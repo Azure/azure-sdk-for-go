@@ -263,6 +263,9 @@ type A2AEnableProtectionInput struct {
 	// REQUIRED; The class type.
 	InstanceType *string
 
+	// A value indicating whether the auto protection is enabled.
+	AutoProtectionOfDataDisk *AutoProtectionOfDataDisk
+
 	// The recovery disk encryption information (for two pass flows).
 	DiskEncryptionInfo *DiskEncryptionInfo
 
@@ -9118,21 +9121,6 @@ type ResolveHealthInputProperties struct {
 	HealthErrors []*ResolveHealthError
 }
 
-// Resource - Azure resource.
-type Resource struct {
-	// Resource Location
-	Location *string
-
-	// READ-ONLY; Resource Id
-	ID *string
-
-	// READ-ONLY; Resource Name
-	Name *string
-
-	// READ-ONLY; Resource Type
-	Type *string
-}
-
 // ResourceHealthSummary - Base class to define the health summary of the resources contained under an Arm resource.
 type ResourceHealthSummary struct {
 	// The categorized resource counts.
@@ -9244,24 +9232,6 @@ type ReverseReplicationProviderSpecificInput struct {
 // for type ReverseReplicationProviderSpecificInput.
 func (r *ReverseReplicationProviderSpecificInput) GetReverseReplicationProviderSpecificInput() *ReverseReplicationProviderSpecificInput {
 	return r
-}
-
-// RoleAssignment - Azure role assignment details.
-type RoleAssignment struct {
-	// The ARM Id of the role assignment.
-	ID *string
-
-	// The name of the role assignment.
-	Name *string
-
-	// Principal Id.
-	PrincipalID *string
-
-	// Role definition id.
-	RoleDefinitionID *string
-
-	// Role assignment scope.
-	Scope *string
 }
 
 // RunAsAccount - CS Accounts Details.

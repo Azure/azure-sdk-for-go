@@ -4,6 +4,7 @@
 package aztables
 
 import (
+	"encoding/json"
 	"fmt"
 	"testing"
 	"time"
@@ -119,6 +120,9 @@ func TestQueryTable(t *testing.T) {
 				require.LessOrEqual(t, len(resp.Tables), 2)
 				resultCount += len(resp.Tables)
 				pageCount++
+				for _, table := range resp.Tables {
+					require.Nil(t, table.Value)
+				}
 			}
 
 			require.Equal(t, resultCount, tableCount-1)
@@ -129,37 +133,57 @@ func TestQueryTable(t *testing.T) {
 	}
 }
 
+type mdForListTables struct {
+	EditLink string `json:"odata.editLink"`
+	ID       string `json:"odata.id"`
+	Type     string `json:"odata.type"`
+}
+
 func TestListTables(t *testing.T) {
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
-			service, delete := initServiceTest(t, service, NewSpanValidator(t, SpanMatcher{
+			client, delete := initServiceTest(t, service, NewSpanValidator(t, SpanMatcher{
 				Name: "Pager[ListTablesResponse].NextPage",
 			}))
 			defer delete()
 			tableName, err := createRandomName(t, tableNamePrefix)
 			require.NoError(t, err)
 
-			err = clearAllTables(service)
+			err = clearAllTables(client)
 			require.NoError(t, err)
 
 			for i := 0; i < 5; i++ {
-				_, err := service.CreateTable(ctx, fmt.Sprintf("%v%v", tableName, i), nil)
+				_, err := client.CreateTable(ctx, fmt.Sprintf("%v%v", tableName, i), nil)
 				require.NoError(t, err)
 			}
 
 			count := 0
-			pager := service.NewListTablesPager(nil)
+			pager := client.NewListTablesPager(&ListTablesOptions{
+				Format: to.Ptr(MetadataFormatFull),
+			})
 			for pager.More() {
 				resp, err := pager.NextPage(ctx)
 				require.NoError(t, err)
 				count += len(resp.Tables)
+
+				for _, table := range resp.Tables {
+					if service == "storage" {
+						// cosmos doesn't send full metadata
+						require.NotEmpty(t, table.Value)
+						var md mdForListTables
+						require.NoError(t, json.Unmarshal(table.Value, &md))
+						require.NotEmpty(t, md.EditLink)
+						require.NotEmpty(t, md.ID)
+						require.NotEmpty(t, md.Type)
+					}
+				}
 			}
 
 			require.Equal(t, 5, count)
 
 			deleteTable := func() {
 				for i := 0; i < 5; i++ {
-					_, err := service.DeleteTable(ctx, fmt.Sprintf("%v%v", tableName, i), nil)
+					_, err := client.DeleteTable(ctx, fmt.Sprintf("%v%v", tableName, i), nil)
 					if err != nil {
 						fmt.Printf("Error cleaning up test. %v\n", err.Error())
 					}

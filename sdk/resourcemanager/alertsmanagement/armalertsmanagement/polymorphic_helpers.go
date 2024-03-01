@@ -11,7 +11,7 @@ package armalertsmanagement
 import "encoding/json"
 
 func unmarshalActionClassification(rawMsg json.RawMessage) (ActionClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -34,7 +34,7 @@ func unmarshalActionClassification(rawMsg json.RawMessage) (ActionClassification
 }
 
 func unmarshalActionClassificationArray(rawMsg json.RawMessage) ([]ActionClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var rawMessages []json.RawMessage
@@ -53,7 +53,7 @@ func unmarshalActionClassificationArray(rawMsg json.RawMessage) ([]ActionClassif
 }
 
 func unmarshalAlertsMetaDataPropertiesClassification(rawMsg json.RawMessage) (AlertsMetaDataPropertiesClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -74,7 +74,7 @@ func unmarshalAlertsMetaDataPropertiesClassification(rawMsg json.RawMessage) (Al
 }
 
 func unmarshalRecurrenceClassification(rawMsg json.RawMessage) (RecurrenceClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -99,7 +99,7 @@ func unmarshalRecurrenceClassification(rawMsg json.RawMessage) (RecurrenceClassi
 }
 
 func unmarshalRecurrenceClassificationArray(rawMsg json.RawMessage) ([]RecurrenceClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var rawMessages []json.RawMessage

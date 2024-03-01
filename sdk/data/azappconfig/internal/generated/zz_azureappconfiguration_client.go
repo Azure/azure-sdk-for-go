@@ -65,17 +65,14 @@ func (client *AzureAppConfigurationClient) checkKeyValueCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Label != nil {
-		reqQP.Set("label", *options.Label)
-	}
-	reqQP.Set("api-version", "2023-10-01")
 	if options != nil && options.Select != nil {
 		reqQP.Set("$Select", strings.Join(strings.Fields(strings.Trim(fmt.Sprint(options.Select), "[]")), ","))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	if client.syncToken != nil {
-		req.Raw().Header["Sync-Token"] = []string{*client.syncToken}
+	reqQP.Set("api-version", "2023-10-01")
+	if options != nil && options.Label != nil {
+		reqQP.Set("label", *options.Label)
 	}
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.AcceptDatetime != nil {
 		req.Raw().Header["Accept-Datetime"] = []string{*options.AcceptDatetime}
 	}
@@ -84,6 +81,9 @@ func (client *AzureAppConfigurationClient) checkKeyValueCreateRequest(ctx contex
 	}
 	if options != nil && options.IfNoneMatch != nil {
 		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
+	}
+	if client.syncToken != nil {
+		req.Raw().Header["Sync-Token"] = []string{*client.syncToken}
 	}
 	return req, nil
 }
@@ -132,26 +132,23 @@ func (client *AzureAppConfigurationClient) checkKeyValuesCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
+	if options != nil && options.Select != nil {
+		reqQP.Set("$Select", strings.Join(strings.Fields(strings.Trim(fmt.Sprint(options.Select), "[]")), ","))
+	}
+	if options != nil && options.After != nil {
+		reqQP.Set("After", *options.After)
+	}
+	reqQP.Set("api-version", "2023-10-01")
 	if options != nil && options.Key != nil {
 		reqQP.Set("key", *options.Key)
 	}
 	if options != nil && options.Label != nil {
 		reqQP.Set("label", *options.Label)
 	}
-	reqQP.Set("api-version", "2023-10-01")
-	if options != nil && options.After != nil {
-		reqQP.Set("After", *options.After)
-	}
-	if options != nil && options.Select != nil {
-		reqQP.Set("$Select", strings.Join(strings.Fields(strings.Trim(fmt.Sprint(options.Select), "[]")), ","))
-	}
 	if options != nil && options.Snapshot != nil {
 		reqQP.Set("snapshot", *options.Snapshot)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	if client.syncToken != nil {
-		req.Raw().Header["Sync-Token"] = []string{*client.syncToken}
-	}
 	if options != nil && options.AcceptDatetime != nil {
 		req.Raw().Header["Accept-Datetime"] = []string{*options.AcceptDatetime}
 	}
@@ -160,6 +157,9 @@ func (client *AzureAppConfigurationClient) checkKeyValuesCreateRequest(ctx conte
 	}
 	if options != nil && options.IfNoneMatch != nil {
 		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
+	}
+	if client.syncToken != nil {
+		req.Raw().Header["Sync-Token"] = []string{*client.syncToken}
 	}
 	return req, nil
 }
@@ -208,19 +208,19 @@ func (client *AzureAppConfigurationClient) checkKeysCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Name != nil {
-		reqQP.Set("name", *options.Name)
-	}
-	reqQP.Set("api-version", "2023-10-01")
 	if options != nil && options.After != nil {
 		reqQP.Set("After", *options.After)
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	if client.syncToken != nil {
-		req.Raw().Header["Sync-Token"] = []string{*client.syncToken}
+	reqQP.Set("api-version", "2023-10-01")
+	if options != nil && options.Name != nil {
+		reqQP.Set("name", *options.Name)
 	}
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.AcceptDatetime != nil {
 		req.Raw().Header["Accept-Datetime"] = []string{*options.AcceptDatetime}
+	}
+	if client.syncToken != nil {
+		req.Raw().Header["Sync-Token"] = []string{*client.syncToken}
 	}
 	return req, nil
 }
@@ -266,22 +266,22 @@ func (client *AzureAppConfigurationClient) checkLabelsCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Name != nil {
-		reqQP.Set("name", *options.Name)
-	}
-	reqQP.Set("api-version", "2023-10-01")
-	if options != nil && options.After != nil {
-		reqQP.Set("After", *options.After)
-	}
 	if options != nil && options.Select != nil {
 		reqQP.Set("$Select", strings.Join(strings.Fields(strings.Trim(fmt.Sprint(options.Select), "[]")), ","))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	if client.syncToken != nil {
-		req.Raw().Header["Sync-Token"] = []string{*client.syncToken}
+	if options != nil && options.After != nil {
+		reqQP.Set("After", *options.After)
 	}
+	reqQP.Set("api-version", "2023-10-01")
+	if options != nil && options.Name != nil {
+		reqQP.Set("name", *options.Name)
+	}
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.AcceptDatetime != nil {
 		req.Raw().Header["Accept-Datetime"] = []string{*options.AcceptDatetime}
+	}
+	if client.syncToken != nil {
+		req.Raw().Header["Sync-Token"] = []string{*client.syncToken}
 	}
 	return req, nil
 }
@@ -327,25 +327,25 @@ func (client *AzureAppConfigurationClient) checkRevisionsCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
+	if options != nil && options.Select != nil {
+		reqQP.Set("$Select", strings.Join(strings.Fields(strings.Trim(fmt.Sprint(options.Select), "[]")), ","))
+	}
+	if options != nil && options.After != nil {
+		reqQP.Set("After", *options.After)
+	}
+	reqQP.Set("api-version", "2023-10-01")
 	if options != nil && options.Key != nil {
 		reqQP.Set("key", *options.Key)
 	}
 	if options != nil && options.Label != nil {
 		reqQP.Set("label", *options.Label)
 	}
-	reqQP.Set("api-version", "2023-10-01")
-	if options != nil && options.After != nil {
-		reqQP.Set("After", *options.After)
-	}
-	if options != nil && options.Select != nil {
-		reqQP.Set("$Select", strings.Join(strings.Fields(strings.Trim(fmt.Sprint(options.Select), "[]")), ","))
-	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	if client.syncToken != nil {
-		req.Raw().Header["Sync-Token"] = []string{*client.syncToken}
-	}
 	if options != nil && options.AcceptDatetime != nil {
 		req.Raw().Header["Accept-Datetime"] = []string{*options.AcceptDatetime}
+	}
+	if client.syncToken != nil {
+		req.Raw().Header["Sync-Token"] = []string{*client.syncToken}
 	}
 	return req, nil
 }
@@ -401,14 +401,14 @@ func (client *AzureAppConfigurationClient) checkSnapshotCreateRequest(ctx contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2023-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	if client.syncToken != nil {
-		req.Raw().Header["Sync-Token"] = []string{*client.syncToken}
-	}
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
 	if options != nil && options.IfNoneMatch != nil {
 		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
+	}
+	if client.syncToken != nil {
+		req.Raw().Header["Sync-Token"] = []string{*client.syncToken}
 	}
 	return req, nil
 }
@@ -460,10 +460,10 @@ func (client *AzureAppConfigurationClient) checkSnapshotsCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01")
 	if options != nil && options.After != nil {
 		reqQP.Set("After", *options.After)
 	}
+	reqQP.Set("api-version", "2023-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if client.syncToken != nil {
 		req.Raw().Header["Sync-Token"] = []string{*client.syncToken}
@@ -536,10 +536,10 @@ func (client *AzureAppConfigurationClient) createSnapshotCreateRequest(ctx conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2023-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/vnd.microsoft.appconfig.snapshot+json, application/problem+json"}
 	if client.syncToken != nil {
 		req.Raw().Header["Sync-Token"] = []string{*client.syncToken}
 	}
-	req.Raw().Header["Accept"] = []string{"application/vnd.microsoft.appconfig.snapshot+json, application/problem+json"}
 	if err := runtime.MarshalAsJSON(req, entity); err != nil {
 		return nil, err
 	}
@@ -583,18 +583,18 @@ func (client *AzureAppConfigurationClient) deleteKeyValueCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2023-10-01")
 	if options != nil && options.Label != nil {
 		reqQP.Set("label", *options.Label)
 	}
-	reqQP.Set("api-version", "2023-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	if client.syncToken != nil {
-		req.Raw().Header["Sync-Token"] = []string{*client.syncToken}
-	}
+	req.Raw().Header["Accept"] = []string{"application/vnd.microsoft.appconfig.kv+json, application/problem+json"}
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
-	req.Raw().Header["Accept"] = []string{"application/vnd.microsoft.appconfig.kv+json, application/problem+json"}
+	if client.syncToken != nil {
+		req.Raw().Header["Sync-Token"] = []string{*client.syncToken}
+	}
 	return req, nil
 }
 
@@ -650,21 +650,21 @@ func (client *AzureAppConfigurationClient) deleteLockCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2023-10-01")
 	if options != nil && options.Label != nil {
 		reqQP.Set("label", *options.Label)
 	}
-	reqQP.Set("api-version", "2023-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	if client.syncToken != nil {
-		req.Raw().Header["Sync-Token"] = []string{*client.syncToken}
-	}
+	req.Raw().Header["Accept"] = []string{"application/vnd.microsoft.appconfig.kv+json, application/problem+json"}
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
 	if options != nil && options.IfNoneMatch != nil {
 		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
 	}
-	req.Raw().Header["Accept"] = []string{"application/vnd.microsoft.appconfig.kv+json, application/problem+json"}
+	if client.syncToken != nil {
+		req.Raw().Header["Sync-Token"] = []string{*client.syncToken}
+	}
 	return req, nil
 }
 
@@ -720,17 +720,15 @@ func (client *AzureAppConfigurationClient) getKeyValueCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Label != nil {
-		reqQP.Set("label", *options.Label)
-	}
-	reqQP.Set("api-version", "2023-10-01")
 	if options != nil && options.Select != nil {
 		reqQP.Set("$Select", strings.Join(strings.Fields(strings.Trim(fmt.Sprint(options.Select), "[]")), ","))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	if client.syncToken != nil {
-		req.Raw().Header["Sync-Token"] = []string{*client.syncToken}
+	reqQP.Set("api-version", "2023-10-01")
+	if options != nil && options.Label != nil {
+		reqQP.Set("label", *options.Label)
 	}
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/vnd.microsoft.appconfig.kv+json, application/problem+json"}
 	if options != nil && options.AcceptDatetime != nil {
 		req.Raw().Header["Accept-Datetime"] = []string{*options.AcceptDatetime}
 	}
@@ -740,7 +738,9 @@ func (client *AzureAppConfigurationClient) getKeyValueCreateRequest(ctx context.
 	if options != nil && options.IfNoneMatch != nil {
 		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
 	}
-	req.Raw().Header["Accept"] = []string{"application/vnd.microsoft.appconfig.kv+json, application/problem+json"}
+	if client.syncToken != nil {
+		req.Raw().Header["Sync-Token"] = []string{*client.syncToken}
+	}
 	return req, nil
 }
 
@@ -797,26 +797,24 @@ func (client *AzureAppConfigurationClient) getKeyValuesCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
+	if options != nil && options.Select != nil {
+		reqQP.Set("$Select", strings.Join(strings.Fields(strings.Trim(fmt.Sprint(options.Select), "[]")), ","))
+	}
+	if options != nil && options.After != nil {
+		reqQP.Set("After", *options.After)
+	}
+	reqQP.Set("api-version", "2023-10-01")
 	if options != nil && options.Key != nil {
 		reqQP.Set("key", *options.Key)
 	}
 	if options != nil && options.Label != nil {
 		reqQP.Set("label", *options.Label)
 	}
-	reqQP.Set("api-version", "2023-10-01")
-	if options != nil && options.After != nil {
-		reqQP.Set("After", *options.After)
-	}
-	if options != nil && options.Select != nil {
-		reqQP.Set("$Select", strings.Join(strings.Fields(strings.Trim(fmt.Sprint(options.Select), "[]")), ","))
-	}
 	if options != nil && options.Snapshot != nil {
 		reqQP.Set("snapshot", *options.Snapshot)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	if client.syncToken != nil {
-		req.Raw().Header["Sync-Token"] = []string{*client.syncToken}
-	}
+	req.Raw().Header["Accept"] = []string{"application/vnd.microsoft.appconfig.kvset+json, application/problem+json"}
 	if options != nil && options.AcceptDatetime != nil {
 		req.Raw().Header["Accept-Datetime"] = []string{*options.AcceptDatetime}
 	}
@@ -826,7 +824,9 @@ func (client *AzureAppConfigurationClient) getKeyValuesCreateRequest(ctx context
 	if options != nil && options.IfNoneMatch != nil {
 		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
 	}
-	req.Raw().Header["Accept"] = []string{"application/vnd.microsoft.appconfig.kvset+json, application/problem+json"}
+	if client.syncToken != nil {
+		req.Raw().Header["Sync-Token"] = []string{*client.syncToken}
+	}
 	return req, nil
 }
 
@@ -883,21 +883,21 @@ func (client *AzureAppConfigurationClient) getKeysCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Name != nil {
-		reqQP.Set("name", *options.Name)
-	}
-	reqQP.Set("api-version", "2023-10-01")
 	if options != nil && options.After != nil {
 		reqQP.Set("After", *options.After)
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	if client.syncToken != nil {
-		req.Raw().Header["Sync-Token"] = []string{*client.syncToken}
+	reqQP.Set("api-version", "2023-10-01")
+	if options != nil && options.Name != nil {
+		reqQP.Set("name", *options.Name)
 	}
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/vnd.microsoft.appconfig.keyset+json, application/problem+json"}
 	if options != nil && options.AcceptDatetime != nil {
 		req.Raw().Header["Accept-Datetime"] = []string{*options.AcceptDatetime}
 	}
-	req.Raw().Header["Accept"] = []string{"application/vnd.microsoft.appconfig.keyset+json, application/problem+json"}
+	if client.syncToken != nil {
+		req.Raw().Header["Sync-Token"] = []string{*client.syncToken}
+	}
 	return req, nil
 }
 
@@ -951,24 +951,24 @@ func (client *AzureAppConfigurationClient) getLabelsCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Name != nil {
-		reqQP.Set("name", *options.Name)
-	}
-	reqQP.Set("api-version", "2023-10-01")
-	if options != nil && options.After != nil {
-		reqQP.Set("After", *options.After)
-	}
 	if options != nil && options.Select != nil {
 		reqQP.Set("$Select", strings.Join(strings.Fields(strings.Trim(fmt.Sprint(options.Select), "[]")), ","))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	if client.syncToken != nil {
-		req.Raw().Header["Sync-Token"] = []string{*client.syncToken}
+	if options != nil && options.After != nil {
+		reqQP.Set("After", *options.After)
 	}
+	reqQP.Set("api-version", "2023-10-01")
+	if options != nil && options.Name != nil {
+		reqQP.Set("name", *options.Name)
+	}
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/vnd.microsoft.appconfig.labelset+json, application/problem+json"}
 	if options != nil && options.AcceptDatetime != nil {
 		req.Raw().Header["Accept-Datetime"] = []string{*options.AcceptDatetime}
 	}
-	req.Raw().Header["Accept"] = []string{"application/vnd.microsoft.appconfig.labelset+json, application/problem+json"}
+	if client.syncToken != nil {
+		req.Raw().Header["Sync-Token"] = []string{*client.syncToken}
+	}
 	return req, nil
 }
 
@@ -1071,27 +1071,27 @@ func (client *AzureAppConfigurationClient) getRevisionsCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
+	if options != nil && options.Select != nil {
+		reqQP.Set("$Select", strings.Join(strings.Fields(strings.Trim(fmt.Sprint(options.Select), "[]")), ","))
+	}
+	if options != nil && options.After != nil {
+		reqQP.Set("After", *options.After)
+	}
+	reqQP.Set("api-version", "2023-10-01")
 	if options != nil && options.Key != nil {
 		reqQP.Set("key", *options.Key)
 	}
 	if options != nil && options.Label != nil {
 		reqQP.Set("label", *options.Label)
 	}
-	reqQP.Set("api-version", "2023-10-01")
-	if options != nil && options.After != nil {
-		reqQP.Set("After", *options.After)
-	}
-	if options != nil && options.Select != nil {
-		reqQP.Set("$Select", strings.Join(strings.Fields(strings.Trim(fmt.Sprint(options.Select), "[]")), ","))
-	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	if client.syncToken != nil {
-		req.Raw().Header["Sync-Token"] = []string{*client.syncToken}
-	}
+	req.Raw().Header["Accept"] = []string{"application/vnd.microsoft.appconfig.kvset+json, application/problem+json"}
 	if options != nil && options.AcceptDatetime != nil {
 		req.Raw().Header["Accept-Datetime"] = []string{*options.AcceptDatetime}
 	}
-	req.Raw().Header["Accept"] = []string{"application/vnd.microsoft.appconfig.kvset+json, application/problem+json"}
+	if client.syncToken != nil {
+		req.Raw().Header["Sync-Token"] = []string{*client.syncToken}
+	}
 	return req, nil
 }
 
@@ -1147,21 +1147,21 @@ func (client *AzureAppConfigurationClient) getSnapshotCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01")
 	if options != nil && options.Select != nil {
 		reqQP.Set("$Select", strings.Join(strings.Fields(strings.Trim(fmt.Sprint(options.Select), "[]")), ","))
 	}
+	reqQP.Set("api-version", "2023-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	if client.syncToken != nil {
-		req.Raw().Header["Sync-Token"] = []string{*client.syncToken}
-	}
+	req.Raw().Header["Accept"] = []string{"application/vnd.microsoft.appconfig.snapshot+json, application/problem+json"}
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
 	if options != nil && options.IfNoneMatch != nil {
 		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
 	}
-	req.Raw().Header["Accept"] = []string{"application/vnd.microsoft.appconfig.snapshot+json, application/problem+json"}
+	if client.syncToken != nil {
+		req.Raw().Header["Sync-Token"] = []string{*client.syncToken}
+	}
 	return req, nil
 }
 
@@ -1221,24 +1221,24 @@ func (client *AzureAppConfigurationClient) getSnapshotsCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Name != nil {
-		reqQP.Set("name", *options.Name)
+	if options != nil && options.Select != nil {
+		reqQP.Set("$Select", strings.Join(strings.Fields(strings.Trim(fmt.Sprint(options.Select), "[]")), ","))
 	}
-	reqQP.Set("api-version", "2023-10-01")
 	if options != nil && options.After != nil {
 		reqQP.Set("After", *options.After)
 	}
-	if options != nil && options.Select != nil {
-		reqQP.Set("$Select", strings.Join(strings.Fields(strings.Trim(fmt.Sprint(options.Select), "[]")), ","))
+	reqQP.Set("api-version", "2023-10-01")
+	if options != nil && options.Name != nil {
+		reqQP.Set("name", *options.Name)
 	}
 	if options != nil && options.Status != nil {
 		reqQP.Set("status", strings.Join(strings.Fields(strings.Trim(fmt.Sprint(options.Status), "[]")), ","))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/vnd.microsoft.appconfig.snapshotset+json, application/problem+json"}
 	if client.syncToken != nil {
 		req.Raw().Header["Sync-Token"] = []string{*client.syncToken}
 	}
-	req.Raw().Header["Accept"] = []string{"application/vnd.microsoft.appconfig.snapshotset+json, application/problem+json"}
 	return req, nil
 }
 
@@ -1292,21 +1292,21 @@ func (client *AzureAppConfigurationClient) putKeyValueCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2023-10-01")
 	if options != nil && options.Label != nil {
 		reqQP.Set("label", *options.Label)
 	}
-	reqQP.Set("api-version", "2023-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	if client.syncToken != nil {
-		req.Raw().Header["Sync-Token"] = []string{*client.syncToken}
-	}
+	req.Raw().Header["Accept"] = []string{"application/vnd.microsoft.appconfig.kv+json, application/problem+json"}
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
 	if options != nil && options.IfNoneMatch != nil {
 		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
 	}
-	req.Raw().Header["Accept"] = []string{"application/vnd.microsoft.appconfig.kv+json, application/problem+json"}
+	if client.syncToken != nil {
+		req.Raw().Header["Sync-Token"] = []string{*client.syncToken}
+	}
 	if err := runtime.MarshalAsJSON(req, entity); err != nil {
 		return nil, err
 	}
@@ -1365,21 +1365,21 @@ func (client *AzureAppConfigurationClient) putLockCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2023-10-01")
 	if options != nil && options.Label != nil {
 		reqQP.Set("label", *options.Label)
 	}
-	reqQP.Set("api-version", "2023-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	if client.syncToken != nil {
-		req.Raw().Header["Sync-Token"] = []string{*client.syncToken}
-	}
+	req.Raw().Header["Accept"] = []string{"application/vnd.microsoft.appconfig.kv+json, application/problem+json"}
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
 	if options != nil && options.IfNoneMatch != nil {
 		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
 	}
-	req.Raw().Header["Accept"] = []string{"application/vnd.microsoft.appconfig.kv+json, application/problem+json"}
+	if client.syncToken != nil {
+		req.Raw().Header["Sync-Token"] = []string{*client.syncToken}
+	}
 	return req, nil
 }
 
@@ -1438,16 +1438,16 @@ func (client *AzureAppConfigurationClient) updateSnapshotCreateRequest(ctx conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2023-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	if client.syncToken != nil {
-		req.Raw().Header["Sync-Token"] = []string{*client.syncToken}
-	}
+	req.Raw().Header["Accept"] = []string{"application/vnd.microsoft.appconfig.snapshot+json, application/problem+json"}
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
 	if options != nil && options.IfNoneMatch != nil {
 		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
 	}
-	req.Raw().Header["Accept"] = []string{"application/vnd.microsoft.appconfig.snapshot+json, application/problem+json"}
+	if client.syncToken != nil {
+		req.Raw().Header["Sync-Token"] = []string{*client.syncToken}
+	}
 	if err := runtime.MarshalAsJSON(req, entity); err != nil {
 		return nil, err
 	}

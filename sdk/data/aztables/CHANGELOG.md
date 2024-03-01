@@ -1,12 +1,18 @@
 # Release History
 
-## 1.1.1 (Unreleased)
+## 1.2.0 (Unreleased)
 
 ### Features Added
+* Methods `Client.AddEntity` and `ServiceClient.NewListTablesPager` now include OData metadata in their responses.
+* The amount of OData metadata returned has been made configurable for the following methods:
+  * `Client.AddEntity`, `Client.GetEntity`, `Client.NewListEntitiesPager`, and `ServiceClient.NewListTablesPager`.
+  * Use one of the following constants to specify the amount: `MetadataFormatFull`, `MetadataFormatMinimal`, or `MetadataFormatNone`.
 
 ### Breaking Changes
 
 ### Bugs Fixed
+* Fixed an issue that could cause `Client.NewListEntitiesPager` to skip pages in some cases.
+* Fixed an issue that could cause unmarshaling empty time values to fail.
 
 ### Other Changes
 

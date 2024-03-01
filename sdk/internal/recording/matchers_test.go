@@ -9,12 +9,34 @@ package recording
 import (
 	"bytes"
 	"net/http"
+	"net/url"
 	"os"
+	"strconv"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 )
+
+func TestSetMatcherRecordingOptions(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	srv.SetResponse(mock.WithStatusCode(http.StatusOK))
+	parsed, err := url.Parse(srv.URL())
+	require.NoError(t, err)
+	port, err := strconv.ParseInt(parsed.Port(), 10, 0)
+	require.NoError(t, err)
+	ro := RecordingOptions{ProxyPort: int(port)}
+	t.Run("SetBodilessMatcher", func(t *testing.T) {
+		err := SetBodilessMatcher(t, &MatcherOptions{RecordingOptions: ro})
+		require.NoError(t, err)
+	})
+	t.Run("SetDefaultMatcher", func(t *testing.T) {
+		err = SetDefaultMatcher(nil, &SetDefaultMatcherOptions{RecordingOptions: ro})
+		require.NoError(t, err)
+	})
+}
 
 type matchersTests struct {
 	suite.Suite

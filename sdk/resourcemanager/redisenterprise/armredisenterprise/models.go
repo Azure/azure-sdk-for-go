@@ -25,6 +25,9 @@ type Cluster struct {
 	// REQUIRED; The SKU to create, which affects price, performance, and features.
 	SKU *SKU
 
+	// The identity of the resource.
+	Identity *ManagedServiceIdentity
+
 	// Other properties of the cluster.
 	Properties *ClusterProperties
 
@@ -55,6 +58,9 @@ type ClusterList struct {
 
 // ClusterProperties - Properties of RedisEnterprise clusters, as opposed to general resource properties like location, tags
 type ClusterProperties struct {
+	// Encryption-at-rest configuration for the cluster.
+	Encryption *ClusterPropertiesEncryption
+
 	// The minimum TLS version for the cluster to support, e.g. '1.2'
 	MinimumTLSVersion *TLSVersion
 
@@ -74,8 +80,38 @@ type ClusterProperties struct {
 	ResourceState *ResourceState
 }
 
+// ClusterPropertiesEncryption - Encryption-at-rest configuration for the cluster.
+type ClusterPropertiesEncryption struct {
+	// All Customer-managed key encryption properties for the resource. Set this to an empty object to use Microsoft-managed key
+	// encryption.
+	CustomerManagedKeyEncryption *ClusterPropertiesEncryptionCustomerManagedKeyEncryption
+}
+
+// ClusterPropertiesEncryptionCustomerManagedKeyEncryption - All Customer-managed key encryption properties for the resource.
+// Set this to an empty object to use Microsoft-managed key encryption.
+type ClusterPropertiesEncryptionCustomerManagedKeyEncryption struct {
+	// All identity configuration for Customer-managed key settings defining which identity should be used to auth to Key Vault.
+	KeyEncryptionKeyIdentity *ClusterPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity
+
+	// Key encryption key Url, versioned only. Ex: https://contosovault.vault.azure.net/keys/contosokek/562a4bb76b524a1493a6afe8e536ee78
+	KeyEncryptionKeyURL *string
+}
+
+// ClusterPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity - All identity configuration for Customer-managed key
+// settings defining which identity should be used to auth to Key Vault.
+type ClusterPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity struct {
+	// Only userAssignedIdentity is supported in this API version; other types may be supported in the future
+	IdentityType *CmkIdentityType
+
+	// User assigned identity to use for accessing key encryption key Url. Ex: /subscriptions//resourceGroups//providers/Microsoft.ManagedIdentity/userAssignedIdentities/myId.
+	UserAssignedIdentityResourceID *string
+}
+
 // ClusterUpdate - A partial update to the RedisEnterprise cluster
 type ClusterUpdate struct {
+	// The identity of the resource.
+	Identity *ManagedServiceIdentity
+
 	// Other properties of the cluster.
 	Properties *ClusterProperties
 
@@ -196,6 +232,12 @@ type ExportClusterParameters struct {
 	SasURI *string
 }
 
+// FlushParameters - Parameters for a Redis Enterprise active geo-replication flush operation
+type FlushParameters struct {
+	// The identifiers of all the other database resources in the georeplication group to be flushed.
+	IDs []*string
+}
+
 // ForceUnlinkParameters - Parameters for a Redis Enterprise Active Geo Replication Force Unlink operation.
 type ForceUnlinkParameters struct {
 	// REQUIRED; The resource IDs of the database resources to be unlinked.
@@ -215,6 +257,26 @@ type LinkedDatabase struct {
 
 	// READ-ONLY; State of the link between the database resources.
 	State *LinkState
+}
+
+// ManagedServiceIdentity - Managed service identity (system assigned and/or user assigned identities)
+type ManagedServiceIdentity struct {
+	// REQUIRED; Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed).
+	Type *ManagedServiceIdentityType
+
+	// The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys will be ARM
+	// resource ids in the form:
+	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}.
+	// The dictionary values can be empty objects ({}) in
+	// requests.
+	UserAssignedIdentities map[string]*UserAssignedIdentity
+
+	// READ-ONLY; The service principal ID of the system assigned identity. This property will only be provided for a system assigned
+	// identity.
+	PrincipalID *string
+
+	// READ-ONLY; The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity.
+	TenantID *string
 }
 
 // Module - Specifies configuration of a redis module
@@ -457,4 +519,13 @@ type TrackedResource struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
+}
+
+// UserAssignedIdentity - User assigned identity properties
+type UserAssignedIdentity struct {
+	// READ-ONLY; The client ID of the assigned identity.
+	ClientID *string
+
+	// READ-ONLY; The principal ID of the assigned identity.
+	PrincipalID *string
 }

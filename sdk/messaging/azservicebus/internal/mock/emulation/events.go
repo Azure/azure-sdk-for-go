@@ -68,6 +68,7 @@ const (
 	DispositionTypeAccept  DispositionType = "accept"
 	DispositionTypeReject  DispositionType = "reject"
 	DispositionTypeRelease DispositionType = "release"
+	DispositionTypeModify  DispositionType = "modify" // used for abandoning a message
 )
 
 type DispositionEvent struct {

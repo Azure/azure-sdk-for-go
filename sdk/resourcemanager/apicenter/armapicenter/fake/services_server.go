@@ -26,15 +26,19 @@ import (
 type ServicesServer struct {
 	// CreateOrUpdate is the fake for method ServicesClient.CreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	CreateOrUpdate func(ctx context.Context, resourceGroupName string, resource armapicenter.Service, options *armapicenter.ServicesClientCreateOrUpdateOptions) (resp azfake.Responder[armapicenter.ServicesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	CreateOrUpdate func(ctx context.Context, resourceGroupName string, serviceName string, resource armapicenter.Service, options *armapicenter.ServicesClientCreateOrUpdateOptions) (resp azfake.Responder[armapicenter.ServicesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// Delete is the fake for method ServicesClient.Delete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
-	Delete func(ctx context.Context, resourceGroupName string, options *armapicenter.ServicesClientDeleteOptions) (resp azfake.Responder[armapicenter.ServicesClientDeleteResponse], errResp azfake.ErrorResponder)
+	Delete func(ctx context.Context, resourceGroupName string, serviceName string, options *armapicenter.ServicesClientDeleteOptions) (resp azfake.Responder[armapicenter.ServicesClientDeleteResponse], errResp azfake.ErrorResponder)
+
+	// BeginExportMetadataSchema is the fake for method ServicesClient.BeginExportMetadataSchema
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginExportMetadataSchema func(ctx context.Context, resourceGroupName string, serviceName string, body armapicenter.MetadataSchemaExportRequest, options *armapicenter.ServicesClientBeginExportMetadataSchemaOptions) (resp azfake.PollerResponder[armapicenter.ServicesClientExportMetadataSchemaResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method ServicesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, options *armapicenter.ServicesClientGetOptions) (resp azfake.Responder[armapicenter.ServicesClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, resourceGroupName string, serviceName string, options *armapicenter.ServicesClientGetOptions) (resp azfake.Responder[armapicenter.ServicesClientGetResponse], errResp azfake.ErrorResponder)
 
 	// NewListByResourceGroupPager is the fake for method ServicesClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -46,7 +50,7 @@ type ServicesServer struct {
 
 	// Update is the fake for method ServicesClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
-	Update func(ctx context.Context, resourceGroupName string, parameters armapicenter.ServiceUpdate, options *armapicenter.ServicesClientUpdateOptions) (resp azfake.Responder[armapicenter.ServicesClientUpdateResponse], errResp azfake.ErrorResponder)
+	Update func(ctx context.Context, resourceGroupName string, serviceName string, properties armapicenter.ServiceUpdate, options *armapicenter.ServicesClientUpdateOptions) (resp azfake.Responder[armapicenter.ServicesClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewServicesServerTransport creates a new instance of ServicesServerTransport with the provided implementation.
@@ -55,6 +59,7 @@ type ServicesServer struct {
 func NewServicesServerTransport(srv *ServicesServer) *ServicesServerTransport {
 	return &ServicesServerTransport{
 		srv:                         srv,
+		beginExportMetadataSchema:   newTracker[azfake.PollerResponder[armapicenter.ServicesClientExportMetadataSchemaResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armapicenter.ServicesClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armapicenter.ServicesClientListBySubscriptionResponse]](),
 	}
@@ -64,6 +69,7 @@ func NewServicesServerTransport(srv *ServicesServer) *ServicesServerTransport {
 // Don't use this type directly, use NewServicesServerTransport instead.
 type ServicesServerTransport struct {
 	srv                         *ServicesServer
+	beginExportMetadataSchema   *tracker[azfake.PollerResponder[armapicenter.ServicesClientExportMetadataSchemaResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armapicenter.ServicesClientListByResourceGroupResponse]]
 	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armapicenter.ServicesClientListBySubscriptionResponse]]
 }
@@ -84,6 +90,8 @@ func (s *ServicesServerTransport) Do(req *http.Request) (*http.Response, error) 
 		resp, err = s.dispatchCreateOrUpdate(req)
 	case "ServicesClient.Delete":
 		resp, err = s.dispatchDelete(req)
+	case "ServicesClient.BeginExportMetadataSchema":
+		resp, err = s.dispatchBeginExportMetadataSchema(req)
 	case "ServicesClient.Get":
 		resp, err = s.dispatchGet(req)
 	case "ServicesClient.NewListByResourceGroupPager":
@@ -121,7 +129,11 @@ func (s *ServicesServerTransport) dispatchCreateOrUpdate(req *http.Request) (*ht
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := s.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, body, nil)
+	serviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, serviceNameParam, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -150,7 +162,11 @@ func (s *ServicesServerTransport) dispatchDelete(req *http.Request) (*http.Respo
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := s.srv.Delete(req.Context(), resourceGroupNameParam, nil)
+	serviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.Delete(req.Context(), resourceGroupNameParam, serviceNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -162,6 +178,54 @@ func (s *ServicesServerTransport) dispatchDelete(req *http.Request) (*http.Respo
 	if err != nil {
 		return nil, err
 	}
+	return resp, nil
+}
+
+func (s *ServicesServerTransport) dispatchBeginExportMetadataSchema(req *http.Request) (*http.Response, error) {
+	if s.srv.BeginExportMetadataSchema == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginExportMetadataSchema not implemented")}
+	}
+	beginExportMetadataSchema := s.beginExportMetadataSchema.get(req)
+	if beginExportMetadataSchema == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ApiCenter/services/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/exportMetadataSchema`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armapicenter.MetadataSchemaExportRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		serviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := s.srv.BeginExportMetadataSchema(req.Context(), resourceGroupNameParam, serviceNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginExportMetadataSchema = &respr
+		s.beginExportMetadataSchema.add(req, beginExportMetadataSchema)
+	}
+
+	resp, err := server.PollerResponderNext(beginExportMetadataSchema, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		s.beginExportMetadataSchema.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginExportMetadataSchema) {
+		s.beginExportMetadataSchema.remove(req)
+	}
+
 	return resp, nil
 }
 
@@ -179,7 +243,11 @@ func (s *ServicesServerTransport) dispatchGet(req *http.Request) (*http.Response
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := s.srv.Get(req.Context(), resourceGroupNameParam, nil)
+	serviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.Get(req.Context(), resourceGroupNameParam, serviceNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -282,7 +350,11 @@ func (s *ServicesServerTransport) dispatchUpdate(req *http.Request) (*http.Respo
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := s.srv.Update(req.Context(), resourceGroupNameParam, body, nil)
+	serviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.Update(req.Context(), resourceGroupNameParam, serviceNameParam, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}

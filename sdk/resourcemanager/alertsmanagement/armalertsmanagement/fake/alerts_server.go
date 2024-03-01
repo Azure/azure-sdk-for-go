@@ -114,7 +114,7 @@ func (a *AlertsServerTransport) dispatchChangeState(req *http.Request) (*http.Re
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	qp := req.URL.Query()
-	body, err := server.UnmarshalRequestAsJSON[string](req)
+	body, err := server.UnmarshalRequestAsJSON[armalertsmanagement.Comments](req)
 	if err != nil {
 		return nil, err
 	}

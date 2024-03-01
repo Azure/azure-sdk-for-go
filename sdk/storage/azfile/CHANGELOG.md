@@ -1,5 +1,25 @@
 # Release History
 
+## 1.2.2 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.2.1 (2024-02-29)
+
+### Bugs Fixed
+
+* Re-enabled `SharedKeyCredential` authentication mode for non TLS protected endpoints.
+
+### Other Changes
+
+* Updated `azidentity` version to `1.5.1`.
+
 ## 1.2.0 (2024-02-12)
 
 ### Other Changes

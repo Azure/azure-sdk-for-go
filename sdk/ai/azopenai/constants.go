@@ -8,60 +8,6 @@
 
 package azopenai
 
-// AudioSpeechOutputFormat - Represents the output format for speech synthesis.
-type AudioSpeechOutputFormat string
-
-const (
-	// AudioSpeechOutputFormatAac - Use aac as output format.
-	AudioSpeechOutputFormatAac AudioSpeechOutputFormat = "aac"
-	// AudioSpeechOutputFormatFlac - Use flac as output format.
-	AudioSpeechOutputFormatFlac AudioSpeechOutputFormat = "flac"
-	// AudioSpeechOutputFormatMp3 - Use mp3 as output format.
-	AudioSpeechOutputFormatMp3 AudioSpeechOutputFormat = "mp3"
-	// AudioSpeechOutputFormatOpus - Use opus as output format.
-	AudioSpeechOutputFormatOpus AudioSpeechOutputFormat = "opus"
-)
-
-// PossibleAudioSpeechOutputFormatValues returns the possible values for the AudioSpeechOutputFormat const type.
-func PossibleAudioSpeechOutputFormatValues() []AudioSpeechOutputFormat {
-	return []AudioSpeechOutputFormat{
-		AudioSpeechOutputFormatAac,
-		AudioSpeechOutputFormatFlac,
-		AudioSpeechOutputFormatMp3,
-		AudioSpeechOutputFormatOpus,
-	}
-}
-
-// AudioSpeechVoice - Represents a voice for speech synthesis.
-type AudioSpeechVoice string
-
-const (
-	// AudioSpeechVoiceAlloy - The Alloy voice.
-	AudioSpeechVoiceAlloy AudioSpeechVoice = "alloy"
-	// AudioSpeechVoiceEcho - The Echo voice.
-	AudioSpeechVoiceEcho AudioSpeechVoice = "echo"
-	// AudioSpeechVoiceFable - The Fable voice.
-	AudioSpeechVoiceFable AudioSpeechVoice = "fable"
-	// AudioSpeechVoiceNova - The Nova voice.
-	AudioSpeechVoiceNova AudioSpeechVoice = "nova"
-	// AudioSpeechVoiceOnyx - The Onyx voice.
-	AudioSpeechVoiceOnyx AudioSpeechVoice = "onyx"
-	// AudioSpeechVoiceShimmer - The Shimmer voice.
-	AudioSpeechVoiceShimmer AudioSpeechVoice = "shimmer"
-)
-
-// PossibleAudioSpeechVoiceValues returns the possible values for the AudioSpeechVoice const type.
-func PossibleAudioSpeechVoiceValues() []AudioSpeechVoice {
-	return []AudioSpeechVoice{
-		AudioSpeechVoiceAlloy,
-		AudioSpeechVoiceEcho,
-		AudioSpeechVoiceFable,
-		AudioSpeechVoiceNova,
-		AudioSpeechVoiceOnyx,
-		AudioSpeechVoiceShimmer,
-	}
-}
-
 // AudioTaskLabel - Defines the possible descriptors for available audio operation responses.
 type AudioTaskLabel string
 
@@ -151,12 +97,12 @@ const (
 	// AzureChatExtensionTypeAzureMachineLearningIndex - Represents the use of Azure Machine Learning index as an Azure OpenAI
 	// chat extension.
 	AzureChatExtensionTypeAzureMachineLearningIndex AzureChatExtensionType = "azure_ml_index"
-	// AzureChatExtensionTypeAzureSearch - Represents the use of Azure Cognitive Search as an Azure OpenAI chat extension.
+	// AzureChatExtensionTypeAzureSearch - Represents the use of Azure AI Search as an Azure OpenAI chat extension.
 	AzureChatExtensionTypeAzureSearch AzureChatExtensionType = "azure_search"
 	// AzureChatExtensionTypeElasticsearch - Represents the use of Elasticsearch® index as an Azure OpenAI chat extension.
 	AzureChatExtensionTypeElasticsearch AzureChatExtensionType = "elasticsearch"
 	// AzureChatExtensionTypePinecone - Represents the use of Pinecone index as an Azure OpenAI chat extension.
-	AzureChatExtensionTypePinecone AzureChatExtensionType = "Pinecone"
+	AzureChatExtensionTypePinecone AzureChatExtensionType = "pinecone"
 )
 
 // PossibleAzureChatExtensionTypeValues returns the possible values for the AzureChatExtensionType const type.
@@ -415,8 +361,7 @@ func PossibleFunctionCallPresetValues() []FunctionCallPreset {
 	}
 }
 
-// ImageGenerationQuality - An image generation configuration that specifies how the model should prioritize quality, cost,
-// and speed. Only configurable with dall-e-3 models.
+// ImageGenerationQuality - The desired image generation quality level to use. Only configurable with dall-e-3 models.
 type ImageGenerationQuality string
 
 const (
@@ -435,7 +380,7 @@ func PossibleImageGenerationQualityValues() []ImageGenerationQuality {
 	}
 }
 
-// ImageGenerationResponseFormat - The format in which the generated images are returned.
+// ImageGenerationResponseFormat - The format in which image generation response items should be presented.
 type ImageGenerationResponseFormat string
 
 const (
@@ -453,8 +398,7 @@ func PossibleImageGenerationResponseFormatValues() []ImageGenerationResponseForm
 	}
 }
 
-// ImageGenerationStyle - An image generation configuration that specifies how the model should incorporate realism and other
-// visual characteristics. Only configurable with dall-e-3 models.
+// ImageGenerationStyle - The desired image generation style to use. Only configurable with dall-e-3 models.
 type ImageGenerationStyle string
 
 const (
@@ -474,7 +418,8 @@ func PossibleImageGenerationStyleValues() []ImageGenerationStyle {
 	}
 }
 
-// ImageSize - The desired size of generated images.
+// ImageSize - The desired dimensions for generated images. Dall-e-2 models support 256x256, 512x512, or 1024x1024. Dall-e-3
+// models support 1024x1024, 1792x1024, or 1024x1792.
 type ImageSize string
 
 const (
@@ -563,5 +508,62 @@ func PossibleOnYourDataVectorizationSourceTypeValues() []OnYourDataVectorization
 		OnYourDataVectorizationSourceTypeDeploymentName,
 		OnYourDataVectorizationSourceTypeEndpoint,
 		OnYourDataVectorizationSourceTypeModelID,
+	}
+}
+
+// SpeechGenerationResponseFormat - The audio output format for the spoken text. By default, the MP3 format will be used.
+type SpeechGenerationResponseFormat string
+
+const (
+	// SpeechGenerationResponseFormatAac - Use AAC as the audio output format. AAC is optimized for digital audio compression
+	// and is preferred by YouTube, Android, and iOS.
+	SpeechGenerationResponseFormatAac SpeechGenerationResponseFormat = "aac"
+	// SpeechGenerationResponseFormatFlac - Use FLAC as the audio output format. FLAC is a fully lossless format optimized for
+	// maximum quality at the expense of size.
+	SpeechGenerationResponseFormatFlac SpeechGenerationResponseFormat = "flac"
+	// SpeechGenerationResponseFormatMp3 - Use MP3 as the audio output format. MP3 is the default, general-purpose format.
+	SpeechGenerationResponseFormatMp3 SpeechGenerationResponseFormat = "mp3"
+	// SpeechGenerationResponseFormatOpus - Use Opus as the audio output format. Opus is optimized for internet streaming and
+	// low latency.
+	SpeechGenerationResponseFormatOpus SpeechGenerationResponseFormat = "opus"
+)
+
+// PossibleSpeechGenerationResponseFormatValues returns the possible values for the SpeechGenerationResponseFormat const type.
+func PossibleSpeechGenerationResponseFormatValues() []SpeechGenerationResponseFormat {
+	return []SpeechGenerationResponseFormat{
+		SpeechGenerationResponseFormatAac,
+		SpeechGenerationResponseFormatFlac,
+		SpeechGenerationResponseFormatMp3,
+		SpeechGenerationResponseFormatOpus,
+	}
+}
+
+// SpeechVoice - The available voices for text-to-speech.
+type SpeechVoice string
+
+const (
+	// SpeechVoiceAlloy - The Alloy voice.
+	SpeechVoiceAlloy SpeechVoice = "alloy"
+	// SpeechVoiceEcho - The Echo voice.
+	SpeechVoiceEcho SpeechVoice = "echo"
+	// SpeechVoiceFable - The Fable voice.
+	SpeechVoiceFable SpeechVoice = "fable"
+	// SpeechVoiceNova - The Nova voice.
+	SpeechVoiceNova SpeechVoice = "nova"
+	// SpeechVoiceOnyx - The Onyx voice.
+	SpeechVoiceOnyx SpeechVoice = "onyx"
+	// SpeechVoiceShimmer - The Shimmer voice.
+	SpeechVoiceShimmer SpeechVoice = "shimmer"
+)
+
+// PossibleSpeechVoiceValues returns the possible values for the SpeechVoice const type.
+func PossibleSpeechVoiceValues() []SpeechVoice {
+	return []SpeechVoice{
+		SpeechVoiceAlloy,
+		SpeechVoiceEcho,
+		SpeechVoiceFable,
+		SpeechVoiceNova,
+		SpeechVoiceOnyx,
+		SpeechVoiceShimmer,
 	}
 }

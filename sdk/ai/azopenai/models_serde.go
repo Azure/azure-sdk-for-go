@@ -17,80 +17,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
-// MarshalJSON implements the json.Marshaller interface for type AudioSpeechOptions.
-func (a AudioSpeechOptions) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "input", a.Input)
-	populate(objectMap, "model", a.DeploymentName)
-	populate(objectMap, "response_format", a.ResponseFormat)
-	populate(objectMap, "speed", a.Speed)
-	populate(objectMap, "voice", a.Voice)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type AudioSpeechOptions.
-func (a *AudioSpeechOptions) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", a, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "input":
-			err = unpopulate(val, "Input", &a.Input)
-			delete(rawMsg, key)
-		case "model":
-			err = unpopulate(val, "Model", &a.DeploymentName)
-			delete(rawMsg, key)
-		case "response_format":
-			err = unpopulate(val, "ResponseFormat", &a.ResponseFormat)
-			delete(rawMsg, key)
-		case "speed":
-			err = unpopulate(val, "Speed", &a.Speed)
-			delete(rawMsg, key)
-		case "voice":
-			err = unpopulate(val, "Voice", &a.Voice)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", a, err)
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AudioSpeechResponse.
-func (a AudioSpeechResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populateByteArray(objectMap, "audio", a.Audio, func() any {
-		return runtime.EncodeByteArray(a.Audio, runtime.Base64StdFormat)
-	})
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type AudioSpeechResponse.
-func (a *AudioSpeechResponse) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", a, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "audio":
-			if val != nil && string(val) != "null" {
-				err = runtime.DecodeByteArray(string(val), &a.Audio, runtime.Base64StdFormat)
-			}
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", a, err)
-		}
-	}
-	return nil
-}
-
 // MarshalJSON implements the json.Marshaller interface for type AudioTranscription.
 func (a AudioTranscription) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -2463,6 +2389,7 @@ func (c CompletionsOptions) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "presence_penalty", c.PresencePenalty)
 	populate(objectMap, "prompt", c.Prompt)
 	populate(objectMap, "stop", c.Stop)
+	populate(objectMap, "suffix", c.Suffix)
 	populate(objectMap, "temperature", c.Temperature)
 	populate(objectMap, "top_p", c.TopP)
 	populate(objectMap, "user", c.User)
@@ -2510,6 +2437,9 @@ func (c *CompletionsOptions) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "stop":
 			err = unpopulate(val, "Stop", &c.Stop)
+			delete(rawMsg, key)
+		case "suffix":
+			err = unpopulate(val, "Suffix", &c.Suffix)
 			delete(rawMsg, key)
 		case "temperature":
 			err = unpopulate(val, "Temperature", &c.Temperature)
@@ -3237,10 +3167,51 @@ func (f *FunctionName) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type ImageGenerationContentFilterResults.
+func (i ImageGenerationContentFilterResults) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "hate", i.Hate)
+	populate(objectMap, "self_harm", i.SelfHarm)
+	populate(objectMap, "sexual", i.Sexual)
+	populate(objectMap, "violence", i.Violence)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ImageGenerationContentFilterResults.
+func (i *ImageGenerationContentFilterResults) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", i, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "hate":
+			err = unpopulate(val, "Hate", &i.Hate)
+			delete(rawMsg, key)
+		case "self_harm":
+			err = unpopulate(val, "SelfHarm", &i.SelfHarm)
+			delete(rawMsg, key)
+		case "sexual":
+			err = unpopulate(val, "Sexual", &i.Sexual)
+			delete(rawMsg, key)
+		case "violence":
+			err = unpopulate(val, "Violence", &i.Violence)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", i, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type ImageGenerationData.
 func (i ImageGenerationData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "b64_json", i.Base64Data)
+	populate(objectMap, "content_filter_results", i.ContentFilterResults)
+	populate(objectMap, "prompt_filter_results", i.PromptFilterResults)
 	populate(objectMap, "revised_prompt", i.RevisedPrompt)
 	populate(objectMap, "url", i.URL)
 	return json.Marshal(objectMap)
@@ -3257,6 +3228,14 @@ func (i *ImageGenerationData) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "b64_json":
 			err = unpopulate(val, "Base64Data", &i.Base64Data)
+			delete(rawMsg, key)
+		case "content_filter_results":
+			err = unpopulate(val, "ContentFilterResults", &i.ContentFilterResults)
+			delete(rawMsg, key)
+		case "prompt_annotations":
+			fallthrough
+		case "prompt_filter_results":
+			err = unpopulate(val, "PromptFilterResults", &i.PromptFilterResults)
 			delete(rawMsg, key)
 		case "revised_prompt":
 			err = unpopulate(val, "RevisedPrompt", &i.RevisedPrompt)
@@ -3318,6 +3297,53 @@ func (i *ImageGenerationOptions) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "user":
 			err = unpopulate(val, "User", &i.User)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", i, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ImageGenerationPromptFilterResults.
+func (i ImageGenerationPromptFilterResults) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "hate", i.Hate)
+	populate(objectMap, "jailbreak", i.Jailbreak)
+	populate(objectMap, "profanity", i.Profanity)
+	populate(objectMap, "self_harm", i.SelfHarm)
+	populate(objectMap, "sexual", i.Sexual)
+	populate(objectMap, "violence", i.Violence)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ImageGenerationPromptFilterResults.
+func (i *ImageGenerationPromptFilterResults) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", i, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "hate":
+			err = unpopulate(val, "Hate", &i.Hate)
+			delete(rawMsg, key)
+		case "jailbreak":
+			err = unpopulate(val, "Jailbreak", &i.Jailbreak)
+			delete(rawMsg, key)
+		case "profanity":
+			err = unpopulate(val, "Profanity", &i.Profanity)
+			delete(rawMsg, key)
+		case "self_harm":
+			err = unpopulate(val, "SelfHarm", &i.SelfHarm)
+			delete(rawMsg, key)
+		case "sexual":
+			err = unpopulate(val, "Sexual", &i.Sexual)
+			delete(rawMsg, key)
+		case "violence":
+			err = unpopulate(val, "Violence", &i.Violence)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -3881,6 +3907,80 @@ func (p *PineconeFieldMappingOptions) UnmarshalJSON(data []byte) error {
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", p, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type SpeechGenerationOptions.
+func (s SpeechGenerationOptions) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "input", s.Input)
+	populate(objectMap, "model", s.DeploymentName)
+	populate(objectMap, "response_format", s.ResponseFormat)
+	populate(objectMap, "speed", s.Speed)
+	populate(objectMap, "voice", s.Voice)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type SpeechGenerationOptions.
+func (s *SpeechGenerationOptions) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", s, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "input":
+			err = unpopulate(val, "Input", &s.Input)
+			delete(rawMsg, key)
+		case "model":
+			err = unpopulate(val, "Model", &s.DeploymentName)
+			delete(rawMsg, key)
+		case "response_format":
+			err = unpopulate(val, "ResponseFormat", &s.ResponseFormat)
+			delete(rawMsg, key)
+		case "speed":
+			err = unpopulate(val, "Speed", &s.Speed)
+			delete(rawMsg, key)
+		case "voice":
+			err = unpopulate(val, "Voice", &s.Voice)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", s, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type SpeechGenerationResponse.
+func (s SpeechGenerationResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populateByteArray(objectMap, "audio", s.Audio, func() any {
+		return runtime.EncodeByteArray(s.Audio, runtime.Base64StdFormat)
+	})
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type SpeechGenerationResponse.
+func (s *SpeechGenerationResponse) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", s, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "audio":
+			if val != nil && string(val) != "null" {
+				err = runtime.DecodeByteArray(string(val), &s.Audio, runtime.Base64StdFormat)
+			}
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", s, err)
 		}
 	}
 	return nil

@@ -41,7 +41,7 @@ type GetAudioTranscriptionResponse struct {
 //   - body - contains parameters to specify audio data to transcribe and control the transcription.
 //   - options - optional parameters for this method.
 func (client *Client) GetAudioTranscription(ctx context.Context, body AudioTranscriptionOptions, options *GetAudioTranscriptionOptions) (GetAudioTranscriptionResponse, error) {
-	resp, err := client.getAudioTranscriptionInternal(ctx, body.File, &getAudioTranscriptionInternalOptions{
+	resp, err := client.getAudioTranscriptionInternal(ctx, streaming.NopCloser(bytes.NewReader(body.File)), &getAudioTranscriptionInternalOptions{
 		Filename:       body.Filename,
 		Language:       body.Language,
 		DeploymentName: body.DeploymentName,
@@ -75,7 +75,7 @@ type GetAudioTranslationResponse struct {
 //   - body - contains parameters to specify audio data to translate and control the translation.
 //   - options - optional parameters for this method.
 func (client *Client) GetAudioTranslation(ctx context.Context, body AudioTranslationOptions, options *GetAudioTranslationOptions) (GetAudioTranslationResponse, error) {
-	resp, err := client.getAudioTranslationInternal(ctx, body.File, &getAudioTranslationInternalOptions{
+	resp, err := client.getAudioTranslationInternal(ctx, streaming.NopCloser(bytes.NewReader(body.File)), &getAudioTranslationInternalOptions{
 		Filename:       body.Filename,
 		DeploymentName: body.DeploymentName,
 		Prompt:         body.Prompt,
@@ -90,18 +90,18 @@ func (client *Client) GetAudioTranslation(ctx context.Context, body AudioTransla
 	return GetAudioTranslationResponse(resp), nil
 }
 
-func setMultipartFormData[T getAudioTranscriptionInternalOptions | getAudioTranslationInternalOptions](req *policy.Request, file []byte, options T) error {
+func setMultipartFormData[T getAudioTranscriptionInternalOptions | getAudioTranslationInternalOptions](req *policy.Request, file io.ReadSeekCloser, options T) error {
 	body := bytes.Buffer{}
 	writer := multipart.NewWriter(&body)
 
-	writeContent := func(fieldname, filename string, file []byte) error {
+	writeContent := func(fieldname, filename string, file io.ReadSeekCloser) error {
 		fd, err := writer.CreateFormFile(fieldname, filename)
 
 		if err != nil {
 			return err
 		}
 
-		if _, err := fd.Write(file); err != nil {
+		if _, err := io.Copy(fd, file); err != nil {
 			return err
 		}
 

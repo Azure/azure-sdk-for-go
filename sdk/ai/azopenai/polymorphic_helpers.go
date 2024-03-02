@@ -20,8 +20,6 @@ func unmarshalAzureChatExtensionConfigurationClassification(rawMsg json.RawMessa
 	}
 	var b AzureChatExtensionConfigurationClassification
 	switch m["type"] {
-	case string(AzureChatExtensionTypePinecone):
-		b = &PineconeChatExtensionConfiguration{}
 	case string(AzureChatExtensionTypeAzureCosmosDB):
 		b = &AzureCosmosDBChatExtensionConfiguration{}
 	case string(AzureChatExtensionTypeAzureMachineLearningIndex):
@@ -30,6 +28,8 @@ func unmarshalAzureChatExtensionConfigurationClassification(rawMsg json.RawMessa
 		b = &AzureSearchChatExtensionConfiguration{}
 	case string(AzureChatExtensionTypeElasticsearch):
 		b = &ElasticsearchChatExtensionConfiguration{}
+	case string(AzureChatExtensionTypePinecone):
+		b = &PineconeChatExtensionConfiguration{}
 	default:
 		b = &AzureChatExtensionConfiguration{}
 	}

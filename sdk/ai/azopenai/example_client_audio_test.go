@@ -89,10 +89,10 @@ func ExampleClient_GetAudioSpeech() {
 		log.Fatalf("ERROR: %s", err)
 	}
 
-	audioResp, err := client.GetAudioSpeech(context.Background(), azopenai.AudioSpeechOptions{
+	audioResp, err := client.GenerateSpeechFromText(context.Background(), azopenai.SpeechGenerationOptions{
 		Input:          to.Ptr("i am a computer"),
-		Voice:          to.Ptr(azopenai.AudioSpeechVoiceAlloy),
-		ResponseFormat: to.Ptr(azopenai.AudioSpeechOutputFormatFlac),
+		Voice:          to.Ptr(azopenai.SpeechVoiceAlloy),
+		ResponseFormat: to.Ptr(azopenai.SpeechGenerationResponseFormatFlac),
 		DeploymentName: to.Ptr("tts-1"),
 	}, nil)
 

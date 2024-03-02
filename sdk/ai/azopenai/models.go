@@ -8,31 +8,9 @@
 
 package azopenai
 
-import "time"
-
-// AudioSpeechOptions - Specifies the request for speech synthesis.
-type AudioSpeechOptions struct {
-	// REQUIRED; The text to synthesize audio for. The maximum length is 4096 characters.
-	Input *string
-
-	// REQUIRED; The voice to use for speech synthesis.
-	Voice *AudioSpeechVoice
-
-	// The model to use for this request.
-	DeploymentName *string
-
-	// The format to synthesize the audio in.
-	ResponseFormat *AudioSpeechOutputFormat
-
-	// The speed of the synthesize audio. Select a value from 0.25 to 4.0. 1.0 is the default.
-	Speed *float32
-}
-
-// AudioSpeechResponse - Represents the response for speech synthesis.
-type AudioSpeechResponse struct {
-	// REQUIRED; The synthesized audio.
-	Audio []byte
-}
+import (
+	"time"
+)
 
 // AudioTranscription - Result information for an operation that transcribed spoken audio into written text.
 type AudioTranscription struct {
@@ -1266,6 +1244,9 @@ type CompletionsOptions struct {
 	// A collection of textual sequences that will end completions generation.
 	Stop []string
 
+	// The suffix that comes after a completion of inserted text
+	Suffix *string
+
 	// The sampling temperature to use that controls the apparent creativity of generated completions. Higher values will make
 	// output more random while lower values will make results more focused and
 	// deterministic. It is not recommended to modify temperature and top_p for the same completions request as the interaction
@@ -1528,7 +1509,7 @@ type EmbeddingsOptions struct {
 	// inferior results when newlines are present.
 	Input []string
 
-	// REQUIRED; type of embedding search to use
+	// When using Azure OpenAI, specifies the input type to use for embedding search.
 	InputType *string
 
 	// The model name to provide as part of this embeddings request. Not applicable to Azure OpenAI, where deployment information
@@ -1589,11 +1570,42 @@ type FunctionName struct {
 	Name *string
 }
 
+// ImageGenerationContentFilterResults - Describes the content filtering result for the image generation request.
+type ImageGenerationContentFilterResults struct {
+	// Describes language attacks or uses that include pejorative or discriminatory language with reference to a person or identity
+	// group on the basis of certain differentiating attributes of these groups
+	// including but not limited to race, ethnicity, nationality, gender identity and expression, sexual orientation, religion,
+	// immigration status, ability status, personal appearance, and body size.
+	Hate *ContentFilterResult
+
+	// Describes language related to physical actions intended to purposely hurt, injure, or damage one’s body, or kill oneself.
+	SelfHarm *ContentFilterResult
+
+	// Describes language related to anatomical organs and genitals, romantic relationships, acts portrayed in erotic or affectionate
+	// terms, physical sexual acts, including those portrayed as an assault or a
+	// forced sexual violent act against one’s will, prostitution, pornography, and abuse.
+	Sexual *ContentFilterResult
+
+	// Describes language related to physical actions intended to hurt, injure, damage, or kill someone or something; describes
+	// weapons, etc.
+	Violence *ContentFilterResult
+}
+
 // ImageGenerationData - A representation of a single generated image, provided as either base64-encoded data or as a URL
 // from which the image may be retrieved.
 type ImageGenerationData struct {
 	// The complete data for an image, represented as a base64-encoded string.
 	Base64Data *string
+
+	// Information about the content filtering results.
+	ContentFilterResults *ImageGenerationContentFilterResults
+
+	// Information about the content filtering category (hate, sexual, violence, selfharm), if it has been detected, as well as
+	// the severity level (verylow, low, medium, high-scale that determines the
+	// intensity and risk level of harmful content) and if it has been filtered or not. Information about jailbreak content and
+	// profanity, if it has been detected, and if it has been filtered or not. And
+	// information about customer block list, if it has been filtered and its id.
+	PromptFilterResults *ImageGenerationPromptFilterResults
 
 	// The final prompt used by the model to generate the image. Only provided with dall-3-models and only when revisions were
 	// made to the prompt.
@@ -1631,6 +1643,33 @@ type ImageGenerationOptions struct {
 
 	// A unique identifier representing your end-user, which can help to monitor and detect abuse.
 	User *string
+}
+
+// ImageGenerationPromptFilterResults - Describes the content filtering results for the prompt of a image generation request.
+type ImageGenerationPromptFilterResults struct {
+	// Describes language attacks or uses that include pejorative or discriminatory language with reference to a person or identity
+	// group on the basis of certain differentiating attributes of these groups
+	// including but not limited to race, ethnicity, nationality, gender identity and expression, sexual orientation, religion,
+	// immigration status, ability status, personal appearance, and body size.
+	Hate *ContentFilterResult
+
+	// Whether a jailbreak attempt was detected in the prompt.
+	Jailbreak *ContentFilterDetectionResult
+
+	// Describes whether profanity was detected.
+	Profanity *ContentFilterDetectionResult
+
+	// Describes language related to physical actions intended to purposely hurt, injure, or damage one’s body, or kill oneself.
+	SelfHarm *ContentFilterResult
+
+	// Describes language related to anatomical organs and genitals, romantic relationships, acts portrayed in erotic or affectionate
+	// terms, physical sexual acts, including those portrayed as an assault or a
+	// forced sexual violent act against one’s will, prostitution, pornography, and abuse.
+	Sexual *ContentFilterResult
+
+	// Describes language related to physical actions intended to hurt, injure, damage, or kill someone or something; describes
+	// weapons, etc.
+	Violence *ContentFilterResult
 }
 
 // ImageGenerations - The result of a successful image generation operation.
@@ -1925,6 +1964,31 @@ type PineconeFieldMappingOptions struct {
 
 	// The name of the index field to use as a URL.
 	URLField *string
+}
+
+// SpeechGenerationOptions - A representation of the request options that control the behavior of a text-to-speech operation.
+type SpeechGenerationOptions struct {
+	// REQUIRED; The text to generate audio for. The maximum length is 4096 characters.
+	Input *string
+
+	// REQUIRED; The voice to use for text-to-speech.
+	Voice *SpeechVoice
+
+	// The model to use for this text-to-speech request.
+	DeploymentName *string
+
+	// The audio output format for the spoken text. By default, the MP3 format will be used.
+	ResponseFormat *SpeechGenerationResponseFormat
+
+	// The speed of speech for generated audio. Values are valid in the range from 0.25 to 4.0, with 1.0 the default and higher
+	// values corresponding to faster speech.
+	Speed *float32
+}
+
+// SpeechGenerationResponse - A representation of a response for a text-to-speech operation.
+type SpeechGenerationResponse struct {
+	// REQUIRED; The generated audio, generated in the requested audio output format.
+	Audio []byte
 }
 
 // StopFinishDetails - A structured representation of a stop reason that signifies natural termination by the model.

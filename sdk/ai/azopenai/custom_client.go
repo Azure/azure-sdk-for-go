@@ -246,11 +246,11 @@ type clientData struct {
 	azure    bool
 }
 
-func getDeployment[T AudioSpeechOptions | AudioTranscriptionOptions | AudioTranslationOptions | ChatCompletionsOptions | CompletionsOptions | EmbeddingsOptions | *getAudioTranscriptionInternalOptions | *getAudioTranslationInternalOptions | ImageGenerationOptions](v T) string {
+func getDeployment[T SpeechGenerationOptions | AudioTranscriptionOptions | AudioTranslationOptions | ChatCompletionsOptions | CompletionsOptions | EmbeddingsOptions | *getAudioTranscriptionInternalOptions | *getAudioTranslationInternalOptions | ImageGenerationOptions](v T) string {
 	var p *string
 
 	switch a := any(v).(type) {
-	case AudioSpeechOptions:
+	case SpeechGenerationOptions:
 		p = a.DeploymentName
 	case AudioTranscriptionOptions:
 		p = a.DeploymentName

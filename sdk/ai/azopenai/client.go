@@ -10,6 +10,7 @@ package azopenai
 
 import (
 	"context"
+	"io"
 	"net/http"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -24,30 +25,30 @@ type Client struct {
 	clientData
 }
 
-// GetAudioSpeech - Generates audio from the input text.
+// GenerateSpeechFromText - Generates text-to-speech audio from the input text.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-02-15-preview
-//   - options - GetAudioSpeechOptions contains the optional parameters for the Client.GetAudioSpeech method.
-func (client *Client) GetAudioSpeech(ctx context.Context, body AudioSpeechOptions, options *GetAudioSpeechOptions) (GetAudioSpeechResponse, error) {
+//   - options - GenerateSpeechFromTextOptions contains the optional parameters for the Client.GenerateSpeechFromText method.
+func (client *Client) GenerateSpeechFromText(ctx context.Context, body SpeechGenerationOptions, options *GenerateSpeechFromTextOptions) (GenerateSpeechFromTextResponse, error) {
 	var err error
-	req, err := client.getAudioSpeechCreateRequest(ctx, body, options)
+	req, err := client.generateSpeechFromTextCreateRequest(ctx, body, options)
 	if err != nil {
-		return GetAudioSpeechResponse{}, err
+		return GenerateSpeechFromTextResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return GetAudioSpeechResponse{}, err
+		return GenerateSpeechFromTextResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = client.newError(httpResp)
-		return GetAudioSpeechResponse{}, err
+		return GenerateSpeechFromTextResponse{}, err
 	}
-	return GetAudioSpeechResponse{Body: httpResp.Body}, nil
+	return GenerateSpeechFromTextResponse{Body: httpResp.Body}, nil
 }
 
-// getAudioSpeechCreateRequest creates the GetAudioSpeech request.
-func (client *Client) getAudioSpeechCreateRequest(ctx context.Context, body AudioSpeechOptions, options *GetAudioSpeechOptions) (*policy.Request, error) {
+// generateSpeechFromTextCreateRequest creates the GenerateSpeechFromText request.
+func (client *Client) generateSpeechFromTextCreateRequest(ctx context.Context, body SpeechGenerationOptions, options *GenerateSpeechFromTextOptions) (*policy.Request, error) {
 	urlPath := "audio/speech"
 	req, err := runtime.NewRequest(ctx, http.MethodPost, client.formatURL(urlPath, getDeployment(body)))
 	if err != nil {
@@ -69,11 +70,13 @@ func (client *Client) getAudioSpeechCreateRequest(ctx context.Context, body Audi
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-02-15-preview
+//   - deploymentID - Specifies either the model deployment name (when using Azure OpenAI) or model name (when using non-Azure
+//     OpenAI) to use for this request.
 //   - file - The audio data to transcribe. This must be the binary content of a file in one of the supported media formats: flac,
 //     mp3, mp4, mpeg, mpga, m4a, ogg, wav, webm.
 //   - options - getAudioTranscriptionInternalOptions contains the optional parameters for the Client.getAudioTranscriptionInternal
 //     method.
-func (client *Client) getAudioTranscriptionInternal(ctx context.Context, file []byte, options *getAudioTranscriptionInternalOptions) (getAudioTranscriptionInternalResponse, error) {
+func (client *Client) getAudioTranscriptionInternal(ctx context.Context, file io.ReadSeekCloser, options *getAudioTranscriptionInternalOptions) (getAudioTranscriptionInternalResponse, error) {
 	var err error
 	req, err := client.getAudioTranscriptionInternalCreateRequest(ctx, file, options)
 	if err != nil {
@@ -92,7 +95,7 @@ func (client *Client) getAudioTranscriptionInternal(ctx context.Context, file []
 }
 
 // getAudioTranscriptionInternalCreateRequest creates the getAudioTranscriptionInternal request.
-func (client *Client) getAudioTranscriptionInternalCreateRequest(ctx context.Context, file []byte, body *getAudioTranscriptionInternalOptions) (*policy.Request, error) {
+func (client *Client) getAudioTranscriptionInternalCreateRequest(ctx context.Context, file io.ReadSeekCloser, body *getAudioTranscriptionInternalOptions) (*policy.Request, error) {
 	urlPath := "audio/transcriptions"
 	req, err := runtime.NewRequest(ctx, http.MethodPost, client.formatURL(urlPath, getDeployment(body)))
 	if err != nil {
@@ -122,11 +125,13 @@ func (client *Client) getAudioTranscriptionInternalHandleResponse(resp *http.Res
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-02-15-preview
+//   - deploymentID - Specifies either the model deployment name (when using Azure OpenAI) or model name (when using non-Azure
+//     OpenAI) to use for this request.
 //   - file - The audio data to translate. This must be the binary content of a file in one of the supported media formats: flac,
 //     mp3, mp4, mpeg, mpga, m4a, ogg, wav, webm.
 //   - options - getAudioTranslationInternalOptions contains the optional parameters for the Client.getAudioTranslationInternal
 //     method.
-func (client *Client) getAudioTranslationInternal(ctx context.Context, file []byte, options *getAudioTranslationInternalOptions) (getAudioTranslationInternalResponse, error) {
+func (client *Client) getAudioTranslationInternal(ctx context.Context, file io.ReadSeekCloser, options *getAudioTranslationInternalOptions) (getAudioTranslationInternalResponse, error) {
 	var err error
 	req, err := client.getAudioTranslationInternalCreateRequest(ctx, file, options)
 	if err != nil {
@@ -145,7 +150,7 @@ func (client *Client) getAudioTranslationInternal(ctx context.Context, file []by
 }
 
 // getAudioTranslationInternalCreateRequest creates the getAudioTranslationInternal request.
-func (client *Client) getAudioTranslationInternalCreateRequest(ctx context.Context, file []byte, body *getAudioTranslationInternalOptions) (*policy.Request, error) {
+func (client *Client) getAudioTranslationInternalCreateRequest(ctx context.Context, file io.ReadSeekCloser, body *getAudioTranslationInternalOptions) (*policy.Request, error) {
 	urlPath := "audio/translations"
 	req, err := runtime.NewRequest(ctx, http.MethodPost, client.formatURL(urlPath, getDeployment(body)))
 	if err != nil {

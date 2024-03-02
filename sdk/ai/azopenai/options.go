@@ -8,9 +8,36 @@
 
 package azopenai
 
-// GetAudioSpeechOptions contains the optional parameters for the Client.GetAudioSpeech method.
-type GetAudioSpeechOptions struct {
+// GenerateSpeechFromTextOptions contains the optional parameters for the Client.GenerateSpeechFromText method.
+type GenerateSpeechFromTextOptions struct {
 	// placeholder for future optional parameters
+}
+
+// GetAudioTranscriptionAsPlainTextOptions contains the optional parameters for the Client.GetAudioTranscriptionAsPlainText
+// method.
+type GetAudioTranscriptionAsPlainTextOptions struct {
+	// The optional filename or descriptive identifier to associate with with the audio data.
+	Filename *string
+
+	// The primary spoken language of the audio data to be transcribed, supplied as a two-letter ISO-639-1 language code such
+	// as 'en' or 'fr'. Providing this known input language is optional but may improve
+	// the accuracy and/or latency of transcription.
+	Language *string
+
+	// The model to use for this transcription request.
+	DeploymentName *string
+
+	// An optional hint to guide the model's style or continue from a prior audio segment. The written language of the prompt
+	// should match the primary spoken language of the audio data.
+	Prompt *string
+
+	// The requested format of the transcription response data, which will influence the content and detail of the result.
+	ResponseFormat *AudioTranscriptionFormat
+
+	// The sampling temperature, between 0 and 1. Higher values like 0.8 will make the output more random, while lower values
+	// like 0.2 will make it more focused and deterministic. If set to 0, the model will
+	// use log probability to automatically increase the temperature until certain thresholds are hit.
+	Temperature *float32
 }
 
 // getAudioTranscriptionInternalOptions contains the optional parameters for the Client.getAudioTranscriptionInternal
@@ -33,6 +60,28 @@ type getAudioTranscriptionInternalOptions struct {
 
 	// The requested format of the transcription response data, which will influence the content and detail of the result.
 	ResponseFormat *AudioTranscriptionFormat
+
+	// The sampling temperature, between 0 and 1. Higher values like 0.8 will make the output more random, while lower values
+	// like 0.2 will make it more focused and deterministic. If set to 0, the model will
+	// use log probability to automatically increase the temperature until certain thresholds are hit.
+	Temperature *float32
+}
+
+// GetAudioTranslationAsPlainTextOptions contains the optional parameters for the Client.GetAudioTranslationAsPlainText
+// method.
+type GetAudioTranslationAsPlainTextOptions struct {
+	// The optional filename or descriptive identifier to associate with with the audio data.
+	Filename *string
+
+	// The model to use for this translation request.
+	DeploymentName *string
+
+	// An optional hint to guide the model's style or continue from a prior audio segment. The written language of the prompt
+	// should match the primary spoken language of the audio data.
+	Prompt *string
+
+	// The requested format of the translation response data, which will influence the content and detail of the result.
+	ResponseFormat *AudioTranslationFormat
 
 	// The sampling temperature, between 0 and 1. Higher values like 0.8 will make the output more random, while lower values
 	// like 0.2 will make it more focused and deterministic. If set to 0, the model will

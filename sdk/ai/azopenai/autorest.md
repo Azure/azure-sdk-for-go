@@ -41,7 +41,7 @@ directive:
 ```yaml
 directive:
   - from: swagger-document
-    where: $.definitions.AudioSpeechOptions.properties
+    where: $.definitions.GenerateSpeechFromTextOptions.properties
     transform: |
       $["model"] = {
           "type": "string",
@@ -155,8 +155,18 @@ directive:
     where: $
     transform: |
       return $
-        .replace(/\/\/ GetAudioTranscriptionAsPlainText -.+?\n}/s, "")
-        .replace(/\/\/ GetAudioTransclationAsPlainText -.+?\n}/s, "");
+        .replace(/\/\/ GetAudioTranscriptionAsPlainText -.+?\n\}\n/s, "")
+        .replace(/\/\/ GetAudioTranslationAsPlainText -.+?\n\}\n/s, "")
+        .replace(/\/\/ getAudioTranscriptionAsPlainTextCreateRequest.+?\n}\n/s, "")
+        .replace(/\/\/ getAudioTranscriptionAsPlainTextHandleResponse.+?\n}\n/s, "")
+        .replace(/\/\/ getAudioTranslationAsPlainTextCreateRequest.+?\n}\n/s, "")
+        .replace(/\/\/ getAudioTranslationAsPlainTextHandleResponse.+?\n}\n/s, "")        
+  - from: client.go
+    where: $
+    transform: | 
+      return $
+        .replace(/, deploymentID string,/g, ",")
+        .replace(/ctx, deploymentID, /g, "ctx, ")
 ```
 
 ## Move the Azure extensions into their own section of the options

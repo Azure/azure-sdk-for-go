@@ -10,16 +10,26 @@ package azopenai
 
 import "io"
 
-// GetAudioSpeechResponse contains the response from method Client.GetAudioSpeech.
-type GetAudioSpeechResponse struct {
+// GenerateSpeechFromTextResponse contains the response from method Client.GenerateSpeechFromText.
+type GenerateSpeechFromTextResponse struct {
 	// Body contains the streaming response.
 	Body io.ReadCloser
+}
+
+// GetAudioTranscriptionAsPlainTextResponse contains the response from method Client.GetAudioTranscriptionAsPlainText.
+type GetAudioTranscriptionAsPlainTextResponse struct {
+	Value *string
 }
 
 // getAudioTranscriptionInternalResponse contains the response from method Client.getAudioTranscriptionInternal.
 type getAudioTranscriptionInternalResponse struct {
 	// Result information for an operation that transcribed spoken audio into written text.
 	AudioTranscription
+}
+
+// GetAudioTranslationAsPlainTextResponse contains the response from method Client.GetAudioTranslationAsPlainText.
+type GetAudioTranslationAsPlainTextResponse struct {
+	Value *string
 }
 
 // getAudioTranslationInternalResponse contains the response from method Client.getAudioTranslationInternal.

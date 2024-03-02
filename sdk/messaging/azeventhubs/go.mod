@@ -8,7 +8,7 @@ require (
 	github.com/Azure/azure-sdk-for-go/sdk/internal v1.5.2
 	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventhub/armeventhub v1.0.0
 	github.com/Azure/azure-sdk-for-go/sdk/storage/azblob v1.3.0
-	github.com/Azure/go-amqp v1.0.4
+	github.com/Azure/go-amqp v1.0.5-0.20240301200753-2dff4b36f85f
 	github.com/golang/mock v1.6.0
 	github.com/joho/godotenv v1.5.1
 	github.com/stretchr/testify v1.8.4

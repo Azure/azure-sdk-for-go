@@ -81,6 +81,13 @@ type StressContextOptions struct {
 	// Duration is the amount of time the stress test should run before
 	// the StressContext.Context expires.
 	Duration time.Duration
+
+	// CommonBaggage will be added as part of the telemetry client, and will be included in each
+	// metric/event/error that's reported.
+	CommonBaggage map[string]string
+
+	// EmitStartEvent enables the automatic sending of the "Start" event for our test to telemetry.
+	EmitStartEvent bool
 }
 
 func MustCreateStressContext(testName string, options *StressContextOptions) *StressContext {
@@ -105,6 +112,12 @@ func MustCreateStressContext(testName string, options *StressContextOptions) *St
 	telemetryClient.Context().CommonProperties = map[string]string{
 		"Test":      testName,
 		"TestRunId": testRunID,
+	}
+
+	if options != nil && options.CommonBaggage != nil {
+		for k, v := range options.CommonBaggage {
+			telemetryClient.Context().CommonProperties[k] = v
+		}
 	}
 
 	log.Printf("Common properties\n:%#v", telemetryClient.Context().CommonProperties)
@@ -144,7 +157,7 @@ func MustCreateStressContext(testName string, options *StressContextOptions) *St
 	// 	return nil
 	// })
 
-	return &StressContext{
+	sc := &StressContext{
 		TestRunID:        testRunID,
 		Nano:             testRunID, // the same for now
 		ConnectionString: cs,
@@ -156,6 +169,12 @@ func MustCreateStressContext(testName string, options *StressContextOptions) *St
 		Context:     ctx,
 		cancel:      cancel,
 	}
+
+	if options != nil && options.EmitStartEvent {
+		sc.Start(testName, nil)
+	}
+
+	return sc
 }
 
 func (sc *StressContext) Start(entityName string, attributes map[string]string) {
@@ -173,7 +192,7 @@ func (sc *StressContext) Start(entityName string, attributes map[string]string) 
 }
 
 func (sc *StressContext) End() {
-	log.Printf("Stopping and flushing telemetry")
+	log.Printf("Stopping and flushing telemetry: %#v", sc.TC.Context().CommonProperties)
 
 	sc.cancel()
 

@@ -1,14 +1,11 @@
 # Release History
 
-## 1.6.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 1.6.1 (2024-03-05)
 
 ### Bugs Fixed
 
-### Other Changes
+- Fixed case where closing a Receiver/Sender after an idle period would take > 20 seconds. (PR#TBD)
+- Fixed a potential memory leak when receiving a message on one receiver and attempting to settle with another. (PR#22431)
 
 ## 1.6.0 (2024-01-17)
 

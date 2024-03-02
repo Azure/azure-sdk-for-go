@@ -1,6 +1,6 @@
 # Azure Nginx Module for Go
 
-[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/nginx/armnginx/v3)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/nginx/armnginx/v3)
+[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/nginx/armnginx/v4)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/nginx/armnginx/v4)
 
 The `armnginx` module provides operations for working with Azure Nginx.
 
@@ -20,7 +20,7 @@ This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for ve
 Install the Azure Nginx module:
 
 ```sh
-go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/nginx/armnginx/v3
+go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/nginx/armnginx/v4
 ```
 
 ## Authorization
@@ -57,7 +57,7 @@ clientFactory, err := armnginx.NewClientFactory(<subscription ID>, cred, &option
 A client groups a set of related APIs, providing access to its functionality.  Create one or more clients to access the APIs you require using client factory.
 
 ```go
-client := clientFactory.NewDeploymentsClient()
+client := clientFactory.NewCertificatesClient()
 ```
 
 ## Fakes

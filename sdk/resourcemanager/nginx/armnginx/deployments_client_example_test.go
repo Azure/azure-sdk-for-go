@@ -14,11 +14,11 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/nginx/armnginx/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/nginx/armnginx/v4"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/nginx/resource-manager/NGINX.NGINXPLUS/stable/2023-04-01/examples/Deployments_Get.json
-func ExampleDeploymentsClient_Get() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e4009d2f8d3bf0271757e522c7d1c1997e193d44/specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Deployments_Get.json
+func ExampleDeploymentsClient_Get_deploymentsGet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -41,6 +41,9 @@ func ExampleDeploymentsClient_Get() {
 	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Nginx.NginxPlus/nginxDeployments/myDeployment"),
 	// 	Location: to.Ptr("westus"),
 	// 	Properties: &armnginx.DeploymentProperties{
+	// 		AutoUpgradeProfile: &armnginx.AutoUpgradeProfile{
+	// 			UpgradeChannel: to.Ptr("stable"),
+	// 		},
 	// 		ManagedResourceGroup: to.Ptr("myManagedResourceGroup"),
 	// 		NetworkProfile: &armnginx.NetworkProfile{
 	// 			FrontEndIPConfiguration: &armnginx.FrontendIPConfiguration{
@@ -61,6 +64,9 @@ func ExampleDeploymentsClient_Get() {
 	// 		},
 	// 		NginxVersion: to.Ptr("nginx-1.19.6"),
 	// 		ProvisioningState: to.Ptr(armnginx.ProvisioningStateSucceeded),
+	// 		ScalingProperties: &armnginx.DeploymentScalingProperties{
+	// 			Capacity: to.Ptr[int32](10),
+	// 		},
 	// 		UserProfile: &armnginx.DeploymentUserProfile{
 	// 			PreferredEmail: to.Ptr("example@example.email"),
 	// 		},
@@ -68,7 +74,73 @@ func ExampleDeploymentsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/nginx/resource-manager/NGINX.NGINXPLUS/stable/2023-04-01/examples/Deployments_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e4009d2f8d3bf0271757e522c7d1c1997e193d44/specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Deployments_Get_AutoScale.json
+func ExampleDeploymentsClient_Get_deploymentsGetAutoScale() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnginx.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewDeploymentsClient().Get(ctx, "myResourceGroup", "myDeployment", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Deployment = armnginx.Deployment{
+	// 	Name: to.Ptr("myDeployment"),
+	// 	Type: to.Ptr("nginx.nginxplus/deployments"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Nginx.NginxPlus/nginxDeployments/myDeployment"),
+	// 	Location: to.Ptr("westus"),
+	// 	Properties: &armnginx.DeploymentProperties{
+	// 		AutoUpgradeProfile: &armnginx.AutoUpgradeProfile{
+	// 			UpgradeChannel: to.Ptr("stable"),
+	// 		},
+	// 		ManagedResourceGroup: to.Ptr("myManagedResourceGroup"),
+	// 		NetworkProfile: &armnginx.NetworkProfile{
+	// 			FrontEndIPConfiguration: &armnginx.FrontendIPConfiguration{
+	// 				PrivateIPAddresses: []*armnginx.PrivateIPAddress{
+	// 					{
+	// 						PrivateIPAddress: to.Ptr("1.1.1.1"),
+	// 						PrivateIPAllocationMethod: to.Ptr(armnginx.NginxPrivateIPAllocationMethodStatic),
+	// 						SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/mySubnet"),
+	// 				}},
+	// 				PublicIPAddresses: []*armnginx.PublicIPAddress{
+	// 					{
+	// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/publicIPAddresses/myPublicIPAddress"),
+	// 				}},
+	// 			},
+	// 			NetworkInterfaceConfiguration: &armnginx.NetworkInterfaceConfiguration{
+	// 				SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/mySubnet"),
+	// 			},
+	// 		},
+	// 		NginxVersion: to.Ptr("nginx-1.19.6"),
+	// 		ProvisioningState: to.Ptr(armnginx.ProvisioningStateSucceeded),
+	// 		ScalingProperties: &armnginx.DeploymentScalingProperties{
+	// 			AutoScaleSettings: &armnginx.DeploymentScalingPropertiesAutoScaleSettings{
+	// 				Profiles: []*armnginx.ScaleProfile{
+	// 					{
+	// 						Name: to.Ptr("ExampleProfile"),
+	// 						Capacity: &armnginx.ScaleProfileCapacity{
+	// 							Max: to.Ptr[int32](50),
+	// 							Min: to.Ptr[int32](10),
+	// 						},
+	// 				}},
+	// 			},
+	// 		},
+	// 		UserProfile: &armnginx.DeploymentUserProfile{
+	// 			PreferredEmail: to.Ptr("example@example.email"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e4009d2f8d3bf0271757e522c7d1c1997e193d44/specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Deployments_Create.json
 func ExampleDeploymentsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -96,6 +168,9 @@ func ExampleDeploymentsClient_BeginCreateOrUpdate() {
 	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Nginx.NginxPlus/nginxDeployments/myDeployment"),
 	// 	Location: to.Ptr("westus"),
 	// 	Properties: &armnginx.DeploymentProperties{
+	// 		AutoUpgradeProfile: &armnginx.AutoUpgradeProfile{
+	// 			UpgradeChannel: to.Ptr("stable"),
+	// 		},
 	// 		IPAddress: to.Ptr("1.1.1.1"),
 	// 		ManagedResourceGroup: to.Ptr("myManagedResourceGroup"),
 	// 		NetworkProfile: &armnginx.NetworkProfile{
@@ -117,6 +192,9 @@ func ExampleDeploymentsClient_BeginCreateOrUpdate() {
 	// 		},
 	// 		NginxVersion: to.Ptr("nginx-1.19.6"),
 	// 		ProvisioningState: to.Ptr(armnginx.ProvisioningStateSucceeded),
+	// 		ScalingProperties: &armnginx.DeploymentScalingProperties{
+	// 			Capacity: to.Ptr[int32](10),
+	// 		},
 	// 	},
 	// 	Tags: map[string]*string{
 	// 		"Environment": to.Ptr("Dev"),
@@ -124,7 +202,7 @@ func ExampleDeploymentsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/nginx/resource-manager/NGINX.NGINXPLUS/stable/2023-04-01/examples/Deployments_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e4009d2f8d3bf0271757e522c7d1c1997e193d44/specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Deployments_Update.json
 func ExampleDeploymentsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -152,6 +230,9 @@ func ExampleDeploymentsClient_BeginUpdate() {
 	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Nginx.NginxPlus/nginxDeployments/myDeployment"),
 	// 	Location: to.Ptr("westus"),
 	// 	Properties: &armnginx.DeploymentProperties{
+	// 		AutoUpgradeProfile: &armnginx.AutoUpgradeProfile{
+	// 			UpgradeChannel: to.Ptr("stable"),
+	// 		},
 	// 		IPAddress: to.Ptr("1.1.1.1"),
 	// 		ManagedResourceGroup: to.Ptr("myManagedResourceGroup"),
 	// 		NetworkProfile: &armnginx.NetworkProfile{
@@ -173,6 +254,9 @@ func ExampleDeploymentsClient_BeginUpdate() {
 	// 		},
 	// 		NginxVersion: to.Ptr("nginx-1.19.6"),
 	// 		ProvisioningState: to.Ptr(armnginx.ProvisioningStateSucceeded),
+	// 		ScalingProperties: &armnginx.DeploymentScalingProperties{
+	// 			Capacity: to.Ptr[int32](10),
+	// 		},
 	// 		UserProfile: &armnginx.DeploymentUserProfile{
 	// 			PreferredEmail: to.Ptr("example@example.email"),
 	// 		},
@@ -183,7 +267,7 @@ func ExampleDeploymentsClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/nginx/resource-manager/NGINX.NGINXPLUS/stable/2023-04-01/examples/Deployments_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e4009d2f8d3bf0271757e522c7d1c1997e193d44/specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Deployments_Delete.json
 func ExampleDeploymentsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -204,7 +288,7 @@ func ExampleDeploymentsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/nginx/resource-manager/NGINX.NGINXPLUS/stable/2023-04-01/examples/Deployments_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e4009d2f8d3bf0271757e522c7d1c1997e193d44/specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Deployments_List.json
 func ExampleDeploymentsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -234,6 +318,9 @@ func ExampleDeploymentsClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Nginx.NginxPlus/nginxDeployments/myDeployment"),
 		// 			Location: to.Ptr("westus"),
 		// 			Properties: &armnginx.DeploymentProperties{
+		// 				AutoUpgradeProfile: &armnginx.AutoUpgradeProfile{
+		// 					UpgradeChannel: to.Ptr("stable"),
+		// 				},
 		// 				IPAddress: to.Ptr("1.1.1.1"),
 		// 				ManagedResourceGroup: to.Ptr("myManagedResourceGroup"),
 		// 				NetworkProfile: &armnginx.NetworkProfile{
@@ -255,13 +342,16 @@ func ExampleDeploymentsClient_NewListPager() {
 		// 				},
 		// 				NginxVersion: to.Ptr("nginx-1.19.6"),
 		// 				ProvisioningState: to.Ptr(armnginx.ProvisioningStateSucceeded),
+		// 				ScalingProperties: &armnginx.DeploymentScalingProperties{
+		// 					Capacity: to.Ptr[int32](10),
+		// 				},
 		// 			},
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/nginx/resource-manager/NGINX.NGINXPLUS/stable/2023-04-01/examples/Deployments_ListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e4009d2f8d3bf0271757e522c7d1c1997e193d44/specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Deployments_ListByResourceGroup.json
 func ExampleDeploymentsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -291,6 +381,9 @@ func ExampleDeploymentsClient_NewListByResourceGroupPager() {
 		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Nginx.NginxPlus/nginxDeployments/myDeployment"),
 		// 			Location: to.Ptr("westus"),
 		// 			Properties: &armnginx.DeploymentProperties{
+		// 				AutoUpgradeProfile: &armnginx.AutoUpgradeProfile{
+		// 					UpgradeChannel: to.Ptr("stable"),
+		// 				},
 		// 				IPAddress: to.Ptr("1.1.1.1"),
 		// 				ManagedResourceGroup: to.Ptr("myManagedResourceGroup"),
 		// 				NetworkProfile: &armnginx.NetworkProfile{
@@ -312,6 +405,9 @@ func ExampleDeploymentsClient_NewListByResourceGroupPager() {
 		// 				},
 		// 				NginxVersion: to.Ptr("nginx-1.19.6"),
 		// 				ProvisioningState: to.Ptr(armnginx.ProvisioningStateSucceeded),
+		// 				ScalingProperties: &armnginx.DeploymentScalingProperties{
+		// 					Capacity: to.Ptr[int32](10),
+		// 				},
 		// 			},
 		// 	}},
 		// }

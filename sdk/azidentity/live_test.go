@@ -26,9 +26,11 @@ import (
 var liveManagedIdentity = struct {
 	clientID   string
 	resourceID string
+	imds       bool
 }{
-	clientID:   os.Getenv("MANAGED_IDENTITY_CLIENT_ID"),
-	resourceID: os.Getenv("MANAGED_IDENTITY_RESOURCE_ID"),
+	clientID:   os.Getenv("IDENTITY_VM_USER_ASSIGNED_MI_CLIENT_ID"),
+	resourceID: os.Getenv("IDENTITY_VM_USER_ASSIGNED_MI_RESOURCE_ID"),
+	imds:       os.Getenv("IDENTITY_IMDS_AVAILABLE") != "",
 }
 
 var liveSP = struct {

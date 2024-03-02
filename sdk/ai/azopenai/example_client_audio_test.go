@@ -67,7 +67,7 @@ func ExampleClient_GetAudioTranscription() {
 	// Output:
 }
 
-func ExampleClient_GetAudioSpeech() {
+func ExampleClient_GenerateSpeechFromText() {
 	openAIKey := os.Getenv("OPENAI_API_KEY")
 
 	// Ex: "https://api.openai.com/v1"

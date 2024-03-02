@@ -4,7 +4,7 @@
 
 ### Bugs Fixed
 
-- Fixed case where closing a Receiver/Sender after an idle period would take > 20 seconds. (PR#TBD)
+- Fixed case where closing a Receiver/Sender after an idle period would take > 20 seconds. (PR#22509)
 
 ## 1.0.3 (2024-01-16)
 

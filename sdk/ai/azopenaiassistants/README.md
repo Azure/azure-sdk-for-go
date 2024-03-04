@@ -2,7 +2,7 @@
 
 NOTE: this client can be used with Azure OpenAI and OpenAI.
 
-Azure OpenAI Service provides access to OpenAI's powerful language models including the GPT-4, GPT-35-Turbo, and Embeddings model series, as well as image generation using DALL-E.
+OpenAI assistants makes it simpler to have a create, manage and use Assistant, where conversation state is stored and managed by the service.  These assistants are backed by the same powerful models you're used to with OpenAI, and also allows the use of the Code Interpreter, Retrieval and Function Calling tools.
 
 Use this module to:
 

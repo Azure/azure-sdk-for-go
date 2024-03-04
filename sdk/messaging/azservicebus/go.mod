@@ -8,7 +8,7 @@ require (
 	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.9.2
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.5.1
 	github.com/Azure/azure-sdk-for-go/sdk/internal v1.5.2
-	github.com/Azure/go-amqp v1.0.5-0.20240301200753-2dff4b36f85f
+	github.com/Azure/go-amqp v1.0.5
 )
 
 require (

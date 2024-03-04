@@ -15,6 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestCosmosErrorOnEmptyResponse(t *testing.T) {
@@ -32,13 +33,13 @@ func TestCosmosErrorOnEmptyResponse(t *testing.T) {
 	resp, _ := pl.Do(req)
 
 	var azErr *azcore.ResponseError
-	if err := newCosmosError(resp); !errors.As(err, &azErr) {
+	if err := azruntime.NewResponseErrorWithErrorCode(resp, resp.Status); !errors.As(err, &azErr) {
 		t.Fatalf("unexpected error type %T", err)
 	}
 	if azErr.StatusCode != http.StatusNotFound {
 		t.Errorf("unexpected status code %d", azErr.StatusCode)
 	}
-	if azErr.ErrorCode != "" {
+	if azErr.ErrorCode != "404 Not Found" {
 		t.Errorf("unexpected error code %s", azErr.ErrorCode)
 	}
 	if azErr.RawResponse == nil {
@@ -62,13 +63,13 @@ func TestCosmosErrorOnNonJsonBody(t *testing.T) {
 	resp, _ := pl.Do(req)
 
 	var azErr *azcore.ResponseError
-	if err := newCosmosError(resp); !errors.As(err, &azErr) {
+	if err := azruntime.NewResponseErrorWithErrorCode(resp, resp.Status); !errors.As(err, &azErr) {
 		t.Fatalf("unexpected error type %T", err)
 	}
 	if azErr.StatusCode != http.StatusNotFound {
 		t.Errorf("unexpected status code %d", azErr.StatusCode)
 	}
-	if azErr.ErrorCode != "" {
+	if azErr.ErrorCode != "404 Not Found" {
 		t.Errorf("unexpected error code %s", azErr.ErrorCode)
 	}
 	if azErr.RawResponse == nil {
@@ -80,9 +81,7 @@ func TestCosmosErrorOnNonJsonBody(t *testing.T) {
 }
 
 func TestCosmosErrorOnJsonBody(t *testing.T) {
-	someError := &cosmosErrorResponse{
-		Code: "SomeCode",
-	}
+	someError := map[string]string{"Code": "SomeCode"}
 
 	jsonString, err := json.Marshal(someError)
 	if err != nil {
@@ -104,13 +103,15 @@ func TestCosmosErrorOnJsonBody(t *testing.T) {
 	resp, _ := pl.Do(req)
 
 	var azErr *azcore.ResponseError
-	if err := newCosmosError(resp); !errors.As(err, &azErr) {
+	err2 := azruntime.NewResponseErrorWithErrorCode(resp, resp.Status)
+	assert.Error(t, err2)
+	if err := azruntime.NewResponseErrorWithErrorCode(resp, resp.Status); !errors.As(err, &azErr) {
 		t.Fatalf("unexpected error type %T", err)
 	}
 	if azErr.StatusCode != http.StatusNotFound {
 		t.Errorf("unexpected status code %d", azErr.StatusCode)
 	}
-	if azErr.ErrorCode != someError.Code {
+	if azErr.ErrorCode != "404 Not Found" {
 		t.Errorf("unexpected error code %s", azErr.ErrorCode)
 	}
 	if azErr.RawResponse == nil {

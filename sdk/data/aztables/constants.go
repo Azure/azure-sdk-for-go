@@ -56,6 +56,16 @@ func toGeneratedStatusType(g *generated.GeoReplicationStatusType) *GeoReplicatio
 	return nil
 }
 
+// MetadataFormat specifies the level of OData metadata returned with an entity.
+// https://learn.microsoft.com/rest/api/storageservices/payload-format-for-table-service-operations#json-format-applicationjson-versions-2013-08-15-and-later
+type MetadataFormat = generated.ODataMetadataFormat
+
+const (
+	MetadataFormatFull    MetadataFormat = generated.ODataMetadataFormatApplicationJSONODataFullmetadata
+	MetadataFormatMinimal MetadataFormat = generated.ODataMetadataFormatApplicationJSONODataMinimalmetadata
+	MetadataFormatNone    MetadataFormat = generated.ODataMetadataFormatApplicationJSONODataNometadata
+)
+
 // SASProtocol indicates the SAS protocol
 type SASProtocol string
 

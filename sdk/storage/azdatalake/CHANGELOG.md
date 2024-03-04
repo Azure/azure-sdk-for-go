@@ -1,12 +1,14 @@
 # Release History
 
-## 1.1.1 (Unreleased)
+## 1.1.2 (Unreleased)
 
 ### Features Added
 * Append with acquire, release lease and renewal of lease.
 * Flush with release lease
 
 ### Breaking Changes
+
+## 1.1.1 (2024-02-29)
 
 ### Bugs Fixed
 * Exposing x-ms-resource-type response header in GetProperties API for file and directory.

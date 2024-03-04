@@ -43,7 +43,7 @@ func NewClient(endpoint string, credential azcore.TokenCredential, options *Clie
 	return &Client{
 		endpoint: endpoint,
 		internal: azcoreClient,
-		clientData: clientData{
+		cd: clientData{
 			azure: true,
 		},
 	}, nil
@@ -67,7 +67,7 @@ func NewClientWithKeyCredential(endpoint string, credential *azcore.KeyCredentia
 	return &Client{
 		endpoint: endpoint,
 		internal: azcoreClient,
-		clientData: clientData{
+		cd: clientData{
 			azure: true,
 		},
 	}, nil
@@ -121,7 +121,7 @@ func (b *azureOpenAIPolicy) Do(req *policy.Request) (*http.Response, error) {
 }
 
 func (client *Client) formatURL(path string) string {
-	if client.azure {
+	if client.cd.azure {
 		return runtime.JoinPaths("openai", path)
 	}
 

@@ -66,7 +66,7 @@ func (t *transformer) injectFormatURLHelper() error {
 // editing client.go just to add in a new field we need.
 func (t *transformer) injectClientData() error {
 	return transformFiles(t.fileCache, "injectClientData", []string{"client.go"}, func(text string) (string, error) {
-		newText := strings.Replace(text, "type Client struct {\n", "type Client struct {\nclientData\n", 1)
+		newText := strings.Replace(text, "type Client struct {\n", "type Client struct {\ncd clientData\n", 1)
 
 		return newText, nil
 	}, &transformFileOptions{AllowNoop: true})

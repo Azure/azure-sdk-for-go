@@ -25,7 +25,7 @@ import (
 // Client contains the methods for the OpenAIAssistants group.
 // Don't use this type directly, use a constructor function instead.
 type Client struct {
-	clientData
+	cd       clientData
 	internal *azcore.Client
 	endpoint string
 }

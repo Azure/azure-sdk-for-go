@@ -340,6 +340,8 @@ func unmarshalCopySourceClassification(rawMsg json.RawMessage) (CopySourceClassi
 		b = &GoogleAdWordsSource{}
 	case "GoogleBigQuerySource":
 		b = &GoogleBigQuerySource{}
+	case "GoogleBigQueryV2Source":
+		b = &GoogleBigQueryV2Source{}
 	case "GreenplumSource":
 		b = &GreenplumSource{}
 	case "HBaseSource":
@@ -400,6 +402,8 @@ func unmarshalCopySourceClassification(rawMsg json.RawMessage) (CopySourceClassi
 		b = &PhoenixSource{}
 	case "PostgreSqlSource":
 		b = &PostgreSQLSource{}
+	case "PostgreSqlV2Source":
+		b = &PostgreSQLV2Source{}
 	case "PrestoSource":
 		b = &PrestoSource{}
 	case "QuickBooksSource":
@@ -436,6 +440,8 @@ func unmarshalCopySourceClassification(rawMsg json.RawMessage) (CopySourceClassi
 		b = &SapTableSource{}
 	case "ServiceNowSource":
 		b = &ServiceNowSource{}
+	case "ServiceNowV2Source":
+		b = &ServiceNowV2Source{}
 	case "SharePointOnlineListSource":
 		b = &SharePointOnlineListSource{}
 	case "ShopifySource":
@@ -642,6 +648,8 @@ func unmarshalDatasetClassification(rawMsg json.RawMessage) (DatasetClassificati
 		b = &GoogleAdWordsObjectDataset{}
 	case "GoogleBigQueryObject":
 		b = &GoogleBigQueryObjectDataset{}
+	case "GoogleBigQueryV2Object":
+		b = &GoogleBigQueryV2ObjectDataset{}
 	case "GreenplumTable":
 		b = &GreenplumTableDataset{}
 	case "HBaseObject":
@@ -700,6 +708,8 @@ func unmarshalDatasetClassification(rawMsg json.RawMessage) (DatasetClassificati
 		b = &PhoenixObjectDataset{}
 	case "PostgreSqlTable":
 		b = &PostgreSQLTableDataset{}
+	case "PostgreSqlV2Table":
+		b = &PostgreSQLV2TableDataset{}
 	case "PrestoObject":
 		b = &PrestoObjectDataset{}
 	case "QuickBooksObject":
@@ -736,6 +746,8 @@ func unmarshalDatasetClassification(rawMsg json.RawMessage) (DatasetClassificati
 		b = &SapTableResourceDataset{}
 	case "ServiceNowObject":
 		b = &ServiceNowObjectDataset{}
+	case "ServiceNowV2Object":
+		b = &ServiceNowV2ObjectDataset{}
 	case "SharePointOnlineListResource":
 		b = &SharePointOnlineListResourceDataset{}
 	case "ShopifyObject":
@@ -1124,6 +1136,8 @@ func unmarshalLinkedServiceClassification(rawMsg json.RawMessage) (LinkedService
 		b = &GoogleAdWordsLinkedService{}
 	case "GoogleBigQuery":
 		b = &GoogleBigQueryLinkedService{}
+	case "GoogleBigQueryV2":
+		b = &GoogleBigQueryV2LinkedService{}
 	case "GoogleCloudStorage":
 		b = &GoogleCloudStorageLinkedService{}
 	case "GoogleSheets":
@@ -1188,6 +1202,8 @@ func unmarshalLinkedServiceClassification(rawMsg json.RawMessage) (LinkedService
 		b = &PhoenixLinkedService{}
 	case "PostgreSql":
 		b = &PostgreSQLLinkedService{}
+	case "PostgreSqlV2":
+		b = &PostgreSQLV2LinkedService{}
 	case "Presto":
 		b = &PrestoLinkedService{}
 	case "QuickBooks":
@@ -1224,6 +1240,8 @@ func unmarshalLinkedServiceClassification(rawMsg json.RawMessage) (LinkedService
 		b = &SapTableLinkedService{}
 	case "ServiceNow":
 		b = &ServiceNowLinkedService{}
+	case "ServiceNowV2":
+		b = &ServiceNowV2LinkedService{}
 	case "Sftp":
 		b = &SftpServerLinkedService{}
 	case "SharePointOnlineList":

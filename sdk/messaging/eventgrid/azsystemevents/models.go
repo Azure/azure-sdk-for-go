@@ -10,6 +10,32 @@ package azsystemevents
 
 import "time"
 
+// APIDefinitionAddedEventData - Schema of the data property of an EventGridEvent for a Microsoft.ApiCenter.ApiDefinitionAdded
+// event.
+type APIDefinitionAddedEventData struct {
+	// API definition description.
+	Description *string
+
+	// API specification details.
+	Specification *APISpecificationDetails
+
+	// API definition title.
+	Title *string
+}
+
+// APIDefinitionUpdatedEventData - Schema of the data property of an EventGridEvent for a Microsoft.ApiCenter.ApiDefinitionUpdated
+// event.
+type APIDefinitionUpdatedEventData struct {
+	// API definition description.
+	Description *string
+
+	// API specification details.
+	Specification *APISpecificationDetails
+
+	// API definition title.
+	Title *string
+}
+
 // APIManagementAPICreatedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.ApiManagement.APICreated
 // event.
 type APIManagementAPICreatedEventData struct {
@@ -242,6 +268,15 @@ type APIManagementUserUpdatedEventData struct {
 	// type. Uses the format,
 	// /subscriptions/<SubscriptionID>/resourceGroups/<ResourceGroup>/Microsoft.ApiManagement/service/<ServiceName>/<ResourceType>/<ResourceName>
 	ResourceURI *string
+}
+
+// APISpecificationDetails - API specification details.
+type APISpecificationDetails struct {
+	// Specification name.
+	Name *string
+
+	// Specification version.
+	Version *string
 }
 
 // AcsChatEventBaseProperties - Schema of common properties of all chat events
@@ -643,6 +678,9 @@ type AcsChatThreadCreatedEventData struct {
 
 	// The communication identifier of the user who created the thread
 	CreatedByCommunicationIdentifier *CommunicationIdentifierModel
+
+	// The chat thread created metadata
+	Metadata map[string]*string
 
 	// The list of properties of participants who are part of the thread
 	Participants []AcsChatThreadParticipantProperties
@@ -1849,6 +1887,166 @@ type AppServicePlanEventTypeDetail struct {
 
 	// Asynchronous operation status of the operation on the app service plan.
 	Status *AsyncStatus
+}
+
+// AvsClusterCreatedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.AVS.ClusterCreated event.
+type AvsClusterCreatedEventData struct {
+	// Hosts added to the cluster in this event, if any.
+	AddedHostNames []string
+
+	// Hosts in Maintenance mode in the cluster, if any.
+	InMaintenanceHostNames []string
+
+	// Id of the operation that caused this event.
+	OperationID *string
+
+	// Hosts removed to the cluster in this event, if any.
+	RemovedHostNames []string
+}
+
+// AvsClusterDeletedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.AVS.ClusterDeleted event.
+type AvsClusterDeletedEventData struct {
+	// Hosts added to the cluster in this event, if any.
+	AddedHostNames []string
+
+	// Hosts in Maintenance mode in the cluster, if any.
+	InMaintenanceHostNames []string
+
+	// Id of the operation that caused this event.
+	OperationID *string
+
+	// Hosts removed to the cluster in this event, if any.
+	RemovedHostNames []string
+}
+
+// AvsClusterFailedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.AVS.ClusterFailed event.
+type AvsClusterFailedEventData struct {
+	// Hosts added to the cluster in this event, if any.
+	AddedHostNames []string
+
+	// Failure reason of an event.
+	FailureMessage *string
+
+	// Hosts in Maintenance mode in the cluster, if any.
+	InMaintenanceHostNames []string
+
+	// Id of the operation that caused this event.
+	OperationID *string
+
+	// Hosts removed to the cluster in this event, if any.
+	RemovedHostNames []string
+}
+
+// AvsClusterUpdatedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.AVS.ClusterUpdated event.
+type AvsClusterUpdatedEventData struct {
+	// Hosts added to the cluster in this event, if any.
+	AddedHostNames []string
+
+	// Hosts in Maintenance mode in the cluster, if any.
+	InMaintenanceHostNames []string
+
+	// Id of the operation that caused this event.
+	OperationID *string
+
+	// Hosts removed to the cluster in this event, if any.
+	RemovedHostNames []string
+}
+
+// AvsClusterUpdatingEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.AVS.ClusterUpdating event.
+type AvsClusterUpdatingEventData struct {
+	// Hosts added to the cluster in this event, if any.
+	AddedHostNames []string
+
+	// Hosts in Maintenance mode in the cluster, if any.
+	InMaintenanceHostNames []string
+
+	// Id of the operation that caused this event.
+	OperationID *string
+
+	// Hosts removed to the cluster in this event, if any.
+	RemovedHostNames []string
+}
+
+// AvsPrivateCloudFailedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.AVS.PrivateCloudFailed
+// event.
+type AvsPrivateCloudFailedEventData struct {
+	// Failure reason of an event.
+	FailureMessage *string
+
+	// Id of the operation that caused this event.
+	OperationID *string
+}
+
+// AvsPrivateCloudUpdatedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.AVS.PrivateCloudUpdated
+// event.
+type AvsPrivateCloudUpdatedEventData struct {
+	// Id of the operation that caused this event.
+	OperationID *string
+}
+
+// AvsPrivateCloudUpdatingEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.AVS.PrivateCloudUpdating
+// event.
+type AvsPrivateCloudUpdatingEventData struct {
+	// Id of the operation that caused this event.
+	OperationID *string
+}
+
+// AvsScriptExecutionCancelledEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.AVS.ScriptExecutionCancelled
+// event.
+type AvsScriptExecutionCancelledEventData struct {
+	// Cmdlet referenced in the execution that caused this event.
+	CmdletID *string
+
+	// Id of the operation that caused this event.
+	OperationID *string
+
+	// Stdout outputs from the execution, if any.
+	Output []string
+}
+
+// AvsScriptExecutionFailedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.AVS.ScriptExecutionFailed
+// event.
+type AvsScriptExecutionFailedEventData struct {
+	// Cmdlet referenced in the execution that caused this event.
+	CmdletID *string
+
+	// Failure reason of an event.
+	FailureMessage *string
+
+	// Id of the operation that caused this event.
+	OperationID *string
+
+	// Stdout outputs from the execution, if any.
+	Output []string
+}
+
+// AvsScriptExecutionFinishedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.AVS.ScriptExecutionFinished
+// event.
+type AvsScriptExecutionFinishedEventData struct {
+	// Cmdlet referenced in the execution that caused this event.
+	CmdletID *string
+
+	// Named outputs of completed execution, if any.
+	NamedOutputs map[string]*string
+
+	// Id of the operation that caused this event.
+	OperationID *string
+
+	// Stdout outputs from the execution, if any.
+	Output []string
+}
+
+// AvsScriptExecutionStartedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.AVS.ScriptExecutionStarted
+// event.
+type AvsScriptExecutionStartedEventData struct {
+	// Cmdlet referenced in the execution that caused this event.
+	CmdletID *string
+
+	// Id of the operation that caused this event.
+	OperationID *string
+
+	// Stdout outputs from the execution, if any.
+	Output []string
 }
 
 // CommunicationIdentifierModel - Identifies a participant in Azure Communication services. A participant is, for example,
@@ -4752,6 +4950,35 @@ type StorageLifecyclePolicyCompletedEventData struct {
 
 	// Execution statistics of a specific policy action in a Blob Management cycle.
 	TierToCoolSummary *StorageLifecyclePolicyActionSummaryDetail
+}
+
+// StorageTaskAssignmentCompletedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for an Microsoft.Storage.StorageTaskAssignmentCompleted
+// event.
+type StorageTaskAssignmentCompletedEventData struct {
+	// The time at which a storage task was completed.
+	CompletedOn *time.Time
+
+	// The status for a storage task.
+	Status *StorageTaskAssignmentCompletedStatus
+
+	// The summary report blob url for a storage task
+	SummaryReportBlobURI *string
+
+	// The execution id for a storage task.
+	TaskExecutionID *string
+
+	// The task name for a storage task.
+	TaskName *string
+}
+
+// StorageTaskAssignmentQueuedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for an Microsoft.Storage.StorageTaskAssignmentQueued
+// event.
+type StorageTaskAssignmentQueuedEventData struct {
+	// The time at which a storage task was queued.
+	QueuedOn *time.Time
+
+	// The execution id for a storage task.
+	TaskExecutionID *string
 }
 
 // StorageTaskCompletedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for an Microsoft.Storage.StorageTaskCompleted

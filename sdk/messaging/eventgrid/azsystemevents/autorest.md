@@ -6,7 +6,7 @@ description: Azure Event Grid system events
 generated-metadata: false
 clear-output-folder: false
 go: true
-require: https://github.com/Azure/azure-rest-api-specs/blob/11bbc2b1df2e915a2227a6a1a48a27b9e67c3311/specification/eventgrid/data-plane/readme.md
+require: https://github.com/Azure/azure-rest-api-specs/blob/1d89c126e2d0e09112b218151a916617d1128cf5/specification/eventgrid/data-plane/readme.md
 license-header: MICROSOFT_MIT_NO_VERSION
 openapi-type: "data-plane"
 output-folder: ../azsystemevents
@@ -120,4 +120,25 @@ directive:
     where: $
     transform: |
       return $.replace(/err = unpopulate\(val, "Data", &e.Data\)/, "e.Data = []byte(val)")
+```
+
+Remove models that are only used as base models, but aren't needed. The OpenAPI emitter
+just duplicates the fields into each child, rather than embedding.  So these aren't needed.
+
+```yaml
+directive:
+  - from: models.go
+    where: $
+    transform: return $.replace(/\/\/ (AvsClusterEventData|AvsPrivateCloudEventData|AvsScriptExecutionEventData) - .+?\n}\n/gs, "");
+  - from: models_serde.go
+    where: |
+      for (let name of ["AvsClusterEventData", "AvsPrivateCloudEventData", "AvsScriptExecutionEventData"]) {
+        const marshalPrefix = `// MarshalJSON implements the json.Marshaller interface for type ${name}.+?\\n}\\n`;
+        const unmarshalPrefix = `// UnmarshalJSON implements the json.Unmarshaller interface for type ${name}.?\\n}\\n`;
+
+        $ = $.replace(new Regexp(marshalPrefix, "gs")/, "");
+        $ = $.replace(new Regexp(unmarshalPrefix), "gs")/, "");
+      }
+      
+      return $;
 ```

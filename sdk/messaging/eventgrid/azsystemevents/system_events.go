@@ -11,6 +11,20 @@ package azsystemevents
 type Type string
 
 const (
+	TypeAvsClusterCreated                                             Type = "Microsoft.AVS.ClusterCreated"                                              // maps to AvsClusterCreatedEventData
+	TypeAvsClusterDeleted                                             Type = "Microsoft.AVS.ClusterDeleted"                                              // maps to AvsClusterDeletedEventData
+	TypeAvsClusterFailed                                              Type = "Microsoft.AVS.ClusterFailed"                                               // maps to AvsClusterFailedEventData
+	TypeAvsClusterUpdated                                             Type = "Microsoft.AVS.ClusterUpdated"                                              // maps to AvsClusterUpdatedEventData
+	TypeAvsClusterUpdating                                            Type = "Microsoft.AVS.ClusterUpdating"                                             // maps to AvsClusterUpdatingEventData
+	TypeAvsPrivateCloudFailed                                         Type = "Microsoft.AVS.PrivateCloudFailed"                                          // maps to AvsPrivateCloudFailedEventData
+	TypeAvsPrivateCloudUpdated                                        Type = "Microsoft.AVS.PrivateCloudUpdated"                                         // maps to AvsPrivateCloudUpdatedEventData
+	TypeAvsPrivateCloudUpdating                                       Type = "Microsoft.AVS.PrivateCloudUpdating"                                        // maps to AvsPrivateCloudUpdatingEventData
+	TypeAvsScriptExecutionCancelled                                   Type = "Microsoft.AVS.ScriptExecutionCancelled"                                    // maps to AvsScriptExecutionCancelledEventData
+	TypeAvsScriptExecutionFailed                                      Type = "Microsoft.AVS.ScriptExecutionFailed"                                       // maps to AvsScriptExecutionFailedEventData
+	TypeAvsScriptExecutionFinished                                    Type = "Microsoft.AVS.ScriptExecutionFinished"                                     // maps to AvsScriptExecutionFinishedEventData
+	TypeAvsScriptExecutionStarted                                     Type = "Microsoft.AVS.ScriptExecutionStarted"                                      // maps to AvsScriptExecutionStartedEventData
+	TypeAPIDefinitionAdded                                            Type = "Microsoft.ApiCenter.ApiDefinitionAdded"                                    // maps to APIDefinitionAddedEventData
+	TypeAPIDefinitionUpdated                                          Type = "Microsoft.ApiCenter.ApiDefinitionUpdated"                                  // maps to APIDefinitionUpdatedEventData
 	TypeAPIManagementAPICreated                                       Type = "Microsoft.ApiManagement.APICreated"                                        // maps to APIManagementAPICreatedEventData
 	TypeAPIManagementAPIDeleted                                       Type = "Microsoft.ApiManagement.APIDeleted"                                        // maps to APIManagementAPIDeletedEventData
 	TypeAPIManagementAPIReleaseCreated                                Type = "Microsoft.ApiManagement.APIReleaseCreated"                                 // maps to APIManagementAPIReleaseCreatedEventData
@@ -195,6 +209,8 @@ const (
 	TypeStorageDirectoryDeleted                                       Type = "Microsoft.Storage.DirectoryDeleted"                                        // maps to StorageDirectoryDeletedEventData
 	TypeStorageDirectoryRenamed                                       Type = "Microsoft.Storage.DirectoryRenamed"                                        // maps to StorageDirectoryRenamedEventData
 	TypeStorageLifecyclePolicyCompleted                               Type = "Microsoft.Storage.LifecyclePolicyCompleted"                                // maps to StorageLifecyclePolicyCompletedEventData
+	TypeStorageTaskAssignmentCompleted                                Type = "Microsoft.Storage.StorageTaskAssignmentCompleted"                          // maps to StorageTaskAssignmentCompletedEventData
+	TypeStorageTaskAssignmentQueued                                   Type = "Microsoft.Storage.StorageTaskAssignmentQueued"                             // maps to StorageTaskAssignmentQueuedEventData
 	TypeStorageTaskCompleted                                          Type = "Microsoft.Storage.StorageTaskCompleted"                                    // maps to StorageTaskCompletedEventData
 	TypeStorageTaskQueued                                             Type = "Microsoft.Storage.StorageTaskQueued"                                       // maps to StorageTaskQueuedEventData
 	TypeWebAppServicePlanUpdated                                      Type = "Microsoft.Web.AppServicePlanUpdated"                                       // maps to WebAppServicePlanUpdatedEventData

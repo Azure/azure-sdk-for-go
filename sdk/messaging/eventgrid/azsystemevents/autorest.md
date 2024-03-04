@@ -131,14 +131,16 @@ directive:
     where: $
     transform: return $.replace(/\/\/ (AvsClusterEventData|AvsPrivateCloudEventData|AvsScriptExecutionEventData) - .+?\n}\n/gs, "");
   - from: models_serde.go
-    where: |
+    where: $
+    transform: |
       for (let name of ["AvsClusterEventData", "AvsPrivateCloudEventData", "AvsScriptExecutionEventData"]) {
-        const marshalPrefix = `// MarshalJSON implements the json.Marshaller interface for type ${name}.+?\\n}\\n`;
-        const unmarshalPrefix = `// UnmarshalJSON implements the json.Unmarshaller interface for type ${name}.?\\n}\\n`;
+        // ex:                '// MarshalJSON implements the json.Marshaller interface for type AvsScriptExecutionEventData.'
+        const marshalPrefix = `// MarshalJSON implements the json\.Marshaller interface for type ${name}.+?\n}\n`;
+        // ex:                  '// UnmarshalJSON implements the json.Unmarshaller interface for type AvsClusterEventData.'
+        const unmarshalPrefix = `// UnmarshalJSON implements the json\.Unmarshaller interface for type ${name}.+?\n}\n`;
 
-        $ = $.replace(new Regexp(marshalPrefix, "gs")/, "");
-        $ = $.replace(new Regexp(unmarshalPrefix), "gs")/, "");
-      }
-      
+        $ = $.replace(new RegExp(marshalPrefix, "gs"), "");
+        $ = $.replace(new RegExp(unmarshalPrefix, "gs"), "");
+      }      
       return $;
 ```

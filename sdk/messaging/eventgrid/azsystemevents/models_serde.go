@@ -4330,45 +4330,6 @@ func (a *AvsClusterDeletedEventData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AvsClusterEventData.
-func (a AvsClusterEventData) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "addedHostNames", a.AddedHostNames)
-	populate(objectMap, "inMaintenanceHostNames", a.InMaintenanceHostNames)
-	populate(objectMap, "operationId", a.OperationID)
-	populate(objectMap, "removedHostNames", a.RemovedHostNames)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type AvsClusterEventData.
-func (a *AvsClusterEventData) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", a, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "addedHostNames":
-			err = unpopulate(val, "AddedHostNames", &a.AddedHostNames)
-			delete(rawMsg, key)
-		case "inMaintenanceHostNames":
-			err = unpopulate(val, "InMaintenanceHostNames", &a.InMaintenanceHostNames)
-			delete(rawMsg, key)
-		case "operationId":
-			err = unpopulate(val, "OperationID", &a.OperationID)
-			delete(rawMsg, key)
-		case "removedHostNames":
-			err = unpopulate(val, "RemovedHostNames", &a.RemovedHostNames)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", a, err)
-		}
-	}
-	return nil
-}
-
 // MarshalJSON implements the json.Marshaller interface for type AvsClusterFailedEventData.
 func (a AvsClusterFailedEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -4490,33 +4451,6 @@ func (a *AvsClusterUpdatingEventData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AvsPrivateCloudEventData.
-func (a AvsPrivateCloudEventData) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "operationId", a.OperationID)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type AvsPrivateCloudEventData.
-func (a *AvsPrivateCloudEventData) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", a, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "operationId":
-			err = unpopulate(val, "OperationID", &a.OperationID)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", a, err)
-		}
-	}
-	return nil
-}
-
 // MarshalJSON implements the json.Marshaller interface for type AvsPrivateCloudFailedEventData.
 func (a AvsPrivateCloudFailedEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -4613,41 +4547,6 @@ func (a AvsScriptExecutionCancelledEventData) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON implements the json.Unmarshaller interface for type AvsScriptExecutionCancelledEventData.
 func (a *AvsScriptExecutionCancelledEventData) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", a, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "cmdletId":
-			err = unpopulate(val, "CmdletID", &a.CmdletID)
-			delete(rawMsg, key)
-		case "operationId":
-			err = unpopulate(val, "OperationID", &a.OperationID)
-			delete(rawMsg, key)
-		case "output":
-			err = unpopulate(val, "Output", &a.Output)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", a, err)
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AvsScriptExecutionEventData.
-func (a AvsScriptExecutionEventData) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "cmdletId", a.CmdletID)
-	populate(objectMap, "operationId", a.OperationID)
-	populate(objectMap, "output", a.Output)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type AvsScriptExecutionEventData.
-func (a *AvsScriptExecutionEventData) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)

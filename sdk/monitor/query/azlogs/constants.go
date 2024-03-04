@@ -8,34 +8,6 @@
 
 package azlogs
 
-// BatchQueryRequestMethod - The method of a single request in a batch, defaults to POST
-type BatchQueryRequestMethod string
-
-const (
-	BatchQueryRequestMethodPOST BatchQueryRequestMethod = "POST"
-)
-
-// PossibleBatchQueryRequestMethodValues returns the possible values for the BatchQueryRequestMethod const type.
-func PossibleBatchQueryRequestMethodValues() []BatchQueryRequestMethod {
-	return []BatchQueryRequestMethod{
-		BatchQueryRequestMethodPOST,
-	}
-}
-
-// BatchQueryRequestPath - The query path of a single request in a batch, defaults to /query
-type BatchQueryRequestPath string
-
-const (
-	BatchQueryRequestPathQuery BatchQueryRequestPath = "/query"
-)
-
-// PossibleBatchQueryRequestPathValues returns the possible values for the BatchQueryRequestPath const type.
-func PossibleBatchQueryRequestPathValues() []BatchQueryRequestPath {
-	return []BatchQueryRequestPath{
-		BatchQueryRequestPathQuery,
-	}
-}
-
 // LogsColumnType - The data type of this column.
 type LogsColumnType string
 

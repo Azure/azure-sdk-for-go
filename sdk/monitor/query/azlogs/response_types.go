@@ -19,9 +19,3 @@ type QueryWorkspaceResponse struct {
 	// Contains the tables, columns & rows resulting from a query.
 	QueryResults
 }
-
-// QueryWorkspacesResponse contains the response from method Client.QueryWorkspaces.
-type QueryWorkspacesResponse struct {
-	// Response to a batch query.
-	BatchResponse
-}

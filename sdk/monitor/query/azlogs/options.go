@@ -19,8 +19,3 @@ type QueryWorkspaceOptions struct {
 	// Optional. The prefer header to set server timeout, query statistics and visualization information.
 	Options *LogsQueryOptions
 }
-
-// QueryWorkspacesOptions contains the optional parameters for the Client.QueryWorkspaces method.
-type QueryWorkspacesOptions struct {
-	// placeholder for future optional parameters
-}

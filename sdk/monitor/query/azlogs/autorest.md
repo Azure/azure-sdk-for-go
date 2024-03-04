@@ -24,12 +24,17 @@ directive:
     where: $["x-ms-paths"]
     transform: >
         delete $["/{resourceId}/query?disambiguation_dummy"];
+  - from: swagger-document
+    where: $["paths"]
+    transform: >
+        delete $["/$batch"];
 
   # delete extra operations
   - remove-operation: Query_Get
   - remove-operation: Query_ResourceGet
+  - remove-operation: Query_Batch
 
-  # delete metadata models
+  # delete metadata and batch models
   - remove-model: metadataResults
   - remove-model: metadataCategory
   - remove-model: metadataSolution
@@ -41,14 +46,16 @@ directive:
   - remove-model: metadataWorkspace
   - remove-model: metadataResource
   - remove-model: metadataPermissions
+  - remove-model: batchRequest
+  - remove-model: batchQueryRequest
+  - remove-model: batchResponse
+  - remove-model: batchQueryResponse
+  - remove-model: batchQueryResults
 
  # rename log operations to generate into a separate logs client
   - rename-operation:
       from: Query_Execute
       to: Logs_QueryWorkspace
-  - rename-operation:
-      from: Query_Batch
-      to: Logs_QueryWorkspaces
   - rename-operation:
       from: Query_ResourceExecute
       to: Logs_QueryResource
@@ -62,22 +69,6 @@ directive:
   - from: swagger-document
     where: $.definitions.queryResults.properties.render
     transform: $["x-ms-client-name"] = "Visualization"
-  - from: swagger-document
-    where: $.definitions.batchQueryResults.properties.render
-    transform: $["x-ms-client-name"] = "Visualization"
-
-  # rename BatchQueryRequest.ID to BatchQueryRequest.CorrelationID
-  - from: swagger-document
-    where: $.definitions.batchQueryRequest.properties.id
-    transform: $["x-ms-client-name"] = "CorrelationID"
-  - from: swagger-document
-    where: $.definitions.batchQueryResponse.properties.id
-    transform: $["x-ms-client-name"] = "CorrelationID"
-
-  # rename BatchQueryRequest.Workspace to BatchQueryRequest.WorkspaceID
-  - from: swagger-document
-    where: $.definitions.batchQueryRequest.properties.workspace
-    transform: $["x-ms-client-name"] = "WorkspaceID"
   
   # rename Prefer to Options
   - from: swagger-document
@@ -89,26 +80,6 @@ directive:
   - from: client.go
     where: $
     transform: return $.replace(/\*options\.Options/g, "options.Options.preferHeader()");
-  
-  # add default values for batch request path and method attributes
-  - from: swagger-document
-    where: $.definitions.batchQueryRequest.properties.path
-    transform: $["x-ms-client-default"] = "/query"
-  - from: swagger-document
-    where: $.definitions.batchQueryRequest.properties.method
-    transform: $["x-ms-client-default"] = "POST"
-  - from: swagger-document
-    where: $.definitions.batchQueryRequest.properties.path.x-ms-enum
-    transform: $["modelAsString"] = true
-  - from: swagger-document
-    where: $.definitions.batchQueryRequest.properties.path.x-ms-enum
-    transform: $["name"] = "BatchQueryRequestPath"
-  - from: swagger-document
-    where: $.definitions.batchQueryRequest.properties.method.x-ms-enum
-    transform: $["modelAsString"] = true
-  - from: swagger-document
-    where: $.definitions.batchQueryRequest.properties.method.x-ms-enum
-    transform: $["name"] = "BatchQueryRequestMethod"
 
   # add descriptions for models and constants that don't have them
   - from: constants.go

@@ -89,7 +89,8 @@ func (testsuite *RedisenterpriseTestSuite) Prepare() {
 		Zones: []*string{
 			to.Ptr("1"),
 			to.Ptr("2"),
-			to.Ptr("3")},
+			to.Ptr("3"),
+		},
 	}, nil)
 	testsuite.Require().NoError(err)
 	var clientCreateResponse *armredisenterprise.ClientCreateResponse

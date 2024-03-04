@@ -125,6 +125,7 @@ const (
 	StateTypeBroken    StateType = azdatalake.StateTypeBroken
 )
 
+// LeaseAction Describes actions that can be performed on a lease.
 type LeaseAction = path.LeaseAction
 
 var (

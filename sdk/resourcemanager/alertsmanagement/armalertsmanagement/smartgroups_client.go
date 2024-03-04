@@ -147,6 +147,28 @@ func (client *SmartGroupsClient) getAllCreateRequest(ctx context.Context, option
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2019-05-05-preview")
+	if options != nil && options.MonitorCondition != nil {
+		reqQP.Set("monitorCondition", string(*options.MonitorCondition))
+	}
+	if options != nil && options.MonitorService != nil {
+		reqQP.Set("monitorService", string(*options.MonitorService))
+	}
+	if options != nil && options.PageCount != nil {
+		reqQP.Set("pageCount", strconv.FormatInt(*options.PageCount, 10))
+	}
+	if options != nil && options.Severity != nil {
+		reqQP.Set("severity", string(*options.Severity))
+	}
+	if options != nil && options.SmartGroupState != nil {
+		reqQP.Set("smartGroupState", string(*options.SmartGroupState))
+	}
+	if options != nil && options.SortBy != nil {
+		reqQP.Set("sortBy", string(*options.SortBy))
+	}
+	if options != nil && options.SortOrder != nil {
+		reqQP.Set("sortOrder", string(*options.SortOrder))
+	}
 	if options != nil && options.TargetResource != nil {
 		reqQP.Set("targetResource", *options.TargetResource)
 	}
@@ -156,31 +178,9 @@ func (client *SmartGroupsClient) getAllCreateRequest(ctx context.Context, option
 	if options != nil && options.TargetResourceType != nil {
 		reqQP.Set("targetResourceType", *options.TargetResourceType)
 	}
-	if options != nil && options.MonitorService != nil {
-		reqQP.Set("monitorService", string(*options.MonitorService))
-	}
-	if options != nil && options.MonitorCondition != nil {
-		reqQP.Set("monitorCondition", string(*options.MonitorCondition))
-	}
-	if options != nil && options.Severity != nil {
-		reqQP.Set("severity", string(*options.Severity))
-	}
-	if options != nil && options.SmartGroupState != nil {
-		reqQP.Set("smartGroupState", string(*options.SmartGroupState))
-	}
 	if options != nil && options.TimeRange != nil {
 		reqQP.Set("timeRange", string(*options.TimeRange))
 	}
-	if options != nil && options.PageCount != nil {
-		reqQP.Set("pageCount", strconv.FormatInt(*options.PageCount, 10))
-	}
-	if options != nil && options.SortBy != nil {
-		reqQP.Set("sortBy", string(*options.SortBy))
-	}
-	if options != nil && options.SortOrder != nil {
-		reqQP.Set("sortOrder", string(*options.SortOrder))
-	}
-	reqQP.Set("api-version", "2019-05-05-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

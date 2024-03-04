@@ -45,7 +45,7 @@ func NewPrivateLinkResourcesClient(subscriptionID string, credential azcore.Toke
 
 // NewListByClusterPager - Gets the private link resources that need to be created for a RedisEnterprise cluster.
 //
-// Generated from API version 2022-01-01
+// Generated from API version 2023-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the RedisEnterprise cluster.
 //   - options - PrivateLinkResourcesClientListByClusterOptions contains the optional parameters for the PrivateLinkResourcesClient.NewListByClusterPager
@@ -94,7 +94,7 @@ func (client *PrivateLinkResourcesClient) listByClusterCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

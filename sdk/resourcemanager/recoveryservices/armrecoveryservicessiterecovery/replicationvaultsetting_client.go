@@ -46,7 +46,7 @@ func NewReplicationVaultSettingClient(subscriptionID string, credential azcore.T
 // BeginCreate - The operation to configure vault setting.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-01
+// Generated from API version 2023-08-01
 //   - resourceName - The name of the recovery services vault.
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - vaultSettingName - Vault setting name.
@@ -73,7 +73,7 @@ func (client *ReplicationVaultSettingClient) BeginCreate(ctx context.Context, re
 // Create - The operation to configure vault setting.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-01
+// Generated from API version 2023-08-01
 func (client *ReplicationVaultSettingClient) create(ctx context.Context, resourceName string, resourceGroupName string, vaultSettingName string, input VaultSettingCreationInput, options *ReplicationVaultSettingClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicationVaultSettingClient.BeginCreate"
@@ -119,7 +119,7 @@ func (client *ReplicationVaultSettingClient) createCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-01")
+	reqQP.Set("api-version", "2023-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, input); err != nil {
@@ -131,7 +131,7 @@ func (client *ReplicationVaultSettingClient) createCreateRequest(ctx context.Con
 // Get - Gets the vault setting. This includes the Migration Hub connection settings.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-01
+// Generated from API version 2023-08-01
 //   - resourceName - The name of the recovery services vault.
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - vaultSettingName - Vault setting name.
@@ -183,7 +183,7 @@ func (client *ReplicationVaultSettingClient) getCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-01")
+	reqQP.Set("api-version", "2023-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -200,7 +200,7 @@ func (client *ReplicationVaultSettingClient) getHandleResponse(resp *http.Respon
 
 // NewListPager - Gets the list of vault setting. This includes the Migration Hub connection settings.
 //
-// Generated from API version 2023-06-01
+// Generated from API version 2023-08-01
 //   - resourceName - The name of the recovery services vault.
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - options - ReplicationVaultSettingClientListOptions contains the optional parameters for the ReplicationVaultSettingClient.NewListPager
@@ -248,7 +248,7 @@ func (client *ReplicationVaultSettingClient) listCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-01")
+	reqQP.Set("api-version", "2023-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

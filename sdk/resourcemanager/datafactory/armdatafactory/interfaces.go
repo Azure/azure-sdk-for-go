@@ -53,7 +53,7 @@ type ControlActivityClassification interface {
 // - *DynamicsCrmSink, *DynamicsSink, *FileSystemSink, *InformixSink, *JSONSink, *LakeHouseTableSink, *MicrosoftAccessSink,
 // - *MongoDbAtlasSink, *MongoDbV2Sink, *OdbcSink, *OracleSink, *OrcSink, *ParquetSink, *RestSink, *SQLDWSink, *SQLMISink,
 // - *SQLServerSink, *SQLSink, *SalesforceServiceCloudSink, *SalesforceServiceCloudV2Sink, *SalesforceSink, *SalesforceV2Sink,
-// - *SapCloudForCustomerSink, *SnowflakeSink, *WarehouseSink
+// - *SapCloudForCustomerSink, *SnowflakeSink, *SnowflakeV2Sink, *WarehouseSink
 type CopySinkClassification interface {
 	// GetCopySink returns the CopySink content of the underlying type.
 	GetCopySink() *CopySink
@@ -75,8 +75,8 @@ type CopySinkClassification interface {
 // - *RestSource, *SQLDWSource, *SQLMISource, *SQLServerSource, *SQLSource, *SalesforceMarketingCloudSource, *SalesforceServiceCloudSource,
 // - *SalesforceServiceCloudV2Source, *SalesforceSource, *SalesforceV2Source, *SapBwSource, *SapCloudForCustomerSource, *SapEccSource,
 // - *SapHanaSource, *SapOdpSource, *SapOpenHubSource, *SapTableSource, *ServiceNowSource, *SharePointOnlineListSource, *ShopifySource,
-// - *SnowflakeSource, *SparkSource, *SquareSource, *SybaseSource, *TabularSource, *TeradataSource, *VerticaSource, *WarehouseSource,
-// - *WebSource, *XMLSource, *XeroSource, *ZohoSource
+// - *SnowflakeSource, *SnowflakeV2Source, *SparkSource, *SquareSource, *SybaseSource, *TabularSource, *TeradataSource, *VerticaSource,
+// - *WarehouseSource, *WebSource, *XMLSource, *XeroSource, *ZohoSource
 type CopySourceClassification interface {
 	// GetCopySource returns the CopySource content of the underlying type.
 	GetCopySource() *CopySource
@@ -129,9 +129,9 @@ type DataFlowClassification interface {
 // - *SQLServerTableDataset, *SalesforceMarketingCloudObjectDataset, *SalesforceObjectDataset, *SalesforceServiceCloudObjectDataset,
 // - *SalesforceServiceCloudV2ObjectDataset, *SalesforceV2ObjectDataset, *SapBwCubeDataset, *SapCloudForCustomerResourceDataset,
 // - *SapEccResourceDataset, *SapHanaTableDataset, *SapOdpResourceDataset, *SapOpenHubTableDataset, *SapTableResourceDataset,
-// - *ServiceNowObjectDataset, *SharePointOnlineListResourceDataset, *ShopifyObjectDataset, *SnowflakeDataset, *SparkObjectDataset,
-// - *SquareObjectDataset, *SybaseTableDataset, *TeradataTableDataset, *VerticaTableDataset, *WarehouseTableDataset, *WebTableDataset,
-// - *XMLDataset, *XeroObjectDataset, *ZohoObjectDataset
+// - *ServiceNowObjectDataset, *SharePointOnlineListResourceDataset, *ShopifyObjectDataset, *SnowflakeDataset, *SnowflakeV2Dataset,
+// - *SparkObjectDataset, *SquareObjectDataset, *SybaseTableDataset, *TeradataTableDataset, *VerticaTableDataset, *WarehouseTableDataset,
+// - *WebTableDataset, *XMLDataset, *XeroObjectDataset, *ZohoObjectDataset
 type DatasetClassification interface {
 	// GetDataset returns the Dataset content of the underlying type.
 	GetDataset() *Dataset
@@ -278,9 +278,9 @@ type LinkedIntegrationRuntimeTypeClassification interface {
 // - *SalesforceServiceCloudV2LinkedService, *SalesforceV2LinkedService, *SapBWLinkedService, *SapCloudForCustomerLinkedService,
 // - *SapEccLinkedService, *SapHanaLinkedService, *SapOdpLinkedService, *SapOpenHubLinkedService, *SapTableLinkedService,
 // - *ServiceNowLinkedService, *SftpServerLinkedService, *SharePointOnlineListLinkedService, *ShopifyLinkedService, *SmartsheetLinkedService,
-// - *SnowflakeLinkedService, *SparkLinkedService, *SquareLinkedService, *SybaseLinkedService, *TeamDeskLinkedService, *TeradataLinkedService,
-// - *TwilioLinkedService, *VerticaLinkedService, *WarehouseLinkedService, *WebLinkedService, *XeroLinkedService, *ZendeskLinkedService,
-// - *ZohoLinkedService
+// - *SnowflakeLinkedService, *SnowflakeV2LinkedService, *SparkLinkedService, *SquareLinkedService, *SybaseLinkedService,
+// - *TeamDeskLinkedService, *TeradataLinkedService, *TwilioLinkedService, *VerticaLinkedService, *WarehouseLinkedService,
+// - *WebLinkedService, *XeroLinkedService, *ZendeskLinkedService, *ZohoLinkedService
 type LinkedServiceClassification interface {
 	// GetLinkedService returns the LinkedService content of the underlying type.
 	GetLinkedService() *LinkedService

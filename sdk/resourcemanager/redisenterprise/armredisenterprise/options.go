@@ -59,6 +59,12 @@ type DatabasesClientBeginExportOptions struct {
 	ResumeToken string
 }
 
+// DatabasesClientBeginFlushOptions contains the optional parameters for the DatabasesClient.BeginFlush method.
+type DatabasesClientBeginFlushOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
 // DatabasesClientBeginForceUnlinkOptions contains the optional parameters for the DatabasesClient.BeginForceUnlink method.
 type DatabasesClientBeginForceUnlinkOptions struct {
 	// Resumes the LRO from the provided token.
@@ -108,17 +114,18 @@ type OperationsStatusClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
+// PrivateEndpointConnectionsClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginDelete
+// method.
+type PrivateEndpointConnectionsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
 // PrivateEndpointConnectionsClientBeginPutOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginPut
 // method.
 type PrivateEndpointConnectionsClientBeginPutOptions struct {
 	// Resumes the LRO from the provided token.
 	ResumeToken string
-}
-
-// PrivateEndpointConnectionsClientDeleteOptions contains the optional parameters for the PrivateEndpointConnectionsClient.Delete
-// method.
-type PrivateEndpointConnectionsClientDeleteOptions struct {
-	// placeholder for future optional parameters
 }
 
 // PrivateEndpointConnectionsClientGetOptions contains the optional parameters for the PrivateEndpointConnectionsClient.Get

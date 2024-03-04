@@ -1,5 +1,25 @@
 # Release History
 
+## 1.1.2 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.1.1 (2024-02-29)
+
+### Bugs Fixed
+* Exposing x-ms-resource-type response header in GetProperties API for file and directory.
+
+* Re-enabled `SharedKeyCredential` authentication mode for non TLS protected endpoints.
+
+### Other Changes
+* Updated version of azblob to `1.3.1`
+
 ## 1.1.0 (2024-02-14)
 
 ### Bugs Fixed

@@ -19,6 +19,24 @@ type Action struct {
 // GetAction implements the ActionClassification interface for type Action.
 func (a *Action) GetAction() *Action { return a }
 
+// ActionGroup - A pointer to an Azure Action Group.
+type ActionGroup struct {
+	// REQUIRED; The resource ID of the Action Group. This cannot be null or empty.
+	ActionGroupID *string
+
+	// Predefined list of properties and configuration items for the action group.
+	ActionProperties map[string]*string
+
+	// the dictionary of custom properties to include with the post operation. These data are appended to the webhook payload.
+	WebhookProperties map[string]*string
+}
+
+// ActionList - A list of Activity Log Alert rule actions.
+type ActionList struct {
+	// The list of the Action Groups.
+	ActionGroups []*ActionGroup
+}
+
 // ActionStatus - Action status
 type ActionStatus struct {
 	// Value indicating whether alert is suppressed.
@@ -171,6 +189,115 @@ type AlertProperties struct {
 	EgressConfig any
 }
 
+// AlertRuleAllOfCondition - An Activity Log Alert rule condition that is met when all its member conditions are met.
+type AlertRuleAllOfCondition struct {
+	// REQUIRED; The list of Activity Log Alert rule conditions.
+	AllOf []*AlertRuleAnyOfOrLeafCondition
+}
+
+// AlertRuleAnyOfOrLeafCondition - An Activity Log Alert rule condition that is met when all its member conditions are met.
+// Each condition can be of one of the following types:Important: Each type has its unique subset of properties.
+// Properties from different types CANNOT exist in one condition.
+// * Leaf Condition - must contain 'field' and either 'equals' or 'containsAny'.Please note, 'anyOf' should not be set in
+// a Leaf Condition.
+// * AnyOf Condition - must contain only 'anyOf' (which is an array of Leaf Conditions).Please note, 'field', 'equals' and
+// 'containsAny' should not be set in an AnyOf Condition.
+type AlertRuleAnyOfOrLeafCondition struct {
+	// An Activity Log Alert rule condition that is met when at least one of its member leaf conditions are met.
+	AnyOf []*AlertRuleLeafCondition
+
+	// The value of the event's field will be compared to the values in this array (case-insensitive) to determine if the condition
+	// is met.
+	ContainsAny []*string
+
+	// The value of the event's field will be compared to this value (case-insensitive) to determine if the condition is met.
+	Equals *string
+
+	// The name of the Activity Log event's field that this condition will examine. The possible values for this field are (case-insensitive):
+	// 'resourceId', 'category', 'caller', 'level', 'operationName',
+	// 'resourceGroup', 'resourceProvider', 'status', 'subStatus', 'resourceType', or anything beginning with 'properties'.
+	Field *string
+}
+
+// AlertRuleLeafCondition - An Activity Log Alert rule condition that is met by comparing the field and value of an Activity
+// Log event. This condition must contain 'field' and either 'equals' or 'containsAny'.
+type AlertRuleLeafCondition struct {
+	// The value of the event's field will be compared to the values in this array (case-insensitive) to determine if the condition
+	// is met.
+	ContainsAny []*string
+
+	// The value of the event's field will be compared to this value (case-insensitive) to determine if the condition is met.
+	Equals *string
+
+	// The name of the Activity Log event's field that this condition will examine. The possible values for this field are (case-insensitive):
+	// 'resourceId', 'category', 'caller', 'level', 'operationName',
+	// 'resourceGroup', 'resourceProvider', 'status', 'subStatus', 'resourceType', or anything beginning with 'properties'.
+	Field *string
+}
+
+// AlertRuleProperties - An Azure Activity Log Alert rule.
+type AlertRuleProperties struct {
+	// REQUIRED; The actions that will activate when the condition is met.
+	Actions *ActionList
+
+	// REQUIRED; The condition that will cause this alert to activate.
+	Condition *AlertRuleAllOfCondition
+
+	// A description of this Activity Log Alert rule.
+	Description *string
+
+	// Indicates whether this Activity Log Alert rule is enabled. If an Activity Log Alert rule is not enabled, then none of its
+	// actions will be activated.
+	Enabled *bool
+
+	// A list of resource IDs that will be used as prefixes. The alert will only apply to Activity Log events with resource IDs
+	// that fall under one of these prefixes. This list must include at least one
+	// item.
+	Scopes []*string
+
+	// The tenant GUID. Must be provided for tenant-level and management group events rules.
+	TenantScope *string
+}
+
+// AlertRuleRecommendationProperties - Describes the format of Alert Rule Recommendations response.
+type AlertRuleRecommendationProperties struct {
+	// REQUIRED; The recommendation alert rule type.
+	AlertRuleType *string
+
+	// REQUIRED; A dictionary that provides the display information for an alert rule recommendation.
+	DisplayInformation map[string]*string
+
+	// REQUIRED; A complete ARM template to deploy the alert rules.
+	RuleArmTemplate *RuleArmTemplate
+}
+
+// AlertRuleRecommendationResource - A single alert rule recommendation resource.
+type AlertRuleRecommendationResource struct {
+	// REQUIRED; recommendation properties.
+	Properties *AlertRuleRecommendationProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// AlertRuleRecommendationsListResponse - List of alert rule recommendations.
+type AlertRuleRecommendationsListResponse struct {
+	// REQUIRED; the values for the alert rule recommendations.
+	Value []*AlertRuleRecommendationResource
+
+	// URL to fetch the next set of recommendations.
+	NextLink *string
+}
+
 // AlertsList - List the alerts.
 type AlertsList struct {
 	// URL to fetch the next set of alerts.
@@ -240,6 +367,11 @@ type AlertsSummaryGroupItem struct {
 	Values []*AlertsSummaryGroupItem
 }
 
+// Comments - Change alert state reason
+type Comments struct {
+	Comments *string
+}
+
 // Condition to trigger an alert processing rule.
 type Condition struct {
 	// Field for a given condition.
@@ -271,69 +403,6 @@ func (d *DailyRecurrence) GetRecurrence() *Recurrence {
 		RecurrenceType: d.RecurrenceType,
 		StartTime:      d.StartTime,
 	}
-}
-
-// ErrorResponse - An error response from the service.
-type ErrorResponse struct {
-	// Details of error response.
-	Error *ErrorResponseBody
-}
-
-// ErrorResponseAutoGenerated - An error response from the service.
-type ErrorResponseAutoGenerated struct {
-	// Details of error response.
-	Error *ErrorResponseBodyAutoGenerated
-}
-
-// ErrorResponseAutoGenerated2 - An error response from the service.
-type ErrorResponseAutoGenerated2 struct {
-	// Details of error response.
-	Error *ErrorResponseBodyAutoGenerated2
-}
-
-// ErrorResponseBody - Details of error response.
-type ErrorResponseBody struct {
-	// Error code, intended to be consumed programmatically.
-	Code *string
-
-	// A list of additional details about the error.
-	Details []*ErrorResponseBody
-
-	// Description of the error, intended for display in user interface.
-	Message *string
-
-	// Target of the particular error, for example name of the property.
-	Target *string
-}
-
-// ErrorResponseBodyAutoGenerated - Details of error response.
-type ErrorResponseBodyAutoGenerated struct {
-	// Error code, intended to be consumed programmatically.
-	Code *string
-
-	// A list of additional details about the error.
-	Details []*ErrorResponseBodyAutoGenerated
-
-	// Description of the error, intended for display in user interface.
-	Message *string
-
-	// Target of the particular error, for example name of the property.
-	Target *string
-}
-
-// ErrorResponseBodyAutoGenerated2 - Details of error response.
-type ErrorResponseBodyAutoGenerated2 struct {
-	// Error code, intended to be consumed programmatically.
-	Code *string
-
-	// A list of additional details about the error.
-	Details []*ErrorResponseBodyAutoGenerated2
-
-	// Description of the error, intended for display in user interface.
-	Message *string
-
-	// Target of the particular error, for example name of the property.
-	Target *string
 }
 
 // Essentials - This object contains consistent fields across different monitor services.
@@ -399,24 +468,6 @@ type Essentials struct {
 
 	// READ-ONLY; Creation time(ISO-8601 format) of alert instance.
 	StartDateTime *time.Time
-}
-
-// ManagedResource - An azure managed resource object.
-type ManagedResource struct {
-	// REQUIRED; Resource location
-	Location *string
-
-	// Resource tags
-	Tags map[string]*string
-
-	// READ-ONLY; Azure resource Id
-	ID *string
-
-	// READ-ONLY; Azure resource name
-	Name *string
-
-	// READ-ONLY; Azure resource type
-	Type *string
 }
 
 // MonitorServiceDetails - Details of a monitor service
@@ -519,6 +570,123 @@ type PatchProperties struct {
 	Enabled *bool
 }
 
+type PrometheusRule struct {
+	// REQUIRED; the expression to run for the rule.
+	Expression *string
+
+	// The array of actions that are performed when the alert rule becomes active, and when an alert condition is resolved. Only
+	// relevant for alerts.
+	Actions []*PrometheusRuleGroupAction
+
+	// the name of the alert rule.
+	Alert *string
+
+	// annotations for rule group. Only relevant for alerts.
+	Annotations map[string]*string
+
+	// the flag that indicates whether the Prometheus rule is enabled.
+	Enabled *bool
+
+	// the amount of time alert must be active before firing. Only relevant for alerts.
+	For *string
+
+	// labels for rule group. Only relevant for alerts.
+	Labels map[string]*string
+
+	// the name of the recording rule.
+	Record *string
+
+	// defines the configuration for resolving fired alerts. Only relevant for alerts.
+	ResolveConfiguration *PrometheusRuleResolveConfiguration
+
+	// the severity of the alerts fired by the rule. Only relevant for alerts.
+	Severity *int32
+}
+
+// PrometheusRuleGroupAction - An alert action. Only relevant for alerts.
+type PrometheusRuleGroupAction struct {
+	// The resource id of the action group to use.
+	ActionGroupID *string
+
+	// The properties of an action group object.
+	ActionProperties map[string]*string
+}
+
+// PrometheusRuleGroupProperties - An alert rule.
+type PrometheusRuleGroupProperties struct {
+	// REQUIRED; defines the rules in the Prometheus rule group.
+	Rules []*PrometheusRule
+
+	// REQUIRED; the list of resource id's that this rule group is scoped to.
+	Scopes []*string
+
+	// the cluster name of the rule group evaluation.
+	ClusterName *string
+
+	// the description of the Prometheus rule group that will be included in the alert email.
+	Description *string
+
+	// the flag that indicates whether the Prometheus rule group is enabled.
+	Enabled *bool
+
+	// the interval in which to run the Prometheus rule group represented in ISO 8601 duration format. Should be between 1 and
+	// 15 minutes
+	Interval *string
+}
+
+// PrometheusRuleGroupResource - The Prometheus rule group resource.
+type PrometheusRuleGroupResource struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// REQUIRED; The Prometheus rule group properties of the resource.
+	Properties *PrometheusRuleGroupProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// PrometheusRuleGroupResourceCollection - Represents a collection of alert rule resources.
+type PrometheusRuleGroupResourceCollection struct {
+	// the values for the alert rule resources.
+	Value []*PrometheusRuleGroupResource
+}
+
+// PrometheusRuleGroupResourcePatch - The Prometheus rule group resource for patch operations.
+type PrometheusRuleGroupResourcePatch struct {
+	Properties *PrometheusRuleGroupResourcePatchProperties
+
+	// Resource tags
+	Tags map[string]*string
+}
+
+type PrometheusRuleGroupResourcePatchProperties struct {
+	// the flag that indicates whether the Prometheus rule group is enabled.
+	Enabled *bool
+}
+
+// PrometheusRuleResolveConfiguration - Specifies the Prometheus alert rule configuration.
+type PrometheusRuleResolveConfiguration struct {
+	// the flag that indicates whether or not to auto resolve a fired alert.
+	AutoResolved *bool
+
+	// the duration a rule must evaluate as healthy before the fired alert is automatically resolved represented in ISO 8601 duration
+	// format. Should be between 1 and 15 minutes
+	TimeToResolve *string
+}
+
 // Recurrence object.
 type Recurrence struct {
 	// REQUIRED; Specifies when the recurrence should be applied.
@@ -547,16 +715,22 @@ func (r *RemoveAllActionGroups) GetAction() *Action {
 	}
 }
 
-// Resource - An azure resource object
-type Resource struct {
-	// READ-ONLY; Azure resource Id
-	ID *string
+// RuleArmTemplate - A complete ARM template to deploy the alert rules.
+type RuleArmTemplate struct {
+	// REQUIRED; A 4 number format for the version number of this template file. For example, 1.0.0.0
+	ContentVersion *string
 
-	// READ-ONLY; Azure resource name
-	Name *string
+	// REQUIRED; Input parameter definitions
+	Parameters any
 
-	// READ-ONLY; Azure resource type
-	Type *string
+	// REQUIRED; Alert rule resource definitions
+	Resources []any
+
+	// REQUIRED; JSON schema reference
+	Schema *string
+
+	// REQUIRED; Variable definitions
+	Variables any
 }
 
 // Schedule - Scheduling configuration for a given alert processing rule.
@@ -722,6 +896,53 @@ type SystemData struct {
 
 	// The type of identity that last modified the resource.
 	LastModifiedByType *CreatedByType
+}
+
+// TenantActivityLogAlertResource - A Tenant Activity Log Alert rule resource.
+type TenantActivityLogAlertResource struct {
+	// REQUIRED; The Activity Log Alert rule properties of the resource.
+	Properties *AlertRuleProperties
+
+	// The location of the resource. Since Azure Activity Log Alerts is a global service, the location of the rules should always
+	// be 'global'.
+	Location *string
+
+	// The tags of the resource.
+	Tags map[string]*string
+
+	// READ-ONLY; The resource Id.
+	ID *string
+
+	// READ-ONLY; The name of the resource.
+	Name *string
+
+	// READ-ONLY; The type of the resource.
+	Type *string
+}
+
+// TenantAlertRuleList - A list of Tenant Activity Log Alert rules.
+type TenantAlertRuleList struct {
+	// Provides the link to retrieve the next set of elements.
+	NextLink *string
+
+	// The list of Tenant Activity Log Alert rules.
+	Value []*TenantActivityLogAlertResource
+}
+
+// TenantAlertRulePatchObject - An Activity Log Alert rule object for the body of patch operations.
+type TenantAlertRulePatchObject struct {
+	// The activity log alert settings for an update operation.
+	Properties *TenantAlertRulePatchProperties
+
+	// The resource tags
+	Tags map[string]*string
+}
+
+// TenantAlertRulePatchProperties - An Activity Log Alert rule properties for patch operations.
+type TenantAlertRulePatchProperties struct {
+	// Indicates whether this Activity Log Alert rule is enabled. If an Activity Log Alert rule is not enabled, then none of its
+	// actions will be activated.
+	Enabled *bool
 }
 
 // WeeklyRecurrence - Weekly recurrence object.

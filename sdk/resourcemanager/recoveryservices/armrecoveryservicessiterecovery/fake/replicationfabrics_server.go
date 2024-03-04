@@ -56,6 +56,10 @@ type ReplicationFabricsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginReassociateGateway func(ctx context.Context, resourceName string, resourceGroupName string, fabricName string, failoverProcessServerRequest armrecoveryservicessiterecovery.FailoverProcessServerRequest, options *armrecoveryservicessiterecovery.ReplicationFabricsClientBeginReassociateGatewayOptions) (resp azfake.PollerResponder[armrecoveryservicessiterecovery.ReplicationFabricsClientReassociateGatewayResponse], errResp azfake.ErrorResponder)
 
+	// BeginRemoveInfra is the fake for method ReplicationFabricsClient.BeginRemoveInfra
+	// HTTP status codes to indicate success: http.StatusAccepted
+	BeginRemoveInfra func(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, options *armrecoveryservicessiterecovery.ReplicationFabricsClientBeginRemoveInfraOptions) (resp azfake.PollerResponder[armrecoveryservicessiterecovery.ReplicationFabricsClientRemoveInfraResponse], errResp azfake.ErrorResponder)
+
 	// BeginRenewCertificate is the fake for method ReplicationFabricsClient.BeginRenewCertificate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginRenewCertificate func(ctx context.Context, resourceName string, resourceGroupName string, fabricName string, renewCertificate armrecoveryservicessiterecovery.RenewCertificateInput, options *armrecoveryservicessiterecovery.ReplicationFabricsClientBeginRenewCertificateOptions) (resp azfake.PollerResponder[armrecoveryservicessiterecovery.ReplicationFabricsClientRenewCertificateResponse], errResp azfake.ErrorResponder)
@@ -74,6 +78,7 @@ func NewReplicationFabricsServerTransport(srv *ReplicationFabricsServer) *Replic
 		beginMigrateToAAD:       newTracker[azfake.PollerResponder[armrecoveryservicessiterecovery.ReplicationFabricsClientMigrateToAADResponse]](),
 		beginPurge:              newTracker[azfake.PollerResponder[armrecoveryservicessiterecovery.ReplicationFabricsClientPurgeResponse]](),
 		beginReassociateGateway: newTracker[azfake.PollerResponder[armrecoveryservicessiterecovery.ReplicationFabricsClientReassociateGatewayResponse]](),
+		beginRemoveInfra:        newTracker[azfake.PollerResponder[armrecoveryservicessiterecovery.ReplicationFabricsClientRemoveInfraResponse]](),
 		beginRenewCertificate:   newTracker[azfake.PollerResponder[armrecoveryservicessiterecovery.ReplicationFabricsClientRenewCertificateResponse]](),
 	}
 }
@@ -89,6 +94,7 @@ type ReplicationFabricsServerTransport struct {
 	beginMigrateToAAD       *tracker[azfake.PollerResponder[armrecoveryservicessiterecovery.ReplicationFabricsClientMigrateToAADResponse]]
 	beginPurge              *tracker[azfake.PollerResponder[armrecoveryservicessiterecovery.ReplicationFabricsClientPurgeResponse]]
 	beginReassociateGateway *tracker[azfake.PollerResponder[armrecoveryservicessiterecovery.ReplicationFabricsClientReassociateGatewayResponse]]
+	beginRemoveInfra        *tracker[azfake.PollerResponder[armrecoveryservicessiterecovery.ReplicationFabricsClientRemoveInfraResponse]]
 	beginRenewCertificate   *tracker[azfake.PollerResponder[armrecoveryservicessiterecovery.ReplicationFabricsClientRenewCertificateResponse]]
 }
 
@@ -120,6 +126,8 @@ func (r *ReplicationFabricsServerTransport) Do(req *http.Request) (*http.Respons
 		resp, err = r.dispatchBeginPurge(req)
 	case "ReplicationFabricsClient.BeginReassociateGateway":
 		resp, err = r.dispatchBeginReassociateGateway(req)
+	case "ReplicationFabricsClient.BeginRemoveInfra":
+		resp, err = r.dispatchBeginRemoveInfra(req)
 	case "ReplicationFabricsClient.BeginRenewCertificate":
 		resp, err = r.dispatchBeginRenewCertificate(req)
 	default:
@@ -514,6 +522,54 @@ func (r *ReplicationFabricsServerTransport) dispatchBeginReassociateGateway(req 
 	}
 	if !server.PollerResponderMore(beginReassociateGateway) {
 		r.beginReassociateGateway.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (r *ReplicationFabricsServerTransport) dispatchBeginRemoveInfra(req *http.Request) (*http.Response, error) {
+	if r.srv.BeginRemoveInfra == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginRemoveInfra not implemented")}
+	}
+	beginRemoveInfra := r.beginRemoveInfra.get(req)
+	if beginRemoveInfra == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationFabrics/(?P<fabricName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/removeInfra`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
+		if err != nil {
+			return nil, err
+		}
+		fabricNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("fabricName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := r.srv.BeginRemoveInfra(req.Context(), resourceGroupNameParam, resourceNameParam, fabricNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginRemoveInfra = &respr
+		r.beginRemoveInfra.add(req, beginRemoveInfra)
+	}
+
+	resp, err := server.PollerResponderNext(beginRemoveInfra, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusAccepted}, resp.StatusCode) {
+		r.beginRemoveInfra.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginRemoveInfra) {
+		r.beginRemoveInfra.remove(req)
 	}
 
 	return resp, nil

@@ -42,10 +42,22 @@ type AlertProcessingRulesClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
+// AlertRuleRecommendationsClientListByResourceOptions contains the optional parameters for the AlertRuleRecommendationsClient.NewListByResourcePager
+// method.
+type AlertRuleRecommendationsClientListByResourceOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AlertRuleRecommendationsClientListByTargetTypeOptions contains the optional parameters for the AlertRuleRecommendationsClient.NewListByTargetTypePager
+// method.
+type AlertRuleRecommendationsClientListByTargetTypeOptions struct {
+	// placeholder for future optional parameters
+}
+
 // AlertsClientChangeStateOptions contains the optional parameters for the AlertsClient.ChangeState method.
 type AlertsClientChangeStateOptions struct {
 	// reason of change alert state
-	Comment *string
+	Comment *Comments
 }
 
 // AlertsClientGetAllOptions contains the optional parameters for the AlertsClient.NewGetAllPager method.
@@ -165,6 +177,39 @@ type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// PrometheusRuleGroupsClientCreateOrUpdateOptions contains the optional parameters for the PrometheusRuleGroupsClient.CreateOrUpdate
+// method.
+type PrometheusRuleGroupsClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrometheusRuleGroupsClientDeleteOptions contains the optional parameters for the PrometheusRuleGroupsClient.Delete method.
+type PrometheusRuleGroupsClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrometheusRuleGroupsClientGetOptions contains the optional parameters for the PrometheusRuleGroupsClient.Get method.
+type PrometheusRuleGroupsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrometheusRuleGroupsClientListByResourceGroupOptions contains the optional parameters for the PrometheusRuleGroupsClient.NewListByResourceGroupPager
+// method.
+type PrometheusRuleGroupsClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrometheusRuleGroupsClientListBySubscriptionOptions contains the optional parameters for the PrometheusRuleGroupsClient.NewListBySubscriptionPager
+// method.
+type PrometheusRuleGroupsClientListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrometheusRuleGroupsClientUpdateOptions contains the optional parameters for the PrometheusRuleGroupsClient.Update method.
+type PrometheusRuleGroupsClientUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
 // SmartGroupsClientChangeStateOptions contains the optional parameters for the SmartGroupsClient.ChangeState method.
 type SmartGroupsClientChangeStateOptions struct {
 	// placeholder for future optional parameters
@@ -214,5 +259,40 @@ type SmartGroupsClientGetByIDOptions struct {
 
 // SmartGroupsClientGetHistoryOptions contains the optional parameters for the SmartGroupsClient.GetHistory method.
 type SmartGroupsClientGetHistoryOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TenantActivityLogAlertsClientCreateOrUpdateOptions contains the optional parameters for the TenantActivityLogAlertsClient.CreateOrUpdate
+// method.
+type TenantActivityLogAlertsClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TenantActivityLogAlertsClientDeleteOptions contains the optional parameters for the TenantActivityLogAlertsClient.Delete
+// method.
+type TenantActivityLogAlertsClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TenantActivityLogAlertsClientGetOptions contains the optional parameters for the TenantActivityLogAlertsClient.Get method.
+type TenantActivityLogAlertsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TenantActivityLogAlertsClientListByManagementGroupOptions contains the optional parameters for the TenantActivityLogAlertsClient.NewListByManagementGroupPager
+// method.
+type TenantActivityLogAlertsClientListByManagementGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TenantActivityLogAlertsClientListByTenantOptions contains the optional parameters for the TenantActivityLogAlertsClient.NewListByTenantPager
+// method.
+type TenantActivityLogAlertsClientListByTenantOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TenantActivityLogAlertsClientUpdateOptions contains the optional parameters for the TenantActivityLogAlertsClient.Update
+// method.
+type TenantActivityLogAlertsClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }

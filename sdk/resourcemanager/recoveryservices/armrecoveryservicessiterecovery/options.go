@@ -124,6 +124,13 @@ type ReplicationFabricsClientBeginReassociateGatewayOptions struct {
 	ResumeToken string
 }
 
+// ReplicationFabricsClientBeginRemoveInfraOptions contains the optional parameters for the ReplicationFabricsClient.BeginRemoveInfra
+// method.
+type ReplicationFabricsClientBeginRemoveInfraOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
 // ReplicationFabricsClientBeginRenewCertificateOptions contains the optional parameters for the ReplicationFabricsClient.BeginRenewCertificate
 // method.
 type ReplicationFabricsClientBeginRenewCertificateOptions struct {

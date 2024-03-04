@@ -114,9 +114,9 @@ func newPipeline(authPolicy policy.Policy, gem *globalEndpointManager, options *
 	if options == nil {
 		options = &ClientOptions{}
 	}
-
 	return azruntime.NewPipeline("azcosmos", serviceLibVersion,
 		azruntime.PipelineOptions{
+			AllowedHeaders: getAllowedHeaders(),
 			PerCall: []policy.Policy{
 				&headerPolicies{
 					enableContentResponseOnWrite: options.EnableContentResponseOnWrite,
@@ -137,6 +137,7 @@ func newInternalPipeline(authPolicy policy.Policy, options *ClientOptions) azrun
 	}
 	return azruntime.NewPipeline("azcosmos", serviceLibVersion,
 		azruntime.PipelineOptions{
+			AllowedHeaders: getAllowedHeaders(),
 			PerRetry: []policy.Policy{
 				authPolicy,
 			},
@@ -473,7 +474,7 @@ func (c *Client) executeAndEnsureSuccessResponse(request *policy.Request) (*http
 		return response, nil
 	}
 
-	return nil, newCosmosError(response)
+	return nil, azruntime.NewResponseErrorWithErrorCode(response, response.Status)
 }
 
 type pipelineRequestOptions struct {
@@ -482,4 +483,80 @@ type pipelineRequestOptions struct {
 	resourceAddress       string
 	isRidBased            bool
 	isWriteOperation      bool
+}
+
+func getAllowedHeaders() []string {
+	return []string{
+		cosmosHeaderRequestCharge,
+		cosmosHeaderActivityId,
+		cosmosHeaderEtag,
+		cosmosHeaderSubstatus,
+		cosmosHeaderPopulateQuotaInfo,
+		cosmosHeaderPreTriggerInclude,
+		cosmosHeaderPostTriggerInclude,
+		cosmosHeaderIndexingDirective,
+		cosmosHeaderSessionToken,
+		cosmosHeaderConsistencyLevel,
+		cosmosHeaderPrefer,
+		cosmosHeaderIsUpsert,
+		cosmosHeaderOfferThroughput,
+		cosmosHeaderOfferAutoscale,
+		cosmosHeaderQuery,
+		cosmosHeaderOfferReplacePending,
+		cosmosHeaderOfferMinimumThroughput,
+		cosmosHeaderResponseContinuationTokenLimitInKb,
+		cosmosHeaderEnableScanInQuery,
+		cosmosHeaderMaxItemCount,
+		cosmosHeaderContinuationToken,
+		cosmosHeaderPopulateIndexMetrics,
+		cosmosHeaderPopulateQueryMetrics,
+		cosmosHeaderQueryMetrics,
+		cosmosHeaderIndexUtilization,
+		cosmosHeaderCorrelatedActivityId,
+		cosmosHeaderIsBatchRequest,
+		cosmosHeaderIsBatchAtomic,
+		cosmosHeaderIsBatchOrdered,
+		cosmosHeaderSDKSupportedCapabilities,
+		headerXmsDate,
+		headerContentType,
+		headerIfMatch,
+		headerIfNoneMatch,
+		headerXmsVersion,
+		headerContentLocation,
+		headerXmsGatewayVersion,
+		headerLsn,
+		headerXmsCosmosLlsn,
+		headerXmsCosmosItemLlsn,
+		headerXmsItemLsn,
+		headerXmsCosmosQuorumAckedLlsn,
+		headerXmsCurrentReplicaSetSize,
+		headerXmsCurrentWriteQuorum,
+		headerXmsGlobalCommittedLsn,
+		headerXmsLastStateChangeUtc,
+		headerXmsNumberOfReadRegions,
+		headerXmsQuorumAckedLsn,
+		headerXmsRequestDurationMs,
+		headerXmsResourceQuota,
+		headerXmsResourceUsage,
+		headerXmsSchemaVersion,
+		headerXmsServiceVersion,
+		headerXmsTransportRequestId,
+		headerXmsXpRole,
+		headerCollectionPartitionIndex,
+		headerCollectionServiceIndex,
+		headerXmsDocumentDbPartitionKeyRangeId,
+		cosmosHeaderPhysicalPartitionId,
+		headerStrictTransportSecurity,
+		headerXmsDatabaseAccountConsumedMb,
+		headerXmsDatabaseAccountProvisionedMb,
+		headerXmsDatabaseAccountReservedMb,
+		headerXmsMaxMediaStorageUsageMb,
+		headerXmsMediaStorageUsageMb,
+		headerXmsContentPath,
+		headerXmsAltContentPath,
+		cosmosHeaderMaxContentLength,
+		cosmosHeaderIsPartitionKeyDeletePending,
+		cosmosHeaderQueryExecutionInfo,
+		headerXmsItemCount,
+	}
 }

@@ -103,7 +103,7 @@ func (testsuite *MobileNetworkTestSuite) TestMobileNetworks() {
 
 	// From step MobileNetworks_UpdateTags
 	fmt.Println("Call operation: MobileNetworks_UpdateTags")
-	_, err = mobileNetworksClient.UpdateTags(testsuite.ctx, testsuite.resourceGroupName, testsuite.mobileNetworkName, armmobilenetwork.TagsObject{
+	_, err = mobileNetworksClient.UpdateTags(testsuite.ctx, testsuite.resourceGroupName, testsuite.mobileNetworkName, armmobilenetwork.IdentityAndTagsObject{
 		Tags: map[string]*string{
 			"tag1": to.Ptr("value1"),
 			"tag2": to.Ptr("value2"),

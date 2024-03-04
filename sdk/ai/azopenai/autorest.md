@@ -154,13 +154,28 @@ directive:
     - client.go
     where: $
     transform: |
-      return $
-        .replace(/\/\/ GetAudioTranscriptionAsPlainText -.+?\n\}\n/s, "")
+      return $.replace(/\/\/ GetAudioTranscriptionAsPlainText -.+?\n\}\n/s, "")
         .replace(/\/\/ GetAudioTranslationAsPlainText -.+?\n\}\n/s, "")
         .replace(/\/\/ getAudioTranscriptionAsPlainTextCreateRequest.+?\n}\n/s, "")
         .replace(/\/\/ getAudioTranscriptionAsPlainTextHandleResponse.+?\n}\n/s, "")
         .replace(/\/\/ getAudioTranslationAsPlainTextCreateRequest.+?\n}\n/s, "")
-        .replace(/\/\/ getAudioTranslationAsPlainTextHandleResponse.+?\n}\n/s, "")        
+        .replace(/\/\/ getAudioTranslationAsPlainTextHandleResponse.+?\n}\n/s, "");
+  # remove other plain text models/options
+  - from:
+    - options.go
+    where: $
+    transform: |
+      return $.replace(/\/\/ ClientGetAudioTranslationAsPlainTextOptions .+?\n\}\n/s, "")
+      .replace(/\/\/ ClientGetAudioTranscriptionAsPlainTextOptions .+?\n\}\n/s, "");
+  # remove other plain text models/options
+  - from:
+    - responses.go
+    where: $
+    transform: |
+      return $.replace(/\/\/ ClientGetAudioTranscriptionAsPlainTextResponse .+?\n\}\n/s, "")
+      .replace(/\/\/ ClientGetAudioTranslationAsPlainTextResponse .+?\n\}\n/s, "");
+
+  # fix any calls that don't use 'deploymentID'
   - from: client.go
     where: $
     transform: | 

@@ -9,5 +9,5 @@ const (
 	ModuleName = "azsystemevents"
 
 	// ModuleVersion is the semantic version (see http://semver.org) of this module.
-	ModuleVersion = "v0.1.0"
+	ModuleVersion = "v0.1.1"
 )

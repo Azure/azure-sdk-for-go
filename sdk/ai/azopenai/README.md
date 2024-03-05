@@ -2,7 +2,10 @@
 
 NOTE: this client can be used with Azure OpenAI and OpenAI.
 
-Azure OpenAI Service provides access to OpenAI's powerful language models including the GPT-4, GPT-35-Turbo, and Embeddings model series, as well as image generation using DALL-E.
+Azure OpenAI Service provides access to OpenAI's features:
+- Language models including the GPT-4, GPT-35-Turbo, and Embeddings model series.
+- Image generation using DALL-E.
+- Speech transcription and speech generation.
 
 [Source code][azopenai_repo] | [Package (pkg.go.dev)][azopenai_pkg_go] | [REST API documentation][openai_rest_docs] | [Product documentation][openai_docs]
 

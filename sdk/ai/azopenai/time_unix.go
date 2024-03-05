@@ -12,7 +12,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"reflect"
-	"strings"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -50,7 +49,7 @@ func populateTimeUnix(m map[string]any, k string, t *time.Time) {
 }
 
 func unpopulateTimeUnix(data json.RawMessage, fn string, t **time.Time) error {
-	if data == nil || strings.EqualFold(string(data), "null") {
+	if data == nil || string(data) == "null" {
 		return nil
 	}
 	var aux timeUnix

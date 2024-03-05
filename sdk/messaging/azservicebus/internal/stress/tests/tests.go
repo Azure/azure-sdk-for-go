@@ -42,6 +42,7 @@ func Run(remainingArgs []string) {
 		"infiniteSendAndReceive":   InfiniteSendAndReceiveRun,
 		"longRunningRenewLock":     LongRunningRenewLockTest,
 		"mostlyIdleReceiver":       MostlyIdleReceiver,
+		"openCloseMeasurements":    OpenCloseMeasurements,
 		"rapidOpenClose":           RapidOpenCloseTest,
 		"receiveCancellation":      ReceiveCancellation,
 		"sendAndReceiveDrain":      SendAndReceiveDrain,

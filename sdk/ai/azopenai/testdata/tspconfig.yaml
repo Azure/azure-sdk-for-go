@@ -4,8 +4,8 @@ parameters:
   "dependencies":
     default: ""
 emit:
- - "@typespec/openapi3"
+  - "@azure-tools/typespec-autorest"
 options:
-  "@typespec/openapi3":
+  "@azure-tools/typespec-autorest":
     emitter-output-dir: "{project-root}/generated"
-    output-file: "openapi3.json"
+    output-file: "openapi.json"

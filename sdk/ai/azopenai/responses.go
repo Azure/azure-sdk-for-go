@@ -8,20 +8,18 @@
 
 package azopenai
 
-// GetAudioTranscriptionAsPlainTextResponse contains the response from method Client.GetAudioTranscriptionAsPlainText.
-type GetAudioTranscriptionAsPlainTextResponse struct {
-	Value *string
+import "io"
+
+// GenerateSpeechFromTextResponse contains the response from method Client.GenerateSpeechFromText.
+type GenerateSpeechFromTextResponse struct {
+	// Body contains the streaming response.
+	Body io.ReadCloser
 }
 
 // getAudioTranscriptionInternalResponse contains the response from method Client.getAudioTranscriptionInternal.
 type getAudioTranscriptionInternalResponse struct {
 	// Result information for an operation that transcribed spoken audio into written text.
 	AudioTranscription
-}
-
-// GetAudioTranslationAsPlainTextResponse contains the response from method Client.GetAudioTranslationAsPlainText.
-type GetAudioTranslationAsPlainTextResponse struct {
-	Value *string
 }
 
 // getAudioTranslationInternalResponse contains the response from method Client.getAudioTranslationInternal.
@@ -32,14 +30,6 @@ type getAudioTranslationInternalResponse struct {
 
 // GetChatCompletionsResponse contains the response from method Client.GetChatCompletions.
 type GetChatCompletionsResponse struct {
-	// Representation of the response data from a chat completions request.
-	// Completions support a wide variety of tasks and generate text that continues from or "completes"
-	// provided prompt data.
-	ChatCompletions
-}
-
-// GetChatCompletionsWithAzureExtensionsResponse contains the response from method Client.GetChatCompletionsWithAzureExtensions.
-type GetChatCompletionsWithAzureExtensionsResponse struct {
 	// Representation of the response data from a chat completions request.
 	// Completions support a wide variety of tasks and generate text that continues from or "completes"
 	// provided prompt data.

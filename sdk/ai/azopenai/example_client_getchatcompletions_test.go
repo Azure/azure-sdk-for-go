@@ -252,7 +252,7 @@ func ExampleClient_GetChatCompletions_legacyFunctions() {
 		log.Fatalf("ERROR: %s", err)
 	}
 
-	funcCall := resp.ChatCompletions.Choices[0].Message.FunctionCall
+	funcCall := resp.Choices[0].Message.FunctionCall
 
 	// This is the function name we gave in the call to GetCompletions
 	// Prints: Function name: "get_current_weather"

@@ -8,7 +8,7 @@
                 }
             },
             "GoVersion": [
-                "1.18"
+                "1.22"
             ],
             "IDENTITY_IMDS_AVAILABLE": "1"
         }

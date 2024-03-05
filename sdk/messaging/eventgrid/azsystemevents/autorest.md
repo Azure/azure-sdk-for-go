@@ -144,3 +144,26 @@ directive:
       }      
       return $;
 ```
+
+Fix acronyms so they match our naming convention.
+
+```yaml
+directive:
+  - from: 
+      - models.go
+      - models_serde.go
+    where: $
+    debug: true
+    transform: |
+      const acronyms = ["Acs", "Avs", "Iot"];
+      for (let acr of acronyms) {
+        // ex:
+        // '// AcsChatMessageDeletedEventData - Schema'
+        // 'type AcsChatMessageDeletedEventData struct'
+        // 'Participants []AcsChatThreadParticipantProperties'
+        // 'ParticipantRemoved *AcsChatThreadParticipantProperties'
+        const re = new RegExp(`([ *\\]])${acr}([A-Za-z0-9]+?(?:EventData|Properties))`, "sg");
+        $ = $.replace(re, `$1${acr.toUpperCase()}$2`);
+      }
+      return $;
+```

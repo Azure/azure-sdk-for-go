@@ -60,7 +60,7 @@ func TestConsumeCloudEventAcsRouterJobQueuedEvent(t *testing.T) {
 
 	event := parseCloudEvent(t, requestContent)
 
-	sysEvent := deserializeSystemEvent[azsystemevents.AcsRouterJobQueuedEventData](t, event.Data)
+	sysEvent := deserializeSystemEvent[azsystemevents.ACSRouterJobQueuedEventData](t, event.Data)
 
 	var selectors = sysEvent.AttachedWorkerSelectors
 	require.Equal(t, 1, len(selectors))
@@ -119,7 +119,7 @@ func TestConsumeCloudEventAcsRouterJobReceivedEvent(t *testing.T) {
 
 	event := parseCloudEvent(t, requestContent)
 
-	sysEvent := deserializeSystemEvent[azsystemevents.AcsRouterJobReceivedEventData](t, event.Data)
+	sysEvent := deserializeSystemEvent[azsystemevents.ACSRouterJobReceivedEventData](t, event.Data)
 	require.Equal(t, azsystemevents.AcsRouterJobStatusPendingClassification, *sysEvent.JobStatus)
 
 	// TODO: don't have a .Status field?

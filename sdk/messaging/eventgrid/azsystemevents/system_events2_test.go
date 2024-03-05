@@ -1378,7 +1378,7 @@ func TestConsumeAcsRecordingFileStatusUpdatedEventData(t *testing.T) {
 	events := parseManyEvents(t, requestContent)
 
 	require.NotEmpty(t, events)
-	sysEvent := deserializeSystemEvent[azsystemevents.AcsRecordingFileStatusUpdatedEventData](t, events[0].Data)
+	sysEvent := deserializeSystemEvent[azsystemevents.ACSRecordingFileStatusUpdatedEventData](t, events[0].Data)
 
 	require.Equal(t, azsystemevents.RecordingChannelTypeMixed, *sysEvent.RecordingChannelType)
 	require.Equal(t, azsystemevents.RecordingContentTypeAudio, *sysEvent.RecordingContentType)
@@ -1414,7 +1414,7 @@ func TestConsumeAcsEmailDeliveryReportReceivedEvent(t *testing.T) {
 	event := parseCloudEvent(t, requestContent)
 
 	require.NotEmpty(t, event)
-	emailEvent := deserializeSystemEvent[azsystemevents.AcsEmailDeliveryReportReceivedEventData](t, event.Data)
+	emailEvent := deserializeSystemEvent[azsystemevents.ACSEmailDeliveryReportReceivedEventData](t, event.Data)
 	require.Equal(t, "test2@contoso.org", *emailEvent.Sender)
 	require.Equal(t, "test1@contoso.com", *emailEvent.Recipient)
 	require.Equal(t, azsystemevents.AcsEmailDeliveryReportStatusDelivered, *emailEvent.Status)
@@ -1465,7 +1465,7 @@ func TestConsumeAcsIncomingCallEvent(t *testing.T) {
 
 	event := parseEvent(t, requestContent)
 
-	incomingCallEvent := deserializeSystemEvent[azsystemevents.AcsIncomingCallEventData](t, event.Data)
+	incomingCallEvent := deserializeSystemEvent[azsystemevents.ACSIncomingCallEventData](t, event.Data)
 	require.Equal(t, "{recipient-id}", *incomingCallEvent.ToCommunicationIdentifier.CommunicationUser.ID)
 	require.Equal(t, "{caller-id}", *incomingCallEvent.FromCommunicationIdentifier.CommunicationUser.ID)
 	require.Equal(t, "VOIP Caller", *incomingCallEvent.CallerDisplayName)

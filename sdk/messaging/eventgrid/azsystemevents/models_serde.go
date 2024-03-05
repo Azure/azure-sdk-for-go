@@ -819,8 +819,8 @@ func (a *APISpecificationDetails) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AcsChatEventBaseProperties.
-func (a AcsChatEventBaseProperties) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ACSChatEventBaseProperties.
+func (a ACSChatEventBaseProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "recipientCommunicationIdentifier", a.RecipientCommunicationIdentifier)
 	populate(objectMap, "threadId", a.ThreadID)
@@ -828,8 +828,8 @@ func (a AcsChatEventBaseProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AcsChatEventBaseProperties.
-func (a *AcsChatEventBaseProperties) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACSChatEventBaseProperties.
+func (a *ACSChatEventBaseProperties) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -854,16 +854,16 @@ func (a *AcsChatEventBaseProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AcsChatEventInThreadBaseProperties.
-func (a AcsChatEventInThreadBaseProperties) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ACSChatEventInThreadBaseProperties.
+func (a ACSChatEventInThreadBaseProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "threadId", a.ThreadID)
 	populate(objectMap, "transactionId", a.TransactionID)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AcsChatEventInThreadBaseProperties.
-func (a *AcsChatEventInThreadBaseProperties) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACSChatEventInThreadBaseProperties.
+func (a *ACSChatEventInThreadBaseProperties) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -885,8 +885,8 @@ func (a *AcsChatEventInThreadBaseProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AcsChatMessageDeletedEventData.
-func (a AcsChatMessageDeletedEventData) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ACSChatMessageDeletedEventData.
+func (a ACSChatMessageDeletedEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populateDateTimeRFC3339(objectMap, "composeTime", a.ComposeTime)
 	populateDateTimeRFC3339(objectMap, "deleteTime", a.DeleteTime)
@@ -901,8 +901,8 @@ func (a AcsChatMessageDeletedEventData) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AcsChatMessageDeletedEventData.
-func (a *AcsChatMessageDeletedEventData) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACSChatMessageDeletedEventData.
+func (a *ACSChatMessageDeletedEventData) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -948,8 +948,8 @@ func (a *AcsChatMessageDeletedEventData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AcsChatMessageDeletedInThreadEventData.
-func (a AcsChatMessageDeletedInThreadEventData) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ACSChatMessageDeletedInThreadEventData.
+func (a ACSChatMessageDeletedInThreadEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populateDateTimeRFC3339(objectMap, "composeTime", a.ComposeTime)
 	populateDateTimeRFC3339(objectMap, "deleteTime", a.DeleteTime)
@@ -963,8 +963,8 @@ func (a AcsChatMessageDeletedInThreadEventData) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AcsChatMessageDeletedInThreadEventData.
-func (a *AcsChatMessageDeletedInThreadEventData) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACSChatMessageDeletedInThreadEventData.
+func (a *ACSChatMessageDeletedInThreadEventData) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -1007,8 +1007,8 @@ func (a *AcsChatMessageDeletedInThreadEventData) UnmarshalJSON(data []byte) erro
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AcsChatMessageEditedEventData.
-func (a AcsChatMessageEditedEventData) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ACSChatMessageEditedEventData.
+func (a ACSChatMessageEditedEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populateDateTimeRFC3339(objectMap, "composeTime", a.ComposeTime)
 	populateDateTimeRFC3339(objectMap, "editTime", a.EditTime)
@@ -1025,8 +1025,8 @@ func (a AcsChatMessageEditedEventData) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AcsChatMessageEditedEventData.
-func (a *AcsChatMessageEditedEventData) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACSChatMessageEditedEventData.
+func (a *ACSChatMessageEditedEventData) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -1078,8 +1078,8 @@ func (a *AcsChatMessageEditedEventData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AcsChatMessageEditedInThreadEventData.
-func (a AcsChatMessageEditedInThreadEventData) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ACSChatMessageEditedInThreadEventData.
+func (a ACSChatMessageEditedInThreadEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populateDateTimeRFC3339(objectMap, "composeTime", a.ComposeTime)
 	populateDateTimeRFC3339(objectMap, "editTime", a.EditTime)
@@ -1095,8 +1095,8 @@ func (a AcsChatMessageEditedInThreadEventData) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AcsChatMessageEditedInThreadEventData.
-func (a *AcsChatMessageEditedInThreadEventData) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACSChatMessageEditedInThreadEventData.
+func (a *ACSChatMessageEditedInThreadEventData) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -1145,8 +1145,8 @@ func (a *AcsChatMessageEditedInThreadEventData) UnmarshalJSON(data []byte) error
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AcsChatMessageEventBaseProperties.
-func (a AcsChatMessageEventBaseProperties) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ACSChatMessageEventBaseProperties.
+func (a ACSChatMessageEventBaseProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populateDateTimeRFC3339(objectMap, "composeTime", a.ComposeTime)
 	populate(objectMap, "messageId", a.MessageID)
@@ -1160,8 +1160,8 @@ func (a AcsChatMessageEventBaseProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AcsChatMessageEventBaseProperties.
-func (a *AcsChatMessageEventBaseProperties) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACSChatMessageEventBaseProperties.
+func (a *ACSChatMessageEventBaseProperties) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -1204,8 +1204,8 @@ func (a *AcsChatMessageEventBaseProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AcsChatMessageEventInThreadBaseProperties.
-func (a AcsChatMessageEventInThreadBaseProperties) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ACSChatMessageEventInThreadBaseProperties.
+func (a ACSChatMessageEventInThreadBaseProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populateDateTimeRFC3339(objectMap, "composeTime", a.ComposeTime)
 	populate(objectMap, "messageId", a.MessageID)
@@ -1218,8 +1218,8 @@ func (a AcsChatMessageEventInThreadBaseProperties) MarshalJSON() ([]byte, error)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AcsChatMessageEventInThreadBaseProperties.
-func (a *AcsChatMessageEventInThreadBaseProperties) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACSChatMessageEventInThreadBaseProperties.
+func (a *ACSChatMessageEventInThreadBaseProperties) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -1259,8 +1259,8 @@ func (a *AcsChatMessageEventInThreadBaseProperties) UnmarshalJSON(data []byte) e
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AcsChatMessageReceivedEventData.
-func (a AcsChatMessageReceivedEventData) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ACSChatMessageReceivedEventData.
+func (a ACSChatMessageReceivedEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populateDateTimeRFC3339(objectMap, "composeTime", a.ComposeTime)
 	populate(objectMap, "messageBody", a.MessageBody)
@@ -1276,8 +1276,8 @@ func (a AcsChatMessageReceivedEventData) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AcsChatMessageReceivedEventData.
-func (a *AcsChatMessageReceivedEventData) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACSChatMessageReceivedEventData.
+func (a *ACSChatMessageReceivedEventData) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -1326,8 +1326,8 @@ func (a *AcsChatMessageReceivedEventData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AcsChatMessageReceivedInThreadEventData.
-func (a AcsChatMessageReceivedInThreadEventData) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ACSChatMessageReceivedInThreadEventData.
+func (a ACSChatMessageReceivedInThreadEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populateDateTimeRFC3339(objectMap, "composeTime", a.ComposeTime)
 	populate(objectMap, "messageBody", a.MessageBody)
@@ -1342,8 +1342,8 @@ func (a AcsChatMessageReceivedInThreadEventData) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AcsChatMessageReceivedInThreadEventData.
-func (a *AcsChatMessageReceivedInThreadEventData) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACSChatMessageReceivedInThreadEventData.
+func (a *ACSChatMessageReceivedInThreadEventData) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -1389,8 +1389,8 @@ func (a *AcsChatMessageReceivedInThreadEventData) UnmarshalJSON(data []byte) err
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AcsChatParticipantAddedToThreadEventData.
-func (a AcsChatParticipantAddedToThreadEventData) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ACSChatParticipantAddedToThreadEventData.
+func (a ACSChatParticipantAddedToThreadEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "addedByCommunicationIdentifier", a.AddedByCommunicationIdentifier)
 	populate(objectMap, "participantAdded", a.ParticipantAdded)
@@ -1401,8 +1401,8 @@ func (a AcsChatParticipantAddedToThreadEventData) MarshalJSON() ([]byte, error) 
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AcsChatParticipantAddedToThreadEventData.
-func (a *AcsChatParticipantAddedToThreadEventData) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACSChatParticipantAddedToThreadEventData.
+func (a *ACSChatParticipantAddedToThreadEventData) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -1436,8 +1436,8 @@ func (a *AcsChatParticipantAddedToThreadEventData) UnmarshalJSON(data []byte) er
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AcsChatParticipantAddedToThreadWithUserEventData.
-func (a AcsChatParticipantAddedToThreadWithUserEventData) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ACSChatParticipantAddedToThreadWithUserEventData.
+func (a ACSChatParticipantAddedToThreadWithUserEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "addedByCommunicationIdentifier", a.AddedByCommunicationIdentifier)
 	populateDateTimeRFC3339(objectMap, "createTime", a.CreateTime)
@@ -1450,8 +1450,8 @@ func (a AcsChatParticipantAddedToThreadWithUserEventData) MarshalJSON() ([]byte,
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AcsChatParticipantAddedToThreadWithUserEventData.
-func (a *AcsChatParticipantAddedToThreadWithUserEventData) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACSChatParticipantAddedToThreadWithUserEventData.
+func (a *ACSChatParticipantAddedToThreadWithUserEventData) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -1491,8 +1491,8 @@ func (a *AcsChatParticipantAddedToThreadWithUserEventData) UnmarshalJSON(data []
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AcsChatParticipantRemovedFromThreadEventData.
-func (a AcsChatParticipantRemovedFromThreadEventData) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ACSChatParticipantRemovedFromThreadEventData.
+func (a ACSChatParticipantRemovedFromThreadEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "participantRemoved", a.ParticipantRemoved)
 	populate(objectMap, "removedByCommunicationIdentifier", a.RemovedByCommunicationIdentifier)
@@ -1503,8 +1503,8 @@ func (a AcsChatParticipantRemovedFromThreadEventData) MarshalJSON() ([]byte, err
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AcsChatParticipantRemovedFromThreadEventData.
-func (a *AcsChatParticipantRemovedFromThreadEventData) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACSChatParticipantRemovedFromThreadEventData.
+func (a *ACSChatParticipantRemovedFromThreadEventData) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -1538,8 +1538,8 @@ func (a *AcsChatParticipantRemovedFromThreadEventData) UnmarshalJSON(data []byte
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AcsChatParticipantRemovedFromThreadWithUserEventData.
-func (a AcsChatParticipantRemovedFromThreadWithUserEventData) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ACSChatParticipantRemovedFromThreadWithUserEventData.
+func (a ACSChatParticipantRemovedFromThreadWithUserEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populateDateTimeRFC3339(objectMap, "createTime", a.CreateTime)
 	populate(objectMap, "participantRemoved", a.ParticipantRemoved)
@@ -1552,8 +1552,8 @@ func (a AcsChatParticipantRemovedFromThreadWithUserEventData) MarshalJSON() ([]b
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AcsChatParticipantRemovedFromThreadWithUserEventData.
-func (a *AcsChatParticipantRemovedFromThreadWithUserEventData) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACSChatParticipantRemovedFromThreadWithUserEventData.
+func (a *ACSChatParticipantRemovedFromThreadWithUserEventData) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -1593,8 +1593,8 @@ func (a *AcsChatParticipantRemovedFromThreadWithUserEventData) UnmarshalJSON(dat
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AcsChatThreadCreatedEventData.
-func (a AcsChatThreadCreatedEventData) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ACSChatThreadCreatedEventData.
+func (a ACSChatThreadCreatedEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populateDateTimeRFC3339(objectMap, "createTime", a.CreateTime)
 	populate(objectMap, "createdByCommunicationIdentifier", a.CreatedByCommunicationIdentifier)
@@ -1607,8 +1607,8 @@ func (a AcsChatThreadCreatedEventData) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AcsChatThreadCreatedEventData.
-func (a *AcsChatThreadCreatedEventData) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACSChatThreadCreatedEventData.
+func (a *ACSChatThreadCreatedEventData) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -1648,8 +1648,8 @@ func (a *AcsChatThreadCreatedEventData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AcsChatThreadCreatedWithUserEventData.
-func (a AcsChatThreadCreatedWithUserEventData) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ACSChatThreadCreatedWithUserEventData.
+func (a ACSChatThreadCreatedWithUserEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populateDateTimeRFC3339(objectMap, "createTime", a.CreateTime)
 	populate(objectMap, "createdByCommunicationIdentifier", a.CreatedByCommunicationIdentifier)
@@ -1663,8 +1663,8 @@ func (a AcsChatThreadCreatedWithUserEventData) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AcsChatThreadCreatedWithUserEventData.
-func (a *AcsChatThreadCreatedWithUserEventData) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACSChatThreadCreatedWithUserEventData.
+func (a *ACSChatThreadCreatedWithUserEventData) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -1707,8 +1707,8 @@ func (a *AcsChatThreadCreatedWithUserEventData) UnmarshalJSON(data []byte) error
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AcsChatThreadDeletedEventData.
-func (a AcsChatThreadDeletedEventData) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ACSChatThreadDeletedEventData.
+func (a ACSChatThreadDeletedEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populateDateTimeRFC3339(objectMap, "createTime", a.CreateTime)
 	populateDateTimeRFC3339(objectMap, "deleteTime", a.DeleteTime)
@@ -1719,8 +1719,8 @@ func (a AcsChatThreadDeletedEventData) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AcsChatThreadDeletedEventData.
-func (a *AcsChatThreadDeletedEventData) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACSChatThreadDeletedEventData.
+func (a *ACSChatThreadDeletedEventData) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -1754,8 +1754,8 @@ func (a *AcsChatThreadDeletedEventData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AcsChatThreadEventBaseProperties.
-func (a AcsChatThreadEventBaseProperties) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ACSChatThreadEventBaseProperties.
+func (a ACSChatThreadEventBaseProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populateDateTimeRFC3339(objectMap, "createTime", a.CreateTime)
 	populate(objectMap, "recipientCommunicationIdentifier", a.RecipientCommunicationIdentifier)
@@ -1765,8 +1765,8 @@ func (a AcsChatThreadEventBaseProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AcsChatThreadEventBaseProperties.
-func (a *AcsChatThreadEventBaseProperties) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACSChatThreadEventBaseProperties.
+func (a *ACSChatThreadEventBaseProperties) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -1797,8 +1797,8 @@ func (a *AcsChatThreadEventBaseProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AcsChatThreadEventInThreadBaseProperties.
-func (a AcsChatThreadEventInThreadBaseProperties) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ACSChatThreadEventInThreadBaseProperties.
+func (a ACSChatThreadEventInThreadBaseProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populateDateTimeRFC3339(objectMap, "createTime", a.CreateTime)
 	populate(objectMap, "threadId", a.ThreadID)
@@ -1807,8 +1807,8 @@ func (a AcsChatThreadEventInThreadBaseProperties) MarshalJSON() ([]byte, error) 
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AcsChatThreadEventInThreadBaseProperties.
-func (a *AcsChatThreadEventInThreadBaseProperties) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACSChatThreadEventInThreadBaseProperties.
+func (a *ACSChatThreadEventInThreadBaseProperties) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -1836,8 +1836,8 @@ func (a *AcsChatThreadEventInThreadBaseProperties) UnmarshalJSON(data []byte) er
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AcsChatThreadParticipantProperties.
-func (a AcsChatThreadParticipantProperties) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ACSChatThreadParticipantProperties.
+func (a ACSChatThreadParticipantProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "displayName", a.DisplayName)
 	populate(objectMap, "metadata", a.Metadata)
@@ -1845,8 +1845,8 @@ func (a AcsChatThreadParticipantProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AcsChatThreadParticipantProperties.
-func (a *AcsChatThreadParticipantProperties) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACSChatThreadParticipantProperties.
+func (a *ACSChatThreadParticipantProperties) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -1871,8 +1871,8 @@ func (a *AcsChatThreadParticipantProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AcsChatThreadPropertiesUpdatedEventData.
-func (a AcsChatThreadPropertiesUpdatedEventData) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ACSChatThreadPropertiesUpdatedEventData.
+func (a ACSChatThreadPropertiesUpdatedEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populateDateTimeRFC3339(objectMap, "createTime", a.CreateTime)
 	populateDateTimeRFC3339(objectMap, "editTime", a.EditTime)
@@ -1885,8 +1885,8 @@ func (a AcsChatThreadPropertiesUpdatedEventData) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AcsChatThreadPropertiesUpdatedEventData.
-func (a *AcsChatThreadPropertiesUpdatedEventData) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACSChatThreadPropertiesUpdatedEventData.
+func (a *ACSChatThreadPropertiesUpdatedEventData) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -1926,8 +1926,8 @@ func (a *AcsChatThreadPropertiesUpdatedEventData) UnmarshalJSON(data []byte) err
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AcsChatThreadPropertiesUpdatedPerUserEventData.
-func (a AcsChatThreadPropertiesUpdatedPerUserEventData) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ACSChatThreadPropertiesUpdatedPerUserEventData.
+func (a ACSChatThreadPropertiesUpdatedPerUserEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populateDateTimeRFC3339(objectMap, "createTime", a.CreateTime)
 	populateDateTimeRFC3339(objectMap, "editTime", a.EditTime)
@@ -1941,8 +1941,8 @@ func (a AcsChatThreadPropertiesUpdatedPerUserEventData) MarshalJSON() ([]byte, e
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AcsChatThreadPropertiesUpdatedPerUserEventData.
-func (a *AcsChatThreadPropertiesUpdatedPerUserEventData) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACSChatThreadPropertiesUpdatedPerUserEventData.
+func (a *ACSChatThreadPropertiesUpdatedPerUserEventData) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -1985,8 +1985,8 @@ func (a *AcsChatThreadPropertiesUpdatedPerUserEventData) UnmarshalJSON(data []by
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AcsChatThreadWithUserDeletedEventData.
-func (a AcsChatThreadWithUserDeletedEventData) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ACSChatThreadWithUserDeletedEventData.
+func (a ACSChatThreadWithUserDeletedEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populateDateTimeRFC3339(objectMap, "createTime", a.CreateTime)
 	populateDateTimeRFC3339(objectMap, "deleteTime", a.DeleteTime)
@@ -1998,8 +1998,8 @@ func (a AcsChatThreadWithUserDeletedEventData) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AcsChatThreadWithUserDeletedEventData.
-func (a *AcsChatThreadWithUserDeletedEventData) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACSChatThreadWithUserDeletedEventData.
+func (a *ACSChatThreadWithUserDeletedEventData) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -2036,8 +2036,8 @@ func (a *AcsChatThreadWithUserDeletedEventData) UnmarshalJSON(data []byte) error
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AcsEmailDeliveryReportReceivedEventData.
-func (a AcsEmailDeliveryReportReceivedEventData) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ACSEmailDeliveryReportReceivedEventData.
+func (a ACSEmailDeliveryReportReceivedEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populateDateTimeRFC3339(objectMap, "deliveryAttemptTimeStamp", a.DeliveryAttemptTimestamp)
 	populate(objectMap, "deliveryStatusDetails", a.DeliveryStatusDetails)
@@ -2048,8 +2048,8 @@ func (a AcsEmailDeliveryReportReceivedEventData) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AcsEmailDeliveryReportReceivedEventData.
-func (a *AcsEmailDeliveryReportReceivedEventData) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACSEmailDeliveryReportReceivedEventData.
+func (a *ACSEmailDeliveryReportReceivedEventData) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -2110,8 +2110,8 @@ func (a *AcsEmailDeliveryReportStatusDetails) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AcsEmailEngagementTrackingReportReceivedEventData.
-func (a AcsEmailEngagementTrackingReportReceivedEventData) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ACSEmailEngagementTrackingReportReceivedEventData.
+func (a ACSEmailEngagementTrackingReportReceivedEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "engagementType", a.Engagement)
 	populate(objectMap, "engagementContext", a.EngagementContext)
@@ -2123,8 +2123,8 @@ func (a AcsEmailEngagementTrackingReportReceivedEventData) MarshalJSON() ([]byte
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AcsEmailEngagementTrackingReportReceivedEventData.
-func (a *AcsEmailEngagementTrackingReportReceivedEventData) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACSEmailEngagementTrackingReportReceivedEventData.
+func (a *ACSEmailEngagementTrackingReportReceivedEventData) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -2192,8 +2192,8 @@ func (a *AcsIncomingCallCustomContext) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AcsIncomingCallEventData.
-func (a AcsIncomingCallEventData) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ACSIncomingCallEventData.
+func (a ACSIncomingCallEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "callerDisplayName", a.CallerDisplayName)
 	populate(objectMap, "correlationId", a.CorrelationID)
@@ -2205,8 +2205,8 @@ func (a AcsIncomingCallEventData) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AcsIncomingCallEventData.
-func (a *AcsIncomingCallEventData) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACSIncomingCallEventData.
+func (a *ACSIncomingCallEventData) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -2243,8 +2243,8 @@ func (a *AcsIncomingCallEventData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AcsRecordingChunkInfoProperties.
-func (a AcsRecordingChunkInfoProperties) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ACSRecordingChunkInfoProperties.
+func (a ACSRecordingChunkInfoProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "contentLocation", a.ContentLocation)
 	populate(objectMap, "deleteLocation", a.DeleteLocation)
@@ -2255,8 +2255,8 @@ func (a AcsRecordingChunkInfoProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AcsRecordingChunkInfoProperties.
-func (a *AcsRecordingChunkInfoProperties) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACSRecordingChunkInfoProperties.
+func (a *ACSRecordingChunkInfoProperties) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -2290,8 +2290,8 @@ func (a *AcsRecordingChunkInfoProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AcsRecordingFileStatusUpdatedEventData.
-func (a AcsRecordingFileStatusUpdatedEventData) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ACSRecordingFileStatusUpdatedEventData.
+func (a ACSRecordingFileStatusUpdatedEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "recordingChannelType", a.RecordingChannelType)
 	populate(objectMap, "recordingContentType", a.RecordingContentType)
@@ -2303,8 +2303,8 @@ func (a AcsRecordingFileStatusUpdatedEventData) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AcsRecordingFileStatusUpdatedEventData.
-func (a *AcsRecordingFileStatusUpdatedEventData) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACSRecordingFileStatusUpdatedEventData.
+func (a *ACSRecordingFileStatusUpdatedEventData) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -2341,15 +2341,15 @@ func (a *AcsRecordingFileStatusUpdatedEventData) UnmarshalJSON(data []byte) erro
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AcsRecordingStorageInfoProperties.
-func (a AcsRecordingStorageInfoProperties) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ACSRecordingStorageInfoProperties.
+func (a ACSRecordingStorageInfoProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "recordingChunks", a.RecordingChunks)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AcsRecordingStorageInfoProperties.
-func (a *AcsRecordingStorageInfoProperties) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACSRecordingStorageInfoProperties.
+func (a *ACSRecordingStorageInfoProperties) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -2446,8 +2446,8 @@ func (a *AcsRouterCommunicationError) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AcsRouterEventData.
-func (a AcsRouterEventData) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ACSRouterEventData.
+func (a ACSRouterEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "channelId", a.ChannelID)
 	populate(objectMap, "channelReference", a.ChannelReference)
@@ -2455,8 +2455,8 @@ func (a AcsRouterEventData) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AcsRouterEventData.
-func (a *AcsRouterEventData) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACSRouterEventData.
+func (a *ACSRouterEventData) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -2481,8 +2481,8 @@ func (a *AcsRouterEventData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AcsRouterJobCancelledEventData.
-func (a AcsRouterJobCancelledEventData) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ACSRouterJobCancelledEventData.
+func (a ACSRouterJobCancelledEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "channelId", a.ChannelID)
 	populate(objectMap, "channelReference", a.ChannelReference)
@@ -2495,8 +2495,8 @@ func (a AcsRouterJobCancelledEventData) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AcsRouterJobCancelledEventData.
-func (a *AcsRouterJobCancelledEventData) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACSRouterJobCancelledEventData.
+func (a *ACSRouterJobCancelledEventData) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -2536,8 +2536,8 @@ func (a *AcsRouterJobCancelledEventData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AcsRouterJobClassificationFailedEventData.
-func (a AcsRouterJobClassificationFailedEventData) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ACSRouterJobClassificationFailedEventData.
+func (a ACSRouterJobClassificationFailedEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "channelId", a.ChannelID)
 	populate(objectMap, "channelReference", a.ChannelReference)
@@ -2550,8 +2550,8 @@ func (a AcsRouterJobClassificationFailedEventData) MarshalJSON() ([]byte, error)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AcsRouterJobClassificationFailedEventData.
-func (a *AcsRouterJobClassificationFailedEventData) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACSRouterJobClassificationFailedEventData.
+func (a *ACSRouterJobClassificationFailedEventData) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -2591,8 +2591,8 @@ func (a *AcsRouterJobClassificationFailedEventData) UnmarshalJSON(data []byte) e
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AcsRouterJobClassifiedEventData.
-func (a AcsRouterJobClassifiedEventData) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ACSRouterJobClassifiedEventData.
+func (a ACSRouterJobClassifiedEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "attachedWorkerSelectors", a.AttachedWorkerSelectors)
 	populate(objectMap, "channelId", a.ChannelID)
@@ -2607,8 +2607,8 @@ func (a AcsRouterJobClassifiedEventData) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AcsRouterJobClassifiedEventData.
-func (a *AcsRouterJobClassifiedEventData) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACSRouterJobClassifiedEventData.
+func (a *ACSRouterJobClassifiedEventData) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -2654,8 +2654,8 @@ func (a *AcsRouterJobClassifiedEventData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AcsRouterJobClosedEventData.
-func (a AcsRouterJobClosedEventData) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ACSRouterJobClosedEventData.
+func (a ACSRouterJobClosedEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "assignmentId", a.AssignmentID)
 	populate(objectMap, "channelId", a.ChannelID)
@@ -2669,8 +2669,8 @@ func (a AcsRouterJobClosedEventData) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AcsRouterJobClosedEventData.
-func (a *AcsRouterJobClosedEventData) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACSRouterJobClosedEventData.
+func (a *ACSRouterJobClosedEventData) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -2713,8 +2713,8 @@ func (a *AcsRouterJobClosedEventData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AcsRouterJobCompletedEventData.
-func (a AcsRouterJobCompletedEventData) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ACSRouterJobCompletedEventData.
+func (a ACSRouterJobCompletedEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "assignmentId", a.AssignmentID)
 	populate(objectMap, "channelId", a.ChannelID)
@@ -2727,8 +2727,8 @@ func (a AcsRouterJobCompletedEventData) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AcsRouterJobCompletedEventData.
-func (a *AcsRouterJobCompletedEventData) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACSRouterJobCompletedEventData.
+func (a *ACSRouterJobCompletedEventData) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -2768,8 +2768,8 @@ func (a *AcsRouterJobCompletedEventData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AcsRouterJobDeletedEventData.
-func (a AcsRouterJobDeletedEventData) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ACSRouterJobDeletedEventData.
+func (a ACSRouterJobDeletedEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "channelId", a.ChannelID)
 	populate(objectMap, "channelReference", a.ChannelReference)
@@ -2780,8 +2780,8 @@ func (a AcsRouterJobDeletedEventData) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AcsRouterJobDeletedEventData.
-func (a *AcsRouterJobDeletedEventData) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACSRouterJobDeletedEventData.
+func (a *ACSRouterJobDeletedEventData) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -2815,8 +2815,8 @@ func (a *AcsRouterJobDeletedEventData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AcsRouterJobEventData.
-func (a AcsRouterJobEventData) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ACSRouterJobEventData.
+func (a ACSRouterJobEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "channelId", a.ChannelID)
 	populate(objectMap, "channelReference", a.ChannelReference)
@@ -2827,8 +2827,8 @@ func (a AcsRouterJobEventData) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AcsRouterJobEventData.
-func (a *AcsRouterJobEventData) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACSRouterJobEventData.
+func (a *ACSRouterJobEventData) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -2862,8 +2862,8 @@ func (a *AcsRouterJobEventData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AcsRouterJobExceptionTriggeredEventData.
-func (a AcsRouterJobExceptionTriggeredEventData) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ACSRouterJobExceptionTriggeredEventData.
+func (a ACSRouterJobExceptionTriggeredEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "channelId", a.ChannelID)
 	populate(objectMap, "channelReference", a.ChannelReference)
@@ -2876,8 +2876,8 @@ func (a AcsRouterJobExceptionTriggeredEventData) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AcsRouterJobExceptionTriggeredEventData.
-func (a *AcsRouterJobExceptionTriggeredEventData) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACSRouterJobExceptionTriggeredEventData.
+func (a *ACSRouterJobExceptionTriggeredEventData) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -2917,8 +2917,8 @@ func (a *AcsRouterJobExceptionTriggeredEventData) UnmarshalJSON(data []byte) err
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AcsRouterJobQueuedEventData.
-func (a AcsRouterJobQueuedEventData) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ACSRouterJobQueuedEventData.
+func (a ACSRouterJobQueuedEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "attachedWorkerSelectors", a.AttachedWorkerSelectors)
 	populate(objectMap, "channelId", a.ChannelID)
@@ -2932,8 +2932,8 @@ func (a AcsRouterJobQueuedEventData) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AcsRouterJobQueuedEventData.
-func (a *AcsRouterJobQueuedEventData) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACSRouterJobQueuedEventData.
+func (a *ACSRouterJobQueuedEventData) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -2976,8 +2976,8 @@ func (a *AcsRouterJobQueuedEventData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AcsRouterJobReceivedEventData.
-func (a AcsRouterJobReceivedEventData) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ACSRouterJobReceivedEventData.
+func (a ACSRouterJobReceivedEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "channelId", a.ChannelID)
 	populate(objectMap, "channelReference", a.ChannelReference)
@@ -2994,8 +2994,8 @@ func (a AcsRouterJobReceivedEventData) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AcsRouterJobReceivedEventData.
-func (a *AcsRouterJobReceivedEventData) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACSRouterJobReceivedEventData.
+func (a *ACSRouterJobReceivedEventData) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -3047,8 +3047,8 @@ func (a *AcsRouterJobReceivedEventData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AcsRouterJobSchedulingFailedEventData.
-func (a AcsRouterJobSchedulingFailedEventData) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ACSRouterJobSchedulingFailedEventData.
+func (a ACSRouterJobSchedulingFailedEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "channelId", a.ChannelID)
 	populate(objectMap, "channelReference", a.ChannelReference)
@@ -3064,8 +3064,8 @@ func (a AcsRouterJobSchedulingFailedEventData) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AcsRouterJobSchedulingFailedEventData.
-func (a *AcsRouterJobSchedulingFailedEventData) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACSRouterJobSchedulingFailedEventData.
+func (a *ACSRouterJobSchedulingFailedEventData) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -3114,8 +3114,8 @@ func (a *AcsRouterJobSchedulingFailedEventData) UnmarshalJSON(data []byte) error
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AcsRouterJobUnassignedEventData.
-func (a AcsRouterJobUnassignedEventData) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ACSRouterJobUnassignedEventData.
+func (a ACSRouterJobUnassignedEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "assignmentId", a.AssignmentID)
 	populate(objectMap, "channelId", a.ChannelID)
@@ -3128,8 +3128,8 @@ func (a AcsRouterJobUnassignedEventData) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AcsRouterJobUnassignedEventData.
-func (a *AcsRouterJobUnassignedEventData) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACSRouterJobUnassignedEventData.
+func (a *ACSRouterJobUnassignedEventData) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -3169,8 +3169,8 @@ func (a *AcsRouterJobUnassignedEventData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AcsRouterJobWaitingForActivationEventData.
-func (a AcsRouterJobWaitingForActivationEventData) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ACSRouterJobWaitingForActivationEventData.
+func (a ACSRouterJobWaitingForActivationEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "channelId", a.ChannelID)
 	populate(objectMap, "channelReference", a.ChannelReference)
@@ -3186,8 +3186,8 @@ func (a AcsRouterJobWaitingForActivationEventData) MarshalJSON() ([]byte, error)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AcsRouterJobWaitingForActivationEventData.
-func (a *AcsRouterJobWaitingForActivationEventData) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACSRouterJobWaitingForActivationEventData.
+func (a *ACSRouterJobWaitingForActivationEventData) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -3236,8 +3236,8 @@ func (a *AcsRouterJobWaitingForActivationEventData) UnmarshalJSON(data []byte) e
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AcsRouterJobWorkerSelectorsExpiredEventData.
-func (a AcsRouterJobWorkerSelectorsExpiredEventData) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ACSRouterJobWorkerSelectorsExpiredEventData.
+func (a ACSRouterJobWorkerSelectorsExpiredEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "channelId", a.ChannelID)
 	populate(objectMap, "channelReference", a.ChannelReference)
@@ -3250,8 +3250,8 @@ func (a AcsRouterJobWorkerSelectorsExpiredEventData) MarshalJSON() ([]byte, erro
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AcsRouterJobWorkerSelectorsExpiredEventData.
-func (a *AcsRouterJobWorkerSelectorsExpiredEventData) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACSRouterJobWorkerSelectorsExpiredEventData.
+func (a *ACSRouterJobWorkerSelectorsExpiredEventData) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -3326,8 +3326,8 @@ func (a *AcsRouterQueueDetails) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AcsRouterWorkerDeletedEventData.
-func (a AcsRouterWorkerDeletedEventData) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ACSRouterWorkerDeletedEventData.
+func (a ACSRouterWorkerDeletedEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "channelId", a.ChannelID)
 	populate(objectMap, "channelReference", a.ChannelReference)
@@ -3336,8 +3336,8 @@ func (a AcsRouterWorkerDeletedEventData) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AcsRouterWorkerDeletedEventData.
-func (a *AcsRouterWorkerDeletedEventData) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACSRouterWorkerDeletedEventData.
+func (a *ACSRouterWorkerDeletedEventData) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -3365,15 +3365,15 @@ func (a *AcsRouterWorkerDeletedEventData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AcsRouterWorkerDeregisteredEventData.
-func (a AcsRouterWorkerDeregisteredEventData) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ACSRouterWorkerDeregisteredEventData.
+func (a ACSRouterWorkerDeregisteredEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "workerId", a.WorkerID)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AcsRouterWorkerDeregisteredEventData.
-func (a *AcsRouterWorkerDeregisteredEventData) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACSRouterWorkerDeregisteredEventData.
+func (a *ACSRouterWorkerDeregisteredEventData) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -3392,8 +3392,8 @@ func (a *AcsRouterWorkerDeregisteredEventData) UnmarshalJSON(data []byte) error 
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AcsRouterWorkerEventData.
-func (a AcsRouterWorkerEventData) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ACSRouterWorkerEventData.
+func (a ACSRouterWorkerEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "channelId", a.ChannelID)
 	populate(objectMap, "channelReference", a.ChannelReference)
@@ -3402,8 +3402,8 @@ func (a AcsRouterWorkerEventData) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AcsRouterWorkerEventData.
-func (a *AcsRouterWorkerEventData) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACSRouterWorkerEventData.
+func (a *ACSRouterWorkerEventData) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -3431,8 +3431,8 @@ func (a *AcsRouterWorkerEventData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AcsRouterWorkerOfferAcceptedEventData.
-func (a AcsRouterWorkerOfferAcceptedEventData) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ACSRouterWorkerOfferAcceptedEventData.
+func (a ACSRouterWorkerOfferAcceptedEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "assignmentId", a.AssignmentID)
 	populate(objectMap, "channelId", a.ChannelID)
@@ -3449,8 +3449,8 @@ func (a AcsRouterWorkerOfferAcceptedEventData) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AcsRouterWorkerOfferAcceptedEventData.
-func (a *AcsRouterWorkerOfferAcceptedEventData) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACSRouterWorkerOfferAcceptedEventData.
+func (a *ACSRouterWorkerOfferAcceptedEventData) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -3502,8 +3502,8 @@ func (a *AcsRouterWorkerOfferAcceptedEventData) UnmarshalJSON(data []byte) error
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AcsRouterWorkerOfferDeclinedEventData.
-func (a AcsRouterWorkerOfferDeclinedEventData) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ACSRouterWorkerOfferDeclinedEventData.
+func (a ACSRouterWorkerOfferDeclinedEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "channelId", a.ChannelID)
 	populate(objectMap, "channelReference", a.ChannelReference)
@@ -3514,8 +3514,8 @@ func (a AcsRouterWorkerOfferDeclinedEventData) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AcsRouterWorkerOfferDeclinedEventData.
-func (a *AcsRouterWorkerOfferDeclinedEventData) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACSRouterWorkerOfferDeclinedEventData.
+func (a *ACSRouterWorkerOfferDeclinedEventData) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -3549,8 +3549,8 @@ func (a *AcsRouterWorkerOfferDeclinedEventData) UnmarshalJSON(data []byte) error
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AcsRouterWorkerOfferExpiredEventData.
-func (a AcsRouterWorkerOfferExpiredEventData) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ACSRouterWorkerOfferExpiredEventData.
+func (a ACSRouterWorkerOfferExpiredEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "channelId", a.ChannelID)
 	populate(objectMap, "channelReference", a.ChannelReference)
@@ -3561,8 +3561,8 @@ func (a AcsRouterWorkerOfferExpiredEventData) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AcsRouterWorkerOfferExpiredEventData.
-func (a *AcsRouterWorkerOfferExpiredEventData) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACSRouterWorkerOfferExpiredEventData.
+func (a *ACSRouterWorkerOfferExpiredEventData) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -3596,8 +3596,8 @@ func (a *AcsRouterWorkerOfferExpiredEventData) UnmarshalJSON(data []byte) error 
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AcsRouterWorkerOfferIssuedEventData.
-func (a AcsRouterWorkerOfferIssuedEventData) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ACSRouterWorkerOfferIssuedEventData.
+func (a ACSRouterWorkerOfferIssuedEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "channelId", a.ChannelID)
 	populate(objectMap, "channelReference", a.ChannelReference)
@@ -3615,8 +3615,8 @@ func (a AcsRouterWorkerOfferIssuedEventData) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AcsRouterWorkerOfferIssuedEventData.
-func (a *AcsRouterWorkerOfferIssuedEventData) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACSRouterWorkerOfferIssuedEventData.
+func (a *ACSRouterWorkerOfferIssuedEventData) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -3671,8 +3671,8 @@ func (a *AcsRouterWorkerOfferIssuedEventData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AcsRouterWorkerOfferRevokedEventData.
-func (a AcsRouterWorkerOfferRevokedEventData) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ACSRouterWorkerOfferRevokedEventData.
+func (a ACSRouterWorkerOfferRevokedEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "channelId", a.ChannelID)
 	populate(objectMap, "channelReference", a.ChannelReference)
@@ -3683,8 +3683,8 @@ func (a AcsRouterWorkerOfferRevokedEventData) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AcsRouterWorkerOfferRevokedEventData.
-func (a *AcsRouterWorkerOfferRevokedEventData) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACSRouterWorkerOfferRevokedEventData.
+func (a *ACSRouterWorkerOfferRevokedEventData) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -3718,8 +3718,8 @@ func (a *AcsRouterWorkerOfferRevokedEventData) UnmarshalJSON(data []byte) error 
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AcsRouterWorkerRegisteredEventData.
-func (a AcsRouterWorkerRegisteredEventData) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ACSRouterWorkerRegisteredEventData.
+func (a ACSRouterWorkerRegisteredEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "channelConfigurations", a.ChannelConfigurations)
 	populate(objectMap, "labels", a.Labels)
@@ -3730,8 +3730,8 @@ func (a AcsRouterWorkerRegisteredEventData) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AcsRouterWorkerRegisteredEventData.
-func (a *AcsRouterWorkerRegisteredEventData) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACSRouterWorkerRegisteredEventData.
+func (a *ACSRouterWorkerRegisteredEventData) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -3812,8 +3812,8 @@ func (a *AcsRouterWorkerSelector) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AcsSmsDeliveryAttemptProperties.
-func (a AcsSmsDeliveryAttemptProperties) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ACSSmsDeliveryAttemptProperties.
+func (a ACSSmsDeliveryAttemptProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "segmentsFailed", a.SegmentsFailed)
 	populate(objectMap, "segmentsSucceeded", a.SegmentsSucceeded)
@@ -3821,8 +3821,8 @@ func (a AcsSmsDeliveryAttemptProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AcsSmsDeliveryAttemptProperties.
-func (a *AcsSmsDeliveryAttemptProperties) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACSSmsDeliveryAttemptProperties.
+func (a *ACSSmsDeliveryAttemptProperties) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -3847,8 +3847,8 @@ func (a *AcsSmsDeliveryAttemptProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AcsSmsDeliveryReportReceivedEventData.
-func (a AcsSmsDeliveryReportReceivedEventData) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ACSSmsDeliveryReportReceivedEventData.
+func (a ACSSmsDeliveryReportReceivedEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "deliveryAttempts", a.DeliveryAttempts)
 	populate(objectMap, "deliveryStatus", a.DeliveryStatus)
@@ -3861,8 +3861,8 @@ func (a AcsSmsDeliveryReportReceivedEventData) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AcsSmsDeliveryReportReceivedEventData.
-func (a *AcsSmsDeliveryReportReceivedEventData) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACSSmsDeliveryReportReceivedEventData.
+func (a *ACSSmsDeliveryReportReceivedEventData) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -3902,8 +3902,8 @@ func (a *AcsSmsDeliveryReportReceivedEventData) UnmarshalJSON(data []byte) error
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AcsSmsEventBaseProperties.
-func (a AcsSmsEventBaseProperties) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ACSSmsEventBaseProperties.
+func (a ACSSmsEventBaseProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "from", a.From)
 	populate(objectMap, "messageId", a.MessageID)
@@ -3911,8 +3911,8 @@ func (a AcsSmsEventBaseProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AcsSmsEventBaseProperties.
-func (a *AcsSmsEventBaseProperties) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACSSmsEventBaseProperties.
+func (a *ACSSmsEventBaseProperties) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -3937,8 +3937,8 @@ func (a *AcsSmsEventBaseProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AcsSmsReceivedEventData.
-func (a AcsSmsReceivedEventData) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ACSSmsReceivedEventData.
+func (a ACSSmsReceivedEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "from", a.From)
 	populate(objectMap, "message", a.Message)
@@ -3948,8 +3948,8 @@ func (a AcsSmsReceivedEventData) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AcsSmsReceivedEventData.
-func (a *AcsSmsReceivedEventData) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACSSmsReceivedEventData.
+func (a *ACSSmsReceivedEventData) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -3980,15 +3980,15 @@ func (a *AcsSmsReceivedEventData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AcsUserDisconnectedEventData.
-func (a AcsUserDisconnectedEventData) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ACSUserDisconnectedEventData.
+func (a ACSUserDisconnectedEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "userCommunicationIdentifier", a.UserCommunicationIdentifier)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AcsUserDisconnectedEventData.
-func (a *AcsUserDisconnectedEventData) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACSUserDisconnectedEventData.
+func (a *ACSUserDisconnectedEventData) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -4252,8 +4252,8 @@ func (a *AppServicePlanEventTypeDetail) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AvsClusterCreatedEventData.
-func (a AvsClusterCreatedEventData) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type AVSClusterCreatedEventData.
+func (a AVSClusterCreatedEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "addedHostNames", a.AddedHostNames)
 	populate(objectMap, "inMaintenanceHostNames", a.InMaintenanceHostNames)
@@ -4262,8 +4262,8 @@ func (a AvsClusterCreatedEventData) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AvsClusterCreatedEventData.
-func (a *AvsClusterCreatedEventData) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type AVSClusterCreatedEventData.
+func (a *AVSClusterCreatedEventData) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -4291,8 +4291,8 @@ func (a *AvsClusterCreatedEventData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AvsClusterDeletedEventData.
-func (a AvsClusterDeletedEventData) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type AVSClusterDeletedEventData.
+func (a AVSClusterDeletedEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "addedHostNames", a.AddedHostNames)
 	populate(objectMap, "inMaintenanceHostNames", a.InMaintenanceHostNames)
@@ -4301,8 +4301,8 @@ func (a AvsClusterDeletedEventData) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AvsClusterDeletedEventData.
-func (a *AvsClusterDeletedEventData) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type AVSClusterDeletedEventData.
+func (a *AVSClusterDeletedEventData) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -4330,8 +4330,8 @@ func (a *AvsClusterDeletedEventData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AvsClusterFailedEventData.
-func (a AvsClusterFailedEventData) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type AVSClusterFailedEventData.
+func (a AVSClusterFailedEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "addedHostNames", a.AddedHostNames)
 	populate(objectMap, "failureMessage", a.FailureMessage)
@@ -4341,8 +4341,8 @@ func (a AvsClusterFailedEventData) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AvsClusterFailedEventData.
-func (a *AvsClusterFailedEventData) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type AVSClusterFailedEventData.
+func (a *AVSClusterFailedEventData) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -4373,8 +4373,8 @@ func (a *AvsClusterFailedEventData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AvsClusterUpdatedEventData.
-func (a AvsClusterUpdatedEventData) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type AVSClusterUpdatedEventData.
+func (a AVSClusterUpdatedEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "addedHostNames", a.AddedHostNames)
 	populate(objectMap, "inMaintenanceHostNames", a.InMaintenanceHostNames)
@@ -4383,8 +4383,8 @@ func (a AvsClusterUpdatedEventData) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AvsClusterUpdatedEventData.
-func (a *AvsClusterUpdatedEventData) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type AVSClusterUpdatedEventData.
+func (a *AVSClusterUpdatedEventData) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -4412,8 +4412,8 @@ func (a *AvsClusterUpdatedEventData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AvsClusterUpdatingEventData.
-func (a AvsClusterUpdatingEventData) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type AVSClusterUpdatingEventData.
+func (a AVSClusterUpdatingEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "addedHostNames", a.AddedHostNames)
 	populate(objectMap, "inMaintenanceHostNames", a.InMaintenanceHostNames)
@@ -4422,8 +4422,8 @@ func (a AvsClusterUpdatingEventData) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AvsClusterUpdatingEventData.
-func (a *AvsClusterUpdatingEventData) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type AVSClusterUpdatingEventData.
+func (a *AVSClusterUpdatingEventData) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -4451,16 +4451,16 @@ func (a *AvsClusterUpdatingEventData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AvsPrivateCloudFailedEventData.
-func (a AvsPrivateCloudFailedEventData) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type AVSPrivateCloudFailedEventData.
+func (a AVSPrivateCloudFailedEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "failureMessage", a.FailureMessage)
 	populate(objectMap, "operationId", a.OperationID)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AvsPrivateCloudFailedEventData.
-func (a *AvsPrivateCloudFailedEventData) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type AVSPrivateCloudFailedEventData.
+func (a *AVSPrivateCloudFailedEventData) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -4482,15 +4482,15 @@ func (a *AvsPrivateCloudFailedEventData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AvsPrivateCloudUpdatedEventData.
-func (a AvsPrivateCloudUpdatedEventData) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type AVSPrivateCloudUpdatedEventData.
+func (a AVSPrivateCloudUpdatedEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "operationId", a.OperationID)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AvsPrivateCloudUpdatedEventData.
-func (a *AvsPrivateCloudUpdatedEventData) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type AVSPrivateCloudUpdatedEventData.
+func (a *AVSPrivateCloudUpdatedEventData) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -4509,15 +4509,15 @@ func (a *AvsPrivateCloudUpdatedEventData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AvsPrivateCloudUpdatingEventData.
-func (a AvsPrivateCloudUpdatingEventData) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type AVSPrivateCloudUpdatingEventData.
+func (a AVSPrivateCloudUpdatingEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "operationId", a.OperationID)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AvsPrivateCloudUpdatingEventData.
-func (a *AvsPrivateCloudUpdatingEventData) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type AVSPrivateCloudUpdatingEventData.
+func (a *AVSPrivateCloudUpdatingEventData) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -4536,8 +4536,8 @@ func (a *AvsPrivateCloudUpdatingEventData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AvsScriptExecutionCancelledEventData.
-func (a AvsScriptExecutionCancelledEventData) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type AVSScriptExecutionCancelledEventData.
+func (a AVSScriptExecutionCancelledEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "cmdletId", a.CmdletID)
 	populate(objectMap, "operationId", a.OperationID)
@@ -4545,8 +4545,8 @@ func (a AvsScriptExecutionCancelledEventData) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AvsScriptExecutionCancelledEventData.
-func (a *AvsScriptExecutionCancelledEventData) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type AVSScriptExecutionCancelledEventData.
+func (a *AVSScriptExecutionCancelledEventData) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -4571,8 +4571,8 @@ func (a *AvsScriptExecutionCancelledEventData) UnmarshalJSON(data []byte) error 
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AvsScriptExecutionFailedEventData.
-func (a AvsScriptExecutionFailedEventData) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type AVSScriptExecutionFailedEventData.
+func (a AVSScriptExecutionFailedEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "cmdletId", a.CmdletID)
 	populate(objectMap, "failureMessage", a.FailureMessage)
@@ -4581,8 +4581,8 @@ func (a AvsScriptExecutionFailedEventData) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AvsScriptExecutionFailedEventData.
-func (a *AvsScriptExecutionFailedEventData) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type AVSScriptExecutionFailedEventData.
+func (a *AVSScriptExecutionFailedEventData) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -4610,8 +4610,8 @@ func (a *AvsScriptExecutionFailedEventData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AvsScriptExecutionFinishedEventData.
-func (a AvsScriptExecutionFinishedEventData) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type AVSScriptExecutionFinishedEventData.
+func (a AVSScriptExecutionFinishedEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "cmdletId", a.CmdletID)
 	populate(objectMap, "namedOutputs", a.NamedOutputs)
@@ -4620,8 +4620,8 @@ func (a AvsScriptExecutionFinishedEventData) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AvsScriptExecutionFinishedEventData.
-func (a *AvsScriptExecutionFinishedEventData) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type AVSScriptExecutionFinishedEventData.
+func (a *AVSScriptExecutionFinishedEventData) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -4649,8 +4649,8 @@ func (a *AvsScriptExecutionFinishedEventData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AvsScriptExecutionStartedEventData.
-func (a AvsScriptExecutionStartedEventData) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type AVSScriptExecutionStartedEventData.
+func (a AVSScriptExecutionStartedEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "cmdletId", a.CmdletID)
 	populate(objectMap, "operationId", a.OperationID)
@@ -4658,8 +4658,8 @@ func (a AvsScriptExecutionStartedEventData) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AvsScriptExecutionStartedEventData.
-func (a *AvsScriptExecutionStartedEventData) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type AVSScriptExecutionStartedEventData.
+func (a *AVSScriptExecutionStartedEventData) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -6537,8 +6537,8 @@ func (h *HealthcareFhirResourceUpdatedEventData) UnmarshalJSON(data []byte) erro
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type IotHubDeviceConnectedEventData.
-func (i IotHubDeviceConnectedEventData) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type IOTHubDeviceConnectedEventData.
+func (i IOTHubDeviceConnectedEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "deviceConnectionStateEventInfo", i.DeviceConnectionStateEventInfo)
 	populate(objectMap, "deviceId", i.DeviceID)
@@ -6547,8 +6547,8 @@ func (i IotHubDeviceConnectedEventData) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type IotHubDeviceConnectedEventData.
-func (i *IotHubDeviceConnectedEventData) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type IOTHubDeviceConnectedEventData.
+func (i *IOTHubDeviceConnectedEventData) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", i, err)
@@ -6576,8 +6576,8 @@ func (i *IotHubDeviceConnectedEventData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type IotHubDeviceCreatedEventData.
-func (i IotHubDeviceCreatedEventData) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type IOTHubDeviceCreatedEventData.
+func (i IOTHubDeviceCreatedEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "deviceId", i.DeviceID)
 	populate(objectMap, "hubName", i.HubName)
@@ -6585,8 +6585,8 @@ func (i IotHubDeviceCreatedEventData) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type IotHubDeviceCreatedEventData.
-func (i *IotHubDeviceCreatedEventData) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type IOTHubDeviceCreatedEventData.
+func (i *IOTHubDeviceCreatedEventData) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", i, err)
@@ -6611,8 +6611,8 @@ func (i *IotHubDeviceCreatedEventData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type IotHubDeviceDeletedEventData.
-func (i IotHubDeviceDeletedEventData) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type IOTHubDeviceDeletedEventData.
+func (i IOTHubDeviceDeletedEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "deviceId", i.DeviceID)
 	populate(objectMap, "hubName", i.HubName)
@@ -6620,8 +6620,8 @@ func (i IotHubDeviceDeletedEventData) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type IotHubDeviceDeletedEventData.
-func (i *IotHubDeviceDeletedEventData) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type IOTHubDeviceDeletedEventData.
+func (i *IOTHubDeviceDeletedEventData) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", i, err)
@@ -6646,8 +6646,8 @@ func (i *IotHubDeviceDeletedEventData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type IotHubDeviceDisconnectedEventData.
-func (i IotHubDeviceDisconnectedEventData) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type IOTHubDeviceDisconnectedEventData.
+func (i IOTHubDeviceDisconnectedEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "deviceConnectionStateEventInfo", i.DeviceConnectionStateEventInfo)
 	populate(objectMap, "deviceId", i.DeviceID)
@@ -6656,8 +6656,8 @@ func (i IotHubDeviceDisconnectedEventData) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type IotHubDeviceDisconnectedEventData.
-func (i *IotHubDeviceDisconnectedEventData) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type IOTHubDeviceDisconnectedEventData.
+func (i *IOTHubDeviceDisconnectedEventData) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", i, err)
@@ -6685,8 +6685,8 @@ func (i *IotHubDeviceDisconnectedEventData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type IotHubDeviceTelemetryEventData.
-func (i IotHubDeviceTelemetryEventData) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type IOTHubDeviceTelemetryEventData.
+func (i IOTHubDeviceTelemetryEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populateAny(objectMap, "body", i.Body)
 	populate(objectMap, "properties", i.Properties)
@@ -6694,8 +6694,8 @@ func (i IotHubDeviceTelemetryEventData) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type IotHubDeviceTelemetryEventData.
-func (i *IotHubDeviceTelemetryEventData) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type IOTHubDeviceTelemetryEventData.
+func (i *IOTHubDeviceTelemetryEventData) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", i, err)

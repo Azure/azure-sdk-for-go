@@ -70,8 +70,8 @@ The `LogsQueryOptions` type is used for advanced logs options.
 * To get visualization data for logs queries, set `LogsQueryOptions.Visualization` to `true`.
 
 ```go
-azquery.LogsClientQueryWorkspaceOptions{
-			Options: &azquery.LogsQueryOptions{
+azlogs.QueryWorkspaceOptions{
+			Options: &azlogs.LogsQueryOptions{
 				Statistics:    to.Ptr(true),
 				Visualization: to.Ptr(true),
 				Wait:          to.Ptr(600),

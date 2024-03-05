@@ -21,7 +21,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-const recordingDirectory = "sdk/monitor/AZLOGS/testdata"
+const recordingDirectory = "sdk/monitor/query/azlogs/testdata"
 const fakeWorkspaceID = "32d1e136-gg81-4b0a-b647-260cdc471f68"
 const fakeWorkspaceID2 = "asdjkfj8k20-gg81-4b0a-9fu2-260c09fn1f68"
 const fakeResourceURI = "/subscriptions/faa080af-c1d8-40ad-9cce-e1a451va7b87/resourceGroups/rg-example/providers/Microsoft.AppConfiguration/configurationStores/example"
@@ -60,11 +60,13 @@ func run(m *testing.M) int {
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		credential = &FakeCredential{}
 	} else {
-		tenantID := getEnvVar("AZLOGS_TENANT_ID", "")
-		clientID := getEnvVar("AZLOGS_CLIENT_ID", "")
-		secret := getEnvVar("AZLOGS_CLIENT_SECRET", "")
+		// tenantID := getEnvVar("AZLOGS_TENANT_ID", "")
+		// clientID := getEnvVar("AZLOGS_CLIENT_ID", "")
+		// secret := getEnvVar("AZLOGS_CLIENT_SECRET", "")
+		// var err error
+		// credential, err = azidentity.NewClientSecretCredential(tenantID, clientID, secret, nil)
 		var err error
-		credential, err = azidentity.NewClientSecretCredential(tenantID, clientID, secret, nil)
+		credential, err = azidentity.NewDefaultAzureCredential(nil)
 		if err != nil {
 			panic(err)
 		}

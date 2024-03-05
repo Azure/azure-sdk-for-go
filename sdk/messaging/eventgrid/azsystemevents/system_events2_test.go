@@ -327,7 +327,7 @@ func TestConsumeIoTHubDeviceCreatedEvent(t *testing.T) {
 	events := parseManyEvents(t, requestContent)
 
 	require.NotEmpty(t, events)
-	sysEvent := deserializeSystemEvent[azsystemevents.IotHubDeviceCreatedEventData](t, events[0].Data)
+	sysEvent := deserializeSystemEvent[azsystemevents.IOTHubDeviceCreatedEventData](t, events[0].Data)
 	require.Equal(t, "enabled", *sysEvent.Twin.Status)
 }
 
@@ -337,7 +337,7 @@ func TestConsumeIoTHubDeviceDeletedEvent(t *testing.T) {
 	events := parseManyEvents(t, requestContent)
 
 	require.NotEmpty(t, events)
-	sysEvent := deserializeSystemEvent[azsystemevents.IotHubDeviceDeletedEventData](t, events[0].Data)
+	sysEvent := deserializeSystemEvent[azsystemevents.IOTHubDeviceDeletedEventData](t, events[0].Data)
 	require.Equal(t, "AAAAAAAAAAI=", *sysEvent.Twin.Etag)
 }
 
@@ -347,7 +347,7 @@ func TestConsumeIoTHubDeviceConnectedEvent(t *testing.T) {
 	events := parseManyEvents(t, requestContent)
 
 	require.NotEmpty(t, events)
-	sysEvent := deserializeSystemEvent[azsystemevents.IotHubDeviceConnectedEventData](t, events[0].Data)
+	sysEvent := deserializeSystemEvent[azsystemevents.IOTHubDeviceConnectedEventData](t, events[0].Data)
 	require.Equal(t, "EGTESTHUB1", *sysEvent.HubName)
 }
 
@@ -357,7 +357,7 @@ func TestConsumeIoTHubDeviceDisconnectedEvent(t *testing.T) {
 	events := parseManyEvents(t, requestContent)
 
 	require.NotEmpty(t, events)
-	sysEvent := deserializeSystemEvent[azsystemevents.IotHubDeviceDisconnectedEventData](t, events[0].Data)
+	sysEvent := deserializeSystemEvent[azsystemevents.IOTHubDeviceDisconnectedEventData](t, events[0].Data)
 	require.Equal(t, "000000000000000001D4132452F67CE200000002000000000000000000000002", *sysEvent.DeviceConnectionStateEventInfo.SequenceNumber)
 }
 
@@ -367,7 +367,7 @@ func TestConsumeIoTHubDeviceTelemetryEvent(t *testing.T) {
 	events := parseManyEvents(t, requestContent)
 
 	require.NotEmpty(t, events)
-	sysEvent := deserializeSystemEvent[azsystemevents.IotHubDeviceTelemetryEventData](t, events[0].Data)
+	sysEvent := deserializeSystemEvent[azsystemevents.IOTHubDeviceTelemetryEventData](t, events[0].Data)
 	require.Equal(t, "Active", *sysEvent.Properties["Status"])
 }
 

@@ -11,7 +11,7 @@ package azopenai
 import "encoding/json"
 
 func unmarshalAzureChatExtensionConfigurationClassification(rawMsg json.RawMessage) (AzureChatExtensionConfigurationClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -20,12 +20,12 @@ func unmarshalAzureChatExtensionConfigurationClassification(rawMsg json.RawMessa
 	}
 	var b AzureChatExtensionConfigurationClassification
 	switch m["type"] {
-	case string(AzureChatExtensionTypeAzureCognitiveSearch):
-		b = &AzureCognitiveSearchChatExtensionConfiguration{}
 	case string(AzureChatExtensionTypeAzureCosmosDB):
 		b = &AzureCosmosDBChatExtensionConfiguration{}
 	case string(AzureChatExtensionTypeAzureMachineLearningIndex):
 		b = &AzureMachineLearningIndexChatExtensionConfiguration{}
+	case string(AzureChatExtensionTypeAzureSearch):
+		b = &AzureSearchChatExtensionConfiguration{}
 	case string(AzureChatExtensionTypeElasticsearch):
 		b = &ElasticsearchChatExtensionConfiguration{}
 	case string(AzureChatExtensionTypePinecone):
@@ -40,7 +40,7 @@ func unmarshalAzureChatExtensionConfigurationClassification(rawMsg json.RawMessa
 }
 
 func unmarshalAzureChatExtensionConfigurationClassificationArray(rawMsg json.RawMessage) ([]AzureChatExtensionConfigurationClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var rawMessages []json.RawMessage
@@ -59,7 +59,7 @@ func unmarshalAzureChatExtensionConfigurationClassificationArray(rawMsg json.Raw
 }
 
 func unmarshalChatCompletionsResponseFormatClassification(rawMsg json.RawMessage) (ChatCompletionsResponseFormatClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -82,7 +82,7 @@ func unmarshalChatCompletionsResponseFormatClassification(rawMsg json.RawMessage
 }
 
 func unmarshalChatCompletionsToolCallClassification(rawMsg json.RawMessage) (ChatCompletionsToolCallClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -108,7 +108,7 @@ func unmarshalChatCompletionsToolCallClassification(rawMsg json.RawMessage) (Cha
 }
 
 func unmarshalChatCompletionsToolCallClassificationArray(rawMsg json.RawMessage) ([]ChatCompletionsToolCallClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var rawMessages []json.RawMessage
@@ -127,7 +127,7 @@ func unmarshalChatCompletionsToolCallClassificationArray(rawMsg json.RawMessage)
 }
 
 func unmarshalChatCompletionsToolDefinitionClassification(rawMsg json.RawMessage) (ChatCompletionsToolDefinitionClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -148,7 +148,7 @@ func unmarshalChatCompletionsToolDefinitionClassification(rawMsg json.RawMessage
 }
 
 func unmarshalChatCompletionsToolDefinitionClassificationArray(rawMsg json.RawMessage) ([]ChatCompletionsToolDefinitionClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var rawMessages []json.RawMessage
@@ -167,7 +167,7 @@ func unmarshalChatCompletionsToolDefinitionClassificationArray(rawMsg json.RawMe
 }
 
 func unmarshalChatFinishDetailsClassification(rawMsg json.RawMessage) (ChatFinishDetailsClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -190,7 +190,7 @@ func unmarshalChatFinishDetailsClassification(rawMsg json.RawMessage) (ChatFinis
 }
 
 func unmarshalChatRequestMessageClassification(rawMsg json.RawMessage) (ChatRequestMessageClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -201,6 +201,8 @@ func unmarshalChatRequestMessageClassification(rawMsg json.RawMessage) (ChatRequ
 	switch m["role"] {
 	case string(ChatRoleAssistant):
 		b = &ChatRequestAssistantMessage{}
+	case string(ChatRoleFunction):
+		b = &ChatRequestFunctionMessage{}
 	case string(ChatRoleSystem):
 		b = &ChatRequestSystemMessage{}
 	case string(ChatRoleTool):
@@ -217,7 +219,7 @@ func unmarshalChatRequestMessageClassification(rawMsg json.RawMessage) (ChatRequ
 }
 
 func unmarshalChatRequestMessageClassificationArray(rawMsg json.RawMessage) ([]ChatRequestMessageClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var rawMessages []json.RawMessage
@@ -236,7 +238,7 @@ func unmarshalChatRequestMessageClassificationArray(rawMsg json.RawMessage) ([]C
 }
 
 func unmarshalOnYourDataAuthenticationOptionsClassification(rawMsg json.RawMessage) (OnYourDataAuthenticationOptionsClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -245,10 +247,14 @@ func unmarshalOnYourDataAuthenticationOptionsClassification(rawMsg json.RawMessa
 	}
 	var b OnYourDataAuthenticationOptionsClassification
 	switch m["type"] {
+	case string(OnYourDataAuthenticationTypeAccessToken):
+		b = &OnYourDataAccessTokenAuthenticationOptions{}
 	case string(OnYourDataAuthenticationTypeAPIKey):
 		b = &OnYourDataAPIKeyAuthenticationOptions{}
 	case string(OnYourDataAuthenticationTypeConnectionString):
 		b = &OnYourDataConnectionStringAuthenticationOptions{}
+	case string(OnYourDataAuthenticationTypeEncodedAPIKey):
+		b = &OnYourDataEncodedAPIKeyAuthenticationOptions{}
 	case string(OnYourDataAuthenticationTypeKeyAndKeyID):
 		b = &OnYourDataKeyAndKeyIDAuthenticationOptions{}
 	case string(OnYourDataAuthenticationTypeSystemAssignedManagedIdentity):
@@ -265,7 +271,7 @@ func unmarshalOnYourDataAuthenticationOptionsClassification(rawMsg json.RawMessa
 }
 
 func unmarshalOnYourDataVectorizationSourceClassification(rawMsg json.RawMessage) (OnYourDataVectorizationSourceClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any

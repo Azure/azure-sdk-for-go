@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -50,12 +51,16 @@ func ExampleClient_GetChatCompletions_vision() {
 		},
 	})
 
-	resp, err := client.GetChatCompletions(context.Background(), azopenai.ChatCompletionsOptions{
+	ctx, cancel := context.WithTimeout(context.TODO(), time.Minute)
+	defer cancel()
+
+	resp, err := client.GetChatCompletions(ctx, azopenai.ChatCompletionsOptions{
 		Messages: []azopenai.ChatRequestMessageClassification{
 			&azopenai.ChatRequestUserMessage{
 				Content: content,
 			},
 		},
+		MaxTokens:      to.Ptr[int32](512),
 		DeploymentName: to.Ptr(modelDeployment),
 	}, nil)
 

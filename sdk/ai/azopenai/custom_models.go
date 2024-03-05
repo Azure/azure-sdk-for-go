@@ -173,11 +173,8 @@ func (tf ChatCompletionsToolChoiceFunction) MarshalJSON() ([]byte, error) {
 	}
 
 	return json.Marshal(jsonFormat{
-		Type: "function",
-		//nolint:gosimple,can't use the ChatCompletionsToolChoiceFunction here or marshalling will be circular!
-		Function: jsonInnerFunc{
-			Name: tf.Name,
-		},
+		Type:     "function",
+		Function: jsonInnerFunc(tf),
 	})
 }
 

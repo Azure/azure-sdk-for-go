@@ -23,6 +23,10 @@ import (
 
 // ProblemClassificationsServer is a fake server for instances of the armsupport.ProblemClassificationsClient type.
 type ProblemClassificationsServer struct {
+	// ClassifyProblems is the fake for method ProblemClassificationsClient.ClassifyProblems
+	// HTTP status codes to indicate success: http.StatusOK
+	ClassifyProblems func(ctx context.Context, problemServiceName string, problemClassificationsClassificationInput armsupport.ProblemClassificationsClassificationInput, options *armsupport.ProblemClassificationsClientClassifyProblemsOptions) (resp azfake.Responder[armsupport.ProblemClassificationsClientClassifyProblemsResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method ProblemClassificationsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, serviceName string, problemClassificationName string, options *armsupport.ProblemClassificationsClientGetOptions) (resp azfake.Responder[armsupport.ProblemClassificationsClientGetResponse], errResp azfake.ErrorResponder)
@@ -61,6 +65,8 @@ func (p *ProblemClassificationsServerTransport) Do(req *http.Request) (*http.Res
 	var err error
 
 	switch method {
+	case "ProblemClassificationsClient.ClassifyProblems":
+		resp, err = p.dispatchClassifyProblems(req)
 	case "ProblemClassificationsClient.Get":
 		resp, err = p.dispatchGet(req)
 	case "ProblemClassificationsClient.NewListPager":
@@ -73,6 +79,39 @@ func (p *ProblemClassificationsServerTransport) Do(req *http.Request) (*http.Res
 		return nil, err
 	}
 
+	return resp, nil
+}
+
+func (p *ProblemClassificationsServerTransport) dispatchClassifyProblems(req *http.Request) (*http.Response, error) {
+	if p.srv.ClassifyProblems == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ClassifyProblems not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Support/services/(?P<problemServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/classifyProblems`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armsupport.ProblemClassificationsClassificationInput](req)
+	if err != nil {
+		return nil, err
+	}
+	problemServiceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("problemServiceName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := p.srv.ClassifyProblems(req.Context(), problemServiceNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ProblemClassificationsClassificationOutput, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 

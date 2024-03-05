@@ -26,6 +26,12 @@ type ChatTranscriptsNoSubscriptionClientGetResponse struct {
 	ChatTranscriptDetails
 }
 
+// ChatTranscriptsNoSubscriptionClientListResponse contains the response from method ChatTranscriptsNoSubscriptionClient.NewListPager.
+type ChatTranscriptsNoSubscriptionClientListResponse struct {
+	// Collection of Chat Transcripts resources.
+	ChatTranscriptsListResult
+}
+
 // CommunicationsClientCheckNameAvailabilityResponse contains the response from method CommunicationsClient.CheckNameAvailability.
 type CommunicationsClientCheckNameAvailabilityResponse struct {
 	// Output of check name availability API.
@@ -66,6 +72,12 @@ type CommunicationsNoSubscriptionClientCreateResponse struct {
 type CommunicationsNoSubscriptionClientGetResponse struct {
 	// Object that represents a Communication resource.
 	CommunicationDetails
+}
+
+// CommunicationsNoSubscriptionClientListResponse contains the response from method CommunicationsNoSubscriptionClient.NewListPager.
+type CommunicationsNoSubscriptionClientListResponse struct {
+	// Collection of Communication resources.
+	CommunicationsListResult
 }
 
 // FileWorkspacesClientCreateResponse contains the response from method FileWorkspacesClient.Create.
@@ -138,10 +150,22 @@ type FilesNoSubscriptionClientUploadResponse struct {
 	// placeholder for future response values
 }
 
+// LookUpResourceIDClientPostResponse contains the response from method LookUpResourceIDClient.Post.
+type LookUpResourceIDClientPostResponse struct {
+	// The look up resource id response
+	LookUpResourceIDResponse
+}
+
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	// The list of operations supported by Microsoft Support resource provider.
 	OperationsListResult
+}
+
+// ProblemClassificationsClientClassifyProblemsResponse contains the response from method ProblemClassificationsClient.ClassifyProblems.
+type ProblemClassificationsClientClassifyProblemsResponse struct {
+	// Output of the problem classification Classification API.
+	ProblemClassificationsClassificationOutput
 }
 
 // ProblemClassificationsClientGetResponse contains the response from method ProblemClassificationsClient.Get.
@@ -156,6 +180,24 @@ type ProblemClassificationsClientListResponse struct {
 	ProblemClassificationsListResult
 }
 
+// ProblemClassificationsNoSubscriptionClientClassifyProblemsResponse contains the response from method ProblemClassificationsNoSubscriptionClient.ClassifyProblems.
+type ProblemClassificationsNoSubscriptionClientClassifyProblemsResponse struct {
+	// Output of the problem classification Classification API.
+	ProblemClassificationsClassificationOutput
+}
+
+// ServiceClassificationsClientClassifyServicesResponse contains the response from method ServiceClassificationsClient.ClassifyServices.
+type ServiceClassificationsClientClassifyServicesResponse struct {
+	// Output of the service classification API.
+	ServiceClassificationOutput
+}
+
+// ServiceClassificationsNoSubscriptionClientClassifyServicesResponse contains the response from method ServiceClassificationsNoSubscriptionClient.ClassifyServices.
+type ServiceClassificationsNoSubscriptionClientClassifyServicesResponse struct {
+	// Output of the service classification API.
+	ServiceClassificationOutput
+}
+
 // ServicesClientGetResponse contains the response from method ServicesClient.Get.
 type ServicesClientGetResponse struct {
 	// Object that represents a Service resource.
@@ -166,18 +208,6 @@ type ServicesClientGetResponse struct {
 type ServicesClientListResponse struct {
 	// Collection of Service resources.
 	ServicesListResult
-}
-
-// TicketChatTranscriptsNoSubscriptionClientListResponse contains the response from method TicketChatTranscriptsNoSubscriptionClient.NewListPager.
-type TicketChatTranscriptsNoSubscriptionClientListResponse struct {
-	// Collection of Chat Transcripts resources.
-	ChatTranscriptsListResult
-}
-
-// TicketCommunicationsNoSubscriptionClientListResponse contains the response from method TicketCommunicationsNoSubscriptionClient.NewListPager.
-type TicketCommunicationsNoSubscriptionClientListResponse struct {
-	// Collection of Communication resources.
-	CommunicationsListResult
 }
 
 // TicketsClientCheckNameAvailabilityResponse contains the response from method TicketsClient.CheckNameAvailability.

@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/support/armsupport/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/CheckNameAvailabilityWithSubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bcecb9990214471ee523e643da76a3a7c4170d2f/specification/support/resource-manager/Microsoft.Support/preview/2023-06-01-preview/examples/CheckNameAvailabilityWithSubscription.json
 func ExampleTicketsClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -46,7 +46,7 @@ func ExampleTicketsClient_CheckNameAvailability() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/ListSupportTicketsCreatedOnOrAfterAndInOpenStateBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bcecb9990214471ee523e643da76a3a7c4170d2f/specification/support/resource-manager/Microsoft.Support/preview/2023-06-01-preview/examples/ListSupportTicketsCreatedOnOrAfterAndInOpenStateBySubscription.json
 func ExampleTicketsClient_NewListPager_listSupportTicketsCreatedOnOrAfterACertainDateAndInOpenStateForASubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -166,7 +166,7 @@ func ExampleTicketsClient_NewListPager_listSupportTicketsCreatedOnOrAfterACertai
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/ListSupportTicketsCreatedOnOrAfterAndInUpdatingStateBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bcecb9990214471ee523e643da76a3a7c4170d2f/specification/support/resource-manager/Microsoft.Support/preview/2023-06-01-preview/examples/ListSupportTicketsCreatedOnOrAfterAndInUpdatingStateBySubscription.json
 func ExampleTicketsClient_NewListPager_listSupportTicketsCreatedOnOrAfterACertainDateAndInUpdatingStateForASubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -286,7 +286,7 @@ func ExampleTicketsClient_NewListPager_listSupportTicketsCreatedOnOrAfterACertai
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/ListSupportTicketsBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bcecb9990214471ee523e643da76a3a7c4170d2f/specification/support/resource-manager/Microsoft.Support/preview/2023-06-01-preview/examples/ListSupportTicketsBySubscription.json
 func ExampleTicketsClient_NewListPager_listSupportTicketsForASubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -406,7 +406,7 @@ func ExampleTicketsClient_NewListPager_listSupportTicketsForASubscription() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/ListSupportTicketsInOpenStateBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bcecb9990214471ee523e643da76a3a7c4170d2f/specification/support/resource-manager/Microsoft.Support/preview/2023-06-01-preview/examples/ListSupportTicketsInOpenStateBySubscription.json
 func ExampleTicketsClient_NewListPager_listSupportTicketsInOpenStateForASubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -526,7 +526,7 @@ func ExampleTicketsClient_NewListPager_listSupportTicketsInOpenStateForASubscrip
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/ListSupportTicketsInUpdatingStateBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bcecb9990214471ee523e643da76a3a7c4170d2f/specification/support/resource-manager/Microsoft.Support/preview/2023-06-01-preview/examples/ListSupportTicketsInUpdatingStateBySubscription.json
 func ExampleTicketsClient_NewListPager_listSupportTicketsInUpdatingStateForASubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -646,7 +646,7 @@ func ExampleTicketsClient_NewListPager_listSupportTicketsInUpdatingStateForASubs
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/ListSupportTicketsProblemClassificationIdEqualsForSubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bcecb9990214471ee523e643da76a3a7c4170d2f/specification/support/resource-manager/Microsoft.Support/preview/2023-06-01-preview/examples/ListSupportTicketsProblemClassificationIdEqualsForSubscription.json
 func ExampleTicketsClient_NewListPager_listSupportTicketsWithACertainProblemClassificationIdForASubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -749,7 +749,7 @@ func ExampleTicketsClient_NewListPager_listSupportTicketsWithACertainProblemClas
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/ListSupportTicketsServiceIdEqualsForSubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bcecb9990214471ee523e643da76a3a7c4170d2f/specification/support/resource-manager/Microsoft.Support/preview/2023-06-01-preview/examples/ListSupportTicketsServiceIdEqualsForSubscription.json
 func ExampleTicketsClient_NewListPager_listSupportTicketsWithACertainServiceIdForASubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -864,7 +864,7 @@ func ExampleTicketsClient_NewListPager_listSupportTicketsWithACertainServiceIdFo
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/GetSubscriptionSupportTicketDetails.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bcecb9990214471ee523e643da76a3a7c4170d2f/specification/support/resource-manager/Microsoft.Support/preview/2023-06-01-preview/examples/GetSubscriptionSupportTicketDetails.json
 func ExampleTicketsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -924,7 +924,7 @@ func ExampleTicketsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/UpdateAdvancedDiagnosticConsentOfSupportTicketForSubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bcecb9990214471ee523e643da76a3a7c4170d2f/specification/support/resource-manager/Microsoft.Support/preview/2023-06-01-preview/examples/UpdateAdvancedDiagnosticConsentOfSupportTicketForSubscription.json
 func ExampleTicketsClient_Update_updateAdvancedDiagnosticConsentOfASupportTicket() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -990,8 +990,8 @@ func ExampleTicketsClient_Update_updateAdvancedDiagnosticConsentOfASupportTicket
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/UpdateContactDetailsOfSupportTicketForSubscription.json
-func ExampleTicketsClient_Update_updateContactDetailsOfASupportTicket() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bcecb9990214471ee523e643da76a3a7c4170d2f/specification/support/resource-manager/Microsoft.Support/preview/2023-06-01-preview/examples/UpdateContactDetailsOfSupportTicketForSubscription.json
+func ExampleTicketsClient_Update_updateContactDetailsOfASubscriptionScopedSupportTicket() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1068,8 +1068,8 @@ func ExampleTicketsClient_Update_updateContactDetailsOfASupportTicket() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/UpdateSeverityOfSupportTicketForSubscription.json
-func ExampleTicketsClient_Update_updateSeverityOfASupportTicket() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bcecb9990214471ee523e643da76a3a7c4170d2f/specification/support/resource-manager/Microsoft.Support/preview/2023-06-01-preview/examples/UpdateSeverityOfSupportTicketForSubscription.json
+func ExampleTicketsClient_Update_updateSeverityOfASubscriptionScopedSupportTicket() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1133,8 +1133,8 @@ func ExampleTicketsClient_Update_updateSeverityOfASupportTicket() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/UpdateStatusOfSupportTicketForSubscription.json
-func ExampleTicketsClient_Update_updateStatusOfASupportTicket() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bcecb9990214471ee523e643da76a3a7c4170d2f/specification/support/resource-manager/Microsoft.Support/preview/2023-06-01-preview/examples/UpdateStatusOfSupportTicketForSubscription.json
+func ExampleTicketsClient_Update_updateStatusOfASubscriptionScopedSupportTicket() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1197,8 +1197,8 @@ func ExampleTicketsClient_Update_updateStatusOfASupportTicket() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/CreateBillingSupportTicketForSubscription.json
-func ExampleTicketsClient_BeginCreate_createATicketForBillingRelatedIssues() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bcecb9990214471ee523e643da76a3a7c4170d2f/specification/support/resource-manager/Microsoft.Support/preview/2023-06-01-preview/examples/CreateBillingSupportTicketForSubscription.json
+func ExampleTicketsClient_BeginCreate_createASubscriptionScopedTicketForBillingRelatedIssues() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1279,8 +1279,8 @@ func ExampleTicketsClient_BeginCreate_createATicketForBillingRelatedIssues() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/CreateSubMgmtSupportTicketForSubscription.json
-func ExampleTicketsClient_BeginCreate_createATicketForSubscriptionManagementRelatedIssues() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bcecb9990214471ee523e643da76a3a7c4170d2f/specification/support/resource-manager/Microsoft.Support/preview/2023-06-01-preview/examples/CreateSubMgmtSupportTicketForSubscription.json
+func ExampleTicketsClient_BeginCreate_createASubscriptionScopedTicketForSubscriptionManagementRelatedIssues() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1361,8 +1361,8 @@ func ExampleTicketsClient_BeginCreate_createATicketForSubscriptionManagementRela
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/CreateTechnicalSupportTicketForSubscription.json
-func ExampleTicketsClient_BeginCreate_createATicketForTechnicalIssueRelatedToASpecificResource() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bcecb9990214471ee523e643da76a3a7c4170d2f/specification/support/resource-manager/Microsoft.Support/preview/2023-06-01-preview/examples/CreateTechnicalSupportTicketForSubscription.json
+func ExampleTicketsClient_BeginCreate_createASubscriptionScopedTicketForTechnicalIssueRelatedToASpecificResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1463,7 +1463,7 @@ func ExampleTicketsClient_BeginCreate_createATicketForTechnicalIssueRelatedToASp
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/CreateBatchQuotaTicketForSpecificBatchAccountForActiveJobs.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bcecb9990214471ee523e643da76a3a7c4170d2f/specification/support/resource-manager/Microsoft.Support/preview/2023-06-01-preview/examples/CreateBatchQuotaTicketForSpecificBatchAccountForActiveJobs.json
 func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForActiveJobsAndJobSchedulesForABatchAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1564,7 +1564,7 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForActi
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/CreateSqlManagedInstanceQuotaTicket.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bcecb9990214471ee523e643da76a3a7c4170d2f/specification/support/resource-manager/Microsoft.Support/preview/2023-06-01-preview/examples/CreateSqlManagedInstanceQuotaTicket.json
 func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForAzureSqlManagedInstance() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1673,7 +1673,7 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForAzur
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/CreateBatchQuotaTicketForSubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bcecb9990214471ee523e643da76a3a7c4170d2f/specification/support/resource-manager/Microsoft.Support/preview/2023-06-01-preview/examples/CreateBatchQuotaTicketForSubscription.json
 func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForBatchAccountsForASubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1774,7 +1774,7 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForBatc
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/CreateCoresQuotaTicketForSubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bcecb9990214471ee523e643da76a3a7c4170d2f/specification/support/resource-manager/Microsoft.Support/preview/2023-06-01-preview/examples/CreateCoresQuotaTicketForSubscription.json
 func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForComputeVmCores() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1873,7 +1873,7 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForComp
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/CreateSqlDatawarehouseQuotaTicketForDTUs.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bcecb9990214471ee523e643da76a3a7c4170d2f/specification/support/resource-manager/Microsoft.Support/preview/2023-06-01-preview/examples/CreateSqlDatawarehouseQuotaTicketForDTUs.json
 func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForDtUsForAzureSynapseAnalytics() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1974,7 +1974,7 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForDtUs
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/CreateSqlDatabaseQuotaTicketForDTUs.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bcecb9990214471ee523e643da76a3a7c4170d2f/specification/support/resource-manager/Microsoft.Support/preview/2023-06-01-preview/examples/CreateSqlDatabaseQuotaTicketForDTUs.json
 func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForDtUsForSqlDatabase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2075,7 +2075,7 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForDtUs
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/CreateMachineLearningQuotaTicketForLowPriorityCores.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bcecb9990214471ee523e643da76a3a7c4170d2f/specification/support/resource-manager/Microsoft.Support/preview/2023-06-01-preview/examples/CreateMachineLearningQuotaTicketForLowPriorityCores.json
 func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForLowPriorityCoresForMachineLearningService() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2176,7 +2176,7 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForLowP
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/CreateBatchQuotaTicketForSpecificBatchAccountForLowPriorityCores.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bcecb9990214471ee523e643da76a3a7c4170d2f/specification/support/resource-manager/Microsoft.Support/preview/2023-06-01-preview/examples/CreateBatchQuotaTicketForSpecificBatchAccountForLowPriorityCores.json
 func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForLowPriorityCoresForABatchAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2277,7 +2277,7 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForLowP
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/CreateBatchQuotaTicketForSpecificBatchAccountForPools.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bcecb9990214471ee523e643da76a3a7c4170d2f/specification/support/resource-manager/Microsoft.Support/preview/2023-06-01-preview/examples/CreateBatchQuotaTicketForSpecificBatchAccountForPools.json
 func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForPoolsForABatchAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2378,7 +2378,7 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForPool
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/CreateSqlDatawarehouseQuotaTicketForServers.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bcecb9990214471ee523e643da76a3a7c4170d2f/specification/support/resource-manager/Microsoft.Support/preview/2023-06-01-preview/examples/CreateSqlDatawarehouseQuotaTicketForServers.json
 func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForServersForAzureSynapseAnalytics() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2479,7 +2479,7 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForServ
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/CreateSqlDatabaseQuotaTicketForServers.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bcecb9990214471ee523e643da76a3a7c4170d2f/specification/support/resource-manager/Microsoft.Support/preview/2023-06-01-preview/examples/CreateSqlDatabaseQuotaTicketForServers.json
 func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForServersForSqlDatabase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2580,7 +2580,7 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForServ
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/CreateGenericQuotaTicket.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bcecb9990214471ee523e643da76a3a7c4170d2f/specification/support/resource-manager/Microsoft.Support/preview/2023-06-01-preview/examples/CreateGenericQuotaTicket.json
 func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForServicesThatDoNotRequireAdditionalDetailsInTheQuotaTicketDetailsObject() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2658,7 +2658,7 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForServ
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/CreateMachineLearningQuotaTicketForDedicatedCores.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bcecb9990214471ee523e643da76a3a7c4170d2f/specification/support/resource-manager/Microsoft.Support/preview/2023-06-01-preview/examples/CreateMachineLearningQuotaTicketForDedicatedCores.json
 func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForSpecificVmFamilyCoresForMachineLearningService() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2759,7 +2759,7 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForSpec
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/CreateBatchQuotaTicketForSpecificBatchAccountForDedicatedCores.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bcecb9990214471ee523e643da76a3a7c4170d2f/specification/support/resource-manager/Microsoft.Support/preview/2023-06-01-preview/examples/CreateBatchQuotaTicketForSpecificBatchAccountForDedicatedCores.json
 func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForSpecificVmFamilyCoresForABatchAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

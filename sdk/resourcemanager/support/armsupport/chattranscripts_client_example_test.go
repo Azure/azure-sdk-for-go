@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/support/armsupport/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/ListChatTranscriptsForSubscriptionSupportTicket.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bcecb9990214471ee523e643da76a3a7c4170d2f/specification/support/resource-manager/Microsoft.Support/preview/2023-06-01-preview/examples/ListChatTranscriptsForSubscriptionSupportTicket.json
 func ExampleChatTranscriptsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -91,7 +91,7 @@ func ExampleChatTranscriptsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/GetchatTranscriptDetailsForSubscriptionSupportTicket.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bcecb9990214471ee523e643da76a3a7c4170d2f/specification/support/resource-manager/Microsoft.Support/preview/2023-06-01-preview/examples/GetchatTranscriptDetailsForSubscriptionSupportTicket.json
 func ExampleChatTranscriptsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

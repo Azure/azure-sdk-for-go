@@ -10,10 +10,10 @@ import (
 	"bytes"
 	"context"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/testcommon"
 	"log"
 	"os"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/pageblob"
@@ -45,10 +45,11 @@ func Example_pageblob_Client() {
 	_, err = pageBlobClient.Create(context.TODO(), pageblob.PageBytes*4, nil)
 	handleError(err)
 
+	// Upload 5 pages to the page blob
 	for i := 0; i < 5; i++ {
 		count := int64(1024)
-		reader, _ := testcommon.GenerateData(pageblob.PageBytes * 2)
-		_, err = pageBlobClient.UploadPages(context.Background(), reader,
+		page := make([]byte, 2*pageblob.PageBytes)
+		_, err = pageBlobClient.UploadPages(context.Background(), streaming.NopCloser(bytes.NewReader(page)),
 			blob.HTTPRange{Offset: int64(i) * count, Count: count}, nil)
 		handleError(err)
 	}

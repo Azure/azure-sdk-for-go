@@ -1,16 +1,10 @@
 # Release History
 
-## 0.4.1 (Unreleased)
-
-### Features Added
+## 0.4.1 (2024-03-05)
 
 ### Breaking Changes
 
 - This module has been moved from its previous location in `azeventgrid` to this location (`github.com/Azure/azure-sdk-for-go/sdk/messaging/eventgrid/aznamespaces`).
-
-### Bugs Fixed
-
-### Other Changes
 
 ## 0.4.0 (2023-11-27)
 

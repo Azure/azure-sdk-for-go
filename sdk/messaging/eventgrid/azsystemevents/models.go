@@ -10,6 +10,32 @@ package azsystemevents
 
 import "time"
 
+// APIDefinitionAddedEventData - Schema of the data property of an EventGridEvent for a Microsoft.ApiCenter.ApiDefinitionAdded
+// event.
+type APIDefinitionAddedEventData struct {
+	// API definition description.
+	Description *string
+
+	// API specification details.
+	Specification *APISpecificationDetails
+
+	// API definition title.
+	Title *string
+}
+
+// APIDefinitionUpdatedEventData - Schema of the data property of an EventGridEvent for a Microsoft.ApiCenter.ApiDefinitionUpdated
+// event.
+type APIDefinitionUpdatedEventData struct {
+	// API definition description.
+	Description *string
+
+	// API specification details.
+	Specification *APISpecificationDetails
+
+	// API definition title.
+	Title *string
+}
+
 // APIManagementAPICreatedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.ApiManagement.APICreated
 // event.
 type APIManagementAPICreatedEventData struct {
@@ -244,8 +270,17 @@ type APIManagementUserUpdatedEventData struct {
 	ResourceURI *string
 }
 
-// AcsChatEventBaseProperties - Schema of common properties of all chat events
-type AcsChatEventBaseProperties struct {
+// APISpecificationDetails - API specification details.
+type APISpecificationDetails struct {
+	// Specification name.
+	Name *string
+
+	// Specification version.
+	Version *string
+}
+
+// ACSChatEventBaseProperties - Schema of common properties of all chat events
+type ACSChatEventBaseProperties struct {
 	// The communication identifier of the target user
 	RecipientCommunicationIdentifier *CommunicationIdentifierModel
 
@@ -256,8 +291,8 @@ type AcsChatEventBaseProperties struct {
 	TransactionID *string
 }
 
-// AcsChatEventInThreadBaseProperties - Schema of common properties of all thread-level chat events
-type AcsChatEventInThreadBaseProperties struct {
+// ACSChatEventInThreadBaseProperties - Schema of common properties of all thread-level chat events
+type ACSChatEventInThreadBaseProperties struct {
 	// The chat thread id
 	ThreadID *string
 
@@ -265,9 +300,9 @@ type AcsChatEventInThreadBaseProperties struct {
 	TransactionID *string
 }
 
-// AcsChatMessageDeletedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.ChatMessageDeleted
+// ACSChatMessageDeletedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.ChatMessageDeleted
 // event.
-type AcsChatMessageDeletedEventData struct {
+type ACSChatMessageDeletedEventData struct {
 	// The original compose time of the message
 	ComposeTime *time.Time
 
@@ -299,9 +334,9 @@ type AcsChatMessageDeletedEventData struct {
 	Version *int64
 }
 
-// AcsChatMessageDeletedInThreadEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.ChatMessageDeletedInThread
+// ACSChatMessageDeletedInThreadEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.ChatMessageDeletedInThread
 // event.
-type AcsChatMessageDeletedInThreadEventData struct {
+type ACSChatMessageDeletedInThreadEventData struct {
 	// The original compose time of the message
 	ComposeTime *time.Time
 
@@ -330,9 +365,9 @@ type AcsChatMessageDeletedInThreadEventData struct {
 	Version *int64
 }
 
-// AcsChatMessageEditedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.ChatMessageEdited
+// ACSChatMessageEditedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.ChatMessageEdited
 // event.
-type AcsChatMessageEditedEventData struct {
+type ACSChatMessageEditedEventData struct {
 	// The original compose time of the message
 	ComposeTime *time.Time
 
@@ -370,9 +405,9 @@ type AcsChatMessageEditedEventData struct {
 	Version *int64
 }
 
-// AcsChatMessageEditedInThreadEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.ChatMessageEditedInThread
+// ACSChatMessageEditedInThreadEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.ChatMessageEditedInThread
 // event.
-type AcsChatMessageEditedInThreadEventData struct {
+type ACSChatMessageEditedInThreadEventData struct {
 	// The original compose time of the message
 	ComposeTime *time.Time
 
@@ -407,8 +442,8 @@ type AcsChatMessageEditedInThreadEventData struct {
 	Version *int64
 }
 
-// AcsChatMessageEventBaseProperties - Schema of common properties of all chat message events
-type AcsChatMessageEventBaseProperties struct {
+// ACSChatMessageEventBaseProperties - Schema of common properties of all chat message events
+type ACSChatMessageEventBaseProperties struct {
 	// The original compose time of the message
 	ComposeTime *time.Time
 
@@ -437,8 +472,8 @@ type AcsChatMessageEventBaseProperties struct {
 	Version *int64
 }
 
-// AcsChatMessageEventInThreadBaseProperties - Schema of common properties of all thread-level chat message events
-type AcsChatMessageEventInThreadBaseProperties struct {
+// ACSChatMessageEventInThreadBaseProperties - Schema of common properties of all thread-level chat message events
+type ACSChatMessageEventInThreadBaseProperties struct {
 	// The original compose time of the message
 	ComposeTime *time.Time
 
@@ -464,9 +499,9 @@ type AcsChatMessageEventInThreadBaseProperties struct {
 	Version *int64
 }
 
-// AcsChatMessageReceivedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.ChatMessageReceived
+// ACSChatMessageReceivedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.ChatMessageReceived
 // event.
-type AcsChatMessageReceivedEventData struct {
+type ACSChatMessageReceivedEventData struct {
 	// The original compose time of the message
 	ComposeTime *time.Time
 
@@ -501,9 +536,9 @@ type AcsChatMessageReceivedEventData struct {
 	Version *int64
 }
 
-// AcsChatMessageReceivedInThreadEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.ChatMessageReceivedInThread
+// ACSChatMessageReceivedInThreadEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.ChatMessageReceivedInThread
 // event.
-type AcsChatMessageReceivedInThreadEventData struct {
+type ACSChatMessageReceivedInThreadEventData struct {
 	// The original compose time of the message
 	ComposeTime *time.Time
 
@@ -535,14 +570,14 @@ type AcsChatMessageReceivedInThreadEventData struct {
 	Version *int64
 }
 
-// AcsChatParticipantAddedToThreadEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.ChatThreadParticipantAdded
+// ACSChatParticipantAddedToThreadEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.ChatThreadParticipantAdded
 // event.
-type AcsChatParticipantAddedToThreadEventData struct {
+type ACSChatParticipantAddedToThreadEventData struct {
 	// The communication identifier of the user who added the user
 	AddedByCommunicationIdentifier *CommunicationIdentifierModel
 
 	// The details of the user who was added
-	ParticipantAdded *AcsChatThreadParticipantProperties
+	ParticipantAdded *ACSChatThreadParticipantProperties
 
 	// The chat thread id
 	ThreadID *string
@@ -557,9 +592,9 @@ type AcsChatParticipantAddedToThreadEventData struct {
 	Version *int64
 }
 
-// AcsChatParticipantAddedToThreadWithUserEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.ChatParticipantAddedToThreadWithUser
+// ACSChatParticipantAddedToThreadWithUserEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.ChatParticipantAddedToThreadWithUser
 // event.
-type AcsChatParticipantAddedToThreadWithUserEventData struct {
+type ACSChatParticipantAddedToThreadWithUserEventData struct {
 	// The communication identifier of the user who added the user
 	AddedByCommunicationIdentifier *CommunicationIdentifierModel
 
@@ -567,7 +602,7 @@ type AcsChatParticipantAddedToThreadWithUserEventData struct {
 	CreateTime *time.Time
 
 	// The details of the user who was added
-	ParticipantAdded *AcsChatThreadParticipantProperties
+	ParticipantAdded *ACSChatThreadParticipantProperties
 
 	// The communication identifier of the target user
 	RecipientCommunicationIdentifier *CommunicationIdentifierModel
@@ -585,11 +620,11 @@ type AcsChatParticipantAddedToThreadWithUserEventData struct {
 	Version *int64
 }
 
-// AcsChatParticipantRemovedFromThreadEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.ChatThreadParticipantRemoved
+// ACSChatParticipantRemovedFromThreadEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.ChatThreadParticipantRemoved
 // event.
-type AcsChatParticipantRemovedFromThreadEventData struct {
+type ACSChatParticipantRemovedFromThreadEventData struct {
 	// The details of the user who was removed
-	ParticipantRemoved *AcsChatThreadParticipantProperties
+	ParticipantRemoved *ACSChatThreadParticipantProperties
 
 	// The communication identifier of the user who removed the user
 	RemovedByCommunicationIdentifier *CommunicationIdentifierModel
@@ -607,14 +642,14 @@ type AcsChatParticipantRemovedFromThreadEventData struct {
 	Version *int64
 }
 
-// AcsChatParticipantRemovedFromThreadWithUserEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.ChatParticipantRemovedFromThreadWithUser
+// ACSChatParticipantRemovedFromThreadWithUserEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.ChatParticipantRemovedFromThreadWithUser
 // event.
-type AcsChatParticipantRemovedFromThreadWithUserEventData struct {
+type ACSChatParticipantRemovedFromThreadWithUserEventData struct {
 	// The original creation time of the thread
 	CreateTime *time.Time
 
 	// The details of the user who was removed
-	ParticipantRemoved *AcsChatThreadParticipantProperties
+	ParticipantRemoved *ACSChatThreadParticipantProperties
 
 	// The communication identifier of the target user
 	RecipientCommunicationIdentifier *CommunicationIdentifierModel
@@ -635,17 +670,20 @@ type AcsChatParticipantRemovedFromThreadWithUserEventData struct {
 	Version *int64
 }
 
-// AcsChatThreadCreatedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.ChatThreadCreated
+// ACSChatThreadCreatedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.ChatThreadCreated
 // event.
-type AcsChatThreadCreatedEventData struct {
+type ACSChatThreadCreatedEventData struct {
 	// The original creation time of the thread
 	CreateTime *time.Time
 
 	// The communication identifier of the user who created the thread
 	CreatedByCommunicationIdentifier *CommunicationIdentifierModel
 
+	// The chat thread created metadata
+	Metadata map[string]*string
+
 	// The list of properties of participants who are part of the thread
-	Participants []AcsChatThreadParticipantProperties
+	Participants []ACSChatThreadParticipantProperties
 
 	// The thread properties
 	Properties map[string]any
@@ -660,9 +698,9 @@ type AcsChatThreadCreatedEventData struct {
 	Version *int64
 }
 
-// AcsChatThreadCreatedWithUserEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.ChatThreadCreatedWithUser
+// ACSChatThreadCreatedWithUserEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.ChatThreadCreatedWithUser
 // event.
-type AcsChatThreadCreatedWithUserEventData struct {
+type ACSChatThreadCreatedWithUserEventData struct {
 	// The original creation time of the thread
 	CreateTime *time.Time
 
@@ -673,7 +711,7 @@ type AcsChatThreadCreatedWithUserEventData struct {
 	Metadata map[string]*string
 
 	// The list of properties of participants who are part of the thread
-	Participants []AcsChatThreadParticipantProperties
+	Participants []ACSChatThreadParticipantProperties
 
 	// The thread properties
 	Properties map[string]any
@@ -691,9 +729,9 @@ type AcsChatThreadCreatedWithUserEventData struct {
 	Version *int64
 }
 
-// AcsChatThreadDeletedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.ChatThreadDeleted
+// ACSChatThreadDeletedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.ChatThreadDeleted
 // event.
-type AcsChatThreadDeletedEventData struct {
+type ACSChatThreadDeletedEventData struct {
 	// The original creation time of the thread
 	CreateTime *time.Time
 
@@ -713,8 +751,8 @@ type AcsChatThreadDeletedEventData struct {
 	Version *int64
 }
 
-// AcsChatThreadEventBaseProperties - Schema of common properties of all chat thread events
-type AcsChatThreadEventBaseProperties struct {
+// ACSChatThreadEventBaseProperties - Schema of common properties of all chat thread events
+type ACSChatThreadEventBaseProperties struct {
 	// The original creation time of the thread
 	CreateTime *time.Time
 
@@ -731,8 +769,8 @@ type AcsChatThreadEventBaseProperties struct {
 	Version *int64
 }
 
-// AcsChatThreadEventInThreadBaseProperties - Schema of common properties of all chat thread events
-type AcsChatThreadEventInThreadBaseProperties struct {
+// ACSChatThreadEventInThreadBaseProperties - Schema of common properties of all chat thread events
+type ACSChatThreadEventInThreadBaseProperties struct {
 	// The original creation time of the thread
 	CreateTime *time.Time
 
@@ -746,8 +784,8 @@ type AcsChatThreadEventInThreadBaseProperties struct {
 	Version *int64
 }
 
-// AcsChatThreadParticipantProperties - Schema of the chat thread participant
-type AcsChatThreadParticipantProperties struct {
+// ACSChatThreadParticipantProperties - Schema of the chat thread participant
+type ACSChatThreadParticipantProperties struct {
 	// The name of the user
 	DisplayName *string
 
@@ -758,9 +796,9 @@ type AcsChatThreadParticipantProperties struct {
 	ParticipantCommunicationIdentifier *CommunicationIdentifierModel
 }
 
-// AcsChatThreadPropertiesUpdatedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.ChatThreadPropertiesUpdated
+// ACSChatThreadPropertiesUpdatedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.ChatThreadPropertiesUpdated
 // event.
-type AcsChatThreadPropertiesUpdatedEventData struct {
+type ACSChatThreadPropertiesUpdatedEventData struct {
 	// The original creation time of the thread
 	CreateTime *time.Time
 
@@ -786,9 +824,9 @@ type AcsChatThreadPropertiesUpdatedEventData struct {
 	Version *int64
 }
 
-// AcsChatThreadPropertiesUpdatedPerUserEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.ChatThreadPropertiesUpdatedPerUser
+// ACSChatThreadPropertiesUpdatedPerUserEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.ChatThreadPropertiesUpdatedPerUser
 // event.
-type AcsChatThreadPropertiesUpdatedPerUserEventData struct {
+type ACSChatThreadPropertiesUpdatedPerUserEventData struct {
 	// The original creation time of the thread
 	CreateTime *time.Time
 
@@ -817,9 +855,9 @@ type AcsChatThreadPropertiesUpdatedPerUserEventData struct {
 	Version *int64
 }
 
-// AcsChatThreadWithUserDeletedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.ChatThreadWithUserDeleted
+// ACSChatThreadWithUserDeletedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.ChatThreadWithUserDeleted
 // event.
-type AcsChatThreadWithUserDeletedEventData struct {
+type ACSChatThreadWithUserDeletedEventData struct {
 	// The original creation time of the thread
 	CreateTime *time.Time
 
@@ -842,9 +880,9 @@ type AcsChatThreadWithUserDeletedEventData struct {
 	Version *int64
 }
 
-// AcsEmailDeliveryReportReceivedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.EmailDeliveryReportReceived
+// ACSEmailDeliveryReportReceivedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.EmailDeliveryReportReceived
 // event.
-type AcsEmailDeliveryReportReceivedEventData struct {
+type ACSEmailDeliveryReportReceivedEventData struct {
 	// The time at which the email delivery report received timestamp
 	DeliveryAttemptTimestamp *time.Time
 
@@ -870,9 +908,9 @@ type AcsEmailDeliveryReportStatusDetails struct {
 	StatusMessage *string
 }
 
-// AcsEmailEngagementTrackingReportReceivedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.EmailEngagementTrackingReportReceived
+// ACSEmailEngagementTrackingReportReceivedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.EmailEngagementTrackingReportReceived
 // event.
-type AcsEmailEngagementTrackingReportReceivedEventData struct {
+type ACSEmailEngagementTrackingReportReceivedEventData struct {
 	// The type of engagement user have with email
 	Engagement *AcsUserEngagement
 
@@ -904,9 +942,9 @@ type AcsIncomingCallCustomContext struct {
 	VoipHeaders map[string]*string
 }
 
-// AcsIncomingCallEventData - Schema of the Data property of an CloudEvent/EventGridEvent for an Microsoft.Communication.IncomingCall
+// ACSIncomingCallEventData - Schema of the Data property of an CloudEvent/EventGridEvent for an Microsoft.Communication.IncomingCall
 // event
-type AcsIncomingCallEventData struct {
+type ACSIncomingCallEventData struct {
 	// Display name of caller.
 	CallerDisplayName *string
 
@@ -929,8 +967,8 @@ type AcsIncomingCallEventData struct {
 	ToCommunicationIdentifier *CommunicationIdentifierModel
 }
 
-// AcsRecordingChunkInfoProperties - Schema for all properties of Recording Chunk Information.
-type AcsRecordingChunkInfoProperties struct {
+// ACSRecordingChunkInfoProperties - Schema for all properties of Recording Chunk Information.
+type ACSRecordingChunkInfoProperties struct {
 	// The location of the content for this chunk
 	ContentLocation *string
 
@@ -950,9 +988,9 @@ type AcsRecordingChunkInfoProperties struct {
 	MetadataLocation *string
 }
 
-// AcsRecordingFileStatusUpdatedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.RecordingFileStatusUpdated
+// ACSRecordingFileStatusUpdatedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.RecordingFileStatusUpdated
 // event.
-type AcsRecordingFileStatusUpdatedEventData struct {
+type ACSRecordingFileStatusUpdatedEventData struct {
 	// The recording channel type - Mixed, Unmixed
 	RecordingChannelType *RecordingChannelType
 
@@ -969,16 +1007,16 @@ type AcsRecordingFileStatusUpdatedEventData struct {
 	RecordingStartTime *time.Time
 
 	// The details of recording storage information
-	RecordingStorageInfo *AcsRecordingStorageInfoProperties
+	RecordingStorageInfo *ACSRecordingStorageInfoProperties
 
 	// The reason for ending recording session
 	SessionEndReason *string
 }
 
-// AcsRecordingStorageInfoProperties - Schema for all properties of Recording Storage Information.
-type AcsRecordingStorageInfoProperties struct {
+// ACSRecordingStorageInfoProperties - Schema for all properties of Recording Storage Information.
+type ACSRecordingStorageInfoProperties struct {
 	// List of details of recording chunks information
-	RecordingChunks []AcsRecordingChunkInfoProperties
+	RecordingChunks []ACSRecordingChunkInfoProperties
 }
 
 // AcsRouterChannelConfiguration - Router Channel Configuration
@@ -1011,8 +1049,8 @@ type AcsRouterCommunicationError struct {
 	Target *string
 }
 
-// AcsRouterEventData - Schema of common properties of all Router events
-type AcsRouterEventData struct {
+// ACSRouterEventData - Schema of common properties of all Router events
+type ACSRouterEventData struct {
 	// Router Event Channel ID
 	ChannelID *string
 
@@ -1023,9 +1061,9 @@ type AcsRouterEventData struct {
 	JobID *string
 }
 
-// AcsRouterJobCancelledEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.RouterJobCancelled
+// ACSRouterJobCancelledEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.RouterJobCancelled
 // event
-type AcsRouterJobCancelledEventData struct {
+type ACSRouterJobCancelledEventData struct {
 	// Router Event Channel ID
 	ChannelID *string
 
@@ -1051,9 +1089,9 @@ type AcsRouterJobCancelledEventData struct {
 	Tags map[string]*string
 }
 
-// AcsRouterJobClassificationFailedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.RouterJobClassificationFailed
+// ACSRouterJobClassificationFailedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.RouterJobClassificationFailed
 // event
-type AcsRouterJobClassificationFailedEventData struct {
+type ACSRouterJobClassificationFailedEventData struct {
 	// Router Event Channel ID
 	ChannelID *string
 
@@ -1079,9 +1117,9 @@ type AcsRouterJobClassificationFailedEventData struct {
 	Tags map[string]*string
 }
 
-// AcsRouterJobClassifiedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.RouterJobClassified
+// ACSRouterJobClassifiedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.RouterJobClassified
 // event
-type AcsRouterJobClassifiedEventData struct {
+type ACSRouterJobClassifiedEventData struct {
 	// Router Job Attached Worker Selector
 	AttachedWorkerSelectors []AcsRouterWorkerSelector
 
@@ -1113,9 +1151,9 @@ type AcsRouterJobClassifiedEventData struct {
 	Tags map[string]*string
 }
 
-// AcsRouterJobClosedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.RouterJobClosed
+// ACSRouterJobClosedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.RouterJobClosed
 // event
-type AcsRouterJobClosedEventData struct {
+type ACSRouterJobClosedEventData struct {
 	// Router Job Closed Assignment Id
 	AssignmentID *string
 
@@ -1144,9 +1182,9 @@ type AcsRouterJobClosedEventData struct {
 	WorkerID *string
 }
 
-// AcsRouterJobCompletedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.RouterJobCompleted
+// ACSRouterJobCompletedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.RouterJobCompleted
 // event
-type AcsRouterJobCompletedEventData struct {
+type ACSRouterJobCompletedEventData struct {
 	// Router Job Completed Assignment Id
 	AssignmentID *string
 
@@ -1172,9 +1210,9 @@ type AcsRouterJobCompletedEventData struct {
 	WorkerID *string
 }
 
-// AcsRouterJobDeletedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.RouterJobDeleted
+// ACSRouterJobDeletedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.RouterJobDeleted
 // event
-type AcsRouterJobDeletedEventData struct {
+type ACSRouterJobDeletedEventData struct {
 	// Router Event Channel ID
 	ChannelID *string
 
@@ -1194,8 +1232,8 @@ type AcsRouterJobDeletedEventData struct {
 	Tags map[string]*string
 }
 
-// AcsRouterJobEventData - Schema of common properties of all Router Job events
-type AcsRouterJobEventData struct {
+// ACSRouterJobEventData - Schema of common properties of all Router Job events
+type ACSRouterJobEventData struct {
 	// Router Event Channel ID
 	ChannelID *string
 
@@ -1215,9 +1253,9 @@ type AcsRouterJobEventData struct {
 	Tags map[string]*string
 }
 
-// AcsRouterJobExceptionTriggeredEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.RouterJobExceptionTriggered
+// ACSRouterJobExceptionTriggeredEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.RouterJobExceptionTriggered
 // event
-type AcsRouterJobExceptionTriggeredEventData struct {
+type ACSRouterJobExceptionTriggeredEventData struct {
 	// Router Event Channel ID
 	ChannelID *string
 
@@ -1243,9 +1281,9 @@ type AcsRouterJobExceptionTriggeredEventData struct {
 	Tags map[string]*string
 }
 
-// AcsRouterJobQueuedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.RouterJobQueued
+// ACSRouterJobQueuedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.RouterJobQueued
 // event
-type AcsRouterJobQueuedEventData struct {
+type ACSRouterJobQueuedEventData struct {
 	// Router Job Queued Attached Worker Selector
 	AttachedWorkerSelectors []AcsRouterWorkerSelector
 
@@ -1274,9 +1312,9 @@ type AcsRouterJobQueuedEventData struct {
 	Tags map[string]*string
 }
 
-// AcsRouterJobReceivedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.RouterJobReceived
+// ACSRouterJobReceivedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.RouterJobReceived
 // event
-type AcsRouterJobReceivedEventData struct {
+type ACSRouterJobReceivedEventData struct {
 	// REQUIRED; Unavailable For Matching for Router Job Received
 	UnavailableForMatching *bool
 
@@ -1314,9 +1352,9 @@ type AcsRouterJobReceivedEventData struct {
 	Tags map[string]*string
 }
 
-// AcsRouterJobSchedulingFailedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.RouterJobSchedulingFailed
+// ACSRouterJobSchedulingFailedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.RouterJobSchedulingFailed
 // event
-type AcsRouterJobSchedulingFailedEventData struct {
+type ACSRouterJobSchedulingFailedEventData struct {
 	// Router Event Channel ID
 	ChannelID *string
 
@@ -1351,9 +1389,9 @@ type AcsRouterJobSchedulingFailedEventData struct {
 	Tags map[string]*string
 }
 
-// AcsRouterJobUnassignedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.RouterJobUnassigned
+// ACSRouterJobUnassignedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.RouterJobUnassigned
 // event
-type AcsRouterJobUnassignedEventData struct {
+type ACSRouterJobUnassignedEventData struct {
 	// Router Job Unassigned Assignment Id
 	AssignmentID *string
 
@@ -1379,9 +1417,9 @@ type AcsRouterJobUnassignedEventData struct {
 	WorkerID *string
 }
 
-// AcsRouterJobWaitingForActivationEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.RouterJobWaitingForActivation
+// ACSRouterJobWaitingForActivationEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.RouterJobWaitingForActivation
 // event
-type AcsRouterJobWaitingForActivationEventData struct {
+type ACSRouterJobWaitingForActivationEventData struct {
 	// REQUIRED; Router Job Waiting For Activation Unavailable For Matching
 	UnavailableForMatching *bool
 
@@ -1416,9 +1454,9 @@ type AcsRouterJobWaitingForActivationEventData struct {
 	Tags map[string]*string
 }
 
-// AcsRouterJobWorkerSelectorsExpiredEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.RouterJobWorkerSelectorsExpired
+// ACSRouterJobWorkerSelectorsExpiredEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.RouterJobWorkerSelectorsExpired
 // event
-type AcsRouterJobWorkerSelectorsExpiredEventData struct {
+type ACSRouterJobWorkerSelectorsExpiredEventData struct {
 	// Router Event Channel ID
 	ChannelID *string
 
@@ -1456,9 +1494,9 @@ type AcsRouterQueueDetails struct {
 	Name *string
 }
 
-// AcsRouterWorkerDeletedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.RouterWorkerDeleted
+// ACSRouterWorkerDeletedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.RouterWorkerDeleted
 // event
-type AcsRouterWorkerDeletedEventData struct {
+type ACSRouterWorkerDeletedEventData struct {
 	// Router Event Channel ID
 	ChannelID *string
 
@@ -1472,15 +1510,15 @@ type AcsRouterWorkerDeletedEventData struct {
 	WorkerID *string
 }
 
-// AcsRouterWorkerDeregisteredEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.RouterWorkerDeregistered
+// ACSRouterWorkerDeregisteredEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.RouterWorkerDeregistered
 // event
-type AcsRouterWorkerDeregisteredEventData struct {
+type ACSRouterWorkerDeregisteredEventData struct {
 	// Router Worker Deregistered Worker Id
 	WorkerID *string
 }
 
-// AcsRouterWorkerEventData - Schema of common properties of all Router Worker events
-type AcsRouterWorkerEventData struct {
+// ACSRouterWorkerEventData - Schema of common properties of all Router Worker events
+type ACSRouterWorkerEventData struct {
 	// Router Event Channel ID
 	ChannelID *string
 
@@ -1494,9 +1532,9 @@ type AcsRouterWorkerEventData struct {
 	WorkerID *string
 }
 
-// AcsRouterWorkerOfferAcceptedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.RouterWorkerOfferAccepted
+// ACSRouterWorkerOfferAcceptedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.RouterWorkerOfferAccepted
 // event
-type AcsRouterWorkerOfferAcceptedEventData struct {
+type ACSRouterWorkerOfferAcceptedEventData struct {
 	// Router Worker Offer Accepted Assignment Id
 	AssignmentID *string
 
@@ -1534,9 +1572,9 @@ type AcsRouterWorkerOfferAcceptedEventData struct {
 	WorkerTags map[string]*string
 }
 
-// AcsRouterWorkerOfferDeclinedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.RouterWorkerOfferDeclined
+// ACSRouterWorkerOfferDeclinedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.RouterWorkerOfferDeclined
 // event
-type AcsRouterWorkerOfferDeclinedEventData struct {
+type ACSRouterWorkerOfferDeclinedEventData struct {
 	// Router Event Channel ID
 	ChannelID *string
 
@@ -1556,9 +1594,9 @@ type AcsRouterWorkerOfferDeclinedEventData struct {
 	WorkerID *string
 }
 
-// AcsRouterWorkerOfferExpiredEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.RouterWorkerOfferExpired
+// ACSRouterWorkerOfferExpiredEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.RouterWorkerOfferExpired
 // event
-type AcsRouterWorkerOfferExpiredEventData struct {
+type ACSRouterWorkerOfferExpiredEventData struct {
 	// Router Event Channel ID
 	ChannelID *string
 
@@ -1578,9 +1616,9 @@ type AcsRouterWorkerOfferExpiredEventData struct {
 	WorkerID *string
 }
 
-// AcsRouterWorkerOfferIssuedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.RouterWorkerOfferIssued
+// ACSRouterWorkerOfferIssuedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.RouterWorkerOfferIssued
 // event
-type AcsRouterWorkerOfferIssuedEventData struct {
+type ACSRouterWorkerOfferIssuedEventData struct {
 	// Router Event Channel ID
 	ChannelID *string
 
@@ -1621,9 +1659,9 @@ type AcsRouterWorkerOfferIssuedEventData struct {
 	WorkerTags map[string]*string
 }
 
-// AcsRouterWorkerOfferRevokedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.RouterWorkerOfferRevoked
+// ACSRouterWorkerOfferRevokedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.RouterWorkerOfferRevoked
 // event
-type AcsRouterWorkerOfferRevokedEventData struct {
+type ACSRouterWorkerOfferRevokedEventData struct {
 	// Router Event Channel ID
 	ChannelID *string
 
@@ -1643,9 +1681,9 @@ type AcsRouterWorkerOfferRevokedEventData struct {
 	WorkerID *string
 }
 
-// AcsRouterWorkerRegisteredEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.RouterWorkerRegistered
+// ACSRouterWorkerRegisteredEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.RouterWorkerRegistered
 // event
-type AcsRouterWorkerRegisteredEventData struct {
+type ACSRouterWorkerRegisteredEventData struct {
 	// Router Worker Registered Channel Configuration
 	ChannelConfigurations []AcsRouterChannelConfiguration
 
@@ -1686,8 +1724,8 @@ type AcsRouterWorkerSelector struct {
 	TimeToLive *float32
 }
 
-// AcsSmsDeliveryAttemptProperties - Schema for details of a delivery attempt
-type AcsSmsDeliveryAttemptProperties struct {
+// ACSSmsDeliveryAttemptProperties - Schema for details of a delivery attempt
+type ACSSmsDeliveryAttemptProperties struct {
 	// Number of segments whose delivery failed
 	SegmentsFailed *int32
 
@@ -1698,11 +1736,11 @@ type AcsSmsDeliveryAttemptProperties struct {
 	Timestamp *time.Time
 }
 
-// AcsSmsDeliveryReportReceivedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.SMSDeliveryReportReceived
+// ACSSmsDeliveryReportReceivedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.SMSDeliveryReportReceived
 // event.
-type AcsSmsDeliveryReportReceivedEventData struct {
+type ACSSmsDeliveryReportReceivedEventData struct {
 	// List of details of delivery attempts made
-	DeliveryAttempts []AcsSmsDeliveryAttemptProperties
+	DeliveryAttempts []ACSSmsDeliveryAttemptProperties
 
 	// Status of Delivery
 	DeliveryStatus *string
@@ -1726,8 +1764,8 @@ type AcsSmsDeliveryReportReceivedEventData struct {
 	To *string
 }
 
-// AcsSmsEventBaseProperties - Schema of common properties of all SMS events
-type AcsSmsEventBaseProperties struct {
+// ACSSmsEventBaseProperties - Schema of common properties of all SMS events
+type ACSSmsEventBaseProperties struct {
 	// The identity of SMS message sender
 	From *string
 
@@ -1738,8 +1776,8 @@ type AcsSmsEventBaseProperties struct {
 	To *string
 }
 
-// AcsSmsReceivedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.SMSReceived event.
-type AcsSmsReceivedEventData struct {
+// ACSSmsReceivedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.SMSReceived event.
+type ACSSmsReceivedEventData struct {
 	// The identity of SMS message sender
 	From *string
 
@@ -1756,9 +1794,9 @@ type AcsSmsReceivedEventData struct {
 	To *string
 }
 
-// AcsUserDisconnectedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for an Microsoft.Communication.UserDisconnected
+// ACSUserDisconnectedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for an Microsoft.Communication.UserDisconnected
 // event.
-type AcsUserDisconnectedEventData struct {
+type ACSUserDisconnectedEventData struct {
 	// The communication identifier of the user who was disconnected
 	UserCommunicationIdentifier *CommunicationIdentifierModel
 }
@@ -1849,6 +1887,166 @@ type AppServicePlanEventTypeDetail struct {
 
 	// Asynchronous operation status of the operation on the app service plan.
 	Status *AsyncStatus
+}
+
+// AVSClusterCreatedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.AVS.ClusterCreated event.
+type AVSClusterCreatedEventData struct {
+	// Hosts added to the cluster in this event, if any.
+	AddedHostNames []string
+
+	// Hosts in Maintenance mode in the cluster, if any.
+	InMaintenanceHostNames []string
+
+	// Id of the operation that caused this event.
+	OperationID *string
+
+	// Hosts removed to the cluster in this event, if any.
+	RemovedHostNames []string
+}
+
+// AVSClusterDeletedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.AVS.ClusterDeleted event.
+type AVSClusterDeletedEventData struct {
+	// Hosts added to the cluster in this event, if any.
+	AddedHostNames []string
+
+	// Hosts in Maintenance mode in the cluster, if any.
+	InMaintenanceHostNames []string
+
+	// Id of the operation that caused this event.
+	OperationID *string
+
+	// Hosts removed to the cluster in this event, if any.
+	RemovedHostNames []string
+}
+
+// AVSClusterFailedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.AVS.ClusterFailed event.
+type AVSClusterFailedEventData struct {
+	// Hosts added to the cluster in this event, if any.
+	AddedHostNames []string
+
+	// Failure reason of an event.
+	FailureMessage *string
+
+	// Hosts in Maintenance mode in the cluster, if any.
+	InMaintenanceHostNames []string
+
+	// Id of the operation that caused this event.
+	OperationID *string
+
+	// Hosts removed to the cluster in this event, if any.
+	RemovedHostNames []string
+}
+
+// AVSClusterUpdatedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.AVS.ClusterUpdated event.
+type AVSClusterUpdatedEventData struct {
+	// Hosts added to the cluster in this event, if any.
+	AddedHostNames []string
+
+	// Hosts in Maintenance mode in the cluster, if any.
+	InMaintenanceHostNames []string
+
+	// Id of the operation that caused this event.
+	OperationID *string
+
+	// Hosts removed to the cluster in this event, if any.
+	RemovedHostNames []string
+}
+
+// AVSClusterUpdatingEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.AVS.ClusterUpdating event.
+type AVSClusterUpdatingEventData struct {
+	// Hosts added to the cluster in this event, if any.
+	AddedHostNames []string
+
+	// Hosts in Maintenance mode in the cluster, if any.
+	InMaintenanceHostNames []string
+
+	// Id of the operation that caused this event.
+	OperationID *string
+
+	// Hosts removed to the cluster in this event, if any.
+	RemovedHostNames []string
+}
+
+// AVSPrivateCloudFailedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.AVS.PrivateCloudFailed
+// event.
+type AVSPrivateCloudFailedEventData struct {
+	// Failure reason of an event.
+	FailureMessage *string
+
+	// Id of the operation that caused this event.
+	OperationID *string
+}
+
+// AVSPrivateCloudUpdatedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.AVS.PrivateCloudUpdated
+// event.
+type AVSPrivateCloudUpdatedEventData struct {
+	// Id of the operation that caused this event.
+	OperationID *string
+}
+
+// AVSPrivateCloudUpdatingEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.AVS.PrivateCloudUpdating
+// event.
+type AVSPrivateCloudUpdatingEventData struct {
+	// Id of the operation that caused this event.
+	OperationID *string
+}
+
+// AVSScriptExecutionCancelledEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.AVS.ScriptExecutionCancelled
+// event.
+type AVSScriptExecutionCancelledEventData struct {
+	// Cmdlet referenced in the execution that caused this event.
+	CmdletID *string
+
+	// Id of the operation that caused this event.
+	OperationID *string
+
+	// Stdout outputs from the execution, if any.
+	Output []string
+}
+
+// AVSScriptExecutionFailedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.AVS.ScriptExecutionFailed
+// event.
+type AVSScriptExecutionFailedEventData struct {
+	// Cmdlet referenced in the execution that caused this event.
+	CmdletID *string
+
+	// Failure reason of an event.
+	FailureMessage *string
+
+	// Id of the operation that caused this event.
+	OperationID *string
+
+	// Stdout outputs from the execution, if any.
+	Output []string
+}
+
+// AVSScriptExecutionFinishedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.AVS.ScriptExecutionFinished
+// event.
+type AVSScriptExecutionFinishedEventData struct {
+	// Cmdlet referenced in the execution that caused this event.
+	CmdletID *string
+
+	// Named outputs of completed execution, if any.
+	NamedOutputs map[string]*string
+
+	// Id of the operation that caused this event.
+	OperationID *string
+
+	// Stdout outputs from the execution, if any.
+	Output []string
+}
+
+// AVSScriptExecutionStartedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.AVS.ScriptExecutionStarted
+// event.
+type AVSScriptExecutionStartedEventData struct {
+	// Cmdlet referenced in the execution that caused this event.
+	CmdletID *string
+
+	// Id of the operation that caused this event.
+	OperationID *string
+
+	// Stdout outputs from the execution, if any.
+	Output []string
 }
 
 // CommunicationIdentifierModel - Identifies a participant in Azure Communication services. A participant is, for example,
@@ -2629,8 +2827,8 @@ type HealthcareFhirResourceUpdatedEventData struct {
 	FhirServiceHostName *string
 }
 
-// IotHubDeviceConnectedEventData - Event data for Microsoft.Devices.DeviceConnected event.
-type IotHubDeviceConnectedEventData struct {
+// IOTHubDeviceConnectedEventData - Event data for Microsoft.Devices.DeviceConnected event.
+type IOTHubDeviceConnectedEventData struct {
 	// Information about the device connection state event.
 	DeviceConnectionStateEventInfo *DeviceConnectionStateEventInfo
 
@@ -2648,8 +2846,8 @@ type IotHubDeviceConnectedEventData struct {
 	ModuleID *string
 }
 
-// IotHubDeviceCreatedEventData - Event data for Microsoft.Devices.DeviceCreated event.
-type IotHubDeviceCreatedEventData struct {
+// IOTHubDeviceCreatedEventData - Event data for Microsoft.Devices.DeviceCreated event.
+type IOTHubDeviceCreatedEventData struct {
 	// The unique identifier of the device. This case-sensitive string can be up to 128 characters long, and supports ASCII 7-bit
 	// alphanumeric characters plus the following special characters: - : . + % _ #
 	// * ? ! ( ) , = @ ; $ '.
@@ -2662,8 +2860,8 @@ type IotHubDeviceCreatedEventData struct {
 	Twin *DeviceTwinInfo
 }
 
-// IotHubDeviceDeletedEventData - Event data for Microsoft.Devices.DeviceDeleted event.
-type IotHubDeviceDeletedEventData struct {
+// IOTHubDeviceDeletedEventData - Event data for Microsoft.Devices.DeviceDeleted event.
+type IOTHubDeviceDeletedEventData struct {
 	// The unique identifier of the device. This case-sensitive string can be up to 128 characters long, and supports ASCII 7-bit
 	// alphanumeric characters plus the following special characters: - : . + % _ #
 	// * ? ! ( ) , = @ ; $ '.
@@ -2676,8 +2874,8 @@ type IotHubDeviceDeletedEventData struct {
 	Twin *DeviceTwinInfo
 }
 
-// IotHubDeviceDisconnectedEventData - Event data for Microsoft.Devices.DeviceDisconnected event.
-type IotHubDeviceDisconnectedEventData struct {
+// IOTHubDeviceDisconnectedEventData - Event data for Microsoft.Devices.DeviceDisconnected event.
+type IOTHubDeviceDisconnectedEventData struct {
 	// Information about the device connection state event.
 	DeviceConnectionStateEventInfo *DeviceConnectionStateEventInfo
 
@@ -2695,8 +2893,8 @@ type IotHubDeviceDisconnectedEventData struct {
 	ModuleID *string
 }
 
-// IotHubDeviceTelemetryEventData - Event data for Microsoft.Devices.DeviceTelemetry event.
-type IotHubDeviceTelemetryEventData struct {
+// IOTHubDeviceTelemetryEventData - Event data for Microsoft.Devices.DeviceTelemetry event.
+type IOTHubDeviceTelemetryEventData struct {
 	// The content of the message from the device.
 	Body any
 
@@ -4752,6 +4950,35 @@ type StorageLifecyclePolicyCompletedEventData struct {
 
 	// Execution statistics of a specific policy action in a Blob Management cycle.
 	TierToCoolSummary *StorageLifecyclePolicyActionSummaryDetail
+}
+
+// StorageTaskAssignmentCompletedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for an Microsoft.Storage.StorageTaskAssignmentCompleted
+// event.
+type StorageTaskAssignmentCompletedEventData struct {
+	// The time at which a storage task was completed.
+	CompletedOn *time.Time
+
+	// The status for a storage task.
+	Status *StorageTaskAssignmentCompletedStatus
+
+	// The summary report blob url for a storage task
+	SummaryReportBlobURI *string
+
+	// The execution id for a storage task.
+	TaskExecutionID *string
+
+	// The task name for a storage task.
+	TaskName *string
+}
+
+// StorageTaskAssignmentQueuedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for an Microsoft.Storage.StorageTaskAssignmentQueued
+// event.
+type StorageTaskAssignmentQueuedEventData struct {
+	// The time at which a storage task was queued.
+	QueuedOn *time.Time
+
+	// The execution id for a storage task.
+	TaskExecutionID *string
 }
 
 // StorageTaskCompletedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for an Microsoft.Storage.StorageTaskCompleted

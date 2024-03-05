@@ -37,5 +37,5 @@ stages:
         AdditionalMatrixConfigs:
           - Name: managed_identity_matrix
             GenerateVMJobs: true
-            Path: sdk/azidentity/platform-matrix.json
+            Path: sdk/azidentity/managed-identity-matrix.json
             Selection: sparse

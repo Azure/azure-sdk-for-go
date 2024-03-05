@@ -21,63 +21,22 @@ import (
 
 func TestClient_GetAudioTranscription_AzureOpenAI(t *testing.T) {
 	client := newTestClient(t, azureOpenAI.Whisper.Endpoint, withForgivingRetryOption())
-	runTranscriptionTests(t, client, azureOpenAI.Whisper.Model)
+	runTranscriptionTests(t, client, azureOpenAI.Whisper.Model, true)
 }
 
 func TestClient_GetAudioTranscription_OpenAI(t *testing.T) {
 	client := newOpenAIClientForTest(t)
-
-	testFiles := []string{
-		`testdata/sampledata_audiofiles_myVoiceIsMyPassportVerifyMe01.m4a`,
-		`testdata/sampledata_audiofiles_myVoiceIsMyPassportVerifyMe01.mp3`,
-	}
-
-	for _, audioFile := range testFiles {
-		t.Run(fmt.Sprintf("verbose (%s)", filepath.Ext(audioFile)), func(t *testing.T) {
-			args := newTranscriptionOptions(azopenai.AudioTranscriptionFormatVerboseJSON, openAI.Whisper.Model, audioFile)
-
-			transcriptResp, err := client.GetAudioTranscription(context.Background(), args, nil)
-			require.NoError(t, err)
-			require.NotEmpty(t, transcriptResp)
-
-			require.NotEmpty(t, *transcriptResp.Text)
-			require.Greater(t, *transcriptResp.Duration, float32(0.0))
-			require.NotEmpty(t, *transcriptResp.Language)
-			require.NotEmpty(t, transcriptResp.Segments)
-			require.NotEmpty(t, transcriptResp.Segments[0])
-			require.NotEmpty(t, transcriptResp.Task)
-		})
-	}
+	runTranscriptionTests(t, client, openAI.Whisper.Model, false)
 }
 
 func TestClient_GetAudioTranslation_AzureOpenAI(t *testing.T) {
 	client := newTestClient(t, azureOpenAI.Whisper.Endpoint, withForgivingRetryOption())
-	runTranslationTests(t, client, azureOpenAI.Whisper.Model)
+	runTranslationTests(t, client, azureOpenAI.Whisper.Model, true)
 }
 
 func TestClient_GetAudioTranslation_OpenAI(t *testing.T) {
 	client := newOpenAIClientForTest(t)
-
-	testFiles := []string{
-		`testdata/sampledata_audiofiles_myVoiceIsMyPassportVerifyMe01.m4a`,
-		`testdata/sampledata_audiofiles_myVoiceIsMyPassportVerifyMe01.mp3`,
-	}
-
-	for _, audioFile := range testFiles {
-		t.Run(fmt.Sprintf("verbose (%s)", filepath.Ext(audioFile)), func(t *testing.T) {
-			args := newTranslationOptions(azopenai.AudioTranslationFormatVerboseJSON, openAI.Whisper.Model, audioFile)
-			transcriptResp, err := client.GetAudioTranslation(context.Background(), args, nil)
-			require.NoError(t, err)
-			require.NotEmpty(t, transcriptResp)
-
-			require.NotEmpty(t, *transcriptResp.Text)
-			require.Greater(t, *transcriptResp.Duration, float32(0.0))
-			require.NotEmpty(t, *transcriptResp.Language)
-			require.NotEmpty(t, transcriptResp.Segments)
-			require.NotEmpty(t, transcriptResp.Segments[0])
-			require.NotEmpty(t, transcriptResp.Task)
-		})
-	}
+	runTranslationTests(t, client, openAI.Whisper.Model, false)
 }
 
 func TestClient_GetAudioSpeech(t *testing.T) {
@@ -114,7 +73,36 @@ func TestClient_GetAudioSpeech(t *testing.T) {
 	require.Contains(t, *transcriptionResp.Text, "computer")
 }
 
-func runTranscriptionTests(t *testing.T, client *azopenai.Client, model string) {
+func runTranscriptionTests(t *testing.T, client *azopenai.Client, model string, isAzure bool) {
+	// We're experiencing load issues on some of our shared test resources so we'll just spot check.
+	// The bulk of the logic will test against OpenAI anyways.
+	if isAzure {
+		t.Run(fmt.Sprintf("%s (%s)", azopenai.AudioTranscriptionFormatText, "m4a"), func(t *testing.T) {
+			args := newTranscriptionOptions(azopenai.AudioTranscriptionFormatText, model, "testdata/sampledata_audiofiles_myVoiceIsMyPassportVerifyMe01.m4a")
+			transcriptResp, err := client.GetAudioTranscription(context.Background(), args, nil)
+			require.NoError(t, err)
+			require.NotEmpty(t, transcriptResp)
+
+			require.NotEmpty(t, *transcriptResp.Text)
+			requireEmptyAudioTranscription(t, transcriptResp.AudioTranscription)
+		})
+
+		t.Run(fmt.Sprintf("%s (%s)", azopenai.AudioTranscriptionFormatVerboseJSON, "mp3"), func(t *testing.T) {
+			args := newTranscriptionOptions(azopenai.AudioTranscriptionFormatVerboseJSON, model, "testdata/sampledata_audiofiles_myVoiceIsMyPassportVerifyMe01.mp3")
+			transcriptResp, err := client.GetAudioTranscription(context.Background(), args, nil)
+			require.NoError(t, err)
+			require.NotEmpty(t, transcriptResp)
+
+			require.NotEmpty(t, *transcriptResp.Text)
+			require.Greater(t, *transcriptResp.Duration, float32(0.0))
+			require.NotEmpty(t, *transcriptResp.Language)
+			require.NotEmpty(t, transcriptResp.Segments)
+			require.NotEmpty(t, transcriptResp.Segments[0])
+			require.NotEmpty(t, transcriptResp.Task)
+		})
+		return
+	}
+
 	testFiles := []string{
 		`testdata/sampledata_audiofiles_myVoiceIsMyPassportVerifyMe01.m4a`,
 		`testdata/sampledata_audiofiles_myVoiceIsMyPassportVerifyMe01.mp3`,
@@ -179,7 +167,37 @@ func runTranscriptionTests(t *testing.T, client *azopenai.Client, model string) 
 	}
 }
 
-func runTranslationTests(t *testing.T, client *azopenai.Client, model string) {
+func runTranslationTests(t *testing.T, client *azopenai.Client, model string, isAzure bool) {
+	// We're experiencing load issues on some of our shared test resources so we'll just spot check.
+	// The bulk of the logic will test against OpenAI anyways.
+	if isAzure {
+		t.Run(fmt.Sprintf("%s (%s)", azopenai.AudioTranscriptionFormatText, "m4a"), func(t *testing.T) {
+			args := newTranslationOptions(azopenai.AudioTranslationFormatText, model, "testdata/sampledata_audiofiles_myVoiceIsMyPassportVerifyMe01.m4a")
+			transcriptResp, err := client.GetAudioTranslation(context.Background(), args, nil)
+			require.NoError(t, err)
+			require.NotEmpty(t, transcriptResp)
+
+			require.NotEmpty(t, *transcriptResp.Text)
+			requireEmptyAudioTranslation(t, transcriptResp.AudioTranslation)
+		})
+
+		t.Run(fmt.Sprintf("%s (%s)", azopenai.AudioTranscriptionFormatVerboseJSON, "mp3"), func(t *testing.T) {
+			args := newTranslationOptions(azopenai.AudioTranslationFormatVerboseJSON, model, "testdata/sampledata_audiofiles_myVoiceIsMyPassportVerifyMe01.mp3")
+			transcriptResp, err := client.GetAudioTranslation(context.Background(), args, nil)
+			require.NoError(t, err)
+			require.NotEmpty(t, transcriptResp)
+
+			require.NotEmpty(t, *transcriptResp.Text)
+			require.Greater(t, *transcriptResp.Duration, float32(0.0))
+			require.NotEmpty(t, *transcriptResp.Language)
+			require.NotEmpty(t, transcriptResp.Segments)
+			require.NotEmpty(t, transcriptResp.Segments[0])
+			require.NotEmpty(t, transcriptResp.Task)
+		})
+
+		return
+	}
+
 	testFiles := []string{
 		`testdata/sampledata_audiofiles_myVoiceIsMyPassportVerifyMe01.m4a`,
 		`testdata/sampledata_audiofiles_myVoiceIsMyPassportVerifyMe01.mp3`,

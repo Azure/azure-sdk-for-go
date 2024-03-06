@@ -81,25 +81,35 @@ func TestPartialAckFailure(t *testing.T) {
 	_, err = c.PublishCloudEvents(context.Background(), c.TestVars.Topic, []messaging.CloudEvent{ce, ce2}, nil)
 	require.NoError(t, err)
 
-	events, err := c.ReceiveCloudEvents(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, &aznamespaces.ReceiveCloudEventsOptions{
-		MaxEvents: to.Ptr[int32](2),
-	})
-	require.NoError(t, err)
+	const numExpectedEvents = 2
+
+	var events []aznamespaces.ReceiveDetails
+
+	receiveCtx, cancelReceive := context.WithTimeout(context.Background(), 2*time.Minute)
+	defer cancelReceive()
+
+	for len(events) < numExpectedEvents {
+		eventsResp, err := c.ReceiveCloudEvents(receiveCtx, c.TestVars.Topic, c.TestVars.Subscription, &aznamespaces.ReceiveCloudEventsOptions{
+			MaxEvents: to.Ptr(int32(numExpectedEvents - len(events))),
+		})
+		require.NoError(t, err)
+		events = append(events, eventsResp.Value...)
+	}
 
 	// we'll ack one now so we can force a failure to happen.
-	ackResp, err := c.AcknowledgeCloudEvents(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, []string{*events.Value[0].BrokerProperties.LockToken}, nil)
+	ackResp, err := c.AcknowledgeCloudEvents(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, []string{*events[0].BrokerProperties.LockToken}, nil)
 	require.NoError(t, err)
 	require.Empty(t, ackResp.FailedLockTokens)
 
 	// this will result in a partial failure.
 	ackResp, err = c.AcknowledgeCloudEvents(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, []string{
-		*events.Value[0].BrokerProperties.LockToken,
-		*events.Value[1].BrokerProperties.LockToken,
+		*events[0].BrokerProperties.LockToken,
+		*events[1].BrokerProperties.LockToken,
 	}, nil)
 	require.NoError(t, err)
 
-	requireFailedLockTokens(t, []string{*events.Value[0].BrokerProperties.LockToken}, ackResp.FailedLockTokens)
-	require.Equal(t, []string{*events.Value[1].BrokerProperties.LockToken}, ackResp.SucceededLockTokens)
+	requireFailedLockTokens(t, []string{*events[0].BrokerProperties.LockToken}, ackResp.FailedLockTokens)
+	require.Equal(t, []string{*events[1].BrokerProperties.LockToken}, ackResp.SucceededLockTokens)
 }
 
 func TestReject(t *testing.T) {

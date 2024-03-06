@@ -1,0 +1,79 @@
+{{- include "stress-test-addons.deploy-job-template.from-pod" (list . "stress.deploy-example") -}}
+{{- define "stress.deploy-example" -}}
+metadata:
+  labels:
+    testName: "goeh"
+    # This'll make it so the resources aren't deleted on test exit.
+    # Skip.RemoveTestResources: "true"
+    chaos: "{{ default false .Stress.chaos }}"
+    testInstance: "{{.Stress.Scenario}}-{{ .Release.Name }}-{{ .Release.Revision }}"
+spec:
+  containers:
+    - name: main
+      # az acr list -g rg-stress-cluster-pg --subscription "Azure SDK Developer Playground" --query "[0].loginServer"
+      image:  {{ .Stress.imageTag }}
+      command: ['sh', '-c']
+      # these 'testTarget' names come from the scenarios-matrix.yaml.
+      #
+      # NOTE: -verbose activates _all_ the Azure internal logging, which can get quite large.
+      # so it's not enabled for every target in here. We also have an issue filed to whittle it
+      # down (https://github.com/Azure/azure-sdk-for-go/issues/19459)
+      args: 
+        - >
+          set -ex;
+          mkdir -p "$DEBUG_SHARE";
+          {{if eq .Stress.testTarget "multibalance" }}
+          /app/stress "{{.Stress.testTarget}}" "-rounds" "{{.Stress.rounds}}" "{{.Stress.verbose}}" 2>&1 | tee -a "${DEBUG_SHARE}/{{ .Stress.Scenario }}-`date +%s`.log";
+          {{else}}
+          /app/stress "{{.Stress.testTarget}}" "-rounds" "{{.Stress.rounds}}" "-prefetch" "{{.Stress.prefetch}}" "{{.Stress.verbose}}" "-sleepAfter" "{{.Stress.sleepAfter}}" 2>&1 | tee -a "${DEBUG_SHARE}/{{ .Stress.Scenario }}-`date +%s`.log";
+          {{end}}
+      # Pulls the image on pod start, always. We tend to push to the same image and tag over and over again
+      # when iterating, so this is a must.
+      imagePullPolicy: Always
+      # More about this section here:
+      # https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+      #
+      # Note that I'm only setting 'limits' and not 'requests'. If 'requests' is missing it
+      # just uses 'limits' for both.
+      resources:
+        limits:
+          memory: "0.5Gi"
+          cpu: "0.5"
+      {{- include "stress-test-addons.container-env" . | nindent 6 }}
+{{- end -}}
+
+{{- include "stress-test-addons.chaos-wrapper.tpl" (list . "stress.network-chaos") -}}
+{{- define "stress.network-chaos" -}}
+# basically: every 5 minutes do 10s of network loss
+kind: Schedule
+apiVersion: chaos-mesh.org/v1alpha1
+spec:
+  schedule: "*/5 * * * *"
+  type: NetworkChaos
+  historyLimit: 10
+  concurrencyPolicy: Allow
+  networkChaos:
+    selector:
+      namespaces:
+        - "{{ .Release.Namespace }}"
+      labelSelectors:
+        testInstance: "{{.Stress.Scenario}}-{{ .Release.Name }}-{{ .Release.Revision }}"
+        chaos: "true"
+    mode: all
+    action: loss
+    duration: 10s
+    loss:
+      loss: '100'
+      correlation: '100'
+    direction: to
+    target:
+      selector:
+        namespaces:
+          - {{ .Release.Namespace }}
+        labelSelectors:
+          testInstance: "{{.Stress.Scenario}}-{{ .Release.Name }}-{{ .Release.Revision }}"
+          chaos: "true"
+      mode: all
+    externalTargets:
+      - {{ .Stress.BaseName }}.servicebus.windows.net
+{{- end -}}

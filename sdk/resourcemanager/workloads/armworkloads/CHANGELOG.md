@@ -1,0 +1,647 @@
+# Release History
+
+## 1.1.0 (2023-11-30)
+### Features Added
+
+- Support for test fakes and OpenTelemetry trace spans.
+
+
+## 1.0.0 (2023-04-28)
+### Breaking Changes
+
+- Field `ExactVersion` of struct `ImageReference` has been removed
+- Field `SharedGalleryImageID` of struct `ImageReference` has been removed
+
+### Features Added
+
+- New struct `ClientFactory` which is a client factory used to create any client in this module
+
+
+## 0.3.0 (2023-02-24)
+### Breaking Changes
+
+- Type alias `ApplicationProvisioningState` has been removed
+- Type alias `AzureFrontDoorEnabled` has been removed
+- Type alias `DatabaseTier` has been removed
+- Type alias `DatabaseType` has been removed
+- Type alias `DiskStorageType` has been removed
+- Type alias `EnableBackup` has been removed
+- Type alias `EnableSSLEnforcement` has been removed
+- Type alias `FileShareStorageType` has been removed
+- Type alias `FileShareType` has been removed
+- Type alias `HAEnabled` has been removed
+- Type alias `LoadBalancerType` has been removed
+- Type alias `LocationType` has been removed
+- Type alias `OSImageOffer` has been removed
+- Type alias `OSImagePublisher` has been removed
+- Type alias `OSImageSKU` has been removed
+- Type alias `OSImageVersion` has been removed
+- Type alias `PHPVersion` has been removed
+- Type alias `PhpWorkloadProvisioningState` has been removed
+- Type alias `RedisCacheFamily` has been removed
+- Type alias `SKURestrictionReasonCode` has been removed
+- Type alias `SKURestrictionType` has been removed
+- Type alias `SKUScaleType` has been removed
+- Type alias `SKUTier` has been removed
+- Type alias `SearchType` has been removed
+- Type alias `WordpressVersions` has been removed
+- Type alias `WorkloadKind` has been removed
+- Function `NewPhpWorkloadsClient` has been removed
+- Function `*PhpWorkloadsClient.BeginCreateOrUpdate` has been removed
+- Function `*PhpWorkloadsClient.BeginDelete` has been removed
+- Function `*PhpWorkloadsClient.Get` has been removed
+- Function `*PhpWorkloadsClient.NewListByResourceGroupPager` has been removed
+- Function `*PhpWorkloadsClient.NewListBySubscriptionPager` has been removed
+- Function `*PhpWorkloadsClient.Update` has been removed
+- Function `NewSKUsClient` has been removed
+- Function `*SKUsClient.NewListPager` has been removed
+- Function `NewWordpressInstancesClient` has been removed
+- Function `*WordpressInstancesClient.BeginCreateOrUpdate` has been removed
+- Function `*WordpressInstancesClient.Delete` has been removed
+- Function `*WordpressInstancesClient.Get` has been removed
+- Function `*WordpressInstancesClient.NewListPager` has been removed
+- Struct `BackupProfile` has been removed
+- Struct `CacheProfile` has been removed
+- Struct `DatabaseProfile` has been removed
+- Struct `DiskInfo` has been removed
+- Struct `FileshareProfile` has been removed
+- Struct `NetworkProfile` has been removed
+- Struct `NodeProfile` has been removed
+- Struct `OsImageProfile` has been removed
+- Struct `PatchResourceRequestBody` has been removed
+- Struct `PatchResourceRequestBodyIdentity` has been removed
+- Struct `PhpProfile` has been removed
+- Struct `PhpWorkloadResource` has been removed
+- Struct `PhpWorkloadResourceIdentity` has been removed
+- Struct `PhpWorkloadResourceList` has been removed
+- Struct `PhpWorkloadResourceProperties` has been removed
+- Struct `PhpWorkloadsClient` has been removed
+- Struct `PhpWorkloadsClientCreateOrUpdateResponse` has been removed
+- Struct `PhpWorkloadsClientDeleteResponse` has been removed
+- Struct `PhpWorkloadsClientListByResourceGroupResponse` has been removed
+- Struct `PhpWorkloadsClientListBySubscriptionResponse` has been removed
+- Struct `RestrictionInfo` has been removed
+- Struct `SKU` has been removed
+- Struct `SKUCapability` has been removed
+- Struct `SKUCapacity` has been removed
+- Struct `SKUCost` has been removed
+- Struct `SKUDefinition` has been removed
+- Struct `SKULocationAndZones` has been removed
+- Struct `SKURestriction` has been removed
+- Struct `SKUZoneDetail` has been removed
+- Struct `SKUsClient` has been removed
+- Struct `SKUsClientListResponse` has been removed
+- Struct `SKUsListResult` has been removed
+- Struct `SearchProfile` has been removed
+- Struct `SiteProfile` has been removed
+- Struct `UserProfile` has been removed
+- Struct `VmssNodesProfile` has been removed
+- Struct `WordpressInstanceResource` has been removed
+- Struct `WordpressInstanceResourceList` has been removed
+- Struct `WordpressInstanceResourceProperties` has been removed
+- Struct `WordpressInstancesClient` has been removed
+- Struct `WordpressInstancesClientCreateOrUpdateResponse` has been removed
+- Struct `WordpressInstancesClientListResponse` has been removed
+- Field `DbSSLCertificateURI` of struct `HanaDbProviderInstanceProperties` has been removed
+- Field `VirtualMachineID` of struct `SAPApplicationServerProperties` has been removed
+- Field `DiskCount` of struct `SAPDiskConfiguration` has been removed
+- Field `DiskIopsReadWrite` of struct `SAPDiskConfiguration` has been removed
+- Field `DiskMBpsReadWrite` of struct `SAPDiskConfiguration` has been removed
+- Field `DiskSizeGB` of struct `SAPDiskConfiguration` has been removed
+- Field `DiskStorageType` of struct `SAPDiskConfiguration` has been removed
+- Field `DiskType` of struct `SAPDiskConfiguration` has been removed
+- Field `Volume` of struct `SAPDiskConfiguration` has been removed
+- Field `DiskConfigurations` of struct `SAPDiskConfigurationsResult` has been removed
+- Field `SapSSLCertificateURI` of struct `SapNetWeaverProviderInstanceProperties` has been removed
+- Field `HardStop` of struct `StopRequest` has been removed
+
+### Features Added
+
+- New value `SAPSoftwareInstallationTypeExternal` added to type alias `SAPSoftwareInstallationType`
+- New value `SAPVirtualInstanceStateSoftwareDetectionFailed`, `SAPVirtualInstanceStateSoftwareDetectionInProgress` added to type alias `SAPVirtualInstanceState`
+- New value `SAPVirtualInstanceStatusSoftShutdown` added to type alias `SAPVirtualInstanceStatus`
+- New type alias `ApplicationServerVirtualMachineType` with values `ApplicationServerVirtualMachineTypeActive`, `ApplicationServerVirtualMachineTypeStandby`, `ApplicationServerVirtualMachineTypeUnknown`
+- New type alias `ConfigurationType` with values `ConfigurationTypeCreateAndMount`, `ConfigurationTypeMount`, `ConfigurationTypeSkip`
+- New type alias `DiskSKUName` with values `DiskSKUNamePremiumLRS`, `DiskSKUNamePremiumV2LRS`, `DiskSKUNamePremiumZRS`, `DiskSKUNameStandardLRS`, `DiskSKUNameStandardSSDLRS`, `DiskSKUNameStandardSSDZRS`, `DiskSKUNameUltraSSDLRS`
+- New type alias `NamingPatternType` with values `NamingPatternTypeFullResourceName`
+- New type alias `SSLPreference` with values `SSLPreferenceDisabled`, `SSLPreferenceRootCertificate`, `SSLPreferenceServerCertificate`
+- New type alias `SapLandscapeMonitorProvisioningState` with values `SapLandscapeMonitorProvisioningStateAccepted`, `SapLandscapeMonitorProvisioningStateCanceled`, `SapLandscapeMonitorProvisioningStateCreated`, `SapLandscapeMonitorProvisioningStateFailed`, `SapLandscapeMonitorProvisioningStateSucceeded`
+- New function `*CreateAndMountFileShareConfiguration.GetFileShareConfiguration() *FileShareConfiguration`
+- New function `*ExternalInstallationSoftwareConfiguration.GetSoftwareConfiguration() *SoftwareConfiguration`
+- New function `*FileShareConfiguration.GetFileShareConfiguration() *FileShareConfiguration`
+- New function `*MountFileShareConfiguration.GetFileShareConfiguration() *FileShareConfiguration`
+- New function `*SAPApplicationServerInstancesClient.BeginStartInstance(context.Context, string, string, string, *SAPApplicationServerInstancesClientBeginStartInstanceOptions) (*runtime.Poller[SAPApplicationServerInstancesClientStartInstanceResponse], error)`
+- New function `*SAPApplicationServerInstancesClient.BeginStopInstance(context.Context, string, string, string, *SAPApplicationServerInstancesClientBeginStopInstanceOptions) (*runtime.Poller[SAPApplicationServerInstancesClientStopInstanceResponse], error)`
+- New function `*SAPCentralInstancesClient.BeginStartInstance(context.Context, string, string, string, *SAPCentralInstancesClientBeginStartInstanceOptions) (*runtime.Poller[SAPCentralInstancesClientStartInstanceResponse], error)`
+- New function `*SAPCentralInstancesClient.BeginStopInstance(context.Context, string, string, string, *SAPCentralInstancesClientBeginStopInstanceOptions) (*runtime.Poller[SAPCentralInstancesClientStopInstanceResponse], error)`
+- New function `*SAPDatabaseInstancesClient.BeginStartInstance(context.Context, string, string, string, *SAPDatabaseInstancesClientBeginStartInstanceOptions) (*runtime.Poller[SAPDatabaseInstancesClientStartInstanceResponse], error)`
+- New function `*SAPDatabaseInstancesClient.BeginStopInstance(context.Context, string, string, string, *SAPDatabaseInstancesClientBeginStopInstanceOptions) (*runtime.Poller[SAPDatabaseInstancesClientStopInstanceResponse], error)`
+- New function `NewSapLandscapeMonitorClient(string, azcore.TokenCredential, *arm.ClientOptions) (*SapLandscapeMonitorClient, error)`
+- New function `*SapLandscapeMonitorClient.Create(context.Context, string, string, SapLandscapeMonitor, *SapLandscapeMonitorClientCreateOptions) (SapLandscapeMonitorClientCreateResponse, error)`
+- New function `*SapLandscapeMonitorClient.Delete(context.Context, string, string, *SapLandscapeMonitorClientDeleteOptions) (SapLandscapeMonitorClientDeleteResponse, error)`
+- New function `*SapLandscapeMonitorClient.Get(context.Context, string, string, *SapLandscapeMonitorClientGetOptions) (SapLandscapeMonitorClientGetResponse, error)`
+- New function `*SapLandscapeMonitorClient.List(context.Context, string, string, *SapLandscapeMonitorClientListOptions) (SapLandscapeMonitorClientListResponse, error)`
+- New function `*SapLandscapeMonitorClient.Update(context.Context, string, string, SapLandscapeMonitor, *SapLandscapeMonitorClientUpdateOptions) (SapLandscapeMonitorClientUpdateResponse, error)`
+- New function `*SingleServerCustomResourceNames.GetSingleServerCustomResourceNames() *SingleServerCustomResourceNames`
+- New function `*SingleServerFullResourceNames.GetSingleServerCustomResourceNames() *SingleServerCustomResourceNames`
+- New function `*SkipFileShareConfiguration.GetFileShareConfiguration() *FileShareConfiguration`
+- New function `*ThreeTierCustomResourceNames.GetThreeTierCustomResourceNames() *ThreeTierCustomResourceNames`
+- New function `*ThreeTierFullResourceNames.GetThreeTierCustomResourceNames() *ThreeTierCustomResourceNames`
+- New struct `ApplicationServerFullResourceNames`
+- New struct `ApplicationServerVMDetails`
+- New struct `CentralServerFullResourceNames`
+- New struct `CreateAndMountFileShareConfiguration`
+- New struct `DatabaseServerFullResourceNames`
+- New struct `DiskConfiguration`
+- New struct `DiskDetails`
+- New struct `DiskSKU`
+- New struct `DiskVolumeConfiguration`
+- New struct `ExternalInstallationSoftwareConfiguration`
+- New struct `LoadBalancerDetails`
+- New struct `LoadBalancerResourceNames`
+- New struct `MountFileShareConfiguration`
+- New struct `NetworkInterfaceResourceNames`
+- New struct `SAPApplicationServerInstancesClientStartInstanceResponse`
+- New struct `SAPApplicationServerInstancesClientStopInstanceResponse`
+- New struct `SAPCentralInstancesClientStartInstanceResponse`
+- New struct `SAPCentralInstancesClientStopInstanceResponse`
+- New struct `SAPDatabaseInstancesClientStartInstanceResponse`
+- New struct `SAPDatabaseInstancesClientStopInstanceResponse`
+- New struct `SapLandscapeMonitor`
+- New struct `SapLandscapeMonitorClient`
+- New struct `SapLandscapeMonitorListResult`
+- New struct `SapLandscapeMonitorMetricThresholds`
+- New struct `SapLandscapeMonitorProperties`
+- New struct `SapLandscapeMonitorPropertiesGrouping`
+- New struct `SapLandscapeMonitorSidMapping`
+- New struct `SharedStorageResourceNames`
+- New struct `SingleServerFullResourceNames`
+- New struct `SkipFileShareConfiguration`
+- New struct `StorageConfiguration`
+- New struct `StorageInformation`
+- New struct `ThreeTierFullResourceNames`
+- New struct `VirtualMachineResourceNames`
+- New field `StorageDetails` in struct `CentralServerVMDetails`
+- New field `SSLCertificateURI` in struct `DB2ProviderInstanceProperties`
+- New field `SSLPreference` in struct `DB2ProviderInstanceProperties`
+- New field `DiskConfiguration` in struct `DatabaseConfiguration`
+- New field `StorageDetails` in struct `DatabaseVMDetails`
+- New field `ManagedRgStorageAccountName` in struct `DiscoveryConfiguration`
+- New field `SSLCertificateURI` in struct `HanaDbProviderInstanceProperties`
+- New field `SSLPreference` in struct `HanaDbProviderInstanceProperties`
+- New field `SapSid` in struct `HanaDbProviderInstanceProperties`
+- New field `StorageAccountArmID` in struct `MonitorProperties`
+- New field `ZoneRedundancyPreference` in struct `MonitorProperties`
+- New field `SSLCertificateURI` in struct `MsSQLServerProviderInstanceProperties`
+- New field `SSLPreference` in struct `MsSQLServerProviderInstanceProperties`
+- New field `SSLCertificateURI` in struct `PrometheusHaClusterProviderInstanceProperties`
+- New field `SSLPreference` in struct `PrometheusHaClusterProviderInstanceProperties`
+- New field `SSLCertificateURI` in struct `PrometheusOSProviderInstanceProperties`
+- New field `SSLPreference` in struct `PrometheusOSProviderInstanceProperties`
+- New field `SapSid` in struct `PrometheusOSProviderInstanceProperties`
+- New field `LoadBalancerDetails` in struct `SAPApplicationServerProperties`
+- New field `VMDetails` in struct `SAPApplicationServerProperties`
+- New field `LoadBalancerDetails` in struct `SAPCentralServerProperties`
+- New field `LoadBalancerDetails` in struct `SAPDatabaseProperties`
+- New field `RecommendedConfiguration` in struct `SAPDiskConfiguration`
+- New field `SupportedConfigurations` in struct `SAPDiskConfiguration`
+- New field `VolumeConfigurations` in struct `SAPDiskConfigurationsResult`
+- New field `SSLCertificateURI` in struct `SapNetWeaverProviderInstanceProperties`
+- New field `SSLPreference` in struct `SapNetWeaverProviderInstanceProperties`
+- New field `CustomResourceNames` in struct `SingleServerConfiguration`
+- New field `DbDiskConfiguration` in struct `SingleServerConfiguration`
+- New field `SoftStopTimeoutSeconds` in struct `StopRequest`
+- New field `CustomResourceNames` in struct `ThreeTierConfiguration`
+- New field `StorageConfiguration` in struct `ThreeTierConfiguration`
+
+
+## 0.2.0 (2022-06-30)
+### Breaking Changes
+
+- Function `*MonitorsClient.Update` parameter(s) have been changed from `(context.Context, string, string, Tags, *MonitorsClientUpdateOptions)` to `(context.Context, string, string, UpdateMonitorRequest, *MonitorsClientUpdateOptions)`
+
+### Features Added
+
+- New const `SAPProductTypeECC`
+- New const `SKURestrictionTypeNotSpecified`
+- New const `SAPVirtualInstanceStateRegistrationComplete`
+- New const `SKUScaleTypeAutomatic`
+- New const `OSImagePublisherCanonical`
+- New const `SKUScaleTypeManual`
+- New const `WordpressVersionsFive43`
+- New const `DatabaseTierGeneralPurpose`
+- New const `WordpressVersionsFive42`
+- New const `SAPVirtualInstanceStatusStopping`
+- New const `SAPVirtualInstanceStateSoftwareInstallationInProgress`
+- New const `OSImageVersionLatest`
+- New const `PhpWorkloadProvisioningStateCreated`
+- New const `SKURestrictionTypeZone`
+- New const `SAPDeploymentTypeSingleServer`
+- New const `OSImageOfferUbuntuServer`
+- New const `SAPHealthStateUnhealthy`
+- New const `LocationTypeRegion`
+- New const `SapVirtualInstanceProvisioningStateCreating`
+- New const `SAPDatabaseTypeHANA`
+- New const `SAPHealthStateUnknown`
+- New const `CentralServerVirtualMachineTypePrimary`
+- New const `DiskStorageTypeStandardSSDLRS`
+- New const `PhpWorkloadProvisioningStateSucceeded`
+- New const `ManagedServiceIdentityTypeNone`
+- New const `ApplicationProvisioningStateFailed`
+- New const `LoadBalancerTypeApplicationGateway`
+- New const `AzureFrontDoorEnabledEnabled`
+- New const `SKUTierStandard`
+- New const `PhpWorkloadProvisioningStateNotSpecified`
+- New const `RedisCacheFamilyP`
+- New const `WordpressVersionsFive4`
+- New const `SAPHealthStateHealthy`
+- New const `SAPConfigurationTypeDeploymentWithOSConfig`
+- New const `PhpWorkloadProvisioningStateProvisioning`
+- New const `SKUTierBasic`
+- New const `OSImageSKUEighteen04LTS`
+- New const `SAPVirtualInstanceStateInfrastructureDeploymentFailed`
+- New const `SapVirtualInstanceProvisioningStateFailed`
+- New const `SAPHighAvailabilityTypeAvailabilitySet`
+- New const `SAPVirtualInstanceStatusOffline`
+- New const `SKURestrictionReasonCodeNotAvailableForSubscription`
+- New const `OSImageSKUSixteen04LTS`
+- New const `PHPVersionSeven3`
+- New const `SAPVirtualInstanceStatusPartiallyRunning`
+- New const `SapVirtualInstanceProvisioningStateUpdating`
+- New const `SKURestrictionReasonCodeNotSpecified`
+- New const `OSTypeLinux`
+- New const `SAPDatabaseScaleMethodScaleUp`
+- New const `DiskStorageTypeStandardLRS`
+- New const `OSTypeWindows`
+- New const `FileShareStorageTypeStandardLRS`
+- New const `SAPProductTypeS4HANA`
+- New const `HAEnabledEnabled`
+- New const `SAPSoftwareInstallationTypeSAPInstallWithoutOSConfig`
+- New const `PHPVersionSeven4`
+- New const `SAPConfigurationTypeDeployment`
+- New const `DatabaseTierBurstable`
+- New const `CentralServerVirtualMachineTypeERS`
+- New const `ApplicationProvisioningStateAccepted`
+- New const `ApplicationProvisioningStateCanceled`
+- New const `PhpWorkloadProvisioningStateFailed`
+- New const `LocationTypeEdgeZone`
+- New const `EnableBackupDisabled`
+- New const `SAPVirtualInstanceStatusUnavailable`
+- New const `SAPDatabaseTypeDB2`
+- New const `FileShareStorageTypePremiumLRS`
+- New const `SapVirtualInstanceProvisioningStateSucceeded`
+- New const `AzureFrontDoorEnabledDisabled`
+- New const `PhpWorkloadProvisioningStateDeleting`
+- New const `SAPVirtualInstanceStatusStarting`
+- New const `SKUScaleTypeNone`
+- New const `DatabaseTypeMySQL`
+- New const `FileShareTypeAzureFiles`
+- New const `SKUTierPremium`
+- New const `SAPVirtualInstanceStateDiscoveryPending`
+- New const `EnableBackupEnabled`
+- New const `SAPEnvironmentTypeProd`
+- New const `DatabaseTierMemoryOptimized`
+- New const `ApplicationProvisioningStateCreated`
+- New const `SapVirtualInstanceProvisioningStateDeleting`
+- New const `SAPProductTypeOther`
+- New const `HAEnabledDisabled`
+- New const `EnqueueReplicationServerTypeEnqueueReplicator1`
+- New const `CentralServerVirtualMachineTypeStandby`
+- New const `WordpressVersionsFive41`
+- New const `SAPVirtualInstanceStatusRunning`
+- New const `EnableSSLEnforcementEnabled`
+- New const `FileShareStorageTypeStandardGRS`
+- New const `ManagedServiceIdentityTypeUserAssigned`
+- New const `SAPVirtualInstanceStateInfrastructureDeploymentInProgress`
+- New const `SAPVirtualInstanceStateInfrastructureDeploymentPending`
+- New const `SKURestrictionReasonCodeQuotaID`
+- New const `FileShareTypeNfsOnController`
+- New const `SAPDeploymentTypeThreeTier`
+- New const `SAPVirtualInstanceStateDiscoveryInProgress`
+- New const `DiskStorageTypePremiumLRS`
+- New const `SKURestrictionTypeLocation`
+- New const `PHPVersionSeven2`
+- New const `SAPHealthStateDegraded`
+- New const `SAPVirtualInstanceStateSoftwareInstallationPending`
+- New const `SKUTierFree`
+- New const `SAPVirtualInstanceStateDiscoveryFailed`
+- New const `RedisCacheFamilyC`
+- New const `CentralServerVirtualMachineTypeUnknown`
+- New const `SearchTypeElastic`
+- New const `FileShareStorageTypeStandardZRS`
+- New const `CentralServerVirtualMachineTypeERSInactive`
+- New const `PhpWorkloadProvisioningStateAccepted`
+- New const `PhpWorkloadProvisioningStateCanceled`
+- New const `LoadBalancerTypeLoadBalancer`
+- New const `CentralServerVirtualMachineTypeSecondary`
+- New const `EnableSSLEnforcementDisabled`
+- New const `SAPConfigurationTypeDiscovery`
+- New const `SAPEnvironmentTypeNonProd`
+- New const `ApplicationProvisioningStateInstalling`
+- New const `SAPHighAvailabilityTypeAvailabilityZone`
+- New const `SAPVirtualInstanceStateSoftwareInstallationFailed`
+- New const `SAPSoftwareInstallationTypeServiceInitiated`
+- New const `ApplicationProvisioningStateNotSpecified`
+- New const `CentralServerVirtualMachineTypeASCS`
+- New const `WorkloadKindWordPress`
+- New const `ApplicationProvisioningStateSucceeded`
+- New const `EnqueueReplicationServerTypeEnqueueReplicator2`
+- New function `*SAPDatabaseInstancesClient.Get(context.Context, string, string, string, *SAPDatabaseInstancesClientGetOptions) (SAPDatabaseInstancesClientGetResponse, error)`
+- New function `PossibleEnableSSLEnforcementValues() []EnableSSLEnforcement`
+- New function `PossibleSAPEnvironmentTypeValues() []SAPEnvironmentType`
+- New function `PossibleSAPSoftwareInstallationTypeValues() []SAPSoftwareInstallationType`
+- New function `PossibleApplicationProvisioningStateValues() []ApplicationProvisioningState`
+- New function `*SAPCentralInstancesClient.BeginUpdate(context.Context, string, string, string, UpdateSAPCentralInstanceRequest, *SAPCentralInstancesClientBeginUpdateOptions) (*runtime.Poller[SAPCentralInstancesClientUpdateResponse], error)`
+- New function `PossibleFileShareStorageTypeValues() []FileShareStorageType`
+- New function `*DeploymentWithOSConfiguration.GetSAPConfiguration() *SAPConfiguration`
+- New function `*Client.SAPSupportedSKU(context.Context, string, *ClientSAPSupportedSKUOptions) (ClientSAPSupportedSKUResponse, error)`
+- New function `*Client.SAPSizingRecommendations(context.Context, string, *ClientSAPSizingRecommendationsOptions) (ClientSAPSizingRecommendationsResponse, error)`
+- New function `*SingleServerConfiguration.GetInfrastructureConfiguration() *InfrastructureConfiguration`
+- New function `*SAPApplicationServerInstancesClient.BeginDelete(context.Context, string, string, string, *SAPApplicationServerInstancesClientBeginDeleteOptions) (*runtime.Poller[SAPApplicationServerInstancesClientDeleteResponse], error)`
+- New function `NewSKUsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*SKUsClient, error)`
+- New function `PossibleOSImageSKUValues() []OSImageSKU`
+- New function `*ServiceInitiatedSoftwareConfiguration.GetSoftwareConfiguration() *SoftwareConfiguration`
+- New function `NewWordpressInstancesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*WordpressInstancesClient, error)`
+- New function `PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType`
+- New function `PossibleSapVirtualInstanceProvisioningStateValues() []SapVirtualInstanceProvisioningState`
+- New function `PossibleLoadBalancerTypeValues() []LoadBalancerType`
+- New function `*SAPVirtualInstancesClient.NewListBySubscriptionPager(*SAPVirtualInstancesClientListBySubscriptionOptions) *runtime.Pager[SAPVirtualInstancesClientListBySubscriptionResponse]`
+- New function `*LinuxConfiguration.GetOSConfiguration() *OSConfiguration`
+- New function `PossibleEnableBackupValues() []EnableBackup`
+- New function `NewPhpWorkloadsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*PhpWorkloadsClient, error)`
+- New function `PossibleSearchTypeValues() []SearchType`
+- New function `PossibleSAPDatabaseTypeValues() []SAPDatabaseType`
+- New function `*SAPSizingRecommendationResult.GetSAPSizingRecommendationResult() *SAPSizingRecommendationResult`
+- New function `PossibleSAPHighAvailabilityTypeValues() []SAPHighAvailabilityType`
+- New function `PossibleLocationTypeValues() []LocationType`
+- New function `PossibleSKUTierValues() []SKUTier`
+- New function `*OSConfiguration.GetOSConfiguration() *OSConfiguration`
+- New function `PossibleSAPDatabaseScaleMethodValues() []SAPDatabaseScaleMethod`
+- New function `PossibleWorkloadKindValues() []WorkloadKind`
+- New function `PossibleDatabaseTierValues() []DatabaseTier`
+- New function `*SAPInstallWithoutOSConfigSoftwareConfiguration.GetSoftwareConfiguration() *SoftwareConfiguration`
+- New function `*SAPDatabaseInstancesClient.BeginUpdate(context.Context, string, string, string, UpdateSAPDatabaseInstanceRequest, *SAPDatabaseInstancesClientBeginUpdateOptions) (*runtime.Poller[SAPDatabaseInstancesClientUpdateResponse], error)`
+- New function `*PhpWorkloadsClient.BeginDelete(context.Context, string, string, *PhpWorkloadsClientBeginDeleteOptions) (*runtime.Poller[PhpWorkloadsClientDeleteResponse], error)`
+- New function `*SAPConfiguration.GetSAPConfiguration() *SAPConfiguration`
+- New function `NewSAPDatabaseInstancesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*SAPDatabaseInstancesClient, error)`
+- New function `PossibleRedisCacheFamilyValues() []RedisCacheFamily`
+- New function `*InfrastructureConfiguration.GetInfrastructureConfiguration() *InfrastructureConfiguration`
+- New function `*SAPVirtualInstancesClient.BeginCreate(context.Context, string, string, SAPVirtualInstance, *SAPVirtualInstancesClientBeginCreateOptions) (*runtime.Poller[SAPVirtualInstancesClientCreateResponse], error)`
+- New function `PossiblePHPVersionValues() []PHPVersion`
+- New function `*PhpWorkloadsClient.BeginCreateOrUpdate(context.Context, string, string, PhpWorkloadResource, *PhpWorkloadsClientBeginCreateOrUpdateOptions) (*runtime.Poller[PhpWorkloadsClientCreateOrUpdateResponse], error)`
+- New function `*SAPCentralInstancesClient.NewListPager(string, string, *SAPCentralInstancesClientListOptions) *runtime.Pager[SAPCentralInstancesClientListResponse]`
+- New function `*SAPVirtualInstancesClient.Update(context.Context, string, string, UpdateSAPVirtualInstanceRequest, *SAPVirtualInstancesClientUpdateOptions) (SAPVirtualInstancesClientUpdateResponse, error)`
+- New function `*SAPDatabaseInstancesClient.BeginDelete(context.Context, string, string, string, *SAPDatabaseInstancesClientBeginDeleteOptions) (*runtime.Poller[SAPDatabaseInstancesClientDeleteResponse], error)`
+- New function `*WordpressInstancesClient.BeginCreateOrUpdate(context.Context, string, string, WordpressInstanceResource, *WordpressInstancesClientBeginCreateOrUpdateOptions) (*runtime.Poller[WordpressInstancesClientCreateOrUpdateResponse], error)`
+- New function `*PhpWorkloadsClient.NewListByResourceGroupPager(string, *PhpWorkloadsClientListByResourceGroupOptions) *runtime.Pager[PhpWorkloadsClientListByResourceGroupResponse]`
+- New function `PossibleOSImagePublisherValues() []OSImagePublisher`
+- New function `PossibleSAPConfigurationTypeValues() []SAPConfigurationType`
+- New function `PossibleSKUScaleTypeValues() []SKUScaleType`
+- New function `PossibleSAPVirtualInstanceStatusValues() []SAPVirtualInstanceStatus`
+- New function `*Client.SAPDiskConfigurations(context.Context, string, *ClientSAPDiskConfigurationsOptions) (ClientSAPDiskConfigurationsResponse, error)`
+- New function `*SAPApplicationServerInstancesClient.BeginUpdate(context.Context, string, string, string, UpdateSAPApplicationInstanceRequest, *SAPApplicationServerInstancesClientBeginUpdateOptions) (*runtime.Poller[SAPApplicationServerInstancesClientUpdateResponse], error)`
+- New function `*WindowsConfiguration.GetOSConfiguration() *OSConfiguration`
+- New function `PossibleOSImageVersionValues() []OSImageVersion`
+- New function `*SingleServerRecommendationResult.GetSAPSizingRecommendationResult() *SAPSizingRecommendationResult`
+- New function `PossibleEnqueueReplicationServerTypeValues() []EnqueueReplicationServerType`
+- New function `NewClient(string, azcore.TokenCredential, *arm.ClientOptions) (*Client, error)`
+- New function `NewSAPApplicationServerInstancesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*SAPApplicationServerInstancesClient, error)`
+- New function `PossibleFileShareTypeValues() []FileShareType`
+- New function `*SAPCentralInstancesClient.Get(context.Context, string, string, string, *SAPCentralInstancesClientGetOptions) (SAPCentralInstancesClientGetResponse, error)`
+- New function `*WordpressInstancesClient.Get(context.Context, string, string, *WordpressInstancesClientGetOptions) (WordpressInstancesClientGetResponse, error)`
+- New function `NewSAPVirtualInstancesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*SAPVirtualInstancesClient, error)`
+- New function `*SAPCentralInstancesClient.BeginDelete(context.Context, string, string, string, *SAPCentralInstancesClientBeginDeleteOptions) (*runtime.Poller[SAPCentralInstancesClientDeleteResponse], error)`
+- New function `*SAPApplicationServerInstancesClient.BeginCreate(context.Context, string, string, string, SAPApplicationServerInstance, *SAPApplicationServerInstancesClientBeginCreateOptions) (*runtime.Poller[SAPApplicationServerInstancesClientCreateResponse], error)`
+- New function `PossibleDatabaseTypeValues() []DatabaseType`
+- New function `*SAPApplicationServerInstancesClient.Get(context.Context, string, string, string, *SAPApplicationServerInstancesClientGetOptions) (SAPApplicationServerInstancesClientGetResponse, error)`
+- New function `PossibleOSImageOfferValues() []OSImageOffer`
+- New function `*SAPDatabaseInstancesClient.BeginCreate(context.Context, string, string, string, SAPDatabaseInstance, *SAPDatabaseInstancesClientBeginCreateOptions) (*runtime.Poller[SAPDatabaseInstancesClientCreateResponse], error)`
+- New function `*PhpWorkloadsClient.NewListBySubscriptionPager(*PhpWorkloadsClientListBySubscriptionOptions) *runtime.Pager[PhpWorkloadsClientListBySubscriptionResponse]`
+- New function `PossibleDiskStorageTypeValues() []DiskStorageType`
+- New function `PossiblePhpWorkloadProvisioningStateValues() []PhpWorkloadProvisioningState`
+- New function `*SAPVirtualInstancesClient.BeginDelete(context.Context, string, string, *SAPVirtualInstancesClientBeginDeleteOptions) (*runtime.Poller[SAPVirtualInstancesClientDeleteResponse], error)`
+- New function `PossibleCentralServerVirtualMachineTypeValues() []CentralServerVirtualMachineType`
+- New function `*PhpWorkloadsClient.Get(context.Context, string, string, *PhpWorkloadsClientGetOptions) (PhpWorkloadsClientGetResponse, error)`
+- New function `*SAPVirtualInstancesClient.NewListByResourceGroupPager(string, *SAPVirtualInstancesClientListByResourceGroupOptions) *runtime.Pager[SAPVirtualInstancesClientListByResourceGroupResponse]`
+- New function `PossibleAzureFrontDoorEnabledValues() []AzureFrontDoorEnabled`
+- New function `*WordpressInstancesClient.NewListPager(string, string, *WordpressInstancesClientListOptions) *runtime.Pager[WordpressInstancesClientListResponse]`
+- New function `PossibleWordpressVersionsValues() []WordpressVersions`
+- New function `*DiscoveryConfiguration.GetSAPConfiguration() *SAPConfiguration`
+- New function `PossibleSAPVirtualInstanceStateValues() []SAPVirtualInstanceState`
+- New function `PossibleSAPProductTypeValues() []SAPProductType`
+- New function `*ThreeTierRecommendationResult.GetSAPSizingRecommendationResult() *SAPSizingRecommendationResult`
+- New function `PossibleHAEnabledValues() []HAEnabled`
+- New function `*SAPDatabaseInstancesClient.NewListPager(string, string, *SAPDatabaseInstancesClientListOptions) *runtime.Pager[SAPDatabaseInstancesClientListResponse]`
+- New function `PossibleSAPHealthStateValues() []SAPHealthState`
+- New function `*ThreeTierConfiguration.GetInfrastructureConfiguration() *InfrastructureConfiguration`
+- New function `*WordpressInstancesClient.Delete(context.Context, string, string, *WordpressInstancesClientDeleteOptions) (WordpressInstancesClientDeleteResponse, error)`
+- New function `*SKUsClient.NewListPager(*SKUsClientListOptions) *runtime.Pager[SKUsClientListResponse]`
+- New function `NewSAPCentralInstancesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*SAPCentralInstancesClient, error)`
+- New function `*SAPApplicationServerInstancesClient.NewListPager(string, string, *SAPApplicationServerInstancesClientListOptions) *runtime.Pager[SAPApplicationServerInstancesClientListResponse]`
+- New function `*DeploymentConfiguration.GetSAPConfiguration() *SAPConfiguration`
+- New function `*SoftwareConfiguration.GetSoftwareConfiguration() *SoftwareConfiguration`
+- New function `*PhpWorkloadsClient.Update(context.Context, string, string, PatchResourceRequestBody, *PhpWorkloadsClientUpdateOptions) (PhpWorkloadsClientUpdateResponse, error)`
+- New function `*SAPVirtualInstancesClient.Get(context.Context, string, string, *SAPVirtualInstancesClientGetOptions) (SAPVirtualInstancesClientGetResponse, error)`
+- New function `PossibleSKURestrictionReasonCodeValues() []SKURestrictionReasonCode`
+- New function `*SAPVirtualInstancesClient.BeginStop(context.Context, string, string, *SAPVirtualInstancesClientBeginStopOptions) (*runtime.Poller[SAPVirtualInstancesClientStopResponse], error)`
+- New function `*SAPCentralInstancesClient.BeginCreate(context.Context, string, string, string, SAPCentralServerInstance, *SAPCentralInstancesClientBeginCreateOptions) (*runtime.Poller[SAPCentralInstancesClientCreateResponse], error)`
+- New function `PossibleSKURestrictionTypeValues() []SKURestrictionType`
+- New function `PossibleSAPDeploymentTypeValues() []SAPDeploymentType`
+- New function `*SAPVirtualInstancesClient.BeginStart(context.Context, string, string, *SAPVirtualInstancesClientBeginStartOptions) (*runtime.Poller[SAPVirtualInstancesClientStartResponse], error)`
+- New function `PossibleOSTypeValues() []OSType`
+- New function `*Client.SAPAvailabilityZoneDetails(context.Context, string, *ClientSAPAvailabilityZoneDetailsOptions) (ClientSAPAvailabilityZoneDetailsResponse, error)`
+- New struct `ApplicationServerConfiguration`
+- New struct `BackupProfile`
+- New struct `CacheProfile`
+- New struct `CentralServerConfiguration`
+- New struct `CentralServerVMDetails`
+- New struct `Client`
+- New struct `ClientSAPAvailabilityZoneDetailsOptions`
+- New struct `ClientSAPAvailabilityZoneDetailsResponse`
+- New struct `ClientSAPDiskConfigurationsOptions`
+- New struct `ClientSAPDiskConfigurationsResponse`
+- New struct `ClientSAPSizingRecommendationsOptions`
+- New struct `ClientSAPSizingRecommendationsResponse`
+- New struct `ClientSAPSupportedSKUOptions`
+- New struct `ClientSAPSupportedSKUResponse`
+- New struct `DatabaseConfiguration`
+- New struct `DatabaseProfile`
+- New struct `DatabaseVMDetails`
+- New struct `DeployerVMPackages`
+- New struct `DeploymentConfiguration`
+- New struct `DeploymentWithOSConfiguration`
+- New struct `DiscoveryConfiguration`
+- New struct `DiskInfo`
+- New struct `EnqueueReplicationServerProperties`
+- New struct `EnqueueServerProperties`
+- New struct `ErrorDefinition`
+- New struct `FileshareProfile`
+- New struct `GatewayServerProperties`
+- New struct `HighAvailabilityConfiguration`
+- New struct `HighAvailabilitySoftwareConfiguration`
+- New struct `ImageReference`
+- New struct `InfrastructureConfiguration`
+- New struct `LinuxConfiguration`
+- New struct `MessageServerProperties`
+- New struct `NetworkConfiguration`
+- New struct `NetworkProfile`
+- New struct `NodeProfile`
+- New struct `OSConfiguration`
+- New struct `OSProfile`
+- New struct `OsImageProfile`
+- New struct `OsSapConfiguration`
+- New struct `PatchResourceRequestBody`
+- New struct `PatchResourceRequestBodyIdentity`
+- New struct `PhpProfile`
+- New struct `PhpWorkloadResource`
+- New struct `PhpWorkloadResourceIdentity`
+- New struct `PhpWorkloadResourceList`
+- New struct `PhpWorkloadResourceProperties`
+- New struct `PhpWorkloadsClient`
+- New struct `PhpWorkloadsClientBeginCreateOrUpdateOptions`
+- New struct `PhpWorkloadsClientBeginDeleteOptions`
+- New struct `PhpWorkloadsClientCreateOrUpdateResponse`
+- New struct `PhpWorkloadsClientDeleteResponse`
+- New struct `PhpWorkloadsClientGetOptions`
+- New struct `PhpWorkloadsClientGetResponse`
+- New struct `PhpWorkloadsClientListByResourceGroupOptions`
+- New struct `PhpWorkloadsClientListByResourceGroupResponse`
+- New struct `PhpWorkloadsClientListBySubscriptionOptions`
+- New struct `PhpWorkloadsClientListBySubscriptionResponse`
+- New struct `PhpWorkloadsClientUpdateOptions`
+- New struct `PhpWorkloadsClientUpdateResponse`
+- New struct `RestrictionInfo`
+- New struct `SAPApplicationServerInstance`
+- New struct `SAPApplicationServerInstanceList`
+- New struct `SAPApplicationServerInstancesClient`
+- New struct `SAPApplicationServerInstancesClientBeginCreateOptions`
+- New struct `SAPApplicationServerInstancesClientBeginDeleteOptions`
+- New struct `SAPApplicationServerInstancesClientBeginUpdateOptions`
+- New struct `SAPApplicationServerInstancesClientCreateResponse`
+- New struct `SAPApplicationServerInstancesClientDeleteResponse`
+- New struct `SAPApplicationServerInstancesClientGetOptions`
+- New struct `SAPApplicationServerInstancesClientGetResponse`
+- New struct `SAPApplicationServerInstancesClientListOptions`
+- New struct `SAPApplicationServerInstancesClientListResponse`
+- New struct `SAPApplicationServerInstancesClientUpdateResponse`
+- New struct `SAPApplicationServerProperties`
+- New struct `SAPAvailabilityZoneDetailsRequest`
+- New struct `SAPAvailabilityZoneDetailsResult`
+- New struct `SAPAvailabilityZonePair`
+- New struct `SAPCentralInstanceList`
+- New struct `SAPCentralInstancesClient`
+- New struct `SAPCentralInstancesClientBeginCreateOptions`
+- New struct `SAPCentralInstancesClientBeginDeleteOptions`
+- New struct `SAPCentralInstancesClientBeginUpdateOptions`
+- New struct `SAPCentralInstancesClientCreateResponse`
+- New struct `SAPCentralInstancesClientDeleteResponse`
+- New struct `SAPCentralInstancesClientGetOptions`
+- New struct `SAPCentralInstancesClientGetResponse`
+- New struct `SAPCentralInstancesClientListOptions`
+- New struct `SAPCentralInstancesClientListResponse`
+- New struct `SAPCentralInstancesClientUpdateResponse`
+- New struct `SAPCentralServerInstance`
+- New struct `SAPCentralServerProperties`
+- New struct `SAPConfiguration`
+- New struct `SAPDatabaseInstance`
+- New struct `SAPDatabaseInstanceList`
+- New struct `SAPDatabaseInstancesClient`
+- New struct `SAPDatabaseInstancesClientBeginCreateOptions`
+- New struct `SAPDatabaseInstancesClientBeginDeleteOptions`
+- New struct `SAPDatabaseInstancesClientBeginUpdateOptions`
+- New struct `SAPDatabaseInstancesClientCreateResponse`
+- New struct `SAPDatabaseInstancesClientDeleteResponse`
+- New struct `SAPDatabaseInstancesClientGetOptions`
+- New struct `SAPDatabaseInstancesClientGetResponse`
+- New struct `SAPDatabaseInstancesClientListOptions`
+- New struct `SAPDatabaseInstancesClientListResponse`
+- New struct `SAPDatabaseInstancesClientUpdateResponse`
+- New struct `SAPDatabaseProperties`
+- New struct `SAPDiskConfiguration`
+- New struct `SAPDiskConfigurationsRequest`
+- New struct `SAPDiskConfigurationsResult`
+- New struct `SAPInstallWithoutOSConfigSoftwareConfiguration`
+- New struct `SAPSizingRecommendationRequest`
+- New struct `SAPSizingRecommendationResult`
+- New struct `SAPSupportedResourceSKUsResult`
+- New struct `SAPSupportedSKU`
+- New struct `SAPSupportedSKUsRequest`
+- New struct `SAPVirtualInstance`
+- New struct `SAPVirtualInstanceError`
+- New struct `SAPVirtualInstanceList`
+- New struct `SAPVirtualInstanceProperties`
+- New struct `SAPVirtualInstancesClient`
+- New struct `SAPVirtualInstancesClientBeginCreateOptions`
+- New struct `SAPVirtualInstancesClientBeginDeleteOptions`
+- New struct `SAPVirtualInstancesClientBeginStartOptions`
+- New struct `SAPVirtualInstancesClientBeginStopOptions`
+- New struct `SAPVirtualInstancesClientCreateResponse`
+- New struct `SAPVirtualInstancesClientDeleteResponse`
+- New struct `SAPVirtualInstancesClientGetOptions`
+- New struct `SAPVirtualInstancesClientGetResponse`
+- New struct `SAPVirtualInstancesClientListByResourceGroupOptions`
+- New struct `SAPVirtualInstancesClientListByResourceGroupResponse`
+- New struct `SAPVirtualInstancesClientListBySubscriptionOptions`
+- New struct `SAPVirtualInstancesClientListBySubscriptionResponse`
+- New struct `SAPVirtualInstancesClientStartResponse`
+- New struct `SAPVirtualInstancesClientStopResponse`
+- New struct `SAPVirtualInstancesClientUpdateOptions`
+- New struct `SAPVirtualInstancesClientUpdateResponse`
+- New struct `SKU`
+- New struct `SKUCapability`
+- New struct `SKUCapacity`
+- New struct `SKUCost`
+- New struct `SKUDefinition`
+- New struct `SKULocationAndZones`
+- New struct `SKURestriction`
+- New struct `SKUZoneDetail`
+- New struct `SKUsClient`
+- New struct `SKUsClientListOptions`
+- New struct `SKUsClientListResponse`
+- New struct `SKUsListResult`
+- New struct `SSHConfiguration`
+- New struct `SSHKeyPair`
+- New struct `SSHPublicKey`
+- New struct `SearchProfile`
+- New struct `ServiceInitiatedSoftwareConfiguration`
+- New struct `SingleServerConfiguration`
+- New struct `SingleServerRecommendationResult`
+- New struct `SiteProfile`
+- New struct `SoftwareConfiguration`
+- New struct `StopRequest`
+- New struct `ThreeTierConfiguration`
+- New struct `ThreeTierRecommendationResult`
+- New struct `UpdateMonitorRequest`
+- New struct `UpdateSAPApplicationInstanceRequest`
+- New struct `UpdateSAPCentralInstanceRequest`
+- New struct `UpdateSAPDatabaseInstanceRequest`
+- New struct `UpdateSAPVirtualInstanceRequest`
+- New struct `UserAssignedIdentity`
+- New struct `UserAssignedServiceIdentity`
+- New struct `UserProfile`
+- New struct `VirtualMachineConfiguration`
+- New struct `VmssNodesProfile`
+- New struct `WindowsConfiguration`
+- New struct `WordpressInstanceResource`
+- New struct `WordpressInstanceResourceList`
+- New struct `WordpressInstanceResourceProperties`
+- New struct `WordpressInstancesClient`
+- New struct `WordpressInstancesClientBeginCreateOrUpdateOptions`
+- New struct `WordpressInstancesClientCreateOrUpdateResponse`
+- New struct `WordpressInstancesClientDeleteOptions`
+- New struct `WordpressInstancesClientDeleteResponse`
+- New struct `WordpressInstancesClientGetOptions`
+- New struct `WordpressInstancesClientGetResponse`
+- New struct `WordpressInstancesClientListOptions`
+- New struct `WordpressInstancesClientListResponse`
+- New field `Identity` in struct `ProviderInstance`
+- New field `Identity` in struct `Monitor`
+
+
+## 0.1.0 (2022-05-16)
+
+The package of `github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloads/armworkloads` is using our [next generation design principles](https://azure.github.io/azure-sdk/general_introduction.html) since version 0.1.0, which contains breaking changes.
+
+To migrate the existing applications to the latest version, please refer to [Migration Guide](https://aka.ms/azsdk/go/mgmt/migration).
+
+To learn more, please refer to our documentation [Quick Start](https://aka.ms/azsdk/go/mgmt).

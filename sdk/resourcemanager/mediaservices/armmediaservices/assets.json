@@ -1,0 +1,6 @@
+{
+  "AssetsRepo": "Azure/azure-sdk-assets",
+  "AssetsRepoPrefixPath": "go",
+  "TagPrefix": "go/resourcemanager/mediaservices/armmediaservices",
+  "Tag": "go/resourcemanager/mediaservices/armmediaservices_816a2c4d41"
+}

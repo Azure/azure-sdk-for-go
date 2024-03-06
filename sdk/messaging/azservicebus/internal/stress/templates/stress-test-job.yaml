@@ -1,0 +1,74 @@
+{{- include "stress-test-addons.deploy-job-template.from-pod" (list . "stress.deploy-example") -}}
+{{- define "stress.deploy-example" -}}
+metadata:
+  labels:
+    chaos: "{{ default false .Stress.chaos }}"
+    testInstance: "{{.Stress.Scenario}}-{{ .Release.Name }}-{{ .Release.Revision }}"
+spec:
+  # uncomment to deploy to the southeastasia region.
+  # nodeSelector:
+  #   sku: 'southeastasia'
+  containers:
+    - name: main
+      # az acr list -g rg-stress-cluster-test --subscription "Azure SDK Developer Playground" --query "[0].loginServer"
+      image:  {{ .Stress.imageTag }}
+      command: ['sh', '-c']
+      args: 
+        - >
+          set -ex;
+          mkdir -p "$DEBUG_SHARE";
+          {{ if ne .Stress.benchmark true }}
+          /app/stress tests "{{ .Stress.testTarget }}" {{ default "" .Stress.args }} 2>&1 | tee -a "${DEBUG_SHARE}/{{ .Stress.Scenario }}-`date +%s`.log";
+          {{ else }}
+          /app/benchmarks.test -test.timeout 24h -test.bench {{ .Stress.testTarget }} 2>&1 | tee -a "${DEBUG_SHARE}/{{ .Stress.Scenario }}-`date +%s`.log";
+          {{ end }}
+      # Pulls the image on pod start, always. We tend to push to the same image and tag over and over again
+      # when iterating, so this is a must.
+      imagePullPolicy: Always
+      # More about this section here:
+      # https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+      #
+      # Note that I'm only setting 'limits' and not 'requests'. If 'requests' is missing it
+      # just uses 'limits' for both.
+      resources:
+        limits:
+          memory: {{.Stress.memory }}
+          cpu: "0.5"
+      {{- include "stress-test-addons.container-env" . | nindent 6 }}
+{{- end -}}
+
+{{- include "stress-test-addons.chaos-wrapper.tpl" (list . "stress.network-chaos") -}}
+{{- define "stress.network-chaos" -}}
+# basically: every 5 minutes do 10s of network loss
+kind: Schedule
+apiVersion: chaos-mesh.org/v1alpha1
+spec:
+  schedule: "*/5 * * * *"
+  type: NetworkChaos
+  historyLimit: 10
+  concurrencyPolicy: Allow
+  networkChaos:
+    selector:
+      namespaces:
+        - "{{ .Release.Namespace }}"
+      labelSelectors:
+        testInstance: "{{.Stress.Scenario}}-{{ .Release.Name }}-{{ .Release.Revision }}"
+        chaos: "true"
+    mode: all
+    action: loss
+    duration: 10s
+    loss:
+      loss: '100'
+      correlation: '100'
+    direction: to
+    target:
+      selector:
+        namespaces:
+          - {{ .Release.Namespace }}
+        labelSelectors:
+          testInstance: "{{.Stress.Scenario}}-{{ .Release.Name }}-{{ .Release.Revision }}"
+          chaos: "true"
+      mode: all
+    externalTargets:
+      - {{ .Stress.BaseName }}.servicebus.windows.net
+{{- end -}}

@@ -1,0 +1,6 @@
+{
+  "AssetsRepo": "Azure/azure-sdk-assets",
+  "AssetsRepoPrefixPath": "go",
+  "TagPrefix": "go/resourcemanager/databricks/armdatabricks",
+  "Tag": "go/resourcemanager/databricks/armdatabricks_31d2dc0356"
+}

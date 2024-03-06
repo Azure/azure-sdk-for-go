@@ -17,6 +17,12 @@ _cgo_defun.c
 _cgo_gotypes.go
 _cgo_export.*
 
+# ignore any generated coverage files
+coverage.txt
+coverage.json
+coverage.xml
+coverage.html
+
 _testmain.go
 
 *.exe
@@ -29,6 +35,24 @@ _testmain.go
 *~
 .DS_Store
 .vscode
+.vs
+.idea
 
 # ignore vendor/
 vendor/
+
+# environment variables
+.env
+
+# vscode
+**/.vscode/*
+!.vscode/cspell.json
+
+# api view file
+*.gosource
+
+# Default Test Proxy Assets restore directory
+.assets
+
+# Default Test Proxy tools install directory
+.proxy

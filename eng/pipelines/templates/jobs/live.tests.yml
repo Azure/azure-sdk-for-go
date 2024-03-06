@@ -1,0 +1,101 @@
+parameters:
+  - name: ServiceDirectory
+    type: string
+    default: ''
+  - name: EnvVars
+    type: object
+    default: {}
+  - name: TimeoutInMinutes
+    type: number
+    default: 60
+  - name: PreSteps
+    type: object
+    default: []
+  - name: PostSteps
+    type: object
+    default: []
+  - name: CloudConfig
+    type: object
+    default: {}
+  - name: Location
+    type: string
+    default: ''
+  - name: Matrix
+    type: string
+  - name: DependsOn
+    type: string
+    default: ''
+  - name: UsePlatformContainer
+    type: boolean
+    default: false
+  - name: TestRunTime
+    type: string
+    default: '600s'
+
+jobs:
+  - job:
+    displayName: Live Test on
+    dependsOn: ${{ parameters.DependsOn }}
+    condition: and(succeededOrFailed(), ne(${{ parameters.Matrix }}, '{}'))
+    strategy:
+      maxParallel: 0
+      matrix: $[ ${{ parameters.Matrix }} ]
+
+    variables:
+      - template: /eng/pipelines/templates/variables/globals.yml
+      - name: ArmTemplateParameters
+        value: '@{}'
+
+    pool:
+      name: $(Pool)
+      vmImage: $(OSVmImage)
+
+    timeoutInMinutes: ${{ parameters.TimeoutInMinutes }}
+
+    ${{ if eq(parameters.UsePlatformContainer, 'true') }}:
+      container: $[ variables['Container'] ]
+
+    steps:
+      - ${{ parameters.PreSteps }}
+
+      - template: /eng/common/pipelines/templates/steps/verify-agent-os.yml
+        parameters:
+          AgentImage: $(OSVmImage)
+
+      - template: /eng/common/TestResources/build-test-resource-config.yml
+        parameters:
+          SubscriptionConfiguration: ${{ parameters.CloudConfig.SubscriptionConfiguration }}
+          SubscriptionConfigurations: ${{ parameters.CloudConfig.SubscriptionConfigurations }}
+          EnvVars: ${{ parameters.EnvVars }}
+
+      - template: /eng/common/TestResources/deploy-test-resources.yml
+        parameters:
+          ${{ if or(parameters.Location, parameters.CloudConfig.Location) }}:
+            Location: ${{ coalesce(parameters.Location, parameters.CloudConfig.Location) }}
+          ServiceDirectory: ${{ parameters.ServiceDirectory }}
+          SubscriptionConfiguration: $(SubscriptionConfiguration)
+          ArmTemplateParameters: $(ArmTemplateParameters)
+
+      - task: GoTool@0
+        inputs:
+          version: '$(GoVersion)'
+        displayName: "Select Go Version"
+
+      - template: ../steps/create-go-workspace.yml
+
+      - template: ../steps/build-test.yml
+        parameters:
+          ServiceDirectory: ${{ parameters.ServiceDirectory }}
+          Image: $(OSVmImage)
+          GoVersion: $(GoVersion)
+          TestRunTime: ${{ parameters.TestRunTime }}
+          EnvVars:
+            AZURE_RECORD_MODE: 'live'
+            ${{ insert }}: ${{ parameters.EnvVars }}
+
+      - ${{ parameters.PostSteps }}
+
+      - template: /eng/common/TestResources/remove-test-resources.yml
+        parameters:
+          ServiceDirectory: ${{ parameters.ServiceDirectory }}
+          SubscriptionConfiguration: $(SubscriptionConfiguration)

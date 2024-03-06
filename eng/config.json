@@ -1,0 +1,121 @@
+{
+    "Packages": [
+        {
+            "Name": "resourcemanager",
+            "CoverageGoal": 0.0
+        },
+        {
+            "Name": "azappconfig",
+            "CoverageGoal": 0.19
+        },
+        {
+            "Name": "azblob",
+            "CoverageGoal": 0.30
+        },
+        {
+            "Name": "azcontainerregistry",
+            "CoverageGoal": 0.60
+        },
+        {
+            "Name": "azcore",
+            "CoverageGoal": 0.92
+        },
+        {
+            "Name": "azcosmos",
+            "CoverageGoal": 0.40
+        },
+        {
+            "Name": "azidentity",
+            "CoverageGoal": 0.87
+        },
+        {
+            "Name": "azidentity/cache",
+            "CoverageGoal": 0.35
+        },
+        {
+            "Name": "azqueue",
+            "CoverageGoal": 0.60
+        },
+        {
+            "Name": "azdatalake",
+            "CoverageGoal": 0.60
+        },
+        {
+            "Name": "azfile",
+            "CoverageGoal": 0.75
+        },
+        {
+            "Name": "azopenai",
+            "CoverageGoal": 0.28
+        },
+        {
+            "Name": "aztemplate",
+            "CoverageGoal": 0.50
+        },
+        {
+            "Name": "keyvault/azcertificates",
+            "CoverageGoal": 0.80
+        },
+        {
+            "Name": "keyvault/azkeys",
+            "CoverageGoal": 0.71
+        },
+        {
+            "Name": "keyvault/azsecrets",
+            "CoverageGoal": 0.86
+        },
+        {
+            "Name": "data",
+            "CoverageGoal": 0.78,
+            "EnvironmentVariables": {
+                "TABLES_STORAGE_ACCOUNT_NAME": "fakeaccount",
+                "TABLES_PRIMARY_STORAGE_ACCOUNT_KEY": "Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==",
+                "TABLES_SHARED_ACCESS_SIGNATURE": "?sig=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw=="
+            }
+        },
+        {
+            "Name": "eng/tools",
+            "CoverageGoal": 0.0
+        },
+        {
+            "Name": "keyvault/internal",
+            "CoverageGoal": 0.40
+        },
+        {
+            "Name": "internal",
+            "CoverageGoal": 0.70
+        },
+        {
+            "Name": "messaging",
+            "CoverageGoal": 0.10
+        },
+        {
+            "Name": "messaging/azservicebus",
+            "CoverageGoal": 0.48
+        },
+        {
+            "Name": "messaging/azeventhubs",
+            "CoverageGoal": 0.60
+        },
+        {
+            "Name": "messaging/internal",
+            "CoverageGoal": 0.40
+        },
+        {
+            "Name": "monitor/azquery",
+            "CoverageGoal": 0.85
+        },
+        {
+            "Name": "monitor/azingest",
+            "CoverageGoal": 0.75
+        },
+        {
+            "Name": "security/keyvault/azadmin",
+            "CoverageGoal": 0.80
+        },
+        {
+            "Name": "monitor/query/azmetrics",
+            "CoverageGoal": 0.75
+        }
+    ]
+}

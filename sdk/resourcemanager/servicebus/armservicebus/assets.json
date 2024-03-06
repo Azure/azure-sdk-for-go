@@ -1,0 +1,6 @@
+{
+  "AssetsRepo": "Azure/azure-sdk-assets",
+  "AssetsRepoPrefixPath": "go",
+  "TagPrefix": "go/resourcemanager/servicebus/armservicebus",
+  "Tag": "go/resourcemanager/servicebus/armservicebus_232ad50803"
+}

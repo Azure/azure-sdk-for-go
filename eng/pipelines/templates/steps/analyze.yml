@@ -1,0 +1,147 @@
+# This step is designed to work against linux only
+parameters:
+  ServiceDirectory: ''
+  LintVersion: ''
+  NonShipping: false
+  LicenseCheck: true
+  IsSdkLibrary: true
+
+
+steps:
+  - task: Powershell@2
+    inputs:
+      filePath: $(Build.SourcesDirectory)/eng/common/scripts/Save-Package-Properties.ps1
+      arguments: >
+        -ServiceDirectory ${{parameters.ServiceDirectory}}
+        -OutDirectory $(Build.ArtifactStagingDirectory)/PackageInfo
+      pwsh: true
+      workingDirectory: $(Pipeline.Workspace)
+    displayName: Dump Package properties
+    condition: and(succeeded(), ${{ parameters.IsSdkLibrary }})
+  - task: PublishPipelineArtifact@1
+    condition: and(succeeded(), ${{ parameters.IsSdkLibrary }})
+    displayName: 'Publish PackageInfo Artifacts'
+    inputs:
+      artifactName: 'PackageInfo'
+      path: $(Build.ArtifactStagingDirectory)/PackageInfo
+  - template: /eng/common/pipelines/templates/steps/set-default-branch.yml
+
+  - task: Powershell@2
+    inputs:
+      filePath: $(Build.SourcesDirectory)/eng/scripts/Create-ApiReview.ps1
+      arguments: >
+        -ServiceDirectory ${{parameters.ServiceDirectory}}
+        -OutPath $(Build.ArtifactStagingDirectory)
+        -ApiviewUri "$(azuresdk-apiview-uri)"
+        -ApiKey "$(azuresdk-apiview-apikey)"
+        -ApiLabel "Auto Review - $(Build.SourceVersion)"
+        -SourceBranch $(Build.SourceBranchName)
+        -DefaultBranch $(DefaultBranch)
+        -ConfigFileDir $(Build.ArtifactStagingDirectory)/PackageInfo
+      pwsh: true
+      workingDirectory: $(Pipeline.Workspace)
+    displayName: Create API review for Go
+    condition: and(succeeded(), ne(variables['Skip.CreateApiReview'], 'true') , ne(variables['Build.Reason'],'PullRequest'), eq(variables['System.TeamProject'], 'internal'))
+
+  - task: Powershell@2
+    displayName: 'Dependency Check'
+    condition: ne(variables['Skip.DependencyCheck'], 'true')
+    env:
+      GO111MODULE: 'on'
+    inputs:
+      targetType: filePath
+      pwsh: true
+      filePath: eng/scripts/Invoke-DependencyCheck.ps1
+      arguments: 'sdk/${{ parameters.ServiceDirectory }}'
+
+  - script: |
+      curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin ${{parameters.LintVersion}}
+      golangci-lint --version
+    displayName: 'Install GoLintCLI and dependencies.'
+    workingDirectory: $(System.DefaultWorkingDirectory)
+    retryCountOnTaskFailure: 3
+
+  - pwsh: |
+      $modDirs = ./eng/scripts/get_module_dirs.ps1 '${{ parameters.ServiceDirectory }}'
+      foreach ($md in $modDirs) {
+        pushd $md
+        Write-Host "##[command]Executing golangci-lint run -c $(System.DefaultWorkingDirectory)/eng/.golangci.yml in $md"
+        golangci-lint run -c $(System.DefaultWorkingDirectory)/eng/.golangci.yml
+      }
+    displayName: 'Lint'
+    failOnStderr: false
+    workingDirectory: $(System.DefaultWorkingDirectory)
+
+  - pwsh: |
+      $modDirs = ./eng/scripts/get_module_dirs.ps1 '${{ parameters.ServiceDirectory }}'
+      foreach ($md in $modDirs) {
+        if (-Not $md -Match "/arm") {
+          Get-ChildItem $md/doc.go
+        }
+      }
+    displayName: 'Verify doc.go'
+    workingDirectory: $(System.DefaultWorkingDirectory)
+
+  - script: |
+      echo scanning copyright headers in $(pwd)
+      grep -L -r --include \*.go -P "Copyright (\d{4}|\(c\)) Microsoft" . | tee >&2
+    displayName: 'Copyright Header Check'
+    condition: succeededOrFailed()
+    failOnStderr: true
+    workingDirectory: 'sdk/${{parameters.ServiceDirectory}}'
+
+  - ${{ if eq(parameters.LicenseCheck, 'true') }}:
+    - pwsh: |
+        Write-Host "ensuring $(pwd)/LICENSE.txt file exists"
+        if (Test-Path LICENSE.txt) {
+          $patternMatches = Get-Content ./LICENSE.txt | Select-String -Pattern 'Copyright (\d{4}|\(c\)) Microsoft'
+          if ($patternMatches.Length -eq 0) {
+            Write-Host "LICENSE.txt file is invalid"
+            exit 1
+          }
+        } else {
+          Write-Host "Could not find a LICENSE.txt file"
+          exit 1
+        }
+      displayName: 'LICENSE.txt Check'
+      condition: succeededOrFailed()
+      workingDirectory: 'sdk/${{parameters.ServiceDirectory}}'
+
+  - script: |
+      echo Check source file formatting in $(pwd)
+      gofmt -s -l -d . | tee >&2
+    displayName: 'Format Check'
+    condition: succeededOrFailed()
+    failOnStderr: true
+    workingDirectory: 'sdk/${{parameters.ServiceDirectory}}'
+
+  - template: /eng/common/pipelines/templates/steps/verify-links.yml
+    parameters:
+      Directory: sdk/${{ parameters.ServiceDirectory }}
+      CheckLinkGuidance: $true
+
+  - script: |
+      go run . --directory '$(System.DefaultWorkingDirectory)/sdk/${{parameters.ServiceDirectory}}'
+    displayName: 'Validate Documentation'
+    condition: succeededOrFailed()
+    workingDirectory: 'eng/tools/doccheck'
+
+  - template: /eng/common/pipelines/templates/steps/eng-common-workflow-enforcer.yml
+
+  - ${{if eq(parameters.NonShipping, 'false')}}:
+    - template: /eng/common/pipelines/templates/steps/verify-changelog.yml
+      parameters:
+        ${{ if startsWith(parameters.ServiceDirectory, '../') }}:
+          PackageName: "${{replace(parameters.ServiceDirectory, '../', '')}}"
+        ${{ else }}:
+          PackageName: 'sdk/${{parameters.ServiceDirectory}}'
+        ServiceDirectory: ${{ parameters.ServiceDirectory }}
+        ForRelease: false
+
+  - task: PowerShell@2
+    displayName: 'Run Nightly SmokeTests'
+    inputs:
+      targetType: 'filePath'
+      filePath: ./eng/scripts/Smoke_Tests_Nightly.ps1
+      pwsh: true
+      arguments: '${{ parameters.ServiceDirectory }}'

@@ -1,0 +1,6 @@
+{
+  "AssetsRepo": "Azure/azure-sdk-assets",
+  "AssetsRepoPrefixPath": "go",
+  "TagPrefix": "go/resourcemanager/datafactory/armdatafactory",
+  "Tag": "go/resourcemanager/datafactory/armdatafactory_993da29d54"
+}

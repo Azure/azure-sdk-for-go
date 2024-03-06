@@ -1,0 +1,29 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "http://host.docker.internal:8080/",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "POST",
+        ":path": "/",
+        ":scheme": "https",
+        "Accept-Encoding": "gzip",
+        "User-Agent": "Go-http-client/2.0"
+      },
+      "RequestBody": "eyJrZXkxIjoidmFsdWUxIn0=",
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Content-Length": "91",
+        "Content-Type": "application/json",
+        "Date": "Tue, 19 Oct 2021 21:51:49 GMT",
+        "Location": "Next-Location",
+        "Success": "2021-10-19 17:51:49.0904642 -0400 EDT m=\u002B24906.888867301"
+      },
+      "ResponseBody": [
+        "{\u0022Tag\u0022:\u0022Sanitized\u0022,\u0022Tag2\u0022:\u0022Sanitized2\u0022,\u0022Tag3\u0022:\u0022https://Sanitized.table.core.windows.net/\u0022}\n"
+      ]
+    }
+  ],
+  "Variables": {}
+}

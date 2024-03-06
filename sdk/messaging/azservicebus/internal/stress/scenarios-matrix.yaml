@@ -1,0 +1,69 @@
+displayNames:
+  # this makes it so these don't show up in the scenario names,
+  # since they're just clutter.
+  1.5Gi": ""
+  4Gi": ""
+  image: ""
+matrix:
+  images:
+    go18:
+      image: Dockerfile
+      imageBuildDir: "../.."
+  scenarios:
+    constantDetach:
+      testTarget: constantDetach
+      memory: "0.5Gi"
+    constantDetachmentSender:
+      testTarget: constantDetachmentSender
+      memory: "0.5Gi"
+    emptySessions:
+      testTarget: emptySessions
+      memory: "1.0Gi"
+    finitePeeks:
+      testTarget: finitePeeks
+      memory: "0.5Gi"
+    finiteSendAndReceive:
+      testTarget: finiteSendAndReceive
+      memory: "0.5Gi"
+    finiteSessions:
+      testTarget: finiteSessions
+      memory: "4Gi"
+    finiteSessionsWithChaos:
+      testTarget: finiteSessions
+      memory: "4Gi"
+      chaos: "true"
+    idleFastReconnect:
+      testTarget: idleFastReconnect
+      memory: "0.5Gi"
+    infiniteSendAndReceive:
+      testTarget: infiniteSendAndReceive
+      memory: "0.5Gi"
+    infiniteSendAndReceiveWithChaos:
+      testTarget: infiniteSendAndReceive
+      # this value is injected as a label value in templates/deploy-job.yaml
+      # this'll activate our standard chaos policy, which is at the bottom of that file.
+      chaos: "true"
+      memory: "0.5Gi"
+    longRunningRenewLock:
+      testTarget: longRunningRenewLock
+      memory: "0.5Gi"
+    mostlyIdleReceiver:
+      testTarget: mostlyIdleReceiver
+      memory: "0.5Gi"
+    openCloseMeasurements:
+      testTarget: openCloseMeasurements
+      memory: "0.5Gi"
+      args: -rounds 100
+    rapidOpenClose:
+      testTarget: rapidOpenClose
+      memory: "0.5Gi"
+    receiveCancellation:
+      testTarget: receiveCancellation
+      memory: "0.5Gi"
+    sendAndReceiveDrain:
+      testTarget: sendAndReceiveDrain
+      memory: "0.5Gi"
+    benchmarkBackupSettlementLeak:
+      benchmark: true
+      testTarget: "BenchmarkBackupSettlementLeakWhileOldReceiverStillAlive"
+      memory: "1.0Gi"

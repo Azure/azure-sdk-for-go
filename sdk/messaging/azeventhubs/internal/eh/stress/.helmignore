@@ -1,0 +1,9 @@
+stress
+stress.exe
+.env
+Dockerfile
+*.go
+*.log
+newstress
+oldstress
+stress

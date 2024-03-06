@@ -1,0 +1,577 @@
+# Release History
+
+## 2.3.0 (2023-11-30)
+### Features Added
+
+- New enum type `DaprLogLevel` with values `DaprLogLevelDebug`, `DaprLogLevelError`, `DaprLogLevelInfo`, `DaprLogLevelWarn`
+- New enum type `TLSCipherSuites` with values `TLSCipherSuitesTLSAES128GCMSHA256`, `TLSCipherSuitesTLSAES256GCMSHA384`, `TLSCipherSuitesTLSECDHEECDSAWITHAES128CBCSHA256`, `TLSCipherSuitesTLSECDHEECDSAWITHAES128GCMSHA256`, `TLSCipherSuitesTLSECDHEECDSAWITHAES256GCMSHA384`, `TLSCipherSuitesTLSECDHERSAWITHAES128CBCSHA`, `TLSCipherSuitesTLSECDHERSAWITHAES128CBCSHA256`, `TLSCipherSuitesTLSECDHERSAWITHAES128GCMSHA256`, `TLSCipherSuitesTLSECDHERSAWITHAES256CBCSHA`, `TLSCipherSuitesTLSECDHERSAWITHAES256CBCSHA384`, `TLSCipherSuitesTLSECDHERSAWITHAES256GCMSHA384`, `TLSCipherSuitesTLSRSAWITHAES128CBCSHA`, `TLSCipherSuitesTLSRSAWITHAES128CBCSHA256`, `TLSCipherSuitesTLSRSAWITHAES128GCMSHA256`, `TLSCipherSuitesTLSRSAWITHAES256CBCSHA`, `TLSCipherSuitesTLSRSAWITHAES256CBCSHA256`, `TLSCipherSuitesTLSRSAWITHAES256GCMSHA384`
+- New function `*ClientFactory.NewGetUsagesInLocationClient() *GetUsagesInLocationClient`
+- New function `NewGetUsagesInLocationClient(string, azcore.TokenCredential, *arm.ClientOptions) (*GetUsagesInLocationClient, error)`
+- New function `*GetUsagesInLocationClient.NewListPager(string, *GetUsagesInLocationClientListOptions) *runtime.Pager[GetUsagesInLocationClientListResponse]`
+- New function `*WebSiteManagementClient.NewListAseRegionsPager(*WebSiteManagementClientListAseRegionsOptions) *runtime.Pager[WebSiteManagementClientListAseRegionsResponse]`
+- New struct `AseRegion`
+- New struct `AseRegionCollection`
+- New struct `AseRegionProperties`
+- New struct `DaprConfig`
+- New struct `ResourceConfig`
+- New field `EnvironmentID` in struct `ResourceNameAvailabilityRequest`
+- New field `MinTLSCipherSuite` in struct `SiteConfig`
+- New field `DaprConfig`, `ResourceConfig`, `WorkloadProfileName` in struct `SiteProperties`
+
+
+## 2.2.0 (2023-11-24)
+### Features Added
+
+- Support for test fakes and OpenTelemetry trace spans.
+
+
+## 2.1.1 (2023-04-14)
+### Bug Fixes
+
+- Fix serialization bug of empty value of `any` type.
+
+## 2.1.0 (2023-03-24)
+### Features Added
+
+- New struct `ClientFactory` which is a client factory used to create any client in this module
+- New enum type `BasicAuthName` with values `BasicAuthNameDefault`
+- New enum type `DefaultAction` with values `DefaultActionAllow`, `DefaultActionDeny`
+- New enum type `WorkflowHealthState` with values `WorkflowHealthStateHealthy`, `WorkflowHealthStateNotSpecified`, `WorkflowHealthStateUnhealthy`, `WorkflowHealthStateUnknown`
+- New function `*StaticSitesClient.CreateOrUpdateBasicAuth(context.Context, string, string, BasicAuthName, StaticSiteBasicAuthPropertiesARMResource, *StaticSitesClientCreateOrUpdateBasicAuthOptions) (StaticSitesClientCreateOrUpdateBasicAuthResponse, error)`
+- New function `*StaticSitesClient.CreateOrUpdateBuildDatabaseConnection(context.Context, string, string, string, string, DatabaseConnection, *StaticSitesClientCreateOrUpdateBuildDatabaseConnectionOptions) (StaticSitesClientCreateOrUpdateBuildDatabaseConnectionResponse, error)`
+- New function `*StaticSitesClient.CreateOrUpdateDatabaseConnection(context.Context, string, string, string, DatabaseConnection, *StaticSitesClientCreateOrUpdateDatabaseConnectionOptions) (StaticSitesClientCreateOrUpdateDatabaseConnectionResponse, error)`
+- New function `*StaticSitesClient.DeleteBuildDatabaseConnection(context.Context, string, string, string, string, *StaticSitesClientDeleteBuildDatabaseConnectionOptions) (StaticSitesClientDeleteBuildDatabaseConnectionResponse, error)`
+- New function `*StaticSitesClient.DeleteDatabaseConnection(context.Context, string, string, string, *StaticSitesClientDeleteDatabaseConnectionOptions) (StaticSitesClientDeleteDatabaseConnectionResponse, error)`
+- New function `*StaticSitesClient.GetBasicAuth(context.Context, string, string, BasicAuthName, *StaticSitesClientGetBasicAuthOptions) (StaticSitesClientGetBasicAuthResponse, error)`
+- New function `*StaticSitesClient.GetBuildDatabaseConnection(context.Context, string, string, string, string, *StaticSitesClientGetBuildDatabaseConnectionOptions) (StaticSitesClientGetBuildDatabaseConnectionResponse, error)`
+- New function `*StaticSitesClient.GetBuildDatabaseConnectionWithDetails(context.Context, string, string, string, string, *StaticSitesClientGetBuildDatabaseConnectionWithDetailsOptions) (StaticSitesClientGetBuildDatabaseConnectionWithDetailsResponse, error)`
+- New function `*StaticSitesClient.NewGetBuildDatabaseConnectionsPager(string, string, string, *StaticSitesClientGetBuildDatabaseConnectionsOptions) *runtime.Pager[StaticSitesClientGetBuildDatabaseConnectionsResponse]`
+- New function `*StaticSitesClient.NewGetBuildDatabaseConnectionsWithDetailsPager(string, string, string, *StaticSitesClientGetBuildDatabaseConnectionsWithDetailsOptions) *runtime.Pager[StaticSitesClientGetBuildDatabaseConnectionsWithDetailsResponse]`
+- New function `*StaticSitesClient.GetDatabaseConnection(context.Context, string, string, string, *StaticSitesClientGetDatabaseConnectionOptions) (StaticSitesClientGetDatabaseConnectionResponse, error)`
+- New function `*StaticSitesClient.GetDatabaseConnectionWithDetails(context.Context, string, string, string, *StaticSitesClientGetDatabaseConnectionWithDetailsOptions) (StaticSitesClientGetDatabaseConnectionWithDetailsResponse, error)`
+- New function `*StaticSitesClient.NewGetDatabaseConnectionsPager(string, string, *StaticSitesClientGetDatabaseConnectionsOptions) *runtime.Pager[StaticSitesClientGetDatabaseConnectionsResponse]`
+- New function `*StaticSitesClient.NewGetDatabaseConnectionsWithDetailsPager(string, string, *StaticSitesClientGetDatabaseConnectionsWithDetailsOptions) *runtime.Pager[StaticSitesClientGetDatabaseConnectionsWithDetailsResponse]`
+- New function `*StaticSitesClient.NewListBasicAuthPager(string, string, *StaticSitesClientListBasicAuthOptions) *runtime.Pager[StaticSitesClientListBasicAuthResponse]`
+- New function `*StaticSitesClient.UpdateBuildDatabaseConnection(context.Context, string, string, string, string, DatabaseConnectionPatchRequest, *StaticSitesClientUpdateBuildDatabaseConnectionOptions) (StaticSitesClientUpdateBuildDatabaseConnectionResponse, error)`
+- New function `*StaticSitesClient.UpdateDatabaseConnection(context.Context, string, string, string, DatabaseConnectionPatchRequest, *StaticSitesClientUpdateDatabaseConnectionOptions) (StaticSitesClientUpdateDatabaseConnectionResponse, error)`
+- New function `*WebAppsClient.DeployWorkflowArtifacts(context.Context, string, string, *WebAppsClientDeployWorkflowArtifactsOptions) (WebAppsClientDeployWorkflowArtifactsResponse, error)`
+- New function `*WebAppsClient.DeployWorkflowArtifactsSlot(context.Context, string, string, string, *WebAppsClientDeployWorkflowArtifactsSlotOptions) (WebAppsClientDeployWorkflowArtifactsSlotResponse, error)`
+- New function `*WebAppsClient.GetInstanceWorkflowSlot(context.Context, string, string, string, string, *WebAppsClientGetInstanceWorkflowSlotOptions) (WebAppsClientGetInstanceWorkflowSlotResponse, error)`
+- New function `*WebAppsClient.GetWorkflow(context.Context, string, string, string, *WebAppsClientGetWorkflowOptions) (WebAppsClientGetWorkflowResponse, error)`
+- New function `*WebAppsClient.NewListInstanceWorkflowsSlotPager(string, string, string, *WebAppsClientListInstanceWorkflowsSlotOptions) *runtime.Pager[WebAppsClientListInstanceWorkflowsSlotResponse]`
+- New function `*WebAppsClient.ListWorkflowsConnections(context.Context, string, string, *WebAppsClientListWorkflowsConnectionsOptions) (WebAppsClientListWorkflowsConnectionsResponse, error)`
+- New function `*WebAppsClient.ListWorkflowsConnectionsSlot(context.Context, string, string, string, *WebAppsClientListWorkflowsConnectionsSlotOptions) (WebAppsClientListWorkflowsConnectionsSlotResponse, error)`
+- New function `*WebAppsClient.NewListWorkflowsPager(string, string, *WebAppsClientListWorkflowsOptions) *runtime.Pager[WebAppsClientListWorkflowsResponse]`
+- New struct `DatabaseConnection`
+- New struct `DatabaseConnectionCollection`
+- New struct `DatabaseConnectionOverview`
+- New struct `DatabaseConnectionPatchRequest`
+- New struct `DatabaseConnectionPatchRequestProperties`
+- New struct `DatabaseConnectionProperties`
+- New struct `StaticSiteBasicAuthPropertiesARMResource`
+- New struct `StaticSiteBasicAuthPropertiesARMResourceProperties`
+- New struct `StaticSiteBasicAuthPropertiesCollection`
+- New struct `StaticSiteDatabaseConnectionConfigurationFileOverview`
+- New struct `WorkflowArtifacts`
+- New struct `WorkflowEnvelope`
+- New struct `WorkflowEnvelopeCollection`
+- New struct `WorkflowEnvelopeProperties`
+- New struct `WorkflowHealth`
+- New field `ElasticWebAppScaleLimit` in struct `SiteConfig`
+- New field `IPSecurityRestrictionsDefaultAction` in struct `SiteConfig`
+- New field `Metadata` in struct `SiteConfig`
+- New field `ScmIPSecurityRestrictionsDefaultAction` in struct `SiteConfig`
+- New field `ManagedEnvironmentID` in struct `SiteProperties`
+- New field `DatabaseConnections` in struct `StaticSite`
+- New field `DatabaseConnections` in struct `StaticSiteBuildARMResourceProperties`
+
+
+## 2.0.0 (2022-07-12)
+### Breaking Changes
+
+- Type of `DomainProperties.DomainNotRenewableReasons` has been changed from `[]*DomainPropertiesDomainNotRenewableReasonsItem` to `[]*ResourceNotRenewableReason`
+- Type of `ProviderClientGetWebAppStacksOptions.StackOsType` has been changed from `*Enum19` to `*ProviderStackOsType`
+- Type of `CertificateOrderProperties.AppServiceCertificateNotRenewableReasons` has been changed from `[]*AppServiceCertificateOrderPropertiesAppServiceCertificateNotRenewableReasonsItem` to `[]*ResourceNotRenewableReason`
+- Type of `ProviderClientGetFunctionAppStacksOptions.StackOsType` has been changed from `*Enum16` to `*ProviderStackOsType`
+- Type of `ProviderClientGetAvailableStacksOptions.OSTypeSelected` has been changed from `*Enum15` to `*ProviderOsTypeSelected`
+- Type of `ProviderClientGetWebAppStacksForLocationOptions.StackOsType` has been changed from `*Enum18` to `*ProviderStackOsType`
+- Type of `ProviderClientGetFunctionAppStacksForLocationOptions.StackOsType` has been changed from `*Enum17` to `*ProviderStackOsType`
+- Type of `CertificateOrderPatchResourceProperties.AppServiceCertificateNotRenewableReasons` has been changed from `[]*AppServiceCertificateOrderPatchResourcePropertiesAppServiceCertificateNotRenewableReasonsItem` to `[]*ResourceNotRenewableReason`
+- Type of `ProviderClientGetAvailableStacksOnPremOptions.OSTypeSelected` has been changed from `*Enum20` to `*ProviderOsTypeSelected`
+- Type of `DomainPatchResourceProperties.DomainNotRenewableReasons` has been changed from `[]*DomainPatchResourcePropertiesDomainNotRenewableReasonsItem` to `[]*ResourceNotRenewableReason`
+- Const `Enum17All` has been removed
+- Const `Enum16Windows` has been removed
+- Const `DomainPropertiesDomainNotRenewableReasonsItemRegistrationStatusNotSupportedForRenewal` has been removed
+- Const `Enum20LinuxFunctions` has been removed
+- Const `Enum20All` has been removed
+- Const `Enum15WindowsFunctions` has been removed
+- Const `Enum19Windows` has been removed
+- Const `DomainPropertiesDomainNotRenewableReasonsItemExpirationNotInRenewalTimeRange` has been removed
+- Const `DomainPropertiesDomainNotRenewableReasonsItemSubscriptionNotActive` has been removed
+- Const `AppServiceCertificateOrderPatchResourcePropertiesAppServiceCertificateNotRenewableReasonsItemExpirationNotInRenewalTimeRange` has been removed
+- Const `AppServiceCertificateOrderPropertiesAppServiceCertificateNotRenewableReasonsItemExpirationNotInRenewalTimeRange` has been removed
+- Const `DomainPatchResourcePropertiesDomainNotRenewableReasonsItemRegistrationStatusNotSupportedForRenewal` has been removed
+- Const `Enum15Linux` has been removed
+- Const `DomainPatchResourcePropertiesDomainNotRenewableReasonsItemSubscriptionNotActive` has been removed
+- Const `Enum20Linux` has been removed
+- Const `Enum16Linux` has been removed
+- Const `Enum15All` has been removed
+- Const `Enum18Windows` has been removed
+- Const `Enum19Linux` has been removed
+- Const `AppServiceCertificateOrderPatchResourcePropertiesAppServiceCertificateNotRenewableReasonsItemSubscriptionNotActive` has been removed
+- Const `AppServiceCertificateOrderPatchResourcePropertiesAppServiceCertificateNotRenewableReasonsItemRegistrationStatusNotSupportedForRenewal` has been removed
+- Const `Enum20WindowsFunctions` has been removed
+- Const `Enum17Windows` has been removed
+- Const `Enum17Linux` has been removed
+- Const `DomainPatchResourcePropertiesDomainNotRenewableReasonsItemExpirationNotInRenewalTimeRange` has been removed
+- Const `Enum16All` has been removed
+- Const `AppServiceCertificateOrderPropertiesAppServiceCertificateNotRenewableReasonsItemSubscriptionNotActive` has been removed
+- Const `Enum18Linux` has been removed
+- Const `Enum19All` has been removed
+- Const `Enum15Windows` has been removed
+- Const `Enum18All` has been removed
+- Const `Enum20Windows` has been removed
+- Const `Enum15LinuxFunctions` has been removed
+- Const `AppServiceCertificateOrderPropertiesAppServiceCertificateNotRenewableReasonsItemRegistrationStatusNotSupportedForRenewal` has been removed
+- Function `PossibleEnum19Values` has been removed
+- Function `PossibleEnum16Values` has been removed
+- Function `PossibleAppServiceCertificateOrderPatchResourcePropertiesAppServiceCertificateNotRenewableReasonsItemValues` has been removed
+- Function `PossibleEnum20Values` has been removed
+- Function `PossibleDomainPatchResourcePropertiesDomainNotRenewableReasonsItemValues` has been removed
+- Function `PossibleEnum15Values` has been removed
+- Function `PossibleEnum18Values` has been removed
+- Function `PossibleAppServiceCertificateOrderPropertiesAppServiceCertificateNotRenewableReasonsItemValues` has been removed
+- Function `PossibleEnum17Values` has been removed
+- Function `PossibleDomainPropertiesDomainNotRenewableReasonsItemValues` has been removed
+- Struct `CertificateEmailProperties` has been removed
+- Struct `CertificateOrderActionProperties` has been removed
+- Field `Properties` of struct `CertificateEmail` has been removed
+- Field `ID` of struct `CertificateEmail` has been removed
+- Field `Name` of struct `CertificateEmail` has been removed
+- Field `Type` of struct `CertificateEmail` has been removed
+- Field `Kind` of struct `CertificateEmail` has been removed
+- Field `ID` of struct `CertificateOrderAction` has been removed
+- Field `Name` of struct `CertificateOrderAction` has been removed
+- Field `Type` of struct `CertificateOrderAction` has been removed
+- Field `Kind` of struct `CertificateOrderAction` has been removed
+- Field `Properties` of struct `CertificateOrderAction` has been removed
+
+### Features Added
+
+- New const `WorkflowProvisioningStateUnregistering`
+- New const `WorkflowProvisioningStateCreating`
+- New const `WorkflowProvisioningStateDeleted`
+- New const `CustomDNSSuffixProvisioningStateFailed`
+- New const `WorkflowTriggerProvisioningStateFailed`
+- New const `WorkflowStateNotSpecified`
+- New const `KeyTypeNotSpecified`
+- New const `WorkflowTriggerProvisioningStateSucceeded`
+- New const `WorkflowStatusNotSpecified`
+- New const `DayOfWeekSaturday`
+- New const `RecurrenceFrequencyWeek`
+- New const `UpgradePreferenceManual`
+- New const `WorkflowProvisioningStateRegistered`
+- New const `WorkflowProvisioningStateWaiting`
+- New const `ParameterTypeString`
+- New const `WorkflowProvisioningStateInProgress`
+- New const `RecurrenceFrequencyNotSpecified`
+- New const `DeploymentBuildStatusRuntimeFailed`
+- New const `WorkflowStatusIgnored`
+- New const `WorkflowStatusRunning`
+- New const `WorkflowStatusAborted`
+- New const `ProviderStackOsTypeLinux`
+- New const `WorkflowProvisioningStateCreated`
+- New const `WorkflowStatusSkipped`
+- New const `UpgradeAvailabilityNone`
+- New const `DayOfWeekWednesday`
+- New const `DeploymentBuildStatusBuildRequestReceived`
+- New const `WorkflowProvisioningStateMoving`
+- New const `DayOfWeekFriday`
+- New const `WorkflowStatusTimedOut`
+- New const `DayOfWeekThursday`
+- New const `ParameterTypeArray`
+- New const `DeploymentBuildStatusStartPolling`
+- New const `ProviderOsTypeSelectedWindowsFunctions`
+- New const `ResourceNotRenewableReasonRegistrationStatusNotSupportedForRenewal`
+- New const `UpgradeAvailabilityReady`
+- New const `UpgradePreferenceLate`
+- New const `WorkflowSKUNameShared`
+- New const `WorkflowTriggerProvisioningStateUnregistering`
+- New const `WorkflowTriggerProvisioningStateCanceled`
+- New const `ParameterTypeSecureObject`
+- New const `WorkflowStatusSucceeded`
+- New const `WorkflowSKUNamePremium`
+- New const `WorkflowTriggerProvisioningStateDeleting`
+- New const `CustomDNSSuffixProvisioningStateDegraded`
+- New const `ParameterTypeSecureString`
+- New const `WorkflowProvisioningStateNotSpecified`
+- New const `WorkflowStatusSuspended`
+- New const `ResourceNotRenewableReasonExpirationNotInRenewalTimeRange`
+- New const `UpgradePreferenceNone`
+- New const `ProviderStackOsTypeAll`
+- New const `RecurrenceFrequencyMinute`
+- New const `WorkflowProvisioningStateUnregistered`
+- New const `WorkflowTriggerProvisioningStateRunning`
+- New const `WorkflowStatusPaused`
+- New const `DayOfWeekMonday`
+- New const `WorkflowProvisioningStateDeleting`
+- New const `DeploymentBuildStatusBuildAborted`
+- New const `WorkflowStateEnabled`
+- New const `KeyTypePrimary`
+- New const `CustomDomainStatusUnhealthy`
+- New const `DeploymentBuildStatusBuildInProgress`
+- New const `OpenAuthenticationProviderTypeAAD`
+- New const `WorkflowStatusFaulted`
+- New const `WorkflowTriggerProvisioningStateDeleted`
+- New const `WorkflowProvisioningStateAccepted`
+- New const `WorkflowTriggerProvisioningStateUpdating`
+- New const `ParameterTypeNotSpecified`
+- New const `WorkflowSKUNameFree`
+- New const `WorkflowProvisioningStateCompleted`
+- New const `WorkflowTriggerProvisioningStateCreating`
+- New const `UpgradePreferenceEarly`
+- New const `WorkflowStatusWaiting`
+- New const `ParameterTypeInt`
+- New const `ParameterTypeBool`
+- New const `DaysOfWeekFriday`
+- New const `WorkflowTriggerProvisioningStateMoving`
+- New const `ProviderOsTypeSelectedWindows`
+- New const `WorkflowTriggerProvisioningStateAccepted`
+- New const `WorkflowStateCompleted`
+- New const `DeploymentBuildStatusRuntimeStarting`
+- New const `WorkflowProvisioningStatePending`
+- New const `WorkflowProvisioningStateRenewing`
+- New const `WorkflowTriggerProvisioningStateRegistered`
+- New const `ProviderOsTypeSelectedAll`
+- New const `DaysOfWeekTuesday`
+- New const `WorkflowTriggerProvisioningStateCreated`
+- New const `KeyTypeSecondary`
+- New const `DaysOfWeekWednesday`
+- New const `ParameterTypeFloat`
+- New const `WorkflowProvisioningStateRunning`
+- New const `WorkflowStatusFailed`
+- New const `WorkflowTriggerProvisioningStateNotSpecified`
+- New const `DeploymentBuildStatusBuildPending`
+- New const `DeploymentBuildStatusStartPollingWithRestart`
+- New const `WorkflowSKUNameNotSpecified`
+- New const `DeploymentBuildStatusBuildFailed`
+- New const `DaysOfWeekThursday`
+- New const `KindStateless`
+- New const `DeploymentBuildStatusBuildSuccessful`
+- New const `WorkflowTriggerProvisioningStateCompleted`
+- New const `DaysOfWeekSunday`
+- New const `RecurrenceFrequencyMonth`
+- New const `WorkflowTriggerProvisioningStateReady`
+- New const `ResourceNotRenewableReasonSubscriptionNotActive`
+- New const `WorkflowStatusCancelled`
+- New const `WorkflowTriggerProvisioningStateUnregistered`
+- New const `ProviderOsTypeSelectedLinux`
+- New const `WorkflowProvisioningStateUpdating`
+- New const `DayOfWeekTuesday`
+- New const `WorkflowProvisioningStateSucceeded`
+- New const `WorkflowTriggerProvisioningStateRegistering`
+- New const `ParameterTypeObject`
+- New const `CustomDNSSuffixProvisioningStateInProgress`
+- New const `DeploymentBuildStatusRuntimeSuccessful`
+- New const `WorkflowProvisioningStateReady`
+- New const `WorkflowProvisioningStateFailed`
+- New const `WorkflowProvisioningStateCanceled`
+- New const `WorkflowSKUNameStandard`
+- New const `RecurrenceFrequencyYear`
+- New const `WorkflowStateDeleted`
+- New const `ProviderOsTypeSelectedLinuxFunctions`
+- New const `WorkflowStateDisabled`
+- New const `WorkflowSKUNameBasic`
+- New const `RecurrenceFrequencyHour`
+- New const `DaysOfWeekMonday`
+- New const `RecurrenceFrequencyDay`
+- New const `WorkflowProvisioningStateRegistering`
+- New const `KindStateful`
+- New const `DaysOfWeekSaturday`
+- New const `ProviderStackOsTypeWindows`
+- New const `WorkflowStateSuspended`
+- New const `RecurrenceFrequencySecond`
+- New const `CustomDNSSuffixProvisioningStateSucceeded`
+- New const `DayOfWeekSunday`
+- New const `DeploymentBuildStatusTimedOut`
+- New const `DeploymentBuildStatusPostBuildRestartRequired`
+- New function `*StaticSitesClient.NewGetLinkedBackendsPager(string, string, *StaticSitesClientGetLinkedBackendsOptions) *runtime.Pager[StaticSitesClientGetLinkedBackendsResponse]`
+- New function `*StaticSitesClient.BeginLinkBackendToBuild(context.Context, string, string, string, string, StaticSiteLinkedBackendARMResource, *StaticSitesClientBeginLinkBackendToBuildOptions) (*runtime.Poller[StaticSitesClientLinkBackendToBuildResponse], error)`
+- New function `PossibleResourceNotRenewableReasonValues() []ResourceNotRenewableReason`
+- New function `*WorkflowsClient.RegenerateAccessKey(context.Context, string, string, string, RegenerateActionParameter, *WorkflowsClientRegenerateAccessKeyOptions) (WorkflowsClientRegenerateAccessKeyResponse, error)`
+- New function `PossibleRecurrenceFrequencyValues() []RecurrenceFrequency`
+- New function `*WorkflowRunActionRepetitionsRequestHistoriesClient.NewListPager(string, string, string, string, string, string, *WorkflowRunActionRepetitionsRequestHistoriesClientListOptions) *runtime.Pager[WorkflowRunActionRepetitionsRequestHistoriesClientListResponse]`
+- New function `NewWorkflowRunActionsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*WorkflowRunActionsClient, error)`
+- New function `PossibleKindValues() []Kind`
+- New function `*EnvironmentsClient.BeginUpgrade(context.Context, string, string, *EnvironmentsClientBeginUpgradeOptions) (*runtime.Poller[EnvironmentsClientUpgradeResponse], error)`
+- New function `NewWorkflowVersionsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*WorkflowVersionsClient, error)`
+- New function `*WorkflowRunActionScopeRepetitionsClient.Get(context.Context, string, string, string, string, string, string, *WorkflowRunActionScopeRepetitionsClientGetOptions) (WorkflowRunActionScopeRepetitionsClientGetResponse, error)`
+- New function `*WorkflowTriggerHistoriesClient.NewListPager(string, string, string, string, *WorkflowTriggerHistoriesClientListOptions) *runtime.Pager[WorkflowTriggerHistoriesClientListResponse]`
+- New function `*WorkflowRunsClient.NewListPager(string, string, string, *WorkflowRunsClientListOptions) *runtime.Pager[WorkflowRunsClientListResponse]`
+- New function `NewWorkflowsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*WorkflowsClient, error)`
+- New function `*WorkflowRunActionsClient.NewListExpressionTracesPager(string, string, string, string, string, *WorkflowRunActionsClientListExpressionTracesOptions) *runtime.Pager[WorkflowRunActionsClientListExpressionTracesResponse]`
+- New function `*StaticSitesClient.GetLinkedBackendForBuild(context.Context, string, string, string, string, *StaticSitesClientGetLinkedBackendForBuildOptions) (StaticSitesClientGetLinkedBackendForBuildResponse, error)`
+- New function `*StaticSitesClient.GetLinkedBackend(context.Context, string, string, string, *StaticSitesClientGetLinkedBackendOptions) (StaticSitesClientGetLinkedBackendResponse, error)`
+- New function `*StaticSitesClient.BeginValidateBackendForBuild(context.Context, string, string, string, string, StaticSiteLinkedBackendARMResource, *StaticSitesClientBeginValidateBackendForBuildOptions) (*runtime.Poller[StaticSitesClientValidateBackendForBuildResponse], error)`
+- New function `*WebAppsClient.BeginGetSlotSiteDeploymentStatusSlot(context.Context, string, string, string, string, *WebAppsClientBeginGetSlotSiteDeploymentStatusSlotOptions) (*runtime.Poller[WebAppsClientGetSlotSiteDeploymentStatusSlotResponse], error)`
+- New function `*StaticSitesClient.BeginLinkBackend(context.Context, string, string, string, StaticSiteLinkedBackendARMResource, *StaticSitesClientBeginLinkBackendOptions) (*runtime.Poller[StaticSitesClientLinkBackendResponse], error)`
+- New function `NewWorkflowRunsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*WorkflowRunsClient, error)`
+- New function `*EnvironmentsClient.TestUpgradeAvailableNotification(context.Context, string, string, *EnvironmentsClientTestUpgradeAvailableNotificationOptions) (EnvironmentsClientTestUpgradeAvailableNotificationResponse, error)`
+- New function `*WorkflowRunActionScopeRepetitionsClient.NewListPager(string, string, string, string, string, *WorkflowRunActionScopeRepetitionsClientListOptions) *runtime.Pager[WorkflowRunActionScopeRepetitionsClientListResponse]`
+- New function `*WorkflowVersionsClient.NewListPager(string, string, string, *WorkflowVersionsClientListOptions) *runtime.Pager[WorkflowVersionsClientListResponse]`
+- New function `PossibleUpgradeAvailabilityValues() []UpgradeAvailability`
+- New function `*WorkflowRunActionRepetitionsClient.Get(context.Context, string, string, string, string, string, string, *WorkflowRunActionRepetitionsClientGetOptions) (WorkflowRunActionRepetitionsClientGetResponse, error)`
+- New function `PossibleUpgradePreferenceValues() []UpgradePreference`
+- New function `PossibleWorkflowSKUNameValues() []WorkflowSKUName`
+- New function `PossibleWorkflowProvisioningStateValues() []WorkflowProvisioningState`
+- New function `*WebAppsClient.BeginGetProductionSiteDeploymentStatus(context.Context, string, string, string, *WebAppsClientBeginGetProductionSiteDeploymentStatusOptions) (*runtime.Poller[WebAppsClientGetProductionSiteDeploymentStatusResponse], error)`
+- New function `*WorkflowVersionsClient.Get(context.Context, string, string, string, string, *WorkflowVersionsClientGetOptions) (WorkflowVersionsClientGetResponse, error)`
+- New function `*WorkflowRunActionsClient.NewListPager(string, string, string, string, *WorkflowRunActionsClientListOptions) *runtime.Pager[WorkflowRunActionsClientListResponse]`
+- New function `PossibleDaysOfWeekValues() []DaysOfWeek`
+- New function `PossibleKeyTypeValues() []KeyType`
+- New function `NewWorkflowTriggerHistoriesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*WorkflowTriggerHistoriesClient, error)`
+- New function `NewWorkflowTriggersClient(string, azcore.TokenCredential, *arm.ClientOptions) (*WorkflowTriggersClient, error)`
+- New function `PossibleCustomDNSSuffixProvisioningStateValues() []CustomDNSSuffixProvisioningState`
+- New function `*WorkflowsClient.Validate(context.Context, string, string, string, Workflow, *WorkflowsClientValidateOptions) (WorkflowsClientValidateResponse, error)`
+- New function `PossibleDeploymentBuildStatusValues() []DeploymentBuildStatus`
+- New function `*StaticSitesClient.NewGetLinkedBackendsForBuildPager(string, string, string, *StaticSitesClientGetLinkedBackendsForBuildOptions) *runtime.Pager[StaticSitesClientGetLinkedBackendsForBuildResponse]`
+- New function `*WorkflowRunActionsClient.Get(context.Context, string, string, string, string, string, *WorkflowRunActionsClientGetOptions) (WorkflowRunActionsClientGetResponse, error)`
+- New function `NewWorkflowRunActionRepetitionsRequestHistoriesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*WorkflowRunActionRepetitionsRequestHistoriesClient, error)`
+- New function `*WorkflowRunsClient.Cancel(context.Context, string, string, string, string, *WorkflowRunsClientCancelOptions) (WorkflowRunsClientCancelResponse, error)`
+- New function `*WorkflowTriggersClient.ListCallbackURL(context.Context, string, string, string, string, *WorkflowTriggersClientListCallbackURLOptions) (WorkflowTriggersClientListCallbackURLResponse, error)`
+- New function `*WorkflowRunActionRepetitionsClient.NewListExpressionTracesPager(string, string, string, string, string, string, *WorkflowRunActionRepetitionsClientListExpressionTracesOptions) *runtime.Pager[WorkflowRunActionRepetitionsClientListExpressionTracesResponse]`
+- New function `PossibleProviderOsTypeSelectedValues() []ProviderOsTypeSelected`
+- New function `NewWorkflowRunActionScopeRepetitionsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*WorkflowRunActionScopeRepetitionsClient, error)`
+- New function `PossibleWorkflowTriggerProvisioningStateValues() []WorkflowTriggerProvisioningState`
+- New function `*EnvironmentsClient.UpdateAseCustomDNSSuffixConfiguration(context.Context, string, string, CustomDNSSuffixConfiguration, *EnvironmentsClientUpdateAseCustomDNSSuffixConfigurationOptions) (EnvironmentsClientUpdateAseCustomDNSSuffixConfigurationResponse, error)`
+- New function `PossibleProviderStackOsTypeValues() []ProviderStackOsType`
+- New function `*WorkflowTriggerHistoriesClient.BeginResubmit(context.Context, string, string, string, string, string, *WorkflowTriggerHistoriesClientBeginResubmitOptions) (*runtime.Poller[WorkflowTriggerHistoriesClientResubmitResponse], error)`
+- New function `*WorkflowRunActionRepetitionsRequestHistoriesClient.Get(context.Context, string, string, string, string, string, string, string, *WorkflowRunActionRepetitionsRequestHistoriesClientGetOptions) (WorkflowRunActionRepetitionsRequestHistoriesClientGetResponse, error)`
+- New function `*WorkflowRunActionRepetitionsClient.NewListPager(string, string, string, string, string, *WorkflowRunActionRepetitionsClientListOptions) *runtime.Pager[WorkflowRunActionRepetitionsClientListResponse]`
+- New function `PossibleWorkflowStatusValues() []WorkflowStatus`
+- New function `NewWorkflowRunActionRepetitionsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*WorkflowRunActionRepetitionsClient, error)`
+- New function `*EnvironmentsClient.GetAseCustomDNSSuffixConfiguration(context.Context, string, string, *EnvironmentsClientGetAseCustomDNSSuffixConfigurationOptions) (EnvironmentsClientGetAseCustomDNSSuffixConfigurationResponse, error)`
+- New function `*EnvironmentsClient.DeleteAseCustomDNSSuffixConfiguration(context.Context, string, string, *EnvironmentsClientDeleteAseCustomDNSSuffixConfigurationOptions) (EnvironmentsClientDeleteAseCustomDNSSuffixConfigurationResponse, error)`
+- New function `*WorkflowTriggerHistoriesClient.Get(context.Context, string, string, string, string, string, *WorkflowTriggerHistoriesClientGetOptions) (WorkflowTriggerHistoriesClientGetResponse, error)`
+- New function `*WorkflowTriggersClient.BeginRun(context.Context, string, string, string, string, *WorkflowTriggersClientBeginRunOptions) (*runtime.Poller[WorkflowTriggersClientRunResponse], error)`
+- New function `*StaticSitesClient.UnlinkBackend(context.Context, string, string, string, *StaticSitesClientUnlinkBackendOptions) (StaticSitesClientUnlinkBackendResponse, error)`
+- New function `*WebAppsClient.NewListProductionSiteDeploymentStatusesPager(string, string, *WebAppsClientListProductionSiteDeploymentStatusesOptions) *runtime.Pager[WebAppsClientListProductionSiteDeploymentStatusesResponse]`
+- New function `*WorkflowTriggersClient.NewListPager(string, string, string, *WorkflowTriggersClientListOptions) *runtime.Pager[WorkflowTriggersClientListResponse]`
+- New function `*StaticSitesClient.UnlinkBackendFromBuild(context.Context, string, string, string, string, *StaticSitesClientUnlinkBackendFromBuildOptions) (StaticSitesClientUnlinkBackendFromBuildResponse, error)`
+- New function `*WorkflowTriggersClient.GetSchemaJSON(context.Context, string, string, string, string, *WorkflowTriggersClientGetSchemaJSONOptions) (WorkflowTriggersClientGetSchemaJSONResponse, error)`
+- New function `PossibleWorkflowStateValues() []WorkflowState`
+- New function `PossibleDayOfWeekValues() []DayOfWeek`
+- New function `PossibleOpenAuthenticationProviderTypeValues() []OpenAuthenticationProviderType`
+- New function `*WorkflowTriggersClient.Get(context.Context, string, string, string, string, *WorkflowTriggersClientGetOptions) (WorkflowTriggersClientGetResponse, error)`
+- New function `PossibleParameterTypeValues() []ParameterType`
+- New function `*StaticSitesClient.BeginValidateBackend(context.Context, string, string, string, StaticSiteLinkedBackendARMResource, *StaticSitesClientBeginValidateBackendOptions) (*runtime.Poller[StaticSitesClientValidateBackendResponse], error)`
+- New function `*WorkflowRunsClient.Get(context.Context, string, string, string, string, *WorkflowRunsClientGetOptions) (WorkflowRunsClientGetResponse, error)`
+- New function `*WebAppsClient.NewListSlotSiteDeploymentStatusesSlotPager(string, string, string, *WebAppsClientListSlotSiteDeploymentStatusesSlotOptions) *runtime.Pager[WebAppsClientListSlotSiteDeploymentStatusesSlotResponse]`
+- New struct `AzureResourceErrorInfo`
+- New struct `ContentHash`
+- New struct `ContentLink`
+- New struct `Correlation`
+- New struct `CsmDeploymentStatus`
+- New struct `CsmDeploymentStatusCollection`
+- New struct `CsmDeploymentStatusProperties`
+- New struct `CustomDNSSuffixConfiguration`
+- New struct `CustomDNSSuffixConfigurationProperties`
+- New struct `EnvironmentsClientBeginUpgradeOptions`
+- New struct `EnvironmentsClientDeleteAseCustomDNSSuffixConfigurationOptions`
+- New struct `EnvironmentsClientDeleteAseCustomDNSSuffixConfigurationResponse`
+- New struct `EnvironmentsClientGetAseCustomDNSSuffixConfigurationOptions`
+- New struct `EnvironmentsClientGetAseCustomDNSSuffixConfigurationResponse`
+- New struct `EnvironmentsClientTestUpgradeAvailableNotificationOptions`
+- New struct `EnvironmentsClientTestUpgradeAvailableNotificationResponse`
+- New struct `EnvironmentsClientUpdateAseCustomDNSSuffixConfigurationOptions`
+- New struct `EnvironmentsClientUpdateAseCustomDNSSuffixConfigurationResponse`
+- New struct `EnvironmentsClientUpgradeResponse`
+- New struct `ErrorInfo`
+- New struct `ErrorProperties`
+- New struct `ErrorResponse`
+- New struct `Expression`
+- New struct `ExpressionRoot`
+- New struct `ExpressionTraces`
+- New struct `FlowAccessControlConfiguration`
+- New struct `FlowAccessControlConfigurationPolicy`
+- New struct `FlowEndpoints`
+- New struct `FlowEndpointsConfiguration`
+- New struct `IPAddress`
+- New struct `IPAddressRange`
+- New struct `JSONSchema`
+- New struct `OpenAuthenticationAccessPolicies`
+- New struct `OpenAuthenticationAccessPolicy`
+- New struct `OpenAuthenticationPolicyClaim`
+- New struct `OperationResult`
+- New struct `OperationResultProperties`
+- New struct `RecurrenceSchedule`
+- New struct `RecurrenceScheduleOccurrence`
+- New struct `RegenerateActionParameter`
+- New struct `RepetitionIndex`
+- New struct `Request`
+- New struct `RequestHistory`
+- New struct `RequestHistoryListResult`
+- New struct `RequestHistoryProperties`
+- New struct `ResourceReference`
+- New struct `Response`
+- New struct `RetryHistory`
+- New struct `RunActionCorrelation`
+- New struct `RunCorrelation`
+- New struct `StaticSiteLinkedBackend`
+- New struct `StaticSiteLinkedBackendARMResource`
+- New struct `StaticSiteLinkedBackendARMResourceProperties`
+- New struct `StaticSiteLinkedBackendsCollection`
+- New struct `StaticSitesClientBeginLinkBackendOptions`
+- New struct `StaticSitesClientBeginLinkBackendToBuildOptions`
+- New struct `StaticSitesClientBeginValidateBackendForBuildOptions`
+- New struct `StaticSitesClientBeginValidateBackendOptions`
+- New struct `StaticSitesClientGetLinkedBackendForBuildOptions`
+- New struct `StaticSitesClientGetLinkedBackendForBuildResponse`
+- New struct `StaticSitesClientGetLinkedBackendOptions`
+- New struct `StaticSitesClientGetLinkedBackendResponse`
+- New struct `StaticSitesClientGetLinkedBackendsForBuildOptions`
+- New struct `StaticSitesClientGetLinkedBackendsForBuildResponse`
+- New struct `StaticSitesClientGetLinkedBackendsOptions`
+- New struct `StaticSitesClientGetLinkedBackendsResponse`
+- New struct `StaticSitesClientLinkBackendResponse`
+- New struct `StaticSitesClientLinkBackendToBuildResponse`
+- New struct `StaticSitesClientUnlinkBackendFromBuildOptions`
+- New struct `StaticSitesClientUnlinkBackendFromBuildResponse`
+- New struct `StaticSitesClientUnlinkBackendOptions`
+- New struct `StaticSitesClientUnlinkBackendResponse`
+- New struct `StaticSitesClientValidateBackendForBuildResponse`
+- New struct `StaticSitesClientValidateBackendResponse`
+- New struct `SubResource`
+- New struct `WebAppsClientBeginGetProductionSiteDeploymentStatusOptions`
+- New struct `WebAppsClientBeginGetSlotSiteDeploymentStatusSlotOptions`
+- New struct `WebAppsClientGetProductionSiteDeploymentStatusResponse`
+- New struct `WebAppsClientGetSlotSiteDeploymentStatusSlotResponse`
+- New struct `WebAppsClientListProductionSiteDeploymentStatusesOptions`
+- New struct `WebAppsClientListProductionSiteDeploymentStatusesResponse`
+- New struct `WebAppsClientListSlotSiteDeploymentStatusesSlotOptions`
+- New struct `WebAppsClientListSlotSiteDeploymentStatusesSlotResponse`
+- New struct `Workflow`
+- New struct `WorkflowFilter`
+- New struct `WorkflowListResult`
+- New struct `WorkflowOutputParameter`
+- New struct `WorkflowParameter`
+- New struct `WorkflowProperties`
+- New struct `WorkflowResource`
+- New struct `WorkflowRun`
+- New struct `WorkflowRunAction`
+- New struct `WorkflowRunActionFilter`
+- New struct `WorkflowRunActionListResult`
+- New struct `WorkflowRunActionProperties`
+- New struct `WorkflowRunActionRepetitionDefinition`
+- New struct `WorkflowRunActionRepetitionDefinitionCollection`
+- New struct `WorkflowRunActionRepetitionProperties`
+- New struct `WorkflowRunActionRepetitionsClient`
+- New struct `WorkflowRunActionRepetitionsClientGetOptions`
+- New struct `WorkflowRunActionRepetitionsClientGetResponse`
+- New struct `WorkflowRunActionRepetitionsClientListExpressionTracesOptions`
+- New struct `WorkflowRunActionRepetitionsClientListExpressionTracesResponse`
+- New struct `WorkflowRunActionRepetitionsClientListOptions`
+- New struct `WorkflowRunActionRepetitionsClientListResponse`
+- New struct `WorkflowRunActionRepetitionsRequestHistoriesClient`
+- New struct `WorkflowRunActionRepetitionsRequestHistoriesClientGetOptions`
+- New struct `WorkflowRunActionRepetitionsRequestHistoriesClientGetResponse`
+- New struct `WorkflowRunActionRepetitionsRequestHistoriesClientListOptions`
+- New struct `WorkflowRunActionRepetitionsRequestHistoriesClientListResponse`
+- New struct `WorkflowRunActionScopeRepetitionsClient`
+- New struct `WorkflowRunActionScopeRepetitionsClientGetOptions`
+- New struct `WorkflowRunActionScopeRepetitionsClientGetResponse`
+- New struct `WorkflowRunActionScopeRepetitionsClientListOptions`
+- New struct `WorkflowRunActionScopeRepetitionsClientListResponse`
+- New struct `WorkflowRunActionsClient`
+- New struct `WorkflowRunActionsClientGetOptions`
+- New struct `WorkflowRunActionsClientGetResponse`
+- New struct `WorkflowRunActionsClientListExpressionTracesOptions`
+- New struct `WorkflowRunActionsClientListExpressionTracesResponse`
+- New struct `WorkflowRunActionsClientListOptions`
+- New struct `WorkflowRunActionsClientListResponse`
+- New struct `WorkflowRunFilter`
+- New struct `WorkflowRunListResult`
+- New struct `WorkflowRunProperties`
+- New struct `WorkflowRunTrigger`
+- New struct `WorkflowRunsClient`
+- New struct `WorkflowRunsClientCancelOptions`
+- New struct `WorkflowRunsClientCancelResponse`
+- New struct `WorkflowRunsClientGetOptions`
+- New struct `WorkflowRunsClientGetResponse`
+- New struct `WorkflowRunsClientListOptions`
+- New struct `WorkflowRunsClientListResponse`
+- New struct `WorkflowSKU`
+- New struct `WorkflowTrigger`
+- New struct `WorkflowTriggerCallbackURL`
+- New struct `WorkflowTriggerFilter`
+- New struct `WorkflowTriggerHistoriesClient`
+- New struct `WorkflowTriggerHistoriesClientBeginResubmitOptions`
+- New struct `WorkflowTriggerHistoriesClientGetOptions`
+- New struct `WorkflowTriggerHistoriesClientGetResponse`
+- New struct `WorkflowTriggerHistoriesClientListOptions`
+- New struct `WorkflowTriggerHistoriesClientListResponse`
+- New struct `WorkflowTriggerHistoriesClientResubmitResponse`
+- New struct `WorkflowTriggerHistory`
+- New struct `WorkflowTriggerHistoryFilter`
+- New struct `WorkflowTriggerHistoryListResult`
+- New struct `WorkflowTriggerHistoryProperties`
+- New struct `WorkflowTriggerListCallbackURLQueries`
+- New struct `WorkflowTriggerListResult`
+- New struct `WorkflowTriggerProperties`
+- New struct `WorkflowTriggerRecurrence`
+- New struct `WorkflowTriggersClient`
+- New struct `WorkflowTriggersClientBeginRunOptions`
+- New struct `WorkflowTriggersClientGetOptions`
+- New struct `WorkflowTriggersClientGetResponse`
+- New struct `WorkflowTriggersClientGetSchemaJSONOptions`
+- New struct `WorkflowTriggersClientGetSchemaJSONResponse`
+- New struct `WorkflowTriggersClientListCallbackURLOptions`
+- New struct `WorkflowTriggersClientListCallbackURLResponse`
+- New struct `WorkflowTriggersClientListOptions`
+- New struct `WorkflowTriggersClientListResponse`
+- New struct `WorkflowTriggersClientRunResponse`
+- New struct `WorkflowVersion`
+- New struct `WorkflowVersionListResult`
+- New struct `WorkflowVersionProperties`
+- New struct `WorkflowVersionsClient`
+- New struct `WorkflowVersionsClientGetOptions`
+- New struct `WorkflowVersionsClientGetResponse`
+- New struct `WorkflowVersionsClientListOptions`
+- New struct `WorkflowVersionsClientListResponse`
+- New struct `WorkflowsClient`
+- New struct `WorkflowsClientRegenerateAccessKeyOptions`
+- New struct `WorkflowsClientRegenerateAccessKeyResponse`
+- New struct `WorkflowsClientValidateOptions`
+- New struct `WorkflowsClientValidateResponse`
+- New field `NumberOfWorkers` in struct `PlanProperties`
+- New field `CustomDNSSuffixConfiguration` in struct `Environment`
+- New field `NetworkingConfiguration` in struct `Environment`
+- New field `UpgradePreference` in struct `Environment`
+- New field `UpgradeAvailability` in struct `Environment`
+- New field `LinkedBackends` in struct `StaticSiteBuildARMResourceProperties`
+- New field `EmailID` in struct `CertificateEmail`
+- New field `TimeStamp` in struct `CertificateEmail`
+- New field `RemoteDebugEnabled` in struct `AseV3NetworkingConfigurationProperties`
+- New field `FtpEnabled` in struct `AseV3NetworkingConfigurationProperties`
+- New field `InboundIPAddressOverride` in struct `AseV3NetworkingConfigurationProperties`
+- New field `ActionType` in struct `CertificateOrderAction`
+- New field `CreatedAt` in struct `CertificateOrderAction`
+- New field `PublicNetworkAccess` in struct `TriggeredWebJobProperties`
+- New field `StorageAccountRequired` in struct `TriggeredWebJobProperties`
+- New field `VnetContentShareEnabled` in struct `SiteProperties`
+- New field `PublicNetworkAccess` in struct `SiteProperties`
+- New field `VnetImagePullEnabled` in struct `SiteProperties`
+- New field `VnetRouteAllEnabled` in struct `SiteProperties`
+- New field `NumberOfWorkers` in struct `PlanPatchResourceProperties`
+- New field `LinkedBackends` in struct `StaticSite`
+- New field `PublicNetworkAccess` in struct `StaticSite`
+- New field `Hostname` in struct `WebSiteManagementClientListCustomHostNameSitesOptions`
+
+
+## 1.0.0 (2022-05-16)
+
+The package of `github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice` is using our [next generation design principles](https://azure.github.io/azure-sdk/general_introduction.html) since version 1.0.0, which contains breaking changes.
+
+To migrate the existing applications to the latest version, please refer to [Migration Guide](https://aka.ms/azsdk/go/mgmt/migration).
+
+To learn more, please refer to our documentation [Quick Start](https://aka.ms/azsdk/go/mgmt).

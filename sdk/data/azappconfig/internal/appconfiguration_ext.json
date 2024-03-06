@@ -1,0 +1,57 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0",
+    "title": "Azure App Configuration"
+  },
+  "schemes": [
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/{nextLink}": {
+      "get": {
+        "operationId": "GetNextPage",
+        "x-ms-pageable": {
+          "itemName": "items",
+          "nextLinkName": "@nextLink",
+          "operationName": "GetNextPage"
+        },
+        "parameters": [
+          {
+            "name": "nextLink",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "x-ms-skip-url-encoding": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "https://github.com/Azure/azure-rest-api-specs/blob/1d5799e57a1bbe66a86afc246d363d8163625b45/specification/appconfiguration/data-plane/Microsoft.AppConfiguration/stable/2023-10-01/appconfiguration.json#/definitions/KeyListResult"
+            },
+            "headers": {
+                "Sync-Token": {
+                "description": "Enables real-time consistency between requests by providing the returned value in the next request made to the server.",
+                "type": "string"
+                }
+            }
+          },
+          "default": {
+            "description": "Error response describing why the operation failed",
+            "schema": {
+              "$ref": "https://github.com/Azure/azure-rest-api-specs/blob/1d5799e57a1bbe66a86afc246d363d8163625b45/specification/appconfiguration/data-plane/Microsoft.AppConfiguration/stable/2023-10-01/appconfiguration.json#/definitions/Error"
+            }
+          }
+        }
+      }
+    }
+  }
+}

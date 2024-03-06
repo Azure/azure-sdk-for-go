@@ -1,0 +1,31 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+trigger:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+    - sdk/security/keyvault/azcertificates
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+    - sdk/security/keyvault/azcertificates
+    - sdk/security/keyvault/internal
+
+stages:
+- template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: 'security/keyvault/azcertificates'
+    RunLiveTests: true
+    UsePipelineProxy: false
+    TestRunTime: '900s'

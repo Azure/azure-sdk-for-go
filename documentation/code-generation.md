@@ -43,7 +43,7 @@ All services, all API versions.
 
 This repo contains a tool to generate the SDK, which depends on the golang tags from the readme files in the Azure REST API specs repo. The tool assumes you have an [Azure REST API specs](https://github.com/Azure/azure-rest-api-specs) clone, and [golint](https://github.com/golang/lint) is installed.
 
-1. `cd tools/generator`
+1. `cd eng/tools/generator`
 
 1. `go install`
 
@@ -93,4 +93,4 @@ generator –r –v –l=temp –version=v11.2.0-beta C:/azure-rest-api-specs/sp
 
 ## Generate Azure SDK for Go profiles
 
-Take a look into the [profile generator documentation](tools/profileBuilder)
+Take a look into the [profile generator documentation](https://github.com/Azure/azure-sdk-for-go/tree/main/eng/tools/profileBuilder)

@@ -1,0 +1,57 @@
+{
+    "version": "0.2",
+    "language": "en",
+    "languageId": "golang",
+    "dictionaries": [
+      "powershell",
+      "golang",
+      "softwareTerms",
+      "en_US",
+      "en-gb"
+    ],
+    "ignorePaths": [
+        "eng/common/**",
+        ".vscode/cspell.json",
+        "*.PNG",
+        "*.pfx",
+        "**/recordings/**/*"
+    ],
+    "words": [
+        "azcore",
+        "azappconfig",
+        "azidentity",
+        "unpopulate",
+        "etag",
+        "stretchr",
+        "Unmarshaller",
+        "AMQP",
+        "Kusto",
+        "azblob",
+        "Kubernetes",
+        "vnet",
+        "skus",
+        "azservicebus",
+        "azcosmos",
+        "Reimage",
+        "nolint",
+        "armkusto",
+        "msix",
+        "armiotsecurity",
+        "odata",
+        "mgmt",
+        "armkubernetesconfiguration",
+        "azruntime"
+    ],
+    "allowCompoundWords": true,
+    "overrides": [
+        {
+            "filename": "{*.sum,*.mod}",
+            "words": [
+                "davecgh",
+                "pmezard",
+                "gover",
+                "objx"
+            ]
+        }
+    ]
+}

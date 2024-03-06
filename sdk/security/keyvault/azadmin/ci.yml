@@ -1,0 +1,41 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+trigger:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+    - sdk/security/keyvault/azadmin
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+    - sdk/security/keyvault/azadmin
+
+stages:
+- template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
+  parameters:
+    TimeoutInMinutes: 120
+    ServiceDirectory: 'security/keyvault/azadmin'
+    RunLiveTests: true
+    UsePipelineProxy: false
+    MatrixConfigs:
+      - Name: keyvault_test_matrix_addons
+        Path: sdk/security/keyvault/azadmin/platform-matrix.json
+        Selection: sparse
+        GenerateVMJobs: true
+
+    ${{ if not(contains(variables['Build.DefinitionName'], 'tests-weekly')) }}:
+        # Due to the high cost of Managed HSMs, which keyvault-admin requires, we only want to run
+        # the live tests weekly.
+        MatrixFilters:
+          - ArmTemplateParameters=^(?!.*enableHsm.*true)

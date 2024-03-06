@@ -1,0 +1,125 @@
+parameters:
+  - name:  ServiceDirectory
+    type: string
+    default: ''
+  - name:  Image
+    type: string
+    default: ''
+  - name:  GoVersion
+    type: string
+    default: ''
+  - name:  TestProxy
+    type: boolean
+    default: false
+  - name: EnvVars
+    type: object
+    default: {}
+  - name: TestRunTime
+    type: string
+    default: '600s'
+
+steps:
+  - task: Powershell@2
+    displayName: Use azcore from main
+    condition: eq(variables.UseAzcoreFromMain, 'true')
+    env:
+      GO111MODULE: 'on'
+    inputs:
+      targetType: filePath
+      pwsh: true
+      filePath: eng/scripts/Replace-azcore.ps1
+      arguments: '${{ parameters.ServiceDirectory }}'
+
+  - task: Powershell@2
+    displayName: Build
+    env:
+      GO111MODULE: 'on'
+    inputs:
+      targetType: filePath
+      pwsh: true
+      filePath: eng/scripts/build.ps1
+      arguments: -filter '${{ parameters.ServiceDirectory }}'
+
+  - task: Powershell@2
+    displayName: Vet
+    env:
+      GO111MODULE: 'on'
+    inputs:
+      targetType: filePath
+      pwsh: true
+      filePath: eng/scripts/build.ps1
+      arguments: -vet -skipBuild -filter '${{ parameters.ServiceDirectory }}'
+
+  - pwsh: |
+      go install github.com/jstemmer/go-junit-report@v0.9.1
+      if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      go install github.com/axw/gocov/gocov@v1.1.0
+      if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      go install github.com/AlekSi/gocov-xml@v1.0.0
+      if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      go install github.com/matm/gocov-html@v0.0.0-20200509184451-71874e2e203b
+      if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+    displayName: "Install Coverage and Junit Dependencies"
+    retryCountOnTaskFailure: 3
+
+  - ${{ if eq(parameters.TestProxy, true) }}:
+    - template: /eng/common/testproxy/test-proxy-tool.yml
+      parameters:
+        targetVersion: '1.0.0-dev.20230427.1'
+
+  - task: PowerShell@2
+    displayName: 'Run Tests'
+    inputs:
+      targetType: 'filePath'
+      filePath: ./eng/scripts/run_tests.ps1
+      arguments: '${{ parameters.ServiceDirectory }} ${{ parameters.TestRunTime }}'
+      pwsh: true
+    env:
+      GO111MODULE: 'on'
+      PROXY_CERT: $(Build.SourcesDirectory)/eng/common/testproxy/dotnet-devcert.crt
+      ${{ insert }}: ${{ parameters.EnvVars }}
+      GOTRACEBACK: all
+      AZURE_SDK_GO_LOGGING: all
+
+  - task: PowerShell@2
+    displayName: 'Build Performance Tests'
+    inputs:
+      targetType: 'filePath'
+      filePath: ./eng/scripts/Build_Perf.ps1
+      arguments: '${{ parameters.ServiceDirectory }} $$(UseAzcoreFromMain)'
+      pwsh: true
+
+  - ${{ if eq(parameters.TestProxy, true) }}:
+    - pwsh: |
+        # $(Build.SourcesDirectory)/test-proxy.log is the hardcoded output log location for the test-proxy-tool.yml
+        cat $(Build.SourcesDirectory)/test-proxy.log
+      displayName: 'Dump Test Proxy logs'
+      condition: succeededOrFailed()
+
+  - ${{if eq(variables['System.TeamProject'], 'internal') }}:
+    - task: AzureArtifacts.manifest-generator-task.manifest-generator-task.ManifestGeneratorTask@0
+      displayName: 'Generate BOM'
+      condition: and(succeededOrFailed(), eq(variables['generate.bom'], 'true'))
+      inputs:
+        BuildDropPath: $(Build.ArtifactStagingDirectory)
+
+    - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
+      parameters:
+        ArtifactPath: '$(Build.ArtifactStagingDirectory)/_manifest'
+        ArtifactName: 'manifest'
+        CustomCondition: and(succeededOrFailed(), eq(variables['generate.bom'], 'true'))
+
+  - task: PublishTestResults@2
+    condition: succeededOrFailed()
+    inputs:
+      testRunner: JUnit
+      testResultsFiles: '$(Build.SourcesDirectory)/sdk/${{parameters.ServiceDirectory}}/report.xml'
+      testRunTitle: 'Go ${{ parameters.GoVersion }} on ${{ parameters.Image }}'
+      failTaskOnFailedTests: true
+
+  - task: PublishCodeCoverageResults@1
+    condition: succeededOrFailed()
+    inputs:
+      codeCoverageTool: Cobertura
+      summaryFileLocation: './coverage.xml'
+      additionalCodeCoverageFiles: './coverage.html'

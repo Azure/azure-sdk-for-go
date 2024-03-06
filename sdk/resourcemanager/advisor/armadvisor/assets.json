@@ -1,0 +1,6 @@
+{
+  "AssetsRepo": "Azure/azure-sdk-assets",
+  "AssetsRepoPrefixPath": "go",
+  "TagPrefix": "go/resourcemanager/advisor/armadvisor",
+  "Tag": "go/resourcemanager/advisor/armadvisor_46f954b727"
+}

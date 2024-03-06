@@ -1,0 +1,108 @@
+parameters:
+  - name: ServiceDirectory
+    type: string
+    default: ''
+  - name: NonShipping
+    type: boolean
+    default: false
+  - name: LicenseCheck
+    type: boolean
+    default: true
+  - name: EnvVars
+    type: object
+    default: {}
+  - name: TestRunTime
+    type: string
+    default: '600s'
+  - name: ExcludeGoNMinus2
+    type: boolean
+    default: false
+
+
+stages:
+  - stage: Build
+    jobs:
+    - job: Test
+      displayName: Build and Test on
+      variables:
+        - template: /eng/pipelines/templates/variables/globals.yml
+      strategy:
+        matrix:
+          ${{ if eq(parameters.ExcludeGoNMinus2, false) }}:
+            Linux_Go118:
+              pool.name: azsdk-pool-mms-ubuntu-2004-general
+              image.name: MMSUbuntu20.04
+              go.version: '1.18.10'
+          ${{ if eq(parameters.ExcludeGoNMinus2, false) }}:
+            Windows_Go118:
+              pool.name: azsdk-pool-mms-win-2022-general
+              image.name: MMS2022
+              go.version: '1.18.10'
+          Linux_Go121:
+            pool.name: azsdk-pool-mms-ubuntu-2004-general
+            image.name: MMSUbuntu20.04
+            go.version: '1.21.7'
+          Windows_Go121:
+            pool.name: azsdk-pool-mms-win-2022-general
+            image.name: MMS2022
+            go.version: '1.21.7'
+          Linux_Go122:
+            pool.name: azsdk-pool-mms-ubuntu-2004-general
+            image.name: MMSUbuntu20.04
+            go.version: '1.22.0'
+            GOEXPERIMENT: nocoverageredesign
+          Windows_Go122:
+            pool.name: azsdk-pool-mms-win-2022-general
+            image.name: MMS2022
+            go.version: '1.22.0'
+            GOEXPERIMENT: nocoverageredesign
+            generate.bom: true
+      pool:
+        name: $(pool.name)
+        vmImage: $(image.name)
+      steps:
+      - template: /eng/common/pipelines/templates/steps/verify-agent-os.yml
+        parameters:
+          AgentImage: $(image.name)
+
+      - task: GoTool@0
+        inputs:
+          version: '$(go.version)'
+        displayName: "Select Go Version"
+
+      - template: ../steps/create-go-workspace.yml
+
+      - template: ../steps/build-test.yml
+        parameters:
+          ServiceDirectory: ${{ parameters.ServiceDirectory }}
+          Image: $(vm.image)
+          GoVersion: $(go.version)
+          TestProxy: true
+          TestRunTime: ${{ parameters.TestRunTime }}
+          EnvVars:
+            AZURE_RECORD_MODE: 'playback'
+
+    - job: Analyze
+      displayName: Analyze
+      variables:
+        - template: /eng/pipelines/templates/variables/globals.yml
+      pool:
+        name: azsdk-pool-mms-ubuntu-2004-general
+
+      steps:
+      - template: /eng/common/pipelines/templates/steps/check-spelling.yml
+
+      - task: GoTool@0
+        inputs:
+          version: '1.22.0'
+        displayName: "Select Go Version"
+
+      - template: ../steps/create-go-workspace.yml
+
+      - template: ../steps/analyze.yml
+        parameters:
+          ServiceDirectory: ${{ parameters.ServiceDirectory }}
+          LintVersion: $(GoLintCLIVersion)
+          NonShipping: ${{ parameters.NonShipping }}
+          LicenseCheck: ${{ parameters.LicenseCheck }}
+          IsSdkLibrary: false

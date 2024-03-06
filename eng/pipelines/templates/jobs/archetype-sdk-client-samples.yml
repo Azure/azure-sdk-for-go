@@ -1,0 +1,98 @@
+parameters:
+  - name: ServiceDirectory
+    type: string
+    default: ''
+  - name: TestRunTime
+    type: string
+    default: '600s'
+
+stages:
+  - stage: Build
+    jobs:
+    - job: Build
+      displayName: Build on
+      variables:
+        - template: /eng/pipelines/templates/variables/globals.yml
+      strategy:
+        matrix:
+          Linux_Go118:
+            pool.name: azsdk-pool-mms-ubuntu-2004-general
+            image.name: MMSUbuntu20.04
+            go.version: '1.18.10'
+          Windows_Go118:
+            pool.name: azsdk-pool-mms-win-2022-general
+            image.name: MMS2022
+            go.version: '1.18.10'
+          Linux_Go121:
+            pool.name: azsdk-pool-mms-ubuntu-2004-general
+            image.name: MMSUbuntu20.04
+            go.version: '1.21.7'
+          Windows_Go121:
+            pool.name: azsdk-pool-mms-win-2022-general
+            image.name: MMS2022
+            go.version: '1.21.7'
+          Linux_Go122:
+            pool.name: azsdk-pool-mms-ubuntu-2004-general
+            image.name: MMSUbuntu20.04
+            go.version: '1.22.0'
+            GOEXPERIMENT: nocoverageredesign
+          Windows_Go122:
+            pool.name: azsdk-pool-mms-win-2022-general
+            image.name: MMS2022
+            go.version: '1.22.0'
+            GOEXPERIMENT: nocoverageredesign
+      pool:
+        name: $(pool.name)
+        vmImage: $(image.name)
+      steps:
+      - template: /eng/common/pipelines/templates/steps/verify-agent-os.yml
+        parameters:
+          AgentImage: $(image.name)
+
+      - task: GoTool@0
+        inputs:
+          version: '$(go.version)'
+        displayName: "Select Go Version"
+
+      - template: ../steps/create-go-workspace.yml
+
+      - template: ../steps/build-test.yml
+        parameters:
+          ServiceDirectory: ${{ parameters.ServiceDirectory }}
+          Image: $(vm.image)
+          GoVersion: $(go.version)
+          TestRunTime: ${{ parameters.TestRunTime }}
+
+    - job: Analyze
+      displayName: Analyze
+      variables:
+        - template: /eng/pipelines/templates/variables/globals.yml
+      pool:
+        name: azsdk-pool-mms-ubuntu-2004-general
+
+      steps:
+      - task: GoTool@0
+        inputs:
+          version: '1.22.0'
+        displayName: "Select Go Version"
+
+      - template: ../steps/create-go-workspace.yml
+
+      - template: ../steps/analyze.yml
+        parameters:
+          ServiceDirectory: ${{ parameters.ServiceDirectory }}
+          LintVersion: $(GoLintCLIVersion)
+
+# Below stage won't work until the release stage is added/necessary.
+# "Releasing" is just the package in the repository on github, but there may be some other metadata related
+# tasks that become necessary later on.
+
+  # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
+  # - ${{if and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
+  #   - template: archetype-go-release.yml
+  #     parameters:
+  #       DependsOn: Build
+  #       ServiceDirectory: ${{parameters.ServiceDirectory}}
+  #       Artifacts: ${{parameters.Artifacts}}
+  #       ArtifactName: packages
+  #       DocArtifact: documentation

@@ -1,0 +1,31 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+trigger:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+    - sdk/data/aztables
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+    - sdk/data/aztables
+    - eng/common/testproxy
+    # adding eng/common/testproxy as aztables is a good exercise of the test-proxy features. if a new proxy version works on this build, we can be confident updating to it
+
+stages:
+- template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: 'data/aztables'
+    RunLiveTests: true
+    UsePipelineProxy: false

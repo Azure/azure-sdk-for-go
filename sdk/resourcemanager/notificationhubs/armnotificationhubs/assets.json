@@ -1,0 +1,6 @@
+{
+  "AssetsRepo": "Azure/azure-sdk-assets",
+  "AssetsRepoPrefixPath": "go",
+  "TagPrefix": "go/resourcemanager/notificationhubs/armnotificationhubs",
+  "Tag": "go/resourcemanager/notificationhubs/armnotificationhubs_d91a050447"
+}

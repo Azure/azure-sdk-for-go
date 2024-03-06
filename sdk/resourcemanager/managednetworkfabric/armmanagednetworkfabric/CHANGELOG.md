@@ -1,0 +1,397 @@
+# Release History
+
+## 1.1.0 (2023-11-24)
+### Features Added
+
+- Support for test fakes and OpenTelemetry trace spans.
+
+
+## 1.0.0 (2023-07-28)
+### Breaking Changes
+
+- Function `*NetworkDevicesClient.BeginReboot` parameter(s) have been changed from `(context.Context, string, string, *NetworkDevicesClientBeginRebootOptions)` to `(context.Context, string, string, RebootProperties, *NetworkDevicesClientBeginRebootOptions)`
+- Function `*NetworkFabricsClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, NetworkFabricPatchParameters, *NetworkFabricsClientBeginUpdateOptions)` to `(context.Context, string, string, NetworkFabricPatch, *NetworkFabricsClientBeginUpdateOptions)`
+- Function `*NetworkRacksClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, NetworkRackPatch, *NetworkRacksClientBeginUpdateOptions)` to `(context.Context, string, string, TagsUpdate, *NetworkRacksClientBeginUpdateOptions)`
+- Type of `BfdConfiguration.AdministrativeState` has been changed from `*EnabledDisabledState` to `*BfdAdministrativeState`
+- Type of `BgpConfiguration.FabricASN` has been changed from `*int32` to `*int64`
+- Type of `BgpConfiguration.PeerASN` has been changed from `*int32` to `*int64`
+- Type of `ExternalNetworkPatchProperties.OptionAProperties` has been changed from `*Layer3OptionAProperties` to `*ExternalNetworkPatchPropertiesOptionAProperties`
+- Type of `ExternalNetworkPatchProperties.OptionBProperties` has been changed from `*OptionBProperties` to `*L3OptionBProperties`
+- Type of `ExternalNetworkProperties.AdministrativeState` has been changed from `*EnabledDisabledState` to `*AdministrativeState`
+- Type of `ExternalNetworkProperties.OptionBProperties` has been changed from `*OptionBProperties` to `*L3OptionBProperties`
+- Type of `ExternalNetworkPropertiesOptionAProperties.FabricASN` has been changed from `*int32` to `*int64`
+- Type of `ExternalNetworkPropertiesOptionAProperties.PeerASN` has been changed from `*int32` to `*int64`
+- Type of `IPPrefixProperties.IPPrefixRules` has been changed from `[]*IPPrefixPropertiesIPPrefixRulesItem` to `[]*IPPrefixRule`
+- Type of `InternalNetworkProperties.AdministrativeState` has been changed from `*EnabledDisabledState` to `*AdministrativeState`
+- Type of `InternalNetworkProperties.BgpConfiguration` has been changed from `*BgpConfiguration` to `*InternalNetworkPropertiesBgpConfiguration`
+- Type of `InternalNetworkProperties.StaticRouteConfiguration` has been changed from `*StaticRouteConfiguration` to `*InternalNetworkPropertiesStaticRouteConfiguration`
+- Type of `L2IsolationDomainProperties.AdministrativeState` has been changed from `*EnabledDisabledState` to `*AdministrativeState`
+- Type of `L3IsolationDomainPatchProperties.ConnectedSubnetRoutePolicy` has been changed from `*L3IsolationDomainPatchPropertiesConnectedSubnetRoutePolicy` to `*ConnectedSubnetRoutePolicy`
+- Type of `L3IsolationDomainProperties.AdministrativeState` has been changed from `*EnabledDisabledState` to `*AdministrativeState`
+- Type of `L3IsolationDomainProperties.ConnectedSubnetRoutePolicy` has been changed from `*L3IsolationDomainPatchPropertiesConnectedSubnetRoutePolicy` to `*ConnectedSubnetRoutePolicy`
+- Type of `NetworkDeviceProperties.NetworkDeviceRole` has been changed from `*NetworkDeviceRoleTypes` to `*NetworkDeviceRole`
+- Type of `NetworkFabricControllerProperties.InfrastructureServices` has been changed from `*InfrastructureServices` to `*ControllerServices`
+- Type of `NetworkFabricControllerProperties.WorkloadServices` has been changed from `*WorkloadServices` to `*ControllerServices`
+- Type of `NetworkFabricProperties.FabricASN` has been changed from `*int32` to `*int64`
+- Type of `NetworkFabricProperties.ManagementNetworkConfiguration` has been changed from `*ManagementNetworkConfiguration` to `*ManagementNetworkConfigurationProperties`
+- Type of `NetworkFabricSKUProperties.Type` has been changed from `*string` to `*FabricSKUType`
+- Type of `NetworkInterfaceProperties.AdministrativeState` has been changed from `*EnabledDisabledState` to `*AdministrativeState`
+- Type of `NetworkToNetworkInterconnectProperties.AdministrativeState` has been changed from `*EnabledDisabledState` to `*AdministrativeState`
+- Type of `NetworkToNetworkInterconnectProperties.IsManagementType` has been changed from `*BooleanEnumProperty` to `*IsManagementType`
+- Type of `StatementActionProperties.ActionType` has been changed from `*CommunityActionTypes` to `*RoutePolicyActionType`
+- Type of `UpdateAdministrativeState.State` has been changed from `*AdministrativeState` to `*EnableDisableState`
+- Type of `VPNConfigurationProperties.AdministrativeState` has been changed from `*EnabledDisabledState` to `*AdministrativeState`
+- Type of `VPNConfigurationProperties.OptionAProperties` has been changed from `*OptionAProperties` to `*VPNConfigurationPropertiesOptionAProperties`
+- Type of `VPNConfigurationProperties.OptionBProperties` has been changed from `*OptionBPropertiesAutoGenerated` to `*OptionBProperties`
+- `AdministrativeStateDisable`, `AdministrativeStateEnable` from enum `AdministrativeState` has been removed
+- Enum `AddressFamily` has been removed
+- Enum `ConditionActionType` has been removed
+- Enum `EnabledDisabledState` has been removed
+- Enum `IsCurrentVersion` has been removed
+- Enum `IsTestVersion` has been removed
+- Enum `NetworkDeviceRackRoleType` has been removed
+- Enum `NetworkDeviceRoleTypes` has been removed
+- Enum `NetworkFabricControllerOperationalState` has been removed
+- Enum `NetworkFabricOperationalState` has been removed
+- Enum `NetworkRackRoleName` has been removed
+- Enum `OperationalStatus` has been removed
+- Enum `PowerCycleState` has been removed
+- Enum `PowerEnd` has been removed
+- Enum `State` has been removed
+- Function `*ClientFactory.NewNetworkRackSKUsClient` has been removed
+- Function `*ExternalNetworksClient.BeginClearArpEntries` has been removed
+- Function `*ExternalNetworksClient.BeginClearIPv6Neighbors` has been removed
+- Function `*ExternalNetworksClient.NewListPager` has been removed
+- Function `*ExternalNetworksClient.BeginUpdateBfdForBgpAdministrativeState` has been removed
+- Function `*ExternalNetworksClient.BeginUpdateBgpAdministrativeState` has been removed
+- Function `*InternalNetworksClient.BeginClearArpEntries` has been removed
+- Function `*InternalNetworksClient.BeginClearIPv6Neighbors` has been removed
+- Function `*InternalNetworksClient.NewListPager` has been removed
+- Function `*InternalNetworksClient.BeginUpdateBfdForBgpAdministrativeState` has been removed
+- Function `*InternalNetworksClient.BeginUpdateBfdForStaticRouteAdministrativeState` has been removed
+- Function `*L2IsolationDomainsClient.BeginClearArpTable` has been removed
+- Function `*L2IsolationDomainsClient.BeginClearNeighborTable` has been removed
+- Function `*L2IsolationDomainsClient.BeginGetArpEntries` has been removed
+- Function `*L3IsolationDomainsClient.BeginClearArpTable` has been removed
+- Function `*L3IsolationDomainsClient.BeginClearNeighborTable` has been removed
+- Function `*L3IsolationDomainsClient.BeginUpdateOptionBAdministrativeState` has been removed
+- Function `*NetworkDevicesClient.BeginGenerateSupportPackage` has been removed
+- Function `*NetworkDevicesClient.BeginGetDynamicInterfaceMaps` has been removed
+- Function `*NetworkDevicesClient.BeginGetStaticInterfaceMaps` has been removed
+- Function `*NetworkDevicesClient.BeginGetStatus` has been removed
+- Function `*NetworkDevicesClient.BeginRestoreConfig` has been removed
+- Function `*NetworkDevicesClient.BeginUpdatePowerCycle` has been removed
+- Function `*NetworkDevicesClient.BeginUpdateVersion` has been removed
+- Function `*NetworkFabricControllersClient.BeginDisableWorkloadManagementNetwork` has been removed
+- Function `*NetworkFabricControllersClient.BeginEnableWorkloadManagementNetwork` has been removed
+- Function `*NetworkInterfacesClient.BeginGetStatus` has been removed
+- Function `*NetworkInterfacesClient.NewListPager` has been removed
+- Function `NewNetworkRackSKUsClient` has been removed
+- Function `*NetworkRackSKUsClient.Get` has been removed
+- Function `*NetworkRackSKUsClient.NewListBySubscriptionPager` has been removed
+- Function `*NetworkToNetworkInterconnectsClient.NewListPager` has been removed
+- Operation `*AccessControlListsClient.Create` has been changed to LRO, use `*AccessControlListsClient.BeginCreate` instead.
+- Operation `*AccessControlListsClient.Delete` has been changed to LRO, use `*AccessControlListsClient.BeginDelete` instead.
+- Operation `*AccessControlListsClient.Update` has been changed to LRO, use `*AccessControlListsClient.BeginUpdate` instead.
+- Struct `ARPProperties` has been removed
+- Struct `AccessControlListConditionProperties` has been removed
+- Struct `DeviceLimits` has been removed
+- Struct `EnableDisableOnResources` has been removed
+- Struct `FabricBfdConfiguration` has been removed
+- Struct `GetDeviceStatusProperties` has been removed
+- Struct `GetDynamicInterfaceMapsPropertiesItem` has been removed
+- Struct `GetStaticInterfaceMapsPropertiesItem` has been removed
+- Struct `IPPrefixPropertiesIPPrefixRulesItem` has been removed
+- Struct `InfrastructureServices` has been removed
+- Struct `InterfaceStatus` has been removed
+- Struct `L3IsolationDomainPatchPropertiesConnectedSubnetRoutePolicy` has been removed
+- Struct `Layer3Configuration` has been removed
+- Struct `Layer3OptionAProperties` has been removed
+- Struct `ManagementNetworkConfiguration` has been removed
+- Struct `NetworkDeviceRoleProperties` has been removed
+- Struct `NetworkFabricPatchParameters` has been removed
+- Struct `NetworkFabricPatchParametersProperties` has been removed
+- Struct `NetworkRackPatch` has been removed
+- Struct `NetworkRackSKU` has been removed
+- Struct `NetworkRackSKUProperties` has been removed
+- Struct `NetworkRackSKUsListResult` has been removed
+- Struct `OptionAProperties` has been removed
+- Struct `OptionBPropertiesAutoGenerated` has been removed
+- Struct `SupportPackageProperties` has been removed
+- Struct `TerminalServerPatchableProperties` has been removed
+- Struct `UpdatePowerCycleProperties` has been removed
+- Struct `UpdateVersionProperties` has been removed
+- Struct `WorkloadServices` has been removed
+- Field `AddressFamily`, `Conditions` of struct `AccessControlListPatchProperties` has been removed
+- Field `AddressFamily`, `Conditions` of struct `AccessControlListProperties` has been removed
+- Field `Interval` of struct `BfdConfiguration` has been removed
+- Field `DisabledOnResources` of struct `ExternalNetworkProperties` has been removed
+- Field `Action`, `CommunityMembers`, `WellKnownCommunities` of struct `IPCommunityProperties` has been removed
+- Field `Action`, `RouteTargets` of struct `IPExtendedCommunityProperties` has been removed
+- Field `BfdDisabledOnResources`, `BfdForStaticRoutesDisabledOnResources`, `BgpDisabledOnResources`, `DisabledOnResources` of struct `InternalNetworkProperties` has been removed
+- Field `DisabledOnResources` of struct `L2IsolationDomainProperties` has been removed
+- Field `Description` of struct `L3IsolationDomainPatchProperties` has been removed
+- Field `Description`, `DisabledOnResources`, `OptionBDisabledOnResources` of struct `L3IsolationDomainProperties` has been removed
+- Field `PortCount` of struct `Layer2Configuration` has been removed
+- Field `OperationalState` of struct `NeighborAddress` has been removed
+- Field `Limits` of struct `NetworkDeviceSKUProperties` has been removed
+- Field `OperationalState` of struct `NetworkFabricControllerProperties` has been removed
+- Field `OperationalState`, `RouterID` of struct `NetworkFabricProperties` has been removed
+- Field `DetailsURI`, `MaxSupportedVer`, `MinSupportedVer` of struct `NetworkFabricSKUProperties` has been removed
+- Field `NetworkRackSKU` of struct `NetworkRackProperties` has been removed
+- Field `Layer3Configuration` of struct `NetworkToNetworkInterconnectProperties` has been removed
+- Field `IsCurrent`, `IsTest` of struct `SupportedVersionProperties` has been removed
+
+### Features Added
+
+- New value `AdministrativeStateDisabled`, `AdministrativeStateEnabled`, `AdministrativeStateMAT`, `AdministrativeStateRMA` added to enum type `AdministrativeState`
+- New value `ConditionRange` added to enum type `Condition`
+- New value `ProvisioningStateAccepted` added to enum type `ProvisioningState`
+- New enum type `ACLActionType` with values `ACLActionTypeCount`, `ACLActionTypeDrop`, `ACLActionTypeLog`
+- New enum type `Action` with values `ActionAllow`, `ActionDeny`
+- New enum type `AddressFamilyType` with values `AddressFamilyTypeIPv4`, `AddressFamilyTypeIPv6`
+- New enum type `BfdAdministrativeState` with values `BfdAdministrativeStateDisabled`, `BfdAdministrativeStateEnabled`, `BfdAdministrativeStateMAT`, `BfdAdministrativeStateRMA`
+- New enum type `ConfigurationState` with values `ConfigurationStateAccepted`, `ConfigurationStateDeferredControl`, `ConfigurationStateDeprovisioned`, `ConfigurationStateDeprovisioning`, `ConfigurationStateErrorDeprovisioning`, `ConfigurationStateErrorProvisioning`, `ConfigurationStateFailed`, `ConfigurationStateProvisioned`, `ConfigurationStateRejected`, `ConfigurationStateSucceeded`
+- New enum type `ConfigurationType` with values `ConfigurationTypeFile`, `ConfigurationTypeInline`
+- New enum type `DestinationType` with values `DestinationTypeDirect`, `DestinationTypeIsolationDomain`
+- New enum type `DeviceAdministrativeState` with values `DeviceAdministrativeStateGracefulQuarantine`, `DeviceAdministrativeStateQuarantine`, `DeviceAdministrativeStateRMA`, `DeviceAdministrativeStateResync`
+- New enum type `EnableDisableState` with values `EnableDisableStateDisable`, `EnableDisableStateEnable`
+- New enum type `Encapsulation` with values `EncapsulationGRE`, `EncapsulationNone`
+- New enum type `EncapsulationType` with values `EncapsulationTypeGTPv1`, `EncapsulationTypeNone`
+- New enum type `Extension` with values `ExtensionNPB`, `ExtensionNoExtension`
+- New enum type `FabricSKUType` with values `FabricSKUTypeMultiRack`, `FabricSKUTypeSingleRack`
+- New enum type `GatewayType` with values `GatewayTypeInfrastructure`, `GatewayTypeWorkload`
+- New enum type `IPAddressType` with values `IPAddressTypeIPv4`, `IPAddressTypeIPv6`
+- New enum type `IsManagementType` with values `IsManagementTypeFalse`, `IsManagementTypeTrue`
+- New enum type `IsMonitoringEnabled` with values `IsMonitoringEnabledFalse`, `IsMonitoringEnabledTrue`
+- New enum type `IsWorkloadManagementNetworkEnabled` with values `IsWorkloadManagementNetworkEnabledFalse`, `IsWorkloadManagementNetworkEnabledTrue`
+- New enum type `Layer4Protocol` with values `Layer4ProtocolTCP`, `Layer4ProtocolUDP`
+- New enum type `NetworkDeviceRole` with values `NetworkDeviceRoleCE`, `NetworkDeviceRoleManagement`, `NetworkDeviceRoleNPB`, `NetworkDeviceRoleTS`, `NetworkDeviceRoleToR`
+- New enum type `NetworkRackType` with values `NetworkRackTypeAggregate`, `NetworkRackTypeCombined`, `NetworkRackTypeCompute`
+- New enum type `NfcSKU` with values `NfcSKUBasic`, `NfcSKUHighPerformance`, `NfcSKUStandard`
+- New enum type `PollingIntervalInSeconds` with values `PollingIntervalInSecondsNinety`, `PollingIntervalInSecondsOneHundredTwenty`, `PollingIntervalInSecondsSixty`, `PollingIntervalInSecondsThirty`
+- New enum type `PollingType` with values `PollingTypePull`, `PollingTypePush`
+- New enum type `PortType` with values `PortTypeDestinationPort`, `PortTypeSourcePort`
+- New enum type `PrefixType` with values `PrefixTypeLongestPrefix`, `PrefixTypePrefix`
+- New enum type `RebootType` with values `RebootTypeGracefulRebootWithZTP`, `RebootTypeGracefulRebootWithoutZTP`, `RebootTypeUngracefulRebootWithZTP`, `RebootTypeUngracefulRebootWithoutZTP`
+- New enum type `RoutePolicyActionType` with values `RoutePolicyActionTypeContinue`, `RoutePolicyActionTypeDeny`, `RoutePolicyActionTypePermit`
+- New enum type `RoutePolicyConditionType` with values `RoutePolicyConditionTypeAnd`, `RoutePolicyConditionTypeOr`
+- New enum type `SourceDestinationType` with values `SourceDestinationTypeDestinationIP`, `SourceDestinationTypeSourceIP`
+- New enum type `TapRuleActionType` with values `TapRuleActionTypeCount`, `TapRuleActionTypeDrop`, `TapRuleActionTypeGoto`, `TapRuleActionTypeLog`, `TapRuleActionTypeMirror`, `TapRuleActionTypeRedirect`, `TapRuleActionTypeReplicate`
+- New enum type `ValidateAction` with values `ValidateActionCabling`, `ValidateActionConfiguration`, `ValidateActionConnectivity`
+- New function `*AccessControlListsClient.BeginResync(context.Context, string, string, *AccessControlListsClientBeginResyncOptions) (*runtime.Poller[AccessControlListsClientResyncResponse], error)`
+- New function `*AccessControlListsClient.BeginUpdateAdministrativeState(context.Context, string, string, UpdateAdministrativeState, *AccessControlListsClientBeginUpdateAdministrativeStateOptions) (*runtime.Poller[AccessControlListsClientUpdateAdministrativeStateResponse], error)`
+- New function `*AccessControlListsClient.BeginValidateConfiguration(context.Context, string, string, *AccessControlListsClientBeginValidateConfigurationOptions) (*runtime.Poller[AccessControlListsClientValidateConfigurationResponse], error)`
+- New function `*ClientFactory.NewInternetGatewayRulesClient() *InternetGatewayRulesClient`
+- New function `*ClientFactory.NewInternetGatewaysClient() *InternetGatewaysClient`
+- New function `*ClientFactory.NewNeighborGroupsClient() *NeighborGroupsClient`
+- New function `*ClientFactory.NewNetworkPacketBrokersClient() *NetworkPacketBrokersClient`
+- New function `*ClientFactory.NewNetworkTapRulesClient() *NetworkTapRulesClient`
+- New function `*ClientFactory.NewNetworkTapsClient() *NetworkTapsClient`
+- New function `*ExternalNetworksClient.NewListByL3IsolationDomainPager(string, string, *ExternalNetworksClientListByL3IsolationDomainOptions) *runtime.Pager[ExternalNetworksClientListByL3IsolationDomainResponse]`
+- New function `*ExternalNetworksClient.BeginUpdateStaticRouteBfdAdministrativeState(context.Context, string, string, string, UpdateAdministrativeState, *ExternalNetworksClientBeginUpdateStaticRouteBfdAdministrativeStateOptions) (*runtime.Poller[ExternalNetworksClientUpdateStaticRouteBfdAdministrativeStateResponse], error)`
+- New function `*InternalNetworksClient.NewListByL3IsolationDomainPager(string, string, *InternalNetworksClientListByL3IsolationDomainOptions) *runtime.Pager[InternalNetworksClientListByL3IsolationDomainResponse]`
+- New function `*InternalNetworksClient.BeginUpdateStaticRouteBfdAdministrativeState(context.Context, string, string, string, UpdateAdministrativeState, *InternalNetworksClientBeginUpdateStaticRouteBfdAdministrativeStateOptions) (*runtime.Poller[InternalNetworksClientUpdateStaticRouteBfdAdministrativeStateResponse], error)`
+- New function `NewInternetGatewayRulesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*InternetGatewayRulesClient, error)`
+- New function `*InternetGatewayRulesClient.BeginCreate(context.Context, string, string, InternetGatewayRule, *InternetGatewayRulesClientBeginCreateOptions) (*runtime.Poller[InternetGatewayRulesClientCreateResponse], error)`
+- New function `*InternetGatewayRulesClient.BeginDelete(context.Context, string, string, *InternetGatewayRulesClientBeginDeleteOptions) (*runtime.Poller[InternetGatewayRulesClientDeleteResponse], error)`
+- New function `*InternetGatewayRulesClient.Get(context.Context, string, string, *InternetGatewayRulesClientGetOptions) (InternetGatewayRulesClientGetResponse, error)`
+- New function `*InternetGatewayRulesClient.NewListByResourceGroupPager(string, *InternetGatewayRulesClientListByResourceGroupOptions) *runtime.Pager[InternetGatewayRulesClientListByResourceGroupResponse]`
+- New function `*InternetGatewayRulesClient.NewListBySubscriptionPager(*InternetGatewayRulesClientListBySubscriptionOptions) *runtime.Pager[InternetGatewayRulesClientListBySubscriptionResponse]`
+- New function `*InternetGatewayRulesClient.BeginUpdate(context.Context, string, string, InternetGatewayRulePatch, *InternetGatewayRulesClientBeginUpdateOptions) (*runtime.Poller[InternetGatewayRulesClientUpdateResponse], error)`
+- New function `NewInternetGatewaysClient(string, azcore.TokenCredential, *arm.ClientOptions) (*InternetGatewaysClient, error)`
+- New function `*InternetGatewaysClient.BeginCreate(context.Context, string, string, InternetGateway, *InternetGatewaysClientBeginCreateOptions) (*runtime.Poller[InternetGatewaysClientCreateResponse], error)`
+- New function `*InternetGatewaysClient.BeginDelete(context.Context, string, string, *InternetGatewaysClientBeginDeleteOptions) (*runtime.Poller[InternetGatewaysClientDeleteResponse], error)`
+- New function `*InternetGatewaysClient.Get(context.Context, string, string, *InternetGatewaysClientGetOptions) (InternetGatewaysClientGetResponse, error)`
+- New function `*InternetGatewaysClient.NewListByResourceGroupPager(string, *InternetGatewaysClientListByResourceGroupOptions) *runtime.Pager[InternetGatewaysClientListByResourceGroupResponse]`
+- New function `*InternetGatewaysClient.NewListBySubscriptionPager(*InternetGatewaysClientListBySubscriptionOptions) *runtime.Pager[InternetGatewaysClientListBySubscriptionResponse]`
+- New function `*InternetGatewaysClient.BeginUpdate(context.Context, string, string, InternetGatewayPatch, *InternetGatewaysClientBeginUpdateOptions) (*runtime.Poller[InternetGatewaysClientUpdateResponse], error)`
+- New function `*L2IsolationDomainsClient.BeginCommitConfiguration(context.Context, string, string, *L2IsolationDomainsClientBeginCommitConfigurationOptions) (*runtime.Poller[L2IsolationDomainsClientCommitConfigurationResponse], error)`
+- New function `*L2IsolationDomainsClient.BeginValidateConfiguration(context.Context, string, string, *L2IsolationDomainsClientBeginValidateConfigurationOptions) (*runtime.Poller[L2IsolationDomainsClientValidateConfigurationResponse], error)`
+- New function `*L3IsolationDomainsClient.BeginCommitConfiguration(context.Context, string, string, *L3IsolationDomainsClientBeginCommitConfigurationOptions) (*runtime.Poller[L3IsolationDomainsClientCommitConfigurationResponse], error)`
+- New function `*L3IsolationDomainsClient.BeginValidateConfiguration(context.Context, string, string, *L3IsolationDomainsClientBeginValidateConfigurationOptions) (*runtime.Poller[L3IsolationDomainsClientValidateConfigurationResponse], error)`
+- New function `*RoutePoliciesClient.BeginCommitConfiguration(context.Context, string, string, *RoutePoliciesClientBeginCommitConfigurationOptions) (*runtime.Poller[RoutePoliciesClientCommitConfigurationResponse], error)`
+- New function `*RoutePoliciesClient.BeginUpdateAdministrativeState(context.Context, string, string, UpdateAdministrativeState, *RoutePoliciesClientBeginUpdateAdministrativeStateOptions) (*runtime.Poller[RoutePoliciesClientUpdateAdministrativeStateResponse], error)`
+- New function `*RoutePoliciesClient.BeginValidateConfiguration(context.Context, string, string, *RoutePoliciesClientBeginValidateConfigurationOptions) (*runtime.Poller[RoutePoliciesClientValidateConfigurationResponse], error)`
+- New function `NewNeighborGroupsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*NeighborGroupsClient, error)`
+- New function `*NeighborGroupsClient.BeginCreate(context.Context, string, string, NeighborGroup, *NeighborGroupsClientBeginCreateOptions) (*runtime.Poller[NeighborGroupsClientCreateResponse], error)`
+- New function `*NeighborGroupsClient.BeginDelete(context.Context, string, string, *NeighborGroupsClientBeginDeleteOptions) (*runtime.Poller[NeighborGroupsClientDeleteResponse], error)`
+- New function `*NeighborGroupsClient.Get(context.Context, string, string, *NeighborGroupsClientGetOptions) (NeighborGroupsClientGetResponse, error)`
+- New function `*NeighborGroupsClient.NewListByResourceGroupPager(string, *NeighborGroupsClientListByResourceGroupOptions) *runtime.Pager[NeighborGroupsClientListByResourceGroupResponse]`
+- New function `*NeighborGroupsClient.NewListBySubscriptionPager(*NeighborGroupsClientListBySubscriptionOptions) *runtime.Pager[NeighborGroupsClientListBySubscriptionResponse]`
+- New function `*NeighborGroupsClient.BeginUpdate(context.Context, string, string, NeighborGroupPatch, *NeighborGroupsClientBeginUpdateOptions) (*runtime.Poller[NeighborGroupsClientUpdateResponse], error)`
+- New function `*NetworkDevicesClient.BeginRefreshConfiguration(context.Context, string, string, *NetworkDevicesClientBeginRefreshConfigurationOptions) (*runtime.Poller[NetworkDevicesClientRefreshConfigurationResponse], error)`
+- New function `*NetworkDevicesClient.BeginUpdateAdministrativeState(context.Context, string, string, UpdateDeviceAdministrativeState, *NetworkDevicesClientBeginUpdateAdministrativeStateOptions) (*runtime.Poller[NetworkDevicesClientUpdateAdministrativeStateResponse], error)`
+- New function `*NetworkDevicesClient.BeginUpgrade(context.Context, string, string, UpdateVersion, *NetworkDevicesClientBeginUpgradeOptions) (*runtime.Poller[NetworkDevicesClientUpgradeResponse], error)`
+- New function `*NetworkFabricsClient.BeginCommitConfiguration(context.Context, string, string, *NetworkFabricsClientBeginCommitConfigurationOptions) (*runtime.Poller[NetworkFabricsClientCommitConfigurationResponse], error)`
+- New function `*NetworkFabricsClient.BeginGetTopology(context.Context, string, string, *NetworkFabricsClientBeginGetTopologyOptions) (*runtime.Poller[NetworkFabricsClientGetTopologyResponse], error)`
+- New function `*NetworkFabricsClient.BeginRefreshConfiguration(context.Context, string, string, *NetworkFabricsClientBeginRefreshConfigurationOptions) (*runtime.Poller[NetworkFabricsClientRefreshConfigurationResponse], error)`
+- New function `*NetworkFabricsClient.BeginUpdateInfraManagementBfdConfiguration(context.Context, string, string, UpdateAdministrativeState, *NetworkFabricsClientBeginUpdateInfraManagementBfdConfigurationOptions) (*runtime.Poller[NetworkFabricsClientUpdateInfraManagementBfdConfigurationResponse], error)`
+- New function `*NetworkFabricsClient.BeginUpdateWorkloadManagementBfdConfiguration(context.Context, string, string, UpdateAdministrativeState, *NetworkFabricsClientBeginUpdateWorkloadManagementBfdConfigurationOptions) (*runtime.Poller[NetworkFabricsClientUpdateWorkloadManagementBfdConfigurationResponse], error)`
+- New function `*NetworkFabricsClient.BeginUpgrade(context.Context, string, string, UpdateVersion, *NetworkFabricsClientBeginUpgradeOptions) (*runtime.Poller[NetworkFabricsClientUpgradeResponse], error)`
+- New function `*NetworkFabricsClient.BeginValidateConfiguration(context.Context, string, string, ValidateConfigurationProperties, *NetworkFabricsClientBeginValidateConfigurationOptions) (*runtime.Poller[NetworkFabricsClientValidateConfigurationResponse], error)`
+- New function `*NetworkInterfacesClient.NewListByNetworkDevicePager(string, string, *NetworkInterfacesClientListByNetworkDeviceOptions) *runtime.Pager[NetworkInterfacesClientListByNetworkDeviceResponse]`
+- New function `NewNetworkPacketBrokersClient(string, azcore.TokenCredential, *arm.ClientOptions) (*NetworkPacketBrokersClient, error)`
+- New function `*NetworkPacketBrokersClient.BeginCreate(context.Context, string, string, NetworkPacketBroker, *NetworkPacketBrokersClientBeginCreateOptions) (*runtime.Poller[NetworkPacketBrokersClientCreateResponse], error)`
+- New function `*NetworkPacketBrokersClient.BeginDelete(context.Context, string, string, *NetworkPacketBrokersClientBeginDeleteOptions) (*runtime.Poller[NetworkPacketBrokersClientDeleteResponse], error)`
+- New function `*NetworkPacketBrokersClient.Get(context.Context, string, string, *NetworkPacketBrokersClientGetOptions) (NetworkPacketBrokersClientGetResponse, error)`
+- New function `*NetworkPacketBrokersClient.NewListByResourceGroupPager(string, *NetworkPacketBrokersClientListByResourceGroupOptions) *runtime.Pager[NetworkPacketBrokersClientListByResourceGroupResponse]`
+- New function `*NetworkPacketBrokersClient.NewListBySubscriptionPager(*NetworkPacketBrokersClientListBySubscriptionOptions) *runtime.Pager[NetworkPacketBrokersClientListBySubscriptionResponse]`
+- New function `*NetworkPacketBrokersClient.BeginUpdate(context.Context, string, string, NetworkPacketBrokerPatch, *NetworkPacketBrokersClientBeginUpdateOptions) (*runtime.Poller[NetworkPacketBrokersClientUpdateResponse], error)`
+- New function `NewNetworkTapRulesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*NetworkTapRulesClient, error)`
+- New function `*NetworkTapRulesClient.BeginCreate(context.Context, string, string, NetworkTapRule, *NetworkTapRulesClientBeginCreateOptions) (*runtime.Poller[NetworkTapRulesClientCreateResponse], error)`
+- New function `*NetworkTapRulesClient.BeginDelete(context.Context, string, string, *NetworkTapRulesClientBeginDeleteOptions) (*runtime.Poller[NetworkTapRulesClientDeleteResponse], error)`
+- New function `*NetworkTapRulesClient.Get(context.Context, string, string, *NetworkTapRulesClientGetOptions) (NetworkTapRulesClientGetResponse, error)`
+- New function `*NetworkTapRulesClient.NewListByResourceGroupPager(string, *NetworkTapRulesClientListByResourceGroupOptions) *runtime.Pager[NetworkTapRulesClientListByResourceGroupResponse]`
+- New function `*NetworkTapRulesClient.NewListBySubscriptionPager(*NetworkTapRulesClientListBySubscriptionOptions) *runtime.Pager[NetworkTapRulesClientListBySubscriptionResponse]`
+- New function `*NetworkTapRulesClient.BeginResync(context.Context, string, string, *NetworkTapRulesClientBeginResyncOptions) (*runtime.Poller[NetworkTapRulesClientResyncResponse], error)`
+- New function `*NetworkTapRulesClient.BeginUpdate(context.Context, string, string, NetworkTapRulePatch, *NetworkTapRulesClientBeginUpdateOptions) (*runtime.Poller[NetworkTapRulesClientUpdateResponse], error)`
+- New function `*NetworkTapRulesClient.BeginUpdateAdministrativeState(context.Context, string, string, UpdateAdministrativeState, *NetworkTapRulesClientBeginUpdateAdministrativeStateOptions) (*runtime.Poller[NetworkTapRulesClientUpdateAdministrativeStateResponse], error)`
+- New function `*NetworkTapRulesClient.BeginValidateConfiguration(context.Context, string, string, *NetworkTapRulesClientBeginValidateConfigurationOptions) (*runtime.Poller[NetworkTapRulesClientValidateConfigurationResponse], error)`
+- New function `NewNetworkTapsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*NetworkTapsClient, error)`
+- New function `*NetworkTapsClient.BeginCreate(context.Context, string, string, NetworkTap, *NetworkTapsClientBeginCreateOptions) (*runtime.Poller[NetworkTapsClientCreateResponse], error)`
+- New function `*NetworkTapsClient.BeginDelete(context.Context, string, string, *NetworkTapsClientBeginDeleteOptions) (*runtime.Poller[NetworkTapsClientDeleteResponse], error)`
+- New function `*NetworkTapsClient.Get(context.Context, string, string, *NetworkTapsClientGetOptions) (NetworkTapsClientGetResponse, error)`
+- New function `*NetworkTapsClient.NewListByResourceGroupPager(string, *NetworkTapsClientListByResourceGroupOptions) *runtime.Pager[NetworkTapsClientListByResourceGroupResponse]`
+- New function `*NetworkTapsClient.NewListBySubscriptionPager(*NetworkTapsClientListBySubscriptionOptions) *runtime.Pager[NetworkTapsClientListBySubscriptionResponse]`
+- New function `*NetworkTapsClient.BeginResync(context.Context, string, string, *NetworkTapsClientBeginResyncOptions) (*runtime.Poller[NetworkTapsClientResyncResponse], error)`
+- New function `*NetworkTapsClient.BeginUpdate(context.Context, string, string, NetworkTapPatch, *NetworkTapsClientBeginUpdateOptions) (*runtime.Poller[NetworkTapsClientUpdateResponse], error)`
+- New function `*NetworkTapsClient.BeginUpdateAdministrativeState(context.Context, string, string, UpdateAdministrativeState, *NetworkTapsClientBeginUpdateAdministrativeStateOptions) (*runtime.Poller[NetworkTapsClientUpdateAdministrativeStateResponse], error)`
+- New function `*NetworkToNetworkInterconnectsClient.NewListByNetworkFabricPager(string, string, *NetworkToNetworkInterconnectsClientListByNetworkFabricOptions) *runtime.Pager[NetworkToNetworkInterconnectsClientListByNetworkFabricResponse]`
+- New function `*NetworkToNetworkInterconnectsClient.BeginUpdate(context.Context, string, string, string, NetworkToNetworkInterconnectPatch, *NetworkToNetworkInterconnectsClientBeginUpdateOptions) (*runtime.Poller[NetworkToNetworkInterconnectsClientUpdateResponse], error)`
+- New function `*NetworkToNetworkInterconnectsClient.BeginUpdateAdministrativeState(context.Context, string, string, string, UpdateAdministrativeState, *NetworkToNetworkInterconnectsClientBeginUpdateAdministrativeStateOptions) (*runtime.Poller[NetworkToNetworkInterconnectsClientUpdateAdministrativeStateResponse], error)`
+- New function `*NetworkToNetworkInterconnectsClient.BeginUpdateNpbStaticRouteBfdAdministrativeState(context.Context, string, string, string, UpdateAdministrativeState, *NetworkToNetworkInterconnectsClientBeginUpdateNpbStaticRouteBfdAdministrativeStateOptions) (*runtime.Poller[NetworkToNetworkInterconnectsClientUpdateNpbStaticRouteBfdAdministrativeStateResponse], error)`
+- New struct `AccessControlListAction`
+- New struct `AccessControlListMatchCondition`
+- New struct `AccessControlListMatchConfiguration`
+- New struct `AccessControlListPortCondition`
+- New struct `CommonDynamicMatchConfiguration`
+- New struct `CommonPostActionResponseForDeviceUpdate`
+- New struct `CommonPostActionResponseForStateUpdate`
+- New struct `ConnectedSubnetRoutePolicy`
+- New struct `ControllerServices`
+- New struct `ErrorAdditionalInfo`
+- New struct `ErrorDetail`
+- New struct `ExportRoutePolicy`
+- New struct `ExportRoutePolicyInformation`
+- New struct `ExternalNetworkPatchPropertiesOptionAProperties`
+- New struct `IPCommunityPatchableProperties`
+- New struct `IPCommunityRule`
+- New struct `IPExtendedCommunityPatchProperties`
+- New struct `IPExtendedCommunityRule`
+- New struct `IPGroupProperties`
+- New struct `IPMatchCondition`
+- New struct `IPPrefixPatchProperties`
+- New struct `IPPrefixRule`
+- New struct `ImportRoutePolicy`
+- New struct `ImportRoutePolicyInformation`
+- New struct `InternalNetworkPropertiesBgpConfiguration`
+- New struct `InternalNetworkPropertiesStaticRouteConfiguration`
+- New struct `InternetGateway`
+- New struct `InternetGatewayPatch`
+- New struct `InternetGatewayPatchableProperties`
+- New struct `InternetGatewayProperties`
+- New struct `InternetGatewayRule`
+- New struct `InternetGatewayRulePatch`
+- New struct `InternetGatewayRuleProperties`
+- New struct `InternetGatewayRulesListResult`
+- New struct `InternetGatewaysListResult`
+- New struct `IsolationDomainProperties`
+- New struct `L3ExportRoutePolicy`
+- New struct `L3OptionBProperties`
+- New struct `ManagementNetworkConfigurationPatchableProperties`
+- New struct `ManagementNetworkConfigurationProperties`
+- New struct `NeighborGroup`
+- New struct `NeighborGroupDestination`
+- New struct `NeighborGroupPatch`
+- New struct `NeighborGroupPatchProperties`
+- New struct `NeighborGroupProperties`
+- New struct `NeighborGroupsListResult`
+- New struct `NetworkFabricPatch`
+- New struct `NetworkFabricPatchProperties`
+- New struct `NetworkFabricPatchablePropertiesTerminalServerConfiguration`
+- New struct `NetworkPacketBroker`
+- New struct `NetworkPacketBrokerPatch`
+- New struct `NetworkPacketBrokerProperties`
+- New struct `NetworkPacketBrokersListResult`
+- New struct `NetworkTap`
+- New struct `NetworkTapPatch`
+- New struct `NetworkTapPatchableParameters`
+- New struct `NetworkTapPatchableParametersDestinationsItem`
+- New struct `NetworkTapProperties`
+- New struct `NetworkTapPropertiesDestinationsItem`
+- New struct `NetworkTapRule`
+- New struct `NetworkTapRuleAction`
+- New struct `NetworkTapRuleMatchCondition`
+- New struct `NetworkTapRuleMatchConfiguration`
+- New struct `NetworkTapRulePatch`
+- New struct `NetworkTapRulePatchProperties`
+- New struct `NetworkTapRuleProperties`
+- New struct `NetworkTapRulesListResult`
+- New struct `NetworkTapsListResult`
+- New struct `NetworkToNetworkInterconnectPatch`
+- New struct `NetworkToNetworkInterconnectPatchableProperties`
+- New struct `NetworkToNetworkInterconnectPropertiesOptionBLayer3Configuration`
+- New struct `NpbStaticRouteConfiguration`
+- New struct `OptionBLayer3Configuration`
+- New struct `PortCondition`
+- New struct `PortGroupProperties`
+- New struct `RebootProperties`
+- New struct `RoutePolicyPatchableProperties`
+- New struct `RouteTargetInformation`
+- New struct `RuleProperties`
+- New struct `TagsUpdate`
+- New struct `UpdateDeviceAdministrativeState`
+- New struct `UpdateVersion`
+- New struct `VPNConfigurationPatchableProperties`
+- New struct `VPNConfigurationPatchablePropertiesOptionAProperties`
+- New struct `VPNConfigurationPropertiesOptionAProperties`
+- New struct `ValidateConfigurationProperties`
+- New struct `ValidateConfigurationResponse`
+- New struct `VlanGroupProperties`
+- New struct `VlanMatchCondition`
+- New field `ACLsURL`, `ConfigurationType`, `DynamicMatchConfigurations`, `MatchConfigurations` in struct `AccessControlListPatchProperties`
+- New field `ACLsURL`, `AdministrativeState`, `ConfigurationState`, `ConfigurationType`, `DynamicMatchConfigurations`, `LastSyncedTime`, `MatchConfigurations` in struct `AccessControlListProperties`
+- New field `IntervalInMilliSeconds` in struct `BfdConfiguration`
+- New field `ExportRoutePolicy`, `ImportRoutePolicy` in struct `ExternalNetworkPatchProperties`
+- New field `ConfigurationState`, `ExportRoutePolicy`, `ImportRoutePolicy` in struct `ExternalNetworkProperties`
+- New field `EgressACLID`, `IngressACLID` in struct `ExternalNetworkPropertiesOptionAProperties`
+- New anonymous field `CommonPostActionResponseForStateUpdate` in struct `ExternalNetworksClientUpdateAdministrativeStateResponse`
+- New field `Properties` in struct `IPCommunityPatch`
+- New field `AdministrativeState`, `ConfigurationState`, `IPCommunityRules` in struct `IPCommunityProperties`
+- New field `Properties` in struct `IPExtendedCommunityPatch`
+- New field `AdministrativeState`, `ConfigurationState`, `IPExtendedCommunityRules` in struct `IPExtendedCommunityProperties`
+- New field `Properties` in struct `IPPrefixPatch`
+- New field `AdministrativeState`, `ConfigurationState` in struct `IPPrefixProperties`
+- New field `EgressACLID`, `ExportRoutePolicy`, `ImportRoutePolicy`, `IngressACLID`, `IsMonitoringEnabled` in struct `InternalNetworkPatchProperties`
+- New field `ConfigurationState`, `EgressACLID`, `ExportRoutePolicy`, `Extension`, `ImportRoutePolicy`, `IngressACLID`, `IsMonitoringEnabled` in struct `InternalNetworkProperties`
+- New anonymous field `CommonPostActionResponseForStateUpdate` in struct `InternalNetworksClientUpdateAdministrativeStateResponse`
+- New anonymous field `CommonPostActionResponseForStateUpdate` in struct `InternalNetworksClientUpdateBgpAdministrativeStateResponse`
+- New field `ConfigurationState` in struct `L2IsolationDomainProperties`
+- New anonymous field `CommonPostActionResponseForDeviceUpdate` in struct `L2IsolationDomainsClientUpdateAdministrativeStateResponse`
+- New field `Annotation` in struct `L3IsolationDomainPatchProperties`
+- New field `ConfigurationState` in struct `L3IsolationDomainProperties`
+- New anonymous field `CommonPostActionResponseForDeviceUpdate` in struct `L3IsolationDomainsClientUpdateAdministrativeStateResponse`
+- New field `ConfigurationState` in struct `NeighborAddress`
+- New field `AdministrativeState`, `ConfigurationState`, `ManagementIPv4Address`, `ManagementIPv6Address` in struct `NetworkDeviceProperties`
+- New anonymous field `CommonPostActionResponseForStateUpdate` in struct `NetworkDevicesClientRebootResponse`
+- New field `IsWorkloadManagementNetworkEnabled`, `NfcSKU`, `TenantInternetGatewayIDs` in struct `NetworkFabricControllerProperties`
+- New field `AdministrativeState`, `ConfigurationState`, `FabricVersion`, `RouterIDs` in struct `NetworkFabricProperties`
+- New field `Details`, `MaximumServerCount`, `SupportedVersions` in struct `NetworkFabricSKUProperties`
+- New anonymous field `CommonPostActionResponseForDeviceUpdate` in struct `NetworkFabricsClientDeprovisionResponse`
+- New anonymous field `CommonPostActionResponseForDeviceUpdate` in struct `NetworkFabricsClientProvisionResponse`
+- New anonymous field `CommonPostActionResponseForStateUpdate` in struct `NetworkInterfacesClientUpdateAdministrativeStateResponse`
+- New field `NetworkRackType` in struct `NetworkRackProperties`
+- New field `ConfigurationState`, `EgressACLID`, `ExportRoutePolicy`, `ImportRoutePolicy`, `IngressACLID`, `NpbStaticRouteConfiguration`, `OptionBLayer3Configuration` in struct `NetworkToNetworkInterconnectProperties`
+- New field `RouteTargets` in struct `OptionBProperties`
+- New field `Properties` in struct `RoutePolicyPatch`
+- New field `AddressFamilyType`, `AdministrativeState`, `ConfigurationState`, `NetworkFabricID` in struct `RoutePolicyProperties`
+- New field `Type` in struct `StatementConditionProperties`
+- New field `IsDefault` in struct `SupportedVersionProperties`
+
+
+## 0.1.0 (2023-06-30)
+
+The package of `github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric` is using our [next generation design principles](https://azure.github.io/azure-sdk/general_introduction.html).
+
+To learn more, please refer to our documentation [Quick Start](https://aka.ms/azsdk/go/mgmt).

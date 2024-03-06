@@ -1,0 +1,245 @@
+parameters:
+  - name: ServiceDirectory
+    type: string
+    default: ''
+  - name: RunLiveTests
+    type: boolean
+    default: false
+  - name: NonShipping
+    type: boolean
+    default: false
+  - name: LicenseCheck
+    type: boolean
+    default: true
+  - name: EnvVars
+    type: object
+    default: {}
+  - name: Clouds
+    type: string
+    default: 'Public'
+  - name: SupportedClouds
+    type: string
+    default: 'Public'
+  - name: UnsupportedClouds
+    type: string
+    default: ''
+  - name: PreSteps
+    type: object
+    default: []
+  - name: PostSteps
+    type: object
+    default: []
+  - name: TimeoutInMinutes
+    type: number
+    default: 60
+  - name: Location
+    type: string
+    default: ''
+  - name: CloudConfig
+    type: object
+    default:
+      Public:
+        SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
+      Preview:
+        SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources-preview)
+      Canary:
+        SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
+        Location: 'centraluseuap'
+      UsGov:
+        SubscriptionConfiguration: $(sub-config-gov-test-resources)
+      China:
+        SubscriptionConfiguration: $(sub-config-cn-test-resources)
+  - name: MatrixConfigs
+    type: object
+    default:
+      - Name: Go_live_test_base
+        Path: eng/pipelines/templates/stages/platform-matrix.json
+        Selection: all
+        GenerateVMJobs: true
+  - name: AdditionalMatrixConfigs
+    type: object
+    default: []
+  - name: MatrixFilters
+    type: object
+    default: []
+  - name: MatrixReplace
+    type: object
+    default: []
+  - name: TestRunTime
+    type: string
+    default: '600s'
+  - name: IncludeRelease
+    type: boolean
+    default: false
+  - name: ExcludeGoNMinus2
+    type: boolean
+    default: false
+  - name: UsePipelineProxy
+    type: boolean
+    default: true
+
+
+stages:
+  - stage: Build
+    variables:
+      - template: /eng/pipelines/templates/variables/globals.yml
+    jobs:
+    - job: Test
+      displayName: Build and Test on
+      strategy:
+        matrix:
+          ${{ if eq(parameters.ExcludeGoNMinus2, false) }}:
+            Linux_Go118:
+              pool.name: azsdk-pool-mms-ubuntu-2004-general
+              image.name: MMSUbuntu20.04
+              go.version: '1.18.10'
+          ${{ if eq(parameters.ExcludeGoNMinus2, false) }}:
+            Windows_Go118:
+              pool.name: azsdk-pool-mms-win-2022-general
+              image.name: MMS2022
+              go.version: '1.18.10'
+          Linux_Go121:
+            pool.name: azsdk-pool-mms-ubuntu-2004-general
+            image.name: MMSUbuntu20.04
+            go.version: '1.21.7'
+          Windows_Go121:
+            pool.name: azsdk-pool-mms-win-2022-general
+            image.name: MMS2022
+            go.version: '1.21.7'
+          Linux_Go122:
+            pool.name: azsdk-pool-mms-ubuntu-2004-general
+            image.name: MMSUbuntu20.04
+            go.version: '1.22.0'
+            GOEXPERIMENT: nocoverageredesign
+          Windows_Go122:
+            pool.name: azsdk-pool-mms-win-2022-general
+            image.name: MMS2022
+            go.version: '1.22.0'
+            GOEXPERIMENT: nocoverageredesign
+            generate.bom: true
+      pool:
+        name: $(pool.name)
+        vmImage: $(image.name)
+      steps:
+      - template: /eng/common/pipelines/templates/steps/verify-agent-os.yml
+        parameters:
+          AgentImage: $(image.name)
+
+      - task: GoTool@0
+        inputs:
+          version: '$(go.version)'
+        displayName: "Select Go Version"
+
+      - template: ../steps/create-go-workspace.yml
+
+      - template: ../steps/build-test.yml
+        parameters:
+          ServiceDirectory: ${{ parameters.ServiceDirectory }}
+          Image: $(vm.image)
+          GoVersion: $(go.version)
+          TestProxy: ${{ parameters.UsePipelineProxy }}
+          TestRunTime: ${{ parameters.TestRunTime }}
+          EnvVars:
+            AZURE_RECORD_MODE: 'playback'
+
+    - ${{ if and(startsWith(parameters.ServiceDirectory, 'resourcemanager'), ne(parameters.ServiceDirectory, 'resourcemanager/internal')) }}:
+      - template: /eng/pipelines/templates/jobs/mgmt-mock-test.yml
+        parameters:
+          ServiceDirectory: ${{ parameters.ServiceDirectory }}
+
+    - job: Analyze
+      displayName: Analyze
+      variables:
+        - name: Codeql.Enabled
+          value: true
+        - name: Codeql.BuildIdentifier
+          value: ${{ parameters.ServiceDirectory }}
+        - name: Codeql.SkipTaskAutoInjection
+          value: false
+      pool:
+        name: azsdk-pool-mms-ubuntu-2004-general
+
+      steps:
+      - template: /eng/common/pipelines/templates/steps/check-spelling.yml
+
+      - task: ms.vss-governance-buildtask.governance-build-task-component-detection.ComponentGovernanceComponentDetection@0
+        displayName: "Component Detection"
+        condition: and(succeededOrFailed(), ne(variables['Build.Reason'],'PullRequest'))
+
+      - task: GoTool@0
+        inputs:
+          version: '1.22.0'
+        displayName: "Select Go Version"
+
+      - template: ../steps/create-go-workspace.yml
+
+      - template: ../steps/analyze.yml
+        parameters:
+          ServiceDirectory: ${{ parameters.ServiceDirectory }}
+          LintVersion: $(GoLintCLIVersion)
+          NonShipping: ${{ parameters.NonShipping }}
+          LicenseCheck: ${{ parameters.LicenseCheck }}
+
+  # Run live tests for internal only, not public CI builds. This can be triggered manually for via an `/azp run` comment.
+  - ${{if and(eq(variables['System.TeamProject'], 'internal'), eq(parameters.RunLiveTests, 'true'))}}:
+    - ${{ each cloud in parameters.CloudConfig }}:
+      # Run all clouds by default for weekly test pipeline, except for clouds specifically unsupported by the calling pipeline
+      - ${{ if or(contains(parameters.Clouds, cloud.key), and(contains(variables['Build.DefinitionName'], 'weekly'), contains(parameters.SupportedClouds, cloud.key))) }}:
+        - ${{ if not(contains(parameters.UnsupportedClouds, cloud.key)) }}:
+          - stage: ${{ cloud.key }}
+            variables:
+            - template: /eng/pipelines/templates/variables/globals.yml
+            displayName: Live Test ${{ cloud.key }}
+            dependsOn: []
+            jobs:
+            - template: /eng/common/pipelines/templates/jobs/archetype-sdk-tests-generate.yml
+              parameters:
+                JobTemplatePath: /eng/pipelines/templates/jobs/live.tests.yml
+                AdditionalParameters:
+                  ServiceDirectory: ${{ parameters.ServiceDirectory }}
+                  EnvVars: ${{ parameters.EnvVars }}
+                  TimeoutInMinutes: ${{ parameters.TimeoutInMinutes }}
+                  TestRunTime: ${{ parameters.TestRunTime }}
+                  Location: ${{ parameters.Location }}
+                  PreSteps:
+                    - ${{ parameters.PreSteps }}
+                  PostSteps:
+                    - ${{ parameters.PostSteps }}
+                MatrixConfigs:
+                  # Enumerate platforms and additional platforms based on supported clouds (sparse platform<-->cloud matrix).
+                  - ${{ each config in parameters.MatrixConfigs }}:
+                    -  ${{ config }}
+                  - ${{ each config in parameters.AdditionalMatrixConfigs }}:
+                    -  ${{ config }}
+                MatrixFilters:
+                  - ${{ each cloudFilter in cloud.value.MatrixFilters }}:
+                    - ${{ cloudFilter }}
+                  - ${{ parameters.MatrixFilters }}
+                MatrixReplace:
+                  - ${{ each cloudReplace in cloud.value.MatrixReplace }}:
+                    - ${{ cloudReplace }}
+                  - ${{ parameters.MatrixReplace }}
+                CloudConfig:
+                  SubscriptionConfiguration: ${{ cloud.value.SubscriptionConfiguration }}
+                  SubscriptionConfigurations: ${{ cloud.value.SubscriptionConfigurations }}
+                  Location: ${{ coalesce(parameters.Location, cloud.value.Location) }}
+                  Cloud: ${{ cloud.key }}
+
+  # The Prerelease and Release stages are conditioned on:
+  # 1. Internal trigger, not Pull Request trigger
+  # 2. Not weekly build
+  # 3. Manual trigger or force IncludeRelease
+  - ${{ if and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal')) }}:
+    - ${{ if not(contains(variables['Build.DefinitionName'], 'weekly')) }}:
+      - ${{ if or(in(variables['Build.Reason'], 'Manual', ''), eq(parameters.IncludeRelease, true)) }}:
+        - template: archetype-go-release.yml
+          parameters:
+            DependsOn:
+              - Build
+              # Copy cloud conditional logic from live test stage
+              - ${{if and(eq(variables['System.TeamProject'], 'internal'), eq(parameters.RunLiveTests, 'true'))}}:
+                - ${{ each cloud in parameters.CloudConfig }}:
+                  - ${{ if or(contains(parameters.Clouds, cloud.key), and(contains(variables['Build.DefinitionName'], 'tests-weekly'), contains(parameters.SupportedClouds, cloud.key))) }}:
+                    - ${{ if not(contains(parameters.UnsupportedClouds, cloud.key)) }}:
+                      - ${{ cloud.key }}
+            ServiceDirectory: ${{ parameters.ServiceDirectory }}

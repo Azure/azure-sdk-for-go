@@ -237,15 +237,9 @@ func (o *FlushDataOptions) format(offset int64) (*generated.PathClientFlushDataO
 			cpkInfoOpts.EncryptionKeySHA256 = o.CPKInfo.EncryptionKeySHA256
 			cpkInfoOpts.EncryptionAlgorithm = o.CPKInfo.EncryptionAlgorithm
 		}
-		if o.LeaseAction != nil {
-			flushDataOpts.LeaseAction = o.LeaseAction
-		}
-		if o.LeaseDuration != nil {
-			flushDataOpts.LeaseDuration = o.LeaseDuration
-		}
-		if o.ProposedLeaseID != nil {
-			flushDataOpts.ProposedLeaseID = o.ProposedLeaseID
-		}
+		flushDataOpts.LeaseAction = o.LeaseAction
+		flushDataOpts.LeaseDuration = o.LeaseDuration
+		flushDataOpts.ProposedLeaseID = o.ProposedLeaseID
 	}
 	return flushDataOpts, modifiedAccessConditions, leaseAccessConditions, httpHeaderOpts, cpkInfoOpts, nil
 }
@@ -308,18 +302,11 @@ func (o *AppendDataOptions) format(offset int64, body io.ReadSeekCloser) (*gener
 			cpkInfoOpts.EncryptionAlgorithm = o.CPKInfo.EncryptionAlgorithm
 		}
 
-		if o.LeaseAction != nil {
-			appendDataOptions.LeaseAction = o.LeaseAction
-		}
-		if o.LeaseDuration != nil {
-			appendDataOptions.LeaseDuration = o.LeaseDuration
-		}
-		if o.ProposedLeaseID != nil {
-			appendDataOptions.ProposedLeaseID = o.ProposedLeaseID
-		}
-		if o.Flush != nil {
-			appendDataOptions.Flush = o.Flush
-		}
+		appendDataOptions.LeaseAction = o.LeaseAction
+		appendDataOptions.LeaseDuration = o.LeaseDuration
+		appendDataOptions.ProposedLeaseID = o.ProposedLeaseID
+		appendDataOptions.Flush = o.Flush
+
 		if o.TransactionalValidation != nil {
 			_, err = o.TransactionalValidation.Apply(body, appendDataOptions)
 			if err != nil {

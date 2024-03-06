@@ -3,8 +3,8 @@
 ## 1.1.2 (Unreleased)
 
 ### Features Added
-* Append with acquire, release lease and renewal of lease.
-* Flush with release lease
+* Append API with acquire, release lease and renewal of lease support.
+* Flush API bundles with release lease option
 
 ### Breaking Changes
 

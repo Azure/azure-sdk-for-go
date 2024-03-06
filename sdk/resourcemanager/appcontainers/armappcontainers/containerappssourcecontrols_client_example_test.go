@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/58be094c6b365f8d4d73a91e293dfb4818e57cf6/specification/app/resource-manager/Microsoft.App/stable/2023-05-01/examples/SourceControls_ListByContainer.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ed482bb7c159f1ff85eb598b1fd557bdc4145034/specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/SourceControls_ListByContainer.json
 func ExampleContainerAppsSourceControlsClient_NewListByContainerAppPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -49,6 +49,15 @@ func ExampleContainerAppsSourceControlsClient_NewListByContainerAppPager() {
 		// 			Properties: &armappcontainers.SourceControlProperties{
 		// 				Branch: to.Ptr("master"),
 		// 				GithubActionConfiguration: &armappcontainers.GithubActionConfiguration{
+		// 					BuildEnvironmentVariables: []*armappcontainers.EnvironmentVariable{
+		// 						{
+		// 							Name: to.Ptr("foo1"),
+		// 							Value: to.Ptr("bar1"),
+		// 						},
+		// 						{
+		// 							Name: to.Ptr("foo2"),
+		// 							Value: to.Ptr("bar2"),
+		// 					}},
 		// 					ContextPath: to.Ptr("./"),
 		// 					Image: to.Ptr("image/tag"),
 		// 					RegistryInfo: &armappcontainers.RegistryInfo{
@@ -63,7 +72,7 @@ func ExampleContainerAppsSourceControlsClient_NewListByContainerAppPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/58be094c6b365f8d4d73a91e293dfb4818e57cf6/specification/app/resource-manager/Microsoft.App/stable/2023-05-01/examples/SourceControls_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ed482bb7c159f1ff85eb598b1fd557bdc4145034/specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/SourceControls_Get.json
 func ExampleContainerAppsSourceControlsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -88,6 +97,15 @@ func ExampleContainerAppsSourceControlsClient_Get() {
 	// 	Properties: &armappcontainers.SourceControlProperties{
 	// 		Branch: to.Ptr("master"),
 	// 		GithubActionConfiguration: &armappcontainers.GithubActionConfiguration{
+	// 			BuildEnvironmentVariables: []*armappcontainers.EnvironmentVariable{
+	// 				{
+	// 					Name: to.Ptr("foo1"),
+	// 					Value: to.Ptr("bar1"),
+	// 				},
+	// 				{
+	// 					Name: to.Ptr("foo2"),
+	// 					Value: to.Ptr("bar2"),
+	// 			}},
 	// 			ContextPath: to.Ptr("./"),
 	// 			Image: to.Ptr("image/tag"),
 	// 			RegistryInfo: &armappcontainers.RegistryInfo{
@@ -100,7 +118,7 @@ func ExampleContainerAppsSourceControlsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/58be094c6b365f8d4d73a91e293dfb4818e57cf6/specification/app/resource-manager/Microsoft.App/stable/2023-05-01/examples/SourceControls_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ed482bb7c159f1ff85eb598b1fd557bdc4145034/specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/SourceControls_CreateOrUpdate.json
 func ExampleContainerAppsSourceControlsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -121,6 +139,15 @@ func ExampleContainerAppsSourceControlsClient_BeginCreateOrUpdate() {
 					Kind:         to.Ptr("feaderated"),
 					TenantID:     to.Ptr("<tenantid>"),
 				},
+				BuildEnvironmentVariables: []*armappcontainers.EnvironmentVariable{
+					{
+						Name:  to.Ptr("foo1"),
+						Value: to.Ptr("bar1"),
+					},
+					{
+						Name:  to.Ptr("foo2"),
+						Value: to.Ptr("bar2"),
+					}},
 				ContextPath:               to.Ptr("./"),
 				GithubPersonalAccessToken: to.Ptr("test"),
 				Image:                     to.Ptr("image/tag"),
@@ -150,6 +177,15 @@ func ExampleContainerAppsSourceControlsClient_BeginCreateOrUpdate() {
 	// 	Properties: &armappcontainers.SourceControlProperties{
 	// 		Branch: to.Ptr("master"),
 	// 		GithubActionConfiguration: &armappcontainers.GithubActionConfiguration{
+	// 			BuildEnvironmentVariables: []*armappcontainers.EnvironmentVariable{
+	// 				{
+	// 					Name: to.Ptr("foo1"),
+	// 					Value: to.Ptr("bar1"),
+	// 				},
+	// 				{
+	// 					Name: to.Ptr("foo2"),
+	// 					Value: to.Ptr("bar2"),
+	// 			}},
 	// 			ContextPath: to.Ptr("./"),
 	// 			Image: to.Ptr("image/tag"),
 	// 			RegistryInfo: &armappcontainers.RegistryInfo{
@@ -163,7 +199,7 @@ func ExampleContainerAppsSourceControlsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/58be094c6b365f8d4d73a91e293dfb4818e57cf6/specification/app/resource-manager/Microsoft.App/stable/2023-05-01/examples/SourceControls_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ed482bb7c159f1ff85eb598b1fd557bdc4145034/specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/SourceControls_Delete.json
 func ExampleContainerAppsSourceControlsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

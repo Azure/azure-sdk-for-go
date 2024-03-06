@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/58be094c6b365f8d4d73a91e293dfb4818e57cf6/specification/app/resource-manager/Microsoft.App/stable/2023-05-01/examples/AuthConfigs_ListByContainer.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ed482bb7c159f1ff85eb598b1fd557bdc4145034/specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/AuthConfigs_ListByContainer.json
 func ExampleContainerAppsAuthConfigsClient_NewListByContainerAppPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -47,6 +47,10 @@ func ExampleContainerAppsAuthConfigsClient_NewListByContainerAppPager() {
 		// 			Type: to.Ptr("Microsoft.App/containerapps/authconfigs"),
 		// 			ID: to.Ptr("/subscriptions/651f8027-33e8-4ec4-97b4-f6e9f3dc8744/resourceGroups/workerapps-rg-xj/providers/Microsoft.App/containerApps/testcanadacentral/authconfigs/current"),
 		// 			Properties: &armappcontainers.AuthConfigProperties{
+		// 				EncryptionSettings: &armappcontainers.EncryptionSettings{
+		// 					ContainerAppAuthEncryptionSecretName: to.Ptr("testEncryptionSecretName"),
+		// 					ContainerAppAuthSigningSecretName: to.Ptr("testSigningSecretName"),
+		// 				},
 		// 				GlobalValidation: &armappcontainers.GlobalValidation{
 		// 					UnauthenticatedClientAction: to.Ptr(armappcontainers.UnauthenticatedClientActionV2AllowAnonymous),
 		// 				},
@@ -67,7 +71,7 @@ func ExampleContainerAppsAuthConfigsClient_NewListByContainerAppPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/58be094c6b365f8d4d73a91e293dfb4818e57cf6/specification/app/resource-manager/Microsoft.App/stable/2023-05-01/examples/AuthConfigs_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ed482bb7c159f1ff85eb598b1fd557bdc4145034/specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/AuthConfigs_Get.json
 func ExampleContainerAppsAuthConfigsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -90,6 +94,10 @@ func ExampleContainerAppsAuthConfigsClient_Get() {
 	// 	Type: to.Ptr("Microsoft.App/containerapps/authconfigs"),
 	// 	ID: to.Ptr("/subscriptions/651f8027-33e8-4ec4-97b4-f6e9f3dc8744/resourceGroups/workerapps-rg-xj/providers/Microsoft.App/containerApps/testcanadacentral/authconfigs/current"),
 	// 	Properties: &armappcontainers.AuthConfigProperties{
+	// 		EncryptionSettings: &armappcontainers.EncryptionSettings{
+	// 			ContainerAppAuthEncryptionSecretName: to.Ptr("testEncryptionSecretName"),
+	// 			ContainerAppAuthSigningSecretName: to.Ptr("testSigningSecretName"),
+	// 		},
 	// 		GlobalValidation: &armappcontainers.GlobalValidation{
 	// 			UnauthenticatedClientAction: to.Ptr(armappcontainers.UnauthenticatedClientActionV2AllowAnonymous),
 	// 		},
@@ -108,7 +116,7 @@ func ExampleContainerAppsAuthConfigsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/58be094c6b365f8d4d73a91e293dfb4818e57cf6/specification/app/resource-manager/Microsoft.App/stable/2023-05-01/examples/AuthConfigs_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ed482bb7c159f1ff85eb598b1fd557bdc4145034/specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/AuthConfigs_CreateOrUpdate.json
 func ExampleContainerAppsAuthConfigsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -121,6 +129,10 @@ func ExampleContainerAppsAuthConfigsClient_CreateOrUpdate() {
 	}
 	res, err := clientFactory.NewContainerAppsAuthConfigsClient().CreateOrUpdate(ctx, "workerapps-rg-xj", "testcanadacentral", "current", armappcontainers.AuthConfig{
 		Properties: &armappcontainers.AuthConfigProperties{
+			EncryptionSettings: &armappcontainers.EncryptionSettings{
+				ContainerAppAuthEncryptionSecretName: to.Ptr("testEncryptionSecretName"),
+				ContainerAppAuthSigningSecretName:    to.Ptr("testSigningSecretName"),
+			},
 			GlobalValidation: &armappcontainers.GlobalValidation{
 				UnauthenticatedClientAction: to.Ptr(armappcontainers.UnauthenticatedClientActionV2AllowAnonymous),
 			},
@@ -148,6 +160,10 @@ func ExampleContainerAppsAuthConfigsClient_CreateOrUpdate() {
 	// 	Type: to.Ptr("Microsoft.App/containerapps/authconfigs"),
 	// 	ID: to.Ptr("/subscriptions/651f8027-33e8-4ec4-97b4-f6e9f3dc8744/resourceGroups/workerapps-rg-xj/providers/Microsoft.App/containerApps/myapp/authconfigs/current"),
 	// 	Properties: &armappcontainers.AuthConfigProperties{
+	// 		EncryptionSettings: &armappcontainers.EncryptionSettings{
+	// 			ContainerAppAuthEncryptionSecretName: to.Ptr("testEncryptionSecretName"),
+	// 			ContainerAppAuthSigningSecretName: to.Ptr("testSigningSecretName"),
+	// 		},
 	// 		GlobalValidation: &armappcontainers.GlobalValidation{
 	// 			UnauthenticatedClientAction: to.Ptr(armappcontainers.UnauthenticatedClientActionV2AllowAnonymous),
 	// 		},
@@ -166,7 +182,7 @@ func ExampleContainerAppsAuthConfigsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/58be094c6b365f8d4d73a91e293dfb4818e57cf6/specification/app/resource-manager/Microsoft.App/stable/2023-05-01/examples/AuthConfigs_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ed482bb7c159f1ff85eb598b1fd557bdc4145034/specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/AuthConfigs_Delete.json
 func ExampleContainerAppsAuthConfigsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -10,7 +10,7 @@ package armappcontainers
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers"
-	moduleVersion = "v2.1.0"
+	moduleVersion = "v3.0.0-beta.1"
 )
 
 // AccessMode - Access mode for storage
@@ -127,6 +127,76 @@ func PossibleBindingTypeValues() []BindingType {
 	}
 }
 
+// BuildProvisioningState - Resource instance provisioning state.
+type BuildProvisioningState string
+
+const (
+	BuildProvisioningStateCanceled  BuildProvisioningState = "Canceled"
+	BuildProvisioningStateCreating  BuildProvisioningState = "Creating"
+	BuildProvisioningStateDeleting  BuildProvisioningState = "Deleting"
+	BuildProvisioningStateFailed    BuildProvisioningState = "Failed"
+	BuildProvisioningStateSucceeded BuildProvisioningState = "Succeeded"
+	BuildProvisioningStateUpdating  BuildProvisioningState = "Updating"
+)
+
+// PossibleBuildProvisioningStateValues returns the possible values for the BuildProvisioningState const type.
+func PossibleBuildProvisioningStateValues() []BuildProvisioningState {
+	return []BuildProvisioningState{
+		BuildProvisioningStateCanceled,
+		BuildProvisioningStateCreating,
+		BuildProvisioningStateDeleting,
+		BuildProvisioningStateFailed,
+		BuildProvisioningStateSucceeded,
+		BuildProvisioningStateUpdating,
+	}
+}
+
+// BuildStatus - Status of the build once it has been provisioned.
+type BuildStatus string
+
+const (
+	BuildStatusCanceled   BuildStatus = "Canceled"
+	BuildStatusFailed     BuildStatus = "Failed"
+	BuildStatusInProgress BuildStatus = "InProgress"
+	BuildStatusNotStarted BuildStatus = "NotStarted"
+	BuildStatusSucceeded  BuildStatus = "Succeeded"
+)
+
+// PossibleBuildStatusValues returns the possible values for the BuildStatus const type.
+func PossibleBuildStatusValues() []BuildStatus {
+	return []BuildStatus{
+		BuildStatusCanceled,
+		BuildStatusFailed,
+		BuildStatusInProgress,
+		BuildStatusNotStarted,
+		BuildStatusSucceeded,
+	}
+}
+
+// BuilderProvisioningState - Resource instance provisioning state.
+type BuilderProvisioningState string
+
+const (
+	BuilderProvisioningStateCanceled  BuilderProvisioningState = "Canceled"
+	BuilderProvisioningStateCreating  BuilderProvisioningState = "Creating"
+	BuilderProvisioningStateDeleting  BuilderProvisioningState = "Deleting"
+	BuilderProvisioningStateFailed    BuilderProvisioningState = "Failed"
+	BuilderProvisioningStateSucceeded BuilderProvisioningState = "Succeeded"
+	BuilderProvisioningStateUpdating  BuilderProvisioningState = "Updating"
+)
+
+// PossibleBuilderProvisioningStateValues returns the possible values for the BuilderProvisioningState const type.
+func PossibleBuilderProvisioningStateValues() []BuilderProvisioningState {
+	return []BuilderProvisioningState{
+		BuilderProvisioningStateCanceled,
+		BuilderProvisioningStateCreating,
+		BuilderProvisioningStateDeleting,
+		BuilderProvisioningStateFailed,
+		BuilderProvisioningStateSucceeded,
+		BuilderProvisioningStateUpdating,
+	}
+}
+
 // CertificateProvisioningState - Provisioning state of the certificate.
 type CertificateProvisioningState string
 
@@ -146,6 +216,22 @@ func PossibleCertificateProvisioningStateValues() []CertificateProvisioningState
 		CertificateProvisioningStateFailed,
 		CertificateProvisioningStatePending,
 		CertificateProvisioningStateSucceeded,
+	}
+}
+
+// CertificateType - The type of the certificate. Allowed values are ServerSSLCertificate and ImagePullTrustedCA
+type CertificateType string
+
+const (
+	CertificateTypeImagePullTrustedCA   CertificateType = "ImagePullTrustedCA"
+	CertificateTypeServerSSLCertificate CertificateType = "ServerSSLCertificate"
+)
+
+// PossibleCertificateTypeValues returns the possible values for the CertificateType const type.
+func PossibleCertificateTypeValues() []CertificateType {
+	return []CertificateType{
+		CertificateTypeImagePullTrustedCA,
+		CertificateTypeServerSSLCertificate,
 	}
 }
 
@@ -305,6 +391,44 @@ func PossibleDNSVerificationTestResultValues() []DNSVerificationTestResult {
 	}
 }
 
+// DotNetComponentProvisioningState - Provisioning state of the .NET Component.
+type DotNetComponentProvisioningState string
+
+const (
+	DotNetComponentProvisioningStateCanceled   DotNetComponentProvisioningState = "Canceled"
+	DotNetComponentProvisioningStateDeleting   DotNetComponentProvisioningState = "Deleting"
+	DotNetComponentProvisioningStateFailed     DotNetComponentProvisioningState = "Failed"
+	DotNetComponentProvisioningStateInProgress DotNetComponentProvisioningState = "InProgress"
+	DotNetComponentProvisioningStateSucceeded  DotNetComponentProvisioningState = "Succeeded"
+)
+
+// PossibleDotNetComponentProvisioningStateValues returns the possible values for the DotNetComponentProvisioningState const type.
+func PossibleDotNetComponentProvisioningStateValues() []DotNetComponentProvisioningState {
+	return []DotNetComponentProvisioningState{
+		DotNetComponentProvisioningStateCanceled,
+		DotNetComponentProvisioningStateDeleting,
+		DotNetComponentProvisioningStateFailed,
+		DotNetComponentProvisioningStateInProgress,
+		DotNetComponentProvisioningStateSucceeded,
+	}
+}
+
+// DotNetComponentType - Type of the .NET Component.
+type DotNetComponentType string
+
+const (
+	DotNetComponentTypeAspireDashboard         DotNetComponentType = "AspireDashboard"
+	DotNetComponentTypeAspireResourceServerAPI DotNetComponentType = "AspireResourceServerApi"
+)
+
+// PossibleDotNetComponentTypeValues returns the possible values for the DotNetComponentType const type.
+func PossibleDotNetComponentTypeValues() []DotNetComponentType {
+	return []DotNetComponentType{
+		DotNetComponentTypeAspireDashboard,
+		DotNetComponentTypeAspireResourceServerAPI,
+	}
+}
+
 // EnvironmentProvisioningState - Provisioning state of the Environment.
 type EnvironmentProvisioningState string
 
@@ -389,6 +513,22 @@ func PossibleIngressClientCertificateModeValues() []IngressClientCertificateMode
 	}
 }
 
+// IngressTargetPortHTTPScheme - Whether an http app listens on http or https
+type IngressTargetPortHTTPScheme string
+
+const (
+	IngressTargetPortHTTPSchemeHTTP  IngressTargetPortHTTPScheme = "http"
+	IngressTargetPortHTTPSchemeHTTPS IngressTargetPortHTTPScheme = "https"
+)
+
+// PossibleIngressTargetPortHTTPSchemeValues returns the possible values for the IngressTargetPortHTTPScheme const type.
+func PossibleIngressTargetPortHTTPSchemeValues() []IngressTargetPortHTTPScheme {
+	return []IngressTargetPortHTTPScheme{
+		IngressTargetPortHTTPSchemeHTTP,
+		IngressTargetPortHTTPSchemeHTTPS,
+	}
+}
+
 // IngressTransportMethod - Ingress transport protocol
 type IngressTransportMethod string
 
@@ -406,6 +546,46 @@ func PossibleIngressTransportMethodValues() []IngressTransportMethod {
 		IngressTransportMethodHTTP,
 		IngressTransportMethodHTTP2,
 		IngressTransportMethodTCP,
+	}
+}
+
+// JavaComponentProvisioningState - Provisioning state of the Java Component.
+type JavaComponentProvisioningState string
+
+const (
+	JavaComponentProvisioningStateCanceled   JavaComponentProvisioningState = "Canceled"
+	JavaComponentProvisioningStateDeleting   JavaComponentProvisioningState = "Deleting"
+	JavaComponentProvisioningStateFailed     JavaComponentProvisioningState = "Failed"
+	JavaComponentProvisioningStateInProgress JavaComponentProvisioningState = "InProgress"
+	JavaComponentProvisioningStateSucceeded  JavaComponentProvisioningState = "Succeeded"
+)
+
+// PossibleJavaComponentProvisioningStateValues returns the possible values for the JavaComponentProvisioningState const type.
+func PossibleJavaComponentProvisioningStateValues() []JavaComponentProvisioningState {
+	return []JavaComponentProvisioningState{
+		JavaComponentProvisioningStateCanceled,
+		JavaComponentProvisioningStateDeleting,
+		JavaComponentProvisioningStateFailed,
+		JavaComponentProvisioningStateInProgress,
+		JavaComponentProvisioningStateSucceeded,
+	}
+}
+
+// JavaComponentType - Type of the Java Component.
+type JavaComponentType string
+
+const (
+	JavaComponentTypeSpringBootAdmin   JavaComponentType = "SpringBootAdmin"
+	JavaComponentTypeSpringCloudConfig JavaComponentType = "SpringCloudConfig"
+	JavaComponentTypeSpringCloudEureka JavaComponentType = "SpringCloudEureka"
+)
+
+// PossibleJavaComponentTypeValues returns the possible values for the JavaComponentType const type.
+func PossibleJavaComponentTypeValues() []JavaComponentType {
+	return []JavaComponentType{
+		JavaComponentTypeSpringBootAdmin,
+		JavaComponentTypeSpringCloudConfig,
+		JavaComponentTypeSpringCloudEureka,
 	}
 }
 
@@ -619,9 +799,10 @@ func PossibleSourceControlOperationStateValues() []SourceControlOperationState {
 type StorageType string
 
 const (
-	StorageTypeAzureFile StorageType = "AzureFile"
-	StorageTypeEmptyDir  StorageType = "EmptyDir"
-	StorageTypeSecret    StorageType = "Secret"
+	StorageTypeAzureFile    StorageType = "AzureFile"
+	StorageTypeEmptyDir     StorageType = "EmptyDir"
+	StorageTypeNfsAzureFile StorageType = "NfsAzureFile"
+	StorageTypeSecret       StorageType = "Secret"
 )
 
 // PossibleStorageTypeValues returns the possible values for the StorageType const type.
@@ -629,6 +810,7 @@ func PossibleStorageTypeValues() []StorageType {
 	return []StorageType{
 		StorageTypeAzureFile,
 		StorageTypeEmptyDir,
+		StorageTypeNfsAzureFile,
 		StorageTypeSecret,
 	}
 }

@@ -116,9 +116,6 @@ directive:
         - options.go
     where: $
     transform: return $.replace(/Timespan \*string/g, "Timespan *TimeInterval");
-  - from: metrics_client.go
-    where: $
-    transform: return $.replace(/reqQP\.Set\(\"timespan\", \*options\.Timespan\)/g, "reqQP.Set(\"timespan\", string(*options.Timespan))");
   
   # delete client name prefix from method options and response types
   - from:

@@ -8,10 +8,8 @@ package azlogs
 
 import "github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 
-// Cloud Service Names for Monitor Query Logs and Metrics, used to identify the respective cloud.ServiceConfiguration
-const (
-	ServiceNameLogs cloud.ServiceName = "query/azlogs"
-)
+// Cloud Service Names for Monitor Query Logs, used to identify the respective cloud.ServiceConfiguration
+const ServiceNameLogs cloud.ServiceName = "query/azlogs"
 
 func init() {
 	cloud.AzureChina.Services[ServiceNameLogs] = cloud.ServiceConfiguration{

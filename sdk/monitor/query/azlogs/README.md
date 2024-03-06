@@ -41,7 +41,7 @@ Example client.
 
 ### Timespan
 
-It's best practice to always query with a timespan (type `TimeInterval`) to prevent excessive queries of the entire logs or metrics data set. Log queries use the ISO8601 Time Interval Standard. All time should be represented in UTC. If the timespan is included in both the Kusto query string and `Timespan` field, the timespan is the intersection of the two values.
+It's best practice to always query with a timespan (type `TimeInterval`) to prevent excessive queries of the entire logs data set. Log queries use the ISO8601 Time Interval Standard. All time should be represented in UTC. If the timespan is included in both the Kusto query string and `Timespan` field, the timespan is the intersection of the two values.
 
 Use the `NewTimeInterval()` method for easy creation.
 

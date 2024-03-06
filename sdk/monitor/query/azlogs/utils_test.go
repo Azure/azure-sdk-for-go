@@ -21,12 +21,14 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-const recordingDirectory = "sdk/monitor/query/azlogs/testdata"
-const fakeWorkspaceID = "32d1e136-gg81-4b0a-b647-260cdc471f68"
-const fakeWorkspaceID2 = "asdjkfj8k20-gg81-4b0a-9fu2-260c09fn1f68"
-const fakeResourceURI = "/subscriptions/faa080af-c1d8-40ad-9cce-e1a451va7b87/resourceGroups/rg-example/providers/Microsoft.AppConfiguration/configurationStores/example"
-const fakeSubscrtiptionID = "faa080af-c1d8-40ad-9cce-e1a451va7b87"
-const fakeRegion = "westus2"
+const (
+	recordingDirectory  = "sdk/monitor/query/azlogs/testdata"
+	fakeWorkspaceID     = "32d1e136-gg81-4b0a-b647-260cdc471f68"
+	fakeWorkspaceID2    = "asdjkfj8k20-gg81-4b0a-9fu2-260c09fn1f68"
+	fakeResourceURI     = "/subscriptions/faa080af-c1d8-40ad-9cce-e1a451va7b87/resourceGroups/rg-example/providers/Microsoft.AppConfiguration/configurationStores/example"
+	fakeSubscrtiptionID = "faa080af-c1d8-40ad-9cce-e1a451va7b87"
+	fakeRegion          = "westus2"
+)
 
 var (
 	credential     azcore.TokenCredential

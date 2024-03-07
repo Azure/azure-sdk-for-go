@@ -77,10 +77,14 @@ steps:
       foreach ($md in $modDirs) {
         pushd $md
         Write-Host "##[command]Executing go mod tidy in $md"
-        go mod tidy | tee >&2
+        go mod tidy
+        $diff = (git diff -w .)
+        Write-Host ($diff -join "`n")
+        if ($diff.Length -gt 0) {
+          exit 1
+        }
       }
     displayName: 'go mod tidy'
-    failOnStderr: true
     workingDirectory: $(System.DefaultWorkingDirectory)
 
   - pwsh: |

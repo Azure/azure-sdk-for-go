@@ -1,6 +1,6 @@
 # Release History
 
-## 0.2.0 (2024-03-07)
+## 0.2.0 (2024-03-11)
 
 ### Breaking Changes
 * Moved from `sdk/monitor/azingest` to `sdk/monitor/ingestion/azlogs`

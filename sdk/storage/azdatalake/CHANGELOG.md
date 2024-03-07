@@ -1,5 +1,13 @@
 # Release History
 
+## 1.1.2 (Unreleased)
+
+### Features Added
+* Append API with acquire lease, release lease and renewal of lease support.
+* Flush API bundled with release lease option.
+
+### Breaking Changes
+
 ## 1.1.1 (2024-02-29)
 
 ### Bugs Fixed

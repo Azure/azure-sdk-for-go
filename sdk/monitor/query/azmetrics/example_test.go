@@ -46,7 +46,7 @@ func ExampleClient_QueryResources() {
 		subscriptionID,
 		"Microsoft.Storage/storageAccounts",
 		[]string{"Ingress"},
-		azmetrics.ResourceIDList{ResourceIDs: to.SliceOfPtrs(resourceURI1, resourceURI2)},
+		azmetrics.ResourceIDList{ResourceIDs: []string{resourceURI1, resourceURI2}},
 		&azmetrics.QueryResourcesOptions{
 			Aggregation: to.Ptr("average"),
 			StartTime:   to.Ptr("2023-11-15"),

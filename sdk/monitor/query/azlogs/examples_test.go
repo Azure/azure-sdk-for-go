@@ -76,7 +76,7 @@ func ExampleClient_QueryWorkspace_second() {
 	// according to the workspace from which it was retrieved.
 	workspaceID1 := "g4d1e129-fb1e-4b0a-b234-250abc987ea65" // example Azure Log Analytics Workspace ID
 	workspaceID2 := "h4bc4471-2e8c-4b1c-8f47-12b9a4d5ac71"
-	additionalWorkspaces := []*string{to.Ptr(workspaceID2)}
+	additionalWorkspaces := []string{workspaceID2}
 
 	// Advanced query options
 	// Setting Statistics to true returns stats information in Results.Statistics

@@ -23,7 +23,7 @@ type QueryBody struct {
 	Query *string
 
 	// A list of workspaces to query in addition to the primary workspace.
-	AdditionalWorkspaces []*string
+	AdditionalWorkspaces []string
 
 	// Optional. The timespan over which to query data. This is an ISO8601 time period value. This timespan is applied in addition
 	// to any that are specified in the query expression.
@@ -33,7 +33,7 @@ type QueryBody struct {
 // QueryResults - Contains the tables, columns & rows resulting from a query.
 type QueryResults struct {
 	// REQUIRED; The results of the query in tabular format.
-	Tables []*Table
+	Tables []Table
 
 	// The code and message for an error.
 	Error *ErrorInfo
@@ -48,7 +48,7 @@ type QueryResults struct {
 // Table - Contains the columns and rows for one table in a query response.
 type Table struct {
 	// REQUIRED; The list of columns in this table.
-	Columns []*Column
+	Columns []Column
 
 	// REQUIRED; The name of the table.
 	Name *string

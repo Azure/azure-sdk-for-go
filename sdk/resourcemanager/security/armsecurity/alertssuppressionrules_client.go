@@ -193,10 +193,10 @@ func (client *AlertsSuppressionRulesClient) listCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2019-01-01-preview")
 	if options != nil && options.AlertType != nil {
 		reqQP.Set("AlertType", *options.AlertType)
 	}
+	reqQP.Set("api-version", "2019-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

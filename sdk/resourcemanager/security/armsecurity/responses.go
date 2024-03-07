@@ -8,27 +8,39 @@
 
 package armsecurity
 
-// APICollectionClientGetResponse contains the response from method APICollectionClient.Get.
-type APICollectionClientGetResponse struct {
-	// An API collection as represented by Defender for APIs.
-	APICollectionResponse
+// APICollectionsClientGetByAzureAPIManagementServiceResponse contains the response from method APICollectionsClient.GetByAzureAPIManagementService.
+type APICollectionsClientGetByAzureAPIManagementServiceResponse struct {
+	// An API collection as represented by Microsoft Defender for APIs.
+	APICollection
 }
 
-// APICollectionClientListResponse contains the response from method APICollectionClient.NewListPager.
-type APICollectionClientListResponse struct {
-	// Page of a list of API collections as represented by Defender for APIs.
-	APICollectionResponseList
+// APICollectionsClientListByAzureAPIManagementServiceResponse contains the response from method APICollectionsClient.NewListByAzureAPIManagementServicePager.
+type APICollectionsClientListByAzureAPIManagementServiceResponse struct {
+	// Page of a list of API collections as represented by Microsoft Defender for APIs.
+	APICollectionList
 }
 
-// APICollectionOffboardingClientDeleteResponse contains the response from method APICollectionOffboardingClient.Delete.
-type APICollectionOffboardingClientDeleteResponse struct {
+// APICollectionsClientListByResourceGroupResponse contains the response from method APICollectionsClient.NewListByResourceGroupPager.
+type APICollectionsClientListByResourceGroupResponse struct {
+	// Page of a list of API collections as represented by Microsoft Defender for APIs.
+	APICollectionList
+}
+
+// APICollectionsClientListBySubscriptionResponse contains the response from method APICollectionsClient.NewListBySubscriptionPager.
+type APICollectionsClientListBySubscriptionResponse struct {
+	// Page of a list of API collections as represented by Microsoft Defender for APIs.
+	APICollectionList
+}
+
+// APICollectionsClientOffboardAzureAPIManagementAPIResponse contains the response from method APICollectionsClient.OffboardAzureAPIManagementAPI.
+type APICollectionsClientOffboardAzureAPIManagementAPIResponse struct {
 	// placeholder for future response values
 }
 
-// APICollectionOnboardingClientCreateResponse contains the response from method APICollectionOnboardingClient.Create.
-type APICollectionOnboardingClientCreateResponse struct {
-	// An API collection as represented by Defender for APIs.
-	APICollectionResponse
+// APICollectionsClientOnboardAzureAPIManagementAPIResponse contains the response from method APICollectionsClient.BeginOnboardAzureAPIManagementAPI.
+type APICollectionsClientOnboardAzureAPIManagementAPIResponse struct {
+	// An API collection as represented by Microsoft Defender for APIs.
+	APICollection
 }
 
 // AccountConnectorsClientCreateOrUpdateResponse contains the response from method AccountConnectorsClient.CreateOrUpdate.
@@ -360,6 +372,84 @@ type AutomationsClientValidateResponse struct {
 	AutomationValidationStatus
 }
 
+// AzureDevOpsOrgsClientCreateOrUpdateResponse contains the response from method AzureDevOpsOrgsClient.BeginCreateOrUpdate.
+type AzureDevOpsOrgsClientCreateOrUpdateResponse struct {
+	// Azure DevOps Organization resource.
+	AzureDevOpsOrg
+}
+
+// AzureDevOpsOrgsClientGetResponse contains the response from method AzureDevOpsOrgsClient.Get.
+type AzureDevOpsOrgsClientGetResponse struct {
+	// Azure DevOps Organization resource.
+	AzureDevOpsOrg
+}
+
+// AzureDevOpsOrgsClientListAvailableResponse contains the response from method AzureDevOpsOrgsClient.ListAvailable.
+type AzureDevOpsOrgsClientListAvailableResponse struct {
+	// List of RP resources which supports pagination.
+	AzureDevOpsOrgListResponse
+}
+
+// AzureDevOpsOrgsClientListResponse contains the response from method AzureDevOpsOrgsClient.NewListPager.
+type AzureDevOpsOrgsClientListResponse struct {
+	// List of RP resources which supports pagination.
+	AzureDevOpsOrgListResponse
+}
+
+// AzureDevOpsOrgsClientUpdateResponse contains the response from method AzureDevOpsOrgsClient.BeginUpdate.
+type AzureDevOpsOrgsClientUpdateResponse struct {
+	// Azure DevOps Organization resource.
+	AzureDevOpsOrg
+}
+
+// AzureDevOpsProjectsClientCreateOrUpdateResponse contains the response from method AzureDevOpsProjectsClient.BeginCreateOrUpdate.
+type AzureDevOpsProjectsClientCreateOrUpdateResponse struct {
+	// Azure DevOps Project resource.
+	AzureDevOpsProject
+}
+
+// AzureDevOpsProjectsClientGetResponse contains the response from method AzureDevOpsProjectsClient.Get.
+type AzureDevOpsProjectsClientGetResponse struct {
+	// Azure DevOps Project resource.
+	AzureDevOpsProject
+}
+
+// AzureDevOpsProjectsClientListResponse contains the response from method AzureDevOpsProjectsClient.NewListPager.
+type AzureDevOpsProjectsClientListResponse struct {
+	// List of RP resources which supports pagination.
+	AzureDevOpsProjectListResponse
+}
+
+// AzureDevOpsProjectsClientUpdateResponse contains the response from method AzureDevOpsProjectsClient.BeginUpdate.
+type AzureDevOpsProjectsClientUpdateResponse struct {
+	// Azure DevOps Project resource.
+	AzureDevOpsProject
+}
+
+// AzureDevOpsReposClientCreateOrUpdateResponse contains the response from method AzureDevOpsReposClient.BeginCreateOrUpdate.
+type AzureDevOpsReposClientCreateOrUpdateResponse struct {
+	// Azure DevOps Repository resource.
+	AzureDevOpsRepository
+}
+
+// AzureDevOpsReposClientGetResponse contains the response from method AzureDevOpsReposClient.Get.
+type AzureDevOpsReposClientGetResponse struct {
+	// Azure DevOps Repository resource.
+	AzureDevOpsRepository
+}
+
+// AzureDevOpsReposClientListResponse contains the response from method AzureDevOpsReposClient.NewListPager.
+type AzureDevOpsReposClientListResponse struct {
+	// List of RP resources which supports pagination.
+	AzureDevOpsRepositoryListResponse
+}
+
+// AzureDevOpsReposClientUpdateResponse contains the response from method AzureDevOpsReposClient.BeginUpdate.
+type AzureDevOpsReposClientUpdateResponse struct {
+	// Azure DevOps Repository resource.
+	AzureDevOpsRepository
+}
+
 // CenterClientGetSensitivitySettingsResponse contains the response from method CenterClient.GetSensitivitySettings.
 type CenterClientGetSensitivitySettingsResponse struct {
 	// Data sensitivity settings for sensitive data discovery
@@ -535,6 +625,53 @@ type CustomEntityStoreAssignmentsClientListBySubscriptionResponse struct {
 	CustomEntityStoreAssignmentsListResult
 }
 
+// DefenderForStorageClientCreateResponse contains the response from method DefenderForStorageClient.Create.
+type DefenderForStorageClientCreateResponse struct {
+	// The Defender for Storage resource.
+	DefenderForStorageSetting
+}
+
+// DefenderForStorageClientGetResponse contains the response from method DefenderForStorageClient.Get.
+type DefenderForStorageClientGetResponse struct {
+	// The Defender for Storage resource.
+	DefenderForStorageSetting
+}
+
+// DevOpsConfigurationsClientCreateOrUpdateResponse contains the response from method DevOpsConfigurationsClient.BeginCreateOrUpdate.
+type DevOpsConfigurationsClientCreateOrUpdateResponse struct {
+	// DevOps Configuration resource.
+	DevOpsConfiguration
+}
+
+// DevOpsConfigurationsClientDeleteResponse contains the response from method DevOpsConfigurationsClient.BeginDelete.
+type DevOpsConfigurationsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// DevOpsConfigurationsClientGetResponse contains the response from method DevOpsConfigurationsClient.Get.
+type DevOpsConfigurationsClientGetResponse struct {
+	// DevOps Configuration resource.
+	DevOpsConfiguration
+}
+
+// DevOpsConfigurationsClientListResponse contains the response from method DevOpsConfigurationsClient.NewListPager.
+type DevOpsConfigurationsClientListResponse struct {
+	// List of RP resources which supports pagination.
+	DevOpsConfigurationListResponse
+}
+
+// DevOpsConfigurationsClientUpdateResponse contains the response from method DevOpsConfigurationsClient.BeginUpdate.
+type DevOpsConfigurationsClientUpdateResponse struct {
+	// DevOps Configuration resource.
+	DevOpsConfiguration
+}
+
+// DevOpsOperationResultsClientGetResponse contains the response from method DevOpsOperationResultsClient.Get.
+type DevOpsOperationResultsClientGetResponse struct {
+	// The current status of an async operation.
+	OperationStatusResult
+}
+
 // DeviceSecurityGroupsClientCreateOrUpdateResponse contains the response from method DeviceSecurityGroupsClient.CreateOrUpdate.
 type DeviceSecurityGroupsClientCreateOrUpdateResponse struct {
 	// The device security group resource
@@ -600,6 +737,72 @@ type ExternalSecuritySolutionsClientListResponse struct {
 	ExternalSecuritySolutionList
 }
 
+// GitHubOwnersClientGetResponse contains the response from method GitHubOwnersClient.Get.
+type GitHubOwnersClientGetResponse struct {
+	// GitHub Owner resource.
+	GitHubOwner
+}
+
+// GitHubOwnersClientListAvailableResponse contains the response from method GitHubOwnersClient.ListAvailable.
+type GitHubOwnersClientListAvailableResponse struct {
+	// List of RP resources which supports pagination.
+	GitHubOwnerListResponse
+}
+
+// GitHubOwnersClientListResponse contains the response from method GitHubOwnersClient.NewListPager.
+type GitHubOwnersClientListResponse struct {
+	// List of RP resources which supports pagination.
+	GitHubOwnerListResponse
+}
+
+// GitHubReposClientGetResponse contains the response from method GitHubReposClient.Get.
+type GitHubReposClientGetResponse struct {
+	// GitHub Repository resource.
+	GitHubRepository
+}
+
+// GitHubReposClientListResponse contains the response from method GitHubReposClient.NewListPager.
+type GitHubReposClientListResponse struct {
+	// List of RP resources which supports pagination.
+	GitHubRepositoryListResponse
+}
+
+// GitLabGroupsClientGetResponse contains the response from method GitLabGroupsClient.Get.
+type GitLabGroupsClientGetResponse struct {
+	// GitLab Group resource.
+	GitLabGroup
+}
+
+// GitLabGroupsClientListAvailableResponse contains the response from method GitLabGroupsClient.ListAvailable.
+type GitLabGroupsClientListAvailableResponse struct {
+	// List of RP resources which supports pagination.
+	GitLabGroupListResponse
+}
+
+// GitLabGroupsClientListResponse contains the response from method GitLabGroupsClient.NewListPager.
+type GitLabGroupsClientListResponse struct {
+	// List of RP resources which supports pagination.
+	GitLabGroupListResponse
+}
+
+// GitLabProjectsClientGetResponse contains the response from method GitLabProjectsClient.Get.
+type GitLabProjectsClientGetResponse struct {
+	// GitLab Project resource.
+	GitLabProject
+}
+
+// GitLabProjectsClientListResponse contains the response from method GitLabProjectsClient.NewListPager.
+type GitLabProjectsClientListResponse struct {
+	// List of RP resources which supports pagination.
+	GitLabProjectListResponse
+}
+
+// GitLabSubgroupsClientListResponse contains the response from method GitLabSubgroupsClient.List.
+type GitLabSubgroupsClientListResponse struct {
+	// List of RP resources which supports pagination.
+	GitLabGroupListResponse
+}
+
 // GovernanceAssignmentsClientCreateOrUpdateResponse contains the response from method GovernanceAssignmentsClient.CreateOrUpdate.
 type GovernanceAssignmentsClientCreateOrUpdateResponse struct {
 	// Governance assignment over a given scope
@@ -660,8 +863,8 @@ type GovernanceRulesClientOperationResultsResponse struct {
 	Location *string
 }
 
-// HealthReportClientGetResponse contains the response from method HealthReportClient.Get.
-type HealthReportClientGetResponse struct {
+// HealthReportsClientGetResponse contains the response from method HealthReportsClient.Get.
+type HealthReportsClientGetResponse struct {
 	// The health report resource
 	HealthReport
 }
@@ -688,41 +891,6 @@ type InformationProtectionPoliciesClientGetResponse struct {
 type InformationProtectionPoliciesClientListResponse struct {
 	// Information protection policies response.
 	InformationProtectionPolicyList
-}
-
-// IngestionSettingsClientCreateResponse contains the response from method IngestionSettingsClient.Create.
-type IngestionSettingsClientCreateResponse struct {
-	// Configures how to correlate scan data and logs with resources associated with the subscription.
-	IngestionSetting
-}
-
-// IngestionSettingsClientDeleteResponse contains the response from method IngestionSettingsClient.Delete.
-type IngestionSettingsClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// IngestionSettingsClientGetResponse contains the response from method IngestionSettingsClient.Get.
-type IngestionSettingsClientGetResponse struct {
-	// Configures how to correlate scan data and logs with resources associated with the subscription.
-	IngestionSetting
-}
-
-// IngestionSettingsClientListConnectionStringsResponse contains the response from method IngestionSettingsClient.ListConnectionStrings.
-type IngestionSettingsClientListConnectionStringsResponse struct {
-	// Connection string for ingesting security data and logs
-	ConnectionStrings
-}
-
-// IngestionSettingsClientListResponse contains the response from method IngestionSettingsClient.NewListPager.
-type IngestionSettingsClientListResponse struct {
-	// List of ingestion settings
-	IngestionSettingList
-}
-
-// IngestionSettingsClientListTokensResponse contains the response from method IngestionSettingsClient.ListTokens.
-type IngestionSettingsClientListTokensResponse struct {
-	// Configures how to correlate scan data and logs with resources associated with the subscription.
-	IngestionSettingToken
 }
 
 // IotSecuritySolutionAnalyticsClientGetResponse contains the response from method IotSecuritySolutionAnalyticsClient.Get.
@@ -892,6 +1060,11 @@ type OperatorsClientGetResponse struct {
 type OperatorsClientListResponse struct {
 	// List of SecurityOperator response.
 	OperatorList
+}
+
+// PricingsClientDeleteResponse contains the response from method PricingsClient.Delete.
+type PricingsClientDeleteResponse struct {
+	// placeholder for future response values
 }
 
 // PricingsClientGetResponse contains the response from method PricingsClient.Get.
@@ -1066,6 +1239,49 @@ type ServerVulnerabilityAssessmentClientGetResponse struct {
 type ServerVulnerabilityAssessmentClientListByExtendedResourceResponse struct {
 	// List of server vulnerability assessments
 	ServerVulnerabilityAssessmentsList
+}
+
+// ServerVulnerabilityAssessmentsSettingsClientCreateOrUpdateResponse contains the response from method ServerVulnerabilityAssessmentsSettingsClient.CreateOrUpdate.
+type ServerVulnerabilityAssessmentsSettingsClientCreateOrUpdateResponse struct {
+	// A base vulnerability assessments setting on servers in the defined scope.
+	ServerVulnerabilityAssessmentsSettingClassification
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ServerVulnerabilityAssessmentsSettingsClientCreateOrUpdateResponse.
+func (s *ServerVulnerabilityAssessmentsSettingsClientCreateOrUpdateResponse) UnmarshalJSON(data []byte) error {
+	res, err := unmarshalServerVulnerabilityAssessmentsSettingClassification(data)
+	if err != nil {
+		return err
+	}
+	s.ServerVulnerabilityAssessmentsSettingClassification = res
+	return nil
+}
+
+// ServerVulnerabilityAssessmentsSettingsClientDeleteResponse contains the response from method ServerVulnerabilityAssessmentsSettingsClient.Delete.
+type ServerVulnerabilityAssessmentsSettingsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ServerVulnerabilityAssessmentsSettingsClientGetResponse contains the response from method ServerVulnerabilityAssessmentsSettingsClient.Get.
+type ServerVulnerabilityAssessmentsSettingsClientGetResponse struct {
+	// A base vulnerability assessments setting on servers in the defined scope.
+	ServerVulnerabilityAssessmentsSettingClassification
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ServerVulnerabilityAssessmentsSettingsClientGetResponse.
+func (s *ServerVulnerabilityAssessmentsSettingsClientGetResponse) UnmarshalJSON(data []byte) error {
+	res, err := unmarshalServerVulnerabilityAssessmentsSettingClassification(data)
+	if err != nil {
+		return err
+	}
+	s.ServerVulnerabilityAssessmentsSettingClassification = res
+	return nil
+}
+
+// ServerVulnerabilityAssessmentsSettingsClientListBySubscriptionResponse contains the response from method ServerVulnerabilityAssessmentsSettingsClient.NewListBySubscriptionPager.
+type ServerVulnerabilityAssessmentsSettingsClientListBySubscriptionResponse struct {
+	// A page of a server vulnerability assessments settings list
+	ServerVulnerabilityAssessmentsSettingsList
 }
 
 // SettingsClientGetResponse contains the response from method SettingsClient.Get.

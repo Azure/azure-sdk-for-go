@@ -13,6 +13,7 @@ security: "AADToken"
 use: "@autorest/go@4.0.0-preview.61"
 inject-spans: true
 version: "^3.0.0"
+slice-elements-byval: true
 
 directive:
   # delete extra endpoints

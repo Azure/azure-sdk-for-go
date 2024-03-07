@@ -135,7 +135,7 @@ func TestQueryWorkspace_AdvancedQuerySuccess(t *testing.T) {
 
 func TestQueryWorkspace_MultipleWorkspaces(t *testing.T) {
 	client := startTest(t)
-	workspaces := []*string{&workspaceID2}
+	workspaces := []string{workspaceID2}
 	body := azlogs.QueryBody{
 		Query:                &query,
 		AdditionalWorkspaces: workspaces,

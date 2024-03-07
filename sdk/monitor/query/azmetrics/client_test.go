@@ -29,8 +29,7 @@ func TestQueryResources_Pass(t *testing.T) {
 		resourceIDList,
 		&azmetrics.QueryResourcesOptions{
 			Aggregation: to.Ptr("average"),
-			StartTime:   to.Ptr("2023-11-15"),
-			EndTime:     to.Ptr("2023-11-16"),
+			StartTime:   to.Ptr("P1D"),
 			Interval:    to.Ptr("PT1H"),
 		},
 	)

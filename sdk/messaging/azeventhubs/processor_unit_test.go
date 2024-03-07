@@ -277,6 +277,17 @@ func TestUnit_Processor_Run_startPosition(t *testing.T) {
 	require.Equal(t, int64(405), *checkpoints[0].SequenceNumber)
 }
 
+func TestUnit_Processor_RunCancelledQuickly(t *testing.T) {
+	cps := newCheckpointStoreForTest()
+	processor := newProcessorForTest(t, "processor", cps)
+
+	precancelledContext, cancel := context.WithCancel(context.Background())
+	cancel()
+
+	require.NoError(t, processor.Run(precancelledContext))
+	require.Nil(t, processor.NextPartitionClient(precancelledContext))
+}
+
 func syncMapToNormalMap(src *sync.Map) map[string]*ProcessorPartitionClient {
 	dest := map[string]*ProcessorPartitionClient{}
 
@@ -360,7 +371,12 @@ type newMockPartitionClientResult struct {
 }
 
 func (cc *fakeConsumerClient) GetEventHubProperties(ctx context.Context, options *GetEventHubPropertiesOptions) (EventHubProperties, error) {
-	return cc.getEventHubPropertiesResult, cc.getEventHubPropertiesErr
+	select {
+	case <-ctx.Done():
+		return EventHubProperties{}, ctx.Err()
+	default:
+		return cc.getEventHubPropertiesResult, cc.getEventHubPropertiesErr
+	}
 }
 
 func (cc *fakeConsumerClient) NewPartitionClient(partitionID string, options *PartitionClientOptions) (*PartitionClient, error) {
@@ -414,11 +430,21 @@ type fakeLinksForPartitionClient struct {
 }
 
 func (fc *fakeLinksForPartitionClient) Retry(ctx context.Context, eventName log.Event, operation string, partitionID string, retryOptions exported.RetryOptions, fn func(ctx context.Context, lwid internal.LinkWithID[amqpwrap.AMQPReceiverCloser]) error) error {
-	return nil
+	select {
+	case <-ctx.Done():
+		return ctx.Err()
+	default:
+		return nil
+	}
 }
 
 func (fc *fakeLinksForPartitionClient) Close(ctx context.Context) error {
-	return nil
+	select {
+	case <-ctx.Done():
+		return ctx.Err()
+	default:
+		return nil
+	}
 }
 
 func newFakePartitionClient(partitionID string, offsetExpr string) *PartitionClient {

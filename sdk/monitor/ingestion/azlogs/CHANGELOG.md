@@ -1,13 +1,9 @@
 # Release History
 
-## 0.2.0 (Unreleased)
-
-### Features Added
+## 0.2.0 (2024-03-07)
 
 ### Breaking Changes
 * Moved from `sdk/monitor/azingest` to `sdk/monitor/ingestion/azlogs`
-
-### Bugs Fixed
 
 ### Other Changes
 * Updated to the latest version of `azcore`.

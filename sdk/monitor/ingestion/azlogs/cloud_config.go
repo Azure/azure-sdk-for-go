@@ -10,7 +10,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 
 // Cloud Service Names for Monitor Ingestion, used to identify the respective cloud.ServiceConfiguration
 const (
-	ServiceNameIngestion cloud.ServiceName = "azlogs"
+	ServiceNameIngestion cloud.ServiceName = "ingestion/azlogs"
 )
 
 func init() {

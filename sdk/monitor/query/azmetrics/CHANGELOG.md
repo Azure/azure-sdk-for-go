@@ -5,6 +5,7 @@
 ### Features Added
 
 ### Breaking Changes
+* Removed pointers from slices
 
 ### Bugs Fixed
 

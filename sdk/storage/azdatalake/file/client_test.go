@@ -13,6 +13,8 @@ import (
 	"encoding/binary"
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/lease"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/path"
 	"hash/crc64"
 	"io"
 	"math/rand"
@@ -3461,7 +3463,7 @@ func (s *RecordedTestSuite) TestDownloadDataContentMD5() {
 	_require.Equal(resp1.ContentMD5, mdf[:])
 }
 
-func (s *RecordedTestSuite) TestFileAppendWithFlushOption() {
+func (s *RecordedTestSuite) TestFileAppendDataWithAcquireLease() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -3484,15 +3486,172 @@ func (s *RecordedTestSuite) TestFileAppendWithFlushOption() {
 
 	contentSize := 1024 * 8 // 8KB
 	rsc, _ := testcommon.GenerateData(contentSize)
+
 	opts := &file.AppendDataOptions{
-		Flush: to.Ptr(true),
+		LeaseAction:     &file.LeaseActionAcquire,
+		LeaseDuration:   to.Ptr(int64(15)),
+		ProposedLeaseID: proposedLeaseIDs[1],
 	}
 	_, err = srcFClient.AppendData(context.Background(), 0, rsc, opts)
 	_require.NoError(err)
 
 	gResp2, err := srcFClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
+	_require.Equal(lease.StateTypeLeased, *gResp2.LeaseState)
+
+	time.Sleep(time.Second * 15)
+
+	//Check if the lease was acquired for the right duration
+	gResp, err := srcFClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(lease.StateTypeExpired, *gResp.LeaseState)
+}
+
+func (s *RecordedTestSuite) TestFileAppendDataWithRenewLease() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	srcFileName := "src" + testcommon.GenerateFileName(testName)
+
+	srcFClient, err := testcommon.GetFileClient(filesystemName, srcFileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	createOpts := file.CreateOptions{
+		ProposedLeaseID: proposedLeaseIDs[0],
+		LeaseDuration:   to.Ptr(int64(15)),
+	}
+
+	resp, err := srcFClient.Create(context.Background(), &createOpts)
+	_require.NoError(err)
+	_require.NotNil(resp)
+
+	gResp2, err := srcFClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(lease.StateTypeLeased, *gResp2.LeaseState)
+
+	//Wait for 15 seconds for lease to expire
+	time.Sleep(15 * time.Second)
+
+	gResp, err := srcFClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(lease.StateTypeExpired, *gResp.LeaseState)
+
+	contentSize := 1024 * 8 // 8KB
+	rsc, _ := testcommon.GenerateData(contentSize)
+
+	opts := &file.AppendDataOptions{
+		LeaseAction:           &file.LeaseActionRenew,
+		LeaseAccessConditions: &file.LeaseAccessConditions{LeaseID: proposedLeaseIDs[0]},
+		LeaseDuration:         to.Ptr(int64(-1)),
+	}
+	_, err = srcFClient.AppendData(context.Background(), 0, rsc, opts)
+	_require.NoError(err)
+
+	gResp2, err = srcFClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(lease.StateTypeLeased, *gResp2.LeaseState)
+}
+
+func (s *RecordedTestSuite) TestFileAppendDataWithReleaseLease() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	srcFileName := "src" + testcommon.GenerateFileName(testName)
+
+	srcFClient, err := testcommon.GetFileClient(filesystemName, srcFileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	createOpts := file.CreateOptions{
+		ProposedLeaseID: proposedLeaseIDs[0],
+		LeaseDuration:   to.Ptr(int64(15)),
+	}
+
+	resp, err := srcFClient.Create(context.Background(), &createOpts)
+	_require.NoError(err)
+	_require.NotNil(resp)
+
+	contentSize := 1024 * 8 // 8KB
+	rsc, _ := testcommon.GenerateData(contentSize)
+
+	opts := &file.AppendDataOptions{
+		LeaseAction:           &file.LeaseActionRelease,
+		LeaseAccessConditions: &file.LeaseAccessConditions{LeaseID: proposedLeaseIDs[0]},
+		Flush:                 to.Ptr(true),
+	}
+
+	_, err = srcFClient.AppendData(context.Background(), 0, rsc, opts)
+	_require.NoError(err)
+
+	gResp, err := srcFClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(lease.StateTypeAvailable, *gResp.LeaseState)
+}
+
+func (s *RecordedTestSuite) TestFileAppendWithFlushReleaseLease() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	srcFileName := "src" + testcommon.GenerateFileName(testName)
+
+	srcFClient, err := testcommon.GetFileClient(filesystemName, srcFileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	createOpts := file.CreateOptions{
+		ProposedLeaseID: proposedLeaseIDs[0],
+		LeaseDuration:   to.Ptr(int64(15)),
+	}
+
+	resp, err := srcFClient.Create(context.Background(), &createOpts)
+	_require.NoError(err)
+	_require.NotNil(resp)
+
+	contentSize := 1024 * 8 // 8KB
+	rsc, _ := testcommon.GenerateData(contentSize)
+
+	_, err = srcFClient.AppendData(context.Background(), 0, rsc,
+		&file.AppendDataOptions{
+			LeaseAccessConditions: &file.LeaseAccessConditions{LeaseID: proposedLeaseIDs[0]},
+		})
+	_require.NoError(err)
+
+	opts := &file.FlushDataOptions{
+		LeaseAction: &file.LeaseActionRelease,
+		AccessConditions: &path.AccessConditions{
+			LeaseAccessConditions: &path.LeaseAccessConditions{LeaseID: proposedLeaseIDs[0]},
+		},
+	}
+
+	_, err = srcFClient.FlushData(context.Background(), int64(contentSize), opts)
+	_require.NoError(err)
+
+	gResp2, err := srcFClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
 	_require.Equal(*gResp2.ContentLength, int64(contentSize))
+	_require.Equal(lease.StateTypeAvailable, *gResp2.LeaseState)
 }
 
 func (s *RecordedTestSuite) TestFileAppendAndFlushData() {

@@ -62,17 +62,8 @@ type AADSolutionProperties struct {
 	Workspace *ConnectedWorkspace
 }
 
-// APICollectionProperties - Describes the properties of an API collection.
-type APICollectionProperties struct {
-	// Additional data regarding the API collection.
-	AdditionalData map[string]*string
-
-	// The display name of the Azure API Management API.
-	DisplayName *string
-}
-
-// APICollectionResponse - An API collection as represented by Defender for APIs.
-type APICollectionResponse struct {
+// APICollection - An API collection as represented by Microsoft Defender for APIs.
+type APICollection struct {
 	// Describes the properties of an API collection.
 	Properties *APICollectionProperties
 
@@ -86,13 +77,65 @@ type APICollectionResponse struct {
 	Type *string
 }
 
-// APICollectionResponseList - Page of a list of API collections as represented by Defender for APIs.
-type APICollectionResponseList struct {
+// APICollectionList - Page of a list of API collections as represented by Microsoft Defender for APIs.
+type APICollectionList struct {
 	// READ-ONLY; The URI to fetch the next page.
 	NextLink *string
 
 	// READ-ONLY; API collections in this page.
-	Value []*APICollectionResponse
+	Value []*APICollection
+}
+
+// APICollectionProperties - Describes the properties of an API collection.
+type APICollectionProperties struct {
+	// READ-ONLY; The base URI for this API collection. All endpoints of this API collection extend this base URI.
+	BaseURL *string
+
+	// READ-ONLY; The resource Id of the resource from where this API collection was discovered.
+	DiscoveredVia *string
+
+	// READ-ONLY; The display name of the API collection.
+	DisplayName *string
+
+	// READ-ONLY; The number of API endpoints discovered in this API collection.
+	NumberOfAPIEndpoints *int64
+
+	// READ-ONLY; The number of API endpoints in this API collection which are exposing sensitive data in their requests and/or
+	// responses.
+	NumberOfAPIEndpointsWithSensitiveDataExposed *int64
+
+	// READ-ONLY; The number of API endpoints in this API collection for which API traffic from the internet was observed.
+	NumberOfExternalAPIEndpoints *int64
+
+	// READ-ONLY; The number of API endpoints in this API collection that have not received any API traffic in the last 30 days.
+	NumberOfInactiveAPIEndpoints *int64
+
+	// READ-ONLY; The number of API endpoints in this API collection that are unauthenticated.
+	NumberOfUnauthenticatedAPIEndpoints *int64
+
+	// READ-ONLY; Gets the provisioning state of the API collection.
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; The highest priority sensitivity label from Microsoft Purview in this API collection.
+	SensitivityLabel *string
+}
+
+// ActionableRemediation - Configuration payload for PR Annotations.
+type ActionableRemediation struct {
+	// Repository branch configuration for PR Annotations.
+	BranchConfiguration *TargetBranchConfiguration
+
+	// Gets or sets list of categories and severity levels.
+	CategoryConfigurations []*CategoryConfiguration
+
+	// Update Settings.
+	// Enabled - Resource should inherit configurations from parent. Disabled - Resource should not inherit configurations from
+	// parent.
+	InheritFromParentState *InheritFromParentState
+
+	// ActionableRemediation Setting. None - the setting was never set. Enabled - ActionableRemediation is enabled. Disabled -
+	// ActionableRemediation is disabled.
+	State *ActionableRemediationState
 }
 
 // ActiveConnectionsNotInAllowedRange - Number of active connections is not in allowed range.
@@ -531,8 +574,7 @@ type AlertsSuppressionRuleProperties struct {
 	// Any comment regarding the rule
 	Comment *string
 
-	// Expiration date of the rule, if value is not provided or provided as null this field will default to the maximum allowed
-	// expiration date.
+	// Expiration date of the rule, if value is not provided or provided as null there will no expiration at all
 	ExpirationDateUTC *time.Time
 
 	// The suppression conditions
@@ -1233,6 +1275,13 @@ func (a *AuthenticationDetailsProperties) GetAuthenticationDetailsProperties() *
 	return a
 }
 
+// Authorization payload.
+type Authorization struct {
+	// Gets or sets one-time OAuth code to exchange for refresh and access tokens.
+	// Only used during PUT/PATCH operations. The secret is cleared during GET.
+	Code *string
+}
+
 // AutoProvisioningSetting - Auto provisioning setting
 type AutoProvisioningSetting struct {
 	// Auto provisioning setting data
@@ -1525,6 +1574,9 @@ type AwsEnvironmentData struct {
 	// list of regions to scan
 	Regions []*string
 
+	// Scan interval in hours (value should be between 1-hour to 24-hours)
+	ScanInterval *int64
+
 	// READ-ONLY; The AWS account name
 	AccountName *string
 }
@@ -1580,6 +1632,203 @@ func (a *AwsOrganizationalDataMember) GetAwsOrganizationalData() *AwsOrganizatio
 	}
 }
 
+// AzureDevOpsOrg - Azure DevOps Organization resource.
+type AzureDevOpsOrg struct {
+	// Azure DevOps Organization properties.
+	Properties *AzureDevOpsOrgProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// AzureDevOpsOrgListResponse - List of RP resources which supports pagination.
+type AzureDevOpsOrgListResponse struct {
+	// Gets or sets next link to scroll over the results.
+	NextLink *string
+
+	// Gets or sets list of resources.
+	Value []*AzureDevOpsOrg
+}
+
+// AzureDevOpsOrgProperties - Azure DevOps Organization properties.
+type AzureDevOpsOrgProperties struct {
+	// Configuration payload for PR Annotations.
+	ActionableRemediation *ActionableRemediation
+
+	// Details about resource onboarding status across all connectors.
+	// OnboardedByOtherConnector - this resource has already been onboarded to another connector. This is only applicable to top-level
+	// resources. Onboarded - this resource has already been onboarded by the
+	// specified connector. NotOnboarded - this resource has not been onboarded to any connector. NotApplicable - the onboarding
+	// state is not applicable to the current endpoint.
+	OnboardingState *OnboardingState
+
+	// The provisioning state of the resource.
+	// Pending - Provisioning pending. Failed - Provisioning failed. Succeeded - Successful provisioning. Canceled - Provisioning
+	// canceled. PendingDeletion - Deletion pending. DeletionSuccess - Deletion
+	// successful. DeletionFailure - Deletion failure.
+	ProvisioningState *DevOpsProvisioningState
+
+	// READ-ONLY; Gets or sets resource status message.
+	ProvisioningStatusMessage *string
+
+	// READ-ONLY; Gets or sets time when resource was last checked.
+	ProvisioningStatusUpdateTimeUTC *time.Time
+}
+
+// AzureDevOpsOrganizationConfiguration - AzureDevOps Org Inventory Configuration.
+type AzureDevOpsOrganizationConfiguration struct {
+	// AutoDiscovery states.
+	AutoDiscovery *AutoDiscovery
+
+	// AzureDevOps Project Inventory Configuration. Dictionary of AzureDevOps project name to desired project configuration. If
+	// AutoDiscovery is Enabled, this field should be empty or null.
+	ProjectConfigs map[string]*AzureDevOpsProjectConfiguration
+}
+
+// AzureDevOpsProject - Azure DevOps Project resource.
+type AzureDevOpsProject struct {
+	// Azure DevOps Project properties.
+	Properties *AzureDevOpsProjectProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// AzureDevOpsProjectConfiguration - AzureDevOps Project Inventory Configuration.
+type AzureDevOpsProjectConfiguration struct {
+	// AutoDiscovery states.
+	AutoDiscovery *AutoDiscovery
+
+	// AzureDevOps Repository Inventory Configuration. Dictionary of AzureDevOps repository name to desired repository configuration.
+	// If AutoDiscovery is Enabled, this field should be null or empty.
+	RepositoryConfigs map[string]*BaseResourceConfiguration
+}
+
+// AzureDevOpsProjectListResponse - List of RP resources which supports pagination.
+type AzureDevOpsProjectListResponse struct {
+	// Gets or sets next link to scroll over the results.
+	NextLink *string
+
+	// Gets or sets list of resources.
+	Value []*AzureDevOpsProject
+}
+
+// AzureDevOpsProjectProperties - Azure DevOps Project properties.
+type AzureDevOpsProjectProperties struct {
+	// Configuration payload for PR Annotations.
+	ActionableRemediation *ActionableRemediation
+
+	// Details about resource onboarding status across all connectors.
+	// OnboardedByOtherConnector - this resource has already been onboarded to another connector. This is only applicable to top-level
+	// resources. Onboarded - this resource has already been onboarded by the
+	// specified connector. NotOnboarded - this resource has not been onboarded to any connector. NotApplicable - the onboarding
+	// state is not applicable to the current endpoint.
+	OnboardingState *OnboardingState
+
+	// Gets or sets parent Azure DevOps Organization name.
+	ParentOrgName *string
+
+	// The provisioning state of the resource.
+	// Pending - Provisioning pending. Failed - Provisioning failed. Succeeded - Successful provisioning. Canceled - Provisioning
+	// canceled. PendingDeletion - Deletion pending. DeletionSuccess - Deletion
+	// successful. DeletionFailure - Deletion failure.
+	ProvisioningState *DevOpsProvisioningState
+
+	// READ-ONLY; Gets or sets Azure DevOps Project id.
+	ProjectID *string
+
+	// READ-ONLY; Gets or sets resource status message.
+	ProvisioningStatusMessage *string
+
+	// READ-ONLY; Gets or sets time when resource was last checked.
+	ProvisioningStatusUpdateTimeUTC *time.Time
+}
+
+// AzureDevOpsRepository - Azure DevOps Repository resource.
+type AzureDevOpsRepository struct {
+	// Azure DevOps Repository properties.
+	Properties *AzureDevOpsRepositoryProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// AzureDevOpsRepositoryListResponse - List of RP resources which supports pagination.
+type AzureDevOpsRepositoryListResponse struct {
+	// Gets or sets next link to scroll over the results.
+	NextLink *string
+
+	// Gets or sets list of resources.
+	Value []*AzureDevOpsRepository
+}
+
+// AzureDevOpsRepositoryProperties - Azure DevOps Repository properties.
+type AzureDevOpsRepositoryProperties struct {
+	// Configuration payload for PR Annotations.
+	ActionableRemediation *ActionableRemediation
+
+	// Details about resource onboarding status across all connectors.
+	// OnboardedByOtherConnector - this resource has already been onboarded to another connector. This is only applicable to top-level
+	// resources. Onboarded - this resource has already been onboarded by the
+	// specified connector. NotOnboarded - this resource has not been onboarded to any connector. NotApplicable - the onboarding
+	// state is not applicable to the current endpoint.
+	OnboardingState *OnboardingState
+
+	// Gets or sets parent Azure DevOps Organization name.
+	ParentOrgName *string
+
+	// Gets or sets parent Azure DevOps Project name.
+	ParentProjectName *string
+
+	// The provisioning state of the resource.
+	// Pending - Provisioning pending. Failed - Provisioning failed. Succeeded - Successful provisioning. Canceled - Provisioning
+	// canceled. PendingDeletion - Deletion pending. DeletionSuccess - Deletion
+	// successful. DeletionFailure - Deletion failure.
+	ProvisioningState *DevOpsProvisioningState
+
+	// READ-ONLY; Gets or sets resource status message.
+	ProvisioningStatusMessage *string
+
+	// READ-ONLY; Gets or sets time when resource was last checked.
+	ProvisioningStatusUpdateTimeUTC *time.Time
+
+	// READ-ONLY; Gets or sets Azure DevOps Repository id.
+	RepoID *string
+
+	// READ-ONLY; Gets or sets Azure DevOps Repository url.
+	RepoURL *string
+
+	// READ-ONLY; Gets or sets Azure DevOps repository visibility, whether it is public or private etc.
+	Visibility *string
+}
+
 // AzureDevOpsScopeEnvironmentData - The AzureDevOps scope connector's environment data
 type AzureDevOpsScopeEnvironmentData struct {
 	// REQUIRED; The type of the environment data.
@@ -1631,10 +1880,49 @@ type AzureResourceLink struct {
 	ID *string
 }
 
+// AzureServersSetting - A vulnerability assessments setting on Azure servers in the defined scope.
+type AzureServersSetting struct {
+	// REQUIRED; The kind of the server vulnerability assessments setting.
+	Kind *ServerVulnerabilityAssessmentsSettingKind
+
+	// The vulnerability assessments setting properties on Azure servers in the defined scope.
+	Properties *ServerVulnerabilityAssessmentsAzureSettingProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// GetServerVulnerabilityAssessmentsSetting implements the ServerVulnerabilityAssessmentsSettingClassification interface for
+// type AzureServersSetting.
+func (a *AzureServersSetting) GetServerVulnerabilityAssessmentsSetting() *ServerVulnerabilityAssessmentsSetting {
+	return &ServerVulnerabilityAssessmentsSetting{
+		ID:         a.ID,
+		Kind:       a.Kind,
+		Name:       a.Name,
+		SystemData: a.SystemData,
+		Type:       a.Type,
+	}
+}
+
 // AzureTrackedResourceLocation - Describes an Azure resource with location
 type AzureTrackedResourceLocation struct {
 	// Location where the resource is stored
 	Location *string
+}
+
+// BaseResourceConfiguration - Base Resource Inventory configuration changes.
+type BaseResourceConfiguration struct {
+	// Onboarding states.
+	DesiredOnboardingState *DesiredOnboardingState
 }
 
 // Baseline details.
@@ -1695,6 +1983,16 @@ type CVE struct {
 type CVSS struct {
 	// READ-ONLY; CVSS base
 	Base *float32
+}
+
+// CategoryConfiguration - Severity level per category configuration for PR Annotations.
+type CategoryConfiguration struct {
+	// Rule categories. Code - code scanning results. Artifact scanning results. Dependencies scanning results. IaC results. Secrets
+	// scanning results. Container scanning results.
+	Category *RuleCategory
+
+	// Gets or sets minimum severity level for a given category.
+	MinimumSeverityLevel *string
 }
 
 // CefExternalSecuritySolution - Represents a security solution which sends CEF logs to an OMS workspace
@@ -1928,12 +2226,6 @@ func (c *ConnectionFromIPNotAllowed) GetListCustomAlertRule() *ListCustomAlertRu
 		RuleType:    c.RuleType,
 		ValueType:   c.ValueType,
 	}
-}
-
-// ConnectionStrings - Connection string for ingesting security data and logs
-type ConnectionStrings struct {
-	// REQUIRED; Connection strings
-	Value []*IngestionConnectionString
 }
 
 // ConnectionToIPNotAllowed - Outbound connection to an ip that isn't allowed. Allow list consists of ipv4 or ipv6 range in
@@ -2478,11 +2770,20 @@ type DefenderCspmAwsOffering struct {
 	// REQUIRED; The type of the security offering.
 	OfferingType *OfferingType
 
+	// Defenders CSPM Cloud infrastructure entitlement management (CIEM) offering configurations
+	Ciem *DefenderCspmAwsOfferingCiem
+
 	// The Microsoft Defender Data Sensitivity discovery configuration
 	DataSensitivityDiscovery *DefenderCspmAwsOfferingDataSensitivityDiscovery
 
 	// The databases DSPM configuration
 	DatabasesDspm *DefenderCspmAwsOfferingDatabasesDspm
+
+	// The Microsoft Defender container agentless discovery K8s configuration
+	MdcContainersAgentlessDiscoveryK8S *DefenderCspmAwsOfferingMdcContainersAgentlessDiscoveryK8S
+
+	// The Microsoft Defender container image assessment configuration
+	MdcContainersImageAssessment *DefenderCspmAwsOfferingMdcContainersImageAssessment
 
 	// The Microsoft Defender for Server VM scanning configuration
 	VMScanners *DefenderCspmAwsOfferingVMScanners
@@ -2497,6 +2798,30 @@ func (d *DefenderCspmAwsOffering) GetCloudOffering() *CloudOffering {
 		Description:  d.Description,
 		OfferingType: d.OfferingType,
 	}
+}
+
+// DefenderCspmAwsOfferingCiem - Defenders CSPM Cloud infrastructure entitlement management (CIEM) offering configurations
+type DefenderCspmAwsOfferingCiem struct {
+	// Defender CSPM CIEM discovery configuration
+	CiemDiscovery *DefenderCspmAwsOfferingCiemDiscovery
+
+	// Defender CSPM CIEM AWS OIDC (open id connect) configuration
+	CiemOidc *DefenderCspmAwsOfferingCiemOidc
+}
+
+// DefenderCspmAwsOfferingCiemDiscovery - Defender CSPM CIEM discovery configuration
+type DefenderCspmAwsOfferingCiemDiscovery struct {
+	// The cloud role ARN in AWS for CIEM discovery
+	CloudRoleArn *string
+}
+
+// DefenderCspmAwsOfferingCiemOidc - Defender CSPM CIEM AWS OIDC (open id connect) configuration
+type DefenderCspmAwsOfferingCiemOidc struct {
+	// the azure active directory app name used of authenticating against AWS
+	AzureActiveDirectoryAppName *string
+
+	// The cloud role ARN in AWS for CIEM oidc connection
+	CloudRoleArn *string
 }
 
 // DefenderCspmAwsOfferingDataSensitivityDiscovery - The Microsoft Defender Data Sensitivity discovery configuration
@@ -2514,6 +2839,24 @@ type DefenderCspmAwsOfferingDatabasesDspm struct {
 	CloudRoleArn *string
 
 	// Is databases DSPM protection enabled
+	Enabled *bool
+}
+
+// DefenderCspmAwsOfferingMdcContainersAgentlessDiscoveryK8S - The Microsoft Defender container agentless discovery K8s configuration
+type DefenderCspmAwsOfferingMdcContainersAgentlessDiscoveryK8S struct {
+	// The cloud role ARN in AWS for this feature
+	CloudRoleArn *string
+
+	// Is Microsoft Defender container agentless discovery K8s enabled
+	Enabled *bool
+}
+
+// DefenderCspmAwsOfferingMdcContainersImageAssessment - The Microsoft Defender container image assessment configuration
+type DefenderCspmAwsOfferingMdcContainersImageAssessment struct {
+	// The cloud role ARN in AWS for this feature
+	CloudRoleArn *string
+
+	// Is Microsoft Defender container image assessment enabled
 	Enabled *bool
 }
 
@@ -2543,6 +2886,21 @@ type DefenderCspmGcpOffering struct {
 	// REQUIRED; The type of the security offering.
 	OfferingType *OfferingType
 
+	// GCP Defenders CSPM Cloud infrastructure entitlement management (CIEM) discovery offering configurations
+	CiemDiscovery *DefenderCspmGcpOfferingCiemDiscovery
+
+	// The Microsoft Defender Data Sensitivity discovery configuration
+	DataSensitivityDiscovery *DefenderCspmGcpOfferingDataSensitivityDiscovery
+
+	// The Microsoft Defender Container agentless discovery configuration
+	MdcContainersAgentlessDiscoveryK8S *DefenderCspmGcpOfferingMdcContainersAgentlessDiscoveryK8S
+
+	// The Microsoft Defender Container image assessment configuration
+	MdcContainersImageAssessment *DefenderCspmGcpOfferingMdcContainersImageAssessment
+
+	// The Microsoft Defender for Server VM scanning configuration
+	VMScanners *DefenderCspmGcpOfferingVMScanners
+
 	// READ-ONLY; The offering description.
 	Description *string
 }
@@ -2553,6 +2911,73 @@ func (d *DefenderCspmGcpOffering) GetCloudOffering() *CloudOffering {
 		Description:  d.Description,
 		OfferingType: d.OfferingType,
 	}
+}
+
+// DefenderCspmGcpOfferingCiemDiscovery - GCP Defenders CSPM Cloud infrastructure entitlement management (CIEM) discovery
+// offering configurations
+type DefenderCspmGcpOfferingCiemDiscovery struct {
+	// the azure active directory app name used of authenticating against GCP workload identity federation
+	AzureActiveDirectoryAppName *string
+
+	// The service account email address in GCP for CIEM discovery offering
+	ServiceAccountEmailAddress *string
+
+	// The GCP workload identity provider id for CIEM discovery offering
+	WorkloadIdentityProviderID *string
+}
+
+// DefenderCspmGcpOfferingDataSensitivityDiscovery - The Microsoft Defender Data Sensitivity discovery configuration
+type DefenderCspmGcpOfferingDataSensitivityDiscovery struct {
+	// Is Microsoft Defender Data Sensitivity discovery enabled
+	Enabled *bool
+
+	// The service account email address in GCP for this feature
+	ServiceAccountEmailAddress *string
+
+	// The workload identity provider id in GCP for this feature
+	WorkloadIdentityProviderID *string
+}
+
+// DefenderCspmGcpOfferingMdcContainersAgentlessDiscoveryK8S - The Microsoft Defender Container agentless discovery configuration
+type DefenderCspmGcpOfferingMdcContainersAgentlessDiscoveryK8S struct {
+	// Is Microsoft Defender container agentless discovery enabled
+	Enabled *bool
+
+	// The service account email address in GCP for this feature
+	ServiceAccountEmailAddress *string
+
+	// The workload identity provider id in GCP for this feature
+	WorkloadIdentityProviderID *string
+}
+
+// DefenderCspmGcpOfferingMdcContainersImageAssessment - The Microsoft Defender Container image assessment configuration
+type DefenderCspmGcpOfferingMdcContainersImageAssessment struct {
+	// Is Microsoft Defender container image assessment enabled
+	Enabled *bool
+
+	// The service account email address in GCP for this feature
+	ServiceAccountEmailAddress *string
+
+	// The workload identity provider id in GCP for this feature
+	WorkloadIdentityProviderID *string
+}
+
+// DefenderCspmGcpOfferingVMScanners - The Microsoft Defender for Server VM scanning configuration
+type DefenderCspmGcpOfferingVMScanners struct {
+	// configuration for Microsoft Defender for Server VM scanning
+	Configuration *DefenderCspmGcpOfferingVMScannersConfiguration
+
+	// Is Microsoft Defender for Server VM scanning enabled
+	Enabled *bool
+}
+
+// DefenderCspmGcpOfferingVMScannersConfiguration - configuration for Microsoft Defender for Server VM scanning
+type DefenderCspmGcpOfferingVMScannersConfiguration struct {
+	// VM tags that indicates that VM should not be scanned
+	ExclusionTags map[string]*string
+
+	// The scanning mode for the VM scan.
+	ScanningMode *ScanningMode
 }
 
 // DefenderFoDatabasesAwsOffering - The Defender for Databases AWS offering
@@ -2652,6 +3077,12 @@ type DefenderForContainersAwsOffering struct {
 	// The kubernetes service connection configuration
 	KubernetesService *DefenderForContainersAwsOfferingKubernetesService
 
+	// The Microsoft Defender container agentless discovery K8s configuration
+	MdcContainersAgentlessDiscoveryK8S *DefenderForContainersAwsOfferingMdcContainersAgentlessDiscoveryK8S
+
+	// The Microsoft Defender container image assessment configuration
+	MdcContainersImageAssessment *DefenderForContainersAwsOfferingMdcContainersImageAssessment
+
 	// The externalId used by the data reader to prevent the confused deputy attack
 	ScubaExternalID *string
 
@@ -2703,6 +3134,25 @@ type DefenderForContainersAwsOfferingKubernetesService struct {
 	CloudRoleArn *string
 }
 
+// DefenderForContainersAwsOfferingMdcContainersAgentlessDiscoveryK8S - The Microsoft Defender container agentless discovery
+// K8s configuration
+type DefenderForContainersAwsOfferingMdcContainersAgentlessDiscoveryK8S struct {
+	// The cloud role ARN in AWS for this feature
+	CloudRoleArn *string
+
+	// Is Microsoft Defender container agentless discovery K8s enabled
+	Enabled *bool
+}
+
+// DefenderForContainersAwsOfferingMdcContainersImageAssessment - The Microsoft Defender container image assessment configuration
+type DefenderForContainersAwsOfferingMdcContainersImageAssessment struct {
+	// The cloud role ARN in AWS for this feature
+	CloudRoleArn *string
+
+	// Is Microsoft Defender container image assessment enabled
+	Enabled *bool
+}
+
 // DefenderForContainersGcpOffering - The containers GCP offering
 type DefenderForContainersGcpOffering struct {
 	// REQUIRED; The type of the security offering.
@@ -2716,6 +3166,12 @@ type DefenderForContainersGcpOffering struct {
 
 	// Is Microsoft Defender for Cloud Kubernetes agent auto provisioning enabled
 	DefenderAgentAutoProvisioningFlag *bool
+
+	// The Microsoft Defender Container agentless discovery configuration
+	MdcContainersAgentlessDiscoveryK8S *DefenderForContainersGcpOfferingMdcContainersAgentlessDiscoveryK8S
+
+	// The Microsoft Defender Container image assessment configuration
+	MdcContainersImageAssessment *DefenderForContainersGcpOfferingMdcContainersImageAssessment
 
 	// The native cloud connection configuration
 	NativeCloudConnection *DefenderForContainersGcpOfferingNativeCloudConnection
@@ -2741,6 +3197,31 @@ type DefenderForContainersGcpOfferingDataPipelineNativeCloudConnection struct {
 	ServiceAccountEmailAddress *string
 
 	// The data collection GCP workload identity provider id for this offering
+	WorkloadIdentityProviderID *string
+}
+
+// DefenderForContainersGcpOfferingMdcContainersAgentlessDiscoveryK8S - The Microsoft Defender Container agentless discovery
+// configuration
+type DefenderForContainersGcpOfferingMdcContainersAgentlessDiscoveryK8S struct {
+	// Is Microsoft Defender container agentless discovery enabled
+	Enabled *bool
+
+	// The service account email address in GCP for this feature
+	ServiceAccountEmailAddress *string
+
+	// The workload identity provider id in GCP for this feature
+	WorkloadIdentityProviderID *string
+}
+
+// DefenderForContainersGcpOfferingMdcContainersImageAssessment - The Microsoft Defender Container image assessment configuration
+type DefenderForContainersGcpOfferingMdcContainersImageAssessment struct {
+	// Is Microsoft Defender container image assessment enabled
+	Enabled *bool
+
+	// The service account email address in GCP for this feature
+	ServiceAccountEmailAddress *string
+
+	// The workload identity provider id in GCP for this feature
 	WorkloadIdentityProviderID *string
 }
 
@@ -3077,6 +3558,36 @@ type DefenderForServersGcpOfferingVaAutoProvisioningConfiguration struct {
 	Type *Type
 }
 
+// DefenderForStorageSetting - The Defender for Storage resource.
+type DefenderForStorageSetting struct {
+	// Defender for Storage resource properties.
+	Properties *DefenderForStorageSettingProperties
+
+	// READ-ONLY; Resource Id
+	ID *string
+
+	// READ-ONLY; Resource name
+	Name *string
+
+	// READ-ONLY; Resource type
+	Type *string
+}
+
+// DefenderForStorageSettingProperties - Defender for Storage resource properties.
+type DefenderForStorageSettingProperties struct {
+	// Indicates whether Defender for Storage is enabled on this storage account.
+	IsEnabled *bool
+
+	// Properties of Malware Scanning.
+	MalwareScanning *MalwareScanningProperties
+
+	// Indicates whether the settings defined for this storage account should override the settings defined for the subscription.
+	OverrideSubscriptionLevelSettings *bool
+
+	// Properties of Sensitive Data Discovery.
+	SensitiveDataDiscovery *SensitiveDataDiscoveryProperties
+}
+
 // DenylistCustomAlertRule - A custom alert rule that checks if a value (depends on the custom alert type) is denied.
 type DenylistCustomAlertRule struct {
 	// REQUIRED; The values to deny. The format of the values depends on the rule type.
@@ -3117,6 +3628,57 @@ func (d *DenylistCustomAlertRule) GetListCustomAlertRule() *ListCustomAlertRule 
 		RuleType:    d.RuleType,
 		ValueType:   d.ValueType,
 	}
+}
+
+// DevOpsConfiguration - DevOps Configuration resource.
+type DevOpsConfiguration struct {
+	// DevOps Configuration properties.
+	Properties *DevOpsConfigurationProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// DevOpsConfigurationListResponse - List of RP resources which supports pagination.
+type DevOpsConfigurationListResponse struct {
+	// Gets or sets next link to scroll over the results.
+	NextLink *string
+
+	// Gets or sets list of resources.
+	Value []*DevOpsConfiguration
+}
+
+// DevOpsConfigurationProperties - DevOps Configuration properties.
+type DevOpsConfigurationProperties struct {
+	// Authorization payload.
+	Authorization *Authorization
+
+	// AutoDiscovery states.
+	AutoDiscovery *AutoDiscovery
+
+	// The provisioning state of the resource.
+	// Pending - Provisioning pending. Failed - Provisioning failed. Succeeded - Successful provisioning. Canceled - Provisioning
+	// canceled. PendingDeletion - Deletion pending. DeletionSuccess - Deletion
+	// successful. DeletionFailure - Deletion failure.
+	ProvisioningState *DevOpsProvisioningState
+
+	// List of top-level inventory to select when AutoDiscovery is disabled. This field is ignored when AutoDiscovery is enabled.
+	TopLevelInventoryList []*string
+
+	// READ-ONLY; Gets or sets resource status message.
+	ProvisioningStatusMessage *string
+
+	// READ-ONLY; Gets or sets time when resource was last checked.
+	ProvisioningStatusUpdateTimeUTC *time.Time
 }
 
 // DeviceSecurityGroup - The device security group resource
@@ -3387,7 +3949,7 @@ type Extension struct {
 	AdditionalExtensionProperties map[string]any
 
 	// READ-ONLY; Optional. A status describing the success/failure of the extension's enablement/disablement operation.
-	OperationStatus *OperationStatus
+	OperationStatus *OperationStatusAutoGenerated
 }
 
 // ExternalSecuritySolution - Represents a security solution external to Microsoft Defender for Cloud which sends information
@@ -3682,6 +4244,9 @@ type GcpProjectEnvironmentData struct {
 
 	// The Gcp project's details
 	ProjectDetails *GcpProjectDetails
+
+	// Scan interval in hours (value should be between 1-hour to 24-hours)
+	ScanInterval *int64
 }
 
 // GetEnvironmentData implements the EnvironmentDataClassification interface for type GcpProjectEnvironmentData.
@@ -3741,6 +4306,270 @@ type GetSensitivitySettingsResponsePropertiesMipInformation struct {
 
 	// Microsoft information protection integration status
 	MipIntegrationStatus *MipIntegrationStatus
+}
+
+// GitHubOwner - GitHub Owner resource.
+type GitHubOwner struct {
+	// GitHub Owner properties.
+	Properties *GitHubOwnerProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// GitHubOwnerConfiguration - GitHub Owner Inventory Configuration.
+type GitHubOwnerConfiguration struct {
+	// AutoDiscovery states.
+	AutoDiscovery *AutoDiscovery
+
+	// GitHub Repository Inventory Configuration. Dictionary of GitHub repository name to desired repository configuration. If
+	// AutoDiscovery is Enabled, this field should be null or empty.
+	RepositoryConfigs map[string]*BaseResourceConfiguration
+}
+
+// GitHubOwnerListResponse - List of RP resources which supports pagination.
+type GitHubOwnerListResponse struct {
+	// Gets or sets next link to scroll over the results.
+	NextLink *string
+
+	// Gets or sets list of resources.
+	Value []*GitHubOwner
+}
+
+// GitHubOwnerProperties - GitHub Owner properties.
+type GitHubOwnerProperties struct {
+	// Details about resource onboarding status across all connectors.
+	// OnboardedByOtherConnector - this resource has already been onboarded to another connector. This is only applicable to top-level
+	// resources. Onboarded - this resource has already been onboarded by the
+	// specified connector. NotOnboarded - this resource has not been onboarded to any connector. NotApplicable - the onboarding
+	// state is not applicable to the current endpoint.
+	OnboardingState *OnboardingState
+
+	// The provisioning state of the resource.
+	// Pending - Provisioning pending. Failed - Provisioning failed. Succeeded - Successful provisioning. Canceled - Provisioning
+	// canceled. PendingDeletion - Deletion pending. DeletionSuccess - Deletion
+	// successful. DeletionFailure - Deletion failure.
+	ProvisioningState *DevOpsProvisioningState
+
+	// READ-ONLY; Gets or sets internal GitHub id.
+	GitHubInternalID *string
+
+	// READ-ONLY; Gets or sets GitHub Owner url.
+	OwnerURL *string
+
+	// READ-ONLY; Gets or sets resource status message.
+	ProvisioningStatusMessage *string
+
+	// READ-ONLY; Gets or sets time when resource was last checked.
+	ProvisioningStatusUpdateTimeUTC *time.Time
+}
+
+// GitHubRepository - GitHub Repository resource.
+type GitHubRepository struct {
+	// GitHub Repository properties.
+	Properties *GitHubRepositoryProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// GitHubRepositoryListResponse - List of RP resources which supports pagination.
+type GitHubRepositoryListResponse struct {
+	// Gets or sets next link to scroll over the results.
+	NextLink *string
+
+	// Gets or sets list of resources.
+	Value []*GitHubRepository
+}
+
+// GitHubRepositoryProperties - GitHub Repository properties.
+type GitHubRepositoryProperties struct {
+	// Details about resource onboarding status across all connectors.
+	// OnboardedByOtherConnector - this resource has already been onboarded to another connector. This is only applicable to top-level
+	// resources. Onboarded - this resource has already been onboarded by the
+	// specified connector. NotOnboarded - this resource has not been onboarded to any connector. NotApplicable - the onboarding
+	// state is not applicable to the current endpoint.
+	OnboardingState *OnboardingState
+
+	// Gets or sets parent GitHub Owner name.
+	ParentOwnerName *string
+
+	// The provisioning state of the resource.
+	// Pending - Provisioning pending. Failed - Provisioning failed. Succeeded - Successful provisioning. Canceled - Provisioning
+	// canceled. PendingDeletion - Deletion pending. DeletionSuccess - Deletion
+	// successful. DeletionFailure - Deletion failure.
+	ProvisioningState *DevOpsProvisioningState
+
+	// READ-ONLY; Gets or sets resource status message.
+	ProvisioningStatusMessage *string
+
+	// READ-ONLY; Gets or sets time when resource was last checked.
+	ProvisioningStatusUpdateTimeUTC *time.Time
+
+	// READ-ONLY; Gets or sets GitHub Full Name. Repository name, prefixed with Owner name. Eg: "my-org/new-repo-1".
+	RepoFullName *string
+
+	// READ-ONLY; Gets or sets GitHub Repository id.
+	// This is a numeric id defined by Github. Eg: "123456".
+	RepoID *string
+
+	// READ-ONLY; Gets or sets GitHub Repository name. Eg: "new-repo-1".
+	RepoName *string
+
+	// READ-ONLY; Gets or sets GitHub Repository url.
+	RepoURL *string
+}
+
+// GitLabGroup - GitLab Group resource.
+type GitLabGroup struct {
+	// GitLab Group properties.
+	Properties *GitLabGroupProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// GitLabGroupConfiguration - GitLab Group Inventory Configuration.
+type GitLabGroupConfiguration struct {
+	// AutoDiscovery states.
+	AutoDiscovery *AutoDiscovery
+
+	// GitLab Project Inventory Configuration. Dictionary of GitLab fully-qualified project name to desired project configuration.
+	// If AutoDiscovery is Enabled, this field should be null or empty.
+	ProjectConfigs map[string]*BaseResourceConfiguration
+}
+
+// GitLabGroupListResponse - List of RP resources which supports pagination.
+type GitLabGroupListResponse struct {
+	// Gets or sets next link to scroll over the results.
+	NextLink *string
+
+	// Gets or sets list of resources.
+	Value []*GitLabGroup
+}
+
+// GitLabGroupProperties - GitLab Group properties.
+type GitLabGroupProperties struct {
+	// Details about resource onboarding status across all connectors.
+	// OnboardedByOtherConnector - this resource has already been onboarded to another connector. This is only applicable to top-level
+	// resources. Onboarded - this resource has already been onboarded by the
+	// specified connector. NotOnboarded - this resource has not been onboarded to any connector. NotApplicable - the onboarding
+	// state is not applicable to the current endpoint.
+	OnboardingState *OnboardingState
+
+	// The provisioning state of the resource.
+	// Pending - Provisioning pending. Failed - Provisioning failed. Succeeded - Successful provisioning. Canceled - Provisioning
+	// canceled. PendingDeletion - Deletion pending. DeletionSuccess - Deletion
+	// successful. DeletionFailure - Deletion failure.
+	ProvisioningState *DevOpsProvisioningState
+
+	// READ-ONLY; Gets or sets the human readable fully-qualified name of the Group object.
+	// This contains the entire namespace hierarchy as seen on GitLab UI where namespaces are separated by the '/' character.
+	FullyQualifiedFriendlyName *string
+
+	// READ-ONLY; Gets or sets the fully-qualified name of the Group object.
+	// This contains the entire namespace hierarchy where namespaces are separated by the '$' character.
+	FullyQualifiedName *string
+
+	// READ-ONLY; Gets or sets resource status message.
+	ProvisioningStatusMessage *string
+
+	// READ-ONLY; Gets or sets time when resource was last checked.
+	ProvisioningStatusUpdateTimeUTC *time.Time
+
+	// READ-ONLY; Gets or sets the url of the GitLab Group.
+	URL *string
+}
+
+// GitLabProject - GitLab Project resource.
+type GitLabProject struct {
+	// GitLab Project properties.
+	Properties *GitLabProjectProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// GitLabProjectListResponse - List of RP resources which supports pagination.
+type GitLabProjectListResponse struct {
+	// Gets or sets next link to scroll over the results.
+	NextLink *string
+
+	// Gets or sets list of resources.
+	Value []*GitLabProject
+}
+
+// GitLabProjectProperties - GitLab Project properties.
+type GitLabProjectProperties struct {
+	// Details about resource onboarding status across all connectors.
+	// OnboardedByOtherConnector - this resource has already been onboarded to another connector. This is only applicable to top-level
+	// resources. Onboarded - this resource has already been onboarded by the
+	// specified connector. NotOnboarded - this resource has not been onboarded to any connector. NotApplicable - the onboarding
+	// state is not applicable to the current endpoint.
+	OnboardingState *OnboardingState
+
+	// The provisioning state of the resource.
+	// Pending - Provisioning pending. Failed - Provisioning failed. Succeeded - Successful provisioning. Canceled - Provisioning
+	// canceled. PendingDeletion - Deletion pending. DeletionSuccess - Deletion
+	// successful. DeletionFailure - Deletion failure.
+	ProvisioningState *DevOpsProvisioningState
+
+	// READ-ONLY; Gets or sets the human readable fully-qualified name of the Project object.
+	// This contains the entire namespace hierarchy as seen on GitLab UI where entities are separated by the '/' character.
+	FullyQualifiedFriendlyName *string
+
+	// READ-ONLY; Gets or sets the fully-qualified name of the project object.
+	// This contains the entire hierarchy where entities are separated by the '$' character.
+	FullyQualifiedName *string
+
+	// READ-ONLY; Gets or sets the fully-qualified name of the project's parent group object.
+	// This contains the entire hierarchy where namespaces are separated by the '$' character.
+	FullyQualifiedParentGroupName *string
+
+	// READ-ONLY; Gets or sets resource status message.
+	ProvisioningStatusMessage *string
+
+	// READ-ONLY; Gets or sets time when resource was last checked.
+	ProvisioningStatusUpdateTimeUTC *time.Time
+
+	// READ-ONLY; Gets or sets the url of the GitLab Project.
+	URL *string
 }
 
 // GithubScopeEnvironmentData - The github scope connector's environment data
@@ -4129,7 +4958,7 @@ type HealthDataClassification struct {
 	Scenario *string
 
 	// The resource scope of the health report
-	Scope *ScopeName
+	Scope *string
 }
 
 // HealthReport - The health report resource
@@ -4152,6 +4981,9 @@ type HealthReportProperties struct {
 	// The affected defenders plans by unhealthy report
 	AffectedDefendersPlans []*string
 
+	// The affected defenders sub plans by unhealthy report
+	AffectedDefendersSubPlans []*string
+
 	// The environment details of the resource
 	EnvironmentDetails *EnvironmentDetails
 
@@ -4166,6 +4998,10 @@ type HealthReportProperties struct {
 
 	// The status of the health report
 	Status *StatusAutoGenerated
+
+	// READ-ONLY; Additional data for the given health report, this field can include more details on the resource and the health
+	// scenario.
+	ReportAdditionalData map[string]*string
 }
 
 // HealthReportsList - Page of health reports list
@@ -4325,45 +5161,6 @@ type InformationType struct {
 
 	// The recommended label id to be associated with this information type.
 	RecommendedLabelID *string
-}
-
-// IngestionConnectionString - Connection string for ingesting security data and logs
-type IngestionConnectionString struct {
-	// READ-ONLY; The region where ingested logs and data resides
-	Location *string
-
-	// READ-ONLY; Connection string value
-	Value *string
-}
-
-// IngestionSetting - Configures how to correlate scan data and logs with resources associated with the subscription.
-type IngestionSetting struct {
-	// Ingestion setting data
-	Properties any
-
-	// READ-ONLY; Resource Id
-	ID *string
-
-	// READ-ONLY; Resource name
-	Name *string
-
-	// READ-ONLY; Resource type
-	Type *string
-}
-
-// IngestionSettingList - List of ingestion settings
-type IngestionSettingList struct {
-	// READ-ONLY; The URI to fetch the next page.
-	NextLink *string
-
-	// READ-ONLY; List of ingestion settings
-	Value []*IngestionSetting
-}
-
-// IngestionSettingToken - Configures how to correlate scan data and logs with resources associated with the subscription.
-type IngestionSettingToken struct {
-	// READ-ONLY; The token is used for correlating security data and logs with the resources in the subscription.
-	Token *string
 }
 
 // IoTSecurityAggregatedAlert - Security Solution Aggregated Alert information
@@ -4971,6 +5768,18 @@ func (l *LogAnalyticsIdentifier) GetResourceIdentifier() *ResourceIdentifier {
 	}
 }
 
+// MalwareScanningProperties - Properties of Malware Scanning.
+type MalwareScanningProperties struct {
+	// Properties of On Upload malware scanning.
+	OnUpload *OnUploadProperties
+
+	// Optional. Resource id of an Event Grid Topic to send scan results to.
+	ScanResultsEventGridTopicResourceID *string
+
+	// READ-ONLY; Upon failure or partial success. Additional data describing Malware Scanning enable/disable operation.
+	OperationStatus *OperationStatus
+}
+
 // MdeOnboardingData - The resource of the configuration or data needed to onboard the machine to MDE
 type MdeOnboardingData struct {
 	// Properties of the MDE configuration or data parameter needed to onboard the machine to MDE
@@ -5251,6 +6060,15 @@ func (o *OnPremiseSQLResourceDetails) GetResourceDetails() *ResourceDetails {
 	}
 }
 
+// OnUploadProperties - Properties of On Upload malware scanning.
+type OnUploadProperties struct {
+	// Defines the max GB to be scanned per Month. Set to -1 if no capping is needed.
+	CapGBPerMonth *int32
+
+	// Indicates whether On Upload malware scanning should be enabled.
+	IsEnabled *bool
+}
+
 // Operation - Possible operation in the REST API of Microsoft.Security
 type Operation struct {
 	// Security operation display
@@ -5293,13 +6111,49 @@ type OperationResultAutoGenerated struct {
 	Status *OperationResult
 }
 
-// OperationStatus - A status describing the success/failure of the extension's enablement/disablement operation.
+// OperationStatus - A status describing the success/failure of the enablement/disablement operation.
 type OperationStatus struct {
+	// The operation status code.
+	Code *string
+
+	// Additional information regarding the success/failure of the operation.
+	Message *string
+}
+
+// OperationStatusAutoGenerated - A status describing the success/failure of the extension's enablement/disablement operation.
+type OperationStatusAutoGenerated struct {
 	// The operation status code.
 	Code *Code
 
 	// Additional information regarding the success/failure of the operation.
 	Message *string
+}
+
+// OperationStatusResult - The current status of an async operation.
+type OperationStatusResult struct {
+	// REQUIRED; Operation status.
+	Status *string
+
+	// The end time of the operation.
+	EndTime *time.Time
+
+	// If present, details of the operation error.
+	Error *ErrorDetailAutoGenerated
+
+	// Fully qualified ID for the async operation.
+	ID *string
+
+	// Name of the async operation.
+	Name *string
+
+	// The operations list.
+	Operations []*OperationStatusResult
+
+	// Percent of the operation that is complete.
+	PercentComplete *float32
+
+	// The start time of the operation.
+	StartTime *time.Time
 }
 
 // OperatorList - List of SecurityOperator response.
@@ -5373,16 +6227,23 @@ type PricingList struct {
 
 // PricingProperties - Pricing properties for the relevant scope
 type PricingProperties struct {
-	// REQUIRED; The pricing tier value. Microsoft Defender for Cloud is provided in two pricing tiers: free and standard. The
-	// standard tier offers advanced security capabilities, while the free tier offers basic
-	// security features.
+	// REQUIRED; Indicates whether the Defender plan is enabled on the selected scope. Microsoft Defender for Cloud is provided
+	// in two pricing tiers: free and standard. The standard tier offers advanced security
+	// capabilities, while the free tier offers basic security features.
 	PricingTier *PricingTier
+
+	// If set to "False", it allows the descendants of this scope to override the pricing configuration set on this scope (allows
+	// setting inherited="False"). If set to "True", it prevents overrides and
+	// forces this pricing configuration on all the descendants of this scope. This field is only available for subscription-level
+	// pricing.
+	Enforce *Enforce
 
 	// Optional. List of extensions offered under a plan.
 	Extensions []*Extension
 
 	// The sub-plan selected for a Standard pricing configuration, when more than one sub-plan is available. Each sub-plan enables
-	// a set of security features. When not specified, full plan is applied.
+	// a set of security features. When not specified, full plan is applied. For
+	// VirtualMachines plan, available sub plans are 'P1' & 'P2', where for resource level only 'P1' sub plan is supported.
 	SubPlan *string
 
 	// READ-ONLY; Optional. True if the plan is deprecated. If there are replacing plans they will appear in replacedBy property
@@ -5395,8 +6256,26 @@ type PricingProperties struct {
 	// READ-ONLY; The duration left for the subscriptions free trial period - in ISO 8601 format (e.g. P3Y6M4DT12H30M5S).
 	FreeTrialRemainingTime *string
 
+	// READ-ONLY; "inherited" = "True" indicates that the current scope inherits its pricing configuration from its parent. The
+	// ID of the parent scope that provides the inherited configuration is displayed in the
+	// "inheritedFrom" field. On the other hand, "inherited" = "False" indicates that the current scope has its own pricing configuration
+	// explicitly set, and does not inherit from its parent. This field is
+	// read only and available only for resource-level pricing.
+	Inherited *Inherited
+
+	// READ-ONLY; The id of the scope inherited from. "Null" if not inherited. This field is only available for resource-level
+	// pricing.
+	InheritedFrom *string
+
 	// READ-ONLY; Optional. List of plans that replace this plan. This property exists only if this plan is deprecated.
 	ReplacedBy []*string
+
+	// READ-ONLY; This field is available for subscription-level only, and reflects the coverage status of the resources under
+	// the subscription. Please note: The "pricingTier" field reflects the plan status of the
+	// subscription. However, since the plan status can also be defined at the resource level, there might be misalignment between
+	// the subscription's plan status and the resource status. This field helps
+	// indicate the coverage status of the resources.
+	ResourcesCoverageStatus *ResourcesCoverageStatus
 }
 
 // ProcessNotAllowed - Execution of a process that isn't allowed. Allow list consists of process names to allow.
@@ -5467,6 +6346,19 @@ type ProtectionMode struct {
 
 	// The application control policy enforcement/protection mode of the machine group
 	Script *EnforcementMode
+}
+
+// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
+// location
+type ProxyResource struct {
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
 }
 
 // ProxyServerProperties - For a non-Azure machine that is not connected directly to the internet, specify a proxy server
@@ -5746,6 +6638,33 @@ type Resource struct {
 	Name *string
 
 	// READ-ONLY; Resource type
+	Type *string
+}
+
+// ResourceAutoGenerated - Common fields that are returned in the response for all Azure Resource Manager resources
+type ResourceAutoGenerated struct {
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ResourceAutoGenerated2 - Common fields that are returned in the response for all Azure Resource Manager resources
+type ResourceAutoGenerated2 struct {
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -6144,6 +7063,15 @@ type SecureScoresList struct {
 	Value []*SecureScoreItem
 }
 
+// SensitiveDataDiscoveryProperties - Properties of Sensitive Data Discovery.
+type SensitiveDataDiscoveryProperties struct {
+	// Indicates whether Sensitive Data Discovery should be enabled.
+	IsEnabled *bool
+
+	// READ-ONLY; Upon failure or partial success. Additional data describing Sensitive Data Discovery enable/disable operation.
+	OperationStatus *OperationStatus
+}
+
 // SensitivityLabel - The sensitivity label.
 type SensitivityLabel struct {
 	// The description of the sensitivity label.
@@ -6183,9 +7111,49 @@ type ServerVulnerabilityAssessmentProperties struct {
 	ProvisioningState *ServerVulnerabilityAssessmentPropertiesProvisioningState
 }
 
+// ServerVulnerabilityAssessmentsAzureSettingProperties - Describes the vulnerability assessments setting properties on Azure
+// servers in the defined scope.
+type ServerVulnerabilityAssessmentsAzureSettingProperties struct {
+	// REQUIRED; The selected vulnerability assessments provider on Azure servers in the defined scope.
+	SelectedProvider *ServerVulnerabilityAssessmentsAzureSettingSelectedProvider
+}
+
 // ServerVulnerabilityAssessmentsList - List of server vulnerability assessments
 type ServerVulnerabilityAssessmentsList struct {
 	Value []*ServerVulnerabilityAssessment
+}
+
+// ServerVulnerabilityAssessmentsSetting - A base vulnerability assessments setting on servers in the defined scope.
+type ServerVulnerabilityAssessmentsSetting struct {
+	// REQUIRED; The kind of the server vulnerability assessments setting.
+	Kind *ServerVulnerabilityAssessmentsSettingKind
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// GetServerVulnerabilityAssessmentsSetting implements the ServerVulnerabilityAssessmentsSettingClassification interface for
+// type ServerVulnerabilityAssessmentsSetting.
+func (s *ServerVulnerabilityAssessmentsSetting) GetServerVulnerabilityAssessmentsSetting() *ServerVulnerabilityAssessmentsSetting {
+	return s
+}
+
+// ServerVulnerabilityAssessmentsSettingsList - A page of a server vulnerability assessments settings list
+type ServerVulnerabilityAssessmentsSettingsList struct {
+	// READ-ONLY; The URI to fetch the next page
+	NextLink *string
+
+	// READ-ONLY; A collection of server vulnerability assessments settings in this page
+	Value []ServerVulnerabilityAssessmentsSettingClassification
 }
 
 // ServerVulnerabilityProperties - Additional context fields for server vulnerability assessment
@@ -6401,6 +7369,12 @@ type StatusAutoGenerated struct {
 	// READ-ONLY; The date of when the resource of the health report was scanned in the first time
 	FirstEvaluationDate *time.Time
 
+	// READ-ONLY; The date of when the resource was scanned in the last time
+	LastScannedDate *time.Time
+
+	// READ-ONLY; The reason of the given status
+	Reason *string
+
 	// READ-ONLY; The date of when the status of the health report was changed in the last time
 	StatusChangeDate *time.Time
 }
@@ -6513,6 +7487,17 @@ type Tags struct {
 type TagsResource struct {
 	// Resource tags
 	Tags map[string]*string
+}
+
+// TargetBranchConfiguration - Repository branch configuration for PR Annotations.
+type TargetBranchConfiguration struct {
+	// Configuration of PR Annotations on default branch.
+	// Enabled - PR Annotations are enabled on the resource's default branch. Disabled - PR Annotations are disabled on the resource's
+	// default branch.
+	AnnotateDefaultBranch *AnnotateDefaultBranchState
+
+	// Gets or sets branches that should have annotations.
+	BranchNames []*string
 }
 
 // Task - Security task that we recommend to do in order to strengthen security

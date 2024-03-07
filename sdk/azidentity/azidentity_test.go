@@ -952,6 +952,26 @@ func TestResolveTenant(t *testing.T) {
 	}
 }
 
+func TestValidaTenantID(t *testing.T) {
+	for _, test := range []struct {
+		tenant string
+		valid  bool
+	}{
+		{"", false},
+		{" ", false},
+		{"A", true},
+		{"A-", true},
+		{"A-B", true},
+	} {
+		t.Run("", func(t *testing.T) {
+			valid := validTenantID(test.tenant)
+			if valid != test.valid {
+				t.Fatalf("expect %q is %t, got %t", test.tenant, test.valid, valid)
+			}
+		})
+	}
+}
+
 func TestTokenCachePersistenceOptions(t *testing.T) {
 	af := filepath.Join(t.TempDir(), t.Name()+credNameWorkloadIdentity)
 	if err := os.WriteFile(af, []byte("assertion"), os.ModePerm); err != nil {

@@ -110,6 +110,10 @@
             "CoverageGoal": 0.75
         },
         {
+            "Name": "monitor/query/azlogs",
+            "CoverageGoal": 0.85
+        },
+        {
             "Name": "security/keyvault/azadmin",
             "CoverageGoal": 0.80
         },

@@ -10,7 +10,7 @@ package armsecurity
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity"
-	moduleVersion = "v0.12.0"
+	moduleVersion = "v0.13.0"
 )
 
 // AADConnectivityState - The connectivity state of the external AAD solution
@@ -46,6 +46,25 @@ func PossibleActionTypeValues() []ActionType {
 		ActionTypeEventHub,
 		ActionTypeLogicApp,
 		ActionTypeWorkspace,
+	}
+}
+
+// ActionableRemediationState - ActionableRemediation Setting. None - the setting was never set. Enabled - ActionableRemediation
+// is enabled. Disabled - ActionableRemediation is disabled.
+type ActionableRemediationState string
+
+const (
+	ActionableRemediationStateDisabled ActionableRemediationState = "Disabled"
+	ActionableRemediationStateEnabled  ActionableRemediationState = "Enabled"
+	ActionableRemediationStateNone     ActionableRemediationState = "None"
+)
+
+// PossibleActionableRemediationStateValues returns the possible values for the ActionableRemediationState const type.
+func PossibleActionableRemediationStateValues() []ActionableRemediationState {
+	return []ActionableRemediationState{
+		ActionableRemediationStateDisabled,
+		ActionableRemediationStateEnabled,
+		ActionableRemediationStateNone,
 	}
 }
 
@@ -148,6 +167,24 @@ func PossibleAlertStatusValues() []AlertStatus {
 		AlertStatusDismissed,
 		AlertStatusInProgress,
 		AlertStatusResolved,
+	}
+}
+
+// AnnotateDefaultBranchState - Configuration of PR Annotations on default branch.
+// Enabled - PR Annotations are enabled on the resource's default branch. Disabled - PR Annotations are disabled on the resource's
+// default branch.
+type AnnotateDefaultBranchState string
+
+const (
+	AnnotateDefaultBranchStateDisabled AnnotateDefaultBranchState = "Disabled"
+	AnnotateDefaultBranchStateEnabled  AnnotateDefaultBranchState = "Enabled"
+)
+
+// PossibleAnnotateDefaultBranchStateValues returns the possible values for the AnnotateDefaultBranchState const type.
+func PossibleAnnotateDefaultBranchStateValues() []AnnotateDefaultBranchState {
+	return []AnnotateDefaultBranchState{
+		AnnotateDefaultBranchStateDisabled,
+		AnnotateDefaultBranchStateEnabled,
 	}
 }
 
@@ -299,6 +336,24 @@ func PossibleAuthenticationTypeValues() []AuthenticationType {
 		AuthenticationTypeAwsAssumeRole,
 		AuthenticationTypeAwsCreds,
 		AuthenticationTypeGcpCredentials,
+	}
+}
+
+// AutoDiscovery - AutoDiscovery states.
+type AutoDiscovery string
+
+const (
+	AutoDiscoveryDisabled      AutoDiscovery = "Disabled"
+	AutoDiscoveryEnabled       AutoDiscovery = "Enabled"
+	AutoDiscoveryNotApplicable AutoDiscovery = "NotApplicable"
+)
+
+// PossibleAutoDiscoveryValues returns the possible values for the AutoDiscovery const type.
+func PossibleAutoDiscoveryValues() []AutoDiscovery {
+	return []AutoDiscovery{
+		AutoDiscoveryDisabled,
+		AutoDiscoveryEnabled,
+		AutoDiscoveryNotApplicable,
 	}
 }
 
@@ -503,6 +558,51 @@ func PossibleDataSourceValues() []DataSource {
 	}
 }
 
+// DesiredOnboardingState - Onboarding states.
+type DesiredOnboardingState string
+
+const (
+	DesiredOnboardingStateDisabled DesiredOnboardingState = "Disabled"
+	DesiredOnboardingStateEnabled  DesiredOnboardingState = "Enabled"
+)
+
+// PossibleDesiredOnboardingStateValues returns the possible values for the DesiredOnboardingState const type.
+func PossibleDesiredOnboardingStateValues() []DesiredOnboardingState {
+	return []DesiredOnboardingState{
+		DesiredOnboardingStateDisabled,
+		DesiredOnboardingStateEnabled,
+	}
+}
+
+// DevOpsProvisioningState - The provisioning state of the resource.
+// Pending - Provisioning pending. Failed - Provisioning failed. Succeeded - Successful provisioning. Canceled - Provisioning
+// canceled. PendingDeletion - Deletion pending. DeletionSuccess - Deletion
+// successful. DeletionFailure - Deletion failure.
+type DevOpsProvisioningState string
+
+const (
+	DevOpsProvisioningStateCanceled        DevOpsProvisioningState = "Canceled"
+	DevOpsProvisioningStateDeletionFailure DevOpsProvisioningState = "DeletionFailure"
+	DevOpsProvisioningStateDeletionSuccess DevOpsProvisioningState = "DeletionSuccess"
+	DevOpsProvisioningStateFailed          DevOpsProvisioningState = "Failed"
+	DevOpsProvisioningStatePending         DevOpsProvisioningState = "Pending"
+	DevOpsProvisioningStatePendingDeletion DevOpsProvisioningState = "PendingDeletion"
+	DevOpsProvisioningStateSucceeded       DevOpsProvisioningState = "Succeeded"
+)
+
+// PossibleDevOpsProvisioningStateValues returns the possible values for the DevOpsProvisioningState const type.
+func PossibleDevOpsProvisioningStateValues() []DevOpsProvisioningState {
+	return []DevOpsProvisioningState{
+		DevOpsProvisioningStateCanceled,
+		DevOpsProvisioningStateDeletionFailure,
+		DevOpsProvisioningStateDeletionSuccess,
+		DevOpsProvisioningStateFailed,
+		DevOpsProvisioningStatePending,
+		DevOpsProvisioningStatePendingDeletion,
+		DevOpsProvisioningStateSucceeded,
+	}
+}
+
 // Direction - The rule's direction
 type Direction string
 
@@ -538,6 +638,28 @@ func PossibleEndOfSupportStatusValues() []EndOfSupportStatus {
 		EndOfSupportStatusUpcomingNoLongerSupported,
 		EndOfSupportStatusUpcomingVersionNoLongerSupported,
 		EndOfSupportStatusVersionNoLongerSupported,
+	}
+}
+
+// Enforce - If set to "False", it allows the descendants of this scope to override the pricing configuration set on this
+// scope (allows setting inherited="False"). If set to "True", it prevents overrides and
+// forces this pricing configuration on all the descendants of this scope. This field is only available for subscription-level
+// pricing.
+type Enforce string
+
+const (
+	// EnforceFalse - Allows the descendants of this scope to override the pricing configuration set on this scope (allows setting
+	// inherited="False")
+	EnforceFalse Enforce = "False"
+	// EnforceTrue - Prevents overrides and forces the current scope's pricing configuration to all descendants
+	EnforceTrue Enforce = "True"
+)
+
+// PossibleEnforceValues returns the possible values for the Enforce const type.
+func PossibleEnforceValues() []Enforce {
+	return []Enforce{
+		EnforceFalse,
+		EnforceTrue,
 	}
 }
 
@@ -846,6 +968,46 @@ func PossibleInformationProtectionPolicyNameValues() []InformationProtectionPoli
 	}
 }
 
+// InheritFromParentState - Update Settings.
+// Enabled - Resource should inherit configurations from parent. Disabled - Resource should not inherit configurations from
+// parent.
+type InheritFromParentState string
+
+const (
+	InheritFromParentStateDisabled InheritFromParentState = "Disabled"
+	InheritFromParentStateEnabled  InheritFromParentState = "Enabled"
+)
+
+// PossibleInheritFromParentStateValues returns the possible values for the InheritFromParentState const type.
+func PossibleInheritFromParentStateValues() []InheritFromParentState {
+	return []InheritFromParentState{
+		InheritFromParentStateDisabled,
+		InheritFromParentStateEnabled,
+	}
+}
+
+// Inherited - "inherited" = "True" indicates that the current scope inherits its pricing configuration from its parent. The
+// ID of the parent scope that provides the inherited configuration is displayed in the
+// "inheritedFrom" field. On the other hand, "inherited" = "False" indicates that the current scope has its own pricing configuration
+// explicitly set, and does not inherit from its parent. This field is
+// read only and available only for resource-level pricing.
+type Inherited string
+
+const (
+	// InheritedFalse - Indicates that the current scope sets its own pricing configuration and does not inherit it from its parent
+	InheritedFalse Inherited = "False"
+	// InheritedTrue - Indicates that the current scope is inheriting its pricing configuration from its parent
+	InheritedTrue Inherited = "True"
+)
+
+// PossibleInheritedValues returns the possible values for the Inherited const type.
+func PossibleInheritedValues() []Inherited {
+	return []Inherited{
+		InheritedFalse,
+		InheritedTrue,
+	}
+}
+
 // Intent - The kill chain related intent behind the alert. For list of supported values, and explanations of Azure Security
 // Center's supported kill chain intents.
 type Intent string
@@ -1042,6 +1204,30 @@ func PossibleOfferingTypeValues() []OfferingType {
 	}
 }
 
+// OnboardingState - Details about resource onboarding status across all connectors.
+// OnboardedByOtherConnector - this resource has already been onboarded to another connector. This is only applicable to top-level
+// resources. Onboarded - this resource has already been onboarded by the
+// specified connector. NotOnboarded - this resource has not been onboarded to any connector. NotApplicable - the onboarding
+// state is not applicable to the current endpoint.
+type OnboardingState string
+
+const (
+	OnboardingStateNotApplicable             OnboardingState = "NotApplicable"
+	OnboardingStateNotOnboarded              OnboardingState = "NotOnboarded"
+	OnboardingStateOnboarded                 OnboardingState = "Onboarded"
+	OnboardingStateOnboardedByOtherConnector OnboardingState = "OnboardedByOtherConnector"
+)
+
+// PossibleOnboardingStateValues returns the possible values for the OnboardingState const type.
+func PossibleOnboardingStateValues() []OnboardingState {
+	return []OnboardingState{
+		OnboardingStateNotApplicable,
+		OnboardingStateNotOnboarded,
+		OnboardingStateOnboarded,
+		OnboardingStateOnboardedByOtherConnector,
+	}
+}
+
 // OperationResult - The status of the long run operation result of governance rule
 type OperationResult string
 
@@ -1143,9 +1329,9 @@ func PossiblePermissionPropertyValues() []PermissionProperty {
 	}
 }
 
-// PricingTier - The pricing tier value. Microsoft Defender for Cloud is provided in two pricing tiers: free and standard.
-// The standard tier offers advanced security capabilities, while the free tier offers basic
-// security features.
+// PricingTier - Indicates whether the Defender plan is enabled on the selected scope. Microsoft Defender for Cloud is provided
+// in two pricing tiers: free and standard. The standard tier offers advanced security
+// capabilities, while the free tier offers basic security features.
 type PricingTier string
 
 const (
@@ -1428,6 +1614,34 @@ func PossibleResourceStatusValues() []ResourceStatus {
 	}
 }
 
+// ResourcesCoverageStatus - This field is available for subscription-level only, and reflects the coverage status of the
+// resources under the subscription. Please note: The "pricingTier" field reflects the plan status of the
+// subscription. However, since the plan status can also be defined at the resource level, there might be misalignment between
+// the subscription's plan status and the resource status. This field helps
+// indicate the coverage status of the resources.
+type ResourcesCoverageStatus string
+
+const (
+	// ResourcesCoverageStatusFullyCovered - This value indicates that all resources associated with the subscription have the
+	// Defender plan enabled.
+	ResourcesCoverageStatusFullyCovered ResourcesCoverageStatus = "FullyCovered"
+	// ResourcesCoverageStatusNotCovered - This value indicates that the Defender plan is disabled for all resources under the
+	// subscription. None of the resources are protected by the Defender plan.
+	ResourcesCoverageStatusNotCovered ResourcesCoverageStatus = "NotCovered"
+	// ResourcesCoverageStatusPartiallyCovered - This value indicates that some resources under the subscription have the Defender
+	// plan enabled, while others have it disabled. There is a mixed coverage status among resources.
+	ResourcesCoverageStatusPartiallyCovered ResourcesCoverageStatus = "PartiallyCovered"
+)
+
+// PossibleResourcesCoverageStatusValues returns the possible values for the ResourcesCoverageStatus const type.
+func PossibleResourcesCoverageStatusValues() []ResourcesCoverageStatus {
+	return []ResourcesCoverageStatus{
+		ResourcesCoverageStatusFullyCovered,
+		ResourcesCoverageStatusNotCovered,
+		ResourcesCoverageStatusPartiallyCovered,
+	}
+}
+
 // Roles - A possible role to configure sending security notification alerts to
 type Roles string
 
@@ -1449,6 +1663,31 @@ func PossibleRolesValues() []Roles {
 		RolesContributor,
 		RolesOwner,
 		RolesServiceAdmin,
+	}
+}
+
+// RuleCategory - Rule categories. Code - code scanning results. Artifact scanning results. Dependencies scanning results.
+// IaC results. Secrets scanning results. Container scanning results.
+type RuleCategory string
+
+const (
+	RuleCategoryArtifacts    RuleCategory = "Artifacts"
+	RuleCategoryCode         RuleCategory = "Code"
+	RuleCategoryContainers   RuleCategory = "Containers"
+	RuleCategoryDependencies RuleCategory = "Dependencies"
+	RuleCategoryIaC          RuleCategory = "IaC"
+	RuleCategorySecrets      RuleCategory = "Secrets"
+)
+
+// PossibleRuleCategoryValues returns the possible values for the RuleCategory const type.
+func PossibleRuleCategoryValues() []RuleCategory {
+	return []RuleCategory{
+		RuleCategoryArtifacts,
+		RuleCategoryCode,
+		RuleCategoryContainers,
+		RuleCategoryDependencies,
+		RuleCategoryIaC,
+		RuleCategorySecrets,
 	}
 }
 
@@ -1598,26 +1837,6 @@ func PossibleScanningModeValues() []ScanningMode {
 	}
 }
 
-// ScopeName - The resource scope of the health report
-type ScopeName string
-
-const (
-	ScopeNameClusters        ScopeName = "Clusters"
-	ScopeNameConnectors      ScopeName = "Connectors"
-	ScopeNameUnknown         ScopeName = "Unknown"
-	ScopeNameVirtualMachines ScopeName = "VirtualMachines"
-)
-
-// PossibleScopeNameValues returns the possible values for the ScopeName const type.
-func PossibleScopeNameValues() []ScopeName {
-	return []ScopeName{
-		ScopeNameClusters,
-		ScopeNameConnectors,
-		ScopeNameUnknown,
-		ScopeNameVirtualMachines,
-	}
-}
-
 // SecurityFamily - The security family of the discovered solution
 type SecurityFamily string
 
@@ -1677,6 +1896,50 @@ func PossibleServerVulnerabilityAssessmentPropertiesProvisioningStateValues() []
 	}
 }
 
+// ServerVulnerabilityAssessmentsAzureSettingSelectedProvider - The selected vulnerability assessments provider on Azure servers
+// in the defined scope.
+type ServerVulnerabilityAssessmentsAzureSettingSelectedProvider string
+
+const (
+	// ServerVulnerabilityAssessmentsAzureSettingSelectedProviderMdeTvm - Microsoft Defender for Endpoints threat and vulnerability
+	// management.
+	ServerVulnerabilityAssessmentsAzureSettingSelectedProviderMdeTvm ServerVulnerabilityAssessmentsAzureSettingSelectedProvider = "MdeTvm"
+)
+
+// PossibleServerVulnerabilityAssessmentsAzureSettingSelectedProviderValues returns the possible values for the ServerVulnerabilityAssessmentsAzureSettingSelectedProvider const type.
+func PossibleServerVulnerabilityAssessmentsAzureSettingSelectedProviderValues() []ServerVulnerabilityAssessmentsAzureSettingSelectedProvider {
+	return []ServerVulnerabilityAssessmentsAzureSettingSelectedProvider{
+		ServerVulnerabilityAssessmentsAzureSettingSelectedProviderMdeTvm,
+	}
+}
+
+// ServerVulnerabilityAssessmentsSettingKind - The kind of the server vulnerability assessments setting
+type ServerVulnerabilityAssessmentsSettingKind string
+
+const (
+	ServerVulnerabilityAssessmentsSettingKindAzureServersSetting ServerVulnerabilityAssessmentsSettingKind = "AzureServersSetting"
+)
+
+// PossibleServerVulnerabilityAssessmentsSettingKindValues returns the possible values for the ServerVulnerabilityAssessmentsSettingKind const type.
+func PossibleServerVulnerabilityAssessmentsSettingKindValues() []ServerVulnerabilityAssessmentsSettingKind {
+	return []ServerVulnerabilityAssessmentsSettingKind{
+		ServerVulnerabilityAssessmentsSettingKindAzureServersSetting,
+	}
+}
+
+type ServerVulnerabilityAssessmentsSettingKindName string
+
+const (
+	ServerVulnerabilityAssessmentsSettingKindNameAzureServersSetting ServerVulnerabilityAssessmentsSettingKindName = "azureServersSetting"
+)
+
+// PossibleServerVulnerabilityAssessmentsSettingKindNameValues returns the possible values for the ServerVulnerabilityAssessmentsSettingKindName const type.
+func PossibleServerVulnerabilityAssessmentsSettingKindNameValues() []ServerVulnerabilityAssessmentsSettingKindName {
+	return []ServerVulnerabilityAssessmentsSettingKindName{
+		ServerVulnerabilityAssessmentsSettingKindNameAzureServersSetting,
+	}
+}
+
 // SettingKind - the kind of the settings string
 type SettingKind string
 
@@ -1698,21 +1961,35 @@ func PossibleSettingKindValues() []SettingKind {
 type SettingName string
 
 const (
-	SettingNameMCAS                           SettingName = "MCAS"
-	SettingNameSentinel                       SettingName = "Sentinel"
-	SettingNameWDATP                          SettingName = "WDATP"
-	SettingNameWDATPEXCLUDELINUXPUBLICPREVIEW SettingName = "WDATP_EXCLUDE_LINUX_PUBLIC_PREVIEW"
-	SettingNameWDATPUNIFIEDSOLUTION           SettingName = "WDATP_UNIFIED_SOLUTION"
+	// SettingNameCurrent - Name of the Defender for Storage Settings name.
+	SettingNameCurrent SettingName = "current"
 )
 
 // PossibleSettingNameValues returns the possible values for the SettingName const type.
 func PossibleSettingNameValues() []SettingName {
 	return []SettingName{
-		SettingNameMCAS,
-		SettingNameSentinel,
-		SettingNameWDATP,
-		SettingNameWDATPEXCLUDELINUXPUBLICPREVIEW,
-		SettingNameWDATPUNIFIEDSOLUTION,
+		SettingNameCurrent,
+	}
+}
+
+type SettingNameAutoGenerated string
+
+const (
+	SettingNameAutoGeneratedMCAS                           SettingNameAutoGenerated = "MCAS"
+	SettingNameAutoGeneratedSentinel                       SettingNameAutoGenerated = "Sentinel"
+	SettingNameAutoGeneratedWDATP                          SettingNameAutoGenerated = "WDATP"
+	SettingNameAutoGeneratedWDATPEXCLUDELINUXPUBLICPREVIEW SettingNameAutoGenerated = "WDATP_EXCLUDE_LINUX_PUBLIC_PREVIEW"
+	SettingNameAutoGeneratedWDATPUNIFIEDSOLUTION           SettingNameAutoGenerated = "WDATP_UNIFIED_SOLUTION"
+)
+
+// PossibleSettingNameAutoGeneratedValues returns the possible values for the SettingNameAutoGenerated const type.
+func PossibleSettingNameAutoGeneratedValues() []SettingNameAutoGenerated {
+	return []SettingNameAutoGenerated{
+		SettingNameAutoGeneratedMCAS,
+		SettingNameAutoGeneratedSentinel,
+		SettingNameAutoGeneratedWDATP,
+		SettingNameAutoGeneratedWDATPEXCLUDELINUXPUBLICPREVIEW,
+		SettingNameAutoGeneratedWDATPUNIFIEDSOLUTION,
 	}
 }
 

@@ -193,7 +193,11 @@ func newProcessorImpl(consumerClient consumerClientForProcessor, checkpointStore
 //
 // [example_consuming_with_checkpoints_test.go]: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/messaging/azeventhubs/example_consuming_with_checkpoints_test.go
 func (p *Processor) NextPartitionClient(ctx context.Context) *ProcessorPartitionClient {
-	<-p.runCalled
+	select {
+	case <-ctx.Done():
+		return nil
+	case <-p.runCalled:
+	}
 
 	select {
 	case nextClient := <-p.nextClients:

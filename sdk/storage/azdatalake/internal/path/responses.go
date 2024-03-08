@@ -157,6 +157,9 @@ type GetPropertiesResponse struct {
 	// EncryptionScope contains the information returned from the x-ms-encryption-scope header response.
 	EncryptionScope *string
 
+	// EncryptionContext contains the information returned from the x-ms-encryption-context header response.
+	EncryptionContext *string
+
 	// ExpiresOn contains the information returned from the x-ms-expiry-time header response.
 	ExpiresOn *time.Time
 
@@ -292,6 +295,9 @@ func FormatGetPropertiesResponse(r *blob.GetPropertiesResponse, rawResponse *htt
 	}
 	if val := rawResponse.Header.Get("x-ms-resource-type"); val != "" {
 		newResp.ResourceType = &val
+	}
+	if val := rawResponse.Header.Get("x-ms-encryption-context"); val != "" {
+		newResp.EncryptionContext = &val
 	}
 	return newResp
 }

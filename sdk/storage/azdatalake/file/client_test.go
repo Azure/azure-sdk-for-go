@@ -4958,6 +4958,48 @@ func (s *RecordedTestSuite) TestFileGetPropertiesWithCPK() {
 	_require.Equal(testcommon.TestCPKByValue.EncryptionKeySHA256, response.EncryptionKeySHA256)
 }
 
+func (s *RecordedTestSuite) TestFileGetPropertiesWithEncryptionContext() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	fileName := testcommon.GenerateFileName(testName)
+	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	createFileOpts := &file.CreateOptions{
+		EncryptionContext: &testcommon.TestEncryptionContext,
+	}
+
+	resp, err := fClient.Create(context.Background(), createFileOpts)
+	_require.NoError(err)
+	_require.NotNil(resp)
+
+	response, err := fClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(response)
+	_require.Equal(testcommon.TestEncryptionContext, *response.EncryptionContext)
+
+	fileClient, err := testcommon.GetFileClient(filesystemName, fileName+"test", s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp2, err := fileClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(resp2)
+
+	response2, err := fileClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(response)
+	_require.Nil(response2.EncryptionContext)
+}
+
 func (s *UnrecordedTestSuite) TestFileCreateDeleteUsingOAuth() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

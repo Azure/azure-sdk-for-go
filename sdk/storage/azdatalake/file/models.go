@@ -55,6 +55,8 @@ type CreateOptions struct {
 	Group *string
 	// ACL is the access control list for the file.
 	ACL *string
+	// Encryption Context
+	EncryptionContext *string
 }
 
 // CreateExpiryValues describes when a newly created file should expire.
@@ -91,6 +93,7 @@ func (o *CreateOptions) format() (*generated.LeaseAccessConditions, *generated.M
 	createOpts.Permissions = o.Permissions
 	createOpts.ProposedLeaseID = o.ProposedLeaseID
 	createOpts.LeaseDuration = o.LeaseDuration
+	createOpts.EncryptionContext = o.EncryptionContext
 
 	var httpHeaders *generated.PathHTTPHeaders
 	var cpkOpts *generated.CPKInfo

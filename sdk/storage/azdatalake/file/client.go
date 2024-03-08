@@ -538,8 +538,10 @@ func (f *Client) DownloadStream(ctx context.Context, o *DownloadStreamOptions) (
 		o = &DownloadStreamOptions{}
 	}
 	opts := o.format()
-	resp, err := f.blobClient().DownloadStream(ctx, opts)
-	newResp := FormatDownloadStreamResponse(&resp)
+	var respFromCtx *http.Response
+	ctxWithResp := shared.WithCaptureBlobResponse(ctx, &respFromCtx)
+	resp, err := f.blobClient().DownloadStream(ctxWithResp, opts)
+	newResp := FormatDownloadStreamResponse(&resp, respFromCtx)
 	fullResp := DownloadStreamResponse{
 		client:           f,
 		DownloadResponse: newResp,

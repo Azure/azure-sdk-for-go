@@ -3,6 +3,7 @@
 ## 1.1.2 (Unreleased)
 
 ### Features Added
+* HNS Encryption Context support 
 
 ### Breaking Changes
 

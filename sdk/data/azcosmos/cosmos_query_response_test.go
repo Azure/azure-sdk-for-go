@@ -95,6 +95,80 @@ func TestQueryResponseParsing(t *testing.T) {
 	}
 }
 
+func TestQueryResponseParsingWithMaxInt64(t *testing.T) {
+	queryResponseRaw := map[string][]map[string]interface{}{
+		"Documents": {
+			{"id": "id1", "name": "name", "maxInt64": 9223372036854775807},
+			{"id": "id2", "name": "name", "maxInt64": 9223372036854775807},
+		},
+	}
+
+	jsonString, err := json.Marshal(queryResponseRaw)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	srv, close := mock.NewTLSServer()
+	defer close()
+	srv.SetResponse(
+		mock.WithBody(jsonString),
+		mock.WithHeader(cosmosHeaderEtag, "someEtag"),
+		mock.WithHeader(cosmosHeaderQueryMetrics, "someQueryMetrics"),
+		mock.WithHeader(cosmosHeaderIndexUtilization, "indexUtilization"),
+		mock.WithHeader(cosmosHeaderActivityId, "someActivityId"),
+		mock.WithHeader(cosmosHeaderRequestCharge, "13.42"))
+
+	req, err := azruntime.NewRequest(context.Background(), http.MethodGet, srv.URL())
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
+	resp, _ := pl.Do(req)
+	parsedResponse, err := newQueryResponse(resp)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if parsedResponse.RawResponse == nil {
+		t.Fatal("parsedResponse.RawResponse is nil")
+	}
+
+	if parsedResponse.ActivityID != "someActivityId" {
+		t.Errorf("Expected ActivityId to be %s, but got %s", "someActivityId", parsedResponse.ActivityID)
+	}
+
+	if parsedResponse.RequestCharge != 13.42 {
+		t.Errorf("Expected RequestCharge to be %f, but got %f", 13.42, parsedResponse.RequestCharge)
+	}
+
+	if parsedResponse.ETag != "someEtag" {
+		t.Errorf("Expected ETag to be %s, but got %s", "someEtag", parsedResponse.ETag)
+	}
+
+	if *parsedResponse.QueryMetrics != "someQueryMetrics" {
+		t.Errorf("Expected IndexMetrics to be %s, but got %s", "someQueryMetrics", *parsedResponse.IndexMetrics)
+	}
+
+	if *parsedResponse.IndexMetrics != "indexUtilization" {
+		t.Errorf("Expected IndexUtilization to be %s, but got %s", "indexUtilization", *parsedResponse.IndexMetrics)
+	}
+
+	if len(parsedResponse.Items) != 2 {
+		t.Errorf("Expected 2 documents, but got %d", len(parsedResponse.Items))
+	}
+
+	firstItem := "{\"id\":\"id1\",\"maxInt64\":9223372036854775807,\"name\":\"name\"}"
+	if string(parsedResponse.Items[0]) != firstItem {
+		t.Errorf("Expected first item to be %s, but got %s", firstItem, parsedResponse.Items[0])
+	}
+
+	secondItem := "{\"id\":\"id2\",\"maxInt64\":9223372036854775807,\"name\":\"name\"}"
+	if string(parsedResponse.Items[1]) != secondItem {
+		t.Errorf("Expected second item to be %s, but got %s", secondItem, parsedResponse.Items[1])
+	}
+}
+
 func TestQueryResponseValueParsing(t *testing.T) {
 	queryResponseRaw := map[string][]string{
 		"Documents": {"id1", "id2"},

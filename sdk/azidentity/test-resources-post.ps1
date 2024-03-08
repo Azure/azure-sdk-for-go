@@ -4,8 +4,14 @@
 # IMPORTANT: Do not invoke this file directly. Please instead run eng/common/TestResources/New-TestResources.ps1 from the repository root.
 
 param (
+    [hashtable] $AdditionalParameters = @{},
     [hashtable] $DeploymentOutputs
 )
+
+if (!$AdditionalParameters['deployResources']) {
+    Write-Host "Skipping post-provisioning script because resources weren't deployed"
+    return
+}
 
 $ErrorActionPreference = 'Stop'
 $PSNativeCommandUseErrorActionPreference = $true

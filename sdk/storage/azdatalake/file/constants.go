@@ -124,3 +124,13 @@ const (
 	StateTypeBreaking  StateType = azdatalake.StateTypeBreaking
 	StateTypeBroken    StateType = azdatalake.StateTypeBroken
 )
+
+// LeaseAction Describes actions that can be performed on a lease.
+type LeaseAction = path.LeaseAction
+
+var (
+	LeaseActionAcquire        LeaseAction = path.LeaseActionAcquire
+	LeaseActionRelease        LeaseAction = path.LeaseActionRelease
+	LeaseActionAcquireRelease LeaseAction = path.LeaseActionAcquireRelease
+	LeaseActionRenew          LeaseAction = path.LeaseActionRenew
+)

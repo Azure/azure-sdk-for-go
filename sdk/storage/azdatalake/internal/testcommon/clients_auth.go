@@ -12,6 +12,7 @@ import (
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 	"testing"
 	"time"
 
@@ -63,6 +64,11 @@ var (
 		EncryptionKey:       &testEncryptedKey,
 		EncryptionKeySHA256: &testEncryptedHash,
 		EncryptionAlgorithm: &testEncryptionAlgorithm,
+	}
+	TestEncryptionScope = "datalaketestencryptionscope"
+	TestCPKScopeInfo    = container.CPKScopeInfo{
+		DefaultEncryptionScope:         &TestEncryptionScope,
+		PreventEncryptionScopeOverride: to.Ptr(false),
 	}
 )
 

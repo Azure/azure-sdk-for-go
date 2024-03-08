@@ -1,0 +1,16 @@
+{
+    "include": [
+        {
+            "Agent": {
+                "msi_image": {
+                    "OSVmImage": "ubuntu-22.04",
+                    "Pool": "azsdk-pool-mms-ubuntu-2204-identitymsi"
+                }
+            },
+            "GoVersion": [
+                "1.22"
+            ],
+            "IDENTITY_IMDS_AVAILABLE": "1"
+        }
+    ]
+}

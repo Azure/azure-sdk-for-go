@@ -75,6 +75,21 @@ steps:
   - pwsh: |
       $modDirs = ./eng/scripts/get_module_dirs.ps1 '${{ parameters.ServiceDirectory }}'
       foreach ($md in $modDirs) {
+        pushd $md
+        Write-Host "##[command]Executing go mod tidy in $md"
+        go mod tidy
+        $diff = (git diff -w .)
+        Write-Host ($diff -join "`n")
+        if ($diff.Length -gt 0) {
+          exit 1
+        }
+      }
+    displayName: 'go mod tidy'
+    workingDirectory: $(System.DefaultWorkingDirectory)
+
+  - pwsh: |
+      $modDirs = ./eng/scripts/get_module_dirs.ps1 '${{ parameters.ServiceDirectory }}'
+      foreach ($md in $modDirs) {
         if (-Not $md -Match "/arm") {
           Get-ChildItem $md/doc.go
         }

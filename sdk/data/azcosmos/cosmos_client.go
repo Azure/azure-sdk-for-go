@@ -197,8 +197,10 @@ func (c *Client) CreateDatabase(
 	}
 
 	operationContext := pipelineRequestOptions{
-		resourceType:    resourceTypeDatabase,
-		resourceAddress: ""}
+		resourceType:     resourceTypeDatabase,
+		resourceAddress:  "",
+		isWriteOperation: true,
+	}
 
 	path, err := generatePathForNameBased(resourceTypeDatabase, "", true)
 	if err != nil {

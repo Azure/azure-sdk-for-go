@@ -55,8 +55,9 @@ func (db *DatabaseClient) CreateContainer(
 	}
 
 	operationContext := pipelineRequestOptions{
-		resourceType:    resourceTypeCollection,
-		resourceAddress: db.link,
+		resourceType:     resourceTypeCollection,
+		resourceAddress:  db.link,
+		isWriteOperation: true,
 	}
 
 	path, err := generatePathForNameBased(resourceTypeCollection, db.link, true)
@@ -209,8 +210,9 @@ func (db *DatabaseClient) Delete(
 	}
 
 	operationContext := pipelineRequestOptions{
-		resourceType:    resourceTypeDatabase,
-		resourceAddress: db.link,
+		resourceType:     resourceTypeDatabase,
+		resourceAddress:  db.link,
+		isWriteOperation: true,
 	}
 
 	path, err := generatePathForNameBased(resourceTypeDatabase, db.link, false)

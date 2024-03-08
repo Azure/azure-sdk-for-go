@@ -11,7 +11,7 @@ if (!$CI) {
     return
 }
 
-if ($EnvironmentVariables -eq $null -or $EnvironmentVariables.Count -eq 0) {
+if ($null -eq $EnvironmentVariables -or $EnvironmentVariables.Count -eq 0) {
     throw "EnvironmentVariables must be set in the calling script New-TestResources.ps1"
 }
 

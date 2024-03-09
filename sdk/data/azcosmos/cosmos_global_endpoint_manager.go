@@ -88,10 +88,10 @@ func (gem *globalEndpointManager) ResolveServiceEndpoint(locationIndex int, isWr
 	return gem.locationCache.resolveServiceEndpoint(locationIndex, isWriteOperation, useWriteEndpoint)
 }
 
-func (gem *globalEndpointManager) Update(ctx context.Context) error {
+func (gem *globalEndpointManager) Update(ctx context.Context, forceRefresh bool) error {
 	gem.gemMutex.Lock()
 	defer gem.gemMutex.Unlock()
-	if !gem.ShouldRefresh() {
+	if !gem.ShouldRefresh() && !forceRefresh {
 		return nil
 	}
 	accountProperties, err := gem.GetAccountProperties(ctx)

@@ -25,6 +25,7 @@ const maxRetryCount = 120
 const defaultBackoff = 1
 
 func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
+	p.resetPolicyCounters()
 	o := pipelineRequestOptions{}
 	if !req.OperationValue(&o) {
 		return nil, fmt.Errorf("Failed to obtain request options, please check request being sent: %s", req.Body())
@@ -34,19 +35,14 @@ func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 	req.Raw().URL.Host = resolvedEndpoint.Host
 	response, err := req.Next() // err can happen in weird scenarios (connectivity, etc) - need to test
 	if err != nil {
-		fmt.Println("error found")
+		return nil, err
 	}
 	subStatus := response.Header.Get(cosmosHeaderSubstatus)
-	fmt.Println(response.StatusCode)
 	if p.shouldRetryStatus(response.StatusCode, subStatus) {
-		p.retryCount = 0
-		p.sessionRetryCount = 0
-		p.preferredLocationIndex = 0
 		for {
 			p.useWriteEndpoint = false
 			subStatus = response.Header.Get(cosmosHeaderSubstatus)
 			if p.shouldRetryStatus(response.StatusCode, subStatus) {
-				fmt.Println("Policy TIME")
 				if response.StatusCode == http.StatusForbidden {
 					if !p.attemptRetryOnEndpointFailure(req, o.isWriteOperation) {
 						return nil, errorinfo.NonRetriableError(azruntime.NewResponseErrorWithErrorCode(response, response.Status))
@@ -60,9 +56,7 @@ func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 						return nil, errorinfo.NonRetriableError(azruntime.NewResponseErrorWithErrorCode(response, response.Status))
 					}
 				}
-				fmt.Println("bout to retry this")
 			} else {
-				fmt.Println("supposed to break this")
 				break
 			}
 			err = req.RewindBody()
@@ -72,13 +66,10 @@ func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 			resolvedEndpoint := p.gem.ResolveServiceEndpoint(p.retryCount, o.isWriteOperation, p.useWriteEndpoint)
 			req.Raw().Host = resolvedEndpoint.Host
 			req.Raw().URL.Host = resolvedEndpoint.Host
-			fmt.Println("retryngggg")
 			p.retryCount += 1
 			response, err = req.Next()
-			fmt.Println("should have retried")
 		}
 	}
-	fmt.Println("returning response from policy")
 	return response, err
 }
 
@@ -100,7 +91,7 @@ func (p *clientRetryPolicy) attemptRetryOnEndpointFailure(req *policy.Request, i
 	} else {
 		p.gem.MarkEndpointUnavailableForRead(*req.Raw().URL)
 	}
-	p.gem.Update(req.Raw().Context())
+	p.gem.Update(req.Raw().Context(), true)
 	time.Sleep(defaultBackoff * time.Second)
 	return true
 }
@@ -134,7 +125,11 @@ func (p *clientRetryPolicy) attemptRetryOnServiceUnavailable(req *policy.Request
 		return false
 	}
 	p.preferredLocationIndex += 1
-	fmt.Println(p.preferredLocationIndex)
-	fmt.Println(len(p.gem.preferredLocations))
 	return true
+}
+
+func (p *clientRetryPolicy) resetPolicyCounters() {
+	p.retryCount = 0
+	p.sessionRetryCount = 0
+	p.preferredLocationIndex = 0
 }

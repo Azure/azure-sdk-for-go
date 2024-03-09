@@ -145,7 +145,7 @@ func TestGlobalEndpointManagerGetEndpointLocation(t *testing.T) {
 	gem, err := newGlobalEndpointManager(srv.URL(), pl, []string{}, 5*time.Minute, true)
 	assert.NoError(t, err)
 
-	err = gem.Update(context.Background())
+	err = gem.Update(context.Background(), false)
 	assert.NoError(t, err)
 
 	location := gem.GetEndpointLocation(*serverEndpoint)
@@ -248,7 +248,7 @@ func TestGlobalEndpointManagerConcurrentUpdate(t *testing.T) {
 		go func(wg *sync.WaitGroup) {
 			defer wg.Done()
 			// Call the function in each goroutine
-			err := gem.Update(context.Background())
+			err := gem.Update(context.Background(), false)
 			assert.NoError(t, err)
 		}(wg)
 	}
@@ -259,14 +259,14 @@ func TestGlobalEndpointManagerConcurrentUpdate(t *testing.T) {
 	callCount := countPolicy.callCount
 	assert.Equal(t, callCount, 1)
 
-	err = gem.Update(context.Background())
+	err = gem.Update(context.Background(), false)
 	assert.NoError(t, err)
 	callCount = countPolicy.callCount
 	assert.Equal(t, callCount, 1)
 
 	time.Sleep(5 * time.Second)
 
-	err = gem.Update(context.Background())
+	err = gem.Update(context.Background(), false)
 	assert.NoError(t, err)
 	callCount = countPolicy.callCount
 	assert.Equal(t, callCount, 2)

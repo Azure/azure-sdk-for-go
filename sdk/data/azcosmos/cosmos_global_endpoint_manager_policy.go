@@ -20,12 +20,12 @@ type globalEndpointManagerPolicy struct {
 func (p *globalEndpointManagerPolicy) Do(req *policy.Request) (*http.Response, error) {
 	p.once.Do(func() {
 		fmt.Println("initializing")
-		p.gem.Update(context.Background())
+		p.gem.Update(context.Background(), false)
 	})
 	if p.gem.ShouldRefresh() {
 		fmt.Println("refreshing")
 		go func() {
-			_ = p.gem.Update(context.Background())
+			_ = p.gem.Update(context.Background(), false)
 		}()
 	}
 	return req.Next()

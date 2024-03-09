@@ -99,9 +99,10 @@ func (c cosmosOffers) ReplaceThroughputIfExists(
 	readResponse.ThroughputProperties.offer = properties.offer
 
 	operationContext := pipelineRequestOptions{
-		resourceType:    resourceTypeOffer,
-		resourceAddress: readResponse.ThroughputProperties.offerId,
-		isRidBased:      true,
+		resourceType:     resourceTypeOffer,
+		resourceAddress:  readResponse.ThroughputProperties.offerId,
+		isRidBased:       true,
+		isWriteOperation: true,
 	}
 
 	path, err := generatePathForNameBased(resourceTypeOffer, readResponse.ThroughputProperties.selfLink, false)

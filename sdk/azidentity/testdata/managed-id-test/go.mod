@@ -8,6 +8,7 @@ require (
 	github.com/Azure/azure-sdk-for-go/sdk/storage/azblob v1.3.1
 )
 
+// use the local azidentity so automation can test the code on main before it's released
 replace github.com/Azure/azure-sdk-for-go/sdk/azidentity => ../../
 
 require (

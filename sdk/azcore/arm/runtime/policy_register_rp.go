@@ -12,6 +12,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"regexp"
 	"strings"
 	"time"
 
@@ -87,8 +88,8 @@ func (r *rpRegistrationPolicy) Do(req *azpolicy.Request) (*http.Response, error)
 		var err error
 		// make the original request
 		resp, err = req.Next()
-		// getting a 409 is the first indication that the RP might need to be registered, check error response
-		if err != nil || resp.StatusCode != http.StatusConflict {
+		// getting a 409, 404 or 400 is the first indication that the RP might need to be registered, check error response
+		if err != nil || !isUnregisteredHttpStatusCode(resp.StatusCode) {
 			return resp, err
 		}
 		var reqErr requestError
@@ -189,6 +190,21 @@ func isUnregisteredRPCode(errorCode string) bool {
 	return false
 }
 
+var unregisteredHttpStatusCodes = []int{
+	http.StatusConflict,
+	http.StatusNotFound,
+	http.StatusBadRequest,
+}
+
+func isUnregisteredHttpStatusCode(statusCode int) bool {
+	for _, code := range unregisteredHttpStatusCodes {
+		if statusCode == code {
+			return true
+		}
+	}
+	return false
+}
+
 func getSubscription(path string) (string, error) {
 	parts := strings.Split(path, "/")
 	for i, v := range parts {
@@ -203,6 +219,15 @@ func getProvider(re requestError) (string, error) {
 	if len(re.ServiceError.Details) > 0 {
 		return re.ServiceError.Details[0].Target, nil
 	}
+	if len(re.ServiceError.Message) > 0 {
+		regExp, err := regexp.Compile(`register.+\b(Microsoft\.(Security|Quota))\b`)
+		if err == nil {
+			resourceProvider := regExp.FindStringSubmatch(re.ServiceError.Message)
+			if len(resourceProvider) > 1 {
+				return resourceProvider[1], nil
+			}
+		}
+	}
 	return "", errors.New("unexpected empty Details")
 }
 
@@ -214,6 +239,7 @@ type requestError struct {
 type serviceError struct {
 	Code    string                `json:"code"`
 	Details []serviceErrorDetails `json:"details"`
+	Message string                `json:"message"`
 }
 
 type serviceErrorDetails struct {

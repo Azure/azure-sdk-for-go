@@ -22,7 +22,7 @@ type globalEndpointManager struct {
 	preferredLocations  []string
 	locationCache       *locationCache
 	refreshTimeInterval time.Duration
-	gemMutex            sync.Mutex
+	gemMutex            sync.RWMutex
 	lastUpdateTime      time.Time
 }
 
@@ -81,13 +81,20 @@ func (gem *globalEndpointManager) RefreshStaleEndpoints() {
 }
 
 func (gem *globalEndpointManager) ShouldRefresh() bool {
+	gem.gemMutex.RLock()
+	defer gem.gemMutex.RUnlock()
+	return gem.shouldRefresh()
+}
+
+// shouldRefresh determines whether to refresh the endpoints. not threadsafe.
+func (gem *globalEndpointManager) shouldRefresh() bool {
 	return time.Since(gem.lastUpdateTime) > gem.refreshTimeInterval
 }
 
 func (gem *globalEndpointManager) Update(ctx context.Context) error {
 	gem.gemMutex.Lock()
 	defer gem.gemMutex.Unlock()
-	if !gem.ShouldRefresh() {
+	if !gem.shouldRefresh() {
 		return nil
 	}
 	accountProperties, err := gem.GetAccountProperties(ctx)

@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
 @minLength(6)
 @maxLength(23)
 @description('The base resource name.')

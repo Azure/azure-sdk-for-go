@@ -32,6 +32,10 @@ type Request = exported.Request
 // Instances can be shared across calls to SDK client constructors when uniform configuration is desired.
 // Zero-value fields will have their specified default values applied during use.
 type ClientOptions struct {
+	// AllowInsecureAuth enables authenticated requests over HTTP.
+	// WARNING: setting this to true will send the authentication key in clear text. Use with caution.
+	AllowInsecureAuth bool
+
 	// APIVersion overrides the default version requested of the service.
 	// Set with caution as this package version has not been tested with arbitrary service versions.
 	APIVersion string
@@ -147,6 +151,10 @@ type BearerTokenOptions struct {
 	// When this field isn't set, the policy follows its default behavior of authorizing every request with a bearer token from
 	// its given credential.
 	AuthorizationHandler AuthorizationHandler
+
+	// AllowInsecureAuth enables authenticated requests over HTTP.
+	// WARNING: setting this to true will send the authentication key in clear text. Use with caution.
+	AllowInsecureAuth bool
 }
 
 // AuthorizationHandler allows SDK developers to insert custom logic that runs when BearerTokenPolicy must authorize a request.

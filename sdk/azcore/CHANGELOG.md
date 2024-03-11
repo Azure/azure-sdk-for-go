@@ -5,6 +5,7 @@
 ### Features Added
 
 * Added `StatusCodes` to `arm/policy.RegistrationOptions` to allow supporting non-standard HTTP status codes during registration.
+* Added field `AllowInsecureAuth` to `azcore.ClientOptions` and dependent authentication pipeline policies.
 
 ### Breaking Changes
 

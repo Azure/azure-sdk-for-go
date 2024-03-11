@@ -33,7 +33,7 @@ type Request = exported.Request
 // Zero-value fields will have their specified default values applied during use.
 type ClientOptions struct {
 	// AllowInsecureAuth enables authenticated requests over HTTP.
-	// WARNING: setting this to true will send the authentication key in clear text. Use with caution.
+	// WARNING: setting this to true will send the credential in clear text. Use with caution.
 	AllowInsecureAuth bool
 
 	// APIVersion overrides the default version requested of the service.
@@ -153,7 +153,7 @@ type BearerTokenOptions struct {
 	AuthorizationHandler AuthorizationHandler
 
 	// AllowInsecureAuth enables authenticated requests over HTTP.
-	// WARNING: setting this to true will send the authentication key in clear text. Use with caution.
+	// WARNING: setting this to true will send the bearer token in clear text. Use with caution.
 	AllowInsecureAuth bool
 }
 

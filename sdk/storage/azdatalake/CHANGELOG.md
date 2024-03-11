@@ -3,6 +3,7 @@
 ## 1.1.2 (Unreleased)
 
 ### Features Added
+* HNS Encryption Context support 
 * HNS Encryption Scope support
 * Append API with acquire lease, release lease and renewal of lease support.
 * Flush API bundled with release lease option.

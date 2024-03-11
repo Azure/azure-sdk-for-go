@@ -59,6 +59,7 @@ var (
 	testEncryptedKey        = "MDEyMzQ1NjcwMTIzNDU2NzAxMjM0NTY3MDEyMzQ1Njc="
 	testEncryptedHash       = "3QFFFpRA5+XANHqwwbT4yXDmrT/2JaLt/FKHjzhOdoE="
 	testEncryptionAlgorithm = file.EncryptionAlgorithmTypeAES256
+	TestEncryptionContext   = "test_encryption_context"
 	TestCPKByValue          = file.CPKInfo{
 		EncryptionKey:       &testEncryptedKey,
 		EncryptionKeySHA256: &testEncryptedHash,

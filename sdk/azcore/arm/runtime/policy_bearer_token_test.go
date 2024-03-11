@@ -51,7 +51,7 @@ func newTestPipeline(opts *azpolicy.ClientOptions) runtime.Pipeline {
 	return runtime.NewPipeline("testmodule", "v0.1.0", runtime.PipelineOptions{}, opts)
 }
 
-func defaultTestPipeline(srv azpolicy.Transporter, scope string) (runtime.Pipeline, error) {
+func defaultTestPipeline(srv azpolicy.Transporter) (runtime.Pipeline, error) {
 	retryOpts := azpolicy.RetryOptions{
 		MaxRetryDelay: 500 * time.Millisecond,
 		RetryDelay:    time.Millisecond,
@@ -74,7 +74,7 @@ func TestBearerPolicy_SuccessGetToken(t *testing.T) {
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
-	pipeline, err := defaultTestPipeline(srv, scope)
+	pipeline, err := defaultTestPipeline(srv)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -121,7 +121,7 @@ func TestBearerTokenPolicy_TokenExpired(t *testing.T) {
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespShortLived)))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
-	pipeline, err := defaultTestPipeline(srv, scope)
+	pipeline, err := defaultTestPipeline(srv)
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -5,7 +5,6 @@ package azcosmos
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 	"sync"
 
@@ -19,11 +18,9 @@ type globalEndpointManagerPolicy struct {
 
 func (p *globalEndpointManagerPolicy) Do(req *policy.Request) (*http.Response, error) {
 	p.once.Do(func() {
-		fmt.Println("initializing")
-		p.gem.Update(context.Background(), false)
+		p.gem.Update(context.Background(), true)
 	})
 	if p.gem.ShouldRefresh() {
-		fmt.Println("refreshing")
 		go func() {
 			_ = p.gem.Update(context.Background(), false)
 		}()

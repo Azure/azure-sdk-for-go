@@ -33,7 +33,7 @@ func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 	resolvedEndpoint := p.gem.ResolveServiceEndpoint(p.retryCount, o.isWriteOperation, p.useWriteEndpoint)
 	req.Raw().Host = resolvedEndpoint.Host
 	req.Raw().URL.Host = resolvedEndpoint.Host
-	response, err := req.Next() // err can happen in weird scenarios (connectivity, etc) - need to test
+	response, err := req.Next() // err can happen in weird scenarios (connectivity, etc)
 	if err != nil {
 		return nil, err
 	}
@@ -88,10 +88,10 @@ func (p *clientRetryPolicy) attemptRetryOnEndpointFailure(req *policy.Request, i
 	}
 	if isWriteOperation {
 		p.gem.MarkEndpointUnavailableForWrite(*req.Raw().URL)
+		p.gem.Update(req.Raw().Context(), true)
 	} else {
 		p.gem.MarkEndpointUnavailableForRead(*req.Raw().URL)
 	}
-	p.gem.Update(req.Raw().Context(), true)
 	time.Sleep(defaultBackoff * time.Second)
 	return true
 }

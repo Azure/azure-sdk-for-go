@@ -120,13 +120,15 @@ func (p *clientRetryPolicy) attemptRetryOnEndpointFailure(req *policy.Request, i
 	}
 	if isWriteOperation {
 		p.gem.MarkEndpointUnavailableForWrite(*req.Raw().URL)
-		err := p.gem.Update(req.Raw().Context(), true)
-		if (err != nil) {
-			return false, err
-		}
 	} else {
 		p.gem.MarkEndpointUnavailableForRead(*req.Raw().URL)
 	}
+
+	err := p.gem.Update(req.Raw().Context(), isWriteOperation)
+	if (err != nil) {
+		return false, err
+	}
+
 	time.Sleep(defaultBackoff * time.Second)
 	return true, nil
 }

@@ -34,7 +34,7 @@ stages:
       UsePipelineProxy: false
 
       ${{ if endsWith(variables['Build.DefinitionName'], 'weekly') }}:
-        AdditionalMatrixConfigs:
+        MatrixConfigs:
           - Name: managed_identity_matrix
             GenerateVMJobs: true
             Path: sdk/azidentity/managed-identity-matrix.json

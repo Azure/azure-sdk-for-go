@@ -40,7 +40,7 @@ type Widget struct {
 }
 
 func (w Widget) MarshalJSON() ([]byte, error) {
-	msg := map[string]interface{}{}
+	msg := map[string]any{}
 	if azcore.IsNullValue(w.Name) {
 		msg["name"] = nil
 	} else if w.Name != nil {

@@ -115,7 +115,7 @@ func (r *rpRegistrationPolicy) Do(req *azpolicy.Request) (*http.Response, error)
 		if err != nil {
 			return resp, err
 		}
-		logRegistrationExit := func(v interface{}) {
+		logRegistrationExit := func(v any) {
 			log.Writef(LogRPRegistration, "END registration for %s: %v", rp, v)
 		}
 		log.Writef(LogRPRegistration, "BEGIN registration for %s", rp)

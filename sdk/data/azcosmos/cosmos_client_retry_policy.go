@@ -43,7 +43,7 @@ func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 		if p.shouldRetryStatus(response.StatusCode, subStatus) {
 			p.useWriteEndpoint = false
 			if response.StatusCode == http.StatusForbidden {
-				shouldRetry, err = p.attemptRetryOnEndpointFailure(req, o.isWriteOperation)
+				shouldRetry, err := p.attemptRetryOnEndpointFailure(req, o.isWriteOperation)
 				if err != nil {
 					return nil, err
 				}
@@ -83,7 +83,7 @@ func (p *clientRetryPolicy) shouldRetryStatus(status int, subStatus string) (sho
 
 func (p *clientRetryPolicy) attemptRetryOnEndpointFailure(req *policy.Request, isWriteOperation bool) (bool, error) {
 	if (p.retryCount > maxRetryCount) || !p.gem.locationCache.enableCrossRegionRetries {
-		return false
+		return false, nil
 	}
 	if isWriteOperation {
 		p.gem.MarkEndpointUnavailableForWrite(*req.Raw().URL)
@@ -95,7 +95,7 @@ func (p *clientRetryPolicy) attemptRetryOnEndpointFailure(req *policy.Request, i
 		p.gem.MarkEndpointUnavailableForRead(*req.Raw().URL)
 	}
 	time.Sleep(defaultBackoff * time.Second)
-	return (true, nil)
+	return true, nil
 }
 
 func (p *clientRetryPolicy) attemptRetryOnSessionUnavailable(req *policy.Request, isWriteOperation bool) bool {

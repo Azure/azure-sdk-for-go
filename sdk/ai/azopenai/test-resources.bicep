@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
 // This is a placeholder file to trigger environment variable setting via New-TestResources.ps1
 
 @description('The base resource name.')

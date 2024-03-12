@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
 param baseName string
 param sku string = 'pergb2018'
 param appSku string = 'standard'

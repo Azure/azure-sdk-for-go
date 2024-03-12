@@ -30,47 +30,46 @@ func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 	if !req.OperationValue(&o) {
 		return nil, fmt.Errorf("Failed to obtain request options, please check request being sent: %s", req.Body())
 	}
-	resolvedEndpoint := p.gem.ResolveServiceEndpoint(p.retryCount, o.isWriteOperation, p.useWriteEndpoint)
-	req.Raw().Host = resolvedEndpoint.Host
-	req.Raw().URL.Host = resolvedEndpoint.Host
-	response, err := req.Next() // err can happen in weird scenarios (connectivity, etc)
-	if err != nil {
-		return nil, err
-	}
-	subStatus := response.Header.Get(cosmosHeaderSubstatus)
-	if p.shouldRetryStatus(response.StatusCode, subStatus) {
-		for {
+	for{
+		resolvedEndpoint := p.gem.ResolveServiceEndpoint(p.retryCount, o.isWriteOperation, p.useWriteEndpoint)
+		req.Raw().Host = resolvedEndpoint.Host
+		req.Raw().URL.Host = resolvedEndpoint.Host
+		response, err := req.Next() // err can happen in weird scenarios (connectivity, etc)
+		if err != nil {
+			// Detect DNS failure and retry if needed
+			return nil, err
+		}
+		subStatus := response.Header.Get(cosmosHeaderSubstatus)
+		if p.shouldRetryStatus(response.StatusCode, subStatus) {
 			p.useWriteEndpoint = false
-			subStatus = response.Header.Get(cosmosHeaderSubstatus)
-			if p.shouldRetryStatus(response.StatusCode, subStatus) {
-				if response.StatusCode == http.StatusForbidden {
-					if !p.attemptRetryOnEndpointFailure(req, o.isWriteOperation) {
-						return nil, errorinfo.NonRetriableError(azruntime.NewResponseErrorWithErrorCode(response, response.Status))
-					}
-				} else if response.StatusCode == http.StatusNotFound {
-					if !p.attemptRetryOnSessionUnavailable(req, o.isWriteOperation) {
-						return nil, errorinfo.NonRetriableError(azruntime.NewResponseErrorWithErrorCode(response, response.Status))
-					}
-				} else if response.StatusCode == http.StatusServiceUnavailable {
-					if !p.attemptRetryOnServiceUnavailable(req, o.isWriteOperation) {
-						return nil, errorinfo.NonRetriableError(azruntime.NewResponseErrorWithErrorCode(response, response.Status))
-					}
+			if response.StatusCode == http.StatusForbidden {
+				shouldRetry, err = p.attemptRetryOnEndpointFailure(req, o.isWriteOperation)
+				if err != nil {
+					return nil, err
 				}
-			} else {
-				break
+				if !shouldRetry {
+					return nil, errorinfo.NonRetriableError(azruntime.NewResponseErrorWithErrorCode(response, response.Status))
+				}
+			} else if response.StatusCode == http.StatusNotFound {
+				if !p.attemptRetryOnSessionUnavailable(req, o.isWriteOperation) {
+					return nil, errorinfo.NonRetriableError(azruntime.NewResponseErrorWithErrorCode(response, response.Status))
+				}
+			} else if response.StatusCode == http.StatusServiceUnavailable {
+				if !p.attemptRetryOnServiceUnavailable(req, o.isWriteOperation) {
+					return nil, errorinfo.NonRetriableError(azruntime.NewResponseErrorWithErrorCode(response, response.Status))
+				}
 			}
 			err = req.RewindBody()
 			if err != nil {
 				return response, err
 			}
-			resolvedEndpoint := p.gem.ResolveServiceEndpoint(p.retryCount, o.isWriteOperation, p.useWriteEndpoint)
-			req.Raw().Host = resolvedEndpoint.Host
-			req.Raw().URL.Host = resolvedEndpoint.Host
 			p.retryCount += 1
-			response, err = req.Next()
+			continue;
 		}
+
+		return response, err
 	}
-	return response, err
+	
 }
 
 func (p *clientRetryPolicy) shouldRetryStatus(status int, subStatus string) (shouldRetry bool) {
@@ -82,18 +81,21 @@ func (p *clientRetryPolicy) shouldRetryStatus(status int, subStatus string) (sho
 	return false
 }
 
-func (p *clientRetryPolicy) attemptRetryOnEndpointFailure(req *policy.Request, isWriteOperation bool) bool {
+func (p *clientRetryPolicy) attemptRetryOnEndpointFailure(req *policy.Request, isWriteOperation bool) (bool, error) {
 	if (p.retryCount > maxRetryCount) || !p.gem.locationCache.enableCrossRegionRetries {
 		return false
 	}
 	if isWriteOperation {
 		p.gem.MarkEndpointUnavailableForWrite(*req.Raw().URL)
-		p.gem.Update(req.Raw().Context(), true)
+		err := p.gem.Update(req.Raw().Context(), true)
+		if (err != nil) {
+			return false, err
+		}
 	} else {
 		p.gem.MarkEndpointUnavailableForRead(*req.Raw().URL)
 	}
 	time.Sleep(defaultBackoff * time.Second)
-	return true
+	return (true, nil)
 }
 
 func (p *clientRetryPolicy) attemptRetryOnSessionUnavailable(req *policy.Request, isWriteOperation bool) bool {

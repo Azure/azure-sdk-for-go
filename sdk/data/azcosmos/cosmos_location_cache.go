@@ -112,11 +112,9 @@ func (lc *locationCache) resolveServiceEndpoint(locationIndex int, isWriteOperat
 		return lc.defaultEndpoint
 	}
 
-	endpoints := []url.URL{}
+	endpoints := lc.locationInfo.readEndpoints
 	if isWriteOperation {
 		endpoints = lc.locationInfo.writeEndpoints
-	} else {
-		endpoints = lc.locationInfo.readEndpoints
 	}
 	return endpoints[locationIndex%len(endpoints)]
 }

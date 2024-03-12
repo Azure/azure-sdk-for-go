@@ -256,7 +256,7 @@ func TestReadEndpointFailure(t *testing.T) {
 	// Verify region is marked as read unavailable
 	assert.True(t, len(gem.locationCache.locationUnavailabilityInfoMap) == 1)
 	locationKeys := []url.URL{}
-	for k, _ := range gem.locationCache.locationUnavailabilityInfoMap {
+	for k := range gem.locationCache.locationUnavailabilityInfoMap {
 		locationKeys = append(locationKeys, k)
 	}
 	assert.True(t, gem.locationCache.locationUnavailabilityInfoMap[locationKeys[0]].unavailableOps == 1)
@@ -317,7 +317,7 @@ func TestWriteEndpointFailure(t *testing.T) {
 	assert.True(t, retryPolicy.retryCount == 2)
 	// Verify region is marked as write unavailable
 	locationKeys := []url.URL{}
-	for k, _ := range gem.locationCache.locationUnavailabilityInfoMap {
+	for k := range gem.locationCache.locationUnavailabilityInfoMap {
 		locationKeys = append(locationKeys, k)
 	}
 	assert.True(t, gem.locationCache.locationUnavailabilityInfoMap[locationKeys[0]].unavailableOps == 2)

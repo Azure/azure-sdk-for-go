@@ -30,7 +30,7 @@ func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 	p.resetPolicyCounters()
 	o := pipelineRequestOptions{}
 	if !req.OperationValue(&o) {
-		return nil, fmt.Errorf("Failed to obtain request options, please check request being sent: %s", req.Body())
+		return nil, fmt.Errorf("failed to obtain request options, please check request being sent: %s", req.Body())
 	}
 	for{
 		resolvedEndpoint := p.gem.ResolveServiceEndpoint(p.retryCount, o.isWriteOperation, p.useWriteEndpoint)
@@ -103,9 +103,15 @@ func (p *clientRetryPolicy) attemptRetryOnNetworkError(req *policy.Request) (boo
 		return false, nil
 	}
 
-	p.gem.MarkEndpointUnavailableForWrite(*req.Raw().URL)
-	p.gem.MarkEndpointUnavailableForRead(*req.Raw().URL)
-	err := p.gem.Update(req.Raw().Context(), false)
+	err := p.gem.MarkEndpointUnavailableForWrite(*req.Raw().URL)
+	if (err != nil) {
+		return false, err
+	}
+	err = p.gem.MarkEndpointUnavailableForRead(*req.Raw().URL)
+	if (err != nil) {
+		return false, err
+	}
+	err = p.gem.Update(req.Raw().Context(), false)
 	if (err != nil) {
 		return false, err
 	}
@@ -119,9 +125,15 @@ func (p *clientRetryPolicy) attemptRetryOnEndpointFailure(req *policy.Request, i
 		return false, nil
 	}
 	if isWriteOperation {
-		p.gem.MarkEndpointUnavailableForWrite(*req.Raw().URL)
+		err := p.gem.MarkEndpointUnavailableForWrite(*req.Raw().URL)
+		if (err != nil) {
+			return false, err
+		}
 	} else {
-		p.gem.MarkEndpointUnavailableForRead(*req.Raw().URL)
+		err := p.gem.MarkEndpointUnavailableForRead(*req.Raw().URL)
+		if (err != nil) {
+			return false, err
+		}
 	}
 
 	err := p.gem.Update(req.Raw().Context(), isWriteOperation)
@@ -135,11 +147,9 @@ func (p *clientRetryPolicy) attemptRetryOnEndpointFailure(req *policy.Request, i
 
 func (p *clientRetryPolicy) attemptRetryOnSessionUnavailable(req *policy.Request, isWriteOperation bool) bool {
 	if p.gem.CanUseMultipleWriteLocations() {
-		endpoints := []string{}
+		endpoints := p.gem.locationCache.locationInfo.availReadLocations
 		if isWriteOperation {
 			endpoints = p.gem.locationCache.locationInfo.availWriteLocations
-		} else {
-			endpoints = p.gem.locationCache.locationInfo.availReadLocations
 		}
 		if p.sessionRetryCount >= len(endpoints) {
 			return false

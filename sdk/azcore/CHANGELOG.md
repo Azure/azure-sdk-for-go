@@ -6,10 +6,13 @@
 
 * Added `StatusCodes` to `arm/policy.RegistrationOptions` to allow supporting non-standard HTTP status codes during registration.
 * Added field `InsecureAllowCredentialWithHTTP` to `azcore.ClientOptions` and dependent authentication pipeline policies.
+* Added type `MultipartContent` to the `streaming` package to support multipart/form payloads with custom Content-Type and file name.
 
 ### Breaking Changes
 
 ### Bugs Fixed
+
+* `runtime.SetMultipartFormData` won't try to stringify `[]byte` values.
 
 ### Other Changes
 

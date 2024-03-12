@@ -231,8 +231,6 @@ func stringize(tmpV any) (string, error) {
 
 	case []byte:
 		return base64.StdEncoding.EncodeToString(v), nil
-	case *url.URL:
-		return v.String(), nil
 	case string:
 		return v, nil
 

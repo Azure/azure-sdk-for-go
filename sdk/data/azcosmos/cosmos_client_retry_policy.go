@@ -4,7 +4,9 @@
 package azcosmos
 
 import (
+	"errors"
 	"fmt"
+	"net"
 	"net/http"
 	"time"
 
@@ -36,7 +38,22 @@ func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 		req.Raw().URL.Host = resolvedEndpoint.Host
 		response, err := req.Next() // err can happen in weird scenarios (connectivity, etc)
 		if err != nil {
-			// Detect DNS failure and retry if needed
+			if (p.isNetworkConnectionError(err)) {
+				shouldRetry, err := p.attemptRetryOnNetworkError(req)
+				if err != nil {
+					return nil, err
+				}
+				if !shouldRetry {
+					return nil, errorinfo.NonRetriableError(azruntime.NewResponseErrorWithErrorCode(response, response.Status))
+				}
+				err = req.RewindBody()
+				if err != nil {
+					return nil, err
+				}
+				p.retryCount += 1
+				continue;
+			}
+
 			return nil, err
 		}
 		subStatus := response.Header.Get(cosmosHeaderSubstatus)
@@ -79,6 +96,22 @@ func (p *clientRetryPolicy) shouldRetryStatus(status int, subStatus string) (sho
 		return true
 	}
 	return false
+}
+
+func (p *clientRetryPolicy) attemptRetryOnNetworkError(req *policy.Request) (bool, error) {
+	if (p.retryCount > maxRetryCount) || !p.gem.locationCache.enableCrossRegionRetries {
+		return false, nil
+	}
+
+	p.gem.MarkEndpointUnavailableForWrite(*req.Raw().URL)
+	p.gem.MarkEndpointUnavailableForRead(*req.Raw().URL)
+	err := p.gem.Update(req.Raw().Context(), false)
+	if (err != nil) {
+		return false, err
+	}
+
+	time.Sleep(defaultBackoff * time.Second)
+	return true, nil
 }
 
 func (p *clientRetryPolicy) attemptRetryOnEndpointFailure(req *policy.Request, isWriteOperation bool) (bool, error) {
@@ -134,4 +167,10 @@ func (p *clientRetryPolicy) resetPolicyCounters() {
 	p.retryCount = 0
 	p.sessionRetryCount = 0
 	p.preferredLocationIndex = 0
+}
+
+// isNetworkConnectionError checks if the error is related to failure to connect / resolve DNS
+func (p *clientRetryPolicy) isNetworkConnectionError(err error) bool {
+	var dnserror *net.DNSError 
+	return errors.As(err, &dnserror)
 }

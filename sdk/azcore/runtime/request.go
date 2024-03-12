@@ -211,17 +211,19 @@ func SetMultipartFormData(req *policy.Request, formData map[string]any) error {
 			}
 			continue
 		}
+
+		var content string
 		if b, ok := v.([]byte); ok {
 			// JSON, don't quote it
-			writer.WriteField(k, string(b))
-			continue
+			content = string(b)
+		} else if s, ok := v.(string); ok {
+			content = s
+		} else {
+			// ensure the value is in string format
+			content = fmt.Sprintf("%v", v)
 		}
-		// ensure the value is in string format
-		s, ok := v.(string)
-		if !ok {
-			s = fmt.Sprintf("%v", v)
-		}
-		if err := writer.WriteField(k, s); err != nil {
+
+		if err := writer.WriteField(k, content); err != nil {
 			return err
 		}
 	}

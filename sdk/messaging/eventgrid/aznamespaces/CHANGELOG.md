@@ -4,7 +4,7 @@
 
 ### Features Added
 
-- Added in "binary mode" support, which can improve efficiency when sending a single event (PR#TBD)
+- Added in "binary mode" support, which can improve efficiency when sending a single event (PR#22582)
 
 ### Breaking Changes
 

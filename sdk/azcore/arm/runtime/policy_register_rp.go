@@ -112,6 +112,7 @@ func (r *rpRegistrationPolicy) Do(req *azpolicy.Request) (*http.Response, error)
 		if err != nil {
 			return resp, err
 		}
+		rp = res.ResourceType.Namespace
 		logRegistrationExit := func(v any) {
 			log.Writef(LogRPRegistration, "END registration for %s: %v", rp, v)
 		}

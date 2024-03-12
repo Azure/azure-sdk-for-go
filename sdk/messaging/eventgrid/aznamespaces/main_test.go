@@ -32,6 +32,7 @@ func TestMain(m *testing.M) {
 }
 
 func run(m *testing.M) int {
+	defer topicCleanup()
 	if recording.GetRecordMode() == recording.PlaybackMode || recording.GetRecordMode() == recording.RecordingMode {
 		proxy, err := recording.StartTestProxy(recordingDirectory, nil)
 		if err != nil {
@@ -48,9 +49,6 @@ func run(m *testing.M) int {
 	if err := godotenv.Load(); err != nil {
 		log.Printf("Failed to load .env file, no integration tests will run: %s", err)
 	}
-
-	cleanup := createTopicAndUpdateEnv()
-	defer cleanup()
 
 	return m.Run()
 }
@@ -140,6 +138,9 @@ func createTopicAndUpdateEnv() func() {
 	return func() {
 		if _, err = topicClient.BeginDelete(context.Background(), resGroup, nsHost, topicName, nil); err != nil {
 			fmt.Printf("Failed to start the delete for our test topic %s: %s", topicName, err)
+			return
 		}
+
+		fmt.Printf("Deleted topic %s\n", topicName)
 	}
 }

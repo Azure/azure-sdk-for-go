@@ -7,11 +7,22 @@
 package aznamespaces
 
 import (
+	"bytes"
 	"context"
+	"encoding/base64"
+	"errors"
+	"fmt"
+	"net/http"
+	"net/url"
+	"strconv"
+	"strings"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/messaging"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/eventgrid/aznamespaces/internal"
 )
 
@@ -99,4 +110,141 @@ func (client *Client) ReleaseCloudEvents(ctx context.Context, topicName string, 
 //   - options - RenewCloudEventLocksOptions contains the optional parameters for the Client.RenewCloudEventLocks method.
 func (client *Client) RenewCloudEventLocks(ctx context.Context, topicName string, eventSubscriptionName string, lockTokens []string, options *RenewCloudEventLocksOptions) (RenewCloudEventLocksResponse, error) {
 	return client.internalRenewCloudEventLocks(ctx, topicName, eventSubscriptionName, renewLockOptions{LockTokens: lockTokens}, options)
+}
+
+// PublishCloudEventOptions contains the optional parameters for the Client.PublishCloudEvent method.
+type PublishCloudEventOptions struct {
+	// BinaryMode sends a CloudEvent more efficiently by avoiding unnecessary encoding of the Body.
+	// There are some caveats to be aware of:
+	// - [CloudEvent.Data] must be of type []byte.
+	// - [CloudEvent.DataContentType] will be used as the Content-Type for the HTTP request.
+	// - [CloudEvent.Extensions] fields are converted to strings.
+	BinaryMode bool
+}
+
+func (client *Client) publishCloudEventCreateRequest(ctx context.Context, topicName string, event messaging.CloudEvent, options *PublishCloudEventOptions) (*policy.Request, error) {
+	if options != nil && options.BinaryMode {
+		return client.publishCloudEventCreateRequestUsingBinaryContentMode(ctx, topicName, event, options)
+	}
+
+	return client.publishCloudEventCreateRequestUsingJSONEncoding(ctx, topicName, event, options)
+}
+
+// publishCloudEventCreateRequestUsingBinaryContentMode creates a request for sending a CloudEvent using [Binary Content mode]
+//
+// [Binary Content mode]: https://github.com/cloudevents/spec/blob/main/cloudevents/bindings/http-protocol-binding.md#31-binary-content-mode
+func (client *Client) publishCloudEventCreateRequestUsingBinaryContentMode(ctx context.Context, topicName string, event messaging.CloudEvent, _ *PublishCloudEventOptions) (*policy.Request, error) {
+	urlPath := "/topics/{topicName}:publish"
+	if topicName == "" {
+		return nil, errors.New("parameter topicName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{topicName}", url.PathEscape(topicName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.endpoint, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2023-10-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+
+	req.Raw().Header.Set("ce-id", event.ID)
+	req.Raw().Header.Set("ce-specversion", event.SpecVersion)
+	req.Raw().Header.Set("ce-time", event.Time.UTC().Format(time.RFC3339))
+	req.Raw().Header.Set("ce-source", event.Source)
+
+	if event.Subject != nil {
+		req.Raw().Header.Set("ce-subject", *event.Subject)
+	}
+
+	req.Raw().Header.Set("ce-type", event.Type)
+
+	if event.DataSchema != nil {
+		req.Raw().Header.Set("ce-dataschema", *event.DataSchema)
+	}
+
+	contentType := ""
+
+	if event.DataContentType != nil {
+		contentType = *event.DataContentType
+	}
+
+	asBytes, ok := event.Data.([]byte)
+
+	if !ok {
+		return nil, fmt.Errorf("CloudEvent.Data must be of type []byte, was type %T", event.Data)
+	}
+
+	bodyStream := streaming.NopCloser(bytes.NewReader(asBytes))
+
+	// encode custom headers
+	for k, v := range event.Extensions {
+		// https://github.com/cloudevents/spec/blob/main/cloudevents/spec.md#type-system
+		headerName := "ce-" + k
+
+		str, err := stringize(v)
+
+		if err != nil {
+			return nil, err
+		}
+
+		req.Raw().Header.Set(headerName, str)
+	}
+
+	if err := req.SetBody(bodyStream, contentType); err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// stringize converts an arbitrary value into an equivalent string, complying with the types
+// in the CloudEvents spec: https://github.com/cloudevents/spec/blob/main/cloudevents/spec.md#type-system
+func stringize(tmpV any) (string, error) {
+	switch v := tmpV.(type) {
+	case bool:
+		return strconv.FormatBool(v), nil
+
+	// signed integer
+	case int8:
+		return strconv.FormatInt(int64(v), 10), nil
+	case int16:
+		return strconv.FormatInt(int64(v), 10), nil
+	case int:
+		return strconv.FormatInt(int64(v), 10), nil
+	case int32:
+		return strconv.FormatInt(int64(v), 10), nil
+	case int64:
+		return strconv.FormatInt(int64(v), 10), nil
+
+	// unsigned integers
+	case uint8: // (also handles `byte`)
+		return strconv.FormatUint(uint64(v), 10), nil
+	case uint16:
+		return strconv.FormatUint(uint64(v), 10), nil
+	case uint:
+		return strconv.FormatUint(uint64(v), 10), nil
+	case uint32:
+		return strconv.FormatUint(uint64(v), 10), nil
+	case uint64:
+		return strconv.FormatUint(uint64(v), 10), nil
+
+	case []byte:
+		return base64.StdEncoding.EncodeToString(v), nil
+	case *url.URL:
+		return v.String(), nil
+	case string:
+		return v, nil
+
+	case time.Time:
+		return v.Format(time.RFC3339), nil
+	case *time.Time:
+		return v.Format(time.RFC3339), nil
+
+	case fmt.Stringer:
+		return v.String(), nil
+
+	default:
+		return "", fmt.Errorf("type %T cannot be converted to a string", v)
+	}
 }

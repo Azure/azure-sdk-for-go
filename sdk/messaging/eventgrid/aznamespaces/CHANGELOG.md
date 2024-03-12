@@ -1,8 +1,10 @@
 # Release History
 
-## 0.4.2 (Unreleased)
+## 0.5.0 (Unreleased)
 
 ### Features Added
+
+- Added in "binary mode" support, which can improve efficiency when sending a single event (PR#TBD)
 
 ### Breaking Changes
 

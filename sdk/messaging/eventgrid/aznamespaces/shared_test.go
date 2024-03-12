@@ -7,16 +7,20 @@
 package aznamespaces_test
 
 import (
+	"context"
 	"crypto/tls"
 	"fmt"
 	"net/http"
 	"os"
 	"strings"
+	"sync"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/messaging"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/eventgrid/aznamespaces"
 	"github.com/stretchr/testify/require"
@@ -77,13 +81,18 @@ type clientWrapper struct {
 	TestVars testVars
 }
 
-type clientWrapperOptions struct {
-	DontPurgeEvents bool
-}
+var initTopic sync.Once
+var topicCleanup = func() {}
 
-func newClientWrapper(t *testing.T, opts *clientWrapperOptions) clientWrapper {
+func newClientWrapper(t *testing.T) clientWrapper {
 	var client *aznamespaces.Client
 	var tv testVars
+
+	if recording.GetRecordMode() == recording.LiveMode {
+		initTopic.Do(func() {
+			topicCleanup = createTopicAndUpdateEnv()
+		})
+	}
 
 	if recording.GetRecordMode() != recording.PlaybackMode {
 		tmpTestVars, err := loadEnv()
@@ -93,7 +102,7 @@ func newClientWrapper(t *testing.T, opts *clientWrapperOptions) clientWrapper {
 		tv = fakeTestVars
 	}
 
-	var options *aznamespaces.ClientOptions
+	options := &aznamespaces.ClientOptions{}
 
 	if recording.GetRecordMode() == recording.LiveMode {
 		if tv.KeyLogPath != "" {
@@ -121,10 +130,25 @@ func newClientWrapper(t *testing.T, opts *clientWrapperOptions) clientWrapper {
 		}
 	}
 
-	if options != nil {
-		options.Logging = policy.LogOptions{
-			IncludeBody: true,
-		}
+	options.Logging = policy.LogOptions{
+		IncludeBody: true,
+		AllowedHeaders: []string{
+			// these are the standard headers for binary content mode with CloudEvents
+			"ce-id",
+			"ce-specversion",
+			"ce-time",
+			"ce-source",
+			"ce-type",
+
+			// these are the Extension fields that I use in testing binary content mode.
+			"ce-extensiondatastring",
+			"ce-extensiondatastring2",
+			"ce-extensiondataint",
+			"ce-extensiondataurl",
+			"ce-extensiondatauint",
+			"ce-extensiondatatime",
+			"ce-extensiondatabytes",
+		},
 	}
 
 	client, err := aznamespaces.NewClientWithSharedKeyCredential(tv.Endpoint, azcore.NewKeyCredential(tv.Key), options)
@@ -219,4 +243,33 @@ func requireEqualCloudEvent(t *testing.T, expected messaging.CloudEvent, actual 
 	expected.Time = actual.Time
 
 	require.Equal(t, actual, expected)
+}
+
+// receiveAll makes sure to receive all of count messages, even if it requires multiple calls.
+// It also acks all events it receives.
+func receiveAll(t *testing.T, client clientWrapper, count int) []aznamespaces.ReceiveDetails {
+	var events []aznamespaces.ReceiveDetails
+
+	receiveCtx, cancelReceive := context.WithTimeout(context.Background(), 2*time.Minute)
+	defer cancelReceive()
+
+	for len(events) < count {
+		eventsResp, err := client.ReceiveCloudEvents(receiveCtx, client.TestVars.Topic, client.TestVars.Subscription, &aznamespaces.ReceiveCloudEventsOptions{
+			MaxEvents: to.Ptr(int32(count - len(events))),
+		})
+		require.NoError(t, err)
+
+		var lockTokens []string
+		for _, evt := range eventsResp.Value {
+			lockTokens = append(lockTokens, *evt.BrokerProperties.LockToken)
+		}
+
+		_, err = client.AcknowledgeCloudEvents(receiveCtx, client.TestVars.Topic, client.TestVars.Subscription, lockTokens, nil)
+		require.NoError(t, err)
+
+		events = append(events, eventsResp.Value...)
+	}
+
+	require.Equal(t, count, len(events))
+	return events
 }

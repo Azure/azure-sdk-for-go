@@ -17,13 +17,17 @@ type globalEndpointManagerPolicy struct {
 }
 
 func (p *globalEndpointManagerPolicy) Do(req *policy.Request) (*http.Response, error) {
+	var err error
 	p.once.Do(func() {
-		p.gem.Update(context.Background(), true)
+		err = p.gem.Update(context.Background(), true)
 	})
 	if p.gem.ShouldRefresh() {
 		go func() {
 			_ = p.gem.Update(context.Background(), false)
 		}()
+	}
+	if err != nil {
+		return nil, err
 	}
 	return req.Next()
 }

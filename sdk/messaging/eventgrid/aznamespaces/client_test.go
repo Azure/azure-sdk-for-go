@@ -390,24 +390,23 @@ func TestPublishCloudEvent_binaryMode(t *testing.T) {
 	captureCtx := policy.WithCaptureResponse(context.Background(), &actualResp)
 
 	// binary mode publish (CloudEvent attributes encoded as headers, CloudEvent.Data used as the request body)
-	{
-		_, err = client.PublishCloudEvent(captureCtx, client.TestVars.Topic, eventToSend, &aznamespaces.PublishCloudEventOptions{
-			BinaryMode: true,
-		})
-		require.NoError(t, err)
+	_, err = client.PublishCloudEvent(captureCtx, client.TestVars.Topic, eventToSend, &aznamespaces.PublishCloudEventOptions{
+		BinaryMode: true,
+	})
+	require.NoError(t, err)
 
-		require.NotNil(t, actualResp.Request)
-		// binary mode propagates the content type of the event itself.
-		// require.Equal(t, customContentType, actualResp.Request.Header["Content-Type"][0])
+	require.NotNil(t, actualResp.Request)
+	// binary mode propagates the content type of the event itself.
+	// require.Equal(t, customContentType, actualResp.Request.Header["Content-Type"][0])
 
-		// (the body bytes stream is exhausted so we can't compare the contents but we can check that we only sent the body bytes.
-		require.Equal(t, int64(len(eventToSend.Data.([]byte))), actualResp.Request.ContentLength)
-	}
+	// (the body bytes stream is exhausted so we can't compare the contents but we can check that we only sent the body bytes.
+	require.Equal(t, int64(len(eventToSend.Data.([]byte))), actualResp.Request.ContentLength)
 
 	event := receiveAll(t, client, 1)[0]
 
-	// zero out needed fields
+	// zero out fields that always change
 	eventToSend.Time, event.Event.Time = nil, nil
+
 	require.Equal(t, eventToSend, event.Event)
 }
 
@@ -631,7 +630,8 @@ func (st stringableType) String() string {
 }
 
 func fixCloudEvent(t *testing.T, ce *messaging.CloudEvent) {
-	ce.ID = "1234-12-1234678"
+	// (this matches what our sanitizers do)
+	ce.ID = "00000000-0000-0000-0000-000000000000"
 	tm, err := time.Parse(time.RFC3339, "2006-01-02T15:04:05Z")
 	require.NoError(t, err)
 	ce.Time = &tm

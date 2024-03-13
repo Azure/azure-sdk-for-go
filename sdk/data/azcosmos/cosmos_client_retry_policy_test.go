@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"net"
 	"net/url"
 	"testing"
 	"time"
@@ -380,7 +381,6 @@ func TestReadServiceUnavailable(t *testing.T) {
 	// Request should retry twice and then fail (2 preferred regions)
 	assert.Error(t, err)
 	assert.True(t, retryPolicy.retryCount == 2)
-	fmt.Println("we here 2")
 
 	// Setting up multi master location cache to test same behavior
 	client.gem.locationCache = CreateMockLC(*defaultEndpoint, true)
@@ -474,6 +474,50 @@ func TestWriteServiceUnavailable(t *testing.T) {
 	// Request should retry twice and then fail (2 preferred regions)
 	assert.Error(t, err)
 	assert.True(t, retryPolicy.retryCount == 2)
+}
+
+func TestDnsErrorRetry(t *testing.T) {
+	srv, closeFunc := mock.NewTLSServer()
+	defer closeFunc()
+
+	defaultEndpoint, err := url.Parse(srv.URL())
+	assert.NoError(t, err)
+
+	gemServer, gemClose := mock.NewTLSServer()
+	defer gemClose()
+	gemServer.SetResponse(mock.WithStatusCode(200))
+
+	internalPipeline := azruntime.NewPipeline("azcosmosgemtest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: gemServer})
+
+	gem := &globalEndpointManager{
+		clientEndpoint:      gemServer.URL(),
+		pipeline:            internalPipeline,
+		preferredLocations:  []string{},
+		locationCache:       CreateMockLC(*defaultEndpoint, false),
+		refreshTimeInterval: defaultExpirationTime,
+		lastUpdateTime:      time.Time{},
+	}
+
+	retryPolicy := &clientRetryPolicy{gem: gem}
+
+	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerRetry: []policy.Policy{retryPolicy}}, &policy.ClientOptions{Transport: srv})
+
+	client := &Client{endpoint: srv.URL(), pipeline: pl, gem: gem}
+	db, _ := client.NewDatabase("database_id")
+	container, _ := db.NewContainer("container_id")
+
+	// Setting up responses for retrying and succeeding, we still have one 503 saved in server responses
+	DNSerr := &net.DNSError{}
+	srv.AppendError(DNSerr)
+	srv.AppendError(DNSerr)
+	srv.AppendResponse(
+		mock.WithStatusCode(200))
+
+	_, err = container.ReadItem(context.TODO(), NewPartitionKeyString("1"), "doc1", nil)
+	// Request should retry twice and then succeed
+	assert.NoError(t, err)
+	assert.True(t, retryPolicy.retryCount == 2)
+
 }
 
 func CreateMockLC(defaultEndpoint url.URL, isMultiMaster bool) *locationCache {

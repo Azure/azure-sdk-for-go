@@ -32,13 +32,13 @@ func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 	if !req.OperationValue(&o) {
 		return nil, fmt.Errorf("failed to obtain request options, please check request being sent: %s", req.Body())
 	}
-	for{
+	for {
 		resolvedEndpoint := p.gem.ResolveServiceEndpoint(p.retryCount, o.isWriteOperation, p.useWriteEndpoint)
 		req.Raw().Host = resolvedEndpoint.Host
 		req.Raw().URL.Host = resolvedEndpoint.Host
 		response, err := req.Next() // err can happen in weird scenarios (connectivity, etc)
 		if err != nil {
-			if (p.isNetworkConnectionError(err)) {
+			if p.isNetworkConnectionError(err) {
 				shouldRetry, err := p.attemptRetryOnNetworkError(req)
 				if err != nil {
 					return nil, err
@@ -51,7 +51,7 @@ func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 					return nil, err
 				}
 				p.retryCount += 1
-				continue;
+				continue
 			}
 
 			return nil, err
@@ -81,12 +81,12 @@ func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 				return response, err
 			}
 			p.retryCount += 1
-			continue;
+			continue
 		}
 
 		return response, err
 	}
-	
+
 }
 
 func (p *clientRetryPolicy) shouldRetryStatus(status int, subStatus string) (shouldRetry bool) {
@@ -104,15 +104,15 @@ func (p *clientRetryPolicy) attemptRetryOnNetworkError(req *policy.Request) (boo
 	}
 
 	err := p.gem.MarkEndpointUnavailableForWrite(*req.Raw().URL)
-	if (err != nil) {
+	if err != nil {
 		return false, err
 	}
 	err = p.gem.MarkEndpointUnavailableForRead(*req.Raw().URL)
-	if (err != nil) {
+	if err != nil {
 		return false, err
 	}
 	err = p.gem.Update(req.Raw().Context(), false)
-	if (err != nil) {
+	if err != nil {
 		return false, err
 	}
 
@@ -126,18 +126,18 @@ func (p *clientRetryPolicy) attemptRetryOnEndpointFailure(req *policy.Request, i
 	}
 	if isWriteOperation {
 		err := p.gem.MarkEndpointUnavailableForWrite(*req.Raw().URL)
-		if (err != nil) {
+		if err != nil {
 			return false, err
 		}
 	} else {
 		err := p.gem.MarkEndpointUnavailableForRead(*req.Raw().URL)
-		if (err != nil) {
+		if err != nil {
 			return false, err
 		}
 	}
 
 	err := p.gem.Update(req.Raw().Context(), isWriteOperation)
-	if (err != nil) {
+	if err != nil {
 		return false, err
 	}
 
@@ -183,6 +183,6 @@ func (p *clientRetryPolicy) resetPolicyCounters() {
 
 // isNetworkConnectionError checks if the error is related to failure to connect / resolve DNS
 func (p *clientRetryPolicy) isNetworkConnectionError(err error) bool {
-	var dnserror *net.DNSError 
+	var dnserror *net.DNSError
 	return errors.As(err, &dnserror)
 }

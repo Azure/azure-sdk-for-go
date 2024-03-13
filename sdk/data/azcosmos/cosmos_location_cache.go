@@ -104,7 +104,7 @@ func (lc *locationCache) update(writeLocations []accountRegion, readLocations []
 
 func (lc *locationCache) resolveServiceEndpoint(locationIndex int, isWriteOperation, useWriteEndpoint bool) url.URL {
 	if (isWriteOperation || useWriteEndpoint) && !lc.canUseMultipleWriteLocs() {
-		if lc.enableCrossRegionRetries {
+		if lc.enableCrossRegionRetries && len(lc.locationInfo.availWriteLocations) > 0 {
 			locationIndex = min(locationIndex%2, len(lc.locationInfo.availWriteLocations)-1)
 			writeLocation := lc.locationInfo.availWriteLocations[locationIndex]
 			return lc.locationInfo.availWriteEndpointsByLocation[writeLocation]

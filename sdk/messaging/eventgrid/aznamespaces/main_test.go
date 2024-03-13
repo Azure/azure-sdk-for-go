@@ -70,11 +70,11 @@ func createTopicAndUpdateEnv(t *testing.T) func() {
 		return func() {}
 	}
 
-	azSubID := os.Getenv("AZEVENTGRID_SUBSCRIPTION_ID")
-	require.NotEmpty(t, azSubID, "AZEVENTGRID_SUBSCRIPTION_ID is defined")
+	azSubID := os.Getenv("AZNAMESPACES_SUBSCRIPTION_ID")
+	require.NotEmpty(t, azSubID, "AZNAMESPACES_SUBSCRIPTION_ID is defined")
 
-	resGroup := os.Getenv("AZEVENTGRID_RESOURCE_GROUP")
-	require.NotEmpty(t, resGroup, "AZEVENTGRID_RESOURCE_GROUP is defined")
+	resGroup := os.Getenv("AZNAMESPACES_RESOURCE_GROUP")
+	require.NotEmpty(t, resGroup, "AZNAMESPACES_RESOURCE_GROUP is defined")
 
 	nsURL, err := url.Parse(os.Getenv("EVENTGRID_ENDPOINT"))
 	require.NoError(t, err)

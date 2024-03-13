@@ -1,3 +1,4 @@
+// Deprecated: use github.com/Azure/azure-sdk-for-go/sdk/monitor/ingestion/azlogs instead
 module github.com/Azure/azure-sdk-for-go/sdk/monitor/azingest
 
 go 1.18

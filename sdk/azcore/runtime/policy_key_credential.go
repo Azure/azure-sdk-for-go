@@ -24,7 +24,7 @@ type KeyCredentialPolicyOptions struct {
 	Prefix string
 
 	// AllowInsecureAuth enables authenticated requests over HTTP.
-	// WARNING: setting this to true will send the authentication key in clear text. Use with caution.
+	// WARNING: setting this to true will allow sending the authentication key in clear text. Use with caution.
 	AllowInsecureAuth bool
 }
 

@@ -19,7 +19,7 @@ import (
 func TestQueryResources_Pass(t *testing.T) {
 	client := startTest(t)
 	metricName := "HttpIncomingRequestCount"
-	resourceIDList := azmetrics.ResourceIDList{ResourceIDs: to.SliceOfPtrs(resourceURI)}
+	resourceIDList := azmetrics.ResourceIDList{ResourceIDs: []string{resourceURI}}
 
 	res, err := client.QueryResources(
 		context.Background(),
@@ -29,8 +29,7 @@ func TestQueryResources_Pass(t *testing.T) {
 		resourceIDList,
 		&azmetrics.QueryResourcesOptions{
 			Aggregation: to.Ptr("average"),
-			StartTime:   to.Ptr("2023-11-15"),
-			EndTime:     to.Ptr("2023-11-16"),
+			StartTime:   to.Ptr("P1D"),
 			Interval:    to.Ptr("PT1H"),
 		},
 	)
@@ -58,7 +57,7 @@ func TestQueryResources_Fail(t *testing.T) {
 		"fakesubscriptionID",
 		"Microsoft.AppConfiguration/configurationStores",
 		[]string{"HttpIncomingRequestCount"},
-		azmetrics.ResourceIDList{ResourceIDs: to.SliceOfPtrs(resourceURI)},
+		azmetrics.ResourceIDList{ResourceIDs: []string{resourceURI}},
 		nil,
 	)
 	require.Error(t, err)

@@ -22,7 +22,7 @@ type globalEndpointManager struct {
 	preferredLocations  []string
 	locationCache       *locationCache
 	refreshTimeInterval time.Duration
-	gemMutex            sync.Mutex
+	gemMutex            sync.RWMutex
 	lastUpdateTime      time.Time
 }
 
@@ -81,6 +81,12 @@ func (gem *globalEndpointManager) RefreshStaleEndpoints() {
 }
 
 func (gem *globalEndpointManager) ShouldRefresh() bool {
+	gem.gemMutex.RLock()
+	defer gem.gemMutex.RUnlock()
+	return gem.shouldRefresh()
+}
+
+func (gem *globalEndpointManager) shouldRefresh() bool {
 	return time.Since(gem.lastUpdateTime) > gem.refreshTimeInterval
 }
 

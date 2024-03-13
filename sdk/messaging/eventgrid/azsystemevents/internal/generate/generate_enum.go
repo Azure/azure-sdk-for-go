@@ -298,7 +298,7 @@ func getConstantValues(reader io.ReadCloser) (map[string]constant, error) {
 			ignorable := false
 
 			// we have a few types that we can ignore - they're not top-level SystemEvents (they're
-			// embeded or used by other events).
+			// embedded or used by other events).
 			for _, prefix := range ignoredTypes {
 				if strings.HasPrefix(comment.Text, prefix) {
 					ignorable = true

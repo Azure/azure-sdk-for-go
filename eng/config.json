@@ -46,7 +46,7 @@
         },
         {
             "Name": "azopenai",
-            "CoverageGoal": 0.32
+            "CoverageGoal": 0.28
         },
         {
             "Name": "aztemplate",
@@ -106,8 +106,16 @@
             "CoverageGoal": 0.85
         },
         {
+            "Name": "monitor/ingestion/azlogs",
+            "CoverageGoal": 0.80
+        },
+        {
             "Name": "monitor/azingest",
             "CoverageGoal": 0.75
+        },
+        {
+            "Name": "monitor/query/azlogs",
+            "CoverageGoal": 0.85
         },
         {
             "Name": "security/keyvault/azadmin",

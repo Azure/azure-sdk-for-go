@@ -14,5 +14,5 @@ const (
 	ModuleName = "aznamespaces"
 
 	// ModuleVersion is the semantic version (see http://semver.org) of this module.
-	ModuleVersion = "v0.4.1"
+	ModuleVersion = "v0.4.2"
 )

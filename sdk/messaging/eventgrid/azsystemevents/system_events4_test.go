@@ -829,7 +829,7 @@ func TestConsumeCloudEventAcsRecordingFileStatusUpdatedEventData(t *testing.T) {
 	events := parseManyCloudEvents(t, requestContent)
 
 	require.NotEmpty(t, events)
-	sysEvent := deserializeSystemEvent[azsystemevents.AcsRecordingFileStatusUpdatedEventData](t, events[0].Data)
+	sysEvent := deserializeSystemEvent[azsystemevents.ACSRecordingFileStatusUpdatedEventData](t, events[0].Data)
 
 	// TODO: rename, it seems?
 	// require.Equal(t, azsystemevents.RecordingChannelTypeMixed, sysEvent.ChannelType)
@@ -864,7 +864,7 @@ func TestConsumeCloudEventAcsEmailDeliveryReportReceivedEvent(t *testing.T) {
 
 	event := parseCloudEvent(t, requestContent)
 
-	sysEvent := deserializeSystemEvent[azsystemevents.AcsEmailDeliveryReportReceivedEventData](t, event.Data)
+	sysEvent := deserializeSystemEvent[azsystemevents.ACSEmailDeliveryReportReceivedEventData](t, event.Data)
 	require.Equal(t, "test2@contoso.org", *sysEvent.Sender)
 	require.Equal(t, "test1@contoso.com", *sysEvent.Recipient)
 	require.Equal(t, azsystemevents.AcsEmailDeliveryReportStatusDelivered, *sysEvent.Status)
@@ -915,7 +915,7 @@ func TestConsumeCloudEventAcsIncomingCallEvent(t *testing.T) {
 	event := parseCloudEvent(t, requestContent)
 
 	require.NotEmpty(t, event)
-	sysEvent := deserializeSystemEvent[azsystemevents.AcsIncomingCallEventData](t, event.Data)
+	sysEvent := deserializeSystemEvent[azsystemevents.ACSIncomingCallEventData](t, event.Data)
 
 	require.Equal(t, "{recipient-id}", *sysEvent.ToCommunicationIdentifier.CommunicationUser.ID)
 	require.Equal(t, "{caller-id}", *sysEvent.FromCommunicationIdentifier.CommunicationUser.ID)
@@ -970,7 +970,7 @@ func TestConsumeCloudEventAcsRouterJobClassificationFailedEvent(t *testing.T) {
 
 	require.NotEmpty(t, event)
 
-	sysEvent := deserializeSystemEvent[azsystemevents.AcsRouterJobClassificationFailedEventData](t, event.Data)
+	sysEvent := deserializeSystemEvent[azsystemevents.ACSRouterJobClassificationFailedEventData](t, event.Data)
 
 	var errors = sysEvent.Errors
 	require.Equal(t, 1, len(errors))

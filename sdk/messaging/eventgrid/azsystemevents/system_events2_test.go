@@ -327,7 +327,7 @@ func TestConsumeIoTHubDeviceCreatedEvent(t *testing.T) {
 	events := parseManyEvents(t, requestContent)
 
 	require.NotEmpty(t, events)
-	sysEvent := deserializeSystemEvent[azsystemevents.IotHubDeviceCreatedEventData](t, events[0].Data)
+	sysEvent := deserializeSystemEvent[azsystemevents.IOTHubDeviceCreatedEventData](t, events[0].Data)
 	require.Equal(t, "enabled", *sysEvent.Twin.Status)
 }
 
@@ -337,7 +337,7 @@ func TestConsumeIoTHubDeviceDeletedEvent(t *testing.T) {
 	events := parseManyEvents(t, requestContent)
 
 	require.NotEmpty(t, events)
-	sysEvent := deserializeSystemEvent[azsystemevents.IotHubDeviceDeletedEventData](t, events[0].Data)
+	sysEvent := deserializeSystemEvent[azsystemevents.IOTHubDeviceDeletedEventData](t, events[0].Data)
 	require.Equal(t, "AAAAAAAAAAI=", *sysEvent.Twin.Etag)
 }
 
@@ -347,7 +347,7 @@ func TestConsumeIoTHubDeviceConnectedEvent(t *testing.T) {
 	events := parseManyEvents(t, requestContent)
 
 	require.NotEmpty(t, events)
-	sysEvent := deserializeSystemEvent[azsystemevents.IotHubDeviceConnectedEventData](t, events[0].Data)
+	sysEvent := deserializeSystemEvent[azsystemevents.IOTHubDeviceConnectedEventData](t, events[0].Data)
 	require.Equal(t, "EGTESTHUB1", *sysEvent.HubName)
 }
 
@@ -357,7 +357,7 @@ func TestConsumeIoTHubDeviceDisconnectedEvent(t *testing.T) {
 	events := parseManyEvents(t, requestContent)
 
 	require.NotEmpty(t, events)
-	sysEvent := deserializeSystemEvent[azsystemevents.IotHubDeviceDisconnectedEventData](t, events[0].Data)
+	sysEvent := deserializeSystemEvent[azsystemevents.IOTHubDeviceDisconnectedEventData](t, events[0].Data)
 	require.Equal(t, "000000000000000001D4132452F67CE200000002000000000000000000000002", *sysEvent.DeviceConnectionStateEventInfo.SequenceNumber)
 }
 
@@ -367,7 +367,7 @@ func TestConsumeIoTHubDeviceTelemetryEvent(t *testing.T) {
 	events := parseManyEvents(t, requestContent)
 
 	require.NotEmpty(t, events)
-	sysEvent := deserializeSystemEvent[azsystemevents.IotHubDeviceTelemetryEventData](t, events[0].Data)
+	sysEvent := deserializeSystemEvent[azsystemevents.IOTHubDeviceTelemetryEventData](t, events[0].Data)
 	require.Equal(t, "Active", *sysEvent.Properties["Status"])
 }
 
@@ -1378,7 +1378,7 @@ func TestConsumeAcsRecordingFileStatusUpdatedEventData(t *testing.T) {
 	events := parseManyEvents(t, requestContent)
 
 	require.NotEmpty(t, events)
-	sysEvent := deserializeSystemEvent[azsystemevents.AcsRecordingFileStatusUpdatedEventData](t, events[0].Data)
+	sysEvent := deserializeSystemEvent[azsystemevents.ACSRecordingFileStatusUpdatedEventData](t, events[0].Data)
 
 	require.Equal(t, azsystemevents.RecordingChannelTypeMixed, *sysEvent.RecordingChannelType)
 	require.Equal(t, azsystemevents.RecordingContentTypeAudio, *sysEvent.RecordingContentType)
@@ -1414,7 +1414,7 @@ func TestConsumeAcsEmailDeliveryReportReceivedEvent(t *testing.T) {
 	event := parseCloudEvent(t, requestContent)
 
 	require.NotEmpty(t, event)
-	emailEvent := deserializeSystemEvent[azsystemevents.AcsEmailDeliveryReportReceivedEventData](t, event.Data)
+	emailEvent := deserializeSystemEvent[azsystemevents.ACSEmailDeliveryReportReceivedEventData](t, event.Data)
 	require.Equal(t, "test2@contoso.org", *emailEvent.Sender)
 	require.Equal(t, "test1@contoso.com", *emailEvent.Recipient)
 	require.Equal(t, azsystemevents.AcsEmailDeliveryReportStatusDelivered, *emailEvent.Status)
@@ -1465,7 +1465,7 @@ func TestConsumeAcsIncomingCallEvent(t *testing.T) {
 
 	event := parseEvent(t, requestContent)
 
-	incomingCallEvent := deserializeSystemEvent[azsystemevents.AcsIncomingCallEventData](t, event.Data)
+	incomingCallEvent := deserializeSystemEvent[azsystemevents.ACSIncomingCallEventData](t, event.Data)
 	require.Equal(t, "{recipient-id}", *incomingCallEvent.ToCommunicationIdentifier.CommunicationUser.ID)
 	require.Equal(t, "{caller-id}", *incomingCallEvent.FromCommunicationIdentifier.CommunicationUser.ID)
 	require.Equal(t, "VOIP Caller", *incomingCallEvent.CallerDisplayName)

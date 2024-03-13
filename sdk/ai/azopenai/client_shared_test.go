@@ -43,7 +43,7 @@ type testVars struct {
 	ChatCompletions                string
 	ChatCompletionsLegacyFunctions string
 	Embeddings                     string
-	Cognitive                      azopenai.AzureCognitiveSearchChatExtensionConfiguration
+	Cognitive                      azopenai.AzureSearchChatExtensionConfiguration
 	Whisper                        endpointWithModel
 	DallE                          endpointWithModel
 	Vision                         endpointWithModel
@@ -158,8 +158,8 @@ func newTestVars(prefix string) testVars {
 		ChatCompletionsLegacyFunctions: getRequired(prefix + "_CHAT_COMPLETIONS_MODEL_LEGACY_FUNCTIONS"),
 		Embeddings:                     getRequired(prefix + "_EMBEDDINGS_MODEL"),
 
-		Cognitive: azopenai.AzureCognitiveSearchChatExtensionConfiguration{
-			Parameters: &azopenai.AzureCognitiveSearchChatExtensionParameters{
+		Cognitive: azopenai.AzureSearchChatExtensionConfiguration{
+			Parameters: &azopenai.AzureSearchChatExtensionParameters{
 				Endpoint:  to.Ptr(getRequired("COGNITIVE_SEARCH_API_ENDPOINT")),
 				IndexName: to.Ptr(getRequired("COGNITIVE_SEARCH_API_INDEX")),
 				Authentication: &azopenai.OnYourDataAPIKeyAuthenticationOptions{
@@ -203,7 +203,7 @@ func initEnvVars() {
 
 		azureOpenAI.Whisper = endpointWithModel{
 			Endpoint: azureOpenAI.Endpoint,
-			Model:    "whisper-deployment",
+			Model:    "whisper",
 		}
 
 		azureOpenAI.ChatCompletionsRAI = endpointWithModel{
@@ -257,8 +257,8 @@ func initEnvVars() {
 		openAI.Embeddings = "text-embedding-ada-002"
 		azureOpenAI.Embeddings = "text-embedding-ada-002"
 
-		azureOpenAI.Cognitive = azopenai.AzureCognitiveSearchChatExtensionConfiguration{
-			Parameters: &azopenai.AzureCognitiveSearchChatExtensionParameters{
+		azureOpenAI.Cognitive = azopenai.AzureSearchChatExtensionConfiguration{
+			Parameters: &azopenai.AzureSearchChatExtensionParameters{
 				Endpoint:  to.Ptr(fakeCognitiveEndpoint),
 				IndexName: to.Ptr(fakeCognitiveIndexName),
 				Authentication: &azopenai.OnYourDataAPIKeyAuthenticationOptions{
@@ -328,8 +328,8 @@ func newRecordingTransporter(t *testing.T) policy.Transporter {
 		require.NoError(t, err)
 
 		err = recording.AddGeneralRegexSanitizer(
-			fmt.Sprintf(`"indexName": "%s"`, fakeCognitiveIndexName),
-			fmt.Sprintf(`"indexName":\s*"%s"`, *azureOpenAI.Cognitive.Parameters.IndexName), nil)
+			fmt.Sprintf(`"index_name": "%s"`, fakeCognitiveIndexName),
+			fmt.Sprintf(`"index_name":\s*"%s"`, *azureOpenAI.Cognitive.Parameters.IndexName), nil)
 		require.NoError(t, err)
 
 		err = recording.AddGeneralRegexSanitizer(
@@ -385,12 +385,12 @@ func newClientOptionsForTest(t *testing.T) *azopenai.ClientOptions {
 	return co
 }
 
-func newAzureOpenAIClientForTest(t *testing.T, tv testVars) *azopenai.Client {
-	return newTestClient(t, tv.Endpoint)
+func newAzureOpenAIClientForTest(t *testing.T, tv testVars, options ...testClientOption) *azopenai.Client {
+	return newTestClient(t, tv.Endpoint, options...)
 }
 
-func newOpenAIClientForTest(t *testing.T) *azopenai.Client {
-	return newTestClient(t, openAI.Endpoint)
+func newOpenAIClientForTest(t *testing.T, options ...testClientOption) *azopenai.Client {
+	return newTestClient(t, openAI.Endpoint, options...)
 }
 
 // newBogusAzureOpenAIClient creates a client that uses an invalid key, which will cause Azure OpenAI to return

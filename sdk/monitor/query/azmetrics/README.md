@@ -1,6 +1,10 @@
-# Azure Monitor Metrics client module for Go
+# Azure Monitor Query Metrics client module for Go
 
-Source code | Package (pkg.go.dev) | [REST API documentation][monitor_rest_docs] | [Product documentation][monitor_docs] | Samples
+The Azure Monitor Query Metrics client module is used to execute read-only queries against [Azure Monitor][azure_monitor_overview]'s metrics platform.
+
+[Metrics][metrics_overview] collects numeric data from monitored resources into a time series database. Metrics are numerical values that are collected at regular intervals and describe some aspect of a system at a particular time. Metrics are lightweight and capable of supporting near real-time scenarios, making them particularly useful for alerting and fast detection of issues.
+
+[Source code][azmetrics_repo] | [Package (pkg.go.dev)][azmetrics_pkg_go] | [REST API documentation][monitor_rest_docs] | [Product documentation][monitor_docs] | Samples
 
 ## Getting started
 
@@ -61,7 +65,11 @@ the [Code of Conduct FAQ][coc_faq] or contact [opencode@microsoft.com][coc_conta
 comments.
 
 <!-- LINKS -->
+[azmetrics_repo]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/monitor/query/azmetrics
+[azmetrics_pkg_go]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/query/azmetrics
 [azure_identity]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity
+[azure_monitor_overview]: https://learn.microsoft.com/azure/azure-monitor/overview
+[metrics_overview]: https://learn.microsoft.com/azure/azure-monitor/essentials/data-platform-metrics
 [azure_sub]: https://azure.microsoft.com/free/
 [cloud_documentation]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud
 [default_cred_ref]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/azidentity#defaultazurecredential

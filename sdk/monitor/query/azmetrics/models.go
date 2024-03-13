@@ -37,7 +37,7 @@ type Metric struct {
 	Name *LocalizableString
 
 	// REQUIRED; The time series returned when a data query is performed.
-	TimeSeries []*TimeSeriesElement
+	TimeSeries []TimeSeriesElement
 
 	// REQUIRED; The resource type of the metric resource.
 	Type *string
@@ -58,7 +58,7 @@ type Metric struct {
 // MetricResults - The metrics result for a resource.
 type MetricResults struct {
 	// The collection of metric data responses per resource, per metric.
-	Values []*MetricValues
+	Values []MetricValues
 }
 
 // MetricValues - Metric data values.
@@ -70,7 +70,7 @@ type MetricValues struct {
 	StartTime *string
 
 	// REQUIRED; The value of the collection.
-	Values []*Metric
+	Values []Metric
 
 	// The interval (window size) for which the metric data was returned in ISO 8601 duration format with a special case for 'FULL'
 	// value that returns single datapoint for entire time span requested (
@@ -113,14 +113,14 @@ type MetricValue struct {
 // ResourceIDList - The comma separated list of resource IDs to query metrics for.
 type ResourceIDList struct {
 	// The list of resource IDs to query metrics for.
-	ResourceIDs []*string
+	ResourceIDs []string
 }
 
 // TimeSeriesElement - A time series result type. The discriminator value is always TimeSeries in this case.
 type TimeSeriesElement struct {
 	// An array of data points representing the metric values. This is only returned if a result type of data is specified.
-	Data []*MetricValue
+	Data []MetricValue
 
 	// The metadata values returned if $filter was specified in the call.
-	MetadataValues []*MetadataValue
+	MetadataValues []MetadataValue
 }

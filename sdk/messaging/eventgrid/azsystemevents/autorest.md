@@ -6,7 +6,7 @@ description: Azure Event Grid system events
 generated-metadata: false
 clear-output-folder: false
 go: true
-require: https://github.com/Azure/azure-rest-api-specs/blob/11bbc2b1df2e915a2227a6a1a48a27b9e67c3311/specification/eventgrid/data-plane/readme.md
+require: https://github.com/Azure/azure-rest-api-specs/blob/1d89c126e2d0e09112b218151a916617d1128cf5/specification/eventgrid/data-plane/readme.md
 license-header: MICROSOFT_MIT_NO_VERSION
 openapi-type: "data-plane"
 output-folder: ../azsystemevents
@@ -120,4 +120,50 @@ directive:
     where: $
     transform: |
       return $.replace(/err = unpopulate\(val, "Data", &e.Data\)/, "e.Data = []byte(val)")
+```
+
+Remove models that are only used as base models, but aren't needed. The OpenAPI emitter
+just duplicates the fields into each child, rather than embedding.  So these aren't needed.
+
+```yaml
+directive:
+  - from: models.go
+    where: $
+    transform: return $.replace(/\/\/ (AvsClusterEventData|AvsPrivateCloudEventData|AvsScriptExecutionEventData) - .+?\n}\n/gs, "");
+  - from: models_serde.go
+    where: $
+    transform: |
+      for (let name of ["AvsClusterEventData", "AvsPrivateCloudEventData", "AvsScriptExecutionEventData"]) {
+        // ex:                '// MarshalJSON implements the json.Marshaller interface for type AvsScriptExecutionEventData.'
+        const marshalPrefix = `// MarshalJSON implements the json\.Marshaller interface for type ${name}.+?\n}\n`;
+        // ex:                  '// UnmarshalJSON implements the json.Unmarshaller interface for type AvsClusterEventData.'
+        const unmarshalPrefix = `// UnmarshalJSON implements the json\.Unmarshaller interface for type ${name}.+?\n}\n`;
+
+        $ = $.replace(new RegExp(marshalPrefix, "gs"), "");
+        $ = $.replace(new RegExp(unmarshalPrefix, "gs"), "");
+      }      
+      return $;
+```
+
+Fix acronyms so they match our naming convention.
+
+```yaml
+directive:
+  - from: 
+      - models.go
+      - models_serde.go
+    where: $
+    debug: true
+    transform: |
+      const acronyms = ["Acs", "Avs", "Iot"];
+      for (let acr of acronyms) {
+        // ex:
+        // '// AcsChatMessageDeletedEventData - Schema'
+        // 'type AcsChatMessageDeletedEventData struct'
+        // 'Participants []AcsChatThreadParticipantProperties'
+        // 'ParticipantRemoved *AcsChatThreadParticipantProperties'
+        const re = new RegExp(`([ *\\]])${acr}([A-Za-z0-9]+?(?:EventData|Properties))`, "sg");
+        $ = $.replace(re, `$1${acr.toUpperCase()}$2`);
+      }
+      return $;
 ```

@@ -8,5 +8,5 @@ package azingest
 
 const (
 	moduleName = "github.com/Azure/azure-sdk-for-go/sdk/monitor/azingest"
-	version    = "v0.1.2"
+	version    = "v0.1.3"
 )

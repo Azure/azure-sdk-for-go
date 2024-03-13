@@ -51,7 +51,7 @@ func TestApplicable(t *testing.T) {
 }
 
 func TestCanResume(t *testing.T) {
-	token := map[string]interface{}{}
+	token := map[string]any{}
 	require.False(t, CanResume(token))
 	token["type"] = kind
 	require.True(t, CanResume(token))

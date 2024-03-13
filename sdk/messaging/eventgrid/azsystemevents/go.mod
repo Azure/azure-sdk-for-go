@@ -4,7 +4,6 @@ go 1.18
 
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.9.2
-	github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue v1.0.0
 	github.com/joho/godotenv v1.5.1
 	github.com/stretchr/testify v1.8.4
 )

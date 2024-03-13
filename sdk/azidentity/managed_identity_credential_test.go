@@ -19,8 +19,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	"github.com/stretchr/testify/require"
 )
 
 const (
@@ -154,6 +156,23 @@ func TestManagedIdentityCredential_AzureArcErrors(t *testing.T) {
 			t.Fatal("expected an error")
 		}
 	})
+}
+
+func TestManagedIdentityCredential_AzureFunctionsLive(t *testing.T) {
+	// This test triggers the managed identity test app deployed to Azure Functions.
+	// See the bicep file and test resources scripts for details.
+	fn := os.Getenv("AZIDENTITY_FUNCTION_NAME")
+	if fn == "" {
+		t.Skip("set AZIDENTITY_FUNCTION_NAME to run this test")
+	}
+	url := fmt.Sprintf("https://%s.azurewebsites.net/api/HttpTrigger", fn)
+	res, err := http.Get(url)
+	require.NoError(t, err)
+	if res.StatusCode != http.StatusOK {
+		b, err := runtime.Payload(res)
+		require.NoError(t, err)
+		t.Fatal("test application returned an error: " + string(b))
+	}
 }
 
 func TestManagedIdentityCredential_AzureMLLive(t *testing.T) {
@@ -472,15 +491,8 @@ func TestManagedIdentityCredential_CreateAccessTokenExpiresOnFail(t *testing.T) 
 }
 
 func TestManagedIdentityCredential_IMDSLive(t *testing.T) {
-	switch recording.GetRecordMode() {
-	case recording.LiveMode:
-		t.Skip("this test doesn't run in live mode because it can't pass in CI")
-	case recording.RecordingMode:
-		// record iff either managed identity environment variable is set, because
-		// otherwise there's no reason to believe the test is running on a VM
-		if len(liveManagedIdentity.clientID)+len(liveManagedIdentity.resourceID) == 0 {
-			t.Skip("neither MANAGED_IDENTITY_CLIENT_ID nor MANAGED_IDENTITY_RESOURCE_ID is set")
-		}
+	if recording.GetRecordMode() != recording.PlaybackMode && !liveManagedIdentity.imds {
+		t.Skip("set IDENTITY_IMDS_AVAILABLE to run this test")
 	}
 	opts, stop := initRecording(t)
 	defer stop()
@@ -492,13 +504,8 @@ func TestManagedIdentityCredential_IMDSLive(t *testing.T) {
 }
 
 func TestManagedIdentityCredential_IMDSClientIDLive(t *testing.T) {
-	switch recording.GetRecordMode() {
-	case recording.LiveMode:
-		t.Skip("this test doesn't run in live mode because it can't pass in CI")
-	case recording.RecordingMode:
-		if liveManagedIdentity.clientID == "" {
-			t.Skip("MANAGED_IDENTITY_CLIENT_ID isn't set")
-		}
+	if recording.GetRecordMode() != recording.PlaybackMode && !liveManagedIdentity.imds || liveManagedIdentity.clientID == "" {
+		t.Skip("set IDENTITY_IMDS_AVAILABLE and IDENTITY_VM_USER_ASSIGNED_MI_CLIENT_ID to run this test")
 	}
 	opts, stop := initRecording(t)
 	defer stop()
@@ -511,13 +518,8 @@ func TestManagedIdentityCredential_IMDSClientIDLive(t *testing.T) {
 }
 
 func TestManagedIdentityCredential_IMDSResourceIDLive(t *testing.T) {
-	switch recording.GetRecordMode() {
-	case recording.LiveMode:
-		t.Skip("this test doesn't run in live mode because it can't pass in CI")
-	case recording.RecordingMode:
-		if liveManagedIdentity.resourceID == "" {
-			t.Skip("MANAGED_IDENTITY_RESOURCE_ID isn't set")
-		}
+	if recording.GetRecordMode() != recording.PlaybackMode && !liveManagedIdentity.imds || liveManagedIdentity.resourceID == "" {
+		t.Skip("set IDENTITY_IMDS_AVAILABLE and IDENTITY_VM_USER_ASSIGNED_MI_RESOURCE_ID to run this test")
 	}
 	opts, stop := initRecording(t)
 	defer stop()

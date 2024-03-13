@@ -1014,6 +1014,22 @@ func PossibleStampKindValues() []StampKind {
 	}
 }
 
+// StorageTaskAssignmentCompletedStatus - The status for a storage task.
+type StorageTaskAssignmentCompletedStatus string
+
+const (
+	StorageTaskAssignmentCompletedStatusFailed    StorageTaskAssignmentCompletedStatus = "Failed"
+	StorageTaskAssignmentCompletedStatusSucceeded StorageTaskAssignmentCompletedStatus = "Succeeded"
+)
+
+// PossibleStorageTaskAssignmentCompletedStatusValues returns the possible values for the StorageTaskAssignmentCompletedStatus const type.
+func PossibleStorageTaskAssignmentCompletedStatusValues() []StorageTaskAssignmentCompletedStatus {
+	return []StorageTaskAssignmentCompletedStatus{
+		StorageTaskAssignmentCompletedStatusFailed,
+		StorageTaskAssignmentCompletedStatusSucceeded,
+	}
+}
+
 // StorageTaskCompletedStatus - The status for a storage task.
 type StorageTaskCompletedStatus string
 

@@ -25,46 +25,60 @@ type Client struct {
 	clientData
 }
 
-// getAudioTranscriptionAsPlainTextCreateRequest creates the GetAudioTranscriptionAsPlainText request.
-func (client *Client) getAudioTranscriptionAsPlainTextCreateRequest(ctx context.Context, body AudioTranscriptionOptions, options *GetAudioTranscriptionAsPlainTextOptions) (*policy.Request, error) {
-	urlPath := "audio/transcriptions"
+// GenerateSpeechFromText - Generates text-to-speech audio from the input text.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-02-15-preview
+//   - options - GenerateSpeechFromTextOptions contains the optional parameters for the Client.GenerateSpeechFromText method.
+func (client *Client) GenerateSpeechFromText(ctx context.Context, body SpeechGenerationOptions, options *GenerateSpeechFromTextOptions) (GenerateSpeechFromTextResponse, error) {
+	var err error
+	req, err := client.generateSpeechFromTextCreateRequest(ctx, body, options)
+	if err != nil {
+		return GenerateSpeechFromTextResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return GenerateSpeechFromTextResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = client.newError(httpResp)
+		return GenerateSpeechFromTextResponse{}, err
+	}
+	return GenerateSpeechFromTextResponse{Body: httpResp.Body}, nil
+}
+
+// generateSpeechFromTextCreateRequest creates the GenerateSpeechFromText request.
+func (client *Client) generateSpeechFromTextCreateRequest(ctx context.Context, body SpeechGenerationOptions, options *GenerateSpeechFromTextOptions) (*policy.Request, error) {
+	urlPath := "audio/speech"
 	req, err := runtime.NewRequest(ctx, http.MethodPost, client.formatURL(urlPath, getDeployment(body)))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-12-01-preview")
+	reqQP.Set("api-version", "2024-02-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	runtime.SkipBodyDownload(req)
+	req.Raw().Header["Accept"] = []string{"application/octet-stream, application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
 		return nil, err
 	}
 	return req, nil
 }
 
-// getAudioTranscriptionAsPlainTextHandleResponse handles the GetAudioTranscriptionAsPlainText response.
-func (client *Client) getAudioTranscriptionAsPlainTextHandleResponse(resp *http.Response) (GetAudioTranscriptionAsPlainTextResponse, error) {
-	result := GetAudioTranscriptionAsPlainTextResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.Value); err != nil {
-		return GetAudioTranscriptionAsPlainTextResponse{}, err
-	}
-	return result, nil
-}
-
 // getAudioTranscriptionInternal - Gets transcribed text and associated metadata from provided spoken audio data. Audio will
 // be transcribed in the written language corresponding to the language it was spoken in.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-12-01-preview
+// Generated from API version 2024-02-15-preview
 //   - deploymentID - Specifies either the model deployment name (when using Azure OpenAI) or model name (when using non-Azure
 //     OpenAI) to use for this request.
 //   - file - The audio data to transcribe. This must be the binary content of a file in one of the supported media formats: flac,
 //     mp3, mp4, mpeg, mpga, m4a, ogg, wav, webm.
 //   - options - getAudioTranscriptionInternalOptions contains the optional parameters for the Client.getAudioTranscriptionInternal
 //     method.
-func (client *Client) getAudioTranscriptionInternal(ctx context.Context, deploymentID string, file io.ReadSeekCloser, options *getAudioTranscriptionInternalOptions) (getAudioTranscriptionInternalResponse, error) {
+func (client *Client) getAudioTranscriptionInternal(ctx context.Context, file io.ReadSeekCloser, options *getAudioTranscriptionInternalOptions) (getAudioTranscriptionInternalResponse, error) {
 	var err error
-	req, err := client.getAudioTranscriptionInternalCreateRequest(ctx, deploymentID, file, options)
+	req, err := client.getAudioTranscriptionInternalCreateRequest(ctx, file, options)
 	if err != nil {
 		return getAudioTranscriptionInternalResponse{}, err
 	}
@@ -81,14 +95,14 @@ func (client *Client) getAudioTranscriptionInternal(ctx context.Context, deploym
 }
 
 // getAudioTranscriptionInternalCreateRequest creates the getAudioTranscriptionInternal request.
-func (client *Client) getAudioTranscriptionInternalCreateRequest(ctx context.Context, deploymentID string, file io.ReadSeekCloser, body *getAudioTranscriptionInternalOptions) (*policy.Request, error) {
+func (client *Client) getAudioTranscriptionInternalCreateRequest(ctx context.Context, file io.ReadSeekCloser, body *getAudioTranscriptionInternalOptions) (*policy.Request, error) {
 	urlPath := "audio/transcriptions"
 	req, err := runtime.NewRequest(ctx, http.MethodPost, client.formatURL(urlPath, getDeployment(body)))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-12-01-preview")
+	reqQP.Set("api-version", "2024-02-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := setMultipartFormData(req, file, *body); err != nil {
@@ -106,71 +120,20 @@ func (client *Client) getAudioTranscriptionInternalHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// GetAudioTranslationAsPlainText - Gets English language transcribed text and associated metadata from provided spoken audio
-// data.
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-12-01-preview
-//   - options - GetAudioTranslationAsPlainTextOptions contains the optional parameters for the Client.GetAudioTranslationAsPlainText
-//     method.
-func (client *Client) GetAudioTranslationAsPlainText(ctx context.Context, body AudioTranslationOptions, options *GetAudioTranslationAsPlainTextOptions) (GetAudioTranslationAsPlainTextResponse, error) {
-	var err error
-	req, err := client.getAudioTranslationAsPlainTextCreateRequest(ctx, body, options)
-	if err != nil {
-		return GetAudioTranslationAsPlainTextResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return GetAudioTranslationAsPlainTextResponse{}, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = client.newError(httpResp)
-		return GetAudioTranslationAsPlainTextResponse{}, err
-	}
-	resp, err := client.getAudioTranslationAsPlainTextHandleResponse(httpResp)
-	return resp, err
-}
-
-// getAudioTranslationAsPlainTextCreateRequest creates the GetAudioTranslationAsPlainText request.
-func (client *Client) getAudioTranslationAsPlainTextCreateRequest(ctx context.Context, body AudioTranslationOptions, options *GetAudioTranslationAsPlainTextOptions) (*policy.Request, error) {
-	urlPath := "audio/translations"
-	req, err := runtime.NewRequest(ctx, http.MethodPost, client.formatURL(urlPath, getDeployment(body)))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// getAudioTranslationAsPlainTextHandleResponse handles the GetAudioTranslationAsPlainText response.
-func (client *Client) getAudioTranslationAsPlainTextHandleResponse(resp *http.Response) (GetAudioTranslationAsPlainTextResponse, error) {
-	result := GetAudioTranslationAsPlainTextResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.Value); err != nil {
-		return GetAudioTranslationAsPlainTextResponse{}, err
-	}
-	return result, nil
-}
-
 // getAudioTranslationInternal - Gets English language transcribed text and associated metadata from provided spoken audio
 // data.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-12-01-preview
+// Generated from API version 2024-02-15-preview
 //   - deploymentID - Specifies either the model deployment name (when using Azure OpenAI) or model name (when using non-Azure
 //     OpenAI) to use for this request.
 //   - file - The audio data to translate. This must be the binary content of a file in one of the supported media formats: flac,
 //     mp3, mp4, mpeg, mpga, m4a, ogg, wav, webm.
 //   - options - getAudioTranslationInternalOptions contains the optional parameters for the Client.getAudioTranslationInternal
 //     method.
-func (client *Client) getAudioTranslationInternal(ctx context.Context, deploymentID string, file io.ReadSeekCloser, options *getAudioTranslationInternalOptions) (getAudioTranslationInternalResponse, error) {
+func (client *Client) getAudioTranslationInternal(ctx context.Context, file io.ReadSeekCloser, options *getAudioTranslationInternalOptions) (getAudioTranslationInternalResponse, error) {
 	var err error
-	req, err := client.getAudioTranslationInternalCreateRequest(ctx, deploymentID, file, options)
+	req, err := client.getAudioTranslationInternalCreateRequest(ctx, file, options)
 	if err != nil {
 		return getAudioTranslationInternalResponse{}, err
 	}
@@ -187,14 +150,14 @@ func (client *Client) getAudioTranslationInternal(ctx context.Context, deploymen
 }
 
 // getAudioTranslationInternalCreateRequest creates the getAudioTranslationInternal request.
-func (client *Client) getAudioTranslationInternalCreateRequest(ctx context.Context, deploymentID string, file io.ReadSeekCloser, body *getAudioTranslationInternalOptions) (*policy.Request, error) {
+func (client *Client) getAudioTranslationInternalCreateRequest(ctx context.Context, file io.ReadSeekCloser, body *getAudioTranslationInternalOptions) (*policy.Request, error) {
 	urlPath := "audio/translations"
 	req, err := runtime.NewRequest(ctx, http.MethodPost, client.formatURL(urlPath, getDeployment(body)))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-12-01-preview")
+	reqQP.Set("api-version", "2024-02-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := setMultipartFormData(req, file, *body); err != nil {
@@ -212,13 +175,13 @@ func (client *Client) getAudioTranslationInternalHandleResponse(resp *http.Respo
 	return result, nil
 }
 
-// getChatCompletions - Gets chat completions for the provided chat messages. Completions support a wide variety of tasks
+// GetChatCompletions - Gets chat completions for the provided chat messages. Completions support a wide variety of tasks
 // and generate text that continues from or "completes" provided prompt data.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-12-01-preview
-//   - options - GetChatCompletionsOptions contains the optional parameters for the Client.getChatCompletions method.
-func (client *Client) getChatCompletions(ctx context.Context, body ChatCompletionsOptions, options *GetChatCompletionsOptions) (GetChatCompletionsResponse, error) {
+// Generated from API version 2024-02-15-preview
+//   - options - GetChatCompletionsOptions contains the optional parameters for the Client.GetChatCompletions method.
+func (client *Client) GetChatCompletions(ctx context.Context, body ChatCompletionsOptions, options *GetChatCompletionsOptions) (GetChatCompletionsResponse, error) {
 	var err error
 	req, err := client.getChatCompletionsCreateRequest(ctx, body, options)
 	if err != nil {
@@ -236,7 +199,7 @@ func (client *Client) getChatCompletions(ctx context.Context, body ChatCompletio
 	return resp, err
 }
 
-// getChatCompletionsCreateRequest creates the getChatCompletions request.
+// getChatCompletionsCreateRequest creates the GetChatCompletions request.
 func (client *Client) getChatCompletionsCreateRequest(ctx context.Context, body ChatCompletionsOptions, options *GetChatCompletionsOptions) (*policy.Request, error) {
 	urlPath := "chat/completions"
 	req, err := runtime.NewRequest(ctx, http.MethodPost, client.formatURL(urlPath, getDeployment(body)))
@@ -244,7 +207,7 @@ func (client *Client) getChatCompletionsCreateRequest(ctx context.Context, body 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-12-01-preview")
+	reqQP.Set("api-version", "2024-02-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -253,7 +216,7 @@ func (client *Client) getChatCompletionsCreateRequest(ctx context.Context, body 
 	return req, nil
 }
 
-// getChatCompletionsHandleResponse handles the getChatCompletions response.
+// getChatCompletionsHandleResponse handles the GetChatCompletions response.
 func (client *Client) getChatCompletionsHandleResponse(resp *http.Response) (GetChatCompletionsResponse, error) {
 	result := GetChatCompletionsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ChatCompletions); err != nil {
@@ -262,63 +225,11 @@ func (client *Client) getChatCompletionsHandleResponse(resp *http.Response) (Get
 	return result, nil
 }
 
-// getChatCompletionsWithAzureExtensions - Gets chat completions for the provided chat messages. This is an Azure-specific
-// version of chat completions that supports integration with configured data sources and other augmentations to the base
-// chat completions capabilities.
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-12-01-preview
-//   - options - GetChatCompletionsWithAzureExtensionsOptions contains the optional parameters for the Client.GetChatCompletionsWithAzureExtensions
-//     method.
-func (client *Client) getChatCompletionsWithAzureExtensions(ctx context.Context, body ChatCompletionsOptions, options *GetChatCompletionsWithAzureExtensionsOptions) (GetChatCompletionsWithAzureExtensionsResponse, error) {
-	var err error
-	req, err := client.getChatCompletionsWithAzureExtensionsCreateRequest(ctx, body, options)
-	if err != nil {
-		return GetChatCompletionsWithAzureExtensionsResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return GetChatCompletionsWithAzureExtensionsResponse{}, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = client.newError(httpResp)
-		return GetChatCompletionsWithAzureExtensionsResponse{}, err
-	}
-	resp, err := client.getChatCompletionsWithAzureExtensionsHandleResponse(httpResp)
-	return resp, err
-}
-
-// getChatCompletionsWithAzureExtensionsCreateRequest creates the getChatCompletionsWithAzureExtensions request.
-func (client *Client) getChatCompletionsWithAzureExtensionsCreateRequest(ctx context.Context, body ChatCompletionsOptions, options *GetChatCompletionsWithAzureExtensionsOptions) (*policy.Request, error) {
-	urlPath := "extensions/chat/completions"
-	req, err := runtime.NewRequest(ctx, http.MethodPost, client.formatURL(urlPath, getDeployment(body)))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// getChatCompletionsWithAzureExtensionsHandleResponse handles the getChatCompletionsWithAzureExtensions response.
-func (client *Client) getChatCompletionsWithAzureExtensionsHandleResponse(resp *http.Response) (GetChatCompletionsWithAzureExtensionsResponse, error) {
-	result := GetChatCompletionsWithAzureExtensionsResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ChatCompletions); err != nil {
-		return GetChatCompletionsWithAzureExtensionsResponse{}, err
-	}
-	return result, nil
-}
-
 // GetCompletions - Gets completions for the provided input prompts. Completions support a wide variety of tasks and generate
 // text that continues from or "completes" provided prompt data.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-12-01-preview
+// Generated from API version 2024-02-15-preview
 //   - options - GetCompletionsOptions contains the optional parameters for the Client.GetCompletions method.
 func (client *Client) GetCompletions(ctx context.Context, body CompletionsOptions, options *GetCompletionsOptions) (GetCompletionsResponse, error) {
 	var err error
@@ -346,7 +257,7 @@ func (client *Client) getCompletionsCreateRequest(ctx context.Context, body Comp
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-12-01-preview")
+	reqQP.Set("api-version", "2024-02-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -367,7 +278,7 @@ func (client *Client) getCompletionsHandleResponse(resp *http.Response) (GetComp
 // GetEmbeddings - Return the embeddings for a given prompt.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-12-01-preview
+// Generated from API version 2024-02-15-preview
 //   - options - GetEmbeddingsOptions contains the optional parameters for the Client.GetEmbeddings method.
 func (client *Client) GetEmbeddings(ctx context.Context, body EmbeddingsOptions, options *GetEmbeddingsOptions) (GetEmbeddingsResponse, error) {
 	var err error
@@ -395,7 +306,7 @@ func (client *Client) getEmbeddingsCreateRequest(ctx context.Context, body Embed
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-12-01-preview")
+	reqQP.Set("api-version", "2024-02-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -416,7 +327,7 @@ func (client *Client) getEmbeddingsHandleResponse(resp *http.Response) (GetEmbed
 // GetImageGenerations - Creates an image given a prompt.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-12-01-preview
+// Generated from API version 2024-02-15-preview
 //   - options - GetImageGenerationsOptions contains the optional parameters for the Client.GetImageGenerations method.
 func (client *Client) GetImageGenerations(ctx context.Context, body ImageGenerationOptions, options *GetImageGenerationsOptions) (GetImageGenerationsResponse, error) {
 	var err error
@@ -444,7 +355,7 @@ func (client *Client) getImageGenerationsCreateRequest(ctx context.Context, body
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-12-01-preview")
+	reqQP.Set("api-version", "2024-02-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {

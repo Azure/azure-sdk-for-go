@@ -57,7 +57,7 @@ clientFactory, err := armsecurity.NewClientFactory(<subscription ID>, cred, &opt
 A client groups a set of related APIs, providing access to its functionality.  Create one or more clients to access the APIs you require using client factory.
 
 ```go
-client := clientFactory.NewConnectorsClient()
+client := clientFactory.NewAPICollectionsClient()
 ```
 
 ## Fakes

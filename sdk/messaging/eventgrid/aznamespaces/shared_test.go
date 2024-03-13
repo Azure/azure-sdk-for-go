@@ -83,23 +83,19 @@ type clientWrapper struct {
 
 var initTopic sync.Once
 var topicCleanup = func() {}
+var tv testVars = fakeTestVars
 
 func newClientWrapper(t *testing.T) clientWrapper {
 	var client *aznamespaces.Client
-	var tv testVars
-
-	if recording.GetRecordMode() == recording.LiveMode {
-		initTopic.Do(func() {
-			topicCleanup = createTopicAndUpdateEnv()
-		})
-	}
 
 	if recording.GetRecordMode() != recording.PlaybackMode {
-		tmpTestVars, err := loadEnv()
-		require.NoError(t, err)
-		tv = tmpTestVars
-	} else {
-		tv = fakeTestVars
+		initTopic.Do(func() {
+			topicCleanup = createTopicAndUpdateEnv(t)
+
+			tmpTestVars, err := loadEnv()
+			require.NoError(t, err)
+			tv = tmpTestVars
+		})
 	}
 
 	options := &aznamespaces.ClientOptions{}

@@ -383,6 +383,7 @@ func TestPublishCloudEvent_binaryMode(t *testing.T) {
 		DataContentType: &customContentType,
 	})
 	require.NoError(t, err)
+	fixCloudEvent(t, &eventToSend)
 
 	// want to validate that we're actually doing the binary mode encoding
 	var actualResp *http.Response
@@ -423,6 +424,7 @@ func TestPublishCloudEvent_worksSameInBinaryVsNonBinaryMode(t *testing.T) {
 		DataContentType: &customContentType,
 	})
 	require.NoError(t, err)
+	fixCloudEvent(t, &eventToSend)
 
 	// want to validate that we're actually doing the binary mode encoding
 	var actualResp *http.Response
@@ -461,7 +463,6 @@ func TestPublishCloudEvent_worksSameInBinaryVsNonBinaryMode(t *testing.T) {
 
 	// events sent via binary content mode and non-binary-content-mode should be the same.
 	// it only affects transport, Event Grid should persist them the same.
-	require.NotEqual(t, events[0].Event.Time, events[1].Event.Time)
 
 	// scrub out fields that change no matter what.
 	for i := 0; i < len(events); i++ {
@@ -495,6 +496,7 @@ func TestPublishCloudEvent_binaryModeNoContentTypeFails(t *testing.T) {
 
 	eventToSend, err := messaging.NewCloudEvent("source", "eventType", []byte{1, 2, 3}, nil)
 	require.NoError(t, err)
+	fixCloudEvent(t, &eventToSend)
 
 	_, err = client.PublishCloudEvent(context.Background(), client.TestVars.Topic, eventToSend, &aznamespaces.PublishCloudEventOptions{
 		BinaryMode: true,
@@ -526,12 +528,13 @@ func TestPublishCloudEvent_binaryModeUseOptionalValues(t *testing.T) {
 			"extensiondataurl":     arbitraryURL,
 			"extensiondatauint":    uint(202),
 			"extensiondatatime":    tm,
-			"extensiondatabytes":   []byte{4, 5, 6},
+			"extensiondatabytes":   []byte{4, 5, 6, 7},
 		},
 		DataSchema: to.Ptr("https://microsoft.com"),
 		Subject:    to.Ptr("my subject"),
 	})
 	require.NoError(t, err)
+	fixCloudEvent(t, &eventToSend)
 
 	// want to validate that we're actually doing the binary mode encoding
 	var actualResp *http.Response
@@ -562,7 +565,7 @@ func TestPublishCloudEvent_binaryModeUseOptionalValues(t *testing.T) {
 		"extensiondataurl":     arbitraryURL.String(),
 		"extensiondatauint":    "202",
 		"extensiondatatime":    tm.Format(time.RFC3339),
-		"extensiondatabytes":   "BAUG", // byte data comes back as a base64 string
+		"extensiondatabytes":   "BAUGBw==", // byte data comes back as a base64 string
 	}, message.Event.Extensions)
 }
 
@@ -572,6 +575,8 @@ func TestPublishCloudEvent_binaryModeNoContentType(t *testing.T) {
 	binaryPayload := []byte{1, 2, 3}
 	eventToSend, err := messaging.NewCloudEvent("source", "eventType", binaryPayload, nil)
 	require.NoError(t, err)
+
+	fixCloudEvent(t, &eventToSend)
 
 	// want to validate that we're actually doing the binary mode encoding
 	var actualResp *http.Response
@@ -623,4 +628,11 @@ type stringableType struct{}
 
 func (st stringableType) String() string {
 	return "hello"
+}
+
+func fixCloudEvent(t *testing.T, ce *messaging.CloudEvent) {
+	ce.ID = "1234-12-1234678"
+	tm, err := time.Parse(time.RFC3339, "2006-01-02T15:04:05Z")
+	require.NoError(t, err)
+	ce.Time = &tm
 }

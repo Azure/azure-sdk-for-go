@@ -120,7 +120,7 @@ func TestSessionNotAvailableMultiMaster(t *testing.T) {
 		clientEndpoint:      gemServer.URL(),
 		pipeline:            internalPipeline,
 		preferredLocations:  []string{},
-		locationCache:       CreateMockLC(*defaultEndpoint, false),
+		locationCache:       CreateMockLC(*defaultEndpoint, true),
 		refreshTimeInterval: defaultExpirationTime,
 		lastUpdateTime:      time.Time{},
 	}

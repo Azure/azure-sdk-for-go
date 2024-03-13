@@ -181,6 +181,8 @@ func generateConstants() error {
 
 	// we don't need these files since we're (intentionally) not exporting a Client from this
 	// package.
+	fmt.Printf("Deleting unneeded files\n")
+
 	for _, file := range filesToDelete {
 		log.Printf("Deleting %s since it only has client types", file)
 		if _, err := os.Stat(file); err == nil {

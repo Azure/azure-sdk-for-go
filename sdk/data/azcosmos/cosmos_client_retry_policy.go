@@ -39,12 +39,12 @@ func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 		response, err := req.Next() // err can happen in weird scenarios (connectivity, etc)
 		if err != nil {
 			if p.isNetworkConnectionError(err) {
-				shouldRetry, err := p.attemptRetryOnNetworkError(req)
-				if err != nil {
-					return nil, err
+				shouldRetry, errRetry := p.attemptRetryOnNetworkError(req)
+				if errRetry != nil {
+					return nil, errRetry
 				}
 				if !shouldRetry {
-					return nil, errorinfo.NonRetriableError(azruntime.NewResponseErrorWithErrorCode(response, response.Status))
+					return nil, err
 				}
 				err = req.RewindBody()
 				if err != nil {
@@ -53,7 +53,6 @@ func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 				p.retryCount += 1
 				continue
 			}
-
 			return nil, err
 		}
 		subStatus := response.Header.Get(cosmosHeaderSubstatus)

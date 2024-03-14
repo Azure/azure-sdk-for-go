@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/nginx/armnginx/v4
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/nginx/armnginx/v3
 
 go 1.18
 

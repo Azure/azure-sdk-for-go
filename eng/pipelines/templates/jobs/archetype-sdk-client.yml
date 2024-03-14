@@ -113,6 +113,7 @@ extends:
       policy: M365
       credscan:
         toolVersion: '2.3.12.23'
+        suppressionsFile: '$(Build.SourcesDirectory)/eng/CredScanSuppression.json'
     stages:
       - stage: Build
         variables:

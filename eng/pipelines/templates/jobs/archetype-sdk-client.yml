@@ -84,7 +84,7 @@ parameters:
   - name: UsePipelineProxy
     type: boolean
     default: true
-  - name: AdditionalStages:
+  - name: AdditionalStages
     type: object
     default: []
 

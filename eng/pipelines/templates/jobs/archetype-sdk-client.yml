@@ -110,7 +110,6 @@ extends:
           break: true
         policy: M365
         credscan:
-          suppressionsFile: '$(Build.SourcesDirectory)/eng/CredScanSuppression.json'
           toolVersion: '2.3.12.23'
     stages:
       - stage: Build

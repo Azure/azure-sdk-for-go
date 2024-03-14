@@ -1,7 +1,5 @@
 jobs:
   - job: CreateDocIndex
-    variables:
-      - template: /eng/pipelines/templates/variables/image.yml@self
     pool:
       name: azsdk-pool-mms-win-2022-general
     steps:

@@ -212,12 +212,13 @@ func SetMultipartFormData(req *policy.Request, formData map[string]any) error {
 		}
 
 		var content string
-		if b, ok := v.([]byte); ok {
+		switch tt := v.(type) {
+		case []byte:
 			// JSON, don't quote it
-			content = string(b)
-		} else if s, ok := v.(string); ok {
-			content = s
-		} else {
+			content = string(tt)
+		case string:
+			content = tt
+		default:
 			// ensure the value is in string format
 			content = fmt.Sprintf("%v", v)
 		}

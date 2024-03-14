@@ -5,6 +5,7 @@ package azopenai_test
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai"
@@ -37,6 +38,64 @@ func TestClient_OpenAI_GetEmbeddings(t *testing.T) {
 func TestClient_GetEmbeddings(t *testing.T) {
 	client := newTestClient(t, azureOpenAI.Endpoint)
 	testGetEmbeddings(t, client, azureOpenAI.Embeddings)
+}
+
+func TestClient_GetEmbeddings_embeddingsFormat(t *testing.T) {
+	testFn := func(t *testing.T, tv testVars, dimension int32) {
+		client := newTestClient(t, tv.Endpoint)
+
+		arg := azopenai.EmbeddingsOptions{
+			Input:          []string{"hello"},
+			EncodingFormat: to.Ptr(azopenai.EmbeddingEncodingFormatBase64),
+			DeploymentName: &tv.TextEmbedding3Small,
+		}
+
+		if dimension > 0 {
+			arg.Dimensions = &dimension
+		}
+
+		base64Resp, err := client.GetEmbeddings(context.Background(), arg, nil)
+		require.NoError(t, err)
+
+		require.NotEmpty(t, base64Resp.Data)
+		require.NotEmpty(t, base64Resp.Data[0].Embedding)
+
+		// sanity checks - we deserialized everything and didn't create anything impossible.
+		for _, v := range base64Resp.Data[0].Embedding {
+			require.True(t, v <= 1.0 && v >= -1.0)
+		}
+
+		arg2 := azopenai.EmbeddingsOptions{
+			Input:          []string{"hello"},
+			DeploymentName: &tv.TextEmbedding3Small,
+		}
+
+		if dimension > 0 {
+			arg2.Dimensions = &dimension
+		}
+
+		floatResp, err := client.GetEmbeddings(context.Background(), arg2, nil)
+		require.NoError(t, err)
+
+		require.NotEmpty(t, floatResp.Data)
+		require.NotEmpty(t, floatResp.Data[0].Embedding)
+
+		require.Equal(t, len(floatResp.Data[0].Embedding), len(base64Resp.Data[0].Embedding))
+
+		// This works "most of the time" but it's non-deterministic since two separate calls don't always
+		// produce the exact same data. Leaving it here in case you want to do some rough checks later.
+		// require.Equal(t, floatResp.Data[0].Embedding[0:dimension], base64Resp.Data[0].Embedding[0:dimension])
+	}
+
+	for _, dim := range []int32{0, 1, 10, 100} {
+		t.Run(fmt.Sprintf("AzureOpenAI(dimensions:%d)", dim), func(t *testing.T) {
+			testFn(t, azureOpenAI, dim)
+		})
+
+		t.Run(fmt.Sprintf("OpenAI(dimensions:%d)", dim), func(t *testing.T) {
+			testFn(t, openAI, dim)
+		})
+	}
 }
 
 func testGetEmbeddings(t *testing.T, client *azopenai.Client, modelOrDeploymentID string) {

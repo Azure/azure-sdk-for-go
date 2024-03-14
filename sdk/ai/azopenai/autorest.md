@@ -611,3 +611,11 @@ directive:
     where: $
     transform: return $.replace(/populateAny\(objectMap, "function_call", c\.FunctionCall\)/, 'populate(objectMap, "function_call", c.FunctionCall)');
 ```
+
+
+```yaml
+directive:
+  - from: models_serde.go
+    where: $
+    transform: return $.replace(/err = unpopulate\(val, "Embedding", &e.Embedding\)/g, "e.Embedding, err = deserializeEmbeddingsArray(val)");
+```

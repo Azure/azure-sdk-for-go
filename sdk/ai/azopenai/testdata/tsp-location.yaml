@@ -1,3 +1,5 @@
 directory: specification/cognitiveservices/OpenAI.Inference
-commit: ea14e94556d26c36830a6c1ff058f71cb00da567
+# Travis's latest PR adding support for the March preview release.
+# https://github.com/Azure/azure-rest-api-specs/pull/28118
+commit: 2a71ca6e3097fecb2edacbcc815f47b3dac336b9
 repo: Azure/azure-rest-api-specs

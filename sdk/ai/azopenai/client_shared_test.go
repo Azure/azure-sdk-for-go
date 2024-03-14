@@ -43,6 +43,7 @@ type testVars struct {
 	ChatCompletions                string
 	ChatCompletionsLegacyFunctions string
 	Embeddings                     string
+	TextEmbedding3Small            string
 	Cognitive                      azopenai.AzureSearchChatExtensionConfiguration
 	Whisper                        endpointWithModel
 	DallE                          endpointWithModel
@@ -144,6 +145,14 @@ func getEndpointWithModel(res string, isAzure bool) endpointWithModel {
 	return ep
 }
 
+func model(azure bool, azureModel, openAIModel string) string {
+	if azure {
+		return azureModel
+	}
+
+	return openAIModel
+}
+
 func newTestVars(prefix string) testVars {
 	azure := prefix == "AOAI"
 
@@ -153,10 +162,11 @@ func newTestVars(prefix string) testVars {
 			APIKey: getRequired(prefix + "_API_KEY"),
 			Azure:  azure,
 		},
-		Completions:                    getRequired(prefix + "_COMPLETIONS_MODEL"),
-		ChatCompletions:                getRequired(prefix + "_CHAT_COMPLETIONS_MODEL"),
-		ChatCompletionsLegacyFunctions: getRequired(prefix + "_CHAT_COMPLETIONS_MODEL_LEGACY_FUNCTIONS"),
-		Embeddings:                     getRequired(prefix + "_EMBEDDINGS_MODEL"),
+		Completions:                    model(azure, "gpt-35-turbo-instruct", "gpt-3.5-turbo-instruct"),
+		ChatCompletions:                model(azure, "gpt-35-turbo-0613", "gpt-4-0613"),
+		ChatCompletionsLegacyFunctions: model(azure, "gpt-4-0613", "gpt-4-0613"),
+		Embeddings:                     model(azure, "text-embedding-ada-002", "text-embedding-ada-002"),
+		TextEmbedding3Small:            model(azure, "text-embedding-3-small", "text-embedding-3-small"),
 
 		Cognitive: azopenai.AzureSearchChatExtensionConfiguration{
 			Parameters: &azopenai.AzureSearchChatExtensionParameters{

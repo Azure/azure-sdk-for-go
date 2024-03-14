@@ -1509,6 +1509,12 @@ type EmbeddingsOptions struct {
 	// inferior results when newlines are present.
 	Input []string
 
+	// The number of dimensions the resulting output embeddings should have. Only supported in text-embedding-3 and later models.
+	Dimensions *int32
+
+	// The response encoding format to use for embedding data.
+	EncodingFormat *EmbeddingEncodingFormat
+
 	// When using Azure OpenAI, specifies the input type to use for embedding search.
 	InputType *string
 

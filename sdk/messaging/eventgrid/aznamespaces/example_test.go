@@ -124,6 +124,87 @@ func ExampleClient_ReceiveCloudEvents() {
 	// Output:
 }
 
+func ExampleClient_PublishCloudEvent() {
+	client := getEventGridClient()
+
+	if client == nil {
+		return
+	}
+
+	topic := os.Getenv("EVENTGRID_TOPIC")
+
+	// CloudEvent is in github.com/Azure/azure-sdk-for-go/azcore/messaging and can be
+	// used to transport
+
+	// you can send a variety of different payloads, all of which can be encoded by messaging.CloudEvent
+	payload := []byte{1, 2, 3}
+	eventToSend, err := messaging.NewCloudEvent("source", "eventType", payload, &messaging.CloudEventOptions{
+		DataContentType: to.Ptr("application/octet-stream"),
+	})
+
+	if err != nil {
+		//  TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	_, err = client.PublishCloudEvent(context.TODO(), topic, eventToSend, nil)
+
+	if err != nil {
+		//  TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	// Output:
+}
+
+// BinaryMode sends a CloudEvent more efficiently by avoiding unnecessary encoding of the Body.
+// There are some caveats to be aware of:
+//
+//   - CloudEvent.Data must be of type []byte.
+//   - CloudEvent.DataContentType will be used as the Content-Type for the HTTP request.
+//   - CloudEvent.Extensions fields are converted to strings.
+func ExampleClient_PublishCloudEvent_binaryMode() {
+	endpoint := os.Getenv("EVENTGRID_ENDPOINT")
+	key := os.Getenv("EVENTGRID_KEY")
+	topicName := os.Getenv("EVENTGRID_TOPIC")
+	subscriptionName := os.Getenv("EVENTGRID_SUBSCRIPTION")
+
+	if endpoint == "" || key == "" || topicName == "" || subscriptionName == "" {
+		return
+	}
+
+	client, err := aznamespaces.NewClientWithSharedKeyCredential(endpoint, azcore.NewKeyCredential(key), nil)
+
+	if err != nil {
+		panic(err)
+	}
+
+	event, err := messaging.NewCloudEvent("source", "eventType", []byte{1, 2, 3}, &messaging.CloudEventOptions{
+		DataContentType: to.Ptr("application/octet-stream"),
+	})
+
+	if err != nil {
+		//  TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	// BinaryMode sends a CloudEvent more efficiently by avoiding unnecessary encoding of the Body.
+	// There are some caveats to be aware of:
+	// - [CloudEvent.Data] must be of type []byte.
+	// - [CloudEvent.DataContentType] will be used as the Content-Type for the HTTP request.
+	// - [CloudEvent.Extensions] fields are converted to strings.
+	_, err = client.PublishCloudEvent(context.TODO(), topicName, event, &aznamespaces.PublishCloudEventOptions{
+		BinaryMode: true,
+	})
+
+	if err != nil {
+		//  TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	// Output:
+}
+
 func getEventGridClient() *aznamespaces.Client {
 	endpoint := os.Getenv("EVENTGRID_ENDPOINT")
 	sharedKey := os.Getenv("EVENTGRID_KEY")

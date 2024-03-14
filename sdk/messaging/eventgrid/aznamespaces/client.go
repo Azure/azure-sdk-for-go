@@ -121,8 +121,8 @@ func (client *Client) PublishCloudEvent(ctx context.Context, topicName string, e
 	return PublishCloudEventResponse{}, nil
 }
 
-// publishCloudEventCreateRequest creates the PublishCloudEvent request.
-func (client *Client) publishCloudEventCreateRequest(ctx context.Context, topicName string, event messaging.CloudEvent, options *PublishCloudEventOptions) (*policy.Request, error) {
+// publishCloudEventCreateRequestUsingJSONEncoding creates the PublishCloudEvent request.
+func (client *Client) publishCloudEventCreateRequestUsingJSONEncoding(ctx context.Context, topicName string, event messaging.CloudEvent, options *PublishCloudEventOptions) (*policy.Request, error) {
 	urlPath := "/topics/{topicName}:publish"
 	if topicName == "" {
 		return nil, errors.New("parameter topicName cannot be empty")

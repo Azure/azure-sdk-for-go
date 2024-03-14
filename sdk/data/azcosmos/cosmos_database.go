@@ -53,11 +53,16 @@ func (db *DatabaseClient) CreateContainer(
 	if o == nil {
 		o = &CreateContainerOptions{}
 	}
+	returnResponse := true
+	h := &headerOptionsOverride{
+		enableContentResponseOnWrite: &returnResponse,
+	}
 
 	operationContext := pipelineRequestOptions{
-		resourceType:     resourceTypeCollection,
-		resourceAddress:  db.link,
-		isWriteOperation: true,
+		resourceType:          resourceTypeCollection,
+		resourceAddress:       db.link,
+		isWriteOperation:      true,
+		headerOptionsOverride: h,
 	}
 
 	path, err := generatePathForNameBased(resourceTypeCollection, db.link, true)

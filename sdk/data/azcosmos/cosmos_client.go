@@ -195,11 +195,16 @@ func (c *Client) CreateDatabase(
 	if o == nil {
 		o = &CreateDatabaseOptions{}
 	}
+	returnResponse := true
+	h := &headerOptionsOverride{
+		enableContentResponseOnWrite: &returnResponse,
+	}
 
 	operationContext := pipelineRequestOptions{
-		resourceType:     resourceTypeDatabase,
-		resourceAddress:  "",
-		isWriteOperation: true,
+		resourceType:          resourceTypeDatabase,
+		resourceAddress:       "",
+		isWriteOperation:      true,
+		headerOptionsOverride: h,
 	}
 
 	path, err := generatePathForNameBased(resourceTypeDatabase, "", true)

@@ -9,8 +9,6 @@
 - New struct `APIKey`
 - New struct `APIKeys`
 - New struct `ListKeysResult`
-- New field `SystemData` in struct `Resource`
-- New field `SystemData` in struct `TrackedResource`
 - New field `APIKeyEnabled` in struct `WorkspaceResourceProperties`
 
 

@@ -23,7 +23,7 @@ pr:
     - sdk/azcore/
     - eng/
 
-extend:
+extends:
   template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: azcore

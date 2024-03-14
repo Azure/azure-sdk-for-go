@@ -1,11 +1,6 @@
 # Release History
 
-## 4.0.0-beta.1 (2024-03-22)
-### Breaking Changes
-
-- Type of `ResourceProviderDefaultErrorResponse.Error` has been changed from `*ErrorResponseBody` to `*ErrorDetail`
-- Struct `ErrorResponseBody` has been removed
-
+## 3.1.0-beta.1 (2024-03-22)
 ### Features Added
 
 - New function `*ConfigurationsClient.Analysis(context.Context, string, string, string, *ConfigurationsClientAnalysisOptions) (ConfigurationsClientAnalysisResponse, error)`
@@ -17,8 +12,6 @@
 - New struct `AutoUpgradeProfile`
 - New struct `CertificateErrorResponseBody`
 - New struct `DeploymentScalingPropertiesAutoScaleSettings`
-- New struct `ErrorAdditionalInfo`
-- New struct `ErrorDetail`
 - New struct `ScaleProfile`
 - New struct `ScaleProfileCapacity`
 - New field `CertificateError`, `KeyVaultSecretCreated`, `KeyVaultSecretVersion`, `SHA1Thumbprint` in struct `CertificateProperties`

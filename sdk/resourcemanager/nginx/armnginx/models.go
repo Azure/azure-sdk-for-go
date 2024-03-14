@@ -250,33 +250,6 @@ type DeploymentUserProfile struct {
 	PreferredEmail *string
 }
 
-// ErrorAdditionalInfo - The resource management error additional info.
-type ErrorAdditionalInfo struct {
-	// READ-ONLY; The additional info.
-	Info any
-
-	// READ-ONLY; The additional info type.
-	Type *string
-}
-
-// ErrorDetail - The error detail.
-type ErrorDetail struct {
-	// READ-ONLY; The error additional info.
-	AdditionalInfo []*ErrorAdditionalInfo
-
-	// READ-ONLY; The error code.
-	Code *string
-
-	// READ-ONLY; The error details.
-	Details []*ErrorDetail
-
-	// READ-ONLY; The error message.
-	Message *string
-
-	// READ-ONLY; The error target.
-	Target *string
-}
-
 type FrontendIPConfiguration struct {
 	PrivateIPAddresses []*PrivateIPAddress
 	PublicIPAddresses  []*PublicIPAddress
@@ -352,11 +325,6 @@ type PrivateIPAddress struct {
 
 type PublicIPAddress struct {
 	ID *string
-}
-
-type ResourceProviderDefaultErrorResponse struct {
-	// The error detail.
-	Error *ErrorDetail
 }
 
 type ResourceSKU struct {

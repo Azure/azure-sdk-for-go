@@ -132,8 +132,6 @@ func MarshalAsXML(req *policy.Request, v any) error {
 	return req.SetBody(exported.NopCloser(bytes.NewReader(b)), shared.ContentTypeAppXML)
 }
 
-var quoteEscaper = strings.NewReplacer("\\", "\\\\", `"`, "\\\"")
-
 // SetMultipartFormData writes the specified keys/values as multi-part form
 // fields with the specified value.  File content must be specified as a ReadSeekCloser.
 // Byte slices will be treated as JSON. All other values are treated as string values.
@@ -165,6 +163,7 @@ func SetMultipartFormData(req *policy.Request, formData map[string]any) error {
 		}
 		// this is pretty much copied from multipart.Writer.CreateFormFile
 		// but lets us set the caller provided Content-Type and filename
+		quoteEscaper := strings.NewReplacer("\\", "\\\\", `"`, "\\\"")
 		h := make(textproto.MIMEHeader)
 		h.Set("Content-Disposition",
 			fmt.Sprintf(`form-data; name="%s"; filename="%s"`,

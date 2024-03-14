@@ -97,7 +97,7 @@ func (gem *globalEndpointManager) ResolveServiceEndpoint(locationIndex int, isWr
 func (gem *globalEndpointManager) Update(ctx context.Context, forceRefresh bool) error {
 	gem.gemMutex.Lock()
 	defer gem.gemMutex.Unlock()
-	if !gem.ShouldRefresh() && !forceRefresh {
+	if !gem.shouldRefresh() && !forceRefresh {
 		return nil
 	}
 	accountProperties, err := gem.GetAccountProperties(ctx)

@@ -49,7 +49,7 @@ type accountProperties struct {
 	ReadRegions                  []accountRegion       `json:"readableLocations"`
 	WriteRegions                 []accountRegion       `json:"writableLocations"`
 	EnableMultipleWriteLocations bool                  `json:"enableMultipleWriteLocations"`
-	UserConsistencyPolicy        userConsistencyPolicy `json:"userConsistencyPolicy"`
+	AccountConsistency accountConsistency `json:"userConsistencyPolicy"`
 	ContinuousBackupEnabled      bool                  `json:"continousBackupEnabled"`
 }
 

@@ -174,8 +174,7 @@ extends:
                   NonShipping: ${{ parameters.NonShipping }}
                   LicenseCheck: ${{ parameters.LicenseCheck }}
 
-      - ${{ each stage in parameters.AdditionalStages }}:
-          - ${{ stage }}
+      - ${{ parameters.AdditionalStages }}
 
       # Run live tests for internal only, not public CI builds. This can be triggered manually for via an `/azp run` comment.
       - ${{if and(eq(variables['System.TeamProject'], 'internal'), eq(parameters.RunLiveTests, 'true'))}}:

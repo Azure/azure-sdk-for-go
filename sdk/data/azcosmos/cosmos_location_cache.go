@@ -54,7 +54,7 @@ type accountProperties struct {
 
 func (accountProps accountProperties) String() string {
 	return fmt.Sprintf("Read Regions: %v\nWrite Regions: %v\nMulti-region writes: %v\nDefault Consistency Level: %v",
-		accountProps.ReadRegions, accountProps.WriteRegions, accountProps.EnableMultipleWriteLocations, accountProps.AccountConsistency.DefaultConsistencyLevel, accountProps.ContinuousBackupEnabled)
+		accountProps.ReadRegions, accountProps.WriteRegions, accountProps.EnableMultipleWriteLocations, accountProps.AccountConsistency.DefaultConsistencyLevel)
 }
 
 type locationCache struct {

@@ -21,8 +21,8 @@ pr:
     include:
     - sdk/resourcemanager/hdinsight/armhdinsight/
 
-stages:
-- template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
+extends:
+  template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
   parameters:
     IncludeRelease: true
     ServiceDirectory: 'resourcemanager/hdinsight/armhdinsight'

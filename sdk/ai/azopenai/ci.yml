@@ -22,8 +22,8 @@ pr:
     include:
       - sdk/ai/azopenai
 
-stages:
-  - template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
+extends:
+    template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
     parameters:
       # We need to allow for longer retry times with tests that run against the public endpoint
       # which throttles under load. Note, I left a little wiggle room since the TimeoutInMinutes

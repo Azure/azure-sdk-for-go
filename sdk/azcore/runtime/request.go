@@ -132,8 +132,8 @@ func MarshalAsXML(req *policy.Request, v any) error {
 	return req.SetBody(exported.NopCloser(bytes.NewReader(b)), shared.ContentTypeAppXML)
 }
 
-// SetMultipartFormData writes the specified keys/values as multi-part form
-// fields with the specified value.  File content must be specified as a ReadSeekCloser.
+// SetMultipartFormData writes the specified keys/values as multi-part form fields with the specified value.
+// File content must be specified as an [io.ReadSeekCloser] or [streaming.MultipartContent].
 // Byte slices will be treated as JSON. All other values are treated as string values.
 func SetMultipartFormData(req *policy.Request, formData map[string]any) error {
 	body := bytes.Buffer{}

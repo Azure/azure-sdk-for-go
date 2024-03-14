@@ -26,7 +26,6 @@ type globalEndpointManager struct {
 	refreshTimeInterval time.Duration
 	gemMutex            sync.RWMutex
 	lastUpdateTime      time.Time
-	once                sync.Once
 }
 
 func newGlobalEndpointManager(clientEndpoint string, pipeline azruntime.Pipeline, preferredLocations []string, refreshTimeInterval time.Duration) (*globalEndpointManager, error) {

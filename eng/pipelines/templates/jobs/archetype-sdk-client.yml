@@ -84,6 +84,9 @@ parameters:
   - name: UsePipelineProxy
     type: boolean
     default: true
+  - name: AdditionalStages:
+    type: object
+    default: []
 
 extends:
   ${{ if eq(variables['System.TeamProject'], 'internal') }}:
@@ -170,6 +173,9 @@ extends:
                   LintVersion: $(GoLintCLIVersion)
                   NonShipping: ${{ parameters.NonShipping }}
                   LicenseCheck: ${{ parameters.LicenseCheck }}
+
+      - ${{ each stage in parameters.AdditionalStages }}:
+          - ${{ stage }}
 
       # Run live tests for internal only, not public CI builds. This can be triggered manually for via an `/azp run` comment.
       - ${{if and(eq(variables['System.TeamProject'], 'internal'), eq(parameters.RunLiveTests, 'true'))}}:

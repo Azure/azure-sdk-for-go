@@ -1,6 +1,6 @@
 # Release History
 
-## 0.2.0 (2024-03-13)
+## 0.4.0 (2024-03-13)
 
 * Template package validating release pipeline
 

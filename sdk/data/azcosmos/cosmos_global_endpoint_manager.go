@@ -11,7 +11,9 @@ import (
 	"sync"
 	"time"
 
+	azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
 
 const defaultUnavailableLocationRefreshInterval = 5 * time.Minute
@@ -24,6 +26,7 @@ type globalEndpointManager struct {
 	refreshTimeInterval time.Duration
 	gemMutex            sync.RWMutex
 	lastUpdateTime      time.Time
+	once                sync.Once
 }
 
 func newGlobalEndpointManager(clientEndpoint string, pipeline azruntime.Pipeline, preferredLocations []string, refreshTimeInterval time.Duration) (*globalEndpointManager, error) {
@@ -143,6 +146,9 @@ func (gem *globalEndpointManager) GetAccountProperties(ctx context.Context) (acc
 		if err != nil {
 			return accountProperties{}, fmt.Errorf("failed to parse account properties: %v", err)
 		}
+		gem.once.Do(func() {
+			log.Write(azlog.EventResponse, "===== Database Account Information:\n"+properties.String()+"\n=====\n")
+		})
 		return properties, nil
 	}
 
@@ -150,8 +156,13 @@ func (gem *globalEndpointManager) GetAccountProperties(ctx context.Context) (acc
 }
 
 func newAccountProperties(azResponse *http.Response) (accountProperties, error) {
+	var props map[string]interface{}
+	err := azruntime.UnmarshalAsJSON(azResponse, &props)
+	if err != nil {
+		return accountProperties{}, err
+	}
 	properties := accountProperties{}
-	err := azruntime.UnmarshalAsJSON(azResponse, &properties)
+	err = azruntime.UnmarshalAsJSON(azResponse, &properties)
 	if err != nil {
 		return properties, err
 	}

@@ -4,6 +4,7 @@
 package azcosmos
 
 import (
+	"fmt"
 	"net/url"
 	"sync"
 	"time"
@@ -40,10 +41,21 @@ type accountRegion struct {
 	Endpoint string `json:"databaseAccountEndpoint"`
 }
 
+type userConsistencyPolicy struct {
+	DefaultConsistencyLevel string `json:"defaultConsistencyLevel"`
+}
+
 type accountProperties struct {
-	ReadRegions                  []accountRegion `json:"readableLocations"`
-	WriteRegions                 []accountRegion `json:"writableLocations"`
-	EnableMultipleWriteLocations bool            `json:"enableMultipleWriteLocations"`
+	ReadRegions                  []accountRegion       `json:"readableLocations"`
+	WriteRegions                 []accountRegion       `json:"writableLocations"`
+	EnableMultipleWriteLocations bool                  `json:"enableMultipleWriteLocations"`
+	UserConsistencyPolicy        userConsistencyPolicy `json:"userConsistencyPolicy"`
+	ContinuousBackupEnabled      bool                  `json:"continousBackupEnabled"`
+}
+
+func (accountProps accountProperties) String() string {
+	return fmt.Sprintf("Read Regions: %v\nWrite Regions: %v\nUse Multiple Write Locations: %v\nDefault Consistency Level: %v\nContinous Backup Enabled: %v\n",
+		accountProps.ReadRegions, accountProps.WriteRegions, accountProps.EnableMultipleWriteLocations, accountProps.UserConsistencyPolicy.DefaultConsistencyLevel, accountProps.ContinuousBackupEnabled)
 }
 
 type locationCache struct {

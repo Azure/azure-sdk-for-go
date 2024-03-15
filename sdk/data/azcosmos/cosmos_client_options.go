@@ -17,11 +17,9 @@ type ClientOptions struct {
 	EnableContentResponseOnWrite bool
 	// PreferredRegions is a list of regions to be used when initializing the client in case the default region fails.
 	PreferredRegions []string
-	// DisableCrossRegionalRetries is a boolean flag letting the SDK know whether or not it should apply cross-regional retries to requests.
-	DisableCrossRegionalRetries bool
 }
 
 func (clientProps ClientOptions) String() string {
-	return fmt.Sprintf("Enable content response on write: %v\nPreferred regions: %v\nDisable cross regional retries: %v",
-		clientProps.EnableContentResponseOnWrite, clientProps.PreferredRegions, clientProps.DisableCrossRegionalRetries)
+	return fmt.Sprintf("Enable content response on write: %v\nPreferred regions: %v",
+		clientProps.EnableContentResponseOnWrite, clientProps.PreferredRegions)
 }

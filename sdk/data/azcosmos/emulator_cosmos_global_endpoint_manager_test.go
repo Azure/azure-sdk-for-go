@@ -30,6 +30,7 @@ func TestGlobalEndpointManagerEmulator(t *testing.T) {
 		ReadRegions:                  []accountRegion{emulatorRegion},
 		WriteRegions:                 []accountRegion{emulatorRegion},
 		EnableMultipleWriteLocations: false,
+		AccountConsistency:           userConsistencyPolicy{"Strong"},
 	}
 	assert.Equal(t, expectedAccountProps, accountProps)
 

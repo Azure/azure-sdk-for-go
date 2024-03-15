@@ -15,4 +15,6 @@ type ClientOptions struct {
 	EnableContentResponseOnWrite bool
 	// PreferredRegions is a list of regions to be used when initializing the client in case the default region fails.
 	PreferredRegions []string
+	// DisableCrossRegionalRetries is a boolean flag letting the SDK know whether or not it should apply cross-regional retries to requests.
+	DisableCrossRegionalRetries bool
 }

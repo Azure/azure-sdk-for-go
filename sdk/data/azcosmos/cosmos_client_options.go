@@ -4,6 +4,8 @@
 package azcosmos
 
 import (
+	"fmt"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
@@ -17,4 +19,9 @@ type ClientOptions struct {
 	PreferredRegions []string
 	// DisableCrossRegionalRetries is a boolean flag letting the SDK know whether or not it should apply cross-regional retries to requests.
 	DisableCrossRegionalRetries bool
+}
+
+func (clientProps ClientOptions) String() string {
+	return fmt.Sprintf("Enable content response on write: %v\nPreferred regions: %v\nDisable cross regional retries: %v",
+		clientProps.EnableContentResponseOnWrite, clientProps.PreferredRegions, clientProps.DisableCrossRegionalRetries)
 }

@@ -1,0 +1,52 @@
+{
+    "tool": "Credential Scanner",
+    "suppressions": [
+        {
+            "placeholder": [
+                "Sanitized",
+                "Basic 000000000000000000000000000000000000000000000000000",
+                "<clientsecret>",
+                "x",
+                "00000000-0000-0000-0000-000000000000",
+                "2",
+                "pwd",
+                "un",
+                "000000000000",
+                "someApiKey==",
+                "sv=2019-12-12&sr=b&st=2111-01-09T01:42:34.936Z&se=2222-03-09T01:42:34.936Z&sp=rw&sip=168.1.5.60-168.1.5.70&spr=https,http&si=myIdentifier&ss=bf&srt=s&rscc=cc&rscd=cd&rsce=ce&rscl=cl&rsct=ct&skoid=oid&sktid=tid&skt=2111-01-09T01:42:34.936Z&ske=2222-03-09T01:42:34.936Z&sks=s&skv=v&sdd=3&saoid=oid&suoid=oid&scid=cid&sig=clNxbtnkKSHw7f3KMEVVc4agaszoRFdbZr%2FWBmPNsrw%3D",
+                "rscc=cc&rscd=cd&rsce=ce&rscl=cl&rsct=ct&saoid=oid&scid=cid&sdd=3&se=2222-03-09T01%3A42%3A34Z&si=myIdentifier&sig=clNxbtnkKSHw7f3KMEVVc4agaszoRFdbZr%2FWBmPNsrw%3D&sip=168.1.5.60-168.1.5.70&ske=2222-03-09T01%3A42%3A34Z&skoid=oid&sks=s&skt=2111-01-09T01%3A42%3A34Z&sktid=tid&skv=v&sp=rw&spr=https%2Chttp&sr=b&srt=sco&ss=bf&st=2111-01-09T01%3A42%3A34Z&suoid=oid&sv=2019-12-12",
+                "sdd=3&scid=cid&se=2222-03-09T01:42:34.936Z&rsce=ce&ss=bf&skoid=oid&si=myIdentifier&ske=2222-03-09T01:42:34.936Z&saoid=oid&sip=168.1.5.60-168.1.5.70&rscc=cc&srt=sco&sig=clNxbtnkKSHw7f3KMEVVc4agaszoRFdbZr%2FWBmPNsrw%3D&rsct=ct&skt=2111-01-09T01:42:34.936Z&rscl=cl&suoid=oid&sv=2019-12-12&sr=b&st=2111-01-09T01:42:34.936Z&rscd=cd&sp=rw&sktid=tid&spr=https,http&sks=s&skv=v",
+                "sv=2019-12-12&sr=b&st=2111-01-09T01:42:34.936Z&se=2222-03-09T01:42:34.936Z&sp=rw&sip=168.1.5.60-168.1.5.70&spr=https,http&si=myIdentifier&ss=bf&srt=s&sig=clNxbtnkKSHw7f3KMEVVc4agaszoRFdbZr%2FWBmPNsrw%3D"       ,
+                "sv=2019-12-12&sr=b&st=2111-01-09T01:42:34.936Z&se=2222-03-09T01:42:34.936Z&sp=rw&sip=168.1.5.60-168.1.5.70&spr=https,http&si=myIdentifier&ss=bf&srt=s&rscc=cc&rscd=cd&rsce=ce&rscl=cl&rsct=ct&ses=test&sig=clNxbtnkKSHw7f3KMEVVc4agaszoRFdbZr%2FWBmPNsrw%3D",
+                "rscc=cc&rscd=cd&rsce=ce&rscl=cl&rsct=ct&se=2222-03-09T01%3A42%3A34Z&si=myIdentifier&sig=clNxbtnkKSHw7f3KMEVVc4agaszoRFdbZr%2FWBmPNsrw%3D&sip=168.1.5.60-168.1.5.70&sp=rw&spr=https%2Chttp&sr=b&srt=sco&ss=bf&st=2111-01-09T01%3A42%3A34Z&sv=2019-12-12",
+                "se=2222-03-09T01:42:34.936Z&rsce=ce&ss=bf&si=myIdentifier&sip=168.1.5.60-168.1.5.70&rscc=cc&srt=sco&sig=clNxbtnkKSHw7f3KMEVVc4agaszoRFdbZr%2FWBmPNsrw%3D&rsct=ct&rscl=cl&sv=2019-12-12&sr=b&st=2111-01-09T01:42:34.936Z&rscd=cd&sp=rw&spr=https,http",
+                "superSecret=",
+                "MDEyMzQ1NjcwMTIzNDU2NzAxMjM0NTY3MDEyMzQ1Njc=",
+                "3QFFFpRA5+XANHqwwbT4yXDmrT/2JaLt/FKHjzhOdoE=",
+                "MDEyMzQ1NjcwMTIzNDU2NzAxMjM0NTY3MDEyMzQ1Njc=",
+                "3QFFFpRA5+XANHqwwbT4yXDmrT/2JaLt/FKHjzhOdoE="
+            ],
+            "_justification": "Secrets used by test code. All are fake."
+        },
+        {
+            "file":[
+                "sdk/azidentity/testdata/certificate-two-keys.pem",
+                "sdk/azidentity/testdata/certificate-two-keys.pem",
+                "sdk/azidentity/testdata/certificate-with-chain.pem",
+                "sdk/azidentity/testdata/certificate-wrong-key.pem",
+                "sdk/azidentity/testdata/certificate.pem",
+                "sdk/azidentity/testdata/certificate.pfx",
+                "sdk/azidentity/testdata/certificate_encrypted_key.pfx",
+                "sdk/azidentity/testdata/certificate_formatB.pem",
+                "sdk/security/keyvault/azcertificates/testdata/ca.key"
+            ],
+            "_justification": "Files contain fake identity certs and private keys to be used in tests."
+        },
+        {
+            "file":[
+                "eng/common/testproxy/dotnet-devcert.pfx"
+            ],
+            "_justification": "File contains a dev cert used to communicate locally with the test-proxy spun up by our test framework. 0 MITM risk."
+        }
+    ]
+}

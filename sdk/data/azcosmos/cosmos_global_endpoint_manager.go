@@ -11,7 +11,9 @@ import (
 	"sync"
 	"time"
 
+	azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
 
 const defaultUnavailableLocationRefreshInterval = 5 * time.Minute
@@ -146,6 +148,7 @@ func (gem *globalEndpointManager) GetAccountProperties(ctx context.Context) (acc
 		if err != nil {
 			return accountProperties{}, fmt.Errorf("failed to parse account properties: %v", err)
 		}
+		log.Write(azlog.EventResponse, "\n===== Database Account Information:\n"+properties.String()+"\n=====\n")
 		return properties, nil
 	}
 

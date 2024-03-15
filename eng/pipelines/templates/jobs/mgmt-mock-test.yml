@@ -1,8 +1,9 @@
 parameters:
   ServiceDirectory: ''
+  OSName: ''
 
 jobs:
-  - job: MgmtMockTest
+  - job:
     displayName: Mock Test For Mgmt Plane
     variables:
       - template: /eng/pipelines/templates/variables/globals.yml
@@ -10,7 +11,7 @@ jobs:
     pool:
       name: $(LINUXPOOL)
       image: $(LINUXVMIMAGE)
-      os: linux
+      os: ${{ parameters.OSName }}
 
     steps:
     - script: |

@@ -96,19 +96,6 @@ steps:
       displayName: 'Dump Test Proxy logs'
       condition: succeededOrFailed()
 
-  - ${{if eq(variables['System.TeamProject'], 'internal') }}:
-    - task: AzureArtifacts.manifest-generator-task.manifest-generator-task.ManifestGeneratorTask@0
-      displayName: 'Generate BOM'
-      condition: and(succeededOrFailed(), eq(variables['generate.bom'], 'true'))
-      inputs:
-        BuildDropPath: $(Build.ArtifactStagingDirectory)
-
-    - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
-      parameters:
-        ArtifactPath: '$(Build.ArtifactStagingDirectory)/_manifest'
-        ArtifactName: 'manifest'
-        CustomCondition: and(succeededOrFailed(), eq(variables['generate.bom'], 'true'))
-
   - task: PublishTestResults@2
     condition: succeededOrFailed()
     inputs:

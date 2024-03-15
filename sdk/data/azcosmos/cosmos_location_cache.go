@@ -49,11 +49,11 @@ type accountProperties struct {
 	ReadRegions                  []accountRegion       `json:"readableLocations"`
 	WriteRegions                 []accountRegion       `json:"writableLocations"`
 	EnableMultipleWriteLocations bool                  `json:"enableMultipleWriteLocations"`
-	AccountConsistency userConsistencyPolicy `json:"userConsistencyPolicy"`
+	AccountConsistency           userConsistencyPolicy `json:"userConsistencyPolicy"`
 }
 
 func (accountProps accountProperties) String() string {
-	return fmt.Sprintf("Read Regions: %v\nWrite Regions: %v\nMulti-region writes: %v\nDefault Consistency Level: %v",
+	return fmt.Sprintf("Read regions: %v\nWrite regions: %v\nMulti-region writes: %v\nAccount consistency level: %v",
 		accountProps.ReadRegions, accountProps.WriteRegions, accountProps.EnableMultipleWriteLocations, accountProps.AccountConsistency.DefaultConsistencyLevel)
 }
 

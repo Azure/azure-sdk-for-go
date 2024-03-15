@@ -30,7 +30,7 @@ type Client struct {
 // QueryResources - Lists the metric values for multiple resources.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-10-01
+// Generated from API version 2024-02-01
 //   - subscriptionID - The subscription identifier for the resources in this batch.
 //   - metricNamespace - Metric namespace that contains the requested metric names.
 //   - metricNames - The names of the metrics (comma separated) to retrieve.
@@ -94,7 +94,7 @@ func (client *Client) queryResourcesCreateRequest(ctx context.Context, subscript
 	if options != nil && options.RollUpBy != nil {
 		reqQP.Set("rollupby", *options.RollUpBy)
 	}
-	reqQP.Set("api-version", "2023-10-01")
+	reqQP.Set("api-version", "2024-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resourceIDs); err != nil {

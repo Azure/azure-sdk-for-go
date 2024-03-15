@@ -20,9 +20,6 @@ type ClientOptions struct {
 }
 
 func (clientProps ClientOptions) String() string {
-	if clientProps == nil {
-		clientProps = ClientOptions{}
-	}
 	return fmt.Sprintf("Enable content response on write: %v\nPreferred regions: %v",
 		clientProps.EnableContentResponseOnWrite, clientProps.PreferredRegions)
 }

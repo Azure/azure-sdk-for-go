@@ -51,7 +51,6 @@ func NewClientWithKey(endpoint string, cred KeyCredential, o *ClientOptions) (*C
 	if err != nil {
 		return nil, err
 	}
-	log.Write(azlog.EventResponse, "\n===== Client configuration:\n"+o.String()+"\n=====\n")
 	return &Client{endpoint: endpoint, pipeline: newPipeline(newSharedKeyCredPolicy(cred), gem, o), gem: gem}, nil
 }
 
@@ -73,7 +72,6 @@ func NewClient(endpoint string, cred azcore.TokenCredential, o *ClientOptions) (
 	if err != nil {
 		return nil, err
 	}
-	log.Write(azlog.EventResponse, "\n===== Client configuration:\n"+o.String()+"\n=====\n")
 	return &Client{endpoint: endpoint, pipeline: newPipeline(newCosmosBearerTokenPolicy(cred, scope, nil), gem, o), gem: gem}, nil
 }
 
@@ -117,6 +115,7 @@ func newPipeline(authPolicy policy.Policy, gem *globalEndpointManager, options *
 	if options == nil {
 		options = &ClientOptions{}
 	}
+	log.Write(azlog.EventResponse, "\n===== Client configuration:\n"+options.String()+"\n=====\n")
 	return azruntime.NewPipeline("azcosmos", serviceLibVersion,
 		azruntime.PipelineOptions{
 			AllowedHeaders: getAllowedHeaders(),

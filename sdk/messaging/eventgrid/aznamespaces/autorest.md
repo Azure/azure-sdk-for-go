@@ -205,3 +205,17 @@ directive:
     where: $
     transform: return $.replace(/\RenewLockOptions\b/g, "renewLockOptions")
 ```
+
+# Binary mode support
+
+```yaml
+directive:
+  - from: options.go
+    where: $
+    transform: return $.replace(/\/\/ PublishCloudEventOptions.+?\n\}\n/s, "");
+  - from: client.go
+    where: $
+    transform: | 
+      return $.replace(/\/\/ publishCloudEventCreateRequest creates/, "// publishCloudEventCreateRequestUsingJSONEncoding creates")
+        .replace(/func \(client \*Client\) publishCloudEventCreateRequest/, "func (client *Client) publishCloudEventCreateRequestUsingJSONEncoding");
+```

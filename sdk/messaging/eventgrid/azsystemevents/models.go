@@ -10,30 +10,39 @@ package azsystemevents
 
 import "time"
 
-// APIDefinitionAddedEventData - Schema of the data property of an EventGridEvent for a Microsoft.ApiCenter.ApiDefinitionAdded
+// APICenterAPIDefinitionAddedEventData - Schema of the data property of an EventGridEvent for a Microsoft.ApiCenter.ApiDefinitionAdded
 // event.
-type APIDefinitionAddedEventData struct {
+type APICenterAPIDefinitionAddedEventData struct {
 	// API definition description.
 	Description *string
 
 	// API specification details.
-	Specification *APISpecificationDetails
+	Specification *APICenterAPISpecification
 
 	// API definition title.
 	Title *string
 }
 
-// APIDefinitionUpdatedEventData - Schema of the data property of an EventGridEvent for a Microsoft.ApiCenter.ApiDefinitionUpdated
+// APICenterAPIDefinitionUpdatedEventData - Schema of the data property of an EventGridEvent for a Microsoft.ApiCenter.ApiDefinitionUpdated
 // event.
-type APIDefinitionUpdatedEventData struct {
+type APICenterAPIDefinitionUpdatedEventData struct {
 	// API definition description.
 	Description *string
 
 	// API specification details.
-	Specification *APISpecificationDetails
+	Specification *APICenterAPISpecification
 
 	// API definition title.
 	Title *string
+}
+
+// APICenterAPISpecification - API specification details.
+type APICenterAPISpecification struct {
+	// Specification name.
+	Name *string
+
+	// Specification version.
+	Version *string
 }
 
 // APIManagementAPICreatedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.ApiManagement.APICreated
@@ -268,15 +277,6 @@ type APIManagementUserUpdatedEventData struct {
 	// type. Uses the format,
 	// /subscriptions/<SubscriptionID>/resourceGroups/<ResourceGroup>/Microsoft.ApiManagement/service/<ServiceName>/<ResourceType>/<ResourceName>
 	ResourceURI *string
-}
-
-// APISpecificationDetails - API specification details.
-type APISpecificationDetails struct {
-	// Specification name.
-	Name *string
-
-	// Specification version.
-	Version *string
 }
 
 // ACSChatEventBaseProperties - Schema of common properties of all chat events

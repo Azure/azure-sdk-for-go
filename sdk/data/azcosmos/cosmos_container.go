@@ -80,8 +80,9 @@ func (c *ContainerClient) Replace(
 	}
 
 	operationContext := pipelineRequestOptions{
-		resourceType:    resourceTypeCollection,
-		resourceAddress: c.link,
+		resourceType:     resourceTypeCollection,
+		resourceAddress:  c.link,
+		isWriteOperation: true,
 	}
 
 	path, err := generatePathForNameBased(resourceTypeCollection, c.link, false)
@@ -114,8 +115,9 @@ func (c *ContainerClient) Delete(
 	}
 
 	operationContext := pipelineRequestOptions{
-		resourceType:    resourceTypeCollection,
-		resourceAddress: c.link,
+		resourceType:     resourceTypeCollection,
+		resourceAddress:  c.link,
+		isWriteOperation: true,
 	}
 
 	path, err := generatePathForNameBased(resourceTypeCollection, c.link, false)

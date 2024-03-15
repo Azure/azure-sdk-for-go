@@ -19,7 +19,7 @@ func TestGlobalEndpointManagerEmulator(t *testing.T) {
 	preferredRegions := []string{}
 	emulatorRegion := accountRegion{Name: emulatorRegionName, Endpoint: "https://127.0.0.1:8081/"}
 
-	gem, err := newGlobalEndpointManager(client.endpoint, client.pipeline, preferredRegions, 5*time.Minute)
+	gem, err := newGlobalEndpointManager(client.endpoint, client.pipeline, preferredRegions, 5*time.Minute, true)
 	assert.NoError(t, err)
 
 	accountProps, err := gem.GetAccountProperties(context.Background())
@@ -63,7 +63,7 @@ func TestGlobalEndpointManagerEmulator(t *testing.T) {
 	assert.Equal(t, locationInfo.availWriteEndpointsByLocation, availableEndpointsByLocation)
 
 	// Run Update() and assert available locations are now populated in location cache
-	err = gem.Update(context.Background())
+	err = gem.Update(context.Background(), false)
 	assert.NoError(t, err)
 	locationInfo = gem.locationCache.locationInfo
 

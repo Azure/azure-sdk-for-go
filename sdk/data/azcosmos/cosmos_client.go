@@ -15,7 +15,6 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 )
@@ -42,10 +41,11 @@ func (c *Client) Endpoint() string {
 // options - Optional Cosmos client options.  Pass nil to accept default values.
 func NewClientWithKey(endpoint string, cred KeyCredential, o *ClientOptions) (*Client, error) {
 	preferredRegions := []string{}
+	enableCrossRegionRetries := true
 	if o != nil {
 		preferredRegions = o.PreferredRegions
 	}
-	gem, err := newGlobalEndpointManager(endpoint, newInternalPipeline(newSharedKeyCredPolicy(cred), o), preferredRegions, 0)
+	gem, err := newGlobalEndpointManager(endpoint, newInternalPipeline(newSharedKeyCredPolicy(cred), o), preferredRegions, 0, enableCrossRegionRetries)
 	if err != nil {
 		return nil, err
 	}
@@ -62,10 +62,11 @@ func NewClient(endpoint string, cred azcore.TokenCredential, o *ClientOptions) (
 		return nil, err
 	}
 	preferredRegions := []string{}
+	enableCrossRegionRetries := true
 	if o != nil {
 		preferredRegions = o.PreferredRegions
 	}
-	gem, err := newGlobalEndpointManager(endpoint, newInternalPipeline(newCosmosBearerTokenPolicy(cred, scope, nil), o), preferredRegions, 0)
+	gem, err := newGlobalEndpointManager(endpoint, newInternalPipeline(newCosmosBearerTokenPolicy(cred, scope, nil), o), preferredRegions, 0, enableCrossRegionRetries)
 	if err != nil {
 		return nil, err
 	}
@@ -124,6 +125,7 @@ func newPipeline(authPolicy policy.Policy, gem *globalEndpointManager, options *
 			},
 			PerRetry: []policy.Policy{
 				authPolicy,
+				&clientRetryPolicy{gem: gem},
 			},
 		},
 		&options.ClientOptions)
@@ -193,10 +195,17 @@ func (c *Client) CreateDatabase(
 	if o == nil {
 		o = &CreateDatabaseOptions{}
 	}
+	returnResponse := true
+	h := &headerOptionsOverride{
+		enableContentResponseOnWrite: &returnResponse,
+	}
 
 	operationContext := pipelineRequestOptions{
-		resourceType:    resourceTypeDatabase,
-		resourceAddress: ""}
+		resourceType:          resourceTypeDatabase,
+		resourceAddress:       "",
+		isWriteOperation:      true,
+		headerOptionsOverride: h,
+	}
 
 	path, err := generatePathForNameBased(resourceTypeDatabase, "", true)
 	if err != nil {
@@ -220,7 +229,7 @@ func (c *Client) CreateDatabase(
 // NewQueryDatabasesPager executes query for databases.
 // query - The SQL query to execute.
 // o - Options for the operation.
-func (c *Client) NewQueryDatabasesPager(query string, o *QueryDatabasesOptions) *runtime.Pager[QueryDatabasesResponse] {
+func (c *Client) NewQueryDatabasesPager(query string, o *QueryDatabasesOptions) *azruntime.Pager[QueryDatabasesResponse] {
 	queryOptions := &QueryDatabasesOptions{}
 	if o != nil {
 		originalOptions := *o
@@ -234,7 +243,7 @@ func (c *Client) NewQueryDatabasesPager(query string, o *QueryDatabasesOptions) 
 
 	path, _ := generatePathForNameBased(resourceTypeDatabase, operationContext.resourceAddress, true)
 
-	return runtime.NewPager(runtime.PagingHandler[QueryDatabasesResponse]{
+	return azruntime.NewPager(azruntime.PagingHandler[QueryDatabasesResponse]{
 		More: func(page QueryDatabasesResponse) bool {
 			return page.ContinuationToken != ""
 		},

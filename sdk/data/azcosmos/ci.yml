@@ -25,6 +25,7 @@ stages:
   parameters:
     ServiceDirectory: 'data/azcosmos'
     UsePipelineProxy: false
+    ExcludeGoNMinus2: true
 - stage: Emulator
   displayName: 'Cosmos Emulator'
   variables:
@@ -38,7 +39,7 @@ stages:
         Windows_Go120:
           pool.name: azsdk-pool-mms-win-2022-general
           image.name: MMS2022
-          go.version: '1.21.1'
+          go.version: '1.22.0'
     pool:
       name: $(pool.name)
       vmImage: $(image.name)

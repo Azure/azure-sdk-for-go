@@ -115,7 +115,6 @@ func newPipeline(authPolicy policy.Policy, gem *globalEndpointManager, options *
 	if options == nil {
 		options = &ClientOptions{}
 	}
-	log.Write(azlog.EventResponse, "\n===== Client configuration:\n"+options.String()+"\n=====\n")
 	return azruntime.NewPipeline("azcosmos", serviceLibVersion,
 		azruntime.PipelineOptions{
 			AllowedHeaders: getAllowedHeaders(),
@@ -473,6 +472,7 @@ func (c *Client) attachContent(content interface{}, req *policy.Request) error {
 }
 
 func (c *Client) executeAndEnsureSuccessResponse(request *policy.Request) (*http.Response, error) {
+	log.Write(azlog.EventResponse, fmt.Sprintf("\n===== Client preferred regions:\n%v\n=====\n", c.gem.preferredLocations))
 	response, err := c.pipeline.Do(request)
 	if err != nil {
 		return nil, err

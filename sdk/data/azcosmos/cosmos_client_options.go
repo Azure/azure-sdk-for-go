@@ -4,8 +4,6 @@
 package azcosmos
 
 import (
-	"fmt"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
@@ -17,9 +15,4 @@ type ClientOptions struct {
 	EnableContentResponseOnWrite bool
 	// PreferredRegions is a list of regions to be used when initializing the client in case the default region fails.
 	PreferredRegions []string
-}
-
-func (clientProps ClientOptions) String() string {
-	return fmt.Sprintf("Enable content response on write: %v\nPreferred regions: %v",
-		clientProps.EnableContentResponseOnWrite, clientProps.PreferredRegions)
 }

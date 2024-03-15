@@ -2,7 +2,7 @@
 title: Metrics Query Client
 clear-output-folder: false
 go: true
-input-file: https://github.com/Azure/azure-rest-api-specs/blob/0373f0edc4414fd402603fac51d0df93f1f70507/specification/monitor/data-plane/Microsoft.Insights/stable/2023-10-01/metricBatch.json
+input-file: https://github.com/Azure/azure-rest-api-specs/blob/0b64ca7cbe3af8cd13228dfb783a16b8272b8be2/specification/monitor/data-plane/Microsoft.Insights/stable/2024-02-01/metricBatch.json
 license-header: MICROSOFT_MIT_NO_VERSION
 module: github.com/Azure/azure-sdk-for-go/sdk/monitor/query/azmetrics
 openapi-type: "data-plane"

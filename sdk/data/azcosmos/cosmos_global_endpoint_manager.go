@@ -26,7 +26,7 @@ type globalEndpointManager struct {
 	lastUpdateTime      time.Time
 }
 
-func newGlobalEndpointManager(clientEndpoint string, pipeline azruntime.Pipeline, preferredLocations []string, refreshTimeInterval time.Duration) (*globalEndpointManager, error) {
+func newGlobalEndpointManager(clientEndpoint string, pipeline azruntime.Pipeline, preferredLocations []string, refreshTimeInterval time.Duration, enableCrossRegionRetries bool) (*globalEndpointManager, error) {
 	endpoint, err := url.Parse(clientEndpoint)
 	if err != nil {
 		return &globalEndpointManager{}, err
@@ -40,7 +40,7 @@ func newGlobalEndpointManager(clientEndpoint string, pipeline azruntime.Pipeline
 		clientEndpoint:      clientEndpoint,
 		pipeline:            pipeline,
 		preferredLocations:  preferredLocations,
-		locationCache:       newLocationCache(preferredLocations, *endpoint),
+		locationCache:       newLocationCache(preferredLocations, *endpoint, enableCrossRegionRetries),
 		refreshTimeInterval: refreshTimeInterval,
 		lastUpdateTime:      time.Time{},
 	}
@@ -86,15 +86,18 @@ func (gem *globalEndpointManager) ShouldRefresh() bool {
 	return gem.shouldRefresh()
 }
 
-// shouldRefresh determines whether to refresh the endpoints. not threadsafe.
 func (gem *globalEndpointManager) shouldRefresh() bool {
 	return time.Since(gem.lastUpdateTime) > gem.refreshTimeInterval
 }
 
-func (gem *globalEndpointManager) Update(ctx context.Context) error {
+func (gem *globalEndpointManager) ResolveServiceEndpoint(locationIndex int, isWriteOperation, useWriteEndpoint bool) url.URL {
+	return gem.locationCache.resolveServiceEndpoint(locationIndex, isWriteOperation, useWriteEndpoint)
+}
+
+func (gem *globalEndpointManager) Update(ctx context.Context, forceRefresh bool) error {
 	gem.gemMutex.Lock()
 	defer gem.gemMutex.Unlock()
-	if !gem.shouldRefresh() {
+	if !gem.shouldRefresh() && !forceRefresh {
 		return nil
 	}
 	accountProperties, err := gem.GetAccountProperties(ctx)

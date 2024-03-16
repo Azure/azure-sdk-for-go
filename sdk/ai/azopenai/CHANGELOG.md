@@ -1,8 +1,10 @@
 # Release History
 
-## 0.5.1 (Unreleased)
+## 0.6.0 (Unreleased)
 
 ### Features Added
+
+- Updating to the `2024-03-01-preview` API version. PR(#22603)
 
 ### Breaking Changes
 

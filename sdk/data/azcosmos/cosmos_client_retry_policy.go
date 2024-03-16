@@ -10,9 +10,11 @@ import (
 	"net/http"
 	"time"
 
+	azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/errorinfo"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
 
 type clientRetryPolicy struct {
@@ -32,6 +34,7 @@ func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 	if !req.OperationValue(&o) {
 		return nil, fmt.Errorf("failed to obtain request options, please check request being sent: %s", req.Body())
 	}
+	log.Write(azlog.EventResponse, fmt.Sprintf("\n===== Client preferred regions:\n%v\n=====\n", p.gem.preferredLocations))
 	for {
 		resolvedEndpoint := p.gem.ResolveServiceEndpoint(p.retryCount, o.isWriteOperation, p.useWriteEndpoint)
 		req.Raw().Host = resolvedEndpoint.Host

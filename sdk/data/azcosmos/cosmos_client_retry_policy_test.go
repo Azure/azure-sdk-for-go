@@ -6,7 +6,6 @@ package azcosmos
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"net"
 	"net/url"
 	"testing"
@@ -366,7 +365,6 @@ func TestReadServiceUnavailable(t *testing.T) {
 	// Request should retry twice and then succeed (2 preferred regions)
 	assert.NoError(t, err)
 	assert.True(t, retryPolicy.retryCount == 2)
-	fmt.Println("we here 1")
 
 	// Setting up responses for retrying and failing
 	srv.AppendResponse(

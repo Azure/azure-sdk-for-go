@@ -4,8 +4,8 @@
             "Agent": {
                 "msi_image": {
                     "ArmTemplateParameters": "@{deployResources = $true}",
-                    "OSVmImage": "ubuntu-22.04",
-                    "Pool": "azsdk-pool-mms-ubuntu-2204-identitymsi"
+                    "OSVmImage": "env:LINUXNEXTVMIMAGE",
+                    "Pool": "env:LINUXPOOL"
                 }
             },
             "GoVersion": [

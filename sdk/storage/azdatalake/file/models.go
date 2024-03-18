@@ -309,7 +309,7 @@ func (o *AppendDataOptions) format(offset int64, body io.ReadSeekCloser) (*gener
 		_, err = o.TransactionalValidation.Apply(body, appendDataOptions)
 		if err != nil {
 			return nil, nil, nil, err
-
+		}
 		appendDataOptions.LeaseAction = o.LeaseAction
 		appendDataOptions.LeaseDuration = o.LeaseDuration
 		appendDataOptions.ProposedLeaseID = o.ProposedLeaseID

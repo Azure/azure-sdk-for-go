@@ -3654,6 +3654,40 @@ func (s *RecordedTestSuite) TestFileAppendWithFlushReleaseLease() {
 	_require.Equal(lease.StateTypeAvailable, *gResp2.LeaseState)
 }
 
+func (s *RecordedTestSuite) TestFileAppendWithFlushOption() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	srcFileName := "src" + testcommon.GenerateFileName(testName)
+
+	srcFClient, err := testcommon.GetFileClient(filesystemName, srcFileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := srcFClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(resp)
+
+	contentSize := 1024 * 8 // 8KB
+	rsc, _ := testcommon.GenerateData(contentSize)
+	opts := &file.AppendDataOptions{
+		Flush: to.Ptr(true),
+	}
+	_, err = srcFClient.AppendData(context.Background(), 0, rsc, opts)
+	_require.NoError(err)
+
+	gResp2, err := srcFClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*gResp2.ContentLength, int64(contentSize))
+}
+
 func (s *RecordedTestSuite) TestFileAppendAndFlushData() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

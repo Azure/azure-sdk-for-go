@@ -299,3 +299,18 @@ func TestBearerTokenPolicyRequiresHTTPS(t *testing.T) {
 	var nre errorinfo.NonRetriable
 	require.ErrorAs(t, err, &nre)
 }
+
+func TestBearerTokenPolicyAllowHTTP(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	srv.SetResponse(mock.WithStatusCode(http.StatusOK))
+	b := NewBearerTokenPolicy(mockCredential{}, &armpolicy.BearerTokenOptions{
+		InsecureAllowCredentialWithHTTP: true,
+	})
+	pl := newTestPipeline(&azpolicy.ClientOptions{Transport: srv, PerRetryPolicies: []azpolicy.Policy{b}})
+	req, err := runtime.NewRequest(context.Background(), "GET", srv.URL())
+	require.NoError(t, err)
+	resp, err := pl.Do(req)
+	require.NoError(t, err)
+	require.EqualValues(t, http.StatusOK, resp.StatusCode)
+}

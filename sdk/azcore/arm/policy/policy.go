@@ -20,6 +20,11 @@ type BearerTokenOptions struct {
 	// policy's credential must support multitenant authentication.
 	AuxiliaryTenants []string
 
+	// InsecureAllowCredentialWithHTTP enables authenticated requests over HTTP.
+	// By default, authenticated requests to an HTTP endpoint are rejected by the client.
+	// WARNING: setting this to true will allow sending the authentication key in clear text. Use with caution.
+	InsecureAllowCredentialWithHTTP bool
+
 	// Scopes contains the list of permission scopes required for the token.
 	Scopes []string
 }

@@ -37,7 +37,8 @@ func TestDatabaseQueryContainers(t *testing.T) {
 	verifier := pipelineVerifier{}
 
 	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
-	client := &Client{endpoint: srv.URL(), pipeline: pl}
+	gem := &globalEndpointManager{preferredLocations: []string{}}
+	client := &Client{endpoint: srv.URL(), pipeline: pl, gem: gem}
 
 	database, _ := newDatabase("databaseId", client)
 

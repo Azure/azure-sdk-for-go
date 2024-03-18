@@ -40,6 +40,7 @@ type ClientOptions struct {
 	Cloud cloud.Configuration
 
 	// InsecureAllowCredentialWithHTTP enables authenticated requests over HTTP.
+	// By default, authenticated requests to an HTTP endpoint are rejected by the client.
 	// WARNING: setting this to true will allow sending the credential in clear text. Use with caution.
 	InsecureAllowCredentialWithHTTP bool
 
@@ -153,6 +154,7 @@ type BearerTokenOptions struct {
 	AuthorizationHandler AuthorizationHandler
 
 	// InsecureAllowCredentialWithHTTP enables authenticated requests over HTTP.
+	// By default, authenticated requests to an HTTP endpoint are rejected by the client.
 	// WARNING: setting this to true will allow sending the bearer token in clear text. Use with caution.
 	InsecureAllowCredentialWithHTTP bool
 }

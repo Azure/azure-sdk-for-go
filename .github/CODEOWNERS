@@ -82,7 +82,7 @@
 # ServiceOwner: @siminsavani-msft
 # ServiceLabel: %Azure.Core
 # PRLabel: %Storage
-/sdk/storage/                 @siminsavani-msft @souravgupta-msft @tasherif-msft @jhendrixMSFT @gapra-msft @vibhansa-msft @tanyasethi-msft
+/sdk/storage/                 @siminsavani-msft @souravgupta-msft @jhendrixMSFT @gapra-msft @vibhansa-msft @tanyasethi-msft
 
 # AzureSDKOwners: @jhendrixMSFT
 # ServiceLabel: %Open Telemetry

@@ -88,11 +88,11 @@ func TestClient_GetEmbeddings_embeddingsFormat(t *testing.T) {
 	}
 
 	for _, dim := range []int32{0, 1, 10, 100} {
-		t.Run(fmt.Sprintf("AzureOpenAI(dimensions:%d)", dim), func(t *testing.T) {
+		t.Run(fmt.Sprintf("AzureOpenAI(dimensions=%d)", dim), func(t *testing.T) {
 			testFn(t, azureOpenAI, dim)
 		})
 
-		t.Run(fmt.Sprintf("OpenAI(dimensions:%d)", dim), func(t *testing.T) {
+		t.Run(fmt.Sprintf("OpenAI(dimensions=%d)", dim), func(t *testing.T) {
 			testFn(t, openAI, dim)
 		})
 	}

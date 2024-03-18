@@ -265,6 +265,8 @@ type AppendDataOptions struct {
 	ProposedLeaseID *string
 	// CPKInfo contains optional parameters to perform encryption using customer-provided key.
 	CPKInfo *CPKInfo
+	//Flush Optional. If true, the file will be flushed after append.
+	Flush *bool
 }
 
 func (o *AppendDataOptions) format(offset int64, body io.ReadSeekCloser) (*generated.PathClientAppendDataOptions,
@@ -310,6 +312,7 @@ func (o *AppendDataOptions) format(offset int64, body io.ReadSeekCloser) (*gener
 		if err != nil {
 			return nil, nil, nil, err
 		}
+    
 		appendDataOptions.LeaseAction = o.LeaseAction
 		appendDataOptions.LeaseDuration = o.LeaseDuration
 		appendDataOptions.ProposedLeaseID = o.ProposedLeaseID

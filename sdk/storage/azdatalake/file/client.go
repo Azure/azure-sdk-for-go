@@ -443,6 +443,13 @@ func (f *Client) uploadFromReader(ctx context.Context, reader io.ReaderAt, actua
 				urlParts.PathName, actualSize, o.ChunkSize, ((actualSize-1)/o.ChunkSize)+1)
 		}
 	}
+	// create a new file and set encryption context options to it if it is not nil
+	if o.EncryptionContext != nil {
+		_, err := f.Create(ctx, &CreateOptions{EncryptionContext: o.EncryptionContext})
+		if err != nil {
+			return err
+		}
+	}
 
 	progress := int64(0)
 	progressLock := &sync.Mutex{}
@@ -483,6 +490,7 @@ func (f *Client) uploadFromReader(ctx context.Context, reader io.ReaderAt, actua
 	})
 
 	if err != nil {
+		_, err = f.Delete(ctx, nil)
 		return exported.ConvertToDFSError(err)
 	}
 	// All appends were successful, call to flush
@@ -531,8 +539,10 @@ func (f *Client) DownloadStream(ctx context.Context, o *DownloadStreamOptions) (
 		o = &DownloadStreamOptions{}
 	}
 	opts := o.format()
-	resp, err := f.blobClient().DownloadStream(ctx, opts)
-	newResp := FormatDownloadStreamResponse(&resp)
+	var respFromCtx *http.Response
+	ctxWithResp := shared.WithCaptureBlobResponse(ctx, &respFromCtx)
+	resp, err := f.blobClient().DownloadStream(ctxWithResp, opts)
+	newResp := FormatDownloadStreamResponse(&resp, respFromCtx)
 	fullResp := DownloadStreamResponse{
 		client:           f,
 		DownloadResponse: newResp,

@@ -26,27 +26,13 @@ import (
 
 const rpUnregisteredResp1 = `{
 	"error":{
-		"code":"MissingSubscriptionRegistration",
-		"message":"The subscription registration is in 'Unregistered' state. The subscription must be registered to use namespace 'Microsoft.Storage'. See https://aka.ms/rps-not-found for how to register subscriptions.",
-		"details":[{
-				"code":"MissingSubscriptionRegistration",
-				"target":"Microsoft.Storage",
-				"message":"The subscription registration is in 'Unregistered' state. The subscription must be registered to use namespace 'Microsoft.Storage'. See https://aka.ms/rps-not-found for how to register subscriptions."
-			}
-		]
+		"code":"MissingSubscriptionRegistration"
 	}
 }`
 
 const rpUnregisteredResp2 = `{
 	"error":{
-		"code":"MissingRegistrationForResourceProvider",
-		"message":"The subscription registration is in 'Unregistered' state. The subscription must be registered to use namespace 'Microsoft.Storage'. See https://aka.ms/rps-not-found for how to register subscriptions.",
-		"details":[{
-				"code":"MissingRegistrationForResourceProvider",
-				"target":"Microsoft.Storage",
-				"message":"The subscription registration is in 'Unregistered' state. The subscription must be registered to use namespace 'Microsoft.Storage'. See https://aka.ms/rps-not-found for how to register subscriptions."
-			}
-		]
+		"code":"MissingRegistrationForResourceProvider"
 	}
 }`
 
@@ -66,12 +52,30 @@ const rpRegisteredResp = `{
     "registrationPolicy": "RegistrationRequired"
 }`
 
+// some content was omitted here as it's not relevant
+const quotaRegisteringResp = `{
+    "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Quota",
+    "namespace": "Microsoft.Quota",
+    "registrationState": "Registering",
+    "registrationPolicy": "RegistrationRequired"
+}`
+
+// some content was omitted here as it's not relevant
+const quotaRegisteredResp = `{
+    "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Quota",
+    "namespace": "Microsoft.Quota",
+    "registrationState": "Registered",
+    "registrationPolicy": "RegistrationRequired"
+}`
+
 const rpEnvsInSubExceeded = `{
 	"code": "MaxNumberOfRegionalEnvironmentsInSubExceeded",
 	"message": "The subscription '00000000-0000-0000-0000-000000000000' cannot have more than 1 environments in East US."
 }`
 
 const requestEndpoint = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/fakeResourceGroupo/providers/Microsoft.Storage/storageAccounts/fakeAccountName"
+
+const quotaEndpoint = "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/northeurope/providers/Microsoft.Quota/quotas/test"
 
 const fakeAPIBody = "success"
 
@@ -110,6 +114,43 @@ func TestRPRegistrationPolicySuccess(t *testing.T) {
 	// response for original request
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(fakeAPIBody)))
 	client := newFakeClient(t, srv, nil)
+	// log only RP registration
+	log.SetEvents(LogRPRegistration)
+	defer func() {
+		// reset logging
+		log.SetEvents()
+	}()
+	logEntries := 0
+	log.SetListener(func(cls log.Event, msg string) {
+		logEntries++
+	})
+	resp, err := client.FakeAPI(context.Background())
+	require.NoError(t, err)
+	require.EqualValues(t, fakeAPIBody, resp.Result)
+	require.EqualValues(t, http.StatusOK, resp.StatusCode)
+	require.EqualValues(t, requestEndpoint, resp.Path)
+	// should be four entries
+	// 1st is for start
+	// 2nd is for first response to get state
+	// 3rd is when state transitions to success
+	// 4th is for end
+	require.EqualValues(t, 4, logEntries)
+}
+
+func TestRPRegistrationPolicySuccessWith404(t *testing.T) {
+	srv, close := mock.NewTLSServer()
+	defer close()
+	// initial response that RP is unregistered
+	srv.AppendResponse(mock.WithStatusCode(http.StatusNotFound), mock.WithBody([]byte(rpUnregisteredResp1)))
+	// polling responses to Register() and Get(), in progress
+	srv.RepeatResponse(5, mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(rpRegisteringResp)))
+	// polling response, successful registration
+	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(rpRegisteredResp)))
+	// response for original request
+	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(fakeAPIBody)))
+	opts := testRPRegistrationOptions(srv)
+	opts.StatusCodes = []int{http.StatusConflict, http.StatusNotFound}
+	client := newFakeClient(t, srv, opts)
 	// log only RP registration
 	log.SetEvents(LogRPRegistration)
 	defer func() {
@@ -246,6 +287,41 @@ func TestRPRegistrationPolicyExceedsAttempts(t *testing.T) {
 	require.Error(t, err)
 	require.Zero(t, resp)
 	require.Contains(t, err.Error(), "exceeded attempts to register Microsoft.Storage")
+	// should be 4 entries for each attempt, total 12 entries
+	// 1st is for start
+	// 2nd is for first response to get state
+	// 3rd is when state transitions to success
+	// 4th is for end
+	require.EqualValues(t, 12, logEntries)
+}
+
+func TestRPRegistrationPolicyExceedsAttemptsForQuota(t *testing.T) {
+	srv, close := mock.NewTLSServer()
+	defer close()
+	// add a cycle of unregistered->registered so that we keep retrying and hit the cap
+	for i := 0; i < 4; i++ {
+		// initial response that RP is unregistered
+		srv.AppendResponse(mock.WithStatusCode(http.StatusConflict), mock.WithBody([]byte(rpUnregisteredResp1)))
+		// polling responses to Register() and Get(), in progress
+		srv.RepeatResponse(2, mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(quotaRegisteringResp)))
+		// polling response, successful registration
+		srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(quotaRegisteredResp)))
+	}
+	client := newFakeClient(t, srv, nil)
+	// log only RP registration
+	log.SetEvents(LogRPRegistration)
+	defer func() {
+		// reset logging
+		log.SetEvents()
+	}()
+	logEntries := 0
+	log.SetListener(func(cls log.Event, msg string) {
+		logEntries++
+	})
+	resp, err := client.QuotaAPI(context.Background())
+	require.Error(t, err)
+	require.Zero(t, resp)
+	require.Contains(t, err.Error(), "exceeded attempts to register Microsoft.Quota")
 	// should be 4 entries for each attempt, total 12 entries
 	// 1st is for start
 	// 2nd is for first response to get state
@@ -436,6 +512,26 @@ type fakeResponse struct {
 // FakeAPI returns fakeResponse with Result "success" on a HTTP 200.
 func (f *fakeClient) FakeAPI(ctx context.Context) (fakeResponse, error) {
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(f.ep, requestEndpoint))
+	if err != nil {
+		return fakeResponse{}, err
+	}
+	resp, err := f.pl.Do(req)
+	if err != nil {
+		return fakeResponse{}, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return fakeResponse{}, runtime.NewResponseError(resp)
+	}
+	body, err := runtime.Payload(resp)
+	if err != nil {
+		return fakeResponse{}, err
+	}
+	return fakeResponse{Result: string(body), StatusCode: resp.StatusCode, Path: resp.Request.URL.Path}, nil
+}
+
+// QuotaAPI returns fakeResponse with Result "success" on a HTTP 200.
+func (f *fakeClient) QuotaAPI(ctx context.Context) (fakeResponse, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(f.ep, quotaEndpoint))
 	if err != nil {
 		return fakeResponse{}, err
 	}

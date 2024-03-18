@@ -44,6 +44,11 @@ type RegistrationOptions struct {
 	// The default valule is 5 minutes.
 	// NOTE: Setting this to a small value might cause the policy to prematurely fail.
 	PollingDuration time.Duration
+
+	// StatusCodes contains the slice of custom HTTP status codes to use instead
+	// of the default http.StatusConflict. This should only be set if a service
+	// returns a non-standard HTTP status code when unregistered.
+	StatusCodes []int
 }
 
 // ClientOptions contains configuration settings for a client's pipeline.

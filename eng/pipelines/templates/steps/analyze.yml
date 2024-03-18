@@ -39,6 +39,8 @@ steps:
         -SourceBranch $(Build.SourceBranchName)
         -DefaultBranch $(DefaultBranch)
         -ConfigFileDir $(Build.ArtifactStagingDirectory)/PackageInfo
+        -BuildId $(Build.BuildId)
+        -RepoName '$(Build.Repository.Name)'
       pwsh: true
       workingDirectory: $(Pipeline.Workspace)
     displayName: Create API review for Go

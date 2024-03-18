@@ -14,7 +14,10 @@ Param(
     [Parameter(Mandatory=$True)]
     [string] $DefaultBranch,
     [Parameter(Mandatory=$True)]
-    [string] $ConfigFileDir
+    [string] $ConfigFileDir,
+    [string] $RepoName,
+    [string] $BuildId,
+    [bool] $MarkPackageAsShipped = $false
 )
 
 
@@ -22,6 +25,7 @@ Write-Host "$PSScriptRoot"
 . (Join-Path $PSScriptRoot .. common scripts common.ps1)
 $createReviewScript = (Join-Path $PSScriptRoot .. common scripts Create-APIReview.ps1)
 
+$artifactList = @()
 foreach ($sdk in (Get-AllPackageInfoFromRepo $ServiceDirectory))
 {
     Write-Host "Creating API review artifact for $($sdk.Name)"
@@ -30,6 +34,10 @@ foreach ($sdk in (Get-AllPackageInfoFromRepo $ServiceDirectory))
     Compress-Archive -Path $sdk.DirectoryPath -DestinationPath $outPath/$($sdk.Name)/$fileName -force
     Rename-Item $outPath/$($sdk.Name)/$fileName.zip -NewName "$fileName.gosource"
 
-    Write-Host "Send request to APIView to create review for $($sdk.Name)"
-    &($createReviewScript) -ArtifactPath $outPath -APIViewUri $ApiviewUri -APIKey $ApiKey -APILabel $ApiLabel -PackageName $sdk.Name -SourceBranch $SourceBranch -DefaultBranch $DefaultBranch -ConfigFileDir $ConfigFileDir
+    $artifactList += [PSCustomObject]@{
+        name = $sdk.Name
+    }
 }
+
+&($createReviewScript) -ArtifactList $artifactList  -ArtifactPath $outPath -APIKey $ApiKey -SourceBranch $SourceBranch -DefaultBranch $DefaultBranch -ConfigFileDir $ConfigFileDir -RepoName $RepoName -BuildId $BuildId -MarkPackageAsShipped $MarkPackageAsShipped
+```

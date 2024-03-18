@@ -134,7 +134,7 @@ function SetPackageVersion ($PackageName, $Version, $ReleaseDate, $PackageProper
 
 function Find-Go-Artifacts-For-Apireview($ArtifactPath, $PackageName)
 {
-  $artifact = Get-ChildItem -Path (Join-Path $ArtifactPath $PackageName) -Filter "*.gosource"
+  $artifact = @(Get-ChildItem -Path (Join-Path $ArtifactPath $PackageName) -Filter "*.gosource")
   if ($artifact)
   {
     $packages = @{

@@ -107,12 +107,10 @@ func newTestClient(t *testing.T, ep endpoint, options ...testClientOption) *azop
 // For example, if azure is true we'll load these environment values based on res:
 //   - AOAI_DALLE_ENDPOINT
 //   - AOAI_DALLE_API_KEY
-//   - AOAI_DALLE_MODEL
 //
 // if azure is false we'll load these environment values based on res:
 //   - OPENAI_ENDPOINT
 //   - OPENAI_API_KEY
-//   - OPENAI_DALLE_MODEL
 func getEndpointWithModel(res string, isAzure bool) endpointWithModel {
 	var ep endpointWithModel
 	if isAzure {
@@ -153,6 +151,24 @@ func model(azure bool, azureModel, openAIModel string) string {
 	return openAIModel
 }
 
+func updateModels(azure bool, tv *testVars) {
+	// the models we use are basically their own API surface so it's good to know which
+	// specific models our tests were written against.
+	tv.Completions = model(azure, "gpt-35-turbo-instruct", "gpt-3.5-turbo-instruct")
+	tv.ChatCompletions = model(azure, "gpt-35-turbo-0613", "gpt-4-0613")
+	tv.ChatCompletionsLegacyFunctions = model(azure, "gpt-4-0613", "gpt-4-0613")
+	tv.Embeddings = model(azure, "text-embedding-ada-002", "text-embedding-ada-002")
+	tv.TextEmbedding3Small = model(azure, "text-embedding-3-small", "text-embedding-3-small")
+
+	tv.DallE.Model = model(azure, "dall-e-3", "dall-e-3")
+	tv.Whisper.Model = model(azure, "whisper-deployment", "whisper-1")
+	tv.Vision.Model = model(azure, "gpt-4-vision-preview", "gpt-4-vision-preview")
+
+	// these are Azure-only features
+	tv.ChatCompletionsOYD.Model = model(azure, "gpt-4", "")
+	tv.ChatCompletionsRAI.Model = model(azure, "gpt-4", "")
+}
+
 func newTestVars(prefix string) testVars {
 	azure := prefix == "AOAI"
 
@@ -162,12 +178,6 @@ func newTestVars(prefix string) testVars {
 			APIKey: getRequired(prefix + "_API_KEY"),
 			Azure:  azure,
 		},
-		Completions:                    model(azure, "gpt-35-turbo-instruct", "gpt-3.5-turbo-instruct"),
-		ChatCompletions:                model(azure, "gpt-35-turbo-0613", "gpt-4-0613"),
-		ChatCompletionsLegacyFunctions: model(azure, "gpt-4-0613", "gpt-4-0613"),
-		Embeddings:                     model(azure, "text-embedding-ada-002", "text-embedding-ada-002"),
-		TextEmbedding3Small:            model(azure, "text-embedding-3-small", "text-embedding-3-small"),
-
 		Cognitive: azopenai.AzureSearchChatExtensionConfiguration{
 			Parameters: &azopenai.AzureSearchChatExtensionParameters{
 				Endpoint:  to.Ptr(getRequired("COGNITIVE_SEARCH_API_ENDPOINT")),
@@ -182,6 +192,8 @@ func newTestVars(prefix string) testVars {
 		Whisper: getEndpointWithModel("WHISPER", azure),
 		Vision:  getEndpointWithModel("VISION", azure),
 	}
+
+	updateModels(azure, &tv)
 
 	if azure {
 		tv.ChatCompletionsRAI = getEndpointWithModel("CHAT_COMPLETIONS_RAI", azure)
@@ -213,27 +225,22 @@ func initEnvVars() {
 
 		azureOpenAI.Whisper = endpointWithModel{
 			Endpoint: azureOpenAI.Endpoint,
-			Model:    "whisper",
 		}
 
 		azureOpenAI.ChatCompletionsRAI = endpointWithModel{
 			Endpoint: azureOpenAI.Endpoint,
-			Model:    "gpt-4",
 		}
 
 		azureOpenAI.ChatCompletionsOYD = endpointWithModel{
 			Endpoint: azureOpenAI.Endpoint,
-			Model:    "gpt-4",
 		}
 
 		azureOpenAI.DallE = endpointWithModel{
 			Endpoint: azureOpenAI.Endpoint,
-			Model:    "dall-e-3",
 		}
 
 		azureOpenAI.Vision = endpointWithModel{
 			Endpoint: azureOpenAI.Endpoint,
-			Model:    "gpt-4-vision-preview",
 		}
 
 		openAI.Endpoint = endpoint{
@@ -246,13 +253,14 @@ func initEnvVars() {
 				APIKey: fakeAPIKey,
 				URL:    fakeEndpoint,
 			},
-			Model: "whisper-1",
 		}
 
 		openAI.DallE = endpointWithModel{
 			Endpoint: openAI.Endpoint,
-			Model:    "dall-e-3",
 		}
+
+		updateModels(true, &azureOpenAI)
+		updateModels(false, &openAI)
 
 		openAI.Vision = azureOpenAI.Vision
 

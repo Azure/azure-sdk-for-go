@@ -490,7 +490,10 @@ func (f *Client) uploadFromReader(ctx context.Context, reader io.ReaderAt, actua
 	})
 
 	if err != nil {
-		_, err = f.Delete(ctx, nil)
+		_, err2 := f.Delete(ctx, nil)
+		if err2 != nil {
+			return exported.ConvertToDFSError(err2)
+		}
 		return exported.ConvertToDFSError(err)
 	}
 	// All appends were successful, call to flush

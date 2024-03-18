@@ -56,7 +56,7 @@ func NewBearerTokenPolicy(cred exported.TokenCredential, scopes []string, opts *
 		cred:         cred,
 		scopes:       scopes,
 		mainResource: temporal.NewResource(acquire),
-		allowHTTP:    opts.AllowInsecureAuth,
+		allowHTTP:    opts.InsecureAllowCredentialWithHTTP,
 	}
 }
 

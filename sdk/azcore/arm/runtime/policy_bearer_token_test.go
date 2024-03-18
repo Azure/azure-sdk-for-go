@@ -305,7 +305,7 @@ func TestBearerTokenPolicyAllowHTTP(t *testing.T) {
 	defer close()
 	srv.SetResponse(mock.WithStatusCode(http.StatusOK))
 	b := NewBearerTokenPolicy(mockCredential{}, &armpolicy.BearerTokenOptions{
-		AllowInsecureAuth: true,
+		InsecureAllowCredentialWithHTTP: true,
 	})
 	pl := newTestPipeline(&azpolicy.ClientOptions{Transport: srv, PerRetryPolicies: []azpolicy.Policy{b}})
 	req, err := runtime.NewRequest(context.Background(), "GET", srv.URL())

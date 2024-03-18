@@ -54,7 +54,7 @@ func TestSASCredentialPolicy_AllowHTTP(t *testing.T) {
 	cred := exported.NewSASCredential("foo")
 
 	policy := NewSASCredentialPolicy(cred, "fake-auth", &SASCredentialPolicyOptions{
-		AllowInsecureAuth: true,
+		InsecureAllowCredentialWithHTTP: true,
 	})
 	require.NotNil(t, policy)
 

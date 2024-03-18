@@ -21,8 +21,8 @@ func TestClientOptions_Copy(t *testing.T) {
 	require.Nil(t, option.Clone())
 
 	option = &ClientOptions{ClientOptions: policy.ClientOptions{
-		AllowInsecureAuth: true,
-		Cloud:             cloud.AzurePublic,
+		InsecureAllowCredentialWithHTTP: true,
+		Cloud:                           cloud.AzurePublic,
 		Logging: policy.LogOptions{
 			AllowedHeaders:     []string{"test1", "test2"},
 			AllowedQueryParams: []string{"test1", "test2"},
@@ -33,7 +33,7 @@ func TestClientOptions_Copy(t *testing.T) {
 	}}
 	copiedOption := option.Clone()
 	require.Equal(t, option.APIVersion, copiedOption.APIVersion)
-	require.Equal(t, option.AllowInsecureAuth, copiedOption.AllowInsecureAuth)
+	require.Equal(t, option.InsecureAllowCredentialWithHTTP, copiedOption.InsecureAllowCredentialWithHTTP)
 	require.NotEqual(t, fmt.Sprintf("%p", &option.APIVersion), fmt.Sprintf("%p", &copiedOption.APIVersion))
 	require.Equal(t, option.Cloud.Services, copiedOption.Cloud.Services)
 	require.NotEqual(t, fmt.Sprintf("%p", option.Cloud.Services), fmt.Sprintf("%p", copiedOption.Cloud.Services))

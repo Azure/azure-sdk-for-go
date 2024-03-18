@@ -83,11 +83,11 @@ func TestKeyCredentialPolicy_NilCredential(t *testing.T) {
 	require.NoError(t, err)
 }
 
-func TestKeyCredentialPolicy_AllowInsecureAuth(t *testing.T) {
+func TestKeyCredentialPolicy_InsecureAllowCredentialWithHTTP(t *testing.T) {
 	cred := exported.NewKeyCredential("foo")
 
 	policy := NewKeyCredentialPolicy(cred, "fake-auth", &KeyCredentialPolicyOptions{
-		AllowInsecureAuth: true,
+		InsecureAllowCredentialWithHTTP: true,
 	})
 	require.NotNil(t, policy)
 

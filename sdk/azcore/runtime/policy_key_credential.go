@@ -20,12 +20,12 @@ type KeyCredentialPolicy struct {
 
 // KeyCredentialPolicyOptions contains the optional values configuring [KeyCredentialPolicy].
 type KeyCredentialPolicyOptions struct {
+	// InsecureAllowCredentialWithHTTP enables authenticated requests over HTTP.
+	// WARNING: setting this to true will allow sending the authentication key in clear text. Use with caution.
+	InsecureAllowCredentialWithHTTP bool
+
 	// Prefix is used if the key requires a prefix before it's inserted into the HTTP request.
 	Prefix string
-
-	// AllowInsecureAuth enables authenticated requests over HTTP.
-	// WARNING: setting this to true will allow sending the authentication key in clear text. Use with caution.
-	AllowInsecureAuth bool
 }
 
 // NewKeyCredentialPolicy creates a new instance of [KeyCredentialPolicy].
@@ -40,7 +40,7 @@ func NewKeyCredentialPolicy(cred *exported.KeyCredential, header string, options
 		cred:      cred,
 		header:    header,
 		prefix:    options.Prefix,
-		allowHTTP: options.AllowInsecureAuth,
+		allowHTTP: options.InsecureAllowCredentialWithHTTP,
 	}
 }
 

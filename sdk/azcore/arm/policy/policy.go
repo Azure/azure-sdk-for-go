@@ -20,12 +20,12 @@ type BearerTokenOptions struct {
 	// policy's credential must support multitenant authentication.
 	AuxiliaryTenants []string
 
+	// InsecureAllowCredentialWithHTTP enables authenticated requests over HTTP.
+	// WARNING: setting this to true will allow sending the authentication key in clear text. Use with caution.
+	InsecureAllowCredentialWithHTTP bool
+
 	// Scopes contains the list of permission scopes required for the token.
 	Scopes []string
-
-	// AllowInsecureAuth enables authenticated requests over HTTP.
-	// WARNING: setting this to true will allow sending the authentication key in clear text. Use with caution.
-	AllowInsecureAuth bool
 }
 
 // RegistrationOptions configures the registration policy's behavior.

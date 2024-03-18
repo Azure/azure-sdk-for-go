@@ -19,9 +19,9 @@ type SASCredentialPolicy struct {
 
 // SASCredentialPolicyOptions contains the optional values configuring [SASCredentialPolicy].
 type SASCredentialPolicyOptions struct {
-	// AllowInsecureAuth enables authenticated requests over HTTP.
+	// InsecureAllowCredentialWithHTTP enables authenticated requests over HTTP.
 	// WARNING: setting this to true will allow sending the authentication key in clear text. Use with caution.
-	AllowInsecureAuth bool
+	InsecureAllowCredentialWithHTTP bool
 }
 
 // NewSASCredentialPolicy creates a new instance of [SASCredentialPolicy].
@@ -35,7 +35,7 @@ func NewSASCredentialPolicy(cred *exported.SASCredential, header string, options
 	return &SASCredentialPolicy{
 		cred:      cred,
 		header:    header,
-		allowHTTP: options.AllowInsecureAuth,
+		allowHTTP: options.InsecureAllowCredentialWithHTTP,
 	}
 }
 

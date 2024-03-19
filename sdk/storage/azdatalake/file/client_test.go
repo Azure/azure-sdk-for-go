@@ -5335,7 +5335,7 @@ func (s *RecordedTestSuite) TestFileGetPropertiesWithCPK() {
 	_require.Equal(testcommon.TestCPKByValue.EncryptionKeySHA256, response.EncryptionKeySHA256)
 }
 
-func (s *UnecordedTestSuite) TestFileGetPropertiesWithEncryptionContext() {
+func (s *UnrecordedTestSuite) TestFileGetPropertiesWithEncryptionContext() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 

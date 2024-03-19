@@ -7,6 +7,7 @@
 * HNS Encryption Scope support
 * Append API with acquire lease, release lease and renewal of lease support.
 * Flush API bundled with release lease option.
+* HNS Encryption Context support
 
 ### Breaking Changes
 

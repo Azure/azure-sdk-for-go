@@ -55,6 +55,8 @@ type CreateOptions struct {
 	Group *string
 	// ACL is the access control list for the file.
 	ACL *string
+	// EncryptionContext stores non-encrypted data that can be used to derive the customer-provided key for a file.
+	EncryptionContext *string
 }
 
 // CreateExpiryValues describes when a newly created file should expire.
@@ -91,6 +93,7 @@ func (o *CreateOptions) format() (*generated.LeaseAccessConditions, *generated.M
 	createOpts.Permissions = o.Permissions
 	createOpts.ProposedLeaseID = o.ProposedLeaseID
 	createOpts.LeaseDuration = o.LeaseDuration
+	createOpts.EncryptionContext = o.EncryptionContext
 
 	var httpHeaders *generated.PathHTTPHeaders
 	var cpkOpts *generated.CPKInfo
@@ -149,6 +152,8 @@ type uploadFromReaderOptions struct {
 	HTTPHeaders *HTTPHeaders
 	// CPKInfo contains optional parameters to perform encryption using customer-provided key.
 	CPKInfo *CPKInfo
+	// EncryptionContext contains the information returned from the x-ms-encryption-context header response.
+	EncryptionContext *string
 }
 
 // UploadStreamOptions provides set of configurations for Client.UploadStream operation.

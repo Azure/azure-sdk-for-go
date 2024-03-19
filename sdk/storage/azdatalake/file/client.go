@@ -444,6 +444,13 @@ func (f *Client) uploadFromReader(ctx context.Context, reader io.ReaderAt, actua
 		}
 	}
 
+	if o.EncryptionContext != nil {
+		_, err := f.Create(ctx, &CreateOptions{EncryptionContext: o.EncryptionContext})
+		if err != nil {
+			return err
+		}
+	}
+
 	progress := int64(0)
 	progressLock := &sync.Mutex{}
 
@@ -483,6 +490,12 @@ func (f *Client) uploadFromReader(ctx context.Context, reader io.ReaderAt, actua
 	})
 
 	if err != nil {
+		if o.EncryptionContext != nil {
+			_, err2 := f.Delete(ctx, nil)
+			if err2 != nil {
+				return exported.ConvertToDFSError(err2)
+			}
+		}
 		return exported.ConvertToDFSError(err)
 	}
 	// All appends were successful, call to flush
@@ -531,8 +544,10 @@ func (f *Client) DownloadStream(ctx context.Context, o *DownloadStreamOptions) (
 		o = &DownloadStreamOptions{}
 	}
 	opts := o.format()
-	resp, err := f.blobClient().DownloadStream(ctx, opts)
-	newResp := FormatDownloadStreamResponse(&resp)
+	var respFromCtx *http.Response
+	ctxWithResp := shared.WithCaptureBlobResponse(ctx, &respFromCtx)
+	resp, err := f.blobClient().DownloadStream(ctxWithResp, opts)
+	newResp := FormatDownloadStreamResponse(&resp, respFromCtx)
 	fullResp := DownloadStreamResponse{
 		client:           f,
 		DownloadResponse: newResp,

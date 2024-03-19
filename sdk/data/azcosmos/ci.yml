@@ -25,6 +25,7 @@ extends:
   parameters:
     ServiceDirectory: 'data/azcosmos'
     UsePipelineProxy: false
+    ExcludeGoNMinus2: true
     AdditionalStages: 
       - stage: Emulator
         displayName: 'Cosmos Emulator'
@@ -59,7 +60,7 @@ extends:
 
           - task: GoTool@0
             inputs:
-              version: '$(go.version)'
+              version: '1.22.0'
             displayName: "Select Go Version"
 
           - template: /eng/pipelines/templates/steps/create-go-workspace.yml@self
@@ -68,6 +69,6 @@ extends:
             parameters:
               ServiceDirectory: 'data/azcosmos'
               Image: $(vm.image)
-              GoVersion: $(go.version)
+              GoVersion: '1.22.0'
               EnvVars:
                 EMULATOR: 'true'

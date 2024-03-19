@@ -14,9 +14,11 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
 
 const (
@@ -70,7 +72,6 @@ func NewClient(endpoint string, cred azcore.TokenCredential, o *ClientOptions) (
 	if err != nil {
 		return nil, err
 	}
-
 	return &Client{endpoint: endpoint, pipeline: newPipeline(newCosmosBearerTokenPolicy(cred, scope, nil), gem, o), gem: gem}, nil
 }
 
@@ -471,6 +472,7 @@ func (c *Client) attachContent(content interface{}, req *policy.Request) error {
 }
 
 func (c *Client) executeAndEnsureSuccessResponse(request *policy.Request) (*http.Response, error) {
+	log.Write(azlog.EventResponse, fmt.Sprintf("\n===== Client preferred regions:\n%v\n=====\n", c.gem.preferredLocations))
 	response, err := c.pipeline.Do(request)
 	if err != nil {
 		return nil, err

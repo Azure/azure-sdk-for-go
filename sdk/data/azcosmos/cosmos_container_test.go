@@ -48,7 +48,8 @@ func TestContainerRead(t *testing.T) {
 		mock.WithStatusCode(200))
 
 	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
-	client := &Client{endpoint: srv.URL(), pipeline: pl}
+	gem := &globalEndpointManager{preferredLocations: []string{}}
+	client := &Client{endpoint: srv.URL(), pipeline: pl, gem: gem}
 
 	database, _ := newDatabase("databaseId", client)
 	container, _ := newContainer("containerId", database)
@@ -123,7 +124,8 @@ func TestContainerDeleteItem(t *testing.T) {
 	verifier := pipelineVerifier{}
 
 	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
-	client := &Client{endpoint: srv.URL(), pipeline: pl}
+	gem := &globalEndpointManager{preferredLocations: []string{}}
+	client := &Client{endpoint: srv.URL(), pipeline: pl, gem: gem}
 
 	database, _ := newDatabase("databaseId", client)
 	container, _ := newContainer("containerId", database)
@@ -176,7 +178,8 @@ func TestContainerReadItem(t *testing.T) {
 	verifier := pipelineVerifier{}
 
 	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
-	client := &Client{endpoint: srv.URL(), pipeline: pl}
+	gem := &globalEndpointManager{preferredLocations: []string{}}
+	client := &Client{endpoint: srv.URL(), pipeline: pl, gem: gem}
 
 	database, _ := newDatabase("databaseId", client)
 	container, _ := newContainer("containerId", database)
@@ -233,7 +236,8 @@ func TestContainerReplaceItem(t *testing.T) {
 	verifier := pipelineVerifier{}
 
 	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
-	client := &Client{endpoint: srv.URL(), pipeline: pl}
+	gem := &globalEndpointManager{preferredLocations: []string{}}
+	client := &Client{endpoint: srv.URL(), pipeline: pl, gem: gem}
 
 	database, _ := newDatabase("databaseId", client)
 	container, _ := newContainer("containerId", database)
@@ -294,7 +298,8 @@ func TestContainerUpsertItem(t *testing.T) {
 	verifier := pipelineVerifier{}
 
 	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
-	client := &Client{endpoint: srv.URL(), pipeline: pl}
+	gem := &globalEndpointManager{preferredLocations: []string{}}
+	client := &Client{endpoint: srv.URL(), pipeline: pl, gem: gem}
 
 	database, _ := newDatabase("databaseId", client)
 	container, _ := newContainer("containerId", database)
@@ -359,7 +364,8 @@ func TestContainerCreateItem(t *testing.T) {
 	verifier := pipelineVerifier{}
 
 	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
-	client := &Client{endpoint: srv.URL(), pipeline: pl}
+	gem := &globalEndpointManager{preferredLocations: []string{}}
+	client := &Client{endpoint: srv.URL(), pipeline: pl, gem: gem}
 
 	database, _ := newDatabase("databaseId", client)
 	container, _ := newContainer("containerId", database)
@@ -437,7 +443,8 @@ func TestContainerQueryItems(t *testing.T) {
 	verifier := pipelineVerifier{}
 
 	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
-	client := &Client{endpoint: srv.URL(), pipeline: pl}
+	gem := &globalEndpointManager{preferredLocations: []string{}}
+	client := &Client{endpoint: srv.URL(), pipeline: pl, gem: gem}
 
 	database, _ := newDatabase("databaseId", client)
 	container, _ := newContainer("containerId", database)
@@ -544,7 +551,8 @@ func TestContainerExecuteBatch(t *testing.T) {
 	verifier := pipelineVerifier{}
 
 	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
-	client := &Client{endpoint: srv.URL(), pipeline: pl}
+	gem := &globalEndpointManager{preferredLocations: []string{}}
+	client := &Client{endpoint: srv.URL(), pipeline: pl, gem: gem}
 
 	database, _ := newDatabase("databaseId", client)
 	container, _ := newContainer("containerId", database)
@@ -607,7 +615,8 @@ func TestContainerPatchItem(t *testing.T) {
 	verifier := pipelineVerifier{}
 
 	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
-	client := &Client{endpoint: srv.URL(), pipeline: pl}
+	gem := &globalEndpointManager{preferredLocations: []string{}}
+	client := &Client{endpoint: srv.URL(), pipeline: pl, gem: gem}
 
 	database, _ := newDatabase("databaseId", client)
 	container, _ := newContainer("containerId", database)

@@ -122,7 +122,6 @@ func getEndpointWithModel(res string, isAzure bool) endpointWithModel {
 				APIKey: getRequired("AOAI_" + res + "_API_KEY"),
 				Azure:  true,
 			},
-			Model: getRequired("AOAI_" + res + "_MODEL"),
 		}
 	} else {
 		ep = endpointWithModel{
@@ -131,7 +130,6 @@ func getEndpointWithModel(res string, isAzure bool) endpointWithModel {
 				APIKey: getRequired("OPENAI_API_KEY"),
 				Azure:  false,
 			},
-			Model: getRequired("OPENAI_" + res + "_MODEL"),
 		}
 	}
 

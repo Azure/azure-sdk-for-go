@@ -18,12 +18,13 @@ steps:
       workingDirectory: $(Pipeline.Workspace)
     displayName: Dump Package properties
     condition: and(succeeded(), ${{ parameters.IsSdkLibrary }})
-  - task: PublishPipelineArtifact@1
-    condition: and(succeeded(), ${{ parameters.IsSdkLibrary }})
-    displayName: 'Publish PackageInfo Artifacts'
-    inputs:
-      artifactName: 'PackageInfo'
-      path: $(Build.ArtifactStagingDirectory)/PackageInfo
+
+  - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
+    parameters:
+      ArtifactName: "PackageInfo"
+      ArtifactPath: "$(Build.ArtifactStagingDirectory)/PackageInfo"
+      CustomCondition: and(succeeded(), ${{ parameters.IsSdkLibrary }})
+
   - template: /eng/common/pipelines/templates/steps/set-default-branch.yml
 
   - task: Powershell@2
@@ -32,12 +33,12 @@ steps:
       arguments: >
         -ServiceDirectory ${{parameters.ServiceDirectory}}
         -OutPath $(Build.ArtifactStagingDirectory)
-        -ApiviewUri "$(azuresdk-apiview-uri)"
         -ApiKey "$(azuresdk-apiview-apikey)"
-        -ApiLabel "Auto Review - $(Build.SourceVersion)"
         -SourceBranch $(Build.SourceBranchName)
         -DefaultBranch $(DefaultBranch)
         -ConfigFileDir $(Build.ArtifactStagingDirectory)/PackageInfo
+        -BuildId $(Build.BuildId)
+        -RepoName '$(Build.Repository.Name)'
       pwsh: true
       workingDirectory: $(Pipeline.Workspace)
     displayName: Create API review for Go

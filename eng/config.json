@@ -110,10 +110,6 @@
             "CoverageGoal": 0.80
         },
         {
-            "Name": "monitor/azingest",
-            "CoverageGoal": 0.75
-        },
-        {
             "Name": "monitor/query/azlogs",
             "CoverageGoal": 0.85
         },

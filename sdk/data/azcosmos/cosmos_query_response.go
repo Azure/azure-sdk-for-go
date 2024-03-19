@@ -58,7 +58,7 @@ func newQueryResponse(resp *http.Response) (QueryItemsResponse, error) {
 }
 
 type queryServiceResponse struct {
-	Documents []any `json:"Documents,omitempty"`
+	Documents []json.RawMessage `json:"Documents,omitempty"`
 }
 
 // QueryContainersResponse contains response from the container query operation.

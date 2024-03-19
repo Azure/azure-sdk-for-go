@@ -1,8 +1,11 @@
 # Release History
 
-## 1.10.1 (Unreleased)
+## 1.11.0 (Unreleased)
 
 ### Features Added
+
+* Added `StatusCodes` to `arm/policy.RegistrationOptions` to allow supporting non-standard HTTP status codes during registration.
+* Added field `InsecureAllowCredentialWithHTTP` to `azcore.ClientOptions` and dependent authentication pipeline policies.
 
 ### Breaking Changes
 

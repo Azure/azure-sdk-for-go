@@ -22,9 +22,10 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid/v2"
 	"github.com/joho/godotenv"
+	"github.com/stretchr/testify/require"
 )
 
-const recordingDirectory = "sdk/messaging/azeventgrid/testdata"
+const recordingDirectory = "sdk/messaging/eventgrid/aznamespaces/testdata"
 
 func TestMain(m *testing.M) {
 	code := run(m)
@@ -32,6 +33,7 @@ func TestMain(m *testing.M) {
 }
 
 func run(m *testing.M) int {
+	defer topicCleanup()
 	if recording.GetRecordMode() == recording.PlaybackMode || recording.GetRecordMode() == recording.RecordingMode {
 		proxy, err := recording.StartTestProxy(recordingDirectory, nil)
 		if err != nil {
@@ -49,9 +51,6 @@ func run(m *testing.M) int {
 		log.Printf("Failed to load .env file, no integration tests will run: %s", err)
 	}
 
-	cleanup := createTopicAndUpdateEnv()
-	defer cleanup()
-
 	return m.Run()
 }
 
@@ -66,40 +65,30 @@ func PollUntilDone[T any](ctx context.Context, fn func() (*runtime.Poller[T], er
 	return err
 }
 
-func createTopicAndUpdateEnv() func() {
-	azSubID := os.Getenv("AZEVENTGRID_SUBSCRIPTION_ID")
-	resGroup := os.Getenv("AZEVENTGRID_RESOURCE_GROUP")
-
-	if azSubID == "" || resGroup == "" || recording.GetRecordMode() != recording.LiveMode {
-		// ie, these are unit tests.
+func createTopicAndUpdateEnv(t *testing.T) func() {
+	if recording.GetRecordMode() == recording.PlaybackMode {
 		return func() {}
 	}
 
-	nsURL, err := url.Parse(os.Getenv("EVENTGRID_ENDPOINT"))
+	azSubID := os.Getenv("AZNAMESPACES_SUBSCRIPTION_ID")
+	require.NotEmpty(t, azSubID, "AZNAMESPACES_SUBSCRIPTION_ID is defined")
 
-	if err != nil {
-		panic(err)
-	}
+	resGroup := os.Getenv("AZNAMESPACES_RESOURCE_GROUP")
+	require.NotEmpty(t, resGroup, "AZNAMESPACES_RESOURCE_GROUP is defined")
+
+	nsURL, err := url.Parse(os.Getenv("EVENTGRID_ENDPOINT"))
+	require.NoError(t, err)
 
 	nsHost := strings.Split(nsURL.Host, ".")[0]
 
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
-
-	if err != nil {
-		panic(err)
-	}
+	require.NoError(t, err)
 
 	topicClient, err := armeventgrid.NewNamespaceTopicsClient(azSubID, cred, nil)
-
-	if err != nil {
-		panic(err)
-	}
+	require.NoError(t, err)
 
 	subClient, err := armeventgrid.NewNamespaceTopicEventSubscriptionsClient(azSubID, cred, nil)
-
-	if err != nil {
-		panic(err)
-	}
+	require.NoError(t, err)
 
 	topicName := fmt.Sprintf("topic-%d", time.Now().UnixNano())
 
@@ -110,10 +99,7 @@ func createTopicAndUpdateEnv() func() {
 	err = PollUntilDone(context.Background(), func() (*runtime.Poller[armeventgrid.NamespaceTopicsClientCreateOrUpdateResponse], error) {
 		return topicClient.BeginCreateOrUpdate(context.Background(), resGroup, nsHost, topicName, armeventgrid.NamespaceTopic{}, nil)
 	})
-
-	if err != nil {
-		panic(err)
-	}
+	require.NoError(t, err)
 
 	err = PollUntilDone(context.Background(), func() (*runtime.Poller[armeventgrid.NamespaceTopicEventSubscriptionsClientCreateOrUpdateResponse], error) {
 		return subClient.BeginCreateOrUpdate(context.Background(),
@@ -130,16 +116,17 @@ func createTopicAndUpdateEnv() func() {
 			},
 			nil)
 	})
-
-	if err != nil {
-		panic(err)
-	}
+	require.NoError(t, err)
 
 	fmt.Printf("Created topic %s\n", topicName)
 
 	return func() {
+		// NOTE: this cleanup will happen after the entire test is complete - don't use 't'
 		if _, err = topicClient.BeginDelete(context.Background(), resGroup, nsHost, topicName, nil); err != nil {
 			fmt.Printf("Failed to start the delete for our test topic %s: %s", topicName, err)
+			return
 		}
+
+		fmt.Printf("Deleted topic %s\n", topicName)
 	}
 }

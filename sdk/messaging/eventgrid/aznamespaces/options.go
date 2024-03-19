@@ -13,11 +13,6 @@ type AcknowledgeCloudEventsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PublishCloudEventOptions contains the optional parameters for the Client.PublishCloudEvent method.
-type PublishCloudEventOptions struct {
-	// placeholder for future optional parameters
-}
-
 // PublishCloudEventsOptions contains the optional parameters for the Client.PublishCloudEvents method.
 type PublishCloudEventsOptions struct {
 	// placeholder for future optional parameters

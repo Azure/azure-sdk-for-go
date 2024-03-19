@@ -109,7 +109,7 @@ func MarshalAsByteArray(req *policy.Request, v []byte, format Base64Encoding) er
 }
 
 // MarshalAsJSON calls json.Marshal() to get the JSON encoding of v then calls SetBody.
-func MarshalAsJSON(req *policy.Request, v interface{}) error {
+func MarshalAsJSON(req *policy.Request, v any) error {
 	b, err := json.Marshal(v)
 	if err != nil {
 		return fmt.Errorf("error marshalling type %T: %s", v, err)
@@ -119,7 +119,7 @@ func MarshalAsJSON(req *policy.Request, v interface{}) error {
 }
 
 // MarshalAsXML calls xml.Marshal() to get the XML encoding of v then calls SetBody.
-func MarshalAsXML(req *policy.Request, v interface{}) error {
+func MarshalAsXML(req *policy.Request, v any) error {
 	b, err := xml.Marshal(v)
 	if err != nil {
 		return fmt.Errorf("error marshalling type %T: %s", v, err)
@@ -132,7 +132,7 @@ func MarshalAsXML(req *policy.Request, v interface{}) error {
 // SetMultipartFormData writes the specified keys/values as multi-part form
 // fields with the specified value.  File content must be specified as a ReadSeekCloser.
 // All other values are treated as string values.
-func SetMultipartFormData(req *policy.Request, formData map[string]interface{}) error {
+func SetMultipartFormData(req *policy.Request, formData map[string]any) error {
 	body := bytes.Buffer{}
 	writer := multipart.NewWriter(&body)
 

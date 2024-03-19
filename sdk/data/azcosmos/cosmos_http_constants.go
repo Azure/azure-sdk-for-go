@@ -3,6 +3,7 @@
 
 package azcosmos
 
+// Headers
 const (
 	cosmosHeaderRequestCharge                      string = "x-ms-request-charge"
 	cosmosHeaderActivityId                         string = "x-ms-activity-id"
@@ -82,4 +83,11 @@ const (
 const (
 	cosmosHeaderValuesPreferMinimal string = "return=minimal"
 	cosmosHeaderValuesQuery         string = "application/query+json"
+)
+
+// Substatus Codes
+const (
+	subStatusWriteForbidden          string = "3"
+	subStatusDatabaseAccountNotFound string = "1008"
+	subStatusReadSessionNotAvailable string = "1002"
 )

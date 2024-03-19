@@ -74,7 +74,7 @@ func ExtractToken(token string) ([]byte, error) {
 
 // IsTokenValid returns an error if the specified token isn't applicable for generic type T.
 func IsTokenValid[T any](token string) error {
-	raw := map[string]interface{}{}
+	raw := map[string]any{}
 	if err := json.Unmarshal([]byte(token), &raw); err != nil {
 		return err
 	}

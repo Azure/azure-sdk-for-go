@@ -23,8 +23,8 @@ const (
 	TypeAVSScriptExecutionFailed                                      Type = "Microsoft.AVS.ScriptExecutionFailed"                                       // maps to AVSScriptExecutionFailedEventData
 	TypeAVSScriptExecutionFinished                                    Type = "Microsoft.AVS.ScriptExecutionFinished"                                     // maps to AVSScriptExecutionFinishedEventData
 	TypeAVSScriptExecutionStarted                                     Type = "Microsoft.AVS.ScriptExecutionStarted"                                      // maps to AVSScriptExecutionStartedEventData
-	TypeAPIDefinitionAdded                                            Type = "Microsoft.ApiCenter.ApiDefinitionAdded"                                    // maps to APIDefinitionAddedEventData
-	TypeAPIDefinitionUpdated                                          Type = "Microsoft.ApiCenter.ApiDefinitionUpdated"                                  // maps to APIDefinitionUpdatedEventData
+	TypeAPICenterAPIDefinitionAdded                                   Type = "Microsoft.ApiCenter.ApiDefinitionAdded"                                    // maps to APICenterAPIDefinitionAddedEventData
+	TypeAPICenterAPIDefinitionUpdated                                 Type = "Microsoft.ApiCenter.ApiDefinitionUpdated"                                  // maps to APICenterAPIDefinitionUpdatedEventData
 	TypeAPIManagementAPICreated                                       Type = "Microsoft.ApiManagement.APICreated"                                        // maps to APIManagementAPICreatedEventData
 	TypeAPIManagementAPIDeleted                                       Type = "Microsoft.ApiManagement.APIDeleted"                                        // maps to APIManagementAPIDeletedEventData
 	TypeAPIManagementAPIReleaseCreated                                Type = "Microsoft.ApiManagement.APIReleaseCreated"                                 // maps to APIManagementAPIReleaseCreatedEventData

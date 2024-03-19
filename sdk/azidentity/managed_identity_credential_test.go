@@ -19,8 +19,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	"github.com/stretchr/testify/require"
 )
 
 const (
@@ -154,6 +156,23 @@ func TestManagedIdentityCredential_AzureArcErrors(t *testing.T) {
 			t.Fatal("expected an error")
 		}
 	})
+}
+
+func TestManagedIdentityCredential_AzureFunctionsLive(t *testing.T) {
+	// This test triggers the managed identity test app deployed to Azure Functions.
+	// See the bicep file and test resources scripts for details.
+	fn := os.Getenv("AZIDENTITY_FUNCTION_NAME")
+	if fn == "" {
+		t.Skip("set AZIDENTITY_FUNCTION_NAME to run this test")
+	}
+	url := fmt.Sprintf("https://%s.azurewebsites.net/api/HttpTrigger", fn)
+	res, err := http.Get(url)
+	require.NoError(t, err)
+	if res.StatusCode != http.StatusOK {
+		b, err := runtime.Payload(res)
+		require.NoError(t, err)
+		t.Fatal("test application returned an error: " + string(b))
+	}
 }
 
 func TestManagedIdentityCredential_AzureMLLive(t *testing.T) {

@@ -24,7 +24,7 @@
 
 # AzureSDKOwners: @richardpark-msft
 # ServiceLabel: %OpenAI
-# PRLable: %OpenAI
+# PRLabel: %OpenAI
 /sdk/ai                       @richardpark-msft @jhendrixMSFT
 
 # AzureSDKOwners: @jhendrixMSFT
@@ -59,12 +59,12 @@
 /sdk/messaging/azservicebus/  @richardpark-msft @jhendrixMSFT
 
 # AzureSDKOwners: @richardpark-msft
-# ServiceLabel: %%Event Grid
+# ServiceLabel: %Event Grid
 # PRLabel: %Event Grid
-/sdk/messaging/azeventgrid/   @richardpark-msft @jhendrixMSFT
+/sdk/messaging/eventgrid/  @richardpark-msft @jhendrixMSFT
 
 # AzureSDKOwners: @richardpark-msft
-# ServiceLabel: %%Event Hubs
+# ServiceLabel: %Event Hubs
 # PRLabel: %Event Hubs
 /sdk/messaging/azeventhubs/   @richardpark-msft @jhendrixMSFT
 
@@ -82,7 +82,7 @@
 # ServiceOwner: @siminsavani-msft
 # ServiceLabel: %Azure.Core
 # PRLabel: %Storage
-/sdk/storage/                 @siminsavani-msft @souravgupta-msft @tasherif-msft @jhendrixMSFT @gapra-msft @vibhansa-msft @tanyasethi-msft
+/sdk/storage/                 @siminsavani-msft @souravgupta-msft @jhendrixMSFT @gapra-msft @vibhansa-msft @tanyasethi-msft
 
 # AzureSDKOwners: @jhendrixMSFT
 # ServiceLabel: %Open Telemetry

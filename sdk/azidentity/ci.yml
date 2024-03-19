@@ -21,8 +21,8 @@ pr:
     include:
       - sdk/azidentity/
 
-stages:
-  - template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
+extends:
+    template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
     parameters:
       CloudConfig:
         Public:
@@ -34,8 +34,11 @@ stages:
       UsePipelineProxy: false
 
       ${{ if endsWith(variables['Build.DefinitionName'], 'weekly') }}:
-        AdditionalMatrixConfigs:
+        MatrixConfigs:
           - Name: managed_identity_matrix
             GenerateVMJobs: true
             Path: sdk/azidentity/managed-identity-matrix.json
             Selection: sparse
+        MatrixReplace:
+          - Pool=.*LINUXPOOL.*/azsdk-pool-mms-ubuntu-2204-identitymsi
+          - OSVmImage=.*LINUXPOOL.*/azsdk-pool-mms-ubuntu-2204-1espt

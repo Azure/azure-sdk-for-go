@@ -27,7 +27,7 @@ func TestNewResumeToken(t *testing.T) {
 	n, err := NewResumeToken[struct{}](fakeResult[struct{}]{})
 	require.Error(t, err)
 	require.Empty(t, n)
-	n, err = NewResumeToken[interface{}](fakeResult[interface{}]{})
+	n, err = NewResumeToken[any](fakeResult[any]{})
 	require.Error(t, err)
 	require.Empty(t, n)
 	n, err = NewResumeToken[int](fakeResult[int]{})

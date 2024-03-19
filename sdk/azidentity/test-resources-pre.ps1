@@ -1,5 +1,12 @@
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+
+# IMPORTANT: Do not invoke this file directly. Please instead run eng/common/TestResources/New-TestResources.ps1 from the repository root.
+
 [CmdletBinding(SupportsShouldProcess = $true, ConfirmImpact = 'Medium')]
 param (
+    [hashtable] $AdditionalParameters = @{},
+
     # Captures any arguments from eng/New-TestResources.ps1 not declared here (no parameter errors).
     [Parameter(ValueFromRemainingArguments = $true)]
     $RemainingArguments
@@ -11,7 +18,7 @@ if (!$CI) {
     return
 }
 
-if ($EnvironmentVariables -eq $null -or $EnvironmentVariables.Count -eq 0) {
+if ($null -eq $EnvironmentVariables -or $EnvironmentVariables.Count -eq 0) {
     throw "EnvironmentVariables must be set in the calling script New-TestResources.ps1"
 }
 

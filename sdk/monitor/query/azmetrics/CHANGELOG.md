@@ -10,6 +10,7 @@
 ### Bugs Fixed
 
 ### Other Changes
+* Updated to use API version 2024-02-01
 * Added code examples
 
 ## 0.1.0 (2024-02-14)

@@ -75,7 +75,7 @@ func TestIsNullValueMapSlice(t *testing.T) {
 	if !IsNullValue(s) {
 		t.Fatal("expected null value for s")
 	}
-	m := NullValue[map[string]interface{}]()
+	m := NullValue[map[string]any]()
 	if !IsNullValue(m) {
 		t.Fatal("expected null value for s")
 	}

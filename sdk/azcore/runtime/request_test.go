@@ -249,7 +249,7 @@ func TestSetMultipartFormData(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	err = SetMultipartFormData(req, map[string]interface{}{
+	err = SetMultipartFormData(req, map[string]any{
 		"string": "value",
 		"int":    1,
 		"data":   exported.NopCloser(strings.NewReader("some data")),

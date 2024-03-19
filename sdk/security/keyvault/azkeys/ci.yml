@@ -21,8 +21,8 @@ pr:
     include:
     - sdk/security/keyvault/azkeys
 
-stages:
-- template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
+extends:
+  template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
   parameters:
     TimeoutInMinutes: 120
     ServiceDirectory: 'security/keyvault/azkeys'

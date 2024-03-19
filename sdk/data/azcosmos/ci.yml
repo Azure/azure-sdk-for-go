@@ -20,57 +20,54 @@ pr:
     include:
     - sdk/data/azcosmos/
 
-stages:
-- template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
+extends:
+  template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: 'data/azcosmos'
     UsePipelineProxy: false
-- stage: Emulator
-  displayName: 'Cosmos Emulator'
-  variables:
-  - template: /eng/pipelines/templates/variables/globals.yml
-  jobs:
-  - job: DownloadAndRunCosmosEmulator
-    displayName: Download and run Cosmos Emulator
+    AdditionalStages: 
+      - stage: Emulator
+        displayName: 'Cosmos Emulator'
+        variables:
+        - template: /eng/pipelines/templates/variables/globals.yml@self
+        - template: /eng/pipelines/templates/variables/image.yml@self
+        jobs:
+        - job: DownloadAndRunCosmosEmulator
+          displayName: Download and run Cosmos Emulator
 
-    strategy:
-      matrix:
-        Windows_Go120:
-          pool.name: azsdk-pool-mms-win-2022-general
-          image.name: MMS2022
-          go.version: '1.21.1'
-    pool:
-      name: $(pool.name)
-      vmImage: $(image.name)
+          pool:
+            name: $(WINDOWSPOOL)
+            image: $(WINDOWSVMIMAGE)
+            os: windows
 
-    steps:
-    - template: /eng/common/pipelines/templates/steps/cosmos-emulator.yml
-      parameters:
-        StartParameters: '/noexplorer /noui /enablepreview /disableratelimiting /enableaadauthentication /partitioncount=50 /consistency=Strong /EnableSqlComputeEndpoint'
-    - powershell: |
-        $Key = 'C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw=='
-        $password = ConvertTo-SecureString -String $Key -Force -AsPlainText
-        $cert = Get-ChildItem cert:\LocalMachine\My | Where-Object { $_.FriendlyName -eq "DocumentDbEmulatorCertificate" }
-        Export-PfxCertificate -Cert $cert -FilePath ".\CosmosDbEmulatorCert.pfx" -Password $password | Out-Null
-        $cert = New-Object System.Security.Cryptography.X509Certificates.X509Certificate2
-        $cert.Import(".\CosmosDbEmulatorCert.pfx", $Key, "DefaultKeySet")
-        $cert | Export-Certificate -FilePath "$env:temp\CosmosDbEmulatorCert.cer" -Type CERT
-      displayName: 'Export Cosmos DB Emulator Certificate'
-    - template: /eng/common/pipelines/templates/steps/verify-agent-os.yml
-      parameters:
-        AgentImage: $(image.name)
+          steps:
+          - template: /eng/common/pipelines/templates/steps/cosmos-emulator.yml@self
+            parameters:
+              StartParameters: '/noexplorer /noui /enablepreview /disableratelimiting /enableaadauthentication /partitioncount=50 /consistency=Strong /EnableSqlComputeEndpoint'
+          - powershell: |
+              $Key = 'C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw=='
+              $password = ConvertTo-SecureString -String $Key -Force -AsPlainText
+              $cert = Get-ChildItem cert:\LocalMachine\My | Where-Object { $_.FriendlyName -eq "DocumentDbEmulatorCertificate" }
+              Export-PfxCertificate -Cert $cert -FilePath ".\CosmosDbEmulatorCert.pfx" -Password $password | Out-Null
+              $cert = New-Object System.Security.Cryptography.X509Certificates.X509Certificate2
+              $cert.Import(".\CosmosDbEmulatorCert.pfx", $Key, "DefaultKeySet")
+              $cert | Export-Certificate -FilePath "$env:temp\CosmosDbEmulatorCert.cer" -Type CERT
+            displayName: 'Export Cosmos DB Emulator Certificate'
+          - template: /eng/common/pipelines/templates/steps/verify-agent-os.yml@self
+            parameters:
+              AgentImage: windows
 
-    - task: GoTool@0
-      inputs:
-        version: '$(go.version)'
-      displayName: "Select Go Version"
+          - task: GoTool@0
+            inputs:
+              version: '$(go.version)'
+            displayName: "Select Go Version"
 
-    - template: /eng/pipelines/templates/steps/create-go-workspace.yml
+          - template: /eng/pipelines/templates/steps/create-go-workspace.yml@self
 
-    - template:  /eng/pipelines/templates/steps/build-test.yml
-      parameters:
-        ServiceDirectory: 'data/azcosmos'
-        Image: $(vm.image)
-        GoVersion: $(go.version)
-        EnvVars:
-          EMULATOR: 'true'
+          - template:  /eng/pipelines/templates/steps/build-test.yml@self
+            parameters:
+              ServiceDirectory: 'data/azcosmos'
+              Image: $(vm.image)
+              GoVersion: $(go.version)
+              EnvVars:
+                EMULATOR: 'true'

@@ -13,7 +13,7 @@ extends:
 
             pool:
               image: $(LINUXNEXTVMIMAGE)
-              name: $(LINUXPOOL)
+              name: $(LINUXNEXTPOOL)
               os: linux
 
 

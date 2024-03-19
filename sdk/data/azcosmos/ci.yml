@@ -39,6 +39,7 @@ extends:
           pool:
             name: $(WINDOWSPOOL)
             image: $(WINDOWSVMIMAGE)
+            go.version: '1.22.0'
             os: windows
 
           steps:

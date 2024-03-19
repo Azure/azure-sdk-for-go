@@ -151,6 +151,8 @@ func SetMultipartFormData(req *policy.Request, formData map[string]any) error {
 		return nil
 	}
 
+	quoteEscaper := strings.NewReplacer("\\", "\\\\", `"`, "\\\"")
+
 	writeMultipartContent := func(fieldname, filename string, mpc streaming.MultipartContent) error {
 		if mpc.Body == nil {
 			return errors.New("streaming.MultipartContent.Body cannot be nil")
@@ -163,7 +165,6 @@ func SetMultipartFormData(req *policy.Request, formData map[string]any) error {
 		}
 		// this is pretty much copied from multipart.Writer.CreateFormFile
 		// but lets us set the caller provided Content-Type and filename
-		quoteEscaper := strings.NewReplacer("\\", "\\\\", `"`, "\\\"")
 		h := make(textproto.MIMEHeader)
 		h.Set("Content-Disposition",
 			fmt.Sprintf(`form-data; name="%s"; filename="%s"`,
@@ -186,7 +187,6 @@ func SetMultipartFormData(req *policy.Request, formData map[string]any) error {
 
 	// the same as multipart.Writer.WriteField but lets us specify the Content-Type
 	writeField := func(fieldname, contentType string, value string) error {
-		quoteEscaper := strings.NewReplacer("\\", "\\\\", `"`, "\\\"")
 		h := make(textproto.MIMEHeader)
 		h.Set("Content-Disposition",
 			fmt.Sprintf(`form-data; name="%s"`, quoteEscaper.Replace(fieldname)))

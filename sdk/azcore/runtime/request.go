@@ -184,6 +184,23 @@ func SetMultipartFormData(req *policy.Request, formData map[string]any) error {
 		return nil
 	}
 
+	// the same as multipart.Writer.WriteField but lets us specify the Content-Type
+	writeField := func(fieldname, contentType string, value string) error {
+		quoteEscaper := strings.NewReplacer("\\", "\\\\", `"`, "\\\"")
+		h := make(textproto.MIMEHeader)
+		h.Set("Content-Disposition",
+			fmt.Sprintf(`form-data; name="%s"`, quoteEscaper.Replace(fieldname)))
+		h.Set("Content-Type", contentType)
+		fd, err := writer.CreatePart(h)
+		if err != nil {
+			return err
+		}
+		if _, err = fd.Write([]byte(value)); err != nil {
+			return err
+		}
+		return nil
+	}
+
 	for k, v := range formData {
 		if rsc, ok := v.(io.ReadSeekCloser); ok {
 			if err := writeContent(k, k, rsc); err != nil {
@@ -212,10 +229,12 @@ func SetMultipartFormData(req *policy.Request, formData map[string]any) error {
 		}
 
 		var content string
+		contentType := shared.ContentTypeTextPlain
 		switch tt := v.(type) {
 		case []byte:
 			// JSON, don't quote it
 			content = string(tt)
+			contentType = shared.ContentTypeAppJSON
 		case string:
 			content = tt
 		default:
@@ -223,7 +242,7 @@ func SetMultipartFormData(req *policy.Request, formData map[string]any) error {
 			content = fmt.Sprintf("%v", v)
 		}
 
-		if err := writer.WriteField(k, content); err != nil {
+		if err := writeField(k, contentType, content); err != nil {
 			return err
 		}
 	}

@@ -285,18 +285,22 @@ func TestSetMultipartFormData(t *testing.T) {
 			thing1 := thing{}
 			require.NoError(t, json.Unmarshal(data, &thing1))
 			require.EqualValues(t, 123, thing1.ID)
+			require.EqualValues(t, "application/json", part.Header.Get(shared.HeaderContentType))
 		case "string":
 			strPart, err := io.ReadAll(part)
 			require.NoError(t, err)
 			require.EqualValues(t, "value", strPart)
+			require.EqualValues(t, "text/plain", part.Header.Get(shared.HeaderContentType))
 		case "int":
 			intPart, err := io.ReadAll(part)
 			require.NoError(t, err)
 			require.EqualValues(t, "1", intPart)
+			require.EqualValues(t, "text/plain", part.Header.Get(shared.HeaderContentType))
 		case "data":
 			dataPart, err := io.ReadAll(part)
 			require.NoError(t, err)
 			require.EqualValues(t, "some data", dataPart)
+			require.EqualValues(t, "application/octet-stream", part.Header.Get(shared.HeaderContentType))
 		case "datum":
 			content, err := io.ReadAll(part)
 			require.NoError(t, err)

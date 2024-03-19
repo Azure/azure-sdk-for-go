@@ -1,32 +1,35 @@
 trigger: none
-
 pr: none
 
-schedules:
-  - cron: "0 1 * * *"
-    displayName: Daily release
-    branches:
-      include:
-        - main
-    always: true
+extends:
+  template: /eng/pipelines/templates/stages/1es-redirect.yml
+  parameters:
+    stages:
+      - stage:
+        variables:
+          - template: /eng/pipelines/templates/variables/image.yml
+        jobs:
+          - job:
 
-stages:
-  - stage:
-    jobs:
-      - job:
-        displayName: Go Auto Release
-        steps:
-          - task: Npm@1
-            inputs:
-              command: 'custom'
-              customCommand: 'install -g autorest@latest'
+            pool:
+              image: $(LINUXNEXTVMIMAGE)
+              name: $(LINUXPOOL)
+              os: linux
 
-          - task: GoTool@0
-            inputs:
-              version: '1.22.0'
 
-          - task: ShellScript@2
-            inputs:
-              scriptPath: 'eng/scripts/mgmt-auto-release.sh'
-              cwd: '$(System.DefaultWorkingDirectory)'
-              args: '$(azuresdk-github-pat)'
+            displayName: Go Auto Release
+            steps:
+              - task: Npm@1
+                inputs:
+                  command: 'custom'
+                  customCommand: 'install -g autorest@latest'
+
+              - task: GoTool@0
+                inputs:
+                  version: '1.22.0'
+
+              - task: ShellScript@2
+                inputs:
+                  scriptPath: 'eng/scripts/mgmt-auto-release.sh'
+                  cwd: '$(System.DefaultWorkingDirectory)'
+                  args: '$(azuresdk-github-pat)'

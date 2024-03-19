@@ -39,7 +39,6 @@ extends:
           pool:
             name: $(WINDOWSPOOL)
             image: $(WINDOWSVMIMAGE)
-            go.version: '1.22.0'
             os: windows
 
           steps:
@@ -61,7 +60,7 @@ extends:
 
           - task: GoTool@0
             inputs:
-              version: '$(go.version)'
+              version: '1.22.0'
             displayName: "Select Go Version"
 
           - template: /eng/pipelines/templates/steps/create-go-workspace.yml@self
@@ -70,6 +69,6 @@ extends:
             parameters:
               ServiceDirectory: 'data/azcosmos'
               Image: $(vm.image)
-              GoVersion: $(go.version)
+              GoVersion: '1.22.0'
               EnvVars:
                 EMULATOR: 'true'

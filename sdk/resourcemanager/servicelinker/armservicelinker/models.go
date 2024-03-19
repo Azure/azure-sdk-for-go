@@ -10,10 +10,39 @@ package armservicelinker
 
 import "time"
 
+// AccessKeyInfoBase - The access key directly from target resource properties, which target service is Azure Resource, such
+// as Microsoft.Storage
+type AccessKeyInfoBase struct {
+	// REQUIRED; The authentication type.
+	AuthType *AuthType
+
+	// Optional. Indicates how to configure authentication. If optInAllAuth, service linker configures authentication such as
+	// enabling identity on source resource and granting RBAC roles. If optOutAllAuth,
+	// opt out authentication setup. Default is optInAllAuth.
+	AuthMode *AuthMode
+
+	// Permissions of the accessKey. Read and Write are for Azure Cosmos DB and Azure App Configuration, Listen, Send and Manage
+	// are for Azure Event Hub and Azure Service Bus.
+	Permissions []*AccessKeyPermissions
+}
+
+// GetAuthInfoBase implements the AuthInfoBaseClassification interface for type AccessKeyInfoBase.
+func (a *AccessKeyInfoBase) GetAuthInfoBase() *AuthInfoBase {
+	return &AuthInfoBase{
+		AuthMode: a.AuthMode,
+		AuthType: a.AuthType,
+	}
+}
+
 // AuthInfoBase - The authentication info
 type AuthInfoBase struct {
 	// REQUIRED; The authentication type.
 	AuthType *AuthType
+
+	// Optional. Indicates how to configure authentication. If optInAllAuth, service linker configures authentication such as
+	// enabling identity on source resource and granting RBAC roles. If optOutAllAuth,
+	// opt out authentication setup. Default is optInAllAuth.
+	AuthMode *AuthMode
 }
 
 // GetAuthInfoBase implements the AuthInfoBaseClassification interface for type AuthInfoBase.
@@ -65,6 +94,111 @@ func (a *AzureResourcePropertiesBase) GetAzureResourcePropertiesBase() *AzureRes
 	return a
 }
 
+// BasicErrorDryrunPrerequisiteResult - The represent of basic error
+type BasicErrorDryrunPrerequisiteResult struct {
+	// REQUIRED; The type of dryrun result.
+	Type *DryrunPrerequisiteResultType
+
+	// The error code.
+	Code *string
+
+	// The error message.
+	Message *string
+}
+
+// GetDryrunPrerequisiteResult implements the DryrunPrerequisiteResultClassification interface for type BasicErrorDryrunPrerequisiteResult.
+func (b *BasicErrorDryrunPrerequisiteResult) GetDryrunPrerequisiteResult() *DryrunPrerequisiteResult {
+	return &DryrunPrerequisiteResult{
+		Type: b.Type,
+	}
+}
+
+// ConfigurationInfo - The configuration information, used to generate configurations or save to applications
+type ConfigurationInfo struct {
+	// Optional, indicate whether to apply configurations on source application. If enable, generate configurations and applied
+	// to the source application. Default is enable. If optOut, no configuration
+	// change will be made on source.
+	Action *ActionType
+
+	// A dictionary of additional configurations to be added. Service will auto generate a set of basic configurations and this
+	// property is to full fill more customized configurations
+	AdditionalConfigurations map[string]*string
+
+	// A dictionary of additional properties to be added in the end of connection string.
+	AdditionalConnectionStringProperties map[string]*string
+
+	// An option to store configuration into different place
+	ConfigurationStore *ConfigurationStore
+
+	// Optional. A dictionary of default key name and customized key name mapping. If not specified, default key name will be
+	// used for generate configurations
+	CustomizedKeys map[string]*string
+
+	// Indicates some additional properties for dapr client type
+	DaprProperties *DaprProperties
+
+	// Indicates whether to clean up previous operation when Linker is updating or deleting
+	DeleteOrUpdateBehavior *DeleteOrUpdateBehavior
+}
+
+// ConfigurationName - The configuration names.
+type ConfigurationName struct {
+	// Description for the configuration name.
+	Description *string
+
+	// Represent the configuration is required or not
+	Required *bool
+	Value    *string
+}
+
+type ConfigurationNameItem struct {
+	// The result detail.
+	Properties *ConfigurationNames
+}
+
+// ConfigurationNameResult - Configuration Name list which will be set based on different target resource, client type, auth
+// type.
+type ConfigurationNameResult struct {
+	// Expected configuration names for each target service.
+	Value []*ConfigurationNameItem
+
+	// READ-ONLY; Link to next page of resources.
+	NextLink *string
+}
+
+// ConfigurationNames - The configuration names which will be set based on specific target resource, client type, auth type.
+type ConfigurationNames struct {
+	// The auth type.
+	AuthType *AuthType
+
+	// The client type for configuration names.
+	ClientType *ClientType
+
+	// Deprecated, please use #/definitions/DaprConfigurationList instead
+	DaprProperties *DaprProperties
+
+	// The configuration names to be set in compute service environment.
+	Names []*ConfigurationName
+
+	// Indicates where the secrets in configuration from. Used when secrets are from Keyvault.
+	SecretType *SecretSourceType
+
+	// The target service provider name and resource name.
+	TargetService *string
+}
+
+// ConfigurationResult - Configurations for source resource, include appSettings, connectionString and serviceBindings
+type ConfigurationResult struct {
+	// The configuration properties for source resource.
+	Configurations []*SourceConfiguration
+}
+
+// ConfigurationStore - An option to store configuration into different place
+type ConfigurationStore struct {
+	// The app configuration id to store configuration
+	AppConfigurationID *string
+}
+
 // ConfluentBootstrapServer - The service properties when target service type is ConfluentBootstrapServer
 type ConfluentBootstrapServer struct {
 	// REQUIRED; The target service type.
@@ -94,6 +228,232 @@ type ConfluentSchemaRegistry struct {
 func (c *ConfluentSchemaRegistry) GetTargetServiceBase() *TargetServiceBase {
 	return &TargetServiceBase{
 		Type: c.Type,
+	}
+}
+
+// CreateOrUpdateDryrunParameters - The dryrun parameters for creation or update a linker
+type CreateOrUpdateDryrunParameters struct {
+	// REQUIRED; The name of action for you dryrun job.
+	ActionName *DryrunActionName
+
+	// The authentication type.
+	AuthInfo AuthInfoBaseClassification
+
+	// The application client type
+	ClientType *ClientType
+
+	// The connection information consumed by applications, including secrets, connection strings.
+	ConfigurationInfo *ConfigurationInfo
+
+	// The network solution.
+	PublicNetworkSolution *PublicNetworkSolution
+
+	// connection scope in source service.
+	Scope *string
+
+	// An option to store secret value in secure place
+	SecretStore *SecretStore
+
+	// The target service properties
+	TargetService TargetServiceBaseClassification
+
+	// The VNet solution.
+	VNetSolution *VNetSolution
+
+	// READ-ONLY; The provisioning state.
+	ProvisioningState *string
+}
+
+// GetDryrunParameters implements the DryrunParametersClassification interface for type CreateOrUpdateDryrunParameters.
+func (c *CreateOrUpdateDryrunParameters) GetDryrunParameters() *DryrunParameters {
+	return &DryrunParameters{
+		ActionName: c.ActionName,
+	}
+}
+
+// DaprConfigurationList - Dapr configuration list supported by Service Connector
+type DaprConfigurationList struct {
+	// The list of dapr configurations
+	Value []*DaprConfigurationResource
+
+	// READ-ONLY; Link to next page of resources.
+	NextLink *string
+}
+
+type DaprConfigurationProperties struct {
+	// The authentication type.
+	AuthType *AuthType
+
+	// Indicates some additional properties for dapr client type
+	DaprProperties *DaprProperties
+
+	// Supported target resource type, extract from resource id, uppercase
+	TargetType *string
+}
+
+// DaprConfigurationResource - Represent one resource of the dapr configuration list
+type DaprConfigurationResource struct {
+	// The properties of the dapr configuration.
+	Properties *DaprConfigurationProperties
+}
+
+// DaprMetadata - The dapr component metadata.
+type DaprMetadata struct {
+	// The description of the metadata, returned from configuration api
+	Description *string
+
+	// Metadata property name.
+	Name *string
+
+	// The value indicating whether the metadata is required or not
+	Required *DaprMetadataRequired
+
+	// The secret name where dapr could get value
+	SecretRef *string
+
+	// Metadata property value.
+	Value *string
+}
+
+// DaprProperties - Indicates some additional properties for dapr client type
+type DaprProperties struct {
+	// The dapr component type
+	ComponentType *string
+
+	// Additional dapr metadata
+	Metadata []*DaprMetadata
+
+	// The dapr component scopes
+	Scopes []*string
+
+	// The name of a secret store dapr to retrieve secret
+	SecretStoreComponent *string
+
+	// The dapr component version
+	Version *string
+
+	// READ-ONLY; The direction supported by the dapr binding component
+	BindingComponentDirection *DaprBindingComponentDirection
+
+	// READ-ONLY; The runtime version supported by the properties
+	RuntimeVersion *string
+}
+
+// DatabaseAADAuthInfo - The extra auth info required by Database AAD authentication.
+type DatabaseAADAuthInfo struct {
+	// Username created in the database which is mapped to a user in AAD.
+	UserName *string
+}
+
+// DryrunList - The list of dryrun.
+type DryrunList struct {
+	// The link used to get the next page of dryrun list.
+	NextLink *string
+
+	// The list of dryrun.
+	Value []*DryrunResource
+}
+
+// DryrunOperationPreview - The preview of the operations for creation
+type DryrunOperationPreview struct {
+	// The action defined by RBAC, refer https://docs.microsoft.com/azure/role-based-access-control/role-definitions#actions-format
+	Action *string
+
+	// The description of the operation
+	Description *string
+
+	// The operation name
+	Name *string
+
+	// The operation type
+	OperationType *DryrunPreviewOperationType
+
+	// The scope of the operation, refer https://docs.microsoft.com/azure/role-based-access-control/scope-overview
+	Scope *string
+}
+
+// DryrunParameters - The parameters of the dryrun
+type DryrunParameters struct {
+	// REQUIRED; The name of action for you dryrun job.
+	ActionName *DryrunActionName
+}
+
+// GetDryrunParameters implements the DryrunParametersClassification interface for type DryrunParameters.
+func (d *DryrunParameters) GetDryrunParameters() *DryrunParameters { return d }
+
+// DryrunPatch - a dryrun job to be updated.
+type DryrunPatch struct {
+	// The properties of the dryrun job.
+	Properties *DryrunProperties
+}
+
+// DryrunPrerequisiteResult - A result of dryrun
+type DryrunPrerequisiteResult struct {
+	// REQUIRED; The type of dryrun result.
+	Type *DryrunPrerequisiteResultType
+}
+
+// GetDryrunPrerequisiteResult implements the DryrunPrerequisiteResultClassification interface for type DryrunPrerequisiteResult.
+func (d *DryrunPrerequisiteResult) GetDryrunPrerequisiteResult() *DryrunPrerequisiteResult { return d }
+
+// DryrunProperties - The properties of the dryrun job
+type DryrunProperties struct {
+	// The parameters of the dryrun
+	Parameters DryrunParametersClassification
+
+	// READ-ONLY; the preview of the operations for creation
+	OperationPreviews []*DryrunOperationPreview
+
+	// READ-ONLY; the result of the dryrun
+	PrerequisiteResults []DryrunPrerequisiteResultClassification
+
+	// READ-ONLY; The provisioning state.
+	ProvisioningState *string
+}
+
+// DryrunResource - a dryrun job resource
+type DryrunResource struct {
+	// The properties of the dryrun job.
+	Properties *DryrunProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// EasyAuthMicrosoftEntraIDAuthInfo - The authentication info when authType is EasyAuth Microsoft Entra ID
+type EasyAuthMicrosoftEntraIDAuthInfo struct {
+	// REQUIRED; The authentication type.
+	AuthType *AuthType
+
+	// Optional. Indicates how to configure authentication. If optInAllAuth, service linker configures authentication such as
+	// enabling identity on source resource and granting RBAC roles. If optOutAllAuth,
+	// opt out authentication setup. Default is optInAllAuth.
+	AuthMode *AuthMode
+
+	// Application clientId for EasyAuth Microsoft Entra ID.
+	ClientID *string
+
+	// Indicates whether to clean up previous operation when Linker is updating or deleting
+	DeleteOrUpdateBehavior *DeleteOrUpdateBehavior
+
+	// Application Secret for EasyAuth Microsoft Entra ID.
+	Secret *string
+}
+
+// GetAuthInfoBase implements the AuthInfoBaseClassification interface for type EasyAuthMicrosoftEntraIDAuthInfo.
+func (e *EasyAuthMicrosoftEntraIDAuthInfo) GetAuthInfoBase() *AuthInfoBase {
+	return &AuthInfoBase{
+		AuthMode: e.AuthMode,
+		AuthType: e.AuthType,
 	}
 }
 
@@ -129,6 +489,20 @@ type ErrorDetail struct {
 type ErrorResponse struct {
 	// The error object.
 	Error *ErrorDetail
+}
+
+// FirewallRules - Target service's firewall rules. to allow connections from source service.
+type FirewallRules struct {
+	// Allow Azure services to access the target service if true.
+	AzureServices *AllowType
+
+	// Allow caller client IP to access the target service if true. the property is used when connecting local application to
+	// target service.
+	CallerClientIP *AllowType
+
+	// This value specifies the set of IP addresses or IP address ranges in CIDR form to be included as the allowed list of client
+	// IPs for a given database account.
+	IPRanges []*string
 }
 
 // KeyVaultSecretReferenceSecretInfo - The secret info when type is keyVaultSecretReference. It's for scenario that user provides
@@ -169,28 +543,25 @@ func (k *KeyVaultSecretURISecretInfo) GetSecretInfoBase() *SecretInfoBase {
 	}
 }
 
-// LinkerList - The list of Linker.
-type LinkerList struct {
-	// The link used to get the next page of Linker list.
-	NextLink *string
-
-	// The list of Linkers.
-	Value []*LinkerResource
-}
-
-// LinkerPatch - A linker to be updated.
+// LinkerPatch - A Linker to be updated.
 type LinkerPatch struct {
 	// Linker properties
 	Properties *LinkerProperties
 }
 
-// LinkerProperties - The properties of the linker.
+// LinkerProperties - The properties of the Linker.
 type LinkerProperties struct {
 	// The authentication type.
 	AuthInfo AuthInfoBaseClassification
 
 	// The application client type
 	ClientType *ClientType
+
+	// The connection information consumed by applications, including secrets, connection strings.
+	ConfigurationInfo *ConfigurationInfo
+
+	// The network solution.
+	PublicNetworkSolution *PublicNetworkSolution
 
 	// connection scope in source service.
 	Scope *string
@@ -210,7 +581,7 @@ type LinkerProperties struct {
 
 // LinkerResource - Linker of source and target resource
 type LinkerResource struct {
-	// REQUIRED; The properties of the linker.
+	// REQUIRED; The properties of the Linker.
 	Properties *LinkerProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
@@ -219,7 +590,7 @@ type LinkerResource struct {
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; The system data.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
@@ -275,6 +646,28 @@ type OperationListResult struct {
 	Value []*Operation
 }
 
+// PermissionsMissingDryrunPrerequisiteResult - The represent of missing permissions
+type PermissionsMissingDryrunPrerequisiteResult struct {
+	// REQUIRED; The type of dryrun result.
+	Type *DryrunPrerequisiteResultType
+
+	// The permission list
+	Permissions []*string
+
+	// The recommended role to resolve permissions missing
+	RecommendedRole *string
+
+	// The permission scope
+	Scope *string
+}
+
+// GetDryrunPrerequisiteResult implements the DryrunPrerequisiteResultClassification interface for type PermissionsMissingDryrunPrerequisiteResult.
+func (p *PermissionsMissingDryrunPrerequisiteResult) GetDryrunPrerequisiteResult() *DryrunPrerequisiteResult {
+	return &DryrunPrerequisiteResult{
+		Type: p.Type,
+	}
+}
+
 // ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
 // location
 type ProxyResource struct {
@@ -284,8 +677,24 @@ type ProxyResource struct {
 	// READ-ONLY; The name of the resource
 	Name *string
 
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
+}
+
+// PublicNetworkSolution - Indicates public network solution, include firewall rules
+type PublicNetworkSolution struct {
+	// Optional. Indicates public network solution. If enable, enable public network access of target service with best try. Default
+	// is enable. If optOut, opt out public network access configuration.
+	Action *ActionType
+
+	// Indicates whether to clean up previous operation(such as firewall rules) when Linker is updating or deleting
+	DeleteOrUpdateBehavior *DeleteOrUpdateBehavior
+
+	// Describe firewall rules of target service to make sure source application could connect to the target.
+	FirewallRules *FirewallRules
 }
 
 // Resource - Common fields that are returned in the response for all Azure Resource Manager resources
@@ -296,14 +705,31 @@ type Resource struct {
 	// READ-ONLY; The name of the resource
 	Name *string
 
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
+}
+
+// ResourceList - The list of Linker.
+type ResourceList struct {
+	// The Linker used to get the next page of Linker list.
+	NextLink *string
+
+	// The list of Linkers.
+	Value []*LinkerResource
 }
 
 // SecretAuthInfo - The authentication info when authType is secret
 type SecretAuthInfo struct {
 	// REQUIRED; The authentication type.
 	AuthType *AuthType
+
+	// Optional. Indicates how to configure authentication. If optInAllAuth, service linker configures authentication such as
+	// enabling identity on source resource and granting RBAC roles. If optOutAllAuth,
+	// opt out authentication setup. Default is optInAllAuth.
+	AuthMode *AuthMode
 
 	// Username or account name for secret auth.
 	Name *string
@@ -315,6 +741,7 @@ type SecretAuthInfo struct {
 // GetAuthInfoBase implements the AuthInfoBaseClassification interface for type SecretAuthInfo.
 func (s *SecretAuthInfo) GetAuthInfoBase() *AuthInfoBase {
 	return &AuthInfoBase{
+		AuthMode: s.AuthMode,
 		AuthType: s.AuthType,
 	}
 }
@@ -332,6 +759,25 @@ func (s *SecretInfoBase) GetSecretInfoBase() *SecretInfoBase { return s }
 type SecretStore struct {
 	// The key vault id to store secret
 	KeyVaultID *string
+
+	// The key vault secret name to store secret, only valid when storing one secret
+	KeyVaultSecretName *string
+}
+
+// SelfHostedServer - The service properties when target service type is SelfHostedServer
+type SelfHostedServer struct {
+	// REQUIRED; The target service type.
+	Type *TargetServiceType
+
+	// The endpoint of service.
+	Endpoint *string
+}
+
+// GetTargetServiceBase implements the TargetServiceBaseClassification interface for type SelfHostedServer.
+func (s *SelfHostedServer) GetTargetServiceBase() *TargetServiceBase {
+	return &TargetServiceBase{
+		Type: s.Type,
+	}
 }
 
 // ServicePrincipalCertificateAuthInfo - The authentication info when authType is servicePrincipal certificate
@@ -347,11 +793,23 @@ type ServicePrincipalCertificateAuthInfo struct {
 
 	// REQUIRED; Principal Id for servicePrincipal auth.
 	PrincipalID *string
+
+	// Optional. Indicates how to configure authentication. If optInAllAuth, service linker configures authentication such as
+	// enabling identity on source resource and granting RBAC roles. If optOutAllAuth,
+	// opt out authentication setup. Default is optInAllAuth.
+	AuthMode *AuthMode
+
+	// Indicates whether to clean up previous operation when Linker is updating or deleting
+	DeleteOrUpdateBehavior *DeleteOrUpdateBehavior
+
+	// Optional, this value specifies the Azure roles to be assigned. Automatically
+	Roles []*string
 }
 
 // GetAuthInfoBase implements the AuthInfoBaseClassification interface for type ServicePrincipalCertificateAuthInfo.
 func (s *ServicePrincipalCertificateAuthInfo) GetAuthInfoBase() *AuthInfoBase {
 	return &AuthInfoBase{
+		AuthMode: s.AuthMode,
 		AuthType: s.AuthType,
 	}
 }
@@ -369,39 +827,72 @@ type ServicePrincipalSecretAuthInfo struct {
 
 	// REQUIRED; Secret for servicePrincipal auth.
 	Secret *string
+
+	// Optional. Indicates how to configure authentication. If optInAllAuth, service linker configures authentication such as
+	// enabling identity on source resource and granting RBAC roles. If optOutAllAuth,
+	// opt out authentication setup. Default is optInAllAuth.
+	AuthMode *AuthMode
+
+	// Indicates whether to clean up previous operation when Linker is updating or deleting
+	DeleteOrUpdateBehavior *DeleteOrUpdateBehavior
+
+	// Optional, this value specifies the Azure roles to be assigned. Automatically
+	Roles []*string
+
+	// Username created in the database which is mapped to a user in AAD.
+	UserName *string
 }
 
 // GetAuthInfoBase implements the AuthInfoBaseClassification interface for type ServicePrincipalSecretAuthInfo.
 func (s *ServicePrincipalSecretAuthInfo) GetAuthInfoBase() *AuthInfoBase {
 	return &AuthInfoBase{
+		AuthMode: s.AuthMode,
 		AuthType: s.AuthType,
 	}
 }
 
 // SourceConfiguration - A configuration item for source resource
 type SourceConfiguration struct {
+	// Descriptive information for the configuration
+	Description *string
+
+	// The identity for key vault reference, system or user-assigned managed identity ID
+	KeyVaultReferenceIdentity *string
+
 	// The name of setting.
 	Name *string
 
 	// The value of setting
 	Value *string
-}
 
-// SourceConfigurationResult - Configurations for source resource, include appSettings, connectionString and serviceBindings
-type SourceConfigurationResult struct {
-	// The configuration properties for source resource.
-	Configurations []*SourceConfiguration
+	// READ-ONLY; The type of setting
+	ConfigType *LinkerConfigurationType
 }
 
 // SystemAssignedIdentityAuthInfo - The authentication info when authType is systemAssignedIdentity
 type SystemAssignedIdentityAuthInfo struct {
 	// REQUIRED; The authentication type.
 	AuthType *AuthType
+
+	// Optional. Indicates how to configure authentication. If optInAllAuth, service linker configures authentication such as
+	// enabling identity on source resource and granting RBAC roles. If optOutAllAuth,
+	// opt out authentication setup. Default is optInAllAuth.
+	AuthMode *AuthMode
+
+	// Indicates whether to clean up previous operation when Linker is updating or deleting
+	DeleteOrUpdateBehavior *DeleteOrUpdateBehavior
+
+	// Optional, this value specifies the Azure role to be assigned
+	Roles []*string
+
+	// Username created in the database which is mapped to a user in AAD.
+	UserName *string
 }
 
 // GetAuthInfoBase implements the AuthInfoBaseClassification interface for type SystemAssignedIdentityAuthInfo.
 func (s *SystemAssignedIdentityAuthInfo) GetAuthInfoBase() *AuthInfoBase {
 	return &AuthInfoBase{
+		AuthMode: s.AuthMode,
 		AuthType: s.AuthType,
 	}
 }
@@ -436,44 +927,93 @@ type TargetServiceBase struct {
 // GetTargetServiceBase implements the TargetServiceBaseClassification interface for type TargetServiceBase.
 func (t *TargetServiceBase) GetTargetServiceBase() *TargetServiceBase { return t }
 
+// UserAccountAuthInfo - The authentication info when authType is user account
+type UserAccountAuthInfo struct {
+	// REQUIRED; The authentication type.
+	AuthType *AuthType
+
+	// Optional. Indicates how to configure authentication. If optInAllAuth, service linker configures authentication such as
+	// enabling identity on source resource and granting RBAC roles. If optOutAllAuth,
+	// opt out authentication setup. Default is optInAllAuth.
+	AuthMode *AuthMode
+
+	// Indicates whether to clean up previous operation when Linker is updating or deleting
+	DeleteOrUpdateBehavior *DeleteOrUpdateBehavior
+
+	// Principal Id for user account.
+	PrincipalID *string
+
+	// Optional, this value specifies the Azure roles to be assigned. Automatically
+	Roles []*string
+
+	// Username created in the database which is mapped to a user in AAD.
+	UserName *string
+}
+
+// GetAuthInfoBase implements the AuthInfoBaseClassification interface for type UserAccountAuthInfo.
+func (u *UserAccountAuthInfo) GetAuthInfoBase() *AuthInfoBase {
+	return &AuthInfoBase{
+		AuthMode: u.AuthMode,
+		AuthType: u.AuthType,
+	}
+}
+
 // UserAssignedIdentityAuthInfo - The authentication info when authType is userAssignedIdentity
 type UserAssignedIdentityAuthInfo struct {
 	// REQUIRED; The authentication type.
 	AuthType *AuthType
 
+	// Optional. Indicates how to configure authentication. If optInAllAuth, service linker configures authentication such as
+	// enabling identity on source resource and granting RBAC roles. If optOutAllAuth,
+	// opt out authentication setup. Default is optInAllAuth.
+	AuthMode *AuthMode
+
 	// Client Id for userAssignedIdentity.
 	ClientID *string
 
+	// Indicates whether to clean up previous operation when Linker is updating or deleting
+	DeleteOrUpdateBehavior *DeleteOrUpdateBehavior
+
+	// Optional, this value specifies the Azure role to be assigned
+	Roles []*string
+
 	// Subscription id for userAssignedIdentity.
 	SubscriptionID *string
+
+	// Username created in the database which is mapped to a user in AAD.
+	UserName *string
 }
 
 // GetAuthInfoBase implements the AuthInfoBaseClassification interface for type UserAssignedIdentityAuthInfo.
 func (u *UserAssignedIdentityAuthInfo) GetAuthInfoBase() *AuthInfoBase {
 	return &AuthInfoBase{
+		AuthMode: u.AuthMode,
 		AuthType: u.AuthType,
 	}
 }
 
 // VNetSolution - The VNet solution for linker
 type VNetSolution struct {
+	// Indicates whether to clean up previous operation when Linker is updating or deleting
+	DeleteOrUpdateBehavior *DeleteOrUpdateBehavior
+
 	// Type of VNet solution.
 	Type *VNetSolutionType
 }
 
-// ValidateOperationResult - The validation operation result for a linker.
+// ValidateOperationResult - The validation operation result for a Linker.
 type ValidateOperationResult struct {
 	// The validation result detail.
 	Properties *ValidateResult
 
-	// Validated linker id.
+	// Validated Linker id.
 	ResourceID *string
 
 	// Validation operation status.
 	Status *string
 }
 
-// ValidateResult - The validation result for a linker.
+// ValidateResult - The validation result for a Linker.
 type ValidateResult struct {
 	// The authentication type.
 	AuthType *AuthType
@@ -490,7 +1030,7 @@ type ValidateResult struct {
 	// The start time of the validation report.
 	ReportStartTimeUTC *time.Time
 
-	// The resource id of the linker source application.
+	// The resource id of the Linker source application.
 	SourceID *string
 
 	// The resource Id of target service.
@@ -500,7 +1040,7 @@ type ValidateResult struct {
 	ValidationDetail []*ValidationResultItem
 }
 
-// ValidationResultItem - The validation item for a linker.
+// ValidationResultItem - The validation item for a Linker.
 type ValidationResultItem struct {
 	// The display name of validation item
 	Description *string

@@ -1,6 +1,6 @@
 # Azure Service Linker Module for Go
 
-[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicelinker/armservicelinker)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicelinker/armservicelinker)
+[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicelinker/armservicelinker/v2)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicelinker/armservicelinker/v2)
 
 The `armservicelinker` module provides operations for working with Azure Service Linker.
 
@@ -20,7 +20,7 @@ This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for ve
 Install the Azure Service Linker module:
 
 ```sh
-go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicelinker/armservicelinker
+go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicelinker/armservicelinker/v2
 ```
 
 ## Authorization
@@ -57,7 +57,7 @@ clientFactory, err := armservicelinker.NewClientFactory(<subscription ID>, cred,
 A client groups a set of related APIs, providing access to its functionality.  Create one or more clients to access the APIs you require using client factory.
 
 ```go
-client := clientFactory.NewLinkerClient()
+client := clientFactory.()
 ```
 
 ## Fakes

@@ -10,20 +10,79 @@ package armservicelinker
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicelinker/armservicelinker"
-	moduleVersion = "v1.2.0"
+	moduleVersion = "v2.0.0-beta.1"
 )
+
+type AccessKeyPermissions string
+
+const (
+	AccessKeyPermissionsListen AccessKeyPermissions = "Listen"
+	AccessKeyPermissionsManage AccessKeyPermissions = "Manage"
+	AccessKeyPermissionsRead   AccessKeyPermissions = "Read"
+	AccessKeyPermissionsSend   AccessKeyPermissions = "Send"
+	AccessKeyPermissionsWrite  AccessKeyPermissions = "Write"
+)
+
+// PossibleAccessKeyPermissionsValues returns the possible values for the AccessKeyPermissions const type.
+func PossibleAccessKeyPermissionsValues() []AccessKeyPermissions {
+	return []AccessKeyPermissions{
+		AccessKeyPermissionsListen,
+		AccessKeyPermissionsManage,
+		AccessKeyPermissionsRead,
+		AccessKeyPermissionsSend,
+		AccessKeyPermissionsWrite,
+	}
+}
 
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
 type ActionType string
 
 const (
+	ActionTypeEnable   ActionType = "enable"
 	ActionTypeInternal ActionType = "Internal"
+	ActionTypeOptOut   ActionType = "optOut"
 )
 
 // PossibleActionTypeValues returns the possible values for the ActionType const type.
 func PossibleActionTypeValues() []ActionType {
 	return []ActionType{
+		ActionTypeEnable,
 		ActionTypeInternal,
+		ActionTypeOptOut,
+	}
+}
+
+// AllowType - Whether to allow firewall rules.
+type AllowType string
+
+const (
+	AllowTypeFalse AllowType = "false"
+	AllowTypeTrue  AllowType = "true"
+)
+
+// PossibleAllowTypeValues returns the possible values for the AllowType const type.
+func PossibleAllowTypeValues() []AllowType {
+	return []AllowType{
+		AllowTypeFalse,
+		AllowTypeTrue,
+	}
+}
+
+// AuthMode - Indicates how to apply the authentication configuration operations.
+type AuthMode string
+
+const (
+	// AuthModeOptInAllAuth - Default authentication configuration according to the authentication type.
+	AuthModeOptInAllAuth AuthMode = "optInAllAuth"
+	// AuthModeOptOutAllAuth - Skip all authentication configuration such as enabling managed identity and granting RBAC roles
+	AuthModeOptOutAllAuth AuthMode = "optOutAllAuth"
+)
+
+// PossibleAuthModeValues returns the possible values for the AuthMode const type.
+func PossibleAuthModeValues() []AuthMode {
+	return []AuthMode{
+		AuthModeOptInAllAuth,
+		AuthModeOptOutAllAuth,
 	}
 }
 
@@ -31,20 +90,26 @@ func PossibleActionTypeValues() []ActionType {
 type AuthType string
 
 const (
+	AuthTypeAccessKey                   AuthType = "accessKey"
+	AuthTypeEasyAuthMicrosoftEntraID    AuthType = "easyAuthMicrosoftEntraID"
 	AuthTypeSecret                      AuthType = "secret"
 	AuthTypeServicePrincipalCertificate AuthType = "servicePrincipalCertificate"
 	AuthTypeServicePrincipalSecret      AuthType = "servicePrincipalSecret"
 	AuthTypeSystemAssignedIdentity      AuthType = "systemAssignedIdentity"
+	AuthTypeUserAccount                 AuthType = "userAccount"
 	AuthTypeUserAssignedIdentity        AuthType = "userAssignedIdentity"
 )
 
 // PossibleAuthTypeValues returns the possible values for the AuthType const type.
 func PossibleAuthTypeValues() []AuthType {
 	return []AuthType{
+		AuthTypeAccessKey,
+		AuthTypeEasyAuthMicrosoftEntraID,
 		AuthTypeSecret,
 		AuthTypeServicePrincipalCertificate,
 		AuthTypeServicePrincipalSecret,
 		AuthTypeSystemAssignedIdentity,
+		AuthTypeUserAccount,
 		AuthTypeUserAssignedIdentity,
 	}
 }
@@ -67,25 +132,31 @@ func PossibleAzureResourceTypeValues() []AzureResourceType {
 type ClientType string
 
 const (
-	ClientTypeDjango     ClientType = "django"
-	ClientTypeDotnet     ClientType = "dotnet"
-	ClientTypeGo         ClientType = "go"
-	ClientTypeJava       ClientType = "java"
-	ClientTypeNodejs     ClientType = "nodejs"
-	ClientTypeNone       ClientType = "none"
-	ClientTypePhp        ClientType = "php"
-	ClientTypePython     ClientType = "python"
-	ClientTypeRuby       ClientType = "ruby"
-	ClientTypeSpringBoot ClientType = "springBoot"
+	ClientTypeDapr            ClientType = "dapr"
+	ClientTypeDjango          ClientType = "django"
+	ClientTypeDotnet          ClientType = "dotnet"
+	ClientTypeGo              ClientType = "go"
+	ClientTypeJava            ClientType = "java"
+	ClientTypeJmsSpringBoot   ClientType = "jms-springBoot"
+	ClientTypeKafkaSpringBoot ClientType = "kafka-springBoot"
+	ClientTypeNodejs          ClientType = "nodejs"
+	ClientTypeNone            ClientType = "none"
+	ClientTypePhp             ClientType = "php"
+	ClientTypePython          ClientType = "python"
+	ClientTypeRuby            ClientType = "ruby"
+	ClientTypeSpringBoot      ClientType = "springBoot"
 )
 
 // PossibleClientTypeValues returns the possible values for the ClientType const type.
 func PossibleClientTypeValues() []ClientType {
 	return []ClientType{
+		ClientTypeDapr,
 		ClientTypeDjango,
 		ClientTypeDotnet,
 		ClientTypeGo,
 		ClientTypeJava,
+		ClientTypeJmsSpringBoot,
+		ClientTypeKafkaSpringBoot,
 		ClientTypeNodejs,
 		ClientTypeNone,
 		ClientTypePhp,
@@ -115,6 +186,120 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
+// DaprBindingComponentDirection - The direction supported by the dapr binding component
+type DaprBindingComponentDirection string
+
+const (
+	DaprBindingComponentDirectionInput  DaprBindingComponentDirection = "input"
+	DaprBindingComponentDirectionOutput DaprBindingComponentDirection = "output"
+)
+
+// PossibleDaprBindingComponentDirectionValues returns the possible values for the DaprBindingComponentDirection const type.
+func PossibleDaprBindingComponentDirectionValues() []DaprBindingComponentDirection {
+	return []DaprBindingComponentDirection{
+		DaprBindingComponentDirectionInput,
+		DaprBindingComponentDirectionOutput,
+	}
+}
+
+// DaprMetadataRequired - The value indicating whether the metadata is required or not
+type DaprMetadataRequired string
+
+const (
+	DaprMetadataRequiredFalse DaprMetadataRequired = "false"
+	DaprMetadataRequiredTrue  DaprMetadataRequired = "true"
+)
+
+// PossibleDaprMetadataRequiredValues returns the possible values for the DaprMetadataRequired const type.
+func PossibleDaprMetadataRequiredValues() []DaprMetadataRequired {
+	return []DaprMetadataRequired{
+		DaprMetadataRequiredFalse,
+		DaprMetadataRequiredTrue,
+	}
+}
+
+// DeleteOrUpdateBehavior - The cleanup behavior to indicate whether clean up operation when resource is deleted or updated
+type DeleteOrUpdateBehavior string
+
+const (
+	DeleteOrUpdateBehaviorDefault       DeleteOrUpdateBehavior = "Default"
+	DeleteOrUpdateBehaviorForcedCleanup DeleteOrUpdateBehavior = "ForcedCleanup"
+)
+
+// PossibleDeleteOrUpdateBehaviorValues returns the possible values for the DeleteOrUpdateBehavior const type.
+func PossibleDeleteOrUpdateBehaviorValues() []DeleteOrUpdateBehavior {
+	return []DeleteOrUpdateBehavior{
+		DeleteOrUpdateBehaviorDefault,
+		DeleteOrUpdateBehaviorForcedCleanup,
+	}
+}
+
+// DryrunActionName - The name of action for you dryrun job.
+type DryrunActionName string
+
+const (
+	DryrunActionNameCreateOrUpdate DryrunActionName = "createOrUpdate"
+)
+
+// PossibleDryrunActionNameValues returns the possible values for the DryrunActionName const type.
+func PossibleDryrunActionNameValues() []DryrunActionName {
+	return []DryrunActionName{
+		DryrunActionNameCreateOrUpdate,
+	}
+}
+
+// DryrunPrerequisiteResultType - The type of dryrun result.
+type DryrunPrerequisiteResultType string
+
+const (
+	DryrunPrerequisiteResultTypeBasicError         DryrunPrerequisiteResultType = "basicError"
+	DryrunPrerequisiteResultTypePermissionsMissing DryrunPrerequisiteResultType = "permissionsMissing"
+)
+
+// PossibleDryrunPrerequisiteResultTypeValues returns the possible values for the DryrunPrerequisiteResultType const type.
+func PossibleDryrunPrerequisiteResultTypeValues() []DryrunPrerequisiteResultType {
+	return []DryrunPrerequisiteResultType{
+		DryrunPrerequisiteResultTypeBasicError,
+		DryrunPrerequisiteResultTypePermissionsMissing,
+	}
+}
+
+// DryrunPreviewOperationType - The operation type
+type DryrunPreviewOperationType string
+
+const (
+	DryrunPreviewOperationTypeConfigAuth       DryrunPreviewOperationType = "configAuth"
+	DryrunPreviewOperationTypeConfigConnection DryrunPreviewOperationType = "configConnection"
+	DryrunPreviewOperationTypeConfigNetwork    DryrunPreviewOperationType = "configNetwork"
+)
+
+// PossibleDryrunPreviewOperationTypeValues returns the possible values for the DryrunPreviewOperationType const type.
+func PossibleDryrunPreviewOperationTypeValues() []DryrunPreviewOperationType {
+	return []DryrunPreviewOperationType{
+		DryrunPreviewOperationTypeConfigAuth,
+		DryrunPreviewOperationTypeConfigConnection,
+		DryrunPreviewOperationTypeConfigNetwork,
+	}
+}
+
+// LinkerConfigurationType - Type of configuration to determine whether the configuration can be modified after creation.
+// KeyvaultSecret means the configuration references a key vault secret, such as App Service/ACA key vault
+// reference. Default means the configuration is real value, such as user name, raw secret, etc.
+type LinkerConfigurationType string
+
+const (
+	LinkerConfigurationTypeDefault        LinkerConfigurationType = "Default"
+	LinkerConfigurationTypeKeyVaultSecret LinkerConfigurationType = "KeyVaultSecret"
+)
+
+// PossibleLinkerConfigurationTypeValues returns the possible values for the LinkerConfigurationType const type.
+func PossibleLinkerConfigurationTypeValues() []LinkerConfigurationType {
+	return []LinkerConfigurationType{
+		LinkerConfigurationTypeDefault,
+		LinkerConfigurationTypeKeyVaultSecret,
+	}
+}
+
 // Origin - The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
 // value is "user,system"
 type Origin string
@@ -131,6 +316,22 @@ func PossibleOriginValues() []Origin {
 		OriginSystem,
 		OriginUser,
 		OriginUserSystem,
+	}
+}
+
+// SecretSourceType - The type of secret source.
+type SecretSourceType string
+
+const (
+	SecretSourceTypeKeyVaultSecret SecretSourceType = "keyVaultSecret"
+	SecretSourceTypeRawValue       SecretSourceType = "rawValue"
+)
+
+// PossibleSecretSourceTypeValues returns the possible values for the SecretSourceType const type.
+func PossibleSecretSourceTypeValues() []SecretSourceType {
+	return []SecretSourceType{
+		SecretSourceTypeKeyVaultSecret,
+		SecretSourceTypeRawValue,
 	}
 }
 
@@ -159,6 +360,7 @@ const (
 	TargetServiceTypeAzureResource            TargetServiceType = "AzureResource"
 	TargetServiceTypeConfluentBootstrapServer TargetServiceType = "ConfluentBootstrapServer"
 	TargetServiceTypeConfluentSchemaRegistry  TargetServiceType = "ConfluentSchemaRegistry"
+	TargetServiceTypeSelfHostedServer         TargetServiceType = "SelfHostedServer"
 )
 
 // PossibleTargetServiceTypeValues returns the possible values for the TargetServiceType const type.
@@ -167,6 +369,7 @@ func PossibleTargetServiceTypeValues() []TargetServiceType {
 		TargetServiceTypeAzureResource,
 		TargetServiceTypeConfluentBootstrapServer,
 		TargetServiceTypeConfluentSchemaRegistry,
+		TargetServiceTypeSelfHostedServer,
 	}
 }
 

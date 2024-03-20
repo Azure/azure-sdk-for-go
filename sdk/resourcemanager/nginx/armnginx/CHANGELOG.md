@@ -1,5 +1,25 @@
 # Release History
 
+## 3.1.0-beta.1 (2024-03-22)
+### Features Added
+
+- New function `*ConfigurationsClient.Analysis(context.Context, string, string, string, *ConfigurationsClientAnalysisOptions) (ConfigurationsClientAnalysisResponse, error)`
+- New struct `AnalysisCreate`
+- New struct `AnalysisCreateConfig`
+- New struct `AnalysisDiagnostic`
+- New struct `AnalysisResult`
+- New struct `AnalysisResultData`
+- New struct `AutoUpgradeProfile`
+- New struct `CertificateErrorResponseBody`
+- New struct `DeploymentScalingPropertiesAutoScaleSettings`
+- New struct `ScaleProfile`
+- New struct `ScaleProfileCapacity`
+- New field `CertificateError`, `KeyVaultSecretCreated`, `KeyVaultSecretVersion`, `SHA1Thumbprint` in struct `CertificateProperties`
+- New field `AutoUpgradeProfile` in struct `DeploymentProperties`
+- New field `AutoScaleSettings` in struct `DeploymentScalingProperties`
+- New field `AutoUpgradeProfile` in struct `DeploymentUpdateProperties`
+
+
 ## 3.0.0 (2023-11-24)
 ### Breaking Changes
 

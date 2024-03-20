@@ -28,6 +28,12 @@ type CertificatesClientListResponse struct {
 	CertificateListResponse
 }
 
+// ConfigurationsClientAnalysisResponse contains the response from method ConfigurationsClient.Analysis.
+type ConfigurationsClientAnalysisResponse struct {
+	// The response body for an analysis request. Contains the status of the analysis and any errors.
+	AnalysisResult
+}
+
 // ConfigurationsClientCreateOrUpdateResponse contains the response from method ConfigurationsClient.BeginCreateOrUpdate.
 type ConfigurationsClientCreateOrUpdateResponse struct {
 	Configuration

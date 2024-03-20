@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/search/armsearch"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7e29dd59eef13ef347d09e41a63f2585be77b3ca/specification/search/resource-manager/Microsoft.Search/stable/2023-11-01/examples/SearchCreateQueryKey.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/search/resource-manager/Microsoft.Search/preview/2024-03-01-preview/examples/SearchCreateQueryKey.json
 func ExampleQueryKeysClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,7 +28,7 @@ func ExampleQueryKeysClient_Create() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewQueryKeysClient().Create(ctx, "rg1", "mysearchservice", "Query key for browser-based clients", &armsearch.SearchManagementRequestOptions{ClientRequestID: nil}, nil)
+	res, err := clientFactory.NewQueryKeysClient().Create(ctx, "rg1", "mysearchservice", "An API key granting read-only access to the documents collection of an index.", &armsearch.SearchManagementRequestOptions{ClientRequestID: nil}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -36,12 +36,12 @@ func ExampleQueryKeysClient_Create() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.QueryKey = armsearch.QueryKey{
-	// 	Name: to.Ptr("Query key for browser-based clients"),
+	// 	Name: to.Ptr("An API key granting read-only access to the documents collection of an index."),
 	// 	Key: to.Ptr("<a query API key>"),
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7e29dd59eef13ef347d09e41a63f2585be77b3ca/specification/search/resource-manager/Microsoft.Search/stable/2023-11-01/examples/SearchListQueryKeysBySearchService.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/search/resource-manager/Microsoft.Search/preview/2024-03-01-preview/examples/SearchListQueryKeysBySearchService.json
 func ExampleQueryKeysClient_NewListBySearchServicePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -77,7 +77,7 @@ func ExampleQueryKeysClient_NewListBySearchServicePager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7e29dd59eef13ef347d09e41a63f2585be77b3ca/specification/search/resource-manager/Microsoft.Search/stable/2023-11-01/examples/SearchDeleteQueryKey.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/search/resource-manager/Microsoft.Search/preview/2024-03-01-preview/examples/SearchDeleteQueryKey.json
 func ExampleQueryKeysClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

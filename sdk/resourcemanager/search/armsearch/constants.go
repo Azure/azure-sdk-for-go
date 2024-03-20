@@ -10,10 +10,10 @@ package armsearch
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/search/armsearch"
-	moduleVersion = "v1.3.0"
+	moduleVersion = "v1.4.0-beta.1"
 )
 
-// AADAuthFailureMode - Describes what response the data plane API of a Search service would send for requests that failed
+// AADAuthFailureMode - Describes what response the data plane API of a search service would send for requests that failed
 // authentication.
 type AADAuthFailureMode string
 
@@ -72,12 +72,21 @@ func PossibleHostingModeValues() []HostingMode {
 	}
 }
 
-// IdentityType - The identity type.
+// IdentityType - The type of identity used for the resource. The type 'SystemAssigned, UserAssigned' includes both an identity
+// created by the system and a set of user assigned identities. The type 'None' will remove
+// all identities from the service.
 type IdentityType string
 
 const (
-	IdentityTypeNone           IdentityType = "None"
+	// IdentityTypeNone - Indicates that any identity associated with the search service needs to be removed.
+	IdentityTypeNone IdentityType = "None"
+	// IdentityTypeSystemAssigned - Indicates that system-assigned identity for the search service will be enabled.
 	IdentityTypeSystemAssigned IdentityType = "SystemAssigned"
+	// IdentityTypeSystemAssignedUserAssigned - Indicates that system-assigned identity for the search service will be enabled
+	// along with the assignment of one or more user assigned identities.
+	IdentityTypeSystemAssignedUserAssigned IdentityType = "SystemAssigned, UserAssigned"
+	// IdentityTypeUserAssigned - Indicates that one or more user assigned identities will be assigned to the search service.
+	IdentityTypeUserAssigned IdentityType = "UserAssigned"
 )
 
 // PossibleIdentityTypeValues returns the possible values for the IdentityType const type.
@@ -85,16 +94,18 @@ func PossibleIdentityTypeValues() []IdentityType {
 	return []IdentityType{
 		IdentityTypeNone,
 		IdentityTypeSystemAssigned,
+		IdentityTypeSystemAssignedUserAssigned,
+		IdentityTypeUserAssigned,
 	}
 }
 
-// PrivateLinkServiceConnectionProvisioningState - The provisioning state of the private link service connection. Can be Updating,
-// Deleting, Failed, Succeeded, or Incomplete
+// PrivateLinkServiceConnectionProvisioningState - The provisioning state of the private link service connection. Valid values
+// are Updating, Deleting, Failed, Succeeded, Incomplete, or Canceled.
 type PrivateLinkServiceConnectionProvisioningState string
 
 const (
 	// PrivateLinkServiceConnectionProvisioningStateCanceled - Provisioning request for the private link service connection resource
-	// has been canceled
+	// has been canceled.
 	PrivateLinkServiceConnectionProvisioningStateCanceled PrivateLinkServiceConnectionProvisioningState = "Canceled"
 	// PrivateLinkServiceConnectionProvisioningStateDeleting - The private link service connection is in the process of being
 	// deleted.
@@ -125,8 +136,8 @@ func PossiblePrivateLinkServiceConnectionProvisioningStateValues() []PrivateLink
 	}
 }
 
-// PrivateLinkServiceConnectionStatus - Status of the the private link service connection. Can be Pending, Approved, Rejected,
-// or Disconnected.
+// PrivateLinkServiceConnectionStatus - Status of the the private link service connection. Valid values are Pending, Approved,
+// Rejected, or Disconnected.
 type PrivateLinkServiceConnectionStatus string
 
 const (
@@ -183,8 +194,11 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 type PublicNetworkAccess string
 
 const (
+	// PublicNetworkAccessDisabled - The search service is not accessible from traffic originating from the public internet. Access
+	// is only permitted over approved private endpoint connections.
 	PublicNetworkAccessDisabled PublicNetworkAccess = "disabled"
-	PublicNetworkAccessEnabled  PublicNetworkAccess = "enabled"
+	// PublicNetworkAccessEnabled - The search service is accessible from traffic originating from the public internet.
+	PublicNetworkAccessEnabled PublicNetworkAccess = "enabled"
 )
 
 // PossiblePublicNetworkAccessValues returns the possible values for the PublicNetworkAccess const type.
@@ -205,20 +219,20 @@ func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
 type SKUName string
 
 const (
-	// SKUNameBasic - Paid tier dedicated service with up to 3 replicas.
+	// SKUNameBasic - Billable tier for a dedicated service having up to 3 replicas.
 	SKUNameBasic SKUName = "basic"
-	// SKUNameFree - Free tier, with no SLA guarantees and a subset of features offered to paid tiers.
+	// SKUNameFree - Free tier, with no SLA guarantees and a subset of the features offered on billable tiers.
 	SKUNameFree SKUName = "free"
-	// SKUNameStandard - Paid tier dedicated service with up to 12 partitions and 12 replicas.
+	// SKUNameStandard - Billable tier for a dedicated service having up to 12 partitions and 12 replicas.
 	SKUNameStandard SKUName = "standard"
 	// SKUNameStandard2 - Similar to 'standard', but with more capacity per search unit.
 	SKUNameStandard2 SKUName = "standard2"
 	// SKUNameStandard3 - The largest Standard offering with up to 12 partitions and 12 replicas (or up to 3 partitions with more
 	// indexes if you also set the hostingMode property to 'highDensity').
 	SKUNameStandard3 SKUName = "standard3"
-	// SKUNameStorageOptimizedL1 - Paid tier dedicated service that supports 1TB per partition, up to 12 partitions.
+	// SKUNameStorageOptimizedL1 - Billable tier for a dedicated service that supports 1TB per partition, up to 12 partitions.
 	SKUNameStorageOptimizedL1 SKUName = "storage_optimized_l1"
-	// SKUNameStorageOptimizedL2 - Paid tier dedicated service that supports 2TB per partition, up to 12 partitions.
+	// SKUNameStorageOptimizedL2 - Billable tier for a dedicated service that supports 2TB per partition, up to 12 partitions.
 	SKUNameStorageOptimizedL2 SKUName = "storage_optimized_l2"
 )
 
@@ -235,17 +249,50 @@ func PossibleSKUNameValues() []SKUName {
 	}
 }
 
-// SearchEncryptionComplianceStatus - Describes whether the search service is compliant or not with respect to having non
-// customer encrypted resources. If a service has more than one non customer encrypted resource and 'Enforcement' is
-// 'enabled' then the service will be marked as 'nonCompliant'.
+// SearchBypass - Possible origins of inbound traffic that can bypass the rules defined in the 'ipRules' section.
+type SearchBypass string
+
+const (
+	// SearchBypassAzurePortal - Indicates that requests originating from the Azure portal can bypass the rules defined in the
+	// 'ipRules' section.
+	SearchBypassAzurePortal SearchBypass = "AzurePortal"
+	// SearchBypassNone - Indicates that no origin can bypass the rules defined in the 'ipRules' section. This is the default.
+	SearchBypassNone SearchBypass = "None"
+)
+
+// PossibleSearchBypassValues returns the possible values for the SearchBypass const type.
+func PossibleSearchBypassValues() []SearchBypass {
+	return []SearchBypass{
+		SearchBypassAzurePortal,
+		SearchBypassNone,
+	}
+}
+
+// SearchDisabledDataExfiltrationOption - A specific data exfiltration scenario that is disabled for the service.
+type SearchDisabledDataExfiltrationOption string
+
+const (
+	// SearchDisabledDataExfiltrationOptionAll - Indicates that all data exfiltration scenarios are disabled.
+	SearchDisabledDataExfiltrationOptionAll SearchDisabledDataExfiltrationOption = "All"
+)
+
+// PossibleSearchDisabledDataExfiltrationOptionValues returns the possible values for the SearchDisabledDataExfiltrationOption const type.
+func PossibleSearchDisabledDataExfiltrationOptionValues() []SearchDisabledDataExfiltrationOption {
+	return []SearchDisabledDataExfiltrationOption{
+		SearchDisabledDataExfiltrationOptionAll,
+	}
+}
+
+// SearchEncryptionComplianceStatus - Returns the status of search service compliance with respect to non-CMK-encrypted objects.
+// If a service has more than one unencrypted object, and enforcement is enabled, the service is marked as
+// noncompliant.
 type SearchEncryptionComplianceStatus string
 
 const (
-	// SearchEncryptionComplianceStatusCompliant - Indicates that the search service is compliant, either because number of non
-	// customer encrypted resources is zero or enforcement is disabled.
+	// SearchEncryptionComplianceStatusCompliant - Indicates that the search service is compliant, either because the number of
+	// non-CMK-encrypted objects is zero or enforcement is disabled.
 	SearchEncryptionComplianceStatusCompliant SearchEncryptionComplianceStatus = "Compliant"
-	// SearchEncryptionComplianceStatusNonCompliant - Indicates that the search service has more than 1 non customer encrypted
-	// resources.
+	// SearchEncryptionComplianceStatusNonCompliant - Indicates that the search service has more than one non-CMK-encrypted objects.
 	SearchEncryptionComplianceStatusNonCompliant SearchEncryptionComplianceStatus = "NonCompliant"
 )
 
@@ -257,14 +304,16 @@ func PossibleSearchEncryptionComplianceStatusValues() []SearchEncryptionComplian
 	}
 }
 
-// SearchEncryptionWithCmk - Describes how a search service should enforce having one or more non customer encrypted resources.
+// SearchEncryptionWithCmk - Describes how a search service should enforce compliance if it finds objects that aren't encrypted
+// with the customer-managed key.
 type SearchEncryptionWithCmk string
 
 const (
-	// SearchEncryptionWithCmkDisabled - No enforcement will be made and the search service can have non customer encrypted resources.
+	// SearchEncryptionWithCmkDisabled - No enforcement of customer-managed key encryption will be made. Only the built-in service-managed
+	// encryption is used.
 	SearchEncryptionWithCmkDisabled SearchEncryptionWithCmk = "Disabled"
-	// SearchEncryptionWithCmkEnabled - Search service will be marked as non-compliant if there are one or more non customer encrypted
-	// resources.
+	// SearchEncryptionWithCmkEnabled - Search service will be marked as non-compliant if one or more objects aren't encrypted
+	// with a customer-managed key.
 	SearchEncryptionWithCmkEnabled SearchEncryptionWithCmk = "Enabled"
 	// SearchEncryptionWithCmkUnspecified - Enforcement policy is not explicitly specified, with the behavior being the same as
 	// if it were set to 'Disabled'.
@@ -281,18 +330,18 @@ func PossibleSearchEncryptionWithCmkValues() []SearchEncryptionWithCmk {
 }
 
 // SearchSemanticSearch - Sets options that control the availability of semantic search. This configuration is only possible
-// for certain Azure Cognitive Search SKUs in certain locations.
+// for certain Azure AI Search SKUs in certain locations.
 type SearchSemanticSearch string
 
 const (
-	// SearchSemanticSearchDisabled - Indicates that semantic search is disabled for the search service.
+	// SearchSemanticSearchDisabled - Indicates that semantic reranker is disabled for the search service. This is the default.
 	SearchSemanticSearchDisabled SearchSemanticSearch = "disabled"
-	// SearchSemanticSearchFree - Enables semantic search on a search service and indicates that it is to be used within the limits
-	// of the free tier. This would cap the volume of semantic search requests and is offered at no extra charge. This is the
-	// default for newly provisioned search services.
+	// SearchSemanticSearchFree - Enables semantic reranker on a search service and indicates that it is to be used within the
+	// limits of the free plan. The free plan would cap the volume of semantic ranking requests and is offered at no extra charge.
+	// This is the default for newly provisioned search services.
 	SearchSemanticSearchFree SearchSemanticSearch = "free"
-	// SearchSemanticSearchStandard - Enables semantic search on a search service as a billable feature, with higher throughput
-	// and volume of semantic search queries.
+	// SearchSemanticSearchStandard - Enables semantic reranker on a search service as a billable feature, with higher throughput
+	// and volume of semantically reranked queries.
 	SearchSemanticSearchStandard SearchSemanticSearch = "standard"
 )
 
@@ -311,9 +360,10 @@ func PossibleSearchSemanticSearchValues() []SearchSemanticSearch {
 // can occur when the underlying search units are not healthy. The search service
 // is most likely operational, but performance might be slow and some requests might be dropped. 'disabled': The search service
 // is disabled. In this state, the service will reject all API requests.
-// 'error': The search service is in an error state. If your service is in the degraded, disabled, or error states, it means
-// the Azure Cognitive Search team is actively investigating the underlying
-// issue. Dedicated services in these states are still chargeable based on the number of search units provisioned.
+// 'error': The search service is in an error state. 'stopped': The search service is in a subscription that's disabled. If
+// your service is in the degraded, disabled, or error states, it means the Azure
+// AI Search team is actively investigating the underlying issue. Dedicated services in these states are still chargeable
+// based on the number of search units provisioned.
 type SearchServiceStatus string
 
 const (
@@ -329,6 +379,8 @@ const (
 	SearchServiceStatusProvisioning SearchServiceStatus = "provisioning"
 	// SearchServiceStatusRunning - The search service is running and no provisioning operations are underway.
 	SearchServiceStatusRunning SearchServiceStatus = "running"
+	// SearchServiceStatusStopped - The search service is in a subscription that's disabled.
+	SearchServiceStatusStopped SearchServiceStatus = "stopped"
 )
 
 // PossibleSearchServiceStatusValues returns the possible values for the SearchServiceStatus const type.
@@ -340,19 +392,28 @@ func PossibleSearchServiceStatusValues() []SearchServiceStatus {
 		SearchServiceStatusError,
 		SearchServiceStatusProvisioning,
 		SearchServiceStatusRunning,
+		SearchServiceStatusStopped,
 	}
 }
 
-// SharedPrivateLinkResourceProvisioningState - The provisioning state of the shared private link resource. Can be Updating,
-// Deleting, Failed, Succeeded or Incomplete.
+// SharedPrivateLinkResourceProvisioningState - The provisioning state of the shared private link resource. Valid values are
+// Updating, Deleting, Failed, Succeeded or Incomplete.
 type SharedPrivateLinkResourceProvisioningState string
 
 const (
-	SharedPrivateLinkResourceProvisioningStateDeleting   SharedPrivateLinkResourceProvisioningState = "Deleting"
-	SharedPrivateLinkResourceProvisioningStateFailed     SharedPrivateLinkResourceProvisioningState = "Failed"
+	// SharedPrivateLinkResourceProvisioningStateDeleting - The shared private link resource is in the process of being deleted.
+	SharedPrivateLinkResourceProvisioningStateDeleting SharedPrivateLinkResourceProvisioningState = "Deleting"
+	// SharedPrivateLinkResourceProvisioningStateFailed - The shared private link resource has failed to be provisioned or deleted.
+	SharedPrivateLinkResourceProvisioningStateFailed SharedPrivateLinkResourceProvisioningState = "Failed"
+	// SharedPrivateLinkResourceProvisioningStateIncomplete - Provisioning request for the shared private link resource has been
+	// accepted but the process of creation has not commenced yet.
 	SharedPrivateLinkResourceProvisioningStateIncomplete SharedPrivateLinkResourceProvisioningState = "Incomplete"
-	SharedPrivateLinkResourceProvisioningStateSucceeded  SharedPrivateLinkResourceProvisioningState = "Succeeded"
-	SharedPrivateLinkResourceProvisioningStateUpdating   SharedPrivateLinkResourceProvisioningState = "Updating"
+	// SharedPrivateLinkResourceProvisioningStateSucceeded - The shared private link resource has finished provisioning and is
+	// ready for approval.
+	SharedPrivateLinkResourceProvisioningStateSucceeded SharedPrivateLinkResourceProvisioningState = "Succeeded"
+	// SharedPrivateLinkResourceProvisioningStateUpdating - The shared private link resource is in the process of being created
+	// along with other resources for it to be fully functional.
+	SharedPrivateLinkResourceProvisioningStateUpdating SharedPrivateLinkResourceProvisioningState = "Updating"
 )
 
 // PossibleSharedPrivateLinkResourceProvisioningStateValues returns the possible values for the SharedPrivateLinkResourceProvisioningState const type.
@@ -366,14 +427,19 @@ func PossibleSharedPrivateLinkResourceProvisioningStateValues() []SharedPrivateL
 	}
 }
 
-// SharedPrivateLinkResourceStatus - Status of the shared private link resource. Can be Pending, Approved, Rejected or Disconnected.
+// SharedPrivateLinkResourceStatus - Status of the shared private link resource. Valid values are Pending, Approved, Rejected
+// or Disconnected.
 type SharedPrivateLinkResourceStatus string
 
 const (
-	SharedPrivateLinkResourceStatusApproved     SharedPrivateLinkResourceStatus = "Approved"
+	// SharedPrivateLinkResourceStatusApproved - The shared private link resource is approved and is ready for use.
+	SharedPrivateLinkResourceStatusApproved SharedPrivateLinkResourceStatus = "Approved"
+	// SharedPrivateLinkResourceStatusDisconnected - The shared private link resource has been removed from the service.
 	SharedPrivateLinkResourceStatusDisconnected SharedPrivateLinkResourceStatus = "Disconnected"
-	SharedPrivateLinkResourceStatusPending      SharedPrivateLinkResourceStatus = "Pending"
-	SharedPrivateLinkResourceStatusRejected     SharedPrivateLinkResourceStatus = "Rejected"
+	// SharedPrivateLinkResourceStatusPending - The shared private link resource has been created and is pending approval.
+	SharedPrivateLinkResourceStatusPending SharedPrivateLinkResourceStatus = "Pending"
+	// SharedPrivateLinkResourceStatusRejected - The shared private link resource has been rejected and cannot be used.
+	SharedPrivateLinkResourceStatusRejected SharedPrivateLinkResourceStatus = "Rejected"
 )
 
 // PossibleSharedPrivateLinkResourceStatusValues returns the possible values for the SharedPrivateLinkResourceStatus const type.
@@ -394,7 +460,7 @@ type UnavailableNameReason string
 const (
 	// UnavailableNameReasonAlreadyExists - The search service name is already assigned to a different search service.
 	UnavailableNameReasonAlreadyExists UnavailableNameReason = "AlreadyExists"
-	// UnavailableNameReasonInvalid - The search service name does not match naming requirements.
+	// UnavailableNameReasonInvalid - The search service name doesn't match naming requirements.
 	UnavailableNameReasonInvalid UnavailableNameReason = "Invalid"
 )
 

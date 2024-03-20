@@ -2877,7 +2877,7 @@ func (s *UnrecordedTestSuite) TestFileUploadDownloadStreamWithCPK() {
 	_require.Equal(testcommon.TestCPKByValue.EncryptionKeySHA256, dResp.EncryptionKeySHA256)
 }
 
-func (s *UnrecordedTestSuite) TestFileUploadDownloadStreamWithEncryptionContext() {
+func (s *RecordedTestSuite) TestFileUploadDownloadStreamWithEncryptionContext() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -2889,7 +2889,7 @@ func (s *UnrecordedTestSuite) TestFileUploadDownloadStreamWithEncryptionContext(
 	_, err = fsClient.Create(context.Background(), nil)
 	_require.NoError(err)
 
-	var fileSize int64 = 1 * 1024 * 1024
+	var fileSize int64 = 1 * 1024
 	fileName := testcommon.GenerateFileName(testName)
 	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
@@ -3020,7 +3020,7 @@ func (s *UnrecordedTestSuite) TestFileUploadFile() {
 	_require.EqualValues(downloadedContentMD5, contentMD5)
 }
 
-func (s *UnrecordedTestSuite) TestFileUploadBufferEncryptionContext() {
+func (s *RecordedTestSuite) TestFileUploadBufferEncryptionContext() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -3032,7 +3032,7 @@ func (s *UnrecordedTestSuite) TestFileUploadBufferEncryptionContext() {
 	_, err = fsClient.Create(context.Background(), nil)
 	_require.NoError(err)
 
-	var fileSize int64 = 100 * 1024 * 1024
+	var fileSize int64 = 10 * 1024
 	fileName := testcommon.GenerateFileName(testName)
 	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
@@ -3059,7 +3059,7 @@ func (s *UnrecordedTestSuite) TestFileUploadBufferEncryptionContext() {
 
 	err = fClient.UploadBuffer(context.Background(), content, &file.UploadBufferOptions{
 		Concurrency:       5,
-		ChunkSize:         4 * 1024 * 1024,
+		ChunkSize:         4 * 1024,
 		EncryptionContext: &testcommon.TestEncryptionContext,
 	})
 	_require.NoError(err)
@@ -3082,7 +3082,7 @@ func (s *UnrecordedTestSuite) TestFileUploadFileEncryptionContext() {
 	_, err = fsClient.Create(context.Background(), nil)
 	_require.NoError(err)
 
-	var fileSize int64 = 100 * 1024 * 1024
+	var fileSize int64 = 10 * 1024
 	fileName := testcommon.GenerateFileName(testName)
 	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
@@ -3109,7 +3109,7 @@ func (s *UnrecordedTestSuite) TestFileUploadFileEncryptionContext() {
 
 	err = fClient.UploadFile(context.Background(), fh, &file.UploadFileOptions{
 		Concurrency:       5,
-		ChunkSize:         4 * 1024 * 1024,
+		ChunkSize:         4 * 1024,
 		EncryptionContext: &testcommon.TestEncryptionContext,
 	})
 	_require.NoError(err)
@@ -3123,7 +3123,7 @@ func (s *UnrecordedTestSuite) TestFileUploadFileEncryptionContext() {
 	_require.Equal(testcommon.TestEncryptionContext, *dResp.EncryptionContext)
 }
 
-func (s *UnrecordedTestSuite) TestFileDownloadStreamEncryptionContext() {
+func (s *RecordedTestSuite) TestFileDownloadStreamEncryptionContext() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -3135,7 +3135,7 @@ func (s *UnrecordedTestSuite) TestFileDownloadStreamEncryptionContext() {
 	_, err = fsClient.Create(context.Background(), nil)
 	_require.NoError(err)
 
-	var fileSize int64 = 1 * 1024 * 1024
+	var fileSize int64 = 10 * 1024
 	fileName := testcommon.GenerateFileName(testName)
 	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)

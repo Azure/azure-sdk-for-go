@@ -3070,7 +3070,7 @@ func (s *RecordedTestSuite) TestFileUploadBufferEncryptionContext() {
 
 }
 
-func (s *UnrecordedTestSuite) TestFileUploadFileEncryptionContext() {
+func (s *RecordedTestSuite) TestFileUploadFileEncryptionContext() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 

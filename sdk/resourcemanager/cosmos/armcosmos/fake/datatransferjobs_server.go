@@ -28,6 +28,10 @@ type DataTransferJobsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Cancel func(ctx context.Context, resourceGroupName string, accountName string, jobName string, options *armcosmos.DataTransferJobsClientCancelOptions) (resp azfake.Responder[armcosmos.DataTransferJobsClientCancelResponse], errResp azfake.ErrorResponder)
 
+	// Complete is the fake for method DataTransferJobsClient.Complete
+	// HTTP status codes to indicate success: http.StatusOK
+	Complete func(ctx context.Context, resourceGroupName string, accountName string, jobName string, options *armcosmos.DataTransferJobsClientCompleteOptions) (resp azfake.Responder[armcosmos.DataTransferJobsClientCompleteResponse], errResp azfake.ErrorResponder)
+
 	// Create is the fake for method DataTransferJobsClient.Create
 	// HTTP status codes to indicate success: http.StatusOK
 	Create func(ctx context.Context, resourceGroupName string, accountName string, jobName string, jobCreateParameters armcosmos.CreateJobRequest, options *armcosmos.DataTransferJobsClientCreateOptions) (resp azfake.Responder[armcosmos.DataTransferJobsClientCreateResponse], errResp azfake.ErrorResponder)
@@ -80,6 +84,8 @@ func (d *DataTransferJobsServerTransport) Do(req *http.Request) (*http.Response,
 	switch method {
 	case "DataTransferJobsClient.Cancel":
 		resp, err = d.dispatchCancel(req)
+	case "DataTransferJobsClient.Complete":
+		resp, err = d.dispatchComplete(req)
 	case "DataTransferJobsClient.Create":
 		resp, err = d.dispatchCreate(req)
 	case "DataTransferJobsClient.Get":
@@ -124,6 +130,43 @@ func (d *DataTransferJobsServerTransport) dispatchCancel(req *http.Request) (*ht
 		return nil, err
 	}
 	respr, errRespr := d.srv.Cancel(req.Context(), resourceGroupNameParam, accountNameParam, jobNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DataTransferJobGetResults, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (d *DataTransferJobsServerTransport) dispatchComplete(req *http.Request) (*http.Response, error) {
+	if d.srv.Complete == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Complete not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/dataTransferJobs/(?P<jobName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/complete`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+	if err != nil {
+		return nil, err
+	}
+	jobNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("jobName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := d.srv.Complete(req.Context(), resourceGroupNameParam, accountNameParam, jobNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}

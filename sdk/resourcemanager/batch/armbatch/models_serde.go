@@ -885,6 +885,45 @@ func (a *AutoUserSpecification) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type AutomaticOSUpgradePolicy.
+func (a AutomaticOSUpgradePolicy) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "disableAutomaticRollback", a.DisableAutomaticRollback)
+	populate(objectMap, "enableAutomaticOSUpgrade", a.EnableAutomaticOSUpgrade)
+	populate(objectMap, "osRollingUpgradeDeferral", a.OSRollingUpgradeDeferral)
+	populate(objectMap, "useRollingUpgradePolicy", a.UseRollingUpgradePolicy)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AutomaticOSUpgradePolicy.
+func (a *AutomaticOSUpgradePolicy) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", a, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "disableAutomaticRollback":
+			err = unpopulate(val, "DisableAutomaticRollback", &a.DisableAutomaticRollback)
+			delete(rawMsg, key)
+		case "enableAutomaticOSUpgrade":
+			err = unpopulate(val, "EnableAutomaticOSUpgrade", &a.EnableAutomaticOSUpgrade)
+			delete(rawMsg, key)
+		case "osRollingUpgradeDeferral":
+			err = unpopulate(val, "OSRollingUpgradeDeferral", &a.OSRollingUpgradeDeferral)
+			delete(rawMsg, key)
+		case "useRollingUpgradePolicy":
+			err = unpopulate(val, "UseRollingUpgradePolicy", &a.UseRollingUpgradePolicy)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", a, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type AzureBlobFileSystemConfiguration.
 func (a AzureBlobFileSystemConfiguration) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -2991,6 +3030,7 @@ func (p PoolProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "targetNodeCommunicationMode", p.TargetNodeCommunicationMode)
 	populate(objectMap, "taskSchedulingPolicy", p.TaskSchedulingPolicy)
 	populate(objectMap, "taskSlotsPerNode", p.TaskSlotsPerNode)
+	populate(objectMap, "upgradePolicy", p.UpgradePolicy)
 	populate(objectMap, "userAccounts", p.UserAccounts)
 	populate(objectMap, "vmSize", p.VMSize)
 	return json.Marshal(objectMap)
@@ -3082,6 +3122,9 @@ func (p *PoolProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "taskSlotsPerNode":
 			err = unpopulate(val, "TaskSlotsPerNode", &p.TaskSlotsPerNode)
+			delete(rawMsg, key)
+		case "upgradePolicy":
+			err = unpopulate(val, "UpgradePolicy", &p.UpgradePolicy)
 			delete(rawMsg, key)
 		case "userAccounts":
 			err = unpopulate(val, "UserAccounts", &p.UserAccounts)
@@ -3565,6 +3608,57 @@ func (r *ResourceFile) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type RollingUpgradePolicy.
+func (r RollingUpgradePolicy) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "enableCrossZoneUpgrade", r.EnableCrossZoneUpgrade)
+	populate(objectMap, "maxBatchInstancePercent", r.MaxBatchInstancePercent)
+	populate(objectMap, "maxUnhealthyInstancePercent", r.MaxUnhealthyInstancePercent)
+	populate(objectMap, "maxUnhealthyUpgradedInstancePercent", r.MaxUnhealthyUpgradedInstancePercent)
+	populate(objectMap, "pauseTimeBetweenBatches", r.PauseTimeBetweenBatches)
+	populate(objectMap, "prioritizeUnhealthyInstances", r.PrioritizeUnhealthyInstances)
+	populate(objectMap, "rollbackFailedInstancesOnPolicyBreach", r.RollbackFailedInstancesOnPolicyBreach)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type RollingUpgradePolicy.
+func (r *RollingUpgradePolicy) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", r, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "enableCrossZoneUpgrade":
+			err = unpopulate(val, "EnableCrossZoneUpgrade", &r.EnableCrossZoneUpgrade)
+			delete(rawMsg, key)
+		case "maxBatchInstancePercent":
+			err = unpopulate(val, "MaxBatchInstancePercent", &r.MaxBatchInstancePercent)
+			delete(rawMsg, key)
+		case "maxUnhealthyInstancePercent":
+			err = unpopulate(val, "MaxUnhealthyInstancePercent", &r.MaxUnhealthyInstancePercent)
+			delete(rawMsg, key)
+		case "maxUnhealthyUpgradedInstancePercent":
+			err = unpopulate(val, "MaxUnhealthyUpgradedInstancePercent", &r.MaxUnhealthyUpgradedInstancePercent)
+			delete(rawMsg, key)
+		case "pauseTimeBetweenBatches":
+			err = unpopulate(val, "PauseTimeBetweenBatches", &r.PauseTimeBetweenBatches)
+			delete(rawMsg, key)
+		case "prioritizeUnhealthyInstances":
+			err = unpopulate(val, "PrioritizeUnhealthyInstances", &r.PrioritizeUnhealthyInstances)
+			delete(rawMsg, key)
+		case "rollbackFailedInstancesOnPolicyBreach":
+			err = unpopulate(val, "RollbackFailedInstancesOnPolicyBreach", &r.RollbackFailedInstancesOnPolicyBreach)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", r, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type SKUCapability.
 func (s SKUCapability) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -3743,6 +3837,7 @@ func (s *StartTask) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SupportedSKU.
 func (s SupportedSKU) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populateDateTimeRFC3339(objectMap, "batchSupportEndOfLife", s.BatchSupportEndOfLife)
 	populate(objectMap, "capabilities", s.Capabilities)
 	populate(objectMap, "familyName", s.FamilyName)
 	populate(objectMap, "name", s.Name)
@@ -3758,6 +3853,9 @@ func (s *SupportedSKU) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "batchSupportEndOfLife":
+			err = unpopulateDateTimeRFC3339(val, "BatchSupportEndOfLife", &s.BatchSupportEndOfLife)
+			delete(rawMsg, key)
 		case "capabilities":
 			err = unpopulate(val, "Capabilities", &s.Capabilities)
 			delete(rawMsg, key)
@@ -3894,6 +3992,41 @@ func (u *UefiSettings) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "vTpmEnabled":
 			err = unpopulate(val, "VTpmEnabled", &u.VTpmEnabled)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", u, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type UpgradePolicy.
+func (u UpgradePolicy) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "automaticOSUpgradePolicy", u.AutomaticOSUpgradePolicy)
+	populate(objectMap, "mode", u.Mode)
+	populate(objectMap, "rollingUpgradePolicy", u.RollingUpgradePolicy)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type UpgradePolicy.
+func (u *UpgradePolicy) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", u, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "automaticOSUpgradePolicy":
+			err = unpopulate(val, "AutomaticOSUpgradePolicy", &u.AutomaticOSUpgradePolicy)
+			delete(rawMsg, key)
+		case "mode":
+			err = unpopulate(val, "Mode", &u.Mode)
+			delete(rawMsg, key)
+		case "rollingUpgradePolicy":
+			err = unpopulate(val, "RollingUpgradePolicy", &u.RollingUpgradePolicy)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -4244,7 +4377,7 @@ func populateAny(m map[string]any, k string, v any) {
 }
 
 func unpopulate(data json.RawMessage, fn string, v any) error {
-	if data == nil {
+	if data == nil || string(data) == "null" {
 		return nil
 	}
 	if err := json.Unmarshal(data, v); err != nil {

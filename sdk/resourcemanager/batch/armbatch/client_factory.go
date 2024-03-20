@@ -17,8 +17,7 @@ import (
 // Don't use this type directly, use NewClientFactory instead.
 type ClientFactory struct {
 	subscriptionID string
-	credential     azcore.TokenCredential
-	options        *arm.ClientOptions
+	internal       *arm.Client
 }
 
 // NewClientFactory creates a new instance of ClientFactory with the specified values.
@@ -27,66 +26,83 @@ type ClientFactory struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClientFactory, error) {
-	_, err := arm.NewClient(moduleName, moduleVersion, credential, options)
+	internal, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	return &ClientFactory{
-		subscriptionID: subscriptionID, credential: credential,
-		options: options.Clone(),
+		subscriptionID: subscriptionID,
+		internal:       internal,
 	}, nil
 }
 
 // NewAccountClient creates a new instance of AccountClient.
 func (c *ClientFactory) NewAccountClient() *AccountClient {
-	subClient, _ := NewAccountClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &AccountClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewApplicationClient creates a new instance of ApplicationClient.
 func (c *ClientFactory) NewApplicationClient() *ApplicationClient {
-	subClient, _ := NewApplicationClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &ApplicationClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewApplicationPackageClient creates a new instance of ApplicationPackageClient.
 func (c *ClientFactory) NewApplicationPackageClient() *ApplicationPackageClient {
-	subClient, _ := NewApplicationPackageClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &ApplicationPackageClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewCertificateClient creates a new instance of CertificateClient.
 func (c *ClientFactory) NewCertificateClient() *CertificateClient {
-	subClient, _ := NewCertificateClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &CertificateClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewLocationClient creates a new instance of LocationClient.
 func (c *ClientFactory) NewLocationClient() *LocationClient {
-	subClient, _ := NewLocationClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &LocationClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewOperationsClient creates a new instance of OperationsClient.
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
-	subClient, _ := NewOperationsClient(c.credential, c.options)
-	return subClient
+	return &OperationsClient{
+		internal: c.internal,
+	}
 }
 
 // NewPoolClient creates a new instance of PoolClient.
 func (c *ClientFactory) NewPoolClient() *PoolClient {
-	subClient, _ := NewPoolClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &PoolClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewPrivateEndpointConnectionClient creates a new instance of PrivateEndpointConnectionClient.
 func (c *ClientFactory) NewPrivateEndpointConnectionClient() *PrivateEndpointConnectionClient {
-	subClient, _ := NewPrivateEndpointConnectionClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &PrivateEndpointConnectionClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewPrivateLinkResourceClient creates a new instance of PrivateLinkResourceClient.
 func (c *ClientFactory) NewPrivateLinkResourceClient() *PrivateLinkResourceClient {
-	subClient, _ := NewPrivateLinkResourceClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &PrivateLinkResourceClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }

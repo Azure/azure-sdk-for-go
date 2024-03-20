@@ -375,6 +375,25 @@ type AutoUserSpecification struct {
 	Scope *AutoUserScope
 }
 
+// AutomaticOSUpgradePolicy - The configuration parameters used for performing automatic OS upgrade.
+type AutomaticOSUpgradePolicy struct {
+	// Whether OS image rollback feature should be disabled.
+	DisableAutomaticRollback *bool
+
+	// Indicates whether OS upgrades should automatically be applied to scale set instances in a rolling fashion when a newer
+	// version of the OS image becomes available.
+	// If this is set to true for Windows based pools, WindowsConfiguration.enableAutomaticUpdates [https://learn.microsoft.com/en-us/rest/api/batchmanagement/pool/create?tabs=HTTP#windowsconfiguration]
+	// cannot be set to true.
+	EnableAutomaticOSUpgrade *bool
+
+	// Defer OS upgrades on the TVMs if they are running tasks.
+	OSRollingUpgradeDeferral *bool
+
+	// Indicates whether rolling upgrade policy should be used during Auto OS Upgrade. Auto OS Upgrade will fallback to the default
+	// policy if no policy is defined on the VMSS.
+	UseRollingUpgradePolicy *bool
+}
+
 // AzureBlobFileSystemConfiguration - Information used to connect to an Azure Storage Container using Blobfuse.
 type AzureBlobFileSystemConfiguration struct {
 	// REQUIRED; The Azure Storage Account name.
@@ -1253,6 +1272,9 @@ type PoolProperties struct {
 	// The default value is 1. The maximum value is the smaller of 4 times the number of cores of the vmSize of the pool or 256.
 	TaskSlotsPerNode *int32
 
+	// Describes an upgrade policy - automatic, manual, or rolling.
+	UpgradePolicy *UpgradePolicy
+
 	// The list of user accounts to be created on each node in the pool.
 	UserAccounts []*UserAccount
 
@@ -1508,6 +1530,46 @@ type ResourceFile struct {
 	StorageContainerURL *string
 }
 
+// RollingUpgradePolicy - The configuration parameters used while performing a rolling upgrade.
+type RollingUpgradePolicy struct {
+	// Allow VMSS to ignore AZ boundaries when constructing upgrade batches. Take into consideration the Update Domain and maxBatchInstancePercent
+	// to determine the batch size. If this field is not set, Azure
+	// Azure Batch will not set its default value. The value of enableCrossZoneUpgrade on the created VirtualMachineScaleSet will
+	// be decided by the default configurations on VirtualMachineScaleSet. This
+	// field is able to be set to true or false only when using NodePlacementConfiguration as Zonal.
+	EnableCrossZoneUpgrade *bool
+
+	// The maximum percent of total virtual machine instances that will be upgraded simultaneously by the rolling upgrade in one
+	// batch. As this is a maximum, unhealthy instances in previous or future batches
+	// can cause the percentage of instances in a batch to decrease to ensure higher reliability. The value of this field should
+	// be between 5 and 100, inclusive. If both maxBatchInstancePercent and
+	// maxUnhealthyInstancePercent are assigned with value, the value of maxBatchInstancePercent should not be more than maxUnhealthyInstancePercent.
+	MaxBatchInstancePercent *int32
+
+	// The maximum percentage of the total virtual machine instances in the scale set that can be simultaneously unhealthy, either
+	// as a result of being upgraded, or by being found in an unhealthy state by
+	// the virtual machine health checks before the rolling upgrade aborts. This constraint will be checked prior to starting
+	// any batch. The value of this field should be between 5 and 100, inclusive. If
+	// both maxBatchInstancePercent and maxUnhealthyInstancePercent are assigned with value, the value of maxBatchInstancePercent
+	// should not be more than maxUnhealthyInstancePercent.
+	MaxUnhealthyInstancePercent *int32
+
+	// The maximum percentage of upgraded virtual machine instances that can be found to be in an unhealthy state. This check
+	// will happen after each batch is upgraded. If this percentage is ever exceeded,
+	// the rolling update aborts. The value of this field should be between 0 and 100, inclusive.
+	MaxUnhealthyUpgradedInstancePercent *int32
+
+	// The wait time between completing the update for all virtual machines in one batch and starting the next batch. The time
+	// duration should be specified in ISO 8601 format.
+	PauseTimeBetweenBatches *string
+
+	// Upgrade all unhealthy instances in a scale set before any healthy instances.
+	PrioritizeUnhealthyInstances *bool
+
+	// Rollback failed instances to previous model if the Rolling Upgrade policy is violated.
+	RollbackFailedInstancesOnPolicyBreach *bool
+}
+
 // SKUCapability - A SKU capability, such as the number of cores.
 type SKUCapability struct {
 	// READ-ONLY; The name of the feature.
@@ -1595,6 +1657,9 @@ type StartTask struct {
 
 // SupportedSKU - Describes a Batch supported SKU.
 type SupportedSKU struct {
+	// READ-ONLY; The time when Azure Batch service will retire this SKU.
+	BatchSupportEndOfLife *time.Time
+
 	// READ-ONLY; A collection of capabilities which this SKU supports.
 	Capabilities []*SKUCapability
 
@@ -1644,6 +1709,23 @@ type UefiSettings struct {
 
 	// Specifies whether vTPM should be enabled on the virtual machine.
 	VTpmEnabled *bool
+}
+
+// UpgradePolicy - Describes an upgrade policy - automatic, manual, or rolling.
+type UpgradePolicy struct {
+	// REQUIRED; Specifies the mode of an upgrade to virtual machines in the scale set.
+	// Possible values are:
+	// Manual - You control the application of updates to virtual machines in the scale set. You do this by using the manualUpgrade
+	// action.
+	// Automatic - All virtual machines in the scale set are automatically updated at the same time.
+	// Rolling - Scale set performs updates in batches with an optional pause time in between.
+	Mode *UpgradeMode
+
+	// The configuration parameters used for performing automatic OS upgrade.
+	AutomaticOSUpgradePolicy *AutomaticOSUpgradePolicy
+
+	// This property is only supported on Pools with the virtualMachineConfiguration property.
+	RollingUpgradePolicy *RollingUpgradePolicy
 }
 
 // UserAccount - Properties used to create a user on an Azure Batch node.

@@ -533,7 +533,20 @@ func (f *Client) UploadStream(ctx context.Context, body io.Reader, options *Uplo
 		options = &UploadStreamOptions{}
 	}
 
+	if options.EncryptionContext != nil {
+		_, err := f.Create(ctx, &CreateOptions{EncryptionContext: options.EncryptionContext})
+		if err != nil {
+			return err
+		}
+	}
 	err := copyFromReader(ctx, body, f, *options, newMMBPool)
+
+	if err != nil && options.EncryptionContext != nil {
+		_, err2 := f.Delete(ctx, nil)
+		if err2 != nil {
+			return exported.ConvertToDFSError(err2)
+		}
+	}
 	return exported.ConvertToDFSError(err)
 }
 

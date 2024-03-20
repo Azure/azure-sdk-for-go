@@ -168,6 +168,8 @@ type UploadStreamOptions struct {
 	HTTPHeaders *HTTPHeaders
 	// CPKInfo contains optional parameters to perform encryption using customer-provided key.
 	CPKInfo *CPKInfo
+	// EncryptionContext contains the information returned from the x-ms-encryption-context header response.
+	EncryptionContext *string
 }
 
 // UploadBufferOptions provides set of configurations for Client.UploadBuffer operation.

@@ -43,7 +43,7 @@ func NewChatTranscriptsNoSubscriptionClient(credential azcore.TokenCredential, o
 // Get - Returns chatTranscript details for a no subscription support ticket.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2023-06-01-preview
 //   - supportTicketName - Support ticket name.
 //   - chatTranscriptName - ChatTranscript name.
 //   - options - ChatTranscriptsNoSubscriptionClientGetOptions contains the optional parameters for the ChatTranscriptsNoSubscriptionClient.Get
@@ -86,7 +86,7 @@ func (client *ChatTranscriptsNoSubscriptionClient) getCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2023-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -97,6 +97,62 @@ func (client *ChatTranscriptsNoSubscriptionClient) getHandleResponse(resp *http.
 	result := ChatTranscriptsNoSubscriptionClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ChatTranscriptDetails); err != nil {
 		return ChatTranscriptsNoSubscriptionClientGetResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListPager - Lists all chat transcripts for a support ticket
+//
+// Generated from API version 2023-06-01-preview
+//   - supportTicketName - Support ticket name.
+//   - options - ChatTranscriptsNoSubscriptionClientListOptions contains the optional parameters for the ChatTranscriptsNoSubscriptionClient.NewListPager
+//     method.
+func (client *ChatTranscriptsNoSubscriptionClient) NewListPager(supportTicketName string, options *ChatTranscriptsNoSubscriptionClientListOptions) *runtime.Pager[ChatTranscriptsNoSubscriptionClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ChatTranscriptsNoSubscriptionClientListResponse]{
+		More: func(page ChatTranscriptsNoSubscriptionClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *ChatTranscriptsNoSubscriptionClientListResponse) (ChatTranscriptsNoSubscriptionClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ChatTranscriptsNoSubscriptionClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, supportTicketName, options)
+			}, nil)
+			if err != nil {
+				return ChatTranscriptsNoSubscriptionClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listCreateRequest creates the List request.
+func (client *ChatTranscriptsNoSubscriptionClient) listCreateRequest(ctx context.Context, supportTicketName string, options *ChatTranscriptsNoSubscriptionClientListOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Support/supportTickets/{supportTicketName}/chatTranscripts"
+	if supportTicketName == "" {
+		return nil, errors.New("parameter supportTicketName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{supportTicketName}", url.PathEscape(supportTicketName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2023-06-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listHandleResponse handles the List response.
+func (client *ChatTranscriptsNoSubscriptionClient) listHandleResponse(resp *http.Response) (ChatTranscriptsNoSubscriptionClientListResponse, error) {
+	result := ChatTranscriptsNoSubscriptionClientListResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ChatTranscriptsListResult); err != nil {
+		return ChatTranscriptsNoSubscriptionClientListResponse{}, err
 	}
 	return result, nil
 }

@@ -28,7 +28,7 @@ type ValidationsClient struct {
 }
 
 // NewValidationsClient creates a new instance of ValidationsClient with the specified values.
-//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
+//   - subscriptionID - Microsoft Azure subscription id
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewValidationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ValidationsClient, error) {
@@ -46,8 +46,8 @@ func NewValidationsClient(subscriptionID string, credential azcore.TokenCredenti
 // ValidateOrganization - Organization Validate proxy resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-22
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+// Generated from API version 2024-02-13
+//   - resourceGroupName - Resource group name
 //   - organizationName - Organization resource name
 //   - body - Organization resource model
 //   - options - ValidationsClientValidateOrganizationOptions contains the optional parameters for the ValidationsClient.ValidateOrganization
@@ -94,7 +94,7 @@ func (client *ValidationsClient) validateOrganizationCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-08-22")
+	reqQP.Set("api-version", "2024-02-13")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -115,8 +115,8 @@ func (client *ValidationsClient) validateOrganizationHandleResponse(resp *http.R
 // ValidateOrganizationV2 - Organization Validate proxy resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-22
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+// Generated from API version 2024-02-13
+//   - resourceGroupName - Resource group name
 //   - organizationName - Organization resource name
 //   - body - Organization resource model
 //   - options - ValidationsClientValidateOrganizationV2Options contains the optional parameters for the ValidationsClient.ValidateOrganizationV2
@@ -163,7 +163,7 @@ func (client *ValidationsClient) validateOrganizationV2CreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-08-22")
+	reqQP.Set("api-version", "2024-02-13")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {

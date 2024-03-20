@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/confluent/armconfluent"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/confluent/resource-manager/Microsoft.Confluent/stable/2023-08-22/examples/Organization_ListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/confluent/resource-manager/Microsoft.Confluent/stable/2024-02-13/examples/Organization_ListBySubscription.json
 func ExampleOrganizationClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -79,7 +79,7 @@ func ExampleOrganizationClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/confluent/resource-manager/Microsoft.Confluent/stable/2023-08-22/examples/Organization_ListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/confluent/resource-manager/Microsoft.Confluent/stable/2024-02-13/examples/Organization_ListByResourceGroup.json
 func ExampleOrganizationClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -140,7 +140,7 @@ func ExampleOrganizationClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/confluent/resource-manager/Microsoft.Confluent/stable/2023-08-22/examples/Organization_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/confluent/resource-manager/Microsoft.Confluent/stable/2024-02-13/examples/Organization_Get.json
 func ExampleOrganizationClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -169,34 +169,39 @@ func ExampleOrganizationClient_Get() {
 	// 			ID: to.Ptr("string"),
 	// 			PlanID: to.Ptr("string"),
 	// 			PlanName: to.Ptr("string"),
-	// 			PublisherID: to.Ptr("string"),
-	// 			Status: to.Ptr(armconfluent.SaaSOfferStatusStarted),
-	// 			TermUnit: to.Ptr("string"),
+	// 			PrivateOfferID: to.Ptr("string"),
+	// 			PrivateOfferIDs: []*string{
+	// 				to.Ptr("string")},
+	// 				PublisherID: to.Ptr("string"),
+	// 				Status: to.Ptr(armconfluent.SaaSOfferStatusStarted),
+	// 				TermUnit: to.Ptr("string"),
+	// 			},
+	// 			OrganizationID: to.Ptr("string"),
+	// 			ProvisioningState: to.Ptr(armconfluent.ProvisionStateSucceeded),
+	// 			SsoURL: to.Ptr("string"),
+	// 			UserDetail: &armconfluent.UserDetail{
+	// 				AADEmail: to.Ptr("contoso@microsoft.com"),
+	// 				EmailAddress: to.Ptr("contoso@microsoft.com"),
+	// 				FirstName: to.Ptr("string"),
+	// 				LastName: to.Ptr("string"),
+	// 				UserPrincipalName: to.Ptr("contoso@microsoft.com"),
+	// 			},
 	// 		},
-	// 		OrganizationID: to.Ptr("string"),
-	// 		ProvisioningState: to.Ptr(armconfluent.ProvisionStateSucceeded),
-	// 		SsoURL: to.Ptr("string"),
-	// 		UserDetail: &armconfluent.UserDetail{
-	// 			EmailAddress: to.Ptr("contoso@microsoft.com"),
-	// 			FirstName: to.Ptr("string"),
-	// 			LastName: to.Ptr("string"),
+	// 		SystemData: &armconfluent.SystemData{
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-09T14:28:47.284Z"); return t}()),
+	// 			CreatedBy: to.Ptr("string"),
+	// 			CreatedByType: to.Ptr(armconfluent.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-09T14:28:47.284Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("string"),
+	// 			LastModifiedByType: to.Ptr(armconfluent.CreatedByTypeUser),
 	// 		},
-	// 	},
-	// 	SystemData: &armconfluent.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-09T14:28:47.284Z"); return t}()),
-	// 		CreatedBy: to.Ptr("string"),
-	// 		CreatedByType: to.Ptr(armconfluent.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-09T14:28:47.284Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("string"),
-	// 		LastModifiedByType: to.Ptr(armconfluent.CreatedByTypeUser),
-	// 	},
-	// 	Tags: map[string]*string{
-	// 		"Environment": to.Ptr("Dev"),
-	// 	},
-	// }
+	// 		Tags: map[string]*string{
+	// 			"Environment": to.Ptr("Dev"),
+	// 		},
+	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/confluent/resource-manager/Microsoft.Confluent/stable/2023-08-22/examples/Organization_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/confluent/resource-manager/Microsoft.Confluent/stable/2024-02-13/examples/Organization_Create.json
 func ExampleOrganizationClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -289,7 +294,7 @@ func ExampleOrganizationClient_BeginCreate() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/confluent/resource-manager/Microsoft.Confluent/stable/2023-08-22/examples/Organization_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/confluent/resource-manager/Microsoft.Confluent/stable/2024-02-13/examples/Organization_Update.json
 func ExampleOrganizationClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -332,9 +337,11 @@ func ExampleOrganizationClient_Update() {
 	// 		ProvisioningState: to.Ptr(armconfluent.ProvisionStateSucceeded),
 	// 		SsoURL: to.Ptr("string"),
 	// 		UserDetail: &armconfluent.UserDetail{
+	// 			AADEmail: to.Ptr("contoso@microsoft.com"),
 	// 			EmailAddress: to.Ptr("contoso@microsoft.com"),
 	// 			FirstName: to.Ptr("string"),
 	// 			LastName: to.Ptr("string"),
+	// 			UserPrincipalName: to.Ptr("contoso@microsoft.com"),
 	// 		},
 	// 	},
 	// 	SystemData: &armconfluent.SystemData{
@@ -351,7 +358,7 @@ func ExampleOrganizationClient_Update() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/confluent/resource-manager/Microsoft.Confluent/stable/2023-08-22/examples/Organization_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/confluent/resource-manager/Microsoft.Confluent/stable/2024-02-13/examples/Organization_Delete.json
 func ExampleOrganizationClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -370,4 +377,503 @@ func ExampleOrganizationClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/confluent/resource-manager/Microsoft.Confluent/stable/2024-02-13/examples/Organization_EnvironmentList.json
+func ExampleOrganizationClient_NewListEnvironmentsPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armconfluent.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewOrganizationClient().NewListEnvironmentsPager("myResourceGroup", "myOrganization", &armconfluent.OrganizationClientListEnvironmentsOptions{PageSize: to.Ptr[int32](10),
+		PageToken: nil,
+	})
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.GetEnvironmentsResponse = armconfluent.GetEnvironmentsResponse{
+		// 	Value: []*armconfluent.SCEnvironmentRecord{
+		// 		{
+		// 			Name: to.Ptr("prod-finance01"),
+		// 			ID: to.Ptr("dlz-f3a90de"),
+		// 			Kind: to.Ptr("Environment"),
+		// 			Properties: &armconfluent.EnvironmentProperties{
+		// 				Metadata: &armconfluent.SCMetadataEntity{
+		// 					CreatedTimestamp: to.Ptr("2006-01-02T15:04:05-07:00"),
+		// 					DeletedTimestamp: to.Ptr("2006-01-02T15:04:05-07:00"),
+		// 					ResourceName: to.Ptr("crn://confluent.cloud/organization=9bb441c4-edef-46ac-8a41-c49e44a3fd9a/environment=e-12345"),
+		// 					Self: to.Ptr("https://api.confluent.cloud/org/v2/environments/e-12345"),
+		// 					UpdatedTimestamp: to.Ptr("2006-01-02T15:04:05-07:00"),
+		// 				},
+		// 			},
+		// 	}},
+		// }
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/confluent/resource-manager/Microsoft.Confluent/stable/2024-02-13/examples/Organization_GetEnvironmentById.json
+func ExampleOrganizationClient_GetEnvironmentByID() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armconfluent.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewOrganizationClient().GetEnvironmentByID(ctx, "myResourceGroup", "myOrganization", "dlz-f3a90de", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.SCEnvironmentRecord = armconfluent.SCEnvironmentRecord{
+	// 	Name: to.Ptr("prod-finance01"),
+	// 	ID: to.Ptr("dlz-f3a90de"),
+	// 	Kind: to.Ptr("Environment"),
+	// 	Properties: &armconfluent.EnvironmentProperties{
+	// 		Metadata: &armconfluent.SCMetadataEntity{
+	// 			CreatedTimestamp: to.Ptr("2006-01-02T15:04:05-07:00"),
+	// 			DeletedTimestamp: to.Ptr("2006-01-02T15:04:05-07:00"),
+	// 			ResourceName: to.Ptr("crn://confluent.cloud/organization=9bb441c4-edef-46ac-8a41-c49e44a3fd9a/environment=e-12345"),
+	// 			Self: to.Ptr("https://api.confluent.cloud/org/v2/environments/e-12345"),
+	// 			UpdatedTimestamp: to.Ptr("2006-01-02T15:04:05-07:00"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/confluent/resource-manager/Microsoft.Confluent/stable/2024-02-13/examples/Organization_ClusterList.json
+func ExampleOrganizationClient_NewListClustersPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armconfluent.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewOrganizationClient().NewListClustersPager("myResourceGroup", "myOrganization", "env-12132", &armconfluent.OrganizationClientListClustersOptions{PageSize: to.Ptr[int32](10),
+		PageToken: nil,
+	})
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.ListClustersSuccessResponse = armconfluent.ListClustersSuccessResponse{
+		// 	Value: []*armconfluent.SCClusterRecord{
+		// 		{
+		// 			ID: to.Ptr("dlz-f3a90de"),
+		// 			Kind: to.Ptr("Cluster"),
+		// 			Properties: &armconfluent.ClusterProperties{
+		// 				Metadata: &armconfluent.SCMetadataEntity{
+		// 					CreatedTimestamp: to.Ptr("2006-01-02T15:04:05-07:00"),
+		// 					DeletedTimestamp: to.Ptr("2006-01-02T15:04:05-07:00"),
+		// 					ResourceName: to.Ptr("crn://confluent.cloud/organization=9bb441c4-edef-46ac-8a41-c49e44a3fd9a/environment=env-abc123/cloud-cluster=lkc-12345"),
+		// 					Self: to.Ptr("https://api.confluent.cloud/cmk/v2/clusters/lkc-12345"),
+		// 					UpdatedTimestamp: to.Ptr("2006-01-02T15:04:05-07:00"),
+		// 				},
+		// 				Spec: &armconfluent.SCClusterSpecEntity{
+		// 					Name: to.Ptr("ProdKafkaCluster"),
+		// 					APIEndpoint: to.Ptr("https://pkac-00000.us-west-2.aws.confluent.cloud"),
+		// 					Availability: to.Ptr("SINGLE_ZONE"),
+		// 					Byok: &armconfluent.SCClusterByokEntity{
+		// 						ID: to.Ptr("cck-00000"),
+		// 						Related: to.Ptr("https://api.confluent.cloud/byok/v1/keys/cck-00000"),
+		// 						ResourceName: to.Ptr("https://api.confluent.cloud/organization=9bb441c4-edef-46ac-8a41-c49e44a3fd9a/key=cck-00000"),
+		// 					},
+		// 					Cloud: to.Ptr("GCP"),
+		// 					Config: &armconfluent.ClusterConfigEntity{
+		// 						Kind: to.Ptr("Basic"),
+		// 					},
+		// 					Environment: &armconfluent.SCClusterNetworkEnvironmentEntity{
+		// 						Environment: to.Ptr("string"),
+		// 						ID: to.Ptr("env-00000"),
+		// 						Related: to.Ptr("https://api.confluent.cloud/v2/environments/env-00000"),
+		// 						ResourceName: to.Ptr("https://api.confluent.cloud/organization=9bb441c4-edef-46ac-8a41-c49e44a3fd9a/environment=env-00000"),
+		// 					},
+		// 					HTTPEndpoint: to.Ptr("https://lkc-00000-00000.us-central1.gcp.glb.confluent.cloud"),
+		// 					KafkaBootstrapEndpoint: to.Ptr("lkc-00000-00000.us-central1.gcp.glb.confluent.cloud:9092"),
+		// 					Network: &armconfluent.SCClusterNetworkEnvironmentEntity{
+		// 						Environment: to.Ptr("string"),
+		// 						ID: to.Ptr("n-00000"),
+		// 						Related: to.Ptr("https://api.confluent.cloud/networking/v1/networks/n-00000"),
+		// 						ResourceName: to.Ptr("https://api.confluent.cloud/organization=9bb441c4-edef-46ac-8a41-c49e44a3fd9a/environment=env-abc123/network=n-00000"),
+		// 					},
+		// 					Region: to.Ptr("us-east4"),
+		// 				},
+		// 				Status: &armconfluent.ClusterStatusEntity{
+		// 					Cku: to.Ptr[int32](2),
+		// 					Phase: to.Ptr("PROVISIONED"),
+		// 				},
+		// 			},
+		// 	}},
+		// }
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/confluent/resource-manager/Microsoft.Confluent/stable/2024-02-13/examples/Organization_ListSchemaRegistryClusters.json
+func ExampleOrganizationClient_NewListSchemaRegistryClustersPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armconfluent.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewOrganizationClient().NewListSchemaRegistryClustersPager("myResourceGroup", "myOrganization", "env-stgcczjp2j3", &armconfluent.OrganizationClientListSchemaRegistryClustersOptions{PageSize: nil,
+		PageToken: nil,
+	})
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.ListSchemaRegistryClustersResponse = armconfluent.ListSchemaRegistryClustersResponse{
+		// 	Value: []*armconfluent.SchemaRegistryClusterRecord{
+		// 		{
+		// 			ID: to.Ptr("lsrc-stgczkq22z"),
+		// 			Kind: to.Ptr("Cluster"),
+		// 			Properties: &armconfluent.SchemaRegistryClusterProperties{
+		// 				Metadata: &armconfluent.SCMetadataEntity{
+		// 					CreatedTimestamp: to.Ptr("2023-11-08T07:37:14.309386Z"),
+		// 					ResourceName: to.Ptr("crn://confluent.cloud/organization=37d1220b-93a6-43e3-a114-dd8a20a94a31/environment=env-stgccnk2mgd/schema-registry=lsrc-stgczkq22z"),
+		// 					Self: to.Ptr("https://api.stag.cpdev.cloud/srcm/v2/clusters/lsrc-stgczkq22z"),
+		// 					UpdatedTimestamp: to.Ptr("2023-11-08T07:37:14.309386Z"),
+		// 				},
+		// 				Spec: &armconfluent.SchemaRegistryClusterSpecEntity{
+		// 					Name: to.Ptr("Stream Governance Package"),
+		// 					Cloud: to.Ptr("GCP"),
+		// 					Environment: &armconfluent.SchemaRegistryClusterEnvironmentRegionEntity{
+		// 						ID: to.Ptr("env-stgccnk2mgd"),
+		// 						Related: to.Ptr("https://api.stag.cpdev.cloud/org/v2/environments/env-stgccnk2mgd"),
+		// 						ResourceName: to.Ptr("crn://confluent.cloud/organization=37d1220b-93a6-43e3-a114-dd8a20a94a31/environment=env-stgccnk2mgd"),
+		// 					},
+		// 					HTTPEndpoint: to.Ptr("https://psrc-57wzyg.centralus.azure.stag.cpdev.cloud"),
+		// 					Package: to.Ptr("ADVANCED"),
+		// 					Region: &armconfluent.SchemaRegistryClusterEnvironmentRegionEntity{
+		// 						ID: to.Ptr("sgreg-7"),
+		// 						Related: to.Ptr("https://api.stag.cpdev.cloud/srcm/v2/regions/sgreg-7"),
+		// 						ResourceName: to.Ptr("crn://confluent.cloud/schema-registry-region=sgreg-7"),
+		// 					},
+		// 				},
+		// 				Status: &armconfluent.SchemaRegistryClusterStatusEntity{
+		// 					Phase: to.Ptr("PROVISIONED"),
+		// 				},
+		// 			},
+		// 	}},
+		// }
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/confluent/resource-manager/Microsoft.Confluent/stable/2024-02-13/examples/Organization_ListRegions.json
+func ExampleOrganizationClient_ListRegions() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armconfluent.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewOrganizationClient().ListRegions(ctx, "myResourceGroup", "myOrganization", armconfluent.ListAccessRequestModel{
+		SearchFilters: map[string]*string{
+			"cloud":    to.Ptr("azure"),
+			"packages": to.Ptr("ADVANCED,ESSENTIALS"),
+			"region":   to.Ptr("eastus"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.ListRegionsSuccessResponse = armconfluent.ListRegionsSuccessResponse{
+	// 	Data: []*armconfluent.RegionRecord{
+	// 		{
+	// 			ID: to.Ptr("sgreg-7"),
+	// 			Kind: to.Ptr("Region"),
+	// 			Properties: &armconfluent.RegionProperties{
+	// 				Metadata: &armconfluent.SCMetadataEntity{
+	// 					CreatedTimestamp: to.Ptr("2023-04-06T10:24:09.840788Z"),
+	// 					ResourceName: to.Ptr("crn://confluent.cloud/schema-registry-region=sgreg-7"),
+	// 					Self: to.Ptr("https://api.stag.cpdev.cloud/srcm/v2/regions/sgreg-7"),
+	// 					UpdatedTimestamp: to.Ptr("2023-04-06T10:24:09.840788Z"),
+	// 				},
+	// 				Spec: &armconfluent.RegionSpecEntity{
+	// 					Name: to.Ptr("Iowa (centralus)"),
+	// 					Cloud: to.Ptr("AZURE"),
+	// 					Packages: []*string{
+	// 						to.Ptr("ADVANCED")},
+	// 						RegionName: to.Ptr("centralus"),
+	// 					},
+	// 				},
+	// 		}},
+	// 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/confluent/resource-manager/Microsoft.Confluent/stable/2024-02-13/examples/Organization_CreateClusterAPIKey.json
+func ExampleOrganizationClient_CreateAPIKey() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armconfluent.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewOrganizationClient().CreateAPIKey(ctx, "myResourceGroup", "myOrganization", "env-12132", "clusterId-123", armconfluent.CreateAPIKeyModel{
+		Name:        to.Ptr("CI kafka access key"),
+		Description: to.Ptr("This API key provides kafka access to cluster x"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.APIKeyRecord = armconfluent.APIKeyRecord{
+	// 	ID: to.Ptr("JDCXTFUVFVQGF56J"),
+	// 	Kind: to.Ptr("ApiKey"),
+	// 	Properties: &armconfluent.APIKeyProperties{
+	// 		Metadata: &armconfluent.SCMetadataEntity{
+	// 			CreatedTimestamp: to.Ptr("2023-11-15T16:15:44.489498Z"),
+	// 			ResourceName: to.Ptr("crn://api.stag.cpdev.cloud/organization=37d1220b-93a6-43e3-a114-dd8a20a94a31/service-account=sa-wwn7mm/api-key=JDCXTFUVFVQGF56J"),
+	// 			Self: to.Ptr("https://api.stag.cpdev.cloud/iam/v2/api-keys/JDCXTFUVFVQGF56J"),
+	// 			UpdatedTimestamp: to.Ptr("2023-11-15T16:15:44.489498Z"),
+	// 		},
+	// 		Spec: &armconfluent.APIKeySpecEntity{
+	// 			Name: to.Ptr("CI kafka access key"),
+	// 			Description: to.Ptr("This API key provides kafka access to cluster x"),
+	// 			Owner: &armconfluent.APIKeyOwnerEntity{
+	// 				ID: to.Ptr("sa-wwn7mm"),
+	// 				Kind: to.Ptr("ServiceAccount"),
+	// 				Related: to.Ptr("https://api.stag.cpdev.cloud/iam/v2/service-accounts/sa-wwn7mm"),
+	// 				ResourceName: to.Ptr("crn://api.stag.cpdev.cloud/organization=37d1220b-93a6-43e3-a114-dd8a20a94a31/service-account=sa-wwn7mm"),
+	// 			},
+	// 			Resource: &armconfluent.APIKeyResourceEntity{
+	// 				ID: to.Ptr("lsrc-stgc1yrzz3"),
+	// 				Kind: to.Ptr("SchemaRegistry"),
+	// 				Related: to.Ptr("https://api.stag.cpdev.cloud/srcm/v2/schema-registries/lsrc-stgc1yrzz3"),
+	// 				ResourceName: to.Ptr("crn://api.stag.cpdev.cloud/organization=37d1220b-93a6-43e3-a114-dd8a20a94a31/schema-registry=lsrc-stgc1yrzz3"),
+	// 			},
+	// 			Secret: to.Ptr(""),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/confluent/resource-manager/Microsoft.Confluent/stable/2024-02-13/examples/Organization_DeleteClusterAPIKey.json
+func ExampleOrganizationClient_DeleteClusterAPIKey() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armconfluent.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	_, err = clientFactory.NewOrganizationClient().DeleteClusterAPIKey(ctx, "myResourceGroup", "myOrganization", "ZFZ6SZZZWGYBEIFB", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/confluent/resource-manager/Microsoft.Confluent/stable/2024-02-13/examples/Organization_GetClusterAPIKey.json
+func ExampleOrganizationClient_GetClusterAPIKey() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armconfluent.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewOrganizationClient().GetClusterAPIKey(ctx, "myResourceGroup", "myOrganization", "apiKeyId-123", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.APIKeyRecord = armconfluent.APIKeyRecord{
+	// 	ID: to.Ptr("apiKeyId-123"),
+	// 	Kind: to.Ptr("ApiKey"),
+	// 	Properties: &armconfluent.APIKeyProperties{
+	// 		Metadata: &armconfluent.SCMetadataEntity{
+	// 			CreatedTimestamp: to.Ptr("2023-11-15T16:15:44.489498Z"),
+	// 			ResourceName: to.Ptr("crn://api.stag.cpdev.cloud/organization=37d1220b-93a6-43e3-a114-dd8a20a94a31/service-account=sa-wwn7mm/api-key=apiKeyId-123"),
+	// 			Self: to.Ptr("https://api.stag.cpdev.cloud/iam/v2/api-keys/apiKeyId-123"),
+	// 			UpdatedTimestamp: to.Ptr("2023-11-15T16:15:44.489498Z"),
+	// 		},
+	// 		Spec: &armconfluent.APIKeySpecEntity{
+	// 			Name: to.Ptr("CI kafka access key"),
+	// 			Description: to.Ptr("This API key provides kafka access to cluster x"),
+	// 			Owner: &armconfluent.APIKeyOwnerEntity{
+	// 				ID: to.Ptr("sa-wwn7mm"),
+	// 				Kind: to.Ptr("ServiceAccount"),
+	// 				Related: to.Ptr("https://api.stag.cpdev.cloud/iam/v2/service-accounts/sa-wwn7mm"),
+	// 				ResourceName: to.Ptr("crn://api.stag.cpdev.cloud/organization=37d1220b-93a6-43e3-a114-dd8a20a94a31/service-account=sa-wwn7mm"),
+	// 			},
+	// 			Resource: &armconfluent.APIKeyResourceEntity{
+	// 				Environment: to.Ptr("env-0000"),
+	// 				ID: to.Ptr("lsrc-stgc1yrzz3"),
+	// 				Kind: to.Ptr("SchemaRegistry"),
+	// 				Related: to.Ptr("https://api.stag.cpdev.cloud/srcm/v2/schema-registries/lsrc-stgc1yrzz3"),
+	// 				ResourceName: to.Ptr("crn://api.stag.cpdev.cloud/organization=37d1220b-93a6-43e3-a114-dd8a20a94a31/schema-registry=lsrc-stgc1yrzz3"),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/confluent/resource-manager/Microsoft.Confluent/stable/2024-02-13/examples/Organization_GetSchemaRegistryClusterById.json
+func ExampleOrganizationClient_GetSchemaRegistryClusterByID() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armconfluent.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewOrganizationClient().GetSchemaRegistryClusterByID(ctx, "myResourceGroup", "myOrganization", "env-stgcczjp2j3", "lsrc-stgczkq22z", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.SchemaRegistryClusterRecord = armconfluent.SchemaRegistryClusterRecord{
+	// 	ID: to.Ptr("lsrc-stgczkq22z"),
+	// 	Kind: to.Ptr("Cluster"),
+	// 	Properties: &armconfluent.SchemaRegistryClusterProperties{
+	// 		Metadata: &armconfluent.SCMetadataEntity{
+	// 			CreatedTimestamp: to.Ptr("2023-11-08T07:37:14.309386Z"),
+	// 			DeletedTimestamp: to.Ptr("2023-11-08T07:37:14.309386Z"),
+	// 			ResourceName: to.Ptr("crn://confluent.cloud/organization=37d1220b-93a6-43e3-a114-dd8a20a94a31/environment=env-stgccnk2mgd/schema-registry=lsrc-stgczkq22z"),
+	// 			Self: to.Ptr("https://api.stag.cpdev.cloud/srcm/v2/clusters/lsrc-stgczkq22z"),
+	// 			UpdatedTimestamp: to.Ptr("2023-11-08T07:37:14.309386Z"),
+	// 		},
+	// 		Spec: &armconfluent.SchemaRegistryClusterSpecEntity{
+	// 			Name: to.Ptr("Stream Governance Package"),
+	// 			Cloud: to.Ptr("GCP"),
+	// 			Environment: &armconfluent.SchemaRegistryClusterEnvironmentRegionEntity{
+	// 				ID: to.Ptr("env-stgccnk2mgd"),
+	// 				Related: to.Ptr("https://api.stag.cpdev.cloud/org/v2/environments/env-stgccnk2mgd"),
+	// 				ResourceName: to.Ptr("crn://confluent.cloud/organization=37d1220b-93a6-43e3-a114-dd8a20a94a31/environment=env-stgccnk2mgd"),
+	// 			},
+	// 			HTTPEndpoint: to.Ptr("https://psrc-57wzyg.centralus.azure.stag.cpdev.cloud"),
+	// 			Package: to.Ptr("ADVANCED"),
+	// 			Region: &armconfluent.SchemaRegistryClusterEnvironmentRegionEntity{
+	// 				ID: to.Ptr("sgreg-7"),
+	// 				Related: to.Ptr("https://api.stag.cpdev.cloud/srcm/v2/regions/sgreg-7"),
+	// 				ResourceName: to.Ptr("crn://confluent.cloud/schema-registry-region=sgreg-7"),
+	// 			},
+	// 		},
+	// 		Status: &armconfluent.SchemaRegistryClusterStatusEntity{
+	// 			Phase: to.Ptr("PROVISIONED"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/confluent/resource-manager/Microsoft.Confluent/stable/2024-02-13/examples/Organization_GetClusterById.json
+func ExampleOrganizationClient_GetClusterByID() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armconfluent.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewOrganizationClient().GetClusterByID(ctx, "myResourceGroup", "myOrganization", "env-12132", "dlz-f3a90de", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.SCClusterRecord = armconfluent.SCClusterRecord{
+	// 	ID: to.Ptr("dlz-f3a90de"),
+	// 	Kind: to.Ptr("Cluster"),
+	// 	Properties: &armconfluent.ClusterProperties{
+	// 		Metadata: &armconfluent.SCMetadataEntity{
+	// 			CreatedTimestamp: to.Ptr("2006-01-02T15:04:05-07:00"),
+	// 			DeletedTimestamp: to.Ptr("2006-01-02T15:04:05-07:00"),
+	// 			ResourceName: to.Ptr("crn://confluent.cloud/organization=9bb441c4-edef-46ac-8a41-c49e44a3fd9a/environment=env-abc123/cloud-cluster=lkc-12345"),
+	// 			Self: to.Ptr("https://api.confluent.cloud/cmk/v2/clusters/lkc-12345"),
+	// 			UpdatedTimestamp: to.Ptr("2006-01-02T15:04:05-07:00"),
+	// 		},
+	// 		Spec: &armconfluent.SCClusterSpecEntity{
+	// 			Name: to.Ptr("ProdKafkaCluster"),
+	// 			APIEndpoint: to.Ptr("https://pkac-00000.us-west-2.aws.confluent.cloud"),
+	// 			Availability: to.Ptr("SINGLE_ZONE"),
+	// 			Byok: &armconfluent.SCClusterByokEntity{
+	// 				ID: to.Ptr("cck-00000"),
+	// 				Related: to.Ptr("https://api.confluent.cloud/byok/v1/keys/cck-00000"),
+	// 				ResourceName: to.Ptr("https://api.confluent.cloud/organization=9bb441c4-edef-46ac-8a41-c49e44a3fd9a/key=cck-00000"),
+	// 			},
+	// 			Cloud: to.Ptr("GCP"),
+	// 			Config: &armconfluent.ClusterConfigEntity{
+	// 				Kind: to.Ptr("Basic"),
+	// 			},
+	// 			Environment: &armconfluent.SCClusterNetworkEnvironmentEntity{
+	// 				Environment: to.Ptr("string"),
+	// 				ID: to.Ptr("env-00000"),
+	// 				Related: to.Ptr("https://api.confluent.cloud/v2/environments/env-00000"),
+	// 				ResourceName: to.Ptr("https://api.confluent.cloud/organization=9bb441c4-edef-46ac-8a41-c49e44a3fd9a/environment=env-00000"),
+	// 			},
+	// 			HTTPEndpoint: to.Ptr("https://lkc-00000-00000.us-central1.gcp.glb.confluent.cloud"),
+	// 			KafkaBootstrapEndpoint: to.Ptr("lkc-00000-00000.us-central1.gcp.glb.confluent.cloud:9092"),
+	// 			Network: &armconfluent.SCClusterNetworkEnvironmentEntity{
+	// 				Environment: to.Ptr("string"),
+	// 				ID: to.Ptr("n-00000"),
+	// 				Related: to.Ptr("https://api.confluent.cloud/networking/v1/networks/n-00000"),
+	// 				ResourceName: to.Ptr("https://api.confluent.cloud/organization=9bb441c4-edef-46ac-8a41-c49e44a3fd9a/environment=env-abc123/network=n-00000"),
+	// 			},
+	// 			Region: to.Ptr("us-east4"),
+	// 		},
+	// 		Status: &armconfluent.ClusterStatusEntity{
+	// 			Cku: to.Ptr[int32](2),
+	// 			Phase: to.Ptr("PROVISIONED"),
+	// 		},
+	// 	},
+	// }
 }

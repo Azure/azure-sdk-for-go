@@ -39,7 +39,7 @@ func NewOrganizationOperationsClient(credential azcore.TokenCredential, options 
 
 // NewListPager - List all operations provided by Microsoft.Confluent.
 //
-// Generated from API version 2023-08-22
+// Generated from API version 2024-02-13
 //   - options - OrganizationOperationsClientListOptions contains the optional parameters for the OrganizationOperationsClient.NewListPager
 //     method.
 func (client *OrganizationOperationsClient) NewListPager(options *OrganizationOperationsClientListOptions) *runtime.Pager[OrganizationOperationsClientListResponse] {
@@ -73,7 +73,7 @@ func (client *OrganizationOperationsClient) listCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-08-22")
+	reqQP.Set("api-version", "2024-02-13")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

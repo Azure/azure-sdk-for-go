@@ -1,5 +1,15 @@
 # Release History
 
+## 2.2.0 (2024-03-22)
+### Features Added
+
+- New enum type `ManagedServiceIdentityType` with values `ManagedServiceIdentityTypeNone`, `ManagedServiceIdentityTypeSystemAssigned`, `ManagedServiceIdentityTypeSystemAssignedUserAssigned`, `ManagedServiceIdentityTypeUserAssigned`
+- New struct `ManagedServiceIdentity`
+- New struct `UserAssignedIdentity`
+- New field `Identity` in struct `ServiceResource`
+- New field `Identity` in struct `ServiceResourceUpdate`
+
+
 ## 2.2.0-beta.1 (2023-11-24)
 ### Features Added
 

@@ -1670,6 +1670,48 @@ func (s *RecordedTestSuite) TestFilesystemListPathsWithContinuation() {
 	_require.Nil(resp.Continuation)
 }
 
+func (s *RecordedTestSuite) TestFilesystemListPathsWithEncryptionContext() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	client := fsClient.NewFileClient(testName + "file1")
+	_, err = client.Create(context.Background(), &file.CreateOptions{EncryptionContext: &testcommon.TestEncryptionContext})
+	_require.NoError(err)
+	client = fsClient.NewFileClient(testName + "file2")
+	_, err = client.Create(context.Background(), &file.CreateOptions{EncryptionContext: &testcommon.TestEncryptionContext})
+	_require.NoError(err)
+	dirClient := fsClient.NewDirectoryClient(testName + "dir1")
+	_, err = dirClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	dirClient = fsClient.NewDirectoryClient(testName + "dir2")
+	_, err = dirClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	pager := fsClient.NewListPathsPager(true, nil)
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.NoError(err)
+		_require.Equal(5, len(resp.Paths))
+		_require.Equal(resp.PathList.Paths[2].IsDirectory, to.Ptr(true))
+		_require.Nil(resp.PathList.Paths[3].IsDirectory)
+		_require.Nil(resp.PathList.Paths[2].EncryptionContext)
+		// Encryption context is only applicable on files, not directories.
+		_require.Equal(resp.PathList.Paths[3].EncryptionContext, &testcommon.TestEncryptionContext)
+
+		if err != nil {
+			break
+		}
+	}
+}
+
 func (s *RecordedTestSuite) TestFilesystemListDeletedPaths() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

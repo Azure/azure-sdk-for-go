@@ -3123,7 +3123,7 @@ func (s *RecordedTestSuite) TestFileUploadFileEncryptionContext() {
 	_require.Equal(testcommon.TestEncryptionContext, *dResp.EncryptionContext)
 }
 
-func (s *RecordedTestSuite) TestFileDownloadStreamEncryptionContext() {
+func (s *UnrecordedTestSuite) TestFileDownloadStreamEncryptionContext() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 

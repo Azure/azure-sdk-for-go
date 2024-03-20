@@ -2877,7 +2877,7 @@ func (s *UnrecordedTestSuite) TestFileUploadDownloadStreamWithCPK() {
 	_require.Equal(testcommon.TestCPKByValue.EncryptionKeySHA256, dResp.EncryptionKeySHA256)
 }
 
-func (s *RecordedTestSuite) TestFileUploadDownloadStreamWithEncryptionContext() {
+func (s *UnrecordedTestSuite) TestFileUploadDownloadStreamWithEncryptionContext() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -3020,7 +3020,7 @@ func (s *UnrecordedTestSuite) TestFileUploadFile() {
 	_require.EqualValues(downloadedContentMD5, contentMD5)
 }
 
-func (s *RecordedTestSuite) TestFileUploadBufferEncryptionContext() {
+func (s *UnrecordedTestSuite) TestFileUploadBufferEncryptionContext() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -3070,7 +3070,7 @@ func (s *RecordedTestSuite) TestFileUploadBufferEncryptionContext() {
 
 }
 
-func (s *RecordedTestSuite) TestFileUploadFileEncryptionContext() {
+func (s *UnrecordedTestSuite) TestFileUploadFileEncryptionContext() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 

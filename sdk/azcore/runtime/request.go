@@ -153,10 +153,14 @@ func SetMultipartFormData(req *policy.Request, formData map[string]any) error {
 
 	quoteEscaper := strings.NewReplacer("\\", "\\\\", `"`, "\\\"")
 
-	writeMultipartContent := func(fieldname, filename string, mpc streaming.MultipartContent) error {
+	writeMultipartContent := func(fieldname string, mpc streaming.MultipartContent) error {
 		if mpc.Body == nil {
 			return errors.New("streaming.MultipartContent.Body cannot be nil")
 		}
+
+		// use fieldname for the file name when unspecified
+		filename := fieldname
+
 		if mpc.ContentType == "" && mpc.Filename == "" {
 			return writeContent(fieldname, filename, mpc.Body)
 		}
@@ -215,13 +219,13 @@ func SetMultipartFormData(req *policy.Request, formData map[string]any) error {
 			}
 			continue
 		} else if mpc, ok := v.(streaming.MultipartContent); ok {
-			if err := writeMultipartContent(k, k, mpc); err != nil {
+			if err := writeMultipartContent(k, mpc); err != nil {
 				return err
 			}
 			continue
 		} else if mpcs, ok := v.([]streaming.MultipartContent); ok {
 			for _, mpc := range mpcs {
-				if err := writeMultipartContent(k, k, mpc); err != nil {
+				if err := writeMultipartContent(k, mpc); err != nil {
 					return err
 				}
 			}

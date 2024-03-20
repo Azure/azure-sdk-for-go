@@ -1114,6 +1114,7 @@ func (e *ExperimentStep) UnmarshalJSON(data []byte) error {
 func (e ExperimentUpdate) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "identity", e.Identity)
+	populate(objectMap, "tags", e.Tags)
 	return json.Marshal(objectMap)
 }
 
@@ -1128,6 +1129,9 @@ func (e *ExperimentUpdate) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "identity":
 			err = unpopulate(val, "Identity", &e.Identity)
+			delete(rawMsg, key)
+		case "tags":
+			err = unpopulate(val, "Tags", &e.Tags)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -2056,7 +2060,7 @@ func populateAny(m map[string]any, k string, v any) {
 }
 
 func unpopulate(data json.RawMessage, fn string, v any) error {
-	if data == nil {
+	if data == nil || string(data) == "null" {
 		return nil
 	}
 	if err := json.Unmarshal(data, v); err != nil {

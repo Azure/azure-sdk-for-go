@@ -617,5 +617,8 @@ directive:
 directive:
   - from: models_serde.go
     where: $
-    transform: return $.replace(/err = unpopulate\(val, "Embedding", &e.Embedding\)/g, "e.Embedding, err = deserializeEmbeddingsArray(val)");
+    transform: return $.replace(/err = unpopulate\(val, "Embedding", &e.Embedding\)/g, "err = deserializeEmbeddingsArray(val, e)");
+  - from: models.go
+    where: $
+    transform: return $.replace(/\/\/ EmbeddingItem - .+?type EmbeddingItem struct \{.+?\n}\n/s, "");
 ```

@@ -4,41 +4,32 @@
 package azopenai
 
 import (
-	"bytes"
-	"encoding/base64"
-	"encoding/binary"
 	"encoding/json"
 )
 
-func deserializeEmbeddingsArray(msg json.RawMessage) ([]float32, error) {
+// EmbeddingItem - Representation of a single embeddings relatedness comparison.
+type EmbeddingItem struct {
+	// List of embeddings value for the input prompt. These represent a measurement of the vector-based relatedness
+	// of the provided input when when [EmbeddingEncodingFormatFloat] is specified.
+	Embedding []float32
+
+	// EmbeddingBase64 represents the Embeddings when [EmbeddingEncodingFormatBase64] is specified.
+	EmbeddingBase64 string
+
+	// REQUIRED; Index of the prompt to which the EmbeddingItem corresponds.
+	Index *int32
+}
+
+func deserializeEmbeddingsArray(msg json.RawMessage, embeddingItem *EmbeddingItem) error {
 	if len(msg) == 0 {
-		return nil, nil
+		return nil
 	}
 
 	if msg[0] == '"' && len(msg) > 2 && msg[len(msg)-1] == '"' {
-		// this is a base64 string, not an array of numbers.
-		msg = msg[1 : len(msg)-1] // splice out the "'s from the beginning and end of the base64 string
-		destBytes, err := base64.StdEncoding.DecodeString(string(msg))
-
-		if err != nil {
-			return nil, err
-		}
-
-		floats := make([]float32, len(destBytes)/4) // it's a binary serialization of float32s.
-		var reader = bytes.NewReader(destBytes)
-
-		if err := binary.Read(reader, binary.LittleEndian, floats); err != nil {
-			return nil, err
-		}
-
-		return floats, nil
+		var s = string(msg)
+		embeddingItem.EmbeddingBase64 = s[1 : len(s)-1]
+		return nil
 	}
 
-	var v []float32
-
-	if err := json.Unmarshal(msg, &v); err != nil {
-		return nil, err
-	}
-
-	return v, nil
+	return json.Unmarshal(msg, &embeddingItem.Embedding)
 }

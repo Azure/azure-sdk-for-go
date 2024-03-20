@@ -2929,7 +2929,7 @@ func (e *EmbeddingItem) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "embedding":
-			e.Embedding, err = deserializeEmbeddingsArray(val)
+			err = deserializeEmbeddingsArray(val, e)
 			delete(rawMsg, key)
 		case "index":
 			err = unpopulate(val, "Index", &e.Index)

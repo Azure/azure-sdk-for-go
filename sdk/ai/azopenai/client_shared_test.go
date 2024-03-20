@@ -101,7 +101,7 @@ func newTestClient(t *testing.T, ep endpoint, options ...testClientOption) *azop
 	}
 }
 
-// getEndpointWithModel retrieves details for an endpoint and a model.
+// getEndpoint retrieves details for an endpoint and a model.
 // - res - the resource type for a particular endpoint. Ex: "DALLE".
 //
 // For example, if azure is true we'll load these environment values based on res:
@@ -111,7 +111,7 @@ func newTestClient(t *testing.T, ep endpoint, options ...testClientOption) *azop
 // if azure is false we'll load these environment values based on res:
 //   - OPENAI_ENDPOINT
 //   - OPENAI_API_KEY
-func getEndpointWithModel(res string, isAzure bool) endpointWithModel {
+func getEndpoint(res string, isAzure bool) endpointWithModel {
 	var ep endpointWithModel
 	if isAzure {
 		// during development resources are often shifted between different
@@ -159,7 +159,7 @@ func updateModels(azure bool, tv *testVars) {
 	tv.TextEmbedding3Small = model(azure, "text-embedding-3-small", "text-embedding-3-small")
 
 	tv.DallE.Model = model(azure, "dall-e-3", "dall-e-3")
-	tv.Whisper.Model = model(azure, "whisper-deployment", "whisper-1")
+	tv.Whisper.Model = model(azure, "whisper", "whisper-1")
 	tv.Vision.Model = model(azure, "gpt-4-vision-preview", "gpt-4-vision-preview")
 
 	// these are Azure-only features
@@ -186,17 +186,17 @@ func newTestVars(prefix string) testVars {
 			},
 		},
 
-		DallE:   getEndpointWithModel("DALLE", azure),
-		Whisper: getEndpointWithModel("WHISPER", azure),
-		Vision:  getEndpointWithModel("VISION", azure),
+		DallE:   getEndpoint("DALLE", azure),
+		Whisper: getEndpoint("WHISPER", azure),
+		Vision:  getEndpoint("VISION", azure),
+	}
+
+	if azure {
+		tv.ChatCompletionsRAI = getEndpoint("CHAT_COMPLETIONS_RAI", azure)
+		tv.ChatCompletionsOYD = getEndpoint("OYD", azure)
 	}
 
 	updateModels(azure, &tv)
-
-	if azure {
-		tv.ChatCompletionsRAI = getEndpointWithModel("CHAT_COMPLETIONS_RAI", azure)
-		tv.ChatCompletionsOYD = getEndpointWithModel("OYD", azure)
-	}
 
 	if tv.Endpoint.URL != "" && !strings.HasSuffix(tv.Endpoint.URL, "/") {
 		// (this just makes recording replacement easier)

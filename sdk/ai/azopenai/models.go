@@ -1479,16 +1479,6 @@ type ElasticsearchIndexFieldMappingOptions struct {
 	VectorFields []string
 }
 
-// EmbeddingItem - Representation of a single embeddings relatedness comparison.
-type EmbeddingItem struct {
-	// REQUIRED; List of embeddings value for the input prompt. These represent a measurement of the vector-based relatedness
-	// of the provided input.
-	Embedding []float32
-
-	// REQUIRED; Index of the prompt to which the EmbeddingItem corresponds.
-	Index *int32
-}
-
 // Embeddings - Representation of the response data from an embeddings request. Embeddings measure the relatedness of text
 // strings and are commonly used for search, clustering, recommendations, and other similar
 // scenarios.

@@ -1701,6 +1701,8 @@ func (s *RecordedTestSuite) TestFilesystemListPathsWithEncryptionContext() {
 		_require.NoError(err)
 		_require.Equal(5, len(resp.Paths))
 		_require.Equal(resp.PathList.Paths[2].IsDirectory, to.Ptr(true))
+		_require.Nil(resp.PathList.Paths[3].IsDirectory)
+		_require.Nil(resp.PathList.Paths[2].EncryptionContext)
 		// Encryption context is only applicable on files, not directories.
 		_require.Equal(resp.PathList.Paths[3].EncryptionContext, &testcommon.TestEncryptionContext)
 

@@ -1,10 +1,11 @@
 # Release History
 
-## 0.3.7 (Unreleased)
+## 1.0.0 (Unreleased)
 
 ### Features Added
-
-### Breaking Changes
+* Added regional routing support through ClientOptions.PreferredRegions
+* Added cross-region availability and failover mechanics supporting [Azure Cosmos DB SDK multiregional environment behavior](https://learn.microsoft.com/azure/cosmos-db/nosql/troubleshoot-sdk-availability)
+* Added extended logging for requests, responses, and client configuration
 
 ### Bugs Fixed
 

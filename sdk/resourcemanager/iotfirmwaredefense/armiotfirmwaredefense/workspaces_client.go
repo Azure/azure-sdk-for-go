@@ -28,7 +28,7 @@ type WorkspacesClient struct {
 }
 
 // NewWorkspacesClient creates a new instance of WorkspacesClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewWorkspacesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WorkspacesClient, error) {
@@ -46,7 +46,7 @@ func NewWorkspacesClient(subscriptionID string, credential azcore.TokenCredentia
 // Create - The operation to create or update a firmware analysis workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-08-preview
+// Generated from API version 2024-01-10
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the firmware analysis workspace.
 //   - workspace - Parameters when creating a firmware analysis workspace.
@@ -93,7 +93,7 @@ func (client *WorkspacesClient) createCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-08-preview")
+	reqQP.Set("api-version", "2024-01-10")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, workspace); err != nil {
@@ -114,7 +114,7 @@ func (client *WorkspacesClient) createHandleResponse(resp *http.Response) (Works
 // Delete - The operation to delete a firmware analysis workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-08-preview
+// Generated from API version 2024-01-10
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the firmware analysis workspace.
 //   - options - WorkspacesClientDeleteOptions contains the optional parameters for the WorkspacesClient.Delete method.
@@ -159,7 +159,7 @@ func (client *WorkspacesClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-08-preview")
+	reqQP.Set("api-version", "2024-01-10")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -168,7 +168,7 @@ func (client *WorkspacesClient) deleteCreateRequest(ctx context.Context, resourc
 // GenerateUploadURL - The operation to get a url for file upload.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-08-preview
+// Generated from API version 2024-01-10
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the firmware analysis workspace.
 //   - generateUploadURL - Parameters when requesting a URL to upload firmware.
@@ -216,7 +216,7 @@ func (client *WorkspacesClient) generateUploadURLCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-08-preview")
+	reqQP.Set("api-version", "2024-01-10")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, generateUploadURL); err != nil {
@@ -237,7 +237,7 @@ func (client *WorkspacesClient) generateUploadURLHandleResponse(resp *http.Respo
 // Get - Get firmware analysis workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-08-preview
+// Generated from API version 2024-01-10
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the firmware analysis workspace.
 //   - options - WorkspacesClientGetOptions contains the optional parameters for the WorkspacesClient.Get method.
@@ -255,7 +255,7 @@ func (client *WorkspacesClient) Get(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return WorkspacesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNotModified) {
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
 		return WorkspacesClientGetResponse{}, err
 	}
@@ -283,7 +283,7 @@ func (client *WorkspacesClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-08-preview")
+	reqQP.Set("api-version", "2024-01-10")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -300,7 +300,7 @@ func (client *WorkspacesClient) getHandleResponse(resp *http.Response) (Workspac
 
 // NewListByResourceGroupPager - Lists all of the firmware analysis workspaces in the specified resource group.
 //
-// Generated from API version 2023-02-08-preview
+// Generated from API version 2024-01-10
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WorkspacesClientListByResourceGroupOptions contains the optional parameters for the WorkspacesClient.NewListByResourceGroupPager
 //     method.
@@ -343,7 +343,7 @@ func (client *WorkspacesClient) listByResourceGroupCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-08-preview")
+	reqQP.Set("api-version", "2024-01-10")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -360,7 +360,7 @@ func (client *WorkspacesClient) listByResourceGroupHandleResponse(resp *http.Res
 
 // NewListBySubscriptionPager - Lists all of the firmware analysis workspaces in the specified subscription.
 //
-// Generated from API version 2023-02-08-preview
+// Generated from API version 2024-01-10
 //   - options - WorkspacesClientListBySubscriptionOptions contains the optional parameters for the WorkspacesClient.NewListBySubscriptionPager
 //     method.
 func (client *WorkspacesClient) NewListBySubscriptionPager(options *WorkspacesClientListBySubscriptionOptions) *runtime.Pager[WorkspacesClientListBySubscriptionResponse] {
@@ -398,7 +398,7 @@ func (client *WorkspacesClient) listBySubscriptionCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-08-preview")
+	reqQP.Set("api-version", "2024-01-10")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -416,7 +416,7 @@ func (client *WorkspacesClient) listBySubscriptionHandleResponse(resp *http.Resp
 // Update - The operation to update a firmware analysis workspaces.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-08-preview
+// Generated from API version 2024-01-10
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the firmware analysis workspace.
 //   - workspace - Parameters when updating a firmware analysis workspace.
@@ -435,7 +435,7 @@ func (client *WorkspacesClient) Update(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return WorkspacesClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
 		return WorkspacesClientUpdateResponse{}, err
 	}
@@ -463,7 +463,7 @@ func (client *WorkspacesClient) updateCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-08-preview")
+	reqQP.Set("api-version", "2024-01-10")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, workspace); err != nil {

@@ -37,7 +37,7 @@ type WorkspacesServer struct {
 	GenerateUploadURL func(ctx context.Context, resourceGroupName string, workspaceName string, generateUploadURL armiotfirmwaredefense.GenerateUploadURLRequest, options *armiotfirmwaredefense.WorkspacesClientGenerateUploadURLOptions) (resp azfake.Responder[armiotfirmwaredefense.WorkspacesClientGenerateUploadURLResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method WorkspacesClient.Get
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusNotModified
+	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, workspaceName string, options *armiotfirmwaredefense.WorkspacesClientGetOptions) (resp azfake.Responder[armiotfirmwaredefense.WorkspacesClientGetResponse], errResp azfake.ErrorResponder)
 
 	// NewListByResourceGroupPager is the fake for method WorkspacesClient.NewListByResourceGroupPager
@@ -49,7 +49,7 @@ type WorkspacesServer struct {
 	NewListBySubscriptionPager func(options *armiotfirmwaredefense.WorkspacesClientListBySubscriptionOptions) (resp azfake.PagerResponder[armiotfirmwaredefense.WorkspacesClientListBySubscriptionResponse])
 
 	// Update is the fake for method WorkspacesClient.Update
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	// HTTP status codes to indicate success: http.StatusOK
 	Update func(ctx context.Context, resourceGroupName string, workspaceName string, workspace armiotfirmwaredefense.WorkspaceUpdateDefinition, options *armiotfirmwaredefense.WorkspacesClientUpdateOptions) (resp azfake.Responder[armiotfirmwaredefense.WorkspacesClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
@@ -239,8 +239,8 @@ func (w *WorkspacesServerTransport) dispatchGet(req *http.Request) (*http.Respon
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK, http.StatusNotModified}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNotModified", respContent.HTTPStatus)}
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Workspace, req)
 	if err != nil {
@@ -346,8 +346,8 @@ func (w *WorkspacesServerTransport) dispatchUpdate(req *http.Request) (*http.Res
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Workspace, req)
 	if err != nil {

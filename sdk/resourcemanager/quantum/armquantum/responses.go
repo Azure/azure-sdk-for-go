@@ -26,6 +26,17 @@ type WorkspaceClientCheckNameAvailabilityResponse struct {
 	CheckNameAvailabilityResult
 }
 
+// WorkspaceClientListKeysResponse contains the response from method WorkspaceClient.ListKeys.
+type WorkspaceClientListKeysResponse struct {
+	// Result of list Api keys and connection strings.
+	ListKeysResult
+}
+
+// WorkspaceClientRegenerateKeysResponse contains the response from method WorkspaceClient.RegenerateKeys.
+type WorkspaceClientRegenerateKeysResponse struct {
+	// placeholder for future response values
+}
+
 // WorkspacesClientCreateOrUpdateResponse contains the response from method WorkspacesClient.BeginCreateOrUpdate.
 type WorkspacesClientCreateOrUpdateResponse struct {
 	// The resource proxy definition object for quantum workspace.

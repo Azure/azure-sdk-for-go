@@ -28,7 +28,7 @@ type OfferingsClient struct {
 }
 
 // NewOfferingsClient creates a new instance of OfferingsClient with the specified values.
-//   - subscriptionID - The Azure subscription ID.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewOfferingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OfferingsClient, error) {
@@ -45,7 +45,7 @@ func NewOfferingsClient(subscriptionID string, credential azcore.TokenCredential
 
 // NewListPager - Returns the list of all provider offerings available for the given location.
 //
-// Generated from API version 2022-01-10-preview
+// Generated from API version 2023-11-13-preview
 //   - locationName - Location.
 //   - options - OfferingsClientListOptions contains the optional parameters for the OfferingsClient.NewListPager method.
 func (client *OfferingsClient) NewListPager(locationName string, options *OfferingsClientListOptions) *runtime.Pager[OfferingsClientListResponse] {
@@ -87,7 +87,7 @@ func (client *OfferingsClient) listCreateRequest(ctx context.Context, locationNa
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-10-preview")
+	reqQP.Set("api-version", "2023-11-13-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -81,6 +81,22 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
+// IsTemporaryTicket - This property indicates if support ticket is a temporary ticket.
+type IsTemporaryTicket string
+
+const (
+	IsTemporaryTicketNo  IsTemporaryTicket = "No"
+	IsTemporaryTicketYes IsTemporaryTicket = "Yes"
+)
+
+// PossibleIsTemporaryTicketValues returns the possible values for the IsTemporaryTicket const type.
+func PossibleIsTemporaryTicketValues() []IsTemporaryTicket {
+	return []IsTemporaryTicket{
+		IsTemporaryTicketNo,
+		IsTemporaryTicketYes,
+	}
+}
+
 // PreferredContactMethod - Preferred contact method.
 type PreferredContactMethod string
 

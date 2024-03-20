@@ -598,6 +598,9 @@ type TicketDetailsProperties struct {
 	// READ-ONLY; Time in UTC (ISO 8601 format) when the support ticket was created.
 	CreatedDate *time.Time
 
+	// READ-ONLY; This property indicates if support ticket is a temporary ticket.
+	IsTemporaryTicket *IsTemporaryTicket
+
 	// READ-ONLY; Time in UTC (ISO 8601 format) when the support ticket was last modified.
 	ModifiedDate *time.Time
 

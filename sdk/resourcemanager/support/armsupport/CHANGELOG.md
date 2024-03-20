@@ -16,6 +16,7 @@
 
 ### Features Added
 
+- New enum type `IsTemporaryTicket` with values `IsTemporaryTicketNo`, `IsTemporaryTicketYes`
 - New function `*ChatTranscriptsNoSubscriptionClient.NewListPager(string, *ChatTranscriptsNoSubscriptionClientListOptions) *runtime.Pager[ChatTranscriptsNoSubscriptionClientListResponse]`
 - New function `*ClientFactory.NewLookUpResourceIDClient() *LookUpResourceIDClient`
 - New function `*ClientFactory.NewProblemClassificationsNoSubscriptionClient() *ProblemClassificationsNoSubscriptionClient`
@@ -42,6 +43,7 @@
 - New struct `ServiceClassificationRequest`
 - New field `Metadata`, `ParentProblemClassification` in struct `ProblemClassificationProperties`
 - New field `Metadata` in struct `ServiceProperties`
+- New field `IsTemporaryTicket` in struct `TicketDetailsProperties`
 
 
 ## 2.0.0-beta.2 (2023-11-30)

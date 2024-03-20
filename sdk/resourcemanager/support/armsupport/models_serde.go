@@ -1506,6 +1506,7 @@ func (t TicketDetailsProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "description", t.Description)
 	populate(objectMap, "enrollmentId", t.EnrollmentID)
 	populate(objectMap, "fileWorkspaceName", t.FileWorkspaceName)
+	populate(objectMap, "isTemporaryTicket", t.IsTemporaryTicket)
 	populateDateTimeRFC3339(objectMap, "modifiedDate", t.ModifiedDate)
 	populate(objectMap, "problemClassificationDisplayName", t.ProblemClassificationDisplayName)
 	populate(objectMap, "problemClassificationId", t.ProblemClassificationID)
@@ -1555,6 +1556,9 @@ func (t *TicketDetailsProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "fileWorkspaceName":
 			err = unpopulate(val, "FileWorkspaceName", &t.FileWorkspaceName)
+			delete(rawMsg, key)
+		case "isTemporaryTicket":
+			err = unpopulate(val, "IsTemporaryTicket", &t.IsTemporaryTicket)
 			delete(rawMsg, key)
 		case "modifiedDate":
 			err = unpopulateDateTimeRFC3339(val, "ModifiedDate", &t.ModifiedDate)

@@ -16,11 +16,11 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/notificationhubs/armnotificationhubs"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/notificationhubs/armnotificationhubs/v2"
 	"net/http"
 	"net/url"
-	"reflect"
 	"regexp"
+	"strconv"
 )
 
 // Server is a fake server for instances of the armnotificationhubs.Client type.
@@ -31,18 +31,18 @@ type Server struct {
 
 	// CreateOrUpdate is the fake for method Client.CreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	CreateOrUpdate func(ctx context.Context, resourceGroupName string, namespaceName string, notificationHubName string, parameters armnotificationhubs.NotificationHubCreateOrUpdateParameters, options *armnotificationhubs.ClientCreateOrUpdateOptions) (resp azfake.Responder[armnotificationhubs.ClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	CreateOrUpdate func(ctx context.Context, resourceGroupName string, namespaceName string, notificationHubName string, parameters armnotificationhubs.NotificationHubResource, options *armnotificationhubs.ClientCreateOrUpdateOptions) (resp azfake.Responder[armnotificationhubs.ClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// CreateOrUpdateAuthorizationRule is the fake for method Client.CreateOrUpdateAuthorizationRule
-	// HTTP status codes to indicate success: http.StatusOK
-	CreateOrUpdateAuthorizationRule func(ctx context.Context, resourceGroupName string, namespaceName string, notificationHubName string, authorizationRuleName string, parameters armnotificationhubs.SharedAccessAuthorizationRuleCreateOrUpdateParameters, options *armnotificationhubs.ClientCreateOrUpdateAuthorizationRuleOptions) (resp azfake.Responder[armnotificationhubs.ClientCreateOrUpdateAuthorizationRuleResponse], errResp azfake.ErrorResponder)
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	CreateOrUpdateAuthorizationRule func(ctx context.Context, resourceGroupName string, namespaceName string, notificationHubName string, authorizationRuleName string, parameters armnotificationhubs.SharedAccessAuthorizationRuleResource, options *armnotificationhubs.ClientCreateOrUpdateAuthorizationRuleOptions) (resp azfake.Responder[armnotificationhubs.ClientCreateOrUpdateAuthorizationRuleResponse], errResp azfake.ErrorResponder)
 
 	// DebugSend is the fake for method Client.DebugSend
-	// HTTP status codes to indicate success: http.StatusCreated
+	// HTTP status codes to indicate success: http.StatusOK
 	DebugSend func(ctx context.Context, resourceGroupName string, namespaceName string, notificationHubName string, options *armnotificationhubs.ClientDebugSendOptions) (resp azfake.Responder[armnotificationhubs.ClientDebugSendResponse], errResp azfake.ErrorResponder)
 
 	// Delete is the fake for method Client.Delete
-	// HTTP status codes to indicate success: http.StatusOK
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
 	Delete func(ctx context.Context, resourceGroupName string, namespaceName string, notificationHubName string, options *armnotificationhubs.ClientDeleteOptions) (resp azfake.Responder[armnotificationhubs.ClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// DeleteAuthorizationRule is the fake for method Client.DeleteAuthorizationRule
@@ -73,13 +73,13 @@ type Server struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	ListKeys func(ctx context.Context, resourceGroupName string, namespaceName string, notificationHubName string, authorizationRuleName string, options *armnotificationhubs.ClientListKeysOptions) (resp azfake.Responder[armnotificationhubs.ClientListKeysResponse], errResp azfake.ErrorResponder)
 
-	// Patch is the fake for method Client.Patch
-	// HTTP status codes to indicate success: http.StatusOK
-	Patch func(ctx context.Context, resourceGroupName string, namespaceName string, notificationHubName string, options *armnotificationhubs.ClientPatchOptions) (resp azfake.Responder[armnotificationhubs.ClientPatchResponse], errResp azfake.ErrorResponder)
-
 	// RegenerateKeys is the fake for method Client.RegenerateKeys
 	// HTTP status codes to indicate success: http.StatusOK
-	RegenerateKeys func(ctx context.Context, resourceGroupName string, namespaceName string, notificationHubName string, authorizationRuleName string, parameters armnotificationhubs.PolicykeyResource, options *armnotificationhubs.ClientRegenerateKeysOptions) (resp azfake.Responder[armnotificationhubs.ClientRegenerateKeysResponse], errResp azfake.ErrorResponder)
+	RegenerateKeys func(ctx context.Context, resourceGroupName string, namespaceName string, notificationHubName string, authorizationRuleName string, parameters armnotificationhubs.PolicyKeyResource, options *armnotificationhubs.ClientRegenerateKeysOptions) (resp azfake.Responder[armnotificationhubs.ClientRegenerateKeysResponse], errResp azfake.ErrorResponder)
+
+	// Update is the fake for method Client.Update
+	// HTTP status codes to indicate success: http.StatusOK
+	Update func(ctx context.Context, resourceGroupName string, namespaceName string, notificationHubName string, parameters armnotificationhubs.NotificationHubPatchParameters, options *armnotificationhubs.ClientUpdateOptions) (resp azfake.Responder[armnotificationhubs.ClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewServerTransport creates a new instance of ServerTransport with the provided implementation.
@@ -137,10 +137,10 @@ func (s *ServerTransport) Do(req *http.Request) (*http.Response, error) {
 		resp, err = s.dispatchNewListAuthorizationRulesPager(req)
 	case "Client.ListKeys":
 		resp, err = s.dispatchListKeys(req)
-	case "Client.Patch":
-		resp, err = s.dispatchPatch(req)
 	case "Client.RegenerateKeys":
 		resp, err = s.dispatchRegenerateKeys(req)
+	case "Client.Update":
+		resp, err = s.dispatchUpdate(req)
 	default:
 		err = fmt.Errorf("unhandled API %s", method)
 	}
@@ -199,7 +199,7 @@ func (s *ServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Respo
 	if matches == nil || len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	body, err := server.UnmarshalRequestAsJSON[armnotificationhubs.NotificationHubCreateOrUpdateParameters](req)
+	body, err := server.UnmarshalRequestAsJSON[armnotificationhubs.NotificationHubResource](req)
 	if err != nil {
 		return nil, err
 	}
@@ -234,13 +234,13 @@ func (s *ServerTransport) dispatchCreateOrUpdateAuthorizationRule(req *http.Requ
 	if s.srv.CreateOrUpdateAuthorizationRule == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdateAuthorizationRule not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NotificationHubs/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/notificationHubs/(?P<notificationHubName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/AuthorizationRules/(?P<authorizationRuleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NotificationHubs/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/notificationHubs/(?P<notificationHubName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/authorizationRules/(?P<authorizationRuleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	body, err := server.UnmarshalRequestAsJSON[armnotificationhubs.SharedAccessAuthorizationRuleCreateOrUpdateParameters](req)
+	body, err := server.UnmarshalRequestAsJSON[armnotificationhubs.SharedAccessAuthorizationRuleResource](req)
 	if err != nil {
 		return nil, err
 	}
@@ -265,8 +265,8 @@ func (s *ServerTransport) dispatchCreateOrUpdateAuthorizationRule(req *http.Requ
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	if !contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SharedAccessAuthorizationRuleResource, req)
 	if err != nil {
@@ -285,10 +285,6 @@ func (s *ServerTransport) dispatchDebugSend(req *http.Request) (*http.Response, 
 	if matches == nil || len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	body, err := server.UnmarshalRequestAsJSON[any](req)
-	if err != nil {
-		return nil, err
-	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
@@ -301,19 +297,13 @@ func (s *ServerTransport) dispatchDebugSend(req *http.Request) (*http.Response, 
 	if err != nil {
 		return nil, err
 	}
-	var options *armnotificationhubs.ClientDebugSendOptions
-	if !reflect.ValueOf(body).IsZero() {
-		options = &armnotificationhubs.ClientDebugSendOptions{
-			Parameters: body,
-		}
-	}
-	respr, errRespr := s.srv.DebugSend(req.Context(), resourceGroupNameParam, namespaceNameParam, notificationHubNameParam, options)
+	respr, errRespr := s.srv.DebugSend(req.Context(), resourceGroupNameParam, namespaceNameParam, notificationHubNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusCreated}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusCreated", respContent.HTTPStatus)}
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DebugSendResponse, req)
 	if err != nil {
@@ -349,8 +339,8 @@ func (s *ServerTransport) dispatchDelete(req *http.Request) (*http.Response, err
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	if !contains([]int{http.StatusOK, http.StatusNoContent}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", respContent.HTTPStatus)}
 	}
 	resp, err := server.NewResponse(respContent, req, nil)
 	if err != nil {
@@ -363,7 +353,7 @@ func (s *ServerTransport) dispatchDeleteAuthorizationRule(req *http.Request) (*h
 	if s.srv.DeleteAuthorizationRule == nil {
 		return nil, &nonRetriableError{errors.New("fake for method DeleteAuthorizationRule not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NotificationHubs/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/notificationHubs/(?P<notificationHubName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/AuthorizationRules/(?P<authorizationRuleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NotificationHubs/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/notificationHubs/(?P<notificationHubName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/authorizationRules/(?P<authorizationRuleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 5 {
@@ -441,7 +431,7 @@ func (s *ServerTransport) dispatchGetAuthorizationRule(req *http.Request) (*http
 	if s.srv.GetAuthorizationRule == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetAuthorizationRule not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NotificationHubs/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/notificationHubs/(?P<notificationHubName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/AuthorizationRules/(?P<authorizationRuleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NotificationHubs/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/notificationHubs/(?P<notificationHubName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/authorizationRules/(?P<authorizationRuleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 5 {
@@ -527,6 +517,7 @@ func (s *ServerTransport) dispatchNewListPager(req *http.Request) (*http.Respons
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
+		qp := req.URL.Query()
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
@@ -535,7 +526,33 @@ func (s *ServerTransport) dispatchNewListPager(req *http.Request) (*http.Respons
 		if err != nil {
 			return nil, err
 		}
-		resp := s.srv.NewListPager(resourceGroupNameParam, namespaceNameParam, nil)
+		skipTokenUnescaped, err := url.QueryUnescape(qp.Get("$skipToken"))
+		if err != nil {
+			return nil, err
+		}
+		skipTokenParam := getOptional(skipTokenUnescaped)
+		topUnescaped, err := url.QueryUnescape(qp.Get("$top"))
+		if err != nil {
+			return nil, err
+		}
+		topParam, err := parseOptional(topUnescaped, func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		var options *armnotificationhubs.ClientListOptions
+		if skipTokenParam != nil || topParam != nil {
+			options = &armnotificationhubs.ClientListOptions{
+				SkipToken: skipTokenParam,
+				Top:       topParam,
+			}
+		}
+		resp := s.srv.NewListPager(resourceGroupNameParam, namespaceNameParam, options)
 		newListPager = &resp
 		s.newListPager.add(req, newListPager)
 		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnotificationhubs.ClientListResponse, createLink func() string) {
@@ -562,7 +579,7 @@ func (s *ServerTransport) dispatchNewListAuthorizationRulesPager(req *http.Reque
 	}
 	newListAuthorizationRulesPager := s.newListAuthorizationRulesPager.get(req)
 	if newListAuthorizationRulesPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NotificationHubs/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/notificationHubs/(?P<notificationHubName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/AuthorizationRules`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NotificationHubs/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/notificationHubs/(?P<notificationHubName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/authorizationRules`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 4 {
@@ -605,7 +622,7 @@ func (s *ServerTransport) dispatchListKeys(req *http.Request) (*http.Response, e
 	if s.srv.ListKeys == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ListKeys not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NotificationHubs/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/notificationHubs/(?P<notificationHubName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/AuthorizationRules/(?P<authorizationRuleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listKeys`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NotificationHubs/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/notificationHubs/(?P<notificationHubName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/authorizationRules/(?P<authorizationRuleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listKeys`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 5 {
@@ -642,64 +659,17 @@ func (s *ServerTransport) dispatchListKeys(req *http.Request) (*http.Response, e
 	return resp, nil
 }
 
-func (s *ServerTransport) dispatchPatch(req *http.Request) (*http.Response, error) {
-	if s.srv.Patch == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Patch not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NotificationHubs/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/notificationHubs/(?P<notificationHubName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armnotificationhubs.NotificationHubPatchParameters](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	namespaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("namespaceName")])
-	if err != nil {
-		return nil, err
-	}
-	notificationHubNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("notificationHubName")])
-	if err != nil {
-		return nil, err
-	}
-	var options *armnotificationhubs.ClientPatchOptions
-	if !reflect.ValueOf(body).IsZero() {
-		options = &armnotificationhubs.ClientPatchOptions{
-			Parameters: &body,
-		}
-	}
-	respr, errRespr := s.srv.Patch(req.Context(), resourceGroupNameParam, namespaceNameParam, notificationHubNameParam, options)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).NotificationHubResource, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (s *ServerTransport) dispatchRegenerateKeys(req *http.Request) (*http.Response, error) {
 	if s.srv.RegenerateKeys == nil {
 		return nil, &nonRetriableError{errors.New("fake for method RegenerateKeys not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NotificationHubs/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/notificationHubs/(?P<notificationHubName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/AuthorizationRules/(?P<authorizationRuleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/regenerateKeys`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NotificationHubs/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/notificationHubs/(?P<notificationHubName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/authorizationRules/(?P<authorizationRuleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/regenerateKeys`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	body, err := server.UnmarshalRequestAsJSON[armnotificationhubs.PolicykeyResource](req)
+	body, err := server.UnmarshalRequestAsJSON[armnotificationhubs.PolicyKeyResource](req)
 	if err != nil {
 		return nil, err
 	}
@@ -728,6 +698,47 @@ func (s *ServerTransport) dispatchRegenerateKeys(req *http.Request) (*http.Respo
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ResourceListKeys, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (s *ServerTransport) dispatchUpdate(req *http.Request) (*http.Response, error) {
+	if s.srv.Update == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Update not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NotificationHubs/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/notificationHubs/(?P<notificationHubName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armnotificationhubs.NotificationHubPatchParameters](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	namespaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("namespaceName")])
+	if err != nil {
+		return nil, err
+	}
+	notificationHubNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("notificationHubName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.Update(req.Context(), resourceGroupNameParam, namespaceNameParam, notificationHubNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).NotificationHubResource, req)
 	if err != nil {
 		return nil, err
 	}

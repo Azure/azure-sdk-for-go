@@ -10,7 +10,7 @@ package armdatafactory
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory"
-	moduleVersion = "v6.0.0"
+	moduleVersion = "v6.1.0"
 )
 
 // ActivityOnInactiveMarkAs - Status result of the activity when the state is set to Inactive. This is an optional property
@@ -436,6 +436,26 @@ func PossibleExpressionTypeValues() []ExpressionType {
 	}
 }
 
+// ExpressionV2Type - Type of expressions supported by the system. Type: string.
+type ExpressionV2Type string
+
+const (
+	ExpressionV2TypeBinary   ExpressionV2Type = "Binary"
+	ExpressionV2TypeConstant ExpressionV2Type = "Constant"
+	ExpressionV2TypeField    ExpressionV2Type = "Field"
+	ExpressionV2TypeUnary    ExpressionV2Type = "Unary"
+)
+
+// PossibleExpressionV2TypeValues returns the possible values for the ExpressionV2Type const type.
+func PossibleExpressionV2TypeValues() []ExpressionV2Type {
+	return []ExpressionV2Type{
+		ExpressionV2TypeBinary,
+		ExpressionV2TypeConstant,
+		ExpressionV2TypeField,
+		ExpressionV2TypeUnary,
+	}
+}
+
 // FactoryIdentityType - The identity type.
 type FactoryIdentityType string
 
@@ -543,6 +563,22 @@ func PossibleGoogleBigQueryAuthenticationTypeValues() []GoogleBigQueryAuthentica
 	return []GoogleBigQueryAuthenticationType{
 		GoogleBigQueryAuthenticationTypeServiceAuthentication,
 		GoogleBigQueryAuthenticationTypeUserAuthentication,
+	}
+}
+
+// GoogleBigQueryV2AuthenticationType - The OAuth 2.0 authentication mechanism used for authentication.
+type GoogleBigQueryV2AuthenticationType string
+
+const (
+	GoogleBigQueryV2AuthenticationTypeServiceAuthentication GoogleBigQueryV2AuthenticationType = "ServiceAuthentication"
+	GoogleBigQueryV2AuthenticationTypeUserAuthentication    GoogleBigQueryV2AuthenticationType = "UserAuthentication"
+)
+
+// PossibleGoogleBigQueryV2AuthenticationTypeValues returns the possible values for the GoogleBigQueryV2AuthenticationType const type.
+func PossibleGoogleBigQueryV2AuthenticationTypeValues() []GoogleBigQueryV2AuthenticationType {
+	return []GoogleBigQueryV2AuthenticationType{
+		GoogleBigQueryV2AuthenticationTypeServiceAuthentication,
+		GoogleBigQueryV2AuthenticationTypeUserAuthentication,
 	}
 }
 
@@ -1497,6 +1533,22 @@ func PossibleServiceNowAuthenticationTypeValues() []ServiceNowAuthenticationType
 	return []ServiceNowAuthenticationType{
 		ServiceNowAuthenticationTypeBasic,
 		ServiceNowAuthenticationTypeOAuth2,
+	}
+}
+
+// ServiceNowV2AuthenticationType - The authentication type to use.
+type ServiceNowV2AuthenticationType string
+
+const (
+	ServiceNowV2AuthenticationTypeBasic  ServiceNowV2AuthenticationType = "Basic"
+	ServiceNowV2AuthenticationTypeOAuth2 ServiceNowV2AuthenticationType = "OAuth2"
+)
+
+// PossibleServiceNowV2AuthenticationTypeValues returns the possible values for the ServiceNowV2AuthenticationType const type.
+func PossibleServiceNowV2AuthenticationTypeValues() []ServiceNowV2AuthenticationType {
+	return []ServiceNowV2AuthenticationType{
+		ServiceNowV2AuthenticationTypeBasic,
+		ServiceNowV2AuthenticationTypeOAuth2,
 	}
 }
 

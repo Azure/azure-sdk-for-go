@@ -2083,15 +2083,15 @@ func (a *ACSEmailDeliveryReportReceivedEventData) UnmarshalJSON(data []byte) err
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AcsEmailDeliveryReportStatusDetails.
-func (a AcsEmailDeliveryReportStatusDetails) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ACSEmailDeliveryReportStatusDetails.
+func (a ACSEmailDeliveryReportStatusDetails) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "statusMessage", a.StatusMessage)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AcsEmailDeliveryReportStatusDetails.
-func (a *AcsEmailDeliveryReportStatusDetails) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACSEmailDeliveryReportStatusDetails.
+func (a *ACSEmailDeliveryReportStatusDetails) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -2161,16 +2161,16 @@ func (a *ACSEmailEngagementTrackingReportReceivedEventData) UnmarshalJSON(data [
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AcsIncomingCallCustomContext.
-func (a AcsIncomingCallCustomContext) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ACSIncomingCallCustomContext.
+func (a ACSIncomingCallCustomContext) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "sipHeaders", a.SipHeaders)
 	populate(objectMap, "voipHeaders", a.VoipHeaders)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AcsIncomingCallCustomContext.
-func (a *AcsIncomingCallCustomContext) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACSIncomingCallCustomContext.
+func (a *ACSIncomingCallCustomContext) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -2368,8 +2368,8 @@ func (a *ACSRecordingStorageInfoProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AcsRouterChannelConfiguration.
-func (a AcsRouterChannelConfiguration) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ACSRouterChannelConfiguration.
+func (a ACSRouterChannelConfiguration) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "capacityCostPerJob", a.CapacityCostPerJob)
 	populate(objectMap, "channelId", a.ChannelID)
@@ -2377,8 +2377,8 @@ func (a AcsRouterChannelConfiguration) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AcsRouterChannelConfiguration.
-func (a *AcsRouterChannelConfiguration) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACSRouterChannelConfiguration.
+func (a *ACSRouterChannelConfiguration) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -2403,8 +2403,8 @@ func (a *AcsRouterChannelConfiguration) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AcsRouterCommunicationError.
-func (a AcsRouterCommunicationError) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ACSRouterCommunicationError.
+func (a ACSRouterCommunicationError) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "code", a.Code)
 	populate(objectMap, "details", a.Details)
@@ -2414,8 +2414,8 @@ func (a AcsRouterCommunicationError) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AcsRouterCommunicationError.
-func (a *AcsRouterCommunicationError) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACSRouterCommunicationError.
+func (a *ACSRouterCommunicationError) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -3291,8 +3291,8 @@ func (a *ACSRouterJobWorkerSelectorsExpiredEventData) UnmarshalJSON(data []byte)
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AcsRouterQueueDetails.
-func (a AcsRouterQueueDetails) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ACSRouterQueueDetails.
+func (a ACSRouterQueueDetails) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "id", a.ID)
 	populate(objectMap, "labels", a.Labels)
@@ -3300,8 +3300,8 @@ func (a AcsRouterQueueDetails) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AcsRouterQueueDetails.
-func (a *AcsRouterQueueDetails) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACSRouterQueueDetails.
+func (a *ACSRouterQueueDetails) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -3765,20 +3765,20 @@ func (a *ACSRouterWorkerRegisteredEventData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AcsRouterWorkerSelector.
-func (a AcsRouterWorkerSelector) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ACSRouterWorkerSelector.
+func (a ACSRouterWorkerSelector) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populateDateTimeRFC3339(objectMap, "expirationTime", a.ExpirationTime)
 	populate(objectMap, "key", a.Key)
 	populate(objectMap, "labelOperator", a.LabelOperator)
-	populateAny(objectMap, "labelValue", a.LabelValue)
+	populateAny(objectMap, "value", a.LabelValue)
 	populate(objectMap, "state", a.State)
 	populate(objectMap, "ttlSeconds", a.TimeToLive)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AcsRouterWorkerSelector.
-func (a *AcsRouterWorkerSelector) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACSRouterWorkerSelector.
+func (a *ACSRouterWorkerSelector) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -3795,7 +3795,7 @@ func (a *AcsRouterWorkerSelector) UnmarshalJSON(data []byte) error {
 		case "labelOperator":
 			err = unpopulate(val, "LabelOperator", &a.LabelOperator)
 			delete(rawMsg, key)
-		case "labelValue":
+		case "value":
 			err = unpopulate(val, "LabelValue", &a.LabelValue)
 			delete(rawMsg, key)
 		case "state":
@@ -3803,6 +3803,57 @@ func (a *AcsRouterWorkerSelector) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "ttlSeconds":
 			err = unpopulate(val, "TTLSeconds", &a.TimeToLive)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", a, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ACSRouterWorkerUpdatedEventData.
+func (a ACSRouterWorkerUpdatedEventData) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "channelConfigurations", a.ChannelConfigurations)
+	populate(objectMap, "labels", a.Labels)
+	populate(objectMap, "queueAssignments", a.QueueAssignments)
+	populate(objectMap, "tags", a.Tags)
+	populate(objectMap, "totalCapacity", a.TotalCapacity)
+	populate(objectMap, "updatedWorkerProperties", a.UpdatedWorkerProperties)
+	populate(objectMap, "workerId", a.WorkerID)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACSRouterWorkerUpdatedEventData.
+func (a *ACSRouterWorkerUpdatedEventData) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", a, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "channelConfigurations":
+			err = unpopulate(val, "ChannelConfigurations", &a.ChannelConfigurations)
+			delete(rawMsg, key)
+		case "labels":
+			err = unpopulate(val, "Labels", &a.Labels)
+			delete(rawMsg, key)
+		case "queueAssignments":
+			err = unpopulate(val, "QueueAssignments", &a.QueueAssignments)
+			delete(rawMsg, key)
+		case "tags":
+			err = unpopulate(val, "Tags", &a.Tags)
+			delete(rawMsg, key)
+		case "totalCapacity":
+			err = unpopulate(val, "TotalCapacity", &a.TotalCapacity)
+			delete(rawMsg, key)
+		case "updatedWorkerProperties":
+			err = unpopulate(val, "UpdatedWorkerProperties", &a.UpdatedWorkerProperties)
+			delete(rawMsg, key)
+		case "workerId":
+			err = unpopulate(val, "WorkerID", &a.WorkerID)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -4688,6 +4739,8 @@ func (a *AVSScriptExecutionStartedEventData) UnmarshalJSON(data []byte) error {
 func (c CommunicationIdentifierModel) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "communicationUser", c.CommunicationUser)
+	populate(objectMap, "kind", c.Kind)
+	populate(objectMap, "microsoftTeamsApp", c.MicrosoftTeamsApp)
 	populate(objectMap, "microsoftTeamsUser", c.MicrosoftTeamsUser)
 	populate(objectMap, "phoneNumber", c.PhoneNumber)
 	populate(objectMap, "rawId", c.RawID)
@@ -4705,6 +4758,12 @@ func (c *CommunicationIdentifierModel) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "communicationUser":
 			err = unpopulate(val, "CommunicationUser", &c.CommunicationUser)
+			delete(rawMsg, key)
+		case "kind":
+			err = unpopulate(val, "Kind", &c.Kind)
+			delete(rawMsg, key)
+		case "microsoftTeamsApp":
+			err = unpopulate(val, "MicrosoftTeamsApp", &c.MicrosoftTeamsApp)
 			delete(rawMsg, key)
 		case "microsoftTeamsUser":
 			err = unpopulate(val, "MicrosoftTeamsUser", &c.MicrosoftTeamsUser)
@@ -8852,6 +8911,37 @@ func (m *MediaLiveEventTrackDiscontinuityDetectedEventData) UnmarshalJSON(data [
 			delete(rawMsg, key)
 		case "trackType":
 			err = unpopulate(val, "TrackType", &m.TrackType)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", m, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type MicrosoftTeamsAppIdentifierModel.
+func (m MicrosoftTeamsAppIdentifierModel) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "appId", m.AppID)
+	populate(objectMap, "cloud", m.Cloud)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type MicrosoftTeamsAppIdentifierModel.
+func (m *MicrosoftTeamsAppIdentifierModel) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", m, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "appId":
+			err = unpopulate(val, "AppID", &m.AppID)
+			delete(rawMsg, key)
+		case "cloud":
+			err = unpopulate(val, "Cloud", &m.Cloud)
 			delete(rawMsg, key)
 		}
 		if err != nil {

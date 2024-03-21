@@ -6,7 +6,7 @@ description: Azure Event Grid system events
 generated-metadata: false
 clear-output-folder: false
 go: true
-require: https://github.com/Azure/azure-rest-api-specs/blob/64819c695760764afa059d799fc7320d3fee33de/specification/eventgrid/data-plane/readme.md
+require: https://github.com/Azure/azure-rest-api-specs/blob/a02f2ba78bfb988c3bd195886c0492024f0ea7fc/specification/eventgrid/data-plane/readme.md
 license-header: MICROSOFT_MIT_NO_VERSION
 openapi-type: "data-plane"
 output-folder: ../azsystemevents
@@ -153,7 +153,6 @@ directive:
       - models.go
       - models_serde.go
     where: $
-    debug: true
     transform: |
       const acronyms = ["Acs", "Avs", "Iot"];
       for (let acr of acronyms) {
@@ -162,8 +161,26 @@ directive:
         // 'type AcsChatMessageDeletedEventData struct'
         // 'Participants []AcsChatThreadParticipantProperties'
         // 'ParticipantRemoved *AcsChatThreadParticipantProperties'
-        const re = new RegExp(`([ *\\]])${acr}([A-Za-z0-9]+?(?:EventData|Properties))`, "sg");
+        const re = new RegExp(`([ *\\]])${acr}([A-Za-z0-9]+?(?:EventData|Properties|Property|Details|Context|Configuration|Error|Selector))`, "sg");
+        $ = $.replace(re, `$1${acr.toUpperCase()}$2`);
+
+        // fix any fields that reference these models
+        const re2 = new RegExp(`([*])${acr}([A-Za-z0-9]+?)`, "sg");
+        $ = $.replace(re2, `$1${acr.toUpperCase()}$2`);
+      }
+
+      return $;
+  - from: 
+      - constants.go
+    where: $
+    debug: True
+    transform: |
+      const acronyms = ["Acs", "Avs", "Iot"];
+      for (let acr of acronyms) {
+        // ex:
+        const re = new RegExp(`([ \\]]|Possible)${acr}([A-Za-z0-9]+?[ ,{(])`, "sg");
         $ = $.replace(re, `$1${acr.toUpperCase()}$2`);
       }
+
       return $;
 ```

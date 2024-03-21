@@ -100,6 +100,7 @@ const (
 	TypeACSRouterWorkerOfferIssued                                    Type = "Microsoft.Communication.RouterWorkerOfferIssued"                           // maps to ACSRouterWorkerOfferIssuedEventData
 	TypeACSRouterWorkerOfferRevoked                                   Type = "Microsoft.Communication.RouterWorkerOfferRevoked"                          // maps to ACSRouterWorkerOfferRevokedEventData
 	TypeACSRouterWorkerRegistered                                     Type = "Microsoft.Communication.RouterWorkerRegistered"                            // maps to ACSRouterWorkerRegisteredEventData
+	TypeACSRouterWorkerUpdated                                        Type = "Microsoft.Communication.RouterWorkerUpdated"                               // maps to ACSRouterWorkerUpdatedEventData
 	TypeACSSmsDeliveryReportReceived                                  Type = "Microsoft.Communication.SMSDeliveryReportReceived"                         // maps to ACSSmsDeliveryReportReceivedEventData
 	TypeACSSmsReceived                                                Type = "Microsoft.Communication.SMSReceived"                                       // maps to ACSSmsReceivedEventData
 	TypeACSUserDisconnected                                           Type = "Microsoft.Communication.UserDisconnected"                                  // maps to ACSUserDisconnectedEventData

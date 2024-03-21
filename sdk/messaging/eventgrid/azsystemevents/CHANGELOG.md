@@ -1,5 +1,15 @@
 # Release History
 
+## 0.2.1 (TBD)
+
+### Features Added
+
+- Added ACSRouterWorkerUpdatedEventData.
+
+### Breaking Changes
+
+- ACS events and constants have been changed to use an all-caps name (ex: AcsEmailDeliveryReportStatusDetails -> ACSEmailDeliveryReportStatusDetails).
+
 ## 0.2.0 (2024-03-14)
 
 ### Features Added

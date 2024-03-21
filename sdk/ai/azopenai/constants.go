@@ -338,6 +338,24 @@ func PossibleElasticsearchQueryTypeValues() []ElasticsearchQueryType {
 	}
 }
 
+// EmbeddingEncodingFormat - Represents the available formats for embeddings data on responses.
+type EmbeddingEncodingFormat string
+
+const (
+	// EmbeddingEncodingFormatBase64 - Specifies that responses should provide a base64-encoded string for each embedding.
+	EmbeddingEncodingFormatBase64 EmbeddingEncodingFormat = "base64"
+	// EmbeddingEncodingFormatFloat - Specifies that responses should provide arrays of floats for each embedding.
+	EmbeddingEncodingFormatFloat EmbeddingEncodingFormat = "float"
+)
+
+// PossibleEmbeddingEncodingFormatValues returns the possible values for the EmbeddingEncodingFormat const type.
+func PossibleEmbeddingEncodingFormatValues() []EmbeddingEncodingFormat {
+	return []EmbeddingEncodingFormat{
+		EmbeddingEncodingFormatBase64,
+		EmbeddingEncodingFormatFloat,
+	}
+}
+
 // FunctionCallPreset - The collection of predefined behaviors for handling request-provided function information in a chat
 // completions operation.
 type FunctionCallPreset string

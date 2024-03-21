@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Updating to the `2024-03-01-preview` API version. This adds support for using Dimensions with Embeddings as well as the ability to choose the embeddings format. PR(#22603)
+
 ### Breaking Changes
 
 ### Bugs Fixed

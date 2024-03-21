@@ -1,5 +1,58 @@
 # Release History
 
+## 4.0.0 (2024-03-22)
+### Breaking Changes
+
+- Function `*MobileNetworksClient.UpdateTags` parameter(s) have been changed from `(context.Context, string, string, TagsObject, *MobileNetworksClientUpdateTagsOptions)` to `(context.Context, string, string, IdentityAndTagsObject, *MobileNetworksClientUpdateTagsOptions)`
+
+### Features Added
+
+- New enum type `HomeNetworkPrivateKeysProvisioningState` with values `HomeNetworkPrivateKeysProvisioningStateFailed`, `HomeNetworkPrivateKeysProvisioningStateNotProvisioned`, `HomeNetworkPrivateKeysProvisioningStateProvisioned`
+- New enum type `PdnType` with values `PdnTypeIPV4`
+- New enum type `RatType` with values `RatTypeFiveG`, `RatTypeFourG`
+- New enum type `RrcEstablishmentCause` with values `RrcEstablishmentCauseEmergency`, `RrcEstablishmentCauseMobileOriginatedData`, `RrcEstablishmentCauseMobileOriginatedSignaling`, `RrcEstablishmentCauseMobileTerminatedData`, `RrcEstablishmentCauseMobileTerminatedSignaling`, `RrcEstablishmentCauseSMS`
+- New enum type `UeState` with values `UeStateConnected`, `UeStateDeregistered`, `UeStateDetached`, `UeStateIdle`, `UeStateUnknown`
+- New enum type `UeUsageSetting` with values `UeUsageSettingDataCentric`, `UeUsageSettingVoiceCentric`
+- New function `*ClientFactory.NewExtendedUeInformationClient() *ExtendedUeInformationClient`
+- New function `*ClientFactory.NewUeInformationClient() *UeInformationClient`
+- New function `*ExtendedUeInfoProperties.GetExtendedUeInfoProperties() *ExtendedUeInfoProperties`
+- New function `NewExtendedUeInformationClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ExtendedUeInformationClient, error)`
+- New function `*ExtendedUeInformationClient.Get(context.Context, string, string, string, *ExtendedUeInformationClientGetOptions) (ExtendedUeInformationClientGetResponse, error)`
+- New function `*UeInfo4G.GetExtendedUeInfoProperties() *ExtendedUeInfoProperties`
+- New function `*UeInfo5G.GetExtendedUeInfoProperties() *ExtendedUeInfoProperties`
+- New function `NewUeInformationClient(string, azcore.TokenCredential, *arm.ClientOptions) (*UeInformationClient, error)`
+- New function `*UeInformationClient.NewListPager(string, string, *UeInformationClientListOptions) *runtime.Pager[UeInformationClientListResponse]`
+- New struct `AmfID`
+- New struct `DnnIPPair`
+- New struct `ExtendedUeInfo`
+- New struct `GNbID`
+- New struct `GlobalRanNodeID`
+- New struct `Guti4G`
+- New struct `Guti5G`
+- New struct `HomeNetworkPrivateKeysProvisioning`
+- New struct `HomeNetworkPublicKey`
+- New struct `MmeID`
+- New struct `PublicLandMobileNetwork`
+- New struct `PublicLandMobileNetworkHomeNetworkPublicKeys`
+- New struct `UeConnectionInfo4G`
+- New struct `UeConnectionInfo5G`
+- New struct `UeIPAddress`
+- New struct `UeInfo`
+- New struct `UeInfo4G`
+- New struct `UeInfo4GProperties`
+- New struct `UeInfo5G`
+- New struct `UeInfo5GProperties`
+- New struct `UeInfoList`
+- New struct `UeInfoPropertiesFormat`
+- New struct `UeLocationInfo`
+- New struct `UeQOSFlow`
+- New struct `UeSessionInfo4G`
+- New struct `UeSessionInfo5G`
+- New field `Identity` in struct `MobileNetwork`
+- New field `HomeNetworkPrivateKeysProvisioning` in struct `PacketCoreControlPlanePropertiesFormat`
+- New field `PublicLandMobileNetworks` in struct `PropertiesFormat`
+
+
 ## 3.1.0 (2023-11-24)
 ### Features Added
 

@@ -22,6 +22,7 @@ type ServerFactory struct {
 	AttachedDataNetworksServer           AttachedDataNetworksServer
 	DataNetworksServer                   DataNetworksServer
 	DiagnosticsPackagesServer            DiagnosticsPackagesServer
+	ExtendedUeInformationServer          ExtendedUeInformationServer
 	MobileNetworksServer                 MobileNetworksServer
 	OperationsServer                     OperationsServer
 	PacketCapturesServer                 PacketCapturesServer
@@ -34,6 +35,7 @@ type ServerFactory struct {
 	SimsServer                           SimsServer
 	SitesServer                          SitesServer
 	SlicesServer                         SlicesServer
+	UeInformationServer                  UeInformationServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -53,6 +55,7 @@ type ServerFactoryTransport struct {
 	trAttachedDataNetworksServer           *AttachedDataNetworksServerTransport
 	trDataNetworksServer                   *DataNetworksServerTransport
 	trDiagnosticsPackagesServer            *DiagnosticsPackagesServerTransport
+	trExtendedUeInformationServer          *ExtendedUeInformationServerTransport
 	trMobileNetworksServer                 *MobileNetworksServerTransport
 	trOperationsServer                     *OperationsServerTransport
 	trPacketCapturesServer                 *PacketCapturesServerTransport
@@ -65,6 +68,7 @@ type ServerFactoryTransport struct {
 	trSimsServer                           *SimsServerTransport
 	trSitesServer                          *SitesServerTransport
 	trSlicesServer                         *SlicesServerTransport
+	trUeInformationServer                  *UeInformationServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -93,6 +97,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewDiagnosticsPackagesServerTransport(&s.srv.DiagnosticsPackagesServer)
 		})
 		resp, err = s.trDiagnosticsPackagesServer.Do(req)
+	case "ExtendedUeInformationClient":
+		initServer(s, &s.trExtendedUeInformationServer, func() *ExtendedUeInformationServerTransport {
+			return NewExtendedUeInformationServerTransport(&s.srv.ExtendedUeInformationServer)
+		})
+		resp, err = s.trExtendedUeInformationServer.Do(req)
 	case "MobileNetworksClient":
 		initServer(s, &s.trMobileNetworksServer, func() *MobileNetworksServerTransport {
 			return NewMobileNetworksServerTransport(&s.srv.MobileNetworksServer)
@@ -139,6 +148,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "SlicesClient":
 		initServer(s, &s.trSlicesServer, func() *SlicesServerTransport { return NewSlicesServerTransport(&s.srv.SlicesServer) })
 		resp, err = s.trSlicesServer.Do(req)
+	case "UeInformationClient":
+		initServer(s, &s.trUeInformationServer, func() *UeInformationServerTransport {
+			return NewUeInformationServerTransport(&s.srv.UeInformationServer)
+		})
+		resp, err = s.trUeInformationServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
 	}

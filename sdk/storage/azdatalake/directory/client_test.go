@@ -8,7 +8,9 @@ package directory_test
 
 import (
 	"context"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake"
 	"net/http"
+	"strconv"
 	"testing"
 	"time"
 
@@ -765,6 +767,73 @@ func (s *RecordedTestSuite) TestDeleteDirWithNilAccessConditions() {
 	resp, err := dirClient.Delete(context.Background(), deleteOpts)
 	_require.NoError(err)
 	_require.NotNil(resp)
+}
+
+func (s *UnrecordedTestSuite) TestDeleteDirWithPaginatedDelete() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	user := "user"
+	readWriteExecutePermission := "rwx"
+
+	objectId, err := testcommon.GetRequiredEnv(testcommon.ObjectIdEnvVar)
+	_require.Nil(err)
+
+	accountName, accountKey := testcommon.GetGenericAccountInfo(testcommon.TestAccountDatalake)
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	rootDirectory := fsClient.NewDirectoryClient("/")
+
+	dirName := testcommon.GenerateDirName(testName)
+	dirURL := "https://" + accountName + ".dfs.core.windows.net/" + filesystemName + "/" + dirName
+	credential, err := azdatalake.NewSharedKeyCredential(accountName, accountKey)
+
+	dirClient, err := directory.NewClientWithSharedKeyCredential(dirURL, credential, nil)
+	_require.NoError(err)
+
+	resp, err := dirClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(resp)
+
+	for i := 0; i < 5020; i++ {
+		fileClient, err := dirClient.NewFileClient(testcommon.GenerateFileName(testName) + strconv.Itoa(i))
+		_require.NoError(err)
+		_require.NotNil(fileClient)
+
+		_, err = fileClient.Create(context.Background(), nil)
+		_require.NoError(err)
+	}
+
+	accessControlResp, err := dirClient.GetAccessControl(context.Background(), nil)
+	_require.NoError(err)
+
+	newAcl := *accessControlResp.ACL + "," + user + ":" + objectId + ":" + readWriteExecutePermission
+
+	_, err = rootDirectory.SetAccessControlRecursive(context.Background(), newAcl, nil)
+	_require.NoError(err)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	directoryURL := "https://" + accountName + ".dfs.core.windows.net/" + filesystemName + "/" + dirName
+
+	newDirClient, err := directory.NewClient(directoryURL, cred, nil)
+	_require.NoError(err)
+
+	deleteOpts := &directory.DeleteOptions{
+		Paginated: to.Ptr(true),
+	}
+
+	response, err := newDirClient.Delete(context.Background(), deleteOpts)
+	_require.NoError(err)
+	_require.Nil(response.Continuation)
+	_require.NotNil(response)
 }
 
 func (s *RecordedTestSuite) TestDeleteDirIfModifiedSinceTrue() {

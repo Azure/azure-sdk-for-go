@@ -8,6 +8,7 @@
 * Append API with acquire lease, release lease and renewal of lease support.
 * Flush API bundled with release lease option.
 * HNS Encryption Context support
+* Pagination Support for recursive directory deletion
 
 ### Breaking Changes
 

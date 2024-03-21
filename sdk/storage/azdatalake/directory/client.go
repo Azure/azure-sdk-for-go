@@ -262,9 +262,14 @@ func (d *Client) Create(ctx context.Context, options *CreateOptions) (CreateResp
 // Delete deletes directory and any path under it.
 func (d *Client) Delete(ctx context.Context, options *DeleteOptions) (DeleteResponse, error) {
 	lac, mac, deleteOpts := path.FormatDeleteOptions(options, true)
-	resp, err := d.generatedDirClientWithDFS().Delete(ctx, deleteOpts, lac, mac)
-	err = exported.ConvertToDFSError(err)
-	return resp, err
+	for {
+		resp, err := d.generatedDirClientWithDFS().Delete(ctx, deleteOpts, lac, mac)
+		if resp.Continuation == nil {
+			err = exported.ConvertToDFSError(err)
+			return resp, err
+		}
+		deleteOpts.Continuation = resp.Continuation
+	}
 }
 
 // GetProperties gets the properties of a directory.

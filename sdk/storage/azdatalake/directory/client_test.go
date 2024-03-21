@@ -793,6 +793,7 @@ func (s *UnrecordedTestSuite) TestDeleteDirWithPaginatedDelete() {
 	dirName := testcommon.GenerateDirName(testName)
 	dirURL := "https://" + accountName + ".dfs.core.windows.net/" + filesystemName + "/" + dirName
 	credential, err := azdatalake.NewSharedKeyCredential(accountName, accountKey)
+	_require.NoError(err)
 
 	dirClient, err := directory.NewClientWithSharedKeyCredential(dirURL, credential, nil)
 	_require.NoError(err)

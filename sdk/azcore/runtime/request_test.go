@@ -9,6 +9,8 @@ package runtime
 import (
 	"bytes"
 	"context"
+	"encoding/json"
+	"errors"
 	"io"
 	"mime"
 	"mime/multipart"
@@ -19,6 +21,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/stretchr/testify/require"
 )
 
@@ -246,10 +249,9 @@ func TestRequestValidFail(t *testing.T) {
 
 func TestSetMultipartFormData(t *testing.T) {
 	req, err := NewRequest(context.Background(), http.MethodPost, "https://contoso.com")
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, err)
 	err = SetMultipartFormData(req, map[string]any{
+		"json":   []byte(`{"id":123}`),
 		"string": "value",
 		"int":    1,
 		"data":   exported.NopCloser(strings.NewReader("some data")),
@@ -259,53 +261,46 @@ func TestSetMultipartFormData(t *testing.T) {
 			exported.NopCloser(strings.NewReader("third part")),
 		},
 	})
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, err)
 	mt, params, err := mime.ParseMediaType(req.Raw().Header.Get(shared.HeaderContentType))
-	if err != nil {
-		t.Fatal(err)
-	}
-	if mt != "multipart/form-data" {
-		t.Fatalf("unexpected media type %s", mt)
-	}
+	require.NoError(t, err)
+	require.EqualValues(t, "multipart/form-data", mt)
 	reader := multipart.NewReader(req.Raw().Body, params["boundary"])
 	var datum []io.ReadSeekCloser
 	for {
 		part, err := reader.NextPart()
-		if err == io.EOF {
+		if errors.Is(err, io.EOF) {
 			break
 		} else if err != nil {
 			t.Fatal(err)
 		}
 		switch fn := part.FormName(); fn {
+		case "json":
+			data, err := io.ReadAll(part)
+			require.NoError(t, err)
+			require.EqualValues(t, '{', data[0])
+			type thing struct {
+				ID int `json:"id"`
+			}
+			thing1 := thing{}
+			require.NoError(t, json.Unmarshal(data, &thing1))
+			require.EqualValues(t, 123, thing1.ID)
+			require.EqualValues(t, "application/json", part.Header.Get(shared.HeaderContentType))
 		case "string":
-			strPart := make([]byte, 16)
-			_, err = part.Read(strPart)
-			if err != io.EOF {
-				t.Fatal(err)
-			}
-			if tr := string(strPart[:5]); tr != "value" {
-				t.Fatalf("unexpected value %s", tr)
-			}
+			strPart, err := io.ReadAll(part)
+			require.NoError(t, err)
+			require.EqualValues(t, "value", strPart)
+			require.EqualValues(t, "text/plain", part.Header.Get(shared.HeaderContentType))
 		case "int":
-			intPart := make([]byte, 16)
-			_, err = part.Read(intPart)
-			if err != io.EOF {
-				t.Fatal(err)
-			}
-			if tr := string(intPart[:1]); tr != "1" {
-				t.Fatalf("unexpected value %s", tr)
-			}
+			intPart, err := io.ReadAll(part)
+			require.NoError(t, err)
+			require.EqualValues(t, "1", intPart)
+			require.EqualValues(t, "text/plain", part.Header.Get(shared.HeaderContentType))
 		case "data":
-			dataPart := make([]byte, 16)
-			_, err = part.Read(dataPart)
-			if err != io.EOF {
-				t.Fatal(err)
-			}
-			if tr := string(dataPart[:9]); tr != "some data" {
-				t.Fatalf("unexpected value %s", tr)
-			}
+			dataPart, err := io.ReadAll(part)
+			require.NoError(t, err)
+			require.EqualValues(t, "some data", dataPart)
+			require.EqualValues(t, "application/octet-stream", part.Header.Get(shared.HeaderContentType))
 		case "datum":
 			content, err := io.ReadAll(part)
 			require.NoError(t, err)
@@ -324,6 +319,95 @@ func TestSetMultipartFormData(t *testing.T) {
 	require.Equal(t, "first part", string(first))
 	require.Equal(t, "second part", string(second))
 	require.Equal(t, "third part", string(third))
+}
+
+func TestSetMultipartContent(t *testing.T) {
+	req, err := NewRequest(context.Background(), http.MethodPost, "https://contoso.com")
+	require.NoError(t, err)
+	err = SetMultipartFormData(req, map[string]any{
+		"default": streaming.MultipartContent{
+			Body: exported.NopCloser(strings.NewReader("default body")),
+		},
+		"withContentType": streaming.MultipartContent{
+			Body:        exported.NopCloser(strings.NewReader("body with content type")),
+			ContentType: "text/plain",
+		},
+		"withFilename": streaming.MultipartContent{
+			Body:     exported.NopCloser(strings.NewReader("body with filename")),
+			Filename: "content.txt",
+		},
+		"allSet": streaming.MultipartContent{
+			Body:        exported.NopCloser(strings.NewReader("body with everything set")),
+			ContentType: "text/plain",
+			Filename:    "content.txt",
+		},
+		"multiple": []streaming.MultipartContent{
+			{
+				Body:     exported.NopCloser(bytes.NewReader([]byte{1, 2, 3, 4, 5})),
+				Filename: "data.bin",
+			},
+			{
+				Body:        exported.NopCloser(strings.NewReader("some text")),
+				ContentType: "text/plain",
+			},
+		},
+	})
+	require.NoError(t, err)
+	mt, params, err := mime.ParseMediaType(req.Raw().Header.Get(shared.HeaderContentType))
+	require.NoError(t, err)
+	require.EqualValues(t, "multipart/form-data", mt)
+	reader := multipart.NewReader(req.Raw().Body, params["boundary"])
+	countMultiple := 0
+	for {
+		part, err := reader.NextPart()
+		if errors.Is(err, io.EOF) {
+			break
+		} else if err != nil {
+			t.Fatal(err)
+		}
+		switch fn := part.FormName(); fn {
+		case "default":
+			require.EqualValues(t, "default", part.FileName())
+			require.EqualValues(t, "application/octet-stream", part.Header.Get(shared.HeaderContentType))
+			body, err := io.ReadAll(part)
+			require.NoError(t, err)
+			require.EqualValues(t, "default body", body)
+		case "withContentType":
+			require.EqualValues(t, "withContentType", part.FileName())
+			require.EqualValues(t, "text/plain", part.Header.Get(shared.HeaderContentType))
+			body, err := io.ReadAll(part)
+			require.NoError(t, err)
+			require.EqualValues(t, "body with content type", body)
+		case "withFilename":
+			require.EqualValues(t, "content.txt", part.FileName())
+			require.EqualValues(t, "application/octet-stream", part.Header.Get(shared.HeaderContentType))
+			body, err := io.ReadAll(part)
+			require.NoError(t, err)
+			require.EqualValues(t, "body with filename", body)
+		case "allSet":
+			require.EqualValues(t, "content.txt", part.FileName())
+			require.EqualValues(t, "text/plain", part.Header.Get(shared.HeaderContentType))
+			body, err := io.ReadAll(part)
+			require.NoError(t, err)
+			require.EqualValues(t, "body with everything set", body)
+		case "multiple":
+			body, err := io.ReadAll(part)
+			require.NoError(t, err)
+			if fn := part.FileName(); fn == "data.bin" {
+				require.EqualValues(t, "application/octet-stream", part.Header.Get(shared.HeaderContentType))
+				require.EqualValues(t, []byte{1, 2, 3, 4, 5}, body)
+			} else if fn == "multiple" {
+				require.EqualValues(t, "text/plain", part.Header.Get(shared.HeaderContentType))
+				require.EqualValues(t, "some text", body)
+			} else {
+				t.Fatalf("unexpected file %s", fn)
+			}
+			countMultiple++
+		default:
+			t.Fatalf("unexpected part %s", fn)
+		}
+	}
+	require.EqualValues(t, 2, countMultiple)
 }
 
 func TestEncodeQueryParams(t *testing.T) {

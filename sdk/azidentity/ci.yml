@@ -41,4 +41,4 @@ extends:
             Selection: sparse
         MatrixReplace:
           - Pool=.*LINUXPOOL.*/azsdk-pool-mms-ubuntu-2204-identitymsi
-          - OSVmImage=.*LINUXPOOL.*/azsdk-pool-mms-ubuntu-2204-1espt
+          - OSVmImage=.*LINUXNEXTVMIMAGE.*/azsdk-pool-mms-ubuntu-2204-1espt

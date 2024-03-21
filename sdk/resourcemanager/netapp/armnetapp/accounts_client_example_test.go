@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v6"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/639ecfad68419328658bd4cfe7094af4ce472be2/specification/netapp/resource-manager/Microsoft.NetApp/preview/2023-05-01-preview/examples/Accounts_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/netapp/resource-manager/Microsoft.NetApp/stable/2023-07-01/examples/Accounts_List.json
 func ExampleAccountsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -55,7 +55,7 @@ func ExampleAccountsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/639ecfad68419328658bd4cfe7094af4ce472be2/specification/netapp/resource-manager/Microsoft.NetApp/preview/2023-05-01-preview/examples/Accounts_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/netapp/resource-manager/Microsoft.NetApp/stable/2023-07-01/examples/Accounts_Get.json
 func ExampleAccountsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -83,7 +83,7 @@ func ExampleAccountsClient_Get() {
 	// 			{
 	// 				ActiveDirectoryID: to.Ptr("02da3711-6c58-2d64-098a-e3af7afaf936"),
 	// 				AesEncryption: to.Ptr(true),
-	// 				DNS: to.Ptr("10.10.10.3, 10.10.10.4"),
+	// 				DNS: to.Ptr("10.10.10.3"),
 	// 				Domain: to.Ptr("10.10.10.3"),
 	// 				LdapSigning: to.Ptr(true),
 	// 				OrganizationalUnit: to.Ptr("OU=Engineering"),
@@ -98,7 +98,7 @@ func ExampleAccountsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/639ecfad68419328658bd4cfe7094af4ce472be2/specification/netapp/resource-manager/Microsoft.NetApp/preview/2023-05-01-preview/examples/Accounts_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/netapp/resource-manager/Microsoft.NetApp/stable/2023-07-01/examples/Accounts_CreateOrUpdate.json
 func ExampleAccountsClient_BeginCreateOrUpdate_accountsCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -134,7 +134,7 @@ func ExampleAccountsClient_BeginCreateOrUpdate_accountsCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/639ecfad68419328658bd4cfe7094af4ce472be2/specification/netapp/resource-manager/Microsoft.NetApp/preview/2023-05-01-preview/examples/Accounts_CreateOrUpdateAD.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/netapp/resource-manager/Microsoft.NetApp/stable/2023-07-01/examples/Accounts_CreateOrUpdateAD.json
 func ExampleAccountsClient_BeginCreateOrUpdate_accountsCreateOrUpdateWithActiveDirectory() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -151,7 +151,7 @@ func ExampleAccountsClient_BeginCreateOrUpdate_accountsCreateOrUpdateWithActiveD
 			ActiveDirectories: []*armnetapp.ActiveDirectory{
 				{
 					AesEncryption:      to.Ptr(true),
-					DNS:                to.Ptr("10.10.10.3, 10.10.10.4"),
+					DNS:                to.Ptr("10.10.10.3"),
 					Domain:             to.Ptr("10.10.10.3"),
 					LdapOverTLS:        to.Ptr(false),
 					LdapSigning:        to.Ptr(false),
@@ -183,7 +183,7 @@ func ExampleAccountsClient_BeginCreateOrUpdate_accountsCreateOrUpdateWithActiveD
 	// 			{
 	// 				ActiveDirectoryID: to.Ptr("503d38f9-f17c-f92d-ef26-b0d46374534b"),
 	// 				AesEncryption: to.Ptr(true),
-	// 				DNS: to.Ptr("10.10.10.3, 10.10.10.4"),
+	// 				DNS: to.Ptr("10.10.10.3"),
 	// 				Domain: to.Ptr("10.10.10.3"),
 	// 				LdapOverTLS: to.Ptr(false),
 	// 				LdapSigning: to.Ptr(false),
@@ -197,7 +197,7 @@ func ExampleAccountsClient_BeginCreateOrUpdate_accountsCreateOrUpdateWithActiveD
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/639ecfad68419328658bd4cfe7094af4ce472be2/specification/netapp/resource-manager/Microsoft.NetApp/preview/2023-05-01-preview/examples/Accounts_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/netapp/resource-manager/Microsoft.NetApp/stable/2023-07-01/examples/Accounts_Delete.json
 func ExampleAccountsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -218,7 +218,7 @@ func ExampleAccountsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/639ecfad68419328658bd4cfe7094af4ce472be2/specification/netapp/resource-manager/Microsoft.NetApp/preview/2023-05-01-preview/examples/Accounts_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/netapp/resource-manager/Microsoft.NetApp/stable/2023-07-01/examples/Accounts_Update.json
 func ExampleAccountsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -255,7 +255,7 @@ func ExampleAccountsClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/639ecfad68419328658bd4cfe7094af4ce472be2/specification/netapp/resource-manager/Microsoft.NetApp/preview/2023-05-01-preview/examples/Accounts_RenewCredentials.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/netapp/resource-manager/Microsoft.NetApp/stable/2023-07-01/examples/Accounts_RenewCredentials.json
 func ExampleAccountsClient_BeginRenewCredentials() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -267,31 +267,6 @@ func ExampleAccountsClient_BeginRenewCredentials() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewAccountsClient().BeginRenewCredentials(ctx, "myRG", "account1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/639ecfad68419328658bd4cfe7094af4ce472be2/specification/netapp/resource-manager/Microsoft.NetApp/preview/2023-05-01-preview/examples/Accounts_MigrateEncryptionKey.json
-func ExampleAccountsClient_BeginMigrateEncryptionKey() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetapp.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewAccountsClient().BeginMigrateEncryptionKey(ctx, "myRG", "account1", &armnetapp.AccountsClientBeginMigrateEncryptionKeyOptions{Body: &armnetapp.EncryptionMigrationRequest{
-		PrivateEndpointID: to.Ptr("/subscriptions/D633CC2E-722B-4AE1-B636-BBD9E4C60ED9/resourceGroups/myRG/providers/Microsoft.Network/privateEndpoints/privip1"),
-		VirtualNetworkID:  to.Ptr("/subscriptions/D633CC2E-722B-4AE1-B636-BBD9E4C60ED9/resourceGroups/myRG/providers/Microsoft.Network/virtualNetworks/vnet1"),
-	},
-	})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

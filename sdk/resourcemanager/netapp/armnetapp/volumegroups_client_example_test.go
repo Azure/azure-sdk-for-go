@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v6"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/639ecfad68419328658bd4cfe7094af4ce472be2/specification/netapp/resource-manager/Microsoft.NetApp/preview/2023-05-01-preview/examples/VolumeGroups_List_Oracle.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/netapp/resource-manager/Microsoft.NetApp/stable/2023-07-01/examples/VolumeGroups_List_Oracle.json
 func ExampleVolumeGroupsClient_NewListByNetAppAccountPager_volumeGroupsListOracle() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -61,7 +61,7 @@ func ExampleVolumeGroupsClient_NewListByNetAppAccountPager_volumeGroupsListOracl
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/639ecfad68419328658bd4cfe7094af4ce472be2/specification/netapp/resource-manager/Microsoft.NetApp/preview/2023-05-01-preview/examples/VolumeGroups_List_SapHana.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/netapp/resource-manager/Microsoft.NetApp/stable/2023-07-01/examples/VolumeGroups_List_SapHana.json
 func ExampleVolumeGroupsClient_NewListByNetAppAccountPager_volumeGroupsListSapHana() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -92,7 +92,7 @@ func ExampleVolumeGroupsClient_NewListByNetAppAccountPager_volumeGroupsListSapHa
 		// 			Location: to.Ptr("eastus"),
 		// 			Properties: &armnetapp.VolumeGroupListProperties{
 		// 				GroupMetaData: &armnetapp.VolumeGroupMetaData{
-		// 					ApplicationIdentifier: to.Ptr("DEV"),
+		// 					ApplicationIdentifier: to.Ptr("SH9"),
 		// 					ApplicationType: to.Ptr(armnetapp.ApplicationTypeSAPHANA),
 		// 					GroupDescription: to.Ptr("Volume group"),
 		// 					VolumesCount: to.Ptr[int64](5),
@@ -104,7 +104,7 @@ func ExampleVolumeGroupsClient_NewListByNetAppAccountPager_volumeGroupsListSapHa
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/639ecfad68419328658bd4cfe7094af4ce472be2/specification/netapp/resource-manager/Microsoft.NetApp/preview/2023-05-01-preview/examples/VolumeGroups_Get_Oracle.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/netapp/resource-manager/Microsoft.NetApp/stable/2023-07-01/examples/VolumeGroups_Get_Oracle.json
 func ExampleVolumeGroupsClient_Get_volumeGroupsGetOracle() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -584,7 +584,7 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetOracle() {
 	// 																								}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/639ecfad68419328658bd4cfe7094af4ce472be2/specification/netapp/resource-manager/Microsoft.NetApp/preview/2023-05-01-preview/examples/VolumeGroups_Get_SapHana.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/netapp/resource-manager/Microsoft.NetApp/stable/2023-07-01/examples/VolumeGroups_Get_SapHana.json
 func ExampleVolumeGroupsClient_Get_volumeGroupsGetSapHana() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -800,7 +800,7 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetSapHana() {
 	// 					}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/639ecfad68419328658bd4cfe7094af4ce472be2/specification/netapp/resource-manager/Microsoft.NetApp/preview/2023-05-01-preview/examples/VolumeGroups_Create_Oracle.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/netapp/resource-manager/Microsoft.NetApp/stable/2023-07-01/examples/VolumeGroups_Create_Oracle.json
 func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateOracle() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1251,7 +1251,7 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateOracle() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/639ecfad68419328658bd4cfe7094af4ce472be2/specification/netapp/resource-manager/Microsoft.NetApp/preview/2023-05-01-preview/examples/VolumeGroups_Create_SapHana.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/netapp/resource-manager/Microsoft.NetApp/stable/2023-07-01/examples/VolumeGroups_Create_SapHana.json
 func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateSapHana() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1452,7 +1452,7 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateSapHana() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/639ecfad68419328658bd4cfe7094af4ce472be2/specification/netapp/resource-manager/Microsoft.NetApp/preview/2023-05-01-preview/examples/VolumeGroups_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/netapp/resource-manager/Microsoft.NetApp/stable/2023-07-01/examples/VolumeGroups_Delete.json
 func ExampleVolumeGroupsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -18,7 +18,7 @@ type AccountInfo struct {
 	// ingestion key of account
 	IngestionKey *string
 
-	// NewRelic account region
+	// Region where New Relic account is present
 	Region *string
 }
 
@@ -33,7 +33,7 @@ type AccountProperties struct {
 	// organization id
 	OrganizationID *string
 
-	// region
+	// Region where New Relic account is present
 	Region *string
 }
 
@@ -109,6 +109,45 @@ type AppServicesListResponse struct {
 	NextLink *string
 }
 
+// BillingInfoResponse - Marketplace Subscription and Organization details to which resource gets billed into.
+type BillingInfoResponse struct {
+	// Marketplace Subscription details
+	MarketplaceSaasInfo *MarketplaceSaaSInfo
+
+	// Partner Billing Entity details: Organization Info
+	PartnerBillingEntity *PartnerBillingEntity
+}
+
+// ConnectedPartnerResourceProperties - Connected Partner Resource Properties
+type ConnectedPartnerResourceProperties struct {
+	// NewRelic Account Id
+	AccountID *string
+
+	// NewRelic account name
+	AccountName *string
+
+	// The azure resource Id of the deployment.
+	AzureResourceID *string
+
+	// The location of the deployment.
+	Location *string
+}
+
+// ConnectedPartnerResourcesListFormat - Connected Partner Resources List Format
+type ConnectedPartnerResourcesListFormat struct {
+	// Connected Partner Resource Properties
+	Properties *ConnectedPartnerResourceProperties
+}
+
+// ConnectedPartnerResourcesListResponse - List of all active newrelic deployments.
+type ConnectedPartnerResourcesListResponse struct {
+	// Link to the next set of results, if any.
+	NextLink *string
+
+	// Results of a list operation.
+	Value []*ConnectedPartnerResourcesListFormat
+}
+
 // FilteringTag - The definition of a filtering tag. Filtering tags are used for capturing resources and include/exclude them
 // from being monitored.
 type FilteringTag struct {
@@ -129,6 +168,21 @@ type HostsGetRequest struct {
 
 	// VM resource IDs
 	VMIDs []*string
+}
+
+// LinkedResource - The definition of a linked resource.
+type LinkedResource struct {
+	// The ARM id of the linked resource.
+	ID *string
+}
+
+// LinkedResourceListResponse - Response of a list operation.
+type LinkedResourceListResponse struct {
+	// Link to the next set of results, if any.
+	NextLink *string
+
+	// Results of a list operation.
+	Value []*LinkedResource
 }
 
 // LogRules - Set of rules for sending logs for the Monitor resource.
@@ -167,6 +221,24 @@ type ManagedServiceIdentity struct {
 
 	// READ-ONLY; The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity.
 	TenantID *string
+}
+
+// MarketplaceSaaSInfo - Marketplace SAAS Info of the resource.
+type MarketplaceSaaSInfo struct {
+	// The Azure Subscription ID to which the Marketplace Subscription belongs and gets billed into.
+	BilledAzureSubscriptionID *string
+
+	// Marketplace Subscription Details: Resource URI
+	MarketplaceResourceID *string
+
+	// Marketplace Subscription Details: SaaS Subscription Status
+	MarketplaceStatus *string
+
+	// Marketplace Subscription Id. This is a GUID-formatted string.
+	MarketplaceSubscriptionID *string
+
+	// Marketplace Subscription Details: SAAS Name
+	MarketplaceSubscriptionName *string
 }
 
 // MetricRules - Set of rules for sending metrics for the Monitor resource.
@@ -216,6 +288,12 @@ type MonitorProperties struct {
 	// Plan details
 	PlanData *PlanData
 
+	// Status of Azure Subscription where Marketplace SaaS is located.
+	SaaSAzureSubscriptionStatus *string
+
+	// State of the Azure Subscription containing the monitor resource
+	SubscriptionState *string
+
 	// User Info
 	UserInfo *UserInfo
 
@@ -263,6 +341,42 @@ type MonitoredResourceListResponse struct {
 
 	// The link to the next page of items
 	NextLink *string
+}
+
+// MonitoredSubscription - The list of subscriptions and it's monitoring status by current NewRelic monitor.
+type MonitoredSubscription struct {
+	// The reason of not monitoring the subscription.
+	Error *string
+
+	// The state of monitoring.
+	Status *Status
+
+	// The subscriptionId to be monitored.
+	SubscriptionID *string
+
+	// The resource-specific properties for this resource.
+	TagRules *MonitoringTagRulesProperties
+}
+
+// MonitoredSubscriptionProperties - The request to update subscriptions needed to be monitored by the NewRelic monitor resource.
+type MonitoredSubscriptionProperties struct {
+	// The request to update subscriptions needed to be monitored by the NewRelic monitor resource.
+	Properties *SubscriptionList
+
+	// READ-ONLY; The id of the monitored subscription resource.
+	ID *string
+
+	// READ-ONLY; Name of the monitored subscription resource.
+	Name *string
+
+	// READ-ONLY; The type of the monitored subscription resource.
+	Type *string
+}
+
+type MonitoredSubscriptionPropertiesList struct {
+	// The link to the next page of items
+	NextLink *string
+	Value    []*MonitoredSubscriptionProperties
 }
 
 // MonitoringTagRulesProperties - The resource-specific properties for this resource.
@@ -452,6 +566,15 @@ type OrganizationsListResponse struct {
 	NextLink *string
 }
 
+// PartnerBillingEntity - Partner Billing details associated with the resource.
+type PartnerBillingEntity struct {
+	// The New Relic Organization Id.
+	OrganizationID *string
+
+	// The New Relic Organization Name.
+	OrganizationName *string
+}
+
 // PlanData - Plan data of NewRelic Monitor resource
 type PlanData struct {
 	// Different billing cycles like MONTHLY/WEEKLY. this could be enum
@@ -504,6 +627,18 @@ type PlanDataResource struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
+}
+
+// SubscriptionList - The request to update subscriptions needed to be monitored by the NewRelic monitor resource.
+type SubscriptionList struct {
+	// List of subscriptions and the state of the monitoring.
+	MonitoredSubscriptionList []*MonitoredSubscription
+
+	// The operation for the patch on the resource.
+	PatchOperation *PatchOperation
+
+	// READ-ONLY; Provisioning State of the resource
+	ProvisioningState *ProvisioningState
 }
 
 // SwitchBillingRequest - Request of a switch billing Operation.

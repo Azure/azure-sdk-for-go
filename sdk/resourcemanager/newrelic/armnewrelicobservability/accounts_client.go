@@ -45,7 +45,7 @@ func NewAccountsClient(subscriptionID string, credential azcore.TokenCredential,
 
 // NewListPager - List all the existing accounts
 //
-// Generated from API version 2022-07-01
+// Generated from API version 2024-01-01
 //   - userEmail - User Email.
 //   - location - Location for NewRelic.
 //   - options - AccountsClientListOptions contains the optional parameters for the AccountsClient.NewListPager method.
@@ -84,9 +84,9 @@ func (client *AccountsClient) listCreateRequest(ctx context.Context, userEmail s
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
-	reqQP.Set("userEmail", userEmail)
+	reqQP.Set("api-version", "2024-01-01")
 	reqQP.Set("location", location)
+	reqQP.Set("userEmail", userEmail)
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

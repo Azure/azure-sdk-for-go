@@ -466,8 +466,8 @@ func TestContainerQueryItems(t *testing.T) {
 			receivedIds = append(receivedIds, itemResponseBody["id"].(string))
 		}
 
-		if queryPager.More() && queryResponse.ContinuationToken != "someContinuationToken" {
-			t.Errorf("Expected ContinuationToken to be %s, but got %s", "someContinuationToken", queryResponse.ContinuationToken)
+		if queryPager.More() && (queryResponse.ContinuationToken == nil || *queryResponse.ContinuationToken != "someContinuationToken") {
+			t.Errorf("Expected ContinuationToken to be %s, but got %s", "someContinuationToken", *queryResponse.ContinuationToken)
 		}
 
 		if queryResponse.QueryMetrics == nil || *queryResponse.QueryMetrics != "someQueryMetrics" {

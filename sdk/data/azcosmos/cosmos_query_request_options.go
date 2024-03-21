@@ -14,7 +14,7 @@ type QueryOptions struct {
 	// If you wanted these nodes to participate in the same session (to be able read your own writes consistently across web tiers),
 	// you would have to send the SessionToken from the response of the write action on one node to the client tier, using a cookie or some other mechanism, and have that token flow back to the web tier for subsequent reads.
 	// If you are using a round-robin load balancer which does not maintain session affinity between requests, such as the Azure Load Balancer,the read could potentially land on a different node to the write request, where the session was created.
-	SessionToken string
+	SessionToken *string
 	// ConsistencyLevel overrides the account defined consistency level for this operation.
 	// Consistency can only be relaxed.
 	ConsistencyLevel *ConsistencyLevel
@@ -30,7 +30,7 @@ type QueryOptions struct {
 	EnableScanInQuery bool
 	// ContinuationToken to be used to continue a previous query execution.
 	// Obtained from QueryItemsResponse.ContinuationToken.
-	ContinuationToken string
+	ContinuationToken *string
 	// QueryParameters allows execution of parametrized queries.
 	// See https://docs.microsoft.com/azure/cosmos-db/sql/sql-query-parameterized-queries
 	QueryParameters []QueryParameter
@@ -43,8 +43,8 @@ func (options *QueryOptions) toHeaders() *map[string]string {
 		headers[cosmosHeaderConsistencyLevel] = string(*options.ConsistencyLevel)
 	}
 
-	if options.SessionToken != "" {
-		headers[cosmosHeaderSessionToken] = options.SessionToken
+	if options.SessionToken != nil {
+		headers[cosmosHeaderSessionToken] = *options.SessionToken
 	}
 
 	if options.ResponseContinuationTokenLimitInKB > 0 {
@@ -63,8 +63,8 @@ func (options *QueryOptions) toHeaders() *map[string]string {
 		headers[cosmosHeaderPopulateIndexMetrics] = "true"
 	}
 
-	if options.ContinuationToken != "" {
-		headers[cosmosHeaderContinuationToken] = options.ContinuationToken
+	if options.ContinuationToken != nil {
+		headers[cosmosHeaderContinuationToken] = *options.ContinuationToken
 	}
 
 	headers[cosmosHeaderPopulateQueryMetrics] = "true"

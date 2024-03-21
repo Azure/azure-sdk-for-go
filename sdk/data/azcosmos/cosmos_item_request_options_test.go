@@ -14,7 +14,8 @@ func TestItemRequestOptionsToHeaders(t *testing.T) {
 	options.PreTriggers = []string{"preTrigger1", "preTrigger2"}
 	options.PostTriggers = []string{"postTrigger1", "postTrigger2"}
 	options.ConsistencyLevel = ConsistencyLevelSession.ToPtr()
-	options.SessionToken = "sessionToken"
+	sessionToken := "sessionToken"
+	options.SessionToken = &sessionToken
 	options.IndexingDirective = IndexingDirectiveInclude.ToPtr()
 	etagValue := azcore.ETag("someEtag")
 	options.IfMatchEtag = &etagValue

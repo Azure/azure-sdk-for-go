@@ -49,7 +49,7 @@ func TestSinglePartitionQueryWithIndexMetrics(t *testing.T) {
 			receivedIds = append(receivedIds, itemResponseBody["id"].(string))
 		}
 
-		if queryPager.More() && queryResponse.ContinuationToken == "" {
+		if queryPager.More() && queryResponse.ContinuationToken == nil {
 			t.Fatal("Query has more pages but no continuation was provided")
 		}
 
@@ -125,7 +125,7 @@ func TestSinglePartitionQuery(t *testing.T) {
 			receivedIds = append(receivedIds, itemResponseBody["id"].(string))
 		}
 
-		if queryPager.More() && queryResponse.ContinuationToken == "" {
+		if queryPager.More() && queryResponse.ContinuationToken == nil {
 			t.Fatal("Query has more pages but no continuation was provided")
 		}
 
@@ -149,7 +149,7 @@ func TestSinglePartitionQuery(t *testing.T) {
 			t.Fatalf("Expected 5 items, got %d", len(queryResponse.Items))
 		}
 
-		if numberOfPages == 2 && opt.ContinuationToken != "" {
+		if numberOfPages == 2 && opt.ContinuationToken != nil {
 			t.Fatalf("Original options should not be modified, initial continuation was empty, now it has %v", opt.ContinuationToken)
 		}
 	}
@@ -261,7 +261,7 @@ func TestSinglePartitionQueryWithProjection(t *testing.T) {
 			receivedIds = append(receivedIds, itemResponseBody)
 		}
 
-		if queryPager.More() && queryResponse.ContinuationToken == "" {
+		if queryPager.More() && queryResponse.ContinuationToken == nil {
 			t.Fatal("Query has more pages but no continuation was provided")
 		}
 
@@ -285,7 +285,7 @@ func TestSinglePartitionQueryWithProjection(t *testing.T) {
 			t.Fatalf("Expected 5 items, got %d", len(queryResponse.Items))
 		}
 
-		if numberOfPages == 2 && opt.ContinuationToken != "" {
+		if numberOfPages == 2 && opt.ContinuationToken != nil {
 			t.Fatalf("Original options should not be modified, initial continuation was empty, now it has %v", opt.ContinuationToken)
 		}
 	}

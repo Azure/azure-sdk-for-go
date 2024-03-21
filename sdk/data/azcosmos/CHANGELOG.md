@@ -7,9 +7,9 @@
 * Added cross-region availability and failover mechanics supporting [Azure Cosmos DB SDK multiregional environment behavior](https://learn.microsoft.com/azure/cosmos-db/nosql/troubleshoot-sdk-availability)
 * Added extended logging for requests, responses, and client configuration
 
-### Bugs Fixed
-
-### Other Changes
+### Breaking Changes
+* ItemOptions.SessionToken, QueryOptions.SessionToken, QueryOptions.ContinuationToken are now `*string`
+* ItemResponse.SessionToken, QueryItemsResponse.ContinuationToken are now `*string`
 
 ## 0.3.6 (2023-08-18)
 

@@ -24,6 +24,16 @@ type WorkspaceClientCheckNameAvailabilityOptions struct {
 	// placeholder for future optional parameters
 }
 
+// WorkspaceClientListKeysOptions contains the optional parameters for the WorkspaceClient.ListKeys method.
+type WorkspaceClientListKeysOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WorkspaceClientRegenerateKeysOptions contains the optional parameters for the WorkspaceClient.RegenerateKeys method.
+type WorkspaceClientRegenerateKeysOptions struct {
+	// placeholder for future optional parameters
+}
+
 // WorkspacesClientBeginCreateOrUpdateOptions contains the optional parameters for the WorkspacesClient.BeginCreateOrUpdate
 // method.
 type WorkspacesClientBeginCreateOrUpdateOptions struct {

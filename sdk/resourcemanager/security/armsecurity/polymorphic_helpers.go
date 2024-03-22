@@ -11,7 +11,7 @@ package armsecurity
 import "encoding/json"
 
 func unmarshalAdditionalDataClassification(rawMsg json.RawMessage) (AdditionalDataClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -36,7 +36,7 @@ func unmarshalAdditionalDataClassification(rawMsg json.RawMessage) (AdditionalDa
 }
 
 func unmarshalAlertSimulatorRequestPropertiesClassification(rawMsg json.RawMessage) (AlertSimulatorRequestPropertiesClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -57,7 +57,7 @@ func unmarshalAlertSimulatorRequestPropertiesClassification(rawMsg json.RawMessa
 }
 
 func unmarshalAllowlistCustomAlertRuleClassification(rawMsg json.RawMessage) (AllowlistCustomAlertRuleClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -84,7 +84,7 @@ func unmarshalAllowlistCustomAlertRuleClassification(rawMsg json.RawMessage) (Al
 }
 
 func unmarshalAllowlistCustomAlertRuleClassificationArray(rawMsg json.RawMessage) ([]AllowlistCustomAlertRuleClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var rawMessages []json.RawMessage
@@ -103,7 +103,7 @@ func unmarshalAllowlistCustomAlertRuleClassificationArray(rawMsg json.RawMessage
 }
 
 func unmarshalAuthenticationDetailsPropertiesClassification(rawMsg json.RawMessage) (AuthenticationDetailsPropertiesClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -128,7 +128,7 @@ func unmarshalAuthenticationDetailsPropertiesClassification(rawMsg json.RawMessa
 }
 
 func unmarshalAutomationActionClassification(rawMsg json.RawMessage) (AutomationActionClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -153,7 +153,7 @@ func unmarshalAutomationActionClassification(rawMsg json.RawMessage) (Automation
 }
 
 func unmarshalAutomationActionClassificationArray(rawMsg json.RawMessage) ([]AutomationActionClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var rawMessages []json.RawMessage
@@ -172,7 +172,7 @@ func unmarshalAutomationActionClassificationArray(rawMsg json.RawMessage) ([]Aut
 }
 
 func unmarshalAwsOrganizationalDataClassification(rawMsg json.RawMessage) (AwsOrganizationalDataClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -195,7 +195,7 @@ func unmarshalAwsOrganizationalDataClassification(rawMsg json.RawMessage) (AwsOr
 }
 
 func unmarshalCloudOfferingClassification(rawMsg json.RawMessage) (CloudOfferingClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -248,7 +248,7 @@ func unmarshalCloudOfferingClassification(rawMsg json.RawMessage) (CloudOffering
 }
 
 func unmarshalCloudOfferingClassificationArray(rawMsg json.RawMessage) ([]CloudOfferingClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var rawMessages []json.RawMessage
@@ -267,7 +267,7 @@ func unmarshalCloudOfferingClassificationArray(rawMsg json.RawMessage) ([]CloudO
 }
 
 func unmarshalEnvironmentDataClassification(rawMsg json.RawMessage) (EnvironmentDataClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -296,7 +296,7 @@ func unmarshalEnvironmentDataClassification(rawMsg json.RawMessage) (Environment
 }
 
 func unmarshalExternalSecuritySolutionClassification(rawMsg json.RawMessage) (ExternalSecuritySolutionClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -321,7 +321,7 @@ func unmarshalExternalSecuritySolutionClassification(rawMsg json.RawMessage) (Ex
 }
 
 func unmarshalExternalSecuritySolutionClassificationArray(rawMsg json.RawMessage) ([]ExternalSecuritySolutionClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var rawMessages []json.RawMessage
@@ -340,7 +340,7 @@ func unmarshalExternalSecuritySolutionClassificationArray(rawMsg json.RawMessage
 }
 
 func unmarshalGcpOrganizationalDataClassification(rawMsg json.RawMessage) (GcpOrganizationalDataClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -363,7 +363,7 @@ func unmarshalGcpOrganizationalDataClassification(rawMsg json.RawMessage) (GcpOr
 }
 
 func unmarshalResourceDetailsClassification(rawMsg json.RawMessage) (ResourceDetailsClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -388,7 +388,7 @@ func unmarshalResourceDetailsClassification(rawMsg json.RawMessage) (ResourceDet
 }
 
 func unmarshalResourceIdentifierClassification(rawMsg json.RawMessage) (ResourceIdentifierClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -411,7 +411,7 @@ func unmarshalResourceIdentifierClassification(rawMsg json.RawMessage) (Resource
 }
 
 func unmarshalResourceIdentifierClassificationArray(rawMsg json.RawMessage) ([]ResourceIdentifierClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var rawMessages []json.RawMessage
@@ -429,8 +429,48 @@ func unmarshalResourceIdentifierClassificationArray(rawMsg json.RawMessage) ([]R
 	return fArray, nil
 }
 
+func unmarshalServerVulnerabilityAssessmentsSettingClassification(rawMsg json.RawMessage) (ServerVulnerabilityAssessmentsSettingClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b ServerVulnerabilityAssessmentsSettingClassification
+	switch m["kind"] {
+	case string(ServerVulnerabilityAssessmentsSettingKindAzureServersSetting):
+		b = &AzureServersSetting{}
+	default:
+		b = &ServerVulnerabilityAssessmentsSetting{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
+func unmarshalServerVulnerabilityAssessmentsSettingClassificationArray(rawMsg json.RawMessage) ([]ServerVulnerabilityAssessmentsSettingClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var rawMessages []json.RawMessage
+	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
+		return nil, err
+	}
+	fArray := make([]ServerVulnerabilityAssessmentsSettingClassification, len(rawMessages))
+	for index, rawMessage := range rawMessages {
+		f, err := unmarshalServerVulnerabilityAssessmentsSettingClassification(rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		fArray[index] = f
+	}
+	return fArray, nil
+}
+
 func unmarshalSettingClassification(rawMsg json.RawMessage) (SettingClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -453,7 +493,7 @@ func unmarshalSettingClassification(rawMsg json.RawMessage) (SettingClassificati
 }
 
 func unmarshalSettingClassificationArray(rawMsg json.RawMessage) ([]SettingClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var rawMessages []json.RawMessage
@@ -472,7 +512,7 @@ func unmarshalSettingClassificationArray(rawMsg json.RawMessage) ([]SettingClass
 }
 
 func unmarshalThresholdCustomAlertRuleClassification(rawMsg json.RawMessage) (ThresholdCustomAlertRuleClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -525,7 +565,7 @@ func unmarshalThresholdCustomAlertRuleClassification(rawMsg json.RawMessage) (Th
 }
 
 func unmarshalThresholdCustomAlertRuleClassificationArray(rawMsg json.RawMessage) ([]ThresholdCustomAlertRuleClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var rawMessages []json.RawMessage
@@ -544,7 +584,7 @@ func unmarshalThresholdCustomAlertRuleClassificationArray(rawMsg json.RawMessage
 }
 
 func unmarshalTimeWindowCustomAlertRuleClassification(rawMsg json.RawMessage) (TimeWindowCustomAlertRuleClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -595,7 +635,7 @@ func unmarshalTimeWindowCustomAlertRuleClassification(rawMsg json.RawMessage) (T
 }
 
 func unmarshalTimeWindowCustomAlertRuleClassificationArray(rawMsg json.RawMessage) ([]TimeWindowCustomAlertRuleClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var rawMessages []json.RawMessage

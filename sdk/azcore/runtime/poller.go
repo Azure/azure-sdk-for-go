@@ -154,7 +154,7 @@ func NewPollerFromResumeToken[T any](token string, pl exported.Pipeline, options
 	if err != nil {
 		return nil, err
 	}
-	var asJSON map[string]interface{}
+	var asJSON map[string]any
 	if err := json.Unmarshal(raw, &asJSON); err != nil {
 		return nil, err
 	}
@@ -240,7 +240,7 @@ func (p *Poller[T]) PollUntilDone(ctx context.Context, options *PollUntilDoneOpt
 	}
 
 	start := time.Now()
-	logPollUntilDoneExit := func(v interface{}) {
+	logPollUntilDoneExit := func(v any) {
 		log.Writef(log.EventLRO, "END PollUntilDone() for %T: %v, total time: %s", p.op, v, time.Since(start))
 	}
 	log.Writef(log.EventLRO, "BEGIN PollUntilDone() for %T", p.op)

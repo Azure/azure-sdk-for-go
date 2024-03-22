@@ -10,7 +10,7 @@ package armmobilenetwork
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mobilenetwork/armmobilenetwork"
-	moduleVersion = "v3.1.0"
+	moduleVersion = "v4.0.0"
 )
 
 // AuthenticationType - How to authenticate users who access local diagnostics APIs.
@@ -156,6 +156,28 @@ func PossibleDiagnosticsPackageStatusValues() []DiagnosticsPackageStatus {
 		DiagnosticsPackageStatusCollecting,
 		DiagnosticsPackageStatusError,
 		DiagnosticsPackageStatusNotStarted,
+	}
+}
+
+// HomeNetworkPrivateKeysProvisioningState - The provisioning state of the private keys for SUPI concealment.
+type HomeNetworkPrivateKeysProvisioningState string
+
+const (
+	// HomeNetworkPrivateKeysProvisioningStateFailed - Provisioning of the private keys for SUPI concealment has failed.
+	HomeNetworkPrivateKeysProvisioningStateFailed HomeNetworkPrivateKeysProvisioningState = "Failed"
+	// HomeNetworkPrivateKeysProvisioningStateNotProvisioned - Provisioning of the private keys for SUPI concealment has not been
+	// attempted.
+	HomeNetworkPrivateKeysProvisioningStateNotProvisioned HomeNetworkPrivateKeysProvisioningState = "NotProvisioned"
+	// HomeNetworkPrivateKeysProvisioningStateProvisioned - The private keys for SUPI concealment are successfully provisioned.
+	HomeNetworkPrivateKeysProvisioningStateProvisioned HomeNetworkPrivateKeysProvisioningState = "Provisioned"
+)
+
+// PossibleHomeNetworkPrivateKeysProvisioningStateValues returns the possible values for the HomeNetworkPrivateKeysProvisioningState const type.
+func PossibleHomeNetworkPrivateKeysProvisioningStateValues() []HomeNetworkPrivateKeysProvisioningState {
+	return []HomeNetworkPrivateKeysProvisioningState{
+		HomeNetworkPrivateKeysProvisioningStateFailed,
+		HomeNetworkPrivateKeysProvisioningStateNotProvisioned,
+		HomeNetworkPrivateKeysProvisioningStateProvisioned,
 	}
 }
 
@@ -318,6 +340,20 @@ func PossiblePacketCaptureStatusValues() []PacketCaptureStatus {
 	}
 }
 
+// PdnType - Packet Data Network Type
+type PdnType string
+
+const (
+	PdnTypeIPV4 PdnType = "IPV4"
+)
+
+// PossiblePdnTypeValues returns the possible values for the PdnType const type.
+func PossiblePdnTypeValues() []PdnType {
+	return []PdnType{
+		PdnTypeIPV4,
+	}
+}
+
 // PduSessionType - PDU session type (IPv4/IPv6).
 type PduSessionType string
 
@@ -416,6 +452,22 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 	}
 }
 
+// RatType - RAT Type
+type RatType string
+
+const (
+	RatTypeFiveG RatType = "5G"
+	RatTypeFourG RatType = "4G"
+)
+
+// PossibleRatTypeValues returns the possible values for the RatType const type.
+func PossibleRatTypeValues() []RatType {
+	return []RatType{
+		RatTypeFiveG,
+		RatTypeFourG,
+	}
+}
+
 // RecommendedVersion - Indicates whether this is the recommended version to use for new packet core control plane deployments.
 type RecommendedVersion string
 
@@ -449,6 +501,30 @@ func PossibleReinstallRequiredValues() []ReinstallRequired {
 	return []ReinstallRequired{
 		ReinstallRequiredNotRequired,
 		ReinstallRequiredRequired,
+	}
+}
+
+// RrcEstablishmentCause - Radio connection establishment cause
+type RrcEstablishmentCause string
+
+const (
+	RrcEstablishmentCauseEmergency                 RrcEstablishmentCause = "Emergency"
+	RrcEstablishmentCauseMobileOriginatedData      RrcEstablishmentCause = "MobileOriginatedData"
+	RrcEstablishmentCauseMobileOriginatedSignaling RrcEstablishmentCause = "MobileOriginatedSignaling"
+	RrcEstablishmentCauseMobileTerminatedData      RrcEstablishmentCause = "MobileTerminatedData"
+	RrcEstablishmentCauseMobileTerminatedSignaling RrcEstablishmentCause = "MobileTerminatedSignaling"
+	RrcEstablishmentCauseSMS                       RrcEstablishmentCause = "SMS"
+)
+
+// PossibleRrcEstablishmentCauseValues returns the possible values for the RrcEstablishmentCause const type.
+func PossibleRrcEstablishmentCauseValues() []RrcEstablishmentCause {
+	return []RrcEstablishmentCause{
+		RrcEstablishmentCauseEmergency,
+		RrcEstablishmentCauseMobileOriginatedData,
+		RrcEstablishmentCauseMobileOriginatedSignaling,
+		RrcEstablishmentCauseMobileTerminatedData,
+		RrcEstablishmentCauseMobileTerminatedSignaling,
+		RrcEstablishmentCauseSMS,
 	}
 }
 
@@ -539,6 +615,44 @@ func PossibleTrafficControlPermissionValues() []TrafficControlPermission {
 	return []TrafficControlPermission{
 		TrafficControlPermissionBlocked,
 		TrafficControlPermissionEnabled,
+	}
+}
+
+// UeState - State of the UE.
+type UeState string
+
+const (
+	UeStateConnected    UeState = "Connected"
+	UeStateDeregistered UeState = "Deregistered"
+	UeStateDetached     UeState = "Detached"
+	UeStateIdle         UeState = "Idle"
+	UeStateUnknown      UeState = "Unknown"
+)
+
+// PossibleUeStateValues returns the possible values for the UeState const type.
+func PossibleUeStateValues() []UeState {
+	return []UeState{
+		UeStateConnected,
+		UeStateDeregistered,
+		UeStateDetached,
+		UeStateIdle,
+		UeStateUnknown,
+	}
+}
+
+// UeUsageSetting - The UE's usage setting
+type UeUsageSetting string
+
+const (
+	UeUsageSettingDataCentric  UeUsageSetting = "DataCentric"
+	UeUsageSettingVoiceCentric UeUsageSetting = "VoiceCentric"
+)
+
+// PossibleUeUsageSettingValues returns the possible values for the UeUsageSetting const type.
+func PossibleUeUsageSettingValues() []UeUsageSetting {
+	return []UeUsageSetting{
+		UeUsageSettingDataCentric,
+		UeUsageSettingVoiceCentric,
 	}
 }
 

@@ -1,5 +1,30 @@
 # Release History
 
+## 0.5.1 (Unreleased)
+
+### Features Added
+
+- Updating to the `2024-03-01-preview` API version. This adds support for using Dimensions with Embeddings as well as the ability to choose the embeddings format. PR(#22603)
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 0.5.0 (2024-03-05)
+
+### Features Added
+
+- Updating to the `2024-02-15-preview` API version.
+- `GetAudioSpeech` enables translating text to speech.
+
+### Breaking Changes
+
+- Citations, previously returned as an unparsed JSON blob, are now deserialized into a real type in `ChatResponseMessage.Citations`.
+- `AzureCognitiveSearchChatExtensionConfiguration` has been renamed to `AzureSearchChatExtensionConfiguration`.
+- `AzureCognitiveSearchChatExtensionParameters` has been renamed to `AzureSearchChatExtensionParameters`.
+
 ## 0.4.1 (2024-01-16)
 
 ### Bugs Fixed

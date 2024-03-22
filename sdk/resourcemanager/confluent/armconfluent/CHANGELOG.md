@@ -1,5 +1,52 @@
 # Release History
 
+## 1.3.0 (2024-03-22)
+### Features Added
+
+- New function `*AccessClient.CreateRoleBinding(context.Context, string, string, AccessCreateRoleBindingRequestModel, *AccessClientCreateRoleBindingOptions) (AccessClientCreateRoleBindingResponse, error)`
+- New function `*AccessClient.DeleteRoleBinding(context.Context, string, string, string, *AccessClientDeleteRoleBindingOptions) (AccessClientDeleteRoleBindingResponse, error)`
+- New function `*AccessClient.ListRoleBindingNameList(context.Context, string, string, ListAccessRequestModel, *AccessClientListRoleBindingNameListOptions) (AccessClientListRoleBindingNameListResponse, error)`
+- New function `*OrganizationClient.CreateAPIKey(context.Context, string, string, string, string, CreateAPIKeyModel, *OrganizationClientCreateAPIKeyOptions) (OrganizationClientCreateAPIKeyResponse, error)`
+- New function `*OrganizationClient.DeleteClusterAPIKey(context.Context, string, string, string, *OrganizationClientDeleteClusterAPIKeyOptions) (OrganizationClientDeleteClusterAPIKeyResponse, error)`
+- New function `*OrganizationClient.GetClusterAPIKey(context.Context, string, string, string, *OrganizationClientGetClusterAPIKeyOptions) (OrganizationClientGetClusterAPIKeyResponse, error)`
+- New function `*OrganizationClient.GetClusterByID(context.Context, string, string, string, string, *OrganizationClientGetClusterByIDOptions) (OrganizationClientGetClusterByIDResponse, error)`
+- New function `*OrganizationClient.GetEnvironmentByID(context.Context, string, string, string, *OrganizationClientGetEnvironmentByIDOptions) (OrganizationClientGetEnvironmentByIDResponse, error)`
+- New function `*OrganizationClient.GetSchemaRegistryClusterByID(context.Context, string, string, string, string, *OrganizationClientGetSchemaRegistryClusterByIDOptions) (OrganizationClientGetSchemaRegistryClusterByIDResponse, error)`
+- New function `*OrganizationClient.NewListClustersPager(string, string, string, *OrganizationClientListClustersOptions) *runtime.Pager[OrganizationClientListClustersResponse]`
+- New function `*OrganizationClient.NewListEnvironmentsPager(string, string, *OrganizationClientListEnvironmentsOptions) *runtime.Pager[OrganizationClientListEnvironmentsResponse]`
+- New function `*OrganizationClient.ListRegions(context.Context, string, string, ListAccessRequestModel, *OrganizationClientListRegionsOptions) (OrganizationClientListRegionsResponse, error)`
+- New function `*OrganizationClient.NewListSchemaRegistryClustersPager(string, string, string, *OrganizationClientListSchemaRegistryClustersOptions) *runtime.Pager[OrganizationClientListSchemaRegistryClustersResponse]`
+- New struct `APIKeyOwnerEntity`
+- New struct `APIKeyProperties`
+- New struct `APIKeyRecord`
+- New struct `APIKeyResourceEntity`
+- New struct `APIKeySpecEntity`
+- New struct `AccessCreateRoleBindingRequestModel`
+- New struct `AccessRoleBindingNameListSuccessResponse`
+- New struct `ClusterProperties`
+- New struct `CreateAPIKeyModel`
+- New struct `EnvironmentProperties`
+- New struct `GetEnvironmentsResponse`
+- New struct `ListClustersSuccessResponse`
+- New struct `ListRegionsSuccessResponse`
+- New struct `ListSchemaRegistryClustersResponse`
+- New struct `RegionProperties`
+- New struct `RegionRecord`
+- New struct `RegionSpecEntity`
+- New struct `SCClusterByokEntity`
+- New struct `SCClusterNetworkEnvironmentEntity`
+- New struct `SCClusterRecord`
+- New struct `SCClusterSpecEntity`
+- New struct `SCConfluentListMetadata`
+- New struct `SCEnvironmentRecord`
+- New struct `SCMetadataEntity`
+- New struct `SchemaRegistryClusterEnvironmentRegionEntity`
+- New struct `SchemaRegistryClusterProperties`
+- New struct `SchemaRegistryClusterRecord`
+- New struct `SchemaRegistryClusterSpecEntity`
+- New struct `SchemaRegistryClusterStatusEntity`
+
+
 ## 1.2.0 (2023-11-24)
 ### Features Added
 

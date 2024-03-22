@@ -67,6 +67,18 @@ type CheckNameAvailabilityOutput struct {
 	Reason *string
 }
 
+// ClassificationService - Service Classification result object.
+type ClassificationService struct {
+	// List of applicable ARM resource types for this service.
+	ResourceTypes []*string
+
+	// READ-ONLY; Localized name of the azure service.
+	DisplayName *string
+
+	// READ-ONLY; Azure resource Id of the service.
+	ServiceID *string
+}
+
 // CommunicationDetails - Object that represents a Communication resource.
 type CommunicationDetails struct {
 	// Properties of the resource.
@@ -174,13 +186,13 @@ type FileDetails struct {
 // FileDetailsProperties - Describes the properties of a file.
 type FileDetailsProperties struct {
 	// Size of each chunk
-	ChunkSize *float32
+	ChunkSize *int32
 
 	// Size of the file to be uploaded
-	FileSize *float32
+	FileSize *int32
 
 	// Number of chunks to be uploaded
-	NumberOfChunks *float32
+	NumberOfChunks *int32
 
 	// READ-ONLY; Time in UTC (ISO 8601 format) when file workspace was created.
 	CreatedOn *time.Time
@@ -220,6 +232,21 @@ type FilesListResult struct {
 
 	// List of File resources.
 	Value []*FileDetails
+}
+
+// LookUpResourceIDRequest - The look up resource Id request body
+type LookUpResourceIDRequest struct {
+	// The System generated Id that is unique. Use supportTicketId property for Microsoft.Support/supportTickets resource type.
+	Identifier *string
+
+	// The type of resource.
+	Type *string
+}
+
+// LookUpResourceIDResponse - The look up resource id response
+type LookUpResourceIDResponse struct {
+	// The resource Id of support resource type.
+	ResourceID *string
 }
 
 // MessageProperties - Describes the properties of a Message Details resource.
@@ -290,8 +317,50 @@ type ProblemClassificationProperties struct {
 	// Localized name of problem classification.
 	DisplayName *string
 
+	// Reference to the parent problem classification which has same structure as problem classification
+	ParentProblemClassification *ProblemClassification
+
 	// This property indicates whether secondary consent is present for problem classification
 	SecondaryConsentEnabled []*SecondaryConsentEnabled
+
+	// READ-ONLY; String-to-string dictionary for additional metadata.
+	Metadata map[string]*string
+}
+
+// ProblemClassificationsClassificationInput - Input to problem classification Classification API.
+type ProblemClassificationsClassificationInput struct {
+	// REQUIRED; Natural language description of the customer’s issue.
+	IssueSummary *string
+
+	// ARM resource Id of the resource that is having the issue.
+	ResourceID *string
+}
+
+// ProblemClassificationsClassificationOutput - Output of the problem classification Classification API.
+type ProblemClassificationsClassificationOutput struct {
+	// Set of problem classification objects classified.
+	ProblemClassificationResults []*ProblemClassificationsClassificationResult
+}
+
+// ProblemClassificationsClassificationResult - ProblemClassification Classification result object.
+type ProblemClassificationsClassificationResult struct {
+	// Related service.
+	RelatedService *ClassificationService
+
+	// READ-ONLY; Description of the problem classification result.
+	Description *string
+
+	// READ-ONLY; Identifier that may be used for support ticket creation.
+	ProblemClassificationID *string
+
+	// READ-ONLY; Identifier that may be used for solution discovery or some other purposes.
+	ProblemID *string
+
+	// READ-ONLY; Identifier of the service associated with this problem classification result.
+	ServiceID *string
+
+	// READ-ONLY; Title of the problem classification result.
+	Title *string
 }
 
 // ProblemClassificationsListResult - Collection of ProblemClassification resources.
@@ -357,6 +426,39 @@ type Service struct {
 	Type *string
 }
 
+// ServiceClassificationAnswer - Service Classification result object.
+type ServiceClassificationAnswer struct {
+	// Child service.
+	ChildService *ClassificationService
+
+	// List of applicable ARM resource types for this service.
+	ResourceTypes []*string
+
+	// READ-ONLY; Localized name of the azure service.
+	DisplayName *string
+
+	// READ-ONLY; Azure resource Id of the service.
+	ServiceID *string
+}
+
+// ServiceClassificationOutput - Output of the service classification API.
+type ServiceClassificationOutput struct {
+	// Set of problem classification objects classified.
+	ServiceClassificationResults []*ServiceClassificationAnswer
+}
+
+// ServiceClassificationRequest - Input to problem classification Classification API.
+type ServiceClassificationRequest struct {
+	// Additional information in the form of a string.
+	AdditionalContext *string
+
+	// Natural language description of the customer’s issue.
+	IssueSummary *string
+
+	// ARM resource Id of the resource that is having the issue.
+	ResourceID *string
+}
+
 // ServiceLevelAgreement - Service Level Agreement details for a support ticket.
 type ServiceLevelAgreement struct {
 	// READ-ONLY; Time in UTC (ISO 8601 format) when the service level agreement expires.
@@ -376,6 +478,9 @@ type ServiceProperties struct {
 
 	// ARM Resource types.
 	ResourceTypes []*string
+
+	// READ-ONLY; Metadata about the service, only visible for 1P clients
+	Metadata map[string]*string
 }
 
 // ServicesListResult - Collection of Service resources.
@@ -454,6 +559,9 @@ type TicketDetailsProperties struct {
 	// Advanced diagnostic consent to be updated on the support ticket.
 	AdvancedDiagnosticConsent *Consent
 
+	// Enrollment Id associated with the support ticket.
+	EnrollmentID *string
+
 	// File workspace name.
 	FileWorkspaceName *string
 
@@ -490,8 +598,8 @@ type TicketDetailsProperties struct {
 	// READ-ONLY; Time in UTC (ISO 8601 format) when the support ticket was created.
 	CreatedDate *time.Time
 
-	// READ-ONLY; Enrollment Id associated with the support ticket.
-	EnrollmentID *string
+	// READ-ONLY; This property indicates if support ticket is a temporary ticket.
+	IsTemporaryTicket *IsTemporaryTicket
 
 	// READ-ONLY; Time in UTC (ISO 8601 format) when the support ticket was last modified.
 	ModifiedDate *time.Time
@@ -577,7 +685,7 @@ type UpdateSupportTicket struct {
 // UploadFile - File content associated with the file under a workspace.
 type UploadFile struct {
 	// Index of the uploaded chunk (Index starts at 0)
-	ChunkIndex *float32
+	ChunkIndex *int32
 
 	// File Content in base64 encoded format
 	Content *string

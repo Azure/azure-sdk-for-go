@@ -10,7 +10,7 @@ package armnewrelicobservability
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/newrelic/armnewrelicobservability"
-	moduleVersion = "v1.1.0"
+	moduleVersion = "v1.2.0"
 )
 
 // AccountCreationSource - Source of Account creation
@@ -80,6 +80,19 @@ func PossibleBillingSourceValues() []BillingSource {
 	return []BillingSource{
 		BillingSourceAZURE,
 		BillingSourceNEWRELIC,
+	}
+}
+
+type ConfigurationName string
+
+const (
+	ConfigurationNameDefault ConfigurationName = "default"
+)
+
+// PossibleConfigurationNameValues returns the possible values for the ConfigurationName const type.
+func PossibleConfigurationNameValues() []ConfigurationName {
+	return []ConfigurationName{
+		ConfigurationNameDefault,
 	}
 }
 
@@ -210,6 +223,28 @@ func PossibleOriginValues() []Origin {
 		OriginSystem,
 		OriginUser,
 		OriginUserSystem,
+	}
+}
+
+// PatchOperation - The operation for the patch on the resource.
+type PatchOperation string
+
+const (
+	PatchOperationActive         PatchOperation = "Active"
+	PatchOperationAddBegin       PatchOperation = "AddBegin"
+	PatchOperationAddComplete    PatchOperation = "AddComplete"
+	PatchOperationDeleteBegin    PatchOperation = "DeleteBegin"
+	PatchOperationDeleteComplete PatchOperation = "DeleteComplete"
+)
+
+// PossiblePatchOperationValues returns the possible values for the PatchOperation const type.
+func PossiblePatchOperationValues() []PatchOperation {
+	return []PatchOperation{
+		PatchOperationActive,
+		PatchOperationAddBegin,
+		PatchOperationAddComplete,
+		PatchOperationDeleteBegin,
+		PatchOperationDeleteComplete,
 	}
 }
 
@@ -365,6 +400,26 @@ func PossibleSingleSignOnStatesValues() []SingleSignOnStates {
 		SingleSignOnStatesEnable,
 		SingleSignOnStatesExisting,
 		SingleSignOnStatesInitial,
+	}
+}
+
+// Status - The state of monitoring.
+type Status string
+
+const (
+	StatusActive     Status = "Active"
+	StatusDeleting   Status = "Deleting"
+	StatusFailed     Status = "Failed"
+	StatusInProgress Status = "InProgress"
+)
+
+// PossibleStatusValues returns the possible values for the Status const type.
+func PossibleStatusValues() []Status {
+	return []Status{
+		StatusActive,
+		StatusDeleting,
+		StatusFailed,
+		StatusInProgress,
 	}
 }
 

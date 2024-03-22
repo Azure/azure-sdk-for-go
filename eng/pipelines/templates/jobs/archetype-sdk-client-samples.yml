@@ -13,6 +13,7 @@ stages:
       displayName: Build on
       variables:
         - template: /eng/pipelines/templates/variables/globals.yml
+        - template: /eng/pipelines/templates/variables/image.yml
       strategy:
         matrix:
           Linux_Go118:
@@ -67,6 +68,7 @@ stages:
       displayName: Analyze
       variables:
         - template: /eng/pipelines/templates/variables/globals.yml
+        - template: /eng/pipelines/templates/variables/image.yml
       pool:
         name: azsdk-pool-mms-ubuntu-2004-general
 

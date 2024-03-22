@@ -16,8 +16,7 @@ import (
 // ClientFactory is a client factory used to create any client in this module.
 // Don't use this type directly, use NewClientFactory instead.
 type ClientFactory struct {
-	credential azcore.TokenCredential
-	options    *arm.ClientOptions
+	internal *arm.Client
 }
 
 // NewClientFactory creates a new instance of ClientFactory with the specified values.
@@ -25,24 +24,46 @@ type ClientFactory struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewClientFactory(credential azcore.TokenCredential, options *arm.ClientOptions) (*ClientFactory, error) {
-	_, err := arm.NewClient(moduleName, moduleVersion, credential, options)
+	internal, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	return &ClientFactory{
-		credential: credential,
-		options:    options.Clone(),
+		internal: internal,
 	}, nil
+}
+
+// NewConfigurationNamesClient creates a new instance of ConfigurationNamesClient.
+func (c *ClientFactory) NewConfigurationNamesClient() *ConfigurationNamesClient {
+	return &ConfigurationNamesClient{
+		internal: c.internal,
+	}
+}
+
+// NewConnectorClient creates a new instance of ConnectorClient.
+func (c *ClientFactory) NewConnectorClient() *ConnectorClient {
+	return &ConnectorClient{
+		internal: c.internal,
+	}
 }
 
 // NewLinkerClient creates a new instance of LinkerClient.
 func (c *ClientFactory) NewLinkerClient() *LinkerClient {
-	subClient, _ := NewLinkerClient(c.credential, c.options)
-	return subClient
+	return &LinkerClient{
+		internal: c.internal,
+	}
+}
+
+// NewLinkersClient creates a new instance of LinkersClient.
+func (c *ClientFactory) NewLinkersClient() *LinkersClient {
+	return &LinkersClient{
+		internal: c.internal,
+	}
 }
 
 // NewOperationsClient creates a new instance of OperationsClient.
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
-	subClient, _ := NewOperationsClient(c.credential, c.options)
-	return subClient
+	return &OperationsClient{
+		internal: c.internal,
+	}
 }

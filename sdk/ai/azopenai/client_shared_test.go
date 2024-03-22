@@ -43,7 +43,8 @@ type testVars struct {
 	ChatCompletions                string
 	ChatCompletionsLegacyFunctions string
 	Embeddings                     string
-	Cognitive                      azopenai.AzureCognitiveSearchChatExtensionConfiguration
+	TextEmbedding3Small            string
+	Cognitive                      azopenai.AzureSearchChatExtensionConfiguration
 	Whisper                        endpointWithModel
 	DallE                          endpointWithModel
 	Vision                         endpointWithModel
@@ -100,19 +101,17 @@ func newTestClient(t *testing.T, ep endpoint, options ...testClientOption) *azop
 	}
 }
 
-// getEndpointWithModel retrieves details for an endpoint and a model.
+// getEndpoint retrieves details for an endpoint and a model.
 // - res - the resource type for a particular endpoint. Ex: "DALLE".
 //
 // For example, if azure is true we'll load these environment values based on res:
 //   - AOAI_DALLE_ENDPOINT
 //   - AOAI_DALLE_API_KEY
-//   - AOAI_DALLE_MODEL
 //
 // if azure is false we'll load these environment values based on res:
 //   - OPENAI_ENDPOINT
 //   - OPENAI_API_KEY
-//   - OPENAI_DALLE_MODEL
-func getEndpointWithModel(res string, isAzure bool) endpointWithModel {
+func getEndpoint(res string, isAzure bool) endpointWithModel {
 	var ep endpointWithModel
 	if isAzure {
 		// during development resources are often shifted between different
@@ -123,7 +122,6 @@ func getEndpointWithModel(res string, isAzure bool) endpointWithModel {
 				APIKey: getRequired("AOAI_" + res + "_API_KEY"),
 				Azure:  true,
 			},
-			Model: getRequired("AOAI_" + res + "_MODEL"),
 		}
 	} else {
 		ep = endpointWithModel{
@@ -132,7 +130,6 @@ func getEndpointWithModel(res string, isAzure bool) endpointWithModel {
 				APIKey: getRequired("OPENAI_API_KEY"),
 				Azure:  false,
 			},
-			Model: getRequired("OPENAI_" + res + "_MODEL"),
 		}
 	}
 
@@ -144,6 +141,32 @@ func getEndpointWithModel(res string, isAzure bool) endpointWithModel {
 	return ep
 }
 
+func model(azure bool, azureModel, openAIModel string) string {
+	if azure {
+		return azureModel
+	}
+
+	return openAIModel
+}
+
+func updateModels(azure bool, tv *testVars) {
+	// the models we use are basically their own API surface so it's good to know which
+	// specific models our tests were written against.
+	tv.Completions = model(azure, "gpt-35-turbo-instruct", "gpt-3.5-turbo-instruct")
+	tv.ChatCompletions = model(azure, "gpt-35-turbo-0613", "gpt-4-0613")
+	tv.ChatCompletionsLegacyFunctions = model(azure, "gpt-4-0613", "gpt-4-0613")
+	tv.Embeddings = model(azure, "text-embedding-ada-002", "text-embedding-ada-002")
+	tv.TextEmbedding3Small = model(azure, "text-embedding-3-small", "text-embedding-3-small")
+
+	tv.DallE.Model = model(azure, "dall-e-3", "dall-e-3")
+	tv.Whisper.Model = model(azure, "whisper", "whisper-1")
+	tv.Vision.Model = model(azure, "gpt-4-vision-preview", "gpt-4-vision-preview")
+
+	// these are Azure-only features
+	tv.ChatCompletionsOYD.Model = model(azure, "gpt-4", "")
+	tv.ChatCompletionsRAI.Model = model(azure, "gpt-4", "")
+}
+
 func newTestVars(prefix string) testVars {
 	azure := prefix == "AOAI"
 
@@ -153,13 +176,8 @@ func newTestVars(prefix string) testVars {
 			APIKey: getRequired(prefix + "_API_KEY"),
 			Azure:  azure,
 		},
-		Completions:                    getRequired(prefix + "_COMPLETIONS_MODEL"),
-		ChatCompletions:                getRequired(prefix + "_CHAT_COMPLETIONS_MODEL"),
-		ChatCompletionsLegacyFunctions: getRequired(prefix + "_CHAT_COMPLETIONS_MODEL_LEGACY_FUNCTIONS"),
-		Embeddings:                     getRequired(prefix + "_EMBEDDINGS_MODEL"),
-
-		Cognitive: azopenai.AzureCognitiveSearchChatExtensionConfiguration{
-			Parameters: &azopenai.AzureCognitiveSearchChatExtensionParameters{
+		Cognitive: azopenai.AzureSearchChatExtensionConfiguration{
+			Parameters: &azopenai.AzureSearchChatExtensionParameters{
 				Endpoint:  to.Ptr(getRequired("COGNITIVE_SEARCH_API_ENDPOINT")),
 				IndexName: to.Ptr(getRequired("COGNITIVE_SEARCH_API_INDEX")),
 				Authentication: &azopenai.OnYourDataAPIKeyAuthenticationOptions{
@@ -168,15 +186,17 @@ func newTestVars(prefix string) testVars {
 			},
 		},
 
-		DallE:   getEndpointWithModel("DALLE", azure),
-		Whisper: getEndpointWithModel("WHISPER", azure),
-		Vision:  getEndpointWithModel("VISION", azure),
+		DallE:   getEndpoint("DALLE", azure),
+		Whisper: getEndpoint("WHISPER", azure),
+		Vision:  getEndpoint("VISION", azure),
 	}
 
 	if azure {
-		tv.ChatCompletionsRAI = getEndpointWithModel("CHAT_COMPLETIONS_RAI", azure)
-		tv.ChatCompletionsOYD = getEndpointWithModel("OYD", azure)
+		tv.ChatCompletionsRAI = getEndpoint("CHAT_COMPLETIONS_RAI", azure)
+		tv.ChatCompletionsOYD = getEndpoint("OYD", azure)
 	}
+
+	updateModels(azure, &tv)
 
 	if tv.Endpoint.URL != "" && !strings.HasSuffix(tv.Endpoint.URL, "/") {
 		// (this just makes recording replacement easier)
@@ -203,27 +223,22 @@ func initEnvVars() {
 
 		azureOpenAI.Whisper = endpointWithModel{
 			Endpoint: azureOpenAI.Endpoint,
-			Model:    "whisper-deployment",
 		}
 
 		azureOpenAI.ChatCompletionsRAI = endpointWithModel{
 			Endpoint: azureOpenAI.Endpoint,
-			Model:    "gpt-4",
 		}
 
 		azureOpenAI.ChatCompletionsOYD = endpointWithModel{
 			Endpoint: azureOpenAI.Endpoint,
-			Model:    "gpt-4",
 		}
 
 		azureOpenAI.DallE = endpointWithModel{
 			Endpoint: azureOpenAI.Endpoint,
-			Model:    "dall-e-3",
 		}
 
 		azureOpenAI.Vision = endpointWithModel{
 			Endpoint: azureOpenAI.Endpoint,
-			Model:    "gpt-4-vision-preview",
 		}
 
 		openAI.Endpoint = endpoint{
@@ -236,13 +251,14 @@ func initEnvVars() {
 				APIKey: fakeAPIKey,
 				URL:    fakeEndpoint,
 			},
-			Model: "whisper-1",
 		}
 
 		openAI.DallE = endpointWithModel{
 			Endpoint: openAI.Endpoint,
-			Model:    "dall-e-3",
 		}
+
+		updateModels(true, &azureOpenAI)
+		updateModels(false, &openAI)
 
 		openAI.Vision = azureOpenAI.Vision
 
@@ -257,8 +273,8 @@ func initEnvVars() {
 		openAI.Embeddings = "text-embedding-ada-002"
 		azureOpenAI.Embeddings = "text-embedding-ada-002"
 
-		azureOpenAI.Cognitive = azopenai.AzureCognitiveSearchChatExtensionConfiguration{
-			Parameters: &azopenai.AzureCognitiveSearchChatExtensionParameters{
+		azureOpenAI.Cognitive = azopenai.AzureSearchChatExtensionConfiguration{
+			Parameters: &azopenai.AzureSearchChatExtensionParameters{
 				Endpoint:  to.Ptr(fakeCognitiveEndpoint),
 				IndexName: to.Ptr(fakeCognitiveIndexName),
 				Authentication: &azopenai.OnYourDataAPIKeyAuthenticationOptions{
@@ -328,8 +344,8 @@ func newRecordingTransporter(t *testing.T) policy.Transporter {
 		require.NoError(t, err)
 
 		err = recording.AddGeneralRegexSanitizer(
-			fmt.Sprintf(`"indexName": "%s"`, fakeCognitiveIndexName),
-			fmt.Sprintf(`"indexName":\s*"%s"`, *azureOpenAI.Cognitive.Parameters.IndexName), nil)
+			fmt.Sprintf(`"index_name": "%s"`, fakeCognitiveIndexName),
+			fmt.Sprintf(`"index_name":\s*"%s"`, *azureOpenAI.Cognitive.Parameters.IndexName), nil)
 		require.NoError(t, err)
 
 		err = recording.AddGeneralRegexSanitizer(
@@ -385,12 +401,12 @@ func newClientOptionsForTest(t *testing.T) *azopenai.ClientOptions {
 	return co
 }
 
-func newAzureOpenAIClientForTest(t *testing.T, tv testVars) *azopenai.Client {
-	return newTestClient(t, tv.Endpoint)
+func newAzureOpenAIClientForTest(t *testing.T, tv testVars, options ...testClientOption) *azopenai.Client {
+	return newTestClient(t, tv.Endpoint, options...)
 }
 
-func newOpenAIClientForTest(t *testing.T) *azopenai.Client {
-	return newTestClient(t, openAI.Endpoint)
+func newOpenAIClientForTest(t *testing.T, options ...testClientOption) *azopenai.Client {
+	return newTestClient(t, openAI.Endpoint, options...)
 }
 
 // newBogusAzureOpenAIClient creates a client that uses an invalid key, which will cause Azure OpenAI to return

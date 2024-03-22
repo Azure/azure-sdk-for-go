@@ -13,8 +13,29 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity"
 )
 
+func unmarshalServerVulnerabilityAssessmentsSettingClassification(rawMsg json.RawMessage) (armsecurity.ServerVulnerabilityAssessmentsSettingClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b armsecurity.ServerVulnerabilityAssessmentsSettingClassification
+	switch m["kind"] {
+	case string(armsecurity.ServerVulnerabilityAssessmentsSettingKindAzureServersSetting):
+		b = &armsecurity.AzureServersSetting{}
+	default:
+		b = &armsecurity.ServerVulnerabilityAssessmentsSetting{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
 func unmarshalSettingClassification(rawMsg json.RawMessage) (armsecurity.SettingClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any

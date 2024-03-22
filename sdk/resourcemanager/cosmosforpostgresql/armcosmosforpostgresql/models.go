@@ -10,6 +10,12 @@ package armcosmosforpostgresql
 
 import "time"
 
+// AuthConfig - Authentication configuration of a cluster.
+type AuthConfig struct {
+	ActiveDirectoryAuth *ActiveDirectoryAuth
+	PasswordAuth        *PasswordAuth
+}
+
 // Cluster - Represents a cluster.
 type Cluster struct {
 	// REQUIRED; The geo-location where the resource lives
@@ -66,6 +72,9 @@ type ClusterProperties struct {
 	// The password of the administrator login. Required for creation.
 	AdministratorLoginPassword *string
 
+	// Authentication configuration of a cluster.
+	AuthConfig *AuthConfig
+
 	// The Citus extension version on all cluster servers.
 	CitusVersion *string
 
@@ -82,6 +91,13 @@ type ClusterProperties struct {
 	// The vCores count of a server (max: 96). Required for creation. See https://learn.microsoft.com/azure/cosmos-db/postgresql/resources-compute
 	// for more information.
 	CoordinatorVCores *int32
+
+	// The database name of the cluster. Only one database per cluster is supported.
+	DatabaseName *string
+
+	// If cluster backup is stored in another Azure region in addition to the copy of the backup stored in the cluster's region.
+	// Enabled only at the time of cluster creation.
+	EnableGeoBackup *bool
 
 	// If high availability (HA) is enabled or not for the cluster.
 	EnableHa *bool
@@ -541,6 +557,12 @@ type PrivateLinkServiceConnectionState struct {
 	Status *PrivateEndpointServiceConnectionStatus
 }
 
+// PromoteRequest - Request from client to promote geo-redundant replica
+type PromoteRequest struct {
+	// Cluster name to verify.
+	EnableGeoBackup *bool
+}
+
 // Role - Represents a cluster role.
 type Role struct {
 	// REQUIRED; The properties of a role.
@@ -567,11 +589,23 @@ type RoleListResult struct {
 
 // RoleProperties - The properties of a cluster role.
 type RoleProperties struct {
-	// REQUIRED; The password of the cluster role.
+	ExternalIdentity *RolePropertiesExternalIdentity
+
+	// The password of the cluster role. If an identity is used, password will not be required.
 	Password *string
+	RoleType *RoleType
 
 	// READ-ONLY; Provisioning state of the role
 	ProvisioningState *ProvisioningState
+}
+
+type RolePropertiesExternalIdentity struct {
+	// REQUIRED
+	ObjectID *string
+
+	// REQUIRED
+	PrincipalType *PrincipalType
+	TenantID      *string
 }
 
 // ServerConfiguration - Represents a configuration.

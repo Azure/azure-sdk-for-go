@@ -10,7 +10,7 @@ package armconfluent
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/confluent/armconfluent"
-	moduleVersion = "v1.2.0"
+	moduleVersion = "v1.3.0"
 )
 
 // CreatedByType - The type of identity that created the resource.

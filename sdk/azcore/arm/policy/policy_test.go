@@ -8,11 +8,12 @@ package policy
 
 import (
 	"fmt"
+	"testing"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/stretchr/testify/require"
-	"testing"
 )
 
 func TestClientOptions_Copy(t *testing.T) {
@@ -20,7 +21,8 @@ func TestClientOptions_Copy(t *testing.T) {
 	require.Nil(t, option.Clone())
 
 	option = &ClientOptions{ClientOptions: policy.ClientOptions{
-		Cloud: cloud.AzurePublic,
+		InsecureAllowCredentialWithHTTP: true,
+		Cloud:                           cloud.AzurePublic,
 		Logging: policy.LogOptions{
 			AllowedHeaders:     []string{"test1", "test2"},
 			AllowedQueryParams: []string{"test1", "test2"},
@@ -31,6 +33,7 @@ func TestClientOptions_Copy(t *testing.T) {
 	}}
 	copiedOption := option.Clone()
 	require.Equal(t, option.APIVersion, copiedOption.APIVersion)
+	require.Equal(t, option.InsecureAllowCredentialWithHTTP, copiedOption.InsecureAllowCredentialWithHTTP)
 	require.NotEqual(t, fmt.Sprintf("%p", &option.APIVersion), fmt.Sprintf("%p", &copiedOption.APIVersion))
 	require.Equal(t, option.Cloud.Services, copiedOption.Cloud.Services)
 	require.NotEqual(t, fmt.Sprintf("%p", option.Cloud.Services), fmt.Sprintf("%p", copiedOption.Cloud.Services))

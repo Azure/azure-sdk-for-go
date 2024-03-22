@@ -15,7 +15,7 @@ type QueryItemsResponse struct {
 	Response
 	// ContinuationToken contains the value of the x-ms-continuation header in the response.
 	// It can be used to stop a query and resume it later.
-	ContinuationToken string
+	ContinuationToken *string
 	// Contains the query metrics related to the query execution
 	QueryMetrics *string
 	// IndexMetrics contains the index utilization metrics if QueryOptions.PopulateIndexMetrics = true
@@ -29,7 +29,10 @@ func newQueryResponse(resp *http.Response) (QueryItemsResponse, error) {
 		Response: newResponse(resp),
 	}
 
-	response.ContinuationToken = resp.Header.Get(cosmosHeaderContinuationToken)
+	continuationToken := resp.Header.Get(cosmosHeaderContinuationToken)
+	if continuationToken != "" {
+		response.ContinuationToken = &continuationToken
+	}
 	queryMetrics := resp.Header.Get(cosmosHeaderQueryMetrics)
 	if queryMetrics != "" {
 		response.QueryMetrics = &queryMetrics
@@ -58,7 +61,7 @@ func newQueryResponse(resp *http.Response) (QueryItemsResponse, error) {
 }
 
 type queryServiceResponse struct {
-	Documents []any `json:"Documents,omitempty"`
+	Documents []json.RawMessage `json:"Documents,omitempty"`
 }
 
 // QueryContainersResponse contains response from the container query operation.

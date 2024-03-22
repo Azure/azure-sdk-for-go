@@ -3688,8 +3688,8 @@ type AzureFunctionActivityTypeProperties struct {
 
 	// Represents the headers that will be sent to the request. For example, to set the language and type on a request: "headers"
 	// : { "Accept-Language": "en-us", "Content-Type": "application/json" }. Type:
-	// dictionary (or Expression with resultType dictionary).
-	Headers any
+	// string (or Expression with resultType string).
+	Headers map[string]*string
 }
 
 // AzureFunctionLinkedService - Azure Function linked service.
@@ -11345,6 +11345,21 @@ type Expression struct {
 	Value *string
 }
 
+// ExpressionV2 - Nested representation of a complex expression.
+type ExpressionV2 struct {
+	// List of nested expressions.
+	Operands []*ExpressionV2
+
+	// Expression operator value Type: string.
+	Operator *string
+
+	// Type of expressions supported by the system. Type: string.
+	Type *ExpressionV2Type
+
+	// Value for Constant/Field Type: string.
+	Value *string
+}
+
 // Factory resource type.
 type Factory struct {
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
@@ -12889,6 +12904,184 @@ func (g *GoogleBigQuerySource) GetCopySource() *CopySource {
 
 // GetTabularSource implements the TabularSourceClassification interface for type GoogleBigQuerySource.
 func (g *GoogleBigQuerySource) GetTabularSource() *TabularSource {
+	return &TabularSource{
+		AdditionalColumns:        g.AdditionalColumns,
+		AdditionalProperties:     g.AdditionalProperties,
+		DisableMetricsCollection: g.DisableMetricsCollection,
+		MaxConcurrentConnections: g.MaxConcurrentConnections,
+		QueryTimeout:             g.QueryTimeout,
+		SourceRetryCount:         g.SourceRetryCount,
+		SourceRetryWait:          g.SourceRetryWait,
+		Type:                     g.Type,
+	}
+}
+
+// GoogleBigQueryV2DatasetTypeProperties - Google BigQuery Dataset Properties
+type GoogleBigQueryV2DatasetTypeProperties struct {
+	// The database name of the Google BigQuery. Type: string (or Expression with resultType string).
+	Dataset any
+
+	// The table name of the Google BigQuery. Type: string (or Expression with resultType string).
+	Table any
+}
+
+// GoogleBigQueryV2LinkedService - Google BigQuery service linked service.
+type GoogleBigQueryV2LinkedService struct {
+	// REQUIRED; Type of linked service.
+	Type *string
+
+	// REQUIRED; Google BigQuery service linked service properties.
+	TypeProperties *GoogleBigQueryV2LinkedServiceTypeProperties
+
+	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
+	AdditionalProperties map[string]any
+
+	// List of tags that can be used for describing the linked service.
+	Annotations []any
+
+	// The integration runtime reference.
+	ConnectVia *IntegrationRuntimeReference
+
+	// Linked service description.
+	Description *string
+
+	// Parameters for linked service.
+	Parameters map[string]*ParameterSpecification
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type GoogleBigQueryV2LinkedService.
+func (g *GoogleBigQueryV2LinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		AdditionalProperties: g.AdditionalProperties,
+		Annotations:          g.Annotations,
+		ConnectVia:           g.ConnectVia,
+		Description:          g.Description,
+		Parameters:           g.Parameters,
+		Type:                 g.Type,
+	}
+}
+
+// GoogleBigQueryV2LinkedServiceTypeProperties - Google BigQuery service linked service properties.
+type GoogleBigQueryV2LinkedServiceTypeProperties struct {
+	// REQUIRED; The OAuth 2.0 authentication mechanism used for authentication.
+	AuthenticationType *GoogleBigQueryV2AuthenticationType
+
+	// REQUIRED; The default BigQuery project id to query against. Type: string (or Expression with resultType string).
+	ProjectID any
+
+	// The client id of the google application used to acquire the refresh token. Type: string (or Expression with resultType
+	// string).
+	ClientID any
+
+	// The client secret of the google application used to acquire the refresh token.
+	ClientSecret SecretBaseClassification
+
+	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
+	// Type: string.
+	EncryptedCredential *string
+
+	// The content of the .json key file that is used to authenticate the service account. Type: string (or Expression with resultType
+	// string).
+	KeyFileContent SecretBaseClassification
+
+	// The refresh token obtained from Google for authorizing access to BigQuery for UserAuthentication.
+	RefreshToken SecretBaseClassification
+}
+
+// GoogleBigQueryV2ObjectDataset - Google BigQuery service dataset.
+type GoogleBigQueryV2ObjectDataset struct {
+	// REQUIRED; Linked service reference.
+	LinkedServiceName *LinkedServiceReference
+
+	// REQUIRED; Type of dataset.
+	Type *string
+
+	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
+	AdditionalProperties map[string]any
+
+	// List of tags that can be used for describing the Dataset.
+	Annotations []any
+
+	// Dataset description.
+	Description *string
+
+	// The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
+	Folder *DatasetFolder
+
+	// Parameters for dataset.
+	Parameters map[string]*ParameterSpecification
+
+	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
+	// DatasetSchemaDataElement.
+	Schema any
+
+	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
+	Structure any
+
+	// Properties specific to this dataset type.
+	TypeProperties *GoogleBigQueryV2DatasetTypeProperties
+}
+
+// GetDataset implements the DatasetClassification interface for type GoogleBigQueryV2ObjectDataset.
+func (g *GoogleBigQueryV2ObjectDataset) GetDataset() *Dataset {
+	return &Dataset{
+		AdditionalProperties: g.AdditionalProperties,
+		Annotations:          g.Annotations,
+		Description:          g.Description,
+		Folder:               g.Folder,
+		LinkedServiceName:    g.LinkedServiceName,
+		Parameters:           g.Parameters,
+		Schema:               g.Schema,
+		Structure:            g.Structure,
+		Type:                 g.Type,
+	}
+}
+
+// GoogleBigQueryV2Source - A copy activity Google BigQuery service source.
+type GoogleBigQueryV2Source struct {
+	// REQUIRED; Copy source type.
+	Type *string
+
+	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
+	// resultType array of objects).
+	AdditionalColumns any
+
+	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
+	AdditionalProperties map[string]any
+
+	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
+	DisableMetricsCollection any
+
+	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
+	MaxConcurrentConnections any
+
+	// A query to retrieve data from source. Type: string (or Expression with resultType string).
+	Query any
+
+	// Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+	QueryTimeout any
+
+	// Source retry count. Type: integer (or Expression with resultType integer).
+	SourceRetryCount any
+
+	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+	SourceRetryWait any
+}
+
+// GetCopySource implements the CopySourceClassification interface for type GoogleBigQueryV2Source.
+func (g *GoogleBigQueryV2Source) GetCopySource() *CopySource {
+	return &CopySource{
+		AdditionalProperties:     g.AdditionalProperties,
+		DisableMetricsCollection: g.DisableMetricsCollection,
+		MaxConcurrentConnections: g.MaxConcurrentConnections,
+		SourceRetryCount:         g.SourceRetryCount,
+		SourceRetryWait:          g.SourceRetryWait,
+		Type:                     g.Type,
+	}
+}
+
+// GetTabularSource implements the TabularSourceClassification interface for type GoogleBigQueryV2Source.
+func (g *GoogleBigQueryV2Source) GetTabularSource() *TabularSource {
 	return &TabularSource{
 		AdditionalColumns:        g.AdditionalColumns,
 		AdditionalProperties:     g.AdditionalProperties,
@@ -21431,6 +21624,222 @@ type PostgreSQLTableDatasetTypeProperties struct {
 	TableName any
 }
 
+// PostgreSQLV2LinkedService - Linked service for PostgreSQLV2 data source.
+type PostgreSQLV2LinkedService struct {
+	// REQUIRED; Type of linked service.
+	Type *string
+
+	// REQUIRED; PostgreSQLV2 linked service properties.
+	TypeProperties *PostgreSQLV2LinkedServiceTypeProperties
+
+	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
+	AdditionalProperties map[string]any
+
+	// List of tags that can be used for describing the linked service.
+	Annotations []any
+
+	// The integration runtime reference.
+	ConnectVia *IntegrationRuntimeReference
+
+	// Linked service description.
+	Description *string
+
+	// Parameters for linked service.
+	Parameters map[string]*ParameterSpecification
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type PostgreSQLV2LinkedService.
+func (p *PostgreSQLV2LinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		AdditionalProperties: p.AdditionalProperties,
+		Annotations:          p.Annotations,
+		ConnectVia:           p.ConnectVia,
+		Description:          p.Description,
+		Parameters:           p.Parameters,
+		Type:                 p.Type,
+	}
+}
+
+// PostgreSQLV2LinkedServiceTypeProperties - PostgreSqlV2 linked service properties.
+type PostgreSQLV2LinkedServiceTypeProperties struct {
+	// REQUIRED; Database name for connection. Type: string.
+	Database any
+
+	// REQUIRED; SSL mode for connection. Type: integer. 0: disable, 1:allow, 2: prefer, 3: require, 4: verify-ca, 5: verify-full.
+	// Type: integer.
+	SSLMode any
+
+	// REQUIRED; Server name for connection. Type: string.
+	Server any
+
+	// REQUIRED; Username for authentication. Type: string.
+	Username any
+
+	// The time to wait (in seconds) while trying to execute a command before terminating the attempt and generating an error.
+	// Set to zero for infinity. Type: integer.
+	CommandTimeout any
+
+	// The time to wait (in seconds) while trying to establish a connection before terminating the attempt and generating an error.
+	// Type: integer.
+	ConnectionTimeout any
+
+	// Gets or sets the .NET encoding that will be used to encode/decode PostgreSQL string data. Type: string
+	Encoding any
+
+	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
+	// Type: string.
+	EncryptedCredential *string
+
+	// When enabled, parameter values are logged when commands are executed. Type: boolean.
+	LogParameters any
+
+	// The Azure key vault secret reference of password in connection string. Type: string.
+	Password *AzureKeyVaultSecretReference
+
+	// Whether connection pooling should be used. Type: boolean.
+	Pooling any
+
+	// The port for the connection. Type: integer.
+	Port any
+
+	// Determines the size of the internal buffer uses when reading. Increasing may improve performance if transferring large
+	// values from the database. Type: integer.
+	ReadBufferSize any
+
+	// Location of a client certificate to be sent to the server. Type: string.
+	SSLCertificate any
+
+	// Location of a client key for a client certificate to be sent to the server. Type: string.
+	SSLKey any
+
+	// Password for a key for a client certificate. Type: string.
+	SSLPassword any
+
+	// Sets the schema search path. Type: string.
+	Schema any
+
+	// Gets or sets the session timezone. Type: string.
+	Timezone any
+
+	// Whether to trust the server certificate without validating it. Type: boolean.
+	TrustServerCertificate any
+}
+
+// PostgreSQLV2Source - A copy activity source for PostgreSQL databases.
+type PostgreSQLV2Source struct {
+	// REQUIRED; Copy source type.
+	Type *string
+
+	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
+	// resultType array of objects).
+	AdditionalColumns any
+
+	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
+	AdditionalProperties map[string]any
+
+	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
+	DisableMetricsCollection any
+
+	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
+	MaxConcurrentConnections any
+
+	// Database query. Type: string (or Expression with resultType string).
+	Query any
+
+	// Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+	QueryTimeout any
+
+	// Source retry count. Type: integer (or Expression with resultType integer).
+	SourceRetryCount any
+
+	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+	SourceRetryWait any
+}
+
+// GetCopySource implements the CopySourceClassification interface for type PostgreSQLV2Source.
+func (p *PostgreSQLV2Source) GetCopySource() *CopySource {
+	return &CopySource{
+		AdditionalProperties:     p.AdditionalProperties,
+		DisableMetricsCollection: p.DisableMetricsCollection,
+		MaxConcurrentConnections: p.MaxConcurrentConnections,
+		SourceRetryCount:         p.SourceRetryCount,
+		SourceRetryWait:          p.SourceRetryWait,
+		Type:                     p.Type,
+	}
+}
+
+// GetTabularSource implements the TabularSourceClassification interface for type PostgreSQLV2Source.
+func (p *PostgreSQLV2Source) GetTabularSource() *TabularSource {
+	return &TabularSource{
+		AdditionalColumns:        p.AdditionalColumns,
+		AdditionalProperties:     p.AdditionalProperties,
+		DisableMetricsCollection: p.DisableMetricsCollection,
+		MaxConcurrentConnections: p.MaxConcurrentConnections,
+		QueryTimeout:             p.QueryTimeout,
+		SourceRetryCount:         p.SourceRetryCount,
+		SourceRetryWait:          p.SourceRetryWait,
+		Type:                     p.Type,
+	}
+}
+
+// PostgreSQLV2TableDataset - The PostgreSQLV2 table dataset.
+type PostgreSQLV2TableDataset struct {
+	// REQUIRED; Linked service reference.
+	LinkedServiceName *LinkedServiceReference
+
+	// REQUIRED; Type of dataset.
+	Type *string
+
+	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
+	AdditionalProperties map[string]any
+
+	// List of tags that can be used for describing the Dataset.
+	Annotations []any
+
+	// Dataset description.
+	Description *string
+
+	// The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
+	Folder *DatasetFolder
+
+	// Parameters for dataset.
+	Parameters map[string]*ParameterSpecification
+
+	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
+	// DatasetSchemaDataElement.
+	Schema any
+
+	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
+	Structure any
+
+	// PostgreSQLV2 table dataset properties.
+	TypeProperties *PostgreSQLV2TableDatasetTypeProperties
+}
+
+// GetDataset implements the DatasetClassification interface for type PostgreSQLV2TableDataset.
+func (p *PostgreSQLV2TableDataset) GetDataset() *Dataset {
+	return &Dataset{
+		AdditionalProperties: p.AdditionalProperties,
+		Annotations:          p.Annotations,
+		Description:          p.Description,
+		Folder:               p.Folder,
+		LinkedServiceName:    p.LinkedServiceName,
+		Parameters:           p.Parameters,
+		Schema:               p.Schema,
+		Structure:            p.Structure,
+		Type:                 p.Type,
+	}
+}
+
+// PostgreSQLV2TableDatasetTypeProperties - PostgreSQLV2 table dataset properties.
+type PostgreSQLV2TableDatasetTypeProperties struct {
+	// The PostgreSQL schema name. Type: string (or Expression with resultType string).
+	Schema any
+
+	// The PostgreSQL table name. Type: string (or Expression with resultType string).
+	Table any
+}
+
 // PowerQuerySink - Power query sink.
 type PowerQuerySink struct {
 	// REQUIRED; Transformation name.
@@ -24274,6 +24683,10 @@ type SalesforceServiceCloudV2LinkedServiceTypeProperties struct {
 	// BULK API 2.0. Type: string (or Expression with resultType string).
 	APIVersion any
 
+	// The authentication type to be used to connect to the Salesforce. Currently, we only support OAuth2ClientCredentials, it
+	// is also the default value
+	AuthenticationType any
+
 	// The client Id for OAuth 2.0 Client Credentials Flow authentication of the Salesforce instance. Type: string (or Expression
 	// with resultType string).
 	ClientID any
@@ -24419,12 +24832,12 @@ type SalesforceServiceCloudV2Source struct {
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
 	DisableMetricsCollection any
 
+	// This property control whether query result contains Deleted objects. Default is false. Type: boolean (or Expression with
+	// resultType boolean).
+	IncludeDeletedObjects any
+
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
 	MaxConcurrentConnections any
-
-	// The read behavior for the operation. Default is query. Allowed values: query/queryAll. Type: string (or Expression with
-	// resultType string).
-	ReadBehavior any
 
 	// Database query. Type: string (or Expression with resultType string).
 	SOQLQuery any
@@ -24607,6 +25020,10 @@ type SalesforceV2LinkedServiceTypeProperties struct {
 	// BULK API 2.0. Type: string (or Expression with resultType string).
 	APIVersion any
 
+	// The authentication type to be used to connect to the Salesforce. Currently, we only support OAuth2ClientCredentials, it
+	// is also the default value
+	AuthenticationType any
+
 	// The client Id for OAuth 2.0 Client Credentials Flow authentication of the Salesforce instance. Type: string (or Expression
 	// with resultType string).
 	ClientID any
@@ -24752,15 +25169,15 @@ type SalesforceV2Source struct {
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
 	DisableMetricsCollection any
 
+	// This property control whether query result contains Deleted objects. Default is false. Type: boolean (or Expression with
+	// resultType boolean).
+	IncludeDeletedObjects any
+
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
 	MaxConcurrentConnections any
 
 	// Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	QueryTimeout any
-
-	// The read behavior for the operation. Default is query. Allowed values: query/queryAll. Type: string (or Expression with
-	// resultType string).
-	ReadBehavior any
 
 	// Database query. Type: string (or Expression with resultType string).
 	SOQLQuery any
@@ -26859,6 +27276,176 @@ func (s *ServiceNowSource) GetTabularSource() *TabularSource {
 	}
 }
 
+// ServiceNowV2LinkedService - ServiceNowV2 server linked service.
+type ServiceNowV2LinkedService struct {
+	// REQUIRED; Type of linked service.
+	Type *string
+
+	// REQUIRED; ServiceNowV2 server linked service properties.
+	TypeProperties *ServiceNowV2LinkedServiceTypeProperties
+
+	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
+	AdditionalProperties map[string]any
+
+	// List of tags that can be used for describing the linked service.
+	Annotations []any
+
+	// The integration runtime reference.
+	ConnectVia *IntegrationRuntimeReference
+
+	// Linked service description.
+	Description *string
+
+	// Parameters for linked service.
+	Parameters map[string]*ParameterSpecification
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type ServiceNowV2LinkedService.
+func (s *ServiceNowV2LinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		AdditionalProperties: s.AdditionalProperties,
+		Annotations:          s.Annotations,
+		ConnectVia:           s.ConnectVia,
+		Description:          s.Description,
+		Parameters:           s.Parameters,
+		Type:                 s.Type,
+	}
+}
+
+// ServiceNowV2LinkedServiceTypeProperties - ServiceNowV2 server linked service properties.
+type ServiceNowV2LinkedServiceTypeProperties struct {
+	// REQUIRED; The authentication type to use.
+	AuthenticationType *ServiceNowV2AuthenticationType
+
+	// REQUIRED; The endpoint of the ServiceNowV2 server. (i.e. .service-now.com)
+	Endpoint any
+
+	// The client id for OAuth2 authentication.
+	ClientID any
+
+	// The client secret for OAuth2 authentication.
+	ClientSecret SecretBaseClassification
+
+	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
+	// Type: string.
+	EncryptedCredential *string
+
+	// GrantType for OAuth2 authentication. Default value is password.
+	GrantType any
+
+	// The password corresponding to the user name for Basic and OAuth2 authentication.
+	Password SecretBaseClassification
+
+	// The user name used to connect to the ServiceNowV2 server for Basic and OAuth2 authentication.
+	Username any
+}
+
+// ServiceNowV2ObjectDataset - ServiceNowV2 server dataset.
+type ServiceNowV2ObjectDataset struct {
+	// REQUIRED; Linked service reference.
+	LinkedServiceName *LinkedServiceReference
+
+	// REQUIRED; Type of dataset.
+	Type *string
+
+	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
+	AdditionalProperties map[string]any
+
+	// List of tags that can be used for describing the Dataset.
+	Annotations []any
+
+	// Dataset description.
+	Description *string
+
+	// The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
+	Folder *DatasetFolder
+
+	// Parameters for dataset.
+	Parameters map[string]*ParameterSpecification
+
+	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
+	// DatasetSchemaDataElement.
+	Schema any
+
+	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
+	Structure any
+
+	// Properties specific to this dataset type.
+	TypeProperties *GenericDatasetTypeProperties
+}
+
+// GetDataset implements the DatasetClassification interface for type ServiceNowV2ObjectDataset.
+func (s *ServiceNowV2ObjectDataset) GetDataset() *Dataset {
+	return &Dataset{
+		AdditionalProperties: s.AdditionalProperties,
+		Annotations:          s.Annotations,
+		Description:          s.Description,
+		Folder:               s.Folder,
+		LinkedServiceName:    s.LinkedServiceName,
+		Parameters:           s.Parameters,
+		Schema:               s.Schema,
+		Structure:            s.Structure,
+		Type:                 s.Type,
+	}
+}
+
+// ServiceNowV2Source - A copy activity ServiceNowV2 server source.
+type ServiceNowV2Source struct {
+	// REQUIRED; Copy source type.
+	Type *string
+
+	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
+	// resultType array of objects).
+	AdditionalColumns any
+
+	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
+	AdditionalProperties map[string]any
+
+	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
+	DisableMetricsCollection any
+
+	// Expression to filter data from source.
+	Expression *ExpressionV2
+
+	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
+	MaxConcurrentConnections any
+
+	// Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+	QueryTimeout any
+
+	// Source retry count. Type: integer (or Expression with resultType integer).
+	SourceRetryCount any
+
+	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+	SourceRetryWait any
+}
+
+// GetCopySource implements the CopySourceClassification interface for type ServiceNowV2Source.
+func (s *ServiceNowV2Source) GetCopySource() *CopySource {
+	return &CopySource{
+		AdditionalProperties:     s.AdditionalProperties,
+		DisableMetricsCollection: s.DisableMetricsCollection,
+		MaxConcurrentConnections: s.MaxConcurrentConnections,
+		SourceRetryCount:         s.SourceRetryCount,
+		SourceRetryWait:          s.SourceRetryWait,
+		Type:                     s.Type,
+	}
+}
+
+// GetTabularSource implements the TabularSourceClassification interface for type ServiceNowV2Source.
+func (s *ServiceNowV2Source) GetTabularSource() *TabularSource {
+	return &TabularSource{
+		AdditionalColumns:        s.AdditionalColumns,
+		AdditionalProperties:     s.AdditionalProperties,
+		DisableMetricsCollection: s.DisableMetricsCollection,
+		MaxConcurrentConnections: s.MaxConcurrentConnections,
+		QueryTimeout:             s.QueryTimeout,
+		SourceRetryCount:         s.SourceRetryCount,
+		SourceRetryWait:          s.SourceRetryWait,
+		Type:                     s.Type,
+	}
+}
+
 // ServicePrincipalCredential - Service principal credential.
 type ServicePrincipalCredential struct {
 	// REQUIRED; Type of credential.
@@ -27715,6 +28302,49 @@ type SnowflakeLinkedServiceTypeProperties struct {
 	Password *AzureKeyVaultSecretReference
 }
 
+// SnowflakeLinkedV2ServiceTypeProperties - Snowflake linked service properties.
+type SnowflakeLinkedV2ServiceTypeProperties struct {
+	// REQUIRED; The account identifier of your Snowflake account, e.g. xy12345.east-us-2.azure
+	AccountIdentifier any
+
+	// REQUIRED; The name of the Snowflake database.
+	Database any
+
+	// REQUIRED; The name of the Snowflake warehouse.
+	Warehouse any
+
+	// The type used for authentication. Type: string.
+	AuthenticationType *SnowflakeAuthenticationType
+
+	// The client ID of the application registered in Azure Active Directory for AADServicePrincipal authentication.
+	ClientID any
+
+	// The Azure key vault secret reference of client secret for AADServicePrincipal authentication.
+	ClientSecret SecretBaseClassification
+
+	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
+	// Type: string.
+	EncryptedCredential *string
+
+	// The Azure key vault secret reference of password in connection string.
+	Password SecretBaseClassification
+
+	// The Azure key vault secret reference of privateKey for KeyPair auth.
+	PrivateKey SecretBaseClassification
+
+	// The Azure key vault secret reference of private key password for KeyPair auth with encrypted private key.
+	PrivateKeyPassphrase SecretBaseClassification
+
+	// The scope of the application registered in Azure Active Directory for AADServicePrincipal authentication.
+	Scope any
+
+	// The tenant ID of the application registered in Azure Active Directory for AADServicePrincipal authentication.
+	TenantID any
+
+	// The name of the Snowflake user.
+	User any
+}
+
 // SnowflakeSink - A copy activity snowflake sink.
 type SnowflakeSink struct {
 	// REQUIRED; Copy sink type.
@@ -27791,6 +28421,177 @@ type SnowflakeSource struct {
 
 // GetCopySource implements the CopySourceClassification interface for type SnowflakeSource.
 func (s *SnowflakeSource) GetCopySource() *CopySource {
+	return &CopySource{
+		AdditionalProperties:     s.AdditionalProperties,
+		DisableMetricsCollection: s.DisableMetricsCollection,
+		MaxConcurrentConnections: s.MaxConcurrentConnections,
+		SourceRetryCount:         s.SourceRetryCount,
+		SourceRetryWait:          s.SourceRetryWait,
+		Type:                     s.Type,
+	}
+}
+
+// SnowflakeV2Dataset - The snowflake dataset.
+type SnowflakeV2Dataset struct {
+	// REQUIRED; Linked service reference.
+	LinkedServiceName *LinkedServiceReference
+
+	// REQUIRED; Type of dataset.
+	Type *string
+
+	// REQUIRED; Snowflake dataset properties.
+	TypeProperties *SnowflakeDatasetTypeProperties
+
+	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
+	AdditionalProperties map[string]any
+
+	// List of tags that can be used for describing the Dataset.
+	Annotations []any
+
+	// Dataset description.
+	Description *string
+
+	// The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
+	Folder *DatasetFolder
+
+	// Parameters for dataset.
+	Parameters map[string]*ParameterSpecification
+
+	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
+	// DatasetSchemaDataElement.
+	Schema any
+
+	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
+	Structure any
+}
+
+// GetDataset implements the DatasetClassification interface for type SnowflakeV2Dataset.
+func (s *SnowflakeV2Dataset) GetDataset() *Dataset {
+	return &Dataset{
+		AdditionalProperties: s.AdditionalProperties,
+		Annotations:          s.Annotations,
+		Description:          s.Description,
+		Folder:               s.Folder,
+		LinkedServiceName:    s.LinkedServiceName,
+		Parameters:           s.Parameters,
+		Schema:               s.Schema,
+		Structure:            s.Structure,
+		Type:                 s.Type,
+	}
+}
+
+// SnowflakeV2LinkedService - Snowflake linked service.
+type SnowflakeV2LinkedService struct {
+	// REQUIRED; Type of linked service.
+	Type *string
+
+	// REQUIRED; Snowflake linked service properties.
+	TypeProperties *SnowflakeLinkedV2ServiceTypeProperties
+
+	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
+	AdditionalProperties map[string]any
+
+	// List of tags that can be used for describing the linked service.
+	Annotations []any
+
+	// The integration runtime reference.
+	ConnectVia *IntegrationRuntimeReference
+
+	// Linked service description.
+	Description *string
+
+	// Parameters for linked service.
+	Parameters map[string]*ParameterSpecification
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type SnowflakeV2LinkedService.
+func (s *SnowflakeV2LinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		AdditionalProperties: s.AdditionalProperties,
+		Annotations:          s.Annotations,
+		ConnectVia:           s.ConnectVia,
+		Description:          s.Description,
+		Parameters:           s.Parameters,
+		Type:                 s.Type,
+	}
+}
+
+// SnowflakeV2Sink - A copy activity snowflake sink.
+type SnowflakeV2Sink struct {
+	// REQUIRED; Copy sink type.
+	Type *string
+
+	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
+	AdditionalProperties map[string]any
+
+	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
+	DisableMetricsCollection any
+
+	// Snowflake import settings.
+	ImportSettings *SnowflakeImportCopyCommand
+
+	// The maximum concurrent connection count for the sink data store. Type: integer (or Expression with resultType integer).
+	MaxConcurrentConnections any
+
+	// SQL pre-copy script. Type: string (or Expression with resultType string).
+	PreCopyScript any
+
+	// Sink retry count. Type: integer (or Expression with resultType integer).
+	SinkRetryCount any
+
+	// Sink retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+	SinkRetryWait any
+
+	// Write batch size. Type: integer (or Expression with resultType integer), minimum: 0.
+	WriteBatchSize any
+
+	// Write batch timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+	WriteBatchTimeout any
+}
+
+// GetCopySink implements the CopySinkClassification interface for type SnowflakeV2Sink.
+func (s *SnowflakeV2Sink) GetCopySink() *CopySink {
+	return &CopySink{
+		AdditionalProperties:     s.AdditionalProperties,
+		DisableMetricsCollection: s.DisableMetricsCollection,
+		MaxConcurrentConnections: s.MaxConcurrentConnections,
+		SinkRetryCount:           s.SinkRetryCount,
+		SinkRetryWait:            s.SinkRetryWait,
+		Type:                     s.Type,
+		WriteBatchSize:           s.WriteBatchSize,
+		WriteBatchTimeout:        s.WriteBatchTimeout,
+	}
+}
+
+// SnowflakeV2Source - A copy activity snowflake source.
+type SnowflakeV2Source struct {
+	// REQUIRED; Snowflake export settings.
+	ExportSettings *SnowflakeExportCopyCommand
+
+	// REQUIRED; Copy source type.
+	Type *string
+
+	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
+	AdditionalProperties map[string]any
+
+	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
+	DisableMetricsCollection any
+
+	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
+	MaxConcurrentConnections any
+
+	// Snowflake Sql query. Type: string (or Expression with resultType string).
+	Query any
+
+	// Source retry count. Type: integer (or Expression with resultType integer).
+	SourceRetryCount any
+
+	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+	SourceRetryWait any
+}
+
+// GetCopySource implements the CopySourceClassification interface for type SnowflakeV2Source.
+func (s *SnowflakeV2Source) GetCopySource() *CopySource {
 	return &CopySource{
 		AdditionalProperties:     s.AdditionalProperties,
 		DisableMetricsCollection: s.DisableMetricsCollection,
@@ -30555,8 +31356,8 @@ type WebActivityTypeProperties struct {
 
 	// Represents the headers that will be sent to the request. For example, to set the language and type on a request: "headers"
 	// : { "Accept-Language": "en-us", "Content-Type": "application/json" }. Type:
-	// dictionary (or Expression with resultType dictionary).
-	Headers any
+	// string (or Expression with resultType string).
+	Headers map[string]*string
 
 	// List of linked services passed to web endpoint.
 	LinkedServices []*LinkedServiceReference
@@ -30714,8 +31515,8 @@ type WebHookActivityTypeProperties struct {
 
 	// Represents the headers that will be sent to the request. For example, to set the language and type on a request: "headers"
 	// : { "Accept-Language": "en-us", "Content-Type": "application/json" }. Type:
-	// dictionary (or Expression with resultType dictionary).
-	Headers any
+	// string (or Expression with resultType string).
+	Headers map[string]*string
 
 	// When set to true, statusCode, output and error in callback request body will be consumed by activity. The activity can
 	// be marked as failed by setting statusCode >= 400 in callback request. Default is

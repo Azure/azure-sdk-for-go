@@ -1,19 +1,37 @@
 # Release History
 
-## 1.10.0 (Unreleased)
+## 1.11.0 (Unreleased)
 
 ### Features Added
 
-* Added logging event `log.EventResponseError` that will contain the contents of `ResponseError.Error()` whenever an `azcore.ResponseError` is created.
-* Added `runtime.NewResponseErrorWithErrorCode` for creating an `azcore.ResponseError` with a caller-supplied error code.
+* Added `StatusCodes` to `arm/policy.RegistrationOptions` to allow supporting non-standard HTTP status codes during registration.
+* Added field `InsecureAllowCredentialWithHTTP` to `azcore.ClientOptions` and dependent authentication pipeline policies.
+* Added type `MultipartContent` to the `streaming` package to support multipart/form payloads with custom Content-Type and file name.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
-* Fixed a potential race condition between `NullValue` and `IsNullValue`.
+* `runtime.SetMultipartFormData` won't try to stringify `[]byte` values.
 
 ### Other Changes
+
+## 1.10.0 (2024-02-29)
+
+### Features Added
+
+* Added logging event `log.EventResponseError` that will contain the contents of `ResponseError.Error()` whenever an `azcore.ResponseError` is created.
+* Added `runtime.NewResponseErrorWithErrorCode` for creating an `azcore.ResponseError` with a caller-supplied error code.
+* Added type `MatchConditions` for use in conditional requests.
+
+### Bugs Fixed
+
+* Fixed a potential race condition between `NullValue` and `IsNullValue`.
+* `runtime.EncodeQueryParams` will escape semicolons before calling `url.ParseQuery`.
+
+### Other Changes
+
+* Update dependencies.
 
 ## 1.9.2 (2024-02-06)
 

@@ -10,6 +10,62 @@ package armnginx
 
 import "time"
 
+// AnalysisCreate - The request body for creating an analysis for an NGINX configuration.
+type AnalysisCreate struct {
+	// REQUIRED
+	Config *AnalysisCreateConfig
+}
+
+type AnalysisCreateConfig struct {
+	Files          []*ConfigurationFile
+	Package        *ConfigurationPackage
+	ProtectedFiles []*ConfigurationFile
+
+	// The root file of the NGINX config file(s). It must match one of the files' filepath.
+	RootFile *string
+}
+
+// AnalysisDiagnostic - An error object found during the analysis of an NGINX configuration.
+type AnalysisDiagnostic struct {
+	// REQUIRED
+	Description *string
+
+	// REQUIRED
+	Directive *string
+
+	// REQUIRED; the filepath of the most relevant config file
+	File *string
+
+	// REQUIRED
+	Line *float32
+
+	// REQUIRED
+	Message *string
+
+	// REQUIRED
+	Rule *string
+
+	// Unique identifier for the error
+	ID *string
+}
+
+// AnalysisResult - The response body for an analysis request. Contains the status of the analysis and any errors.
+type AnalysisResult struct {
+	// REQUIRED; The status of the analysis.
+	Status *string
+	Data   *AnalysisResultData
+}
+
+type AnalysisResultData struct {
+	Errors []*AnalysisDiagnostic
+}
+
+// AutoUpgradeProfile - Autoupgrade settings of a deployment.
+type AutoUpgradeProfile struct {
+	// REQUIRED; Channel used for autoupgrade.
+	UpgradeChannel *string
+}
+
 type Certificate struct {
 	Location   *string
 	Properties *CertificateProperties
@@ -27,18 +83,33 @@ type Certificate struct {
 	Type *string
 }
 
+type CertificateErrorResponseBody struct {
+	Code    *string
+	Message *string
+}
+
 type CertificateListResponse struct {
 	NextLink *string
 	Value    []*Certificate
 }
 
 type CertificateProperties struct {
+	CertificateError       *CertificateErrorResponseBody
 	CertificateVirtualPath *string
 	KeyVaultSecretID       *string
 	KeyVirtualPath         *string
 
 	// READ-ONLY
+	KeyVaultSecretCreated *time.Time
+
+	// READ-ONLY
+	KeyVaultSecretVersion *string
+
+	// READ-ONLY
 	ProvisioningState *ProvisioningState
+
+	// READ-ONLY
+	SHA1Thumbprint *string
 }
 
 type Configuration struct {
@@ -115,14 +186,18 @@ type DeploymentListResponse struct {
 }
 
 type DeploymentProperties struct {
+	// Autoupgrade settings of a deployment.
+	AutoUpgradeProfile       *AutoUpgradeProfile
 	EnableDiagnosticsSupport *bool
 	Logging                  *Logging
 
 	// The managed resource group to deploy VNet injection related network resources.
 	ManagedResourceGroup *string
 	NetworkProfile       *NetworkProfile
-	ScalingProperties    *DeploymentScalingProperties
-	UserProfile          *DeploymentUserProfile
+
+	// Information on how the deployment will be scaled.
+	ScalingProperties *DeploymentScalingProperties
+	UserProfile       *DeploymentUserProfile
 
 	// READ-ONLY; The IP address of the deployment.
 	IPAddress *string
@@ -134,8 +209,18 @@ type DeploymentProperties struct {
 	ProvisioningState *ProvisioningState
 }
 
+// DeploymentScalingProperties - Information on how the deployment will be scaled.
 type DeploymentScalingProperties struct {
-	Capacity *int32
+	// The settings for enabling automatic scaling of the deployment. If this field is specified, 'scale.capacity' must be empty.
+	AutoScaleSettings *DeploymentScalingPropertiesAutoScaleSettings
+	Capacity          *int32
+}
+
+// DeploymentScalingPropertiesAutoScaleSettings - The settings for enabling automatic scaling of the deployment. If this field
+// is specified, 'scale.capacity' must be empty.
+type DeploymentScalingPropertiesAutoScaleSettings struct {
+	// REQUIRED
+	Profiles []*ScaleProfile
 }
 
 type DeploymentUpdateParameters struct {
@@ -149,23 +234,20 @@ type DeploymentUpdateParameters struct {
 }
 
 type DeploymentUpdateProperties struct {
+	// Autoupgrade settings of a deployment.
+	AutoUpgradeProfile       *AutoUpgradeProfile
 	EnableDiagnosticsSupport *bool
 	Logging                  *Logging
-	ScalingProperties        *DeploymentScalingProperties
-	UserProfile              *DeploymentUserProfile
+
+	// Information on how the deployment will be scaled.
+	ScalingProperties *DeploymentScalingProperties
+	UserProfile       *DeploymentUserProfile
 }
 
 type DeploymentUserProfile struct {
 	// The preferred support contact email address of the user used for sending alerts and notification. Can be an empty string
 	// or a valid email address.
 	PreferredEmail *string
-}
-
-type ErrorResponseBody struct {
-	Code    *string
-	Details []*ErrorResponseBody
-	Message *string
-	Target  *string
 }
 
 type FrontendIPConfiguration struct {
@@ -245,13 +327,27 @@ type PublicIPAddress struct {
 	ID *string
 }
 
-type ResourceProviderDefaultErrorResponse struct {
-	Error *ErrorResponseBody
-}
-
 type ResourceSKU struct {
 	// REQUIRED; Name of the SKU.
 	Name *string
+}
+
+// ScaleProfile - The autoscale profile.
+type ScaleProfile struct {
+	// REQUIRED; The capacity parameters of the profile.
+	Capacity *ScaleProfileCapacity
+
+	// REQUIRED
+	Name *string
+}
+
+// ScaleProfileCapacity - The capacity parameters of the profile.
+type ScaleProfileCapacity struct {
+	// REQUIRED; The maximum number of NCUs the deployment can be autoscaled to.
+	Max *int32
+
+	// REQUIRED; The minimum number of NCUs the deployment can be autoscaled to.
+	Min *int32
 }
 
 type StorageAccount struct {

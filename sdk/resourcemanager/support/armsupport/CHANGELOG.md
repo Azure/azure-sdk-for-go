@@ -1,5 +1,51 @@
 # Release History
 
+## 2.0.0-beta.3 (2024-03-22)
+### Breaking Changes
+
+- Type of `FileDetailsProperties.ChunkSize` has been changed from `*float32` to `*int32`
+- Type of `FileDetailsProperties.FileSize` has been changed from `*float32` to `*int32`
+- Type of `FileDetailsProperties.NumberOfChunks` has been changed from `*float32` to `*int32`
+- Type of `UploadFile.ChunkIndex` has been changed from `*float32` to `*int32`
+- Function `*ClientFactory.NewTicketChatTranscriptsNoSubscriptionClient` has been removed
+- Function `*ClientFactory.NewTicketCommunicationsNoSubscriptionClient` has been removed
+- Function `NewTicketChatTranscriptsNoSubscriptionClient` has been removed
+- Function `*TicketChatTranscriptsNoSubscriptionClient.NewListPager` has been removed
+- Function `NewTicketCommunicationsNoSubscriptionClient` has been removed
+- Function `*TicketCommunicationsNoSubscriptionClient.NewListPager` has been removed
+
+### Features Added
+
+- New enum type `IsTemporaryTicket` with values `IsTemporaryTicketNo`, `IsTemporaryTicketYes`
+- New function `*ChatTranscriptsNoSubscriptionClient.NewListPager(string, *ChatTranscriptsNoSubscriptionClientListOptions) *runtime.Pager[ChatTranscriptsNoSubscriptionClientListResponse]`
+- New function `*ClientFactory.NewLookUpResourceIDClient() *LookUpResourceIDClient`
+- New function `*ClientFactory.NewProblemClassificationsNoSubscriptionClient() *ProblemClassificationsNoSubscriptionClient`
+- New function `*ClientFactory.NewServiceClassificationsClient() *ServiceClassificationsClient`
+- New function `*ClientFactory.NewServiceClassificationsNoSubscriptionClient() *ServiceClassificationsNoSubscriptionClient`
+- New function `*CommunicationsNoSubscriptionClient.NewListPager(string, *CommunicationsNoSubscriptionClientListOptions) *runtime.Pager[CommunicationsNoSubscriptionClientListResponse]`
+- New function `NewLookUpResourceIDClient(azcore.TokenCredential, *arm.ClientOptions) (*LookUpResourceIDClient, error)`
+- New function `*LookUpResourceIDClient.Post(context.Context, LookUpResourceIDRequest, *LookUpResourceIDClientPostOptions) (LookUpResourceIDClientPostResponse, error)`
+- New function `*ProblemClassificationsClient.ClassifyProblems(context.Context, string, ProblemClassificationsClassificationInput, *ProblemClassificationsClientClassifyProblemsOptions) (ProblemClassificationsClientClassifyProblemsResponse, error)`
+- New function `NewProblemClassificationsNoSubscriptionClient(azcore.TokenCredential, *arm.ClientOptions) (*ProblemClassificationsNoSubscriptionClient, error)`
+- New function `*ProblemClassificationsNoSubscriptionClient.ClassifyProblems(context.Context, string, ProblemClassificationsClassificationInput, *ProblemClassificationsNoSubscriptionClientClassifyProblemsOptions) (ProblemClassificationsNoSubscriptionClientClassifyProblemsResponse, error)`
+- New function `NewServiceClassificationsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ServiceClassificationsClient, error)`
+- New function `*ServiceClassificationsClient.ClassifyServices(context.Context, ServiceClassificationRequest, *ServiceClassificationsClientClassifyServicesOptions) (ServiceClassificationsClientClassifyServicesResponse, error)`
+- New function `NewServiceClassificationsNoSubscriptionClient(azcore.TokenCredential, *arm.ClientOptions) (*ServiceClassificationsNoSubscriptionClient, error)`
+- New function `*ServiceClassificationsNoSubscriptionClient.ClassifyServices(context.Context, ServiceClassificationRequest, *ServiceClassificationsNoSubscriptionClientClassifyServicesOptions) (ServiceClassificationsNoSubscriptionClientClassifyServicesResponse, error)`
+- New struct `ClassificationService`
+- New struct `LookUpResourceIDRequest`
+- New struct `LookUpResourceIDResponse`
+- New struct `ProblemClassificationsClassificationInput`
+- New struct `ProblemClassificationsClassificationOutput`
+- New struct `ProblemClassificationsClassificationResult`
+- New struct `ServiceClassificationAnswer`
+- New struct `ServiceClassificationOutput`
+- New struct `ServiceClassificationRequest`
+- New field `Metadata`, `ParentProblemClassification` in struct `ProblemClassificationProperties`
+- New field `Metadata` in struct `ServiceProperties`
+- New field `IsTemporaryTicket` in struct `TicketDetailsProperties`
+
+
 ## 2.0.0-beta.2 (2023-11-30)
 ### Features Added
 

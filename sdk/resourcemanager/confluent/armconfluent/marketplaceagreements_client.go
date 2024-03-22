@@ -28,7 +28,7 @@ type MarketplaceAgreementsClient struct {
 }
 
 // NewMarketplaceAgreementsClient creates a new instance of MarketplaceAgreementsClient with the specified values.
-//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
+//   - subscriptionID - Microsoft Azure subscription id
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewMarketplaceAgreementsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MarketplaceAgreementsClient, error) {
@@ -46,7 +46,7 @@ func NewMarketplaceAgreementsClient(subscriptionID string, credential azcore.Tok
 // Create - Create Confluent Marketplace agreement in the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-22
+// Generated from API version 2024-02-13
 //   - options - MarketplaceAgreementsClientCreateOptions contains the optional parameters for the MarketplaceAgreementsClient.Create
 //     method.
 func (client *MarketplaceAgreementsClient) Create(ctx context.Context, options *MarketplaceAgreementsClientCreateOptions) (MarketplaceAgreementsClientCreateResponse, error) {
@@ -83,7 +83,7 @@ func (client *MarketplaceAgreementsClient) createCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-08-22")
+	reqQP.Set("api-version", "2024-02-13")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Body != nil {
@@ -106,7 +106,7 @@ func (client *MarketplaceAgreementsClient) createHandleResponse(resp *http.Respo
 
 // NewListPager - List Confluent marketplace agreements in the subscription.
 //
-// Generated from API version 2023-08-22
+// Generated from API version 2024-02-13
 //   - options - MarketplaceAgreementsClientListOptions contains the optional parameters for the MarketplaceAgreementsClient.NewListPager
 //     method.
 func (client *MarketplaceAgreementsClient) NewListPager(options *MarketplaceAgreementsClientListOptions) *runtime.Pager[MarketplaceAgreementsClientListResponse] {
@@ -144,7 +144,7 @@ func (client *MarketplaceAgreementsClient) listCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-08-22")
+	reqQP.Set("api-version", "2024-02-13")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -19,12 +19,15 @@ import (
 
 // ServerFactory is a fake server for instances of the armnewrelicobservability.ClientFactory type.
 type ServerFactory struct {
-	AccountsServer      AccountsServer
-	MonitorsServer      MonitorsServer
-	OperationsServer    OperationsServer
-	OrganizationsServer OrganizationsServer
-	PlansServer         PlansServer
-	TagRulesServer      TagRulesServer
+	AccountsServer                  AccountsServer
+	BillingInfoServer               BillingInfoServer
+	ConnectedPartnerResourcesServer ConnectedPartnerResourcesServer
+	MonitoredSubscriptionsServer    MonitoredSubscriptionsServer
+	MonitorsServer                  MonitorsServer
+	OperationsServer                OperationsServer
+	OrganizationsServer             OrganizationsServer
+	PlansServer                     PlansServer
+	TagRulesServer                  TagRulesServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -39,14 +42,17 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armnewrelicobservability.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                   *ServerFactory
-	trMu                  sync.Mutex
-	trAccountsServer      *AccountsServerTransport
-	trMonitorsServer      *MonitorsServerTransport
-	trOperationsServer    *OperationsServerTransport
-	trOrganizationsServer *OrganizationsServerTransport
-	trPlansServer         *PlansServerTransport
-	trTagRulesServer      *TagRulesServerTransport
+	srv                               *ServerFactory
+	trMu                              sync.Mutex
+	trAccountsServer                  *AccountsServerTransport
+	trBillingInfoServer               *BillingInfoServerTransport
+	trConnectedPartnerResourcesServer *ConnectedPartnerResourcesServerTransport
+	trMonitoredSubscriptionsServer    *MonitoredSubscriptionsServerTransport
+	trMonitorsServer                  *MonitorsServerTransport
+	trOperationsServer                *OperationsServerTransport
+	trOrganizationsServer             *OrganizationsServerTransport
+	trPlansServer                     *PlansServerTransport
+	trTagRulesServer                  *TagRulesServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -65,6 +71,19 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "AccountsClient":
 		initServer(s, &s.trAccountsServer, func() *AccountsServerTransport { return NewAccountsServerTransport(&s.srv.AccountsServer) })
 		resp, err = s.trAccountsServer.Do(req)
+	case "BillingInfoClient":
+		initServer(s, &s.trBillingInfoServer, func() *BillingInfoServerTransport { return NewBillingInfoServerTransport(&s.srv.BillingInfoServer) })
+		resp, err = s.trBillingInfoServer.Do(req)
+	case "ConnectedPartnerResourcesClient":
+		initServer(s, &s.trConnectedPartnerResourcesServer, func() *ConnectedPartnerResourcesServerTransport {
+			return NewConnectedPartnerResourcesServerTransport(&s.srv.ConnectedPartnerResourcesServer)
+		})
+		resp, err = s.trConnectedPartnerResourcesServer.Do(req)
+	case "MonitoredSubscriptionsClient":
+		initServer(s, &s.trMonitoredSubscriptionsServer, func() *MonitoredSubscriptionsServerTransport {
+			return NewMonitoredSubscriptionsServerTransport(&s.srv.MonitoredSubscriptionsServer)
+		})
+		resp, err = s.trMonitoredSubscriptionsServer.Do(req)
 	case "MonitorsClient":
 		initServer(s, &s.trMonitorsServer, func() *MonitorsServerTransport { return NewMonitorsServerTransport(&s.srv.MonitorsServer) })
 		resp, err = s.trMonitorsServer.Do(req)

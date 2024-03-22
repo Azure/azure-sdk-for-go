@@ -19,21 +19,23 @@ import (
 
 // ServerFactory is a fake server for instances of the armsupport.ClientFactory type.
 type ServerFactory struct {
-	ChatTranscriptsServer                     ChatTranscriptsServer
-	ChatTranscriptsNoSubscriptionServer       ChatTranscriptsNoSubscriptionServer
-	CommunicationsServer                      CommunicationsServer
-	CommunicationsNoSubscriptionServer        CommunicationsNoSubscriptionServer
-	FileWorkspacesServer                      FileWorkspacesServer
-	FileWorkspacesNoSubscriptionServer        FileWorkspacesNoSubscriptionServer
-	FilesServer                               FilesServer
-	FilesNoSubscriptionServer                 FilesNoSubscriptionServer
-	OperationsServer                          OperationsServer
-	ProblemClassificationsServer              ProblemClassificationsServer
-	ServicesServer                            ServicesServer
-	TicketChatTranscriptsNoSubscriptionServer TicketChatTranscriptsNoSubscriptionServer
-	TicketCommunicationsNoSubscriptionServer  TicketCommunicationsNoSubscriptionServer
-	TicketsServer                             TicketsServer
-	TicketsNoSubscriptionServer               TicketsNoSubscriptionServer
+	ChatTranscriptsServer                      ChatTranscriptsServer
+	ChatTranscriptsNoSubscriptionServer        ChatTranscriptsNoSubscriptionServer
+	CommunicationsServer                       CommunicationsServer
+	CommunicationsNoSubscriptionServer         CommunicationsNoSubscriptionServer
+	FileWorkspacesServer                       FileWorkspacesServer
+	FileWorkspacesNoSubscriptionServer         FileWorkspacesNoSubscriptionServer
+	FilesServer                                FilesServer
+	FilesNoSubscriptionServer                  FilesNoSubscriptionServer
+	LookUpResourceIDServer                     LookUpResourceIDServer
+	OperationsServer                           OperationsServer
+	ProblemClassificationsServer               ProblemClassificationsServer
+	ProblemClassificationsNoSubscriptionServer ProblemClassificationsNoSubscriptionServer
+	ServiceClassificationsServer               ServiceClassificationsServer
+	ServiceClassificationsNoSubscriptionServer ServiceClassificationsNoSubscriptionServer
+	ServicesServer                             ServicesServer
+	TicketsServer                              TicketsServer
+	TicketsNoSubscriptionServer                TicketsNoSubscriptionServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -48,23 +50,25 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armsupport.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                                         *ServerFactory
-	trMu                                        sync.Mutex
-	trChatTranscriptsServer                     *ChatTranscriptsServerTransport
-	trChatTranscriptsNoSubscriptionServer       *ChatTranscriptsNoSubscriptionServerTransport
-	trCommunicationsServer                      *CommunicationsServerTransport
-	trCommunicationsNoSubscriptionServer        *CommunicationsNoSubscriptionServerTransport
-	trFileWorkspacesServer                      *FileWorkspacesServerTransport
-	trFileWorkspacesNoSubscriptionServer        *FileWorkspacesNoSubscriptionServerTransport
-	trFilesServer                               *FilesServerTransport
-	trFilesNoSubscriptionServer                 *FilesNoSubscriptionServerTransport
-	trOperationsServer                          *OperationsServerTransport
-	trProblemClassificationsServer              *ProblemClassificationsServerTransport
-	trServicesServer                            *ServicesServerTransport
-	trTicketChatTranscriptsNoSubscriptionServer *TicketChatTranscriptsNoSubscriptionServerTransport
-	trTicketCommunicationsNoSubscriptionServer  *TicketCommunicationsNoSubscriptionServerTransport
-	trTicketsServer                             *TicketsServerTransport
-	trTicketsNoSubscriptionServer               *TicketsNoSubscriptionServerTransport
+	srv                                          *ServerFactory
+	trMu                                         sync.Mutex
+	trChatTranscriptsServer                      *ChatTranscriptsServerTransport
+	trChatTranscriptsNoSubscriptionServer        *ChatTranscriptsNoSubscriptionServerTransport
+	trCommunicationsServer                       *CommunicationsServerTransport
+	trCommunicationsNoSubscriptionServer         *CommunicationsNoSubscriptionServerTransport
+	trFileWorkspacesServer                       *FileWorkspacesServerTransport
+	trFileWorkspacesNoSubscriptionServer         *FileWorkspacesNoSubscriptionServerTransport
+	trFilesServer                                *FilesServerTransport
+	trFilesNoSubscriptionServer                  *FilesNoSubscriptionServerTransport
+	trLookUpResourceIDServer                     *LookUpResourceIDServerTransport
+	trOperationsServer                           *OperationsServerTransport
+	trProblemClassificationsServer               *ProblemClassificationsServerTransport
+	trProblemClassificationsNoSubscriptionServer *ProblemClassificationsNoSubscriptionServerTransport
+	trServiceClassificationsServer               *ServiceClassificationsServerTransport
+	trServiceClassificationsNoSubscriptionServer *ServiceClassificationsNoSubscriptionServerTransport
+	trServicesServer                             *ServicesServerTransport
+	trTicketsServer                              *TicketsServerTransport
+	trTicketsNoSubscriptionServer                *TicketsNoSubscriptionServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -118,6 +122,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewFilesNoSubscriptionServerTransport(&s.srv.FilesNoSubscriptionServer)
 		})
 		resp, err = s.trFilesNoSubscriptionServer.Do(req)
+	case "LookUpResourceIDClient":
+		initServer(s, &s.trLookUpResourceIDServer, func() *LookUpResourceIDServerTransport {
+			return NewLookUpResourceIDServerTransport(&s.srv.LookUpResourceIDServer)
+		})
+		resp, err = s.trLookUpResourceIDServer.Do(req)
 	case "OperationsClient":
 		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
@@ -126,19 +135,24 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewProblemClassificationsServerTransport(&s.srv.ProblemClassificationsServer)
 		})
 		resp, err = s.trProblemClassificationsServer.Do(req)
+	case "ProblemClassificationsNoSubscriptionClient":
+		initServer(s, &s.trProblemClassificationsNoSubscriptionServer, func() *ProblemClassificationsNoSubscriptionServerTransport {
+			return NewProblemClassificationsNoSubscriptionServerTransport(&s.srv.ProblemClassificationsNoSubscriptionServer)
+		})
+		resp, err = s.trProblemClassificationsNoSubscriptionServer.Do(req)
+	case "ServiceClassificationsClient":
+		initServer(s, &s.trServiceClassificationsServer, func() *ServiceClassificationsServerTransport {
+			return NewServiceClassificationsServerTransport(&s.srv.ServiceClassificationsServer)
+		})
+		resp, err = s.trServiceClassificationsServer.Do(req)
+	case "ServiceClassificationsNoSubscriptionClient":
+		initServer(s, &s.trServiceClassificationsNoSubscriptionServer, func() *ServiceClassificationsNoSubscriptionServerTransport {
+			return NewServiceClassificationsNoSubscriptionServerTransport(&s.srv.ServiceClassificationsNoSubscriptionServer)
+		})
+		resp, err = s.trServiceClassificationsNoSubscriptionServer.Do(req)
 	case "ServicesClient":
 		initServer(s, &s.trServicesServer, func() *ServicesServerTransport { return NewServicesServerTransport(&s.srv.ServicesServer) })
 		resp, err = s.trServicesServer.Do(req)
-	case "TicketChatTranscriptsNoSubscriptionClient":
-		initServer(s, &s.trTicketChatTranscriptsNoSubscriptionServer, func() *TicketChatTranscriptsNoSubscriptionServerTransport {
-			return NewTicketChatTranscriptsNoSubscriptionServerTransport(&s.srv.TicketChatTranscriptsNoSubscriptionServer)
-		})
-		resp, err = s.trTicketChatTranscriptsNoSubscriptionServer.Do(req)
-	case "TicketCommunicationsNoSubscriptionClient":
-		initServer(s, &s.trTicketCommunicationsNoSubscriptionServer, func() *TicketCommunicationsNoSubscriptionServerTransport {
-			return NewTicketCommunicationsNoSubscriptionServerTransport(&s.srv.TicketCommunicationsNoSubscriptionServer)
-		})
-		resp, err = s.trTicketCommunicationsNoSubscriptionServer.Do(req)
 	case "TicketsClient":
 		initServer(s, &s.trTicketsServer, func() *TicketsServerTransport { return NewTicketsServerTransport(&s.srv.TicketsServer) })
 		resp, err = s.trTicketsServer.Do(req)

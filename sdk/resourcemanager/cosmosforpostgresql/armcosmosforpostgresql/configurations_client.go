@@ -46,7 +46,7 @@ func NewConfigurationsClient(subscriptionID string, credential azcore.TokenCrede
 // Get - Gets information of a configuration for coordinator and nodes.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-08
+// Generated from API version 2023-03-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - configurationName - The name of the cluster configuration.
@@ -97,7 +97,7 @@ func (client *ConfigurationsClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-08")
+	reqQP.Set("api-version", "2023-03-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -115,7 +115,7 @@ func (client *ConfigurationsClient) getHandleResponse(resp *http.Response) (Conf
 // GetCoordinator - Gets information of a configuration for coordinator.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-08
+// Generated from API version 2023-03-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - configurationName - The name of the cluster configuration.
@@ -167,7 +167,7 @@ func (client *ConfigurationsClient) getCoordinatorCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-08")
+	reqQP.Set("api-version", "2023-03-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -185,7 +185,7 @@ func (client *ConfigurationsClient) getCoordinatorHandleResponse(resp *http.Resp
 // GetNode - Gets information of a configuration for worker nodes.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-08
+// Generated from API version 2023-03-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - configurationName - The name of the cluster configuration.
@@ -236,7 +236,7 @@ func (client *ConfigurationsClient) getNodeCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-08")
+	reqQP.Set("api-version", "2023-03-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -253,7 +253,7 @@ func (client *ConfigurationsClient) getNodeHandleResponse(resp *http.Response) (
 
 // NewListByClusterPager - List all the configurations of a cluster.
 //
-// Generated from API version 2022-11-08
+// Generated from API version 2023-03-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - options - ConfigurationsClientListByClusterOptions contains the optional parameters for the ConfigurationsClient.NewListByClusterPager
@@ -301,7 +301,7 @@ func (client *ConfigurationsClient) listByClusterCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-08")
+	reqQP.Set("api-version", "2023-03-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -318,7 +318,7 @@ func (client *ConfigurationsClient) listByClusterHandleResponse(resp *http.Respo
 
 // NewListByServerPager - List all the configurations of a server in cluster.
 //
-// Generated from API version 2022-11-08
+// Generated from API version 2023-03-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - serverName - The name of the server.
@@ -371,7 +371,7 @@ func (client *ConfigurationsClient) listByServerCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-08")
+	reqQP.Set("api-version", "2023-03-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -389,7 +389,7 @@ func (client *ConfigurationsClient) listByServerHandleResponse(resp *http.Respon
 // BeginUpdateOnCoordinator - Updates configuration of coordinator in a cluster
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-08
+// Generated from API version 2023-03-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - configurationName - The name of the cluster configuration.
@@ -417,7 +417,7 @@ func (client *ConfigurationsClient) BeginUpdateOnCoordinator(ctx context.Context
 // UpdateOnCoordinator - Updates configuration of coordinator in a cluster
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-08
+// Generated from API version 2023-03-02-preview
 func (client *ConfigurationsClient) updateOnCoordinator(ctx context.Context, resourceGroupName string, clusterName string, configurationName string, parameters ServerConfiguration, options *ConfigurationsClientBeginUpdateOnCoordinatorOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ConfigurationsClient.BeginUpdateOnCoordinator"
@@ -463,7 +463,7 @@ func (client *ConfigurationsClient) updateOnCoordinatorCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-08")
+	reqQP.Set("api-version", "2023-03-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -475,7 +475,7 @@ func (client *ConfigurationsClient) updateOnCoordinatorCreateRequest(ctx context
 // BeginUpdateOnNode - Updates configuration of worker nodes in a cluster
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-08
+// Generated from API version 2023-03-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - configurationName - The name of the cluster configuration.
@@ -503,7 +503,7 @@ func (client *ConfigurationsClient) BeginUpdateOnNode(ctx context.Context, resou
 // UpdateOnNode - Updates configuration of worker nodes in a cluster
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-08
+// Generated from API version 2023-03-02-preview
 func (client *ConfigurationsClient) updateOnNode(ctx context.Context, resourceGroupName string, clusterName string, configurationName string, parameters ServerConfiguration, options *ConfigurationsClientBeginUpdateOnNodeOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ConfigurationsClient.BeginUpdateOnNode"
@@ -549,7 +549,7 @@ func (client *ConfigurationsClient) updateOnNodeCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-08")
+	reqQP.Set("api-version", "2023-03-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

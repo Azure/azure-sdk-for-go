@@ -28,7 +28,7 @@ type JobsExecutionsClient struct {
 }
 
 // NewJobsExecutionsClient creates a new instance of JobsExecutionsClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewJobsExecutionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*JobsExecutionsClient, error) {
@@ -45,7 +45,7 @@ func NewJobsExecutionsClient(subscriptionID string, credential azcore.TokenCrede
 
 // NewListPager - Get a Container Apps Job's executions
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-11-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - jobName - Job Name
 //   - options - JobsExecutionsClientListOptions contains the optional parameters for the JobsExecutionsClient.NewListPager method.
@@ -92,10 +92,10 @@ func (client *JobsExecutionsClient) listCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
+	reqQP.Set("api-version", "2023-11-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

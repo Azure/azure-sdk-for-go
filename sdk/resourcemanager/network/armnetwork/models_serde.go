@@ -7042,6 +7042,7 @@ func (b BastionHost) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "sku", b.SKU)
 	populate(objectMap, "tags", b.Tags)
 	populate(objectMap, "type", b.Type)
+	populate(objectMap, "zones", b.Zones)
 	return json.Marshal(objectMap)
 }
 
@@ -7077,6 +7078,9 @@ func (b *BastionHost) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "type":
 			err = unpopulate(val, "Type", &b.Type)
+			delete(rawMsg, key)
+		case "zones":
+			err = unpopulate(val, "Zones", &b.Zones)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -34460,7 +34464,7 @@ func populateAny(m map[string]any, k string, v any) {
 }
 
 func unpopulate(data json.RawMessage, fn string, v any) error {
-	if data == nil {
+	if data == nil || string(data) == "null" {
 		return nil
 	}
 	if err := json.Unmarshal(data, v); err != nil {

@@ -46,7 +46,7 @@ func NewRolesClient(subscriptionID string, credential azcore.TokenCredential, op
 // BeginCreate - Creates a new role or updates an existing role.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-08
+// Generated from API version 2023-03-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - roleName - The name of the cluster role.
@@ -73,7 +73,7 @@ func (client *RolesClient) BeginCreate(ctx context.Context, resourceGroupName st
 // Create - Creates a new role or updates an existing role.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-08
+// Generated from API version 2023-03-02-preview
 func (client *RolesClient) create(ctx context.Context, resourceGroupName string, clusterName string, roleName string, parameters Role, options *RolesClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RolesClient.BeginCreate"
@@ -119,7 +119,7 @@ func (client *RolesClient) createCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-08")
+	reqQP.Set("api-version", "2023-03-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -131,7 +131,7 @@ func (client *RolesClient) createCreateRequest(ctx context.Context, resourceGrou
 // BeginDelete - Deletes a cluster role.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-08
+// Generated from API version 2023-03-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - roleName - The name of the cluster role.
@@ -157,7 +157,7 @@ func (client *RolesClient) BeginDelete(ctx context.Context, resourceGroupName st
 // Delete - Deletes a cluster role.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-08
+// Generated from API version 2023-03-02-preview
 func (client *RolesClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, roleName string, options *RolesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RolesClient.BeginDelete"
@@ -203,7 +203,7 @@ func (client *RolesClient) deleteCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-08")
+	reqQP.Set("api-version", "2023-03-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -212,7 +212,7 @@ func (client *RolesClient) deleteCreateRequest(ctx context.Context, resourceGrou
 // Get - Gets information about a cluster role.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-08
+// Generated from API version 2023-03-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - roleName - The name of the cluster role.
@@ -263,7 +263,7 @@ func (client *RolesClient) getCreateRequest(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-08")
+	reqQP.Set("api-version", "2023-03-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -280,7 +280,7 @@ func (client *RolesClient) getHandleResponse(resp *http.Response) (RolesClientGe
 
 // NewListByClusterPager - List all the roles in a given cluster.
 //
-// Generated from API version 2022-11-08
+// Generated from API version 2023-03-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - options - RolesClientListByClusterOptions contains the optional parameters for the RolesClient.NewListByClusterPager method.
@@ -328,7 +328,7 @@ func (client *RolesClient) listByClusterCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-08")
+	reqQP.Set("api-version", "2023-03-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

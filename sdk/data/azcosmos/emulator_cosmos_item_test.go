@@ -52,7 +52,7 @@ func TestItemCRUD(t *testing.T) {
 		t.Fatalf("Failed to create item: %v", err)
 	}
 
-	if itemResponse.SessionToken == "" {
+	if itemResponse.SessionToken == nil {
 		t.Fatalf("Session token is empty")
 	}
 
@@ -227,7 +227,7 @@ func TestItemCRUDforNullPartitionKey(t *testing.T) {
 		t.Fatalf("Failed to create item: %v", err)
 	}
 
-	if itemResponse.SessionToken == "" {
+	if itemResponse.SessionToken == nil {
 		t.Fatalf("Session token is empty")
 	}
 

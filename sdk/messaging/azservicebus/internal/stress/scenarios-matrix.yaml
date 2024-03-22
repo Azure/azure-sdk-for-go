@@ -50,6 +50,10 @@ matrix:
     mostlyIdleReceiver:
       testTarget: mostlyIdleReceiver
       memory: "0.5Gi"
+    openCloseMeasurements:
+      testTarget: openCloseMeasurements
+      memory: "0.5Gi"
+      args: -rounds 100
     rapidOpenClose:
       testTarget: rapidOpenClose
       memory: "0.5Gi"

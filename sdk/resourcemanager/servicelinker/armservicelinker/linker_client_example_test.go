@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicelinker/armservicelinker"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicelinker/armservicelinker/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/servicelinker/resource-manager/Microsoft.ServiceLinker/stable/2022-05-01/examples/LinkList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c16ce913afbdaa073e8ca5e480f3b465db2de542/specification/servicelinker/resource-manager/Microsoft.ServiceLinker/preview/2023-04-01-preview/examples/LinkerList.json
 func ExampleLinkerClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -40,12 +40,15 @@ func ExampleLinkerClient_NewListPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.LinkerList = armservicelinker.LinkerList{
+		// page.ResourceList = armservicelinker.ResourceList{
 		// 	Value: []*armservicelinker.LinkerResource{
 		// 		{
 		// 			Name: to.Ptr("linkName"),
 		// 			Type: to.Ptr("Microsoft.ServiceLinker/links"),
 		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.ServiceLinker/links/linkName"),
+		// 			SystemData: &armservicelinker.SystemData{
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-07-12T22:05:09.000Z"); return t}()),
+		// 			},
 		// 			Properties: &armservicelinker.LinkerProperties{
 		// 				AuthInfo: &armservicelinker.SecretAuthInfo{
 		// 					AuthType: to.Ptr(armservicelinker.AuthTypeSecret),
@@ -56,15 +59,12 @@ func ExampleLinkerClient_NewListPager() {
 		// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.DocumentDb/databaseAccounts/test-acc/mongodbDatabases/test-db"),
 		// 				},
 		// 			},
-		// 			SystemData: &armservicelinker.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-07-12T22:05:09.000Z"); return t}()),
-		// 			},
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/servicelinker/resource-manager/Microsoft.ServiceLinker/stable/2022-05-01/examples/Link.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c16ce913afbdaa073e8ca5e480f3b465db2de542/specification/servicelinker/resource-manager/Microsoft.ServiceLinker/preview/2023-04-01-preview/examples/Linker.json
 func ExampleLinkerClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -86,24 +86,42 @@ func ExampleLinkerClient_Get() {
 	// 	Name: to.Ptr("linkName"),
 	// 	Type: to.Ptr("Microsoft.ServiceLinker/links"),
 	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.Web/sites/test-app/providers/Microsoft.ServiceLinker/links/linkName"),
+	// 	SystemData: &armservicelinker.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-07-12T22:05:09.000Z"); return t}()),
+	// 	},
 	// 	Properties: &armservicelinker.LinkerProperties{
 	// 		AuthInfo: &armservicelinker.SecretAuthInfo{
 	// 			AuthType: to.Ptr(armservicelinker.AuthTypeSecret),
 	// 			Name: to.Ptr("name"),
+	// 		},
+	// 		ClientType: to.Ptr(armservicelinker.ClientTypeDotnet),
+	// 		ConfigurationInfo: &armservicelinker.ConfigurationInfo{
+	// 			AdditionalConfigurations: map[string]*string{
+	// 				"throttlingLimit": to.Ptr("100"),
+	// 			},
+	// 			CustomizedKeys: map[string]*string{
+	// 				"AZURE_MYSQL_CONNECTIONSTRING": to.Ptr("myConnectionstring"),
+	// 				"AZURE_MYSQL_SSLMODE": to.Ptr("mySslmode"),
+	// 			},
+	// 			DeleteOrUpdateBehavior: to.Ptr(armservicelinker.DeleteOrUpdateBehaviorForcedCleanup),
+	// 		},
+	// 		PublicNetworkSolution: &armservicelinker.PublicNetworkSolution{
+	// 			Action: to.Ptr(armservicelinker.ActionTypeEnable),
+	// 		},
+	// 		Scope: to.Ptr("AKS-Namespace"),
+	// 		SecretStore: &armservicelinker.SecretStore{
+	// 			KeyVaultID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.KeyVault/vaults/kvname"),
 	// 		},
 	// 		TargetService: &armservicelinker.AzureResource{
 	// 			Type: to.Ptr(armservicelinker.TargetServiceTypeAzureResource),
 	// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.DocumentDb/databaseAccounts/test-acc/mongodbDatabases/test-db"),
 	// 		},
 	// 	},
-	// 	SystemData: &armservicelinker.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-07-12T22:05:09.000Z"); return t}()),
-	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/servicelinker/resource-manager/Microsoft.ServiceLinker/stable/2022-05-01/examples/PutLink.json
-func ExampleLinkerClient_BeginCreateOrUpdate_putLink() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c16ce913afbdaa073e8ca5e480f3b465db2de542/specification/servicelinker/resource-manager/Microsoft.ServiceLinker/preview/2023-04-01-preview/examples/PutLinker.json
+func ExampleLinkerClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -121,113 +139,6 @@ func ExampleLinkerClient_BeginCreateOrUpdate_putLink() {
 				SecretInfo: &armservicelinker.ValueSecretInfo{
 					SecretType: to.Ptr(armservicelinker.SecretTypeRawValue),
 					Value:      to.Ptr("secret"),
-				},
-			},
-			TargetService: &armservicelinker.AzureResource{
-				Type: to.Ptr(armservicelinker.TargetServiceTypeAzureResource),
-				ID:   to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.DBforPostgreSQL/servers/test-pg/databases/test-db"),
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.LinkerResource = armservicelinker.LinkerResource{
-	// 	Name: to.Ptr("linkName"),
-	// 	Type: to.Ptr("Microsoft.ServiceLinker/links"),
-	// 	Properties: &armservicelinker.LinkerProperties{
-	// 		AuthInfo: &armservicelinker.SecretAuthInfo{
-	// 			AuthType: to.Ptr(armservicelinker.AuthTypeSecret),
-	// 			Name: to.Ptr("name"),
-	// 		},
-	// 		TargetService: &armservicelinker.AzureResource{
-	// 			Type: to.Ptr(armservicelinker.TargetServiceTypeAzureResource),
-	// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.DBforPostgreSQL/servers/test-pg/databases/test-db"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/servicelinker/resource-manager/Microsoft.ServiceLinker/stable/2022-05-01/examples/PutLinkWithSecretStore.json
-func ExampleLinkerClient_BeginCreateOrUpdate_putLinkWithSecretStore() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armservicelinker.NewClientFactory(cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewLinkerClient().BeginCreateOrUpdate(ctx, "subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.Web/sites/test-app", "linkName", armservicelinker.LinkerResource{
-		Properties: &armservicelinker.LinkerProperties{
-			AuthInfo: &armservicelinker.SecretAuthInfo{
-				AuthType: to.Ptr(armservicelinker.AuthTypeSecret),
-			},
-			SecretStore: &armservicelinker.SecretStore{
-				KeyVaultID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.KeyVault/vaults/test-kv"),
-			},
-			TargetService: &armservicelinker.AzureResource{
-				Type: to.Ptr(armservicelinker.TargetServiceTypeAzureResource),
-				ID:   to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.DocumentDb/databaseAccounts/test-acc/mongodbDatabases/test-db"),
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.LinkerResource = armservicelinker.LinkerResource{
-	// 	Name: to.Ptr("linkName"),
-	// 	Type: to.Ptr("Microsoft.ServiceLinker/links"),
-	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.Web/sites/test-app/providers/Microsoft.ServiceLinker/links/linkName"),
-	// 	Properties: &armservicelinker.LinkerProperties{
-	// 		AuthInfo: &armservicelinker.SecretAuthInfo{
-	// 			AuthType: to.Ptr(armservicelinker.AuthTypeSecret),
-	// 		},
-	// 		SecretStore: &armservicelinker.SecretStore{
-	// 			KeyVaultID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.KeyVault/vaults/test-kv"),
-	// 		},
-	// 		TargetService: &armservicelinker.AzureResource{
-	// 			Type: to.Ptr(armservicelinker.TargetServiceTypeAzureResource),
-	// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.DocumentDb/databaseAccounts/test-acc/mongodbDatabases/test-db"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/servicelinker/resource-manager/Microsoft.ServiceLinker/stable/2022-05-01/examples/PutLinkWithServiceEndpoint.json
-func ExampleLinkerClient_BeginCreateOrUpdate_putLinkWithServiceEndpoint() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armservicelinker.NewClientFactory(cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewLinkerClient().BeginCreateOrUpdate(ctx, "subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.Web/sites/test-app", "linkName", armservicelinker.LinkerResource{
-		Properties: &armservicelinker.LinkerProperties{
-			AuthInfo: &armservicelinker.SecretAuthInfo{
-				AuthType: to.Ptr(armservicelinker.AuthTypeSecret),
-				Name:     to.Ptr("name"),
-				SecretInfo: &armservicelinker.KeyVaultSecretURISecretInfo{
-					SecretType: to.Ptr(armservicelinker.SecretTypeKeyVaultSecretURI),
-					Value:      to.Ptr("https://vault-name.vault.azure.net/secrets/secret-name/00000000000000000000000000000000"),
 				},
 			},
 			TargetService: &armservicelinker.AzureResource{
@@ -269,7 +180,7 @@ func ExampleLinkerClient_BeginCreateOrUpdate_putLinkWithServiceEndpoint() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/servicelinker/resource-manager/Microsoft.ServiceLinker/stable/2022-05-01/examples/DeleteLink.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c16ce913afbdaa073e8ca5e480f3b465db2de542/specification/servicelinker/resource-manager/Microsoft.ServiceLinker/preview/2023-04-01-preview/examples/DeleteLinker.json
 func ExampleLinkerClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -290,7 +201,7 @@ func ExampleLinkerClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/servicelinker/resource-manager/Microsoft.ServiceLinker/stable/2022-05-01/examples/PatchLink.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c16ce913afbdaa073e8ca5e480f3b465db2de542/specification/servicelinker/resource-manager/Microsoft.ServiceLinker/preview/2023-04-01-preview/examples/PatchLinker.json
 func ExampleLinkerClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -343,7 +254,7 @@ func ExampleLinkerClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/servicelinker/resource-manager/Microsoft.ServiceLinker/stable/2022-05-01/examples/ValidateLinkSuccess.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c16ce913afbdaa073e8ca5e480f3b465db2de542/specification/servicelinker/resource-manager/Microsoft.ServiceLinker/preview/2023-04-01-preview/examples/ValidateLinkerSuccess.json
 func ExampleLinkerClient_BeginValidate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -369,7 +280,6 @@ func ExampleLinkerClient_BeginValidate() {
 	// 	Properties: &armservicelinker.ValidateResult{
 	// 		AuthType: to.Ptr(armservicelinker.AuthTypeSecret),
 	// 		IsConnectionAvailable: to.Ptr(true),
-	// 		LinkerName: to.Ptr("linkName"),
 	// 		ReportEndTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-07-12T22:06:09.000Z"); return t}()),
 	// 		ReportStartTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-07-12T22:05:09.000Z"); return t}()),
 	// 		SourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.DocumentDb/databaseAccounts/test-acc/mongodbDatabases/test-db"),
@@ -389,7 +299,7 @@ func ExampleLinkerClient_BeginValidate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/servicelinker/resource-manager/Microsoft.ServiceLinker/stable/2022-05-01/examples/GetConfigurations.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c16ce913afbdaa073e8ca5e480f3b465db2de542/specification/servicelinker/resource-manager/Microsoft.ServiceLinker/preview/2023-04-01-preview/examples/GetConfigurations.json
 func ExampleLinkerClient_ListConfigurations() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -400,18 +310,40 @@ func ExampleLinkerClient_ListConfigurations() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewLinkerClient().ListConfigurations(ctx, "subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.Web/sites/test-app", "linkName", nil)
+	res, err := clientFactory.NewLinkerClient().ListConfigurations(ctx, "subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.App/containerApps/test-app", "linkName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.SourceConfigurationResult = armservicelinker.SourceConfigurationResult{
+	// res.ConfigurationResult = armservicelinker.ConfigurationResult{
 	// 	Configurations: []*armservicelinker.SourceConfiguration{
 	// 		{
-	// 			Name: to.Ptr("ASL_DocumentDb_ConnectionString"),
-	// 			Value: to.Ptr("ConnectionString"),
+	// 			Name: to.Ptr("AZURE_POSTGRESQL_HOST"),
+	// 			ConfigType: to.Ptr(armservicelinker.LinkerConfigurationTypeDefault),
+	// 			Value: to.Ptr("Host"),
+	// 		},
+	// 		{
+	// 			Name: to.Ptr("AZURE_POSTGRESQL_USER"),
+	// 			ConfigType: to.Ptr(armservicelinker.LinkerConfigurationTypeDefault),
+	// 			Value: to.Ptr("Username"),
+	// 		},
+	// 		{
+	// 			Name: to.Ptr("AZURE_POSTGRESQL_DATABASE"),
+	// 			ConfigType: to.Ptr(armservicelinker.LinkerConfigurationTypeDefault),
+	// 			Value: to.Ptr("DatabaseName"),
+	// 		},
+	// 		{
+	// 			Name: to.Ptr("AZURE_POSTGRESQL_PORT"),
+	// 			ConfigType: to.Ptr(armservicelinker.LinkerConfigurationTypeDefault),
+	// 			Value: to.Ptr("Port"),
+	// 		},
+	// 		{
+	// 			Name: to.Ptr("AZURE_POSTGRESQL_PASSWORD"),
+	// 			ConfigType: to.Ptr(armservicelinker.LinkerConfigurationTypeKeyVaultSecret),
+	// 			KeyVaultReferenceIdentity: to.Ptr("system"),
+	// 			Value: to.Ptr("SecretUri"),
 	// 	}},
 	// }
 }

@@ -13,6 +13,50 @@ type AccountsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// BillingInfoClientGetOptions contains the optional parameters for the BillingInfoClient.Get method.
+type BillingInfoClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConnectedPartnerResourcesClientListOptions contains the optional parameters for the ConnectedPartnerResourcesClient.NewListPager
+// method.
+type ConnectedPartnerResourcesClientListOptions struct {
+	// Email Id of the user
+	Body *string
+}
+
+// MonitoredSubscriptionsClientBeginCreateorUpdateOptions contains the optional parameters for the MonitoredSubscriptionsClient.BeginCreateorUpdate
+// method.
+type MonitoredSubscriptionsClientBeginCreateorUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// MonitoredSubscriptionsClientBeginDeleteOptions contains the optional parameters for the MonitoredSubscriptionsClient.BeginDelete
+// method.
+type MonitoredSubscriptionsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// MonitoredSubscriptionsClientBeginUpdateOptions contains the optional parameters for the MonitoredSubscriptionsClient.BeginUpdate
+// method.
+type MonitoredSubscriptionsClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// MonitoredSubscriptionsClientGetOptions contains the optional parameters for the MonitoredSubscriptionsClient.Get method.
+type MonitoredSubscriptionsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// MonitoredSubscriptionsClientListOptions contains the optional parameters for the MonitoredSubscriptionsClient.NewListPager
+// method.
+type MonitoredSubscriptionsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // MonitorsClientBeginCreateOrUpdateOptions contains the optional parameters for the MonitorsClient.BeginCreateOrUpdate method.
 type MonitorsClientBeginCreateOrUpdateOptions struct {
 	// Resumes the LRO from the provided token.
@@ -59,6 +103,12 @@ type MonitorsClientListBySubscriptionOptions struct {
 
 // MonitorsClientListHostsOptions contains the optional parameters for the MonitorsClient.NewListHostsPager method.
 type MonitorsClientListHostsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// MonitorsClientListLinkedResourcesOptions contains the optional parameters for the MonitorsClient.NewListLinkedResourcesPager
+// method.
+type MonitorsClientListLinkedResourcesOptions struct {
 	// placeholder for future optional parameters
 }
 

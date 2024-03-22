@@ -15,7 +15,7 @@ import (
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers/v3"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -23,6 +23,10 @@ import (
 
 // ContainerAppsAPIServer is a fake server for instances of the armappcontainers.ContainerAppsAPIClient type.
 type ContainerAppsAPIServer struct {
+	// GetCustomDomainVerificationID is the fake for method ContainerAppsAPIClient.GetCustomDomainVerificationID
+	// HTTP status codes to indicate success: http.StatusOK
+	GetCustomDomainVerificationID func(ctx context.Context, options *armappcontainers.ContainerAppsAPIClientGetCustomDomainVerificationIDOptions) (resp azfake.Responder[armappcontainers.ContainerAppsAPIClientGetCustomDomainVerificationIDResponse], errResp azfake.ErrorResponder)
+
 	// JobExecution is the fake for method ContainerAppsAPIClient.JobExecution
 	// HTTP status codes to indicate success: http.StatusOK
 	JobExecution func(ctx context.Context, resourceGroupName string, jobName string, jobExecutionName string, options *armappcontainers.ContainerAppsAPIClientJobExecutionOptions) (resp azfake.Responder[armappcontainers.ContainerAppsAPIClientJobExecutionResponse], errResp azfake.ErrorResponder)
@@ -53,6 +57,8 @@ func (c *ContainerAppsAPIServerTransport) Do(req *http.Request) (*http.Response,
 	var err error
 
 	switch method {
+	case "ContainerAppsAPIClient.GetCustomDomainVerificationID":
+		resp, err = c.dispatchGetCustomDomainVerificationID(req)
 	case "ContainerAppsAPIClient.JobExecution":
 		resp, err = c.dispatchJobExecution(req)
 	default:
@@ -63,6 +69,31 @@ func (c *ContainerAppsAPIServerTransport) Do(req *http.Request) (*http.Response,
 		return nil, err
 	}
 
+	return resp, nil
+}
+
+func (c *ContainerAppsAPIServerTransport) dispatchGetCustomDomainVerificationID(req *http.Request) (*http.Response, error) {
+	if c.srv.GetCustomDomainVerificationID == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetCustomDomainVerificationID not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.App/getCustomDomainVerificationId`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 1 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	respr, errRespr := c.srv.GetCustomDomainVerificationID(req.Context(), nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Value, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 

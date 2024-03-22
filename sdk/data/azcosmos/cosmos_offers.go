@@ -56,7 +56,7 @@ func (c cosmosOffers) ReadThroughputIfExists(
 	if len(theOffers.Offers) == 0 {
 		azResponse.StatusCode = http.StatusNotFound
 		azResponse.Header.Add(cosmosHeaderRequestCharge, fmt.Sprint(queryRequestCharge))
-		return ThroughputResponse{}, newCosmosError(azResponse)
+		return ThroughputResponse{}, azruntime.NewResponseErrorWithErrorCode(azResponse, azResponse.Status)
 	}
 
 	// Now read the individual offer
@@ -99,9 +99,10 @@ func (c cosmosOffers) ReplaceThroughputIfExists(
 	readResponse.ThroughputProperties.offer = properties.offer
 
 	operationContext := pipelineRequestOptions{
-		resourceType:    resourceTypeOffer,
-		resourceAddress: readResponse.ThroughputProperties.offerId,
-		isRidBased:      true,
+		resourceType:     resourceTypeOffer,
+		resourceAddress:  readResponse.ThroughputProperties.offerId,
+		isRidBased:       true,
+		isWriteOperation: true,
 	}
 
 	path, err := generatePathForNameBased(resourceTypeOffer, readResponse.ThroughputProperties.selfLink, false)

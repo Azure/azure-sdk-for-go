@@ -93,6 +93,11 @@ type DiagnosticsPackagesClientListByPacketCoreControlPlaneOptions struct {
 	// placeholder for future optional parameters
 }
 
+// ExtendedUeInformationClientGetOptions contains the optional parameters for the ExtendedUeInformationClient.Get method.
+type ExtendedUeInformationClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
 // MobileNetworksClientBeginCreateOrUpdateOptions contains the optional parameters for the MobileNetworksClient.BeginCreateOrUpdate
 // method.
 type MobileNetworksClientBeginCreateOrUpdateOptions struct {
@@ -468,5 +473,10 @@ type SlicesClientListByMobileNetworkOptions struct {
 
 // SlicesClientUpdateTagsOptions contains the optional parameters for the SlicesClient.UpdateTags method.
 type SlicesClientUpdateTagsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// UeInformationClientListOptions contains the optional parameters for the UeInformationClient.NewListPager method.
+type UeInformationClientListOptions struct {
 	// placeholder for future optional parameters
 }

@@ -26,6 +26,14 @@ type WorkspaceServer struct {
 	// CheckNameAvailability is the fake for method WorkspaceClient.CheckNameAvailability
 	// HTTP status codes to indicate success: http.StatusOK
 	CheckNameAvailability func(ctx context.Context, locationName string, checkNameAvailabilityParameters armquantum.CheckNameAvailabilityParameters, options *armquantum.WorkspaceClientCheckNameAvailabilityOptions) (resp azfake.Responder[armquantum.WorkspaceClientCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
+
+	// ListKeys is the fake for method WorkspaceClient.ListKeys
+	// HTTP status codes to indicate success: http.StatusOK
+	ListKeys func(ctx context.Context, resourceGroupName string, workspaceName string, options *armquantum.WorkspaceClientListKeysOptions) (resp azfake.Responder[armquantum.WorkspaceClientListKeysResponse], errResp azfake.ErrorResponder)
+
+	// RegenerateKeys is the fake for method WorkspaceClient.RegenerateKeys
+	// HTTP status codes to indicate success: http.StatusNoContent
+	RegenerateKeys func(ctx context.Context, resourceGroupName string, workspaceName string, keySpecification armquantum.APIKeys, options *armquantum.WorkspaceClientRegenerateKeysOptions) (resp azfake.Responder[armquantum.WorkspaceClientRegenerateKeysResponse], errResp azfake.ErrorResponder)
 }
 
 // NewWorkspaceServerTransport creates a new instance of WorkspaceServerTransport with the provided implementation.
@@ -55,6 +63,10 @@ func (w *WorkspaceServerTransport) Do(req *http.Request) (*http.Response, error)
 	switch method {
 	case "WorkspaceClient.CheckNameAvailability":
 		resp, err = w.dispatchCheckNameAvailability(req)
+	case "WorkspaceClient.ListKeys":
+		resp, err = w.dispatchListKeys(req)
+	case "WorkspaceClient.RegenerateKeys":
+		resp, err = w.dispatchRegenerateKeys(req)
 	default:
 		err = fmt.Errorf("unhandled API %s", method)
 	}
@@ -93,6 +105,76 @@ func (w *WorkspaceServerTransport) dispatchCheckNameAvailability(req *http.Reque
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CheckNameAvailabilityResult, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (w *WorkspaceServerTransport) dispatchListKeys(req *http.Request) (*http.Response, error) {
+	if w.srv.ListKeys == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListKeys not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Quantum/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listKeys`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := w.srv.ListKeys(req.Context(), resourceGroupNameParam, workspaceNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ListKeysResult, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (w *WorkspaceServerTransport) dispatchRegenerateKeys(req *http.Request) (*http.Response, error) {
+	if w.srv.RegenerateKeys == nil {
+		return nil, &nonRetriableError{errors.New("fake for method RegenerateKeys not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Quantum/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/regenerateKey`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armquantum.APIKeys](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := w.srv.RegenerateKeys(req.Context(), resourceGroupNameParam, workspaceNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusNoContent}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusNoContent", respContent.HTTPStatus)}
+	}
+	resp, err := server.NewResponse(respContent, req, nil)
 	if err != nil {
 		return nil, err
 	}

@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/nginx/armnginx/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/nginx/resource-manager/NGINX.NGINXPLUS/stable/2023-04-01/examples/Certificates_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e4009d2f8d3bf0271757e522c7d1c1997e193d44/specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Certificates_Get.json
 func ExampleCertificatesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -40,15 +40,22 @@ func ExampleCertificatesClient_Get() {
 	// 	Type: to.Ptr("nginx.nginxplus/nginxdeployments/certificates"),
 	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/NGINX.NGINXPLUS/nginxDeployments/myDeployment/certificates/default"),
 	// 	Properties: &armnginx.CertificateProperties{
+	// 		CertificateError: &armnginx.CertificateErrorResponseBody{
+	// 			Code: to.Ptr("CertificateNotYetValid"),
+	// 			Message: to.Ptr("The certificate is not yet valid. The certificate is not yet valid. NotBefore: '2020-01-01T00:00:00Z', NotAfter: '2020-01-01T00:00:00Z'"),
+	// 		},
 	// 		CertificateVirtualPath: to.Ptr("/src/cert/somePath.cert"),
+	// 		KeyVaultSecretCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T00:00:00.000Z"); return t}()),
 	// 		KeyVaultSecretID: to.Ptr("https://someKV.vault.azure.com/someSecretID"),
+	// 		KeyVaultSecretVersion: to.Ptr("12345678ef9a12345678ef9a12345678"),
 	// 		KeyVirtualPath: to.Ptr("/src/cert/somekey.key"),
 	// 		ProvisioningState: to.Ptr(armnginx.ProvisioningStateSucceeded),
+	// 		SHA1Thumbprint: to.Ptr("1234567890ABCDEF1234567890ABCDEF12345678"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/nginx/resource-manager/NGINX.NGINXPLUS/stable/2023-04-01/examples/Certificates_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e4009d2f8d3bf0271757e522c7d1c1997e193d44/specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Certificates_CreateOrUpdate.json
 func ExampleCertificatesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -83,7 +90,7 @@ func ExampleCertificatesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/nginx/resource-manager/NGINX.NGINXPLUS/stable/2023-04-01/examples/Certificates_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e4009d2f8d3bf0271757e522c7d1c1997e193d44/specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Certificates_Delete.json
 func ExampleCertificatesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -104,7 +111,7 @@ func ExampleCertificatesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/nginx/resource-manager/NGINX.NGINXPLUS/stable/2023-04-01/examples/Certificates_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e4009d2f8d3bf0271757e522c7d1c1997e193d44/specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Certificates_List.json
 func ExampleCertificatesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -133,10 +140,17 @@ func ExampleCertificatesClient_NewListPager() {
 		// 			Type: to.Ptr("nginx.nginxplus/nginxdeployments/certificates"),
 		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/NGINX.NGINXPLUS/nginxDeployments/myDeployment/certificates/cert1"),
 		// 			Properties: &armnginx.CertificateProperties{
+		// 				CertificateError: &armnginx.CertificateErrorResponseBody{
+		// 					Code: to.Ptr("CertificateNotYetValid"),
+		// 					Message: to.Ptr("The certificate is not yet valid. The certificate is not yet valid. NotBefore: '2020-01-01T00:00:00Z', NotAfter: '2020-01-01T00:00:00Z'"),
+		// 				},
 		// 				CertificateVirtualPath: to.Ptr("/src/cert/somePath.cert"),
+		// 				KeyVaultSecretCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T00:00:00.000Z"); return t}()),
 		// 				KeyVaultSecretID: to.Ptr("https://someKV.vault.azure.com/someSecretID"),
+		// 				KeyVaultSecretVersion: to.Ptr("12345678ef9a12345678ef9a12345678"),
 		// 				KeyVirtualPath: to.Ptr("/src/cert/somekey.key"),
 		// 				ProvisioningState: to.Ptr(armnginx.ProvisioningStateSucceeded),
+		// 				SHA1Thumbprint: to.Ptr("1234567890ABCDEF1234567890ABCDEF12345678"),
 		// 			},
 		// 		},
 		// 		{
@@ -145,9 +159,12 @@ func ExampleCertificatesClient_NewListPager() {
 		// 			ID: to.Ptr("/subscritions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/NGINX.NGINXPLUS/nginxDeployments/myDeployment/certificates/cert2"),
 		// 			Properties: &armnginx.CertificateProperties{
 		// 				CertificateVirtualPath: to.Ptr("/src/cert/somePath2.cert"),
+		// 				KeyVaultSecretCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T00:00:00.000Z"); return t}()),
 		// 				KeyVaultSecretID: to.Ptr("https://someKV.vault.azure.com/someSecretID2"),
+		// 				KeyVaultSecretVersion: to.Ptr("12345678ef9a12345678ef9a12345678"),
 		// 				KeyVirtualPath: to.Ptr("/src/cert/somekey2.key"),
 		// 				ProvisioningState: to.Ptr(armnginx.ProvisioningStateSucceeded),
+		// 				SHA1Thumbprint: to.Ptr("1234567890ABCDEF1234567890ABCDEF12345678"),
 		// 			},
 		// 	}},
 		// }

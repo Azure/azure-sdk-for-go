@@ -19,13 +19,11 @@ import (
 
 // ServerFactory is a fake server for instances of the armcommunication.ClientFactory type.
 type ServerFactory struct {
-	DomainsServer                  DomainsServer
-	EmailServicesServer            EmailServicesServer
-	OperationsServer               OperationsServer
-	SenderUsernamesServer          SenderUsernamesServer
-	ServicesServer                 ServicesServer
-	SuppressionListAddressesServer SuppressionListAddressesServer
-	SuppressionListsServer         SuppressionListsServer
+	DomainsServer         DomainsServer
+	EmailServicesServer   EmailServicesServer
+	OperationsServer      OperationsServer
+	SenderUsernamesServer SenderUsernamesServer
+	ServicesServer        ServicesServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -40,15 +38,13 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armcommunication.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                              *ServerFactory
-	trMu                             sync.Mutex
-	trDomainsServer                  *DomainsServerTransport
-	trEmailServicesServer            *EmailServicesServerTransport
-	trOperationsServer               *OperationsServerTransport
-	trSenderUsernamesServer          *SenderUsernamesServerTransport
-	trServicesServer                 *ServicesServerTransport
-	trSuppressionListAddressesServer *SuppressionListAddressesServerTransport
-	trSuppressionListsServer         *SuppressionListsServerTransport
+	srv                     *ServerFactory
+	trMu                    sync.Mutex
+	trDomainsServer         *DomainsServerTransport
+	trEmailServicesServer   *EmailServicesServerTransport
+	trOperationsServer      *OperationsServerTransport
+	trSenderUsernamesServer *SenderUsernamesServerTransport
+	trServicesServer        *ServicesServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -83,16 +79,6 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "ServicesClient":
 		initServer(s, &s.trServicesServer, func() *ServicesServerTransport { return NewServicesServerTransport(&s.srv.ServicesServer) })
 		resp, err = s.trServicesServer.Do(req)
-	case "SuppressionListAddressesClient":
-		initServer(s, &s.trSuppressionListAddressesServer, func() *SuppressionListAddressesServerTransport {
-			return NewSuppressionListAddressesServerTransport(&s.srv.SuppressionListAddressesServer)
-		})
-		resp, err = s.trSuppressionListAddressesServer.Do(req)
-	case "SuppressionListsClient":
-		initServer(s, &s.trSuppressionListsServer, func() *SuppressionListsServerTransport {
-			return NewSuppressionListsServerTransport(&s.srv.SuppressionListsServer)
-		})
-		resp, err = s.trSuppressionListsServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
 	}

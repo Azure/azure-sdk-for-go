@@ -82,3 +82,22 @@ func TestKeyCredentialPolicy_NilCredential(t *testing.T) {
 	_, err = pl.Do(req)
 	require.NoError(t, err)
 }
+
+func TestKeyCredentialPolicy_InsecureAllowCredentialWithHTTP(t *testing.T) {
+	cred := exported.NewKeyCredential("foo")
+
+	policy := NewKeyCredentialPolicy(cred, "fake-auth", &KeyCredentialPolicyOptions{
+		InsecureAllowCredentialWithHTTP: true,
+	})
+	require.NotNil(t, policy)
+
+	pl := exported.NewPipeline(shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
+		return &http.Response{}, nil
+	}), policy)
+
+	req, err := NewRequest(context.Background(), http.MethodGet, "http://contoso.com")
+	require.NoError(t, err)
+
+	_, err = pl.Do(req)
+	require.NoError(t, err)
+}

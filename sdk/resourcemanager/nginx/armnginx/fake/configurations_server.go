@@ -25,6 +25,10 @@ import (
 
 // ConfigurationsServer is a fake server for instances of the armnginx.ConfigurationsClient type.
 type ConfigurationsServer struct {
+	// Analysis is the fake for method ConfigurationsClient.Analysis
+	// HTTP status codes to indicate success: http.StatusOK
+	Analysis func(ctx context.Context, resourceGroupName string, deploymentName string, configurationName string, options *armnginx.ConfigurationsClientAnalysisOptions) (resp azfake.Responder[armnginx.ConfigurationsClientAnalysisResponse], errResp azfake.ErrorResponder)
+
 	// BeginCreateOrUpdate is the fake for method ConfigurationsClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, deploymentName string, configurationName string, options *armnginx.ConfigurationsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armnginx.ConfigurationsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -75,6 +79,8 @@ func (c *ConfigurationsServerTransport) Do(req *http.Request) (*http.Response, e
 	var err error
 
 	switch method {
+	case "ConfigurationsClient.Analysis":
+		resp, err = c.dispatchAnalysis(req)
 	case "ConfigurationsClient.BeginCreateOrUpdate":
 		resp, err = c.dispatchBeginCreateOrUpdate(req)
 	case "ConfigurationsClient.BeginDelete":
@@ -91,6 +97,53 @@ func (c *ConfigurationsServerTransport) Do(req *http.Request) (*http.Response, e
 		return nil, err
 	}
 
+	return resp, nil
+}
+
+func (c *ConfigurationsServerTransport) dispatchAnalysis(req *http.Request) (*http.Response, error) {
+	if c.srv.Analysis == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Analysis not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Nginx\.NginxPlus/nginxDeployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/configurations/(?P<configurationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/analyze`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armnginx.AnalysisCreate](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
+	if err != nil {
+		return nil, err
+	}
+	configurationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("configurationName")])
+	if err != nil {
+		return nil, err
+	}
+	var options *armnginx.ConfigurationsClientAnalysisOptions
+	if !reflect.ValueOf(body).IsZero() {
+		options = &armnginx.ConfigurationsClientAnalysisOptions{
+			Body: &body,
+		}
+	}
+	respr, errRespr := c.srv.Analysis(req.Context(), resourceGroupNameParam, deploymentNameParam, configurationNameParam, options)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AnalysisResult, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 

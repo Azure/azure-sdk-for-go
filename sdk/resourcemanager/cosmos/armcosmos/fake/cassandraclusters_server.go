@@ -19,7 +19,6 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
-	"strconv"
 )
 
 // CassandraClustersServer is a fake server for instances of the armcosmos.CassandraClustersClient type.
@@ -243,10 +242,7 @@ func (c *CassandraClustersServerTransport) dispatchBeginDeallocate(req *http.Req
 		if err != nil {
 			return nil, err
 		}
-		xMSForceDeallocateParam, err := parseOptional(getHeaderValue(req.Header, "x-ms-force-deallocate"), strconv.ParseBool)
-		if err != nil {
-			return nil, err
-		}
+		xMSForceDeallocateParam := getOptional(getHeaderValue(req.Header, "x-ms-force-deallocate"))
 		var options *armcosmos.CassandraClustersClientBeginDeallocateOptions
 		if xMSForceDeallocateParam != nil {
 			options = &armcosmos.CassandraClustersClientBeginDeallocateOptions{

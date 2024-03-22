@@ -29,9 +29,7 @@ func FormatDeleteOptions(o *DeleteOptions, recursive bool) (*generated.LeaseAcce
 	if o == nil {
 		return nil, nil, deleteOpts
 	}
-	if o.Paginated != nil {
-		deleteOpts.Paginated = o.Paginated
-	}
+	deleteOpts.Paginated = o.Paginated
 	leaseAccessConditions, modifiedAccessConditions := exported.FormatPathAccessConditions(o.AccessConditions)
 	return leaseAccessConditions, modifiedAccessConditions, deleteOpts
 }

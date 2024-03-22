@@ -264,7 +264,7 @@ func (d *Client) Delete(ctx context.Context, options *DeleteOptions) (DeleteResp
 	lac, mac, deleteOpts := path.FormatDeleteOptions(options, true)
 	for {
 		resp, err := d.generatedDirClientWithDFS().Delete(ctx, deleteOpts, lac, mac)
-		if resp.Continuation == nil {
+		if resp.Continuation == nil || err != nil {
 			err = exported.ConvertToDFSError(err)
 			return resp, err
 		}

@@ -769,7 +769,10 @@ func (s *RecordedTestSuite) TestDeleteDirWithNilAccessConditions() {
 	_require.NotNil(resp)
 }
 
-func (s *UnrecordedTestSuite) TestDeleteDirWithPaginatedDelete() {
+// To run this test, the NamespaceTenant AAD info needs to be set to an AAD app that does not have any RBAC permissions,
+// and entityId needs to be set to the entity ID of the application.
+func (s *RecordedTestSuite) TestDeleteDirWithPaginatedDelete() {
+	s.T().Skip("AAD app not configured for this test, this will be skipped")
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	user := "user"
@@ -800,7 +803,7 @@ func (s *UnrecordedTestSuite) TestDeleteDirWithPaginatedDelete() {
 	_require.NoError(err)
 	_require.NotNil(resp)
 
-	for i := 0; i < 5; i++ {
+	for i := 0; i < 5020; i++ {
 		fileClient, err := dirClient.NewFileClient(testcommon.GenerateFileName(testName) + strconv.Itoa(i))
 		_require.NoError(err)
 		_require.NotNil(fileClient)
@@ -809,7 +812,7 @@ func (s *UnrecordedTestSuite) TestDeleteDirWithPaginatedDelete() {
 		_require.NoError(err)
 	}
 
-	accessControlResp, err := dirClient.GetAccessControl(context.Background(), nil)
+	accessControlResp, err := rootDirectory.GetAccessControl(context.Background(), nil)
 	_require.NoError(err)
 
 	newAcl := *accessControlResp.ACL + "," + user + ":" + objectId + ":" + readWriteExecutePermission

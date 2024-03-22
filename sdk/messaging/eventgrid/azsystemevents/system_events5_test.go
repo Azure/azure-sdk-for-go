@@ -67,11 +67,11 @@ func TestConsumeCloudEventAcsRouterJobQueuedEvent(t *testing.T) {
 	require.Equal(t, 1, len(selectors))
 	require.Equal(t, float32(1000), *selectors[0].TimeToLive)
 
-	require.Equal(t, azsystemevents.AcsRouterLabelOperatorEqual, *selectors[0].LabelOperator)
+	require.Equal(t, azsystemevents.ACSRouterLabelOperatorEqual, *selectors[0].LabelOperator)
 	// TODO: might have been a field rename?
 	//require.Equal(t, azsystemevents.AcsRouterLabelOperatorEqual, selectors[0].Operator)
 
-	require.Equal(t, azsystemevents.AcsRouterWorkerSelectorStateActive, *selectors[0].State)
+	require.Equal(t, azsystemevents.ACSRouterWorkerSelectorStateActive, *selectors[0].State)
 	// TODO: might have been a field rename?
 	//require.Equal(t, azsystemevents.AcsRouterWorkerSelectorStateActive, selectors[0].SelectorState)
 }
@@ -121,7 +121,7 @@ func TestConsumeCloudEventAcsRouterJobReceivedEvent(t *testing.T) {
 	event := parseCloudEvent(t, requestContent)
 
 	sysEvent := deserializeSystemEvent[azsystemevents.ACSRouterJobReceivedEventData](t, event.Data)
-	require.Equal(t, azsystemevents.AcsRouterJobStatusPendingClassification, *sysEvent.JobStatus)
+	require.Equal(t, azsystemevents.ACSRouterJobStatusPendingClassification, *sysEvent.JobStatus)
 
 	// TODO: don't have a .Status field?
 	//require.Equal(t, Azure.Messaging.EventGrid.azsystemevents.AcsRouterJobStatus.PendingClassification, sysEvent.Status)

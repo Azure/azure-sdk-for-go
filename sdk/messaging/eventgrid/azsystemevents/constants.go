@@ -13,29 +13,29 @@ type ACSEmailDeliveryReportStatus string
 
 const (
 	// ACSEmailDeliveryReportStatusBounced - Hard bounce detected while sending the email
-	AcsEmailDeliveryReportStatusBounced ACSEmailDeliveryReportStatus = "Bounced"
+	ACSEmailDeliveryReportStatusBounced ACSEmailDeliveryReportStatus = "Bounced"
 	// ACSEmailDeliveryReportStatusDelivered - The email was delivered
-	AcsEmailDeliveryReportStatusDelivered ACSEmailDeliveryReportStatus = "Delivered"
+	ACSEmailDeliveryReportStatusDelivered ACSEmailDeliveryReportStatus = "Delivered"
 	// ACSEmailDeliveryReportStatusFailed - The email failed to be delivered
-	AcsEmailDeliveryReportStatusFailed ACSEmailDeliveryReportStatus = "Failed"
+	ACSEmailDeliveryReportStatusFailed ACSEmailDeliveryReportStatus = "Failed"
 	// ACSEmailDeliveryReportStatusFilteredSpam - The message was identified spam and was rejected or blocked (not quarantined).
-	AcsEmailDeliveryReportStatusFilteredSpam ACSEmailDeliveryReportStatus = "FilteredSpam"
+	ACSEmailDeliveryReportStatusFilteredSpam ACSEmailDeliveryReportStatus = "FilteredSpam"
 	// ACSEmailDeliveryReportStatusQuarantined - The message was quarantined (as spam, bulk mail, or phishing). For more information,
 	// see Quarantined email messages in EOP (EXCHANGE ONLINE PROTECTION).
-	AcsEmailDeliveryReportStatusQuarantined ACSEmailDeliveryReportStatus = "Quarantined"
+	ACSEmailDeliveryReportStatusQuarantined ACSEmailDeliveryReportStatus = "Quarantined"
 	// ACSEmailDeliveryReportStatusSuppressed - The email was suppressed
-	AcsEmailDeliveryReportStatusSuppressed ACSEmailDeliveryReportStatus = "Suppressed"
+	ACSEmailDeliveryReportStatusSuppressed ACSEmailDeliveryReportStatus = "Suppressed"
 )
 
-// PossibleACSEmailDeliveryReportStatusValues returns the possible values for the ACSEmailDeliveryReportStatus const type.
+// PossibleACSEmailDeliveryReportStatusValues returns the possible values for the AcsEmailDeliveryReportStatus const type.
 func PossibleACSEmailDeliveryReportStatusValues() []ACSEmailDeliveryReportStatus {
 	return []ACSEmailDeliveryReportStatus{
-		AcsEmailDeliveryReportStatusBounced,
-		AcsEmailDeliveryReportStatusDelivered,
-		AcsEmailDeliveryReportStatusFailed,
-		AcsEmailDeliveryReportStatusFilteredSpam,
-		AcsEmailDeliveryReportStatusQuarantined,
-		AcsEmailDeliveryReportStatusSuppressed,
+		ACSEmailDeliveryReportStatusBounced,
+		ACSEmailDeliveryReportStatusDelivered,
+		ACSEmailDeliveryReportStatusFailed,
+		ACSEmailDeliveryReportStatusFilteredSpam,
+		ACSEmailDeliveryReportStatusQuarantined,
+		ACSEmailDeliveryReportStatusSuppressed,
 	}
 }
 
@@ -43,35 +43,35 @@ func PossibleACSEmailDeliveryReportStatusValues() []ACSEmailDeliveryReportStatus
 type ACSRouterJobStatus string
 
 const (
-	AcsRouterJobStatusAssigned              ACSRouterJobStatus = "Assigned"
-	AcsRouterJobStatusCancelled             ACSRouterJobStatus = "Cancelled"
-	AcsRouterJobStatusClassificationFailed  ACSRouterJobStatus = "ClassificationFailed"
-	AcsRouterJobStatusClosed                ACSRouterJobStatus = "Closed"
-	AcsRouterJobStatusCompleted             ACSRouterJobStatus = "Completed"
-	AcsRouterJobStatusCreated               ACSRouterJobStatus = "Created"
-	AcsRouterJobStatusPendingClassification ACSRouterJobStatus = "PendingClassification"
-	AcsRouterJobStatusPendingSchedule       ACSRouterJobStatus = "PendingSchedule"
-	AcsRouterJobStatusQueued                ACSRouterJobStatus = "Queued"
-	AcsRouterJobStatusScheduleFailed        ACSRouterJobStatus = "ScheduleFailed"
-	AcsRouterJobStatusScheduled             ACSRouterJobStatus = "Scheduled"
-	AcsRouterJobStatusWaitingForActivation  ACSRouterJobStatus = "WaitingForActivation"
+	ACSRouterJobStatusAssigned              ACSRouterJobStatus = "Assigned"
+	ACSRouterJobStatusCancelled             ACSRouterJobStatus = "Cancelled"
+	ACSRouterJobStatusClassificationFailed  ACSRouterJobStatus = "ClassificationFailed"
+	ACSRouterJobStatusClosed                ACSRouterJobStatus = "Closed"
+	ACSRouterJobStatusCompleted             ACSRouterJobStatus = "Completed"
+	ACSRouterJobStatusCreated               ACSRouterJobStatus = "Created"
+	ACSRouterJobStatusPendingClassification ACSRouterJobStatus = "PendingClassification"
+	ACSRouterJobStatusPendingSchedule       ACSRouterJobStatus = "PendingSchedule"
+	ACSRouterJobStatusQueued                ACSRouterJobStatus = "Queued"
+	ACSRouterJobStatusScheduleFailed        ACSRouterJobStatus = "ScheduleFailed"
+	ACSRouterJobStatusScheduled             ACSRouterJobStatus = "Scheduled"
+	ACSRouterJobStatusWaitingForActivation  ACSRouterJobStatus = "WaitingForActivation"
 )
 
-// PossibleACSRouterJobStatusValues returns the possible values for the ACSRouterJobStatus const type.
+// PossibleACSRouterJobStatusValues returns the possible values for the AcsRouterJobStatus const type.
 func PossibleACSRouterJobStatusValues() []ACSRouterJobStatus {
 	return []ACSRouterJobStatus{
-		AcsRouterJobStatusAssigned,
-		AcsRouterJobStatusCancelled,
-		AcsRouterJobStatusClassificationFailed,
-		AcsRouterJobStatusClosed,
-		AcsRouterJobStatusCompleted,
-		AcsRouterJobStatusCreated,
-		AcsRouterJobStatusPendingClassification,
-		AcsRouterJobStatusPendingSchedule,
-		AcsRouterJobStatusQueued,
-		AcsRouterJobStatusScheduleFailed,
-		AcsRouterJobStatusScheduled,
-		AcsRouterJobStatusWaitingForActivation,
+		ACSRouterJobStatusAssigned,
+		ACSRouterJobStatusCancelled,
+		ACSRouterJobStatusClassificationFailed,
+		ACSRouterJobStatusClosed,
+		ACSRouterJobStatusCompleted,
+		ACSRouterJobStatusCreated,
+		ACSRouterJobStatusPendingClassification,
+		ACSRouterJobStatusPendingSchedule,
+		ACSRouterJobStatusQueued,
+		ACSRouterJobStatusScheduleFailed,
+		ACSRouterJobStatusScheduled,
+		ACSRouterJobStatusWaitingForActivation,
 	}
 }
 
@@ -80,28 +80,28 @@ type ACSRouterLabelOperator string
 
 const (
 	// ACSRouterLabelOperatorEqual - =
-	AcsRouterLabelOperatorEqual ACSRouterLabelOperator = "Equal"
+	ACSRouterLabelOperatorEqual ACSRouterLabelOperator = "Equal"
 	// ACSRouterLabelOperatorGreater - >
-	AcsRouterLabelOperatorGreater ACSRouterLabelOperator = "Greater"
+	ACSRouterLabelOperatorGreater ACSRouterLabelOperator = "Greater"
 	// ACSRouterLabelOperatorGreaterThanOrEqual - >=
-	AcsRouterLabelOperatorGreaterThanOrEqual ACSRouterLabelOperator = "GreaterThanOrEqual"
+	ACSRouterLabelOperatorGreaterThanOrEqual ACSRouterLabelOperator = "GreaterThanOrEqual"
 	// ACSRouterLabelOperatorLess - <
-	AcsRouterLabelOperatorLess ACSRouterLabelOperator = "Less"
+	ACSRouterLabelOperatorLess ACSRouterLabelOperator = "Less"
 	// ACSRouterLabelOperatorLessThanOrEqual - <=
-	AcsRouterLabelOperatorLessThanOrEqual ACSRouterLabelOperator = "LessThanOrEqual"
+	ACSRouterLabelOperatorLessThanOrEqual ACSRouterLabelOperator = "LessThanOrEqual"
 	// ACSRouterLabelOperatorNotEqual - !=
-	AcsRouterLabelOperatorNotEqual ACSRouterLabelOperator = "NotEqual"
+	ACSRouterLabelOperatorNotEqual ACSRouterLabelOperator = "NotEqual"
 )
 
-// PossibleACSRouterLabelOperatorValues returns the possible values for the ACSRouterLabelOperator const type.
+// PossibleACSRouterLabelOperatorValues returns the possible values for the AcsRouterLabelOperator const type.
 func PossibleACSRouterLabelOperatorValues() []ACSRouterLabelOperator {
 	return []ACSRouterLabelOperator{
-		AcsRouterLabelOperatorEqual,
-		AcsRouterLabelOperatorGreater,
-		AcsRouterLabelOperatorGreaterThanOrEqual,
-		AcsRouterLabelOperatorLess,
-		AcsRouterLabelOperatorLessThanOrEqual,
-		AcsRouterLabelOperatorNotEqual,
+		ACSRouterLabelOperatorEqual,
+		ACSRouterLabelOperatorGreater,
+		ACSRouterLabelOperatorGreaterThanOrEqual,
+		ACSRouterLabelOperatorLess,
+		ACSRouterLabelOperatorLessThanOrEqual,
+		ACSRouterLabelOperatorNotEqual,
 	}
 }
 
@@ -109,25 +109,25 @@ func PossibleACSRouterLabelOperatorValues() []ACSRouterLabelOperator {
 type ACSRouterUpdatedWorkerProperty string
 
 const (
-	AcsRouterUpdatedWorkerPropertyAvailableForOffers    ACSRouterUpdatedWorkerProperty = "AvailableForOffers"
-	AcsRouterUpdatedWorkerPropertyChannelConfigurations ACSRouterUpdatedWorkerProperty = "ChannelConfigurations"
-	AcsRouterUpdatedWorkerPropertyLabels                ACSRouterUpdatedWorkerProperty = "Labels"
-	AcsRouterUpdatedWorkerPropertyMaxConcurrentOffers   ACSRouterUpdatedWorkerProperty = "MaxConcurrentOffers"
-	AcsRouterUpdatedWorkerPropertyQueueAssignments      ACSRouterUpdatedWorkerProperty = "QueueAssignments"
-	AcsRouterUpdatedWorkerPropertyTags                  ACSRouterUpdatedWorkerProperty = "Tags"
-	AcsRouterUpdatedWorkerPropertyTotalCapacity         ACSRouterUpdatedWorkerProperty = "TotalCapacity"
+	ACSRouterUpdatedWorkerPropertyAvailableForOffers    ACSRouterUpdatedWorkerProperty = "AvailableForOffers"
+	ACSRouterUpdatedWorkerPropertyChannelConfigurations ACSRouterUpdatedWorkerProperty = "ChannelConfigurations"
+	ACSRouterUpdatedWorkerPropertyLabels                ACSRouterUpdatedWorkerProperty = "Labels"
+	ACSRouterUpdatedWorkerPropertyMaxConcurrentOffers   ACSRouterUpdatedWorkerProperty = "MaxConcurrentOffers"
+	ACSRouterUpdatedWorkerPropertyQueueAssignments      ACSRouterUpdatedWorkerProperty = "QueueAssignments"
+	ACSRouterUpdatedWorkerPropertyTags                  ACSRouterUpdatedWorkerProperty = "Tags"
+	ACSRouterUpdatedWorkerPropertyTotalCapacity         ACSRouterUpdatedWorkerProperty = "TotalCapacity"
 )
 
-// PossibleACSRouterUpdatedWorkerPropertyValues returns the possible values for the ACSRouterUpdatedWorkerProperty const type.
+// PossibleACSRouterUpdatedWorkerPropertyValues returns the possible values for the AcsRouterUpdatedWorkerProperty const type.
 func PossibleACSRouterUpdatedWorkerPropertyValues() []ACSRouterUpdatedWorkerProperty {
 	return []ACSRouterUpdatedWorkerProperty{
-		AcsRouterUpdatedWorkerPropertyAvailableForOffers,
-		AcsRouterUpdatedWorkerPropertyChannelConfigurations,
-		AcsRouterUpdatedWorkerPropertyLabels,
-		AcsRouterUpdatedWorkerPropertyMaxConcurrentOffers,
-		AcsRouterUpdatedWorkerPropertyQueueAssignments,
-		AcsRouterUpdatedWorkerPropertyTags,
-		AcsRouterUpdatedWorkerPropertyTotalCapacity,
+		ACSRouterUpdatedWorkerPropertyAvailableForOffers,
+		ACSRouterUpdatedWorkerPropertyChannelConfigurations,
+		ACSRouterUpdatedWorkerPropertyLabels,
+		ACSRouterUpdatedWorkerPropertyMaxConcurrentOffers,
+		ACSRouterUpdatedWorkerPropertyQueueAssignments,
+		ACSRouterUpdatedWorkerPropertyTags,
+		ACSRouterUpdatedWorkerPropertyTotalCapacity,
 	}
 }
 
@@ -136,16 +136,16 @@ type ACSRouterWorkerSelectorState string
 
 const (
 	// ACSRouterWorkerSelectorStateActive - Router Job Worker Selector is Active
-	AcsRouterWorkerSelectorStateActive ACSRouterWorkerSelectorState = "active"
+	ACSRouterWorkerSelectorStateActive ACSRouterWorkerSelectorState = "active"
 	// ACSRouterWorkerSelectorStateExpired - Router Job Worker Selector has Expire
-	AcsRouterWorkerSelectorStateExpired ACSRouterWorkerSelectorState = "expired"
+	ACSRouterWorkerSelectorStateExpired ACSRouterWorkerSelectorState = "expired"
 )
 
 // PossibleACSRouterWorkerSelectorStateValues returns the possible values for the ACSRouterWorkerSelectorState const type.
 func PossibleACSRouterWorkerSelectorStateValues() []ACSRouterWorkerSelectorState {
 	return []ACSRouterWorkerSelectorState{
-		AcsRouterWorkerSelectorStateActive,
-		AcsRouterWorkerSelectorStateExpired,
+		ACSRouterWorkerSelectorStateActive,
+		ACSRouterWorkerSelectorStateExpired,
 	}
 }
 
@@ -153,15 +153,15 @@ func PossibleACSRouterWorkerSelectorStateValues() []ACSRouterWorkerSelectorState
 type ACSUserEngagement string
 
 const (
-	AcsUserEngagementClick ACSUserEngagement = "click"
-	AcsUserEngagementView  ACSUserEngagement = "view"
+	ACSUserEngagementClick ACSUserEngagement = "click"
+	ACSUserEngagementView  ACSUserEngagement = "view"
 )
 
-// PossibleACSUserEngagementValues returns the possible values for the ACSUserEngagement const type.
+// PossibleACSUserEngagementValues returns the possible values for the AcsUserEngagement const type.
 func PossibleACSUserEngagementValues() []ACSUserEngagement {
 	return []ACSUserEngagement{
-		AcsUserEngagementClick,
-		AcsUserEngagementView,
+		ACSUserEngagementClick,
+		ACSUserEngagementView,
 	}
 }
 

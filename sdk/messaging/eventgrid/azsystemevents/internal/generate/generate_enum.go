@@ -18,6 +18,8 @@ import (
 	"regexp"
 	"sort"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/eventgrid/azsystemevents/internal/gopls"
 )
 
 var filesToDelete = []string{
@@ -62,7 +64,11 @@ func main() {
 	case "download":
 		err = writeEventFiles()
 	case "generate":
-		err = generateConstants()
+		err = fixPrefixes()
+
+		if err == nil {
+			err = generateSystemEventEnum()
+		}
 	case "validate":
 		var m map[string]bool
 		m, err = readLines(pyOutputPath)
@@ -160,7 +166,7 @@ func writeEventFiles() error {
 	return nil
 }
 
-func generateConstants() error {
+func generateSystemEventEnum() error {
 	reader, err := os.Open(goModelsFile)
 
 	if err != nil {
@@ -404,3 +410,185 @@ func cutPrefix(s, prefix string) (after string, found bool) {
 	}
 	return s[len(prefix):], true
 }
+
+type rename struct {
+	Orig     gopls.Symbol
+	New      string
+	FileName string
+}
+
+func fixPrefixes() error {
+	constantSyms, err := gopls.TypeSymbols("constants.go")
+
+	if err != nil {
+		return err
+	}
+
+	modelsSyms, err := gopls.TypeSymbols("models.go")
+
+	if err != nil {
+		return err
+	}
+
+	constantRepls := getConstantsGoReplacements(constantSyms)
+	modelRepls := getModelsReplacements(modelsSyms)
+
+	total := len(constantRepls) + len(modelRepls)
+
+	for i, repl := range constantRepls {
+		fmt.Printf("%s[%d/%d]: %s -> %s\n", repl.FileName, i+1, total, repl.Orig.Name, repl.New)
+		if err := gopls.Rename(repl.FileName, repl.Orig, repl.New); err != nil {
+			return err
+		}
+	}
+
+	for i, repl := range modelRepls {
+		idx := i + 1 + len(constantRepls)
+		fmt.Printf("%s[%d/%d]: %s -> %s\n", repl.FileName, idx, total, repl.Orig.Name, repl.New)
+		if err := gopls.Rename(repl.FileName, repl.Orig, repl.New); err != nil {
+			return err
+		}
+	}
+
+	{
+		// one annoyance here is that if the type name is not a doc reference (like [typename]) then
+		// it doesn't get renamed, so we'll have to fix up the comments on our own.
+		modelsSerdeBytes, err := os.ReadFile("models_serde.go")
+
+		if err != nil {
+			return err
+		}
+
+		constantsBytes, err := os.ReadFile("constants.go")
+
+		if err != nil {
+			return err
+		}
+
+		for _, repl := range modelRepls {
+			modelsSerdeBytes = bytes.Replace(modelsSerdeBytes, []byte(repl.Orig.Name), []byte(repl.New), -1)
+			constantsBytes = bytes.Replace(constantsBytes, []byte(repl.Orig.Name), []byte(repl.New), -1)
+		}
+
+		if err := os.WriteFile("models_serde.go", modelsSerdeBytes, 0700); err != nil {
+			return err
+		}
+
+		if err := os.WriteFile("constants.go", constantsBytes, 0700); err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+func getConstantsGoReplacements(syms map[string]gopls.Symbol) []rename {
+	typeRE := regexp.MustCompile(`^(Acs|Avs|Iot)([A-Za-z0-9]+)$`)
+	possibleRE := regexp.MustCompile(`^(Possible)(Acs|Avs|Iot)([A-Za-z0-9]+)$`)
+
+	var renames []rename
+
+	for k, sym := range syms {
+		matches := typeRE.FindStringSubmatch(k)
+
+		if matches != nil {
+			renames = append(renames, rename{
+				FileName: "constants.go",
+				Orig:     sym,
+				New:      strings.ToUpper(matches[1]) + matches[2],
+			})
+		}
+
+		matches = possibleRE.FindStringSubmatch(k)
+
+		if matches != nil {
+			renames = append(renames, rename{
+				FileName: "constants.go",
+				Orig:     sym,
+				New:      matches[1] + strings.ToUpper(matches[2]) + matches[3],
+			})
+		}
+	}
+
+	sort.Slice(renames, func(i, j int) bool {
+		return renames[i].New < renames[j].New
+	})
+	return renames
+}
+
+func getModelsReplacements(syms map[string]gopls.Symbol) []rename {
+	typeRE := regexp.MustCompile(`^(Acs|Avs|Iot)([A-Za-z0-9]+)$`)
+
+	var renames []rename
+
+	for k, sym := range syms {
+		matches := typeRE.FindStringSubmatch(k)
+
+		if matches != nil {
+			renames = append(renames, rename{
+				FileName: "models.go",
+				Orig:     sym,
+				New:      strings.ToUpper(matches[1]) + matches[2],
+			})
+		}
+	}
+
+	return renames
+}
+
+// func renameModels() error {
+// 	const filepath = "models.go"
+// 	syms, err := gopls.TypeSymbols(filepath)
+
+// 	if err != nil {
+// 		return err
+// 	}
+
+// 	modelsSerdeBytes, err := os.ReadFile("models_serde.go")
+
+// 	if err != nil {
+// 		return err
+// 	}
+
+// 	// there are some comments that linger after refactor that we need to touch up as well.
+// 	// TODO: in the future we can wrap the type names in [] and the go refactor tool will do the
+// 	// rename for us!
+// 	constantsBytes, err := os.ReadFile("constants.go")
+
+// 	if err != nil {
+// 		return err
+// 	}
+
+// 	typeRE := regexp.MustCompile(`^(Acs|Avs|Iot)([A-Za-z0-9]+)$`)
+
+// 	for k, sym := range syms {
+// 		matches := typeRE.FindStringSubmatch(k)
+
+// 		if matches != nil {
+// 			repl := strings.ToUpper(matches[1]) + matches[2]
+
+// 			fmt.Printf("Renaming %s -> %s\n", sym.Name, repl)
+
+// 			err := gopls.Rename(filepath, sym, repl)
+
+// 			if err != nil {
+// 				return err
+// 			}
+
+// 			// one annoyance here is that if the type name is not a doc reference (like [typename]) then
+// 			// it doesn't get renamed, so we'll have to fix up the comments on our own.
+// 			modelsSerdeBytes = bytes.Replace(modelsSerdeBytes, []byte(sym.Name), []byte(repl), -1)
+// 			constantsBytes = bytes.Replace(constantsBytes, []byte(sym.Name), []byte(repl), -1)
+// 		}
+// 	}
+
+// 	if err := os.WriteFile("models_serde.go", modelsSerdeBytes, 0700); err != nil {
+// 		return err
+// 	}
+
+// 	if err := os.WriteFile("constants.go", constantsBytes, 0700); err != nil {
+// 		return err
+// 	}
+
+// 	return nil
+// }

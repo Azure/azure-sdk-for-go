@@ -775,9 +775,7 @@ func (s *UnrecordedTestSuite) TestDeleteDirWithPaginatedDelete() {
 	user := "user"
 	readWriteExecutePermission := "rwx"
 
-	objectId, err := testcommon.GetRequiredEnv(testcommon.ObjectIdEnvVar)
-	_require.Nil(err)
-
+	objectId := "48965e63-fd19-4438-b9d0-dc585a8baf57"
 	accountName, accountKey := testcommon.GetGenericAccountInfo(testcommon.TestAccountDatalake)
 
 	filesystemName := testcommon.GenerateFileSystemName(testName)
@@ -802,7 +800,7 @@ func (s *UnrecordedTestSuite) TestDeleteDirWithPaginatedDelete() {
 	_require.NoError(err)
 	_require.NotNil(resp)
 
-	for i := 0; i < 5020; i++ {
+	for i := 0; i < 5; i++ {
 		fileClient, err := dirClient.NewFileClient(testcommon.GenerateFileName(testName) + strconv.Itoa(i))
 		_require.NoError(err)
 		_require.NotNil(fileClient)

@@ -33,7 +33,6 @@
       "dataLakeEncryptionScopeName": "encryptionScope",
       "dataLakeEncryptionScope": "[concat(parameters('baseName'), 'dtlk', concat('/', variables('dataLakeEncryptionScopeName')))]",
       "softDeleteAccountName": "[concat(parameters('baseName'), 'sftdl')]",
-      "objectId": "[parameters('objectId')]",
       "premiumFileAccountName": "[concat(parameters('baseName'), 'pfile')]",
       "webjobsPrimaryAccountName": "[concat(parameters('baseName'), 'wjprim')]",
       "webjobsSecondaryAccountName": "[concat(parameters('baseName'), 'wjsec')]",
@@ -579,10 +578,6 @@
       "DATALAKE_AZURE_STORAGE_ENCRYPTION_SCOPE": {
         "type": "string",
         "value": "[variables('dataLakeEncryptionScopeName')]"
-      },
-      "AZURE_APP_OBJECT_ID": {
-        "type": "string",
-        "value": "[variables('ObjectId')]"
       }
     }
   }

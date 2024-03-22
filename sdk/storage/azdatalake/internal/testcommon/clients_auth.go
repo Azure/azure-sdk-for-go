@@ -36,7 +36,6 @@ const (
 	DataLakeEncryptionScopeEnvVar = "DATALAKE_AZURE_STORAGE_ENCRYPTION_SCOPE"
 	SubscriptionID                = "SUBSCRIPTION_ID"
 	ResourceGroupName             = "RESOURCE_GROUP_NAME"
-	ObjectIdEnvVar                = "AZURE_APP_OBJECT_ID"
 )
 
 const (

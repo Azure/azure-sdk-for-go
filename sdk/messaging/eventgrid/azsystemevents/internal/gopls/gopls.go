@@ -9,6 +9,7 @@ package gopls
 import (
 	"bufio"
 	"bytes"
+	"errors"
 	"fmt"
 	"os"
 	"os/exec"
@@ -16,12 +17,23 @@ import (
 )
 
 type Symbol struct {
-	Name     string
+	Name string
+	// Either:
+	// - Constant
+	// - Class (type ACSRouterJobStatus string)
+	// - Struct
+	// - Field
+	// - Function
+	// - Method
 	Type     string
 	Position string
 }
 
 func Rename(filename string, sym Symbol, newName string) error {
+	if sym.Name == "" && sym.Position == "" && sym.Type == "" {
+		return errors.New("attempted to rename with an empty symbol")
+	}
+
 	cmd := exec.Command("gopls", "rename", "-w", filename+":"+sym.Position, newName)
 
 	if err := cmd.Run(); err != nil {
@@ -31,7 +43,7 @@ func Rename(filename string, sym Symbol, newName string) error {
 	return nil
 }
 
-func TypeSymbols(filename string) (map[string]Symbol, error) {
+func Symbols(filename string) (map[string]Symbol, error) {
 	if _, err := os.Stat(filename); err != nil {
 		return nil, err
 	}
@@ -51,6 +63,7 @@ func TypeSymbols(filename string) (map[string]Symbol, error) {
 	scanner := bufio.NewScanner(bytes.NewReader(allBytes))
 
 	m := map[string]Symbol{}
+	prevParent := ""
 
 	for scanner.Scan() {
 		// ex:
@@ -62,11 +75,17 @@ func TypeSymbols(filename string) (map[string]Symbol, error) {
 		// renaming types.
 		//         Address Field 5379:2-5379:9
 
-		if len(scanner.Text()) > 0 && scanner.Text()[0] == '\t' {
-			continue
-		}
+		var fields []string
 
-		fields := strings.Split(scanner.Text(), " ")
+		if len(scanner.Text()) > 0 && scanner.Text()[0] == '\t' {
+			// this is a field - we'll add it and "parent" it to the last non-field symbol before it
+			// (and clip out the first char, which is a tab)
+			fields = strings.Split(scanner.Text()[1:], " ")
+
+			fields[0] = prevParent + "." + fields[0]
+		} else {
+			fields = strings.Split(scanner.Text(), " ")
+		}
 
 		if len(fields) != 3 {
 			return nil, fmt.Errorf("failed to parse %q into three fields, got %d", scanner.Text(), len(fields))
@@ -83,6 +102,10 @@ func TypeSymbols(filename string) (map[string]Symbol, error) {
 		}
 
 		m[sym.Name] = sym
+
+		if sym.Type != "Field" {
+			prevParent = sym.Name
+		}
 	}
 
 	return m, nil

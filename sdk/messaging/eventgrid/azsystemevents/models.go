@@ -1040,7 +1040,7 @@ type ACSRouterCommunicationError struct {
 	Details []ACSRouterCommunicationError
 
 	// Router Communication Inner Error
-	Innererror *ACSRouterCommunicationError
+	InnerError *ACSRouterCommunicationError
 
 	// Router Communication Error Message
 	Message *string

@@ -2408,7 +2408,7 @@ func (a ACSRouterCommunicationError) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "code", a.Code)
 	populate(objectMap, "details", a.Details)
-	populate(objectMap, "innererror", a.Innererror)
+	populate(objectMap, "innererror", a.InnerError)
 	populate(objectMap, "message", a.Message)
 	populate(objectMap, "target", a.Target)
 	return json.Marshal(objectMap)
@@ -2430,7 +2430,7 @@ func (a *ACSRouterCommunicationError) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Details", &a.Details)
 			delete(rawMsg, key)
 		case "innererror":
-			err = unpopulate(val, "Innererror", &a.Innererror)
+			err = unpopulate(val, "Innererror", &a.InnerError)
 			delete(rawMsg, key)
 		case "message":
 			err = unpopulate(val, "Message", &a.Message)

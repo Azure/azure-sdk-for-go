@@ -7,15 +7,14 @@
 package main
 
 import (
-	"bufio"
 	"bytes"
 	"fmt"
-	"io"
 	"log"
 	"os"
 	"regexp"
 	"sort"
 	"strings"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/eventgrid/azsystemevents/internal/gopls"
 )
@@ -25,27 +24,6 @@ var filesToDelete = []string{
 	"responses.go",
 	"clientdeleteme_client.go",
 }
-
-const systemEventsGoFile = "system_events.go"
-const modelsGoFile = "models.go"
-const constantsGoFile = "constants.go"
-
-const header = `//go:build go1.18
-// +build go1.18
-
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See License.txt in the project root for license information.
-
-package azsystemevents
-
-// Type represents the value set in EventData.EventType or messaging.CloudEvent.Type
-// for system events.
-type Type string
-
-const (
-`
-
-const footer = `)`
 
 func main() {
 	fn := func() error {
@@ -104,146 +82,6 @@ func deleteUnneededFiles() {
 	}
 }
 
-type constant struct {
-	ConstantName  string
-	GoType        string
-	ConstantValue string
-}
-
-func getConstantValues(reader io.ReadCloser) (map[string]constant, error) {
-	data, err := io.ReadAll(reader)
-
-	if err != nil {
-		return nil, err
-	}
-
-	scanner := bufio.NewScanner(bytes.NewReader(data))
-
-	var currentComment []string
-
-	var comments []struct {
-		Text    string
-		ForType string
-	}
-
-	for scanner.Scan() {
-		line := scanner.Text()
-
-		if commentText, found := cutPrefix(line, "// "); found {
-			currentComment = append(currentComment, commentText)
-		} else if len(currentComment) > 0 && strings.HasPrefix(line, "type ") {
-			comments = append(comments, struct {
-				Text    string
-				ForType string
-			}{
-				Text:    strings.Join(currentComment, " "),
-				ForType: strings.Split(line, " ")[1],
-			})
-			currentComment = nil
-		}
-	}
-
-	consts := map[string]constant{}
-	// ex: 'StorageBlobCreatedEventData - Schema of the Data property of an Event for a Microsoft.Storage.BlobCreated event.'
-	//     'IotHubDeviceConnectedEventData - Event data for Microsoft.Devices.DeviceConnected event.'
-	typeRE := regexp.MustCompile(`([^ ]+) -.+?([A-Za-z0-9]+(?:\.[A-Za-z0-9]+){2,3})`)
-
-	ignoredTypes := []string{
-		"DeviceConnectionStateEventProperties",
-		"DeviceLifeCycleEventProperties",
-		"DeviceTelemetryEventProperties",
-		"EventGridMQTTClientEventData",
-		"MapsGeofenceEventProperties",
-	}
-
-	for _, comment := range comments {
-		matches := typeRE.FindStringSubmatch(comment.Text)
-
-		if strings.Contains(comment.Text, "Schema of the Data") && len(matches) == 0 {
-			ignorable := false
-
-			// we have a few types that we can ignore - they're not top-level SystemEvents (they're
-			// embedded or used by other events).
-			for _, prefix := range ignoredTypes {
-				if strings.HasPrefix(comment.Text, prefix) {
-					ignorable = true
-					break
-				}
-			}
-
-			if !ignorable {
-				log.Printf("===========> DIDN'T MATCH REGEX: %q ", comment)
-			}
-		}
-
-		if len(matches) == 0 {
-			continue
-		}
-
-		goTypeName, stringValue := matches[1], matches[2]
-		constantName := strings.Replace(goTypeName, "EventData", "", 1)
-
-		consts[stringValue] = constant{
-			ConstantName:  "Type" + constantName,
-			GoType:        goTypeName,
-			ConstantValue: stringValue,
-		}
-	}
-
-	return consts, nil
-}
-
-func writeConstantsFile(path string, constants map[string]constant) error {
-	writer, err := os.Create(path)
-
-	if err != nil {
-		return err
-	}
-
-	defer writer.Close()
-
-	if _, err := writer.Write([]byte(header)); err != nil {
-		return err
-	}
-
-	for _, key := range sortedKeys(constants) {
-		c := constants[key]
-
-		// ex:
-		// TypeAPIManagementAPICreated Type = "Microsoft.ApiManagement.APICreated" // maps to APIManagementAPICreatedEventData
-		buff := fmt.Sprintf("%s Type = \"%s\" // maps to %s\n", c.ConstantName, c.ConstantValue, c.GoType)
-		_, err := writer.WriteString(buff)
-
-		if err != nil {
-			return err
-		}
-	}
-
-	if _, err := writer.Write([]byte(footer)); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func sortedKeys[T any](m map[string]T) []string {
-	var keys []string
-	for k := range m {
-		keys = append(keys, k)
-	}
-
-	sort.Strings(keys)
-	return keys
-}
-
-// copy of strings.CutPrefix, which doesn't exist in our oldest support compiler (1.18)
-func cutPrefix(s, prefix string) (after string, found bool) {
-	if !strings.HasPrefix(s, prefix) {
-		return s, false
-	}
-	return s[len(prefix):], true
-}
-
 type rename struct {
 	Orig     gopls.Symbol
 	New      string
@@ -275,6 +113,8 @@ func doRenames() error {
 
 	total := len(phase1Repls) + len(modelRepls)
 
+	now := time.Now()
+
 	for i, repl := range phase1Repls {
 		fmt.Printf("%s[%d/%d]: %s -> %s\n", repl.FileName, i+1, total, repl.Orig.Name, repl.New)
 		if err := gopls.Rename(repl.FileName, repl.Orig, repl.New); err != nil {
@@ -289,6 +129,8 @@ func doRenames() error {
 			return err
 		}
 	}
+
+	fmt.Printf("Took %s to do gopls based renames\n", time.Since(now))
 
 	return fixComments(modelRepls)
 }

@@ -819,6 +819,392 @@ func (a *APIManagementUserUpdatedEventData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type ACSAdvancedMessageButtonContent.
+func (a ACSAdvancedMessageButtonContent) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "payload", a.Payload)
+	populate(objectMap, "text", a.Text)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACSAdvancedMessageButtonContent.
+func (a *ACSAdvancedMessageButtonContent) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", a, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "payload":
+			err = unpopulate(val, "Payload", &a.Payload)
+			delete(rawMsg, key)
+		case "text":
+			err = unpopulate(val, "Text", &a.Text)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", a, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ACSAdvancedMessageChannelEventError.
+func (a ACSAdvancedMessageChannelEventError) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "channelCode", a.ChannelCode)
+	populate(objectMap, "channelMessage", a.ChannelMessage)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACSAdvancedMessageChannelEventError.
+func (a *ACSAdvancedMessageChannelEventError) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", a, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "channelCode":
+			err = unpopulate(val, "ChannelCode", &a.ChannelCode)
+			delete(rawMsg, key)
+		case "channelMessage":
+			err = unpopulate(val, "ChannelMessage", &a.ChannelMessage)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", a, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ACSAdvancedMessageContext.
+func (a ACSAdvancedMessageContext) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "from", a.From)
+	populate(objectMap, "id", a.ID)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACSAdvancedMessageContext.
+func (a *ACSAdvancedMessageContext) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", a, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "from":
+			err = unpopulate(val, "From", &a.From)
+			delete(rawMsg, key)
+		case "id":
+			err = unpopulate(val, "ID", &a.ID)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", a, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ACSAdvancedMessageDeliveryStatusUpdatedEventData.
+func (a ACSAdvancedMessageDeliveryStatusUpdatedEventData) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "channelType", a.ChannelType)
+	populate(objectMap, "error", a.Error)
+	populate(objectMap, "from", a.From)
+	populate(objectMap, "messageId", a.MessageID)
+	populateDateTimeRFC3339(objectMap, "receivedTimestamp", a.ReceivedTimestamp)
+	populate(objectMap, "status", a.Status)
+	populate(objectMap, "to", a.To)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACSAdvancedMessageDeliveryStatusUpdatedEventData.
+func (a *ACSAdvancedMessageDeliveryStatusUpdatedEventData) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", a, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "channelType":
+			err = unpopulate(val, "ChannelType", &a.ChannelType)
+			delete(rawMsg, key)
+		case "error":
+			err = unpopulate(val, "Error", &a.Error)
+			delete(rawMsg, key)
+		case "from":
+			err = unpopulate(val, "From", &a.From)
+			delete(rawMsg, key)
+		case "messageId":
+			err = unpopulate(val, "MessageID", &a.MessageID)
+			delete(rawMsg, key)
+		case "receivedTimestamp":
+			err = unpopulateDateTimeRFC3339(val, "ReceivedTimestamp", &a.ReceivedTimestamp)
+			delete(rawMsg, key)
+		case "status":
+			err = unpopulate(val, "Status", &a.Status)
+			delete(rawMsg, key)
+		case "to":
+			err = unpopulate(val, "To", &a.To)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", a, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ACSAdvancedMessageEventData.
+func (a ACSAdvancedMessageEventData) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "error", a.Error)
+	populate(objectMap, "from", a.From)
+	populateDateTimeRFC3339(objectMap, "receivedTimestamp", a.ReceivedTimestamp)
+	populate(objectMap, "to", a.To)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACSAdvancedMessageEventData.
+func (a *ACSAdvancedMessageEventData) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", a, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "error":
+			err = unpopulate(val, "Error", &a.Error)
+			delete(rawMsg, key)
+		case "from":
+			err = unpopulate(val, "From", &a.From)
+			delete(rawMsg, key)
+		case "receivedTimestamp":
+			err = unpopulateDateTimeRFC3339(val, "ReceivedTimestamp", &a.ReceivedTimestamp)
+			delete(rawMsg, key)
+		case "to":
+			err = unpopulate(val, "To", &a.To)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", a, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ACSAdvancedMessageInteractiveButtonReplyContent.
+func (a ACSAdvancedMessageInteractiveButtonReplyContent) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "id", a.ID)
+	populate(objectMap, "title", a.Title)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACSAdvancedMessageInteractiveButtonReplyContent.
+func (a *ACSAdvancedMessageInteractiveButtonReplyContent) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", a, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "id":
+			err = unpopulate(val, "ID", &a.ID)
+			delete(rawMsg, key)
+		case "title":
+			err = unpopulate(val, "Title", &a.Title)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", a, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ACSAdvancedMessageInteractiveContent.
+func (a ACSAdvancedMessageInteractiveContent) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "buttonReply", a.ButtonReply)
+	populate(objectMap, "listReply", a.ListReply)
+	populate(objectMap, "type", a.Type)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACSAdvancedMessageInteractiveContent.
+func (a *ACSAdvancedMessageInteractiveContent) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", a, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "buttonReply":
+			err = unpopulate(val, "ButtonReply", &a.ButtonReply)
+			delete(rawMsg, key)
+		case "listReply":
+			err = unpopulate(val, "ListReply", &a.ListReply)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, "Type", &a.Type)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", a, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ACSAdvancedMessageInteractiveListReplyContent.
+func (a ACSAdvancedMessageInteractiveListReplyContent) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "description", a.Description)
+	populate(objectMap, "id", a.ID)
+	populate(objectMap, "title", a.Title)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACSAdvancedMessageInteractiveListReplyContent.
+func (a *ACSAdvancedMessageInteractiveListReplyContent) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", a, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "description":
+			err = unpopulate(val, "Description", &a.Description)
+			delete(rawMsg, key)
+		case "id":
+			err = unpopulate(val, "ID", &a.ID)
+			delete(rawMsg, key)
+		case "title":
+			err = unpopulate(val, "Title", &a.Title)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", a, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ACSAdvancedMessageMediaContent.
+func (a ACSAdvancedMessageMediaContent) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "caption", a.Caption)
+	populate(objectMap, "fileName", a.FileName)
+	populate(objectMap, "id", a.ID)
+	populate(objectMap, "mimeType", a.MimeType)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACSAdvancedMessageMediaContent.
+func (a *ACSAdvancedMessageMediaContent) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", a, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "caption":
+			err = unpopulate(val, "Caption", &a.Caption)
+			delete(rawMsg, key)
+		case "fileName":
+			err = unpopulate(val, "FileName", &a.FileName)
+			delete(rawMsg, key)
+		case "id":
+			err = unpopulate(val, "ID", &a.ID)
+			delete(rawMsg, key)
+		case "mimeType":
+			err = unpopulate(val, "MimeType", &a.MimeType)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", a, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ACSAdvancedMessageReceivedEventData.
+func (a ACSAdvancedMessageReceivedEventData) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "button", a.Button)
+	populate(objectMap, "channelType", a.ChannelType)
+	populate(objectMap, "content", a.Content)
+	populate(objectMap, "context", a.Context)
+	populate(objectMap, "error", a.Error)
+	populate(objectMap, "from", a.From)
+	populate(objectMap, "interactive", a.Interactive)
+	populate(objectMap, "media", a.Media)
+	populateDateTimeRFC3339(objectMap, "receivedTimestamp", a.ReceivedTimestamp)
+	populate(objectMap, "to", a.To)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACSAdvancedMessageReceivedEventData.
+func (a *ACSAdvancedMessageReceivedEventData) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", a, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "button":
+			err = unpopulate(val, "Button", &a.Button)
+			delete(rawMsg, key)
+		case "channelType":
+			err = unpopulate(val, "ChannelType", &a.ChannelType)
+			delete(rawMsg, key)
+		case "content":
+			err = unpopulate(val, "Content", &a.Content)
+			delete(rawMsg, key)
+		case "context":
+			err = unpopulate(val, "Context", &a.Context)
+			delete(rawMsg, key)
+		case "error":
+			err = unpopulate(val, "Error", &a.Error)
+			delete(rawMsg, key)
+		case "from":
+			err = unpopulate(val, "From", &a.From)
+			delete(rawMsg, key)
+		case "interactive":
+			err = unpopulate(val, "Interactive", &a.Interactive)
+			delete(rawMsg, key)
+		case "media":
+			err = unpopulate(val, "Media", &a.Media)
+			delete(rawMsg, key)
+		case "receivedTimestamp":
+			err = unpopulateDateTimeRFC3339(val, "ReceivedTimestamp", &a.ReceivedTimestamp)
+			delete(rawMsg, key)
+		case "to":
+			err = unpopulate(val, "To", &a.To)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", a, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type ACSChatEventBaseProperties.
 func (a ACSChatEventBaseProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)

@@ -6,7 +6,7 @@ description: Azure Event Grid system events
 generated-metadata: false
 clear-output-folder: false
 go: true
-require: https://github.com/Azure/azure-rest-api-specs/blob/a02f2ba78bfb988c3bd195886c0492024f0ea7fc/specification/eventgrid/data-plane/readme.md
+require: https://github.com/Azure/azure-rest-api-specs/blob/c25006263b7c15ad5da755a5ef864e4301e56b54/specification/eventgrid/data-plane/readme.md
 license-header: MICROSOFT_MIT_NO_VERSION
 openapi-type: "data-plane"
 output-folder: ../azsystemevents

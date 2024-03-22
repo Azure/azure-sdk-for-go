@@ -59,6 +59,8 @@ const (
 	TypeRedisImportRDBCompleted                                       Type = "Microsoft.Cache.ImportRDBCompleted"                                        // maps to RedisImportRDBCompletedEventData
 	TypeRedisPatchingCompleted                                        Type = "Microsoft.Cache.PatchingCompleted"                                         // maps to RedisPatchingCompletedEventData
 	TypeRedisScalingCompleted                                         Type = "Microsoft.Cache.ScalingCompleted"                                          // maps to RedisScalingCompletedEventData
+	TypeACSAdvancedMessageDeliveryStatusUpdated                       Type = "Microsoft.Communication.AdvancedMessageDeliveryStatusUpdated"              // maps to ACSAdvancedMessageDeliveryStatusUpdatedEventData
+	TypeACSAdvancedMessageReceived                                    Type = "Microsoft.Communication.AdvancedMessageReceived"                           // maps to ACSAdvancedMessageReceivedEventData
 	TypeACSChatMessageDeleted                                         Type = "Microsoft.Communication.ChatMessageDeleted"                                // maps to ACSChatMessageDeletedEventData
 	TypeACSChatMessageDeletedInThread                                 Type = "Microsoft.Communication.ChatMessageDeletedInThread"                        // maps to ACSChatMessageDeletedInThreadEventData
 	TypeACSChatMessageEdited                                          Type = "Microsoft.Communication.ChatMessageEdited"                                 // maps to ACSChatMessageEditedEventData

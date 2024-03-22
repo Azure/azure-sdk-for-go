@@ -39,6 +39,42 @@ func PossibleACSEmailDeliveryReportStatusValues() []ACSEmailDeliveryReportStatus
 	}
 }
 
+// ACSInteractiveReplyType - The Message interactive reply type
+type ACSInteractiveReplyType string
+
+const (
+	// ACSInteractiveReplyTypeButtonReply - Messaged interactive reply type is ButtonReply
+	ACSInteractiveReplyTypeButtonReply ACSInteractiveReplyType = "buttonReply"
+	// ACSInteractiveReplyTypeListReply - Messaged interactive reply type is ListReply
+	ACSInteractiveReplyTypeListReply ACSInteractiveReplyType = "listReply"
+	// ACSInteractiveReplyTypeUnknown - Messaged interactive reply type is Unknown
+	ACSInteractiveReplyTypeUnknown ACSInteractiveReplyType = "unknown"
+)
+
+// PossibleACSInteractiveReplyTypeValues returns the possible values for the AcsInteractiveReplyType const type.
+func PossibleACSInteractiveReplyTypeValues() []ACSInteractiveReplyType {
+	return []ACSInteractiveReplyType{
+		ACSInteractiveReplyTypeButtonReply,
+		ACSInteractiveReplyTypeListReply,
+		ACSInteractiveReplyTypeUnknown,
+	}
+}
+
+// ACSMessageChannelType - The The messaged received channel type
+type ACSMessageChannelType string
+
+const (
+	// ACSMessageChannelTypeWhatsapp - Updated messaged channel type is Whatsapp
+	ACSMessageChannelTypeWhatsapp ACSMessageChannelType = "whatsapp"
+)
+
+// PossibleACSMessageChannelTypeValues returns the possible values for the AcsMessageChannelType const type.
+func PossibleACSMessageChannelTypeValues() []ACSMessageChannelType {
+	return []ACSMessageChannelType{
+		ACSMessageChannelTypeWhatsapp,
+	}
+}
+
 // ACSRouterJobStatus - Router Job Received Job Status
 type ACSRouterJobStatus string
 

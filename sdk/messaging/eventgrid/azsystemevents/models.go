@@ -279,6 +279,157 @@ type APIManagementUserUpdatedEventData struct {
 	ResourceURI *string
 }
 
+// ACSAdvancedMessageButtonContent - Advanced Message Button Content
+type ACSAdvancedMessageButtonContent struct {
+	// The Payload of the button which was clicked by the user, setup by the business
+	Payload *string
+
+	// The Text of the button
+	Text *string
+}
+
+// ACSAdvancedMessageChannelEventError - Advanced Message Channel Event Error
+type ACSAdvancedMessageChannelEventError struct {
+	// The channel error code
+	ChannelCode *string
+
+	// The channel error message
+	ChannelMessage *string
+}
+
+// ACSAdvancedMessageContext - Advanced Message Context
+type ACSAdvancedMessageContext struct {
+	// The WhatsApp ID for the customer who replied to an inbound message.
+	From *string
+
+	// The message ID for the sent message for an inbound reply
+	ID *string
+}
+
+// ACSAdvancedMessageDeliveryStatusUpdatedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.AdvancedMessageDeliveryStatusUpdated
+// event.
+type ACSAdvancedMessageDeliveryStatusUpdatedEventData struct {
+	// The updated message channel type
+	ChannelType *ACSMessageChannelType
+
+	// The channel event error
+	Error *ACSAdvancedMessageChannelEventError
+
+	// The message sender
+	From *string
+
+	// The message id
+	MessageID *string
+
+	// The time message was received
+	ReceivedTimestamp *time.Time
+
+	// The updated message status
+	Status *string
+
+	// The message recipient
+	To *string
+}
+
+// ACSAdvancedMessageEventData - Schema of common properties of all chat thread events
+type ACSAdvancedMessageEventData struct {
+	// The channel event error
+	Error *ACSAdvancedMessageChannelEventError
+
+	// The message sender
+	From *string
+
+	// The time message was received
+	ReceivedTimestamp *time.Time
+
+	// The message recipient
+	To *string
+}
+
+// ACSAdvancedMessageInteractiveButtonReplyContent - Advanced Message Interactive button reply content for a user to business
+// message
+type ACSAdvancedMessageInteractiveButtonReplyContent struct {
+	// The ID of the button
+	ID *string
+
+	// The title of the button
+	Title *string
+}
+
+// ACSAdvancedMessageInteractiveContent - Advanced Message Interactive Content
+type ACSAdvancedMessageInteractiveContent struct {
+	// The Message Sent when a customer clicks a button
+	ButtonReply *ACSAdvancedMessageInteractiveButtonReplyContent
+
+	// The Message Sent when a customer selects an item from a list
+	ListReply *ACSAdvancedMessageInteractiveListReplyContent
+
+	// The Message interactive reply type
+	Type *ACSInteractiveReplyType
+}
+
+// ACSAdvancedMessageInteractiveListReplyContent - Advanced Message Interactive list reply content for a user to business
+// message
+type ACSAdvancedMessageInteractiveListReplyContent struct {
+	// The sescription of the selected row
+	Description *string
+
+	// The ID of the selected list item
+	ID *string
+
+	// The title of the selected list item
+	Title *string
+}
+
+// ACSAdvancedMessageMediaContent - Advanced Message Media Content
+type ACSAdvancedMessageMediaContent struct {
+	// The caption for the media object, if supported and provided
+	Caption *string
+
+	// The filename of the underlying media file as specified when uploaded
+	FileName *string
+
+	// The media identifier
+	ID *string
+
+	// The MIME type of the file this media represents
+	MimeType *string
+}
+
+// ACSAdvancedMessageReceivedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.AdvancedMessageReceived
+// event.
+type ACSAdvancedMessageReceivedEventData struct {
+	// The The messaged received button content
+	Button *ACSAdvancedMessageButtonContent
+
+	// The The messaged received channel type
+	ChannelType *ACSMessageChannelType
+
+	// The The messaged received content
+	Content *string
+
+	// The The messaged received context
+	Context *ACSAdvancedMessageContext
+
+	// The channel event error
+	Error *ACSAdvancedMessageChannelEventError
+
+	// The message sender
+	From *string
+
+	// The The messaged received interactive content
+	Interactive *ACSAdvancedMessageInteractiveContent
+
+	// The messaged received media content
+	Media *ACSAdvancedMessageMediaContent
+
+	// The time message was received
+	ReceivedTimestamp *time.Time
+
+	// The message recipient
+	To *string
+}
+
 // ACSChatEventBaseProperties - Schema of common properties of all chat events
 type ACSChatEventBaseProperties struct {
 	// The communication identifier of the target user

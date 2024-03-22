@@ -772,7 +772,10 @@ func (s *RecordedTestSuite) TestDeleteDirWithNilAccessConditions() {
 // To run this test, the NamespaceTenant AAD info needs to be set to an AAD app that does not have any RBAC permissions,
 // and entityId needs to be set to the entity ID of the application.
 func (s *RecordedTestSuite) TestDeleteDirWithPaginatedDelete() {
-	s.T().Skip("AAD app not configured for this test, this will be skipped")
+
+	if recording.GetRecordMode() == recording.LiveMode {
+		s.T().Skip("AAD app not configured for this test, this will be skipped")
+	}
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	user := "user"

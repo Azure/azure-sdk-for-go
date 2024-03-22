@@ -39,7 +39,7 @@ var (
 )
 
 func credential(resourceID string) (azcore.TokenCredential, error) {
-	if *&config.workloadID {
+	if config.workloadID {
 		// the identity is determined by service account configuration
 		return azidentity.NewWorkloadIdentityCredential(nil)
 	}

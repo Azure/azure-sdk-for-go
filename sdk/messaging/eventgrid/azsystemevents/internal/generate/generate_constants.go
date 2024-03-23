@@ -20,6 +20,7 @@ import (
 
 const systemEventsGoFile = "system_events.go"
 const modelsGoFile = "models.go"
+const modelsSerdeGoFile = "models_serde.go"
 const constantsGoFile = "constants.go"
 
 const header = `//go:build go1.18

@@ -27,6 +27,10 @@ var filesToDelete = []string{
 
 func main() {
 	fn := func() error {
+		if err := swapErrorTypes(); err != nil {
+			return err
+		}
+
 		if err := doRenames(); err != nil {
 			return err
 		}
@@ -45,6 +49,77 @@ func main() {
 	}
 
 	fmt.Printf("DONE\n")
+}
+
+// swapErrorTypes handles turning most of the auto-generated errors into a single consistent error type.
+// The key is that the Error type doesn't export human readable strings as fields - it's all contained in
+// the Error() field.
+func swapErrorTypes() error {
+	syms, err := gopls.Symbols(modelsGoFile)
+
+	if err != nil {
+		return err
+	}
+
+	{
+		if err := gopls.Rename(syms.Get("AcsAdvancedMessageChannelEventError"), "internalACSAdvancedMessageChannelEventError"); err != nil {
+			return err
+		}
+
+		if err := SwapType(syms.Get("AcsAdvancedMessageReceivedEventData.Error"), "*Error"); err != nil {
+			return err
+		}
+
+		if err := UseCustomUnpopulate(modelsSerdeGoFile, "AcsAdvancedMessageReceivedEventData.Error", "unmarshalInternalACSAdvancedMessageChannelEventError"); err != nil {
+			return err
+		}
+	}
+
+	{
+		if err := SwapType(syms.Get("AcsRouterJobClassificationFailedEventData.Errors"), "[]*Error"); err != nil {
+			return err
+		}
+
+		if err := UseCustomUnpopulate(modelsSerdeGoFile, "AcsRouterJobClassificationFailedEventData.Errors", "unmarshalInternalACSRouterCommunicationError"); err != nil {
+			return err
+		}
+	}
+
+	{
+		if err := gopls.Rename(syms.Get("AcsRouterCommunicationError"), "internalAcsRouterCommunicationError"); err != nil {
+			return err
+		}
+
+		if err := SwapType(syms.Get("AcsRouterJobClassificationFailedEventData.Errors"), "[]*Error"); err != nil {
+			return err
+		}
+
+		if err := UseCustomUnpopulate(modelsSerdeGoFile, "AcsRouterJobClassificationFailedEventData.Errors", "unmarshalInternalACSRouterCommunicationError"); err != nil {
+			return err
+		}
+	}
+
+	syms, err = gopls.Symbols(modelsGoFile)
+
+	if err != nil {
+		return err
+	}
+
+	allowedErrs := map[string]bool{
+		"MediaJobError": true,
+	}
+
+	for _, sym := range syms.All() {
+		if allowedErrs[sym.Name] {
+			continue
+		}
+
+		if strings.HasSuffix(sym.Name, "Error") && !strings.HasPrefix(sym.Name, "internal") && sym.Type == "Struct" {
+			return fmt.Errorf("found redundant unhandled error type %s\n", sym.Name)
+		}
+	}
+
+	return nil
 }
 
 func generateSystemEventEnum() error {
@@ -83,9 +158,8 @@ func deleteUnneededFiles() {
 }
 
 type rename struct {
-	Orig     gopls.Symbol
-	New      string
-	FileName string
+	Orig *gopls.Symbol
+	New  string
 }
 
 func doRenames() error {
@@ -103,11 +177,11 @@ func doRenames() error {
 
 	phase1Repls := getConstantsReplacements(constantSyms)
 
-	phase1Repls = append(phase1Repls, rename{
-		FileName: "models.go",
-		Orig:     modelsSyms["AcsRouterCommunicationError.Innererror"],
-		New:      "InnerError",
-	})
+	// We don't need to do this since we're not holding onto this error type anymore.
+	// phase1Repls = append(phase1Repls, rename{
+	// 	Orig: modelsSyms.Get("AcsRouterCommunicationError.Innererror"),
+	// 	New:  "InnerError",
+	// })
 
 	modelRepls := getModelsReplacements(modelsSyms)
 
@@ -116,16 +190,16 @@ func doRenames() error {
 	now := time.Now()
 
 	for i, repl := range phase1Repls {
-		fmt.Printf("%s[%d/%d]: %s -> %s\n", repl.FileName, i+1, total, repl.Orig.Name, repl.New)
-		if err := gopls.Rename(repl.FileName, repl.Orig, repl.New); err != nil {
+		fmt.Printf("%s[%d/%d]: %s -> %s\n", repl.Orig.File, i+1, total, repl.Orig.Name, repl.New)
+		if err := gopls.Rename(repl.Orig, repl.New); err != nil {
 			return err
 		}
 	}
 
 	for i, repl := range modelRepls {
 		idx := 1 + i + len(phase1Repls)
-		fmt.Printf("%s[%d/%d]: %s -> %s\n", repl.FileName, idx, total, repl.Orig.Name, repl.New)
-		if err := gopls.Rename(repl.FileName, repl.Orig, repl.New); err != nil {
+		fmt.Printf("%s[%d/%d]: %s -> %s\n", repl.Orig.File, idx, total, repl.Orig.Name, repl.New)
+		if err := gopls.Rename(repl.Orig, repl.New); err != nil {
 			return err
 		}
 	}
@@ -162,30 +236,28 @@ func fixComments(modelRepls []rename) error {
 	return os.WriteFile(constantsGoFile, constantsBytes, 0700)
 }
 
-func getConstantsReplacements(syms map[string]gopls.Symbol) []rename {
+func getConstantsReplacements(syms *gopls.SymbolMap) []rename {
 	typeRE := regexp.MustCompile(`^(Acs|Avs|Iot)([A-Za-z0-9]+)$`)
 	possibleRE := regexp.MustCompile(`^(Possible)(Acs|Avs|Iot)([A-Za-z0-9]+)$`)
 
 	var renames []rename
 
-	for k, sym := range syms {
-		matches := typeRE.FindStringSubmatch(k)
+	for _, sym := range syms.All() {
+		matches := typeRE.FindStringSubmatch(sym.Name)
 
 		if matches != nil {
 			renames = append(renames, rename{
-				FileName: constantsGoFile,
-				Orig:     sym,
-				New:      strings.ToUpper(matches[1]) + matches[2],
+				Orig: sym,
+				New:  strings.ToUpper(matches[1]) + matches[2],
 			})
 		}
 
-		matches = possibleRE.FindStringSubmatch(k)
+		matches = possibleRE.FindStringSubmatch(sym.Name)
 
 		if matches != nil {
 			renames = append(renames, rename{
-				FileName: constantsGoFile,
-				Orig:     sym,
-				New:      matches[1] + strings.ToUpper(matches[2]) + matches[3],
+				Orig: sym,
+				New:  matches[1] + strings.ToUpper(matches[2]) + matches[3],
 			})
 		}
 	}
@@ -196,19 +268,18 @@ func getConstantsReplacements(syms map[string]gopls.Symbol) []rename {
 	return renames
 }
 
-func getModelsReplacements(syms map[string]gopls.Symbol) []rename {
+func getModelsReplacements(syms *gopls.SymbolMap) []rename {
 	typeRE := regexp.MustCompile(`^(Acs|Avs|Iot)([A-Za-z0-9]+)$`)
 
 	var renames []rename
 
-	for k, sym := range syms {
-		matches := typeRE.FindStringSubmatch(k)
+	for _, sym := range syms.All() {
+		matches := typeRE.FindStringSubmatch(sym.Name)
 
 		if matches != nil {
 			renames = append(renames, rename{
-				FileName: modelsGoFile,
-				Orig:     sym,
-				New:      strings.ToUpper(matches[1]) + matches[2],
+				Orig: sym,
+				New:  strings.ToUpper(matches[1]) + matches[2],
 			})
 		}
 	}

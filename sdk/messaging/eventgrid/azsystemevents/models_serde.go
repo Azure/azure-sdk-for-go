@@ -850,16 +850,16 @@ func (a *ACSAdvancedMessageButtonContent) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ACSAdvancedMessageChannelEventError.
-func (a ACSAdvancedMessageChannelEventError) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type AcsAdvancedMessageChannelEventError.
+func (a internalACSAdvancedMessageChannelEventError) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "channelCode", a.ChannelCode)
 	populate(objectMap, "channelMessage", a.ChannelMessage)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ACSAdvancedMessageChannelEventError.
-func (a *ACSAdvancedMessageChannelEventError) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type AcsAdvancedMessageChannelEventError.
+func (a *internalACSAdvancedMessageChannelEventError) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -1180,7 +1180,7 @@ func (a *ACSAdvancedMessageReceivedEventData) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Context", &a.Context)
 			delete(rawMsg, key)
 		case "error":
-			err = unpopulate(val, "Error", &a.Error)
+			err = unmarshalInternalACSAdvancedMessageChannelEventError(val, "Error", &a.Error)
 			delete(rawMsg, key)
 		case "from":
 			err = unpopulate(val, "From", &a.From)
@@ -2789,19 +2789,19 @@ func (a *ACSRouterChannelConfiguration) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ACSRouterCommunicationError.
-func (a ACSRouterCommunicationError) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type AcsRouterCommunicationError.
+func (a internalAcsRouterCommunicationError) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "code", a.Code)
 	populate(objectMap, "details", a.Details)
-	populate(objectMap, "innererror", a.InnerError)
+	populate(objectMap, "innererror", a.Innererror)
 	populate(objectMap, "message", a.Message)
 	populate(objectMap, "target", a.Target)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ACSRouterCommunicationError.
-func (a *ACSRouterCommunicationError) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type AcsRouterCommunicationError.
+func (a *internalAcsRouterCommunicationError) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -2816,7 +2816,7 @@ func (a *ACSRouterCommunicationError) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Details", &a.Details)
 			delete(rawMsg, key)
 		case "innererror":
-			err = unpopulate(val, "Innererror", &a.InnerError)
+			err = unpopulate(val, "Innererror", &a.Innererror)
 			delete(rawMsg, key)
 		case "message":
 			err = unpopulate(val, "Message", &a.Message)
@@ -2955,7 +2955,7 @@ func (a *ACSRouterJobClassificationFailedEventData) UnmarshalJSON(data []byte) e
 			err = unpopulate(val, "ClassificationPolicyID", &a.ClassificationPolicyID)
 			delete(rawMsg, key)
 		case "errors":
-			err = unpopulate(val, "Errors", &a.Errors)
+			err = unmarshalInternalACSRouterCommunicationError(val, "Errors", &a.Errors)
 			delete(rawMsg, key)
 		case "jobId":
 			err = unpopulate(val, "JobID", &a.JobID)

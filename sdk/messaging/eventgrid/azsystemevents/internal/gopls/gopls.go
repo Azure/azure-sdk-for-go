@@ -9,32 +9,95 @@ package gopls
 import (
 	"bufio"
 	"bytes"
-	"errors"
 	"fmt"
+	"log"
 	"os"
 	"os/exec"
+	"regexp"
+	"strconv"
 	"strings"
+)
+
+// SymbolType maps to the second field in the `gopls symbols` output.
+type SymbolType string
+
+const (
+	SymbolTypeConstant SymbolType = "Constant"
+	SymbolTypeClass    SymbolType = "Class" // (ex: ACSRouterJobStatus, from 'type ACSRouterJobStatus string')
+	SymbolTypeStruct   SymbolType = "Struct"
+	SymbolTypeField    SymbolType = "Field"
+	SymbolTypeFunction SymbolType = "Function"
+	SymbolTypeMethod   SymbolType = "Method" // ex: '(*WebBackupOperationCompletedEventData).UnmarshalJSON'
 )
 
 type Symbol struct {
 	Name string
-	// Either:
-	// - Constant
-	// - Class (type ACSRouterJobStatus string)
-	// - Struct
-	// - Field
-	// - Function
-	// - Method
-	Type     string
+	Type SymbolType
+
+	// Position is a start and end range for a symbol
+	// ex: 36:2-36:7
+	// (line 36, columns 2 - 7)
 	Position string
+
+	File string
 }
 
-func Rename(filename string, sym Symbol, newName string) error {
-	if sym.Name == "" && sym.Position == "" && sym.Type == "" {
-		return errors.New("attempted to rename with an empty symbol")
+type SymbolMap struct {
+	m map[string]*Symbol
+}
+
+func NewSymbolMap(m map[string]*Symbol) *SymbolMap {
+	newM := map[string]*Symbol{}
+
+	for k, v := range m {
+		newM[strings.ToLower(k)] = v
 	}
 
-	cmd := exec.Command("gopls", "rename", "-w", filename+":"+sym.Position, newName)
+	return &SymbolMap{m: newM}
+}
+
+// Get retrieves a symbol, ignoring casing.
+func (s SymbolMap) Get(name string) *Symbol {
+	v, exists := s.m[strings.ToLower(name)]
+
+	if !exists {
+		log.Fatalf("No key exists for %q", name)
+	}
+
+	return v
+}
+
+// All gets all the symbols within our map, in no specific order.
+func (s SymbolMap) All() []*Symbol {
+	var all []*Symbol
+
+	for _, v := range s.m {
+		all = append(all, v)
+	}
+
+	return all
+}
+
+// ex: 36:2-36:7
+var posRE = regexp.MustCompile(`(\d+):(\d+)-(\d+):(\d+)`)
+
+// StartLine returns the starting line for this symbol.
+func (s Symbol) StartLine() (int64, error) {
+	var matches = posRE.FindStringSubmatch(s.Position)
+
+	if matches == nil {
+		return 0, fmt.Errorf("couldn't parse position %q", s.Position)
+	}
+
+	return strconv.ParseInt(matches[1], 10, 64)
+}
+
+// Rename renames a given symbol to a new name. This naming will propagate
+// throughout, including references to the type, the type name itself and
+// any comments that contain the type name in godoc's reference format
+// with '[typename]'.
+func Rename(sym *Symbol, newName string) error {
+	cmd := exec.Command("gopls", "rename", "-w", sym.File+":"+sym.Position, newName)
 
 	if err := cmd.Run(); err != nil {
 		return err
@@ -43,7 +106,8 @@ func Rename(filename string, sym Symbol, newName string) error {
 	return nil
 }
 
-func Symbols(filename string) (map[string]Symbol, error) {
+// Symbols parses the output of `gopls symbols`.
+func Symbols(filename string) (*SymbolMap, error) {
 	if _, err := os.Stat(filename); err != nil {
 		return nil, err
 	}
@@ -55,14 +119,14 @@ func Symbols(filename string) (map[string]Symbol, error) {
 	cmd.Stderr = os.Stderr
 
 	if err := cmd.Run(); err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed getting symbols for %s: %w", filename, err)
 	}
 
 	allBytes := stdout.Bytes()
 
 	scanner := bufio.NewScanner(bytes.NewReader(allBytes))
 
-	m := map[string]Symbol{}
+	m := map[string]*Symbol{}
 	prevParent := ""
 
 	for scanner.Scan() {
@@ -93,20 +157,21 @@ func Symbols(filename string) (map[string]Symbol, error) {
 
 		sym := Symbol{
 			Name:     fields[0],
-			Type:     fields[1],
+			Type:     SymbolType(fields[1]),
 			Position: fields[2],
+			File:     filename,
 		}
 
 		if _, exists := m[sym.Name]; exists {
 			return nil, fmt.Errorf("%s was in the map twice", sym.Name)
 		}
 
-		m[sym.Name] = sym
+		m[sym.Name] = &sym
 
-		if sym.Type != "Field" {
+		if sym.Type != SymbolTypeField {
 			prevParent = sym.Name
 		}
 	}
 
-	return m, nil
+	return NewSymbolMap(m), nil
 }

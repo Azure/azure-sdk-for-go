@@ -288,8 +288,8 @@ type ACSAdvancedMessageButtonContent struct {
 	Text *string
 }
 
-// ACSAdvancedMessageChannelEventError - Advanced Message Channel Event Error
-type ACSAdvancedMessageChannelEventError struct {
+// internalACSAdvancedMessageChannelEventError - Advanced Message Channel Event Error
+type internalACSAdvancedMessageChannelEventError struct {
 	// The channel error code
 	ChannelCode *string
 
@@ -313,7 +313,7 @@ type ACSAdvancedMessageDeliveryStatusUpdatedEventData struct {
 	ChannelType *ACSMessageChannelType
 
 	// The channel event error
-	Error *ACSAdvancedMessageChannelEventError
+	Error *internalACSAdvancedMessageChannelEventError
 
 	// The message sender
 	From *string
@@ -334,7 +334,7 @@ type ACSAdvancedMessageDeliveryStatusUpdatedEventData struct {
 // ACSAdvancedMessageEventData - Schema of common properties of all chat thread events
 type ACSAdvancedMessageEventData struct {
 	// The channel event error
-	Error *ACSAdvancedMessageChannelEventError
+	Error *internalACSAdvancedMessageChannelEventError
 
 	// The message sender
 	From *string
@@ -412,7 +412,7 @@ type ACSAdvancedMessageReceivedEventData struct {
 	Context *ACSAdvancedMessageContext
 
 	// The channel event error
-	Error *ACSAdvancedMessageChannelEventError
+	Error *Error
 
 	// The message sender
 	From *string
@@ -1182,16 +1182,16 @@ type ACSRouterChannelConfiguration struct {
 	MaxNumberOfJobs *int32
 }
 
-// ACSRouterCommunicationError - Router Communication Error
-type ACSRouterCommunicationError struct {
+// internalAcsRouterCommunicationError - Router Communication Error
+type internalAcsRouterCommunicationError struct {
 	// Router Communication Error Code
 	Code *string
 
 	// List of Router Communication Errors
-	Details []ACSRouterCommunicationError
+	Details []internalAcsRouterCommunicationError
 
 	// Router Communication Inner Error
-	InnerError *ACSRouterCommunicationError
+	Innererror *internalAcsRouterCommunicationError
 
 	// Router Communication Error Message
 	Message *string
@@ -1253,7 +1253,7 @@ type ACSRouterJobClassificationFailedEventData struct {
 	ClassificationPolicyID *string
 
 	// Router Job Classification Failed Errors
-	Errors []ACSRouterCommunicationError
+	Errors []*Error
 
 	// Router Event Job ID
 	JobID *string

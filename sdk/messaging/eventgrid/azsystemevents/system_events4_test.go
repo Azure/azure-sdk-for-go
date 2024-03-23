@@ -974,6 +974,6 @@ func TestConsumeCloudEventAcsRouterJobClassificationFailedEvent(t *testing.T) {
 
 	var errors = sysEvent.Errors
 	require.Equal(t, 1, len(errors))
-	require.Equal(t, "Failure", *errors[0].Code)
-	require.Equal(t, "Classification failed due to <reason>", *errors[0].Message)
+	require.Equal(t, "Failure", (*errors[0]).Code)
+	require.Equal(t, "Classification failed due to <reason>", (*errors[0]).Error())
 }

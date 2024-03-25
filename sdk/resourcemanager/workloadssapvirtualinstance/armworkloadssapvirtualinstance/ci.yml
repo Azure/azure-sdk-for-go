@@ -21,7 +21,7 @@ pr:
     include:
     - sdk/resourcemanager/workloadssapvirtualinstance/armworkloadssapvirtualinstance/
 
-stages:
+extends:
 - template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
   parameters:
     IncludeRelease: true

@@ -322,6 +322,7 @@ func TestSimpleErrors(t *testing.T) {
 	// }
 	var respErr *azcore.ResponseError
 	require.ErrorAs(t, err, &respErr)
+	require.Equal(t, "BadRequest", respErr.ErrorCode)
 	require.Equal(t, http.StatusBadRequest, respErr.StatusCode)
 }
 
@@ -592,7 +593,7 @@ func TestPublishCloudEvent_binaryModeNoContentType(t *testing.T) {
 	})
 	var resp *azcore.ResponseError
 	require.ErrorAs(t, err, &resp)
-
+	require.Equal(t, "BadRequest", resp.ErrorCode)
 	require.Equal(t, http.StatusBadRequest, resp.StatusCode)
 }
 

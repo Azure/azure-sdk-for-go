@@ -12,6 +12,11 @@ param (
     $RemainingArguments
 )
 
+if (-not (Test-Path "$PSScriptRoot/sshkey.pub")) {
+    ssh-keygen -t rsa -b 4096 -f "$PSScriptRoot/sshkey" -N '' -C ''
+}
+$templateFileParameters['sshPubKey'] = Get-Content "$PSScriptRoot/sshkey.pub"
+
 if (!$CI) {
     # TODO: Remove this once auto-cloud config downloads are supported locally
     Write-Host "Skipping cert setup in local testing mode"

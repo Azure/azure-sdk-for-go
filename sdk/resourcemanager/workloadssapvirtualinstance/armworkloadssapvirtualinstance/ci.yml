@@ -22,7 +22,7 @@ pr:
     - sdk/resourcemanager/workloadssapvirtualinstance/armworkloadssapvirtualinstance/
 
 extends:
-- template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
+  template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
   parameters:
     IncludeRelease: true
     ServiceDirectory: 'resourcemanager/workloadssapvirtualinstance/armworkloadssapvirtualinstance'

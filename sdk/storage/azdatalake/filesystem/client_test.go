@@ -9,6 +9,7 @@ package filesystem_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/file"
+	"net/http"
 	"strconv"
 	"strings"
 	"testing"
@@ -1998,5 +1999,81 @@ func (s *UnrecordedTestSuite) TestFSCreateDeleteUsingOAuth() {
 
 	_, err = fsClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
+
+}
+
+func (s *RecordedTestSuite) TestCreateFileInFileSystemSetOptions() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	umask := "0000"
+	user := "4cf4e284-f6a8-4540-b53e-c3469af032dc"
+	group := user
+	acl := "user::rwx,group::r-x,other::rwx"
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	expiryTimeAbsolute := time.Now().Add(8 * time.Second)
+	createFileOptions := &filesystem.CreateFileOptions{
+		Umask: &umask,
+		Owner: &user,
+		Group: &group,
+		ACL:   &acl,
+		Expiry: file.CreateExpiryValues{
+			ExpiryType: file.CreateExpiryTypeAbsolute,
+			ExpiresOn:  time.Now().Add(8 * time.Second).UTC().Format(http.TimeFormat),
+		},
+	}
+	resp, err := fsClient.CreateFile(context.Background(), testName, createFileOptions)
+	_require.NoError(err)
+	_require.NotNil(resp)
+
+	fClient := fsClient.NewFileClient(testName)
+
+	response, err := fClient.GetProperties(context.Background(), nil)
+	_require.Equal(*response.Owner, "4cf4e284-f6a8-4540-b53e-c3469af032dc")
+	_require.Equal(expiryTimeAbsolute.UTC().Format(http.TimeFormat), (*response.ExpiresOn).UTC().Format(http.TimeFormat))
+	_require.Equal("rwxr-xrwx", *response.Permissions)
+
+}
+
+func (s *RecordedTestSuite) TestCreateDirectoryInFileSystemSetOptions() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	perms := "0777"
+	umask := "0000"
+	owner := "4cf4e284-f6a8-4540-b53e-c3469af032dc"
+	group := owner
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	createDirOptions := &filesystem.CreateDirectoryOptions{
+		Permissions: &perms,
+		Umask:       &umask,
+		Owner:       &owner,
+		Group:       &group,
+	}
+
+	resp, err := fsClient.CreateDirectory(context.Background(), testName, createDirOptions)
+	_require.NoError(err)
+	_require.NotNil(resp)
+
+	dirClient := fsClient.NewDirectoryClient(testName)
+
+	response, err := dirClient.GetProperties(context.Background(), nil)
+	_require.Equal(*response.Owner, "4cf4e284-f6a8-4540-b53e-c3469af032dc")
+	_require.Equal("rwxrwxrwx", *response.Permissions)
 
 }

@@ -39,14 +39,12 @@ var liveSP = struct {
 	secret   string
 	pemPath  string
 	pfxPath  string
-	sniPath  string
 }{
 	tenantID: os.Getenv("IDENTITY_SP_TENANT_ID"),
 	clientID: os.Getenv("IDENTITY_SP_CLIENT_ID"),
 	secret:   os.Getenv("IDENTITY_SP_CLIENT_SECRET"),
 	pemPath:  os.Getenv("IDENTITY_SP_CERT_PEM"),
 	pfxPath:  os.Getenv("IDENTITY_SP_CERT_PFX"),
-	sniPath:  os.Getenv("IDENTITY_SP_CERT_SNI"),
 }
 
 var liveUser = struct {
@@ -111,7 +109,6 @@ func setFakeValues() {
 	liveSP.tenantID = fakeTenantID
 	liveSP.pemPath = "testdata/certificate.pem"
 	liveSP.pfxPath = "testdata/certificate.pfx"
-	liveSP.sniPath = "testdata/certificate-with-chain.pem"
 	liveUser.tenantID = fakeTenantID
 	liveUser.username = fakeUsername
 	liveUser.password = "fake-password"

@@ -773,15 +773,13 @@ func (s *RecordedTestSuite) TestDeleteDirWithNilAccessConditions() {
 // and entityId needs to be set to the entity ID of the application.
 func (s *RecordedTestSuite) TestDeleteDirWithPaginatedDelete() {
 
-	if recording.GetRecordMode() == recording.LiveMode {
-		s.T().Skip("AAD app not configured for this test, this will be skipped")
-	}
+	s.T().Skip("AAD app not configured for this test, this will be skipped")
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	user := "user"
 	readWriteExecutePermission := "rwx"
 
-	objectId := "48965e63-fd19-4438-b9d0-dc585a8baf57"
+	objectId := "" // object ID of an AAD app which has no RBAC permissions
 	accountName, accountKey := testcommon.GetGenericAccountInfo(testcommon.TestAccountDatalake)
 
 	filesystemName := testcommon.GenerateFileSystemName(testName)

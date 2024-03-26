@@ -3,7 +3,7 @@
 ## 1.0.0 (2024-03-26)
 ### Breaking Changes
 
-- Struct `CountDeviceResponse` has been renamed `CountDevicesResponse`
+- Struct `CountDeviceResponse` has been renamed to `CountDevicesResponse`
 
 ### Features Added
 

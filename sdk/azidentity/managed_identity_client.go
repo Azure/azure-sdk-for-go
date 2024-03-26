@@ -88,7 +88,7 @@ func setIMDSRetryOptionDefaults(o *policy.RetryOptions) {
 	if o.StatusCodes == nil {
 		o.StatusCodes = []int{
 			// IMDS docs recommend retrying 404, 410, 429 and 5xx
-			// https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/how-to-use-vm-token#error-handling
+			// https://learn.microsoft.com/entra/identity/managed-identities-azure-resources/how-to-use-vm-token#error-handling
 			http.StatusNotFound,                      // 404
 			http.StatusGone,                          // 410
 			http.StatusTooManyRequests,               // 429

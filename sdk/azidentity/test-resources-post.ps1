@@ -27,6 +27,7 @@ FROM mcr.microsoft.com/oss/go/microsoft/golang:latest as builder
 ENV GOARCH=amd64 GOWORK=off
 COPY . /azidentity
 WORKDIR /azidentity/testdata/managed-id-test
+RUN go mod tidy
 RUN go build -o /build/managed-id-test .
 RUN GOOS=windows go build -o /build/managed-id-test.exe .
 

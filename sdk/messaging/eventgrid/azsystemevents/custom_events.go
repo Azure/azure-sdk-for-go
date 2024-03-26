@@ -9,6 +9,7 @@ package azsystemevents
 import (
 	"encoding/json"
 	"fmt"
+	"strings"
 )
 
 //type IotHubDeviceConnectedEventData DeviceConnectionStateEventProperties
@@ -34,42 +35,60 @@ func unmarshalInternalACSAdvancedMessageChannelEventError(val json.RawMessage, f
 	return nil
 }
 
+func unpackMsg(err *internalAcsRouterCommunicationError, indent string) string {
+	if err == nil {
+		return ""
+	}
+
+	sb := strings.Builder{}
+
+	code := ""
+	if err.Code != nil {
+		code = *err.Code
+	}
+
+	message := ""
+	if err.Message != nil {
+		message = *err.Message
+	}
+
+	sb.WriteString(fmt.Sprintf("%sCode: %s\n%sMessage: %s\n", indent, code, indent, message))
+
+	if len(err.Details) > 0 {
+		for i, detailErr := range err.Details {
+			sb.WriteString(fmt.Sprintf("%sDetails[%d]:\n%s", indent, i, unpackMsg(&detailErr, indent+"  ")))
+		}
+	}
+
+	if err.Innererror != nil {
+		sb.WriteString(fmt.Sprintf("%sInnerError:\n%s", indent, unpackMsg(err.Innererror, indent+"  ")))
+	}
+
+	return sb.String()
+}
+
 func unmarshalInternalACSRouterCommunicationError(val json.RawMessage, fn string, re *[]*Error) error {
-	type superError struct {
-		Code       string
-		InnerError *superError
-		Details    []*superError
-		Message    string
-	}
-
-	var unpack func(err *superError) *Error
-
-	unpack = func(err *superError) *Error {
-		if err == nil {
-			return nil
-		}
-
-		e := &Error{
-			Code:       err.Code,
-			message:    err.Message,
-			InnerError: unpack(err.InnerError),
-		}
-
-		for _, detailErr := range err.Details {
-			e.Details = append(e.Details, unpack(detailErr))
-		}
-
-		return e
-	}
-
-	var tmp []*superError
+	var tmp []internalAcsRouterCommunicationError
 
 	if err := json.Unmarshal(val, &tmp); err != nil {
 		return fmt.Errorf("struct field %s: %v", fn, err)
 	}
 
 	for _, se := range tmp {
-		*re = append(*re, unpack(se))
+		code := ""
+
+		if se.Code != nil {
+			code = *se.Code
+		}
+
+		e := &Error{
+			Code: code,
+			// we're going to compress the remainder of these details into a
+			// string.
+			message: unpackMsg(&se, ""),
+		}
+
+		*re = append(*re, e)
 	}
 
 	return nil

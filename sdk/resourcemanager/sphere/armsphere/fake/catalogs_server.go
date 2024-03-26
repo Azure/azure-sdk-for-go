@@ -68,6 +68,10 @@ type CatalogsServer struct {
 	// Update is the fake for method CatalogsClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
 	Update func(ctx context.Context, resourceGroupName string, catalogName string, properties armsphere.CatalogUpdate, options *armsphere.CatalogsClientUpdateOptions) (resp azfake.Responder[armsphere.CatalogsClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// BeginUploadImage is the fake for method CatalogsClient.BeginUploadImage
+	// HTTP status codes to indicate success: http.StatusAccepted
+	BeginUploadImage func(ctx context.Context, resourceGroupName string, catalogName string, uploadImageRequest armsphere.Image, options *armsphere.CatalogsClientBeginUploadImageOptions) (resp azfake.PollerResponder[armsphere.CatalogsClientUploadImageResponse], errResp azfake.ErrorResponder)
 }
 
 // NewCatalogsServerTransport creates a new instance of CatalogsServerTransport with the provided implementation.
@@ -84,6 +88,7 @@ func NewCatalogsServerTransport(srv *CatalogsServer) *CatalogsServerTransport {
 		newListDeviceGroupsPager:    newTracker[azfake.PagerResponder[armsphere.CatalogsClientListDeviceGroupsResponse]](),
 		newListDeviceInsightsPager:  newTracker[azfake.PagerResponder[armsphere.CatalogsClientListDeviceInsightsResponse]](),
 		newListDevicesPager:         newTracker[azfake.PagerResponder[armsphere.CatalogsClientListDevicesResponse]](),
+		beginUploadImage:            newTracker[azfake.PollerResponder[armsphere.CatalogsClientUploadImageResponse]](),
 	}
 }
 
@@ -99,6 +104,7 @@ type CatalogsServerTransport struct {
 	newListDeviceGroupsPager    *tracker[azfake.PagerResponder[armsphere.CatalogsClientListDeviceGroupsResponse]]
 	newListDeviceInsightsPager  *tracker[azfake.PagerResponder[armsphere.CatalogsClientListDeviceInsightsResponse]]
 	newListDevicesPager         *tracker[azfake.PagerResponder[armsphere.CatalogsClientListDevicesResponse]]
+	beginUploadImage            *tracker[azfake.PollerResponder[armsphere.CatalogsClientUploadImageResponse]]
 }
 
 // Do implements the policy.Transporter interface for CatalogsServerTransport.
@@ -135,6 +141,8 @@ func (c *CatalogsServerTransport) Do(req *http.Request) (*http.Response, error) 
 		resp, err = c.dispatchNewListDevicesPager(req)
 	case "CatalogsClient.Update":
 		resp, err = c.dispatchUpdate(req)
+	case "CatalogsClient.BeginUploadImage":
+		resp, err = c.dispatchBeginUploadImage(req)
 	default:
 		err = fmt.Errorf("unhandled API %s", method)
 	}
@@ -172,7 +180,7 @@ func (c *CatalogsServerTransport) dispatchCountDevices(req *http.Request) (*http
 	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CountDeviceResponse, req)
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CountDevicesResponse, req)
 	if err != nil {
 		return nil, err
 	}
@@ -391,10 +399,6 @@ func (c *CatalogsServerTransport) dispatchNewListDeploymentsPager(req *http.Requ
 		if err != nil {
 			return nil, err
 		}
-		catalogNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("catalogName")])
-		if err != nil {
-			return nil, err
-		}
 		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
 		if err != nil {
 			return nil, err
@@ -439,6 +443,10 @@ func (c *CatalogsServerTransport) dispatchNewListDeploymentsPager(req *http.Requ
 			}
 			return int32(p), nil
 		})
+		if err != nil {
+			return nil, err
+		}
+		catalogNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("catalogName")])
 		if err != nil {
 			return nil, err
 		}
@@ -493,10 +501,6 @@ func (c *CatalogsServerTransport) dispatchNewListDeviceGroupsPager(req *http.Req
 		if err != nil {
 			return nil, err
 		}
-		catalogNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("catalogName")])
-		if err != nil {
-			return nil, err
-		}
 		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
 		if err != nil {
 			return nil, err
@@ -541,6 +545,10 @@ func (c *CatalogsServerTransport) dispatchNewListDeviceGroupsPager(req *http.Req
 			}
 			return int32(p), nil
 		})
+		if err != nil {
+			return nil, err
+		}
+		catalogNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("catalogName")])
 		if err != nil {
 			return nil, err
 		}
@@ -591,10 +599,6 @@ func (c *CatalogsServerTransport) dispatchNewListDeviceInsightsPager(req *http.R
 		if err != nil {
 			return nil, err
 		}
-		catalogNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("catalogName")])
-		if err != nil {
-			return nil, err
-		}
 		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
 		if err != nil {
 			return nil, err
@@ -639,6 +643,10 @@ func (c *CatalogsServerTransport) dispatchNewListDeviceInsightsPager(req *http.R
 			}
 			return int32(p), nil
 		})
+		if err != nil {
+			return nil, err
+		}
+		catalogNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("catalogName")])
 		if err != nil {
 			return nil, err
 		}
@@ -689,10 +697,6 @@ func (c *CatalogsServerTransport) dispatchNewListDevicesPager(req *http.Request)
 		if err != nil {
 			return nil, err
 		}
-		catalogNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("catalogName")])
-		if err != nil {
-			return nil, err
-		}
 		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
 		if err != nil {
 			return nil, err
@@ -737,6 +741,10 @@ func (c *CatalogsServerTransport) dispatchNewListDevicesPager(req *http.Request)
 			}
 			return int32(p), nil
 		})
+		if err != nil {
+			return nil, err
+		}
+		catalogNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("catalogName")])
 		if err != nil {
 			return nil, err
 		}
@@ -804,5 +812,53 @@ func (c *CatalogsServerTransport) dispatchUpdate(req *http.Request) (*http.Respo
 	if err != nil {
 		return nil, err
 	}
+	return resp, nil
+}
+
+func (c *CatalogsServerTransport) dispatchBeginUploadImage(req *http.Request) (*http.Response, error) {
+	if c.srv.BeginUploadImage == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUploadImage not implemented")}
+	}
+	beginUploadImage := c.beginUploadImage.get(req)
+	if beginUploadImage == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureSphere/catalogs/(?P<catalogName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/uploadImage`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armsphere.Image](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		catalogNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("catalogName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := c.srv.BeginUploadImage(req.Context(), resourceGroupNameParam, catalogNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUploadImage = &respr
+		c.beginUploadImage.add(req, beginUploadImage)
+	}
+
+	resp, err := server.PollerResponderNext(beginUploadImage, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusAccepted}, resp.StatusCode) {
+		c.beginUploadImage.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUploadImage) {
+		c.beginUploadImage.remove(req)
+	}
+
 	return resp, nil
 }

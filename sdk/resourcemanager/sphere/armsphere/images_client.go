@@ -47,10 +47,10 @@ func NewImagesClient(subscriptionID string, credential azcore.TokenCredential, o
 // BeginCreateOrUpdate - Create a Image
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2024-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - catalogName - Name of catalog
-//   - imageName - Image name. Use .default for image creation.
+//   - imageName - Image name. Use an image GUID for GA versions of the API.
 //   - resource - Resource create parameters.
 //   - options - ImagesClientBeginCreateOrUpdateOptions contains the optional parameters for the ImagesClient.BeginCreateOrUpdate
 //     method.
@@ -75,7 +75,7 @@ func (client *ImagesClient) BeginCreateOrUpdate(ctx context.Context, resourceGro
 // CreateOrUpdate - Create a Image
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2024-04-01
 func (client *ImagesClient) createOrUpdate(ctx context.Context, resourceGroupName string, catalogName string, imageName string, resource Image, options *ImagesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ImagesClient.BeginCreateOrUpdate"
@@ -121,7 +121,7 @@ func (client *ImagesClient) createOrUpdateCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -133,10 +133,10 @@ func (client *ImagesClient) createOrUpdateCreateRequest(ctx context.Context, res
 // BeginDelete - Delete a Image
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2024-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - catalogName - Name of catalog
-//   - imageName - Image name. Use .default for image creation.
+//   - imageName - Image name. Use an image GUID for GA versions of the API.
 //   - options - ImagesClientBeginDeleteOptions contains the optional parameters for the ImagesClient.BeginDelete method.
 func (client *ImagesClient) BeginDelete(ctx context.Context, resourceGroupName string, catalogName string, imageName string, options *ImagesClientBeginDeleteOptions) (*runtime.Poller[ImagesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
@@ -159,7 +159,7 @@ func (client *ImagesClient) BeginDelete(ctx context.Context, resourceGroupName s
 // Delete - Delete a Image
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2024-04-01
 func (client *ImagesClient) deleteOperation(ctx context.Context, resourceGroupName string, catalogName string, imageName string, options *ImagesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ImagesClient.BeginDelete"
@@ -205,7 +205,7 @@ func (client *ImagesClient) deleteCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -214,10 +214,10 @@ func (client *ImagesClient) deleteCreateRequest(ctx context.Context, resourceGro
 // Get - Get a Image
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2024-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - catalogName - Name of catalog
-//   - imageName - Image name. Use .default for image creation.
+//   - imageName - Image name. Use an image GUID for GA versions of the API.
 //   - options - ImagesClientGetOptions contains the optional parameters for the ImagesClient.Get method.
 func (client *ImagesClient) Get(ctx context.Context, resourceGroupName string, catalogName string, imageName string, options *ImagesClientGetOptions) (ImagesClientGetResponse, error) {
 	var err error
@@ -265,7 +265,7 @@ func (client *ImagesClient) getCreateRequest(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -282,7 +282,7 @@ func (client *ImagesClient) getHandleResponse(resp *http.Response) (ImagesClient
 
 // NewListByCatalogPager - List Image resources by Catalog
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2024-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - catalogName - Name of catalog
 //   - options - ImagesClientListByCatalogOptions contains the optional parameters for the ImagesClient.NewListByCatalogPager
@@ -333,16 +333,16 @@ func (client *ImagesClient) listByCatalogCreateRequest(ctx context.Context, reso
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+	if options != nil && options.Maxpagesize != nil {
+		reqQP.Set("$maxpagesize", strconv.FormatInt(int64(*options.Maxpagesize), 10))
 	}
 	if options != nil && options.Skip != nil {
 		reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
 	}
-	if options != nil && options.Maxpagesize != nil {
-		reqQP.Set("$maxpagesize", strconv.FormatInt(int64(*options.Maxpagesize), 10))
+	if options != nil && options.Top != nil {
+		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

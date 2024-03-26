@@ -140,6 +140,10 @@ func (c *CertificatesServerTransport) dispatchNewListByCatalogPager(req *http.Re
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
 		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
 		if err != nil {
 			return nil, err
@@ -184,10 +188,6 @@ func (c *CertificatesServerTransport) dispatchNewListByCatalogPager(req *http.Re
 			}
 			return int32(p), nil
 		})
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
 		}

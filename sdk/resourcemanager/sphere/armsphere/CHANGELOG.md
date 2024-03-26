@@ -1,5 +1,23 @@
 # Release History
 
+## 1.0.0 (2024-03-26)
+### Breaking Changes
+
+- Struct `CountDeviceResponse` has been removed
+- Field `CountDeviceResponse` of struct `CatalogsClientCountDevicesResponse` has been removed
+- Field `CountDeviceResponse` of struct `DeviceGroupsClientCountDevicesResponse` has been removed
+- Field `CountDeviceResponse` of struct `ProductsClientCountDevicesResponse` has been removed
+
+### Features Added
+
+- New function `*CatalogsClient.BeginUploadImage(context.Context, string, string, Image, *CatalogsClientBeginUploadImageOptions) (*runtime.Poller[CatalogsClientUploadImageResponse], error)`
+- New struct `CountDevicesResponse`
+- New field `TenantID` in struct `CatalogProperties`
+- New anonymous field `CountDevicesResponse` in struct `CatalogsClientCountDevicesResponse`
+- New anonymous field `CountDevicesResponse` in struct `DeviceGroupsClientCountDevicesResponse`
+- New anonymous field `CountDevicesResponse` in struct `ProductsClientCountDevicesResponse`
+
+
 ## 0.2.0 (2023-11-24)
 ### Features Added
 

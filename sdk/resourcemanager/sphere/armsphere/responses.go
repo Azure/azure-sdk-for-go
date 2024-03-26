@@ -11,7 +11,7 @@ package armsphere
 // CatalogsClientCountDevicesResponse contains the response from method CatalogsClient.CountDevices.
 type CatalogsClientCountDevicesResponse struct {
 	// Response to the action call for count devices in a catalog.
-	CountDeviceResponse
+	CountDevicesResponse
 }
 
 // CatalogsClientCreateOrUpdateResponse contains the response from method CatalogsClient.BeginCreateOrUpdate.
@@ -73,6 +73,11 @@ type CatalogsClientUpdateResponse struct {
 	Catalog
 }
 
+// CatalogsClientUploadImageResponse contains the response from method CatalogsClient.BeginUploadImage.
+type CatalogsClientUploadImageResponse struct {
+	// placeholder for future response values
+}
+
 // CertificatesClientGetResponse contains the response from method CertificatesClient.Get.
 type CertificatesClientGetResponse struct {
 	// An certificate resource belonging to a catalog resource.
@@ -128,7 +133,7 @@ type DeviceGroupsClientClaimDevicesResponse struct {
 // DeviceGroupsClientCountDevicesResponse contains the response from method DeviceGroupsClient.CountDevices.
 type DeviceGroupsClientCountDevicesResponse struct {
 	// Response to the action call for count devices in a catalog.
-	CountDeviceResponse
+	CountDevicesResponse
 }
 
 // DeviceGroupsClientCreateOrUpdateResponse contains the response from method DeviceGroupsClient.BeginCreateOrUpdate.
@@ -227,7 +232,7 @@ type OperationsClientListResponse struct {
 // ProductsClientCountDevicesResponse contains the response from method ProductsClient.CountDevices.
 type ProductsClientCountDevicesResponse struct {
 	// Response to the action call for count devices in a catalog.
-	CountDeviceResponse
+	CountDevicesResponse
 }
 
 // ProductsClientCreateOrUpdateResponse contains the response from method ProductsClient.BeginCreateOrUpdate.

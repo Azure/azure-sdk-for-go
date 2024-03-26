@@ -101,6 +101,7 @@ func (c *CatalogListResult) UnmarshalJSON(data []byte) error {
 func (c CatalogProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "provisioningState", c.ProvisioningState)
+	populate(objectMap, "tenantId", c.TenantID)
 	return json.Marshal(objectMap)
 }
 
@@ -115,6 +116,9 @@ func (c *CatalogProperties) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "provisioningState":
 			err = unpopulate(val, "ProvisioningState", &c.ProvisioningState)
+			delete(rawMsg, key)
+		case "tenantId":
+			err = unpopulate(val, "TenantID", &c.TenantID)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -330,15 +334,15 @@ func (c *ClaimDevicesRequest) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type CountDeviceResponse.
-func (c CountDeviceResponse) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type CountDevicesResponse.
+func (c CountDevicesResponse) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "value", c.Value)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type CountDeviceResponse.
-func (c *CountDeviceResponse) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type CountDevicesResponse.
+func (c *CountDevicesResponse) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", c, err)
@@ -1552,7 +1556,7 @@ func populate(m map[string]any, k string, v any) {
 }
 
 func unpopulate(data json.RawMessage, fn string, v any) error {
-	if data == nil {
+	if data == nil || string(data) == "null" {
 		return nil
 	}
 	if err := json.Unmarshal(data, v); err != nil {

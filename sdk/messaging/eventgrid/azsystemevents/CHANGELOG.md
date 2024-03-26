@@ -4,7 +4,7 @@
 
 ### Features Added
 
-- Added ACSRouterWorkerUpdatedEventData.
+- Added events ACSRouterWorkerUpdatedEventData and ACSAdvancedMessageDeliveryStatusUpdatedEventData. (PR#TBD)
 
 ### Breaking Changes
 

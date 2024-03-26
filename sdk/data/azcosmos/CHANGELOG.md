@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0 (Unreleased)
+## 1.0.0 (2024-04-09)
 
 ### Features Added
 * Added regional routing support through ClientOptions.PreferredRegions

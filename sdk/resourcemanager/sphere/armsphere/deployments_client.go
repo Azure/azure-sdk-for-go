@@ -48,7 +48,7 @@ func NewDeploymentsClient(subscriptionID string, credential azcore.TokenCredenti
 // product or device group name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2024-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - catalogName - Name of catalog
 //   - productName - Name of product.
@@ -80,7 +80,7 @@ func (client *DeploymentsClient) BeginCreateOrUpdate(ctx context.Context, resour
 // or device group name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2024-04-01
 func (client *DeploymentsClient) createOrUpdate(ctx context.Context, resourceGroupName string, catalogName string, productName string, deviceGroupName string, deploymentName string, resource Deployment, options *DeploymentsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DeploymentsClient.BeginCreateOrUpdate"
@@ -134,7 +134,7 @@ func (client *DeploymentsClient) createOrUpdateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -147,7 +147,7 @@ func (client *DeploymentsClient) createOrUpdateCreateRequest(ctx context.Context
 // or device group name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2024-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - catalogName - Name of catalog
 //   - productName - Name of product.
@@ -177,7 +177,7 @@ func (client *DeploymentsClient) BeginDelete(ctx context.Context, resourceGroupN
 // device group name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2024-04-01
 func (client *DeploymentsClient) deleteOperation(ctx context.Context, resourceGroupName string, catalogName string, productName string, deviceGroupName string, deploymentName string, options *DeploymentsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DeploymentsClient.BeginDelete"
@@ -231,7 +231,7 @@ func (client *DeploymentsClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -241,7 +241,7 @@ func (client *DeploymentsClient) deleteCreateRequest(ctx context.Context, resour
 // group name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2024-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - catalogName - Name of catalog
 //   - productName - Name of product.
@@ -303,7 +303,7 @@ func (client *DeploymentsClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -321,7 +321,7 @@ func (client *DeploymentsClient) getHandleResponse(resp *http.Response) (Deploym
 // NewListByDeviceGroupPager - List Deployment resources by DeviceGroup. '.default' and '.unassigned' are system defined values
 // and cannot be used for product or device group name.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2024-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - catalogName - Name of catalog
 //   - productName - Name of product.
@@ -382,16 +382,16 @@ func (client *DeploymentsClient) listByDeviceGroupCreateRequest(ctx context.Cont
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+	if options != nil && options.Maxpagesize != nil {
+		reqQP.Set("$maxpagesize", strconv.FormatInt(int64(*options.Maxpagesize), 10))
 	}
 	if options != nil && options.Skip != nil {
 		reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
 	}
-	if options != nil && options.Maxpagesize != nil {
-		reqQP.Set("$maxpagesize", strconv.FormatInt(int64(*options.Maxpagesize), 10))
+	if options != nil && options.Top != nil {
+		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

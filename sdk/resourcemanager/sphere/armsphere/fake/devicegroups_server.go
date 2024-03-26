@@ -206,7 +206,7 @@ func (d *DeviceGroupsServerTransport) dispatchCountDevices(req *http.Request) (*
 	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CountDeviceResponse, req)
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CountDevicesResponse, req)
 	if err != nil {
 		return nil, err
 	}
@@ -375,6 +375,10 @@ func (d *DeviceGroupsServerTransport) dispatchNewListByProductPager(req *http.Re
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
 		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
 		if err != nil {
 			return nil, err
@@ -419,10 +423,6 @@ func (d *DeviceGroupsServerTransport) dispatchNewListByProductPager(req *http.Re
 			}
 			return int32(p), nil
 		})
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
 		}

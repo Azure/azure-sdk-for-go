@@ -39,7 +39,7 @@ type CatalogListResult struct {
 	// REQUIRED; The Catalog items on this page
 	Value []*Catalog
 
-	// The link to the next page of items
+	// READ-ONLY; The link to the next page of items
 	NextLink *string
 }
 
@@ -47,6 +47,9 @@ type CatalogListResult struct {
 type CatalogProperties struct {
 	// READ-ONLY; The status of the last operation.
 	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; The Azure Sphere tenant ID associated with the catalog.
+	TenantID *string
 }
 
 // CatalogUpdate - The type used for update operations of the Catalog.
@@ -84,7 +87,7 @@ type CertificateListResult struct {
 	// REQUIRED; The Certificate items on this page
 	Value []*Certificate
 
-	// The link to the next page of items
+	// READ-ONLY; The link to the next page of items
 	NextLink *string
 }
 
@@ -118,8 +121,8 @@ type ClaimDevicesRequest struct {
 	DeviceIdentifiers []*string
 }
 
-// CountDeviceResponse - Response to the action call for count devices in a catalog.
-type CountDeviceResponse struct {
+// CountDevicesResponse - Response to the action call for count devices in a catalog.
+type CountDevicesResponse struct {
 	// REQUIRED; Number of children resources in parent resource.
 	Value *int32
 }
@@ -147,7 +150,7 @@ type DeploymentListResult struct {
 	// REQUIRED; The Deployment items on this page
 	Value []*Deployment
 
-	// The link to the next page of items
+	// READ-ONLY; The link to the next page of items
 	NextLink *string
 }
 
@@ -207,7 +210,7 @@ type DeviceGroupListResult struct {
 	// REQUIRED; The DeviceGroup items on this page
 	Value []*DeviceGroup
 
-	// The link to the next page of items
+	// READ-ONLY; The link to the next page of items
 	NextLink *string
 }
 
@@ -291,7 +294,7 @@ type DeviceListResult struct {
 	// REQUIRED; The Device items on this page
 	Value []*Device
 
-	// The link to the next page of items
+	// READ-ONLY; The link to the next page of items
 	NextLink *string
 }
 
@@ -360,7 +363,7 @@ type ImageListResult struct {
 	// REQUIRED; The Image items on this page
 	Value []*Image
 
-	// The link to the next page of items
+	// READ-ONLY; The link to the next page of items
 	NextLink *string
 }
 
@@ -454,7 +457,7 @@ type PagedDeviceInsight struct {
 	// REQUIRED; The DeviceInsight items on this page
 	Value []*DeviceInsight
 
-	// The link to the next page of items
+	// READ-ONLY; The link to the next page of items
 	NextLink *string
 }
 
@@ -481,13 +484,13 @@ type ProductListResult struct {
 	// REQUIRED; The Product items on this page
 	Value []*Product
 
-	// The link to the next page of items
+	// READ-ONLY; The link to the next page of items
 	NextLink *string
 }
 
 // ProductProperties - The properties of product
 type ProductProperties struct {
-	// REQUIRED; Description of the product
+	// Description of the product
 	Description *string
 
 	// READ-ONLY; The status of the last operation.

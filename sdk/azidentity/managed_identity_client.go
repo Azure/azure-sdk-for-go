@@ -28,20 +28,20 @@ import (
 
 const (
 	arcIMDSEndpoint          = "IMDS_ENDPOINT"
+	clientID                 = "client_id"
 	defaultIdentityClientID  = "DEFAULT_IDENTITY_CLIENT_ID"
 	identityEndpoint         = "IDENTITY_ENDPOINT"
 	identityHeader           = "IDENTITY_HEADER"
 	identityServerThumbprint = "IDENTITY_SERVER_THUMBPRINT"
 	headerMetadata           = "Metadata"
 	imdsEndpoint             = "http://169.254.169.254/metadata/identity/oauth2/token"
+	miResID                  = "mi_res_id"
 	msiEndpoint              = "MSI_ENDPOINT"
+	msiResID                 = "msi_res_id"
 	msiSecret                = "MSI_SECRET"
 	imdsAPIVersion           = "2018-02-01"
 	azureArcAPIVersion       = "2019-08-15"
 	serviceFabricAPIVersion  = "2019-07-01-preview"
-
-	qpClientID = "client_id"
-	qpResID    = "mi_res_id"
 )
 
 type msiType int
@@ -286,9 +286,9 @@ func (c *managedIdentityClient) createIMDSAuthRequest(ctx context.Context, id Ma
 	q.Add("resource", strings.Join(scopes, " "))
 	if id != nil {
 		if id.idKind() == miResourceID {
-			q.Add(qpResID, id.String())
+			q.Add(msiResID, id.String())
 		} else {
-			q.Add(qpClientID, id.String())
+			q.Add(clientID, id.String())
 		}
 	}
 	request.Raw().URL.RawQuery = q.Encode()
@@ -306,9 +306,9 @@ func (c *managedIdentityClient) createAppServiceAuthRequest(ctx context.Context,
 	q.Add("resource", scopes[0])
 	if id != nil {
 		if id.idKind() == miResourceID {
-			q.Add(qpResID, id.String())
+			q.Add(miResID, id.String())
 		} else {
-			q.Add(qpClientID, id.String())
+			q.Add(clientID, id.String())
 		}
 	}
 	request.Raw().URL.RawQuery = q.Encode()
@@ -329,7 +329,7 @@ func (c *managedIdentityClient) createAzureMLAuthRequest(ctx context.Context, id
 		if id.idKind() == miResourceID {
 			log.Write(EventAuthentication, "WARNING: Azure ML doesn't support specifying a managed identity by resource ID")
 			q.Set("clientid", "")
-			q.Set(qpResID, id.String())
+			q.Set(miResID, id.String())
 		} else {
 			q.Set("clientid", id.String())
 		}
@@ -351,9 +351,9 @@ func (c *managedIdentityClient) createServiceFabricAuthRequest(ctx context.Conte
 	if id != nil {
 		log.Write(EventAuthentication, "WARNING: Service Fabric doesn't support selecting a user-assigned identity at runtime")
 		if id.idKind() == miResourceID {
-			q.Add(qpResID, id.String())
+			q.Add(miResID, id.String())
 		} else {
-			q.Add(qpClientID, id.String())
+			q.Add(clientID, id.String())
 		}
 	}
 	request.Raw().URL.RawQuery = q.Encode()
@@ -411,9 +411,9 @@ func (c *managedIdentityClient) createAzureArcAuthRequest(ctx context.Context, i
 	if id != nil {
 		log.Write(EventAuthentication, "WARNING: Azure Arc doesn't support user-assigned managed identities")
 		if id.idKind() == miResourceID {
-			q.Add(qpResID, id.String())
+			q.Add(miResID, id.String())
 		} else {
-			q.Add(qpClientID, id.String())
+			q.Add(clientID, id.String())
 		}
 	}
 	request.Raw().URL.RawQuery = q.Encode()
@@ -437,9 +437,9 @@ func (c *managedIdentityClient) createCloudShellAuthRequest(ctx context.Context,
 		log.Write(EventAuthentication, "WARNING: Cloud Shell doesn't support user-assigned managed identities")
 		q := request.Raw().URL.Query()
 		if id.idKind() == miResourceID {
-			q.Add(qpResID, id.String())
+			q.Add(miResID, id.String())
 		} else {
-			q.Add(qpClientID, id.String())
+			q.Add(clientID, id.String())
 		}
 	}
 	return request, nil

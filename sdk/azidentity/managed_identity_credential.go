@@ -69,7 +69,7 @@ type ManagedIdentityCredentialOptions struct {
 // ManagedIdentityCredential authenticates an Azure managed identity in any hosting environment supporting managed identities.
 // This credential authenticates a system-assigned identity by default. Use ManagedIdentityCredentialOptions.ID to specify a
 // user-assigned identity. See Microsoft Entra ID documentation for more information about managed identities:
-// https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview
+// https://learn.microsoft.com/entra/identity/managed-identities-azure-resources/overview
 type ManagedIdentityCredential struct {
 	client *confidentialClient
 	mic    *managedIdentityClient

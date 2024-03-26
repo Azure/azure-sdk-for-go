@@ -17,7 +17,7 @@ param sshPubKey string = ''
 @description('The location of the resource. By default, this is the same as the resource group.')
 param location string = resourceGroup().location
 
-// https://docs.microsoft.com/azure/role-based-access-control/built-in-roles
+// https://learn.microsoft.com/azure/role-based-access-control/built-in-roles
 var blobContributor = subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'ba92f5b4-2d11-453d-a403-e96b0029c9fe') // Storage Blob Data Contributor
 
 resource sa 'Microsoft.Storage/storageAccounts@2021-08-01' = if (deployResources) {

@@ -207,7 +207,7 @@ For more details, see the [token caching documentation](https://aka.ms/azsdk/go/
 
 Credentials return an `error` when they fail to authenticate or lack data they require to authenticate. For guidance on resolving errors from specific credential types, see the [troubleshooting guide](https://aka.ms/azsdk/go/identity/troubleshoot).
 
-For more details on handling specific Microsoft Entra errors, see the Microsoft Entra [error code documentation](https://learn.microsoft.com/entra/identity/develop/reference-error-codes).
+For more details on handling specific Microsoft Entra errors, see the Microsoft Entra [error code documentation](https://learn.microsoft.com/entra/identity-platform/reference-error-codes).
 
 ### Logging
 

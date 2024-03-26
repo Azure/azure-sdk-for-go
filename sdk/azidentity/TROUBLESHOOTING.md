@@ -58,7 +58,7 @@ This error contains several pieces of information:
 
 - __Failing Credential Type__: The type of credential that failed to authenticate. This can be helpful when diagnosing issues with chained credential types such as `DefaultAzureCredential` or `ChainedTokenCredential`.
 
-- __Microsoft Entra ID Error Code and Message__: The error code and message returned by Microsoft Entra ID. This can give insight into the specific reason the request failed. For instance, in this case authentication failed because the provided client secret is incorrect. [Microsoft Entra ID documentation](https://learn.microsoft.com/entra/identity/develop/reference-error-codes#aadsts-error-codes) has more information on AADSTS error codes.
+- __Microsoft Entra ID Error Code and Message__: The error code and message returned by Microsoft Entra ID. This can give insight into the specific reason the request failed. For instance, in this case authentication failed because the provided client secret is incorrect. [Microsoft Entra ID documentation](https://learn.microsoft.com/entra/identity-platform/reference-error-codes#aadsts-error-codes) has more information on AADSTS error codes.
 
 - __Correlation ID and Timestamp__: The correlation ID and timestamp identify the request in server-side logs. This information can be useful to support engineers diagnosing unexpected Microsoft Entra failures.
 
@@ -97,17 +97,17 @@ azlog.SetEvents(azidentity.EventAuthentication)
 
 | Error Code | Issue | Mitigation |
 |---|---|---|
-|AADSTS7000215|An invalid client secret was provided.|Ensure the secret provided to the credential constructor is valid. If unsure, create a new client secret using the Azure portal. Details on creating a new client secret are in [Microsoft Entra ID documentation](https://learn.microsoft.com/entra/identity/develop/howto-create-service-principal-portal#option-2-create-a-new-application-secret).|
-|AADSTS7000222|An expired client secret was provided.|Create a new client secret using the Azure portal. Details on creating a new client secret are in [Microsoft Entra ID documentation](https://learn.microsoft.com/entra/identity/develop/howto-create-service-principal-portal#option-2-create-a-new-application-secret).|
-|AADSTS700016|The specified application wasn't found in the specified tenant.|Ensure the client and tenant IDs provided to the credential constructor are correct for your application registration. For multi-tenant apps, ensure the application has been added to the desired tenant by a tenant admin. To add a new application in the desired tenant, follow the [Microsoft Entra ID instructions](https://learn.microsoft.com/entra/identity/develop/howto-create-service-principal-portal).|
+|AADSTS7000215|An invalid client secret was provided.|Ensure the secret provided to the credential constructor is valid. If unsure, create a new client secret using the Azure portal. Details on creating a new client secret are in [Microsoft Entra ID documentation](https://learn.microsoft.com/entra/identity-platform/howto-create-service-principal-portal#option-2-create-a-new-application-secret).|
+|AADSTS7000222|An expired client secret was provided.|Create a new client secret using the Azure portal. Details on creating a new client secret are in [Microsoft Entra ID documentation](https://learn.microsoft.com/entra/identity-platform/howto-create-service-principal-portal#option-2-create-a-new-application-secret).|
+|AADSTS700016|The specified application wasn't found in the specified tenant.|Ensure the client and tenant IDs provided to the credential constructor are correct for your application registration. For multi-tenant apps, ensure the application has been added to the desired tenant by a tenant admin. To add a new application in the desired tenant, follow the [Microsoft Entra ID instructions](https://learn.microsoft.com/entra/identity-platform/howto-create-service-principal-portal).|
 
 <a id="client-cert"></a>
 ## Troubleshoot ClientCertificateCredential authentication issues
 
 | Error Code | Description | Mitigation |
 |---|---|---|
-|AADSTS700027|Client assertion contains an invalid signature.|Ensure the specified certificate has been uploaded to the application registration as described in [Microsoft Entra ID documentation](https://learn.microsoft.com/entra/identity/develop/howto-create-service-principal-portal#option-1-upload-a-certificate).|
-|AADSTS700016|The specified application wasn't found in the specified tenant.|Ensure the client and tenant IDs provided to the credential constructor are correct for your application registration. For multi-tenant apps, ensure the application has been added to the desired tenant by a tenant admin. To add a new application in the desired tenant, follow the [Microsoft Entra ID instructions](https://learn.microsoft.com/entra/identity/develop/howto-create-service-principal-portal).|
+|AADSTS700027|Client assertion contains an invalid signature.|Ensure the specified certificate has been uploaded to the application registration as described in [Microsoft Entra ID documentation](https://learn.microsoft.com/entra/identity-platform/howto-create-service-principal-portal#option-1-upload-a-certificate).|
+|AADSTS700016|The specified application wasn't found in the specified tenant.|Ensure the client and tenant IDs provided to the credential constructor are correct for your application registration. For multi-tenant apps, ensure the application has been added to the desired tenant by a tenant admin. To add a new application in the desired tenant, follow the [Microsoft Entra ID instructions](https://learn.microsoft.com/entra/identity-platform/howto-create-service-principal-portal).|
 
 <a id="username-password"></a>
 ## Troubleshoot UsernamePasswordCredential authentication issues

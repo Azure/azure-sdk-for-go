@@ -2010,6 +2010,7 @@ func (s *RecordedTestSuite) TestCreateFileInFileSystemSetOptions() {
 	user := "4cf4e284-f6a8-4540-b53e-c3469af032dc"
 	group := user
 	acl := "user::rwx,group::r-x,other::rwx"
+	leaseDuration := to.Ptr(int64(15))
 
 	filesystemName := testcommon.GenerateFileSystemName(testName)
 	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
@@ -2018,7 +2019,7 @@ func (s *RecordedTestSuite) TestCreateFileInFileSystemSetOptions() {
 
 	_, err = fsClient.Create(context.Background(), nil)
 	_require.NoError(err)
-	expiryTimeAbsolute := time.Now().Add(8 * time.Second)
+	expiryTimeAbsolute := time.Now().Add(20 * time.Second)
 	createFileOptions := &filesystem.CreateFileOptions{
 		Umask: &umask,
 		Owner: &user,
@@ -2026,19 +2027,24 @@ func (s *RecordedTestSuite) TestCreateFileInFileSystemSetOptions() {
 		ACL:   &acl,
 		Expiry: file.CreateExpiryValues{
 			ExpiryType: file.CreateExpiryTypeAbsolute,
-			ExpiresOn:  time.Now().Add(8 * time.Second).UTC().Format(http.TimeFormat),
+			ExpiresOn:  time.Now().Add(20 * time.Second).UTC().Format(http.TimeFormat),
 		},
+		LeaseDuration:   leaseDuration,
+		ProposedLeaseID: proposedLeaseIDs[0],
 	}
 	resp, err := fsClient.CreateFile(context.Background(), testName, createFileOptions)
 	_require.NoError(err)
 	_require.NotNil(resp)
 
+	time.Sleep(time.Second * 15)
+
 	fClient := fsClient.NewFileClient(testName)
 
 	response, err := fClient.GetProperties(context.Background(), nil)
-	_require.Equal(*response.Owner, "4cf4e284-f6a8-4540-b53e-c3469af032dc")
+	_require.Equal("4cf4e284-f6a8-4540-b53e-c3469af032dc", *response.Owner)
 	_require.Equal(expiryTimeAbsolute.UTC().Format(http.TimeFormat), (*response.ExpiresOn).UTC().Format(http.TimeFormat))
 	_require.Equal("rwxr-xrwx", *response.Permissions)
+	_require.Equal(filesystem.StateTypeExpired, *response.LeaseState)
 
 }
 
@@ -2050,6 +2056,7 @@ func (s *RecordedTestSuite) TestCreateDirectoryInFileSystemSetOptions() {
 	umask := "0000"
 	owner := "4cf4e284-f6a8-4540-b53e-c3469af032dc"
 	group := owner
+	leaseDuration := to.Ptr(int64(-1))
 
 	filesystemName := testcommon.GenerateFileSystemName(testName)
 	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
@@ -2060,10 +2067,12 @@ func (s *RecordedTestSuite) TestCreateDirectoryInFileSystemSetOptions() {
 	_require.NoError(err)
 
 	createDirOptions := &filesystem.CreateDirectoryOptions{
-		Permissions: &perms,
-		Umask:       &umask,
-		Owner:       &owner,
-		Group:       &group,
+		Permissions:     &perms,
+		Umask:           &umask,
+		Owner:           &owner,
+		Group:           &group,
+		LeaseDuration:   leaseDuration,
+		ProposedLeaseID: proposedLeaseIDs[0],
 	}
 
 	resp, err := fsClient.CreateDirectory(context.Background(), testName, createDirOptions)
@@ -2075,5 +2084,6 @@ func (s *RecordedTestSuite) TestCreateDirectoryInFileSystemSetOptions() {
 	response, err := dirClient.GetProperties(context.Background(), nil)
 	_require.Equal(*response.Owner, "4cf4e284-f6a8-4540-b53e-c3469af032dc")
 	_require.Equal("rwxrwxrwx", *response.Permissions)
+	_require.Equal(filesystem.StateTypeLeased, *response.LeaseState)
 
 }

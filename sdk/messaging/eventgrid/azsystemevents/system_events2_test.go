@@ -1417,7 +1417,7 @@ func TestConsumeAcsEmailDeliveryReportReceivedEvent(t *testing.T) {
 	emailEvent := deserializeSystemEvent[azsystemevents.ACSEmailDeliveryReportReceivedEventData](t, event.Data)
 	require.Equal(t, "test2@contoso.org", *emailEvent.Sender)
 	require.Equal(t, "test1@contoso.com", *emailEvent.Recipient)
-	require.Equal(t, azsystemevents.AcsEmailDeliveryReportStatusDelivered, *emailEvent.Status)
+	require.Equal(t, azsystemevents.ACSEmailDeliveryReportStatusDelivered, *emailEvent.Status)
 	require.Equal(t, "DestinationMailboxFull", *emailEvent.DeliveryStatusDetails.StatusMessage)
 	require.Equal(t, mustParseTime(t, "2023-02-09T19:46:12.2480265+00:00"), *emailEvent.DeliveryAttemptTimestamp)
 }

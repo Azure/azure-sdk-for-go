@@ -6,7 +6,7 @@ description: Azure Event Grid system events
 generated-metadata: false
 clear-output-folder: false
 go: true
-require: https://github.com/Azure/azure-rest-api-specs/blob/64819c695760764afa059d799fc7320d3fee33de/specification/eventgrid/data-plane/readme.md
+require: https://github.com/Azure/azure-rest-api-specs/blob/c25006263b7c15ad5da755a5ef864e4301e56b54/specification/eventgrid/data-plane/readme.md
 license-header: MICROSOFT_MIT_NO_VERSION
 openapi-type: "data-plane"
 output-folder: ../azsystemevents
@@ -142,28 +142,5 @@ directive:
         $ = $.replace(new RegExp(marshalPrefix, "gs"), "");
         $ = $.replace(new RegExp(unmarshalPrefix, "gs"), "");
       }      
-      return $;
-```
-
-Fix acronyms so they match our naming convention.
-
-```yaml
-directive:
-  - from: 
-      - models.go
-      - models_serde.go
-    where: $
-    debug: true
-    transform: |
-      const acronyms = ["Acs", "Avs", "Iot"];
-      for (let acr of acronyms) {
-        // ex:
-        // '// AcsChatMessageDeletedEventData - Schema'
-        // 'type AcsChatMessageDeletedEventData struct'
-        // 'Participants []AcsChatThreadParticipantProperties'
-        // 'ParticipantRemoved *AcsChatThreadParticipantProperties'
-        const re = new RegExp(`([ *\\]])${acr}([A-Za-z0-9]+?(?:EventData|Properties))`, "sg");
-        $ = $.replace(re, `$1${acr.toUpperCase()}$2`);
-      }
       return $;
 ```

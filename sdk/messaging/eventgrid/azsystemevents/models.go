@@ -279,6 +279,157 @@ type APIManagementUserUpdatedEventData struct {
 	ResourceURI *string
 }
 
+// ACSAdvancedMessageButtonContent - Advanced Message Button Content
+type ACSAdvancedMessageButtonContent struct {
+	// The Payload of the button which was clicked by the user, setup by the business
+	Payload *string
+
+	// The Text of the button
+	Text *string
+}
+
+// internalACSAdvancedMessageChannelEventError - Advanced Message Channel Event Error
+type internalACSAdvancedMessageChannelEventError struct {
+	// The channel error code
+	ChannelCode *string
+
+	// The channel error message
+	ChannelMessage *string
+}
+
+// ACSAdvancedMessageContext - Advanced Message Context
+type ACSAdvancedMessageContext struct {
+	// The WhatsApp ID for the customer who replied to an inbound message.
+	From *string
+
+	// The message ID for the sent message for an inbound reply
+	ID *string
+}
+
+// ACSAdvancedMessageDeliveryStatusUpdatedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.AdvancedMessageDeliveryStatusUpdated
+// event.
+type ACSAdvancedMessageDeliveryStatusUpdatedEventData struct {
+	// The updated message channel type
+	ChannelType *ACSMessageChannelType
+
+	// The channel event error
+	Error *internalACSAdvancedMessageChannelEventError
+
+	// The message sender
+	From *string
+
+	// The message id
+	MessageID *string
+
+	// The time message was received
+	ReceivedTimestamp *time.Time
+
+	// The updated message status
+	Status *string
+
+	// The message recipient
+	To *string
+}
+
+// ACSAdvancedMessageEventData - Schema of common properties of all chat thread events
+type ACSAdvancedMessageEventData struct {
+	// The channel event error
+	Error *internalACSAdvancedMessageChannelEventError
+
+	// The message sender
+	From *string
+
+	// The time message was received
+	ReceivedTimestamp *time.Time
+
+	// The message recipient
+	To *string
+}
+
+// ACSAdvancedMessageInteractiveButtonReplyContent - Advanced Message Interactive button reply content for a user to business
+// message
+type ACSAdvancedMessageInteractiveButtonReplyContent struct {
+	// The ID of the button
+	ID *string
+
+	// The title of the button
+	Title *string
+}
+
+// ACSAdvancedMessageInteractiveContent - Advanced Message Interactive Content
+type ACSAdvancedMessageInteractiveContent struct {
+	// The Message Sent when a customer clicks a button
+	ButtonReply *ACSAdvancedMessageInteractiveButtonReplyContent
+
+	// The Message Sent when a customer selects an item from a list
+	ListReply *ACSAdvancedMessageInteractiveListReplyContent
+
+	// The Message interactive reply type
+	Type *ACSInteractiveReplyType
+}
+
+// ACSAdvancedMessageInteractiveListReplyContent - Advanced Message Interactive list reply content for a user to business
+// message
+type ACSAdvancedMessageInteractiveListReplyContent struct {
+	// The sescription of the selected row
+	Description *string
+
+	// The ID of the selected list item
+	ID *string
+
+	// The title of the selected list item
+	Title *string
+}
+
+// ACSAdvancedMessageMediaContent - Advanced Message Media Content
+type ACSAdvancedMessageMediaContent struct {
+	// The caption for the media object, if supported and provided
+	Caption *string
+
+	// The filename of the underlying media file as specified when uploaded
+	FileName *string
+
+	// The media identifier
+	ID *string
+
+	// The MIME type of the file this media represents
+	MimeType *string
+}
+
+// ACSAdvancedMessageReceivedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.AdvancedMessageReceived
+// event.
+type ACSAdvancedMessageReceivedEventData struct {
+	// The The messaged received button content
+	Button *ACSAdvancedMessageButtonContent
+
+	// The The messaged received channel type
+	ChannelType *ACSMessageChannelType
+
+	// The The messaged received content
+	Content *string
+
+	// The The messaged received context
+	Context *ACSAdvancedMessageContext
+
+	// The channel event error
+	Error *Error
+
+	// The message sender
+	From *string
+
+	// The The messaged received interactive content
+	Interactive *ACSAdvancedMessageInteractiveContent
+
+	// The messaged received media content
+	Media *ACSAdvancedMessageMediaContent
+
+	// The time message was received
+	ReceivedTimestamp *time.Time
+
+	// The message recipient
+	To *string
+}
+
 // ACSChatEventBaseProperties - Schema of common properties of all chat events
 type ACSChatEventBaseProperties struct {
 	// The communication identifier of the target user
@@ -887,7 +1038,7 @@ type ACSEmailDeliveryReportReceivedEventData struct {
 	DeliveryAttemptTimestamp *time.Time
 
 	// Detailed information about the status if any
-	DeliveryStatusDetails *AcsEmailDeliveryReportStatusDetails
+	DeliveryStatusDetails *ACSEmailDeliveryReportStatusDetails
 
 	// The Id of the email been sent
 	MessageID *string
@@ -899,11 +1050,11 @@ type ACSEmailDeliveryReportReceivedEventData struct {
 	Sender *string
 
 	// The status of the email. Any value other than Delivered is considered failed.
-	Status *AcsEmailDeliveryReportStatus
+	Status *ACSEmailDeliveryReportStatus
 }
 
-// AcsEmailDeliveryReportStatusDetails - Detailed information about the status if any
-type AcsEmailDeliveryReportStatusDetails struct {
+// ACSEmailDeliveryReportStatusDetails - Detailed information about the status if any
+type ACSEmailDeliveryReportStatusDetails struct {
 	// Detailed status message
 	StatusMessage *string
 }
@@ -912,7 +1063,7 @@ type AcsEmailDeliveryReportStatusDetails struct {
 // event.
 type ACSEmailEngagementTrackingReportReceivedEventData struct {
 	// The type of engagement user have with email
-	Engagement *AcsUserEngagement
+	Engagement *ACSUserEngagement
 
 	// The context of the type of engagement user had with email
 	EngagementContext *string
@@ -933,8 +1084,8 @@ type ACSEmailEngagementTrackingReportReceivedEventData struct {
 	UserAgent *string
 }
 
-// AcsIncomingCallCustomContext - Custom Context of Incoming Call
-type AcsIncomingCallCustomContext struct {
+// ACSIncomingCallCustomContext - Custom Context of Incoming Call
+type ACSIncomingCallCustomContext struct {
 	// Sip Headers for incoming call
 	SipHeaders map[string]*string
 
@@ -952,7 +1103,7 @@ type ACSIncomingCallEventData struct {
 	CorrelationID *string
 
 	// Custom Context of Incoming Call
-	CustomContext *AcsIncomingCallCustomContext
+	CustomContext *ACSIncomingCallCustomContext
 
 	// The communication identifier of the user who initiated the call.
 	FromCommunicationIdentifier *CommunicationIdentifierModel
@@ -1019,8 +1170,8 @@ type ACSRecordingStorageInfoProperties struct {
 	RecordingChunks []ACSRecordingChunkInfoProperties
 }
 
-// AcsRouterChannelConfiguration - Router Channel Configuration
-type AcsRouterChannelConfiguration struct {
+// ACSRouterChannelConfiguration - Router Channel Configuration
+type ACSRouterChannelConfiguration struct {
 	// Capacity Cost Per Job for Router Job
 	CapacityCostPerJob *int32
 
@@ -1031,16 +1182,16 @@ type AcsRouterChannelConfiguration struct {
 	MaxNumberOfJobs *int32
 }
 
-// AcsRouterCommunicationError - Router Communication Error
-type AcsRouterCommunicationError struct {
+// internalAcsRouterCommunicationError - Router Communication Error
+type internalAcsRouterCommunicationError struct {
 	// Router Communication Error Code
 	Code *string
 
 	// List of Router Communication Errors
-	Details []AcsRouterCommunicationError
+	Details []internalAcsRouterCommunicationError
 
 	// Router Communication Inner Error
-	Innererror *AcsRouterCommunicationError
+	Innererror *internalAcsRouterCommunicationError
 
 	// Router Communication Error Message
 	Message *string
@@ -1102,7 +1253,7 @@ type ACSRouterJobClassificationFailedEventData struct {
 	ClassificationPolicyID *string
 
 	// Router Job Classification Failed Errors
-	Errors []AcsRouterCommunicationError
+	Errors []*Error
 
 	// Router Event Job ID
 	JobID *string
@@ -1121,7 +1272,7 @@ type ACSRouterJobClassificationFailedEventData struct {
 // event
 type ACSRouterJobClassifiedEventData struct {
 	// Router Job Attached Worker Selector
-	AttachedWorkerSelectors []AcsRouterWorkerSelector
+	AttachedWorkerSelectors []ACSRouterWorkerSelector
 
 	// Router Event Channel ID
 	ChannelID *string
@@ -1142,7 +1293,7 @@ type ACSRouterJobClassifiedEventData struct {
 	Priority *int32
 
 	// Router Job Queue Info
-	QueueDetails *AcsRouterQueueDetails
+	QueueDetails *ACSRouterQueueDetails
 
 	// Router Job events Queue Id
 	QueueID *string
@@ -1285,7 +1436,7 @@ type ACSRouterJobExceptionTriggeredEventData struct {
 // event
 type ACSRouterJobQueuedEventData struct {
 	// Router Job Queued Attached Worker Selector
-	AttachedWorkerSelectors []AcsRouterWorkerSelector
+	AttachedWorkerSelectors []ACSRouterWorkerSelector
 
 	// Router Event Channel ID
 	ChannelID *string
@@ -1306,7 +1457,7 @@ type ACSRouterJobQueuedEventData struct {
 	QueueID *string
 
 	// Router Job Queued Requested Worker Selector
-	RequestedWorkerSelectors []AcsRouterWorkerSelector
+	RequestedWorkerSelectors []ACSRouterWorkerSelector
 
 	// Router Jobs events Tags
 	Tags map[string]*string
@@ -1331,7 +1482,7 @@ type ACSRouterJobReceivedEventData struct {
 	JobID *string
 
 	// Router Job Received Job Status
-	JobStatus *AcsRouterJobStatus
+	JobStatus *ACSRouterJobStatus
 
 	// Router Job events Labels
 	Labels map[string]*string
@@ -1343,7 +1494,7 @@ type ACSRouterJobReceivedEventData struct {
 	QueueID *string
 
 	// Router Job Received Requested Worker Selectors
-	RequestedWorkerSelectors []AcsRouterWorkerSelector
+	RequestedWorkerSelectors []ACSRouterWorkerSelector
 
 	// Router Job Received Scheduled Time in UTC
 	ScheduledOn *time.Time
@@ -1362,10 +1513,10 @@ type ACSRouterJobSchedulingFailedEventData struct {
 	ChannelReference *string
 
 	// Router Job Scheduling Failed Attached Worker Selector Expired
-	ExpiredAttachedWorkerSelectors []AcsRouterWorkerSelector
+	ExpiredAttachedWorkerSelectors []ACSRouterWorkerSelector
 
 	// Router Job Scheduling Failed Requested Worker Selector Expired
-	ExpiredRequestedWorkerSelectors []AcsRouterWorkerSelector
+	ExpiredRequestedWorkerSelectors []ACSRouterWorkerSelector
 
 	// Router Job Scheduling Failed Reason
 	FailureReason *string
@@ -1430,10 +1581,10 @@ type ACSRouterJobWaitingForActivationEventData struct {
 	ChannelReference *string
 
 	// Router Job Waiting For Activation Worker Selector Expired
-	ExpiredAttachedWorkerSelectors []AcsRouterWorkerSelector
+	ExpiredAttachedWorkerSelectors []ACSRouterWorkerSelector
 
 	// Router Job Waiting For Activation Requested Worker Selector Expired
-	ExpiredRequestedWorkerSelectors []AcsRouterWorkerSelector
+	ExpiredRequestedWorkerSelectors []ACSRouterWorkerSelector
 
 	// Router Event Job ID
 	JobID *string
@@ -1464,10 +1615,10 @@ type ACSRouterJobWorkerSelectorsExpiredEventData struct {
 	ChannelReference *string
 
 	// Router Job Worker Selectors Expired Attached Worker Selectors
-	ExpiredAttachedWorkerSelectors []AcsRouterWorkerSelector
+	ExpiredAttachedWorkerSelectors []ACSRouterWorkerSelector
 
 	// Router Job Worker Selectors Expired Requested Worker Selectors
-	ExpiredRequestedWorkerSelectors []AcsRouterWorkerSelector
+	ExpiredRequestedWorkerSelectors []ACSRouterWorkerSelector
 
 	// Router Event Job ID
 	JobID *string
@@ -1482,8 +1633,8 @@ type ACSRouterJobWorkerSelectorsExpiredEventData struct {
 	Tags map[string]*string
 }
 
-// AcsRouterQueueDetails - Router Queue Details
-type AcsRouterQueueDetails struct {
+// ACSRouterQueueDetails - Router Queue Details
+type ACSRouterQueueDetails struct {
 	// Router Queue Id
 	ID *string
 
@@ -1685,13 +1836,13 @@ type ACSRouterWorkerOfferRevokedEventData struct {
 // event
 type ACSRouterWorkerRegisteredEventData struct {
 	// Router Worker Registered Channel Configuration
-	ChannelConfigurations []AcsRouterChannelConfiguration
+	ChannelConfigurations []ACSRouterChannelConfiguration
 
 	// Router Worker Registered Labels
 	Labels map[string]*string
 
 	// Router Worker Registered Queue Info
-	QueueAssignments []AcsRouterQueueDetails
+	QueueAssignments []ACSRouterQueueDetails
 
 	// Router Worker Registered Tags
 	Tags map[string]*string
@@ -1703,8 +1854,8 @@ type ACSRouterWorkerRegisteredEventData struct {
 	WorkerID *string
 }
 
-// AcsRouterWorkerSelector - Router Job Worker Selector
-type AcsRouterWorkerSelector struct {
+// ACSRouterWorkerSelector - Router Job Worker Selector
+type ACSRouterWorkerSelector struct {
 	// Router Job Worker Selector Expiration Time
 	ExpirationTime *time.Time
 
@@ -1712,16 +1863,41 @@ type AcsRouterWorkerSelector struct {
 	Key *string
 
 	// Router Job Worker Selector Label Operator
-	LabelOperator *AcsRouterLabelOperator
+	LabelOperator *ACSRouterLabelOperator
 
 	// Router Job Worker Selector Value
 	LabelValue any
 
 	// Router Job Worker Selector State
-	State *AcsRouterWorkerSelectorState
+	State *ACSRouterWorkerSelectorState
 
 	// Router Job Worker Selector Time to Live in Seconds
 	TimeToLive *float32
+}
+
+// ACSRouterWorkerUpdatedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.RouterWorkerUpdated
+// event
+type ACSRouterWorkerUpdatedEventData struct {
+	// Router Worker Updated Channel Configuration
+	ChannelConfigurations []ACSRouterChannelConfiguration
+
+	// Router Worker Updated Labels
+	Labels map[string]*string
+
+	// Router Worker Updated Queue Info
+	QueueAssignments []ACSRouterQueueDetails
+
+	// Router Worker Updated Tags
+	Tags map[string]*string
+
+	// Router Worker Updated Total Capacity
+	TotalCapacity *int32
+
+	// Router Worker Properties Updated
+	UpdatedWorkerProperties []ACSRouterUpdatedWorkerProperty
+
+	// Router Worker Updated Worker Id
+	WorkerID *string
 }
 
 // ACSSmsDeliveryAttemptProperties - Schema for details of a delivery attempt
@@ -2050,11 +2226,17 @@ type AVSScriptExecutionStartedEventData struct {
 }
 
 // CommunicationIdentifierModel - Identifies a participant in Azure Communication services. A participant is, for example,
-// a phone number or an Azure communication user. This model must be interpreted as a union: Apart from rawId, at
-// most one further property may be set.
+// a phone number or an Azure communication user. This model is polymorphic: Apart from kind and rawId, at most
+// one further property may be set which must match the kind enum value.
 type CommunicationIdentifierModel struct {
 	// The communication user.
 	CommunicationUser *CommunicationUserIdentifierModel
+
+	// The identifier kind. Only required in responses.
+	Kind *CommunicationIdentifierModelKind
+
+	// The Microsoft Teams application.
+	MicrosoftTeamsApp *MicrosoftTeamsAppIdentifierModel
 
 	// The Microsoft Teams user.
 	MicrosoftTeamsUser *MicrosoftTeamsUserIdentifierModel
@@ -3877,6 +4059,15 @@ type MediaLiveEventTrackDiscontinuityDetectedEventData struct {
 
 	// READ-ONLY; Gets the type of the track (Audio / Video).
 	TrackType *string
+}
+
+// MicrosoftTeamsAppIdentifierModel - A Microsoft Teams application.
+type MicrosoftTeamsAppIdentifierModel struct {
+	// REQUIRED; The Id of the Microsoft Teams application.
+	AppID *string
+
+	// The cloud that the Microsoft Teams application belongs to. By default 'public' if missing.
+	Cloud *CommunicationCloudEnvironmentModel
 }
 
 // MicrosoftTeamsUserIdentifierModel - A Microsoft Teams user.

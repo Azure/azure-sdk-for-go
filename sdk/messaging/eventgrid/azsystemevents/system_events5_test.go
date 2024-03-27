@@ -9,6 +9,7 @@ package azsystemevents_test
 import (
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/eventgrid/azsystemevents"
 
 	"github.com/stretchr/testify/require"
@@ -66,11 +67,11 @@ func TestConsumeCloudEventAcsRouterJobQueuedEvent(t *testing.T) {
 	require.Equal(t, 1, len(selectors))
 	require.Equal(t, float32(1000), *selectors[0].TimeToLive)
 
-	require.Equal(t, azsystemevents.AcsRouterLabelOperatorEqual, *selectors[0].LabelOperator)
+	require.Equal(t, azsystemevents.ACSRouterLabelOperatorEqual, *selectors[0].LabelOperator)
 	// TODO: might have been a field rename?
 	//require.Equal(t, azsystemevents.AcsRouterLabelOperatorEqual, selectors[0].Operator)
 
-	require.Equal(t, azsystemevents.AcsRouterWorkerSelectorStateActive, *selectors[0].State)
+	require.Equal(t, azsystemevents.ACSRouterWorkerSelectorStateActive, *selectors[0].State)
 	// TODO: might have been a field rename?
 	//require.Equal(t, azsystemevents.AcsRouterWorkerSelectorStateActive, selectors[0].SelectorState)
 }
@@ -120,7 +121,7 @@ func TestConsumeCloudEventAcsRouterJobReceivedEvent(t *testing.T) {
 	event := parseCloudEvent(t, requestContent)
 
 	sysEvent := deserializeSystemEvent[azsystemevents.ACSRouterJobReceivedEventData](t, event.Data)
-	require.Equal(t, azsystemevents.AcsRouterJobStatusPendingClassification, *sysEvent.JobStatus)
+	require.Equal(t, azsystemevents.ACSRouterJobStatusPendingClassification, *sysEvent.JobStatus)
 
 	// TODO: don't have a .Status field?
 	//require.Equal(t, Azure.Messaging.EventGrid.azsystemevents.AcsRouterJobStatus.PendingClassification, sysEvent.Status)
@@ -573,4 +574,63 @@ func TestConsumeCloudEventResourceCreatedOrUpdatedEvent(t *testing.T) {
 	require.Equal(t,
 		"/subscriptions/319a9601-1ec0-0000-aebc-8fe82724c81e/resourceGroups/{rg-name}/providers/Microsoft.Storage/storageAccounts/{storageAccount-name}",
 		*sysEvent.ResourceDetails.ID)
+}
+
+func TestConsumeCloudEventAPICenter(t *testing.T) {
+	// https://learn.microsoft.com/en-us/azure/event-grid/event-schema-api-center?tabs=cloud-event-schema
+	const addedEventText = `[{
+		"source": "/subscriptions/{subscription_id}/resourceGroups/{resource_group_name}/providers/Microsoft.ApiCenter/services",
+		"subject": "/subscriptions/{subscription_id}/resourceGroups/{resource_group_name}/providers/Microsoft.ApiCenter/services/{api_center_name}/workspaces/default/apis/{api_name}/versions/{version_name}/definitions/{definition_name}",
+		"type": "Microsoft.ApiCenter.ApiDefinitionAdded",
+		"time": "2024-03-01T00:00:00.0000000Z",
+		"id": "00000000-0000-0000-0000-000000000000",
+		"data": {
+		  "title": "OpenAPI",
+		  "description": "Default spec",
+		  "specification": {
+			"name": "openapi",
+			"version": "3.0.1"
+		  }
+		},
+		"specversion": "1.0"
+	  }]`
+
+	events := parseManyCloudEvents(t, addedEventText)
+	addedEvent := deserializeSystemEvent[azsystemevents.APICenterAPIDefinitionAddedEventData](t, events[0].Data)
+	require.Equal(t, azsystemevents.APICenterAPIDefinitionAddedEventData{
+		Title:       to.Ptr("OpenAPI"),
+		Description: to.Ptr("Default spec"),
+		Specification: &azsystemevents.APICenterAPISpecification{
+			Name:    to.Ptr("openapi"),
+			Version: to.Ptr("3.0.1"),
+		},
+	}, addedEvent)
+
+	const updatedEventText = `[{
+		"source": "/subscriptions/{subscription_id}/resourceGroups/{resource_group_name}/providers/Microsoft.ApiCenter/services",
+		"subject": "/subscriptions/{subscription_id}/resourceGroups/{resource_group_name}/providers/Microsoft.ApiCenter/services/{api_center_name}/workspaces/default/apis/{api_name}/versions/{version_name}/definitions/{definition_name}",
+		"type": "Microsoft.ApiCenter.ApiDefinitionUpdated",
+		"time": "2024-03-01T00:00:00.0000000Z",
+		"id": "00000000-0000-0000-0000-000000000000",
+		"data": {
+		  "title": "OpenAPI",
+		  "description": "Default spec",
+		  "specification": {
+			"name": "openapi",
+			"version": "3.0.1"
+		  }
+		},
+		"specversion": "1.0"
+	  }]`
+
+	events = parseManyCloudEvents(t, updatedEventText)
+	updatedEvent := deserializeSystemEvent[azsystemevents.APICenterAPIDefinitionUpdatedEventData](t, events[0].Data)
+	require.Equal(t, azsystemevents.APICenterAPIDefinitionUpdatedEventData{
+		Title:       to.Ptr("OpenAPI"),
+		Description: to.Ptr("Default spec"),
+		Specification: &azsystemevents.APICenterAPISpecification{
+			Name:    to.Ptr("openapi"),
+			Version: to.Ptr("3.0.1"),
+		},
+	}, updatedEvent)
 }

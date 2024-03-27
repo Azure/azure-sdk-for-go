@@ -1504,7 +1504,7 @@ type EmbeddingsOptions struct {
 	Dimensions *int32
 
 	// The response encoding format to use for embedding data.
-	// - If using EmbeddingEncodingFormatFloat, the value will be a []float32, in [EmbeddingItem.Embedding]
+	// - If using EmbeddingEncodingFormatFloat (the default), the value will be a []float32, in [EmbeddingItem.Embedding]
 	// - If using EmbeddingEncodingFormatBase64, the value will be a base-64 string in [EmbeddingItem.EmbeddingBase64]
 	EncodingFormat *EmbeddingEncodingFormat
 

@@ -622,3 +622,21 @@ directive:
     where: $
     transform: return $.replace(/\/\/ EmbeddingItem - .+?type EmbeddingItem struct \{.+?\n}\n/s, "");
 ```
+
+Fix some doc comments
+
+```yaml
+directive:
+  - from: models.go
+    where: $
+    transform: |
+      const text = "// NOTE: This field is not available when using [Client.GetChatCompletionsStream].\n$1";
+      return $.replace(/(Usage \*CompletionsUsage)/, text);
+  - from: models.go
+    where: $
+    transform: |
+      const text = "// - If using EmbeddingEncodingFormatFloat, the value will be a []float32, in [EmbeddingItem.Embedding]\n" + 
+        "// - If using EmbeddingEncodingFormatBase64, the value will be a base-64 string in [EmbeddingItem.EmbeddingBase64]\n";
+        
+      return $.replace(/(EncodingFormat \*EmbeddingEncodingFormat)/, `${text}$1`);
+```

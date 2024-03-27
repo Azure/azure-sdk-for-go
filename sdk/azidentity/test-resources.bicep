@@ -17,8 +17,9 @@ param sshPubKey string = ''
 @description('The location of the resource. By default, this is the same as the resource group.')
 param location string = resourceGroup().location
 
-// https://learn.microsoft.com/azure/role-based-access-control/built-in-roles
-var blobContributor = subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'ba92f5b4-2d11-453d-a403-e96b0029c9fe') // Storage Blob Data Contributor
+// https://docs.microsoft.com/azure/role-based-access-control/built-in-roles
+var acrPull = subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '7f951dda-4ed3-4680-a7ca-43fe172d538d') // AcrPull
+var blobReader = subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '2a2b9908-6ea1-4ae2-8e65-a410df84e7d1') // Storage Blob Data Reader
 
 resource sa 'Microsoft.Storage/storageAccounts@2021-08-01' = if (deployResources) {
   kind: 'StorageV2'
@@ -49,21 +50,31 @@ resource usermgdid 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30'
   name: baseName
 }
 
-resource blobRoleUserAssigned 'Microsoft.Authorization/roleAssignments@2022-04-01' = if (deployResources) {
-  scope: saUserAssigned
-  name: guid(resourceGroup().id, blobContributor, usermgdid.id)
+resource acrPullContainerInstance 'Microsoft.Authorization/roleAssignments@2022-04-01' = if (deployResources) {
+  name: guid(resourceGroup().id, acrPull, 'containerInstance')
   properties: {
     principalId: deployResources ? usermgdid.properties.principalId : ''
     principalType: 'ServicePrincipal'
-    roleDefinitionId: blobContributor
+    roleDefinitionId: acrPull
+  }
+  scope: containerRegistry
+}
+
+resource blobRoleUserAssigned 'Microsoft.Authorization/roleAssignments@2022-04-01' = if (deployResources) {
+  scope: saUserAssigned
+  name: guid(resourceGroup().id, blobReader, usermgdid.id)
+  properties: {
+    principalId: deployResources ? usermgdid.properties.principalId : ''
+    principalType: 'ServicePrincipal'
+    roleDefinitionId: blobReader
   }
 }
 
 resource blobRoleFunc 'Microsoft.Authorization/roleAssignments@2022-04-01' = if (deployResources) {
-  name: guid(resourceGroup().id, blobContributor, 'azfunc')
+  name: guid(resourceGroup().id, blobReader, 'azfunc')
   properties: {
     principalId: deployResources ? azfunc.identity.principalId : ''
-    roleDefinitionId: blobContributor
+    roleDefinitionId: blobReader
     principalType: 'ServicePrincipal'
   }
   scope: sa
@@ -76,7 +87,7 @@ resource containerRegistry 'Microsoft.ContainerRegistry/registries@2023-01-01-pr
     adminUserEnabled: true
   }
   sku: {
-    name: 'Basic'
+    name: 'Standard'
   }
 }
 
@@ -200,6 +211,7 @@ output AZIDENTITY_ACR_LOGIN_SERVER string = deployResources ? containerRegistry.
 output AZIDENTITY_ACR_NAME string = deployResources ? containerRegistry.name : ''
 output AZIDENTITY_AKS_NAME string = deployResources ? aks.name : ''
 output AZIDENTITY_FUNCTION_NAME string = deployResources ? azfunc.name : ''
+output AZIDENTITY_STORAGE_ID string = deployResources ? sa.id : ''
 output AZIDENTITY_STORAGE_NAME string = deployResources ? sa.name : ''
 output AZIDENTITY_STORAGE_NAME_USER_ASSIGNED string = deployResources ? saUserAssigned.name : ''
 output AZIDENTITY_USER_ASSIGNED_IDENTITY string = deployResources ? usermgdid.id : ''

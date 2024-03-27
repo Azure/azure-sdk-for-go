@@ -66,92 +66,41 @@ func TestContainerPropertiesSerialization(t *testing.T) {
 		t.Fatal(err, string(jsonString))
 	}
 
-	if properties.ID != otherProperties.ID {
-		t.Errorf("Expected Id to be %s, but got %s", properties.ID, otherProperties.ID)
+	tests := []struct {
+		name     string
+		got      interface{}
+		expected interface{}
+	}{
+		{"ID", otherProperties.ID, properties.ID},
+		{"ETag", *otherProperties.ETag, *properties.ETag},
+		{"SelfLink", otherProperties.SelfLink, properties.SelfLink},
+		{"ResourceID", otherProperties.ResourceID, properties.ResourceID},
+		{"LastModified", otherProperties.LastModified, properties.LastModified},
+		{"AnalyticalStoreTimtoLiveInSeconds", otherProperties.AnalyticalStoreTimeToLiveInSeconds, properties.AnalyticalStoreTimeToLiveInSeconds},
+		{"DefaultTimeToLive", otherProperties.DefaultTimeToLive, properties.DefaultTimeToLive},
+		{"PartitionKeyDefinitionPaths", otherProperties.PartitionKeyDefinition.Paths[0], properties.PartitionKeyDefinition.Paths[0]},
+		{"PartitionKeyDefinitionVersion", otherProperties.PartitionKeyDefinition.Version, properties.PartitionKeyDefinition.Version},
+		{"IndexingPolicy", otherProperties.IndexingPolicy != nil, properties.IndexingPolicy != nil},
+		{"IndexingPolicyAutomatic", otherProperties.IndexingPolicy.Automatic, properties.IndexingPolicy.Automatic},
+		{"IndexingPolicyIndexingMode", otherProperties.IndexingPolicy.IndexingMode, properties.IndexingPolicy.IndexingMode},
+		{"IndexingPolicyIncludedPaths", otherProperties.IndexingPolicy.IncludedPaths[0], properties.IndexingPolicy.IncludedPaths[0]},
+		{"IndexingPolicyExcludedPaths", otherProperties.IndexingPolicy.ExcludedPaths[0], properties.IndexingPolicy.ExcludedPaths[0]},
+		{"IndexingPolicySpatialIndexesPath", otherProperties.IndexingPolicy.SpatialIndexes[0].Path, properties.IndexingPolicy.SpatialIndexes[0].Path},
+		{"IndexingPolicySpatialIndexesSpatialTypes", otherProperties.IndexingPolicy.SpatialIndexes[0].SpatialTypes[0], properties.IndexingPolicy.SpatialIndexes[0].SpatialTypes[0]},
+		{"IndexingPolicyCompositeIndexesPath", otherProperties.IndexingPolicy.CompositeIndexes[0][0].Path, properties.IndexingPolicy.CompositeIndexes[0][0].Path},
+		{"UniqueKeyPolicy", otherProperties.UniqueKeyPolicy != nil, properties.UniqueKeyPolicy != nil},
+		{"UniqueKeyPolicyUniqueKeys", otherProperties.UniqueKeyPolicy.UniqueKeys[0].Paths[0], properties.UniqueKeyPolicy.UniqueKeys[0].Paths[0]},
+		{"ConflictResolutionPolicy", otherProperties.ConflictResolutionPolicy != nil, properties.ConflictResolutionPolicy !=nil},
+		{"ConflictResolutionPolicyMode", otherProperties.ConflictResolutionPolicy.Mode, properties.ConflictResolutionPolicy.Mode},
+		{"ConflictResolutionPolicyResolutionPath", otherProperties.ConflictResolutionPolicy.ResolutionPath, properties.ConflictResolutionPolicy.ResolutionPath},
 	}
-
-	if *properties.ETag != *otherProperties.ETag {
-		t.Errorf("Expected ETag to be %s, but got %s", *properties.ETag, *otherProperties.ETag)
-	}
-
-	if properties.SelfLink != otherProperties.SelfLink {
-		t.Errorf("Expected SelfLink to be %s, but got %s", properties.SelfLink, otherProperties.SelfLink)
-	}
-
-	if properties.ResourceID != otherProperties.ResourceID {
-		t.Errorf("Expected ResourceId to be %s, but got %s", properties.ResourceID, otherProperties.ResourceID)
-	}
-
-	if properties.LastModified != otherProperties.LastModified {
-		t.Errorf("Expected LastModified.Time to be %v, but got %v", properties.LastModified, otherProperties.LastModified)
-	}
-
-	if otherProperties.AnalyticalStoreTimeToLiveInSeconds != nil {
-		t.Errorf("Expected AnalyticalStoreTimeToLiveInSeconds to be nil, but got %d", *otherProperties.AnalyticalStoreTimeToLiveInSeconds)
-	}
-
-	if otherProperties.DefaultTimeToLive != nil {
-		t.Errorf("Expected DefaultTimeToLive to be nil, but got %d", *otherProperties.DefaultTimeToLive)
-	}
-
-	if properties.PartitionKeyDefinition.Paths[0] != otherProperties.PartitionKeyDefinition.Paths[0] {
-		t.Errorf("Expected PartitionKeyDefinition.Paths[0] to be %s, but got %s", properties.PartitionKeyDefinition.Paths[0], otherProperties.PartitionKeyDefinition.Paths[0])
-	}
-
-	if properties.PartitionKeyDefinition.Version != otherProperties.PartitionKeyDefinition.Version {
-		t.Errorf("Expected PartitionKeyDefinition.Version to be %d, but got %d", properties.PartitionKeyDefinition.Version, otherProperties.PartitionKeyDefinition.Version)
-	}
-
-	if otherProperties.IndexingPolicy == nil {
-		t.Errorf("Expected IndexingPolicy to be not nil, but got nil")
-	}
-
-	if otherProperties.IndexingPolicy.Automatic != properties.IndexingPolicy.Automatic {
-		t.Errorf("Expected IndexingPolicy.Automatic to be %t, but got %t", properties.IndexingPolicy.Automatic, otherProperties.IndexingPolicy.Automatic)
-	}
-
-	if otherProperties.IndexingPolicy.IndexingMode != properties.IndexingPolicy.IndexingMode {
-		t.Errorf("Expected IndexingPolicy.IndexingMode to be %v, but got %v", properties.IndexingPolicy.IndexingMode, otherProperties.IndexingPolicy.IndexingMode)
-	}
-
-	if otherProperties.IndexingPolicy.IncludedPaths[0].Path != properties.IndexingPolicy.IncludedPaths[0].Path {
-		t.Errorf("Expected IndexingPolicy.IncludedPaths[0].Path to be %s, but got %s", properties.IndexingPolicy.IncludedPaths[0].Path, otherProperties.IndexingPolicy.IncludedPaths[0].Path)
-	}
-
-	if otherProperties.IndexingPolicy.ExcludedPaths[0].Path != properties.IndexingPolicy.ExcludedPaths[0].Path {
-		t.Errorf("Expected IndexingPolicy.ExcludedPaths[0].Path to be %s, but got %s", properties.IndexingPolicy.ExcludedPaths[0].Path, otherProperties.IndexingPolicy.ExcludedPaths[0].Path)
-	}
-
-	if otherProperties.IndexingPolicy.SpatialIndexes[0].Path != properties.IndexingPolicy.SpatialIndexes[0].Path {
-		t.Errorf("Expected IndexingPolicy.SpatialIndexes[0].Path to be %s, but got %s", properties.IndexingPolicy.SpatialIndexes[0].Path, otherProperties.IndexingPolicy.SpatialIndexes[0].Path)
-	}
-
-	if otherProperties.IndexingPolicy.SpatialIndexes[0].SpatialTypes[0] != properties.IndexingPolicy.SpatialIndexes[0].SpatialTypes[0] {
-		t.Errorf("Expected IndexingPolicy.SpatialIndexes[0].SpatialTypes[0] to be %v, but got %v", properties.IndexingPolicy.SpatialIndexes[0].SpatialTypes[0], otherProperties.IndexingPolicy.SpatialIndexes[0].SpatialTypes[0])
-	}
-
-	if otherProperties.IndexingPolicy.CompositeIndexes[0][0].Path != properties.IndexingPolicy.CompositeIndexes[0][0].Path {
-		t.Errorf("Expected IndexingPolicy.CompositeIndexes[0][0].Path to be %s, but got %s", properties.IndexingPolicy.CompositeIndexes[0][0].Path, otherProperties.IndexingPolicy.CompositeIndexes[0][0].Path)
-	}
-
-	if otherProperties.UniqueKeyPolicy == nil {
-		t.Errorf("Expected UniqueKeyPolicy to be not nil, but got nil")
-	}
-
-	if otherProperties.UniqueKeyPolicy.UniqueKeys[0].Paths[0] != properties.UniqueKeyPolicy.UniqueKeys[0].Paths[0] {
-		t.Errorf("Expected UniqueKeyPolicy.UniqueKeys[0].Paths[0] to be %s, but got %s", properties.UniqueKeyPolicy.UniqueKeys[0].Paths[0], otherProperties.UniqueKeyPolicy.UniqueKeys[0].Paths[0])
-	}
-
-	if otherProperties.ConflictResolutionPolicy == nil {
-		t.Errorf("Expected ConflictResolutionPolicy to be not nil, but got nil")
-	}
-
-	if otherProperties.ConflictResolutionPolicy.Mode != properties.ConflictResolutionPolicy.Mode {
-		t.Errorf("Expected ConflictResolutionPolicy.Mode to be %v, but got %v", properties.ConflictResolutionPolicy.Mode, otherProperties.ConflictResolutionPolicy.Mode)
-	}
-
-	if otherProperties.ConflictResolutionPolicy.ResolutionPath != properties.ConflictResolutionPolicy.ResolutionPath {
-		t.Errorf("Expected ConflictResolutionPolicy.ResolutionPath to be %s, but got %s", properties.ConflictResolutionPolicy.ResolutionPath, otherProperties.ConflictResolutionPolicy.ResolutionPath)
+	
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if tt.got != tt.expected {
+				t.Errorf("Expected %s to be %v, but got %v", tt.name, tt.expected, tt.got)
+			}
+		})
 	}
 }
 

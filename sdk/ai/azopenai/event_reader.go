@@ -62,6 +62,13 @@ func (er *EventReader[T]) Read() (T, error) {
 	return *new(T), scannerErr
 }
 
+// Buffer sets the initial buffer to use when streaming the response, and
+// the maximum size of the buffer.  This must be called before Read(), or
+// a panic will occur.
+func (er *EventReader[T]) Buffer(buf []byte, max int) {
+	er.scanner.Buffer(buf, max)
+}
+
 // Close closes the EventReader and any applicable inner stream state.
 func (er *EventReader[T]) Close() error {
 	return er.reader.Close()

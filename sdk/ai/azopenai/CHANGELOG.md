@@ -5,6 +5,7 @@
 ### Features Added
 
 - Updating to the `2024-03-01-preview` API version. This adds support for using Dimensions with Embeddings as well as the ability to choose the embeddings format. PR(#22603)
+- `EventReader` now has a `Buffer` method that controls the scanner buffer size when streaming Server-sent event's.
 
 ### Breaking Changes
 

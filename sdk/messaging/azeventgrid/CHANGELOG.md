@@ -1,14 +1,14 @@
 # Release History
 
-## 0.4.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 0.5.0 (2024-03-27)
 
 ### Other Changes
+
+- This module has been split into two separate modules, one for each of the two different Event Grid products.
+  - The **Event Grid Basic** package in *`azeventgrid/publisher`* has been **replaced** 
+    with `github.com/Azure/azure-sdk-for-go/sdk/messaging/eventgrid/azeventgrid`
+  - The **Event Grid Namespaces** package in *`azeventgrid`* has been **replaced**
+    with `github.com/Azure/azure-sdk-for-go/sdk/messaging/eventgrid/aznamespaces`
 
 ## 0.4.0 (2023-11-27)
 

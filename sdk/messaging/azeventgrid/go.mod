@@ -1,3 +1,5 @@
+// Deprecated: Event Grid Basic client has moved to github.com/Azure/azure-sdk-for-go/sdk/messaging/eventgrid/azeventgrid
+// Deprecated: Event Grid Namespaces client has moved to use github.com/Azure/azure-sdk-for-go/sdk/messaging/eventgrid/aznamespaces
 module github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid
 
 go 1.18

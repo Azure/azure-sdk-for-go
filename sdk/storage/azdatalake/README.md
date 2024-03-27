@@ -1,4 +1,6 @@
 # ADLS Gen2 Storage SDK for Go
+[![Build Status](https://dev.azure.com/azure-sdk/public/_apis/build/status/go/go%20-%20azdatalake%20-%20ci?branchName=main)](https://dev.azure.com/azure-sdk/public/_build/latest?definitionId=6338&branchName=main)
+[![Code Coverage](https://img.shields.io/azure-devops/coverage/azure-sdk/public/6338/main)](https://img.shields.io/azure-devops/coverage/azure-sdk/public/6338/main)
 
 > Service Version: 2021-06-08
 

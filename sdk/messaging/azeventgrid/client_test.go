@@ -330,13 +330,19 @@ func TestSimpleErrors(t *testing.T) {
 	_, err := c.PublishCloudEvents(context.Background(), c.TestVars.Topic, []messaging.CloudEvent{
 		{},
 	}, nil)
+
+	// this'll lead to an error message like this:
+	// "error": {
+	// 	"code":"BadRequest",
+	// 	"message":"`id` must be non-empty string",
+	// 	"timestamp_utc":"2024-03-22T21:53:04.035019068+00:00",
+	// 	"tracking_id":"<some tracking ID>"
+	// }
 	var respErr *azcore.ResponseError
-
 	require.ErrorAs(t, err, &respErr)
+	require.Equal(t, "BadRequest", respErr.ErrorCode)
 	require.Equal(t, http.StatusBadRequest, respErr.StatusCode)
-	require.Contains(t, respErr.Error(), "'data' attribute is required")
 }
-
 func TestRenewCloudEventLocks(t *testing.T) {
 	c := newClientWrapper(t, nil)
 

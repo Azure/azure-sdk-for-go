@@ -75,3 +75,28 @@ func TestEventReader_SpacesAroundAreas(t *testing.T) {
 	require.NotEmpty(t, evt)
 	require.Equal(t, "without-spaces", *evt.Choices[0].Delta.Content)
 }
+
+func TestEventReader_BufferSize(t *testing.T) {
+	data := []struct {
+		size int
+		err  error
+	}{
+		{
+			size: 1,
+			err:  bufio.ErrTooLong,
+		},
+		{
+			size: 100,
+			err:  nil,
+		},
+	}
+
+	for _, i := range data {
+		buff := strings.NewReader("data: {}")
+		eventReader := newEventReader[ChatCompletions](io.NopCloser(buff))
+		eventReader.Buffer(make([]byte, 1), i.size)
+
+		_, err := eventReader.Read()
+		require.ErrorIs(t, err, i.err)
+	}
+}

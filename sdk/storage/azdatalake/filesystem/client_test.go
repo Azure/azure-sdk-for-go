@@ -2041,6 +2041,7 @@ func (s *RecordedTestSuite) TestCreateFileInFileSystemSetOptions() {
 	fClient := fsClient.NewFileClient(testName)
 
 	response, err := fClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
 	_require.Equal("4cf4e284-f6a8-4540-b53e-c3469af032dc", *response.Owner)
 	_require.Equal(expiryTimeAbsolute.UTC().Format(http.TimeFormat), (*response.ExpiresOn).UTC().Format(http.TimeFormat))
 	_require.Equal("rwxr-xrwx", *response.Permissions)
@@ -2082,6 +2083,7 @@ func (s *RecordedTestSuite) TestCreateDirectoryInFileSystemSetOptions() {
 	dirClient := fsClient.NewDirectoryClient(testName)
 
 	response, err := dirClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
 	_require.Equal(*response.Owner, "4cf4e284-f6a8-4540-b53e-c3469af032dc")
 	_require.Equal("rwxrwxrwx", *response.Permissions)
 	_require.Equal(filesystem.StateTypeLeased, *response.LeaseState)

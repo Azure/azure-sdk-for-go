@@ -223,18 +223,18 @@ func TestManagedIdentityCredential_AppService(t *testing.T) {
 				t.Fatalf(`unexpected resource "%s"`, v)
 			}
 			if id == nil {
-				if q.Get(qpClientID) != "" || q.Get(qpResID) != "" {
+				if q.Get(qpClientID) != "" || q.Get(miResID) != "" {
 					t.Fatal("request shouldn't include a user-assigned ID")
 				}
 			} else {
-				if q.Get(qpClientID) != "" && q.Get(qpResID) != "" {
+				if q.Get(qpClientID) != "" && q.Get(miResID) != "" {
 					t.Fatal("request includes two IDs")
 				}
 				var v string
 				if _, ok := id.(ClientID); ok {
 					v = q.Get(qpClientID)
 				} else if _, ok := id.(ResourceID); ok {
-					v = q.Get(qpResID)
+					v = q.Get(miResID)
 				}
 				if v != id.String() {
 					t.Fatalf(`unexpected id "%s"`, v)
@@ -431,7 +431,7 @@ func TestManagedIdentityCredential_ResourceID_IMDS(t *testing.T) {
 	if reqQueryParams["resource"][0] != liveTestScope {
 		t.Fatalf("Unexpected resource in resource query param")
 	}
-	if reqQueryParams[qpResID][0] != resID {
+	if reqQueryParams[msiResID][0] != resID {
 		t.Fatalf("Unexpected resource ID in resource query param")
 	}
 }

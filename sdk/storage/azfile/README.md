@@ -1,4 +1,5 @@
 # Azure File Storage SDK for Go
+[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/azfile)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/storage/azfile)
 [![Build Status](https://dev.azure.com/azure-sdk/public/_apis/build/status/go/go%20-%20azdatalake%20-%20ci?branchName=main)](https://dev.azure.com/azure-sdk/public/_build/latest?definitionId=4784&branchName=main)
 [![Code Coverage](https://img.shields.io/azure-devops/coverage/azure-sdk/public/4784/main)](https://img.shields.io/azure-devops/coverage/azure-sdk/public/4784/main)
 

@@ -44,6 +44,20 @@ docker push $image
 
 $rg = $DeploymentOutputs['AZIDENTITY_RESOURCE_GROUP']
 
+# ACI is easier to provision here than in the bicep file because the image isn't available before now
+Write-Host "Deploying Azure Container Instance"
+$aciName = "azidentity-test"
+az container create -g $rg -n $aciName --image $image `
+  --acr-identity $($DeploymentOutputs['AZIDENTITY_USER_ASSIGNED_IDENTITY']) `
+  --assign-identity [system] $($DeploymentOutputs['AZIDENTITY_USER_ASSIGNED_IDENTITY']) `
+  --role "Storage Blob Data Reader" `
+  --scope $($DeploymentOutputs['AZIDENTITY_STORAGE_ID']) `
+  -e AZIDENTITY_STORAGE_NAME=$($DeploymentOutputs['AZIDENTITY_STORAGE_NAME']) `
+     AZIDENTITY_STORAGE_NAME_USER_ASSIGNED=$($DeploymentOutputs['AZIDENTITY_STORAGE_NAME_USER_ASSIGNED']) `
+     AZIDENTITY_USER_ASSIGNED_IDENTITY=$($DeploymentOutputs['AZIDENTITY_USER_ASSIGNED_IDENTITY']) `
+     FUNCTIONS_CUSTOMHANDLER_PORT=80
+Write-Host "##vso[task.setvariable variable=AZIDENTITY_ACI_NAME;]$aciName"
+
 # Azure Functions deployment: copy the Windows binary from the Docker image, deploy it in a zip
 Write-Host "Deploying to Azure Functions"
 $container = docker create $image
@@ -96,7 +110,3 @@ spec:
 "@
 kubectl apply -f "$PSScriptRoot/k8s.yaml"
 Write-Host "##vso[task.setvariable variable=AZIDENTITY_POD_NAME;]$podName"
-
-if ($CI) {
-  az logout
-}

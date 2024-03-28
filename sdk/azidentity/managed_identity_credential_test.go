@@ -12,6 +12,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"strings"
 	"testing"
@@ -156,6 +157,27 @@ func TestManagedIdentityCredential_AzureArcErrors(t *testing.T) {
 			t.Fatal("expected an error")
 		}
 	})
+}
+
+func TestManagedIdentityCredential_AzureContainerInstanceLive(t *testing.T) {
+	// This test triggers the managed identity test app deployed to an Azure Container Instance.
+	// See the bicep file and test resources scripts for details.
+	// It triggers the app with az because the test subscription prohibits opening ports to the internet.
+	name := os.Getenv("AZIDENTITY_ACI_NAME")
+	rg := os.Getenv("AZIDENTITY_RESOURCE_GROUP")
+	if name == "" || rg == "" {
+		t.Skip("set AZIDENTITY_ACI_NAME and AZIDENTITY_RESOURCE_GROUP to run this test")
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
+	defer cancel()
+	command := fmt.Sprintf("az container exec -g %s -n %s --exec-command 'wget -qO- localhost'", rg, name)
+	// using "script" as a workaround for "az container exec" requiring a tty
+	// https://github.com/Azure/azure-cli/issues/17530
+	cmd := exec.CommandContext(ctx, "script", "-q", "-O", "/dev/null", "-c", command)
+	b, err := cmd.CombinedOutput()
+	s := string(b)
+	require.NoError(t, err, s)
+	require.Equal(t, "test passed", s)
 }
 
 func TestManagedIdentityCredential_AzureFunctionsLive(t *testing.T) {

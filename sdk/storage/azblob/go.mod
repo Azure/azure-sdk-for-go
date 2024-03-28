@@ -11,7 +11,6 @@ require (
 )
 
 require (
-	github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/testdata/perf v0.0.0-20240208231215-981108a6de20 // indirect
 	github.com/AzureAD/microsoft-authentication-library-for-go v1.2.1 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/dnaeon/go-vcr v1.2.0 // indirect

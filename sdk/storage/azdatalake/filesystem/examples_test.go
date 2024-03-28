@@ -10,6 +10,7 @@ import (
 	"bytes"
 	"context"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/file"
 	"io"
 	"log"
 	"net/http"
@@ -327,4 +328,72 @@ func Example_fs_ClientSetMetadata() {
 	fsGetPropertiesResponse.Metadata["author"] = to.Ptr("Mohit")
 	_, err = fsClient.SetMetadata(context.TODO(), &filesystem.SetMetadataOptions{Metadata: fsGetPropertiesResponse.Metadata})
 	handleError(err)
+}
+
+func Example_fs_ClientCreateFile() {
+	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
+	if !ok {
+		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
+	}
+	fsName := "testfs"
+	fsURL := fmt.Sprintf("https://%s.dfs.core.windows.net/%s", accountName, fsName)
+	filePath := "testFile"
+
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	handleError(err)
+
+	fsClient, err := filesystem.NewClient(fsURL, cred, nil)
+	handleError(err)
+
+	fsCreateResponse, err := fsClient.Create(context.TODO(), &filesystem.CreateOptions{
+		Metadata: map[string]*string{"Foo": to.Ptr("Bar")},
+	})
+	handleError(err)
+	fmt.Println(fsCreateResponse)
+
+	createFileOptions := &filesystem.CreateFileOptions{
+		Umask: to.Ptr("0000"),
+		ACL:   to.Ptr("user::rwx,group::r-x,other::rwx"),
+		Expiry: file.CreateExpiryValues{
+			ExpiryType: file.CreateExpiryTypeAbsolute,
+			ExpiresOn:  time.Now().Add(20 * time.Second).UTC().Format(http.TimeFormat),
+		},
+		LeaseDuration:   to.Ptr(int64(15)),
+		ProposedLeaseID: to.Ptr("c820a799-76d7-4ee2-6e15-546f19325c2c"),
+	}
+	resp, err := fsClient.CreateFile(context.Background(), filePath, createFileOptions)
+	handleError(err)
+	fmt.Println(resp)
+}
+
+func Example_fs_ClientCreateDirectory() {
+	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
+	if !ok {
+		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
+	}
+	fsName := "testfs"
+	fsURL := fmt.Sprintf("https://%s.dfs.core.windows.net/%s", accountName, fsName)
+	dirPath := "testDir"
+
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	handleError(err)
+
+	fsClient, err := filesystem.NewClient(fsURL, cred, nil)
+	handleError(err)
+
+	fsCreateResponse, err := fsClient.Create(context.TODO(), &filesystem.CreateOptions{
+		Metadata: map[string]*string{"Foo": to.Ptr("Bar")},
+	})
+	handleError(err)
+	fmt.Println(fsCreateResponse)
+
+	options := &filesystem.CreateDirectoryOptions{
+		Umask:           to.Ptr("0000"),
+		ACL:             to.Ptr("user::rwx,group::r-x,other::rwx"),
+		LeaseDuration:   to.Ptr(int64(15)),
+		ProposedLeaseID: to.Ptr("c820a799-76d7-4ee2-6e15-546f19325c2c"),
+	}
+	resp, err := fsClient.CreateDirectory(context.Background(), dirPath, options)
+	handleError(err)
+	fmt.Println(resp)
 }

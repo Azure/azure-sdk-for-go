@@ -55,12 +55,13 @@ func TestWorkloadIdentityCredential_Live(t *testing.T) {
 	if pod == "" {
 		t.Skip("set AZIDENTITY_POD_NAME to run this test")
 	}
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
 	defer cancel()
 	cmd := exec.CommandContext(ctx, "kubectl", "exec", pod, "--", "wget", "-qO-", "localhost")
 	b, err := cmd.CombinedOutput()
-	require.NoError(t, err)
-	require.EqualValues(t, "test passed", b)
+	s := string(b)
+	require.NoError(t, err, s)
+	require.Equal(t, "test passed", s)
 }
 
 func TestWorkloadIdentityCredential_Recorded(t *testing.T) {

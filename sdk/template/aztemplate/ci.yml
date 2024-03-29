@@ -23,8 +23,18 @@ pr:
     - sdk/template/aztemplate/
     - eng/
 
+parameters:
+  # Switch to canary to test canary 1es branch. 1es template validation will set this parameter
+  # to canary on run.
+  - name: oneESTemplateTag
+    type: string
+    default: release
+    values:
+      - release
+      - canary
 
 extends:
   template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
   parameters:
+    oneESTemplateTag: ${{ parameters.oneESTemplateTag }}
     ServiceDirectory: 'template/aztemplate'

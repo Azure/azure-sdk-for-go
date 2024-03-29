@@ -359,9 +359,6 @@ func (r *Receiver) DeadLetterMessage(ctx context.Context, message *ReceivedMessa
 }
 
 func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages int, options *ReceiveMessagesOptions) ([]*ReceivedMessage, error) {
-	cancelReleaser := r.cancelReleaser.Swap(emptyCancelFn).(func() string)
-	_ = cancelReleaser()
-
 	if maxMessages <= 0 {
 		return nil, internal.NewErrNonRetriable("maxMessages should be greater than 0")
 	}
@@ -375,6 +372,10 @@ func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages int, opt
 	var receivedMessages []*ReceivedMessage
 
 	err := r.amqpLinks.Retry(ctx, EventReceiver, "receiveMessages.getlinks", func(ctx context.Context, lwid *internal.LinksWithID, args *utils.RetryFnArgs) error {
+		// stop the releaser goroutine from running - we want messages that are coming in now.
+		cancelReleaser := r.cancelReleaser.Swap(emptyCancelFn).(func() string)
+		_ = cancelReleaser()
+
 		linksWithID = lwid
 
 		// request just the right amount of credits, taking into account the credits
@@ -416,6 +417,10 @@ func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages int, opt
 			// This prevents us from holding onto messages for a long period of time in our
 			// internal cache where they'll just keep expiring.
 			releaserFunc := r.newReleaserFunc(linksWithID.Receiver)
+
+			// this function is cancelled at the top of this retry loop. The general flow is that a user gets
+			// some messages and leaves active credits on the link so the releaser needs to run in between
+			// any ReceiveMessages() calls.
 			go releaserFunc()
 		} else {
 			r.amqpLinks.Writef(EventReceiver, "Failure when receiving messages: %s", result.Error)
@@ -593,9 +598,8 @@ func (r *Receiver) fetchMessages(parentCtx context.Context, receiver amqpwrap.AM
 }
 
 // newReleaserFunc creates a function that continually receives on a
-// receiver and amqpReceiver.Release(msg)'s until cancelled. We use this
-// lieu of a 'drain' strategy so we don't hold onto messages in our internal
-// cache only for them to expire.
+// receiver and amqpReceiver.Release(msg)'s until cancelled. We use this instead of a
+// 'drain' strategy so we don't hold onto messages in our internal cache only for them to expire.
 func (r *Receiver) newReleaserFunc(receiver amqpwrap.AMQPReceiver) func() {
 	if r.receiveMode == ReceiveModeReceiveAndDelete {
 		// you can't disposition messages that are received in this mode - these messages

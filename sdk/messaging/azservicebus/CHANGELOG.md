@@ -10,7 +10,7 @@
 
 ### Other Changes
 
-- Fixed behavior in ReceiveMessages() that could lead to cases where it would not retry on retryable failures. (PR#TBD)
+- Fixed behavior in ReceiveMessages() that could lead to cases where it would not retry on retryable failures. (PR#22653)
 
 ## 1.6.1 (2024-03-05)
 

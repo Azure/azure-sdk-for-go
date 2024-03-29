@@ -13,6 +13,7 @@
 ### Bugs Fixed
 
 * `runtime.SetMultipartFormData` won't try to stringify `[]byte` values.
+* Pollers that use the `Location` header won't consider `http.StatusTooManyRequests` a terminal failure.
 
 ### Other Changes
 

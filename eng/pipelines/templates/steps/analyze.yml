@@ -53,6 +53,7 @@ steps:
         }
       }
       $ArtifactsList = $artifactList | ConvertTo-Json -Compress
+      Write-Host "ArtifactsList: [$ArtifactsList]"
       echo "##vso[task.setvariable variable=ArtifactsList]$ArtifactsList"
     displayName: 'Set artifacts variable'
     failOnStderr: false
@@ -60,7 +61,7 @@ steps:
 
   - template: /eng/common/pipelines/templates/steps/validate-all-packages.yml
     parameters:
-      Artifacts: ('$(ArtifactsList)' | ConvertFrom-Json | Select-Object Name)
+      Artifacts: ($(ArtifactsList) | ConvertFrom-Json)
 
   - task: Powershell@2
     displayName: 'Dependency Check'

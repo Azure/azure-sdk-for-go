@@ -372,80 +372,76 @@ func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages int, opt
 
 	var linksWithID *internal.LinksWithID
 
+	var receivedMessages []*ReceivedMessage
+
 	err := r.amqpLinks.Retry(ctx, EventReceiver, "receiveMessages.getlinks", func(ctx context.Context, lwid *internal.LinksWithID, args *utils.RetryFnArgs) error {
 		linksWithID = lwid
+
+		// request just the right amount of credits, taking into account the credits
+		// that are already active on the link from prior ReceiveMessages() calls that
+		// might have exited before all credits were used up.
+		currentReceiverCredits := int64(linksWithID.Receiver.Credits())
+		creditsToIssue := int64(maxMessages) - currentReceiverCredits
+
+		if creditsToIssue > 0 {
+			r.amqpLinks.Writef(EventReceiver, "Issuing %d credits, have %d", creditsToIssue, currentReceiverCredits)
+
+			if err := linksWithID.Receiver.IssueCredit(uint32(creditsToIssue)); err != nil {
+				return err
+			}
+		} else {
+			r.amqpLinks.Writef(EventReceiver, "Have %d credits, no new credits needed", currentReceiverCredits)
+		}
+
+		timeAfterFirstMessage := 20 * time.Millisecond
+
+		if options != nil && options.TimeAfterFirstMessage > 0 {
+			timeAfterFirstMessage = options.TimeAfterFirstMessage
+		} else if r.receiveMode == ReceiveModeReceiveAndDelete {
+			timeAfterFirstMessage = time.Second
+		}
+
+		result := r.fetchMessages(ctx, linksWithID.Receiver, maxMessages, timeAfterFirstMessage)
+
+		r.amqpLinks.Writef(EventReceiver, "Received %d/%d messages", len(result.Messages), maxMessages)
+
+		// this'll only close anything if the error indicates that the link/connection is bad.
+		// it's safe to call with cancellation errors.
+		rk := r.amqpLinks.CloseIfNeeded(context.Background(), result.Error)
+
+		if rk == internal.RecoveryKindNone {
+			// The link is still alive - we'll start the releaser which will releasing any messages
+			// that arrive between this call and the next call to ReceiveMessages().
+			//
+			// This prevents us from holding onto messages for a long period of time in our
+			// internal cache where they'll just keep expiring.
+			releaserFunc := r.newReleaserFunc(linksWithID.Receiver)
+			go releaserFunc()
+		} else {
+			r.amqpLinks.Writef(EventReceiver, "Failure when receiving messages: %s", result.Error)
+		}
+
+		// If the user does get some messages we ignore 'error' and return only the messages.
+		//
+		// Doing otherwise would break the idiom that people are used to where people expected
+		// a non-nil error to mean any other values in the return are nil or not useful (ie,
+		// partial success is not idiomatic).
+		//
+		// This is mostly safe because the next call to ReceiveMessages() (or any other
+		// function on Receiver).will have the same issue and will return the relevant error
+		// at that time
+		if len(result.Messages) == 0 {
+			return result.Error
+		}
+
+		for _, msg := range result.Messages {
+			receivedMessages = append(receivedMessages, newReceivedMessage(msg, linksWithID.Receiver))
+		}
 		return nil
 	}, r.retryOptions)
 
 	if err != nil {
 		return nil, err
-	}
-
-	// request just the right amount of credits, taking into account the credits
-	// that are already active on the link from prior ReceiveMessages() calls that
-	// might have exited before all credits were used up.
-	currentReceiverCredits := int64(linksWithID.Receiver.Credits())
-	creditsToIssue := int64(maxMessages) - currentReceiverCredits
-
-	if creditsToIssue > 0 {
-		r.amqpLinks.Writef(EventReceiver, "Issuing %d credits, have %d", creditsToIssue, currentReceiverCredits)
-
-		if err := linksWithID.Receiver.IssueCredit(uint32(creditsToIssue)); err != nil {
-			return nil, err
-		}
-	} else {
-		r.amqpLinks.Writef(EventReceiver, "Have %d credits, no new credits needed", currentReceiverCredits)
-	}
-
-	timeAfterFirstMessage := 20 * time.Millisecond
-
-	if options != nil && options.TimeAfterFirstMessage > 0 {
-		timeAfterFirstMessage = options.TimeAfterFirstMessage
-	} else if r.receiveMode == ReceiveModeReceiveAndDelete {
-		timeAfterFirstMessage = time.Second
-	}
-
-	result := r.fetchMessages(ctx, linksWithID.Receiver, maxMessages, timeAfterFirstMessage)
-
-	r.amqpLinks.Writef(EventReceiver, "Received %d/%d messages", len(result.Messages), maxMessages)
-
-	// this'll only close anything if the error indicates that the link/connection is bad.
-	// it's safe to call with cancellation errors.
-	rk := r.amqpLinks.CloseIfNeeded(context.Background(), result.Error)
-
-	if rk == internal.RecoveryKindNone {
-		// The link is still alive - we'll start the releaser which will releasing any messages
-		// that arrive between this call and the next call to ReceiveMessages().
-		//
-		// This prevents us from holding onto messages for a long period of time in our
-		// internal cache where they'll just keep expiring.
-		releaserFunc := r.newReleaserFunc(linksWithID.Receiver)
-		go releaserFunc()
-	} else {
-		r.amqpLinks.Writef(EventReceiver, "Failure when receiving messages: %s", result.Error)
-	}
-
-	// If the user does get some messages we ignore 'error' and return only the messages.
-	//
-	// Doing otherwise would break the idiom that people are used to where people expected
-	// a non-nil error to mean any other values in the return are nil or not useful (ie,
-	// partial success is not idiomatic).
-	//
-	// This is mostly safe because the next call to ReceiveMessages() (or any other
-	// function on Receiver).will have the same issue and will return the relevant error
-	// at that time
-	if len(result.Messages) == 0 {
-		if internal.IsCancelError(result.Error) || rk == internal.RecoveryKindFatal {
-			return nil, result.Error
-		}
-
-		return nil, nil
-	}
-
-	var receivedMessages []*ReceivedMessage
-
-	for _, msg := range result.Messages {
-		receivedMessages = append(receivedMessages, newReceivedMessage(msg, linksWithID.Receiver))
 	}
 
 	return receivedMessages, nil

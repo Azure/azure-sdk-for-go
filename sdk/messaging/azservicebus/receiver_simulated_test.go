@@ -111,7 +111,7 @@ func TestReceiver_Simulated_Recovery(t *testing.T) {
 
 	messages, err := receiver.ReceiveMessages(context.Background(), 1, nil)
 	require.NoError(t, err)
-	require.NotEmpty(t, messages)
+	require.Equal(t, []string{"hello"}, getSortedBodies(messages))
 
 	require.Equal(t, 1, len(md.Events.GetOpenConns()))
 	require.Equal(t, 3+3, len(md.Events.GetOpenLinks()), "Sender and Receiver each own 3 links apiece ($mgmt, actual link)")
@@ -125,15 +125,20 @@ func TestReceiver_Simulated_Recovery(t *testing.T) {
 	require.NoError(t, err)
 
 	messages, err = receiver.ReceiveMessages(context.Background(), 1, nil)
-	require.NoError(t, err, "We eat the error in this case since it's recoverable and we want them to try again")
-	require.Empty(t, messages)
+	require.NoError(t, err, "receiver was able to recover from error")
+	require.Equal(t, []string{"hello2"}, getSortedBodies(messages))
 
 	require.Equal(t, 1, len(md.Events.GetOpenConns()))
-	require.Equal(t, 3, len(md.Events.GetOpenLinks()), "Sender is still alive, but the Receiver is closed until we call it again...")
+	require.Equal(t, 3+3, len(md.Events.GetOpenLinks()), "Sender and Receiver both recover from their forced detach")
+
+	err = sender.SendMessage(context.Background(), &Message{
+		Body: []byte("hello3"),
+	}, nil)
+	require.NoError(t, err)
 
 	messages, err = receiver.ReceiveMessages(context.Background(), 1, nil)
 	require.NoError(t, err)
-	require.Equal(t, 1, len(messages))
+	require.Equal(t, []string{"hello3"}, getSortedBodies(messages))
 
 	require.Equal(t, 3+3, len(md.Events.GetOpenLinks()), "Sender and Receiver each own 3 links apiece ($mgmt, actual link)")
 
@@ -177,76 +182,94 @@ func TestReceiver_ReceiveMessages_SomeMessagesAndCancelled(t *testing.T) {
 
 func TestReceiver_ReceiveMessages_NoMessagesReceivedAndError(t *testing.T) {
 	type args struct {
-		Name        string
-		InternalErr error
-		ReturnedErr error
-		ConnAlive   bool
-		LinkAlive   bool
+		ReceiveErr      error // error returned when AMQPReceiver.Receive() is called (for non-$cbs links)
+		ExpectedErr     error // error that should be returned after all internal retries have occurred.
+		ExpectConnAlive bool
+		ExpectLinkAlive bool
 	}
 
-	fn := func(args args) {
-		t.Run(args.Name, func(t *testing.T) {
-			md, client, cleanup := newClientWithMockedConn(t, &emulation.MockDataOptions{
-				PreReceiverMock: func(mr *emulation.MockReceiver, ctx context.Context) error {
-					if mr.Source == "queue" {
-						mr.EXPECT().Receive(gomock.Any(), gomock.Nil()).Return(nil, args.InternalErr)
-					}
+	testFn := func(t *testing.T, args args) {
+		t.Parallel()
 
-					return nil
-				},
-			}, nil)
-			defer cleanup()
+		// make it so any AMQPReceiver created here will return args.InternalErr when AMQPReceiver.Receive()
+		// is called.
+		md, client, cleanup := newClientWithMockedConn(t, &emulation.MockDataOptions{
+			PreReceiverMock: func(mr *emulation.MockReceiver, ctx context.Context) error {
+				if mr.Source == "queue" {
+					mr.EXPECT().Receive(gomock.Any(), gomock.Nil()).Return(nil, args.ReceiveErr)
+				}
 
-			receiver, err := client.NewReceiverForQueue("queue", nil)
-			require.NoError(t, err)
-
-			messages, err := receiver.ReceiveMessages(context.Background(), 2, nil)
-			require.EqualValues(t, args.ReturnedErr, err)
-			require.Empty(t, messages)
-
-			if args.ConnAlive {
-				require.Equal(t, 1, len(md.Events.GetOpenConns()), "Connection is still alive")
-			} else {
-				require.Equal(t, 0, len(md.Events.GetOpenConns()), "Connection has been closed")
-			}
-
-			if args.LinkAlive {
-				require.Equal(t, 3, len(md.Events.GetOpenLinks()), "Links are still alive")
-			} else {
-				require.Equal(t, 0, len(md.Events.GetOpenLinks()), "Links have been closed")
-			}
+				return nil
+			},
+		}, &ClientOptions{
+			RetryOptions: exported.RetryOptions{
+				RetryDelay:    0,
+				MaxRetryDelay: 0,
+				MaxRetries:    1,
+			},
 		})
+		defer cleanup()
+
+		receiver, err := client.NewReceiverForQueue("queue", nil)
+		require.NoError(t, err)
+
+		// internally we're handling args.InternalErr in our retry loop.
+		messages, err := receiver.ReceiveMessages(context.Background(), 2, nil)
+		require.EqualValues(t, args.ExpectedErr, err)
+		require.Empty(t, messages)
+
+		if args.ExpectConnAlive {
+			require.Equal(t, 1, len(md.Events.GetOpenConns()), "Connection is still alive")
+		} else {
+			require.Equal(t, 0, len(md.Events.GetOpenConns()), "Connection has been closed")
+		}
+
+		if args.ExpectLinkAlive {
+			require.Equal(t, 3, len(md.Events.GetOpenLinks()), "Links are still alive")
+		} else {
+			require.Equal(t, 0, len(md.Events.GetOpenLinks()), "Links have been closed")
+		}
 	}
 
-	fn(args{
-		Name:        "Non-retriable errors shut down the connection",
-		InternalErr: internal.NewErrNonRetriable("non retriable error"),
-		ReturnedErr: internal.NewErrNonRetriable("non retriable error"),
-		ConnAlive:   false,
+	t.Run("Non-retriable errors shut down the connection", func(t *testing.T) {
+		testFn(t, args{
+			ReceiveErr:      internal.NewErrNonRetriable("non retriable error"),
+			ExpectedErr:     internal.NewErrNonRetriable("non retriable error"),
+			ExpectConnAlive: false,
+		})
 	})
 
-	fn(args{
-		Name:        "Cancel errors don't close the connection",
-		InternalErr: context.Canceled,
-		ReturnedErr: context.Canceled,
-		ConnAlive:   true,
-		LinkAlive:   true,
+	t.Run("Cancel errors don't close the connection", func(t *testing.T) {
+		testFn(t, args{
+			ReceiveErr:      context.Canceled,
+			ExpectedErr:     context.Canceled,
+			ExpectConnAlive: true,
+			ExpectLinkAlive: true,
+		})
 	})
 
-	fn(args{
-		Name:        "Connection level errors close link and connection",
-		InternalErr: &amqp.ConnError{},
-		ReturnedErr: nil,
-		ConnAlive:   false,
-		LinkAlive:   false,
+	t.Run("Connection level errors close link and connection", func(t *testing.T) {
+		testFn(t, args{
+			ReceiveErr: &amqp.ConnError{},
+			ExpectedErr: exported.NewError(
+				exported.CodeConnectionLost,
+				&amqp.ConnError{},
+			),
+			ExpectConnAlive: false,
+			ExpectLinkAlive: false,
+		})
 	})
 
-	fn(args{
-		Name:        "Link level errors close the link",
-		InternalErr: &amqp.LinkError{},
-		ReturnedErr: nil,
-		ConnAlive:   true,
-		LinkAlive:   false,
+	t.Run("Link level errors close the link", func(t *testing.T) {
+		testFn(t, args{
+			ReceiveErr: &amqp.LinkError{},
+			ExpectedErr: exported.NewError(
+				exported.CodeConnectionLost,
+				&amqp.LinkError{},
+			),
+			ExpectConnAlive: true,
+			ExpectLinkAlive: false,
+		})
 	})
 }
 
@@ -325,6 +348,7 @@ func TestReceiver_ReceiveMessages_SomeMessagesAndError(t *testing.T) {
 func TestReceiver_UserFacingErrors(t *testing.T) {
 	var receiveErr error
 
+	// all AMQPReceivers created from this client will return receiveErr whenver AMQPReceiver.Receive() is called.
 	_, client, cleanup := newClientWithMockedConn(t, &emulation.MockDataOptions{
 		PreReceiverMock: func(mr *emulation.MockReceiver, ctx context.Context) error {
 			if mr.Source != "$cbs" {
@@ -345,6 +369,7 @@ func TestReceiver_UserFacingErrors(t *testing.T) {
 
 	var asSBError *Error
 
+	// forcing a link error to come back on first use of AMQPReceiver.Receive()
 	receiveErr = &amqp.LinkError{}
 	messages, err := receiver.PeekMessages(context.Background(), 1, nil)
 	require.Empty(t, messages)
@@ -353,13 +378,14 @@ func TestReceiver_UserFacingErrors(t *testing.T) {
 
 	receiveErr = &amqp.ConnError{}
 	messages, err = receiver.ReceiveDeferredMessages(context.Background(), []int64{1}, nil)
-	require.Empty(t, messages)
 	require.ErrorAs(t, err, &asSBError)
 	require.Equal(t, CodeConnectionLost, asSBError.Code)
+	require.Empty(t, messages)
 
 	receiveErr = &amqp.ConnError{}
 	messages, err = receiver.ReceiveMessages(context.Background(), 1, nil)
-	require.NoError(t, err)
+	require.ErrorAs(t, err, &asSBError)
+	require.Equal(t, CodeConnectionLost, asSBError.Code)
 	require.Empty(t, messages)
 
 	receiveErr = internal.RPCError{Resp: &amqpwrap.RPCResponse{Code: internal.RPCResponseCodeLockLost}}
@@ -577,16 +603,22 @@ func TestReceiver_ReceiveMessages_CreditValidation(t *testing.T) {
 
 func TestReceiver_CreditsDontExceedMax(t *testing.T) {
 	type keyType string
+	totalCreditIssued := uint32(0)
 
 	md, client, cleanup := newClientWithMockedConn(t, &emulation.MockDataOptions{
 		PreReceiverMock: func(mr *emulation.MockReceiver, ctx context.Context) error {
 			if mr.Source == "queue" {
+				fn := func(credit uint32) error {
+					totalCreditIssued += credit
+					return mr.InternalIssueCredit(credit)
+				}
+
 				// first actual request, 5000 fresh credits.
-				mr.EXPECT().IssueCredit(uint32(5000)).DoAndReturn(mr.InternalIssueCredit)
+				mr.EXPECT().IssueCredit(uint32(5000)).DoAndReturn(fn)
 
 				// we're going to eat up one credit with a Receive() call and then
 				// issue 5000 again, and should only need to issue 1 new credit.
-				mr.EXPECT().IssueCredit(uint32(1)).DoAndReturn(mr.InternalIssueCredit)
+				mr.EXPECT().IssueCredit(uint32(1)).DoAndReturn(fn)
 
 				mr.EXPECT().Receive(mock.NewContextWithValueMatcher(keyType("FromReceive"), true), gomock.Nil()).DoAndReturn(mr.InternalReceive).AnyTimes()
 
@@ -613,6 +645,7 @@ func TestReceiver_CreditsDontExceedMax(t *testing.T) {
 	sender, err := client.NewSender("queue", nil)
 	require.NoError(t, err)
 
+	// we've got a gomock matcher that looks at the context and activates our InternalReceive() function.
 	baseReceiveCtx := context.WithValue(context.Background(), keyType("FromReceive"), true)
 
 	ctx, cancel := context.WithTimeout(baseReceiveCtx, time.Second)
@@ -625,28 +658,24 @@ func TestReceiver_CreditsDontExceedMax(t *testing.T) {
 	err = sender.SendMessage(context.Background(), &Message{Body: []byte("hello world")}, nil)
 	require.NoError(t, err)
 
-	logsFn := test.CaptureLogsForTest(false)
-
 	// no issue credit needed - we've still got the 5000 from last time since we didn't
 	// receive any messages.
 	messages, err = receiver.ReceiveMessages(baseReceiveCtx, 5000, nil)
 	require.NoError(t, err)
 	require.Equal(t, []string{"hello world"}, getSortedBodies(messages))
-	logs := logsFn()
 
-	require.Contains(t, logs, "[azsb.Receiver] [c:1, l:1, r:name:c:001|] Have 5000 credits, no new credits needed")
+	require.Equal(t, uint32(5000), totalCreditIssued)
 
 	ctx, cancel = context.WithTimeout(baseReceiveCtx, time.Second)
 	defer cancel()
-
-	logsFn = test.CaptureLogsForTest(false)
 
 	// we ate a credit last time since we received a single message, so this time we'll still
 	// need to issue some more to backfill.
 	messages, err = receiver.ReceiveMessages(ctx, 5000, nil)
 	require.ErrorIs(t, err, context.DeadlineExceeded)
 	require.Empty(t, messages)
-	require.Contains(t, logsFn(), "[azsb.Receiver] [c:1, l:1, r:name:c:001|] Issuing 1 credits, have 4999")
+
+	require.Equal(t, uint32(5000+1), totalCreditIssued)
 
 	require.Equal(t, 1, len(md.Events.GetOpenConns()))
 	require.Equal(t, 3+3, len(md.Events.GetOpenLinks()), "Sender and Receiver each own 3 links apiece ($mgmt, actual link)")

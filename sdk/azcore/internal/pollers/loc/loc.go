@@ -105,7 +105,7 @@ func (p *Poller[T]) Poll(ctx context.Context) (*http.Response, error) {
 			p.CurState = poller.StatusSucceeded
 		} else if resp.StatusCode == http.StatusTooManyRequests {
 			// the request is being throttled. DO NOT include
-			// this as a terminal failure. Preserve the
+			// this as a terminal failure. preserve the
 			// existing state and return the response.
 		} else {
 			p.CurState = poller.StatusFailed

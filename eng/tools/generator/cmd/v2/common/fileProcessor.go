@@ -668,7 +668,7 @@ func ReplaceReadmeNewClientName(packageRootPath string, exports exports.Content)
 		}
 	}
 
-	if oldClientName == fmt.Sprintf("%s()", clientName) {
+	if clientName == "" || oldClientName == "" || oldClientName == fmt.Sprintf("%s()", clientName) {
 		return nil
 	}
 

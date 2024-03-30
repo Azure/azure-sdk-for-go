@@ -61,7 +61,7 @@ steps:
 
   - template: /eng/common/pipelines/templates/steps/validate-all-packages.yml
     parameters:
-      Artifacts: ($(ArtifactsList) | ConvertFrom-Json)
+      Artifacts: '$(ArtifactsList)'
 
   - task: Powershell@2
     displayName: 'Dependency Check'

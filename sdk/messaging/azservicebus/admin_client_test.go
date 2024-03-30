@@ -32,10 +32,10 @@ func TestAdminClient_Queue_Forwarding(t *testing.T) {
 		require.NoError(t, err)
 	}()
 
-	parsed, err := conn.ParsedConnectionFromStr(cs)
+	parsed, err := conn.ParseConnectionString(cs)
 	require.NoError(t, err)
 
-	formatted := fmt.Sprintf("%s%s", fmt.Sprintf("https://%s/", parsed.Namespace), forwardToQueueName)
+	formatted := fmt.Sprintf("%s%s", fmt.Sprintf("https://%s/", parsed.FullyQualifiedNamespace), forwardToQueueName)
 
 	createResp, err := adminClient.CreateQueue(context.Background(), queueName, &admin.CreateQueueOptions{
 		Properties: &admin.QueueProperties{

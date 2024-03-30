@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"net/url"
+	"strconv"
 	"strings"
 )
 
@@ -32,6 +33,10 @@ type ConnectionStringProperties struct {
 
 	// SharedAccessSignature is the SharedAccessSignature value in the connection string.
 	SharedAccessSignature *string
+
+	// Emulator indicates that the connection string is for an emulator:
+	// ex: Endpoint=localhost:6765;SharedAccessKeyName=<< REDACTED >>;SharedAccessKey=<< REDACTED >>;UseDevelopmentEmulator=true
+	Emulator bool
 }
 
 // ParseConnectionString takes a connection string from the Azure portal and returns the
@@ -48,6 +53,7 @@ func ParseConnectionString(connStr string) (ConnectionStringProperties, error) {
 		sharedAccessKeyKey       = "SharedAccessKey"
 		entityPathKey            = "EntityPath"
 		sharedAccessSignatureKey = "SharedAccessSignature"
+		useEmulator              = "UseDevelopmentEmulator"
 	)
 
 	csp := ConnectionStringProperties{}
@@ -55,6 +61,10 @@ func ParseConnectionString(connStr string) (ConnectionStringProperties, error) {
 	splits := strings.Split(connStr, ";")
 
 	for _, split := range splits {
+		if split == "" {
+			continue
+		}
+
 		keyAndValue := strings.SplitN(split, "=", 2)
 		if len(keyAndValue) < 2 {
 			return ConnectionStringProperties{}, errors.New("failed parsing connection string due to unmatched key value separated by '='")
@@ -79,7 +89,19 @@ func ParseConnectionString(connStr string) (ConnectionStringProperties, error) {
 			csp.EntityPath = &value
 		case strings.EqualFold(sharedAccessSignatureKey, key):
 			csp.SharedAccessSignature = &value
+		case strings.EqualFold(useEmulator, key):
+			v, err := strconv.ParseBool(value)
+
+			if err != nil {
+				return ConnectionStringProperties{}, err
+			}
+
+			csp.Emulator = v
 		}
+	}
+
+	if csp.Emulator && !strings.HasPrefix(csp.Endpoint, "sb://localhost:") {
+		return ConnectionStringProperties{}, fmt.Errorf("UseEmulator=true can only be used with sb://localhost:<port>, not %s", csp.Endpoint)
 	}
 
 	if csp.FullyQualifiedNamespace == "" {

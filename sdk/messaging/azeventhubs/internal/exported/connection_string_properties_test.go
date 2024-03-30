@@ -33,6 +33,7 @@ func TestNewConnectionStringProperties(t *testing.T) {
 			SharedAccessKeyName:     &keyName,
 			SharedAccessKey:         &secret,
 			SharedAccessSignature:   nil,
+			Emulator:                false,
 		}, props)
 	})
 
@@ -99,5 +100,33 @@ func TestNewConnectionStringProperties(t *testing.T) {
 
 		_, err := exported.ParseConnectionString(s)
 		require.EqualError(t, err, "key \"SharedAccessKey\" or \"SharedAccessSignature\" cannot both be empty")
+	})
+
+	t.Run("UseDevelopmentEmulator", func(t *testing.T) {
+		cs := "Endpoint=sb://localhost:6765;SharedAccessKeyName=" + keyName + ";SharedAccessKey=" + secret + ";UseDevelopmentEmulator=true"
+		parsed, err := exported.ParseConnectionString(cs)
+		require.NoError(t, err)
+		require.True(t, parsed.Emulator)
+		require.Equal(t, "sb://localhost:6765", parsed.Endpoint)
+
+		// emulator can give connection strings that have a trailing ';'
+		cs = "Endpoint=sb://localhost:6765;SharedAccessKeyName=" + keyName + ";SharedAccessKey=" + secret + ";UseDevelopmentEmulator=true;"
+		parsed, err = exported.ParseConnectionString(cs)
+		require.NoError(t, err)
+		require.True(t, parsed.Emulator)
+		require.Equal(t, "sb://localhost:6765", parsed.Endpoint)
+
+		// UseDevelopmentEmulator only works for localhost
+		cs = "Endpoint=sb://myserver.com:6765;SharedAccessKeyName=" + keyName + ";SharedAccessKey=" + secret + ";UseDevelopmentEmulator=true"
+		parsed, err = exported.ParseConnectionString(cs)
+		require.EqualError(t, err, "UseEmulator=true can only be used with sb://localhost:<port>, not sb://myserver.com:6765")
+
+		// there's no reason for a person to pass False, but it's allowed.
+		// If they're not using the dev emulator then there's no special behavior, it's like a normal connection string
+		cs = "Endpoint=sb://localhost:6765;SharedAccessKeyName=" + keyName + ";SharedAccessKey=" + secret + ";UseDevelopmentEmulator=false"
+		parsed, err = exported.ParseConnectionString(cs)
+		require.NoError(t, err)
+		require.False(t, parsed.Emulator)
+		require.Equal(t, "sb://localhost:6765", parsed.Endpoint)
 	})
 }

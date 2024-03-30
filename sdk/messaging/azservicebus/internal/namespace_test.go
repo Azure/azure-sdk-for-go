@@ -407,3 +407,31 @@ func (f *fakeAMQPClient) Close() error {
 	f.closeCalled++
 	return nil
 }
+
+func TestNamespaceDisablingAMQPS(t *testing.T) {
+	t.Run("UseDevelopmentEmulator", func(t *testing.T) {
+		cs := "Endpoint=sb://localhost:6765;SharedAccessKeyName=" + "MyKey" + ";SharedAccessKey=" + "MySecret" + ";UseDevelopmentEmulator=true"
+		ns, err := NewNamespace(NamespaceWithConnectionString(cs))
+		require.NoError(t, err)
+
+		audience := ns.GetEntityAudience("hub1")
+		require.Equal(t, "amqp://localhost:6765/hub1", audience)
+	})
+
+	t.Run("Normal", func(t *testing.T) {
+		cs := "Endpoint=sb://localhost:6765;SharedAccessKeyName=" + "MyKey" + ";SharedAccessKey=" + "MySecret"
+		ns, err := NewNamespace(NamespaceWithConnectionString(cs))
+		require.NoError(t, err)
+
+		audience := ns.GetEntityAudience("hub1")
+		require.Equal(t, "amqps://localhost:6765/hub1", audience)
+	})
+
+	t.Run("TokenCredential", func(t *testing.T) {
+		ns, err := NewNamespace(NamespaceWithTokenCredential("localhost:6765", &fakeTokenCredential{}))
+		require.NoError(t, err)
+
+		audience := ns.GetEntityAudience("hub1")
+		require.Equal(t, "amqps://localhost:6765/hub1", audience)
+	})
+}

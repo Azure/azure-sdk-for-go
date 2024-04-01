@@ -4,7 +4,7 @@
 
 ### Features Added
 
-- Add in ability to handle emulator connection strings. (PR#TBD)
+- Add in ability to handle emulator connection strings. (PR#22663)
 
 ### Breaking Changes
 

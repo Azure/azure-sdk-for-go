@@ -43,7 +43,9 @@ type ConnectionStringProperties struct {
 // parsed representation.
 //
 // There are two supported formats:
+//
 //  1. Connection strings generated from the portal (or elsewhere) that contain an embedded key and keyname.
+//
 //  2. A connection string with an embedded SharedAccessSignature:
 //     Endpoint=sb://<sb>.servicebus.windows.net;SharedAccessSignature=SharedAccessSignature sr=<sb>.servicebus.windows.net&sig=<base64-sig>&se=<expiry>&skn=<keyname>"
 func ParseConnectionString(connStr string) (ConnectionStringProperties, error) {
@@ -100,8 +102,16 @@ func ParseConnectionString(connStr string) (ConnectionStringProperties, error) {
 		}
 	}
 
-	if csp.Emulator && !strings.HasPrefix(csp.Endpoint, "sb://localhost:") {
-		return ConnectionStringProperties{}, fmt.Errorf("UseEmulator=true can only be used with sb://localhost:<port>, not %s", csp.Endpoint)
+	if csp.Emulator {
+		// check that they're only connecting to localhost
+		endpointParts := strings.SplitN(csp.Endpoint, ":", 3) // allow for a port, if it exists.
+
+		if len(endpointParts) < 2 || endpointParts[0] != "sb" || endpointParts[1] != "//localhost" {
+			// there should always be at least two parts "sb:" and "//localhost"
+			// with an optional 3rd piece that's the port "1111".
+			// (we don't need to validate it's a valid host since it's been through url.Parse() above)
+			return ConnectionStringProperties{}, fmt.Errorf("UseDevelopmentEmulator=true can only be used with sb://localhost or sb://localhost:<port number>, not %s", csp.Endpoint)
+		}
 	}
 
 	if csp.FullyQualifiedNamespace == "" {

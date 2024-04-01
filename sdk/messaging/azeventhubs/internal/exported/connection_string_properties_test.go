@@ -109,6 +109,13 @@ func TestNewConnectionStringProperties(t *testing.T) {
 		require.True(t, parsed.Emulator)
 		require.Equal(t, "sb://localhost:6765", parsed.Endpoint)
 
+		// also allowed _without_ a port.
+		cs = "Endpoint=sb://localhost;SharedAccessKeyName=" + keyName + ";SharedAccessKey=" + secret + ";UseDevelopmentEmulator=true"
+		parsed, err = exported.ParseConnectionString(cs)
+		require.NoError(t, err)
+		require.True(t, parsed.Emulator)
+		require.Equal(t, "sb://localhost", parsed.Endpoint)
+
 		// emulator can give connection strings that have a trailing ';'
 		cs = "Endpoint=sb://localhost:6765;SharedAccessKeyName=" + keyName + ";SharedAccessKey=" + secret + ";UseDevelopmentEmulator=true;"
 		parsed, err = exported.ParseConnectionString(cs)
@@ -119,7 +126,7 @@ func TestNewConnectionStringProperties(t *testing.T) {
 		// UseDevelopmentEmulator only works for localhost
 		cs = "Endpoint=sb://myserver.com:6765;SharedAccessKeyName=" + keyName + ";SharedAccessKey=" + secret + ";UseDevelopmentEmulator=true"
 		parsed, err = exported.ParseConnectionString(cs)
-		require.EqualError(t, err, "UseEmulator=true can only be used with sb://localhost:<port>, not sb://myserver.com:6765")
+		require.EqualError(t, err, "UseDevelopmentEmulator=true can only be used with sb://localhost or sb://localhost:<port number>, not sb://myserver.com:6765")
 
 		// there's no reason for a person to pass False, but it's allowed.
 		// If they're not using the dev emulator then there's no special behavior, it's like a normal connection string

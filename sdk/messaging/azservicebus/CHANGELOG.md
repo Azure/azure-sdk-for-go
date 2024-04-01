@@ -1,8 +1,10 @@
 # Release History
 
-## 1.6.2 (Unreleased)
+## 1.7.0 (2024-04-02)
 
 ### Features Added
+
+- Add in ability to handle emulator connection strings. (PR#TBD)
 
 ### Breaking Changes
 

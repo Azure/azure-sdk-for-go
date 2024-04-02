@@ -646,6 +646,9 @@ type ChatCompletions struct {
 	// NOTE: This field is not available when using [Client.GetChatCompletionsStream].
 	Usage *CompletionsUsage
 
+	// The model name used for this completions request.
+	Model *string
+
 	// Content filtering results for zero or more prompts in the request. In a streaming request, results for different prompts
 	// may arrive at different times or in different orders.
 	PromptFilterResults []ContentFilterResultsForPrompt

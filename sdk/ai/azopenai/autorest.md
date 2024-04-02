@@ -59,7 +59,17 @@ directive:
         .replace(/populate\(objectMap, "model", (.)\.Model\)/g, 'populate(objectMap, "model", $1.DeploymentName)')
         .replace(/err = unpopulate\(val, "Model", &(.)\.Model\)/g, 'err = unpopulate(val, "Model", &$1.DeploymentName)')
         .replace(/Model:/g, "DeploymentName: ");
- 
+  # hack - we have _one_ spot where we want to keep it as Model (ChatCompletions.Model) since 
+  # it is the actual model name, not the deployment, in Azure OpenAI or OpenAI.
+  - from: models.go
+    where: $
+    transform: return $.replace(/(ChatCompletions.+?)DeploymentName/s, "$1Model");
+  - from: models_serde.go
+    where: $
+    transform: |
+      return $
+        .replace(/(func \(c ChatCompletions\) MarshalJSON.+?populate\(objectMap, "model", c\.)DeploymentName/s, "$1Model")
+        .replace(/(func \(c \*ChatCompletions\) UnmarshalJSON.+?unpopulate\(val, "Model", &c\.)DeploymentName/s, "$1Model");
 ```
 
 ## Polymorphic adjustments

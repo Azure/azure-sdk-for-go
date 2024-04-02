@@ -1295,6 +1295,7 @@ func (c ChatCompletions) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "choices", c.Choices)
 	populateTimeUnix(objectMap, "created", c.Created)
 	populate(objectMap, "id", c.ID)
+	populate(objectMap, "model", c.Model)
 	populate(objectMap, "prompt_filter_results", c.PromptFilterResults)
 	populate(objectMap, "system_fingerprint", c.SystemFingerprint)
 	populate(objectMap, "usage", c.Usage)
@@ -1318,6 +1319,9 @@ func (c *ChatCompletions) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "id":
 			err = unpopulate(val, "ID", &c.ID)
+			delete(rawMsg, key)
+		case "model":
+			err = unpopulate(val, "Model", &c.Model)
 			delete(rawMsg, key)
 		case "prompt_annotations":
 			fallthrough

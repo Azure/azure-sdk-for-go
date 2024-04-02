@@ -3,6 +3,8 @@
 ## 5.1.1 (2024-04-02)
 ### Other Changes
 
+- upgrade azcore version
+
 
 ## 5.1.0 (2024-02-23)
 ### Features Added

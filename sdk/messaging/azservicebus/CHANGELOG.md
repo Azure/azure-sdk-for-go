@@ -6,12 +6,6 @@
 
 - Add in ability to handle emulator connection strings. (PR#22663)
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
 ## 1.6.1 (2024-03-05)
 
 ### Bugs Fixed

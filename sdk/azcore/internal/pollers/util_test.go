@@ -188,5 +188,10 @@ func TestResultHelper(t *testing.T) {
 func TestIsNonTerminalHTTPStatusCode(t *testing.T) {
 	require.True(t, IsNonTerminalHTTPStatusCode(&http.Response{StatusCode: http.StatusRequestTimeout}))
 	require.True(t, IsNonTerminalHTTPStatusCode(&http.Response{StatusCode: http.StatusTooManyRequests}))
-	require.False(t, IsNonTerminalHTTPStatusCode(&http.Response{StatusCode: http.StatusInternalServerError}))
+	require.True(t, IsNonTerminalHTTPStatusCode(&http.Response{StatusCode: http.StatusInternalServerError}))
+	require.True(t, IsNonTerminalHTTPStatusCode(&http.Response{StatusCode: http.StatusBadGateway}))
+	require.True(t, IsNonTerminalHTTPStatusCode(&http.Response{StatusCode: http.StatusServiceUnavailable}))
+	require.True(t, IsNonTerminalHTTPStatusCode(&http.Response{StatusCode: http.StatusGatewayTimeout}))
+	require.False(t, IsNonTerminalHTTPStatusCode(&http.Response{StatusCode: http.StatusBadRequest}))
+	require.False(t, IsNonTerminalHTTPStatusCode(&http.Response{StatusCode: http.StatusNotImplemented}))
 }

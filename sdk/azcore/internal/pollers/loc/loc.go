@@ -103,7 +103,7 @@ func (p *Poller[T]) Poll(ctx context.Context) (*http.Response, error) {
 		} else if resp.StatusCode > 199 && resp.StatusCode < 300 {
 			// any 2xx other than a 202 indicates success
 			p.CurState = poller.StatusSucceeded
-		} else if resp.StatusCode == http.StatusRequestTimeout || resp.StatusCode == http.StatusTooManyRequests {
+		} else if pollers.IsNonTerminalHTTPStatusCode(resp) {
 			// the request timed out or is being throttled.
 			// DO NOT include this as a terminal failure. preserve
 			// the existing state and return the response.

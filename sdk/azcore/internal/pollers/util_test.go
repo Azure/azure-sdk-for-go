@@ -184,3 +184,9 @@ func TestResultHelper(t *testing.T) {
 	require.Equal(t, "happy", widgetResult.Result)
 	require.Equal(t, 123, widgetResult.Precalculated)
 }
+
+func TestIsNonTerminalHTTPStatusCode(t *testing.T) {
+	require.True(t, IsNonTerminalHTTPStatusCode(&http.Response{StatusCode: http.StatusRequestTimeout}))
+	require.True(t, IsNonTerminalHTTPStatusCode(&http.Response{StatusCode: http.StatusTooManyRequests}))
+	require.False(t, IsNonTerminalHTTPStatusCode(&http.Response{StatusCode: http.StatusInternalServerError}))
+}

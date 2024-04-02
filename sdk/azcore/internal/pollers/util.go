@@ -185,3 +185,9 @@ func ResultHelper[T any](resp *http.Response, failed bool, out *T) error {
 	}
 	return nil
 }
+
+// IsNonTerminalHTTPStatusCode returns true if the HTTP status code should be
+// considered non-terminal thus eligible for retry.
+func IsNonTerminalHTTPStatusCode(resp *http.Response) bool {
+	return resp.StatusCode == http.StatusRequestTimeout || resp.StatusCode == http.StatusTooManyRequests
+}

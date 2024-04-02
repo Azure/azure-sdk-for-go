@@ -159,7 +159,7 @@ func updateModels(azure bool, tv *testVars) {
 	tv.TextEmbedding3Small = model(azure, "text-embedding-3-small", "text-embedding-3-small")
 
 	tv.DallE.Model = model(azure, "dall-e-3", "dall-e-3")
-	tv.Whisper.Model = model(azure, "whisper", "whisper-1")
+	tv.Whisper.Model = model(azure, "whisper-deployment", "whisper-1")
 	tv.Vision.Model = model(azure, "gpt-4-vision-preview", "gpt-4-vision-preview")
 
 	// these are Azure-only features

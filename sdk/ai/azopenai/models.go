@@ -643,7 +643,11 @@ type ChatCompletions struct {
 	ID *string
 
 	// REQUIRED; Usage information for tokens processed and generated as part of this completions operation.
+	// NOTE: This field is not available when using [Client.GetChatCompletionsStream].
 	Usage *CompletionsUsage
+
+	// The model name used for this completions request.
+	Model *string
 
 	// Content filtering results for zero or more prompts in the request. In a streaming request, results for different prompts
 	// may arrive at different times or in different orders.
@@ -1503,6 +1507,8 @@ type EmbeddingsOptions struct {
 	Dimensions *int32
 
 	// The response encoding format to use for embedding data.
+	// - If using EmbeddingEncodingFormatFloat (the default), the value will be a []float32, in [EmbeddingItem.Embedding]
+	// - If using EmbeddingEncodingFormatBase64, the value will be a base-64 string in [EmbeddingItem.EmbeddingBase64]
 	EncodingFormat *EmbeddingEncodingFormat
 
 	// When using Azure OpenAI, specifies the input type to use for embedding search.

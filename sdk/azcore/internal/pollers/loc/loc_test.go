@@ -197,3 +197,26 @@ func TestWithThrottling(t *testing.T) {
 	require.EqualValues(t, 4, respCount)
 	require.EqualValues(t, poller.StatusSucceeded, lp.CurState)
 }
+
+func TestWithTimeout(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	srv.AppendResponse(mock.WithStatusCode(http.StatusAccepted))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusRequestTimeout))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusRequestTimeout))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
+	resp := initialResponse()
+	resp.Header.Set(shared.HeaderLocation, srv.URL())
+	lp, err := New[struct{}](exported.NewPipeline(shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
+		return srv.Do(req)
+	})), resp)
+	require.NoError(t, err)
+	respCount := 0
+	for !lp.Done() {
+		_, err = lp.Poll(context.Background())
+		require.NoError(t, err)
+		respCount++
+	}
+	require.EqualValues(t, 4, respCount)
+	require.EqualValues(t, poller.StatusSucceeded, lp.CurState)
+}

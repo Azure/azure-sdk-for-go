@@ -10,6 +10,7 @@
 * `ManagedIdentityCredential` now specifies resource IDs correctly for Azure Container Instances
 
 ### Other Changes
+* Increased `DefaultAzureCredential` reliability when authenticating a managed identity on an Azure VM
 
 ## 1.6.0-beta.2 (2024-02-06)
 

@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7b551033155a63739b6d28f79b9c07569f6179b8/specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/Profiles_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ac34f238dd6b9071f486b57e9f9f1a0c43ec6f6/specification/cdn/resource-manager/Microsoft.Cdn/stable/2024-02-01/examples/Profiles_List.json
 func ExampleProfilesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -52,6 +52,11 @@ func ExampleProfilesClient_NewListPager() {
 		// 			Kind: to.Ptr("frontdoor"),
 		// 			Properties: &armcdn.ProfileProperties{
 		// 				FrontDoorID: to.Ptr("3b4682da-b3e2-47a1-96ca-08ab3cb7294e"),
+		// 				LogScrubbing: &armcdn.ProfileLogScrubbing{
+		// 					ScrubbingRules: []*armcdn.ProfileScrubbingRules{
+		// 					},
+		// 					State: to.Ptr(armcdn.ProfileScrubbingStateEnabled),
+		// 				},
 		// 				OriginResponseTimeoutSeconds: to.Ptr[int32](30),
 		// 				ProvisioningState: to.Ptr(armcdn.ProfileProvisioningStateSucceeded),
 		// 				ResourceState: to.Ptr(armcdn.ProfileResourceStateActive),
@@ -70,6 +75,11 @@ func ExampleProfilesClient_NewListPager() {
 		// 			Kind: to.Ptr("frontdoor"),
 		// 			Properties: &armcdn.ProfileProperties{
 		// 				FrontDoorID: to.Ptr("3b4682da-b3e2-47a1-96ca-08ab3cb7294e"),
+		// 				LogScrubbing: &armcdn.ProfileLogScrubbing{
+		// 					ScrubbingRules: []*armcdn.ProfileScrubbingRules{
+		// 					},
+		// 					State: to.Ptr(armcdn.ProfileScrubbingStateEnabled),
+		// 				},
 		// 				OriginResponseTimeoutSeconds: to.Ptr[int32](30),
 		// 				ProvisioningState: to.Ptr(armcdn.ProfileProvisioningStateSucceeded),
 		// 				ResourceState: to.Ptr(armcdn.ProfileResourceStateActive),
@@ -82,7 +92,7 @@ func ExampleProfilesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7b551033155a63739b6d28f79b9c07569f6179b8/specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/Profiles_ListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ac34f238dd6b9071f486b57e9f9f1a0c43ec6f6/specification/cdn/resource-manager/Microsoft.Cdn/stable/2024-02-01/examples/Profiles_ListByResourceGroup.json
 func ExampleProfilesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -116,6 +126,11 @@ func ExampleProfilesClient_NewListByResourceGroupPager() {
 		// 			Kind: to.Ptr("frontdoor"),
 		// 			Properties: &armcdn.ProfileProperties{
 		// 				FrontDoorID: to.Ptr("3b4682da-b3e2-47a1-96ca-08ab3cb7294e"),
+		// 				LogScrubbing: &armcdn.ProfileLogScrubbing{
+		// 					ScrubbingRules: []*armcdn.ProfileScrubbingRules{
+		// 					},
+		// 					State: to.Ptr(armcdn.ProfileScrubbingStateEnabled),
+		// 				},
 		// 				OriginResponseTimeoutSeconds: to.Ptr[int32](30),
 		// 				ProvisioningState: to.Ptr(armcdn.ProfileProvisioningStateSucceeded),
 		// 				ResourceState: to.Ptr(armcdn.ProfileResourceStateActive),
@@ -134,6 +149,11 @@ func ExampleProfilesClient_NewListByResourceGroupPager() {
 		// 			Kind: to.Ptr("frontdoor"),
 		// 			Properties: &armcdn.ProfileProperties{
 		// 				FrontDoorID: to.Ptr("3b4682da-b3e2-47a1-96ca-08ab3cb7294e"),
+		// 				LogScrubbing: &armcdn.ProfileLogScrubbing{
+		// 					ScrubbingRules: []*armcdn.ProfileScrubbingRules{
+		// 					},
+		// 					State: to.Ptr(armcdn.ProfileScrubbingStateEnabled),
+		// 				},
 		// 				OriginResponseTimeoutSeconds: to.Ptr[int32](30),
 		// 				ProvisioningState: to.Ptr(armcdn.ProfileProvisioningStateSucceeded),
 		// 				ResourceState: to.Ptr(armcdn.ProfileResourceStateActive),
@@ -146,7 +166,7 @@ func ExampleProfilesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7b551033155a63739b6d28f79b9c07569f6179b8/specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/Profiles_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ac34f238dd6b9071f486b57e9f9f1a0c43ec6f6/specification/cdn/resource-manager/Microsoft.Cdn/stable/2024-02-01/examples/Profiles_Get.json
 func ExampleProfilesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -174,6 +194,11 @@ func ExampleProfilesClient_Get() {
 	// 	Kind: to.Ptr("frontdoor"),
 	// 	Properties: &armcdn.ProfileProperties{
 	// 		FrontDoorID: to.Ptr("3b4682da-b3e2-47a1-96ca-08ab3cb7294e"),
+	// 		LogScrubbing: &armcdn.ProfileLogScrubbing{
+	// 			ScrubbingRules: []*armcdn.ProfileScrubbingRules{
+	// 			},
+	// 			State: to.Ptr(armcdn.ProfileScrubbingStateEnabled),
+	// 		},
 	// 		OriginResponseTimeoutSeconds: to.Ptr[int32](30),
 	// 		ProvisioningState: to.Ptr(armcdn.ProfileProvisioningStateSucceeded),
 	// 		ResourceState: to.Ptr(armcdn.ProfileResourceStateActive),
@@ -184,7 +209,7 @@ func ExampleProfilesClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7b551033155a63739b6d28f79b9c07569f6179b8/specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/Profiles_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ac34f238dd6b9071f486b57e9f9f1a0c43ec6f6/specification/cdn/resource-manager/Microsoft.Cdn/stable/2024-02-01/examples/Profiles_Create.json
 func ExampleProfilesClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -231,7 +256,7 @@ func ExampleProfilesClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7b551033155a63739b6d28f79b9c07569f6179b8/specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/Profiles_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ac34f238dd6b9071f486b57e9f9f1a0c43ec6f6/specification/cdn/resource-manager/Microsoft.Cdn/stable/2024-02-01/examples/Profiles_Update.json
 func ExampleProfilesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -268,6 +293,11 @@ func ExampleProfilesClient_BeginUpdate() {
 	// 	Kind: to.Ptr("frontdoor"),
 	// 	Properties: &armcdn.ProfileProperties{
 	// 		FrontDoorID: to.Ptr("3b4682da-b3e2-47a1-96ca-08ab3cb7294e"),
+	// 		LogScrubbing: &armcdn.ProfileLogScrubbing{
+	// 			ScrubbingRules: []*armcdn.ProfileScrubbingRules{
+	// 			},
+	// 			State: to.Ptr(armcdn.ProfileScrubbingStateEnabled),
+	// 		},
 	// 		OriginResponseTimeoutSeconds: to.Ptr[int32](30),
 	// 		ProvisioningState: to.Ptr(armcdn.ProfileProvisioningStateSucceeded),
 	// 		ResourceState: to.Ptr(armcdn.ProfileResourceStateActive),
@@ -278,7 +308,7 @@ func ExampleProfilesClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7b551033155a63739b6d28f79b9c07569f6179b8/specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/Profiles_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ac34f238dd6b9071f486b57e9f9f1a0c43ec6f6/specification/cdn/resource-manager/Microsoft.Cdn/stable/2024-02-01/examples/Profiles_Delete.json
 func ExampleProfilesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -299,7 +329,7 @@ func ExampleProfilesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7b551033155a63739b6d28f79b9c07569f6179b8/specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/Profiles_CanMigrate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ac34f238dd6b9071f486b57e9f9f1a0c43ec6f6/specification/cdn/resource-manager/Microsoft.Cdn/stable/2024-02-01/examples/Profiles_CanMigrate.json
 func ExampleProfilesClient_BeginCanMigrate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -335,7 +365,7 @@ func ExampleProfilesClient_BeginCanMigrate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7b551033155a63739b6d28f79b9c07569f6179b8/specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/Profiles_Migrate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ac34f238dd6b9071f486b57e9f9f1a0c43ec6f6/specification/cdn/resource-manager/Microsoft.Cdn/stable/2024-02-01/examples/Profiles_Migrate.json
 func ExampleProfilesClient_BeginMigrate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -376,7 +406,7 @@ func ExampleProfilesClient_BeginMigrate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7b551033155a63739b6d28f79b9c07569f6179b8/specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/Profiles_MigrationCommit.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ac34f238dd6b9071f486b57e9f9f1a0c43ec6f6/specification/cdn/resource-manager/Microsoft.Cdn/stable/2024-02-01/examples/Profiles_MigrationCommit.json
 func ExampleProfilesClient_BeginMigrationCommit() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -397,7 +427,7 @@ func ExampleProfilesClient_BeginMigrationCommit() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7b551033155a63739b6d28f79b9c07569f6179b8/specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/Profiles_GenerateSsoUri.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ac34f238dd6b9071f486b57e9f9f1a0c43ec6f6/specification/cdn/resource-manager/Microsoft.Cdn/stable/2024-02-01/examples/Profiles_GenerateSsoUri.json
 func ExampleProfilesClient_GenerateSsoURI() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -420,7 +450,7 @@ func ExampleProfilesClient_GenerateSsoURI() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7b551033155a63739b6d28f79b9c07569f6179b8/specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/Profiles_ListSupportedOptimizationTypes.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ac34f238dd6b9071f486b57e9f9f1a0c43ec6f6/specification/cdn/resource-manager/Microsoft.Cdn/stable/2024-02-01/examples/Profiles_ListSupportedOptimizationTypes.json
 func ExampleProfilesClient_ListSupportedOptimizationTypes() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -445,7 +475,7 @@ func ExampleProfilesClient_ListSupportedOptimizationTypes() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7b551033155a63739b6d28f79b9c07569f6179b8/specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/Profiles_ListResourceUsage.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ac34f238dd6b9071f486b57e9f9f1a0c43ec6f6/specification/cdn/resource-manager/Microsoft.Cdn/stable/2024-02-01/examples/Profiles_ListResourceUsage.json
 func ExampleProfilesClient_NewListResourceUsagePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -182,6 +182,8 @@ func (c *managedIdentityClient) provideToken(ctx context.Context, params confide
 
 // authenticate acquires an access token
 func (c *managedIdentityClient) authenticate(ctx context.Context, id ManagedIDKind, scopes []string) (azcore.AccessToken, error) {
+	// no need to synchronize around this value because it's true only when DefaultAzureCredential constructed the client,
+	// and in that case ChainedTokenCredential.GetToken synchronizes goroutines that would execute this block
 	if c.probeIMDS {
 		cx, cancel := context.WithTimeout(ctx, imdsProbeTimeout)
 		defer cancel()

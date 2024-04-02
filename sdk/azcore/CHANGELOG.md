@@ -9,6 +9,7 @@
 ### Bugs Fixed
 
 * Pollers that use the `Location` header won't consider `http.StatusRequestTimeout` a terminal failure.
+* `runtime.Poller[T].Result` won't consider non-terminal error responses as terminal.
 
 ### Other Changes
 

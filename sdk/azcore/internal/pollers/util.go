@@ -185,3 +185,16 @@ func ResultHelper[T any](resp *http.Response, failed bool, out *T) error {
 	}
 	return nil
 }
+
+// IsNonTerminalHTTPStatusCode returns true if the HTTP status code should be
+// considered non-terminal thus eligible for retry.
+func IsNonTerminalHTTPStatusCode(resp *http.Response) bool {
+	return exported.HasStatusCode(resp,
+		http.StatusRequestTimeout,      // 408
+		http.StatusTooManyRequests,     // 429
+		http.StatusInternalServerError, // 500
+		http.StatusBadGateway,          // 502
+		http.StatusServiceUnavailable,  // 503
+		http.StatusGatewayTimeout,      // 504
+	)
+}

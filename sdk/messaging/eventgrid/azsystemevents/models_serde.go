@@ -885,7 +885,7 @@ func (a *internalACSAdvancedMessageChannelEventError) UnmarshalJSON(data []byte)
 func (a ACSAdvancedMessageContext) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "from", a.From)
-	populate(objectMap, "id", a.ID)
+	populate(objectMap, "id", a.MessageID)
 	return json.Marshal(objectMap)
 }
 
@@ -902,7 +902,7 @@ func (a *ACSAdvancedMessageContext) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "From", &a.From)
 			delete(rawMsg, key)
 		case "id":
-			err = unpopulate(val, "ID", &a.ID)
+			err = unpopulate(val, "MessageID", &a.MessageID)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -915,7 +915,7 @@ func (a *ACSAdvancedMessageContext) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ACSAdvancedMessageDeliveryStatusUpdatedEventData.
 func (a ACSAdvancedMessageDeliveryStatusUpdatedEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "channelType", a.ChannelType)
+	populate(objectMap, "channelType", a.ChannelKind)
 	populate(objectMap, "error", a.Error)
 	populate(objectMap, "from", a.From)
 	populate(objectMap, "messageId", a.MessageID)
@@ -935,7 +935,7 @@ func (a *ACSAdvancedMessageDeliveryStatusUpdatedEventData) UnmarshalJSON(data []
 		var err error
 		switch key {
 		case "channelType":
-			err = unpopulate(val, "ChannelType", &a.ChannelType)
+			err = unpopulate(val, "ChannelKind", &a.ChannelKind)
 			delete(rawMsg, key)
 		case "error":
 			err = unpopulate(val, "Error", &a.Error)
@@ -1005,7 +1005,7 @@ func (a *ACSAdvancedMessageEventData) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ACSAdvancedMessageInteractiveButtonReplyContent.
 func (a ACSAdvancedMessageInteractiveButtonReplyContent) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "id", a.ID)
+	populate(objectMap, "id", a.ButtonID)
 	populate(objectMap, "title", a.Title)
 	return json.Marshal(objectMap)
 }
@@ -1020,7 +1020,7 @@ func (a *ACSAdvancedMessageInteractiveButtonReplyContent) UnmarshalJSON(data []b
 		var err error
 		switch key {
 		case "id":
-			err = unpopulate(val, "ID", &a.ID)
+			err = unpopulate(val, "ButtonID", &a.ButtonID)
 			delete(rawMsg, key)
 		case "title":
 			err = unpopulate(val, "Title", &a.Title)
@@ -1038,7 +1038,7 @@ func (a ACSAdvancedMessageInteractiveContent) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "buttonReply", a.ButtonReply)
 	populate(objectMap, "listReply", a.ListReply)
-	populate(objectMap, "type", a.Type)
+	populate(objectMap, "type", a.ReplyKind)
 	return json.Marshal(objectMap)
 }
 
@@ -1058,7 +1058,7 @@ func (a *ACSAdvancedMessageInteractiveContent) UnmarshalJSON(data []byte) error 
 			err = unpopulate(val, "ListReply", &a.ListReply)
 			delete(rawMsg, key)
 		case "type":
-			err = unpopulate(val, "Type", &a.Type)
+			err = unpopulate(val, "ReplyKind", &a.ReplyKind)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -1072,7 +1072,7 @@ func (a *ACSAdvancedMessageInteractiveContent) UnmarshalJSON(data []byte) error 
 func (a ACSAdvancedMessageInteractiveListReplyContent) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "description", a.Description)
-	populate(objectMap, "id", a.ID)
+	populate(objectMap, "id", a.ListItemID)
 	populate(objectMap, "title", a.Title)
 	return json.Marshal(objectMap)
 }
@@ -1090,7 +1090,7 @@ func (a *ACSAdvancedMessageInteractiveListReplyContent) UnmarshalJSON(data []byt
 			err = unpopulate(val, "Description", &a.Description)
 			delete(rawMsg, key)
 		case "id":
-			err = unpopulate(val, "ID", &a.ID)
+			err = unpopulate(val, "ListItemID", &a.ListItemID)
 			delete(rawMsg, key)
 		case "title":
 			err = unpopulate(val, "Title", &a.Title)
@@ -1108,7 +1108,7 @@ func (a ACSAdvancedMessageMediaContent) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "caption", a.Caption)
 	populate(objectMap, "fileName", a.FileName)
-	populate(objectMap, "id", a.ID)
+	populate(objectMap, "id", a.MediaID)
 	populate(objectMap, "mimeType", a.MimeType)
 	return json.Marshal(objectMap)
 }
@@ -1129,7 +1129,7 @@ func (a *ACSAdvancedMessageMediaContent) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "FileName", &a.FileName)
 			delete(rawMsg, key)
 		case "id":
-			err = unpopulate(val, "ID", &a.ID)
+			err = unpopulate(val, "MediaID", &a.MediaID)
 			delete(rawMsg, key)
 		case "mimeType":
 			err = unpopulate(val, "MimeType", &a.MimeType)
@@ -1146,13 +1146,13 @@ func (a *ACSAdvancedMessageMediaContent) UnmarshalJSON(data []byte) error {
 func (a ACSAdvancedMessageReceivedEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "button", a.Button)
-	populate(objectMap, "channelType", a.ChannelType)
+	populate(objectMap, "channelType", a.ChannelKind)
 	populate(objectMap, "content", a.Content)
 	populate(objectMap, "context", a.Context)
 	populate(objectMap, "error", a.Error)
 	populate(objectMap, "from", a.From)
-	populate(objectMap, "interactive", a.Interactive)
-	populate(objectMap, "media", a.Media)
+	populate(objectMap, "interactive", a.InteractiveContent)
+	populate(objectMap, "media", a.MediaContent)
 	populateDateTimeRFC3339(objectMap, "receivedTimestamp", a.ReceivedTimestamp)
 	populate(objectMap, "to", a.To)
 	return json.Marshal(objectMap)
@@ -1171,7 +1171,7 @@ func (a *ACSAdvancedMessageReceivedEventData) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Button", &a.Button)
 			delete(rawMsg, key)
 		case "channelType":
-			err = unpopulate(val, "ChannelType", &a.ChannelType)
+			err = unpopulate(val, "ChannelKind", &a.ChannelKind)
 			delete(rawMsg, key)
 		case "content":
 			err = unpopulate(val, "Content", &a.Content)
@@ -1186,10 +1186,10 @@ func (a *ACSAdvancedMessageReceivedEventData) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "From", &a.From)
 			delete(rawMsg, key)
 		case "interactive":
-			err = unpopulate(val, "Interactive", &a.Interactive)
+			err = unpopulate(val, "InteractiveContent", &a.InteractiveContent)
 			delete(rawMsg, key)
 		case "media":
-			err = unpopulate(val, "Media", &a.Media)
+			err = unpopulate(val, "MediaContent", &a.MediaContent)
 			delete(rawMsg, key)
 		case "receivedTimestamp":
 			err = unpopulateDateTimeRFC3339(val, "ReceivedTimestamp", &a.ReceivedTimestamp)

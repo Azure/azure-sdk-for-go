@@ -8,6 +8,30 @@
 
 package azsystemevents
 
+// ACSAdvanceMessageDeliveryStatus - The updated message status
+type ACSAdvanceMessageDeliveryStatus string
+
+const (
+	ACSAdvanceMessageDeliveryStatusDelivered ACSAdvanceMessageDeliveryStatus = "delivered"
+	ACSAdvanceMessageDeliveryStatusFailed    ACSAdvanceMessageDeliveryStatus = "failed"
+	ACSAdvanceMessageDeliveryStatusRead      ACSAdvanceMessageDeliveryStatus = "read"
+	ACSAdvanceMessageDeliveryStatusSent      ACSAdvanceMessageDeliveryStatus = "sent"
+	ACSAdvanceMessageDeliveryStatusUnknown   ACSAdvanceMessageDeliveryStatus = "unknown"
+	ACSAdvanceMessageDeliveryStatusWarning   ACSAdvanceMessageDeliveryStatus = "warning"
+)
+
+// PossibleACSAdvanceMessageDeliveryStatusValues returns the possible values for the AcsAdvanceMessageDeliveryStatus const type.
+func PossibleACSAdvanceMessageDeliveryStatusValues() []ACSAdvanceMessageDeliveryStatus {
+	return []ACSAdvanceMessageDeliveryStatus{
+		ACSAdvanceMessageDeliveryStatusDelivered,
+		ACSAdvanceMessageDeliveryStatusFailed,
+		ACSAdvanceMessageDeliveryStatusRead,
+		ACSAdvanceMessageDeliveryStatusSent,
+		ACSAdvanceMessageDeliveryStatusUnknown,
+		ACSAdvanceMessageDeliveryStatusWarning,
+	}
+}
+
 // ACSEmailDeliveryReportStatus - The status of the email. Any value other than Delivered is considered failed.
 type ACSEmailDeliveryReportStatus string
 
@@ -39,39 +63,39 @@ func PossibleACSEmailDeliveryReportStatusValues() []ACSEmailDeliveryReportStatus
 	}
 }
 
-// ACSInteractiveReplyType - The Message interactive reply type
-type ACSInteractiveReplyType string
+// ACSInteractiveReplyKind - The Message interactive reply type
+type ACSInteractiveReplyKind string
 
 const (
-	// ACSInteractiveReplyTypeButtonReply - Messaged interactive reply type is ButtonReply
-	ACSInteractiveReplyTypeButtonReply ACSInteractiveReplyType = "buttonReply"
-	// ACSInteractiveReplyTypeListReply - Messaged interactive reply type is ListReply
-	ACSInteractiveReplyTypeListReply ACSInteractiveReplyType = "listReply"
-	// ACSInteractiveReplyTypeUnknown - Messaged interactive reply type is Unknown
-	ACSInteractiveReplyTypeUnknown ACSInteractiveReplyType = "unknown"
+	// ACSInteractiveReplyKindButtonReply - Messaged interactive reply type is ButtonReply
+	ACSInteractiveReplyKindButtonReply ACSInteractiveReplyKind = "buttonReply"
+	// ACSInteractiveReplyKindListReply - Messaged interactive reply type is ListReply
+	ACSInteractiveReplyKindListReply ACSInteractiveReplyKind = "listReply"
+	// ACSInteractiveReplyKindUnknown - Messaged interactive reply type is Unknown
+	ACSInteractiveReplyKindUnknown ACSInteractiveReplyKind = "unknown"
 )
 
-// PossibleACSInteractiveReplyTypeValues returns the possible values for the AcsInteractiveReplyType const type.
-func PossibleACSInteractiveReplyTypeValues() []ACSInteractiveReplyType {
-	return []ACSInteractiveReplyType{
-		ACSInteractiveReplyTypeButtonReply,
-		ACSInteractiveReplyTypeListReply,
-		ACSInteractiveReplyTypeUnknown,
+// PossibleACSInteractiveReplyKindValues returns the possible values for the AcsInteractiveReplyKind const type.
+func PossibleACSInteractiveReplyKindValues() []ACSInteractiveReplyKind {
+	return []ACSInteractiveReplyKind{
+		ACSInteractiveReplyKindButtonReply,
+		ACSInteractiveReplyKindListReply,
+		ACSInteractiveReplyKindUnknown,
 	}
 }
 
-// ACSMessageChannelType - The The messaged received channel type
-type ACSMessageChannelType string
+// ACSMessageChannelKind - The The messaged received channel Kind
+type ACSMessageChannelKind string
 
 const (
-	// ACSMessageChannelTypeWhatsapp - Updated messaged channel type is Whatsapp
-	ACSMessageChannelTypeWhatsapp ACSMessageChannelType = "whatsapp"
+	// ACSMessageChannelKindWhatsapp - Updated messaged channel type is Whatsapp
+	ACSMessageChannelKindWhatsapp ACSMessageChannelKind = "whatsapp"
 )
 
-// PossibleACSMessageChannelTypeValues returns the possible values for the AcsMessageChannelType const type.
-func PossibleACSMessageChannelTypeValues() []ACSMessageChannelType {
-	return []ACSMessageChannelType{
-		ACSMessageChannelTypeWhatsapp,
+// PossibleACSMessageChannelKindValues returns the possible values for the AcsMessageChannelKind const type.
+func PossibleACSMessageChannelKindValues() []ACSMessageChannelKind {
+	return []ACSMessageChannelKind{
+		ACSMessageChannelKindWhatsapp,
 	}
 }
 
@@ -148,7 +172,6 @@ const (
 	ACSRouterUpdatedWorkerPropertyAvailableForOffers    ACSRouterUpdatedWorkerProperty = "AvailableForOffers"
 	ACSRouterUpdatedWorkerPropertyChannelConfigurations ACSRouterUpdatedWorkerProperty = "ChannelConfigurations"
 	ACSRouterUpdatedWorkerPropertyLabels                ACSRouterUpdatedWorkerProperty = "Labels"
-	ACSRouterUpdatedWorkerPropertyMaxConcurrentOffers   ACSRouterUpdatedWorkerProperty = "MaxConcurrentOffers"
 	ACSRouterUpdatedWorkerPropertyQueueAssignments      ACSRouterUpdatedWorkerProperty = "QueueAssignments"
 	ACSRouterUpdatedWorkerPropertyTags                  ACSRouterUpdatedWorkerProperty = "Tags"
 	ACSRouterUpdatedWorkerPropertyTotalCapacity         ACSRouterUpdatedWorkerProperty = "TotalCapacity"
@@ -160,7 +183,6 @@ func PossibleACSRouterUpdatedWorkerPropertyValues() []ACSRouterUpdatedWorkerProp
 		ACSRouterUpdatedWorkerPropertyAvailableForOffers,
 		ACSRouterUpdatedWorkerPropertyChannelConfigurations,
 		ACSRouterUpdatedWorkerPropertyLabels,
-		ACSRouterUpdatedWorkerPropertyMaxConcurrentOffers,
 		ACSRouterUpdatedWorkerPropertyQueueAssignments,
 		ACSRouterUpdatedWorkerPropertyTags,
 		ACSRouterUpdatedWorkerPropertyTotalCapacity,

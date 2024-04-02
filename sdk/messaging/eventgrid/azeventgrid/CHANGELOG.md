@@ -1,14 +1,8 @@
 # Release History
 
-## 0.1.1 (Unreleased)
+## 1.0.0 (2024-04-09)
 
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- GA for the Event Grid basic module.
 
 ## 0.1.0 (2024-03-05)
 

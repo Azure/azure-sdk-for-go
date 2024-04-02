@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+* Pollers that use the `Location` header won't consider `http.StatusRequestTimeout` a terminal failure.
+
 ### Other Changes
 
 ## 1.11.0 (2024-04-01)

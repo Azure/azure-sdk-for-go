@@ -10,7 +10,7 @@ package armnetwork
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork"
-	moduleVersion = "v5.1.0"
+	moduleVersion = "v5.1.1"
 )
 
 // Access - Access to be allowed or denied.

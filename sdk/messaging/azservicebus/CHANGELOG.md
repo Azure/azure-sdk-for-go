@@ -1,14 +1,10 @@
 # Release History
 
-## 1.6.2 (Unreleased)
+## 1.7.0 (2024-04-02)
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Add in ability to handle emulator connection strings. (PR#22663)
 
 ## 1.6.1 (2024-03-05)
 

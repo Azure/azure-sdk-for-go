@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory/v6"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory/v7"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/01a71545e82bb98b8137d3038150c436d46a59ed/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Credentials_ListByFactory.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Credentials_ListByFactory.json
 func ExampleCredentialOperationsClient_NewListByFactoryPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -41,7 +41,7 @@ func ExampleCredentialOperationsClient_NewListByFactoryPager() {
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page.CredentialListResponse = armdatafactory.CredentialListResponse{
-		// 	Value: []*armdatafactory.ManagedIdentityCredentialResource{
+		// 	Value: []*armdatafactory.CredentialResource{
 		// 		{
 		// 			Name: to.Ptr("exampleLinkedService"),
 		// 			Type: to.Ptr("Microsoft.DataFactory/factories/credentials"),
@@ -50,8 +50,10 @@ func ExampleCredentialOperationsClient_NewListByFactoryPager() {
 		// 			Properties: &armdatafactory.ManagedIdentityCredential{
 		// 				Type: to.Ptr("ManagedIdentity"),
 		// 				Description: to.Ptr("Example description"),
-		// 				TypeProperties: &armdatafactory.ManagedIdentityTypeProperties{
-		// 					ResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-12345678abc/resourcegroups/exampleResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/exampleUami"),
+		// 				AdditionalProperties: map[string]any{
+		// 					"typeProperties": map[string]any{
+		// 						"resourceId": "/subscriptions/12345678-1234-1234-1234-12345678abc/resourcegroups/exampleResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/exampleUami",
+		// 					},
 		// 				},
 		// 			},
 		// 	}},
@@ -59,7 +61,7 @@ func ExampleCredentialOperationsClient_NewListByFactoryPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/01a71545e82bb98b8137d3038150c436d46a59ed/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Credentials_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Credentials_Create.json
 func ExampleCredentialOperationsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -70,11 +72,13 @@ func ExampleCredentialOperationsClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewCredentialOperationsClient().CreateOrUpdate(ctx, "exampleResourceGroup", "exampleFactoryName", "exampleCredential", armdatafactory.ManagedIdentityCredentialResource{
+	res, err := clientFactory.NewCredentialOperationsClient().CreateOrUpdate(ctx, "exampleResourceGroup", "exampleFactoryName", "exampleCredential", armdatafactory.CredentialResource{
 		Properties: &armdatafactory.ManagedIdentityCredential{
 			Type: to.Ptr("ManagedIdentity"),
-			TypeProperties: &armdatafactory.ManagedIdentityTypeProperties{
-				ResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-12345678abc/resourcegroups/exampleResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/exampleUami"),
+			AdditionalProperties: map[string]any{
+				"typeProperties": map[string]any{
+					"resourceId": "/subscriptions/12345678-1234-1234-1234-12345678abc/resourcegroups/exampleResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/exampleUami",
+				},
 			},
 		},
 	}, &armdatafactory.CredentialOperationsClientCreateOrUpdateOptions{IfMatch: nil})
@@ -84,21 +88,23 @@ func ExampleCredentialOperationsClient_CreateOrUpdate() {
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.ManagedIdentityCredentialResource = armdatafactory.ManagedIdentityCredentialResource{
+	// res.CredentialResource = armdatafactory.CredentialResource{
 	// 	Name: to.Ptr("exampleCredential"),
 	// 	Type: to.Ptr("Microsoft.DataFactory/factories/credentials"),
 	// 	Etag: to.Ptr("0a0062d4-0000-0000-0000-5b245bcf0000"),
 	// 	ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-12345678abc/resourceGroups/exampleResourceGroup/providers/Microsoft.DataFactory/factories/exampleFactoryName/credentials/exampleCredential"),
 	// 	Properties: &armdatafactory.ManagedIdentityCredential{
 	// 		Type: to.Ptr("ManagedIdentity"),
-	// 		TypeProperties: &armdatafactory.ManagedIdentityTypeProperties{
-	// 			ResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-12345678abc/resourcegroups/exampleResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/exampleUami"),
+	// 		AdditionalProperties: map[string]any{
+	// 			"typeProperties": map[string]any{
+	// 				"resourceId": "/subscriptions/12345678-1234-1234-1234-12345678abc/resourcegroups/exampleResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/exampleUami",
+	// 			},
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/01a71545e82bb98b8137d3038150c436d46a59ed/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Credentials_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Credentials_Get.json
 func ExampleCredentialOperationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -116,7 +122,7 @@ func ExampleCredentialOperationsClient_Get() {
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.ManagedIdentityCredentialResource = armdatafactory.ManagedIdentityCredentialResource{
+	// res.CredentialResource = armdatafactory.CredentialResource{
 	// 	Name: to.Ptr("exampleLinkedService"),
 	// 	Type: to.Ptr("Microsoft.DataFactory/factories/credentials"),
 	// 	Etag: to.Ptr("1500474f-0000-0200-0000-5cbe090d0000"),
@@ -124,14 +130,16 @@ func ExampleCredentialOperationsClient_Get() {
 	// 	Properties: &armdatafactory.ManagedIdentityCredential{
 	// 		Type: to.Ptr("ManagedIdentity"),
 	// 		Description: to.Ptr("Example description"),
-	// 		TypeProperties: &armdatafactory.ManagedIdentityTypeProperties{
-	// 			ResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-12345678abc/resourcegroups/exampleResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/exampleUami"),
+	// 		AdditionalProperties: map[string]any{
+	// 			"typeProperties": map[string]any{
+	// 				"resourceId": "/subscriptions/12345678-1234-1234-1234-12345678abc/resourcegroups/exampleResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/exampleUami",
+	// 			},
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/01a71545e82bb98b8137d3038150c436d46a59ed/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Credentials_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Credentials_Delete.json
 func ExampleCredentialOperationsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

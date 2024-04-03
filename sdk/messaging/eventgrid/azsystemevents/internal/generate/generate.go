@@ -243,32 +243,45 @@ func getConstantsReplacements(syms *gopls.SymbolMap) []rename {
 	var renames []rename
 
 	for _, sym := range syms.All() {
-		switch sym.Name {
-		case "RecordingChannelType":
+		matches := typeRE.FindStringSubmatch(sym.Name)
+
+		if matches != nil {
 			renames = append(renames, rename{
 				Orig: sym,
-				New:  "RecordingChannelKind",
+				New:  strings.ToUpper(matches[1]) + matches[2],
 			})
-		default:
-			matches := typeRE.FindStringSubmatch(sym.Name)
+		}
 
-			if matches != nil {
-				renames = append(renames, rename{
-					Orig: sym,
-					New:  strings.ToUpper(matches[1]) + matches[2],
-				})
-			}
+		matches = possibleRE.FindStringSubmatch(sym.Name)
 
-			matches = possibleRE.FindStringSubmatch(sym.Name)
-
-			if matches != nil {
-				renames = append(renames, rename{
-					Orig: sym,
-					New:  matches[1] + strings.ToUpper(matches[2]) + matches[3],
-				})
-			}
+		if matches != nil {
+			renames = append(renames, rename{
+				Orig: sym,
+				New:  matches[1] + strings.ToUpper(matches[2]) + matches[3],
+			})
 		}
 	}
+
+	// TODO: it'd be nice to make this a bit more general
+	renames = append(renames, rename{
+		Orig: syms.Get("RecordingChannelType"),
+		New:  "RecordingChannelKind",
+	})
+
+	renames = append(renames, rename{
+		Orig: syms.Get("PossibleRecordingChannelTypeValues"),
+		New:  "PossibleRecordingChannelKindValues",
+	})
+
+	renames = append(renames, rename{
+		Orig: syms.Get("RecordingChannelTypeMixed"),
+		New:  "RecordingChannelKindMixed",
+	})
+
+	renames = append(renames, rename{
+		Orig: syms.Get("RecordingChannelTypeUnmixed"),
+		New:  "RecordingChannelKindUnmixed",
+	})
 
 	sort.Slice(renames, func(i, j int) bool {
 		return renames[i].New < renames[j].New

@@ -10,7 +10,7 @@ package armdevcenter
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devcenter/armdevcenter"
-	moduleVersion = "v1.2.0-beta.1"
+	moduleVersion = "v2.0.0"
 )
 
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -40,6 +40,37 @@ func PossibleCatalogConnectionStateValues() []CatalogConnectionState {
 	return []CatalogConnectionState{
 		CatalogConnectionStateConnected,
 		CatalogConnectionStateDisconnected,
+	}
+}
+
+// CatalogItemSyncEnableStatus - Catalog item sync types enable or disable status. Indicates whether project catalogs are
+// allowed to sync catalog items under projects associated to this dev center.
+type CatalogItemSyncEnableStatus string
+
+const (
+	CatalogItemSyncEnableStatusDisabled CatalogItemSyncEnableStatus = "Disabled"
+	CatalogItemSyncEnableStatusEnabled  CatalogItemSyncEnableStatus = "Enabled"
+)
+
+// PossibleCatalogItemSyncEnableStatusValues returns the possible values for the CatalogItemSyncEnableStatus const type.
+func PossibleCatalogItemSyncEnableStatusValues() []CatalogItemSyncEnableStatus {
+	return []CatalogItemSyncEnableStatus{
+		CatalogItemSyncEnableStatusDisabled,
+		CatalogItemSyncEnableStatusEnabled,
+	}
+}
+
+// CatalogItemType - Indicates catalog item types.
+type CatalogItemType string
+
+const (
+	CatalogItemTypeEnvironmentDefinition CatalogItemType = "EnvironmentDefinition"
+)
+
+// PossibleCatalogItemTypeValues returns the possible values for the CatalogItemType const type.
+func PossibleCatalogItemTypeValues() []CatalogItemType {
+	return []CatalogItemType{
+		CatalogItemTypeEnvironmentDefinition,
 	}
 }
 
@@ -132,24 +163,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 		CreatedByTypeKey,
 		CreatedByTypeManagedIdentity,
 		CreatedByTypeUser,
-	}
-}
-
-// CustomizationTaskInputType - Type of the input.
-type CustomizationTaskInputType string
-
-const (
-	CustomizationTaskInputTypeBoolean CustomizationTaskInputType = "boolean"
-	CustomizationTaskInputTypeNumber  CustomizationTaskInputType = "number"
-	CustomizationTaskInputTypeString  CustomizationTaskInputType = "string"
-)
-
-// PossibleCustomizationTaskInputTypeValues returns the possible values for the CustomizationTaskInputType const type.
-func PossibleCustomizationTaskInputTypeValues() []CustomizationTaskInputType {
-	return []CustomizationTaskInputType{
-		CustomizationTaskInputTypeBoolean,
-		CustomizationTaskInputTypeNumber,
-		CustomizationTaskInputTypeString,
 	}
 }
 

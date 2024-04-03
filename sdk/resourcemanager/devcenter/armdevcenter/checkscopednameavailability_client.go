@@ -20,23 +20,23 @@ import (
 	"strings"
 )
 
-// CheckNameAvailabilityClient contains the methods for the CheckNameAvailability group.
-// Don't use this type directly, use NewCheckNameAvailabilityClient() instead.
-type CheckNameAvailabilityClient struct {
+// CheckScopedNameAvailabilityClient contains the methods for the CheckScopedNameAvailability group.
+// Don't use this type directly, use NewCheckScopedNameAvailabilityClient() instead.
+type CheckScopedNameAvailabilityClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewCheckNameAvailabilityClient creates a new instance of CheckNameAvailabilityClient with the specified values.
+// NewCheckScopedNameAvailabilityClient creates a new instance of CheckScopedNameAvailabilityClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
-func NewCheckNameAvailabilityClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CheckNameAvailabilityClient, error) {
+func NewCheckScopedNameAvailabilityClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CheckScopedNameAvailabilityClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
-	client := &CheckNameAvailabilityClient{
+	client := &CheckScopedNameAvailabilityClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
@@ -48,33 +48,33 @@ func NewCheckNameAvailabilityClient(subscriptionID string, credential azcore.Tok
 //
 // Generated from API version 2024-02-01
 //   - nameAvailabilityRequest - The required parameters for checking if resource name is available.
-//   - options - CheckNameAvailabilityClientExecuteOptions contains the optional parameters for the CheckNameAvailabilityClient.Execute
+//   - options - CheckScopedNameAvailabilityClientExecuteOptions contains the optional parameters for the CheckScopedNameAvailabilityClient.Execute
 //     method.
-func (client *CheckNameAvailabilityClient) Execute(ctx context.Context, nameAvailabilityRequest CheckNameAvailabilityRequest, options *CheckNameAvailabilityClientExecuteOptions) (CheckNameAvailabilityClientExecuteResponse, error) {
+func (client *CheckScopedNameAvailabilityClient) Execute(ctx context.Context, nameAvailabilityRequest CheckScopedNameAvailabilityRequest, options *CheckScopedNameAvailabilityClientExecuteOptions) (CheckScopedNameAvailabilityClientExecuteResponse, error) {
 	var err error
-	const operationName = "CheckNameAvailabilityClient.Execute"
+	const operationName = "CheckScopedNameAvailabilityClient.Execute"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.executeCreateRequest(ctx, nameAvailabilityRequest, options)
 	if err != nil {
-		return CheckNameAvailabilityClientExecuteResponse{}, err
+		return CheckScopedNameAvailabilityClientExecuteResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return CheckNameAvailabilityClientExecuteResponse{}, err
+		return CheckScopedNameAvailabilityClientExecuteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return CheckNameAvailabilityClientExecuteResponse{}, err
+		return CheckScopedNameAvailabilityClientExecuteResponse{}, err
 	}
 	resp, err := client.executeHandleResponse(httpResp)
 	return resp, err
 }
 
 // executeCreateRequest creates the Execute request.
-func (client *CheckNameAvailabilityClient) executeCreateRequest(ctx context.Context, nameAvailabilityRequest CheckNameAvailabilityRequest, options *CheckNameAvailabilityClientExecuteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DevCenter/checkNameAvailability"
+func (client *CheckScopedNameAvailabilityClient) executeCreateRequest(ctx context.Context, nameAvailabilityRequest CheckScopedNameAvailabilityRequest, options *CheckScopedNameAvailabilityClientExecuteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DevCenter/checkScopedNameAvailability"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -94,10 +94,10 @@ func (client *CheckNameAvailabilityClient) executeCreateRequest(ctx context.Cont
 }
 
 // executeHandleResponse handles the Execute response.
-func (client *CheckNameAvailabilityClient) executeHandleResponse(resp *http.Response) (CheckNameAvailabilityClientExecuteResponse, error) {
-	result := CheckNameAvailabilityClientExecuteResponse{}
+func (client *CheckScopedNameAvailabilityClient) executeHandleResponse(resp *http.Response) (CheckScopedNameAvailabilityClientExecuteResponse, error) {
+	result := CheckScopedNameAvailabilityClientExecuteResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CheckNameAvailabilityResponse); err != nil {
-		return CheckNameAvailabilityClientExecuteResponse{}, err
+		return CheckScopedNameAvailabilityClientExecuteResponse{}, err
 	}
 	return result, nil
 }

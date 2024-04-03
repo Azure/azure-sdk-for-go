@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devcenter/armdevcenter"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devcenter/armdevcenter/v2"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -30,11 +30,11 @@ type CatalogsServer struct {
 	BeginConnect func(ctx context.Context, resourceGroupName string, devCenterName string, catalogName string, options *armdevcenter.CatalogsClientBeginConnectOptions) (resp azfake.PollerResponder[armdevcenter.CatalogsClientConnectResponse], errResp azfake.ErrorResponder)
 
 	// BeginCreateOrUpdate is the fake for method CatalogsClient.BeginCreateOrUpdate
-	// HTTP status codes to indicate success: http.StatusCreated
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, devCenterName string, catalogName string, body armdevcenter.Catalog, options *armdevcenter.CatalogsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armdevcenter.CatalogsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method CatalogsClient.BeginDelete
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	// HTTP status codes to indicate success: http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, devCenterName string, catalogName string, options *armdevcenter.CatalogsClientBeginDeleteOptions) (resp azfake.PollerResponder[armdevcenter.CatalogsClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method CatalogsClient.Get
@@ -213,9 +213,9 @@ func (c *CatalogsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request)
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusCreated}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
 		c.beginCreateOrUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusCreated", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginCreateOrUpdate) {
 		c.beginCreateOrUpdate.remove(req)
@@ -261,9 +261,9 @@ func (c *CatalogsServerTransport) dispatchBeginDelete(req *http.Request) (*http.
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !contains([]int{http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		c.beginDelete.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginDelete) {
 		c.beginDelete.remove(req)

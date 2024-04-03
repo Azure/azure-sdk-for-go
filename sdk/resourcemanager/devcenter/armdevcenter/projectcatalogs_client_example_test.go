@@ -18,8 +18,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devcenter/armdevcenter/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/Catalogs_List.json
-func ExampleCatalogsClient_NewListByDevCenterPager() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/ProjectCatalogs_List.json
+func ExampleProjectCatalogsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,7 @@ func ExampleCatalogsClient_NewListByDevCenterPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewCatalogsClient().NewListByDevCenterPager("rg1", "Contoso", &armdevcenter.CatalogsClientListByDevCenterOptions{Top: nil})
+	pager := clientFactory.NewProjectCatalogsClient().NewListPager("rg1", "DevProject", &armdevcenter.ProjectCatalogsClientListOptions{Top: nil})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -44,8 +44,8 @@ func ExampleCatalogsClient_NewListByDevCenterPager() {
 		// 	Value: []*armdevcenter.Catalog{
 		// 		{
 		// 			Name: to.Ptr("CentralCatalog"),
-		// 			Type: to.Ptr("Microsoft.DevCenter/devcenters/catalogs"),
-		// 			ID: to.Ptr("/subscriptions/0ac520ee-14c0-480f-b6c9-0a90c58ffff/resourceGroups/rg1/providers/Microsoft.DevCenter/devcenters/Contoso/catalogs/CentralCatalog"),
+		// 			Type: to.Ptr("Microsoft.DevCenter/projects/catalogs"),
+		// 			ID: to.Ptr("/subscriptions/0ac520ee-14c0-480f-b6c9-0a90c58ffff/resourceGroups/rg1/providers/Microsoft.DevCenter/projects/DevProject/Contoso/catalogs"),
 		// 			SystemData: &armdevcenter.SystemData{
 		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-18T18:24:24.818Z"); return t}()),
 		// 				CreatedBy: to.Ptr("User1"),
@@ -80,8 +80,8 @@ func ExampleCatalogsClient_NewListByDevCenterPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/Catalogs_Get.json
-func ExampleCatalogsClient_Get() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/ProjectCatalogs_Get.json
+func ExampleProjectCatalogsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -91,7 +91,7 @@ func ExampleCatalogsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewCatalogsClient().Get(ctx, "rg1", "Contoso", "CentralCatalog", nil)
+	res, err := clientFactory.NewProjectCatalogsClient().Get(ctx, "rg1", "DevProject", "CentralCatalog", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -100,8 +100,8 @@ func ExampleCatalogsClient_Get() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.Catalog = armdevcenter.Catalog{
 	// 	Name: to.Ptr("CentralCatalog"),
-	// 	Type: to.Ptr("Microsoft.DevCenter/devcenters/catalogs"),
-	// 	ID: to.Ptr("/subscriptions/0ac520ee-14c0-480f-b6c9-0a90c58ffff/resourceGroups/rg1/providers/Microsoft.DevCenter/devcenters/Contoso/catalogs/CentralCatalog"),
+	// 	Type: to.Ptr("Microsoft.DevCenter/projects/catalogs"),
+	// 	ID: to.Ptr("/subscriptions/0ac520ee-14c0-480f-b6c9-0a90c58ffff/resourceGroups/rg1/providers/Microsoft.DevCenter/projects/DevProject/catalogs/CentralCatalog"),
 	// 	SystemData: &armdevcenter.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-18T18:24:24.818Z"); return t}()),
 	// 		CreatedBy: to.Ptr("User1"),
@@ -117,26 +117,27 @@ func ExampleCatalogsClient_Get() {
 	// 			SecretIdentifier: to.Ptr("https://contosokv.vault.azure.net/secrets/CentralRepoPat"),
 	// 			URI: to.Ptr("https://github.com/Contoso/centralrepo-fake.git"),
 	// 		},
-	// 		SyncType: to.Ptr(armdevcenter.CatalogSyncTypeScheduled),
 	// 		ConnectionState: to.Ptr(armdevcenter.CatalogConnectionStateConnected),
 	// 		LastConnectionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-18T18:28:00.314Z"); return t}()),
 	// 		LastSyncStats: &armdevcenter.SyncStats{
 	// 			Added: to.Ptr[int32](1),
 	// 			Removed: to.Ptr[int32](1),
-	// 			SynchronizationErrors: to.Ptr[int32](1),
-	// 			Unchanged: to.Ptr[int32](1),
-	// 			Updated: to.Ptr[int32](1),
-	// 			ValidationErrors: to.Ptr[int32](1),
+	// 			SyncedCatalogItemTypes: []*armdevcenter.CatalogItemType{
+	// 				to.Ptr(armdevcenter.CatalogItemTypeEnvironmentDefinition)},
+	// 				SynchronizationErrors: to.Ptr[int32](1),
+	// 				Unchanged: to.Ptr[int32](1),
+	// 				Updated: to.Ptr[int32](1),
+	// 				ValidationErrors: to.Ptr[int32](1),
+	// 			},
+	// 			LastSyncTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-18T18:28:00.314Z"); return t}()),
+	// 			ProvisioningState: to.Ptr(armdevcenter.ProvisioningStateSucceeded),
+	// 			SyncState: to.Ptr(armdevcenter.CatalogSyncStateSucceeded),
 	// 		},
-	// 		LastSyncTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-18T18:28:00.314Z"); return t}()),
-	// 		ProvisioningState: to.Ptr(armdevcenter.ProvisioningStateSucceeded),
-	// 		SyncState: to.Ptr(armdevcenter.CatalogSyncStateSucceeded),
-	// 	},
-	// }
+	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/Catalogs_CreateAdo.json
-func ExampleCatalogsClient_BeginCreateOrUpdate_catalogsCreateOrUpdateAdo() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/ProjectCatalogs_CreateAdo.json
+func ExampleProjectCatalogsClient_BeginCreateOrUpdate_projectCatalogsCreateOrUpdateAdo() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -146,7 +147,7 @@ func ExampleCatalogsClient_BeginCreateOrUpdate_catalogsCreateOrUpdateAdo() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewCatalogsClient().BeginCreateOrUpdate(ctx, "rg1", "Contoso", "CentralCatalog", armdevcenter.Catalog{
+	poller, err := clientFactory.NewProjectCatalogsClient().BeginCreateOrUpdate(ctx, "rg1", "DevProject", "CentralCatalog", armdevcenter.Catalog{
 		Properties: &armdevcenter.CatalogProperties{
 			AdoGit: &armdevcenter.GitCatalog{
 				Path:             to.Ptr("/templates"),
@@ -154,7 +155,6 @@ func ExampleCatalogsClient_BeginCreateOrUpdate_catalogsCreateOrUpdateAdo() {
 				SecretIdentifier: to.Ptr("https://contosokv.vault.azure.net/secrets/CentralRepoPat"),
 				URI:              to.Ptr("https://contoso@dev.azure.com/contoso/contosoOrg/_git/centralrepo-fakecontoso"),
 			},
-			SyncType: to.Ptr(armdevcenter.CatalogSyncTypeScheduled),
 		},
 	}, nil)
 	if err != nil {
@@ -169,8 +169,8 @@ func ExampleCatalogsClient_BeginCreateOrUpdate_catalogsCreateOrUpdateAdo() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.Catalog = armdevcenter.Catalog{
 	// 	Name: to.Ptr("CentralCatalog"),
-	// 	Type: to.Ptr("Microsoft.DevCenter/devcenters/catalogs"),
-	// 	ID: to.Ptr("/subscriptions/0ac520ee-14c0-480f-b6c9-0a90c58ffff/resourceGroups/rg1/providers/Microsoft.DevCenter/devcenters/Contoso/catalogs/CentralCatalog"),
+	// 	Type: to.Ptr("Microsoft.DevCenter/projects/catalogs"),
+	// 	ID: to.Ptr("/subscriptions/0ac520ee-14c0-480f-b6c9-0a90c58ffff/resourceGroups/rg1/providers/Microsoft.DevCenter/projects/DevProject/catalogs/CentralCatalog"),
 	// 	SystemData: &armdevcenter.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-18T18:24:24.818Z"); return t}()),
 	// 		CreatedBy: to.Ptr("User1"),
@@ -186,24 +186,25 @@ func ExampleCatalogsClient_BeginCreateOrUpdate_catalogsCreateOrUpdateAdo() {
 	// 			SecretIdentifier: to.Ptr("https://contosokv.vault.azure.net/secrets/CentralRepoPat"),
 	// 			URI: to.Ptr("https://contoso@dev.azure.com/contoso/contosoOrg/_git/centralrepo-fakecontoso"),
 	// 		},
-	// 		SyncType: to.Ptr(armdevcenter.CatalogSyncTypeScheduled),
 	// 		ConnectionState: to.Ptr(armdevcenter.CatalogConnectionStateConnected),
 	// 		LastSyncStats: &armdevcenter.SyncStats{
 	// 			Added: to.Ptr[int32](0),
 	// 			Removed: to.Ptr[int32](0),
-	// 			SynchronizationErrors: to.Ptr[int32](0),
-	// 			Unchanged: to.Ptr[int32](0),
-	// 			Updated: to.Ptr[int32](0),
-	// 			ValidationErrors: to.Ptr[int32](0),
+	// 			SyncedCatalogItemTypes: []*armdevcenter.CatalogItemType{
+	// 				to.Ptr(armdevcenter.CatalogItemTypeEnvironmentDefinition)},
+	// 				SynchronizationErrors: to.Ptr[int32](0),
+	// 				Unchanged: to.Ptr[int32](0),
+	// 				Updated: to.Ptr[int32](0),
+	// 				ValidationErrors: to.Ptr[int32](0),
+	// 			},
+	// 			ProvisioningState: to.Ptr(armdevcenter.ProvisioningStateSucceeded),
+	// 			SyncState: to.Ptr(armdevcenter.CatalogSyncStateSucceeded),
 	// 		},
-	// 		ProvisioningState: to.Ptr(armdevcenter.ProvisioningStateSucceeded),
-	// 		SyncState: to.Ptr(armdevcenter.CatalogSyncStateSucceeded),
-	// 	},
-	// }
+	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/Catalogs_CreateGitHub.json
-func ExampleCatalogsClient_BeginCreateOrUpdate_catalogsCreateOrUpdateGitHub() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/ProjectCatalogs_CreateGitHub.json
+func ExampleProjectCatalogsClient_BeginCreateOrUpdate_projectCatalogsCreateOrUpdateGitHub() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -213,7 +214,7 @@ func ExampleCatalogsClient_BeginCreateOrUpdate_catalogsCreateOrUpdateGitHub() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewCatalogsClient().BeginCreateOrUpdate(ctx, "rg1", "Contoso", "CentralCatalog", armdevcenter.Catalog{
+	poller, err := clientFactory.NewProjectCatalogsClient().BeginCreateOrUpdate(ctx, "rg1", "DevProject", "CentralCatalog", armdevcenter.Catalog{
 		Properties: &armdevcenter.CatalogProperties{
 			GitHub: &armdevcenter.GitCatalog{
 				Path:             to.Ptr("/templates"),
@@ -221,7 +222,6 @@ func ExampleCatalogsClient_BeginCreateOrUpdate_catalogsCreateOrUpdateGitHub() {
 				SecretIdentifier: to.Ptr("https://contosokv.vault.azure.net/secrets/CentralRepoPat"),
 				URI:              to.Ptr("https://github.com/Contoso/centralrepo-fake.git"),
 			},
-			SyncType: to.Ptr(armdevcenter.CatalogSyncTypeManual),
 		},
 	}, nil)
 	if err != nil {
@@ -236,8 +236,8 @@ func ExampleCatalogsClient_BeginCreateOrUpdate_catalogsCreateOrUpdateGitHub() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.Catalog = armdevcenter.Catalog{
 	// 	Name: to.Ptr("CentralCatalog"),
-	// 	Type: to.Ptr("Microsoft.DevCenter/devcenters/catalogs"),
-	// 	ID: to.Ptr("/subscriptions/0ac520ee-14c0-480f-b6c9-0a90c58ffff/resourceGroups/rg1/providers/Microsoft.DevCenter/devcenters/Contoso/catalogs/CentralCatalog"),
+	// 	Type: to.Ptr("Microsoft.DevCenter/projects/catalogs"),
+	// 	ID: to.Ptr("/subscriptions/0ac520ee-14c0-480f-b6c9-0a90c58ffff/resourceGroups/rg1/providers/Microsoft.DevCenter/projects/DevProject/catalogs/CentralCatalog"),
 	// 	SystemData: &armdevcenter.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-18T18:24:24.818Z"); return t}()),
 	// 		CreatedBy: to.Ptr("User1"),
@@ -253,24 +253,25 @@ func ExampleCatalogsClient_BeginCreateOrUpdate_catalogsCreateOrUpdateGitHub() {
 	// 			SecretIdentifier: to.Ptr("https://contosokv.vault.azure.net/secrets/CentralRepoPat"),
 	// 			URI: to.Ptr("https://github.com/Contoso/centralrepo-fake.git"),
 	// 		},
-	// 		SyncType: to.Ptr(armdevcenter.CatalogSyncTypeManual),
 	// 		ConnectionState: to.Ptr(armdevcenter.CatalogConnectionStateConnected),
 	// 		LastSyncStats: &armdevcenter.SyncStats{
 	// 			Added: to.Ptr[int32](0),
 	// 			Removed: to.Ptr[int32](0),
-	// 			SynchronizationErrors: to.Ptr[int32](0),
-	// 			Unchanged: to.Ptr[int32](0),
-	// 			Updated: to.Ptr[int32](0),
-	// 			ValidationErrors: to.Ptr[int32](0),
+	// 			SyncedCatalogItemTypes: []*armdevcenter.CatalogItemType{
+	// 				to.Ptr(armdevcenter.CatalogItemTypeEnvironmentDefinition)},
+	// 				SynchronizationErrors: to.Ptr[int32](0),
+	// 				Unchanged: to.Ptr[int32](0),
+	// 				Updated: to.Ptr[int32](0),
+	// 				ValidationErrors: to.Ptr[int32](0),
+	// 			},
+	// 			ProvisioningState: to.Ptr(armdevcenter.ProvisioningStateSucceeded),
+	// 			SyncState: to.Ptr(armdevcenter.CatalogSyncStateSucceeded),
 	// 		},
-	// 		ProvisioningState: to.Ptr(armdevcenter.ProvisioningStateSucceeded),
-	// 		SyncState: to.Ptr(armdevcenter.CatalogSyncStateSucceeded),
-	// 	},
-	// }
+	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/Catalogs_Patch.json
-func ExampleCatalogsClient_BeginUpdate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/ProjectCatalogs_Patch.json
+func ExampleProjectCatalogsClient_BeginPatch() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -280,12 +281,11 @@ func ExampleCatalogsClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewCatalogsClient().BeginUpdate(ctx, "rg1", "Contoso", "CentralCatalog", armdevcenter.CatalogUpdate{
+	poller, err := clientFactory.NewProjectCatalogsClient().BeginPatch(ctx, "rg1", "DevProject", "CentralCatalog", armdevcenter.CatalogUpdate{
 		Properties: &armdevcenter.CatalogUpdateProperties{
 			GitHub: &armdevcenter.GitCatalog{
 				Path: to.Ptr("/environments"),
 			},
-			SyncType: to.Ptr(armdevcenter.CatalogSyncTypeScheduled),
 		},
 	}, nil)
 	if err != nil {
@@ -300,8 +300,8 @@ func ExampleCatalogsClient_BeginUpdate() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.Catalog = armdevcenter.Catalog{
 	// 	Name: to.Ptr("CentralCatalog"),
-	// 	Type: to.Ptr("Microsoft.DevCenter/devcenters/catalogs"),
-	// 	ID: to.Ptr("/subscriptions/0ac520ee-14c0-480f-b6c9-0a90c58ffff/resourceGroups/rg1/providers/Microsoft.DevCenter/devcenters/Contoso/catalogs/CentralCatalog"),
+	// 	Type: to.Ptr("Microsoft.DevCenter/projects/catalogs"),
+	// 	ID: to.Ptr("/subscriptions/0ac520ee-14c0-480f-b6c9-0a90c58ffff/resourceGroups/rg1/providers/Microsoft.DevCenter/projects/DevProject/catalogs/CentralCatalog"),
 	// 	SystemData: &armdevcenter.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-18T18:24:24.818Z"); return t}()),
 	// 		CreatedBy: to.Ptr("User1"),
@@ -317,7 +317,6 @@ func ExampleCatalogsClient_BeginUpdate() {
 	// 			SecretIdentifier: to.Ptr("https://contosokv.vault.azure.net/secrets/CentralRepoPat"),
 	// 			URI: to.Ptr("https://github.com/Contoso/centralrepo-fake.git"),
 	// 		},
-	// 		SyncType: to.Ptr(armdevcenter.CatalogSyncTypeScheduled),
 	// 		ConnectionState: to.Ptr(armdevcenter.CatalogConnectionStateConnected),
 	// 		LastConnectionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-18T18:28:00.314Z"); return t}()),
 	// 		LastSyncStats: &armdevcenter.SyncStats{
@@ -335,8 +334,8 @@ func ExampleCatalogsClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/Catalogs_Delete.json
-func ExampleCatalogsClient_BeginDelete() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/ProjectCatalogs_Delete.json
+func ExampleProjectCatalogsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -346,7 +345,7 @@ func ExampleCatalogsClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewCatalogsClient().BeginDelete(ctx, "rg1", "Contoso", "CentralCatalog", nil)
+	poller, err := clientFactory.NewProjectCatalogsClient().BeginDelete(ctx, "rg1", "DevProject", "CentralCatalog", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -356,8 +355,8 @@ func ExampleCatalogsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/Catalogs_GetSyncErrorDetails.json
-func ExampleCatalogsClient_GetSyncErrorDetails() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/ProjectCatalogs_GetSyncErrorDetails.json
+func ExampleProjectCatalogsClient_GetSyncErrorDetails() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -367,7 +366,7 @@ func ExampleCatalogsClient_GetSyncErrorDetails() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewCatalogsClient().GetSyncErrorDetails(ctx, "rg1", "Contoso", "CentralCatalog", nil)
+	res, err := clientFactory.NewProjectCatalogsClient().GetSyncErrorDetails(ctx, "rg1", "DevProject", "CentralCatalog", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -396,8 +395,8 @@ func ExampleCatalogsClient_GetSyncErrorDetails() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/Catalogs_Sync.json
-func ExampleCatalogsClient_BeginSync() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/ProjectCatalogs_Sync.json
+func ExampleProjectCatalogsClient_BeginSync() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -407,7 +406,7 @@ func ExampleCatalogsClient_BeginSync() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewCatalogsClient().BeginSync(ctx, "rg1", "Contoso", "CentralCatalog", nil)
+	poller, err := clientFactory.NewProjectCatalogsClient().BeginSync(ctx, "rg1", "DevProject", "CentralCatalog", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -417,8 +416,8 @@ func ExampleCatalogsClient_BeginSync() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/Catalogs_Connect.json
-func ExampleCatalogsClient_BeginConnect() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/ProjectCatalogs_Connect.json
+func ExampleProjectCatalogsClient_BeginConnect() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -428,7 +427,7 @@ func ExampleCatalogsClient_BeginConnect() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewCatalogsClient().BeginConnect(ctx, "rg1", "Contoso", "CentralCatalog", nil)
+	poller, err := clientFactory.NewProjectCatalogsClient().BeginConnect(ctx, "rg1", "DevProject", "CentralCatalog", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

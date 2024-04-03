@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devcenter/armdevcenter"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devcenter/armdevcenter/v2"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -29,6 +29,10 @@ type EnvironmentDefinitionsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, devCenterName string, catalogName string, environmentDefinitionName string, options *armdevcenter.EnvironmentDefinitionsClientGetOptions) (resp azfake.Responder[armdevcenter.EnvironmentDefinitionsClientGetResponse], errResp azfake.ErrorResponder)
 
+	// GetByProjectCatalog is the fake for method EnvironmentDefinitionsClient.GetByProjectCatalog
+	// HTTP status codes to indicate success: http.StatusOK
+	GetByProjectCatalog func(ctx context.Context, resourceGroupName string, projectName string, catalogName string, environmentDefinitionName string, options *armdevcenter.EnvironmentDefinitionsClientGetByProjectCatalogOptions) (resp azfake.Responder[armdevcenter.EnvironmentDefinitionsClientGetByProjectCatalogResponse], errResp azfake.ErrorResponder)
+
 	// GetErrorDetails is the fake for method EnvironmentDefinitionsClient.GetErrorDetails
 	// HTTP status codes to indicate success: http.StatusOK
 	GetErrorDetails func(ctx context.Context, resourceGroupName string, devCenterName string, catalogName string, environmentDefinitionName string, options *armdevcenter.EnvironmentDefinitionsClientGetErrorDetailsOptions) (resp azfake.Responder[armdevcenter.EnvironmentDefinitionsClientGetErrorDetailsResponse], errResp azfake.ErrorResponder)
@@ -36,6 +40,10 @@ type EnvironmentDefinitionsServer struct {
 	// NewListByCatalogPager is the fake for method EnvironmentDefinitionsClient.NewListByCatalogPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByCatalogPager func(resourceGroupName string, devCenterName string, catalogName string, options *armdevcenter.EnvironmentDefinitionsClientListByCatalogOptions) (resp azfake.PagerResponder[armdevcenter.EnvironmentDefinitionsClientListByCatalogResponse])
+
+	// NewListByProjectCatalogPager is the fake for method EnvironmentDefinitionsClient.NewListByProjectCatalogPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByProjectCatalogPager func(resourceGroupName string, projectName string, catalogName string, options *armdevcenter.EnvironmentDefinitionsClientListByProjectCatalogOptions) (resp azfake.PagerResponder[armdevcenter.EnvironmentDefinitionsClientListByProjectCatalogResponse])
 }
 
 // NewEnvironmentDefinitionsServerTransport creates a new instance of EnvironmentDefinitionsServerTransport with the provided implementation.
@@ -43,16 +51,18 @@ type EnvironmentDefinitionsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewEnvironmentDefinitionsServerTransport(srv *EnvironmentDefinitionsServer) *EnvironmentDefinitionsServerTransport {
 	return &EnvironmentDefinitionsServerTransport{
-		srv:                   srv,
-		newListByCatalogPager: newTracker[azfake.PagerResponder[armdevcenter.EnvironmentDefinitionsClientListByCatalogResponse]](),
+		srv:                          srv,
+		newListByCatalogPager:        newTracker[azfake.PagerResponder[armdevcenter.EnvironmentDefinitionsClientListByCatalogResponse]](),
+		newListByProjectCatalogPager: newTracker[azfake.PagerResponder[armdevcenter.EnvironmentDefinitionsClientListByProjectCatalogResponse]](),
 	}
 }
 
 // EnvironmentDefinitionsServerTransport connects instances of armdevcenter.EnvironmentDefinitionsClient to instances of EnvironmentDefinitionsServer.
 // Don't use this type directly, use NewEnvironmentDefinitionsServerTransport instead.
 type EnvironmentDefinitionsServerTransport struct {
-	srv                   *EnvironmentDefinitionsServer
-	newListByCatalogPager *tracker[azfake.PagerResponder[armdevcenter.EnvironmentDefinitionsClientListByCatalogResponse]]
+	srv                          *EnvironmentDefinitionsServer
+	newListByCatalogPager        *tracker[azfake.PagerResponder[armdevcenter.EnvironmentDefinitionsClientListByCatalogResponse]]
+	newListByProjectCatalogPager *tracker[azfake.PagerResponder[armdevcenter.EnvironmentDefinitionsClientListByProjectCatalogResponse]]
 }
 
 // Do implements the policy.Transporter interface for EnvironmentDefinitionsServerTransport.
@@ -69,10 +79,14 @@ func (e *EnvironmentDefinitionsServerTransport) Do(req *http.Request) (*http.Res
 	switch method {
 	case "EnvironmentDefinitionsClient.Get":
 		resp, err = e.dispatchGet(req)
+	case "EnvironmentDefinitionsClient.GetByProjectCatalog":
+		resp, err = e.dispatchGetByProjectCatalog(req)
 	case "EnvironmentDefinitionsClient.GetErrorDetails":
 		resp, err = e.dispatchGetErrorDetails(req)
 	case "EnvironmentDefinitionsClient.NewListByCatalogPager":
 		resp, err = e.dispatchNewListByCatalogPager(req)
+	case "EnvironmentDefinitionsClient.NewListByProjectCatalogPager":
+		resp, err = e.dispatchNewListByProjectCatalogPager(req)
 	default:
 		err = fmt.Errorf("unhandled API %s", method)
 	}
@@ -111,6 +125,47 @@ func (e *EnvironmentDefinitionsServerTransport) dispatchGet(req *http.Request) (
 		return nil, err
 	}
 	respr, errRespr := e.srv.Get(req.Context(), resourceGroupNameParam, devCenterNameParam, catalogNameParam, environmentDefinitionNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).EnvironmentDefinition, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (e *EnvironmentDefinitionsServerTransport) dispatchGetByProjectCatalog(req *http.Request) (*http.Response, error) {
+	if e.srv.GetByProjectCatalog == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetByProjectCatalog not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DevCenter/projects/(?P<projectName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/catalogs/(?P<catalogName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/environmentDefinitions/(?P<environmentDefinitionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	projectNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("projectName")])
+	if err != nil {
+		return nil, err
+	}
+	catalogNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("catalogName")])
+	if err != nil {
+		return nil, err
+	}
+	environmentDefinitionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("environmentDefinitionName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := e.srv.GetByProjectCatalog(req.Context(), resourceGroupNameParam, projectNameParam, catalogNameParam, environmentDefinitionNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -228,6 +283,51 @@ func (e *EnvironmentDefinitionsServerTransport) dispatchNewListByCatalogPager(re
 	}
 	if !server.PagerResponderMore(newListByCatalogPager) {
 		e.newListByCatalogPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (e *EnvironmentDefinitionsServerTransport) dispatchNewListByProjectCatalogPager(req *http.Request) (*http.Response, error) {
+	if e.srv.NewListByProjectCatalogPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByProjectCatalogPager not implemented")}
+	}
+	newListByProjectCatalogPager := e.newListByProjectCatalogPager.get(req)
+	if newListByProjectCatalogPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DevCenter/projects/(?P<projectName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/catalogs/(?P<catalogName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/environmentDefinitions`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		projectNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("projectName")])
+		if err != nil {
+			return nil, err
+		}
+		catalogNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("catalogName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := e.srv.NewListByProjectCatalogPager(resourceGroupNameParam, projectNameParam, catalogNameParam, nil)
+		newListByProjectCatalogPager = &resp
+		e.newListByProjectCatalogPager.add(req, newListByProjectCatalogPager)
+		server.PagerResponderInjectNextLinks(newListByProjectCatalogPager, req, func(page *armdevcenter.EnvironmentDefinitionsClientListByProjectCatalogResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByProjectCatalogPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		e.newListByProjectCatalogPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByProjectCatalogPager) {
+		e.newListByProjectCatalogPager.remove(req)
 	}
 	return resp, nil
 }

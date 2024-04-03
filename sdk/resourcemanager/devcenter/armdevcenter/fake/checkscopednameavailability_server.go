@@ -20,28 +20,28 @@ import (
 	"regexp"
 )
 
-// CheckNameAvailabilityServer is a fake server for instances of the armdevcenter.CheckNameAvailabilityClient type.
-type CheckNameAvailabilityServer struct {
-	// Execute is the fake for method CheckNameAvailabilityClient.Execute
+// CheckScopedNameAvailabilityServer is a fake server for instances of the armdevcenter.CheckScopedNameAvailabilityClient type.
+type CheckScopedNameAvailabilityServer struct {
+	// Execute is the fake for method CheckScopedNameAvailabilityClient.Execute
 	// HTTP status codes to indicate success: http.StatusOK
-	Execute func(ctx context.Context, nameAvailabilityRequest armdevcenter.CheckNameAvailabilityRequest, options *armdevcenter.CheckNameAvailabilityClientExecuteOptions) (resp azfake.Responder[armdevcenter.CheckNameAvailabilityClientExecuteResponse], errResp azfake.ErrorResponder)
+	Execute func(ctx context.Context, nameAvailabilityRequest armdevcenter.CheckScopedNameAvailabilityRequest, options *armdevcenter.CheckScopedNameAvailabilityClientExecuteOptions) (resp azfake.Responder[armdevcenter.CheckScopedNameAvailabilityClientExecuteResponse], errResp azfake.ErrorResponder)
 }
 
-// NewCheckNameAvailabilityServerTransport creates a new instance of CheckNameAvailabilityServerTransport with the provided implementation.
-// The returned CheckNameAvailabilityServerTransport instance is connected to an instance of armdevcenter.CheckNameAvailabilityClient via the
+// NewCheckScopedNameAvailabilityServerTransport creates a new instance of CheckScopedNameAvailabilityServerTransport with the provided implementation.
+// The returned CheckScopedNameAvailabilityServerTransport instance is connected to an instance of armdevcenter.CheckScopedNameAvailabilityClient via the
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
-func NewCheckNameAvailabilityServerTransport(srv *CheckNameAvailabilityServer) *CheckNameAvailabilityServerTransport {
-	return &CheckNameAvailabilityServerTransport{srv: srv}
+func NewCheckScopedNameAvailabilityServerTransport(srv *CheckScopedNameAvailabilityServer) *CheckScopedNameAvailabilityServerTransport {
+	return &CheckScopedNameAvailabilityServerTransport{srv: srv}
 }
 
-// CheckNameAvailabilityServerTransport connects instances of armdevcenter.CheckNameAvailabilityClient to instances of CheckNameAvailabilityServer.
-// Don't use this type directly, use NewCheckNameAvailabilityServerTransport instead.
-type CheckNameAvailabilityServerTransport struct {
-	srv *CheckNameAvailabilityServer
+// CheckScopedNameAvailabilityServerTransport connects instances of armdevcenter.CheckScopedNameAvailabilityClient to instances of CheckScopedNameAvailabilityServer.
+// Don't use this type directly, use NewCheckScopedNameAvailabilityServerTransport instead.
+type CheckScopedNameAvailabilityServerTransport struct {
+	srv *CheckScopedNameAvailabilityServer
 }
 
-// Do implements the policy.Transporter interface for CheckNameAvailabilityServerTransport.
-func (c *CheckNameAvailabilityServerTransport) Do(req *http.Request) (*http.Response, error) {
+// Do implements the policy.Transporter interface for CheckScopedNameAvailabilityServerTransport.
+func (c *CheckScopedNameAvailabilityServerTransport) Do(req *http.Request) (*http.Response, error) {
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
@@ -52,7 +52,7 @@ func (c *CheckNameAvailabilityServerTransport) Do(req *http.Request) (*http.Resp
 	var err error
 
 	switch method {
-	case "CheckNameAvailabilityClient.Execute":
+	case "CheckScopedNameAvailabilityClient.Execute":
 		resp, err = c.dispatchExecute(req)
 	default:
 		err = fmt.Errorf("unhandled API %s", method)
@@ -65,17 +65,17 @@ func (c *CheckNameAvailabilityServerTransport) Do(req *http.Request) (*http.Resp
 	return resp, nil
 }
 
-func (c *CheckNameAvailabilityServerTransport) dispatchExecute(req *http.Request) (*http.Response, error) {
+func (c *CheckScopedNameAvailabilityServerTransport) dispatchExecute(req *http.Request) (*http.Response, error) {
 	if c.srv.Execute == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Execute not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DevCenter/checkNameAvailability`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DevCenter/checkScopedNameAvailability`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 1 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	body, err := server.UnmarshalRequestAsJSON[armdevcenter.CheckNameAvailabilityRequest](req)
+	body, err := server.UnmarshalRequestAsJSON[armdevcenter.CheckScopedNameAvailabilityRequest](req)
 	if err != nil {
 		return nil, err
 	}

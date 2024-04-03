@@ -15,7 +15,7 @@ import (
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devcenter/armdevcenter"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devcenter/armdevcenter/v2"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -95,6 +95,9 @@ func (o *OperationStatusesServerTransport) dispatchGet(req *http.Request) (*http
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).OperationStatus, req)
 	if err != nil {
 		return nil, err
+	}
+	if val := server.GetResponse(respr).Location; val != nil {
+		resp.Header.Set("Location", *val)
 	}
 	return resp, nil
 }

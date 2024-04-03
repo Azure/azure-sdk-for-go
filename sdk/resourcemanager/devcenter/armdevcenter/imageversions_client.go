@@ -46,7 +46,7 @@ func NewImageVersionsClient(subscriptionID string, credential azcore.TokenCreden
 // Get - Gets an image version.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-10-01-preview
+// Generated from API version 2024-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - devCenterName - The name of the devcenter.
 //   - galleryName - The name of the gallery.
@@ -107,7 +107,7 @@ func (client *ImageVersionsClient) getCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01-preview")
+	reqQP.Set("api-version", "2024-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -124,7 +124,7 @@ func (client *ImageVersionsClient) getHandleResponse(resp *http.Response) (Image
 
 // NewListByImagePager - Lists versions for an image.
 //
-// Generated from API version 2023-10-01-preview
+// Generated from API version 2024-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - devCenterName - The name of the devcenter.
 //   - galleryName - The name of the gallery.
@@ -182,7 +182,7 @@ func (client *ImageVersionsClient) listByImageCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01-preview")
+	reqQP.Set("api-version", "2024-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

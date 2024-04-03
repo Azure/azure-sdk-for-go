@@ -161,6 +161,15 @@ type UpdateRunsClientBeginDeleteOptions struct {
 	ResumeToken string
 }
 
+// UpdateRunsClientBeginSkipOptions contains the optional parameters for the UpdateRunsClient.BeginSkip method.
+type UpdateRunsClientBeginSkipOptions struct {
+	// The request should only proceed if an entity matches this string.
+	IfMatch *string
+
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
 // UpdateRunsClientBeginStartOptions contains the optional parameters for the UpdateRunsClient.BeginStart method.
 type UpdateRunsClientBeginStartOptions struct {
 	// The request should only proceed if an entity matches this string.

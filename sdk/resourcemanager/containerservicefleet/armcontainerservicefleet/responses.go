@@ -130,6 +130,12 @@ type UpdateRunsClientListByFleetResponse struct {
 	UpdateRunListResult
 }
 
+// UpdateRunsClientSkipResponse contains the response from method UpdateRunsClient.BeginSkip.
+type UpdateRunsClientSkipResponse struct {
+	// A multi-stage process to perform update operations across members of a Fleet.
+	UpdateRun
+}
+
 // UpdateRunsClientStartResponse contains the response from method UpdateRunsClient.BeginStart.
 type UpdateRunsClientStartResponse struct {
 	// A multi-stage process to perform update operations across members of a Fleet.

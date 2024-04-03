@@ -17,14 +17,22 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	"github.com/stretchr/testify/require"
 )
 
-func resetEnvironmentVarsForTest() {
-	clearEnvVars(azureTenantID, azureClientID, azureClientSecret, azureClientCertificatePath, azureUsername, azurePassword)
+func unsetEnvironmentVarsForTest(t *testing.T) {
+	for _, k := range []string{
+		azureClientCertificatePath, azureClientID, azureClientSecret, azurePassword, azureTenantID, azureUsername,
+	} {
+		if v, set := os.LookupEnv(k); set {
+			require.NoError(t, os.Unsetenv(k))
+			t.Cleanup(func() { require.NoError(t, os.Setenv(k, v)) })
+		}
+	}
 }
 
 func TestEnvironmentCredential_TenantIDNotSet(t *testing.T) {
-	resetEnvironmentVarsForTest()
+	unsetEnvironmentVarsForTest(t)
 	err := os.Setenv(azureClientID, fakeClientID)
 	if err != nil {
 		t.Fatalf("Unexpected error when initializing environment variables: %v", err)
@@ -40,7 +48,7 @@ func TestEnvironmentCredential_TenantIDNotSet(t *testing.T) {
 }
 
 func TestEnvironmentCredential_ClientIDNotSet(t *testing.T) {
-	resetEnvironmentVarsForTest()
+	unsetEnvironmentVarsForTest(t)
 	err := os.Setenv(azureTenantID, fakeTenantID)
 	if err != nil {
 		t.Fatalf("Unexpected error when initializing environment variables: %v", err)
@@ -56,7 +64,7 @@ func TestEnvironmentCredential_ClientIDNotSet(t *testing.T) {
 }
 
 func TestEnvironmentCredential_ClientSecretNotSet(t *testing.T) {
-	resetEnvironmentVarsForTest()
+	unsetEnvironmentVarsForTest(t)
 	err := os.Setenv(azureTenantID, fakeTenantID)
 	if err != nil {
 		t.Fatalf("Unexpected error when initializing environment variables: %v", err)
@@ -72,7 +80,7 @@ func TestEnvironmentCredential_ClientSecretNotSet(t *testing.T) {
 }
 
 func TestEnvironmentCredential_ClientSecretSet(t *testing.T) {
-	resetEnvironmentVarsForTest()
+	unsetEnvironmentVarsForTest(t)
 	err := os.Setenv(azureTenantID, fakeTenantID)
 	if err != nil {
 		t.Fatalf("Unexpected error when initializing environment variables: %v", err)
@@ -95,7 +103,7 @@ func TestEnvironmentCredential_ClientSecretSet(t *testing.T) {
 }
 
 func TestEnvironmentCredential_CertificateErrors(t *testing.T) {
-	resetEnvironmentVarsForTest()
+	unsetEnvironmentVarsForTest(t)
 	for _, test := range []struct {
 		name, path string
 	}{
@@ -119,7 +127,7 @@ func TestEnvironmentCredential_CertificateErrors(t *testing.T) {
 }
 
 func TestEnvironmentCredential_ClientCertificatePathSet(t *testing.T) {
-	resetEnvironmentVarsForTest()
+	unsetEnvironmentVarsForTest(t)
 	err := os.Setenv(azureTenantID, fakeTenantID)
 	if err != nil {
 		t.Fatalf("Unexpected error when initializing environment variables: %v", err)
@@ -172,7 +180,7 @@ func TestEnvironmentCredential_ClientCertificatePassword(t *testing.T) {
 }
 
 func TestEnvironmentCredential_UsernameOnlySet(t *testing.T) {
-	resetEnvironmentVarsForTest()
+	unsetEnvironmentVarsForTest(t)
 	err := os.Setenv(azureTenantID, fakeTenantID)
 	if err != nil {
 		t.Fatalf("Unexpected error when initializing environment variables: %v", err)
@@ -192,7 +200,7 @@ func TestEnvironmentCredential_UsernameOnlySet(t *testing.T) {
 }
 
 func TestEnvironmentCredential_UsernamePasswordSet(t *testing.T) {
-	resetEnvironmentVarsForTest()
+	unsetEnvironmentVarsForTest(t)
 	err := os.Setenv(azureTenantID, fakeTenantID)
 	if err != nil {
 		t.Fatalf("Unexpected error when initializing environment variables: %v", err)
@@ -227,7 +235,7 @@ func TestEnvironmentCredential_SendCertificateChain(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	resetEnvironmentVarsForTest()
+	unsetEnvironmentVarsForTest(t)
 	sts := mockSTS{tokenRequestCallback: validateX5C(t, certs)}
 	vars := map[string]string{
 		azureClientID:              liveSP.clientID,

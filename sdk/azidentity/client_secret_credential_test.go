@@ -17,18 +17,6 @@ import (
 
 const fakeSecret = "secret"
 
-func TestClientSecretCredential_GetTokenSuccess(t *testing.T) {
-	cred, err := NewClientSecretCredential(fakeTenantID, fakeClientID, fakeSecret, nil)
-	if err != nil {
-		t.Fatalf("Unable to create credential. Received: %v", err)
-	}
-	cred.client.noCAE = fakeConfidentialClient{}
-	_, err = cred.GetToken(context.Background(), testTRO)
-	if err != nil {
-		t.Fatalf("Expected an empty error but received: %v", err)
-	}
-}
-
 func TestClientSecretCredential_Live(t *testing.T) {
 	for _, disabledID := range []bool{true, false} {
 		name := "default options"

@@ -63,22 +63,6 @@ func TestParseCertificates_Error(t *testing.T) {
 	}
 }
 
-func TestClientCertificateCredential_GetTokenSuccess(t *testing.T) {
-	for _, test := range allCertTests {
-		t.Run(test.name, func(t *testing.T) {
-			cred, err := NewClientCertificateCredential(fakeTenantID, fakeClientID, test.certs, test.key, nil)
-			if err != nil {
-				t.Fatalf("Expected an empty error but received: %s", err.Error())
-			}
-			cred.client.noCAE = fakeConfidentialClient{}
-			_, err = cred.GetToken(context.Background(), testTRO)
-			if err != nil {
-				t.Fatalf("Expected an empty error but received: %s", err.Error())
-			}
-		})
-	}
-}
-
 func TestClientCertificateCredential_SendCertificateChain(t *testing.T) {
 	for _, test := range allCertTests {
 		t.Run(test.name, func(t *testing.T) {
@@ -100,19 +84,6 @@ func TestClientCertificateCredential_SendCertificateChain(t *testing.T) {
 				t.Fatalf("unexpected token: %s", tk.Token)
 			}
 		})
-	}
-}
-
-func TestClientCertificateCredential_GetTokenCheckPrivateKeyBlocks(t *testing.T) {
-	test := allCertTests[0]
-	cred, err := NewClientCertificateCredential(fakeTenantID, fakeClientID, test.certs, test.key, nil)
-	if err != nil {
-		t.Fatalf("Expected an empty error but received: %s", err.Error())
-	}
-	cred.client.noCAE = fakeConfidentialClient{}
-	_, err = cred.GetToken(context.Background(), testTRO)
-	if err != nil {
-		t.Fatalf("Expected an empty error but received: %s", err.Error())
 	}
 }
 

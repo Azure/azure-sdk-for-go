@@ -458,19 +458,38 @@ func Test_DefaultAuthorityHost(t *testing.T) {
 	}
 }
 
-func Test_GetTokenRequiresScopes(t *testing.T) {
+func TestGetTokenRequiresScopes(t *testing.T) {
 	for _, ctor := range []func() (azcore.TokenCredential, error){
 		func() (azcore.TokenCredential, error) { return NewAzureCLICredential(nil) },
+		func() (azcore.TokenCredential, error) { return NewAzureDeveloperCLICredential(nil) },
 		func() (azcore.TokenCredential, error) {
-			return NewClientCertificateCredential("tenantID", "clientID", allCertTests[0].certs, allCertTests[0].key, nil)
+			return NewClientAssertionCredential(
+				fakeTenantID, fakeClientID, func(context.Context) (string, error) { return "", nil }, nil,
+			)
 		},
 		func() (azcore.TokenCredential, error) {
-			return NewClientSecretCredential("tenantID", "clientID", fakeSecret, nil)
+			return NewClientCertificateCredential(
+				fakeTenantID, fakeClientID, allCertTests[0].certs, allCertTests[0].key, nil,
+			)
+		},
+		func() (azcore.TokenCredential, error) {
+			return NewClientSecretCredential(fakeTenantID, fakeClientID, fakeSecret, nil)
 		},
 		func() (azcore.TokenCredential, error) { return NewDeviceCodeCredential(nil) },
 		func() (azcore.TokenCredential, error) { return NewInteractiveBrowserCredential(nil) },
+		func() (azcore.TokenCredential, error) { return NewManagedIdentityCredential(nil) },
 		func() (azcore.TokenCredential, error) {
-			return NewUsernamePasswordCredential("tenantID", "clientID", "username", "password", nil)
+			return NewOnBehalfOfCredentialWithSecret(
+				fakeTenantID, fakeClientID, "assertion", fakeSecret, nil,
+			)
+		},
+		func() (azcore.TokenCredential, error) {
+			return NewUsernamePasswordCredential(fakeTenantID, fakeClientID, fakeUsername, "password", nil)
+		},
+		func() (azcore.TokenCredential, error) {
+			return NewWorkloadIdentityCredential(&WorkloadIdentityCredentialOptions{
+				ClientID: fakeClientID, TokenFilePath: ".", TenantID: fakeTenantID,
+			})
 		},
 	} {
 		cred, err := ctor()

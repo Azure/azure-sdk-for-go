@@ -91,6 +91,7 @@ func (c *ClusterJobsServerTransport) dispatchNewListPager(req *http.Request) (*h
 		if matches == nil || len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
+		qp := req.URL.Query()
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
@@ -103,7 +104,18 @@ func (c *ClusterJobsServerTransport) dispatchNewListPager(req *http.Request) (*h
 		if err != nil {
 			return nil, err
 		}
-		resp := c.srv.NewListPager(resourceGroupNameParam, clusterPoolNameParam, clusterNameParam, nil)
+		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+		if err != nil {
+			return nil, err
+		}
+		filterParam := getOptional(filterUnescaped)
+		var options *armhdinsightcontainers.ClusterJobsClientListOptions
+		if filterParam != nil {
+			options = &armhdinsightcontainers.ClusterJobsClientListOptions{
+				Filter: filterParam,
+			}
+		}
+		resp := c.srv.NewListPager(resourceGroupNameParam, clusterPoolNameParam, clusterNameParam, options)
 		newListPager = &resp
 		c.newListPager.add(req, newListPager)
 		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armhdinsightcontainers.ClusterJobsClientListResponse, createLink func() string) {

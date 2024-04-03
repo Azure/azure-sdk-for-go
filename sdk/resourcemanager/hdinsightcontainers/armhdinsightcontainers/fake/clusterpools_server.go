@@ -47,6 +47,10 @@ type ClusterPoolsServer struct {
 	// BeginUpdateTags is the fake for method ClusterPoolsClient.BeginUpdateTags
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdateTags func(ctx context.Context, resourceGroupName string, clusterPoolName string, clusterPoolTags armhdinsightcontainers.TagsObject, options *armhdinsightcontainers.ClusterPoolsClientBeginUpdateTagsOptions) (resp azfake.PollerResponder[armhdinsightcontainers.ClusterPoolsClientUpdateTagsResponse], errResp azfake.ErrorResponder)
+
+	// BeginUpgrade is the fake for method ClusterPoolsClient.BeginUpgrade
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpgrade func(ctx context.Context, resourceGroupName string, clusterPoolName string, clusterPoolUpgradeRequest armhdinsightcontainers.ClusterPoolUpgrade, options *armhdinsightcontainers.ClusterPoolsClientBeginUpgradeOptions) (resp azfake.PollerResponder[armhdinsightcontainers.ClusterPoolsClientUpgradeResponse], errResp azfake.ErrorResponder)
 }
 
 // NewClusterPoolsServerTransport creates a new instance of ClusterPoolsServerTransport with the provided implementation.
@@ -60,6 +64,7 @@ func NewClusterPoolsServerTransport(srv *ClusterPoolsServer) *ClusterPoolsServer
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armhdinsightcontainers.ClusterPoolsClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armhdinsightcontainers.ClusterPoolsClientListBySubscriptionResponse]](),
 		beginUpdateTags:             newTracker[azfake.PollerResponder[armhdinsightcontainers.ClusterPoolsClientUpdateTagsResponse]](),
+		beginUpgrade:                newTracker[azfake.PollerResponder[armhdinsightcontainers.ClusterPoolsClientUpgradeResponse]](),
 	}
 }
 
@@ -72,6 +77,7 @@ type ClusterPoolsServerTransport struct {
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armhdinsightcontainers.ClusterPoolsClientListByResourceGroupResponse]]
 	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armhdinsightcontainers.ClusterPoolsClientListBySubscriptionResponse]]
 	beginUpdateTags             *tracker[azfake.PollerResponder[armhdinsightcontainers.ClusterPoolsClientUpdateTagsResponse]]
+	beginUpgrade                *tracker[azfake.PollerResponder[armhdinsightcontainers.ClusterPoolsClientUpgradeResponse]]
 }
 
 // Do implements the policy.Transporter interface for ClusterPoolsServerTransport.
@@ -98,6 +104,8 @@ func (c *ClusterPoolsServerTransport) Do(req *http.Request) (*http.Response, err
 		resp, err = c.dispatchNewListBySubscriptionPager(req)
 	case "ClusterPoolsClient.BeginUpdateTags":
 		resp, err = c.dispatchBeginUpdateTags(req)
+	case "ClusterPoolsClient.BeginUpgrade":
+		resp, err = c.dispatchBeginUpgrade(req)
 	default:
 		err = fmt.Errorf("unhandled API %s", method)
 	}
@@ -347,6 +355,54 @@ func (c *ClusterPoolsServerTransport) dispatchBeginUpdateTags(req *http.Request)
 	}
 	if !server.PollerResponderMore(beginUpdateTags) {
 		c.beginUpdateTags.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (c *ClusterPoolsServerTransport) dispatchBeginUpgrade(req *http.Request) (*http.Response, error) {
+	if c.srv.BeginUpgrade == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpgrade not implemented")}
+	}
+	beginUpgrade := c.beginUpgrade.get(req)
+	if beginUpgrade == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.HDInsight/clusterpools/(?P<clusterPoolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/upgrade`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armhdinsightcontainers.ClusterPoolUpgrade](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		clusterPoolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterPoolName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := c.srv.BeginUpgrade(req.Context(), resourceGroupNameParam, clusterPoolNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpgrade = &respr
+		c.beginUpgrade.add(req, beginUpgrade)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpgrade, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		c.beginUpgrade.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpgrade) {
+		c.beginUpgrade.remove(req)
 	}
 
 	return resp, nil

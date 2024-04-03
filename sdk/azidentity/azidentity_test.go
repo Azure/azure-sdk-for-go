@@ -284,7 +284,7 @@ func TestUserAuthentication(t *testing.T) {
 				_, err = cred.Authenticate(context.Background(), nil)
 				require.NoError(t, err)
 
-				os.Setenv(azureAuthorityHost, cc.ActiveDirectoryAuthorityHost)
+				t.Setenv(azureAuthorityHost, cc.ActiveDirectoryAuthorityHost)
 				cred, err = credential.new(nil, azcore.ClientOptions{Transport: &sts}, AuthenticationRecord{}, false)
 				require.NoError(t, err)
 				_, err = cred.Authenticate(context.Background(), nil)

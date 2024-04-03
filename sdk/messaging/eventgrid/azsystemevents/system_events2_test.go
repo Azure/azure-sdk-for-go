@@ -1380,7 +1380,7 @@ func TestConsumeAcsRecordingFileStatusUpdatedEventData(t *testing.T) {
 	require.NotEmpty(t, events)
 	sysEvent := deserializeSystemEvent[azsystemevents.ACSRecordingFileStatusUpdatedEventData](t, events[0].Data)
 
-	require.Equal(t, azsystemevents.RecordingChannelTypeMixed, *sysEvent.RecordingChannelType)
+	require.Equal(t, azsystemevents.RecordingChannelTypeMixed, *sysEvent.RecordingChannelKind)
 	require.Equal(t, azsystemevents.RecordingContentTypeAudio, *sysEvent.RecordingContentType)
 	require.Equal(t, azsystemevents.RecordingFormatTypeMp3, *sysEvent.RecordingFormatType)
 }

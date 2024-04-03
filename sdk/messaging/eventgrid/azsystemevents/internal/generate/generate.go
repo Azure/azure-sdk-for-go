@@ -243,22 +243,30 @@ func getConstantsReplacements(syms *gopls.SymbolMap) []rename {
 	var renames []rename
 
 	for _, sym := range syms.All() {
-		matches := typeRE.FindStringSubmatch(sym.Name)
-
-		if matches != nil {
+		switch sym.Name {
+		case "RecordingChannelType":
 			renames = append(renames, rename{
 				Orig: sym,
-				New:  strings.ToUpper(matches[1]) + matches[2],
+				New:  "RecordingChannelKind",
 			})
-		}
+		default:
+			matches := typeRE.FindStringSubmatch(sym.Name)
 
-		matches = possibleRE.FindStringSubmatch(sym.Name)
+			if matches != nil {
+				renames = append(renames, rename{
+					Orig: sym,
+					New:  strings.ToUpper(matches[1]) + matches[2],
+				})
+			}
 
-		if matches != nil {
-			renames = append(renames, rename{
-				Orig: sym,
-				New:  matches[1] + strings.ToUpper(matches[2]) + matches[3],
-			})
+			matches = possibleRE.FindStringSubmatch(sym.Name)
+
+			if matches != nil {
+				renames = append(renames, rename{
+					Orig: sym,
+					New:  matches[1] + strings.ToUpper(matches[2]) + matches[3],
+				})
+			}
 		}
 	}
 
@@ -274,6 +282,14 @@ func getModelsReplacements(syms *gopls.SymbolMap) []rename {
 	var renames []rename
 
 	for _, sym := range syms.All() {
+		if strings.EqualFold("AcsRecordingFileStatusUpdatedEventData.RecordingChannelType", sym.Name) {
+			renames = append(renames, rename{
+				Orig: sym,
+				New:  "RecordingChannelKind",
+			})
+			continue
+		}
+
 		matches := typeRE.FindStringSubmatch(sym.Name)
 
 		if matches != nil {

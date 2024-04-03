@@ -9,6 +9,8 @@
 ### Breaking Changes
 
 - ACS events and constants have been changed to use an all-caps name (ex: AcsEmailDeliveryReportStatusDetails -> ACSEmailDeliveryReportStatusDetails).
+- ACSRecordingFileStatusUpdatedEventData.RecordingChannelType has been renamed to RecordingChannelKind.- 
+- RecordingChannelType has been renamed to RecordingChannelKind. 
 
 ## 0.2.0 (2024-03-14)
 

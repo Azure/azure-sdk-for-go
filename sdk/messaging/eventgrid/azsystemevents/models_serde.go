@@ -2679,7 +2679,7 @@ func (a *ACSRecordingChunkInfoProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ACSRecordingFileStatusUpdatedEventData.
 func (a ACSRecordingFileStatusUpdatedEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "recordingChannelType", a.RecordingChannelType)
+	populate(objectMap, "recordingChannelType", a.RecordingChannelKind)
 	populate(objectMap, "recordingContentType", a.RecordingContentType)
 	populate(objectMap, "recordingDurationMs", a.RecordingDurationMs)
 	populate(objectMap, "recordingFormatType", a.RecordingFormatType)
@@ -2699,7 +2699,7 @@ func (a *ACSRecordingFileStatusUpdatedEventData) UnmarshalJSON(data []byte) erro
 		var err error
 		switch key {
 		case "recordingChannelType":
-			err = unpopulate(val, "RecordingChannelType", &a.RecordingChannelType)
+			err = unpopulate(val, "RecordingChannelType", &a.RecordingChannelKind)
 			delete(rawMsg, key)
 		case "recordingContentType":
 			err = unpopulate(val, "RecordingContentType", &a.RecordingContentType)

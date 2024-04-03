@@ -1049,17 +1049,17 @@ func PossibleMediaJobStateValues() []MediaJobState {
 	}
 }
 
-// RecordingChannelType - The recording channel type - Mixed, Unmixed
-type RecordingChannelType string
+// RecordingChannelKind - The recording channel type - Mixed, Unmixed
+type RecordingChannelKind string
 
 const (
-	RecordingChannelTypeMixed   RecordingChannelType = "Mixed"
-	RecordingChannelTypeUnmixed RecordingChannelType = "Unmixed"
+	RecordingChannelTypeMixed   RecordingChannelKind = "Mixed"
+	RecordingChannelTypeUnmixed RecordingChannelKind = "Unmixed"
 )
 
 // PossibleRecordingChannelTypeValues returns the possible values for the RecordingChannelType const type.
-func PossibleRecordingChannelTypeValues() []RecordingChannelType {
-	return []RecordingChannelType{
+func PossibleRecordingChannelTypeValues() []RecordingChannelKind {
+	return []RecordingChannelKind{
 		RecordingChannelTypeMixed,
 		RecordingChannelTypeUnmixed,
 	}

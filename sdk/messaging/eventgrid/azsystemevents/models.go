@@ -1143,7 +1143,7 @@ type ACSRecordingChunkInfoProperties struct {
 // event.
 type ACSRecordingFileStatusUpdatedEventData struct {
 	// The recording channel type - Mixed, Unmixed
-	RecordingChannelType *RecordingChannelType
+	RecordingChannelKind *RecordingChannelKind
 
 	// The recording content type- AudioVideo, or Audio
 	RecordingContentType *RecordingContentType

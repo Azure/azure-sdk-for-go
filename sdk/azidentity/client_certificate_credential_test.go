@@ -63,17 +63,6 @@ func TestParseCertificates_Error(t *testing.T) {
 	}
 }
 
-func TestClientCertificateCredential_InvalidTenantID(t *testing.T) {
-	test := allCertTests[0]
-	cred, err := NewClientCertificateCredential(badTenantID, fakeClientID, test.certs, test.key, nil)
-	if err == nil {
-		t.Fatal("Expected an error but received none")
-	}
-	if cred != nil {
-		t.Fatalf("Expected a nil credential value. Received: %v", cred)
-	}
-}
-
 func TestClientCertificateCredential_GetTokenSuccess(t *testing.T) {
 	for _, test := range allCertTests {
 		t.Run(test.name, func(t *testing.T) {

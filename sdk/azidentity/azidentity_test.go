@@ -101,53 +101,89 @@ func (t *tokenRequestCountingPolicy) Do(req *policy.Request) (*http.Response, er
 	return req.Next()
 }
 
-func TestEmptyTenantID(t *testing.T) {
+func TestTenantID(t *testing.T) {
 	type tc struct {
-		name string
-		ctor func() (azcore.TokenCredential, error)
+		name           string
+		ctor           func(tenant string) (azcore.TokenCredential, error)
+		tenantOptional bool
 	}
-	// constructors having a tenant parameter should return an error because they require a nonempty value
 	for _, test := range []tc{
 		{
 			name: credNameAssertion,
-			ctor: func() (azcore.TokenCredential, error) {
-				return NewClientAssertionCredential("", fakeClientID, func(context.Context) (string, error) { return "", nil }, nil)
+			ctor: func(tenant string) (azcore.TokenCredential, error) {
+				return NewClientAssertionCredential(tenant, fakeClientID, func(context.Context) (string, error) { return "", nil }, nil)
 			},
+		},
+		{
+			name: credNameAzureCLI,
+			ctor: func(tenant string) (azcore.TokenCredential, error) {
+				return NewAzureCLICredential(&AzureCLICredentialOptions{
+					TenantID: tenant,
+				})
+			},
+			tenantOptional: true,
+		},
+		{
+			name: credNameAzureDeveloperCLI,
+			ctor: func(tenant string) (azcore.TokenCredential, error) {
+				return NewAzureDeveloperCLICredential(&AzureDeveloperCLICredentialOptions{
+					TenantID: tenant,
+				})
+			},
+			tenantOptional: true,
+		},
+		{
+			name: credNameBrowser,
+			ctor: func(tenant string) (azcore.TokenCredential, error) {
+				return NewInteractiveBrowserCredential(&InteractiveBrowserCredentialOptions{
+					TenantID: tenant,
+				})
+			},
+			tenantOptional: true,
 		},
 		{
 			name: credNameCert,
-			ctor: func() (azcore.TokenCredential, error) {
-				return NewClientCertificateCredential("", fakeClientID, allCertTests[0].certs, allCertTests[0].key, nil)
+			ctor: func(tenant string) (azcore.TokenCredential, error) {
+				return NewClientCertificateCredential(tenant, fakeClientID, allCertTests[0].certs, allCertTests[0].key, nil)
 			},
 		},
 		{
+			name: credNameDeviceCode,
+			ctor: func(tenant string) (azcore.TokenCredential, error) {
+				return NewDeviceCodeCredential(&DeviceCodeCredentialOptions{
+					TenantID: tenant,
+				})
+			},
+			tenantOptional: true,
+		},
+		{
 			name: credNameOBO + "/cert",
-			ctor: func() (azcore.TokenCredential, error) {
-				return NewOnBehalfOfCredentialWithCertificate("", fakeClientID, "assertion", allCertTests[0].certs, allCertTests[0].key, nil)
+			ctor: func(tenant string) (azcore.TokenCredential, error) {
+				return NewOnBehalfOfCredentialWithCertificate(tenant, fakeClientID, "assertion", allCertTests[0].certs, allCertTests[0].key, nil)
 			},
 		},
 		{
 			name: credNameOBO + "/secret",
-			ctor: func() (azcore.TokenCredential, error) {
-				return NewOnBehalfOfCredentialWithSecret("", fakeClientID, "assertion", fakeSecret, nil)
+			ctor: func(tenant string) (azcore.TokenCredential, error) {
+				return NewOnBehalfOfCredentialWithSecret(tenant, fakeClientID, "assertion", fakeSecret, nil)
 			},
 		},
 		{
 			name: credNameSecret,
-			ctor: func() (azcore.TokenCredential, error) {
-				return NewClientSecretCredential("", fakeClientID, fakeSecret, nil)
+			ctor: func(tenant string) (azcore.TokenCredential, error) {
+				return NewClientSecretCredential(tenant, fakeClientID, fakeSecret, nil)
 			},
 		},
 		{
 			name: credNameUserPassword,
-			ctor: func() (azcore.TokenCredential, error) {
-				return NewUsernamePasswordCredential("", fakeClientID, "username", "password", nil)
+			ctor: func(tenant string) (azcore.TokenCredential, error) {
+				return NewUsernamePasswordCredential(tenant, fakeClientID, "username", "password", nil)
 			},
 		},
 		{
 			name: credNameWorkloadIdentity,
-			ctor: func() (azcore.TokenCredential, error) {
-				t.Setenv(azureTenantID, "")
+			ctor: func(tenant string) (azcore.TokenCredential, error) {
+				t.Setenv(azureTenantID, tenant)
 				return NewWorkloadIdentityCredential(&WorkloadIdentityCredentialOptions{
 					ClientID:      fakeClientID,
 					TokenFilePath: "...",
@@ -155,42 +191,17 @@ func TestEmptyTenantID(t *testing.T) {
 			},
 		},
 	} {
-		t.Run(test.name, func(t *testing.T) {
-			_, err := test.ctor()
-			require.ErrorContains(t, err, "tenant")
+		t.Run(test.name+"/empty", func(t *testing.T) {
+			_, err := test.ctor("")
+			if test.tenantOptional {
+				require.NoError(t, err)
+			} else {
+				require.ErrorContains(t, err, "tenant")
+			}
 		})
-	}
-
-	// constructors having a tenant option should not return an error
-	for _, test := range []tc{
-		{
-			name: credNameAzureCLI,
-			ctor: func() (azcore.TokenCredential, error) {
-				return NewAzureCLICredential(nil)
-			},
-		},
-		{
-			name: credNameAzureDeveloperCLI,
-			ctor: func() (azcore.TokenCredential, error) {
-				return NewAzureDeveloperCLICredential(nil)
-			},
-		},
-		{
-			name: credNameBrowser,
-			ctor: func() (azcore.TokenCredential, error) {
-				return NewInteractiveBrowserCredential(nil)
-			},
-		},
-		{
-			name: credNameDeviceCode,
-			ctor: func() (azcore.TokenCredential, error) {
-				return NewDeviceCodeCredential(nil)
-			},
-		},
-	} {
-		t.Run(test.name, func(t *testing.T) {
-			_, err := test.ctor()
-			require.NoError(t, err)
+		t.Run(test.name+"/invalid", func(t *testing.T) {
+			_, err := test.ctor(badTenantID)
+			require.ErrorContains(t, err, "tenant")
 		})
 	}
 }

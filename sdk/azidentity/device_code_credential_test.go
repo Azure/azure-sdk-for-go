@@ -16,18 +16,6 @@ import (
 	"github.com/AzureAD/microsoft-authentication-library-for-go/apps/public"
 )
 
-func TestDeviceCodeCredential_InvalidTenantID(t *testing.T) {
-	options := DeviceCodeCredentialOptions{}
-	options.TenantID = badTenantID
-	cred, err := NewDeviceCodeCredential(&options)
-	if err == nil {
-		t.Fatal("Expected an error but received none")
-	}
-	if cred != nil {
-		t.Fatalf("Expected a nil credential value. Received: %v", cred)
-	}
-}
-
 func TestDeviceCodeCredential_GetTokenInvalidCredentials(t *testing.T) {
 	cred, err := NewDeviceCodeCredential(nil)
 	if err != nil {

@@ -17,16 +17,6 @@ import (
 
 const fakeSecret = "secret"
 
-func TestClientSecretCredential_InvalidTenantID(t *testing.T) {
-	cred, err := NewClientSecretCredential(badTenantID, fakeClientID, fakeSecret, nil)
-	if err == nil {
-		t.Fatal("Expected an error but received none")
-	}
-	if cred != nil {
-		t.Fatalf("Expected a nil credential value. Received: %v", cred)
-	}
-}
-
 func TestClientSecretCredential_GetTokenSuccess(t *testing.T) {
 	cred, err := NewClientSecretCredential(fakeTenantID, fakeClientID, fakeSecret, nil)
 	if err != nil {

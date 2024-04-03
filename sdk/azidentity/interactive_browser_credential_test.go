@@ -19,18 +19,6 @@ import (
 	"github.com/AzureAD/microsoft-authentication-library-for-go/apps/public"
 )
 
-func TestInteractiveBrowserCredential_InvalidTenantID(t *testing.T) {
-	options := InteractiveBrowserCredentialOptions{}
-	options.TenantID = badTenantID
-	cred, err := NewInteractiveBrowserCredential(&options)
-	if err == nil {
-		t.Fatal("Expected an error but received none")
-	}
-	if cred != nil {
-		t.Fatalf("Expected a nil credential value. Received: %v", cred)
-	}
-}
-
 func TestInteractiveBrowserCredential_GetTokenSuccess(t *testing.T) {
 	cred, err := NewInteractiveBrowserCredential(nil)
 	if err != nil {

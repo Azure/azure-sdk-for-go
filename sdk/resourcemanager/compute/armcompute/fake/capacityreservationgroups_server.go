@@ -285,10 +285,16 @@ func (c *CapacityReservationGroupsServerTransport) dispatchNewListBySubscription
 			return nil, err
 		}
 		expandParam := getOptional(armcompute.ExpandTypesForGetCapacityReservationGroups(expandUnescaped))
+		resourceIDsOnlyUnescaped, err := url.QueryUnescape(qp.Get("resourceIdsOnly"))
+		if err != nil {
+			return nil, err
+		}
+		resourceIDsOnlyParam := getOptional(armcompute.ResourceIDOptionsForGetCapacityReservationGroups(resourceIDsOnlyUnescaped))
 		var options *armcompute.CapacityReservationGroupsClientListBySubscriptionOptions
-		if expandParam != nil {
+		if expandParam != nil || resourceIDsOnlyParam != nil {
 			options = &armcompute.CapacityReservationGroupsClientListBySubscriptionOptions{
-				Expand: expandParam,
+				Expand:          expandParam,
+				ResourceIDsOnly: resourceIDsOnlyParam,
 			}
 		}
 		resp := c.srv.NewListBySubscriptionPager(options)

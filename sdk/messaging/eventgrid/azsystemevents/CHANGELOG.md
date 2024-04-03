@@ -8,9 +8,13 @@
 
 ### Breaking Changes
 
+Field and type renames:
+- Globally, types and fields named ChannelType has been renamed to ChannelKind
 - ACS events and constants have been changed to use an all-caps name (ex: AcsEmailDeliveryReportStatusDetails -> ACSEmailDeliveryReportStatusDetails).
-- ACSRecordingFileStatusUpdatedEventData.RecordingChannelType has been renamed to RecordingChannelKind.- 
-- RecordingChannelType has been renamed to RecordingChannelKind. 
+- ACSAdvancedMessageContext.ID -> MessageID
+- ACSAdvancedMessageReceivedEventData
+  - .Media -> MediaContent
+  - .Interactive -> InteractiveContent
 
 ## 0.2.0 (2024-03-14)
 

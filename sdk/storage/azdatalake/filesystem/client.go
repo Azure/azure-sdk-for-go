@@ -371,3 +371,21 @@ func (fs *Client) GetSASURL(permissions sas.FileSystemPermissions, expiry time.T
 
 	return endpoint, nil
 }
+
+// CreateFile Creates a new file within a file system.
+// For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
+func (fs *Client) CreateFile(ctx context.Context, filePath string, options *CreateFileOptions) (CreateFileResponse, error) {
+	fileClient := fs.NewFileClient(filePath)
+	resp, err := fileClient.Create(ctx, options)
+	err = exported.ConvertToDFSError(err)
+	return resp, err
+}
+
+// CreateDirectory Creates a new directory within a file system.
+// For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
+func (fs *Client) CreateDirectory(ctx context.Context, filePath string, options *CreateDirectoryOptions) (CreateDirectoryResponse, error) {
+	dirClient := fs.NewDirectoryClient(filePath)
+	resp, err := dirClient.Create(ctx, options)
+	err = exported.ConvertToDFSError(err)
+	return resp, err
+}

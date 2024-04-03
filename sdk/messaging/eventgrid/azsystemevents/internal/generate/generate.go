@@ -262,6 +262,27 @@ func getConstantsReplacements(syms *gopls.SymbolMap) []rename {
 		}
 	}
 
+	// TODO: it'd be nice to make this a bit more general
+	renames = append(renames, rename{
+		Orig: syms.Get("RecordingChannelType"),
+		New:  "RecordingChannelKind",
+	})
+
+	renames = append(renames, rename{
+		Orig: syms.Get("PossibleRecordingChannelTypeValues"),
+		New:  "PossibleRecordingChannelKindValues",
+	})
+
+	renames = append(renames, rename{
+		Orig: syms.Get("RecordingChannelTypeMixed"),
+		New:  "RecordingChannelKindMixed",
+	})
+
+	renames = append(renames, rename{
+		Orig: syms.Get("RecordingChannelTypeUnmixed"),
+		New:  "RecordingChannelKindUnmixed",
+	})
+
 	sort.Slice(renames, func(i, j int) bool {
 		return renames[i].New < renames[j].New
 	})
@@ -274,6 +295,14 @@ func getModelsReplacements(syms *gopls.SymbolMap) []rename {
 	var renames []rename
 
 	for _, sym := range syms.All() {
+		if strings.EqualFold("AcsRecordingFileStatusUpdatedEventData.RecordingChannelType", sym.Name) {
+			renames = append(renames, rename{
+				Orig: sym,
+				New:  "RecordingChannelKind",
+			})
+			continue
+		}
+
 		matches := typeRE.FindStringSubmatch(sym.Name)
 
 		if matches != nil {

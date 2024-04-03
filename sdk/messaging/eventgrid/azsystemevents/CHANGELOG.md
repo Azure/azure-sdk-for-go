@@ -1,6 +1,6 @@
 # Release History
 
-## 0.3.0 (TBD)
+## 0.3.0 (2024-04-03)
 
 ### Features Added
 
@@ -8,7 +8,13 @@
 
 ### Breaking Changes
 
+Field and type renames:
+- Globally, types and fields named ChannelType has been renamed to ChannelKind
 - ACS events and constants have been changed to use an all-caps name (ex: AcsEmailDeliveryReportStatusDetails -> ACSEmailDeliveryReportStatusDetails).
+- ACSAdvancedMessageContext.ID -> MessageID
+- ACSAdvancedMessageReceivedEventData
+  - .Media -> MediaContent
+  - .Interactive -> InteractiveContent
 
 ## 0.2.0 (2024-03-14)
 

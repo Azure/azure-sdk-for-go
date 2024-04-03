@@ -43,7 +43,7 @@ func NewAgentVersionClient(credential azcore.TokenCredential, options *arm.Clien
 // Get - Gets an Agent Version along with the download link currently present.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-20-preview
+// Generated from API version 2023-10-03-preview
 //   - osType - Defines the os type
 //   - version - Defines the agent version. To get latest, use latest or else a specific agent version.
 //   - options - AgentVersionClientGetOptions contains the optional parameters for the AgentVersionClient.Get method.
@@ -85,7 +85,7 @@ func (client *AgentVersionClient) getCreateRequest(ctx context.Context, osType s
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-20-preview")
+	reqQP.Set("api-version", "2023-10-03-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -103,7 +103,7 @@ func (client *AgentVersionClient) getHandleResponse(resp *http.Response) (AgentV
 // List - Gets all Agent Versions along with the download link currently present.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-20-preview
+// Generated from API version 2023-10-03-preview
 //   - osType - Defines the os type.
 //   - options - AgentVersionClientListOptions contains the optional parameters for the AgentVersionClient.List method.
 func (client *AgentVersionClient) List(ctx context.Context, osType string, options *AgentVersionClientListOptions) (AgentVersionClientListResponse, error) {
@@ -140,7 +140,7 @@ func (client *AgentVersionClient) listCreateRequest(ctx context.Context, osType 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-20-preview")
+	reqQP.Set("api-version", "2023-10-03-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

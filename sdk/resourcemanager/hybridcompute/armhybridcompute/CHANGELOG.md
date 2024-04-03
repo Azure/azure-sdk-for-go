@@ -1,5 +1,71 @@
 # Release History
 
+## 2.0.0-beta.2 (2024-04-26)
+### Features Added
+
+- New enum type `AccessMode` with values `AccessModeAudit`, `AccessModeEnforced`, `AccessModeLearning`
+- New enum type `AccessRuleDirection` with values `AccessRuleDirectionInbound`, `AccessRuleDirectionOutbound`
+- New enum type `ExecutionState` with values `ExecutionStateCanceled`, `ExecutionStateFailed`, `ExecutionStatePending`, `ExecutionStateRunning`, `ExecutionStateSucceeded`, `ExecutionStateTimedOut`, `ExecutionStateUnknown`
+- New enum type `ExtensionsStatusLevelTypes` with values `ExtensionsStatusLevelTypesError`, `ExtensionsStatusLevelTypesInfo`, `ExtensionsStatusLevelTypesWarning`
+- New enum type `LicenseProfileProductType` with values `LicenseProfileProductTypeWindowsIoTEnterprise`, `LicenseProfileProductTypeWindowsServer`
+- New enum type `LicenseProfileSubscriptionStatus` with values `LicenseProfileSubscriptionStatusDisabled`, `LicenseProfileSubscriptionStatusEnabled`, `LicenseProfileSubscriptionStatusEnabling`, `LicenseProfileSubscriptionStatusUnknown`
+- New enum type `LicenseProfileSubscriptionStatusUpdate` with values `LicenseProfileSubscriptionStatusUpdateDisable`, `LicenseProfileSubscriptionStatusUpdateEnable`
+- New enum type `LicenseStatus` with values `LicenseStatusExtendedGrace`, `LicenseStatusLicensed`, `LicenseStatusNonGenuineGrace`, `LicenseStatusNotification`, `LicenseStatusOOBGrace`, `LicenseStatusOOTGrace`, `LicenseStatusUnlicensed`
+- New enum type `ProvisioningIssueSeverity` with values `ProvisioningIssueSeverityError`, `ProvisioningIssueSeverityWarning`
+- New enum type `ProvisioningIssueType` with values `ProvisioningIssueTypeConfigurationPropagationFailure`, `ProvisioningIssueTypeMissingIdentityConfiguration`, `ProvisioningIssueTypeMissingPerimeterConfiguration`, `ProvisioningIssueTypeOther`
+- New function `*ClientFactory.NewMachineRunCommandsClient() *MachineRunCommandsClient`
+- New function `*ClientFactory.NewNetworkConfigurationsClient() *NetworkConfigurationsClient`
+- New function `*ClientFactory.NewNetworkSecurityPerimeterConfigurationsClient() *NetworkSecurityPerimeterConfigurationsClient`
+- New function `NewMachineRunCommandsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*MachineRunCommandsClient, error)`
+- New function `*MachineRunCommandsClient.BeginCreateOrUpdate(context.Context, string, string, string, MachineRunCommand, *MachineRunCommandsClientBeginCreateOrUpdateOptions) (*runtime.Poller[MachineRunCommandsClientCreateOrUpdateResponse], error)`
+- New function `*MachineRunCommandsClient.BeginDelete(context.Context, string, string, string, *MachineRunCommandsClientBeginDeleteOptions) (*runtime.Poller[MachineRunCommandsClientDeleteResponse], error)`
+- New function `*MachineRunCommandsClient.Get(context.Context, string, string, string, *MachineRunCommandsClientGetOptions) (MachineRunCommandsClientGetResponse, error)`
+- New function `*MachineRunCommandsClient.NewListPager(string, string, *MachineRunCommandsClientListOptions) *runtime.Pager[MachineRunCommandsClientListResponse]`
+- New function `*MachineRunCommandsClient.BeginUpdate(context.Context, string, string, string, MachineRunCommandUpdate, *MachineRunCommandsClientBeginUpdateOptions) (*runtime.Poller[MachineRunCommandsClientUpdateResponse], error)`
+- New function `NewNetworkConfigurationsClient(azcore.TokenCredential, *arm.ClientOptions) (*NetworkConfigurationsClient, error)`
+- New function `*NetworkConfigurationsClient.CreateOrUpdate(context.Context, string, NetworkConfiguration, *NetworkConfigurationsClientCreateOrUpdateOptions) (NetworkConfigurationsClientCreateOrUpdateResponse, error)`
+- New function `*NetworkConfigurationsClient.Get(context.Context, string, *NetworkConfigurationsClientGetOptions) (NetworkConfigurationsClientGetResponse, error)`
+- New function `*NetworkConfigurationsClient.Update(context.Context, string, NetworkConfiguration, *NetworkConfigurationsClientUpdateOptions) (NetworkConfigurationsClientUpdateResponse, error)`
+- New function `NewNetworkSecurityPerimeterConfigurationsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*NetworkSecurityPerimeterConfigurationsClient, error)`
+- New function `*NetworkSecurityPerimeterConfigurationsClient.GetByPrivateLinkScope(context.Context, string, string, string, *NetworkSecurityPerimeterConfigurationsClientGetByPrivateLinkScopeOptions) (NetworkSecurityPerimeterConfigurationsClientGetByPrivateLinkScopeResponse, error)`
+- New function `*NetworkSecurityPerimeterConfigurationsClient.NewListByPrivateLinkScopePager(string, string, *NetworkSecurityPerimeterConfigurationsClientListByPrivateLinkScopeOptions) *runtime.Pager[NetworkSecurityPerimeterConfigurationsClientListByPrivateLinkScopeResponse]`
+- New function `*NetworkSecurityPerimeterConfigurationsClient.BeginReconcileForPrivateLinkScope(context.Context, string, string, string, *NetworkSecurityPerimeterConfigurationsClientBeginReconcileForPrivateLinkScopeOptions) (*runtime.Poller[NetworkSecurityPerimeterConfigurationsClientReconcileForPrivateLinkScopeResponse], error)`
+- New struct `AccessRule`
+- New struct `AccessRuleProperties`
+- New struct `ExtensionsResourceStatus`
+- New struct `KeyDetails`
+- New struct `KeyProperties`
+- New struct `LicenseProfileArmProductProfileProperties`
+- New struct `LicenseProfileMachineInstanceViewSoftwareAssurance`
+- New struct `LicenseProfilePropertiesSoftwareAssurance`
+- New struct `LicenseProfileUpdatePropertiesSoftwareAssurance`
+- New struct `MachineRunCommand`
+- New struct `MachineRunCommandInstanceView`
+- New struct `MachineRunCommandProperties`
+- New struct `MachineRunCommandScriptSource`
+- New struct `MachineRunCommandUpdate`
+- New struct `MachineRunCommandsListResult`
+- New struct `NetworkConfiguration`
+- New struct `NetworkConfigurationProperties`
+- New struct `NetworkSecurityPerimeter`
+- New struct `NetworkSecurityPerimeterConfiguration`
+- New struct `NetworkSecurityPerimeterConfigurationListResult`
+- New struct `NetworkSecurityPerimeterConfigurationProperties`
+- New struct `NetworkSecurityPerimeterProfile`
+- New struct `ProductFeature`
+- New struct `ProductFeatureUpdate`
+- New struct `ProductProfileUpdateProperties`
+- New struct `ProvisioningIssue`
+- New struct `ProvisioningIssueProperties`
+- New struct `ResourceAssociation`
+- New struct `RunCommandInputParameter`
+- New struct `RunCommandManagedIdentity`
+- New field `LicenseChannel`, `LicenseStatus`, `ProductProfile`, `SoftwareAssurance` in struct `LicenseProfileMachineInstanceView`
+- New field `ProductProfile`, `SoftwareAssurance` in struct `LicenseProfileProperties`
+- New field `ProductProfile`, `SoftwareAssurance` in struct `LicenseProfileUpdateProperties`
+- New field `OSEdition` in struct `MachineProperties`
+
+
 ## 2.0.0-beta.1 (2023-11-24)
 ### Breaking Changes
 

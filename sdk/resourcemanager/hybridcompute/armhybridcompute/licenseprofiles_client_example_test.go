@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armhybridcompute/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bf204aab860f2eb58a9d346b00d44760f2a9b0a2/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2023-06-20-preview/examples/licenseProfile/LicenseProfile_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2023-10-03-preview/examples/licenseProfile/LicenseProfile_CreateOrUpdate.json
 func ExampleLicenseProfilesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -34,6 +34,18 @@ func ExampleLicenseProfilesClient_BeginCreateOrUpdate() {
 		Properties: &armhybridcompute.LicenseProfileProperties{
 			EsuProfile: &armhybridcompute.LicenseProfileArmEsuProperties{
 				AssignedLicense: to.Ptr("{LicenseResourceId}"),
+			},
+			ProductProfile: &armhybridcompute.LicenseProfileArmProductProfileProperties{
+				ProductFeatures: []*armhybridcompute.ProductFeature{
+					{
+						Name:               to.Ptr("HotPatching"),
+						SubscriptionStatus: to.Ptr(armhybridcompute.LicenseProfileSubscriptionStatusEnabled),
+					}},
+				ProductType:        to.Ptr(armhybridcompute.LicenseProfileProductTypeWindowsServer),
+				SubscriptionStatus: to.Ptr(armhybridcompute.LicenseProfileSubscriptionStatusEnabled),
+			},
+			SoftwareAssurance: &armhybridcompute.LicenseProfilePropertiesSoftwareAssurance{
+				SoftwareAssuranceCustomer: to.Ptr(true),
 			},
 		},
 	}, nil)
@@ -69,11 +81,29 @@ func ExampleLicenseProfilesClient_BeginCreateOrUpdate() {
 	// 			ServerType: to.Ptr(armhybridcompute.EsuServerTypeStandard),
 	// 			AssignedLicense: to.Ptr("{LicenseResourceId}"),
 	// 		},
+	// 		ProductProfile: &armhybridcompute.LicenseProfileArmProductProfileProperties{
+	// 			BillingStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-05T20:36:49.745Z"); return t}()),
+	// 			DisenrollmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-05T20:36:49.745Z"); return t}()),
+	// 			EnrollmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-05T20:36:49.745Z"); return t}()),
+	// 			ProductFeatures: []*armhybridcompute.ProductFeature{
+	// 				{
+	// 					Name: to.Ptr("HotPatching"),
+	// 					BillingStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-05T20:36:49.745Z"); return t}()),
+	// 					DisenrollmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-05T20:36:49.745Z"); return t}()),
+	// 					EnrollmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-05T20:36:49.745Z"); return t}()),
+	// 					SubscriptionStatus: to.Ptr(armhybridcompute.LicenseProfileSubscriptionStatusEnabling),
+	// 			}},
+	// 			ProductType: to.Ptr(armhybridcompute.LicenseProfileProductTypeWindowsServer),
+	// 			SubscriptionStatus: to.Ptr(armhybridcompute.LicenseProfileSubscriptionStatusEnabling),
+	// 		},
+	// 		SoftwareAssurance: &armhybridcompute.LicenseProfilePropertiesSoftwareAssurance{
+	// 			SoftwareAssuranceCustomer: to.Ptr(true),
+	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bf204aab860f2eb58a9d346b00d44760f2a9b0a2/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2023-06-20-preview/examples/licenseProfile/LicenseProfile_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2023-10-03-preview/examples/licenseProfile/LicenseProfile_Update.json
 func ExampleLicenseProfilesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -88,6 +118,18 @@ func ExampleLicenseProfilesClient_BeginUpdate() {
 		Properties: &armhybridcompute.LicenseProfileUpdateProperties{
 			EsuProfile: &armhybridcompute.EsuProfileUpdateProperties{
 				AssignedLicense: to.Ptr("{LicenseResourceId}"),
+			},
+			ProductProfile: &armhybridcompute.ProductProfileUpdateProperties{
+				ProductFeatures: []*armhybridcompute.ProductFeatureUpdate{
+					{
+						Name:               to.Ptr("HotPatching"),
+						SubscriptionStatus: to.Ptr(armhybridcompute.LicenseProfileSubscriptionStatusUpdateEnable),
+					}},
+				ProductType:        to.Ptr(armhybridcompute.LicenseProfileProductTypeWindowsServer),
+				SubscriptionStatus: to.Ptr(armhybridcompute.LicenseProfileSubscriptionStatusUpdateEnable),
+			},
+			SoftwareAssurance: &armhybridcompute.LicenseProfileUpdatePropertiesSoftwareAssurance{
+				SoftwareAssuranceCustomer: to.Ptr(true),
 			},
 		},
 	}, nil)
@@ -122,11 +164,29 @@ func ExampleLicenseProfilesClient_BeginUpdate() {
 	// 			ServerType: to.Ptr(armhybridcompute.EsuServerTypeStandard),
 	// 			AssignedLicense: to.Ptr("{LicenseResourceId}"),
 	// 		},
+	// 		ProductProfile: &armhybridcompute.LicenseProfileArmProductProfileProperties{
+	// 			BillingStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-05T20:36:49.745Z"); return t}()),
+	// 			DisenrollmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-05T20:36:49.745Z"); return t}()),
+	// 			EnrollmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-05T20:36:49.745Z"); return t}()),
+	// 			ProductFeatures: []*armhybridcompute.ProductFeature{
+	// 				{
+	// 					Name: to.Ptr("HotPatching"),
+	// 					BillingStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-05T20:36:49.745Z"); return t}()),
+	// 					DisenrollmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-05T20:36:49.745Z"); return t}()),
+	// 					EnrollmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-05T20:36:49.745Z"); return t}()),
+	// 					SubscriptionStatus: to.Ptr(armhybridcompute.LicenseProfileSubscriptionStatusEnabling),
+	// 			}},
+	// 			ProductType: to.Ptr(armhybridcompute.LicenseProfileProductTypeWindowsServer),
+	// 			SubscriptionStatus: to.Ptr(armhybridcompute.LicenseProfileSubscriptionStatusEnabling),
+	// 		},
+	// 		SoftwareAssurance: &armhybridcompute.LicenseProfilePropertiesSoftwareAssurance{
+	// 			SoftwareAssuranceCustomer: to.Ptr(true),
+	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bf204aab860f2eb58a9d346b00d44760f2a9b0a2/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2023-06-20-preview/examples/licenseProfile/LicenseProfile_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2023-10-03-preview/examples/licenseProfile/LicenseProfile_Get.json
 func ExampleLicenseProfilesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -165,11 +225,29 @@ func ExampleLicenseProfilesClient_Get() {
 	// 			ServerType: to.Ptr(armhybridcompute.EsuServerTypeStandard),
 	// 			AssignedLicense: to.Ptr("{LicenseResourceId}"),
 	// 		},
+	// 		ProductProfile: &armhybridcompute.LicenseProfileArmProductProfileProperties{
+	// 			BillingStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-05T20:36:49.745Z"); return t}()),
+	// 			DisenrollmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-05T20:36:49.745Z"); return t}()),
+	// 			EnrollmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-05T20:36:49.745Z"); return t}()),
+	// 			ProductFeatures: []*armhybridcompute.ProductFeature{
+	// 				{
+	// 					Name: to.Ptr("HotPatching"),
+	// 					BillingStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-05T20:36:49.745Z"); return t}()),
+	// 					DisenrollmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-05T20:36:49.745Z"); return t}()),
+	// 					EnrollmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-05T20:36:49.745Z"); return t}()),
+	// 					SubscriptionStatus: to.Ptr(armhybridcompute.LicenseProfileSubscriptionStatusEnabled),
+	// 			}},
+	// 			ProductType: to.Ptr(armhybridcompute.LicenseProfileProductTypeWindowsServer),
+	// 			SubscriptionStatus: to.Ptr(armhybridcompute.LicenseProfileSubscriptionStatusEnabled),
+	// 		},
+	// 		SoftwareAssurance: &armhybridcompute.LicenseProfilePropertiesSoftwareAssurance{
+	// 			SoftwareAssuranceCustomer: to.Ptr(true),
+	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bf204aab860f2eb58a9d346b00d44760f2a9b0a2/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2023-06-20-preview/examples/licenseProfile/LicenseProfile_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2023-10-03-preview/examples/licenseProfile/LicenseProfile_Delete.json
 func ExampleLicenseProfilesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -190,7 +268,7 @@ func ExampleLicenseProfilesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bf204aab860f2eb58a9d346b00d44760f2a9b0a2/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2023-06-20-preview/examples/licenseProfile/LicenseProfile_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2023-10-03-preview/examples/licenseProfile/LicenseProfile_List.json
 func ExampleLicenseProfilesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -234,6 +312,24 @@ func ExampleLicenseProfilesClient_NewListPager() {
 		// 					EsuKeyState: to.Ptr(armhybridcompute.EsuKeyStateInactive),
 		// 					ServerType: to.Ptr(armhybridcompute.EsuServerTypeStandard),
 		// 					AssignedLicense: to.Ptr("{LicenseResourceId}"),
+		// 				},
+		// 				ProductProfile: &armhybridcompute.LicenseProfileArmProductProfileProperties{
+		// 					BillingStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-05T20:36:49.745Z"); return t}()),
+		// 					DisenrollmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-05T20:36:49.745Z"); return t}()),
+		// 					EnrollmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-05T20:36:49.745Z"); return t}()),
+		// 					ProductFeatures: []*armhybridcompute.ProductFeature{
+		// 						{
+		// 							Name: to.Ptr("HotPatching"),
+		// 							BillingStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-05T20:36:49.745Z"); return t}()),
+		// 							DisenrollmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-05T20:36:49.745Z"); return t}()),
+		// 							EnrollmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-05T20:36:49.745Z"); return t}()),
+		// 							SubscriptionStatus: to.Ptr(armhybridcompute.LicenseProfileSubscriptionStatusEnabled),
+		// 					}},
+		// 					ProductType: to.Ptr(armhybridcompute.LicenseProfileProductTypeWindowsServer),
+		// 					SubscriptionStatus: to.Ptr(armhybridcompute.LicenseProfileSubscriptionStatusEnabled),
+		// 				},
+		// 				SoftwareAssurance: &armhybridcompute.LicenseProfilePropertiesSoftwareAssurance{
+		// 					SoftwareAssuranceCustomer: to.Ptr(true),
 		// 				},
 		// 			},
 		// 	}},

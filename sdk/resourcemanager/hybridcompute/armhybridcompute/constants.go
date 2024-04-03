@@ -10,8 +10,47 @@ package armhybridcompute
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armhybridcompute"
-	moduleVersion = "v2.0.0-beta.1"
+	moduleVersion = "v2.0.0-beta.2"
 )
+
+// AccessMode - Property that impacts a resource's logging behavior and its connectivity with other resources and public networks.
+type AccessMode string
+
+const (
+	// AccessModeAudit - Dry run mode, where traffic is evaluated against NSP Rules, logged but not enforced.
+	AccessModeAudit AccessMode = "audit"
+	// AccessModeEnforced - Indicates that resource access is controlled by the NSP definition.
+	AccessModeEnforced AccessMode = "enforced"
+	// AccessModeLearning - Enables traffic evaluation to fall back to resource-specific firewall configurations.
+	AccessModeLearning AccessMode = "learning"
+)
+
+// PossibleAccessModeValues returns the possible values for the AccessMode const type.
+func PossibleAccessModeValues() []AccessMode {
+	return []AccessMode{
+		AccessModeAudit,
+		AccessModeEnforced,
+		AccessModeLearning,
+	}
+}
+
+// AccessRuleDirection - Indicates direction of an access rule.
+type AccessRuleDirection string
+
+const (
+	// AccessRuleDirectionInbound - Traffic originates outside of network.
+	AccessRuleDirectionInbound AccessRuleDirection = "Inbound"
+	// AccessRuleDirectionOutbound - Traffic originates inside the network
+	AccessRuleDirectionOutbound AccessRuleDirection = "Outbound"
+)
+
+// PossibleAccessRuleDirectionValues returns the possible values for the AccessRuleDirection const type.
+func PossibleAccessRuleDirectionValues() []AccessRuleDirection {
+	return []AccessRuleDirection{
+		AccessRuleDirectionInbound,
+		AccessRuleDirectionOutbound,
+	}
+}
 
 // AgentConfigurationMode - Name of configuration mode to use. Modes are pre-defined configurations of security controls,
 // extension allowlists and guest configuration, maintained by Microsoft.
@@ -142,6 +181,50 @@ func PossibleEsuServerTypeValues() []EsuServerType {
 	}
 }
 
+// ExecutionState - Script execution status.
+type ExecutionState string
+
+const (
+	ExecutionStateCanceled  ExecutionState = "Canceled"
+	ExecutionStateFailed    ExecutionState = "Failed"
+	ExecutionStatePending   ExecutionState = "Pending"
+	ExecutionStateRunning   ExecutionState = "Running"
+	ExecutionStateSucceeded ExecutionState = "Succeeded"
+	ExecutionStateTimedOut  ExecutionState = "TimedOut"
+	ExecutionStateUnknown   ExecutionState = "Unknown"
+)
+
+// PossibleExecutionStateValues returns the possible values for the ExecutionState const type.
+func PossibleExecutionStateValues() []ExecutionState {
+	return []ExecutionState{
+		ExecutionStateCanceled,
+		ExecutionStateFailed,
+		ExecutionStatePending,
+		ExecutionStateRunning,
+		ExecutionStateSucceeded,
+		ExecutionStateTimedOut,
+		ExecutionStateUnknown,
+	}
+}
+
+// ExtensionsStatusLevelTypes - The level code.
+type ExtensionsStatusLevelTypes string
+
+const (
+	ExtensionsStatusLevelTypesError   ExtensionsStatusLevelTypes = "Error"
+	ExtensionsStatusLevelTypesInfo    ExtensionsStatusLevelTypes = "Info"
+	ExtensionsStatusLevelTypesWarning ExtensionsStatusLevelTypes = "Warning"
+)
+
+// PossibleExtensionsStatusLevelTypesValues returns the possible values for the ExtensionsStatusLevelTypes const type.
+func PossibleExtensionsStatusLevelTypesValues() []ExtensionsStatusLevelTypes {
+	return []ExtensionsStatusLevelTypes{
+		ExtensionsStatusLevelTypesError,
+		ExtensionsStatusLevelTypesInfo,
+		ExtensionsStatusLevelTypesWarning,
+	}
+}
+
 type InstanceViewTypes string
 
 const (
@@ -219,6 +302,58 @@ func PossibleLicenseEditionValues() []LicenseEdition {
 	}
 }
 
+// LicenseProfileProductType - The product type of the license.
+type LicenseProfileProductType string
+
+const (
+	LicenseProfileProductTypeWindowsIoTEnterprise LicenseProfileProductType = "WindowsIoTEnterprise"
+	LicenseProfileProductTypeWindowsServer        LicenseProfileProductType = "WindowsServer"
+)
+
+// PossibleLicenseProfileProductTypeValues returns the possible values for the LicenseProfileProductType const type.
+func PossibleLicenseProfileProductTypeValues() []LicenseProfileProductType {
+	return []LicenseProfileProductType{
+		LicenseProfileProductTypeWindowsIoTEnterprise,
+		LicenseProfileProductTypeWindowsServer,
+	}
+}
+
+// LicenseProfileSubscriptionStatus - Subscription status of the OS or Product feature.
+type LicenseProfileSubscriptionStatus string
+
+const (
+	LicenseProfileSubscriptionStatusDisabled LicenseProfileSubscriptionStatus = "Disabled"
+	LicenseProfileSubscriptionStatusEnabled  LicenseProfileSubscriptionStatus = "Enabled"
+	LicenseProfileSubscriptionStatusEnabling LicenseProfileSubscriptionStatus = "Enabling"
+	LicenseProfileSubscriptionStatusUnknown  LicenseProfileSubscriptionStatus = "Unknown"
+)
+
+// PossibleLicenseProfileSubscriptionStatusValues returns the possible values for the LicenseProfileSubscriptionStatus const type.
+func PossibleLicenseProfileSubscriptionStatusValues() []LicenseProfileSubscriptionStatus {
+	return []LicenseProfileSubscriptionStatus{
+		LicenseProfileSubscriptionStatusDisabled,
+		LicenseProfileSubscriptionStatusEnabled,
+		LicenseProfileSubscriptionStatusEnabling,
+		LicenseProfileSubscriptionStatusUnknown,
+	}
+}
+
+// LicenseProfileSubscriptionStatusUpdate - Indicates the new subscription status of the OS or Product Features.
+type LicenseProfileSubscriptionStatusUpdate string
+
+const (
+	LicenseProfileSubscriptionStatusUpdateDisable LicenseProfileSubscriptionStatusUpdate = "Disable"
+	LicenseProfileSubscriptionStatusUpdateEnable  LicenseProfileSubscriptionStatusUpdate = "Enable"
+)
+
+// PossibleLicenseProfileSubscriptionStatusUpdateValues returns the possible values for the LicenseProfileSubscriptionStatusUpdate const type.
+func PossibleLicenseProfileSubscriptionStatusUpdateValues() []LicenseProfileSubscriptionStatusUpdate {
+	return []LicenseProfileSubscriptionStatusUpdate{
+		LicenseProfileSubscriptionStatusUpdateDisable,
+		LicenseProfileSubscriptionStatusUpdateEnable,
+	}
+}
+
 // LicenseState - Describes the state of the license.
 type LicenseState string
 
@@ -232,6 +367,32 @@ func PossibleLicenseStateValues() []LicenseState {
 	return []LicenseState{
 		LicenseStateActivated,
 		LicenseStateDeactivated,
+	}
+}
+
+// LicenseStatus - The license status.
+type LicenseStatus string
+
+const (
+	LicenseStatusExtendedGrace   LicenseStatus = "ExtendedGrace"
+	LicenseStatusLicensed        LicenseStatus = "Licensed"
+	LicenseStatusNonGenuineGrace LicenseStatus = "NonGenuineGrace"
+	LicenseStatusNotification    LicenseStatus = "Notification"
+	LicenseStatusOOBGrace        LicenseStatus = "OOBGrace"
+	LicenseStatusOOTGrace        LicenseStatus = "OOTGrace"
+	LicenseStatusUnlicensed      LicenseStatus = "Unlicensed"
+)
+
+// PossibleLicenseStatusValues returns the possible values for the LicenseStatus const type.
+func PossibleLicenseStatusValues() []LicenseStatus {
+	return []LicenseStatus{
+		LicenseStatusExtendedGrace,
+		LicenseStatusLicensed,
+		LicenseStatusNonGenuineGrace,
+		LicenseStatusNotification,
+		LicenseStatusOOBGrace,
+		LicenseStatusOOTGrace,
+		LicenseStatusUnlicensed,
 	}
 }
 
@@ -362,6 +523,48 @@ func PossiblePatchServiceUsedValues() []PatchServiceUsed {
 		PatchServiceUsedWUWSUS,
 		PatchServiceUsedYUM,
 		PatchServiceUsedZypper,
+	}
+}
+
+// ProvisioningIssueSeverity - Severity of the provisioning issue.
+type ProvisioningIssueSeverity string
+
+const (
+	// ProvisioningIssueSeverityError - Errors will cause association provisioning to fail.
+	ProvisioningIssueSeverityError ProvisioningIssueSeverity = "Error"
+	// ProvisioningIssueSeverityWarning - Warnings can cause connectivity issues after provisioning succeeds.
+	ProvisioningIssueSeverityWarning ProvisioningIssueSeverity = "Warning"
+)
+
+// PossibleProvisioningIssueSeverityValues returns the possible values for the ProvisioningIssueSeverity const type.
+func PossibleProvisioningIssueSeverityValues() []ProvisioningIssueSeverity {
+	return []ProvisioningIssueSeverity{
+		ProvisioningIssueSeverityError,
+		ProvisioningIssueSeverityWarning,
+	}
+}
+
+// ProvisioningIssueType - Type of provisioning issue.
+type ProvisioningIssueType string
+
+const (
+	// ProvisioningIssueTypeConfigurationPropagationFailure - Configuration failed to propagate.
+	ProvisioningIssueTypeConfigurationPropagationFailure ProvisioningIssueType = "ConfigurationPropagationFailure"
+	// ProvisioningIssueTypeMissingIdentityConfiguration - Identity configuration is missing.
+	ProvisioningIssueTypeMissingIdentityConfiguration ProvisioningIssueType = "MissingIdentityConfiguration"
+	// ProvisioningIssueTypeMissingPerimeterConfiguration - Perimeter configuration is missing.
+	ProvisioningIssueTypeMissingPerimeterConfiguration ProvisioningIssueType = "MissingPerimeterConfiguration"
+	// ProvisioningIssueTypeOther - Other failure.
+	ProvisioningIssueTypeOther ProvisioningIssueType = "Other"
+)
+
+// PossibleProvisioningIssueTypeValues returns the possible values for the ProvisioningIssueType const type.
+func PossibleProvisioningIssueTypeValues() []ProvisioningIssueType {
+	return []ProvisioningIssueType{
+		ProvisioningIssueTypeConfigurationPropagationFailure,
+		ProvisioningIssueTypeMissingIdentityConfiguration,
+		ProvisioningIssueTypeMissingPerimeterConfiguration,
+		ProvisioningIssueTypeOther,
 	}
 }
 

@@ -46,7 +46,7 @@ func NewHybridIdentityMetadataClient(subscriptionID string, credential azcore.To
 // Get - Implements HybridIdentityMetadata GET method.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-20-preview
+// Generated from API version 2023-10-03-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - machineName - The name of the hybrid machine.
 //   - metadataName - Name of the HybridIdentityMetadata.
@@ -98,7 +98,7 @@ func (client *HybridIdentityMetadataClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-20-preview")
+	reqQP.Set("api-version", "2023-10-03-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -115,7 +115,7 @@ func (client *HybridIdentityMetadataClient) getHandleResponse(resp *http.Respons
 
 // NewListByMachinesPager - Returns the list of HybridIdentityMetadata of the given machine.
 //
-// Generated from API version 2023-06-20-preview
+// Generated from API version 2023-10-03-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - machineName - The name of the hybrid machine.
 //   - options - HybridIdentityMetadataClientListByMachinesOptions contains the optional parameters for the HybridIdentityMetadataClient.NewListByMachinesPager
@@ -163,7 +163,7 @@ func (client *HybridIdentityMetadataClient) listByMachinesCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-20-preview")
+	reqQP.Set("api-version", "2023-10-03-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

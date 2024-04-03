@@ -143,6 +143,35 @@ type MachineExtensionsClientUpdateResponse struct {
 	MachineExtension
 }
 
+// MachineRunCommandsClientCreateOrUpdateResponse contains the response from method MachineRunCommandsClient.BeginCreateOrUpdate.
+type MachineRunCommandsClientCreateOrUpdateResponse struct {
+	// Describes a Run Command
+	MachineRunCommand
+}
+
+// MachineRunCommandsClientDeleteResponse contains the response from method MachineRunCommandsClient.BeginDelete.
+type MachineRunCommandsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// MachineRunCommandsClientGetResponse contains the response from method MachineRunCommandsClient.Get.
+type MachineRunCommandsClientGetResponse struct {
+	// Describes a Run Command
+	MachineRunCommand
+}
+
+// MachineRunCommandsClientListResponse contains the response from method MachineRunCommandsClient.NewListPager.
+type MachineRunCommandsClientListResponse struct {
+	// Describes the Run Commands List Result.
+	MachineRunCommandsListResult
+}
+
+// MachineRunCommandsClientUpdateResponse contains the response from method MachineRunCommandsClient.BeginUpdate.
+type MachineRunCommandsClientUpdateResponse struct {
+	// Describes a Run Command
+	MachineRunCommand
+}
+
 // MachinesClientAssessPatchesResponse contains the response from method MachinesClient.BeginAssessPatches.
 type MachinesClientAssessPatchesResponse struct {
 	// Describes the properties of an AssessPatches result.
@@ -195,10 +224,42 @@ type ManagementClientUpgradeExtensionsResponse struct {
 	// placeholder for future response values
 }
 
+// NetworkConfigurationsClientCreateOrUpdateResponse contains the response from method NetworkConfigurationsClient.CreateOrUpdate.
+type NetworkConfigurationsClientCreateOrUpdateResponse struct {
+	NetworkConfiguration
+}
+
+// NetworkConfigurationsClientGetResponse contains the response from method NetworkConfigurationsClient.Get.
+type NetworkConfigurationsClientGetResponse struct {
+	NetworkConfiguration
+}
+
+// NetworkConfigurationsClientUpdateResponse contains the response from method NetworkConfigurationsClient.Update.
+type NetworkConfigurationsClientUpdateResponse struct {
+	NetworkConfiguration
+}
+
 // NetworkProfileClientGetResponse contains the response from method NetworkProfileClient.Get.
 type NetworkProfileClientGetResponse struct {
 	// Describes the network information on this machine.
 	NetworkProfile
+}
+
+// NetworkSecurityPerimeterConfigurationsClientGetByPrivateLinkScopeResponse contains the response from method NetworkSecurityPerimeterConfigurationsClient.GetByPrivateLinkScope.
+type NetworkSecurityPerimeterConfigurationsClientGetByPrivateLinkScopeResponse struct {
+	// Properties that define a Network Security Perimeter resource.
+	NetworkSecurityPerimeterConfiguration
+}
+
+// NetworkSecurityPerimeterConfigurationsClientListByPrivateLinkScopeResponse contains the response from method NetworkSecurityPerimeterConfigurationsClient.NewListByPrivateLinkScopePager.
+type NetworkSecurityPerimeterConfigurationsClientListByPrivateLinkScopeResponse struct {
+	// A list of network security perimeter configurations.
+	NetworkSecurityPerimeterConfigurationListResult
+}
+
+// NetworkSecurityPerimeterConfigurationsClientReconcileForPrivateLinkScopeResponse contains the response from method NetworkSecurityPerimeterConfigurationsClient.BeginReconcileForPrivateLinkScope.
+type NetworkSecurityPerimeterConfigurationsClientReconcileForPrivateLinkScopeResponse struct {
+	// placeholder for future response values
 }
 
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.

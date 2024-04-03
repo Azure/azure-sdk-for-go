@@ -142,6 +142,38 @@ type MachineExtensionsClientListOptions struct {
 	Expand *string
 }
 
+// MachineRunCommandsClientBeginCreateOrUpdateOptions contains the optional parameters for the MachineRunCommandsClient.BeginCreateOrUpdate
+// method.
+type MachineRunCommandsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// MachineRunCommandsClientBeginDeleteOptions contains the optional parameters for the MachineRunCommandsClient.BeginDelete
+// method.
+type MachineRunCommandsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// MachineRunCommandsClientBeginUpdateOptions contains the optional parameters for the MachineRunCommandsClient.BeginUpdate
+// method.
+type MachineRunCommandsClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// MachineRunCommandsClientGetOptions contains the optional parameters for the MachineRunCommandsClient.Get method.
+type MachineRunCommandsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// MachineRunCommandsClientListOptions contains the optional parameters for the MachineRunCommandsClient.NewListPager method.
+type MachineRunCommandsClientListOptions struct {
+	// The expand expression to apply on the operation.
+	Expand *string
+}
+
 // MachinesClientBeginAssessPatchesOptions contains the optional parameters for the MachinesClient.BeginAssessPatches method.
 type MachinesClientBeginAssessPatchesOptions struct {
 	// Resumes the LRO from the provided token.
@@ -196,8 +228,43 @@ type ManagementClientBeginUpgradeExtensionsOptions struct {
 	ResumeToken string
 }
 
+// NetworkConfigurationsClientCreateOrUpdateOptions contains the optional parameters for the NetworkConfigurationsClient.CreateOrUpdate
+// method.
+type NetworkConfigurationsClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NetworkConfigurationsClientGetOptions contains the optional parameters for the NetworkConfigurationsClient.Get method.
+type NetworkConfigurationsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NetworkConfigurationsClientUpdateOptions contains the optional parameters for the NetworkConfigurationsClient.Update method.
+type NetworkConfigurationsClientUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
 // NetworkProfileClientGetOptions contains the optional parameters for the NetworkProfileClient.Get method.
 type NetworkProfileClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NetworkSecurityPerimeterConfigurationsClientBeginReconcileForPrivateLinkScopeOptions contains the optional parameters for
+// the NetworkSecurityPerimeterConfigurationsClient.BeginReconcileForPrivateLinkScope method.
+type NetworkSecurityPerimeterConfigurationsClientBeginReconcileForPrivateLinkScopeOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// NetworkSecurityPerimeterConfigurationsClientGetByPrivateLinkScopeOptions contains the optional parameters for the NetworkSecurityPerimeterConfigurationsClient.GetByPrivateLinkScope
+// method.
+type NetworkSecurityPerimeterConfigurationsClientGetByPrivateLinkScopeOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NetworkSecurityPerimeterConfigurationsClientListByPrivateLinkScopeOptions contains the optional parameters for the NetworkSecurityPerimeterConfigurationsClient.NewListByPrivateLinkScopePager
+// method.
+type NetworkSecurityPerimeterConfigurationsClientListByPrivateLinkScopeOptions struct {
 	// placeholder for future optional parameters
 }
 

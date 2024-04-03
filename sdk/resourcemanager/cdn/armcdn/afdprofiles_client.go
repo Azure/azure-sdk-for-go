@@ -47,7 +47,7 @@ func NewAFDProfilesClient(subscriptionID string, credential azcore.TokenCredenti
 // host name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2024-02-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium which is unique within the resource group.
 //   - checkEndpointNameAvailabilityInput - Input to check.
@@ -95,7 +95,7 @@ func (client *AFDProfilesClient) checkEndpointNameAvailabilityCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2024-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, checkEndpointNameAvailabilityInput); err != nil {
@@ -117,7 +117,7 @@ func (client *AFDProfilesClient) checkEndpointNameAvailabilityHandleResponse(res
 // in DNS.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2024-02-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
 //     group.
@@ -166,7 +166,7 @@ func (client *AFDProfilesClient) checkHostNameAvailabilityCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2024-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, checkHostNameAvailabilityInput); err != nil {
@@ -186,7 +186,7 @@ func (client *AFDProfilesClient) checkHostNameAvailabilityHandleResponse(resp *h
 
 // NewListResourceUsagePager - Checks the quota and actual usage of endpoints under the given Azure Front Door profile.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2024-02-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
 //     group.
@@ -235,7 +235,7 @@ func (client *AFDProfilesClient) listResourceUsageCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2024-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -253,7 +253,7 @@ func (client *AFDProfilesClient) listResourceUsageHandleResponse(resp *http.Resp
 // BeginUpgrade - Upgrade a profile from StandardAzureFrontDoor to PremiumAzureFrontDoor.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2024-02-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium which is unique within the resource group.
 //   - profileUpgradeParameters - Profile upgrade input parameter.
@@ -280,7 +280,7 @@ func (client *AFDProfilesClient) BeginUpgrade(ctx context.Context, resourceGroup
 // Upgrade - Upgrade a profile from StandardAzureFrontDoor to PremiumAzureFrontDoor.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2024-02-01
 func (client *AFDProfilesClient) upgrade(ctx context.Context, resourceGroupName string, profileName string, profileUpgradeParameters ProfileUpgradeParameters, options *AFDProfilesClientBeginUpgradeOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AFDProfilesClient.BeginUpgrade"
@@ -322,7 +322,7 @@ func (client *AFDProfilesClient) upgradeCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2024-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, profileUpgradeParameters); err != nil {
@@ -334,7 +334,7 @@ func (client *AFDProfilesClient) upgradeCreateRequest(ctx context.Context, resou
 // ValidateSecret - Validate a Secret in the profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2024-02-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium which is unique within the resource group.
 //   - validateSecretInput - The Secret source.
@@ -382,7 +382,7 @@ func (client *AFDProfilesClient) validateSecretCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2024-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, validateSecretInput); err != nil {

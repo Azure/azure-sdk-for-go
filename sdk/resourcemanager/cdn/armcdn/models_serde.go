@@ -5987,11 +5987,43 @@ func (p *ProfileListResult) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type ProfileLogScrubbing.
+func (p ProfileLogScrubbing) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "scrubbingRules", p.ScrubbingRules)
+	populate(objectMap, "state", p.State)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ProfileLogScrubbing.
+func (p *ProfileLogScrubbing) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", p, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "scrubbingRules":
+			err = unpopulate(val, "ScrubbingRules", &p.ScrubbingRules)
+			delete(rawMsg, key)
+		case "state":
+			err = unpopulate(val, "State", &p.State)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", p, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type ProfileProperties.
 func (p ProfileProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "extendedProperties", p.ExtendedProperties)
 	populate(objectMap, "frontDoorId", p.FrontDoorID)
+	populate(objectMap, "logScrubbing", p.LogScrubbing)
 	populate(objectMap, "originResponseTimeoutSeconds", p.OriginResponseTimeoutSeconds)
 	populate(objectMap, "provisioningState", p.ProvisioningState)
 	populate(objectMap, "resourceState", p.ResourceState)
@@ -6013,6 +6045,9 @@ func (p *ProfileProperties) UnmarshalJSON(data []byte) error {
 		case "frontDoorId":
 			err = unpopulate(val, "FrontDoorID", &p.FrontDoorID)
 			delete(rawMsg, key)
+		case "logScrubbing":
+			err = unpopulate(val, "LogScrubbing", &p.LogScrubbing)
+			delete(rawMsg, key)
 		case "originResponseTimeoutSeconds":
 			err = unpopulate(val, "OriginResponseTimeoutSeconds", &p.OriginResponseTimeoutSeconds)
 			delete(rawMsg, key)
@@ -6033,6 +6068,7 @@ func (p *ProfileProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ProfilePropertiesUpdateParameters.
 func (p ProfilePropertiesUpdateParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "logScrubbing", p.LogScrubbing)
 	populate(objectMap, "originResponseTimeoutSeconds", p.OriginResponseTimeoutSeconds)
 	return json.Marshal(objectMap)
 }
@@ -6046,8 +6082,50 @@ func (p *ProfilePropertiesUpdateParameters) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "logScrubbing":
+			err = unpopulate(val, "LogScrubbing", &p.LogScrubbing)
+			delete(rawMsg, key)
 		case "originResponseTimeoutSeconds":
 			err = unpopulate(val, "OriginResponseTimeoutSeconds", &p.OriginResponseTimeoutSeconds)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", p, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ProfileScrubbingRules.
+func (p ProfileScrubbingRules) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "matchVariable", p.MatchVariable)
+	populate(objectMap, "selector", p.Selector)
+	populate(objectMap, "selectorMatchOperator", p.SelectorMatchOperator)
+	populate(objectMap, "state", p.State)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ProfileScrubbingRules.
+func (p *ProfileScrubbingRules) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", p, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "matchVariable":
+			err = unpopulate(val, "MatchVariable", &p.MatchVariable)
+			delete(rawMsg, key)
+		case "selector":
+			err = unpopulate(val, "Selector", &p.Selector)
+			delete(rawMsg, key)
+		case "selectorMatchOperator":
+			err = unpopulate(val, "SelectorMatchOperator", &p.SelectorMatchOperator)
+			delete(rawMsg, key)
+		case "state":
+			err = unpopulate(val, "State", &p.State)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -9437,7 +9515,7 @@ func populate(m map[string]any, k string, v any) {
 }
 
 func unpopulate(data json.RawMessage, fn string, v any) error {
-	if data == nil {
+	if data == nil || string(data) == "null" {
 		return nil
 	}
 	if err := json.Unmarshal(data, v); err != nil {

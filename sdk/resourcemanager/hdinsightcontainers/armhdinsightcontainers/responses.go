@@ -20,6 +20,12 @@ type AvailableClusterVersionsClientListByLocationResponse struct {
 	ClusterVersionsListResult
 }
 
+// ClusterAvailableUpgradesClientListResponse contains the response from method ClusterAvailableUpgradesClient.NewListPager.
+type ClusterAvailableUpgradesClientListResponse struct {
+	// Collection of cluster available upgrade.
+	ClusterAvailableUpgradeList
+}
+
 // ClusterJobsClientListResponse contains the response from method ClusterJobsClient.NewListPager.
 type ClusterJobsClientListResponse struct {
 	// Collection of cluster job.
@@ -30,6 +36,12 @@ type ClusterJobsClientListResponse struct {
 type ClusterJobsClientRunJobResponse struct {
 	// Cluster job.
 	ClusterJob
+}
+
+// ClusterPoolAvailableUpgradesClientListResponse contains the response from method ClusterPoolAvailableUpgradesClient.NewListPager.
+type ClusterPoolAvailableUpgradesClientListResponse struct {
+	// collection of cluster pool available upgrade.
+	ClusterPoolAvailableUpgradeList
 }
 
 // ClusterPoolsClientCreateOrUpdateResponse contains the response from method ClusterPoolsClient.BeginCreateOrUpdate.
@@ -63,6 +75,12 @@ type ClusterPoolsClientListBySubscriptionResponse struct {
 
 // ClusterPoolsClientUpdateTagsResponse contains the response from method ClusterPoolsClient.BeginUpdateTags.
 type ClusterPoolsClientUpdateTagsResponse struct {
+	// Cluster pool.
+	ClusterPool
+}
+
+// ClusterPoolsClientUpgradeResponse contains the response from method ClusterPoolsClient.BeginUpgrade.
+type ClusterPoolsClientUpgradeResponse struct {
 	// Cluster pool.
 	ClusterPool
 }
@@ -116,6 +134,12 @@ type ClustersClientResizeResponse struct {
 
 // ClustersClientUpdateResponse contains the response from method ClustersClient.BeginUpdate.
 type ClustersClientUpdateResponse struct {
+	// The cluster.
+	Cluster
+}
+
+// ClustersClientUpgradeResponse contains the response from method ClustersClient.BeginUpgrade.
+type ClustersClientUpgradeResponse struct {
 	// The cluster.
 	Cluster
 }

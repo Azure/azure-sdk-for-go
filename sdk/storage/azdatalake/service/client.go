@@ -39,7 +39,8 @@ type Client base.CompositeClient[generated.ServiceClient, generated_blob.Service
 //   - options - client options; pass nil to accept the default values
 func NewClient(serviceURL string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
 	blobServiceURL, datalakeServiceURL := shared.GetURLs(serviceURL)
-	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{shared.TokenScope}, nil)
+	audience := base.GetAudience((*base.ClientOptions)(options))
+	authPolicy := shared.NewStorageChallengePolicy(cred, audience)
 	conOptions := shared.GetClientOptions(options)
 	plOpts := runtime.PipelineOptions{
 		PerRetry: []policy.Policy{authPolicy},

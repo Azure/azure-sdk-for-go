@@ -860,3 +860,75 @@ func (s *ServiceRecordedTestsSuite) TestServiceClientWithNilSharedKey() {
 	_require.Error(err)
 	_require.Nil(svcClient)
 }
+
+func (s *ServiceRecordedTestsSuite) TestServiceClientUsingOauth() {
+	_require := require.New(s.T())
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDatalake)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	serviceUrl := "https://" + accountName + ".dfs.core.windows.net/"
+
+	svcClient, err := service.NewClient(serviceUrl, cred, nil)
+	_require.NoError(err)
+	_require.NotNil(svcClient)
+
+	fs, _ := svcClient.CreateFileSystem(context.Background(), "test", nil)
+	_require.NotNil(fs)
+	_require.NoError(err)
+}
+
+func (s *ServiceRecordedTestsSuite) TestServiceClientUsingOauthWithDefaultAudience() {
+	_require := require.New(s.T())
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDatalake)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	serviceUrl := "https://" + accountName + ".dfs.core.windows.net/"
+
+	options := service.ClientOptions{
+		Audience: "https://storage.azure.com/",
+	}
+
+	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
+	svcClient, err := service.NewClient(serviceUrl, cred, &options)
+	_require.NoError(err)
+	_require.NotNil(svcClient)
+
+	fs, _ := svcClient.CreateFileSystem(context.Background(), "test", nil)
+	_require.NotNil(fs)
+	_require.NoError(err)
+
+}
+
+func (s *ServiceRecordedTestsSuite) TestServiceClientUsingOauthWithCustomAudience() {
+	_require := require.New(s.T())
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDatalake)
+	_require.Greater(len(accountName), 0)
+
+	serviceUrl := "https://" + accountName + ".dfs.core.windows.net/"
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	options := service.ClientOptions{
+		Audience: "https://" + accountName + ".blob.core.windows.net",
+	}
+
+	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
+	svcClient, err := service.NewClient(serviceUrl, cred, &options)
+	_require.NoError(err)
+	_require.NotNil(svcClient)
+
+	fs, _ := svcClient.CreateFileSystem(context.Background(), "test", nil)
+	_require.NotNil(fs)
+	_require.NoError(err)
+
+}

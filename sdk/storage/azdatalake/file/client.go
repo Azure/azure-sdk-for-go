@@ -48,7 +48,8 @@ type Client base.CompositeClient[generated.PathClient, generated_blob.BlobClient
 //   - options - client options; pass nil to accept the default values
 func NewClient(fileURL string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
 	blobURL, fileURL := shared.GetURLs(fileURL)
-	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{shared.TokenScope}, nil)
+	audience := base.GetAudience((*base.ClientOptions)(options))
+	authPolicy := shared.NewStorageChallengePolicy(cred, audience)
 	conOptions := shared.GetClientOptions(options)
 	plOpts := runtime.PipelineOptions{
 		PerRetry: []policy.Policy{authPolicy},

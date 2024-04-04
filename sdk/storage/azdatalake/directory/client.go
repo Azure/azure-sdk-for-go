@@ -42,7 +42,8 @@ type Client base.CompositeClient[generated.PathClient, generated_blob.BlobClient
 func NewClient(directoryURL string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
 	blobURL, directoryURL := shared.GetURLs(directoryURL)
 
-	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{shared.TokenScope}, nil)
+	audience := base.GetAudience((*base.ClientOptions)(options))
+	authPolicy := shared.NewStorageChallengePolicy(cred, audience)
 	conOptions := shared.GetClientOptions(options)
 	plOpts := runtime.PipelineOptions{
 		PerRetry: []policy.Policy{authPolicy},

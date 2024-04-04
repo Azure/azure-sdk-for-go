@@ -25,7 +25,7 @@ import (
 	"github.com/stretchr/testify/suite"
 )
 
-var proposedLeaseIDs = []*string{to.Ptr("c820a799-76d7-4ee2-6e15-546f19325c2c"), to.Ptr("326cc5e1-746e-4af8-4811-a50e6629a8ca")}
+var proposedLeaseIDs = []*string{to.Ptr("c820a799-76d7-4ee2-6e15-546f1 nnn 9325c2c"), to.Ptr("326cc5e1-746e-4af8-4811-a50e6629a8ca")}
 
 func Test(t *testing.T) {
 	recordMode := recording.GetRecordMode()
@@ -2921,4 +2921,68 @@ func (s *UnrecordedTestSuite) TestDirCreateDeleteUsingOAuth() {
 
 	_, err = dirClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
+}
+
+func (s *RecordedTestSuite) TestCreateDirectoryClientDefaultAudience() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDatalake)
+	_require.Greater(len(accountName), 0)
+
+	dirName := testcommon.GenerateDirName(testName)
+	dirURL := "https://" + accountName + ".dfs.core.windows.net/" + filesystemName + "/" + dirName
+
+	dirClient, err := directory.NewClient(dirURL, cred, &directory.ClientOptions{Audience: "https://storage.azure.com/"})
+	_require.NoError(err)
+
+	_, err = dirClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	_, err = dirClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+
+}
+
+func (s *RecordedTestSuite) TestCreateDirectoryClientCustomAudience() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDatalake)
+	_require.Greater(len(accountName), 0)
+
+	dirName := testcommon.GenerateDirName(testName)
+	dirURL := "https://" + accountName + ".dfs.core.windows.net/" + filesystemName + "/" + dirName
+
+	dirClient, err := directory.NewClient(dirURL, cred, &directory.ClientOptions{Audience: "https://" + accountName + ".blob.core.windows.net"})
+	_require.NoError(err)
+
+	_, err = dirClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	_, err = dirClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+
 }

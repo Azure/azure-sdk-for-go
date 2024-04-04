@@ -25,7 +25,7 @@ import (
 	"github.com/stretchr/testify/suite"
 )
 
-var proposedLeaseIDs = []*string{to.Ptr("c820a799-76d7-4ee2-6e15-546f1 nnn 9325c2c"), to.Ptr("326cc5e1-746e-4af8-4811-a50e6629a8ca")}
+var proposedLeaseIDs = []*string{to.Ptr("c820a799-76d7-4ee2-6e15-546f19325c2c"), to.Ptr("326cc5e1-746e-4af8-4811-a50e6629a8ca")}
 
 func Test(t *testing.T) {
 	recordMode := recording.GetRecordMode()

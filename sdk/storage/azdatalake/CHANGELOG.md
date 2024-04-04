@@ -10,6 +10,7 @@
 * HNS Encryption Context support
 * Pagination Support for recursive directory deletion
 * Bundle ability to set permission, owner, group, acl, lease, expiry time and umask along with FileSystem.CreateFile and FileSystem.CreateDirectory APIs.
+* Added support for AAD Audience.
 
 ### Breaking Changes
 

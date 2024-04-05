@@ -44,6 +44,8 @@ const (
 	serviceFabricAPIVersion  = "2019-07-01-preview"
 )
 
+var imdsProbeTimeout = time.Second
+
 type msiType int
 
 const (
@@ -55,13 +57,12 @@ const (
 	msiTypeServiceFabric
 )
 
-// managedIdentityClient provides the base for authenticating in managed identity environments
-// This type includes an runtime.Pipeline and TokenCredentialOptions.
 type managedIdentityClient struct {
-	azClient *azcore.Client
-	msiType  msiType
-	endpoint string
-	id       ManagedIDKind
+	azClient  *azcore.Client
+	endpoint  string
+	id        ManagedIDKind
+	msiType   msiType
+	probeIMDS bool
 }
 
 type wrappedNumber json.Number
@@ -147,6 +148,7 @@ func newManagedIdentityClient(options *ManagedIdentityCredentialOptions) (*manag
 			c.msiType = msiTypeCloudShell
 		}
 	} else {
+		c.probeIMDS = options.dac
 		setIMDSRetryOptionDefaults(&cp.Retry)
 	}
 
@@ -180,6 +182,26 @@ func (c *managedIdentityClient) provideToken(ctx context.Context, params confide
 
 // authenticate acquires an access token
 func (c *managedIdentityClient) authenticate(ctx context.Context, id ManagedIDKind, scopes []string) (azcore.AccessToken, error) {
+	// no need to synchronize around this value because it's true only when DefaultAzureCredential constructed the client,
+	// and in that case ChainedTokenCredential.GetToken synchronizes goroutines that would execute this block
+	if c.probeIMDS {
+		cx, cancel := context.WithTimeout(ctx, imdsProbeTimeout)
+		defer cancel()
+		req, err := runtime.NewRequest(cx, http.MethodGet, c.endpoint)
+		if err == nil {
+			_, err = c.azClient.Pipeline().Do(req)
+		}
+		if err != nil {
+			msg := err.Error()
+			if errors.Is(err, context.Canceled) || errors.Is(err, context.DeadlineExceeded) {
+				msg = "managed identity timed out. See https://aka.ms/azsdk/go/identity/troubleshoot#dac for more information"
+			}
+			return azcore.AccessToken{}, newCredentialUnavailableError(credNameManagedIdentity, msg)
+		}
+		// send normal token requests from now on because something responded
+		c.probeIMDS = false
+	}
+
 	msg, err := c.createAuthRequest(ctx, id, scopes)
 	if err != nil {
 		return azcore.AccessToken{}, err

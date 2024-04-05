@@ -38,7 +38,7 @@ func (er *EventReader[T]) Read() (T, error) {
 
 		if err != nil {
 			if errors.Is(err, io.EOF) {
-				return *new(T), errors.New("incomplete stream")
+				return er.zeroT, errors.New("incomplete stream")
 			}
 
 			return er.zeroT, err

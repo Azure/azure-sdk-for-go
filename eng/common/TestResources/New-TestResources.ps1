@@ -29,9 +29,6 @@ param (
     [string] $TestApplicationId,
 
     [Parameter()]
-    [string] $TestApplicationSecret,
-
-    [Parameter()]
     [ValidatePattern('^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$')]
     [string] $TestApplicationOid,
 
@@ -51,9 +48,6 @@ param (
     [Parameter(ParameterSetName = 'Provisioner', Mandatory = $false)]
     [ValidatePattern('^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$')]
     [string] $ProvisionerApplicationOid,
-
-    [Parameter(ParameterSetName = 'Provisioner', Mandatory = $true)]
-    [string] $ProvisionerApplicationSecret,
 
     [Parameter()]
     [ValidateRange(1, 7*24)]
@@ -268,7 +262,6 @@ function BuildDeploymentOutputs([string]$serviceName, [object]$azContext, [objec
     # Add default values
     $deploymentOutputs = [Ordered]@{
         "${serviceDirectoryPrefix}CLIENT_ID" = $TestApplicationId;
-        # "${serviceDirectoryPrefix}CLIENT_SECRET" = $TestApplicationSecret;
         "${serviceDirectoryPrefix}TENANT_ID" = $azContext.Tenant.Id;
         "${serviceDirectoryPrefix}SUBSCRIPTION_ID" =  $azContext.Subscription.Id;
         "${serviceDirectoryPrefix}RESOURCE_GROUP" = $resourceGroup.ResourceGroupName;
@@ -518,35 +511,6 @@ try {
         }
     }
 
-    # If a provisioner service principal was provided, log into it to perform the pre- and post-scripts and deployments.
-    if ($ProvisionerApplicationId) {
-        $null = Disable-AzContextAutosave -Scope Process
-
-        Log "Logging into service principal '$ProvisionerApplicationId'."
-        $provisionerSecret = ConvertTo-SecureString -String $ProvisionerApplicationSecret -AsPlainText -Force
-        $provisionerCredential = [System.Management.Automation.PSCredential]::new($ProvisionerApplicationId, $provisionerSecret)
-
-        # Use the given subscription ID if provided.
-        $subscriptionArgs = if ($SubscriptionId) {
-            @{Subscription = $SubscriptionId}
-        } else {
-            @{}
-        }
-
-        $provisionerAccount = Retry {
-            Connect-AzAccount -Force:$Force -Tenant $TenantId -Credential $provisionerCredential -ServicePrincipal -Environment $Environment @subscriptionArgs
-        }
-
-        $exitActions += {
-            Write-Verbose "Logging out of service principal '$($provisionerAccount.Context.Account)'"
-
-            # Only attempt to disconnect if the -WhatIf flag was not set. Otherwise, this call is not necessary and will fail.
-            if ($PSCmdlet.ShouldProcess($ProvisionerApplicationId)) {
-                $null = Disconnect-AzAccount -AzureContext $provisionerAccount.Context
-            }
-        }
-    }
-
     # Determine the Azure context that the script is running in.
     $context = Get-AzContext;
 
@@ -658,7 +622,6 @@ try {
 
         $TestApplicationId = $servicePrincipal.AppId
         $TestApplicationOid = $servicePrincipal.Id
-        $TestApplicationSecret = (ConvertFrom-SecureString $servicePrincipal.Secret -AsPlainText)
     }
 
     # Get test application OID from ID if not already provided. This may fail if the
@@ -686,7 +649,6 @@ try {
     # Make sure pre- and post-scripts are passed formerly required arguments.
     $PSBoundParameters['TestApplicationId'] = $TestApplicationId
     $PSBoundParameters['TestApplicationOid'] = $TestApplicationOid
-    $PSBoundParameters['TestApplicationSecret'] = $TestApplicationSecret
 
     # If the role hasn't been explicitly assigned to the resource group and a cached service principal or user authentication is in use,
     # query to see if the grant is needed.
@@ -733,9 +695,6 @@ try {
 
     if ($TenantId) {
         $templateParameters.Add('tenantId', $TenantId)
-    }
-    if ($TestApplicationSecret) {
-        $templateParameters.Add('testApplicationSecret', $TestApplicationSecret)
     }
 
     $defaultCloudParameters = LoadCloudConfig $Environment

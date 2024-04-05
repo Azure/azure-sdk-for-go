@@ -44,6 +44,7 @@ steps:
       TEMP: $(Agent.TempDirectory)
     inputs:
       azureSubscription: "bebroder-wif"
+      azurePowerShellVersion: 11.3.1
       ScriptType: InlineScript
       Inline: |
         eng/common/scripts/Import-AzModules.ps1

@@ -16,20 +16,33 @@ import (
 
 // EventReader streams events dynamically from an OpenAI endpoint.
 type EventReader[T any] struct {
-	reader  io.ReadCloser // Required for Closing
-	scanner *bufio.Scanner
+	reader      io.ReadCloser // Required for Closing
+	bufioReader *bufio.Reader
+	zeroT       T
 }
 
 func newEventReader[T any](r io.ReadCloser) *EventReader[T] {
-	return &EventReader[T]{reader: r, scanner: bufio.NewScanner(r)}
+	return &EventReader[T]{
+		reader:      r,
+		bufioReader: bufio.NewReader(r),
+	}
 }
 
 // Read reads the next event from the stream.
 // Returns io.EOF when there are no further events.
 func (er *EventReader[T]) Read() (T, error) {
 	// https://html.spec.whatwg.org/multipage/server-sent-events.html
-	for er.scanner.Scan() { // Scan while no error
-		line := er.scanner.Text() // Get the line & interpret the event stream:
+
+	for {
+		line, err := er.bufioReader.ReadString('\n')
+
+		if err != nil {
+			if errors.Is(err, io.EOF) {
+				return er.zeroT, errors.New("incomplete stream")
+			}
+
+			return er.zeroT, err
+		}
 
 		if line == "" || line[0] == ':' { // If the line is blank or is a comment, skip it
 			continue
@@ -52,14 +65,6 @@ func (er *EventReader[T]) Read() (T, error) {
 			// Unreachable
 		}
 	}
-
-	scannerErr := er.scanner.Err()
-
-	if scannerErr == nil {
-		return *new(T), errors.New("incomplete stream")
-	}
-
-	return *new(T), scannerErr
 }
 
 // Close closes the EventReader and any applicable inner stream state.

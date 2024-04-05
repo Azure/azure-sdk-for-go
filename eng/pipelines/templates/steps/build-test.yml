@@ -78,6 +78,7 @@ steps:
     inputs:
       azureSubscription: "bebroder-wif"
       azurePowerShellVersion: 11.3.1
+      pwsh: true
       ScriptPath: ./eng/scripts/Build_Perf.ps1
       arguments: '${{ parameters.ServiceDirectory }} ${{ parameters.TestRunTime }}'
 

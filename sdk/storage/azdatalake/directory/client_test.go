@@ -2976,7 +2976,7 @@ func (s *RecordedTestSuite) TestCreateDirectoryClientCustomAudience() {
 	dirName := testcommon.GenerateDirName(testName)
 	dirURL := "https://" + accountName + ".dfs.core.windows.net/" + filesystemName + "/" + dirName
 
-	dirClient, err := directory.NewClient(dirURL, cred, &directory.ClientOptions{Audience: "https://" + accountName + ".dfs.core.windows.net"})
+	dirClient, err := directory.NewClient(dirURL, cred, &directory.ClientOptions{Audience: "https://" + accountName + ".blob.core.windows.net"})
 	_require.NoError(err)
 
 	_, err = dirClient.Create(context.Background(), nil)

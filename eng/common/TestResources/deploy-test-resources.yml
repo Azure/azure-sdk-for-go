@@ -38,6 +38,15 @@ steps:
 
   - template: /eng/common/TestResources/setup-environments.yml
 
+  - task: AzureCLI@2
+    displayName: Login WIF
+    inputs:
+      azureSubscription: "bebroder-wif"
+      scriptType: bash
+      scriptLocation: inlineScript
+      inlineScript: |
+        az group show -n automation
+
   - pwsh: |
       eng/common/scripts/Import-AzModules.ps1
 

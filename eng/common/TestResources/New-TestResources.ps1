@@ -268,7 +268,7 @@ function BuildDeploymentOutputs([string]$serviceName, [object]$azContext, [objec
     # Add default values
     $deploymentOutputs = [Ordered]@{
         "${serviceDirectoryPrefix}CLIENT_ID" = $TestApplicationId;
-        "${serviceDirectoryPrefix}CLIENT_SECRET" = $TestApplicationSecret;
+        # "${serviceDirectoryPrefix}CLIENT_SECRET" = $TestApplicationSecret;
         "${serviceDirectoryPrefix}TENANT_ID" = $azContext.Tenant.Id;
         "${serviceDirectoryPrefix}SUBSCRIPTION_ID" =  $azContext.Subscription.Id;
         "${serviceDirectoryPrefix}RESOURCE_GROUP" = $resourceGroup.ResourceGroupName;

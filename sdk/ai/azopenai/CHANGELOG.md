@@ -8,7 +8,7 @@
 
 ### Bugs Fixed
 
-- EventReader can now handle chunks of text larger than 64k. Thank you @ChrisTrenkamp for finding the issue and suggesting a fix. (PR#TBD)
+- EventReader can now handle chunks of text larger than 64k. Thank you @ChrisTrenkamp for finding the issue and suggesting a fix. (PR#22703)
 
 ### Other Changes
 

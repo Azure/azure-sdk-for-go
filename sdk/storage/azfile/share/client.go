@@ -286,7 +286,6 @@ func (s *Client) GetSASURL(permissions sas.SharePermissions, expiry time.Time, o
 
 	qps, err := sas.SignatureValues{
 		Version:      sas.Version,
-		Protocol:     sas.ProtocolHTTPS,
 		ShareName:    urlParts.ShareName,
 		SnapshotTime: t,
 		Permissions:  permissions.String(),

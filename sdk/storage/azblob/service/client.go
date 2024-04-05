@@ -280,7 +280,6 @@ func (s *Client) GetSASURL(resources sas.AccountResourceTypes, permissions sas.A
 	st := o.format()
 	qps, err := sas.AccountSignatureValues{
 		Version:       sas.Version,
-		Protocol:      sas.ProtocolHTTPS,
 		Permissions:   permissions.String(),
 		ResourceTypes: resources.String(),
 		StartTime:     st,

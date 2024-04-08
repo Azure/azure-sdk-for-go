@@ -1,10 +1,6 @@
 # Release History
 
-## 1.3.2 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 1.3.2 (2024-04-09)
 
 ### Bugs Fixed
 * Fixed an issue where GetSASURL() was providing HTTPS SAS, instead of the default http+https SAS. Fixes [#22448](https://github.com/Azure/azure-sdk-for-go/issues/22448)

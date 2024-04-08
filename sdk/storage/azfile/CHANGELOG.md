@@ -9,6 +9,7 @@
 ### Bugs Fixed
 
 ### Other Changes
+* Updated `azcore` version to `1.11.1`.
 
 ## 1.2.1 (2024-02-29)
 

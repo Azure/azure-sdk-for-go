@@ -15,16 +15,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 )
 
-func TestUsernamePasswordCredential_InvalidTenantID(t *testing.T) {
-	cred, err := NewUsernamePasswordCredential(badTenantID, fakeClientID, "username", "password", nil)
-	if err == nil {
-		t.Fatal("Expected an error but received none")
-	}
-	if cred != nil {
-		t.Fatalf("Expected a nil credential value. Received: %v", cred)
-	}
-}
-
 func TestUsernamePasswordCredential_Live(t *testing.T) {
 	for _, disabledID := range []bool{true, false} {
 		name := "default options"

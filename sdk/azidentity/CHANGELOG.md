@@ -2,8 +2,6 @@
 
 ## 1.6.0-beta.3 (2024-04-09)
 
-### Features Added
-
 ### Breaking Changes
 * `DefaultAzureCredential` now sends a probe request with no retries for IMDS managed identity
   environments to avoid excessive retry delays when the IMDS endpoint is not available. This

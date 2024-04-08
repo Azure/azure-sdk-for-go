@@ -348,7 +348,6 @@ func (c *Client) GetSASURL(permissions sas.ContainerPermissions, expiry time.Tim
 	// Containers do not have snapshots, nor versions.
 	qps, err := sas.BlobSignatureValues{
 		Version:       sas.Version,
-		Protocol:      sas.ProtocolHTTPS,
 		ContainerName: urlParts.ContainerName,
 		Permissions:   permissions.String(),
 		StartTime:     st,

@@ -1,10 +1,12 @@
 # Release History
 
-## 0.1.1 (Unreleased)
+## 1.0.0 (Unreleased)
 
 ### Features Added
+* First GA
 
 ### Breaking Changes
+* Removed slices of pointers
 
 ### Bugs Fixed
 

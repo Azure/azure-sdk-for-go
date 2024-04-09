@@ -309,6 +309,6 @@ directive:
   where: $
   transform: >-
     return $.
-      replaceAll(`[]string{"2023-08-03"}`, `[]string{ServiceVersion}`).
-      replaceAll(`2023-08-03`, `2023-11-03`);
+      replaceAll(`[]string{"2023-05-03"}`, `[]string{ServiceVersion}`).
+      replaceAll(`2023-05-03`, `2023-11-03`);
 ```

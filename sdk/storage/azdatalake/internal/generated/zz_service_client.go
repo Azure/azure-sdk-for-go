@@ -29,7 +29,7 @@ type ServiceClient struct {
 
 // NewListFileSystemsPager - List filesystems and their properties in given account.
 //
-// Generated from API version 2023-08-03
+// Generated from API version 2023-11-03
 //   - options - ServiceClientListFileSystemsOptions contains the optional parameters for the ServiceClient.NewListFileSystemsPager
 //     method.
 //

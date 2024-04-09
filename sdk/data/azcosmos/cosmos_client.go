@@ -246,11 +246,11 @@ func (c *Client) NewQueryDatabasesPager(query string, o *QueryDatabasesOptions) 
 
 	return azruntime.NewPager(azruntime.PagingHandler[QueryDatabasesResponse]{
 		More: func(page QueryDatabasesResponse) bool {
-			return page.ContinuationToken != ""
+			return page.ContinuationToken != nil
 		},
 		Fetcher: func(ctx context.Context, page *QueryDatabasesResponse) (QueryDatabasesResponse, error) {
 			if page != nil {
-				if page.ContinuationToken != "" {
+				if page.ContinuationToken != nil {
 					// Use the previous page continuation if available
 					queryOptions.ContinuationToken = page.ContinuationToken
 				}

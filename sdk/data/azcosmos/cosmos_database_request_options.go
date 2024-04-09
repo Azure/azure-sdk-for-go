@@ -58,8 +58,8 @@ type CreateDatabaseOptions struct {
 // QueryDatabasesOptions are options to query databases
 type QueryDatabasesOptions struct {
 	// ContinuationToken to be used to continue a previous query execution.
-	// Obtained from QueryItemsResponse.ContinuationToken.
-	ContinuationToken string
+	// Obtained from QueryDatabasesResponse.ContinuationToken.
+	ContinuationToken *string
 
 	// QueryParameters allows execution of parametrized queries.
 	// See https://docs.microsoft.com/azure/cosmos-db/sql/sql-query-parameterized-queries
@@ -69,8 +69,8 @@ type QueryDatabasesOptions struct {
 func (options *QueryDatabasesOptions) toHeaders() *map[string]string {
 	headers := make(map[string]string)
 
-	if options.ContinuationToken != "" {
-		headers[cosmosHeaderContinuationToken] = options.ContinuationToken
+	if options.ContinuationToken != nil {
+		headers[cosmosHeaderContinuationToken] = *options.ContinuationToken
 	}
 
 	return &headers

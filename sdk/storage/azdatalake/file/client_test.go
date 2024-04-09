@@ -5541,6 +5541,7 @@ func (s *RecordedTestSuite) TestFileClientDefaultAudience() {
 	fileURL := "https://" + accountName + ".dfs.core.windows.net/" + filesystemName + "/" + fileName
 
 	options := &file.ClientOptions{Audience: "https://storage.azure.com/"}
+	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
 
 	fClient, err := file.NewClient(fileURL, cred, options)
 	_require.NoError(err)

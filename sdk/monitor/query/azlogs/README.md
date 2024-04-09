@@ -1,8 +1,8 @@
 # Azure Monitor Query Logs client module for Go
 
-* Query logs (this module)- execute read-only queries against [Azure Monitor Logs][logs_overview]
-* Query metrics ([query/azmetrics][azmetrics])- execute read-only queries against [Azure Monitor Metrics][metrics_overview]
-* Upload logs ([ingestion/azlogs][ingestion/azlogs])- send custom logs to [Azure Monitor][azure_monitor_overview] using the [Logs Ingestion API][ingestion_overview]
+* Query logs (this module): execute read-only queries against [Azure Monitor Logs][logs_overview]
+* Query metrics ([query/azmetrics][azmetrics]): execute read-only queries against [Azure Monitor Metrics][metrics_overview]
+* Upload logs ([ingestion/azlogs][ingestion_azlogs]): send custom logs to [Azure Monitor][azure_monitor_overview] using the [Logs Ingestion API][ingestion_overview]
 
 [Source code][source_code] | [Package (pkg.go.dev)][pkg_go] | [REST API documentation][monitor_rest_docs] | [Product documentation][monitor_docs] | [Samples][examples]
 
@@ -106,7 +106,7 @@ comments.
 [default_cred_ref]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/azidentity#defaultazurecredential
 [example_client]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/query/azlogs#example-NewClient
 [examples]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/query/azlogs#pkg-examples
-[ingestion/azlogs]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/ingestion/azlogs
+[ingestion_azlogs]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/ingestion/azlogs
 [ingestion_overview]: https://learn.microsoft.com/azure/azure-monitor/logs/logs-ingestion-api-overview
 [kusto_query_language]: https://learn.microsoft.com/azure/data-explorer/kusto/query/
 [kusto_to_sql]: https://learn.microsoft.com/azure/data-explorer/kusto/query/sqlcheatsheet

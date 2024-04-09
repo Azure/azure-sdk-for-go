@@ -12,6 +12,7 @@
 * Bundle ability to set permission, owner, group, acl, lease, expiry time and umask along with FileSystem.CreateFile and FileSystem.CreateDirectory APIs.
 * Added support for AAD Audience when OAuth is used.
 * Updated service version to `2023-11-03`
+* Integrate `InsecureAllowCredentialWithHTTP` client options.
 
 ### Breaking Changes
 

@@ -43,8 +43,8 @@ func NewClient(directoryURL string, cred azcore.TokenCredential, options *Client
 	blobURL, directoryURL := shared.GetURLs(directoryURL)
 
 	audience := base.GetAudience((*base.ClientOptions)(options))
-	authPolicy := shared.NewStorageChallengePolicy(cred, audience)
 	conOptions := shared.GetClientOptions(options)
+	authPolicy := shared.NewStorageChallengePolicy(cred, audience, conOptions.InsecureAllowCredentialWithHTTP)
 	plOpts := runtime.PipelineOptions{
 		PerRetry: []policy.Policy{authPolicy},
 	}

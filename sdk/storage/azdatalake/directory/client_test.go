@@ -2944,7 +2944,10 @@ func (s *RecordedTestSuite) TestCreateDirectoryClientDefaultAudience() {
 	dirName := testcommon.GenerateDirName(testName)
 	dirURL := "https://" + accountName + ".dfs.core.windows.net/" + filesystemName + "/" + dirName
 
-	dirClient, err := directory.NewClient(dirURL, cred, &directory.ClientOptions{Audience: "https://storage.azure.com/"})
+	options := &directory.ClientOptions{Audience: "https://storage.azure.com/"}
+	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
+
+	dirClient, err := directory.NewClient(dirURL, cred, options)
 	_require.NoError(err)
 
 	_, err = dirClient.Create(context.Background(), nil)

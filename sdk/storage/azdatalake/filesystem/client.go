@@ -41,8 +41,8 @@ type Client base.CompositeClient[generated.FileSystemClient, generated.FileSyste
 func NewClient(filesystemURL string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
 	containerURL, filesystemURL := shared.GetURLs(filesystemURL)
 	audience := base.GetAudience((*base.ClientOptions)(options))
-	authPolicy := shared.NewStorageChallengePolicy(cred, audience)
 	conOptions := shared.GetClientOptions(options)
+	authPolicy := shared.NewStorageChallengePolicy(cred, audience, conOptions.InsecureAllowCredentialWithHTTP)
 	plOpts := runtime.PipelineOptions{
 		PerRetry: []policy.Policy{authPolicy},
 	}

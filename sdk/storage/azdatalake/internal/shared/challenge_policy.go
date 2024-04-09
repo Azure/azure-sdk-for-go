@@ -19,13 +19,14 @@ type storageAuthorizer struct {
 	tenantID string
 }
 
-func NewStorageChallengePolicy(cred azcore.TokenCredential, audience string) policy.Policy {
+func NewStorageChallengePolicy(cred azcore.TokenCredential, audience string, allowHTTP bool) policy.Policy {
 	s := storageAuthorizer{scopes: []string{audience}}
 	return runtime.NewBearerTokenPolicy(cred, []string{audience}, &policy.BearerTokenOptions{
 		AuthorizationHandler: policy.AuthorizationHandler{
 			OnRequest:   s.onRequest,
 			OnChallenge: s.onChallenge,
 		},
+		InsecureAllowCredentialWithHTTP: allowHTTP,
 	})
 }
 

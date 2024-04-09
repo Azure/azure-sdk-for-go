@@ -40,8 +40,8 @@ type Client base.CompositeClient[generated.ServiceClient, generated_blob.Service
 func NewClient(serviceURL string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
 	blobServiceURL, datalakeServiceURL := shared.GetURLs(serviceURL)
 	audience := base.GetAudience((*base.ClientOptions)(options))
-	authPolicy := shared.NewStorageChallengePolicy(cred, audience)
 	conOptions := shared.GetClientOptions(options)
+	authPolicy := shared.NewStorageChallengePolicy(cred, audience, conOptions.InsecureAllowCredentialWithHTTP)
 	plOpts := runtime.PipelineOptions{
 		PerRetry: []policy.Policy{authPolicy},
 	}

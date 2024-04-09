@@ -79,7 +79,7 @@ func newContainersQueryResponse(resp *http.Response) (QueryContainersResponse, e
 		Response: newResponse(resp),
 	}
 
-	continuationToken = resp.Header.Get(cosmosHeaderContinuationToken)
+	continuationToken := resp.Header.Get(cosmosHeaderContinuationToken)
 	if continuationToken != "" {
 		response.ContinuationToken = &continuationToken
 	}
@@ -112,7 +112,7 @@ func newDatabasesQueryResponse(resp *http.Response) (QueryDatabasesResponse, err
 		Response: newResponse(resp),
 	}
 
-	continuationToken = resp.Header.Get(cosmosHeaderContinuationToken)
+	continuationToken := resp.Header.Get(cosmosHeaderContinuationToken)
 	if continuationToken != "" {
 		response.ContinuationToken = &continuationToken
 	}

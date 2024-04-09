@@ -55,7 +55,7 @@ type QueryContainersOptions struct {
 func (options *QueryContainersOptions) toHeaders() *map[string]string {
 	headers := make(map[string]string)
 
-	if options.ContinuationToken != nill {
+	if options.ContinuationToken != nil {
 		headers[cosmosHeaderContinuationToken] = *options.ContinuationToken
 	}
 

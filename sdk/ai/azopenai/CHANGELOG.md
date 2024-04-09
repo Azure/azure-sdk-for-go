@@ -1,6 +1,6 @@
 # Release History
 
-## 0.5.1 (Unreleased)
+## 0.5.2 (Unreleased)
 
 ### Features Added
 
@@ -8,7 +8,16 @@
 
 ### Bugs Fixed
 
+- EventReader can now handle chunks of text larger than 64k. Thank you @ChrisTrenkamp for finding the issue and suggesting a fix. (PR#22703)
+
 ### Other Changes
+
+## 0.5.1 (2024-04-02)
+
+### Features Added
+
+- Updating to the `2024-03-01-preview` API version. This adds support for using Dimensions with Embeddings as well as the ability to choose the embeddings format. 
+  This update also adds in the `Model` field for ChatCompletions responses. PR(#22603)
 
 ## 0.5.0 (2024-03-05)
 

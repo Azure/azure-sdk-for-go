@@ -11,7 +11,7 @@ package armchaos
 import "encoding/json"
 
 func unmarshalExperimentActionClassification(rawMsg json.RawMessage) (ExperimentActionClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -36,7 +36,7 @@ func unmarshalExperimentActionClassification(rawMsg json.RawMessage) (Experiment
 }
 
 func unmarshalExperimentActionClassificationArray(rawMsg json.RawMessage) ([]ExperimentActionClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var rawMessages []json.RawMessage
@@ -55,7 +55,7 @@ func unmarshalExperimentActionClassificationArray(rawMsg json.RawMessage) ([]Exp
 }
 
 func unmarshalTargetFilterClassification(rawMsg json.RawMessage) (TargetFilterClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -76,7 +76,7 @@ func unmarshalTargetFilterClassification(rawMsg json.RawMessage) (TargetFilterCl
 }
 
 func unmarshalTargetSelectorClassification(rawMsg json.RawMessage) (TargetSelectorClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -99,7 +99,7 @@ func unmarshalTargetSelectorClassification(rawMsg json.RawMessage) (TargetSelect
 }
 
 func unmarshalTargetSelectorClassificationArray(rawMsg json.RawMessage) ([]TargetSelectorClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var rawMessages []json.RawMessage

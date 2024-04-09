@@ -8,6 +8,16 @@
 
 package armconfluent
 
+// AccessClientCreateRoleBindingOptions contains the optional parameters for the AccessClient.CreateRoleBinding method.
+type AccessClientCreateRoleBindingOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccessClientDeleteRoleBindingOptions contains the optional parameters for the AccessClient.DeleteRoleBinding method.
+type AccessClientDeleteRoleBindingOptions struct {
+	// placeholder for future optional parameters
+}
+
 // AccessClientInviteUserOptions contains the optional parameters for the AccessClient.InviteUser method.
 type AccessClientInviteUserOptions struct {
 	// placeholder for future optional parameters
@@ -25,6 +35,12 @@ type AccessClientListEnvironmentsOptions struct {
 
 // AccessClientListInvitationsOptions contains the optional parameters for the AccessClient.ListInvitations method.
 type AccessClientListInvitationsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccessClientListRoleBindingNameListOptions contains the optional parameters for the AccessClient.ListRoleBindingNameList
+// method.
+type AccessClientListRoleBindingNameListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -70,8 +86,42 @@ type OrganizationClientBeginDeleteOptions struct {
 	ResumeToken string
 }
 
+// OrganizationClientCreateAPIKeyOptions contains the optional parameters for the OrganizationClient.CreateAPIKey method.
+type OrganizationClientCreateAPIKeyOptions struct {
+	// placeholder for future optional parameters
+}
+
+// OrganizationClientDeleteClusterAPIKeyOptions contains the optional parameters for the OrganizationClient.DeleteClusterAPIKey
+// method.
+type OrganizationClientDeleteClusterAPIKeyOptions struct {
+	// placeholder for future optional parameters
+}
+
+// OrganizationClientGetClusterAPIKeyOptions contains the optional parameters for the OrganizationClient.GetClusterAPIKey
+// method.
+type OrganizationClientGetClusterAPIKeyOptions struct {
+	// placeholder for future optional parameters
+}
+
+// OrganizationClientGetClusterByIDOptions contains the optional parameters for the OrganizationClient.GetClusterByID method.
+type OrganizationClientGetClusterByIDOptions struct {
+	// placeholder for future optional parameters
+}
+
+// OrganizationClientGetEnvironmentByIDOptions contains the optional parameters for the OrganizationClient.GetEnvironmentByID
+// method.
+type OrganizationClientGetEnvironmentByIDOptions struct {
+	// placeholder for future optional parameters
+}
+
 // OrganizationClientGetOptions contains the optional parameters for the OrganizationClient.Get method.
 type OrganizationClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// OrganizationClientGetSchemaRegistryClusterByIDOptions contains the optional parameters for the OrganizationClient.GetSchemaRegistryClusterByID
+// method.
+type OrganizationClientGetSchemaRegistryClusterByIDOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -85,6 +135,41 @@ type OrganizationClientListByResourceGroupOptions struct {
 // method.
 type OrganizationClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
+}
+
+// OrganizationClientListClustersOptions contains the optional parameters for the OrganizationClient.NewListClustersPager
+// method.
+type OrganizationClientListClustersOptions struct {
+	// Pagination size
+	PageSize *int32
+
+	// An opaque pagination token to fetch the next set of records
+	PageToken *string
+}
+
+// OrganizationClientListEnvironmentsOptions contains the optional parameters for the OrganizationClient.NewListEnvironmentsPager
+// method.
+type OrganizationClientListEnvironmentsOptions struct {
+	// Pagination size
+	PageSize *int32
+
+	// An opaque pagination token to fetch the next set of records
+	PageToken *string
+}
+
+// OrganizationClientListRegionsOptions contains the optional parameters for the OrganizationClient.ListRegions method.
+type OrganizationClientListRegionsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// OrganizationClientListSchemaRegistryClustersOptions contains the optional parameters for the OrganizationClient.NewListSchemaRegistryClustersPager
+// method.
+type OrganizationClientListSchemaRegistryClustersOptions struct {
+	// Pagination size
+	PageSize *int32
+
+	// An opaque pagination token to fetch the next set of records
+	PageToken *string
 }
 
 // OrganizationClientUpdateOptions contains the optional parameters for the OrganizationClient.Update method.

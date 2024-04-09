@@ -596,7 +596,7 @@ func ExampleContainerClient_ReadItem_sessionConsistency() {
 	}
 
 	itemSessionToken := itemResponse.SessionToken
-	fmt.Printf("Create response contained session %s", itemSessionToken)
+	fmt.Printf("Create response contained session %s", *itemSessionToken)
 
 	// In another client, maintain the session by passing the session token
 	itemResponse, err = container.ReadItem(context.Background(), pk, id, &azcosmos.ItemOptions{SessionToken: itemSessionToken})

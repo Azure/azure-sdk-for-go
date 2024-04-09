@@ -1,5 +1,20 @@
 # Release History
 
+## 1.2.0-beta.1 (2024-03-22)
+### Features Added
+
+- New enum type `ActiveDirectoryAuth` with values `ActiveDirectoryAuthDisabled`, `ActiveDirectoryAuthEnabled`
+- New enum type `PasswordAuth` with values `PasswordAuthDisabled`, `PasswordAuthEnabled`
+- New enum type `PrincipalType` with values `PrincipalTypeGroup`, `PrincipalTypeServicePrincipal`, `PrincipalTypeUser`
+- New enum type `RoleType` with values `RoleTypeAdmin`, `RoleTypeUser`
+- New struct `AuthConfig`
+- New struct `PromoteRequest`
+- New struct `RolePropertiesExternalIdentity`
+- New field `AuthConfig`, `DatabaseName`, `EnableGeoBackup` in struct `ClusterProperties`
+- New field `PromoteRequest` in struct `ClustersClientBeginPromoteReadReplicaOptions`
+- New field `ExternalIdentity`, `RoleType` in struct `RoleProperties`
+
+
 ## 1.1.0 (2023-11-24)
 ### Features Added
 

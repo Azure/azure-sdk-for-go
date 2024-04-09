@@ -47,7 +47,7 @@ func NewThroughputPoolAccountClient(subscriptionID string, credential azcore.Tok
 // updates on an account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-15-preview
+// Generated from API version 2024-02-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - throughputPoolName - Cosmos DB Throughput Pool name.
 //   - throughputPoolAccountName - Cosmos DB global database account in a Throughput Pool
@@ -76,7 +76,7 @@ func (client *ThroughputPoolAccountClient) BeginCreate(ctx context.Context, reso
 // updates on an account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-15-preview
+// Generated from API version 2024-02-15-preview
 func (client *ThroughputPoolAccountClient) create(ctx context.Context, resourceGroupName string, throughputPoolName string, throughputPoolAccountName string, body ThroughputPoolAccountResource, options *ThroughputPoolAccountClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ThroughputPoolAccountClient.BeginCreate"
@@ -122,7 +122,7 @@ func (client *ThroughputPoolAccountClient) createCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-15-preview")
+	reqQP.Set("api-version", "2024-02-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -134,7 +134,7 @@ func (client *ThroughputPoolAccountClient) createCreateRequest(ctx context.Conte
 // BeginDelete - Removes an existing Azure Cosmos DB database account from a throughput pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-15-preview
+// Generated from API version 2024-02-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - throughputPoolName - Cosmos DB Throughput Pool name.
 //   - throughputPoolAccountName - Cosmos DB global database account in a Throughput Pool
@@ -160,7 +160,7 @@ func (client *ThroughputPoolAccountClient) BeginDelete(ctx context.Context, reso
 // Delete - Removes an existing Azure Cosmos DB database account from a throughput pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-15-preview
+// Generated from API version 2024-02-15-preview
 func (client *ThroughputPoolAccountClient) deleteOperation(ctx context.Context, resourceGroupName string, throughputPoolName string, throughputPoolAccountName string, options *ThroughputPoolAccountClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ThroughputPoolAccountClient.BeginDelete"
@@ -206,7 +206,7 @@ func (client *ThroughputPoolAccountClient) deleteCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-15-preview")
+	reqQP.Set("api-version", "2024-02-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -215,7 +215,7 @@ func (client *ThroughputPoolAccountClient) deleteCreateRequest(ctx context.Conte
 // Get - Retrieves the properties of an existing Azure Cosmos DB Throughput Pool
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-15-preview
+// Generated from API version 2024-02-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - throughputPoolName - Cosmos DB Throughput Pool name.
 //   - throughputPoolAccountName - Cosmos DB global database account in a Throughput Pool
@@ -267,7 +267,7 @@ func (client *ThroughputPoolAccountClient) getCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-15-preview")
+	reqQP.Set("api-version", "2024-02-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

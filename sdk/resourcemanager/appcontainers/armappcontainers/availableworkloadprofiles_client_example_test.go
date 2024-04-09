@@ -14,10 +14,10 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/58be094c6b365f8d4d73a91e293dfb4818e57cf6/specification/app/resource-manager/Microsoft.App/stable/2023-05-01/examples/AvailableWorkloadProfiles_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/AvailableWorkloadProfiles_Get.json
 func ExampleAvailableWorkloadProfilesClient_NewGetPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -156,6 +156,20 @@ func ExampleAvailableWorkloadProfilesClient_NewGetPager() {
 		// 				Cores: to.Ptr[int32](16),
 		// 				DisplayName: to.Ptr("Dedicated-F16"),
 		// 				MemoryGiB: to.Ptr[int32](32),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("NC48-A100"),
+		// 			Type: to.Ptr("Microsoft.App/availableManagedEnvironmentsWorkloadProfileTypes"),
+		// 			ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/providers/Microsoft.App/availableManagedEnvironmentsWorkloadProfileTypes/NC48-A100"),
+		// 			Location: to.Ptr("East US"),
+		// 			Properties: &armappcontainers.AvailableWorkloadProfileProperties{
+		// 				Applicability: to.Ptr(armappcontainers.ApplicabilityCustom),
+		// 				Category: to.Ptr("GPU-NC-A100"),
+		// 				Cores: to.Ptr[int32](48),
+		// 				DisplayName: to.Ptr("Dedicated-NC48-A100"),
+		// 				Gpus: to.Ptr[int32](2),
+		// 				MemoryGiB: to.Ptr[int32](440),
 		// 			},
 		// 		},
 		// 		{

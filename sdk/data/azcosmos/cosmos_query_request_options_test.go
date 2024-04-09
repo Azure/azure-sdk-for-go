@@ -10,12 +10,14 @@ import (
 func TestQueryRequestOptionsToHeaders(t *testing.T) {
 	options := &QueryOptions{}
 	options.ConsistencyLevel = ConsistencyLevelSession.ToPtr()
-	options.SessionToken = "sessionToken"
+	sessionToken := "sessionToken"
+	options.SessionToken = &sessionToken
 	options.PageSizeHint = 20
 	options.EnableScanInQuery = true
 	options.ResponseContinuationTokenLimitInKB = 100
 	options.PopulateIndexMetrics = true
-	options.ContinuationToken = "continuationToken"
+	continuation := "continuationToken"
+	options.ContinuationToken = &continuation
 	header := options.toHeaders()
 	if header == nil {
 		t.Fatal("toHeaders should return non-nil")

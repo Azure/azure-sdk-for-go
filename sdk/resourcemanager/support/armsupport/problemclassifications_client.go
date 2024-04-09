@@ -23,28 +23,95 @@ import (
 // ProblemClassificationsClient contains the methods for the ProblemClassifications group.
 // Don't use this type directly, use NewProblemClassificationsClient() instead.
 type ProblemClassificationsClient struct {
-	internal *arm.Client
+	internal       *arm.Client
+	subscriptionID string
 }
 
 // NewProblemClassificationsClient creates a new instance of ProblemClassificationsClient with the specified values.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
-func NewProblemClassificationsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*ProblemClassificationsClient, error) {
+func NewProblemClassificationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ProblemClassificationsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ProblemClassificationsClient{
-		internal: cl,
+		subscriptionID: subscriptionID,
+		internal:       cl,
 	}
 	return client, nil
+}
+
+// ClassifyProblems - Classify the right problem classifications (categories) available for a specific Azure service.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-06-01-preview
+//   - problemServiceName - Name of the Azure service for which the problem classifications need to be retrieved.
+//   - problemClassificationsClassificationInput - Input to check.
+//   - options - ProblemClassificationsClientClassifyProblemsOptions contains the optional parameters for the ProblemClassificationsClient.ClassifyProblems
+//     method.
+func (client *ProblemClassificationsClient) ClassifyProblems(ctx context.Context, problemServiceName string, problemClassificationsClassificationInput ProblemClassificationsClassificationInput, options *ProblemClassificationsClientClassifyProblemsOptions) (ProblemClassificationsClientClassifyProblemsResponse, error) {
+	var err error
+	const operationName = "ProblemClassificationsClient.ClassifyProblems"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.classifyProblemsCreateRequest(ctx, problemServiceName, problemClassificationsClassificationInput, options)
+	if err != nil {
+		return ProblemClassificationsClientClassifyProblemsResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return ProblemClassificationsClientClassifyProblemsResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return ProblemClassificationsClientClassifyProblemsResponse{}, err
+	}
+	resp, err := client.classifyProblemsHandleResponse(httpResp)
+	return resp, err
+}
+
+// classifyProblemsCreateRequest creates the ClassifyProblems request.
+func (client *ProblemClassificationsClient) classifyProblemsCreateRequest(ctx context.Context, problemServiceName string, problemClassificationsClassificationInput ProblemClassificationsClassificationInput, options *ProblemClassificationsClientClassifyProblemsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Support/services/{problemServiceName}/classifyProblems"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if problemServiceName == "" {
+		return nil, errors.New("parameter problemServiceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{problemServiceName}", url.PathEscape(problemServiceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2023-06-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, problemClassificationsClassificationInput); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// classifyProblemsHandleResponse handles the ClassifyProblems response.
+func (client *ProblemClassificationsClient) classifyProblemsHandleResponse(resp *http.Response) (ProblemClassificationsClientClassifyProblemsResponse, error) {
+	result := ProblemClassificationsClientClassifyProblemsResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ProblemClassificationsClassificationOutput); err != nil {
+		return ProblemClassificationsClientClassifyProblemsResponse{}, err
+	}
+	return result, nil
 }
 
 // Get - Get problem classification details for a specific Azure service.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01-preview
-//   - serviceName - Name of the Azure service available for support.
+// Generated from API version 2023-06-01-preview
+//   - serviceName - Name of the Azure service for which the problem classifications need to be retrieved.
 //   - problemClassificationName - Name of problem classification.
 //   - options - ProblemClassificationsClientGetOptions contains the optional parameters for the ProblemClassificationsClient.Get
 //     method.
@@ -86,7 +153,7 @@ func (client *ProblemClassificationsClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2023-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -105,7 +172,7 @@ func (client *ProblemClassificationsClient) getHandleResponse(resp *http.Respons
 // service and problem classifications obtained programmatically. This practice ensures that you
 // always have the most recent set of service and problem classification Ids.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2023-06-01-preview
 //   - serviceName - Name of the Azure service for which the problem classifications need to be retrieved.
 //   - options - ProblemClassificationsClientListOptions contains the optional parameters for the ProblemClassificationsClient.NewListPager
 //     method.
@@ -145,7 +212,7 @@ func (client *ProblemClassificationsClient) listCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2023-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

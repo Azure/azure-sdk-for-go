@@ -357,7 +357,6 @@ func (fs *Client) GetSASURL(permissions sas.FileSystemPermissions, expiry time.T
 	}
 	qps, err := sas.DatalakeSignatureValues{
 		Version:        sas.Version,
-		Protocol:       sas.ProtocolHTTPS,
 		FileSystemName: urlParts.FileSystemName,
 		Permissions:    permissions.String(),
 		StartTime:      st,

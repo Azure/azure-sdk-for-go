@@ -837,7 +837,7 @@ func TestConsumeCloudEventAcsRecordingFileStatusUpdatedEventData(t *testing.T) {
 	// require.Equal(t, azsystemevents.RecordingFormatTypeMp3, sysEvent.FormatType)
 
 	// back compat
-	require.Equal(t, azsystemevents.RecordingChannelTypeMixed, *sysEvent.RecordingChannelType)
+	require.Equal(t, azsystemevents.RecordingChannelKindMixed, *sysEvent.RecordingChannelKind)
 	require.Equal(t, azsystemevents.RecordingContentTypeAudio, *sysEvent.RecordingContentType)
 	require.Equal(t, azsystemevents.RecordingFormatTypeMp3, *sysEvent.RecordingFormatType)
 }
@@ -867,7 +867,7 @@ func TestConsumeCloudEventAcsEmailDeliveryReportReceivedEvent(t *testing.T) {
 	sysEvent := deserializeSystemEvent[azsystemevents.ACSEmailDeliveryReportReceivedEventData](t, event.Data)
 	require.Equal(t, "test2@contoso.org", *sysEvent.Sender)
 	require.Equal(t, "test1@contoso.com", *sysEvent.Recipient)
-	require.Equal(t, azsystemevents.AcsEmailDeliveryReportStatusDelivered, *sysEvent.Status)
+	require.Equal(t, azsystemevents.ACSEmailDeliveryReportStatusDelivered, *sysEvent.Status)
 	require.Equal(t, "DestinationMailboxFull", *sysEvent.DeliveryStatusDetails.StatusMessage)
 	require.Equal(t, mustParseTime(t, "2023-02-09T19:46:12.2480265+00:00"), *sysEvent.DeliveryAttemptTimestamp)
 }
@@ -974,6 +974,10 @@ func TestConsumeCloudEventAcsRouterJobClassificationFailedEvent(t *testing.T) {
 
 	var errors = sysEvent.Errors
 	require.Equal(t, 1, len(errors))
-	require.Equal(t, "Failure", *errors[0].Code)
-	require.Equal(t, "Classification failed due to <reason>", *errors[0].Message)
+	require.Equal(t, "Failure", (*errors[0]).Code)
+	require.Equal(t, "Code: Failure\n"+
+		"Message: Classification failed due to <reason>\n"+
+		"InnerError:\n"+
+		"  Code: InnerFailure\n"+
+		"  Message: Classification failed due to <reason>\n", (*errors[0]).Error())
 }

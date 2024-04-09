@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/newrelic/armnewrelicobservability"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Organizations_List_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/Organizations_List_MaximumSet_Gen.json
 func ExampleOrganizationsClient_NewListPager_organizationsListMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -42,7 +42,7 @@ func ExampleOrganizationsClient_NewListPager_organizationsListMaximumSetGen() {
 		// page.OrganizationsListResponse = armnewrelicobservability.OrganizationsListResponse{
 		// 	Value: []*armnewrelicobservability.OrganizationResource{
 		// 		{
-		// 			ID: to.Ptr("ycdsgeiitvxcd"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/NewRelic.Observability/monitors/myMonitor"),
 		// 			Properties: &armnewrelicobservability.OrganizationProperties{
 		// 				BillingSource: to.Ptr(armnewrelicobservability.BillingSourceAZURE),
 		// 				OrganizationID: to.Ptr("tjmcifofzirili"),
@@ -53,7 +53,7 @@ func ExampleOrganizationsClient_NewListPager_organizationsListMaximumSetGen() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Organizations_List_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/Organizations_List_MinimumSet_Gen.json
 func ExampleOrganizationsClient_NewListPager_organizationsListMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -77,9 +77,7 @@ func ExampleOrganizationsClient_NewListPager_organizationsListMinimumSetGen() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page.OrganizationsListResponse = armnewrelicobservability.OrganizationsListResponse{
 		// 	Value: []*armnewrelicobservability.OrganizationResource{
-		// 		{
-		// 			ID: to.Ptr("ycdsgeiitvxcd"),
-		// 	}},
+		// 	},
 		// }
 	}
 }

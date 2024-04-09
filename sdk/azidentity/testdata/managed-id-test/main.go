@@ -18,17 +18,37 @@ import (
 
 var (
 	config = struct {
-		id                      string
-		storageName             string
+		// resourceID of a managed identity permitted to list blobs in the account specified by storageNameUserAssigned.
+		resourceID string
+		// storageName is the name of a storage account accessible by the default or system-assigned identity
+		storageName string
+		// storageNameUserAssigned is the name of a storage account accessible by the identity specified by
+		// resourceID. The default or system-assigned identity shouldn't have any permission for this account.
 		storageNameUserAssigned string
+		// workloadID determines whether this app tests ManagedIdentityCredential or WorkloadIdentityCredential.
+		// When true, the app ignores resourceID and storageNameUserAssigned.
+		workloadID bool
 	}{
-		id:                      os.Getenv("AZIDENTITY_USER_ASSIGNED_IDENTITY"),
+		resourceID:              os.Getenv("AZIDENTITY_USER_ASSIGNED_IDENTITY"),
 		storageName:             os.Getenv("AZIDENTITY_STORAGE_NAME"),
 		storageNameUserAssigned: os.Getenv("AZIDENTITY_STORAGE_NAME_USER_ASSIGNED"),
+		workloadID:              os.Getenv("AZIDENTITY_USE_WORKLOAD_IDENTITY") != "",
 	}
 
 	missingConfig string
 )
+
+func credential(resourceID string) (azcore.TokenCredential, error) {
+	if config.workloadID {
+		// the identity is determined by service account configuration
+		return azidentity.NewWorkloadIdentityCredential(nil)
+	}
+	opts := azidentity.ManagedIdentityCredentialOptions{}
+	if resourceID != "" {
+		opts.ID = azidentity.ResourceID(resourceID)
+	}
+	return azidentity.NewManagedIdentityCredential(&opts)
+}
 
 func listContainers(account string, cred azcore.TokenCredential) error {
 	url := fmt.Sprintf("https://%s.blob.core.windows.net", account)
@@ -48,20 +68,14 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	cred, err := azidentity.NewManagedIdentityCredential(nil)
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		fmt.Fprint(w, err)
-		log.Print(err)
-		return
-	}
-	err = listContainers(config.storageName, cred)
+	cred, err := credential("")
 	if err == nil {
-		cred, err = azidentity.NewManagedIdentityCredential(&azidentity.ManagedIdentityCredentialOptions{
-			ID: azidentity.ResourceID(config.id),
-		})
-		if err == nil {
-			err = listContainers(config.storageNameUserAssigned, cred)
+		err = listContainers(config.storageName, cred)
+		if !config.workloadID && err == nil {
+			cred, err = credential(config.resourceID)
+			if err == nil {
+				err = listContainers(config.storageNameUserAssigned, cred)
+			}
 		}
 	}
 
@@ -77,14 +91,19 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	v := []string{}
-	if config.id == "" {
-		v = append(v, "AZIDENTITY_USER_ASSIGNED_IDENTITY")
-	}
 	if config.storageName == "" {
 		v = append(v, "AZIDENTITY_STORAGE_NAME")
 	}
-	if config.storageNameUserAssigned == "" {
-		v = append(v, "AZIDENTITY_STORAGE_NAME_USER_ASSIGNED")
+	if config.workloadID {
+		log.Print("Testing WorkloadIdentityCredential")
+	} else {
+		log.Print("Testing ManagedIdentityCredential")
+		if config.resourceID == "" {
+			v = append(v, "AZIDENTITY_USER_ASSIGNED_IDENTITY")
+		}
+		if config.storageNameUserAssigned == "" {
+			v = append(v, "AZIDENTITY_STORAGE_NAME_USER_ASSIGNED")
+		}
 	}
 	if len(v) > 0 {
 		missingConfig = strings.Join(v, ", ")

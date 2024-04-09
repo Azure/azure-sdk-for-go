@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mobilenetwork/armmobilenetwork/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mobilenetwork/armmobilenetwork/v4"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -46,7 +46,7 @@ type MobileNetworksServer struct {
 
 	// UpdateTags is the fake for method MobileNetworksClient.UpdateTags
 	// HTTP status codes to indicate success: http.StatusOK
-	UpdateTags func(ctx context.Context, resourceGroupName string, mobileNetworkName string, parameters armmobilenetwork.TagsObject, options *armmobilenetwork.MobileNetworksClientUpdateTagsOptions) (resp azfake.Responder[armmobilenetwork.MobileNetworksClientUpdateTagsResponse], errResp azfake.ErrorResponder)
+	UpdateTags func(ctx context.Context, resourceGroupName string, mobileNetworkName string, parameters armmobilenetwork.IdentityAndTagsObject, options *armmobilenetwork.MobileNetworksClientUpdateTagsOptions) (resp azfake.Responder[armmobilenetwork.MobileNetworksClientUpdateTagsResponse], errResp azfake.ErrorResponder)
 }
 
 // NewMobileNetworksServerTransport creates a new instance of MobileNetworksServerTransport with the provided implementation.
@@ -312,7 +312,7 @@ func (m *MobileNetworksServerTransport) dispatchUpdateTags(req *http.Request) (*
 	if matches == nil || len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	body, err := server.UnmarshalRequestAsJSON[armmobilenetwork.TagsObject](req)
+	body, err := server.UnmarshalRequestAsJSON[armmobilenetwork.IdentityAndTagsObject](req)
 	if err != nil {
 		return nil, err
 	}

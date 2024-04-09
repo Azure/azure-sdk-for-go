@@ -45,7 +45,7 @@ func NewClusterJobsClient(subscriptionID string, credential azcore.TokenCredenti
 
 // NewListPager - Get jobs of HDInsight on AKS cluster.
 //
-// Generated from API version 2023-06-01-preview
+// Generated from API version 2023-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterPoolName - The name of the cluster pool.
 //   - clusterName - The name of the HDInsight cluster.
@@ -97,7 +97,10 @@ func (client *ClusterJobsClient) listCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-01-preview")
+	if options != nil && options.Filter != nil {
+		reqQP.Set("$filter", *options.Filter)
+	}
+	reqQP.Set("api-version", "2023-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -115,7 +118,7 @@ func (client *ClusterJobsClient) listHandleResponse(resp *http.Response) (Cluste
 // BeginRunJob - Operations on jobs of HDInsight on AKS cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-01-preview
+// Generated from API version 2023-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterPoolName - The name of the cluster pool.
 //   - clusterName - The name of the HDInsight cluster.
@@ -142,7 +145,7 @@ func (client *ClusterJobsClient) BeginRunJob(ctx context.Context, resourceGroupN
 // RunJob - Operations on jobs of HDInsight on AKS cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-01-preview
+// Generated from API version 2023-11-01-preview
 func (client *ClusterJobsClient) runJob(ctx context.Context, resourceGroupName string, clusterPoolName string, clusterName string, clusterJob ClusterJob, options *ClusterJobsClientBeginRunJobOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ClusterJobsClient.BeginRunJob"
@@ -188,7 +191,7 @@ func (client *ClusterJobsClient) runJobCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-01-preview")
+	reqQP.Set("api-version", "2023-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, clusterJob); err != nil {

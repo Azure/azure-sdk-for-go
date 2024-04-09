@@ -78,6 +78,10 @@ func TestQueryResponseParsing(t *testing.T) {
 		t.Errorf("Expected 2 documents, but got %d", len(parsedResponse.Items))
 	}
 
+	if parsedResponse.ContinuationToken != nil {
+		t.Fatal("parsedResponse.ContinuationToken is not nil")
+	}
+
 	for index, item := range parsedResponse.Items {
 		var itemResponseBody map[string]interface{}
 		err = json.Unmarshal(item, &itemResponseBody)
@@ -116,6 +120,7 @@ func TestQueryResponseParsingWithMaxInt64(t *testing.T) {
 		mock.WithHeader(cosmosHeaderQueryMetrics, "someQueryMetrics"),
 		mock.WithHeader(cosmosHeaderIndexUtilization, "indexUtilization"),
 		mock.WithHeader(cosmosHeaderActivityId, "someActivityId"),
+		mock.WithHeader(cosmosHeaderContinuationToken, "someContinuation"),
 		mock.WithHeader(cosmosHeaderRequestCharge, "13.42"))
 
 	req, err := azruntime.NewRequest(context.Background(), http.MethodGet, srv.URL())
@@ -152,6 +157,10 @@ func TestQueryResponseParsingWithMaxInt64(t *testing.T) {
 
 	if *parsedResponse.IndexMetrics != "indexUtilization" {
 		t.Errorf("Expected IndexUtilization to be %s, but got %s", "indexUtilization", *parsedResponse.IndexMetrics)
+	}
+
+	if *parsedResponse.ContinuationToken != "someContinuation" {
+		t.Errorf("Expected ContinuationToken to be %s, but got %s", "someContinuation", *parsedResponse.ContinuationToken)
 	}
 
 	if len(parsedResponse.Items) != 2 {

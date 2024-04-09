@@ -63,33 +63,6 @@ func TestParseCertificates_Error(t *testing.T) {
 	}
 }
 
-func TestClientCertificateCredential_InvalidTenantID(t *testing.T) {
-	test := allCertTests[0]
-	cred, err := NewClientCertificateCredential(badTenantID, fakeClientID, test.certs, test.key, nil)
-	if err == nil {
-		t.Fatal("Expected an error but received none")
-	}
-	if cred != nil {
-		t.Fatalf("Expected a nil credential value. Received: %v", cred)
-	}
-}
-
-func TestClientCertificateCredential_GetTokenSuccess(t *testing.T) {
-	for _, test := range allCertTests {
-		t.Run(test.name, func(t *testing.T) {
-			cred, err := NewClientCertificateCredential(fakeTenantID, fakeClientID, test.certs, test.key, nil)
-			if err != nil {
-				t.Fatalf("Expected an empty error but received: %s", err.Error())
-			}
-			cred.client.noCAE = fakeConfidentialClient{}
-			_, err = cred.GetToken(context.Background(), testTRO)
-			if err != nil {
-				t.Fatalf("Expected an empty error but received: %s", err.Error())
-			}
-		})
-	}
-}
-
 func TestClientCertificateCredential_SendCertificateChain(t *testing.T) {
 	for _, test := range allCertTests {
 		t.Run(test.name, func(t *testing.T) {
@@ -111,19 +84,6 @@ func TestClientCertificateCredential_SendCertificateChain(t *testing.T) {
 				t.Fatalf("unexpected token: %s", tk.Token)
 			}
 		})
-	}
-}
-
-func TestClientCertificateCredential_GetTokenCheckPrivateKeyBlocks(t *testing.T) {
-	test := allCertTests[0]
-	cred, err := NewClientCertificateCredential(fakeTenantID, fakeClientID, test.certs, test.key, nil)
-	if err != nil {
-		t.Fatalf("Expected an empty error but received: %s", err.Error())
-	}
-	cred.client.noCAE = fakeConfidentialClient{}
-	_, err = cred.GetToken(context.Background(), testTRO)
-	if err != nil {
-		t.Fatalf("Expected an empty error but received: %s", err.Error())
 	}
 }
 
@@ -173,15 +133,12 @@ func TestClientCertificateCredential_Live(t *testing.T) {
 		path      string
 		sendChain bool
 	}{
-		{"PEM", liveSP.pemPath, false}, {"PKCS12", liveSP.pfxPath, false}, {"SNI", liveSP.sniPath, true},
+		{"PEM", liveSP.pemPath, false}, {"PKCS12", liveSP.pfxPath, false},
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
 			if test.path == "" {
 				t.Skip("no certificate file specified")
-			}
-			if recording.GetRecordMode() == recording.LiveMode && test.name == "SNI" {
-				t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/21988")
 			}
 			certData, err := os.ReadFile(test.path)
 			if err != nil {
@@ -276,14 +233,14 @@ func TestClientCertificateCredential_InvalidCertLive(t *testing.T) {
 }
 
 func TestClientCertificateCredential_Regional(t *testing.T) {
-	if recording.GetRecordMode() == recording.LiveMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/21988")
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		t.Skip("this test runs only in playback mode because it requires a production cert")
 	}
 	t.Setenv(azureRegionalAuthorityName, "westus2")
 	opts, stop := initRecording(t)
 	defer stop()
 
-	f, err := os.ReadFile(liveSP.sniPath)
+	f, err := os.ReadFile("testdata/certificate-with-chain.pem")
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -47,7 +47,7 @@ func NewCatalogsClient(subscriptionID string, credential azcore.TokenCredential,
 // CountDevices - Counts devices in catalog.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2024-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - catalogName - Name of catalog
 //   - options - CatalogsClientCountDevicesOptions contains the optional parameters for the CatalogsClient.CountDevices method.
@@ -93,7 +93,7 @@ func (client *CatalogsClient) countDevicesCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -102,7 +102,7 @@ func (client *CatalogsClient) countDevicesCreateRequest(ctx context.Context, res
 // countDevicesHandleResponse handles the CountDevices response.
 func (client *CatalogsClient) countDevicesHandleResponse(resp *http.Response) (CatalogsClientCountDevicesResponse, error) {
 	result := CatalogsClientCountDevicesResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.CountDeviceResponse); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.CountDevicesResponse); err != nil {
 		return CatalogsClientCountDevicesResponse{}, err
 	}
 	return result, nil
@@ -111,7 +111,7 @@ func (client *CatalogsClient) countDevicesHandleResponse(resp *http.Response) (C
 // BeginCreateOrUpdate - Create a Catalog
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2024-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - catalogName - Name of catalog
 //   - resource - Resource create parameters.
@@ -138,7 +138,7 @@ func (client *CatalogsClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 // CreateOrUpdate - Create a Catalog
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2024-04-01
 func (client *CatalogsClient) createOrUpdate(ctx context.Context, resourceGroupName string, catalogName string, resource Catalog, options *CatalogsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CatalogsClient.BeginCreateOrUpdate"
@@ -180,7 +180,7 @@ func (client *CatalogsClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -192,7 +192,7 @@ func (client *CatalogsClient) createOrUpdateCreateRequest(ctx context.Context, r
 // BeginDelete - Delete a Catalog
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2024-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - catalogName - Name of catalog
 //   - options - CatalogsClientBeginDeleteOptions contains the optional parameters for the CatalogsClient.BeginDelete method.
@@ -217,7 +217,7 @@ func (client *CatalogsClient) BeginDelete(ctx context.Context, resourceGroupName
 // Delete - Delete a Catalog
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2024-04-01
 func (client *CatalogsClient) deleteOperation(ctx context.Context, resourceGroupName string, catalogName string, options *CatalogsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CatalogsClient.BeginDelete"
@@ -259,7 +259,7 @@ func (client *CatalogsClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -268,7 +268,7 @@ func (client *CatalogsClient) deleteCreateRequest(ctx context.Context, resourceG
 // Get - Get a Catalog
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2024-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - catalogName - Name of catalog
 //   - options - CatalogsClientGetOptions contains the optional parameters for the CatalogsClient.Get method.
@@ -314,7 +314,7 @@ func (client *CatalogsClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -331,7 +331,7 @@ func (client *CatalogsClient) getHandleResponse(resp *http.Response) (CatalogsCl
 
 // NewListByResourceGroupPager - List Catalog resources by resource group
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2024-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - CatalogsClientListByResourceGroupOptions contains the optional parameters for the CatalogsClient.NewListByResourceGroupPager
 //     method.
@@ -374,7 +374,7 @@ func (client *CatalogsClient) listByResourceGroupCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -391,7 +391,7 @@ func (client *CatalogsClient) listByResourceGroupHandleResponse(resp *http.Respo
 
 // NewListBySubscriptionPager - List Catalog resources by subscription ID
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2024-04-01
 //   - options - CatalogsClientListBySubscriptionOptions contains the optional parameters for the CatalogsClient.NewListBySubscriptionPager
 //     method.
 func (client *CatalogsClient) NewListBySubscriptionPager(options *CatalogsClientListBySubscriptionOptions) *runtime.Pager[CatalogsClientListBySubscriptionResponse] {
@@ -429,7 +429,7 @@ func (client *CatalogsClient) listBySubscriptionCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -446,7 +446,7 @@ func (client *CatalogsClient) listBySubscriptionHandleResponse(resp *http.Respon
 
 // NewListDeploymentsPager - Lists deployments for catalog.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2024-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - catalogName - Name of catalog
 //   - options - CatalogsClientListDeploymentsOptions contains the optional parameters for the CatalogsClient.NewListDeploymentsPager
@@ -494,19 +494,19 @@ func (client *CatalogsClient) listDeploymentsCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
-	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	if options != nil && options.Skip != nil {
-		reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
 	}
 	if options != nil && options.Maxpagesize != nil {
 		reqQP.Set("$maxpagesize", strconv.FormatInt(int64(*options.Maxpagesize), 10))
 	}
+	if options != nil && options.Skip != nil {
+		reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
+	}
+	if options != nil && options.Top != nil {
+		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+	}
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -523,7 +523,7 @@ func (client *CatalogsClient) listDeploymentsHandleResponse(resp *http.Response)
 
 // NewListDeviceGroupsPager - List the device groups for the catalog.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2024-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - catalogName - Name of catalog
 //   - listDeviceGroupsRequest - List device groups for catalog.
@@ -572,19 +572,19 @@ func (client *CatalogsClient) listDeviceGroupsCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
-	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	if options != nil && options.Skip != nil {
-		reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
 	}
 	if options != nil && options.Maxpagesize != nil {
 		reqQP.Set("$maxpagesize", strconv.FormatInt(int64(*options.Maxpagesize), 10))
 	}
+	if options != nil && options.Skip != nil {
+		reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
+	}
+	if options != nil && options.Top != nil {
+		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+	}
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, listDeviceGroupsRequest); err != nil {
@@ -604,7 +604,7 @@ func (client *CatalogsClient) listDeviceGroupsHandleResponse(resp *http.Response
 
 // NewListDeviceInsightsPager - Lists device insights for catalog.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2024-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - catalogName - Name of catalog
 //   - options - CatalogsClientListDeviceInsightsOptions contains the optional parameters for the CatalogsClient.NewListDeviceInsightsPager
@@ -652,19 +652,19 @@ func (client *CatalogsClient) listDeviceInsightsCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
-	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	if options != nil && options.Skip != nil {
-		reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
 	}
 	if options != nil && options.Maxpagesize != nil {
 		reqQP.Set("$maxpagesize", strconv.FormatInt(int64(*options.Maxpagesize), 10))
 	}
+	if options != nil && options.Skip != nil {
+		reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
+	}
+	if options != nil && options.Top != nil {
+		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+	}
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -681,7 +681,7 @@ func (client *CatalogsClient) listDeviceInsightsHandleResponse(resp *http.Respon
 
 // NewListDevicesPager - Lists devices for catalog.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2024-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - catalogName - Name of catalog
 //   - options - CatalogsClientListDevicesOptions contains the optional parameters for the CatalogsClient.NewListDevicesPager
@@ -729,19 +729,19 @@ func (client *CatalogsClient) listDevicesCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
-	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	if options != nil && options.Skip != nil {
-		reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
 	}
 	if options != nil && options.Maxpagesize != nil {
 		reqQP.Set("$maxpagesize", strconv.FormatInt(int64(*options.Maxpagesize), 10))
 	}
+	if options != nil && options.Skip != nil {
+		reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
+	}
+	if options != nil && options.Top != nil {
+		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+	}
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -759,7 +759,7 @@ func (client *CatalogsClient) listDevicesHandleResponse(resp *http.Response) (Ca
 // Update - Update a Catalog
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2024-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - catalogName - Name of catalog
 //   - properties - The resource properties to be updated.
@@ -806,7 +806,7 @@ func (client *CatalogsClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {
@@ -822,4 +822,85 @@ func (client *CatalogsClient) updateHandleResponse(resp *http.Response) (Catalog
 		return CatalogsClientUpdateResponse{}, err
 	}
 	return result, nil
+}
+
+// BeginUploadImage - Creates an image. Use this action when the image ID is unknown.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - catalogName - Name of catalog
+//   - uploadImageRequest - Image upload request body.
+//   - options - CatalogsClientBeginUploadImageOptions contains the optional parameters for the CatalogsClient.BeginUploadImage
+//     method.
+func (client *CatalogsClient) BeginUploadImage(ctx context.Context, resourceGroupName string, catalogName string, uploadImageRequest Image, options *CatalogsClientBeginUploadImageOptions) (*runtime.Poller[CatalogsClientUploadImageResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.uploadImage(ctx, resourceGroupName, catalogName, uploadImageRequest, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CatalogsClientUploadImageResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[CatalogsClientUploadImageResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// UploadImage - Creates an image. Use this action when the image ID is unknown.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01
+func (client *CatalogsClient) uploadImage(ctx context.Context, resourceGroupName string, catalogName string, uploadImageRequest Image, options *CatalogsClientBeginUploadImageOptions) (*http.Response, error) {
+	var err error
+	const operationName = "CatalogsClient.BeginUploadImage"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.uploadImageCreateRequest(ctx, resourceGroupName, catalogName, uploadImageRequest, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// uploadImageCreateRequest creates the UploadImage request.
+func (client *CatalogsClient) uploadImageCreateRequest(ctx context.Context, resourceGroupName string, catalogName string, uploadImageRequest Image, options *CatalogsClientBeginUploadImageOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureSphere/catalogs/{catalogName}/uploadImage"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if catalogName == "" {
+		return nil, errors.New("parameter catalogName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{catalogName}", url.PathEscape(catalogName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-04-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, uploadImageRequest); err != nil {
+		return nil, err
+	}
+	return req, nil
 }

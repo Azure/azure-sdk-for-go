@@ -88,6 +88,9 @@ func testGetChatCompletions(t *testing.T, client *azopenai.Client, deployment st
 			PromptTokens:     to.Ptr(int32(42)),
 			TotalTokens:      to.Ptr(int32(71)),
 		},
+		// NOTE: this is actually the name of the _model_, not the deployment. They usually match (just
+		// by convention) but if this fails because they _don't_ match we can just adjust the test.
+		Model: &deployment,
 	}
 
 	resp, err := client.GetChatCompletions(context.Background(), newTestChatCompletionOptions(deployment), nil)
@@ -127,11 +130,19 @@ func testGetChatCompletionsStream(t *testing.T, client *azopenai.Client, deploym
 	// check that the role came back as well.
 	var choices []azopenai.ChatChoice
 
+	modelWasReturned := false
+
 	for {
 		completion, err := streamResp.ChatCompletionsStream.Read()
 
 		if errors.Is(err, io.EOF) {
 			break
+		}
+
+		// NOTE: this is actually the name of the _model_, not the deployment. They usually match (just
+		// by convention) but if this fails because they _don't_ match we can just adjust the test.
+		if deployment == *completion.Model {
+			modelWasReturned = true
 		}
 
 		require.NoError(t, err)
@@ -150,6 +161,8 @@ func testGetChatCompletionsStream(t *testing.T, client *azopenai.Client, deploym
 		require.Equal(t, 1, len(completion.Choices))
 		choices = append(choices, completion.Choices[0])
 	}
+
+	require.True(t, modelWasReturned)
 
 	var message string
 

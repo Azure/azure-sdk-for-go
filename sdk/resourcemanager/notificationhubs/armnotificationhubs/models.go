@@ -12,426 +12,583 @@ import "time"
 
 // AdmCredential - Description of a NotificationHub AdmCredential.
 type AdmCredential struct {
-	// Properties of NotificationHub AdmCredential.
+	// REQUIRED; Description of a NotificationHub AdmCredential.
 	Properties *AdmCredentialProperties
 }
 
 // AdmCredentialProperties - Description of a NotificationHub AdmCredential.
 type AdmCredentialProperties struct {
-	// The URL of the authorization token.
+	// REQUIRED; Gets or sets the URL of the authorization token.
 	AuthTokenURL *string
 
-	// The client identifier.
+	// REQUIRED; Gets or sets the client identifier.
 	ClientID *string
 
-	// The credential secret access key.
+	// REQUIRED; Gets or sets the credential secret access key.
 	ClientSecret *string
 }
 
 // ApnsCredential - Description of a NotificationHub ApnsCredential.
 type ApnsCredential struct {
-	// Properties of NotificationHub ApnsCredential.
+	// REQUIRED; Description of a NotificationHub ApnsCredential.
 	Properties *ApnsCredentialProperties
 }
 
-// ApnsCredentialProperties - Description of a NotificationHub ApnsCredential. Note that there is no explicit switch between
-// Certificate and Token Authentication Modes. The mode is determined based on the properties passed in.
+// ApnsCredentialProperties - Description of a NotificationHub ApnsCredential.
 type ApnsCredentialProperties struct {
-	// The APNS certificate. Specify if using Certificate Authentication Mode.
-	ApnsCertificate *string
-
-	// The issuer (iss) registered claim key. The value is a 10-character TeamId, obtained from your developer account. Specify
-	// if using Token Authentication Mode.
-	AppID *string
-
-	// The name of the application or BundleId. Specify if using Token Authentication Mode.
-	AppName *string
-
-	// The APNS certificate password if it exists.
-	CertificateKey *string
-
-	// The APNS endpoint of this credential. If using Certificate Authentication Mode and Sandbox specify 'gateway.sandbox.push.apple.com'.
-	// If using Certificate Authentication Mode and Production specify
-	// 'gateway.push.apple.com'. If using Token Authentication Mode and Sandbox specify 'https://api.development.push.apple.com:443/3/device'.
-	// If using Token Authentication Mode and Production specify
-	// 'https://api.push.apple.com:443/3/device'.
+	// REQUIRED; Gets or sets the endpoint of this credential.
 	Endpoint *string
 
-	// A 10-character key identifier (kid) key, obtained from your developer account. Specify if using Token Authentication Mode.
+	// Gets or sets the APNS certificate.
+	ApnsCertificate *string
+
+	// Gets or sets the issuer (iss) registered claim key, whose value is your 10-character Team ID, obtained from your developer
+	// account
+	AppID *string
+
+	// Gets or sets the name of the application
+	AppName *string
+
+	// Gets or sets the certificate key.
+	CertificateKey *string
+
+	// Gets or sets a 10-character key identifier (kid) key, obtained from your developer account
 	KeyID *string
 
-	// The APNS certificate thumbprint. Specify if using Certificate Authentication Mode.
+	// Gets or sets the APNS certificate Thumbprint
 	Thumbprint *string
 
-	// Provider Authentication Token, obtained through your developer account. Specify if using Token Authentication Mode.
+	// Gets or sets provider Authentication Token, obtained through your developer account
 	Token *string
+}
+
+// Availability - Represents metric availability (part of RP operation descriptions).
+type Availability struct {
+	// READ-ONLY; Duration of the availability blob.
+	BlobDuration *string
+
+	// READ-ONLY; Time grain of the availability.
+	TimeGrain *string
 }
 
 // BaiduCredential - Description of a NotificationHub BaiduCredential.
 type BaiduCredential struct {
-	// Properties of NotificationHub BaiduCredential.
+	// REQUIRED; Description of a NotificationHub BaiduCredential.
 	Properties *BaiduCredentialProperties
 }
 
 // BaiduCredentialProperties - Description of a NotificationHub BaiduCredential.
 type BaiduCredentialProperties struct {
-	// Baidu Api Key.
+	// REQUIRED; Gets or sets baidu Api Key.
 	BaiduAPIKey *string
 
-	// Baidu Endpoint.
+	// REQUIRED; Gets or sets baidu Endpoint.
 	BaiduEndPoint *string
 
-	// Baidu Secret Key
+	// REQUIRED; Gets or sets baidu Secret Key
 	BaiduSecretKey *string
+}
+
+// BrowserCredential - Description of a NotificationHub BrowserCredential.
+type BrowserCredential struct {
+	// REQUIRED; Description of a NotificationHub BrowserCredential.
+	Properties *BrowserCredentialProperties
+}
+
+// BrowserCredentialProperties - Description of a NotificationHub BrowserCredential.
+type BrowserCredentialProperties struct {
+	// REQUIRED; Gets or sets web push subject.
+	Subject *string
+
+	// REQUIRED; Gets or sets VAPID private key.
+	VapidPrivateKey *string
+
+	// REQUIRED; Gets or sets VAPID public key.
+	VapidPublicKey *string
 }
 
 // CheckAvailabilityParameters - Parameters supplied to the Check Name Availability for Namespace and NotificationHubs.
 type CheckAvailabilityParameters struct {
-	// REQUIRED; Resource name
+	// REQUIRED; Gets or sets resource name
 	Name *string
 
-	// True if the name is available and can be used to create new Namespace/NotificationHub. Otherwise false.
+	// Not used and deprecated since API version 2023-01-01-preview
 	IsAvailiable *bool
 
-	// Resource location
+	// Gets or sets resource location
 	Location *string
 
-	// The sku of the created namespace
+	// The Sku description for a namespace
 	SKU *SKU
 
-	// Resource tags
+	// Gets or sets resource tags
 	Tags map[string]*string
 
-	// READ-ONLY; Resource Id
+	// READ-ONLY; Gets resource Id
 	ID *string
 
-	// READ-ONLY; Resource type
+	// READ-ONLY; Gets resource type
 	Type *string
 }
 
 // CheckAvailabilityResult - Description of a CheckAvailability resource.
 type CheckAvailabilityResult struct {
-	// True if the name is available and can be used to create new Namespace/NotificationHub. Otherwise false.
+	// Gets or sets true if the name is available and can be used to create new Namespace/NotificationHub. Otherwise false.
 	IsAvailiable *bool
 
-	// Resource location
+	// Deprecated - only for compatibility.
 	Location *string
 
-	// The sku of the created namespace
+	// The Sku description for a namespace
 	SKU *SKU
 
-	// Resource tags
+	// Deprecated - only for compatibility.
 	Tags map[string]*string
 
-	// READ-ONLY; Resource Id
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; Resource name
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
+}
+
+// ConnectionDetails - Part of Private Endpoint description that stores information about a connection between Private Endpoint
+// and Notification Hubs namespace. This is internal class, not visible to customers, and we use
+// it only to discover the link identifier.
+type ConnectionDetails struct {
+	// READ-ONLY; Group name. Always "namespace" for Notification Hubs.
+	GroupID *string
+
+	// READ-ONLY; A unique ID of the connection. This is not the ARM id, but rather an internal identifier set by the Networking
+	// RP. Notification Hubs code does not analyze it.
+	ID *string
+
+	// READ-ONLY; Link identifier. This is a string representation of an integer that is also encoded in every IPv6 frame received
+	// by Front Door, and we use it to create implicit authorization rule that allows
+	// connection from the associated Private Endpoint.
+	LinkIdentifier *string
+
+	// READ-ONLY; Member name. Always "namespace" for Notification Hubs.
+	MemberName *string
+
+	// READ-ONLY; IP address of the Private Endpoint. This is not used by Notification Hubs.
+	PrivateIPAddress *string
 }
 
 // DebugSendResponse - Description of a NotificationHub Resource.
 type DebugSendResponse struct {
-	// Resource location
+	// Deprecated - only for compatibility.
 	Location *string
 
-	// Properties of the NotificationHub.
+	// Result of DebugSend operations.
 	Properties *DebugSendResult
 
-	// The sku of the created namespace
-	SKU *SKU
-
-	// Resource tags
+	// Deprecated - only for compatibility.
 	Tags map[string]*string
 
-	// READ-ONLY; Resource Id
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; Resource name
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
+// DebugSendResult - Result of DebugSend operations.
 type DebugSendResult struct {
-	// send failure
-	Failure *float32
+	// READ-ONLY; Gets or sets send failure
+	Failure *int64
 
-	// actual failure description
-	Results any
+	// READ-ONLY; Gets or sets actual failure description
+	Results []*RegistrationResult
 
-	// successful send
-	Success *float32
+	// READ-ONLY; Gets or sets successful send
+	Success *int64
 }
 
-// ErrorResponse - Error response indicates NotificationHubs service is not able to process the incoming request. The reason
-// is provided in the error message.
-type ErrorResponse struct {
-	// Error code.
+// ErrorAdditionalInfo - The resource management error additional info.
+type ErrorAdditionalInfo struct {
+	// READ-ONLY; The additional info.
+	Info any
+
+	// READ-ONLY; The additional info type.
+	Type *string
+}
+
+// ErrorDetail - The error detail.
+type ErrorDetail struct {
+	// READ-ONLY; The error additional info.
+	AdditionalInfo []*ErrorAdditionalInfo
+
+	// READ-ONLY; The error code.
 	Code *string
 
-	// Error message indicating why the operation failed.
+	// READ-ONLY; The error details.
+	Details []*ErrorDetail
+
+	// READ-ONLY; The error message.
 	Message *string
+
+	// READ-ONLY; The error target.
+	Target *string
+}
+
+// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
+// (This also follows the OData error response format.).
+type ErrorResponse struct {
+	// The error object.
+	Error *ErrorDetail
+}
+
+// FcmV1Credential - Description of a NotificationHub FcmV1Credential.
+type FcmV1Credential struct {
+	// REQUIRED; Description of a NotificationHub FcmV1Credential.
+	Properties *FcmV1CredentialProperties
+}
+
+// FcmV1CredentialProperties - Description of a NotificationHub FcmV1Credential.
+type FcmV1CredentialProperties struct {
+	// REQUIRED; Gets or sets client email.
+	ClientEmail *string
+
+	// REQUIRED; Gets or sets private key.
+	PrivateKey *string
+
+	// REQUIRED; Gets or sets project id.
+	ProjectID *string
 }
 
 // GCMCredential - Description of a NotificationHub GcmCredential.
 type GCMCredential struct {
-	// Properties of NotificationHub GcmCredential.
+	// REQUIRED; Description of a NotificationHub GcmCredential.
 	Properties *GCMCredentialProperties
 }
 
 // GCMCredentialProperties - Description of a NotificationHub GcmCredential.
 type GCMCredentialProperties struct {
-	// The FCM legacy endpoint. Default value is 'https://fcm.googleapis.com/fcm/send'
-	GCMEndpoint *string
-
-	// The Google API key.
+	// REQUIRED; Gets or sets the Google API key.
 	GoogleAPIKey *string
+
+	// Gets or sets the GCM endpoint.
+	GCMEndpoint *string
+}
+
+// GroupConnectivityInformation - Represents a connectivity information to Notification Hubs namespace. This is part of PrivateLinkService
+// proxy that tell the Networking RP how to connect to the Notification Hubs namespace.
+type GroupConnectivityInformation struct {
+	// READ-ONLY; List of customer-visible domain names that point to a Notification Hubs namespace.
+	CustomerVisibleFqdns []*string
+
+	// READ-ONLY; Group id. Always set to "namespace".
+	GroupID *string
+
+	// READ-ONLY; One of the domain name from the customer-visible names; this is used internally by Private Link service to make
+	// connection to Notification Hubs namespace.
+	InternalFqdn *string
+
+	// READ-ONLY; Member name. Always set to "namespace".
+	MemberName *string
+
+	// READ-ONLY; ARM region for Private Link Service. We use the region that contains the connected Notification Hubs namespace.
+	PrivateLinkServiceArmRegion *string
+
+	// READ-ONLY; Not used by Notification Hubs.
+	RedirectMapID *string
+}
+
+// IPRule - A network authorization rule that filters traffic based on IP address.
+type IPRule struct {
+	// REQUIRED; IP mask.
+	IPMask *string
+
+	// REQUIRED; List of access rights.
+	Rights []*AccessRights
+}
+
+// LogSpecification - A single log category specification.
+type LogSpecification struct {
+	// Category group for the log specification.
+	CategoryGroups []*string
+
+	// READ-ONLY; Duration of data written to a single blob.
+	BlobDuration *string
+
+	// READ-ONLY; Display name of the log category.
+	DisplayName *string
+
+	// READ-ONLY; Name of the log category.
+	Name *string
+}
+
+// MetricSpecification - A metric specification.
+type MetricSpecification struct {
+	// READ-ONLY; Type of the aggregation (Average, Minimum, Maximum, Total or Count).
+	AggregationType *string
+
+	// READ-ONLY; List of availabilities.
+	Availabilities []*Availability
+
+	// READ-ONLY; Description of the metric.
+	DisplayDescription *string
+
+	// READ-ONLY; User-visible metric name.
+	DisplayName *string
+
+	// READ-ONLY; Optional property. If set to true, then zero will be returned for time duration where no metric is emitted /
+	// published.
+	FillGapWithZero *bool
+
+	// READ-ONLY; The matching regex pattern to be applied to the field pointed by the "metricsFilterPathSelector" flag in the
+	// ARM manifest.
+	MetricFilterPattern *string
+
+	// READ-ONLY; Metric name / id.
+	Name *string
+
+	// READ-ONLY; List of supported time grain types.
+	SupportedTimeGrainTypes []*string
+
+	// READ-ONLY; Metric unit.
+	Unit *string
 }
 
 // MpnsCredential - Description of a NotificationHub MpnsCredential.
 type MpnsCredential struct {
-	// Properties of NotificationHub MpnsCredential.
+	// REQUIRED; Description of a NotificationHub MpnsCredential.
 	Properties *MpnsCredentialProperties
 }
 
 // MpnsCredentialProperties - Description of a NotificationHub MpnsCredential.
 type MpnsCredentialProperties struct {
-	// The certificate key for this credential.
+	// REQUIRED; Gets or sets the certificate key for this credential.
 	CertificateKey *string
 
-	// The MPNS certificate.
+	// REQUIRED; Gets or sets the MPNS certificate.
 	MpnsCertificate *string
 
-	// The MPNS certificate Thumbprint
+	// REQUIRED; Gets or sets the MPNS certificate Thumbprint
 	Thumbprint *string
-}
-
-// NamespaceCreateOrUpdateParameters - Parameters supplied to the CreateOrUpdate Namespace operation.
-type NamespaceCreateOrUpdateParameters struct {
-	// Resource location
-	Location *string
-
-	// Properties of the Namespace.
-	Properties *NamespaceProperties
-
-	// The sku of the created namespace
-	SKU *SKU
-
-	// Resource tags
-	Tags map[string]*string
-
-	// READ-ONLY; Resource Id
-	ID *string
-
-	// READ-ONLY; Resource name
-	Name *string
-
-	// READ-ONLY; Resource type
-	Type *string
 }
 
 // NamespaceListResult - The response of the List Namespace operation.
 type NamespaceListResult struct {
-	// Link to the next set of results. Not empty if Value contains incomplete list of Namespaces
+	// READ-ONLY; Gets or sets link to the next set of results.
 	NextLink *string
 
-	// Result of the List Namespace operation.
+	// READ-ONLY; Gets or sets result of the List AuthorizationRules operation.
 	Value []*NamespaceResource
 }
 
-// NamespacePatchParameters - Parameters supplied to the Patch Namespace operation.
+// NamespacePatchParameters - Patch parameter for NamespaceResource.
 type NamespacePatchParameters struct {
-	// The sku of the created namespace
-	SKU *SKU
-
-	// Resource tags
-	Tags map[string]*string
-}
-
-// NamespaceProperties - Namespace properties.
-type NamespaceProperties struct {
-	// The time the namespace was created.
-	CreatedAt *time.Time
-
-	// Whether or not the namespace is set as Critical.
-	Critical *bool
-
-	// Data center for the namespace
-	DataCenter *string
-
-	// Whether or not the namespace is currently enabled.
-	Enabled *bool
-
-	// The name of the namespace.
-	Name *string
-
-	// The namespace type.
-	NamespaceType *NamespaceType
-
-	// Provisioning state of the Namespace.
-	ProvisioningState *string
-
-	// Specifies the targeted region in which the namespace should be created. It can be any of the following values: Australia
-	// East, Australia Southeast, Central US, East US, East US 2, West US, North
-	// Central US, South Central US, East Asia, Southeast Asia, Brazil South, Japan East, Japan West, North Europe, West Europe
-	Region *string
-
-	// ScaleUnit where the namespace gets created
-	ScaleUnit *string
-
-	// Endpoint you can use to perform NotificationHub operations.
-	ServiceBusEndpoint *string
-
-	// Status of the namespace. It can be any of these values:1 = Created/Active2 = Creating3 = Suspended4 = Deleting
-	Status *string
-
-	// The Id of the Azure subscription associated with the namespace.
-	SubscriptionID *string
-
-	// The time the namespace was updated.
-	UpdatedAt *time.Time
-
-	// READ-ONLY; Identifier for Azure Insights metrics
-	MetricID *string
-}
-
-// NamespaceResource - Description of a Namespace resource.
-type NamespaceResource struct {
-	// Resource location
-	Location *string
-
-	// Properties of the Namespace.
+	// Represents namespace properties.
 	Properties *NamespaceProperties
 
-	// The sku of the created namespace
+	// The Sku description for a namespace
 	SKU *SKU
 
-	// Resource tags
+	// Dictionary of
 	Tags map[string]*string
+}
 
-	// READ-ONLY; Resource Id
-	ID *string
+// NamespaceProperties - Represents namespace properties.
+type NamespaceProperties struct {
+	// Deprecated.
+	DataCenter *string
 
-	// READ-ONLY; Resource name
+	// Defines values for NamespaceType.
+	NamespaceType *NamespaceType
+
+	// A collection of network authorization rules.
+	NetworkACLs *NetworkACLs
+
+	// Collection of Notification Hub or Notification Hub Namespace PNS credentials.
+	PnsCredentials *PnsCredentials
+
+	// Defines values for OperationProvisioningState.
+	ProvisioningState *OperationProvisioningState
+
+	// Type of public network access.
+	PublicNetworkAccess *PublicNetworkAccess
+
+	// Allowed replication region
+	ReplicationRegion *ReplicationRegion
+
+	// Gets or sets scaleUnit where the namespace gets created
+	ScaleUnit *string
+
+	// Namespace status.
+	Status *NamespaceStatus
+
+	// Namespace SKU name.
+	ZoneRedundancy *ZoneRedundancyPreference
+
+	// READ-ONLY; Time when the namespace was created.
+	CreatedAt *time.Time
+
+	// READ-ONLY; Gets or sets whether or not the namespace is set as Critical.
+	Critical *bool
+
+	// READ-ONLY; Gets or sets whether or not the namespace is currently enabled.
+	Enabled *bool
+
+	// READ-ONLY; Azure Insights Metrics id.
+	MetricID *string
+
+	// READ-ONLY; Name of the Notification Hubs namespace. This is immutable property, set automatically by the service when the
+	// namespace is created.
 	Name *string
 
-	// READ-ONLY; Resource type
+	// READ-ONLY; Private Endpoint Connections for namespace
+	PrivateEndpointConnections []*PrivateEndpointConnectionResource
+
+	// READ-ONLY; Region. The value is always set to the same value as Namespace.Location, so we are deprecating this property.
+	Region *string
+
+	// READ-ONLY; Gets or sets endpoint you can use to perform NotificationHub operations.
+	ServiceBusEndpoint *string
+
+	// READ-ONLY; Namespace subscription id.
+	SubscriptionID *string
+
+	// READ-ONLY; Time when the namespace was updated.
+	UpdatedAt *time.Time
+}
+
+// NamespaceResource - Notification Hubs Namespace Resource.
+type NamespaceResource struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// REQUIRED; The Sku description for a namespace
+	SKU *SKU
+
+	// Represents namespace properties.
+	Properties *NamespaceProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
-// NotificationHubCreateOrUpdateParameters - Parameters supplied to the CreateOrUpdate NotificationHub operation.
-type NotificationHubCreateOrUpdateParameters struct {
-	// REQUIRED; Properties of the NotificationHub.
-	Properties *NotificationHubProperties
+// NetworkACLs - A collection of network authorization rules.
+type NetworkACLs struct {
+	// List of IP rules.
+	IPRules []*IPRule
 
-	// Resource location
-	Location *string
-
-	// The sku of the created namespace
-	SKU *SKU
-
-	// Resource tags
-	Tags map[string]*string
-
-	// READ-ONLY; Resource Id
-	ID *string
-
-	// READ-ONLY; Resource name
-	Name *string
-
-	// READ-ONLY; Resource type
-	Type *string
+	// A default (public Internet) network authorization rule, which contains rights if no other network rule matches.
+	PublicNetworkRule *PublicInternetAuthorizationRule
 }
 
 // NotificationHubListResult - The response of the List NotificationHub operation.
 type NotificationHubListResult struct {
-	// Link to the next set of results. Not empty if Value contains incomplete list of NotificationHub
+	// READ-ONLY; Gets or sets link to the next set of results.
 	NextLink *string
 
-	// Result of the List NotificationHub operation.
+	// READ-ONLY; Gets or sets result of the List AuthorizationRules operation.
 	Value []*NotificationHubResource
 }
 
-// NotificationHubPatchParameters - Parameters supplied to the patch NotificationHub operation.
+// NotificationHubPatchParameters - Patch parameter for NamespaceResource.
 type NotificationHubPatchParameters struct {
-	// Resource location
-	Location *string
-
-	// Properties of the NotificationHub.
+	// NotificationHub properties.
 	Properties *NotificationHubProperties
 
-	// The sku of the created namespace
+	// The Sku description for a namespace
 	SKU *SKU
 
-	// Resource tags
+	// Dictionary of
 	Tags map[string]*string
-
-	// READ-ONLY; Resource Id
-	ID *string
-
-	// READ-ONLY; Resource name
-	Name *string
-
-	// READ-ONLY; Resource type
-	Type *string
 }
 
 // NotificationHubProperties - NotificationHub properties.
 type NotificationHubProperties struct {
-	// The AdmCredential of the created NotificationHub
+	// Description of a NotificationHub AdmCredential.
 	AdmCredential *AdmCredential
 
-	// The ApnsCredential of the created NotificationHub
+	// Description of a NotificationHub ApnsCredential.
 	ApnsCredential *ApnsCredential
 
-	// The AuthorizationRules of the created NotificationHub
-	AuthorizationRules []*SharedAccessAuthorizationRuleProperties
-
-	// The BaiduCredential of the created NotificationHub
+	// Description of a NotificationHub BaiduCredential.
 	BaiduCredential *BaiduCredential
 
-	// The GcmCredential of the created NotificationHub
+	// Description of a NotificationHub BrowserCredential.
+	BrowserCredential *BrowserCredential
+
+	// Description of a NotificationHub FcmV1Credential.
+	FcmV1Credential *FcmV1Credential
+
+	// Description of a NotificationHub GcmCredential.
 	GCMCredential *GCMCredential
 
-	// The MpnsCredential of the created NotificationHub
+	// Description of a NotificationHub MpnsCredential.
 	MpnsCredential *MpnsCredential
 
-	// The NotificationHub name.
+	// Gets or sets the NotificationHub name.
 	Name *string
 
-	// The RegistrationTtl of the created NotificationHub
+	// Gets or sets the RegistrationTtl of the created NotificationHub
 	RegistrationTTL *string
 
-	// The WnsCredential of the created NotificationHub
+	// Description of a NotificationHub WnsCredential.
 	WnsCredential *WnsCredential
+
+	// Description of a NotificationHub XiaomiCredential.
+	XiaomiCredential *XiaomiCredential
+
+	// READ-ONLY; Gets or sets the AuthorizationRules of the created NotificationHub
+	AuthorizationRules []*SharedAccessAuthorizationRuleProperties
+
+	// READ-ONLY
+	DailyMaxActiveDevices *int64
 }
 
-// NotificationHubResource - Description of a NotificationHub Resource.
+// NotificationHubResource - Notification Hub Resource.
 type NotificationHubResource struct {
-	// Resource location
+	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
-	// Properties of the NotificationHub.
+	// NotificationHub properties.
 	Properties *NotificationHubProperties
 
-	// The sku of the created namespace
+	// The Sku description for a namespace
 	SKU *SKU
 
-	// Resource tags
+	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Resource Id
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; Resource name
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -440,228 +597,464 @@ type Operation struct {
 	// The object that represents the operation.
 	Display *OperationDisplay
 
-	// READ-ONLY; Operation name: {provider}/{resource}/{operation}
+	// Optional operation properties.
+	Properties *OperationProperties
+
+	// READ-ONLY; Gets or sets IsDataAction property. It is used to differentiate management and data plane operations.
+	IsDataAction *bool
+
+	// READ-ONLY; Gets operation name: {provider}/{resource}/{operation}
 	Name *string
 }
 
 // OperationDisplay - The object that represents the operation.
 type OperationDisplay struct {
-	// READ-ONLY; Operation type: Read, write, delete, etc.
+	// READ-ONLY; Human-friendly operation description.
+	Description *string
+
+	// READ-ONLY; Gets operation type: Read, write, delete, etc.
 	Operation *string
 
-	// READ-ONLY; Service provider: Microsoft.NotificationHubs
+	// READ-ONLY; Gets service provider: Microsoft.NotificationHubs
 	Provider *string
 
-	// READ-ONLY; Resource on which the operation is performed: Invoice, etc.
+	// READ-ONLY; Gets resource on which the operation is performed: Invoice, etc.
 	Resource *string
 }
 
 // OperationListResult - Result of the request to list NotificationHubs operations. It contains a list of operations and a
 // URL link to get the next set of results.
 type OperationListResult struct {
-	// READ-ONLY; URL to get the next set of operation list results if there are any.
+	// READ-ONLY; Gets URL to get the next set of operation list results if there are any.
 	NextLink *string
 
-	// READ-ONLY; List of NotificationHubs operations supported by the Microsoft.NotificationHubs resource provider.
+	// READ-ONLY; Gets list of NotificationHubs operations supported by the Microsoft.NotificationHubs resource provider.
 	Value []*Operation
 }
 
-// PnsCredentialsProperties - Description of a NotificationHub PNS Credentials.
-type PnsCredentialsProperties struct {
-	// The AdmCredential of the created NotificationHub
+// OperationProperties - Optional operation properties.
+type OperationProperties struct {
+	// Optional service specification used in Operations API.
+	ServiceSpecification *ServiceSpecification
+}
+
+// PnsCredentials - Collection of Notification Hub or Notification Hub Namespace PNS credentials.
+type PnsCredentials struct {
+	// Description of a NotificationHub AdmCredential.
 	AdmCredential *AdmCredential
 
-	// The ApnsCredential of the created NotificationHub
+	// Description of a NotificationHub ApnsCredential.
 	ApnsCredential *ApnsCredential
 
-	// The BaiduCredential of the created NotificationHub
+	// Description of a NotificationHub BaiduCredential.
 	BaiduCredential *BaiduCredential
 
-	// The GcmCredential of the created NotificationHub
+	// Description of a NotificationHub BrowserCredential.
+	BrowserCredential *BrowserCredential
+
+	// Description of a NotificationHub FcmV1Credential.
+	FcmV1Credential *FcmV1Credential
+
+	// Description of a NotificationHub GcmCredential.
 	GCMCredential *GCMCredential
 
-	// The MpnsCredential of the created NotificationHub
+	// Description of a NotificationHub MpnsCredential.
 	MpnsCredential *MpnsCredential
 
-	// The WnsCredential of the created NotificationHub
+	// Description of a NotificationHub WnsCredential.
 	WnsCredential *WnsCredential
+
+	// Description of a NotificationHub XiaomiCredential.
+	XiaomiCredential *XiaomiCredential
 }
 
-// PnsCredentialsResource - Description of a NotificationHub PNS Credentials.
+// PnsCredentialsResource - Description of a NotificationHub PNS Credentials. This is a response of the POST requests that
+// return namespace or hubs PNS credentials.
 type PnsCredentialsResource struct {
-	// Resource location
+	// Deprecated - only for compatibility.
 	Location *string
 
-	// NotificationHub PNS Credentials.
-	Properties *PnsCredentialsProperties
+	// Collection of Notification Hub or Notification Hub Namespace PNS credentials.
+	Properties *PnsCredentials
 
-	// The sku of the created namespace
-	SKU *SKU
-
-	// Resource tags
+	// Deprecated - only for compatibility.
 	Tags map[string]*string
 
-	// READ-ONLY; Resource Id
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; Resource name
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
-// PolicykeyResource - Namespace/NotificationHub Regenerate Keys
-type PolicykeyResource struct {
-	// Name of the key that has to be regenerated for the Namespace/Notification Hub Authorization Rule. The value can be Primary
-	// Key/Secondary Key.
-	PolicyKey *string
+// PolicyKeyResource - Namespace / NotificationHub Regenerate Keys request.
+type PolicyKeyResource struct {
+	// REQUIRED; Type of Shared Access Policy Key (primary or secondary).
+	PolicyKey *PolicyKeyType
 }
 
+// PrivateEndpointConnectionProperties - Private Endpoint Connection properties.
+type PrivateEndpointConnectionProperties struct {
+	// Represents a Private Endpoint that is connected to Notification Hubs namespace using Private Endpoint Connection.
+	PrivateEndpoint *RemotePrivateEndpointConnection
+
+	// State of the Private Link Service connection.
+	PrivateLinkServiceConnectionState *RemotePrivateLinkServiceConnectionState
+
+	// State of Private Endpoint Connection.
+	ProvisioningState *PrivateEndpointConnectionProvisioningState
+
+	// READ-ONLY; List of group ids. For Notification Hubs, it always contains a single "namespace" element.
+	GroupIDs []*string
+}
+
+// PrivateEndpointConnectionResource - Represents a Private Endpoint Connection ARM resource - a sub-resource of Notification
+// Hubs namespace.
+type PrivateEndpointConnectionResource struct {
+	// Private Endpoint Connection properties.
+	Properties *PrivateEndpointConnectionProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// PrivateEndpointConnectionResourceListResult - The response of the List Private Endpoint Connections operation.
+type PrivateEndpointConnectionResourceListResult struct {
+	// READ-ONLY; Gets or sets link to the next set of results.
+	NextLink *string
+
+	// READ-ONLY; Gets or sets result of the List AuthorizationRules operation.
+	Value []*PrivateEndpointConnectionResource
+}
+
+// PrivateLinkResource - A Private Link Arm Resource.
+type PrivateLinkResource struct {
+	// Represents properties of Private Link Resource.
+	Properties *PrivateLinkResourceProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// PrivateLinkResourceListResult - The response of the List Private Link Resources operation.
+type PrivateLinkResourceListResult struct {
+	// READ-ONLY; Gets or sets link to the next set of results.
+	NextLink *string
+
+	// READ-ONLY; Gets or sets result of the List AuthorizationRules operation.
+	Value []*PrivateLinkResource
+}
+
+// PrivateLinkResourceProperties - Represents properties of Private Link Resource.
+type PrivateLinkResourceProperties struct {
+	// READ-ONLY; A Group Id for Private Link. For Notification Hubs, it is always set to "namespace".
+	GroupID *string
+
+	// READ-ONLY; Required members. For Notification Hubs, it's always a collection with a single "namespace" item.
+	RequiredMembers []*string
+
+	// READ-ONLY; Required DNS zone names. For Notification Hubs, it contains two CNames for Service Bus and Notification Hubs
+	// zones.
+	RequiredZoneNames []*string
+}
+
+// PrivateLinkServiceConnection - A customer-visible sub-resource of Private Endpoint, which describe the connection between
+// Private Endpoint and Notification Hubs namespace.
+type PrivateLinkServiceConnection struct {
+	// List of group ids. Always contains a single element - "namespace" - for Notification Hub Namespace.
+	GroupIDs []*string
+
+	// Name of the Private Link Service connection.
+	Name *string
+
+	// Request message provided by the user that created the connection. This is usually used when the connection requires manual
+	// approval.
+	RequestMessage *string
+}
+
+// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
+// location
+type ProxyResource struct {
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// PublicInternetAuthorizationRule - A default (public Internet) network authorization rule, which contains rights if no other
+// network rule matches.
+type PublicInternetAuthorizationRule struct {
+	// REQUIRED; List of access rights.
+	Rights []*AccessRights
+}
+
+// RegistrationResult - Notification result for a single registration.
+type RegistrationResult struct {
+	// READ-ONLY; PNS type.
+	ApplicationPlatform *string
+
+	// READ-ONLY; Notification outcome.
+	Outcome *string
+
+	// READ-ONLY; PNS handle.
+	PnsHandle *string
+
+	// READ-ONLY; Registration id.
+	RegistrationID *string
+}
+
+// RemotePrivateEndpointConnection - Represents a Private Endpoint that is connected to Notification Hubs namespace using
+// Private Endpoint Connection.
+type RemotePrivateEndpointConnection struct {
+	// READ-ONLY; ARM resource ID of the Private Endpoint. This may belong to different subscription and resource group than a
+	// Notification Hubs namespace.
+	ID *string
+}
+
+// RemotePrivateLinkServiceConnectionState - State of the Private Link Service connection.
+type RemotePrivateLinkServiceConnectionState struct {
+	// State of Private Link Connection.
+	Status *PrivateLinkConnectionStatus
+
+	// READ-ONLY; Human-friendly description of required actions.
+	ActionsRequired *string
+
+	// READ-ONLY; Human-friendly description.
+	Description *string
+}
+
+// Resource - Common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
-	// Resource location
-	Location *string
-
-	// The sku of the created namespace
-	SKU *SKU
-
-	// Resource tags
-	Tags map[string]*string
-
-	// READ-ONLY; Resource Id
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; Resource name
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
-// ResourceListKeys - Namespace/NotificationHub Connection String
+// ResourceListKeys - Response for the POST request that returns Namespace or NotificationHub access keys (connection strings).
 type ResourceListKeys struct {
-	// KeyName of the created AuthorizationRule
+	// READ-ONLY; Gets or sets keyName of the created AuthorizationRule
 	KeyName *string
 
-	// PrimaryConnectionString of the AuthorizationRule.
+	// READ-ONLY; Gets or sets primaryConnectionString of the AuthorizationRule.
 	PrimaryConnectionString *string
 
-	// PrimaryKey of the created AuthorizationRule.
+	// READ-ONLY; Gets or sets primaryKey of the created AuthorizationRule.
 	PrimaryKey *string
 
-	// SecondaryConnectionString of the created AuthorizationRule
+	// READ-ONLY; Gets or sets secondaryConnectionString of the created AuthorizationRule
 	SecondaryConnectionString *string
 
-	// SecondaryKey of the created AuthorizationRule
+	// READ-ONLY; Gets or sets secondaryKey of the created AuthorizationRule
 	SecondaryKey *string
 }
 
 // SKU - The Sku description for a namespace
 type SKU struct {
-	// REQUIRED; Name of the notification hub sku
+	// REQUIRED; Namespace SKU name.
 	Name *SKUName
 
-	// The capacity of the resource
+	// Gets or sets the capacity of the resource
 	Capacity *int32
 
-	// The Sku Family
+	// Gets or sets the Sku Family
 	Family *string
 
-	// The Sku size
+	// Gets or sets the Sku size
 	Size *string
 
-	// The tier of particular sku
+	// Gets or sets the tier of particular sku
 	Tier *string
 }
 
-// SharedAccessAuthorizationRuleCreateOrUpdateParameters - Parameters supplied to the CreateOrUpdate Namespace AuthorizationRules.
-type SharedAccessAuthorizationRuleCreateOrUpdateParameters struct {
-	// REQUIRED; Properties of the Namespace AuthorizationRules.
-	Properties *SharedAccessAuthorizationRuleProperties
+// ServiceSpecification - Optional service specification used in Operations API.
+type ServiceSpecification struct {
+	// READ-ONLY; Log specifications.
+	LogSpecifications []*LogSpecification
+
+	// READ-ONLY; Metric specification.
+	MetricSpecifications []*MetricSpecification
 }
 
 // SharedAccessAuthorizationRuleListResult - The response of the List Namespace operation.
 type SharedAccessAuthorizationRuleListResult struct {
-	// Link to the next set of results. Not empty if Value contains incomplete list of AuthorizationRules
+	// READ-ONLY; Gets or sets link to the next set of results.
 	NextLink *string
 
-	// Result of the List AuthorizationRules operation.
+	// READ-ONLY; Gets or sets result of the List AuthorizationRules operation.
 	Value []*SharedAccessAuthorizationRuleResource
 }
 
 // SharedAccessAuthorizationRuleProperties - SharedAccessAuthorizationRule properties.
 type SharedAccessAuthorizationRuleProperties struct {
-	// The rights associated with the rule.
+	// REQUIRED; Gets or sets the rights associated with the rule.
 	Rights []*AccessRights
 
-	// READ-ONLY; A string that describes the claim type
-	ClaimType *string
-
-	// READ-ONLY; A string that describes the claim value
-	ClaimValue *string
-
-	// READ-ONLY; The created time for this rule
-	CreatedTime *string
-
-	// READ-ONLY; A string that describes the authorization rule.
-	KeyName *string
-
-	// READ-ONLY; The last modified time for this rule
-	ModifiedTime *string
-
-	// READ-ONLY; A base64-encoded 256-bit primary key for signing and validating the SAS token.
+	// Gets a base64-encoded 256-bit primary key for signing and validating the SAS token.
 	PrimaryKey *string
 
-	// READ-ONLY; The revision number for the rule
-	Revision *int32
-
-	// READ-ONLY; A base64-encoded 256-bit primary key for signing and validating the SAS token.
+	// Gets a base64-encoded 256-bit primary key for signing and validating the SAS token.
 	SecondaryKey *string
+
+	// READ-ONLY; Gets a string that describes the claim type
+	ClaimType *string
+
+	// READ-ONLY; Gets a string that describes the claim value
+	ClaimValue *string
+
+	// READ-ONLY; Gets the created time for this rule
+	CreatedTime *time.Time
+
+	// READ-ONLY; Gets a string that describes the authorization rule.
+	KeyName *string
+
+	// READ-ONLY; Gets the last modified time for this rule
+	ModifiedTime *time.Time
+
+	// READ-ONLY; Gets the revision number for the rule
+	Revision *int32
 }
 
-// SharedAccessAuthorizationRuleResource - Description of a Namespace AuthorizationRules.
+// SharedAccessAuthorizationRuleResource - Response for POST requests that return single SharedAccessAuthorizationRule.
 type SharedAccessAuthorizationRuleResource struct {
-	// Resource location
+	// Deprecated - only for compatibility.
 	Location *string
 
-	// Properties of the Namespace AuthorizationRule.
+	// SharedAccessAuthorizationRule properties.
 	Properties *SharedAccessAuthorizationRuleProperties
 
-	// The sku of the created namespace
-	SKU *SKU
-
-	// Resource tags
+	// Deprecated - only for compatibility.
 	Tags map[string]*string
 
-	// READ-ONLY; Resource Id
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; Resource name
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
-type SubResource struct {
-	// Resource Id
+// SystemData - Metadata pertaining to creation and last modification of the resource.
+type SystemData struct {
+	// The timestamp of resource creation (UTC).
+	CreatedAt *time.Time
+
+	// The identity that created the resource.
+	CreatedBy *string
+
+	// The type of identity that created the resource.
+	CreatedByType *CreatedByType
+
+	// The timestamp of resource last modification (UTC)
+	LastModifiedAt *time.Time
+
+	// The identity that last modified the resource.
+	LastModifiedBy *string
+
+	// The type of identity that last modified the resource.
+	LastModifiedByType *CreatedByType
+}
+
+// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
+// and a 'location'
+type TrackedResource struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
 }
 
 // WnsCredential - Description of a NotificationHub WnsCredential.
 type WnsCredential struct {
-	// Properties of NotificationHub WnsCredential.
+	// REQUIRED; Description of a NotificationHub WnsCredential.
 	Properties *WnsCredentialProperties
 }
 
 // WnsCredentialProperties - Description of a NotificationHub WnsCredential.
 type WnsCredentialProperties struct {
-	// The package ID for this credential.
+	// Ges or sets the WNS Certificate Key.
+	CertificateKey *string
+
+	// Gets or sets the package ID for this credential.
 	PackageSid *string
 
-	// The secret key.
+	// Gets or sets the secret key.
 	SecretKey *string
 
-	// The Windows Live endpoint.
+	// Gets or sets the Windows Live endpoint.
 	WindowsLiveEndpoint *string
+
+	// Gets or sets the WNS Certificate.
+	WnsCertificate *string
+}
+
+// XiaomiCredential - Description of a NotificationHub XiaomiCredential.
+type XiaomiCredential struct {
+	// REQUIRED; Description of a NotificationHub XiaomiCredentialProperties.
+	Properties *XiaomiCredentialProperties
+}
+
+// XiaomiCredentialProperties - Description of a NotificationHub XiaomiCredentialProperties.
+type XiaomiCredentialProperties struct {
+	// Gets or sets app secret.
+	AppSecret *string
+
+	// Gets or sets xiaomi service endpoint.
+	Endpoint *string
 }

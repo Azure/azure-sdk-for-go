@@ -451,6 +451,9 @@ type ExperimentStep struct {
 type ExperimentUpdate struct {
 	// The identity of the experiment resource.
 	Identity *ResourceIdentity
+
+	// The tags of the experiment resource.
+	Tags map[string]*string
 }
 
 // KeyValuePair - A map to describe the settings of an action.

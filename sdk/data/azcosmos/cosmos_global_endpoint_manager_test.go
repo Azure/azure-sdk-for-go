@@ -79,9 +79,7 @@ func TestGlobalEndpointManagerMarkEndpointUnavailableForRead(t *testing.T) {
 
 	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
 
-	client := &Client{endpoint: srv.URL(), pipeline: pl}
-
-	endpoint, err := url.Parse(client.endpoint)
+	endpoint, err := url.Parse(srv.URL())
 	assert.NoError(t, err)
 
 	gem, err := newGlobalEndpointManager(srv.URL(), pl, []string{"West US", "Central US"}, 5*time.Minute, true)
@@ -101,9 +99,7 @@ func TestGlobalEndpointManagerMarkEndpointUnavailableForWrite(t *testing.T) {
 
 	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
 
-	client := &Client{endpoint: srv.URL(), pipeline: pl}
-
-	endpoint, err := url.Parse(client.endpoint)
+	endpoint, err := url.Parse(srv.URL())
 	assert.NoError(t, err)
 
 	gem, err := newGlobalEndpointManager(srv.URL(), pl, []string{"West US", "Central US"}, 5*time.Minute, true)

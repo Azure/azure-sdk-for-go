@@ -28,7 +28,7 @@ type ContainerAppsAPIClient struct {
 }
 
 // NewContainerAppsAPIClient creates a new instance of ContainerAppsAPIClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewContainerAppsAPIClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ContainerAppsAPIClient, error) {
@@ -43,10 +43,65 @@ func NewContainerAppsAPIClient(subscriptionID string, credential azcore.TokenCre
 	return client, nil
 }
 
+// GetCustomDomainVerificationID - Get the verification id of a subscription used for verifying custom domains
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-11-02-preview
+//   - options - ContainerAppsAPIClientGetCustomDomainVerificationIDOptions contains the optional parameters for the ContainerAppsAPIClient.GetCustomDomainVerificationID
+//     method.
+func (client *ContainerAppsAPIClient) GetCustomDomainVerificationID(ctx context.Context, options *ContainerAppsAPIClientGetCustomDomainVerificationIDOptions) (ContainerAppsAPIClientGetCustomDomainVerificationIDResponse, error) {
+	var err error
+	const operationName = "ContainerAppsAPIClient.GetCustomDomainVerificationID"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getCustomDomainVerificationIDCreateRequest(ctx, options)
+	if err != nil {
+		return ContainerAppsAPIClientGetCustomDomainVerificationIDResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return ContainerAppsAPIClientGetCustomDomainVerificationIDResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return ContainerAppsAPIClientGetCustomDomainVerificationIDResponse{}, err
+	}
+	resp, err := client.getCustomDomainVerificationIDHandleResponse(httpResp)
+	return resp, err
+}
+
+// getCustomDomainVerificationIDCreateRequest creates the GetCustomDomainVerificationID request.
+func (client *ContainerAppsAPIClient) getCustomDomainVerificationIDCreateRequest(ctx context.Context, options *ContainerAppsAPIClientGetCustomDomainVerificationIDOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.App/getCustomDomainVerificationId"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2023-11-02-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getCustomDomainVerificationIDHandleResponse handles the GetCustomDomainVerificationID response.
+func (client *ContainerAppsAPIClient) getCustomDomainVerificationIDHandleResponse(resp *http.Response) (ContainerAppsAPIClientGetCustomDomainVerificationIDResponse, error) {
+	result := ContainerAppsAPIClientGetCustomDomainVerificationIDResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Value); err != nil {
+		return ContainerAppsAPIClientGetCustomDomainVerificationIDResponse{}, err
+	}
+	return result, nil
+}
+
 // JobExecution - Get details of a single job execution
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-11-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - jobName - Job Name
 //   - jobExecutionName - Job execution name.
@@ -98,7 +153,7 @@ func (client *ContainerAppsAPIClient) jobExecutionCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-11-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

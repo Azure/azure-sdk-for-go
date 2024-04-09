@@ -44,6 +44,50 @@ steps:
     displayName: Create API review for Go
     condition: and(succeeded(), ne(variables['Skip.CreateApiReview'], 'true') , ne(variables['Build.Reason'],'PullRequest'), eq(variables['System.TeamProject'], 'internal'))
 
+  - ${{ if and(ne(variables['Skip.PackageValidation'], 'true'), eq(variables['System.TeamProject'], 'internal')) }}:
+    - pwsh: |
+        . ./eng/common/scripts/common.ps1
+        $artifactList = @()
+        foreach ($sdk in (Get-AllPackageInfoFromRepo '${{ parameters.ServiceDirectory }}')) {
+          $artifactList += [PSCustomObject]@{
+            name = $sdk.Name
+          }
+        }
+        $ArtifactsList = $artifactList | ConvertTo-Json -Compress
+        Write-Host "ArtifactsList: [$ArtifactsList]"
+        echo "##vso[task.setvariable variable=ArtifactsList]$ArtifactsList"
+      displayName: 'Set artifacts variable'
+      failOnStderr: false
+      workingDirectory: $(System.DefaultWorkingDirectory)
+
+    - pwsh: |
+        echo "##vso[task.setvariable variable=SetAsReleaseBuild]false"
+      displayName: "Set as release build"
+      condition: and(succeeded(), eq(variables['SetAsReleaseBuild'], ''))
+
+    - task: Powershell@2
+      inputs:
+        filePath: $(Build.SourcesDirectory)/eng/common/scripts/Validate-All-Packages.ps1
+        arguments: >
+          -ArtifactList ('$(ArtifactsList)' | ConvertFrom-Json | Select-Object Name)
+          -ArtifactPath $(Build.ArtifactStagingDirectory)
+          -RepoRoot $(Build.SourcesDirectory)
+          -APIKey $(azuresdk-apiview-apikey)
+          -ConfigFileDir '$(Build.ArtifactStagingDirectory)/PackageInfo'
+          -BuildDefinition $(System.CollectionUri)$(System.TeamProject)/_build?definitionId=$(System.DefinitionId)
+          -PipelineUrl $(System.CollectionUri)$(System.TeamProject)/_build/results?buildId=$(Build.BuildId)
+          -Devops_pat '$(azuresdk-azure-sdk-devops-release-work-item-pat)'
+          -IsReleaseBuild $$(SetAsReleaseBuild)
+        pwsh: true
+        workingDirectory: $(Pipeline.Workspace)
+      displayName: Validate packages and update work items
+      continueOnError: true
+      condition: >-
+        and(
+          succeededOrFailed(),
+          not(endsWith(variables['Build.Repository.Name'], '-pr'))
+        )
+
   - task: Powershell@2
     displayName: 'Dependency Check'
     condition: ne(variables['Skip.DependencyCheck'], 'true')

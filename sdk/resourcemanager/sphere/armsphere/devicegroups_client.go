@@ -48,7 +48,7 @@ func NewDeviceGroupsClient(subscriptionID string, credential azcore.TokenCredent
 // bulk claiming devices to a catalog only.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2024-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - catalogName - Name of catalog
 //   - productName - Name of product.
@@ -78,7 +78,7 @@ func (client *DeviceGroupsClient) BeginClaimDevices(ctx context.Context, resourc
 // claiming devices to a catalog only.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2024-04-01
 func (client *DeviceGroupsClient) claimDevices(ctx context.Context, resourceGroupName string, catalogName string, productName string, deviceGroupName string, claimDevicesRequest ClaimDevicesRequest, options *DeviceGroupsClientBeginClaimDevicesOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DeviceGroupsClient.BeginClaimDevices"
@@ -128,7 +128,7 @@ func (client *DeviceGroupsClient) claimDevicesCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, claimDevicesRequest); err != nil {
@@ -141,7 +141,7 @@ func (client *DeviceGroupsClient) claimDevicesCreateRequest(ctx context.Context,
 // for product or device group name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2024-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - catalogName - Name of catalog
 //   - productName - Name of product.
@@ -198,7 +198,7 @@ func (client *DeviceGroupsClient) countDevicesCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -207,7 +207,7 @@ func (client *DeviceGroupsClient) countDevicesCreateRequest(ctx context.Context,
 // countDevicesHandleResponse handles the CountDevices response.
 func (client *DeviceGroupsClient) countDevicesHandleResponse(resp *http.Response) (DeviceGroupsClientCountDevicesResponse, error) {
 	result := DeviceGroupsClientCountDevicesResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.CountDeviceResponse); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.CountDevicesResponse); err != nil {
 		return DeviceGroupsClientCountDevicesResponse{}, err
 	}
 	return result, nil
@@ -217,7 +217,7 @@ func (client *DeviceGroupsClient) countDevicesHandleResponse(resp *http.Response
 // product or device group name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2024-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - catalogName - Name of catalog
 //   - productName - Name of product.
@@ -247,7 +247,7 @@ func (client *DeviceGroupsClient) BeginCreateOrUpdate(ctx context.Context, resou
 // or device group name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2024-04-01
 func (client *DeviceGroupsClient) createOrUpdate(ctx context.Context, resourceGroupName string, catalogName string, productName string, deviceGroupName string, resource DeviceGroup, options *DeviceGroupsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DeviceGroupsClient.BeginCreateOrUpdate"
@@ -297,7 +297,7 @@ func (client *DeviceGroupsClient) createOrUpdateCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -310,7 +310,7 @@ func (client *DeviceGroupsClient) createOrUpdateCreateRequest(ctx context.Contex
 // or device group name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2024-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - catalogName - Name of catalog
 //   - productName - Name of product.
@@ -339,7 +339,7 @@ func (client *DeviceGroupsClient) BeginDelete(ctx context.Context, resourceGroup
 // device group name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2024-04-01
 func (client *DeviceGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, catalogName string, productName string, deviceGroupName string, options *DeviceGroupsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DeviceGroupsClient.BeginDelete"
@@ -389,7 +389,7 @@ func (client *DeviceGroupsClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -399,7 +399,7 @@ func (client *DeviceGroupsClient) deleteCreateRequest(ctx context.Context, resou
 // group name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2024-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - catalogName - Name of catalog
 //   - productName - Name of product.
@@ -455,7 +455,7 @@ func (client *DeviceGroupsClient) getCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -473,7 +473,7 @@ func (client *DeviceGroupsClient) getHandleResponse(resp *http.Response) (Device
 // NewListByProductPager - List DeviceGroup resources by Product. '.default' and '.unassigned' are system defined values and
 // cannot be used for product name.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2024-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - catalogName - Name of catalog
 //   - productName - Name of product.
@@ -529,16 +529,16 @@ func (client *DeviceGroupsClient) listByProductCreateRequest(ctx context.Context
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+	if options != nil && options.Maxpagesize != nil {
+		reqQP.Set("$maxpagesize", strconv.FormatInt(int64(*options.Maxpagesize), 10))
 	}
 	if options != nil && options.Skip != nil {
 		reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
 	}
-	if options != nil && options.Maxpagesize != nil {
-		reqQP.Set("$maxpagesize", strconv.FormatInt(int64(*options.Maxpagesize), 10))
+	if options != nil && options.Top != nil {
+		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -557,7 +557,7 @@ func (client *DeviceGroupsClient) listByProductHandleResponse(resp *http.Respons
 // or device group name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2024-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - catalogName - Name of catalog
 //   - productName - Name of product.
@@ -587,7 +587,7 @@ func (client *DeviceGroupsClient) BeginUpdate(ctx context.Context, resourceGroup
 // device group name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2024-04-01
 func (client *DeviceGroupsClient) update(ctx context.Context, resourceGroupName string, catalogName string, productName string, deviceGroupName string, properties DeviceGroupUpdate, options *DeviceGroupsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DeviceGroupsClient.BeginUpdate"
@@ -637,7 +637,7 @@ func (client *DeviceGroupsClient) updateCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {

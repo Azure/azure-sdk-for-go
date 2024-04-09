@@ -1,14 +1,15 @@
 # Release History
 
-## 0.3.7 (Unreleased)
+## 1.0.0 (2024-04-09)
 
 ### Features Added
+* Added regional routing support through ClientOptions.PreferredRegions
+* Added cross-region availability and failover mechanics supporting [Azure Cosmos DB SDK multiregional environment behavior](https://learn.microsoft.com/azure/cosmos-db/nosql/troubleshoot-sdk-availability)
+* Added extended logging for requests, responses, and client configuration
 
 ### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+* ItemOptions.SessionToken, QueryOptions.SessionToken, QueryOptions.ContinuationToken, QueryDatabasesOptions.ContinuationToken, QueryContainersOptions.ContinuationToken are now `*string`
+* ItemResponse.SessionToken, QueryItemsResponse.ContinuationToken, QueryContainersResponse.ContinuationToken, QueryDatabasesResponse.ContinuationToken are now `*string`
 
 ## 0.3.6 (2023-08-18)
 

@@ -45,7 +45,7 @@ func NewAvailableClusterVersionsClient(subscriptionID string, credential azcore.
 
 // NewListByLocationPager - Returns a list of available cluster versions.
 //
-// Generated from API version 2023-06-01-preview
+// Generated from API version 2023-11-01-preview
 //   - location - The name of the Azure region.
 //   - options - AvailableClusterVersionsClientListByLocationOptions contains the optional parameters for the AvailableClusterVersionsClient.NewListByLocationPager
 //     method.
@@ -88,7 +88,7 @@ func (client *AvailableClusterVersionsClient) listByLocationCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-01-preview")
+	reqQP.Set("api-version", "2023-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

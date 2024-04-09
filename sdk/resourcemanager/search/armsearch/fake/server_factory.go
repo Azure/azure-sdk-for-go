@@ -19,15 +19,16 @@ import (
 
 // ServerFactory is a fake server for instances of the armsearch.ClientFactory type.
 type ServerFactory struct {
-	AdminKeysServer                  AdminKeysServer
-	ManagementServer                 ManagementServer
-	OperationsServer                 OperationsServer
-	PrivateEndpointConnectionsServer PrivateEndpointConnectionsServer
-	PrivateLinkResourcesServer       PrivateLinkResourcesServer
-	QueryKeysServer                  QueryKeysServer
-	ServicesServer                   ServicesServer
-	SharedPrivateLinkResourcesServer SharedPrivateLinkResourcesServer
-	UsagesServer                     UsagesServer
+	AdminKeysServer                              AdminKeysServer
+	ManagementServer                             ManagementServer
+	NetworkSecurityPerimeterConfigurationsServer NetworkSecurityPerimeterConfigurationsServer
+	OperationsServer                             OperationsServer
+	PrivateEndpointConnectionsServer             PrivateEndpointConnectionsServer
+	PrivateLinkResourcesServer                   PrivateLinkResourcesServer
+	QueryKeysServer                              QueryKeysServer
+	ServicesServer                               ServicesServer
+	SharedPrivateLinkResourcesServer             SharedPrivateLinkResourcesServer
+	UsagesServer                                 UsagesServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -42,17 +43,18 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armsearch.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                                *ServerFactory
-	trMu                               sync.Mutex
-	trAdminKeysServer                  *AdminKeysServerTransport
-	trManagementServer                 *ManagementServerTransport
-	trOperationsServer                 *OperationsServerTransport
-	trPrivateEndpointConnectionsServer *PrivateEndpointConnectionsServerTransport
-	trPrivateLinkResourcesServer       *PrivateLinkResourcesServerTransport
-	trQueryKeysServer                  *QueryKeysServerTransport
-	trServicesServer                   *ServicesServerTransport
-	trSharedPrivateLinkResourcesServer *SharedPrivateLinkResourcesServerTransport
-	trUsagesServer                     *UsagesServerTransport
+	srv                                            *ServerFactory
+	trMu                                           sync.Mutex
+	trAdminKeysServer                              *AdminKeysServerTransport
+	trManagementServer                             *ManagementServerTransport
+	trNetworkSecurityPerimeterConfigurationsServer *NetworkSecurityPerimeterConfigurationsServerTransport
+	trOperationsServer                             *OperationsServerTransport
+	trPrivateEndpointConnectionsServer             *PrivateEndpointConnectionsServerTransport
+	trPrivateLinkResourcesServer                   *PrivateLinkResourcesServerTransport
+	trQueryKeysServer                              *QueryKeysServerTransport
+	trServicesServer                               *ServicesServerTransport
+	trSharedPrivateLinkResourcesServer             *SharedPrivateLinkResourcesServerTransport
+	trUsagesServer                                 *UsagesServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -74,6 +76,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "ManagementClient":
 		initServer(s, &s.trManagementServer, func() *ManagementServerTransport { return NewManagementServerTransport(&s.srv.ManagementServer) })
 		resp, err = s.trManagementServer.Do(req)
+	case "NetworkSecurityPerimeterConfigurationsClient":
+		initServer(s, &s.trNetworkSecurityPerimeterConfigurationsServer, func() *NetworkSecurityPerimeterConfigurationsServerTransport {
+			return NewNetworkSecurityPerimeterConfigurationsServerTransport(&s.srv.NetworkSecurityPerimeterConfigurationsServer)
+		})
+		resp, err = s.trNetworkSecurityPerimeterConfigurationsServer.Do(req)
 	case "OperationsClient":
 		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)

@@ -17,8 +17,7 @@ import (
 // Don't use this type directly, use NewClientFactory instead.
 type ClientFactory struct {
 	subscriptionID string
-	credential     azcore.TokenCredential
-	options        *arm.ClientOptions
+	internal       *arm.Client
 }
 
 // NewClientFactory creates a new instance of ClientFactory with the specified values.
@@ -27,54 +26,51 @@ type ClientFactory struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClientFactory, error) {
-	_, err := arm.NewClient(moduleName, moduleVersion, credential, options)
+	internal, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	return &ClientFactory{
-		subscriptionID: subscriptionID, credential: credential,
-		options: options.Clone(),
+		subscriptionID: subscriptionID,
+		internal:       internal,
 	}, nil
 }
 
 // NewDomainsClient creates a new instance of DomainsClient.
 func (c *ClientFactory) NewDomainsClient() *DomainsClient {
-	subClient, _ := NewDomainsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &DomainsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewEmailServicesClient creates a new instance of EmailServicesClient.
 func (c *ClientFactory) NewEmailServicesClient() *EmailServicesClient {
-	subClient, _ := NewEmailServicesClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &EmailServicesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewOperationsClient creates a new instance of OperationsClient.
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
-	subClient, _ := NewOperationsClient(c.credential, c.options)
-	return subClient
+	return &OperationsClient{
+		internal: c.internal,
+	}
 }
 
 // NewSenderUsernamesClient creates a new instance of SenderUsernamesClient.
 func (c *ClientFactory) NewSenderUsernamesClient() *SenderUsernamesClient {
-	subClient, _ := NewSenderUsernamesClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &SenderUsernamesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewServicesClient creates a new instance of ServicesClient.
 func (c *ClientFactory) NewServicesClient() *ServicesClient {
-	subClient, _ := NewServicesClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-// NewSuppressionListAddressesClient creates a new instance of SuppressionListAddressesClient.
-func (c *ClientFactory) NewSuppressionListAddressesClient() *SuppressionListAddressesClient {
-	subClient, _ := NewSuppressionListAddressesClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-// NewSuppressionListsClient creates a new instance of SuppressionListsClient.
-func (c *ClientFactory) NewSuppressionListsClient() *SuppressionListsClient {
-	subClient, _ := NewSuppressionListsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &ServicesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }

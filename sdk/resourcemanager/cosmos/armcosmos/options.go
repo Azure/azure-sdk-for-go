@@ -23,7 +23,7 @@ type CassandraClustersClientBeginDeallocateOptions struct {
 
 	// Force to deallocate a cluster of Cluster Type Production. Force to deallocate a cluster of Cluster Type Production might
 	// cause data loss
-	XMSForceDeallocate *bool
+	XMSForceDeallocate *string
 }
 
 // CassandraClustersClientBeginDeleteOptions contains the optional parameters for the CassandraClustersClient.BeginDelete
@@ -342,6 +342,11 @@ type CollectionRegionClientListMetricsOptions struct {
 
 // DataTransferJobsClientCancelOptions contains the optional parameters for the DataTransferJobsClient.Cancel method.
 type DataTransferJobsClientCancelOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DataTransferJobsClientCompleteOptions contains the optional parameters for the DataTransferJobsClient.Complete method.
+type DataTransferJobsClientCompleteOptions struct {
 	// placeholder for future optional parameters
 }
 

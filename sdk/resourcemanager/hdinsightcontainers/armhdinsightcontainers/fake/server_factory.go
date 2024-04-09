@@ -21,7 +21,9 @@ import (
 type ServerFactory struct {
 	AvailableClusterPoolVersionsServer AvailableClusterPoolVersionsServer
 	AvailableClusterVersionsServer     AvailableClusterVersionsServer
+	ClusterAvailableUpgradesServer     ClusterAvailableUpgradesServer
 	ClusterJobsServer                  ClusterJobsServer
+	ClusterPoolAvailableUpgradesServer ClusterPoolAvailableUpgradesServer
 	ClusterPoolsServer                 ClusterPoolsServer
 	ClustersServer                     ClustersServer
 	LocationsServer                    LocationsServer
@@ -44,7 +46,9 @@ type ServerFactoryTransport struct {
 	trMu                                 sync.Mutex
 	trAvailableClusterPoolVersionsServer *AvailableClusterPoolVersionsServerTransport
 	trAvailableClusterVersionsServer     *AvailableClusterVersionsServerTransport
+	trClusterAvailableUpgradesServer     *ClusterAvailableUpgradesServerTransport
 	trClusterJobsServer                  *ClusterJobsServerTransport
+	trClusterPoolAvailableUpgradesServer *ClusterPoolAvailableUpgradesServerTransport
 	trClusterPoolsServer                 *ClusterPoolsServerTransport
 	trClustersServer                     *ClustersServerTransport
 	trLocationsServer                    *LocationsServerTransport
@@ -74,9 +78,19 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewAvailableClusterVersionsServerTransport(&s.srv.AvailableClusterVersionsServer)
 		})
 		resp, err = s.trAvailableClusterVersionsServer.Do(req)
+	case "ClusterAvailableUpgradesClient":
+		initServer(s, &s.trClusterAvailableUpgradesServer, func() *ClusterAvailableUpgradesServerTransport {
+			return NewClusterAvailableUpgradesServerTransport(&s.srv.ClusterAvailableUpgradesServer)
+		})
+		resp, err = s.trClusterAvailableUpgradesServer.Do(req)
 	case "ClusterJobsClient":
 		initServer(s, &s.trClusterJobsServer, func() *ClusterJobsServerTransport { return NewClusterJobsServerTransport(&s.srv.ClusterJobsServer) })
 		resp, err = s.trClusterJobsServer.Do(req)
+	case "ClusterPoolAvailableUpgradesClient":
+		initServer(s, &s.trClusterPoolAvailableUpgradesServer, func() *ClusterPoolAvailableUpgradesServerTransport {
+			return NewClusterPoolAvailableUpgradesServerTransport(&s.srv.ClusterPoolAvailableUpgradesServer)
+		})
+		resp, err = s.trClusterPoolAvailableUpgradesServer.Do(req)
 	case "ClusterPoolsClient":
 		initServer(s, &s.trClusterPoolsServer, func() *ClusterPoolsServerTransport { return NewClusterPoolsServerTransport(&s.srv.ClusterPoolsServer) })
 		resp, err = s.trClusterPoolsServer.Do(req)

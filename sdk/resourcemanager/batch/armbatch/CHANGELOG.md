@@ -1,5 +1,16 @@
 # Release History
 
+## 2.3.0 (2024-03-22)
+### Features Added
+
+- New enum type `UpgradeMode` with values `UpgradeModeAutomatic`, `UpgradeModeManual`, `UpgradeModeRolling`
+- New struct `AutomaticOSUpgradePolicy`
+- New struct `RollingUpgradePolicy`
+- New struct `UpgradePolicy`
+- New field `UpgradePolicy` in struct `PoolProperties`
+- New field `BatchSupportEndOfLife` in struct `SupportedSKU`
+
+
 ## 2.2.0 (2023-12-22)
 ### Features Added
 

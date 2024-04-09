@@ -334,6 +334,11 @@ func (p *Poller[T]) Result(ctx context.Context) (res T, err error) {
 	err = p.op.Result(ctx, p.result)
 	var respErr *exported.ResponseError
 	if errors.As(err, &respErr) {
+		if pollers.IsNonTerminalHTTPStatusCode(respErr.RawResponse) {
+			// the request failed in a non-terminal way.
+			// don't cache the error or mark the Poller as done
+			return
+		}
 		// the LRO failed. record the error
 		p.err = err
 	} else if err != nil {

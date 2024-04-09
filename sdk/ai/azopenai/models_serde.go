@@ -1295,6 +1295,7 @@ func (c ChatCompletions) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "choices", c.Choices)
 	populateTimeUnix(objectMap, "created", c.Created)
 	populate(objectMap, "id", c.ID)
+	populate(objectMap, "model", c.Model)
 	populate(objectMap, "prompt_filter_results", c.PromptFilterResults)
 	populate(objectMap, "system_fingerprint", c.SystemFingerprint)
 	populate(objectMap, "usage", c.Usage)
@@ -1318,6 +1319,9 @@ func (c *ChatCompletions) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "id":
 			err = unpopulate(val, "ID", &c.ID)
+			delete(rawMsg, key)
+		case "model":
+			err = unpopulate(val, "Model", &c.Model)
 			delete(rawMsg, key)
 		case "prompt_annotations":
 			fallthrough
@@ -2929,7 +2933,7 @@ func (e *EmbeddingItem) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "embedding":
-			err = unpopulate(val, "Embedding", &e.Embedding)
+			err = deserializeEmbeddingsArray(val, e)
 			delete(rawMsg, key)
 		case "index":
 			err = unpopulate(val, "Index", &e.Index)
@@ -2976,6 +2980,8 @@ func (e *Embeddings) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type EmbeddingsOptions.
 func (e EmbeddingsOptions) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "dimensions", e.Dimensions)
+	populate(objectMap, "encoding_format", e.EncodingFormat)
 	populate(objectMap, "input", e.Input)
 	populate(objectMap, "input_type", e.InputType)
 	populate(objectMap, "model", e.DeploymentName)
@@ -2992,6 +2998,12 @@ func (e *EmbeddingsOptions) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "dimensions":
+			err = unpopulate(val, "Dimensions", &e.Dimensions)
+			delete(rawMsg, key)
+		case "encoding_format":
+			err = unpopulate(val, "EncodingFormat", &e.EncodingFormat)
+			delete(rawMsg, key)
 		case "input":
 			err = unpopulate(val, "Input", &e.Input)
 			delete(rawMsg, key)

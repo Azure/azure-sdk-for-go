@@ -15,7 +15,7 @@ type QueryItemsResponse struct {
 	Response
 	// ContinuationToken contains the value of the x-ms-continuation header in the response.
 	// It can be used to stop a query and resume it later.
-	ContinuationToken string
+	ContinuationToken *string
 	// Contains the query metrics related to the query execution
 	QueryMetrics *string
 	// IndexMetrics contains the index utilization metrics if QueryOptions.PopulateIndexMetrics = true
@@ -29,7 +29,10 @@ func newQueryResponse(resp *http.Response) (QueryItemsResponse, error) {
 		Response: newResponse(resp),
 	}
 
-	response.ContinuationToken = resp.Header.Get(cosmosHeaderContinuationToken)
+	continuationToken := resp.Header.Get(cosmosHeaderContinuationToken)
+	if continuationToken != "" {
+		response.ContinuationToken = &continuationToken
+	}
 	queryMetrics := resp.Header.Get(cosmosHeaderQueryMetrics)
 	if queryMetrics != "" {
 		response.QueryMetrics = &queryMetrics
@@ -66,7 +69,7 @@ type QueryContainersResponse struct {
 	Response
 	// ContinuationToken contains the value of the x-ms-continuation header in the response.
 	// It can be used to stop a query and resume it later.
-	ContinuationToken string
+	ContinuationToken *string
 	// List of containers.
 	Containers []ContainerProperties
 }
@@ -76,8 +79,10 @@ func newContainersQueryResponse(resp *http.Response) (QueryContainersResponse, e
 		Response: newResponse(resp),
 	}
 
-	response.ContinuationToken = resp.Header.Get(cosmosHeaderContinuationToken)
-
+	continuationToken := resp.Header.Get(cosmosHeaderContinuationToken)
+	if continuationToken != "" {
+		response.ContinuationToken = &continuationToken
+	}
 	result := queryContainersServiceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result); err != nil {
 		return QueryContainersResponse{}, err
@@ -97,7 +102,7 @@ type QueryDatabasesResponse struct {
 	Response
 	// ContinuationToken contains the value of the x-ms-continuation header in the response.
 	// It can be used to stop a query and resume it later.
-	ContinuationToken string
+	ContinuationToken *string
 	// List of databases.
 	Databases []DatabaseProperties
 }
@@ -107,7 +112,10 @@ func newDatabasesQueryResponse(resp *http.Response) (QueryDatabasesResponse, err
 		Response: newResponse(resp),
 	}
 
-	response.ContinuationToken = resp.Header.Get(cosmosHeaderContinuationToken)
+	continuationToken := resp.Header.Get(cosmosHeaderContinuationToken)
+	if continuationToken != "" {
+		response.ContinuationToken = &continuationToken
+	}
 
 	result := queryDatabasesServiceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result); err != nil {

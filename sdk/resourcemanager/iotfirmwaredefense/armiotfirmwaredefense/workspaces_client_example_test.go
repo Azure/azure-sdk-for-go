@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iotfirmwaredefense/armiotfirmwaredefense"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/fist/resource-manager/Microsoft.IoTFirmwareDefense/preview/2023-02-08-preview/examples/Workspaces_ListBySubscription_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/fist/resource-manager/Microsoft.IoTFirmwareDefense/stable/2024-01-10/examples/Workspaces_ListBySubscription_MaximumSet_Gen.json
 func ExampleWorkspacesClient_NewListBySubscriptionPager_workspacesListBySubscriptionMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -45,7 +45,7 @@ func ExampleWorkspacesClient_NewListBySubscriptionPager_workspacesListBySubscrip
 		// 		{
 		// 			Name: to.Ptr("tbrqhnzpsatbrnhtj"),
 		// 			Type: to.Ptr("angrpzpxmuppzqpzpljasjirao"),
-		// 			ID: to.Ptr("uuuwv"),
+		// 			ID: to.Ptr("/subscriptions/blah/resourceGroups/blah/providers/blah/workspaces/blah"),
 		// 			SystemData: &armiotfirmwaredefense.SystemData{
 		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-19T05:35:25.545Z"); return t}()),
 		// 				CreatedBy: to.Ptr("kmgstbzxtl"),
@@ -66,7 +66,7 @@ func ExampleWorkspacesClient_NewListBySubscriptionPager_workspacesListBySubscrip
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/fist/resource-manager/Microsoft.IoTFirmwareDefense/preview/2023-02-08-preview/examples/Workspaces_ListBySubscription_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/fist/resource-manager/Microsoft.IoTFirmwareDefense/stable/2024-01-10/examples/Workspaces_ListBySubscription_MinimumSet_Gen.json
 func ExampleWorkspacesClient_NewListBySubscriptionPager_workspacesListBySubscriptionMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -93,7 +93,7 @@ func ExampleWorkspacesClient_NewListBySubscriptionPager_workspacesListBySubscrip
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/fist/resource-manager/Microsoft.IoTFirmwareDefense/preview/2023-02-08-preview/examples/Workspaces_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/fist/resource-manager/Microsoft.IoTFirmwareDefense/stable/2024-01-10/examples/Workspaces_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleWorkspacesClient_NewListByResourceGroupPager_workspacesListByResourceGroupMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -120,7 +120,7 @@ func ExampleWorkspacesClient_NewListByResourceGroupPager_workspacesListByResourc
 		// 		{
 		// 			Name: to.Ptr("tbrqhnzpsatbrnhtj"),
 		// 			Type: to.Ptr("angrpzpxmuppzqpzpljasjirao"),
-		// 			ID: to.Ptr("uuuwv"),
+		// 			ID: to.Ptr("/subscriptions/blah/resourceGroups/blah/providers/blah/workspaces/blah"),
 		// 			SystemData: &armiotfirmwaredefense.SystemData{
 		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-19T05:35:25.545Z"); return t}()),
 		// 				CreatedBy: to.Ptr("kmgstbzxtl"),
@@ -141,7 +141,7 @@ func ExampleWorkspacesClient_NewListByResourceGroupPager_workspacesListByResourc
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/fist/resource-manager/Microsoft.IoTFirmwareDefense/preview/2023-02-08-preview/examples/Workspaces_ListByResourceGroup_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/fist/resource-manager/Microsoft.IoTFirmwareDefense/stable/2024-01-10/examples/Workspaces_ListByResourceGroup_MinimumSet_Gen.json
 func ExampleWorkspacesClient_NewListByResourceGroupPager_workspacesListByResourceGroupMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -168,7 +168,7 @@ func ExampleWorkspacesClient_NewListByResourceGroupPager_workspacesListByResourc
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/fist/resource-manager/Microsoft.IoTFirmwareDefense/preview/2023-02-08-preview/examples/Workspaces_Create_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/fist/resource-manager/Microsoft.IoTFirmwareDefense/stable/2024-01-10/examples/Workspaces_Create_MaximumSet_Gen.json
 func ExampleWorkspacesClient_Create_workspacesCreateMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -195,7 +195,7 @@ func ExampleWorkspacesClient_Create_workspacesCreateMaximumSetGen() {
 	// res.Workspace = armiotfirmwaredefense.Workspace{
 	// 	Name: to.Ptr("tbrqhnzpsatbrnhtj"),
 	// 	Type: to.Ptr("angrpzpxmuppzqpzpljasjirao"),
-	// 	ID: to.Ptr("uuuwv"),
+	// 	ID: to.Ptr("/subscriptions/blah/resourceGroups/blah/providers/blah/workspaces/blah"),
 	// 	SystemData: &armiotfirmwaredefense.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-19T05:35:25.545Z"); return t}()),
 	// 		CreatedBy: to.Ptr("kmgstbzxtl"),
@@ -214,7 +214,7 @@ func ExampleWorkspacesClient_Create_workspacesCreateMaximumSetGen() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/fist/resource-manager/Microsoft.IoTFirmwareDefense/preview/2023-02-08-preview/examples/Workspaces_Create_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/fist/resource-manager/Microsoft.IoTFirmwareDefense/stable/2024-01-10/examples/Workspaces_Create_MinimumSet_Gen.json
 func ExampleWorkspacesClient_Create_workspacesCreateMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -237,12 +237,12 @@ func ExampleWorkspacesClient_Create_workspacesCreateMinimumSetGen() {
 	// res.Workspace = armiotfirmwaredefense.Workspace{
 	// 	Name: to.Ptr("tbrqhnzpsatbrnhtj"),
 	// 	Type: to.Ptr("angrpzpxmuppzqpzpljasjirao"),
-	// 	ID: to.Ptr("uuuwv"),
+	// 	ID: to.Ptr("/subscriptions/blah/resourceGroups/blah/providers/blah/workspaces/blah"),
 	// 	Location: to.Ptr("jjwbseilitjgdrhbvvkwviqj"),
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/fist/resource-manager/Microsoft.IoTFirmwareDefense/preview/2023-02-08-preview/examples/Workspaces_Update_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/fist/resource-manager/Microsoft.IoTFirmwareDefense/stable/2024-01-10/examples/Workspaces_Update_MaximumSet_Gen.json
 func ExampleWorkspacesClient_Update_workspacesUpdateMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -265,7 +265,7 @@ func ExampleWorkspacesClient_Update_workspacesUpdateMaximumSetGen() {
 	// res.Workspace = armiotfirmwaredefense.Workspace{
 	// 	Name: to.Ptr("tbrqhnzpsatbrnhtj"),
 	// 	Type: to.Ptr("angrpzpxmuppzqpzpljasjirao"),
-	// 	ID: to.Ptr("uuuwv"),
+	// 	ID: to.Ptr("/subscriptions/blah/resourceGroups/blah/providers/blah/workspaces/blah"),
 	// 	SystemData: &armiotfirmwaredefense.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-19T05:35:25.545Z"); return t}()),
 	// 		CreatedBy: to.Ptr("kmgstbzxtl"),
@@ -284,7 +284,7 @@ func ExampleWorkspacesClient_Update_workspacesUpdateMaximumSetGen() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/fist/resource-manager/Microsoft.IoTFirmwareDefense/preview/2023-02-08-preview/examples/Workspaces_Update_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/fist/resource-manager/Microsoft.IoTFirmwareDefense/stable/2024-01-10/examples/Workspaces_Update_MinimumSet_Gen.json
 func ExampleWorkspacesClient_Update_workspacesUpdateMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -307,7 +307,7 @@ func ExampleWorkspacesClient_Update_workspacesUpdateMinimumSetGen() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/fist/resource-manager/Microsoft.IoTFirmwareDefense/preview/2023-02-08-preview/examples/Workspaces_Delete_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/fist/resource-manager/Microsoft.IoTFirmwareDefense/stable/2024-01-10/examples/Workspaces_Delete_MaximumSet_Gen.json
 func ExampleWorkspacesClient_Delete_workspacesDeleteMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -324,7 +324,7 @@ func ExampleWorkspacesClient_Delete_workspacesDeleteMaximumSetGen() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/fist/resource-manager/Microsoft.IoTFirmwareDefense/preview/2023-02-08-preview/examples/Workspaces_Delete_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/fist/resource-manager/Microsoft.IoTFirmwareDefense/stable/2024-01-10/examples/Workspaces_Delete_MinimumSet_Gen.json
 func ExampleWorkspacesClient_Delete_workspacesDeleteMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -341,7 +341,7 @@ func ExampleWorkspacesClient_Delete_workspacesDeleteMinimumSetGen() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/fist/resource-manager/Microsoft.IoTFirmwareDefense/preview/2023-02-08-preview/examples/Workspaces_Get_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/fist/resource-manager/Microsoft.IoTFirmwareDefense/stable/2024-01-10/examples/Workspaces_Get_MaximumSet_Gen.json
 func ExampleWorkspacesClient_Get_workspacesGetMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -362,7 +362,7 @@ func ExampleWorkspacesClient_Get_workspacesGetMaximumSetGen() {
 	// res.Workspace = armiotfirmwaredefense.Workspace{
 	// 	Name: to.Ptr("vbgktdhddtb"),
 	// 	Type: to.Ptr("ux"),
-	// 	ID: to.Ptr("vdqbannpvrsembsinbyaupmpxsdi"),
+	// 	ID: to.Ptr("/subscriptions/blah/resourceGroups/blah/providers/blah/workspaces/blah"),
 	// 	SystemData: &armiotfirmwaredefense.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-04-21T14:59:45.580Z"); return t}()),
 	// 		CreatedBy: to.Ptr("vnrbl"),
@@ -381,7 +381,7 @@ func ExampleWorkspacesClient_Get_workspacesGetMaximumSetGen() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/fist/resource-manager/Microsoft.IoTFirmwareDefense/preview/2023-02-08-preview/examples/Workspaces_Get_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/fist/resource-manager/Microsoft.IoTFirmwareDefense/stable/2024-01-10/examples/Workspaces_Get_MinimumSet_Gen.json
 func ExampleWorkspacesClient_Get_workspacesGetMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -402,12 +402,12 @@ func ExampleWorkspacesClient_Get_workspacesGetMinimumSetGen() {
 	// res.Workspace = armiotfirmwaredefense.Workspace{
 	// 	Name: to.Ptr("tbrqhnzpsatbrnhtj"),
 	// 	Type: to.Ptr("angrpzpxmuppzqpzpljasjirao"),
-	// 	ID: to.Ptr("uuuwv"),
+	// 	ID: to.Ptr("/subscriptions/blah/resourceGroups/blah/providers/blah/workspaces/blah"),
 	// 	Location: to.Ptr("zxwrauqottoy"),
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/fist/resource-manager/Microsoft.IoTFirmwareDefense/preview/2023-02-08-preview/examples/Workspaces_GenerateUploadUrl_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/fist/resource-manager/Microsoft.IoTFirmwareDefense/stable/2024-01-10/examples/Workspaces_GenerateUploadUrl_MaximumSet_Gen.json
 func ExampleWorkspacesClient_GenerateUploadURL_workspacesGenerateUploadUrlMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -428,12 +428,11 @@ func ExampleWorkspacesClient_GenerateUploadURL_workspacesGenerateUploadUrlMaximu
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.URLToken = armiotfirmwaredefense.URLToken{
-	// 	UploadURL: to.Ptr("https://i/am/a/sas/token/too"),
 	// 	URL: to.Ptr("https://i/am/a/sas/token"),
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/fist/resource-manager/Microsoft.IoTFirmwareDefense/preview/2023-02-08-preview/examples/Workspaces_GenerateUploadUrl_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/fist/resource-manager/Microsoft.IoTFirmwareDefense/stable/2024-01-10/examples/Workspaces_GenerateUploadUrl_MinimumSet_Gen.json
 func ExampleWorkspacesClient_GenerateUploadURL_workspacesGenerateUploadUrlMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

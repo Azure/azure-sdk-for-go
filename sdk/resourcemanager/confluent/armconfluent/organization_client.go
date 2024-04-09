@@ -17,6 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
+	"strconv"
 	"strings"
 )
 
@@ -28,7 +29,7 @@ type OrganizationClient struct {
 }
 
 // NewOrganizationClient creates a new instance of OrganizationClient with the specified values.
-//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
+//   - subscriptionID - Microsoft Azure subscription id
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewOrganizationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OrganizationClient, error) {
@@ -46,8 +47,8 @@ func NewOrganizationClient(subscriptionID string, credential azcore.TokenCredent
 // BeginCreate - Create Organization resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-22
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+// Generated from API version 2024-02-13
+//   - resourceGroupName - Resource group name
 //   - organizationName - Organization resource name
 //   - options - OrganizationClientBeginCreateOptions contains the optional parameters for the OrganizationClient.BeginCreate
 //     method.
@@ -72,7 +73,7 @@ func (client *OrganizationClient) BeginCreate(ctx context.Context, resourceGroup
 // Create - Create Organization resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-22
+// Generated from API version 2024-02-13
 func (client *OrganizationClient) create(ctx context.Context, resourceGroupName string, organizationName string, options *OrganizationClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "OrganizationClient.BeginCreate"
@@ -114,7 +115,7 @@ func (client *OrganizationClient) createCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-08-22")
+	reqQP.Set("api-version", "2024-02-13")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Body != nil {
@@ -126,11 +127,90 @@ func (client *OrganizationClient) createCreateRequest(ctx context.Context, resou
 	return req, nil
 }
 
+// CreateAPIKey - Creates API key for a schema registry Cluster ID or Kafka Cluster ID under a environment
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-02-13
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - organizationName - Organization resource name
+//   - environmentID - Confluent environment id
+//   - clusterID - Confluent kafka or schema registry cluster id
+//   - body - Request payload for get creating API Key for schema registry Cluster ID or Kafka Cluster ID under a environment
+//   - options - OrganizationClientCreateAPIKeyOptions contains the optional parameters for the OrganizationClient.CreateAPIKey
+//     method.
+func (client *OrganizationClient) CreateAPIKey(ctx context.Context, resourceGroupName string, organizationName string, environmentID string, clusterID string, body CreateAPIKeyModel, options *OrganizationClientCreateAPIKeyOptions) (OrganizationClientCreateAPIKeyResponse, error) {
+	var err error
+	const operationName = "OrganizationClient.CreateAPIKey"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.createAPIKeyCreateRequest(ctx, resourceGroupName, organizationName, environmentID, clusterID, body, options)
+	if err != nil {
+		return OrganizationClientCreateAPIKeyResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return OrganizationClientCreateAPIKeyResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return OrganizationClientCreateAPIKeyResponse{}, err
+	}
+	resp, err := client.createAPIKeyHandleResponse(httpResp)
+	return resp, err
+}
+
+// createAPIKeyCreateRequest creates the CreateAPIKey request.
+func (client *OrganizationClient) createAPIKeyCreateRequest(ctx context.Context, resourceGroupName string, organizationName string, environmentID string, clusterID string, body CreateAPIKeyModel, options *OrganizationClientCreateAPIKeyOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/environments/{environmentId}/clusters/{clusterId}/createAPIKey"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if organizationName == "" {
+		return nil, errors.New("parameter organizationName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{organizationName}", url.PathEscape(organizationName))
+	if environmentID == "" {
+		return nil, errors.New("parameter environmentID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{environmentId}", url.PathEscape(environmentID))
+	if clusterID == "" {
+		return nil, errors.New("parameter clusterID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{clusterId}", url.PathEscape(clusterID))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-02-13")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// createAPIKeyHandleResponse handles the CreateAPIKey response.
+func (client *OrganizationClient) createAPIKeyHandleResponse(resp *http.Response) (OrganizationClientCreateAPIKeyResponse, error) {
+	result := OrganizationClientCreateAPIKeyResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.APIKeyRecord); err != nil {
+		return OrganizationClientCreateAPIKeyResponse{}, err
+	}
+	return result, nil
+}
+
 // BeginDelete - Delete Organization resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-22
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+// Generated from API version 2024-02-13
+//   - resourceGroupName - Resource group name
 //   - organizationName - Organization resource name
 //   - options - OrganizationClientBeginDeleteOptions contains the optional parameters for the OrganizationClient.BeginDelete
 //     method.
@@ -155,7 +235,7 @@ func (client *OrganizationClient) BeginDelete(ctx context.Context, resourceGroup
 // Delete - Delete Organization resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-22
+// Generated from API version 2024-02-13
 func (client *OrganizationClient) deleteOperation(ctx context.Context, resourceGroupName string, organizationName string, options *OrganizationClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "OrganizationClient.BeginDelete"
@@ -197,7 +277,67 @@ func (client *OrganizationClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-08-22")
+	reqQP.Set("api-version", "2024-02-13")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// DeleteClusterAPIKey - Deletes API key of a kafka or schema registry cluster
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-02-13
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - organizationName - Organization resource name
+//   - apiKeyID - Confluent API Key id
+//   - options - OrganizationClientDeleteClusterAPIKeyOptions contains the optional parameters for the OrganizationClient.DeleteClusterAPIKey
+//     method.
+func (client *OrganizationClient) DeleteClusterAPIKey(ctx context.Context, resourceGroupName string, organizationName string, apiKeyID string, options *OrganizationClientDeleteClusterAPIKeyOptions) (OrganizationClientDeleteClusterAPIKeyResponse, error) {
+	var err error
+	const operationName = "OrganizationClient.DeleteClusterAPIKey"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.deleteClusterAPIKeyCreateRequest(ctx, resourceGroupName, organizationName, apiKeyID, options)
+	if err != nil {
+		return OrganizationClientDeleteClusterAPIKeyResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return OrganizationClientDeleteClusterAPIKeyResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
+		err = runtime.NewResponseError(httpResp)
+		return OrganizationClientDeleteClusterAPIKeyResponse{}, err
+	}
+	return OrganizationClientDeleteClusterAPIKeyResponse{}, nil
+}
+
+// deleteClusterAPIKeyCreateRequest creates the DeleteClusterAPIKey request.
+func (client *OrganizationClient) deleteClusterAPIKeyCreateRequest(ctx context.Context, resourceGroupName string, organizationName string, apiKeyID string, options *OrganizationClientDeleteClusterAPIKeyOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/apiKeys/{apiKeyId}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if organizationName == "" {
+		return nil, errors.New("parameter organizationName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{organizationName}", url.PathEscape(organizationName))
+	if apiKeyID == "" {
+		return nil, errors.New("parameter apiKeyID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{apiKeyId}", url.PathEscape(apiKeyID))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-02-13")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -206,8 +346,8 @@ func (client *OrganizationClient) deleteCreateRequest(ctx context.Context, resou
 // Get - Get the properties of a specific Organization resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-22
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+// Generated from API version 2024-02-13
+//   - resourceGroupName - Resource group name
 //   - organizationName - Organization resource name
 //   - options - OrganizationClientGetOptions contains the optional parameters for the OrganizationClient.Get method.
 func (client *OrganizationClient) Get(ctx context.Context, resourceGroupName string, organizationName string, options *OrganizationClientGetOptions) (OrganizationClientGetResponse, error) {
@@ -252,7 +392,7 @@ func (client *OrganizationClient) getCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-08-22")
+	reqQP.Set("api-version", "2024-02-13")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -267,10 +407,300 @@ func (client *OrganizationClient) getHandleResponse(resp *http.Response) (Organi
 	return result, nil
 }
 
+// GetClusterAPIKey - Get API key details of a kafka or schema registry cluster
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-02-13
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - organizationName - Organization resource name
+//   - apiKeyID - Confluent API Key id
+//   - options - OrganizationClientGetClusterAPIKeyOptions contains the optional parameters for the OrganizationClient.GetClusterAPIKey
+//     method.
+func (client *OrganizationClient) GetClusterAPIKey(ctx context.Context, resourceGroupName string, organizationName string, apiKeyID string, options *OrganizationClientGetClusterAPIKeyOptions) (OrganizationClientGetClusterAPIKeyResponse, error) {
+	var err error
+	const operationName = "OrganizationClient.GetClusterAPIKey"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getClusterAPIKeyCreateRequest(ctx, resourceGroupName, organizationName, apiKeyID, options)
+	if err != nil {
+		return OrganizationClientGetClusterAPIKeyResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return OrganizationClientGetClusterAPIKeyResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return OrganizationClientGetClusterAPIKeyResponse{}, err
+	}
+	resp, err := client.getClusterAPIKeyHandleResponse(httpResp)
+	return resp, err
+}
+
+// getClusterAPIKeyCreateRequest creates the GetClusterAPIKey request.
+func (client *OrganizationClient) getClusterAPIKeyCreateRequest(ctx context.Context, resourceGroupName string, organizationName string, apiKeyID string, options *OrganizationClientGetClusterAPIKeyOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/apiKeys/{apiKeyId}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if organizationName == "" {
+		return nil, errors.New("parameter organizationName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{organizationName}", url.PathEscape(organizationName))
+	if apiKeyID == "" {
+		return nil, errors.New("parameter apiKeyID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{apiKeyId}", url.PathEscape(apiKeyID))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-02-13")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getClusterAPIKeyHandleResponse handles the GetClusterAPIKey response.
+func (client *OrganizationClient) getClusterAPIKeyHandleResponse(resp *http.Response) (OrganizationClientGetClusterAPIKeyResponse, error) {
+	result := OrganizationClientGetClusterAPIKeyResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.APIKeyRecord); err != nil {
+		return OrganizationClientGetClusterAPIKeyResponse{}, err
+	}
+	return result, nil
+}
+
+// GetClusterByID - Get cluster by Id
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-02-13
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - organizationName - Organization resource name
+//   - environmentID - Confluent environment id
+//   - clusterID - Confluent kafka or schema registry cluster id
+//   - options - OrganizationClientGetClusterByIDOptions contains the optional parameters for the OrganizationClient.GetClusterByID
+//     method.
+func (client *OrganizationClient) GetClusterByID(ctx context.Context, resourceGroupName string, organizationName string, environmentID string, clusterID string, options *OrganizationClientGetClusterByIDOptions) (OrganizationClientGetClusterByIDResponse, error) {
+	var err error
+	const operationName = "OrganizationClient.GetClusterByID"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getClusterByIDCreateRequest(ctx, resourceGroupName, organizationName, environmentID, clusterID, options)
+	if err != nil {
+		return OrganizationClientGetClusterByIDResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return OrganizationClientGetClusterByIDResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return OrganizationClientGetClusterByIDResponse{}, err
+	}
+	resp, err := client.getClusterByIDHandleResponse(httpResp)
+	return resp, err
+}
+
+// getClusterByIDCreateRequest creates the GetClusterByID request.
+func (client *OrganizationClient) getClusterByIDCreateRequest(ctx context.Context, resourceGroupName string, organizationName string, environmentID string, clusterID string, options *OrganizationClientGetClusterByIDOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/environments/{environmentId}/clusters/{clusterId}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if organizationName == "" {
+		return nil, errors.New("parameter organizationName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{organizationName}", url.PathEscape(organizationName))
+	if environmentID == "" {
+		return nil, errors.New("parameter environmentID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{environmentId}", url.PathEscape(environmentID))
+	if clusterID == "" {
+		return nil, errors.New("parameter clusterID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{clusterId}", url.PathEscape(clusterID))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-02-13")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getClusterByIDHandleResponse handles the GetClusterByID response.
+func (client *OrganizationClient) getClusterByIDHandleResponse(resp *http.Response) (OrganizationClientGetClusterByIDResponse, error) {
+	result := OrganizationClientGetClusterByIDResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SCClusterRecord); err != nil {
+		return OrganizationClientGetClusterByIDResponse{}, err
+	}
+	return result, nil
+}
+
+// GetEnvironmentByID - Get Environment details by environment Id
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-02-13
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - organizationName - Organization resource name
+//   - environmentID - Confluent environment id
+//   - options - OrganizationClientGetEnvironmentByIDOptions contains the optional parameters for the OrganizationClient.GetEnvironmentByID
+//     method.
+func (client *OrganizationClient) GetEnvironmentByID(ctx context.Context, resourceGroupName string, organizationName string, environmentID string, options *OrganizationClientGetEnvironmentByIDOptions) (OrganizationClientGetEnvironmentByIDResponse, error) {
+	var err error
+	const operationName = "OrganizationClient.GetEnvironmentByID"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getEnvironmentByIDCreateRequest(ctx, resourceGroupName, organizationName, environmentID, options)
+	if err != nil {
+		return OrganizationClientGetEnvironmentByIDResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return OrganizationClientGetEnvironmentByIDResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return OrganizationClientGetEnvironmentByIDResponse{}, err
+	}
+	resp, err := client.getEnvironmentByIDHandleResponse(httpResp)
+	return resp, err
+}
+
+// getEnvironmentByIDCreateRequest creates the GetEnvironmentByID request.
+func (client *OrganizationClient) getEnvironmentByIDCreateRequest(ctx context.Context, resourceGroupName string, organizationName string, environmentID string, options *OrganizationClientGetEnvironmentByIDOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/environments/{environmentId}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if organizationName == "" {
+		return nil, errors.New("parameter organizationName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{organizationName}", url.PathEscape(organizationName))
+	if environmentID == "" {
+		return nil, errors.New("parameter environmentID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{environmentId}", url.PathEscape(environmentID))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-02-13")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getEnvironmentByIDHandleResponse handles the GetEnvironmentByID response.
+func (client *OrganizationClient) getEnvironmentByIDHandleResponse(resp *http.Response) (OrganizationClientGetEnvironmentByIDResponse, error) {
+	result := OrganizationClientGetEnvironmentByIDResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SCEnvironmentRecord); err != nil {
+		return OrganizationClientGetEnvironmentByIDResponse{}, err
+	}
+	return result, nil
+}
+
+// GetSchemaRegistryClusterByID - Get schema registry cluster by Id
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-02-13
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - organizationName - Organization resource name
+//   - environmentID - Confluent environment id
+//   - clusterID - Confluent kafka or schema registry cluster id
+//   - options - OrganizationClientGetSchemaRegistryClusterByIDOptions contains the optional parameters for the OrganizationClient.GetSchemaRegistryClusterByID
+//     method.
+func (client *OrganizationClient) GetSchemaRegistryClusterByID(ctx context.Context, resourceGroupName string, organizationName string, environmentID string, clusterID string, options *OrganizationClientGetSchemaRegistryClusterByIDOptions) (OrganizationClientGetSchemaRegistryClusterByIDResponse, error) {
+	var err error
+	const operationName = "OrganizationClient.GetSchemaRegistryClusterByID"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getSchemaRegistryClusterByIDCreateRequest(ctx, resourceGroupName, organizationName, environmentID, clusterID, options)
+	if err != nil {
+		return OrganizationClientGetSchemaRegistryClusterByIDResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return OrganizationClientGetSchemaRegistryClusterByIDResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return OrganizationClientGetSchemaRegistryClusterByIDResponse{}, err
+	}
+	resp, err := client.getSchemaRegistryClusterByIDHandleResponse(httpResp)
+	return resp, err
+}
+
+// getSchemaRegistryClusterByIDCreateRequest creates the GetSchemaRegistryClusterByID request.
+func (client *OrganizationClient) getSchemaRegistryClusterByIDCreateRequest(ctx context.Context, resourceGroupName string, organizationName string, environmentID string, clusterID string, options *OrganizationClientGetSchemaRegistryClusterByIDOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/environments/{environmentId}/schemaRegistryClusters/{clusterId}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if organizationName == "" {
+		return nil, errors.New("parameter organizationName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{organizationName}", url.PathEscape(organizationName))
+	if environmentID == "" {
+		return nil, errors.New("parameter environmentID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{environmentId}", url.PathEscape(environmentID))
+	if clusterID == "" {
+		return nil, errors.New("parameter clusterID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{clusterId}", url.PathEscape(clusterID))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-02-13")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getSchemaRegistryClusterByIDHandleResponse handles the GetSchemaRegistryClusterByID response.
+func (client *OrganizationClient) getSchemaRegistryClusterByIDHandleResponse(resp *http.Response) (OrganizationClientGetSchemaRegistryClusterByIDResponse, error) {
+	result := OrganizationClientGetSchemaRegistryClusterByIDResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SchemaRegistryClusterRecord); err != nil {
+		return OrganizationClientGetSchemaRegistryClusterByIDResponse{}, err
+	}
+	return result, nil
+}
+
 // NewListByResourceGroupPager - List all Organizations under the specified resource group.
 //
-// Generated from API version 2023-08-22
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+// Generated from API version 2024-02-13
+//   - resourceGroupName - Resource group name
 //   - options - OrganizationClientListByResourceGroupOptions contains the optional parameters for the OrganizationClient.NewListByResourceGroupPager
 //     method.
 func (client *OrganizationClient) NewListByResourceGroupPager(resourceGroupName string, options *OrganizationClientListByResourceGroupOptions) *runtime.Pager[OrganizationClientListByResourceGroupResponse] {
@@ -312,7 +742,7 @@ func (client *OrganizationClient) listByResourceGroupCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-08-22")
+	reqQP.Set("api-version", "2024-02-13")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -329,7 +759,7 @@ func (client *OrganizationClient) listByResourceGroupHandleResponse(resp *http.R
 
 // NewListBySubscriptionPager - List all organizations under the specified subscription.
 //
-// Generated from API version 2023-08-22
+// Generated from API version 2024-02-13
 //   - options - OrganizationClientListBySubscriptionOptions contains the optional parameters for the OrganizationClient.NewListBySubscriptionPager
 //     method.
 func (client *OrganizationClient) NewListBySubscriptionPager(options *OrganizationClientListBySubscriptionOptions) *runtime.Pager[OrganizationClientListBySubscriptionResponse] {
@@ -367,7 +797,7 @@ func (client *OrganizationClient) listBySubscriptionCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-08-22")
+	reqQP.Set("api-version", "2024-02-13")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -382,11 +812,303 @@ func (client *OrganizationClient) listBySubscriptionHandleResponse(resp *http.Re
 	return result, nil
 }
 
+// NewListClustersPager - Lists of all the clusters in a environment
+//
+// Generated from API version 2024-02-13
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - organizationName - Organization resource name
+//   - environmentID - Confluent environment id
+//   - options - OrganizationClientListClustersOptions contains the optional parameters for the OrganizationClient.NewListClustersPager
+//     method.
+func (client *OrganizationClient) NewListClustersPager(resourceGroupName string, organizationName string, environmentID string, options *OrganizationClientListClustersOptions) *runtime.Pager[OrganizationClientListClustersResponse] {
+	return runtime.NewPager(runtime.PagingHandler[OrganizationClientListClustersResponse]{
+		More: func(page OrganizationClientListClustersResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *OrganizationClientListClustersResponse) (OrganizationClientListClustersResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "OrganizationClient.NewListClustersPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listClustersCreateRequest(ctx, resourceGroupName, organizationName, environmentID, options)
+			}, nil)
+			if err != nil {
+				return OrganizationClientListClustersResponse{}, err
+			}
+			return client.listClustersHandleResponse(resp)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listClustersCreateRequest creates the ListClusters request.
+func (client *OrganizationClient) listClustersCreateRequest(ctx context.Context, resourceGroupName string, organizationName string, environmentID string, options *OrganizationClientListClustersOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/environments/{environmentId}/clusters"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if organizationName == "" {
+		return nil, errors.New("parameter organizationName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{organizationName}", url.PathEscape(organizationName))
+	if environmentID == "" {
+		return nil, errors.New("parameter environmentID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{environmentId}", url.PathEscape(environmentID))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-02-13")
+	if options != nil && options.PageSize != nil {
+		reqQP.Set("pageSize", strconv.FormatInt(int64(*options.PageSize), 10))
+	}
+	if options != nil && options.PageToken != nil {
+		reqQP.Set("pageToken", *options.PageToken)
+	}
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listClustersHandleResponse handles the ListClusters response.
+func (client *OrganizationClient) listClustersHandleResponse(resp *http.Response) (OrganizationClientListClustersResponse, error) {
+	result := OrganizationClientListClustersResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ListClustersSuccessResponse); err != nil {
+		return OrganizationClientListClustersResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListEnvironmentsPager - Lists of all the environments in a organization
+//
+// Generated from API version 2024-02-13
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - organizationName - Organization resource name
+//   - options - OrganizationClientListEnvironmentsOptions contains the optional parameters for the OrganizationClient.NewListEnvironmentsPager
+//     method.
+func (client *OrganizationClient) NewListEnvironmentsPager(resourceGroupName string, organizationName string, options *OrganizationClientListEnvironmentsOptions) *runtime.Pager[OrganizationClientListEnvironmentsResponse] {
+	return runtime.NewPager(runtime.PagingHandler[OrganizationClientListEnvironmentsResponse]{
+		More: func(page OrganizationClientListEnvironmentsResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *OrganizationClientListEnvironmentsResponse) (OrganizationClientListEnvironmentsResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "OrganizationClient.NewListEnvironmentsPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listEnvironmentsCreateRequest(ctx, resourceGroupName, organizationName, options)
+			}, nil)
+			if err != nil {
+				return OrganizationClientListEnvironmentsResponse{}, err
+			}
+			return client.listEnvironmentsHandleResponse(resp)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listEnvironmentsCreateRequest creates the ListEnvironments request.
+func (client *OrganizationClient) listEnvironmentsCreateRequest(ctx context.Context, resourceGroupName string, organizationName string, options *OrganizationClientListEnvironmentsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/environments"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if organizationName == "" {
+		return nil, errors.New("parameter organizationName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{organizationName}", url.PathEscape(organizationName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-02-13")
+	if options != nil && options.PageSize != nil {
+		reqQP.Set("pageSize", strconv.FormatInt(int64(*options.PageSize), 10))
+	}
+	if options != nil && options.PageToken != nil {
+		reqQP.Set("pageToken", *options.PageToken)
+	}
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listEnvironmentsHandleResponse handles the ListEnvironments response.
+func (client *OrganizationClient) listEnvironmentsHandleResponse(resp *http.Response) (OrganizationClientListEnvironmentsResponse, error) {
+	result := OrganizationClientListEnvironmentsResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.GetEnvironmentsResponse); err != nil {
+		return OrganizationClientListEnvironmentsResponse{}, err
+	}
+	return result, nil
+}
+
+// ListRegions - cloud provider regions available for creating Schema Registry clusters.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-02-13
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - organizationName - Organization resource name
+//   - body - List Access Request Model
+//   - options - OrganizationClientListRegionsOptions contains the optional parameters for the OrganizationClient.ListRegions
+//     method.
+func (client *OrganizationClient) ListRegions(ctx context.Context, resourceGroupName string, organizationName string, body ListAccessRequestModel, options *OrganizationClientListRegionsOptions) (OrganizationClientListRegionsResponse, error) {
+	var err error
+	const operationName = "OrganizationClient.ListRegions"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listRegionsCreateRequest(ctx, resourceGroupName, organizationName, body, options)
+	if err != nil {
+		return OrganizationClientListRegionsResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return OrganizationClientListRegionsResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return OrganizationClientListRegionsResponse{}, err
+	}
+	resp, err := client.listRegionsHandleResponse(httpResp)
+	return resp, err
+}
+
+// listRegionsCreateRequest creates the ListRegions request.
+func (client *OrganizationClient) listRegionsCreateRequest(ctx context.Context, resourceGroupName string, organizationName string, body ListAccessRequestModel, options *OrganizationClientListRegionsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/listRegions"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if organizationName == "" {
+		return nil, errors.New("parameter organizationName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{organizationName}", url.PathEscape(organizationName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-02-13")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// listRegionsHandleResponse handles the ListRegions response.
+func (client *OrganizationClient) listRegionsHandleResponse(resp *http.Response) (OrganizationClientListRegionsResponse, error) {
+	result := OrganizationClientListRegionsResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ListRegionsSuccessResponse); err != nil {
+		return OrganizationClientListRegionsResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListSchemaRegistryClustersPager - Get schema registry clusters
+//
+// Generated from API version 2024-02-13
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - organizationName - Organization resource name
+//   - environmentID - Confluent environment id
+//   - options - OrganizationClientListSchemaRegistryClustersOptions contains the optional parameters for the OrganizationClient.NewListSchemaRegistryClustersPager
+//     method.
+func (client *OrganizationClient) NewListSchemaRegistryClustersPager(resourceGroupName string, organizationName string, environmentID string, options *OrganizationClientListSchemaRegistryClustersOptions) *runtime.Pager[OrganizationClientListSchemaRegistryClustersResponse] {
+	return runtime.NewPager(runtime.PagingHandler[OrganizationClientListSchemaRegistryClustersResponse]{
+		More: func(page OrganizationClientListSchemaRegistryClustersResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *OrganizationClientListSchemaRegistryClustersResponse) (OrganizationClientListSchemaRegistryClustersResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "OrganizationClient.NewListSchemaRegistryClustersPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listSchemaRegistryClustersCreateRequest(ctx, resourceGroupName, organizationName, environmentID, options)
+			}, nil)
+			if err != nil {
+				return OrganizationClientListSchemaRegistryClustersResponse{}, err
+			}
+			return client.listSchemaRegistryClustersHandleResponse(resp)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listSchemaRegistryClustersCreateRequest creates the ListSchemaRegistryClusters request.
+func (client *OrganizationClient) listSchemaRegistryClustersCreateRequest(ctx context.Context, resourceGroupName string, organizationName string, environmentID string, options *OrganizationClientListSchemaRegistryClustersOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/environments/{environmentId}/schemaRegistryClusters"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if organizationName == "" {
+		return nil, errors.New("parameter organizationName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{organizationName}", url.PathEscape(organizationName))
+	if environmentID == "" {
+		return nil, errors.New("parameter environmentID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{environmentId}", url.PathEscape(environmentID))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-02-13")
+	if options != nil && options.PageSize != nil {
+		reqQP.Set("pageSize", strconv.FormatInt(int64(*options.PageSize), 10))
+	}
+	if options != nil && options.PageToken != nil {
+		reqQP.Set("pageToken", *options.PageToken)
+	}
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listSchemaRegistryClustersHandleResponse handles the ListSchemaRegistryClusters response.
+func (client *OrganizationClient) listSchemaRegistryClustersHandleResponse(resp *http.Response) (OrganizationClientListSchemaRegistryClustersResponse, error) {
+	result := OrganizationClientListSchemaRegistryClustersResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ListSchemaRegistryClustersResponse); err != nil {
+		return OrganizationClientListSchemaRegistryClustersResponse{}, err
+	}
+	return result, nil
+}
+
 // Update - Update Organization resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-22
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+// Generated from API version 2024-02-13
+//   - resourceGroupName - Resource group name
 //   - organizationName - Organization resource name
 //   - options - OrganizationClientUpdateOptions contains the optional parameters for the OrganizationClient.Update method.
 func (client *OrganizationClient) Update(ctx context.Context, resourceGroupName string, organizationName string, options *OrganizationClientUpdateOptions) (OrganizationClientUpdateResponse, error) {
@@ -431,7 +1153,7 @@ func (client *OrganizationClient) updateCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-08-22")
+	reqQP.Set("api-version", "2024-02-13")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Body != nil {

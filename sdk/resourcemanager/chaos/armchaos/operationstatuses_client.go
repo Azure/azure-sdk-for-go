@@ -46,8 +46,8 @@ func NewOperationStatusesClient(subscriptionID string, credential azcore.TokenCr
 // Get - Get the status of a long running azure asynchronous operation.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01
-//   - location - The region name of operation.
+// Generated from API version 2024-01-01
+//   - location - The name of the Azure region.
 //   - asyncOperationID - The operation Id.
 //   - options - OperationStatusesClientGetOptions contains the optional parameters for the OperationStatusesClient.Get method.
 func (client *OperationStatusesClient) Get(ctx context.Context, location string, asyncOperationID string, options *OperationStatusesClientGetOptions) (OperationStatusesClientGetResponse, error) {
@@ -74,7 +74,7 @@ func (client *OperationStatusesClient) Get(ctx context.Context, location string,
 
 // getCreateRequest creates the Get request.
 func (client *OperationStatusesClient) getCreateRequest(ctx context.Context, location string, asyncOperationID string, options *OperationStatusesClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Chaos/locations/{location}/operationsStatuses/{asyncOperationId}"
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Chaos/locations/{location}/operationStatuses/{asyncOperationId}"
 	if location == "" {
 		return nil, errors.New("parameter location cannot be empty")
 	}
@@ -92,7 +92,7 @@ func (client *OperationStatusesClient) getCreateRequest(ctx context.Context, loc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-01")
+	reqQP.Set("api-version", "2024-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

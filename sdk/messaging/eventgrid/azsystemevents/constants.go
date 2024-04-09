@@ -8,134 +8,218 @@
 
 package azsystemevents
 
-// AcsEmailDeliveryReportStatus - The status of the email. Any value other than Delivered is considered failed.
-type AcsEmailDeliveryReportStatus string
+// ACSAdvanceMessageDeliveryStatus - The updated message status
+type ACSAdvanceMessageDeliveryStatus string
 
 const (
-	// AcsEmailDeliveryReportStatusBounced - Hard bounce detected while sending the email
-	AcsEmailDeliveryReportStatusBounced AcsEmailDeliveryReportStatus = "Bounced"
-	// AcsEmailDeliveryReportStatusDelivered - The email was delivered
-	AcsEmailDeliveryReportStatusDelivered AcsEmailDeliveryReportStatus = "Delivered"
-	// AcsEmailDeliveryReportStatusFailed - The email failed to be delivered
-	AcsEmailDeliveryReportStatusFailed AcsEmailDeliveryReportStatus = "Failed"
-	// AcsEmailDeliveryReportStatusFilteredSpam - The message was identified spam and was rejected or blocked (not quarantined).
-	AcsEmailDeliveryReportStatusFilteredSpam AcsEmailDeliveryReportStatus = "FilteredSpam"
-	// AcsEmailDeliveryReportStatusQuarantined - The message was quarantined (as spam, bulk mail, or phishing). For more information,
+	ACSAdvanceMessageDeliveryStatusDelivered ACSAdvanceMessageDeliveryStatus = "delivered"
+	ACSAdvanceMessageDeliveryStatusFailed    ACSAdvanceMessageDeliveryStatus = "failed"
+	ACSAdvanceMessageDeliveryStatusRead      ACSAdvanceMessageDeliveryStatus = "read"
+	ACSAdvanceMessageDeliveryStatusSent      ACSAdvanceMessageDeliveryStatus = "sent"
+	ACSAdvanceMessageDeliveryStatusUnknown   ACSAdvanceMessageDeliveryStatus = "unknown"
+	ACSAdvanceMessageDeliveryStatusWarning   ACSAdvanceMessageDeliveryStatus = "warning"
+)
+
+// PossibleACSAdvanceMessageDeliveryStatusValues returns the possible values for the AcsAdvanceMessageDeliveryStatus const type.
+func PossibleACSAdvanceMessageDeliveryStatusValues() []ACSAdvanceMessageDeliveryStatus {
+	return []ACSAdvanceMessageDeliveryStatus{
+		ACSAdvanceMessageDeliveryStatusDelivered,
+		ACSAdvanceMessageDeliveryStatusFailed,
+		ACSAdvanceMessageDeliveryStatusRead,
+		ACSAdvanceMessageDeliveryStatusSent,
+		ACSAdvanceMessageDeliveryStatusUnknown,
+		ACSAdvanceMessageDeliveryStatusWarning,
+	}
+}
+
+// ACSEmailDeliveryReportStatus - The status of the email. Any value other than Delivered is considered failed.
+type ACSEmailDeliveryReportStatus string
+
+const (
+	// ACSEmailDeliveryReportStatusBounced - Hard bounce detected while sending the email
+	ACSEmailDeliveryReportStatusBounced ACSEmailDeliveryReportStatus = "Bounced"
+	// ACSEmailDeliveryReportStatusDelivered - The email was delivered
+	ACSEmailDeliveryReportStatusDelivered ACSEmailDeliveryReportStatus = "Delivered"
+	// ACSEmailDeliveryReportStatusFailed - The email failed to be delivered
+	ACSEmailDeliveryReportStatusFailed ACSEmailDeliveryReportStatus = "Failed"
+	// ACSEmailDeliveryReportStatusFilteredSpam - The message was identified spam and was rejected or blocked (not quarantined).
+	ACSEmailDeliveryReportStatusFilteredSpam ACSEmailDeliveryReportStatus = "FilteredSpam"
+	// ACSEmailDeliveryReportStatusQuarantined - The message was quarantined (as spam, bulk mail, or phishing). For more information,
 	// see Quarantined email messages in EOP (EXCHANGE ONLINE PROTECTION).
-	AcsEmailDeliveryReportStatusQuarantined AcsEmailDeliveryReportStatus = "Quarantined"
-	// AcsEmailDeliveryReportStatusSuppressed - The email was suppressed
-	AcsEmailDeliveryReportStatusSuppressed AcsEmailDeliveryReportStatus = "Suppressed"
+	ACSEmailDeliveryReportStatusQuarantined ACSEmailDeliveryReportStatus = "Quarantined"
+	// ACSEmailDeliveryReportStatusSuppressed - The email was suppressed
+	ACSEmailDeliveryReportStatusSuppressed ACSEmailDeliveryReportStatus = "Suppressed"
 )
 
-// PossibleAcsEmailDeliveryReportStatusValues returns the possible values for the AcsEmailDeliveryReportStatus const type.
-func PossibleAcsEmailDeliveryReportStatusValues() []AcsEmailDeliveryReportStatus {
-	return []AcsEmailDeliveryReportStatus{
-		AcsEmailDeliveryReportStatusBounced,
-		AcsEmailDeliveryReportStatusDelivered,
-		AcsEmailDeliveryReportStatusFailed,
-		AcsEmailDeliveryReportStatusFilteredSpam,
-		AcsEmailDeliveryReportStatusQuarantined,
-		AcsEmailDeliveryReportStatusSuppressed,
+// PossibleACSEmailDeliveryReportStatusValues returns the possible values for the AcsEmailDeliveryReportStatus const type.
+func PossibleACSEmailDeliveryReportStatusValues() []ACSEmailDeliveryReportStatus {
+	return []ACSEmailDeliveryReportStatus{
+		ACSEmailDeliveryReportStatusBounced,
+		ACSEmailDeliveryReportStatusDelivered,
+		ACSEmailDeliveryReportStatusFailed,
+		ACSEmailDeliveryReportStatusFilteredSpam,
+		ACSEmailDeliveryReportStatusQuarantined,
+		ACSEmailDeliveryReportStatusSuppressed,
 	}
 }
 
-// AcsRouterJobStatus - Router Job Received Job Status
-type AcsRouterJobStatus string
+// ACSInteractiveReplyKind - The Message interactive reply type
+type ACSInteractiveReplyKind string
 
 const (
-	AcsRouterJobStatusAssigned              AcsRouterJobStatus = "Assigned"
-	AcsRouterJobStatusCancelled             AcsRouterJobStatus = "Cancelled"
-	AcsRouterJobStatusClassificationFailed  AcsRouterJobStatus = "ClassificationFailed"
-	AcsRouterJobStatusClosed                AcsRouterJobStatus = "Closed"
-	AcsRouterJobStatusCompleted             AcsRouterJobStatus = "Completed"
-	AcsRouterJobStatusCreated               AcsRouterJobStatus = "Created"
-	AcsRouterJobStatusPendingClassification AcsRouterJobStatus = "PendingClassification"
-	AcsRouterJobStatusPendingSchedule       AcsRouterJobStatus = "PendingSchedule"
-	AcsRouterJobStatusQueued                AcsRouterJobStatus = "Queued"
-	AcsRouterJobStatusScheduleFailed        AcsRouterJobStatus = "ScheduleFailed"
-	AcsRouterJobStatusScheduled             AcsRouterJobStatus = "Scheduled"
-	AcsRouterJobStatusWaitingForActivation  AcsRouterJobStatus = "WaitingForActivation"
+	// ACSInteractiveReplyKindButtonReply - Messaged interactive reply type is ButtonReply
+	ACSInteractiveReplyKindButtonReply ACSInteractiveReplyKind = "buttonReply"
+	// ACSInteractiveReplyKindListReply - Messaged interactive reply type is ListReply
+	ACSInteractiveReplyKindListReply ACSInteractiveReplyKind = "listReply"
+	// ACSInteractiveReplyKindUnknown - Messaged interactive reply type is Unknown
+	ACSInteractiveReplyKindUnknown ACSInteractiveReplyKind = "unknown"
 )
 
-// PossibleAcsRouterJobStatusValues returns the possible values for the AcsRouterJobStatus const type.
-func PossibleAcsRouterJobStatusValues() []AcsRouterJobStatus {
-	return []AcsRouterJobStatus{
-		AcsRouterJobStatusAssigned,
-		AcsRouterJobStatusCancelled,
-		AcsRouterJobStatusClassificationFailed,
-		AcsRouterJobStatusClosed,
-		AcsRouterJobStatusCompleted,
-		AcsRouterJobStatusCreated,
-		AcsRouterJobStatusPendingClassification,
-		AcsRouterJobStatusPendingSchedule,
-		AcsRouterJobStatusQueued,
-		AcsRouterJobStatusScheduleFailed,
-		AcsRouterJobStatusScheduled,
-		AcsRouterJobStatusWaitingForActivation,
+// PossibleACSInteractiveReplyKindValues returns the possible values for the AcsInteractiveReplyKind const type.
+func PossibleACSInteractiveReplyKindValues() []ACSInteractiveReplyKind {
+	return []ACSInteractiveReplyKind{
+		ACSInteractiveReplyKindButtonReply,
+		ACSInteractiveReplyKindListReply,
+		ACSInteractiveReplyKindUnknown,
 	}
 }
 
-// AcsRouterLabelOperator - Router Job Worker Selector Label Operator
-type AcsRouterLabelOperator string
+// ACSMessageChannelKind - The The messaged received channel Kind
+type ACSMessageChannelKind string
 
 const (
-	// AcsRouterLabelOperatorEqual - =
-	AcsRouterLabelOperatorEqual AcsRouterLabelOperator = "Equal"
-	// AcsRouterLabelOperatorGreater - >
-	AcsRouterLabelOperatorGreater AcsRouterLabelOperator = "Greater"
-	// AcsRouterLabelOperatorGreaterThanOrEqual - >=
-	AcsRouterLabelOperatorGreaterThanOrEqual AcsRouterLabelOperator = "GreaterThanOrEqual"
-	// AcsRouterLabelOperatorLess - <
-	AcsRouterLabelOperatorLess AcsRouterLabelOperator = "Less"
-	// AcsRouterLabelOperatorLessThanOrEqual - <=
-	AcsRouterLabelOperatorLessThanOrEqual AcsRouterLabelOperator = "LessThanOrEqual"
-	// AcsRouterLabelOperatorNotEqual - !=
-	AcsRouterLabelOperatorNotEqual AcsRouterLabelOperator = "NotEqual"
+	// ACSMessageChannelKindWhatsapp - Updated messaged channel type is Whatsapp
+	ACSMessageChannelKindWhatsapp ACSMessageChannelKind = "whatsapp"
 )
 
-// PossibleAcsRouterLabelOperatorValues returns the possible values for the AcsRouterLabelOperator const type.
-func PossibleAcsRouterLabelOperatorValues() []AcsRouterLabelOperator {
-	return []AcsRouterLabelOperator{
-		AcsRouterLabelOperatorEqual,
-		AcsRouterLabelOperatorGreater,
-		AcsRouterLabelOperatorGreaterThanOrEqual,
-		AcsRouterLabelOperatorLess,
-		AcsRouterLabelOperatorLessThanOrEqual,
-		AcsRouterLabelOperatorNotEqual,
+// PossibleACSMessageChannelKindValues returns the possible values for the AcsMessageChannelKind const type.
+func PossibleACSMessageChannelKindValues() []ACSMessageChannelKind {
+	return []ACSMessageChannelKind{
+		ACSMessageChannelKindWhatsapp,
 	}
 }
 
-// AcsRouterWorkerSelectorState - Router Job Worker Selector State
-type AcsRouterWorkerSelectorState string
+// ACSRouterJobStatus - Router Job Received Job Status
+type ACSRouterJobStatus string
 
 const (
-	// AcsRouterWorkerSelectorStateActive - Router Job Worker Selector is Active
-	AcsRouterWorkerSelectorStateActive AcsRouterWorkerSelectorState = "active"
-	// AcsRouterWorkerSelectorStateExpired - Router Job Worker Selector has Expire
-	AcsRouterWorkerSelectorStateExpired AcsRouterWorkerSelectorState = "expired"
+	ACSRouterJobStatusAssigned              ACSRouterJobStatus = "Assigned"
+	ACSRouterJobStatusCancelled             ACSRouterJobStatus = "Cancelled"
+	ACSRouterJobStatusClassificationFailed  ACSRouterJobStatus = "ClassificationFailed"
+	ACSRouterJobStatusClosed                ACSRouterJobStatus = "Closed"
+	ACSRouterJobStatusCompleted             ACSRouterJobStatus = "Completed"
+	ACSRouterJobStatusCreated               ACSRouterJobStatus = "Created"
+	ACSRouterJobStatusPendingClassification ACSRouterJobStatus = "PendingClassification"
+	ACSRouterJobStatusPendingSchedule       ACSRouterJobStatus = "PendingSchedule"
+	ACSRouterJobStatusQueued                ACSRouterJobStatus = "Queued"
+	ACSRouterJobStatusScheduleFailed        ACSRouterJobStatus = "ScheduleFailed"
+	ACSRouterJobStatusScheduled             ACSRouterJobStatus = "Scheduled"
+	ACSRouterJobStatusWaitingForActivation  ACSRouterJobStatus = "WaitingForActivation"
 )
 
-// PossibleAcsRouterWorkerSelectorStateValues returns the possible values for the AcsRouterWorkerSelectorState const type.
-func PossibleAcsRouterWorkerSelectorStateValues() []AcsRouterWorkerSelectorState {
-	return []AcsRouterWorkerSelectorState{
-		AcsRouterWorkerSelectorStateActive,
-		AcsRouterWorkerSelectorStateExpired,
+// PossibleACSRouterJobStatusValues returns the possible values for the AcsRouterJobStatus const type.
+func PossibleACSRouterJobStatusValues() []ACSRouterJobStatus {
+	return []ACSRouterJobStatus{
+		ACSRouterJobStatusAssigned,
+		ACSRouterJobStatusCancelled,
+		ACSRouterJobStatusClassificationFailed,
+		ACSRouterJobStatusClosed,
+		ACSRouterJobStatusCompleted,
+		ACSRouterJobStatusCreated,
+		ACSRouterJobStatusPendingClassification,
+		ACSRouterJobStatusPendingSchedule,
+		ACSRouterJobStatusQueued,
+		ACSRouterJobStatusScheduleFailed,
+		ACSRouterJobStatusScheduled,
+		ACSRouterJobStatusWaitingForActivation,
 	}
 }
 
-// AcsUserEngagement - The type of engagement user have with email
-type AcsUserEngagement string
+// ACSRouterLabelOperator - Router Job Worker Selector Label Operator
+type ACSRouterLabelOperator string
 
 const (
-	AcsUserEngagementClick AcsUserEngagement = "click"
-	AcsUserEngagementView  AcsUserEngagement = "view"
+	// ACSRouterLabelOperatorEqual - =
+	ACSRouterLabelOperatorEqual ACSRouterLabelOperator = "Equal"
+	// ACSRouterLabelOperatorGreater - >
+	ACSRouterLabelOperatorGreater ACSRouterLabelOperator = "Greater"
+	// ACSRouterLabelOperatorGreaterThanOrEqual - >=
+	ACSRouterLabelOperatorGreaterThanOrEqual ACSRouterLabelOperator = "GreaterThanOrEqual"
+	// ACSRouterLabelOperatorLess - <
+	ACSRouterLabelOperatorLess ACSRouterLabelOperator = "Less"
+	// ACSRouterLabelOperatorLessThanOrEqual - <=
+	ACSRouterLabelOperatorLessThanOrEqual ACSRouterLabelOperator = "LessThanOrEqual"
+	// ACSRouterLabelOperatorNotEqual - !=
+	ACSRouterLabelOperatorNotEqual ACSRouterLabelOperator = "NotEqual"
 )
 
-// PossibleAcsUserEngagementValues returns the possible values for the AcsUserEngagement const type.
-func PossibleAcsUserEngagementValues() []AcsUserEngagement {
-	return []AcsUserEngagement{
-		AcsUserEngagementClick,
-		AcsUserEngagementView,
+// PossibleACSRouterLabelOperatorValues returns the possible values for the AcsRouterLabelOperator const type.
+func PossibleACSRouterLabelOperatorValues() []ACSRouterLabelOperator {
+	return []ACSRouterLabelOperator{
+		ACSRouterLabelOperatorEqual,
+		ACSRouterLabelOperatorGreater,
+		ACSRouterLabelOperatorGreaterThanOrEqual,
+		ACSRouterLabelOperatorLess,
+		ACSRouterLabelOperatorLessThanOrEqual,
+		ACSRouterLabelOperatorNotEqual,
+	}
+}
+
+// ACSRouterUpdatedWorkerProperty - An individual property updated in the Router Worker
+type ACSRouterUpdatedWorkerProperty string
+
+const (
+	ACSRouterUpdatedWorkerPropertyAvailableForOffers    ACSRouterUpdatedWorkerProperty = "AvailableForOffers"
+	ACSRouterUpdatedWorkerPropertyChannelConfigurations ACSRouterUpdatedWorkerProperty = "ChannelConfigurations"
+	ACSRouterUpdatedWorkerPropertyLabels                ACSRouterUpdatedWorkerProperty = "Labels"
+	ACSRouterUpdatedWorkerPropertyQueueAssignments      ACSRouterUpdatedWorkerProperty = "QueueAssignments"
+	ACSRouterUpdatedWorkerPropertyTags                  ACSRouterUpdatedWorkerProperty = "Tags"
+	ACSRouterUpdatedWorkerPropertyTotalCapacity         ACSRouterUpdatedWorkerProperty = "TotalCapacity"
+)
+
+// PossibleACSRouterUpdatedWorkerPropertyValues returns the possible values for the AcsRouterUpdatedWorkerProperty const type.
+func PossibleACSRouterUpdatedWorkerPropertyValues() []ACSRouterUpdatedWorkerProperty {
+	return []ACSRouterUpdatedWorkerProperty{
+		ACSRouterUpdatedWorkerPropertyAvailableForOffers,
+		ACSRouterUpdatedWorkerPropertyChannelConfigurations,
+		ACSRouterUpdatedWorkerPropertyLabels,
+		ACSRouterUpdatedWorkerPropertyQueueAssignments,
+		ACSRouterUpdatedWorkerPropertyTags,
+		ACSRouterUpdatedWorkerPropertyTotalCapacity,
+	}
+}
+
+// ACSRouterWorkerSelectorState - Router Job Worker Selector State
+type ACSRouterWorkerSelectorState string
+
+const (
+	// ACSRouterWorkerSelectorStateActive - Router Job Worker Selector is Active
+	ACSRouterWorkerSelectorStateActive ACSRouterWorkerSelectorState = "active"
+	// ACSRouterWorkerSelectorStateExpired - Router Job Worker Selector has Expire
+	ACSRouterWorkerSelectorStateExpired ACSRouterWorkerSelectorState = "expired"
+)
+
+// PossibleACSRouterWorkerSelectorStateValues returns the possible values for the ACSRouterWorkerSelectorState const type.
+func PossibleACSRouterWorkerSelectorStateValues() []ACSRouterWorkerSelectorState {
+	return []ACSRouterWorkerSelectorState{
+		ACSRouterWorkerSelectorStateActive,
+		ACSRouterWorkerSelectorStateExpired,
+	}
+}
+
+// ACSUserEngagement - The type of engagement user have with email
+type ACSUserEngagement string
+
+const (
+	ACSUserEngagementClick ACSUserEngagement = "click"
+	ACSUserEngagementView  ACSUserEngagement = "view"
+)
+
+// PossibleACSUserEngagementValues returns the possible values for the AcsUserEngagement const type.
+func PossibleACSUserEngagementValues() []ACSUserEngagement {
+	return []ACSUserEngagement{
+		ACSUserEngagementClick,
+		ACSUserEngagementView,
 	}
 }
 
@@ -220,6 +304,28 @@ func PossibleCommunicationCloudEnvironmentModelValues() []CommunicationCloudEnvi
 		CommunicationCloudEnvironmentModelDod,
 		CommunicationCloudEnvironmentModelGcch,
 		CommunicationCloudEnvironmentModelPublic,
+	}
+}
+
+// CommunicationIdentifierModelKind - The identifier kind, for example 'communicationUser' or 'phoneNumber'.
+type CommunicationIdentifierModelKind string
+
+const (
+	CommunicationIdentifierModelKindCommunicationUser  CommunicationIdentifierModelKind = "communicationUser"
+	CommunicationIdentifierModelKindMicrosoftTeamsApp  CommunicationIdentifierModelKind = "microsoftTeamsApp"
+	CommunicationIdentifierModelKindMicrosoftTeamsUser CommunicationIdentifierModelKind = "microsoftTeamsUser"
+	CommunicationIdentifierModelKindPhoneNumber        CommunicationIdentifierModelKind = "phoneNumber"
+	CommunicationIdentifierModelKindUnknown            CommunicationIdentifierModelKind = "unknown"
+)
+
+// PossibleCommunicationIdentifierModelKindValues returns the possible values for the CommunicationIdentifierModelKind const type.
+func PossibleCommunicationIdentifierModelKindValues() []CommunicationIdentifierModelKind {
+	return []CommunicationIdentifierModelKind{
+		CommunicationIdentifierModelKindCommunicationUser,
+		CommunicationIdentifierModelKindMicrosoftTeamsApp,
+		CommunicationIdentifierModelKindMicrosoftTeamsUser,
+		CommunicationIdentifierModelKindPhoneNumber,
+		CommunicationIdentifierModelKindUnknown,
 	}
 }
 
@@ -943,19 +1049,19 @@ func PossibleMediaJobStateValues() []MediaJobState {
 	}
 }
 
-// RecordingChannelType - The recording channel type - Mixed, Unmixed
-type RecordingChannelType string
+// RecordingChannelKind - The recording channel type - Mixed, Unmixed
+type RecordingChannelKind string
 
 const (
-	RecordingChannelTypeMixed   RecordingChannelType = "Mixed"
-	RecordingChannelTypeUnmixed RecordingChannelType = "Unmixed"
+	RecordingChannelKindMixed   RecordingChannelKind = "Mixed"
+	RecordingChannelKindUnmixed RecordingChannelKind = "Unmixed"
 )
 
-// PossibleRecordingChannelTypeValues returns the possible values for the RecordingChannelType const type.
-func PossibleRecordingChannelTypeValues() []RecordingChannelType {
-	return []RecordingChannelType{
-		RecordingChannelTypeMixed,
-		RecordingChannelTypeUnmixed,
+// PossibleRecordingChannelKindValues returns the possible values for the RecordingChannelType const type.
+func PossibleRecordingChannelKindValues() []RecordingChannelKind {
+	return []RecordingChannelKind{
+		RecordingChannelKindMixed,
+		RecordingChannelKindUnmixed,
 	}
 }
 

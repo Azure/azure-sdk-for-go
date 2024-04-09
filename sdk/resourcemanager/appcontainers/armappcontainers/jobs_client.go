@@ -28,7 +28,7 @@ type JobsClient struct {
 }
 
 // NewJobsClient creates a new instance of JobsClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewJobsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*JobsClient, error) {
@@ -46,7 +46,7 @@ func NewJobsClient(subscriptionID string, credential azcore.TokenCredential, opt
 // BeginCreateOrUpdate - Create or Update a Container Apps Job.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-11-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - jobName - Job Name
 //   - jobEnvelope - Properties used to create a container apps job
@@ -73,7 +73,7 @@ func (client *JobsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroup
 // CreateOrUpdate - Create or Update a Container Apps Job.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-11-02-preview
 func (client *JobsClient) createOrUpdate(ctx context.Context, resourceGroupName string, jobName string, jobEnvelope Job, options *JobsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "JobsClient.BeginCreateOrUpdate"
@@ -115,7 +115,7 @@ func (client *JobsClient) createOrUpdateCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-11-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, jobEnvelope); err != nil {
@@ -127,7 +127,7 @@ func (client *JobsClient) createOrUpdateCreateRequest(ctx context.Context, resou
 // BeginDelete - Delete a Container Apps Job.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-11-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - jobName - Job Name
 //   - options - JobsClientBeginDeleteOptions contains the optional parameters for the JobsClient.BeginDelete method.
@@ -152,7 +152,7 @@ func (client *JobsClient) BeginDelete(ctx context.Context, resourceGroupName str
 // Delete - Delete a Container Apps Job.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-11-02-preview
 func (client *JobsClient) deleteOperation(ctx context.Context, resourceGroupName string, jobName string, options *JobsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "JobsClient.BeginDelete"
@@ -194,7 +194,7 @@ func (client *JobsClient) deleteCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-11-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -203,7 +203,7 @@ func (client *JobsClient) deleteCreateRequest(ctx context.Context, resourceGroup
 // Get - Get the properties of a Container Apps Job.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-11-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - jobName - Job Name
 //   - options - JobsClientGetOptions contains the optional parameters for the JobsClient.Get method.
@@ -249,7 +249,7 @@ func (client *JobsClient) getCreateRequest(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-11-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -264,9 +264,78 @@ func (client *JobsClient) getHandleResponse(resp *http.Response) (JobsClientGetR
 	return result, nil
 }
 
+// GetDetector - Get the diagnostics data for a Container App Job.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-11-02-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - jobName - Job Name
+//   - detectorName - Name of the Container App Job detector.
+//   - options - JobsClientGetDetectorOptions contains the optional parameters for the JobsClient.GetDetector method.
+func (client *JobsClient) GetDetector(ctx context.Context, resourceGroupName string, jobName string, detectorName string, options *JobsClientGetDetectorOptions) (JobsClientGetDetectorResponse, error) {
+	var err error
+	const operationName = "JobsClient.GetDetector"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getDetectorCreateRequest(ctx, resourceGroupName, jobName, detectorName, options)
+	if err != nil {
+		return JobsClientGetDetectorResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return JobsClientGetDetectorResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return JobsClientGetDetectorResponse{}, err
+	}
+	resp, err := client.getDetectorHandleResponse(httpResp)
+	return resp, err
+}
+
+// getDetectorCreateRequest creates the GetDetector request.
+func (client *JobsClient) getDetectorCreateRequest(ctx context.Context, resourceGroupName string, jobName string, detectorName string, options *JobsClientGetDetectorOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/jobs/{jobName}/detectors/{detectorName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if jobName == "" {
+		return nil, errors.New("parameter jobName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{jobName}", url.PathEscape(jobName))
+	if detectorName == "" {
+		return nil, errors.New("parameter detectorName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{detectorName}", url.PathEscape(detectorName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2023-11-02-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getDetectorHandleResponse handles the GetDetector response.
+func (client *JobsClient) getDetectorHandleResponse(resp *http.Response) (JobsClientGetDetectorResponse, error) {
+	result := JobsClientGetDetectorResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Diagnostics); err != nil {
+		return JobsClientGetDetectorResponse{}, err
+	}
+	return result, nil
+}
+
 // NewListByResourceGroupPager - Get the Container Apps Jobs in a given resource group.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-11-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - JobsClientListByResourceGroupOptions contains the optional parameters for the JobsClient.NewListByResourceGroupPager
 //     method.
@@ -309,7 +378,7 @@ func (client *JobsClient) listByResourceGroupCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-11-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -326,7 +395,7 @@ func (client *JobsClient) listByResourceGroupHandleResponse(resp *http.Response)
 
 // NewListBySubscriptionPager - Get the Container Apps Jobs in a given subscription.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-11-02-preview
 //   - options - JobsClientListBySubscriptionOptions contains the optional parameters for the JobsClient.NewListBySubscriptionPager
 //     method.
 func (client *JobsClient) NewListBySubscriptionPager(options *JobsClientListBySubscriptionOptions) *runtime.Pager[JobsClientListBySubscriptionResponse] {
@@ -364,7 +433,7 @@ func (client *JobsClient) listBySubscriptionCreateRequest(ctx context.Context, o
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-11-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -379,10 +448,74 @@ func (client *JobsClient) listBySubscriptionHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
+// ListDetectors - Get the list of diagnostics for a Container App Job.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-11-02-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - jobName - Job Name
+//   - options - JobsClientListDetectorsOptions contains the optional parameters for the JobsClient.ListDetectors method.
+func (client *JobsClient) ListDetectors(ctx context.Context, resourceGroupName string, jobName string, options *JobsClientListDetectorsOptions) (JobsClientListDetectorsResponse, error) {
+	var err error
+	const operationName = "JobsClient.ListDetectors"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listDetectorsCreateRequest(ctx, resourceGroupName, jobName, options)
+	if err != nil {
+		return JobsClientListDetectorsResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return JobsClientListDetectorsResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return JobsClientListDetectorsResponse{}, err
+	}
+	resp, err := client.listDetectorsHandleResponse(httpResp)
+	return resp, err
+}
+
+// listDetectorsCreateRequest creates the ListDetectors request.
+func (client *JobsClient) listDetectorsCreateRequest(ctx context.Context, resourceGroupName string, jobName string, options *JobsClientListDetectorsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/jobs/{jobName}/detectors"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if jobName == "" {
+		return nil, errors.New("parameter jobName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{jobName}", url.PathEscape(jobName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2023-11-02-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listDetectorsHandleResponse handles the ListDetectors response.
+func (client *JobsClient) listDetectorsHandleResponse(resp *http.Response) (JobsClientListDetectorsResponse, error) {
+	result := JobsClientListDetectorsResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DiagnosticsCollection); err != nil {
+		return JobsClientListDetectorsResponse{}, err
+	}
+	return result, nil
+}
+
 // ListSecrets - List secrets for a container apps job
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-11-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - jobName - Job Name
 //   - options - JobsClientListSecretsOptions contains the optional parameters for the JobsClient.ListSecrets method.
@@ -428,7 +561,7 @@ func (client *JobsClient) listSecretsCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-11-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -443,10 +576,75 @@ func (client *JobsClient) listSecretsHandleResponse(resp *http.Response) (JobsCl
 	return result, nil
 }
 
+// ProxyGet - Get the properties of a Container App Job.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-11-02-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - jobName - Job Name
+//   - options - JobsClientProxyGetOptions contains the optional parameters for the JobsClient.ProxyGet method.
+func (client *JobsClient) ProxyGet(ctx context.Context, resourceGroupName string, jobName string, options *JobsClientProxyGetOptions) (JobsClientProxyGetResponse, error) {
+	var err error
+	const operationName = "JobsClient.ProxyGet"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.proxyGetCreateRequest(ctx, resourceGroupName, jobName, options)
+	if err != nil {
+		return JobsClientProxyGetResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return JobsClientProxyGetResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return JobsClientProxyGetResponse{}, err
+	}
+	resp, err := client.proxyGetHandleResponse(httpResp)
+	return resp, err
+}
+
+// proxyGetCreateRequest creates the ProxyGet request.
+func (client *JobsClient) proxyGetCreateRequest(ctx context.Context, resourceGroupName string, jobName string, options *JobsClientProxyGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/jobs/{jobName}/detectorProperties/{apiName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if jobName == "" {
+		return nil, errors.New("parameter jobName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{jobName}", url.PathEscape(jobName))
+	urlPath = strings.ReplaceAll(urlPath, "{apiName}", url.PathEscape("rootApi"))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2023-11-02-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// proxyGetHandleResponse handles the ProxyGet response.
+func (client *JobsClient) proxyGetHandleResponse(resp *http.Response) (JobsClientProxyGetResponse, error) {
+	result := JobsClientProxyGetResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Job); err != nil {
+		return JobsClientProxyGetResponse{}, err
+	}
+	return result, nil
+}
+
 // BeginStart - Start a Container Apps Job
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-11-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - jobName - Job Name
 //   - options - JobsClientBeginStartOptions contains the optional parameters for the JobsClient.BeginStart method.
@@ -471,7 +669,7 @@ func (client *JobsClient) BeginStart(ctx context.Context, resourceGroupName stri
 // Start - Start a Container Apps Job
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-11-02-preview
 func (client *JobsClient) start(ctx context.Context, resourceGroupName string, jobName string, options *JobsClientBeginStartOptions) (*http.Response, error) {
 	var err error
 	const operationName = "JobsClient.BeginStart"
@@ -513,7 +711,7 @@ func (client *JobsClient) startCreateRequest(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-11-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Template != nil {
@@ -528,7 +726,7 @@ func (client *JobsClient) startCreateRequest(ctx context.Context, resourceGroupN
 // BeginStopExecution - Terminates execution of a running container apps job
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-11-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - jobName - Job Name
 //   - jobExecutionName - Job execution name.
@@ -554,7 +752,7 @@ func (client *JobsClient) BeginStopExecution(ctx context.Context, resourceGroupN
 // StopExecution - Terminates execution of a running container apps job
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-11-02-preview
 func (client *JobsClient) stopExecution(ctx context.Context, resourceGroupName string, jobName string, jobExecutionName string, options *JobsClientBeginStopExecutionOptions) (*http.Response, error) {
 	var err error
 	const operationName = "JobsClient.BeginStopExecution"
@@ -600,7 +798,7 @@ func (client *JobsClient) stopExecutionCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-11-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -609,7 +807,7 @@ func (client *JobsClient) stopExecutionCreateRequest(ctx context.Context, resour
 // BeginStopMultipleExecutions - Terminates execution of a running container apps job
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-11-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - jobName - Job Name
 //   - options - JobsClientBeginStopMultipleExecutionsOptions contains the optional parameters for the JobsClient.BeginStopMultipleExecutions
@@ -635,7 +833,7 @@ func (client *JobsClient) BeginStopMultipleExecutions(ctx context.Context, resou
 // StopMultipleExecutions - Terminates execution of a running container apps job
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-11-02-preview
 func (client *JobsClient) stopMultipleExecutions(ctx context.Context, resourceGroupName string, jobName string, options *JobsClientBeginStopMultipleExecutionsOptions) (*http.Response, error) {
 	var err error
 	const operationName = "JobsClient.BeginStopMultipleExecutions"
@@ -677,7 +875,7 @@ func (client *JobsClient) stopMultipleExecutionsCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-11-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -686,7 +884,7 @@ func (client *JobsClient) stopMultipleExecutionsCreateRequest(ctx context.Contex
 // BeginUpdate - Patches a Container Apps Job using JSON Merge Patch
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-11-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - jobName - Job Name
 //   - jobEnvelope - Properties used to create a container apps job
@@ -711,7 +909,7 @@ func (client *JobsClient) BeginUpdate(ctx context.Context, resourceGroupName str
 // Update - Patches a Container Apps Job using JSON Merge Patch
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-11-02-preview
 func (client *JobsClient) update(ctx context.Context, resourceGroupName string, jobName string, jobEnvelope JobPatchProperties, options *JobsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "JobsClient.BeginUpdate"
@@ -753,7 +951,7 @@ func (client *JobsClient) updateCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-11-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, jobEnvelope); err != nil {

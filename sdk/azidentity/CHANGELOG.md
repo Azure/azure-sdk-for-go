@@ -1,14 +1,14 @@
 # Release History
 
-## 1.6.0-beta.3 (Unreleased)
-
-### Features Added
+## 1.6.0-beta.3 (2024-04-09)
 
 ### Breaking Changes
+* `DefaultAzureCredential` now sends a probe request with no retries for IMDS managed identity
+  environments to avoid excessive retry delays when the IMDS endpoint is not available. This
+  should improve credential chain resolution for local development scenarios.
 
 ### Bugs Fixed
-
-### Other Changes
+* `ManagedIdentityCredential` now specifies resource IDs correctly for Azure Container Instances
 
 ## 1.6.0-beta.2 (2024-02-06)
 
@@ -158,7 +158,7 @@
 
 ### Features Added
 * By default, credentials set client capability "CP1" to enable support for
-  [Continuous Access Evaluation (CAE)](https://docs.microsoft.com/azure/active-directory/develop/app-resilience-continuous-access-evaluation).
+  [Continuous Access Evaluation (CAE)](https://learn.microsoft.com/entra/identity-platform/app-resilience-continuous-access-evaluation).
   This indicates to Microsoft Entra ID that your application can handle CAE claims challenges.
   You can disable this behavior by setting the environment variable "AZURE_IDENTITY_DISABLE_CP1" to "true".
 * `InteractiveBrowserCredentialOptions.LoginHint` enables pre-populating the login

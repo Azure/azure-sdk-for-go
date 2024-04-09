@@ -1,5 +1,175 @@
 # Release History
 
+## 3.0.0-beta.1 (2024-03-22)
+### Breaking Changes
+
+- Field `EndTime`, `StartTime`, `Status`, `Template` of struct `JobExecution` has been removed
+
+### Features Added
+
+- New value `StorageTypeNfsAzureFile` added to enum type `StorageType`
+- New enum type `BuildProvisioningState` with values `BuildProvisioningStateCanceled`, `BuildProvisioningStateCreating`, `BuildProvisioningStateDeleting`, `BuildProvisioningStateFailed`, `BuildProvisioningStateSucceeded`, `BuildProvisioningStateUpdating`
+- New enum type `BuildStatus` with values `BuildStatusCanceled`, `BuildStatusFailed`, `BuildStatusInProgress`, `BuildStatusNotStarted`, `BuildStatusSucceeded`
+- New enum type `BuilderProvisioningState` with values `BuilderProvisioningStateCanceled`, `BuilderProvisioningStateCreating`, `BuilderProvisioningStateDeleting`, `BuilderProvisioningStateFailed`, `BuilderProvisioningStateSucceeded`, `BuilderProvisioningStateUpdating`
+- New enum type `CertificateType` with values `CertificateTypeImagePullTrustedCA`, `CertificateTypeServerSSLCertificate`
+- New enum type `DotNetComponentProvisioningState` with values `DotNetComponentProvisioningStateCanceled`, `DotNetComponentProvisioningStateDeleting`, `DotNetComponentProvisioningStateFailed`, `DotNetComponentProvisioningStateInProgress`, `DotNetComponentProvisioningStateSucceeded`
+- New enum type `DotNetComponentType` with values `DotNetComponentTypeAspireDashboard`, `DotNetComponentTypeAspireResourceServerAPI`
+- New enum type `IngressTargetPortHTTPScheme` with values `IngressTargetPortHTTPSchemeHTTP`, `IngressTargetPortHTTPSchemeHTTPS`
+- New enum type `JavaComponentProvisioningState` with values `JavaComponentProvisioningStateCanceled`, `JavaComponentProvisioningStateDeleting`, `JavaComponentProvisioningStateFailed`, `JavaComponentProvisioningStateInProgress`, `JavaComponentProvisioningStateSucceeded`
+- New enum type `JavaComponentType` with values `JavaComponentTypeSpringBootAdmin`, `JavaComponentTypeSpringCloudConfig`, `JavaComponentTypeSpringCloudEureka`
+- New function `NewAppResiliencyClient(string, azcore.TokenCredential, *arm.ClientOptions) (*AppResiliencyClient, error)`
+- New function `*AppResiliencyClient.CreateOrUpdate(context.Context, string, string, string, AppResiliency, *AppResiliencyClientCreateOrUpdateOptions) (AppResiliencyClientCreateOrUpdateResponse, error)`
+- New function `*AppResiliencyClient.Delete(context.Context, string, string, string, *AppResiliencyClientDeleteOptions) (AppResiliencyClientDeleteResponse, error)`
+- New function `*AppResiliencyClient.Get(context.Context, string, string, string, *AppResiliencyClientGetOptions) (AppResiliencyClientGetResponse, error)`
+- New function `*AppResiliencyClient.NewListPager(string, string, *AppResiliencyClientListOptions) *runtime.Pager[AppResiliencyClientListResponse]`
+- New function `*AppResiliencyClient.Update(context.Context, string, string, string, AppResiliency, *AppResiliencyClientUpdateOptions) (AppResiliencyClientUpdateResponse, error)`
+- New function `NewBuildAuthTokenClient(string, azcore.TokenCredential, *arm.ClientOptions) (*BuildAuthTokenClient, error)`
+- New function `*BuildAuthTokenClient.List(context.Context, string, string, string, *BuildAuthTokenClientListOptions) (BuildAuthTokenClientListResponse, error)`
+- New function `NewBuildersClient(string, azcore.TokenCredential, *arm.ClientOptions) (*BuildersClient, error)`
+- New function `*BuildersClient.BeginCreateOrUpdate(context.Context, string, string, BuilderResource, *BuildersClientBeginCreateOrUpdateOptions) (*runtime.Poller[BuildersClientCreateOrUpdateResponse], error)`
+- New function `*BuildersClient.BeginDelete(context.Context, string, string, *BuildersClientBeginDeleteOptions) (*runtime.Poller[BuildersClientDeleteResponse], error)`
+- New function `*BuildersClient.Get(context.Context, string, string, *BuildersClientGetOptions) (BuildersClientGetResponse, error)`
+- New function `*BuildersClient.NewListByResourceGroupPager(string, *BuildersClientListByResourceGroupOptions) *runtime.Pager[BuildersClientListByResourceGroupResponse]`
+- New function `*BuildersClient.NewListBySubscriptionPager(*BuildersClientListBySubscriptionOptions) *runtime.Pager[BuildersClientListBySubscriptionResponse]`
+- New function `*BuildersClient.BeginUpdate(context.Context, string, string, BuilderResourceUpdate, *BuildersClientBeginUpdateOptions) (*runtime.Poller[BuildersClientUpdateResponse], error)`
+- New function `NewBuildsByBuilderResourceClient(string, azcore.TokenCredential, *arm.ClientOptions) (*BuildsByBuilderResourceClient, error)`
+- New function `*BuildsByBuilderResourceClient.NewListPager(string, string, *BuildsByBuilderResourceClientListOptions) *runtime.Pager[BuildsByBuilderResourceClientListResponse]`
+- New function `NewBuildsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*BuildsClient, error)`
+- New function `*BuildsClient.BeginCreateOrUpdate(context.Context, string, string, string, BuildResource, *BuildsClientBeginCreateOrUpdateOptions) (*runtime.Poller[BuildsClientCreateOrUpdateResponse], error)`
+- New function `*BuildsClient.BeginDelete(context.Context, string, string, string, *BuildsClientBeginDeleteOptions) (*runtime.Poller[BuildsClientDeleteResponse], error)`
+- New function `*BuildsClient.Get(context.Context, string, string, string, *BuildsClientGetOptions) (BuildsClientGetResponse, error)`
+- New function `*ClientFactory.NewAppResiliencyClient() *AppResiliencyClient`
+- New function `*ClientFactory.NewBuildAuthTokenClient() *BuildAuthTokenClient`
+- New function `*ClientFactory.NewBuildersClient() *BuildersClient`
+- New function `*ClientFactory.NewBuildsByBuilderResourceClient() *BuildsByBuilderResourceClient`
+- New function `*ClientFactory.NewBuildsClient() *BuildsClient`
+- New function `*ClientFactory.NewDaprComponentResiliencyPoliciesClient() *DaprComponentResiliencyPoliciesClient`
+- New function `*ClientFactory.NewDaprSubscriptionsClient() *DaprSubscriptionsClient`
+- New function `*ClientFactory.NewDotNetComponentsClient() *DotNetComponentsClient`
+- New function `*ClientFactory.NewJavaComponentsClient() *JavaComponentsClient`
+- New function `*ClientFactory.NewManagedEnvironmentUsagesClient() *ManagedEnvironmentUsagesClient`
+- New function `*ClientFactory.NewUsagesClient() *UsagesClient`
+- New function `*ContainerAppsAPIClient.GetCustomDomainVerificationID(context.Context, *ContainerAppsAPIClientGetCustomDomainVerificationIDOptions) (ContainerAppsAPIClientGetCustomDomainVerificationIDResponse, error)`
+- New function `NewDaprComponentResiliencyPoliciesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*DaprComponentResiliencyPoliciesClient, error)`
+- New function `*DaprComponentResiliencyPoliciesClient.CreateOrUpdate(context.Context, string, string, string, string, DaprComponentResiliencyPolicy, *DaprComponentResiliencyPoliciesClientCreateOrUpdateOptions) (DaprComponentResiliencyPoliciesClientCreateOrUpdateResponse, error)`
+- New function `*DaprComponentResiliencyPoliciesClient.Delete(context.Context, string, string, string, string, *DaprComponentResiliencyPoliciesClientDeleteOptions) (DaprComponentResiliencyPoliciesClientDeleteResponse, error)`
+- New function `*DaprComponentResiliencyPoliciesClient.Get(context.Context, string, string, string, string, *DaprComponentResiliencyPoliciesClientGetOptions) (DaprComponentResiliencyPoliciesClientGetResponse, error)`
+- New function `*DaprComponentResiliencyPoliciesClient.NewListPager(string, string, string, *DaprComponentResiliencyPoliciesClientListOptions) *runtime.Pager[DaprComponentResiliencyPoliciesClientListResponse]`
+- New function `NewDaprSubscriptionsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*DaprSubscriptionsClient, error)`
+- New function `*DaprSubscriptionsClient.CreateOrUpdate(context.Context, string, string, string, DaprSubscription, *DaprSubscriptionsClientCreateOrUpdateOptions) (DaprSubscriptionsClientCreateOrUpdateResponse, error)`
+- New function `*DaprSubscriptionsClient.Delete(context.Context, string, string, string, *DaprSubscriptionsClientDeleteOptions) (DaprSubscriptionsClientDeleteResponse, error)`
+- New function `*DaprSubscriptionsClient.Get(context.Context, string, string, string, *DaprSubscriptionsClientGetOptions) (DaprSubscriptionsClientGetResponse, error)`
+- New function `*DaprSubscriptionsClient.NewListPager(string, string, *DaprSubscriptionsClientListOptions) *runtime.Pager[DaprSubscriptionsClientListResponse]`
+- New function `NewDotNetComponentsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*DotNetComponentsClient, error)`
+- New function `*DotNetComponentsClient.BeginCreateOrUpdate(context.Context, string, string, string, DotNetComponent, *DotNetComponentsClientBeginCreateOrUpdateOptions) (*runtime.Poller[DotNetComponentsClientCreateOrUpdateResponse], error)`
+- New function `*DotNetComponentsClient.BeginDelete(context.Context, string, string, string, *DotNetComponentsClientBeginDeleteOptions) (*runtime.Poller[DotNetComponentsClientDeleteResponse], error)`
+- New function `*DotNetComponentsClient.Get(context.Context, string, string, string, *DotNetComponentsClientGetOptions) (DotNetComponentsClientGetResponse, error)`
+- New function `*DotNetComponentsClient.NewListPager(string, string, *DotNetComponentsClientListOptions) *runtime.Pager[DotNetComponentsClientListResponse]`
+- New function `*DotNetComponentsClient.BeginUpdate(context.Context, string, string, string, DotNetComponent, *DotNetComponentsClientBeginUpdateOptions) (*runtime.Poller[DotNetComponentsClientUpdateResponse], error)`
+- New function `NewJavaComponentsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*JavaComponentsClient, error)`
+- New function `*JavaComponentsClient.BeginCreateOrUpdate(context.Context, string, string, string, JavaComponent, *JavaComponentsClientBeginCreateOrUpdateOptions) (*runtime.Poller[JavaComponentsClientCreateOrUpdateResponse], error)`
+- New function `*JavaComponentsClient.BeginDelete(context.Context, string, string, string, *JavaComponentsClientBeginDeleteOptions) (*runtime.Poller[JavaComponentsClientDeleteResponse], error)`
+- New function `*JavaComponentsClient.Get(context.Context, string, string, string, *JavaComponentsClientGetOptions) (JavaComponentsClientGetResponse, error)`
+- New function `*JavaComponentsClient.NewListPager(string, string, *JavaComponentsClientListOptions) *runtime.Pager[JavaComponentsClientListResponse]`
+- New function `*JavaComponentsClient.BeginUpdate(context.Context, string, string, string, JavaComponent, *JavaComponentsClientBeginUpdateOptions) (*runtime.Poller[JavaComponentsClientUpdateResponse], error)`
+- New function `*JobsClient.GetDetector(context.Context, string, string, string, *JobsClientGetDetectorOptions) (JobsClientGetDetectorResponse, error)`
+- New function `*JobsClient.ListDetectors(context.Context, string, string, *JobsClientListDetectorsOptions) (JobsClientListDetectorsResponse, error)`
+- New function `*JobsClient.ProxyGet(context.Context, string, string, *JobsClientProxyGetOptions) (JobsClientProxyGetResponse, error)`
+- New function `NewManagedEnvironmentUsagesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ManagedEnvironmentUsagesClient, error)`
+- New function `*ManagedEnvironmentUsagesClient.NewListPager(string, string, *ManagedEnvironmentUsagesClientListOptions) *runtime.Pager[ManagedEnvironmentUsagesClientListResponse]`
+- New function `NewUsagesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*UsagesClient, error)`
+- New function `*UsagesClient.NewListPager(string, *UsagesClientListOptions) *runtime.Pager[UsagesClientListResponse]`
+- New struct `AppInsightsConfiguration`
+- New struct `AppResiliency`
+- New struct `AppResiliencyCollection`
+- New struct `AppResiliencyProperties`
+- New struct `BlobStorageTokenStore`
+- New struct `BuildCollection`
+- New struct `BuildConfiguration`
+- New struct `BuildProperties`
+- New struct `BuildResource`
+- New struct `BuildToken`
+- New struct `BuilderCollection`
+- New struct `BuilderProperties`
+- New struct `BuilderResource`
+- New struct `BuilderResourceUpdate`
+- New struct `BuilderResourceUpdateProperties`
+- New struct `CertificateKeyVaultProperties`
+- New struct `CircuitBreakerPolicy`
+- New struct `ContainerRegistry`
+- New struct `ContainerRegistryWithCustomImage`
+- New struct `DaprComponentResiliencyPoliciesCollection`
+- New struct `DaprComponentResiliencyPolicy`
+- New struct `DaprComponentResiliencyPolicyCircuitBreakerPolicyConfiguration`
+- New struct `DaprComponentResiliencyPolicyConfiguration`
+- New struct `DaprComponentResiliencyPolicyHTTPRetryBackOffConfiguration`
+- New struct `DaprComponentResiliencyPolicyHTTPRetryPolicyConfiguration`
+- New struct `DaprComponentResiliencyPolicyProperties`
+- New struct `DaprComponentResiliencyPolicyTimeoutPolicyConfiguration`
+- New struct `DaprComponentServiceBinding`
+- New struct `DaprServiceBindMetadata`
+- New struct `DaprSubscription`
+- New struct `DaprSubscriptionBulkSubscribeOptions`
+- New struct `DaprSubscriptionProperties`
+- New struct `DaprSubscriptionRouteRule`
+- New struct `DaprSubscriptionRoutes`
+- New struct `DaprSubscriptionsCollection`
+- New struct `DataDogConfiguration`
+- New struct `DestinationsConfiguration`
+- New struct `DotNetComponent`
+- New struct `DotNetComponentConfigurationProperty`
+- New struct `DotNetComponentProperties`
+- New struct `DotNetComponentServiceBind`
+- New struct `DotNetComponentsCollection`
+- New struct `EncryptionSettings`
+- New struct `EnvironmentVariable`
+- New struct `HTTPConnectionPool`
+- New struct `HTTPGet`
+- New struct `HTTPRetryPolicy`
+- New struct `HTTPRetryPolicyMatches`
+- New struct `HTTPRetryPolicyRetryBackOff`
+- New struct `Header`
+- New struct `HeaderMatch`
+- New struct `HeaderMatchMatch`
+- New struct `IngressPortMapping`
+- New struct `JavaComponent`
+- New struct `JavaComponentConfigurationProperty`
+- New struct `JavaComponentProperties`
+- New struct `JavaComponentServiceBind`
+- New struct `JavaComponentsCollection`
+- New struct `JobExecutionProperties`
+- New struct `ListUsagesResult`
+- New struct `LogsConfiguration`
+- New struct `MetricsConfiguration`
+- New struct `NfsAzureFileProperties`
+- New struct `OpenTelemetryConfiguration`
+- New struct `OtlpConfiguration`
+- New struct `PreBuildStep`
+- New struct `TCPConnectionPool`
+- New struct `TCPRetryPolicy`
+- New struct `TimeoutPolicy`
+- New struct `TokenStore`
+- New struct `TracesConfiguration`
+- New struct `Usage`
+- New struct `UsageName`
+- New field `EncryptionSettings` in struct `AuthConfigProperties`
+- New field `Gpus` in struct `AvailableWorkloadProfileProperties`
+- New field `CertificateKeyVaultProperties`, `CertificateType` in struct `CertificateProperties`
+- New field `CertificateKeyVaultProperties` in struct `CustomDomainConfiguration`
+- New field `ServiceComponentBind` in struct `DaprComponentProperties`
+- New field `BuildEnvironmentVariables` in struct `GithubActionConfiguration`
+- New field `AdditionalPortMappings`, `TargetPortHTTPScheme` in struct `Ingress`
+- New field `ExtendedLocation` in struct `Job`
+- New field `Properties` in struct `JobExecution`
+- New field `ExtendedLocation` in struct `JobPatchProperties`
+- New field `DynamicJSONColumns` in struct `LogAnalyticsConfiguration`
+- New field `TokenStore` in struct `Login`
+- New field `Identity` in struct `ManagedEnvironment`
+- New field `AppInsightsConfiguration`, `OpenTelemetryConfiguration` in struct `ManagedEnvironmentProperties`
+- New field `NfsAzureFile` in struct `ManagedEnvironmentStorageProperties`
+- New field `ClientType`, `CustomizedKeys` in struct `ServiceBind`
+
+
 ## 2.1.0 (2023-11-24)
 ### Features Added
 

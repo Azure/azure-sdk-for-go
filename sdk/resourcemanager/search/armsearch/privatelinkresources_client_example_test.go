@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/search/armsearch"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7e29dd59eef13ef347d09e41a63f2585be77b3ca/specification/search/resource-manager/Microsoft.Search/stable/2023-11-01/examples/ListSupportedPrivateLinkResources.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/search/resource-manager/Microsoft.Search/preview/2024-03-01-preview/examples/ListSupportedPrivateLinkResources.json
 func ExamplePrivateLinkResourcesClient_NewListSupportedPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -56,7 +56,7 @@ func ExamplePrivateLinkResourcesClient_NewListSupportedPager() {
 		// 								Name: to.Ptr("blob"),
 		// 								Properties: &armsearch.ShareablePrivateLinkResourceProperties{
 		// 									Type: to.Ptr("Microsoft.Storage/storageAccounts"),
-		// 									Description: to.Ptr("Azure Cognitive Search indexers can connect to blobs in Azure Storage for reading data (data source), for writing intermediate results of indexer execution (annotation cache, preview) or for storing any knowledge store projections (preview)"),
+		// 									Description: to.Ptr("Azure AI Search indexers can connect to blobs in Azure Storage for reading data from an indexer data source, for writing intermediate results of indexer execution or for storing any knowledge store projections."),
 		// 									GroupID: to.Ptr("blob"),
 		// 								},
 		// 							},
@@ -64,7 +64,7 @@ func ExamplePrivateLinkResourcesClient_NewListSupportedPager() {
 		// 								Name: to.Ptr("table"),
 		// 								Properties: &armsearch.ShareablePrivateLinkResourceProperties{
 		// 									Type: to.Ptr("Microsoft.Storage/storageAccounts"),
-		// 									Description: to.Ptr("Azure Cognitive Search indexers can connect to tables in Azure Storage for reading data (data source), for writing book-keeping information about intermediate results of indexer execution (annotation cache, preview) or for storing any knowledge store projections (preview)"),
+		// 									Description: to.Ptr("Azure AI Search indexers can connect to tables in Azure Storage for reading data from an indexer data source, for writing intermediate results of indexer execution or for storing any knowledge store projections."),
 		// 									GroupID: to.Ptr("table"),
 		// 								},
 		// 							},
@@ -72,7 +72,7 @@ func ExamplePrivateLinkResourcesClient_NewListSupportedPager() {
 		// 								Name: to.Ptr("Sql"),
 		// 								Properties: &armsearch.ShareablePrivateLinkResourceProperties{
 		// 									Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts"),
-		// 									Description: to.Ptr("Azure Cognitive Search indexers can connect to CosmosDB using the SQL head for reading data (data source)."),
+		// 									Description: to.Ptr("Azure AI Search indexers can connect to Azure Cosmos DB API for NoSQL for reading data from an indexer data source."),
 		// 									GroupID: to.Ptr("Sql"),
 		// 								},
 		// 							},
@@ -80,7 +80,7 @@ func ExamplePrivateLinkResourcesClient_NewListSupportedPager() {
 		// 								Name: to.Ptr("plr"),
 		// 								Properties: &armsearch.ShareablePrivateLinkResourceProperties{
 		// 									Type: to.Ptr("Microsoft.Sql/servers"),
-		// 									Description: to.Ptr("Azure Cognitive Search indexers can connect to AzureSQL databases in a SQL server for reading data (data source)."),
+		// 									Description: to.Ptr("Azure AI Search indexers can connect to Azure SQL database on a server for reading data from an indexer data source."),
 		// 									GroupID: to.Ptr("sqlServer"),
 		// 								},
 		// 							},
@@ -88,7 +88,7 @@ func ExamplePrivateLinkResourcesClient_NewListSupportedPager() {
 		// 								Name: to.Ptr("vault"),
 		// 								Properties: &armsearch.ShareablePrivateLinkResourceProperties{
 		// 									Type: to.Ptr("Microsoft.KeyVault/vaults"),
-		// 									Description: to.Ptr("Azure Cognitive Search can access keys in Azure Key Vault to encrypt search index and synonym map data"),
+		// 									Description: to.Ptr("Azure AI Search can access keys in Azure Key Vault to encrypt sensitive data in a search index and synonym map data."),
 		// 									GroupID: to.Ptr("vault"),
 		// 								},
 		// 							},
@@ -96,7 +96,7 @@ func ExamplePrivateLinkResourcesClient_NewListSupportedPager() {
 		// 								Name: to.Ptr("plr"),
 		// 								Properties: &armsearch.ShareablePrivateLinkResourceProperties{
 		// 									Type: to.Ptr("Microsoft.DBforMySQL/servers"),
-		// 									Description: to.Ptr("Azure Cognitive Search indexers can connect to MySQL databases for reading data (data source, preview)."),
+		// 									Description: to.Ptr("Azure AI Search indexers can connect to MySQL databases for reading data from an indexer data source."),
 		// 									GroupID: to.Ptr("mysqlServer"),
 		// 								},
 		// 							},
@@ -104,7 +104,7 @@ func ExamplePrivateLinkResourcesClient_NewListSupportedPager() {
 		// 								Name: to.Ptr("site"),
 		// 								Properties: &armsearch.ShareablePrivateLinkResourceProperties{
 		// 									Type: to.Ptr("Microsoft.Web/sites"),
-		// 									Description: to.Ptr("Azure Cognitive Search indexers can connect to App Services when executing custom web api skills that can be present in a skillset (optional) attached to the indexer."),
+		// 									Description: to.Ptr("For custom skills that connect to an app service, you can specify sites as the group ID."),
 		// 									GroupID: to.Ptr("sites"),
 		// 								},
 		// 						}},

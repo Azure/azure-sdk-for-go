@@ -1,13 +1,12 @@
 # Release History
 
-## 0.1.1 (Unreleased)
+## 1.0.0 (2024-04-09)
 
 ### Features Added
+* First GA
 
 ### Breaking Changes
 * Removed pointers from slices
-
-### Bugs Fixed
 
 ### Other Changes
 * Updated to use API version 2024-02-01

@@ -3,6 +3,16 @@
 ## 1.1.2 (Unreleased)
 
 ### Features Added
+* Append API Bundled with Flush functionality
+* HNS Encryption Scope support
+* Append API with acquire lease, release lease and renewal of lease support.
+* Flush API bundled with release lease option.
+* HNS Encryption Context support
+* Pagination Support for recursive directory deletion
+* Bundle ability to set permission, owner, group, acl, lease, expiry time and umask along with FileSystem.CreateFile and FileSystem.CreateDirectory APIs.
+* Added support for AAD Audience when OAuth is used.
+* Updated service version to `2023-11-03`
+* Integrate `InsecureAllowCredentialWithHTTP` client options.
 
 ### Breaking Changes
 
@@ -10,6 +20,7 @@
 * Fixed an issue where GetSASURL() was providing HTTPS SAS, instead of the default http+https SAS. Fixes [#22448](https://github.com/Azure/azure-sdk-for-go/issues/22448)
 
 ### Other Changes
+* Updated azcore version to `1.11.1`
 
 ## 1.1.1 (2024-02-29)
 

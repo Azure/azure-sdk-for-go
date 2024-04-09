@@ -92,6 +92,35 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceClientFromConnectionString() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 }
 
+func (s *ServiceRecordedTestsSuite) TestCreateFilesystemsWithOptions() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClientFromConnectionString(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+	md := map[string]*string{
+		"foo": to.Ptr("foovalue"),
+		"bar": to.Ptr("barvalue"),
+	}
+	cpkScopeInfo := &testcommon.TestCPKScopeInfo
+
+	fsName := testcommon.GenerateFileSystemName(testName)
+	fsClient := testcommon.ServiceGetFileSystemClient(fsName, svcClient)
+
+	_, err = fsClient.Create(context.Background(), &filesystem.CreateOptions{Metadata: md, CPKScopeInfo: cpkScopeInfo})
+	defer func(fsClient *filesystem.Client, ctx context.Context, options *filesystem.DeleteOptions) {
+		_, err := fsClient.Delete(ctx, options)
+		if err != nil {
+			_require.NoError(err)
+		}
+	}(fsClient, context.Background(), nil)
+
+	_require.NoError(err)
+	resp, err := fsClient.GetProperties(context.Background(), nil)
+
+	_require.NoError(err)
+	_require.Equal(resp.DefaultEncryptionScope, &testcommon.TestEncryptionScope)
+}
+
 func (s *ServiceRecordedTestsSuite) TestSetPropertiesLogging() {
 	_require := require.New(s.T())
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -830,4 +859,76 @@ func (s *ServiceRecordedTestsSuite) TestServiceClientWithNilSharedKey() {
 	svcClient, err := service.NewClientWithSharedKeyCredential("http://"+accountName+".dfs.core.windows.net/", nil, nil)
 	_require.Error(err)
 	_require.Nil(svcClient)
+}
+
+func (s *ServiceRecordedTestsSuite) TestServiceClientUsingOauth() {
+	_require := require.New(s.T())
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDatalake)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	serviceUrl := "https://" + accountName + ".dfs.core.windows.net/"
+
+	svcClient, err := service.NewClient(serviceUrl, cred, nil)
+	_require.NoError(err)
+	_require.NotNil(svcClient)
+
+	fs, _ := svcClient.CreateFileSystem(context.Background(), "test", nil)
+	_require.NotNil(fs)
+	_require.NoError(err)
+}
+
+func (s *ServiceRecordedTestsSuite) TestServiceClientUsingOauthWithDefaultAudience() {
+	_require := require.New(s.T())
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDatalake)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	serviceUrl := "https://" + accountName + ".dfs.core.windows.net/"
+
+	options := service.ClientOptions{
+		Audience: "https://storage.azure.com/",
+	}
+
+	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
+	svcClient, err := service.NewClient(serviceUrl, cred, &options)
+	_require.NoError(err)
+	_require.NotNil(svcClient)
+
+	fs, _ := svcClient.CreateFileSystem(context.Background(), "test", nil)
+	_require.NotNil(fs)
+	_require.NoError(err)
+
+}
+
+func (s *ServiceRecordedTestsSuite) TestServiceClientUsingOauthWithCustomAudience() {
+	_require := require.New(s.T())
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDatalake)
+	_require.Greater(len(accountName), 0)
+
+	serviceUrl := "https://" + accountName + ".dfs.core.windows.net/"
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	options := service.ClientOptions{
+		Audience: "https://" + accountName + ".blob.core.windows.net",
+	}
+
+	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
+	svcClient, err := service.NewClient(serviceUrl, cred, &options)
+	_require.NoError(err)
+	_require.NotNil(svcClient)
+
+	fs, _ := svcClient.CreateFileSystem(context.Background(), "test", nil)
+	_require.NotNil(fs)
+	_require.NoError(err)
+
 }

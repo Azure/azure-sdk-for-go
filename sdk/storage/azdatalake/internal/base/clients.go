@@ -15,12 +15,18 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated_blob"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/shared"
+	"strings"
 )
 
 // ClientOptions contains the optional parameters when creating a Client.
 type ClientOptions struct {
 	azcore.ClientOptions
 	pipelineOptions *runtime.PipelineOptions
+	// Audience to use when requesting tokens for Azure Active Directory authentication.
+	// Only has an effect when credential is of type TokenCredential. The value could be
+	// https://storage.azure.com/ (default) or https://<account>.blob.core.windows.net.
+	Audience string
 }
 
 func GetPipelineOptions(clOpts *ClientOptions) *runtime.PipelineOptions {
@@ -90,4 +96,12 @@ func NewPathClient(pathURL string, pathURLWithBlobEndpoint string, client *block
 
 func GetCompositeClientOptions[T, K, U any](client *CompositeClient[T, K, U]) *ClientOptions {
 	return client.options
+}
+
+func GetAudience(clOpts *ClientOptions) string {
+	if clOpts == nil || len(strings.TrimSpace(clOpts.Audience)) == 0 {
+		return shared.TokenScope
+	} else {
+		return strings.TrimRight(clOpts.Audience, "/") + "/.default"
+	}
 }

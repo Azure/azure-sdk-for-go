@@ -8,8 +8,8 @@
 * Added extended logging for requests, responses, and client configuration
 
 ### Breaking Changes
-* ItemOptions.SessionToken, QueryOptions.SessionToken, QueryOptions.ContinuationToken are now `*string`
-* ItemResponse.SessionToken, QueryItemsResponse.ContinuationToken are now `*string`
+* ItemOptions.SessionToken, QueryOptions.SessionToken, QueryOptions.ContinuationToken, QueryDatabasesOptions.ContinuationToken, QueryContainersOptions.ContinuationToken are now `*string`
+* ItemResponse.SessionToken, QueryItemsResponse.ContinuationToken, QueryContainersResponse.ContinuationToken, QueryDatabasesResponse.ContinuationToken are now `*string`
 
 ## 0.3.6 (2023-08-18)
 

@@ -299,7 +299,7 @@ directive:
         replace(/err = unpopulate\((.*), "IsDirectory", &p\.IsDirectory\)/g, 'var rawVal string\nerr = unpopulate(val, "IsDirectory", &rawVal)\nboolVal, _ := strconv.ParseBool(rawVal)\np.IsDirectory = &boolVal');
 ```
 
-### Updating service version to 2023-08-03
+### Updating service version to 2023-11-03
 ```yaml
 directive:
 - from: 
@@ -309,6 +309,6 @@ directive:
   where: $
   transform: >-
     return $.
-      replaceAll(`[]string{"2023-05-03"}`, `[]string{ServiceVersion}`).
-      replaceAll(`2023-05-03`, `2023-08-03`);
+      replaceAll(`[]string{"2023-08-03"}`, `[]string{ServiceVersion}`).
+      replaceAll(`2023-08-03`, `2023-11-03`);
 ```

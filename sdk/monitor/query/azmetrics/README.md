@@ -1,8 +1,8 @@
 # Azure Monitor Query Metrics client module for Go
 
-The Azure Monitor Query Metrics client module is used to execute read-only queries against [Azure Monitor][azure_monitor_overview]'s metrics platform.
-
-[Metrics][metrics_overview] collects numeric data from monitored resources into a time series database. Metrics are numerical values that are collected at regular intervals and describe some aspect of a system at a particular time. Metrics are lightweight and capable of supporting near real-time scenarios, making them particularly useful for alerting and fast detection of issues.
+* Query metrics (this module)- execute read-only queries against [Azure Monitor Metrics][metrics_overview]
+* Query logs ([query/azlogs][azlogs])- execute read-only queries against [Azure Monitor Logs][logs_overview]
+* Upload logs ([ingestion/azlogs][ingestion/azlogs])- send custom logs to [Azure Monitor][azure_monitor_overview] using the [Logs Ingestion API][ingestion_overview]
 
 [Source code][azmetrics_repo] | [Package (pkg.go.dev)][azmetrics_pkg_go] | [REST API documentation][monitor_rest_docs] | [Product documentation][monitor_docs] | Samples
 
@@ -37,6 +37,8 @@ Example client
 
 ## Key concepts
 
+[Azure Monitor Metrics][metrics_overview] collects numeric data from monitored resources into a time series database. Metrics are numerical values that are collected at regular intervals and describe some aspect of a system at a particular time. Metrics are lightweight and capable of supporting near real-time scenarios, making them particularly useful for alerting and fast detection of issues.
+
 ### Metrics data structure
 
 Each set of metric values is a time series with the following characteristics:
@@ -65,6 +67,7 @@ the [Code of Conduct FAQ][coc_faq] or contact [opencode@microsoft.com][coc_conta
 comments.
 
 <!-- LINKS -->
+[azlogs]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/query/azlogs
 [azmetrics_repo]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/monitor/query/azmetrics
 [azmetrics_pkg_go]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/query/azmetrics
 [azure_identity]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity
@@ -73,6 +76,9 @@ comments.
 [azure_sub]: https://azure.microsoft.com/free/
 [cloud_documentation]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud
 [default_cred_ref]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/azidentity#defaultazurecredential
+[ingestion/azlogs]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/ingestion/azlogs
+[ingestion_overview]: https://learn.microsoft.com/azure/azure-monitor/logs/logs-ingestion-api-overview
+[logs_overview]: https://learn.microsoft.com/azure/azure-monitor/logs/data-platform-logs
 [monitor_docs]: https://learn.microsoft.com/azure/azure-monitor/
 [monitor_rest_docs]: https://learn.microsoft.com/rest/api/monitor/
 [multi-metrics]: https://learn.microsoft.com/azure/azure-monitor/essentials/data-platform-metrics#multi-dimensional-metrics

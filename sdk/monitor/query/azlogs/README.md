@@ -1,10 +1,10 @@
-# Azure Monitor Query client module for Go
+# Azure Monitor Query Logs client module for Go
 
-The Azure Monitor Query client module is used to execute read-only queries against [Azure Monitor][azure_monitor_overview]'s log data platform.
+* Query logs (this module): execute read-only queries against [Azure Monitor Logs][logs_overview]
+* Query metrics ([query/azmetrics][azmetrics]): execute read-only queries against [Azure Monitor Metrics][metrics_overview]
+* Upload logs ([ingestion/azlogs][ingestion_azlogs]): send custom logs to [Azure Monitor][azure_monitor_overview] using the [Logs Ingestion API][ingestion_overview]
 
-[Logs][logs_overview] collects and organizes log and performance data from monitored resources. Data from different sources such as platform logs from Azure services, log and performance data from virtual machines agents, and usage and performance data from apps can be consolidated into a single [Azure Log Analytics workspace][log_analytics_workspace]. The various data types can be analyzed together using the [Kusto Query Language][kusto_query_language]. See the [Kusto to SQL cheat sheet][kusto_to_sql] for more information.
-
-Source code | Package (pkg.go.dev) | [REST API documentation][monitor_rest_docs] | [Product documentation][monitor_docs] | Samples
+[Source code][source_code] | [Package (pkg.go.dev)][pkg_go] | [REST API documentation][monitor_rest_docs] | [Product documentation][monitor_docs] | [Samples][examples]
 
 ## Getting started
 
@@ -12,9 +12,9 @@ Source code | Package (pkg.go.dev) | [REST API documentation][monitor_rest_docs]
 
 * Go, version 1.18 or higher - [Install Go](https://go.dev/doc/install)
 * Azure subscription - [Create a free account][azure_sub]
-* To query Logs, you need one of the following things:
+* To query logs, you need one of the following things:
   * An [Azure Log Analytics workspace][log_analytics_workspace_create]
-  * The resource URI of an Azure resource (Storage Account, Key Vault, Cosmos DB, etc.)
+  * The resource ID of an Azure resource (Storage Account, Key Vault, Cosmos DB, etc.)
 
 ### Install the packages
 
@@ -35,9 +35,11 @@ The clients default to the Azure public cloud. For other cloud configurations, s
 
 #### Create a client
 
-Example client.
+Example [client][example_client].
 
 ## Key concepts
+
+[Azure Monitor Logs][logs_overview] collects and organizes log and performance data from monitored resources. Data from different sources such as platform logs from Azure services, log and performance data from virtual machines agents, and usage and performance data from apps can be consolidated into a single [Azure Log Analytics workspace][log_analytics_workspace]. The various data types can be analyzed together using the [Kusto Query Language][kusto_query_language]. See the [Kusto to SQL cheat sheet][kusto_to_sql] for more information.
 
 ### Timespan
 
@@ -59,7 +61,7 @@ To run the same query against multiple Log Analytics workspaces, add the additio
 
 When multiple workspaces are included in the query, the logs in the result table are not grouped according to the workspace from which they were retrieved.
 
-#### Increase wait time, include statistics, include render (visualization)
+#### Increase wait time, include statistics, include visualization
 
 The `LogsQueryOptions` type is used for advanced logs options.
 
@@ -81,7 +83,7 @@ azlogs.QueryWorkspaceOptions{
 
 ## Examples
 
-Get started with our examples.
+Get started with our [examples][examples].
 
 ## Contributing
 
@@ -96,19 +98,27 @@ the [Code of Conduct FAQ][coc_faq] or contact [opencode@microsoft.com][coc_conta
 comments.
 
 <!-- LINKS -->
+[azmetrics]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/query/azmetrics
 [azure_identity]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity
 [azure_sub]: https://azure.microsoft.com/free/
 [azure_monitor_overview]: https://learn.microsoft.com/azure/azure-monitor/overview
 [cloud_documentation]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud
 [default_cred_ref]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/azidentity#defaultazurecredential
+[example_client]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/query/azlogs#example-NewClient
+[examples]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/query/azlogs#pkg-examples
+[ingestion_azlogs]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/ingestion/azlogs
+[ingestion_overview]: https://learn.microsoft.com/azure/azure-monitor/logs/logs-ingestion-api-overview
 [kusto_query_language]: https://learn.microsoft.com/azure/data-explorer/kusto/query/
 [kusto_to_sql]: https://learn.microsoft.com/azure/data-explorer/kusto/query/sqlcheatsheet
 [log_analytics_workspace]: https://learn.microsoft.com/azure/azure-monitor/logs/log-analytics-workspace-overview
 [log_analytics_workspace_create]: https://learn.microsoft.com/azure/azure-monitor/logs/quick-create-workspace
 [logs_overview]: https://learn.microsoft.com/azure/azure-monitor/logs/data-platform-logs
+[metrics_overview]: https://learn.microsoft.com/azure/azure-monitor/essentials/data-platform-metrics
 [monitor_docs]: https://learn.microsoft.com/azure/azure-monitor/
 [monitor_rest_docs]: https://learn.microsoft.com/rest/api/monitor/
+[pkg_go]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/query/azlogs
 [service_limits]: https://learn.microsoft.com/azure/azure-monitor/service-limits#la-query-api
+[source_code]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/monitor/query/azlogs
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/

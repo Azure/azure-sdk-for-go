@@ -1,14 +1,9 @@
 # Release History
 
-## 0.1.1 (Unreleased)
-
-### Features Added
+## 1.0.0 (2024-04-10)
 
 ### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+* Removed pointers from slices
 
 ## 0.1.0 (2024-03-07)
 

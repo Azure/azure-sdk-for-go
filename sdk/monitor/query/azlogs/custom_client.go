@@ -35,7 +35,7 @@ func NewClient(credential azcore.TokenCredential, options *ClientOptions) (*Clie
 	if reflect.ValueOf(options.Cloud).IsZero() {
 		options.Cloud = cloud.AzurePublic
 	}
-	c, ok := options.Cloud.Services[ServiceNameLogs]
+	c, ok := options.Cloud.Services[ServiceName]
 	if !ok || c.Audience == "" || c.Endpoint == "" {
 		return nil, errors.New("provided Cloud field is missing Azure Monitor Logs configuration")
 	}
@@ -109,8 +109,8 @@ func (i TimeInterval) Values() (time.Time, time.Time, error) {
 	return start, end, nil
 }
 
-// LogsQueryOptions sets server timeout, query statistics and visualization information
-type LogsQueryOptions struct {
+// QueryOptions sets server timeout, query statistics and visualization information
+type QueryOptions struct {
 	// Set Statistics to true to get logs query execution statistics,
 	// such as CPU and memory consumption. Defaults to false.
 	Statistics *bool
@@ -126,9 +126,9 @@ type LogsQueryOptions struct {
 	Wait *int
 }
 
-// preferHeader converts LogsQueryOptions from struct to properly formatted sting
+// preferHeader converts QueryOptions from struct to properly formatted sting
 // to be used in the request Prefer Header
-func (l LogsQueryOptions) preferHeader() string {
+func (l QueryOptions) preferHeader() string {
 	var options []string
 	if l.Statistics != nil && *l.Statistics {
 		options = append(options, "include-statistics=true")

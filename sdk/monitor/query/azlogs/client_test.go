@@ -124,7 +124,7 @@ func TestQueryWorkspace_AdvancedQuerySuccess(t *testing.T) {
 	client := startTest(t)
 
 	res, err := client.QueryWorkspace(context.Background(), workspaceID, azlogs.QueryBody{Query: &query},
-		&azlogs.QueryWorkspaceOptions{Options: &azlogs.LogsQueryOptions{Statistics: to.Ptr(true), Visualization: to.Ptr(true), Wait: to.Ptr(600)}})
+		&azlogs.QueryWorkspaceOptions{Options: &azlogs.QueryOptions{Statistics: to.Ptr(true), Visualization: to.Ptr(true), Wait: to.Ptr(600)}})
 	require.NoError(t, err)
 	require.Nil(t, res.Error)
 	require.NotNil(t, res.Tables)
@@ -196,7 +196,7 @@ func TestQueryResource_Advanced(t *testing.T) {
 	client := startTest(t)
 
 	res, err := client.QueryResource(context.Background(), resourceURI, azlogs.QueryBody{Query: &query},
-		&azlogs.QueryResourceOptions{Options: &azlogs.LogsQueryOptions{Statistics: to.Ptr(true), Visualization: to.Ptr(true), Wait: to.Ptr(600)}})
+		&azlogs.QueryResourceOptions{Options: &azlogs.QueryOptions{Statistics: to.Ptr(true), Visualization: to.Ptr(true), Wait: to.Ptr(600)}})
 	require.NoError(t, err)
 	require.Nil(t, res.Error)
 	require.NotNil(t, res.Tables)

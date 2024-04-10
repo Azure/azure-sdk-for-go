@@ -63,17 +63,17 @@ When multiple workspaces are included in the query, the logs in the result table
 
 #### Increase wait time, include statistics, include visualization
 
-The `LogsQueryOptions` type is used for advanced logs options.
+The `QueryOptions` type is used for advanced logs options.
 
-* By default, your query will run for up to three minutes. To increase the default timeout, set `LogsQueryOptions.Wait` to the desired number of seconds. The maximum wait time is 10 minutes (600 seconds).
+* By default, your query will run for up to three minutes. To increase the default timeout, set `QueryOptions.Wait` to the desired number of seconds. The maximum wait time is 10 minutes (600 seconds).
 
-* To get logs query execution statistics, such as CPU and memory consumption, set `LogsQueryOptions.Statistics` to `true`.
+* To get logs query execution statistics, such as CPU and memory consumption, set `QueryOptions.Statistics` to `true`.
 
-* To get visualization data for logs queries, set `LogsQueryOptions.Visualization` to `true`.
+* To get visualization data for logs queries, set `QueryOptions.Visualization` to `true`.
 
 ```go
 azlogs.QueryWorkspaceOptions{
-			Options: &azlogs.LogsQueryOptions{
+			Options: &azlogs.QueryOptions{
 				Statistics:    to.Ptr(true),
 				Visualization: to.Ptr(true),
 				Wait:          to.Ptr(600),

@@ -70,6 +70,11 @@ directive:
   - from: swagger-document
     where: $.definitions.queryResults.properties.render
     transform: $["x-ms-client-name"] = "Visualization"
+
+  # rename LogsColumnType to ColumnType
+  - from: swagger-document
+    where: $.definitions.logsColumnType.x-ms-enum
+    transform: $["name"] = "ColumnType"
   
   # rename Prefer to Options
   - from: swagger-document
@@ -77,15 +82,10 @@ directive:
     transform: $["x-ms-client-name"] = "Options"
   - from: options.go
     where: $
-    transform: return $.replace(/Options \*string/g, "Options *LogsQueryOptions");
+    transform: return $.replace(/Options \*string/g, "Options *QueryOptions");
   - from: client.go
     where: $
     transform: return $.replace(/\*options\.Options/g, "options.Options.preferHeader()");
-
-  # add descriptions for models and constants that don't have them
-  - from: constants.go
-    where: $
-    transform: return $.replace(/type ResultType string/, "//ResultType - Reduces the set of data collected. The syntax allowed depends on the operation. See the operation's description for details.\ntype ResultType string");
 
   # delete unused error models
   - from: models.go

@@ -1,5 +1,26 @@
 # Release History
 
+## 1.3.0-beta.2 (2024-04-26)
+### Features Added
+
+- New enum type `LedgerSKU` with values `LedgerSKUBasic`, `LedgerSKUStandard`, `LedgerSKUUnknown`
+- New function `*LedgerClient.BeginRestore(context.Context, string, string, Restore, *LedgerClientBeginRestoreOptions) (*runtime.Poller[LedgerClientRestoreResponse], error)`
+- New function `*LedgerClient.BeginBackup(context.Context, string, string, Backup, *LedgerClientBeginBackupOptions) (*runtime.Poller[LedgerClientBackupResponse], error)`
+- New function `*ManagedCCFClient.BeginRestore(context.Context, string, string, ManagedCCFRestore, *ManagedCCFClientBeginRestoreOptions) (*runtime.Poller[ManagedCCFClientRestoreResponse], error)`
+- New function `*ManagedCCFClient.BeginBackup(context.Context, string, string, ManagedCCFBackup, *ManagedCCFClientBeginBackupOptions) (*runtime.Poller[ManagedCCFClientBackupResponse], error)`
+- New struct `Backup`
+- New struct `BackupResponse`
+- New struct `ManagedCCFBackup`
+- New struct `ManagedCCFBackupResponse`
+- New struct `ManagedCCFRestore`
+- New struct `ManagedCCFRestoreResponse`
+- New struct `Restore`
+- New struct `RestoreResponse`
+- New field `LedgerSKU` in struct `LedgerProperties`
+- New anonymous field `ManagedCCF` in struct `ManagedCCFClientUpdateResponse`
+- New field `RunningState` in struct `ManagedCCFProperties`
+
+
 ## 1.3.0-beta.1 (2023-11-30)
 ### Features Added
 

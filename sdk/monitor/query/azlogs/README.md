@@ -117,7 +117,6 @@ comments.
 [monitor_docs]: https://learn.microsoft.com/azure/azure-monitor/
 [monitor_rest_docs]: https://learn.microsoft.com/rest/api/monitor/
 [pkg_go]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/query/azlogs
-[samples]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/query/azlogs#pkg-examples
 [service_limits]: https://learn.microsoft.com/azure/azure-monitor/service-limits#la-query-api
 [source_code]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/monitor/query/azlogs
 [cla]: https://cla.microsoft.com

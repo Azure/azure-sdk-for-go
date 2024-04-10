@@ -32,10 +32,34 @@ type DiscoverySolutionClientListResponse struct {
 	DiscoveryResponse
 }
 
+// DiscoverySolutionNLPSubscriptionScopeClientPostResponse contains the response from method DiscoverySolutionNLPSubscriptionScopeClient.Post.
+type DiscoverySolutionNLPSubscriptionScopeClientPostResponse struct {
+	// Successfully fetched list of solution metadata.
+	DiscoveryNlpResponse
+}
+
+// DiscoverySolutionNLPTenantScopeClientPostResponse contains the response from method DiscoverySolutionNLPTenantScopeClient.Post.
+type DiscoverySolutionNLPTenantScopeClientPostResponse struct {
+	// Successfully fetched list of solution metadata.
+	DiscoveryNlpResponse
+}
+
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	// A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to get the next set of results.
 	OperationListResult
+}
+
+// SimplifiedSolutionsClientCreateResponse contains the response from method SimplifiedSolutionsClient.BeginCreate.
+type SimplifiedSolutionsClientCreateResponse struct {
+	// Simplified Solutions response.
+	SimplifiedSolutionsResource
+}
+
+// SimplifiedSolutionsClientGetResponse contains the response from method SimplifiedSolutionsClient.Get.
+type SimplifiedSolutionsClientGetResponse struct {
+	// Simplified Solutions response.
+	SimplifiedSolutionsResource
 }
 
 // SolutionClientCreateResponse contains the response from method SolutionClient.BeginCreate.
@@ -54,6 +78,17 @@ type SolutionClientGetResponse struct {
 type SolutionClientUpdateResponse struct {
 	// Solution response.
 	SolutionResource
+}
+
+// SolutionClientWarmUpResponse contains the response from method SolutionClient.WarmUp.
+type SolutionClientWarmUpResponse struct {
+	// placeholder for future response values
+}
+
+// SolutionSelfHelpClientGetResponse contains the response from method SolutionSelfHelpClient.Get.
+type SolutionSelfHelpClientGetResponse struct {
+	// Self Help Solution response.
+	SolutionResourceSelfHelp
 }
 
 // TroubleshootersClientContinueResponse contains the response from method TroubleshootersClient.Continue.

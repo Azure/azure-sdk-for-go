@@ -16,57 +16,93 @@ import (
 // ClientFactory is a client factory used to create any client in this module.
 // Don't use this type directly, use NewClientFactory instead.
 type ClientFactory struct {
-	credential azcore.TokenCredential
-	options    *arm.ClientOptions
+	subscriptionID string
+	internal       *arm.Client
 }
 
 // NewClientFactory creates a new instance of ClientFactory with the specified values.
 // The parameter values will be propagated to any client created from this factory.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
-func NewClientFactory(credential azcore.TokenCredential, options *arm.ClientOptions) (*ClientFactory, error) {
-	_, err := arm.NewClient(moduleName, moduleVersion, credential, options)
+func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClientFactory, error) {
+	internal, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	return &ClientFactory{
-		credential: credential,
-		options:    options.Clone(),
+		subscriptionID: subscriptionID,
+		internal:       internal,
 	}, nil
 }
 
 // NewCheckNameAvailabilityClient creates a new instance of CheckNameAvailabilityClient.
 func (c *ClientFactory) NewCheckNameAvailabilityClient() *CheckNameAvailabilityClient {
-	subClient, _ := NewCheckNameAvailabilityClient(c.credential, c.options)
-	return subClient
+	return &CheckNameAvailabilityClient{
+		internal: c.internal,
+	}
 }
 
 // NewDiagnosticsClient creates a new instance of DiagnosticsClient.
 func (c *ClientFactory) NewDiagnosticsClient() *DiagnosticsClient {
-	subClient, _ := NewDiagnosticsClient(c.credential, c.options)
-	return subClient
+	return &DiagnosticsClient{
+		internal: c.internal,
+	}
 }
 
 // NewDiscoverySolutionClient creates a new instance of DiscoverySolutionClient.
 func (c *ClientFactory) NewDiscoverySolutionClient() *DiscoverySolutionClient {
-	subClient, _ := NewDiscoverySolutionClient(c.credential, c.options)
-	return subClient
+	return &DiscoverySolutionClient{
+		internal: c.internal,
+	}
+}
+
+// NewDiscoverySolutionNLPSubscriptionScopeClient creates a new instance of DiscoverySolutionNLPSubscriptionScopeClient.
+func (c *ClientFactory) NewDiscoverySolutionNLPSubscriptionScopeClient() *DiscoverySolutionNLPSubscriptionScopeClient {
+	return &DiscoverySolutionNLPSubscriptionScopeClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewDiscoverySolutionNLPTenantScopeClient creates a new instance of DiscoverySolutionNLPTenantScopeClient.
+func (c *ClientFactory) NewDiscoverySolutionNLPTenantScopeClient() *DiscoverySolutionNLPTenantScopeClient {
+	return &DiscoverySolutionNLPTenantScopeClient{
+		internal: c.internal,
+	}
 }
 
 // NewOperationsClient creates a new instance of OperationsClient.
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
-	subClient, _ := NewOperationsClient(c.credential, c.options)
-	return subClient
+	return &OperationsClient{
+		internal: c.internal,
+	}
+}
+
+// NewSimplifiedSolutionsClient creates a new instance of SimplifiedSolutionsClient.
+func (c *ClientFactory) NewSimplifiedSolutionsClient() *SimplifiedSolutionsClient {
+	return &SimplifiedSolutionsClient{
+		internal: c.internal,
+	}
 }
 
 // NewSolutionClient creates a new instance of SolutionClient.
 func (c *ClientFactory) NewSolutionClient() *SolutionClient {
-	subClient, _ := NewSolutionClient(c.credential, c.options)
-	return subClient
+	return &SolutionClient{
+		internal: c.internal,
+	}
+}
+
+// NewSolutionSelfHelpClient creates a new instance of SolutionSelfHelpClient.
+func (c *ClientFactory) NewSolutionSelfHelpClient() *SolutionSelfHelpClient {
+	return &SolutionSelfHelpClient{
+		internal: c.internal,
+	}
 }
 
 // NewTroubleshootersClient creates a new instance of TroubleshootersClient.
 func (c *ClientFactory) NewTroubleshootersClient() *TroubleshootersClient {
-	subClient, _ := NewTroubleshootersClient(c.credential, c.options)
-	return subClient
+	return &TroubleshootersClient{
+		internal: c.internal,
+	}
 }

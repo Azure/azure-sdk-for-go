@@ -18,14 +18,13 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/selfhelp/armselfhelp/v2"
 	"net/http"
 	"net/url"
-	"regexp"
 )
 
 // DiscoverySolutionServer is a fake server for instances of the armselfhelp.DiscoverySolutionClient type.
 type DiscoverySolutionServer struct {
 	// NewListPager is the fake for method DiscoverySolutionClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(scope string, options *armselfhelp.DiscoverySolutionClientListOptions) (resp azfake.PagerResponder[armselfhelp.DiscoverySolutionClientListResponse])
+	NewListPager func(options *armselfhelp.DiscoverySolutionClientListOptions) (resp azfake.PagerResponder[armselfhelp.DiscoverySolutionClientListResponse])
 }
 
 // NewDiscoverySolutionServerTransport creates a new instance of DiscoverySolutionServerTransport with the provided implementation.
@@ -76,17 +75,7 @@ func (d *DiscoverySolutionServerTransport) dispatchNewListPager(req *http.Reques
 	}
 	newListPager := d.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Help/discoverySolutions`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
 		qp := req.URL.Query()
-		scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-		if err != nil {
-			return nil, err
-		}
 		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
 		if err != nil {
 			return nil, err
@@ -104,7 +93,7 @@ func (d *DiscoverySolutionServerTransport) dispatchNewListPager(req *http.Reques
 				Skiptoken: skiptokenParam,
 			}
 		}
-		resp := d.srv.NewListPager(scopeParam, options)
+		resp := d.srv.NewListPager(options)
 		newListPager = &resp
 		d.newListPager.add(req, newListPager)
 		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armselfhelp.DiscoverySolutionClientListResponse, createLink func() string) {

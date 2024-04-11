@@ -14,6 +14,7 @@ use: "@autorest/go@4.0.0-preview.61"
 inject-spans: true
 version: "^3.0.0"
 slice-elements-byval: true
+rawjson-as-bytes: true
 
 directive:
   # delete extra endpoints

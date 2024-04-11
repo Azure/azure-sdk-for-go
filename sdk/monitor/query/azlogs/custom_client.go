@@ -74,7 +74,7 @@ func (e *ErrorInfo) Error() string {
 	return string(e.data)
 }
 
-// Row of data in a table, types of data used by service specified in LogsColumnType
+// Row of data in a table, types of data used by service specified in ColumnType
 type Row []any
 
 // TimeInterval specifies the time range over which to query.

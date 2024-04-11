@@ -4,6 +4,7 @@
 
 ### Breaking Changes
 * Removed pointers from slices
+* Renamed `MetricValues` to `MetricData`
 
 ### Other Changes
 * Updated to use API version 2024-02-01

@@ -58,11 +58,11 @@ type Metric struct {
 // MetricResults - The metrics result for a resource.
 type MetricResults struct {
 	// The collection of metric data responses per resource, per metric.
-	Values []MetricValues
+	Values []MetricData
 }
 
-// MetricValues - Metric data values.
-type MetricValues struct {
+// MetricData - Metric data values.
+type MetricData struct {
 	// REQUIRED; The end time, in datetime format, for which the data was retrieved.
 	EndTime *string
 

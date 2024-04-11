@@ -62,13 +62,11 @@ func run(m *testing.M) int {
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		credential = &FakeCredential{}
 	} else {
-		// tenantID := getEnvVar("AZLOGS_TENANT_ID", "")
-		// clientID := getEnvVar("AZLOGS_CLIENT_ID", "")
-		// secret := getEnvVar("AZLOGS_CLIENT_SECRET", "")
-		// var err error
-		// credential, err = azidentity.NewClientSecretCredential(tenantID, clientID, secret, nil)
+		tenantID := getEnvVar("AZLOGS_TENANT_ID", "")
+		clientID := getEnvVar("AZLOGS_CLIENT_ID", "")
+		secret := getEnvVar("AZLOGS_CLIENT_SECRET", "")
 		var err error
-		credential, err = azidentity.NewDefaultAzureCredential(nil)
+		credential, err = azidentity.NewClientSecretCredential(tenantID, clientID, secret, nil)
 		if err != nil {
 			panic(err)
 		}

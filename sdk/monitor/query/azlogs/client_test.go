@@ -31,7 +31,7 @@ func TestClient(t *testing.T) {
 	c := cloud.Configuration{
 		ActiveDirectoryAuthorityHost: "https://...",
 		Services: map[cloud.ServiceName]cloud.ServiceConfiguration{
-			cloud.ResourceManager: {
+			azlogs.ServiceName: {
 				Audience: "",
 				Endpoint: "",
 			},

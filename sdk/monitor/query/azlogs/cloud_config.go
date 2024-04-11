@@ -9,18 +9,18 @@ package azlogs
 import "github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 
 // Cloud Service Names for Monitor Query Logs, used to identify the respective cloud.ServiceConfiguration
-const ServiceNameLogs cloud.ServiceName = "query/azlogs"
+const ServiceName cloud.ServiceName = "query/azlogs"
 
 func init() {
-	cloud.AzureChina.Services[ServiceNameLogs] = cloud.ServiceConfiguration{
+	cloud.AzureChina.Services[ServiceName] = cloud.ServiceConfiguration{
 		Audience: "https://api.loganalytics.azure.cn",
 		Endpoint: "https://api.loganalytics.azure.cn/v1",
 	}
-	cloud.AzureGovernment.Services[ServiceNameLogs] = cloud.ServiceConfiguration{
+	cloud.AzureGovernment.Services[ServiceName] = cloud.ServiceConfiguration{
 		Audience: "https://api.loganalytics.us",
 		Endpoint: "https://api.loganalytics.us/v1",
 	}
-	cloud.AzurePublic.Services[ServiceNameLogs] = cloud.ServiceConfiguration{
+	cloud.AzurePublic.Services[ServiceName] = cloud.ServiceConfiguration{
 		Audience: "https://api.loganalytics.io",
 		Endpoint: "https://api.loganalytics.io/v1",
 	}

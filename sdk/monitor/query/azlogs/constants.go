@@ -8,34 +8,34 @@
 
 package azlogs
 
-// LogsColumnType - The data type of this column.
-type LogsColumnType string
+// ColumnType - The data type of this column.
+type ColumnType string
 
 const (
-	LogsColumnTypeBool     LogsColumnType = "bool"
-	LogsColumnTypeDatetime LogsColumnType = "datetime"
-	LogsColumnTypeDecimal  LogsColumnType = "decimal"
-	LogsColumnTypeDynamic  LogsColumnType = "dynamic"
-	LogsColumnTypeGUID     LogsColumnType = "guid"
-	LogsColumnTypeInt      LogsColumnType = "int"
-	LogsColumnTypeLong     LogsColumnType = "long"
-	LogsColumnTypeReal     LogsColumnType = "real"
-	LogsColumnTypeString   LogsColumnType = "string"
-	LogsColumnTypeTimespan LogsColumnType = "timespan"
+	ColumnTypeBool     ColumnType = "bool"
+	ColumnTypeDatetime ColumnType = "datetime"
+	ColumnTypeDecimal  ColumnType = "decimal"
+	ColumnTypeDynamic  ColumnType = "dynamic"
+	ColumnTypeGUID     ColumnType = "guid"
+	ColumnTypeInt      ColumnType = "int"
+	ColumnTypeLong     ColumnType = "long"
+	ColumnTypeReal     ColumnType = "real"
+	ColumnTypeString   ColumnType = "string"
+	ColumnTypeTimespan ColumnType = "timespan"
 )
 
-// PossibleLogsColumnTypeValues returns the possible values for the LogsColumnType const type.
-func PossibleLogsColumnTypeValues() []LogsColumnType {
-	return []LogsColumnType{
-		LogsColumnTypeBool,
-		LogsColumnTypeDatetime,
-		LogsColumnTypeDecimal,
-		LogsColumnTypeDynamic,
-		LogsColumnTypeGUID,
-		LogsColumnTypeInt,
-		LogsColumnTypeLong,
-		LogsColumnTypeReal,
-		LogsColumnTypeString,
-		LogsColumnTypeTimespan,
+// PossibleColumnTypeValues returns the possible values for the ColumnType const type.
+func PossibleColumnTypeValues() []ColumnType {
+	return []ColumnType{
+		ColumnTypeBool,
+		ColumnTypeDatetime,
+		ColumnTypeDecimal,
+		ColumnTypeDynamic,
+		ColumnTypeGUID,
+		ColumnTypeInt,
+		ColumnTypeLong,
+		ColumnTypeReal,
+		ColumnTypeString,
+		ColumnTypeTimespan,
 	}
 }

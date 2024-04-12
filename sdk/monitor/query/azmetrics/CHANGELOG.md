@@ -1,9 +1,10 @@
 # Release History
 
-## 1.0.0 (2024-04-10)
+## 1.0.0 (2024-04-15)
 
 ### Breaking Changes
 * Removed pointers from slices
+* Renamed `MetricValues` to `MetricData`
 
 ### Other Changes
 * Updated to use API version 2024-02-01

@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/support/armsupport/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/support/armsupport"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/support/resource-manager/Microsoft.Support/preview/2023-06-01-preview/examples/ListFilesForSubscriptionUnderFileWorkspace.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/106483d9f698ac3b6c0d481ab0c5fab14152e21f/specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/ListFilesForSubscriptionUnderFileWorkspace.json
 func ExampleFilesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -45,7 +45,7 @@ func ExampleFilesClient_NewListPager() {
 		// 		{
 		// 			Name: to.Ptr("test1.txt"),
 		// 			Type: to.Ptr("Microsoft.Support/files"),
-		// 			ID: to.Ptr("/subscriptions/subid/providers/Microsoft.Support/fileWorkspaces/testworkspace/files/test1.txt"),
+		// 			ID: to.Ptr("/subscriptions/132d901f-189d-4381-9214-fe68e27e05a1/providers/Microsoft.Support/fileWorkspaces/testworkspace/files/test1.txt"),
 		// 			Properties: &armsupport.FileDetailsProperties{
 		// 				ChunkSize: to.Ptr[int32](41423),
 		// 				CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-24T20:18:19.000Z"); return t}()),
@@ -56,7 +56,7 @@ func ExampleFilesClient_NewListPager() {
 		// 		{
 		// 			Name: to.Ptr("test2.txt"),
 		// 			Type: to.Ptr("Microsoft.Support/files"),
-		// 			ID: to.Ptr("/subscriptions/subid/providers/Microsoft.Support/fileWorkspaces/testworkspace/files/test2.txt"),
+		// 			ID: to.Ptr("/subscriptions/132d901f-189d-4381-9214-fe68e27e05a1/providers/Microsoft.Support/fileWorkspaces/testworkspace/files/test2.txt"),
 		// 			Properties: &armsupport.FileDetailsProperties{
 		// 				ChunkSize: to.Ptr[int32](41423),
 		// 				CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-24T20:18:19.000Z"); return t}()),
@@ -68,7 +68,7 @@ func ExampleFilesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/support/resource-manager/Microsoft.Support/preview/2023-06-01-preview/examples/GetFileDetailsForSubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/106483d9f698ac3b6c0d481ab0c5fab14152e21f/specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/GetFileDetailsForSubscription.json
 func ExampleFilesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -89,7 +89,7 @@ func ExampleFilesClient_Get() {
 	// res.FileDetails = armsupport.FileDetails{
 	// 	Name: to.Ptr("test.txt"),
 	// 	Type: to.Ptr("Microsoft.Support/files"),
-	// 	ID: to.Ptr("/subscriptions/subid/providers/Microsoft.Support/fileWorkspaces/testworkspace/files/test.txt"),
+	// 	ID: to.Ptr("/subscriptions/132d901f-189d-4381-9214-fe68e27e05a1/providers/Microsoft.Support/fileWorkspaces/testworkspace/files/test.txt"),
 	// 	Properties: &armsupport.FileDetailsProperties{
 	// 		ChunkSize: to.Ptr[int32](41423),
 	// 		CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-24T20:18:19.000Z"); return t}()),
@@ -99,7 +99,7 @@ func ExampleFilesClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/support/resource-manager/Microsoft.Support/preview/2023-06-01-preview/examples/CreateFileForSubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/106483d9f698ac3b6c0d481ab0c5fab14152e21f/specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/CreateFileForSubscription.json
 func ExampleFilesClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -122,7 +122,7 @@ func ExampleFilesClient_Create() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/support/resource-manager/Microsoft.Support/preview/2023-06-01-preview/examples/UploadFileForSubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/106483d9f698ac3b6c0d481ab0c5fab14152e21f/specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/UploadFileForSubscription.json
 func ExampleFilesClient_Upload() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

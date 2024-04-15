@@ -193,4 +193,13 @@ var defaultSanitizers = []sanitizer{
 	newBodyRegexSanitizer("-----BEGIN PRIVATE KEY-----\\\\n(?<key>.+\\\\n)*-----END PRIVATE KEY-----\\\\n", "key"),
 	newBodyKeySanitizer("$..adminPassword.value"),
 	newBodyKeySanitizer("$..decryptionKey"),
+	newBodyRegexSanitizer("(?<=<UserDelegationKey>).*?(?:<Value>)(.*)(?:</Value>)", ""),
+	newBodyRegexSanitizer("(?<=<UserDelegationKey>).*?(?:<SignedTid>)(.*)(?:</SignedTid>)", ""),
+	newBodyRegexSanitizer("(?<=<UserDelegationKey>).*?(?:<SignedOid>)(.*)(?:</SignedOid>)", ""),
+	newBodyRegexSanitizer("(?:Password=)(.*?)(?:;)", ""),
+	newBodyRegexSanitizer("(?:User ID=)(.+)(?:;)?", ""),
+	newBodyRegexSanitizer("(?:<PrimaryKey>)(.*)(?:</PrimaryKey>)", ""),
+	newBodyRegexSanitizer("(?:<SecondaryKey>)(.*)(?:</SecondaryKey>)", ""),
+	newBodyKeySanitizer("$..accountName"),
+	newBodyKeySanitizer("$.properties.DOCKER_REGISTRY_SERVER_PASSWORD"),
 }

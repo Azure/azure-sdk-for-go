@@ -534,6 +534,10 @@ type RecordingOptions struct {
 	GroupForReplace string
 	Variables       map[string]interface{}
 	TestInstance    *testing.T
+
+	// insecure allows this package's tests to configure the proxy to skip upstream TLS
+	// verification so they can use a mock upstream server having a self-signed cert
+	insecure bool
 }
 
 func defaultOptions() *RecordingOptions {

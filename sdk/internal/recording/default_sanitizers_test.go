@@ -5,74 +5,18 @@ package recording
 
 import (
 	"bytes"
-	cryptorand "crypto/rand"
-	"crypto/rsa"
-	"crypto/tls"
-	"crypto/x509"
 	"encoding/json"
-	"encoding/pem"
 	"fmt"
 	"io"
-	"math/big"
 	"net/http"
 	"os"
 	"path/filepath"
 	"strings"
 	"testing"
-	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/stretchr/testify/require"
 )
-
-// newMockServerForProxy creates a mock.Server with TLS enabled and configures the test proxy to trust the Server's
-// cert. It assumes the test proxy is running and reachable using defaultOptions(), and handles closing the Server.
-func newMockServerForProxy(t *testing.T) *mock.Server {
-	pk, err := rsa.GenerateKey(cryptorand.Reader, 2048)
-	require.NoError(t, err)
-	template := &x509.Certificate{
-		NotAfter:     time.Now().Add(time.Minute),
-		SerialNumber: big.NewInt(1),
-	}
-	certBytes, err := x509.CreateCertificate(cryptorand.Reader, template, template, &pk.PublicKey, pk)
-	require.NoError(t, err)
-	srv, close := mock.NewTLSServer(
-		mock.WithTLSConfig(&tls.Config{
-			Certificates: []tls.Certificate{{
-				Certificate: [][]byte{certBytes},
-				PrivateKey:  pk,
-			}},
-		}),
-	)
-	t.Cleanup(close)
-
-	// configure the proxy to trust the mock.Server's TLS cert
-	c := *http.DefaultClient
-	c.Transport = &http.Transport{
-		TLSClientConfig: &tls.Config{
-			InsecureSkipVerify: true,
-		},
-	}
-	certPEM := string(pem.EncodeToMemory(&pem.Block{
-		Bytes: certBytes,
-		Type:  "CERTIFICATE",
-	}))
-	res, err := c.Post(
-		fmt.Sprintf("https://localhost:%d/Admin/SetRecordingOptions", defaultOptions().ProxyPort),
-		"application/json",
-		io.NopCloser(strings.NewReader(
-			fmt.Sprintf(`{"Transport":{"TLSValidationCert":%q}}`, strings.ReplaceAll(certPEM, "\n", "")),
-		)),
-	)
-	require.NoError(t, err)
-	require.NotNil(t, res)
-	if res.StatusCode != http.StatusOK {
-		d, err := io.ReadAll(res.Body)
-		require.NoError(t, err)
-		require.Failf(t, "failed to configure proxy to trust mock server's TLS cert: %s", string(d))
-	}
-	return srv
-}
 
 func TestDefaultSanitizers(t *testing.T) {
 	before := recordMode
@@ -80,7 +24,9 @@ func TestDefaultSanitizers(t *testing.T) {
 	recordMode = RecordingMode
 
 	t.Setenv(proxyManualStartEnv, "false")
-	proxy, err := StartTestProxy("", nil)
+	o := *defaultOptions()
+	o.insecure = true
+	proxy, err := StartTestProxy("", &o)
 	require.NoError(t, err)
 	defer func() {
 		err := StopTestProxy(proxy)
@@ -91,7 +37,8 @@ func TestDefaultSanitizers(t *testing.T) {
 	client, err := NewRecordingHTTPClient(t, nil)
 	require.NoError(t, err)
 
-	srv := newMockServerForProxy(t)
+	srv, close := mock.NewTLSServer()
+	defer close()
 
 	// build a request and response containing all the values that should be sanitized by default
 	fail := "FAIL"
@@ -137,6 +84,8 @@ func TestDefaultSanitizers(t *testing.T) {
 		strings.ReplaceAll("-----BEGIN PRIVATE KEY-----\n*\n*\n*\n-----END PRIVATE KEY-----\n", "*", fail),
 		failSAS,
 		strings.Join([]string{"AccessKey", "accesskey", "Accesskey", "AccountKey", "SharedAccessKey"}, "="+fail+";") + "=" + fail,
+		strings.ReplaceAll("<UserDelegationKey><SignedOid>*</SignedOid><SignedTid>*</SignedTid><Value>*</Value></UserDelegationKey>", "*", fail),
+		fmt.Sprintf("<PrimaryKey>%s</PrimaryKey>", failSAS),
 	} {
 		k := fmt.Sprint(i)
 		require.NotContains(t, body, k, "test bug: body already has key %q", k)

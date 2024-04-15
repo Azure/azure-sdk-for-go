@@ -4,6 +4,7 @@
 
 ### Features Added
 * Options types for `SetBodilessMatcher` and `SetDefaultMatcher` now embed `RecordingOptions`
+* Added a collection of default sanitizers for test recordings
 
 ### Breaking Changes
 

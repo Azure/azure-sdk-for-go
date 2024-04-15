@@ -8,5 +8,5 @@ package azlogs
 
 const (
 	moduleName = "github.com/Azure/azure-sdk-for-go/sdk/monitor/query/azlogs"
-	version    = "v1.0.0"
+	version    = "v1.0.1"
 )

@@ -298,6 +298,13 @@ type BlobClientDownloadOptions struct {
 	// [https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations]
 	Timeout *int32
 
+	// Optional. Valid only when Hierarchical Namespace is enabled for the account. If "true", the user identity values returned
+	// in the x-ms-owner, x-ms-group, and x-ms-acl response headers will be
+	// transformed from Azure Active Directory Object IDs to User Principal Names. If "false", the values will be returned as
+	// Azure Active Directory Object IDs. The default value is false. Note that group
+	// and application Object IDs are not translated because they do not have unique friendly names.
+	UserPrincipalName *bool
+
 	// The version id parameter is an opaque DateTime value that, when present, specifies the version of the blob to operate on.
 	// It's for service version 2019-10-10 and newer.
 	VersionID *string
@@ -322,6 +329,13 @@ type BlobClientGetPropertiesOptions struct {
 	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for Blob Service Operations.
 	// [https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations]
 	Timeout *int32
+
+	// Optional. Valid only when Hierarchical Namespace is enabled for the account. If "true", the user identity values returned
+	// in the x-ms-owner, x-ms-group, and x-ms-acl response headers will be
+	// transformed from Azure Active Directory Object IDs to User Principal Names. If "false", the values will be returned as
+	// Azure Active Directory Object IDs. The default value is false. Note that group
+	// and application Object IDs are not translated because they do not have unique friendly names.
+	UserPrincipalName *bool
 
 	// The version id parameter is an opaque DateTime value that, when present, specifies the version of the blob to operate on.
 	// It's for service version 2019-10-10 and newer.

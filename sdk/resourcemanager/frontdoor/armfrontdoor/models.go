@@ -890,8 +890,9 @@ type PolicySettings struct {
 	// Describes if the policy is in enabled or disabled state. Defaults to Enabled if not specified.
 	EnabledState *PolicyEnabledState
 
-	// Defines the JavaScript challenge cookie validity lifetime in minutes. Value must be an integer between 5 and 1440 with
-	// the default value being 30.
+	// Defines the JavaScript challenge cookie validity lifetime in minutes. This setting is only applicable to Premium_AzureFrontDoor.
+	// Value must be an integer between 5 and 1440 with the default value
+	// being 30.
 	JavascriptChallengeExpirationInMinutes *int32
 
 	// Defines rules that scrub sensitive fields in the Web Application Firewall logs.

@@ -10,15 +10,15 @@ Metrics has a larger split. Users wanting to use the existing ARM API's should u
 
 ### Name changes
 
-| `azquery`   | `azlogs` | `azmetrics` | `armmonitor` | 
+| old module   | old method name |new module | new method name | 
 | ----------- | ----------- | --- | --- |
-| LogsClient.QueryWorkspace      |   Client.QueryWorkspace   | - | - |
-| LogsClient.QueryResource |  Client.QueryResource | - | - |
-| LogsClient.QueryBatch | N/A | - | - |
-| - | - | Client.QueryResources | - | 
-| MetricsClient.QueryResource       | - | - | MetricsClient.List |
-| MetricsClient.NewListDefinitionsPager     | - | -    | MetricDefinitionsClient.List |
-| MetricsClient.NewListNamespacesPager    | - | -     | MetricNamespacesClient.List   | 
+| `azquery` | LogsClient.QueryWorkspace | `azlogs` | Client.QueryWorkspace |
+|  | LogsClient.QueryResource |  | Client.QueryResource |
+| | LogsClient.QueryBatch | | N/A |
+| | MetricsClient.QueryResource | `armmonitor` | MetricsClient.List |
+| | MetricsClient.NewListDefinitionsPager  | | MetricDefinitionsClient.NewListPager |
+| | MetricsClient.NewListNamespacesPager  | | MetricNamespacesClient.NewListPager |
+|  | N/A | `azmetrics` | Client.QueryResources | 
 
 The `azlogs` module does not contain the `QueryBatch` method. To request that functionality, please [file an issue in our github repo][github_issues], so we can prioritize adding it to `azlogs`.
 

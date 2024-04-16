@@ -7,7 +7,7 @@ retract v0.1.0
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.10.0
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.6.0-beta.2
-	github.com/Azure/azure-sdk-for-go/sdk/internal v1.5.2
+	github.com/Azure/azure-sdk-for-go/sdk/internal v1.6.0
 	github.com/AzureAD/microsoft-authentication-extensions-for-go/cache v0.1.1
 	github.com/AzureAD/microsoft-authentication-library-for-go v1.2.2
 	github.com/google/uuid v1.6.0

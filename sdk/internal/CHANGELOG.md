@@ -1,16 +1,11 @@
 # Release History
 
-## 1.6.0 (Unreleased)
+## 1.6.0 (2024-04-16)
 
 ### Features Added
+
 * Options types for `SetBodilessMatcher` and `SetDefaultMatcher` now embed `RecordingOptions`
 * Added a collection of default sanitizers for test recordings
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
 
 ## 1.5.2 (2024-02-06)
 

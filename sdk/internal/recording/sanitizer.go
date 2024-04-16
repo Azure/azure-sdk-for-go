@@ -106,7 +106,7 @@ func handleProxyResponse(resp *http.Response, err error) error {
 	if err != nil {
 		return err
 	}
-	return fmt.Errorf("there was an error communicating with the test proxy: %s", body)
+	return fmt.Errorf("%s responded %s: %s", resp.Request.URL, resp.Status, body)
 }
 
 // handleTestLevelSanitizer sets the "x-recording-id" header if options.TestInstance is not nil

@@ -5,7 +5,7 @@ go 1.18
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.10.0
 	github.com/Azure/azure-sdk-for-go/sdk/data/aztables v1.0.0
-	github.com/Azure/azure-sdk-for-go/sdk/internal v1.5.2
+	github.com/Azure/azure-sdk-for-go/sdk/internal v1.6.0
 )
 
 require (

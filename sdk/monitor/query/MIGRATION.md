@@ -192,7 +192,7 @@ func main() {
         ValidateDimensions:  to.Ptr(false),
     })
     if err != nil {
-        log.Fatalf("failed to finish the request: %v", err)
+        //TODO: handle partial error
     }
 }
 ```

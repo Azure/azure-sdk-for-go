@@ -1,10 +1,11 @@
 # Release History
 
-## 1.6.1 (Unreleased)
+## 1.7.0 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
+* Deprecated the `go-vcr` based recording API. Its methods now return errors or panic.
 
 ### Bugs Fixed
 

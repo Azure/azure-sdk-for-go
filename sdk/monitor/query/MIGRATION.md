@@ -12,13 +12,13 @@ Metrics has a larger split. Users wanting to use the existing ARM API's should u
 
 | old module   | old method name |new module | new method name | 
 | ----------- | ----------- | --- | --- |
-| `azquery` | LogsClient.QueryWorkspace | `azlogs` | Client.QueryWorkspace |
-|  | LogsClient.QueryResource |  | Client.QueryResource |
-| | LogsClient.QueryBatch | | N/A |
-| | MetricsClient.QueryResource | `armmonitor` | MetricsClient.List |
-| | MetricsClient.NewListDefinitionsPager  | | MetricDefinitionsClient.NewListPager |
-| | MetricsClient.NewListNamespacesPager  | | MetricNamespacesClient.NewListPager |
-|  | N/A | `azmetrics` | Client.QueryResources | 
+| `azquery` | `LogsClient.QueryWorkspace` | `azlogs` | `Client.QueryWorkspace` |
+|  | `LogsClient.QueryResource` |  | `Client.QueryResource` |
+| | `LogsClient.QueryBatch` | | N/A |
+| | `MetricsClient.QueryResource` | `armmonitor` | `MetricsClient.List` |
+| | `MetricsClient.NewListDefinitionsPager`  | | `MetricDefinitionsClient.NewListPager` |
+| | `MetricsClient.NewListNamespacesPager`  | | `MetricNamespacesClient.NewListPager` |
+|  | N/A | `azmetrics` | `Client.QueryResources` | 
 
 The `azlogs` module does not contain the `QueryBatch` method. To request that functionality, please [file an issue in our github repo][github_issues], so we can prioritize adding it to `azlogs`.
 
@@ -37,29 +37,29 @@ import (
 )
 
 func main() {
-    // create the logs client
-    cred, err := azidentity.NewDefaultAzureCredential(nil)
-    if err != nil {
-        //TODO: handle error
-    }
-    client, err := azquery.NewLogsClient(cred, nil)
-    if err != nil {
-        //TODO: handle error
-    }
+	// create the logs client
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		//TODO: handle error
+	}
+	client, err := azquery.NewLogsClient(cred, nil)
+	if err != nil {
+		//TODO: handle error
+	}
 
-    // execute the logs query
-    res, err := client.QueryWorkspace(context.TODO(), workspaceID,
-        azquery.Body{
-            Query:    to.Ptr("<kusto query>"),
-            Timespan: to.Ptr(azquery.NewTimeInterval(time.Date(2022, 12, 25, 0, 0, 0, 0, time.UTC), time.Date(2022, 12, 25, 12, 0, 0, 0, time.UTC))),
-        },
-        nil)
-    if err != nil {
-        //TODO: handle error
-    }
-    if res.Error != nil {
-        //TODO: handle partial error
-    }
+	// execute the logs query
+	res, err := client.QueryWorkspace(context.TODO(), "workspaceID",
+		azquery.Body{
+			Query:    to.Ptr("<kusto query>"),
+			Timespan: to.Ptr(azquery.NewTimeInterval(time.Date(2022, 12, 25, 0, 0, 0, 0, time.UTC), time.Date(2022, 12, 25, 12, 0, 0, 0, time.UTC))),
+		},
+		nil)
+	if err != nil {
+		//TODO: handle error
+	}
+	if res.Error != nil {
+		//TODO: handle partial error
+	}
 }
 ```
 
@@ -78,31 +78,31 @@ import (
 )
 
 func main() {
-    // create the client
-    cred, err := azidentity.NewDefaultAzureCredential(nil)
-    if err != nil {
-        //TODO: handle error
-    }
-    client, err := azlogs.Client(cred, nil)
-    if err != nil {
-        //TODO: handle error
-    }
+	// create the client
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		//TODO: handle error
+	}
+	client, err := azlogs.NewClient(cred, nil)
+	if err != nil {
+		//TODO: handle error
+	}
 
-    // execute the logs query
-    res, err := client.QueryWorkspace(
-        context.TODO(),
-        workspaceID,
-        azlogs.QueryBody{
-            Query:    to.Ptr("<kusto query>"), // example Kusto query
-            Timespan: to.Ptr(azlogs.NewTimeInterval(time.Date(2022, 12, 25, 0, 0, 0, 0, time.UTC), time.Date(2022, 12, 25, 12, 0, 0, 0, time.UTC))),
-        },
-        nil)
-    if err != nil {
-        //TODO: handle error
-    }
-    if res.Error != nil {
-        //TODO: handle partial error
-    }
+	// execute the logs query
+	res, err := client.QueryWorkspace(
+		context.TODO(),
+		"<workspaceID>",
+		azlogs.QueryBody{
+			Query:    to.Ptr("<kusto query>"), // example Kusto query
+			Timespan: to.Ptr(azlogs.NewTimeInterval(time.Date(2022, 12, 25, 0, 0, 0, 0, time.UTC), time.Date(2022, 12, 25, 12, 0, 0, 0, time.UTC))),
+		},
+		nil)
+	if err != nil {
+		//TODO: handle error
+	}
+	if res.Error != nil {
+		//TODO: handle partial error
+	}
 }
 ```
 
@@ -121,32 +121,33 @@ import (
 )
 
 func main() {
-    // create the metrics client
-    cred, err := azidentity.NewDefaultAzureCredential(nil)
-    if err != nil {
-        //TODO: handle error
-    }
-    client, err := azquery.NewMetricsClient(cred, nil)
-    if err != nil {
-        //TODO: handle error
-    }
+	// create the metrics client
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		//TODO: handle error
+	}
+	client, err := azquery.NewMetricsClient(cred, nil)
+	if err != nil {
+		//TODO: handle error
+	}
 
-    // execute the metrics query
-    res, err := client.QueryResource(context.TODO(), "<resourceID>",
-        &azquery.MetricsClientQueryResourceOptions{
-            Timespan:        to.Ptr(azquery.NewTimeInterval(time.Date(2022, 12, 25, 0, 0, 0, 0, time.UTC), time.Date(2022, 12, 25, 12, 0, 0, 0, time.UTC))),
-            Interval:        to.Ptr("PT1M"),
-            MetricNames:     nil,
-            Aggregation:     to.SliceOfPtrs(azquery.AggregationTypeAverage, azquery.AggregationTypeCount),
-            Top:             to.Ptr[int32](3),
-            OrderBy:         to.Ptr("Average asc"),
-            Filter:          to.Ptr("BlobType eq '*'"),
-            ResultType:      nil,
-            MetricNamespace: to.Ptr("Microsoft.Storage/storageAccounts/blobServices"),
-        })
-    if err != nil {
-        //TODO: handle error
-    }
+	// execute the metrics query
+	res, err := client.QueryResource(context.TODO(), "<resourceID>",
+		&azquery.MetricsClientQueryResourceOptions{
+			Timespan:        to.Ptr(azquery.NewTimeInterval(time.Date(2022, 12, 25, 0, 0, 0, 0, time.UTC), time.Date(2022, 12, 25, 12, 0, 0, 0, time.UTC))),
+			Interval:        to.Ptr("PT1M"),
+			MetricNames:     nil,
+			Aggregation:     to.SliceOfPtrs(azquery.AggregationTypeAverage, azquery.AggregationTypeCount),
+			Top:             to.Ptr[int32](3),
+			OrderBy:         to.Ptr("Average asc"),
+			Filter:          to.Ptr("BlobType eq '*'"),
+			ResultType:      nil,
+			MetricNamespace: to.Ptr("Microsoft.Storage/storageAccounts/blobServices"),
+		})
+	if err != nil {
+		//TODO: handle error
+	}
+	_ = res
 }
 ```
 
@@ -156,10 +157,7 @@ The code in `armmonitor` is closer to the REST API; therefore, there are some na
 
 ```go
 import (
-    "context"
-	"log"
-
-	"time"
+	"context"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
@@ -167,33 +165,34 @@ import (
 )
 
 func main() {
-    // create the client
-    cred, err := azidentity.NewDefaultAzureCredential(nil)
-    if err != nil {
-        //TODO: handle error
-    }
-    client, err := armmonitor.NewMetricsClient("<subscription-id>", cred, nil)
-    if err != nil {
-        //TODO: handle error
-    }
+	// create the client
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		//TODO: handle error
+	}
+	client, err := armmonitor.NewMetricsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		//TODO: handle error
+	}
 
-    // execute the query
-    res, err := client.List(context.Background(), "<resourceID>", &armmonitor.MetricsClientListOptions{
-        Timespan:            to.Ptr("2021-04-20T09:00:00.000Z/2021-04-20T14:00:00.000Z"),
-        Interval:            to.Ptr("PT6H"),
-        Metricnames:         to.Ptr("BlobCount,BlobCapacity"),
-        Aggregation:         to.Ptr("average,minimum,maximum"),
-        Top:                 to.Ptr[int32](5),
-        Orderby:             to.Ptr("average asc"),
-        Filter:              to.Ptr("Tier eq '*'"),
-        ResultType:          nil,
-        Metricnamespace:     to.Ptr("Microsoft.Storage/storageAccounts/blobServices"),
-        AutoAdjustTimegrain: to.Ptr(true),
-        ValidateDimensions:  to.Ptr(false),
-    })
-    if err != nil {
-        //TODO: handle partial error
-    }
+	// execute the query
+	res, err := client.List(context.Background(), "<resourceID>", &armmonitor.MetricsClientListOptions{
+		Timespan:            to.Ptr("2021-04-20T09:00:00.000Z/2021-04-20T14:00:00.000Z"),
+		Interval:            to.Ptr("PT6H"),
+		Metricnames:         to.Ptr("BlobCount,BlobCapacity"),
+		Aggregation:         to.Ptr("average,minimum,maximum"),
+		Top:                 to.Ptr[int32](5),
+		Orderby:             to.Ptr("average asc"),
+		Filter:              to.Ptr("Tier eq '*'"),
+		ResultType:          nil,
+		Metricnamespace:     to.Ptr("Microsoft.Storage/storageAccounts/blobServices"),
+		AutoAdjustTimegrain: to.Ptr(true),
+		ValidateDimensions:  to.Ptr(false),
+	})
+	if err != nil {
+		//TODO: handle partial error
+	}
+	_ = res
 }
 ```
 
@@ -203,7 +202,7 @@ func main() {
 [azmetrics]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/query/azmetrics
 [azmetrics_blog]: https://devblogs.microsoft.com/azure-sdk/multi-resource-metrics-query-support-in-the-azure-monitor-query-libraries/
 [github_issues]: https://github.com/Azure/azure-sdk-for-go/issues
-[rest_api]: https://learn.microsoft.com/en-us/rest/api/monitor/
+[rest_api]: https://learn.microsoft.com/rest/api/monitor/
 
 
 

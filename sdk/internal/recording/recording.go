@@ -83,7 +83,7 @@ var (
 	// defaultSanitizersSet tracks whether default sanitizers have been added (this would be neater with Go 1.19's atomic.Bool)
 	defaultSanitizersSet int32
 
-	errUnsupportedAPI = errors.New("the vcr based recording API isn't supported. Use the test proxy instead")
+	errUnsupportedAPI = errors.New("the vcr based test recording API isn't supported. Use the test proxy instead")
 )
 
 // NewRecording initializes a new Recording instance

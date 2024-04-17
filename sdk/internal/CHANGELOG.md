@@ -5,7 +5,7 @@
 ### Features Added
 
 ### Breaking Changes
-* Deprecated the `go-vcr` based recording API. Its methods now return errors or panic.
+* Deprecated the `go-vcr` based test recording API. Its methods now return errors or panic.
 
 ### Bugs Fixed
 

@@ -18,6 +18,9 @@ import (
 	"github.com/dnaeon/go-vcr/recorder"
 )
 
+// Deprecated: the local recording API that uses this type is no longer supported. Use [Start] and [Stop] to make
+// recordings with the test proxy instead, and configure its sanitizers with functions such as [AddBodyKeySanitizer]
+// and [AddRemoveHeaderSanitizer].
 type Sanitizer struct {
 	recorder          *recorder.Recorder
 	headersToSanitize []string
@@ -26,6 +29,9 @@ type Sanitizer struct {
 }
 
 // StringSanitizer is a func that will modify the string pointed to by the parameter into a sanitized value.
+//
+// Deprecated: the local sanitizer API that uses this type is no longer supported. Use test proxy sanitizer
+// configuration functions such as [AddBodyKeySanitizer] and [AddRemoveHeaderSanitizer] instead.
 type StringSanitizer func(*string)
 
 // SanitizedValue is the default placeholder value to be used for sanitized strings.
@@ -90,6 +96,7 @@ func (s *Sanitizer) applySaveFilter(i *cassette.Interaction) error {
 	return nil
 }
 
+// Deprecated: the local sanitizer API that uses this function is no longer supported.
 func DefaultStringSanitizer(s *string) {}
 
 func handleProxyResponse(resp *http.Response, err error) error {

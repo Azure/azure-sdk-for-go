@@ -6,6 +6,7 @@
 
 package recording
 
+// Deprecated: only deprecated methods use this type.
 type TestContext interface {
 	Fail(string)
 	Log(string)
@@ -20,8 +21,11 @@ type testContext struct {
 	name   string
 }
 
+// Deprecated: only deprecated methods use this type.
 type Failer func(string)
+// Deprecated: only deprecated methods use this type.
 type Logger func(string)
+// Deprecated: only deprecated methods use this type.
 type Name func() string
 
 // NewTestContext initializes a new TestContext

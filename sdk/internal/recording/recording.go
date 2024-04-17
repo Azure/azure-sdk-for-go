@@ -35,6 +35,8 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
+// Deprecated: the local recording API that uses this type is no longer supported. Call [Start] and [Stop]
+// to make recordings via the test proxy instead.
 type Recording struct {
 	SessionName              string
 	RecordingFile            string
@@ -74,6 +76,7 @@ const (
 	Live     RecordMode = "live"
 )
 
+// Deprecated: only deprecated methods use this type. Call [Start] and [Stop] to make recordings.
 type VariableType string
 
 const (
@@ -89,8 +92,6 @@ const (
 var defaultSanitizersSet int32
 
 // NewRecording initializes a new Recording instance
-//
-// Deprecated: call [Start] instead
 func NewRecording(c TestContext, mode RecordMode) (*Recording, error) {
 	// create recorder based on the test name, recordMode, variables, and sanitizers
 	recPath, varPath := getFilePaths(c.Name())

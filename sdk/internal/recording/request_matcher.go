@@ -16,6 +16,8 @@ import (
 	"github.com/dnaeon/go-vcr/cassette"
 )
 
+// Deprecated: the local recording API that uses this type is no longer supported. Call [SetDefaultMatcher] to
+// configure the test proxy's matcher instead.
 type RequestMatcher struct {
 	context TestContext
 	// IgnoredHeaders is a map acting as a hash set of the header names that will be ignored for matching.
@@ -26,6 +28,7 @@ type RequestMatcher struct {
 	methodMatcher  StringMatcher
 }
 
+// Deprecated: only deprecated methods use this type.
 type StringMatcher func(reqVal string, recVal string) bool
 
 var ignoredHeaders = map[string]struct{}{

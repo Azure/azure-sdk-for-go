@@ -42,170 +42,252 @@ var expectedContent = "1, 2, 3, 4, 5, 6, 7, 8, 9, 10."
 var expectedRole = azopenai.ChatRoleAssistant
 
 func TestClient_GetChatCompletions(t *testing.T) {
-	client := newTestClient(t, azureOpenAI.Endpoint)
-	testGetChatCompletions(t, client, azureOpenAI.ChatCompletionsRAI.Model, true)
+	testFn := func(t *testing.T, client *azopenai.Client, deployment string, returnedModel string, checkRAI bool) {
+		expected := azopenai.ChatCompletions{
+			Choices: []azopenai.ChatChoice{
+				{
+					Message: &azopenai.ChatResponseMessage{
+						Role:    &expectedRole,
+						Content: &expectedContent,
+					},
+					Index:        to.Ptr(int32(0)),
+					FinishReason: to.Ptr(azopenai.CompletionsFinishReason("stop")),
+				},
+			},
+			Usage: &azopenai.CompletionsUsage{
+				// these change depending on which model you use. These #'s work for gpt-4, which is
+				// what I'm using for these tests.
+				CompletionTokens: to.Ptr(int32(29)),
+				PromptTokens:     to.Ptr(int32(42)),
+				TotalTokens:      to.Ptr(int32(71)),
+			},
+			Model: &returnedModel,
+		}
+
+		resp, err := client.GetChatCompletions(context.Background(), newTestChatCompletionOptions(deployment), nil)
+		skipNowIfThrottled(t, err)
+		require.NoError(t, err)
+
+		if checkRAI {
+			// Azure also provides content-filtering. This particular prompt and responses
+			// will be considered safe.
+			expected.PromptFilterResults = []azopenai.ContentFilterResultsForPrompt{
+				{PromptIndex: to.Ptr[int32](0), ContentFilterResults: safeContentFilterResultDetailsForPrompt},
+			}
+			expected.Choices[0].ContentFilterResults = safeContentFilter
+		}
+
+		require.NotEmpty(t, resp.ID)
+		require.NotEmpty(t, resp.Created)
+
+		expected.ID = resp.ID
+		expected.Created = resp.Created
+
+		t.Logf("isAzure: %t, deployment: %s, returnedModel: %s", checkRAI, deployment, *resp.ChatCompletions.Model)
+		require.Equal(t, expected, resp.ChatCompletions)
+	}
+
+	t.Run("AzureOpenAI", func(t *testing.T) {
+		client := newTestClient(t, azureOpenAI.ChatCompletionsRAI.Endpoint)
+		testFn(t, client, azureOpenAI.ChatCompletionsRAI.Model, "gpt-4", true)
+	})
+
+	t.Run("AzureOpenAI.DefaultAzureCredential", func(t *testing.T) {
+		if recording.GetRecordMode() == recording.PlaybackMode {
+			t.Skipf("Not running this test in playback (for now)")
+		}
+
+		if os.Getenv("USE_TOKEN_CREDS") != "true" {
+			t.Skipf("USE_TOKEN_CREDS is not true, disabling token credential tests")
+		}
+
+		recordingTransporter := newRecordingTransporter(t)
+
+		dac, err := azidentity.NewDefaultAzureCredential(&azidentity.DefaultAzureCredentialOptions{
+			ClientOptions: policy.ClientOptions{
+				Transport: recordingTransporter,
+			},
+		})
+		require.NoError(t, err)
+
+		chatClient, err := azopenai.NewClient(azureOpenAI.ChatCompletions.Endpoint.URL, dac, &azopenai.ClientOptions{
+			ClientOptions: policy.ClientOptions{Transport: recordingTransporter},
+		})
+		require.NoError(t, err)
+
+		testFn(t, chatClient, azureOpenAI.ChatCompletions.Model, "gpt-4", true)
+	})
+
+	t.Run("OpenAI", func(t *testing.T) {
+		chatClient := newTestClient(t, openAI.ChatCompletions.Endpoint)
+		testFn(t, chatClient, openAI.ChatCompletions.Model, "gpt-4-0613", false)
+	})
+}
+
+func TestClient_GetChatCompletions_LogProbs(t *testing.T) {
+	testFn := func(t *testing.T, epm endpointWithModel) {
+		client := newTestClient(t, epm.Endpoint)
+
+		opts := azopenai.ChatCompletionsOptions{
+			Messages: []azopenai.ChatRequestMessageClassification{
+				&azopenai.ChatRequestUserMessage{
+					Content: azopenai.NewChatRequestUserMessageContent("Count to 10, with a comma between each number, no newlines and a period at the end. E.g., 1, 2, 3, ..."),
+				},
+			},
+			MaxTokens:      to.Ptr(int32(1024)),
+			Temperature:    to.Ptr(float32(0.0)),
+			DeploymentName: &epm.Model,
+			LogProbs:       to.Ptr(true),
+			TopLogProbs:    to.Ptr(int32(5)),
+		}
+
+		resp, err := client.GetChatCompletions(context.Background(), opts, nil)
+		require.NoError(t, err)
+
+		for _, choice := range resp.Choices {
+			require.NotEmpty(t, choice.LogProbs)
+		}
+	}
+
+	t.Run("AzureOpenAI", func(t *testing.T) {
+		testFn(t, azureOpenAI.ChatCompletions)
+	})
+
+	t.Run("OpenAI", func(t *testing.T) {
+		testFn(t, openAI.ChatCompletions)
+	})
+}
+
+func TestClient_GetChatCompletions_LogitBias(t *testing.T) {
+	// you can use LogitBias to constrain the answer to NOT contain
+	// certain tokens. More or less following the technique in this OpenAI article:
+	// https://help.openai.com/en/articles/5247780-using-logit-bias-to-alter-token-probability-with-the-openai-api
+
+	testFn := func(t *testing.T, epm endpointWithModel) {
+		client := newTestClient(t, epm.Endpoint)
+
+		opts := azopenai.ChatCompletionsOptions{
+			Messages: []azopenai.ChatRequestMessageClassification{
+				&azopenai.ChatRequestUserMessage{
+					Content: azopenai.NewChatRequestUserMessageContent("Briefly, what are some common roles for people at a circus, names only, one per line?"),
+				},
+			},
+			MaxTokens:      to.Ptr(int32(200)),
+			Temperature:    to.Ptr(float32(0.0)),
+			DeploymentName: &epm.Model,
+			LogitBias: map[string]*int32{
+				// you can calculate these tokens using OpenAI's online tool:
+				// https://platform.openai.com/tokenizer?view=bpe
+				// These token IDs are all variations of "Clown", which I want to exclude from the response.
+				"25":    to.Ptr(int32(-100)),
+				"220":   to.Ptr(int32(-100)),
+				"1206":  to.Ptr(int32(-100)),
+				"2493":  to.Ptr(int32(-100)),
+				"5176":  to.Ptr(int32(-100)),
+				"43456": to.Ptr(int32(-100)),
+				"99423": to.Ptr(int32(-100)),
+			},
+		}
+
+		resp, err := client.GetChatCompletions(context.Background(), opts, nil)
+		require.NoError(t, err)
+
+		for _, choice := range resp.Choices {
+			if choice.Message == nil || choice.Message.Content == nil {
+				continue
+			}
+
+			require.NotContains(t, *choice.Message.Content, "clown")
+			require.NotContains(t, *choice.Message.Content, "Clown")
+		}
+	}
+
+	t.Run("AzureOpenAI", func(t *testing.T) {
+		testFn(t, azureOpenAI.ChatCompletions)
+	})
+
+	t.Run("OpenAI", func(t *testing.T) {
+		testFn(t, openAI.ChatCompletions)
+	})
 }
 
 func TestClient_GetChatCompletionsStream(t *testing.T) {
-	chatClient := newTestClient(t, azureOpenAI.ChatCompletionsRAI.Endpoint)
-	testGetChatCompletionsStream(t, chatClient, azureOpenAI.ChatCompletionsRAI.Model)
-}
+	testFn := func(t *testing.T, client *azopenai.Client, deployment string, returnedDeployment string) {
+		streamResp, err := client.GetChatCompletionsStream(context.Background(), newTestChatCompletionOptions(deployment), nil)
 
-func TestClient_OpenAI_GetChatCompletions(t *testing.T) {
-	if testing.Short() {
-		t.Skip("Skipping OpenAI tests when attempting to do quick tests")
-	}
-
-	chatClient := newOpenAIClientForTest(t)
-	testGetChatCompletions(t, chatClient, openAI.ChatCompletions, false)
-}
-
-func TestClient_OpenAI_GetChatCompletionsStream(t *testing.T) {
-	if testing.Short() {
-		t.Skip("Skipping OpenAI tests when attempting to do quick tests")
-	}
-
-	chatClient := newOpenAIClientForTest(t)
-	testGetChatCompletionsStream(t, chatClient, openAI.ChatCompletions)
-}
-
-func testGetChatCompletions(t *testing.T, client *azopenai.Client, deployment string, checkRAI bool) {
-	expected := azopenai.ChatCompletions{
-		Choices: []azopenai.ChatChoice{
-			{
-				Message: &azopenai.ChatResponseMessage{
-					Role:    &expectedRole,
-					Content: &expectedContent,
-				},
-				Index:        to.Ptr(int32(0)),
-				FinishReason: to.Ptr(azopenai.CompletionsFinishReason("stop")),
-			},
-		},
-		Usage: &azopenai.CompletionsUsage{
-			// these change depending on which model you use. These #'s work for gpt-4, which is
-			// what I'm using for these tests.
-			CompletionTokens: to.Ptr(int32(29)),
-			PromptTokens:     to.Ptr(int32(42)),
-			TotalTokens:      to.Ptr(int32(71)),
-		},
-		// NOTE: this is actually the name of the _model_, not the deployment. They usually match (just
-		// by convention) but if this fails because they _don't_ match we can just adjust the test.
-		Model: &deployment,
-	}
-
-	resp, err := client.GetChatCompletions(context.Background(), newTestChatCompletionOptions(deployment), nil)
-	skipNowIfThrottled(t, err)
-	require.NoError(t, err)
-
-	if checkRAI {
-		// Azure also provides content-filtering. This particular prompt and responses
-		// will be considered safe.
-		expected.PromptFilterResults = []azopenai.ContentFilterResultsForPrompt{
-			{PromptIndex: to.Ptr[int32](0), ContentFilterResults: safeContentFilterResultDetailsForPrompt},
-		}
-		expected.Choices[0].ContentFilterResults = safeContentFilter
-	}
-
-	require.NotEmpty(t, resp.ID)
-	require.NotEmpty(t, resp.Created)
-
-	expected.ID = resp.ID
-	expected.Created = resp.Created
-
-	require.Equal(t, expected, resp.ChatCompletions)
-}
-
-func testGetChatCompletionsStream(t *testing.T, client *azopenai.Client, deployment string) {
-	streamResp, err := client.GetChatCompletionsStream(context.Background(), newTestChatCompletionOptions(deployment), nil)
-
-	if respErr := (*azcore.ResponseError)(nil); errors.As(err, &respErr) && respErr.StatusCode == http.StatusTooManyRequests {
-		t.Skipf("OpenAI resource overloaded, skipping this test")
-	}
-
-	require.NoError(t, err)
-
-	// the data comes back differently for streaming
-	// 1. the text comes back in the ChatCompletion.Delta field
-	// 2. the role is only sent on the first streamed ChatCompletion
-	// check that the role came back as well.
-	var choices []azopenai.ChatChoice
-
-	modelWasReturned := false
-
-	for {
-		completion, err := streamResp.ChatCompletionsStream.Read()
-
-		if errors.Is(err, io.EOF) {
-			break
-		}
-
-		// NOTE: this is actually the name of the _model_, not the deployment. They usually match (just
-		// by convention) but if this fails because they _don't_ match we can just adjust the test.
-		if deployment == *completion.Model {
-			modelWasReturned = true
+		if respErr := (*azcore.ResponseError)(nil); errors.As(err, &respErr) && respErr.StatusCode == http.StatusTooManyRequests {
+			t.Skipf("OpenAI resource overloaded, skipping this test")
 		}
 
 		require.NoError(t, err)
 
-		if completion.PromptFilterResults != nil {
-			require.Equal(t, []azopenai.ContentFilterResultsForPrompt{
-				{PromptIndex: to.Ptr[int32](0), ContentFilterResults: safeContentFilterResultDetailsForPrompt},
-			}, completion.PromptFilterResults)
+		// the data comes back differently for streaming
+		// 1. the text comes back in the ChatCompletion.Delta field
+		// 2. the role is only sent on the first streamed ChatCompletion
+		// check that the role came back as well.
+		var choices []azopenai.ChatChoice
+
+		modelWasReturned := false
+
+		for {
+			completion, err := streamResp.ChatCompletionsStream.Read()
+
+			if errors.Is(err, io.EOF) {
+				break
+			}
+
+			// NOTE: this is actually the name of the _model_, not the deployment. They usually match (just
+			// by convention) but if this fails because they _don't_ match we can just adjust the test.
+			if returnedDeployment == *completion.Model {
+				modelWasReturned = true
+			}
+
+			require.NoError(t, err)
+
+			if completion.PromptFilterResults != nil {
+				require.Equal(t, []azopenai.ContentFilterResultsForPrompt{
+					{PromptIndex: to.Ptr[int32](0), ContentFilterResults: safeContentFilterResultDetailsForPrompt},
+				}, completion.PromptFilterResults)
+			}
+
+			if len(completion.Choices) == 0 {
+				// you can get empty entries that contain just metadata (ie, prompt annotations)
+				continue
+			}
+
+			require.Equal(t, 1, len(completion.Choices))
+			choices = append(choices, completion.Choices[0])
 		}
 
-		if len(completion.Choices) == 0 {
-			// you can get empty entries that contain just metadata (ie, prompt annotations)
-			continue
+		require.True(t, modelWasReturned)
+
+		var message string
+
+		for _, choice := range choices {
+			if choice.Delta.Content == nil {
+				continue
+			}
+
+			message += *choice.Delta.Content
 		}
 
-		require.Equal(t, 1, len(completion.Choices))
-		choices = append(choices, completion.Choices[0])
+		require.Equal(t, expectedContent, message, "Ultimately, the same result as GetChatCompletions(), just sent across the .Delta field instead")
+		require.Equal(t, azopenai.ChatRoleAssistant, expectedRole)
 	}
 
-	require.True(t, modelWasReturned)
-
-	var message string
-
-	for _, choice := range choices {
-		if choice.Delta.Content == nil {
-			continue
-		}
-
-		message += *choice.Delta.Content
-	}
-
-	require.Equal(t, expectedContent, message, "Ultimately, the same result as GetChatCompletions(), just sent across the .Delta field instead")
-	require.Equal(t, azopenai.ChatRoleAssistant, expectedRole)
-}
-
-func TestClient_GetChatCompletions_DefaultAzureCredential(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skipf("Not running this test in playback (for now)")
-	}
-
-	if os.Getenv("USE_TOKEN_CREDS") != "true" {
-		t.Skipf("USE_TOKEN_CREDS is not true, disabling token credential tests")
-	}
-
-	recordingTransporter := newRecordingTransporter(t)
-
-	dac, err := azidentity.NewDefaultAzureCredential(&azidentity.DefaultAzureCredentialOptions{
-		ClientOptions: policy.ClientOptions{
-			Transport: recordingTransporter,
-		},
+	t.Run("AzureOpenAI", func(t *testing.T) {
+		chatClient := newTestClient(t, azureOpenAI.ChatCompletionsRAI.Endpoint)
+		testFn(t, chatClient, azureOpenAI.ChatCompletionsRAI.Model, "gpt-4")
 	})
-	require.NoError(t, err)
 
-	chatClient, err := azopenai.NewClient(azureOpenAI.Endpoint.URL, dac, &azopenai.ClientOptions{
-		ClientOptions: policy.ClientOptions{Transport: recordingTransporter},
+	t.Run("OpenAI", func(t *testing.T) {
+		chatClient := newTestClient(t, openAI.ChatCompletions.Endpoint)
+		testFn(t, chatClient, openAI.ChatCompletions.Model, openAI.ChatCompletions.Model)
 	})
-	require.NoError(t, err)
-
-	testGetChatCompletions(t, chatClient, azureOpenAI.ChatCompletions, true)
 }
 
 func TestClient_GetChatCompletions_InvalidModel(t *testing.T) {
-	client := newTestClient(t, azureOpenAI.Endpoint)
+	client := newTestClient(t, azureOpenAI.ChatCompletions.Endpoint)
 
 	_, err := client.GetChatCompletions(context.Background(), azopenai.ChatCompletionsOptions{
 		Messages: []azopenai.ChatRequestMessageClassification{
@@ -230,14 +312,14 @@ func TestClient_GetChatCompletionsStream_Error(t *testing.T) {
 
 	t.Run("AzureOpenAI", func(t *testing.T) {
 		client := newBogusAzureOpenAIClient(t)
-		streamResp, err := client.GetChatCompletionsStream(context.Background(), newTestChatCompletionOptions(azureOpenAI.ChatCompletions), nil)
+		streamResp, err := client.GetChatCompletionsStream(context.Background(), newTestChatCompletionOptions(azureOpenAI.ChatCompletions.Model), nil)
 		require.Empty(t, streamResp)
 		assertResponseIsError(t, err)
 	})
 
 	t.Run("OpenAI", func(t *testing.T) {
 		client := newBogusOpenAIClient(t)
-		streamResp, err := client.GetChatCompletionsStream(context.Background(), newTestChatCompletionOptions(openAI.ChatCompletions), nil)
+		streamResp, err := client.GetChatCompletionsStream(context.Background(), newTestChatCompletionOptions(openAI.ChatCompletions.Model), nil)
 		require.Empty(t, streamResp)
 		assertResponseIsError(t, err)
 	})
@@ -276,14 +358,14 @@ func TestClient_GetChatCompletions_Vision(t *testing.T) {
 		t.Logf(*resp.Choices[0].Message.Content)
 	}
 
-	t.Run("OpenAI", func(t *testing.T) {
-		chatClient := newOpenAIClientForTest(t)
-		testFn(t, chatClient, openAI.Vision.Model)
-	})
-
 	t.Run("AzureOpenAI", func(t *testing.T) {
 		chatClient := newTestClient(t, azureOpenAI.Vision.Endpoint)
 		testFn(t, chatClient, azureOpenAI.Vision.Model)
+	})
+
+	t.Run("OpenAI", func(t *testing.T) {
+		chatClient := newTestClient(t, openAI.Vision.Endpoint)
+		testFn(t, chatClient, openAI.Vision.Model)
 	})
 }
 
@@ -313,13 +395,13 @@ func TestGetChatCompletions_usingResponseFormatForJSON(t *testing.T) {
 		require.NotEmpty(t, v)
 	}
 
-	t.Run("OpenAI", func(t *testing.T) {
-		chatClient := newOpenAIClientForTest(t)
-		testFn(t, chatClient, "gpt-3.5-turbo-1106")
+	t.Run("AzureOpenAI", func(t *testing.T) {
+		chatClient := newTestClient(t, azureOpenAI.ChatCompletionsWithJSONResponseFormat.Endpoint)
+		testFn(t, chatClient, azureOpenAI.ChatCompletionsWithJSONResponseFormat.Model)
 	})
 
-	t.Run("AzureOpenAI", func(t *testing.T) {
-		chatClient := newTestClient(t, azureOpenAI.DallE.Endpoint)
-		testFn(t, chatClient, "gpt-4-1106-preview")
+	t.Run("OpenAI", func(t *testing.T) {
+		chatClient := newTestClient(t, openAI.ChatCompletionsWithJSONResponseFormat.Endpoint)
+		testFn(t, chatClient, openAI.ChatCompletionsWithJSONResponseFormat.Model)
 	})
 }

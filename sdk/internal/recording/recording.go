@@ -30,9 +30,6 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
-	"github.com/dnaeon/go-vcr/cassette"
-	"github.com/dnaeon/go-vcr/recorder"
-	"gopkg.in/yaml.v2"
 )
 
 // Deprecated: the local recording API that uses this type is no longer supported. Call [Start] and [Stop]
@@ -44,12 +41,10 @@ type Recording struct {
 	Mode                     RecordMode
 	variables                map[string]*string `yaml:"variables"`
 	previousSessionVariables map[string]*string `yaml:"variables"`
-	recorder                 *recorder.Recorder
 	src                      rand.Source
 	now                      *time.Time
 	Sanitizer                *Sanitizer
 	Matcher                  *RequestMatcher
-	c                        TestContext
 }
 
 const (
@@ -154,16 +149,6 @@ func (r *Recording) GenerateAlphaNumericID(prefix string, length int, lowercaseO
 	return "", errUnsupportedAPI
 }
 
-// getRequiredEnv gets an environment variable by name and returns an error if it is not found
-func getRequiredEnv(name string) (*string, error) {
-	env, ok := os.LookupEnv(name)
-	if ok {
-		return &env, nil
-	} else {
-		return nil, errors.New(envNotExistsError(name))
-	}
-}
-
 // getOptionalEnv gets an environment variable by name and returns the defaultValue if not found
 func getOptionalEnv(name string, defaultValue string) *string {
 	env, ok := os.LookupEnv(name)
@@ -172,24 +157,6 @@ func getOptionalEnv(name string, defaultValue string) *string {
 	} else {
 		return &defaultValue
 	}
-}
-
-func (r *Recording) matchRequest(req *http.Request, rec cassette.Request) bool {
-	isMatch := r.Matcher.compareMethods(req, rec.Method) &&
-		r.Matcher.compareURLs(req, rec.URL) &&
-		r.Matcher.compareHeaders(req, rec) &&
-		r.Matcher.compareBodies(req, rec.Body)
-
-	return isMatch
-}
-
-func missingRequestError(req *http.Request) string {
-	reqUrl := req.URL.String()
-	return fmt.Sprintf("\nNo matching recorded request found.\nRequest: [%s] %s\n", req.Method, reqUrl)
-}
-
-func envNotExistsError(varName string) string {
-	return "Required environment variable not set: " + varName
 }
 
 // applyVariableOptions applies the VariableType transform to the value
@@ -265,67 +232,6 @@ func (r *Recording) initNow() {
 
 	// save the now value.
 	r.now = &newNow
-}
-
-// getFilePaths returns (recordingFilePath, variablesFilePath)
-func getFilePaths(name string) (string, string) {
-	recPath := "recordings/" + name
-	varPath := fmt.Sprintf("%s-variables.yaml", recPath)
-	return recPath, varPath
-}
-
-// createVariablesFileIfNotExists calls os.Create on the VariablesFile and creates it if it or the path does not exist
-// Callers must call Close on the result
-func (r *Recording) createVariablesFileIfNotExists() (*os.File, error) {
-	f, err := os.Create(r.VariablesFile)
-	if err != nil {
-		if !os.IsNotExist(err) {
-			return nil, err
-		}
-		// Create directory for the variables if missing
-		variablesDir := filepath.Dir(r.VariablesFile)
-		if _, err := os.Stat(variablesDir); os.IsNotExist(err) {
-			if err = os.MkdirAll(variablesDir, 0755); err != nil {
-				return nil, err
-			}
-		}
-
-		f, err = os.Create(r.VariablesFile)
-		if err != nil {
-			return nil, err
-		}
-	}
-
-	return f, nil
-}
-
-func (r *Recording) unmarshalVariablesFile(out interface{}) error {
-	data, err := os.ReadFile(r.VariablesFile)
-	if err != nil {
-		// If the file or dir do not exist, this is not an error to report
-		if os.IsNotExist(err) {
-			r.c.Log(fmt.Sprintf("Did not find recording for test '%s'", r.RecordingFile))
-			return nil
-		} else {
-			return err
-		}
-	} else {
-		err = yaml.Unmarshal(data, out)
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-func (r *Recording) initVariables() error {
-	return r.unmarshalVariablesFile(r.previousSessionVariables)
-}
-
-var modeMap = map[RecordMode]recorder.Mode{
-	Record:   recorder.ModeRecording,
-	Live:     recorder.ModeDisabled,
-	Playback: recorder.ModeReplaying,
 }
 
 func init() {

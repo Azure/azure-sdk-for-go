@@ -13,16 +13,12 @@ import (
 	"io"
 	"net/http"
 	"strings"
-
-	"github.com/dnaeon/go-vcr/cassette"
-	"github.com/dnaeon/go-vcr/recorder"
 )
 
 // Deprecated: the local recording API that uses this type is no longer supported. Use [Start] and [Stop] to make
 // recordings with the test proxy instead, and configure its sanitizers with functions such as [AddBodyKeySanitizer]
 // and [AddRemoveHeaderSanitizer].
 type Sanitizer struct {
-	recorder          *recorder.Recorder
 	headersToSanitize []string
 	urlSanitizer      StringSanitizer
 	bodySanitizer     StringSanitizer
@@ -40,18 +36,6 @@ const SanitizedValue string = "sanitized"
 // SanitizedBase64Value is the default placeholder value to be used for sanitized base-64 encoded strings.
 const SanitizedBase64Value string = "Kg=="
 
-var sanitizedValueSlice = []string{SanitizedValue}
-
-// defaultSanitizer returns a new RecordingSanitizer with the default sanitizing behavior.
-// To customize sanitization, call AddSanitizedHeaders, AddBodySanitizer, or AddUrlSanitizer.
-func defaultSanitizer(recorder *recorder.Recorder) *Sanitizer {
-	// The default sanitizer sanitizes the Authorization header
-	s := &Sanitizer{headersToSanitize: []string{"Authorization"}, recorder: recorder, urlSanitizer: DefaultStringSanitizer, bodySanitizer: DefaultStringSanitizer}
-	recorder.AddSaveFilter(s.applySaveFilter)
-
-	return s
-}
-
 // AddSanitizedHeaders adds the supplied header names to the list of headers to be sanitized on request and response recordings.
 func (s *Sanitizer) AddSanitizedHeaders(headers ...string) {
 	s.headersToSanitize = append(s.headersToSanitize, headers...)
@@ -65,26 +49,6 @@ func (s *Sanitizer) AddBodysanitizer(sanitizer StringSanitizer) {
 // AddUriSanitizer configures the supplied StringSanitizer to sanitize recording request and response URLs
 func (s *Sanitizer) AddUrlSanitizer(sanitizer StringSanitizer) {
 	s.urlSanitizer = sanitizer
-}
-
-func (s *Sanitizer) sanitizeHeaders(header http.Header) {
-	for _, headerName := range s.headersToSanitize {
-		if _, ok := header[headerName]; ok {
-			header[headerName] = sanitizedValueSlice
-		}
-	}
-}
-
-func (s *Sanitizer) sanitizeBodies(body *string) {
-	s.bodySanitizer(body)
-}
-
-func (s *Sanitizer) sanitizeURL(url *string) {
-	s.urlSanitizer(url)
-}
-
-func (s *Sanitizer) applySaveFilter(i *cassette.Interaction) error {
-	return errUnsupportedAPI
 }
 
 // Deprecated: the local sanitizer API that uses this function is no longer supported.

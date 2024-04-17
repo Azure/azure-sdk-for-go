@@ -23,8 +23,10 @@ type testContext struct {
 
 // Deprecated: only deprecated methods use this type.
 type Failer func(string)
+
 // Deprecated: only deprecated methods use this type.
 type Logger func(string)
+
 // Deprecated: only deprecated methods use this type.
 type Name func() string
 

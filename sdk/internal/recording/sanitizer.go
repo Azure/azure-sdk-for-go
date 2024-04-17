@@ -84,16 +84,7 @@ func (s *Sanitizer) sanitizeURL(url *string) {
 }
 
 func (s *Sanitizer) applySaveFilter(i *cassette.Interaction) error {
-	s.sanitizeHeaders(i.Request.Headers)
-	s.sanitizeHeaders(i.Response.Headers)
-	s.sanitizeURL(&i.Request.URL)
-	if len(i.Request.Body) > 0 {
-		s.sanitizeBodies(&i.Request.Body)
-	}
-	if len(i.Response.Body) > 0 {
-		s.sanitizeBodies(&i.Response.Body)
-	}
-	return nil
+	return errUnsupportedAPI
 }
 
 // Deprecated: the local sanitizer API that uses this function is no longer supported.

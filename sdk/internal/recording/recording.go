@@ -88,66 +88,22 @@ const (
 	Secret_Base64String VariableType = "secret_base64String"
 )
 
-// defaultSanitizersSet tracks whether default sanitizers have been added (this would be neater with Go 1.19's atomic.Bool)
-var defaultSanitizersSet int32
+var (
+	// defaultSanitizersSet tracks whether default sanitizers have been added (this would be neater with Go 1.19's atomic.Bool)
+	defaultSanitizersSet int32
+
+	errUnsupportedAPI = errors.New("the vcr based recording API isn't supported. Use the test proxy instead")
+)
 
 // NewRecording initializes a new Recording instance
 func NewRecording(c TestContext, mode RecordMode) (*Recording, error) {
-	// create recorder based on the test name, recordMode, variables, and sanitizers
-	recPath, varPath := getFilePaths(c.Name())
-	rec, err := recorder.NewAsMode(recPath, modeMap[mode], nil)
-	if err != nil {
-		return nil, err
-	}
-
-	// If the mode is set in the environment, let that override the requested mode
-	// This is to enable support for nightly live test pipelines
-	envMode := getOptionalEnv(ModeEnvironmentVariableName, string(mode))
-	mode = RecordMode(*envMode)
-
-	// initialize the Recording
-	recording := &Recording{
-		SessionName:              recPath,
-		RecordingFile:            recPath + ".yaml",
-		VariablesFile:            varPath,
-		Mode:                     mode,
-		variables:                make(map[string]*string),
-		previousSessionVariables: make(map[string]*string),
-		recorder:                 rec,
-		c:                        c,
-	}
-
-	// Try loading the recording if it already exists to hydrate the variables
-	err = recording.initVariables()
-	if err != nil {
-		return nil, err
-	}
-
-	// set the recorder Matcher
-	recording.Matcher = defaultMatcher(c)
-	rec.SetMatcher(recording.matchRequest)
-
-	// wire up the sanitizer
-	recording.Sanitizer = defaultSanitizer(rec)
-
-	return recording, err
+	return nil, errUnsupportedAPI
 }
 
 // GetEnvVar returns a recorded environment variable. If the variable is not found we return an error.
 // variableType determines how the recorded variable will be saved.
 func (r *Recording) GetEnvVar(name string, variableType VariableType) (string, error) {
-	var err error
-	result, ok := r.previousSessionVariables[name]
-	if !ok || r.Mode == Live {
-
-		result, err = getRequiredEnv(name)
-		if err != nil {
-			r.c.Fail(err.Error())
-			return "", err
-		}
-		r.variables[name] = applyVariableOptions(result, variableType)
-	}
-	return *result, err
+	return "", errUnsupportedAPI
 }
 
 // GetOptionalEnvVar returns a recorded environment variable with a fallback default value.
@@ -164,61 +120,12 @@ func (r *Recording) GetOptionalEnvVar(name string, defaultValue string, variable
 
 // Do satisfies the azcore.Transport interface so that Recording can be used as the transport for recorded requests
 func (r *Recording) Do(req *http.Request) (*http.Response, error) {
-	resp, err := r.recorder.RoundTrip(req)
-	if err == cassette.ErrInteractionNotFound {
-		error := missingRequestError(req)
-		r.c.Fail(error)
-		return nil, errors.New(error)
-	}
-	return resp, err
+	return nil, errUnsupportedAPI
 }
 
 // Stop stops the recording and saves them, including any captured variables, to disk
 func (r *Recording) Stop() error {
-
-	err := r.recorder.Stop()
-	if err != nil {
-		return err
-	}
-	if r.Mode == Live {
-		return nil
-	}
-
-	if len(r.variables) > 0 {
-		// Merge values from previousVariables that are not in variables to variables
-		for k, v := range r.previousSessionVariables {
-			if _, ok := r.variables[k]; ok {
-				// skip variables that were new in the current session
-				continue
-			}
-			r.variables[k] = v
-		}
-
-		// Marshal to YAML and save variables
-		data, err := yaml.Marshal(r.variables)
-		if err != nil {
-			return err
-		}
-
-		f, err := r.createVariablesFileIfNotExists()
-		if err != nil {
-			return err
-		}
-
-		defer f.Close()
-
-		// http://www.yaml.org/spec/1.2/spec.html#id2760395
-		_, err = f.Write([]byte("---\n"))
-		if err != nil {
-			return err
-		}
-
-		_, err = f.Write(data)
-		if err != nil {
-			return err
-		}
-	}
-	return nil
+	return errUnsupportedAPI
 }
 
 func (r *Recording) Now() time.Time {
@@ -244,8 +151,7 @@ func (r *Recording) UUID() uuid.UUID {
 // GenerateAlphaNumericID will generate a recorded random alpha numeric id
 // if the recording has a randomSeed already set, the value will be generated from that seed, else a new random seed will be used
 func (r *Recording) GenerateAlphaNumericID(prefix string, length int, lowercaseOnly bool) (string, error) {
-	r.initRandomSource()
-	return generateAlphaNumericID(prefix, length, lowercaseOnly, r.src)
+	return "", errUnsupportedAPI
 }
 
 // getRequiredEnv gets an environment variable by name and returns an error if it is not found

@@ -18,11 +18,7 @@ import (
 // Deprecated: the local recording API that uses this type is no longer supported. Use [Start] and [Stop] to make
 // recordings with the test proxy instead, and configure its sanitizers with functions such as [AddBodyKeySanitizer]
 // and [AddRemoveHeaderSanitizer].
-type Sanitizer struct {
-	headersToSanitize []string
-	urlSanitizer      StringSanitizer
-	bodySanitizer     StringSanitizer
-}
+type Sanitizer struct{}
 
 // StringSanitizer is a func that will modify the string pointed to by the parameter into a sanitized value.
 //
@@ -38,17 +34,17 @@ const SanitizedBase64Value string = "Kg=="
 
 // AddSanitizedHeaders adds the supplied header names to the list of headers to be sanitized on request and response recordings.
 func (s *Sanitizer) AddSanitizedHeaders(headers ...string) {
-	s.headersToSanitize = append(s.headersToSanitize, headers...)
+	panic(errUnsupportedAPI)
 }
 
 // AddBodysanitizer configures the supplied StringSanitizer to sanitize recording request and response bodies
 func (s *Sanitizer) AddBodysanitizer(sanitizer StringSanitizer) {
-	s.bodySanitizer = sanitizer
+	panic(errUnsupportedAPI)
 }
 
 // AddUriSanitizer configures the supplied StringSanitizer to sanitize recording request and response URLs
 func (s *Sanitizer) AddUrlSanitizer(sanitizer StringSanitizer) {
-	s.urlSanitizer = sanitizer
+	panic(errUnsupportedAPI)
 }
 
 // Deprecated: the local sanitizer API that uses this function is no longer supported.

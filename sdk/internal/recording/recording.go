@@ -35,16 +35,12 @@ import (
 // Deprecated: the local recording API that uses this type is no longer supported. Call [Start] and [Stop]
 // to make recordings via the test proxy instead.
 type Recording struct {
-	SessionName              string
-	RecordingFile            string
-	VariablesFile            string
-	Mode                     RecordMode
-	variables                map[string]*string `yaml:"variables"`
-	previousSessionVariables map[string]*string `yaml:"variables"`
-	src                      rand.Source
-	now                      *time.Time
-	Sanitizer                *Sanitizer
-	Matcher                  *RequestMatcher
+	SessionName   string
+	RecordingFile string
+	VariablesFile string
+	Mode          RecordMode
+	Sanitizer     *Sanitizer
+	Matcher       *RequestMatcher
 }
 
 const (
@@ -105,12 +101,7 @@ func (r *Recording) GetEnvVar(name string, variableType VariableType) (string, e
 // default Value configures the fallback value to be returned if the environment variable is not set.
 // variableType determines how the recorded variable will be saved.
 func (r *Recording) GetOptionalEnvVar(name string, defaultValue string, variableType VariableType) string {
-	result, ok := r.previousSessionVariables[name]
-	if !ok || r.Mode == Live {
-		result = getOptionalEnv(name, defaultValue)
-		r.variables[name] = applyVariableOptions(result, variableType)
-	}
-	return *result
+	panic(errUnsupportedAPI)
 }
 
 // Do satisfies the azcore.Transport interface so that Recording can be used as the transport for recorded requests
@@ -124,114 +115,17 @@ func (r *Recording) Stop() error {
 }
 
 func (r *Recording) Now() time.Time {
-	r.initNow()
-
-	return *r.now
+	panic(errUnsupportedAPI)
 }
 
 func (r *Recording) UUID() uuid.UUID {
-	r.initRandomSource()
-	u := uuid.UUID{}
-	// Set all bits to randomly (or pseudo-randomly) chosen values.
-	// math/rand.Read() is no-fail so we omit any error checking.
-	rnd := rand.New(r.src)
-	rnd.Read(u[:])
-	u[8] = (u[8] | 0x40) & 0x7F // u.setVariant(ReservedRFC4122)
-
-	var version byte = 4
-	u[6] = (u[6] & 0xF) | (version << 4) // u.setVersion(4)
-	return u
+	panic(errUnsupportedAPI)
 }
 
 // GenerateAlphaNumericID will generate a recorded random alpha numeric id
 // if the recording has a randomSeed already set, the value will be generated from that seed, else a new random seed will be used
 func (r *Recording) GenerateAlphaNumericID(prefix string, length int, lowercaseOnly bool) (string, error) {
 	return "", errUnsupportedAPI
-}
-
-// getOptionalEnv gets an environment variable by name and returns the defaultValue if not found
-func getOptionalEnv(name string, defaultValue string) *string {
-	env, ok := os.LookupEnv(name)
-	if ok {
-		return &env
-	} else {
-		return &defaultValue
-	}
-}
-
-// applyVariableOptions applies the VariableType transform to the value
-// If variableType is not provided or Default, return result
-// If variableType is Secret_String, return SanitizedValue
-// If variableType isSecret_Base64String return SanitizedBase64Value
-func applyVariableOptions(val *string, variableType VariableType) *string {
-	var ret string
-
-	switch variableType {
-	case Secret_String:
-		ret = SanitizedValue
-		return &ret
-	case Secret_Base64String:
-		ret = SanitizedBase64Value
-		return &ret
-	default:
-		return val
-	}
-}
-
-// initRandomSource initializes the Source to be used for random value creation in this Recording
-func (r *Recording) initRandomSource() {
-	// if we already have a Source generated, return immediately
-	if r.src != nil {
-		return
-	}
-
-	var seed int64
-	var err error
-
-	// check to see if we already have a random seed stored, use that if so
-	seedString, ok := r.previousSessionVariables[randomSeedVariableName]
-	if ok {
-		seed, err = strconv.ParseInt(*seedString, 10, 64)
-	}
-
-	// We did not have a random seed already stored; create a new one
-	if !ok || err != nil || r.Mode == Live {
-		seed = time.Now().Unix()
-		val := strconv.FormatInt(seed, 10)
-		r.variables[randomSeedVariableName] = &val
-	}
-
-	// create a Source with the seed
-	r.src = rand.NewSource(seed)
-}
-
-// initNow initializes the Source to be used for random value creation in this Recording
-func (r *Recording) initNow() {
-	// if we already have a now generated, return immediately
-	if r.now != nil {
-		return
-	}
-
-	var err error
-	var nowStr *string
-	var newNow time.Time
-
-	// check to see if we already have a random seed stored, use that if so
-	nowStr, ok := r.previousSessionVariables[nowVariableName]
-	if ok {
-		newNow, err = time.Parse(time.RFC3339Nano, *nowStr)
-	}
-
-	// We did not have a random seed already stored; create a new one
-	if !ok || err != nil || r.Mode == Live {
-		newNow = time.Now()
-		nowStr = new(string)
-		*nowStr = newNow.Format(time.RFC3339Nano)
-		r.variables[nowVariableName] = nowStr
-	}
-
-	// save the now value.
-	r.now = &newNow
 }
 
 func init() {

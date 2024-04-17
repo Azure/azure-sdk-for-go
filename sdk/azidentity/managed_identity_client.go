@@ -187,6 +187,7 @@ func (c *managedIdentityClient) authenticate(ctx context.Context, id ManagedIDKi
 	if c.probeIMDS {
 		cx, cancel := context.WithTimeout(ctx, imdsProbeTimeout)
 		defer cancel()
+		cx = policy.WithRetryOptions(cx, policy.RetryOptions{MaxRetries: -1})
 		req, err := runtime.NewRequest(cx, http.MethodGet, c.endpoint)
 		if err == nil {
 			_, err = c.azClient.Pipeline().Do(req)

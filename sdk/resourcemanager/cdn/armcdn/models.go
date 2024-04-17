@@ -2494,8 +2494,20 @@ type ProfileListResult struct {
 	Value []*Profile
 }
 
+// ProfileLogScrubbing - Defines rules that scrub sensitive fields in the Azure Front Door profile logs.
+type ProfileLogScrubbing struct {
+	// List of log scrubbing rules applied to the Azure Front Door profile logs.
+	ScrubbingRules []*ProfileScrubbingRules
+
+	// State of the log scrubbing config. Default value is Enabled.
+	State *ProfileScrubbingState
+}
+
 // ProfileProperties - The JSON object that contains the properties required to create a profile.
 type ProfileProperties struct {
+	// Defines rules that scrub sensitive fields in the Azure Front Door profile logs.
+	LogScrubbing *ProfileLogScrubbing
+
 	// Send and receive timeout on forwarding request to the origin. When timeout is reached, the request fails and returns.
 	OriginResponseTimeoutSeconds *int32
 
@@ -2514,8 +2526,27 @@ type ProfileProperties struct {
 
 // ProfilePropertiesUpdateParameters - The JSON object containing profile update parameters.
 type ProfilePropertiesUpdateParameters struct {
+	// Defines rules to scrub sensitive fields in logs
+	LogScrubbing *ProfileLogScrubbing
+
 	// Send and receive timeout on forwarding request to the origin. When timeout is reached, the request fails and returns.
 	OriginResponseTimeoutSeconds *int32
+}
+
+// ProfileScrubbingRules - Defines the contents of the log scrubbing rules.
+type ProfileScrubbingRules struct {
+	// REQUIRED; The variable to be scrubbed from the logs.
+	MatchVariable *ScrubbingRuleEntryMatchVariable
+
+	// REQUIRED; When matchVariable is a collection, operate on the selector to specify which elements in the collection this
+	// rule applies to.
+	SelectorMatchOperator *ScrubbingRuleEntryMatchOperator
+
+	// When matchVariable is a collection, operator used to specify which elements in the collection this rule applies to.
+	Selector *string
+
+	// Defines the state of a log scrubbing rule. Default value is enabled.
+	State *ScrubbingRuleEntryState
 }
 
 // ProfileUpdateParameters - Properties required to update a profile.

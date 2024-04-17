@@ -287,7 +287,7 @@ func (p *delayPolicy) Do(req *policy.Request) (resp *http.Response, err error) {
 	return req.Next()
 }
 
-func TestDefaultAzureCredential_IMDSTimeout(t *testing.T) {
+func TestDefaultAzureCredential_IMDS(t *testing.T) {
 	// unsetting environment variables to skip EnvironmentCredential and other managed identity sources
 	for _, k := range []string{azureTenantID, identityEndpoint, msiEndpoint} {
 		if v, set := os.LookupEnv(k); set {
@@ -295,44 +295,79 @@ func TestDefaultAzureCredential_IMDSTimeout(t *testing.T) {
 			defer os.Setenv(k, v)
 		}
 	}
-
-	// AzureCLICredential returning an error ensures we see the ManagedIdentityCredential timeout error
-	datp := defaultAzTokenProvider
-	defer func() { defaultAzTokenProvider = datp }()
+	// AzureCLICredential returning an error ensures we see fatal errors from ManagedIdentityCredential
+	before := defaultAzTokenProvider
+	defer func() { defaultAzTokenProvider = before }()
 	defaultAzTokenProvider = mockAzTokenProviderFailure
 
-	// shorten the timeout to speed up this test
-	ipt := imdsProbeTimeout
-	defer func() { imdsProbeTimeout = ipt }()
-	imdsProbeTimeout = 100 * time.Millisecond
-
-	dp := delayPolicy{2 * imdsProbeTimeout}
-	chain, err := NewDefaultAzureCredential(&DefaultAzureCredentialOptions{
-		ClientOptions: policy.ClientOptions{
-			PerCallPolicies: []policy.Policy{&dp},
-			Retry:           policy.RetryOptions{MaxRetries: -1},
-			Transport:       &mockSTS{},
-		},
+	t.Run("probe", func(t *testing.T) {
+		probed := false
+		cred, err := NewDefaultAzureCredential(&DefaultAzureCredentialOptions{
+			ClientOptions: policy.ClientOptions{
+				Retry: policy.RetryOptions{
+					MaxRetries:  5,
+					StatusCodes: []int{http.StatusInternalServerError},
+				},
+				Transport: &mockSTS{
+					tokenRequestCallback: func(req *http.Request) *http.Response {
+						hdr := req.Header.Get(headerMetadata)
+						if probed {
+							// This should be a token request. Return nil, mockSTS will respond with a token
+							require.NotEmpty(t, hdr, "credential shouldn't retry probe request")
+							return nil
+						}
+						// probe request. Respond with retriable status. The credential shouldn't retry
+						probed = true
+						require.Empty(t, hdr, "probe request shouldn't have Metadata header")
+						return &http.Response{
+							Body:       http.NoBody,
+							StatusCode: http.StatusInternalServerError,
+						}
+					},
+				},
+			},
+		})
+		require.NoError(t, err)
+		tk, err := cred.GetToken(context.Background(), testTRO)
+		require.NoError(t, err)
+		require.True(t, probed)
+		require.Equal(t, tokenValue, tk.Token)
 	})
-	require.NoError(t, err)
-	for i := 0; i < 2; i++ {
-		// expecting an error because managed identity times out and AzureCLICredential returns an error
-		_, err = chain.GetToken(context.Background(), testTRO)
-		require.ErrorContains(t, err, credNameManagedIdentity+": managed identity timed out")
-	}
 
-	// remove the delay so ManagedIdentityCredential can get a token from the fake STS
-	dp.delay = 0
-	tk, err := chain.GetToken(context.Background(), testTRO)
-	require.NoError(t, err)
-	require.Equal(t, tokenValue, tk.Token)
+	t.Run("timeout", func(t *testing.T) {
+		// shorten the timeout to speed up this test
+		before := imdsProbeTimeout
+		defer func() { imdsProbeTimeout = before }()
+		imdsProbeTimeout = 100 * time.Millisecond
 
-	// now there should be no timeout on token requests
-	dp.delay = 2 * imdsProbeTimeout
-	tk, err = chain.GetToken(context.Background(), policy.TokenRequestOptions{
-		// using a different scope forces a token request by bypassing the cache
-		Scopes: []string{"not-" + testTRO.Scopes[0]},
+		dp := delayPolicy{2 * imdsProbeTimeout}
+		chain, err := NewDefaultAzureCredential(&DefaultAzureCredentialOptions{
+			ClientOptions: policy.ClientOptions{
+				PerCallPolicies: []policy.Policy{&dp},
+				Retry:           policy.RetryOptions{MaxRetries: -1},
+				Transport:       &mockSTS{},
+			},
+		})
+		require.NoError(t, err)
+		for i := 0; i < 2; i++ {
+			// expecting an error because managed identity times out and AzureCLICredential returns an error
+			_, err = chain.GetToken(context.Background(), testTRO)
+			require.ErrorContains(t, err, credNameManagedIdentity+": managed identity timed out")
+		}
+
+		// remove the delay so ManagedIdentityCredential can get a token from the fake STS
+		dp.delay = 0
+		tk, err := chain.GetToken(context.Background(), testTRO)
+		require.NoError(t, err)
+		require.Equal(t, tokenValue, tk.Token)
+
+		// now there should be no timeout on token requests
+		dp.delay = 2 * imdsProbeTimeout
+		tk, err = chain.GetToken(context.Background(), policy.TokenRequestOptions{
+			// using a different scope forces a token request by bypassing the cache
+			Scopes: []string{"not-" + testTRO.Scopes[0]},
+		})
+		require.NoError(t, err)
+		require.Equal(t, tokenValue, tk.Token)
 	})
-	require.NoError(t, err)
-	require.Equal(t, tokenValue, tk.Token)
 }

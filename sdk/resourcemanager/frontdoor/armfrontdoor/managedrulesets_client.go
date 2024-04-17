@@ -46,7 +46,7 @@ func NewManagedRuleSetsClient(subscriptionID string, credential azcore.TokenCred
 
 // NewListPager - Lists all available managed rule sets.
 //
-// Generated from API version 2022-05-01
+// Generated from API version 2024-02-01
 //   - options - ManagedRuleSetsClientListOptions contains the optional parameters for the ManagedRuleSetsClient.NewListPager
 //     method.
 func (client *ManagedRuleSetsClient) NewListPager(options *ManagedRuleSetsClientListOptions) *runtime.Pager[ManagedRuleSetsClientListResponse] {
@@ -84,7 +84,7 @@ func (client *ManagedRuleSetsClient) listCreateRequest(ctx context.Context, opti
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01")
+	reqQP.Set("api-version", "2024-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

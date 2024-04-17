@@ -59,7 +59,8 @@ func TestDeleteDatabaseOptionsToHeaders(t *testing.T) {
 
 func TestQueryDatabasesRequestOptionsToHeaders(t *testing.T) {
 	options := &QueryDatabasesOptions{}
-	options.ContinuationToken = "continuationToken"
+	continuation := "continuationToken"
+	options.ContinuationToken = &continuation
 	header := options.toHeaders()
 	if header == nil {
 		t.Fatal("toHeaders should return non-nil")

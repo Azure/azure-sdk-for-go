@@ -1,16 +1,24 @@
 # Release History
 
-## 1.6.0-beta.3 (Unreleased)
+## 1.6.0-beta.4 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
 
 ### Bugs Fixed
-* `ManagedIdentityCredential` now specifies resource IDs correctly for Azure Container Instances
 
 ### Other Changes
-* Increased `DefaultAzureCredential` reliability when authenticating a managed identity on an Azure VM
+
+## 1.6.0-beta.3 (2024-04-09)
+
+### Breaking Changes
+* `DefaultAzureCredential` now sends a probe request with no retries for IMDS managed identity
+  environments to avoid excessive retry delays when the IMDS endpoint is not available. This
+  should improve credential chain resolution for local development scenarios.
+
+### Bugs Fixed
+* `ManagedIdentityCredential` now specifies resource IDs correctly for Azure Container Instances
 
 ## 1.6.0-beta.2 (2024-02-06)
 

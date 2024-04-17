@@ -73,3 +73,12 @@ const (
 	StateTypeBreaking  StateType = azdatalake.StateTypeBreaking
 	StateTypeBroken    StateType = azdatalake.StateTypeBroken
 )
+
+type LeaseAction = generated.LeaseAction
+
+const (
+	LeaseActionAcquire        = generated.LeaseActionAcquire
+	LeaseActionRelease        = generated.LeaseActionRelease
+	LeaseActionAcquireRelease = generated.LeaseActionAcquireRelease
+	LeaseActionRenew          = generated.LeaseActionAutoRenew
+)

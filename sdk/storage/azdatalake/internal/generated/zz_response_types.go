@@ -210,6 +210,15 @@ type PathClientDeleteResponse struct {
 
 	// Version contains the information returned from the x-ms-version header response.
 	Version *string
+
+	// XMSContinuation contains the information returned from the x-ms-continuation header response.
+	XMSContinuation *string
+
+	// XMSRequestID contains the information returned from the x-ms-request-id header response.
+	XMSRequestID *string
+
+	// XMSVersion contains the information returned from the x-ms-version header response.
+	XMSVersion *string
 }
 
 // PathClientFlushDataResponse contains the response from method PathClient.FlushData.

@@ -40,6 +40,10 @@ type UpdateRunsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByFleetPager func(resourceGroupName string, fleetName string, options *armcontainerservicefleet.UpdateRunsClientListByFleetOptions) (resp azfake.PagerResponder[armcontainerservicefleet.UpdateRunsClientListByFleetResponse])
 
+	// BeginSkip is the fake for method UpdateRunsClient.BeginSkip
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginSkip func(ctx context.Context, resourceGroupName string, fleetName string, updateRunName string, body armcontainerservicefleet.SkipProperties, options *armcontainerservicefleet.UpdateRunsClientBeginSkipOptions) (resp azfake.PollerResponder[armcontainerservicefleet.UpdateRunsClientSkipResponse], errResp azfake.ErrorResponder)
+
 	// BeginStart is the fake for method UpdateRunsClient.BeginStart
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginStart func(ctx context.Context, resourceGroupName string, fleetName string, updateRunName string, options *armcontainerservicefleet.UpdateRunsClientBeginStartOptions) (resp azfake.PollerResponder[armcontainerservicefleet.UpdateRunsClientStartResponse], errResp azfake.ErrorResponder)
@@ -58,6 +62,7 @@ func NewUpdateRunsServerTransport(srv *UpdateRunsServer) *UpdateRunsServerTransp
 		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armcontainerservicefleet.UpdateRunsClientCreateOrUpdateResponse]](),
 		beginDelete:         newTracker[azfake.PollerResponder[armcontainerservicefleet.UpdateRunsClientDeleteResponse]](),
 		newListByFleetPager: newTracker[azfake.PagerResponder[armcontainerservicefleet.UpdateRunsClientListByFleetResponse]](),
+		beginSkip:           newTracker[azfake.PollerResponder[armcontainerservicefleet.UpdateRunsClientSkipResponse]](),
 		beginStart:          newTracker[azfake.PollerResponder[armcontainerservicefleet.UpdateRunsClientStartResponse]](),
 		beginStop:           newTracker[azfake.PollerResponder[armcontainerservicefleet.UpdateRunsClientStopResponse]](),
 	}
@@ -70,6 +75,7 @@ type UpdateRunsServerTransport struct {
 	beginCreateOrUpdate *tracker[azfake.PollerResponder[armcontainerservicefleet.UpdateRunsClientCreateOrUpdateResponse]]
 	beginDelete         *tracker[azfake.PollerResponder[armcontainerservicefleet.UpdateRunsClientDeleteResponse]]
 	newListByFleetPager *tracker[azfake.PagerResponder[armcontainerservicefleet.UpdateRunsClientListByFleetResponse]]
+	beginSkip           *tracker[azfake.PollerResponder[armcontainerservicefleet.UpdateRunsClientSkipResponse]]
 	beginStart          *tracker[azfake.PollerResponder[armcontainerservicefleet.UpdateRunsClientStartResponse]]
 	beginStop           *tracker[azfake.PollerResponder[armcontainerservicefleet.UpdateRunsClientStopResponse]]
 }
@@ -94,6 +100,8 @@ func (u *UpdateRunsServerTransport) Do(req *http.Request) (*http.Response, error
 		resp, err = u.dispatchGet(req)
 	case "UpdateRunsClient.NewListByFleetPager":
 		resp, err = u.dispatchNewListByFleetPager(req)
+	case "UpdateRunsClient.BeginSkip":
+		resp, err = u.dispatchBeginSkip(req)
 	case "UpdateRunsClient.BeginStart":
 		resp, err = u.dispatchBeginStart(req)
 	case "UpdateRunsClient.BeginStop":
@@ -300,6 +308,65 @@ func (u *UpdateRunsServerTransport) dispatchNewListByFleetPager(req *http.Reques
 	if !server.PagerResponderMore(newListByFleetPager) {
 		u.newListByFleetPager.remove(req)
 	}
+	return resp, nil
+}
+
+func (u *UpdateRunsServerTransport) dispatchBeginSkip(req *http.Request) (*http.Response, error) {
+	if u.srv.BeginSkip == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginSkip not implemented")}
+	}
+	beginSkip := u.beginSkip.get(req)
+	if beginSkip == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/fleets/(?P<fleetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/updateRuns/(?P<updateRunName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/skip`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armcontainerservicefleet.SkipProperties](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
+		fleetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("fleetName")])
+		if err != nil {
+			return nil, err
+		}
+		updateRunNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("updateRunName")])
+		if err != nil {
+			return nil, err
+		}
+		var options *armcontainerservicefleet.UpdateRunsClientBeginSkipOptions
+		if ifMatchParam != nil {
+			options = &armcontainerservicefleet.UpdateRunsClientBeginSkipOptions{
+				IfMatch: ifMatchParam,
+			}
+		}
+		respr, errRespr := u.srv.BeginSkip(req.Context(), resourceGroupNameParam, fleetNameParam, updateRunNameParam, body, options)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginSkip = &respr
+		u.beginSkip.add(req, beginSkip)
+	}
+
+	resp, err := server.PollerResponderNext(beginSkip, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		u.beginSkip.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginSkip) {
+		u.beginSkip.remove(req)
+	}
+
 	return resp, nil
 }
 

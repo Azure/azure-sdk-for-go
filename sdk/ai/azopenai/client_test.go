@@ -23,7 +23,7 @@ func TestClient_OpenAI_InvalidModel(t *testing.T) {
 		t.Skip()
 	}
 
-	chatClient := newOpenAIClientForTest(t)
+	chatClient := newTestClient(t, openAI.ChatCompletions.Endpoint)
 
 	_, err := chatClient.GetChatCompletions(context.Background(), azopenai.ChatCompletionsOptions{
 		Messages: []azopenai.ChatRequestMessageClassification{

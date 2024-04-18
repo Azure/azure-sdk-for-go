@@ -48,8 +48,9 @@ type Client base.CompositeClient[generated.PathClient, generated_blob.BlobClient
 //   - options - client options; pass nil to accept the default values
 func NewClient(fileURL string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
 	blobURL, fileURL := shared.GetURLs(fileURL)
-	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{shared.TokenScope}, nil)
+	audience := base.GetAudience((*base.ClientOptions)(options))
 	conOptions := shared.GetClientOptions(options)
+	authPolicy := shared.NewStorageChallengePolicy(cred, audience, conOptions.InsecureAllowCredentialWithHTTP)
 	plOpts := runtime.PipelineOptions{
 		PerRetry: []policy.Policy{authPolicy},
 	}
@@ -411,13 +412,6 @@ func (f *Client) AppendData(ctx context.Context, offset int64, body io.ReadSeekC
 		return AppendDataResponse{}, err
 	}
 	resp, err := f.generatedFileClientWithDFS().AppendData(ctx, body, appendDataOptions, nil, leaseAccessConditions, cpkInfo)
-	// TODO: check and uncomment this
-	//if err != nil {
-	//	_, err1 := body.Seek(0, io.SeekStart)
-	//	if err1 != nil {
-	//		return AppendDataResponse{}, err1
-	//	}
-	//}
 	return resp, exported.ConvertToDFSError(err)
 }
 
@@ -448,6 +442,13 @@ func (f *Client) uploadFromReader(ctx context.Context, reader io.ReaderAt, actua
 		if err == nil {
 			log.Writef(exported.EventUpload, "file name %s actual size %v chunk-size %v chunk-count %v",
 				urlParts.PathName, actualSize, o.ChunkSize, ((actualSize-1)/o.ChunkSize)+1)
+		}
+	}
+
+	if o.EncryptionContext != nil {
+		_, err := f.Create(ctx, &CreateOptions{EncryptionContext: o.EncryptionContext})
+		if err != nil {
+			return err
 		}
 	}
 
@@ -490,6 +491,12 @@ func (f *Client) uploadFromReader(ctx context.Context, reader io.ReaderAt, actua
 	})
 
 	if err != nil {
+		if o.EncryptionContext != nil {
+			_, err2 := f.Delete(ctx, nil)
+			if err2 != nil {
+				return exported.ConvertToDFSError(err2)
+			}
+		}
 		return exported.ConvertToDFSError(err)
 	}
 	// All appends were successful, call to flush
@@ -527,7 +534,20 @@ func (f *Client) UploadStream(ctx context.Context, body io.Reader, options *Uplo
 		options = &UploadStreamOptions{}
 	}
 
+	if options.EncryptionContext != nil {
+		_, err := f.Create(ctx, &CreateOptions{EncryptionContext: options.EncryptionContext})
+		if err != nil {
+			return err
+		}
+	}
 	err := copyFromReader(ctx, body, f, *options, newMMBPool)
+
+	if err != nil && options.EncryptionContext != nil {
+		_, err2 := f.Delete(ctx, nil)
+		if err2 != nil {
+			return exported.ConvertToDFSError(err2)
+		}
+	}
 	return exported.ConvertToDFSError(err)
 }
 
@@ -538,8 +558,10 @@ func (f *Client) DownloadStream(ctx context.Context, o *DownloadStreamOptions) (
 		o = &DownloadStreamOptions{}
 	}
 	opts := o.format()
-	resp, err := f.blobClient().DownloadStream(ctx, opts)
-	newResp := FormatDownloadStreamResponse(&resp)
+	var respFromCtx *http.Response
+	ctxWithResp := shared.WithCaptureBlobResponse(ctx, &respFromCtx)
+	resp, err := f.blobClient().DownloadStream(ctxWithResp, opts)
+	newResp := FormatDownloadStreamResponse(&resp, respFromCtx)
 	fullResp := DownloadStreamResponse{
 		client:           f,
 		DownloadResponse: newResp,

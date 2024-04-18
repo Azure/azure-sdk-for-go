@@ -101,14 +101,14 @@ func (client *ReportsClient) getLatencyScorecardsCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
+	reqQP.Set("aggregationInterval", string(aggregationInterval))
 	reqQP.Set("api-version", "2019-11-01")
-	if options != nil && options.EndDateTimeUTC != nil {
-		reqQP.Set("endDateTimeUTC", *options.EndDateTimeUTC)
-	}
 	if options != nil && options.Country != nil {
 		reqQP.Set("country", *options.Country)
 	}
-	reqQP.Set("aggregationInterval", string(aggregationInterval))
+	if options != nil && options.EndDateTimeUTC != nil {
+		reqQP.Set("endDateTimeUTC", *options.EndDateTimeUTC)
+	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -181,17 +181,17 @@ func (client *ReportsClient) getTimeseriesCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2019-11-01")
-	reqQP.Set("startDateTimeUTC", startDateTimeUTC.Format(time.RFC3339Nano))
-	reqQP.Set("endDateTimeUTC", endDateTimeUTC.Format(time.RFC3339Nano))
 	reqQP.Set("aggregationInterval", string(aggregationInterval))
-	reqQP.Set("timeseriesType", string(timeseriesType))
-	if options != nil && options.Endpoint != nil {
-		reqQP.Set("endpoint", *options.Endpoint)
-	}
+	reqQP.Set("api-version", "2019-11-01")
 	if options != nil && options.Country != nil {
 		reqQP.Set("country", *options.Country)
 	}
+	reqQP.Set("endDateTimeUTC", endDateTimeUTC.Format(time.RFC3339Nano))
+	if options != nil && options.Endpoint != nil {
+		reqQP.Set("endpoint", *options.Endpoint)
+	}
+	reqQP.Set("startDateTimeUTC", startDateTimeUTC.Format(time.RFC3339Nano))
+	reqQP.Set("timeseriesType", string(timeseriesType))
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

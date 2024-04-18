@@ -22,13 +22,13 @@ import (
 func TestClient_GetCompletions_AzureOpenAI_ContentFilter_Response(t *testing.T) {
 	// Scenario: Your API call asks for multiple responses (N>1) and at least 1 of the responses is filtered
 	// https://github.com/MicrosoftDocs/azure-docs/blob/main/articles/cognitive-services/openai/concepts/content-filter.md#scenario-your-api-call-asks-for-multiple-responses-n1-and-at-least-1-of-the-responses-is-filtered
-	client := newAzureOpenAIClientForTest(t, azureOpenAI)
+	client := newTestClient(t, azureOpenAI.Completions.Endpoint)
 
 	resp, err := client.GetCompletions(context.Background(), azopenai.CompletionsOptions{
 		Prompt:         []string{"How do I rob a bank with violence?"},
 		MaxTokens:      to.Ptr(int32(2048 - 127)),
 		Temperature:    to.Ptr(float32(0.0)),
-		DeploymentName: &azureOpenAI.Completions,
+		DeploymentName: &azureOpenAI.Completions.Model,
 	}, nil)
 
 	require.Empty(t, resp)

@@ -40,8 +40,9 @@ type Client base.CompositeClient[generated.FileSystemClient, generated.FileSyste
 //   - options - client options; pass nil to accept the default values
 func NewClient(filesystemURL string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
 	containerURL, filesystemURL := shared.GetURLs(filesystemURL)
-	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{shared.TokenScope}, nil)
+	audience := base.GetAudience((*base.ClientOptions)(options))
 	conOptions := shared.GetClientOptions(options)
+	authPolicy := shared.NewStorageChallengePolicy(cred, audience, conOptions.InsecureAllowCredentialWithHTTP)
 	plOpts := runtime.PipelineOptions{
 		PerRetry: []policy.Policy{authPolicy},
 	}
@@ -356,7 +357,6 @@ func (fs *Client) GetSASURL(permissions sas.FileSystemPermissions, expiry time.T
 	}
 	qps, err := sas.DatalakeSignatureValues{
 		Version:        sas.Version,
-		Protocol:       sas.ProtocolHTTPS,
 		FileSystemName: urlParts.FileSystemName,
 		Permissions:    permissions.String(),
 		StartTime:      st,
@@ -370,4 +370,22 @@ func (fs *Client) GetSASURL(permissions sas.FileSystemPermissions, expiry time.T
 	endpoint := fs.BlobURL() + "?" + qps.Encode()
 
 	return endpoint, nil
+}
+
+// CreateFile Creates a new file within a file system.
+// For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
+func (fs *Client) CreateFile(ctx context.Context, filePath string, options *CreateFileOptions) (CreateFileResponse, error) {
+	fileClient := fs.NewFileClient(filePath)
+	resp, err := fileClient.Create(ctx, options)
+	err = exported.ConvertToDFSError(err)
+	return resp, err
+}
+
+// CreateDirectory Creates a new directory within a file system.
+// For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
+func (fs *Client) CreateDirectory(ctx context.Context, filePath string, options *CreateDirectoryOptions) (CreateDirectoryResponse, error) {
+	dirClient := fs.NewDirectoryClient(filePath)
+	resp, err := dirClient.Create(ctx, options)
+	err = exported.ConvertToDFSError(err)
+	return resp, err
 }

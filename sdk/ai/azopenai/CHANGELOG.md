@@ -1,5 +1,17 @@
 # Release History
 
+## 0.5.2 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+- EventReader can now handle chunks of text larger than 64k. Thank you @ChrisTrenkamp for finding the issue and suggesting a fix. (PR#22703)
+
+### Other Changes
+
 ## 0.5.1 (2024-04-02)
 
 ### Features Added

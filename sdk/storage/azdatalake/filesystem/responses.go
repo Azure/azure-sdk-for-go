@@ -150,3 +150,9 @@ type ListPathsHierarchySegmentResponse = generated.ListPathsHierarchySegmentResp
 
 // PathHierarchyListSegment contains the response from method FileSystemClient.ListPathsHierarchySegment.
 type PathHierarchyListSegment = generated.PathHierarchyListSegment
+
+// CreateFileResponse contains the response from method FileSystemClient.CreateFile.
+type CreateFileResponse = generated.PathClientCreateResponse
+
+// CreateDirectoryResponse contains the response from method FileSystemClient.CreateDirectory.
+type CreateDirectoryResponse = generated.PathClientCreateResponse

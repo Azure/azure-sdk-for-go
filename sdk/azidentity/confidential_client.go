@@ -91,7 +91,7 @@ func (c *confidentialClient) GetToken(ctx context.Context, tro policy.TokenReque
 		}
 		tro.TenantID = tenant
 	}
-	client, mu, err := c.client(ctx, tro)
+	client, mu, err := c.client(tro)
 	if err != nil {
 		return azcore.AccessToken{}, err
 	}
@@ -121,7 +121,7 @@ func (c *confidentialClient) GetToken(ctx context.Context, tro policy.TokenReque
 	return azcore.AccessToken{Token: ar.AccessToken, ExpiresOn: ar.ExpiresOn.UTC()}, err
 }
 
-func (c *confidentialClient) client(ctx context.Context, tro policy.TokenRequestOptions) (msalConfidentialClient, *sync.Mutex, error) {
+func (c *confidentialClient) client(tro policy.TokenRequestOptions) (msalConfidentialClient, *sync.Mutex, error) {
 	c.clientMu.Lock()
 	defer c.clientMu.Unlock()
 	if tro.EnableCAE {

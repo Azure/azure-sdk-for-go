@@ -40,7 +40,7 @@ func mockAzTokenProviderFailure(context.Context, []string, string, string) ([]by
 	return nil, newAuthenticationFailedError(credNameAzureCLI, "mock provider error", nil, nil)
 }
 
-func mockAzTokenProviderSuccess(ctx context.Context, scopes []string, tenant, subscription string) ([]byte, error) {
+func mockAzTokenProviderSuccess(context.Context, []string, string, string) ([]byte, error) {
 	return azTokenOutput("2001-02-03 04:05:06.000007", 0), nil
 }
 

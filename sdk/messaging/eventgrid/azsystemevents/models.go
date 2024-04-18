@@ -303,14 +303,14 @@ type ACSAdvancedMessageContext struct {
 	From *string
 
 	// The message ID for the sent message for an inbound reply
-	ID *string
+	MessageID *string
 }
 
 // ACSAdvancedMessageDeliveryStatusUpdatedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.AdvancedMessageDeliveryStatusUpdated
 // event.
 type ACSAdvancedMessageDeliveryStatusUpdatedEventData struct {
 	// The updated message channel type
-	ChannelType *ACSMessageChannelType
+	ChannelKind *ACSMessageChannelKind
 
 	// The channel event error
 	Error *internalACSAdvancedMessageChannelEventError
@@ -325,7 +325,7 @@ type ACSAdvancedMessageDeliveryStatusUpdatedEventData struct {
 	ReceivedTimestamp *time.Time
 
 	// The updated message status
-	Status *string
+	Status *ACSAdvanceMessageDeliveryStatus
 
 	// The message recipient
 	To *string
@@ -350,7 +350,7 @@ type ACSAdvancedMessageEventData struct {
 // message
 type ACSAdvancedMessageInteractiveButtonReplyContent struct {
 	// The ID of the button
-	ID *string
+	ButtonID *string
 
 	// The title of the button
 	Title *string
@@ -365,7 +365,7 @@ type ACSAdvancedMessageInteractiveContent struct {
 	ListReply *ACSAdvancedMessageInteractiveListReplyContent
 
 	// The Message interactive reply type
-	Type *ACSInteractiveReplyType
+	ReplyKind *ACSInteractiveReplyKind
 }
 
 // ACSAdvancedMessageInteractiveListReplyContent - Advanced Message Interactive list reply content for a user to business
@@ -375,7 +375,7 @@ type ACSAdvancedMessageInteractiveListReplyContent struct {
 	Description *string
 
 	// The ID of the selected list item
-	ID *string
+	ListItemID *string
 
 	// The title of the selected list item
 	Title *string
@@ -390,7 +390,7 @@ type ACSAdvancedMessageMediaContent struct {
 	FileName *string
 
 	// The media identifier
-	ID *string
+	MediaID *string
 
 	// The MIME type of the file this media represents
 	MimeType *string
@@ -402,8 +402,8 @@ type ACSAdvancedMessageReceivedEventData struct {
 	// The The messaged received button content
 	Button *ACSAdvancedMessageButtonContent
 
-	// The The messaged received channel type
-	ChannelType *ACSMessageChannelType
+	// The The messaged received channel Kind
+	ChannelKind *ACSMessageChannelKind
 
 	// The The messaged received content
 	Content *string
@@ -418,10 +418,10 @@ type ACSAdvancedMessageReceivedEventData struct {
 	From *string
 
 	// The The messaged received interactive content
-	Interactive *ACSAdvancedMessageInteractiveContent
+	InteractiveContent *ACSAdvancedMessageInteractiveContent
 
 	// The messaged received media content
-	Media *ACSAdvancedMessageMediaContent
+	MediaContent *ACSAdvancedMessageMediaContent
 
 	// The time message was received
 	ReceivedTimestamp *time.Time
@@ -1143,7 +1143,7 @@ type ACSRecordingChunkInfoProperties struct {
 // event.
 type ACSRecordingFileStatusUpdatedEventData struct {
 	// The recording channel type - Mixed, Unmixed
-	RecordingChannelType *RecordingChannelType
+	RecordingChannelKind *RecordingChannelKind
 
 	// The recording content type- AudioVideo, or Audio
 	RecordingContentType *RecordingContentType

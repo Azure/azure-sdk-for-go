@@ -15,7 +15,6 @@ import (
 const RecordingDirectory = "sdk/ai/azopenai/testdata"
 
 func TestMain(m *testing.M) {
-	initEnvVars()
 	code := run(m)
 	os.Exit(code)
 }

@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated_blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/path"
 	"io"
+	"net/http"
 	"time"
 )
 
@@ -135,6 +136,9 @@ type DownloadResponse struct {
 	// EncryptionScope contains the information returned from the x-ms-encryption-scope header response.
 	EncryptionScope *string
 
+	// EncryptionContext contains the information returned from the x-ms-encryption-context header response.
+	EncryptionContext *string
+
 	// ErrorCode contains the information returned from the x-ms-error-code header response.
 	ErrorCode *string
 
@@ -193,7 +197,7 @@ type DownloadResponse struct {
 	VersionID *string
 }
 
-func FormatDownloadStreamResponse(r *blob.DownloadStreamResponse) DownloadResponse {
+func FormatDownloadStreamResponse(r *blob.DownloadStreamResponse, rawResponse *http.Response) DownloadResponse {
 	newResp := DownloadResponse{}
 	if r != nil {
 		newResp.AcceptRanges = r.AcceptRanges
@@ -237,6 +241,9 @@ func FormatDownloadStreamResponse(r *blob.DownloadStreamResponse) DownloadRespon
 		newResp.TagCount = r.TagCount
 		newResp.Version = r.Version
 		newResp.VersionID = r.VersionID
+	}
+	if val := rawResponse.Header.Get("x-ms-encryption-context"); val != "" {
+		newResp.EncryptionContext = &val
 	}
 	return newResp
 }

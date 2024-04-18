@@ -54,8 +54,8 @@ func TestDatabaseQueryContainers(t *testing.T) {
 			receivedIds = append(receivedIds, container.ID)
 		}
 
-		if queryPager.More() && queryResponse.ContinuationToken != "someContinuationToken" {
-			t.Errorf("Expected ContinuationToken to be %s, but got %s", "someContinuationToken", queryResponse.ContinuationToken)
+		if queryPager.More() && *queryResponse.ContinuationToken != "someContinuationToken" {
+			t.Errorf("Expected ContinuationToken to be %s, but got %s", "someContinuationToken", *queryResponse.ContinuationToken)
 		}
 
 		if queryResponse.ActivityID == "" {

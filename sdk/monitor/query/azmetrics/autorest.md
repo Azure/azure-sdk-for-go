@@ -35,7 +35,7 @@ directive:
         - models.go
         - models_serde.go
     where: $
-    transform: return $.replace(/MetricResultsValuesItem/g, "MetricValues");
+    transform: return $.replace(/MetricResultsValuesItem/g, "MetricData");
   - from: swagger-document
     where: $.definitions.MetricResults.properties.values.items
     transform: $["description"] = "Metric data values."

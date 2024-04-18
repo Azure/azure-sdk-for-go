@@ -17,8 +17,7 @@ import (
 // Don't use this type directly, use NewClientFactory instead.
 type ClientFactory struct {
 	subscriptionID string
-	credential     azcore.TokenCredential
-	options        *arm.ClientOptions
+	internal       *arm.Client
 }
 
 // NewClientFactory creates a new instance of ClientFactory with the specified values.
@@ -27,54 +26,83 @@ type ClientFactory struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClientFactory, error) {
-	_, err := arm.NewClient(moduleName, moduleVersion, credential, options)
+	internal, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	return &ClientFactory{
-		subscriptionID: subscriptionID, credential: credential,
-		options: options.Clone(),
+		subscriptionID: subscriptionID,
+		internal:       internal,
 	}, nil
 }
 
 // NewAvailableClusterPoolVersionsClient creates a new instance of AvailableClusterPoolVersionsClient.
 func (c *ClientFactory) NewAvailableClusterPoolVersionsClient() *AvailableClusterPoolVersionsClient {
-	subClient, _ := NewAvailableClusterPoolVersionsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &AvailableClusterPoolVersionsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewAvailableClusterVersionsClient creates a new instance of AvailableClusterVersionsClient.
 func (c *ClientFactory) NewAvailableClusterVersionsClient() *AvailableClusterVersionsClient {
-	subClient, _ := NewAvailableClusterVersionsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &AvailableClusterVersionsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewClusterAvailableUpgradesClient creates a new instance of ClusterAvailableUpgradesClient.
+func (c *ClientFactory) NewClusterAvailableUpgradesClient() *ClusterAvailableUpgradesClient {
+	return &ClusterAvailableUpgradesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewClusterJobsClient creates a new instance of ClusterJobsClient.
 func (c *ClientFactory) NewClusterJobsClient() *ClusterJobsClient {
-	subClient, _ := NewClusterJobsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &ClusterJobsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewClusterPoolAvailableUpgradesClient creates a new instance of ClusterPoolAvailableUpgradesClient.
+func (c *ClientFactory) NewClusterPoolAvailableUpgradesClient() *ClusterPoolAvailableUpgradesClient {
+	return &ClusterPoolAvailableUpgradesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewClusterPoolsClient creates a new instance of ClusterPoolsClient.
 func (c *ClientFactory) NewClusterPoolsClient() *ClusterPoolsClient {
-	subClient, _ := NewClusterPoolsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &ClusterPoolsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewClustersClient creates a new instance of ClustersClient.
 func (c *ClientFactory) NewClustersClient() *ClustersClient {
-	subClient, _ := NewClustersClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &ClustersClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewLocationsClient creates a new instance of LocationsClient.
 func (c *ClientFactory) NewLocationsClient() *LocationsClient {
-	subClient, _ := NewLocationsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &LocationsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewOperationsClient creates a new instance of OperationsClient.
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
-	subClient, _ := NewOperationsClient(c.credential, c.options)
-	return subClient
+	return &OperationsClient{
+		internal: c.internal,
+	}
 }

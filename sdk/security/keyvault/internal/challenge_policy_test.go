@@ -17,6 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/errorinfo"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/stretchr/testify/require"
 )
@@ -90,7 +91,8 @@ func TestChallengePolicy(t *testing.T) {
 			if test.err {
 				expected := fmt.Sprintf(challengeMatchError, test.resource)
 				require.EqualError(t, err, expected)
-				require.IsType(t, &challengePolicyError{}, err)
+				var nre errorinfo.NonRetriable
+				require.ErrorAs(t, err, &nre)
 			} else {
 				require.True(t, authenticated, "policy should have authenticated")
 			}

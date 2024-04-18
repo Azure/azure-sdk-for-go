@@ -409,11 +409,14 @@ func StartTestProxy(pathToRecordings string, options *RecordingOptions) (*TestPr
 	if options == nil {
 		options = defaultOptions()
 	}
-	log.Printf("Running test proxy command: %s start --storage-location %s -- --urls=%s\n",
-		proxyPath, gitRoot, options.baseURL())
+	insecure := ""
+	if options.insecure {
+		insecure = "--insecure"
+	}
+	args := []string{"start", "--storage-location", gitRoot, insecure, "--", "--urls=" + options.baseURL()}
+	log.Printf("Running test proxy command: %s %s", proxyPath, strings.Join(args, " "))
 	log.Printf("Test proxy log location: %s\n", proxyLog.Name())
-	cmd := exec.Command(
-		proxyPath, "start", "--storage-location", gitRoot, "--", "--urls="+options.baseURL())
+	cmd := exec.Command(proxyPath, args...)
 
 	cmd.Stdout = proxyLog
 	cmd.Stderr = proxyLog

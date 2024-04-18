@@ -10,7 +10,7 @@ package armcdn
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn"
-	moduleVersion = "v2.1.0"
+	moduleVersion = "v2.2.0"
 )
 
 // AFDEndpointProtocols - Supported protocols for the customer's endpoint.
@@ -1557,6 +1557,22 @@ func PossibleProfileResourceStateValues() []ProfileResourceState {
 	}
 }
 
+// ProfileScrubbingState - State of the log scrubbing config. Default value is Enabled.
+type ProfileScrubbingState string
+
+const (
+	ProfileScrubbingStateDisabled ProfileScrubbingState = "Disabled"
+	ProfileScrubbingStateEnabled  ProfileScrubbingState = "Enabled"
+)
+
+// PossibleProfileScrubbingStateValues returns the possible values for the ProfileScrubbingState const type.
+func PossibleProfileScrubbingStateValues() []ProfileScrubbingState {
+	return []ProfileScrubbingState{
+		ProfileScrubbingStateDisabled,
+		ProfileScrubbingStateEnabled,
+	}
+}
+
 // ProtocolType - Defines the TLS extension protocol that is used for secure delivery.
 type ProtocolType string
 
@@ -2157,6 +2173,55 @@ const (
 func PossibleSSLProtocolOperatorValues() []SSLProtocolOperator {
 	return []SSLProtocolOperator{
 		SSLProtocolOperatorEqual,
+	}
+}
+
+// ScrubbingRuleEntryMatchOperator - When matchVariable is a collection, operate on the selector to specify which elements
+// in the collection this rule applies to.
+type ScrubbingRuleEntryMatchOperator string
+
+const (
+	ScrubbingRuleEntryMatchOperatorEqualsAny ScrubbingRuleEntryMatchOperator = "EqualsAny"
+)
+
+// PossibleScrubbingRuleEntryMatchOperatorValues returns the possible values for the ScrubbingRuleEntryMatchOperator const type.
+func PossibleScrubbingRuleEntryMatchOperatorValues() []ScrubbingRuleEntryMatchOperator {
+	return []ScrubbingRuleEntryMatchOperator{
+		ScrubbingRuleEntryMatchOperatorEqualsAny,
+	}
+}
+
+// ScrubbingRuleEntryMatchVariable - The variable to be scrubbed from the logs.
+type ScrubbingRuleEntryMatchVariable string
+
+const (
+	ScrubbingRuleEntryMatchVariableQueryStringArgNames ScrubbingRuleEntryMatchVariable = "QueryStringArgNames"
+	ScrubbingRuleEntryMatchVariableRequestIPAddress    ScrubbingRuleEntryMatchVariable = "RequestIPAddress"
+	ScrubbingRuleEntryMatchVariableRequestURI          ScrubbingRuleEntryMatchVariable = "RequestUri"
+)
+
+// PossibleScrubbingRuleEntryMatchVariableValues returns the possible values for the ScrubbingRuleEntryMatchVariable const type.
+func PossibleScrubbingRuleEntryMatchVariableValues() []ScrubbingRuleEntryMatchVariable {
+	return []ScrubbingRuleEntryMatchVariable{
+		ScrubbingRuleEntryMatchVariableQueryStringArgNames,
+		ScrubbingRuleEntryMatchVariableRequestIPAddress,
+		ScrubbingRuleEntryMatchVariableRequestURI,
+	}
+}
+
+// ScrubbingRuleEntryState - Defines the state of a log scrubbing rule. Default value is enabled.
+type ScrubbingRuleEntryState string
+
+const (
+	ScrubbingRuleEntryStateDisabled ScrubbingRuleEntryState = "Disabled"
+	ScrubbingRuleEntryStateEnabled  ScrubbingRuleEntryState = "Enabled"
+)
+
+// PossibleScrubbingRuleEntryStateValues returns the possible values for the ScrubbingRuleEntryState const type.
+func PossibleScrubbingRuleEntryStateValues() []ScrubbingRuleEntryState {
+	return []ScrubbingRuleEntryState{
+		ScrubbingRuleEntryStateDisabled,
+		ScrubbingRuleEntryStateEnabled,
 	}
 }
 

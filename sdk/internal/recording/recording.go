@@ -25,6 +25,7 @@ import (
 	"strconv"
 	"strings"
 	"sync"
+	"sync/atomic"
 	"testing"
 	"time"
 
@@ -84,7 +85,12 @@ const (
 	Secret_Base64String VariableType = "secret_base64String"
 )
 
+// defaultSanitizersSet tracks whether default sanitizers have been added (this would be neater with Go 1.19's atomic.Bool)
+var defaultSanitizersSet int32
+
 // NewRecording initializes a new Recording instance
+//
+// Deprecated: call [Start] instead
 func NewRecording(c TestContext, mode RecordMode) (*Recording, error) {
 	// create recorder based on the test name, recordMode, variables, and sanitizers
 	recPath, varPath := getFilePaths(c.Name())
@@ -528,6 +534,10 @@ type RecordingOptions struct {
 	GroupForReplace string
 	Variables       map[string]interface{}
 	TestInstance    *testing.T
+
+	// insecure allows this package's tests to configure the proxy to skip upstream TLS
+	// verification so they can use a mock upstream server having a self-signed cert
+	insecure bool
 }
 
 func defaultOptions() *RecordingOptions {
@@ -674,9 +684,6 @@ func requestStart(url string, testId string, assetConfigLocation string) (*http.
 }
 
 func Start(t *testing.T, pathToRecordings string, options *RecordingOptions) error {
-	if options == nil {
-		options = defaultOptions()
-	}
 	if recordMode == LiveMode {
 		return nil
 	}
@@ -687,7 +694,16 @@ func Start(t *testing.T, pathToRecordings string, options *RecordingOptions) err
 			return nil
 		}
 	}
-
+	if recordMode == RecordingMode && atomic.CompareAndSwapInt32(&defaultSanitizersSet, 0, 1) {
+		err := addSanitizers(defaultSanitizers, options)
+		if err != nil {
+			atomic.StoreInt32(&defaultSanitizersSet, 0)
+			return err
+		}
+	}
+	if options == nil {
+		options = defaultOptions()
+	}
 	testId := getTestId(pathToRecordings, t)
 
 	absAssetLocation, relAssetLocation, err := getAssetsConfigLocation(pathToRecordings)

@@ -83,6 +83,137 @@ type Cluster struct {
 	Type *string
 }
 
+// ClusterAKSPatchVersionUpgradeProperties - Properties of upgrading cluster's AKS patch version.
+type ClusterAKSPatchVersionUpgradeProperties struct {
+	// REQUIRED; Type of upgrade.
+	UpgradeType *ClusterUpgradeType
+}
+
+// GetClusterUpgradeProperties implements the ClusterUpgradePropertiesClassification interface for type ClusterAKSPatchVersionUpgradeProperties.
+func (c *ClusterAKSPatchVersionUpgradeProperties) GetClusterUpgradeProperties() *ClusterUpgradeProperties {
+	return &ClusterUpgradeProperties{
+		UpgradeType: c.UpgradeType,
+	}
+}
+
+// ClusterAccessProfile - Cluster access profile.
+type ClusterAccessProfile struct {
+	// REQUIRED; Whether to create cluster using private IP instead of public IP. This property must be set at create time.
+	EnableInternalIngress *bool
+
+	// READ-ONLY; Private link service resource ID. Only when enableInternalIngress is true, this property will be returned.
+	PrivateLinkServiceID *string
+}
+
+// ClusterAvailableUpgrade - Cluster available upgrade.
+type ClusterAvailableUpgrade struct {
+	// Gets or sets the properties. Define cluster upgrade specific properties.
+	Properties ClusterAvailableUpgradePropertiesClassification
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ClusterAvailableUpgradeAksPatchUpgradeProperties - Cluster available AKS patch version upgrade.
+type ClusterAvailableUpgradeAksPatchUpgradeProperties struct {
+	// REQUIRED; Type of upgrade.
+	UpgradeType *ClusterAvailableUpgradeType
+
+	// Current node pool version.
+	CurrentVersion *string
+
+	// Current AKS version's status: whether it is deprecated or supported
+	CurrentVersionStatus *CurrentClusterAksVersionStatus
+
+	// Latest available version, which should be equal to AKS control plane version if it's not deprecated.
+	LatestVersion *string
+}
+
+// GetClusterAvailableUpgradeProperties implements the ClusterAvailableUpgradePropertiesClassification interface for type
+// ClusterAvailableUpgradeAksPatchUpgradeProperties.
+func (c *ClusterAvailableUpgradeAksPatchUpgradeProperties) GetClusterAvailableUpgradeProperties() *ClusterAvailableUpgradeProperties {
+	return &ClusterAvailableUpgradeProperties{
+		UpgradeType: c.UpgradeType,
+	}
+}
+
+// ClusterAvailableUpgradeHotfixUpgradeProperties - Cluster available hotfix version upgrade.
+type ClusterAvailableUpgradeHotfixUpgradeProperties struct {
+	// REQUIRED; Type of upgrade.
+	UpgradeType *ClusterAvailableUpgradeType
+
+	// Name of component to be upgraded.
+	ComponentName *string
+
+	// Created time of current available upgrade version
+	CreatedTime *time.Time
+
+	// Hotfix version upgrade description.
+	Description *string
+
+	// Extended properties of current available upgrade version
+	ExtendedProperties *string
+
+	// Severity of this upgrade.
+	Severity *Severity
+
+	// Source build number of current cluster component.
+	SourceBuildNumber *string
+
+	// Source cluster version of current cluster component.
+	SourceClusterVersion *string
+
+	// Source OSS version of current cluster component.
+	SourceOssVersion *string
+
+	// Target build number of component to be upgraded.
+	TargetBuildNumber *string
+
+	// Target cluster version of component to be upgraded.
+	TargetClusterVersion *string
+
+	// Target OSS version of component to be upgraded.
+	TargetOssVersion *string
+}
+
+// GetClusterAvailableUpgradeProperties implements the ClusterAvailableUpgradePropertiesClassification interface for type
+// ClusterAvailableUpgradeHotfixUpgradeProperties.
+func (c *ClusterAvailableUpgradeHotfixUpgradeProperties) GetClusterAvailableUpgradeProperties() *ClusterAvailableUpgradeProperties {
+	return &ClusterAvailableUpgradeProperties{
+		UpgradeType: c.UpgradeType,
+	}
+}
+
+// ClusterAvailableUpgradeList - Collection of cluster available upgrade.
+type ClusterAvailableUpgradeList struct {
+	// REQUIRED; Collection of Cluster available upgrade.
+	Value []*ClusterAvailableUpgrade
+
+	// The URL of next result page.
+	NextLink *string
+}
+
+// ClusterAvailableUpgradeProperties - Cluster available upgrade properties.
+type ClusterAvailableUpgradeProperties struct {
+	// REQUIRED; Type of upgrade.
+	UpgradeType *ClusterAvailableUpgradeType
+}
+
+// GetClusterAvailableUpgradeProperties implements the ClusterAvailableUpgradePropertiesClassification interface for type
+// ClusterAvailableUpgradeProperties.
+func (c *ClusterAvailableUpgradeProperties) GetClusterAvailableUpgradeProperties() *ClusterAvailableUpgradeProperties {
+	return c
+}
+
 type ClusterComponentsItem struct {
 	Name    *string
 	Version *string
@@ -105,6 +236,31 @@ type ClusterConfigFile struct {
 
 	// List of key value pairs where key represents a valid service configuration name and value represents the value of the config.
 	Values map[string]*string
+}
+
+// ClusterHotfixUpgradeProperties - Properties of upgrading cluster's hotfix.
+type ClusterHotfixUpgradeProperties struct {
+	// REQUIRED; Type of upgrade.
+	UpgradeType *ClusterUpgradeType
+
+	// Name of component to be upgraded.
+	ComponentName *string
+
+	// Target build number of component to be upgraded.
+	TargetBuildNumber *string
+
+	// Target cluster version of component to be upgraded.
+	TargetClusterVersion *string
+
+	// Target OSS version of component to be upgraded.
+	TargetOssVersion *string
+}
+
+// GetClusterUpgradeProperties implements the ClusterUpgradePropertiesClassification interface for type ClusterHotfixUpgradeProperties.
+func (c *ClusterHotfixUpgradeProperties) GetClusterUpgradeProperties() *ClusterUpgradeProperties {
+	return &ClusterUpgradeProperties{
+		UpgradeType: c.UpgradeType,
+	}
 }
 
 // ClusterInstanceViewPropertiesStatus - Status of the instance view.
@@ -130,7 +286,7 @@ type ClusterInstanceViewResult struct {
 
 // ClusterInstanceViewResultProperties - Properties of the instance view.
 type ClusterInstanceViewResultProperties struct {
-	// REQUIRED; List of statuses of relevant services that make up the HDInsight on aks cluster to surface to the customer.
+	// REQUIRED; List of statuses of relevant services that make up the HDInsight on AKS cluster to surface to the customer.
 	ServiceStatuses []*ServiceStatus
 
 	// REQUIRED; Status of the instance view.
@@ -214,26 +370,11 @@ type ClusterLogAnalyticsProfile struct {
 
 // ClusterPatch - The patch for a cluster.
 type ClusterPatch struct {
-	// REQUIRED; The geo-location where the resource lives
-	Location *string
-
 	// Define cluster patch specific properties.
 	Properties *ClusterPatchProperties
 
 	// Resource tags.
 	Tags map[string]*string
-
-	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
 }
 
 // ClusterPatchProperties - Cluster resource patch data.
@@ -266,6 +407,110 @@ type ClusterPool struct {
 	Type *string
 }
 
+// ClusterPoolAKSPatchVersionUpgradeProperties - Properties of upgrading cluster pool's AKS patch version.
+type ClusterPoolAKSPatchVersionUpgradeProperties struct {
+	// REQUIRED; Type of upgrade.
+	UpgradeType *ClusterPoolUpgradeType
+
+	// Target AKS version. When it's not set, latest version will be used. When upgradeClusterPool is true and upgradeAllClusterNodes
+	// is false, target version should be greater or equal to current version.
+	// When upgradeClusterPool is false and upgradeAllClusterNodes is true, target version should be equal to AKS version of cluster
+	// pool.
+	TargetAksVersion *string
+
+	// whether upgrade all clusters' nodes. If it's true, upgradeClusterPool should be false.
+	UpgradeAllClusterNodes *bool
+
+	// whether upgrade cluster pool or not. If it's true, upgradeAllClusterNodes should be false.
+	UpgradeClusterPool *bool
+}
+
+// GetClusterPoolUpgradeProperties implements the ClusterPoolUpgradePropertiesClassification interface for type ClusterPoolAKSPatchVersionUpgradeProperties.
+func (c *ClusterPoolAKSPatchVersionUpgradeProperties) GetClusterPoolUpgradeProperties() *ClusterPoolUpgradeProperties {
+	return &ClusterPoolUpgradeProperties{
+		UpgradeType: c.UpgradeType,
+	}
+}
+
+// ClusterPoolAvailableUpgrade - Cluster pool available upgrade.
+type ClusterPoolAvailableUpgrade struct {
+	// Gets or sets the properties. Define cluster pool upgrade specific properties.
+	Properties ClusterPoolAvailableUpgradePropertiesClassification
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ClusterPoolAvailableUpgradeAksPatchUpgradeProperties - Cluster pool available AKS patch version upgrade.
+type ClusterPoolAvailableUpgradeAksPatchUpgradeProperties struct {
+	// REQUIRED; Type of upgrade.
+	UpgradeType *ClusterPoolAvailableUpgradeType
+
+	// Current AKS version.
+	CurrentVersion *string
+
+	// Current AKS version's status: whether it is deprecated or supported
+	CurrentVersionStatus *CurrentClusterPoolAksVersionStatus
+
+	// Latest AKS patch version.
+	LatestVersion *string
+}
+
+// GetClusterPoolAvailableUpgradeProperties implements the ClusterPoolAvailableUpgradePropertiesClassification interface for
+// type ClusterPoolAvailableUpgradeAksPatchUpgradeProperties.
+func (c *ClusterPoolAvailableUpgradeAksPatchUpgradeProperties) GetClusterPoolAvailableUpgradeProperties() *ClusterPoolAvailableUpgradeProperties {
+	return &ClusterPoolAvailableUpgradeProperties{
+		UpgradeType: c.UpgradeType,
+	}
+}
+
+// ClusterPoolAvailableUpgradeList - collection of cluster pool available upgrade.
+type ClusterPoolAvailableUpgradeList struct {
+	// REQUIRED; Collection of cluster pool available upgrade.
+	Value []*ClusterPoolAvailableUpgrade
+
+	// The Url of next result page.
+	NextLink *string
+}
+
+// ClusterPoolAvailableUpgradeNodeOsUpgradeProperties - Cluster pool available node OS update.
+type ClusterPoolAvailableUpgradeNodeOsUpgradeProperties struct {
+	// REQUIRED; Type of upgrade.
+	UpgradeType *ClusterPoolAvailableUpgradeType
+
+	// The latest node OS version.
+	LatestVersion *string
+}
+
+// GetClusterPoolAvailableUpgradeProperties implements the ClusterPoolAvailableUpgradePropertiesClassification interface for
+// type ClusterPoolAvailableUpgradeNodeOsUpgradeProperties.
+func (c *ClusterPoolAvailableUpgradeNodeOsUpgradeProperties) GetClusterPoolAvailableUpgradeProperties() *ClusterPoolAvailableUpgradeProperties {
+	return &ClusterPoolAvailableUpgradeProperties{
+		UpgradeType: c.UpgradeType,
+	}
+}
+
+// ClusterPoolAvailableUpgradeProperties - Cluster pool available upgrade properties.
+type ClusterPoolAvailableUpgradeProperties struct {
+	// REQUIRED; Type of upgrade.
+	UpgradeType *ClusterPoolAvailableUpgradeType
+}
+
+// GetClusterPoolAvailableUpgradeProperties implements the ClusterPoolAvailableUpgradePropertiesClassification interface for
+// type ClusterPoolAvailableUpgradeProperties.
+func (c *ClusterPoolAvailableUpgradeProperties) GetClusterPoolAvailableUpgradeProperties() *ClusterPoolAvailableUpgradeProperties {
+	return c
+}
+
 // ClusterPoolListResult - The list cluster pools operation response.
 type ClusterPoolListResult struct {
 	// The list of cluster pools.
@@ -273,6 +518,19 @@ type ClusterPoolListResult struct {
 
 	// READ-ONLY; The link (url) to the next page of results.
 	NextLink *string
+}
+
+// ClusterPoolNodeOsImageUpdateProperties - Properties of upgrading cluster pool's AKS patch version.
+type ClusterPoolNodeOsImageUpdateProperties struct {
+	// REQUIRED; Type of upgrade.
+	UpgradeType *ClusterPoolUpgradeType
+}
+
+// GetClusterPoolUpgradeProperties implements the ClusterPoolUpgradePropertiesClassification interface for type ClusterPoolNodeOsImageUpdateProperties.
+func (c *ClusterPoolNodeOsImageUpdateProperties) GetClusterPoolUpgradeProperties() *ClusterPoolUpgradeProperties {
+	return &ClusterPoolUpgradeProperties{
+		UpgradeType: c.UpgradeType,
+	}
 }
 
 // ClusterPoolResourceProperties - Cluster pool resource properties.
@@ -352,6 +610,36 @@ type ClusterPoolResourcePropertiesLogAnalyticsProfile struct {
 type ClusterPoolResourcePropertiesNetworkProfile struct {
 	// REQUIRED; Cluster pool subnet resource id.
 	SubnetID *string
+
+	// IP ranges are specified in CIDR format, e.g. 137.117.106.88/29. This feature is not compatible with private AKS clusters.
+	// So you cannot set enablePrivateApiServer to true and
+	// apiServerAuthorizedIpRanges at the same time.
+	APIServerAuthorizedIPRanges []*string
+
+	// ClusterPool is based on AKS cluster. AKS cluster exposes the API server to public internet by default. If you set this
+	// property to true, a private AKS cluster will be created, and it will use private
+	// apiserver, which is not exposed to public internet.
+	EnablePrivateAPIServer *bool
+
+	// This can only be set at cluster pool creation time and cannot be changed later.
+	OutboundType *OutboundType
+}
+
+// ClusterPoolUpgrade - Cluster Pool Upgrade.
+type ClusterPoolUpgrade struct {
+	// REQUIRED; Properties of upgrading cluster pool.
+	Properties ClusterPoolUpgradePropertiesClassification
+}
+
+// ClusterPoolUpgradeProperties - Properties of upgrading cluster pool.
+type ClusterPoolUpgradeProperties struct {
+	// REQUIRED; Type of upgrade.
+	UpgradeType *ClusterPoolUpgradeType
+}
+
+// GetClusterPoolUpgradeProperties implements the ClusterPoolUpgradePropertiesClassification interface for type ClusterPoolUpgradeProperties.
+func (c *ClusterPoolUpgradeProperties) GetClusterPoolUpgradeProperties() *ClusterPoolUpgradeProperties {
+	return c
 }
 
 // ClusterPoolVersion - Available cluster pool version.
@@ -401,20 +689,23 @@ type ClusterProfile struct {
 	// REQUIRED; Version with 3/4 part.
 	ClusterVersion *string
 
-	// REQUIRED; Identity Profile with details of an MSI.
-	IdentityProfile *IdentityProfile
-
 	// REQUIRED; Version with three part.
 	OssVersion *string
 
 	// This is the Autoscale profile for the cluster. This will allow customer to create cluster enabled with Autoscale.
 	AutoscaleProfile *AutoscaleProfile
 
+	// Cluster access profile.
+	ClusterAccessProfile *ClusterAccessProfile
+
 	// The Flink cluster profile.
 	FlinkProfile *FlinkProfile
 
-	// Kafka cluster profile.
-	KafkaProfile map[string]any
+	// This property is required by Trino, Spark and Flink cluster but is optional for Kafka cluster.
+	IdentityProfile *IdentityProfile
+
+	// The Kafka cluster profile.
+	KafkaProfile *KafkaProfile
 
 	// LLAP cluster profile.
 	LlapProfile map[string]any
@@ -424,6 +715,12 @@ type ClusterProfile struct {
 
 	// Cluster Prometheus profile.
 	PrometheusProfile *ClusterPrometheusProfile
+
+	// Cluster Ranger plugin profile.
+	RangerPluginProfile *ClusterRangerPluginProfile
+
+	// The ranger cluster profile.
+	RangerProfile *RangerProfile
 
 	// Ssh profile for the cluster.
 	SSHProfile *SSHProfile
@@ -456,6 +753,12 @@ type ClusterProfile struct {
 // ClusterPrometheusProfile - Cluster Prometheus profile.
 type ClusterPrometheusProfile struct {
 	// REQUIRED; Enable Prometheus for cluster or not.
+	Enabled *bool
+}
+
+// ClusterRangerPluginProfile - Cluster Ranger plugin profile.
+type ClusterRangerPluginProfile struct {
+	// REQUIRED; Enable Ranger for cluster or not.
 	Enabled *bool
 }
 
@@ -527,6 +830,21 @@ type ClusterServiceConfigsProfile struct {
 	// REQUIRED; Name of the service the configurations should apply to.
 	ServiceName *string
 }
+
+// ClusterUpgrade - Cluster Upgrade.
+type ClusterUpgrade struct {
+	// REQUIRED; Properties of upgrading cluster.
+	Properties ClusterUpgradePropertiesClassification
+}
+
+// ClusterUpgradeProperties - Properties of upgrading cluster.
+type ClusterUpgradeProperties struct {
+	// REQUIRED; Type of upgrade.
+	UpgradeType *ClusterUpgradeType
+}
+
+// GetClusterUpgradeProperties implements the ClusterUpgradePropertiesClassification interface for type ClusterUpgradeProperties.
+func (c *ClusterUpgradeProperties) GetClusterUpgradeProperties() *ClusterUpgradeProperties { return c }
 
 // ClusterVersion - Available cluster version.
 type ClusterVersion struct {
@@ -614,6 +932,19 @@ type ConnectivityProfile struct {
 type ConnectivityProfileWeb struct {
 	// REQUIRED; Web connectivity endpoint.
 	Fqdn *string
+
+	// Private web connectivity endpoint. This property will only be returned when enableInternalIngress is true.
+	PrivateFqdn *string
+}
+
+// DiskStorageProfile - Kafka disk storage profile.
+type DiskStorageProfile struct {
+	// REQUIRED; Managed Disk size in GB. The maximum supported disk size for Standard and Premium HDD/SSD is 32TB, except for
+	// Premium SSD v2, which supports up to 64TB.
+	DataDiskSize *int32
+
+	// REQUIRED; Managed Disk Type.
+	DataDiskType *DataDiskType
 }
 
 // FlinkCatalogOptions - Flink cluster catalog options.
@@ -624,21 +955,47 @@ type FlinkCatalogOptions struct {
 
 // FlinkHiveCatalogOption - Hive Catalog Option for Flink cluster.
 type FlinkHiveCatalogOption struct {
-	// REQUIRED; Secret reference name from secretsProfile.secrets containing password for database connection.
-	MetastoreDbConnectionPasswordSecret *string
-
 	// REQUIRED; Connection string for hive metastore database.
 	MetastoreDbConnectionURL *string
 
-	// REQUIRED; User name for database connection.
+	// The authentication mode to connect to your Hive metastore database. More details:
+	// https://learn.microsoft.com/en-us/azure/azure-sql/database/logins-create-manage?view=azuresql#authentication-and-authorization
+	MetastoreDbConnectionAuthenticationMode *MetastoreDbConnectionAuthenticationMode
+
+	// Secret reference name from secretsProfile.secrets containing password for database connection.
+	MetastoreDbConnectionPasswordSecret *string
+
+	// User name for database connection.
 	MetastoreDbConnectionUserName *string
+}
+
+// FlinkJobProfile - Job specifications for flink clusters in application deployment mode. The specification is immutable
+// even if job properties are changed by calling the RunJob API, please use the ListJob API to get the
+// latest job information.
+type FlinkJobProfile struct {
+	// REQUIRED; A string property that represents the name of the job JAR.
+	JarName *string
+
+	// REQUIRED; A string property that specifies the directory where the job JAR is located.
+	JobJarDirectory *string
+
+	// REQUIRED; A string property that indicates the upgrade mode to be performed on the Flink job. It can have one of the following
+	// enum values => STATELESSUPDATE, UPDATE, LASTSTATE_UPDATE.
+	UpgradeMode *UpgradeMode
+
+	// A string property representing additional JVM arguments for the Flink job. It should be space separated value.
+	Args *string
+
+	// A string property that specifies the entry class for the Flink job. If not specified, the entry point is auto-detected
+	// from the flink job jar package.
+	EntryClass *string
+
+	// A string property that represents the name of the savepoint for the Flink job
+	SavePointName *string
 }
 
 // FlinkJobProperties - Properties of flink job.
 type FlinkJobProperties struct {
-	// REQUIRED; Name of job
-	JobName *string
-
 	// REQUIRED; Type of cluster job.
 	JobType *JobType
 
@@ -663,6 +1020,12 @@ type FlinkJobProperties struct {
 
 	// A string property that specifies the directory where the job JAR is located.
 	JobJarDirectory *string
+
+	// Name of job
+	JobName *string
+
+	// Run id of job
+	RunID *string
 
 	// A string property that represents the name of the savepoint for the Flink job
 	SavePointName *string
@@ -704,8 +1067,17 @@ type FlinkProfile struct {
 	// Flink cluster catalog options.
 	CatalogOptions *FlinkCatalogOptions
 
+	// A string property that indicates the deployment mode of Flink cluster. It can have one of the following enum values =>
+	// Application, Session. Default value is Session
+	DeploymentMode *DeploymentMode
+
 	// History Server container/ process CPU and memory requirements
 	HistoryServer *ComputeResourceDefinition
+
+	// Job specifications for flink clusters in application deployment mode. The specification is immutable even if job properties
+	// are changed by calling the RunJob API, please use the ListJob API to get the
+	// latest job information.
+	JobSpec *FlinkJobProfile
 
 	// The number of task managers.
 	NumReplicas *int32
@@ -725,17 +1097,21 @@ type HiveCatalogOption struct {
 	// REQUIRED; Name of trino catalog which should use specified hive metastore.
 	CatalogName *string
 
-	// REQUIRED; Secret reference name from secretsProfile.secrets containing password for database connection.
-	MetastoreDbConnectionPasswordSecret *string
-
 	// REQUIRED; Connection string for hive metastore database.
 	MetastoreDbConnectionURL *string
 
-	// REQUIRED; User name for database connection.
-	MetastoreDbConnectionUserName *string
-
 	// REQUIRED; Metastore root directory URI, format: abfs[s]://@.dfs.core.windows.net/. More details: https://docs.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-introduction-abfs-uri
 	MetastoreWarehouseDir *string
+
+	// The authentication mode to connect to your Hive metastore database. More details:
+	// https://learn.microsoft.com/en-us/azure/azure-sql/database/logins-create-manage?view=azuresql#authentication-and-authorization
+	MetastoreDbConnectionAuthenticationMode *MetastoreDbConnectionAuthenticationMode
+
+	// Secret reference name from secretsProfile.secrets containing password for database connection.
+	MetastoreDbConnectionPasswordSecret *string
+
+	// User name for database connection.
+	MetastoreDbConnectionUserName *string
 }
 
 // IdentityProfile - Identity Profile with details of an MSI.
@@ -748,6 +1124,36 @@ type IdentityProfile struct {
 
 	// REQUIRED; ResourceId of the MSI.
 	MsiResourceID *string
+}
+
+// KafkaConnectivityEndpoints - Kafka bootstrap server and broker related connectivity endpoints.
+type KafkaConnectivityEndpoints struct {
+	// bootstrap server connectivity endpoint.
+	BootstrapServerEndpoint *string
+
+	// Kafka broker endpoint list.
+	BrokerEndpoints []*string
+}
+
+// KafkaProfile - The Kafka cluster profile.
+type KafkaProfile struct {
+	// REQUIRED; Kafka disk storage profile.
+	DiskStorage *DiskStorageProfile
+
+	// Expose Kafka cluster in KRaft mode.
+	EnableKRaft *bool
+
+	// Expose worker nodes as public endpoints.
+	EnablePublicEndpoints *bool
+
+	// Fully qualified path of Azure Storage container used for Tiered Storage.
+	RemoteStorageURI *string
+
+	// READ-ONLY; Identity of the internal service components inside the Kafka cluster.
+	ClusterIdentity *IdentityProfile
+
+	// READ-ONLY; Kafka bootstrap server and brokers related connectivity endpoints.
+	ConnectivityEndpoints *KafkaConnectivityEndpoints
 }
 
 // LoadBasedConfig - Profile of load based Autoscale.
@@ -855,10 +1261,73 @@ type OperationListResult struct {
 	Value []*Operation
 }
 
+// RangerAdminSpec - Specification for the Ranger Admin service.
+type RangerAdminSpec struct {
+	// REQUIRED; List of usernames that should be marked as ranger admins. These usernames should match the user principal name
+	// (UPN) of the respective AAD users.
+	Admins []*string
+
+	// REQUIRED
+	Database *RangerAdminSpecDatabase
+}
+
+type RangerAdminSpecDatabase struct {
+	// REQUIRED; The database URL
+	Host *string
+
+	// REQUIRED; The database name
+	Name *string
+
+	// Reference for the database password
+	PasswordSecretRef *string
+
+	// The name of the database user
+	Username *string
+}
+
+// RangerAuditSpec - Properties required to describe audit log storage.
+type RangerAuditSpec struct {
+	// Azure storage location of the blobs. MSI should have read/write access to this Storage account.
+	StorageAccount *string
+}
+
+// RangerProfile - The ranger cluster profile.
+type RangerProfile struct {
+	// REQUIRED; Specification for the Ranger Admin service.
+	RangerAdmin *RangerAdminSpec
+
+	// REQUIRED; Specification for the Ranger Usersync service
+	RangerUsersync *RangerUsersyncSpec
+
+	// Properties required to describe audit log storage.
+	RangerAudit *RangerAuditSpec
+}
+
+// RangerUsersyncSpec - Specification for the Ranger Usersync service
+type RangerUsersyncSpec struct {
+	// Denotes whether usersync service should be enabled
+	Enabled *bool
+
+	// List of groups that should be synced. These group names should match the object id of the respective AAD groups.
+	Groups []*string
+
+	// User & groups can be synced automatically or via a static list that's refreshed.
+	Mode *RangerUsersyncMode
+
+	// Azure storage location of a mapping file that lists user & group associations.
+	UserMappingLocation *string
+
+	// List of user names that should be synced. These usernames should match the User principal name of the respective AAD users.
+	Users []*string
+}
+
 // SSHConnectivityEndpoint - SSH connectivity endpoint details.
 type SSHConnectivityEndpoint struct {
 	// REQUIRED; SSH connectivity endpoint.
 	Endpoint *string
+
+	// Private SSH connectivity endpoint. This property will only be returned when enableInternalIngress is true.
+	PrivateSSHEndpoint *string
 }
 
 // SSHProfile - Ssh profile for the cluster.
@@ -1016,7 +1485,7 @@ type ServiceConfigResultProperties struct {
 	Type *string
 }
 
-// ServiceStatus - Describes the status of a service of a HDInsight on aks cluster.
+// ServiceStatus - Describes the status of a service of a HDInsight on AKS cluster.
 type ServiceStatus struct {
 	// REQUIRED; Kind of the service. E.g. "Zookeeper".
 	Kind *string
@@ -1033,16 +1502,20 @@ type SparkMetastoreSpec struct {
 	// REQUIRED; The database name.
 	DbName *string
 
-	// REQUIRED; The secret name which contains the database user password.
-	DbPasswordSecretName *string
-
 	// REQUIRED; The database server host.
 	DbServerHost *string
 
-	// REQUIRED; The database user name.
+	// The authentication mode to connect to your Hive metastore database. More details:
+	// https://learn.microsoft.com/en-us/azure/azure-sql/database/logins-create-manage?view=azuresql#authentication-and-authorization
+	DbConnectionAuthenticationMode *DbConnectionAuthenticationMode
+
+	// The secret name which contains the database user password.
+	DbPasswordSecretName *string
+
+	// The database user name.
 	DbUserName *string
 
-	// REQUIRED; The key vault resource id.
+	// The key vault resource id.
 	KeyVaultID *string
 
 	// The thrift url.
@@ -1199,6 +1672,12 @@ type UpdatableClusterProfile struct {
 
 	// Cluster Prometheus profile.
 	PrometheusProfile *ClusterPrometheusProfile
+
+	// Cluster Ranger plugin profile.
+	RangerPluginProfile *ClusterRangerPluginProfile
+
+	// The ranger cluster profile.
+	RangerProfile *RangerProfile
 
 	// Ssh profile for the cluster.
 	SSHProfile *SSHProfile

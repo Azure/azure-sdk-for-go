@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/frontdoor/armfrontdoor"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/frontdoor/resource-manager/Microsoft.Network/stable/2022-05-01/examples/WafListPolicies.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b54ffc9278eff071455b1dbb4ad2e772afce885d/specification/frontdoor/resource-manager/Microsoft.Network/stable/2024-02-01/examples/WafListPolicies.json
 func ExamplePoliciesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -153,7 +153,7 @@ func ExamplePoliciesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/frontdoor/resource-manager/Microsoft.Network/stable/2022-05-01/examples/WafListPoliciesUnderSubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b54ffc9278eff071455b1dbb4ad2e772afce885d/specification/frontdoor/resource-manager/Microsoft.Network/stable/2024-02-01/examples/WafListPoliciesUnderSubscription.json
 func ExamplePoliciesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -288,7 +288,7 @@ func ExamplePoliciesClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/frontdoor/resource-manager/Microsoft.Network/stable/2022-05-01/examples/WafPolicyGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b54ffc9278eff071455b1dbb4ad2e772afce885d/specification/frontdoor/resource-manager/Microsoft.Network/stable/2024-02-01/examples/WafPolicyGet.json
 func ExamplePoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -421,7 +421,7 @@ func ExamplePoliciesClient_Get() {
 	// 				}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/frontdoor/resource-manager/Microsoft.Network/stable/2022-05-01/examples/WafPolicyCreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b54ffc9278eff071455b1dbb4ad2e772afce885d/specification/frontdoor/resource-manager/Microsoft.Network/stable/2024-02-01/examples/WafPolicyCreateOrUpdate.json
 func ExamplePoliciesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -433,6 +433,7 @@ func ExamplePoliciesClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewPoliciesClient().BeginCreateOrUpdate(ctx, "rg1", "Policy1", armfrontdoor.WebApplicationFirewallPolicy{
+		Location: to.Ptr("WestUs"),
 		Properties: &armfrontdoor.WebApplicationFirewallPolicyProperties{
 			CustomRules: &armfrontdoor.CustomRuleList{
 				Rules: []*armfrontdoor.CustomRule{
@@ -515,16 +516,26 @@ func ExamplePoliciesClient_BeginCreateOrUpdate() {
 					}},
 			},
 			PolicySettings: &armfrontdoor.PolicySettings{
-				CustomBlockResponseBody:       to.Ptr("PGh0bWw+CjxoZWFkZXI+PHRpdGxlPkhlbGxvPC90aXRsZT48L2hlYWRlcj4KPGJvZHk+CkhlbGxvIHdvcmxkCjwvYm9keT4KPC9odG1sPg=="),
-				CustomBlockResponseStatusCode: to.Ptr[int32](499),
-				EnabledState:                  to.Ptr(armfrontdoor.PolicyEnabledStateEnabled),
-				Mode:                          to.Ptr(armfrontdoor.PolicyModePrevention),
-				RedirectURL:                   to.Ptr("http://www.bing.com"),
-				RequestBodyCheck:              to.Ptr(armfrontdoor.PolicyRequestBodyCheckDisabled),
+				CustomBlockResponseBody:                to.Ptr("PGh0bWw+CjxoZWFkZXI+PHRpdGxlPkhlbGxvPC90aXRsZT48L2hlYWRlcj4KPGJvZHk+CkhlbGxvIHdvcmxkCjwvYm9keT4KPC9odG1sPg=="),
+				CustomBlockResponseStatusCode:          to.Ptr[int32](429),
+				EnabledState:                           to.Ptr(armfrontdoor.PolicyEnabledStateEnabled),
+				JavascriptChallengeExpirationInMinutes: to.Ptr[int32](30),
+				LogScrubbing: &armfrontdoor.PolicySettingsLogScrubbing{
+					ScrubbingRules: []*armfrontdoor.WebApplicationFirewallScrubbingRules{
+						{
+							MatchVariable:         to.Ptr(armfrontdoor.ScrubbingRuleEntryMatchVariableRequestIPAddress),
+							SelectorMatchOperator: to.Ptr(armfrontdoor.ScrubbingRuleEntryMatchOperatorEqualsAny),
+							State:                 to.Ptr(armfrontdoor.ScrubbingRuleEntryStateEnabled),
+						}},
+					State: to.Ptr(armfrontdoor.WebApplicationFirewallScrubbingStateEnabled),
+				},
+				Mode:             to.Ptr(armfrontdoor.PolicyModePrevention),
+				RedirectURL:      to.Ptr("http://www.bing.com"),
+				RequestBodyCheck: to.Ptr(armfrontdoor.PolicyRequestBodyCheckDisabled),
 			},
 		},
 		SKU: &armfrontdoor.SKU{
-			Name: to.Ptr(armfrontdoor.SKUNameClassicAzureFrontDoor),
+			Name: to.Ptr(armfrontdoor.SKUNamePremiumAzureFrontDoor),
 		},
 	}, nil)
 	if err != nil {
@@ -641,8 +652,18 @@ func ExamplePoliciesClient_BeginCreateOrUpdate() {
 	// 						},
 	// 						PolicySettings: &armfrontdoor.PolicySettings{
 	// 							CustomBlockResponseBody: to.Ptr("PGh0bWw+CjxoZWFkZXI+PHRpdGxlPkhlbGxvPC90aXRsZT48L2hlYWRlcj4KPGJvZHk+CkhlbGxvIHdvcmxkCjwvYm9keT4KPC9odG1sPg=="),
-	// 							CustomBlockResponseStatusCode: to.Ptr[int32](499),
+	// 							CustomBlockResponseStatusCode: to.Ptr[int32](429),
 	// 							EnabledState: to.Ptr(armfrontdoor.PolicyEnabledStateEnabled),
+	// 							JavascriptChallengeExpirationInMinutes: to.Ptr[int32](30),
+	// 							LogScrubbing: &armfrontdoor.PolicySettingsLogScrubbing{
+	// 								ScrubbingRules: []*armfrontdoor.WebApplicationFirewallScrubbingRules{
+	// 									{
+	// 										MatchVariable: to.Ptr(armfrontdoor.ScrubbingRuleEntryMatchVariableRequestIPAddress),
+	// 										SelectorMatchOperator: to.Ptr(armfrontdoor.ScrubbingRuleEntryMatchOperatorEqualsAny),
+	// 										State: to.Ptr(armfrontdoor.ScrubbingRuleEntryStateEnabled),
+	// 								}},
+	// 								State: to.Ptr(armfrontdoor.WebApplicationFirewallScrubbingStateEnabled),
+	// 							},
 	// 							Mode: to.Ptr(armfrontdoor.PolicyModePrevention),
 	// 							RedirectURL: to.Ptr("http://www.bing.com"),
 	// 							RequestBodyCheck: to.Ptr(armfrontdoor.PolicyRequestBodyCheckDisabled),
@@ -653,12 +674,12 @@ func ExamplePoliciesClient_BeginCreateOrUpdate() {
 	// 						},
 	// 					},
 	// 					SKU: &armfrontdoor.SKU{
-	// 						Name: to.Ptr(armfrontdoor.SKUNameClassicAzureFrontDoor),
+	// 						Name: to.Ptr(armfrontdoor.SKUNamePremiumAzureFrontDoor),
 	// 					},
 	// 				}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/frontdoor/resource-manager/Microsoft.Network/stable/2022-05-01/examples/WafPolicyPatch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b54ffc9278eff071455b1dbb4ad2e772afce885d/specification/frontdoor/resource-manager/Microsoft.Network/stable/2024-02-01/examples/WafPolicyPatch.json
 func ExamplePoliciesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -806,7 +827,7 @@ func ExamplePoliciesClient_BeginUpdate() {
 	// 				}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/frontdoor/resource-manager/Microsoft.Network/stable/2022-05-01/examples/WafPolicyDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b54ffc9278eff071455b1dbb4ad2e772afce885d/specification/frontdoor/resource-manager/Microsoft.Network/stable/2024-02-01/examples/WafPolicyDelete.json
 func ExamplePoliciesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

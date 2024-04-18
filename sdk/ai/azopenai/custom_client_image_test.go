@@ -29,11 +29,7 @@ func TestImageGeneration_AzureOpenAI(t *testing.T) {
 }
 
 func TestImageGeneration_OpenAI(t *testing.T) {
-	if testing.Short() {
-		t.Skip("Skipping OpenAI tests when attempting to do quick tests")
-	}
-
-	client := newOpenAIClientForTest(t)
+	client := newTestClient(t, openAI.DallE.Endpoint)
 	testImageGeneration(t, client, openAI.DallE.Model, azopenai.ImageGenerationResponseFormatURL)
 }
 
@@ -60,7 +56,7 @@ func TestImageGeneration_OpenAI_Base64(t *testing.T) {
 		t.Skip("Skipping OpenAI tests when attempting to do quick tests")
 	}
 
-	client := newOpenAIClientForTest(t)
+	client := newTestClient(t, openAI.DallE.Endpoint)
 	testImageGeneration(t, client, openAI.DallE.Model, azopenai.ImageGenerationResponseFormatBase64)
 }
 

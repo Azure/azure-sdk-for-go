@@ -70,7 +70,7 @@ func ExampleClient_QueryWorkspace() {
 
 func ExampleClient_QueryWorkspace_second() {
 	// `QueryWorkspace` also has more advanced options, including querying multiple workspaces
-	// and LogsQueryOptions (including statistics and visualization information and increasing default timeout).
+	// and QueryOptions (including statistics and visualization information and increasing default timeout).
 
 	// When multiple workspaces are included in the query, the logs in the result table are not grouped
 	// according to the workspace from which it was retrieved.
@@ -82,7 +82,7 @@ func ExampleClient_QueryWorkspace_second() {
 	// Setting Statistics to true returns stats information in Results.Statistics
 	// Setting Visualization to true returns visualization information in Results.Visualization
 	options := &azlogs.QueryWorkspaceOptions{
-		Options: &azlogs.LogsQueryOptions{
+		Options: &azlogs.QueryOptions{
 			Statistics:    to.Ptr(true),
 			Visualization: to.Ptr(true),
 			Wait:          to.Ptr(600),

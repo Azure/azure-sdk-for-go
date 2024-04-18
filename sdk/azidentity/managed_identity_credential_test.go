@@ -31,13 +31,6 @@ const (
 	expiresOnNonStringIntResp = `{"access_token": "new_token", "refresh_token": "", "expires_in": "", "expires_on": 1560974028, "not_before": "1560970130", "resource": "https://vault.azure.net", "token_type": "Bearer"}`
 )
 
-// TODO: replace with 1.17's T.Setenv
-func clearEnvVars(envVars ...string) {
-	for _, ev := range envVars {
-		_ = os.Unsetenv(ev)
-	}
-}
-
 func TestManagedIdentityCredential_AzureArc(t *testing.T) {
 	file, err := os.Create(filepath.Join(t.TempDir(), "arc.key"))
 	if err != nil {
@@ -587,7 +580,6 @@ func TestManagedIdentityCredential_IMDSRetries(t *testing.T) {
 }
 
 func TestManagedIdentityCredential_ServiceFabric(t *testing.T) {
-	resetEnvironmentVarsForTest()
 	expectedSecret := "expected-secret"
 	pred := func(req *http.Request) bool {
 		if secret := req.Header.Get("Secret"); secret != expectedSecret {

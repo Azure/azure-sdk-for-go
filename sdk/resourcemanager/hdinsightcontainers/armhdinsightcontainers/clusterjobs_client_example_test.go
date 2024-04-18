@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hdinsightcontainers/armhdinsightcontainers"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7f70e351393addbc31d790a908c994c7c8644d9c/specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2023-06-01-preview/examples/RunClusterJob.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2023-11-01-preview/examples/RunClusterJob.json
 func ExampleClusterJobsClient_BeginRunJob() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -65,11 +65,12 @@ func ExampleClusterJobsClient_BeginRunJob() {
 	// 		JarName: to.Ptr("flink-sleep-job-0.0.1-SNAPSHOT.jar"),
 	// 		JobJarDirectory: to.Ptr("abfs://flinkjob@hilosa.dfs.core.windows.net/jars"),
 	// 		JobName: to.Ptr("flink-job-name"),
+	// 		RunID: to.Ptr("job-15a-4322-b32c-ea541845e911"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7f70e351393addbc31d790a908c994c7c8644d9c/specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2023-06-01-preview/examples/ListClusterJobs.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2023-11-01-preview/examples/ListClusterJobs.json
 func ExampleClusterJobsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -80,7 +81,7 @@ func ExampleClusterJobsClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewClusterJobsClient().NewListPager("hiloResourcegroup", "clusterPool1", "cluster1", nil)
+	pager := clientFactory.NewClusterJobsClient().NewListPager("hiloResourcegroup", "clusterPool1", "cluster1", &armhdinsightcontainers.ClusterJobsClientListOptions{Filter: nil})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -94,7 +95,7 @@ func ExampleClusterJobsClient_NewListPager() {
 		// page.ClusterJobList = armhdinsightcontainers.ClusterJobList{
 		// 	Value: []*armhdinsightcontainers.ClusterJob{
 		// 		{
-		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/hiloResourcegroup/providers/Microsoft.HDInsight/clusterPools/clusterpool1/clusters/cluster1/jobs/flink-job-1"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hiloResourcegroup/providers/Microsoft.HDInsight/clusterPools/clusterpool1/clusters/cluster1/jobs/flink-job-1"),
 		// 			Properties: &armhdinsightcontainers.FlinkJobProperties{
 		// 				JobType: to.Ptr(armhdinsightcontainers.JobTypeFlinkJob),
 		// 				ActionResult: to.Ptr("SUCCESS"),
@@ -108,7 +109,8 @@ func ExampleClusterJobsClient_NewListPager() {
 		// 				JobJarDirectory: to.Ptr("jobJarDirectory1"),
 		// 				JobName: to.Ptr("flink-job-1"),
 		// 				JobOutput: to.Ptr("job-output"),
-		// 				Status: to.Ptr("STOP-FAILED"),
+		// 				RunID: to.Ptr("job-15a-4322-b32c-ea541845e911"),
+		// 				Status: to.Ptr("RUNNING"),
 		// 			},
 		// 	}},
 		// }

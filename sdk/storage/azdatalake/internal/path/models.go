@@ -19,6 +19,7 @@ import (
 type DeleteOptions struct {
 	// AccessConditions contains parameters for accessing the path.
 	AccessConditions *AccessConditions
+	Paginated        *bool
 }
 
 func FormatDeleteOptions(o *DeleteOptions, recursive bool) (*generated.LeaseAccessConditions, *generated.ModifiedAccessConditions, *generated.PathClientDeleteOptions) {
@@ -28,6 +29,7 @@ func FormatDeleteOptions(o *DeleteOptions, recursive bool) (*generated.LeaseAcce
 	if o == nil {
 		return nil, nil, deleteOpts
 	}
+	deleteOpts.Paginated = o.Paginated
 	leaseAccessConditions, modifiedAccessConditions := exported.FormatPathAccessConditions(o.AccessConditions)
 	return leaseAccessConditions, modifiedAccessConditions, deleteOpts
 }

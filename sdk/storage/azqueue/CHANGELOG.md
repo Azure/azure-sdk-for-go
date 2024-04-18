@@ -11,6 +11,8 @@
 * Fixed service SAS creation where expiry time or permissions can be omitted when stored access policy is used.
 
 #### Other Changes
+* Integrate `InsecureAllowCredentialWithHTTP` client options.
+* Update dependencies.
 
 ### 1.0.0 (2023-05-09)
 

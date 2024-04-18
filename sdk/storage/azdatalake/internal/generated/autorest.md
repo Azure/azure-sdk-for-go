@@ -310,5 +310,5 @@ directive:
   transform: >-
     return $.
       replaceAll(`[]string{"2023-05-03"}`, `[]string{ServiceVersion}`).
-      replaceAll(`2023-05-03`, `2023-11-03`);
+      replaceAll(`2023-05-03`, `2024-05-04`);
 ```

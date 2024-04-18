@@ -36,7 +36,7 @@ directive:
   transform: >-
     return $.
       replaceAll(`[]string{"2021-12-02"}`, `[]string{ServiceVersion}`).
-      replaceAll(`2021-12-02`, `2023-11-03`);
+      replaceAll(`2021-12-02`, `2024-05-04`);
 ```
 
 ### Undo breaking change with BlobName 

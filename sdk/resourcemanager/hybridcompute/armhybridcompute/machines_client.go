@@ -120,78 +120,6 @@ func (client *MachinesClient) assessPatchesCreateRequest(ctx context.Context, re
 	return req, nil
 }
 
-// CreateOrUpdate - The operation to create or update a hybrid machine. Please note some properties can be set only during
-// machine creation.
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-10-03-preview
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - machineName - The name of the hybrid machine.
-//   - parameters - Parameters supplied to the Create hybrid machine operation.
-//   - options - MachinesClientCreateOrUpdateOptions contains the optional parameters for the MachinesClient.CreateOrUpdate method.
-func (client *MachinesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, machineName string, parameters Machine, options *MachinesClientCreateOrUpdateOptions) (MachinesClientCreateOrUpdateResponse, error) {
-	var err error
-	const operationName = "MachinesClient.CreateOrUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, machineName, parameters, options)
-	if err != nil {
-		return MachinesClientCreateOrUpdateResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return MachinesClientCreateOrUpdateResponse{}, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return MachinesClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
-}
-
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *MachinesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, machineName string, parameters Machine, options *MachinesClientCreateOrUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{machineName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if machineName == "" {
-		return nil, errors.New("parameter machineName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{machineName}", url.PathEscape(machineName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Expand != nil {
-		reqQP.Set("$expand", *options.Expand)
-	}
-	reqQP.Set("api-version", "2023-10-03-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *MachinesClient) createOrUpdateHandleResponse(resp *http.Response) (MachinesClientCreateOrUpdateResponse, error) {
-	result := MachinesClientCreateOrUpdateResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.Machine); err != nil {
-		return MachinesClientCreateOrUpdateResponse{}, err
-	}
-	return result, nil
-}
-
 // Delete - The operation to delete a hybrid machine.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
@@ -296,7 +224,7 @@ func (client *MachinesClient) getCreateRequest(ctx context.Context, resourceGrou
 	}
 	reqQP := req.Raw().URL.Query()
 	if options != nil && options.Expand != nil {
-		reqQP.Set("$expand", string(*options.Expand))
+		reqQP.Set("$expand", *options.Expand)
 	}
 	reqQP.Set("api-version", "2023-10-03-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()

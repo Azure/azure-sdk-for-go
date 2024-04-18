@@ -36,40 +36,9 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}, nil
 }
 
-// NewAgentVersionClient creates a new instance of AgentVersionClient.
-func (c *ClientFactory) NewAgentVersionClient() *AgentVersionClient {
-	return &AgentVersionClient{
-		internal: c.internal,
-	}
-}
-
 // NewExtensionMetadataClient creates a new instance of ExtensionMetadataClient.
 func (c *ClientFactory) NewExtensionMetadataClient() *ExtensionMetadataClient {
 	return &ExtensionMetadataClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewHybridIdentityMetadataClient creates a new instance of HybridIdentityMetadataClient.
-func (c *ClientFactory) NewHybridIdentityMetadataClient() *HybridIdentityMetadataClient {
-	return &HybridIdentityMetadataClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewLicenseProfilesClient creates a new instance of LicenseProfilesClient.
-func (c *ClientFactory) NewLicenseProfilesClient() *LicenseProfilesClient {
-	return &LicenseProfilesClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewLicensesClient creates a new instance of LicensesClient.
-func (c *ClientFactory) NewLicensesClient() *LicensesClient {
-	return &LicensesClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}
@@ -107,24 +76,9 @@ func (c *ClientFactory) NewManagementClient() *ManagementClient {
 	}
 }
 
-// NewNetworkConfigurationsClient creates a new instance of NetworkConfigurationsClient.
-func (c *ClientFactory) NewNetworkConfigurationsClient() *NetworkConfigurationsClient {
-	return &NetworkConfigurationsClient{
-		internal: c.internal,
-	}
-}
-
 // NewNetworkProfileClient creates a new instance of NetworkProfileClient.
 func (c *ClientFactory) NewNetworkProfileClient() *NetworkProfileClient {
 	return &NetworkProfileClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewNetworkSecurityPerimeterConfigurationsClient creates a new instance of NetworkSecurityPerimeterConfigurationsClient.
-func (c *ClientFactory) NewNetworkSecurityPerimeterConfigurationsClient() *NetworkSecurityPerimeterConfigurationsClient {
-	return &NetworkSecurityPerimeterConfigurationsClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

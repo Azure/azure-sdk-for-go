@@ -10,24 +10,6 @@ package armhybridcompute
 
 import "time"
 
-// AccessRule - Access rule.
-type AccessRule struct {
-	// READ-ONLY; Name of the access rule.
-	Name *string
-
-	// READ-ONLY; Access rule properties
-	Properties *AccessRuleProperties
-}
-
-// AccessRuleProperties - Properties of an access rule.
-type AccessRuleProperties struct {
-	// READ-ONLY; Address prefixes that are allowed access.
-	AddressPrefixes []*string
-
-	// READ-ONLY; Direction of the access rule.
-	Direction *AccessRuleDirection
-}
-
 // AgentConfiguration - Configurable properties that the user can set locally via the azcmagent config command, or remotely
 // via ARM.
 type AgentConfiguration struct {
@@ -78,28 +60,7 @@ type AgentUpgrade struct {
 	LastAttemptStatus *LastAttemptStatusEnum
 
 	// READ-ONLY; Timestamp of last upgrade attempt
-	LastAttemptTimestamp *string
-}
-
-// AgentVersion - Describes properties of Agent Version.
-type AgentVersion struct {
-	// Represents the agent version.
-	AgentVersion *string
-
-	// Represents the download link of specific agent version.
-	DownloadLink *string
-
-	// Defines the os type.
-	OSType *string
-}
-
-// AgentVersionsList - Describes AgentVersions List.
-type AgentVersionsList struct {
-	// The URI to fetch the next 10 available Agent Versions.
-	NextLink *string
-
-	// The list of available Agent Versions.
-	Value []*AgentVersion
+	LastAttemptTimestamp *time.Time
 }
 
 // AvailablePatchCountByClassification - Summarization of patches available for installation on the machine by classification.
@@ -200,12 +161,6 @@ type EsuKey struct {
 	SKU *string
 }
 
-// EsuProfileUpdateProperties - Describes the Update properties of a ESU License Profile.
-type EsuProfileUpdateProperties struct {
-	// The resource id of the license.
-	AssignedLicense *string
-}
-
 // ExtensionTargetProperties - Describes the Machine Extension Target Version Properties
 type ExtensionTargetProperties struct {
 	// Properties for the specified Extension to Upgrade.
@@ -266,45 +221,6 @@ type ExtensionsResourceStatus struct {
 	Time *time.Time
 }
 
-// HybridIdentityMetadata - Defines the HybridIdentityMetadata.
-type HybridIdentityMetadata struct {
-	// REQUIRED; Resource properties.
-	Properties *HybridIdentityMetadataProperties
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// HybridIdentityMetadataList - List of HybridIdentityMetadata.
-type HybridIdentityMetadataList struct {
-	// REQUIRED; Array of HybridIdentityMetadata
-	Value []*HybridIdentityMetadata
-
-	// Url to follow for getting next page of HybridIdentityMetadata.
-	NextLink *string
-}
-
-// HybridIdentityMetadataProperties - Defines the resource properties.
-type HybridIdentityMetadataProperties struct {
-	// The Public Key.
-	PublicKey *string
-
-	// The unique identifier for the resource.
-	VMID *string
-
-	// READ-ONLY; Identity for the resource.
-	Identity *Identity
-}
-
 // IPAddress - Describes properties of the IP address.
 type IPAddress struct {
 	// Represents the IP Address.
@@ -327,27 +243,6 @@ type Identity struct {
 
 	// READ-ONLY; The tenant ID of resource.
 	TenantID *string
-}
-
-// KeyDetails - Public key details
-type KeyDetails struct {
-	// READ-ONLY; Key expiration date
-	NotAfter *time.Time
-
-	// READ-ONLY; Public key
-	PublicKey *string
-
-	// READ-ONLY; Recommended key renewal date
-	RenewAfter *time.Time
-}
-
-// KeyProperties - Public key information for client authentication
-type KeyProperties struct {
-	// READ-ONLY; Candidate public key details
-	CandidatePublicKey *KeyDetails
-
-	// READ-ONLY; Current public key details
-	ClientPublicKey *KeyDetails
 }
 
 // License - Describes a license in a hybrid machine.
@@ -396,51 +291,6 @@ type LicenseDetails struct {
 
 	// READ-ONLY; Describes the immutable id.
 	ImmutableID *string
-}
-
-// LicenseProfile - Describes a license profile in a hybrid machine.
-type LicenseProfile struct {
-	// REQUIRED; The geo-location where the resource lives
-	Location *string
-
-	// Describe the properties of a license profile.
-	Properties *LicenseProfileProperties
-
-	// Resource tags.
-	Tags map[string]*string
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// LicenseProfileArmEsuProperties - Describes the properties of a License Profile ARM model.
-type LicenseProfileArmEsuProperties struct {
-	// The resource id of the license.
-	AssignedLicense *string
-
-	// READ-ONLY; The guid id of the license.
-	AssignedLicenseImmutableID *string
-
-	// READ-ONLY; Indicates the eligibility state of Esu.
-	EsuEligibility *EsuEligibility
-
-	// READ-ONLY; Indicates whether there is an ESU Key currently active for the machine.
-	EsuKeyState *EsuKeyState
-
-	// READ-ONLY; The list of ESU keys.
-	EsuKeys []*EsuKey
-
-	// READ-ONLY; The type of the Esu servers.
-	ServerType *EsuServerType
 }
 
 // LicenseProfileArmProductProfileProperties - Describes the properties of a Product License Profile ARM model.
@@ -511,57 +361,6 @@ type LicenseProfileMachineInstanceViewSoftwareAssurance struct {
 	SoftwareAssuranceCustomer *bool
 }
 
-// LicenseProfileProperties - Describe the properties of a license profile.
-type LicenseProfileProperties struct {
-	// Hybrid Compute ESU Profile properties
-	EsuProfile *LicenseProfileArmEsuProperties
-
-	// Hybrid Compute Product Profile properties
-	ProductProfile    *LicenseProfileArmProductProfileProperties
-	SoftwareAssurance *LicenseProfilePropertiesSoftwareAssurance
-
-	// READ-ONLY; The provisioning state, which only appears in the response.
-	ProvisioningState *ProvisioningState
-}
-
-type LicenseProfilePropertiesSoftwareAssurance struct {
-	// Specifies if this machine is licensed as part of a Software Assurance agreement.
-	SoftwareAssuranceCustomer *bool
-}
-
-// LicenseProfileUpdate - Describes a License Profile Update.
-type LicenseProfileUpdate struct {
-	// Describe the Update properties of a license profile.
-	Properties *LicenseProfileUpdateProperties
-
-	// Resource tags
-	Tags map[string]*string
-}
-
-// LicenseProfileUpdateProperties - Describe the Update properties of a license profile.
-type LicenseProfileUpdateProperties struct {
-	// Hybrid Compute ESU Profile Update properties
-	EsuProfile *EsuProfileUpdateProperties
-
-	// Hybrid Compute Product Profile Update properties
-	ProductProfile    *ProductProfileUpdateProperties
-	SoftwareAssurance *LicenseProfileUpdatePropertiesSoftwareAssurance
-}
-
-type LicenseProfileUpdatePropertiesSoftwareAssurance struct {
-	// Specifies if this machine is licensed as part of a Software Assurance agreement.
-	SoftwareAssuranceCustomer *bool
-}
-
-// LicenseProfilesListResult - The List hybrid machine license profile operation response.
-type LicenseProfilesListResult struct {
-	// REQUIRED; The list of license profiles.
-	Value []*LicenseProfile
-
-	// The URI to fetch the next page of Machines. Call ListNext() with this URI to fetch the next page of license profile.
-	NextLink *string
-}
-
 // LicenseProperties - Describes the properties of a License Profile.
 type LicenseProperties struct {
 	// Describes the properties of a License.
@@ -575,49 +374,6 @@ type LicenseProperties struct {
 
 	// READ-ONLY; The provisioning state, which only appears in the response.
 	ProvisioningState *ProvisioningState
-}
-
-// LicenseUpdate - Describes a License Update.
-type LicenseUpdate struct {
-	// License Update properties
-	Properties *LicenseUpdateProperties
-
-	// Resource tags
-	Tags map[string]*string
-}
-
-// LicenseUpdateProperties - Describes the Update properties of a License Profile.
-type LicenseUpdateProperties struct {
-	LicenseDetails *LicenseUpdatePropertiesLicenseDetails
-
-	// The type of the license resource.
-	LicenseType *LicenseType
-}
-
-type LicenseUpdatePropertiesLicenseDetails struct {
-	// Describes the edition of the license. The values are either Standard or Datacenter.
-	Edition *LicenseEdition
-
-	// Describes the number of processors.
-	Processors *int32
-
-	// Describes the state of the license.
-	State *LicenseState
-
-	// Describes the license target server.
-	Target *LicenseTarget
-
-	// Describes the license core type (pCore or vCore).
-	Type *LicenseCoreType
-}
-
-// LicensesListResult - The List license operation response.
-type LicensesListResult struct {
-	// REQUIRED; The list of licenses.
-	Value []*License
-
-	// The URI to fetch the next page of Machines. Call ListNext() with this URI to fetch the next page of license profile.
-	NextLink *string
 }
 
 // LinuxParameters - Input for InstallPatches on a Linux VM, as directly received by the API
@@ -1156,12 +912,6 @@ type MachineRunCommandScriptSource struct {
 	ScriptURIManagedIdentity *RunCommandManagedIdentity
 }
 
-// MachineRunCommandUpdate - Describes a Machine Extension Update.
-type MachineRunCommandUpdate struct {
-	// Resource tags
-	Tags map[string]*string
-}
-
 // MachineRunCommandsListResult - Describes the Run Commands List Result.
 type MachineRunCommandsListResult struct {
 	// The uri to fetch the next page of run commands. Call ListNext() with this to fetch the next page of run commands.
@@ -1207,41 +957,6 @@ type MachineUpdateProperties struct {
 	PrivateLinkScopeResourceID *string
 }
 
-type NetworkConfiguration struct {
-	// Network configuration properties
-	Properties *NetworkConfigurationProperties
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// NetworkConfigurationProperties - Network configuration properties
-type NetworkConfigurationProperties struct {
-	// REQUIRED; Associated Network Configuration Scope Resource Id
-	NetworkConfigurationScopeResourceID *string
-
-	// Resource location
-	Location *string
-
-	// Associated Network Configuration Scope Id (GUID)
-	NetworkConfigurationScopeID *string
-
-	// READ-ONLY; Public key information for client authentication
-	KeyProperties *KeyProperties
-
-	// READ-ONLY; Azure resource tenant Id
-	TenantID *string
-}
-
 // NetworkInterface - Describes a network interface.
 type NetworkInterface struct {
 	// The list of IP addresses in this interface.
@@ -1252,80 +967,6 @@ type NetworkInterface struct {
 type NetworkProfile struct {
 	// The list of network interfaces.
 	NetworkInterfaces []*NetworkInterface
-}
-
-// NetworkSecurityPerimeter - Properties that define a Network Security Perimeter resource.
-type NetworkSecurityPerimeter struct {
-	// READ-ONLY; Azure resource Id
-	ID *string
-
-	// READ-ONLY; Regional location of the perimeter
-	Location *string
-
-	// READ-ONLY; Guid of the Network Security Perimeter
-	PerimeterGUID *string
-}
-
-// NetworkSecurityPerimeterConfiguration - Properties that define a Network Security Perimeter resource.
-type NetworkSecurityPerimeterConfiguration struct {
-	// Properties that define a Network Security Perimeter resource.
-	Properties *NetworkSecurityPerimeterConfigurationProperties
-
-	// READ-ONLY; Azure resource Id
-	ID *string
-
-	// READ-ONLY; Azure resource name
-	Name *string
-
-	// READ-ONLY; Azure resource type
-	Type *string
-}
-
-// NetworkSecurityPerimeterConfigurationListResult - A list of network security perimeter configurations.
-type NetworkSecurityPerimeterConfigurationListResult struct {
-	// READ-ONLY; Link to retrieve next page of results.
-	NextLink *string
-
-	// READ-ONLY; Array of results.
-	Value []*NetworkSecurityPerimeterConfiguration
-}
-
-// NetworkSecurityPerimeterConfigurationProperties - Properties that define a Network Security Perimeter resource.
-type NetworkSecurityPerimeterConfigurationProperties struct {
-	// The Network Security Perimeter associated with this configuration.
-	NetworkSecurityPerimeter *NetworkSecurityPerimeter
-
-	// Network Security Perimeter profile
-	Profile *NetworkSecurityPerimeterProfile
-
-	// The Resource Association.
-	ResourceAssociation *ResourceAssociation
-
-	// READ-ONLY; Provisioning issues.
-	ProvisioningIssues []*ProvisioningIssue
-
-	// READ-ONLY; Current state of this NetworkSecurityPerimeter: whether or not is has been provisioned within the resource group
-	// it is defined. Users cannot change this value but are able to read from it. Values will
-	// include Provisioning ,Succeeded, Canceled and Failed.
-	ProvisioningState *string
-}
-
-// NetworkSecurityPerimeterProfile - Network Security Perimeter profile
-type NetworkSecurityPerimeterProfile struct {
-	// READ-ONLY; Collection of access rules for the profile
-	AccessRules []*AccessRule
-
-	// READ-ONLY; Access rules version number
-	AccessRulesVersion *string
-
-	// READ-ONLY; Diagnostic settings version number
-	DiagnosticSettingsVersion *string
-
-	// READ-ONLY; Collection of enabled log categories for the profile
-	EnabledLogCategories []*string
-
-	// READ-ONLY; Name of the resource
-	Name *string
 }
 
 // OSProfile - Specifies the operating system settings for the hybrid machine.
@@ -1589,63 +1230,6 @@ type ProductFeature struct {
 
 	// READ-ONLY; The timestamp in UTC when the user enrolls the feature.
 	EnrollmentDate *time.Time
-}
-
-// ProductFeatureUpdate - Product Feature
-type ProductFeatureUpdate struct {
-	// Product feature name.
-	Name *string
-
-	// Indicates the new status of the product feature.
-	SubscriptionStatus *LicenseProfileSubscriptionStatusUpdate
-}
-
-// ProductProfileUpdateProperties - Describes the Update properties of a Product Profile.
-type ProductProfileUpdateProperties struct {
-	// The list of product feature updates.
-	ProductFeatures []*ProductFeatureUpdate
-
-	// Indicates the product type of the license.
-	ProductType *LicenseProfileProductType
-
-	// Indicates the subscription status of the product.
-	SubscriptionStatus *LicenseProfileSubscriptionStatusUpdate
-}
-
-// ProvisioningIssue - Details on issues that occurred during provisioning.
-type ProvisioningIssue struct {
-	// READ-ONLY; Name of the provisioning issue.
-	Name *string
-
-	// READ-ONLY; Provisioning issue properties
-	Properties *ProvisioningIssueProperties
-}
-
-// ProvisioningIssueProperties - Properties of a provisioning issue.
-type ProvisioningIssueProperties struct {
-	// READ-ONLY; Description of the provisioning issue.
-	Description *string
-
-	// READ-ONLY; Issue type
-	IssueType *ProvisioningIssueType
-
-	// READ-ONLY; Severity of the provisioning issue.
-	Severity *ProvisioningIssueSeverity
-
-	// READ-ONLY; Access rules that can be added to the perimeter to remediate the issue
-	SuggestedAccessRules []*AccessRule
-
-	// READ-ONLY; ARM Ids of the resources that can be associated to the same perimeter to remediate the issue
-	SuggestedResourceIDs []*string
-}
-
-// ResourceAssociation - Properties that define a Resource Association.
-type ResourceAssociation struct {
-	// READ-ONLY; The access mode
-	AccessMode *AccessMode
-
-	// READ-ONLY; Name of the Resource Association
-	Name *string
 }
 
 // RunCommandInputParameter - Describes the properties of a run command parameter.

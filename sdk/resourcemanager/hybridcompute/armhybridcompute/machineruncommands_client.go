@@ -174,7 +174,7 @@ func (client *MachineRunCommandsClient) deleteOperation(ctx context.Context, res
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		err = runtime.NewResponseError(httpResp)
 		return nil, err
 	}
@@ -346,89 +346,4 @@ func (client *MachineRunCommandsClient) listHandleResponse(resp *http.Response) 
 		return MachineRunCommandsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - The operation to update the run command.
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-10-03-preview
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - machineName - The name of the hybrid machine.
-//   - runCommandName - The name of the run command.
-//   - runCommandProperties - Parameters supplied to the Create Run Command.
-//   - options - MachineRunCommandsClientBeginUpdateOptions contains the optional parameters for the MachineRunCommandsClient.BeginUpdate
-//     method.
-func (client *MachineRunCommandsClient) BeginUpdate(ctx context.Context, resourceGroupName string, machineName string, runCommandName string, runCommandProperties MachineRunCommandUpdate, options *MachineRunCommandsClientBeginUpdateOptions) (*runtime.Poller[MachineRunCommandsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, machineName, runCommandName, runCommandProperties, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[MachineRunCommandsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[MachineRunCommandsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - The operation to update the run command.
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-10-03-preview
-func (client *MachineRunCommandsClient) update(ctx context.Context, resourceGroupName string, machineName string, runCommandName string, runCommandProperties MachineRunCommandUpdate, options *MachineRunCommandsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "MachineRunCommandsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, machineName, runCommandName, runCommandProperties, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *MachineRunCommandsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, machineName string, runCommandName string, runCommandProperties MachineRunCommandUpdate, options *MachineRunCommandsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{machineName}/runCommands/{runCommandName}"
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if machineName == "" {
-		return nil, errors.New("parameter machineName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{machineName}", url.PathEscape(machineName))
-	if runCommandName == "" {
-		return nil, errors.New("parameter runCommandName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{runCommandName}", url.PathEscape(runCommandName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-03-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, runCommandProperties); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

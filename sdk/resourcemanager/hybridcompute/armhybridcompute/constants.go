@@ -13,45 +13,6 @@ const (
 	moduleVersion = "v2.0.0-beta.2"
 )
 
-// AccessMode - Property that impacts a resource's logging behavior and its connectivity with other resources and public networks.
-type AccessMode string
-
-const (
-	// AccessModeAudit - Dry run mode, where traffic is evaluated against NSP Rules, logged but not enforced.
-	AccessModeAudit AccessMode = "audit"
-	// AccessModeEnforced - Indicates that resource access is controlled by the NSP definition.
-	AccessModeEnforced AccessMode = "enforced"
-	// AccessModeLearning - Enables traffic evaluation to fall back to resource-specific firewall configurations.
-	AccessModeLearning AccessMode = "learning"
-)
-
-// PossibleAccessModeValues returns the possible values for the AccessMode const type.
-func PossibleAccessModeValues() []AccessMode {
-	return []AccessMode{
-		AccessModeAudit,
-		AccessModeEnforced,
-		AccessModeLearning,
-	}
-}
-
-// AccessRuleDirection - Indicates direction of an access rule.
-type AccessRuleDirection string
-
-const (
-	// AccessRuleDirectionInbound - Traffic originates outside of network.
-	AccessRuleDirectionInbound AccessRuleDirection = "Inbound"
-	// AccessRuleDirectionOutbound - Traffic originates inside the network
-	AccessRuleDirectionOutbound AccessRuleDirection = "Outbound"
-)
-
-// PossibleAccessRuleDirectionValues returns the possible values for the AccessRuleDirection const type.
-func PossibleAccessRuleDirectionValues() []AccessRuleDirection {
-	return []AccessRuleDirection{
-		AccessRuleDirectionInbound,
-		AccessRuleDirectionOutbound,
-	}
-}
-
 // AgentConfigurationMode - Name of configuration mode to use. Modes are pre-defined configurations of security controls,
 // extension allowlists and guest configuration, maintained by Microsoft.
 type AgentConfigurationMode string
@@ -225,19 +186,6 @@ func PossibleExtensionsStatusLevelTypesValues() []ExtensionsStatusLevelTypes {
 	}
 }
 
-type InstanceViewTypes string
-
-const (
-	InstanceViewTypesInstanceView InstanceViewTypes = "instanceView"
-)
-
-// PossibleInstanceViewTypesValues returns the possible values for the InstanceViewTypes const type.
-func PossibleInstanceViewTypesValues() []InstanceViewTypes {
-	return []InstanceViewTypes{
-		InstanceViewTypesInstanceView,
-	}
-}
-
 // LastAttemptStatusEnum - Specifies the status of Agent Upgrade.
 type LastAttemptStatusEnum string
 
@@ -335,22 +283,6 @@ func PossibleLicenseProfileSubscriptionStatusValues() []LicenseProfileSubscripti
 		LicenseProfileSubscriptionStatusEnabled,
 		LicenseProfileSubscriptionStatusEnabling,
 		LicenseProfileSubscriptionStatusUnknown,
-	}
-}
-
-// LicenseProfileSubscriptionStatusUpdate - Indicates the new subscription status of the OS or Product Features.
-type LicenseProfileSubscriptionStatusUpdate string
-
-const (
-	LicenseProfileSubscriptionStatusUpdateDisable LicenseProfileSubscriptionStatusUpdate = "Disable"
-	LicenseProfileSubscriptionStatusUpdateEnable  LicenseProfileSubscriptionStatusUpdate = "Enable"
-)
-
-// PossibleLicenseProfileSubscriptionStatusUpdateValues returns the possible values for the LicenseProfileSubscriptionStatusUpdate const type.
-func PossibleLicenseProfileSubscriptionStatusUpdateValues() []LicenseProfileSubscriptionStatusUpdate {
-	return []LicenseProfileSubscriptionStatusUpdate{
-		LicenseProfileSubscriptionStatusUpdateDisable,
-		LicenseProfileSubscriptionStatusUpdateEnable,
 	}
 }
 
@@ -523,48 +455,6 @@ func PossiblePatchServiceUsedValues() []PatchServiceUsed {
 		PatchServiceUsedWUWSUS,
 		PatchServiceUsedYUM,
 		PatchServiceUsedZypper,
-	}
-}
-
-// ProvisioningIssueSeverity - Severity of the provisioning issue.
-type ProvisioningIssueSeverity string
-
-const (
-	// ProvisioningIssueSeverityError - Errors will cause association provisioning to fail.
-	ProvisioningIssueSeverityError ProvisioningIssueSeverity = "Error"
-	// ProvisioningIssueSeverityWarning - Warnings can cause connectivity issues after provisioning succeeds.
-	ProvisioningIssueSeverityWarning ProvisioningIssueSeverity = "Warning"
-)
-
-// PossibleProvisioningIssueSeverityValues returns the possible values for the ProvisioningIssueSeverity const type.
-func PossibleProvisioningIssueSeverityValues() []ProvisioningIssueSeverity {
-	return []ProvisioningIssueSeverity{
-		ProvisioningIssueSeverityError,
-		ProvisioningIssueSeverityWarning,
-	}
-}
-
-// ProvisioningIssueType - Type of provisioning issue.
-type ProvisioningIssueType string
-
-const (
-	// ProvisioningIssueTypeConfigurationPropagationFailure - Configuration failed to propagate.
-	ProvisioningIssueTypeConfigurationPropagationFailure ProvisioningIssueType = "ConfigurationPropagationFailure"
-	// ProvisioningIssueTypeMissingIdentityConfiguration - Identity configuration is missing.
-	ProvisioningIssueTypeMissingIdentityConfiguration ProvisioningIssueType = "MissingIdentityConfiguration"
-	// ProvisioningIssueTypeMissingPerimeterConfiguration - Perimeter configuration is missing.
-	ProvisioningIssueTypeMissingPerimeterConfiguration ProvisioningIssueType = "MissingPerimeterConfiguration"
-	// ProvisioningIssueTypeOther - Other failure.
-	ProvisioningIssueTypeOther ProvisioningIssueType = "Other"
-)
-
-// PossibleProvisioningIssueTypeValues returns the possible values for the ProvisioningIssueType const type.
-func PossibleProvisioningIssueTypeValues() []ProvisioningIssueType {
-	return []ProvisioningIssueType{
-		ProvisioningIssueTypeConfigurationPropagationFailure,
-		ProvisioningIssueTypeMissingIdentityConfiguration,
-		ProvisioningIssueTypeMissingPerimeterConfiguration,
-		ProvisioningIssueTypeOther,
 	}
 }
 

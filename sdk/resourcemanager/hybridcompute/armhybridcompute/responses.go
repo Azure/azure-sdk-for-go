@@ -8,18 +8,6 @@
 
 package armhybridcompute
 
-// AgentVersionClientGetResponse contains the response from method AgentVersionClient.Get.
-type AgentVersionClientGetResponse struct {
-	// Describes properties of Agent Version.
-	AgentVersion
-}
-
-// AgentVersionClientListResponse contains the response from method AgentVersionClient.List.
-type AgentVersionClientListResponse struct {
-	// Describes AgentVersions List.
-	AgentVersionsList
-}
-
 // ExtensionMetadataClientGetResponse contains the response from method ExtensionMetadataClient.Get.
 type ExtensionMetadataClientGetResponse struct {
 	// Describes a Extension Metadata
@@ -30,88 +18,6 @@ type ExtensionMetadataClientGetResponse struct {
 type ExtensionMetadataClientListResponse struct {
 	// The List Extension Metadata response.
 	ExtensionValueListResult
-}
-
-// HybridIdentityMetadataClientGetResponse contains the response from method HybridIdentityMetadataClient.Get.
-type HybridIdentityMetadataClientGetResponse struct {
-	// Defines the HybridIdentityMetadata.
-	HybridIdentityMetadata
-}
-
-// HybridIdentityMetadataClientListByMachinesResponse contains the response from method HybridIdentityMetadataClient.NewListByMachinesPager.
-type HybridIdentityMetadataClientListByMachinesResponse struct {
-	// List of HybridIdentityMetadata.
-	HybridIdentityMetadataList
-}
-
-// LicenseProfilesClientCreateOrUpdateResponse contains the response from method LicenseProfilesClient.BeginCreateOrUpdate.
-type LicenseProfilesClientCreateOrUpdateResponse struct {
-	// Describes a license profile in a hybrid machine.
-	LicenseProfile
-}
-
-// LicenseProfilesClientDeleteResponse contains the response from method LicenseProfilesClient.BeginDelete.
-type LicenseProfilesClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// LicenseProfilesClientGetResponse contains the response from method LicenseProfilesClient.Get.
-type LicenseProfilesClientGetResponse struct {
-	// Describes a license profile in a hybrid machine.
-	LicenseProfile
-}
-
-// LicenseProfilesClientListResponse contains the response from method LicenseProfilesClient.NewListPager.
-type LicenseProfilesClientListResponse struct {
-	// The List hybrid machine license profile operation response.
-	LicenseProfilesListResult
-}
-
-// LicenseProfilesClientUpdateResponse contains the response from method LicenseProfilesClient.BeginUpdate.
-type LicenseProfilesClientUpdateResponse struct {
-	// Describes a license profile in a hybrid machine.
-	LicenseProfile
-}
-
-// LicensesClientCreateOrUpdateResponse contains the response from method LicensesClient.BeginCreateOrUpdate.
-type LicensesClientCreateOrUpdateResponse struct {
-	// Describes a license in a hybrid machine.
-	License
-}
-
-// LicensesClientDeleteResponse contains the response from method LicensesClient.BeginDelete.
-type LicensesClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// LicensesClientGetResponse contains the response from method LicensesClient.Get.
-type LicensesClientGetResponse struct {
-	// Describes a license in a hybrid machine.
-	License
-}
-
-// LicensesClientListByResourceGroupResponse contains the response from method LicensesClient.NewListByResourceGroupPager.
-type LicensesClientListByResourceGroupResponse struct {
-	// The List license operation response.
-	LicensesListResult
-}
-
-// LicensesClientListBySubscriptionResponse contains the response from method LicensesClient.NewListBySubscriptionPager.
-type LicensesClientListBySubscriptionResponse struct {
-	// The List license operation response.
-	LicensesListResult
-}
-
-// LicensesClientUpdateResponse contains the response from method LicensesClient.BeginUpdate.
-type LicensesClientUpdateResponse struct {
-	// Describes a license in a hybrid machine.
-	License
-}
-
-// LicensesClientValidateLicenseResponse contains the response from method LicensesClient.BeginValidateLicense.
-type LicensesClientValidateLicenseResponse struct {
-	// Describes a license in a hybrid machine.
-	License
 }
 
 // MachineExtensionsClientCreateOrUpdateResponse contains the response from method MachineExtensionsClient.BeginCreateOrUpdate.
@@ -166,22 +72,10 @@ type MachineRunCommandsClientListResponse struct {
 	MachineRunCommandsListResult
 }
 
-// MachineRunCommandsClientUpdateResponse contains the response from method MachineRunCommandsClient.BeginUpdate.
-type MachineRunCommandsClientUpdateResponse struct {
-	// Describes a Run Command
-	MachineRunCommand
-}
-
 // MachinesClientAssessPatchesResponse contains the response from method MachinesClient.BeginAssessPatches.
 type MachinesClientAssessPatchesResponse struct {
 	// Describes the properties of an AssessPatches result.
 	MachineAssessPatchesResult
-}
-
-// MachinesClientCreateOrUpdateResponse contains the response from method MachinesClient.CreateOrUpdate.
-type MachinesClientCreateOrUpdateResponse struct {
-	// Describes a hybrid machine.
-	Machine
 }
 
 // MachinesClientDeleteResponse contains the response from method MachinesClient.Delete.
@@ -224,42 +118,10 @@ type ManagementClientUpgradeExtensionsResponse struct {
 	// placeholder for future response values
 }
 
-// NetworkConfigurationsClientCreateOrUpdateResponse contains the response from method NetworkConfigurationsClient.CreateOrUpdate.
-type NetworkConfigurationsClientCreateOrUpdateResponse struct {
-	NetworkConfiguration
-}
-
-// NetworkConfigurationsClientGetResponse contains the response from method NetworkConfigurationsClient.Get.
-type NetworkConfigurationsClientGetResponse struct {
-	NetworkConfiguration
-}
-
-// NetworkConfigurationsClientUpdateResponse contains the response from method NetworkConfigurationsClient.Update.
-type NetworkConfigurationsClientUpdateResponse struct {
-	NetworkConfiguration
-}
-
 // NetworkProfileClientGetResponse contains the response from method NetworkProfileClient.Get.
 type NetworkProfileClientGetResponse struct {
 	// Describes the network information on this machine.
 	NetworkProfile
-}
-
-// NetworkSecurityPerimeterConfigurationsClientGetByPrivateLinkScopeResponse contains the response from method NetworkSecurityPerimeterConfigurationsClient.GetByPrivateLinkScope.
-type NetworkSecurityPerimeterConfigurationsClientGetByPrivateLinkScopeResponse struct {
-	// Properties that define a Network Security Perimeter resource.
-	NetworkSecurityPerimeterConfiguration
-}
-
-// NetworkSecurityPerimeterConfigurationsClientListByPrivateLinkScopeResponse contains the response from method NetworkSecurityPerimeterConfigurationsClient.NewListByPrivateLinkScopePager.
-type NetworkSecurityPerimeterConfigurationsClientListByPrivateLinkScopeResponse struct {
-	// A list of network security perimeter configurations.
-	NetworkSecurityPerimeterConfigurationListResult
-}
-
-// NetworkSecurityPerimeterConfigurationsClientReconcileForPrivateLinkScopeResponse contains the response from method NetworkSecurityPerimeterConfigurationsClient.BeginReconcileForPrivateLinkScope.
-type NetworkSecurityPerimeterConfigurationsClientReconcileForPrivateLinkScopeResponse struct {
-	// placeholder for future response values
 }
 
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.

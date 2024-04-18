@@ -19,22 +19,16 @@ import (
 
 // ServerFactory is a fake server for instances of the armhybridcompute.ClientFactory type.
 type ServerFactory struct {
-	AgentVersionServer                           AgentVersionServer
-	ExtensionMetadataServer                      ExtensionMetadataServer
-	HybridIdentityMetadataServer                 HybridIdentityMetadataServer
-	LicenseProfilesServer                        LicenseProfilesServer
-	LicensesServer                               LicensesServer
-	MachineExtensionsServer                      MachineExtensionsServer
-	MachineRunCommandsServer                     MachineRunCommandsServer
-	MachinesServer                               MachinesServer
-	ManagementServer                             ManagementServer
-	NetworkConfigurationsServer                  NetworkConfigurationsServer
-	NetworkProfileServer                         NetworkProfileServer
-	NetworkSecurityPerimeterConfigurationsServer NetworkSecurityPerimeterConfigurationsServer
-	OperationsServer                             OperationsServer
-	PrivateEndpointConnectionsServer             PrivateEndpointConnectionsServer
-	PrivateLinkResourcesServer                   PrivateLinkResourcesServer
-	PrivateLinkScopesServer                      PrivateLinkScopesServer
+	ExtensionMetadataServer          ExtensionMetadataServer
+	MachineExtensionsServer          MachineExtensionsServer
+	MachineRunCommandsServer         MachineRunCommandsServer
+	MachinesServer                   MachinesServer
+	ManagementServer                 ManagementServer
+	NetworkProfileServer             NetworkProfileServer
+	OperationsServer                 OperationsServer
+	PrivateEndpointConnectionsServer PrivateEndpointConnectionsServer
+	PrivateLinkResourcesServer       PrivateLinkResourcesServer
+	PrivateLinkScopesServer          PrivateLinkScopesServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -49,24 +43,18 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armhybridcompute.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                                            *ServerFactory
-	trMu                                           sync.Mutex
-	trAgentVersionServer                           *AgentVersionServerTransport
-	trExtensionMetadataServer                      *ExtensionMetadataServerTransport
-	trHybridIdentityMetadataServer                 *HybridIdentityMetadataServerTransport
-	trLicenseProfilesServer                        *LicenseProfilesServerTransport
-	trLicensesServer                               *LicensesServerTransport
-	trMachineExtensionsServer                      *MachineExtensionsServerTransport
-	trMachineRunCommandsServer                     *MachineRunCommandsServerTransport
-	trMachinesServer                               *MachinesServerTransport
-	trManagementServer                             *ManagementServerTransport
-	trNetworkConfigurationsServer                  *NetworkConfigurationsServerTransport
-	trNetworkProfileServer                         *NetworkProfileServerTransport
-	trNetworkSecurityPerimeterConfigurationsServer *NetworkSecurityPerimeterConfigurationsServerTransport
-	trOperationsServer                             *OperationsServerTransport
-	trPrivateEndpointConnectionsServer             *PrivateEndpointConnectionsServerTransport
-	trPrivateLinkResourcesServer                   *PrivateLinkResourcesServerTransport
-	trPrivateLinkScopesServer                      *PrivateLinkScopesServerTransport
+	srv                                *ServerFactory
+	trMu                               sync.Mutex
+	trExtensionMetadataServer          *ExtensionMetadataServerTransport
+	trMachineExtensionsServer          *MachineExtensionsServerTransport
+	trMachineRunCommandsServer         *MachineRunCommandsServerTransport
+	trMachinesServer                   *MachinesServerTransport
+	trManagementServer                 *ManagementServerTransport
+	trNetworkProfileServer             *NetworkProfileServerTransport
+	trOperationsServer                 *OperationsServerTransport
+	trPrivateEndpointConnectionsServer *PrivateEndpointConnectionsServerTransport
+	trPrivateLinkResourcesServer       *PrivateLinkResourcesServerTransport
+	trPrivateLinkScopesServer          *PrivateLinkScopesServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -82,27 +70,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	var err error
 
 	switch client {
-	case "AgentVersionClient":
-		initServer(s, &s.trAgentVersionServer, func() *AgentVersionServerTransport { return NewAgentVersionServerTransport(&s.srv.AgentVersionServer) })
-		resp, err = s.trAgentVersionServer.Do(req)
 	case "ExtensionMetadataClient":
 		initServer(s, &s.trExtensionMetadataServer, func() *ExtensionMetadataServerTransport {
 			return NewExtensionMetadataServerTransport(&s.srv.ExtensionMetadataServer)
 		})
 		resp, err = s.trExtensionMetadataServer.Do(req)
-	case "HybridIdentityMetadataClient":
-		initServer(s, &s.trHybridIdentityMetadataServer, func() *HybridIdentityMetadataServerTransport {
-			return NewHybridIdentityMetadataServerTransport(&s.srv.HybridIdentityMetadataServer)
-		})
-		resp, err = s.trHybridIdentityMetadataServer.Do(req)
-	case "LicenseProfilesClient":
-		initServer(s, &s.trLicenseProfilesServer, func() *LicenseProfilesServerTransport {
-			return NewLicenseProfilesServerTransport(&s.srv.LicenseProfilesServer)
-		})
-		resp, err = s.trLicenseProfilesServer.Do(req)
-	case "LicensesClient":
-		initServer(s, &s.trLicensesServer, func() *LicensesServerTransport { return NewLicensesServerTransport(&s.srv.LicensesServer) })
-		resp, err = s.trLicensesServer.Do(req)
 	case "MachineExtensionsClient":
 		initServer(s, &s.trMachineExtensionsServer, func() *MachineExtensionsServerTransport {
 			return NewMachineExtensionsServerTransport(&s.srv.MachineExtensionsServer)
@@ -119,21 +91,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "ManagementClient":
 		initServer(s, &s.trManagementServer, func() *ManagementServerTransport { return NewManagementServerTransport(&s.srv.ManagementServer) })
 		resp, err = s.trManagementServer.Do(req)
-	case "NetworkConfigurationsClient":
-		initServer(s, &s.trNetworkConfigurationsServer, func() *NetworkConfigurationsServerTransport {
-			return NewNetworkConfigurationsServerTransport(&s.srv.NetworkConfigurationsServer)
-		})
-		resp, err = s.trNetworkConfigurationsServer.Do(req)
 	case "NetworkProfileClient":
 		initServer(s, &s.trNetworkProfileServer, func() *NetworkProfileServerTransport {
 			return NewNetworkProfileServerTransport(&s.srv.NetworkProfileServer)
 		})
 		resp, err = s.trNetworkProfileServer.Do(req)
-	case "NetworkSecurityPerimeterConfigurationsClient":
-		initServer(s, &s.trNetworkSecurityPerimeterConfigurationsServer, func() *NetworkSecurityPerimeterConfigurationsServerTransport {
-			return NewNetworkSecurityPerimeterConfigurationsServerTransport(&s.srv.NetworkSecurityPerimeterConfigurationsServer)
-		})
-		resp, err = s.trNetworkSecurityPerimeterConfigurationsServer.Do(req)
 	case "OperationsClient":
 		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)

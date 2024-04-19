@@ -1,16 +1,16 @@
 # Azure Monitor Ingestion client module for Go
 
-The Azure Monitor Ingestion client module is used to send custom logs to [Azure Monitor][azure_monitor_overview] using the [Logs Ingestion API][ingestion_overview].
+* Upload logs (this module): send custom logs to Azure Monitor using the Logs Ingestion API
+* Query logs ([query/azlogs][query_azlogs]): execute read-only queries against Azure Monitor Logs
+* Query metrics ([query/azmetrics][query_azmetrics]): execute read-only queries against Azure Monitor Metrics
 
-This library allows you to send data from virtually any source to supported built-in tables or to custom tables that you create in Log Analytics workspaces. You can even extend the schema of built-in tables with custom columns.
-
-Source code | Package (pkg.go.dev) | [Product documentation][azure_monitor_overview] | Samples
+[Source code][source_code] | [Package (pkg.go.dev)][pkg_go] | [Product documentation][azure_monitor_overview] | [Samples][examples]
 
 ## Getting started
 
 ### Prerequisites
 
-* A supported Go version (the Azure SDK supports the two most recent Go releases)
+* Go version 1.18 or higher
 * An [Azure subscription][azure_subscription]
 * An [Azure Log Analytics workspace][azure_monitor_create_using_portal]
 * A [Data Collection Endpoint][data_collection_endpoint]
@@ -35,9 +35,13 @@ The client defaults to the Azure public cloud. For other cloud configurations, s
 
 #### Create a client
 
-Example client
+Example [client][example_client]
 
 ## Key concepts
+
+The Azure Monitor Logs Ingestion client module is used to send custom logs to [Azure Monitor][azure_monitor_overview] using the [Logs Ingestion API][ingestion_overview].
+
+This library allows you to send data from virtually any source to supported built-in tables or to custom tables that you create in Log Analytics workspaces. You can even extend the schema of built-in tables with custom columns.
 
 ### Data Collection Endpoint
 
@@ -62,15 +66,15 @@ Custom logs can send data to any custom table that you create and to certain bui
 
 ### Logs retrieval
 
-The logs that were uploaded using this module can be queried using the [azquery][azure_monitor_query] module (Azure Monitor Query).
+The logs that were uploaded using this module can be queried using the [query/azlogs][query_azlogs] module (Azure Monitor Query Logs).
 
 ## Examples
 
-Get started with our examples.
+Get started with our [examples][examples].
 
 ## Troubleshooting
 
-See our troubleshooting guide for details on how to diagnose various failure scenarios.
+See our [troubleshooting guide][troubleshooting_guide] for details on how to diagnose various failure scenarios.
 
 ## Next steps
 
@@ -88,7 +92,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [azure_identity]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity
 [azure_monitor_create_using_portal]: https://learn.microsoft.com/azure/azure-monitor/logs/quick-create-workspace
 [azure_monitor_overview]: https://learn.microsoft.com/azure/azure-monitor/
-[azure_monitor_query]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery
 [azure_subscription]: https://azure.microsoft.com/free/
 [cloud_documentation]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud
 [data_collection_endpoint]: https://learn.microsoft.com/azure/azure-monitor/essentials/data-collection-endpoint-overview
@@ -96,7 +99,14 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [data_collection_rule_structure]: https://learn.microsoft.com/azure/azure-monitor/essentials/data-collection-rule-structure
 [data_collection_rule_tutorial]: https://learn.microsoft.com/azure/azure-monitor/logs/tutorial-logs-ingestion-portal#collect-information-from-the-dcr
 [default_cred_ref]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/azidentity#defaultazurecredential
+[examples]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/ingestion/azlogs#pkg-examples
+[example_client]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/ingestion/azlogs#example-NewClient
 [ingestion_overview]: https://learn.microsoft.com/azure/azure-monitor/logs/logs-ingestion-api-overview
+[pkg_go]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/ingestion/azlogs
+[query_azlogs]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/query/azlogs
+[query_azmetrics]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/query/azmetrics
+[source_code]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/monitor/ingestion/azlogs
+[troubleshooting_guide]: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/monitor/ingestion/azlogs/TROUBLESHOOTING.md
 
 [cla]: https://cla.microsoft.com
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/

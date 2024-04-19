@@ -173,7 +173,28 @@ var azureOpenAI, openAI, servers = func() (testVars, testVars, []string) {
 		}
 	}
 
-	return newTestVarsFn(true), newTestVarsFn(false), endpoints
+	azureTestVars := newTestVarsFn(true)
+
+	// these are for the examples - we don't want to mention regions or anything in them so the
+	// env variables have a more friendly naming scheme.
+	remaps := map[string]endpointWithModel{
+		"CHAT_COMPLETIONS_MODEL_LEGACY_FUNCTIONS": azureTestVars.ChatCompletionsLegacyFunctions,
+		"CHAT_COMPLETIONS_RAI":                    azureTestVars.ChatCompletionsRAI,
+		"CHAT_COMPLETIONS":                        azureTestVars.ChatCompletions,
+		"COMPLETIONS":                             azureTestVars.Completions,
+		"DALLE":                                   azureTestVars.DallE,
+		"EMBEDDINGS":                              azureTestVars.Embeddings,
+		"VISION":                                  azureTestVars.Vision,
+		"WHISPER":                                 azureTestVars.Whisper,
+	}
+
+	for area, epm := range remaps {
+		os.Setenv("AOAI_"+area+"_ENDPOINT", epm.Endpoint.URL)
+		os.Setenv("AOAI_"+area+"_API_KEY", epm.Endpoint.APIKey)
+		os.Setenv("AOAI_"+area+"_MODEL", epm.Model)
+	}
+
+	return azureTestVars, newTestVarsFn(false), endpoints
 }()
 
 type testClientOption func(opt *azopenai.ClientOptions)

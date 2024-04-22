@@ -23,6 +23,9 @@ type ClustersClientBeginDeleteOptions struct {
 // ClustersClientBeginPromoteReadReplicaOptions contains the optional parameters for the ClustersClient.BeginPromoteReadReplica
 // method.
 type ClustersClientBeginPromoteReadReplicaOptions struct {
+	// The parameter for enabling geo-redundant backup while promoting read replica.
+	PromoteRequest *PromoteRequest
+
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }

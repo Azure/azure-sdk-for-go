@@ -1,7 +1,7 @@
 github.com/Azure/azure-sdk-for-go v68.0.0+incompatible h1:fcYLmCpyNYRnvJbPerq7U0hS+6+I79yEDJBqVNcqUzU=
 github.com/Azure/azure-sdk-for-go v68.0.0+incompatible/go.mod h1:9XXNKU+eRnpl9moKnB4QOLf1HestfXbmab5FXxiDBjc=
-github.com/Azure/azure-sdk-for-go/eng/tools/internal v0.0.0-20240117220840-708e50633b35 h1:65myjiwFNqR0Se4EcvSMYbaokPoE2SFMjNBEKUvQJO0=
-github.com/Azure/azure-sdk-for-go/eng/tools/internal v0.0.0-20240117220840-708e50633b35/go.mod h1:Kj3VHYunKkjLgAmgj3ah6UqBCTMxOJcvW7U15E1Ayfs=
+github.com/Azure/azure-sdk-for-go/eng/tools/internal v0.0.0-20240318180644-568da5a8e8f0 h1:jGDlZMgA4k7NELVSpItSK06k56G7vGwI8EaxkDndQG0=
+github.com/Azure/azure-sdk-for-go/eng/tools/internal v0.0.0-20240318180644-568da5a8e8f0/go.mod h1:PbAlIFeOJmHf0o1OFe9I2g72u1Vby2RlvomjTZhnOiY=
 github.com/Masterminds/semver v1.5.0 h1:H65muMkzWKEuNDnfl9d70GUjFniHKHRbFPGBuZ3QEww=
 github.com/Masterminds/semver v1.5.0/go.mod h1:MB6lktGJrhw8PrUyiEoblNEGEQ+RzHPF078ddwwvV3Y=
 github.com/cpuguy83/go-md2man/v2 v2.0.3/go.mod h1:tgQtvFlXSQOSOSIRvRPT7W67SCa46tRHOmNcaadrF8o=

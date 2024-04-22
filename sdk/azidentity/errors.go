@@ -13,14 +13,11 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/errorinfo"
 	msal "github.com/AzureAD/microsoft-authentication-library-for-go/apps/errors"
 )
-
-// ErrAuthenticationRequired indicates a credential's Authenticate method must be called to acquire a token
-// because user interaction is required and the credential is configured not to automatically prompt the user.
-var ErrAuthenticationRequired error = &credentialUnavailableError{"can't acquire a token without user interaction. Call Authenticate to interactively authenticate a user"}
 
 // getResponseFromError retrieves the response carried by
 // an AuthenticationFailedError or MSAL CallErr, if any
@@ -110,8 +107,34 @@ func (*AuthenticationFailedError) NonRetriable() {
 
 var _ errorinfo.NonRetriable = (*AuthenticationFailedError)(nil)
 
-// credentialUnavailableError indicates a credential can't attempt authentication because it lacks required
-// data or state
+// AuthenticationRequiredError indicates a credential's Authenticate method must be called to acquire a token
+// because the credential requires user interaction and is configured not to request it automatically.
+type AuthenticationRequiredError struct {
+	credentialUnavailableError
+
+	// TokenRequestOptions for the required token. Pass this to the credential's Authenticate method.
+	TokenRequestOptions policy.TokenRequestOptions
+}
+
+func newAuthenticationRequiredError(credType string, tro policy.TokenRequestOptions) error {
+	return &AuthenticationRequiredError{
+		credentialUnavailableError: credentialUnavailableError{
+			credType + " can't acquire a token without user interaction. Call Authenticate to authenticate a user interactively",
+		},
+		TokenRequestOptions: tro,
+	}
+}
+
+var (
+	_ credentialUnavailable  = (*AuthenticationRequiredError)(nil)
+	_ errorinfo.NonRetriable = (*AuthenticationRequiredError)(nil)
+)
+
+type credentialUnavailable interface {
+	error
+	credentialUnavailable()
+}
+
 type credentialUnavailableError struct {
 	message string
 }
@@ -135,6 +158,11 @@ func (e *credentialUnavailableError) Error() string {
 }
 
 // NonRetriable is a marker method indicating this error should not be retried. It has no implementation.
-func (e *credentialUnavailableError) NonRetriable() {}
+func (*credentialUnavailableError) NonRetriable() {}
 
-var _ errorinfo.NonRetriable = (*credentialUnavailableError)(nil)
+func (*credentialUnavailableError) credentialUnavailable() {}
+
+var (
+	_ credentialUnavailable  = (*credentialUnavailableError)(nil)
+	_ errorinfo.NonRetriable = (*credentialUnavailableError)(nil)
+)

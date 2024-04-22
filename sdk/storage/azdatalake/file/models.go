@@ -55,6 +55,8 @@ type CreateOptions struct {
 	Group *string
 	// ACL is the access control list for the file.
 	ACL *string
+	// EncryptionContext stores non-encrypted data that can be used to derive the customer-provided key for a file.
+	EncryptionContext *string
 }
 
 // CreateExpiryValues describes when a newly created file should expire.
@@ -91,6 +93,7 @@ func (o *CreateOptions) format() (*generated.LeaseAccessConditions, *generated.M
 	createOpts.Permissions = o.Permissions
 	createOpts.ProposedLeaseID = o.ProposedLeaseID
 	createOpts.LeaseDuration = o.LeaseDuration
+	createOpts.EncryptionContext = o.EncryptionContext
 
 	var httpHeaders *generated.PathHTTPHeaders
 	var cpkOpts *generated.CPKInfo
@@ -149,6 +152,8 @@ type uploadFromReaderOptions struct {
 	HTTPHeaders *HTTPHeaders
 	// CPKInfo contains optional parameters to perform encryption using customer-provided key.
 	CPKInfo *CPKInfo
+	// EncryptionContext contains the information returned from the x-ms-encryption-context header response.
+	EncryptionContext *string
 }
 
 // UploadStreamOptions provides set of configurations for Client.UploadStream operation.
@@ -163,6 +168,8 @@ type UploadStreamOptions struct {
 	HTTPHeaders *HTTPHeaders
 	// CPKInfo contains optional parameters to perform encryption using customer-provided key.
 	CPKInfo *CPKInfo
+	// EncryptionContext contains the information returned from the x-ms-encryption-context header response.
+	EncryptionContext *string
 }
 
 // UploadBufferOptions provides set of configurations for Client.UploadBuffer operation.
@@ -185,6 +192,13 @@ type FlushDataOptions struct {
 	// RetainUncommittedData if "true", uncommitted data is retained after the flush operation
 	// completes, otherwise, the uncommitted data is deleted after the flush operation.
 	RetainUncommittedData *bool
+	// LeaseAction Describes actions that can be performed on a lease.
+	LeaseAction *LeaseAction
+	// LeaseDuration specifies the duration of the lease, in seconds, or negative one
+	// (-1) for a lease that never expires. A non-infinite lease can be between 15 and 60 seconds.
+	LeaseDuration *int64
+	// ProposedLeaseID specifies the proposed lease ID for the file.
+	ProposedLeaseID *string
 }
 
 func (o *FlushDataOptions) format(offset int64) (*generated.PathClientFlushDataOptions, *generated.ModifiedAccessConditions, *generated.LeaseAccessConditions, *generated.PathHTTPHeaders, *generated.CPKInfo, error) {
@@ -230,6 +244,9 @@ func (o *FlushDataOptions) format(offset int64) (*generated.PathClientFlushDataO
 			cpkInfoOpts.EncryptionKeySHA256 = o.CPKInfo.EncryptionKeySHA256
 			cpkInfoOpts.EncryptionAlgorithm = o.CPKInfo.EncryptionAlgorithm
 		}
+		flushDataOpts.LeaseAction = o.LeaseAction
+		flushDataOpts.LeaseDuration = o.LeaseDuration
+		flushDataOpts.ProposedLeaseID = o.ProposedLeaseID
 	}
 	return flushDataOpts, modifiedAccessConditions, leaseAccessConditions, httpHeaderOpts, cpkInfoOpts, nil
 }
@@ -241,11 +258,22 @@ type AppendDataOptions struct {
 	TransactionalValidation TransferValidationType
 	// LeaseAccessConditions contains optional parameters to access leased entity.
 	LeaseAccessConditions *LeaseAccessConditions
+	// LeaseAction describes actions that can be performed on a lease.
+	LeaseAction *LeaseAction
+	// LeaseDuration specifies the duration of the lease, in seconds, or negative one
+	// (-1) for a lease that never expires. A non-infinite lease can be between 15 and 60 seconds.
+	LeaseDuration *int64
+	// ProposedLeaseID specifies the proposed lease ID for the file.
+	ProposedLeaseID *string
 	// CPKInfo contains optional parameters to perform encryption using customer-provided key.
 	CPKInfo *CPKInfo
+	//Flush Optional. If true, the file will be flushed after append.
+	Flush *bool
 }
 
-func (o *AppendDataOptions) format(offset int64, body io.ReadSeekCloser) (*generated.PathClientAppendDataOptions, *generated.LeaseAccessConditions, *generated.CPKInfo, error) {
+func (o *AppendDataOptions) format(offset int64, body io.ReadSeekCloser) (*generated.PathClientAppendDataOptions,
+	*generated.LeaseAccessConditions, *generated.CPKInfo, error) {
+
 	if offset < 0 || body == nil {
 		return nil, nil, nil, errors.New("invalid argument: offset must be >= 0 and body must not be nil")
 	}
@@ -280,11 +308,17 @@ func (o *AppendDataOptions) format(offset int64, body io.ReadSeekCloser) (*gener
 			cpkInfoOpts.EncryptionKeySHA256 = o.CPKInfo.EncryptionKeySHA256
 			cpkInfoOpts.EncryptionAlgorithm = o.CPKInfo.EncryptionAlgorithm
 		}
-	}
-	if o != nil && o.TransactionalValidation != nil {
-		_, err = o.TransactionalValidation.Apply(body, appendDataOptions)
-		if err != nil {
-			return nil, nil, nil, err
+
+		appendDataOptions.LeaseAction = o.LeaseAction
+		appendDataOptions.LeaseDuration = o.LeaseDuration
+		appendDataOptions.ProposedLeaseID = o.ProposedLeaseID
+		appendDataOptions.Flush = o.Flush
+
+		if o.TransactionalValidation != nil {
+			_, err = o.TransactionalValidation.Apply(body, appendDataOptions)
+			if err != nil {
+				return nil, nil, nil, err
+			}
 		}
 	}
 

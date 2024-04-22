@@ -10,7 +10,7 @@ package armfrontdoor
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/frontdoor/armfrontdoor"
-	moduleVersion = "v1.3.0"
+	moduleVersion = "v1.4.0"
 )
 
 // ActionType - Defines the action to take on rule match.
@@ -20,6 +20,7 @@ const (
 	ActionTypeAllow          ActionType = "Allow"
 	ActionTypeAnomalyScoring ActionType = "AnomalyScoring"
 	ActionTypeBlock          ActionType = "Block"
+	ActionTypeJSChallenge    ActionType = "JSChallenge"
 	ActionTypeLog            ActionType = "Log"
 	ActionTypeRedirect       ActionType = "Redirect"
 )
@@ -30,6 +31,7 @@ func PossibleActionTypeValues() []ActionType {
 		ActionTypeAllow,
 		ActionTypeAnomalyScoring,
 		ActionTypeBlock,
+		ActionTypeJSChallenge,
 		ActionTypeLog,
 		ActionTypeRedirect,
 	}
@@ -905,6 +907,65 @@ func PossibleSKUNameValues() []SKUName {
 	}
 }
 
+// ScrubbingRuleEntryMatchOperator - When matchVariable is a collection, operate on the selector to specify which elements
+// in the collection this rule applies to.
+type ScrubbingRuleEntryMatchOperator string
+
+const (
+	ScrubbingRuleEntryMatchOperatorEquals    ScrubbingRuleEntryMatchOperator = "Equals"
+	ScrubbingRuleEntryMatchOperatorEqualsAny ScrubbingRuleEntryMatchOperator = "EqualsAny"
+)
+
+// PossibleScrubbingRuleEntryMatchOperatorValues returns the possible values for the ScrubbingRuleEntryMatchOperator const type.
+func PossibleScrubbingRuleEntryMatchOperatorValues() []ScrubbingRuleEntryMatchOperator {
+	return []ScrubbingRuleEntryMatchOperator{
+		ScrubbingRuleEntryMatchOperatorEquals,
+		ScrubbingRuleEntryMatchOperatorEqualsAny,
+	}
+}
+
+// ScrubbingRuleEntryMatchVariable - The variable to be scrubbed from the logs.
+type ScrubbingRuleEntryMatchVariable string
+
+const (
+	ScrubbingRuleEntryMatchVariableQueryStringArgNames     ScrubbingRuleEntryMatchVariable = "QueryStringArgNames"
+	ScrubbingRuleEntryMatchVariableRequestBodyJSONArgNames ScrubbingRuleEntryMatchVariable = "RequestBodyJsonArgNames"
+	ScrubbingRuleEntryMatchVariableRequestBodyPostArgNames ScrubbingRuleEntryMatchVariable = "RequestBodyPostArgNames"
+	ScrubbingRuleEntryMatchVariableRequestCookieNames      ScrubbingRuleEntryMatchVariable = "RequestCookieNames"
+	ScrubbingRuleEntryMatchVariableRequestHeaderNames      ScrubbingRuleEntryMatchVariable = "RequestHeaderNames"
+	ScrubbingRuleEntryMatchVariableRequestIPAddress        ScrubbingRuleEntryMatchVariable = "RequestIPAddress"
+	ScrubbingRuleEntryMatchVariableRequestURI              ScrubbingRuleEntryMatchVariable = "RequestUri"
+)
+
+// PossibleScrubbingRuleEntryMatchVariableValues returns the possible values for the ScrubbingRuleEntryMatchVariable const type.
+func PossibleScrubbingRuleEntryMatchVariableValues() []ScrubbingRuleEntryMatchVariable {
+	return []ScrubbingRuleEntryMatchVariable{
+		ScrubbingRuleEntryMatchVariableQueryStringArgNames,
+		ScrubbingRuleEntryMatchVariableRequestBodyJSONArgNames,
+		ScrubbingRuleEntryMatchVariableRequestBodyPostArgNames,
+		ScrubbingRuleEntryMatchVariableRequestCookieNames,
+		ScrubbingRuleEntryMatchVariableRequestHeaderNames,
+		ScrubbingRuleEntryMatchVariableRequestIPAddress,
+		ScrubbingRuleEntryMatchVariableRequestURI,
+	}
+}
+
+// ScrubbingRuleEntryState - Defines the state of a log scrubbing rule. Default value is enabled.
+type ScrubbingRuleEntryState string
+
+const (
+	ScrubbingRuleEntryStateDisabled ScrubbingRuleEntryState = "Disabled"
+	ScrubbingRuleEntryStateEnabled  ScrubbingRuleEntryState = "Enabled"
+)
+
+// PossibleScrubbingRuleEntryStateValues returns the possible values for the ScrubbingRuleEntryState const type.
+func PossibleScrubbingRuleEntryStateValues() []ScrubbingRuleEntryState {
+	return []ScrubbingRuleEntryState{
+		ScrubbingRuleEntryStateDisabled,
+		ScrubbingRuleEntryStateEnabled,
+	}
+}
+
 // SessionAffinityEnabledState - Whether to allow session affinity on this host. Valid options are 'Enabled' or 'Disabled'
 type SessionAffinityEnabledState string
 
@@ -1017,5 +1078,39 @@ func PossibleTransformTypeValues() []TransformType {
 		TransformTypeURLDecode,
 		TransformTypeURLEncode,
 		TransformTypeUppercase,
+	}
+}
+
+// VariableName - Describes the supported variable for group by
+type VariableName string
+
+const (
+	VariableNameGeoLocation VariableName = "GeoLocation"
+	VariableNameNone        VariableName = "None"
+	VariableNameSocketAddr  VariableName = "SocketAddr"
+)
+
+// PossibleVariableNameValues returns the possible values for the VariableName const type.
+func PossibleVariableNameValues() []VariableName {
+	return []VariableName{
+		VariableNameGeoLocation,
+		VariableNameNone,
+		VariableNameSocketAddr,
+	}
+}
+
+// WebApplicationFirewallScrubbingState - State of the log scrubbing config. Default value is Enabled.
+type WebApplicationFirewallScrubbingState string
+
+const (
+	WebApplicationFirewallScrubbingStateDisabled WebApplicationFirewallScrubbingState = "Disabled"
+	WebApplicationFirewallScrubbingStateEnabled  WebApplicationFirewallScrubbingState = "Enabled"
+)
+
+// PossibleWebApplicationFirewallScrubbingStateValues returns the possible values for the WebApplicationFirewallScrubbingState const type.
+func PossibleWebApplicationFirewallScrubbingStateValues() []WebApplicationFirewallScrubbingState {
+	return []WebApplicationFirewallScrubbingState{
+		WebApplicationFirewallScrubbingStateDisabled,
+		WebApplicationFirewallScrubbingStateEnabled,
 	}
 }

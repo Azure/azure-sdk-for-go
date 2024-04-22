@@ -1,6 +1,6 @@
 # Azure Healthcare APIs Module for Go
 
-[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/healthcareapis/armhealthcareapis)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/healthcareapis/armhealthcareapis)
+[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/healthcareapis/armhealthcareapis/v2)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/healthcareapis/armhealthcareapis/v2)
 
 The `armhealthcareapis` module provides operations for working with Azure Healthcare APIs.
 
@@ -20,7 +20,7 @@ This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for ve
 Install the Azure Healthcare APIs module:
 
 ```sh
-go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/healthcareapis/armhealthcareapis
+go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/healthcareapis/armhealthcareapis/v2
 ```
 
 ## Authorization
@@ -57,7 +57,7 @@ clientFactory, err := armhealthcareapis.NewClientFactory(<subscription ID>, cred
 A client groups a set of related APIs, providing access to its functionality.  Create one or more clients to access the APIs you require using client factory.
 
 ```go
-client := clientFactory.NewIotConnectorFhirDestinationClient()
+client := clientFactory.NewDicomServicesClient()
 ```
 
 ## Fakes

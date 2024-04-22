@@ -23,39 +23,90 @@ import (
 // PricingsClient contains the methods for the Pricings group.
 // Don't use this type directly, use NewPricingsClient() instead.
 type PricingsClient struct {
-	internal       *arm.Client
-	subscriptionID string
+	internal *arm.Client
 }
 
 // NewPricingsClient creates a new instance of PricingsClient with the specified values.
-//   - subscriptionID - Azure subscription ID
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
-func NewPricingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PricingsClient, error) {
+func NewPricingsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*PricingsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &PricingsClient{
-		subscriptionID: subscriptionID,
-		internal:       cl,
+		internal: cl,
 	}
 	return client, nil
 }
 
-// Get - Gets a provided Microsoft Defender for Cloud pricing configuration in the subscription.
+// Delete - Deletes a provided Microsoft Defender for Cloud pricing configuration in a specific resource. Valid only for resource
+// scope (Supported resources are: 'VirtualMachines, VMSS and ARC MachinesS').
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2024-01-01
+//   - scopeID - The identifier of the resource, (format: 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName})
+//   - pricingName - name of the pricing configuration
+//   - options - PricingsClientDeleteOptions contains the optional parameters for the PricingsClient.Delete method.
+func (client *PricingsClient) Delete(ctx context.Context, scopeID string, pricingName string, options *PricingsClientDeleteOptions) (PricingsClientDeleteResponse, error) {
+	var err error
+	const operationName = "PricingsClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.deleteCreateRequest(ctx, scopeID, pricingName, options)
+	if err != nil {
+		return PricingsClientDeleteResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return PricingsClientDeleteResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
+		err = runtime.NewResponseError(httpResp)
+		return PricingsClientDeleteResponse{}, err
+	}
+	return PricingsClientDeleteResponse{}, nil
+}
+
+// deleteCreateRequest creates the Delete request.
+func (client *PricingsClient) deleteCreateRequest(ctx context.Context, scopeID string, pricingName string, options *PricingsClientDeleteOptions) (*policy.Request, error) {
+	urlPath := "/{scopeId}/providers/Microsoft.Security/pricings/{pricingName}"
+	urlPath = strings.ReplaceAll(urlPath, "{scopeId}", scopeID)
+	if pricingName == "" {
+		return nil, errors.New("parameter pricingName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{pricingName}", url.PathEscape(pricingName))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-01-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// Get - Get the Defender plans pricing configurations of the selected scope (valid scopes are resource id or a subscription
+// id). At the resource level, supported resource types are 'VirtualMachines, VMSS and
+// ARC Machines'.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-01-01
+//   - scopeID - The scope id of the pricing. Valid scopes are: subscription (format: 'subscriptions/{subscriptionId}'), or a
+//     specific resource (format:
+//     'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName})
+//   - Supported resources are (VirtualMachines)
 //   - pricingName - name of the pricing configuration
 //   - options - PricingsClientGetOptions contains the optional parameters for the PricingsClient.Get method.
-func (client *PricingsClient) Get(ctx context.Context, pricingName string, options *PricingsClientGetOptions) (PricingsClientGetResponse, error) {
+func (client *PricingsClient) Get(ctx context.Context, scopeID string, pricingName string, options *PricingsClientGetOptions) (PricingsClientGetResponse, error) {
 	var err error
 	const operationName = "PricingsClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, pricingName, options)
+	req, err := client.getCreateRequest(ctx, scopeID, pricingName, options)
 	if err != nil {
 		return PricingsClientGetResponse{}, err
 	}
@@ -72,12 +123,9 @@ func (client *PricingsClient) Get(ctx context.Context, pricingName string, optio
 }
 
 // getCreateRequest creates the Get request.
-func (client *PricingsClient) getCreateRequest(ctx context.Context, pricingName string, options *PricingsClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/pricings/{pricingName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+func (client *PricingsClient) getCreateRequest(ctx context.Context, scopeID string, pricingName string, options *PricingsClientGetOptions) (*policy.Request, error) {
+	urlPath := "/{scopeId}/providers/Microsoft.Security/pricings/{pricingName}"
+	urlPath = strings.ReplaceAll(urlPath, "{scopeId}", scopeID)
 	if pricingName == "" {
 		return nil, errors.New("parameter pricingName cannot be empty")
 	}
@@ -87,7 +135,7 @@ func (client *PricingsClient) getCreateRequest(ctx context.Context, pricingName 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
+	reqQP.Set("api-version", "2024-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -102,18 +150,26 @@ func (client *PricingsClient) getHandleResponse(resp *http.Response) (PricingsCl
 	return result, nil
 }
 
-// List - Lists Microsoft Defender for Cloud pricing configurations in the subscription.
+// List - Lists Microsoft Defender for Cloud pricing configurations of the scopeId, that match the optional given $filter.
+// Valid scopes are: subscription id or a specific resource id (Supported resources are:
+// 'VirtualMachines, VMSS and ARC Machines'). Valid $filter is: 'name in ({planName1},{planName2},…)'. If $filter is not provided,
+// the unfiltered list will be returned. If '$filter=name in
+// (planName1,planName2)' is provided, the returned list includes the pricings set for 'planName1' and 'planName2' only.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2024-01-01
+//   - scopeID - The scope id of the pricing. Valid scopes are: subscription (format: 'subscriptions/{subscriptionId}'), or a
+//     specific resource (format:
+//     'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName})
+//   - Supported resources are (VirtualMachines)
 //   - options - PricingsClientListOptions contains the optional parameters for the PricingsClient.List method.
-func (client *PricingsClient) List(ctx context.Context, options *PricingsClientListOptions) (PricingsClientListResponse, error) {
+func (client *PricingsClient) List(ctx context.Context, scopeID string, options *PricingsClientListOptions) (PricingsClientListResponse, error) {
 	var err error
 	const operationName = "PricingsClient.List"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.listCreateRequest(ctx, options)
+	req, err := client.listCreateRequest(ctx, scopeID, options)
 	if err != nil {
 		return PricingsClientListResponse{}, err
 	}
@@ -130,18 +186,18 @@ func (client *PricingsClient) List(ctx context.Context, options *PricingsClientL
 }
 
 // listCreateRequest creates the List request.
-func (client *PricingsClient) listCreateRequest(ctx context.Context, options *PricingsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/pricings"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+func (client *PricingsClient) listCreateRequest(ctx context.Context, scopeID string, options *PricingsClientListOptions) (*policy.Request, error) {
+	urlPath := "/{scopeId}/providers/Microsoft.Security/pricings"
+	urlPath = strings.ReplaceAll(urlPath, "{scopeId}", scopeID)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
+	if options != nil && options.Filter != nil {
+		reqQP.Set("$filter", *options.Filter)
+	}
+	reqQP.Set("api-version", "2024-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -156,20 +212,26 @@ func (client *PricingsClient) listHandleResponse(resp *http.Response) (PricingsC
 	return result, nil
 }
 
-// Update - Updates a provided Microsoft Defender for Cloud pricing configuration in the subscription.
+// Update - Updates a provided Microsoft Defender for Cloud pricing configuration in the scope. Valid scopes are: subscription
+// id or a specific resource id (Supported resources are: 'VirtualMachines, VMSS and ARC
+// Machines' and only for plan='VirtualMachines' and subPlan='P1').
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2024-01-01
+//   - scopeID - The scope id of the pricing. Valid scopes are: subscription (format: 'subscriptions/{subscriptionId}'), or a
+//     specific resource (format:
+//     'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName})
+//   - Supported resources are (VirtualMachines)
 //   - pricingName - name of the pricing configuration
 //   - pricing - Pricing object
 //   - options - PricingsClientUpdateOptions contains the optional parameters for the PricingsClient.Update method.
-func (client *PricingsClient) Update(ctx context.Context, pricingName string, pricing Pricing, options *PricingsClientUpdateOptions) (PricingsClientUpdateResponse, error) {
+func (client *PricingsClient) Update(ctx context.Context, scopeID string, pricingName string, pricing Pricing, options *PricingsClientUpdateOptions) (PricingsClientUpdateResponse, error) {
 	var err error
 	const operationName = "PricingsClient.Update"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, pricingName, pricing, options)
+	req, err := client.updateCreateRequest(ctx, scopeID, pricingName, pricing, options)
 	if err != nil {
 		return PricingsClientUpdateResponse{}, err
 	}
@@ -177,7 +239,7 @@ func (client *PricingsClient) Update(ctx context.Context, pricingName string, pr
 	if err != nil {
 		return PricingsClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
 		err = runtime.NewResponseError(httpResp)
 		return PricingsClientUpdateResponse{}, err
 	}
@@ -186,12 +248,9 @@ func (client *PricingsClient) Update(ctx context.Context, pricingName string, pr
 }
 
 // updateCreateRequest creates the Update request.
-func (client *PricingsClient) updateCreateRequest(ctx context.Context, pricingName string, pricing Pricing, options *PricingsClientUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/pricings/{pricingName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+func (client *PricingsClient) updateCreateRequest(ctx context.Context, scopeID string, pricingName string, pricing Pricing, options *PricingsClientUpdateOptions) (*policy.Request, error) {
+	urlPath := "/{scopeId}/providers/Microsoft.Security/pricings/{pricingName}"
+	urlPath = strings.ReplaceAll(urlPath, "{scopeId}", scopeID)
 	if pricingName == "" {
 		return nil, errors.New("parameter pricingName cannot be empty")
 	}
@@ -201,7 +260,7 @@ func (client *PricingsClient) updateCreateRequest(ctx context.Context, pricingNa
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
+	reqQP.Set("api-version", "2024-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, pricing); err != nil {

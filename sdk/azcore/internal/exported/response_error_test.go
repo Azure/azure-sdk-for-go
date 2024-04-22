@@ -14,7 +14,9 @@ import (
 	"strings"
 	"testing"
 
+	azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/stretchr/testify/require"
 )
 
@@ -467,4 +469,82 @@ func TestNilRequestInRawResponse(t *testing.T) {
 		},
 	}
 	require.EqualValues(t, expected, respErr.Error())
+}
+
+func TestNilResponseBody(t *testing.T) {
+	const expected = "Request information not available\n--------------------------------------------------------------------------------\nRESPONSE 0: \nERROR CODE UNAVAILABLE\n--------------------------------------------------------------------------------\nResponse contained no body\n--------------------------------------------------------------------------------\n"
+	require.EqualValues(t, expected, (&ResponseError{RawResponse: &http.Response{}}).Error())
+}
+
+func TestLogResponseErrorCodeInBody(t *testing.T) {
+	fakeURL, err := url.Parse("https://fakeurl.com/the/path?qp=removed")
+	require.NoError(t, err)
+	rawlog := map[log.Event][]string{}
+	log.SetListener(func(cls log.Event, s string) {
+		rawlog[cls] = append(rawlog[cls], s)
+	})
+	defer log.SetListener(nil)
+	_ = NewResponseError(&http.Response{
+		Status:     "the system is down",
+		StatusCode: http.StatusInternalServerError,
+		Body:       io.NopCloser(strings.NewReader(`{ "error": { "code": "ErrorItsBroken", "message": "it's not working" } }`)),
+		Request: &http.Request{
+			Method: http.MethodGet,
+			URL:    fakeURL,
+		},
+	})
+	const want = `GET https://fakeurl.com/the/path
+--------------------------------------------------------------------------------
+RESPONSE 500: the system is down
+ERROR CODE: ErrorItsBroken
+--------------------------------------------------------------------------------
+{
+  "error": {
+    "code": "ErrorItsBroken",
+    "message": "it's not working"
+  }
+}
+--------------------------------------------------------------------------------
+`
+	msg, ok := rawlog[azlog.EventResponseError]
+	require.True(t, ok)
+	require.Len(t, msg, 1)
+	require.EqualValues(t, want, msg[0])
+}
+
+func TestLogResponseErrorCodeInHeader(t *testing.T) {
+	fakeURL, err := url.Parse("https://fakeurl.com/the/path?qp=removed")
+	require.NoError(t, err)
+	rawlog := map[log.Event][]string{}
+	log.SetListener(func(cls log.Event, s string) {
+		rawlog[cls] = append(rawlog[cls], s)
+	})
+	defer log.SetListener(nil)
+	respHeader := http.Header{}
+	respHeader.Set(shared.HeaderXMSErrorCode, "ErrorTooManyCheats")
+	_ = NewResponseError(&http.Response{
+		Status:     "the system is down",
+		StatusCode: http.StatusInternalServerError,
+		Body:       io.NopCloser(strings.NewReader(`{ "code": "ErrorItsBroken", "message": "it's not working" }`)),
+		Header:     respHeader,
+		Request: &http.Request{
+			Method: http.MethodGet,
+			URL:    fakeURL,
+		},
+	})
+	const want = `GET https://fakeurl.com/the/path
+--------------------------------------------------------------------------------
+RESPONSE 500: the system is down
+ERROR CODE: ErrorTooManyCheats
+--------------------------------------------------------------------------------
+{
+  "code": "ErrorItsBroken",
+  "message": "it's not working"
+}
+--------------------------------------------------------------------------------
+`
+	msg, ok := rawlog[azlog.EventResponseError]
+	require.True(t, ok)
+	require.Len(t, msg, 1)
+	require.EqualValues(t, want, msg[0])
 }

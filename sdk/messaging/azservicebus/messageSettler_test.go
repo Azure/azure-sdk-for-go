@@ -9,6 +9,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/test"
 	"github.com/stretchr/testify/require"
 )
 
@@ -203,52 +204,103 @@ func TestDeferredMessage_DeadLettering(t *testing.T) {
 }
 
 func TestMessageSettlementUsingOnlyBackupSettlement(t *testing.T) {
-	testStuff := newTestStuff(t)
-	defer testStuff.Close()
+	newConn, cleanup, queueName := setupLiveTest(t, nil)
+	t.Cleanup(cleanup)
 
-	actualSettler, _ := testStuff.Receiver.settler.(*messageSettler)
-	actualSettler.onlyDoBackupSettlement = true
-
-	actualSettler, _ = testStuff.DeadLetterReceiver.settler.(*messageSettler)
-	actualSettler.onlyDoBackupSettlement = true
-
-	receiver, deadLetterReceiver := testStuff.Receiver, testStuff.DeadLetterReceiver
-	ctx := context.TODO()
-
-	err := testStuff.Sender.SendMessage(context.Background(), &Message{
-		Body: []byte("hello"),
-	}, nil)
+	sender, err := newConn.NewSender(queueName, nil)
 	require.NoError(t, err)
 
-	// toggle the super secret switch
-	actualSettler, _ = receiver.settler.(*messageSettler)
-	actualSettler.onlyDoBackupSettlement = true
+	runTest := func(t *testing.T, whichToClose string, settlementFn func(*Receiver, *ReceivedMessage) error) {
+		err = sender.SendMessage(context.Background(), &Message{
+			Body: []byte("hello"),
+		}, nil)
+		require.NoError(t, err)
 
-	messages, err := receiver.ReceiveMessages(ctx, 1, nil)
-	require.NoError(t, err)
-	require.EqualValues(t, 1, messages[0].DeliveryCount)
+		oldConn, err := NewClientFromConnectionString(test.GetConnectionString(t), nil)
+		require.NoError(t, err)
+		defer test.RequireClose(t, oldConn)
 
-	err = receiver.AbandonMessage(context.Background(), messages[0], nil)
-	require.NoError(t, err)
+		oldReceiver, err := oldConn.NewReceiverForQueue(queueName, nil)
+		require.NoError(t, err)
+		defer test.RequireClose(t, oldReceiver)
 
-	messages, err = receiver.ReceiveMessages(ctx, 1, nil)
-	require.NoError(t, err)
-	require.EqualValues(t, 2, messages[0].DeliveryCount)
+		messages, err := oldReceiver.ReceiveMessages(context.Background(), 1, nil)
+		require.NoError(t, err)
 
-	err = receiver.DeadLetterMessage(ctx, messages[0], nil)
-	require.NoError(t, err)
+		switch whichToClose {
+		case "connection":
+			test.RequireClose(t, oldConn)
+		case "receiver":
+			test.RequireClose(t, oldReceiver)
+		case "":
+			// don't close anything.
+		default:
+			panic("Invalid `whichToClose` value " + whichToClose)
+		}
 
-	messages, err = deadLetterReceiver.ReceiveMessages(ctx, 1, nil)
-	require.NoError(t, err)
-	require.EqualValues(t, 2, messages[0].DeliveryCount)
+		newReceiver, err := newConn.NewReceiverForQueue(queueName, nil)
+		require.NoError(t, err)
+		defer test.RequireClose(t, newReceiver)
 
-	err = deadLetterReceiver.CompleteMessage(context.Background(), messages[0], nil)
-	require.NoError(t, err)
-}
+		onLink := false
+		onMgmt := false
 
-func TestMessageSettlementWithDeferral(t *testing.T) {
-	testStuff := newTestStuff(t)
-	defer testStuff.Close()
+		newReceiver.settler.notifySettleOnLink = func(message *ReceivedMessage) { onLink = true }
+		newReceiver.settler.notifySettleOnManagement = func(message *ReceivedMessage) { onMgmt = true }
+
+		// old receiver is still open, so the settlement will occur there.
+		err = settlementFn(newReceiver, messages[0])
+		require.NoError(t, err)
+
+		switch whichToClose {
+		case "connection":
+			// we try to settle on the original link (and the entire connection is dead) so we fallback to the management link
+			require.True(t, onLink)
+			require.True(t, onMgmt)
+		case "receiver":
+			// we try to settle on the original link (which is dead) so we fallback to the management link
+			require.True(t, onLink)
+			require.True(t, onMgmt)
+		case "":
+			// original link was still alive so we can settle against it. No backup settlement required.
+			require.True(t, onLink)
+			require.False(t, onMgmt)
+		default:
+			panic("Invalid `whichToClose` value " + whichToClose)
+		}
+	}
+
+	tests := []struct {
+		Name string
+		F    func(*Receiver, *ReceivedMessage) error
+	}{
+		{"Abandon", func(r *Receiver, rm *ReceivedMessage) error {
+			return r.AbandonMessage(context.Background(), rm, nil)
+		}},
+		{"Complete", func(r *Receiver, rm *ReceivedMessage) error {
+			return r.CompleteMessage(context.Background(), rm, nil)
+		}},
+		{"DeadLetter", func(r *Receiver, rm *ReceivedMessage) error {
+			return r.DeadLetterMessage(context.Background(), rm, nil)
+		}},
+		{"Defer", func(r *Receiver, rm *ReceivedMessage) error {
+			return r.DeferMessage(context.Background(), rm, nil)
+		}},
+	}
+
+	for _, test := range tests {
+		t.Run(test.Name+"_OriginalReceiverAlive", func(t *testing.T) {
+			runTest(t, "", test.F)
+		})
+
+		t.Run(test.Name+"_OriginalReceiverDead", func(t *testing.T) {
+			runTest(t, "receiver", test.F)
+		})
+
+		t.Run(test.Name+"_OriginalConnDead", func(t *testing.T) {
+			runTest(t, "connection", test.F)
+		})
+	}
 }
 
 type testStuff struct {

@@ -241,10 +241,16 @@ func TestBearerTokenPolicy_RequiresHTTPS(t *testing.T) {
 func TestCheckHTTPSForAuth(t *testing.T) {
 	req, err := NewRequest(context.Background(), http.MethodGet, "http://contoso.com")
 	require.NoError(t, err)
-	require.Error(t, checkHTTPSForAuth(req))
+	require.Error(t, checkHTTPSForAuth(req, false))
 	req, err = NewRequest(context.Background(), http.MethodGet, "https://contoso.com")
 	require.NoError(t, err)
-	require.NoError(t, checkHTTPSForAuth(req))
+	require.NoError(t, checkHTTPSForAuth(req, false))
+	req, err = NewRequest(context.Background(), http.MethodGet, "http://contoso.com")
+	require.NoError(t, err)
+	require.NoError(t, checkHTTPSForAuth(req, true))
+	req, err = NewRequest(context.Background(), http.MethodGet, "https://contoso.com")
+	require.NoError(t, err)
+	require.NoError(t, checkHTTPSForAuth(req, true))
 }
 
 func TestBearerTokenPolicy_NilCredential(t *testing.T) {

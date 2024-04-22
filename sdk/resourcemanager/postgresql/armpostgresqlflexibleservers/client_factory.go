@@ -17,8 +17,7 @@ import (
 // Don't use this type directly, use NewClientFactory instead.
 type ClientFactory struct {
 	subscriptionID string
-	credential     azcore.TokenCredential
-	options        *arm.ClientOptions
+	internal       *arm.Client
 }
 
 // NewClientFactory creates a new instance of ClientFactory with the specified values.
@@ -27,162 +26,208 @@ type ClientFactory struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClientFactory, error) {
-	_, err := arm.NewClient(moduleName, moduleVersion, credential, options)
+	internal, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	return &ClientFactory{
-		subscriptionID: subscriptionID, credential: credential,
-		options: options.Clone(),
+		subscriptionID: subscriptionID,
+		internal:       internal,
 	}, nil
 }
 
 // NewAdministratorsClient creates a new instance of AdministratorsClient.
 func (c *ClientFactory) NewAdministratorsClient() *AdministratorsClient {
-	subClient, _ := NewAdministratorsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &AdministratorsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewBackupsClient creates a new instance of BackupsClient.
 func (c *ClientFactory) NewBackupsClient() *BackupsClient {
-	subClient, _ := NewBackupsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &BackupsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewCheckNameAvailabilityClient creates a new instance of CheckNameAvailabilityClient.
 func (c *ClientFactory) NewCheckNameAvailabilityClient() *CheckNameAvailabilityClient {
-	subClient, _ := NewCheckNameAvailabilityClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &CheckNameAvailabilityClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewCheckNameAvailabilityWithLocationClient creates a new instance of CheckNameAvailabilityWithLocationClient.
 func (c *ClientFactory) NewCheckNameAvailabilityWithLocationClient() *CheckNameAvailabilityWithLocationClient {
-	subClient, _ := NewCheckNameAvailabilityWithLocationClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &CheckNameAvailabilityWithLocationClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewConfigurationsClient creates a new instance of ConfigurationsClient.
 func (c *ClientFactory) NewConfigurationsClient() *ConfigurationsClient {
-	subClient, _ := NewConfigurationsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &ConfigurationsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewDatabasesClient creates a new instance of DatabasesClient.
 func (c *ClientFactory) NewDatabasesClient() *DatabasesClient {
-	subClient, _ := NewDatabasesClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &DatabasesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewFirewallRulesClient creates a new instance of FirewallRulesClient.
 func (c *ClientFactory) NewFirewallRulesClient() *FirewallRulesClient {
-	subClient, _ := NewFirewallRulesClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &FirewallRulesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewFlexibleServerClient creates a new instance of FlexibleServerClient.
 func (c *ClientFactory) NewFlexibleServerClient() *FlexibleServerClient {
-	subClient, _ := NewFlexibleServerClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &FlexibleServerClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewGetPrivateDNSZoneSuffixClient creates a new instance of GetPrivateDNSZoneSuffixClient.
 func (c *ClientFactory) NewGetPrivateDNSZoneSuffixClient() *GetPrivateDNSZoneSuffixClient {
-	subClient, _ := NewGetPrivateDNSZoneSuffixClient(c.credential, c.options)
-	return subClient
+	return &GetPrivateDNSZoneSuffixClient{
+		internal: c.internal,
+	}
 }
 
 // NewLocationBasedCapabilitiesClient creates a new instance of LocationBasedCapabilitiesClient.
 func (c *ClientFactory) NewLocationBasedCapabilitiesClient() *LocationBasedCapabilitiesClient {
-	subClient, _ := NewLocationBasedCapabilitiesClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &LocationBasedCapabilitiesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewLogFilesClient creates a new instance of LogFilesClient.
 func (c *ClientFactory) NewLogFilesClient() *LogFilesClient {
-	subClient, _ := NewLogFilesClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &LogFilesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewLtrBackupOperationsClient creates a new instance of LtrBackupOperationsClient.
 func (c *ClientFactory) NewLtrBackupOperationsClient() *LtrBackupOperationsClient {
-	subClient, _ := NewLtrBackupOperationsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &LtrBackupOperationsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewMigrationsClient creates a new instance of MigrationsClient.
 func (c *ClientFactory) NewMigrationsClient() *MigrationsClient {
-	subClient, _ := NewMigrationsClient(c.credential, c.options)
-	return subClient
+	return &MigrationsClient{
+		internal: c.internal,
+	}
 }
 
 // NewOperationsClient creates a new instance of OperationsClient.
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
-	subClient, _ := NewOperationsClient(c.credential, c.options)
-	return subClient
+	return &OperationsClient{
+		internal: c.internal,
+	}
 }
 
 // NewPostgreSQLManagementClient creates a new instance of PostgreSQLManagementClient.
 func (c *ClientFactory) NewPostgreSQLManagementClient() *PostgreSQLManagementClient {
-	subClient, _ := NewPostgreSQLManagementClient(c.credential, c.options)
-	return subClient
+	return &PostgreSQLManagementClient{
+		internal: c.internal,
+	}
 }
 
 // NewPrivateEndpointConnectionClient creates a new instance of PrivateEndpointConnectionClient.
 func (c *ClientFactory) NewPrivateEndpointConnectionClient() *PrivateEndpointConnectionClient {
-	subClient, _ := NewPrivateEndpointConnectionClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &PrivateEndpointConnectionClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewPrivateEndpointConnectionsClient creates a new instance of PrivateEndpointConnectionsClient.
 func (c *ClientFactory) NewPrivateEndpointConnectionsClient() *PrivateEndpointConnectionsClient {
-	subClient, _ := NewPrivateEndpointConnectionsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &PrivateEndpointConnectionsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewPrivateLinkResourcesClient creates a new instance of PrivateLinkResourcesClient.
 func (c *ClientFactory) NewPrivateLinkResourcesClient() *PrivateLinkResourcesClient {
-	subClient, _ := NewPrivateLinkResourcesClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &PrivateLinkResourcesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewQuotaUsagesClient creates a new instance of QuotaUsagesClient.
 func (c *ClientFactory) NewQuotaUsagesClient() *QuotaUsagesClient {
-	subClient, _ := NewQuotaUsagesClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &QuotaUsagesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewReplicasClient creates a new instance of ReplicasClient.
 func (c *ClientFactory) NewReplicasClient() *ReplicasClient {
-	subClient, _ := NewReplicasClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &ReplicasClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewServerCapabilitiesClient creates a new instance of ServerCapabilitiesClient.
 func (c *ClientFactory) NewServerCapabilitiesClient() *ServerCapabilitiesClient {
-	subClient, _ := NewServerCapabilitiesClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &ServerCapabilitiesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewServerThreatProtectionSettingsClient creates a new instance of ServerThreatProtectionSettingsClient.
 func (c *ClientFactory) NewServerThreatProtectionSettingsClient() *ServerThreatProtectionSettingsClient {
-	subClient, _ := NewServerThreatProtectionSettingsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &ServerThreatProtectionSettingsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewServersClient creates a new instance of ServersClient.
 func (c *ClientFactory) NewServersClient() *ServersClient {
-	subClient, _ := NewServersClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &ServersClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewVirtualEndpointsClient creates a new instance of VirtualEndpointsClient.
 func (c *ClientFactory) NewVirtualEndpointsClient() *VirtualEndpointsClient {
-	subClient, _ := NewVirtualEndpointsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &VirtualEndpointsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewVirtualNetworkSubnetUsageClient creates a new instance of VirtualNetworkSubnetUsageClient.
 func (c *ClientFactory) NewVirtualNetworkSubnetUsageClient() *VirtualNetworkSubnetUsageClient {
-	subClient, _ := NewVirtualNetworkSubnetUsageClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &VirtualNetworkSubnetUsageClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }

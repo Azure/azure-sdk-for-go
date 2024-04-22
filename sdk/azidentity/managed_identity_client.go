@@ -34,15 +34,17 @@ const (
 	identityServerThumbprint = "IDENTITY_SERVER_THUMBPRINT"
 	headerMetadata           = "Metadata"
 	imdsEndpoint             = "http://169.254.169.254/metadata/identity/oauth2/token"
+	miResID                  = "mi_res_id"
 	msiEndpoint              = "MSI_ENDPOINT"
+	msiResID                 = "msi_res_id"
 	msiSecret                = "MSI_SECRET"
 	imdsAPIVersion           = "2018-02-01"
 	azureArcAPIVersion       = "2019-08-15"
+	qpClientID               = "client_id"
 	serviceFabricAPIVersion  = "2019-07-01-preview"
-
-	qpClientID = "client_id"
-	qpResID    = "mi_res_id"
 )
+
+var imdsProbeTimeout = time.Second
 
 type msiType int
 
@@ -55,13 +57,12 @@ const (
 	msiTypeServiceFabric
 )
 
-// managedIdentityClient provides the base for authenticating in managed identity environments
-// This type includes an runtime.Pipeline and TokenCredentialOptions.
 type managedIdentityClient struct {
-	azClient *azcore.Client
-	msiType  msiType
-	endpoint string
-	id       ManagedIDKind
+	azClient  *azcore.Client
+	endpoint  string
+	id        ManagedIDKind
+	msiType   msiType
+	probeIMDS bool
 }
 
 type wrappedNumber json.Number
@@ -88,7 +89,7 @@ func setIMDSRetryOptionDefaults(o *policy.RetryOptions) {
 	if o.StatusCodes == nil {
 		o.StatusCodes = []int{
 			// IMDS docs recommend retrying 404, 410, 429 and 5xx
-			// https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/how-to-use-vm-token#error-handling
+			// https://learn.microsoft.com/entra/identity/managed-identities-azure-resources/how-to-use-vm-token#error-handling
 			http.StatusNotFound,                      // 404
 			http.StatusGone,                          // 410
 			http.StatusTooManyRequests,               // 429
@@ -147,6 +148,7 @@ func newManagedIdentityClient(options *ManagedIdentityCredentialOptions) (*manag
 			c.msiType = msiTypeCloudShell
 		}
 	} else {
+		c.probeIMDS = options.dac
 		setIMDSRetryOptionDefaults(&cp.Retry)
 	}
 
@@ -180,6 +182,27 @@ func (c *managedIdentityClient) provideToken(ctx context.Context, params confide
 
 // authenticate acquires an access token
 func (c *managedIdentityClient) authenticate(ctx context.Context, id ManagedIDKind, scopes []string) (azcore.AccessToken, error) {
+	// no need to synchronize around this value because it's true only when DefaultAzureCredential constructed the client,
+	// and in that case ChainedTokenCredential.GetToken synchronizes goroutines that would execute this block
+	if c.probeIMDS {
+		cx, cancel := context.WithTimeout(ctx, imdsProbeTimeout)
+		defer cancel()
+		cx = policy.WithRetryOptions(cx, policy.RetryOptions{MaxRetries: -1})
+		req, err := runtime.NewRequest(cx, http.MethodGet, c.endpoint)
+		if err == nil {
+			_, err = c.azClient.Pipeline().Do(req)
+		}
+		if err != nil {
+			msg := err.Error()
+			if errors.Is(err, context.Canceled) || errors.Is(err, context.DeadlineExceeded) {
+				msg = "managed identity timed out. See https://aka.ms/azsdk/go/identity/troubleshoot#dac for more information"
+			}
+			return azcore.AccessToken{}, newCredentialUnavailableError(credNameManagedIdentity, msg)
+		}
+		// send normal token requests from now on because something responded
+		c.probeIMDS = false
+	}
+
 	msg, err := c.createAuthRequest(ctx, id, scopes)
 	if err != nil {
 		return azcore.AccessToken{}, err
@@ -286,7 +309,7 @@ func (c *managedIdentityClient) createIMDSAuthRequest(ctx context.Context, id Ma
 	q.Add("resource", strings.Join(scopes, " "))
 	if id != nil {
 		if id.idKind() == miResourceID {
-			q.Add(qpResID, id.String())
+			q.Add(msiResID, id.String())
 		} else {
 			q.Add(qpClientID, id.String())
 		}
@@ -306,7 +329,7 @@ func (c *managedIdentityClient) createAppServiceAuthRequest(ctx context.Context,
 	q.Add("resource", scopes[0])
 	if id != nil {
 		if id.idKind() == miResourceID {
-			q.Add(qpResID, id.String())
+			q.Add(miResID, id.String())
 		} else {
 			q.Add(qpClientID, id.String())
 		}
@@ -329,7 +352,7 @@ func (c *managedIdentityClient) createAzureMLAuthRequest(ctx context.Context, id
 		if id.idKind() == miResourceID {
 			log.Write(EventAuthentication, "WARNING: Azure ML doesn't support specifying a managed identity by resource ID")
 			q.Set("clientid", "")
-			q.Set(qpResID, id.String())
+			q.Set(miResID, id.String())
 		} else {
 			q.Set("clientid", id.String())
 		}
@@ -351,7 +374,7 @@ func (c *managedIdentityClient) createServiceFabricAuthRequest(ctx context.Conte
 	if id != nil {
 		log.Write(EventAuthentication, "WARNING: Service Fabric doesn't support selecting a user-assigned identity at runtime")
 		if id.idKind() == miResourceID {
-			q.Add(qpResID, id.String())
+			q.Add(miResID, id.String())
 		} else {
 			q.Add(qpClientID, id.String())
 		}
@@ -411,7 +434,7 @@ func (c *managedIdentityClient) createAzureArcAuthRequest(ctx context.Context, i
 	if id != nil {
 		log.Write(EventAuthentication, "WARNING: Azure Arc doesn't support user-assigned managed identities")
 		if id.idKind() == miResourceID {
-			q.Add(qpResID, id.String())
+			q.Add(miResID, id.String())
 		} else {
 			q.Add(qpClientID, id.String())
 		}
@@ -437,7 +460,7 @@ func (c *managedIdentityClient) createCloudShellAuthRequest(ctx context.Context,
 		log.Write(EventAuthentication, "WARNING: Cloud Shell doesn't support user-assigned managed identities")
 		q := request.Raw().URL.Query()
 		if id.idKind() == miResourceID {
-			q.Add(qpResID, id.String())
+			q.Add(miResID, id.String())
 		} else {
 			q.Add(qpClientID, id.String())
 		}

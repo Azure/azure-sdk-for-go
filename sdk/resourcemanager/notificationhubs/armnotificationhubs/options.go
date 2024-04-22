@@ -27,8 +27,7 @@ type ClientCreateOrUpdateOptions struct {
 
 // ClientDebugSendOptions contains the optional parameters for the Client.DebugSend method.
 type ClientDebugSendOptions struct {
-	// Debug send parameters
-	Parameters any
+	// placeholder for future optional parameters
 }
 
 // ClientDeleteAuthorizationRuleOptions contains the optional parameters for the Client.DeleteAuthorizationRule method.
@@ -68,13 +67,11 @@ type ClientListKeysOptions struct {
 
 // ClientListOptions contains the optional parameters for the Client.NewListPager method.
 type ClientListOptions struct {
-	// placeholder for future optional parameters
-}
+	// Continuation token.
+	SkipToken *string
 
-// ClientPatchOptions contains the optional parameters for the Client.Patch method.
-type ClientPatchOptions struct {
-	// Parameters supplied to patch a NotificationHub Resource.
-	Parameters *NotificationHubPatchParameters
+	// Page size.
+	Top *int32
 }
 
 // ClientRegenerateKeysOptions contains the optional parameters for the Client.RegenerateKeys method.
@@ -82,8 +79,14 @@ type ClientRegenerateKeysOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NamespacesClientBeginDeleteOptions contains the optional parameters for the NamespacesClient.BeginDelete method.
-type NamespacesClientBeginDeleteOptions struct {
+// ClientUpdateOptions contains the optional parameters for the Client.Update method.
+type ClientUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NamespacesClientBeginCreateOrUpdateOptions contains the optional parameters for the NamespacesClient.BeginCreateOrUpdate
+// method.
+type NamespacesClientBeginCreateOrUpdateOptions struct {
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }
@@ -99,14 +102,14 @@ type NamespacesClientCreateOrUpdateAuthorizationRuleOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NamespacesClientCreateOrUpdateOptions contains the optional parameters for the NamespacesClient.CreateOrUpdate method.
-type NamespacesClientCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
 // NamespacesClientDeleteAuthorizationRuleOptions contains the optional parameters for the NamespacesClient.DeleteAuthorizationRule
 // method.
 type NamespacesClientDeleteAuthorizationRuleOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NamespacesClientDeleteOptions contains the optional parameters for the NamespacesClient.Delete method.
+type NamespacesClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -121,9 +124,18 @@ type NamespacesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
+// NamespacesClientGetPnsCredentialsOptions contains the optional parameters for the NamespacesClient.GetPnsCredentials method.
+type NamespacesClientGetPnsCredentialsOptions struct {
+	// placeholder for future optional parameters
+}
+
 // NamespacesClientListAllOptions contains the optional parameters for the NamespacesClient.NewListAllPager method.
 type NamespacesClientListAllOptions struct {
-	// placeholder for future optional parameters
+	// Skip token for subsequent requests.
+	SkipToken *string
+
+	// Maximum number of results to return.
+	Top *int32
 }
 
 // NamespacesClientListAuthorizationRulesOptions contains the optional parameters for the NamespacesClient.NewListAuthorizationRulesPager
@@ -139,12 +151,11 @@ type NamespacesClientListKeysOptions struct {
 
 // NamespacesClientListOptions contains the optional parameters for the NamespacesClient.NewListPager method.
 type NamespacesClientListOptions struct {
-	// placeholder for future optional parameters
-}
+	// Skip token for subsequent requests.
+	SkipToken *string
 
-// NamespacesClientPatchOptions contains the optional parameters for the NamespacesClient.Patch method.
-type NamespacesClientPatchOptions struct {
-	// placeholder for future optional parameters
+	// Maximum number of results to return.
+	Top *int32
 }
 
 // NamespacesClientRegenerateKeysOptions contains the optional parameters for the NamespacesClient.RegenerateKeys method.
@@ -152,7 +163,50 @@ type NamespacesClientRegenerateKeysOptions struct {
 	// placeholder for future optional parameters
 }
 
+// NamespacesClientUpdateOptions contains the optional parameters for the NamespacesClient.Update method.
+type NamespacesClientUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateEndpointConnectionsClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginDelete
+// method.
+type PrivateEndpointConnectionsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// PrivateEndpointConnectionsClientBeginUpdateOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginUpdate
+// method.
+type PrivateEndpointConnectionsClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// PrivateEndpointConnectionsClientGetGroupIDOptions contains the optional parameters for the PrivateEndpointConnectionsClient.GetGroupID
+// method.
+type PrivateEndpointConnectionsClientGetGroupIDOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateEndpointConnectionsClientGetOptions contains the optional parameters for the PrivateEndpointConnectionsClient.Get
+// method.
+type PrivateEndpointConnectionsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateEndpointConnectionsClientListGroupIDsOptions contains the optional parameters for the PrivateEndpointConnectionsClient.NewListGroupIDsPager
+// method.
+type PrivateEndpointConnectionsClientListGroupIDsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateEndpointConnectionsClientListOptions contains the optional parameters for the PrivateEndpointConnectionsClient.NewListPager
+// method.
+type PrivateEndpointConnectionsClientListOptions struct {
 	// placeholder for future optional parameters
 }

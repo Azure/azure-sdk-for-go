@@ -52,7 +52,7 @@ func TestItemCRUD(t *testing.T) {
 		t.Fatalf("Failed to create item: %v", err)
 	}
 
-	if itemResponse.SessionToken == "" {
+	if itemResponse.SessionToken == nil {
 		t.Fatalf("Session token is empty")
 	}
 
@@ -227,7 +227,7 @@ func TestItemCRUDforNullPartitionKey(t *testing.T) {
 		t.Fatalf("Failed to create item: %v", err)
 	}
 
-	if itemResponse.SessionToken == "" {
+	if itemResponse.SessionToken == nil {
 		t.Fatalf("Session token is empty")
 	}
 
@@ -393,8 +393,8 @@ func TestItemIdEncodingRoutingGW(t *testing.T) {
 	verifyEncodingScenario(t, container, "RoutingGW - IdEndingWithPercentEncodedWhitespace", "IdEndingWithPercentEncodedWhitespace%20", http.StatusCreated, http.StatusUnauthorized, http.StatusUnauthorized, http.StatusUnauthorized)
 	verifyEncodingScenario(t, container, "RoutingGW - IdWithPercentEncodedSpecialChar", "WithPercentEncodedSpecialChar%E9%B1%80", http.StatusCreated, http.StatusUnauthorized, http.StatusUnauthorized, http.StatusUnauthorized)
 	verifyEncodingScenario(t, container, "RoutingGW - IdWithDisallowedCharQuestionMark", "Disallowed?Chars", http.StatusCreated, http.StatusOK, http.StatusOK, http.StatusNoContent)
-	verifyEncodingScenario(t, container, "RoutingGW - IdWithDisallowedCharForwardSlash", "Disallowed/Chars", http.StatusCreated, http.StatusBadRequest, http.StatusBadRequest, http.StatusBadRequest)
-	verifyEncodingScenario(t, container, "RoutingGW - IdWithDisallowedCharBackSlash", "Disallowed\\Chars", http.StatusCreated, http.StatusBadRequest, http.StatusBadRequest, http.StatusBadRequest)
+	verifyEncodingScenario(t, container, "RoutingGW - IdWithDisallowedCharForwardSlash", "Disallowed/Chars", http.StatusCreated, http.StatusUnauthorized, http.StatusUnauthorized, http.StatusUnauthorized)
+	verifyEncodingScenario(t, container, "RoutingGW - IdWithDisallowedCharBackSlash", "Disallowed\\Chars", http.StatusCreated, http.StatusUnauthorized, http.StatusUnauthorized, http.StatusUnauthorized)
 	verifyEncodingScenario(t, container, "RoutingGW - IdWithDisallowedCharPoundSign", "Disallowed#Chars", http.StatusCreated, http.StatusUnauthorized, http.StatusUnauthorized, http.StatusUnauthorized)
 	verifyEncodingScenario(t, container, "RoutingGW - IdWithCarriageReturn", "With\rCarriageReturn", http.StatusCreated, http.StatusBadRequest, http.StatusBadRequest, http.StatusBadRequest)
 	verifyEncodingScenario(t, container, "RoutingGW - IdWithTab", "With\tTab", http.StatusCreated, http.StatusBadRequest, http.StatusBadRequest, http.StatusBadRequest)

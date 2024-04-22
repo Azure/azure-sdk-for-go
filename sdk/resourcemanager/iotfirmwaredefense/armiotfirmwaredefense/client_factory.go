@@ -17,40 +17,100 @@ import (
 // Don't use this type directly, use NewClientFactory instead.
 type ClientFactory struct {
 	subscriptionID string
-	credential     azcore.TokenCredential
-	options        *arm.ClientOptions
+	internal       *arm.Client
 }
 
 // NewClientFactory creates a new instance of ClientFactory with the specified values.
 // The parameter values will be propagated to any client created from this factory.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClientFactory, error) {
-	_, err := arm.NewClient(moduleName, moduleVersion, credential, options)
+	internal, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	return &ClientFactory{
-		subscriptionID: subscriptionID, credential: credential,
-		options: options.Clone(),
+		subscriptionID: subscriptionID,
+		internal:       internal,
 	}, nil
 }
 
-// NewFirmwareClient creates a new instance of FirmwareClient.
-func (c *ClientFactory) NewFirmwareClient() *FirmwareClient {
-	subClient, _ := NewFirmwareClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+// NewBinaryHardeningClient creates a new instance of BinaryHardeningClient.
+func (c *ClientFactory) NewBinaryHardeningClient() *BinaryHardeningClient {
+	return &BinaryHardeningClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewCryptoCertificatesClient creates a new instance of CryptoCertificatesClient.
+func (c *ClientFactory) NewCryptoCertificatesClient() *CryptoCertificatesClient {
+	return &CryptoCertificatesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewCryptoKeysClient creates a new instance of CryptoKeysClient.
+func (c *ClientFactory) NewCryptoKeysClient() *CryptoKeysClient {
+	return &CryptoKeysClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewCvesClient creates a new instance of CvesClient.
+func (c *ClientFactory) NewCvesClient() *CvesClient {
+	return &CvesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewFirmwaresClient creates a new instance of FirmwaresClient.
+func (c *ClientFactory) NewFirmwaresClient() *FirmwaresClient {
+	return &FirmwaresClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewOperationsClient creates a new instance of OperationsClient.
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
-	subClient, _ := NewOperationsClient(c.credential, c.options)
-	return subClient
+	return &OperationsClient{
+		internal: c.internal,
+	}
+}
+
+// NewPasswordHashesClient creates a new instance of PasswordHashesClient.
+func (c *ClientFactory) NewPasswordHashesClient() *PasswordHashesClient {
+	return &PasswordHashesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewSbomComponentsClient creates a new instance of SbomComponentsClient.
+func (c *ClientFactory) NewSbomComponentsClient() *SbomComponentsClient {
+	return &SbomComponentsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewSummariesClient creates a new instance of SummariesClient.
+func (c *ClientFactory) NewSummariesClient() *SummariesClient {
+	return &SummariesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewWorkspacesClient creates a new instance of WorkspacesClient.
 func (c *ClientFactory) NewWorkspacesClient() *WorkspacesClient {
-	subClient, _ := NewWorkspacesClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &WorkspacesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }

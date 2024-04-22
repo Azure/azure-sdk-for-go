@@ -34,8 +34,8 @@ type DeviceCodeCredentialOptions struct {
 	ClientID string
 
 	// DisableAutomaticAuthentication prevents the credential from automatically prompting the user to authenticate.
-	// When this option is true, [DeviceCodeCredential.GetToken] will return [ErrAuthenticationRequired] when user
-	// interaction is necessary to acquire a token.
+	// When this option is true, GetToken will return AuthenticationRequiredError when user interaction is necessary
+	// to acquire a token.
 	DisableAutomaticAuthentication bool
 
 	// DisableInstanceDiscovery should be set true only by applications authenticating in disconnected clouds, or

@@ -1,5 +1,27 @@
 # Release History
 
+## 2.0.0 (2024-02-23)
+### Breaking Changes
+
+- Operation `*PrivateEndpointConnectionsClient.Delete` has been changed to LRO, use `*PrivateEndpointConnectionsClient.BeginDelete` instead.
+
+### Features Added
+
+- New value `ResourceStateScaling`, `ResourceStateScalingFailed` added to enum type `ResourceState`
+- New enum type `CmkIdentityType` with values `CmkIdentityTypeSystemAssignedIdentity`, `CmkIdentityTypeUserAssignedIdentity`
+- New enum type `ManagedServiceIdentityType` with values `ManagedServiceIdentityTypeNone`, `ManagedServiceIdentityTypeSystemAssigned`, `ManagedServiceIdentityTypeSystemAssignedUserAssigned`, `ManagedServiceIdentityTypeUserAssigned`
+- New function `*DatabasesClient.BeginFlush(context.Context, string, string, string, FlushParameters, *DatabasesClientBeginFlushOptions) (*runtime.Poller[DatabasesClientFlushResponse], error)`
+- New struct `ClusterPropertiesEncryption`
+- New struct `ClusterPropertiesEncryptionCustomerManagedKeyEncryption`
+- New struct `ClusterPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity`
+- New struct `FlushParameters`
+- New struct `ManagedServiceIdentity`
+- New struct `UserAssignedIdentity`
+- New field `Identity` in struct `Cluster`
+- New field `Encryption` in struct `ClusterProperties`
+- New field `Identity` in struct `ClusterUpdate`
+
+
 ## 1.2.0 (2023-11-24)
 ### Features Added
 

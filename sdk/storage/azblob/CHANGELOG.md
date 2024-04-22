@@ -1,14 +1,30 @@
 # Release History
 
-## 1.3.0-beta.2 (Unreleased)
+## 1.3.2 (2024-04-09)
 
-### Features Added
+### Bugs Fixed
+* Fixed an issue where GetSASURL() was providing HTTPS SAS, instead of the default http+https SAS. Fixes [#22448](https://github.com/Azure/azure-sdk-for-go/issues/22448)
 
-### Breaking Changes
+### Other Changes
+* Integrate `InsecureAllowCredentialWithHTTP` client options.
+* Update dependencies.
+
+## 1.3.1 (2024-02-28)
 
 ### Bugs Fixed
 
+* Re-enabled `SharedKeyCredential` authentication mode for non TLS protected endpoints.
+* Use random write in `DownloadFile` method. Fixes [#22426](https://github.com/Azure/azure-sdk-for-go/issues/22426).
+
+## 1.3.0 (2024-02-12)
+
+### Bugs Fixed
+* Fix concurrency issue while Downloading File. Fixes [#22156](https://github.com/Azure/azure-sdk-for-go/issues/22156). 
+* Fix panic when nil options bag is passed to NewGetPageRangesPager. Fixes [22356](https://github.com/Azure/azure-sdk-for-go/issues/22356).
+* Fix file offset update after Download file. Fixes [#22297](https://github.com/Azure/azure-sdk-for-go/issues/22297).
+
 ### Other Changes
+* Updated the version of `azcore` to `1.9.2`
 
 ## 1.3.0-beta.1 (2024-01-09)
 

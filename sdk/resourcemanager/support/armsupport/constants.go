@@ -10,7 +10,7 @@ package armsupport
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/support/armsupport"
-	moduleVersion = "v2.0.0-beta.2"
+	moduleVersion = "v1.3.0"
 )
 
 // CommunicationDirection - Direction of communication.
@@ -78,6 +78,22 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 		CreatedByTypeKey,
 		CreatedByTypeManagedIdentity,
 		CreatedByTypeUser,
+	}
+}
+
+// IsTemporaryTicket - This property indicates if support ticket is a temporary ticket.
+type IsTemporaryTicket string
+
+const (
+	IsTemporaryTicketNo  IsTemporaryTicket = "No"
+	IsTemporaryTicketYes IsTemporaryTicket = "Yes"
+)
+
+// PossibleIsTemporaryTicketValues returns the possible values for the IsTemporaryTicket const type.
+func PossibleIsTemporaryTicketValues() []IsTemporaryTicket {
+	return []IsTemporaryTicket{
+		IsTemporaryTicketNo,
+		IsTemporaryTicketYes,
 	}
 }
 

@@ -34,7 +34,7 @@ func (sw *senderWrapper) NewMessageBatch(ctx context.Context, options *azservice
 	return sw.inner.NewMessageBatch(ctx, options)
 }
 
-func NewStreamingMessageBatch(ctx context.Context, sender internalBatchSender) (*StreamingMessageBatch, error) {
+func NewStreamingMessageBatch(ctx context.Context, sender internalBatchSender, expectedTotal int) (*StreamingMessageBatch, error) {
 	batch, err := sender.NewMessageBatch(ctx, nil)
 
 	if err != nil {
@@ -42,14 +42,17 @@ func NewStreamingMessageBatch(ctx context.Context, sender internalBatchSender) (
 	}
 
 	return &StreamingMessageBatch{
-		sender:       sender,
-		currentBatch: batch,
+		sender:        sender,
+		currentBatch:  batch,
+		expectedTotal: expectedTotal,
 	}, nil
 }
 
 type StreamingMessageBatch struct {
-	sender       internalBatchSender
-	currentBatch internalBatch
+	sender        internalBatchSender
+	currentBatch  internalBatch
+	expectedTotal int
+	total         int
 }
 
 // Add appends to the current batch. If it's full it'll send it, allocate a new one.
@@ -65,10 +68,12 @@ func (sb *StreamingMessageBatch) Add(ctx context.Context, msg *azservicebus.Mess
 		return err
 	}
 
-	log.Printf("Sending message batch (%d messages)", sb.currentBatch.NumMessages())
+	log.Printf("Sending message batch with %d messages. %d/%d messages sent so far.", sb.currentBatch.NumMessages(), sb.total, sb.expectedTotal)
 	if err := sb.sender.SendMessageBatch(ctx, sb.currentBatch); err != nil {
 		return err
 	}
+
+	sb.total += int(sb.currentBatch.NumMessages())
 
 	// throttle a teeny bit.
 	time.Sleep(time.Second)

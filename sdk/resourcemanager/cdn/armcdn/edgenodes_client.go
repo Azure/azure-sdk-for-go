@@ -39,7 +39,7 @@ func NewEdgeNodesClient(credential azcore.TokenCredential, options *arm.ClientOp
 
 // NewListPager - Edgenodes are the global Point of Presence (POP) locations used to deliver CDN content to end users.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2024-02-01
 //   - options - EdgeNodesClientListOptions contains the optional parameters for the EdgeNodesClient.NewListPager method.
 func (client *EdgeNodesClient) NewListPager(options *EdgeNodesClientListOptions) *runtime.Pager[EdgeNodesClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[EdgeNodesClientListResponse]{
@@ -72,7 +72,7 @@ func (client *EdgeNodesClient) listCreateRequest(ctx context.Context, options *E
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2024-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

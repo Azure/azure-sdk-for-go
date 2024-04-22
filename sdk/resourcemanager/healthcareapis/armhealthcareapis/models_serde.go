@@ -246,12 +246,14 @@ func (d DicomServiceProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "authenticationConfiguration", d.AuthenticationConfiguration)
 	populate(objectMap, "corsConfiguration", d.CorsConfiguration)
+	populate(objectMap, "enableDataPartitions", d.EnableDataPartitions)
 	populate(objectMap, "encryption", d.Encryption)
 	populate(objectMap, "eventState", d.EventState)
 	populate(objectMap, "privateEndpointConnections", d.PrivateEndpointConnections)
 	populate(objectMap, "provisioningState", d.ProvisioningState)
 	populate(objectMap, "publicNetworkAccess", d.PublicNetworkAccess)
 	populate(objectMap, "serviceUrl", d.ServiceURL)
+	populate(objectMap, "storageConfiguration", d.StorageConfiguration)
 	return json.Marshal(objectMap)
 }
 
@@ -270,6 +272,9 @@ func (d *DicomServiceProperties) UnmarshalJSON(data []byte) error {
 		case "corsConfiguration":
 			err = unpopulate(val, "CorsConfiguration", &d.CorsConfiguration)
 			delete(rawMsg, key)
+		case "enableDataPartitions":
+			err = unpopulate(val, "EnableDataPartitions", &d.EnableDataPartitions)
+			delete(rawMsg, key)
 		case "encryption":
 			err = unpopulate(val, "Encryption", &d.Encryption)
 			delete(rawMsg, key)
@@ -287,6 +292,9 @@ func (d *DicomServiceProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "serviceUrl":
 			err = unpopulate(val, "ServiceURL", &d.ServiceURL)
+			delete(rawMsg, key)
+		case "storageConfiguration":
+			err = unpopulate(val, "StorageConfiguration", &d.StorageConfiguration)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -538,6 +546,7 @@ func (f FhirServiceAuthenticationConfiguration) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "audience", f.Audience)
 	populate(objectMap, "authority", f.Authority)
+	populate(objectMap, "smartIdentityProviders", f.SmartIdentityProviders)
 	populate(objectMap, "smartProxyEnabled", f.SmartProxyEnabled)
 	return json.Marshal(objectMap)
 }
@@ -556,6 +565,9 @@ func (f *FhirServiceAuthenticationConfiguration) UnmarshalJSON(data []byte) erro
 			delete(rawMsg, key)
 		case "authority":
 			err = unpopulate(val, "Authority", &f.Authority)
+			delete(rawMsg, key)
+		case "smartIdentityProviders":
+			err = unpopulate(val, "SmartIdentityProviders", &f.SmartIdentityProviders)
 			delete(rawMsg, key)
 		case "smartProxyEnabled":
 			err = unpopulate(val, "SmartProxyEnabled", &f.SmartProxyEnabled)
@@ -2804,6 +2816,103 @@ func (s *ServicesResourceIdentity) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type SmartIdentityProviderApplication.
+func (s SmartIdentityProviderApplication) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "allowedDataActions", s.AllowedDataActions)
+	populate(objectMap, "audience", s.Audience)
+	populate(objectMap, "clientId", s.ClientID)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type SmartIdentityProviderApplication.
+func (s *SmartIdentityProviderApplication) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", s, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "allowedDataActions":
+			err = unpopulate(val, "AllowedDataActions", &s.AllowedDataActions)
+			delete(rawMsg, key)
+		case "audience":
+			err = unpopulate(val, "Audience", &s.Audience)
+			delete(rawMsg, key)
+		case "clientId":
+			err = unpopulate(val, "ClientID", &s.ClientID)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", s, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type SmartIdentityProviderConfiguration.
+func (s SmartIdentityProviderConfiguration) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "applications", s.Applications)
+	populate(objectMap, "authority", s.Authority)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type SmartIdentityProviderConfiguration.
+func (s *SmartIdentityProviderConfiguration) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", s, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "applications":
+			err = unpopulate(val, "Applications", &s.Applications)
+			delete(rawMsg, key)
+		case "authority":
+			err = unpopulate(val, "Authority", &s.Authority)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", s, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type StorageConfiguration.
+func (s StorageConfiguration) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "fileSystemName", s.FileSystemName)
+	populate(objectMap, "storageResourceId", s.StorageResourceID)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type StorageConfiguration.
+func (s *StorageConfiguration) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", s, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "fileSystemName":
+			err = unpopulate(val, "FileSystemName", &s.FileSystemName)
+			delete(rawMsg, key)
+		case "storageResourceId":
+			err = unpopulate(val, "StorageResourceID", &s.StorageResourceID)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", s, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type SystemData.
 func (s SystemData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -3098,7 +3207,7 @@ func populateAny(m map[string]any, k string, v any) {
 }
 
 func unpopulate(data json.RawMessage, fn string, v any) error {
-	if data == nil {
+	if data == nil || string(data) == "null" {
 		return nil
 	}
 	if err := json.Unmarshal(data, v); err != nil {

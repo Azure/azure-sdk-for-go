@@ -211,3 +211,22 @@ func TestRequestWithContext(t *testing.T) {
 	req2.Raw().Header.Add("added-req2", "value")
 	require.EqualValues(t, "value", req1.Raw().Header.Get("added-req2"))
 }
+
+func TestSetBodyWithClobber(t *testing.T) {
+	req, err := NewRequest(context.Background(), http.MethodPatch, "https://contoso.com")
+	require.NoError(t, err)
+	require.NotNil(t, req)
+	req.req.Header.Set(shared.HeaderContentType, "clobber-me")
+	require.NoError(t, SetBody(req, NopCloser(strings.NewReader(`"json-string"`)), shared.ContentTypeAppJSON, true))
+	require.EqualValues(t, shared.ContentTypeAppJSON, req.req.Header.Get(shared.HeaderContentType))
+}
+
+func TestSetBodyWithNoClobber(t *testing.T) {
+	req, err := NewRequest(context.Background(), http.MethodPatch, "https://contoso.com")
+	require.NoError(t, err)
+	require.NotNil(t, req)
+	const mergePatch = "application/merge-patch+json"
+	req.req.Header.Set(shared.HeaderContentType, mergePatch)
+	require.NoError(t, SetBody(req, NopCloser(strings.NewReader(`"json-string"`)), shared.ContentTypeAppJSON, false))
+	require.EqualValues(t, mergePatch, req.req.Header.Get(shared.HeaderContentType))
+}

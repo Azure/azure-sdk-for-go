@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/support/armsupport/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/support/armsupport"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/CheckNameAvailabilityForSupportTicketCommunication.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/106483d9f698ac3b6c0d481ab0c5fab14152e21f/specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/CheckNameAvailabilityForSupportTicketCommunication.json
 func ExampleCommunicationsClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -46,7 +46,7 @@ func ExampleCommunicationsClient_CheckNameAvailability() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/ListCommunicationsForSubscriptionSupportTicket.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/106483d9f698ac3b6c0d481ab0c5fab14152e21f/specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/ListCommunicationsForSubscriptionSupportTicket.json
 func ExampleCommunicationsClient_NewListPager_listCommunicationsForASubscriptionSupportTicket() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -75,7 +75,7 @@ func ExampleCommunicationsClient_NewListPager_listCommunicationsForASubscription
 		// 		{
 		// 			Name: to.Ptr("testmessage1"),
 		// 			Type: to.Ptr("Microsoft.Support/communications"),
-		// 			ID: to.Ptr("/subscriptions/subid/providers/Microsoft.Support/supportTickets/testticket/communications/testmessage1"),
+		// 			ID: to.Ptr("/subscriptions/132d901f-189d-4381-9214-fe68e27e05a1/providers/Microsoft.Support/supportTickets/testticket/communications/testmessage1"),
 		// 			Properties: &armsupport.CommunicationDetailsProperties{
 		// 				Body: to.Ptr("this is a test message"),
 		// 				CommunicationDirection: to.Ptr(armsupport.CommunicationDirectionOutbound),
@@ -88,7 +88,7 @@ func ExampleCommunicationsClient_NewListPager_listCommunicationsForASubscription
 		// 		{
 		// 			Name: to.Ptr("testmessage2"),
 		// 			Type: to.Ptr("Microsoft.Support/communications"),
-		// 			ID: to.Ptr("/subscriptions/subid/providers/Microsoft.Support/supportTickets/testticket/communications/testmessage2"),
+		// 			ID: to.Ptr("/subscriptions/132d901f-189d-4381-9214-fe68e27e05a1/providers/Microsoft.Support/supportTickets/testticket/communications/testmessage2"),
 		// 			Properties: &armsupport.CommunicationDetailsProperties{
 		// 				Body: to.Ptr("test"),
 		// 				CommunicationDirection: to.Ptr(armsupport.CommunicationDirectionOutbound),
@@ -102,7 +102,7 @@ func ExampleCommunicationsClient_NewListPager_listCommunicationsForASubscription
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/ListWebCommunicationsForSubscriptionSupportTicketCreatedOnOrAfter.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/106483d9f698ac3b6c0d481ab0c5fab14152e21f/specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/ListWebCommunicationsForSubscriptionSupportTicketCreatedOnOrAfter.json
 func ExampleCommunicationsClient_NewListPager_listWebCommunicationCreatedOnOrAfterASpecificDateForASubscriptionSupportTicket() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -131,7 +131,7 @@ func ExampleCommunicationsClient_NewListPager_listWebCommunicationCreatedOnOrAft
 		// 		{
 		// 			Name: to.Ptr("testmessage1"),
 		// 			Type: to.Ptr("Microsoft.Support/communications"),
-		// 			ID: to.Ptr("/subscriptions/subid/providers/Microsoft.Support/supportTickets/testticket/communications/testmessage1"),
+		// 			ID: to.Ptr("/subscriptions/132d901f-189d-4381-9214-fe68e27e05a1/providers/Microsoft.Support/supportTickets/testticket/communications/testmessage1"),
 		// 			Properties: &armsupport.CommunicationDetailsProperties{
 		// 				Body: to.Ptr("this is a test message"),
 		// 				CommunicationDirection: to.Ptr(armsupport.CommunicationDirectionOutbound),
@@ -144,7 +144,7 @@ func ExampleCommunicationsClient_NewListPager_listWebCommunicationCreatedOnOrAft
 		// 		{
 		// 			Name: to.Ptr("testmessage2"),
 		// 			Type: to.Ptr("Microsoft.Support/communications"),
-		// 			ID: to.Ptr("/subscriptions/subid/providers/Microsoft.Support/supportTickets/testticket/communications/testmessage2"),
+		// 			ID: to.Ptr("/subscriptions/132d901f-189d-4381-9214-fe68e27e05a1/providers/Microsoft.Support/supportTickets/testticket/communications/testmessage2"),
 		// 			Properties: &armsupport.CommunicationDetailsProperties{
 		// 				Body: to.Ptr("test"),
 		// 				CommunicationDirection: to.Ptr(armsupport.CommunicationDirectionOutbound),
@@ -158,7 +158,7 @@ func ExampleCommunicationsClient_NewListPager_listWebCommunicationCreatedOnOrAft
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/ListWebCommunicationsForSubscriptionSupportTicket.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/106483d9f698ac3b6c0d481ab0c5fab14152e21f/specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/ListWebCommunicationsForSubscriptionSupportTicket.json
 func ExampleCommunicationsClient_NewListPager_listWebCommunicationsForASubscriptionSupportTicket() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -187,7 +187,7 @@ func ExampleCommunicationsClient_NewListPager_listWebCommunicationsForASubscript
 		// 		{
 		// 			Name: to.Ptr("testmessage1"),
 		// 			Type: to.Ptr("Microsoft.Support/communications"),
-		// 			ID: to.Ptr("/subscriptions/subid/providers/Microsoft.Support/supportTickets/testticket/communications/testmessage1"),
+		// 			ID: to.Ptr("/subscriptions/132d901f-189d-4381-9214-fe68e27e05a1/providers/Microsoft.Support/supportTickets/testticket/communications/testmessage1"),
 		// 			Properties: &armsupport.CommunicationDetailsProperties{
 		// 				Body: to.Ptr("this is a test message"),
 		// 				CommunicationDirection: to.Ptr(armsupport.CommunicationDirectionOutbound),
@@ -200,7 +200,7 @@ func ExampleCommunicationsClient_NewListPager_listWebCommunicationsForASubscript
 		// 		{
 		// 			Name: to.Ptr("testmessage2"),
 		// 			Type: to.Ptr("Microsoft.Support/communications"),
-		// 			ID: to.Ptr("/subscriptions/subid/providers/Microsoft.Support/supportTickets/testticket/communications/testmessage2"),
+		// 			ID: to.Ptr("/subscriptions/132d901f-189d-4381-9214-fe68e27e05a1/providers/Microsoft.Support/supportTickets/testticket/communications/testmessage2"),
 		// 			Properties: &armsupport.CommunicationDetailsProperties{
 		// 				Body: to.Ptr("test"),
 		// 				CommunicationDirection: to.Ptr(armsupport.CommunicationDirectionOutbound),
@@ -214,7 +214,7 @@ func ExampleCommunicationsClient_NewListPager_listWebCommunicationsForASubscript
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/GetCommunicationDetailsForSubscriptionSupportTicket.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/106483d9f698ac3b6c0d481ab0c5fab14152e21f/specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/GetCommunicationDetailsForSubscriptionSupportTicket.json
 func ExampleCommunicationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -235,7 +235,7 @@ func ExampleCommunicationsClient_Get() {
 	// res.CommunicationDetails = armsupport.CommunicationDetails{
 	// 	Name: to.Ptr("testmessage"),
 	// 	Type: to.Ptr("Microsoft.Support/communications"),
-	// 	ID: to.Ptr("/subscriptions/subid/providers/Microsoft.Support/supportTickets/testticket/communications/testmessage"),
+	// 	ID: to.Ptr("/subscriptions/132d901f-189d-4381-9214-fe68e27e05a1/providers/Microsoft.Support/supportTickets/testticket/communications/testmessage"),
 	// 	Properties: &armsupport.CommunicationDetailsProperties{
 	// 		Body: to.Ptr("this is a test message"),
 	// 		CommunicationDirection: to.Ptr(armsupport.CommunicationDirectionOutbound),
@@ -247,7 +247,7 @@ func ExampleCommunicationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/CreateSupportTicketCommunication.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/106483d9f698ac3b6c0d481ab0c5fab14152e21f/specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/CreateSupportTicketCommunication.json
 func ExampleCommunicationsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -278,7 +278,7 @@ func ExampleCommunicationsClient_BeginCreate() {
 	// res.CommunicationDetails = armsupport.CommunicationDetails{
 	// 	Name: to.Ptr("testcommunication"),
 	// 	Type: to.Ptr("Microsoft.Support/communications"),
-	// 	ID: to.Ptr("/subscriptions/subid/providers/Microsoft.Support/supportTickets/testticket/communications/testcommunication"),
+	// 	ID: to.Ptr("/subscriptions/132d901f-189d-4381-9214-fe68e27e05a1/providers/Microsoft.Support/supportTickets/testticket/communications/testcommunication"),
 	// 	Properties: &armsupport.CommunicationDetailsProperties{
 	// 		Body: to.Ptr("This is a test message from a customer!"),
 	// 		CommunicationDirection: to.Ptr(armsupport.CommunicationDirectionOutbound),

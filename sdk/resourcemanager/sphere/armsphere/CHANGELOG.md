@@ -1,5 +1,16 @@
 # Release History
 
+## 1.0.0 (2024-03-26)
+### Breaking Changes
+
+- Struct `CountDeviceResponse` has been renamed to `CountDevicesResponse`
+
+### Features Added
+
+- New function `*CatalogsClient.BeginUploadImage(context.Context, string, string, Image, *CatalogsClientBeginUploadImageOptions) (*runtime.Poller[CatalogsClientUploadImageResponse], error)`
+- New field `TenantID` in struct `CatalogProperties`
+
+
 ## 0.2.0 (2023-11-24)
 ### Features Added
 

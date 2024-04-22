@@ -1544,6 +1544,9 @@ type DatabaseAccountCreateUpdateProperties struct {
 	// Flag to indicate enabling/disabling of Partition Merge feature on the account
 	EnablePartitionMerge *bool
 
+	// Flag to indicate enabling/disabling of Per-Region Per-partition autoscale Preview feature on the account
+	EnablePerRegionPerPartitionAutoscale *bool
+
 	// Flag to indicate enabling/disabling of Priority Based Execution Preview feature on the account
 	EnablePriorityBasedExecution *bool
 
@@ -1655,6 +1658,9 @@ type DatabaseAccountGetProperties struct {
 
 	// Flag to indicate enabling/disabling of Partition Merge feature on the account
 	EnablePartitionMerge *bool
+
+	// Flag to indicate enabling/disabling of Per-Region Per-partition autoscale Preview feature on the account
+	EnablePerRegionPerPartitionAutoscale *bool
 
 	// Flag to indicate enabling/disabling of Priority Based Execution Preview feature on the account
 	EnablePriorityBasedExecution *bool
@@ -1899,6 +1905,9 @@ type DatabaseAccountUpdateProperties struct {
 
 	// Flag to indicate enabling/disabling of Partition Merge feature on the account
 	EnablePartitionMerge *bool
+
+	// Flag to indicate enabling/disabling of Per-Region Per-partition autoscale Preview feature on the account
+	EnablePerRegionPerPartitionAutoscale *bool
 
 	// Flag to indicate enabling/disabling of Priority Based Execution Preview feature on the account
 	EnablePriorityBasedExecution *bool
@@ -4011,6 +4020,9 @@ type ResourceRestoreParameters struct {
 
 	// Time to which the account has to be restored (ISO-8601 format).
 	RestoreTimestampInUTC *time.Time
+
+	// Specifies whether the restored account will have Time-To-Live disabled upon the successful restore.
+	RestoreWithTTLDisabled *bool
 }
 
 // RestorableDatabaseAccountGetResult - A Azure Cosmos DB restorable database account.
@@ -4630,6 +4642,9 @@ type RestoreParameters struct {
 	// Time to which the account has to be restored (ISO-8601 format).
 	RestoreTimestampInUTC *time.Time
 
+	// Specifies whether the restored account will have Time-To-Live disabled upon the successful restore.
+	RestoreWithTTLDisabled *bool
+
 	// The source backup location for restore.
 	SourceBackupLocation *string
 
@@ -4645,6 +4660,9 @@ type RestoreParametersBase struct {
 
 	// Time to which the account has to be restored (ISO-8601 format).
 	RestoreTimestampInUTC *time.Time
+
+	// Specifies whether the restored account will have Time-To-Live disabled upon the successful restore.
+	RestoreWithTTLDisabled *bool
 }
 
 // RetrieveThroughputParameters - Cosmos DB retrieve throughput parameters object

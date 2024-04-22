@@ -8,25 +8,40 @@
 
 package armsecurity
 
-// APICollectionClientGetOptions contains the optional parameters for the APICollectionClient.Get method.
-type APICollectionClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// APICollectionClientListOptions contains the optional parameters for the APICollectionClient.NewListPager method.
-type APICollectionClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// APICollectionOffboardingClientDeleteOptions contains the optional parameters for the APICollectionOffboardingClient.Delete
+// APICollectionsClientBeginOnboardAzureAPIManagementAPIOptions contains the optional parameters for the APICollectionsClient.BeginOnboardAzureAPIManagementAPI
 // method.
-type APICollectionOffboardingClientDeleteOptions struct {
+type APICollectionsClientBeginOnboardAzureAPIManagementAPIOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// APICollectionsClientGetByAzureAPIManagementServiceOptions contains the optional parameters for the APICollectionsClient.GetByAzureAPIManagementService
+// method.
+type APICollectionsClientGetByAzureAPIManagementServiceOptions struct {
 	// placeholder for future optional parameters
 }
 
-// APICollectionOnboardingClientCreateOptions contains the optional parameters for the APICollectionOnboardingClient.Create
+// APICollectionsClientListByAzureAPIManagementServiceOptions contains the optional parameters for the APICollectionsClient.NewListByAzureAPIManagementServicePager
 // method.
-type APICollectionOnboardingClientCreateOptions struct {
+type APICollectionsClientListByAzureAPIManagementServiceOptions struct {
+	// placeholder for future optional parameters
+}
+
+// APICollectionsClientListByResourceGroupOptions contains the optional parameters for the APICollectionsClient.NewListByResourceGroupPager
+// method.
+type APICollectionsClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// APICollectionsClientListBySubscriptionOptions contains the optional parameters for the APICollectionsClient.NewListBySubscriptionPager
+// method.
+type APICollectionsClientListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// APICollectionsClientOffboardAzureAPIManagementAPIOptions contains the optional parameters for the APICollectionsClient.OffboardAzureAPIManagementAPI
+// method.
+type APICollectionsClientOffboardAzureAPIManagementAPIOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -359,6 +374,82 @@ type AutomationsClientValidateOptions struct {
 	// placeholder for future optional parameters
 }
 
+// AzureDevOpsOrgsClientBeginCreateOrUpdateOptions contains the optional parameters for the AzureDevOpsOrgsClient.BeginCreateOrUpdate
+// method.
+type AzureDevOpsOrgsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// AzureDevOpsOrgsClientBeginUpdateOptions contains the optional parameters for the AzureDevOpsOrgsClient.BeginUpdate method.
+type AzureDevOpsOrgsClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// AzureDevOpsOrgsClientGetOptions contains the optional parameters for the AzureDevOpsOrgsClient.Get method.
+type AzureDevOpsOrgsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AzureDevOpsOrgsClientListAvailableOptions contains the optional parameters for the AzureDevOpsOrgsClient.ListAvailable
+// method.
+type AzureDevOpsOrgsClientListAvailableOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AzureDevOpsOrgsClientListOptions contains the optional parameters for the AzureDevOpsOrgsClient.NewListPager method.
+type AzureDevOpsOrgsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AzureDevOpsProjectsClientBeginCreateOrUpdateOptions contains the optional parameters for the AzureDevOpsProjectsClient.BeginCreateOrUpdate
+// method.
+type AzureDevOpsProjectsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// AzureDevOpsProjectsClientBeginUpdateOptions contains the optional parameters for the AzureDevOpsProjectsClient.BeginUpdate
+// method.
+type AzureDevOpsProjectsClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// AzureDevOpsProjectsClientGetOptions contains the optional parameters for the AzureDevOpsProjectsClient.Get method.
+type AzureDevOpsProjectsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AzureDevOpsProjectsClientListOptions contains the optional parameters for the AzureDevOpsProjectsClient.NewListPager method.
+type AzureDevOpsProjectsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AzureDevOpsReposClientBeginCreateOrUpdateOptions contains the optional parameters for the AzureDevOpsReposClient.BeginCreateOrUpdate
+// method.
+type AzureDevOpsReposClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// AzureDevOpsReposClientBeginUpdateOptions contains the optional parameters for the AzureDevOpsReposClient.BeginUpdate method.
+type AzureDevOpsReposClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// AzureDevOpsReposClientGetOptions contains the optional parameters for the AzureDevOpsReposClient.Get method.
+type AzureDevOpsReposClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AzureDevOpsReposClientListOptions contains the optional parameters for the AzureDevOpsReposClient.NewListPager method.
+type AzureDevOpsReposClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // CenterClientGetSensitivitySettingsOptions contains the optional parameters for the CenterClient.GetSensitivitySettings
 // method.
 type CenterClientGetSensitivitySettingsOptions struct {
@@ -524,6 +615,53 @@ type CustomEntityStoreAssignmentsClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
+// DefenderForStorageClientCreateOptions contains the optional parameters for the DefenderForStorageClient.Create method.
+type DefenderForStorageClientCreateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DefenderForStorageClientGetOptions contains the optional parameters for the DefenderForStorageClient.Get method.
+type DefenderForStorageClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DevOpsConfigurationsClientBeginCreateOrUpdateOptions contains the optional parameters for the DevOpsConfigurationsClient.BeginCreateOrUpdate
+// method.
+type DevOpsConfigurationsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// DevOpsConfigurationsClientBeginDeleteOptions contains the optional parameters for the DevOpsConfigurationsClient.BeginDelete
+// method.
+type DevOpsConfigurationsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// DevOpsConfigurationsClientBeginUpdateOptions contains the optional parameters for the DevOpsConfigurationsClient.BeginUpdate
+// method.
+type DevOpsConfigurationsClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// DevOpsConfigurationsClientGetOptions contains the optional parameters for the DevOpsConfigurationsClient.Get method.
+type DevOpsConfigurationsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DevOpsConfigurationsClientListOptions contains the optional parameters for the DevOpsConfigurationsClient.NewListPager
+// method.
+type DevOpsConfigurationsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DevOpsOperationResultsClientGetOptions contains the optional parameters for the DevOpsOperationResultsClient.Get method.
+type DevOpsOperationResultsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
 // DeviceSecurityGroupsClientCreateOrUpdateOptions contains the optional parameters for the DeviceSecurityGroupsClient.CreateOrUpdate
 // method.
 type DeviceSecurityGroupsClientCreateOrUpdateOptions struct {
@@ -579,6 +717,61 @@ type ExternalSecuritySolutionsClientListByHomeRegionOptions struct {
 // ExternalSecuritySolutionsClientListOptions contains the optional parameters for the ExternalSecuritySolutionsClient.NewListPager
 // method.
 type ExternalSecuritySolutionsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GitHubOwnersClientGetOptions contains the optional parameters for the GitHubOwnersClient.Get method.
+type GitHubOwnersClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GitHubOwnersClientListAvailableOptions contains the optional parameters for the GitHubOwnersClient.ListAvailable method.
+type GitHubOwnersClientListAvailableOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GitHubOwnersClientListOptions contains the optional parameters for the GitHubOwnersClient.NewListPager method.
+type GitHubOwnersClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GitHubReposClientGetOptions contains the optional parameters for the GitHubReposClient.Get method.
+type GitHubReposClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GitHubReposClientListOptions contains the optional parameters for the GitHubReposClient.NewListPager method.
+type GitHubReposClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GitLabGroupsClientGetOptions contains the optional parameters for the GitLabGroupsClient.Get method.
+type GitLabGroupsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GitLabGroupsClientListAvailableOptions contains the optional parameters for the GitLabGroupsClient.ListAvailable method.
+type GitLabGroupsClientListAvailableOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GitLabGroupsClientListOptions contains the optional parameters for the GitLabGroupsClient.NewListPager method.
+type GitLabGroupsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GitLabProjectsClientGetOptions contains the optional parameters for the GitLabProjectsClient.Get method.
+type GitLabProjectsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GitLabProjectsClientListOptions contains the optional parameters for the GitLabProjectsClient.NewListPager method.
+type GitLabProjectsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GitLabSubgroupsClientListOptions contains the optional parameters for the GitLabSubgroupsClient.List method.
+type GitLabSubgroupsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -641,8 +834,8 @@ type GovernanceRulesClientOperationResultsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// HealthReportClientGetOptions contains the optional parameters for the HealthReportClient.Get method.
-type HealthReportClientGetOptions struct {
+// HealthReportsClientGetOptions contains the optional parameters for the HealthReportsClient.Get method.
+type HealthReportsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -666,37 +859,6 @@ type InformationProtectionPoliciesClientGetOptions struct {
 // InformationProtectionPoliciesClientListOptions contains the optional parameters for the InformationProtectionPoliciesClient.NewListPager
 // method.
 type InformationProtectionPoliciesClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// IngestionSettingsClientCreateOptions contains the optional parameters for the IngestionSettingsClient.Create method.
-type IngestionSettingsClientCreateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// IngestionSettingsClientDeleteOptions contains the optional parameters for the IngestionSettingsClient.Delete method.
-type IngestionSettingsClientDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// IngestionSettingsClientGetOptions contains the optional parameters for the IngestionSettingsClient.Get method.
-type IngestionSettingsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// IngestionSettingsClientListConnectionStringsOptions contains the optional parameters for the IngestionSettingsClient.ListConnectionStrings
-// method.
-type IngestionSettingsClientListConnectionStringsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// IngestionSettingsClientListOptions contains the optional parameters for the IngestionSettingsClient.NewListPager method.
-type IngestionSettingsClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// IngestionSettingsClientListTokensOptions contains the optional parameters for the IngestionSettingsClient.ListTokens method.
-type IngestionSettingsClientListTokensOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -871,6 +1033,11 @@ type OperatorsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// PricingsClientDeleteOptions contains the optional parameters for the PricingsClient.Delete method.
+type PricingsClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
 // PricingsClientGetOptions contains the optional parameters for the PricingsClient.Get method.
 type PricingsClientGetOptions struct {
 	// placeholder for future optional parameters
@@ -878,7 +1045,8 @@ type PricingsClientGetOptions struct {
 
 // PricingsClientListOptions contains the optional parameters for the PricingsClient.List method.
 type PricingsClientListOptions struct {
-	// placeholder for future optional parameters
+	// OData filter. Optional.
+	Filter *string
 }
 
 // PricingsClientUpdateOptions contains the optional parameters for the PricingsClient.Update method.
@@ -1043,6 +1211,30 @@ type ServerVulnerabilityAssessmentClientGetOptions struct {
 // ServerVulnerabilityAssessmentClientListByExtendedResourceOptions contains the optional parameters for the ServerVulnerabilityAssessmentClient.ListByExtendedResource
 // method.
 type ServerVulnerabilityAssessmentClientListByExtendedResourceOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ServerVulnerabilityAssessmentsSettingsClientCreateOrUpdateOptions contains the optional parameters for the ServerVulnerabilityAssessmentsSettingsClient.CreateOrUpdate
+// method.
+type ServerVulnerabilityAssessmentsSettingsClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ServerVulnerabilityAssessmentsSettingsClientDeleteOptions contains the optional parameters for the ServerVulnerabilityAssessmentsSettingsClient.Delete
+// method.
+type ServerVulnerabilityAssessmentsSettingsClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ServerVulnerabilityAssessmentsSettingsClientGetOptions contains the optional parameters for the ServerVulnerabilityAssessmentsSettingsClient.Get
+// method.
+type ServerVulnerabilityAssessmentsSettingsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ServerVulnerabilityAssessmentsSettingsClientListBySubscriptionOptions contains the optional parameters for the ServerVulnerabilityAssessmentsSettingsClient.NewListBySubscriptionPager
+// method.
+type ServerVulnerabilityAssessmentsSettingsClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 

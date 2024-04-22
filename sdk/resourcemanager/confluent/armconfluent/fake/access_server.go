@@ -23,6 +23,14 @@ import (
 
 // AccessServer is a fake server for instances of the armconfluent.AccessClient type.
 type AccessServer struct {
+	// CreateRoleBinding is the fake for method AccessClient.CreateRoleBinding
+	// HTTP status codes to indicate success: http.StatusOK
+	CreateRoleBinding func(ctx context.Context, resourceGroupName string, organizationName string, body armconfluent.AccessCreateRoleBindingRequestModel, options *armconfluent.AccessClientCreateRoleBindingOptions) (resp azfake.Responder[armconfluent.AccessClientCreateRoleBindingResponse], errResp azfake.ErrorResponder)
+
+	// DeleteRoleBinding is the fake for method AccessClient.DeleteRoleBinding
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
+	DeleteRoleBinding func(ctx context.Context, resourceGroupName string, organizationName string, roleBindingID string, options *armconfluent.AccessClientDeleteRoleBindingOptions) (resp azfake.Responder[armconfluent.AccessClientDeleteRoleBindingResponse], errResp azfake.ErrorResponder)
+
 	// InviteUser is the fake for method AccessClient.InviteUser
 	// HTTP status codes to indicate success: http.StatusOK
 	InviteUser func(ctx context.Context, resourceGroupName string, organizationName string, body armconfluent.AccessInviteUserAccountModel, options *armconfluent.AccessClientInviteUserOptions) (resp azfake.Responder[armconfluent.AccessClientInviteUserResponse], errResp azfake.ErrorResponder)
@@ -38,6 +46,10 @@ type AccessServer struct {
 	// ListInvitations is the fake for method AccessClient.ListInvitations
 	// HTTP status codes to indicate success: http.StatusOK
 	ListInvitations func(ctx context.Context, resourceGroupName string, organizationName string, body armconfluent.ListAccessRequestModel, options *armconfluent.AccessClientListInvitationsOptions) (resp azfake.Responder[armconfluent.AccessClientListInvitationsResponse], errResp azfake.ErrorResponder)
+
+	// ListRoleBindingNameList is the fake for method AccessClient.ListRoleBindingNameList
+	// HTTP status codes to indicate success: http.StatusOK
+	ListRoleBindingNameList func(ctx context.Context, resourceGroupName string, organizationName string, body armconfluent.ListAccessRequestModel, options *armconfluent.AccessClientListRoleBindingNameListOptions) (resp azfake.Responder[armconfluent.AccessClientListRoleBindingNameListResponse], errResp azfake.ErrorResponder)
 
 	// ListRoleBindings is the fake for method AccessClient.ListRoleBindings
 	// HTTP status codes to indicate success: http.StatusOK
@@ -77,6 +89,10 @@ func (a *AccessServerTransport) Do(req *http.Request) (*http.Response, error) {
 	var err error
 
 	switch method {
+	case "AccessClient.CreateRoleBinding":
+		resp, err = a.dispatchCreateRoleBinding(req)
+	case "AccessClient.DeleteRoleBinding":
+		resp, err = a.dispatchDeleteRoleBinding(req)
 	case "AccessClient.InviteUser":
 		resp, err = a.dispatchInviteUser(req)
 	case "AccessClient.ListClusters":
@@ -85,6 +101,8 @@ func (a *AccessServerTransport) Do(req *http.Request) (*http.Response, error) {
 		resp, err = a.dispatchListEnvironments(req)
 	case "AccessClient.ListInvitations":
 		resp, err = a.dispatchListInvitations(req)
+	case "AccessClient.ListRoleBindingNameList":
+		resp, err = a.dispatchListRoleBindingNameList(req)
 	case "AccessClient.ListRoleBindings":
 		resp, err = a.dispatchListRoleBindings(req)
 	case "AccessClient.ListServiceAccounts":
@@ -99,6 +117,80 @@ func (a *AccessServerTransport) Do(req *http.Request) (*http.Response, error) {
 		return nil, err
 	}
 
+	return resp, nil
+}
+
+func (a *AccessServerTransport) dispatchCreateRoleBinding(req *http.Request) (*http.Response, error) {
+	if a.srv.CreateRoleBinding == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CreateRoleBinding not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Confluent/organizations/(?P<organizationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/access/default/createRoleBinding`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armconfluent.AccessCreateRoleBindingRequestModel](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	organizationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("organizationName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := a.srv.CreateRoleBinding(req.Context(), resourceGroupNameParam, organizationNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RoleBindingRecord, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (a *AccessServerTransport) dispatchDeleteRoleBinding(req *http.Request) (*http.Response, error) {
+	if a.srv.DeleteRoleBinding == nil {
+		return nil, &nonRetriableError{errors.New("fake for method DeleteRoleBinding not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Confluent/organizations/(?P<organizationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/access/default/deleteRoleBinding/(?P<roleBindingId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	organizationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("organizationName")])
+	if err != nil {
+		return nil, err
+	}
+	roleBindingIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("roleBindingId")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := a.srv.DeleteRoleBinding(req.Context(), resourceGroupNameParam, organizationNameParam, roleBindingIDParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK, http.StatusNoContent}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", respContent.HTTPStatus)}
+	}
+	resp, err := server.NewResponse(respContent, req, nil)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 
@@ -244,6 +336,43 @@ func (a *AccessServerTransport) dispatchListInvitations(req *http.Request) (*htt
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AccessListInvitationsSuccessResponse, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (a *AccessServerTransport) dispatchListRoleBindingNameList(req *http.Request) (*http.Response, error) {
+	if a.srv.ListRoleBindingNameList == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListRoleBindingNameList not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Confluent/organizations/(?P<organizationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/access/default/listRoleBindingNameList`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armconfluent.ListAccessRequestModel](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	organizationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("organizationName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := a.srv.ListRoleBindingNameList(req.Context(), resourceGroupNameParam, organizationNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AccessRoleBindingNameListSuccessResponse, req)
 	if err != nil {
 		return nil, err
 	}

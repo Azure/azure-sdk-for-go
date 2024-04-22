@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/healthcareapis/armhealthcareapis/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8c74fd80b415fa1ebb6fa787d454694c39e0fd5/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2023-11-01/examples/dicomservices/DicomServices_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2024-03-31/examples/dicomservices/DicomServices_List.json
 func ExampleDicomServicesClient_NewListByWorkspacePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -73,6 +73,7 @@ func ExampleDicomServicesClient_NewListByWorkspacePager() {
 		// 								Origins: []*string{
 		// 									to.Ptr("*")},
 		// 								},
+		// 								EnableDataPartitions: to.Ptr(false),
 		// 								Encryption: &armhealthcareapis.Encryption{
 		// 									CustomerManagedKeyEncryption: &armhealthcareapis.EncryptionCustomerManagedKeyEncryption{
 		// 										KeyEncryptionKeyURL: to.Ptr("https://mykeyvault.vault.azure.net/keys/myEncryptionKey/myKeyVersion"),
@@ -81,6 +82,10 @@ func ExampleDicomServicesClient_NewListByWorkspacePager() {
 		// 								EventState: to.Ptr(armhealthcareapis.ServiceEventStateDisabled),
 		// 								ProvisioningState: to.Ptr(armhealthcareapis.ProvisioningStateSucceeded),
 		// 								ServiceURL: to.Ptr("https://workspace1-blue.dicom.azurehealthcareapis.com"),
+		// 								StorageConfiguration: &armhealthcareapis.StorageConfiguration{
+		// 									FileSystemName: to.Ptr("fileSystemName"),
+		// 									StorageResourceID: to.Ptr("/subscriptions/ab309d4e-4c2e-4241-be2e-08e1c8dd4246/resourceGroups/rgname/providers/Microsoft.Storage/storageAccounts/accountname"),
+		// 								},
 		// 							},
 		// 						},
 		// 						{
@@ -99,6 +104,7 @@ func ExampleDicomServicesClient_NewListByWorkspacePager() {
 		// 										to.Ptr("https://azurehealthcareapis.com")},
 		// 										Authority: to.Ptr("https://login.microsoftonline.com/abfde7b2-df0f-47e6-aabf-2462b07508dc"),
 		// 									},
+		// 									EnableDataPartitions: to.Ptr(false),
 		// 									Encryption: &armhealthcareapis.Encryption{
 		// 										CustomerManagedKeyEncryption: &armhealthcareapis.EncryptionCustomerManagedKeyEncryption{
 		// 											KeyEncryptionKeyURL: to.Ptr("https://mykeyvault.vault.azure.net/keys/myEncryptionKey/myKeyVersion"),
@@ -107,13 +113,17 @@ func ExampleDicomServicesClient_NewListByWorkspacePager() {
 		// 									EventState: to.Ptr(armhealthcareapis.ServiceEventStateDisabled),
 		// 									ProvisioningState: to.Ptr(armhealthcareapis.ProvisioningStateSucceeded),
 		// 									ServiceURL: to.Ptr("https://workspace1-red.dicom.azurehealthcareapis.com"),
+		// 									StorageConfiguration: &armhealthcareapis.StorageConfiguration{
+		// 										FileSystemName: to.Ptr("fileSystemName"),
+		// 										StorageResourceID: to.Ptr("/subscriptions/ab309d4e-4c2e-4241-be2e-08e1c8dd4246/resourceGroups/rgname/providers/Microsoft.Storage/storageAccounts/accountname"),
+		// 									},
 		// 								},
 		// 						}},
 		// 					}
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8c74fd80b415fa1ebb6fa787d454694c39e0fd5/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2023-11-01/examples/dicomservices/DicomServices_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2024-03-31/examples/dicomservices/DicomServices_Get.json
 func ExampleDicomServicesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -162,6 +172,7 @@ func ExampleDicomServicesClient_Get() {
 	// 						Origins: []*string{
 	// 							to.Ptr("*")},
 	// 						},
+	// 						EnableDataPartitions: to.Ptr(false),
 	// 						Encryption: &armhealthcareapis.Encryption{
 	// 							CustomerManagedKeyEncryption: &armhealthcareapis.EncryptionCustomerManagedKeyEncryption{
 	// 								KeyEncryptionKeyURL: to.Ptr("https://mykeyvault.vault.azure.net/keys/myEncryptionKey/myKeyVersion"),
@@ -170,11 +181,15 @@ func ExampleDicomServicesClient_Get() {
 	// 						EventState: to.Ptr(armhealthcareapis.ServiceEventStateDisabled),
 	// 						ProvisioningState: to.Ptr(armhealthcareapis.ProvisioningStateSucceeded),
 	// 						ServiceURL: to.Ptr("https://workspace1-blue.dicom.azurehealthcareapis.com"),
+	// 						StorageConfiguration: &armhealthcareapis.StorageConfiguration{
+	// 							FileSystemName: to.Ptr("fileSystemName"),
+	// 							StorageResourceID: to.Ptr("/subscriptions/ab309d4e-4c2e-4241-be2e-08e1c8dd4246/resourceGroups/rgname/providers/Microsoft.Storage/storageAccounts/accountname"),
+	// 						},
 	// 					},
 	// 				}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8c74fd80b415fa1ebb6fa787d454694c39e0fd5/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2023-11-01/examples/dicomservices/DicomServices_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2024-03-31/examples/dicomservices/DicomServices_Create.json
 func ExampleDicomServicesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -186,8 +201,14 @@ func ExampleDicomServicesClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewDicomServicesClient().BeginCreateOrUpdate(ctx, "testRG", "workspace1", "blue", armhealthcareapis.DicomService{
-		Location:   to.Ptr("westus"),
-		Properties: &armhealthcareapis.DicomServiceProperties{},
+		Location: to.Ptr("westus"),
+		Properties: &armhealthcareapis.DicomServiceProperties{
+			EnableDataPartitions: to.Ptr(false),
+			StorageConfiguration: &armhealthcareapis.StorageConfiguration{
+				FileSystemName:    to.Ptr("fileSystemName"),
+				StorageResourceID: to.Ptr("/subscriptions/ab309d4e-4c2e-4241-be2e-08e1c8dd4246/resourceGroups/rgname/providers/Microsoft.Storage/storageAccounts/accountname"),
+			},
+		},
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -233,6 +254,7 @@ func ExampleDicomServicesClient_BeginCreateOrUpdate() {
 	// 						Origins: []*string{
 	// 							to.Ptr("*")},
 	// 						},
+	// 						EnableDataPartitions: to.Ptr(false),
 	// 						Encryption: &armhealthcareapis.Encryption{
 	// 							CustomerManagedKeyEncryption: &armhealthcareapis.EncryptionCustomerManagedKeyEncryption{
 	// 								KeyEncryptionKeyURL: to.Ptr("https://mykeyvault.vault.azure.net/keys/myEncryptionKey/myKeyVersion"),
@@ -240,11 +262,15 @@ func ExampleDicomServicesClient_BeginCreateOrUpdate() {
 	// 						},
 	// 						EventState: to.Ptr(armhealthcareapis.ServiceEventStateDisabled),
 	// 						ProvisioningState: to.Ptr(armhealthcareapis.ProvisioningStateSucceeded),
+	// 						StorageConfiguration: &armhealthcareapis.StorageConfiguration{
+	// 							FileSystemName: to.Ptr("fileSystemName"),
+	// 							StorageResourceID: to.Ptr("/subscriptions/ab309d4e-4c2e-4241-be2e-08e1c8dd4246/resourceGroups/rgname/providers/Microsoft.Storage/storageAccounts/accountname"),
+	// 						},
 	// 					},
 	// 				}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8c74fd80b415fa1ebb6fa787d454694c39e0fd5/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2023-11-01/examples/dicomservices/DicomServices_Patch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2024-03-31/examples/dicomservices/DicomServices_Patch.json
 func ExampleDicomServicesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -304,6 +330,7 @@ func ExampleDicomServicesClient_BeginUpdate() {
 	// 						Origins: []*string{
 	// 							to.Ptr("*")},
 	// 						},
+	// 						EnableDataPartitions: to.Ptr(false),
 	// 						Encryption: &armhealthcareapis.Encryption{
 	// 							CustomerManagedKeyEncryption: &armhealthcareapis.EncryptionCustomerManagedKeyEncryption{
 	// 								KeyEncryptionKeyURL: to.Ptr("https://mykeyvault.vault.azure.net/keys/myEncryptionKey/myKeyVersion"),
@@ -312,11 +339,15 @@ func ExampleDicomServicesClient_BeginUpdate() {
 	// 						EventState: to.Ptr(armhealthcareapis.ServiceEventStateDisabled),
 	// 						ProvisioningState: to.Ptr(armhealthcareapis.ProvisioningStateSucceeded),
 	// 						ServiceURL: to.Ptr("https://workspace1-blue.dicom.azurehealthcareapis.com"),
+	// 						StorageConfiguration: &armhealthcareapis.StorageConfiguration{
+	// 							FileSystemName: to.Ptr("fileSystemName"),
+	// 							StorageResourceID: to.Ptr("/subscriptions/ab309d4e-4c2e-4241-be2e-08e1c8dd4246/resourceGroups/rgname/providers/Microsoft.Storage/storageAccounts/accountname"),
+	// 						},
 	// 					},
 	// 				}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8c74fd80b415fa1ebb6fa787d454694c39e0fd5/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2023-11-01/examples/dicomservices/DicomServices_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2024-03-31/examples/dicomservices/DicomServices_Delete.json
 func ExampleDicomServicesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

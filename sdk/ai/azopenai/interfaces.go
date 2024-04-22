@@ -11,8 +11,8 @@ package azopenai
 // AzureChatExtensionConfigurationClassification provides polymorphic access to related types.
 // Call the interface's GetAzureChatExtensionConfiguration() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *AzureChatExtensionConfiguration, *AzureCognitiveSearchChatExtensionConfiguration, *AzureCosmosDBChatExtensionConfiguration,
-// - *AzureMachineLearningIndexChatExtensionConfiguration, *ElasticsearchChatExtensionConfiguration, *PineconeChatExtensionConfiguration
+// - *AzureChatExtensionConfiguration, *AzureCosmosDBChatExtensionConfiguration, *AzureMachineLearningIndexChatExtensionConfiguration,
+// - *AzureSearchChatExtensionConfiguration, *ElasticsearchChatExtensionConfiguration, *PineconeChatExtensionConfiguration
 type AzureChatExtensionConfigurationClassification interface {
 	// GetAzureChatExtensionConfiguration returns the AzureChatExtensionConfiguration content of the underlying type.
 	GetAzureChatExtensionConfiguration() *AzureChatExtensionConfiguration
@@ -25,6 +25,15 @@ type AzureChatExtensionConfigurationClassification interface {
 type ChatCompletionRequestMessageContentPartClassification interface {
 	// GetChatCompletionRequestMessageContentPart returns the ChatCompletionRequestMessageContentPart content of the underlying type.
 	GetChatCompletionRequestMessageContentPart() *ChatCompletionRequestMessageContentPart
+}
+
+// ChatCompletionsNamedToolSelectionClassification provides polymorphic access to related types.
+// Call the interface's GetChatCompletionsNamedToolSelection() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *ChatCompletionsNamedFunctionToolSelection, *ChatCompletionsNamedToolSelection
+type ChatCompletionsNamedToolSelectionClassification interface {
+	// GetChatCompletionsNamedToolSelection returns the ChatCompletionsNamedToolSelection content of the underlying type.
+	GetChatCompletionsNamedToolSelection() *ChatCompletionsNamedToolSelection
 }
 
 // ChatCompletionsResponseFormatClassification provides polymorphic access to related types.
@@ -63,10 +72,20 @@ type ChatFinishDetailsClassification interface {
 	GetChatFinishDetails() *ChatFinishDetails
 }
 
+// ChatMessageContentItemClassification provides polymorphic access to related types.
+// Call the interface's GetChatMessageContentItem() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *ChatMessageContentItem, *ChatMessageImageContentItem, *ChatMessageTextContentItem
+type ChatMessageContentItemClassification interface {
+	// GetChatMessageContentItem returns the ChatMessageContentItem content of the underlying type.
+	GetChatMessageContentItem() *ChatMessageContentItem
+}
+
 // ChatRequestMessageClassification provides polymorphic access to related types.
 // Call the interface's GetChatRequestMessage() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *ChatRequestAssistantMessage, *ChatRequestMessage, *ChatRequestSystemMessage, *ChatRequestToolMessage, *ChatRequestUserMessage
+// - *ChatRequestAssistantMessage, *ChatRequestFunctionMessage, *ChatRequestMessage, *ChatRequestSystemMessage, *ChatRequestToolMessage,
+// - *ChatRequestUserMessage
 type ChatRequestMessageClassification interface {
 	// GetChatRequestMessage returns the ChatRequestMessage content of the underlying type.
 	GetChatRequestMessage() *ChatRequestMessage
@@ -75,8 +94,9 @@ type ChatRequestMessageClassification interface {
 // OnYourDataAuthenticationOptionsClassification provides polymorphic access to related types.
 // Call the interface's GetOnYourDataAuthenticationOptions() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *OnYourDataAPIKeyAuthenticationOptions, *OnYourDataAuthenticationOptions, *OnYourDataConnectionStringAuthenticationOptions,
-// - *OnYourDataKeyAndKeyIDAuthenticationOptions, *OnYourDataSystemAssignedManagedIdentityAuthenticationOptions, *OnYourDataUserAssignedManagedIdentityAuthenticationOptions
+// - *OnYourDataAPIKeyAuthenticationOptions, *OnYourDataAccessTokenAuthenticationOptions, *OnYourDataAuthenticationOptions,
+// - *OnYourDataConnectionStringAuthenticationOptions, *OnYourDataEncodedAPIKeyAuthenticationOptions, *OnYourDataKeyAndKeyIDAuthenticationOptions,
+// - *OnYourDataSystemAssignedManagedIdentityAuthenticationOptions, *OnYourDataUserAssignedManagedIdentityAuthenticationOptions
 type OnYourDataAuthenticationOptionsClassification interface {
 	// GetOnYourDataAuthenticationOptions returns the OnYourDataAuthenticationOptions content of the underlying type.
 	GetOnYourDataAuthenticationOptions() *OnYourDataAuthenticationOptions

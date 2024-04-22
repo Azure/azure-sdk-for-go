@@ -62,6 +62,17 @@ func fromGeneratedCors(c *generated.CorsRule) *CorsRule {
 	}
 }
 
+func toGeneratedCorsRules(corsRules []*CorsRule) []*generated.CorsRule {
+	if len(corsRules) == 0 {
+		return nil
+	}
+	ret := make([]*generated.CorsRule, len(corsRules))
+	for i := range corsRules {
+		ret[i] = corsRules[i].toGenerated()
+	}
+	return ret
+}
+
 // ServiceProperties - Service Properties for a given table
 type ServiceProperties struct {
 	// The set of CORS rules.
@@ -90,12 +101,13 @@ func (t *ServiceProperties) toGenerated() *generated.TableServiceProperties {
 	}
 }
 
-func toGeneratedCorsRules(corsRules []*CorsRule) []*generated.CorsRule {
-	var ret []*generated.CorsRule
-	for _, c := range corsRules {
-		ret = append(ret, c.toGenerated())
-	}
-	return ret
+// TableProperties contains the properties for a single Table
+type TableProperties struct {
+	// The name of the table.
+	Name *string `json:"TableName,omitempty"`
+
+	// The OData properties of the table in JSON format.
+	Value []byte
 }
 
 // RetentionPolicy - The retention policy.
@@ -314,38 +326,4 @@ func fromGeneratedGeoReplication(g *generated.GeoReplication) *GeoReplication {
 		LastSyncTime: g.LastSyncTime,
 		Status:       toGeneratedStatusType(g.Status),
 	}
-}
-
-// GeoReplicationStatus - The status of the secondary location.
-type GeoReplicationStatus string
-
-const (
-	GeoReplicationStatusBootstrap   GeoReplicationStatus = "bootstrap"
-	GeoReplicationStatusLive        GeoReplicationStatus = "live"
-	GeoReplicationStatusUnavailable GeoReplicationStatus = "unavailable"
-)
-
-// PossibleGeoReplicationStatusValues returns the possible values for the GeoReplicationStatus const type.
-func PossibleGeoReplicationStatusValues() []GeoReplicationStatus {
-	return []GeoReplicationStatus{
-		GeoReplicationStatusBootstrap,
-		GeoReplicationStatusLive,
-		GeoReplicationStatusUnavailable,
-	}
-}
-
-func toGeneratedStatusType(g *generated.GeoReplicationStatusType) *GeoReplicationStatus {
-	if g == nil {
-		return nil
-	}
-	if *g == generated.GeoReplicationStatusTypeBootstrap {
-		return to.Ptr(GeoReplicationStatusBootstrap)
-	}
-	if *g == generated.GeoReplicationStatusTypeLive {
-		return to.Ptr(GeoReplicationStatusLive)
-	}
-	if *g == generated.GeoReplicationStatusTypeUnavailable {
-		return to.Ptr(GeoReplicationStatusUnavailable)
-	}
-	return nil
 }

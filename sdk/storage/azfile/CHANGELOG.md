@@ -1,14 +1,29 @@
 # Release History
 
-## 1.2.0-beta.2 (Unreleased)
+## 1.2.2 (2024-04-09)
 
-### Features Added
+### Bugs Fixed
+* Fixed an issue where GetSASURL() was providing HTTPS SAS, instead of the default http+https SAS. Fixes [#22448](https://github.com/Azure/azure-sdk-for-go/issues/22448)
 
-### Breaking Changes
+### Other Changes
+* Integrate `InsecureAllowCredentialWithHTTP` client options.
+* Update dependencies.
+
+## 1.2.1 (2024-02-29)
 
 ### Bugs Fixed
 
+* Re-enabled `SharedKeyCredential` authentication mode for non TLS protected endpoints.
+
 ### Other Changes
+
+* Updated `azidentity` version to `1.5.1`.
+
+## 1.2.0 (2024-02-12)
+
+### Other Changes
+
+* Updated `azcore` version to `1.9.2`.
 
 ## 1.2.0-beta.1 (2024-01-09)
 

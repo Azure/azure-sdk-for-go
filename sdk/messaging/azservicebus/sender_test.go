@@ -550,8 +550,9 @@ func TestSender_SendAMQPMessageWithMultipleByteSlicesInData(t *testing.T) {
 	require.Nil(t, m.Body)
 	require.NotEmpty(t, m.RawAMQPMessage.DeliveryTag)
 
+	require.NoError(t, receiver.CompleteMessage(context.Background(), messages[0], nil))
+
 	// kill some fields that aren't important for this comparison
-	m.RawAMQPMessage.linkName = ""
 	m.RawAMQPMessage.inner = nil
 
 	require.Equal(t, &AMQPAnnotatedMessage{
@@ -586,8 +587,6 @@ func TestSender_SendAMQPMessageWithMultipleByteSlicesInData(t *testing.T) {
 		// as we're not trying to test those necessarily
 		DeliveryTag: m.RawAMQPMessage.DeliveryTag,
 	}, messages[0].RawAMQPMessage)
-
-	require.NoError(t, receiver.CompleteMessage(context.Background(), messages[0], nil))
 }
 
 func TestSender_SendAMQPMessageWithValue(t *testing.T) {

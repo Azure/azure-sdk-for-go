@@ -23,17 +23,21 @@ import (
 
 // PricingsServer is a fake server for instances of the armsecurity.PricingsClient type.
 type PricingsServer struct {
+	// Delete is the fake for method PricingsClient.Delete
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
+	Delete func(ctx context.Context, scopeID string, pricingName string, options *armsecurity.PricingsClientDeleteOptions) (resp azfake.Responder[armsecurity.PricingsClientDeleteResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method PricingsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, pricingName string, options *armsecurity.PricingsClientGetOptions) (resp azfake.Responder[armsecurity.PricingsClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, scopeID string, pricingName string, options *armsecurity.PricingsClientGetOptions) (resp azfake.Responder[armsecurity.PricingsClientGetResponse], errResp azfake.ErrorResponder)
 
 	// List is the fake for method PricingsClient.List
 	// HTTP status codes to indicate success: http.StatusOK
-	List func(ctx context.Context, options *armsecurity.PricingsClientListOptions) (resp azfake.Responder[armsecurity.PricingsClientListResponse], errResp azfake.ErrorResponder)
+	List func(ctx context.Context, scopeID string, options *armsecurity.PricingsClientListOptions) (resp azfake.Responder[armsecurity.PricingsClientListResponse], errResp azfake.ErrorResponder)
 
 	// Update is the fake for method PricingsClient.Update
-	// HTTP status codes to indicate success: http.StatusOK
-	Update func(ctx context.Context, pricingName string, pricing armsecurity.Pricing, options *armsecurity.PricingsClientUpdateOptions) (resp azfake.Responder[armsecurity.PricingsClientUpdateResponse], errResp azfake.ErrorResponder)
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	Update func(ctx context.Context, scopeID string, pricingName string, pricing armsecurity.Pricing, options *armsecurity.PricingsClientUpdateOptions) (resp azfake.Responder[armsecurity.PricingsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewPricingsServerTransport creates a new instance of PricingsServerTransport with the provided implementation.
@@ -61,6 +65,8 @@ func (p *PricingsServerTransport) Do(req *http.Request) (*http.Response, error) 
 	var err error
 
 	switch method {
+	case "PricingsClient.Delete":
+		resp, err = p.dispatchDelete(req)
 	case "PricingsClient.Get":
 		resp, err = p.dispatchGet(req)
 	case "PricingsClient.List":
@@ -78,21 +84,58 @@ func (p *PricingsServerTransport) Do(req *http.Request) (*http.Response, error) 
 	return resp, nil
 }
 
-func (p *PricingsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if p.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+func (p *PricingsServerTransport) dispatchDelete(req *http.Request) (*http.Response, error) {
+	if p.srv.Delete == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/pricings/(?P<pricingName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/(?P<scopeId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/pricings/(?P<pricingName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
+	scopeIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("scopeId")])
+	if err != nil {
+		return nil, err
+	}
 	pricingNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("pricingName")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := p.srv.Get(req.Context(), pricingNameParam, nil)
+	respr, errRespr := p.srv.Delete(req.Context(), scopeIDParam, pricingNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK, http.StatusNoContent}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", respContent.HTTPStatus)}
+	}
+	resp, err := server.NewResponse(respContent, req, nil)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (p *PricingsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if p.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/(?P<scopeId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/pricings/(?P<pricingName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	scopeIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("scopeId")])
+	if err != nil {
+		return nil, err
+	}
+	pricingNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("pricingName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := p.srv.Get(req.Context(), scopeIDParam, pricingNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -111,13 +154,29 @@ func (p *PricingsServerTransport) dispatchList(req *http.Request) (*http.Respons
 	if p.srv.List == nil {
 		return nil, &nonRetriableError{errors.New("fake for method List not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/pricings`
+	const regexStr = `/(?P<scopeId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/pricings`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 1 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	respr, errRespr := p.srv.List(req.Context(), nil)
+	qp := req.URL.Query()
+	scopeIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("scopeId")])
+	if err != nil {
+		return nil, err
+	}
+	filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+	if err != nil {
+		return nil, err
+	}
+	filterParam := getOptional(filterUnescaped)
+	var options *armsecurity.PricingsClientListOptions
+	if filterParam != nil {
+		options = &armsecurity.PricingsClientListOptions{
+			Filter: filterParam,
+		}
+	}
+	respr, errRespr := p.srv.List(req.Context(), scopeIDParam, options)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -136,7 +195,7 @@ func (p *PricingsServerTransport) dispatchUpdate(req *http.Request) (*http.Respo
 	if p.srv.Update == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Update not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/pricings/(?P<pricingName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/(?P<scopeId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/pricings/(?P<pricingName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 2 {
@@ -146,17 +205,21 @@ func (p *PricingsServerTransport) dispatchUpdate(req *http.Request) (*http.Respo
 	if err != nil {
 		return nil, err
 	}
+	scopeIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("scopeId")])
+	if err != nil {
+		return nil, err
+	}
 	pricingNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("pricingName")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := p.srv.Update(req.Context(), pricingNameParam, body, nil)
+	respr, errRespr := p.srv.Update(req.Context(), scopeIDParam, pricingNameParam, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	if !contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Pricing, req)
 	if err != nil {

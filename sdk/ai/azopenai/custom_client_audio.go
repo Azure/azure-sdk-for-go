@@ -41,12 +41,10 @@ type GetAudioTranscriptionResponse struct {
 //   - body - contains parameters to specify audio data to transcribe and control the transcription.
 //   - options - optional parameters for this method.
 func (client *Client) GetAudioTranscription(ctx context.Context, body AudioTranscriptionOptions, options *GetAudioTranscriptionOptions) (GetAudioTranscriptionResponse, error) {
-	audioStream := streaming.NopCloser(bytes.NewReader(body.File))
-
-	resp, err := client.getAudioTranscriptionInternal(ctx, getDeployment(body), audioStream, &getAudioTranscriptionInternalOptions{
+	resp, err := client.getAudioTranscriptionInternal(ctx, streaming.NopCloser(bytes.NewReader(body.File)), &getAudioTranscriptionInternalOptions{
 		Filename:       body.Filename,
 		Language:       body.Language,
-		Model:          body.DeploymentName,
+		DeploymentName: body.DeploymentName,
 		Prompt:         body.Prompt,
 		ResponseFormat: body.ResponseFormat,
 		Temperature:    body.Temperature,
@@ -77,11 +75,9 @@ type GetAudioTranslationResponse struct {
 //   - body - contains parameters to specify audio data to translate and control the translation.
 //   - options - optional parameters for this method.
 func (client *Client) GetAudioTranslation(ctx context.Context, body AudioTranslationOptions, options *GetAudioTranslationOptions) (GetAudioTranslationResponse, error) {
-	audioStream := streaming.NopCloser(bytes.NewReader(body.File))
-
-	resp, err := client.getAudioTranslationInternal(ctx, getDeployment(body), audioStream, &getAudioTranslationInternalOptions{
+	resp, err := client.getAudioTranslationInternal(ctx, streaming.NopCloser(bytes.NewReader(body.File)), &getAudioTranslationInternalOptions{
 		Filename:       body.Filename,
-		Model:          body.DeploymentName,
+		DeploymentName: body.DeploymentName,
 		Prompt:         body.Prompt,
 		ResponseFormat: body.ResponseFormat,
 		Temperature:    body.Temperature,
@@ -98,13 +94,17 @@ func setMultipartFormData[T getAudioTranscriptionInternalOptions | getAudioTrans
 	body := bytes.Buffer{}
 	writer := multipart.NewWriter(&body)
 
-	writeContent := func(fieldname, filename string, content io.ReadSeekCloser) error {
+	writeContent := func(fieldname, filename string, file io.ReadSeekCloser) error {
 		fd, err := writer.CreateFormFile(fieldname, filename)
+
 		if err != nil {
 			return err
 		}
 
-		_, err = io.Copy(fd, file)
+		if _, err := io.Copy(fd, file); err != nil {
+			return err
+		}
+
 		return err
 	}
 
@@ -127,7 +127,7 @@ func setMultipartFormData[T getAudioTranscriptionInternalOptions | getAudioTrans
 
 	switch v := any(options).(type) {
 	case getAudioTranslationInternalOptions:
-		if err := writeField(writer, "model", v.Model); err != nil {
+		if err := writeField(writer, "model", v.DeploymentName); err != nil {
 			return err
 		}
 		if err := writeField(writer, "prompt", v.Prompt); err != nil {
@@ -143,7 +143,7 @@ func setMultipartFormData[T getAudioTranscriptionInternalOptions | getAudioTrans
 		if err := writeField(writer, "language", v.Language); err != nil {
 			return err
 		}
-		if err := writeField(writer, "model", v.Model); err != nil {
+		if err := writeField(writer, "model", v.DeploymentName); err != nil {
 			return err
 		}
 		if err := writeField(writer, "prompt", v.Prompt); err != nil {

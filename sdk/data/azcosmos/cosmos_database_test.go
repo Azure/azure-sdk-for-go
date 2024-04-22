@@ -37,7 +37,8 @@ func TestDatabaseQueryContainers(t *testing.T) {
 	verifier := pipelineVerifier{}
 
 	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
-	client := &Client{endpoint: srv.URL(), pipeline: pl}
+	gem := &globalEndpointManager{preferredLocations: []string{}}
+	client := &Client{endpoint: srv.URL(), pipeline: pl, gem: gem}
 
 	database, _ := newDatabase("databaseId", client)
 
@@ -53,8 +54,8 @@ func TestDatabaseQueryContainers(t *testing.T) {
 			receivedIds = append(receivedIds, container.ID)
 		}
 
-		if queryPager.More() && queryResponse.ContinuationToken != "someContinuationToken" {
-			t.Errorf("Expected ContinuationToken to be %s, but got %s", "someContinuationToken", queryResponse.ContinuationToken)
+		if queryPager.More() && *queryResponse.ContinuationToken != "someContinuationToken" {
+			t.Errorf("Expected ContinuationToken to be %s, but got %s", "someContinuationToken", *queryResponse.ContinuationToken)
 		}
 
 		if queryResponse.ActivityID == "" {

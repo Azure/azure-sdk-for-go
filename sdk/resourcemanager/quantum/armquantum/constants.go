@@ -10,7 +10,7 @@ package armquantum
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/quantum/armquantum"
-	moduleVersion = "v0.7.0"
+	moduleVersion = "v0.8.0"
 )
 
 // CreatedByType - The type of identity that created the resource.
@@ -30,6 +30,21 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 		CreatedByTypeKey,
 		CreatedByTypeManagedIdentity,
 		CreatedByTypeUser,
+	}
+}
+
+type KeyType string
+
+const (
+	KeyTypePrimary   KeyType = "Primary"
+	KeyTypeSecondary KeyType = "Secondary"
+)
+
+// PossibleKeyTypeValues returns the possible values for the KeyType const type.
+func PossibleKeyTypeValues() []KeyType {
+	return []KeyType{
+		KeyTypePrimary,
+		KeyTypeSecondary,
 	}
 }
 

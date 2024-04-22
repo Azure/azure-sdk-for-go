@@ -34,6 +34,12 @@ type CertificatesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// ConfigurationsClientAnalysisOptions contains the optional parameters for the ConfigurationsClient.Analysis method.
+type ConfigurationsClientAnalysisOptions struct {
+	// The NGINX configuration to analyze
+	Body *AnalysisCreate
+}
+
 // ConfigurationsClientBeginCreateOrUpdateOptions contains the optional parameters for the ConfigurationsClient.BeginCreateOrUpdate
 // method.
 type ConfigurationsClientBeginCreateOrUpdateOptions struct {

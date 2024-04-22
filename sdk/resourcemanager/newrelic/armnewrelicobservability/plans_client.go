@@ -45,7 +45,7 @@ func NewPlansClient(subscriptionID string, credential azcore.TokenCredential, op
 
 // NewListPager - List plans data
 //
-// Generated from API version 2022-07-01
+// Generated from API version 2024-01-01
 //   - options - PlansClientListOptions contains the optional parameters for the PlansClient.NewListPager method.
 func (client *PlansClient) NewListPager(options *PlansClientListOptions) *runtime.Pager[PlansClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[PlansClientListResponse]{
@@ -82,10 +82,10 @@ func (client *PlansClient) listCreateRequest(ctx context.Context, options *Plans
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
 	if options != nil && options.AccountID != nil {
 		reqQP.Set("accountId", *options.AccountID)
 	}
+	reqQP.Set("api-version", "2024-01-01")
 	if options != nil && options.OrganizationID != nil {
 		reqQP.Set("organizationId", *options.OrganizationID)
 	}

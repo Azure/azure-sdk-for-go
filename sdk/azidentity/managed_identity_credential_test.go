@@ -12,6 +12,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"strings"
 	"testing"
@@ -19,21 +20,16 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	"github.com/stretchr/testify/require"
 )
 
 const (
 	expiresOnIntResp          = `{"access_token": "new_token", "refresh_token": "", "expires_in": "", "expires_on": "1560974028", "not_before": "1560970130", "resource": "https://vault.azure.net", "token_type": "Bearer"}`
 	expiresOnNonStringIntResp = `{"access_token": "new_token", "refresh_token": "", "expires_in": "", "expires_on": 1560974028, "not_before": "1560970130", "resource": "https://vault.azure.net", "token_type": "Bearer"}`
 )
-
-// TODO: replace with 1.17's T.Setenv
-func clearEnvVars(envVars ...string) {
-	for _, ev := range envVars {
-		_ = os.Unsetenv(ev)
-	}
-}
 
 func TestManagedIdentityCredential_AzureArc(t *testing.T) {
 	file, err := os.Create(filepath.Join(t.TempDir(), "arc.key"))
@@ -156,6 +152,44 @@ func TestManagedIdentityCredential_AzureArcErrors(t *testing.T) {
 	})
 }
 
+func TestManagedIdentityCredential_AzureContainerInstanceLive(t *testing.T) {
+	// This test triggers the managed identity test app deployed to an Azure Container Instance.
+	// See the bicep file and test resources scripts for details.
+	// It triggers the app with az because the test subscription prohibits opening ports to the internet.
+	name := os.Getenv("AZIDENTITY_ACI_NAME")
+	rg := os.Getenv("AZIDENTITY_RESOURCE_GROUP")
+	if name == "" || rg == "" {
+		t.Skip("set AZIDENTITY_ACI_NAME and AZIDENTITY_RESOURCE_GROUP to run this test")
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
+	defer cancel()
+	command := fmt.Sprintf("az container exec -g %s -n %s --exec-command 'wget -qO- localhost'", rg, name)
+	// using "script" as a workaround for "az container exec" requiring a tty
+	// https://github.com/Azure/azure-cli/issues/17530
+	cmd := exec.CommandContext(ctx, "script", "-q", "-O", "/dev/null", "-c", command)
+	b, err := cmd.CombinedOutput()
+	s := string(b)
+	require.NoError(t, err, s)
+	require.Equal(t, "test passed", s)
+}
+
+func TestManagedIdentityCredential_AzureFunctionsLive(t *testing.T) {
+	// This test triggers the managed identity test app deployed to Azure Functions.
+	// See the bicep file and test resources scripts for details.
+	fn := os.Getenv("AZIDENTITY_FUNCTION_NAME")
+	if fn == "" {
+		t.Skip("set AZIDENTITY_FUNCTION_NAME to run this test")
+	}
+	url := fmt.Sprintf("https://%s.azurewebsites.net/api/HttpTrigger", fn)
+	res, err := http.Get(url)
+	require.NoError(t, err)
+	if res.StatusCode != http.StatusOK {
+		b, err := runtime.Payload(res)
+		require.NoError(t, err)
+		t.Fatal("test application returned an error: " + string(b))
+	}
+}
+
 func TestManagedIdentityCredential_AzureMLLive(t *testing.T) {
 	switch recording.GetRecordMode() {
 	case recording.LiveMode:
@@ -223,18 +257,18 @@ func TestManagedIdentityCredential_AppService(t *testing.T) {
 				t.Fatalf(`unexpected resource "%s"`, v)
 			}
 			if id == nil {
-				if q.Get(qpClientID) != "" || q.Get(qpResID) != "" {
+				if q.Get(qpClientID) != "" || q.Get(miResID) != "" {
 					t.Fatal("request shouldn't include a user-assigned ID")
 				}
 			} else {
-				if q.Get(qpClientID) != "" && q.Get(qpResID) != "" {
+				if q.Get(qpClientID) != "" && q.Get(miResID) != "" {
 					t.Fatal("request includes two IDs")
 				}
 				var v string
 				if _, ok := id.(ClientID); ok {
 					v = q.Get(qpClientID)
 				} else if _, ok := id.(ResourceID); ok {
-					v = q.Get(qpResID)
+					v = q.Get(miResID)
 				}
 				if v != id.String() {
 					t.Fatalf(`unexpected id "%s"`, v)
@@ -300,8 +334,8 @@ func TestManagedIdentityCredential_GetTokenIMDS400(t *testing.T) {
 	// cred should return credentialUnavailableError when IMDS responds 400 to a token request
 	for i := 0; i < 3; i++ {
 		_, err = cred.GetToken(context.Background(), testTRO)
-		if _, ok := err.(*credentialUnavailableError); !ok {
-			t.Fatalf("expected credentialUnavailableError, received %T", err)
+		if _, ok := err.(credentialUnavailable); !ok {
+			t.Fatalf("expected credentialUnavailable, received %T", err)
 		}
 	}
 }
@@ -431,7 +465,7 @@ func TestManagedIdentityCredential_ResourceID_IMDS(t *testing.T) {
 	if reqQueryParams["resource"][0] != liveTestScope {
 		t.Fatalf("Unexpected resource in resource query param")
 	}
-	if reqQueryParams[qpResID][0] != resID {
+	if reqQueryParams[msiResID][0] != resID {
 		t.Fatalf("Unexpected resource ID in resource query param")
 	}
 }
@@ -472,15 +506,8 @@ func TestManagedIdentityCredential_CreateAccessTokenExpiresOnFail(t *testing.T) 
 }
 
 func TestManagedIdentityCredential_IMDSLive(t *testing.T) {
-	switch recording.GetRecordMode() {
-	case recording.LiveMode:
-		t.Skip("this test doesn't run in live mode because it can't pass in CI")
-	case recording.RecordingMode:
-		// record iff either managed identity environment variable is set, because
-		// otherwise there's no reason to believe the test is running on a VM
-		if len(liveManagedIdentity.clientID)+len(liveManagedIdentity.resourceID) == 0 {
-			t.Skip("neither MANAGED_IDENTITY_CLIENT_ID nor MANAGED_IDENTITY_RESOURCE_ID is set")
-		}
+	if recording.GetRecordMode() != recording.PlaybackMode && !liveManagedIdentity.imds {
+		t.Skip("set IDENTITY_IMDS_AVAILABLE to run this test")
 	}
 	opts, stop := initRecording(t)
 	defer stop()
@@ -492,13 +519,8 @@ func TestManagedIdentityCredential_IMDSLive(t *testing.T) {
 }
 
 func TestManagedIdentityCredential_IMDSClientIDLive(t *testing.T) {
-	switch recording.GetRecordMode() {
-	case recording.LiveMode:
-		t.Skip("this test doesn't run in live mode because it can't pass in CI")
-	case recording.RecordingMode:
-		if liveManagedIdentity.clientID == "" {
-			t.Skip("MANAGED_IDENTITY_CLIENT_ID isn't set")
-		}
+	if recording.GetRecordMode() != recording.PlaybackMode && !liveManagedIdentity.imds || liveManagedIdentity.clientID == "" {
+		t.Skip("set IDENTITY_IMDS_AVAILABLE and IDENTITY_VM_USER_ASSIGNED_MI_CLIENT_ID to run this test")
 	}
 	opts, stop := initRecording(t)
 	defer stop()
@@ -511,13 +533,8 @@ func TestManagedIdentityCredential_IMDSClientIDLive(t *testing.T) {
 }
 
 func TestManagedIdentityCredential_IMDSResourceIDLive(t *testing.T) {
-	switch recording.GetRecordMode() {
-	case recording.LiveMode:
-		t.Skip("this test doesn't run in live mode because it can't pass in CI")
-	case recording.RecordingMode:
-		if liveManagedIdentity.resourceID == "" {
-			t.Skip("MANAGED_IDENTITY_RESOURCE_ID isn't set")
-		}
+	if recording.GetRecordMode() != recording.PlaybackMode && !liveManagedIdentity.imds || liveManagedIdentity.resourceID == "" {
+		t.Skip("set IDENTITY_IMDS_AVAILABLE and IDENTITY_VM_USER_ASSIGNED_MI_RESOURCE_ID to run this test")
 	}
 	opts, stop := initRecording(t)
 	defer stop()
@@ -563,7 +580,6 @@ func TestManagedIdentityCredential_IMDSRetries(t *testing.T) {
 }
 
 func TestManagedIdentityCredential_ServiceFabric(t *testing.T) {
-	resetEnvironmentVarsForTest()
 	expectedSecret := "expected-secret"
 	pred := func(req *http.Request) bool {
 		if secret := req.Header.Get("Secret"); secret != expectedSecret {

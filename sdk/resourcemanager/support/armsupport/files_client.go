@@ -28,7 +28,7 @@ type FilesClient struct {
 }
 
 // NewFilesClient creates a new instance of FilesClient with the specified values.
-//   - subscriptionID - Azure subscription Id.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewFilesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*FilesClient, error) {
@@ -46,7 +46,7 @@ func NewFilesClient(subscriptionID string, credential azcore.TokenCredential, op
 // Create - Creates a new file under a workspace for the specified subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2024-04-01
 //   - fileWorkspaceName - File workspace name.
 //   - fileName - File name.
 //   - createFileParameters - Create file object
@@ -93,7 +93,7 @@ func (client *FilesClient) createCreateRequest(ctx context.Context, fileWorkspac
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, createFileParameters); err != nil {
@@ -114,7 +114,7 @@ func (client *FilesClient) createHandleResponse(resp *http.Response) (FilesClien
 // Get - Returns details of a specific file in a work space.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2024-04-01
 //   - fileWorkspaceName - File Workspace Name
 //   - fileName - File Name
 //   - options - FilesClientGetOptions contains the optional parameters for the FilesClient.Get method.
@@ -160,7 +160,7 @@ func (client *FilesClient) getCreateRequest(ctx context.Context, fileWorkspaceNa
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -177,7 +177,7 @@ func (client *FilesClient) getHandleResponse(resp *http.Response) (FilesClientGe
 
 // NewListPager - Lists all the Files information under a workspace for an Azure subscription.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2024-04-01
 //   - fileWorkspaceName - File Workspace Name
 //   - options - FilesClientListOptions contains the optional parameters for the FilesClient.NewListPager method.
 func (client *FilesClient) NewListPager(fileWorkspaceName string, options *FilesClientListOptions) *runtime.Pager[FilesClientListResponse] {
@@ -219,7 +219,7 @@ func (client *FilesClient) listCreateRequest(ctx context.Context, fileWorkspaceN
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -237,7 +237,7 @@ func (client *FilesClient) listHandleResponse(resp *http.Response) (FilesClientL
 // Upload - This API allows you to upload content to a file
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2024-04-01
 //   - fileWorkspaceName - File WorkspaceName
 //   - fileName - File Name
 //   - uploadFile - UploadFile object
@@ -283,7 +283,7 @@ func (client *FilesClient) uploadCreateRequest(ctx context.Context, fileWorkspac
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, uploadFile); err != nil {

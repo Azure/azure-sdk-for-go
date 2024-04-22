@@ -27,7 +27,7 @@ func TestNewResumeToken(t *testing.T) {
 	n, err := NewResumeToken[struct{}](fakeResult[struct{}]{})
 	require.Error(t, err)
 	require.Empty(t, n)
-	n, err = NewResumeToken[interface{}](fakeResult[interface{}]{})
+	n, err = NewResumeToken[any](fakeResult[any]{})
 	require.Error(t, err)
 	require.Empty(t, n)
 	n, err = NewResumeToken[int](fakeResult[int]{})
@@ -183,4 +183,15 @@ func TestResultHelper(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, "happy", widgetResult.Result)
 	require.Equal(t, 123, widgetResult.Precalculated)
+}
+
+func TestIsNonTerminalHTTPStatusCode(t *testing.T) {
+	require.True(t, IsNonTerminalHTTPStatusCode(&http.Response{StatusCode: http.StatusRequestTimeout}))
+	require.True(t, IsNonTerminalHTTPStatusCode(&http.Response{StatusCode: http.StatusTooManyRequests}))
+	require.True(t, IsNonTerminalHTTPStatusCode(&http.Response{StatusCode: http.StatusInternalServerError}))
+	require.True(t, IsNonTerminalHTTPStatusCode(&http.Response{StatusCode: http.StatusBadGateway}))
+	require.True(t, IsNonTerminalHTTPStatusCode(&http.Response{StatusCode: http.StatusServiceUnavailable}))
+	require.True(t, IsNonTerminalHTTPStatusCode(&http.Response{StatusCode: http.StatusGatewayTimeout}))
+	require.False(t, IsNonTerminalHTTPStatusCode(&http.Response{StatusCode: http.StatusBadRequest}))
+	require.False(t, IsNonTerminalHTTPStatusCode(&http.Response{StatusCode: http.StatusNotImplemented}))
 }

@@ -11,8 +11,8 @@ package armservicelinker
 // AuthInfoBaseClassification provides polymorphic access to related types.
 // Call the interface's GetAuthInfoBase() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *AuthInfoBase, *SecretAuthInfo, *ServicePrincipalCertificateAuthInfo, *ServicePrincipalSecretAuthInfo, *SystemAssignedIdentityAuthInfo,
-// - *UserAssignedIdentityAuthInfo
+// - *AccessKeyInfoBase, *AuthInfoBase, *EasyAuthMicrosoftEntraIDAuthInfo, *SecretAuthInfo, *ServicePrincipalCertificateAuthInfo,
+// - *ServicePrincipalSecretAuthInfo, *SystemAssignedIdentityAuthInfo, *UserAccountAuthInfo, *UserAssignedIdentityAuthInfo
 type AuthInfoBaseClassification interface {
 	// GetAuthInfoBase returns the AuthInfoBase content of the underlying type.
 	GetAuthInfoBase() *AuthInfoBase
@@ -27,6 +27,24 @@ type AzureResourcePropertiesBaseClassification interface {
 	GetAzureResourcePropertiesBase() *AzureResourcePropertiesBase
 }
 
+// DryrunParametersClassification provides polymorphic access to related types.
+// Call the interface's GetDryrunParameters() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *CreateOrUpdateDryrunParameters, *DryrunParameters
+type DryrunParametersClassification interface {
+	// GetDryrunParameters returns the DryrunParameters content of the underlying type.
+	GetDryrunParameters() *DryrunParameters
+}
+
+// DryrunPrerequisiteResultClassification provides polymorphic access to related types.
+// Call the interface's GetDryrunPrerequisiteResult() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *BasicErrorDryrunPrerequisiteResult, *DryrunPrerequisiteResult, *PermissionsMissingDryrunPrerequisiteResult
+type DryrunPrerequisiteResultClassification interface {
+	// GetDryrunPrerequisiteResult returns the DryrunPrerequisiteResult content of the underlying type.
+	GetDryrunPrerequisiteResult() *DryrunPrerequisiteResult
+}
+
 // SecretInfoBaseClassification provides polymorphic access to related types.
 // Call the interface's GetSecretInfoBase() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -39,7 +57,7 @@ type SecretInfoBaseClassification interface {
 // TargetServiceBaseClassification provides polymorphic access to related types.
 // Call the interface's GetTargetServiceBase() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *AzureResource, *ConfluentBootstrapServer, *ConfluentSchemaRegistry, *TargetServiceBase
+// - *AzureResource, *ConfluentBootstrapServer, *ConfluentSchemaRegistry, *SelfHostedServer, *TargetServiceBase
 type TargetServiceBaseClassification interface {
 	// GetTargetServiceBase returns the TargetServiceBase content of the underlying type.
 	GetTargetServiceBase() *TargetServiceBase

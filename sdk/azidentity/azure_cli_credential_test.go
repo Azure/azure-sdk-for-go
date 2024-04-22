@@ -40,7 +40,7 @@ func mockAzTokenProviderFailure(context.Context, []string, string, string) ([]by
 	return nil, newAuthenticationFailedError(credNameAzureCLI, "mock provider error", nil, nil)
 }
 
-func mockAzTokenProviderSuccess(ctx context.Context, scopes []string, tenant, subscription string) ([]byte, error) {
+func mockAzTokenProviderSuccess(context.Context, []string, string, string) ([]byte, error) {
 	return azTokenOutput("2001-02-03 04:05:06.000007", 0), nil
 }
 
@@ -53,9 +53,9 @@ func TestAzureCLICredential_DefaultChainError(t *testing.T) {
 		t.Fatal(err)
 	}
 	_, err = cred.GetToken(context.Background(), testTRO)
-	var ue *credentialUnavailableError
-	if !errors.As(err, &ue) {
-		t.Fatalf("expected credentialUnavailableError, got %T: %q", err, err)
+	var cu credentialUnavailable
+	if !errors.As(err, &cu) {
+		t.Fatalf("expected %T, got %T: %q", cu, err, err)
 	}
 }
 

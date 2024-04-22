@@ -37,8 +37,34 @@ type DiscoverySolutionClientListOptions struct {
 	Skiptoken *string
 }
 
+// DiscoverySolutionNLPSubscriptionScopeClientPostOptions contains the optional parameters for the DiscoverySolutionNLPSubscriptionScopeClient.Post
+// method.
+type DiscoverySolutionNLPSubscriptionScopeClientPostOptions struct {
+	// Request body for discovering solutions using NLP.
+	DiscoverSolutionRequest *DiscoveryNlpRequest
+}
+
+// DiscoverySolutionNLPTenantScopeClientPostOptions contains the optional parameters for the DiscoverySolutionNLPTenantScopeClient.Post
+// method.
+type DiscoverySolutionNLPTenantScopeClientPostOptions struct {
+	// Request body for discovering solutions using NLP.
+	DiscoverSolutionRequest *DiscoveryNlpRequest
+}
+
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SimplifiedSolutionsClientBeginCreateOptions contains the optional parameters for the SimplifiedSolutionsClient.BeginCreate
+// method.
+type SimplifiedSolutionsClientBeginCreateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// SimplifiedSolutionsClientGetOptions contains the optional parameters for the SimplifiedSolutionsClient.Get method.
+type SimplifiedSolutionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -56,6 +82,17 @@ type SolutionClientBeginUpdateOptions struct {
 
 // SolutionClientGetOptions contains the optional parameters for the SolutionClient.Get method.
 type SolutionClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SolutionClientWarmUpOptions contains the optional parameters for the SolutionClient.WarmUp method.
+type SolutionClientWarmUpOptions struct {
+	// The required request body for warming up a solution resource.
+	SolutionWarmUpRequestBody *SolutionWarmUpRequestBody
+}
+
+// SolutionSelfHelpClientGetOptions contains the optional parameters for the SolutionSelfHelpClient.Get method.
+type SolutionSelfHelpClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 

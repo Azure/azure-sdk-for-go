@@ -472,6 +472,7 @@ func (c CustomRule) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "action", c.Action)
 	populate(objectMap, "enabledState", c.EnabledState)
+	populate(objectMap, "groupBy", c.GroupBy)
 	populate(objectMap, "matchConditions", c.MatchConditions)
 	populate(objectMap, "name", c.Name)
 	populate(objectMap, "priority", c.Priority)
@@ -495,6 +496,9 @@ func (c *CustomRule) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "enabledState":
 			err = unpopulate(val, "EnabledState", &c.EnabledState)
+			delete(rawMsg, key)
+		case "groupBy":
+			err = unpopulate(val, "GroupBy", &c.GroupBy)
 			delete(rawMsg, key)
 		case "matchConditions":
 			err = unpopulate(val, "MatchConditions", &c.MatchConditions)
@@ -1241,6 +1245,33 @@ func (f *FrontendEndpointsListResult) UnmarshalJSON(data []byte) error {
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", f, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type GroupByVariable.
+func (g GroupByVariable) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "variableName", g.VariableName)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type GroupByVariable.
+func (g *GroupByVariable) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", g, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "variableName":
+			err = unpopulate(val, "VariableName", &g.VariableName)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", g, err)
 		}
 	}
 	return nil
@@ -2274,6 +2305,8 @@ func (p PolicySettings) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "customBlockResponseBody", p.CustomBlockResponseBody)
 	populate(objectMap, "customBlockResponseStatusCode", p.CustomBlockResponseStatusCode)
 	populate(objectMap, "enabledState", p.EnabledState)
+	populate(objectMap, "javascriptChallengeExpirationInMinutes", p.JavascriptChallengeExpirationInMinutes)
+	populate(objectMap, "logScrubbing", p.LogScrubbing)
 	populate(objectMap, "mode", p.Mode)
 	populate(objectMap, "redirectUrl", p.RedirectURL)
 	populate(objectMap, "requestBodyCheck", p.RequestBodyCheck)
@@ -2298,6 +2331,12 @@ func (p *PolicySettings) UnmarshalJSON(data []byte) error {
 		case "enabledState":
 			err = unpopulate(val, "EnabledState", &p.EnabledState)
 			delete(rawMsg, key)
+		case "javascriptChallengeExpirationInMinutes":
+			err = unpopulate(val, "JavascriptChallengeExpirationInMinutes", &p.JavascriptChallengeExpirationInMinutes)
+			delete(rawMsg, key)
+		case "logScrubbing":
+			err = unpopulate(val, "LogScrubbing", &p.LogScrubbing)
+			delete(rawMsg, key)
 		case "mode":
 			err = unpopulate(val, "Mode", &p.Mode)
 			delete(rawMsg, key)
@@ -2306,6 +2345,37 @@ func (p *PolicySettings) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "requestBodyCheck":
 			err = unpopulate(val, "RequestBodyCheck", &p.RequestBodyCheck)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", p, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type PolicySettingsLogScrubbing.
+func (p PolicySettingsLogScrubbing) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "scrubbingRules", p.ScrubbingRules)
+	populate(objectMap, "state", p.State)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type PolicySettingsLogScrubbing.
+func (p *PolicySettingsLogScrubbing) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", p, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "scrubbingRules":
+			err = unpopulate(val, "ScrubbingRules", &p.ScrubbingRules)
+			delete(rawMsg, key)
+		case "state":
+			err = unpopulate(val, "State", &p.State)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -3808,6 +3878,45 @@ func (w *WebApplicationFirewallPolicyProperties) UnmarshalJSON(data []byte) erro
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type WebApplicationFirewallScrubbingRules.
+func (w WebApplicationFirewallScrubbingRules) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "matchVariable", w.MatchVariable)
+	populate(objectMap, "selector", w.Selector)
+	populate(objectMap, "selectorMatchOperator", w.SelectorMatchOperator)
+	populate(objectMap, "state", w.State)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type WebApplicationFirewallScrubbingRules.
+func (w *WebApplicationFirewallScrubbingRules) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", w, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "matchVariable":
+			err = unpopulate(val, "MatchVariable", &w.MatchVariable)
+			delete(rawMsg, key)
+		case "selector":
+			err = unpopulate(val, "Selector", &w.Selector)
+			delete(rawMsg, key)
+		case "selectorMatchOperator":
+			err = unpopulate(val, "SelectorMatchOperator", &w.SelectorMatchOperator)
+			delete(rawMsg, key)
+		case "state":
+			err = unpopulate(val, "State", &w.State)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", w, err)
+		}
+	}
+	return nil
+}
+
 func populate(m map[string]any, k string, v any) {
 	if v == nil {
 		return
@@ -3819,7 +3928,7 @@ func populate(m map[string]any, k string, v any) {
 }
 
 func unpopulate(data json.RawMessage, fn string, v any) error {
-	if data == nil {
+	if data == nil || string(data) == "null" {
 		return nil
 	}
 	if err := json.Unmarshal(data, v); err != nil {

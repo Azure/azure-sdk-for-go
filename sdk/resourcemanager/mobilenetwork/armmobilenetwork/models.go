@@ -19,6 +19,18 @@ type Ambr struct {
 	Uplink *string
 }
 
+// AmfID - AMF identifier
+type AmfID struct {
+	// REQUIRED; AMF pointer
+	Pointer *int32
+
+	// REQUIRED; AMF region identifier
+	RegionID *int32
+
+	// REQUIRED; AMF set identifier
+	SetID *int32
+}
+
 // Arp - Allocation and Retention Priority (ARP) parameters.
 type Arp struct {
 	// REQUIRED; ARP preemption capability.
@@ -349,6 +361,15 @@ type DiagnosticsUploadConfiguration struct {
 	StorageAccountContainerURL *string
 }
 
+// DnnIPPair - DNN and UE IP address
+type DnnIPPair struct {
+	// Data network name
+	Dnn *string
+
+	// UE IP address
+	UeIPAddress *UeIPAddress
+}
+
 // EncryptedSimPropertiesFormat - Encrypted SIM properties.
 type EncryptedSimPropertiesFormat struct {
 	// REQUIRED; The international mobile subscriber identity (IMSI) for the SIM.
@@ -453,6 +474,97 @@ type EventHubConfiguration struct {
 	ReportingInterval *int32
 }
 
+// ExtendedUeInfo - Extended User Equipment (UE) information.
+type ExtendedUeInfo struct {
+	// REQUIRED; Extended UE Information Properties.
+	Properties ExtendedUeInfoPropertiesClassification
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ExtendedUeInfoProperties - Extended UE Information Properties.
+type ExtendedUeInfoProperties struct {
+	// REQUIRED; RAT Type
+	RatType *RatType
+
+	// The timestamp of last UE info read from the packet core (UTC).
+	LastReadAt *time.Time
+}
+
+// GetExtendedUeInfoProperties implements the ExtendedUeInfoPropertiesClassification interface for type ExtendedUeInfoProperties.
+func (e *ExtendedUeInfoProperties) GetExtendedUeInfoProperties() *ExtendedUeInfoProperties { return e }
+
+// GNbID - gNodeB identifier
+type GNbID struct {
+	BitLength *int32
+	GNBValue  *string
+}
+
+// GlobalRanNodeID - Global RAN Node ID
+type GlobalRanNodeID struct {
+	// REQUIRED; PLMN Identifier
+	PlmnID *PlmnID
+
+	// eNodeB identifier
+	ENbID *string
+
+	// gNodeB identifier
+	GNbID *GNbID
+
+	// N3 IWF identifier
+	N3IwfID *string
+
+	// NG-eNodeB identifier
+	NgeNbID *string
+
+	// Network identifier
+	Nid *string
+
+	// TNGF identifier
+	TngfID *string
+
+	// W-AGF identifier
+	WagfID *string
+}
+
+// Guti4G - Globally Unique Temporary Identifier (4G)
+type Guti4G struct {
+	// REQUIRED; MME Temporary Mobile Subscriber Identity
+	MTmsi *int32
+
+	// REQUIRED; MME identifier
+	MmeID *MmeID
+
+	// REQUIRED; Public land mobile network (PLMN) ID. This is made up of the mobile country code and mobile network code, as
+	// defined in https://www.itu.int/rec/T-REC-E.212. The values 001-01 and 001-001 can be used
+	// for testing and the values 999-99 and 999-999 can be used on internal private networks.
+	Plmn *PlmnID
+}
+
+// Guti5G - 5G GUTI
+type Guti5G struct {
+	// REQUIRED; AMF identifier
+	AmfID *AmfID
+
+	// REQUIRED; 5G Temporary Mobile Subscriber Identity
+	FivegTmsi *int32
+
+	// REQUIRED; Public land mobile network (PLMN) ID. This is made up of the mobile country code and mobile network code, as
+	// defined in https://www.itu.int/rec/T-REC-E.212. The values 001-01 and 001-001 can be used
+	// for testing and the values 999-99 and 999-999 can be used on internal private networks.
+	Plmn *PlmnID
+}
+
 // HTTPSServerCertificate - HTTPS server certificate configuration.
 type HTTPSServerCertificate struct {
 	// REQUIRED; The certificate URL, unversioned. For example: https://contosovault.vault.azure.net/certificates/ingress.
@@ -460,6 +572,21 @@ type HTTPSServerCertificate struct {
 
 	// READ-ONLY; The provisioning state of the certificate.
 	Provisioning *CertificateProvisioning
+}
+
+type HomeNetworkPrivateKeysProvisioning struct {
+	// READ-ONLY; The provisioning state of the private keys for SUPI concealment.
+	State *HomeNetworkPrivateKeysProvisioningState
+}
+
+// HomeNetworkPublicKey - A key used for SUPI concealment.
+type HomeNetworkPublicKey struct {
+	// REQUIRED; The Home Network Public Key Identifier determines which public key was used to generate the SUCI sent to the
+	// AMF. See TS 23.003 Section 2.2B Section 5.
+	ID *int32
+
+	// The URL of Azure Key Vault secret containing the private key, versioned or unversioned. For example: https://contosovault.vault.azure.net/secrets/mySuciPrivateKey/562a4bb76b524a1493a6afe8e536ee78.
+	URL *string
 }
 
 // IdentityAndTagsObject - Identity and Tags object for patch operations.
@@ -542,6 +669,15 @@ type ManagedServiceIdentity struct {
 	UserAssignedIdentities map[string]*UserAssignedIdentity
 }
 
+// MmeID - MME identifier
+type MmeID struct {
+	// REQUIRED; MME code
+	Code *int32
+
+	// REQUIRED; MME group identifier
+	GroupID *int32
+}
+
 // MobileNetwork - Mobile network resource.
 type MobileNetwork struct {
 	// REQUIRED; The geo-location where the resource lives
@@ -549,6 +685,9 @@ type MobileNetwork struct {
 
 	// REQUIRED; Mobile network properties.
 	Properties *PropertiesFormat
+
+	// The identity used to retrieve any private keys used for SUPI concealment from Azure key vault.
+	Identity *ManagedServiceIdentity
 
 	// Resource tags.
 	Tags map[string]*string
@@ -781,6 +920,9 @@ type PacketCoreControlPlanePropertiesFormat struct {
 	// The desired version of the packet core software.
 	Version *string
 
+	// READ-ONLY; The provisioning state of the secret containing private keys and keyIds for SUPI concealment.
+	HomeNetworkPrivateKeysProvisioning *HomeNetworkPrivateKeysProvisioning
+
 	// READ-ONLY; The currently installed version of the packet core software.
 	InstalledVersion *string
 
@@ -993,7 +1135,9 @@ type PlatformConfiguration struct {
 	AzureStackEdgeDevices []*AzureStackEdgeDeviceResourceID
 }
 
-// PlmnID - Public land mobile network (PLMN) ID.
+// PlmnID - Public land mobile network (PLMN) ID. This is made up of the mobile country code and mobile network code, as defined
+// in https://www.itu.int/rec/T-REC-E.212. The values 001-01 and 001-001 can be used
+// for testing and the values 999-99 and 999-999 can be used on internal private networks.
 type PlmnID struct {
 	// REQUIRED; Mobile country code (MCC).
 	Mcc *string
@@ -1027,10 +1171,15 @@ type PortReuseHoldTimes struct {
 
 // PropertiesFormat - Mobile network properties.
 type PropertiesFormat struct {
-	// REQUIRED; The unique public land mobile network identifier for the network. This is made up of the mobile country code
-	// and mobile network code, as defined in https://www.itu.int/rec/T-REC-E.212. The values
-	// 001-01 and 001-001 can be used for testing and the values 999-99 and 999-999 can be used on internal private networks.
+	// REQUIRED; The unique public land mobile network identifier for the network. If both 'publicLandMobileNetworks' and 'publicLandMobileNetworkIdentifier'
+	// are specified, then the 'publicLandMobileNetworks' will
+	// take precedence.
 	PublicLandMobileNetworkIdentifier *PlmnID
+
+	// A list of public land mobile networks including their identifiers. If both 'publicLandMobileNetworks' and 'publicLandMobileNetworkIdentifier'
+	// are specified, then the 'publicLandMobileNetworks' will
+	// take precedence.
+	PublicLandMobileNetworks []*PublicLandMobileNetwork
 
 	// READ-ONLY; The provisioning state of the mobile network resource.
 	ProvisioningState *ProvisioningState
@@ -1053,6 +1202,29 @@ type ProxyResource struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
+}
+
+// PublicLandMobileNetwork - Configuration relating to a particular PLMN
+type PublicLandMobileNetwork struct {
+	// REQUIRED; Mobile country code (MCC).
+	Mcc *string
+
+	// REQUIRED; Mobile network code (MNC).
+	Mnc *string
+
+	// Configuration relating to SUPI concealment.
+	HomeNetworkPublicKeys *PublicLandMobileNetworkHomeNetworkPublicKeys
+}
+
+// PublicLandMobileNetworkHomeNetworkPublicKeys - Configuration relating to SUPI concealment.
+type PublicLandMobileNetworkHomeNetworkPublicKeys struct {
+	// This provides a mapping to identify which public key has been used for SUPI concealment using the Profile A Protection
+	// Scheme.
+	ProfileA []*HomeNetworkPublicKey
+
+	// This provides a mapping to identify which public key has been used for SUPI concealment using the Profile B Protection
+	// Scheme.
+	ProfileB []*HomeNetworkPublicKey
 }
 
 // QosPolicy - QoS policy
@@ -1621,6 +1793,262 @@ type TrackedResource struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
+}
+
+// UeConnectionInfo4G - UE Connection Info for 4G
+type UeConnectionInfo4G struct {
+	// REQUIRED; eNodeB S1AP identifier
+	EnbS1ApID *int32
+
+	// REQUIRED; Global RAN Node ID
+	GlobalRanNodeID *GlobalRanNodeID
+
+	// REQUIRED; MME S1AP identifier
+	MmeS1ApID *int32
+
+	// REQUIRED; Radio connection establishment cause
+	RrcEstablishmentCause *RrcEstablishmentCause
+
+	// REQUIRED; State of the UE.
+	UeState *UeState
+
+	// The timestamp of last activity of UE (UTC).
+	LastActivityTime *time.Time
+
+	// Last Visited TAI
+	LastVisitedTai *string
+
+	// UE Location Info properties
+	LocationInfo *UeLocationInfo
+
+	// Per-UE transport network layer association
+	PerUeTnla *string
+
+	// The UE's usage setting
+	UeUsageSetting *UeUsageSetting
+}
+
+// UeConnectionInfo5G - UE Connection Info for 5G.
+type UeConnectionInfo5G struct {
+	// REQUIRED; The AMF UE NGAP ID
+	AmfUeNgapID *int64
+
+	// REQUIRED; Global RAN Node ID
+	GlobalRanNodeID *GlobalRanNodeID
+
+	// REQUIRED; The RAN UE NGAP ID
+	RanUeNgapID *int32
+
+	// REQUIRED; Radio connection establishment cause
+	RrcEstablishmentCause *RrcEstablishmentCause
+
+	// REQUIRED; State of the UE.
+	UeState *UeState
+
+	// Allowed Network Slice Selection Assistance Information
+	AllowedNssai []*Snssai
+
+	// The timestamp of last activity of UE (UTC).
+	LastActivityTime *time.Time
+
+	// Last Visited TAI
+	LastVisitedTai *string
+
+	// UE Location Info properties
+	LocationInfo *UeLocationInfo
+
+	// Per-UE transport network layer association
+	PerUeTnla *string
+
+	// The UE's usage setting
+	UeUsageSetting *UeUsageSetting
+}
+
+// UeIPAddress - UE IP address
+type UeIPAddress struct {
+	// IPv4 address.
+	IPV4Addr *string
+}
+
+// UeInfo - Basic UE Information.
+type UeInfo struct {
+	// REQUIRED; Basic UE Information Properties.
+	Properties *UeInfoPropertiesFormat
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// UeInfo4G - UE Information for 4G.
+type UeInfo4G struct {
+	// REQUIRED; UE Information properties for 4G.
+	Info *UeInfo4GProperties
+
+	// REQUIRED; RAT Type
+	RatType *RatType
+
+	// The timestamp of last UE info read from the packet core (UTC).
+	LastReadAt *time.Time
+}
+
+// GetExtendedUeInfoProperties implements the ExtendedUeInfoPropertiesClassification interface for type UeInfo4G.
+func (u *UeInfo4G) GetExtendedUeInfoProperties() *ExtendedUeInfoProperties {
+	return &ExtendedUeInfoProperties{
+		LastReadAt: u.LastReadAt,
+		RatType:    u.RatType,
+	}
+}
+
+// UeInfo4GProperties - UE Information properties for 4G.
+type UeInfo4GProperties struct {
+	// REQUIRED; Globally Unique Temporary Identifier (4G)
+	Guti *Guti4G
+
+	// REQUIRED; International mobile subscriber identifier
+	Imsi *string
+
+	// UE Connection Info for 4G
+	ConnectionInfo *UeConnectionInfo4G
+
+	// International mobile equipment identity
+	Imei *string
+
+	// International mobile equipment identity – software version
+	Imeisv      *string
+	SessionInfo []*UeSessionInfo4G
+}
+
+// UeInfo5G - UE Information for 5G.
+type UeInfo5G struct {
+	// REQUIRED; UE Information properties for 5G.
+	Info *UeInfo5GProperties
+
+	// REQUIRED; RAT Type
+	RatType *RatType
+
+	// The timestamp of last UE info read from the packet core (UTC).
+	LastReadAt *time.Time
+}
+
+// GetExtendedUeInfoProperties implements the ExtendedUeInfoPropertiesClassification interface for type UeInfo5G.
+func (u *UeInfo5G) GetExtendedUeInfoProperties() *ExtendedUeInfoProperties {
+	return &ExtendedUeInfoProperties{
+		LastReadAt: u.LastReadAt,
+		RatType:    u.RatType,
+	}
+}
+
+// UeInfo5GProperties - UE Information properties for 5G.
+type UeInfo5GProperties struct {
+	// REQUIRED; 5G GUTI
+	FivegGuti *Guti5G
+
+	// REQUIRED; Subscription Permanent Identifier
+	Supi *string
+
+	// UE Connection Info for 5G.
+	ConnectionInfo *UeConnectionInfo5G
+
+	// Permanent Equipment Identifier
+	Pei         *string
+	SessionInfo []*UeSessionInfo5G
+}
+
+// UeInfoList - Response for packet core list UEs API call.
+type UeInfoList struct {
+	// A list of UEs in a packet core and their basic information.
+	Value []*UeInfo
+
+	// READ-ONLY; The URL to get the next set of results.
+	NextLink *string
+}
+
+// UeInfoPropertiesFormat - Basic UE Information Properties.
+type UeInfoPropertiesFormat struct {
+	// REQUIRED; RAT Type
+	RatType *RatType
+
+	// REQUIRED; State of the UE.
+	UeState *UeState
+
+	// The timestamp of last list UEs call to the packet core (UTC).
+	LastReadAt    *time.Time
+	UeIPAddresses []*DnnIPPair
+}
+
+// UeLocationInfo - UE Location Info properties
+type UeLocationInfo struct {
+	// REQUIRED; Location Type
+	LocationType *string
+
+	// REQUIRED; PLMN Identifier
+	Plmn *PlmnID
+
+	// REQUIRED; Type Allocation Code of UE
+	Tac *string
+}
+
+// UeQOSFlow - QoS Flow
+type UeQOSFlow struct {
+	// REQUIRED; 5G QoS Identifier.
+	Fiveqi *int32
+
+	// REQUIRED; Qos Flow Identifier
+	Qfi *int32
+
+	// Guaranteed Bit Rate
+	Gbr *Ambr
+
+	// Maximum Bit Rate
+	Mbr *Ambr
+}
+
+// UeSessionInfo4G - UE Session Info for 4G
+type UeSessionInfo4G struct {
+	// REQUIRED; Access point name
+	Apn *string
+
+	// REQUIRED; EPS bearer identifier
+	Ebi *int32
+
+	// REQUIRED; Packet Data Network Type
+	PdnType *PdnType
+
+	// REQUIRED; UE IP address
+	UeIPAddress *UeIPAddress
+}
+
+// UeSessionInfo5G - UE Session Info for 5G.
+type UeSessionInfo5G struct {
+	// REQUIRED; Aggregate maximum bit rate.
+	Ambr *Ambr
+
+	// REQUIRED; Data network name
+	Dnn *string
+
+	// REQUIRED; Packet Data Network Type
+	PdnType *PdnType
+
+	// REQUIRED; PDU session identifier
+	PduSessionID *int32
+
+	// REQUIRED
+	QosFlow []*UeQOSFlow
+
+	// REQUIRED; Single-network slice selection assistance information (S-NSSAI).
+	Snssai *Snssai
+
+	// REQUIRED; UE IP address
+	UeIPAddress *UeIPAddress
 }
 
 // UserAssignedIdentity - User assigned identity properties

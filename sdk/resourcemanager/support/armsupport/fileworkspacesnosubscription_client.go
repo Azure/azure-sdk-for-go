@@ -43,7 +43,7 @@ func NewFileWorkspacesNoSubscriptionClient(credential azcore.TokenCredential, op
 // Create - Creates a new file workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2024-04-01
 //   - fileWorkspaceName - File workspace name.
 //   - options - FileWorkspacesNoSubscriptionClientCreateOptions contains the optional parameters for the FileWorkspacesNoSubscriptionClient.Create
 //     method.
@@ -81,7 +81,7 @@ func (client *FileWorkspacesNoSubscriptionClient) createCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -99,7 +99,7 @@ func (client *FileWorkspacesNoSubscriptionClient) createHandleResponse(resp *htt
 // Get - Gets details for a specific file workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2024-04-01
 //   - fileWorkspaceName - File Workspace Name
 //   - options - FileWorkspacesNoSubscriptionClientGetOptions contains the optional parameters for the FileWorkspacesNoSubscriptionClient.Get
 //     method.
@@ -137,7 +137,7 @@ func (client *FileWorkspacesNoSubscriptionClient) getCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

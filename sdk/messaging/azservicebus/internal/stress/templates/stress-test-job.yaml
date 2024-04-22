@@ -17,7 +17,11 @@ spec:
         - >
           set -ex;
           mkdir -p "$DEBUG_SHARE";
-          /app/stress tests "{{ .Stress.testTarget }}" 2>&1 | tee -a "${DEBUG_SHARE}/{{ .Stress.Scenario }}-`date +%s`.log";
+          {{ if ne .Stress.benchmark true }}
+          /app/stress tests "{{ .Stress.testTarget }}" {{ default "" .Stress.args }} 2>&1 | tee -a "${DEBUG_SHARE}/{{ .Stress.Scenario }}-`date +%s`.log";
+          {{ else }}
+          /app/benchmarks.test -test.timeout 24h -test.bench {{ .Stress.testTarget }} 2>&1 | tee -a "${DEBUG_SHARE}/{{ .Stress.Scenario }}-`date +%s`.log";
+          {{ end }}
       # Pulls the image on pod start, always. We tend to push to the same image and tag over and over again
       # when iterating, so this is a must.
       imagePullPolicy: Always

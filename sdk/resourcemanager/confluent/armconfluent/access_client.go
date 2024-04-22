@@ -28,7 +28,7 @@ type AccessClient struct {
 }
 
 // NewAccessClient creates a new instance of AccessClient with the specified values.
-//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
+//   - subscriptionID - Microsoft Azure subscription id
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewAccessClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AccessClient, error) {
@@ -43,11 +43,140 @@ func NewAccessClient(subscriptionID string, credential azcore.TokenCredential, o
 	return client, nil
 }
 
+// CreateRoleBinding - Organization role bindings
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-02-13
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - organizationName - Organization resource name
+//   - body - Create role binding Request Model
+//   - options - AccessClientCreateRoleBindingOptions contains the optional parameters for the AccessClient.CreateRoleBinding
+//     method.
+func (client *AccessClient) CreateRoleBinding(ctx context.Context, resourceGroupName string, organizationName string, body AccessCreateRoleBindingRequestModel, options *AccessClientCreateRoleBindingOptions) (AccessClientCreateRoleBindingResponse, error) {
+	var err error
+	const operationName = "AccessClient.CreateRoleBinding"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.createRoleBindingCreateRequest(ctx, resourceGroupName, organizationName, body, options)
+	if err != nil {
+		return AccessClientCreateRoleBindingResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return AccessClientCreateRoleBindingResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return AccessClientCreateRoleBindingResponse{}, err
+	}
+	resp, err := client.createRoleBindingHandleResponse(httpResp)
+	return resp, err
+}
+
+// createRoleBindingCreateRequest creates the CreateRoleBinding request.
+func (client *AccessClient) createRoleBindingCreateRequest(ctx context.Context, resourceGroupName string, organizationName string, body AccessCreateRoleBindingRequestModel, options *AccessClientCreateRoleBindingOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/access/default/createRoleBinding"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if organizationName == "" {
+		return nil, errors.New("parameter organizationName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{organizationName}", url.PathEscape(organizationName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-02-13")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// createRoleBindingHandleResponse handles the CreateRoleBinding response.
+func (client *AccessClient) createRoleBindingHandleResponse(resp *http.Response) (AccessClientCreateRoleBindingResponse, error) {
+	result := AccessClientCreateRoleBindingResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RoleBindingRecord); err != nil {
+		return AccessClientCreateRoleBindingResponse{}, err
+	}
+	return result, nil
+}
+
+// DeleteRoleBinding - Organization role bindings
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-02-13
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - organizationName - Organization resource name
+//   - roleBindingID - Confluent Role binding id
+//   - options - AccessClientDeleteRoleBindingOptions contains the optional parameters for the AccessClient.DeleteRoleBinding
+//     method.
+func (client *AccessClient) DeleteRoleBinding(ctx context.Context, resourceGroupName string, organizationName string, roleBindingID string, options *AccessClientDeleteRoleBindingOptions) (AccessClientDeleteRoleBindingResponse, error) {
+	var err error
+	const operationName = "AccessClient.DeleteRoleBinding"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.deleteRoleBindingCreateRequest(ctx, resourceGroupName, organizationName, roleBindingID, options)
+	if err != nil {
+		return AccessClientDeleteRoleBindingResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return AccessClientDeleteRoleBindingResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
+		err = runtime.NewResponseError(httpResp)
+		return AccessClientDeleteRoleBindingResponse{}, err
+	}
+	return AccessClientDeleteRoleBindingResponse{}, nil
+}
+
+// deleteRoleBindingCreateRequest creates the DeleteRoleBinding request.
+func (client *AccessClient) deleteRoleBindingCreateRequest(ctx context.Context, resourceGroupName string, organizationName string, roleBindingID string, options *AccessClientDeleteRoleBindingOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/access/default/deleteRoleBinding/{roleBindingId}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if organizationName == "" {
+		return nil, errors.New("parameter organizationName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{organizationName}", url.PathEscape(organizationName))
+	if roleBindingID == "" {
+		return nil, errors.New("parameter roleBindingID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{roleBindingId}", url.PathEscape(roleBindingID))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-02-13")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
 // InviteUser - Invite user to the organization
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-22
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+// Generated from API version 2024-02-13
+//   - resourceGroupName - Resource group name
 //   - organizationName - Organization resource name
 //   - body - Invite user account model
 //   - options - AccessClientInviteUserOptions contains the optional parameters for the AccessClient.InviteUser method.
@@ -93,7 +222,7 @@ func (client *AccessClient) inviteUserCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-08-22")
+	reqQP.Set("api-version", "2024-02-13")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -114,7 +243,7 @@ func (client *AccessClient) inviteUserHandleResponse(resp *http.Response) (Acces
 // ListClusters - Cluster details
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-22
+// Generated from API version 2024-02-13
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - organizationName - Organization resource name
 //   - body - List Access Request Model
@@ -161,7 +290,7 @@ func (client *AccessClient) listClustersCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-08-22")
+	reqQP.Set("api-version", "2024-02-13")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -182,7 +311,7 @@ func (client *AccessClient) listClustersHandleResponse(resp *http.Response) (Acc
 // ListEnvironments - Environment list of an organization
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-22
+// Generated from API version 2024-02-13
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - organizationName - Organization resource name
 //   - body - List Access Request Model
@@ -229,7 +358,7 @@ func (client *AccessClient) listEnvironmentsCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-08-22")
+	reqQP.Set("api-version", "2024-02-13")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -250,8 +379,8 @@ func (client *AccessClient) listEnvironmentsHandleResponse(resp *http.Response) 
 // ListInvitations - Organization accounts invitation details
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-22
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+// Generated from API version 2024-02-13
+//   - resourceGroupName - Resource group name
 //   - organizationName - Organization resource name
 //   - body - List Access Request Model
 //   - options - AccessClientListInvitationsOptions contains the optional parameters for the AccessClient.ListInvitations method.
@@ -297,7 +426,7 @@ func (client *AccessClient) listInvitationsCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-08-22")
+	reqQP.Set("api-version", "2024-02-13")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -315,10 +444,79 @@ func (client *AccessClient) listInvitationsHandleResponse(resp *http.Response) (
 	return result, nil
 }
 
+// ListRoleBindingNameList - Organization role bindings
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-02-13
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - organizationName - Organization resource name
+//   - body - List Access Request Model
+//   - options - AccessClientListRoleBindingNameListOptions contains the optional parameters for the AccessClient.ListRoleBindingNameList
+//     method.
+func (client *AccessClient) ListRoleBindingNameList(ctx context.Context, resourceGroupName string, organizationName string, body ListAccessRequestModel, options *AccessClientListRoleBindingNameListOptions) (AccessClientListRoleBindingNameListResponse, error) {
+	var err error
+	const operationName = "AccessClient.ListRoleBindingNameList"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listRoleBindingNameListCreateRequest(ctx, resourceGroupName, organizationName, body, options)
+	if err != nil {
+		return AccessClientListRoleBindingNameListResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return AccessClientListRoleBindingNameListResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return AccessClientListRoleBindingNameListResponse{}, err
+	}
+	resp, err := client.listRoleBindingNameListHandleResponse(httpResp)
+	return resp, err
+}
+
+// listRoleBindingNameListCreateRequest creates the ListRoleBindingNameList request.
+func (client *AccessClient) listRoleBindingNameListCreateRequest(ctx context.Context, resourceGroupName string, organizationName string, body ListAccessRequestModel, options *AccessClientListRoleBindingNameListOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/access/default/listRoleBindingNameList"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if organizationName == "" {
+		return nil, errors.New("parameter organizationName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{organizationName}", url.PathEscape(organizationName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-02-13")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// listRoleBindingNameListHandleResponse handles the ListRoleBindingNameList response.
+func (client *AccessClient) listRoleBindingNameListHandleResponse(resp *http.Response) (AccessClientListRoleBindingNameListResponse, error) {
+	result := AccessClientListRoleBindingNameListResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AccessRoleBindingNameListSuccessResponse); err != nil {
+		return AccessClientListRoleBindingNameListResponse{}, err
+	}
+	return result, nil
+}
+
 // ListRoleBindings - Organization role bindings
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-22
+// Generated from API version 2024-02-13
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - organizationName - Organization resource name
 //   - body - List Access Request Model
@@ -365,7 +563,7 @@ func (client *AccessClient) listRoleBindingsCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-08-22")
+	reqQP.Set("api-version", "2024-02-13")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -386,8 +584,8 @@ func (client *AccessClient) listRoleBindingsHandleResponse(resp *http.Response) 
 // ListServiceAccounts - Organization service accounts details
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-22
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+// Generated from API version 2024-02-13
+//   - resourceGroupName - Resource group name
 //   - organizationName - Organization resource name
 //   - body - List Access Request Model
 //   - options - AccessClientListServiceAccountsOptions contains the optional parameters for the AccessClient.ListServiceAccounts
@@ -434,7 +632,7 @@ func (client *AccessClient) listServiceAccountsCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-08-22")
+	reqQP.Set("api-version", "2024-02-13")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -455,8 +653,8 @@ func (client *AccessClient) listServiceAccountsHandleResponse(resp *http.Respons
 // ListUsers - Organization users details
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-22
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+// Generated from API version 2024-02-13
+//   - resourceGroupName - Resource group name
 //   - organizationName - Organization resource name
 //   - body - List Access Request Model
 //   - options - AccessClientListUsersOptions contains the optional parameters for the AccessClient.ListUsers method.
@@ -502,7 +700,7 @@ func (client *AccessClient) listUsersCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-08-22")
+	reqQP.Set("api-version", "2024-02-13")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {

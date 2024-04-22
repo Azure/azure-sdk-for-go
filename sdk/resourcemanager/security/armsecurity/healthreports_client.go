@@ -10,11 +10,13 @@ package armsecurity
 
 import (
 	"context"
+	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
+	"net/url"
 	"strings"
 )
 
@@ -38,11 +40,68 @@ func NewHealthReportsClient(credential azcore.TokenCredential, options *arm.Clie
 	return client, nil
 }
 
+// Get - Get health report of resource
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-05-01-preview
+//   - resourceID - The identifier of the resource.
+//   - healthReportName - The health report Key - Unique key for the health report type
+//   - options - HealthReportsClientGetOptions contains the optional parameters for the HealthReportsClient.Get method.
+func (client *HealthReportsClient) Get(ctx context.Context, resourceID string, healthReportName string, options *HealthReportsClientGetOptions) (HealthReportsClientGetResponse, error) {
+	var err error
+	const operationName = "HealthReportsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getCreateRequest(ctx, resourceID, healthReportName, options)
+	if err != nil {
+		return HealthReportsClientGetResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return HealthReportsClientGetResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return HealthReportsClientGetResponse{}, err
+	}
+	resp, err := client.getHandleResponse(httpResp)
+	return resp, err
+}
+
+// getCreateRequest creates the Get request.
+func (client *HealthReportsClient) getCreateRequest(ctx context.Context, resourceID string, healthReportName string, options *HealthReportsClientGetOptions) (*policy.Request, error) {
+	urlPath := "/{resourceId}/providers/Microsoft.Security/healthReports/{healthReportName}"
+	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceID)
+	if healthReportName == "" {
+		return nil, errors.New("parameter healthReportName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{healthReportName}", url.PathEscape(healthReportName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2023-05-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getHandleResponse handles the Get response.
+func (client *HealthReportsClient) getHandleResponse(resp *http.Response) (HealthReportsClientGetResponse, error) {
+	result := HealthReportsClientGetResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.HealthReport); err != nil {
+		return HealthReportsClientGetResponse{}, err
+	}
+	return result, nil
+}
+
 // NewListPager - Get a list of all health reports inside a scope. Valid scopes are: subscription (format: 'subscriptions/{subscriptionId}'),
 // or security connector (format:
 // 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-05-01-preview
 //   - scope - The scope at which the operation is performed.
 //   - options - HealthReportsClientListOptions contains the optional parameters for the HealthReportsClient.NewListPager method.
 func (client *HealthReportsClient) NewListPager(scope string, options *HealthReportsClientListOptions) *runtime.Pager[HealthReportsClientListResponse] {
@@ -77,7 +136,7 @@ func (client *HealthReportsClient) listCreateRequest(ctx context.Context, scope 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

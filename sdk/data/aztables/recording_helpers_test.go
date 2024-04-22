@@ -103,7 +103,7 @@ func createSimpleEntities(count int, pk string) *[]basicTestEntity {
 func createComplexEntity(i int, pk string) complexTestEntity {
 	return complexTestEntity{
 		Entity: Entity{
-			PartitionKey: "partition",
+			PartitionKey: pk,
 			RowKey:       fmt.Sprint(i),
 		},
 		Integer:  int(i),

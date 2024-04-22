@@ -7,11 +7,12 @@
 package path
 
 import (
+	"net/http"
+	"time"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
-	"net/http"
-	"time"
 )
 
 // SetAccessControlResponse contains the response fields for the SetAccessControl operation.
@@ -156,6 +157,9 @@ type GetPropertiesResponse struct {
 	// EncryptionScope contains the information returned from the x-ms-encryption-scope header response.
 	EncryptionScope *string
 
+	// EncryptionContext contains the information returned from the x-ms-encryption-context header response.
+	EncryptionContext *string
+
 	// ExpiresOn contains the information returned from the x-ms-expiry-time header response.
 	ExpiresOn *time.Time
 
@@ -227,6 +231,9 @@ type GetPropertiesResponse struct {
 
 	// Permissions contains the information returned from the x-ms-permissions header response.
 	Permissions *string
+
+	// ResourceType contains the information returned from the x-ms-resource-type header response.
+	ResourceType *string
 }
 
 func FormatGetPropertiesResponse(r *blob.GetPropertiesResponse, rawResponse *http.Response) GetPropertiesResponse {
@@ -285,6 +292,12 @@ func FormatGetPropertiesResponse(r *blob.GetPropertiesResponse, rawResponse *htt
 	}
 	if val := rawResponse.Header.Get("x-ms-permissions"); val != "" {
 		newResp.Permissions = &val
+	}
+	if val := rawResponse.Header.Get("x-ms-resource-type"); val != "" {
+		newResp.ResourceType = &val
+	}
+	if val := rawResponse.Header.Get("x-ms-encryption-context"); val != "" {
+		newResp.EncryptionContext = &val
 	}
 	return newResp
 }

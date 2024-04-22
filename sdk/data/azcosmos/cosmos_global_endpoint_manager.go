@@ -11,7 +11,9 @@ import (
 	"sync"
 	"time"
 
+	azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
 
 const defaultUnavailableLocationRefreshInterval = 5 * time.Minute
@@ -22,11 +24,11 @@ type globalEndpointManager struct {
 	preferredLocations  []string
 	locationCache       *locationCache
 	refreshTimeInterval time.Duration
-	gemMutex            sync.Mutex
+	gemMutex            sync.RWMutex
 	lastUpdateTime      time.Time
 }
 
-func newGlobalEndpointManager(clientEndpoint string, pipeline azruntime.Pipeline, preferredLocations []string, refreshTimeInterval time.Duration) (*globalEndpointManager, error) {
+func newGlobalEndpointManager(clientEndpoint string, pipeline azruntime.Pipeline, preferredLocations []string, refreshTimeInterval time.Duration, enableCrossRegionRetries bool) (*globalEndpointManager, error) {
 	endpoint, err := url.Parse(clientEndpoint)
 	if err != nil {
 		return &globalEndpointManager{}, err
@@ -40,7 +42,7 @@ func newGlobalEndpointManager(clientEndpoint string, pipeline azruntime.Pipeline
 		clientEndpoint:      clientEndpoint,
 		pipeline:            pipeline,
 		preferredLocations:  preferredLocations,
-		locationCache:       newLocationCache(preferredLocations, *endpoint),
+		locationCache:       newLocationCache(preferredLocations, *endpoint, enableCrossRegionRetries),
 		refreshTimeInterval: refreshTimeInterval,
 		lastUpdateTime:      time.Time{},
 	}
@@ -81,13 +83,23 @@ func (gem *globalEndpointManager) RefreshStaleEndpoints() {
 }
 
 func (gem *globalEndpointManager) ShouldRefresh() bool {
+	gem.gemMutex.RLock()
+	defer gem.gemMutex.RUnlock()
+	return gem.shouldRefresh()
+}
+
+func (gem *globalEndpointManager) shouldRefresh() bool {
 	return time.Since(gem.lastUpdateTime) > gem.refreshTimeInterval
 }
 
-func (gem *globalEndpointManager) Update(ctx context.Context) error {
+func (gem *globalEndpointManager) ResolveServiceEndpoint(locationIndex int, isWriteOperation, useWriteEndpoint bool) url.URL {
+	return gem.locationCache.resolveServiceEndpoint(locationIndex, isWriteOperation, useWriteEndpoint)
+}
+
+func (gem *globalEndpointManager) Update(ctx context.Context, forceRefresh bool) error {
 	gem.gemMutex.Lock()
 	defer gem.gemMutex.Unlock()
-	if !gem.ShouldRefresh() {
+	if !gem.shouldRefresh() && !forceRefresh {
 		return nil
 	}
 	accountProperties, err := gem.GetAccountProperties(ctx)
@@ -136,10 +148,11 @@ func (gem *globalEndpointManager) GetAccountProperties(ctx context.Context) (acc
 		if err != nil {
 			return accountProperties{}, fmt.Errorf("failed to parse account properties: %v", err)
 		}
+		log.Write(azlog.EventResponse, "\n===== Database Account Information:\n"+properties.String()+"\n=====\n")
 		return properties, nil
 	}
 
-	return accountProperties{}, newCosmosError(azResponse)
+	return accountProperties{}, azruntime.NewResponseErrorWithErrorCode(azResponse, azResponse.Status)
 }
 
 func newAccountProperties(azResponse *http.Response) (accountProperties, error) {

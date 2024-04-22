@@ -113,8 +113,6 @@ func GetConnectionParamsForTest(t *testing.T) ConnectionParamsForTest {
 	}
 
 	envVars := mustGetEnvironmentVars(t, []string{
-		"AZURE_TENANT_ID",
-		"AZURE_CLIENT_ID",
 		"AZURE_SUBSCRIPTION_ID",
 		"CHECKPOINTSTORE_STORAGE_CONNECTION_STRING",
 		"EVENTHUB_CONNECTION_STRING_LISTEN_ONLY",

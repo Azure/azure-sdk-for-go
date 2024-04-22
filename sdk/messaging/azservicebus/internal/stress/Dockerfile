@@ -6,6 +6,8 @@ ENV CGO_ENABLED=0
 ADD . /src
 WORKDIR /src/internal/stress
 RUN go build -o stress .
+WORKDIR /src/internal/stress/tests/benchmarks
+RUN go test -c
 
 # The first container is just for building the artifacts, and contains all the source, etc...
 # That container instance only ever lives on your local machine (or the build machine).
@@ -15,5 +17,6 @@ RUN go build -o stress .
 FROM mcr.microsoft.com/cbl-mariner/base/core:2.0
 WORKDIR /app
 COPY --from=build /src/internal/stress/stress /app/stress
+COPY --from=build /src/internal/stress/tests/benchmarks/benchmarks.test /app/benchmarks.test
 RUN yum update -y && yum install -y ca-certificates
 ENTRYPOINT ["/bin/bash"]

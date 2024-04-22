@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/support/armsupport/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/support/armsupport"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/ListFilesForSubscriptionUnderFileWorkspace.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/106483d9f698ac3b6c0d481ab0c5fab14152e21f/specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/ListFilesForSubscriptionUnderFileWorkspace.json
 func ExampleFilesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -45,30 +45,30 @@ func ExampleFilesClient_NewListPager() {
 		// 		{
 		// 			Name: to.Ptr("test1.txt"),
 		// 			Type: to.Ptr("Microsoft.Support/files"),
-		// 			ID: to.Ptr("/subscriptions/subid/providers/Microsoft.Support/fileWorkspaces/testworkspace/files/test1.txt"),
+		// 			ID: to.Ptr("/subscriptions/132d901f-189d-4381-9214-fe68e27e05a1/providers/Microsoft.Support/fileWorkspaces/testworkspace/files/test1.txt"),
 		// 			Properties: &armsupport.FileDetailsProperties{
-		// 				ChunkSize: to.Ptr[float32](41423),
+		// 				ChunkSize: to.Ptr[int32](41423),
 		// 				CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-24T20:18:19.000Z"); return t}()),
-		// 				FileSize: to.Ptr[float32](41423),
-		// 				NumberOfChunks: to.Ptr[float32](1),
+		// 				FileSize: to.Ptr[int32](41423),
+		// 				NumberOfChunks: to.Ptr[int32](1),
 		// 			},
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("test2.txt"),
 		// 			Type: to.Ptr("Microsoft.Support/files"),
-		// 			ID: to.Ptr("/subscriptions/subid/providers/Microsoft.Support/fileWorkspaces/testworkspace/files/test2.txt"),
+		// 			ID: to.Ptr("/subscriptions/132d901f-189d-4381-9214-fe68e27e05a1/providers/Microsoft.Support/fileWorkspaces/testworkspace/files/test2.txt"),
 		// 			Properties: &armsupport.FileDetailsProperties{
-		// 				ChunkSize: to.Ptr[float32](41423),
+		// 				ChunkSize: to.Ptr[int32](41423),
 		// 				CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-24T20:18:19.000Z"); return t}()),
-		// 				FileSize: to.Ptr[float32](41423),
-		// 				NumberOfChunks: to.Ptr[float32](1),
+		// 				FileSize: to.Ptr[int32](41423),
+		// 				NumberOfChunks: to.Ptr[int32](1),
 		// 			},
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/GetFileDetailsForSubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/106483d9f698ac3b6c0d481ab0c5fab14152e21f/specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/GetFileDetailsForSubscription.json
 func ExampleFilesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -89,17 +89,17 @@ func ExampleFilesClient_Get() {
 	// res.FileDetails = armsupport.FileDetails{
 	// 	Name: to.Ptr("test.txt"),
 	// 	Type: to.Ptr("Microsoft.Support/files"),
-	// 	ID: to.Ptr("/subscriptions/subid/providers/Microsoft.Support/fileWorkspaces/testworkspace/files/test.txt"),
+	// 	ID: to.Ptr("/subscriptions/132d901f-189d-4381-9214-fe68e27e05a1/providers/Microsoft.Support/fileWorkspaces/testworkspace/files/test.txt"),
 	// 	Properties: &armsupport.FileDetailsProperties{
-	// 		ChunkSize: to.Ptr[float32](41423),
+	// 		ChunkSize: to.Ptr[int32](41423),
 	// 		CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-24T20:18:19.000Z"); return t}()),
-	// 		FileSize: to.Ptr[float32](41423),
-	// 		NumberOfChunks: to.Ptr[float32](1),
+	// 		FileSize: to.Ptr[int32](41423),
+	// 		NumberOfChunks: to.Ptr[int32](1),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/CreateFileForSubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/106483d9f698ac3b6c0d481ab0c5fab14152e21f/specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/CreateFileForSubscription.json
 func ExampleFilesClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -112,9 +112,9 @@ func ExampleFilesClient_Create() {
 	}
 	_, err = clientFactory.NewFilesClient().Create(ctx, "testworkspace", "test.txt", armsupport.FileDetails{
 		Properties: &armsupport.FileDetailsProperties{
-			ChunkSize:      to.Ptr[float32](41423),
-			FileSize:       to.Ptr[float32](41423),
-			NumberOfChunks: to.Ptr[float32](1),
+			ChunkSize:      to.Ptr[int32](41423),
+			FileSize:       to.Ptr[int32](41423),
+			NumberOfChunks: to.Ptr[int32](1),
 		},
 	}, nil)
 	if err != nil {
@@ -122,7 +122,7 @@ func ExampleFilesClient_Create() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/UploadFileForSubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/106483d9f698ac3b6c0d481ab0c5fab14152e21f/specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/UploadFileForSubscription.json
 func ExampleFilesClient_Upload() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -134,7 +134,7 @@ func ExampleFilesClient_Upload() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = clientFactory.NewFilesClient().Upload(ctx, "testworkspaceName", "test.txt", armsupport.UploadFile{
-		ChunkIndex: to.Ptr[float32](0),
+		ChunkIndex: to.Ptr[int32](0),
 		Content:    to.Ptr("iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABd"),
 	}, nil)
 	if err != nil {

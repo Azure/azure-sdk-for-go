@@ -19,7 +19,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v6"
 	"net/http"
 	"net/url"
-	"reflect"
 	"regexp"
 )
 
@@ -45,10 +44,6 @@ type AccountsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armnetapp.AccountsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armnetapp.AccountsClientListBySubscriptionResponse])
 
-	// BeginMigrateEncryptionKey is the fake for method AccountsClient.BeginMigrateEncryptionKey
-	// HTTP status codes to indicate success: http.StatusAccepted
-	BeginMigrateEncryptionKey func(ctx context.Context, resourceGroupName string, accountName string, options *armnetapp.AccountsClientBeginMigrateEncryptionKeyOptions) (resp azfake.PollerResponder[armnetapp.AccountsClientMigrateEncryptionKeyResponse], errResp azfake.ErrorResponder)
-
 	// BeginRenewCredentials is the fake for method AccountsClient.BeginRenewCredentials
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginRenewCredentials func(ctx context.Context, resourceGroupName string, accountName string, options *armnetapp.AccountsClientBeginRenewCredentialsOptions) (resp azfake.PollerResponder[armnetapp.AccountsClientRenewCredentialsResponse], errResp azfake.ErrorResponder)
@@ -68,7 +63,6 @@ func NewAccountsServerTransport(srv *AccountsServer) *AccountsServerTransport {
 		beginDelete:                newTracker[azfake.PollerResponder[armnetapp.AccountsClientDeleteResponse]](),
 		newListPager:               newTracker[azfake.PagerResponder[armnetapp.AccountsClientListResponse]](),
 		newListBySubscriptionPager: newTracker[azfake.PagerResponder[armnetapp.AccountsClientListBySubscriptionResponse]](),
-		beginMigrateEncryptionKey:  newTracker[azfake.PollerResponder[armnetapp.AccountsClientMigrateEncryptionKeyResponse]](),
 		beginRenewCredentials:      newTracker[azfake.PollerResponder[armnetapp.AccountsClientRenewCredentialsResponse]](),
 		beginUpdate:                newTracker[azfake.PollerResponder[armnetapp.AccountsClientUpdateResponse]](),
 	}
@@ -82,7 +76,6 @@ type AccountsServerTransport struct {
 	beginDelete                *tracker[azfake.PollerResponder[armnetapp.AccountsClientDeleteResponse]]
 	newListPager               *tracker[azfake.PagerResponder[armnetapp.AccountsClientListResponse]]
 	newListBySubscriptionPager *tracker[azfake.PagerResponder[armnetapp.AccountsClientListBySubscriptionResponse]]
-	beginMigrateEncryptionKey  *tracker[azfake.PollerResponder[armnetapp.AccountsClientMigrateEncryptionKeyResponse]]
 	beginRenewCredentials      *tracker[azfake.PollerResponder[armnetapp.AccountsClientRenewCredentialsResponse]]
 	beginUpdate                *tracker[azfake.PollerResponder[armnetapp.AccountsClientUpdateResponse]]
 }
@@ -109,8 +102,6 @@ func (a *AccountsServerTransport) Do(req *http.Request) (*http.Response, error) 
 		resp, err = a.dispatchNewListPager(req)
 	case "AccountsClient.NewListBySubscriptionPager":
 		resp, err = a.dispatchNewListBySubscriptionPager(req)
-	case "AccountsClient.BeginMigrateEncryptionKey":
-		resp, err = a.dispatchBeginMigrateEncryptionKey(req)
 	case "AccountsClient.BeginRenewCredentials":
 		resp, err = a.dispatchBeginRenewCredentials(req)
 	case "AccountsClient.BeginUpdate":
@@ -318,60 +309,6 @@ func (a *AccountsServerTransport) dispatchNewListBySubscriptionPager(req *http.R
 	if !server.PagerResponderMore(newListBySubscriptionPager) {
 		a.newListBySubscriptionPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (a *AccountsServerTransport) dispatchBeginMigrateEncryptionKey(req *http.Request) (*http.Response, error) {
-	if a.srv.BeginMigrateEncryptionKey == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginMigrateEncryptionKey not implemented")}
-	}
-	beginMigrateEncryptionKey := a.beginMigrateEncryptionKey.get(req)
-	if beginMigrateEncryptionKey == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/migrateEncryption`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armnetapp.EncryptionMigrationRequest](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-		if err != nil {
-			return nil, err
-		}
-		var options *armnetapp.AccountsClientBeginMigrateEncryptionKeyOptions
-		if !reflect.ValueOf(body).IsZero() {
-			options = &armnetapp.AccountsClientBeginMigrateEncryptionKeyOptions{
-				Body: &body,
-			}
-		}
-		respr, errRespr := a.srv.BeginMigrateEncryptionKey(req.Context(), resourceGroupNameParam, accountNameParam, options)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginMigrateEncryptionKey = &respr
-		a.beginMigrateEncryptionKey.add(req, beginMigrateEncryptionKey)
-	}
-
-	resp, err := server.PollerResponderNext(beginMigrateEncryptionKey, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !contains([]int{http.StatusAccepted}, resp.StatusCode) {
-		a.beginMigrateEncryptionKey.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginMigrateEncryptionKey) {
-		a.beginMigrateEncryptionKey.remove(req)
-	}
-
 	return resp, nil
 }
 

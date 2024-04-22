@@ -4,7 +4,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package streaming
+package streaming_test
 
 import (
 	"bytes"
@@ -16,6 +16,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
 
@@ -36,7 +37,7 @@ func TestProgressReporting(t *testing.T) {
 	}
 	runtime.SkipBodyDownload(req)
 	var bytesSent int64
-	reqRpt := NewRequestProgress(NopCloser(body), func(bytesTransferred int64) {
+	reqRpt := streaming.NewRequestProgress(streaming.NopCloser(body), func(bytesTransferred int64) {
 		bytesSent = bytesTransferred
 	})
 	if err := req.SetBody(reqRpt, "application/octet-stream"); err != nil {
@@ -47,7 +48,7 @@ func TestProgressReporting(t *testing.T) {
 		t.Fatalf("unexpected error: %v", err)
 	}
 	var bytesReceived int64
-	respRpt := NewResponseProgress(resp.Body, func(bytesTransferred int64) {
+	respRpt := streaming.NewResponseProgress(resp.Body, func(bytesTransferred int64) {
 		bytesReceived = bytesTransferred
 	})
 	defer respRpt.Close()
@@ -85,7 +86,7 @@ func TestProgressReportingSeek(t *testing.T) {
 	}
 	runtime.SkipBodyDownload(req)
 	var bytesSent int64
-	reqRpt := NewRequestProgress(NopCloser(body), func(bytesTransferred int64) {
+	reqRpt := streaming.NewRequestProgress(streaming.NopCloser(body), func(bytesTransferred int64) {
 		bytesSent = bytesTransferred
 	})
 	if err := req.SetBody(reqRpt, "application/octet-stream"); err != nil {

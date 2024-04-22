@@ -14,6 +14,12 @@ type ClientCheckNameAvailabilityResponse struct {
 	CheckNameAvailabilityResponse
 }
 
+// LedgerClientBackupResponse contains the response from method LedgerClient.BeginBackup.
+type LedgerClientBackupResponse struct {
+	// Object representing the backup response of a Confidential Ledger Resource.
+	BackupResponse
+}
+
 // LedgerClientCreateResponse contains the response from method LedgerClient.BeginCreate.
 type LedgerClientCreateResponse struct {
 	// Confidential Ledger. Contains the properties of Confidential Ledger Resource.
@@ -43,10 +49,22 @@ type LedgerClientListBySubscriptionResponse struct {
 	List
 }
 
+// LedgerClientRestoreResponse contains the response from method LedgerClient.BeginRestore.
+type LedgerClientRestoreResponse struct {
+	// Object representing the restore response of a Confidential Ledger Resource.
+	RestoreResponse
+}
+
 // LedgerClientUpdateResponse contains the response from method LedgerClient.BeginUpdate.
 type LedgerClientUpdateResponse struct {
 	// Confidential Ledger. Contains the properties of Confidential Ledger Resource.
 	ConfidentialLedger
+}
+
+// ManagedCCFClientBackupResponse contains the response from method ManagedCCFClient.BeginBackup.
+type ManagedCCFClientBackupResponse struct {
+	// Object representing the backup response of a Managed CCF Resource.
+	ManagedCCFBackupResponse
 }
 
 // ManagedCCFClientCreateResponse contains the response from method ManagedCCFClient.BeginCreate.
@@ -78,9 +96,16 @@ type ManagedCCFClientListBySubscriptionResponse struct {
 	ManagedCCFList
 }
 
+// ManagedCCFClientRestoreResponse contains the response from method ManagedCCFClient.BeginRestore.
+type ManagedCCFClientRestoreResponse struct {
+	// Object representing the restore response of a Managed CCF Resource.
+	ManagedCCFRestoreResponse
+}
+
 // ManagedCCFClientUpdateResponse contains the response from method ManagedCCFClient.BeginUpdate.
 type ManagedCCFClientUpdateResponse struct {
-	// placeholder for future response values
+	// Managed CCF. Contains the properties of Managed CCF Resource.
+	ManagedCCF
 }
 
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.

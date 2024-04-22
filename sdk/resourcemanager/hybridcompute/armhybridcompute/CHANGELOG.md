@@ -1,5 +1,81 @@
 # Release History
 
+## 2.0.0-beta.2 (2024-04-26)
+### Breaking Changes
+
+- Type of `AgentUpgrade.LastAttemptTimestamp` has been changed from `*string` to `*time.Time`
+- Type of `MachinesClientGetOptions.Expand` has been changed from `*InstanceViewTypes` to `*string`
+- Enum `InstanceViewTypes` has been removed
+- Function `NewAgentVersionClient` has been removed
+- Function `*AgentVersionClient.Get` has been removed
+- Function `*AgentVersionClient.List` has been removed
+- Function `*ClientFactory.NewAgentVersionClient` has been removed
+- Function `*ClientFactory.NewHybridIdentityMetadataClient` has been removed
+- Function `*ClientFactory.NewLicenseProfilesClient` has been removed
+- Function `*ClientFactory.NewLicensesClient` has been removed
+- Function `NewHybridIdentityMetadataClient` has been removed
+- Function `*HybridIdentityMetadataClient.Get` has been removed
+- Function `*HybridIdentityMetadataClient.NewListByMachinesPager` has been removed
+- Function `NewLicenseProfilesClient` has been removed
+- Function `*LicenseProfilesClient.BeginCreateOrUpdate` has been removed
+- Function `*LicenseProfilesClient.BeginDelete` has been removed
+- Function `*LicenseProfilesClient.Get` has been removed
+- Function `*LicenseProfilesClient.NewListPager` has been removed
+- Function `*LicenseProfilesClient.BeginUpdate` has been removed
+- Function `NewLicensesClient` has been removed
+- Function `*LicensesClient.BeginCreateOrUpdate` has been removed
+- Function `*LicensesClient.BeginDelete` has been removed
+- Function `*LicensesClient.Get` has been removed
+- Function `*LicensesClient.NewListByResourceGroupPager` has been removed
+- Function `*LicensesClient.NewListBySubscriptionPager` has been removed
+- Function `*LicensesClient.BeginUpdate` has been removed
+- Function `*LicensesClient.BeginValidateLicense` has been removed
+- Function `*MachinesClient.CreateOrUpdate` has been removed
+- Struct `AgentVersion` has been removed
+- Struct `AgentVersionsList` has been removed
+- Struct `EsuProfileUpdateProperties` has been removed
+- Struct `HybridIdentityMetadata` has been removed
+- Struct `HybridIdentityMetadataList` has been removed
+- Struct `HybridIdentityMetadataProperties` has been removed
+- Struct `LicenseProfile` has been removed
+- Struct `LicenseProfileArmEsuProperties` has been removed
+- Struct `LicenseProfileProperties` has been removed
+- Struct `LicenseProfileUpdate` has been removed
+- Struct `LicenseProfileUpdateProperties` has been removed
+- Struct `LicenseProfilesListResult` has been removed
+- Struct `LicenseUpdate` has been removed
+- Struct `LicenseUpdateProperties` has been removed
+- Struct `LicenseUpdatePropertiesLicenseDetails` has been removed
+- Struct `LicensesListResult` has been removed
+
+### Features Added
+
+- New enum type `ExecutionState` with values `ExecutionStateCanceled`, `ExecutionStateFailed`, `ExecutionStatePending`, `ExecutionStateRunning`, `ExecutionStateSucceeded`, `ExecutionStateTimedOut`, `ExecutionStateUnknown`
+- New enum type `ExtensionsStatusLevelTypes` with values `ExtensionsStatusLevelTypesError`, `ExtensionsStatusLevelTypesInfo`, `ExtensionsStatusLevelTypesWarning`
+- New enum type `LicenseProfileProductType` with values `LicenseProfileProductTypeWindowsIoTEnterprise`, `LicenseProfileProductTypeWindowsServer`
+- New enum type `LicenseProfileSubscriptionStatus` with values `LicenseProfileSubscriptionStatusDisabled`, `LicenseProfileSubscriptionStatusEnabled`, `LicenseProfileSubscriptionStatusEnabling`, `LicenseProfileSubscriptionStatusUnknown`
+- New enum type `LicenseStatus` with values `LicenseStatusExtendedGrace`, `LicenseStatusLicensed`, `LicenseStatusNonGenuineGrace`, `LicenseStatusNotification`, `LicenseStatusOOBGrace`, `LicenseStatusOOTGrace`, `LicenseStatusUnlicensed`
+- New function `*ClientFactory.NewMachineRunCommandsClient() *MachineRunCommandsClient`
+- New function `NewMachineRunCommandsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*MachineRunCommandsClient, error)`
+- New function `*MachineRunCommandsClient.BeginCreateOrUpdate(context.Context, string, string, string, MachineRunCommand, *MachineRunCommandsClientBeginCreateOrUpdateOptions) (*runtime.Poller[MachineRunCommandsClientCreateOrUpdateResponse], error)`
+- New function `*MachineRunCommandsClient.BeginDelete(context.Context, string, string, string, *MachineRunCommandsClientBeginDeleteOptions) (*runtime.Poller[MachineRunCommandsClientDeleteResponse], error)`
+- New function `*MachineRunCommandsClient.Get(context.Context, string, string, string, *MachineRunCommandsClientGetOptions) (MachineRunCommandsClientGetResponse, error)`
+- New function `*MachineRunCommandsClient.NewListPager(string, string, *MachineRunCommandsClientListOptions) *runtime.Pager[MachineRunCommandsClientListResponse]`
+- New struct `ExtensionsResourceStatus`
+- New struct `LicenseProfileArmProductProfileProperties`
+- New struct `LicenseProfileMachineInstanceViewSoftwareAssurance`
+- New struct `MachineRunCommand`
+- New struct `MachineRunCommandInstanceView`
+- New struct `MachineRunCommandProperties`
+- New struct `MachineRunCommandScriptSource`
+- New struct `MachineRunCommandsListResult`
+- New struct `ProductFeature`
+- New struct `RunCommandInputParameter`
+- New struct `RunCommandManagedIdentity`
+- New field `LicenseChannel`, `LicenseStatus`, `ProductProfile`, `SoftwareAssurance` in struct `LicenseProfileMachineInstanceView`
+- New field `OSEdition` in struct `MachineProperties`
+
+
 ## 2.0.0-beta.1 (2023-11-24)
 ### Breaking Changes
 

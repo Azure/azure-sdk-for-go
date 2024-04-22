@@ -1,5 +1,14 @@
 # Release History
 
+## 4.0.0-beta.5 (2024-04-26)
+### Features Added
+
+- New value `SourceTypeAWSAURORA`, `SourceTypeAWSEC2`, `SourceTypeAWSRDS`, `SourceTypeEDB`, `SourceTypeGCPAlloyDB`, `SourceTypeGCPCloudSQL`, `SourceTypeGCPCompute` added to enum type `SourceType`
+- New enum type `MigrateRolesEnum` with values `MigrateRolesEnumFalse`, `MigrateRolesEnumTrue`
+- New field `MigrateRoles`, `MigrationInstanceResourceID` in struct `MigrationResourceProperties`
+- New field `MigrateRoles` in struct `MigrationResourcePropertiesForPatch`
+
+
 ## 4.0.0-beta.4 (2023-12-22)
 ### Other Changes
 

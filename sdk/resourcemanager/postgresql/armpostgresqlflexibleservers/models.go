@@ -725,6 +725,12 @@ type MigrationResourceProperties struct {
 	// When you want to trigger cutover for specific databases send triggerCutover flag as True and database names in this array
 	DbsToTriggerCutoverOn []*string
 
+	// To migrate roles and permissions we need to send this flag as True
+	MigrateRoles *MigrateRolesEnum
+
+	// ResourceId of the private endpoint migration instance
+	MigrationInstanceResourceID *string
+
 	// There are two types of migration modes Online and Offline
 	MigrationMode *MigrationMode
 
@@ -759,7 +765,8 @@ type MigrationResourceProperties struct {
 	// should be ipaddress:port@username or hostname:port@username
 	SourceDbServerResourceID *string
 
-	// migration source server type : OnPremises, AWS, GCP, AzureVM or PostgreSQLSingleServer
+	// migration source server type : OnPremises, AWS, GCP, AzureVM, PostgreSQLSingleServer, AWSRDS, AWSAURORA, AWSEC2, GCPCloudSQL,
+	// GCPAlloyDB, GCPCompute, or EDB
 	SourceType *SourceType
 
 	// Indicates whether the data migration should start right away
@@ -801,6 +808,9 @@ type MigrationResourcePropertiesForPatch struct {
 
 	// When you want to trigger cutover for specific databases send triggerCutover flag as True and database names in this array
 	DbsToTriggerCutoverOn []*string
+
+	// To migrate roles and permissions we need to send this flag as True
+	MigrateRoles *MigrateRolesEnum
 
 	// There are two types of migration modes Online and Offline
 	MigrationMode *MigrationMode

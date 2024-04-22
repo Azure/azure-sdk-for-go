@@ -46,7 +46,7 @@ func NewCheckNameAvailabilityClient(subscriptionID string, credential azcore.Tok
 // Execute - Check the availability of name for resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-01-preview
+// Generated from API version 2023-12-01-preview
 //   - nameAvailabilityRequest - The required parameters for checking if resource name is available.
 //   - options - CheckNameAvailabilityClientExecuteOptions contains the optional parameters for the CheckNameAvailabilityClient.Execute
 //     method.
@@ -84,7 +84,7 @@ func (client *CheckNameAvailabilityClient) executeCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-01-preview")
+	reqQP.Set("api-version", "2023-12-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, nameAvailabilityRequest); err != nil {

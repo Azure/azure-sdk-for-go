@@ -1,5 +1,48 @@
 # Release History
 
+## 2.0.0-beta.4 (2024-04-26)
+### Breaking Changes
+
+- Function `*DiscoverySolutionClient.NewListPager` parameter(s) have been changed from `(string, *DiscoverySolutionClientListOptions)` to `(*DiscoverySolutionClientListOptions)`
+
+### Features Added
+
+- New value `QuestionTypeDateTimePicker`, `QuestionTypeMultiSelect` added to enum type `QuestionType`
+- New value `SolutionTypeSelfHelp`, `SolutionTypeTroubleshooters` added to enum type `SolutionType`
+- New value `TypeInput` added to enum type `Type`
+- New enum type `ValidationScope` with values `ValidationScopeGUIDFormat`, `ValidationScopeIPAddressFormat`, `ValidationScopeNone`, `ValidationScopeNumberOnlyFormat`, `ValidationScopeURLFormat`
+- New function `*ClientFactory.NewDiscoverySolutionNLPSubscriptionScopeClient() *DiscoverySolutionNLPSubscriptionScopeClient`
+- New function `*ClientFactory.NewDiscoverySolutionNLPTenantScopeClient() *DiscoverySolutionNLPTenantScopeClient`
+- New function `*ClientFactory.NewSimplifiedSolutionsClient() *SimplifiedSolutionsClient`
+- New function `*ClientFactory.NewSolutionSelfHelpClient() *SolutionSelfHelpClient`
+- New function `NewDiscoverySolutionNLPSubscriptionScopeClient(string, azcore.TokenCredential, *arm.ClientOptions) (*DiscoverySolutionNLPSubscriptionScopeClient, error)`
+- New function `*DiscoverySolutionNLPSubscriptionScopeClient.Post(context.Context, *DiscoverySolutionNLPSubscriptionScopeClientPostOptions) (DiscoverySolutionNLPSubscriptionScopeClientPostResponse, error)`
+- New function `NewDiscoverySolutionNLPTenantScopeClient(azcore.TokenCredential, *arm.ClientOptions) (*DiscoverySolutionNLPTenantScopeClient, error)`
+- New function `*DiscoverySolutionNLPTenantScopeClient.Post(context.Context, *DiscoverySolutionNLPTenantScopeClientPostOptions) (DiscoverySolutionNLPTenantScopeClientPostResponse, error)`
+- New function `NewSimplifiedSolutionsClient(azcore.TokenCredential, *arm.ClientOptions) (*SimplifiedSolutionsClient, error)`
+- New function `*SimplifiedSolutionsClient.BeginCreate(context.Context, string, string, SimplifiedSolutionsResource, *SimplifiedSolutionsClientBeginCreateOptions) (*runtime.Poller[SimplifiedSolutionsClientCreateResponse], error)`
+- New function `*SimplifiedSolutionsClient.Get(context.Context, string, string, *SimplifiedSolutionsClientGetOptions) (SimplifiedSolutionsClientGetResponse, error)`
+- New function `*SolutionClient.WarmUp(context.Context, string, string, *SolutionClientWarmUpOptions) (SolutionClientWarmUpResponse, error)`
+- New function `NewSolutionSelfHelpClient(azcore.TokenCredential, *arm.ClientOptions) (*SolutionSelfHelpClient, error)`
+- New function `*SolutionSelfHelpClient.Get(context.Context, string, *SolutionSelfHelpClientGetOptions) (SolutionSelfHelpClientGetResponse, error)`
+- New struct `ClassificationService`
+- New struct `DiscoveryNlpRequest`
+- New struct `DiscoveryNlpResponse`
+- New struct `NlpSolutions`
+- New struct `ReplacementMapsSelfHelp`
+- New struct `SectionSelfHelp`
+- New struct `SimplifiedSolutionsResource`
+- New struct `SimplifiedSolutionsResourceProperties`
+- New struct `SolutionNlpMetadataResource`
+- New struct `SolutionResourceSelfHelp`
+- New struct `SolutionWarmUpRequestBody`
+- New struct `SolutionsResourcePropertiesSelfHelp`
+- New field `Status`, `Version` in struct `AutomatedCheckResult`
+- New field `ValidationScope` in struct `ResponseValidationProperties`
+- New field `EstimatedCompletionTime` in struct `SolutionsDiagnostic`
+- New field `QuestionTitle` in struct `StepInput`
+
+
 ## 2.0.0-beta.3 (2023-12-22)
 ### Breaking Changes
 

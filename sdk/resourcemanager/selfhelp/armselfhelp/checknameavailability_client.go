@@ -41,7 +41,7 @@ func NewCheckNameAvailabilityClient(credential azcore.TokenCredential, options *
 // Post - This API is used to check the uniqueness of a resource name used for a diagnostic, troubleshooter or solutions
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01-preview
+// Generated from API version 2024-03-01-preview
 //   - scope - scope = resourceUri of affected resource.
 //     For example: /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read
 //   - options - CheckNameAvailabilityClientPostOptions contains the optional parameters for the CheckNameAvailabilityClient.Post
@@ -77,7 +77,7 @@ func (client *CheckNameAvailabilityClient) postCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-01-preview")
+	reqQP.Set("api-version", "2024-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.CheckNameAvailabilityRequest != nil {

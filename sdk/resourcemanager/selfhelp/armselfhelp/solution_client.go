@@ -43,22 +43,14 @@ func NewSolutionClient(credential azcore.TokenCredential, options *arm.ClientOpt
 // BeginCreate - Creates a solution for the specific Azure resource or subscription using the inputs ‘solutionId and requiredInputs’
 // from discovery solutions. Azure solutions comprise a comprehensive library of
 // self-help resources that have been thoughtfully curated by Azure engineers to aid customers in resolving typical troubleshooting
-// issues. These solutions encompass (1.) dynamic and context-aware
-// diagnostics, guided troubleshooting wizards, and data visualizations, (2.) rich instructional video tutorials and illustrative
-// diagrams and images, and (3.) thoughtfully assembled textual
-// troubleshooting instructions. All these components are seamlessly converged into unified solutions tailored to address
-// a specific support problem area. Each solution type may require one or more
-// ‘requiredParameters’ that are required to execute the individual solution component. In the absence of the ‘requiredParameters’
-// it is likely that some of the solutions might fail execution, and you
-// might see an empty response.
-// Note:
-// 1. ‘requiredInputs’ from Discovery solutions response must be passed via ‘parameters’ in the request body of Solutions
-// API.
-// 2. ‘requiredParameters’ from the Solutions response is the same as ‘ additionalParameters’ in the request for diagnostics
-// 3. ‘requiredParameters’ from the Solutions response is the same as ‘properties.parameters’ in the request for Troubleshooters
+// issues. These solutions encompass: (1.) Dynamic and context-aware
+// diagnostics, guided troubleshooting wizards, and data visualizations. (2.) Rich instructional video tutorials and illustrative
+// diagrams and images. (3.) Thoughtfully assembled textual troubleshooting
+// instructions. All these components are seamlessly converged into unified solutions tailored to address a specific support
+// problem area.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01-preview
+// Generated from API version 2024-03-01-preview
 //   - scope - scope = resourceUri of affected resource.
 //     For example: /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read
 //   - solutionResourceName - Solution resource Name.
@@ -85,22 +77,14 @@ func (client *SolutionClient) BeginCreate(ctx context.Context, scope string, sol
 // Create - Creates a solution for the specific Azure resource or subscription using the inputs ‘solutionId and requiredInputs’
 // from discovery solutions. Azure solutions comprise a comprehensive library of
 // self-help resources that have been thoughtfully curated by Azure engineers to aid customers in resolving typical troubleshooting
-// issues. These solutions encompass (1.) dynamic and context-aware
-// diagnostics, guided troubleshooting wizards, and data visualizations, (2.) rich instructional video tutorials and illustrative
-// diagrams and images, and (3.) thoughtfully assembled textual
-// troubleshooting instructions. All these components are seamlessly converged into unified solutions tailored to address
-// a specific support problem area. Each solution type may require one or more
-// ‘requiredParameters’ that are required to execute the individual solution component. In the absence of the ‘requiredParameters’
-// it is likely that some of the solutions might fail execution, and you
-// might see an empty response.
-// Note:
-// 1. ‘requiredInputs’ from Discovery solutions response must be passed via ‘parameters’ in the request body of Solutions
-// API.
-// 2. ‘requiredParameters’ from the Solutions response is the same as ‘ additionalParameters’ in the request for diagnostics
-// 3. ‘requiredParameters’ from the Solutions response is the same as ‘properties.parameters’ in the request for Troubleshooters
+// issues. These solutions encompass: (1.) Dynamic and context-aware
+// diagnostics, guided troubleshooting wizards, and data visualizations. (2.) Rich instructional video tutorials and illustrative
+// diagrams and images. (3.) Thoughtfully assembled textual troubleshooting
+// instructions. All these components are seamlessly converged into unified solutions tailored to address a specific support
+// problem area.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01-preview
+// Generated from API version 2024-03-01-preview
 func (client *SolutionClient) create(ctx context.Context, scope string, solutionResourceName string, solutionRequestBody SolutionResource, options *SolutionClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SolutionClient.BeginCreate"
@@ -135,7 +119,7 @@ func (client *SolutionClient) createCreateRequest(ctx context.Context, scope str
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-01-preview")
+	reqQP.Set("api-version", "2024-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, solutionRequestBody); err != nil {
@@ -147,7 +131,7 @@ func (client *SolutionClient) createCreateRequest(ctx context.Context, scope str
 // Get - Get the solution using the applicable solutionResourceName while creating the solution.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01-preview
+// Generated from API version 2024-03-01-preview
 //   - scope - scope = resourceUri of affected resource.
 //     For example: /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read
 //   - solutionResourceName - Solution resource Name.
@@ -187,7 +171,7 @@ func (client *SolutionClient) getCreateRequest(ctx context.Context, scope string
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-01-preview")
+	reqQP.Set("api-version", "2024-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -205,7 +189,7 @@ func (client *SolutionClient) getHandleResponse(resp *http.Response) (SolutionCl
 // BeginUpdate - Update the requiredInputs or additional information needed to execute the solution
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01-preview
+// Generated from API version 2024-03-01-preview
 //   - scope - scope = resourceUri of affected resource.
 //     For example: /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read
 //   - solutionResourceName - Solution resource Name.
@@ -232,7 +216,7 @@ func (client *SolutionClient) BeginUpdate(ctx context.Context, scope string, sol
 // Update - Update the requiredInputs or additional information needed to execute the solution
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01-preview
+// Generated from API version 2024-03-01-preview
 func (client *SolutionClient) update(ctx context.Context, scope string, solutionResourceName string, solutionPatchRequestBody SolutionPatchRequestBody, options *SolutionClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SolutionClient.BeginUpdate"
@@ -267,11 +251,65 @@ func (client *SolutionClient) updateCreateRequest(ctx context.Context, scope str
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-01-preview")
+	reqQP.Set("api-version", "2024-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, solutionPatchRequestBody); err != nil {
 		return nil, err
+	}
+	return req, nil
+}
+
+// WarmUp - Warm up the solution resource by preloading asynchronous diagnostics results into cache
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-03-01-preview
+//   - scope - scope = resourceUri of affected resource.
+//     For example: /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read
+//   - solutionResourceName - Solution resource Name.
+//   - options - SolutionClientWarmUpOptions contains the optional parameters for the SolutionClient.WarmUp method.
+func (client *SolutionClient) WarmUp(ctx context.Context, scope string, solutionResourceName string, options *SolutionClientWarmUpOptions) (SolutionClientWarmUpResponse, error) {
+	var err error
+	const operationName = "SolutionClient.WarmUp"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.warmUpCreateRequest(ctx, scope, solutionResourceName, options)
+	if err != nil {
+		return SolutionClientWarmUpResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return SolutionClientWarmUpResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
+		err = runtime.NewResponseError(httpResp)
+		return SolutionClientWarmUpResponse{}, err
+	}
+	return SolutionClientWarmUpResponse{}, nil
+}
+
+// warmUpCreateRequest creates the WarmUp request.
+func (client *SolutionClient) warmUpCreateRequest(ctx context.Context, scope string, solutionResourceName string, options *SolutionClientWarmUpOptions) (*policy.Request, error) {
+	urlPath := "/{scope}/providers/Microsoft.Help/solutions/{solutionResourceName}/warmup"
+	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
+	if solutionResourceName == "" {
+		return nil, errors.New("parameter solutionResourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{solutionResourceName}", url.PathEscape(solutionResourceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-03-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if options != nil && options.SolutionWarmUpRequestBody != nil {
+		if err := runtime.MarshalAsJSON(req, *options.SolutionWarmUpRequestBody); err != nil {
+			return nil, err
+		}
+		return req, nil
 	}
 	return req, nil
 }

@@ -46,7 +46,7 @@ func NewServicesClient(subscriptionID string, credential azcore.TokenCredential,
 // CheckNameAvailability - Check if a service instance name is available.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01
+// Generated from API version 2024-03-31
 //   - checkNameAvailabilityInputs - Set the name parameter in the CheckNameAvailabilityParameters structure to the name of the
 //     service instance to check.
 //   - options - ServicesClientCheckNameAvailabilityOptions contains the optional parameters for the ServicesClient.CheckNameAvailability
@@ -85,7 +85,7 @@ func (client *ServicesClient) checkNameAvailabilityCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-01")
+	reqQP.Set("api-version", "2024-03-31")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, checkNameAvailabilityInputs); err != nil {
@@ -106,7 +106,7 @@ func (client *ServicesClient) checkNameAvailabilityHandleResponse(resp *http.Res
 // BeginCreateOrUpdate - Create or update the metadata of a service instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01
+// Generated from API version 2024-03-31
 //   - resourceGroupName - The name of the resource group that contains the service instance.
 //   - resourceName - The name of the service instance.
 //   - serviceDescription - The service instance metadata.
@@ -132,7 +132,7 @@ func (client *ServicesClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 // CreateOrUpdate - Create or update the metadata of a service instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01
+// Generated from API version 2024-03-31
 func (client *ServicesClient) createOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, serviceDescription ServicesDescription, options *ServicesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ServicesClient.BeginCreateOrUpdate"
@@ -174,7 +174,7 @@ func (client *ServicesClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-01")
+	reqQP.Set("api-version", "2024-03-31")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, serviceDescription); err != nil {
@@ -186,7 +186,7 @@ func (client *ServicesClient) createOrUpdateCreateRequest(ctx context.Context, r
 // BeginDelete - Delete a service instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01
+// Generated from API version 2024-03-31
 //   - resourceGroupName - The name of the resource group that contains the service instance.
 //   - resourceName - The name of the service instance.
 //   - options - ServicesClientBeginDeleteOptions contains the optional parameters for the ServicesClient.BeginDelete method.
@@ -210,7 +210,7 @@ func (client *ServicesClient) BeginDelete(ctx context.Context, resourceGroupName
 // Delete - Delete a service instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01
+// Generated from API version 2024-03-31
 func (client *ServicesClient) deleteOperation(ctx context.Context, resourceGroupName string, resourceName string, options *ServicesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ServicesClient.BeginDelete"
@@ -252,7 +252,7 @@ func (client *ServicesClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-01")
+	reqQP.Set("api-version", "2024-03-31")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -261,7 +261,7 @@ func (client *ServicesClient) deleteCreateRequest(ctx context.Context, resourceG
 // Get - Get the metadata of a service instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01
+// Generated from API version 2024-03-31
 //   - resourceGroupName - The name of the resource group that contains the service instance.
 //   - resourceName - The name of the service instance.
 //   - options - ServicesClientGetOptions contains the optional parameters for the ServicesClient.Get method.
@@ -307,7 +307,7 @@ func (client *ServicesClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-01")
+	reqQP.Set("api-version", "2024-03-31")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -324,7 +324,7 @@ func (client *ServicesClient) getHandleResponse(resp *http.Response) (ServicesCl
 
 // NewListPager - Get all the service instances in a subscription.
 //
-// Generated from API version 2023-11-01
+// Generated from API version 2024-03-31
 //   - options - ServicesClientListOptions contains the optional parameters for the ServicesClient.NewListPager method.
 func (client *ServicesClient) NewListPager(options *ServicesClientListOptions) *runtime.Pager[ServicesClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ServicesClientListResponse]{
@@ -361,7 +361,7 @@ func (client *ServicesClient) listCreateRequest(ctx context.Context, options *Se
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-01")
+	reqQP.Set("api-version", "2024-03-31")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -378,7 +378,7 @@ func (client *ServicesClient) listHandleResponse(resp *http.Response) (ServicesC
 
 // NewListByResourceGroupPager - Get all the service instances in a resource group.
 //
-// Generated from API version 2023-11-01
+// Generated from API version 2024-03-31
 //   - resourceGroupName - The name of the resource group that contains the service instance.
 //   - options - ServicesClientListByResourceGroupOptions contains the optional parameters for the ServicesClient.NewListByResourceGroupPager
 //     method.
@@ -421,7 +421,7 @@ func (client *ServicesClient) listByResourceGroupCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-01")
+	reqQP.Set("api-version", "2024-03-31")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -439,7 +439,7 @@ func (client *ServicesClient) listByResourceGroupHandleResponse(resp *http.Respo
 // BeginUpdate - Update the metadata of a service instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01
+// Generated from API version 2024-03-31
 //   - resourceGroupName - The name of the resource group that contains the service instance.
 //   - resourceName - The name of the service instance.
 //   - servicePatchDescription - The service instance metadata and security metadata.
@@ -464,7 +464,7 @@ func (client *ServicesClient) BeginUpdate(ctx context.Context, resourceGroupName
 // Update - Update the metadata of a service instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01
+// Generated from API version 2024-03-31
 func (client *ServicesClient) update(ctx context.Context, resourceGroupName string, resourceName string, servicePatchDescription ServicesPatchDescription, options *ServicesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ServicesClient.BeginUpdate"
@@ -506,7 +506,7 @@ func (client *ServicesClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-01")
+	reqQP.Set("api-version", "2024-03-31")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, servicePatchDescription); err != nil {

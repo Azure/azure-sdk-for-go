@@ -46,7 +46,7 @@ func NewIotConnectorFhirDestinationClient(subscriptionID string, credential azco
 // BeginCreateOrUpdate - Creates or updates an IoT Connector FHIR destination resource with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01
+// Generated from API version 2024-03-31
 //   - resourceGroupName - The name of the resource group that contains the service instance.
 //   - workspaceName - The name of workspace resource.
 //   - iotConnectorName - The name of IoT Connector resource.
@@ -74,7 +74,7 @@ func (client *IotConnectorFhirDestinationClient) BeginCreateOrUpdate(ctx context
 // CreateOrUpdate - Creates or updates an IoT Connector FHIR destination resource with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01
+// Generated from API version 2024-03-31
 func (client *IotConnectorFhirDestinationClient) createOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, iotConnectorName string, fhirDestinationName string, iotFhirDestination IotFhirDestination, options *IotConnectorFhirDestinationClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "IotConnectorFhirDestinationClient.BeginCreateOrUpdate"
@@ -124,7 +124,7 @@ func (client *IotConnectorFhirDestinationClient) createOrUpdateCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-01")
+	reqQP.Set("api-version", "2024-03-31")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, iotFhirDestination); err != nil {
@@ -136,7 +136,7 @@ func (client *IotConnectorFhirDestinationClient) createOrUpdateCreateRequest(ctx
 // BeginDelete - Deletes an IoT Connector FHIR destination.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01
+// Generated from API version 2024-03-31
 //   - resourceGroupName - The name of the resource group that contains the service instance.
 //   - workspaceName - The name of workspace resource.
 //   - iotConnectorName - The name of IoT Connector resource.
@@ -163,7 +163,7 @@ func (client *IotConnectorFhirDestinationClient) BeginDelete(ctx context.Context
 // Delete - Deletes an IoT Connector FHIR destination.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01
+// Generated from API version 2024-03-31
 func (client *IotConnectorFhirDestinationClient) deleteOperation(ctx context.Context, resourceGroupName string, workspaceName string, iotConnectorName string, fhirDestinationName string, options *IotConnectorFhirDestinationClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "IotConnectorFhirDestinationClient.BeginDelete"
@@ -213,7 +213,7 @@ func (client *IotConnectorFhirDestinationClient) deleteCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-01")
+	reqQP.Set("api-version", "2024-03-31")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -222,7 +222,7 @@ func (client *IotConnectorFhirDestinationClient) deleteCreateRequest(ctx context
 // Get - Gets the properties of the specified Iot Connector FHIR destination.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01
+// Generated from API version 2024-03-31
 //   - resourceGroupName - The name of the resource group that contains the service instance.
 //   - workspaceName - The name of workspace resource.
 //   - iotConnectorName - The name of IoT Connector resource.
@@ -279,7 +279,7 @@ func (client *IotConnectorFhirDestinationClient) getCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-01")
+	reqQP.Set("api-version", "2024-03-31")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

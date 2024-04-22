@@ -47,7 +47,7 @@ func NewAPIPortalsClient(subscriptionID string, credential azcore.TokenCredentia
 // BeginCreateOrUpdate - Create the default API portal or update the existing API portal.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01-preview
+// Generated from API version 2023-12-01
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serviceName - The name of the Service resource.
@@ -75,7 +75,7 @@ func (client *APIPortalsClient) BeginCreateOrUpdate(ctx context.Context, resourc
 // CreateOrUpdate - Create the default API portal or update the existing API portal.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01-preview
+// Generated from API version 2023-12-01
 func (client *APIPortalsClient) createOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, apiPortalName string, apiPortalResource APIPortalResource, options *APIPortalsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "APIPortalsClient.BeginCreateOrUpdate"
@@ -121,7 +121,7 @@ func (client *APIPortalsClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01-preview")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, apiPortalResource); err != nil {
@@ -133,7 +133,7 @@ func (client *APIPortalsClient) createOrUpdateCreateRequest(ctx context.Context,
 // BeginDelete - Delete the default API portal.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01-preview
+// Generated from API version 2023-12-01
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serviceName - The name of the Service resource.
@@ -159,7 +159,7 @@ func (client *APIPortalsClient) BeginDelete(ctx context.Context, resourceGroupNa
 // Delete - Delete the default API portal.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01-preview
+// Generated from API version 2023-12-01
 func (client *APIPortalsClient) deleteOperation(ctx context.Context, resourceGroupName string, serviceName string, apiPortalName string, options *APIPortalsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "APIPortalsClient.BeginDelete"
@@ -205,7 +205,7 @@ func (client *APIPortalsClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01-preview")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -214,7 +214,7 @@ func (client *APIPortalsClient) deleteCreateRequest(ctx context.Context, resourc
 // Get - Get the API portal and its properties.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01-preview
+// Generated from API version 2023-12-01
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serviceName - The name of the Service resource.
@@ -266,7 +266,7 @@ func (client *APIPortalsClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01-preview")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -283,7 +283,7 @@ func (client *APIPortalsClient) getHandleResponse(resp *http.Response) (APIPorta
 
 // NewListPager - Handles requests to list all resources in a Service.
 //
-// Generated from API version 2023-01-01-preview
+// Generated from API version 2023-12-01
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serviceName - The name of the Service resource.
@@ -331,7 +331,7 @@ func (client *APIPortalsClient) listCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01-preview")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -349,7 +349,7 @@ func (client *APIPortalsClient) listHandleResponse(resp *http.Response) (APIPort
 // ValidateDomain - Check the domains are valid as well as not in use.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01-preview
+// Generated from API version 2023-12-01
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serviceName - The name of the Service resource.
@@ -403,7 +403,7 @@ func (client *APIPortalsClient) validateDomainCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01-preview")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, validatePayload); err != nil {

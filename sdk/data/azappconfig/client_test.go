@@ -473,11 +473,12 @@ func TestSnapshotListConfigurationSettings(t *testing.T) {
 
 	// Cleanup Settings
 	for _, setting := range Settings {
-		_, _ = client.DeleteSetting(context.Background(), *setting.Key, nil)
+		_, err = client.DeleteSetting(context.Background(), *setting.Key, nil)
+		require.NoError(t, err)
 	}
 
 	// Cleanup Snapshots
-	_ = CleanupSnapshot(client, snapshotName)
+	require.NoError(t, CleanupSnapshot(client, snapshotName))
 }
 
 func TestGetSnapshots(t *testing.T) {
@@ -525,7 +526,7 @@ func TestGetSnapshots(t *testing.T) {
 	// Cleanup Snapshots
 	for i := 0; i < ssCreateCount; i++ {
 		cleanSSName := snapshotName + fmt.Sprintf("%d", i)
-		_ = CleanupSnapshot(client, cleanSSName)
+		require.NoError(t, CleanupSnapshot(client, cleanSSName))
 	}
 }
 
@@ -548,7 +549,7 @@ func TestSnapshotArchive(t *testing.T) {
 	require.Equal(t, azappconfig.SnapshotStatusArchived, *archiveSnapshot.Snapshot.Status)
 
 	//Best effort snapshot cleanup
-	_ = CleanupSnapshot(client, snapshotName)
+	require.NoError(t, CleanupSnapshot(client, snapshotName))
 }
 
 func TestSnapshotRecover(t *testing.T) {
@@ -576,7 +577,7 @@ func TestSnapshotRecover(t *testing.T) {
 	require.Equal(t, azappconfig.SnapshotStatusReady, *readySnapshot.Snapshot.Status)
 
 	// Best effort snapshot cleanup
-	_ = CleanupSnapshot(client, snapshotName)
+	require.NoError(t, CleanupSnapshot(client, snapshotName))
 }
 
 func TestSnapshotCreate(t *testing.T) {
@@ -591,7 +592,7 @@ func TestSnapshotCreate(t *testing.T) {
 	require.Equal(t, snapshotName, *snapshot.Name)
 
 	// Best effort cleanup snapshot
-	_ = CleanupSnapshot(client, snapshotName)
+	require.NoError(t, CleanupSnapshot(client, snapshotName))
 }
 
 func CreateSnapshot(c *azappconfig.Client, snapshotName string, sf []azappconfig.SettingFilter) (azappconfig.CreateSnapshotResponse, error) {
@@ -604,10 +605,8 @@ func CreateSnapshot(c *azappconfig.Client, snapshotName string, sf []azappconfig
 		}
 	}
 
-	retPer := int64(3600)
-
-	opts := &azappconfig.CreateSnapshotOptions{
-		RetentionPeriod: &retPer,
+	opts := &azappconfig.BeginCreateSnapshotOptions{
+		RetentionPeriod: to.Ptr[int64](3600),
 	}
 
 	//Create a snapshot
@@ -617,9 +616,6 @@ func CreateSnapshot(c *azappconfig.Client, snapshotName string, sf []azappconfig
 		return azappconfig.CreateSnapshotResponse{}, err
 	}
 
-	if resp == nil {
-		return azappconfig.CreateSnapshotResponse{}, fmt.Errorf("resp is nil")
-	}
 	snapshot, err := resp.PollUntilDone(context.Background(), &runtime.PollUntilDoneOptions{
 		Frequency: 1 * time.Second,
 	})

@@ -38,7 +38,7 @@ func TestUnit_Processor_loadBalancing(t *testing.T) {
 	// which means that we get to claim them all
 	require.Empty(t, lbinfo.aboveMax)
 	require.Empty(t, lbinfo.current)
-	require.False(t, lbinfo.extraPartitionPossible)
+	require.True(t, lbinfo.claimMorePartitions)
 	require.Equal(t, 3, lbinfo.maxAllowed, "only 1 possible owner (us), so we're allowed all the available partitions")
 
 	expectedOwnerships := []Ownership{
@@ -89,8 +89,8 @@ func TestUnit_Processor_loadBalancing(t *testing.T) {
 	require.NoError(t, err)
 	require.Empty(t, lbinfo.aboveMax)
 	require.Empty(t, lbinfo.current)
-	require.True(t, lbinfo.extraPartitionPossible, "divvying 3 partitions amongst 2 processors")
-	require.Equal(t, 2, lbinfo.maxAllowed, "now we're divvying up 3 partitions between 2 processors. At _most_ you can have min+1")
+	require.True(t, lbinfo.claimMorePartitions)
+	require.Equal(t, 1, lbinfo.maxAllowed, "the max is now 1 (instead of 2) because _our_ processor doesn't own enough")
 
 	// there are two available partition ownerships - we should be getting one of them.
 	newProcessorOwnerships, err := secondProcessor.lb.LoadBalance(context.Background(), allPartitionIDs)
@@ -277,6 +277,17 @@ func TestUnit_Processor_Run_startPosition(t *testing.T) {
 	require.Equal(t, int64(405), *checkpoints[0].SequenceNumber)
 }
 
+func TestUnit_Processor_RunCancelledQuickly(t *testing.T) {
+	cps := newCheckpointStoreForTest()
+	processor := newProcessorForTest(t, "processor", cps)
+
+	precancelledContext, cancel := context.WithCancel(context.Background())
+	cancel()
+
+	require.NoError(t, processor.Run(precancelledContext))
+	require.Nil(t, processor.NextPartitionClient(precancelledContext))
+}
+
 func syncMapToNormalMap(src *sync.Map) map[string]*ProcessorPartitionClient {
 	dest := map[string]*ProcessorPartitionClient{}
 
@@ -360,7 +371,12 @@ type newMockPartitionClientResult struct {
 }
 
 func (cc *fakeConsumerClient) GetEventHubProperties(ctx context.Context, options *GetEventHubPropertiesOptions) (EventHubProperties, error) {
-	return cc.getEventHubPropertiesResult, cc.getEventHubPropertiesErr
+	select {
+	case <-ctx.Done():
+		return EventHubProperties{}, ctx.Err()
+	default:
+		return cc.getEventHubPropertiesResult, cc.getEventHubPropertiesErr
+	}
 }
 
 func (cc *fakeConsumerClient) NewPartitionClient(partitionID string, options *PartitionClientOptions) (*PartitionClient, error) {
@@ -414,11 +430,21 @@ type fakeLinksForPartitionClient struct {
 }
 
 func (fc *fakeLinksForPartitionClient) Retry(ctx context.Context, eventName log.Event, operation string, partitionID string, retryOptions exported.RetryOptions, fn func(ctx context.Context, lwid internal.LinkWithID[amqpwrap.AMQPReceiverCloser]) error) error {
-	return nil
+	select {
+	case <-ctx.Done():
+		return ctx.Err()
+	default:
+		return nil
+	}
 }
 
 func (fc *fakeLinksForPartitionClient) Close(ctx context.Context) error {
-	return nil
+	select {
+	case <-ctx.Done():
+		return ctx.Err()
+	default:
+		return nil
+	}
 }
 
 func newFakePartitionClient(partitionID string, offsetExpr string) *PartitionClient {

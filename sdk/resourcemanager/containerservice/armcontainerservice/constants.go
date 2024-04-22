@@ -10,7 +10,7 @@ package armcontainerservice
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice"
-	moduleVersion = "v4.7.0-beta.1"
+	moduleVersion = "v4.9.0-beta.1"
 )
 
 // AddonAutoscaling - Whether VPA add-on is enabled and configured to scale AKS-managed add-ons.
@@ -87,6 +87,24 @@ func PossibleAgentPoolTypeValues() []AgentPoolType {
 		AgentPoolTypeAvailabilitySet,
 		AgentPoolTypeVirtualMachineScaleSets,
 		AgentPoolTypeVirtualMachines,
+	}
+}
+
+// ArtifactSource - The source where the artifacts are downloaded from.
+type ArtifactSource string
+
+const (
+	// ArtifactSourceCache - pull images from Azure Container Registry with cache
+	ArtifactSourceCache ArtifactSource = "Cache"
+	// ArtifactSourceDirect - pull images from Microsoft Artifact Registry
+	ArtifactSourceDirect ArtifactSource = "Direct"
+)
+
+// PossibleArtifactSourceValues returns the possible values for the ArtifactSource const type.
+func PossibleArtifactSourceValues() []ArtifactSource {
+	return []ArtifactSource{
+		ArtifactSourceCache,
+		ArtifactSourceDirect,
 	}
 }
 
@@ -379,7 +397,7 @@ func PossibleKubernetesSupportPlanValues() []KubernetesSupportPlan {
 	}
 }
 
-// Level - The guardrails level to be used. By default, Guardrails is enabled for all namespaces except those that AKS excludes
+// Level - The Safeguards level to be used. By default, Safeguards is enabled for all namespaces except those that AKS excludes
 // via systemExcludedNamespaces
 type Level string
 
@@ -789,6 +807,30 @@ func PossibleOutboundTypeValues() []OutboundType {
 	}
 }
 
+// PodIPAllocationMode - The IP allocation mode for pods in the agent pool. Must be used with podSubnetId. The default is
+// 'DynamicIndividual'.
+type PodIPAllocationMode string
+
+const (
+	// PodIPAllocationModeDynamicIndividual - Each pod gets a single IP address assigned. This is better for maximizing a small
+	// to medium subnet of size /16 or smaller. The Azure CNI cluster with dynamic IP allocation defaults to this mode if the
+	// customer does not explicitly specify a podIPAllocationMode
+	PodIPAllocationModeDynamicIndividual PodIPAllocationMode = "DynamicIndividual"
+	// PodIPAllocationModeStaticBlock - Each node is statically allocated CIDR block(s) of size /28 = 16 IPs per block to satisfy
+	// the maxPods per node. Number of CIDR blocks >= (maxPods / 16). The block, rather than a single IP, counts against the Azure
+	// Vnet Private IP limit of 65K. Therefore block mode is suitable for running larger workloads with more than the current
+	// limit of 65K pods in a cluster. This mode is better suited to scale with larger subnets of /15 or bigger
+	PodIPAllocationModeStaticBlock PodIPAllocationMode = "StaticBlock"
+)
+
+// PossiblePodIPAllocationModeValues returns the possible values for the PodIPAllocationMode const type.
+func PossiblePodIPAllocationModeValues() []PodIPAllocationMode {
+	return []PodIPAllocationMode{
+		PodIPAllocationModeDynamicIndividual,
+		PodIPAllocationModeStaticBlock,
+	}
+}
+
 // PrivateEndpointConnectionProvisioningState - The current provisioning state.
 type PrivateEndpointConnectionProvisioningState string
 
@@ -890,6 +932,25 @@ func PossibleRestrictionLevelValues() []RestrictionLevel {
 	return []RestrictionLevel{
 		RestrictionLevelReadOnly,
 		RestrictionLevelUnrestricted,
+	}
+}
+
+// SafeguardsSupport - Whether the version is preview or stable.
+type SafeguardsSupport string
+
+const (
+	// SafeguardsSupportPreview - The version is preview. It is not recommended to use preview versions on critical production
+	// clusters. The preview version may not support all use-cases.
+	SafeguardsSupportPreview SafeguardsSupport = "Preview"
+	// SafeguardsSupportStable - The version is stable and can be used on critical production clusters.
+	SafeguardsSupportStable SafeguardsSupport = "Stable"
+)
+
+// PossibleSafeguardsSupportValues returns the possible values for the SafeguardsSupport const type.
+func PossibleSafeguardsSupportValues() []SafeguardsSupport {
+	return []SafeguardsSupport{
+		SafeguardsSupportPreview,
+		SafeguardsSupportStable,
 	}
 }
 

@@ -8,6 +8,7 @@ package sas
 
 import (
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/generated"
 	"net"
 	"net/url"
 	"strings"
@@ -22,7 +23,7 @@ const (
 
 var (
 	// Version is the default version encoded in the SAS token.
-	Version = "2022-11-02"
+	Version = generated.ServiceVersion
 )
 
 // TimeFormats ISO 8601 format.

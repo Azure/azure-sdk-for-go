@@ -1,5 +1,5 @@
 displayNames:
-  # this makes it so these don't show up in the scenario names, 
+  # this makes it so these don't show up in the scenario names,
   # since they're just clutter.
   1.5Gi": ""
   4Gi": ""
@@ -23,7 +23,7 @@ matrix:
       testTarget: finitePeeks
       memory: "0.5Gi"
     finiteSendAndReceive:
-      testTarget: finiteSendAndReceive    
+      testTarget: finiteSendAndReceive
       memory: "0.5Gi"
     finiteSessions:
       testTarget: finiteSessions
@@ -50,12 +50,20 @@ matrix:
     mostlyIdleReceiver:
       testTarget: mostlyIdleReceiver
       memory: "0.5Gi"
+    openCloseMeasurements:
+      testTarget: openCloseMeasurements
+      memory: "0.5Gi"
+      args: -rounds 100
     rapidOpenClose:
       testTarget: rapidOpenClose
-      memory: "0.5Gi"      
+      memory: "0.5Gi"
     receiveCancellation:
       testTarget: receiveCancellation
       memory: "0.5Gi"
     sendAndReceiveDrain:
       testTarget: sendAndReceiveDrain
       memory: "0.5Gi"
+    benchmarkBackupSettlementLeak:
+      benchmark: true
+      testTarget: "BenchmarkBackupSettlementLeakWhileOldReceiverStillAlive"
+      memory: "1.0Gi"

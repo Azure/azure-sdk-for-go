@@ -145,7 +145,7 @@ func (p *ProductsServerTransport) dispatchCountDevices(req *http.Request) (*http
 	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CountDeviceResponse, req)
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CountDevicesResponse, req)
 	if err != nil {
 		return nil, err
 	}

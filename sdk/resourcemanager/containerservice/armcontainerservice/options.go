@@ -253,6 +253,12 @@ type ManagedClustersClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
+// ManagedClustersClientGetSafeguardsVersionsOptions contains the optional parameters for the ManagedClustersClient.GetSafeguardsVersions
+// method.
+type ManagedClustersClientGetSafeguardsVersionsOptions struct {
+	// placeholder for future optional parameters
+}
+
 // ManagedClustersClientGetUpgradeProfileOptions contains the optional parameters for the ManagedClustersClient.GetUpgradeProfile
 // method.
 type ManagedClustersClientGetUpgradeProfileOptions struct {
@@ -323,6 +329,12 @@ type ManagedClustersClientListOptions struct {
 // ManagedClustersClientListOutboundNetworkDependenciesEndpointsOptions contains the optional parameters for the ManagedClustersClient.NewListOutboundNetworkDependenciesEndpointsPager
 // method.
 type ManagedClustersClientListOutboundNetworkDependenciesEndpointsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ManagedClustersClientListSafeguardsVersionsOptions contains the optional parameters for the ManagedClustersClient.NewListSafeguardsVersionsPager
+// method.
+type ManagedClustersClientListSafeguardsVersionsOptions struct {
 	// placeholder for future optional parameters
 }
 

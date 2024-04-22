@@ -40,10 +40,10 @@ func NewLinkerClient(credential azcore.TokenCredential, options *arm.ClientOptio
 	return client, nil
 }
 
-// BeginCreateOrUpdate - Create or update linker resource.
+// BeginCreateOrUpdate - Create or update Linker resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-05-01
+// Generated from API version 2023-04-01-preview
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource to be connected.
 //   - linkerName - The name Linker resource.
 //   - parameters - Linker details.
@@ -67,10 +67,10 @@ func (client *LinkerClient) BeginCreateOrUpdate(ctx context.Context, resourceURI
 	}
 }
 
-// CreateOrUpdate - Create or update linker resource.
+// CreateOrUpdate - Create or update Linker resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-05-01
+// Generated from API version 2023-04-01-preview
 func (client *LinkerClient) createOrUpdate(ctx context.Context, resourceURI string, linkerName string, parameters LinkerResource, options *LinkerClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "LinkerClient.BeginCreateOrUpdate"
@@ -105,7 +105,7 @@ func (client *LinkerClient) createOrUpdateCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01")
+	reqQP.Set("api-version", "2023-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -114,10 +114,10 @@ func (client *LinkerClient) createOrUpdateCreateRequest(ctx context.Context, res
 	return req, nil
 }
 
-// BeginDelete - Delete a link.
+// BeginDelete - Delete a Linker.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-05-01
+// Generated from API version 2023-04-01-preview
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource to be connected.
 //   - linkerName - The name Linker resource.
 //   - options - LinkerClientBeginDeleteOptions contains the optional parameters for the LinkerClient.BeginDelete method.
@@ -139,10 +139,10 @@ func (client *LinkerClient) BeginDelete(ctx context.Context, resourceURI string,
 	}
 }
 
-// Delete - Delete a link.
+// Delete - Delete a Linker.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-05-01
+// Generated from API version 2023-04-01-preview
 func (client *LinkerClient) deleteOperation(ctx context.Context, resourceURI string, linkerName string, options *LinkerClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "LinkerClient.BeginDelete"
@@ -177,7 +177,7 @@ func (client *LinkerClient) deleteCreateRequest(ctx context.Context, resourceURI
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01")
+	reqQP.Set("api-version", "2023-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -186,7 +186,7 @@ func (client *LinkerClient) deleteCreateRequest(ctx context.Context, resourceURI
 // Get - Returns Linker resource for a given name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-05-01
+// Generated from API version 2023-04-01-preview
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource to be connected.
 //   - linkerName - The name Linker resource.
 //   - options - LinkerClientGetOptions contains the optional parameters for the LinkerClient.Get method.
@@ -225,7 +225,7 @@ func (client *LinkerClient) getCreateRequest(ctx context.Context, resourceURI st
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01")
+	reqQP.Set("api-version", "2023-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -240,9 +240,10 @@ func (client *LinkerClient) getHandleResponse(resp *http.Response) (LinkerClient
 	return result, nil
 }
 
-// NewListPager - Returns list of Linkers which connects to the resource.
+// NewListPager - Returns list of Linkers which connects to the resource. which supports to config both application and target
+// service during the resource provision.
 //
-// Generated from API version 2022-05-01
+// Generated from API version 2023-04-01-preview
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource to be connected.
 //   - options - LinkerClientListOptions contains the optional parameters for the LinkerClient.NewListPager method.
 func (client *LinkerClient) NewListPager(resourceURI string, options *LinkerClientListOptions) *runtime.Pager[LinkerClientListResponse] {
@@ -277,7 +278,7 @@ func (client *LinkerClient) listCreateRequest(ctx context.Context, resourceURI s
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01")
+	reqQP.Set("api-version", "2023-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -286,16 +287,16 @@ func (client *LinkerClient) listCreateRequest(ctx context.Context, resourceURI s
 // listHandleResponse handles the List response.
 func (client *LinkerClient) listHandleResponse(resp *http.Response) (LinkerClientListResponse, error) {
 	result := LinkerClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.LinkerList); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceList); err != nil {
 		return LinkerClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// ListConfigurations - list source configurations for a linker.
+// ListConfigurations - list source configurations for a Linker.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-05-01
+// Generated from API version 2023-04-01-preview
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource to be connected.
 //   - linkerName - The name Linker resource.
 //   - options - LinkerClientListConfigurationsOptions contains the optional parameters for the LinkerClient.ListConfigurations
@@ -335,7 +336,7 @@ func (client *LinkerClient) listConfigurationsCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01")
+	reqQP.Set("api-version", "2023-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -344,16 +345,16 @@ func (client *LinkerClient) listConfigurationsCreateRequest(ctx context.Context,
 // listConfigurationsHandleResponse handles the ListConfigurations response.
 func (client *LinkerClient) listConfigurationsHandleResponse(resp *http.Response) (LinkerClientListConfigurationsResponse, error) {
 	result := LinkerClientListConfigurationsResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.SourceConfigurationResult); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.ConfigurationResult); err != nil {
 		return LinkerClientListConfigurationsResponse{}, err
 	}
 	return result, nil
 }
 
-// BeginUpdate - Operation to update an existing link.
+// BeginUpdate - Operation to update an existing Linker.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-05-01
+// Generated from API version 2023-04-01-preview
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource to be connected.
 //   - linkerName - The name Linker resource.
 //   - parameters - Linker details.
@@ -376,10 +377,10 @@ func (client *LinkerClient) BeginUpdate(ctx context.Context, resourceURI string,
 	}
 }
 
-// Update - Operation to update an existing link.
+// Update - Operation to update an existing Linker.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-05-01
+// Generated from API version 2023-04-01-preview
 func (client *LinkerClient) update(ctx context.Context, resourceURI string, linkerName string, parameters LinkerPatch, options *LinkerClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "LinkerClient.BeginUpdate"
@@ -414,7 +415,7 @@ func (client *LinkerClient) updateCreateRequest(ctx context.Context, resourceURI
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01")
+	reqQP.Set("api-version", "2023-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -423,10 +424,10 @@ func (client *LinkerClient) updateCreateRequest(ctx context.Context, resourceURI
 	return req, nil
 }
 
-// BeginValidate - Validate a link.
+// BeginValidate - Validate a Linker.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-05-01
+// Generated from API version 2023-04-01-preview
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource to be connected.
 //   - linkerName - The name Linker resource.
 //   - options - LinkerClientBeginValidateOptions contains the optional parameters for the LinkerClient.BeginValidate method.
@@ -437,7 +438,7 @@ func (client *LinkerClient) BeginValidate(ctx context.Context, resourceURI strin
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[LinkerClientValidateResponse]{
-			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			FinalStateVia: runtime.FinalStateViaLocation,
 			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
@@ -448,10 +449,10 @@ func (client *LinkerClient) BeginValidate(ctx context.Context, resourceURI strin
 	}
 }
 
-// Validate - Validate a link.
+// Validate - Validate a Linker.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-05-01
+// Generated from API version 2023-04-01-preview
 func (client *LinkerClient) validate(ctx context.Context, resourceURI string, linkerName string, options *LinkerClientBeginValidateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "LinkerClient.BeginValidate"
@@ -486,7 +487,7 @@ func (client *LinkerClient) validateCreateRequest(ctx context.Context, resourceU
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01")
+	reqQP.Set("api-version", "2023-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

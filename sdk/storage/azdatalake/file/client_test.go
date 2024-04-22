@@ -11,15 +11,24 @@ import (
 	"context"
 	"crypto/md5"
 	"encoding/binary"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/service"
+	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/lease"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/path"
 	"hash/crc64"
 	"io"
 	"math/rand"
 	"net/http"
 	"os"
 	"strconv"
+	"strings"
+	"sync/atomic"
 	"testing"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/service"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
@@ -82,12 +91,46 @@ type UnrecordedTestSuite struct {
 	suite.Suite
 }
 
-//func validateFileDeleted(_require *require.Assertions, fileClient *file.Client) {
-//	_, err := fileClient.GetAccessControl(context.Background(), nil)
-//	_require.Error(err)
+//	func validateFileDeleted(_require *require.Assertions, fileClient *file.Client) {
+//		_, err := fileClient.GetAccessControl(context.Background(), nil)
+//		_require.Error(err)
 //
-//	testcommon.ValidateErrorCode(_require, err, datalakeerror.PathNotFound)
-//}
+//		testcommon.ValidateErrorCode(_require, err, datalakeerror.PathNotFound)
+//	}
+type userAgentTest struct{}
+
+func (u userAgentTest) Do(req *policy.Request) (*http.Response, error) {
+	const userAgentHeader = "User-Agent"
+
+	currentUserAgentHeader := req.Raw().Header.Get(userAgentHeader)
+	if !strings.HasPrefix(currentUserAgentHeader, "azsdk-go-azdatalake/"+exported.ModuleVersion) {
+		return nil, fmt.Errorf(currentUserAgentHeader + " user agent doesn't match expected agent: azsdk-go-azdatalake/vx.xx.xx")
+	}
+
+	return &http.Response{
+		Request:    req.Raw(),
+		Status:     "Created",
+		StatusCode: http.StatusCreated,
+		Header:     http.Header{},
+		Body:       http.NoBody,
+	}, nil
+}
+
+func newTelemetryTestPolicy() policy.Policy {
+	return &userAgentTest{}
+}
+
+func TestUserAgentForAzDatalake(t *testing.T) {
+	client, err := file.NewClientWithNoCredential("https://fake/blob/testpath", &file.ClientOptions{
+		ClientOptions: policy.ClientOptions{
+			PerCallPolicies: []policy.Policy{newTelemetryTestPolicy()},
+		},
+	})
+	require.NoError(t, err)
+	_, err = client.Create(context.Background(), nil)
+	require.NoError(t, err)
+	require.NotNil(t, client)
+}
 
 func (s *UnrecordedTestSuite) TestCreateFileAndDeleteWithConnectionString() {
 
@@ -2834,6 +2877,42 @@ func (s *UnrecordedTestSuite) TestFileUploadDownloadStreamWithCPK() {
 	_require.Equal(testcommon.TestCPKByValue.EncryptionKeySHA256, dResp.EncryptionKeySHA256)
 }
 
+func (s *UnrecordedTestSuite) TestFileUploadDownloadStreamWithEncryptionContext() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	var fileSize int64 = 1 * 1024
+	fileName := testcommon.GenerateFileName(testName)
+	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	content := make([]byte, fileSize)
+	_, err = rand.Read(content)
+	_require.NoError(err)
+
+	err = fClient.UploadStream(context.Background(), streaming.NopCloser(bytes.NewReader(content)), &file.UploadStreamOptions{
+		EncryptionContext: &testcommon.TestEncryptionContext,
+	})
+	_require.NoError(err)
+
+	gResp2, err := fClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*gResp2.EncryptionContext, testcommon.TestEncryptionContext)
+
+	dResp, err := fClient.DownloadStream(context.Background(), nil)
+	_require.NoError(err)
+
+	_require.Equal(testcommon.TestEncryptionContext, *dResp.EncryptionContext)
+}
+
 func (s *UnrecordedTestSuite) TestFileUploadDownloadStreamWithCPKNegative() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -2941,6 +3020,156 @@ func (s *UnrecordedTestSuite) TestFileUploadFile() {
 	_require.EqualValues(downloadedContentMD5, contentMD5)
 }
 
+func (s *UnrecordedTestSuite) TestFileUploadBufferEncryptionContext() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	var fileSize int64 = 10 * 1024
+	fileName := testcommon.GenerateFileName(testName)
+	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	// create local file
+	content := make([]byte, fileSize)
+	_, err = rand.Read(content)
+	_require.NoError(err)
+	err = os.WriteFile("testFile", content, 0644)
+	_require.NoError(err)
+
+	defer func() {
+		err = os.Remove("testFile")
+		_require.NoError(err)
+	}()
+
+	fh, err := os.Open("testFile")
+	_require.NoError(err)
+
+	defer func(fh *os.File) {
+		err := fh.Close()
+		_require.NoError(err)
+	}(fh)
+
+	err = fClient.UploadBuffer(context.Background(), content, &file.UploadBufferOptions{
+		Concurrency:       5,
+		ChunkSize:         4 * 1024,
+		EncryptionContext: &testcommon.TestEncryptionContext,
+	})
+	_require.NoError(err)
+
+	gResp2, err := fClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(testcommon.TestEncryptionContext, *gResp2.EncryptionContext)
+
+}
+
+func (s *UnrecordedTestSuite) TestFileUploadFileEncryptionContext() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	var fileSize int64 = 10 * 1024
+	fileName := testcommon.GenerateFileName(testName)
+	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	// create local file
+	content := make([]byte, fileSize)
+	_, err = rand.Read(content)
+	_require.NoError(err)
+	err = os.WriteFile("testFile", content, 0644)
+	_require.NoError(err)
+
+	defer func() {
+		err = os.Remove("testFile")
+		_require.NoError(err)
+	}()
+
+	fh, err := os.Open("testFile")
+	_require.NoError(err)
+
+	defer func(fh *os.File) {
+		err := fh.Close()
+		_require.NoError(err)
+	}(fh)
+
+	err = fClient.UploadFile(context.Background(), fh, &file.UploadFileOptions{
+		Concurrency:       5,
+		ChunkSize:         4 * 1024,
+		EncryptionContext: &testcommon.TestEncryptionContext,
+	})
+	_require.NoError(err)
+
+	gResp2, err := fClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(testcommon.TestEncryptionContext, *gResp2.EncryptionContext)
+
+	dResp, err := fClient.DownloadStream(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(testcommon.TestEncryptionContext, *dResp.EncryptionContext)
+}
+
+func (s *UnrecordedTestSuite) TestFileDownloadStreamEncryptionContext() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	var fileSize int64 = 10 * 1024
+	fileName := testcommon.GenerateFileName(testName)
+	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := fClient.Create(context.Background(), &file.CreateOptions{EncryptionContext: &testcommon.TestEncryptionContext})
+	_require.NoError(err)
+	_require.NotNil(resp)
+
+	content := make([]byte, fileSize)
+	_, err = rand.Read(content)
+	_require.NoError(err)
+	md5Value := md5.Sum(content)
+	contentMD5 := md5Value[:]
+
+	err = fClient.UploadStream(context.Background(), streaming.NopCloser(bytes.NewReader(content)), nil)
+	_require.NoError(err)
+
+	gResp2, err := fClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*gResp2.ContentLength, fileSize)
+
+	dResp, err := fClient.DownloadStream(context.Background(), nil)
+	_require.NoError(err)
+
+	data, err := io.ReadAll(dResp.Body)
+	_require.NoError(err)
+
+	downloadedMD5Value := md5.Sum(data)
+	downloadedContentMD5 := downloadedMD5Value[:]
+
+	_require.EqualValues(downloadedContentMD5, contentMD5)
+	_require.Equal(testcommon.TestEncryptionContext, *dResp.EncryptionContext)
+}
+
 func (s *RecordedTestSuite) TestSmallFileUploadFile() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -3006,6 +3235,48 @@ func (s *RecordedTestSuite) TestSmallFileUploadFile() {
 	downloadedContentMD5 := downloadedMD5Value[:]
 
 	_require.EqualValues(downloadedContentMD5, contentMD5)
+}
+
+func (s *UnrecordedTestSuite) TestFileGetPropertiesWithEncryptionContext() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	fileName := testcommon.GenerateFileName(testName)
+	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	createFileOpts := &file.CreateOptions{
+		EncryptionContext: &testcommon.TestEncryptionContext,
+	}
+
+	resp, err := fClient.Create(context.Background(), createFileOpts)
+	_require.NoError(err)
+	_require.NotNil(resp)
+
+	response, err := fClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(response)
+	_require.Equal(testcommon.TestEncryptionContext, *response.EncryptionContext)
+
+	fileClient, err := testcommon.GetFileClient(filesystemName, fileName+"test", s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp2, err := fileClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(resp2)
+
+	response2, err := fileClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(response)
+	_require.Nil(response2.EncryptionContext)
 }
 
 func (s *RecordedTestSuite) TestSmallFileUploadFileWithAccessConditionsAndHTTPHeaders() {
@@ -3142,6 +3413,7 @@ func (s *RecordedTestSuite) TestTinyFileUploadFile() {
 	gResp2, err := fClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
 	_require.Equal(*gResp2.ContentLength, fileSize)
+	_require.Equal(*gResp2.ResourceType, "file")
 
 	dResp, err := fClient.DownloadStream(context.Background(), nil)
 	_require.NoError(err)
@@ -3417,6 +3689,197 @@ func (s *RecordedTestSuite) TestDownloadDataContentMD5() {
 	_require.Nil(err)
 	mdf := md5.Sum(content[10:13])
 	_require.Equal(resp1.ContentMD5, mdf[:])
+}
+
+func (s *RecordedTestSuite) TestFileAppendDataWithAcquireLease() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	srcFileName := "src" + testcommon.GenerateFileName(testName)
+
+	srcFClient, err := testcommon.GetFileClient(filesystemName, srcFileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := srcFClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(resp)
+
+	contentSize := 1024 * 8 // 8KB
+	rsc, _ := testcommon.GenerateData(contentSize)
+
+	opts := &file.AppendDataOptions{
+		LeaseAction:     &file.LeaseActionAcquire,
+		LeaseDuration:   to.Ptr(int64(15)),
+		ProposedLeaseID: proposedLeaseIDs[1],
+	}
+	_, err = srcFClient.AppendData(context.Background(), 0, rsc, opts)
+	_require.NoError(err)
+
+	gResp2, err := srcFClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(lease.StateTypeLeased, *gResp2.LeaseState)
+
+	time.Sleep(time.Second * 15)
+
+	//Check if the lease was acquired for the right duration
+	gResp, err := srcFClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(lease.StateTypeExpired, *gResp.LeaseState)
+}
+
+func (s *RecordedTestSuite) TestFileAppendDataWithRenewLease() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	srcFileName := "src" + testcommon.GenerateFileName(testName)
+
+	srcFClient, err := testcommon.GetFileClient(filesystemName, srcFileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	createOpts := file.CreateOptions{
+		ProposedLeaseID: proposedLeaseIDs[0],
+		LeaseDuration:   to.Ptr(int64(15)),
+	}
+
+	resp, err := srcFClient.Create(context.Background(), &createOpts)
+	_require.NoError(err)
+	_require.NotNil(resp)
+
+	gResp2, err := srcFClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(lease.StateTypeLeased, *gResp2.LeaseState)
+
+	//Wait for 15 seconds for lease to expire
+	time.Sleep(15 * time.Second)
+
+	gResp, err := srcFClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(lease.StateTypeExpired, *gResp.LeaseState)
+
+	contentSize := 1024 * 8 // 8KB
+	rsc, _ := testcommon.GenerateData(contentSize)
+
+	opts := &file.AppendDataOptions{
+		LeaseAction:           &file.LeaseActionRenew,
+		LeaseAccessConditions: &file.LeaseAccessConditions{LeaseID: proposedLeaseIDs[0]},
+		LeaseDuration:         to.Ptr(int64(-1)),
+	}
+	_, err = srcFClient.AppendData(context.Background(), 0, rsc, opts)
+	_require.NoError(err)
+
+	gResp2, err = srcFClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(lease.StateTypeLeased, *gResp2.LeaseState)
+}
+
+func (s *RecordedTestSuite) TestFileAppendDataWithReleaseLease() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	srcFileName := "src" + testcommon.GenerateFileName(testName)
+
+	srcFClient, err := testcommon.GetFileClient(filesystemName, srcFileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	createOpts := file.CreateOptions{
+		ProposedLeaseID: proposedLeaseIDs[0],
+		LeaseDuration:   to.Ptr(int64(15)),
+	}
+
+	resp, err := srcFClient.Create(context.Background(), &createOpts)
+	_require.NoError(err)
+	_require.NotNil(resp)
+
+	contentSize := 1024 * 8 // 8KB
+	rsc, _ := testcommon.GenerateData(contentSize)
+
+	opts := &file.AppendDataOptions{
+		LeaseAction:           &file.LeaseActionRelease,
+		LeaseAccessConditions: &file.LeaseAccessConditions{LeaseID: proposedLeaseIDs[0]},
+		Flush:                 to.Ptr(true),
+	}
+
+	_, err = srcFClient.AppendData(context.Background(), 0, rsc, opts)
+	_require.NoError(err)
+
+	gResp, err := srcFClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(lease.StateTypeAvailable, *gResp.LeaseState)
+}
+
+func (s *RecordedTestSuite) TestFileAppendWithFlushReleaseLease() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	srcFileName := "src" + testcommon.GenerateFileName(testName)
+
+	srcFClient, err := testcommon.GetFileClient(filesystemName, srcFileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	createOpts := file.CreateOptions{
+		ProposedLeaseID: proposedLeaseIDs[0],
+		LeaseDuration:   to.Ptr(int64(15)),
+	}
+
+	resp, err := srcFClient.Create(context.Background(), &createOpts)
+	_require.NoError(err)
+	_require.NotNil(resp)
+
+	contentSize := 1024 * 8 // 8KB
+	rsc, _ := testcommon.GenerateData(contentSize)
+
+	_, err = srcFClient.AppendData(context.Background(), 0, rsc,
+		&file.AppendDataOptions{
+			LeaseAccessConditions: &file.LeaseAccessConditions{LeaseID: proposedLeaseIDs[0]},
+		})
+	_require.NoError(err)
+
+	opts := &file.FlushDataOptions{
+		LeaseAction: &file.LeaseActionRelease,
+		AccessConditions: &path.AccessConditions{
+			LeaseAccessConditions: &path.LeaseAccessConditions{LeaseID: proposedLeaseIDs[0]},
+		},
+	}
+
+	_, err = srcFClient.FlushData(context.Background(), int64(contentSize), opts)
+	_require.NoError(err)
+
+	gResp2, err := srcFClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*gResp2.ContentLength, int64(contentSize))
+	_require.Equal(lease.StateTypeAvailable, *gResp2.LeaseState)
 }
 
 func (s *RecordedTestSuite) TestFileAppendAndFlushData() {
@@ -4106,6 +4569,10 @@ func (s *UnrecordedTestSuite) TestFileDownloadFile() {
 		err = os.Remove(name)
 		_require.NoError(err)
 	}(destFileName)
+	defer func(destFile *os.File) {
+		err = destFile.Close()
+		_require.NoError(err)
+	}(destFile)
 
 	cnt, err := fClient.DownloadFile(context.Background(), destFile, &file.DownloadFileOptions{
 		ChunkSize:   10 * 1024 * 1024,
@@ -4114,18 +4581,8 @@ func (s *UnrecordedTestSuite) TestFileDownloadFile() {
 	_require.NoError(err)
 	_require.Equal(cnt, fileSize)
 
-	err = destFile.Close()
-	_require.NoError(err)
-
-	newDestFileHandle, err := os.Open(destFileName)
-	_require.NoError(err)
-	defer func(file *os.File) {
-		err = file.Close()
-		_require.NoError(err)
-	}(newDestFileHandle)
-
 	hash := md5.New()
-	_, err = io.Copy(hash, newDestFileHandle)
+	_, err = io.Copy(hash, destFile)
 	_require.NoError(err)
 	downloadedContentMD5 := hash.Sum(nil)
 
@@ -4191,6 +4648,10 @@ func (s *RecordedTestSuite) TestFileUploadDownloadSmallFile() {
 		err = os.Remove(name)
 		_require.NoError(err)
 	}(destFileName)
+	defer func(destFile *os.File) {
+		err = destFile.Close()
+		_require.NoError(err)
+	}(destFile)
 
 	cnt, err := fClient.DownloadFile(context.Background(), destFile, &file.DownloadFileOptions{
 		ChunkSize:   2 * 1024,
@@ -4199,18 +4660,8 @@ func (s *RecordedTestSuite) TestFileUploadDownloadSmallFile() {
 	_require.NoError(err)
 	_require.Equal(cnt, fileSize)
 
-	err = destFile.Close()
-	_require.NoError(err)
-
-	newDestFileHandle, err := os.Open(destFileName)
-	_require.NoError(err)
-	defer func(file *os.File) {
-		err = file.Close()
-		_require.NoError(err)
-	}(newDestFileHandle)
-
 	destHash := md5.New()
-	_, err = io.Copy(destHash, newDestFileHandle)
+	_, err = io.Copy(destHash, destFile)
 	_require.NoError(err)
 	downloadedContentMD5 := destHash.Sum(nil)
 
@@ -4277,6 +4728,10 @@ func (s *RecordedTestSuite) TestFileUploadDownloadSmallFileWithRange() {
 		err = os.Remove(name)
 		_require.NoError(err)
 	}(destFileName)
+	defer func(destFile *os.File) {
+		err = destFile.Close()
+		_require.NoError(err)
+	}(destFile)
 
 	cnt, err := fClient.DownloadFile(context.Background(), destFile, &file.DownloadFileOptions{
 		ChunkSize:   2 * 1024,
@@ -4289,18 +4744,8 @@ func (s *RecordedTestSuite) TestFileUploadDownloadSmallFileWithRange() {
 	_require.NoError(err)
 	_require.Equal(cnt, fileSize)
 
-	err = destFile.Close()
-	_require.NoError(err)
-
-	newDestFileHandle, err := os.Open(destFileName)
-	_require.NoError(err)
-	defer func(file *os.File) {
-		err = file.Close()
-		_require.NoError(err)
-	}(newDestFileHandle)
-
 	destHash := md5.New()
-	_, err = io.Copy(destHash, newDestFileHandle)
+	_, err = io.Copy(destHash, destFile)
 	_require.NoError(err)
 	downloadedContentMD5 := destHash.Sum(nil)
 
@@ -4367,6 +4812,10 @@ func (s *RecordedTestSuite) TestFileUploadDownloadSmallFileWithAccessConditions(
 		err = os.Remove(name)
 		_require.NoError(err)
 	}(destFileName)
+	defer func(destFile *os.File) {
+		err = destFile.Close()
+		_require.NoError(err)
+	}(destFile)
 
 	cnt, err := fClient.DownloadFile(context.Background(), destFile, &file.DownloadFileOptions{
 		ChunkSize:   2 * 1024,
@@ -4384,18 +4833,8 @@ func (s *RecordedTestSuite) TestFileUploadDownloadSmallFileWithAccessConditions(
 	_require.NoError(err)
 	_require.Equal(cnt, fileSize)
 
-	err = destFile.Close()
-	_require.NoError(err)
-
-	newDestFileHandle, err := os.Open(destFileName)
-	_require.NoError(err)
-	defer func(file *os.File) {
-		err = file.Close()
-		_require.NoError(err)
-	}(newDestFileHandle)
-
 	destHash := md5.New()
-	_, err = io.Copy(destHash, newDestFileHandle)
+	_, err = io.Copy(destHash, destFile)
 	_require.NoError(err)
 	downloadedContentMD5 := destHash.Sum(nil)
 
@@ -4464,6 +4903,10 @@ func (s *RecordedTestSuite) TestFileUploadDownloadSmallFileWithCPK() {
 		err = os.Remove(name)
 		_require.NoError(err)
 	}(destFileName)
+	defer func(destFile *os.File) {
+		err = destFile.Close()
+		_require.NoError(err)
+	}(destFile)
 
 	cnt, err := fClient.DownloadFile(context.Background(), destFile, &file.DownloadFileOptions{
 		ChunkSize:   2 * 1024,
@@ -4477,18 +4920,8 @@ func (s *RecordedTestSuite) TestFileUploadDownloadSmallFileWithCPK() {
 	_require.NoError(err)
 	_require.Equal(cnt, fileSize)
 
-	err = destFile.Close()
-	_require.NoError(err)
-
-	newDestFileHandle, err := os.Open(destFileName)
-	_require.NoError(err)
-	defer func(file *os.File) {
-		err = file.Close()
-		_require.NoError(err)
-	}(newDestFileHandle)
-
 	destHash := md5.New()
-	_, err = io.Copy(destHash, newDestFileHandle)
+	_, err = io.Copy(destHash, destFile)
 	_require.NoError(err)
 	downloadedContentMD5 := destHash.Sum(nil)
 
@@ -4859,7 +5292,7 @@ func (s *RecordedTestSuite) TestFileGetPropertiesResponseCapture() {
 	_require.NoError(err)
 	_require.NotNil(resp2)
 	_require.NotNil(respFromCtxFile) // validate that the respFromCtx is actually populated
-	_require.Equal("file", respFromCtxFile.Header.Get("x-ms-resource-type"))
+	_require.Equal("file", *resp2.ResourceType)
 
 	// This tests filesystem.NewClient
 	fClient = fsClient.NewFileClient(dirName + "/" + fileName)
@@ -4869,7 +5302,7 @@ func (s *RecordedTestSuite) TestFileGetPropertiesResponseCapture() {
 	_require.NoError(err)
 	_require.NotNil(resp2)
 	_require.NotNil(respFromCtxFs) // validate that the respFromCtx is actually populated
-	_require.Equal("file", respFromCtxFs.Header.Get("x-ms-resource-type"))
+	_require.Equal("file", *resp2.ResourceType)
 
 	// This tests service.NewClient
 	serviceClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDatalake, nil)
@@ -4884,7 +5317,7 @@ func (s *RecordedTestSuite) TestFileGetPropertiesResponseCapture() {
 	_require.NoError(err)
 	_require.NotNil(resp2)
 	_require.NotNil(respFromCtxService) // validate that the respFromCtx is actually populated
-	_require.Equal("file", respFromCtxService.Header.Get("x-ms-resource-type"))
+	_require.Equal("file", *resp2.ResourceType)
 
 	// This tests directory.NewClient
 	var respFromCtxDir *http.Response
@@ -4897,7 +5330,7 @@ func (s *RecordedTestSuite) TestFileGetPropertiesResponseCapture() {
 	_require.NoError(err)
 	_require.NotNil(resp2)
 	_require.NotNil(respFromCtxDir) // validate that the respFromCtx is actually populated
-	_require.Equal("file", respFromCtxDir.Header.Get("x-ms-resource-type"))
+	_require.Equal("file", *resp2.ResourceType)
 }
 
 func (s *RecordedTestSuite) TestFileGetPropertiesWithCPK() {
@@ -4968,6 +5401,149 @@ func (s *UnrecordedTestSuite) TestFileCreateDeleteUsingOAuth() {
 	fileURL := "https://" + accountName + ".dfs.core.windows.net/" + filesystemName + "/" + fileName
 
 	fClient, err := file.NewClient(fileURL, cred, nil)
+	_require.NoError(err)
+
+	_, err = fClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	_, err = fClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+}
+
+type fakeUploadBlob struct {
+	numChunks uint64
+}
+
+// nolint
+func (f *fakeUploadBlob) Do(req *http.Request) (*http.Response, error) {
+	statusCode := http.StatusOK
+
+	// check how many times append data is called
+	if val, ok := req.URL.Query()["action"]; ok {
+		if val[0] == "append" {
+			statusCode = http.StatusAccepted
+			atomic.AddUint64(&f.numChunks, 1)
+		}
+	}
+
+	return &http.Response{
+		Request:    req,
+		Status:     "Created",
+		StatusCode: statusCode,
+		Header:     http.Header{},
+		Body:       http.NoBody,
+	}, nil
+}
+
+func TestUploadSmallChunkSize(t *testing.T) {
+	_require := require.New(t)
+
+	fileSize := int64(100 * 1024 * 1024)
+	chunkSize := int64(1024)
+	numChunks := uint64(((fileSize - 1) / chunkSize) + 1)
+	fbb := &fakeUploadBlob{}
+
+	log.SetListener(nil) // no logging
+
+	fClient, err := file.NewClientWithNoCredential("https://fake/blob/path", &file.ClientOptions{
+		ClientOptions: policy.ClientOptions{
+			Transport: fbb,
+		},
+	})
+	_require.NoError(err)
+	_require.NotNil(fClient)
+
+	// create local file
+	_, content := generateData(int(fileSize))
+	err = os.WriteFile("testFile", content, 0644)
+	_require.NoError(err)
+
+	defer func() {
+		err = os.Remove("testFile")
+		_require.NoError(err)
+	}()
+
+	fh, err := os.Open("testFile")
+	_require.NoError(err)
+
+	defer func(fh *os.File) {
+		err := fh.Close()
+		_require.NoError(err)
+	}(fh)
+
+	err = fClient.UploadFile(context.Background(), fh, &file.UploadFileOptions{ChunkSize: chunkSize})
+	_require.NoError(err)
+
+	_require.Equal(atomic.LoadUint64(&fbb.numChunks), numChunks)
+
+	// reset counter
+	atomic.StoreUint64(&fbb.numChunks, 0)
+
+	err = fClient.UploadBuffer(context.Background(), content, &file.UploadBufferOptions{ChunkSize: chunkSize})
+	_require.NoError(err)
+
+	_require.Equal(atomic.LoadUint64(&fbb.numChunks), numChunks)
+}
+
+func (s *RecordedTestSuite) TestFileClientCustomAudience() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDatalake)
+	_require.Greater(len(accountName), 0)
+
+	fileName := testcommon.GenerateFileName(testName)
+	fileURL := "https://" + accountName + ".dfs.core.windows.net/" + filesystemName + "/" + fileName
+
+	options := &file.ClientOptions{Audience: "https://" + accountName + ".blob.core.windows.net"}
+	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
+
+	fClient, err := file.NewClient(fileURL, cred, options)
+	_require.NoError(err)
+
+	_, err = fClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	_, err = fClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+}
+
+func (s *RecordedTestSuite) TestFileClientDefaultAudience() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDatalake)
+	_require.Greater(len(accountName), 0)
+
+	fileName := testcommon.GenerateFileName(testName)
+	fileURL := "https://" + accountName + ".dfs.core.windows.net/" + filesystemName + "/" + fileName
+
+	options := &file.ClientOptions{Audience: "https://storage.azure.com/"}
+	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
+
+	fClient, err := file.NewClient(fileURL, cred, options)
 	_require.NoError(err)
 
 	_, err = fClient.Create(context.Background(), nil)

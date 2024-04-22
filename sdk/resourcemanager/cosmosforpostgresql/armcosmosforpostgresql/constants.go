@@ -10,8 +10,23 @@ package armcosmosforpostgresql
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmosforpostgresql/armcosmosforpostgresql"
-	moduleVersion = "v1.1.0"
+	moduleVersion = "v1.2.0-beta.1"
 )
+
+type ActiveDirectoryAuth string
+
+const (
+	ActiveDirectoryAuthDisabled ActiveDirectoryAuth = "disabled"
+	ActiveDirectoryAuthEnabled  ActiveDirectoryAuth = "enabled"
+)
+
+// PossibleActiveDirectoryAuthValues returns the possible values for the ActiveDirectoryAuth const type.
+func PossibleActiveDirectoryAuthValues() []ActiveDirectoryAuth {
+	return []ActiveDirectoryAuth{
+		ActiveDirectoryAuthDisabled,
+		ActiveDirectoryAuthEnabled,
+	}
+}
 
 // ConfigurationDataType - Data type of the configuration.
 type ConfigurationDataType string
@@ -71,6 +86,38 @@ func PossibleOperationOriginValues() []OperationOrigin {
 	}
 }
 
+type PasswordAuth string
+
+const (
+	PasswordAuthDisabled PasswordAuth = "disabled"
+	PasswordAuthEnabled  PasswordAuth = "enabled"
+)
+
+// PossiblePasswordAuthValues returns the possible values for the PasswordAuth const type.
+func PossiblePasswordAuthValues() []PasswordAuth {
+	return []PasswordAuth{
+		PasswordAuthDisabled,
+		PasswordAuthEnabled,
+	}
+}
+
+type PrincipalType string
+
+const (
+	PrincipalTypeGroup            PrincipalType = "group"
+	PrincipalTypeServicePrincipal PrincipalType = "servicePrincipal"
+	PrincipalTypeUser             PrincipalType = "user"
+)
+
+// PossiblePrincipalTypeValues returns the possible values for the PrincipalType const type.
+func PossiblePrincipalTypeValues() []PrincipalType {
+	return []PrincipalType{
+		PrincipalTypeGroup,
+		PrincipalTypeServicePrincipal,
+		PrincipalTypeUser,
+	}
+}
+
 // PrivateEndpointConnectionProvisioningState - The current provisioning state.
 type PrivateEndpointConnectionProvisioningState string
 
@@ -126,6 +173,21 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 		ProvisioningStateFailed,
 		ProvisioningStateInProgress,
 		ProvisioningStateSucceeded,
+	}
+}
+
+type RoleType string
+
+const (
+	RoleTypeAdmin RoleType = "admin"
+	RoleTypeUser  RoleType = "user"
+)
+
+// PossibleRoleTypeValues returns the possible values for the RoleType const type.
+func PossibleRoleTypeValues() []RoleType {
+	return []RoleType{
+		RoleTypeAdmin,
+		RoleTypeUser,
 	}
 }
 

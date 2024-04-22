@@ -44,6 +44,9 @@ func (t *dateTimeRFC3339) UnmarshalJSON(data []byte) error {
 }
 
 func (t *dateTimeRFC3339) UnmarshalText(data []byte) error {
+	if len(data) == 0 {
+		return nil
+	}
 	layout := utcDateTime
 	if tzOffsetRegex.Match(data) {
 		layout = time.RFC3339Nano

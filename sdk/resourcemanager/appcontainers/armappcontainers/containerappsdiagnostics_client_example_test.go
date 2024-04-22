@@ -14,10 +14,10 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/58be094c6b365f8d4d73a91e293dfb4818e57cf6/specification/app/resource-manager/Microsoft.App/stable/2023-05-01/examples/ContainerAppsDiagnostics_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/ContainerAppsDiagnostics_List.json
 func ExampleContainerAppsDiagnosticsClient_NewListDetectorsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -67,7 +67,7 @@ func ExampleContainerAppsDiagnosticsClient_NewListDetectorsPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/58be094c6b365f8d4d73a91e293dfb4818e57cf6/specification/app/resource-manager/Microsoft.App/stable/2023-05-01/examples/ContainerAppsDiagnostics_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/ContainerAppsDiagnostics_Get.json
 func ExampleContainerAppsDiagnosticsClient_GetDetector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -139,7 +139,7 @@ func ExampleContainerAppsDiagnosticsClient_GetDetector() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/58be094c6b365f8d4d73a91e293dfb4818e57cf6/specification/app/resource-manager/Microsoft.App/stable/2023-05-01/examples/Revisions_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/Revisions_List.json
 func ExampleContainerAppsDiagnosticsClient_NewListRevisionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -204,7 +204,7 @@ func ExampleContainerAppsDiagnosticsClient_NewListRevisionsPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/58be094c6b365f8d4d73a91e293dfb4818e57cf6/specification/app/resource-manager/Microsoft.App/stable/2023-05-01/examples/Revisions_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/Revisions_Get.json
 func ExampleContainerAppsDiagnosticsClient_GetRevision() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -262,7 +262,7 @@ func ExampleContainerAppsDiagnosticsClient_GetRevision() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/58be094c6b365f8d4d73a91e293dfb4818e57cf6/specification/app/resource-manager/Microsoft.App/stable/2023-05-01/examples/ContainerApps_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/ContainerApps_Get.json
 func ExampleContainerAppsDiagnosticsClient_GetRoot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -327,6 +327,7 @@ func ExampleContainerAppsDiagnosticsClient_GetRoot() {
 	// 					Affinity: to.Ptr(armappcontainers.AffinitySticky),
 	// 				},
 	// 				TargetPort: to.Ptr[int32](3000),
+	// 				TargetPortHTTPScheme: to.Ptr(armappcontainers.IngressTargetPortHTTPSchemeHTTP),
 	// 				Traffic: []*armappcontainers.TrafficWeight{
 	// 					{
 	// 						RevisionName: to.Ptr("testcontainerApp0-ab1234"),
@@ -358,6 +359,17 @@ func ExampleContainerAppsDiagnosticsClient_GetRoot() {
 	// 						CPU: to.Ptr[float64](0.2),
 	// 						Memory: to.Ptr("100Mi"),
 	// 					},
+	// 					VolumeMounts: []*armappcontainers.VolumeMount{
+	// 						{
+	// 							MountPath: to.Ptr("/mnt/path1"),
+	// 							SubPath: to.Ptr("subPath1"),
+	// 							VolumeName: to.Ptr("azurefile"),
+	// 						},
+	// 						{
+	// 							MountPath: to.Ptr("/mnt/path2"),
+	// 							SubPath: to.Ptr("subPath2"),
+	// 							VolumeName: to.Ptr("nfsazurefile"),
+	// 					}},
 	// 			}},
 	// 			InitContainers: []*armappcontainers.InitContainer{
 	// 				{
@@ -384,7 +396,22 @@ func ExampleContainerAppsDiagnosticsClient_GetRoot() {
 	// 			ServiceBinds: []*armappcontainers.ServiceBind{
 	// 				{
 	// 					Name: to.Ptr("service"),
+	// 					ClientType: to.Ptr("dotnet"),
+	// 					CustomizedKeys: map[string]*string{
+	// 						"DesiredKey": to.Ptr("defaultKey"),
+	// 					},
 	// 					ServiceID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/containerApps/service"),
+	// 			}},
+	// 			Volumes: []*armappcontainers.Volume{
+	// 				{
+	// 					Name: to.Ptr("azurefile"),
+	// 					StorageName: to.Ptr("storage"),
+	// 					StorageType: to.Ptr(armappcontainers.StorageTypeAzureFile),
+	// 				},
+	// 				{
+	// 					Name: to.Ptr("nfsazurefile"),
+	// 					StorageName: to.Ptr("nfsStorage"),
+	// 					StorageType: to.Ptr(armappcontainers.StorageTypeNfsAzureFile),
 	// 			}},
 	// 		},
 	// 		WorkloadProfileName: to.Ptr("My-GP-01"),

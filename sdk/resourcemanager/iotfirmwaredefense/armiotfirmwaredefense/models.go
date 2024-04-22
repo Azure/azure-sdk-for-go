@@ -10,22 +10,67 @@ package armiotfirmwaredefense
 
 import "time"
 
-// BinaryHardening - Binary hardening of a firmware.
-type BinaryHardening struct {
+// BinaryHardeningFeatures - Binary hardening features.
+type BinaryHardeningFeatures struct {
+	// Canary (stack canaries) flag.
+	Canary *bool
+
+	// NX (no-execute) flag.
+	Nx *bool
+
+	// PIE (position independent executable) flag.
+	Pie *bool
+
+	// RELRO (relocation read-only) flag.
+	Relro *bool
+
+	// Stripped flag.
+	Stripped *bool
+}
+
+// BinaryHardeningListResult - List of binary hardening results.
+type BinaryHardeningListResult struct {
+	// The uri to fetch the next page of resources.
+	NextLink *string
+
+	// READ-ONLY; The list of binary hardening results.
+	Value []*BinaryHardeningResource
+}
+
+// BinaryHardeningResource - binary hardening analysis result resource
+type BinaryHardeningResource struct {
+	// The properties of a binary hardening result found within a firmware image
+	Properties *BinaryHardeningResult
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// BinaryHardeningResult - Binary hardening of a firmware.
+type BinaryHardeningResult struct {
 	// The architecture of the uploaded firmware.
 	Architecture *string
 
 	// ID for the binary hardening result.
 	BinaryHardeningID *string
 
-	// class for binary hardening.
+	// The executable class to indicate 32 or 64 bit.
 	Class *string
 
 	// Binary hardening features.
 	Features *BinaryHardeningFeatures
 
-	// path for binary hardening.
-	Path *string
+	// The executable path.
+	FilePath *string
 
 	// The rpath of the uploaded firmware.
 	Rpath *string
@@ -34,35 +79,11 @@ type BinaryHardening struct {
 	Runpath *string
 }
 
-// BinaryHardeningFeatures - Binary hardening features.
-type BinaryHardeningFeatures struct {
-	// Canary flag.
-	Canary *CanaryFlag
+// BinaryHardeningSummaryResource - Properties for a binary hardening analysis summary.
+type BinaryHardeningSummaryResource struct {
+	// REQUIRED; Describes the type of summary.
+	SummaryType *SummaryType
 
-	// NX flag.
-	Nx *NxFlag
-
-	// PIE flag.
-	Pie *PieFlag
-
-	// RELRO flag.
-	Relro *RelroFlag
-
-	// Stripped flag.
-	Stripped *StrippedFlag
-}
-
-// BinaryHardeningList - List result for binary hardening
-type BinaryHardeningList struct {
-	// The uri to fetch the next page of asset.
-	NextLink *string
-
-	// READ-ONLY; The list of binary hardening results.
-	Value []*BinaryHardening
-}
-
-// BinaryHardeningSummary - Binary hardening summary percentages.
-type BinaryHardeningSummary struct {
 	// Canary summary percentage
 	Canary *int32
 
@@ -82,42 +103,16 @@ type BinaryHardeningSummary struct {
 	TotalFiles *int64
 }
 
-// Component of a firmware.
-type Component struct {
-	// ID for the component.
-	ComponentID *string
-
-	// Name for the component.
-	ComponentName *string
-
-	// Flag if new update is available for the component.
-	IsUpdateAvailable *IsUpdateAvailable
-
-	// License for the component.
-	License *string
-
-	// Paths of the component.
-	Paths []*string
-
-	// Release date for the component.
-	ReleaseDate *time.Time
-
-	// Version for the component.
-	Version *string
-}
-
-// ComponentList - List result for components
-type ComponentList struct {
-	// The uri to fetch the next page of asset.
-	NextLink *string
-
-	// READ-ONLY; The list of components.
-	Value []*Component
+// GetSummaryResourceProperties implements the SummaryResourcePropertiesClassification interface for type BinaryHardeningSummaryResource.
+func (b *BinaryHardeningSummaryResource) GetSummaryResourceProperties() *SummaryResourceProperties {
+	return &SummaryResourceProperties{
+		SummaryType: b.SummaryType,
+	}
 }
 
 // CryptoCertificate - Crypto certificate properties
 type CryptoCertificate struct {
-	// ID for the certificate.
+	// ID for the certificate result.
 	CryptoCertID *string
 
 	// Encoding used for the certificate.
@@ -130,16 +125,16 @@ type CryptoCertificate struct {
 	Fingerprint *string
 
 	// Indicates if the certificate is expired.
-	IsExpired *IsExpired
+	IsExpired *bool
 
-	// Indicates if the certificate was self-signed.
-	IsSelfSigned *IsSelfSigned
+	// Indicates if the certificate is self-signed.
+	IsSelfSigned *bool
 
 	// Indicates the certificate's key size is considered too small to be secure for the key algorithm.
-	IsShortKeySize *IsShortKeySize
+	IsShortKeySize *bool
 
 	// Indicates the signature algorithm used is insecure.
-	IsWeakSignature *IsWeakSignature
+	IsWeakSignature *bool
 
 	// Issue date for the certificate.
 	IssuedDate *time.Time
@@ -174,7 +169,7 @@ type CryptoCertificate struct {
 	// List of functions the certificate can fulfill.
 	Usage []*string
 
-	// READ-ONLY; List of files paths for this certificate
+	// READ-ONLY; List of files where this certificate was found.
 	FilePaths []*string
 }
 
@@ -196,17 +191,38 @@ type CryptoCertificateEntity struct {
 	State *string
 }
 
-// CryptoCertificateList - Crypto certificates list
-type CryptoCertificateList struct {
-	// The uri to fetch the next page of asset.
+// CryptoCertificateListResult - List of crypto certificates.
+type CryptoCertificateListResult struct {
+	// The uri to fetch the next page of resources.
 	NextLink *string
 
-	// READ-ONLY; Crypto certificates list
-	Value []*CryptoCertificate
+	// READ-ONLY; The list of crypto certificate results.
+	Value []*CryptoCertificateResource
 }
 
-// CryptoCertificateSummary - Cryptographic certificate summary values.
-type CryptoCertificateSummary struct {
+// CryptoCertificateResource - Crypto certificate resource
+type CryptoCertificateResource struct {
+	// The properties of a crypto certificate found within a firmware image
+	Properties *CryptoCertificate
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// CryptoCertificateSummaryResource - Properties for cryptographic certificate summary.
+type CryptoCertificateSummaryResource struct {
+	// REQUIRED; Describes the type of summary.
+	SummaryType *SummaryType
+
 	// Total number of expired certificates found.
 	Expired *int64
 
@@ -229,13 +245,20 @@ type CryptoCertificateSummary struct {
 	WeakSignature *int64
 }
 
+// GetSummaryResourceProperties implements the SummaryResourcePropertiesClassification interface for type CryptoCertificateSummaryResource.
+func (c *CryptoCertificateSummaryResource) GetSummaryResourceProperties() *SummaryResourceProperties {
+	return &SummaryResourceProperties{
+		SummaryType: c.SummaryType,
+	}
+}
+
 // CryptoKey - Crypto key properties
 type CryptoKey struct {
-	// ID for the key.
+	// ID for the key result.
 	CryptoKeyID *string
 
 	// Indicates the key size is considered too small to be secure for the algorithm.
-	IsShortKeySize *IsShortKeySize
+	IsShortKeySize *bool
 
 	// Key algorithm name.
 	KeyAlgorithm *string
@@ -252,21 +275,42 @@ type CryptoKey struct {
 	// Functions the key can fulfill.
 	Usage []*string
 
-	// READ-ONLY; List of files paths for this key.
+	// READ-ONLY; List of files where this key was found.
 	FilePaths []*string
 }
 
-// CryptoKeyList - Crypto keys list
-type CryptoKeyList struct {
-	// The uri to fetch the next page of asset.
+// CryptoKeyListResult - List of crypto keys.
+type CryptoKeyListResult struct {
+	// The uri to fetch the next page of resources.
 	NextLink *string
 
-	// READ-ONLY; Crypto keys list
-	Value []*CryptoKey
+	// READ-ONLY; The list of crypto key results.
+	Value []*CryptoKeyResource
 }
 
-// CryptoKeySummary - Cryptographic key summary values.
-type CryptoKeySummary struct {
+// CryptoKeyResource - Crypto key resource
+type CryptoKeyResource struct {
+	// The properties of a crypto key found within a firmware image
+	Properties *CryptoKey
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// CryptoKeySummaryResource - Properties for cryptographic key summary.
+type CryptoKeySummaryResource struct {
+	// REQUIRED; Describes the type of summary.
+	SummaryType *SummaryType
+
 	// Total number of keys found that have a matching paired key or certificate.
 	PairedKeys *int64
 
@@ -283,66 +327,100 @@ type CryptoKeySummary struct {
 	TotalKeys *int64
 }
 
-// Cve - Known CVEs of a firmware.
-type Cve struct {
-	// Component of CVE
-	Component any
-
-	// ID of CVE
-	CveID *string
-
-	// A single CVSS score to represent the CVE. If a V3 score is specified, then it will use the V3 score. Otherwise if the V2
-	// score is specified it will be the V2 score
-	CvssScore *string
-
-	// Cvss V2 score of CVE
-	CvssV2Score *string
-
-	// Cvss V3 score of CVE
-	CvssV3Score *string
-
-	// Cvss version of CVE
-	CvssVersion *string
-
-	// Description of CVE
-	Description *string
-
-	// Name of CVE
-	Name *string
-
-	// Publish date of CVE
-	PublishDate *time.Time
-
-	// Severity of CVE
-	Severity *string
-
-	// Updated date of CVE
-	UpdatedDate *time.Time
-
-	// READ-ONLY; The list of CVE links.
-	Links []*CveLink
+// GetSummaryResourceProperties implements the SummaryResourcePropertiesClassification interface for type CryptoKeySummaryResource.
+func (c *CryptoKeySummaryResource) GetSummaryResourceProperties() *SummaryResourceProperties {
+	return &SummaryResourceProperties{
+		SummaryType: c.SummaryType,
+	}
 }
 
-// CveLink - Link for CVE
+// CveComponent - Properties of the SBOM component for a CVE.
+type CveComponent struct {
+	// ID of the SBOM component
+	ComponentID *string
+
+	// Name of the SBOM component
+	Name *string
+
+	// Version of the SBOM component.
+	Version *string
+}
+
+// CveLink - Properties of a reference link for a CVE.
 type CveLink struct {
-	// Href of CVE link
+	// The destination of the reference link.
 	Href *string
 
-	// Label of CVE link
+	// The label of the reference link.
 	Label *string
 }
 
-// CveList - List result for CVE
-type CveList struct {
-	// The uri to fetch the next page of asset.
+// CveListResult - List of CVE results.
+type CveListResult struct {
+	// The uri to fetch the next page of resources.
 	NextLink *string
 
 	// READ-ONLY; The list of CVE results.
-	Value []*Cve
+	Value []*CveResource
 }
 
-// CveSummary - CVE summary values.
+// CveResource - CVE analysis result resource
+type CveResource struct {
+	// The properties of a CVE result found within a firmware image
+	Properties *CveResult
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// CveResult - Details of a CVE detected in firmware.
+type CveResult struct {
+	// The SBOM component for the CVE.
+	Component *CveComponent
+
+	// ID of the CVE result.
+	CveID *string
+
+	// A single CVSS score to represent the CVE. If a V3 score is specified, then it will use the V3 score. Otherwise if the V2
+	// score is specified it will be the V2 score.
+	CvssScore *string
+
+	// CVSS V2 score of the CVE.
+	CvssV2Score *string
+
+	// CVSS V3 score of the CVE.
+	CvssV3Score *string
+
+	// CVSS version of the CVE.
+	CvssVersion *string
+
+	// The CVE description.
+	Description *string
+
+	// Name of the CVE.
+	Name *string
+
+	// Severity of the CVE.
+	Severity *string
+
+	// READ-ONLY; The list of reference links for the CVE.
+	Links []*CveLink
+}
+
+// CveSummary - Properties for a CVE analysis summary.
 type CveSummary struct {
+	// REQUIRED; Describes the type of summary.
+	SummaryType *SummaryType
+
 	// The total number of critical severity CVEs detected
 	Critical *int64
 
@@ -355,11 +433,15 @@ type CveSummary struct {
 	// The total number of medium severity CVEs detected
 	Medium *int64
 
-	// The total number of undefined severity CVEs detected
-	Undefined *int64
-
 	// The total number of unknown severity CVEs detected
 	Unknown *int64
+}
+
+// GetSummaryResourceProperties implements the SummaryResourcePropertiesClassification interface for type CveSummary.
+func (c *CveSummary) GetSummaryResourceProperties() *SummaryResourceProperties {
+	return &SummaryResourceProperties{
+		SummaryType: c.SummaryType,
+	}
 }
 
 // Firmware definition
@@ -367,7 +449,7 @@ type Firmware struct {
 	// The properties of a firmware
 	Properties *FirmwareProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -407,7 +489,7 @@ type FirmwareProperties struct {
 	Status *Status
 
 	// A list of errors or other messages generated during firmware analysis
-	StatusMessages []any
+	StatusMessages []*StatusMessage
 
 	// Firmware vendor.
 	Vendor *string
@@ -419,8 +501,11 @@ type FirmwareProperties struct {
 	ProvisioningState *ProvisioningState
 }
 
-// FirmwareSummary - Summary result after scanning the firmware.
+// FirmwareSummary - Properties for high level summary of firmware analysis results.
 type FirmwareSummary struct {
+	// REQUIRED; Describes the type of summary.
+	SummaryType *SummaryType
+
 	// Time used for analysis
 	AnalysisTimeSeconds *int64
 
@@ -441,6 +526,13 @@ type FirmwareSummary struct {
 
 	// The number of root file systems found.
 	RootFileSystems *int64
+}
+
+// GetSummaryResourceProperties implements the SummaryResourcePropertiesClassification interface for type FirmwareSummary.
+func (f *FirmwareSummary) GetSummaryResourceProperties() *SummaryResourceProperties {
+	return &SummaryResourceProperties{
+		SummaryType: f.SummaryType,
+	}
 }
 
 // FirmwareUpdateDefinition - Firmware definition
@@ -506,9 +598,6 @@ type OperationListResult struct {
 
 // PairedKey - Details of a matching paired key or certificate.
 type PairedKey struct {
-	// Additional paired key properties
-	AdditionalProperties any
-
 	// ID of the paired key or certificate.
 	ID *string
 
@@ -540,13 +629,123 @@ type PasswordHash struct {
 	Username *string
 }
 
-// PasswordHashList - Password hashes list
-type PasswordHashList struct {
-	// The uri to fetch the next page of asset.
+// PasswordHashListResult - List of password hash results
+type PasswordHashListResult struct {
+	// The uri to fetch the next page of resources.
 	NextLink *string
 
-	// READ-ONLY; Password hashes list
-	Value []*PasswordHash
+	// READ-ONLY; The list of password hash results.
+	Value []*PasswordHashResource
+}
+
+// PasswordHashResource - Password hash resource
+type PasswordHashResource struct {
+	// The properties of a password hash found within a firmware image
+	Properties *PasswordHash
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// SbomComponent - SBOM component of a firmware.
+type SbomComponent struct {
+	// ID for the component.
+	ComponentID *string
+
+	// Name for the component.
+	ComponentName *string
+
+	// File paths related to the component.
+	FilePaths []*string
+
+	// License for the component.
+	License *string
+
+	// Version for the component.
+	Version *string
+}
+
+// SbomComponentListResult - List of SBOM results.
+type SbomComponentListResult struct {
+	// The uri to fetch the next page of resources.
+	NextLink *string
+
+	// READ-ONLY; The list of SBOM components.
+	Value []*SbomComponentResource
+}
+
+// SbomComponentResource - SBOM analysis result resource
+type SbomComponentResource struct {
+	// The properties of an SBOM component found within a firmware image
+	Properties *SbomComponent
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// StatusMessage - Error and status message
+type StatusMessage struct {
+	// The error code
+	ErrorCode *int64
+
+	// The error or status message
+	Message *string
+}
+
+// SummaryListResult - List of analysis summaries.
+type SummaryListResult struct {
+	// The uri to fetch the next page of resources.
+	NextLink *string
+
+	// READ-ONLY; The list of summaries.
+	Value []*SummaryResource
+}
+
+// SummaryResource - The object representing a firmware analysis summary resource.
+type SummaryResource struct {
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Properties of an analysis summary.
+	Properties SummaryResourcePropertiesClassification
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// SummaryResourceProperties - Properties of an analysis summary.
+type SummaryResourceProperties struct {
+	// REQUIRED; Describes the type of summary.
+	SummaryType *SummaryType
+}
+
+// GetSummaryResourceProperties implements the SummaryResourcePropertiesClassification interface for type SummaryResourceProperties.
+func (s *SummaryResourceProperties) GetSummaryResourceProperties() *SummaryResourceProperties {
+	return s
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
@@ -574,9 +773,6 @@ type SystemData struct {
 type URLToken struct {
 	// READ-ONLY; SAS URL for creating or accessing a blob file.
 	URL *string
-
-	// READ-ONLY; SAS URL for file uploading. Kept for backwards compatibility
-	UploadURL *string
 }
 
 // Workspace - Firmware analysis workspace.
@@ -590,7 +786,7 @@ type Workspace struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource

@@ -28,7 +28,7 @@ type ChatTranscriptsClient struct {
 }
 
 // NewChatTranscriptsClient creates a new instance of ChatTranscriptsClient with the specified values.
-//   - subscriptionID - Azure subscription Id.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewChatTranscriptsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ChatTranscriptsClient, error) {
@@ -46,7 +46,7 @@ func NewChatTranscriptsClient(subscriptionID string, credential azcore.TokenCred
 // Get - Returns chatTranscript details for a support ticket under a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2024-04-01
 //   - supportTicketName - Support ticket name.
 //   - chatTranscriptName - ChatTranscript name.
 //   - options - ChatTranscriptsClientGetOptions contains the optional parameters for the ChatTranscriptsClient.Get method.
@@ -92,7 +92,7 @@ func (client *ChatTranscriptsClient) getCreateRequest(ctx context.Context, suppo
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -109,7 +109,7 @@ func (client *ChatTranscriptsClient) getHandleResponse(resp *http.Response) (Cha
 
 // NewListPager - Lists all chat transcripts for a support ticket under subscription
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2024-04-01
 //   - supportTicketName - Support ticket name.
 //   - options - ChatTranscriptsClientListOptions contains the optional parameters for the ChatTranscriptsClient.NewListPager
 //     method.
@@ -152,7 +152,7 @@ func (client *ChatTranscriptsClient) listCreateRequest(ctx context.Context, supp
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

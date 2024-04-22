@@ -47,7 +47,7 @@ func NewPoliciesClient(subscriptionID string, credential azcore.TokenCredential,
 // BeginCreateOrUpdate - Create or update policy with specified rule set name within a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-05-01
+// Generated from API version 2024-02-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - policyName - The name of the Web Application Firewall Policy.
 //   - parameters - Policy to be created.
@@ -73,7 +73,7 @@ func (client *PoliciesClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 // CreateOrUpdate - Create or update policy with specified rule set name within a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-05-01
+// Generated from API version 2024-02-01
 func (client *PoliciesClient) createOrUpdate(ctx context.Context, resourceGroupName string, policyName string, parameters WebApplicationFirewallPolicy, options *PoliciesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PoliciesClient.BeginCreateOrUpdate"
@@ -115,7 +115,7 @@ func (client *PoliciesClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01")
+	reqQP.Set("api-version", "2024-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -127,7 +127,7 @@ func (client *PoliciesClient) createOrUpdateCreateRequest(ctx context.Context, r
 // BeginDelete - Deletes Policy
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-05-01
+// Generated from API version 2024-02-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - policyName - The name of the Web Application Firewall Policy.
 //   - options - PoliciesClientBeginDeleteOptions contains the optional parameters for the PoliciesClient.BeginDelete method.
@@ -151,7 +151,7 @@ func (client *PoliciesClient) BeginDelete(ctx context.Context, resourceGroupName
 // Delete - Deletes Policy
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-05-01
+// Generated from API version 2024-02-01
 func (client *PoliciesClient) deleteOperation(ctx context.Context, resourceGroupName string, policyName string, options *PoliciesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PoliciesClient.BeginDelete"
@@ -193,7 +193,7 @@ func (client *PoliciesClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01")
+	reqQP.Set("api-version", "2024-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -201,7 +201,7 @@ func (client *PoliciesClient) deleteCreateRequest(ctx context.Context, resourceG
 // Get - Retrieve protection policy with specified name within a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-05-01
+// Generated from API version 2024-02-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - policyName - The name of the Web Application Firewall Policy.
 //   - options - PoliciesClientGetOptions contains the optional parameters for the PoliciesClient.Get method.
@@ -247,7 +247,7 @@ func (client *PoliciesClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01")
+	reqQP.Set("api-version", "2024-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -264,7 +264,7 @@ func (client *PoliciesClient) getHandleResponse(resp *http.Response) (PoliciesCl
 
 // NewListPager - Lists all of the protection policies within a resource group.
 //
-// Generated from API version 2022-05-01
+// Generated from API version 2024-02-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - options - PoliciesClientListOptions contains the optional parameters for the PoliciesClient.NewListPager method.
 func (client *PoliciesClient) NewListPager(resourceGroupName string, options *PoliciesClientListOptions) *runtime.Pager[PoliciesClientListResponse] {
@@ -306,7 +306,7 @@ func (client *PoliciesClient) listCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01")
+	reqQP.Set("api-version", "2024-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -323,7 +323,7 @@ func (client *PoliciesClient) listHandleResponse(resp *http.Response) (PoliciesC
 
 // NewListBySubscriptionPager - Lists all of the protection policies within a subscription.
 //
-// Generated from API version 2022-05-01
+// Generated from API version 2024-02-01
 //   - options - PoliciesClientListBySubscriptionOptions contains the optional parameters for the PoliciesClient.NewListBySubscriptionPager
 //     method.
 func (client *PoliciesClient) NewListBySubscriptionPager(options *PoliciesClientListBySubscriptionOptions) *runtime.Pager[PoliciesClientListBySubscriptionResponse] {
@@ -361,7 +361,7 @@ func (client *PoliciesClient) listBySubscriptionCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01")
+	reqQP.Set("api-version", "2024-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -380,7 +380,7 @@ func (client *PoliciesClient) listBySubscriptionHandleResponse(resp *http.Respon
 // and resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-05-01
+// Generated from API version 2024-02-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - policyName - The name of the Web Application Firewall Policy.
 //   - parameters - FrontdoorWebApplicationFirewallPolicy parameters to be patched.
@@ -406,7 +406,7 @@ func (client *PoliciesClient) BeginUpdate(ctx context.Context, resourceGroupName
 // resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-05-01
+// Generated from API version 2024-02-01
 func (client *PoliciesClient) update(ctx context.Context, resourceGroupName string, policyName string, parameters TagsObject, options *PoliciesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PoliciesClient.BeginUpdate"
@@ -448,7 +448,7 @@ func (client *PoliciesClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01")
+	reqQP.Set("api-version", "2024-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

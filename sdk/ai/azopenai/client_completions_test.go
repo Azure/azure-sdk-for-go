@@ -15,63 +15,45 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestClient_GetCompletions_AzureOpenAI(t *testing.T) {
-	client := newTestClient(t, azureOpenAI.Endpoint)
-	testGetCompletions(t, client, true)
-}
+func TestClient_GetCompletions(t *testing.T) {
+	testFn := func(t *testing.T, epm endpointWithModel) {
+		client := newTestClient(t, epm.Endpoint)
 
-func TestClient_GetCompletions_OpenAI(t *testing.T) {
-	if testing.Short() {
-		t.Skip("Skipping OpenAI tests when attempting to do quick tests")
-	}
+		resp, err := client.GetCompletions(context.Background(), azopenai.CompletionsOptions{
+			Prompt:         []string{"What is Azure OpenAI?"},
+			MaxTokens:      to.Ptr(int32(2048 - 127)),
+			Temperature:    to.Ptr(float32(0.0)),
+			DeploymentName: &epm.Model,
+		}, nil)
+		skipNowIfThrottled(t, err)
+		require.NoError(t, err)
 
-	client := newOpenAIClientForTest(t)
-	testGetCompletions(t, client, false)
-}
+		// we'll do a general check here - as models change the answers can also change, token usages are different,
+		// etc... So we'll just make sure data is coming back and is reasonable.
+		require.NotZero(t, *resp.Completions.Usage.PromptTokens)
+		require.NotZero(t, *resp.Completions.Usage.CompletionTokens)
+		require.NotZero(t, *resp.Completions.Usage.TotalTokens)
+		require.Equal(t, int32(0), *resp.Completions.Choices[0].Index)
+		require.Equal(t, azopenai.CompletionsFinishReasonStopped, *resp.Completions.Choices[0].FinishReason)
 
-func testGetCompletions(t *testing.T, client *azopenai.Client, isAzure bool) {
-	deploymentID := openAI.Completions
+		require.NotEmpty(t, *resp.Completions.Choices[0].Text)
 
-	if isAzure {
-		deploymentID = azureOpenAI.Completions
-	}
-
-	resp, err := client.GetCompletions(context.Background(), azopenai.CompletionsOptions{
-		Prompt:         []string{"What is Azure OpenAI?"},
-		MaxTokens:      to.Ptr(int32(2048 - 127)),
-		Temperature:    to.Ptr(float32(0.0)),
-		DeploymentName: &deploymentID,
-	}, nil)
-	skipNowIfThrottled(t, err)
-	require.NoError(t, err)
-
-	want := azopenai.GetCompletionsResponse{
-		Completions: azopenai.Completions{
-			Choices: []azopenai.Choice{
+		if epm.Endpoint.Azure {
+			require.Equal(t, safeContentFilter, resp.Completions.Choices[0].ContentFilterResults)
+			require.Equal(t, []azopenai.ContentFilterResultsForPrompt{
 				{
-					Text:         to.Ptr("\n\nAzure OpenAI is a platform from Microsoft that provides access to OpenAI's artificial intelligence (AI) technologies. It enables developers to build, train, and deploy AI models in the cloud. Azure OpenAI provides access to OpenAI's powerful AI technologies, such as GPT-3, which can be used to create natural language processing (NLP) applications, computer vision models, and reinforcement learning models."),
-					Index:        to.Ptr(int32(0)),
-					FinishReason: to.Ptr(azopenai.CompletionsFinishReason("stop")),
-					LogProbs:     nil,
-				},
-			},
-			Usage: &azopenai.CompletionsUsage{
-				CompletionTokens: to.Ptr(int32(85)),
-				PromptTokens:     to.Ptr(int32(6)),
-				TotalTokens:      to.Ptr(int32(91)),
-			},
-		},
-	}
-
-	if isAzure {
-		want.Choices[0].ContentFilterResults = (*azopenai.ContentFilterResultsForChoice)(safeContentFilter)
-		want.PromptFilterResults = []azopenai.ContentFilterResultsForPrompt{
-			{PromptIndex: to.Ptr[int32](0), ContentFilterResults: safeContentFilterResultDetailsForPrompt},
+					PromptIndex:          to.Ptr[int32](0),
+					ContentFilterResults: safeContentFilterResultDetailsForPrompt,
+				}}, resp.PromptFilterResults)
 		}
+
 	}
 
-	want.ID = resp.Completions.ID
-	want.Created = resp.Completions.Created
+	t.Run("AzureOpenAI", func(t *testing.T) {
+		testFn(t, azureOpenAI.Completions)
+	})
 
-	require.Equal(t, want, resp)
+	t.Run("OpenAI", func(t *testing.T) {
+		testFn(t, openAI.Completions)
+	})
 }

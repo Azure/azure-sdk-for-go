@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sphere/armsphere"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ed9bde6a3db71b84fdba076ba0546213bcce56ee/specification/sphere/resource-manager/Microsoft.AzureSphere/preview/2022-09-01-preview/examples/GetCertificates.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/09c37754dac91874ff689ed1e60effb4268c8669/specification/sphere/resource-manager/Microsoft.AzureSphere/stable/2024-04-01/examples/GetCertificates.json
 func ExampleCertificatesClient_NewListByCatalogPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -51,7 +51,7 @@ func ExampleCertificatesClient_NewListByCatalogPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ed9bde6a3db71b84fdba076ba0546213bcce56ee/specification/sphere/resource-manager/Microsoft.AzureSphere/preview/2022-09-01-preview/examples/GetCertificate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/09c37754dac91874ff689ed1e60effb4268c8669/specification/sphere/resource-manager/Microsoft.AzureSphere/stable/2024-04-01/examples/GetCertificate.json
 func ExampleCertificatesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -73,7 +73,7 @@ func ExampleCertificatesClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ed9bde6a3db71b84fdba076ba0546213bcce56ee/specification/sphere/resource-manager/Microsoft.AzureSphere/preview/2022-09-01-preview/examples/PostRetrieveCatalogCertChain.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/09c37754dac91874ff689ed1e60effb4268c8669/specification/sphere/resource-manager/Microsoft.AzureSphere/stable/2024-04-01/examples/PostRetrieveCatalogCertChain.json
 func ExampleCertificatesClient_RetrieveCertChain() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -96,7 +96,7 @@ func ExampleCertificatesClient_RetrieveCertChain() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ed9bde6a3db71b84fdba076ba0546213bcce56ee/specification/sphere/resource-manager/Microsoft.AzureSphere/preview/2022-09-01-preview/examples/PostRetrieveProofOfPossessionNonce.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/09c37754dac91874ff689ed1e60effb4268c8669/specification/sphere/resource-manager/Microsoft.AzureSphere/stable/2024-04-01/examples/PostRetrieveProofOfPossessionNonce.json
 func ExampleCertificatesClient_RetrieveProofOfPossessionNonce() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

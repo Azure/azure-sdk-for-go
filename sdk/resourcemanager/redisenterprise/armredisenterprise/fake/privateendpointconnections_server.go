@@ -15,7 +15,7 @@ import (
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redisenterprise/armredisenterprise"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redisenterprise/armredisenterprise/v2"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -23,9 +23,9 @@ import (
 
 // PrivateEndpointConnectionsServer is a fake server for instances of the armredisenterprise.PrivateEndpointConnectionsClient type.
 type PrivateEndpointConnectionsServer struct {
-	// Delete is the fake for method PrivateEndpointConnectionsClient.Delete
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
-	Delete func(ctx context.Context, resourceGroupName string, clusterName string, privateEndpointConnectionName string, options *armredisenterprise.PrivateEndpointConnectionsClientDeleteOptions) (resp azfake.Responder[armredisenterprise.PrivateEndpointConnectionsClientDeleteResponse], errResp azfake.ErrorResponder)
+	// BeginDelete is the fake for method PrivateEndpointConnectionsClient.BeginDelete
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginDelete func(ctx context.Context, resourceGroupName string, clusterName string, privateEndpointConnectionName string, options *armredisenterprise.PrivateEndpointConnectionsClientBeginDeleteOptions) (resp azfake.PollerResponder[armredisenterprise.PrivateEndpointConnectionsClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method PrivateEndpointConnectionsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -46,6 +46,7 @@ type PrivateEndpointConnectionsServer struct {
 func NewPrivateEndpointConnectionsServerTransport(srv *PrivateEndpointConnectionsServer) *PrivateEndpointConnectionsServerTransport {
 	return &PrivateEndpointConnectionsServerTransport{
 		srv:          srv,
+		beginDelete:  newTracker[azfake.PollerResponder[armredisenterprise.PrivateEndpointConnectionsClientDeleteResponse]](),
 		newListPager: newTracker[azfake.PagerResponder[armredisenterprise.PrivateEndpointConnectionsClientListResponse]](),
 		beginPut:     newTracker[azfake.PollerResponder[armredisenterprise.PrivateEndpointConnectionsClientPutResponse]](),
 	}
@@ -55,6 +56,7 @@ func NewPrivateEndpointConnectionsServerTransport(srv *PrivateEndpointConnection
 // Don't use this type directly, use NewPrivateEndpointConnectionsServerTransport instead.
 type PrivateEndpointConnectionsServerTransport struct {
 	srv          *PrivateEndpointConnectionsServer
+	beginDelete  *tracker[azfake.PollerResponder[armredisenterprise.PrivateEndpointConnectionsClientDeleteResponse]]
 	newListPager *tracker[azfake.PagerResponder[armredisenterprise.PrivateEndpointConnectionsClientListResponse]]
 	beginPut     *tracker[azfake.PollerResponder[armredisenterprise.PrivateEndpointConnectionsClientPutResponse]]
 }
@@ -71,8 +73,8 @@ func (p *PrivateEndpointConnectionsServerTransport) Do(req *http.Request) (*http
 	var err error
 
 	switch method {
-	case "PrivateEndpointConnectionsClient.Delete":
-		resp, err = p.dispatchDelete(req)
+	case "PrivateEndpointConnectionsClient.BeginDelete":
+		resp, err = p.dispatchBeginDelete(req)
 	case "PrivateEndpointConnectionsClient.Get":
 		resp, err = p.dispatchGet(req)
 	case "PrivateEndpointConnectionsClient.NewListPager":
@@ -90,40 +92,51 @@ func (p *PrivateEndpointConnectionsServerTransport) Do(req *http.Request) (*http
 	return resp, nil
 }
 
-func (p *PrivateEndpointConnectionsServerTransport) dispatchDelete(req *http.Request) (*http.Response, error) {
-	if p.srv.Delete == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
+func (p *PrivateEndpointConnectionsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
+	if p.srv.BeginDelete == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Cache/redisEnterprise/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/privateEndpointConnections/(?P<privateEndpointConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	beginDelete := p.beginDelete.get(req)
+	if beginDelete == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Cache/redisEnterprise/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/privateEndpointConnections/(?P<privateEndpointConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
+		if err != nil {
+			return nil, err
+		}
+		privateEndpointConnectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("privateEndpointConnectionName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := p.srv.BeginDelete(req.Context(), resourceGroupNameParam, clusterNameParam, privateEndpointConnectionNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginDelete = &respr
+		p.beginDelete.add(req, beginDelete)
 	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+
+	resp, err := server.PollerResponderNext(beginDelete, req)
 	if err != nil {
 		return nil, err
 	}
-	clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
-	if err != nil {
-		return nil, err
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		p.beginDelete.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	privateEndpointConnectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("privateEndpointConnectionName")])
-	if err != nil {
-		return nil, err
+	if !server.PollerResponderMore(beginDelete) {
+		p.beginDelete.remove(req)
 	}
-	respr, errRespr := p.srv.Delete(req.Context(), resourceGroupNameParam, clusterNameParam, privateEndpointConnectionNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK, http.StatusNoContent}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", respContent.HTTPStatus)}
-	}
-	resp, err := server.NewResponse(respContent, req, nil)
-	if err != nil {
-		return nil, err
-	}
+
 	return resp, nil
 }
 

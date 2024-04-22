@@ -16,6 +16,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"strconv"
 	"strings"
@@ -25,6 +26,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"
+	"github.com/stretchr/testify/require"
 )
 
 func assertion(cert *x509.Certificate, key crypto.PrivateKey) (string, error) {
@@ -46,6 +48,23 @@ func assertion(cert *x509.Certificate, key crypto.PrivateKey) (string, error) {
 }
 
 func TestWorkloadIdentityCredential_Live(t *testing.T) {
+	// This test triggers the managed identity test app deployed to Azure Kubernetes Service.
+	// See the bicep file and test resources scripts for details.
+	// It triggers the app with kubectl because the test subscription prohibits opening ports to the internet.
+	pod := os.Getenv("AZIDENTITY_POD_NAME")
+	if pod == "" {
+		t.Skip("set AZIDENTITY_POD_NAME to run this test")
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
+	defer cancel()
+	cmd := exec.CommandContext(ctx, "kubectl", "exec", pod, "--", "wget", "-qO-", "localhost")
+	b, err := cmd.CombinedOutput()
+	s := string(b)
+	require.NoError(t, err, s)
+	require.Equal(t, "test passed", s)
+}
+
+func TestWorkloadIdentityCredential_Recorded(t *testing.T) {
 	cert, err := os.ReadFile(liveSP.pemPath)
 	if err != nil {
 		t.Fatal(err)

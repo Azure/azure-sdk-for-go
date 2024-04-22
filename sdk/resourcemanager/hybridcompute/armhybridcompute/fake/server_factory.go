@@ -19,12 +19,9 @@ import (
 
 // ServerFactory is a fake server for instances of the armhybridcompute.ClientFactory type.
 type ServerFactory struct {
-	AgentVersionServer               AgentVersionServer
 	ExtensionMetadataServer          ExtensionMetadataServer
-	HybridIdentityMetadataServer     HybridIdentityMetadataServer
-	LicenseProfilesServer            LicenseProfilesServer
-	LicensesServer                   LicensesServer
 	MachineExtensionsServer          MachineExtensionsServer
+	MachineRunCommandsServer         MachineRunCommandsServer
 	MachinesServer                   MachinesServer
 	ManagementServer                 ManagementServer
 	NetworkProfileServer             NetworkProfileServer
@@ -48,12 +45,9 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 type ServerFactoryTransport struct {
 	srv                                *ServerFactory
 	trMu                               sync.Mutex
-	trAgentVersionServer               *AgentVersionServerTransport
 	trExtensionMetadataServer          *ExtensionMetadataServerTransport
-	trHybridIdentityMetadataServer     *HybridIdentityMetadataServerTransport
-	trLicenseProfilesServer            *LicenseProfilesServerTransport
-	trLicensesServer                   *LicensesServerTransport
 	trMachineExtensionsServer          *MachineExtensionsServerTransport
+	trMachineRunCommandsServer         *MachineRunCommandsServerTransport
 	trMachinesServer                   *MachinesServerTransport
 	trManagementServer                 *ManagementServerTransport
 	trNetworkProfileServer             *NetworkProfileServerTransport
@@ -76,32 +70,21 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	var err error
 
 	switch client {
-	case "AgentVersionClient":
-		initServer(s, &s.trAgentVersionServer, func() *AgentVersionServerTransport { return NewAgentVersionServerTransport(&s.srv.AgentVersionServer) })
-		resp, err = s.trAgentVersionServer.Do(req)
 	case "ExtensionMetadataClient":
 		initServer(s, &s.trExtensionMetadataServer, func() *ExtensionMetadataServerTransport {
 			return NewExtensionMetadataServerTransport(&s.srv.ExtensionMetadataServer)
 		})
 		resp, err = s.trExtensionMetadataServer.Do(req)
-	case "HybridIdentityMetadataClient":
-		initServer(s, &s.trHybridIdentityMetadataServer, func() *HybridIdentityMetadataServerTransport {
-			return NewHybridIdentityMetadataServerTransport(&s.srv.HybridIdentityMetadataServer)
-		})
-		resp, err = s.trHybridIdentityMetadataServer.Do(req)
-	case "LicenseProfilesClient":
-		initServer(s, &s.trLicenseProfilesServer, func() *LicenseProfilesServerTransport {
-			return NewLicenseProfilesServerTransport(&s.srv.LicenseProfilesServer)
-		})
-		resp, err = s.trLicenseProfilesServer.Do(req)
-	case "LicensesClient":
-		initServer(s, &s.trLicensesServer, func() *LicensesServerTransport { return NewLicensesServerTransport(&s.srv.LicensesServer) })
-		resp, err = s.trLicensesServer.Do(req)
 	case "MachineExtensionsClient":
 		initServer(s, &s.trMachineExtensionsServer, func() *MachineExtensionsServerTransport {
 			return NewMachineExtensionsServerTransport(&s.srv.MachineExtensionsServer)
 		})
 		resp, err = s.trMachineExtensionsServer.Do(req)
+	case "MachineRunCommandsClient":
+		initServer(s, &s.trMachineRunCommandsServer, func() *MachineRunCommandsServerTransport {
+			return NewMachineRunCommandsServerTransport(&s.srv.MachineRunCommandsServer)
+		})
+		resp, err = s.trMachineRunCommandsServer.Do(req)
 	case "MachinesClient":
 		initServer(s, &s.trMachinesServer, func() *MachinesServerTransport { return NewMachinesServerTransport(&s.srv.MachinesServer) })
 		resp, err = s.trMachinesServer.Do(req)

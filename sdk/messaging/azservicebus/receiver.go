@@ -47,7 +47,6 @@ type Receiver struct {
 	amqpLinks                internal.AMQPLinks
 	cancelReleaser           *atomic.Value
 	cleanupOnClose           func()
-	defaultTimeAfterFirstMsg time.Duration
 	entityPath               string
 	lastPeekedSequenceNumber int64
 	maxAllowedCredits        uint32
@@ -55,7 +54,7 @@ type Receiver struct {
 	receiveMode              ReceiveMode
 	receiving                bool
 	retryOptions             RetryOptions
-	settler                  settler
+	settler                  *messageSettler
 }
 
 // ReceiverOptions contains options for the `Client.NewReceiverForQueue` or `Client.NewReceiverForSubscription`
@@ -131,7 +130,6 @@ func newReceiver(args newReceiverArgs, options *ReceiverOptions) (*Receiver, err
 	receiver := &Receiver{
 		cancelReleaser:           &atomic.Value{},
 		cleanupOnClose:           args.cleanupOnClose,
-		defaultTimeAfterFirstMsg: 20 * time.Millisecond,
 		lastPeekedSequenceNumber: 0,
 		maxAllowedCredits:        defaultLinkRxBuffer,
 		retryOptions:             args.retryOptions,
@@ -141,13 +139,6 @@ func newReceiver(args newReceiverArgs, options *ReceiverOptions) (*Receiver, err
 
 	if err := applyReceiverOptions(receiver, &args.entity, options); err != nil {
 		return nil, err
-	}
-
-	if receiver.receiveMode == ReceiveModeReceiveAndDelete {
-		// TODO: there appears to be a bit more overhead when receiving messages
-		// in ReceiveAndDelete. Need to investigate if this is related to our
-		// auto-accepting logic in go-amqp.
-		receiver.defaultTimeAfterFirstMsg = time.Second
 	}
 
 	newLinkFn := receiver.newReceiverLink
@@ -181,7 +172,13 @@ func (r *Receiver) newReceiverLink(ctx context.Context, session amqpwrap.AMQPSes
 
 // ReceiveMessagesOptions are options for the ReceiveMessages function.
 type ReceiveMessagesOptions struct {
-	// For future expansion
+	// TimeAfterFirstMessage controls how long, after a message has been received, before we return the
+	// accumulated batch of messages.
+	//
+	// Default value depends on the receive mode:
+	// - 20ms when the receiver is in ReceiveModePeekLock
+	// - 1s when the receiver is in ReceiveModeReceiveAndDelete
+	TimeAfterFirstMessage time.Duration
 }
 
 // ReceiveMessages receives a fixed number of messages, up to numMessages.
@@ -228,8 +225,8 @@ func (r *Receiver) ReceiveDeferredMessages(ctx context.Context, sequenceNumbers 
 		}
 
 		for _, amqpMsg := range amqpMessages {
-			receivedMsg := newReceivedMessage(amqpMsg, lwid.Receiver.LinkName())
-			receivedMsg.deferred = true
+			receivedMsg := newReceivedMessage(amqpMsg, lwid.Receiver)
+			receivedMsg.settleOnMgmtLink = true
 
 			receivedMessages = append(receivedMessages, receivedMsg)
 		}
@@ -280,7 +277,7 @@ func (r *Receiver) PeekMessages(ctx context.Context, maxMessageCount int, option
 		receivedMessages = make([]*ReceivedMessage, len(messages))
 
 		for i := 0; i < len(messages); i++ {
-			receivedMessages[i] = newReceivedMessage(messages[i], links.Receiver.LinkName())
+			receivedMessages[i] = newReceivedMessage(messages[i], links.Receiver)
 		}
 
 		if len(receivedMessages) > 0 && updateInternalSequenceNumber {
@@ -303,7 +300,7 @@ type RenewMessageLockOptions struct {
 // If the operation fails it can return an [*azservicebus.Error] type if the failure is actionable.
 func (r *Receiver) RenewMessageLock(ctx context.Context, msg *ReceivedMessage, options *RenewMessageLockOptions) error {
 	err := r.amqpLinks.Retry(ctx, EventReceiver, "renewMessageLock", func(ctx context.Context, linksWithVersion *internal.LinksWithID, args *utils.RetryFnArgs) error {
-		newExpirationTime, err := internal.RenewLocks(ctx, linksWithVersion.RPC, msg.RawAMQPMessage.linkName, []amqp.UUID{
+		newExpirationTime, err := internal.RenewLocks(ctx, linksWithVersion.RPC, msg.linkName, []amqp.UUID{
 			(amqp.UUID)(msg.LockToken),
 		})
 
@@ -335,7 +332,7 @@ func (r *Receiver) CompleteMessage(ctx context.Context, message *ReceivedMessage
 	return r.settler.CompleteMessage(ctx, message, options)
 }
 
-// AbandonMessage will cause a message to be  available again from the queue or subscription.
+// AbandonMessage will cause a message to be available again from the queue or subscription.
 // This will increment its delivery count, and potentially cause it to be dead-lettered
 // depending on your queue or subscription's configuration.
 // This function can only be used when the Receiver has been opened with `ReceiveModePeekLock`.
@@ -400,7 +397,15 @@ func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages int, opt
 		r.amqpLinks.Writef(EventReceiver, "Have %d credits, no new credits needed", currentReceiverCredits)
 	}
 
-	result := r.fetchMessages(ctx, linksWithID.Receiver, maxMessages, r.defaultTimeAfterFirstMsg)
+	timeAfterFirstMessage := 20 * time.Millisecond
+
+	if options != nil && options.TimeAfterFirstMessage > 0 {
+		timeAfterFirstMessage = options.TimeAfterFirstMessage
+	} else if r.receiveMode == ReceiveModeReceiveAndDelete {
+		timeAfterFirstMessage = time.Second
+	}
+
+	result := r.fetchMessages(ctx, linksWithID.Receiver, maxMessages, timeAfterFirstMessage)
 
 	r.amqpLinks.Writef(EventReceiver, "Received %d/%d messages", len(result.Messages), maxMessages)
 
@@ -440,7 +445,7 @@ func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages int, opt
 	var receivedMessages []*ReceivedMessage
 
 	for _, msg := range result.Messages {
-		receivedMessages = append(receivedMessages, newReceivedMessage(msg, linksWithID.Receiver.LinkName()))
+		receivedMessages = append(receivedMessages, newReceivedMessage(msg, linksWithID.Receiver))
 	}
 
 	return receivedMessages, nil

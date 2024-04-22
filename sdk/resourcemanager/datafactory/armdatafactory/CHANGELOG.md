@@ -1,5 +1,120 @@
 # Release History
 
+## 6.1.0 (2024-03-22)
+### Features Added
+
+- New enum type `ExpressionV2Type` with values `ExpressionV2TypeBinary`, `ExpressionV2TypeConstant`, `ExpressionV2TypeField`, `ExpressionV2TypeUnary`
+- New enum type `GoogleBigQueryV2AuthenticationType` with values `GoogleBigQueryV2AuthenticationTypeServiceAuthentication`, `GoogleBigQueryV2AuthenticationTypeUserAuthentication`
+- New enum type `ServiceNowV2AuthenticationType` with values `ServiceNowV2AuthenticationTypeBasic`, `ServiceNowV2AuthenticationTypeOAuth2`
+- New function `*GoogleBigQueryV2LinkedService.GetLinkedService() *LinkedService`
+- New function `*GoogleBigQueryV2ObjectDataset.GetDataset() *Dataset`
+- New function `*GoogleBigQueryV2Source.GetCopySource() *CopySource`
+- New function `*GoogleBigQueryV2Source.GetTabularSource() *TabularSource`
+- New function `*PostgreSQLV2LinkedService.GetLinkedService() *LinkedService`
+- New function `*PostgreSQLV2Source.GetCopySource() *CopySource`
+- New function `*PostgreSQLV2Source.GetTabularSource() *TabularSource`
+- New function `*PostgreSQLV2TableDataset.GetDataset() *Dataset`
+- New function `*ServiceNowV2LinkedService.GetLinkedService() *LinkedService`
+- New function `*ServiceNowV2ObjectDataset.GetDataset() *Dataset`
+- New function `*ServiceNowV2Source.GetCopySource() *CopySource`
+- New function `*ServiceNowV2Source.GetTabularSource() *TabularSource`
+- New struct `ExpressionV2`
+- New struct `GoogleBigQueryV2DatasetTypeProperties`
+- New struct `GoogleBigQueryV2LinkedService`
+- New struct `GoogleBigQueryV2LinkedServiceTypeProperties`
+- New struct `GoogleBigQueryV2ObjectDataset`
+- New struct `GoogleBigQueryV2Source`
+- New struct `PostgreSQLV2LinkedService`
+- New struct `PostgreSQLV2LinkedServiceTypeProperties`
+- New struct `PostgreSQLV2Source`
+- New struct `PostgreSQLV2TableDataset`
+- New struct `PostgreSQLV2TableDatasetTypeProperties`
+- New struct `ServiceNowV2LinkedService`
+- New struct `ServiceNowV2LinkedServiceTypeProperties`
+- New struct `ServiceNowV2ObjectDataset`
+- New struct `ServiceNowV2Source`
+
+
+## 6.0.0 (2024-02-23)
+### Breaking Changes
+
+- Type of `AzureFunctionActivityTypeProperties.Headers` has been changed from `any` to `map[string]*string`
+- Type of `WebActivityTypeProperties.Headers` has been changed from `any` to `map[string]*string`
+- Type of `WebHookActivityTypeProperties.Headers` has been changed from `any` to `map[string]*string`
+- Field `ReadBehavior` of struct `SalesforceServiceCloudV2Source` has been removed
+- Field `ReadBehavior` of struct `SalesforceV2Source` has been removed
+
+### Features Added
+
+- New enum type `SnowflakeAuthenticationType` with values `SnowflakeAuthenticationTypeAADServicePrincipal`, `SnowflakeAuthenticationTypeBasic`, `SnowflakeAuthenticationTypeKeyPair`
+- New function `*SnowflakeV2Dataset.GetDataset() *Dataset`
+- New function `*SnowflakeV2LinkedService.GetLinkedService() *LinkedService`
+- New function `*SnowflakeV2Sink.GetCopySink() *CopySink`
+- New function `*SnowflakeV2Source.GetCopySource() *CopySource`
+- New struct `SnowflakeLinkedV2ServiceTypeProperties`
+- New struct `SnowflakeV2Dataset`
+- New struct `SnowflakeV2LinkedService`
+- New struct `SnowflakeV2Sink`
+- New struct `SnowflakeV2Source`
+- New field `AuthenticationType` in struct `SalesforceServiceCloudV2LinkedServiceTypeProperties`
+- New field `IncludeDeletedObjects` in struct `SalesforceServiceCloudV2Source`
+- New field `AuthenticationType` in struct `SalesforceV2LinkedServiceTypeProperties`
+- New field `IncludeDeletedObjects` in struct `SalesforceV2Source`
+
+
+## 5.0.0 (2024-01-26)
+### Breaking Changes
+
+- Field `Pwd` of struct `MariaDBLinkedServiceTypeProperties` has been removed
+
+### Features Added
+
+- New enum type `SalesforceV2SinkWriteBehavior` with values `SalesforceV2SinkWriteBehaviorInsert`, `SalesforceV2SinkWriteBehaviorUpsert`
+- New function `*SalesforceServiceCloudV2LinkedService.GetLinkedService() *LinkedService`
+- New function `*SalesforceServiceCloudV2ObjectDataset.GetDataset() *Dataset`
+- New function `*SalesforceServiceCloudV2Sink.GetCopySink() *CopySink`
+- New function `*SalesforceServiceCloudV2Source.GetCopySource() *CopySource`
+- New function `*SalesforceV2LinkedService.GetLinkedService() *LinkedService`
+- New function `*SalesforceV2ObjectDataset.GetDataset() *Dataset`
+- New function `*SalesforceV2Sink.GetCopySink() *CopySink`
+- New function `*SalesforceV2Source.GetCopySource() *CopySource`
+- New function `*SalesforceV2Source.GetTabularSource() *TabularSource`
+- New function `*WarehouseLinkedService.GetLinkedService() *LinkedService`
+- New function `*WarehouseSink.GetCopySink() *CopySink`
+- New function `*WarehouseSource.GetCopySource() *CopySource`
+- New function `*WarehouseSource.GetTabularSource() *TabularSource`
+- New function `*WarehouseTableDataset.GetDataset() *Dataset`
+- New struct `SalesforceServiceCloudV2LinkedService`
+- New struct `SalesforceServiceCloudV2LinkedServiceTypeProperties`
+- New struct `SalesforceServiceCloudV2ObjectDataset`
+- New struct `SalesforceServiceCloudV2ObjectDatasetTypeProperties`
+- New struct `SalesforceServiceCloudV2Sink`
+- New struct `SalesforceServiceCloudV2Source`
+- New struct `SalesforceV2LinkedService`
+- New struct `SalesforceV2LinkedServiceTypeProperties`
+- New struct `SalesforceV2ObjectDataset`
+- New struct `SalesforceV2ObjectDatasetTypeProperties`
+- New struct `SalesforceV2Sink`
+- New struct `SalesforceV2Source`
+- New struct `WarehouseLinkedService`
+- New struct `WarehouseLinkedServiceTypeProperties`
+- New struct `WarehouseSink`
+- New struct `WarehouseSource`
+- New struct `WarehouseTableDataset`
+- New struct `WarehouseTableDatasetTypeProperties`
+- New field `Metadata` in struct `AzureBlobFSWriteSettings`
+- New field `Metadata` in struct `AzureBlobStorageWriteSettings`
+- New field `Metadata` in struct `AzureDataLakeStoreWriteSettings`
+- New field `Metadata` in struct `AzureFileStorageWriteSettings`
+- New field `Metadata` in struct `FileServerWriteSettings`
+- New field `Metadata` in struct `LakeHouseWriteSettings`
+- New field `Database`, `DriverVersion`, `Password`, `Port`, `Server`, `Username` in struct `MariaDBLinkedServiceTypeProperties`
+- New field `Database`, `DriverVersion`, `Port`, `SSLMode`, `Server`, `UseSystemTrustStore`, `Username` in struct `MySQLLinkedServiceTypeProperties`
+- New field `Metadata` in struct `SftpWriteSettings`
+- New field `Metadata` in struct `StoreWriteSettings`
+- New field `HTTPRequestTimeout`, `TurnOffAsync` in struct `WebActivityTypeProperties`
+
+
 ## 4.0.0 (2023-12-22)
 ### Breaking Changes
 

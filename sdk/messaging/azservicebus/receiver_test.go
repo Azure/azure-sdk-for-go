@@ -5,6 +5,7 @@ package azservicebus
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"regexp"
 	"sort"
@@ -20,6 +21,38 @@ import (
 	"github.com/Azure/go-amqp"
 	"github.com/stretchr/testify/require"
 )
+
+func TestReceiverBackupSettlement(t *testing.T) {
+	serviceBusClient, cleanup, queueName := setupLiveTest(t, &liveTestOptions{
+		QueueProperties: &admin.QueueProperties{
+			LockDuration: to.Ptr("PT5M"),
+		},
+	})
+	defer cleanup()
+
+	sender, err := serviceBusClient.NewSender(queueName, nil)
+	require.NoError(t, err)
+
+	err = sender.SendMessage(context.Background(), &Message{
+		Body: []byte("hello world"),
+	}, nil)
+	require.NoError(t, err)
+
+	origReceiver, err := serviceBusClient.NewReceiverForQueue(queueName, nil)
+	require.NoError(t, err)
+	defer test.RequireClose(t, origReceiver)
+
+	otherReceiver, err := serviceBusClient.NewReceiverForQueue(queueName, nil)
+	require.NoError(t, err)
+	defer test.RequireClose(t, otherReceiver)
+
+	messages, err := origReceiver.ReceiveMessages(context.TODO(), 1, nil)
+	require.NoError(t, err)
+	require.NotEmpty(t, messages)
+
+	err = otherReceiver.CompleteMessage(context.Background(), messages[0], nil)
+	require.NoError(t, err)
+}
 
 func TestReceiverCancel(t *testing.T) {
 	serviceBusClient, cleanup, queueName := setupLiveTest(t, nil)
@@ -275,7 +308,7 @@ func TestReceiverDeferAndReceiveDeferredMessages(t *testing.T) {
 	require.NoError(t, err)
 
 	require.EqualValues(t, []string{"deferring a message"}, getSortedBodies(deferredMessages))
-	require.True(t, deferredMessages[0].deferred, "internal flag indicating it was from a deferred receiver method is set")
+	require.True(t, deferredMessages[0].settleOnMgmtLink, "deferred messages should always settle on the management link")
 
 	for _, m := range deferredMessages {
 		err = receiver.CompleteMessage(ctx, m, nil)
@@ -939,6 +972,77 @@ func TestReceiveAndSendAndReceive(t *testing.T) {
 	require.NoError(t, err)
 
 	require.Equal(t, msgs[0].Message(), rereceivedMsgs[0].Message(), "all sendable fields are preserved when resending")
+}
+
+func TestReceiveWithDifferentWaitTime(t *testing.T) {
+	setup := func(t *testing.T, timeAfterFirstMessage *time.Duration) int {
+		serviceBusClient, cleanup, queueName := setupLiveTest(t, nil)
+		defer cleanup()
+
+		sender, err := serviceBusClient.NewSender(queueName, nil)
+		require.NoError(t, err)
+		defer sender.Close(context.Background())
+
+		batch, err := sender.NewMessageBatch(context.Background(), nil)
+		require.NoError(t, err)
+
+		bigBody := make([]byte, 1000)
+
+		// send a bunch of messages
+		for i := 0; i < 10000; i++ {
+			err := batch.AddMessage(&Message{
+				Body: bigBody,
+			}, nil)
+
+			if errors.Is(err, ErrMessageTooLarge) {
+				err = sender.SendMessageBatch(context.Background(), batch, nil)
+				require.NoError(t, err)
+
+				batch, err = sender.NewMessageBatch(context.Background(), nil)
+				require.NoError(t, err)
+
+				i--
+			}
+		}
+
+		if batch.NumMessages() > 0 {
+			err = sender.SendMessageBatch(context.Background(), batch, nil)
+			require.NoError(t, err)
+		}
+
+		receiver, err := serviceBusClient.NewReceiverForQueue(queueName, nil)
+		require.NoError(t, err)
+
+		var opts *ReceiveMessagesOptions
+
+		if timeAfterFirstMessage != nil {
+			opts = &ReceiveMessagesOptions{
+				TimeAfterFirstMessage: *timeAfterFirstMessage,
+			}
+
+			t.Logf("Setting time after first message: %s", *timeAfterFirstMessage)
+		} else {
+			t.Log("Using default time after first message")
+		}
+
+		messages, err := receiver.ReceiveMessages(context.Background(), 1000, opts)
+		require.NoError(t, err)
+
+		return len(messages)
+	}
+
+	base := setup(t, nil)
+	require.NotZero(t, base)
+	t.Logf("Base case: %d messages", base)
+
+	base2 := setup(t, to.Ptr[time.Duration](0))
+	require.NotZero(t, base2)
+	t.Logf("Base case2: %d messages", base2)
+
+	bigger := setup(t, to.Ptr(20*time.Second))
+	t.Logf("Bigger: %d messages", bigger)
+	require.Greater(t, bigger, base)
+	require.Greater(t, bigger, base2)
 }
 
 type receivedMessageSlice []*ReceivedMessage

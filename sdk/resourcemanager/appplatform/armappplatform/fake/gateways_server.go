@@ -44,9 +44,9 @@ type GatewaysServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	ListEnvSecrets func(ctx context.Context, resourceGroupName string, serviceName string, gatewayName string, options *armappplatform.GatewaysClientListEnvSecretsOptions) (resp azfake.Responder[armappplatform.GatewaysClientListEnvSecretsResponse], errResp azfake.ErrorResponder)
 
-	// BeginUpdateCapacity is the fake for method GatewaysClient.BeginUpdateCapacity
+	// BeginRestart is the fake for method GatewaysClient.BeginRestart
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdateCapacity func(ctx context.Context, resourceGroupName string, serviceName string, gatewayName string, gatewayCapacityResource armappplatform.SKUObject, options *armappplatform.GatewaysClientBeginUpdateCapacityOptions) (resp azfake.PollerResponder[armappplatform.GatewaysClientUpdateCapacityResponse], errResp azfake.ErrorResponder)
+	BeginRestart func(ctx context.Context, resourceGroupName string, serviceName string, gatewayName string, options *armappplatform.GatewaysClientBeginRestartOptions) (resp azfake.PollerResponder[armappplatform.GatewaysClientRestartResponse], errResp azfake.ErrorResponder)
 
 	// ValidateDomain is the fake for method GatewaysClient.ValidateDomain
 	// HTTP status codes to indicate success: http.StatusOK
@@ -62,7 +62,7 @@ func NewGatewaysServerTransport(srv *GatewaysServer) *GatewaysServerTransport {
 		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armappplatform.GatewaysClientCreateOrUpdateResponse]](),
 		beginDelete:         newTracker[azfake.PollerResponder[armappplatform.GatewaysClientDeleteResponse]](),
 		newListPager:        newTracker[azfake.PagerResponder[armappplatform.GatewaysClientListResponse]](),
-		beginUpdateCapacity: newTracker[azfake.PollerResponder[armappplatform.GatewaysClientUpdateCapacityResponse]](),
+		beginRestart:        newTracker[azfake.PollerResponder[armappplatform.GatewaysClientRestartResponse]](),
 	}
 }
 
@@ -73,7 +73,7 @@ type GatewaysServerTransport struct {
 	beginCreateOrUpdate *tracker[azfake.PollerResponder[armappplatform.GatewaysClientCreateOrUpdateResponse]]
 	beginDelete         *tracker[azfake.PollerResponder[armappplatform.GatewaysClientDeleteResponse]]
 	newListPager        *tracker[azfake.PagerResponder[armappplatform.GatewaysClientListResponse]]
-	beginUpdateCapacity *tracker[azfake.PollerResponder[armappplatform.GatewaysClientUpdateCapacityResponse]]
+	beginRestart        *tracker[azfake.PollerResponder[armappplatform.GatewaysClientRestartResponse]]
 }
 
 // Do implements the policy.Transporter interface for GatewaysServerTransport.
@@ -98,8 +98,8 @@ func (g *GatewaysServerTransport) Do(req *http.Request) (*http.Response, error) 
 		resp, err = g.dispatchNewListPager(req)
 	case "GatewaysClient.ListEnvSecrets":
 		resp, err = g.dispatchListEnvSecrets(req)
-	case "GatewaysClient.BeginUpdateCapacity":
-		resp, err = g.dispatchBeginUpdateCapacity(req)
+	case "GatewaysClient.BeginRestart":
+		resp, err = g.dispatchBeginRestart(req)
 	case "GatewaysClient.ValidateDomain":
 		resp, err = g.dispatchValidateDomain(req)
 	default:
@@ -328,21 +328,17 @@ func (g *GatewaysServerTransport) dispatchListEnvSecrets(req *http.Request) (*ht
 	return resp, nil
 }
 
-func (g *GatewaysServerTransport) dispatchBeginUpdateCapacity(req *http.Request) (*http.Response, error) {
-	if g.srv.BeginUpdateCapacity == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdateCapacity not implemented")}
+func (g *GatewaysServerTransport) dispatchBeginRestart(req *http.Request) (*http.Response, error) {
+	if g.srv.BeginRestart == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginRestart not implemented")}
 	}
-	beginUpdateCapacity := g.beginUpdateCapacity.get(req)
-	if beginUpdateCapacity == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AppPlatform/Spring/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/gateways/(?P<gatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	beginRestart := g.beginRestart.get(req)
+	if beginRestart == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AppPlatform/Spring/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/gateways/(?P<gatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/restart`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armappplatform.SKUObject](req)
-		if err != nil {
-			return nil, err
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
@@ -356,25 +352,25 @@ func (g *GatewaysServerTransport) dispatchBeginUpdateCapacity(req *http.Request)
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := g.srv.BeginUpdateCapacity(req.Context(), resourceGroupNameParam, serviceNameParam, gatewayNameParam, body, nil)
+		respr, errRespr := g.srv.BeginRestart(req.Context(), resourceGroupNameParam, serviceNameParam, gatewayNameParam, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		beginUpdateCapacity = &respr
-		g.beginUpdateCapacity.add(req, beginUpdateCapacity)
+		beginRestart = &respr
+		g.beginRestart.add(req, beginRestart)
 	}
 
-	resp, err := server.PollerResponderNext(beginUpdateCapacity, req)
+	resp, err := server.PollerResponderNext(beginRestart, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		g.beginUpdateCapacity.remove(req)
+		g.beginRestart.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(beginUpdateCapacity) {
-		g.beginUpdateCapacity.remove(req)
+	if !server.PollerResponderMore(beginRestart) {
+		g.beginRestart.remove(req)
 	}
 
 	return resp, nil

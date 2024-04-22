@@ -47,7 +47,7 @@ func NewGatewaysClient(subscriptionID string, credential azcore.TokenCredential,
 // BeginCreateOrUpdate - Create the default Spring Cloud Gateway or update the existing Spring Cloud Gateway.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01-preview
+// Generated from API version 2023-12-01
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serviceName - The name of the Service resource.
@@ -75,7 +75,7 @@ func (client *GatewaysClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 // CreateOrUpdate - Create the default Spring Cloud Gateway or update the existing Spring Cloud Gateway.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01-preview
+// Generated from API version 2023-12-01
 func (client *GatewaysClient) createOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, gatewayName string, gatewayResource GatewayResource, options *GatewaysClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "GatewaysClient.BeginCreateOrUpdate"
@@ -121,7 +121,7 @@ func (client *GatewaysClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01-preview")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, gatewayResource); err != nil {
@@ -133,7 +133,7 @@ func (client *GatewaysClient) createOrUpdateCreateRequest(ctx context.Context, r
 // BeginDelete - Disable the default Spring Cloud Gateway.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01-preview
+// Generated from API version 2023-12-01
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serviceName - The name of the Service resource.
@@ -159,7 +159,7 @@ func (client *GatewaysClient) BeginDelete(ctx context.Context, resourceGroupName
 // Delete - Disable the default Spring Cloud Gateway.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01-preview
+// Generated from API version 2023-12-01
 func (client *GatewaysClient) deleteOperation(ctx context.Context, resourceGroupName string, serviceName string, gatewayName string, options *GatewaysClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "GatewaysClient.BeginDelete"
@@ -205,7 +205,7 @@ func (client *GatewaysClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01-preview")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -214,7 +214,7 @@ func (client *GatewaysClient) deleteCreateRequest(ctx context.Context, resourceG
 // Get - Get the Spring Cloud Gateway and its properties.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01-preview
+// Generated from API version 2023-12-01
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serviceName - The name of the Service resource.
@@ -266,7 +266,7 @@ func (client *GatewaysClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01-preview")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -283,7 +283,7 @@ func (client *GatewaysClient) getHandleResponse(resp *http.Response) (GatewaysCl
 
 // NewListPager - Handles requests to list all resources in a Service.
 //
-// Generated from API version 2023-01-01-preview
+// Generated from API version 2023-12-01
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serviceName - The name of the Service resource.
@@ -331,7 +331,7 @@ func (client *GatewaysClient) listCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01-preview")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -349,7 +349,7 @@ func (client *GatewaysClient) listHandleResponse(resp *http.Response) (GatewaysC
 // ListEnvSecrets - List sensitive environment variables of Spring Cloud Gateway.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01-preview
+// Generated from API version 2023-12-01
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serviceName - The name of the Service resource.
@@ -401,7 +401,7 @@ func (client *GatewaysClient) listEnvSecretsCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01-preview")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -416,46 +416,44 @@ func (client *GatewaysClient) listEnvSecretsHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// BeginUpdateCapacity - Operation to update an exiting Spring Cloud Gateway capacity.
+// BeginRestart - Restart the Spring Cloud Gateway.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01-preview
+// Generated from API version 2023-12-01
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serviceName - The name of the Service resource.
 //   - gatewayName - The name of Spring Cloud Gateway.
-//   - gatewayCapacityResource - The gateway capacity for the update operation
-//   - options - GatewaysClientBeginUpdateCapacityOptions contains the optional parameters for the GatewaysClient.BeginUpdateCapacity
-//     method.
-func (client *GatewaysClient) BeginUpdateCapacity(ctx context.Context, resourceGroupName string, serviceName string, gatewayName string, gatewayCapacityResource SKUObject, options *GatewaysClientBeginUpdateCapacityOptions) (*runtime.Poller[GatewaysClientUpdateCapacityResponse], error) {
+//   - options - GatewaysClientBeginRestartOptions contains the optional parameters for the GatewaysClient.BeginRestart method.
+func (client *GatewaysClient) BeginRestart(ctx context.Context, resourceGroupName string, serviceName string, gatewayName string, options *GatewaysClientBeginRestartOptions) (*runtime.Poller[GatewaysClientRestartResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.updateCapacity(ctx, resourceGroupName, serviceName, gatewayName, gatewayCapacityResource, options)
+		resp, err := client.restart(ctx, resourceGroupName, serviceName, gatewayName, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[GatewaysClientUpdateCapacityResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[GatewaysClientRestartResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[GatewaysClientUpdateCapacityResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[GatewaysClientRestartResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
 }
 
-// UpdateCapacity - Operation to update an exiting Spring Cloud Gateway capacity.
+// Restart - Restart the Spring Cloud Gateway.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01-preview
-func (client *GatewaysClient) updateCapacity(ctx context.Context, resourceGroupName string, serviceName string, gatewayName string, gatewayCapacityResource SKUObject, options *GatewaysClientBeginUpdateCapacityOptions) (*http.Response, error) {
+// Generated from API version 2023-12-01
+func (client *GatewaysClient) restart(ctx context.Context, resourceGroupName string, serviceName string, gatewayName string, options *GatewaysClientBeginRestartOptions) (*http.Response, error) {
 	var err error
-	const operationName = "GatewaysClient.BeginUpdateCapacity"
+	const operationName = "GatewaysClient.BeginRestart"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.updateCapacityCreateRequest(ctx, resourceGroupName, serviceName, gatewayName, gatewayCapacityResource, options)
+	req, err := client.restartCreateRequest(ctx, resourceGroupName, serviceName, gatewayName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -470,9 +468,9 @@ func (client *GatewaysClient) updateCapacity(ctx context.Context, resourceGroupN
 	return httpResp, nil
 }
 
-// updateCapacityCreateRequest creates the UpdateCapacity request.
-func (client *GatewaysClient) updateCapacityCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, gatewayName string, gatewayCapacityResource SKUObject, options *GatewaysClientBeginUpdateCapacityOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/gateways/{gatewayName}"
+// restartCreateRequest creates the Restart request.
+func (client *GatewaysClient) restartCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, gatewayName string, options *GatewaysClientBeginRestartOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/gateways/{gatewayName}/restart"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -489,24 +487,21 @@ func (client *GatewaysClient) updateCapacityCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter gatewayName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{gatewayName}", url.PathEscape(gatewayName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01-preview")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, gatewayCapacityResource); err != nil {
-		return nil, err
-	}
 	return req, nil
 }
 
 // ValidateDomain - Check the domains are valid as well as not in use.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01-preview
+// Generated from API version 2023-12-01
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serviceName - The name of the Service resource.
@@ -559,7 +554,7 @@ func (client *GatewaysClient) validateDomainCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01-preview")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, validatePayload); err != nil {

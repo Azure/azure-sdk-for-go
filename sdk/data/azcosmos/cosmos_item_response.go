@@ -15,14 +15,17 @@ type ItemResponse struct {
 	Value []byte
 	Response
 	// SessionToken contains the value from the session token header to be used on session consistency.
-	SessionToken string
+	SessionToken *string
 }
 
 func newItemResponse(resp *http.Response) (ItemResponse, error) {
 	response := ItemResponse{
 		Response: newResponse(resp),
 	}
-	response.SessionToken = resp.Header.Get(cosmosHeaderSessionToken)
+	sessionToken := resp.Header.Get(cosmosHeaderSessionToken)
+	if sessionToken != "" {
+		response.SessionToken = &sessionToken
+	}
 	defer resp.Body.Close()
 	body, err := azruntime.Payload(resp)
 	if err != nil {

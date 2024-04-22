@@ -47,7 +47,7 @@ func NewRestorableMongodbResourcesClient(subscriptionID string, credential azcor
 // This helps in scenarios to validate what resources exist at given timestamp and location.
 // This API requires 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/…/read' permission.
 //
-// Generated from API version 2023-03-15-preview
+// Generated from API version 2024-02-15-preview
 //   - location - Cosmos DB region, with spaces between words and each word capitalized.
 //   - instanceID - The instanceId GUID of a restorable database account.
 //   - options - RestorableMongodbResourcesClientListOptions contains the optional parameters for the RestorableMongodbResourcesClient.NewListPager
@@ -96,7 +96,7 @@ func (client *RestorableMongodbResourcesClient) listCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-15-preview")
+	reqQP.Set("api-version", "2024-02-15-preview")
 	if options != nil && options.RestoreLocation != nil {
 		reqQP.Set("restoreLocation", *options.RestoreLocation)
 	}

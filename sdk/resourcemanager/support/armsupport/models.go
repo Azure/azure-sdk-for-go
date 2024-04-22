@@ -69,7 +69,7 @@ type CheckNameAvailabilityOutput struct {
 
 // CommunicationDetails - Object that represents a Communication resource.
 type CommunicationDetails struct {
-	// Properties of the resource.
+	// REQUIRED; Properties of the resource.
 	Properties *CommunicationDetailsProperties
 
 	// READ-ONLY; Id of the resource.
@@ -173,14 +173,14 @@ type FileDetails struct {
 
 // FileDetailsProperties - Describes the properties of a file.
 type FileDetailsProperties struct {
-	// Size of each chunk
-	ChunkSize *float32
+	// Size of each chunk. The size of each chunk should be provided in bytes and must not exceed 2.5 megabytes (MB).
+	ChunkSize *int32
 
-	// Size of the file to be uploaded
-	FileSize *float32
+	// Size of the file to be uploaded. The file size must not exceed 5 MB and should be provided in bytes.
+	FileSize *int32
 
-	// Number of chunks to be uploaded
-	NumberOfChunks *float32
+	// Number of chunks to be uploaded. The maximum number of allowed chunks is 2.
+	NumberOfChunks *int32
 
 	// READ-ONLY; Time in UTC (ISO 8601 format) when file workspace was created.
 	CreatedOn *time.Time
@@ -224,7 +224,7 @@ type FilesListResult struct {
 
 // MessageProperties - Describes the properties of a Message Details resource.
 type MessageProperties struct {
-	// REQUIRED; Body of the communication.
+	// Body of the communication.
 	Body *string
 
 	// Name of the sender.
@@ -414,7 +414,7 @@ type TechnicalTicketDetails struct {
 
 // TicketDetails - Object that represents SupportTicketDetails resource.
 type TicketDetails struct {
-	// Properties of the resource.
+	// REQUIRED; Properties of the resource.
 	Properties *TicketDetailsProperties
 
 	// READ-ONLY; Id of the resource.
@@ -429,6 +429,9 @@ type TicketDetails struct {
 
 // TicketDetailsProperties - Describes the properties of a support ticket.
 type TicketDetailsProperties struct {
+	// REQUIRED; Advanced diagnostic consent to be updated on the support ticket.
+	AdvancedDiagnosticConsent *Consent
+
 	// REQUIRED; Contact information of the user requesting to create a support ticket.
 	ContactDetails *ContactProfile
 
@@ -451,8 +454,8 @@ type TicketDetailsProperties struct {
 	// REQUIRED; Title of the support ticket.
 	Title *string
 
-	// Advanced diagnostic consent to be updated on the support ticket.
-	AdvancedDiagnosticConsent *Consent
+	// Enrollment Id associated with the support ticket.
+	EnrollmentID *string
 
 	// File workspace name.
 	FileWorkspaceName *string
@@ -490,8 +493,8 @@ type TicketDetailsProperties struct {
 	// READ-ONLY; Time in UTC (ISO 8601 format) when the support ticket was created.
 	CreatedDate *time.Time
 
-	// READ-ONLY; Enrollment Id associated with the support ticket.
-	EnrollmentID *string
+	// READ-ONLY; This property indicates if support ticket is a temporary ticket.
+	IsTemporaryTicket *IsTemporaryTicket
 
 	// READ-ONLY; Time in UTC (ISO 8601 format) when the support ticket was last modified.
 	ModifiedDate *time.Time
@@ -556,7 +559,8 @@ type UpdateContactProfile struct {
 	PrimaryEmailAddress *string
 }
 
-// UpdateSupportTicket - Updates severity, ticket status, and contact details in the support ticket.
+// UpdateSupportTicket - Updates severity, ticket status, contact details, advanced diagnostic consent and secondary consent
+// in the support ticket.
 type UpdateSupportTicket struct {
 	// Advanced diagnostic consent to be updated on the support ticket.
 	AdvancedDiagnosticConsent *Consent
@@ -577,7 +581,7 @@ type UpdateSupportTicket struct {
 // UploadFile - File content associated with the file under a workspace.
 type UploadFile struct {
 	// Index of the uploaded chunk (Index starts at 0)
-	ChunkIndex *float32
+	ChunkIndex *int32
 
 	// File Content in base64 encoded format
 	Content *string

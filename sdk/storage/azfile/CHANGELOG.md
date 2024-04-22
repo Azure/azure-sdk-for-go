@@ -1,16 +1,45 @@
 # Release History
 
+## 1.2.2 (2024-04-09)
 
-## 1.1.2 (Unreleased)
+### Bugs Fixed
+* Fixed an issue where GetSASURL() was providing HTTPS SAS, instead of the default http+https SAS. Fixes [#22448](https://github.com/Azure/azure-sdk-for-go/issues/22448)
 
-### Features Added
+### Other Changes
+* Integrate `InsecureAllowCredentialWithHTTP` client options.
+* Update dependencies.
 
-### Breaking Changes
+## 1.2.1 (2024-02-29)
 
 ### Bugs Fixed
 
+* Re-enabled `SharedKeyCredential` authentication mode for non TLS protected endpoints.
+
 ### Other Changes
 
+* Updated `azidentity` version to `1.5.1`.
+
+## 1.2.0 (2024-02-12)
+
+### Other Changes
+
+* Updated `azcore` version to `1.9.2`.
+
+## 1.2.0-beta.1 (2024-01-09)
+
+### Features Added
+
+* Updated service version to `2023-11-03`.
+* Added support for Audience when OAuth is used.
+
+### Bugs Fixed
+
+* Block `SharedKeyCredential` authentication mode for non TLS protected endpoints. Fixes [#21841](https://github.com/Azure/azure-sdk-for-go/issues/21841).
+* Fixed a bug where `UploadRangeFromURL` using OAuth was returning error.
+
+### Other Changes
+
+* Updated azcore version to `1.9.1`.
 
 ## 1.1.1 (2023-11-15)
 

@@ -9,6 +9,7 @@ package azopenai_test
 import (
 	"context"
 	"fmt"
+	"io"
 	"log"
 	"os"
 
@@ -62,6 +63,54 @@ func ExampleClient_GetAudioTranscription() {
 	}
 
 	fmt.Fprintf(os.Stderr, "Transcribed text: %s\n", *resp.Text)
+
+	// Output:
+}
+
+func ExampleClient_GenerateSpeechFromText() {
+	openAIKey := os.Getenv("OPENAI_API_KEY")
+
+	// Ex: "https://api.openai.com/v1"
+	openAIEndpoint := os.Getenv("OPENAI_ENDPOINT")
+
+	modelDeploymentID := "tts-1"
+
+	if openAIKey == "" || openAIEndpoint == "" || modelDeploymentID == "" {
+		fmt.Fprintf(os.Stderr, "Skipping example, environment variables missing\n")
+		return
+	}
+
+	keyCredential := azcore.NewKeyCredential(openAIKey)
+
+	client, err := azopenai.NewClientForOpenAI(openAIEndpoint, keyCredential, nil)
+
+	if err != nil {
+		//  TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	audioResp, err := client.GenerateSpeechFromText(context.Background(), azopenai.SpeechGenerationOptions{
+		Input:          to.Ptr("i am a computer"),
+		Voice:          to.Ptr(azopenai.SpeechVoiceAlloy),
+		ResponseFormat: to.Ptr(azopenai.SpeechGenerationResponseFormatFlac),
+		DeploymentName: to.Ptr("tts-1"),
+	}, nil)
+
+	if err != nil {
+		//  TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	defer audioResp.Body.Close()
+
+	audioBytes, err := io.ReadAll(audioResp.Body)
+
+	if err != nil {
+		//  TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	fmt.Fprintf(os.Stderr, "Got %d bytes of FLAC audio\n", len(audioBytes))
 
 	// Output:
 }

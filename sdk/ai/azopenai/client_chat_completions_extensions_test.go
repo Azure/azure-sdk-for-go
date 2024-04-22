@@ -31,12 +31,10 @@ func TestChatCompletions_extensions_bringYourOwnData(t *testing.T) {
 		DeploymentName: &azureOpenAI.ChatCompletionsOYD.Model,
 	}, nil)
 	require.NoError(t, err)
+	require.NotEmpty(t, resp)
 
-	// when you BYOD you get some extra content showing you metadata/info from the external
-	// data source.
 	msgContext := resp.Choices[0].Message.Context
-	require.NotEmpty(t, msgContext.Messages[0].Content)
-	require.Equal(t, azopenai.ChatRoleTool, *msgContext.Messages[0].Role)
+	require.NotEmpty(t, msgContext.Citations[0].Content)
 
 	require.NotEmpty(t, *resp.Choices[0].Message.Content)
 	require.Equal(t, azopenai.CompletionsFinishReasonStopped, *resp.Choices[0].FinishReason)
@@ -77,8 +75,7 @@ func TestChatExtensionsStreaming_extensions_bringYourOwnData(t *testing.T) {
 			// data source.
 			first = false
 			msgContext := event.Choices[0].Message.Context
-			require.NotEmpty(t, msgContext.Messages[0].Content)
-			require.Equal(t, azopenai.ChatRoleTool, *msgContext.Messages[0].Role)
+			require.NotEmpty(t, msgContext.Citations[0].Content)
 		}
 
 		for _, choice := range event.Choices {

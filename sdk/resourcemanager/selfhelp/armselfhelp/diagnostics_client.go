@@ -40,14 +40,12 @@ func NewDiagnosticsClient(credential azcore.TokenCredential, options *arm.Client
 	return client, nil
 }
 
-// BeginCreate - Creates a diagnostic for the specific resource using solutionId and requiredInputs* from discovery solutions.
-// Diagnostics are powerful solutions that access product resources or other relevant data
-// and provide the root cause of the issue and the steps to address the issue.
-// Note: ‘requiredInputs’ from Discovery solutions response must be passed via ‘additionalParameters’ as an input to Diagnostics
-// API.
+// BeginCreate - Creates a diagnostic for the specific resource using solutionId from discovery solutions. Diagnostics are
+// powerful solutions that access product resources or other relevant data and provide the root
+// cause of the issue and the steps to address the issue.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01-preview
+// Generated from API version 2024-03-01-preview
 //   - scope - scope = resourceUri of affected resource.
 //     For example: /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read
 //   - diagnosticsResourceName - Unique resource name for insight resources
@@ -71,14 +69,12 @@ func (client *DiagnosticsClient) BeginCreate(ctx context.Context, scope string, 
 	}
 }
 
-// Create - Creates a diagnostic for the specific resource using solutionId and requiredInputs* from discovery solutions.
-// Diagnostics are powerful solutions that access product resources or other relevant data
-// and provide the root cause of the issue and the steps to address the issue.
-// Note: ‘requiredInputs’ from Discovery solutions response must be passed via ‘additionalParameters’ as an input to Diagnostics
-// API.
+// Create - Creates a diagnostic for the specific resource using solutionId from discovery solutions. Diagnostics are powerful
+// solutions that access product resources or other relevant data and provide the root
+// cause of the issue and the steps to address the issue.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01-preview
+// Generated from API version 2024-03-01-preview
 func (client *DiagnosticsClient) create(ctx context.Context, scope string, diagnosticsResourceName string, diagnosticResourceRequest DiagnosticResource, options *DiagnosticsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DiagnosticsClient.BeginCreate"
@@ -113,7 +109,7 @@ func (client *DiagnosticsClient) createCreateRequest(ctx context.Context, scope 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-01-preview")
+	reqQP.Set("api-version", "2024-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, diagnosticResourceRequest); err != nil {
@@ -125,7 +121,7 @@ func (client *DiagnosticsClient) createCreateRequest(ctx context.Context, scope 
 // Get - Get the diagnostics using the 'diagnosticsResourceName' you chose while creating the diagnostic.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01-preview
+// Generated from API version 2024-03-01-preview
 //   - scope - scope = resourceUri of affected resource.
 //     For example: /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read
 //   - diagnosticsResourceName - Unique resource name for insight resources
@@ -165,7 +161,7 @@ func (client *DiagnosticsClient) getCreateRequest(ctx context.Context, scope str
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-01-preview")
+	reqQP.Set("api-version", "2024-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -38,14 +38,15 @@ func NewProvisionedClusterInstancesClient(credential azcore.TokenCredential, opt
 	return client, nil
 }
 
-// BeginCreateOrUpdate - Creates the Hybrid AKS provisioned cluster instance
+// BeginCreateOrUpdate - Creates or updates the provisioned cluster instance
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-15-preview
-//   - connectedClusterResourceURI - The fully qualified Azure Resource manager identifier of the connected cluster resource.
+// Generated from API version 2024-01-01
+//   - connectedClusterResourceURI - The fully qualified Azure Resource Manager identifier of the connected cluster resource.
+//   - provisionedClusterInstance - Provisioned Cluster resource definition
 //   - options - ProvisionedClusterInstancesClientBeginCreateOrUpdateOptions contains the optional parameters for the ProvisionedClusterInstancesClient.BeginCreateOrUpdate
 //     method.
-func (client *ProvisionedClusterInstancesClient) BeginCreateOrUpdate(ctx context.Context, connectedClusterResourceURI string, provisionedClusterInstance ProvisionedClusters, options *ProvisionedClusterInstancesClientBeginCreateOrUpdateOptions) (*runtime.Poller[ProvisionedClusterInstancesClientCreateOrUpdateResponse], error) {
+func (client *ProvisionedClusterInstancesClient) BeginCreateOrUpdate(ctx context.Context, connectedClusterResourceURI string, provisionedClusterInstance ProvisionedCluster, options *ProvisionedClusterInstancesClientBeginCreateOrUpdateOptions) (*runtime.Poller[ProvisionedClusterInstancesClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, connectedClusterResourceURI, provisionedClusterInstance, options)
 		if err != nil {
@@ -63,11 +64,11 @@ func (client *ProvisionedClusterInstancesClient) BeginCreateOrUpdate(ctx context
 	}
 }
 
-// CreateOrUpdate - Creates the Hybrid AKS provisioned cluster instance
+// CreateOrUpdate - Creates or updates the provisioned cluster instance
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-15-preview
-func (client *ProvisionedClusterInstancesClient) createOrUpdate(ctx context.Context, connectedClusterResourceURI string, provisionedClusterInstance ProvisionedClusters, options *ProvisionedClusterInstancesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
+// Generated from API version 2024-01-01
+func (client *ProvisionedClusterInstancesClient) createOrUpdate(ctx context.Context, connectedClusterResourceURI string, provisionedClusterInstance ProvisionedCluster, options *ProvisionedClusterInstancesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ProvisionedClusterInstancesClient.BeginCreateOrUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -89,7 +90,7 @@ func (client *ProvisionedClusterInstancesClient) createOrUpdate(ctx context.Cont
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ProvisionedClusterInstancesClient) createOrUpdateCreateRequest(ctx context.Context, connectedClusterResourceURI string, provisionedClusterInstance ProvisionedClusters, options *ProvisionedClusterInstancesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *ProvisionedClusterInstancesClient) createOrUpdateCreateRequest(ctx context.Context, connectedClusterResourceURI string, provisionedClusterInstance ProvisionedCluster, options *ProvisionedClusterInstancesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/{connectedClusterResourceUri}/providers/Microsoft.HybridContainerService/provisionedClusterInstances/default"
 	urlPath = strings.ReplaceAll(urlPath, "{connectedClusterResourceUri}", connectedClusterResourceURI)
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
@@ -97,7 +98,7 @@ func (client *ProvisionedClusterInstancesClient) createOrUpdateCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-15-preview")
+	reqQP.Set("api-version", "2024-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, provisionedClusterInstance); err != nil {
@@ -106,11 +107,11 @@ func (client *ProvisionedClusterInstancesClient) createOrUpdateCreateRequest(ctx
 	return req, nil
 }
 
-// BeginDelete - Deletes the Hybrid AKS provisioned cluster instance
+// BeginDelete - Deletes the provisioned cluster instance
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-15-preview
-//   - connectedClusterResourceURI - The fully qualified Azure Resource manager identifier of the connected cluster resource.
+// Generated from API version 2024-01-01
+//   - connectedClusterResourceURI - The fully qualified Azure Resource Manager identifier of the connected cluster resource.
 //   - options - ProvisionedClusterInstancesClientBeginDeleteOptions contains the optional parameters for the ProvisionedClusterInstancesClient.BeginDelete
 //     method.
 func (client *ProvisionedClusterInstancesClient) BeginDelete(ctx context.Context, connectedClusterResourceURI string, options *ProvisionedClusterInstancesClientBeginDeleteOptions) (*runtime.Poller[ProvisionedClusterInstancesClientDeleteResponse], error) {
@@ -131,10 +132,10 @@ func (client *ProvisionedClusterInstancesClient) BeginDelete(ctx context.Context
 	}
 }
 
-// Delete - Deletes the Hybrid AKS provisioned cluster instance
+// Delete - Deletes the provisioned cluster instance
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-15-preview
+// Generated from API version 2024-01-01
 func (client *ProvisionedClusterInstancesClient) deleteOperation(ctx context.Context, connectedClusterResourceURI string, options *ProvisionedClusterInstancesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ProvisionedClusterInstancesClient.BeginDelete"
@@ -165,17 +166,17 @@ func (client *ProvisionedClusterInstancesClient) deleteCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-15-preview")
+	reqQP.Set("api-version", "2024-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// Get - Gets the Hybrid AKS provisioned cluster instance
+// Get - Gets the provisioned cluster instance
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-15-preview
-//   - connectedClusterResourceURI - The fully qualified Azure Resource manager identifier of the connected cluster resource.
+// Generated from API version 2024-01-01
+//   - connectedClusterResourceURI - The fully qualified Azure Resource Manager identifier of the connected cluster resource.
 //   - options - ProvisionedClusterInstancesClientGetOptions contains the optional parameters for the ProvisionedClusterInstancesClient.Get
 //     method.
 func (client *ProvisionedClusterInstancesClient) Get(ctx context.Context, connectedClusterResourceURI string, options *ProvisionedClusterInstancesClientGetOptions) (ProvisionedClusterInstancesClientGetResponse, error) {
@@ -209,7 +210,7 @@ func (client *ProvisionedClusterInstancesClient) getCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-15-preview")
+	reqQP.Set("api-version", "2024-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -218,17 +219,17 @@ func (client *ProvisionedClusterInstancesClient) getCreateRequest(ctx context.Co
 // getHandleResponse handles the Get response.
 func (client *ProvisionedClusterInstancesClient) getHandleResponse(resp *http.Response) (ProvisionedClusterInstancesClientGetResponse, error) {
 	result := ProvisionedClusterInstancesClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ProvisionedClusters); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.ProvisionedCluster); err != nil {
 		return ProvisionedClusterInstancesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// GetUpgradeProfile - Gets the upgrade profile of a provisioned cluster instance.
+// GetUpgradeProfile - Gets the upgrade profile of a provisioned cluster
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-15-preview
-//   - connectedClusterResourceURI - The fully qualified Azure Resource manager identifier of the connected cluster resource.
+// Generated from API version 2024-01-01
+//   - connectedClusterResourceURI - The fully qualified Azure Resource Manager identifier of the connected cluster resource.
 //   - options - ProvisionedClusterInstancesClientGetUpgradeProfileOptions contains the optional parameters for the ProvisionedClusterInstancesClient.GetUpgradeProfile
 //     method.
 func (client *ProvisionedClusterInstancesClient) GetUpgradeProfile(ctx context.Context, connectedClusterResourceURI string, options *ProvisionedClusterInstancesClientGetUpgradeProfileOptions) (ProvisionedClusterInstancesClientGetUpgradeProfileResponse, error) {
@@ -262,7 +263,7 @@ func (client *ProvisionedClusterInstancesClient) getUpgradeProfileCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-15-preview")
+	reqQP.Set("api-version", "2024-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -277,10 +278,10 @@ func (client *ProvisionedClusterInstancesClient) getUpgradeProfileHandleResponse
 	return result, nil
 }
 
-// NewListPager - Gets the Hybrid AKS provisioned cluster instances associated with the connected cluster
+// NewListPager - Lists the ProvisionedClusterInstance resource associated with the ConnectedCluster
 //
-// Generated from API version 2023-11-15-preview
-//   - connectedClusterResourceURI - The fully qualified Azure Resource manager identifier of the connected cluster resource.
+// Generated from API version 2024-01-01
+//   - connectedClusterResourceURI - The fully qualified Azure Resource Manager identifier of the connected cluster resource.
 //   - options - ProvisionedClusterInstancesClientListOptions contains the optional parameters for the ProvisionedClusterInstancesClient.NewListPager
 //     method.
 func (client *ProvisionedClusterInstancesClient) NewListPager(connectedClusterResourceURI string, options *ProvisionedClusterInstancesClientListOptions) *runtime.Pager[ProvisionedClusterInstancesClientListResponse] {
@@ -315,7 +316,7 @@ func (client *ProvisionedClusterInstancesClient) listCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-15-preview")
+	reqQP.Set("api-version", "2024-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -324,17 +325,17 @@ func (client *ProvisionedClusterInstancesClient) listCreateRequest(ctx context.C
 // listHandleResponse handles the List response.
 func (client *ProvisionedClusterInstancesClient) listHandleResponse(resp *http.Response) (ProvisionedClusterInstancesClientListResponse, error) {
 	result := ProvisionedClusterInstancesClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ProvisionedClustersListResult); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.ProvisionedClusterListResult); err != nil {
 		return ProvisionedClusterInstancesClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// BeginListAdminKubeconfig - Lists the admin credentials of a provisioned cluster instance used only in direct mode.
+// BeginListAdminKubeconfig - Lists the admin credentials of the provisioned cluster (can only be used within private network)
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-15-preview
-//   - connectedClusterResourceURI - The fully qualified Azure Resource manager identifier of the connected cluster resource.
+// Generated from API version 2024-01-01
+//   - connectedClusterResourceURI - The fully qualified Azure Resource Manager identifier of the connected cluster resource.
 //   - options - ProvisionedClusterInstancesClientBeginListAdminKubeconfigOptions contains the optional parameters for the ProvisionedClusterInstancesClient.BeginListAdminKubeconfig
 //     method.
 func (client *ProvisionedClusterInstancesClient) BeginListAdminKubeconfig(ctx context.Context, connectedClusterResourceURI string, options *ProvisionedClusterInstancesClientBeginListAdminKubeconfigOptions) (*runtime.Poller[ProvisionedClusterInstancesClientListAdminKubeconfigResponse], error) {
@@ -355,10 +356,10 @@ func (client *ProvisionedClusterInstancesClient) BeginListAdminKubeconfig(ctx co
 	}
 }
 
-// ListAdminKubeconfig - Lists the admin credentials of a provisioned cluster instance used only in direct mode.
+// ListAdminKubeconfig - Lists the admin credentials of the provisioned cluster (can only be used within private network)
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-15-preview
+// Generated from API version 2024-01-01
 func (client *ProvisionedClusterInstancesClient) listAdminKubeconfig(ctx context.Context, connectedClusterResourceURI string, options *ProvisionedClusterInstancesClientBeginListAdminKubeconfigOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ProvisionedClusterInstancesClient.BeginListAdminKubeconfig"
@@ -389,17 +390,17 @@ func (client *ProvisionedClusterInstancesClient) listAdminKubeconfigCreateReques
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-15-preview")
+	reqQP.Set("api-version", "2024-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// BeginListUserKubeconfig - Lists the AAD user credentials of a provisioned cluster instance used only in direct mode.
+// BeginListUserKubeconfig - Lists the user credentials of the provisioned cluster (can only be used within private network)
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-15-preview
-//   - connectedClusterResourceURI - The fully qualified Azure Resource manager identifier of the connected cluster resource.
+// Generated from API version 2024-01-01
+//   - connectedClusterResourceURI - The fully qualified Azure Resource Manager identifier of the connected cluster resource.
 //   - options - ProvisionedClusterInstancesClientBeginListUserKubeconfigOptions contains the optional parameters for the ProvisionedClusterInstancesClient.BeginListUserKubeconfig
 //     method.
 func (client *ProvisionedClusterInstancesClient) BeginListUserKubeconfig(ctx context.Context, connectedClusterResourceURI string, options *ProvisionedClusterInstancesClientBeginListUserKubeconfigOptions) (*runtime.Poller[ProvisionedClusterInstancesClientListUserKubeconfigResponse], error) {
@@ -420,10 +421,10 @@ func (client *ProvisionedClusterInstancesClient) BeginListUserKubeconfig(ctx con
 	}
 }
 
-// ListUserKubeconfig - Lists the AAD user credentials of a provisioned cluster instance used only in direct mode.
+// ListUserKubeconfig - Lists the user credentials of the provisioned cluster (can only be used within private network)
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-15-preview
+// Generated from API version 2024-01-01
 func (client *ProvisionedClusterInstancesClient) listUserKubeconfig(ctx context.Context, connectedClusterResourceURI string, options *ProvisionedClusterInstancesClientBeginListUserKubeconfigOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ProvisionedClusterInstancesClient.BeginListUserKubeconfig"
@@ -454,7 +455,7 @@ func (client *ProvisionedClusterInstancesClient) listUserKubeconfigCreateRequest
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-15-preview")
+	reqQP.Set("api-version", "2024-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

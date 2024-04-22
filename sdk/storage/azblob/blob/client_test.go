@@ -13,11 +13,15 @@ import (
 	"crypto/rand"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"io"
+	"net/http"
 	"net/url"
 	"os"
 	"strconv"
 	"strings"
+	"sync/atomic"
 	"testing"
 	"time"
 
@@ -3680,4 +3684,128 @@ func (s *BlobRecordedTestsSuite) TestBlobGetAccountInfo() {
 	bAccInfo, err := bbClient.GetAccountInfo(context.Background(), nil)
 	_require.NoError(err)
 	_require.NotZero(bAccInfo)
+}
+
+func (s *BlobRecordedTestsSuite) TestBlobClientDefaultAudience() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := testcommon.GenerateBlobName(testName)
+	blobURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s/%s", accountName, containerName, blobName)
+	testcommon.CreateNewBlockBlob(context.Background(), _require, blobName, containerClient)
+
+	options := &blob.ClientOptions{
+		Audience: "https://storage.azure.com/",
+	}
+	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
+	blobClientAudience, err := blob.NewClient(blobURL, cred, options)
+	_require.NoError(err)
+
+	_, err = blobClientAudience.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+}
+
+func (s *BlobRecordedTestsSuite) TestBlobClientCustomAudience() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := testcommon.GenerateBlobName(testName)
+	blobURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s/%s", accountName, containerName, blobName)
+	testcommon.CreateNewBlockBlob(context.Background(), _require, blobName, containerClient)
+
+	options := &blob.ClientOptions{
+		Audience: "https://" + accountName + ".blob.core.windows.net",
+	}
+	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
+	blobClientAudience, err := blob.NewClient(blobURL, cred, options)
+	_require.NoError(err)
+
+	_, err = blobClientAudience.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+}
+
+type fakeDownloadBlob struct {
+	contentSize int64
+	numChunks   uint64
+}
+
+// nolint
+func (f *fakeDownloadBlob) Do(req *http.Request) (*http.Response, error) {
+	// check how many times range based get blob is called
+	if _, ok := req.Header["x-ms-range"]; ok {
+		atomic.AddUint64(&f.numChunks, 1)
+	}
+	return &http.Response{
+		Request:    req,
+		Status:     "Created",
+		StatusCode: http.StatusOK,
+		Header:     http.Header{"Content-Length": []string{fmt.Sprintf("%v", f.contentSize)}},
+		Body:       http.NoBody,
+	}, nil
+}
+
+func TestDownloadSmallBlockSize(t *testing.T) {
+	_require := require.New(t)
+
+	fileSize := int64(100 * 1024 * 1024)
+	blockSize := int64(1024)
+	numChunks := uint64(((fileSize - 1) / blockSize) + 1)
+	fbb := &fakeDownloadBlob{
+		contentSize: fileSize,
+	}
+
+	log.SetListener(nil) // no logging
+
+	blobClient, err := blockblob.NewClientWithNoCredential("https://fake/blob/path", &blockblob.ClientOptions{
+		ClientOptions: policy.ClientOptions{
+			Transport: fbb,
+		},
+	})
+	_require.NoError(err)
+	_require.NotNil(blobClient)
+
+	// download to a temp file and verify contents
+	tmp, err := os.CreateTemp("", "")
+	_require.NoError(err)
+	defer tmp.Close()
+
+	_, err = blobClient.DownloadFile(context.Background(), tmp, &blob.DownloadFileOptions{BlockSize: blockSize})
+	_require.NoError(err)
+
+	_require.Equal(atomic.LoadUint64(&fbb.numChunks), numChunks)
+
+	// reset counter
+	atomic.StoreUint64(&fbb.numChunks, 0)
+
+	buff := make([]byte, fileSize)
+	_, err = blobClient.DownloadBuffer(context.Background(), buff, &blob.DownloadBufferOptions{BlockSize: blockSize})
+	_require.NoError(err)
+
+	_require.Equal(atomic.LoadUint64(&fbb.numChunks), numChunks)
 }

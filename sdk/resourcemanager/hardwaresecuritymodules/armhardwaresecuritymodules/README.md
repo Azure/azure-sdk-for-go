@@ -1,6 +1,6 @@
 # Azure Dedicated HSM Module for Go
 
-[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hardwaresecuritymodules/armhardwaresecuritymodules)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hardwaresecuritymodules/armhardwaresecuritymodules)
+[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hardwaresecuritymodules/armhardwaresecuritymodules/v2)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hardwaresecuritymodules/armhardwaresecuritymodules/v2)
 
 The `armhardwaresecuritymodules` module provides operations for working with Azure Dedicated HSM.
 
@@ -20,7 +20,7 @@ This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for ve
 Install the Azure Dedicated HSM module:
 
 ```sh
-go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hardwaresecuritymodules/armhardwaresecuritymodules
+go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hardwaresecuritymodules/armhardwaresecuritymodules/v2
 ```
 
 ## Authorization
@@ -57,7 +57,7 @@ clientFactory, err := armhardwaresecuritymodules.NewClientFactory(<subscription 
 A client groups a set of related APIs, providing access to its functionality.  Create one or more clients to access the APIs you require using client factory.
 
 ```go
-client := clientFactory.NewDedicatedHsmClient()
+client := clientFactory.NewCloudHsmClusterPrivateEndpointConnectionsClient()
 ```
 
 ## Fakes

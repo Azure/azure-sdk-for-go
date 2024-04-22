@@ -8,14 +8,15 @@ package shared
 
 import (
 	"context"
+	"strings"
+	"testing"
+	"time"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/stretchr/testify/require"
-	"strings"
-	"testing"
-	"time"
 )
 
 type credentialFunc func(context.Context, policy.TokenRequestOptions) (azcore.AccessToken, error)
@@ -39,7 +40,7 @@ func TestChallengePolicyStorage(t *testing.T) {
 		require.Equal(t, []string{storageScope}, tro.Scopes)
 		return azcore.AccessToken{Token: accessToken, ExpiresOn: time.Now().Add(time.Hour)}, nil
 	})
-	p := NewStorageChallengePolicy(cred)
+	p := NewStorageChallengePolicy(cred, storageScope, false)
 	pl := runtime.NewPipeline("", "",
 		runtime.PipelineOptions{PerRetry: []policy.Policy{p}},
 		&policy.ClientOptions{Transport: srv},
@@ -77,7 +78,7 @@ func TestChallengePolicyDisk(t *testing.T) {
 		attemptedAuthentication = true
 		return azcore.AccessToken{}, nil
 	})
-	p := NewStorageChallengePolicy(cred)
+	p := NewStorageChallengePolicy(cred, "https://storage.azure.com/.default", false)
 	pl := runtime.NewPipeline("", "",
 		runtime.PipelineOptions{PerRetry: []policy.Policy{p}},
 		&policy.ClientOptions{Transport: srv},

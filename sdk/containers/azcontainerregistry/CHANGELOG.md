@@ -1,12 +1,24 @@
 # Release History
 
-## 0.2.1 (Unreleased)
+## 0.2.2 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 0.2.1 (2024-01-24)
 
 ### Features Added
 * Add `ConfigMediaType` and `MediaType` properties to `ManifestAttributes`
+* Enabled spans for distributed tracing
 
 ### Other Changes
 * Refine some logics and comments
+* Updated to latest version of azcore
 
 ## 0.2.0 (2023-06-06)
 

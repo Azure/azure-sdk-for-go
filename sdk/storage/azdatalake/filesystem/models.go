@@ -8,6 +8,8 @@ package filesystem
 
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/directory"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/file"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
 	"time"
@@ -250,3 +252,9 @@ type PathProperties = generated.PathPropertiesInternal
 
 // PathPrefix contains the response from method FileSystemClient.ListPathsHierarchySegment.
 type PathPrefix = generated.PathPrefix
+
+// CreateFileOptions contains the optional parameters when calling the CreateFile operation.
+type CreateFileOptions = file.CreateOptions
+
+// CreateDirectoryOptions contains the optional parameters when calling the CreateDirectory operation.
+type CreateDirectoryOptions = directory.CreateOptions

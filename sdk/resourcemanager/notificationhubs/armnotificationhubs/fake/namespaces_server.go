@@ -16,10 +16,11 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/notificationhubs/armnotificationhubs"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/notificationhubs/armnotificationhubs/v2"
 	"net/http"
 	"net/url"
 	"regexp"
+	"strconv"
 )
 
 // NamespacesServer is a fake server for instances of the armnotificationhubs.NamespacesClient type.
@@ -28,17 +29,17 @@ type NamespacesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	CheckAvailability func(ctx context.Context, parameters armnotificationhubs.CheckAvailabilityParameters, options *armnotificationhubs.NamespacesClientCheckAvailabilityOptions) (resp azfake.Responder[armnotificationhubs.NamespacesClientCheckAvailabilityResponse], errResp azfake.ErrorResponder)
 
-	// CreateOrUpdate is the fake for method NamespacesClient.CreateOrUpdate
+	// BeginCreateOrUpdate is the fake for method NamespacesClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	CreateOrUpdate func(ctx context.Context, resourceGroupName string, namespaceName string, parameters armnotificationhubs.NamespaceCreateOrUpdateParameters, options *armnotificationhubs.NamespacesClientCreateOrUpdateOptions) (resp azfake.Responder[armnotificationhubs.NamespacesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, namespaceName string, parameters armnotificationhubs.NamespaceResource, options *armnotificationhubs.NamespacesClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armnotificationhubs.NamespacesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// CreateOrUpdateAuthorizationRule is the fake for method NamespacesClient.CreateOrUpdateAuthorizationRule
-	// HTTP status codes to indicate success: http.StatusOK
-	CreateOrUpdateAuthorizationRule func(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, parameters armnotificationhubs.SharedAccessAuthorizationRuleCreateOrUpdateParameters, options *armnotificationhubs.NamespacesClientCreateOrUpdateAuthorizationRuleOptions) (resp azfake.Responder[armnotificationhubs.NamespacesClientCreateOrUpdateAuthorizationRuleResponse], errResp azfake.ErrorResponder)
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	CreateOrUpdateAuthorizationRule func(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, parameters armnotificationhubs.SharedAccessAuthorizationRuleResource, options *armnotificationhubs.NamespacesClientCreateOrUpdateAuthorizationRuleOptions) (resp azfake.Responder[armnotificationhubs.NamespacesClientCreateOrUpdateAuthorizationRuleResponse], errResp azfake.ErrorResponder)
 
-	// BeginDelete is the fake for method NamespacesClient.BeginDelete
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDelete func(ctx context.Context, resourceGroupName string, namespaceName string, options *armnotificationhubs.NamespacesClientBeginDeleteOptions) (resp azfake.PollerResponder[armnotificationhubs.NamespacesClientDeleteResponse], errResp azfake.ErrorResponder)
+	// Delete is the fake for method NamespacesClient.Delete
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
+	Delete func(ctx context.Context, resourceGroupName string, namespaceName string, options *armnotificationhubs.NamespacesClientDeleteOptions) (resp azfake.Responder[armnotificationhubs.NamespacesClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// DeleteAuthorizationRule is the fake for method NamespacesClient.DeleteAuthorizationRule
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
@@ -51,6 +52,10 @@ type NamespacesServer struct {
 	// GetAuthorizationRule is the fake for method NamespacesClient.GetAuthorizationRule
 	// HTTP status codes to indicate success: http.StatusOK
 	GetAuthorizationRule func(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, options *armnotificationhubs.NamespacesClientGetAuthorizationRuleOptions) (resp azfake.Responder[armnotificationhubs.NamespacesClientGetAuthorizationRuleResponse], errResp azfake.ErrorResponder)
+
+	// GetPnsCredentials is the fake for method NamespacesClient.GetPnsCredentials
+	// HTTP status codes to indicate success: http.StatusOK
+	GetPnsCredentials func(ctx context.Context, resourceGroupName string, namespaceName string, options *armnotificationhubs.NamespacesClientGetPnsCredentialsOptions) (resp azfake.Responder[armnotificationhubs.NamespacesClientGetPnsCredentialsResponse], errResp azfake.ErrorResponder)
 
 	// NewListPager is the fake for method NamespacesClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -68,13 +73,13 @@ type NamespacesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	ListKeys func(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, options *armnotificationhubs.NamespacesClientListKeysOptions) (resp azfake.Responder[armnotificationhubs.NamespacesClientListKeysResponse], errResp azfake.ErrorResponder)
 
-	// Patch is the fake for method NamespacesClient.Patch
-	// HTTP status codes to indicate success: http.StatusOK
-	Patch func(ctx context.Context, resourceGroupName string, namespaceName string, parameters armnotificationhubs.NamespacePatchParameters, options *armnotificationhubs.NamespacesClientPatchOptions) (resp azfake.Responder[armnotificationhubs.NamespacesClientPatchResponse], errResp azfake.ErrorResponder)
-
 	// RegenerateKeys is the fake for method NamespacesClient.RegenerateKeys
 	// HTTP status codes to indicate success: http.StatusOK
-	RegenerateKeys func(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, parameters armnotificationhubs.PolicykeyResource, options *armnotificationhubs.NamespacesClientRegenerateKeysOptions) (resp azfake.Responder[armnotificationhubs.NamespacesClientRegenerateKeysResponse], errResp azfake.ErrorResponder)
+	RegenerateKeys func(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, parameters armnotificationhubs.PolicyKeyResource, options *armnotificationhubs.NamespacesClientRegenerateKeysOptions) (resp azfake.Responder[armnotificationhubs.NamespacesClientRegenerateKeysResponse], errResp azfake.ErrorResponder)
+
+	// Update is the fake for method NamespacesClient.Update
+	// HTTP status codes to indicate success: http.StatusOK
+	Update func(ctx context.Context, resourceGroupName string, namespaceName string, parameters armnotificationhubs.NamespacePatchParameters, options *armnotificationhubs.NamespacesClientUpdateOptions) (resp azfake.Responder[armnotificationhubs.NamespacesClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewNamespacesServerTransport creates a new instance of NamespacesServerTransport with the provided implementation.
@@ -83,7 +88,7 @@ type NamespacesServer struct {
 func NewNamespacesServerTransport(srv *NamespacesServer) *NamespacesServerTransport {
 	return &NamespacesServerTransport{
 		srv:                            srv,
-		beginDelete:                    newTracker[azfake.PollerResponder[armnotificationhubs.NamespacesClientDeleteResponse]](),
+		beginCreateOrUpdate:            newTracker[azfake.PollerResponder[armnotificationhubs.NamespacesClientCreateOrUpdateResponse]](),
 		newListPager:                   newTracker[azfake.PagerResponder[armnotificationhubs.NamespacesClientListResponse]](),
 		newListAllPager:                newTracker[azfake.PagerResponder[armnotificationhubs.NamespacesClientListAllResponse]](),
 		newListAuthorizationRulesPager: newTracker[azfake.PagerResponder[armnotificationhubs.NamespacesClientListAuthorizationRulesResponse]](),
@@ -94,7 +99,7 @@ func NewNamespacesServerTransport(srv *NamespacesServer) *NamespacesServerTransp
 // Don't use this type directly, use NewNamespacesServerTransport instead.
 type NamespacesServerTransport struct {
 	srv                            *NamespacesServer
-	beginDelete                    *tracker[azfake.PollerResponder[armnotificationhubs.NamespacesClientDeleteResponse]]
+	beginCreateOrUpdate            *tracker[azfake.PollerResponder[armnotificationhubs.NamespacesClientCreateOrUpdateResponse]]
 	newListPager                   *tracker[azfake.PagerResponder[armnotificationhubs.NamespacesClientListResponse]]
 	newListAllPager                *tracker[azfake.PagerResponder[armnotificationhubs.NamespacesClientListAllResponse]]
 	newListAuthorizationRulesPager *tracker[azfake.PagerResponder[armnotificationhubs.NamespacesClientListAuthorizationRulesResponse]]
@@ -114,18 +119,20 @@ func (n *NamespacesServerTransport) Do(req *http.Request) (*http.Response, error
 	switch method {
 	case "NamespacesClient.CheckAvailability":
 		resp, err = n.dispatchCheckAvailability(req)
-	case "NamespacesClient.CreateOrUpdate":
-		resp, err = n.dispatchCreateOrUpdate(req)
+	case "NamespacesClient.BeginCreateOrUpdate":
+		resp, err = n.dispatchBeginCreateOrUpdate(req)
 	case "NamespacesClient.CreateOrUpdateAuthorizationRule":
 		resp, err = n.dispatchCreateOrUpdateAuthorizationRule(req)
-	case "NamespacesClient.BeginDelete":
-		resp, err = n.dispatchBeginDelete(req)
+	case "NamespacesClient.Delete":
+		resp, err = n.dispatchDelete(req)
 	case "NamespacesClient.DeleteAuthorizationRule":
 		resp, err = n.dispatchDeleteAuthorizationRule(req)
 	case "NamespacesClient.Get":
 		resp, err = n.dispatchGet(req)
 	case "NamespacesClient.GetAuthorizationRule":
 		resp, err = n.dispatchGetAuthorizationRule(req)
+	case "NamespacesClient.GetPnsCredentials":
+		resp, err = n.dispatchGetPnsCredentials(req)
 	case "NamespacesClient.NewListPager":
 		resp, err = n.dispatchNewListPager(req)
 	case "NamespacesClient.NewListAllPager":
@@ -134,10 +141,10 @@ func (n *NamespacesServerTransport) Do(req *http.Request) (*http.Response, error
 		resp, err = n.dispatchNewListAuthorizationRulesPager(req)
 	case "NamespacesClient.ListKeys":
 		resp, err = n.dispatchListKeys(req)
-	case "NamespacesClient.Patch":
-		resp, err = n.dispatchPatch(req)
 	case "NamespacesClient.RegenerateKeys":
 		resp, err = n.dispatchRegenerateKeys(req)
+	case "NamespacesClient.Update":
+		resp, err = n.dispatchUpdate(req)
 	default:
 		err = fmt.Errorf("unhandled API %s", method)
 	}
@@ -178,40 +185,51 @@ func (n *NamespacesServerTransport) dispatchCheckAvailability(req *http.Request)
 	return resp, nil
 }
 
-func (n *NamespacesServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
-	if n.srv.CreateOrUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
+func (n *NamespacesServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
+	if n.srv.BeginCreateOrUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NotificationHubs/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	beginCreateOrUpdate := n.beginCreateOrUpdate.get(req)
+	if beginCreateOrUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NotificationHubs/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armnotificationhubs.NamespaceResource](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		namespaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("namespaceName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := n.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, namespaceNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginCreateOrUpdate = &respr
+		n.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
 	}
-	body, err := server.UnmarshalRequestAsJSON[armnotificationhubs.NamespaceCreateOrUpdateParameters](req)
+
+	resp, err := server.PollerResponderNext(beginCreateOrUpdate, req)
 	if err != nil {
 		return nil, err
 	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
+
+	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		n.beginCreateOrUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
-	namespaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("namespaceName")])
-	if err != nil {
-		return nil, err
+	if !server.PollerResponderMore(beginCreateOrUpdate) {
+		n.beginCreateOrUpdate.remove(req)
 	}
-	respr, errRespr := n.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, namespaceNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).NamespaceResource, req)
-	if err != nil {
-		return nil, err
-	}
+
 	return resp, nil
 }
 
@@ -219,13 +237,13 @@ func (n *NamespacesServerTransport) dispatchCreateOrUpdateAuthorizationRule(req 
 	if n.srv.CreateOrUpdateAuthorizationRule == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdateAuthorizationRule not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NotificationHubs/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/AuthorizationRules/(?P<authorizationRuleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NotificationHubs/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/authorizationRules/(?P<authorizationRuleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	body, err := server.UnmarshalRequestAsJSON[armnotificationhubs.SharedAccessAuthorizationRuleCreateOrUpdateParameters](req)
+	body, err := server.UnmarshalRequestAsJSON[armnotificationhubs.SharedAccessAuthorizationRuleResource](req)
 	if err != nil {
 		return nil, err
 	}
@@ -246,8 +264,8 @@ func (n *NamespacesServerTransport) dispatchCreateOrUpdateAuthorizationRule(req 
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	if !contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SharedAccessAuthorizationRuleResource, req)
 	if err != nil {
@@ -256,47 +274,36 @@ func (n *NamespacesServerTransport) dispatchCreateOrUpdateAuthorizationRule(req 
 	return resp, nil
 }
 
-func (n *NamespacesServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
-	if n.srv.BeginDelete == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
+func (n *NamespacesServerTransport) dispatchDelete(req *http.Request) (*http.Response, error) {
+	if n.srv.Delete == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
 	}
-	beginDelete := n.beginDelete.get(req)
-	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NotificationHubs/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		namespaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("namespaceName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := n.srv.BeginDelete(req.Context(), resourceGroupNameParam, namespaceNameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginDelete = &respr
-		n.beginDelete.add(req, beginDelete)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NotificationHubs/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-
-	resp, err := server.PollerResponderNext(beginDelete, req)
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
 	}
-
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		n.beginDelete.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	namespaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("namespaceName")])
+	if err != nil {
+		return nil, err
 	}
-	if !server.PollerResponderMore(beginDelete) {
-		n.beginDelete.remove(req)
+	respr, errRespr := n.srv.Delete(req.Context(), resourceGroupNameParam, namespaceNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
 	}
-
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK, http.StatusNoContent}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", respContent.HTTPStatus)}
+	}
+	resp, err := server.NewResponse(respContent, req, nil)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 
@@ -304,7 +311,7 @@ func (n *NamespacesServerTransport) dispatchDeleteAuthorizationRule(req *http.Re
 	if n.srv.DeleteAuthorizationRule == nil {
 		return nil, &nonRetriableError{errors.New("fake for method DeleteAuthorizationRule not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NotificationHubs/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/AuthorizationRules/(?P<authorizationRuleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NotificationHubs/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/authorizationRules/(?P<authorizationRuleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 4 {
@@ -374,7 +381,7 @@ func (n *NamespacesServerTransport) dispatchGetAuthorizationRule(req *http.Reque
 	if n.srv.GetAuthorizationRule == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetAuthorizationRule not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NotificationHubs/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/AuthorizationRules/(?P<authorizationRuleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NotificationHubs/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/authorizationRules/(?P<authorizationRuleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 4 {
@@ -407,6 +414,39 @@ func (n *NamespacesServerTransport) dispatchGetAuthorizationRule(req *http.Reque
 	return resp, nil
 }
 
+func (n *NamespacesServerTransport) dispatchGetPnsCredentials(req *http.Request) (*http.Response, error) {
+	if n.srv.GetPnsCredentials == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetPnsCredentials not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NotificationHubs/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/pnsCredentials`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	namespaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("namespaceName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := n.srv.GetPnsCredentials(req.Context(), resourceGroupNameParam, namespaceNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).PnsCredentialsResource, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (n *NamespacesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
 	if n.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
@@ -419,11 +459,38 @@ func (n *NamespacesServerTransport) dispatchNewListPager(req *http.Request) (*ht
 		if matches == nil || len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
+		qp := req.URL.Query()
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
 		}
-		resp := n.srv.NewListPager(resourceGroupNameParam, nil)
+		skipTokenUnescaped, err := url.QueryUnescape(qp.Get("$skipToken"))
+		if err != nil {
+			return nil, err
+		}
+		skipTokenParam := getOptional(skipTokenUnescaped)
+		topUnescaped, err := url.QueryUnescape(qp.Get("$top"))
+		if err != nil {
+			return nil, err
+		}
+		topParam, err := parseOptional(topUnescaped, func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		var options *armnotificationhubs.NamespacesClientListOptions
+		if skipTokenParam != nil || topParam != nil {
+			options = &armnotificationhubs.NamespacesClientListOptions{
+				SkipToken: skipTokenParam,
+				Top:       topParam,
+			}
+		}
+		resp := n.srv.NewListPager(resourceGroupNameParam, options)
 		newListPager = &resp
 		n.newListPager.add(req, newListPager)
 		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnotificationhubs.NamespacesClientListResponse, createLink func() string) {
@@ -456,7 +523,34 @@ func (n *NamespacesServerTransport) dispatchNewListAllPager(req *http.Request) (
 		if matches == nil || len(matches) < 1 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resp := n.srv.NewListAllPager(nil)
+		qp := req.URL.Query()
+		skipTokenUnescaped, err := url.QueryUnescape(qp.Get("$skipToken"))
+		if err != nil {
+			return nil, err
+		}
+		skipTokenParam := getOptional(skipTokenUnescaped)
+		topUnescaped, err := url.QueryUnescape(qp.Get("$top"))
+		if err != nil {
+			return nil, err
+		}
+		topParam, err := parseOptional(topUnescaped, func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		var options *armnotificationhubs.NamespacesClientListAllOptions
+		if skipTokenParam != nil || topParam != nil {
+			options = &armnotificationhubs.NamespacesClientListAllOptions{
+				SkipToken: skipTokenParam,
+				Top:       topParam,
+			}
+		}
+		resp := n.srv.NewListAllPager(options)
 		newListAllPager = &resp
 		n.newListAllPager.add(req, newListAllPager)
 		server.PagerResponderInjectNextLinks(newListAllPager, req, func(page *armnotificationhubs.NamespacesClientListAllResponse, createLink func() string) {
@@ -483,7 +577,7 @@ func (n *NamespacesServerTransport) dispatchNewListAuthorizationRulesPager(req *
 	}
 	newListAuthorizationRulesPager := n.newListAuthorizationRulesPager.get(req)
 	if newListAuthorizationRulesPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NotificationHubs/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/AuthorizationRules`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NotificationHubs/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/authorizationRules`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
@@ -522,7 +616,7 @@ func (n *NamespacesServerTransport) dispatchListKeys(req *http.Request) (*http.R
 	if n.srv.ListKeys == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ListKeys not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NotificationHubs/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/AuthorizationRules/(?P<authorizationRuleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listKeys`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NotificationHubs/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/authorizationRules/(?P<authorizationRuleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listKeys`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 4 {
@@ -555,54 +649,17 @@ func (n *NamespacesServerTransport) dispatchListKeys(req *http.Request) (*http.R
 	return resp, nil
 }
 
-func (n *NamespacesServerTransport) dispatchPatch(req *http.Request) (*http.Response, error) {
-	if n.srv.Patch == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Patch not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NotificationHubs/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armnotificationhubs.NamespacePatchParameters](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	namespaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("namespaceName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := n.srv.Patch(req.Context(), resourceGroupNameParam, namespaceNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).NamespaceResource, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (n *NamespacesServerTransport) dispatchRegenerateKeys(req *http.Request) (*http.Response, error) {
 	if n.srv.RegenerateKeys == nil {
 		return nil, &nonRetriableError{errors.New("fake for method RegenerateKeys not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NotificationHubs/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/AuthorizationRules/(?P<authorizationRuleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/regenerateKeys`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NotificationHubs/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/authorizationRules/(?P<authorizationRuleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/regenerateKeys`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	body, err := server.UnmarshalRequestAsJSON[armnotificationhubs.PolicykeyResource](req)
+	body, err := server.UnmarshalRequestAsJSON[armnotificationhubs.PolicyKeyResource](req)
 	if err != nil {
 		return nil, err
 	}
@@ -627,6 +684,43 @@ func (n *NamespacesServerTransport) dispatchRegenerateKeys(req *http.Request) (*
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ResourceListKeys, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (n *NamespacesServerTransport) dispatchUpdate(req *http.Request) (*http.Response, error) {
+	if n.srv.Update == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Update not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NotificationHubs/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armnotificationhubs.NamespacePatchParameters](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	namespaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("namespaceName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := n.srv.Update(req.Context(), resourceGroupNameParam, namespaceNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).NamespaceResource, req)
 	if err != nil {
 		return nil, err
 	}

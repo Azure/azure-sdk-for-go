@@ -42,14 +42,15 @@ type Client base.CompositeClient[generated.PathClient, generated_blob.BlobClient
 func NewClient(directoryURL string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
 	blobURL, directoryURL := shared.GetURLs(directoryURL)
 
-	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{shared.TokenScope}, nil)
+	audience := base.GetAudience((*base.ClientOptions)(options))
 	conOptions := shared.GetClientOptions(options)
+	authPolicy := shared.NewStorageChallengePolicy(cred, audience, conOptions.InsecureAllowCredentialWithHTTP)
 	plOpts := runtime.PipelineOptions{
 		PerRetry: []policy.Policy{authPolicy},
 	}
 	base.SetPipelineOptions((*base.ClientOptions)(conOptions), &plOpts)
 
-	azClient, err := azcore.NewClient(shared.DirectoryClient, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
+	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -82,7 +83,7 @@ func NewClientWithNoCredential(directoryURL string, options *ClientOptions) (*Cl
 	plOpts := runtime.PipelineOptions{}
 	base.SetPipelineOptions((*base.ClientOptions)(conOptions), &plOpts)
 
-	azClient, err := azcore.NewClient(shared.DirectoryClient, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
+	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -119,7 +120,7 @@ func NewClientWithSharedKeyCredential(directoryURL string, cred *SharedKeyCreden
 	}
 	base.SetPipelineOptions((*base.ClientOptions)(conOptions), &plOpts)
 
-	azClient, err := azcore.NewClient(shared.DirectoryClient, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
+	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -225,7 +226,7 @@ func (d *Client) NewFileClient(fileName string) (*file.Client, error) {
 	if err != nil {
 		return nil, exported.ConvertToDFSError(err)
 	}
-	return (*file.Client)(base.NewPathClient(fileURL, newBlobURL, newBlobClient, d.generatedDirClientWithDFS().InternalClient().WithClientName(shared.FileClient), d.sharedKey(), d.identityCredential(), d.getClientOptions())), nil
+	return (*file.Client)(base.NewPathClient(fileURL, newBlobURL, newBlobClient, d.generatedDirClientWithDFS().InternalClient().WithClientName(exported.ModuleName), d.sharedKey(), d.identityCredential(), d.getClientOptions())), nil
 }
 
 // NewSubdirectoryClient creates a new directory.Client object by concatenating subdirectoryName to the end of this Client's URL.
@@ -248,7 +249,7 @@ func (d *Client) NewSubdirectoryClient(subdirectoryName string) (*Client, error)
 	if err != nil {
 		return nil, exported.ConvertToDFSError(err)
 	}
-	return (*Client)(base.NewPathClient(subDirectoryURL, newBlobURL, newBlobClient, d.generatedDirClientWithDFS().InternalClient().WithClientName(shared.DirectoryClient), d.sharedKey(), d.identityCredential(), d.getClientOptions())), nil
+	return (*Client)(base.NewPathClient(subDirectoryURL, newBlobURL, newBlobClient, d.generatedDirClientWithDFS().InternalClient().WithClientName(exported.ModuleName), d.sharedKey(), d.identityCredential(), d.getClientOptions())), nil
 }
 
 // Create creates a new directory.
@@ -262,9 +263,14 @@ func (d *Client) Create(ctx context.Context, options *CreateOptions) (CreateResp
 // Delete deletes directory and any path under it.
 func (d *Client) Delete(ctx context.Context, options *DeleteOptions) (DeleteResponse, error) {
 	lac, mac, deleteOpts := path.FormatDeleteOptions(options, true)
-	resp, err := d.generatedDirClientWithDFS().Delete(ctx, deleteOpts, lac, mac)
-	err = exported.ConvertToDFSError(err)
-	return resp, err
+	for {
+		resp, err := d.generatedDirClientWithDFS().Delete(ctx, deleteOpts, lac, mac)
+		if resp.Continuation == nil || err != nil {
+			err = exported.ConvertToDFSError(err)
+			return resp, err
+		}
+		deleteOpts.Continuation = resp.Continuation
+	}
 }
 
 // GetProperties gets the properties of a directory.
@@ -332,7 +338,7 @@ func (d *Client) Rename(ctx context.Context, destinationPath string, options *Re
 	if err != nil {
 		return RenameResponse{}, exported.ConvertToDFSError(err)
 	}
-	newDirClient := (*Client)(base.NewPathClient(newPathURL, newBlobURL, newBlobClient, d.generatedDirClientWithDFS().InternalClient().WithClientName(shared.DirectoryClient), d.sharedKey(), d.identityCredential(), d.getClientOptions()))
+	newDirClient := (*Client)(base.NewPathClient(newPathURL, newBlobURL, newBlobClient, d.generatedDirClientWithDFS().InternalClient().WithClientName(exported.ModuleName), d.sharedKey(), d.identityCredential(), d.getClientOptions()))
 	resp, err := newDirClient.generatedDirClientWithDFS().Create(ctx, createOpts, nil, lac, mac, smac, cpkOpts)
 	//return RenameResponse{
 	//	Response:           resp,

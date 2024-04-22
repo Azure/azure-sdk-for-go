@@ -4,8 +4,7 @@
 clear-output-folder: false
 export-clients: true
 go: true
-input-file: 
-    - https://github.com/Azure/azure-rest-api-specs/blob/a2f6f742d088dcc712e67cb2745d8271eaa370ff/specification/keyvault/data-plane/Microsoft.KeyVault/preview/7.5-preview.1/backuprestore.json
+input-file: https://github.com/Azure/azure-rest-api-specs/blob/7452e1cc7db72fbc6cd9539b390d8b8e5c2a1864/specification/keyvault/data-plane/Microsoft.KeyVault/stable/7.5/backuprestore.json
 license-header: MICROSOFT_MIT_NO_VERSION
 openapi-type: "data-plane"
 output-folder: ../backup

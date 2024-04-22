@@ -10,7 +10,7 @@ package armhybridcontainerservice
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcontainerservice/armhybridcontainerservice"
-	moduleVersion = "v0.3.0"
+	moduleVersion = "v1.0.0"
 )
 
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -27,9 +27,9 @@ func PossibleActionTypeValues() []ActionType {
 	}
 }
 
-// AddonPhase - Observed phase of the addon on the target cluster. Possible values include: 'pending', 'provisioning', 'provisioning
-// {HelmChartInstalled}', 'provisioning {MSICertificateDownloaded}', 'provisioned',
-// 'deleting', 'failed', 'upgrading'
+// AddonPhase - Observed phase of the addon or component on the provisioned cluster. Possible values include: 'pending', 'provisioning',
+// 'provisioning {HelmChartInstalled}', 'provisioning {MSICertificateDownloaded}',
+// 'provisioned', 'deleting', 'failed', 'upgrading'
 type AddonPhase string
 
 const (
@@ -57,7 +57,7 @@ func PossibleAddonPhaseValues() []AddonPhase {
 	}
 }
 
-// AzureHybridBenefit - Indicates whether Azure Hybrid Benefit is opted in
+// AzureHybridBenefit - Indicates whether Azure Hybrid Benefit is opted in. Default value is false
 type AzureHybridBenefit string
 
 const (
@@ -95,7 +95,37 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// ExtendedLocationTypes - The extended location type.
+// Expander - If not specified, the default is 'random'. See expanders [https://github.com/kubernetes/autoscaler/blob/master/cluster-autoscaler/FAQ.md#what-are-expanders]
+// for more information.
+type Expander string
+
+const (
+	// ExpanderLeastWaste - Selects the node group that will have the least idle CPU (if tied, unused memory) after scale-up.
+	// This is useful when you have different classes of nodes, for example, high CPU or high memory nodes, and only want to expand
+	// those when there are pending pods that need a lot of those resources.
+	ExpanderLeastWaste Expander = "least-waste"
+	// ExpanderMostPods - Selects the node group that would be able to schedule the most pods when scaling up. This is useful
+	// when you are using nodeSelector to make sure certain pods land on certain nodes. Note that this won't cause the autoscaler
+	// to select bigger nodes vs. smaller, as it can add multiple smaller nodes at once.
+	ExpanderMostPods Expander = "most-pods"
+	// ExpanderPriority - Selects the node group that has the highest priority assigned by the user. It's configuration is described
+	// in more details [here](https://github.com/kubernetes/autoscaler/blob/master/cluster-autoscaler/expander/priority/readme.md).
+	ExpanderPriority Expander = "priority"
+	// ExpanderRandom - Used when you don't have a particular need for the node groups to scale differently.
+	ExpanderRandom Expander = "random"
+)
+
+// PossibleExpanderValues returns the possible values for the Expander const type.
+func PossibleExpanderValues() []Expander {
+	return []Expander{
+		ExpanderLeastWaste,
+		ExpanderMostPods,
+		ExpanderPriority,
+		ExpanderRandom,
+	}
+}
+
+// ExtendedLocationTypes - The extended location type. Allowed value: 'CustomLocation'
 type ExtendedLocationTypes string
 
 const (
@@ -109,20 +139,17 @@ func PossibleExtendedLocationTypesValues() []ExtendedLocationTypes {
 	}
 }
 
-// NetworkPolicy - NetworkPolicy - Network policy used for building Kubernetes network. Possible values include: 'calico',
-// 'flannel'. Default is 'calico'
+// NetworkPolicy - Network policy used for building Kubernetes network. Possible values include: 'calico'.
 type NetworkPolicy string
 
 const (
-	NetworkPolicyCalico  NetworkPolicy = "calico"
-	NetworkPolicyFlannel NetworkPolicy = "flannel"
+	NetworkPolicyCalico NetworkPolicy = "calico"
 )
 
 // PossibleNetworkPolicyValues returns the possible values for the NetworkPolicy const type.
 func PossibleNetworkPolicyValues() []NetworkPolicy {
 	return []NetworkPolicy{
 		NetworkPolicyCalico,
-		NetworkPolicyFlannel,
 	}
 }
 
@@ -167,7 +194,7 @@ func PossibleOriginValues() []Origin {
 	}
 }
 
-// OsType - The particular KubernetesVersion's Image's OS Type (Linux, Windows)
+// OsType - The particular KubernetesVersion Image OS Type (Linux, Windows)
 type OsType string
 
 const (
@@ -186,14 +213,14 @@ func PossibleOsTypeValues() []OsType {
 type ProvisioningState string
 
 const (
-	ProvisioningStateAccepted   ProvisioningState = "Accepted"
-	ProvisioningStateCanceled   ProvisioningState = "Canceled"
-	ProvisioningStateCreated    ProvisioningState = "Created"
-	ProvisioningStateDeleting   ProvisioningState = "Deleting"
-	ProvisioningStateFailed     ProvisioningState = "Failed"
-	ProvisioningStateInProgress ProvisioningState = "InProgress"
-	ProvisioningStateSucceeded  ProvisioningState = "Succeeded"
-	ProvisioningStateUpdating   ProvisioningState = "Updating"
+	ProvisioningStateAccepted  ProvisioningState = "Accepted"
+	ProvisioningStateCanceled  ProvisioningState = "Canceled"
+	ProvisioningStateCreating  ProvisioningState = "Creating"
+	ProvisioningStateDeleting  ProvisioningState = "Deleting"
+	ProvisioningStateFailed    ProvisioningState = "Failed"
+	ProvisioningStatePending   ProvisioningState = "Pending"
+	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
+	ProvisioningStateUpdating  ProvisioningState = "Updating"
 )
 
 // PossibleProvisioningStateValues returns the possible values for the ProvisioningState const type.
@@ -201,10 +228,10 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 	return []ProvisioningState{
 		ProvisioningStateAccepted,
 		ProvisioningStateCanceled,
-		ProvisioningStateCreated,
+		ProvisioningStateCreating,
 		ProvisioningStateDeleting,
 		ProvisioningStateFailed,
-		ProvisioningStateInProgress,
+		ProvisioningStatePending,
 		ProvisioningStateSucceeded,
 		ProvisioningStateUpdating,
 	}
@@ -214,16 +241,15 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 type ResourceProvisioningState string
 
 const (
-	ResourceProvisioningStateAccepted   ResourceProvisioningState = "Accepted"
-	ResourceProvisioningStateCanceled   ResourceProvisioningState = "Canceled"
-	ResourceProvisioningStateCreated    ResourceProvisioningState = "Created"
-	ResourceProvisioningStateCreating   ResourceProvisioningState = "Creating"
-	ResourceProvisioningStateDeleting   ResourceProvisioningState = "Deleting"
-	ResourceProvisioningStateFailed     ResourceProvisioningState = "Failed"
-	ResourceProvisioningStateInProgress ResourceProvisioningState = "InProgress"
-	ResourceProvisioningStateSucceeded  ResourceProvisioningState = "Succeeded"
-	ResourceProvisioningStateUpdating   ResourceProvisioningState = "Updating"
-	ResourceProvisioningStateUpgrading  ResourceProvisioningState = "Upgrading"
+	ResourceProvisioningStateAccepted  ResourceProvisioningState = "Accepted"
+	ResourceProvisioningStateCanceled  ResourceProvisioningState = "Canceled"
+	ResourceProvisioningStateCreating  ResourceProvisioningState = "Creating"
+	ResourceProvisioningStateDeleting  ResourceProvisioningState = "Deleting"
+	ResourceProvisioningStateFailed    ResourceProvisioningState = "Failed"
+	ResourceProvisioningStatePending   ResourceProvisioningState = "Pending"
+	ResourceProvisioningStateSucceeded ResourceProvisioningState = "Succeeded"
+	ResourceProvisioningStateUpdating  ResourceProvisioningState = "Updating"
+	ResourceProvisioningStateUpgrading ResourceProvisioningState = "Upgrading"
 )
 
 // PossibleResourceProvisioningStateValues returns the possible values for the ResourceProvisioningState const type.
@@ -231,11 +257,10 @@ func PossibleResourceProvisioningStateValues() []ResourceProvisioningState {
 	return []ResourceProvisioningState{
 		ResourceProvisioningStateAccepted,
 		ResourceProvisioningStateCanceled,
-		ResourceProvisioningStateCreated,
 		ResourceProvisioningStateCreating,
 		ResourceProvisioningStateDeleting,
 		ResourceProvisioningStateFailed,
-		ResourceProvisioningStateInProgress,
+		ResourceProvisioningStatePending,
 		ResourceProvisioningStateSucceeded,
 		ResourceProvisioningStateUpdating,
 		ResourceProvisioningStateUpgrading,

@@ -43,9 +43,17 @@ type CassandraClustersServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GetBackup func(ctx context.Context, resourceGroupName string, clusterName string, backupID string, options *armcosmos.CassandraClustersClientGetBackupOptions) (resp azfake.Responder[armcosmos.CassandraClustersClientGetBackupResponse], errResp azfake.ErrorResponder)
 
+	// GetCommandAsync is the fake for method CassandraClustersClient.GetCommandAsync
+	// HTTP status codes to indicate success: http.StatusOK
+	GetCommandAsync func(ctx context.Context, resourceGroupName string, clusterName string, commandID string, options *armcosmos.CassandraClustersClientGetCommandAsyncOptions) (resp azfake.Responder[armcosmos.CassandraClustersClientGetCommandAsyncResponse], errResp azfake.ErrorResponder)
+
 	// BeginInvokeCommand is the fake for method CassandraClustersClient.BeginInvokeCommand
 	// HTTP status codes to indicate success: http.StatusAccepted
 	BeginInvokeCommand func(ctx context.Context, resourceGroupName string, clusterName string, body armcosmos.CommandPostBody, options *armcosmos.CassandraClustersClientBeginInvokeCommandOptions) (resp azfake.PollerResponder[armcosmos.CassandraClustersClientInvokeCommandResponse], errResp azfake.ErrorResponder)
+
+	// BeginInvokeCommandAsync is the fake for method CassandraClustersClient.BeginInvokeCommandAsync
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginInvokeCommandAsync func(ctx context.Context, resourceGroupName string, clusterName string, body armcosmos.CommandPostBody, options *armcosmos.CassandraClustersClientBeginInvokeCommandAsyncOptions) (resp azfake.PollerResponder[armcosmos.CassandraClustersClientInvokeCommandAsyncResponse], errResp azfake.ErrorResponder)
 
 	// NewListBackupsPager is the fake for method CassandraClustersClient.NewListBackupsPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -58,6 +66,10 @@ type CassandraClustersServer struct {
 	// NewListBySubscriptionPager is the fake for method CassandraClustersClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armcosmos.CassandraClustersClientListBySubscriptionOptions) (resp azfake.PagerResponder[armcosmos.CassandraClustersClientListBySubscriptionResponse])
+
+	// NewListCommandPager is the fake for method CassandraClustersClient.NewListCommandPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListCommandPager func(resourceGroupName string, clusterName string, options *armcosmos.CassandraClustersClientListCommandOptions) (resp azfake.PagerResponder[armcosmos.CassandraClustersClientListCommandResponse])
 
 	// BeginStart is the fake for method CassandraClustersClient.BeginStart
 	// HTTP status codes to indicate success: http.StatusAccepted
@@ -82,9 +94,11 @@ func NewCassandraClustersServerTransport(srv *CassandraClustersServer) *Cassandr
 		beginDeallocate:             newTracker[azfake.PollerResponder[armcosmos.CassandraClustersClientDeallocateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armcosmos.CassandraClustersClientDeleteResponse]](),
 		beginInvokeCommand:          newTracker[azfake.PollerResponder[armcosmos.CassandraClustersClientInvokeCommandResponse]](),
+		beginInvokeCommandAsync:     newTracker[azfake.PollerResponder[armcosmos.CassandraClustersClientInvokeCommandAsyncResponse]](),
 		newListBackupsPager:         newTracker[azfake.PagerResponder[armcosmos.CassandraClustersClientListBackupsResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armcosmos.CassandraClustersClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armcosmos.CassandraClustersClientListBySubscriptionResponse]](),
+		newListCommandPager:         newTracker[azfake.PagerResponder[armcosmos.CassandraClustersClientListCommandResponse]](),
 		beginStart:                  newTracker[azfake.PollerResponder[armcosmos.CassandraClustersClientStartResponse]](),
 		beginUpdate:                 newTracker[azfake.PollerResponder[armcosmos.CassandraClustersClientUpdateResponse]](),
 	}
@@ -98,9 +112,11 @@ type CassandraClustersServerTransport struct {
 	beginDeallocate             *tracker[azfake.PollerResponder[armcosmos.CassandraClustersClientDeallocateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armcosmos.CassandraClustersClientDeleteResponse]]
 	beginInvokeCommand          *tracker[azfake.PollerResponder[armcosmos.CassandraClustersClientInvokeCommandResponse]]
+	beginInvokeCommandAsync     *tracker[azfake.PollerResponder[armcosmos.CassandraClustersClientInvokeCommandAsyncResponse]]
 	newListBackupsPager         *tracker[azfake.PagerResponder[armcosmos.CassandraClustersClientListBackupsResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armcosmos.CassandraClustersClientListByResourceGroupResponse]]
 	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armcosmos.CassandraClustersClientListBySubscriptionResponse]]
+	newListCommandPager         *tracker[azfake.PagerResponder[armcosmos.CassandraClustersClientListCommandResponse]]
 	beginStart                  *tracker[azfake.PollerResponder[armcosmos.CassandraClustersClientStartResponse]]
 	beginUpdate                 *tracker[azfake.PollerResponder[armcosmos.CassandraClustersClientUpdateResponse]]
 }
@@ -127,14 +143,20 @@ func (c *CassandraClustersServerTransport) Do(req *http.Request) (*http.Response
 		resp, err = c.dispatchGet(req)
 	case "CassandraClustersClient.GetBackup":
 		resp, err = c.dispatchGetBackup(req)
+	case "CassandraClustersClient.GetCommandAsync":
+		resp, err = c.dispatchGetCommandAsync(req)
 	case "CassandraClustersClient.BeginInvokeCommand":
 		resp, err = c.dispatchBeginInvokeCommand(req)
+	case "CassandraClustersClient.BeginInvokeCommandAsync":
+		resp, err = c.dispatchBeginInvokeCommandAsync(req)
 	case "CassandraClustersClient.NewListBackupsPager":
 		resp, err = c.dispatchNewListBackupsPager(req)
 	case "CassandraClustersClient.NewListByResourceGroupPager":
 		resp, err = c.dispatchNewListByResourceGroupPager(req)
 	case "CassandraClustersClient.NewListBySubscriptionPager":
 		resp, err = c.dispatchNewListBySubscriptionPager(req)
+	case "CassandraClustersClient.NewListCommandPager":
+		resp, err = c.dispatchNewListCommandPager(req)
 	case "CassandraClustersClient.BeginStart":
 		resp, err = c.dispatchBeginStart(req)
 	case "CassandraClustersClient.Status":
@@ -220,7 +242,14 @@ func (c *CassandraClustersServerTransport) dispatchBeginDeallocate(req *http.Req
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := c.srv.BeginDeallocate(req.Context(), resourceGroupNameParam, clusterNameParam, nil)
+		xMSForceDeallocateParam := getOptional(getHeaderValue(req.Header, "x-ms-force-deallocate"))
+		var options *armcosmos.CassandraClustersClientBeginDeallocateOptions
+		if xMSForceDeallocateParam != nil {
+			options = &armcosmos.CassandraClustersClientBeginDeallocateOptions{
+				XMSForceDeallocate: xMSForceDeallocateParam,
+			}
+		}
+		respr, errRespr := c.srv.BeginDeallocate(req.Context(), resourceGroupNameParam, clusterNameParam, options)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -358,6 +387,43 @@ func (c *CassandraClustersServerTransport) dispatchGetBackup(req *http.Request) 
 	return resp, nil
 }
 
+func (c *CassandraClustersServerTransport) dispatchGetCommandAsync(req *http.Request) (*http.Response, error) {
+	if c.srv.GetCommandAsync == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetCommandAsync not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/cassandraClusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/commands/(?P<commandId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
+	if err != nil {
+		return nil, err
+	}
+	commandIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("commandId")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := c.srv.GetCommandAsync(req.Context(), resourceGroupNameParam, clusterNameParam, commandIDParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ListCommands, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (c *CassandraClustersServerTransport) dispatchBeginInvokeCommand(req *http.Request) (*http.Response, error) {
 	if c.srv.BeginInvokeCommand == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginInvokeCommand not implemented")}
@@ -401,6 +467,54 @@ func (c *CassandraClustersServerTransport) dispatchBeginInvokeCommand(req *http.
 	}
 	if !server.PollerResponderMore(beginInvokeCommand) {
 		c.beginInvokeCommand.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (c *CassandraClustersServerTransport) dispatchBeginInvokeCommandAsync(req *http.Request) (*http.Response, error) {
+	if c.srv.BeginInvokeCommandAsync == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginInvokeCommandAsync not implemented")}
+	}
+	beginInvokeCommandAsync := c.beginInvokeCommandAsync.get(req)
+	if beginInvokeCommandAsync == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/cassandraClusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/invokeCommandAsync`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armcosmos.CommandPostBody](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := c.srv.BeginInvokeCommandAsync(req.Context(), resourceGroupNameParam, clusterNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginInvokeCommandAsync = &respr
+		c.beginInvokeCommandAsync.add(req, beginInvokeCommandAsync)
+	}
+
+	resp, err := server.PollerResponderNext(beginInvokeCommandAsync, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		c.beginInvokeCommandAsync.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginInvokeCommandAsync) {
+		c.beginInvokeCommandAsync.remove(req)
 	}
 
 	return resp, nil
@@ -504,6 +618,44 @@ func (c *CassandraClustersServerTransport) dispatchNewListBySubscriptionPager(re
 	}
 	if !server.PagerResponderMore(newListBySubscriptionPager) {
 		c.newListBySubscriptionPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (c *CassandraClustersServerTransport) dispatchNewListCommandPager(req *http.Request) (*http.Response, error) {
+	if c.srv.NewListCommandPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListCommandPager not implemented")}
+	}
+	newListCommandPager := c.newListCommandPager.get(req)
+	if newListCommandPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/cassandraClusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/commands`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := c.srv.NewListCommandPager(resourceGroupNameParam, clusterNameParam, nil)
+		newListCommandPager = &resp
+		c.newListCommandPager.add(req, newListCommandPager)
+	}
+	resp, err := server.PagerResponderNext(newListCommandPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		c.newListCommandPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListCommandPager) {
+		c.newListCommandPager.remove(req)
 	}
 	return resp, nil
 }

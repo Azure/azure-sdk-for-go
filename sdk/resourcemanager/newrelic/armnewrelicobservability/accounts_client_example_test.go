@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/newrelic/armnewrelicobservability"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Accounts_List_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/Accounts_List_MaximumSet_Gen.json
 func ExampleAccountsClient_NewListPager_accountsListMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -42,7 +42,7 @@ func ExampleAccountsClient_NewListPager_accountsListMaximumSetGen() {
 		// page.AccountsListResponse = armnewrelicobservability.AccountsListResponse{
 		// 	Value: []*armnewrelicobservability.AccountResource{
 		// 		{
-		// 			ID: to.Ptr("ycdsgeiitvxcd"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/NewRelic.Observability/monitors/myMonitor"),
 		// 			Properties: &armnewrelicobservability.AccountProperties{
 		// 				AccountID: to.Ptr("igmdjq"),
 		// 				AccountName: to.Ptr("accname"),
@@ -54,7 +54,7 @@ func ExampleAccountsClient_NewListPager_accountsListMaximumSetGen() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Accounts_List_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/Accounts_List_MinimumSet_Gen.json
 func ExampleAccountsClient_NewListPager_accountsListMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -79,7 +79,7 @@ func ExampleAccountsClient_NewListPager_accountsListMinimumSetGen() {
 		// page.AccountsListResponse = armnewrelicobservability.AccountsListResponse{
 		// 	Value: []*armnewrelicobservability.AccountResource{
 		// 		{
-		// 			ID: to.Ptr("ycdsgeiitvxcd"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/NewRelic.Observability/monitors/myMonitor"),
 		// 	}},
 		// }
 	}

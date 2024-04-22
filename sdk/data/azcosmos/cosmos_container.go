@@ -80,8 +80,9 @@ func (c *ContainerClient) Replace(
 	}
 
 	operationContext := pipelineRequestOptions{
-		resourceType:    resourceTypeCollection,
-		resourceAddress: c.link,
+		resourceType:     resourceTypeCollection,
+		resourceAddress:  c.link,
+		isWriteOperation: true,
 	}
 
 	path, err := generatePathForNameBased(resourceTypeCollection, c.link, false)
@@ -114,8 +115,9 @@ func (c *ContainerClient) Delete(
 	}
 
 	operationContext := pipelineRequestOptions{
-		resourceType:    resourceTypeCollection,
-		resourceAddress: c.link,
+		resourceType:     resourceTypeCollection,
+		resourceAddress:  c.link,
+		isWriteOperation: true,
 	}
 
 	path, err := generatePathForNameBased(resourceTypeCollection, c.link, false)
@@ -429,11 +431,11 @@ func (c *ContainerClient) NewQueryItemsPager(query string, partitionKey Partitio
 
 	return runtime.NewPager(runtime.PagingHandler[QueryItemsResponse]{
 		More: func(page QueryItemsResponse) bool {
-			return page.ContinuationToken != ""
+			return page.ContinuationToken != nil
 		},
 		Fetcher: func(ctx context.Context, page *QueryItemsResponse) (QueryItemsResponse, error) {
 			if page != nil {
-				if page.ContinuationToken != "" {
+				if page.ContinuationToken != nil {
 					// Use the previous page continuation if available
 					queryOptions.ContinuationToken = page.ContinuationToken
 				}

@@ -15,6 +15,8 @@ stages:
         displayName: "Check whether need to release"
         pool:
           name: azsdk-pool-mms-ubuntu-2004-general
+          image: azsdk-pool-mms-ubuntu-2004-1espt
+          os: linux
         steps:
           - task: PowerShell@2
             name: Verify
@@ -49,13 +51,16 @@ stages:
 
         pool:
           name: azsdk-pool-mms-ubuntu-2004-general
-          vmImage: MMSUbuntu20.04
+          image: azsdk-pool-mms-ubuntu-2004-1espt
+          os: linux
 
         strategy:
           runOnce:
             deploy:
               steps:
                 - checkout: self
+                - download: current
+                  artifact: 'PackageInfo'
                 - template: /eng/common/pipelines/templates/steps/retain-run.yml
                 - template: /eng/common/pipelines/templates/steps/verify-changelog.yml
                   parameters:
@@ -64,6 +69,14 @@ stages:
                     ${{ else }}:
                       PackageName: 'sdk/${{parameters.ServiceDirectory}}'
                     ForRelease: true
+                - template: /eng/common/pipelines/templates/steps/verify-restapi-spec-location.yml
+                  parameters:
+                    ${{ if startsWith(parameters.ServiceDirectory, '../') }}:
+                      PackageName: "${{replace(parameters.ServiceDirectory, '../', '')}}"
+                    ${{ else }}:
+                      PackageName: 'sdk/${{parameters.ServiceDirectory}}'
+                    ServiceDirectory: ${{parameters.ServiceDirectory}}
+                    ArtifactLocation: $(Pipeline.Workspace)
                 - task: PowerShell@2
                   displayName: 'Verify no replace directives in go.mod file'
                   inputs:
@@ -74,10 +87,11 @@ stages:
                 - template: /eng/common/pipelines/templates/steps/create-tags-and-git-release.yml
                   parameters:
                     ArtifactLocation: $(Build.SourcesDirectory)/sdk/${{ parameters.ServiceDirectory }}
+                    PackageFilter: sdk/${{ parameters.ServiceDirectory }}
                     ReleaseSha: $(Build.SourceVersion)
                     RepoId: Azure/azure-sdk-for-go
                     WorkingDirectory: $(System.DefaultWorkingDirectory)
-      
+
       - ${{ if not(and(startsWith(parameters.ServiceDirectory, 'resourcemanager'), ne(parameters.ServiceDirectory, 'resourcemanager/internal'))) }}:
         - deployment: UpdatePackageVersion
           displayName: "Update Package Version"
@@ -87,7 +101,8 @@ stages:
 
           pool:
             name: azsdk-pool-mms-ubuntu-2004-general
-            vmImage: MMSUbuntu20.04
+            image: azsdk-pool-mms-ubuntu-2004-1espt
+            os: linux
 
           strategy:
             runOnce:

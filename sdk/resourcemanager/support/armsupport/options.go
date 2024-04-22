@@ -24,6 +24,12 @@ type ChatTranscriptsNoSubscriptionClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
+// ChatTranscriptsNoSubscriptionClientListOptions contains the optional parameters for the ChatTranscriptsNoSubscriptionClient.NewListPager
+// method.
+type ChatTranscriptsNoSubscriptionClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // CommunicationsClientBeginCreateOptions contains the optional parameters for the CommunicationsClient.BeginCreate method.
 type CommunicationsClientBeginCreateOptions struct {
 	// Resumes the LRO from the provided token.
@@ -70,6 +76,19 @@ type CommunicationsNoSubscriptionClientCheckNameAvailabilityOptions struct {
 // method.
 type CommunicationsNoSubscriptionClientGetOptions struct {
 	// placeholder for future optional parameters
+}
+
+// CommunicationsNoSubscriptionClientListOptions contains the optional parameters for the CommunicationsNoSubscriptionClient.NewListPager
+// method.
+type CommunicationsNoSubscriptionClientListOptions struct {
+	// The filter to apply on the operation. You can filter by communicationType and createdDate properties. CommunicationType
+	// supports Equals ('eq') operator and createdDate supports Greater Than ('gt') and
+	// Greater Than or Equals ('ge') operators. You may combine the CommunicationType and CreatedDate filters by Logical And ('and')
+	// operator.
+	Filter *string
+
+	// The number of values to return in the collection. Default is 10 and max is 10.
+	Top *int32
 }
 
 // FileWorkspacesClientCreateOptions contains the optional parameters for the FileWorkspacesClient.Create method.
@@ -158,25 +177,6 @@ type ServicesClientGetOptions struct {
 // ServicesClientListOptions contains the optional parameters for the ServicesClient.NewListPager method.
 type ServicesClientListOptions struct {
 	// placeholder for future optional parameters
-}
-
-// TicketChatTranscriptsNoSubscriptionClientListOptions contains the optional parameters for the TicketChatTranscriptsNoSubscriptionClient.NewListPager
-// method.
-type TicketChatTranscriptsNoSubscriptionClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// TicketCommunicationsNoSubscriptionClientListOptions contains the optional parameters for the TicketCommunicationsNoSubscriptionClient.NewListPager
-// method.
-type TicketCommunicationsNoSubscriptionClientListOptions struct {
-	// The filter to apply on the operation. You can filter by communicationType and createdDate properties. CommunicationType
-	// supports Equals ('eq') operator and createdDate supports Greater Than ('gt') and
-	// Greater Than or Equals ('ge') operators. You may combine the CommunicationType and CreatedDate filters by Logical And ('and')
-	// operator.
-	Filter *string
-
-	// The number of values to return in the collection. Default is 10 and max is 10.
-	Top *int32
 }
 
 // TicketsClientBeginCreateOptions contains the optional parameters for the TicketsClient.BeginCreate method.

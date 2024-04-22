@@ -8,6 +8,10 @@ package share
 
 import (
 	"context"
+	"net/url"
+	"strings"
+	"time"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
@@ -18,9 +22,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/sas"
-	"net/url"
-	"strings"
-	"time"
 )
 
 // ClientOptions contains the optional parameters when creating a Client.
@@ -37,14 +38,17 @@ type Client base.Client[generated.ShareClient]
 // Note that the only share-level operations that support token credential authentication are CreatePermission and GetPermission.
 // Also note that ClientOptions.FileRequestIntent is currently required for token authentication.
 func NewClient(shareURL string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
-	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{shared.TokenScope}, nil)
+	audience := base.GetAudience((*base.ClientOptions)(options))
 	conOptions := shared.GetClientOptions(options)
+	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{audience}, &policy.BearerTokenOptions{
+		InsecureAllowCredentialWithHTTP: conOptions.InsecureAllowCredentialWithHTTP,
+	})
 	plOpts := runtime.PipelineOptions{
 		PerRetry: []policy.Policy{authPolicy},
 	}
 	base.SetPipelineOptions((*base.ClientOptions)(conOptions), &plOpts)
 
-	azClient, err := azcore.NewClient(shared.ShareClient, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
+	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -61,7 +65,7 @@ func NewClientWithNoCredential(shareURL string, options *ClientOptions) (*Client
 	plOpts := runtime.PipelineOptions{}
 	base.SetPipelineOptions((*base.ClientOptions)(conOptions), &plOpts)
 
-	azClient, err := azcore.NewClient(shared.ShareClient, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
+	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -81,7 +85,7 @@ func NewClientWithSharedKeyCredential(shareURL string, cred *SharedKeyCredential
 	}
 	base.SetPipelineOptions((*base.ClientOptions)(conOptions), &plOpts)
 
-	azClient, err := azcore.NewClient(shared.ShareClient, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
+	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -133,14 +137,14 @@ func (s *Client) URL() string {
 func (s *Client) NewDirectoryClient(directoryName string) *directory.Client {
 	directoryName = url.PathEscape(strings.TrimRight(directoryName, "/"))
 	directoryURL := runtime.JoinPaths(s.URL(), directoryName)
-	return (*directory.Client)(base.NewDirectoryClient(directoryURL, s.generated().InternalClient().WithClientName(shared.DirectoryClient), s.sharedKey(), s.getClientOptions()))
+	return (*directory.Client)(base.NewDirectoryClient(directoryURL, s.generated().InternalClient().WithClientName(exported.ModuleName), s.sharedKey(), s.getClientOptions()))
 }
 
 // NewRootDirectoryClient creates a new directory.Client object for the root of the share using the Client's URL.
 // The new directory.Client uses the same request policy pipeline as the Client.
 func (s *Client) NewRootDirectoryClient() *directory.Client {
 	rootDirURL := s.URL()
-	return (*directory.Client)(base.NewDirectoryClient(rootDirURL, s.generated().InternalClient().WithClientName(shared.DirectoryClient), s.sharedKey(), s.getClientOptions()))
+	return (*directory.Client)(base.NewDirectoryClient(rootDirURL, s.generated().InternalClient().WithClientName(exported.ModuleName), s.sharedKey(), s.getClientOptions()))
 }
 
 // WithSnapshot creates a new Client object identical to the source but with the specified share snapshot timestamp.
@@ -285,7 +289,6 @@ func (s *Client) GetSASURL(permissions sas.SharePermissions, expiry time.Time, o
 
 	qps, err := sas.SignatureValues{
 		Version:      sas.Version,
-		Protocol:     sas.ProtocolHTTPS,
 		ShareName:    urlParts.ShareName,
 		SnapshotTime: t,
 		Permissions:  permissions.String(),

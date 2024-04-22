@@ -28,6 +28,8 @@ type DeleteSettingOptions struct {
 
 	// If set, and the configuration setting exists in the configuration store,
 	// delete the setting if the passed-in ETag is the same as the setting's ETag in the configuration store.
+	//
+	// This has IfMatch semantics.
 	OnlyIfUnchanged *azcore.ETag
 }
 
@@ -41,6 +43,8 @@ type GetSettingOptions struct {
 
 	// If set, only retrieve the setting from the configuration store if setting has changed
 	// since the client last retrieved it with the ETag provided.
+	//
+	// This has IfNoneMatch semantics.
 	OnlyIfChanged *azcore.ETag
 }
 
@@ -61,6 +65,8 @@ type SetReadOnlyOptions struct {
 
 	// If set, and the configuration setting exists in the configuration store, update the setting
 	// if the passed-in configuration setting ETag is the same version as the one in the configuration store.
+	//
+	// This has IfMatch semantics.
 	OnlyIfUnchanged *azcore.ETag
 }
 
@@ -74,11 +80,13 @@ type SetSettingOptions struct {
 
 	// If set, and the configuration setting exists in the configuration store, overwrite the setting
 	// if the passed-in ETag is the same version as the one in the configuration store.
+	//
+	// This has IfMatch semantics.
 	OnlyIfUnchanged *azcore.ETag
 }
 
-// CreateSnapshotOptions contains the optional parameters for the BeginCreateSnapshot method.
-type CreateSnapshotOptions struct {
+// BeginCreateSnapshotOptions contains the optional parameters for the BeginCreateSnapshot method.
+type BeginCreateSnapshotOptions struct {
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 
@@ -99,19 +107,19 @@ type CreateSnapshotOptions struct {
 // ArchiveSnapshotOptions contains the optional parameters for the ArchiveSnapshot method.
 type ArchiveSnapshotOptions struct {
 	// Used to perform an operation only if the targeted resource's etag matches the value provided.
-	IfMatch *string
+	IfMatch *azcore.ETag
 
 	// Used to perform an operation only if the targeted resource's etag does not match the value provided.
-	IfNoneMatch *string
+	IfNoneMatch *azcore.ETag
 }
 
 // RestoreSnapshotOptions contains the optional parameters for the RestoreSnapshot method.
 type RestoreSnapshotOptions struct {
 	// Used to perform an operation only if the targeted resource's etag matches the value provided.
-	IfMatch *string
+	IfMatch *azcore.ETag
 
 	// Used to perform an operation only if the targeted resource's etag does not match the value provided.
-	IfNoneMatch *string
+	IfNoneMatch *azcore.ETag
 }
 
 // ListSnapshotsOptions contains the optional parameters for the ListSnapshotsPager method.
@@ -138,10 +146,10 @@ type ListSettingsForSnapshotOptions struct {
 	After *string
 
 	// Used to perform an operation only if the targeted resource's etag matches the value provided.
-	IfMatch *string
+	IfMatch *azcore.ETag
 
 	// Used to perform an operation only if the targeted resource's etag does not match the value provided.
-	IfNoneMatch *string
+	IfNoneMatch *azcore.ETag
 
 	// Used to select what fields are present in the returned resource(s).
 	Select []SettingFields
@@ -156,10 +164,10 @@ type ListSettingsForSnapshotOptions struct {
 // GetSnapshotOptions contains the optional parameters for the GetSnapshot method.
 type GetSnapshotOptions struct {
 	// Used to perform an operation only if the targeted resource's etag matches the value provided.
-	IfMatch *string
+	IfMatch *azcore.ETag
 
 	// Used to perform an operation only if the targeted resource's etag does not match the value provided.
-	IfNoneMatch *string
+	IfNoneMatch *azcore.ETag
 
 	// Used to select what fields are present in the returned resource(s).
 	Select []SnapshotFields
@@ -168,17 +176,17 @@ type GetSnapshotOptions struct {
 // RecoverSnapshotOptions contains the optional parameters for the RecoverSnapshot method.
 type RecoverSnapshotOptions struct {
 	// Used to perform an operation only if the targeted resource's etag matches the value provided.
-	IfMatch *string
+	IfMatch *azcore.ETag
 
 	// Used to perform an operation only if the targeted resource's etag does not match the value provided.
-	IfNoneMatch *string
+	IfNoneMatch *azcore.ETag
 }
 
 // UpdateSnapshotStatusOptions contains the optional parameters for the UpdateSnapshotStatus method.
 type updateSnapshotStatusOptions struct {
 	// Used to perform an operation only if the targeted resource's etag matches the value provided.
-	IfMatch *string
+	IfMatch *azcore.ETag
 
 	// Used to perform an operation only if the targeted resource's etag does not match the value provided.
-	IfNoneMatch *string
+	IfNoneMatch *azcore.ETag
 }

@@ -14,16 +14,22 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
+)
+
+const (
+	apiVersion = "2020-11-05"
 )
 
 // Client is used to interact with the Azure Cosmos DB database service.
 type Client struct {
 	endpoint string
 	pipeline azruntime.Pipeline
+	gem      *globalEndpointManager
 }
 
 // Endpoint used to create the client.
@@ -36,7 +42,16 @@ func (c *Client) Endpoint() string {
 // cred - The credential used to authenticate with the cosmos service.
 // options - Optional Cosmos client options.  Pass nil to accept default values.
 func NewClientWithKey(endpoint string, cred KeyCredential, o *ClientOptions) (*Client, error) {
-	return &Client{endpoint: endpoint, pipeline: newPipeline(newSharedKeyCredPolicy(cred), o)}, nil
+	preferredRegions := []string{}
+	enableCrossRegionRetries := true
+	if o != nil {
+		preferredRegions = o.PreferredRegions
+	}
+	gem, err := newGlobalEndpointManager(endpoint, newInternalPipeline(newSharedKeyCredPolicy(cred), o), preferredRegions, 0, enableCrossRegionRetries)
+	if err != nil {
+		return nil, err
+	}
+	return &Client{endpoint: endpoint, pipeline: newPipeline(newSharedKeyCredPolicy(cred), gem, o), gem: gem}, nil
 }
 
 // NewClient creates a new instance of Cosmos client with Azure AD access token authentication. It uses the default pipeline configuration.
@@ -48,7 +63,16 @@ func NewClient(endpoint string, cred azcore.TokenCredential, o *ClientOptions) (
 	if err != nil {
 		return nil, err
 	}
-	return &Client{endpoint: endpoint, pipeline: newPipeline(newCosmosBearerTokenPolicy(cred, scope, nil), o)}, nil
+	preferredRegions := []string{}
+	enableCrossRegionRetries := true
+	if o != nil {
+		preferredRegions = o.PreferredRegions
+	}
+	gem, err := newGlobalEndpointManager(endpoint, newInternalPipeline(newCosmosBearerTokenPolicy(cred, scope, nil), o), preferredRegions, 0, enableCrossRegionRetries)
+	if err != nil {
+		return nil, err
+	}
+	return &Client{endpoint: endpoint, pipeline: newPipeline(newCosmosBearerTokenPolicy(cred, scope, nil), gem, o), gem: gem}, nil
 }
 
 // NewClientFromConnectionString creates a new instance of Cosmos client from connection string. It uses the default pipeline configuration.
@@ -87,18 +111,34 @@ func NewClientFromConnectionString(connectionString string, o *ClientOptions) (*
 	return NewClientWithKey(endpoint, cred, o)
 }
 
-func newPipeline(authPolicy policy.Policy, options *ClientOptions) azruntime.Pipeline {
+func newPipeline(authPolicy policy.Policy, gem *globalEndpointManager, options *ClientOptions) azruntime.Pipeline {
 	if options == nil {
 		options = &ClientOptions{}
 	}
-
 	return azruntime.NewPipeline("azcosmos", serviceLibVersion,
 		azruntime.PipelineOptions{
+			AllowedHeaders: getAllowedHeaders(),
 			PerCall: []policy.Policy{
 				&headerPolicies{
 					enableContentResponseOnWrite: options.EnableContentResponseOnWrite,
 				},
+				&globalEndpointManagerPolicy{gem: gem},
 			},
+			PerRetry: []policy.Policy{
+				authPolicy,
+				&clientRetryPolicy{gem: gem},
+			},
+		},
+		&options.ClientOptions)
+}
+
+func newInternalPipeline(authPolicy policy.Policy, options *ClientOptions) azruntime.Pipeline {
+	if options == nil {
+		options = &ClientOptions{}
+	}
+	return azruntime.NewPipeline("azcosmos", serviceLibVersion,
+		azruntime.PipelineOptions{
+			AllowedHeaders: getAllowedHeaders(),
 			PerRetry: []policy.Policy{
 				authPolicy,
 			},
@@ -156,10 +196,17 @@ func (c *Client) CreateDatabase(
 	if o == nil {
 		o = &CreateDatabaseOptions{}
 	}
+	returnResponse := true
+	h := &headerOptionsOverride{
+		enableContentResponseOnWrite: &returnResponse,
+	}
 
 	operationContext := pipelineRequestOptions{
-		resourceType:    resourceTypeDatabase,
-		resourceAddress: ""}
+		resourceType:          resourceTypeDatabase,
+		resourceAddress:       "",
+		isWriteOperation:      true,
+		headerOptionsOverride: h,
+	}
 
 	path, err := generatePathForNameBased(resourceTypeDatabase, "", true)
 	if err != nil {
@@ -183,7 +230,7 @@ func (c *Client) CreateDatabase(
 // NewQueryDatabasesPager executes query for databases.
 // query - The SQL query to execute.
 // o - Options for the operation.
-func (c *Client) NewQueryDatabasesPager(query string, o *QueryDatabasesOptions) *runtime.Pager[QueryDatabasesResponse] {
+func (c *Client) NewQueryDatabasesPager(query string, o *QueryDatabasesOptions) *azruntime.Pager[QueryDatabasesResponse] {
 	queryOptions := &QueryDatabasesOptions{}
 	if o != nil {
 		originalOptions := *o
@@ -197,13 +244,13 @@ func (c *Client) NewQueryDatabasesPager(query string, o *QueryDatabasesOptions) 
 
 	path, _ := generatePathForNameBased(resourceTypeDatabase, operationContext.resourceAddress, true)
 
-	return runtime.NewPager(runtime.PagingHandler[QueryDatabasesResponse]{
+	return azruntime.NewPager(azruntime.PagingHandler[QueryDatabasesResponse]{
 		More: func(page QueryDatabasesResponse) bool {
-			return page.ContinuationToken != ""
+			return page.ContinuationToken != nil
 		},
 		Fetcher: func(ctx context.Context, page *QueryDatabasesResponse) (QueryDatabasesResponse, error) {
 			if page != nil {
-				if page.ContinuationToken != "" {
+				if page.ContinuationToken != nil {
 					// Use the previous page continuation if available
 					queryOptions.ContinuationToken = page.ContinuationToken
 				}
@@ -394,7 +441,7 @@ func (c *Client) createRequest(
 	}
 
 	req.Raw().Header.Set(headerXmsDate, time.Now().UTC().Format(http.TimeFormat))
-	req.Raw().Header.Set(headerXmsVersion, "2020-11-05")
+	req.Raw().Header.Set(headerXmsVersion, apiVersion)
 	req.Raw().Header.Set(cosmosHeaderSDKSupportedCapabilities, supportedCapabilitiesHeaderValue)
 
 	req.SetOperationValue(operationContext)
@@ -425,6 +472,7 @@ func (c *Client) attachContent(content interface{}, req *policy.Request) error {
 }
 
 func (c *Client) executeAndEnsureSuccessResponse(request *policy.Request) (*http.Response, error) {
+	log.Write(azlog.EventResponse, fmt.Sprintf("\n===== Client preferred regions:\n%v\n=====\n", c.gem.preferredLocations))
 	response, err := c.pipeline.Do(request)
 	if err != nil {
 		return nil, err
@@ -435,7 +483,7 @@ func (c *Client) executeAndEnsureSuccessResponse(request *policy.Request) (*http
 		return response, nil
 	}
 
-	return nil, newCosmosError(response)
+	return nil, azruntime.NewResponseErrorWithErrorCode(response, response.Status)
 }
 
 type pipelineRequestOptions struct {
@@ -444,4 +492,80 @@ type pipelineRequestOptions struct {
 	resourceAddress       string
 	isRidBased            bool
 	isWriteOperation      bool
+}
+
+func getAllowedHeaders() []string {
+	return []string{
+		cosmosHeaderRequestCharge,
+		cosmosHeaderActivityId,
+		cosmosHeaderEtag,
+		cosmosHeaderSubstatus,
+		cosmosHeaderPopulateQuotaInfo,
+		cosmosHeaderPreTriggerInclude,
+		cosmosHeaderPostTriggerInclude,
+		cosmosHeaderIndexingDirective,
+		cosmosHeaderSessionToken,
+		cosmosHeaderConsistencyLevel,
+		cosmosHeaderPrefer,
+		cosmosHeaderIsUpsert,
+		cosmosHeaderOfferThroughput,
+		cosmosHeaderOfferAutoscale,
+		cosmosHeaderQuery,
+		cosmosHeaderOfferReplacePending,
+		cosmosHeaderOfferMinimumThroughput,
+		cosmosHeaderResponseContinuationTokenLimitInKb,
+		cosmosHeaderEnableScanInQuery,
+		cosmosHeaderMaxItemCount,
+		cosmosHeaderContinuationToken,
+		cosmosHeaderPopulateIndexMetrics,
+		cosmosHeaderPopulateQueryMetrics,
+		cosmosHeaderQueryMetrics,
+		cosmosHeaderIndexUtilization,
+		cosmosHeaderCorrelatedActivityId,
+		cosmosHeaderIsBatchRequest,
+		cosmosHeaderIsBatchAtomic,
+		cosmosHeaderIsBatchOrdered,
+		cosmosHeaderSDKSupportedCapabilities,
+		headerXmsDate,
+		headerContentType,
+		headerIfMatch,
+		headerIfNoneMatch,
+		headerXmsVersion,
+		headerContentLocation,
+		headerXmsGatewayVersion,
+		headerLsn,
+		headerXmsCosmosLlsn,
+		headerXmsCosmosItemLlsn,
+		headerXmsItemLsn,
+		headerXmsCosmosQuorumAckedLlsn,
+		headerXmsCurrentReplicaSetSize,
+		headerXmsCurrentWriteQuorum,
+		headerXmsGlobalCommittedLsn,
+		headerXmsLastStateChangeUtc,
+		headerXmsNumberOfReadRegions,
+		headerXmsQuorumAckedLsn,
+		headerXmsRequestDurationMs,
+		headerXmsResourceQuota,
+		headerXmsResourceUsage,
+		headerXmsSchemaVersion,
+		headerXmsServiceVersion,
+		headerXmsTransportRequestId,
+		headerXmsXpRole,
+		headerCollectionPartitionIndex,
+		headerCollectionServiceIndex,
+		headerXmsDocumentDbPartitionKeyRangeId,
+		cosmosHeaderPhysicalPartitionId,
+		headerStrictTransportSecurity,
+		headerXmsDatabaseAccountConsumedMb,
+		headerXmsDatabaseAccountProvisionedMb,
+		headerXmsDatabaseAccountReservedMb,
+		headerXmsMaxMediaStorageUsageMb,
+		headerXmsMediaStorageUsageMb,
+		headerXmsContentPath,
+		headerXmsAltContentPath,
+		cosmosHeaderMaxContentLength,
+		cosmosHeaderIsPartitionKeyDeletePending,
+		cosmosHeaderQueryExecutionInfo,
+		headerXmsItemCount,
+	}
 }

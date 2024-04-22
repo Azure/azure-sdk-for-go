@@ -47,7 +47,8 @@ func getBatchTesterParams(args []string) (batchTesterParams, error) {
 	fs.IntVar(&params.paddingBytes, "padding", 1024, "Extra number of bytes to add into each message body")
 	fs.StringVar(&params.partitionID, "partition", "0", "Partition ID to send and receive events to")
 	fs.IntVar(&params.maxDeadlineExceeded, "maxtimeouts", 10, "Number of consecutive receive timeouts allowed before quitting")
-	fs.BoolVar(&params.enableVerboseLogging, "verbose", false, "enable verbose azure sdk logging")
+	enableVerboseLoggingFn := addVerboseLoggingFlag(fs, nil)
+
 	sleepAfterFn := addSleepAfterFlag(fs)
 
 	if err := fs.Parse(os.Args[2:]); err != nil {
@@ -55,6 +56,7 @@ func getBatchTesterParams(args []string) (batchTesterParams, error) {
 		return batchTesterParams{}, err
 	}
 
+	enableVerboseLoggingFn()
 	params.prefetch = int32(*prefetch)
 
 	if params.rounds == -1 {
@@ -85,7 +87,7 @@ func BatchStressTester(ctx context.Context) error {
 
 	defer params.sleepAfterFn()
 
-	testData, err := newStressTestData("batch", params.enableVerboseLogging, map[string]string{
+	testData, err := newStressTestData("batch", map[string]string{
 		"BatchDuration":       params.batchDuration.String(),
 		"BatchSize":           fmt.Sprintf("%d", params.batchSize),
 		"NumToSend":           fmt.Sprintf("%d", params.numToSend),
@@ -93,7 +95,6 @@ func BatchStressTester(ctx context.Context) error {
 		"PartitionId":         params.partitionID,
 		"Prefetch":            fmt.Sprintf("%d", params.prefetch),
 		"Rounds":              fmt.Sprintf("%d", params.rounds),
-		"Verbose":             fmt.Sprintf("%t", params.enableVerboseLogging),
 		"MaxDeadlineExceeded": fmt.Sprintf("%d", params.maxDeadlineExceeded),
 	})
 
@@ -155,16 +156,15 @@ func BatchStressTester(ctx context.Context) error {
 }
 
 type batchTesterParams struct {
-	numToSend            int
-	paddingBytes         int
-	partitionID          string
-	batchSize            int
-	batchDuration        time.Duration
-	rounds               int64
-	prefetch             int32
-	maxDeadlineExceeded  int
-	enableVerboseLogging bool
-	sleepAfterFn         func()
+	numToSend           int
+	paddingBytes        int
+	partitionID         string
+	batchSize           int
+	batchDuration       time.Duration
+	rounds              int64
+	prefetch            int32
+	maxDeadlineExceeded int
+	sleepAfterFn        func()
 }
 
 func consumeForBatchTester(ctx context.Context, round int64, cc *azeventhubs.ConsumerClient, sp azeventhubs.StartPosition, params batchTesterParams, testData *stressTestData) error {

@@ -21,6 +21,7 @@ import (
 	"runtime"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
@@ -100,6 +101,111 @@ func (t *tokenRequestCountingPolicy) Do(req *policy.Request) (*http.Response, er
 	return req.Next()
 }
 
+func TestTenantID(t *testing.T) {
+	type tc struct {
+		name           string
+		ctor           func(tenant string) (azcore.TokenCredential, error)
+		tenantOptional bool
+	}
+	for _, test := range []tc{
+		{
+			name: credNameAssertion,
+			ctor: func(tenant string) (azcore.TokenCredential, error) {
+				return NewClientAssertionCredential(tenant, fakeClientID, func(context.Context) (string, error) { return "", nil }, nil)
+			},
+		},
+		{
+			name: credNameAzureCLI,
+			ctor: func(tenant string) (azcore.TokenCredential, error) {
+				return NewAzureCLICredential(&AzureCLICredentialOptions{
+					TenantID: tenant,
+				})
+			},
+			tenantOptional: true,
+		},
+		{
+			name: credNameAzureDeveloperCLI,
+			ctor: func(tenant string) (azcore.TokenCredential, error) {
+				return NewAzureDeveloperCLICredential(&AzureDeveloperCLICredentialOptions{
+					TenantID: tenant,
+				})
+			},
+			tenantOptional: true,
+		},
+		{
+			name: credNameBrowser,
+			ctor: func(tenant string) (azcore.TokenCredential, error) {
+				return NewInteractiveBrowserCredential(&InteractiveBrowserCredentialOptions{
+					TenantID: tenant,
+				})
+			},
+			tenantOptional: true,
+		},
+		{
+			name: credNameCert,
+			ctor: func(tenant string) (azcore.TokenCredential, error) {
+				return NewClientCertificateCredential(tenant, fakeClientID, allCertTests[0].certs, allCertTests[0].key, nil)
+			},
+		},
+		{
+			name: credNameDeviceCode,
+			ctor: func(tenant string) (azcore.TokenCredential, error) {
+				return NewDeviceCodeCredential(&DeviceCodeCredentialOptions{
+					TenantID: tenant,
+				})
+			},
+			tenantOptional: true,
+		},
+		{
+			name: credNameOBO + "/cert",
+			ctor: func(tenant string) (azcore.TokenCredential, error) {
+				return NewOnBehalfOfCredentialWithCertificate(tenant, fakeClientID, "assertion", allCertTests[0].certs, allCertTests[0].key, nil)
+			},
+		},
+		{
+			name: credNameOBO + "/secret",
+			ctor: func(tenant string) (azcore.TokenCredential, error) {
+				return NewOnBehalfOfCredentialWithSecret(tenant, fakeClientID, "assertion", fakeSecret, nil)
+			},
+		},
+		{
+			name: credNameSecret,
+			ctor: func(tenant string) (azcore.TokenCredential, error) {
+				return NewClientSecretCredential(tenant, fakeClientID, fakeSecret, nil)
+			},
+		},
+		{
+			name: credNameUserPassword,
+			ctor: func(tenant string) (azcore.TokenCredential, error) {
+				return NewUsernamePasswordCredential(tenant, fakeClientID, "username", "password", nil)
+			},
+		},
+		{
+			name: credNameWorkloadIdentity,
+			ctor: func(tenant string) (azcore.TokenCredential, error) {
+				t.Setenv(azureTenantID, tenant)
+				return NewWorkloadIdentityCredential(&WorkloadIdentityCredentialOptions{
+					ClientID:      fakeClientID,
+					TokenFilePath: "...",
+				})
+			},
+		},
+	} {
+		t.Run(test.name+"/empty", func(t *testing.T) {
+			_, err := test.ctor("")
+			if test.tenantOptional {
+				require.NoError(t, err)
+			} else {
+				require.ErrorContains(t, err, "tenant")
+			}
+		})
+		t.Run(test.name+"/invalid", func(t *testing.T) {
+			_, err := test.ctor(badTenantID)
+			require.ErrorContains(t, err, "tenant")
+		})
+	}
+}
+
 func TestUserAuthentication(t *testing.T) {
 	type authenticater interface {
 		azcore.TokenCredential
@@ -114,6 +220,7 @@ func TestUserAuthentication(t *testing.T) {
 			name: credNameBrowser,
 			new: func(tcpo *TokenCachePersistenceOptions, co azcore.ClientOptions, ar AuthenticationRecord, disableAutoAuth bool) (authenticater, error) {
 				return NewInteractiveBrowserCredential(&InteractiveBrowserCredentialOptions{
+					AdditionallyAllowedTenants:     []string{"*"},
 					AuthenticationRecord:           ar,
 					ClientOptions:                  co,
 					DisableAutomaticAuthentication: disableAutoAuth,
@@ -126,6 +233,7 @@ func TestUserAuthentication(t *testing.T) {
 			name: credNameDeviceCode,
 			new: func(tcpo *TokenCachePersistenceOptions, co azcore.ClientOptions, ar AuthenticationRecord, disableAutoAuth bool) (authenticater, error) {
 				o := DeviceCodeCredentialOptions{
+					AdditionallyAllowedTenants:     []string{"*"},
 					AuthenticationRecord:           ar,
 					ClientOptions:                  co,
 					DisableAutomaticAuthentication: disableAutoAuth,
@@ -143,6 +251,7 @@ func TestUserAuthentication(t *testing.T) {
 			name: credNameUserPassword,
 			new: func(tcpo *TokenCachePersistenceOptions, co azcore.ClientOptions, ar AuthenticationRecord, disableAutoAuth bool) (authenticater, error) {
 				opts := UsernamePasswordCredentialOptions{
+					AdditionallyAllowedTenants:   []string{"*"},
 					AuthenticationRecord:         ar,
 					ClientOptions:                co,
 					TokenCachePersistenceOptions: tcpo,
@@ -175,7 +284,7 @@ func TestUserAuthentication(t *testing.T) {
 				_, err = cred.Authenticate(context.Background(), nil)
 				require.NoError(t, err)
 
-				os.Setenv(azureAuthorityHost, cc.ActiveDirectoryAuthorityHost)
+				t.Setenv(azureAuthorityHost, cc.ActiveDirectoryAuthorityHost)
 				cred, err = credential.new(nil, azcore.ClientOptions{Transport: &sts}, AuthenticationRecord{}, false)
 				require.NoError(t, err)
 				_, err = cred.Authenticate(context.Background(), nil)
@@ -264,8 +373,19 @@ func TestUserAuthentication(t *testing.T) {
 			t.Run("DisableAutomaticAuthentication/"+credential.name, func(t *testing.T) {
 				cred, err := credential.new(nil, policy.ClientOptions{Transport: &mockSTS{}}, AuthenticationRecord{}, true)
 				require.NoError(t, err)
-				_, err = cred.GetToken(context.Background(), testTRO)
-				require.ErrorIs(t, err, ErrAuthenticationRequired)
+				expected := policy.TokenRequestOptions{
+					Claims:    "claims",
+					EnableCAE: true,
+					Scopes:    []string{"scope"},
+					TenantID:  "tenant",
+				}
+				_, err = cred.GetToken(context.Background(), expected)
+				require.Contains(t, err.Error(), credential.name)
+				require.Contains(t, err.Error(), "Call Authenticate")
+				var actual *AuthenticationRequiredError
+				require.ErrorAs(t, err, &actual)
+				require.Equal(t, expected, actual.TokenRequestOptions)
+
 				if credential.name != credNameBrowser || runManualTests {
 					_, err = cred.Authenticate(context.Background(), &testTRO)
 					require.NoError(t, err)
@@ -273,6 +393,20 @@ func TestUserAuthentication(t *testing.T) {
 					_, err = cred.GetToken(context.Background(), testTRO)
 					require.NoError(t, err)
 				}
+			})
+			t.Run("DisableAutomaticAuthentication/ChainedTokenCredential/"+credential.name, func(t *testing.T) {
+				cred, err := credential.new(nil, policy.ClientOptions{}, AuthenticationRecord{}, true)
+				require.NoError(t, err)
+				expected := azcore.AccessToken{ExpiresOn: time.Now().UTC(), Token: tokenValue}
+				fake := NewFakeCredential()
+				fake.SetResponse(expected, nil)
+				chain, err := NewChainedTokenCredential([]azcore.TokenCredential{cred, fake}, nil)
+				require.NoError(t, err)
+				// ChainedTokenCredential should continue iterating when a credential returns
+				// AuthenticationRequiredError i.e., it should call fake.GetToken() and return the expected token
+				actual, err := chain.GetToken(context.Background(), testTRO)
+				require.NoError(t, err)
+				require.Equal(t, expected, actual)
 			})
 		}
 	}
@@ -324,19 +458,38 @@ func Test_DefaultAuthorityHost(t *testing.T) {
 	}
 }
 
-func Test_GetTokenRequiresScopes(t *testing.T) {
+func TestGetTokenRequiresScopes(t *testing.T) {
 	for _, ctor := range []func() (azcore.TokenCredential, error){
 		func() (azcore.TokenCredential, error) { return NewAzureCLICredential(nil) },
+		func() (azcore.TokenCredential, error) { return NewAzureDeveloperCLICredential(nil) },
 		func() (azcore.TokenCredential, error) {
-			return NewClientCertificateCredential("tenantID", "clientID", allCertTests[0].certs, allCertTests[0].key, nil)
+			return NewClientAssertionCredential(
+				fakeTenantID, fakeClientID, func(context.Context) (string, error) { return "", nil }, nil,
+			)
 		},
 		func() (azcore.TokenCredential, error) {
-			return NewClientSecretCredential("tenantID", "clientID", fakeSecret, nil)
+			return NewClientCertificateCredential(
+				fakeTenantID, fakeClientID, allCertTests[0].certs, allCertTests[0].key, nil,
+			)
+		},
+		func() (azcore.TokenCredential, error) {
+			return NewClientSecretCredential(fakeTenantID, fakeClientID, fakeSecret, nil)
 		},
 		func() (azcore.TokenCredential, error) { return NewDeviceCodeCredential(nil) },
 		func() (azcore.TokenCredential, error) { return NewInteractiveBrowserCredential(nil) },
+		func() (azcore.TokenCredential, error) { return NewManagedIdentityCredential(nil) },
 		func() (azcore.TokenCredential, error) {
-			return NewUsernamePasswordCredential("tenantID", "clientID", "username", "password", nil)
+			return NewOnBehalfOfCredentialWithSecret(
+				fakeTenantID, fakeClientID, "assertion", fakeSecret, nil,
+			)
+		},
+		func() (azcore.TokenCredential, error) {
+			return NewUsernamePasswordCredential(fakeTenantID, fakeClientID, fakeUsername, "password", nil)
+		},
+		func() (azcore.TokenCredential, error) {
+			return NewWorkloadIdentityCredential(&WorkloadIdentityCredentialOptions{
+				ClientID: fakeClientID, TokenFilePath: ".", TenantID: fakeTenantID,
+			})
 		},
 	} {
 		cred, err := ctor()
@@ -619,6 +772,27 @@ func TestAdditionallyAllowedTenants(t *testing.T) {
 				}
 			})
 		}
+
+		t.Run(credNameBrowser, func(t *testing.T) {
+			c, err := NewInteractiveBrowserCredential(&InteractiveBrowserCredentialOptions{
+				AdditionallyAllowedTenants: test.allowed,
+				// this enables testing the credential's tenant resolution without having to authenticate
+				DisableAutomaticAuthentication: true,
+			})
+			require.NoError(t, err)
+			_, err = c.GetToken(context.Background(), tro)
+			if test.err {
+				// the specified tenant isn't allowed, so the error should be about that
+				require.ErrorContains(t, err, "AdditionallyAllowedTenants")
+			} else {
+				// tenant resolution should have succeeded because the specified tenant is allowed,
+				// however the credential should have returned a different error because automatic
+				// authentication is disabled
+				var e *AuthenticationRequiredError
+				require.ErrorAs(t, err, &e)
+			}
+		})
+
 		for _, credName := range []string{credNameAzureCLI, credNameAzureDeveloperCLI} {
 			t.Run(fmt.Sprintf("DefaultAzureCredential/%s/%s", credName, test.desc), func(t *testing.T) {
 				typeName := fmt.Sprintf("%T", &AzureCLICredential{})

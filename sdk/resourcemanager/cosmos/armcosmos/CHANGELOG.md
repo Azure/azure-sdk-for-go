@@ -1,5 +1,142 @@
 # Release History
 
+## 3.0.0-beta.4 (2024-03-22)
+### Breaking Changes
+
+- Type of `CassandraClustersClientBeginDeallocateOptions.XMSForceDeallocate` has been changed from `*bool` to `*string`
+
+### Features Added
+
+- New function `*DataTransferJobsClient.Complete(context.Context, string, string, string, *DataTransferJobsClientCompleteOptions) (DataTransferJobsClientCompleteResponse, error)`
+- New field `EnablePerRegionPerPartitionAutoscale` in struct `DatabaseAccountCreateUpdateProperties`
+- New field `EnablePerRegionPerPartitionAutoscale` in struct `DatabaseAccountGetProperties`
+- New field `EnablePerRegionPerPartitionAutoscale` in struct `DatabaseAccountUpdateProperties`
+- New field `RestoreWithTTLDisabled` in struct `ResourceRestoreParameters`
+- New field `RestoreWithTTLDisabled` in struct `RestoreParameters`
+- New field `RestoreWithTTLDisabled` in struct `RestoreParametersBase`
+
+
+## 3.0.0-beta.3 (2024-01-26)
+### Breaking Changes
+
+- Struct `BackupResourceProperties` has been removed
+- Field `ID`, `Name`, `Properties`, `Type` of struct `BackupResource` has been removed
+- Field `Readwrite` of struct `CommandPostBody` has been removed
+
+### Features Added
+
+- Type of `CommandPostBody.Arguments` has been changed from `map[string]*string` to `any`
+- New value `PublicNetworkAccessSecuredByPerimeter` added to enum type `PublicNetworkAccess`
+- New value `StatusCanceled`, `StatusFailed`, `StatusSucceeded`, `StatusUpdating` added to enum type `Status`
+- New enum type `AutoReplicate` with values `AutoReplicateAllKeyspaces`, `AutoReplicateNone`, `AutoReplicateSystemKeyspaces`
+- New enum type `AzureConnectionType` with values `AzureConnectionTypeNone`, `AzureConnectionTypeVPN`
+- New enum type `BackupState` with values `BackupStateFailed`, `BackupStateInProgress`, `BackupStateInitiated`, `BackupStateSucceeded`
+- New enum type `ClusterType` with values `ClusterTypeNonProduction`, `ClusterTypeProduction`
+- New enum type `CommandStatus` with values `CommandStatusDone`, `CommandStatusEnqueue`, `CommandStatusFailed`, `CommandStatusFinished`, `CommandStatusProcessing`, `CommandStatusRunning`
+- New enum type `DataTransferJobMode` with values `DataTransferJobModeOffline`, `DataTransferJobModeOnline`
+- New enum type `DefaultPriorityLevel` with values `DefaultPriorityLevelHigh`, `DefaultPriorityLevelLow`
+- New enum type `ScheduledEventStrategy` with values `ScheduledEventStrategyIgnore`, `ScheduledEventStrategyStopAny`, `ScheduledEventStrategyStopByRack`
+- New function `*BaseCosmosDataTransferDataSourceSink.GetBaseCosmosDataTransferDataSourceSink() *BaseCosmosDataTransferDataSourceSink`
+- New function `*BaseCosmosDataTransferDataSourceSink.GetDataTransferDataSourceSink() *DataTransferDataSourceSink`
+- New function `*CassandraClustersClient.GetCommandAsync(context.Context, string, string, string, *CassandraClustersClientGetCommandAsyncOptions) (CassandraClustersClientGetCommandAsyncResponse, error)`
+- New function `*CassandraClustersClient.BeginInvokeCommandAsync(context.Context, string, string, CommandPostBody, *CassandraClustersClientBeginInvokeCommandAsyncOptions) (*runtime.Poller[CassandraClustersClientInvokeCommandAsyncResponse], error)`
+- New function `*CassandraClustersClient.NewListCommandPager(string, string, *CassandraClustersClientListCommandOptions) *runtime.Pager[CassandraClustersClientListCommandResponse]`
+- New function `*CassandraDataTransferDataSourceSink.GetBaseCosmosDataTransferDataSourceSink() *BaseCosmosDataTransferDataSourceSink`
+- New function `*ClientFactory.NewThroughputPoolAccountClient() *ThroughputPoolAccountClient`
+- New function `*ClientFactory.NewThroughputPoolAccountsClient() *ThroughputPoolAccountsClient`
+- New function `*ClientFactory.NewThroughputPoolClient() *ThroughputPoolClient`
+- New function `*ClientFactory.NewThroughputPoolsClient() *ThroughputPoolsClient`
+- New function `*MongoDataTransferDataSourceSink.GetBaseCosmosDataTransferDataSourceSink() *BaseCosmosDataTransferDataSourceSink`
+- New function `*SQLDataTransferDataSourceSink.GetBaseCosmosDataTransferDataSourceSink() *BaseCosmosDataTransferDataSourceSink`
+- New function `NewThroughputPoolAccountClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ThroughputPoolAccountClient, error)`
+- New function `*ThroughputPoolAccountClient.BeginCreate(context.Context, string, string, string, ThroughputPoolAccountResource, *ThroughputPoolAccountClientBeginCreateOptions) (*runtime.Poller[ThroughputPoolAccountClientCreateResponse], error)`
+- New function `*ThroughputPoolAccountClient.BeginDelete(context.Context, string, string, string, *ThroughputPoolAccountClientBeginDeleteOptions) (*runtime.Poller[ThroughputPoolAccountClientDeleteResponse], error)`
+- New function `*ThroughputPoolAccountClient.Get(context.Context, string, string, string, *ThroughputPoolAccountClientGetOptions) (ThroughputPoolAccountClientGetResponse, error)`
+- New function `NewThroughputPoolAccountsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ThroughputPoolAccountsClient, error)`
+- New function `*ThroughputPoolAccountsClient.NewListPager(string, string, *ThroughputPoolAccountsClientListOptions) *runtime.Pager[ThroughputPoolAccountsClientListResponse]`
+- New function `NewThroughputPoolClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ThroughputPoolClient, error)`
+- New function `*ThroughputPoolClient.BeginCreateOrUpdate(context.Context, string, string, ThroughputPoolResource, *ThroughputPoolClientBeginCreateOrUpdateOptions) (*runtime.Poller[ThroughputPoolClientCreateOrUpdateResponse], error)`
+- New function `*ThroughputPoolClient.BeginDelete(context.Context, string, string, *ThroughputPoolClientBeginDeleteOptions) (*runtime.Poller[ThroughputPoolClientDeleteResponse], error)`
+- New function `*ThroughputPoolClient.Get(context.Context, string, string, *ThroughputPoolClientGetOptions) (ThroughputPoolClientGetResponse, error)`
+- New function `*ThroughputPoolClient.BeginUpdate(context.Context, string, string, *ThroughputPoolClientBeginUpdateOptions) (*runtime.Poller[ThroughputPoolClientUpdateResponse], error)`
+- New function `NewThroughputPoolsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ThroughputPoolsClient, error)`
+- New function `*ThroughputPoolsClient.NewListByResourceGroupPager(string, *ThroughputPoolsClientListByResourceGroupOptions) *runtime.Pager[ThroughputPoolsClientListByResourceGroupResponse]`
+- New function `*ThroughputPoolsClient.NewListPager(*ThroughputPoolsClientListOptions) *runtime.Pager[ThroughputPoolsClientListResponse]`
+- New struct `BackupSchedule`
+- New struct `CommandPublicResource`
+- New struct `ComputedProperty`
+- New struct `ListCommands`
+- New struct `ThroughputPoolAccountCreateParameters`
+- New struct `ThroughputPoolAccountCreateProperties`
+- New struct `ThroughputPoolAccountProperties`
+- New struct `ThroughputPoolAccountResource`
+- New struct `ThroughputPoolAccountsListResult`
+- New struct `ThroughputPoolProperties`
+- New struct `ThroughputPoolResource`
+- New struct `ThroughputPoolUpdate`
+- New struct `ThroughputPoolsListResult`
+- New field `BackupExpiryTimestamp`, `BackupID`, `BackupStartTimestamp`, `BackupState`, `BackupStopTimestamp` in struct `BackupResource`
+- New field `XMSForceDeallocate` in struct `CassandraClustersClientBeginDeallocateOptions`
+- New field `RemoteAccountName` in struct `CassandraDataTransferDataSourceSink`
+- New field `AutoReplicate`, `AzureConnectionMethod`, `BackupSchedules`, `ClusterType`, `Extensions`, `ExternalDataCenters`, `PrivateLinkResourceID`, `ScheduledEventStrategy` in struct `ClusterResourceProperties`
+- New field `ReadWrite` in struct `CommandPostBody`
+- New field `IsLatestModel` in struct `ComponentsM9L909SchemasCassandraclusterpublicstatusPropertiesDatacentersItemsPropertiesNodesItems`
+- New field `PrivateEndpointIPAddress` in struct `DataCenterResourceProperties`
+- New field `Duration`, `Mode` in struct `DataTransferJobProperties`
+- New field `CustomerManagedKeyStatus`, `DefaultPriorityLevel`, `EnablePriorityBasedExecution` in struct `DatabaseAccountCreateUpdateProperties`
+- New field `CustomerManagedKeyStatus`, `DefaultPriorityLevel`, `EnablePriorityBasedExecution` in struct `DatabaseAccountGetProperties`
+- New field `CustomerManagedKeyStatus`, `DefaultPriorityLevel`, `EnablePriorityBasedExecution` in struct `DatabaseAccountUpdateProperties`
+- New field `RemoteAccountName` in struct `MongoDataTransferDataSourceSink`
+- New field `CanUndelete`, `CanUndeleteReason` in struct `RestorableGremlinDatabasePropertiesResource`
+- New field `CanUndelete`, `CanUndeleteReason` in struct `RestorableGremlinGraphPropertiesResource`
+- New field `CanUndelete`, `CanUndeleteReason` in struct `RestorableMongodbCollectionPropertiesResource`
+- New field `CanUndelete`, `CanUndeleteReason` in struct `RestorableMongodbDatabasePropertiesResource`
+- New field `CanUndelete`, `CanUndeleteReason` in struct `RestorableSQLContainerPropertiesResource`
+- New field `ComputedProperties` in struct `RestorableSQLContainerPropertiesResourceContainer`
+- New field `CanUndelete`, `CanUndeleteReason` in struct `RestorableSQLDatabasePropertiesResource`
+- New field `CanUndelete`, `CanUndeleteReason` in struct `RestorableTablePropertiesResource`
+- New field `ComputedProperties` in struct `SQLContainerGetPropertiesResource`
+- New field `ComputedProperties` in struct `SQLContainerResource`
+- New field `RemoteAccountName` in struct `SQLDataTransferDataSourceSink`
+- New field `InstantMaximumThroughput`, `SoftAllowedMaximumThroughput` in struct `ThroughputSettingsGetPropertiesResource`
+- New field `InstantMaximumThroughput`, `SoftAllowedMaximumThroughput` in struct `ThroughputSettingsResource`
+
+
+## 2.7.0 (2024-01-26)
+### Features Added
+
+- New value `OperationTypeRecreate` added to enum type `OperationType`
+- New struct `ComputedProperty`
+- New struct `ResourceRestoreParameters`
+- New struct `RestoreParametersBase`
+- New field `CustomerManagedKeyStatus`, `EnableBurstCapacity` in struct `DatabaseAccountCreateUpdateProperties`
+- New field `CustomerManagedKeyStatus`, `EnableBurstCapacity` in struct `DatabaseAccountGetProperties`
+- New field `CustomerManagedKeyStatus`, `EnableBurstCapacity` in struct `DatabaseAccountUpdateProperties`
+- New field `CreateMode`, `RestoreParameters` in struct `GremlinDatabaseGetPropertiesResource`
+- New field `CreateMode`, `RestoreParameters` in struct `GremlinDatabaseResource`
+- New field `CreateMode`, `RestoreParameters` in struct `GremlinGraphGetPropertiesResource`
+- New field `CreateMode`, `RestoreParameters` in struct `GremlinGraphResource`
+- New field `CreateMode`, `RestoreParameters` in struct `MongoDBCollectionGetPropertiesResource`
+- New field `CreateMode`, `RestoreParameters` in struct `MongoDBCollectionResource`
+- New field `CreateMode`, `RestoreParameters` in struct `MongoDBDatabaseGetPropertiesResource`
+- New field `CreateMode`, `RestoreParameters` in struct `MongoDBDatabaseResource`
+- New field `CanUndelete`, `CanUndeleteReason` in struct `RestorableGremlinDatabasePropertiesResource`
+- New field `CanUndelete`, `CanUndeleteReason` in struct `RestorableGremlinGraphPropertiesResource`
+- New field `CanUndelete`, `CanUndeleteReason` in struct `RestorableMongodbCollectionPropertiesResource`
+- New field `CanUndelete`, `CanUndeleteReason` in struct `RestorableMongodbDatabasePropertiesResource`
+- New field `CanUndelete`, `CanUndeleteReason` in struct `RestorableSQLContainerPropertiesResource`
+- New field `ComputedProperties`, `CreateMode`, `RestoreParameters` in struct `RestorableSQLContainerPropertiesResourceContainer`
+- New field `CanUndelete`, `CanUndeleteReason` in struct `RestorableSQLDatabasePropertiesResource`
+- New field `CreateMode`, `RestoreParameters` in struct `RestorableSQLDatabasePropertiesResourceDatabase`
+- New field `CanUndelete`, `CanUndeleteReason` in struct `RestorableTablePropertiesResource`
+- New field `ComputedProperties`, `CreateMode`, `RestoreParameters` in struct `SQLContainerGetPropertiesResource`
+- New field `ComputedProperties`, `CreateMode`, `RestoreParameters` in struct `SQLContainerResource`
+- New field `CreateMode`, `RestoreParameters` in struct `SQLDatabaseGetPropertiesResource`
+- New field `CreateMode`, `RestoreParameters` in struct `SQLDatabaseResource`
+- New field `CreateMode`, `RestoreParameters` in struct `TableGetPropertiesResource`
+- New field `CreateMode`, `RestoreParameters` in struct `TableResource`
+
+
 ## 3.0.0-beta.2 (2023-11-30)
 ### Features Added
 

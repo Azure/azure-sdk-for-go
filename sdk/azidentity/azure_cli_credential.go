@@ -163,26 +163,21 @@ var defaultAzTokenProvider azTokenProvider = func(ctx context.Context, scopes []
 
 func (c *AzureCLICredential) createAccessToken(tk []byte) (azcore.AccessToken, error) {
 	t := struct {
-		AccessToken      string `json:"accessToken"`
-		Authority        string `json:"_authority"`
-		ClientID         string `json:"_clientId"`
-		ExpiresOn        string `json:"expiresOn"`
-		IdentityProvider string `json:"identityProvider"`
-		IsMRRT           bool   `json:"isMRRT"`
-		RefreshToken     string `json:"refreshToken"`
-		Resource         string `json:"resource"`
-		TokenType        string `json:"tokenType"`
-		UserID           string `json:"userId"`
+		AccessToken string `json:"accessToken"`
+		Expires_On  int64  `json:"expires_on"`
+		ExpiresOn   string `json:"expiresOn"`
 	}{}
 	err := json.Unmarshal(tk, &t)
 	if err != nil {
 		return azcore.AccessToken{}, err
 	}
 
-	// the Azure CLI's "expiresOn" is local time
-	exp, err := time.ParseInLocation("2006-01-02 15:04:05.999999", t.ExpiresOn, time.Local)
-	if err != nil {
-		return azcore.AccessToken{}, fmt.Errorf("Error parsing token expiration time %q: %v", t.ExpiresOn, err)
+	exp := time.Unix(t.Expires_On, 0)
+	if t.Expires_On == 0 {
+		exp, err = time.ParseInLocation("2006-01-02 15:04:05.999999", t.ExpiresOn, time.Local)
+		if err != nil {
+			return azcore.AccessToken{}, fmt.Errorf("%s: error parsing token expiration time %q: %v", credNameAzureCLI, t.ExpiresOn, err)
+		}
 	}
 
 	converted := azcore.AccessToken{

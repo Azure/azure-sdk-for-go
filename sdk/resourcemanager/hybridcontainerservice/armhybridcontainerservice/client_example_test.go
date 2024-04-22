@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcontainerservice/armhybridcontainerservice"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2023-11-15-preview/examples/GetKubernetesVersions.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/41e4538ed7bb3ceac3c1322c9455a0812ed110ac/specification/hybridaks/resource-manager/Microsoft.HybridContainerService/stable/2024-01-01/examples/GetKubernetesVersions.json
 func ExampleClient_GetKubernetesVersions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -48,13 +48,30 @@ func ExampleClient_GetKubernetesVersions() {
 	// 		ProvisioningState: to.Ptr(armhybridcontainerservice.ResourceProvisioningStateSucceeded),
 	// 		Values: []*armhybridcontainerservice.KubernetesVersionProperties{
 	// 			{
-	// 				Capabilities: &armhybridcontainerservice.KubernetesVersionCapabilities{
-	// 					SupportPlan: []*string{
-	// 						to.Ptr("KubernetesOfficial")},
-	// 					},
-	// 					IsPreview: to.Ptr(false),
-	// 					PatchVersions: map[string]*armhybridcontainerservice.KubernetesPatchVersions{
-	// 						"1.23.12": &armhybridcontainerservice.KubernetesPatchVersions{
+	// 				IsPreview: to.Ptr(false),
+	// 				PatchVersions: map[string]*armhybridcontainerservice.KubernetesPatchVersions{
+	// 					"1.23.12": &armhybridcontainerservice.KubernetesPatchVersions{
+	// 						Readiness: []*armhybridcontainerservice.KubernetesVersionReadiness{
+	// 							{
+	// 								OSSKU: to.Ptr(armhybridcontainerservice.OSSKUCBLMariner),
+	// 								OSType: to.Ptr(armhybridcontainerservice.OsTypeLinux),
+	// 								Ready: to.Ptr(true),
+	// 							},
+	// 							{
+	// 								OSSKU: to.Ptr(armhybridcontainerservice.OSSKU("Windows")),
+	// 								OSType: to.Ptr(armhybridcontainerservice.OsTypeWindows),
+	// 								Ready: to.Ptr(true),
+	// 							},
+	// 							{
+	// 								ErrorMessage: to.Ptr("Not Ready. Reasons: Failed to find proudct stream windoes2022 in release aks-hybrid-catalog-stable-int"),
+	// 								OSSKU: to.Ptr(armhybridcontainerservice.OSSKUWindows2022),
+	// 								OSType: to.Ptr(armhybridcontainerservice.OsTypeWindows),
+	// 								Ready: to.Ptr(false),
+	// 						}},
+	// 						Upgrades: []*string{
+	// 							to.Ptr("1.23.13")},
+	// 						},
+	// 						"1.23.13": &armhybridcontainerservice.KubernetesPatchVersions{
 	// 							Readiness: []*armhybridcontainerservice.KubernetesVersionReadiness{
 	// 								{
 	// 									OSSKU: to.Ptr(armhybridcontainerservice.OSSKUCBLMariner),
@@ -62,47 +79,26 @@ func ExampleClient_GetKubernetesVersions() {
 	// 									Ready: to.Ptr(true),
 	// 								},
 	// 								{
-	// 									OSSKU: to.Ptr(armhybridcontainerservice.OSSKU("Windows")),
+	// 									OSSKU: to.Ptr(armhybridcontainerservice.OSSKUWindows2019),
 	// 									OSType: to.Ptr(armhybridcontainerservice.OsTypeWindows),
 	// 									Ready: to.Ptr(true),
 	// 								},
 	// 								{
-	// 									ErrorMessage: to.Ptr("Not Ready. Reasons: Failed to find proudct stream windoes2022 in release aks-hybrid-catalog-stable-int"),
 	// 									OSSKU: to.Ptr(armhybridcontainerservice.OSSKUWindows2022),
 	// 									OSType: to.Ptr(armhybridcontainerservice.OsTypeWindows),
-	// 									Ready: to.Ptr(false),
+	// 									Ready: to.Ptr(true),
 	// 							}},
 	// 							Upgrades: []*string{
-	// 								to.Ptr("1.23.13")},
-	// 							},
-	// 							"1.23.13": &armhybridcontainerservice.KubernetesPatchVersions{
-	// 								Readiness: []*armhybridcontainerservice.KubernetesVersionReadiness{
-	// 									{
-	// 										OSSKU: to.Ptr(armhybridcontainerservice.OSSKUCBLMariner),
-	// 										OSType: to.Ptr(armhybridcontainerservice.OsTypeLinux),
-	// 										Ready: to.Ptr(true),
-	// 									},
-	// 									{
-	// 										OSSKU: to.Ptr(armhybridcontainerservice.OSSKU("Windows")),
-	// 										OSType: to.Ptr(armhybridcontainerservice.OsTypeWindows),
-	// 										Ready: to.Ptr(true),
-	// 									},
-	// 									{
-	// 										OSSKU: to.Ptr(armhybridcontainerservice.OSSKUWindows2022),
-	// 										OSType: to.Ptr(armhybridcontainerservice.OsTypeWindows),
-	// 										Ready: to.Ptr(true),
-	// 								}},
-	// 								Upgrades: []*string{
-	// 								},
 	// 							},
 	// 						},
-	// 						Version: to.Ptr("1.23"),
-	// 				}},
-	// 			},
-	// 		}
+	// 					},
+	// 					Version: to.Ptr("1.23"),
+	// 			}},
+	// 		},
+	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2023-11-15-preview/examples/PutKubernetesVersions.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/41e4538ed7bb3ceac3c1322c9455a0812ed110ac/specification/hybridaks/resource-manager/Microsoft.HybridContainerService/stable/2024-01-01/examples/PutKubernetesVersions.json
 func ExampleClient_BeginPutKubernetesVersions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -139,7 +135,7 @@ func ExampleClient_BeginPutKubernetesVersions() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2023-11-15-preview/examples/DeleteKubernetesVersions.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/41e4538ed7bb3ceac3c1322c9455a0812ed110ac/specification/hybridaks/resource-manager/Microsoft.HybridContainerService/stable/2024-01-01/examples/DeleteKubernetesVersions.json
 func ExampleClient_BeginDeleteKubernetesVersions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -160,7 +156,7 @@ func ExampleClient_BeginDeleteKubernetesVersions() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2023-11-15-preview/examples/GetVmSkus.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/41e4538ed7bb3ceac3c1322c9455a0812ed110ac/specification/hybridaks/resource-manager/Microsoft.HybridContainerService/stable/2024-01-01/examples/GetVmSkus.json
 func ExampleClient_GetVMSKUs() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -228,7 +224,7 @@ func ExampleClient_GetVMSKUs() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2023-11-15-preview/examples/PutVmSkus.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/41e4538ed7bb3ceac3c1322c9455a0812ed110ac/specification/hybridaks/resource-manager/Microsoft.HybridContainerService/stable/2024-01-01/examples/PutVmSkus.json
 func ExampleClient_BeginPutVMSKUs() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -265,7 +261,7 @@ func ExampleClient_BeginPutVMSKUs() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2023-11-15-preview/examples/DeleteVmSkus.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/41e4538ed7bb3ceac3c1322c9455a0812ed110ac/specification/hybridaks/resource-manager/Microsoft.HybridContainerService/stable/2024-01-01/examples/DeleteVmSkus.json
 func ExampleClient_BeginDeleteVMSKUs() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

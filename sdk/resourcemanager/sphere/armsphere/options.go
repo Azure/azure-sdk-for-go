@@ -20,6 +20,12 @@ type CatalogsClientBeginDeleteOptions struct {
 	ResumeToken string
 }
 
+// CatalogsClientBeginUploadImageOptions contains the optional parameters for the CatalogsClient.BeginUploadImage method.
+type CatalogsClientBeginUploadImageOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
 // CatalogsClientCountDevicesOptions contains the optional parameters for the CatalogsClient.CountDevices method.
 type CatalogsClientCountDevicesOptions struct {
 	// placeholder for future optional parameters

@@ -10,6 +10,113 @@ package armquota
 
 import "time"
 
+// AdditionalAttributes - Additional attribute or filter to allow subscriptions meeting the requirements to be part of the
+// GroupQuota.
+type AdditionalAttributes struct {
+	// REQUIRED; The grouping Id for the group quota. It can be Billing Id or ServiceTreeId if applicable.
+	GroupID *GroupingID
+
+	// Environment name.
+	Environment *EnvironmentType
+}
+
+// AdditionalAttributesPatch - Additional attribute or filter to allow subscriptions meeting the requirements to be part of
+// the GroupQuota.
+type AdditionalAttributesPatch struct {
+	// Environment name.
+	Environment *EnvironmentType
+
+	// The grouping Id for the group quota. It can be Billing Id or ServiceTreeId if applicable.
+	GroupID *GroupingID
+}
+
+// AllocatedQuotaToSubscriptionList - Quota allocated to subscriptions
+type AllocatedQuotaToSubscriptionList struct {
+	// List of Group Quota Limit allocated to subscriptions.
+	Value []*AllocatedToSubscription
+}
+
+// AllocatedToSubscription - SubscriptionIds and quota allocated to subscriptions from the GroupQuota.
+type AllocatedToSubscription struct {
+	// The amount of quota allocated to this subscriptionId from the GroupQuotasEntity.
+	QuotaAllocated *int64
+
+	// An Azure subscriptionId.
+	SubscriptionID *string
+}
+
+// AllocationRequestBase - The new quota request allocated to subscription.
+type AllocationRequestBase struct {
+	Properties *AllocationRequestBaseProperties
+}
+
+type AllocationRequestBaseProperties struct {
+	// The new quota limit for the subscription. The incremental quota will be allocated from pre-approved group quota.
+	Limit *int64
+
+	// The location for which the subscription is allocated
+	Region *string
+
+	// READ-ONLY; Name of the resource provided by the resource provider. This property is already included in the request URI,
+	// so it is a readonly property returned in the response.
+	Name *AllocationRequestBasePropertiesName
+}
+
+// AllocationRequestBasePropertiesName - Name of the resource provided by the resource provider. This property is already
+// included in the request URI, so it is a readonly property returned in the response.
+type AllocationRequestBasePropertiesName struct {
+	// READ-ONLY; Resource display name.
+	LocalizedValue *string
+
+	// READ-ONLY; Resource name.
+	Value *string
+}
+
+// AllocationRequestStatus - The subscription quota allocation status.
+type AllocationRequestStatus struct {
+	Properties *AllocationRequestStatusProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// AllocationRequestStatusList - List of QuotaAllocation Request Status
+type AllocationRequestStatusList struct {
+	// List of QuotaAllocation Request Status
+	Value []*AllocationRequestStatus
+
+	// READ-ONLY; The URL to use for getting the next set of results.
+	NextLink *string
+}
+
+type AllocationRequestStatusProperties struct {
+	// The new quota request allocated to subscription.
+	RequestedResource *AllocationRequestBase
+
+	// READ-ONLY; Details of the failure.
+	FaultCode *string
+
+	// READ-ONLY; Request status.
+	ProvisioningState *RequestState
+
+	// READ-ONLY; The request submission time. The date conforms to the following format specified by the ISO 8601 standard: yyyy-MM-ddTHH:mm:ssZ
+	RequestSubmitTime *time.Time
+}
+
+// BillingAccountID - A Billing Account Id.
+type BillingAccountID struct {
+	ID *string
+}
+
 // CommonResourceProperties - Resource properties.
 type CommonResourceProperties struct {
 	// READ-ONLY; Resource ID
@@ -58,10 +165,378 @@ type CurrentUsagesBase struct {
 	Type *string
 }
 
+// ErrorAdditionalInfo - The resource management error additional info.
+type ErrorAdditionalInfo struct {
+	// READ-ONLY; The additional info.
+	Info any
+
+	// READ-ONLY; The additional info type.
+	Type *string
+}
+
+// ErrorDetail - The error detail.
+type ErrorDetail struct {
+	// READ-ONLY; The error additional info.
+	AdditionalInfo []*ErrorAdditionalInfo
+
+	// READ-ONLY; The error code.
+	Code *string
+
+	// READ-ONLY; The error details.
+	Details []*ErrorDetail
+
+	// READ-ONLY; The error message.
+	Message *string
+
+	// READ-ONLY; The error target.
+	Target *string
+}
+
+// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
+// (This also follows the OData error response format.).
+type ErrorResponse struct {
+	// The error object.
+	Error *ErrorDetail
+}
+
 // ExceptionResponse - Error.
 type ExceptionResponse struct {
 	// API error details.
 	Error *ServiceError
+}
+
+// GroupQuotaDetails - Group Quota details.
+type GroupQuotaDetails struct {
+	// Any comment related to quota request.
+	Comment *string
+
+	// The current Group Quota Limit at the parentId level.
+	Limit *int64
+
+	// Location/Azure region for the quota requested for resource.
+	Region *string
+
+	// READ-ONLY; Quota allocated to subscriptions
+	AllocatedToSubscriptions *AllocatedQuotaToSubscriptionList
+
+	// READ-ONLY; The available Group Quota Limit at the MG level. This Group quota can be allocated to subscription(s).
+	AvailableLimit *int64
+
+	// READ-ONLY; Name of the resource provided by the resource provider. This property is already included in the request URI,
+	// so it is a readonly property returned in the response.
+	Name *GroupQuotaDetailsName
+
+	// READ-ONLY; The usages units, such as Count and Bytes. When requesting quota, use the unit value returned in the GET response
+	// in the request body of your PUT operation.
+	Unit *string
+}
+
+// GroupQuotaDetailsName - Name of the resource provided by the resource provider. This property is already included in the
+// request URI, so it is a readonly property returned in the response.
+type GroupQuotaDetailsName struct {
+	// READ-ONLY; Resource display name.
+	LocalizedValue *string
+
+	// READ-ONLY; Resource name.
+	Value *string
+}
+
+// GroupQuotaLimit - Group Quota limit.
+type GroupQuotaLimit struct {
+	// Group Quota properties for the specified resource.
+	Properties *GroupQuotaDetails
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// GroupQuotaLimitList - List of Group Quota Limit details.
+type GroupQuotaLimitList struct {
+	// List of Group Quota Limit details.
+	Value []*GroupQuotaLimit
+
+	// READ-ONLY; The URL to use for getting the next set of results.
+	NextLink *string
+}
+
+// GroupQuotaList - List of Group Quotas at MG level.
+type GroupQuotaList struct {
+	// List of Group Quotas at MG level.
+	Value []*GroupQuotasEntity
+
+	// READ-ONLY; The URL to use for getting the next set of results.
+	NextLink *string
+}
+
+// GroupQuotaRequestBase - The new GroupQuota limit requested.
+type GroupQuotaRequestBase struct {
+	Properties *GroupQuotaRequestBaseProperties
+}
+
+type GroupQuotaRequestBaseProperties struct {
+	// GroupQuota Request comments and details for request. This is optional paramter to provide more details related to the requested
+	// resource.
+	Comments *string
+
+	// The new quota limit for the subscription. The incremental quota will be allocated from pre-approved group quota.
+	Limit *int64
+
+	// Location/Azure region for the quota requested for resource.
+	Region *string
+
+	// READ-ONLY; Name of the resource provided by the resource provider. This property is already included in the request URI,
+	// so it is a readonly property returned in the response.
+	Name *GroupQuotaRequestBasePropertiesName
+}
+
+// GroupQuotaRequestBasePropertiesName - Name of the resource provided by the resource provider. This property is already
+// included in the request URI, so it is a readonly property returned in the response.
+type GroupQuotaRequestBasePropertiesName struct {
+	// READ-ONLY; Resource display name.
+	LocalizedValue *string
+
+	// READ-ONLY; Resource name.
+	Value *string
+}
+
+// GroupQuotaSubscriptionID - This represents a Azure subscriptionId that is associated with a GroupQuotasEntity.
+type GroupQuotaSubscriptionID struct {
+	Properties *GroupQuotaSubscriptionIDProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// GroupQuotaSubscriptionIDList - List of GroupQuotaSubscriptionIds
+type GroupQuotaSubscriptionIDList struct {
+	// List of GroupQuotaSubscriptionIds
+	Value []*GroupQuotaSubscriptionID
+
+	// READ-ONLY; The URL to use for getting the next set of results.
+	NextLink *string
+}
+
+type GroupQuotaSubscriptionIDProperties struct {
+	// READ-ONLY; Status of this subscriptionId being associated with the GroupQuotasEntity.
+	ProvisioningState *RequestState
+
+	// READ-ONLY; An Azure subscriptionId.
+	SubscriptionID *string
+}
+
+// GroupQuotaSubscriptionRequestStatus - The new quota limit request status.
+type GroupQuotaSubscriptionRequestStatus struct {
+	Properties *GroupQuotaSubscriptionRequestStatusProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// GroupQuotaSubscriptionRequestStatusList - List of GroupQuotaSubscriptionRequests Status
+type GroupQuotaSubscriptionRequestStatusList struct {
+	// List of GroupQuotaSubscriptionRequests Status
+	Value []*GroupQuotaSubscriptionRequestStatus
+
+	// READ-ONLY; The URL to use for getting the next set of results.
+	NextLink *string
+}
+
+type GroupQuotaSubscriptionRequestStatusProperties struct {
+	// The request submission time. The date conforms to the following format specified by the ISO 8601 standard: yyyy-MM-ddTHH:mm:ssZ
+	RequestSubmitTime *time.Time
+
+	// The subscription Id
+	SubscriptionID *string
+
+	// READ-ONLY; Status of this subscriptionId being associated with the GroupQuotasEntity.
+	ProvisioningState *RequestState
+}
+
+// GroupQuotaUsagesBase - Resource details with usages and GroupQuota.
+type GroupQuotaUsagesBase struct {
+	// Quota/limits for the resource.
+	Limit *int64
+
+	// Name of the resource provided by the resource provider. This property is already included in the request URI, so it is
+	// a readonly property returned in the response.
+	Name *GroupQuotaUsagesBaseName
+
+	// Usages for the resource.
+	Usages *int64
+
+	// READ-ONLY; Representing the units of the usage quota. Possible values are: Count, Bytes, Seconds, Percent, CountPerSecond,
+	// BytesPerSecond. Based on -
+	// https://armwiki.azurewebsites.net/api_contracts/UsagesAPIContract.html?q=usages . Different RPs may have different units,
+	// Count, type as int64 should work for most of the integer values.
+	Unit *string
+}
+
+// GroupQuotaUsagesBaseName - Name of the resource provided by the resource provider. This property is already included in
+// the request URI, so it is a readonly property returned in the response.
+type GroupQuotaUsagesBaseName struct {
+	// Resource name.
+	Value *string
+
+	// READ-ONLY; Resource display name.
+	LocalizedValue *string
+}
+
+// GroupQuotasEnforcementListResponse - List of Azure regions, where the group quotas is enabled for enforcement.
+type GroupQuotasEnforcementListResponse struct {
+	// List of Azure Regions.
+	Value []*GroupQuotasEnforcementResponse
+
+	// READ-ONLY; The URL to use for getting the next set of results.
+	NextLink *string
+}
+
+// GroupQuotasEnforcementResponse - The GroupQuota Enforcement status for a Azure Location/Region.
+type GroupQuotasEnforcementResponse struct {
+	Properties *GroupQuotasEnforcementResponseProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+type GroupQuotasEnforcementResponseProperties struct {
+	// Is the GroupQuota Enforcement enabled for the Azure region.
+	EnforcementEnabled *EnforcementState
+
+	// READ-ONLY; Details of the failure.
+	FaultCode *string
+
+	// READ-ONLY; Request status.
+	ProvisioningState *RequestState
+}
+
+// GroupQuotasEntity - Properties and filters for ShareQuota. The request parameter is optional, if there are no filters specified.
+type GroupQuotasEntity struct {
+	// Properties and filters for ShareQuota. The request parameter is optional, if there are no filters specified.
+	Properties *GroupQuotasEntityBase
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// GroupQuotasEntityBase - Properties and filters for ShareQuota. The request parameter is optional, if there are no filters
+// specified.
+type GroupQuotasEntityBase struct {
+	// Additional attributes to filter/restrict the subscriptions, which can be added to the subscriptionIds.
+	AdditionalAttributes *AdditionalAttributes
+
+	// Display name of the GroupQuota entity.
+	DisplayName *string
+
+	// READ-ONLY; Provisioning state of the operation.
+	ProvisioningState *RequestState
+}
+
+// GroupQuotasEntityBasePatch - Properties and filters for ShareQuota. The request parameter is optional, if there are no
+// filters specified.
+type GroupQuotasEntityBasePatch struct {
+	// Additional attributes to filter/restrict the subscriptions, which can be added to the subscriptionIds.
+	AdditionalAttributes *AdditionalAttributesPatch
+
+	// Display name of the GroupQuota entity.
+	DisplayName *string
+
+	// READ-ONLY; Provisioning state of the operation.
+	ProvisioningState *RequestState
+}
+
+// GroupQuotasEntityPatch - Properties and filters for ShareQuota. The request parameter is optional, if there are no filters
+// specified.
+type GroupQuotasEntityPatch struct {
+	// Properties and filters for ShareQuota. The request parameter is optional, if there are no filters specified.
+	Properties *GroupQuotasEntityBasePatch
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// GroupingID - The grouping Id for the group quota. It can be Billing Id or ServiceTreeId if applicable.
+type GroupingID struct {
+	// GroupingId type. It is a required property. More types of groupIds can be supported in future.
+	GroupingIDType *GroupingIDType
+
+	// GroupId value based on the groupingType selected - Billing Id or ServiceTreeId.
+	Value *string
+}
+
+// LROResponse - The provisioning state for the operation.
+type LROResponse struct {
+	Properties *LROResponseProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+type LROResponseProperties struct {
+	// READ-ONLY; Request status.
+	ProvisioningState *RequestState
 }
 
 // LimitJSONObject - LimitJson abstract class.
@@ -161,6 +636,22 @@ type Properties struct {
 	// READ-ONLY; The quota units, such as Count and Bytes. When requesting quota, use the unit value returned in the GET response
 	// in the request body of your PUT operation.
 	Unit *string
+}
+
+// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
+// location
+type ProxyResource struct {
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
 }
 
 // RequestDetails - List of quota requests with details.
@@ -324,6 +815,36 @@ type RequestSubmitResponse202 struct {
 	Type *string
 }
 
+// Resource - Common fields that are returned in the response for all Azure Resource Manager resources
+type Resource struct {
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ResourceBaseRequest - Resource definition with the requested quota.
+type ResourceBaseRequest struct {
+	// Quota requested for the resource.
+	Limit *int64
+
+	// READ-ONLY; The resource name, such as SKU name.
+	ResourceName *string
+
+	// READ-ONLY; Representing the units of the usage quota. Possible values are: Count, Bytes, Seconds, Percent, CountPerSecond,
+	// BytesPerSecond. Based on -
+	// https://armwiki.azurewebsites.net/api_contracts/UsagesAPIContract.html?q=usages . Different RPs may have different units,
+	// Count, type as int64 should work for most of the integer values.
+	Unit *string
+}
+
 // ResourceName - Name of the resource provided by the resource Provider. When requesting quota, use this property name.
 type ResourceName struct {
 	// Resource name.
@@ -331,6 +852,33 @@ type ResourceName struct {
 
 	// READ-ONLY; Resource display name.
 	LocalizedValue *string
+}
+
+// ResourceUsageList - List of resource usages and quotas for GroupQuota.
+type ResourceUsageList struct {
+	// List of resource usages at Group Quotas.
+	Value []*ResourceUsages
+
+	// READ-ONLY; The URL to use for getting the next set of results.
+	NextLink *string
+}
+
+// ResourceUsages - Resource details with usages and GroupQuota.
+type ResourceUsages struct {
+	// Resource details with usages and GroupQuota.
+	Properties *GroupQuotaUsagesBase
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
 }
 
 // ServiceError - API error details.
@@ -377,6 +925,149 @@ type SubRequest struct {
 
 	// READ-ONLY; Quota request ID.
 	SubRequestID *string
+}
+
+// SubmittedResourceRequestStatus - Status of a single GroupQuota request.
+type SubmittedResourceRequestStatus struct {
+	Properties *SubmittedResourceRequestStatusProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// SubmittedResourceRequestStatusList - Share Quota Entity list.
+type SubmittedResourceRequestStatusList struct {
+	// Subscription groupQuotaRequests list.
+	Value []*SubmittedResourceRequestStatus
+
+	// READ-ONLY; The URL to use for getting the next set of results.
+	NextLink *string
+}
+
+type SubmittedResourceRequestStatusProperties struct {
+	// Requested Resource.
+	RequestedResource *GroupQuotaRequestBase
+
+	// READ-ONLY; Details of the failure.
+	FaultCode *string
+
+	// READ-ONLY; Request status.
+	ProvisioningState *RequestState
+
+	// READ-ONLY; The request submission time. The date conforms to the following format specified by the ISO 8601 standard: yyyy-MM-ddTHH:mm:ssZ
+	RequestSubmitTime *time.Time
+}
+
+// SubscriptionGroupQuotaAssignment - MGId the source of group quota.
+type SubscriptionGroupQuotaAssignment struct {
+	// The group quota id of the quota source.
+	GroupQuotaID *string
+
+	// The amount of quota allocated to this subscriptionId from the quota source.
+	QuotaAllocated *int64
+}
+
+// SubscriptionQuotaAllocationRequestList - List of Allocated Group Quota to the subscriptions.
+type SubscriptionQuotaAllocationRequestList struct {
+	// Allocated Group Quota to subscriptions.
+	Value []*AllocationRequestStatus
+
+	// READ-ONLY; The URL to use for getting the next set of results.
+	NextLink *string
+}
+
+// SubscriptionQuotaAllocations - Quota allocated to a subscription for the specific Resource Provider, Location, ResourceName.
+// This will include the GroupQuota and total quota allocated to the subscription. Only the Group quota
+// allocated to the subscription can be allocated back to the MG Group Quota.
+type SubscriptionQuotaAllocations struct {
+	// Quota properties for the specified resource.
+	Properties *SubscriptionQuotaDetails
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// SubscriptionQuotaAllocationsList - Subscription quota list.
+type SubscriptionQuotaAllocationsList struct {
+	// Subscription quota list.
+	Value []*SubscriptionQuotaAllocations
+
+	// READ-ONLY; The URL to use for getting the next set of results.
+	NextLink *string
+}
+
+// SubscriptionQuotaAllocationsStatusList - Subscription quota allocation requests status list.
+type SubscriptionQuotaAllocationsStatusList struct {
+	// Subscription quota allocation status list.
+	Value []*SubmittedResourceRequestStatus
+
+	// READ-ONLY; The URL to use for getting the next set of results.
+	NextLink *string
+}
+
+// SubscriptionQuotaDetails - Subscription Quota details.
+type SubscriptionQuotaDetails struct {
+	// The total quota limit for the subscription.
+	Limit *int64
+
+	// Location/Azure region for the quota requested for resource.
+	Region *string
+
+	// READ-ONLY; Name of the resource provided by the resource provider. This property is already included in the request URI,
+	// so it is a readonly property returned in the response.
+	Name *SubscriptionQuotaDetailsName
+
+	// READ-ONLY; The shareable quota for the subscription.
+	ShareableQuota *int64
+}
+
+// SubscriptionQuotaDetailsName - Name of the resource provided by the resource provider. This property is already included
+// in the request URI, so it is a readonly property returned in the response.
+type SubscriptionQuotaDetailsName struct {
+	// READ-ONLY; Resource display name.
+	LocalizedValue *string
+
+	// READ-ONLY; Resource name.
+	Value *string
+}
+
+// SystemData - Metadata pertaining to creation and last modification of the resource.
+type SystemData struct {
+	// The timestamp of resource creation (UTC).
+	CreatedAt *time.Time
+
+	// The identity that created the resource.
+	CreatedBy *string
+
+	// The type of identity that created the resource.
+	CreatedByType *CreatedByType
+
+	// The timestamp of resource last modification (UTC)
+	LastModifiedAt *time.Time
+
+	// The identity that last modified the resource.
+	LastModifiedBy *string
+
+	// The type of identity that last modified the resource.
+	LastModifiedByType *CreatedByType
 }
 
 // UsagesLimits - Quota limits.

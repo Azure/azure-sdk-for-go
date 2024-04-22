@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redisenterprise/armredisenterprise"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redisenterprise/armredisenterprise/v2"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -35,6 +35,10 @@ type DatabasesServer struct {
 	// BeginExport is the fake for method DatabasesClient.BeginExport
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginExport func(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, parameters armredisenterprise.ExportClusterParameters, options *armredisenterprise.DatabasesClientBeginExportOptions) (resp azfake.PollerResponder[armredisenterprise.DatabasesClientExportResponse], errResp azfake.ErrorResponder)
+
+	// BeginFlush is the fake for method DatabasesClient.BeginFlush
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginFlush func(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, parameters armredisenterprise.FlushParameters, options *armredisenterprise.DatabasesClientBeginFlushOptions) (resp azfake.PollerResponder[armredisenterprise.DatabasesClientFlushResponse], errResp azfake.ErrorResponder)
 
 	// BeginForceUnlink is the fake for method DatabasesClient.BeginForceUnlink
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
@@ -74,6 +78,7 @@ func NewDatabasesServerTransport(srv *DatabasesServer) *DatabasesServerTransport
 		beginCreate:           newTracker[azfake.PollerResponder[armredisenterprise.DatabasesClientCreateResponse]](),
 		beginDelete:           newTracker[azfake.PollerResponder[armredisenterprise.DatabasesClientDeleteResponse]](),
 		beginExport:           newTracker[azfake.PollerResponder[armredisenterprise.DatabasesClientExportResponse]](),
+		beginFlush:            newTracker[azfake.PollerResponder[armredisenterprise.DatabasesClientFlushResponse]](),
 		beginForceUnlink:      newTracker[azfake.PollerResponder[armredisenterprise.DatabasesClientForceUnlinkResponse]](),
 		beginImport:           newTracker[azfake.PollerResponder[armredisenterprise.DatabasesClientImportResponse]](),
 		newListByClusterPager: newTracker[azfake.PagerResponder[armredisenterprise.DatabasesClientListByClusterResponse]](),
@@ -89,6 +94,7 @@ type DatabasesServerTransport struct {
 	beginCreate           *tracker[azfake.PollerResponder[armredisenterprise.DatabasesClientCreateResponse]]
 	beginDelete           *tracker[azfake.PollerResponder[armredisenterprise.DatabasesClientDeleteResponse]]
 	beginExport           *tracker[azfake.PollerResponder[armredisenterprise.DatabasesClientExportResponse]]
+	beginFlush            *tracker[azfake.PollerResponder[armredisenterprise.DatabasesClientFlushResponse]]
 	beginForceUnlink      *tracker[azfake.PollerResponder[armredisenterprise.DatabasesClientForceUnlinkResponse]]
 	beginImport           *tracker[azfake.PollerResponder[armredisenterprise.DatabasesClientImportResponse]]
 	newListByClusterPager *tracker[azfake.PagerResponder[armredisenterprise.DatabasesClientListByClusterResponse]]
@@ -114,6 +120,8 @@ func (d *DatabasesServerTransport) Do(req *http.Request) (*http.Response, error)
 		resp, err = d.dispatchBeginDelete(req)
 	case "DatabasesClient.BeginExport":
 		resp, err = d.dispatchBeginExport(req)
+	case "DatabasesClient.BeginFlush":
+		resp, err = d.dispatchBeginFlush(req)
 	case "DatabasesClient.BeginForceUnlink":
 		resp, err = d.dispatchBeginForceUnlink(req)
 	case "DatabasesClient.Get":
@@ -286,6 +294,58 @@ func (d *DatabasesServerTransport) dispatchBeginExport(req *http.Request) (*http
 	}
 	if !server.PollerResponderMore(beginExport) {
 		d.beginExport.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (d *DatabasesServerTransport) dispatchBeginFlush(req *http.Request) (*http.Response, error) {
+	if d.srv.BeginFlush == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginFlush not implemented")}
+	}
+	beginFlush := d.beginFlush.get(req)
+	if beginFlush == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Cache/redisEnterprise/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/databases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/flush`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armredisenterprise.FlushParameters](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
+		if err != nil {
+			return nil, err
+		}
+		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := d.srv.BeginFlush(req.Context(), resourceGroupNameParam, clusterNameParam, databaseNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginFlush = &respr
+		d.beginFlush.add(req, beginFlush)
+	}
+
+	resp, err := server.PollerResponderNext(beginFlush, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		d.beginFlush.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginFlush) {
+		d.beginFlush.remove(req)
 	}
 
 	return resp, nil

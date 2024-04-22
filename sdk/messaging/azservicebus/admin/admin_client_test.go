@@ -752,9 +752,9 @@ func TestAdminClient_Forwarding(t *testing.T) {
 
 	defer deleteTopic(t, adminClient, topicName)
 
-	parsed, err := conn.ParsedConnectionFromStr(test.GetConnectionString(t))
+	parsed, err := conn.ParseConnectionString(test.GetConnectionString(t))
 	require.NoError(t, err)
-	forwardToName := to.Ptr(fmt.Sprintf("sb://%s/%s", parsed.Namespace, forwardToQueueName))
+	forwardToName := to.Ptr(fmt.Sprintf("sb://%s/%s", parsed.FullyQualifiedNamespace, forwardToQueueName))
 
 	_, err = adminClient.CreateSubscription(context.Background(), topicName, "sub1", &CreateSubscriptionOptions{
 		Properties: &SubscriptionProperties{

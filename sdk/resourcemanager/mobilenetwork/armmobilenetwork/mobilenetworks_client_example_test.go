@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mobilenetwork/armmobilenetwork/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mobilenetwork/armmobilenetwork/v4"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/MobileNetworkDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-02-01/examples/MobileNetworkDelete.json
 func ExampleMobileNetworksClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -39,7 +39,7 @@ func ExampleMobileNetworksClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/MobileNetworkGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-02-01/examples/MobileNetworkGet.json
 func ExampleMobileNetworksClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -78,11 +78,32 @@ func ExampleMobileNetworksClient_Get() {
 	// 			Mcc: to.Ptr("001"),
 	// 			Mnc: to.Ptr("01"),
 	// 		},
+	// 		PublicLandMobileNetworks: []*armmobilenetwork.PublicLandMobileNetwork{
+	// 			{
+	// 				Mcc: to.Ptr("001"),
+	// 				Mnc: to.Ptr("01"),
+	// 				HomeNetworkPublicKeys: &armmobilenetwork.PublicLandMobileNetworkHomeNetworkPublicKeys{
+	// 					ProfileA: []*armmobilenetwork.HomeNetworkPublicKey{
+	// 						{
+	// 							ID: to.Ptr[int32](1),
+	// 							URL: to.Ptr("https://contosovault.vault.azure.net/secrets/exampleHnpk"),
+	// 						},
+	// 						{
+	// 							ID: to.Ptr[int32](2),
+	// 							URL: to.Ptr("https://contosovault.vault.azure.net/secrets/exampleHnpk2/5e4876e9140e4e16bfe6e2cf92e0cbd2"),
+	// 					}},
+	// 					ProfileB: []*armmobilenetwork.HomeNetworkPublicKey{
+	// 						{
+	// 							ID: to.Ptr[int32](1),
+	// 							URL: to.Ptr("https://contosovault.vault.azure.net/secrets/exampleHnpkProfileB"),
+	// 					}},
+	// 				},
+	// 		}},
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/MobileNetworkCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-02-01/examples/MobileNetworkCreate.json
 func ExampleMobileNetworksClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -100,6 +121,27 @@ func ExampleMobileNetworksClient_BeginCreateOrUpdate() {
 				Mcc: to.Ptr("001"),
 				Mnc: to.Ptr("01"),
 			},
+			PublicLandMobileNetworks: []*armmobilenetwork.PublicLandMobileNetwork{
+				{
+					Mcc: to.Ptr("001"),
+					Mnc: to.Ptr("01"),
+					HomeNetworkPublicKeys: &armmobilenetwork.PublicLandMobileNetworkHomeNetworkPublicKeys{
+						ProfileA: []*armmobilenetwork.HomeNetworkPublicKey{
+							{
+								ID:  to.Ptr[int32](1),
+								URL: to.Ptr("https://contosovault.vault.azure.net/secrets/exampleHnpk"),
+							},
+							{
+								ID:  to.Ptr[int32](2),
+								URL: to.Ptr("https://contosovault.vault.azure.net/secrets/exampleHnpk2/5e4876e9140e4e16bfe6e2cf92e0cbd2"),
+							}},
+						ProfileB: []*armmobilenetwork.HomeNetworkPublicKey{
+							{
+								ID:  to.Ptr[int32](1),
+								URL: to.Ptr("https://contosovault.vault.azure.net/secrets/exampleHnpkProfileB"),
+							}},
+					},
+				}},
 		},
 	}, nil)
 	if err != nil {
@@ -133,11 +175,32 @@ func ExampleMobileNetworksClient_BeginCreateOrUpdate() {
 	// 			Mcc: to.Ptr("001"),
 	// 			Mnc: to.Ptr("01"),
 	// 		},
+	// 		PublicLandMobileNetworks: []*armmobilenetwork.PublicLandMobileNetwork{
+	// 			{
+	// 				Mcc: to.Ptr("001"),
+	// 				Mnc: to.Ptr("01"),
+	// 				HomeNetworkPublicKeys: &armmobilenetwork.PublicLandMobileNetworkHomeNetworkPublicKeys{
+	// 					ProfileA: []*armmobilenetwork.HomeNetworkPublicKey{
+	// 						{
+	// 							ID: to.Ptr[int32](1),
+	// 							URL: to.Ptr("https://contosovault.vault.azure.net/secrets/exampleHnpk"),
+	// 						},
+	// 						{
+	// 							ID: to.Ptr[int32](2),
+	// 							URL: to.Ptr("https://contosovault.vault.azure.net/secrets/exampleHnpk2/5e4876e9140e4e16bfe6e2cf92e0cbd2"),
+	// 					}},
+	// 					ProfileB: []*armmobilenetwork.HomeNetworkPublicKey{
+	// 						{
+	// 							ID: to.Ptr[int32](1),
+	// 							URL: to.Ptr("https://contosovault.vault.azure.net/secrets/exampleHnpkProfileB"),
+	// 					}},
+	// 				},
+	// 		}},
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/MobileNetworkUpdateTags.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-02-01/examples/MobileNetworkUpdateTags.json
 func ExampleMobileNetworksClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -148,7 +211,7 @@ func ExampleMobileNetworksClient_UpdateTags() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewMobileNetworksClient().UpdateTags(ctx, "rg1", "testMobileNetwork", armmobilenetwork.TagsObject{
+	res, err := clientFactory.NewMobileNetworksClient().UpdateTags(ctx, "rg1", "testMobileNetwork", armmobilenetwork.IdentityAndTagsObject{
 		Tags: map[string]*string{
 			"tag1": to.Ptr("value1"),
 			"tag2": to.Ptr("value2"),
@@ -183,11 +246,32 @@ func ExampleMobileNetworksClient_UpdateTags() {
 	// 			Mcc: to.Ptr("001"),
 	// 			Mnc: to.Ptr("01"),
 	// 		},
+	// 		PublicLandMobileNetworks: []*armmobilenetwork.PublicLandMobileNetwork{
+	// 			{
+	// 				Mcc: to.Ptr("001"),
+	// 				Mnc: to.Ptr("01"),
+	// 				HomeNetworkPublicKeys: &armmobilenetwork.PublicLandMobileNetworkHomeNetworkPublicKeys{
+	// 					ProfileA: []*armmobilenetwork.HomeNetworkPublicKey{
+	// 						{
+	// 							ID: to.Ptr[int32](1),
+	// 							URL: to.Ptr("https://contosovault.vault.azure.net/secrets/exampleHnpk"),
+	// 						},
+	// 						{
+	// 							ID: to.Ptr[int32](2),
+	// 							URL: to.Ptr("https://contosovault.vault.azure.net/secrets/exampleHnpk2/5e4876e9140e4e16bfe6e2cf92e0cbd2"),
+	// 					}},
+	// 					ProfileB: []*armmobilenetwork.HomeNetworkPublicKey{
+	// 						{
+	// 							ID: to.Ptr[int32](1),
+	// 							URL: to.Ptr("https://contosovault.vault.azure.net/secrets/exampleHnpkProfileB"),
+	// 					}},
+	// 				},
+	// 		}},
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/MobileNetworkListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-02-01/examples/MobileNetworkListBySubscription.json
 func ExampleMobileNetworksClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -232,13 +316,34 @@ func ExampleMobileNetworksClient_NewListBySubscriptionPager() {
 		// 					Mcc: to.Ptr("001"),
 		// 					Mnc: to.Ptr("01"),
 		// 				},
+		// 				PublicLandMobileNetworks: []*armmobilenetwork.PublicLandMobileNetwork{
+		// 					{
+		// 						Mcc: to.Ptr("001"),
+		// 						Mnc: to.Ptr("01"),
+		// 						HomeNetworkPublicKeys: &armmobilenetwork.PublicLandMobileNetworkHomeNetworkPublicKeys{
+		// 							ProfileA: []*armmobilenetwork.HomeNetworkPublicKey{
+		// 								{
+		// 									ID: to.Ptr[int32](1),
+		// 									URL: to.Ptr("https://contosovault.vault.azure.net/secrets/exampleHnpk"),
+		// 								},
+		// 								{
+		// 									ID: to.Ptr[int32](2),
+		// 									URL: to.Ptr("https://contosovault.vault.azure.net/secrets/exampleHnpk2/5e4876e9140e4e16bfe6e2cf92e0cbd2"),
+		// 							}},
+		// 							ProfileB: []*armmobilenetwork.HomeNetworkPublicKey{
+		// 								{
+		// 									ID: to.Ptr[int32](1),
+		// 									URL: to.Ptr("https://contosovault.vault.azure.net/secrets/exampleHnpkProfileB"),
+		// 							}},
+		// 						},
+		// 				}},
 		// 			},
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/MobileNetworkListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-02-01/examples/MobileNetworkListByResourceGroup.json
 func ExampleMobileNetworksClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -283,6 +388,27 @@ func ExampleMobileNetworksClient_NewListByResourceGroupPager() {
 		// 					Mcc: to.Ptr("001"),
 		// 					Mnc: to.Ptr("01"),
 		// 				},
+		// 				PublicLandMobileNetworks: []*armmobilenetwork.PublicLandMobileNetwork{
+		// 					{
+		// 						Mcc: to.Ptr("001"),
+		// 						Mnc: to.Ptr("01"),
+		// 						HomeNetworkPublicKeys: &armmobilenetwork.PublicLandMobileNetworkHomeNetworkPublicKeys{
+		// 							ProfileA: []*armmobilenetwork.HomeNetworkPublicKey{
+		// 								{
+		// 									ID: to.Ptr[int32](1),
+		// 									URL: to.Ptr("https://contosovault.vault.azure.net/secrets/exampleHnpk"),
+		// 								},
+		// 								{
+		// 									ID: to.Ptr[int32](2),
+		// 									URL: to.Ptr("https://contosovault.vault.azure.net/secrets/exampleHnpk2/5e4876e9140e4e16bfe6e2cf92e0cbd2"),
+		// 							}},
+		// 							ProfileB: []*armmobilenetwork.HomeNetworkPublicKey{
+		// 								{
+		// 									ID: to.Ptr[int32](1),
+		// 									URL: to.Ptr("https://contosovault.vault.azure.net/secrets/exampleHnpkProfileB"),
+		// 							}},
+		// 						},
+		// 				}},
 		// 			},
 		// 	}},
 		// }

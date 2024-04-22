@@ -46,7 +46,7 @@ func NewDataTransferJobsClient(subscriptionID string, credential azcore.TokenCre
 // Cancel - Cancels a Data Transfer Job.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-15-preview
+// Generated from API version 2024-02-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - jobName - Name of the Data Transfer Job
@@ -97,7 +97,7 @@ func (client *DataTransferJobsClient) cancelCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-15-preview")
+	reqQP.Set("api-version", "2024-02-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -112,10 +112,80 @@ func (client *DataTransferJobsClient) cancelHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
+// Complete - Completes a Data Transfer Online Job.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-02-15-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - Cosmos DB database account name.
+//   - jobName - Name of the Data Transfer Job
+//   - options - DataTransferJobsClientCompleteOptions contains the optional parameters for the DataTransferJobsClient.Complete
+//     method.
+func (client *DataTransferJobsClient) Complete(ctx context.Context, resourceGroupName string, accountName string, jobName string, options *DataTransferJobsClientCompleteOptions) (DataTransferJobsClientCompleteResponse, error) {
+	var err error
+	const operationName = "DataTransferJobsClient.Complete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.completeCreateRequest(ctx, resourceGroupName, accountName, jobName, options)
+	if err != nil {
+		return DataTransferJobsClientCompleteResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return DataTransferJobsClientCompleteResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return DataTransferJobsClientCompleteResponse{}, err
+	}
+	resp, err := client.completeHandleResponse(httpResp)
+	return resp, err
+}
+
+// completeCreateRequest creates the Complete request.
+func (client *DataTransferJobsClient) completeCreateRequest(ctx context.Context, resourceGroupName string, accountName string, jobName string, options *DataTransferJobsClientCompleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/dataTransferJobs/{jobName}/complete"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if jobName == "" {
+		return nil, errors.New("parameter jobName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{jobName}", url.PathEscape(jobName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-02-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// completeHandleResponse handles the Complete response.
+func (client *DataTransferJobsClient) completeHandleResponse(resp *http.Response) (DataTransferJobsClientCompleteResponse, error) {
+	result := DataTransferJobsClientCompleteResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DataTransferJobGetResults); err != nil {
+		return DataTransferJobsClientCompleteResponse{}, err
+	}
+	return result, nil
+}
+
 // Create - Creates a Data Transfer Job.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-15-preview
+// Generated from API version 2024-02-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - jobName - Name of the Data Transfer Job
@@ -166,7 +236,7 @@ func (client *DataTransferJobsClient) createCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-15-preview")
+	reqQP.Set("api-version", "2024-02-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, jobCreateParameters); err != nil {
@@ -187,7 +257,7 @@ func (client *DataTransferJobsClient) createHandleResponse(resp *http.Response) 
 // Get - Get a Data Transfer Job.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-15-preview
+// Generated from API version 2024-02-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - jobName - Name of the Data Transfer Job
@@ -238,7 +308,7 @@ func (client *DataTransferJobsClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-15-preview")
+	reqQP.Set("api-version", "2024-02-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -255,7 +325,7 @@ func (client *DataTransferJobsClient) getHandleResponse(resp *http.Response) (Da
 
 // NewListByDatabaseAccountPager - Get a list of Data Transfer jobs.
 //
-// Generated from API version 2023-03-15-preview
+// Generated from API version 2024-02-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - options - DataTransferJobsClientListByDatabaseAccountOptions contains the optional parameters for the DataTransferJobsClient.NewListByDatabaseAccountPager
@@ -303,7 +373,7 @@ func (client *DataTransferJobsClient) listByDatabaseAccountCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-15-preview")
+	reqQP.Set("api-version", "2024-02-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -321,7 +391,7 @@ func (client *DataTransferJobsClient) listByDatabaseAccountHandleResponse(resp *
 // Pause - Pause a Data Transfer Job.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-15-preview
+// Generated from API version 2024-02-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - jobName - Name of the Data Transfer Job
@@ -372,7 +442,7 @@ func (client *DataTransferJobsClient) pauseCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-15-preview")
+	reqQP.Set("api-version", "2024-02-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -390,7 +460,7 @@ func (client *DataTransferJobsClient) pauseHandleResponse(resp *http.Response) (
 // Resume - Resumes a Data Transfer Job.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-15-preview
+// Generated from API version 2024-02-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - jobName - Name of the Data Transfer Job
@@ -441,7 +511,7 @@ func (client *DataTransferJobsClient) resumeCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-15-preview")
+	reqQP.Set("api-version", "2024-02-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

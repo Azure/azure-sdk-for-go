@@ -1,0 +1,39 @@
+{
+    "displayNames": {
+    },
+    "matrix": {
+        "Agent": {
+            "windows-2022": {
+                "OSVmImage": "env:WINDOWSVMIMAGE", "Pool": "env:WINDOWSPOOL"
+            },
+            "ubuntu-2004": {
+                "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL"
+            }
+        },
+        "go.version": ["1.21.7"]
+    },
+    "include": [
+        {
+            "WindowsNoCoverage": {
+                "windows-22_1220_nocoverage":
+                {
+                    "go.version": "1.22.0",
+                    "GOEXPERIMENT": "nocoverageredesign",
+                    "generate.bom": "true",
+                    "OSVmImage": "env:WINDOWSVMIMAGE",
+                    "Pool":"env:WINDOWSPOOL"
+                }
+            }
+        },
+        {
+            "LinuxNoCoverage": {
+                "ubuntu-2004_nocoverage": {
+                    "go.version": "1.22.0",
+                    "GOEXPERIMENT": "nocoverageredesign",
+                    "OSVmImage": "env:LINUXVMIMAGE",
+                    "Pool": "env:LINUXPOOL"
+                }
+            }
+        }
+    ]
+}

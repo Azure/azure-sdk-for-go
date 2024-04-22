@@ -45,7 +45,7 @@ func NewDatabaseAccountRegionClient(subscriptionID string, credential azcore.Tok
 
 // NewListMetricsPager - Retrieves the metrics determined by the given filter for the given database account and region.
 //
-// Generated from API version 2023-03-15-preview
+// Generated from API version 2024-02-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - region - Cosmos DB region, with spaces between words and each word capitalized.
@@ -102,8 +102,8 @@ func (client *DatabaseAccountRegionClient) listMetricsCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-15-preview")
 	reqQP.Set("$filter", filter)
+	reqQP.Set("api-version", "2024-02-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

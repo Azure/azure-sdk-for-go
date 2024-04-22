@@ -1,5 +1,17 @@
 # Release History
 
+## 0.8.0 (2024-03-22)
+### Features Added
+
+- New enum type `KeyType` with values `KeyTypePrimary`, `KeyTypeSecondary`
+- New function `*WorkspaceClient.ListKeys(context.Context, string, string, *WorkspaceClientListKeysOptions) (WorkspaceClientListKeysResponse, error)`
+- New function `*WorkspaceClient.RegenerateKeys(context.Context, string, string, APIKeys, *WorkspaceClientRegenerateKeysOptions) (WorkspaceClientRegenerateKeysResponse, error)`
+- New struct `APIKey`
+- New struct `APIKeys`
+- New struct `ListKeysResult`
+- New field `APIKeyEnabled` in struct `WorkspaceResourceProperties`
+
+
 ## 0.7.0 (2023-11-24)
 ### Features Added
 

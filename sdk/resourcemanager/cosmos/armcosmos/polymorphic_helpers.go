@@ -11,7 +11,7 @@ package armcosmos
 import "encoding/json"
 
 func unmarshalBackupPolicyClassification(rawMsg json.RawMessage) (BackupPolicyClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -34,7 +34,7 @@ func unmarshalBackupPolicyClassification(rawMsg json.RawMessage) (BackupPolicyCl
 }
 
 func unmarshalDataTransferDataSourceSinkClassification(rawMsg json.RawMessage) (DataTransferDataSourceSinkClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -43,6 +43,8 @@ func unmarshalDataTransferDataSourceSinkClassification(rawMsg json.RawMessage) (
 	}
 	var b DataTransferDataSourceSinkClassification
 	switch m["component"] {
+	case "BaseCosmosDataTransferDataSourceSink":
+		b = &BaseCosmosDataTransferDataSourceSink{}
 	case string(DataTransferComponentAzureBlobStorage):
 		b = &AzureBlobDataTransferDataSourceSink{}
 	case string(DataTransferComponentCosmosDBCassandra):
@@ -61,7 +63,7 @@ func unmarshalDataTransferDataSourceSinkClassification(rawMsg json.RawMessage) (
 }
 
 func unmarshalServiceResourcePropertiesClassification(rawMsg json.RawMessage) (ServiceResourcePropertiesClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any

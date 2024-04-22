@@ -40,14 +40,15 @@ type Client base.CompositeClient[generated.FileSystemClient, generated.FileSyste
 //   - options - client options; pass nil to accept the default values
 func NewClient(filesystemURL string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
 	containerURL, filesystemURL := shared.GetURLs(filesystemURL)
-	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{shared.TokenScope}, nil)
+	audience := base.GetAudience((*base.ClientOptions)(options))
 	conOptions := shared.GetClientOptions(options)
+	authPolicy := shared.NewStorageChallengePolicy(cred, audience, conOptions.InsecureAllowCredentialWithHTTP)
 	plOpts := runtime.PipelineOptions{
 		PerRetry: []policy.Policy{authPolicy},
 	}
 	base.SetPipelineOptions((*base.ClientOptions)(conOptions), &plOpts)
 
-	azClient, err := azcore.NewClient(shared.FileSystemClient, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
+	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -79,7 +80,7 @@ func NewClientWithNoCredential(filesystemURL string, options *ClientOptions) (*C
 	plOpts := runtime.PipelineOptions{}
 	base.SetPipelineOptions((*base.ClientOptions)(conOptions), &plOpts)
 
-	azClient, err := azcore.NewClient(shared.FileSystemClient, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
+	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -114,7 +115,7 @@ func NewClientWithSharedKeyCredential(filesystemURL string, cred *SharedKeyCrede
 	}
 	base.SetPipelineOptions((*base.ClientOptions)(conOptions), &plOpts)
 
-	azClient, err := azcore.NewClient(shared.FileSystemClient, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
+	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -202,18 +203,18 @@ func (fs *Client) BlobURL() string {
 // The new directory.Client uses the same request policy pipeline as the Client.
 func (fs *Client) NewDirectoryClient(directoryPath string) *directory.Client {
 	directoryPath = strings.ReplaceAll(directoryPath, "\\", "/")
-	dirURL := runtime.JoinPaths(fs.generatedFSClientWithDFS().Endpoint(), directoryPath)
+	dirURL := runtime.JoinPaths(fs.generatedFSClientWithDFS().Endpoint(), shared.EscapeSplitPaths(directoryPath))
 	blobURL, dirURL := shared.GetURLs(dirURL)
-	return (*directory.Client)(base.NewPathClient(dirURL, blobURL, fs.containerClient().NewBlockBlobClient(directoryPath), fs.generatedFSClientWithDFS().InternalClient().WithClientName(shared.DirectoryClient), fs.sharedKey(), fs.identityCredential(), fs.getClientOptions()))
+	return (*directory.Client)(base.NewPathClient(dirURL, blobURL, fs.containerClient().NewBlockBlobClient(directoryPath), fs.generatedFSClientWithDFS().InternalClient().WithClientName(exported.ModuleName), fs.sharedKey(), fs.identityCredential(), fs.getClientOptions()))
 }
 
 // NewFileClient creates a new file.Client object by concatenating file path to the end of this Client's URL.
 // The new file.Client uses the same request policy pipeline as the Client.
 func (fs *Client) NewFileClient(filePath string) *file.Client {
 	filePath = strings.ReplaceAll(filePath, "\\", "/")
-	fileURL := runtime.JoinPaths(fs.generatedFSClientWithDFS().Endpoint(), filePath)
+	fileURL := runtime.JoinPaths(fs.generatedFSClientWithDFS().Endpoint(), shared.EscapeSplitPaths(filePath))
 	blobURL, fileURL := shared.GetURLs(fileURL)
-	return (*file.Client)(base.NewPathClient(fileURL, blobURL, fs.containerClient().NewBlockBlobClient(filePath), fs.generatedFSClientWithDFS().InternalClient().WithClientName(shared.FileClient), fs.sharedKey(), fs.identityCredential(), fs.getClientOptions()))
+	return (*file.Client)(base.NewPathClient(fileURL, blobURL, fs.containerClient().NewBlockBlobClient(filePath), fs.generatedFSClientWithDFS().InternalClient().WithClientName(exported.ModuleName), fs.sharedKey(), fs.identityCredential(), fs.getClientOptions()))
 }
 
 // Create creates a new filesystem under the specified account.
@@ -356,7 +357,6 @@ func (fs *Client) GetSASURL(permissions sas.FileSystemPermissions, expiry time.T
 	}
 	qps, err := sas.DatalakeSignatureValues{
 		Version:        sas.Version,
-		Protocol:       sas.ProtocolHTTPS,
 		FileSystemName: urlParts.FileSystemName,
 		Permissions:    permissions.String(),
 		StartTime:      st,
@@ -370,4 +370,22 @@ func (fs *Client) GetSASURL(permissions sas.FileSystemPermissions, expiry time.T
 	endpoint := fs.BlobURL() + "?" + qps.Encode()
 
 	return endpoint, nil
+}
+
+// CreateFile Creates a new file within a file system.
+// For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
+func (fs *Client) CreateFile(ctx context.Context, filePath string, options *CreateFileOptions) (CreateFileResponse, error) {
+	fileClient := fs.NewFileClient(filePath)
+	resp, err := fileClient.Create(ctx, options)
+	err = exported.ConvertToDFSError(err)
+	return resp, err
+}
+
+// CreateDirectory Creates a new directory within a file system.
+// For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
+func (fs *Client) CreateDirectory(ctx context.Context, filePath string, options *CreateDirectoryOptions) (CreateDirectoryResponse, error) {
+	dirClient := fs.NewDirectoryClient(filePath)
+	resp, err := dirClient.Create(ctx, options)
+	err = exported.ConvertToDFSError(err)
+	return resp, err
 }

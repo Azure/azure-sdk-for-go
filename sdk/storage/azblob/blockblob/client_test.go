@@ -5742,7 +5742,6 @@ func TestUploadLogEvent(t *testing.T) {
 	listnercalled := false
 	log.SetEvents(azblob.EventUpload, log.EventRequest, log.EventResponse)
 	log.SetListener(func(cls log.Event, msg string) {
-		t.Logf("%s: %s\n", cls, msg)
 		if cls == azblob.EventUpload {
 			listnercalled = true
 			require.Equal(t, msg, "blob name path1/path2 actual size 270000000 block-size 4194304 block-count 65")
@@ -5795,7 +5794,6 @@ func TestRequestIDGeneration(t *testing.T) {
 	requestIdMatch := false
 	log.SetEvents(log.EventRequest)
 	log.SetListener(func(cls log.Event, msg string) {
-		t.Logf("%s: %s\n", cls, msg)
 		require.Contains(t, msg, "X-Ms-Client-Request-Id: azblob-test-request-id")
 		require.Contains(t, msg, "User-Agent: testApp/1.0.0-preview.2")
 		requestIdMatch = true
@@ -5868,4 +5866,150 @@ func TestServiceVersion(t *testing.T) {
 
 	_, err = client.Upload(context.Background(), streaming.NopCloser(r), nil)
 	require.NoError(t, err)
+}
+
+func (s *BlockBlobRecordedTestsSuite) TestBlockBlobClientDefaultAudience() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := testcommon.GenerateBlobName(testName)
+	blobURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s/%s", accountName, containerName, blobName)
+
+	options := &blockblob.ClientOptions{
+		Audience: "https://storage.azure.com/",
+	}
+	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
+	bbClientAudience, err := blockblob.NewClient(blobURL, cred, options)
+	_require.NoError(err)
+
+	contentSize := 4 * 1024 // 4 KB
+	r, _ := testcommon.GetDataAndReader(testName, contentSize)
+	rsc := streaming.NopCloser(r)
+
+	_, err = bbClientAudience.Upload(context.Background(), rsc, nil)
+	_require.NoError(err)
+
+	_, err = bbClientAudience.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+}
+
+func (s *BlockBlobRecordedTestsSuite) TestBlockBlobClientCustomAudience() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := testcommon.GenerateBlobName(testName)
+	blobURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s/%s", accountName, containerName, blobName)
+
+	options := &blockblob.ClientOptions{
+		Audience: "https://" + accountName + ".blob.core.windows.net",
+	}
+	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
+	bbClientAudience, err := blockblob.NewClient(blobURL, cred, options)
+	_require.NoError(err)
+
+	contentSize := 4 * 1024 // 4 KB
+	r, _ := testcommon.GetDataAndReader(testName, contentSize)
+	rsc := streaming.NopCloser(r)
+
+	_, err = bbClientAudience.Upload(context.Background(), rsc, nil)
+	_require.NoError(err)
+
+	_, err = bbClientAudience.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+}
+
+func (s *BlockBlobUnrecordedTestsSuite) TestBlockBlobClientUploadDownloadFile() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, testcommon.GenerateContainerName(testName), svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	bbClient := containerClient.NewBlockBlobClient(testcommon.GenerateBlobName(testName))
+
+	// create local file
+	var fileSize int64 = 401 * 1024 * 1024
+	content := make([]byte, fileSize)
+	_, err = rand.Read(content)
+	_require.NoError(err)
+	err = os.WriteFile("testFile", content, 0644)
+	_require.NoError(err)
+
+	defer func() {
+		err = os.Remove("testFile")
+		_require.NoError(err)
+	}()
+
+	fh, err := os.Open("testFile")
+	_require.NoError(err)
+
+	defer func(fh *os.File) {
+		err := fh.Close()
+		_require.NoError(err)
+	}(fh)
+
+	srcHash := md5.New()
+	_, err = io.Copy(srcHash, fh)
+	_require.NoError(err)
+	contentMD5 := srcHash.Sum(nil)
+
+	_, err = bbClient.UploadFile(context.Background(), fh, &blockblob.UploadFileOptions{
+		Concurrency: 5,
+		BlockSize:   4 * 1024 * 1024,
+	})
+	_require.NoError(err)
+
+	// download to a temp file and verify contents
+	tmp, err := os.CreateTemp("", "")
+	_require.NoError(err)
+	defer tmp.Close()
+
+	n, err := bbClient.DownloadFile(context.Background(), tmp, &blob.DownloadFileOptions{BlockSize: 4 * 1024 * 1024})
+	_require.NoError(err)
+	_require.Equal(fileSize, n)
+
+	stat, err := tmp.Stat()
+	_require.NoError(err)
+	_require.Equal(fileSize, stat.Size())
+
+	destHash := md5.New()
+	_, err = io.Copy(destHash, tmp)
+	_require.NoError(err)
+	downloadedContentMD5 := destHash.Sum(nil)
+
+	_require.EqualValues(contentMD5, downloadedContentMD5)
+
+	gResp, err := bbClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(gResp.ContentLength)
+	_require.Equal(fileSize, *gResp.ContentLength)
 }

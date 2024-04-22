@@ -18,8 +18,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e716082ac474f182e2220e4f38f1d6191e7636cf/specification/security/resource-manager/Microsoft.Security/stable/2023-01-01/examples/Pricings/ListPricings_example.json
-func ExamplePricingsClient_List() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b43974e07d3204c4b6f8396627f5430994a7f7c9/specification/security/resource-manager/Microsoft.Security/stable/2024-01-01/examples/Pricings/GetResourcePricingByNameVirtualMachines_example.json
+func ExamplePricingsClient_Get_getPricingsOnResourceVirtualMachinesPlan() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,602 @@ func ExamplePricingsClient_List() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewPricingsClient().List(ctx, nil)
+	res, err := clientFactory.NewPricingsClient().Get(ctx, "subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/DEMO/providers/Microsoft.Compute/virtualMachines/VM-1", "VirtualMachines", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Pricing = armsecurity.Pricing{
+	// 	Name: to.Ptr("VirtualMachines"),
+	// 	Type: to.Ptr("Microsoft.Security/pricings"),
+	// 	ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/DEMO/providers/Microsoft.Compute/virtualMachines/VM-1/providers/Microsoft.Security/pricings/VirtualMachines"),
+	// 	Properties: &armsecurity.PricingProperties{
+	// 		EnablementTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T12:42:42.192Z"); return t}()),
+	// 		FreeTrialRemainingTime: to.Ptr("PT0S"),
+	// 		Inherited: to.Ptr(armsecurity.InheritedTrue),
+	// 		InheritedFrom: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23"),
+	// 		PricingTier: to.Ptr(armsecurity.PricingTierStandard),
+	// 		SubPlan: to.Ptr("P2"),
+	// 		Extensions: []*armsecurity.Extension{
+	// 			{
+	// 				Name: to.Ptr("AgentlessVmScanning"),
+	// 				AdditionalExtensionProperties: map[string]any{
+	// 					"ExclusionTags": "[{\"Key\":\"TestKey1\",\"Value\":\"TestValue1\"},{\"Key\":\"TestKey2\",\"Value\":\"TestValue2\"}]",
+	// 				},
+	// 				IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
+	// 			},
+	// 			{
+	// 				Name: to.Ptr("MdeDesignatedSubscription"),
+	// 				IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
+	// 		}},
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b43974e07d3204c4b6f8396627f5430994a7f7c9/specification/security/resource-manager/Microsoft.Security/stable/2024-01-01/examples/Pricings/GetPricingByNameCloudPosture_example.json
+func ExamplePricingsClient_Get_getPricingsOnSubscriptionCloudPosturePlan() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsecurity.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewPricingsClient().Get(ctx, "subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23", "CloudPosture", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Pricing = armsecurity.Pricing{
+	// 	Name: to.Ptr("CloudPosture"),
+	// 	Type: to.Ptr("Microsoft.Security/pricings"),
+	// 	ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/providers/Microsoft.Security/pricings/CloudPosture"),
+	// 	Properties: &armsecurity.PricingProperties{
+	// 		EnablementTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T12:42:42.192Z"); return t}()),
+	// 		Enforce: to.Ptr(armsecurity.EnforceFalse),
+	// 		FreeTrialRemainingTime: to.Ptr("PT0S"),
+	// 		PricingTier: to.Ptr(armsecurity.PricingTierStandard),
+	// 		ResourcesCoverageStatus: to.Ptr(armsecurity.ResourcesCoverageStatusFullyCovered),
+	// 		Extensions: []*armsecurity.Extension{
+	// 			{
+	// 				Name: to.Ptr("AgentlessVmScanning"),
+	// 				AdditionalExtensionProperties: map[string]any{
+	// 					"ExclusionTags": "[]",
+	// 				},
+	// 				IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
+	// 			},
+	// 			{
+	// 				Name: to.Ptr("AgentlessDiscoveryForKubernetes"),
+	// 				IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
+	// 			},
+	// 			{
+	// 				Name: to.Ptr("SensitiveDataDiscovery"),
+	// 				IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
+	// 			},
+	// 			{
+	// 				Name: to.Ptr("ContainerRegistriesVulnerabilityAssessments"),
+	// 				IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
+	// 			},
+	// 			{
+	// 				Name: to.Ptr("EntraPermissionsManagement"),
+	// 				IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
+	// 		}},
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b43974e07d3204c4b6f8396627f5430994a7f7c9/specification/security/resource-manager/Microsoft.Security/stable/2024-01-01/examples/Pricings/GetPricingByNameContainers_example.json
+func ExamplePricingsClient_Get_getPricingsOnSubscriptionContainersPlan() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsecurity.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewPricingsClient().Get(ctx, "subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23", "Containers", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Pricing = armsecurity.Pricing{
+	// 	Name: to.Ptr("Containers"),
+	// 	Type: to.Ptr("Microsoft.Security/pricings"),
+	// 	ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/providers/Microsoft.Security/pricings/Containers"),
+	// 	Properties: &armsecurity.PricingProperties{
+	// 		EnablementTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T12:42:42.192Z"); return t}()),
+	// 		Enforce: to.Ptr(armsecurity.EnforceFalse),
+	// 		FreeTrialRemainingTime: to.Ptr("PT0S"),
+	// 		PricingTier: to.Ptr(armsecurity.PricingTierStandard),
+	// 		ResourcesCoverageStatus: to.Ptr(armsecurity.ResourcesCoverageStatusFullyCovered),
+	// 		Extensions: []*armsecurity.Extension{
+	// 			{
+	// 				Name: to.Ptr("ContainerRegistriesVulnerabilityAssessments"),
+	// 				IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
+	// 		}},
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b43974e07d3204c4b6f8396627f5430994a7f7c9/specification/security/resource-manager/Microsoft.Security/stable/2024-01-01/examples/Pricings/GetPricingByNameDns_example.json
+func ExamplePricingsClient_Get_getPricingsOnSubscriptionDnsPlan() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsecurity.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewPricingsClient().Get(ctx, "subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23", "Dns", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Pricing = armsecurity.Pricing{
+	// 	Name: to.Ptr("Dns"),
+	// 	Type: to.Ptr("Microsoft.Security/pricings"),
+	// 	ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/providers/Microsoft.Security/pricings/Dns"),
+	// 	Properties: &armsecurity.PricingProperties{
+	// 		Deprecated: to.Ptr(true),
+	// 		EnablementTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T12:42:42.192Z"); return t}()),
+	// 		Enforce: to.Ptr(armsecurity.EnforceFalse),
+	// 		FreeTrialRemainingTime: to.Ptr("PT0S"),
+	// 		PricingTier: to.Ptr(armsecurity.PricingTierStandard),
+	// 		ReplacedBy: []*string{
+	// 			to.Ptr("VirtualMachines")},
+	// 			ResourcesCoverageStatus: to.Ptr(armsecurity.ResourcesCoverageStatusFullyCovered),
+	// 		},
+	// 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b43974e07d3204c4b6f8396627f5430994a7f7c9/specification/security/resource-manager/Microsoft.Security/stable/2024-01-01/examples/Pricings/GetPricingByNameStorageAccounts_example.json
+func ExamplePricingsClient_Get_getPricingsOnSubscriptionStorageAccountsPlan() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsecurity.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewPricingsClient().Get(ctx, "subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23", "StorageAccounts", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Pricing = armsecurity.Pricing{
+	// 	Name: to.Ptr("StorageAccounts"),
+	// 	Type: to.Ptr("Microsoft.Security/pricings"),
+	// 	ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/providers/Microsoft.Security/pricings/StorageAccounts"),
+	// 	Properties: &armsecurity.PricingProperties{
+	// 		EnablementTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T12:42:42.192Z"); return t}()),
+	// 		Enforce: to.Ptr(armsecurity.EnforceFalse),
+	// 		FreeTrialRemainingTime: to.Ptr("PT0S"),
+	// 		PricingTier: to.Ptr(armsecurity.PricingTierStandard),
+	// 		ResourcesCoverageStatus: to.Ptr(armsecurity.ResourcesCoverageStatusFullyCovered),
+	// 		SubPlan: to.Ptr("PerStorageAccount"),
+	// 		Extensions: []*armsecurity.Extension{
+	// 			{
+	// 				Name: to.Ptr("OnUploadMalwareScanning"),
+	// 				AdditionalExtensionProperties: map[string]any{
+	// 					"capGBPerMonthPerStorageAccount": float64(10),
+	// 				},
+	// 				IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
+	// 			},
+	// 			{
+	// 				Name: to.Ptr("SensitiveDataDiscovery"),
+	// 				IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
+	// 		}},
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b43974e07d3204c4b6f8396627f5430994a7f7c9/specification/security/resource-manager/Microsoft.Security/stable/2024-01-01/examples/Pricings/GetPricingByNameVirtualMachines_example.json
+func ExamplePricingsClient_Get_getPricingsOnSubscriptionVirtualMachinesPlan() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsecurity.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewPricingsClient().Get(ctx, "subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23", "VirtualMachines", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Pricing = armsecurity.Pricing{
+	// 	Name: to.Ptr("VirtualMachines"),
+	// 	Type: to.Ptr("Microsoft.Security/pricings"),
+	// 	ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/providers/Microsoft.Security/pricings/VirtualMachines"),
+	// 	Properties: &armsecurity.PricingProperties{
+	// 		EnablementTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T12:42:42.192Z"); return t}()),
+	// 		Enforce: to.Ptr(armsecurity.EnforceFalse),
+	// 		FreeTrialRemainingTime: to.Ptr("PT0S"),
+	// 		PricingTier: to.Ptr(armsecurity.PricingTierStandard),
+	// 		ResourcesCoverageStatus: to.Ptr(armsecurity.ResourcesCoverageStatusPartiallyCovered),
+	// 		SubPlan: to.Ptr("P2"),
+	// 		Extensions: []*armsecurity.Extension{
+	// 			{
+	// 				Name: to.Ptr("AgentlessVmScanning"),
+	// 				AdditionalExtensionProperties: map[string]any{
+	// 					"ExclusionTags": "[{\"Key\":\"TestKey1\",\"Value\":\"TestValue1\"},{\"Key\":\"TestKey2\",\"Value\":\"TestValue2\"}]",
+	// 				},
+	// 				IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
+	// 			},
+	// 			{
+	// 				Name: to.Ptr("MdeDesignatedSubscription"),
+	// 				IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
+	// 		}},
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b43974e07d3204c4b6f8396627f5430994a7f7c9/specification/security/resource-manager/Microsoft.Security/stable/2024-01-01/examples/Pricings/PutResourcePricingByNameVirtualMachines_example.json
+func ExamplePricingsClient_Update_updatePricingOnResourceExampleForVirtualMachinesPlan() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsecurity.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewPricingsClient().Update(ctx, "subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/DEMO/providers/Microsoft.Compute/virtualMachines/VM-1", "virtualMachines", armsecurity.Pricing{
+		Properties: &armsecurity.PricingProperties{
+			PricingTier: to.Ptr(armsecurity.PricingTierStandard),
+			SubPlan:     to.Ptr("P1"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Pricing = armsecurity.Pricing{
+	// 	Name: to.Ptr("virtualMachines"),
+	// 	Type: to.Ptr("Microsoft.Security/pricings"),
+	// 	ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/DEMO/providers/Microsoft.Compute/virtualMachines/VM-1/providers/Microsoft.Security/pricings/virtualMachines"),
+	// 	Properties: &armsecurity.PricingProperties{
+	// 		EnablementTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T12:42:42.192Z"); return t}()),
+	// 		FreeTrialRemainingTime: to.Ptr("PT0S"),
+	// 		Inherited: to.Ptr(armsecurity.InheritedFalse),
+	// 		PricingTier: to.Ptr(armsecurity.PricingTierStandard),
+	// 		SubPlan: to.Ptr("P1"),
+	// 		Extensions: []*armsecurity.Extension{
+	// 			{
+	// 				Name: to.Ptr("MdeDesignatedSubscription"),
+	// 				IsEnabled: to.Ptr(armsecurity.IsEnabledFalse),
+	// 			},
+	// 			{
+	// 				Name: to.Ptr("AgentlessVmScanning"),
+	// 				AdditionalExtensionProperties: map[string]any{
+	// 					"ExclusionTags": "[{\"Key\":\"TestKey1\",\"Value\":\"TestValue1\"},{\"Key\":\"TestKey2\",\"Value\":\"TestValue2\"}]",
+	// 				},
+	// 				IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
+	// 		}},
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b43974e07d3204c4b6f8396627f5430994a7f7c9/specification/security/resource-manager/Microsoft.Security/stable/2024-01-01/examples/Pricings/PutPricingByName_example.json
+func ExamplePricingsClient_Update_updatePricingOnSubscriptionExampleForCloudPosturePlan() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsecurity.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewPricingsClient().Update(ctx, "subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23", "CloudPosture", armsecurity.Pricing{
+		Properties: &armsecurity.PricingProperties{
+			PricingTier: to.Ptr(armsecurity.PricingTierStandard),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Pricing = armsecurity.Pricing{
+	// 	Name: to.Ptr("CloudPosture"),
+	// 	Type: to.Ptr("Microsoft.Security/pricings"),
+	// 	ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/providers/Microsoft.Security/pricings/CloudPosture"),
+	// 	Properties: &armsecurity.PricingProperties{
+	// 		EnablementTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T12:42:42.192Z"); return t}()),
+	// 		Enforce: to.Ptr(armsecurity.EnforceFalse),
+	// 		FreeTrialRemainingTime: to.Ptr("PT0S"),
+	// 		PricingTier: to.Ptr(armsecurity.PricingTierStandard),
+	// 		ResourcesCoverageStatus: to.Ptr(armsecurity.ResourcesCoverageStatusFullyCovered),
+	// 		Extensions: []*armsecurity.Extension{
+	// 			{
+	// 				Name: to.Ptr("AgentlessVmScanning"),
+	// 				IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
+	// 				OperationStatus: &armsecurity.OperationStatusAutoGenerated{
+	// 					Code: to.Ptr(armsecurity.CodeSucceeded),
+	// 					Message: to.Ptr("Successfully enabled extension"),
+	// 				},
+	// 			},
+	// 			{
+	// 				Name: to.Ptr("AgentlessDiscoveryForKubernetes"),
+	// 				IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
+	// 				OperationStatus: &armsecurity.OperationStatusAutoGenerated{
+	// 					Code: to.Ptr(armsecurity.CodeSucceeded),
+	// 					Message: to.Ptr("Successfully enabled extension"),
+	// 				},
+	// 			},
+	// 			{
+	// 				Name: to.Ptr("SensitiveDataDiscovery"),
+	// 				IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
+	// 				OperationStatus: &armsecurity.OperationStatusAutoGenerated{
+	// 					Code: to.Ptr(armsecurity.CodeSucceeded),
+	// 					Message: to.Ptr("Successfully enabled extension"),
+	// 				},
+	// 			},
+	// 			{
+	// 				Name: to.Ptr("ContainerRegistriesVulnerabilityAssessments"),
+	// 				IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
+	// 				OperationStatus: &armsecurity.OperationStatusAutoGenerated{
+	// 					Code: to.Ptr(armsecurity.CodeSucceeded),
+	// 					Message: to.Ptr("Successfully enabled extension"),
+	// 				},
+	// 			},
+	// 			{
+	// 				Name: to.Ptr("EntraPermissionsManagement"),
+	// 				IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
+	// 				OperationStatus: &armsecurity.OperationStatusAutoGenerated{
+	// 					Code: to.Ptr(armsecurity.CodeSucceeded),
+	// 					Message: to.Ptr("Successfully enabled extension"),
+	// 				},
+	// 		}},
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b43974e07d3204c4b6f8396627f5430994a7f7c9/specification/security/resource-manager/Microsoft.Security/stable/2024-01-01/examples/Pricings/PutPricingByNamePartialSuccess_example.json
+func ExamplePricingsClient_Update_updatePricingOnSubscriptionExampleForCloudPosturePlanPartialSuccess() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsecurity.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewPricingsClient().Update(ctx, "subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23", "CloudPosture", armsecurity.Pricing{
+		Properties: &armsecurity.PricingProperties{
+			PricingTier: to.Ptr(armsecurity.PricingTierStandard),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Pricing = armsecurity.Pricing{
+	// 	Name: to.Ptr("CloudPosture"),
+	// 	Type: to.Ptr("Microsoft.Security/pricings"),
+	// 	ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/providers/Microsoft.Security/pricings/CloudPosture"),
+	// 	Properties: &armsecurity.PricingProperties{
+	// 		EnablementTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T12:42:42.192Z"); return t}()),
+	// 		Enforce: to.Ptr(armsecurity.EnforceFalse),
+	// 		FreeTrialRemainingTime: to.Ptr("PT0S"),
+	// 		PricingTier: to.Ptr(armsecurity.PricingTierStandard),
+	// 		ResourcesCoverageStatus: to.Ptr(armsecurity.ResourcesCoverageStatusFullyCovered),
+	// 		Extensions: []*armsecurity.Extension{
+	// 			{
+	// 				Name: to.Ptr("AgentlessVmScanning"),
+	// 				IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
+	// 				OperationStatus: &armsecurity.OperationStatusAutoGenerated{
+	// 					Code: to.Ptr(armsecurity.CodeFailed),
+	// 					Message: to.Ptr("Failed find dedicated first party application client ID for extension"),
+	// 				},
+	// 			},
+	// 			{
+	// 				Name: to.Ptr("AgentlessDiscoveryForKubernetes"),
+	// 				IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
+	// 				OperationStatus: &armsecurity.OperationStatusAutoGenerated{
+	// 					Code: to.Ptr(armsecurity.CodeFailed),
+	// 					Message: to.Ptr("Failed assigning roles {d5a2ae44-610b-4500-93be-660a0c5f5ca6} to {identityName} for plan"),
+	// 				},
+	// 			},
+	// 			{
+	// 				Name: to.Ptr("SensitiveDataDiscovery"),
+	// 				IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
+	// 				OperationStatus: &armsecurity.OperationStatusAutoGenerated{
+	// 					Code: to.Ptr(armsecurity.CodeFailed),
+	// 					Message: to.Ptr("Failed assigning roles {f58310d9-a9f6-439a-9e8d-f62e7b41a168} to {identityName} for plan"),
+	// 				},
+	// 			},
+	// 			{
+	// 				Name: to.Ptr("ContainerRegistriesVulnerabilityAssessments"),
+	// 				IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
+	// 				OperationStatus: &armsecurity.OperationStatusAutoGenerated{
+	// 					Code: to.Ptr(armsecurity.CodeSucceeded),
+	// 					Message: to.Ptr("Successfully enabled extension"),
+	// 				},
+	// 			},
+	// 			{
+	// 				Name: to.Ptr("EntraPermissionsManagement"),
+	// 				IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
+	// 				OperationStatus: &armsecurity.OperationStatusAutoGenerated{
+	// 					Code: to.Ptr(armsecurity.CodeSucceeded),
+	// 					Message: to.Ptr("Successfully enabled extension"),
+	// 				},
+	// 		}},
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b43974e07d3204c4b6f8396627f5430994a7f7c9/specification/security/resource-manager/Microsoft.Security/stable/2024-01-01/examples/Pricings/PutPricingVMsByName_example.json
+func ExamplePricingsClient_Update_updatePricingOnSubscriptionExampleForVirtualMachinesPlan() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsecurity.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewPricingsClient().Update(ctx, "subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23", "VirtualMachines", armsecurity.Pricing{
+		Properties: &armsecurity.PricingProperties{
+			Enforce:     to.Ptr(armsecurity.EnforceTrue),
+			PricingTier: to.Ptr(armsecurity.PricingTierStandard),
+			SubPlan:     to.Ptr("P2"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Pricing = armsecurity.Pricing{
+	// 	Name: to.Ptr("VirtualMachines"),
+	// 	Type: to.Ptr("Microsoft.Security/pricings"),
+	// 	ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/providers/Microsoft.Security/pricings/VirtualMachines"),
+	// 	Properties: &armsecurity.PricingProperties{
+	// 		EnablementTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T12:42:42.192Z"); return t}()),
+	// 		Enforce: to.Ptr(armsecurity.EnforceTrue),
+	// 		FreeTrialRemainingTime: to.Ptr("PT0S"),
+	// 		PricingTier: to.Ptr(armsecurity.PricingTierStandard),
+	// 		ResourcesCoverageStatus: to.Ptr(armsecurity.ResourcesCoverageStatusFullyCovered),
+	// 		SubPlan: to.Ptr("P2"),
+	// 		Extensions: []*armsecurity.Extension{
+	// 			{
+	// 				Name: to.Ptr("MdeDesignatedSubscription"),
+	// 				IsEnabled: to.Ptr(armsecurity.IsEnabledFalse),
+	// 			},
+	// 			{
+	// 				Name: to.Ptr("AgentlessVmScanning"),
+	// 				AdditionalExtensionProperties: map[string]any{
+	// 					"ExclusionTags": "[{\"Key\":\"TestKey1\",\"Value\":\"TestValue1\"},{\"Key\":\"TestKey2\",\"Value\":\"TestValue2\"}]",
+	// 				},
+	// 				IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
+	// 				OperationStatus: &armsecurity.OperationStatusAutoGenerated{
+	// 					Code: to.Ptr(armsecurity.CodeSucceeded),
+	// 					Message: to.Ptr("Successfully enabled extension"),
+	// 				},
+	// 		}},
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b43974e07d3204c4b6f8396627f5430994a7f7c9/specification/security/resource-manager/Microsoft.Security/stable/2024-01-01/examples/Pricings/DeleteResourcePricing_example.json
+func ExamplePricingsClient_Delete() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsecurity.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	_, err = clientFactory.NewPricingsClient().Delete(ctx, "subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/DEMO/providers/Microsoft.Compute/virtualMachines/VM-1", "VirtualMachines", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b43974e07d3204c4b6f8396627f5430994a7f7c9/specification/security/resource-manager/Microsoft.Security/stable/2024-01-01/examples/Pricings/ListResourcePricings_example.json
+func ExamplePricingsClient_List_getPricingsOnResource() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsecurity.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewPricingsClient().List(ctx, "subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/DEMO/providers/Microsoft.Compute/virtualMachines/VM-1", &armsecurity.PricingsClientListOptions{Filter: nil})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.PricingList = armsecurity.PricingList{
+	// 	Value: []*armsecurity.Pricing{
+	// 		{
+	// 			Name: to.Ptr("VirtualMachines"),
+	// 			Type: to.Ptr("Microsoft.Security/pricings"),
+	// 			ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/DEMO/providers/Microsoft.Compute/virtualMachines/VM-1/providers/Microsoft.Security/pricings/VirtualMachines"),
+	// 			Properties: &armsecurity.PricingProperties{
+	// 				EnablementTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T12:42:42.192Z"); return t}()),
+	// 				FreeTrialRemainingTime: to.Ptr("PT0S"),
+	// 				Inherited: to.Ptr(armsecurity.InheritedTrue),
+	// 				InheritedFrom: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23"),
+	// 				PricingTier: to.Ptr(armsecurity.PricingTierStandard),
+	// 				SubPlan: to.Ptr("P2"),
+	// 				Extensions: []*armsecurity.Extension{
+	// 					{
+	// 						Name: to.Ptr("AgentlessVmScanning"),
+	// 						AdditionalExtensionProperties: map[string]any{
+	// 							"ExclusionTags": "[{\"Key\":\"TestKey1\",\"Value\":\"TestValue1\"},{\"Key\":\"TestKey2\",\"Value\":\"TestValue2\"}]",
+	// 						},
+	// 						IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
+	// 					},
+	// 					{
+	// 						Name: to.Ptr("MdeDesignatedSubscription"),
+	// 						IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
+	// 				}},
+	// 			},
+	// 		},
+	// 		{
+	// 			Name: to.Ptr("CloudPosture"),
+	// 			Type: to.Ptr("Microsoft.Security/pricings"),
+	// 			ID: to.Ptr("/subscriptions/d34fd44c-ebfa-4a9c-bceb-9eeafe72ac15/resourceGroups/DEMO/providers/Microsoft.Compute/virtualMachines/VM-1/providers/Microsoft.Security/pricings/CloudPosture"),
+	// 			Properties: &armsecurity.PricingProperties{
+	// 				Inherited: to.Ptr(armsecurity.InheritedFalse),
+	// 				PricingTier: to.Ptr(armsecurity.PricingTierFree),
+	// 			},
+	// 	}},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b43974e07d3204c4b6f8396627f5430994a7f7c9/specification/security/resource-manager/Microsoft.Security/stable/2024-01-01/examples/Pricings/ListPricings_example.json
+func ExamplePricingsClient_List_getPricingsOnSubscription() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsecurity.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewPricingsClient().List(ctx, "subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23", &armsecurity.PricingsClientListOptions{Filter: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -44,12 +639,21 @@ func ExamplePricingsClient_List() {
 	// 			ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/providers/Microsoft.Security/pricings/VirtualMachines"),
 	// 			Properties: &armsecurity.PricingProperties{
 	// 				EnablementTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T12:42:42.192Z"); return t}()),
+	// 				Enforce: to.Ptr(armsecurity.EnforceFalse),
 	// 				FreeTrialRemainingTime: to.Ptr("PT0S"),
 	// 				PricingTier: to.Ptr(armsecurity.PricingTierStandard),
+	// 				ResourcesCoverageStatus: to.Ptr(armsecurity.ResourcesCoverageStatusPartiallyCovered),
 	// 				SubPlan: to.Ptr("P2"),
 	// 				Extensions: []*armsecurity.Extension{
 	// 					{
 	// 						Name: to.Ptr("AgentlessVmScanning"),
+	// 						AdditionalExtensionProperties: map[string]any{
+	// 							"ExclusionTags": "[{\"Key\":\"TestKey1\",\"Value\":\"TestValue1\"},{\"Key\":\"TestKey2\",\"Value\":\"TestValue2\"}]",
+	// 						},
+	// 						IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
+	// 					},
+	// 					{
+	// 						Name: to.Ptr("MdeDesignatedSubscription"),
 	// 						IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
 	// 				}},
 	// 			},
@@ -60,8 +664,10 @@ func ExamplePricingsClient_List() {
 	// 			ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/providers/Microsoft.Security/pricings/SqlServers"),
 	// 			Properties: &armsecurity.PricingProperties{
 	// 				EnablementTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T12:42:42.192Z"); return t}()),
+	// 				Enforce: to.Ptr(armsecurity.EnforceFalse),
 	// 				FreeTrialRemainingTime: to.Ptr("PT0S"),
 	// 				PricingTier: to.Ptr(armsecurity.PricingTierStandard),
+	// 				ResourcesCoverageStatus: to.Ptr(armsecurity.ResourcesCoverageStatusFullyCovered),
 	// 			},
 	// 		},
 	// 		{
@@ -69,8 +675,10 @@ func ExamplePricingsClient_List() {
 	// 			Type: to.Ptr("Microsoft.Security/pricings"),
 	// 			ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/providers/Microsoft.Security/pricings/AppServices"),
 	// 			Properties: &armsecurity.PricingProperties{
+	// 				Enforce: to.Ptr(armsecurity.EnforceFalse),
 	// 				FreeTrialRemainingTime: to.Ptr("PT0S"),
 	// 				PricingTier: to.Ptr(armsecurity.PricingTierFree),
+	// 				ResourcesCoverageStatus: to.Ptr(armsecurity.ResourcesCoverageStatusNotCovered),
 	// 			},
 	// 		},
 	// 		{
@@ -79,9 +687,11 @@ func ExamplePricingsClient_List() {
 	// 			ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/providers/Microsoft.Security/pricings/StorageAccounts"),
 	// 			Properties: &armsecurity.PricingProperties{
 	// 				EnablementTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T12:42:42.192Z"); return t}()),
+	// 				Enforce: to.Ptr(armsecurity.EnforceFalse),
 	// 				FreeTrialRemainingTime: to.Ptr("PT0S"),
 	// 				PricingTier: to.Ptr(armsecurity.PricingTierStandard),
-	// 				SubPlan: to.Ptr("PerStorageAccount"),
+	// 				ResourcesCoverageStatus: to.Ptr(armsecurity.ResourcesCoverageStatusFullyCovered),
+	// 				SubPlan: to.Ptr("DefenderForStorageV2"),
 	// 				Extensions: []*armsecurity.Extension{
 	// 					{
 	// 						Name: to.Ptr("OnUploadMalwareScanning"),
@@ -102,8 +712,10 @@ func ExamplePricingsClient_List() {
 	// 			ID: to.Ptr("/subscriptions/d34fd44c-ebfa-4a9c-bceb-9eeafe72ac15/providers/Microsoft.Security/pricings/SqlServerVirtualMachines"),
 	// 			Properties: &armsecurity.PricingProperties{
 	// 				EnablementTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T12:42:42.192Z"); return t}()),
+	// 				Enforce: to.Ptr(armsecurity.EnforceFalse),
 	// 				FreeTrialRemainingTime: to.Ptr("PT0S"),
 	// 				PricingTier: to.Ptr(armsecurity.PricingTierStandard),
+	// 				ResourcesCoverageStatus: to.Ptr(armsecurity.ResourcesCoverageStatusFullyCovered),
 	// 			},
 	// 		},
 	// 		{
@@ -112,10 +724,12 @@ func ExamplePricingsClient_List() {
 	// 			ID: to.Ptr("/subscriptions/d34fd44c-ebfa-4a9c-bceb-9eeafe72ac15/providers/Microsoft.Security/pricings/KubernetesService"),
 	// 			Properties: &armsecurity.PricingProperties{
 	// 				Deprecated: to.Ptr(true),
+	// 				Enforce: to.Ptr(armsecurity.EnforceFalse),
 	// 				FreeTrialRemainingTime: to.Ptr("PT0S"),
 	// 				PricingTier: to.Ptr(armsecurity.PricingTierFree),
 	// 				ReplacedBy: []*string{
 	// 					to.Ptr("Containers")},
+	// 					ResourcesCoverageStatus: to.Ptr(armsecurity.ResourcesCoverageStatusNotCovered),
 	// 				},
 	// 			},
 	// 			{
@@ -124,10 +738,12 @@ func ExamplePricingsClient_List() {
 	// 				ID: to.Ptr("/subscriptions/d34fd44c-ebfa-4a9c-bceb-9eeafe72ac15/providers/Microsoft.Security/pricings/ContainerRegistry"),
 	// 				Properties: &armsecurity.PricingProperties{
 	// 					Deprecated: to.Ptr(true),
+	// 					Enforce: to.Ptr(armsecurity.EnforceFalse),
 	// 					FreeTrialRemainingTime: to.Ptr("PT0S"),
 	// 					PricingTier: to.Ptr(armsecurity.PricingTierFree),
 	// 					ReplacedBy: []*string{
 	// 						to.Ptr("Containers")},
+	// 						ResourcesCoverageStatus: to.Ptr(armsecurity.ResourcesCoverageStatusNotCovered),
 	// 					},
 	// 				},
 	// 				{
@@ -136,8 +752,11 @@ func ExamplePricingsClient_List() {
 	// 					ID: to.Ptr("/subscriptions/d34fd44c-ebfa-4a9c-bceb-9eeafe72ac15/providers/Microsoft.Security/pricings/KeyVaults"),
 	// 					Properties: &armsecurity.PricingProperties{
 	// 						EnablementTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T12:42:42.192Z"); return t}()),
+	// 						Enforce: to.Ptr(armsecurity.EnforceFalse),
 	// 						FreeTrialRemainingTime: to.Ptr("PT0S"),
 	// 						PricingTier: to.Ptr(armsecurity.PricingTierStandard),
+	// 						ResourcesCoverageStatus: to.Ptr(armsecurity.ResourcesCoverageStatusFullyCovered),
+	// 						SubPlan: to.Ptr("PerKeyVault"),
 	// 					},
 	// 				},
 	// 				{
@@ -145,77 +764,108 @@ func ExamplePricingsClient_List() {
 	// 					Type: to.Ptr("Microsoft.Security/pricings"),
 	// 					ID: to.Ptr("/subscriptions/d34fd44c-ebfa-4a9c-bceb-9eeafe72ac15/providers/Microsoft.Security/pricings/Dns"),
 	// 					Properties: &armsecurity.PricingProperties{
+	// 						Deprecated: to.Ptr(true),
 	// 						EnablementTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T12:42:42.192Z"); return t}()),
+	// 						Enforce: to.Ptr(armsecurity.EnforceFalse),
 	// 						FreeTrialRemainingTime: to.Ptr("PT0S"),
 	// 						PricingTier: to.Ptr(armsecurity.PricingTierStandard),
+	// 						ReplacedBy: []*string{
+	// 							to.Ptr("VirtualMachines")},
+	// 							ResourcesCoverageStatus: to.Ptr(armsecurity.ResourcesCoverageStatusFullyCovered),
+	// 						},
 	// 					},
-	// 				},
-	// 				{
-	// 					Name: to.Ptr("Arm"),
-	// 					Type: to.Ptr("Microsoft.Security/pricings"),
-	// 					ID: to.Ptr("/subscriptions/d34fd44c-ebfa-4a9c-bceb-9eeafe72ac15/providers/Microsoft.Security/pricings/Arm"),
-	// 					Properties: &armsecurity.PricingProperties{
-	// 						EnablementTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T12:42:42.192Z"); return t}()),
-	// 						FreeTrialRemainingTime: to.Ptr("PT0S"),
-	// 						PricingTier: to.Ptr(armsecurity.PricingTierStandard),
+	// 					{
+	// 						Name: to.Ptr("Arm"),
+	// 						Type: to.Ptr("Microsoft.Security/pricings"),
+	// 						ID: to.Ptr("/subscriptions/d34fd44c-ebfa-4a9c-bceb-9eeafe72ac15/providers/Microsoft.Security/pricings/Arm"),
+	// 						Properties: &armsecurity.PricingProperties{
+	// 							EnablementTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T12:42:42.192Z"); return t}()),
+	// 							Enforce: to.Ptr(armsecurity.EnforceFalse),
+	// 							FreeTrialRemainingTime: to.Ptr("PT0S"),
+	// 							PricingTier: to.Ptr(armsecurity.PricingTierStandard),
+	// 							ResourcesCoverageStatus: to.Ptr(armsecurity.ResourcesCoverageStatusFullyCovered),
+	// 							SubPlan: to.Ptr("PerSubscription"),
+	// 						},
 	// 					},
-	// 				},
-	// 				{
-	// 					Name: to.Ptr("OpenSourceRelationalDatabases"),
-	// 					Type: to.Ptr("Microsoft.Security/pricings"),
-	// 					ID: to.Ptr("/subscriptions/d34fd44c-ebfa-4a9c-bceb-9eeafe72ac15/providers/Microsoft.Security/pricings/OpenSourceRelationalDatabases"),
-	// 					Properties: &armsecurity.PricingProperties{
-	// 						FreeTrialRemainingTime: to.Ptr("PT0S"),
-	// 						PricingTier: to.Ptr(armsecurity.PricingTierFree),
+	// 					{
+	// 						Name: to.Ptr("OpenSourceRelationalDatabases"),
+	// 						Type: to.Ptr("Microsoft.Security/pricings"),
+	// 						ID: to.Ptr("/subscriptions/d34fd44c-ebfa-4a9c-bceb-9eeafe72ac15/providers/Microsoft.Security/pricings/OpenSourceRelationalDatabases"),
+	// 						Properties: &armsecurity.PricingProperties{
+	// 							Enforce: to.Ptr(armsecurity.EnforceFalse),
+	// 							FreeTrialRemainingTime: to.Ptr("PT0S"),
+	// 							PricingTier: to.Ptr(armsecurity.PricingTierStandard),
+	// 							ResourcesCoverageStatus: to.Ptr(armsecurity.ResourcesCoverageStatusFullyCovered),
+	// 						},
 	// 					},
-	// 				},
-	// 				{
-	// 					Name: to.Ptr("Containers"),
-	// 					Type: to.Ptr("Microsoft.Security/pricings"),
-	// 					ID: to.Ptr("/subscriptions/d34fd44c-ebfa-4a9c-bceb-9eeafe72ac15/providers/Microsoft.Security/pricings/Containers"),
-	// 					Properties: &armsecurity.PricingProperties{
-	// 						EnablementTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T12:42:42.192Z"); return t}()),
-	// 						FreeTrialRemainingTime: to.Ptr("PT0S"),
-	// 						PricingTier: to.Ptr(armsecurity.PricingTierStandard),
-	// 						Extensions: []*armsecurity.Extension{
-	// 							{
-	// 								Name: to.Ptr("ContainerRegistriesVulnerabilityAssessments"),
-	// 								IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
-	// 						}},
+	// 					{
+	// 						Name: to.Ptr("Containers"),
+	// 						Type: to.Ptr("Microsoft.Security/pricings"),
+	// 						ID: to.Ptr("/subscriptions/d34fd44c-ebfa-4a9c-bceb-9eeafe72ac15/providers/Microsoft.Security/pricings/Containers"),
+	// 						Properties: &armsecurity.PricingProperties{
+	// 							EnablementTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T12:42:42.192Z"); return t}()),
+	// 							Enforce: to.Ptr(armsecurity.EnforceFalse),
+	// 							FreeTrialRemainingTime: to.Ptr("PT0S"),
+	// 							PricingTier: to.Ptr(armsecurity.PricingTierStandard),
+	// 							ResourcesCoverageStatus: to.Ptr(armsecurity.ResourcesCoverageStatusFullyCovered),
+	// 							Extensions: []*armsecurity.Extension{
+	// 								{
+	// 									Name: to.Ptr("ContainerRegistriesVulnerabilityAssessments"),
+	// 									IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
+	// 							}},
+	// 						},
 	// 					},
-	// 				},
-	// 				{
-	// 					Name: to.Ptr("CloudPosture"),
-	// 					Type: to.Ptr("Microsoft.Security/pricings"),
-	// 					ID: to.Ptr("/subscriptions/d34fd44c-ebfa-4a9c-bceb-9eeafe72ac15/providers/Microsoft.Security/pricings/CloudPosture"),
-	// 					Properties: &armsecurity.PricingProperties{
-	// 						EnablementTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T12:42:42.192Z"); return t}()),
-	// 						FreeTrialRemainingTime: to.Ptr("PT0S"),
-	// 						PricingTier: to.Ptr(armsecurity.PricingTierStandard),
-	// 						Extensions: []*armsecurity.Extension{
-	// 							{
-	// 								Name: to.Ptr("AgentlessVmScanning"),
-	// 								IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
-	// 							},
-	// 							{
-	// 								Name: to.Ptr("AgentlessDiscoveryForKubernetes"),
-	// 								IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
-	// 							},
-	// 							{
-	// 								Name: to.Ptr("SensitiveDataDiscovery"),
-	// 								IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
-	// 							},
-	// 							{
-	// 								Name: to.Ptr("ContainerRegistriesVulnerabilityAssessments"),
-	// 								IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
-	// 						}},
+	// 					{
+	// 						Name: to.Ptr("CloudPosture"),
+	// 						Type: to.Ptr("Microsoft.Security/pricings"),
+	// 						ID: to.Ptr("/subscriptions/d34fd44c-ebfa-4a9c-bceb-9eeafe72ac15/providers/Microsoft.Security/pricings/CloudPosture"),
+	// 						Properties: &armsecurity.PricingProperties{
+	// 							EnablementTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T12:42:42.192Z"); return t}()),
+	// 							Enforce: to.Ptr(armsecurity.EnforceFalse),
+	// 							FreeTrialRemainingTime: to.Ptr("PT0S"),
+	// 							PricingTier: to.Ptr(armsecurity.PricingTierStandard),
+	// 							ResourcesCoverageStatus: to.Ptr(armsecurity.ResourcesCoverageStatusFullyCovered),
+	// 							Extensions: []*armsecurity.Extension{
+	// 								{
+	// 									Name: to.Ptr("AgentlessVmScanning"),
+	// 									AdditionalExtensionProperties: map[string]any{
+	// 										"ExclusionTags": "[]",
+	// 									},
+	// 									IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
+	// 								},
+	// 								{
+	// 									Name: to.Ptr("AgentlessDiscoveryForKubernetes"),
+	// 									IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
+	// 								},
+	// 								{
+	// 									Name: to.Ptr("SensitiveDataDiscovery"),
+	// 									IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
+	// 								},
+	// 								{
+	// 									Name: to.Ptr("ContainerRegistriesVulnerabilityAssessments"),
+	// 									IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
+	// 								},
+	// 								{
+	// 									Name: to.Ptr("EntraPermissionsManagement"),
+	// 									IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
+	// 							}},
+	// 						},
 	// 					},
-	// 			}},
-	// 		}
+	// 					{
+	// 						Name: to.Ptr("Api"),
+	// 						Type: to.Ptr("Microsoft.Security/pricings"),
+	// 						ID: to.Ptr("subscriptions/d34fd44c-ebfa-4a9c-bceb-9eeafe72ac15/providers/Microsoft.Security/pricings/Api"),
+	// 						Properties: &armsecurity.PricingProperties{
+	// 							FreeTrialRemainingTime: to.Ptr("PT0S"),
+	// 							PricingTier: to.Ptr(armsecurity.PricingTierStandard),
+	// 							SubPlan: to.Ptr("P1"),
+	// 						},
+	// 				}},
+	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e716082ac474f182e2220e4f38f1d6191e7636cf/specification/security/resource-manager/Microsoft.Security/stable/2023-01-01/examples/Pricings/GetPricingByNameCloudPosture_example.json
-func ExamplePricingsClient_Get_getPricingsOnSubscriptionCloudPosturePlan() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b43974e07d3204c4b6f8396627f5430994a7f7c9/specification/security/resource-manager/Microsoft.Security/stable/2024-01-01/examples/Pricings/ListPricingsWithPlanFilter_example.json
+func ExamplePricingsClient_List_getPricingsOnSubscriptionWithPlansFilter() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -225,316 +875,52 @@ func ExamplePricingsClient_Get_getPricingsOnSubscriptionCloudPosturePlan() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewPricingsClient().Get(ctx, "CloudPosture", nil)
+	res, err := clientFactory.NewPricingsClient().List(ctx, "subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23", &armsecurity.PricingsClientListOptions{Filter: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.Pricing = armsecurity.Pricing{
-	// 	Name: to.Ptr("CloudPosture"),
-	// 	Type: to.Ptr("Microsoft.Security/pricings"),
-	// 	ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/providers/Microsoft.Security/pricings/CloudPosture"),
-	// 	Properties: &armsecurity.PricingProperties{
-	// 		EnablementTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T12:42:42.192Z"); return t}()),
-	// 		FreeTrialRemainingTime: to.Ptr("PT0S"),
-	// 		PricingTier: to.Ptr(armsecurity.PricingTierStandard),
-	// 		Extensions: []*armsecurity.Extension{
-	// 			{
-	// 				Name: to.Ptr("AgentlessVmScanning"),
-	// 				IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
+	// res.PricingList = armsecurity.PricingList{
+	// 	Value: []*armsecurity.Pricing{
+	// 		{
+	// 			Name: to.Ptr("VirtualMachines"),
+	// 			Type: to.Ptr("Microsoft.Security/pricings"),
+	// 			ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/providers/Microsoft.Security/pricings/VirtualMachines"),
+	// 			Properties: &armsecurity.PricingProperties{
+	// 				EnablementTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T12:42:42.192Z"); return t}()),
+	// 				Enforce: to.Ptr(armsecurity.EnforceFalse),
+	// 				FreeTrialRemainingTime: to.Ptr("PT0S"),
+	// 				PricingTier: to.Ptr(armsecurity.PricingTierStandard),
+	// 				ResourcesCoverageStatus: to.Ptr(armsecurity.ResourcesCoverageStatusPartiallyCovered),
+	// 				SubPlan: to.Ptr("P2"),
+	// 				Extensions: []*armsecurity.Extension{
+	// 					{
+	// 						Name: to.Ptr("AgentlessVmScanning"),
+	// 						AdditionalExtensionProperties: map[string]any{
+	// 							"ExclusionTags": "[{\"Key\":\"TestKey1\",\"Value\":\"TestValue1\"},{\"Key\":\"TestKey2\",\"Value\":\"TestValue2\"}]",
+	// 						},
+	// 						IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
+	// 					},
+	// 					{
+	// 						Name: to.Ptr("MdeDesignatedSubscription"),
+	// 						IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
+	// 				}},
 	// 			},
-	// 			{
-	// 				Name: to.Ptr("AgentlessDiscoveryForKubernetes"),
-	// 				IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
+	// 		},
+	// 		{
+	// 			Name: to.Ptr("KeyVaults"),
+	// 			Type: to.Ptr("Microsoft.Security/pricings"),
+	// 			ID: to.Ptr("/subscriptions/d34fd44c-ebfa-4a9c-bceb-9eeafe72ac15/providers/Microsoft.Security/pricings/KeyVaults"),
+	// 			Properties: &armsecurity.PricingProperties{
+	// 				EnablementTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T12:42:42.192Z"); return t}()),
+	// 				Enforce: to.Ptr(armsecurity.EnforceFalse),
+	// 				FreeTrialRemainingTime: to.Ptr("PT0S"),
+	// 				PricingTier: to.Ptr(armsecurity.PricingTierStandard),
+	// 				ResourcesCoverageStatus: to.Ptr(armsecurity.ResourcesCoverageStatusFullyCovered),
+	// 				SubPlan: to.Ptr("PerKeyVault"),
 	// 			},
-	// 			{
-	// 				Name: to.Ptr("SensitiveDataDiscovery"),
-	// 				IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
-	// 			},
-	// 			{
-	// 				Name: to.Ptr("ContainerRegistriesVulnerabilityAssessments"),
-	// 				IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
-	// 		}},
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e716082ac474f182e2220e4f38f1d6191e7636cf/specification/security/resource-manager/Microsoft.Security/stable/2023-01-01/examples/Pricings/GetPricingByNameContainers_example.json
-func ExamplePricingsClient_Get_getPricingsOnSubscriptionContainersPlan() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsecurity.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewPricingsClient().Get(ctx, "Containers", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.Pricing = armsecurity.Pricing{
-	// 	Name: to.Ptr("Containers"),
-	// 	Type: to.Ptr("Microsoft.Security/pricings"),
-	// 	ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/providers/Microsoft.Security/pricings/Containers"),
-	// 	Properties: &armsecurity.PricingProperties{
-	// 		EnablementTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T12:42:42.192Z"); return t}()),
-	// 		FreeTrialRemainingTime: to.Ptr("PT0S"),
-	// 		PricingTier: to.Ptr(armsecurity.PricingTierStandard),
-	// 		Extensions: []*armsecurity.Extension{
-	// 			{
-	// 				Name: to.Ptr("ContainerRegistriesVulnerabilityAssessments"),
-	// 				IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
-	// 		}},
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e716082ac474f182e2220e4f38f1d6191e7636cf/specification/security/resource-manager/Microsoft.Security/stable/2023-01-01/examples/Pricings/GetPricingByNameDns_example.json
-func ExamplePricingsClient_Get_getPricingsOnSubscriptionDnsPlan() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsecurity.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewPricingsClient().Get(ctx, "Dns", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.Pricing = armsecurity.Pricing{
-	// 	Name: to.Ptr("Dns"),
-	// 	Type: to.Ptr("Microsoft.Security/pricings"),
-	// 	ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/providers/Microsoft.Security/pricings/Dns"),
-	// 	Properties: &armsecurity.PricingProperties{
-	// 		EnablementTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T12:42:42.192Z"); return t}()),
-	// 		FreeTrialRemainingTime: to.Ptr("PT0S"),
-	// 		PricingTier: to.Ptr(armsecurity.PricingTierStandard),
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e716082ac474f182e2220e4f38f1d6191e7636cf/specification/security/resource-manager/Microsoft.Security/stable/2023-01-01/examples/Pricings/GetPricingByNameStorageAccounts_example.json
-func ExamplePricingsClient_Get_getPricingsOnSubscriptionStorageAccountsPlan() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsecurity.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewPricingsClient().Get(ctx, "StorageAccounts", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.Pricing = armsecurity.Pricing{
-	// 	Name: to.Ptr("StorageAccounts"),
-	// 	Type: to.Ptr("Microsoft.Security/pricings"),
-	// 	ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/providers/Microsoft.Security/pricings/StorageAccounts"),
-	// 	Properties: &armsecurity.PricingProperties{
-	// 		EnablementTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T12:42:42.192Z"); return t}()),
-	// 		FreeTrialRemainingTime: to.Ptr("PT0S"),
-	// 		PricingTier: to.Ptr(armsecurity.PricingTierStandard),
-	// 		SubPlan: to.Ptr("PerStorageAccount"),
-	// 		Extensions: []*armsecurity.Extension{
-	// 			{
-	// 				Name: to.Ptr("OnUploadMalwareScanning"),
-	// 				AdditionalExtensionProperties: map[string]any{
-	// 					"capGBPerMonthPerStorageAccount": float64(10),
-	// 				},
-	// 				IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
-	// 			},
-	// 			{
-	// 				Name: to.Ptr("SensitiveDataDiscovery"),
-	// 				IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
-	// 		}},
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e716082ac474f182e2220e4f38f1d6191e7636cf/specification/security/resource-manager/Microsoft.Security/stable/2023-01-01/examples/Pricings/GetPricingByNameVirtualMachines_example.json
-func ExamplePricingsClient_Get_getPricingsOnSubscriptionVirtualMachinesPlan() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsecurity.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewPricingsClient().Get(ctx, "VirtualMachines", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.Pricing = armsecurity.Pricing{
-	// 	Name: to.Ptr("VirtualMachines"),
-	// 	Type: to.Ptr("Microsoft.Security/pricings"),
-	// 	ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/providers/Microsoft.Security/pricings/VirtualMachines"),
-	// 	Properties: &armsecurity.PricingProperties{
-	// 		EnablementTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T12:42:42.192Z"); return t}()),
-	// 		FreeTrialRemainingTime: to.Ptr("PT0S"),
-	// 		PricingTier: to.Ptr(armsecurity.PricingTierStandard),
-	// 		SubPlan: to.Ptr("P2"),
-	// 		Extensions: []*armsecurity.Extension{
-	// 			{
-	// 				Name: to.Ptr("AgentlessVmScanning"),
-	// 				IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
-	// 		}},
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e716082ac474f182e2220e4f38f1d6191e7636cf/specification/security/resource-manager/Microsoft.Security/stable/2023-01-01/examples/Pricings/PutPricingByName_example.json
-func ExamplePricingsClient_Update_updatePricingOnSubscription() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsecurity.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewPricingsClient().Update(ctx, "CloudPosture", armsecurity.Pricing{
-		Properties: &armsecurity.PricingProperties{
-			PricingTier: to.Ptr(armsecurity.PricingTierStandard),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.Pricing = armsecurity.Pricing{
-	// 	Name: to.Ptr("CloudPosture"),
-	// 	Type: to.Ptr("Microsoft.Security/pricings"),
-	// 	ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/providers/Microsoft.Security/pricings/CloudPosture"),
-	// 	Properties: &armsecurity.PricingProperties{
-	// 		EnablementTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T12:42:42.192Z"); return t}()),
-	// 		FreeTrialRemainingTime: to.Ptr("PT0S"),
-	// 		PricingTier: to.Ptr(armsecurity.PricingTierStandard),
-	// 		Extensions: []*armsecurity.Extension{
-	// 			{
-	// 				Name: to.Ptr("AgentlessVmScanning"),
-	// 				IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
-	// 				OperationStatus: &armsecurity.OperationStatus{
-	// 					Code: to.Ptr(armsecurity.CodeSucceeded),
-	// 					Message: to.Ptr(""),
-	// 				},
-	// 			},
-	// 			{
-	// 				Name: to.Ptr("AgentlessDiscoveryForKubernetes"),
-	// 				IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
-	// 				OperationStatus: &armsecurity.OperationStatus{
-	// 					Code: to.Ptr(armsecurity.CodeSucceeded),
-	// 					Message: to.Ptr(""),
-	// 				},
-	// 			},
-	// 			{
-	// 				Name: to.Ptr("SensitiveDataDiscovery"),
-	// 				IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
-	// 				OperationStatus: &armsecurity.OperationStatus{
-	// 					Code: to.Ptr(armsecurity.CodeSucceeded),
-	// 					Message: to.Ptr(""),
-	// 				},
-	// 			},
-	// 			{
-	// 				Name: to.Ptr("ContainerRegistriesVulnerabilityAssessments"),
-	// 				IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
-	// 				OperationStatus: &armsecurity.OperationStatus{
-	// 					Code: to.Ptr(armsecurity.CodeSucceeded),
-	// 					Message: to.Ptr(""),
-	// 				},
-	// 		}},
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e716082ac474f182e2220e4f38f1d6191e7636cf/specification/security/resource-manager/Microsoft.Security/stable/2023-01-01/examples/Pricings/PutPricingByNamePartialSuccess_example.json
-func ExamplePricingsClient_Update_updatePricingOnSubscriptionPartialSuccess() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsecurity.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewPricingsClient().Update(ctx, "CloudPosture", armsecurity.Pricing{
-		Properties: &armsecurity.PricingProperties{
-			PricingTier: to.Ptr(armsecurity.PricingTierStandard),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.Pricing = armsecurity.Pricing{
-	// 	Name: to.Ptr("CloudPosture"),
-	// 	Type: to.Ptr("Microsoft.Security/pricings"),
-	// 	ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/providers/Microsoft.Security/pricings/CloudPosture"),
-	// 	Properties: &armsecurity.PricingProperties{
-	// 		EnablementTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T12:42:42.192Z"); return t}()),
-	// 		FreeTrialRemainingTime: to.Ptr("PT0S"),
-	// 		PricingTier: to.Ptr(armsecurity.PricingTierStandard),
-	// 		Extensions: []*armsecurity.Extension{
-	// 			{
-	// 				Name: to.Ptr("AgentlessVmScanning"),
-	// 				IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
-	// 				OperationStatus: &armsecurity.OperationStatus{
-	// 					Code: to.Ptr(armsecurity.CodeSucceeded),
-	// 					Message: to.Ptr(""),
-	// 				},
-	// 			},
-	// 			{
-	// 				Name: to.Ptr("AgentlessDiscoveryForKubernetes"),
-	// 				IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
-	// 				OperationStatus: &armsecurity.OperationStatus{
-	// 					Code: to.Ptr(armsecurity.CodeSucceeded),
-	// 					Message: to.Ptr(""),
-	// 				},
-	// 			},
-	// 			{
-	// 				Name: to.Ptr("SensitiveDataDiscovery"),
-	// 				IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
-	// 				OperationStatus: &armsecurity.OperationStatus{
-	// 					Code: to.Ptr(armsecurity.CodeSucceeded),
-	// 					Message: to.Ptr(""),
-	// 				},
-	// 			},
-	// 			{
-	// 				Name: to.Ptr("ContainerRegistriesVulnerabilityAssessments"),
-	// 				IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
-	// 				OperationStatus: &armsecurity.OperationStatus{
-	// 					Code: to.Ptr(armsecurity.CodeFailed),
-	// 					Message: to.Ptr("Extension enablemment failed due to missing permissions."),
-	// 				},
-	// 		}},
-	// 	},
+	// 	}},
 	// }
 }

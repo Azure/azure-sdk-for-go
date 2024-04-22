@@ -10,6 +10,12 @@ import (
 	"bytes"
 	"context"
 	"errors"
+	"io"
+	"os"
+	"strings"
+	"sync"
+	"time"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
@@ -21,11 +27,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/sas"
-	"io"
-	"os"
-	"strings"
-	"sync"
-	"time"
 )
 
 // ClientOptions contains the optional parameters when creating a Client.
@@ -41,14 +42,17 @@ type Client base.Client[generated.FileClient]
 //
 // Note that ClientOptions.FileRequestIntent is currently required for token authentication.
 func NewClient(fileURL string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
-	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{shared.TokenScope}, nil)
+	audience := base.GetAudience((*base.ClientOptions)(options))
 	conOptions := shared.GetClientOptions(options)
+	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{audience}, &policy.BearerTokenOptions{
+		InsecureAllowCredentialWithHTTP: conOptions.InsecureAllowCredentialWithHTTP,
+	})
 	plOpts := runtime.PipelineOptions{
 		PerRetry: []policy.Policy{authPolicy},
 	}
 	base.SetPipelineOptions((*base.ClientOptions)(conOptions), &plOpts)
 
-	azClient, err := azcore.NewClient(shared.FileClient, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
+	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -67,7 +71,7 @@ func NewClientWithNoCredential(fileURL string, options *ClientOptions) (*Client,
 	plOpts := runtime.PipelineOptions{}
 	base.SetPipelineOptions((*base.ClientOptions)(conOptions), &plOpts)
 
-	azClient, err := azcore.NewClient(shared.FileClient, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
+	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -89,7 +93,7 @@ func NewClientWithSharedKeyCredential(fileURL string, cred *SharedKeyCredential,
 	}
 	base.SetPipelineOptions((*base.ClientOptions)(conOptions), &plOpts)
 
-	azClient, err := azcore.NewClient(shared.FileClient, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
+	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -337,7 +341,6 @@ func (f *Client) GetSASURL(permissions sas.FilePermissions, expiry time.Time, o 
 
 	qps, err := sas.SignatureValues{
 		Version:     sas.Version,
-		Protocol:    sas.ProtocolHTTPS,
 		ShareName:   urlParts.ShareName,
 		FilePath:    urlParts.DirectoryOrFilePath,
 		Permissions: permissions.String(),

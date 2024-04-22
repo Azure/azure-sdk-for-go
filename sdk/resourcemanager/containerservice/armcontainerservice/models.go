@@ -116,6 +116,16 @@ type AgentPoolNetworkProfile struct {
 
 // AgentPoolSecurityProfile - The security settings of an agent pool.
 type AgentPoolSecurityProfile struct {
+	// Secure Boot is a feature of Trusted Launch which ensures that only signed operating systems and drivers can boot. For more
+	// details, see aka.ms/aks/trustedlaunch. If not specified, the default is
+	// false.
+	EnableSecureBoot *bool
+
+	// vTPM is a Trusted Launch feature for configuring a dedicated secure vault for keys and measurements held locally on the
+	// node. For more details, see aka.ms/aks/trustedlaunch. If not specified, the
+	// default is false.
+	EnableVTPM *bool
+
 	// SSH access method of an agent pool.
 	SSHAccess *AgentPoolSSHAccess
 }
@@ -386,22 +396,6 @@ type GuardrailsAvailableVersionsProperties struct {
 
 	// READ-ONLY; Whether the version is preview or stable.
 	Support *GuardrailsSupport
-}
-
-// GuardrailsProfile - The Guardrails profile.
-type GuardrailsProfile struct {
-	// REQUIRED; The guardrails level to be used. By default, Guardrails is enabled for all namespaces except those that AKS excludes
-	// via systemExcludedNamespaces
-	Level *Level
-
-	// List of namespaces excluded from guardrails checks
-	ExcludedNamespaces []*string
-
-	// The version of constraints to use
-	Version *string
-
-	// READ-ONLY; List of namespaces specified by AKS to be excluded from Guardrails
-	SystemExcludedNamespaces []*string
 }
 
 // IPTag - Contains the IPTag associated with the object.
@@ -973,6 +967,9 @@ type ManagedClusterAgentPoolProfile struct {
 	// For more information see upgrading a node pool [https://docs.microsoft.com/azure/aks/use-multiple-node-pools#upgrade-a-node-pool].
 	OrchestratorVersion *string
 
+	// The IP allocation mode for pods in the agent pool. Must be used with podSubnetId. The default is 'DynamicIndividual'.
+	PodIPAllocationMode *PodIPAllocationMode
+
 	// If omitted, pod IPs are statically assigned on the node subnet (see vnetSubnetID for more details). This is of the form:
 	// /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}
 	PodSubnetID *string
@@ -1171,6 +1168,9 @@ type ManagedClusterAgentPoolProfileProperties struct {
 	// For more information see upgrading a node pool [https://docs.microsoft.com/azure/aks/use-multiple-node-pools#upgrade-a-node-pool].
 	OrchestratorVersion *string
 
+	// The IP allocation mode for pods in the agent pool. Must be used with podSubnetId. The default is 'DynamicIndividual'.
+	PodIPAllocationMode *PodIPAllocationMode
+
 	// If omitted, pod IPs are statically assigned on the node subnet (see vnetSubnetID for more details). This is of the form:
 	// /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}
 	PodSubnetID *string
@@ -1336,6 +1336,15 @@ type ManagedClusterAzureMonitorProfileMetrics struct {
 type ManagedClusterAzureMonitorProfileWindowsHostLogs struct {
 	// Indicates if Windows Host Log Collection is enabled or not for Azure Monitor Container Insights Logs Addon.
 	Enabled *bool
+}
+
+// ManagedClusterBootstrapProfile - The bootstrap profile.
+type ManagedClusterBootstrapProfile struct {
+	// The source where the artifacts are downloaded from.
+	ArtifactSource *ArtifactSource
+
+	// The resource Id of Azure Container Registry. The registry must have private network access, premium SKU and zone redundancy.
+	ContainerRegistryID *string
 }
 
 // ManagedClusterCostAnalysis - The cost analysis configuration for the cluster
@@ -1644,6 +1653,9 @@ type ManagedClusterProperties struct {
 	// Prometheus addon profile for the container service cluster
 	AzureMonitorProfile *ManagedClusterAzureMonitorProfile
 
+	// Profile of the cluster bootstrap configuration.
+	BootstrapProfile *ManagedClusterBootstrapProfile
+
 	// CreationData to be used to specify the source Snapshot ID if the cluster will be created/upgraded using a snapshot.
 	CreationData *CreationData
 
@@ -1673,9 +1685,6 @@ type ManagedClusterProperties struct {
 
 	// This cannot be updated once the Managed Cluster has been created.
 	FqdnSubdomain *string
-
-	// The guardrails profile holds all the guardrails information for a given cluster
-	GuardrailsProfile *GuardrailsProfile
 
 	// Configurations for provisioning the cluster with HTTP proxy servers.
 	HTTPProxyConfig *ManagedClusterHTTPProxyConfig
@@ -1722,6 +1731,9 @@ type ManagedClusterProperties struct {
 
 	// Allow or deny public network access for AKS
 	PublicNetworkAccess *PublicNetworkAccess
+
+	// The Safeguards profile holds all the safeguards information for a given cluster
+	SafeguardsProfile *SafeguardsProfile
 
 	// Security profile for the managed cluster.
 	SecurityProfile *ManagedClusterSecurityProfile
@@ -2610,6 +2622,58 @@ type SSHPublicKey struct {
 	// REQUIRED; Certificate public key used to authenticate with VMs through SSH. The certificate must be in PEM format with
 	// or without headers.
 	KeyData *string
+}
+
+// SafeguardsAvailableVersion - Available Safeguards Version
+type SafeguardsAvailableVersion struct {
+	// REQUIRED; Whether the version is default or not and support info.
+	Properties *SafeguardsAvailableVersionsProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// SafeguardsAvailableVersionsList - Hold values properties, which is array of SafeguardsVersions
+type SafeguardsAvailableVersionsList struct {
+	// Array of AKS supported Safeguards versions.
+	Value []*SafeguardsAvailableVersion
+
+	// READ-ONLY; The URL to get the next Safeguards available version.
+	NextLink *string
+}
+
+// SafeguardsAvailableVersionsProperties - Whether the version is default or not and support info.
+type SafeguardsAvailableVersionsProperties struct {
+	// READ-ONLY
+	IsDefaultVersion *bool
+
+	// READ-ONLY; Whether the version is preview or stable.
+	Support *SafeguardsSupport
+}
+
+// SafeguardsProfile - The Safeguards profile.
+type SafeguardsProfile struct {
+	// REQUIRED; The Safeguards level to be used. By default, Safeguards is enabled for all namespaces except those that AKS excludes
+	// via systemExcludedNamespaces
+	Level *Level
+
+	// List of namespaces excluded from Safeguards checks
+	ExcludedNamespaces []*string
+
+	// The version of constraints to use
+	Version *string
+
+	// READ-ONLY; List of namespaces specified by AKS to be excluded from Safeguards
+	SystemExcludedNamespaces []*string
 }
 
 // ScaleProfile - Specifications on how to scale a VirtualMachines agent pool.

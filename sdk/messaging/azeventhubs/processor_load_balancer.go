@@ -46,15 +46,16 @@ type loadBalancerInfo struct {
 	// it contains _all_ the partitions for that particular consumer.
 	aboveMax []Ownership
 
-	// maxAllowed is the maximum number of partitions a consumer should have
-	// If partitions do not divide evenly this will be the "theoretical" max
-	// with the assumption that this particular consumer will get an extra
-	// partition.
-	maxAllowed int
+	// claimMorePartitions is true when we should try to claim more partitions
+	// because we're under the limit, or we're in a situation where we could claim
+	// one extra partition.
+	claimMorePartitions bool
 
-	// extraPartitionPossible is true if the partitions cannot split up evenly
-	// amongst all the known consumers.
-	extraPartitionPossible bool
+	// maxAllowed is the maximum number of partitions that other processors are allowed
+	// to own during this round. It can change based on how many partitions we own and whether
+	// an 'extra' partition is allowed (ie, partitions %owners is not 0). Look at
+	// [processorLoadBalancer.getAvailablePartitions] for more details.
+	maxAllowed int
 
 	raw []Ownership
 }
@@ -68,45 +69,22 @@ func (lb *processorLoadBalancer) LoadBalance(ctx context.Context, partitionIDs [
 		return nil, err
 	}
 
-	claimMorePartitions := true
-
-	if len(lbinfo.current) >= lbinfo.maxAllowed {
-		// - I have _exactly_ the right amount
-		// or
-		// - I have too many. We expect to have some stolen from us, but we'll maintain
-		//    ownership for now.
-		claimMorePartitions = false
-		log.Writef(EventConsumer, "Owns %d/%d, no more needed", len(lbinfo.current), lbinfo.maxAllowed)
-	} else if lbinfo.extraPartitionPossible && len(lbinfo.current) == lbinfo.maxAllowed-1 {
-		// In the 'extraPartitionPossible' scenario, some consumers will have an extra partition
-		// since things don't divide up evenly. We're one under the max, which means we _might_
-		// be able to claim another one.
-		//
-		// We will attempt to grab _one_ more but only if there are free partitions available
-		// or if one of the consumers has more than the max allowed.
-		claimMorePartitions = len(lbinfo.unownedOrExpired) > 0 || len(lbinfo.aboveMax) > 0
-		log.Writef(EventConsumer, "Unowned/expired: %d, above max: %d, need to claim: %t",
-			len(lbinfo.unownedOrExpired),
-			len(lbinfo.aboveMax),
-			claimMorePartitions)
-	}
-
 	ownerships := lbinfo.current
 
-	if claimMorePartitions {
+	if lbinfo.claimMorePartitions {
 		switch lb.strategy {
 		case ProcessorStrategyGreedy:
-			log.Writef(EventConsumer, "Using greedy strategy to claim partitions")
+			log.Writef(EventConsumer, "[%s] Using greedy strategy to claim partitions", lb.details.ClientID)
 			ownerships = lb.greedyLoadBalancer(ctx, lbinfo)
 		case ProcessorStrategyBalanced:
-			log.Writef(EventConsumer, "Using balanced strategy to claim partitions")
+			log.Writef(EventConsumer, "[%s] Using balanced strategy to claim partitions", lb.details.ClientID)
 			o := lb.balancedLoadBalancer(ctx, lbinfo)
 
 			if o != nil {
 				ownerships = append(lbinfo.current, *o)
 			}
 		default:
-			return nil, fmt.Errorf("invalid load balancing strategy '%s'", lb.strategy)
+			return nil, fmt.Errorf("[%s] invalid load balancing strategy '%s'", lb.details.ClientID, lb.strategy)
 		}
 	}
 
@@ -133,8 +111,11 @@ func partitionsForOwnerships(all []Ownership) string {
 	return strings.Join(parts, ",")
 }
 
-// getAvailablePartitions finds all partitions that are either completely unowned _or_
-// their ownership is stale.
+// getAvailablePartitions looks through the ownership list (using the checkpointstore.ListOwnership) and evaluates:
+//   - Whether we should claim more partitions
+//   - Which partitions are available - unowned/relinquished, expired or processors that own more than the maximum allowed.
+//
+// Load balancing happens in individual functions
 func (lb *processorLoadBalancer) getAvailablePartitions(ctx context.Context, partitionIDs []string) (loadBalancerInfo, error) {
 	log.Writef(EventConsumer, "[%s] Listing ownership for %s/%s/%s", lb.details.ClientID, lb.details.FullyQualifiedNamespace, lb.details.EventHubName, lb.details.ConsumerGroup)
 
@@ -170,7 +151,6 @@ func (lb *processorLoadBalancer) getAvailablePartitions(ctx context.Context, par
 	}
 
 	numExpired := len(unownedOrExpired)
-	log.Writef(EventConsumer, "Expired: %d", numExpired)
 
 	// add in all the unowned partitions
 	for _, partID := range partitionIDs {
@@ -189,12 +169,13 @@ func (lb *processorLoadBalancer) getAvailablePartitions(ctx context.Context, par
 		})
 	}
 
-	log.Writef(EventConsumer, "Unowned: %d", len(unownedOrExpired)-numExpired)
+	minRequired := len(partitionIDs) / len(groupedByOwner)
+	maxAllowed := minRequired
+	allowExtraPartition := len(partitionIDs)%len(groupedByOwner) > 0
 
-	maxAllowed := len(partitionIDs) / len(groupedByOwner)
-	hasRemainder := len(partitionIDs)%len(groupedByOwner) > 0
-
-	if hasRemainder {
+	// only allow owners to keep extra partitions if we've already met our minimum bar. Otherwise
+	// above the minimum is fair game.
+	if allowExtraPartition && len(groupedByOwner[lb.details.ClientID]) >= minRequired {
 		maxAllowed += 1
 	}
 
@@ -210,13 +191,41 @@ func (lb *processorLoadBalancer) getAvailablePartitions(ctx context.Context, par
 		}
 	}
 
+	claimMorePartitions := true
+	current := groupedByOwner[lb.details.ClientID]
+
+	if len(current) >= maxAllowed {
+		// - I have _exactly_ the right amount
+		// or
+		// - I have too many. We expect to have some stolen from us, but we'll maintain
+		//    ownership for now.
+		claimMorePartitions = false
+	} else if allowExtraPartition && len(current) == maxAllowed-1 {
+		// In the 'allowExtraPartition' scenario, some consumers will have an extra partition
+		// since things don't divide up evenly. We're one under the max, which means we _might_
+		// be able to claim another one.
+		//
+		// We will attempt to grab _one_ more but only if there are free partitions available
+		// or if one of the consumers has more than the max allowed.
+		claimMorePartitions = len(unownedOrExpired) > 0 || len(aboveMax) > 0
+	}
+
+	log.Writef(EventConsumer, "[%s] claimMorePartitions: %t, owners: %d, current: %d, unowned: %d, expired: %d, above: %d",
+		lb.details.ClientID,
+		claimMorePartitions,
+		len(groupedByOwner),
+		len(current),
+		len(unownedOrExpired)-numExpired,
+		numExpired,
+		len(aboveMax))
+
 	return loadBalancerInfo{
-		current:                groupedByOwner[lb.details.ClientID],
-		unownedOrExpired:       unownedOrExpired,
-		aboveMax:               aboveMax,
-		maxAllowed:             maxAllowed,
-		extraPartitionPossible: hasRemainder,
-		raw:                    ownerships,
+		current:             current,
+		unownedOrExpired:    unownedOrExpired,
+		aboveMax:            aboveMax,
+		claimMorePartitions: claimMorePartitions,
+		raw:                 ownerships,
+		maxAllowed:          maxAllowed,
 	}, nil
 }
 

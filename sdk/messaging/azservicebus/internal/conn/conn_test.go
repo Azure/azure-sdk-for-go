@@ -25,6 +25,7 @@ package conn
 import (
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -42,47 +43,85 @@ const (
 )
 
 func TestParsedConnectionFromStr(t *testing.T) {
-	parsed, err := ParsedConnectionFromStr(happyConnStr)
+	parsed, err := ParseConnectionString(happyConnStr)
 	if assert.NoError(t, err) {
-		assert.Equal(t, namespace+".servicebus.windows.net", parsed.Namespace)
-		assert.Equal(t, keyName, parsed.KeyName)
-		assert.Equal(t, secret, parsed.Key)
-		assert.Equal(t, hubName, parsed.HubName)
+		assert.Equal(t, namespace+".servicebus.windows.net", parsed.FullyQualifiedNamespace)
+		assert.Equal(t, keyName, *parsed.SharedAccessKeyName)
+		assert.Equal(t, secret, *parsed.SharedAccessKey)
+		assert.Equal(t, hubName, *parsed.EntityPath)
+		require.False(t, parsed.Emulator)
 	}
 }
 
 func TestParsedConnectionFromStrCaseIndifference(t *testing.T) {
-	parsed, err := ParsedConnectionFromStr(lowerCase)
+	parsed, err := ParseConnectionString(lowerCase)
 	if assert.NoError(t, err) {
-		assert.Equal(t, namespace+".servicebus.windows.net", parsed.Namespace)
-		assert.Equal(t, keyName, parsed.KeyName)
-		assert.Equal(t, secret, parsed.Key)
-		assert.Equal(t, hubName, parsed.HubName)
+		assert.Equal(t, namespace+".servicebus.windows.net", parsed.FullyQualifiedNamespace)
+		assert.Equal(t, keyName, *parsed.SharedAccessKeyName)
+		assert.Equal(t, secret, *parsed.SharedAccessKey)
+		assert.Equal(t, hubName, *parsed.EntityPath)
 	}
 }
 
 func TestParsedConnectionFromStrWithoutEntityPath(t *testing.T) {
-	parsed, err := ParsedConnectionFromStr(noEntityPath)
+	parsed, err := ParseConnectionString(noEntityPath)
 	if assert.NoError(t, err) {
-		assert.Equal(t, namespace+".servicebus.windows.net", parsed.Namespace)
-		assert.Equal(t, keyName, parsed.KeyName)
-		assert.Equal(t, secret, parsed.Key)
-		assert.Equal(t, "", parsed.HubName)
+		assert.Equal(t, namespace+".servicebus.windows.net", parsed.FullyQualifiedNamespace)
+		assert.Equal(t, keyName, *parsed.SharedAccessKeyName)
+		assert.Equal(t, secret, *parsed.SharedAccessKey)
+		require.Nil(t, parsed.EntityPath)
 	}
 }
 
 func TestParsedConnectionFromStrWithEmbeddedSAS(t *testing.T) {
-	parsed, err := ParsedConnectionFromStr(withEmbeddedSAS)
+	parsed, err := ParseConnectionString(withEmbeddedSAS)
 	require.NoError(t, err)
 
-	require.Equal(t, &ParsedConn{
-		Namespace: namespace + ".servicebus.windows.net",
-		SAS:       "SharedAccessSignature sr=" + namespace + ".servicebus.windows.net&sig=<base64-sig>&se=<expiry>&skn=<keyname>",
+	require.Equal(t, ConnectionStringProperties{
+		Endpoint:                "sb://" + namespace + ".servicebus.windows.net/",
+		FullyQualifiedNamespace: namespace + ".servicebus.windows.net",
+		SharedAccessSignature:   to.Ptr("SharedAccessSignature sr=" + namespace + ".servicebus.windows.net&sig=<base64-sig>&se=<expiry>&skn=<keyname>"),
 	}, parsed)
 
 }
 
 func TestFailedParsedConnectionFromStrWithoutEndpoint(t *testing.T) {
-	_, err := ParsedConnectionFromStr(noEndpoint)
+	_, err := ParseConnectionString(noEndpoint)
 	assert.Error(t, err)
+}
+
+func TestUseDevelopmentEmulatorProperty(t *testing.T) {
+	cs := "Endpoint=sb://localhost:6765;SharedAccessKeyName=" + keyName + ";SharedAccessKey=" + secret + ";UseDevelopmentEmulator=true"
+	parsed, err := ParseConnectionString(cs)
+	require.NoError(t, err)
+	require.True(t, parsed.Emulator)
+	require.Equal(t, "sb://localhost:6765", parsed.Endpoint)
+
+	// also allowed _without_ a port.
+	cs = "Endpoint=sb://localhost;SharedAccessKeyName=" + keyName + ";SharedAccessKey=" + secret + ";UseDevelopmentEmulator=true"
+	parsed, err = ParseConnectionString(cs)
+	require.NoError(t, err)
+	require.True(t, parsed.Emulator)
+	require.Equal(t, "sb://localhost", parsed.Endpoint)
+
+	// emulator can give connection strings that have a trailing ';'
+	cs = "Endpoint=sb://localhost:6765;SharedAccessKeyName=" + keyName + ";SharedAccessKey=" + secret + ";UseDevelopmentEmulator=true;"
+	parsed, err = ParseConnectionString(cs)
+	require.NoError(t, err)
+	require.True(t, parsed.Emulator)
+	require.Equal(t, "sb://localhost:6765", parsed.Endpoint)
+
+	// UseDevelopmentEmulator only works for localhost
+	cs = "Endpoint=sb://myserver.com:6765;SharedAccessKeyName=" + keyName + ";SharedAccessKey=" + secret + ";UseDevelopmentEmulator=true"
+	parsed, err = ParseConnectionString(cs)
+	require.EqualError(t, err, "UseDevelopmentEmulator=true can only be used with sb://localhost or sb://localhost:<port number>, not sb://myserver.com:6765")
+
+	// there's no reason for a person to pass False, but it's allowed.
+	// If they're not using the dev emulator then there's no special behavior, it's like a normal connection string
+	cs = "Endpoint=sb://localhost:6765;SharedAccessKeyName=" + keyName + ";SharedAccessKey=" + secret + ";UseDevelopmentEmulator=false"
+	parsed, err = ParseConnectionString(cs)
+	require.NoError(t, err)
+	require.False(t, parsed.Emulator)
+	require.Equal(t, "sb://localhost:6765", parsed.Endpoint)
+
 }

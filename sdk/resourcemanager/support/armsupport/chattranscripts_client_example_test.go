@@ -14,10 +14,10 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/support/armsupport/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/support/armsupport"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/ListChatTranscriptsForSubscriptionSupportTicket.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/106483d9f698ac3b6c0d481ab0c5fab14152e21f/specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/ListChatTranscriptsForSubscriptionSupportTicket.json
 func ExampleChatTranscriptsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -44,7 +44,7 @@ func ExampleChatTranscriptsClient_NewListPager() {
 		// 		{
 		// 			Name: to.Ptr("55989c71-1727-4cd9-abad-ddb8770f71cd"),
 		// 			Type: to.Ptr("Microsoft.Support/chatTranscripts"),
-		// 			ID: to.Ptr("/subscriptions/subid/providers/Microsoft.Support/supportTickets/2207120020000085/chatTranscripts/55989c71-1727-4cd9-abad-ddb8770f71cd"),
+		// 			ID: to.Ptr("/subscriptions/132d901f-189d-4381-9214-fe68e27e05a1/providers/Microsoft.Support/supportTickets/2207120020000085/chatTranscripts/55989c71-1727-4cd9-abad-ddb8770f71cd"),
 		// 			Properties: &armsupport.ChatTranscriptDetailsProperties{
 		// 				Messages: []*armsupport.MessageProperties{
 		// 					{
@@ -67,7 +67,7 @@ func ExampleChatTranscriptsClient_NewListPager() {
 		// 		{
 		// 			Name: to.Ptr("f15051e3-a2f2-489f-9e64-8cfa203f44f8"),
 		// 			Type: to.Ptr("Microsoft.Support/chatTranscripts"),
-		// 			ID: to.Ptr("/subscriptions/subid/providers/Microsoft.Support/supportTickets/2207120020000085/chatTranscripts/f15051e3-a2f2-489f-9e64-8cfa203f44f8"),
+		// 			ID: to.Ptr("/subscriptions/132d901f-189d-4381-9214-fe68e27e05a1/providers/Microsoft.Support/supportTickets/2207120020000085/chatTranscripts/f15051e3-a2f2-489f-9e64-8cfa203f44f8"),
 		// 			Properties: &armsupport.ChatTranscriptDetailsProperties{
 		// 				Messages: []*armsupport.MessageProperties{
 		// 					{
@@ -91,7 +91,7 @@ func ExampleChatTranscriptsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/GetchatTranscriptDetailsForSubscriptionSupportTicket.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/106483d9f698ac3b6c0d481ab0c5fab14152e21f/specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/GetchatTranscriptDetailsForSubscriptionSupportTicket.json
 func ExampleChatTranscriptsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

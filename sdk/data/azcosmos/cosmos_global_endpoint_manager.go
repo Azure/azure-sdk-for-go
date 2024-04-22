@@ -11,22 +11,25 @@ import (
 	"sync"
 	"time"
 
+	azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
 
 const defaultUnavailableLocationRefreshInterval = 5 * time.Minute
 
 type globalEndpointManager struct {
-	client              *Client
+	clientEndpoint      string
+	pipeline            azruntime.Pipeline
 	preferredLocations  []string
 	locationCache       *locationCache
 	refreshTimeInterval time.Duration
-	gemMutex            sync.Mutex
+	gemMutex            sync.RWMutex
 	lastUpdateTime      time.Time
 }
 
-func newGlobalEndpointManager(client *Client, preferredLocations []string, refreshTimeInterval time.Duration) (*globalEndpointManager, error) {
-	endpoint, err := url.Parse(client.endpoint)
+func newGlobalEndpointManager(clientEndpoint string, pipeline azruntime.Pipeline, preferredLocations []string, refreshTimeInterval time.Duration, enableCrossRegionRetries bool) (*globalEndpointManager, error) {
+	endpoint, err := url.Parse(clientEndpoint)
 	if err != nil {
 		return &globalEndpointManager{}, err
 	}
@@ -36,9 +39,10 @@ func newGlobalEndpointManager(client *Client, preferredLocations []string, refre
 	}
 
 	gem := &globalEndpointManager{
-		client:              client,
+		clientEndpoint:      clientEndpoint,
+		pipeline:            pipeline,
 		preferredLocations:  preferredLocations,
-		locationCache:       newLocationCache(preferredLocations, *endpoint),
+		locationCache:       newLocationCache(preferredLocations, *endpoint, enableCrossRegionRetries),
 		refreshTimeInterval: refreshTimeInterval,
 		lastUpdateTime:      time.Time{},
 	}
@@ -79,13 +83,23 @@ func (gem *globalEndpointManager) RefreshStaleEndpoints() {
 }
 
 func (gem *globalEndpointManager) ShouldRefresh() bool {
+	gem.gemMutex.RLock()
+	defer gem.gemMutex.RUnlock()
+	return gem.shouldRefresh()
+}
+
+func (gem *globalEndpointManager) shouldRefresh() bool {
 	return time.Since(gem.lastUpdateTime) > gem.refreshTimeInterval
 }
 
-func (gem *globalEndpointManager) Update(ctx context.Context) error {
+func (gem *globalEndpointManager) ResolveServiceEndpoint(locationIndex int, isWriteOperation, useWriteEndpoint bool) url.URL {
+	return gem.locationCache.resolveServiceEndpoint(locationIndex, isWriteOperation, useWriteEndpoint)
+}
+
+func (gem *globalEndpointManager) Update(ctx context.Context, forceRefresh bool) error {
 	gem.gemMutex.Lock()
 	defer gem.gemMutex.Unlock()
-	if !gem.ShouldRefresh() {
+	if !gem.shouldRefresh() && !forceRefresh {
 		return nil
 	}
 	accountProperties, err := gem.GetAccountProperties(ctx)
@@ -110,24 +124,35 @@ func (gem *globalEndpointManager) GetAccountProperties(ctx context.Context) (acc
 		resourceAddress: "",
 	}
 
-	path, err := generatePathForNameBased(resourceTypeDatabaseAccount, "", false)
+	ctxt, cancel := context.WithTimeout(ctx, 60*time.Second)
+	defer cancel()
+	req, err := azruntime.NewRequest(ctxt, http.MethodGet, gem.clientEndpoint)
 	if err != nil {
-		return accountProperties{}, fmt.Errorf("failed to generate path for name-based request: %v", err)
+		return accountProperties{}, err
 	}
 
-	ctx, cancel := context.WithTimeout(ctx, 60*time.Second)
-	azResponse, err := gem.client.sendGetRequest(path, ctx, operationContext, nil, nil)
-	cancel()
+	req.Raw().Header.Set(headerXmsDate, time.Now().UTC().Format(http.TimeFormat))
+	req.Raw().Header.Set(headerXmsVersion, apiVersion)
+	req.Raw().Header.Set(cosmosHeaderSDKSupportedCapabilities, supportedCapabilitiesHeaderValue)
+
+	req.SetOperationValue(operationContext)
+
+	azResponse, err := gem.pipeline.Do(req)
 	if err != nil {
-		return accountProperties{}, fmt.Errorf("failed to retrieve account properties: %v", err)
+		return accountProperties{}, err
 	}
 
-	properties, err := newAccountProperties(azResponse)
-	if err != nil {
-		return accountProperties{}, fmt.Errorf("failed to parse account properties: %v", err)
+	successResponse := (azResponse.StatusCode >= 200 && azResponse.StatusCode < 300)
+	if successResponse {
+		properties, err := newAccountProperties(azResponse)
+		if err != nil {
+			return accountProperties{}, fmt.Errorf("failed to parse account properties: %v", err)
+		}
+		log.Write(azlog.EventResponse, "\n===== Database Account Information:\n"+properties.String()+"\n=====\n")
+		return properties, nil
 	}
 
-	return properties, nil
+	return accountProperties{}, azruntime.NewResponseErrorWithErrorCode(azResponse, azResponse.Status)
 }
 
 func newAccountProperties(azResponse *http.Response) (accountProperties, error) {

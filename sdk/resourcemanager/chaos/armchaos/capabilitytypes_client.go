@@ -46,7 +46,7 @@ func NewCapabilityTypesClient(subscriptionID string, credential azcore.TokenCred
 // Get - Get a Capability Type resource for given Target Type and location.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01
+// Generated from API version 2024-01-01
 //   - locationName - String that represents a Location resource name.
 //   - targetTypeName - String that represents a Target Type resource name.
 //   - capabilityTypeName - String that represents a Capability Type resource name.
@@ -97,7 +97,7 @@ func (client *CapabilityTypesClient) getCreateRequest(ctx context.Context, locat
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-01")
+	reqQP.Set("api-version", "2024-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -114,7 +114,7 @@ func (client *CapabilityTypesClient) getHandleResponse(resp *http.Response) (Cap
 
 // NewListPager - Get a list of Capability Type resources for given Target Type and location.
 //
-// Generated from API version 2023-11-01
+// Generated from API version 2024-01-01
 //   - locationName - String that represents a Location resource name.
 //   - targetTypeName - String that represents a Target Type resource name.
 //   - options - CapabilityTypesClientListOptions contains the optional parameters for the CapabilityTypesClient.NewListPager
@@ -162,7 +162,7 @@ func (client *CapabilityTypesClient) listCreateRequest(ctx context.Context, loca
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-01")
+	reqQP.Set("api-version", "2024-01-01")
 	if options != nil && options.ContinuationToken != nil {
 		reqQP.Set("continuationToken", *options.ContinuationToken)
 	}

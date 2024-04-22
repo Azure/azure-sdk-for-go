@@ -20,7 +20,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/newrelic/armnewrelicobservability"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Monitors_ListBySubscription_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/Monitors_ListBySubscription_MaximumSet_Gen.json
 func ExampleMonitorsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -47,7 +47,7 @@ func ExampleMonitorsClient_NewListBySubscriptionPager() {
 		// 		{
 		// 			Name: to.Ptr("fteaqmtwspcfgyopqzrepiqu"),
 		// 			Type: to.Ptr("hdj"),
-		// 			ID: to.Ptr("ilrwkvbuwu"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/NewRelic.Observability/monitors/myMonitor"),
 		// 			SystemData: &armnewrelicobservability.SystemData{
 		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-12-05T14:11:37.787Z"); return t}()),
 		// 				CreatedBy: to.Ptr("pcdjzdldbwsdlfi"),
@@ -115,7 +115,7 @@ func ExampleMonitorsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Monitors_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/Monitors_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleMonitorsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -142,7 +142,7 @@ func ExampleMonitorsClient_NewListByResourceGroupPager() {
 		// 		{
 		// 			Name: to.Ptr("fteaqmtwspcfgyopqzrepiqu"),
 		// 			Type: to.Ptr("hdj"),
-		// 			ID: to.Ptr("ilrwkvbuwu"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/NewRelic.Observability/monitors/myMonitor"),
 		// 			SystemData: &armnewrelicobservability.SystemData{
 		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-12-05T14:11:37.787Z"); return t}()),
 		// 				CreatedBy: to.Ptr("pcdjzdldbwsdlfi"),
@@ -210,7 +210,7 @@ func ExampleMonitorsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Monitors_Get_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/Monitors_Get_MaximumSet_Gen.json
 func ExampleMonitorsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -231,7 +231,7 @@ func ExampleMonitorsClient_Get() {
 	// res.NewRelicMonitorResource = armnewrelicobservability.NewRelicMonitorResource{
 	// 	Name: to.Ptr("fteaqmtwspcfgyopqzrepiqu"),
 	// 	Type: to.Ptr("hdj"),
-	// 	ID: to.Ptr("ilrwkvbuwu"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/NewRelic.Observability/monitors/myMonitor"),
 	// 	SystemData: &armnewrelicobservability.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-12-05T14:11:37.787Z"); return t}()),
 	// 		CreatedBy: to.Ptr("pcdjzdldbwsdlfi"),
@@ -297,7 +297,7 @@ func ExampleMonitorsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Monitors_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/Monitors_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleMonitorsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -312,6 +312,12 @@ func ExampleMonitorsClient_BeginCreateOrUpdate() {
 		Location: to.Ptr("k"),
 		Tags: map[string]*string{
 			"key6976": to.Ptr("oaxfhf"),
+		},
+		Identity: &armnewrelicobservability.ManagedServiceIdentity{
+			Type: to.Ptr(armnewrelicobservability.ManagedServiceIdentityTypeNone),
+			UserAssignedIdentities: map[string]*armnewrelicobservability.UserAssignedIdentity{
+				"key8903": {},
+			},
 		},
 		Properties: &armnewrelicobservability.MonitorProperties{
 			AccountCreationSource:         to.Ptr(armnewrelicobservability.AccountCreationSourceLIFTR),
@@ -342,7 +348,9 @@ func ExampleMonitorsClient_BeginCreateOrUpdate() {
 				PlanDetails:   to.Ptr("tbbiaga"),
 				UsageType:     to.Ptr(armnewrelicobservability.UsageTypePAYG),
 			},
-			ProvisioningState: to.Ptr(armnewrelicobservability.ProvisioningStateAccepted),
+			ProvisioningState:           to.Ptr(armnewrelicobservability.ProvisioningStateAccepted),
+			SaaSAzureSubscriptionStatus: to.Ptr("Subscribed"),
+			SubscriptionState:           to.Ptr("Suspended"),
 			UserInfo: &armnewrelicobservability.UserInfo{
 				Country:      to.Ptr("hslqnwdanrconqyekwbnttaetv"),
 				EmailAddress: to.Ptr("%6%@4-g.N1.3F-kI1.Ue-.lJso"),
@@ -365,7 +373,7 @@ func ExampleMonitorsClient_BeginCreateOrUpdate() {
 	// res.NewRelicMonitorResource = armnewrelicobservability.NewRelicMonitorResource{
 	// 	Name: to.Ptr("fteaqmtwspcfgyopqzrepiqu"),
 	// 	Type: to.Ptr("hdj"),
-	// 	ID: to.Ptr("ilrwkvbuwu"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/NewRelic.Observability/monitors/myMonitor"),
 	// 	SystemData: &armnewrelicobservability.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-12-05T14:11:37.787Z"); return t}()),
 	// 		CreatedBy: to.Ptr("pcdjzdldbwsdlfi"),
@@ -377,6 +385,17 @@ func ExampleMonitorsClient_BeginCreateOrUpdate() {
 	// 	Location: to.Ptr("k"),
 	// 	Tags: map[string]*string{
 	// 		"key6976": to.Ptr("oaxfhf"),
+	// 	},
+	// 	Identity: &armnewrelicobservability.ManagedServiceIdentity{
+	// 		Type: to.Ptr(armnewrelicobservability.ManagedServiceIdentityTypeNone),
+	// 		PrincipalID: to.Ptr("cac47a92-2856-11ed-a261-0242ac120002"),
+	// 		TenantID: to.Ptr("cac47a92-2856-11ed-a261-0242ac120002"),
+	// 		UserAssignedIdentities: map[string]*armnewrelicobservability.UserAssignedIdentity{
+	// 			"key8903": &armnewrelicobservability.UserAssignedIdentity{
+	// 				ClientID: to.Ptr("cac47a92-2856-11ed-a261-0242ac120002"),
+	// 				PrincipalID: to.Ptr("cac47a92-2856-11ed-a261-0242ac120002"),
+	// 			},
+	// 		},
 	// 	},
 	// 	Properties: &armnewrelicobservability.MonitorProperties{
 	// 		AccountCreationSource: to.Ptr(armnewrelicobservability.AccountCreationSourceLIFTR),
@@ -409,6 +428,8 @@ func ExampleMonitorsClient_BeginCreateOrUpdate() {
 	// 			UsageType: to.Ptr(armnewrelicobservability.UsageTypePAYG),
 	// 		},
 	// 		ProvisioningState: to.Ptr(armnewrelicobservability.ProvisioningStateSucceeded),
+	// 		SaaSAzureSubscriptionStatus: to.Ptr("Subscribed"),
+	// 		SubscriptionState: to.Ptr("Suspended"),
 	// 		UserInfo: &armnewrelicobservability.UserInfo{
 	// 			Country: to.Ptr("hslqnwdanrconqyekwbnttaetv"),
 	// 			EmailAddress: to.Ptr("%6%@4-g.N1.3F-kI1.Ue-.lJso"),
@@ -420,7 +441,7 @@ func ExampleMonitorsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Monitors_Update_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/Monitors_Update_MaximumSet_Gen.json
 func ExampleMonitorsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -485,7 +506,7 @@ func ExampleMonitorsClient_Update() {
 	// res.NewRelicMonitorResource = armnewrelicobservability.NewRelicMonitorResource{
 	// 	Name: to.Ptr("fteaqmtwspcfgyopqzrepiqu"),
 	// 	Type: to.Ptr("hdj"),
-	// 	ID: to.Ptr("ilrwkvbuwu"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/NewRelic.Observability/monitors/myMonitor"),
 	// 	SystemData: &armnewrelicobservability.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-12-05T14:11:37.787Z"); return t}()),
 	// 		CreatedBy: to.Ptr("pcdjzdldbwsdlfi"),
@@ -551,7 +572,7 @@ func ExampleMonitorsClient_Update() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Monitors_Delete_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/Monitors_Delete_MaximumSet_Gen.json
 func ExampleMonitorsClient_BeginDelete_monitorsDeleteMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -572,7 +593,7 @@ func ExampleMonitorsClient_BeginDelete_monitorsDeleteMaximumSetGen() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Monitors_Delete_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/Monitors_Delete_MinimumSet_Gen.json
 func ExampleMonitorsClient_BeginDelete_monitorsDeleteMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -593,7 +614,7 @@ func ExampleMonitorsClient_BeginDelete_monitorsDeleteMinimumSetGen() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Monitors_GetMetricRules_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/Monitors_GetMetricRules_MaximumSet_Gen.json
 func ExampleMonitorsClient_GetMetricRules_monitorsGetMetricRulesMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -625,7 +646,7 @@ func ExampleMonitorsClient_GetMetricRules_monitorsGetMetricRulesMaximumSetGen() 
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Monitors_GetMetricRules_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/Monitors_GetMetricRules_MinimumSet_Gen.json
 func ExampleMonitorsClient_GetMetricRules_monitorsGetMetricRulesMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -646,10 +667,13 @@ func ExampleMonitorsClient_GetMetricRules_monitorsGetMetricRulesMinimumSetGen() 
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.MetricRules = armnewrelicobservability.MetricRules{
+	// 	FilteringTags: []*armnewrelicobservability.FilteringTag{
+	// 	},
+	// 	SendMetrics: to.Ptr(armnewrelicobservability.SendMetricsStatusDisabled),
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Monitors_GetMetricStatus_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/Monitors_GetMetricStatus_MaximumSet_Gen.json
 func ExampleMonitorsClient_GetMetricStatus_monitorsGetMetricStatusMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -662,7 +686,7 @@ func ExampleMonitorsClient_GetMetricStatus_monitorsGetMetricStatusMaximumSetGen(
 	}
 	res, err := clientFactory.NewMonitorsClient().GetMetricStatus(ctx, "rgNewRelic", "fhcjxnxumkdlgpwanewtkdnyuz", armnewrelicobservability.MetricsStatusRequest{
 		AzureResourceIDs: []*string{
-			to.Ptr("enfghpfw")},
+			to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgNewRelic/providers/NewRelic.Observability/monitors/fhcjxnxumkdlgpwanewtkdnyuz")},
 		UserEmail: to.Ptr("ruxvg@xqkmdhrnoo.hlmbpm"),
 	}, nil)
 	if err != nil {
@@ -673,11 +697,11 @@ func ExampleMonitorsClient_GetMetricStatus_monitorsGetMetricStatusMaximumSetGen(
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.MetricsStatusResponse = armnewrelicobservability.MetricsStatusResponse{
 	// 	AzureResourceIDs: []*string{
-	// 		to.Ptr("enfghpfw")},
+	// 		to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgNewRelic/providers/NewRelic.Observability/monitors/fhcjxnxumkdlgpwanewtkdnyuz")},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Monitors_GetMetricStatus_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/Monitors_GetMetricStatus_MinimumSet_Gen.json
 func ExampleMonitorsClient_GetMetricStatus_monitorsGetMetricStatusMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -689,6 +713,8 @@ func ExampleMonitorsClient_GetMetricStatus_monitorsGetMetricStatusMinimumSetGen(
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewMonitorsClient().GetMetricStatus(ctx, "rgNewRelic", "fhcjxnxumkdlgpwanewtkdnyuz", armnewrelicobservability.MetricsStatusRequest{
+		AzureResourceIDs: []*string{
+			to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgNewRelic/providers/NewRelic.Observability/monitors/fhcjxnxumkdlgpwanewtkdnyuz")},
 		UserEmail: to.Ptr("ruxvg@xqkmdhrnoo.hlmbpm"),
 	}, nil)
 	if err != nil {
@@ -698,10 +724,12 @@ func ExampleMonitorsClient_GetMetricStatus_monitorsGetMetricStatusMinimumSetGen(
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.MetricsStatusResponse = armnewrelicobservability.MetricsStatusResponse{
+	// 	AzureResourceIDs: []*string{
+	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Monitors_ListAppServices_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/Monitors_ListAppServices_MaximumSet_Gen.json
 func ExampleMonitorsClient_NewListAppServicesPager_monitorsListAppServicesMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -714,7 +742,7 @@ func ExampleMonitorsClient_NewListAppServicesPager_monitorsListAppServicesMaximu
 	}
 	pager := clientFactory.NewMonitorsClient().NewListAppServicesPager("rgNewRelic", "fhcjxnxumkdlgpwanewtkdnyuz", armnewrelicobservability.AppServicesGetRequest{
 		AzureResourceIDs: []*string{
-			to.Ptr("pvzrksrmzowobuhxpwiotnpcvjbu")},
+			to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgNewRelic/providers/NewRelic.Observability/monitors/fhcjxnxumkdlgpwanewtkdnyuz")},
 		UserEmail: to.Ptr("ruxvg@xqkmdhrnoo.hlmbpm"),
 	}, nil)
 	for pager.More() {
@@ -732,13 +760,13 @@ func ExampleMonitorsClient_NewListAppServicesPager_monitorsListAppServicesMaximu
 		// 		{
 		// 			AgentStatus: to.Ptr("vclwfecbppsfaygdccfu"),
 		// 			AgentVersion: to.Ptr("owxkssnbp"),
-		// 			AzureResourceID: to.Ptr("kjvbkwuqmouugrrz"),
+		// 			AzureResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgNewRelic/providers/NewRelic.Observability/monitors/fhcjxnxumkdlgpwanewtkdnyuz"),
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Monitors_ListAppServices_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/Monitors_ListAppServices_MinimumSet_Gen.json
 func ExampleMonitorsClient_NewListAppServicesPager_monitorsListAppServicesMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -750,6 +778,8 @@ func ExampleMonitorsClient_NewListAppServicesPager_monitorsListAppServicesMinimu
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := clientFactory.NewMonitorsClient().NewListAppServicesPager("rgNewRelic", "fhcjxnxumkdlgpwanewtkdnyuz", armnewrelicobservability.AppServicesGetRequest{
+		AzureResourceIDs: []*string{
+			to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgNewRelic/providers/NewRelic.Observability/monitors/fhcjxnxumkdlgpwanewtkdnyuz")},
 		UserEmail: to.Ptr("ruxvg@xqkmdhrnoo.hlmbpm"),
 	}, nil)
 	for pager.More() {
@@ -764,13 +794,12 @@ func ExampleMonitorsClient_NewListAppServicesPager_monitorsListAppServicesMinimu
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page.AppServicesListResponse = armnewrelicobservability.AppServicesListResponse{
 		// 	Value: []*armnewrelicobservability.AppServiceInfo{
-		// 		{
-		// 	}},
+		// 	},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Monitors_SwitchBilling_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/Monitors_SwitchBilling_MaximumSet_Gen.json
 func ExampleMonitorsClient_SwitchBilling_monitorsSwitchBillingMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -782,7 +811,7 @@ func ExampleMonitorsClient_SwitchBilling_monitorsSwitchBillingMaximumSetGen() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewMonitorsClient().SwitchBilling(ctx, "rgNewRelic", "fhcjxnxumkdlgpwanewtkdnyuz", armnewrelicobservability.SwitchBillingRequest{
-		AzureResourceID: to.Ptr("enfghpfw"),
+		AzureResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgNewRelic/providers/NewRelic.Observability/monitors/fhcjxnxumkdlgpwanewtkdnyuz"),
 		OrganizationID:  to.Ptr("k"),
 		PlanData: &armnewrelicobservability.PlanData{
 			BillingCycle:  to.Ptr(armnewrelicobservability.BillingCycleYEARLY),
@@ -801,7 +830,7 @@ func ExampleMonitorsClient_SwitchBilling_monitorsSwitchBillingMaximumSetGen() {
 	// res.NewRelicMonitorResource = armnewrelicobservability.NewRelicMonitorResource{
 	// 	Name: to.Ptr("fteaqmtwspcfgyopqzrepiqu"),
 	// 	Type: to.Ptr("hdj"),
-	// 	ID: to.Ptr("ilrwkvbuwu"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/NewRelic.Observability/monitors/myMonitor"),
 	// 	SystemData: &armnewrelicobservability.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-12-05T14:11:37.787Z"); return t}()),
 	// 		CreatedBy: to.Ptr("pcdjzdldbwsdlfi"),
@@ -867,7 +896,7 @@ func ExampleMonitorsClient_SwitchBilling_monitorsSwitchBillingMaximumSetGen() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Monitors_SwitchBilling_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/Monitors_SwitchBilling_MinimumSet_Gen.json
 func ExampleMonitorsClient_SwitchBilling_monitorsSwitchBillingMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -890,7 +919,7 @@ func ExampleMonitorsClient_SwitchBilling_monitorsSwitchBillingMinimumSetGen() {
 	// res.NewRelicMonitorResource = armnewrelicobservability.NewRelicMonitorResource{
 	// 	Name: to.Ptr("fteaqmtwspcfgyopqzrepiqu"),
 	// 	Type: to.Ptr("hdj"),
-	// 	ID: to.Ptr("ilrwkvbuwu"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/NewRelic.Observability/monitors/myMonitor"),
 	// 	SystemData: &armnewrelicobservability.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-12-05T14:11:37.787Z"); return t}()),
 	// 		CreatedBy: to.Ptr("pcdjzdldbwsdlfi"),
@@ -956,7 +985,7 @@ func ExampleMonitorsClient_SwitchBilling_monitorsSwitchBillingMinimumSetGen() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Monitors_ListHosts_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/Monitors_ListHosts_MaximumSet_Gen.json
 func ExampleMonitorsClient_NewListHostsPager_monitorsListHostsMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -993,7 +1022,7 @@ func ExampleMonitorsClient_NewListHostsPager_monitorsListHostsMaximumSetGen() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Monitors_ListHosts_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/Monitors_ListHosts_MinimumSet_Gen.json
 func ExampleMonitorsClient_NewListHostsPager_monitorsListHostsMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1021,13 +1050,12 @@ func ExampleMonitorsClient_NewListHostsPager_monitorsListHostsMinimumSetGen() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page.VMHostsListResponse = armnewrelicobservability.VMHostsListResponse{
 		// 	Value: []*armnewrelicobservability.VMInfo{
-		// 		{
-		// 	}},
+		// 	},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Monitors_ListMonitoredResources_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/Monitors_ListMonitoredResources_MaximumSet_Gen.json
 func ExampleMonitorsClient_NewListMonitoredResourcesPager_monitorsListMonitoredResourcesMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1052,7 +1080,7 @@ func ExampleMonitorsClient_NewListMonitoredResourcesPager_monitorsListMonitoredR
 		// page.MonitoredResourceListResponse = armnewrelicobservability.MonitoredResourceListResponse{
 		// 	Value: []*armnewrelicobservability.MonitoredResource{
 		// 		{
-		// 			ID: to.Ptr("qmtrcoxuctyphc"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/NewRelic.Observability/monitors/myMonitor"),
 		// 			ReasonForLogsStatus: to.Ptr("agzxviwuxgr"),
 		// 			ReasonForMetricsStatus: to.Ptr("k"),
 		// 			SendingLogs: to.Ptr(armnewrelicobservability.SendingLogsStatusEnabled),
@@ -1062,7 +1090,7 @@ func ExampleMonitorsClient_NewListMonitoredResourcesPager_monitorsListMonitoredR
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Monitors_ListMonitoredResources_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/Monitors_ListMonitoredResources_MinimumSet_Gen.json
 func ExampleMonitorsClient_NewListMonitoredResourcesPager_monitorsListMonitoredResourcesMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1086,13 +1114,43 @@ func ExampleMonitorsClient_NewListMonitoredResourcesPager_monitorsListMonitoredR
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page.MonitoredResourceListResponse = armnewrelicobservability.MonitoredResourceListResponse{
 		// 	Value: []*armnewrelicobservability.MonitoredResource{
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/LinkedResources_List.json
+func ExampleMonitorsClient_NewListLinkedResourcesPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnewrelicobservability.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewMonitorsClient().NewListLinkedResourcesPager("myResourceGroup", "myMonitor", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.LinkedResourceListResponse = armnewrelicobservability.LinkedResourceListResponse{
+		// 	Value: []*armnewrelicobservability.LinkedResource{
 		// 		{
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/NewRelic.Observability/monitors/myMonitor"),
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Monitors_VmHostPayload_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/Monitors_VmHostPayload_MaximumSet_Gen.json
 func ExampleMonitorsClient_VMHostPayload_monitorsVmHostPayloadMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1115,7 +1173,7 @@ func ExampleMonitorsClient_VMHostPayload_monitorsVmHostPayloadMaximumSetGen() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Monitors_VmHostPayload_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/Monitors_VmHostPayload_MinimumSet_Gen.json
 func ExampleMonitorsClient_VMHostPayload_monitorsVmHostPayloadMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

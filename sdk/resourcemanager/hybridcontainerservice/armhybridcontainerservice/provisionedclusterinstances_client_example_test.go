@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcontainerservice/armhybridcontainerservice"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2023-11-15-preview/examples/GetProvisionedClusterInstance.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/41e4538ed7bb3ceac3c1322c9455a0812ed110ac/specification/hybridaks/resource-manager/Microsoft.HybridContainerService/stable/2024-01-01/examples/GetProvisionedClusterInstance.json
 func ExampleProvisionedClusterInstancesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -36,7 +36,7 @@ func ExampleProvisionedClusterInstancesClient_Get() {
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.ProvisionedClusters = armhybridcontainerservice.ProvisionedClusters{
+	// res.ProvisionedCluster = armhybridcontainerservice.ProvisionedCluster{
 	// 	Name: to.Ptr("test-hybridakscluster"),
 	// 	Type: to.Ptr("Microsoft.HybridContainerService/provisionedClusterInstances"),
 	// 	ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.Kubernetes/connectedClusters/test-hybridakscluster/providers/Microsoft.HybridContainerService/provisionedClusterInstances/default"),
@@ -59,15 +59,6 @@ func ExampleProvisionedClusterInstancesClient_Get() {
 	// 				},
 	// 			},
 	// 			ControlPlane: &armhybridcontainerservice.ControlPlaneProfile{
-	// 				LinuxProfile: &armhybridcontainerservice.LinuxProfileProperties{
-	// 					SSH: &armhybridcontainerservice.LinuxProfilePropertiesSSH{
-	// 						PublicKeys: []*armhybridcontainerservice.LinuxProfilePropertiesSSHPublicKeysItem{
-	// 							{
-	// 								KeyData: to.Ptr("ssh-rsa AAAAB1NzaC1yc2EAAAADAQABAAACAQCY......"),
-	// 						}},
-	// 					},
-	// 				},
-	// 				OSType: to.Ptr(armhybridcontainerservice.OsTypeLinux),
 	// 				Count: to.Ptr[int32](1),
 	// 				VMSize: to.Ptr("Standard_A4_v2"),
 	// 			},
@@ -92,7 +83,7 @@ func ExampleProvisionedClusterInstancesClient_Get() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2023-11-15-preview/examples/PutProvisionedClusterInstance.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/41e4538ed7bb3ceac3c1322c9455a0812ed110ac/specification/hybridaks/resource-manager/Microsoft.HybridContainerService/stable/2024-01-01/examples/PutProvisionedClusterInstance.json
 func ExampleProvisionedClusterInstancesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -103,7 +94,7 @@ func ExampleProvisionedClusterInstancesClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewProvisionedClusterInstancesClient().BeginCreateOrUpdate(ctx, "subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.Kubernetes/connectedClusters/test-hybridakscluster", armhybridcontainerservice.ProvisionedClusters{
+	poller, err := clientFactory.NewProvisionedClusterInstancesClient().BeginCreateOrUpdate(ctx, "subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.Kubernetes/connectedClusters/test-hybridakscluster", armhybridcontainerservice.ProvisionedCluster{
 		ExtendedLocation: &armhybridcontainerservice.ExtendedLocation{
 			Name: to.Ptr("/subscriptions/a3e42606-29b1-4d7d-b1d9-9ff6b9d3c71b/resourcegroups/test-arcappliance-resgrp/providers/microsoft.extendedlocation/customlocations/testcustomlocation"),
 			Type: to.Ptr(armhybridcontainerservice.ExtendedLocationTypesCustomLocation),
@@ -111,7 +102,14 @@ func ExampleProvisionedClusterInstancesClient_BeginCreateOrUpdate() {
 		Properties: &armhybridcontainerservice.ProvisionedClusterProperties{
 			AgentPoolProfiles: []*armhybridcontainerservice.NamedAgentPoolProfile{
 				{
-					Name:   to.Ptr("default-nodepool-1"),
+					Name: to.Ptr("default-nodepool-1"),
+					NodeLabels: map[string]*string{
+						"env":  to.Ptr("dev"),
+						"goal": to.Ptr("test"),
+					},
+					NodeTaints: []*string{
+						to.Ptr("env=prod:NoSchedule"),
+						to.Ptr("sku=gpu:NoSchedule")},
 					OSType: to.Ptr(armhybridcontainerservice.OsTypeLinux),
 					Count:  to.Ptr[int32](1),
 					VMSize: to.Ptr("Standard_A4_v2"),
@@ -122,16 +120,10 @@ func ExampleProvisionedClusterInstancesClient_BeginCreateOrUpdate() {
 						to.Ptr("/subscriptions/a3e42606-29b1-4d7d-b1d9-9ff6b9d3c71b/resourceGroups/test-arcappliance-resgrp/providers/Microsoft.AzureStackHCI/logicalNetworks/test-vnet-static")},
 				},
 			},
+			ClusterVMAccessProfile: &armhybridcontainerservice.ClusterVMAccessProfile{
+				AuthorizedIPRanges: to.Ptr("127.0.0.1,127.0.0.2"),
+			},
 			ControlPlane: &armhybridcontainerservice.ControlPlaneProfile{
-				LinuxProfile: &armhybridcontainerservice.LinuxProfileProperties{
-					SSH: &armhybridcontainerservice.LinuxProfilePropertiesSSH{
-						PublicKeys: []*armhybridcontainerservice.LinuxProfilePropertiesSSHPublicKeysItem{
-							{
-								KeyData: to.Ptr("ssh-rsa AAAAB1NzaC1yc2EAAAADAQABAAACAQCY......"),
-							}},
-					},
-				},
-				OSType: to.Ptr(armhybridcontainerservice.OsTypeLinux),
 				Count:  to.Ptr[int32](1),
 				VMSize: to.Ptr("Standard_A4_v2"),
 			},
@@ -163,7 +155,7 @@ func ExampleProvisionedClusterInstancesClient_BeginCreateOrUpdate() {
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.ProvisionedClusters = armhybridcontainerservice.ProvisionedClusters{
+	// res.ProvisionedCluster = armhybridcontainerservice.ProvisionedCluster{
 	// 	Name: to.Ptr("test-hybridakscluster"),
 	// 	Type: to.Ptr("Microsoft.HybridContainerService/provisionedClusterInstances"),
 	// 	ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.Kubernetes/connectedClusters/test-hybridakscluster/providers/Microsoft.HybridContainerService/provisionedClusterInstances/default"),
@@ -175,51 +167,49 @@ func ExampleProvisionedClusterInstancesClient_BeginCreateOrUpdate() {
 	// 		AgentPoolProfiles: []*armhybridcontainerservice.NamedAgentPoolProfile{
 	// 			{
 	// 				Name: to.Ptr("default-nodepool-1"),
-	// 				OSType: to.Ptr(armhybridcontainerservice.OsTypeLinux),
-	// 				Count: to.Ptr[int32](1),
-	// 				VMSize: to.Ptr("Standard_A4_v2"),
-	// 		}},
-	// 		CloudProviderProfile: &armhybridcontainerservice.CloudProviderProfile{
-	// 			InfraNetworkProfile: &armhybridcontainerservice.CloudProviderProfileInfraNetworkProfile{
-	// 				VnetSubnetIDs: []*string{
-	// 					to.Ptr("/subscriptions/a3e42606-29b1-4d7d-b1d9-9ff6b9d3c71b/resourceGroups/test-arcappliance-resgrp/providers/Microsoft.AzureStackHCI/logicalNetworks/test-vnet-static")},
+	// 				NodeLabels: map[string]*string{
+	// 					"env": to.Ptr("dev"),
+	// 					"goal": to.Ptr("test"),
 	// 				},
-	// 			},
-	// 			ControlPlane: &armhybridcontainerservice.ControlPlaneProfile{
+	// 				NodeTaints: []*string{
+	// 					to.Ptr("env=prod:NoSchedule"),
+	// 					to.Ptr("sku=gpu:NoSchedule")},
+	// 					OSType: to.Ptr(armhybridcontainerservice.OsTypeLinux),
+	// 					Count: to.Ptr[int32](1),
+	// 					VMSize: to.Ptr("Standard_A4_v2"),
+	// 			}},
+	// 			CloudProviderProfile: &armhybridcontainerservice.CloudProviderProfile{
+	// 				InfraNetworkProfile: &armhybridcontainerservice.CloudProviderProfileInfraNetworkProfile{
+	// 					VnetSubnetIDs: []*string{
+	// 						to.Ptr("/subscriptions/a3e42606-29b1-4d7d-b1d9-9ff6b9d3c71b/resourceGroups/test-arcappliance-resgrp/providers/Microsoft.AzureStackHCI/logicalNetworks/test-vnet-static")},
+	// 					},
+	// 				},
+	// 				ControlPlane: &armhybridcontainerservice.ControlPlaneProfile{
+	// 					Count: to.Ptr[int32](1),
+	// 					VMSize: to.Ptr("Standard_A4_v2"),
+	// 				},
+	// 				KubernetesVersion: to.Ptr("v1.20.5"),
+	// 				LicenseProfile: &armhybridcontainerservice.ProvisionedClusterLicenseProfile{
+	// 					AzureHybridBenefit: to.Ptr(armhybridcontainerservice.AzureHybridBenefitNotApplicable),
+	// 				},
 	// 				LinuxProfile: &armhybridcontainerservice.LinuxProfileProperties{
 	// 					SSH: &armhybridcontainerservice.LinuxProfilePropertiesSSH{
 	// 						PublicKeys: []*armhybridcontainerservice.LinuxProfilePropertiesSSHPublicKeysItem{
 	// 							{
-	// 								KeyData: to.Ptr("ssh-rsa AAAAB1NzaC1yc2EAAAADAQABAAACAQCY......"),
+	// 								KeyData: to.Ptr("ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCY......."),
 	// 						}},
 	// 					},
 	// 				},
-	// 				OSType: to.Ptr(armhybridcontainerservice.OsTypeLinux),
-	// 				Count: to.Ptr[int32](1),
-	// 				VMSize: to.Ptr("Standard_A4_v2"),
-	// 			},
-	// 			KubernetesVersion: to.Ptr("v1.20.5"),
-	// 			LicenseProfile: &armhybridcontainerservice.ProvisionedClusterLicenseProfile{
-	// 				AzureHybridBenefit: to.Ptr(armhybridcontainerservice.AzureHybridBenefitNotApplicable),
-	// 			},
-	// 			LinuxProfile: &armhybridcontainerservice.LinuxProfileProperties{
-	// 				SSH: &armhybridcontainerservice.LinuxProfilePropertiesSSH{
-	// 					PublicKeys: []*armhybridcontainerservice.LinuxProfilePropertiesSSHPublicKeysItem{
-	// 						{
-	// 							KeyData: to.Ptr("ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCY......."),
-	// 					}},
+	// 				NetworkProfile: &armhybridcontainerservice.NetworkProfile{
+	// 					NetworkPolicy: to.Ptr(armhybridcontainerservice.NetworkPolicyCalico),
+	// 					PodCidr: to.Ptr("10.244.0.0/16"),
 	// 				},
+	// 				ProvisioningState: to.Ptr(armhybridcontainerservice.ResourceProvisioningStateSucceeded),
 	// 			},
-	// 			NetworkProfile: &armhybridcontainerservice.NetworkProfile{
-	// 				NetworkPolicy: to.Ptr(armhybridcontainerservice.NetworkPolicyCalico),
-	// 				PodCidr: to.Ptr("10.244.0.0/16"),
-	// 			},
-	// 			ProvisioningState: to.Ptr(armhybridcontainerservice.ResourceProvisioningStateSucceeded),
-	// 		},
-	// 	}
+	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2023-11-15-preview/examples/DeleteProvisionedClusterInstance.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/41e4538ed7bb3ceac3c1322c9455a0812ed110ac/specification/hybridaks/resource-manager/Microsoft.HybridContainerService/stable/2024-01-01/examples/DeleteProvisionedClusterInstance.json
 func ExampleProvisionedClusterInstancesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -240,7 +230,7 @@ func ExampleProvisionedClusterInstancesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2023-11-15-preview/examples/ListProvisionedClusterInstances.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/41e4538ed7bb3ceac3c1322c9455a0812ed110ac/specification/hybridaks/resource-manager/Microsoft.HybridContainerService/stable/2024-01-01/examples/ListProvisionedClusterInstances.json
 func ExampleProvisionedClusterInstancesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -262,8 +252,8 @@ func ExampleProvisionedClusterInstancesClient_NewListPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.ProvisionedClustersListResult = armhybridcontainerservice.ProvisionedClustersListResult{
-		// 	Value: []*armhybridcontainerservice.ProvisionedClusters{
+		// page.ProvisionedClusterListResult = armhybridcontainerservice.ProvisionedClusterListResult{
+		// 	Value: []*armhybridcontainerservice.ProvisionedCluster{
 		// 		{
 		// 			Name: to.Ptr("test-hybridakscluster"),
 		// 			Type: to.Ptr("Microsoft.HybridContainerService/provisionedClusterInstances"),
@@ -287,15 +277,6 @@ func ExampleProvisionedClusterInstancesClient_NewListPager() {
 		// 						},
 		// 					},
 		// 					ControlPlane: &armhybridcontainerservice.ControlPlaneProfile{
-		// 						LinuxProfile: &armhybridcontainerservice.LinuxProfileProperties{
-		// 							SSH: &armhybridcontainerservice.LinuxProfilePropertiesSSH{
-		// 								PublicKeys: []*armhybridcontainerservice.LinuxProfilePropertiesSSHPublicKeysItem{
-		// 									{
-		// 										KeyData: to.Ptr("ssh-rsa AAAAB1NzaC1yc2EAAAADAQABAAACAQCY......"),
-		// 								}},
-		// 							},
-		// 						},
-		// 						OSType: to.Ptr(armhybridcontainerservice.OsTypeLinux),
 		// 						Count: to.Ptr[int32](1),
 		// 						VMSize: to.Ptr("Standard_A4_v2"),
 		// 					},
@@ -322,7 +303,7 @@ func ExampleProvisionedClusterInstancesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2023-11-15-preview/examples/ProvisionedClusterInstanceGetUpgradeProfile.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/41e4538ed7bb3ceac3c1322c9455a0812ed110ac/specification/hybridaks/resource-manager/Microsoft.HybridContainerService/stable/2024-01-01/examples/ProvisionedClusterInstanceGetUpgradeProfile.json
 func ExampleProvisionedClusterInstancesClient_GetUpgradeProfile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -345,22 +326,7 @@ func ExampleProvisionedClusterInstancesClient_GetUpgradeProfile() {
 	// 	Type: to.Ptr("Microsoft.HybridContainerService/provisionedClusterInstances/upgradeprofiles"),
 	// 	ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.Kubernetes/connectedClusters/test-hybridakscluster/providers/Microsoft.HybridContainerService/provisionedClusterInstances/default/upgradeprofiles/default"),
 	// 	Properties: &armhybridcontainerservice.ProvisionedClusterUpgradeProfileProperties{
-	// 		AgentPoolProfiles: []*armhybridcontainerservice.ProvisionedClusterPoolUpgradeProfile{
-	// 			{
-	// 				Name: to.Ptr("agent"),
-	// 				KubernetesVersion: to.Ptr("1.7.7"),
-	// 				OSType: to.Ptr(armhybridcontainerservice.OsTypeLinux),
-	// 				Upgrades: []*armhybridcontainerservice.ProvisionedClusterPoolUpgradeProfileProperties{
-	// 					{
-	// 						KubernetesVersion: to.Ptr("1.7.9"),
-	// 					},
-	// 					{
-	// 						IsPreview: to.Ptr(true),
-	// 						KubernetesVersion: to.Ptr("1.7.11"),
-	// 				}},
-	// 		}},
 	// 		ControlPlaneProfile: &armhybridcontainerservice.ProvisionedClusterPoolUpgradeProfile{
-	// 			Name: to.Ptr("master"),
 	// 			KubernetesVersion: to.Ptr("1.7.7"),
 	// 			OSType: to.Ptr(armhybridcontainerservice.OsTypeLinux),
 	// 			Upgrades: []*armhybridcontainerservice.ProvisionedClusterPoolUpgradeProfileProperties{
@@ -376,7 +342,7 @@ func ExampleProvisionedClusterInstancesClient_GetUpgradeProfile() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2023-11-15-preview/examples/ProvisionedClusterInstanceListUserKubeconfig.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/41e4538ed7bb3ceac3c1322c9455a0812ed110ac/specification/hybridaks/resource-manager/Microsoft.HybridContainerService/stable/2024-01-01/examples/ProvisionedClusterInstanceListUserKubeconfig.json
 func ExampleProvisionedClusterInstancesClient_BeginListUserKubeconfig() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -413,7 +379,7 @@ func ExampleProvisionedClusterInstancesClient_BeginListUserKubeconfig() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2023-11-15-preview/examples/ProvisionedClusterInstanceListAdminKubeconfig.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/41e4538ed7bb3ceac3c1322c9455a0812ed110ac/specification/hybridaks/resource-manager/Microsoft.HybridContainerService/stable/2024-01-01/examples/ProvisionedClusterInstanceListAdminKubeconfig.json
 func ExampleProvisionedClusterInstancesClient_BeginListAdminKubeconfig() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

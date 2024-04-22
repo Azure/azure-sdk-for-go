@@ -1,6 +1,6 @@
 # Release History
 
-## 1.5.1 (Unreleased)
+## 1.7.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,30 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.7.0 (2024-04-02)
+
+### Features Added
+
+- Add in ability to handle emulator connection strings. (PR#22663)
+
+## 1.6.1 (2024-03-05)
+
+### Bugs Fixed
+
+- Fixed case where closing a Receiver/Sender after an idle period would take > 20 seconds. (PR#22509)
+- Fixed a potential memory leak when receiving a message on one receiver and attempting to settle with another. (PR#22431)
+
+## 1.6.0 (2024-01-17)
+
+### Features Added
+
+- ReceiverOptions.TimeAfterFirstMessage lets you configure the amount of time, after the first message in a batch is received, before we return messages. (PR#22154)
+
+### Bugs Fixed
+
+- Settling a message (using CompleteMessage, AbandonMessage, etc..) on a different Receiver instance than you received on no 
+  longer leaks memory. (PR#22253)
 
 ## 1.5.0 (2023-10-10)
 

@@ -15,7 +15,8 @@ import (
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/support/armsupport/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/support/armsupport"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -26,19 +27,27 @@ type ChatTranscriptsNoSubscriptionServer struct {
 	// Get is the fake for method ChatTranscriptsNoSubscriptionClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, supportTicketName string, chatTranscriptName string, options *armsupport.ChatTranscriptsNoSubscriptionClientGetOptions) (resp azfake.Responder[armsupport.ChatTranscriptsNoSubscriptionClientGetResponse], errResp azfake.ErrorResponder)
+
+	// NewListPager is the fake for method ChatTranscriptsNoSubscriptionClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(supportTicketName string, options *armsupport.ChatTranscriptsNoSubscriptionClientListOptions) (resp azfake.PagerResponder[armsupport.ChatTranscriptsNoSubscriptionClientListResponse])
 }
 
 // NewChatTranscriptsNoSubscriptionServerTransport creates a new instance of ChatTranscriptsNoSubscriptionServerTransport with the provided implementation.
 // The returned ChatTranscriptsNoSubscriptionServerTransport instance is connected to an instance of armsupport.ChatTranscriptsNoSubscriptionClient via the
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewChatTranscriptsNoSubscriptionServerTransport(srv *ChatTranscriptsNoSubscriptionServer) *ChatTranscriptsNoSubscriptionServerTransport {
-	return &ChatTranscriptsNoSubscriptionServerTransport{srv: srv}
+	return &ChatTranscriptsNoSubscriptionServerTransport{
+		srv:          srv,
+		newListPager: newTracker[azfake.PagerResponder[armsupport.ChatTranscriptsNoSubscriptionClientListResponse]](),
+	}
 }
 
 // ChatTranscriptsNoSubscriptionServerTransport connects instances of armsupport.ChatTranscriptsNoSubscriptionClient to instances of ChatTranscriptsNoSubscriptionServer.
 // Don't use this type directly, use NewChatTranscriptsNoSubscriptionServerTransport instead.
 type ChatTranscriptsNoSubscriptionServerTransport struct {
-	srv *ChatTranscriptsNoSubscriptionServer
+	srv          *ChatTranscriptsNoSubscriptionServer
+	newListPager *tracker[azfake.PagerResponder[armsupport.ChatTranscriptsNoSubscriptionClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for ChatTranscriptsNoSubscriptionServerTransport.
@@ -55,6 +64,8 @@ func (c *ChatTranscriptsNoSubscriptionServerTransport) Do(req *http.Request) (*h
 	switch method {
 	case "ChatTranscriptsNoSubscriptionClient.Get":
 		resp, err = c.dispatchGet(req)
+	case "ChatTranscriptsNoSubscriptionClient.NewListPager":
+		resp, err = c.dispatchNewListPager(req)
 	default:
 		err = fmt.Errorf("unhandled API %s", method)
 	}
@@ -95,6 +106,43 @@ func (c *ChatTranscriptsNoSubscriptionServerTransport) dispatchGet(req *http.Req
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ChatTranscriptDetails, req)
 	if err != nil {
 		return nil, err
+	}
+	return resp, nil
+}
+
+func (c *ChatTranscriptsNoSubscriptionServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if c.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := c.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/providers/Microsoft\.Support/supportTickets/(?P<supportTicketName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/chatTranscripts`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 1 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		supportTicketNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("supportTicketName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := c.srv.NewListPager(supportTicketNameParam, nil)
+		newListPager = &resp
+		c.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armsupport.ChatTranscriptsNoSubscriptionClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		c.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		c.newListPager.remove(req)
 	}
 	return resp, nil
 }

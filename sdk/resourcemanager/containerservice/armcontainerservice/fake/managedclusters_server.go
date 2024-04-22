@@ -65,6 +65,10 @@ type ManagedClustersServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GetOSOptions func(ctx context.Context, location string, options *armcontainerservice.ManagedClustersClientGetOSOptionsOptions) (resp azfake.Responder[armcontainerservice.ManagedClustersClientGetOSOptionsResponse], errResp azfake.ErrorResponder)
 
+	// GetSafeguardsVersions is the fake for method ManagedClustersClient.GetSafeguardsVersions
+	// HTTP status codes to indicate success: http.StatusOK
+	GetSafeguardsVersions func(ctx context.Context, location string, version string, options *armcontainerservice.ManagedClustersClientGetSafeguardsVersionsOptions) (resp azfake.Responder[armcontainerservice.ManagedClustersClientGetSafeguardsVersionsResponse], errResp azfake.ErrorResponder)
+
 	// GetUpgradeProfile is the fake for method ManagedClustersClient.GetUpgradeProfile
 	// HTTP status codes to indicate success: http.StatusOK
 	GetUpgradeProfile func(ctx context.Context, resourceGroupName string, resourceName string, options *armcontainerservice.ManagedClustersClientGetUpgradeProfileOptions) (resp azfake.Responder[armcontainerservice.ManagedClustersClientGetUpgradeProfileResponse], errResp azfake.ErrorResponder)
@@ -108,6 +112,10 @@ type ManagedClustersServer struct {
 	// NewListOutboundNetworkDependenciesEndpointsPager is the fake for method ManagedClustersClient.NewListOutboundNetworkDependenciesEndpointsPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListOutboundNetworkDependenciesEndpointsPager func(resourceGroupName string, resourceName string, options *armcontainerservice.ManagedClustersClientListOutboundNetworkDependenciesEndpointsOptions) (resp azfake.PagerResponder[armcontainerservice.ManagedClustersClientListOutboundNetworkDependenciesEndpointsResponse])
+
+	// NewListSafeguardsVersionsPager is the fake for method ManagedClustersClient.NewListSafeguardsVersionsPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListSafeguardsVersionsPager func(location string, options *armcontainerservice.ManagedClustersClientListSafeguardsVersionsOptions) (resp azfake.PagerResponder[armcontainerservice.ManagedClustersClientListSafeguardsVersionsResponse])
 
 	// BeginResetAADProfile is the fake for method ManagedClustersClient.BeginResetAADProfile
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
@@ -157,6 +165,7 @@ func NewManagedClustersServerTransport(srv *ManagedClustersServer) *ManagedClust
 		newListMeshRevisionProfilesPager: newTracker[azfake.PagerResponder[armcontainerservice.ManagedClustersClientListMeshRevisionProfilesResponse]](),
 		newListMeshUpgradeProfilesPager:  newTracker[azfake.PagerResponder[armcontainerservice.ManagedClustersClientListMeshUpgradeProfilesResponse]](),
 		newListOutboundNetworkDependenciesEndpointsPager: newTracker[azfake.PagerResponder[armcontainerservice.ManagedClustersClientListOutboundNetworkDependenciesEndpointsResponse]](),
+		newListSafeguardsVersionsPager:                   newTracker[azfake.PagerResponder[armcontainerservice.ManagedClustersClientListSafeguardsVersionsResponse]](),
 		beginResetAADProfile:                             newTracker[azfake.PollerResponder[armcontainerservice.ManagedClustersClientResetAADProfileResponse]](),
 		beginResetServicePrincipalProfile:                newTracker[azfake.PollerResponder[armcontainerservice.ManagedClustersClientResetServicePrincipalProfileResponse]](),
 		beginRotateClusterCertificates:                   newTracker[azfake.PollerResponder[armcontainerservice.ManagedClustersClientRotateClusterCertificatesResponse]](),
@@ -181,6 +190,7 @@ type ManagedClustersServerTransport struct {
 	newListMeshRevisionProfilesPager                 *tracker[azfake.PagerResponder[armcontainerservice.ManagedClustersClientListMeshRevisionProfilesResponse]]
 	newListMeshUpgradeProfilesPager                  *tracker[azfake.PagerResponder[armcontainerservice.ManagedClustersClientListMeshUpgradeProfilesResponse]]
 	newListOutboundNetworkDependenciesEndpointsPager *tracker[azfake.PagerResponder[armcontainerservice.ManagedClustersClientListOutboundNetworkDependenciesEndpointsResponse]]
+	newListSafeguardsVersionsPager                   *tracker[azfake.PagerResponder[armcontainerservice.ManagedClustersClientListSafeguardsVersionsResponse]]
 	beginResetAADProfile                             *tracker[azfake.PollerResponder[armcontainerservice.ManagedClustersClientResetAADProfileResponse]]
 	beginResetServicePrincipalProfile                *tracker[azfake.PollerResponder[armcontainerservice.ManagedClustersClientResetServicePrincipalProfileResponse]]
 	beginRotateClusterCertificates                   *tracker[azfake.PollerResponder[armcontainerservice.ManagedClustersClientRotateClusterCertificatesResponse]]
@@ -223,6 +233,8 @@ func (m *ManagedClustersServerTransport) Do(req *http.Request) (*http.Response, 
 		resp, err = m.dispatchGetMeshUpgradeProfile(req)
 	case "ManagedClustersClient.GetOSOptions":
 		resp, err = m.dispatchGetOSOptions(req)
+	case "ManagedClustersClient.GetSafeguardsVersions":
+		resp, err = m.dispatchGetSafeguardsVersions(req)
 	case "ManagedClustersClient.GetUpgradeProfile":
 		resp, err = m.dispatchGetUpgradeProfile(req)
 	case "ManagedClustersClient.NewListPager":
@@ -245,6 +257,8 @@ func (m *ManagedClustersServerTransport) Do(req *http.Request) (*http.Response, 
 		resp, err = m.dispatchNewListMeshUpgradeProfilesPager(req)
 	case "ManagedClustersClient.NewListOutboundNetworkDependenciesEndpointsPager":
 		resp, err = m.dispatchNewListOutboundNetworkDependenciesEndpointsPager(req)
+	case "ManagedClustersClient.NewListSafeguardsVersionsPager":
+		resp, err = m.dispatchNewListSafeguardsVersionsPager(req)
 	case "ManagedClustersClient.BeginResetAADProfile":
 		resp, err = m.dispatchBeginResetAADProfile(req)
 	case "ManagedClustersClient.BeginResetServicePrincipalProfile":
@@ -677,6 +691,39 @@ func (m *ManagedClustersServerTransport) dispatchGetOSOptions(req *http.Request)
 	return resp, nil
 }
 
+func (m *ManagedClustersServerTransport) dispatchGetSafeguardsVersions(req *http.Request) (*http.Response, error) {
+	if m.srv.GetSafeguardsVersions == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetSafeguardsVersions not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/safeguardsVersions/(?P<version>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
+	if err != nil {
+		return nil, err
+	}
+	versionParam, err := url.PathUnescape(matches[regex.SubexpIndex("version")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := m.srv.GetSafeguardsVersions(req.Context(), locationParam, versionParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SafeguardsAvailableVersion, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (m *ManagedClustersServerTransport) dispatchGetUpgradeProfile(req *http.Request) (*http.Response, error) {
 	if m.srv.GetUpgradeProfile == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetUpgradeProfile not implemented")}
@@ -1102,6 +1149,43 @@ func (m *ManagedClustersServerTransport) dispatchNewListOutboundNetworkDependenc
 	}
 	if !server.PagerResponderMore(newListOutboundNetworkDependenciesEndpointsPager) {
 		m.newListOutboundNetworkDependenciesEndpointsPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (m *ManagedClustersServerTransport) dispatchNewListSafeguardsVersionsPager(req *http.Request) (*http.Response, error) {
+	if m.srv.NewListSafeguardsVersionsPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListSafeguardsVersionsPager not implemented")}
+	}
+	newListSafeguardsVersionsPager := m.newListSafeguardsVersionsPager.get(req)
+	if newListSafeguardsVersionsPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/safeguardsVersions`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
+		if err != nil {
+			return nil, err
+		}
+		resp := m.srv.NewListSafeguardsVersionsPager(locationParam, nil)
+		newListSafeguardsVersionsPager = &resp
+		m.newListSafeguardsVersionsPager.add(req, newListSafeguardsVersionsPager)
+		server.PagerResponderInjectNextLinks(newListSafeguardsVersionsPager, req, func(page *armcontainerservice.ManagedClustersClientListSafeguardsVersionsResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListSafeguardsVersionsPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		m.newListSafeguardsVersionsPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListSafeguardsVersionsPager) {
+		m.newListSafeguardsVersionsPager.remove(req)
 	}
 	return resp, nil
 }

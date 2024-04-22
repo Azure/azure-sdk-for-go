@@ -10,6 +10,90 @@ package armconfluent
 
 import "time"
 
+// APIKeyOwnerEntity - API Key Owner details which can be a user or service account
+type APIKeyOwnerEntity struct {
+	// API Key owner id
+	ID *string
+
+	// Type of the owner service or user account
+	Kind *string
+
+	// API URL for accessing or modifying the referred object
+	Related *string
+
+	// CRN reference to the referred resource
+	ResourceName *string
+}
+
+// APIKeyProperties - API Key Properties
+type APIKeyProperties struct {
+	// Metadata of the record
+	Metadata *SCMetadataEntity
+
+	// Specification of the API Key
+	Spec *APIKeySpecEntity
+}
+
+// APIKeyRecord - Details API key
+type APIKeyRecord struct {
+	// Id of the api key
+	ID *string
+
+	// Type of api key
+	Kind *string
+
+	// API Key Properties
+	Properties *APIKeyProperties
+}
+
+// APIKeyResourceEntity - API Key Resource details which can be kafka cluster or schema registry cluster
+type APIKeyResourceEntity struct {
+	// The environment of the api key
+	Environment *string
+
+	// Id of the resource
+	ID *string
+
+	// Type of the owner which can be service or user account
+	Kind *string
+
+	// API URL for accessing or modifying the api key resource object
+	Related *string
+
+	// CRN reference to the referred resource
+	ResourceName *string
+}
+
+// APIKeySpecEntity - Spec of the API Key record
+type APIKeySpecEntity struct {
+	// The description of the API Key
+	Description *string
+
+	// The name of the API Key
+	Name *string
+
+	// Specification of the cluster
+	Owner *APIKeyOwnerEntity
+
+	// Specification of the cluster
+	Resource *APIKeyResourceEntity
+
+	// API Key Secret
+	Secret *string
+}
+
+// AccessCreateRoleBindingRequestModel - Create role binding request model
+type AccessCreateRoleBindingRequestModel struct {
+	// A CRN that specifies the scope and resource patterns necessary for the role to bind
+	CrnPattern *string
+
+	// The principal User or Group to bind the role to
+	Principal *string
+
+	// The name of the role to bind to the principal
+	RoleName *string
+}
+
 // AccessInviteUserAccountModel - Invite User Account model
 type AccessInviteUserAccountModel struct {
 	// Email of the logged in user
@@ -34,9 +118,9 @@ type AccessInvitedUserDetails struct {
 	InvitedEmail *string
 }
 
-// AccessListClusterSuccessResponse - List cluster success response
+// AccessListClusterSuccessResponse - Details of the clusters returned on successful response
 type AccessListClusterSuccessResponse struct {
-	// Data of the environments list
+	// List of clusters
 	Data []*ClusterRecord
 
 	// Type of response
@@ -46,15 +130,15 @@ type AccessListClusterSuccessResponse struct {
 	Metadata *ListMetadata
 }
 
-// AccessListEnvironmentsSuccessResponse - List environments success response
+// AccessListEnvironmentsSuccessResponse - Details of the environments returned on successful response
 type AccessListEnvironmentsSuccessResponse struct {
-	// Data of the environments list
+	// Environment list data
 	Data []*EnvironmentRecord
 
 	// Type of response
 	Kind *string
 
-	// Metadata of the list
+	// Metadata of the environment list
 	Metadata *ListMetadata
 }
 
@@ -70,9 +154,9 @@ type AccessListInvitationsSuccessResponse struct {
 	Metadata *ListMetadata
 }
 
-// AccessListRoleBindingsSuccessResponse - List cluster success response
+// AccessListRoleBindingsSuccessResponse - Details of the role bindings returned on successful response
 type AccessListRoleBindingsSuccessResponse struct {
-	// Data of the environments list
+	// List of role binding
 	Data []*RoleBindingRecord
 
 	// Type of response
@@ -98,6 +182,18 @@ type AccessListServiceAccountsSuccessResponse struct {
 type AccessListUsersSuccessResponse struct {
 	// Data of the users list
 	Data []*UserRecord
+
+	// Type of response
+	Kind *string
+
+	// Metadata of the list
+	Metadata *ListMetadata
+}
+
+// AccessRoleBindingNameListSuccessResponse - Details of the role binding names returned on successful response
+type AccessRoleBindingNameListSuccessResponse struct {
+	// List of role binding names
+	Data []*string
 
 	// Type of response
 	Kind *string
@@ -208,15 +304,27 @@ type ClusterNetworkEntity struct {
 	ResourceName *string
 }
 
-// ClusterRecord - Record of the environment
+// ClusterProperties - Cluster Properties
+type ClusterProperties struct {
+	// Metadata of the record
+	Metadata *SCMetadataEntity
+
+	// Specification of the cluster
+	Spec *SCClusterSpecEntity
+
+	// Specification of the cluster status
+	Status *ClusterStatusEntity
+}
+
+// ClusterRecord - Details of cluster record
 type ClusterRecord struct {
-	// Display name of the user
+	// Display name of the cluster
 	DisplayName *string
 
-	// Id of the environment
+	// Id of the cluster
 	ID *string
 
-	// Type of environment
+	// Type of cluster
 	Kind *string
 
 	// Metadata of the record
@@ -277,7 +385,22 @@ type ClusterStatusEntity struct {
 	Phase *string
 }
 
-// EnvironmentRecord - Record of the environment
+// CreateAPIKeyModel - Create API Key model
+type CreateAPIKeyModel struct {
+	// Description of the API Key
+	Description *string
+
+	// Name of the API Key
+	Name *string
+}
+
+// EnvironmentProperties - Environment resource property
+type EnvironmentProperties struct {
+	// Metadata of the record
+	Metadata *SCMetadataEntity
+}
+
+// EnvironmentRecord - Details about environment name, metadata and environment id of an environment
 type EnvironmentRecord struct {
 	// Display name of the user
 	DisplayName *string
@@ -305,6 +428,15 @@ type ErrorResponseBody struct {
 
 	// READ-ONLY; Error target
 	Target *string
+}
+
+// GetEnvironmentsResponse - Result of GET request to list Confluent operations.
+type GetEnvironmentsResponse struct {
+	// URL to get the next set of environment records if there are any.
+	NextLink *string
+
+	// List of environments in a confluent organization
+	Value []*SCEnvironmentRecord
 }
 
 // InvitationRecord - Record of the invitation
@@ -346,6 +478,15 @@ type ListAccessRequestModel struct {
 	SearchFilters map[string]*string
 }
 
+// ListClustersSuccessResponse - Result of GET request to list clusters in the environment of a confluent organization
+type ListClustersSuccessResponse struct {
+	// URL to get the next set of cluster records if there are any.
+	NextLink *string
+
+	// List of clusters in an environment of a confluent organization
+	Value []*SCClusterRecord
+}
+
 // ListMetadata - Metadata of the list
 type ListMetadata struct {
 	// First page of the list
@@ -362,6 +503,22 @@ type ListMetadata struct {
 
 	// Total size of the list
 	TotalSize *int32
+}
+
+// ListRegionsSuccessResponse - Result of POST request to list regions supported by confluent
+type ListRegionsSuccessResponse struct {
+	// List of regions supported by confluent
+	Data []*RegionRecord
+}
+
+// ListSchemaRegistryClustersResponse - Result of GET request to list schema registry clusters in the environment of a confluent
+// organization
+type ListSchemaRegistryClustersResponse struct {
+	// URL to get the next set of schema registry cluster records if there are any.
+	NextLink *string
+
+	// List of schema registry clusters in an environment of a confluent organization
+	Value []*SchemaRegistryClusterRecord
 }
 
 // MetadataEntity - Metadata of the data record
@@ -511,18 +668,52 @@ type OrganizationResourceUpdate struct {
 	Tags map[string]*string
 }
 
+// RegionProperties - Region Properties
+type RegionProperties struct {
+	// Metadata of the record
+	Metadata *SCMetadataEntity
+
+	// Specification of the region
+	Spec *RegionSpecEntity
+}
+
+// RegionRecord - Details of region record
+type RegionRecord struct {
+	// Id of the cluster
+	ID *string
+
+	// Kind of the cluster
+	Kind *string
+
+	// Region Properties
+	Properties *RegionProperties
+}
+
+// RegionSpecEntity - Region spec details
+type RegionSpecEntity struct {
+	// Cloud provider name
+	Cloud *string
+
+	// Display Name of the region
+	Name     *string
+	Packages []*string
+
+	// Region name
+	RegionName *string
+}
+
 // ResourceProviderDefaultErrorResponse - Default error response for resource provider
 type ResourceProviderDefaultErrorResponse struct {
 	// READ-ONLY; Response body of Error
 	Error *ErrorResponseBody
 }
 
-// RoleBindingRecord - Record of the environment
+// RoleBindingRecord - Details on principal, role name and crn pattern of a role binding
 type RoleBindingRecord struct {
 	// A CRN that specifies the scope and resource patterns necessary for the role to bind
 	CrnPattern *string
 
-	// Id of the role
+	// Id of the role binding
 	ID *string
 
 	// The type of the resource.
@@ -536,6 +727,201 @@ type RoleBindingRecord struct {
 
 	// The name of the role to bind to the principal
 	RoleName *string
+}
+
+// SCClusterByokEntity - The network associated with this object
+type SCClusterByokEntity struct {
+	// ID of the referred resource
+	ID *string
+
+	// API URL for accessing or modifying the referred object
+	Related *string
+
+	// CRN reference to the referred resource
+	ResourceName *string
+}
+
+// SCClusterNetworkEnvironmentEntity - The environment or the network to which cluster belongs
+type SCClusterNetworkEnvironmentEntity struct {
+	// Environment of the referred resource
+	Environment *string
+
+	// ID of the referred resource
+	ID *string
+
+	// API URL for accessing or modifying the referred object
+	Related *string
+
+	// CRN reference to the referred resource
+	ResourceName *string
+}
+
+// SCClusterRecord - Details of cluster record
+type SCClusterRecord struct {
+	// Id of the cluster
+	ID *string
+
+	// Type of cluster
+	Kind *string
+
+	// Display name of the cluster
+	Name *string
+
+	// Cluster Properties
+	Properties *ClusterProperties
+}
+
+// SCClusterSpecEntity - Spec of the cluster record
+type SCClusterSpecEntity struct {
+	// The Kafka API cluster endpoint
+	APIEndpoint *string
+
+	// The availability zone configuration of the cluster
+	Availability *string
+
+	// Specification of the cluster byok
+	Byok *SCClusterByokEntity
+
+	// The cloud service provider
+	Cloud *string
+
+	// Specification of the cluster configuration
+	Config *ClusterConfigEntity
+
+	// Specification of the cluster environment
+	Environment *SCClusterNetworkEnvironmentEntity
+
+	// The cluster HTTP request URL.
+	HTTPEndpoint *string
+
+	// The bootstrap endpoint used by Kafka clients to connect to the cluster
+	KafkaBootstrapEndpoint *string
+
+	// The name of the cluster
+	Name *string
+
+	// Specification of the cluster network
+	Network *SCClusterNetworkEnvironmentEntity
+
+	// The cloud service provider region
+	Region *string
+
+	// type of zone availability
+	Zone *string
+}
+
+// SCConfluentListMetadata - Metadata of the list
+type SCConfluentListMetadata struct {
+	// First page of the list
+	First *string
+
+	// Last page of the list
+	Last *string
+
+	// Next page of the list
+	Next *string
+
+	// Previous page of the list
+	Prev *string
+
+	// Total size of the list
+	TotalSize *int32
+}
+
+// SCEnvironmentRecord - Details about environment name, metadata and environment id of an environment
+type SCEnvironmentRecord struct {
+	// Id of the environment
+	ID *string
+
+	// Type of environment
+	Kind *string
+
+	// Display name of the environment
+	Name *string
+
+	// Environment properties
+	Properties *EnvironmentProperties
+}
+
+// SCMetadataEntity - Metadata of the data record
+type SCMetadataEntity struct {
+	// Created Date Time
+	CreatedTimestamp *string
+
+	// Deleted Date time
+	DeletedTimestamp *string
+
+	// Resource name of the record
+	ResourceName *string
+
+	// Self lookup url
+	Self *string
+
+	// Updated Date time
+	UpdatedTimestamp *string
+}
+
+// SchemaRegistryClusterEnvironmentRegionEntity - The environment associated with this object
+type SchemaRegistryClusterEnvironmentRegionEntity struct {
+	// ID of the referred resource
+	ID *string
+
+	// API URL for accessing or modifying the referred object
+	Related *string
+
+	// CRN reference to the referred resource
+	ResourceName *string
+}
+
+// SchemaRegistryClusterProperties - Schema Registry Cluster Properties
+type SchemaRegistryClusterProperties struct {
+	// Metadata of the record
+	Metadata *SCMetadataEntity
+
+	// Specification of the schema registry cluster
+	Spec *SchemaRegistryClusterSpecEntity
+
+	// Specification of the cluster status
+	Status *SchemaRegistryClusterStatusEntity
+}
+
+// SchemaRegistryClusterRecord - Details of schema registry cluster record
+type SchemaRegistryClusterRecord struct {
+	// Id of the cluster
+	ID *string
+
+	// Kind of the cluster
+	Kind *string
+
+	// Schema Registry Cluster Properties
+	Properties *SchemaRegistryClusterProperties
+}
+
+// SchemaRegistryClusterSpecEntity - Details of schema registry cluster spec
+type SchemaRegistryClusterSpecEntity struct {
+	// The cloud service provider
+	Cloud *string
+
+	// Environment details of the schema registry cluster
+	Environment *SchemaRegistryClusterEnvironmentRegionEntity
+
+	// Http endpoint of the cluster
+	HTTPEndpoint *string
+
+	// Name of the schema registry cluster
+	Name *string
+
+	// Type of the cluster package Advanced, essentials
+	Package *string
+
+	// Region details of the schema registry cluster
+	Region *SchemaRegistryClusterEnvironmentRegionEntity
+}
+
+// SchemaRegistryClusterStatusEntity - Status of the schema registry cluster record
+type SchemaRegistryClusterStatusEntity struct {
+	// The lifecycle phase of the cluster
+	Phase *string
 }
 
 // ServiceAccountRecord - Record of the service account

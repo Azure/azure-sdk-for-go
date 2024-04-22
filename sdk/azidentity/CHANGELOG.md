@@ -1,17 +1,63 @@
 # Release History
 
-## 1.5.0-beta.3 (Unreleased)
+## 1.6.0-beta.4 (Unreleased)
 
 ### Features Added
-* Added `AzureCLICredentialOptions.Subscription`
 
 ### Breaking Changes
 
 ### Bugs Fixed
-* `azidentity.doForClient` method no longer removes headers from the incoming request
 
 ### Other Changes
-* Move to latest released versions of net, crypto, core, etc...
+
+## 1.6.0-beta.3 (2024-04-09)
+
+### Breaking Changes
+* `DefaultAzureCredential` now sends a probe request with no retries for IMDS managed identity
+  environments to avoid excessive retry delays when the IMDS endpoint is not available. This
+  should improve credential chain resolution for local development scenarios.
+
+### Bugs Fixed
+* `ManagedIdentityCredential` now specifies resource IDs correctly for Azure Container Instances
+
+## 1.6.0-beta.2 (2024-02-06)
+
+### Breaking Changes
+> These changes affect only code written against a beta version such as v1.6.0-beta.1
+* Replaced `ErrAuthenticationRequired` with `AuthenticationRequiredError`, a struct
+  type that carries the `TokenRequestOptions` passed to the `GetToken` call which
+  returned the error.
+
+### Bugs Fixed
+* Fixed more cases in which credential chains like `DefaultAzureCredential`
+  should try their next credential after attempting managed identity
+  authentication in a Docker Desktop container
+
+### Other Changes
+* `AzureCLICredential` uses the CLI's `expires_on` value for token expiration
+
+## 1.6.0-beta.1 (2024-01-17)
+
+### Features Added
+* Restored persistent token caching API first added in v1.5.0-beta.1
+* Added `AzureCLICredentialOptions.Subscription`
+
+## 1.5.1 (2024-01-17)
+
+### Bugs Fixed
+* `InteractiveBrowserCredential` handles `AdditionallyAllowedTenants` correctly
+
+## 1.5.0 (2024-01-16)
+
+### Breaking Changes
+> These changes affect only code written against a beta version such as v1.5.0-beta.1
+* Removed persistent token caching. It will return in v1.6.0-beta.1
+
+### Bugs Fixed
+* Credentials now preserve MSAL headers e.g. X-Client-Sku
+
+### Other Changes
+* Upgraded dependencies
 
 ## 1.5.0-beta.2 (2023-11-07)
 
@@ -122,7 +168,7 @@
 
 ### Features Added
 * By default, credentials set client capability "CP1" to enable support for
-  [Continuous Access Evaluation (CAE)](https://docs.microsoft.com/azure/active-directory/develop/app-resilience-continuous-access-evaluation).
+  [Continuous Access Evaluation (CAE)](https://learn.microsoft.com/entra/identity-platform/app-resilience-continuous-access-evaluation).
   This indicates to Microsoft Entra ID that your application can handle CAE claims challenges.
   You can disable this behavior by setting the environment variable "AZURE_IDENTITY_DISABLE_CP1" to "true".
 * `InteractiveBrowserCredentialOptions.LoginHint` enables pre-populating the login

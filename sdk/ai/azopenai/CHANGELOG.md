@@ -1,6 +1,6 @@
 # Release History
 
-## 0.4.1 (Unreleased)
+## 0.5.2 (Unreleased)
 
 ### Features Added
 
@@ -8,7 +8,36 @@
 
 ### Bugs Fixed
 
+- EventReader can now handle chunks of text larger than 64k. Thank you @ChrisTrenkamp for finding the issue and suggesting a fix. (PR#22703)
+
 ### Other Changes
+
+## 0.5.1 (2024-04-02)
+
+### Features Added
+
+- Updating to the `2024-03-01-preview` API version. This adds support for using Dimensions with Embeddings as well as the ability to choose the embeddings format. 
+  This update also adds in the `Model` field for ChatCompletions responses. PR(#22603)
+
+## 0.5.0 (2024-03-05)
+
+### Features Added
+
+- Updating to the `2024-02-15-preview` API version.
+- `GetAudioSpeech` enables translating text to speech.
+
+### Breaking Changes
+
+- Citations, previously returned as an unparsed JSON blob, are now deserialized into a real type in `ChatResponseMessage.Citations`.
+- `AzureCognitiveSearchChatExtensionConfiguration` has been renamed to `AzureSearchChatExtensionConfiguration`.
+- `AzureCognitiveSearchChatExtensionParameters` has been renamed to `AzureSearchChatExtensionParameters`.
+
+## 0.4.1 (2024-01-16)
+
+### Bugs Fixed
+
+- `AudioTranscriptionOptions.Filename` and `AudioTranslationOptions.Filename` fields are now properly propagated, allowing 
+  for disambiguating the format of an audio file when OpenAI can't detect it. (PR#22210) 
 
 ## 0.4.0 (2023-12-11)
 

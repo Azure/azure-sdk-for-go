@@ -1,6 +1,6 @@
 # Azure Stream Analytics Module for Go
 
-[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/streamanalytics/armstreamanalytics)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/streamanalytics/armstreamanalytics)
+[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/streamanalytics/armstreamanalytics/v2)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/streamanalytics/armstreamanalytics/v2)
 
 The `armstreamanalytics` module provides operations for working with Azure Stream Analytics.
 
@@ -20,7 +20,7 @@ This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for ve
 Install the Azure Stream Analytics module:
 
 ```sh
-go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/streamanalytics/armstreamanalytics
+go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/streamanalytics/armstreamanalytics/v2
 ```
 
 ## Authorization
@@ -57,7 +57,7 @@ clientFactory, err := armstreamanalytics.NewClientFactory(<subscription ID>, cre
 A client groups a set of related APIs, providing access to its functionality.  Create one or more clients to access the APIs you require using client factory.
 
 ```go
-client := clientFactory.NewInputsClient()
+client := clientFactory.NewClustersClient()
 ```
 
 ## Fakes

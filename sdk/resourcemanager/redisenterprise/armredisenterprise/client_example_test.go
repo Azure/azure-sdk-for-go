@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redisenterprise/armredisenterprise"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redisenterprise/armredisenterprise/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/redisenterprise/resource-manager/Microsoft.Cache/stable/2022-01-01/examples/RedisEnterpriseCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/redisenterprise/resource-manager/Microsoft.Cache/stable/2023-11-01/examples/RedisEnterpriseCreate.json
 func ExampleClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -34,7 +34,22 @@ func ExampleClient_BeginCreate() {
 		Tags: map[string]*string{
 			"tag1": to.Ptr("value1"),
 		},
+		Identity: &armredisenterprise.ManagedServiceIdentity{
+			Type: to.Ptr(armredisenterprise.ManagedServiceIdentityTypeUserAssigned),
+			UserAssignedIdentities: map[string]*armredisenterprise.UserAssignedIdentity{
+				"/subscriptions/your-subscription/resourceGroups/your-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/your-identity": {},
+			},
+		},
 		Properties: &armredisenterprise.ClusterProperties{
+			Encryption: &armredisenterprise.ClusterPropertiesEncryption{
+				CustomerManagedKeyEncryption: &armredisenterprise.ClusterPropertiesEncryptionCustomerManagedKeyEncryption{
+					KeyEncryptionKeyIdentity: &armredisenterprise.ClusterPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity{
+						IdentityType:                   to.Ptr(armredisenterprise.CmkIdentityTypeUserAssignedIdentity),
+						UserAssignedIdentityResourceID: to.Ptr("/subscriptions/your-subscription/resourceGroups/your-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/your-identity"),
+					},
+					KeyEncryptionKeyURL: to.Ptr("https://your-kv.vault.azure.net/keys/your-key/your-key-version"),
+				},
+			},
 			MinimumTLSVersion: to.Ptr(armredisenterprise.TLSVersionOne2),
 		},
 		SKU: &armredisenterprise.SKU{
@@ -64,6 +79,15 @@ func ExampleClient_BeginCreate() {
 	// 	Tags: map[string]*string{
 	// 		"tag1": to.Ptr("value1"),
 	// 	},
+	// 	Identity: &armredisenterprise.ManagedServiceIdentity{
+	// 		Type: to.Ptr(armredisenterprise.ManagedServiceIdentityTypeUserAssigned),
+	// 		UserAssignedIdentities: map[string]*armredisenterprise.UserAssignedIdentity{
+	// 			"/subscriptions/your-subscription/resourceGroups/your-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/your-identity": &armredisenterprise.UserAssignedIdentity{
+	// 				ClientID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 			},
+	// 		},
+	// 	},
 	// 	Properties: &armredisenterprise.ClusterProperties{
 	// 		HostName: to.Ptr("cache1.westus.something.azure.net"),
 	// 		MinimumTLSVersion: to.Ptr(armredisenterprise.TLSVersionOne2),
@@ -82,7 +106,7 @@ func ExampleClient_BeginCreate() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/redisenterprise/resource-manager/Microsoft.Cache/stable/2022-01-01/examples/RedisEnterpriseUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/redisenterprise/resource-manager/Microsoft.Cache/stable/2023-11-01/examples/RedisEnterpriseUpdate.json
 func ExampleClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -123,7 +147,12 @@ func ExampleClient_BeginUpdate() {
 	// 	Tags: map[string]*string{
 	// 		"tag1": to.Ptr("value1"),
 	// 	},
+	// 	Identity: &armredisenterprise.ManagedServiceIdentity{
+	// 		Type: to.Ptr(armredisenterprise.ManagedServiceIdentityTypeNone),
+	// 	},
 	// 	Properties: &armredisenterprise.ClusterProperties{
+	// 		Encryption: &armredisenterprise.ClusterPropertiesEncryption{
+	// 		},
 	// 		HostName: to.Ptr("cache1.westus.something.azure.com"),
 	// 		MinimumTLSVersion: to.Ptr(armredisenterprise.TLSVersionOne2),
 	// 		ProvisioningState: to.Ptr(armredisenterprise.ProvisioningStateSucceeded),
@@ -141,7 +170,7 @@ func ExampleClient_BeginUpdate() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/redisenterprise/resource-manager/Microsoft.Cache/stable/2022-01-01/examples/RedisEnterpriseDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/redisenterprise/resource-manager/Microsoft.Cache/stable/2023-11-01/examples/RedisEnterpriseDelete.json
 func ExampleClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -162,7 +191,7 @@ func ExampleClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/redisenterprise/resource-manager/Microsoft.Cache/stable/2022-01-01/examples/RedisEnterpriseGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/redisenterprise/resource-manager/Microsoft.Cache/stable/2023-11-01/examples/RedisEnterpriseGet.json
 func ExampleClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -219,7 +248,7 @@ func ExampleClient_Get() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/redisenterprise/resource-manager/Microsoft.Cache/stable/2022-01-01/examples/RedisEnterpriseListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/redisenterprise/resource-manager/Microsoft.Cache/stable/2023-11-01/examples/RedisEnterpriseListByResourceGroup.json
 func ExampleClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -270,7 +299,7 @@ func ExampleClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/redisenterprise/resource-manager/Microsoft.Cache/stable/2022-01-01/examples/RedisEnterpriseList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/redisenterprise/resource-manager/Microsoft.Cache/stable/2023-11-01/examples/RedisEnterpriseList.json
 func ExampleClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

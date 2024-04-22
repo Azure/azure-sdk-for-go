@@ -52,7 +52,7 @@ func ExampleClient_GetChatCompletions_bringYourOwnDataWithCognitiveSearch() {
 		},
 		MaxTokens: to.Ptr[int32](512),
 		AzureExtensionsOptions: []azopenai.AzureChatExtensionConfigurationClassification{
-			&azopenai.AzureCognitiveSearchChatExtensionConfiguration{
+			&azopenai.AzureSearchChatExtensionConfiguration{
 				// This allows Azure OpenAI to use an Azure Cognitive Search index.
 				//
 				// > Because the model has access to, and can reference specific sources to support its responses, answers are not only based on its pretrained knowledge
@@ -60,7 +60,7 @@ func ExampleClient_GetChatCompletions_bringYourOwnDataWithCognitiveSearch() {
 				// > based on outdated or incorrect information.
 				//
 				// Quote from here: https://learn.microsoft.com/en-us/azure/ai-services/openai/concepts/use-your-data
-				Parameters: &azopenai.AzureCognitiveSearchChatExtensionParameters{
+				Parameters: &azopenai.AzureSearchChatExtensionParameters{
 					Endpoint:  &searchEndpoint,
 					IndexName: &searchIndex,
 					Authentication: &azopenai.OnYourDataAPIKeyAuthenticationOptions{
@@ -80,9 +80,7 @@ func ExampleClient_GetChatCompletions_bringYourOwnDataWithCognitiveSearch() {
 	// Contains contextual information from your Azure chat completion extensions, configured above in `AzureExtensionsOptions`
 	msgContext := resp.Choices[0].Message.Context
 
-	fmt.Fprintf(os.Stderr, "Extensions Context Role: %s\nExtensions Context (length): %d\n",
-		*msgContext.Messages[0].Role,
-		len(*msgContext.Messages[0].Content))
+	fmt.Fprintf(os.Stderr, "Extensions Context (length): %d\n", len(*msgContext.Citations[0].Content))
 
 	fmt.Fprintf(os.Stderr, "ChatRole: %s\nChat content: %s\n",
 		*resp.Choices[0].Message.Role,

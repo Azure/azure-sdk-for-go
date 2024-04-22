@@ -758,7 +758,12 @@ func getPipeline(srv *mock.Server) Pipeline {
 		"test",
 		"v0.1.0",
 		PipelineOptions{PerRetry: []policy.Policy{NewLogPolicy(nil)}},
-		&policy.ClientOptions{Transport: srv},
+		&policy.ClientOptions{
+			Retry: policy.RetryOptions{
+				MaxRetryDelay: 1 * time.Second,
+			},
+			Transport: srv,
+		},
 	)
 }
 
@@ -1205,4 +1210,49 @@ func TestNewFakePoller(t *testing.T) {
 	result, err := poller.PollUntilDone(context.Background(), &PollUntilDoneOptions{Frequency: time.Millisecond})
 	require.NoError(t, err)
 	require.Nil(t, result.Field)
+}
+
+func TestNewPollerWithThrottling(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	srv.AppendResponse(mock.WithBody([]byte(statusInProgress)))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusTooManyRequests))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusTooManyRequests))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusTooManyRequests))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusTooManyRequests))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusTooManyRequests))
+	srv.AppendResponse(mock.WithBody([]byte(statusSucceeded)))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusTooManyRequests))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusTooManyRequests))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusTooManyRequests))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusTooManyRequests))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusTooManyRequests))
+	srv.AppendResponse(mock.WithBody([]byte(successResp)))
+	resp, closed := initialResponse(context.Background(), http.MethodPatch, srv.URL(), strings.NewReader(provStateStarted))
+	resp.Header.Set(shared.HeaderAzureAsync, srv.URL())
+	resp.StatusCode = http.StatusCreated
+	pl := getPipeline(srv)
+	poller, err := NewPoller[mockType](resp, pl, nil)
+	require.NoError(t, err)
+	require.True(t, closed())
+	if pt := typeOfOpField(poller); pt != reflect.TypeOf((*async.Poller[mockType])(nil)) {
+		t.Fatalf("unexpected poller type %s", pt.String())
+	}
+	tk, err := poller.ResumeToken()
+	require.NoError(t, err)
+	poller, err = NewPollerFromResumeToken[mockType](tk, pl, nil)
+	require.NoError(t, err)
+	result, err := poller.PollUntilDone(context.Background(), &PollUntilDoneOptions{Frequency: time.Millisecond})
+	require.Zero(t, result)
+	var respErr *exported.ResponseError
+	require.ErrorAs(t, err, &respErr)
+	require.EqualValues(t, http.StatusTooManyRequests, respErr.StatusCode)
+	result, err = poller.PollUntilDone(context.Background(), &PollUntilDoneOptions{Frequency: time.Millisecond})
+	require.Zero(t, result)
+	require.ErrorAs(t, err, &respErr)
+	require.EqualValues(t, http.StatusTooManyRequests, respErr.StatusCode)
+	result, err = poller.PollUntilDone(context.Background(), &PollUntilDoneOptions{Frequency: time.Millisecond})
+	require.NoError(t, err)
+	require.NotNil(t, result.Field)
+	require.EqualValues(t, "value", *result.Field)
 }

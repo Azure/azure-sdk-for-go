@@ -53,10 +53,16 @@ func (db *DatabaseClient) CreateContainer(
 	if o == nil {
 		o = &CreateContainerOptions{}
 	}
+	returnResponse := true
+	h := &headerOptionsOverride{
+		enableContentResponseOnWrite: &returnResponse,
+	}
 
 	operationContext := pipelineRequestOptions{
-		resourceType:    resourceTypeCollection,
-		resourceAddress: db.link,
+		resourceType:          resourceTypeCollection,
+		resourceAddress:       db.link,
+		isWriteOperation:      true,
+		headerOptionsOverride: h,
 	}
 
 	path, err := generatePathForNameBased(resourceTypeCollection, db.link, true)
@@ -97,11 +103,11 @@ func (c *DatabaseClient) NewQueryContainersPager(query string, o *QueryContainer
 
 	return runtime.NewPager(runtime.PagingHandler[QueryContainersResponse]{
 		More: func(page QueryContainersResponse) bool {
-			return page.ContinuationToken != ""
+			return page.ContinuationToken != nil
 		},
 		Fetcher: func(ctx context.Context, page *QueryContainersResponse) (QueryContainersResponse, error) {
 			if page != nil {
-				if page.ContinuationToken != "" {
+				if page.ContinuationToken != nil {
 					// Use the previous page continuation if available
 					queryOptions.ContinuationToken = page.ContinuationToken
 				}
@@ -209,8 +215,9 @@ func (db *DatabaseClient) Delete(
 	}
 
 	operationContext := pipelineRequestOptions{
-		resourceType:    resourceTypeDatabase,
-		resourceAddress: db.link,
+		resourceType:     resourceTypeDatabase,
+		resourceAddress:  db.link,
+		isWriteOperation: true,
 	}
 
 	path, err := generatePathForNameBased(resourceTypeDatabase, db.link, false)

@@ -10,7 +10,7 @@ package fake
 
 import (
 	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup/v4"
 )
 
 func unmarshalFeatureSupportRequestClassification(rawMsg json.RawMessage) (armrecoveryservicesbackup.FeatureSupportRequestClassification, error) {
@@ -36,7 +36,7 @@ func unmarshalFeatureSupportRequestClassification(rawMsg json.RawMessage) (armre
 	return b, nil
 }
 
-func unmarshalValidateOperationRequestClassification(rawMsg json.RawMessage) (armrecoveryservicesbackup.ValidateOperationRequestClassification, error) {
+func unmarshalFetchTieringCostInfoRequestClassification(rawMsg json.RawMessage) (armrecoveryservicesbackup.FetchTieringCostInfoRequestClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
 	}
@@ -44,14 +44,18 @@ func unmarshalValidateOperationRequestClassification(rawMsg json.RawMessage) (ar
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
-	var b armrecoveryservicesbackup.ValidateOperationRequestClassification
+	var b armrecoveryservicesbackup.FetchTieringCostInfoRequestClassification
 	switch m["objectType"] {
-	case "ValidateIaasVMRestoreOperationRequest":
-		b = &armrecoveryservicesbackup.ValidateIaasVMRestoreOperationRequest{}
-	case "ValidateRestoreOperationRequest":
-		b = &armrecoveryservicesbackup.ValidateRestoreOperationRequest{}
+	case "FetchTieringCostInfoForRehydrationRequest":
+		b = &armrecoveryservicesbackup.FetchTieringCostInfoForRehydrationRequest{}
+	case "FetchTieringCostSavingsInfoForPolicyRequest":
+		b = &armrecoveryservicesbackup.FetchTieringCostSavingsInfoForPolicyRequest{}
+	case "FetchTieringCostSavingsInfoForProtectedItemRequest":
+		b = &armrecoveryservicesbackup.FetchTieringCostSavingsInfoForProtectedItemRequest{}
+	case "FetchTieringCostSavingsInfoForVaultRequest":
+		b = &armrecoveryservicesbackup.FetchTieringCostSavingsInfoForVaultRequest{}
 	default:
-		b = &armrecoveryservicesbackup.ValidateOperationRequest{}
+		b = &armrecoveryservicesbackup.FetchTieringCostInfoRequest{}
 	}
 	if err := json.Unmarshal(rawMsg, b); err != nil {
 		return nil, err

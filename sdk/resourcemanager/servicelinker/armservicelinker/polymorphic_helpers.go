@@ -11,7 +11,7 @@ package armservicelinker
 import "encoding/json"
 
 func unmarshalAuthInfoBaseClassification(rawMsg json.RawMessage) (AuthInfoBaseClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -20,6 +20,10 @@ func unmarshalAuthInfoBaseClassification(rawMsg json.RawMessage) (AuthInfoBaseCl
 	}
 	var b AuthInfoBaseClassification
 	switch m["authType"] {
+	case string(AuthTypeAccessKey):
+		b = &AccessKeyInfoBase{}
+	case string(AuthTypeEasyAuthMicrosoftEntraID):
+		b = &EasyAuthMicrosoftEntraIDAuthInfo{}
 	case string(AuthTypeSecret):
 		b = &SecretAuthInfo{}
 	case string(AuthTypeServicePrincipalCertificate):
@@ -28,6 +32,8 @@ func unmarshalAuthInfoBaseClassification(rawMsg json.RawMessage) (AuthInfoBaseCl
 		b = &ServicePrincipalSecretAuthInfo{}
 	case string(AuthTypeSystemAssignedIdentity):
 		b = &SystemAssignedIdentityAuthInfo{}
+	case string(AuthTypeUserAccount):
+		b = &UserAccountAuthInfo{}
 	case string(AuthTypeUserAssignedIdentity):
 		b = &UserAssignedIdentityAuthInfo{}
 	default:
@@ -40,7 +46,7 @@ func unmarshalAuthInfoBaseClassification(rawMsg json.RawMessage) (AuthInfoBaseCl
 }
 
 func unmarshalAzureResourcePropertiesBaseClassification(rawMsg json.RawMessage) (AzureResourcePropertiesBaseClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -60,8 +66,71 @@ func unmarshalAzureResourcePropertiesBaseClassification(rawMsg json.RawMessage) 
 	return b, nil
 }
 
+func unmarshalDryrunParametersClassification(rawMsg json.RawMessage) (DryrunParametersClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b DryrunParametersClassification
+	switch m["actionName"] {
+	case string(DryrunActionNameCreateOrUpdate):
+		b = &CreateOrUpdateDryrunParameters{}
+	default:
+		b = &DryrunParameters{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
+func unmarshalDryrunPrerequisiteResultClassification(rawMsg json.RawMessage) (DryrunPrerequisiteResultClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b DryrunPrerequisiteResultClassification
+	switch m["type"] {
+	case string(DryrunPrerequisiteResultTypeBasicError):
+		b = &BasicErrorDryrunPrerequisiteResult{}
+	case string(DryrunPrerequisiteResultTypePermissionsMissing):
+		b = &PermissionsMissingDryrunPrerequisiteResult{}
+	default:
+		b = &DryrunPrerequisiteResult{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
+func unmarshalDryrunPrerequisiteResultClassificationArray(rawMsg json.RawMessage) ([]DryrunPrerequisiteResultClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var rawMessages []json.RawMessage
+	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
+		return nil, err
+	}
+	fArray := make([]DryrunPrerequisiteResultClassification, len(rawMessages))
+	for index, rawMessage := range rawMessages {
+		f, err := unmarshalDryrunPrerequisiteResultClassification(rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		fArray[index] = f
+	}
+	return fArray, nil
+}
+
 func unmarshalSecretInfoBaseClassification(rawMsg json.RawMessage) (SecretInfoBaseClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -86,7 +155,7 @@ func unmarshalSecretInfoBaseClassification(rawMsg json.RawMessage) (SecretInfoBa
 }
 
 func unmarshalTargetServiceBaseClassification(rawMsg json.RawMessage) (TargetServiceBaseClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -101,6 +170,8 @@ func unmarshalTargetServiceBaseClassification(rawMsg json.RawMessage) (TargetSer
 		b = &ConfluentBootstrapServer{}
 	case string(TargetServiceTypeConfluentSchemaRegistry):
 		b = &ConfluentSchemaRegistry{}
+	case string(TargetServiceTypeSelfHostedServer):
+		b = &SelfHostedServer{}
 	default:
 		b = &TargetServiceBase{}
 	}

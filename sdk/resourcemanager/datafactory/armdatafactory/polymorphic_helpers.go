@@ -11,7 +11,7 @@ package armdatafactory
 import "encoding/json"
 
 func unmarshalActivityClassification(rawMsg json.RawMessage) (ActivityClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -112,7 +112,7 @@ func unmarshalActivityClassification(rawMsg json.RawMessage) (ActivityClassifica
 }
 
 func unmarshalActivityClassificationArray(rawMsg json.RawMessage) ([]ActivityClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var rawMessages []json.RawMessage
@@ -131,7 +131,7 @@ func unmarshalActivityClassificationArray(rawMsg json.RawMessage) ([]ActivityCla
 }
 
 func unmarshalCompressionReadSettingsClassification(rawMsg json.RawMessage) (CompressionReadSettingsClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -156,7 +156,7 @@ func unmarshalCompressionReadSettingsClassification(rawMsg json.RawMessage) (Com
 }
 
 func unmarshalCopySinkClassification(rawMsg json.RawMessage) (CopySinkClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -231,12 +231,18 @@ func unmarshalCopySinkClassification(rawMsg json.RawMessage) (CopySinkClassifica
 		b = &RestSink{}
 	case "SalesforceServiceCloudSink":
 		b = &SalesforceServiceCloudSink{}
+	case "SalesforceServiceCloudV2Sink":
+		b = &SalesforceServiceCloudV2Sink{}
 	case "SalesforceSink":
 		b = &SalesforceSink{}
+	case "SalesforceV2Sink":
+		b = &SalesforceV2Sink{}
 	case "SapCloudForCustomerSink":
 		b = &SapCloudForCustomerSink{}
 	case "SnowflakeSink":
 		b = &SnowflakeSink{}
+	case "SnowflakeV2Sink":
+		b = &SnowflakeV2Sink{}
 	case "SqlDWSink":
 		b = &SQLDWSink{}
 	case "SqlMISink":
@@ -245,6 +251,8 @@ func unmarshalCopySinkClassification(rawMsg json.RawMessage) (CopySinkClassifica
 		b = &SQLServerSink{}
 	case "SqlSink":
 		b = &SQLSink{}
+	case "WarehouseSink":
+		b = &WarehouseSink{}
 	default:
 		b = &CopySink{}
 	}
@@ -255,7 +263,7 @@ func unmarshalCopySinkClassification(rawMsg json.RawMessage) (CopySinkClassifica
 }
 
 func unmarshalCopySourceClassification(rawMsg json.RawMessage) (CopySourceClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -332,6 +340,8 @@ func unmarshalCopySourceClassification(rawMsg json.RawMessage) (CopySourceClassi
 		b = &GoogleAdWordsSource{}
 	case "GoogleBigQuerySource":
 		b = &GoogleBigQuerySource{}
+	case "GoogleBigQueryV2Source":
+		b = &GoogleBigQueryV2Source{}
 	case "GreenplumSource":
 		b = &GreenplumSource{}
 	case "HBaseSource":
@@ -392,6 +402,8 @@ func unmarshalCopySourceClassification(rawMsg json.RawMessage) (CopySourceClassi
 		b = &PhoenixSource{}
 	case "PostgreSqlSource":
 		b = &PostgreSQLSource{}
+	case "PostgreSqlV2Source":
+		b = &PostgreSQLV2Source{}
 	case "PrestoSource":
 		b = &PrestoSource{}
 	case "QuickBooksSource":
@@ -406,8 +418,12 @@ func unmarshalCopySourceClassification(rawMsg json.RawMessage) (CopySourceClassi
 		b = &SalesforceMarketingCloudSource{}
 	case "SalesforceServiceCloudSource":
 		b = &SalesforceServiceCloudSource{}
+	case "SalesforceServiceCloudV2Source":
+		b = &SalesforceServiceCloudV2Source{}
 	case "SalesforceSource":
 		b = &SalesforceSource{}
+	case "SalesforceV2Source":
+		b = &SalesforceV2Source{}
 	case "SapBwSource":
 		b = &SapBwSource{}
 	case "SapCloudForCustomerSource":
@@ -424,12 +440,16 @@ func unmarshalCopySourceClassification(rawMsg json.RawMessage) (CopySourceClassi
 		b = &SapTableSource{}
 	case "ServiceNowSource":
 		b = &ServiceNowSource{}
+	case "ServiceNowV2Source":
+		b = &ServiceNowV2Source{}
 	case "SharePointOnlineListSource":
 		b = &SharePointOnlineListSource{}
 	case "ShopifySource":
 		b = &ShopifySource{}
 	case "SnowflakeSource":
 		b = &SnowflakeSource{}
+	case "SnowflakeV2Source":
+		b = &SnowflakeV2Source{}
 	case "SparkSource":
 		b = &SparkSource{}
 	case "SqlDWSource":
@@ -450,6 +470,8 @@ func unmarshalCopySourceClassification(rawMsg json.RawMessage) (CopySourceClassi
 		b = &TeradataSource{}
 	case "VerticaSource":
 		b = &VerticaSource{}
+	case "WarehouseSource":
+		b = &WarehouseSource{}
 	case "WebSource":
 		b = &WebSource{}
 	case "XeroSource":
@@ -468,7 +490,7 @@ func unmarshalCopySourceClassification(rawMsg json.RawMessage) (CopySourceClassi
 }
 
 func unmarshalCustomSetupBaseClassification(rawMsg json.RawMessage) (CustomSetupBaseClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -495,7 +517,7 @@ func unmarshalCustomSetupBaseClassification(rawMsg json.RawMessage) (CustomSetup
 }
 
 func unmarshalCustomSetupBaseClassificationArray(rawMsg json.RawMessage) ([]CustomSetupBaseClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var rawMessages []json.RawMessage
@@ -514,7 +536,7 @@ func unmarshalCustomSetupBaseClassificationArray(rawMsg json.RawMessage) ([]Cust
 }
 
 func unmarshalDataFlowClassification(rawMsg json.RawMessage) (DataFlowClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -539,7 +561,7 @@ func unmarshalDataFlowClassification(rawMsg json.RawMessage) (DataFlowClassifica
 }
 
 func unmarshalDatasetClassification(rawMsg json.RawMessage) (DatasetClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -626,6 +648,8 @@ func unmarshalDatasetClassification(rawMsg json.RawMessage) (DatasetClassificati
 		b = &GoogleAdWordsObjectDataset{}
 	case "GoogleBigQueryObject":
 		b = &GoogleBigQueryObjectDataset{}
+	case "GoogleBigQueryV2Object":
+		b = &GoogleBigQueryV2ObjectDataset{}
 	case "GreenplumTable":
 		b = &GreenplumTableDataset{}
 	case "HBaseObject":
@@ -684,6 +708,8 @@ func unmarshalDatasetClassification(rawMsg json.RawMessage) (DatasetClassificati
 		b = &PhoenixObjectDataset{}
 	case "PostgreSqlTable":
 		b = &PostgreSQLTableDataset{}
+	case "PostgreSqlV2Table":
+		b = &PostgreSQLV2TableDataset{}
 	case "PrestoObject":
 		b = &PrestoObjectDataset{}
 	case "QuickBooksObject":
@@ -700,6 +726,10 @@ func unmarshalDatasetClassification(rawMsg json.RawMessage) (DatasetClassificati
 		b = &SalesforceObjectDataset{}
 	case "SalesforceServiceCloudObject":
 		b = &SalesforceServiceCloudObjectDataset{}
+	case "SalesforceServiceCloudV2Object":
+		b = &SalesforceServiceCloudV2ObjectDataset{}
+	case "SalesforceV2Object":
+		b = &SalesforceV2ObjectDataset{}
 	case "SapBwCube":
 		b = &SapBwCubeDataset{}
 	case "SapCloudForCustomerResource":
@@ -716,12 +746,16 @@ func unmarshalDatasetClassification(rawMsg json.RawMessage) (DatasetClassificati
 		b = &SapTableResourceDataset{}
 	case "ServiceNowObject":
 		b = &ServiceNowObjectDataset{}
+	case "ServiceNowV2Object":
+		b = &ServiceNowV2ObjectDataset{}
 	case "SharePointOnlineListResource":
 		b = &SharePointOnlineListResourceDataset{}
 	case "ShopifyObject":
 		b = &ShopifyObjectDataset{}
 	case "SnowflakeTable":
 		b = &SnowflakeDataset{}
+	case "SnowflakeV2Table":
+		b = &SnowflakeV2Dataset{}
 	case "SparkObject":
 		b = &SparkObjectDataset{}
 	case "SqlServerTable":
@@ -734,6 +768,8 @@ func unmarshalDatasetClassification(rawMsg json.RawMessage) (DatasetClassificati
 		b = &TeradataTableDataset{}
 	case "VerticaTable":
 		b = &VerticaTableDataset{}
+	case "WarehouseTable":
+		b = &WarehouseTableDataset{}
 	case "WebTable":
 		b = &WebTableDataset{}
 	case "XeroObject":
@@ -752,7 +788,7 @@ func unmarshalDatasetClassification(rawMsg json.RawMessage) (DatasetClassificati
 }
 
 func unmarshalDatasetLocationClassification(rawMsg json.RawMessage) (DatasetLocationClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -799,7 +835,7 @@ func unmarshalDatasetLocationClassification(rawMsg json.RawMessage) (DatasetLoca
 }
 
 func unmarshalDatasetStorageFormatClassification(rawMsg json.RawMessage) (DatasetStorageFormatClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -828,7 +864,7 @@ func unmarshalDatasetStorageFormatClassification(rawMsg json.RawMessage) (Datase
 }
 
 func unmarshalDependencyReferenceClassification(rawMsg json.RawMessage) (DependencyReferenceClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -853,7 +889,7 @@ func unmarshalDependencyReferenceClassification(rawMsg json.RawMessage) (Depende
 }
 
 func unmarshalDependencyReferenceClassificationArray(rawMsg json.RawMessage) ([]DependencyReferenceClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var rawMessages []json.RawMessage
@@ -872,7 +908,7 @@ func unmarshalDependencyReferenceClassificationArray(rawMsg json.RawMessage) ([]
 }
 
 func unmarshalFactoryRepoConfigurationClassification(rawMsg json.RawMessage) (FactoryRepoConfigurationClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -895,7 +931,7 @@ func unmarshalFactoryRepoConfigurationClassification(rawMsg json.RawMessage) (Fa
 }
 
 func unmarshalFormatReadSettingsClassification(rawMsg json.RawMessage) (FormatReadSettingsClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -924,7 +960,7 @@ func unmarshalFormatReadSettingsClassification(rawMsg json.RawMessage) (FormatRe
 }
 
 func unmarshalIntegrationRuntimeClassification(rawMsg json.RawMessage) (IntegrationRuntimeClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -947,7 +983,7 @@ func unmarshalIntegrationRuntimeClassification(rawMsg json.RawMessage) (Integrat
 }
 
 func unmarshalIntegrationRuntimeStatusClassification(rawMsg json.RawMessage) (IntegrationRuntimeStatusClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -970,7 +1006,7 @@ func unmarshalIntegrationRuntimeStatusClassification(rawMsg json.RawMessage) (In
 }
 
 func unmarshalLinkedIntegrationRuntimeTypeClassification(rawMsg json.RawMessage) (LinkedIntegrationRuntimeTypeClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -993,7 +1029,7 @@ func unmarshalLinkedIntegrationRuntimeTypeClassification(rawMsg json.RawMessage)
 }
 
 func unmarshalLinkedServiceClassification(rawMsg json.RawMessage) (LinkedServiceClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -1100,6 +1136,8 @@ func unmarshalLinkedServiceClassification(rawMsg json.RawMessage) (LinkedService
 		b = &GoogleAdWordsLinkedService{}
 	case "GoogleBigQuery":
 		b = &GoogleBigQueryLinkedService{}
+	case "GoogleBigQueryV2":
+		b = &GoogleBigQueryV2LinkedService{}
 	case "GoogleCloudStorage":
 		b = &GoogleCloudStorageLinkedService{}
 	case "GoogleSheets":
@@ -1164,6 +1202,8 @@ func unmarshalLinkedServiceClassification(rawMsg json.RawMessage) (LinkedService
 		b = &PhoenixLinkedService{}
 	case "PostgreSql":
 		b = &PostgreSQLLinkedService{}
+	case "PostgreSqlV2":
+		b = &PostgreSQLV2LinkedService{}
 	case "Presto":
 		b = &PrestoLinkedService{}
 	case "QuickBooks":
@@ -1180,6 +1220,10 @@ func unmarshalLinkedServiceClassification(rawMsg json.RawMessage) (LinkedService
 		b = &SalesforceMarketingCloudLinkedService{}
 	case "SalesforceServiceCloud":
 		b = &SalesforceServiceCloudLinkedService{}
+	case "SalesforceServiceCloudV2":
+		b = &SalesforceServiceCloudV2LinkedService{}
+	case "SalesforceV2":
+		b = &SalesforceV2LinkedService{}
 	case "SapBW":
 		b = &SapBWLinkedService{}
 	case "SapCloudForCustomer":
@@ -1196,6 +1240,8 @@ func unmarshalLinkedServiceClassification(rawMsg json.RawMessage) (LinkedService
 		b = &SapTableLinkedService{}
 	case "ServiceNow":
 		b = &ServiceNowLinkedService{}
+	case "ServiceNowV2":
+		b = &ServiceNowV2LinkedService{}
 	case "Sftp":
 		b = &SftpServerLinkedService{}
 	case "SharePointOnlineList":
@@ -1206,6 +1252,8 @@ func unmarshalLinkedServiceClassification(rawMsg json.RawMessage) (LinkedService
 		b = &SmartsheetLinkedService{}
 	case "Snowflake":
 		b = &SnowflakeLinkedService{}
+	case "SnowflakeV2":
+		b = &SnowflakeV2LinkedService{}
 	case "Spark":
 		b = &SparkLinkedService{}
 	case "SqlServer":
@@ -1222,6 +1270,8 @@ func unmarshalLinkedServiceClassification(rawMsg json.RawMessage) (LinkedService
 		b = &TwilioLinkedService{}
 	case "Vertica":
 		b = &VerticaLinkedService{}
+	case "Warehouse":
+		b = &WarehouseLinkedService{}
 	case "Web":
 		b = &WebLinkedService{}
 	case "Xero":
@@ -1240,7 +1290,7 @@ func unmarshalLinkedServiceClassification(rawMsg json.RawMessage) (LinkedService
 }
 
 func unmarshalSecretBaseClassification(rawMsg json.RawMessage) (SecretBaseClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -1263,7 +1313,7 @@ func unmarshalSecretBaseClassification(rawMsg json.RawMessage) (SecretBaseClassi
 }
 
 func unmarshalSsisObjectMetadataClassification(rawMsg json.RawMessage) (SsisObjectMetadataClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -1290,7 +1340,7 @@ func unmarshalSsisObjectMetadataClassification(rawMsg json.RawMessage) (SsisObje
 }
 
 func unmarshalSsisObjectMetadataClassificationArray(rawMsg json.RawMessage) ([]SsisObjectMetadataClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var rawMessages []json.RawMessage
@@ -1309,7 +1359,7 @@ func unmarshalSsisObjectMetadataClassificationArray(rawMsg json.RawMessage) ([]S
 }
 
 func unmarshalStoreReadSettingsClassification(rawMsg json.RawMessage) (StoreReadSettingsClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -1356,7 +1406,7 @@ func unmarshalStoreReadSettingsClassification(rawMsg json.RawMessage) (StoreRead
 }
 
 func unmarshalStoreWriteSettingsClassification(rawMsg json.RawMessage) (StoreWriteSettingsClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -1389,7 +1439,7 @@ func unmarshalStoreWriteSettingsClassification(rawMsg json.RawMessage) (StoreWri
 }
 
 func unmarshalTriggerClassification(rawMsg json.RawMessage) (TriggerClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -1424,7 +1474,7 @@ func unmarshalTriggerClassification(rawMsg json.RawMessage) (TriggerClassificati
 }
 
 func unmarshalWebLinkedServiceTypePropertiesClassification(rawMsg json.RawMessage) (WebLinkedServiceTypePropertiesClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any

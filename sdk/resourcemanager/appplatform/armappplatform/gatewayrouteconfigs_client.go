@@ -48,7 +48,7 @@ func NewGatewayRouteConfigsClient(subscriptionID string, credential azcore.Token
 // route configs.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01-preview
+// Generated from API version 2023-12-01
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serviceName - The name of the Service resource.
@@ -78,7 +78,7 @@ func (client *GatewayRouteConfigsClient) BeginCreateOrUpdate(ctx context.Context
 // configs.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01-preview
+// Generated from API version 2023-12-01
 func (client *GatewayRouteConfigsClient) createOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, gatewayName string, routeConfigName string, gatewayRouteConfigResource GatewayRouteConfigResource, options *GatewayRouteConfigsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "GatewayRouteConfigsClient.BeginCreateOrUpdate"
@@ -128,7 +128,7 @@ func (client *GatewayRouteConfigsClient) createOrUpdateCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01-preview")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, gatewayRouteConfigResource); err != nil {
@@ -140,7 +140,7 @@ func (client *GatewayRouteConfigsClient) createOrUpdateCreateRequest(ctx context
 // BeginDelete - Delete the Spring Cloud Gateway route config.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01-preview
+// Generated from API version 2023-12-01
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serviceName - The name of the Service resource.
@@ -168,7 +168,7 @@ func (client *GatewayRouteConfigsClient) BeginDelete(ctx context.Context, resour
 // Delete - Delete the Spring Cloud Gateway route config.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01-preview
+// Generated from API version 2023-12-01
 func (client *GatewayRouteConfigsClient) deleteOperation(ctx context.Context, resourceGroupName string, serviceName string, gatewayName string, routeConfigName string, options *GatewayRouteConfigsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "GatewayRouteConfigsClient.BeginDelete"
@@ -218,7 +218,7 @@ func (client *GatewayRouteConfigsClient) deleteCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01-preview")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -227,7 +227,7 @@ func (client *GatewayRouteConfigsClient) deleteCreateRequest(ctx context.Context
 // Get - Get the Spring Cloud Gateway route configs.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01-preview
+// Generated from API version 2023-12-01
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serviceName - The name of the Service resource.
@@ -284,7 +284,7 @@ func (client *GatewayRouteConfigsClient) getCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01-preview")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -301,7 +301,7 @@ func (client *GatewayRouteConfigsClient) getHandleResponse(resp *http.Response) 
 
 // NewListPager - Handle requests to list all Spring Cloud Gateway route configs.
 //
-// Generated from API version 2023-01-01-preview
+// Generated from API version 2023-12-01
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serviceName - The name of the Service resource.
@@ -355,7 +355,7 @@ func (client *GatewayRouteConfigsClient) listCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01-preview")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

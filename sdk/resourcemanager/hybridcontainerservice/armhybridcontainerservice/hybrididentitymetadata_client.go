@@ -41,8 +41,8 @@ func NewHybridIdentityMetadataClient(credential azcore.TokenCredential, options 
 // BeginDelete - Deletes the hybrid identity metadata proxy resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-15-preview
-//   - connectedClusterResourceURI - The fully qualified Azure Resource manager identifier of the connected cluster resource.
+// Generated from API version 2024-01-01
+//   - connectedClusterResourceURI - The fully qualified Azure Resource Manager identifier of the connected cluster resource.
 //   - options - HybridIdentityMetadataClientBeginDeleteOptions contains the optional parameters for the HybridIdentityMetadataClient.BeginDelete
 //     method.
 func (client *HybridIdentityMetadataClient) BeginDelete(ctx context.Context, connectedClusterResourceURI string, options *HybridIdentityMetadataClientBeginDeleteOptions) (*runtime.Poller[HybridIdentityMetadataClientDeleteResponse], error) {
@@ -66,7 +66,7 @@ func (client *HybridIdentityMetadataClient) BeginDelete(ctx context.Context, con
 // Delete - Deletes the hybrid identity metadata proxy resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-15-preview
+// Generated from API version 2024-01-01
 func (client *HybridIdentityMetadataClient) deleteOperation(ctx context.Context, connectedClusterResourceURI string, options *HybridIdentityMetadataClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "HybridIdentityMetadataClient.BeginDelete"
@@ -97,7 +97,7 @@ func (client *HybridIdentityMetadataClient) deleteCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-15-preview")
+	reqQP.Set("api-version", "2024-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -106,8 +106,8 @@ func (client *HybridIdentityMetadataClient) deleteCreateRequest(ctx context.Cont
 // Get - Get the hybrid identity metadata proxy resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-15-preview
-//   - connectedClusterResourceURI - The fully qualified Azure Resource manager identifier of the connected cluster resource.
+// Generated from API version 2024-01-01
+//   - connectedClusterResourceURI - The fully qualified Azure Resource Manager identifier of the connected cluster resource.
 //   - options - HybridIdentityMetadataClientGetOptions contains the optional parameters for the HybridIdentityMetadataClient.Get
 //     method.
 func (client *HybridIdentityMetadataClient) Get(ctx context.Context, connectedClusterResourceURI string, options *HybridIdentityMetadataClientGetOptions) (HybridIdentityMetadataClientGetResponse, error) {
@@ -141,7 +141,7 @@ func (client *HybridIdentityMetadataClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-15-preview")
+	reqQP.Set("api-version", "2024-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -158,8 +158,8 @@ func (client *HybridIdentityMetadataClient) getHandleResponse(resp *http.Respons
 
 // NewListByClusterPager - Lists the hybrid identity metadata proxy resource in a provisioned cluster instance.
 //
-// Generated from API version 2023-11-15-preview
-//   - connectedClusterResourceURI - The fully qualified Azure Resource manager identifier of the connected cluster resource.
+// Generated from API version 2024-01-01
+//   - connectedClusterResourceURI - The fully qualified Azure Resource Manager identifier of the connected cluster resource.
 //   - options - HybridIdentityMetadataClientListByClusterOptions contains the optional parameters for the HybridIdentityMetadataClient.NewListByClusterPager
 //     method.
 func (client *HybridIdentityMetadataClient) NewListByClusterPager(connectedClusterResourceURI string, options *HybridIdentityMetadataClientListByClusterOptions) *runtime.Pager[HybridIdentityMetadataClientListByClusterResponse] {
@@ -194,7 +194,7 @@ func (client *HybridIdentityMetadataClient) listByClusterCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-15-preview")
+	reqQP.Set("api-version", "2024-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -212,8 +212,9 @@ func (client *HybridIdentityMetadataClient) listByClusterHandleResponse(resp *ht
 // Put - Creates the hybrid identity metadata proxy resource that facilitates the managed identity provisioning.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-15-preview
-//   - connectedClusterResourceURI - The fully qualified Azure Resource manager identifier of the connected cluster resource.
+// Generated from API version 2024-01-01
+//   - connectedClusterResourceURI - The fully qualified Azure Resource Manager identifier of the connected cluster resource.
+//   - body - Hybrid Identity Metadata resource definition
 //   - options - HybridIdentityMetadataClientPutOptions contains the optional parameters for the HybridIdentityMetadataClient.Put
 //     method.
 func (client *HybridIdentityMetadataClient) Put(ctx context.Context, connectedClusterResourceURI string, body HybridIdentityMetadata, options *HybridIdentityMetadataClientPutOptions) (HybridIdentityMetadataClientPutResponse, error) {
@@ -247,7 +248,7 @@ func (client *HybridIdentityMetadataClient) putCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-15-preview")
+	reqQP.Set("api-version", "2024-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {

@@ -22,7 +22,7 @@ export-clients: true
 use: "@autorest/go@4.0.0-preview.61"
 ```
 
-### Updating service version to 2023-11-03
+### Updating service version to 2024-05-04
 
 ```yaml
 directive:
@@ -35,7 +35,7 @@ directive:
   transform: >-
     return $.
       replaceAll(`[]string{"2023-08-03"}`, `[]string{ServiceVersion}`).
-      replaceAll(`2023-08-03`, `2023-11-03`);
+      replaceAll(`2023-08-03`, `2024-05-04`);
 ```
 
 ### Don't include share name, directory, or file name in path - we have direct URIs

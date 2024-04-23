@@ -40,8 +40,6 @@ Example [client][example_client]
 
 [Azure Monitor Metrics][metrics_overview] collects numeric data from monitored resources into a time series database. Metrics are numerical values that are collected at regular intervals and describe some aspect of a system at a particular time. Metrics are lightweight and capable of supporting near real-time scenarios, making them particularly useful for alerting and fast detection of issues.
 
-Note, each resource must be in the same region as the endpoint passed in when instantiating the client, and each resource must be in the same Azure subscription. Furthermore, the [metric namespace][supported_metrics] that contains the metrics to be queried must also be passed.
-
 ### Metrics data structure
 
 Each set of metric values is a time series with the following characteristics:

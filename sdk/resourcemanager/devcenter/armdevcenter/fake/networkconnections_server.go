@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devcenter/armdevcenter"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devcenter/armdevcenter/v2"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -30,7 +30,7 @@ type NetworkConnectionsServer struct {
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, networkConnectionName string, body armdevcenter.NetworkConnection, options *armdevcenter.NetworkConnectionsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armdevcenter.NetworkConnectionsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method NetworkConnectionsClient.BeginDelete
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	// HTTP status codes to indicate success: http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, networkConnectionName string, options *armdevcenter.NetworkConnectionsClientBeginDeleteOptions) (resp azfake.PollerResponder[armdevcenter.NetworkConnectionsClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method NetworkConnectionsClient.Get
@@ -58,7 +58,7 @@ type NetworkConnectionsServer struct {
 	NewListOutboundNetworkDependenciesEndpointsPager func(resourceGroupName string, networkConnectionName string, options *armdevcenter.NetworkConnectionsClientListOutboundNetworkDependenciesEndpointsOptions) (resp azfake.PagerResponder[armdevcenter.NetworkConnectionsClientListOutboundNetworkDependenciesEndpointsResponse])
 
 	// BeginRunHealthChecks is the fake for method NetworkConnectionsClient.BeginRunHealthChecks
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	// HTTP status codes to indicate success: http.StatusAccepted
 	BeginRunHealthChecks func(ctx context.Context, resourceGroupName string, networkConnectionName string, options *armdevcenter.NetworkConnectionsClientBeginRunHealthChecksOptions) (resp azfake.PollerResponder[armdevcenter.NetworkConnectionsClientRunHealthChecksResponse], errResp azfake.ErrorResponder)
 
 	// BeginUpdate is the fake for method NetworkConnectionsClient.BeginUpdate
@@ -221,9 +221,9 @@ func (n *NetworkConnectionsServerTransport) dispatchBeginDelete(req *http.Reques
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !contains([]int{http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		n.beginDelete.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginDelete) {
 		n.beginDelete.remove(req)
@@ -454,9 +454,6 @@ func (n *NetworkConnectionsServerTransport) dispatchNewListHealthDetailsPager(re
 		resp := n.srv.NewListHealthDetailsPager(resourceGroupNameParam, networkConnectionNameParam, options)
 		newListHealthDetailsPager = &resp
 		n.newListHealthDetailsPager.add(req, newListHealthDetailsPager)
-		server.PagerResponderInjectNextLinks(newListHealthDetailsPager, req, func(page *armdevcenter.NetworkConnectionsClientListHealthDetailsResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
 	}
 	resp, err := server.PagerResponderNext(newListHealthDetailsPager, req)
 	if err != nil {
@@ -567,9 +564,9 @@ func (n *NetworkConnectionsServerTransport) dispatchBeginRunHealthChecks(req *ht
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !contains([]int{http.StatusAccepted}, resp.StatusCode) {
 		n.beginRunHealthChecks.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginRunHealthChecks) {
 		n.beginRunHealthChecks.remove(req)

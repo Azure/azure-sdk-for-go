@@ -389,6 +389,33 @@ func AddURISubscriptionIDSanitizer(value string, options *RecordingOptions) erro
 	return handleProxyResponse(client.Do(req))
 }
 
+// RemoveRegisteredSanitizers selectively disables sanitizers that are enabled by default such as "AZSDK1001"
+func RemoveRegisteredSanitizers(sanitizerIDs []string, options *RecordingOptions) error {
+	if recordMode == LiveMode {
+		return nil
+	}
+	if options == nil {
+		options = defaultOptions()
+	}
+	b, err := json.Marshal(struct {
+		Sanitizers []string `json:"Sanitizers"`
+	}{
+		Sanitizers: sanitizerIDs,
+	})
+	if err != nil {
+		return err
+	}
+	url := options.baseURL() + "/Admin/RemoveSanitizers"
+	req, err := http.NewRequest(http.MethodPost, url, io.NopCloser(bytes.NewReader(b)))
+	if err != nil {
+		return err
+	}
+	req.Header.Set("Content-Type", "application/json")
+	req.ContentLength = int64(len(b))
+	handleTestLevelSanitizer(req, options)
+	return handleProxyResponse(client.Do(req))
+}
+
 // ResetProxy restores the proxy's default sanitizers, matchers, and transforms
 func ResetProxy(options *RecordingOptions) error {
 	if recordMode == LiveMode {

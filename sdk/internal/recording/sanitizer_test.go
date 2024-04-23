@@ -78,6 +78,19 @@ func (e Entry) ResponseBodyByValue(k string) interface{} {
 	return m[k]
 }
 
+func (s *sanitizerTests) TestRemoveRegisteredSanitizers() {
+	s.T().Skip("this feature requires proxy version 1.0.0-dev.20240424.1 or later. Unskip this test after upgrading the proxy version specified in eng/target_proxy_version.txt")
+	require := require.New(s.T())
+	defer reset(s.T())
+
+	sanitizers := make([]string, 7)
+	for i := 0; i < len(sanitizers); i++ {
+		sanitizers[i] = fmt.Sprintf("AZSDK100%d", i)
+	}
+	require.NoError(RemoveRegisteredSanitizers(sanitizers, nil))
+	require.Error(RemoveRegisteredSanitizers([]string{"unknown ID"}, nil))
+}
+
 func (s *sanitizerTests) TestUriSanitizer() {
 	require := require.New(s.T())
 	defer reset(s.T())

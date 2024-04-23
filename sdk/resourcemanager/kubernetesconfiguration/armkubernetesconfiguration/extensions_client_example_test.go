@@ -37,7 +37,7 @@ func ExampleExtensionsClient_BeginCreate_createExtension() {
 			},
 			ConfigurationSettings: map[string]*string{
 				"omsagent.env.clusterName": to.Ptr("clusterName1"),
-				"omsagent.secret.wsid":     to.Ptr("a38cef99-5a89-52ed-b6db-22095c23664b"),
+				"omsagent.secret.wsid":     to.Ptr("00000000-0000-0000-0000-000000000000"),
 			},
 			ExtensionType: to.Ptr("azuremonitor-containers"),
 			ReleaseTrain:  to.Ptr("Preview"),
@@ -66,7 +66,7 @@ func ExampleExtensionsClient_BeginCreate_createExtension() {
 	// 		AutoUpgradeMinorVersion: to.Ptr(false),
 	// 		ConfigurationSettings: map[string]*string{
 	// 			"omsagent.env.clusterName": to.Ptr("clusterName1"),
-	// 			"omsagent.secret.wsid": to.Ptr("a38cef99-5a89-52ed-b6db-22095c23664b"),
+	// 			"omsagent.secret.wsid": to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 		},
 	// 		CurrentVersion: to.Ptr("0.1.4"),
 	// 		ExtensionType: to.Ptr("azuremonitor-containers"),
@@ -188,7 +188,7 @@ func ExampleExtensionsClient_Get_getExtension() {
 	// 		AutoUpgradeMinorVersion: to.Ptr(false),
 	// 		ConfigurationSettings: map[string]*string{
 	// 			"omsagent.env.clusterName": to.Ptr("clusterName1"),
-	// 			"omsagent.secret.wsid": to.Ptr("a38cef99-5a89-52ed-b6db-22095c23664b"),
+	// 			"omsagent.secret.wsid": to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 		},
 	// 		CurrentVersion: to.Ptr("0.1.4"),
 	// 		ExtensionType: to.Ptr("azuremonitor-containers"),
@@ -246,7 +246,7 @@ func ExampleExtensionsClient_Get_getExtensionWithPlan() {
 	// 		AutoUpgradeMinorVersion: to.Ptr(false),
 	// 		ConfigurationSettings: map[string]*string{
 	// 			"omsagent.env.clusterName": to.Ptr("clusterName1"),
-	// 			"omsagent.secret.wsid": to.Ptr("a38cef99-5a89-52ed-b6db-22095c23664b"),
+	// 			"omsagent.secret.wsid": to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 		},
 	// 		CurrentVersion: to.Ptr("0.1.4"),
 	// 		ExtensionType: to.Ptr("azure-vote"),
@@ -313,7 +313,7 @@ func ExampleExtensionsClient_BeginUpdate() {
 			},
 			ConfigurationSettings: map[string]*string{
 				"omsagent.env.clusterName": to.Ptr("clusterName1"),
-				"omsagent.secret.wsid":     to.Ptr("a38cef99-5a89-52ed-b6db-22095c23664b"),
+				"omsagent.secret.wsid":     to.Ptr("00000000-0000-0000-0000-000000000000"),
 			},
 			ReleaseTrain: to.Ptr("Preview"),
 		},
@@ -333,7 +333,7 @@ func ExampleExtensionsClient_BeginUpdate() {
 	// 		AutoUpgradeMinorVersion: to.Ptr(true),
 	// 		ConfigurationSettings: map[string]*string{
 	// 			"omsagent.env.clusterName": to.Ptr("clusterName1"),
-	// 			"omsagent.secret.wsid": to.Ptr("a38cef99-5a89-52ed-b6db-22095c23664b"),
+	// 			"omsagent.secret.wsid": to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 		},
 	// 		ExtensionType: to.Ptr("azuremonitor-containers"),
 	// 		ProvisioningState: to.Ptr(armkubernetesconfiguration.ProvisioningStateSucceeded),
@@ -382,7 +382,7 @@ func ExampleExtensionsClient_NewListPager() {
 		// 				AutoUpgradeMinorVersion: to.Ptr(false),
 		// 				ConfigurationSettings: map[string]*string{
 		// 					"omsagent.env.clusterName": to.Ptr("clusterName1"),
-		// 					"omsagent.secret.wsid": to.Ptr("a38cef99-5a89-52ed-b6db-22095c23664b"),
+		// 					"omsagent.secret.wsid": to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 				},
 		// 				CurrentVersion: to.Ptr("0.1.4"),
 		// 				ExtensionType: to.Ptr("azuremonitor-containers"),
@@ -450,7 +450,7 @@ func ExampleExtensionsClient_NewListPager() {
 		// 				AutoUpgradeMinorVersion: to.Ptr(false),
 		// 				ConfigurationSettings: map[string]*string{
 		// 					"omsagent.env.clusterName": to.Ptr("clusterName1"),
-		// 					"omsagent.secret.wsid": to.Ptr("a38cef99-5a89-52ed-b6db-22095c23664b"),
+		// 					"omsagent.secret.wsid": to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 				},
 		// 				CurrentVersion: to.Ptr("0.1.4"),
 		// 				ExtensionType: to.Ptr("azure-vote"),

@@ -321,13 +321,13 @@ func getProxyVersion(gitRoot string) (string, error) {
 	proxyVersionConfig := filepath.Join(gitRoot, "eng/common/testproxy/target_version.txt")
 	overrideProxyVersionConfig := filepath.Join(gitRoot, "eng/target_proxy_version.txt")
 
-    if _, err := os.Stat(overrideProxyVersionConfig); err == nil {
-        version, err := ioutil.ReadFile(overrideProxyVersionConfig)
-        if err == nil {
-            proxyVersion := strings.TrimSpace(string(version))
-            return proxyVersion, nil
-        }
-    }
+	if _, err := os.Stat(overrideProxyVersionConfig); err == nil {
+		version, err := ioutil.ReadFile(overrideProxyVersionConfig)
+		if err == nil {
+			proxyVersion := strings.TrimSpace(string(version))
+			return proxyVersion, nil
+		}
+	}
 
 	version, err := ioutil.ReadFile(proxyVersionConfig)
 	if err != nil {

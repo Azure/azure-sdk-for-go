@@ -56,7 +56,7 @@ type ChangeDataCaptureClientStopResponse struct {
 // CredentialOperationsClientCreateOrUpdateResponse contains the response from method CredentialOperationsClient.CreateOrUpdate.
 type CredentialOperationsClientCreateOrUpdateResponse struct {
 	// Credential resource type.
-	ManagedIdentityCredentialResource
+	CredentialResource
 }
 
 // CredentialOperationsClientDeleteResponse contains the response from method CredentialOperationsClient.Delete.
@@ -67,7 +67,7 @@ type CredentialOperationsClientDeleteResponse struct {
 // CredentialOperationsClientGetResponse contains the response from method CredentialOperationsClient.Get.
 type CredentialOperationsClientGetResponse struct {
 	// Credential resource type.
-	ManagedIdentityCredentialResource
+	CredentialResource
 }
 
 // CredentialOperationsClientListByFactoryResponse contains the response from method CredentialOperationsClient.NewListByFactoryPager.

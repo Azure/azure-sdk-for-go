@@ -53,7 +53,7 @@ func NewCredentialOperationsClient(subscriptionID string, credential azcore.Toke
 //   - credential - Credential resource definition.
 //   - options - CredentialOperationsClientCreateOrUpdateOptions contains the optional parameters for the CredentialOperationsClient.CreateOrUpdate
 //     method.
-func (client *CredentialOperationsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, factoryName string, credentialName string, credential ManagedIdentityCredentialResource, options *CredentialOperationsClientCreateOrUpdateOptions) (CredentialOperationsClientCreateOrUpdateResponse, error) {
+func (client *CredentialOperationsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, factoryName string, credentialName string, credential CredentialResource, options *CredentialOperationsClientCreateOrUpdateOptions) (CredentialOperationsClientCreateOrUpdateResponse, error) {
 	var err error
 	const operationName = "CredentialOperationsClient.CreateOrUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -76,7 +76,7 @@ func (client *CredentialOperationsClient) CreateOrUpdate(ctx context.Context, re
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *CredentialOperationsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, credentialName string, credential ManagedIdentityCredentialResource, options *CredentialOperationsClientCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *CredentialOperationsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, credentialName string, credential CredentialResource, options *CredentialOperationsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/credentials/{credentialName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -114,7 +114,7 @@ func (client *CredentialOperationsClient) createOrUpdateCreateRequest(ctx contex
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *CredentialOperationsClient) createOrUpdateHandleResponse(resp *http.Response) (CredentialOperationsClientCreateOrUpdateResponse, error) {
 	result := CredentialOperationsClientCreateOrUpdateResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedIdentityCredentialResource); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.CredentialResource); err != nil {
 		return CredentialOperationsClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
@@ -247,7 +247,7 @@ func (client *CredentialOperationsClient) getCreateRequest(ctx context.Context, 
 // getHandleResponse handles the Get response.
 func (client *CredentialOperationsClient) getHandleResponse(resp *http.Response) (CredentialOperationsClientGetResponse, error) {
 	result := CredentialOperationsClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedIdentityCredentialResource); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.CredentialResource); err != nil {
 		return CredentialOperationsClientGetResponse{}, err
 	}
 	return result, nil

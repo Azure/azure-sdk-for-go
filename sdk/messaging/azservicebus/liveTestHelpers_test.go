@@ -184,13 +184,13 @@ func deleteSubscription(t *testing.T, ac *admin.Client, topicName string, subscr
 
 // peekSingleMessageForTest wraps a standard Receiver.Peek() call so it returns at least one message
 // and fails tests otherwise.
-func peekSingleMessageForTest(t *testing.T, receiver *Receiver) *ReceivedMessage {
+func peekSingleMessageForTest(t *testing.T, receiver *Receiver, options *PeekMessagesOptions) *ReceivedMessage {
 	var msg *ReceivedMessage
 
 	// Peek, unlike Receive, doesn't block until at least one message has arrived, so we have to poll
 	// to get a similar effect.
 	err := utils.Retry(context.Background(), EventReceiver, "peekSingleForTest", func(ctx context.Context, args *utils.RetryFnArgs) error {
-		peekedMessages, err := receiver.PeekMessages(context.Background(), 1, nil)
+		peekedMessages, err := receiver.PeekMessages(context.Background(), 1, options)
 		require.NoError(t, err)
 
 		if len(peekedMessages) == 1 {

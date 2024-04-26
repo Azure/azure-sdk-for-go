@@ -121,10 +121,18 @@ func ISO8601StringToDuration(durationStr *string) (*time.Duration, error) {
 	return &duration, nil
 }
 
-func Int32ToPtr(val *int32) *int32 {
-	if val != nil && *val > 0 {
-		return val
+// ToInt64 - allow any size signed-int to be upconverted into an int64
+func ToInt64(v any, defValue int64) (int64, bool) {
+	switch tmpV := v.(type) {
+	case int:
+		return int64(tmpV), true
+	case int8:
+		return int64(tmpV), true
+	case int32:
+		return int64(tmpV), true
+	case int64:
+		return int64(tmpV), true
+	default:
+		return defValue, false
 	}
-
-	return nil
 }

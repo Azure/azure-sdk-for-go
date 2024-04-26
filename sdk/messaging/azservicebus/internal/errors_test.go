@@ -175,9 +175,9 @@ func Test_ServiceBusError_NoRecoveryNeeded(t *testing.T) {
 		&amqp.Error{Condition: amqp.ErrCond("com.microsoft:operation-cancelled")},
 		errors.New("link is currently draining"), // not yet exposed from go-amqp
 		// simple timeouts from the mgmt link
-		RPCError{Resp: &amqpwrap.RPCResponse{Code: 408}},
-		RPCError{Resp: &amqpwrap.RPCResponse{Code: 503}},
-		RPCError{Resp: &amqpwrap.RPCResponse{Code: 500}},
+		RPCError{Resp: &amqpwrap.RPCResponse{Code: http.StatusRequestTimeout}},      // 408
+		RPCError{Resp: &amqpwrap.RPCResponse{Code: http.StatusServiceUnavailable}},  // 503
+		RPCError{Resp: &amqpwrap.RPCResponse{Code: http.StatusInternalServerError}}, // 500
 	}
 
 	for i, err := range tempErrors {

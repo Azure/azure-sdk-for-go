@@ -49,6 +49,7 @@ func TestToInt64(t *testing.T) {
 		{uint32(100), -1, -1, false},
 		{"oops, all strings", -1, -1, false},
 	}
+
 	for _, test := range tests {
 		v, ok := ToInt64(test.V, test.Default)
 		require.Equal(t, test.Expected, v)

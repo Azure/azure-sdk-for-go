@@ -277,6 +277,8 @@ func (sr *SessionReceiver) RenewSessionLock(ctx context.Context, options *RenewS
 	return internal.TransformError(err)
 }
 
+// DeleteMessages deletes messages from the session for this SessionReceiver.
+// Messages are deleted on the service and are not transferred locally.
 func (sr *SessionReceiver) DeleteMessages(ctx context.Context, options *DeleteMessagesOptions) (int64, error) {
 	return sr.inner.DeleteMessages(ctx, options)
 }

@@ -9,7 +9,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"log"
 	"mime"
 	"net/http"
 	"os"
@@ -23,7 +22,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/joho/godotenv"
 	"github.com/stretchr/testify/require"
 )
 
@@ -61,13 +59,23 @@ func ifAzure[T string | endpoint](azure bool, forAzure T, forOpenAI T) T {
 	return forOpenAI
 }
 
-var azureOpenAI, openAI, servers = func() (testVars, testVars, []string) {
-	if recording.GetRecordMode() != recording.PlaybackMode {
-		if err := godotenv.Load(); err != nil {
-			log.Fatalf("Failed to load .env file: %s\n", err)
-		}
+// getEnvVariable is recording.GetEnvVariable but it panics if the
+// value isn't found, rather than falling back to the playback value.
+func getEnvVariable(varName string, playbackValue string) string {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		return playbackValue
 	}
 
+	val := os.Getenv(varName)
+
+	if val == "" {
+		panic(fmt.Sprintf("Missing required environment variable %s", varName))
+	}
+
+	return val
+}
+
+var azureOpenAI, openAI, servers = func() (testVars, testVars, []string) {
 	servers := struct {
 		USEast         endpoint
 		USNorthCentral endpoint
@@ -77,27 +85,27 @@ var azureOpenAI, openAI, servers = func() (testVars, testVars, []string) {
 	}{
 		OpenAI: endpoint{
 			URL:    getEndpoint("OPENAI_ENDPOINT"), // ex: https://api.openai.com/v1/
-			APIKey: recording.GetEnvVariable("OPENAI_API_KEY", fakeAPIKey),
+			APIKey: getEnvVariable("OPENAI_API_KEY", fakeAPIKey),
 			Azure:  false,
 		},
 		USEast: endpoint{
 			URL:    getEndpoint("ENDPOINT_USEAST"),
-			APIKey: recording.GetEnvVariable("ENDPOINT_USEAST_API_KEY", fakeAPIKey),
+			APIKey: getEnvVariable("ENDPOINT_USEAST_API_KEY", fakeAPIKey),
 			Azure:  true,
 		},
 		USEast2: endpoint{
 			URL:    getEndpoint("ENDPOINT_USEAST2"),
-			APIKey: recording.GetEnvVariable("ENDPOINT_USEAST2_API_KEY", fakeAPIKey),
+			APIKey: getEnvVariable("ENDPOINT_USEAST2_API_KEY", fakeAPIKey),
 			Azure:  true,
 		},
 		USNorthCentral: endpoint{
 			URL:    getEndpoint("ENDPOINT_USNORTHCENTRAL"),
-			APIKey: recording.GetEnvVariable("ENDPOINT_USNORTHCENTRAL_API_KEY", fakeAPIKey),
+			APIKey: getEnvVariable("ENDPOINT_USNORTHCENTRAL_API_KEY", fakeAPIKey),
 			Azure:  true,
 		},
 		SWECentral: endpoint{
 			URL:    getEndpoint("ENDPOINT_SWECENTRAL"),
-			APIKey: recording.GetEnvVariable("ENDPOINT_SWECENTRAL_API_KEY", fakeAPIKey),
+			APIKey: getEnvVariable("ENDPOINT_SWECENTRAL_API_KEY", fakeAPIKey),
 			Azure:  true,
 		},
 	}
@@ -368,7 +376,7 @@ func assertResponseIsError(t *testing.T, err error) {
 }
 
 func getEndpoint(ev string) string {
-	v := recording.GetEnvVariable(ev, fakeEndpoint)
+	v := getEnvVariable(ev, fakeEndpoint)
 
 	if !strings.HasSuffix(v, "/") {
 		// (this just makes recording replacement easier)

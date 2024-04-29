@@ -44,7 +44,7 @@ type ChannelsClientDeleteResponse struct {
 
 // ChannelsClientGetFullURLResponse contains the response from method ChannelsClient.GetFullURL.
 type ChannelsClientGetFullURLResponse struct {
-	// Full endpoint url of an event subscription
+	// Full endpoint URL of an event subscription
 	EventSubscriptionFullURL
 }
 
@@ -130,7 +130,7 @@ type DomainEventSubscriptionsClientGetDeliveryAttributesResponse struct {
 
 // DomainEventSubscriptionsClientGetFullURLResponse contains the response from method DomainEventSubscriptionsClient.GetFullURL.
 type DomainEventSubscriptionsClientGetFullURLResponse struct {
-	// Full endpoint url of an event subscription
+	// Full endpoint URL of an event subscription
 	EventSubscriptionFullURL
 }
 
@@ -171,7 +171,7 @@ type DomainTopicEventSubscriptionsClientGetDeliveryAttributesResponse struct {
 
 // DomainTopicEventSubscriptionsClientGetFullURLResponse contains the response from method DomainTopicEventSubscriptionsClient.GetFullURL.
 type DomainTopicEventSubscriptionsClientGetFullURLResponse struct {
-	// Full endpoint url of an event subscription
+	// Full endpoint URL of an event subscription
 	EventSubscriptionFullURL
 }
 
@@ -282,7 +282,7 @@ type EventSubscriptionsClientGetDeliveryAttributesResponse struct {
 
 // EventSubscriptionsClientGetFullURLResponse contains the response from method EventSubscriptionsClient.GetFullURL.
 type EventSubscriptionsClientGetFullURLResponse struct {
-	// Full endpoint url of an event subscription
+	// Full endpoint URL of an event subscription
 	EventSubscriptionFullURL
 }
 
@@ -379,6 +379,12 @@ type NamespaceTopicEventSubscriptionsClientDeleteResponse struct {
 type NamespaceTopicEventSubscriptionsClientGetDeliveryAttributesResponse struct {
 	// Result of the Get delivery attributes operation.
 	DeliveryAttributeListResult
+}
+
+// NamespaceTopicEventSubscriptionsClientGetFullURLResponse contains the response from method NamespaceTopicEventSubscriptionsClient.GetFullURL.
+type NamespaceTopicEventSubscriptionsClientGetFullURLResponse struct {
+	// Full endpoint URL of an event subscription
+	SubscriptionFullURL
 }
 
 // NamespaceTopicEventSubscriptionsClientGetResponse contains the response from method NamespaceTopicEventSubscriptionsClient.Get.
@@ -485,6 +491,12 @@ type NamespacesClientRegenerateKeyResponse struct {
 type NamespacesClientUpdateResponse struct {
 	// Namespace resource.
 	Namespace
+}
+
+// NamespacesClientValidateCustomDomainOwnershipResponse contains the response from method NamespacesClient.BeginValidateCustomDomainOwnership.
+type NamespacesClientValidateCustomDomainOwnershipResponse struct {
+	// Namespace custom domain ownership validation result.
+	CustomDomainOwnershipValidationResult
 }
 
 // NetworkSecurityPerimeterConfigurationsClientGetResponse contains the response from method NetworkSecurityPerimeterConfigurationsClient.Get.
@@ -700,7 +712,7 @@ type PartnerTopicEventSubscriptionsClientGetDeliveryAttributesResponse struct {
 
 // PartnerTopicEventSubscriptionsClientGetFullURLResponse contains the response from method PartnerTopicEventSubscriptionsClient.GetFullURL.
 type PartnerTopicEventSubscriptionsClientGetFullURLResponse struct {
-	// Full endpoint url of an event subscription
+	// Full endpoint URL of an event subscription
 	EventSubscriptionFullURL
 }
 
@@ -844,7 +856,7 @@ type SystemTopicEventSubscriptionsClientGetDeliveryAttributesResponse struct {
 
 // SystemTopicEventSubscriptionsClientGetFullURLResponse contains the response from method SystemTopicEventSubscriptionsClient.GetFullURL.
 type SystemTopicEventSubscriptionsClientGetFullURLResponse struct {
-	// Full endpoint url of an event subscription
+	// Full endpoint URL of an event subscription
 	EventSubscriptionFullURL
 }
 
@@ -920,7 +932,7 @@ type TopicEventSubscriptionsClientGetDeliveryAttributesResponse struct {
 
 // TopicEventSubscriptionsClientGetFullURLResponse contains the response from method TopicEventSubscriptionsClient.GetFullURL.
 type TopicEventSubscriptionsClientGetFullURLResponse struct {
-	// Full endpoint url of an event subscription
+	// Full endpoint URL of an event subscription
 	EventSubscriptionFullURL
 }
 

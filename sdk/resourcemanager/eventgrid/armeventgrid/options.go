@@ -588,6 +588,12 @@ type NamespaceTopicEventSubscriptionsClientGetDeliveryAttributesOptions struct {
 	// placeholder for future optional parameters
 }
 
+// NamespaceTopicEventSubscriptionsClientGetFullURLOptions contains the optional parameters for the NamespaceTopicEventSubscriptionsClient.GetFullURL
+// method.
+type NamespaceTopicEventSubscriptionsClientGetFullURLOptions struct {
+	// placeholder for future optional parameters
+}
+
 // NamespaceTopicEventSubscriptionsClientGetOptions contains the optional parameters for the NamespaceTopicEventSubscriptionsClient.Get
 // method.
 type NamespaceTopicEventSubscriptionsClientGetOptions struct {
@@ -685,6 +691,13 @@ type NamespacesClientBeginRegenerateKeyOptions struct {
 
 // NamespacesClientBeginUpdateOptions contains the optional parameters for the NamespacesClient.BeginUpdate method.
 type NamespacesClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// NamespacesClientBeginValidateCustomDomainOwnershipOptions contains the optional parameters for the NamespacesClient.BeginValidateCustomDomainOwnership
+// method.
+type NamespacesClientBeginValidateCustomDomainOwnershipOptions struct {
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }

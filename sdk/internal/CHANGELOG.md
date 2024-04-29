@@ -4,7 +4,11 @@
 
 ### Features Added
 
+* `RemoveRegisteredSanitizers` selectively disables sanitizers the test proxy enables by
+  default since version 1.0.0-dev.20240422.1
+
 ### Breaking Changes
+
 * Deprecated the `go-vcr` based test recording API. Its methods now return errors or panic.
 
 ### Bugs Fixed

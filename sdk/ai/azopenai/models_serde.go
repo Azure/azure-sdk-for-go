@@ -25,6 +25,7 @@ func (a AudioTranscription) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "segments", a.Segments)
 	populate(objectMap, "task", a.Task)
 	populate(objectMap, "text", a.Text)
+	populate(objectMap, "words", a.Words)
 	return json.Marshal(objectMap)
 }
 
@@ -52,6 +53,9 @@ func (a *AudioTranscription) UnmarshalJSON(data []byte) error {
 		case "text":
 			err = unpopulate(val, "Text", &a.Text)
 			delete(rawMsg, key)
+		case "words":
+			err = unpopulate(val, "Words", &a.Words)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -72,6 +76,7 @@ func (a AudioTranscriptionOptions) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "prompt", a.Prompt)
 	populate(objectMap, "response_format", a.ResponseFormat)
 	populate(objectMap, "temperature", a.Temperature)
+	populate(objectMap, "timestamp_granularities", a.TimestampGranularities)
 	return json.Marshal(objectMap)
 }
 
@@ -106,6 +111,9 @@ func (a *AudioTranscriptionOptions) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "temperature":
 			err = unpopulate(val, "Temperature", &a.Temperature)
+			delete(rawMsg, key)
+		case "timestamp_granularities":
+			err = unpopulate(val, "TimestampGranularities", &a.TimestampGranularities)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -169,6 +177,41 @@ func (a *AudioTranscriptionSegment) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "tokens":
 			err = unpopulate(val, "Tokens", &a.Tokens)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", a, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AudioTranscriptionWord.
+func (a AudioTranscriptionWord) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "end", a.End)
+	populate(objectMap, "start", a.Start)
+	populate(objectMap, "word", a.Word)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AudioTranscriptionWord.
+func (a *AudioTranscriptionWord) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", a, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "end":
+			err = unpopulate(val, "End", &a.End)
+			delete(rawMsg, key)
+		case "start":
+			err = unpopulate(val, "Start", &a.Start)
+			delete(rawMsg, key)
+		case "word":
+			err = unpopulate(val, "Word", &a.Word)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -1295,7 +1338,6 @@ func (c ChatCompletions) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "choices", c.Choices)
 	populateTimeUnix(objectMap, "created", c.Created)
 	populate(objectMap, "id", c.ID)
-	populate(objectMap, "model", c.Model)
 	populate(objectMap, "prompt_filter_results", c.PromptFilterResults)
 	populate(objectMap, "system_fingerprint", c.SystemFingerprint)
 	populate(objectMap, "usage", c.Usage)
@@ -1319,9 +1361,6 @@ func (c *ChatCompletions) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "id":
 			err = unpopulate(val, "ID", &c.ID)
-			delete(rawMsg, key)
-		case "model":
-			err = unpopulate(val, "Model", &c.Model)
 			delete(rawMsg, key)
 		case "prompt_annotations":
 			fallthrough
@@ -1532,7 +1571,7 @@ func (c ChatCompletionsOptions) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "logprobs", c.LogProbs)
 	populate(objectMap, "max_tokens", c.MaxTokens)
 	populate(objectMap, "messages", c.Messages)
-	populate(objectMap, "model", c.DeploymentName)
+	populate(objectMap, "model", c.Model)
 	populate(objectMap, "n", c.N)
 	populate(objectMap, "presence_penalty", c.PresencePenalty)
 	populate(objectMap, "response_format", c.ResponseFormat)
@@ -1584,7 +1623,7 @@ func (c *ChatCompletionsOptions) UnmarshalJSON(data []byte) error {
 			c.Messages, err = unmarshalChatRequestMessageClassificationArray(val)
 			delete(rawMsg, key)
 		case "model":
-			err = unpopulate(val, "Model", &c.DeploymentName)
+			err = unpopulate(val, "Model", &c.Model)
 			delete(rawMsg, key)
 		case "n":
 			err = unpopulate(val, "N", &c.N)
@@ -2567,6 +2606,37 @@ func (c *ContentFilterCitedDetectionResult) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type ContentFilterDetailedResults.
+func (c ContentFilterDetailedResults) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "details", c.Details)
+	populate(objectMap, "filtered", c.Filtered)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ContentFilterDetailedResults.
+func (c *ContentFilterDetailedResults) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", c, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "details":
+			err = unpopulate(val, "Details", &c.Details)
+			delete(rawMsg, key)
+		case "filtered":
+			err = unpopulate(val, "Filtered", &c.Filtered)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", c, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type ContentFilterDetectionResult.
 func (c ContentFilterDetectionResult) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -2635,6 +2705,7 @@ func (c ContentFilterResultDetailsForPrompt) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "custom_blocklists", c.CustomBlocklists)
 	populate(objectMap, "error", c.Error)
 	populate(objectMap, "hate", c.Hate)
+	populate(objectMap, "indirect_attack", c.IndirectAttack)
 	populate(objectMap, "jailbreak", c.Jailbreak)
 	populate(objectMap, "profanity", c.Profanity)
 	populate(objectMap, "self_harm", c.SelfHarm)
@@ -2660,6 +2731,9 @@ func (c *ContentFilterResultDetailsForPrompt) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "hate":
 			err = unpopulate(val, "Hate", &c.Hate)
+			delete(rawMsg, key)
+		case "indirect_attack":
+			err = unpopulate(val, "IndirectAttack", &c.IndirectAttack)
 			delete(rawMsg, key)
 		case "jailbreak":
 			err = unpopulate(val, "Jailbreak", &c.Jailbreak)

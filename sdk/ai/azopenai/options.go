@@ -38,6 +38,11 @@ type getAudioTranscriptionInternalOptions struct {
 	// like 0.2 will make it more focused and deterministic. If set to 0, the model will
 	// use log probability to automatically increase the temperature until certain thresholds are hit.
 	Temperature *float32
+
+	// The timestamp granularities to populate for this transcription.response_format must be set verbose_json to use timestamp
+	// granularities. Either or both of these options are supported: word, or segment.
+	// Note: There is no additional latency for segment timestamps, but generating word timestamps incurs additional latency.
+	TimestampGranularities []AudioTranscriptionTimestampGranularity
 }
 
 // getAudioTranslationInternalOptions contains the optional parameters for the Client.getAudioTranslationInternal method.

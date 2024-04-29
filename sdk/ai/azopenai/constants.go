@@ -567,6 +567,12 @@ const (
 	// SpeechGenerationResponseFormatOpus - Use Opus as the audio output format. Opus is optimized for internet streaming and
 	// low latency.
 	SpeechGenerationResponseFormatOpus SpeechGenerationResponseFormat = "opus"
+	// SpeechGenerationResponseFormatPcm - Use uncompressed PCM as the audio output format, which is similar to WAV but contains
+	// raw samples in 24kHz (16-bit signed, low-endian), without the header.
+	SpeechGenerationResponseFormatPcm SpeechGenerationResponseFormat = "pcm"
+	// SpeechGenerationResponseFormatWav - Use uncompressed WAV as the audio output format, suitable for low-latency applications
+	// to avoid decoding overhead.
+	SpeechGenerationResponseFormatWav SpeechGenerationResponseFormat = "wav"
 )
 
 // PossibleSpeechGenerationResponseFormatValues returns the possible values for the SpeechGenerationResponseFormat const type.
@@ -576,6 +582,8 @@ func PossibleSpeechGenerationResponseFormatValues() []SpeechGenerationResponseFo
 		SpeechGenerationResponseFormatFlac,
 		SpeechGenerationResponseFormatMp3,
 		SpeechGenerationResponseFormatOpus,
+		SpeechGenerationResponseFormatPcm,
+		SpeechGenerationResponseFormatWav,
 	}
 }
 

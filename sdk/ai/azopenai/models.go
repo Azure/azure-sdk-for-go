@@ -667,6 +667,9 @@ type ChatCompletions struct {
 	// NOTE: This field is not available when using [Client.GetChatCompletionsStream].
 	Usage *CompletionsUsage
 
+	// The model name used for this completions request.
+	Model *string
+
 	// Content filtering results for zero or more prompts in the request. In a streaming request, results for different prompts
 	// may arrive at different times or in different orders.
 	PromptFilterResults []ContentFilterResultsForPrompt
@@ -813,7 +816,7 @@ type ChatCompletionsOptions struct {
 
 	// The model name to provide as part of this completions request. Not applicable to Azure OpenAI, where deployment information
 	// should be included in the Azure resource URI that's connected to.
-	Model *string
+	DeploymentName *string
 
 	// The number of chat completions choices that should be generated for a chat completions response. Because this setting can
 	// generate many completions, it may quickly consume your token quota. Use
@@ -1325,7 +1328,7 @@ type ContentFilterCitedDetectionResult struct {
 	URL *string
 }
 
-// ContentFilterDetailedResults - Represents a stuctured collection of result details for content filtering.
+// ContentFilterDetailedResults - Represents a structured collection of result details for content filtering.
 type ContentFilterDetailedResults struct {
 	// REQUIRED; The collection of detailed blocklist result information.
 	Details []ContentFilterBlocklistIDResult

@@ -368,7 +368,7 @@ func (r *Receiver) DeadLetterMessage(ctx context.Context, message *ReceivedMessa
 type DeleteMessagesOptions struct {
 	// Count is the maximum number of messages to delete.
 	// Defaults to 4000.
-	Count int
+	Count int32
 
 	// BeforeEnqueueTime - any messages older than this time can be deleted.
 	// Defaults to time.Now().

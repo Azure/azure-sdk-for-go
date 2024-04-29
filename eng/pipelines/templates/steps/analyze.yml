@@ -130,6 +130,7 @@ steps:
         }
       }
     displayName: 'go get -u all'
+    condition: eq(variables.SkipGoGetUAll, 'false')
     workingDirectory: $(System.DefaultWorkingDirectory)
 
   - pwsh: |

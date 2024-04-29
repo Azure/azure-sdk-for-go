@@ -6,6 +6,7 @@
 package generated
 
 import (
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"io"
 	"time"
 )
@@ -28,7 +29,7 @@ type AppendBlobClientAppendBlockFromURLResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// EncryptionKeySHA256 contains the information returned from the x-ms-encryption-key-sha256 header response.
 	EncryptionKeySHA256 *string
@@ -70,7 +71,7 @@ type AppendBlobClientAppendBlockResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// EncryptionKeySHA256 contains the information returned from the x-ms-encryption-key-sha256 header response.
 	EncryptionKeySHA256 *string
@@ -103,7 +104,7 @@ type AppendBlobClientCreateResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// EncryptionKeySHA256 contains the information returned from the x-ms-encryption-key-sha256 header response.
 	EncryptionKeySHA256 *string
@@ -136,7 +137,7 @@ type AppendBlobClientSealResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// IsSealed contains the information returned from the x-ms-blob-sealed header response.
 	IsSealed *bool
@@ -175,7 +176,7 @@ type BlobClientAcquireLeaseResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
@@ -199,7 +200,7 @@ type BlobClientBreakLeaseResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
@@ -223,7 +224,7 @@ type BlobClientChangeLeaseResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
@@ -259,7 +260,7 @@ type BlobClientCopyFromURLResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// EncryptionScope contains the information returned from the x-ms-encryption-scope header response.
 	EncryptionScope *string
@@ -286,7 +287,7 @@ type BlobClientCreateSnapshotResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// IsServerEncrypted contains the information returned from the x-ms-request-server-encrypted header response.
 	IsServerEncrypted *bool
@@ -412,7 +413,7 @@ type BlobClientDownloadResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// EncryptionKeySHA256 contains the information returned from the x-ms-encryption-key-sha256 header response.
 	EncryptionKeySHA256 *string
@@ -577,7 +578,7 @@ type BlobClientGetPropertiesResponse struct {
 	DestinationSnapshot *string
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// EncryptionKeySHA256 contains the information returned from the x-ms-encryption-key-sha256 header response.
 	EncryptionKeySHA256 *string
@@ -739,7 +740,7 @@ type BlobClientQueryResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// EncryptionKeySHA256 contains the information returned from the x-ms-encryption-key-sha256 header response.
 	EncryptionKeySHA256 *string
@@ -781,7 +782,7 @@ type BlobClientReleaseLeaseResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
@@ -802,7 +803,7 @@ type BlobClientRenewLeaseResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
@@ -826,7 +827,7 @@ type BlobClientSetExpiryResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
@@ -850,7 +851,7 @@ type BlobClientSetHTTPHeadersResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
@@ -910,7 +911,7 @@ type BlobClientSetMetadataResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// EncryptionKeySHA256 contains the information returned from the x-ms-encryption-key-sha256 header response.
 	EncryptionKeySHA256 *string
@@ -976,7 +977,7 @@ type BlobClientStartCopyFromURLResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
@@ -1021,7 +1022,7 @@ type BlockBlobClientCommitBlockListResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// EncryptionKeySHA256 contains the information returned from the x-ms-encryption-key-sha256 header response.
 	EncryptionKeySHA256 *string
@@ -1062,7 +1063,7 @@ type BlockBlobClientGetBlockListResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
@@ -1086,7 +1087,7 @@ type BlockBlobClientPutBlobFromURLResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// EncryptionKeySHA256 contains the information returned from the x-ms-encryption-key-sha256 header response.
 	EncryptionKeySHA256 *string
@@ -1182,7 +1183,7 @@ type BlockBlobClientUploadResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// EncryptionKeySHA256 contains the information returned from the x-ms-encryption-key-sha256 header response.
 	EncryptionKeySHA256 *string
@@ -1215,7 +1216,7 @@ type ContainerClientAcquireLeaseResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
@@ -1239,7 +1240,7 @@ type ContainerClientBreakLeaseResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
@@ -1263,7 +1264,7 @@ type ContainerClientChangeLeaseResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
@@ -1287,7 +1288,7 @@ type ContainerClientCreateResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
@@ -1344,7 +1345,7 @@ type ContainerClientGetAccessPolicyResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
@@ -1398,7 +1399,7 @@ type ContainerClientGetPropertiesResponse struct {
 	DenyEncryptionScopeOverride *bool
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// HasImmutabilityPolicy contains the information returned from the x-ms-has-immutability-policy header response.
 	HasImmutabilityPolicy *bool
@@ -1483,7 +1484,7 @@ type ContainerClientReleaseLeaseResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
@@ -1519,7 +1520,7 @@ type ContainerClientRenewLeaseResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
@@ -1558,7 +1559,7 @@ type ContainerClientSetAccessPolicyResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
@@ -1579,7 +1580,7 @@ type ContainerClientSetMetadataResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
@@ -1624,7 +1625,7 @@ type PageBlobClientClearPagesResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
@@ -1651,7 +1652,7 @@ type PageBlobClientCopyIncrementalResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
@@ -1675,7 +1676,7 @@ type PageBlobClientCreateResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// EncryptionKeySHA256 contains the information returned from the x-ms-encryption-key-sha256 header response.
 	EncryptionKeySHA256 *string
@@ -1714,7 +1715,7 @@ type PageBlobClientGetPageRangesDiffResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
@@ -1741,7 +1742,7 @@ type PageBlobClientGetPageRangesResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
@@ -1765,7 +1766,7 @@ type PageBlobClientResizeResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
@@ -1789,7 +1790,7 @@ type PageBlobClientUpdateSequenceNumberResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
@@ -1816,7 +1817,7 @@ type PageBlobClientUploadPagesFromURLResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// EncryptionKeySHA256 contains the information returned from the x-ms-encryption-key-sha256 header response.
 	EncryptionKeySHA256 *string
@@ -1855,7 +1856,7 @@ type PageBlobClientUploadPagesResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// EncryptionKeySHA256 contains the information returned from the x-ms-encryption-key-sha256 header response.
 	EncryptionKeySHA256 *string

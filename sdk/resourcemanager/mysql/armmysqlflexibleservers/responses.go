@@ -8,6 +8,30 @@
 
 package armmysqlflexibleservers
 
+// AdvancedThreatProtectionSettingsClientGetResponse contains the response from method AdvancedThreatProtectionSettingsClient.Get.
+type AdvancedThreatProtectionSettingsClientGetResponse struct {
+	// A server's Advanced Threat Protection.
+	AdvancedThreatProtection
+}
+
+// AdvancedThreatProtectionSettingsClientListResponse contains the response from method AdvancedThreatProtectionSettingsClient.NewListPager.
+type AdvancedThreatProtectionSettingsClientListResponse struct {
+	// A list of the server's Advanced Threat Protection configurations.
+	AdvancedThreatProtectionListResult
+}
+
+// AdvancedThreatProtectionSettingsClientUpdatePutResponse contains the response from method AdvancedThreatProtectionSettingsClient.BeginUpdatePut.
+type AdvancedThreatProtectionSettingsClientUpdatePutResponse struct {
+	// A server's Advanced Threat Protection.
+	AdvancedThreatProtection
+}
+
+// AdvancedThreatProtectionSettingsClientUpdateResponse contains the response from method AdvancedThreatProtectionSettingsClient.BeginUpdate.
+type AdvancedThreatProtectionSettingsClientUpdateResponse struct {
+	// A server's Advanced Threat Protection.
+	AdvancedThreatProtection
+}
+
 // AzureADAdministratorsClientCreateOrUpdateResponse contains the response from method AzureADAdministratorsClient.BeginCreateOrUpdate.
 type AzureADAdministratorsClientCreateOrUpdateResponse struct {
 	// Represents a Administrator.
@@ -167,10 +191,70 @@ type LocationBasedCapabilitiesClientListResponse struct {
 	CapabilitiesListResult
 }
 
+// LocationBasedCapabilitySetClientGetResponse contains the response from method LocationBasedCapabilitySetClient.Get.
+type LocationBasedCapabilitySetClientGetResponse struct {
+	// Represents a location capability set.
+	Capability
+}
+
+// LocationBasedCapabilitySetClientListResponse contains the response from method LocationBasedCapabilitySetClient.NewListPager.
+type LocationBasedCapabilitySetClientListResponse struct {
+	// location capability set
+	CapabilitySetsList
+}
+
 // LogFilesClientListByServerResponse contains the response from method LogFilesClient.NewListByServerPager.
 type LogFilesClientListByServerResponse struct {
 	// A List of logFiles.
 	LogFileListResult
+}
+
+// LongRunningBackupClientCreateResponse contains the response from method LongRunningBackupClient.BeginCreate.
+type LongRunningBackupClientCreateResponse struct {
+	// Server backup properties
+	ServerBackupV2
+}
+
+// LongRunningBackupsClientGetResponse contains the response from method LongRunningBackupsClient.Get.
+type LongRunningBackupsClientGetResponse struct {
+	// Server backup properties
+	ServerBackupV2
+}
+
+// LongRunningBackupsClientListResponse contains the response from method LongRunningBackupsClient.NewListPager.
+type LongRunningBackupsClientListResponse struct {
+	// A list of server backups.
+	ServerBackupV2ListResult
+}
+
+// MaintenancesClientListResponse contains the response from method MaintenancesClient.NewListPager.
+type MaintenancesClientListResponse struct {
+	// A list of maintenances.
+	MaintenanceListResult
+}
+
+// MaintenancesClientReadResponse contains the response from method MaintenancesClient.Read.
+type MaintenancesClientReadResponse struct {
+	// Represents a maintenance.
+	Maintenance
+}
+
+// MaintenancesClientUpdateResponse contains the response from method MaintenancesClient.BeginUpdate.
+type MaintenancesClientUpdateResponse struct {
+	// Represents a maintenance.
+	Maintenance
+}
+
+// OperationProgressClientGetResponse contains the response from method OperationProgressClient.Get.
+type OperationProgressClientGetResponse struct {
+	// Represents Operation Results API Response
+	OperationProgressResult
+}
+
+// OperationResultsClientGetResponse contains the response from method OperationResultsClient.Get.
+type OperationResultsClientGetResponse struct {
+	// Represents Operation Results API Response
+	OperationStatusExtendedResult
 }
 
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
@@ -241,6 +325,18 @@ type ServersClientStopResponse struct {
 
 // ServersClientUpdateResponse contains the response from method ServersClient.BeginUpdate.
 type ServersClientUpdateResponse struct {
+	// Represents a server.
+	Server
+}
+
+// ServersClientValidateEstimateHighAvailabilityResponse contains the response from method ServersClient.ValidateEstimateHighAvailability.
+type ServersClientValidateEstimateHighAvailabilityResponse struct {
+	// High availability validation properties of a server
+	HighAvailabilityValidationEstimation
+}
+
+// ServersMigrationClientCutoverMigrationResponse contains the response from method ServersMigrationClient.BeginCutoverMigration.
+type ServersMigrationClientCutoverMigrationResponse struct {
 	// Represents a server.
 	Server
 }

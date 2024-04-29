@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysqlflexibleservers/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/mysql/resource-manager/Microsoft.DBforMySQL/Backups/preview/2022-09-30-preview/examples/BackupAndExport.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8691fbfca8fcdc5a241a0b501c32fd4a76bb0cd/specification/mysql/resource-manager/Microsoft.DBforMySQL/Backups/preview/2023-10-01-preview/examples/BackupAndExport.json
 func ExampleBackupAndExportClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -51,14 +51,14 @@ func ExampleBackupAndExportClient_BeginCreate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.BackupAndExportResponse = armmysqlflexibleservers.BackupAndExportResponse{
+	// 	Error: &armmysqlflexibleservers.ErrorDetail{
+	// 		Code: to.Ptr("AggregateException"),
+	// 		Message: to.Ptr("System.AggregateException: One or more errors occurred. (Mismatch in count of number of Commited-Blocks from service.)"),
+	// 	},
 	// 	Name: to.Ptr("custom-backup101"),
 	// 	Type: to.Ptr("Microsoft.DBforMySQL/flexibleServers/backupAndExport"),
 	// 	ID: to.Ptr("/subscriptions/cb9d743d-2140-4e73-b871-cd31abab1d2f/resourceGroups/mrgsumitkumatest1/providers/Microsoft.DBforMySQL/flexibleServers/servermysql-01/backupAndExport/custom-backup101"),
 	// 	EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-12-29T07:37:05.640Z"); return t}()),
-	// 	Error: &armmysqlflexibleservers.ErrorResponse{
-	// 		Code: to.Ptr("AggregateException"),
-	// 		Message: to.Ptr("System.AggregateException: One or more errors occurred. (Mismatch in count of number of Commited-Blocks from service.)"),
-	// 	},
 	// 	PercentComplete: to.Ptr[float64](100),
 	// 	Properties: &armmysqlflexibleservers.BackupAndExportResponseProperties{
 	// 		BackupMetadata: to.Ptr("{\"key1\":\"value1\",\"key2\":\"value2\"}"),
@@ -70,7 +70,7 @@ func ExampleBackupAndExportClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/mysql/resource-manager/Microsoft.DBforMySQL/Backups/preview/2022-09-30-preview/examples/ValidateBackup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8691fbfca8fcdc5a241a0b501c32fd4a76bb0cd/specification/mysql/resource-manager/Microsoft.DBforMySQL/Backups/preview/2023-10-01-preview/examples/ValidateBackup.json
 func ExampleBackupAndExportClient_ValidateBackup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

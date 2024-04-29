@@ -20,7 +20,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysqlflexibleservers/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/preview/2022-09-30-preview/examples/ServerCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8691fbfca8fcdc5a241a0b501c32fd4a76bb0cd/specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/stable/2023-12-30/examples/ServerCreate.json
 func ExampleServersClient_BeginCreate_createANewServer() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -41,6 +41,7 @@ func ExampleServersClient_BeginCreate_createANewServer() {
 			AdministratorLoginPassword: to.Ptr("your_password"),
 			AvailabilityZone:           to.Ptr("1"),
 			Backup: &armmysqlflexibleservers.Backup{
+				BackupIntervalHours: to.Ptr[int32](24),
 				BackupRetentionDays: to.Ptr[int32](7),
 				GeoRedundantBackup:  to.Ptr(armmysqlflexibleservers.EnableStatusEnumDisabled),
 			},
@@ -56,9 +57,9 @@ func ExampleServersClient_BeginCreate_createANewServer() {
 			},
 			Version: to.Ptr(armmysqlflexibleservers.ServerVersionFive7),
 		},
-		SKU: &armmysqlflexibleservers.SKU{
+		SKU: &armmysqlflexibleservers.MySQLServerSKU{
 			Name: to.Ptr("Standard_D2ds_v4"),
-			Tier: to.Ptr(armmysqlflexibleservers.SKUTierGeneralPurpose),
+			Tier: to.Ptr(armmysqlflexibleservers.ServerSKUTierGeneralPurpose),
 		},
 	}, nil)
 	if err != nil {
@@ -113,14 +114,14 @@ func ExampleServersClient_BeginCreate_createANewServer() {
 	// 		},
 	// 		Version: to.Ptr(armmysqlflexibleservers.ServerVersionFive7),
 	// 	},
-	// 	SKU: &armmysqlflexibleservers.SKU{
+	// 	SKU: &armmysqlflexibleservers.MySQLServerSKU{
 	// 		Name: to.Ptr("Standard_D2ds_v4"),
-	// 		Tier: to.Ptr(armmysqlflexibleservers.SKUTierGeneralPurpose),
+	// 		Tier: to.Ptr(armmysqlflexibleservers.ServerSKUTierGeneralPurpose),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/preview/2022-09-30-preview/examples/ServerCreateReplica.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8691fbfca8fcdc5a241a0b501c32fd4a76bb0cd/specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/stable/2023-12-30/examples/ServerCreateReplica.json
 func ExampleServersClient_BeginCreate_createAReplicaServer() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -190,14 +191,14 @@ func ExampleServersClient_BeginCreate_createAReplicaServer() {
 	// 		},
 	// 		Version: to.Ptr(armmysqlflexibleservers.ServerVersionFive7),
 	// 	},
-	// 	SKU: &armmysqlflexibleservers.SKU{
+	// 	SKU: &armmysqlflexibleservers.MySQLServerSKU{
 	// 		Name: to.Ptr("Standard_D2ds_v4"),
-	// 		Tier: to.Ptr(armmysqlflexibleservers.SKUTierGeneralPurpose),
+	// 		Tier: to.Ptr(armmysqlflexibleservers.ServerSKUTierGeneralPurpose),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/preview/2022-09-30-preview/examples/ServerCreateWithPointInTimeRestore.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8691fbfca8fcdc5a241a0b501c32fd4a76bb0cd/specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/stable/2023-12-30/examples/ServerCreateWithPointInTimeRestore.json
 func ExampleServersClient_BeginCreate_createAServerAsAPointInTimeRestore() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -218,9 +219,9 @@ func ExampleServersClient_BeginCreate_createAServerAsAPointInTimeRestore() {
 			RestorePointInTime:     to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-24T00:00:37.467Z"); return t }()),
 			SourceServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/SourceResourceGroup/providers/Microsoft.DBforMySQL/flexibleServers/sourceserver"),
 		},
-		SKU: &armmysqlflexibleservers.SKU{
+		SKU: &armmysqlflexibleservers.MySQLServerSKU{
 			Name: to.Ptr("Standard_D14_v2"),
-			Tier: to.Ptr(armmysqlflexibleservers.SKUTierGeneralPurpose),
+			Tier: to.Ptr(armmysqlflexibleservers.ServerSKUTierGeneralPurpose),
 		},
 	}, nil)
 	if err != nil {
@@ -245,6 +246,7 @@ func ExampleServersClient_BeginCreate_createAServerAsAPointInTimeRestore() {
 	// 		AdministratorLogin: to.Ptr("adminuser"),
 	// 		AvailabilityZone: to.Ptr("1"),
 	// 		Backup: &armmysqlflexibleservers.Backup{
+	// 			BackupIntervalHours: to.Ptr[int32](24),
 	// 			BackupRetentionDays: to.Ptr[int32](7),
 	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-24T00:15:24.000Z"); return t}()),
 	// 			GeoRedundantBackup: to.Ptr(armmysqlflexibleservers.EnableStatusEnumDisabled),
@@ -274,14 +276,14 @@ func ExampleServersClient_BeginCreate_createAServerAsAPointInTimeRestore() {
 	// 		},
 	// 		Version: to.Ptr(armmysqlflexibleservers.ServerVersionFive7),
 	// 	},
-	// 	SKU: &armmysqlflexibleservers.SKU{
+	// 	SKU: &armmysqlflexibleservers.MySQLServerSKU{
 	// 		Name: to.Ptr("Standard_D2ds_v4"),
-	// 		Tier: to.Ptr(armmysqlflexibleservers.SKUTierGeneralPurpose),
+	// 		Tier: to.Ptr(armmysqlflexibleservers.ServerSKUTierGeneralPurpose),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/preview/2022-09-30-preview/examples/ServerCreateWithBYOK.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8691fbfca8fcdc5a241a0b501c32fd4a76bb0cd/specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/stable/2023-12-30/examples/ServerCreateWithBYOK.json
 func ExampleServersClient_BeginCreate_createAServerWithByok() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -297,7 +299,7 @@ func ExampleServersClient_BeginCreate_createAServerWithByok() {
 		Tags: map[string]*string{
 			"num": to.Ptr("1"),
 		},
-		Identity: &armmysqlflexibleservers.Identity{
+		Identity: &armmysqlflexibleservers.MySQLServerIdentity{
 			Type: to.Ptr(armmysqlflexibleservers.ManagedServiceIdentityTypeUserAssigned),
 			UserAssignedIdentities: map[string]any{
 				"/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-identity": map[string]any{},
@@ -308,6 +310,7 @@ func ExampleServersClient_BeginCreate_createAServerWithByok() {
 			AdministratorLoginPassword: to.Ptr("your_password"),
 			AvailabilityZone:           to.Ptr("1"),
 			Backup: &armmysqlflexibleservers.Backup{
+				BackupIntervalHours: to.Ptr[int32](24),
 				BackupRetentionDays: to.Ptr[int32](7),
 				GeoRedundantBackup:  to.Ptr(armmysqlflexibleservers.EnableStatusEnumDisabled),
 			},
@@ -330,9 +333,9 @@ func ExampleServersClient_BeginCreate_createAServerWithByok() {
 			},
 			Version: to.Ptr(armmysqlflexibleservers.ServerVersionFive7),
 		},
-		SKU: &armmysqlflexibleservers.SKU{
+		SKU: &armmysqlflexibleservers.MySQLServerSKU{
 			Name: to.Ptr("Standard_D2ds_v4"),
-			Tier: to.Ptr(armmysqlflexibleservers.SKUTierGeneralPurpose),
+			Tier: to.Ptr(armmysqlflexibleservers.ServerSKUTierGeneralPurpose),
 		},
 	}, nil)
 	if err != nil {
@@ -387,14 +390,14 @@ func ExampleServersClient_BeginCreate_createAServerWithByok() {
 	// 		},
 	// 		Version: to.Ptr(armmysqlflexibleservers.ServerVersionFive7),
 	// 	},
-	// 	SKU: &armmysqlflexibleservers.SKU{
+	// 	SKU: &armmysqlflexibleservers.MySQLServerSKU{
 	// 		Name: to.Ptr("Standard_D2ds_v4"),
-	// 		Tier: to.Ptr(armmysqlflexibleservers.SKUTierGeneralPurpose),
+	// 		Tier: to.Ptr(armmysqlflexibleservers.ServerSKUTierGeneralPurpose),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/preview/2022-09-30-preview/examples/ServerUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8691fbfca8fcdc5a241a0b501c32fd4a76bb0cd/specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/stable/2023-12-30/examples/ServerUpdate.json
 func ExampleServersClient_BeginUpdate_updateAServer() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -407,6 +410,9 @@ func ExampleServersClient_BeginUpdate_updateAServer() {
 	}
 	poller, err := clientFactory.NewServersClient().BeginUpdate(ctx, "testrg", "mysqltestserver", armmysqlflexibleservers.ServerForUpdate{
 		Properties: &armmysqlflexibleservers.ServerPropertiesForUpdate{
+			Network: &armmysqlflexibleservers.Network{
+				PublicNetworkAccess: to.Ptr(armmysqlflexibleservers.EnableStatusEnumDisabled),
+			},
 			Storage: &armmysqlflexibleservers.Storage{
 				AutoGrow:      to.Ptr(armmysqlflexibleservers.EnableStatusEnumDisabled),
 				AutoIoScaling: to.Ptr(armmysqlflexibleservers.EnableStatusEnumDisabled),
@@ -437,6 +443,7 @@ func ExampleServersClient_BeginUpdate_updateAServer() {
 	// 		AdministratorLogin: to.Ptr("cloudsa"),
 	// 		AvailabilityZone: to.Ptr("3"),
 	// 		Backup: &armmysqlflexibleservers.Backup{
+	// 			BackupIntervalHours: to.Ptr[int32](24),
 	// 			BackupRetentionDays: to.Ptr[int32](7),
 	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-17T06:11:38.415Z"); return t}()),
 	// 			GeoRedundantBackup: to.Ptr(armmysqlflexibleservers.EnableStatusEnumDisabled),
@@ -453,7 +460,7 @@ func ExampleServersClient_BeginUpdate_updateAServer() {
 	// 			StartMinute: to.Ptr[int32](0),
 	// 		},
 	// 		Network: &armmysqlflexibleservers.Network{
-	// 			PublicNetworkAccess: to.Ptr(armmysqlflexibleservers.EnableStatusEnumEnabled),
+	// 			PublicNetworkAccess: to.Ptr(armmysqlflexibleservers.EnableStatusEnumDisabled),
 	// 		},
 	// 		ReplicaCapacity: to.Ptr[int32](10),
 	// 		ReplicationRole: to.Ptr(armmysqlflexibleservers.ReplicationRoleNone),
@@ -467,14 +474,14 @@ func ExampleServersClient_BeginUpdate_updateAServer() {
 	// 		},
 	// 		Version: to.Ptr(armmysqlflexibleservers.ServerVersionFive7),
 	// 	},
-	// 	SKU: &armmysqlflexibleservers.SKU{
+	// 	SKU: &armmysqlflexibleservers.MySQLServerSKU{
 	// 		Name: to.Ptr("Standard_D2ds_v4"),
-	// 		Tier: to.Ptr(armmysqlflexibleservers.SKUTierGeneralPurpose),
+	// 		Tier: to.Ptr(armmysqlflexibleservers.ServerSKUTierGeneralPurpose),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/preview/2022-09-30-preview/examples/ServerUpdateWithCustomerMaintenanceWindow.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8691fbfca8fcdc5a241a0b501c32fd4a76bb0cd/specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/stable/2023-12-30/examples/ServerUpdateWithCustomerMaintenanceWindow.json
 func ExampleServersClient_BeginUpdate_updateServerCustomerMaintenanceWindow() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -517,6 +524,7 @@ func ExampleServersClient_BeginUpdate_updateServerCustomerMaintenanceWindow() {
 	// 		AdministratorLogin: to.Ptr("cloudsa"),
 	// 		AvailabilityZone: to.Ptr("3"),
 	// 		Backup: &armmysqlflexibleservers.Backup{
+	// 			BackupIntervalHours: to.Ptr[int32](24),
 	// 			BackupRetentionDays: to.Ptr[int32](7),
 	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-17T06:11:38.415Z"); return t}()),
 	// 			GeoRedundantBackup: to.Ptr(armmysqlflexibleservers.EnableStatusEnumDisabled),
@@ -546,14 +554,14 @@ func ExampleServersClient_BeginUpdate_updateServerCustomerMaintenanceWindow() {
 	// 		},
 	// 		Version: to.Ptr(armmysqlflexibleservers.ServerVersionFive7),
 	// 	},
-	// 	SKU: &armmysqlflexibleservers.SKU{
+	// 	SKU: &armmysqlflexibleservers.MySQLServerSKU{
 	// 		Name: to.Ptr("Standard_D2ds_v4"),
-	// 		Tier: to.Ptr(armmysqlflexibleservers.SKUTierGeneralPurpose),
+	// 		Tier: to.Ptr(armmysqlflexibleservers.ServerSKUTierGeneralPurpose),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/preview/2022-09-30-preview/examples/ServerUpdateWithBYOK.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8691fbfca8fcdc5a241a0b501c32fd4a76bb0cd/specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/stable/2023-12-30/examples/ServerUpdateWithBYOK.json
 func ExampleServersClient_BeginUpdate_updateServerWithByok() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -565,7 +573,7 @@ func ExampleServersClient_BeginUpdate_updateServerWithByok() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewServersClient().BeginUpdate(ctx, "testrg", "mysqltestserver", armmysqlflexibleservers.ServerForUpdate{
-		Identity: &armmysqlflexibleservers.Identity{
+		Identity: &armmysqlflexibleservers.MySQLServerIdentity{
 			Type: to.Ptr(armmysqlflexibleservers.ManagedServiceIdentityTypeUserAssigned),
 			UserAssignedIdentities: map[string]any{
 				"/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-identity": map[string]any{},
@@ -603,6 +611,7 @@ func ExampleServersClient_BeginUpdate_updateServerWithByok() {
 	// 		AdministratorLogin: to.Ptr("cloudsa"),
 	// 		AvailabilityZone: to.Ptr("1"),
 	// 		Backup: &armmysqlflexibleservers.Backup{
+	// 			BackupIntervalHours: to.Ptr[int32](24),
 	// 			BackupRetentionDays: to.Ptr[int32](7),
 	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-17T06:11:38.415Z"); return t}()),
 	// 			GeoRedundantBackup: to.Ptr(armmysqlflexibleservers.EnableStatusEnumDisabled),
@@ -633,14 +642,14 @@ func ExampleServersClient_BeginUpdate_updateServerWithByok() {
 	// 		},
 	// 		Version: to.Ptr(armmysqlflexibleservers.ServerVersionFive7),
 	// 	},
-	// 	SKU: &armmysqlflexibleservers.SKU{
+	// 	SKU: &armmysqlflexibleservers.MySQLServerSKU{
 	// 		Name: to.Ptr("Standard_D2ds_v4"),
-	// 		Tier: to.Ptr(armmysqlflexibleservers.SKUTierGeneralPurpose),
+	// 		Tier: to.Ptr(armmysqlflexibleservers.ServerSKUTierGeneralPurpose),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/preview/2022-09-30-preview/examples/ServerDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8691fbfca8fcdc5a241a0b501c32fd4a76bb0cd/specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/stable/2023-12-30/examples/ServerDelete.json
 func ExampleServersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -661,7 +670,7 @@ func ExampleServersClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/preview/2022-09-30-preview/examples/ServerGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8691fbfca8fcdc5a241a0b501c32fd4a76bb0cd/specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/stable/2023-12-30/examples/ServerGet.json
 func ExampleServersClient_Get_getAServer() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -691,6 +700,7 @@ func ExampleServersClient_Get_getAServer() {
 	// 		AdministratorLogin: to.Ptr("cloudsa"),
 	// 		AvailabilityZone: to.Ptr("3"),
 	// 		Backup: &armmysqlflexibleservers.Backup{
+	// 			BackupIntervalHours: to.Ptr[int32](24),
 	// 			BackupRetentionDays: to.Ptr[int32](7),
 	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-17T06:11:38.415Z"); return t}()),
 	// 			GeoRedundantBackup: to.Ptr(armmysqlflexibleservers.EnableStatusEnumDisabled),
@@ -721,14 +731,14 @@ func ExampleServersClient_Get_getAServer() {
 	// 		},
 	// 		Version: to.Ptr(armmysqlflexibleservers.ServerVersionFive7),
 	// 	},
-	// 	SKU: &armmysqlflexibleservers.SKU{
+	// 	SKU: &armmysqlflexibleservers.MySQLServerSKU{
 	// 		Name: to.Ptr("Standard_D2ds_v4"),
-	// 		Tier: to.Ptr(armmysqlflexibleservers.SKUTierGeneralPurpose),
+	// 		Tier: to.Ptr(armmysqlflexibleservers.ServerSKUTierGeneralPurpose),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/preview/2022-09-30-preview/examples/ServerGetWithVnet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8691fbfca8fcdc5a241a0b501c32fd4a76bb0cd/specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/stable/2023-12-30/examples/ServerGetWithVnet.json
 func ExampleServersClient_Get_getAServerWithVnet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -758,6 +768,7 @@ func ExampleServersClient_Get_getAServerWithVnet() {
 	// 		AdministratorLogin: to.Ptr("cloudsa"),
 	// 		AvailabilityZone: to.Ptr("3"),
 	// 		Backup: &armmysqlflexibleservers.Backup{
+	// 			BackupIntervalHours: to.Ptr[int32](24),
 	// 			BackupRetentionDays: to.Ptr[int32](7),
 	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-17T06:11:38.415Z"); return t}()),
 	// 			GeoRedundantBackup: to.Ptr(armmysqlflexibleservers.EnableStatusEnumDisabled),
@@ -788,14 +799,14 @@ func ExampleServersClient_Get_getAServerWithVnet() {
 	// 		},
 	// 		Version: to.Ptr(armmysqlflexibleservers.ServerVersionFive7),
 	// 	},
-	// 	SKU: &armmysqlflexibleservers.SKU{
+	// 	SKU: &armmysqlflexibleservers.MySQLServerSKU{
 	// 		Name: to.Ptr("Standard_D2ds_v4"),
-	// 		Tier: to.Ptr(armmysqlflexibleservers.SKUTierGeneralPurpose),
+	// 		Tier: to.Ptr(armmysqlflexibleservers.ServerSKUTierGeneralPurpose),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/preview/2022-09-30-preview/examples/ServersListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8691fbfca8fcdc5a241a0b501c32fd4a76bb0cd/specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/stable/2023-12-30/examples/ServersListByResourceGroup.json
 func ExampleServersClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -831,6 +842,7 @@ func ExampleServersClient_NewListByResourceGroupPager() {
 		// 				AdministratorLogin: to.Ptr("cloudsa"),
 		// 				AvailabilityZone: to.Ptr("1"),
 		// 				Backup: &armmysqlflexibleservers.Backup{
+		// 					BackupIntervalHours: to.Ptr[int32](24),
 		// 					BackupRetentionDays: to.Ptr[int32](7),
 		// 					EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-17T07:08:17.425Z"); return t}()),
 		// 					GeoRedundantBackup: to.Ptr(armmysqlflexibleservers.EnableStatusEnumDisabled),
@@ -860,9 +872,9 @@ func ExampleServersClient_NewListByResourceGroupPager() {
 		// 				},
 		// 				Version: to.Ptr(armmysqlflexibleservers.ServerVersionFive7),
 		// 			},
-		// 			SKU: &armmysqlflexibleservers.SKU{
+		// 			SKU: &armmysqlflexibleservers.MySQLServerSKU{
 		// 				Name: to.Ptr("Standard_B1ms"),
-		// 				Tier: to.Ptr(armmysqlflexibleservers.SKUTierBurstable),
+		// 				Tier: to.Ptr(armmysqlflexibleservers.ServerSKUTierBurstable),
 		// 			},
 		// 		},
 		// 		{
@@ -877,6 +889,7 @@ func ExampleServersClient_NewListByResourceGroupPager() {
 		// 				AdministratorLogin: to.Ptr("cloudsa"),
 		// 				AvailabilityZone: to.Ptr("2"),
 		// 				Backup: &armmysqlflexibleservers.Backup{
+		// 					BackupIntervalHours: to.Ptr[int32](24),
 		// 					BackupRetentionDays: to.Ptr[int32](7),
 		// 					EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-17T07:08:17.425Z"); return t}()),
 		// 					GeoRedundantBackup: to.Ptr(armmysqlflexibleservers.EnableStatusEnumDisabled),
@@ -906,9 +919,9 @@ func ExampleServersClient_NewListByResourceGroupPager() {
 		// 				},
 		// 				Version: to.Ptr(armmysqlflexibleservers.ServerVersionFive7),
 		// 			},
-		// 			SKU: &armmysqlflexibleservers.SKU{
+		// 			SKU: &armmysqlflexibleservers.MySQLServerSKU{
 		// 				Name: to.Ptr("Standard_B1ms"),
-		// 				Tier: to.Ptr(armmysqlflexibleservers.SKUTierBurstable),
+		// 				Tier: to.Ptr(armmysqlflexibleservers.ServerSKUTierBurstable),
 		// 			},
 		// 		},
 		// 		{
@@ -923,6 +936,7 @@ func ExampleServersClient_NewListByResourceGroupPager() {
 		// 				AdministratorLogin: to.Ptr("cloudsa"),
 		// 				AvailabilityZone: to.Ptr("1"),
 		// 				Backup: &armmysqlflexibleservers.Backup{
+		// 					BackupIntervalHours: to.Ptr[int32](24),
 		// 					BackupRetentionDays: to.Ptr[int32](7),
 		// 					EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-24T06:28:19.061Z"); return t}()),
 		// 					GeoRedundantBackup: to.Ptr(armmysqlflexibleservers.EnableStatusEnumDisabled),
@@ -952,16 +966,16 @@ func ExampleServersClient_NewListByResourceGroupPager() {
 		// 				},
 		// 				Version: to.Ptr(armmysqlflexibleservers.ServerVersionFive7),
 		// 			},
-		// 			SKU: &armmysqlflexibleservers.SKU{
+		// 			SKU: &armmysqlflexibleservers.MySQLServerSKU{
 		// 				Name: to.Ptr("Standard_E2ds_v4"),
-		// 				Tier: to.Ptr(armmysqlflexibleservers.SKUTierMemoryOptimized),
+		// 				Tier: to.Ptr(armmysqlflexibleservers.ServerSKUTierMemoryOptimized),
 		// 			},
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/preview/2022-09-30-preview/examples/ServersList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8691fbfca8fcdc5a241a0b501c32fd4a76bb0cd/specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/stable/2023-12-30/examples/ServersList.json
 func ExampleServersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -997,6 +1011,7 @@ func ExampleServersClient_NewListPager() {
 		// 				AdministratorLogin: to.Ptr("cloudsa"),
 		// 				AvailabilityZone: to.Ptr("1"),
 		// 				Backup: &armmysqlflexibleservers.Backup{
+		// 					BackupIntervalHours: to.Ptr[int32](24),
 		// 					BackupRetentionDays: to.Ptr[int32](7),
 		// 					EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-17T07:08:17.425Z"); return t}()),
 		// 					GeoRedundantBackup: to.Ptr(armmysqlflexibleservers.EnableStatusEnumDisabled),
@@ -1026,9 +1041,9 @@ func ExampleServersClient_NewListPager() {
 		// 				},
 		// 				Version: to.Ptr(armmysqlflexibleservers.ServerVersionFive7),
 		// 			},
-		// 			SKU: &armmysqlflexibleservers.SKU{
+		// 			SKU: &armmysqlflexibleservers.MySQLServerSKU{
 		// 				Name: to.Ptr("Standard_B1ms"),
-		// 				Tier: to.Ptr(armmysqlflexibleservers.SKUTierBurstable),
+		// 				Tier: to.Ptr(armmysqlflexibleservers.ServerSKUTierBurstable),
 		// 			},
 		// 		},
 		// 		{
@@ -1043,6 +1058,7 @@ func ExampleServersClient_NewListPager() {
 		// 				AdministratorLogin: to.Ptr("cloudsa"),
 		// 				AvailabilityZone: to.Ptr("2"),
 		// 				Backup: &armmysqlflexibleservers.Backup{
+		// 					BackupIntervalHours: to.Ptr[int32](24),
 		// 					BackupRetentionDays: to.Ptr[int32](7),
 		// 					EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-17T07:08:17.425Z"); return t}()),
 		// 					GeoRedundantBackup: to.Ptr(armmysqlflexibleservers.EnableStatusEnumDisabled),
@@ -1072,9 +1088,9 @@ func ExampleServersClient_NewListPager() {
 		// 				},
 		// 				Version: to.Ptr(armmysqlflexibleservers.ServerVersionFive7),
 		// 			},
-		// 			SKU: &armmysqlflexibleservers.SKU{
+		// 			SKU: &armmysqlflexibleservers.MySQLServerSKU{
 		// 				Name: to.Ptr("Standard_B1ms"),
-		// 				Tier: to.Ptr(armmysqlflexibleservers.SKUTierBurstable),
+		// 				Tier: to.Ptr(armmysqlflexibleservers.ServerSKUTierBurstable),
 		// 			},
 		// 		},
 		// 		{
@@ -1089,6 +1105,7 @@ func ExampleServersClient_NewListPager() {
 		// 				AdministratorLogin: to.Ptr("cloudsa"),
 		// 				AvailabilityZone: to.Ptr("1"),
 		// 				Backup: &armmysqlflexibleservers.Backup{
+		// 					BackupIntervalHours: to.Ptr[int32](24),
 		// 					BackupRetentionDays: to.Ptr[int32](7),
 		// 					EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-24T06:28:19.061Z"); return t}()),
 		// 					GeoRedundantBackup: to.Ptr(armmysqlflexibleservers.EnableStatusEnumDisabled),
@@ -1118,16 +1135,16 @@ func ExampleServersClient_NewListPager() {
 		// 				},
 		// 				Version: to.Ptr(armmysqlflexibleservers.ServerVersionFive7),
 		// 			},
-		// 			SKU: &armmysqlflexibleservers.SKU{
+		// 			SKU: &armmysqlflexibleservers.MySQLServerSKU{
 		// 				Name: to.Ptr("Standard_E2ds_v4"),
-		// 				Tier: to.Ptr(armmysqlflexibleservers.SKUTierMemoryOptimized),
+		// 				Tier: to.Ptr(armmysqlflexibleservers.ServerSKUTierMemoryOptimized),
 		// 			},
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/preview/2022-09-30-preview/examples/ServerFailover.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8691fbfca8fcdc5a241a0b501c32fd4a76bb0cd/specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/stable/2023-12-30/examples/ServerFailover.json
 func ExampleServersClient_BeginFailover() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1148,7 +1165,34 @@ func ExampleServersClient_BeginFailover() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/preview/2022-09-30-preview/examples/ServerRestart.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8691fbfca8fcdc5a241a0b501c32fd4a76bb0cd/specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/stable/2023-12-30/examples/ServerValidateEstimateHighAvailability.json
+func ExampleServersClient_ValidateEstimateHighAvailability() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmysqlflexibleservers.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewServersClient().ValidateEstimateHighAvailability(ctx, "TestGroup", "testserver", armmysqlflexibleservers.HighAvailabilityValidationEstimation{
+		ExpectedStandbyAvailabilityZone: to.Ptr("1"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.HighAvailabilityValidationEstimation = armmysqlflexibleservers.HighAvailabilityValidationEstimation{
+	// 	EstimatedDowntime: to.Ptr[int32](0),
+	// 	ExpectedStandbyAvailabilityZone: to.Ptr("1"),
+	// 	ScheduledStandbyAvailabilityZone: to.Ptr("1"),
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8691fbfca8fcdc5a241a0b501c32fd4a76bb0cd/specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/stable/2023-12-30/examples/ServerRestart.json
 func ExampleServersClient_BeginRestart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1172,7 +1216,7 @@ func ExampleServersClient_BeginRestart() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/preview/2022-09-30-preview/examples/ServerStart.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8691fbfca8fcdc5a241a0b501c32fd4a76bb0cd/specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/stable/2023-12-30/examples/ServerStart.json
 func ExampleServersClient_BeginStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1193,7 +1237,7 @@ func ExampleServersClient_BeginStart() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/preview/2022-09-30-preview/examples/ServerStop.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8691fbfca8fcdc5a241a0b501c32fd4a76bb0cd/specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/stable/2023-12-30/examples/ServerStop.json
 func ExampleServersClient_BeginStop() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1214,7 +1258,7 @@ func ExampleServersClient_BeginStop() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/preview/2022-09-30-preview/examples/ServerResetGtid.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8691fbfca8fcdc5a241a0b501c32fd4a76bb0cd/specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/stable/2023-12-30/examples/ServerResetGtid.json
 func ExampleServersClient_BeginResetGtid() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

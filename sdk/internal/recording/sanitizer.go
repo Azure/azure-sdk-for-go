@@ -406,12 +406,11 @@ func RemoveRegisteredSanitizers(sanitizerIDs []string, options *RecordingOptions
 		return err
 	}
 	url := options.baseURL() + "/Admin/RemoveSanitizers"
-	req, err := http.NewRequest(http.MethodPost, url, io.NopCloser(bytes.NewReader(b)))
+	req, err := http.NewRequest(http.MethodPost, url, bytes.NewReader(b))
 	if err != nil {
 		return err
 	}
 	req.Header.Set("Content-Type", "application/json")
-	req.ContentLength = int64(len(b))
 	handleTestLevelSanitizer(req, options)
 	return handleProxyResponse(client.Do(req))
 }

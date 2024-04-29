@@ -10,6 +10,8 @@
 ### Breaking Changes
 
 * Deprecated the `go-vcr` based test recording API. Its methods now return errors or panic.
+* Changed value of `recording.SanitizedValue` from "sanitized" to "Sanitized" to match the
+  test proxy
 
 ### Bugs Fixed
 

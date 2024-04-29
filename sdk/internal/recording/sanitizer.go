@@ -27,7 +27,7 @@ type Sanitizer struct{}
 type StringSanitizer func(*string)
 
 // SanitizedValue is the default placeholder value to be used for sanitized strings.
-const SanitizedValue string = "sanitized"
+const SanitizedValue string = "Sanitized"
 
 // SanitizedBase64Value is the default placeholder value to be used for sanitized base-64 encoded strings.
 const SanitizedBase64Value string = "Kg=="

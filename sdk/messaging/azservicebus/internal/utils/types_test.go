@@ -33,3 +33,26 @@ func TestISO8601StringToDuration(t *testing.T) {
 		})
 	}
 }
+
+func TestToInt64(t *testing.T) {
+	tests := []struct {
+		V        any
+		Default  int64
+		Expected int64
+		OK       bool
+	}{
+		{100, -1, 100, true},
+		{int64(100), -1, 100, true},
+		{int32(100), -1, 100, true},
+		{int8(100), -1, 100, true},
+
+		{uint32(100), -1, -1, false},
+		{"oops, all strings", -1, -1, false},
+	}
+
+	for _, test := range tests {
+		v, ok := ToInt64(test.V, test.Default)
+		require.Equal(t, test.Expected, v)
+		require.Equal(t, test.OK, ok)
+	}
+}

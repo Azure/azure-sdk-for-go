@@ -51,6 +51,8 @@ func toReceiverOptions(sropts *SessionReceiverOptions) *ReceiverOptions {
 }
 
 type newSessionReceiverArgs struct {
+	// sessionID is the Service Bus session ID the user requested. If we're just accepting
+	// the next available session this will be nil.
 	sessionID         *string
 	ns                internal.NamespaceForAMQPLinks
 	entity            entity
@@ -87,6 +89,10 @@ func newSessionReceiver(ctx context.Context, args newSessionReceiverArgs, option
 		return nil, err
 	}
 
+	// this has to be set _after_ the link has been initialized to accomodate the "ask for
+	// next available session" case where the broker returns the actual session ID as a link
+	// property.
+	r.updateSessionID(sessionReceiver.SessionID())
 	return sessionReceiver, nil
 }
 
@@ -269,6 +275,12 @@ func (sr *SessionReceiver) RenewSessionLock(ctx context.Context, options *RenewS
 	}, sr.inner.retryOptions)
 
 	return internal.TransformError(err)
+}
+
+// DeleteMessages deletes messages from the session for this SessionReceiver.
+// Messages are deleted on the service and are not transferred locally.
+func (sr *SessionReceiver) DeleteMessages(ctx context.Context, options *DeleteMessagesOptions) (int64, error) {
+	return sr.inner.DeleteMessages(ctx, options)
 }
 
 // init ensures the link was created, guaranteeing that we get our expected session lock.

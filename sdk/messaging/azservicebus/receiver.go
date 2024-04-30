@@ -7,6 +7,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"net/http"
 	"sync"
 	"sync/atomic"
 	"time"
@@ -55,6 +56,11 @@ type Receiver struct {
 	receiving                bool
 	retryOptions             RetryOptions
 	settler                  *messageSettler
+
+	// sessionID is the actual session ID for this receiver - it's used in some management
+	// operations that are otherwise the same between session receivers and non-session
+	// receivers.
+	sessionID *string
 }
 
 // ReceiverOptions contains options for the `Client.NewReceiverForQueue` or `Client.NewReceiverForSubscription`
@@ -268,7 +274,7 @@ func (r *Receiver) PeekMessages(ctx context.Context, maxMessageCount int, option
 			updateInternalSequenceNumber = false
 		}
 
-		messages, err := internal.PeekMessages(ctx, links.RPC, links.Receiver.LinkName(), sequenceNumber, int32(maxMessageCount))
+		messages, err := internal.PeekMessages(ctx, links.RPC, links.Receiver.LinkName(), sequenceNumber, int32(maxMessageCount), r.sessionID)
 
 		if err != nil {
 			return err
@@ -356,6 +362,83 @@ func (r *Receiver) DeferMessage(ctx context.Context, message *ReceivedMessage, o
 // If the operation fails it can return an [*azservicebus.Error] type if the failure is actionable.
 func (r *Receiver) DeadLetterMessage(ctx context.Context, message *ReceivedMessage, options *DeadLetterOptions) error {
 	return r.settler.DeadLetterMessage(ctx, message, options)
+}
+
+// DeleteMessagesOptions contains the optional parameters for the [Client.DeleteMessages] method.
+type DeleteMessagesOptions struct {
+	// Count is the maximum number of messages to delete.
+	// Defaults to 4000.
+	Count int32
+
+	// BeforeEnqueueTime - any messages older than this time can be deleted.
+	// Defaults to time.Now().
+	BeforeEnqueueTime time.Time
+}
+
+// DeleteMessages deletes messages from a queue or subscription.
+// Messages are deleted on the service and are not transferred locally.
+func (r *Receiver) DeleteMessages(ctx context.Context, options *DeleteMessagesOptions) (int64, error) {
+	if options == nil {
+		options = &DeleteMessagesOptions{}
+	}
+
+	if options.BeforeEnqueueTime.IsZero() {
+		options.BeforeEnqueueTime = time.Now()
+	}
+
+	if options.Count == 0 {
+		options.Count = 4000
+	}
+
+	count := int64(0)
+
+	err := r.amqpLinks.Retry(ctx, EventReceiver, "DeleteMessages", func(ctx context.Context, lwid *internal.LinksWithID, args *utils.RetryFnArgs) error {
+		value := map[string]any{
+			"enqueued-time-utc": options.BeforeEnqueueTime.UTC(),
+			"message-count":     int32(options.Count),
+		}
+
+		if r.sessionID != nil {
+			value["session-id"] = *r.sessionID
+		}
+
+		msg := &amqp.Message{
+			ApplicationProperties: map[string]any{
+				"operation": "com.microsoft:batch-delete-messages",
+			},
+			Value: value,
+		}
+
+		rpcResponse, err := lwid.RPC.RPC(ctx, msg)
+
+		if err != nil {
+			return err
+		}
+
+		switch rpcResponse.Code {
+		case http.StatusOK:
+			m, ok := rpcResponse.Message.Value.(map[string]any)
+
+			if !ok {
+				return fmt.Errorf("invalid response type %T", msg.Value)
+			}
+
+			tmpCount, ok := utils.ToInt64(m["message-count"], 0)
+
+			if !ok {
+				return fmt.Errorf("invalid integer type %T", m["message-count"])
+			}
+
+			count = tmpCount
+			return nil
+		case http.StatusNoContent:
+			return nil // no messages to delete
+		default:
+			return fmt.Errorf("failed to delete messages, status code %d: %s", rpcResponse.Code, rpcResponse.Description)
+		}
+	}, r.retryOptions)
+
+	return count, err
 }
 
 func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages int, options *ReceiveMessagesOptions) ([]*ReceivedMessage, error) {
@@ -644,6 +727,10 @@ func (r *Receiver) newReleaserFunc(receiver amqpwrap.AMQPReceiver) func() {
 			}
 		}
 	}
+}
+
+func (r *Receiver) updateSessionID(sessionID string) {
+	r.sessionID = &sessionID
 }
 
 func getAllPrefetched(receiver amqpwrap.AMQPReceiver, max int) []*amqp.Message {

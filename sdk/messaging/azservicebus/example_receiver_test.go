@@ -7,6 +7,8 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"log"
+	"os"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
@@ -212,6 +214,40 @@ func ExampleReceiver_ReceiveMessages_second() {
 		err := deadLetterReceiver.CompleteMessage(context.TODO(), deadLetterMessage, nil)
 		if err != nil {
 			panic(err)
+		}
+	}
+}
+
+func ExampleReceiver_DeleteMessages() {
+	count, err := receiver.DeleteMessages(context.TODO(), &azservicebus.DeleteMessagesOptions{
+		Count:             4000,
+		BeforeEnqueueTime: time.Now(),
+	})
+
+	if err != nil {
+		//  TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	fmt.Fprintf(os.Stderr, "Number of messages deleted: %d\n", count)
+}
+
+func ExampleReceiver_DeleteMessages_loop() {
+	// An example of how to delete messages in a loop.
+	now := time.Now()
+
+	for {
+		count, err := receiver.DeleteMessages(context.TODO(), &azservicebus.DeleteMessagesOptions{
+			BeforeEnqueueTime: now,
+		})
+
+		if err != nil {
+			//  TODO: Update the following line with your application specific error handling logic
+			log.Fatalf("ERROR: %s", err)
+		}
+
+		if count == 0 {
+			break
 		}
 	}
 }

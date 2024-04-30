@@ -24,6 +24,10 @@ import (
 
 // LedgerServer is a fake server for instances of the armconfidentialledger.LedgerClient type.
 type LedgerServer struct {
+	// BeginBackup is the fake for method LedgerClient.BeginBackup
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginBackup func(ctx context.Context, resourceGroupName string, ledgerName string, confidentialLedger armconfidentialledger.Backup, options *armconfidentialledger.LedgerClientBeginBackupOptions) (resp azfake.PollerResponder[armconfidentialledger.LedgerClientBackupResponse], errResp azfake.ErrorResponder)
+
 	// BeginCreate is the fake for method LedgerClient.BeginCreate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreate func(ctx context.Context, resourceGroupName string, ledgerName string, confidentialLedger armconfidentialledger.ConfidentialLedger, options *armconfidentialledger.LedgerClientBeginCreateOptions) (resp azfake.PollerResponder[armconfidentialledger.LedgerClientCreateResponse], errResp azfake.ErrorResponder)
@@ -44,6 +48,10 @@ type LedgerServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armconfidentialledger.LedgerClientListBySubscriptionOptions) (resp azfake.PagerResponder[armconfidentialledger.LedgerClientListBySubscriptionResponse])
 
+	// BeginRestore is the fake for method LedgerClient.BeginRestore
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginRestore func(ctx context.Context, resourceGroupName string, ledgerName string, confidentialLedger armconfidentialledger.Restore, options *armconfidentialledger.LedgerClientBeginRestoreOptions) (resp azfake.PollerResponder[armconfidentialledger.LedgerClientRestoreResponse], errResp azfake.ErrorResponder)
+
 	// BeginUpdate is the fake for method LedgerClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginUpdate func(ctx context.Context, resourceGroupName string, ledgerName string, confidentialLedger armconfidentialledger.ConfidentialLedger, options *armconfidentialledger.LedgerClientBeginUpdateOptions) (resp azfake.PollerResponder[armconfidentialledger.LedgerClientUpdateResponse], errResp azfake.ErrorResponder)
@@ -55,10 +63,12 @@ type LedgerServer struct {
 func NewLedgerServerTransport(srv *LedgerServer) *LedgerServerTransport {
 	return &LedgerServerTransport{
 		srv:                         srv,
+		beginBackup:                 newTracker[azfake.PollerResponder[armconfidentialledger.LedgerClientBackupResponse]](),
 		beginCreate:                 newTracker[azfake.PollerResponder[armconfidentialledger.LedgerClientCreateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armconfidentialledger.LedgerClientDeleteResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armconfidentialledger.LedgerClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armconfidentialledger.LedgerClientListBySubscriptionResponse]](),
+		beginRestore:                newTracker[azfake.PollerResponder[armconfidentialledger.LedgerClientRestoreResponse]](),
 		beginUpdate:                 newTracker[azfake.PollerResponder[armconfidentialledger.LedgerClientUpdateResponse]](),
 	}
 }
@@ -67,10 +77,12 @@ func NewLedgerServerTransport(srv *LedgerServer) *LedgerServerTransport {
 // Don't use this type directly, use NewLedgerServerTransport instead.
 type LedgerServerTransport struct {
 	srv                         *LedgerServer
+	beginBackup                 *tracker[azfake.PollerResponder[armconfidentialledger.LedgerClientBackupResponse]]
 	beginCreate                 *tracker[azfake.PollerResponder[armconfidentialledger.LedgerClientCreateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armconfidentialledger.LedgerClientDeleteResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armconfidentialledger.LedgerClientListByResourceGroupResponse]]
 	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armconfidentialledger.LedgerClientListBySubscriptionResponse]]
+	beginRestore                *tracker[azfake.PollerResponder[armconfidentialledger.LedgerClientRestoreResponse]]
 	beginUpdate                 *tracker[azfake.PollerResponder[armconfidentialledger.LedgerClientUpdateResponse]]
 }
 
@@ -86,6 +98,8 @@ func (l *LedgerServerTransport) Do(req *http.Request) (*http.Response, error) {
 	var err error
 
 	switch method {
+	case "LedgerClient.BeginBackup":
+		resp, err = l.dispatchBeginBackup(req)
 	case "LedgerClient.BeginCreate":
 		resp, err = l.dispatchBeginCreate(req)
 	case "LedgerClient.BeginDelete":
@@ -96,6 +110,8 @@ func (l *LedgerServerTransport) Do(req *http.Request) (*http.Response, error) {
 		resp, err = l.dispatchNewListByResourceGroupPager(req)
 	case "LedgerClient.NewListBySubscriptionPager":
 		resp, err = l.dispatchNewListBySubscriptionPager(req)
+	case "LedgerClient.BeginRestore":
+		resp, err = l.dispatchBeginRestore(req)
 	case "LedgerClient.BeginUpdate":
 		resp, err = l.dispatchBeginUpdate(req)
 	default:
@@ -104,6 +120,54 @@ func (l *LedgerServerTransport) Do(req *http.Request) (*http.Response, error) {
 
 	if err != nil {
 		return nil, err
+	}
+
+	return resp, nil
+}
+
+func (l *LedgerServerTransport) dispatchBeginBackup(req *http.Request) (*http.Response, error) {
+	if l.srv.BeginBackup == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginBackup not implemented")}
+	}
+	beginBackup := l.beginBackup.get(req)
+	if beginBackup == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ConfidentialLedger/ledgers/(?P<ledgerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/backup`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armconfidentialledger.Backup](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		ledgerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("ledgerName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := l.srv.BeginBackup(req.Context(), resourceGroupNameParam, ledgerNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginBackup = &respr
+		l.beginBackup.add(req, beginBackup)
+	}
+
+	resp, err := server.PollerResponderNext(beginBackup, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		l.beginBackup.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginBackup) {
+		l.beginBackup.remove(req)
 	}
 
 	return resp, nil
@@ -325,6 +389,54 @@ func (l *LedgerServerTransport) dispatchNewListBySubscriptionPager(req *http.Req
 	if !server.PagerResponderMore(newListBySubscriptionPager) {
 		l.newListBySubscriptionPager.remove(req)
 	}
+	return resp, nil
+}
+
+func (l *LedgerServerTransport) dispatchBeginRestore(req *http.Request) (*http.Response, error) {
+	if l.srv.BeginRestore == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginRestore not implemented")}
+	}
+	beginRestore := l.beginRestore.get(req)
+	if beginRestore == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ConfidentialLedger/ledgers/(?P<ledgerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/restore`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armconfidentialledger.Restore](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		ledgerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("ledgerName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := l.srv.BeginRestore(req.Context(), resourceGroupNameParam, ledgerNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginRestore = &respr
+		l.beginRestore.add(req, beginRestore)
+	}
+
+	resp, err := server.PollerResponderNext(beginRestore, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		l.beginRestore.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginRestore) {
+		l.beginRestore.remove(req)
+	}
+
 	return resp, nil
 }
 

@@ -48,7 +48,7 @@ func NewClientsClient(subscriptionID string, credential azcore.TokenCredential, 
 // BeginCreateOrUpdate - Create or update a client with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-12-15-preview
+// Generated from API version 2024-06-01-preview
 //   - resourceGroupName - The name of the resource group within the user's subscription.
 //   - namespaceName - Name of the namespace.
 //   - clientName - The client name.
@@ -76,7 +76,7 @@ func (client *ClientsClient) BeginCreateOrUpdate(ctx context.Context, resourceGr
 // CreateOrUpdate - Create or update a client with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-12-15-preview
+// Generated from API version 2024-06-01-preview
 func (client *ClientsClient) createOrUpdate(ctx context.Context, resourceGroupName string, namespaceName string, clientName string, clientInfo Client, options *ClientsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ClientsClient.BeginCreateOrUpdate"
@@ -122,7 +122,7 @@ func (client *ClientsClient) createOrUpdateCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-12-15-preview")
+	reqQP.Set("api-version", "2024-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, clientInfo); err != nil {
@@ -134,7 +134,7 @@ func (client *ClientsClient) createOrUpdateCreateRequest(ctx context.Context, re
 // BeginDelete - Delete an existing client.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-12-15-preview
+// Generated from API version 2024-06-01-preview
 //   - resourceGroupName - The name of the resource group within the user's subscription.
 //   - namespaceName - Name of the namespace.
 //   - clientName - Name of the client.
@@ -160,7 +160,7 @@ func (client *ClientsClient) BeginDelete(ctx context.Context, resourceGroupName 
 // Delete - Delete an existing client.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-12-15-preview
+// Generated from API version 2024-06-01-preview
 func (client *ClientsClient) deleteOperation(ctx context.Context, resourceGroupName string, namespaceName string, clientName string, options *ClientsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ClientsClient.BeginDelete"
@@ -206,7 +206,7 @@ func (client *ClientsClient) deleteCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-12-15-preview")
+	reqQP.Set("api-version", "2024-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -215,7 +215,7 @@ func (client *ClientsClient) deleteCreateRequest(ctx context.Context, resourceGr
 // Get - Get properties of a client.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-12-15-preview
+// Generated from API version 2024-06-01-preview
 //   - resourceGroupName - The name of the resource group within the user's subscription.
 //   - namespaceName - Name of the namespace.
 //   - clientName - Name of the client.
@@ -266,7 +266,7 @@ func (client *ClientsClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-12-15-preview")
+	reqQP.Set("api-version", "2024-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -283,7 +283,7 @@ func (client *ClientsClient) getHandleResponse(resp *http.Response) (ClientsClie
 
 // NewListByNamespacePager - Get all the permission bindings under a namespace.
 //
-// Generated from API version 2023-12-15-preview
+// Generated from API version 2024-06-01-preview
 //   - resourceGroupName - The name of the resource group within the user's subscription.
 //   - namespaceName - Name of the namespace.
 //   - options - ClientsClientListByNamespaceOptions contains the optional parameters for the ClientsClient.NewListByNamespacePager
@@ -331,13 +331,13 @@ func (client *ClientsClient) listByNamespaceCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-12-15-preview")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
+	reqQP.Set("api-version", "2024-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

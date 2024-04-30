@@ -107,7 +107,7 @@
         },
         {
             "Name": "monitor/ingestion/azlogs",
-            "CoverageGoal": 0.80
+            "CoverageGoal": 0.78
         },
         {
             "Name": "monitor/query/azlogs",

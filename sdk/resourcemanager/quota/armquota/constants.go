@@ -10,8 +10,78 @@ package armquota
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/quota/armquota"
-	moduleVersion = "v1.0.0"
+	moduleVersion = "v1.1.0-beta.1"
 )
+
+// CreatedByType - The type of identity that created the resource.
+type CreatedByType string
+
+const (
+	CreatedByTypeApplication     CreatedByType = "Application"
+	CreatedByTypeKey             CreatedByType = "Key"
+	CreatedByTypeManagedIdentity CreatedByType = "ManagedIdentity"
+	CreatedByTypeUser            CreatedByType = "User"
+)
+
+// PossibleCreatedByTypeValues returns the possible values for the CreatedByType const type.
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return []CreatedByType{
+		CreatedByTypeApplication,
+		CreatedByTypeKey,
+		CreatedByTypeManagedIdentity,
+		CreatedByTypeUser,
+	}
+}
+
+// EnforcementState - Enforcement status.
+type EnforcementState string
+
+const (
+	EnforcementStateDisabled     EnforcementState = "Disabled"
+	EnforcementStateEnabled      EnforcementState = "Enabled"
+	EnforcementStateNotAvailable EnforcementState = "NotAvailable"
+)
+
+// PossibleEnforcementStateValues returns the possible values for the EnforcementState const type.
+func PossibleEnforcementStateValues() []EnforcementState {
+	return []EnforcementState{
+		EnforcementStateDisabled,
+		EnforcementStateEnabled,
+		EnforcementStateNotAvailable,
+	}
+}
+
+// EnvironmentType - Environment name.
+type EnvironmentType string
+
+const (
+	EnvironmentTypeNonProduction EnvironmentType = "NonProduction"
+	EnvironmentTypeProduction    EnvironmentType = "Production"
+)
+
+// PossibleEnvironmentTypeValues returns the possible values for the EnvironmentType const type.
+func PossibleEnvironmentTypeValues() []EnvironmentType {
+	return []EnvironmentType{
+		EnvironmentTypeNonProduction,
+		EnvironmentTypeProduction,
+	}
+}
+
+// GroupingIDType - GroupingId type. It is a required property. More types of groupIds can be supported in future.
+type GroupingIDType string
+
+const (
+	GroupingIDTypeBillingID     GroupingIDType = "BillingId"
+	GroupingIDTypeServiceTreeID GroupingIDType = "ServiceTreeId"
+)
+
+// PossibleGroupingIDTypeValues returns the possible values for the GroupingIDType const type.
+func PossibleGroupingIDTypeValues() []GroupingIDType {
+	return []GroupingIDType{
+		GroupingIDTypeBillingID,
+		GroupingIDTypeServiceTreeID,
+	}
+}
 
 // LimitType - The limit object type.
 type LimitType string
@@ -62,6 +132,32 @@ func PossibleQuotaRequestStateValues() []QuotaRequestState {
 		QuotaRequestStateInProgress,
 		QuotaRequestStateInvalid,
 		QuotaRequestStateSucceeded,
+	}
+}
+
+// RequestState - Request status.
+type RequestState string
+
+const (
+	RequestStateAccepted   RequestState = "Accepted"
+	RequestStateCanceled   RequestState = "Canceled"
+	RequestStateCreated    RequestState = "Created"
+	RequestStateFailed     RequestState = "Failed"
+	RequestStateInProgress RequestState = "InProgress"
+	RequestStateInvalid    RequestState = "Invalid"
+	RequestStateSucceeded  RequestState = "Succeeded"
+)
+
+// PossibleRequestStateValues returns the possible values for the RequestState const type.
+func PossibleRequestStateValues() []RequestState {
+	return []RequestState{
+		RequestStateAccepted,
+		RequestStateCanceled,
+		RequestStateCreated,
+		RequestStateFailed,
+		RequestStateInProgress,
+		RequestStateInvalid,
+		RequestStateSucceeded,
 	}
 }
 

@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/support/armsupport/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/support/armsupport"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/support/resource-manager/Microsoft.Support/preview/2023-06-01-preview/examples/CheckNameAvailability.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/106483d9f698ac3b6c0d481ab0c5fab14152e21f/specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/CheckNameAvailability.json
 func ExampleTicketsNoSubscriptionClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -46,7 +46,7 @@ func ExampleTicketsNoSubscriptionClient_CheckNameAvailability() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/support/resource-manager/Microsoft.Support/preview/2023-06-01-preview/examples/ListSupportTickets.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/106483d9f698ac3b6c0d481ab0c5fab14152e21f/specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/ListSupportTickets.json
 func ExampleTicketsNoSubscriptionClient_NewListPager_listSupportTickets() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -124,6 +124,7 @@ func ExampleTicketsNoSubscriptionClient_NewListPager_listSupportTickets() {
 		// 			ID: to.Ptr("/providers/Microsoft.Support/supportTickets/testticket2"),
 		// 			Properties: &armsupport.TicketDetailsProperties{
 		// 				Description: to.Ptr("This is a test - please ignore"),
+		// 				AdvancedDiagnosticConsent: to.Ptr(armsupport.ConsentNo),
 		// 				ContactDetails: &armsupport.ContactProfile{
 		// 					Country: to.Ptr("USA"),
 		// 					FirstName: to.Ptr("abc"),
@@ -162,7 +163,7 @@ func ExampleTicketsNoSubscriptionClient_NewListPager_listSupportTickets() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/support/resource-manager/Microsoft.Support/preview/2023-06-01-preview/examples/ListSupportTicketsCreatedOnOrAfterAndInOpenState.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/106483d9f698ac3b6c0d481ab0c5fab14152e21f/specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/ListSupportTicketsCreatedOnOrAfterAndInOpenState.json
 func ExampleTicketsNoSubscriptionClient_NewListPager_listSupportTicketsCreatedOnOrAfterACertainDateAndInOpenState() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -241,6 +242,7 @@ func ExampleTicketsNoSubscriptionClient_NewListPager_listSupportTicketsCreatedOn
 		// 			ID: to.Ptr("/providers/Microsoft.Support/supportTickets/testticket2"),
 		// 			Properties: &armsupport.TicketDetailsProperties{
 		// 				Description: to.Ptr("This is a test - please ignore"),
+		// 				AdvancedDiagnosticConsent: to.Ptr(armsupport.ConsentNo),
 		// 				ContactDetails: &armsupport.ContactProfile{
 		// 					Country: to.Ptr("USA"),
 		// 					FirstName: to.Ptr("abc"),
@@ -279,7 +281,7 @@ func ExampleTicketsNoSubscriptionClient_NewListPager_listSupportTicketsCreatedOn
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/support/resource-manager/Microsoft.Support/preview/2023-06-01-preview/examples/ListSupportTicketsCreatedOnOrAfterAndInUpdatingState.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/106483d9f698ac3b6c0d481ab0c5fab14152e21f/specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/ListSupportTicketsCreatedOnOrAfterAndInUpdatingState.json
 func ExampleTicketsNoSubscriptionClient_NewListPager_listSupportTicketsCreatedOnOrAfterACertainDateAndInUpdatingState() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -403,7 +405,7 @@ func ExampleTicketsNoSubscriptionClient_NewListPager_listSupportTicketsCreatedOn
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/support/resource-manager/Microsoft.Support/preview/2023-06-01-preview/examples/ListSupportTicketsInOpenState.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/106483d9f698ac3b6c0d481ab0c5fab14152e21f/specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/ListSupportTicketsInOpenState.json
 func ExampleTicketsNoSubscriptionClient_NewListPager_listSupportTicketsInOpenState() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -482,6 +484,7 @@ func ExampleTicketsNoSubscriptionClient_NewListPager_listSupportTicketsInOpenSta
 		// 			ID: to.Ptr("/providers/Microsoft.Support/supportTickets/testticket2"),
 		// 			Properties: &armsupport.TicketDetailsProperties{
 		// 				Description: to.Ptr("This is a test - please ignore"),
+		// 				AdvancedDiagnosticConsent: to.Ptr(armsupport.ConsentNo),
 		// 				ContactDetails: &armsupport.ContactProfile{
 		// 					Country: to.Ptr("USA"),
 		// 					FirstName: to.Ptr("abc"),
@@ -520,7 +523,7 @@ func ExampleTicketsNoSubscriptionClient_NewListPager_listSupportTicketsInOpenSta
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/support/resource-manager/Microsoft.Support/preview/2023-06-01-preview/examples/ListSupportTicketsInUpdatingState.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/106483d9f698ac3b6c0d481ab0c5fab14152e21f/specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/ListSupportTicketsInUpdatingState.json
 func ExampleTicketsNoSubscriptionClient_NewListPager_listSupportTicketsInUpdatingState() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -599,6 +602,7 @@ func ExampleTicketsNoSubscriptionClient_NewListPager_listSupportTicketsInUpdatin
 		// 			ID: to.Ptr("/providers/Microsoft.Support/supportTickets/testticket2"),
 		// 			Properties: &armsupport.TicketDetailsProperties{
 		// 				Description: to.Ptr("This is a test - please ignore"),
+		// 				AdvancedDiagnosticConsent: to.Ptr(armsupport.ConsentNo),
 		// 				ContactDetails: &armsupport.ContactProfile{
 		// 					Country: to.Ptr("USA"),
 		// 					FirstName: to.Ptr("abc"),
@@ -637,7 +641,7 @@ func ExampleTicketsNoSubscriptionClient_NewListPager_listSupportTicketsInUpdatin
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/support/resource-manager/Microsoft.Support/preview/2023-06-01-preview/examples/ListSupportTicketsProblemClassificationIdEquals.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/106483d9f698ac3b6c0d481ab0c5fab14152e21f/specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/ListSupportTicketsProblemClassificationIdEquals.json
 func ExampleTicketsNoSubscriptionClient_NewListPager_listSupportTicketsWithACertainProblemClassificationId() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -740,7 +744,7 @@ func ExampleTicketsNoSubscriptionClient_NewListPager_listSupportTicketsWithACert
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/support/resource-manager/Microsoft.Support/preview/2023-06-01-preview/examples/ListSupportTicketsServiceIdEquals.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/106483d9f698ac3b6c0d481ab0c5fab14152e21f/specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/ListSupportTicketsServiceIdEquals.json
 func ExampleTicketsNoSubscriptionClient_NewListPager_listSupportTicketsWithACertainServiceId() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -855,7 +859,7 @@ func ExampleTicketsNoSubscriptionClient_NewListPager_listSupportTicketsWithACert
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/support/resource-manager/Microsoft.Support/preview/2023-06-01-preview/examples/GetSupportTicketDetails.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/106483d9f698ac3b6c0d481ab0c5fab14152e21f/specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/GetSupportTicketDetails.json
 func ExampleTicketsNoSubscriptionClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -916,7 +920,7 @@ func ExampleTicketsNoSubscriptionClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/support/resource-manager/Microsoft.Support/preview/2023-06-01-preview/examples/UpdateAdvancedDiagnosticConsentOfSupportTicket.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/106483d9f698ac3b6c0d481ab0c5fab14152e21f/specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/UpdateAdvancedDiagnosticConsentOfSupportTicket.json
 func ExampleTicketsNoSubscriptionClient_Update_updateAdvancedDiagnosticConsentOfASupportTicket() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -982,7 +986,7 @@ func ExampleTicketsNoSubscriptionClient_Update_updateAdvancedDiagnosticConsentOf
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/support/resource-manager/Microsoft.Support/preview/2023-06-01-preview/examples/UpdateContactDetailsOfSupportTicket.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/106483d9f698ac3b6c0d481ab0c5fab14152e21f/specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/UpdateContactDetailsOfSupportTicket.json
 func ExampleTicketsNoSubscriptionClient_Update_updateContactDetailsOfASupportTicket() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1061,7 +1065,7 @@ func ExampleTicketsNoSubscriptionClient_Update_updateContactDetailsOfASupportTic
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/support/resource-manager/Microsoft.Support/preview/2023-06-01-preview/examples/UpdateSeverityOfSupportTicket.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/106483d9f698ac3b6c0d481ab0c5fab14152e21f/specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/UpdateSeverityOfSupportTicket.json
 func ExampleTicketsNoSubscriptionClient_Update_updateSeverityOfASupportTicket() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1127,7 +1131,7 @@ func ExampleTicketsNoSubscriptionClient_Update_updateSeverityOfASupportTicket() 
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/support/resource-manager/Microsoft.Support/preview/2023-06-01-preview/examples/UpdateStatusOfSupportTicket.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/106483d9f698ac3b6c0d481ab0c5fab14152e21f/specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/UpdateStatusOfSupportTicket.json
 func ExampleTicketsNoSubscriptionClient_Update_updateStatusOfASupportTicket() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1192,7 +1196,7 @@ func ExampleTicketsNoSubscriptionClient_Update_updateStatusOfASupportTicket() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/support/resource-manager/Microsoft.Support/preview/2023-06-01-preview/examples/CreateBillingSupportTicket.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/106483d9f698ac3b6c0d481ab0c5fab14152e21f/specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/CreateBillingSupportTicket.json
 func ExampleTicketsNoSubscriptionClient_BeginCreate_createATicketForBillingRelatedIssues() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1205,7 +1209,8 @@ func ExampleTicketsNoSubscriptionClient_BeginCreate_createATicketForBillingRelat
 	}
 	poller, err := clientFactory.NewTicketsNoSubscriptionClient().BeginCreate(ctx, "testticket", armsupport.TicketDetails{
 		Properties: &armsupport.TicketDetailsProperties{
-			Description: to.Ptr("my description"),
+			Description:               to.Ptr("my description"),
+			AdvancedDiagnosticConsent: to.Ptr(armsupport.ConsentNo),
 			ContactDetails: &armsupport.ContactProfile{
 				Country:                  to.Ptr("usa"),
 				FirstName:                to.Ptr("abc"),
@@ -1239,6 +1244,7 @@ func ExampleTicketsNoSubscriptionClient_BeginCreate_createATicketForBillingRelat
 	// 	ID: to.Ptr("/providers/Microsoft.Support/supportTickets/testticket"),
 	// 	Properties: &armsupport.TicketDetailsProperties{
 	// 		Description: to.Ptr("my description"),
+	// 		AdvancedDiagnosticConsent: to.Ptr(armsupport.ConsentNo),
 	// 		ContactDetails: &armsupport.ContactProfile{
 	// 			Country: to.Ptr("usa"),
 	// 			FirstName: to.Ptr("abc"),
@@ -1274,7 +1280,7 @@ func ExampleTicketsNoSubscriptionClient_BeginCreate_createATicketForBillingRelat
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/support/resource-manager/Microsoft.Support/preview/2023-06-01-preview/examples/CreateSubMgmtSupportTicket.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/106483d9f698ac3b6c0d481ab0c5fab14152e21f/specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/CreateSubMgmtSupportTicket.json
 func ExampleTicketsNoSubscriptionClient_BeginCreate_createATicketForSubscriptionManagementRelatedIssues() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1287,7 +1293,8 @@ func ExampleTicketsNoSubscriptionClient_BeginCreate_createATicketForSubscription
 	}
 	poller, err := clientFactory.NewTicketsNoSubscriptionClient().BeginCreate(ctx, "testticket", armsupport.TicketDetails{
 		Properties: &armsupport.TicketDetailsProperties{
-			Description: to.Ptr("my description"),
+			Description:               to.Ptr("my description"),
+			AdvancedDiagnosticConsent: to.Ptr(armsupport.ConsentYes),
 			ContactDetails: &armsupport.ContactProfile{
 				Country:                  to.Ptr("usa"),
 				FirstName:                to.Ptr("abc"),
@@ -1321,6 +1328,7 @@ func ExampleTicketsNoSubscriptionClient_BeginCreate_createATicketForSubscription
 	// 	ID: to.Ptr("/providers/Microsoft.Support/supportTickets/testticket"),
 	// 	Properties: &armsupport.TicketDetailsProperties{
 	// 		Description: to.Ptr("my description"),
+	// 		AdvancedDiagnosticConsent: to.Ptr(armsupport.ConsentYes),
 	// 		ContactDetails: &armsupport.ContactProfile{
 	// 			Country: to.Ptr("usa"),
 	// 			FirstName: to.Ptr("abc"),
@@ -1356,7 +1364,7 @@ func ExampleTicketsNoSubscriptionClient_BeginCreate_createATicketForSubscription
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/support/resource-manager/Microsoft.Support/preview/2023-06-01-preview/examples/CreateTechnicalSupportTicket.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/106483d9f698ac3b6c0d481ab0c5fab14152e21f/specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/CreateTechnicalSupportTicket.json
 func ExampleTicketsNoSubscriptionClient_BeginCreate_createATicketForTechnicalIssueRelatedToASpecificResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

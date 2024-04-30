@@ -11,7 +11,7 @@ package armfrontdoor
 import "encoding/json"
 
 func unmarshalRouteConfigurationClassification(rawMsg json.RawMessage) (RouteConfigurationClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any

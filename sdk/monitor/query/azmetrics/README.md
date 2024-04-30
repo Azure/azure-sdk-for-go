@@ -4,7 +4,7 @@
 * Query logs ([query/azlogs][azlogs]): execute read-only queries against [Azure Monitor Logs][logs_overview]
 * Upload logs ([ingestion/azlogs][ingestion_azlogs]): send custom logs to [Azure Monitor][azure_monitor_overview] using the [Logs Ingestion API][ingestion_overview]
 
-[Source code][azmetrics_repo] | [Package (pkg.go.dev)][azmetrics_pkg_go] | [REST API documentation][monitor_rest_docs] | [Product documentation][monitor_docs] | Samples
+[Source code][azmetrics_repo] | [Package (pkg.go.dev)][azmetrics_pkg_go] | [REST API documentation][monitor_rest_docs] | [Product documentation][monitor_docs] | [Samples][examples]
 
 ## Getting started
 
@@ -13,6 +13,7 @@
 * Go version 1.18 or higher - [Install Go](https://go.dev/doc/install)
 * Azure subscription - [Create a free account][azure_sub]
 * The resource URI of an Azure resource (Storage Account, Key Vault, CosmosDB, etc.) that you plan to monitor
+* Regional endpoint when instantiating the client (for example, "https://westus3.metrics.monitor.azure.com")
 
 ### Install the packages
 
@@ -33,7 +34,7 @@ The clients default to the Azure public cloud. For other cloud configurations, s
 
 #### Create a client
 
-Example client
+Example [client][example_client]
 
 ## Key concepts
 
@@ -52,7 +53,7 @@ Each set of metric values is a time series with the following characteristics:
 
 ## Examples
 
-Get started with our examples.
+Get started with our [examples][examples].
 
 ## Contributing
 
@@ -72,16 +73,20 @@ comments.
 [azmetrics_pkg_go]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/query/azmetrics
 [azure_identity]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity
 [azure_monitor_overview]: https://learn.microsoft.com/azure/azure-monitor/overview
-[metrics_overview]: https://learn.microsoft.com/azure/azure-monitor/essentials/data-platform-metrics
 [azure_sub]: https://azure.microsoft.com/free/
 [cloud_documentation]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud
 [default_cred_ref]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/azidentity#defaultazurecredential
+[examples]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/query/azmetrics#pkg-examples
+[example_client]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/query/azmetrics#example-NewClient
 [ingestion_azlogs]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/ingestion/azlogs
 [ingestion_overview]: https://learn.microsoft.com/azure/azure-monitor/logs/logs-ingestion-api-overview
 [logs_overview]: https://learn.microsoft.com/azure/azure-monitor/logs/data-platform-logs
+[metrics_overview]: https://learn.microsoft.com/azure/azure-monitor/essentials/data-platform-metrics
 [monitor_docs]: https://learn.microsoft.com/azure/azure-monitor/
 [monitor_rest_docs]: https://learn.microsoft.com/rest/api/monitor/
 [multi-metrics]: https://learn.microsoft.com/azure/azure-monitor/essentials/data-platform-metrics#multi-dimensional-metrics
+[supported_metrics]: https://learn.microsoft.com/azure/azure-monitor/reference/supported-metrics/metrics-index#metrics-by-resource-provider
+
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/

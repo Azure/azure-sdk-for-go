@@ -14,10 +14,10 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/support/armsupport/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/support/armsupport"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/support/resource-manager/Microsoft.Support/preview/2023-06-01-preview/examples/ListOperations.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/106483d9f698ac3b6c0d481ab0c5fab14152e21f/specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/ListOperations.json
 func ExampleOperationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -120,24 +120,6 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Operation: to.Ptr("Registers Support Resource Provider"),
 		// 				Provider: to.Ptr("Microsoft Support"),
 		// 				Resource: to.Ptr("Communication"),
-		// 			},
-		// 		},
-		// 		{
-		// 			Name: to.Ptr("Microsoft.Support/services/classifyProblems/action"),
-		// 			Display: &armsupport.OperationDisplay{
-		// 				Description: to.Ptr("Lists one or all classified problems"),
-		// 				Operation: to.Ptr("List Classify Problems"),
-		// 				Provider: to.Ptr("Microsoft Support"),
-		// 				Resource: to.Ptr("Services"),
-		// 			},
-		// 		},
-		// 		{
-		// 			Name: to.Ptr("Microsoft.Support/classifyServices/action"),
-		// 			Display: &armsupport.OperationDisplay{
-		// 				Description: to.Ptr("Lists one or all classified services"),
-		// 				Operation: to.Ptr("List Classify services"),
-		// 				Provider: to.Ptr("Microsoft Support"),
-		// 				Resource: to.Ptr("Classify Services"),
 		// 			},
 		// 	}},
 		// }

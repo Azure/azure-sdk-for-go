@@ -10,7 +10,7 @@ package armcontainerservice
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice"
-	moduleVersion = "v4.9.0-beta.1"
+	moduleVersion = "v5.1.0-beta.1"
 )
 
 // AddonAutoscaling - Whether VPA add-on is enabled and configured to scale AKS-managed add-ons.
@@ -36,6 +36,9 @@ func PossibleAddonAutoscalingValues() []AddonAutoscaling {
 type AgentPoolMode string
 
 const (
+	// AgentPoolModeGateway - Gateway agent pools are dedicated to providing static egress IPs to pods. For more details, see
+	// https://aka.ms/aks/static-egress-gateway.
+	AgentPoolModeGateway AgentPoolMode = "Gateway"
 	// AgentPoolModeSystem - System agent pools are primarily for hosting critical system pods such as CoreDNS and metrics-server.
 	// System agent pools osType must be Linux. System agent pools VM SKU must have at least 2vCPUs and 4GB of memory.
 	AgentPoolModeSystem AgentPoolMode = "System"
@@ -46,6 +49,7 @@ const (
 // PossibleAgentPoolModeValues returns the possible values for the AgentPoolMode const type.
 func PossibleAgentPoolModeValues() []AgentPoolMode {
 	return []AgentPoolMode{
+		AgentPoolModeGateway,
 		AgentPoolModeSystem,
 		AgentPoolModeUser,
 	}
@@ -123,6 +127,26 @@ func PossibleBackendPoolTypeValues() []BackendPoolType {
 	return []BackendPoolType{
 		BackendPoolTypeNodeIP,
 		BackendPoolTypeNodeIPConfiguration,
+	}
+}
+
+// ClusterServiceLoadBalancerHealthProbeMode - The health probing behavior for External Traffic Policy Cluster services.
+type ClusterServiceLoadBalancerHealthProbeMode string
+
+const (
+	// ClusterServiceLoadBalancerHealthProbeModeServiceNodePort - Each External Traffic Policy Cluster service will have its own
+	// health probe targeting service nodePort.
+	ClusterServiceLoadBalancerHealthProbeModeServiceNodePort ClusterServiceLoadBalancerHealthProbeMode = "ServiceNodePort"
+	// ClusterServiceLoadBalancerHealthProbeModeShared - All External Traffic Policy Cluster services in a Standard Load Balancer
+	// will have a dedicated health probe targeting the backend nodes' kube-proxy health check port 10256.
+	ClusterServiceLoadBalancerHealthProbeModeShared ClusterServiceLoadBalancerHealthProbeMode = "Shared"
+)
+
+// PossibleClusterServiceLoadBalancerHealthProbeModeValues returns the possible values for the ClusterServiceLoadBalancerHealthProbeMode const type.
+func PossibleClusterServiceLoadBalancerHealthProbeModeValues() []ClusterServiceLoadBalancerHealthProbeMode {
+	return []ClusterServiceLoadBalancerHealthProbeMode{
+		ClusterServiceLoadBalancerHealthProbeModeServiceNodePort,
+		ClusterServiceLoadBalancerHealthProbeModeShared,
 	}
 }
 

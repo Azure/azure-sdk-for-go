@@ -14,10 +14,10 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/support/armsupport/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/support/armsupport"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/support/resource-manager/Microsoft.Support/preview/2023-06-01-preview/examples/ListServices.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/106483d9f698ac3b6c0d481ab0c5fab14152e21f/specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/ListServices.json
 func ExampleServicesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -57,11 +57,6 @@ func ExampleServicesClient_NewListPager() {
 		// 			ID: to.Ptr("/providers/Microsoft.Support/services/service_guid_2"),
 		// 			Properties: &armsupport.ServiceProperties{
 		// 				DisplayName: to.Ptr("Service and subscription limits (quotas)"),
-		// 				Metadata: map[string]*string{
-		// 					"azureSubscriptionRequired": to.Ptr("false"),
-		// 					"quotaautomationenabled": to.Ptr("false"),
-		// 					"state": to.Ptr("preview"),
-		// 				},
 		// 				ResourceTypes: []*string{
 		// 				},
 		// 			},
@@ -82,11 +77,6 @@ func ExampleServicesClient_NewListPager() {
 		// 			ID: to.Ptr("/providers/Microsoft.Support/services/service_guid_4"),
 		// 			Properties: &armsupport.ServiceProperties{
 		// 				DisplayName: to.Ptr("Data Explorer"),
-		// 				Metadata: map[string]*string{
-		// 					"azureSubscriptionRequired": to.Ptr("true"),
-		// 					"quotaautomationenabled": to.Ptr("true"),
-		// 					"state": to.Ptr("public"),
-		// 				},
 		// 				ResourceTypes: []*string{
 		// 					to.Ptr("MICROSOFT.KUSTO/CLUSTERS"),
 		// 					to.Ptr("MICROSOFT.KUSTO/DATABASES")},
@@ -109,11 +99,6 @@ func ExampleServicesClient_NewListPager() {
 		// 					ID: to.Ptr("/providers/Microsoft.Support/services/service_guid_6"),
 		// 					Properties: &armsupport.ServiceProperties{
 		// 						DisplayName: to.Ptr("Virtual Machine running Linux"),
-		// 						Metadata: map[string]*string{
-		// 							"azureSubscriptionRequired": to.Ptr("false"),
-		// 							"quotaautomationenabled": to.Ptr("false"),
-		// 							"state": to.Ptr("public"),
-		// 						},
 		// 						ResourceTypes: []*string{
 		// 							to.Ptr("MICROSOFT.CLASSICCOMPUTE/VIRTUALMACHINES"),
 		// 							to.Ptr("MICROSOFT.COMPUTE/VIRTUALMACHINES")},
@@ -134,7 +119,7 @@ func ExampleServicesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/support/resource-manager/Microsoft.Support/preview/2023-06-01-preview/examples/GetService.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/106483d9f698ac3b6c0d481ab0c5fab14152e21f/specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/GetService.json
 func ExampleServicesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -158,11 +143,6 @@ func ExampleServicesClient_Get() {
 	// 	ID: to.Ptr("/providers/Microsoft.Support/services/service_guid"),
 	// 	Properties: &armsupport.ServiceProperties{
 	// 		DisplayName: to.Ptr("Virtual Machine running Windows"),
-	// 		Metadata: map[string]*string{
-	// 			"azureSubscriptionRequired": to.Ptr("true"),
-	// 			"quotaautomationenabled": to.Ptr("true"),
-	// 			"state": to.Ptr("public"),
-	// 		},
 	// 		ResourceTypes: []*string{
 	// 			to.Ptr("MICROSOFT.CLASSICCOMPUTE/VIRTUALMACHINES"),
 	// 			to.Ptr("MICROSOFT.COMPUTE/VIRTUALMACHINES")},

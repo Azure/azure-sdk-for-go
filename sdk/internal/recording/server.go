@@ -319,6 +319,16 @@ func getProxyLog() (*os.File, error) {
 
 func getProxyVersion(gitRoot string) (string, error) {
 	proxyVersionConfig := filepath.Join(gitRoot, "eng/common/testproxy/target_version.txt")
+	overrideProxyVersionConfig := filepath.Join(gitRoot, "eng/target_proxy_version.txt")
+
+	if _, err := os.Stat(overrideProxyVersionConfig); err == nil {
+		version, err := ioutil.ReadFile(overrideProxyVersionConfig)
+		if err == nil {
+			proxyVersion := strings.TrimSpace(string(version))
+			return proxyVersion, nil
+		}
+	}
+
 	version, err := ioutil.ReadFile(proxyVersionConfig)
 	if err != nil {
 		return "", err
@@ -409,11 +419,14 @@ func StartTestProxy(pathToRecordings string, options *RecordingOptions) (*TestPr
 	if options == nil {
 		options = defaultOptions()
 	}
-	log.Printf("Running test proxy command: %s start --storage-location %s -- --urls=%s\n",
-		proxyPath, gitRoot, options.baseURL())
+	insecure := ""
+	if options.insecure {
+		insecure = "--insecure"
+	}
+	args := []string{"start", "--storage-location", gitRoot, insecure, "--", "--urls=" + options.baseURL()}
+	log.Printf("Running test proxy command: %s %s", proxyPath, strings.Join(args, " "))
 	log.Printf("Test proxy log location: %s\n", proxyLog.Name())
-	cmd := exec.Command(
-		proxyPath, "start", "--storage-location", gitRoot, "--", "--urls="+options.baseURL())
+	cmd := exec.Command(proxyPath, args...)
 
 	cmd.Stdout = proxyLog
 	cmd.Stderr = proxyLog

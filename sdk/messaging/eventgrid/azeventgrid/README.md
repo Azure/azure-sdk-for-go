@@ -42,7 +42,7 @@ you publish to will be configured to accept events of a certain format: EventGri
 
 # Examples
 
-Examples for various scenarios can be found on [pkg.go.dev][godoc_examples] or in the example*_test.go files in our GitHub repo for [azeventgrid][gh].
+Examples for various scenarios can be found on [pkg.go.dev][godoc_examples] or in the example*_test.go files in our GitHub repo for [azeventgrid][source].
 
 # Troubleshooting
 
@@ -111,7 +111,7 @@ Azure SDK for Go is licensed under the [MIT](https://github.com/Azure/azure-sdk-
 [azure_sub]: https://azure.microsoft.com/free/
 [cloud_shell]: https://docs.microsoft.com/azure/cloud-shell/overview
 [cloud_shell_bash]: https://shell.azure.com/bash
-[source]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/messaging/azeventgrid
+[source]: https://aka.ms/azsdk/go/eventgrid/src
 [godoc_namespaces]: https://aka.ms/azsdk/go/namespaces/pkg#Client
 [godoc]: https://aka.ms/azsdk/go/eventgrid/pkg
 [godoc_examples]: https://aka.ms/azsdk/go/eventgrid/pkg#pkg-examples
@@ -119,4 +119,3 @@ Azure SDK for Go is licensed under the [MIT](https://github.com/Azure/azure-sdk-
 [godoc_example_newclient]: https://aka.ms/azsdk/go/eventgrid/pkg#example-NewClient
 [godoc_example_newclientsk]: https://aka.ms/azsdk/go/eventgrid/pkg#example-NewClientWithSharedKeyCredential
 [godoc_example_newclientsas]: https://aka.ms/azsdk/go/eventgrid/pkg#example-NewClientWithSAS
-[gh]: https://aka.ms/azsdk/go/eventgrid/src

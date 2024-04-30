@@ -8,5 +8,5 @@ package internal
 
 const (
 	ModuleName    = "p20200901"
-	ModuleVersion = "v0.1.1"
+	ModuleVersion = "v0.1.2"
 )

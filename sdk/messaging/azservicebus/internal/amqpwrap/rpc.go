@@ -13,6 +13,12 @@ import (
 type RPCResponse struct {
 	// Code is the response code - these originate from Service Bus. Some
 	// common values are called out below, with the RPCResponseCode* constants.
+	//
+	// NOTE: These status codes are intended to mirror HTTP status codes. For instance
+	// peeking messages returns http.StatusOK, etc...
+	//
+	// See https://learn.microsoft.com/en-us/azure/service-bus-messaging/service-bus-amqp-request-response
+	// for more details about the ins and outs of each operation.
 	Code        int
 	Description string
 	Message     *amqp.Message

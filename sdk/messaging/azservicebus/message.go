@@ -10,6 +10,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/amqpwrap"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
 	"github.com/Azure/go-amqp"
 )
 
@@ -389,7 +390,9 @@ func newReceivedMessage(amqpMsg *amqp.Message, receiver amqpwrap.AMQPReceiver) *
 			msg.EnqueuedSequenceNumber = to.Ptr(enqueuedSequenceNumber.(int64))
 		}
 
-		switch asInt64(amqpMsg.Annotations[messageStateAnnotation], 0) {
+		msgState, _ := utils.ToInt64(amqpMsg.Annotations[messageStateAnnotation], 0)
+
+		switch msgState {
 		case 1:
 			msg.State = MessageStateDeferred
 		case 2:
@@ -474,17 +477,4 @@ func uuidFromLockTokenBytes(bytes []byte) (*amqp.UUID, error) {
 	amqpUUID := amqp.UUID(lockTokenBytes)
 
 	return &amqpUUID, nil
-}
-
-func asInt64(v any, defVal int64) int64 {
-	switch v2 := v.(type) {
-	case int32:
-		return int64(v2)
-	case int64:
-		return int64(v2)
-	case int:
-		return int64(v2)
-	default:
-		return defVal
-	}
 }

@@ -8,6 +8,7 @@ import (
 	"errors"
 	"fmt"
 	"sort"
+	"strings"
 	"testing"
 	"time"
 
@@ -565,6 +566,129 @@ func TestSessionReceiverSendFiveReceiveFive_Subscription(t *testing.T) {
 		require.Equal(t, "session-1", *messages[i].SessionID)
 
 		require.NoError(t, receiver.CompleteMessage(context.Background(), messages[i], nil))
+	}
+}
+
+func TestSessionReceiverPeekMessages(t *testing.T) {
+	serviceBusClient, cleanup, queueName := setupLiveTest(t, &liveTestOptions{
+		QueueProperties: &admin.QueueProperties{
+			RequiresSession: to.Ptr(true),
+		},
+	})
+	defer cleanup()
+
+	sender, err := serviceBusClient.NewSender(queueName, nil)
+	require.NoError(t, err)
+	defer sender.Close(context.Background())
+
+	for i := 0; i < 10; i++ {
+		err = sender.SendMessage(context.Background(), &Message{
+			Body:      []byte(fmt.Sprintf("%d", i)),
+			SessionID: to.Ptr("session-1"),
+		}, nil)
+		require.NoError(t, err)
+	}
+
+	for i := 0; i < 10; i++ {
+		err = sender.SendMessage(context.Background(), &Message{
+			Body:      []byte(fmt.Sprintf("%d", i)),
+			SessionID: to.Ptr("session-2"),
+		}, nil)
+		require.NoError(t, err)
+	}
+
+	// check that we never cross session boundaries with our peek
+	{
+		// peek the messages for session-1
+		session1Receiver, err := serviceBusClient.AcceptSessionForQueue(context.Background(), queueName, "session-1", nil)
+		require.NoError(t, err)
+
+		peeked, err := session1Receiver.PeekMessages(context.Background(), 10, nil)
+		require.NoError(t, err)
+
+		for _, msg := range peeked {
+			require.Equal(t, "session-1", *msg.SessionID)
+		}
+
+		// peek the messages for session-2
+		session2Receiver, err := serviceBusClient.AcceptSessionForQueue(context.Background(), queueName, "session-2", nil)
+		require.NoError(t, err)
+
+		peeked, err = session2Receiver.PeekMessages(context.Background(), 10, nil)
+		require.NoError(t, err)
+
+		for _, msg := range peeked {
+			require.Equal(t, "session-2", *msg.SessionID)
+		}
+	}
+}
+
+func TestSessionReceiverDeleteMessages(t *testing.T) {
+	serviceBusClient, cleanup, queueName := setupLiveTest(t, &liveTestOptions{
+		QueueProperties: &admin.QueueProperties{
+			RequiresSession: to.Ptr(true),
+		},
+	})
+	defer cleanup()
+
+	sender, err := serviceBusClient.NewSender(queueName, nil)
+	require.NoError(t, err)
+	defer sender.Close(context.Background())
+
+	for i := 0; i < 10; i++ {
+		err = sender.SendMessage(context.Background(), &Message{
+			Body:      []byte(fmt.Sprintf("[%d] session-1", i)),
+			SessionID: to.Ptr("session-1"),
+		}, nil)
+		require.NoError(t, err)
+	}
+
+	err = sender.SendMessage(context.Background(), &Message{
+		Body:      []byte("the only message for session-2"),
+		SessionID: to.Ptr("session-2"),
+	}, nil)
+	require.NoError(t, err)
+
+	session2Receiver, err := serviceBusClient.AcceptSessionForQueue(context.Background(), queueName, "session-2", nil)
+	require.NoError(t, err)
+
+	defer session2Receiver.Close(context.Background())
+
+	count, err := session2Receiver.DeleteMessages(context.Background(), &DeleteMessagesOptions{
+		Count: 10, // note we're specifying enough that we could delete more than just our sessions messages.
+	})
+	require.NoError(t, err)
+	require.Equal(t, int64(1), count, "only one message available for session-2")
+
+	err = session2Receiver.Close(context.Background())
+	require.NoError(t, err)
+
+	// validate that all of session-1's messages are still there.
+	{
+		session1Receiver, err := serviceBusClient.AcceptSessionForQueue(context.Background(), queueName, "session-1", nil)
+		require.NoError(t, err)
+
+		defer session1Receiver.Close(context.Background())
+
+		ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
+		defer cancel()
+
+		total := 0
+
+		for total < 10 {
+			messages, err := session1Receiver.ReceiveMessages(ctx, 10, nil)
+			require.NoError(t, err)
+
+			total += len(messages)
+
+			for _, m := range messages {
+				require.Equal(t, "session-1", *m.SessionID)
+				require.Truef(t, strings.HasSuffix(string(m.Body), "session-1"), "%s has suffix session-1", string(m.Body))
+
+				err := session1Receiver.CompleteMessage(context.Background(), m, nil)
+				require.NoError(t, err)
+			}
+		}
 	}
 }
 

@@ -35,7 +35,7 @@ func Test_Sender_MessageID(t *testing.T) {
 	}, nil)
 	require.NoError(t, err)
 
-	peekedMsg := peekSingleMessageForTest(t, receiver)
+	peekedMsg := peekSingleMessageForTest(t, receiver, nil)
 	require.EqualValues(t, MessageStateActive, peekedMsg.State)
 
 	messages, err := receiver.ReceiveMessages(context.Background(), 1, nil)

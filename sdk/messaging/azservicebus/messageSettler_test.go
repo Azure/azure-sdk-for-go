@@ -138,7 +138,7 @@ func TestDeferredMessages(t *testing.T) {
 		require.NoError(t, err)
 
 		// we can peek it without altering anything here.
-		peekedMessage := peekSingleMessageForTest(t, receiver)
+		peekedMessage := peekSingleMessageForTest(t, receiver, nil)
 		require.Equal(t, originalDeferredMessage.DeliveryCount+1, peekedMessage.DeliveryCount, "Delivery count is incremented")
 	})
 
@@ -155,7 +155,7 @@ func TestDeferredMessages(t *testing.T) {
 		msg := testStuff.deferMessageForTest(t)
 		require.EqualValues(t, MessageStateDeferred, msg.State)
 
-		peekedMsg := peekSingleMessageForTest(t, receiver)
+		peekedMsg := peekSingleMessageForTest(t, receiver, nil)
 		require.EqualValues(t, MessageStateDeferred, peekedMsg.State)
 
 		// double defer!

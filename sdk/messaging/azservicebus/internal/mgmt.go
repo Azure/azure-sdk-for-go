@@ -7,6 +7,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"net/http"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
@@ -111,17 +112,23 @@ func ReceiveDeferred(ctx context.Context, rpcLink amqpwrap.RPCLink, linkName str
 	return transformedMessages, nil
 }
 
-func PeekMessages(ctx context.Context, rpcLink amqpwrap.RPCLink, linkName string, fromSequenceNumber int64, messageCount int32) ([]*amqp.Message, error) {
+func PeekMessages(ctx context.Context, rpcLink amqpwrap.RPCLink, linkName string, fromSequenceNumber int64, messageCount int32, sessionID *string) ([]*amqp.Message, error) {
 	const messagesField, messageField = "messages", "message"
+
+	value := map[string]any{
+		"from-sequence-number": fromSequenceNumber,
+		"message-count":        messageCount,
+	}
+
+	if sessionID != nil {
+		value["session-id"] = *sessionID
+	}
 
 	msg := &amqp.Message{
 		ApplicationProperties: map[string]any{
 			"operation": "com.microsoft:peek-message",
 		},
-		Value: map[string]any{
-			"from-sequence-number": fromSequenceNumber,
-			"message-count":        messageCount,
-		},
+		Value: value,
 	}
 
 	addAssociatedLinkName(linkName, msg)
@@ -135,7 +142,7 @@ func PeekMessages(ctx context.Context, rpcLink amqpwrap.RPCLink, linkName string
 		return nil, err
 	}
 
-	if rsp.Code == 204 {
+	if rsp.Code == http.StatusNoContent {
 		// no messages available
 		return nil, nil
 	}
@@ -190,23 +197,7 @@ func PeekMessages(ctx context.Context, rpcLink amqpwrap.RPCLink, linkName string
 		}
 
 		transformedMessages[i] = &rehydrated
-
-		// transformedMessages[i], err = MessageFromAMQPMessage(&rehydrated)
-		// if err != nil {
-		// 	tab.For(ctx).Error(err)
-		// 	return nil, err
-		// }
-
-		// transformedMessages[i].useSession = r.isSessionFilterSet
-		// transformedMessages[i].sessionID = r.sessionID
 	}
-
-	// This sort is done to ensure that folks wanting to peek messages in sequence order may do so.
-	// sort.Slice(transformedMessages, func(i, j int) bool {
-	// 	iSeq := *transformedMessages[i].SystemProperties.SequenceNumber
-	// 	jSeq := *transformedMessages[j].SystemProperties.SequenceNumber
-	// 	return iSeq < jSeq
-	// })
 
 	return transformedMessages, nil
 }

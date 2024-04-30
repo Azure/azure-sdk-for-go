@@ -15,7 +15,7 @@ type AllowedEnvironmentType struct {
 	// Properties of an allowed environment type.
 	Properties *AllowedEnvironmentTypeProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -51,7 +51,7 @@ type AttachedNetworkConnection struct {
 	// Attached NetworkConnection properties.
 	Properties *AttachedNetworkConnectionProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -105,7 +105,7 @@ type Catalog struct {
 	// Catalog properties.
 	Properties *CatalogProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -156,6 +156,9 @@ type CatalogProperties struct {
 	// Indicates the type of sync that is configured for the catalog.
 	SyncType *CatalogSyncType
 
+	// Resource tags.
+	Tags map[string]*string
+
 	// READ-ONLY; The connection state of the catalog.
 	ConnectionState *CatalogConnectionState
 
@@ -196,9 +199,6 @@ type CatalogSyncError struct {
 type CatalogUpdate struct {
 	// Catalog properties for update.
 	Properties *CatalogUpdateProperties
-
-	// Resource tags.
-	Tags map[string]*string
 }
 
 // CatalogUpdateProperties - Properties of a catalog. These properties can be updated after the resource has been created.
@@ -211,6 +211,9 @@ type CatalogUpdateProperties struct {
 
 	// Indicates the type of sync that is configured for the catalog.
 	SyncType *CatalogSyncType
+
+	// Resource tags.
+	Tags map[string]*string
 }
 
 // CheckNameAvailabilityRequest - The check availability request body.
@@ -232,6 +235,18 @@ type CheckNameAvailabilityResponse struct {
 
 	// The reason why the given name is not available.
 	Reason *CheckNameAvailabilityReason
+}
+
+// CheckScopedNameAvailabilityRequest - The scoped name check availability request body.
+type CheckScopedNameAvailabilityRequest struct {
+	// The name of the resource for which availability needs to be checked.
+	Name *string
+
+	// The resource id to scope the name check.
+	Scope *string
+
+	// The resource type.
+	Type *string
 }
 
 // CustomerManagedKeyEncryption - All Customer-managed key encryption properties for the resource.
@@ -260,57 +275,6 @@ type CustomerManagedKeyEncryptionKeyIdentity struct {
 	UserAssignedIdentityResourceID *string
 }
 
-// CustomizationTask - Represents a Task to be used in customizing a Dev Box.
-type CustomizationTask struct {
-	// Task properties
-	Properties *CustomizationTaskProperties
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// CustomizationTaskInput - Input for a Task.
-type CustomizationTaskInput struct {
-	// READ-ONLY; Description of the input.
-	Description *string
-
-	// READ-ONLY; Whether or not the input is required.
-	Required *bool
-
-	// READ-ONLY; Type of the input.
-	Type *CustomizationTaskInputType
-}
-
-// CustomizationTaskListResult - Results of the Task list operation.
-type CustomizationTaskListResult struct {
-	// READ-ONLY; URL to get the next set of results if there are any.
-	NextLink *string
-
-	// READ-ONLY; Current page of results.
-	Value []*CustomizationTask
-}
-
-// CustomizationTaskProperties - Properties of a Task.
-type CustomizationTaskProperties struct {
-	// READ-ONLY; Inputs to the task.
-	Inputs map[string]*CustomizationTaskInput
-
-	// READ-ONLY; The default timeout for the task.
-	Timeout *int32
-
-	// READ-ONLY; Validation status for the Task.
-	ValidationStatus *CatalogResourceValidationStatus
-}
-
 // DevBoxDefinition - Represents a definition for a Developer Machine.
 type DevBoxDefinition struct {
 	// REQUIRED; The geo-location where the resource lives
@@ -322,7 +286,7 @@ type DevBoxDefinition struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -418,7 +382,7 @@ type DevCenter struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -459,7 +423,7 @@ type EnvironmentDefinition struct {
 	// Environment definition properties.
 	Properties *EnvironmentDefinitionProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -534,7 +498,7 @@ type EnvironmentType struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -614,7 +578,7 @@ type Gallery struct {
 	// Gallery properties.
 	Properties *GalleryProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -689,7 +653,7 @@ type HealthCheckStatusDetails struct {
 	// Health check status details properties.
 	Properties *HealthCheckStatusDetailsProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -737,7 +701,7 @@ type Image struct {
 	// Image properties.
 	Properties *ImageProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -808,7 +772,7 @@ type ImageVersion struct {
 	// Image version properties.
 	Properties *ImageVersionProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -897,7 +861,7 @@ type NetworkConnection struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -1062,7 +1026,7 @@ type OperationStatus struct {
 	// READ-ONLY; Custom operation properties, populated only for a successful operation.
 	Properties any
 
-	// READ-ONLY; The id of the resource.
+	// READ-ONLY; Fully qualified ID of the resource against which the original async operation was started.
 	ResourceID *string
 }
 
@@ -1091,6 +1055,9 @@ type OperationStatusResult struct {
 
 	// The start time of the operation.
 	StartTime *time.Time
+
+	// READ-ONLY; Fully qualified ID of the resource against which the original async operation was started.
+	ResourceID *string
 }
 
 // OutboundEnvironmentEndpoint - A collection of related endpoints from the same service for which the agent requires outbound
@@ -1123,7 +1090,7 @@ type Pool struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -1237,13 +1204,16 @@ type Project struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
+	// Managed identity properties
+	Identity *ManagedServiceIdentity
+
 	// Properties of a project.
 	Properties *ProjectProperties
 
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -1254,6 +1224,18 @@ type Project struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
+}
+
+// ProjectCatalogSettings - Settings to be used when associating a project with a catalog.
+type ProjectCatalogSettings struct {
+	// Indicates catalog item types that can be synced.
+	CatalogItemSyncTypes []*CatalogItemType
+}
+
+// ProjectCatalogSettingsInfo - Project catalog settings for project catalogs under a project associated to this dev center.
+type ProjectCatalogSettingsInfo struct {
+	// Whether project catalogs associated with projects in this dev center can be configured to sync catalog items.
+	CatalogItemSyncEnableStatus *CatalogItemSyncEnableStatus
 }
 
 // ProjectEnvironmentType - Represents an environment type.
@@ -1270,7 +1252,7 @@ type ProjectEnvironmentType struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -1341,6 +1323,9 @@ type ProjectEnvironmentTypeUpdateProperties struct {
 	// subscription.
 	DeploymentTargetID *string
 
+	// The display name of the project environment type.
+	DisplayName *string
+
 	// Defines whether this Environment Type can be used in this Project.
 	Status *EnvironmentTypeEnableStatus
 
@@ -1367,6 +1352,9 @@ type ProjectListResult struct {
 
 // ProjectProperties - Properties of a project.
 type ProjectProperties struct {
+	// Settings to be used when associating a project with a catalog.
+	CatalogSettings *ProjectCatalogSettings
+
 	// Description of the project.
 	Description *string
 
@@ -1389,6 +1377,9 @@ type ProjectProperties struct {
 
 // ProjectUpdate - The project properties for partial update. Properties not provided in the update request will not be changed.
 type ProjectUpdate struct {
+	// Managed identity properties
+	Identity *ManagedServiceIdentity
+
 	// The geo-location where the resource lives
 	Location *string
 
@@ -1401,6 +1392,9 @@ type ProjectUpdate struct {
 
 // ProjectUpdateProperties - Properties of a project. These properties can be updated after the resource has been created.
 type ProjectUpdateProperties struct {
+	// Settings to be used when associating a project with a catalog.
+	CatalogSettings *ProjectCatalogSettings
+
 	// Description of the project.
 	Description *string
 
@@ -1422,6 +1416,9 @@ type Properties struct {
 
 	// Encryption settings to be used for server-side encryption for proprietary content (such as catalogs, logs, customizations).
 	Encryption *Encryption
+
+	// Dev Center settings to be used when associating a project with a catalog.
+	ProjectCatalogSettings *ProjectCatalogSettingsInfo
 
 	// READ-ONLY; The URI of the Dev Center.
 	DevCenterURI *string
@@ -1511,7 +1508,7 @@ type Schedule struct {
 	// Properties of a Schedule resource
 	Properties *ScheduleProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -1538,8 +1535,14 @@ type ScheduleProperties struct {
 	// The frequency of this scheduled task.
 	Frequency *ScheduledFrequency
 
+	// The geo-location where the resource lives
+	Location *string
+
 	// Indicates whether or not this scheduled task is enabled.
 	State *ScheduleEnableStatus
+
+	// Resource tags.
+	Tags map[string]*string
 
 	// The target time to trigger the action. The format is HH:MM.
 	Time *string
@@ -1557,14 +1560,8 @@ type ScheduleProperties struct {
 // ScheduleUpdate - The schedule properties for partial update. Properties not provided in the update request will not be
 // changed.
 type ScheduleUpdate struct {
-	// The geo-location where the resource lives
-	Location *string
-
 	// Properties of a schedule resource to be updated.
 	Properties *ScheduleUpdateProperties
-
-	// Resource tags.
-	Tags map[string]*string
 }
 
 // ScheduleUpdateProperties - Updatable properties of a Schedule.
@@ -1572,8 +1569,14 @@ type ScheduleUpdateProperties struct {
 	// The frequency of this scheduled task.
 	Frequency *ScheduledFrequency
 
+	// The geo-location where the resource lives
+	Location *string
+
 	// Indicates whether or not this scheduled task is enabled.
 	State *ScheduleEnableStatus
+
+	// Resource tags.
+	Tags map[string]*string
 
 	// The target time to trigger the action. The format is HH:MM.
 	Time *string
@@ -1608,6 +1611,9 @@ type SyncErrorDetails struct {
 
 // SyncStats - Stats of the synchronization.
 type SyncStats struct {
+	// Indicates catalog item types that were synced.
+	SyncedCatalogItemTypes []*CatalogItemType
+
 	// READ-ONLY; Count of catalog items added during synchronization.
 	Added *int32
 
@@ -1670,6 +1676,9 @@ type UpdateProperties struct {
 
 	// Encryption settings to be used for server-side encryption for proprietary content (such as catalogs, logs, customizations).
 	Encryption *Encryption
+
+	// Dev Center settings to be used when associating a project with a catalog.
+	ProjectCatalogSettings *ProjectCatalogSettingsInfo
 }
 
 // Usage - The core usage details.

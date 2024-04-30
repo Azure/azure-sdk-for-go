@@ -9,6 +9,7 @@
 ### Bugs Fixed
 
 ### Other Changes
+* Updated dependencies.
 
 ## 2.0.0 (2023-11-16)
 

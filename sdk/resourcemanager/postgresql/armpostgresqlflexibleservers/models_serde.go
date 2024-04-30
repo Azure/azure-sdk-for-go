@@ -1836,7 +1836,9 @@ func (m MigrationResourceProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "dbsToCancelMigrationOn", m.DbsToCancelMigrationOn)
 	populate(objectMap, "dbsToMigrate", m.DbsToMigrate)
 	populate(objectMap, "dbsToTriggerCutoverOn", m.DbsToTriggerCutoverOn)
+	populate(objectMap, "migrateRoles", m.MigrateRoles)
 	populate(objectMap, "migrationId", m.MigrationID)
+	populate(objectMap, "migrationInstanceResourceId", m.MigrationInstanceResourceID)
 	populate(objectMap, "migrationMode", m.MigrationMode)
 	populate(objectMap, "migrationOption", m.MigrationOption)
 	populateDateTimeRFC3339(objectMap, "migrationWindowEndTimeInUtc", m.MigrationWindowEndTimeInUTC)
@@ -1881,8 +1883,14 @@ func (m *MigrationResourceProperties) UnmarshalJSON(data []byte) error {
 		case "dbsToTriggerCutoverOn":
 			err = unpopulate(val, "DbsToTriggerCutoverOn", &m.DbsToTriggerCutoverOn)
 			delete(rawMsg, key)
+		case "migrateRoles":
+			err = unpopulate(val, "MigrateRoles", &m.MigrateRoles)
+			delete(rawMsg, key)
 		case "migrationId":
 			err = unpopulate(val, "MigrationID", &m.MigrationID)
+			delete(rawMsg, key)
+		case "migrationInstanceResourceId":
+			err = unpopulate(val, "MigrationInstanceResourceID", &m.MigrationInstanceResourceID)
 			delete(rawMsg, key)
 		case "migrationMode":
 			err = unpopulate(val, "MigrationMode", &m.MigrationMode)
@@ -1950,6 +1958,7 @@ func (m MigrationResourcePropertiesForPatch) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "dbsToCancelMigrationOn", m.DbsToCancelMigrationOn)
 	populate(objectMap, "dbsToMigrate", m.DbsToMigrate)
 	populate(objectMap, "dbsToTriggerCutoverOn", m.DbsToTriggerCutoverOn)
+	populate(objectMap, "migrateRoles", m.MigrateRoles)
 	populate(objectMap, "migrationMode", m.MigrationMode)
 	populateDateTimeRFC3339(objectMap, "migrationWindowStartTimeInUtc", m.MigrationWindowStartTimeInUTC)
 	populate(objectMap, "overwriteDbsInTarget", m.OverwriteDbsInTarget)
@@ -1983,6 +1992,9 @@ func (m *MigrationResourcePropertiesForPatch) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "dbsToTriggerCutoverOn":
 			err = unpopulate(val, "DbsToTriggerCutoverOn", &m.DbsToTriggerCutoverOn)
+			delete(rawMsg, key)
+		case "migrateRoles":
+			err = unpopulate(val, "MigrateRoles", &m.MigrateRoles)
 			delete(rawMsg, key)
 		case "migrationMode":
 			err = unpopulate(val, "MigrationMode", &m.MigrationMode)
@@ -4081,7 +4093,7 @@ func populate(m map[string]any, k string, v any) {
 }
 
 func unpopulate(data json.RawMessage, fn string, v any) error {
-	if data == nil {
+	if data == nil || string(data) == "null" {
 		return nil
 	}
 	if err := json.Unmarshal(data, v); err != nil {

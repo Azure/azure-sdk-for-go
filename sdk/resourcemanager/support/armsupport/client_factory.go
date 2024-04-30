@@ -96,13 +96,6 @@ func (c *ClientFactory) NewFilesNoSubscriptionClient() *FilesNoSubscriptionClien
 	}
 }
 
-// NewLookUpResourceIDClient creates a new instance of LookUpResourceIDClient.
-func (c *ClientFactory) NewLookUpResourceIDClient() *LookUpResourceIDClient {
-	return &LookUpResourceIDClient{
-		internal: c.internal,
-	}
-}
-
 // NewOperationsClient creates a new instance of OperationsClient.
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	return &OperationsClient{
@@ -113,29 +106,6 @@ func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 // NewProblemClassificationsClient creates a new instance of ProblemClassificationsClient.
 func (c *ClientFactory) NewProblemClassificationsClient() *ProblemClassificationsClient {
 	return &ProblemClassificationsClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewProblemClassificationsNoSubscriptionClient creates a new instance of ProblemClassificationsNoSubscriptionClient.
-func (c *ClientFactory) NewProblemClassificationsNoSubscriptionClient() *ProblemClassificationsNoSubscriptionClient {
-	return &ProblemClassificationsNoSubscriptionClient{
-		internal: c.internal,
-	}
-}
-
-// NewServiceClassificationsClient creates a new instance of ServiceClassificationsClient.
-func (c *ClientFactory) NewServiceClassificationsClient() *ServiceClassificationsClient {
-	return &ServiceClassificationsClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewServiceClassificationsNoSubscriptionClient creates a new instance of ServiceClassificationsNoSubscriptionClient.
-func (c *ClientFactory) NewServiceClassificationsNoSubscriptionClient() *ServiceClassificationsNoSubscriptionClient {
-	return &ServiceClassificationsNoSubscriptionClient{
 		internal: c.internal,
 	}
 }

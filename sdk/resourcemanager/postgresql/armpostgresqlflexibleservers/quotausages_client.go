@@ -45,7 +45,7 @@ func NewQuotaUsagesClient(subscriptionID string, credential azcore.TokenCredenti
 
 // NewListPager - Get quota usages at specified location in a given subscription.
 //
-// Generated from API version 2023-06-01-preview
+// Generated from API version 2023-12-01-preview
 //   - locationName - The name of the location.
 //   - options - QuotaUsagesClientListOptions contains the optional parameters for the QuotaUsagesClient.NewListPager method.
 func (client *QuotaUsagesClient) NewListPager(locationName string, options *QuotaUsagesClientListOptions) *runtime.Pager[QuotaUsagesClientListResponse] {
@@ -87,7 +87,7 @@ func (client *QuotaUsagesClient) listCreateRequest(ctx context.Context, location
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-01-preview")
+	reqQP.Set("api-version", "2023-12-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

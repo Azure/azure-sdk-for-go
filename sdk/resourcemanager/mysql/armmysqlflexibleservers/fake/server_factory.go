@@ -19,6 +19,7 @@ import (
 
 // ServerFactory is a fake server for instances of the armmysqlflexibleservers.ClientFactory type.
 type ServerFactory struct {
+	AdvancedThreatProtectionSettingsServer     AdvancedThreatProtectionSettingsServer
 	AzureADAdministratorsServer                AzureADAdministratorsServer
 	BackupAndExportServer                      BackupAndExportServer
 	BackupsServer                              BackupsServer
@@ -30,10 +31,17 @@ type ServerFactory struct {
 	FirewallRulesServer                        FirewallRulesServer
 	GetPrivateDNSZoneSuffixServer              GetPrivateDNSZoneSuffixServer
 	LocationBasedCapabilitiesServer            LocationBasedCapabilitiesServer
+	LocationBasedCapabilitySetServer           LocationBasedCapabilitySetServer
 	LogFilesServer                             LogFilesServer
+	LongRunningBackupServer                    LongRunningBackupServer
+	LongRunningBackupsServer                   LongRunningBackupsServer
+	MaintenancesServer                         MaintenancesServer
+	OperationProgressServer                    OperationProgressServer
+	OperationResultsServer                     OperationResultsServer
 	OperationsServer                           OperationsServer
 	ReplicasServer                             ReplicasServer
 	ServersServer                              ServersServer
+	ServersMigrationServer                     ServersMigrationServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -50,6 +58,7 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 type ServerFactoryTransport struct {
 	srv                                          *ServerFactory
 	trMu                                         sync.Mutex
+	trAdvancedThreatProtectionSettingsServer     *AdvancedThreatProtectionSettingsServerTransport
 	trAzureADAdministratorsServer                *AzureADAdministratorsServerTransport
 	trBackupAndExportServer                      *BackupAndExportServerTransport
 	trBackupsServer                              *BackupsServerTransport
@@ -61,10 +70,17 @@ type ServerFactoryTransport struct {
 	trFirewallRulesServer                        *FirewallRulesServerTransport
 	trGetPrivateDNSZoneSuffixServer              *GetPrivateDNSZoneSuffixServerTransport
 	trLocationBasedCapabilitiesServer            *LocationBasedCapabilitiesServerTransport
+	trLocationBasedCapabilitySetServer           *LocationBasedCapabilitySetServerTransport
 	trLogFilesServer                             *LogFilesServerTransport
+	trLongRunningBackupServer                    *LongRunningBackupServerTransport
+	trLongRunningBackupsServer                   *LongRunningBackupsServerTransport
+	trMaintenancesServer                         *MaintenancesServerTransport
+	trOperationProgressServer                    *OperationProgressServerTransport
+	trOperationResultsServer                     *OperationResultsServerTransport
 	trOperationsServer                           *OperationsServerTransport
 	trReplicasServer                             *ReplicasServerTransport
 	trServersServer                              *ServersServerTransport
+	trServersMigrationServer                     *ServersMigrationServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -80,6 +96,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	var err error
 
 	switch client {
+	case "AdvancedThreatProtectionSettingsClient":
+		initServer(s, &s.trAdvancedThreatProtectionSettingsServer, func() *AdvancedThreatProtectionSettingsServerTransport {
+			return NewAdvancedThreatProtectionSettingsServerTransport(&s.srv.AdvancedThreatProtectionSettingsServer)
+		})
+		resp, err = s.trAdvancedThreatProtectionSettingsServer.Do(req)
 	case "AzureADAdministratorsClient":
 		initServer(s, &s.trAzureADAdministratorsServer, func() *AzureADAdministratorsServerTransport {
 			return NewAzureADAdministratorsServerTransport(&s.srv.AzureADAdministratorsServer)
@@ -131,9 +152,37 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewLocationBasedCapabilitiesServerTransport(&s.srv.LocationBasedCapabilitiesServer)
 		})
 		resp, err = s.trLocationBasedCapabilitiesServer.Do(req)
+	case "LocationBasedCapabilitySetClient":
+		initServer(s, &s.trLocationBasedCapabilitySetServer, func() *LocationBasedCapabilitySetServerTransport {
+			return NewLocationBasedCapabilitySetServerTransport(&s.srv.LocationBasedCapabilitySetServer)
+		})
+		resp, err = s.trLocationBasedCapabilitySetServer.Do(req)
 	case "LogFilesClient":
 		initServer(s, &s.trLogFilesServer, func() *LogFilesServerTransport { return NewLogFilesServerTransport(&s.srv.LogFilesServer) })
 		resp, err = s.trLogFilesServer.Do(req)
+	case "LongRunningBackupClient":
+		initServer(s, &s.trLongRunningBackupServer, func() *LongRunningBackupServerTransport {
+			return NewLongRunningBackupServerTransport(&s.srv.LongRunningBackupServer)
+		})
+		resp, err = s.trLongRunningBackupServer.Do(req)
+	case "LongRunningBackupsClient":
+		initServer(s, &s.trLongRunningBackupsServer, func() *LongRunningBackupsServerTransport {
+			return NewLongRunningBackupsServerTransport(&s.srv.LongRunningBackupsServer)
+		})
+		resp, err = s.trLongRunningBackupsServer.Do(req)
+	case "MaintenancesClient":
+		initServer(s, &s.trMaintenancesServer, func() *MaintenancesServerTransport { return NewMaintenancesServerTransport(&s.srv.MaintenancesServer) })
+		resp, err = s.trMaintenancesServer.Do(req)
+	case "OperationProgressClient":
+		initServer(s, &s.trOperationProgressServer, func() *OperationProgressServerTransport {
+			return NewOperationProgressServerTransport(&s.srv.OperationProgressServer)
+		})
+		resp, err = s.trOperationProgressServer.Do(req)
+	case "OperationResultsClient":
+		initServer(s, &s.trOperationResultsServer, func() *OperationResultsServerTransport {
+			return NewOperationResultsServerTransport(&s.srv.OperationResultsServer)
+		})
+		resp, err = s.trOperationResultsServer.Do(req)
 	case "OperationsClient":
 		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
@@ -143,6 +192,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "ServersClient":
 		initServer(s, &s.trServersServer, func() *ServersServerTransport { return NewServersServerTransport(&s.srv.ServersServer) })
 		resp, err = s.trServersServer.Do(req)
+	case "ServersMigrationClient":
+		initServer(s, &s.trServersMigrationServer, func() *ServersMigrationServerTransport {
+			return NewServersMigrationServerTransport(&s.srv.ServersMigrationServer)
+		})
+		resp, err = s.trServersMigrationServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
 	}

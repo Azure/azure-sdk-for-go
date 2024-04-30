@@ -1,15 +1,28 @@
 # Release History
 
-## 1.6.0 (Unreleased)
+## 1.7.0 (Unreleased)
 
 ### Features Added
-* Options types for `SetBodilessMatcher` and `SetDefaultMatcher` now embed `RecordingOptions`
+
+* `RemoveRegisteredSanitizers` selectively disables sanitizers the test proxy enables by
+  default since version 1.0.0-dev.20240422.1
 
 ### Breaking Changes
+
+* Deprecated the `go-vcr` based test recording API. Its methods now return errors or panic.
+* Changed value of `recording.SanitizedValue` from "sanitized" to "Sanitized" to match the
+  test proxy
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.6.0 (2024-04-16)
+
+### Features Added
+
+* Options types for `SetBodilessMatcher` and `SetDefaultMatcher` now embed `RecordingOptions`
+* Added a collection of default sanitizers for test recordings
 
 ## 1.5.2 (2024-02-06)
 

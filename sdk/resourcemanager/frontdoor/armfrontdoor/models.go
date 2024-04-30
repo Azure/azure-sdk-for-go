@@ -203,6 +203,9 @@ type CustomRule struct {
 	// Describes if the custom rule is in enabled or disabled state. Defaults to Enabled if not specified.
 	EnabledState *CustomRuleEnabledState
 
+	// Describes the list of variables to group the rate limit requests
+	GroupBy []*GroupByVariable
+
 	// Describes the name of the rule.
 	Name *string
 
@@ -466,6 +469,12 @@ type FrontendEndpointsListResult struct {
 
 	// READ-ONLY; List of Frontend endpoints within a Front Door.
 	Value []*FrontendEndpoint
+}
+
+// GroupByVariable - Describes the variables available to group the rate limit requests
+type GroupByVariable struct {
+	// REQUIRED; Describes the supported variable for group by
+	VariableName *VariableName
 }
 
 // HeaderAction - An action that can manipulate an http header.
@@ -881,6 +890,14 @@ type PolicySettings struct {
 	// Describes if the policy is in enabled or disabled state. Defaults to Enabled if not specified.
 	EnabledState *PolicyEnabledState
 
+	// Defines the JavaScript challenge cookie validity lifetime in minutes. This setting is only applicable to Premium_AzureFrontDoor.
+	// Value must be an integer between 5 and 1440 with the default value
+	// being 30.
+	JavascriptChallengeExpirationInMinutes *int32
+
+	// Defines rules that scrub sensitive fields in the Web Application Firewall logs.
+	LogScrubbing *PolicySettingsLogScrubbing
+
 	// Describes if it is in detection mode or prevention mode at policy level.
 	Mode *PolicyMode
 
@@ -889,6 +906,15 @@ type PolicySettings struct {
 
 	// Describes if policy managed rules will inspect the request body content.
 	RequestBodyCheck *PolicyRequestBodyCheck
+}
+
+// PolicySettingsLogScrubbing - Defines rules that scrub sensitive fields in the Web Application Firewall logs.
+type PolicySettingsLogScrubbing struct {
+	// List of log scrubbing rules applied to the Web Application Firewall logs.
+	ScrubbingRules []*WebApplicationFirewallScrubbingRules
+
+	// State of the log scrubbing config. Default value is Enabled.
+	State *WebApplicationFirewallScrubbingState
 }
 
 // PreconfiguredEndpoint - Defines the properties of a preconfigured endpoint
@@ -1478,4 +1504,20 @@ type WebApplicationFirewallPolicyProperties struct {
 
 	// READ-ONLY; Describes Security Policy associated with this Web Application Firewall policy.
 	SecurityPolicyLinks []*SecurityPolicyLink
+}
+
+// WebApplicationFirewallScrubbingRules - Defines the contents of the log scrubbing rules.
+type WebApplicationFirewallScrubbingRules struct {
+	// REQUIRED; The variable to be scrubbed from the logs.
+	MatchVariable *ScrubbingRuleEntryMatchVariable
+
+	// REQUIRED; When matchVariable is a collection, operate on the selector to specify which elements in the collection this
+	// rule applies to.
+	SelectorMatchOperator *ScrubbingRuleEntryMatchOperator
+
+	// When matchVariable is a collection, operator used to specify which elements in the collection this rule applies to.
+	Selector *string
+
+	// Defines the state of a log scrubbing rule. Default value is enabled.
+	State *ScrubbingRuleEntryState
 }

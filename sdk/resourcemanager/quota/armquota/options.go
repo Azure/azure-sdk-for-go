@@ -30,6 +30,201 @@ type ClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// GroupQuotaLimitsClientGetOptions contains the optional parameters for the GroupQuotaLimitsClient.Get method.
+type GroupQuotaLimitsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GroupQuotaLimitsClientListOptions contains the optional parameters for the GroupQuotaLimitsClient.NewListPager method.
+type GroupQuotaLimitsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GroupQuotaLimitsRequestClientBeginCreateOrUpdateOptions contains the optional parameters for the GroupQuotaLimitsRequestClient.BeginCreateOrUpdate
+// method.
+type GroupQuotaLimitsRequestClientBeginCreateOrUpdateOptions struct {
+	// The GroupQuotaRequest body details for specific resourceProvider/location/resources.
+	GroupQuotaRequest *SubmittedResourceRequestStatus
+
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// GroupQuotaLimitsRequestClientBeginUpdateOptions contains the optional parameters for the GroupQuotaLimitsRequestClient.BeginUpdate
+// method.
+type GroupQuotaLimitsRequestClientBeginUpdateOptions struct {
+	// The GroupQuotaRequest body details for specific resourceProvider/location/resources.
+	GroupQuotaRequest *SubmittedResourceRequestStatus
+
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// GroupQuotaLimitsRequestClientGetOptions contains the optional parameters for the GroupQuotaLimitsRequestClient.Get method.
+type GroupQuotaLimitsRequestClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GroupQuotaLimitsRequestClientListOptions contains the optional parameters for the GroupQuotaLimitsRequestClient.NewListPager
+// method.
+type GroupQuotaLimitsRequestClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GroupQuotaLocationSettingsClientBeginCreateOrUpdateOptions contains the optional parameters for the GroupQuotaLocationSettingsClient.BeginCreateOrUpdate
+// method.
+type GroupQuotaLocationSettingsClientBeginCreateOrUpdateOptions struct {
+	// The GroupQuota body details for creation or update of a GroupQuota entity.
+	LocationSettings *GroupQuotasEnforcementResponse
+
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// GroupQuotaLocationSettingsClientBeginUpdateOptions contains the optional parameters for the GroupQuotaLocationSettingsClient.BeginUpdate
+// method.
+type GroupQuotaLocationSettingsClientBeginUpdateOptions struct {
+	// The GroupQuota body details for creation or update of a GroupQuota entity.
+	LocationSettings *GroupQuotasEnforcementResponse
+
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// GroupQuotaLocationSettingsClientGetOptions contains the optional parameters for the GroupQuotaLocationSettingsClient.Get
+// method.
+type GroupQuotaLocationSettingsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GroupQuotaLocationSettingsClientListOptions contains the optional parameters for the GroupQuotaLocationSettingsClient.NewListPager
+// method.
+type GroupQuotaLocationSettingsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GroupQuotaSubscriptionAllocationClientGetOptions contains the optional parameters for the GroupQuotaSubscriptionAllocationClient.Get
+// method.
+type GroupQuotaSubscriptionAllocationClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GroupQuotaSubscriptionAllocationClientListOptions contains the optional parameters for the GroupQuotaSubscriptionAllocationClient.NewListPager
+// method.
+type GroupQuotaSubscriptionAllocationClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GroupQuotaSubscriptionAllocationRequestClientBeginCreateOrUpdateOptions contains the optional parameters for the GroupQuotaSubscriptionAllocationRequestClient.BeginCreateOrUpdate
+// method.
+type GroupQuotaSubscriptionAllocationRequestClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// GroupQuotaSubscriptionAllocationRequestClientBeginUpdateOptions contains the optional parameters for the GroupQuotaSubscriptionAllocationRequestClient.BeginUpdate
+// method.
+type GroupQuotaSubscriptionAllocationRequestClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// GroupQuotaSubscriptionAllocationRequestClientGetOptions contains the optional parameters for the GroupQuotaSubscriptionAllocationRequestClient.Get
+// method.
+type GroupQuotaSubscriptionAllocationRequestClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GroupQuotaSubscriptionAllocationRequestClientListOptions contains the optional parameters for the GroupQuotaSubscriptionAllocationRequestClient.NewListPager
+// method.
+type GroupQuotaSubscriptionAllocationRequestClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GroupQuotaSubscriptionRequestsClientGetOptions contains the optional parameters for the GroupQuotaSubscriptionRequestsClient.Get
+// method.
+type GroupQuotaSubscriptionRequestsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GroupQuotaSubscriptionRequestsClientListOptions contains the optional parameters for the GroupQuotaSubscriptionRequestsClient.NewListPager
+// method.
+type GroupQuotaSubscriptionRequestsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GroupQuotaSubscriptionsClientBeginCreateOrUpdateOptions contains the optional parameters for the GroupQuotaSubscriptionsClient.BeginCreateOrUpdate
+// method.
+type GroupQuotaSubscriptionsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// GroupQuotaSubscriptionsClientBeginDeleteOptions contains the optional parameters for the GroupQuotaSubscriptionsClient.BeginDelete
+// method.
+type GroupQuotaSubscriptionsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// GroupQuotaSubscriptionsClientBeginUpdateOptions contains the optional parameters for the GroupQuotaSubscriptionsClient.BeginUpdate
+// method.
+type GroupQuotaSubscriptionsClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// GroupQuotaSubscriptionsClientGetOptions contains the optional parameters for the GroupQuotaSubscriptionsClient.Get method.
+type GroupQuotaSubscriptionsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GroupQuotaSubscriptionsClientListOptions contains the optional parameters for the GroupQuotaSubscriptionsClient.NewListPager
+// method.
+type GroupQuotaSubscriptionsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GroupQuotaUsagesClientListOptions contains the optional parameters for the GroupQuotaUsagesClient.NewListPager method.
+type GroupQuotaUsagesClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GroupQuotasClientBeginCreateOrUpdateOptions contains the optional parameters for the GroupQuotasClient.BeginCreateOrUpdate
+// method.
+type GroupQuotasClientBeginCreateOrUpdateOptions struct {
+	// The GroupQuota body details for creation or update of a GroupQuota entity.
+	GroupQuotaPutRequestBody *GroupQuotasEntity
+
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// GroupQuotasClientBeginDeleteOptions contains the optional parameters for the GroupQuotasClient.BeginDelete method.
+type GroupQuotasClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// GroupQuotasClientBeginUpdateOptions contains the optional parameters for the GroupQuotasClient.BeginUpdate method.
+type GroupQuotasClientBeginUpdateOptions struct {
+	// The GroupQuotas Patch Request.
+	GroupQuotasPatchRequestBody *GroupQuotasEntityPatch
+
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// GroupQuotasClientGetOptions contains the optional parameters for the GroupQuotasClient.Get method.
+type GroupQuotasClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GroupQuotasClientListOptions contains the optional parameters for the GroupQuotasClient.NewListPager method.
+type GroupQuotasClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // OperationClientListOptions contains the optional parameters for the OperationClient.NewListPager method.
 type OperationClientListOptions struct {
 	// placeholder for future optional parameters

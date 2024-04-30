@@ -46,7 +46,7 @@ func NewTroubleshootersClient(credential azcore.TokenCredential, options *arm.Cl
 // created using the Create API.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01-preview
+// Generated from API version 2024-03-01-preview
 //   - scope - scope = resourceUri of affected resource.
 //     For example: /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read
 //   - troubleshooterName - Troubleshooter resource Name.
@@ -87,7 +87,7 @@ func (client *TroubleshootersClient) continueCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-01-preview")
+	reqQP.Set("api-version", "2024-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.ContinueRequestBody != nil {
@@ -118,7 +118,7 @@ func (client *TroubleshootersClient) continueHandleResponse(resp *http.Response)
 // signals and customer manual selections.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01-preview
+// Generated from API version 2024-03-01-preview
 //   - scope - scope = resourceUri of affected resource.
 //     For example: /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read
 //   - troubleshooterName - Troubleshooter resource Name.
@@ -159,7 +159,7 @@ func (client *TroubleshootersClient) createCreateRequest(ctx context.Context, sc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-01-preview")
+	reqQP.Set("api-version", "2024-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, createTroubleshooterRequestBody); err != nil {
@@ -180,7 +180,7 @@ func (client *TroubleshootersClient) createHandleResponse(resp *http.Response) (
 // End - Ends the troubleshooter action
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01-preview
+// Generated from API version 2024-03-01-preview
 //   - scope - scope = resourceUri of affected resource.
 //     For example: /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read
 //   - troubleshooterName - Troubleshooter resource Name.
@@ -220,7 +220,7 @@ func (client *TroubleshootersClient) endCreateRequest(ctx context.Context, scope
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-01-preview")
+	reqQP.Set("api-version", "2024-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -241,7 +241,7 @@ func (client *TroubleshootersClient) endHandleResponse(resp *http.Response) (Tro
 // resource name that was created using the Create API.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01-preview
+// Generated from API version 2024-03-01-preview
 //   - scope - scope = resourceUri of affected resource.
 //     For example: /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read
 //   - troubleshooterName - Troubleshooter resource Name.
@@ -281,7 +281,7 @@ func (client *TroubleshootersClient) getCreateRequest(ctx context.Context, scope
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-01-preview")
+	reqQP.Set("api-version", "2024-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -301,7 +301,7 @@ func (client *TroubleshootersClient) getHandleResponse(resp *http.Response) (Tro
 // after this API is invoked.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01-preview
+// Generated from API version 2024-03-01-preview
 //   - scope - scope = resourceUri of affected resource.
 //     For example: /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read
 //   - troubleshooterName - Troubleshooter resource Name.
@@ -341,7 +341,7 @@ func (client *TroubleshootersClient) restartCreateRequest(ctx context.Context, s
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-01-preview")
+	reqQP.Set("api-version", "2024-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

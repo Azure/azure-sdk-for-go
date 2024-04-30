@@ -150,22 +150,10 @@ type FilesNoSubscriptionClientUploadResponse struct {
 	// placeholder for future response values
 }
 
-// LookUpResourceIDClientPostResponse contains the response from method LookUpResourceIDClient.Post.
-type LookUpResourceIDClientPostResponse struct {
-	// The look up resource id response
-	LookUpResourceIDResponse
-}
-
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	// The list of operations supported by Microsoft Support resource provider.
 	OperationsListResult
-}
-
-// ProblemClassificationsClientClassifyProblemsResponse contains the response from method ProblemClassificationsClient.ClassifyProblems.
-type ProblemClassificationsClientClassifyProblemsResponse struct {
-	// Output of the problem classification Classification API.
-	ProblemClassificationsClassificationOutput
 }
 
 // ProblemClassificationsClientGetResponse contains the response from method ProblemClassificationsClient.Get.
@@ -178,24 +166,6 @@ type ProblemClassificationsClientGetResponse struct {
 type ProblemClassificationsClientListResponse struct {
 	// Collection of ProblemClassification resources.
 	ProblemClassificationsListResult
-}
-
-// ProblemClassificationsNoSubscriptionClientClassifyProblemsResponse contains the response from method ProblemClassificationsNoSubscriptionClient.ClassifyProblems.
-type ProblemClassificationsNoSubscriptionClientClassifyProblemsResponse struct {
-	// Output of the problem classification Classification API.
-	ProblemClassificationsClassificationOutput
-}
-
-// ServiceClassificationsClientClassifyServicesResponse contains the response from method ServiceClassificationsClient.ClassifyServices.
-type ServiceClassificationsClientClassifyServicesResponse struct {
-	// Output of the service classification API.
-	ServiceClassificationOutput
-}
-
-// ServiceClassificationsNoSubscriptionClientClassifyServicesResponse contains the response from method ServiceClassificationsNoSubscriptionClient.ClassifyServices.
-type ServiceClassificationsNoSubscriptionClientClassifyServicesResponse struct {
-	// Output of the service classification API.
-	ServiceClassificationOutput
 }
 
 // ServicesClientGetResponse contains the response from method ServicesClient.Get.

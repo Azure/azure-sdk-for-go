@@ -8,9 +8,9 @@ Metrics has a larger split. Users wanting to use the existing ARM API's should u
 
 [`azmetrics`][azmetrics] contains the [new data plane metrics][azmetrics_blog] functionality. This new code was not previously generally available in `azquery`. The code allows users to query data from one or multiple resource IDs using a data plane endpoint. `azmetrics` will expand in the future when the service adds more features.
 
-### Name changes
+## Name changes
 
-| old module   | old method name |new module | new method name | 
+| Old module   | Old method name |New module | New method name | 
 | ----------- | ----------- | --- | --- |
 | `azquery` | `LogsClient.QueryWorkspace` | `azlogs` | `Client.QueryWorkspace` |
 |  | `LogsClient.QueryResource` |  | `Client.QueryResource` |
@@ -19,8 +19,6 @@ Metrics has a larger split. Users wanting to use the existing ARM API's should u
 | | `MetricsClient.NewListDefinitionsPager`  | | `MetricDefinitionsClient.NewListPager` |
 | | `MetricsClient.NewListNamespacesPager`  | | `MetricNamespacesClient.NewListPager` |
 |  | N/A | `azmetrics` | `Client.QueryResources` | 
-
-The `azlogs` module does not contain the `QueryBatch` method. To request that functionality, please [file an issue in our github repo][github_issues], so we can prioritize adding it to `azlogs`.
 
 ## Query Logs
 

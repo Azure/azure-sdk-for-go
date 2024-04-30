@@ -18,7 +18,6 @@ Metrics has a larger split. Users wanting to use the existing ARM APIs should us
 | | `MetricsClient.QueryResource` | `armmonitor` | `MetricsClient.List` |
 | | `MetricsClient.NewListDefinitionsPager`  | | `MetricDefinitionsClient.NewListPager` |
 | | `MetricsClient.NewListNamespacesPager`  | | `MetricNamespacesClient.NewListPager` |
-|  | N/A | `azmetrics` | `Client.QueryResources` | 
 
 ## Query Logs
 
@@ -201,8 +200,3 @@ func main() {
 [azmetrics_blog]: https://devblogs.microsoft.com/azure-sdk/multi-resource-metrics-query-support-in-the-azure-monitor-query-libraries/
 [github_issues]: https://github.com/Azure/azure-sdk-for-go/issues
 [rest_api]: https://learn.microsoft.com/rest/api/monitor/
-
-
-
-
-

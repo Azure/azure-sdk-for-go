@@ -41,6 +41,10 @@ type NamespaceTopicEventSubscriptionsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GetDeliveryAttributes func(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, eventSubscriptionName string, options *armeventgrid.NamespaceTopicEventSubscriptionsClientGetDeliveryAttributesOptions) (resp azfake.Responder[armeventgrid.NamespaceTopicEventSubscriptionsClientGetDeliveryAttributesResponse], errResp azfake.ErrorResponder)
 
+	// GetFullURL is the fake for method NamespaceTopicEventSubscriptionsClient.GetFullURL
+	// HTTP status codes to indicate success: http.StatusOK
+	GetFullURL func(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, eventSubscriptionName string, options *armeventgrid.NamespaceTopicEventSubscriptionsClientGetFullURLOptions) (resp azfake.Responder[armeventgrid.NamespaceTopicEventSubscriptionsClientGetFullURLResponse], errResp azfake.ErrorResponder)
+
 	// NewListByNamespaceTopicPager is the fake for method NamespaceTopicEventSubscriptionsClient.NewListByNamespaceTopicPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByNamespaceTopicPager func(resourceGroupName string, namespaceName string, topicName string, options *armeventgrid.NamespaceTopicEventSubscriptionsClientListByNamespaceTopicOptions) (resp azfake.PagerResponder[armeventgrid.NamespaceTopicEventSubscriptionsClientListByNamespaceTopicResponse])
@@ -93,6 +97,8 @@ func (n *NamespaceTopicEventSubscriptionsServerTransport) Do(req *http.Request) 
 		resp, err = n.dispatchGet(req)
 	case "NamespaceTopicEventSubscriptionsClient.GetDeliveryAttributes":
 		resp, err = n.dispatchGetDeliveryAttributes(req)
+	case "NamespaceTopicEventSubscriptionsClient.GetFullURL":
+		resp, err = n.dispatchGetFullURL(req)
 	case "NamespaceTopicEventSubscriptionsClient.NewListByNamespaceTopicPager":
 		resp, err = n.dispatchNewListByNamespaceTopicPager(req)
 	case "NamespaceTopicEventSubscriptionsClient.BeginUpdate":
@@ -292,6 +298,47 @@ func (n *NamespaceTopicEventSubscriptionsServerTransport) dispatchGetDeliveryAtt
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DeliveryAttributeListResult, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (n *NamespaceTopicEventSubscriptionsServerTransport) dispatchGetFullURL(req *http.Request) (*http.Response, error) {
+	if n.srv.GetFullURL == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetFullURL not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventGrid/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/topics/(?P<topicName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/eventSubscriptions/(?P<eventSubscriptionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getFullUrl`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	namespaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("namespaceName")])
+	if err != nil {
+		return nil, err
+	}
+	topicNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("topicName")])
+	if err != nil {
+		return nil, err
+	}
+	eventSubscriptionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("eventSubscriptionName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := n.srv.GetFullURL(req.Context(), resourceGroupNameParam, namespaceNameParam, topicNameParam, eventSubscriptionNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SubscriptionFullURL, req)
 	if err != nil {
 		return nil, err
 	}

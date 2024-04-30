@@ -48,7 +48,7 @@ func NewPrivateLinkResourcesClient(subscriptionID string, credential azcore.Toke
 // Get - Get properties of a private link resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-12-15-preview
+// Generated from API version 2024-06-01-preview
 //   - resourceGroupName - The name of the resource group within the user's subscription.
 //   - parentType - The type of the parent resource. This can be either \'topics\', \'domains\', or \'partnerNamespaces\' or \'namespaces\'.
 //   - parentName - The name of the parent resource (namely, either, the topic name, domain name, or partner namespace name or
@@ -106,7 +106,7 @@ func (client *PrivateLinkResourcesClient) getCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-12-15-preview")
+	reqQP.Set("api-version", "2024-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -123,7 +123,7 @@ func (client *PrivateLinkResourcesClient) getHandleResponse(resp *http.Response)
 
 // NewListByResourcePager - List all the private link resources under a topic, domain, or partner namespace or namespace.
 //
-// Generated from API version 2023-12-15-preview
+// Generated from API version 2024-06-01-preview
 //   - resourceGroupName - The name of the resource group within the user's subscription.
 //   - parentType - The type of the parent resource. This can be either \'topics\', \'domains\', or \'partnerNamespaces\' or \'namespaces\'.
 //   - parentName - The name of the parent resource (namely, either, the topic name, domain name, or partner namespace or namespace
@@ -177,13 +177,13 @@ func (client *PrivateLinkResourcesClient) listByResourceCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-12-15-preview")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
+	reqQP.Set("api-version", "2024-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

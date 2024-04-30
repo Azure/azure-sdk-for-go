@@ -4,9 +4,9 @@ With the service team's creation of a new data plane metrics endpoint, the Go SD
 
 Logs largely remained the same; the code just moved from `azquery` to [`azlogs`][azlogs].
 
-Metrics has a larger split. Users wanting to use the existing ARM API's should use the [`armmonitor`][armmonitor] module. `armmonitor` contains all the metrics functionality from `azquery` and more.
+Metrics has a larger split. Users wanting to use the existing ARM APIs should use the [`armmonitor`][armmonitor] module. `armmonitor` contains all the metrics functionality from `azquery` and more.
 
-[`azmetrics`][azmetrics] contains the [new data plane metrics][azmetrics_blog] functionality. This new code was not previously generally available in `azquery`. The code allows users to query data from one or multiple resource IDs using a data plane endpoint. `azmetrics` will expand in the future when the service adds more features.
+[`azmetrics`][azmetrics] contains a [new data plane metrics feature][azmetrics_blog] that wasn't previously available in `azquery`. This allows users to query data from one or multiple resource IDs using a data plane endpoint. `azmetrics` will expand in the future when the service adds more features.
 
 ## Name changes
 

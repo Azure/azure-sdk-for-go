@@ -10,6 +10,8 @@
 
 ### Other Changes
 
+* Updated dependencies.
+
 ## 0.4.0 (2023-11-07)
 
 ### Other Changes

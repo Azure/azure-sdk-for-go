@@ -110,23 +110,23 @@ var azureOpenAI, openAI, servers = func() (testVars, testVars, []string) {
 			Azure:  false,
 		},
 		USEast: endpoint{
-			URL:    getEndpoint("ENDPOINT_USEAST"),
-			APIKey: getEnvVariable("ENDPOINT_USEAST_API_KEY", fakeAPIKey),
+			URL:    getEndpoint("AOAI_ENDPOINT_USEAST"),
+			APIKey: getEnvVariable("AOAI_ENDPOINT_USEAST_API_KEY", fakeAPIKey),
 			Azure:  true,
 		},
 		USEast2: endpoint{
-			URL:    getEndpoint("ENDPOINT_USEAST2"),
-			APIKey: getEnvVariable("ENDPOINT_USEAST2_API_KEY", fakeAPIKey),
+			URL:    getEndpoint("AOAI_ENDPOINT_USEAST2"),
+			APIKey: getEnvVariable("AOAI_ENDPOINT_USEAST2_API_KEY", fakeAPIKey),
 			Azure:  true,
 		},
 		USNorthCentral: endpoint{
-			URL:    getEndpoint("ENDPOINT_USNORTHCENTRAL"),
-			APIKey: getEnvVariable("ENDPOINT_USNORTHCENTRAL_API_KEY", fakeAPIKey),
+			URL:    getEndpoint("AOAI_ENDPOINT_USNORTHCENTRAL"),
+			APIKey: getEnvVariable("AOAI_ENDPOINT_USNORTHCENTRAL_API_KEY", fakeAPIKey),
 			Azure:  true,
 		},
 		SWECentral: endpoint{
-			URL:    getEndpoint("ENDPOINT_SWECENTRAL"),
-			APIKey: getEnvVariable("ENDPOINT_SWECENTRAL_API_KEY", fakeAPIKey),
+			URL:    getEndpoint("AOAI_ENDPOINT_SWECENTRAL"),
+			APIKey: getEnvVariable("AOAI_ENDPOINT_SWECENTRAL_API_KEY", fakeAPIKey),
 			Azure:  true,
 		},
 	}

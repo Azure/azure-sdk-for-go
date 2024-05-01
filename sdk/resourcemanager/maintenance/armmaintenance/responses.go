@@ -14,6 +14,12 @@ type ApplyUpdateForResourceGroupClientListResponse struct {
 	ListApplyUpdate
 }
 
+// ApplyUpdatesClientCreateOrUpdateOrCancelResponse contains the response from method ApplyUpdatesClient.CreateOrUpdateOrCancel.
+type ApplyUpdatesClientCreateOrUpdateOrCancelResponse struct {
+	// Apply Update request
+	ApplyUpdate
+}
+
 // ApplyUpdatesClientCreateOrUpdateParentResponse contains the response from method ApplyUpdatesClient.CreateOrUpdateParent.
 type ApplyUpdatesClientCreateOrUpdateParentResponse struct {
 	// Apply Update request
@@ -198,6 +204,12 @@ type PublicMaintenanceConfigurationsClientGetResponse struct {
 type PublicMaintenanceConfigurationsClientListResponse struct {
 	// Response for MaintenanceConfigurations list
 	ListMaintenanceConfigurationsResult
+}
+
+// ScheduledEventClientAcknowledgeResponse contains the response from method ScheduledEventClient.Acknowledge.
+type ScheduledEventClientAcknowledgeResponse struct {
+	// Response of scheduled event acknowledge
+	ScheduledEventApproveResponse
 }
 
 // UpdatesClientListParentResponse contains the response from method UpdatesClient.NewListParentPager.

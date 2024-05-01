@@ -17,89 +17,116 @@ import (
 // Don't use this type directly, use NewClientFactory instead.
 type ClientFactory struct {
 	subscriptionID string
-	credential     azcore.TokenCredential
-	options        *arm.ClientOptions
+	internal       *arm.Client
 }
 
 // NewClientFactory creates a new instance of ClientFactory with the specified values.
 // The parameter values will be propagated to any client created from this factory.
-//   - subscriptionID - Subscription credentials that uniquely identify a Microsoft Azure subscription. The subscription ID forms
-//     part of the URI for every service call.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClientFactory, error) {
-	_, err := arm.NewClient(moduleName, moduleVersion, credential, options)
+	internal, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	return &ClientFactory{
-		subscriptionID: subscriptionID, credential: credential,
-		options: options.Clone(),
+		subscriptionID: subscriptionID,
+		internal:       internal,
 	}, nil
 }
 
 // NewApplyUpdateForResourceGroupClient creates a new instance of ApplyUpdateForResourceGroupClient.
 func (c *ClientFactory) NewApplyUpdateForResourceGroupClient() *ApplyUpdateForResourceGroupClient {
-	subClient, _ := NewApplyUpdateForResourceGroupClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &ApplyUpdateForResourceGroupClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewApplyUpdatesClient creates a new instance of ApplyUpdatesClient.
 func (c *ClientFactory) NewApplyUpdatesClient() *ApplyUpdatesClient {
-	subClient, _ := NewApplyUpdatesClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &ApplyUpdatesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewConfigurationAssignmentsClient creates a new instance of ConfigurationAssignmentsClient.
 func (c *ClientFactory) NewConfigurationAssignmentsClient() *ConfigurationAssignmentsClient {
-	subClient, _ := NewConfigurationAssignmentsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &ConfigurationAssignmentsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewConfigurationAssignmentsForResourceGroupClient creates a new instance of ConfigurationAssignmentsForResourceGroupClient.
 func (c *ClientFactory) NewConfigurationAssignmentsForResourceGroupClient() *ConfigurationAssignmentsForResourceGroupClient {
-	subClient, _ := NewConfigurationAssignmentsForResourceGroupClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &ConfigurationAssignmentsForResourceGroupClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewConfigurationAssignmentsForSubscriptionsClient creates a new instance of ConfigurationAssignmentsForSubscriptionsClient.
 func (c *ClientFactory) NewConfigurationAssignmentsForSubscriptionsClient() *ConfigurationAssignmentsForSubscriptionsClient {
-	subClient, _ := NewConfigurationAssignmentsForSubscriptionsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &ConfigurationAssignmentsForSubscriptionsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewConfigurationAssignmentsWithinSubscriptionClient creates a new instance of ConfigurationAssignmentsWithinSubscriptionClient.
 func (c *ClientFactory) NewConfigurationAssignmentsWithinSubscriptionClient() *ConfigurationAssignmentsWithinSubscriptionClient {
-	subClient, _ := NewConfigurationAssignmentsWithinSubscriptionClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &ConfigurationAssignmentsWithinSubscriptionClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewConfigurationsClient creates a new instance of ConfigurationsClient.
 func (c *ClientFactory) NewConfigurationsClient() *ConfigurationsClient {
-	subClient, _ := NewConfigurationsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &ConfigurationsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewConfigurationsForResourceGroupClient creates a new instance of ConfigurationsForResourceGroupClient.
 func (c *ClientFactory) NewConfigurationsForResourceGroupClient() *ConfigurationsForResourceGroupClient {
-	subClient, _ := NewConfigurationsForResourceGroupClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &ConfigurationsForResourceGroupClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewOperationsClient creates a new instance of OperationsClient.
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
-	subClient, _ := NewOperationsClient(c.credential, c.options)
-	return subClient
+	return &OperationsClient{
+		internal: c.internal,
+	}
 }
 
 // NewPublicMaintenanceConfigurationsClient creates a new instance of PublicMaintenanceConfigurationsClient.
 func (c *ClientFactory) NewPublicMaintenanceConfigurationsClient() *PublicMaintenanceConfigurationsClient {
-	subClient, _ := NewPublicMaintenanceConfigurationsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &PublicMaintenanceConfigurationsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewScheduledEventClient creates a new instance of ScheduledEventClient.
+func (c *ClientFactory) NewScheduledEventClient() *ScheduledEventClient {
+	return &ScheduledEventClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewUpdatesClient creates a new instance of UpdatesClient.
 func (c *ClientFactory) NewUpdatesClient() *UpdatesClient {
-	subClient, _ := NewUpdatesClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &UpdatesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }

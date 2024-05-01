@@ -29,6 +29,7 @@ type ServerFactory struct {
 	ConfigurationsForResourceGroupServer             ConfigurationsForResourceGroupServer
 	OperationsServer                                 OperationsServer
 	PublicMaintenanceConfigurationsServer            PublicMaintenanceConfigurationsServer
+	ScheduledEventServer                             ScheduledEventServer
 	UpdatesServer                                    UpdatesServer
 }
 
@@ -56,6 +57,7 @@ type ServerFactoryTransport struct {
 	trConfigurationsForResourceGroupServer             *ConfigurationsForResourceGroupServerTransport
 	trOperationsServer                                 *OperationsServerTransport
 	trPublicMaintenanceConfigurationsServer            *PublicMaintenanceConfigurationsServerTransport
+	trScheduledEventServer                             *ScheduledEventServerTransport
 	trUpdatesServer                                    *UpdatesServerTransport
 }
 
@@ -118,6 +120,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewPublicMaintenanceConfigurationsServerTransport(&s.srv.PublicMaintenanceConfigurationsServer)
 		})
 		resp, err = s.trPublicMaintenanceConfigurationsServer.Do(req)
+	case "ScheduledEventClient":
+		initServer(s, &s.trScheduledEventServer, func() *ScheduledEventServerTransport {
+			return NewScheduledEventServerTransport(&s.srv.ScheduledEventServer)
+		})
+		resp, err = s.trScheduledEventServer.Do(req)
 	case "UpdatesClient":
 		initServer(s, &s.trUpdatesServer, func() *UpdatesServerTransport { return NewUpdatesServerTransport(&s.srv.UpdatesServer) })
 		resp, err = s.trUpdatesServer.Do(req)

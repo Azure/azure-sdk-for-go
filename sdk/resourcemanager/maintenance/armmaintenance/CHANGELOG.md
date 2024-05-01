@@ -1,5 +1,16 @@
 # Release History
 
+## 1.4.0-beta.1 (2024-05-24)
+### Features Added
+
+- New value `UpdateStatusCancel`, `UpdateStatusCancelled`, `UpdateStatusNoUpdatesPending` added to enum type `UpdateStatus`
+- New function `*ApplyUpdatesClient.CreateOrUpdateOrCancel(context.Context, string, string, string, string, string, ApplyUpdate, *ApplyUpdatesClientCreateOrUpdateOrCancelOptions) (ApplyUpdatesClientCreateOrUpdateOrCancelResponse, error)`
+- New function `*ClientFactory.NewScheduledEventClient() *ScheduledEventClient`
+- New function `NewScheduledEventClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ScheduledEventClient, error)`
+- New function `*ScheduledEventClient.Acknowledge(context.Context, string, string, string, string, *ScheduledEventClientAcknowledgeOptions) (ScheduledEventClientAcknowledgeResponse, error)`
+- New struct `ScheduledEventApproveResponse`
+
+
 ## 1.3.0 (2023-11-24)
 ### Features Added
 

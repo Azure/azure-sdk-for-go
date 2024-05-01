@@ -24,6 +24,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	"github.com/joho/godotenv"
 	"github.com/stretchr/testify/require"
 )
 
@@ -87,6 +88,13 @@ var azureOpenAI, openAI, servers = func() (testVars, testVars, []string) {
 		h := sha256.New()
 		hashBytes := h.Sum([]byte(os.Getenv(pieces[0])))
 		fmt.Printf("Var[%s] = %X\n", pieces[0], hashBytes)
+	}
+
+	// is there an .env file here?!
+	if err := godotenv.Load(); err != nil {
+		fmt.Printf("Failed to load .env file: %s\n", err)
+	} else {
+		fmt.Printf("Loaded .env file\n")
 	}
 
 	servers := struct {

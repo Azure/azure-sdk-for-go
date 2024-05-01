@@ -431,13 +431,13 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) listByDatabaseCreat
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	if options != nil && options.OnlyLatestPerDatabase != nil {
-		reqQP.Set("onlyLatestPerDatabase", strconv.FormatBool(*options.OnlyLatestPerDatabase))
-	}
+	reqQP.Set("api-version", "2021-05-01-preview")
 	if options != nil && options.DatabaseState != nil {
 		reqQP.Set("databaseState", string(*options.DatabaseState))
 	}
-	reqQP.Set("api-version", "2021-05-01-preview")
+	if options != nil && options.OnlyLatestPerDatabase != nil {
+		reqQP.Set("onlyLatestPerDatabase", strconv.FormatBool(*options.OnlyLatestPerDatabase))
+	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -502,13 +502,13 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) listByInstanceCreat
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	if options != nil && options.OnlyLatestPerDatabase != nil {
-		reqQP.Set("onlyLatestPerDatabase", strconv.FormatBool(*options.OnlyLatestPerDatabase))
-	}
+	reqQP.Set("api-version", "2021-05-01-preview")
 	if options != nil && options.DatabaseState != nil {
 		reqQP.Set("databaseState", string(*options.DatabaseState))
 	}
-	reqQP.Set("api-version", "2021-05-01-preview")
+	if options != nil && options.OnlyLatestPerDatabase != nil {
+		reqQP.Set("onlyLatestPerDatabase", strconv.FormatBool(*options.OnlyLatestPerDatabase))
+	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -568,13 +568,13 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) listByLocationCreat
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	if options != nil && options.OnlyLatestPerDatabase != nil {
-		reqQP.Set("onlyLatestPerDatabase", strconv.FormatBool(*options.OnlyLatestPerDatabase))
-	}
+	reqQP.Set("api-version", "2021-05-01-preview")
 	if options != nil && options.DatabaseState != nil {
 		reqQP.Set("databaseState", string(*options.DatabaseState))
 	}
-	reqQP.Set("api-version", "2021-05-01-preview")
+	if options != nil && options.OnlyLatestPerDatabase != nil {
+		reqQP.Set("onlyLatestPerDatabase", strconv.FormatBool(*options.OnlyLatestPerDatabase))
+	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -650,13 +650,13 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) listByResourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	if options != nil && options.OnlyLatestPerDatabase != nil {
-		reqQP.Set("onlyLatestPerDatabase", strconv.FormatBool(*options.OnlyLatestPerDatabase))
-	}
+	reqQP.Set("api-version", "2021-05-01-preview")
 	if options != nil && options.DatabaseState != nil {
 		reqQP.Set("databaseState", string(*options.DatabaseState))
 	}
-	reqQP.Set("api-version", "2021-05-01-preview")
+	if options != nil && options.OnlyLatestPerDatabase != nil {
+		reqQP.Set("onlyLatestPerDatabase", strconv.FormatBool(*options.OnlyLatestPerDatabase))
+	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -727,13 +727,13 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) listByResourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	if options != nil && options.OnlyLatestPerDatabase != nil {
-		reqQP.Set("onlyLatestPerDatabase", strconv.FormatBool(*options.OnlyLatestPerDatabase))
-	}
+	reqQP.Set("api-version", "2021-05-01-preview")
 	if options != nil && options.DatabaseState != nil {
 		reqQP.Set("databaseState", string(*options.DatabaseState))
 	}
-	reqQP.Set("api-version", "2021-05-01-preview")
+	if options != nil && options.OnlyLatestPerDatabase != nil {
+		reqQP.Set("onlyLatestPerDatabase", strconv.FormatBool(*options.OnlyLatestPerDatabase))
+	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -799,13 +799,13 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) listByResourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	if options != nil && options.OnlyLatestPerDatabase != nil {
-		reqQP.Set("onlyLatestPerDatabase", strconv.FormatBool(*options.OnlyLatestPerDatabase))
-	}
+	reqQP.Set("api-version", "2021-05-01-preview")
 	if options != nil && options.DatabaseState != nil {
 		reqQP.Set("databaseState", string(*options.DatabaseState))
 	}
-	reqQP.Set("api-version", "2021-05-01-preview")
+	if options != nil && options.OnlyLatestPerDatabase != nil {
+		reqQP.Set("onlyLatestPerDatabase", strconv.FormatBool(*options.OnlyLatestPerDatabase))
+	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

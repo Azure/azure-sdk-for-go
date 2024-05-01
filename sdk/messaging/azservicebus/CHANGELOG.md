@@ -4,13 +4,7 @@
 
 ### Features Added
 
-- Receiver.DeleteMessages can delete messages in batches, service-side. This allows you to quickly purge messages in a queue or subscription. (PR#TBD)
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Receiver.DeleteMessages can delete messages in batches, service-side. This allows you to quickly purge messages in a queue or subscription. (PR#22784)
 
 ## 1.7.1 (2024-05-20)
 

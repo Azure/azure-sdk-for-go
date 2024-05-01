@@ -141,3 +141,5 @@ func Example_assistantsUsingCodeInterpreter() {
 
 	// Output:
 }
+
+var _ = true // needed so the entire file gets rendered

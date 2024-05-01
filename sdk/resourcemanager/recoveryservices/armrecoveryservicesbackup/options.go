@@ -133,13 +133,13 @@ type BackupResourceVaultConfigsClientGetOptions struct {
 // BackupResourceVaultConfigsClientPutOptions contains the optional parameters for the BackupResourceVaultConfigsClient.Put
 // method.
 type BackupResourceVaultConfigsClientPutOptions struct {
-	// placeholder for future optional parameters
+	XMSAuthorizationAuxiliary *string
 }
 
 // BackupResourceVaultConfigsClientUpdateOptions contains the optional parameters for the BackupResourceVaultConfigsClient.Update
 // method.
 type BackupResourceVaultConfigsClientUpdateOptions struct {
-	// placeholder for future optional parameters
+	XMSAuthorizationAuxiliary *string
 }
 
 // BackupStatusClientGetOptions contains the optional parameters for the BackupStatusClient.Get method.
@@ -315,7 +315,7 @@ type ProtectedItemOperationStatusesClientGetOptions struct {
 // ProtectedItemsClientCreateOrUpdateOptions contains the optional parameters for the ProtectedItemsClient.CreateOrUpdate
 // method.
 type ProtectedItemsClientCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
+	XMSAuthorizationAuxiliary *string
 }
 
 // ProtectedItemsClientDeleteOptions contains the optional parameters for the ProtectedItemsClient.Delete method.
@@ -402,7 +402,7 @@ type ProtectionPoliciesClientBeginDeleteOptions struct {
 // ProtectionPoliciesClientCreateOrUpdateOptions contains the optional parameters for the ProtectionPoliciesClient.CreateOrUpdate
 // method.
 type ProtectionPoliciesClientCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
+	XMSAuthorizationAuxiliary *string
 }
 
 // ProtectionPoliciesClientGetOptions contains the optional parameters for the ProtectionPoliciesClient.Get method.
@@ -468,13 +468,15 @@ type ResourceGuardProxyClientUnlockDeleteOptions struct {
 // RestoresClientBeginTriggerOptions contains the optional parameters for the RestoresClient.BeginTrigger method.
 type RestoresClientBeginTriggerOptions struct {
 	// Resumes the LRO from the provided token.
-	ResumeToken string
+	ResumeToken               string
+	XMSAuthorizationAuxiliary *string
 }
 
 // SecurityPINsClientGetOptions contains the optional parameters for the SecurityPINsClient.Get method.
 type SecurityPINsClientGetOptions struct {
 	// security pin request
-	Parameters *SecurityPinBase
+	Parameters                *SecurityPinBase
+	XMSAuthorizationAuxiliary *string
 }
 
 // TieringCostOperationStatusClientGetOptions contains the optional parameters for the TieringCostOperationStatusClient.Get

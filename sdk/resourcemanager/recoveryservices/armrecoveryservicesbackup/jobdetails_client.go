@@ -46,7 +46,7 @@ func NewJobDetailsClient(subscriptionID string, credential azcore.TokenCredentia
 // Get - Gets extended information associated with the job.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-01
+// Generated from API version 2024-04-01
 //   - vaultName - The name of the recovery services vault.
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - jobName - Name of the job whose details are to be fetched.
@@ -97,7 +97,7 @@ func (client *JobDetailsClient) getCreateRequest(ctx context.Context, vaultName 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-01")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

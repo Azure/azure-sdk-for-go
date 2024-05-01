@@ -14,12 +14,6 @@ import "time"
 type APIServerAccessProfile struct {
 	// Whether to create the Fleet hub as a private cluster or not.
 	EnablePrivateCluster *bool
-
-	// Whether to enable apiserver vnet integration for the Fleet hub or not.
-	EnableVnetIntegration *bool
-
-	// The subnet to be used when apiserver vnet integration is enabled. It is required when creating a new Fleet with BYO vnet.
-	SubnetID *string
 }
 
 // AgentProfile - Agent profile for the Fleet hub.
@@ -133,7 +127,7 @@ type FleetListResult struct {
 	// REQUIRED; The Fleet items on this page
 	Value []*Fleet
 
-	// READ-ONLY; The link to the next page of items
+	// The link to the next page of items
 	NextLink *string
 }
 
@@ -166,7 +160,7 @@ type FleetMemberListResult struct {
 	// REQUIRED; The FleetMember items on this page
 	Value []*FleetMember
 
-	// READ-ONLY; The link to the next page of items
+	// The link to the next page of items
 	NextLink *string
 }
 
@@ -242,7 +236,7 @@ type FleetUpdateStrategyListResult struct {
 	// REQUIRED; The FleetUpdateStrategy items on this page
 	Value []*FleetUpdateStrategy
 
-	// READ-ONLY; The link to the next page of items
+	// The link to the next page of items
 	NextLink *string
 }
 
@@ -462,7 +456,7 @@ type UpdateRunListResult struct {
 	// REQUIRED; The UpdateRun items on this page
 	Value []*UpdateRun
 
-	// READ-ONLY; The link to the next page of items
+	// The link to the next page of items
 	NextLink *string
 }
 

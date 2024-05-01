@@ -5,7 +5,6 @@ package azopenai_test
 
 import (
 	"bytes"
-	"crypto/sha256"
 	"crypto/tls"
 	"errors"
 	"fmt"
@@ -14,7 +13,6 @@ import (
 	"net/http"
 	"os"
 	"regexp"
-	"sort"
 	"strings"
 	"testing"
 
@@ -24,7 +22,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/joho/godotenv"
 	"github.com/stretchr/testify/require"
 )
 
@@ -79,24 +76,6 @@ func getEnvVariable(varName string, playbackValue string) string {
 }
 
 var azureOpenAI, openAI, servers = func() (testVars, testVars, []string) {
-	vars := os.Environ()
-
-	sort.Strings(vars)
-
-	for _, v := range vars {
-		pieces := strings.SplitN(v, "=", 2)
-		h := sha256.New()
-		hashBytes := h.Sum([]byte(os.Getenv(pieces[0])))
-		fmt.Printf("Var[%s] = %X\n", pieces[0], hashBytes)
-	}
-
-	// is there an .env file here?!
-	if err := godotenv.Load(); err != nil {
-		fmt.Printf("Failed to load .env file: %s\n", err)
-	} else {
-		fmt.Printf("Loaded .env file\n")
-	}
-
 	servers := struct {
 		USEast         endpoint
 		USNorthCentral endpoint

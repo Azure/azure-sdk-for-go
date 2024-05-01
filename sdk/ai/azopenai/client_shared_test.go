@@ -5,6 +5,7 @@ package azopenai_test
 
 import (
 	"bytes"
+	"crypto/sha256"
 	"crypto/tls"
 	"errors"
 	"fmt"
@@ -13,6 +14,7 @@ import (
 	"net/http"
 	"os"
 	"regexp"
+	"sort"
 	"strings"
 	"testing"
 
@@ -76,6 +78,17 @@ func getEnvVariable(varName string, playbackValue string) string {
 }
 
 var azureOpenAI, openAI, servers = func() (testVars, testVars, []string) {
+	vars := os.Environ()
+
+	sort.Strings(vars)
+
+	for _, v := range vars {
+		pieces := strings.SplitN(v, "=", 2)
+		h := sha256.New()
+		hashBytes := h.Sum([]byte(os.Getenv(pieces[0])))
+		fmt.Printf("Var[%s] = %X\n", pieces[0], hashBytes)
+	}
+
 	servers := struct {
 		USEast         endpoint
 		USNorthCentral endpoint

@@ -1,16 +1,10 @@
 # Release History
 
-## 1.8.0-beta.1 (Unreleased)
+## 1.8.0-beta.1 (2024-05-07)
 
 ### Features Added
 
-- Receiver.DeleteMessages can delete messages in batches, service-side. This allows you to quickly purge messages in a queue or subscription. (PR#TBD)
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Receiver.DeleteMessages can delete messages in batches, service-side. This allows you to quickly purge messages in a queue or subscription. (PR#22784)
 
 ## 1.7.0 (2024-04-02)
 

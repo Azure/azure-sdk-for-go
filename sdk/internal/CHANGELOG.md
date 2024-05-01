@@ -1,8 +1,9 @@
 # Release History
 
-## 1.7.0 (Unreleased)
+## 1.7.0 (2024-05-01)
 
 ### Features Added
+* Support for local repo override (via presence of eng/target_proxy_version.txt) of invoked test-proxy version.
 
 * `RemoveRegisteredSanitizers` selectively disables sanitizers the test proxy enables by
   default since version 1.0.0-dev.20240422.1
@@ -12,10 +13,6 @@
 * Deprecated the `go-vcr` based test recording API. Its methods now return errors or panic.
 * Changed value of `recording.SanitizedValue` from "sanitized" to "Sanitized" to match the
   test proxy
-
-### Bugs Fixed
-
-### Other Changes
 
 ## 1.6.0 (2024-04-16)
 

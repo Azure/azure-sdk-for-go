@@ -110,7 +110,7 @@ func Example_assistantsUsingCodeInterpreter() {
 	}
 
 	// Wait till the assistant has responded
-	if err := pollRunEnd(context.TODO(), client, threadID, *threadRun.ID); err != nil {
+	if err := pollCodeInterpreterEnd(context.TODO(), client, threadID, *threadRun.ID); err != nil {
 		// TODO: Update the following line with your application specific error handling logic
 		log.Fatalf("ERROR: %s", err)
 	}
@@ -142,4 +142,26 @@ func Example_assistantsUsingCodeInterpreter() {
 	// Output:
 }
 
-var _ = true // needed so the entire file gets rendered
+func pollCodeInterpreterEnd(ctx context.Context, client *azopenaiassistants.Client, threadID string, runID string) error {
+	for {
+		lastGetRunResp, err := client.GetRun(context.Background(), threadID, runID, nil)
+
+		if err != nil {
+			return err
+		}
+
+		if *lastGetRunResp.Status != azopenaiassistants.RunStatusQueued && *lastGetRunResp.Status != azopenaiassistants.RunStatusInProgress {
+			if *lastGetRunResp.Status == azopenaiassistants.RunStatusCompleted {
+				return nil
+			}
+
+			return fmt.Errorf("run ended but status was not complete: %s", *lastGetRunResp.Status)
+		}
+
+		select {
+		case <-time.After(500 * time.Millisecond):
+		case <-ctx.Done():
+			return ctx.Err()
+		}
+	}
+}

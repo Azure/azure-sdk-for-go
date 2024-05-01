@@ -20,7 +20,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 )
 
-func Example_assistants() {
+func Example_assistantsWithConversationLoop() {
 	azureOpenAIKey := os.Getenv("AOAI_ASSISTANTS_KEY")
 
 	// Ex: "https://<your-azure-openai-host>.openai.azure.com"

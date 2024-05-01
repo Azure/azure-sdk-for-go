@@ -5,6 +5,7 @@ package azopenai_test
 
 import (
 	"bytes"
+	"context"
 	"crypto/tls"
 	"errors"
 	"fmt"
@@ -166,8 +167,8 @@ var azureOpenAI, openAI, servers = func() (testVars, testVars, []string) {
 				Model:    ifAzure(azure, "gpt-4-vision-preview", "gpt-4-vision-preview"),
 			},
 			Whisper: endpointWithModel{
-				Endpoint: ifAzure(azure, servers.USEast2, servers.OpenAI),
-				Model:    ifAzure(azure, "whisper-deployment", "whisper-1"),
+				Endpoint: ifAzure(azure, servers.USNorthCentral, servers.OpenAI),
+				Model:    ifAzure(azure, "whisper", "whisper-1"),
 			},
 			Cognitive: azopenai.AzureSearchChatExtensionConfiguration{
 				Parameters: &azopenai.AzureSearchChatExtensionParameters{
@@ -437,4 +438,26 @@ func (mrp *mimeTypeRecordingPolicy) Do(req *policy.Request) (*http.Response, err
 	}
 
 	return req.Next()
+}
+
+// customRequireNoError checks the error but allows throttling errors to account for resources that are
+// constrained.
+func customRequireNoError(t *testing.T, err error, throttlingAllowed bool) {
+	if err == nil {
+		return
+	}
+
+	if throttlingAllowed {
+		if respErr := (*azcore.ResponseError)(nil); errors.As(err, &respErr) && respErr.StatusCode == http.StatusTooManyRequests {
+			t.Skip("Skipping test because of throttling")
+			return
+		}
+
+		if errors.Is(err, context.DeadlineExceeded) {
+			t.Skip("Skipping test because of throttling")
+			return
+		}
+	}
+
+	require.NoError(t, err)
 }

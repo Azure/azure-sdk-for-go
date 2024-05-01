@@ -30,7 +30,7 @@ func TestClient_GetAudioTranscription(t *testing.T) {
 			t.Run(fmt.Sprintf("%s (%s)", azopenai.AudioTranscriptionFormatText, "m4a"), func(t *testing.T) {
 				args := newTranscriptionOptions(azopenai.AudioTranscriptionFormatText, model, "testdata/sampledata_audiofiles_myVoiceIsMyPassportVerifyMe01.m4a")
 				transcriptResp, err := client.GetAudioTranscription(context.Background(), args, nil)
-				require.NoError(t, err)
+				customRequireNoError(t, err, true)
 				require.NotEmpty(t, transcriptResp)
 
 				require.NotEmpty(t, *transcriptResp.Text)
@@ -40,7 +40,7 @@ func TestClient_GetAudioTranscription(t *testing.T) {
 			t.Run(fmt.Sprintf("%s (%s)", azopenai.AudioTranscriptionFormatVerboseJSON, "mp3"), func(t *testing.T) {
 				args := newTranscriptionOptions(azopenai.AudioTranscriptionFormatVerboseJSON, model, "testdata/sampledata_audiofiles_myVoiceIsMyPassportVerifyMe01.mp3")
 				transcriptResp, err := client.GetAudioTranscription(context.Background(), args, nil)
-				require.NoError(t, err)
+				customRequireNoError(t, err, true)
 				require.NotEmpty(t, transcriptResp)
 
 				require.NotEmpty(t, *transcriptResp.Text)
@@ -137,7 +137,7 @@ func TestClient_GetAudioTranslation(t *testing.T) {
 			t.Run(fmt.Sprintf("%s (%s)", azopenai.AudioTranscriptionFormatText, "m4a"), func(t *testing.T) {
 				args := newTranslationOptions(azopenai.AudioTranslationFormatText, model, "testdata/sampledata_audiofiles_myVoiceIsMyPassportVerifyMe01.m4a")
 				transcriptResp, err := client.GetAudioTranslation(context.Background(), args, nil)
-				require.NoError(t, err)
+				customRequireNoError(t, err, true)
 				require.NotEmpty(t, transcriptResp)
 
 				require.NotEmpty(t, *transcriptResp.Text)
@@ -148,7 +148,7 @@ func TestClient_GetAudioTranslation(t *testing.T) {
 				args := newTranslationOptions(azopenai.AudioTranslationFormatVerboseJSON, model, "testdata/sampledata_audiofiles_myVoiceIsMyPassportVerifyMe01.mp3")
 				transcriptResp, err := client.GetAudioTranslation(context.Background(), args, nil)
 				require.NoError(t, err)
-				require.NotEmpty(t, transcriptResp)
+				customRequireNoError(t, err, true)
 
 				require.NotEmpty(t, *transcriptResp.Text)
 				require.Greater(t, *transcriptResp.Duration, float32(0.0))

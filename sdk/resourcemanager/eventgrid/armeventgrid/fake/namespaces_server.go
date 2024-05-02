@@ -56,6 +56,10 @@ type NamespacesServer struct {
 	// BeginUpdate is the fake for method NamespacesClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdate func(ctx context.Context, resourceGroupName string, namespaceName string, namespaceUpdateParameters armeventgrid.NamespaceUpdateParameters, options *armeventgrid.NamespacesClientBeginUpdateOptions) (resp azfake.PollerResponder[armeventgrid.NamespacesClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// BeginValidateCustomDomainOwnership is the fake for method NamespacesClient.BeginValidateCustomDomainOwnership
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginValidateCustomDomainOwnership func(ctx context.Context, resourceGroupName string, namespaceName string, options *armeventgrid.NamespacesClientBeginValidateCustomDomainOwnershipOptions) (resp azfake.PollerResponder[armeventgrid.NamespacesClientValidateCustomDomainOwnershipResponse], errResp azfake.ErrorResponder)
 }
 
 // NewNamespacesServerTransport creates a new instance of NamespacesServerTransport with the provided implementation.
@@ -63,26 +67,28 @@ type NamespacesServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewNamespacesServerTransport(srv *NamespacesServer) *NamespacesServerTransport {
 	return &NamespacesServerTransport{
-		srv:                         srv,
-		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armeventgrid.NamespacesClientCreateOrUpdateResponse]](),
-		beginDelete:                 newTracker[azfake.PollerResponder[armeventgrid.NamespacesClientDeleteResponse]](),
-		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armeventgrid.NamespacesClientListByResourceGroupResponse]](),
-		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armeventgrid.NamespacesClientListBySubscriptionResponse]](),
-		beginRegenerateKey:          newTracker[azfake.PollerResponder[armeventgrid.NamespacesClientRegenerateKeyResponse]](),
-		beginUpdate:                 newTracker[azfake.PollerResponder[armeventgrid.NamespacesClientUpdateResponse]](),
+		srv:                                srv,
+		beginCreateOrUpdate:                newTracker[azfake.PollerResponder[armeventgrid.NamespacesClientCreateOrUpdateResponse]](),
+		beginDelete:                        newTracker[azfake.PollerResponder[armeventgrid.NamespacesClientDeleteResponse]](),
+		newListByResourceGroupPager:        newTracker[azfake.PagerResponder[armeventgrid.NamespacesClientListByResourceGroupResponse]](),
+		newListBySubscriptionPager:         newTracker[azfake.PagerResponder[armeventgrid.NamespacesClientListBySubscriptionResponse]](),
+		beginRegenerateKey:                 newTracker[azfake.PollerResponder[armeventgrid.NamespacesClientRegenerateKeyResponse]](),
+		beginUpdate:                        newTracker[azfake.PollerResponder[armeventgrid.NamespacesClientUpdateResponse]](),
+		beginValidateCustomDomainOwnership: newTracker[azfake.PollerResponder[armeventgrid.NamespacesClientValidateCustomDomainOwnershipResponse]](),
 	}
 }
 
 // NamespacesServerTransport connects instances of armeventgrid.NamespacesClient to instances of NamespacesServer.
 // Don't use this type directly, use NewNamespacesServerTransport instead.
 type NamespacesServerTransport struct {
-	srv                         *NamespacesServer
-	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armeventgrid.NamespacesClientCreateOrUpdateResponse]]
-	beginDelete                 *tracker[azfake.PollerResponder[armeventgrid.NamespacesClientDeleteResponse]]
-	newListByResourceGroupPager *tracker[azfake.PagerResponder[armeventgrid.NamespacesClientListByResourceGroupResponse]]
-	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armeventgrid.NamespacesClientListBySubscriptionResponse]]
-	beginRegenerateKey          *tracker[azfake.PollerResponder[armeventgrid.NamespacesClientRegenerateKeyResponse]]
-	beginUpdate                 *tracker[azfake.PollerResponder[armeventgrid.NamespacesClientUpdateResponse]]
+	srv                                *NamespacesServer
+	beginCreateOrUpdate                *tracker[azfake.PollerResponder[armeventgrid.NamespacesClientCreateOrUpdateResponse]]
+	beginDelete                        *tracker[azfake.PollerResponder[armeventgrid.NamespacesClientDeleteResponse]]
+	newListByResourceGroupPager        *tracker[azfake.PagerResponder[armeventgrid.NamespacesClientListByResourceGroupResponse]]
+	newListBySubscriptionPager         *tracker[azfake.PagerResponder[armeventgrid.NamespacesClientListBySubscriptionResponse]]
+	beginRegenerateKey                 *tracker[azfake.PollerResponder[armeventgrid.NamespacesClientRegenerateKeyResponse]]
+	beginUpdate                        *tracker[azfake.PollerResponder[armeventgrid.NamespacesClientUpdateResponse]]
+	beginValidateCustomDomainOwnership *tracker[azfake.PollerResponder[armeventgrid.NamespacesClientValidateCustomDomainOwnershipResponse]]
 }
 
 // Do implements the policy.Transporter interface for NamespacesServerTransport.
@@ -113,6 +119,8 @@ func (n *NamespacesServerTransport) Do(req *http.Request) (*http.Response, error
 		resp, err = n.dispatchBeginRegenerateKey(req)
 	case "NamespacesClient.BeginUpdate":
 		resp, err = n.dispatchBeginUpdate(req)
+	case "NamespacesClient.BeginValidateCustomDomainOwnership":
+		resp, err = n.dispatchBeginValidateCustomDomainOwnership(req)
 	default:
 		err = fmt.Errorf("unhandled API %s", method)
 	}
@@ -497,6 +505,50 @@ func (n *NamespacesServerTransport) dispatchBeginUpdate(req *http.Request) (*htt
 	}
 	if !server.PollerResponderMore(beginUpdate) {
 		n.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (n *NamespacesServerTransport) dispatchBeginValidateCustomDomainOwnership(req *http.Request) (*http.Response, error) {
+	if n.srv.BeginValidateCustomDomainOwnership == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginValidateCustomDomainOwnership not implemented")}
+	}
+	beginValidateCustomDomainOwnership := n.beginValidateCustomDomainOwnership.get(req)
+	if beginValidateCustomDomainOwnership == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventGrid/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validateCustomDomainOwnership`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		namespaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("namespaceName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := n.srv.BeginValidateCustomDomainOwnership(req.Context(), resourceGroupNameParam, namespaceNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginValidateCustomDomainOwnership = &respr
+		n.beginValidateCustomDomainOwnership.add(req, beginValidateCustomDomainOwnership)
+	}
+
+	resp, err := server.PollerResponderNext(beginValidateCustomDomainOwnership, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		n.beginValidateCustomDomainOwnership.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginValidateCustomDomainOwnership) {
+		n.beginValidateCustomDomainOwnership.remove(req)
 	}
 
 	return resp, nil

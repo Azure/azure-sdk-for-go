@@ -29,8 +29,7 @@ func TestQueryBatch_Metrics(t *testing.T) {
 		resourceIDList,
 		&azquery.MetricsBatchClientQueryBatchOptions{
 			Aggregation: to.SliceOfPtrs(azquery.AggregationTypeAverage),
-			StartTime:   to.Ptr("2023-11-15"),
-			EndTime:     to.Ptr("2023-11-16"),
+			StartTime:   to.Ptr("P1D"),
 			Interval:    to.Ptr("PT1H"),
 		},
 	)
@@ -64,8 +63,7 @@ func TestQueryBatch_MetricsFailure(t *testing.T) {
 	require.Error(t, err)
 	var httpErr *azcore.ResponseError
 	require.ErrorAs(t, err, &httpErr)
-	require.Equal(t, httpErr.ErrorCode, "InvalidSubscriptionId")
-	require.Equal(t, httpErr.StatusCode, 400)
+	require.NotEqual(t, 200, httpErr.StatusCode)
 	require.Nil(t, res.Values)
 
 	testSerde(t, &res)

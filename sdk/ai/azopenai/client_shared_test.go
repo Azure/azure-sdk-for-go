@@ -450,12 +450,12 @@ func customRequireNoError(t *testing.T, err error, throttlingAllowed bool) {
 
 	if throttlingAllowed {
 		if respErr := (*azcore.ResponseError)(nil); errors.As(err, &respErr) && respErr.StatusCode == http.StatusTooManyRequests {
-			t.Skip("Skipping test because of throttling")
+			t.Skip("Skipping test because of throttling (http.StatusTooManyRequests)")
 			return
 		}
 
 		if errors.Is(err, context.DeadlineExceeded) {
-			t.Skip("Skipping test because of throttling")
+			t.Skip("Skipping test because of throttling (DeadlineExceeded)")
 			return
 		}
 	}

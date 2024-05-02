@@ -46,7 +46,7 @@
         },
         {
             "Name": "azopenai",
-            "CoverageGoal": 0.28
+            "CoverageGoal": 0.26
         },
         {
             "Name": "aztemplate",

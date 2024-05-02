@@ -17,11 +17,11 @@ import (
 )
 
 func ExampleClient_GetCompletions() {
-	azureOpenAIKey := os.Getenv("AOAI_API_KEY")
+	azureOpenAIKey := os.Getenv("AOAI_COMPLETIONS_API_KEY")
 	modelDeployment := os.Getenv("AOAI_COMPLETIONS_MODEL")
 
 	// Ex: "https://<your-azure-openai-host>.openai.azure.com"
-	azureOpenAIEndpoint := os.Getenv("AOAI_ENDPOINT")
+	azureOpenAIEndpoint := os.Getenv("AOAI_COMPLETIONS_ENDPOINT")
 
 	if azureOpenAIKey == "" || modelDeployment == "" || azureOpenAIEndpoint == "" {
 		fmt.Fprintf(os.Stderr, "Skipping example, environment variables missing\n")
@@ -59,11 +59,11 @@ func ExampleClient_GetCompletions() {
 }
 
 func ExampleClient_GetCompletionsStream() {
-	azureOpenAIKey := os.Getenv("AOAI_API_KEY")
+	azureOpenAIKey := os.Getenv("AOAI_COMPLETIONS_API_KEY")
 	modelDeploymentID := os.Getenv("AOAI_COMPLETIONS_MODEL")
 
 	// Ex: "https://<your-azure-openai-host>.openai.azure.com"
-	azureOpenAIEndpoint := os.Getenv("AOAI_ENDPOINT")
+	azureOpenAIEndpoint := os.Getenv("AOAI_COMPLETIONS_ENDPOINT")
 
 	if azureOpenAIKey == "" || modelDeploymentID == "" || azureOpenAIEndpoint == "" {
 		fmt.Fprintf(os.Stderr, "Skipping example, environment variables missing\n")

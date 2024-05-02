@@ -2,13 +2,9 @@
 
 ## 1.0.1 (Unreleased)
 
-### Features Added
-
-### Breaking Changes
-
 ### Bugs Fixed
 
-### Other Changes
+* Reduces minimum required go version to 1.21
 
 ## 1.0.0 (2024-04-09)
 

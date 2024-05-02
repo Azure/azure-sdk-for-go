@@ -194,8 +194,9 @@ var azureOpenAI, openAI, servers = func() (testVars, testVars, []string) {
 			"COMPLETIONS":                             azureTestVars.Completions,
 			"DALLE":                                   azureTestVars.DallE,
 			"EMBEDDINGS":                              azureTestVars.Embeddings,
-			"VISION":                                  azureTestVars.Vision,
-			"WHISPER":                                 azureTestVars.Whisper,
+			// these resources are oversubscribed and occasionally fail in live testing.
+			//"VISION":                                  azureTestVars.Vision,
+			//"WHISPER": azureTestVars.Whisper,
 		}
 
 		for area, epm := range remaps {

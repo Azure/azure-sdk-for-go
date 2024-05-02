@@ -94,6 +94,9 @@
 ###########
 /eng/                         @benbp @weshaggard
 
+# Add owners for notifications for specific pipelines
+/eng/common/pipelines/codeowners-linter.yml       @rickwinter
+
 # AzureSDKOwners: @benbp
 # ServiceLabel: %EngSys
 # PRLabel: %EngSys

@@ -5,7 +5,10 @@
 
 package generated
 
-import "time"
+import (
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"time"
+)
 
 type ACLFailedEntry struct {
 	ErrorMessage *string
@@ -45,7 +48,7 @@ type PathPrefix struct {
 // PathPropertiesInternal - Properties of a blob
 type PathPropertiesInternal struct {
 	// REQUIRED
-	Etag *string `xml:"Etag"`
+	ETag *azcore.ETag `xml:"Etag"`
 
 	// REQUIRED
 	LastModified         *time.Time `xml:"Last-Modified"`

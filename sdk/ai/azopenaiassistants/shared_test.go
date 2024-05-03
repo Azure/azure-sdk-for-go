@@ -149,7 +149,25 @@ func mustGetClientWithAssistant(t *testing.T, args mustGetClientWithAssistantArg
 			&assistants.CodeInterpreterToolDefinition{},
 
 			// others...
-			// &assistants.FunctionToolDefinition{}
+			&assistants.FunctionToolDefinition{
+				Function: &assistants.FunctionDefinition{
+					Name: to.Ptr("get_current_weather"),
+					Parameters: map[string]any{
+						"required": []string{"location"},
+						"type":     "object",
+						"properties": map[string]any{
+							"location": map[string]any{
+								"type":        "string",
+								"description": "The city and state, e.g. San Francisco, CA",
+							},
+							"unit": map[string]any{
+								"type": "string",
+								"enum": []string{"celsius", "fahrenheit"},
+							},
+						},
+					},
+				},
+			},
 			// &assistants.RetrievalToolDefinition{}
 		},
 	}, nil)
@@ -196,8 +214,9 @@ func mustRunThread(ctx context.Context, t *testing.T, args runThreadArgs) (*azop
 	require.NoError(t, err)
 
 	// poll for the thread end
-	err = pollRunEnd(ctx, client, *threadRunResp.ThreadID, *threadRunResp.ID)
+	runStatus, err := pollUntilRunEnds(ctx, client, *threadRunResp.ThreadID, *threadRunResp.ID)
 	require.NoError(t, err)
+	require.Equal(t, runStatus, azopenaiassistants.RunStatusCompleted)
 
 	var allMessages []azopenaiassistants.ThreadMessage
 

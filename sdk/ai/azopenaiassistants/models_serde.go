@@ -2439,7 +2439,7 @@ func (t *ThreadRun) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Object", &t.Object)
 			delete(rawMsg, key)
 		case "required_action":
-			err = unpopulate(val, "RequiredAction", &t.RequiredAction)
+			t.RequiredAction, err = unmarshalRequiredActionClassification(val)
 			delete(rawMsg, key)
 		case "started_at":
 			err = unpopulateTimeUnix(val, "StartedAt", &t.StartedAt)
@@ -2483,33 +2483,6 @@ func (t *ThreadRunLastError) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "message":
 			err = unpopulate(val, "Message", &t.Message)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", t, err)
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ThreadRunRequiredAction.
-func (t ThreadRunRequiredAction) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	objectMap["type"] = "ThreadRun-required_action"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ThreadRunRequiredAction.
-func (t *ThreadRunRequiredAction) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", t, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "type":
-			err = unpopulate(val, "Type", &t.Type)
 			delete(rawMsg, key)
 		}
 		if err != nil {

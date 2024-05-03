@@ -9,12 +9,13 @@ package azopenaiassistants_test
 import (
 	"bytes"
 	"context"
+	"encoding/json"
 	"fmt"
 	"os"
 	"testing"
 	"time"
 
-	assistants "github.com/Azure/azure-sdk-for-go/sdk/ai/azopenaiassistants"
+	"github.com/Azure/azure-sdk-for-go/sdk/ai/azopenaiassistants"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/require"
@@ -37,7 +38,7 @@ func Test_UsingIdentity(t *testing.T) {
 
 		found := false
 
-		pager := client.NewListAssistantsPager(&assistants.ListAssistantsOptions{
+		pager := client.NewListAssistantsPager(&azopenaiassistants.ListAssistantsOptions{
 			Limit: to.Ptr(int32(100)),
 		})
 
@@ -81,7 +82,7 @@ func TestAssistantCreationAndListing(t *testing.T) {
 
 		found := false
 
-		pager := client.NewListAssistantsPager(&assistants.ListAssistantsOptions{
+		pager := client.NewListAssistantsPager(&azopenaiassistants.ListAssistantsOptions{
 			Limit: to.Ptr(int32(100)),
 		})
 
@@ -125,7 +126,7 @@ func TestAssistantMessages(t *testing.T) {
 			Azure: azure,
 		})
 
-		threadResp, err := client.CreateThread(context.Background(), assistants.AssistantThreadCreationOptions{}, nil)
+		threadResp, err := client.CreateThread(context.Background(), azopenaiassistants.AssistantThreadCreationOptions{}, nil)
 		require.NoError(t, err)
 
 		defer func() {
@@ -135,7 +136,7 @@ func TestAssistantMessages(t *testing.T) {
 
 		threadID := threadResp.ID
 
-		uploadResp, err := client.UploadFile(context.Background(), bytes.NewReader([]byte("hello world")), assistants.FilePurposeAssistants, &assistants.UploadFileOptions{
+		uploadResp, err := client.UploadFile(context.Background(), bytes.NewReader([]byte("hello world")), azopenaiassistants.FilePurposeAssistants, &azopenaiassistants.UploadFileOptions{
 			Filename: to.Ptr("a.txt"),
 		})
 		require.NoError(t, err)
@@ -145,9 +146,9 @@ func TestAssistantMessages(t *testing.T) {
 			require.NoError(t, err)
 		}()
 
-		messageResp, err := client.CreateMessage(context.Background(), *threadID, assistants.CreateMessageBody{
+		messageResp, err := client.CreateMessage(context.Background(), *threadID, azopenaiassistants.CreateMessageBody{
 			Content: to.Ptr("How many ears does a dog usually have?"),
-			Role:    to.Ptr(assistants.MessageRoleUser),
+			Role:    to.Ptr(azopenaiassistants.MessageRoleUser),
 			FileIDs: []string{
 				*uploadResp.ID,
 			},
@@ -159,7 +160,7 @@ func TestAssistantMessages(t *testing.T) {
 		getMessageResp, err := client.GetMessage(context.Background(), *threadID, *messageID, nil)
 		require.NoError(t, err)
 
-		require.Equal(t, "How many ears does a dog usually have?", *getMessageResp.Content[0].(*assistants.MessageTextContent).Text.Value)
+		require.Equal(t, "How many ears does a dog usually have?", *getMessageResp.Content[0].(*azopenaiassistants.MessageTextContent).Text.Value)
 
 		getMessageFileResp, err := client.GetMessageFile(context.Background(), *threadID, *messageID, *uploadResp.ID, nil)
 		require.NoError(t, err)
@@ -169,7 +170,7 @@ func TestAssistantMessages(t *testing.T) {
 
 		// list message files
 		{
-			var files []assistants.MessageFile
+			var files []azopenaiassistants.MessageFile
 			pager := client.NewListMessageFilesPager(*threadID, *messageID, nil)
 
 			for pager.More() {
@@ -200,7 +201,7 @@ func TestAssistantConversationLoop(t *testing.T) {
 			},
 		})
 
-		createThreadResp, err := client.CreateThread(context.Background(), assistants.AssistantThreadCreationOptions{}, nil)
+		createThreadResp, err := client.CreateThread(context.Background(), azopenaiassistants.AssistantThreadCreationOptions{}, nil)
 		require.NoError(t, err)
 
 		t.Cleanup(func() {
@@ -216,7 +217,7 @@ func TestAssistantConversationLoop(t *testing.T) {
 			"That answer was nice, thank you. Was my question clear?",
 		}
 
-		var convo func(threadMessages []assistants.ThreadMessage) []string = func(threadMessages []assistants.ThreadMessage) []string {
+		var convo func(threadMessages []azopenaiassistants.ThreadMessage) []string = func(threadMessages []azopenaiassistants.ThreadMessage) []string {
 			// we have a few scripted interactions, just to test how the run loop works.
 			defer func() { convoIdx++ }()
 
@@ -237,7 +238,7 @@ func TestAssistantConversationLoop(t *testing.T) {
 		defer cancel()
 
 		runAssistant := func(ctx context.Context) {
-			var lastResponses []assistants.ThreadMessage
+			var lastResponses []azopenaiassistants.ThreadMessage
 			var lastMessageID *string
 
 			for {
@@ -249,9 +250,9 @@ func TestAssistantConversationLoop(t *testing.T) {
 
 				for _, msg := range convoResponses {
 					// now, let's actually ask it some questions
-					createMessageResp, err := client.CreateMessage(context.Background(), threadID, assistants.CreateMessageBody{
+					createMessageResp, err := client.CreateMessage(ctx, threadID, azopenaiassistants.CreateMessageBody{
 						Content: &msg,
-						Role:    to.Ptr(assistants.MessageRoleUser),
+						Role:    to.Ptr(azopenaiassistants.MessageRoleUser),
 					}, nil)
 					require.NoError(t, err)
 					require.NotEmpty(t, createMessageResp)
@@ -262,7 +263,7 @@ func TestAssistantConversationLoop(t *testing.T) {
 				}
 
 				// run the thread
-				createRunResp, err := client.CreateRun(context.Background(), *createThreadResp.ID, assistants.CreateRunBody{
+				createRunResp, err := client.CreateRun(context.Background(), *createThreadResp.ID, azopenaiassistants.CreateRunBody{
 					AssistantID:  createAssistantResp.ID,
 					Instructions: to.Ptr("This user is known to be sad, please be kind"),
 					// (getting an error with Azure OpenAI on this one)
@@ -279,38 +280,134 @@ func TestAssistantConversationLoop(t *testing.T) {
 				require.NoError(t, err)
 
 				runID := *createRunResp.ID
-				var lastGetRunResp assistants.GetRunResponse
+				var lastGetRunResp azopenaiassistants.GetRunResponse
 
 				for {
 					var err error
 					lastGetRunResp, err = client.GetRun(context.Background(), *createThreadResp.ID, runID, nil)
 					require.NoError(t, err)
 
-					if *lastGetRunResp.Status != assistants.RunStatusQueued && *lastGetRunResp.Status != assistants.RunStatusInProgress {
+					if *lastGetRunResp.Status != azopenaiassistants.RunStatusQueued && *lastGetRunResp.Status != azopenaiassistants.RunStatusInProgress {
 						break
 					}
 
 					time.Sleep(500 * time.Millisecond)
 				}
 
-				require.Equal(t, assistants.RunStatusCompleted, *lastGetRunResp.Status)
+				require.Equal(t, azopenaiassistants.RunStatusCompleted, *lastGetRunResp.Status)
 
 				// grab any messages that occurred after our last known message
-				listMessagesPager := client.NewListMessagesPager(*createThreadResp.ID, &assistants.ListMessagesOptions{
-					After: lastMessageID,
-					Order: to.Ptr(assistants.ListSortOrderAscending),
-				})
-
-				for listMessagesPager.More() {
-					page, err := listMessagesPager.NextPage(context.Background())
-					require.NoError(t, err)
-
-					lastResponses = page.Data
-				}
+				lastResponses, err = getLatestMessages(context.Background(), client, threadID, lastMessageID)
+				require.NoError(t, err)
 			}
 		}
 
 		runAssistant(ctx)
+	}
+
+	t.Run("OpenAI", func(t *testing.T) {
+		testFn(t, false)
+	})
+
+	t.Run("AzureOpenAI", func(t *testing.T) {
+		testFn(t, true)
+	})
+}
+
+func TestAssistantRequiredAction(t *testing.T) {
+	testFn := func(t *testing.T, azure bool) {
+		client, createAssistantResp := mustGetClientWithAssistant(t, mustGetClientWithAssistantArgs{
+			newClientArgs: newClientArgs{
+				Azure: azure,
+			},
+		})
+
+		// create our thread and a run for that thread with our question "What's the weather like in Boston, MA, in celsius?"
+		var lastMessageID, runID, threadID string
+		{
+			createThreadResp, err := client.CreateThread(context.Background(), azopenaiassistants.AssistantThreadCreationOptions{}, nil)
+			require.NoError(t, err)
+
+			t.Cleanup(func() {
+				_, err := client.DeleteThread(context.Background(), *createThreadResp.ID, nil)
+				require.NoError(t, err)
+			})
+
+			threadID = *createThreadResp.ID
+
+			msgResponse, err := client.CreateMessage(context.Background(), threadID, azopenaiassistants.CreateMessageBody{
+				Content: to.Ptr("What's the weather like in Boston, MA, in celsius?"),
+				Role:    to.Ptr(azopenaiassistants.MessageRoleUser),
+			}, nil)
+			require.NoError(t, err)
+
+			lastMessageID = *msgResponse.ID
+
+			// run the thread
+			createRunResp, err := client.CreateRun(context.Background(), *createThreadResp.ID, azopenaiassistants.CreateRunBody{
+				AssistantID:  createAssistantResp.ID,
+				Instructions: to.Ptr("Use functions to answer questions, when possible."),
+			}, nil)
+			require.NoError(t, err)
+
+			runID = *createRunResp.ID
+		}
+
+		lastResp, err := pollUntilRunEnds(context.Background(), client, threadID, runID)
+		require.NoError(t, err)
+		require.Equal(t, azopenaiassistants.RunStatusRequiresAction, *lastResp.Status, "More action would be required since we need to run the action and feed it's inputs back in")
+
+		// extract the tool we need to call and the arguments we need to call it with
+		var weatherFuncArgs *WeatherFuncArgs
+		var funcToolCall *azopenaiassistants.RequiredFunctionToolCall
+		{
+			// the arguments we need to run the next thing are inside of the run
+			submitToolsAction, ok := lastResp.RequiredAction.(*azopenaiassistants.SubmitToolOutputsAction)
+			require.True(t, ok)
+
+			tmpFuncToolCall, ok := submitToolsAction.SubmitToolOutputs.ToolCalls[0].(*azopenaiassistants.RequiredFunctionToolCall)
+			require.True(t, ok)
+			require.Equal(t, "get_current_weather", *tmpFuncToolCall.Function.Name)
+
+			err := json.Unmarshal([]byte(*tmpFuncToolCall.Function.Arguments), &weatherFuncArgs)
+			require.NoError(t, err)
+
+			funcToolCall = tmpFuncToolCall
+		}
+
+		// now call the "function" (OpenAI is just providing the arguments)
+		{
+			require.Equal(t, "Boston, MA", weatherFuncArgs.Location)
+			require.Equal(t, "celsius", weatherFuncArgs.Unit)
+
+			// submit our outputs from evaluating the tool
+			submitToolOutputResp, err := client.SubmitToolOutputsToRun(context.Background(), threadID, runID, azopenaiassistants.SubmitToolOutputsToRunBody{
+				ToolOutputs: []azopenaiassistants.ToolOutput{
+					{
+						Output:     to.Ptr("0C"),
+						ToolCallID: funcToolCall.ID,
+					},
+				},
+			}, nil)
+			require.NoError(t, err)
+			require.NotEmpty(t, submitToolOutputResp)
+		}
+
+		// the run will restart now, we just need to wait until it finishes
+		lastResp, err = pollUntilRunEnds(context.Background(), client, threadID, runID)
+		require.NoError(t, err)
+		// note our status is Completed now, instead of RunStatusRequiresAction
+		require.Equal(t, azopenaiassistants.RunStatusCompleted, *lastResp.Status, "Run should complete now that we've submitted tool outputs")
+
+		latestMessages, err := getLatestMessages(context.Background(), client, threadID, &lastMessageID)
+		require.NoError(t, err)
+
+		require.NotEmpty(t, latestMessages)
+
+		// Prints something like:
+		// [ASSISTANT] <id>: Text response: The current weather in Boston, MA, measured in Celsius, is 0°C.
+		err = printAssistantMessages(context.Background(), client, latestMessages)
+		require.NoError(t, err)
 	}
 
 	t.Run("OpenAI", func(t *testing.T) {
@@ -333,7 +430,7 @@ func TestNewAssistantFilesPager(t *testing.T) {
 		var createdIDs []string
 
 		for i := 0; i < 5; i++ {
-			createAsstFileResp, err := client.CreateAssistantFile(context.Background(), *createResp.ID, assistants.CreateAssistantFileBody{
+			createAsstFileResp, err := client.CreateAssistantFile(context.Background(), *createResp.ID, azopenaiassistants.CreateAssistantFileBody{
 				FileID: mustUploadFile(t, client, "hello world").ID,
 			}, nil)
 			require.NoError(t, err)
@@ -342,18 +439,18 @@ func TestNewAssistantFilesPager(t *testing.T) {
 			createdIDs = append(createdIDs, *createAsstFileResp.ID)
 		}
 
-		for _, sortOrder := range []assistants.ListSortOrder{assistants.ListSortOrderAscending, assistants.ListSortOrderDescending} {
+		for _, sortOrder := range []azopenaiassistants.ListSortOrder{azopenaiassistants.ListSortOrderAscending, azopenaiassistants.ListSortOrderDescending} {
 			t.Run("with sort order "+string(sortOrder), func(t *testing.T) {
 				m := map[string]bool{}
 
-				var first *assistants.AssistantFile
-				var last *assistants.AssistantFile
+				var first *azopenaiassistants.AssistantFile
+				var last *azopenaiassistants.AssistantFile
 
 				for _, id := range createdIDs {
 					m[id] = true
 				}
 
-				pager := client.NewListAssistantFilesPager(*createResp.ID, &assistants.ListAssistantFilesOptions{
+				pager := client.NewListAssistantFilesPager(*createResp.ID, &azopenaiassistants.ListAssistantFilesOptions{
 					Limit: to.Ptr[int32](1),
 					Order: &sortOrder,
 				})
@@ -376,7 +473,7 @@ func TestNewAssistantFilesPager(t *testing.T) {
 
 				require.Empty(t, m)
 
-				if sortOrder == assistants.ListSortOrderAscending {
+				if sortOrder == azopenaiassistants.ListSortOrderAscending {
 					require.Greater(t, last.CreatedAt.Sub(*first.CreatedAt), time.Duration(0))
 				} else {
 					require.Greater(t, first.CreatedAt.Sub(*last.CreatedAt), time.Duration(0))
@@ -406,13 +503,13 @@ func TestNewListRunsPager(t *testing.T) {
 
 		runs := map[string]bool{}
 
-		threadAndRunResp, err := client.CreateThreadAndRun(context.Background(), assistants.CreateAndRunThreadOptions{
+		threadAndRunResp, err := client.CreateThreadAndRun(context.Background(), azopenaiassistants.CreateAndRunThreadOptions{
 			AssistantID:    &assistantID,
 			Instructions:   to.Ptr("You're a helpful assistant, but refuse to speak about cats"),
 			DeploymentName: &assistantsModel,
-			Thread: &assistants.AssistantThreadCreationOptions{
-				Messages: []assistants.ThreadInitializationMessage{
-					{Role: to.Ptr(assistants.MessageRoleUser), Content: to.Ptr("How many ears do cats have?")},
+			Thread: &azopenaiassistants.AssistantThreadCreationOptions{
+				Messages: []azopenaiassistants.ThreadInitializationMessage{
+					{Role: to.Ptr(azopenaiassistants.MessageRoleUser), Content: to.Ptr("How many ears do cats have?")},
 				},
 			},
 		}, nil)
@@ -422,19 +519,21 @@ func TestNewListRunsPager(t *testing.T) {
 		threadID := *threadAndRunResp.ThreadID
 		runs[runID] = true
 
-		err = pollRunEnd(context.Background(), client, threadID, runID)
+		lastRun, err := pollUntilRunEnds(context.Background(), client, threadID, runID)
 		require.NoError(t, err)
+		require.Equal(t, azopenaiassistants.RunStatusCompleted, *lastRun.Status)
 
-		run2Resp, err := client.CreateRun(context.Background(), threadID, assistants.CreateRunBody{
+		run2Resp, err := client.CreateRun(context.Background(), threadID, azopenaiassistants.CreateRunBody{
 			AssistantID: &assistantID,
 		}, nil)
 		require.NoError(t, err)
 		runs[*run2Resp.ID] = true
 
-		err = pollRunEnd(context.Background(), client, threadID, runID)
+		lastRun, err = pollUntilRunEnds(context.Background(), client, threadID, runID)
 		require.NoError(t, err)
+		require.Equal(t, azopenaiassistants.RunStatusCompleted, *lastRun.Status)
 
-		pager := client.NewListRunsPager(threadID, &assistants.ListRunsOptions{
+		pager := client.NewListRunsPager(threadID, &azopenaiassistants.ListRunsOptions{
 			Limit: to.Ptr[int32](1),
 		})
 
@@ -468,17 +567,17 @@ func TestNewListRunStepsPager(t *testing.T) {
 			},
 		})
 
-		createThreadAndRunResp, err := client.CreateThreadAndRun(context.Background(), assistants.CreateAndRunThreadOptions{
+		createThreadAndRunResp, err := client.CreateThreadAndRun(context.Background(), azopenaiassistants.CreateAndRunThreadOptions{
 			AssistantID:    createAsstResp.ID,
 			DeploymentName: &assistantsModel,
 			Instructions:   to.Ptr("You are a mysterious assistant"),
-			Thread: &assistants.AssistantThreadCreationOptions{
-				Messages: []assistants.ThreadInitializationMessage{
-					{Role: to.Ptr(assistants.MessageRoleUser), Content: to.Ptr("First, message A")},
-					{Role: to.Ptr(assistants.MessageRoleUser), Content: to.Ptr("Next, message B")},
-					{Role: to.Ptr(assistants.MessageRoleUser), Content: to.Ptr("And then, message C")},
-					{Role: to.Ptr(assistants.MessageRoleUser), Content: to.Ptr("And lastly, message D")},
-					{Role: to.Ptr(assistants.MessageRoleUser), Content: to.Ptr("What should come next?")},
+			Thread: &azopenaiassistants.AssistantThreadCreationOptions{
+				Messages: []azopenaiassistants.ThreadInitializationMessage{
+					{Role: to.Ptr(azopenaiassistants.MessageRoleUser), Content: to.Ptr("First, message A")},
+					{Role: to.Ptr(azopenaiassistants.MessageRoleUser), Content: to.Ptr("Next, message B")},
+					{Role: to.Ptr(azopenaiassistants.MessageRoleUser), Content: to.Ptr("And then, message C")},
+					{Role: to.Ptr(azopenaiassistants.MessageRoleUser), Content: to.Ptr("And lastly, message D")},
+					{Role: to.Ptr(azopenaiassistants.MessageRoleUser), Content: to.Ptr("What should come next?")},
 				},
 			},
 		}, nil)
@@ -487,8 +586,9 @@ func TestNewListRunStepsPager(t *testing.T) {
 		threadID := *createThreadAndRunResp.ThreadID
 		runID := *createThreadAndRunResp.ID
 
-		err = pollRunEnd(context.Background(), client, threadID, runID)
+		lastRun, err := pollUntilRunEnds(context.Background(), client, threadID, runID)
 		require.NoError(t, err)
+		require.Equal(t, azopenaiassistants.RunStatusCompleted, *lastRun.Status)
 
 		// Run steps are described here:
 		// https://platform.openai.com/docs/assistants/how-it-works/runs-and-run-steps
@@ -505,19 +605,19 @@ func TestNewListRunStepsPager(t *testing.T) {
 			require.NoError(t, err)
 
 			for _, runStep := range page.Data {
-				require.Equal(t, assistants.RunStepStatusCompleted, *runStep.Status)
+				require.Equal(t, azopenaiassistants.RunStepStatusCompleted, *runStep.Status)
 
 				// little sanity check - yes, we can re-read the same step with the ID.
 				rereadRunStep, err := client.GetRunStep(context.Background(), threadID, runID, *runStep.ID, nil)
 				require.NoError(t, err)
 				require.Equal(t, *runStep.ID, *rereadRunStep.ID)
 
-				stepDetails := runStep.StepDetails.(*assistants.RunStepMessageCreationDetails)
+				stepDetails := runStep.StepDetails.(*azopenaiassistants.RunStepMessageCreationDetails)
 				messageResp, err := client.GetMessage(context.Background(), threadID, *stepDetails.MessageCreation.MessageID, nil)
 				require.NoError(t, err)
 
-				if *messageResp.Role == assistants.MessageRoleAssistant {
-					body := *messageResp.Content[0].(*assistants.MessageTextContent).Text.Value
+				if *messageResp.Role == azopenaiassistants.MessageRoleAssistant {
+					body := *messageResp.Content[0].(*azopenaiassistants.MessageTextContent).Text.Value
 					fmt.Printf("Assistant response: %s\n", body)
 					gotResponse = true
 				}
@@ -545,7 +645,7 @@ func TestFiles(t *testing.T) {
 		textBytes := []byte("test text")
 		expectedLen := int32(len(textBytes))
 
-		uploadResp, err := client.UploadFile(context.Background(), bytes.NewReader(textBytes), assistants.FilePurposeAssistants, &assistants.UploadFileOptions{
+		uploadResp, err := client.UploadFile(context.Background(), bytes.NewReader(textBytes), azopenaiassistants.FilePurposeAssistants, &azopenaiassistants.UploadFileOptions{
 			Filename: to.Ptr("a.txt"),
 		})
 		require.NoError(t, err)

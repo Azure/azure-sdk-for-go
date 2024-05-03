@@ -1,14 +1,10 @@
 # Release History
 
-## 0.1.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 0.1.1 (2024-05-07)
 
 ### Bugs Fixed
 
-### Other Changes
+- ThreadRun.RequiredAction was deserialized incorrectly, making it impossible to actually resubmit a tool output. (PR#TBD)
 
 ## 0.1.0 (2024-03-05)
 

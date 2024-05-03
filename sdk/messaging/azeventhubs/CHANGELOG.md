@@ -1,14 +1,14 @@
 # Release History
 
-## 1.1.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 1.2.0 (2024-05-07)
 
 ### Bugs Fixed
 
-### Other Changes
+Processor.Run had unclear behavior for some cases:
+- Run() now returns an explicit error when called more than once on a single 
+  Processor instance or if multiple Run calls are made concurrently. (PR#22833)
+- NextProcessorClient now properly terminates (and returns nil) if called on a 
+  stopped Processor. (PR#22833)
 
 ## 1.1.0 (2024-04-02)
 

@@ -136,8 +136,6 @@ func GetConnectionParamsForTest(t *testing.T) ConnectionParamsForTest {
 		ResourceGroup:              envVars["RESOURCE_GROUP"],
 		StorageConnectionString:    envVars["CHECKPOINTSTORE_STORAGE_CONNECTION_STRING"],
 		SubscriptionID:             envVars["AZURE_SUBSCRIPTION_ID"],
-		TenantID:                   envVars["AZURE_TENANT_ID"],
-		ClientID:                   envVars["AZURE_CLIENT_ID"],
 	}
 }
 

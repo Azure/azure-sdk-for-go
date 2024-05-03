@@ -4,7 +4,7 @@
 
 ### Bugs Fixed
 
-- ThreadRun.RequiredAction was deserialized incorrectly, making it impossible to actually resubmit a tool output. (PR#TBD)
+- ThreadRun.RequiredAction was deserialized incorrectly, making it impossible to actually resubmit a tool output. (PR#22834)
 
 ## 0.1.0 (2024-03-05)
 

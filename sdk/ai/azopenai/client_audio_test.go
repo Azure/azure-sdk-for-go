@@ -160,7 +160,6 @@ func TestClient_GetAudioTranslation(t *testing.T) {
 
 				args := newTranslationOptions(azopenai.AudioTranslationFormatVerboseJSON, model, "testdata/sampledata_audiofiles_myVoiceIsMyPassportVerifyMe01.mp3")
 				transcriptResp, err := client.GetAudioTranslation(context.Background(), args, nil)
-				require.NoError(t, err)
 				customRequireNoError(t, err, true)
 
 				require.NotEmpty(t, *transcriptResp.Text)

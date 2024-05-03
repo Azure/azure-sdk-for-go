@@ -1,5 +1,16 @@
 # Release History
 
+## 1.3.3 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+* Updated `azblob` version to `1.3.2`
+
 ## 1.2.2 (2024-04-09)
 
 ### Bugs Fixed

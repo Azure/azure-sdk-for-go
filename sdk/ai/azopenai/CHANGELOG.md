@@ -1,16 +1,14 @@
 # Release History
 
-## 0.5.2 (Unreleased)
+## 0.5.2 (2024-05-07)
 
 ### Features Added
 
-### Breaking Changes
+- Updating to the `2024-04-01-preview` API version for Azure OpenAI. (PR#22798)
 
 ### Bugs Fixed
 
 - EventReader can now handle chunks of text larger than 64k. Thank you @ChrisTrenkamp for finding the issue and suggesting a fix. (PR#22703)
-
-### Other Changes
 
 ## 0.5.1 (2024-04-02)
 

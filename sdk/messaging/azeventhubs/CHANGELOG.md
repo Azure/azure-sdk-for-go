@@ -1,8 +1,6 @@
 # Release History
 
-## 1.2.0 (Unreleased)
-
-### Features Added
+## 1.2.0 (2024-05-07)
 
 ### Breaking Changes
 
@@ -16,8 +14,6 @@ The Processor had incorrect behavior when Run had been stopped:
   Processor instance.
 - NextProcessorClient now properly terminates (and returns nil) if called on a 
   stopped Processor.
-
-### Other Changes
 
 ## 1.1.0 (2024-04-02)
 

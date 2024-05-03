@@ -11,9 +11,9 @@
 
 The Processor had incorrect behavior when Run had been stopped:
 - Run() now returns an explicit error when called more than once on a single 
-  Processor instance.
+  Processor instance. (PR#22833)
 - NextProcessorClient now properly terminates (and returns nil) if called on a 
-  stopped Processor.
+  stopped Processor. (PR#22833)
 
 ## 1.1.0 (2024-04-02)
 

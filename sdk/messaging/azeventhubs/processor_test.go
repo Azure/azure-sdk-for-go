@@ -221,6 +221,190 @@ func TestProcessor_Contention(t *testing.T) {
 	}
 }
 
+func TestProcessor_Restart(t *testing.T) {
+	t.Run("VariationsWithoutCallingNextPartitionClient", func(t *testing.T) {
+		newProc := setupProcessorTest(t)
+
+		processor := newProc(&azeventhubs.ProcessorOptions{
+			UpdateInterval:        time.Millisecond,
+			LoadBalancingStrategy: azeventhubs.ProcessorStrategyBalanced,
+		})
+
+		ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+		defer cancel()
+
+		// start the processor up and let it run for a few seconds
+		err = processor.Run(ctx)
+		require.NoError(t, err)
+
+		ctx, cancel = context.WithTimeout(context.Background(), 5*time.Second)
+		defer cancel()
+
+		// try to start it again (it'll fail)
+		err = processor.Run(ctx)
+		require.EqualError(t, err, "the Processor has been stopped. Create a new instance to start processing again")
+
+		// and it takes precedence over the context
+		err = processor.Run(ctx)
+		require.EqualError(t, err, "the Processor has been stopped. Create a new instance to start processing again")
+	})
+
+	t.Run("NextPartitionClient quits properly when Run is stopped.", func(t *testing.T) {
+		newProc := setupProcessorTest(t)
+
+		processor := newProc(&azeventhubs.ProcessorOptions{
+			UpdateInterval:        time.Millisecond,
+			LoadBalancingStrategy: azeventhubs.ProcessorStrategyBalanced,
+		})
+
+		runProcessor := func(firstRun bool) {
+			counter := newNextPartitionCounter(t, processor)
+			go counter.Func()
+
+			ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+			defer cancel()
+
+			err := processor.Run(ctx)
+
+			if firstRun {
+				require.NoError(t, err)
+			} else {
+				require.EqualError(t, err, "the Processor has been stopped. Create a new instance to start processing again")
+			}
+
+			// now don't explicitly cancel the previous NextPartitionClient() run.
+			t.Logf("Waiting for NextPartitionClient goroutine to stop")
+			select {
+			case <-time.After(time.Minute):
+				require.Fail(t, "old goroutine didn't close after a minute")
+			case <-counter.Closed:
+			}
+
+			if firstRun {
+				require.NotZero(t, *counter.Called, "we should be assigned some partitions")
+			} else {
+				require.Zero(t, *counter.Called, "we should be assigned some partitions")
+			}
+		}
+
+		runProcessor(true)
+		runProcessor(false)
+		runProcessor(false)
+	})
+
+	t.Run("Run stopped quickly", func(t *testing.T) {
+		newProc := setupProcessorTest(t)
+
+		processor := newProc(&azeventhubs.ProcessorOptions{
+			UpdateInterval:        time.Millisecond,
+			LoadBalancingStrategy: azeventhubs.ProcessorStrategyBalanced,
+		})
+
+		runProcessor := func(firstRun bool) {
+			counter := newNextPartitionCounter(t, processor)
+			go counter.Func()
+
+			ctx, cancel := context.WithTimeout(context.Background(), time.Millisecond)
+			defer cancel()
+
+			err := processor.Run(ctx)
+
+			if firstRun {
+				require.NoError(t, err)
+			} else {
+				require.EqualError(t, err, "the Processor has been stopped. Create a new instance to start processing again")
+			}
+
+			// now don't explicitly cancel the previous NextPartitionClient() run.
+			t.Logf("Waiting for NextPartitionClient goroutine to stop")
+			select {
+			case <-time.After(time.Minute):
+				require.Fail(t, "old goroutine didn't close after a minute")
+			case <-counter.Closed:
+			}
+		}
+
+		runProcessor(true)
+		runProcessor(false)
+		runProcessor(false)
+	})
+}
+
+func newNextPartitionCounter(t *testing.T, processor *azeventhubs.Processor) struct {
+	Func   func()
+	Closed chan struct{}
+	Called *int
+} {
+	closed := make(chan struct{})
+	got := 0
+
+	return struct {
+		Func   func()
+		Closed chan struct{}
+		Called *int
+	}{
+		Func: func() {
+			defer close(closed)
+
+			for {
+				pc := processor.NextPartitionClient(context.Background())
+
+				if pc == nil {
+					t.Logf("partition counter: got nil, exiting loop")
+					break
+				}
+
+				got++
+				err = pc.Close(context.Background())
+				require.NoError(t, err)
+			}
+		},
+		Closed: closed,
+		Called: &got,
+	}
+}
+
+func setupProcessorTest(t *testing.T) func(*azeventhubs.ProcessorOptions) *azeventhubs.Processor {
+	testParams := test.GetConnectionParamsForTest(t)
+
+	containerName := test.RandomString("proctest", 10)
+	cc, err := container.NewClientFromConnectionString(testParams.StorageConnectionString, containerName, nil)
+	require.NoError(t, err)
+
+	t.Logf("Creating storage container %s", containerName)
+	_, err = cc.Create(context.Background(), nil)
+	require.NoError(t, err)
+
+	t.Cleanup(func() {
+		t.Logf("Deleting storage container")
+		_, err = cc.Delete(context.Background(), nil)
+		require.NoError(t, err)
+	})
+
+	// Create the checkpoint store
+	// NOTE: the container must exist before the checkpoint store can be used.
+	t.Logf("Checkpoint store created")
+	checkpointStore, err := checkpoints.NewBlobStore(cc, nil)
+	require.NoError(t, err)
+
+	t.Logf("Consumer client created")
+	consumerClient, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, nil)
+	require.NoError(t, err)
+
+	t.Cleanup(func() {
+		err := consumerClient.Close(context.Background())
+		require.NoError(t, err)
+	})
+
+	return func(options *azeventhubs.ProcessorOptions) *azeventhubs.Processor {
+		t.Logf("Processor created")
+		processor, err := azeventhubs.NewProcessor(consumerClient, checkpointStore, options)
+		require.NoError(t, err)
+
+		return processor
+	}
+}
+
 func testPartitionAcquisition(t *testing.T, loadBalancerStrategy azeventhubs.ProcessorStrategy) {
 	testParams := test.GetConnectionParamsForTest(t)
 

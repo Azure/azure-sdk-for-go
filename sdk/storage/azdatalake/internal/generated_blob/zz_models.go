@@ -5,10 +5,7 @@
 
 package generated_blob
 
-import (
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"time"
-)
+import "time"
 
 // AccessPolicy - An Access policy
 type AccessPolicy struct {
@@ -91,7 +88,7 @@ type PathPrefix struct {
 // PathProperties - Properties of a blob
 type PathProperties struct {
 	// REQUIRED
-	ETag *azcore.ETag `xml:"Etag"`
+	Etag *string `xml:"Etag"`
 
 	// REQUIRED
 	LastModified         *time.Time     `xml:"Last-Modified"`
@@ -201,7 +198,7 @@ type FileSystemItem struct {
 // FileSystemProperties - Properties of a container
 type FileSystemProperties struct {
 	// REQUIRED
-	ETag *azcore.ETag `xml:"Etag"`
+	Etag *string `xml:"Etag"`
 
 	// REQUIRED
 	LastModified           *time.Time `xml:"Last-Modified"`

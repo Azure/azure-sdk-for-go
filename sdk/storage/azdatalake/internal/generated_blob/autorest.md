@@ -263,7 +263,7 @@ directive:
 
 ``` yaml
 directive:
-- from: zz_models.go
+- from: zz_options.go
   where: $
   transform: >-
     return $.

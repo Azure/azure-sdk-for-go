@@ -5,7 +5,10 @@
 
 package generated
 
-import "time"
+import (
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"time"
+)
 
 // CPKInfo contains a group of parameters for the PathClient.Create method.
 type CPKInfo struct {
@@ -160,13 +163,13 @@ type LeaseAccessConditions struct {
 // ModifiedAccessConditions contains a group of parameters for the FileSystemClient.SetProperties method.
 type ModifiedAccessConditions struct {
 	// Specify an ETag value to operate only on blobs with a matching value.
-	IfMatch *string
+	IfMatch *azcore.ETag
 
 	// Specify this header value to operate only on a blob if it has been modified since the specified date/time.
 	IfModifiedSince *time.Time
 
 	// Specify an ETag value to operate only on blobs without a matching value.
-	IfNoneMatch *string
+	IfNoneMatch *azcore.ETag
 
 	// Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
 	IfUnmodifiedSince *time.Time
@@ -674,13 +677,13 @@ type ServiceClientListFileSystemsOptions struct {
 // SourceModifiedAccessConditions contains a group of parameters for the PathClient.Create method.
 type SourceModifiedAccessConditions struct {
 	// Specify an ETag value to operate only on blobs with a matching value.
-	SourceIfMatch *string
+	SourceIfMatch *azcore.ETag
 
 	// Specify this header value to operate only on a blob if it has been modified since the specified date/time.
 	SourceIfModifiedSince *time.Time
 
 	// Specify an ETag value to operate only on blobs without a matching value.
-	SourceIfNoneMatch *string
+	SourceIfNoneMatch *azcore.ETag
 
 	// Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
 	SourceIfUnmodifiedSince *time.Time

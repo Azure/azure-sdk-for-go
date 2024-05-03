@@ -79,6 +79,14 @@ type StartPositions struct {
 	Default StartPosition
 }
 
+type state int32
+
+const (
+	stateNone    state = 0
+	stateStopped state = 1
+	stateRunning state = 2
+)
+
 // Processor uses a [ConsumerClient] and [CheckpointStore] to provide automatic
 // load balancing between multiple Processor instances, even in separate
 // processes or on separate machines.
@@ -88,7 +96,9 @@ type StartPositions struct {
 //
 // [example_consuming_with_checkpoints_test.go]: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/messaging/azeventhubs/example_consuming_with_checkpoints_test.go
 type Processor struct {
-	stopped                 int32
+	stateMu sync.Mutex
+	state   state
+
 	ownershipUpdateInterval time.Duration
 	defaultStartPositions   StartPositions
 	checkpointStore         CheckpointStore
@@ -210,6 +220,21 @@ func (p *Processor) NextPartitionClient(ctx context.Context) *ProcessorPartition
 	}
 }
 
+func (p *Processor) checkState() error {
+	switch p.state {
+	case stateNone:
+		// not running so we can start. And lock out any other users.
+		p.state = stateRunning
+		return nil
+	case stateRunning:
+		return errors.New("the Processor is currently running. Concurrent calls to Run() are not allowed.")
+	case stateStopped:
+		return errors.New("the Processor has been stopped. Create a new instance to start processing again")
+	default:
+		return fmt.Errorf("unhandled state value %v", p.state)
+	}
+}
+
 // Run handles the load balancing loop, blocking until the passed in context is cancelled
 // or it encounters an unrecoverable error. On cancellation, it will return a nil error.
 //
@@ -231,11 +256,15 @@ func (p *Processor) NextPartitionClient(ctx context.Context) *ProcessorPartition
 //
 // [example_consuming_with_checkpoints_test.go]: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/messaging/azeventhubs/example_consuming_with_checkpoints_test.go
 func (p *Processor) Run(ctx context.Context) error {
-	if atomic.LoadInt32(&p.stopped) == 1 {
-		return errors.New("the Processor has been stopped. Create a new instance to start processing again")
+	p.stateMu.Lock()
+	err := p.checkState()
+	p.stateMu.Unlock()
+
+	if err != nil {
+		return err
 	}
 
-	err := p.runImpl(ctx)
+	err = p.runImpl(ctx)
 
 	// the context is the proper way to close down the Run() loop, so it's not
 	// an error and doesn't need to be returned.
@@ -466,7 +495,9 @@ func (p *Processor) close(ctx context.Context, consumersMap *sync.Map) {
 		azlog.Writef(EventConsumer, "Failed to relinquish ownerships. New processors will have to wait for ownerships to expire: %s", err.Error())
 	}
 
-	atomic.StoreInt32(&p.stopped, 1)
+	p.stateMu.Lock()
+	p.state = stateStopped
+	p.stateMu.Unlock()
 
 	// NextPartitionClient() will quit out now that p.nextClients is closed.
 	close(p.nextClients)

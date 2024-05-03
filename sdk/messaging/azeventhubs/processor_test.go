@@ -10,6 +10,7 @@ import (
 	"sort"
 	"strings"
 	"sync"
+	"sync/atomic"
 	"testing"
 	"time"
 
@@ -221,7 +222,41 @@ func TestProcessor_Contention(t *testing.T) {
 	}
 }
 
-func TestProcessor_Restart(t *testing.T) {
+func TestProcessor_RunNotConcurrent(t *testing.T) {
+	newProc := setupProcessorTest(t)
+	proc := newProc(nil)
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	wg := sync.WaitGroup{}
+	var errors int32
+
+	wg.Add(2)
+
+	go func() {
+		defer wg.Done()
+
+		if err := proc.Run(ctx); err != nil {
+			require.EqualError(t, err, "the Processor is currently running. Concurrent calls to Run() are not allowed.")
+			atomic.AddInt32(&errors, 1)
+		}
+	}()
+
+	go func() {
+		defer wg.Done()
+
+		if err := proc.Run(ctx); err != nil {
+			require.EqualError(t, err, "the Processor is currently running. Concurrent calls to Run() are not allowed.")
+			atomic.AddInt32(&errors, 1)
+		}
+	}()
+
+	wg.Wait()
+	require.Equal(t, int32(1), errors)
+}
+
+func TestProcessor_Run(t *testing.T) {
 	t.Run("VariationsWithoutCallingNextPartitionClient", func(t *testing.T) {
 		newProc := setupProcessorTest(t)
 

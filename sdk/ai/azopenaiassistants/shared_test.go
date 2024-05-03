@@ -79,6 +79,21 @@ func newClient(t *testing.T, args newClientArgs) *azopenaiassistants.Client {
 
 			err = recording.AddHeaderRegexSanitizer("Api-Key", "key", "", nil)
 			require.NoError(t, err)
+
+			// add regexes for all of our resources
+			for _, res := range []string{"thread", "run", "asst", "step", "msg"} {
+				err = recording.AddURISanitizer("$1Sanitized$2", fmt.Sprintf("^(.+?/)%s_[^?/]+(.*)$", res), nil)
+				require.NoError(t, err)
+
+				err = recording.AddURISanitizer("$1Sanitized$2", fmt.Sprintf("^(.+?/)%s_[^?/]+(/.*)$", res), nil)
+				require.NoError(t, err)
+			}
+
+			for _, res := range []string{"thread", "run", "assistant", "step", "message", "first", "last"} {
+				// ie: "run_id": "run_SSUooivFMcO9KVYY99xUoFUG",
+				err = recording.AddBodyRegexSanitizer(`$1:"Sanitized"`, fmt.Sprintf(`("%s_id")\s*:\s*"[^"]+"`, res), nil)
+				require.NoError(t, err)
+			}
 		}
 
 		httpClient = tmpHttpClient

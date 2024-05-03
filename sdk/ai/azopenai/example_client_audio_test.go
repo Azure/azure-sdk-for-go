@@ -19,12 +19,12 @@ import (
 )
 
 func ExampleClient_GetAudioTranscription() {
-	azureOpenAIKey := os.Getenv("AOAI_API_KEY_WHISPER")
+	azureOpenAIKey := os.Getenv("AOAI_WHISPER_API_KEY")
 
 	// Ex: "https://<your-azure-openai-host>.openai.azure.com"
-	azureOpenAIEndpoint := os.Getenv("AOAI_ENDPOINT_WHISPER")
+	azureOpenAIEndpoint := os.Getenv("AOAI_WHISPER_ENDPOINT")
 
-	modelDeploymentID := os.Getenv("AOAI_MODEL_WHISPER")
+	modelDeploymentID := os.Getenv("AOAI_WHISPER_MODEL")
 
 	if azureOpenAIKey == "" || azureOpenAIEndpoint == "" || modelDeploymentID == "" {
 		fmt.Fprintf(os.Stderr, "Skipping example, environment variables missing\n")

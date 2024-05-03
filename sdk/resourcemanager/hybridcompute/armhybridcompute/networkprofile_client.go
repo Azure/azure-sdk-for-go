@@ -46,7 +46,7 @@ func NewNetworkProfileClient(subscriptionID string, credential azcore.TokenCrede
 // Get - The operation to get network information of hybrid machine
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-20-preview
+// Generated from API version 2023-10-03-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - machineName - The name of the hybrid machine.
 //   - options - NetworkProfileClientGetOptions contains the optional parameters for the NetworkProfileClient.Get method.
@@ -92,7 +92,7 @@ func (client *NetworkProfileClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-20-preview")
+	reqQP.Set("api-version", "2023-10-03-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

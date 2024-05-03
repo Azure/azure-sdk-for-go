@@ -46,7 +46,7 @@ func NewFileWorkspacesClient(subscriptionID string, credential azcore.TokenCrede
 // Create - Creates a new file workspace for the specified subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-01-preview
+// Generated from API version 2024-04-01
 //   - fileWorkspaceName - File workspace name.
 //   - options - FileWorkspacesClientCreateOptions contains the optional parameters for the FileWorkspacesClient.Create method.
 func (client *FileWorkspacesClient) Create(ctx context.Context, fileWorkspaceName string, options *FileWorkspacesClientCreateOptions) (FileWorkspacesClientCreateResponse, error) {
@@ -87,7 +87,7 @@ func (client *FileWorkspacesClient) createCreateRequest(ctx context.Context, fil
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-01-preview")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -105,7 +105,7 @@ func (client *FileWorkspacesClient) createHandleResponse(resp *http.Response) (F
 // Get - Gets details for a specific file workspace in an Azure subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-01-preview
+// Generated from API version 2024-04-01
 //   - fileWorkspaceName - File Workspace Name
 //   - options - FileWorkspacesClientGetOptions contains the optional parameters for the FileWorkspacesClient.Get method.
 func (client *FileWorkspacesClient) Get(ctx context.Context, fileWorkspaceName string, options *FileWorkspacesClientGetOptions) (FileWorkspacesClientGetResponse, error) {
@@ -146,7 +146,7 @@ func (client *FileWorkspacesClient) getCreateRequest(ctx context.Context, fileWo
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-01-preview")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

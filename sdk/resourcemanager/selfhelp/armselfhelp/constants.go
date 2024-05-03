@@ -10,7 +10,7 @@ package armselfhelp
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/selfhelp/armselfhelp"
-	moduleVersion = "v2.0.0-beta.3"
+	moduleVersion = "v2.0.0-beta.4"
 )
 
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -238,10 +238,14 @@ func PossibleQuestionContentTypeValues() []QuestionContentType {
 type QuestionType string
 
 const (
+	// QuestionTypeDateTimePicker - DateTime Picker
+	QuestionTypeDateTimePicker QuestionType = "DateTimePicker"
 	// QuestionTypeDropdown - SingleChoice dropdown.
 	QuestionTypeDropdown QuestionType = "Dropdown"
 	// QuestionTypeMultiLineInfoBox - MultiLineInfoBox
 	QuestionTypeMultiLineInfoBox QuestionType = "MultiLineInfoBox"
+	// QuestionTypeMultiSelect - Multi Select
+	QuestionTypeMultiSelect QuestionType = "MultiSelect"
 	// QuestionTypeRadioButton - SingleChoice radio button
 	QuestionTypeRadioButton QuestionType = "RadioButton"
 	// QuestionTypeTextInput - Text Input
@@ -251,8 +255,10 @@ const (
 // PossibleQuestionTypeValues returns the possible values for the QuestionType const type.
 func PossibleQuestionTypeValues() []QuestionType {
 	return []QuestionType{
+		QuestionTypeDateTimePicker,
 		QuestionTypeDropdown,
 		QuestionTypeMultiLineInfoBox,
+		QuestionTypeMultiSelect,
 		QuestionTypeRadioButton,
 		QuestionTypeTextInput,
 	}
@@ -307,15 +313,21 @@ type SolutionType string
 const (
 	// SolutionTypeDiagnostics - Diagnostics resource type.
 	SolutionTypeDiagnostics SolutionType = "Diagnostics"
+	// SolutionTypeSelfHelp - SelfHelp resource type.
+	SolutionTypeSelfHelp SolutionType = "SelfHelp"
 	// SolutionTypeSolutions - Solutions resource type.
 	SolutionTypeSolutions SolutionType = "Solutions"
+	// SolutionTypeTroubleshooters - Troubleshooters resource type.
+	SolutionTypeTroubleshooters SolutionType = "Troubleshooters"
 )
 
 // PossibleSolutionTypeValues returns the possible values for the SolutionType const type.
 func PossibleSolutionTypeValues() []SolutionType {
 	return []SolutionType{
 		SolutionTypeDiagnostics,
+		SolutionTypeSelfHelp,
 		SolutionTypeSolutions,
+		SolutionTypeTroubleshooters,
 	}
 }
 
@@ -374,6 +386,7 @@ type Type string
 const (
 	TypeAutomatedCheck Type = "AutomatedCheck"
 	TypeDecision       Type = "Decision"
+	TypeInput          Type = "Input"
 	TypeInsight        Type = "Insight"
 	TypeSolution       Type = "Solution"
 )
@@ -383,7 +396,30 @@ func PossibleTypeValues() []Type {
 	return []Type{
 		TypeAutomatedCheck,
 		TypeDecision,
+		TypeInput,
 		TypeInsight,
 		TypeSolution,
+	}
+}
+
+// ValidationScope - Validation scope
+type ValidationScope string
+
+const (
+	ValidationScopeGUIDFormat       ValidationScope = "GuidFormat"
+	ValidationScopeIPAddressFormat  ValidationScope = "IpAddressFormat"
+	ValidationScopeNone             ValidationScope = "None"
+	ValidationScopeNumberOnlyFormat ValidationScope = "NumberOnlyFormat"
+	ValidationScopeURLFormat        ValidationScope = "URLFormat"
+)
+
+// PossibleValidationScopeValues returns the possible values for the ValidationScope const type.
+func PossibleValidationScopeValues() []ValidationScope {
+	return []ValidationScope{
+		ValidationScopeGUIDFormat,
+		ValidationScopeIPAddressFormat,
+		ValidationScopeNone,
+		ValidationScopeNumberOnlyFormat,
+		ValidationScopeURLFormat,
 	}
 }

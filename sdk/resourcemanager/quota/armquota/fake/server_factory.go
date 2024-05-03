@@ -19,10 +19,19 @@ import (
 
 // ServerFactory is a fake server for instances of the armquota.ClientFactory type.
 type ServerFactory struct {
-	Server              Server
-	OperationServer     OperationServer
-	RequestStatusServer RequestStatusServer
-	UsagesServer        UsagesServer
+	Server                                        Server
+	GroupQuotaLimitsServer                        GroupQuotaLimitsServer
+	GroupQuotaLimitsRequestServer                 GroupQuotaLimitsRequestServer
+	GroupQuotaLocationSettingsServer              GroupQuotaLocationSettingsServer
+	GroupQuotaSubscriptionAllocationServer        GroupQuotaSubscriptionAllocationServer
+	GroupQuotaSubscriptionAllocationRequestServer GroupQuotaSubscriptionAllocationRequestServer
+	GroupQuotaSubscriptionRequestsServer          GroupQuotaSubscriptionRequestsServer
+	GroupQuotaSubscriptionsServer                 GroupQuotaSubscriptionsServer
+	GroupQuotaUsagesServer                        GroupQuotaUsagesServer
+	GroupQuotasServer                             GroupQuotasServer
+	OperationServer                               OperationServer
+	RequestStatusServer                           RequestStatusServer
+	UsagesServer                                  UsagesServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -37,12 +46,21 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armquota.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                   *ServerFactory
-	trMu                  sync.Mutex
-	trServer              *ServerTransport
-	trOperationServer     *OperationServerTransport
-	trRequestStatusServer *RequestStatusServerTransport
-	trUsagesServer        *UsagesServerTransport
+	srv                                             *ServerFactory
+	trMu                                            sync.Mutex
+	trServer                                        *ServerTransport
+	trGroupQuotaLimitsServer                        *GroupQuotaLimitsServerTransport
+	trGroupQuotaLimitsRequestServer                 *GroupQuotaLimitsRequestServerTransport
+	trGroupQuotaLocationSettingsServer              *GroupQuotaLocationSettingsServerTransport
+	trGroupQuotaSubscriptionAllocationServer        *GroupQuotaSubscriptionAllocationServerTransport
+	trGroupQuotaSubscriptionAllocationRequestServer *GroupQuotaSubscriptionAllocationRequestServerTransport
+	trGroupQuotaSubscriptionRequestsServer          *GroupQuotaSubscriptionRequestsServerTransport
+	trGroupQuotaSubscriptionsServer                 *GroupQuotaSubscriptionsServerTransport
+	trGroupQuotaUsagesServer                        *GroupQuotaUsagesServerTransport
+	trGroupQuotasServer                             *GroupQuotasServerTransport
+	trOperationServer                               *OperationServerTransport
+	trRequestStatusServer                           *RequestStatusServerTransport
+	trUsagesServer                                  *UsagesServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -61,6 +79,49 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "Client":
 		initServer(s, &s.trServer, func() *ServerTransport { return NewServerTransport(&s.srv.Server) })
 		resp, err = s.trServer.Do(req)
+	case "GroupQuotaLimitsClient":
+		initServer(s, &s.trGroupQuotaLimitsServer, func() *GroupQuotaLimitsServerTransport {
+			return NewGroupQuotaLimitsServerTransport(&s.srv.GroupQuotaLimitsServer)
+		})
+		resp, err = s.trGroupQuotaLimitsServer.Do(req)
+	case "GroupQuotaLimitsRequestClient":
+		initServer(s, &s.trGroupQuotaLimitsRequestServer, func() *GroupQuotaLimitsRequestServerTransport {
+			return NewGroupQuotaLimitsRequestServerTransport(&s.srv.GroupQuotaLimitsRequestServer)
+		})
+		resp, err = s.trGroupQuotaLimitsRequestServer.Do(req)
+	case "GroupQuotaLocationSettingsClient":
+		initServer(s, &s.trGroupQuotaLocationSettingsServer, func() *GroupQuotaLocationSettingsServerTransport {
+			return NewGroupQuotaLocationSettingsServerTransport(&s.srv.GroupQuotaLocationSettingsServer)
+		})
+		resp, err = s.trGroupQuotaLocationSettingsServer.Do(req)
+	case "GroupQuotaSubscriptionAllocationClient":
+		initServer(s, &s.trGroupQuotaSubscriptionAllocationServer, func() *GroupQuotaSubscriptionAllocationServerTransport {
+			return NewGroupQuotaSubscriptionAllocationServerTransport(&s.srv.GroupQuotaSubscriptionAllocationServer)
+		})
+		resp, err = s.trGroupQuotaSubscriptionAllocationServer.Do(req)
+	case "GroupQuotaSubscriptionAllocationRequestClient":
+		initServer(s, &s.trGroupQuotaSubscriptionAllocationRequestServer, func() *GroupQuotaSubscriptionAllocationRequestServerTransport {
+			return NewGroupQuotaSubscriptionAllocationRequestServerTransport(&s.srv.GroupQuotaSubscriptionAllocationRequestServer)
+		})
+		resp, err = s.trGroupQuotaSubscriptionAllocationRequestServer.Do(req)
+	case "GroupQuotaSubscriptionRequestsClient":
+		initServer(s, &s.trGroupQuotaSubscriptionRequestsServer, func() *GroupQuotaSubscriptionRequestsServerTransport {
+			return NewGroupQuotaSubscriptionRequestsServerTransport(&s.srv.GroupQuotaSubscriptionRequestsServer)
+		})
+		resp, err = s.trGroupQuotaSubscriptionRequestsServer.Do(req)
+	case "GroupQuotaSubscriptionsClient":
+		initServer(s, &s.trGroupQuotaSubscriptionsServer, func() *GroupQuotaSubscriptionsServerTransport {
+			return NewGroupQuotaSubscriptionsServerTransport(&s.srv.GroupQuotaSubscriptionsServer)
+		})
+		resp, err = s.trGroupQuotaSubscriptionsServer.Do(req)
+	case "GroupQuotaUsagesClient":
+		initServer(s, &s.trGroupQuotaUsagesServer, func() *GroupQuotaUsagesServerTransport {
+			return NewGroupQuotaUsagesServerTransport(&s.srv.GroupQuotaUsagesServer)
+		})
+		resp, err = s.trGroupQuotaUsagesServer.Do(req)
+	case "GroupQuotasClient":
+		initServer(s, &s.trGroupQuotasServer, func() *GroupQuotasServerTransport { return NewGroupQuotasServerTransport(&s.srv.GroupQuotasServer) })
+		resp, err = s.trGroupQuotasServer.Do(req)
 	case "OperationClient":
 		initServer(s, &s.trOperationServer, func() *OperationServerTransport { return NewOperationServerTransport(&s.srv.OperationServer) })
 		resp, err = s.trOperationServer.Do(req)

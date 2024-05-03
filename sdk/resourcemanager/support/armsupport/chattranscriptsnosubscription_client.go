@@ -43,7 +43,7 @@ func NewChatTranscriptsNoSubscriptionClient(credential azcore.TokenCredential, o
 // Get - Returns chatTranscript details for a no subscription support ticket.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-01-preview
+// Generated from API version 2024-04-01
 //   - supportTicketName - Support ticket name.
 //   - chatTranscriptName - ChatTranscript name.
 //   - options - ChatTranscriptsNoSubscriptionClientGetOptions contains the optional parameters for the ChatTranscriptsNoSubscriptionClient.Get
@@ -86,7 +86,7 @@ func (client *ChatTranscriptsNoSubscriptionClient) getCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-01-preview")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -103,8 +103,8 @@ func (client *ChatTranscriptsNoSubscriptionClient) getHandleResponse(resp *http.
 
 // NewListPager - Lists all chat transcripts for a support ticket
 //
-// Generated from API version 2023-06-01-preview
-//   - supportTicketName - Support ticket name.
+// Generated from API version 2024-04-01
+//   - supportTicketName - Support ticket name
 //   - options - ChatTranscriptsNoSubscriptionClientListOptions contains the optional parameters for the ChatTranscriptsNoSubscriptionClient.NewListPager
 //     method.
 func (client *ChatTranscriptsNoSubscriptionClient) NewListPager(supportTicketName string, options *ChatTranscriptsNoSubscriptionClientListOptions) *runtime.Pager[ChatTranscriptsNoSubscriptionClientListResponse] {
@@ -142,7 +142,7 @@ func (client *ChatTranscriptsNoSubscriptionClient) listCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-01-preview")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

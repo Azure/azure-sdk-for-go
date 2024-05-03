@@ -15,8 +15,14 @@ type AutomatedCheckResult struct {
 	// Insight Article Content
 	Result *string
 
+	// Status for automated check result
+	Status *string
+
 	// Type of Result.
 	Type *AutomatedCheckResultType
+
+	// Version for automated check result
+	Version *string
 }
 
 // CheckNameAvailabilityRequest - The check availability request body.
@@ -38,6 +44,18 @@ type CheckNameAvailabilityResponse struct {
 
 	// Reason for why value is not available. This field is returned if nameAvailable is false.
 	Reason *string
+}
+
+// ClassificationService - Service Classification result object.
+type ClassificationService struct {
+	// List of applicable ARM resource types for this service.
+	ResourceTypes []*string
+
+	// READ-ONLY; Localized name of the azure service.
+	DisplayName *string
+
+	// READ-ONLY; Azure resource Id of the service.
+	ServiceID *string
 }
 
 // ContinueRequestBody - Troubleshooter ContinueRequest body.
@@ -107,6 +125,27 @@ type DiagnosticResourceProperties struct {
 
 	// READ-ONLY; Status of diagnostic provisioning.
 	ProvisioningState *DiagnosticProvisioningState
+}
+
+// DiscoveryNlpRequest - Discover NLP request.
+type DiscoveryNlpRequest struct {
+	// REQUIRED; Natural language description of the issue.
+	IssueSummary *string
+
+	// Additional information in the form of a string.
+	AdditionalContext *string
+
+	// ARM resource Id of the resource that is having the issue.
+	ResourceID *string
+
+	// ARM service Id of the service that is having the issue. For more information on service Id see https://learn.microsoft.com/rest/api/support/services/list?tabs=HTTP.
+	ServiceID *string
+}
+
+// DiscoveryNlpResponse - Successfully fetched list of solution metadata.
+type DiscoveryNlpResponse struct {
+	// The list of solution metadata.
+	Value []*SolutionNlpMetadataResource
 }
 
 // DiscoveryResponse - Discovery response.
@@ -214,6 +253,31 @@ type MetricsBasedChart struct {
 	Title *string
 }
 
+// NlpSolutions - Nlp metadata.
+type NlpSolutions struct {
+	// Id of the ProblemClassification (https://learn.microsoft.com/en-us/rest/api/support/problem-classifications?view=rest-support-2020-04-01)
+	// that may be used to create a support ticket.
+	ProblemClassificationID *string
+
+	// Description of the problem classification.
+	ProblemDescription *string
+
+	// Title of the problem classification.
+	ProblemTitle *string
+
+	// The set of services that are most likely related to the request. If relatedServices is included in the response then solutions
+	// may not be discovered until the client calls a second time specifying one
+	// of the service Ids in the relatedServices object.
+	RelatedServices []*ClassificationService
+
+	// Id of the service (https://learn.microsoft.com/en-us/rest/api/support/services?view=rest-support-2020-04-01) that may be
+	// used to create a support ticket.
+	ServiceID *string
+
+	// The list of solution metadata.
+	Solutions []*SolutionMetadataProperties
+}
+
 // Operation - Details of a REST API operation, returned from the Resource Provider Operations API
 type Operation struct {
 	// Localized display information for this particular operation.
@@ -284,6 +348,18 @@ type ReplacementMaps struct {
 	WebResults []*WebResult
 }
 
+// ReplacementMapsSelfHelp - Solution replacement maps.
+type ReplacementMapsSelfHelp struct {
+	// Group of Videos
+	VideoGroups []*VideoGroup
+
+	// Video solutions, which have the power to engage the customer by stimulating their senses
+	Videos []*Video
+
+	// Solution AzureKB results
+	WebResults []*WebResult
+}
+
 // ResponseOption - The status of the resource.
 type ResponseOption struct {
 	// Unique string.
@@ -306,6 +382,9 @@ type ResponseValidationProperties struct {
 
 	// Validation Error Message.
 	ValidationErrorMessage *string
+
+	// Validation scope
+	ValidationScope *ValidationScope
 }
 
 // RestartTroubleshooterResponse - Troubleshooter restart response
@@ -353,6 +432,57 @@ type Section struct {
 	Title *string
 }
 
+// SectionSelfHelp - Part of the solution and are dividers in the solution rendering.
+type SectionSelfHelp struct {
+	// Solution sections content.
+	Content *string
+
+	// Solution replacement maps.
+	ReplacementMaps *ReplacementMapsSelfHelp
+
+	// Solution sections title.
+	Title *string
+}
+
+// SimplifiedSolutionsResource - Simplified Solutions response.
+type SimplifiedSolutionsResource struct {
+	// Simplified Solutions result
+	Properties *SimplifiedSolutionsResourceProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// SimplifiedSolutionsResourceProperties - Simplified Solutions result
+type SimplifiedSolutionsResourceProperties struct {
+	// Client input parameters to run Simplified Solutions
+	Parameters map[string]*string
+
+	// Solution Id to identify single Simplified Solution.
+	SolutionID *string
+
+	// READ-ONLY; Additional parameter response for Simplified Solutions
+	Appendix map[string]*string
+
+	// READ-ONLY; The HTML content that needs to be rendered and shown to customer.
+	Content *string
+
+	// READ-ONLY; Status of Simplified Solution provisioning.
+	ProvisioningState *SolutionProvisioningState
+
+	// READ-ONLY; The title.
+	Title *string
+}
+
 // SolutionMetadataProperties - Metadata Properties
 type SolutionMetadataProperties struct {
 	// Solution Id.
@@ -386,7 +516,25 @@ type SolutionMetadataResource struct {
 	Type *string
 }
 
-// SolutionPatchRequestBody - Solution response
+// SolutionNlpMetadataResource - Nlp Metadata resource
+type SolutionNlpMetadataResource struct {
+	// Solution metadata Resource properties.
+	Properties *NlpSolutions
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// SolutionPatchRequestBody - Solution PatchRequest body
 type SolutionPatchRequestBody struct {
 	// Solution result
 	Properties *SolutionResourceProperties
@@ -437,6 +585,30 @@ type SolutionResourceProperties struct {
 	Title *string
 }
 
+// SolutionResourceSelfHelp - Self Help Solution response.
+type SolutionResourceSelfHelp struct {
+	// Solution result
+	Properties *SolutionsResourcePropertiesSelfHelp
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// SolutionWarmUpRequestBody - Solution WarmUpRequest body
+type SolutionWarmUpRequestBody struct {
+	// Dictionary of
+	Parameters map[string]*string
+}
+
 // Solutions - List of solutions
 type Solutions struct {
 	// List of metadata.
@@ -445,6 +617,9 @@ type Solutions struct {
 
 // SolutionsDiagnostic - Solutions Diagnostic
 type SolutionsDiagnostic struct {
+	// Diagnostics estimated completion time in minutes
+	EstimatedCompletionTime *string
+
 	// Diagnostic insights
 	Insights []*Insight
 
@@ -462,6 +637,25 @@ type SolutionsDiagnostic struct {
 
 	// Details of the status
 	StatusDetails *string
+}
+
+// SolutionsResourcePropertiesSelfHelp - Solution result
+type SolutionsResourcePropertiesSelfHelp struct {
+	// READ-ONLY; The HTML content that needs to be rendered and shown to customer.
+	Content *string
+
+	// READ-ONLY; Solution replacement maps.
+	ReplacementMaps *ReplacementMapsSelfHelp
+
+	// READ-ONLY; List of section object.
+	Sections []*SectionSelfHelp
+
+	// READ-ONLY; SolutionId is a unique id to identify a solution. You can retrieve the solution id using the Discovery api -
+	// https://learn.microsoft.com/en-us/rest/api/help/discovery-solution/list?view=rest-help-2023-09-01-preview&tabs=HTTP
+	SolutionID *string
+
+	// READ-ONLY; The title.
+	Title *string
 }
 
 // SolutionsTroubleshooters - Troubleshooters in Solutions
@@ -521,6 +715,9 @@ type StepInput struct {
 
 	// Use Index as QuestionId.
 	QuestionID *string
+
+	// Question title
+	QuestionTitle *string
 
 	// Type of Question
 	QuestionType *QuestionType

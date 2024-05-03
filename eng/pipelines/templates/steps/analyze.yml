@@ -121,6 +121,22 @@ steps:
       $modDirs = ./eng/scripts/get_module_dirs.ps1 '${{ parameters.ServiceDirectory }}'
       foreach ($md in $modDirs) {
         pushd $md
+        Write-Host "##[command]Executing go get -u all in $md"
+        go get -u all
+        $diff = (git diff -w .)
+        Write-Host ($diff -join "`n")
+        if ($diff.Length -gt 0) {
+          exit 1
+        }
+      }
+    displayName: 'go get -u all'
+    condition: eq(variables.SkipGoGetUAll, 'false')
+    workingDirectory: $(System.DefaultWorkingDirectory)
+
+  - pwsh: |
+      $modDirs = ./eng/scripts/get_module_dirs.ps1 '${{ parameters.ServiceDirectory }}'
+      foreach ($md in $modDirs) {
+        pushd $md
         Write-Host "##[command]Executing go mod tidy in $md"
         go mod tidy
         $diff = (git diff -w .)

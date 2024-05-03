@@ -38,22 +38,20 @@ func NewDiscoverySolutionClient(credential azcore.TokenCredential, options *arm.
 	return client, nil
 }
 
-// NewListPager - Lists the relevant Azure diagnostics and solutions using problemClassification API [https://learn.microsoft.com/rest/api/support/problem-classifications/list?tabs=HTTP])
-// AND resourceUri or
-// resourceType. Discovery Solutions is the initial entry point within Help API, which identifies relevant Azure diagnostics
-// and solutions.
+// NewListPager - Lists the relevant Azure Diagnostics, Solutions and Troubleshooters using problemClassification API [https://learn.microsoft.com/rest/api/support/problem-classifications/list?tabs=HTTP])
+// AND
+// resourceUri or resourceType. Discovery Solutions is the initial entry point within Help API, which identifies relevant
+// Azure diagnostics and solutions.
 // Required Input : problemClassificationId (Use the problemClassification API [https://learn.microsoft.com/rest/api/support/problem-classifications/list?tabs=HTTP])
 // Optional input: resourceUri OR
 // resource Type
 // Note: ‘requiredInputs’ from Discovery solutions response must be passed via ‘additionalParameters’ as an input to Diagnostics
 // and Solutions API.
 //
-// Generated from API version 2023-09-01-preview
-//   - scope - scope = resourceUri of affected resource.
-//     For example: /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read
+// Generated from API version 2024-03-01-preview
 //   - options - DiscoverySolutionClientListOptions contains the optional parameters for the DiscoverySolutionClient.NewListPager
 //     method.
-func (client *DiscoverySolutionClient) NewListPager(scope string, options *DiscoverySolutionClientListOptions) *runtime.Pager[DiscoverySolutionClientListResponse] {
+func (client *DiscoverySolutionClient) NewListPager(options *DiscoverySolutionClientListOptions) *runtime.Pager[DiscoverySolutionClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DiscoverySolutionClientListResponse]{
 		More: func(page DiscoverySolutionClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -65,7 +63,7 @@ func (client *DiscoverySolutionClient) NewListPager(scope string, options *Disco
 				nextLink = *page.NextLink
 			}
 			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, scope, options)
+				return client.listCreateRequest(ctx, options)
 			}, nil)
 			if err != nil {
 				return DiscoverySolutionClientListResponse{}, err
@@ -77,18 +75,17 @@ func (client *DiscoverySolutionClient) NewListPager(scope string, options *Disco
 }
 
 // listCreateRequest creates the List request.
-func (client *DiscoverySolutionClient) listCreateRequest(ctx context.Context, scope string, options *DiscoverySolutionClientListOptions) (*policy.Request, error) {
-	urlPath := "/{scope}/providers/Microsoft.Help/discoverySolutions"
-	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
+func (client *DiscoverySolutionClient) listCreateRequest(ctx context.Context, options *DiscoverySolutionClientListOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Help/discoverySolutions"
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-01-preview")
 	if options != nil && options.Skiptoken != nil {
 		reqQP.Set("$skiptoken", *options.Skiptoken)
 	}
+	reqQP.Set("api-version", "2024-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	unencodedParams := []string{req.Raw().URL.RawQuery}
 	if options != nil && options.Filter != nil {

@@ -1,5 +1,88 @@
 # Release History
 
+## 2.0.0 (2024-04-26)
+### Breaking Changes
+
+- Field `Tags` of struct `CatalogUpdate` has been removed
+- Field `Location`, `Tags` of struct `ScheduleUpdate` has been removed
+
+### Features Added
+
+- New enum type `CatalogConnectionState` with values `CatalogConnectionStateConnected`, `CatalogConnectionStateDisconnected`
+- New enum type `CatalogItemSyncEnableStatus` with values `CatalogItemSyncEnableStatusDisabled`, `CatalogItemSyncEnableStatusEnabled`
+- New enum type `CatalogItemType` with values `CatalogItemTypeEnvironmentDefinition`
+- New enum type `CatalogResourceValidationStatus` with values `CatalogResourceValidationStatusFailed`, `CatalogResourceValidationStatusPending`, `CatalogResourceValidationStatusSucceeded`, `CatalogResourceValidationStatusUnknown`
+- New enum type `CatalogSyncType` with values `CatalogSyncTypeManual`, `CatalogSyncTypeScheduled`
+- New enum type `IdentityType` with values `IdentityTypeDelegatedResourceIdentity`, `IdentityTypeSystemAssignedIdentity`, `IdentityTypeUserAssignedIdentity`
+- New enum type `ParameterType` with values `ParameterTypeArray`, `ParameterTypeBoolean`, `ParameterTypeInteger`, `ParameterTypeNumber`, `ParameterTypeObject`, `ParameterTypeString`
+- New enum type `SingleSignOnStatus` with values `SingleSignOnStatusDisabled`, `SingleSignOnStatusEnabled`
+- New enum type `VirtualNetworkType` with values `VirtualNetworkTypeManaged`, `VirtualNetworkTypeUnmanaged`
+- New function `*CatalogsClient.BeginConnect(context.Context, string, string, string, *CatalogsClientBeginConnectOptions) (*runtime.Poller[CatalogsClientConnectResponse], error)`
+- New function `*CatalogsClient.GetSyncErrorDetails(context.Context, string, string, string, *CatalogsClientGetSyncErrorDetailsOptions) (CatalogsClientGetSyncErrorDetailsResponse, error)`
+- New function `NewCheckScopedNameAvailabilityClient(string, azcore.TokenCredential, *arm.ClientOptions) (*CheckScopedNameAvailabilityClient, error)`
+- New function `*CheckScopedNameAvailabilityClient.Execute(context.Context, CheckScopedNameAvailabilityRequest, *CheckScopedNameAvailabilityClientExecuteOptions) (CheckScopedNameAvailabilityClientExecuteResponse, error)`
+- New function `*ClientFactory.NewCheckScopedNameAvailabilityClient() *CheckScopedNameAvailabilityClient`
+- New function `*ClientFactory.NewEnvironmentDefinitionsClient() *EnvironmentDefinitionsClient`
+- New function `*ClientFactory.NewProjectCatalogEnvironmentDefinitionsClient() *ProjectCatalogEnvironmentDefinitionsClient`
+- New function `*ClientFactory.NewProjectCatalogsClient() *ProjectCatalogsClient`
+- New function `NewEnvironmentDefinitionsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*EnvironmentDefinitionsClient, error)`
+- New function `*EnvironmentDefinitionsClient.Get(context.Context, string, string, string, string, *EnvironmentDefinitionsClientGetOptions) (EnvironmentDefinitionsClientGetResponse, error)`
+- New function `*EnvironmentDefinitionsClient.GetByProjectCatalog(context.Context, string, string, string, string, *EnvironmentDefinitionsClientGetByProjectCatalogOptions) (EnvironmentDefinitionsClientGetByProjectCatalogResponse, error)`
+- New function `*EnvironmentDefinitionsClient.GetErrorDetails(context.Context, string, string, string, string, *EnvironmentDefinitionsClientGetErrorDetailsOptions) (EnvironmentDefinitionsClientGetErrorDetailsResponse, error)`
+- New function `*EnvironmentDefinitionsClient.NewListByCatalogPager(string, string, string, *EnvironmentDefinitionsClientListByCatalogOptions) *runtime.Pager[EnvironmentDefinitionsClientListByCatalogResponse]`
+- New function `*EnvironmentDefinitionsClient.NewListByProjectCatalogPager(string, string, string, *EnvironmentDefinitionsClientListByProjectCatalogOptions) *runtime.Pager[EnvironmentDefinitionsClientListByProjectCatalogResponse]`
+- New function `NewProjectCatalogEnvironmentDefinitionsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ProjectCatalogEnvironmentDefinitionsClient, error)`
+- New function `*ProjectCatalogEnvironmentDefinitionsClient.GetErrorDetails(context.Context, string, string, string, string, *ProjectCatalogEnvironmentDefinitionsClientGetErrorDetailsOptions) (ProjectCatalogEnvironmentDefinitionsClientGetErrorDetailsResponse, error)`
+- New function `NewProjectCatalogsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ProjectCatalogsClient, error)`
+- New function `*ProjectCatalogsClient.BeginConnect(context.Context, string, string, string, *ProjectCatalogsClientBeginConnectOptions) (*runtime.Poller[ProjectCatalogsClientConnectResponse], error)`
+- New function `*ProjectCatalogsClient.BeginCreateOrUpdate(context.Context, string, string, string, Catalog, *ProjectCatalogsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ProjectCatalogsClientCreateOrUpdateResponse], error)`
+- New function `*ProjectCatalogsClient.BeginDelete(context.Context, string, string, string, *ProjectCatalogsClientBeginDeleteOptions) (*runtime.Poller[ProjectCatalogsClientDeleteResponse], error)`
+- New function `*ProjectCatalogsClient.Get(context.Context, string, string, string, *ProjectCatalogsClientGetOptions) (ProjectCatalogsClientGetResponse, error)`
+- New function `*ProjectCatalogsClient.GetSyncErrorDetails(context.Context, string, string, string, *ProjectCatalogsClientGetSyncErrorDetailsOptions) (ProjectCatalogsClientGetSyncErrorDetailsResponse, error)`
+- New function `*ProjectCatalogsClient.NewListPager(string, string, *ProjectCatalogsClientListOptions) *runtime.Pager[ProjectCatalogsClientListResponse]`
+- New function `*ProjectCatalogsClient.BeginPatch(context.Context, string, string, string, CatalogUpdate, *ProjectCatalogsClientBeginPatchOptions) (*runtime.Poller[ProjectCatalogsClientPatchResponse], error)`
+- New function `*ProjectCatalogsClient.BeginSync(context.Context, string, string, string, *ProjectCatalogsClientBeginSyncOptions) (*runtime.Poller[ProjectCatalogsClientSyncResponse], error)`
+- New struct `CatalogConflictError`
+- New struct `CatalogErrorDetails`
+- New struct `CatalogResourceValidationErrorDetails`
+- New struct `CatalogSyncError`
+- New struct `CheckScopedNameAvailabilityRequest`
+- New struct `CustomerManagedKeyEncryption`
+- New struct `CustomerManagedKeyEncryptionKeyIdentity`
+- New struct `Encryption`
+- New struct `EnvironmentDefinition`
+- New struct `EnvironmentDefinitionListResult`
+- New struct `EnvironmentDefinitionParameter`
+- New struct `EnvironmentDefinitionProperties`
+- New struct `EnvironmentTypeUpdateProperties`
+- New struct `ProjectCatalogSettings`
+- New struct `ProjectCatalogSettingsInfo`
+- New struct `SyncErrorDetails`
+- New struct `SyncStats`
+- New struct `UpdateProperties`
+- New field `DisplayName` in struct `AllowedEnvironmentTypeProperties`
+- New field `ConnectionState`, `LastConnectionTime`, `LastSyncStats`, `SyncType`, `Tags` in struct `CatalogProperties`
+- New field `SyncType`, `Tags` in struct `CatalogUpdateProperties`
+- New field `ValidationStatus` in struct `DevBoxDefinitionProperties`
+- New field `DisplayName` in struct `EnvironmentTypeProperties`
+- New field `Properties` in struct `EnvironmentTypeUpdate`
+- New field `ResourceID` in struct `OperationStatusResult`
+- New field `Location` in struct `OperationStatusesClientGetResponse`
+- New field `DevBoxCount`, `DisplayName`, `ManagedVirtualNetworkRegions`, `SingleSignOnStatus`, `VirtualNetworkType` in struct `PoolProperties`
+- New field `DisplayName`, `ManagedVirtualNetworkRegions`, `SingleSignOnStatus`, `VirtualNetworkType` in struct `PoolUpdateProperties`
+- New field `Identity` in struct `Project`
+- New field `DisplayName`, `EnvironmentCount` in struct `ProjectEnvironmentTypeProperties`
+- New field `DisplayName` in struct `ProjectEnvironmentTypeUpdateProperties`
+- New field `CatalogSettings`, `DisplayName` in struct `ProjectProperties`
+- New field `Identity` in struct `ProjectUpdate`
+- New field `CatalogSettings`, `DisplayName` in struct `ProjectUpdateProperties`
+- New field `DisplayName`, `Encryption`, `ProjectCatalogSettings` in struct `Properties`
+- New field `Location`, `Tags` in struct `ScheduleProperties`
+- New field `Location`, `Tags` in struct `ScheduleUpdateProperties`
+- New field `Properties` in struct `Update`
+- New field `ID` in struct `Usage`
+
+
 ## 1.2.0-beta.1 (2023-11-30)
 ### Features Added
 

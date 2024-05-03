@@ -21,6 +21,11 @@ import (
 )
 
 func TestDownloadFileContent(t *testing.T) {
+	// I haven't come up with a way to guarantee I always get a file download here, which makes this test fail on occasion.
+	// If you're attempting (and failing) to get a recording for this you might just have to give it a few tries.
+	//
+	// So something like this, so you don't have to rerun the entire suite each time:
+	// AZURE_RECORD_MODE=record go test -run TestDownloadFileContent
 	if recording.GetRecordMode() == recording.LiveMode {
 		t.Skip("Skipping non-deterministic test for live tests. Only runs in record/playback.")
 	}
@@ -28,7 +33,7 @@ func TestDownloadFileContent(t *testing.T) {
 	args := runThreadArgs{
 		Assistant: azopenaiassistants.AssistantCreationBody{
 			DeploymentName: &assistantsModel,
-			Instructions:   to.Ptr("You are a helpful assistant that always draws images."),
+			Instructions:   to.Ptr("You are a helpful assistant that always draws images and provides files for download."),
 			Tools: []azopenaiassistants.ToolDefinitionClassification{
 				&azopenaiassistants.CodeInterpreterToolDefinition{},
 			},
@@ -38,7 +43,7 @@ func TestDownloadFileContent(t *testing.T) {
 				Messages: []azopenaiassistants.ThreadInitializationMessage{
 					{
 						Role:    to.Ptr(azopenaiassistants.MessageRoleUser),
-						Content: to.Ptr("Draw an image of two squares, connected by a line, as a PNG file"),
+						Content: to.Ptr("Draw an image of two squares, connected by a line, as a PNG file and make it available for download"),
 					},
 				},
 			},

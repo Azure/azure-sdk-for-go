@@ -89,6 +89,9 @@ func newClient(t *testing.T, args newClientArgs) *azopenaiassistants.Client {
 				require.NoError(t, err)
 			}
 
+			err := recording.AddURISanitizer("after=SANITIZED", `after=msg_[^&+]+`, nil)
+			require.NoError(t, err)
+
 			for _, res := range []string{"thread", "run", "assistant", "step", "message", "first", "last"} {
 				// ie: "run_id": "run_SSUooivFMcO9KVYY99xUoFUG",
 				err = recording.AddBodyRegexSanitizer(`$1:"Sanitized"`, fmt.Sprintf(`("%s_id")\s*:\s*"[^"]+"`, res), nil)
@@ -231,7 +234,7 @@ func mustRunThread(ctx context.Context, t *testing.T, args runThreadArgs) (*azop
 	// poll for the thread end
 	runStatus, err := pollUntilRunEnds(ctx, client, *threadRunResp.ThreadID, *threadRunResp.ID)
 	require.NoError(t, err)
-	require.Equal(t, runStatus, azopenaiassistants.RunStatusCompleted)
+	require.Equal(t, *runStatus.Status, azopenaiassistants.RunStatusCompleted)
 
 	var allMessages []azopenaiassistants.ThreadMessage
 

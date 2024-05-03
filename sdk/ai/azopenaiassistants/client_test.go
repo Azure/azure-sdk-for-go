@@ -193,7 +193,15 @@ func TestAssistantMessages(t *testing.T) {
 	})
 }
 
+func skipRecordingsCantMatchRoutesTestHack(t *testing.T) {
+	if recording.GetRecordMode() != recording.LiveMode {
+		t.Skip("skipping due to issue where recordings never match. Issue #22839")
+	}
+}
+
 func TestAssistantConversationLoop(t *testing.T) {
+	skipRecordingsCantMatchRoutesTestHack(t)
+
 	testFn := func(t *testing.T, azure bool) {
 		client, createAssistantResp := mustGetClientWithAssistant(t, mustGetClientWithAssistantArgs{
 			newClientArgs: newClientArgs{
@@ -315,6 +323,8 @@ func TestAssistantConversationLoop(t *testing.T) {
 }
 
 func TestAssistantRequiredAction(t *testing.T) {
+	skipRecordingsCantMatchRoutesTestHack(t)
+
 	testFn := func(t *testing.T, azure bool) {
 		client, createAssistantResp := mustGetClientWithAssistant(t, mustGetClientWithAssistantArgs{
 			newClientArgs: newClientArgs{
@@ -420,6 +430,8 @@ func TestAssistantRequiredAction(t *testing.T) {
 }
 
 func TestNewAssistantFilesPager(t *testing.T) {
+	skipRecordingsCantMatchRoutesTestHack(t)
+
 	testFn := func(t *testing.T, azure bool) {
 		client, createResp := mustGetClientWithAssistant(t, mustGetClientWithAssistantArgs{
 			newClientArgs: newClientArgs{
@@ -492,6 +504,8 @@ func TestNewAssistantFilesPager(t *testing.T) {
 }
 
 func TestNewListRunsPager(t *testing.T) {
+	skipRecordingsCantMatchRoutesTestHack(t)
+
 	testFn := func(t *testing.T, azure bool) {
 		client, createResp := mustGetClientWithAssistant(t, mustGetClientWithAssistantArgs{
 			newClientArgs: newClientArgs{
@@ -560,6 +574,8 @@ func TestNewListRunsPager(t *testing.T) {
 }
 
 func TestNewListRunStepsPager(t *testing.T) {
+	skipRecordingsCantMatchRoutesTestHack(t)
+
 	testFn := func(t *testing.T, azure bool) {
 		client, createAsstResp := mustGetClientWithAssistant(t, mustGetClientWithAssistantArgs{
 			newClientArgs: newClientArgs{

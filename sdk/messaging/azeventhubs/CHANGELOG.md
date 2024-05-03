@@ -1,12 +1,21 @@
 # Release History
 
-## 1.1.1 (Unreleased)
+## 1.2.0 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
 
+- Processor.Run() behavior has been clarified and returns errors and handles closing
+  properly. See "Bugs Fixed" for more details about specific changes.
+
 ### Bugs Fixed
+
+The Processor had incorrect behavior when Run had been stopped:
+- Run() now returns an explicit error when called more than once on a single 
+  Processor instance.
+- NextProcessorClient now properly terminates (and returns nil) if called on a 
+  stopped Processor.
 
 ### Other Changes
 

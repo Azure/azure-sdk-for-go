@@ -49,6 +49,10 @@
             "CoverageGoal": 0.26
         },
         {
+            "Name": "ai/azopenaiassistants",
+            "CoverageGoal": 0.15
+        },
+        {
             "Name": "aztemplate",
             "CoverageGoal": 0.50
         },

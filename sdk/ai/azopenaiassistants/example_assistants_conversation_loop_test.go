@@ -191,26 +191,15 @@ func assistantLoop(ctx context.Context, client *azopenaiassistants.Client,
 
 		runID := *createRunResp.ID
 
-		if err := pollRunEnd(ctx, client, threadID, runID); err != nil {
+		if _, err := pollUntilRunEnds(ctx, client, threadID, runID); err != nil {
 			return err
 		}
 
-		lastAssistantResponses = nil
-
 		// get all the messages that were added after our most recently added message.
-		listMessagesPager := client.NewListMessagesPager(threadID, &azopenaiassistants.ListMessagesOptions{
-			After: lastMessageID,
-			Order: to.Ptr(azopenaiassistants.ListSortOrderAscending),
-		})
+		lastAssistantResponses, err = getLatestMessages(ctx, client, threadID, lastMessageID)
 
-		for listMessagesPager.More() {
-			page, err := listMessagesPager.NextPage(context.Background())
-
-			if err != nil {
-				return err
-			}
-
-			lastAssistantResponses = append(lastAssistantResponses, page.Data...)
+		if err != nil {
+			return err
 		}
 	}
 }
@@ -246,26 +235,51 @@ func printAssistantMessages(ctx context.Context, client *azopenaiassistants.Clie
 	return nil
 }
 
-func pollRunEnd(ctx context.Context, client *azopenaiassistants.Client, threadID string, runID string) error {
+func pollUntilRunEnds(ctx context.Context, client *azopenaiassistants.Client, threadID string, runID string) (azopenaiassistants.GetRunResponse, error) {
 	for {
 		lastGetRunResp, err := client.GetRun(context.Background(), threadID, runID, nil)
 
 		if err != nil {
-			return err
+			return azopenaiassistants.GetRunResponse{}, err
+		}
+
+		if *lastGetRunResp.Status == azopenaiassistants.RunStatusCompleted ||
+			*lastGetRunResp.Status == azopenaiassistants.RunStatusRequiresAction {
+			return lastGetRunResp, nil
 		}
 
 		if *lastGetRunResp.Status != azopenaiassistants.RunStatusQueued && *lastGetRunResp.Status != azopenaiassistants.RunStatusInProgress {
-			if *lastGetRunResp.Status == azopenaiassistants.RunStatusCompleted {
-				return nil
-			}
-
-			return fmt.Errorf("run ended but status was not complete: %s", *lastGetRunResp.Status)
+			return azopenaiassistants.GetRunResponse{}, fmt.Errorf("run ended but status was not complete: %s", *lastGetRunResp.Status)
 		}
 
 		select {
 		case <-time.After(500 * time.Millisecond):
 		case <-ctx.Done():
-			return ctx.Err()
+			return azopenaiassistants.GetRunResponse{}, ctx.Err()
 		}
 	}
+}
+
+// getLatestMessages gets any messages that have occurred since lastMessageID.
+// If an error occurs, returns any messages received so far, as well as the error.
+func getLatestMessages(ctx context.Context, client *azopenaiassistants.Client, threadID string, lastMessageID *string) ([]azopenaiassistants.ThreadMessage, error) {
+	// grab any messages that occurred after our last known message
+	listMessagesPager := client.NewListMessagesPager(threadID, &azopenaiassistants.ListMessagesOptions{
+		After: lastMessageID,
+		Order: to.Ptr(azopenaiassistants.ListSortOrderAscending),
+	})
+
+	var all []azopenaiassistants.ThreadMessage
+
+	for listMessagesPager.More() {
+		page, err := listMessagesPager.NextPage(ctx)
+
+		if err != nil {
+			return all, err
+		}
+
+		all = append(all, page.Data...)
+	}
+
+	return all, nil
 }

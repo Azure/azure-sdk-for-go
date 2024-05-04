@@ -21,6 +21,8 @@ import (
 )
 
 func TestDownloadFileContent(t *testing.T) {
+	skipRecordingsCantMatchRoutesTestHack(t)
+
 	// I haven't come up with a way to guarantee I always get a file download here, which makes this test fail on occasion.
 	// If you're attempting (and failing) to get a recording for this you might just have to give it a few tries.
 	//

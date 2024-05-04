@@ -74,7 +74,7 @@ func Test_UsingIdentity(t *testing.T) {
 
 func TestAssistantCreationAndListing(t *testing.T) {
 	skipRecordingsCantMatchRoutesTestHack(t)
-	
+
 	testFn := func(t *testing.T, azure bool) {
 		client, createResp := mustGetClientWithAssistant(t, mustGetClientWithAssistantArgs{
 			newClientArgs: newClientArgs{

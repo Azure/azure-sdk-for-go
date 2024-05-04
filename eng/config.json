@@ -49,7 +49,7 @@
             "CoverageGoal": 0.26
         },
         {
-            "Name": "azopenaiassistants",
+            "Name": "ai/azopenaiassistants",
             "CoverageGoal": 0.15
         },
         {

@@ -178,7 +178,8 @@ client := armresources.NewResourceGroupsClient("subscription ID", chain, nil)
 |`AZURE_CLIENT_ID`|ID of a Microsoft Entra application
 |`AZURE_TENANT_ID`|ID of the application's Microsoft Entra tenant
 |`AZURE_CLIENT_CERTIFICATE_PATH`|path to a certificate file including private key
-|`AZURE_CLIENT_CERTIFICATE_PASSWORD`|password of the certificate file, if any
+|`AZURE_CLIENT_CERTIFICATE_PASSWORD`|(optional) password of the certificate file, if any
+|`AZURE_CLIENT_SEND_CERTIFICATE_CHAIN`|(optional) send certificate chain in x5c header to support subject name / issuer based authentication
 
 #### Username and password
 

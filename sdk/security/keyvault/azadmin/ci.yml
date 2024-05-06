@@ -29,8 +29,8 @@ extends:
     UsePipelineProxy: false
 
     # Due to the high cost of Managed HSMs, which keyvault-admin requires, we only want to run
-    # the live tests weekly.
-    ${{ if contains(variables['Build.DefinitionName'], 'weekly') }}:
+    # the live tests weekly or for releases (manual builds).
+    ${{ if or(contains(variables['Build.DefinitionName'], 'weekly'), eq(variables['Build.Reason'], 'Manual')) }}:
       RunLiveTests: true
       MatrixConfigs:
         - Name: keyvault_test_matrix_addons

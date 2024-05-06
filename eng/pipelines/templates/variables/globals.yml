@@ -13,7 +13,7 @@ variables:
   UseAzcoreFromMain: $[eq(variables['Use.AzcoreFromMain'], 'true')]
 
   # Set to disable analyze step for requiring latest version of dependencies
-  SkipGoGetUAll: $[eq(variables['Skip.GoGetUAll'], 'true')]
+  SkipGoGetUAll: true
 
   # We enable this selectively to avoid overloading CG scanning/reporting on PR pipelines
   skipComponentGovernanceDetection: true

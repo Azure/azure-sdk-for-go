@@ -333,12 +333,6 @@
 # ServiceLabel: %Digital Twins
 #/<NotInRepo>/          @sourabhguha @inesk-vt
 
-# ServiceLabel: %Event Grid
-#/<NotInRepo>/          @jfggdl
-
-# ServiceLabel: %Event Hubs
-#/<NotInRepo>/          @jfggdl
-
 # ServiceLabel: %Functions
 #/<NotInRepo>/          @ahmedelnably @fabiocav
 
@@ -480,9 +474,6 @@
 # ServiceLabel: %Redis Cache
 #/<NotInRepo>/          @yegu-ms
 
-# ServiceLabel: %Relay
-#/<NotInRepo>/          @jfggdl
-
 # ServiceLabel: %Reservations
 #/<NotInRepo>/          @Rkapso
 
@@ -505,7 +496,7 @@
 #/<NotInRepo>/          @chlahav
 
 # ServiceLabel: %Service Bus
-#/<NotInRepo>/          @jfggdl @EldertGrootenboer
+#/<NotInRepo>/          @EldertGrootenboer
 
 # ServiceLabel: %Service Fabric
 #/<NotInRepo>/          @QingChenmsft @vaishnavk @juhacket

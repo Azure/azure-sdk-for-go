@@ -31,6 +31,7 @@ extends:
     # Due to the high cost of Managed HSMs, which keyvault-admin requires, we only want to run
     # the live tests weekly or for releases (manual builds).
     ${{ if or(contains(variables['Build.DefinitionName'], 'weekly'), eq(variables['Build.Reason'], 'Manual')) }}:
+      Location: australiaeast
       RunLiveTests: true
       MatrixConfigs:
         - Name: keyvault_test_matrix_addons

@@ -9,6 +9,9 @@
 /**                           @rickwinter @jhendrixMSFT
 /sdk/                         @rickwinter @chlowell @richardpark-msft
 
+# Add owners for notifications for specific pipelines
+/eng/common/pipelines/codeowners-linter.yml       @rickwinter
+
 # Samples
 /sdk/samples/                     @rickwinter @chlowell @jhendrixMSFT @richardpark-msft
 

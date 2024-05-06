@@ -6013,3 +6013,37 @@ func (s *BlockBlobUnrecordedTestsSuite) TestBlockBlobClientUploadDownloadFile() 
 	_require.NotNil(gResp.ContentLength)
 	_require.Equal(fileSize, *gResp.ContentLength)
 }
+
+func (s *BlockBlobRecordedTestsSuite) TestBlobDataORProperties() {
+
+	s.T().Skip("Object replication policies required to be set on source and destination for this test, this will be skipped")
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	bbName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.GetBlockBlobClient(bbName, containerClient)
+
+	_, err = bbClient.Upload(context.Background(), streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), nil)
+	_require.NoError(err)
+	time.Sleep(10 * time.Second)
+
+	destSvcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountSecondary, nil)
+	_require.NoError(err)
+
+	destContainerName := testcommon.GenerateContainerName(testName)
+	destContainerClient := testcommon.CreateNewContainer(context.Background(), _require, destContainerName, destSvcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	bbClient2 := testcommon.GetBlockBlobClient(bbName, destContainerClient)
+
+	properties2, _ := bbClient2.GetProperties(context.Background(), nil)
+	_require.Nil(properties2.Metadata)
+	_require.NotContains(properties2.Metadata, properties2.ObjectReplicationPolicyID)
+	_require.NotNil(properties2.ObjectReplicationPolicyID)
+}

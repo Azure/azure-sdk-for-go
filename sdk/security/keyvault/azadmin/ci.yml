@@ -32,7 +32,7 @@ extends:
     # the live tests weekly.
     ${{ if contains(variables['Build.DefinitionName'], 'weekly') }}:
       RunLiveTests: true
-      AdditionalMatrixConfigs:
+      MatrixConfigs:
         - Name: keyvault_test_matrix_addons
           Path: sdk/security/keyvault/azadmin/platform-matrix.json
           Selection: sparse

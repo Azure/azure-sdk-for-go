@@ -37,5 +37,3 @@ extends:
           Path: sdk/security/keyvault/azadmin/platform-matrix.json
           Selection: sparse
           GenerateVMJobs: true
-    
-        

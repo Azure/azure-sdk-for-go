@@ -1,10 +1,15 @@
 # Release History
 
-## 0.5.2 (2024-05-07)
+## 0.6.0 (TBD)
 
 ### Features Added
 
 - Updating to the `2024-04-01-preview` API version for Azure OpenAI. (PR#22798)
+
+### Breaking Changes
+
+- ContentFilterResultDetailsForPrompt.CustomBlocklists has been changed from a []ContentFilterBlocklistIDResult to a struct, 
+  containing the slice of []ContentFilterBlocklistIDResult.
 
 ### Bugs Fixed
 

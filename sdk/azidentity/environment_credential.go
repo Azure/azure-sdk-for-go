@@ -57,6 +57,8 @@ type EnvironmentCredentialOptions struct {
 //
 // AZURE_CLIENT_CERTIFICATE_PASSWORD: (optional) password for the certificate file.
 //
+// AZURE_CLIENT_SEND_CERTIFICATE_CHAIN: (optional) send certificate chain in x5c header to support subject name/issuer-based authentication
+//
 // # User with username and password
 //
 // AZURE_TENANT_ID: (optional) tenant to authenticate in. Defaults to "organizations".

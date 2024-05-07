@@ -15,7 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
 	"github.com/Azure/azure-sdk-for-go/sdk/tracing/azotel"
-	"go.opentelemetry.io/otel/exporters/jaeger"
+	"go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracehttp"
 	"go.opentelemetry.io/otel/sdk/resource"
 	otelsdk "go.opentelemetry.io/otel/sdk/trace"
 	semconv "go.opentelemetry.io/otel/semconv/v1.17.0"
@@ -23,10 +23,12 @@ import (
 
 func Example_jaegerExporter() {
 	// end-to-end example creating an OTel TracerProvider that exports to Jaeger
-	// then uses the azotel adapter to conenct it to an Azure SDK client.
+	// then uses the azotel adapter to connect it to an Azure SDK client.
+
+	ctx := context.Background()
 
 	// create the Jaeger exporter
-	exp, err := jaeger.New(jaeger.WithCollectorEndpoint())
+	exp, err := otlptracehttp.New(ctx)
 	if err != nil {
 		log.Fatal(err)
 	}

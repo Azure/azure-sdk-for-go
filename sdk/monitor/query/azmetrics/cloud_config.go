@@ -16,7 +16,7 @@ func init() {
 		Audience: "https://metrics.monitor.azure.cn",
 	}
 	cloud.AzureGovernment.Services[ServiceName] = cloud.ServiceConfiguration{
-		Audience: "https:/metrics.monitor.azure.us",
+		Audience: "https://metrics.monitor.azure.us",
 	}
 	cloud.AzurePublic.Services[ServiceName] = cloud.ServiceConfiguration{
 		Audience: "https://metrics.monitor.azure.com",

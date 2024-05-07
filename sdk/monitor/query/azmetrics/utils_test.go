@@ -107,7 +107,7 @@ func startTest(t *testing.T) *azmetrics.Client {
 	startRecording(t)
 	transport, err := recording.NewRecordingHTTPClient(t, nil)
 	require.NoError(t, err)
-	opts := &azmetrics.ClientOptions{ClientOptions: azcore.ClientOptions{Transport: transport}}
+	opts := &azmetrics.ClientOptions{ClientOptions: azcore.ClientOptions{Transport: transport, Cloud: clientCloud}}
 	client, err := azmetrics.NewClient(endpoint, credential, opts)
 	require.NoError(t, err)
 	return client

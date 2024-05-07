@@ -3,6 +3,7 @@
 ## 1.0.1 (Unreleased)
 
 ### Features Added
+* Added sovereign cloud support
 
 ### Breaking Changes
 

@@ -29,6 +29,9 @@ type AudioTranscription struct {
 
 	// The label that describes which operation type generated the accompanying response data.
 	Task *AudioTaskLabel
+
+	// A collection of information about the timing of each processed word.
+	Words []AudioTranscriptionWord
 }
 
 // AudioTranscriptionOptions - The configuration information for an audio transcription request.
@@ -59,6 +62,11 @@ type AudioTranscriptionOptions struct {
 	// like 0.2 will make it more focused and deterministic. If set to 0, the model will
 	// use log probability to automatically increase the temperature until certain thresholds are hit.
 	Temperature *float32
+
+	// The timestamp granularities to populate for this transcription.response_format must be set verbose_json to use timestamp
+	// granularities. Either or both of these options are supported: word, or segment.
+	// Note: There is no additional latency for segment timestamps, but generating word timestamps incurs additional latency.
+	TimestampGranularities []AudioTranscriptionTimestampGranularity
 }
 
 // AudioTranscriptionSegment - Extended information about a single segment of transcribed audio data. Segments generally represent
@@ -97,6 +105,19 @@ type AudioTranscriptionSegment struct {
 
 	// REQUIRED; The token IDs matching the transcribed text in this audio segment.
 	Tokens []int32
+}
+
+// AudioTranscriptionWord - Extended information about a single transcribed word, as provided on responses when the 'word'
+// timestamp granularity is provided.
+type AudioTranscriptionWord struct {
+	// REQUIRED; The end time of the word relative to the beginning of the audio, expressed in seconds.
+	End *float32
+
+	// REQUIRED; The start time of the word relative to the beginning of the audio, expressed in seconds.
+	Start *float32
+
+	// REQUIRED; The textual content of the word.
+	Word *string
 }
 
 // AudioTranslation - Result information for an operation that translated spoken audio into written text.
@@ -1307,6 +1328,15 @@ type ContentFilterCitedDetectionResult struct {
 	URL *string
 }
 
+// ContentFilterDetailedResults - Represents a structured collection of result details for content filtering.
+type ContentFilterDetailedResults struct {
+	// REQUIRED; The collection of detailed blocklist result information.
+	Details []ContentFilterBlocklistIDResult
+
+	// REQUIRED; A value indicating whether or not the content has been filtered.
+	Filtered *bool
+}
+
 // ContentFilterDetectionResult - Represents the outcome of a detection operation performed by content filtering.
 type ContentFilterDetectionResult struct {
 	// REQUIRED; A value indicating whether detection occurred, irrespective of severity or whether the content was filtered.
@@ -1328,7 +1358,7 @@ type ContentFilterResult struct {
 // ContentFilterResultDetailsForPrompt - Information about content filtering evaluated against input data to Azure OpenAI.
 type ContentFilterResultDetailsForPrompt struct {
 	// Describes detection results against configured custom blocklists.
-	CustomBlocklists []ContentFilterBlocklistIDResult
+	CustomBlocklists *ContentFilterDetailedResults
 
 	// Describes an error returned if the content filtering system is down or otherwise unable to complete the operation in time.
 	Error *Error
@@ -1338,6 +1368,9 @@ type ContentFilterResultDetailsForPrompt struct {
 	// including but not limited to race, ethnicity, nationality, gender identity and expression, sexual orientation, religion,
 	// immigration status, ability status, personal appearance, and body size.
 	Hate *ContentFilterResult
+
+	// Whether an indirect attack was detected in the prompt.
+	IndirectAttack *ContentFilterDetectionResult
 
 	// Whether a jailbreak attempt was detected in the prompt.
 	Jailbreak *ContentFilterDetectionResult
@@ -1361,7 +1394,7 @@ type ContentFilterResultDetailsForPrompt struct {
 // ContentFilterResultsForChoice - Information about content filtering evaluated against generated model output.
 type ContentFilterResultsForChoice struct {
 	// Describes detection results against configured custom blocklists.
-	CustomBlocklists []ContentFilterBlocklistIDResult
+	CustomBlocklists *ContentFilterDetailedResults
 
 	// Describes an error returned if the content filtering system is down or otherwise unable to complete the operation in time.
 	Error *Error

@@ -34,6 +34,10 @@ func TestEncryptParseDecrypt(t *testing.T) {
 	segments := strings.Split(s, ".")
 	require.Len(t, segments, 5, "compact format has 5 segments")
 
+	p, err := ParseCompactFormat([]byte(s))
+	require.NoError(t, err)
+	require.Equal(t, j, p)
+
 	h, err := base64.RawURLEncoding.DecodeString(segments[0])
 	require.NoError(t, err, segments[0])
 	hdr := Header{}

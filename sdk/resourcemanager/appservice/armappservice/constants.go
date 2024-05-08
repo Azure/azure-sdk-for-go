@@ -10,7 +10,7 @@ package armappservice
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice"
-	moduleVersion = "v2.3.0"
+	moduleVersion = "v3.0.0"
 )
 
 // ActiveRevisionsMode - ActiveRevisionsMode controls how active revisions are handled for the Container app:Multiple: multiple
@@ -55,6 +55,45 @@ func PossibleAppServicePlanRestrictionsValues() []AppServicePlanRestrictions {
 	}
 }
 
+// AuthType - Auth Type
+type AuthType string
+
+const (
+	AuthTypeAnonymous       AuthType = "Anonymous"
+	AuthTypeSystemIdentity  AuthType = "SystemIdentity"
+	AuthTypeUserAssigned    AuthType = "UserAssigned"
+	AuthTypeUserCredentials AuthType = "UserCredentials"
+)
+
+// PossibleAuthTypeValues returns the possible values for the AuthType const type.
+func PossibleAuthTypeValues() []AuthType {
+	return []AuthType{
+		AuthTypeAnonymous,
+		AuthTypeSystemIdentity,
+		AuthTypeUserAssigned,
+		AuthTypeUserCredentials,
+	}
+}
+
+// AuthenticationType - Property to select authentication type to access the selected storage account. Available options:
+// SystemAssignedIdentity, UserAssignedIdentity, StorageAccountConnectionString.
+type AuthenticationType string
+
+const (
+	AuthenticationTypeStorageAccountConnectionString AuthenticationType = "StorageAccountConnectionString"
+	AuthenticationTypeSystemAssignedIdentity         AuthenticationType = "SystemAssignedIdentity"
+	AuthenticationTypeUserAssignedIdentity           AuthenticationType = "UserAssignedIdentity"
+)
+
+// PossibleAuthenticationTypeValues returns the possible values for the AuthenticationType const type.
+func PossibleAuthenticationTypeValues() []AuthenticationType {
+	return []AuthenticationType{
+		AuthenticationTypeStorageAccountConnectionString,
+		AuthenticationTypeSystemAssignedIdentity,
+		AuthenticationTypeUserAssignedIdentity,
+	}
+}
+
 // AutoHealActionType - Predefined action to be taken.
 type AutoHealActionType string
 
@@ -86,6 +125,24 @@ func PossibleAzureResourceTypeValues() []AzureResourceType {
 	return []AzureResourceType{
 		AzureResourceTypeTrafficManager,
 		AzureResourceTypeWebsite,
+	}
+}
+
+// AzureStorageProtocol - Mounting protocol to use for the storage account.
+type AzureStorageProtocol string
+
+const (
+	AzureStorageProtocolHTTP AzureStorageProtocol = "Http"
+	AzureStorageProtocolNfs  AzureStorageProtocol = "Nfs"
+	AzureStorageProtocolSmb  AzureStorageProtocol = "Smb"
+)
+
+// PossibleAzureStorageProtocolValues returns the possible values for the AzureStorageProtocol const type.
+func PossibleAzureStorageProtocolValues() []AzureStorageProtocol {
+	return []AzureStorageProtocol{
+		AzureStorageProtocolHTTP,
+		AzureStorageProtocolNfs,
+		AzureStorageProtocolSmb,
 	}
 }
 
@@ -1760,6 +1817,30 @@ func PossibleRouteTypeValues() []RouteType {
 	}
 }
 
+// RuntimeName - Function app runtime name. Available options: dotnet-isolated, node, java, powershell, python, custom
+type RuntimeName string
+
+const (
+	RuntimeNameCustom         RuntimeName = "custom"
+	RuntimeNameDotnetIsolated RuntimeName = "dotnet-isolated"
+	RuntimeNameJava           RuntimeName = "java"
+	RuntimeNameNode           RuntimeName = "node"
+	RuntimeNamePowershell     RuntimeName = "powershell"
+	RuntimeNamePython         RuntimeName = "python"
+)
+
+// PossibleRuntimeNameValues returns the possible values for the RuntimeName const type.
+func PossibleRuntimeNameValues() []RuntimeName {
+	return []RuntimeName{
+		RuntimeNameCustom,
+		RuntimeNameDotnetIsolated,
+		RuntimeNameJava,
+		RuntimeNameNode,
+		RuntimeNamePowershell,
+		RuntimeNamePython,
+	}
+}
+
 type SKUName string
 
 const (
@@ -1767,6 +1848,7 @@ const (
 	SKUNameDynamic          SKUName = "Dynamic"
 	SKUNameElasticIsolated  SKUName = "ElasticIsolated"
 	SKUNameElasticPremium   SKUName = "ElasticPremium"
+	SKUNameFlexConsumption  SKUName = "FlexConsumption"
 	SKUNameFree             SKUName = "Free"
 	SKUNameIsolated         SKUName = "Isolated"
 	SKUNameIsolatedV2       SKUName = "IsolatedV2"
@@ -1785,6 +1867,7 @@ func PossibleSKUNameValues() []SKUName {
 		SKUNameDynamic,
 		SKUNameElasticIsolated,
 		SKUNameElasticPremium,
+		SKUNameFlexConsumption,
 		SKUNameFree,
 		SKUNameIsolated,
 		SKUNameIsolatedV2,
@@ -1998,9 +2081,11 @@ func PossibleStatusOptionsValues() []StatusOptions {
 	}
 }
 
+// StorageType - Property to select Azure Storage type. Available options: blobContainer.
 type StorageType string
 
 const (
+	StorageTypeBlobContainer     StorageType = "blobContainer"
 	StorageTypeLocalNode         StorageType = "LocalNode"
 	StorageTypeNetworkFileSystem StorageType = "NetworkFileSystem"
 )
@@ -2008,6 +2093,7 @@ const (
 // PossibleStorageTypeValues returns the possible values for the StorageType const type.
 func PossibleStorageTypeValues() []StorageType {
 	return []StorageType{
+		StorageTypeBlobContainer,
 		StorageTypeLocalNode,
 		StorageTypeNetworkFileSystem,
 	}
@@ -2020,6 +2106,7 @@ const (
 	SupportedTLSVersionsOne0 SupportedTLSVersions = "1.0"
 	SupportedTLSVersionsOne1 SupportedTLSVersions = "1.1"
 	SupportedTLSVersionsOne2 SupportedTLSVersions = "1.2"
+	SupportedTLSVersionsOne3 SupportedTLSVersions = "1.3"
 )
 
 // PossibleSupportedTLSVersionsValues returns the possible values for the SupportedTLSVersions const type.
@@ -2028,6 +2115,7 @@ func PossibleSupportedTLSVersionsValues() []SupportedTLSVersions {
 		SupportedTLSVersionsOne0,
 		SupportedTLSVersionsOne1,
 		SupportedTLSVersionsOne2,
+		SupportedTLSVersionsOne3,
 	}
 }
 

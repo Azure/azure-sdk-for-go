@@ -1823,6 +1823,18 @@ type WebAppsClientCreateOrUpdateResponse struct {
 	Site
 }
 
+// WebAppsClientCreateOrUpdateSiteContainerResponse contains the response from method WebAppsClient.CreateOrUpdateSiteContainer.
+type WebAppsClientCreateOrUpdateSiteContainerResponse struct {
+	// Container of a site
+	SiteContainer
+}
+
+// WebAppsClientCreateOrUpdateSiteContainerSlotResponse contains the response from method WebAppsClient.CreateOrUpdateSiteContainerSlot.
+type WebAppsClientCreateOrUpdateSiteContainerSlotResponse struct {
+	// Container of a site
+	SiteContainer
+}
+
 // WebAppsClientCreateOrUpdateSlotResponse contains the response from method WebAppsClient.BeginCreateOrUpdateSlot.
 type WebAppsClientCreateOrUpdateSlotResponse struct {
 	// A web app, a mobile app backend, or an API app.
@@ -2051,6 +2063,16 @@ type WebAppsClientDeleteRelayServiceConnectionSlotResponse struct {
 
 // WebAppsClientDeleteResponse contains the response from method WebAppsClient.Delete.
 type WebAppsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// WebAppsClientDeleteSiteContainerResponse contains the response from method WebAppsClient.DeleteSiteContainer.
+type WebAppsClientDeleteSiteContainerResponse struct {
+	// placeholder for future response values
+}
+
+// WebAppsClientDeleteSiteContainerSlotResponse contains the response from method WebAppsClient.DeleteSiteContainerSlot.
+type WebAppsClientDeleteSiteContainerSlotResponse struct {
 	// placeholder for future response values
 }
 
@@ -2695,6 +2717,18 @@ type WebAppsClientGetSiteConnectionStringKeyVaultReferencesSlotResponse struct {
 	APIKVReferenceCollection
 }
 
+// WebAppsClientGetSiteContainerResponse contains the response from method WebAppsClient.GetSiteContainer.
+type WebAppsClientGetSiteContainerResponse struct {
+	// Container of a site
+	SiteContainer
+}
+
+// WebAppsClientGetSiteContainerSlotResponse contains the response from method WebAppsClient.GetSiteContainerSlot.
+type WebAppsClientGetSiteContainerSlotResponse struct {
+	// Container of a site
+	SiteContainer
+}
+
 // WebAppsClientGetSiteExtensionResponse contains the response from method WebAppsClient.GetSiteExtension.
 type WebAppsClientGetSiteExtensionResponse struct {
 	// Site Extension Information.
@@ -3287,6 +3321,18 @@ type WebAppsClientListSiteBackupsResponse struct {
 type WebAppsClientListSiteBackupsSlotResponse struct {
 	// Collection of backup items.
 	BackupItemCollection
+}
+
+// WebAppsClientListSiteContainersResponse contains the response from method WebAppsClient.NewListSiteContainersPager.
+type WebAppsClientListSiteContainersResponse struct {
+	// Collection of site containers
+	SiteContainerCollection
+}
+
+// WebAppsClientListSiteContainersSlotResponse contains the response from method WebAppsClient.NewListSiteContainersSlotPager.
+type WebAppsClientListSiteContainersSlotResponse struct {
+	// Collection of site containers
+	SiteContainerCollection
 }
 
 // WebAppsClientListSiteExtensionsResponse contains the response from method WebAppsClient.NewListSiteExtensionsPager.

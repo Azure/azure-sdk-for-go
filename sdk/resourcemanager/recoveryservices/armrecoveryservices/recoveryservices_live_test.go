@@ -201,6 +201,8 @@ func (testsuite *RecoveryservicesTestSuite) TestRecoveryServices() {
 
 	// From step Vaults_Delete
 	fmt.Println("Call operation: Vaults_Delete")
-	_, err = vaultsClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.vaultName, nil)
+	vaultsClientDeleteResponsePoller, err := vaultsClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.vaultName, nil)
+	testsuite.Require().NoError(err)
+	_, err = testutil.PollForTest(testsuite.ctx, vaultsClientDeleteResponsePoller)
 	testsuite.Require().NoError(err)
 }

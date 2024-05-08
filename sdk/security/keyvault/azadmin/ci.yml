@@ -26,16 +26,15 @@ extends:
   parameters:
     TimeoutInMinutes: 120
     ServiceDirectory: 'security/keyvault/azadmin'
-    RunLiveTests: true
     UsePipelineProxy: false
-    MatrixConfigs:
-      - Name: keyvault_test_matrix_addons
-        Path: sdk/security/keyvault/azadmin/platform-matrix.json
-        Selection: sparse
-        GenerateVMJobs: true
 
-    ${{ if not(contains(variables['Build.DefinitionName'], 'tests-weekly')) }}:
-        # Due to the high cost of Managed HSMs, which keyvault-admin requires, we only want to run
-        # the live tests weekly.
-        MatrixFilters:
-          - ArmTemplateParameters=^(?!.*enableHsm.*true)
+    # Due to the high cost of Managed HSMs, which keyvault-admin requires, we only want to run
+    # the live tests weekly or for releases (manual builds).
+    ${{ if or(contains(variables['Build.DefinitionName'], 'weekly'), eq(variables['Build.Reason'], 'Manual')) }}:
+      Location: australiaeast
+      RunLiveTests: true
+      MatrixConfigs:
+        - Name: keyvault_test_matrix_addons
+          Path: sdk/security/keyvault/azadmin/platform-matrix.json
+          Selection: sparse
+          GenerateVMJobs: true

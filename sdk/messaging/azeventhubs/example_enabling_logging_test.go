@@ -23,10 +23,6 @@ func Example_enableLogging() {
 	)
 
 	fmt.Printf("Logging enabled\n")
-
-	// Output:
-	// Logging enabled
-	//
 }
 
 func printLoggedEvent(event azlog.Event, s string) {

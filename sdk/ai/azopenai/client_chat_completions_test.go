@@ -326,7 +326,7 @@ func TestClient_GetChatCompletionsStream_Error(t *testing.T) {
 }
 
 func TestClient_GetChatCompletions_Vision(t *testing.T) {
-	testFn := func(t *testing.T, chatClient *azopenai.Client, deploymentName string) {
+	testFn := func(t *testing.T, chatClient *azopenai.Client, deploymentName string, azure bool) {
 		imageURL := "https://www.bing.com/th?id=OHR.BradgateFallow_EN-US3932725763_1920x1080.jpg"
 
 		content := azopenai.NewChatRequestUserMessageContent([]azopenai.ChatCompletionRequestMessageContentPartClassification{
@@ -352,7 +352,9 @@ func TestClient_GetChatCompletions_Vision(t *testing.T) {
 			DeploymentName: to.Ptr(deploymentName),
 			MaxTokens:      to.Ptr[int32](512),
 		}, nil)
-		require.NoError(t, err)
+
+		// vision is a bit of an oversubscribed Azure resource. Allow 429, but mark the test as skipped.
+		customRequireNoError(t, err, azure)
 		require.NotEmpty(t, resp.Choices[0].Message.Content)
 
 		t.Logf(*resp.Choices[0].Message.Content)
@@ -360,12 +362,12 @@ func TestClient_GetChatCompletions_Vision(t *testing.T) {
 
 	t.Run("AzureOpenAI", func(t *testing.T) {
 		chatClient := newTestClient(t, azureOpenAI.Vision.Endpoint)
-		testFn(t, chatClient, azureOpenAI.Vision.Model)
+		testFn(t, chatClient, azureOpenAI.Vision.Model, true)
 	})
 
 	t.Run("OpenAI", func(t *testing.T) {
 		chatClient := newTestClient(t, openAI.Vision.Endpoint)
-		testFn(t, chatClient, openAI.Vision.Model)
+		testFn(t, chatClient, openAI.Vision.Model, false)
 	})
 }
 

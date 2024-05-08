@@ -56,6 +56,29 @@ func PossibleAudioTranscriptionFormatValues() []AudioTranscriptionFormat {
 	}
 }
 
+// AudioTranscriptionTimestampGranularity - Defines the timestamp granularities that can be requested on a verbose transcription
+// response.
+type AudioTranscriptionTimestampGranularity string
+
+const (
+	// AudioTranscriptionTimestampGranularitySegment - Indicates that responses should include timing and other information about
+	// each transcribed audio segment. Audio
+	// segment timestamp information does not incur any additional latency.
+	AudioTranscriptionTimestampGranularitySegment AudioTranscriptionTimestampGranularity = "segment"
+	// AudioTranscriptionTimestampGranularityWord - Indicates that responses should include timing information about each transcribed
+	// word. Note that generating word
+	// timestamp information will incur additional response latency.
+	AudioTranscriptionTimestampGranularityWord AudioTranscriptionTimestampGranularity = "word"
+)
+
+// PossibleAudioTranscriptionTimestampGranularityValues returns the possible values for the AudioTranscriptionTimestampGranularity const type.
+func PossibleAudioTranscriptionTimestampGranularityValues() []AudioTranscriptionTimestampGranularity {
+	return []AudioTranscriptionTimestampGranularity{
+		AudioTranscriptionTimestampGranularitySegment,
+		AudioTranscriptionTimestampGranularityWord,
+	}
+}
+
 // AudioTranslationFormat - Defines available options for the underlying response format of output translation information.
 type AudioTranslationFormat string
 
@@ -544,6 +567,12 @@ const (
 	// SpeechGenerationResponseFormatOpus - Use Opus as the audio output format. Opus is optimized for internet streaming and
 	// low latency.
 	SpeechGenerationResponseFormatOpus SpeechGenerationResponseFormat = "opus"
+	// SpeechGenerationResponseFormatPcm - Use uncompressed PCM as the audio output format, which is similar to WAV but contains
+	// raw samples in 24kHz (16-bit signed, low-endian), without the header.
+	SpeechGenerationResponseFormatPcm SpeechGenerationResponseFormat = "pcm"
+	// SpeechGenerationResponseFormatWav - Use uncompressed WAV as the audio output format, suitable for low-latency applications
+	// to avoid decoding overhead.
+	SpeechGenerationResponseFormatWav SpeechGenerationResponseFormat = "wav"
 )
 
 // PossibleSpeechGenerationResponseFormatValues returns the possible values for the SpeechGenerationResponseFormat const type.
@@ -553,6 +582,8 @@ func PossibleSpeechGenerationResponseFormatValues() []SpeechGenerationResponseFo
 		SpeechGenerationResponseFormatFlac,
 		SpeechGenerationResponseFormatMp3,
 		SpeechGenerationResponseFormatOpus,
+		SpeechGenerationResponseFormatPcm,
+		SpeechGenerationResponseFormatWav,
 	}
 }
 

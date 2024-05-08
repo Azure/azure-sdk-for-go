@@ -94,6 +94,27 @@ func unmarshalMessageTextAnnotationClassificationArray(rawMsg json.RawMessage) (
 	return fArray, nil
 }
 
+func unmarshalRequiredActionClassification(rawMsg json.RawMessage) (RequiredActionClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b RequiredActionClassification
+	switch m["type"] {
+	case "submit_tool_outputs":
+		b = &SubmitToolOutputsAction{}
+	default:
+		b = &RequiredAction{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
 func unmarshalRequiredToolCallClassification(rawMsg json.RawMessage) (RequiredToolCallClassification, error) {
 	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil

@@ -123,6 +123,9 @@ func TestAssistantCreationAndListing(t *testing.T) {
 }
 
 func TestAssistantMessages(t *testing.T) {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
+	}
 	testFn := func(t *testing.T, azure bool) {
 		client := newClient(t, newClientArgs{
 			Azure: azure,
@@ -196,8 +199,8 @@ func TestAssistantMessages(t *testing.T) {
 }
 
 func skipRecordingsCantMatchRoutesTestHack(t *testing.T) {
-	if recording.GetRecordMode() != recording.LiveMode {
-		t.Skip("skipping due to issue where recordings never match. Issue #22839")
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skip("skipping due to issue where recordings never match. Issue #22839. Also #22869")
 	}
 }
 
@@ -655,6 +658,9 @@ func TestNewListRunStepsPager(t *testing.T) {
 }
 
 func TestFiles(t *testing.T) {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
+	}
 	testFn := func(t *testing.T, azure bool) {
 		client := newClient(t, newClientArgs{
 			Azure: azure,

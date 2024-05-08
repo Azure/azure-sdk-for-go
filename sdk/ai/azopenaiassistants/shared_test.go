@@ -79,6 +79,24 @@ func newClient(t *testing.T, args newClientArgs) *azopenaiassistants.Client {
 
 			err = recording.AddHeaderRegexSanitizer("Api-Key", "key", "", nil)
 			require.NoError(t, err)
+
+			// add regexes for all of our resources
+			for _, res := range []string{"thread", "run", "asst", "step", "msg"} {
+				err = recording.AddURISanitizer("$1Sanitized$2", fmt.Sprintf("^(.+?/)%s_[^?/]+(.*)$", res), nil)
+				require.NoError(t, err)
+
+				err = recording.AddURISanitizer("$1Sanitized$2", fmt.Sprintf("^(.+?/)%s_[^?/]+(/.*)$", res), nil)
+				require.NoError(t, err)
+			}
+
+			err := recording.AddURISanitizer("after=SANITIZED", `after=msg_[^&+]+`, nil)
+			require.NoError(t, err)
+
+			for _, res := range []string{"thread", "run", "assistant", "step", "message", "first", "last"} {
+				// ie: "run_id": "run_SSUooivFMcO9KVYY99xUoFUG",
+				err = recording.AddBodyRegexSanitizer(`$1:"Sanitized"`, fmt.Sprintf(`("%s_id")\s*:\s*"[^"]+"`, res), nil)
+				require.NoError(t, err)
+			}
 		}
 
 		httpClient = tmpHttpClient
@@ -149,7 +167,25 @@ func mustGetClientWithAssistant(t *testing.T, args mustGetClientWithAssistantArg
 			&assistants.CodeInterpreterToolDefinition{},
 
 			// others...
-			// &assistants.FunctionToolDefinition{}
+			&assistants.FunctionToolDefinition{
+				Function: &assistants.FunctionDefinition{
+					Name: to.Ptr("get_current_weather"),
+					Parameters: map[string]any{
+						"required": []string{"location"},
+						"type":     "object",
+						"properties": map[string]any{
+							"location": map[string]any{
+								"type":        "string",
+								"description": "The city and state, e.g. San Francisco, CA",
+							},
+							"unit": map[string]any{
+								"type": "string",
+								"enum": []string{"celsius", "fahrenheit"},
+							},
+						},
+					},
+				},
+			},
 			// &assistants.RetrievalToolDefinition{}
 		},
 	}, nil)
@@ -196,8 +232,9 @@ func mustRunThread(ctx context.Context, t *testing.T, args runThreadArgs) (*azop
 	require.NoError(t, err)
 
 	// poll for the thread end
-	err = pollRunEnd(ctx, client, *threadRunResp.ThreadID, *threadRunResp.ID)
+	runStatus, err := pollUntilRunEnds(ctx, client, *threadRunResp.ThreadID, *threadRunResp.ID)
 	require.NoError(t, err)
+	require.Equal(t, *runStatus.Status, azopenaiassistants.RunStatusCompleted)
 
 	var allMessages []azopenaiassistants.ThreadMessage
 

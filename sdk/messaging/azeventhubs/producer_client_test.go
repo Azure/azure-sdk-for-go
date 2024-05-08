@@ -12,6 +12,8 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs"
@@ -140,12 +142,9 @@ func TestClientsUnauthorizedCreds(t *testing.T) {
 	})
 
 	t.Run("invalid identity creds", func(t *testing.T) {
-		testData := test.GetConnectionParamsForTest(t)
+		var cred fakeTokenCred
 
-		cliCred, err := azidentity.NewClientSecretCredential(testData.TenantID, testData.ClientID, "bogus-client-secret", nil)
-		require.NoError(t, err)
-
-		prodClient, err := azeventhubs.NewProducerClient(testParams.EventHubNamespace, testParams.EventHubName, cliCred, nil)
+		prodClient, err := azeventhubs.NewProducerClient(testParams.EventHubNamespace, testParams.EventHubName, cred, nil)
 		require.NoError(t, err)
 		defer test.RequireClose(t, prodClient)
 
@@ -154,7 +153,7 @@ func TestClientsUnauthorizedCreds(t *testing.T) {
 		require.ErrorAs(t, err, &authFailedErr)
 		require.Nil(t, batch)
 
-		cc, err := azeventhubs.NewConsumerClient(testParams.EventHubNamespace, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, cliCred, nil)
+		cc, err := azeventhubs.NewConsumerClient(testParams.EventHubNamespace, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, cred, nil)
 		require.NoError(t, err)
 		defer test.RequireClose(t, cc)
 
@@ -166,6 +165,14 @@ func TestClientsUnauthorizedCreds(t *testing.T) {
 		require.Nil(t, batch)
 		require.Empty(t, events)
 	})
+}
+
+type fakeTokenCred struct{}
+
+var _ azcore.TokenCredential = fakeTokenCred{}
+
+func (tc fakeTokenCred) GetToken(ctx context.Context, options policy.TokenRequestOptions) (azcore.AccessToken, error) {
+	return azcore.AccessToken{}, &azidentity.AuthenticationFailedError{}
 }
 
 func TestProducerClient_GetHubAndPartitionProperties(t *testing.T) {

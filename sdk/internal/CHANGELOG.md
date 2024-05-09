@@ -1,6 +1,6 @@
 # Release History
 
-## 1.7.1 (Unreleased)
+## 1.8.0 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,8 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+* Removed default sanitizers added in v1.6.0 (the test proxy itself now includes these)
 
 ## 1.7.0 (2024-05-01)
 

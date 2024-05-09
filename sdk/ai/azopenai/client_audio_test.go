@@ -21,6 +21,9 @@ import (
 )
 
 func TestClient_GetAudioTranscription(t *testing.T) {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
+	}
 	testFn := func(t *testing.T, epm endpointWithModel) {
 		client := newTestClient(t, epm.Endpoint)
 		model := epm.Model
@@ -136,6 +139,9 @@ func TestClient_GetAudioTranscription(t *testing.T) {
 }
 
 func TestClient_GetAudioTranslation(t *testing.T) {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
+	}
 	testFn := func(t *testing.T, epm endpointWithModel) {
 		client := newTestClient(t, epm.Endpoint)
 		model := epm.Model
@@ -252,7 +258,7 @@ func TestClient_GetAudioTranslation(t *testing.T) {
 
 func TestClient_GetAudioSpeech(t *testing.T) {
 	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("TODO: sanitization break: needs to be looked at")
+		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
 	}
 
 	client := newTestClient(t, openAI.Speech.Endpoint)

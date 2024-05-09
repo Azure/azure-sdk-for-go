@@ -27,8 +27,8 @@ type AddonsClientGetResponse struct {
 
 // AddonsClientListResponse contains the response from method AddonsClient.NewListPager.
 type AddonsClientListResponse struct {
-	// A paged list of addons
-	AddonList
+	// The response of a Addon list operation.
+	AddonListResult
 }
 
 // AuthorizationsClientCreateOrUpdateResponse contains the response from method AuthorizationsClient.BeginCreateOrUpdate.
@@ -50,8 +50,8 @@ type AuthorizationsClientGetResponse struct {
 
 // AuthorizationsClientListResponse contains the response from method AuthorizationsClient.NewListPager.
 type AuthorizationsClientListResponse struct {
-	// A paged list of ExpressRoute Circuit Authorizations
-	ExpressRouteAuthorizationList
+	// The response of a ExpressRouteAuthorization list operation.
+	ExpressRouteAuthorizationListResult
 }
 
 // CloudLinksClientCreateOrUpdateResponse contains the response from method CloudLinksClient.BeginCreateOrUpdate.
@@ -73,8 +73,8 @@ type CloudLinksClientGetResponse struct {
 
 // CloudLinksClientListResponse contains the response from method CloudLinksClient.NewListPager.
 type CloudLinksClientListResponse struct {
-	// A paged list of cloud links
-	CloudLinkList
+	// The response of a CloudLink list operation.
+	CloudLinkListResult
 }
 
 // ClustersClientCreateOrUpdateResponse contains the response from method ClustersClient.BeginCreateOrUpdate.
@@ -96,8 +96,8 @@ type ClustersClientGetResponse struct {
 
 // ClustersClientListResponse contains the response from method ClustersClient.NewListPager.
 type ClustersClientListResponse struct {
-	// A paged list of clusters
-	ClusterList
+	// The response of a Cluster list operation.
+	ClusterListResult
 }
 
 // ClustersClientListZonesResponse contains the response from method ClustersClient.ListZones.
@@ -131,8 +131,8 @@ type DatastoresClientGetResponse struct {
 
 // DatastoresClientListResponse contains the response from method DatastoresClient.NewListPager.
 type DatastoresClientListResponse struct {
-	// A paged list of datastores
-	DatastoreList
+	// The response of a Datastore list operation.
+	DatastoreListResult
 }
 
 // GlobalReachConnectionsClientCreateOrUpdateResponse contains the response from method GlobalReachConnectionsClient.BeginCreateOrUpdate.
@@ -154,8 +154,8 @@ type GlobalReachConnectionsClientGetResponse struct {
 
 // GlobalReachConnectionsClientListResponse contains the response from method GlobalReachConnectionsClient.NewListPager.
 type GlobalReachConnectionsClientListResponse struct {
-	// A paged list of global reach connections
-	GlobalReachConnectionList
+	// The response of a GlobalReachConnection list operation.
+	GlobalReachConnectionListResult
 }
 
 // HcxEnterpriseSitesClientCreateOrUpdateResponse contains the response from method HcxEnterpriseSitesClient.CreateOrUpdate.
@@ -177,8 +177,31 @@ type HcxEnterpriseSitesClientGetResponse struct {
 
 // HcxEnterpriseSitesClientListResponse contains the response from method HcxEnterpriseSitesClient.NewListPager.
 type HcxEnterpriseSitesClientListResponse struct {
-	// A paged list of HCX Enterprise Sites
-	HcxEnterpriseSiteList
+	// The response of a HcxEnterpriseSite list operation.
+	HcxEnterpriseSiteListResult
+}
+
+// IscsiPathsClientCreateOrUpdateResponse contains the response from method IscsiPathsClient.BeginCreateOrUpdate.
+type IscsiPathsClientCreateOrUpdateResponse struct {
+	// An iSCSI path resource
+	IscsiPath
+}
+
+// IscsiPathsClientDeleteResponse contains the response from method IscsiPathsClient.BeginDelete.
+type IscsiPathsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// IscsiPathsClientGetResponse contains the response from method IscsiPathsClient.Get.
+type IscsiPathsClientGetResponse struct {
+	// An iSCSI path resource
+	IscsiPath
+}
+
+// IscsiPathsClientListByPrivateCloudResponse contains the response from method IscsiPathsClient.NewListByPrivateCloudPager.
+type IscsiPathsClientListByPrivateCloudResponse struct {
+	// The response of a IscsiPath list operation.
+	IscsiPathListResult
 }
 
 // LocationsClientCheckQuotaAvailabilityResponse contains the response from method LocationsClient.CheckQuotaAvailability.
@@ -195,8 +218,8 @@ type LocationsClientCheckTrialAvailabilityResponse struct {
 
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
-	// Pageable list of operations
-	OperationList
+	// A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to get the next set of results.
+	OperationListResult
 }
 
 // PlacementPoliciesClientCreateOrUpdateResponse contains the response from method PlacementPoliciesClient.BeginCreateOrUpdate.
@@ -218,8 +241,8 @@ type PlacementPoliciesClientGetResponse struct {
 
 // PlacementPoliciesClientListResponse contains the response from method PlacementPoliciesClient.NewListPager.
 type PlacementPoliciesClientListResponse struct {
-	// Represents list of placement policies
-	PlacementPoliciesList
+	// The response of a PlacementPolicy list operation.
+	PlacementPolicyListResult
 }
 
 // PlacementPoliciesClientUpdateResponse contains the response from method PlacementPoliciesClient.BeginUpdate.
@@ -253,14 +276,14 @@ type PrivateCloudsClientListAdminCredentialsResponse struct {
 
 // PrivateCloudsClientListInSubscriptionResponse contains the response from method PrivateCloudsClient.NewListInSubscriptionPager.
 type PrivateCloudsClientListInSubscriptionResponse struct {
-	// A paged list of private clouds
-	PrivateCloudList
+	// The response of a PrivateCloud list operation.
+	PrivateCloudListResult
 }
 
 // PrivateCloudsClientListResponse contains the response from method PrivateCloudsClient.NewListPager.
 type PrivateCloudsClientListResponse struct {
-	// A paged list of private clouds
-	PrivateCloudList
+	// The response of a PrivateCloud list operation.
+	PrivateCloudListResult
 }
 
 // PrivateCloudsClientRotateNsxtPasswordResponse contains the response from method PrivateCloudsClient.BeginRotateNsxtPassword.
@@ -287,8 +310,8 @@ type ScriptCmdletsClientGetResponse struct {
 
 // ScriptCmdletsClientListResponse contains the response from method ScriptCmdletsClient.NewListPager.
 type ScriptCmdletsClientListResponse struct {
-	// Pageable list of scripts/cmdlets
-	ScriptCmdletsList
+	// The response of a ScriptCmdlet list operation.
+	ScriptCmdletListResult
 }
 
 // ScriptExecutionsClientCreateOrUpdateResponse contains the response from method ScriptExecutionsClient.BeginCreateOrUpdate.
@@ -316,8 +339,8 @@ type ScriptExecutionsClientGetResponse struct {
 
 // ScriptExecutionsClientListResponse contains the response from method ScriptExecutionsClient.NewListPager.
 type ScriptExecutionsClientListResponse struct {
-	// Pageable list of script executions
-	ScriptExecutionsList
+	// The response of a ScriptExecution list operation.
+	ScriptExecutionListResult
 }
 
 // ScriptPackagesClientGetResponse contains the response from method ScriptPackagesClient.Get.
@@ -328,8 +351,8 @@ type ScriptPackagesClientGetResponse struct {
 
 // ScriptPackagesClientListResponse contains the response from method ScriptPackagesClient.NewListPager.
 type ScriptPackagesClientListResponse struct {
-	// A list of the available script packages
-	ScriptPackagesList
+	// The response of a ScriptPackage list operation.
+	ScriptPackageListResult
 }
 
 // VirtualMachinesClientGetResponse contains the response from method VirtualMachinesClient.Get.
@@ -340,8 +363,8 @@ type VirtualMachinesClientGetResponse struct {
 
 // VirtualMachinesClientListResponse contains the response from method VirtualMachinesClient.NewListPager.
 type VirtualMachinesClientListResponse struct {
-	// A list of Virtual Machines
-	VirtualMachinesList
+	// The response of a VirtualMachine list operation.
+	VirtualMachineListResult
 }
 
 // VirtualMachinesClientRestrictMovementResponse contains the response from method VirtualMachinesClient.BeginRestrictMovement.
@@ -488,62 +511,62 @@ type WorkloadNetworksClientGetVirtualMachineResponse struct {
 
 // WorkloadNetworksClientListDNSServicesResponse contains the response from method WorkloadNetworksClient.NewListDNSServicesPager.
 type WorkloadNetworksClientListDNSServicesResponse struct {
-	// A list of NSX DNS Services
-	WorkloadNetworkDNSServicesList
+	// The response of a WorkloadNetworkDnsService list operation.
+	WorkloadNetworkDNSServiceListResult
 }
 
 // WorkloadNetworksClientListDNSZonesResponse contains the response from method WorkloadNetworksClient.NewListDNSZonesPager.
 type WorkloadNetworksClientListDNSZonesResponse struct {
-	// A list of NSX DNS Zones
-	WorkloadNetworkDNSZonesList
+	// The response of a WorkloadNetworkDnsZone list operation.
+	WorkloadNetworkDNSZoneListResult
 }
 
 // WorkloadNetworksClientListDhcpResponse contains the response from method WorkloadNetworksClient.NewListDhcpPager.
 type WorkloadNetworksClientListDhcpResponse struct {
-	// A list of NSX dhcp entities
-	WorkloadNetworkDhcpList
+	// The response of a WorkloadNetworkDhcp list operation.
+	WorkloadNetworkDhcpListResult
 }
 
 // WorkloadNetworksClientListGatewaysResponse contains the response from method WorkloadNetworksClient.NewListGatewaysPager.
 type WorkloadNetworksClientListGatewaysResponse struct {
-	// A list of NSX Gateways
-	WorkloadNetworkGatewayList
+	// The response of a WorkloadNetworkGateway list operation.
+	WorkloadNetworkGatewayListResult
 }
 
 // WorkloadNetworksClientListPortMirroringResponse contains the response from method WorkloadNetworksClient.NewListPortMirroringPager.
 type WorkloadNetworksClientListPortMirroringResponse struct {
-	// A list of NSX Port Mirroring
-	WorkloadNetworkPortMirroringList
+	// The response of a WorkloadNetworkPortMirroring list operation.
+	WorkloadNetworkPortMirroringListResult
 }
 
 // WorkloadNetworksClientListPublicIPsResponse contains the response from method WorkloadNetworksClient.NewListPublicIPsPager.
 type WorkloadNetworksClientListPublicIPsResponse struct {
-	// A list of NSX Public IP Blocks
-	WorkloadNetworkPublicIPsList
+	// The response of a WorkloadNetworkPublicIP list operation.
+	WorkloadNetworkPublicIPListResult
 }
 
 // WorkloadNetworksClientListResponse contains the response from method WorkloadNetworksClient.NewListPager.
 type WorkloadNetworksClientListResponse struct {
-	// A list of workload networks
-	WorkloadNetworkList
+	// The response of a WorkloadNetwork list operation.
+	WorkloadNetworkListResult
 }
 
 // WorkloadNetworksClientListSegmentsResponse contains the response from method WorkloadNetworksClient.NewListSegmentsPager.
 type WorkloadNetworksClientListSegmentsResponse struct {
-	// A list of NSX Segments
-	WorkloadNetworkSegmentsList
+	// The response of a WorkloadNetworkSegment list operation.
+	WorkloadNetworkSegmentListResult
 }
 
 // WorkloadNetworksClientListVMGroupsResponse contains the response from method WorkloadNetworksClient.NewListVMGroupsPager.
 type WorkloadNetworksClientListVMGroupsResponse struct {
-	// A list of NSX VM Groups
-	WorkloadNetworkVMGroupsList
+	// The response of a WorkloadNetworkVMGroup list operation.
+	WorkloadNetworkVMGroupListResult
 }
 
 // WorkloadNetworksClientListVirtualMachinesResponse contains the response from method WorkloadNetworksClient.NewListVirtualMachinesPager.
 type WorkloadNetworksClientListVirtualMachinesResponse struct {
-	// A list of NSX Virtual Machines
-	WorkloadNetworkVirtualMachinesList
+	// The response of a WorkloadNetworkVirtualMachine list operation.
+	WorkloadNetworkVirtualMachineListResult
 }
 
 // WorkloadNetworksClientUpdateDNSServiceResponse contains the response from method WorkloadNetworksClient.BeginUpdateDNSService.

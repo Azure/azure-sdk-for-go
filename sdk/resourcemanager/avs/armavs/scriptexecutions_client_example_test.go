@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/avs/armavs"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/avs/armavs/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a5e7ff51c8af3781e7f6dd3b82a3fc922e2f6f93/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/ScriptExecutions_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9c51b17f1c544eea0f6a67c01a6b763995521f52/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/ScriptExecutions_List.json
 func ExampleScriptExecutionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -40,7 +40,7 @@ func ExampleScriptExecutionsClient_NewListPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.ScriptExecutionsList = armavs.ScriptExecutionsList{
+		// page.ScriptExecutionListResult = armavs.ScriptExecutionListResult{
 		// 	Value: []*armavs.ScriptExecution{
 		// 		{
 		// 			Name: to.Ptr("addSsoServer"),
@@ -72,7 +72,7 @@ func ExampleScriptExecutionsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a5e7ff51c8af3781e7f6dd3b82a3fc922e2f6f93/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/ScriptExecutions_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9c51b17f1c544eea0f6a67c01a6b763995521f52/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/ScriptExecutions_Get.json
 func ExampleScriptExecutionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -118,7 +118,7 @@ func ExampleScriptExecutionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a5e7ff51c8af3781e7f6dd3b82a3fc922e2f6f93/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/ScriptExecutions_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9c51b17f1c544eea0f6a67c01a6b763995521f52/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/ScriptExecutions_CreateOrUpdate.json
 func ExampleScriptExecutionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -191,7 +191,7 @@ func ExampleScriptExecutionsClient_BeginCreateOrUpdate() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a5e7ff51c8af3781e7f6dd3b82a3fc922e2f6f93/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/ScriptExecutions_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9c51b17f1c544eea0f6a67c01a6b763995521f52/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/ScriptExecutions_Delete.json
 func ExampleScriptExecutionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -212,7 +212,7 @@ func ExampleScriptExecutionsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a5e7ff51c8af3781e7f6dd3b82a3fc922e2f6f93/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/ScriptExecutions_GetExecutionLogs.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9c51b17f1c544eea0f6a67c01a6b763995521f52/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/ScriptExecutions_GetExecutionLogs.json
 func ExampleScriptExecutionsClient_GetExecutionLogs() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

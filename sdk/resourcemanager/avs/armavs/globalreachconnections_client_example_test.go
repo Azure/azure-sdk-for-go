@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/avs/armavs"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/avs/armavs/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a5e7ff51c8af3781e7f6dd3b82a3fc922e2f6f93/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/GlobalReachConnections_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9c51b17f1c544eea0f6a67c01a6b763995521f52/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/GlobalReachConnections_List.json
 func ExampleGlobalReachConnectionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -40,7 +40,7 @@ func ExampleGlobalReachConnectionsClient_NewListPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.GlobalReachConnectionList = armavs.GlobalReachConnectionList{
+		// page.GlobalReachConnectionListResult = armavs.GlobalReachConnectionListResult{
 		// 	Value: []*armavs.GlobalReachConnection{
 		// 		{
 		// 			Name: to.Ptr("connection1"),
@@ -59,7 +59,7 @@ func ExampleGlobalReachConnectionsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a5e7ff51c8af3781e7f6dd3b82a3fc922e2f6f93/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/GlobalReachConnections_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9c51b17f1c544eea0f6a67c01a6b763995521f52/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/GlobalReachConnections_Get.json
 func ExampleGlobalReachConnectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -92,7 +92,7 @@ func ExampleGlobalReachConnectionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a5e7ff51c8af3781e7f6dd3b82a3fc922e2f6f93/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/GlobalReachConnections_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9c51b17f1c544eea0f6a67c01a6b763995521f52/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/GlobalReachConnections_CreateOrUpdate.json
 func ExampleGlobalReachConnectionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -134,7 +134,7 @@ func ExampleGlobalReachConnectionsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a5e7ff51c8af3781e7f6dd3b82a3fc922e2f6f93/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/GlobalReachConnections_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9c51b17f1c544eea0f6a67c01a6b763995521f52/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/GlobalReachConnections_Delete.json
 func ExampleGlobalReachConnectionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

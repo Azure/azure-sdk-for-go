@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/avs/armavs"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/avs/armavs/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a5e7ff51c8af3781e7f6dd3b82a3fc922e2f6f93/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/VirtualMachines_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9c51b17f1c544eea0f6a67c01a6b763995521f52/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/VirtualMachines_List.json
 func ExampleVirtualMachinesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -40,7 +40,7 @@ func ExampleVirtualMachinesClient_NewListPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.VirtualMachinesList = armavs.VirtualMachinesList{
+		// page.VirtualMachineListResult = armavs.VirtualMachineListResult{
 		// 	Value: []*armavs.VirtualMachine{
 		// 		{
 		// 			Name: to.Ptr("vm-209"),
@@ -68,7 +68,7 @@ func ExampleVirtualMachinesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a5e7ff51c8af3781e7f6dd3b82a3fc922e2f6f93/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/VirtualMachines_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9c51b17f1c544eea0f6a67c01a6b763995521f52/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/VirtualMachines_Get.json
 func ExampleVirtualMachinesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -99,7 +99,7 @@ func ExampleVirtualMachinesClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a5e7ff51c8af3781e7f6dd3b82a3fc922e2f6f93/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/VirtualMachines_RestrictMovement.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9c51b17f1c544eea0f6a67c01a6b763995521f52/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/VirtualMachines_RestrictMovement.json
 func ExampleVirtualMachinesClient_BeginRestrictMovement() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

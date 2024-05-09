@@ -1,6 +1,6 @@
 # Azure VMware Solution Module for Go
 
-[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/avs/armavs)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/avs/armavs)
+[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/avs/armavs/v2)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/avs/armavs/v2)
 
 The `armavs` module provides operations for working with Azure VMware Solution.
 
@@ -20,7 +20,7 @@ This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for ve
 Install the Azure VMware Solution module:
 
 ```sh
-go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/avs/armavs
+go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/avs/armavs/v2
 ```
 
 ## Authorization
@@ -57,7 +57,7 @@ clientFactory, err := armavs.NewClientFactory(<subscription ID>, cred, &options)
 A client groups a set of related APIs, providing access to its functionality.  Create one or more clients to access the APIs you require using client factory.
 
 ```go
-client := clientFactory.NewVirtualMachinesClient()
+client := clientFactory.NewAddonsClient()
 ```
 
 ## Fakes

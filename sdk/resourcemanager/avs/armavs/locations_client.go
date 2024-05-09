@@ -28,7 +28,7 @@ type LocationsClient struct {
 }
 
 // NewLocationsClient creates a new instance of LocationsClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewLocationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LocationsClient, error) {
@@ -46,8 +46,8 @@ func NewLocationsClient(subscriptionID string, credential azcore.TokenCredential
 // CheckQuotaAvailability - Return quota for subscription by region
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-01
-//   - location - Azure region
+// Generated from API version 2023-09-01
+//   - location - The name of the Azure region.
 //   - options - LocationsClientCheckQuotaAvailabilityOptions contains the optional parameters for the LocationsClient.CheckQuotaAvailability
 //     method.
 func (client *LocationsClient) CheckQuotaAvailability(ctx context.Context, location string, options *LocationsClientCheckQuotaAvailabilityOptions) (LocationsClientCheckQuotaAvailabilityResponse, error) {
@@ -88,7 +88,7 @@ func (client *LocationsClient) checkQuotaAvailabilityCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -106,8 +106,8 @@ func (client *LocationsClient) checkQuotaAvailabilityHandleResponse(resp *http.R
 // CheckTrialAvailability - Return trial status for subscription by region
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-01
-//   - location - Azure region
+// Generated from API version 2023-09-01
+//   - location - The name of the Azure region.
 //   - options - LocationsClientCheckTrialAvailabilityOptions contains the optional parameters for the LocationsClient.CheckTrialAvailability
 //     method.
 func (client *LocationsClient) CheckTrialAvailability(ctx context.Context, location string, options *LocationsClientCheckTrialAvailabilityOptions) (LocationsClientCheckTrialAvailabilityResponse, error) {
@@ -148,7 +148,7 @@ func (client *LocationsClient) checkTrialAvailabilityCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.SKU != nil {

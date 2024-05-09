@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/avs/armavs"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/avs/armavs/v2"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -82,7 +82,7 @@ type WorkloadNetworksServer struct {
 
 	// Get is the fake for method WorkloadNetworksClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, privateCloudName string, workloadNetworkName armavs.WorkloadNetworkName, options *armavs.WorkloadNetworksClientGetOptions) (resp azfake.Responder[armavs.WorkloadNetworksClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, resourceGroupName string, privateCloudName string, options *armavs.WorkloadNetworksClientGetOptions) (resp azfake.Responder[armavs.WorkloadNetworksClientGetResponse], errResp azfake.ErrorResponder)
 
 	// GetDNSService is the fake for method WorkloadNetworksClient.GetDNSService
 	// HTTP status codes to indicate success: http.StatusOK
@@ -162,27 +162,27 @@ type WorkloadNetworksServer struct {
 
 	// BeginUpdateDNSService is the fake for method WorkloadNetworksClient.BeginUpdateDNSService
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdateDNSService func(ctx context.Context, resourceGroupName string, privateCloudName string, dnsServiceID string, workloadNetworkDNSService armavs.WorkloadNetworkDNSService, options *armavs.WorkloadNetworksClientBeginUpdateDNSServiceOptions) (resp azfake.PollerResponder[armavs.WorkloadNetworksClientUpdateDNSServiceResponse], errResp azfake.ErrorResponder)
+	BeginUpdateDNSService func(ctx context.Context, resourceGroupName string, privateCloudName string, dnsServiceID string, workloadNetworkDNSService armavs.WorkloadNetworkDNSServiceUpdate, options *armavs.WorkloadNetworksClientBeginUpdateDNSServiceOptions) (resp azfake.PollerResponder[armavs.WorkloadNetworksClientUpdateDNSServiceResponse], errResp azfake.ErrorResponder)
 
 	// BeginUpdateDNSZone is the fake for method WorkloadNetworksClient.BeginUpdateDNSZone
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdateDNSZone func(ctx context.Context, resourceGroupName string, privateCloudName string, dnsZoneID string, workloadNetworkDNSZone armavs.WorkloadNetworkDNSZone, options *armavs.WorkloadNetworksClientBeginUpdateDNSZoneOptions) (resp azfake.PollerResponder[armavs.WorkloadNetworksClientUpdateDNSZoneResponse], errResp azfake.ErrorResponder)
+	BeginUpdateDNSZone func(ctx context.Context, resourceGroupName string, privateCloudName string, dnsZoneID string, workloadNetworkDNSZone armavs.WorkloadNetworkDNSZoneUpdate, options *armavs.WorkloadNetworksClientBeginUpdateDNSZoneOptions) (resp azfake.PollerResponder[armavs.WorkloadNetworksClientUpdateDNSZoneResponse], errResp azfake.ErrorResponder)
 
 	// BeginUpdateDhcp is the fake for method WorkloadNetworksClient.BeginUpdateDhcp
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdateDhcp func(ctx context.Context, resourceGroupName string, privateCloudName string, dhcpID string, workloadNetworkDhcp armavs.WorkloadNetworkDhcp, options *armavs.WorkloadNetworksClientBeginUpdateDhcpOptions) (resp azfake.PollerResponder[armavs.WorkloadNetworksClientUpdateDhcpResponse], errResp azfake.ErrorResponder)
+	BeginUpdateDhcp func(ctx context.Context, resourceGroupName string, privateCloudName string, dhcpID string, workloadNetworkDhcp armavs.WorkloadNetworkDhcpUpdate, options *armavs.WorkloadNetworksClientBeginUpdateDhcpOptions) (resp azfake.PollerResponder[armavs.WorkloadNetworksClientUpdateDhcpResponse], errResp azfake.ErrorResponder)
 
 	// BeginUpdatePortMirroring is the fake for method WorkloadNetworksClient.BeginUpdatePortMirroring
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdatePortMirroring func(ctx context.Context, resourceGroupName string, privateCloudName string, portMirroringID string, workloadNetworkPortMirroring armavs.WorkloadNetworkPortMirroring, options *armavs.WorkloadNetworksClientBeginUpdatePortMirroringOptions) (resp azfake.PollerResponder[armavs.WorkloadNetworksClientUpdatePortMirroringResponse], errResp azfake.ErrorResponder)
+	BeginUpdatePortMirroring func(ctx context.Context, resourceGroupName string, privateCloudName string, portMirroringID string, workloadNetworkPortMirroring armavs.WorkloadNetworkPortMirroringUpdate, options *armavs.WorkloadNetworksClientBeginUpdatePortMirroringOptions) (resp azfake.PollerResponder[armavs.WorkloadNetworksClientUpdatePortMirroringResponse], errResp azfake.ErrorResponder)
 
 	// BeginUpdateSegments is the fake for method WorkloadNetworksClient.BeginUpdateSegments
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdateSegments func(ctx context.Context, resourceGroupName string, privateCloudName string, segmentID string, workloadNetworkSegment armavs.WorkloadNetworkSegment, options *armavs.WorkloadNetworksClientBeginUpdateSegmentsOptions) (resp azfake.PollerResponder[armavs.WorkloadNetworksClientUpdateSegmentsResponse], errResp azfake.ErrorResponder)
+	BeginUpdateSegments func(ctx context.Context, resourceGroupName string, privateCloudName string, segmentID string, workloadNetworkSegment armavs.WorkloadNetworkSegmentUpdate, options *armavs.WorkloadNetworksClientBeginUpdateSegmentsOptions) (resp azfake.PollerResponder[armavs.WorkloadNetworksClientUpdateSegmentsResponse], errResp azfake.ErrorResponder)
 
 	// BeginUpdateVMGroup is the fake for method WorkloadNetworksClient.BeginUpdateVMGroup
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdateVMGroup func(ctx context.Context, resourceGroupName string, privateCloudName string, vmGroupID string, workloadNetworkVMGroup armavs.WorkloadNetworkVMGroup, options *armavs.WorkloadNetworksClientBeginUpdateVMGroupOptions) (resp azfake.PollerResponder[armavs.WorkloadNetworksClientUpdateVMGroupResponse], errResp azfake.ErrorResponder)
+	BeginUpdateVMGroup func(ctx context.Context, resourceGroupName string, privateCloudName string, vmGroupID string, workloadNetworkVMGroup armavs.WorkloadNetworkVMGroupUpdate, options *armavs.WorkloadNetworksClientBeginUpdateVMGroupOptions) (resp azfake.PollerResponder[armavs.WorkloadNetworksClientUpdateVMGroupResponse], errResp azfake.ErrorResponder)
 }
 
 // NewWorkloadNetworksServerTransport creates a new instance of WorkloadNetworksServerTransport with the provided implementation.
@@ -1067,10 +1067,10 @@ func (w *WorkloadNetworksServerTransport) dispatchGet(req *http.Request) (*http.
 	if w.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AVS/privateClouds/(?P<privateCloudName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/workloadNetworks/(?P<workloadNetworkName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AVS/privateClouds/(?P<privateCloudName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/workloadNetworks/default`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if matches == nil || len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -1081,17 +1081,7 @@ func (w *WorkloadNetworksServerTransport) dispatchGet(req *http.Request) (*http.
 	if err != nil {
 		return nil, err
 	}
-	workloadNetworkNameParam, err := parseWithCast(matches[regex.SubexpIndex("workloadNetworkName")], func(v string) (armavs.WorkloadNetworkName, error) {
-		p, unescapeErr := url.PathUnescape(v)
-		if unescapeErr != nil {
-			return "", unescapeErr
-		}
-		return armavs.WorkloadNetworkName(p), nil
-	})
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := w.srv.Get(req.Context(), resourceGroupNameParam, privateCloudNameParam, workloadNetworkNameParam, nil)
+	respr, errRespr := w.srv.Get(req.Context(), resourceGroupNameParam, privateCloudNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -1861,7 +1851,7 @@ func (w *WorkloadNetworksServerTransport) dispatchBeginUpdateDNSService(req *htt
 		if matches == nil || len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		body, err := server.UnmarshalRequestAsJSON[armavs.WorkloadNetworkDNSService](req)
+		body, err := server.UnmarshalRequestAsJSON[armavs.WorkloadNetworkDNSServiceUpdate](req)
 		if err != nil {
 			return nil, err
 		}
@@ -1913,7 +1903,7 @@ func (w *WorkloadNetworksServerTransport) dispatchBeginUpdateDNSZone(req *http.R
 		if matches == nil || len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		body, err := server.UnmarshalRequestAsJSON[armavs.WorkloadNetworkDNSZone](req)
+		body, err := server.UnmarshalRequestAsJSON[armavs.WorkloadNetworkDNSZoneUpdate](req)
 		if err != nil {
 			return nil, err
 		}
@@ -1965,7 +1955,7 @@ func (w *WorkloadNetworksServerTransport) dispatchBeginUpdateDhcp(req *http.Requ
 		if matches == nil || len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		body, err := server.UnmarshalRequestAsJSON[armavs.WorkloadNetworkDhcp](req)
+		body, err := server.UnmarshalRequestAsJSON[armavs.WorkloadNetworkDhcpUpdate](req)
 		if err != nil {
 			return nil, err
 		}
@@ -2017,7 +2007,7 @@ func (w *WorkloadNetworksServerTransport) dispatchBeginUpdatePortMirroring(req *
 		if matches == nil || len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		body, err := server.UnmarshalRequestAsJSON[armavs.WorkloadNetworkPortMirroring](req)
+		body, err := server.UnmarshalRequestAsJSON[armavs.WorkloadNetworkPortMirroringUpdate](req)
 		if err != nil {
 			return nil, err
 		}
@@ -2069,7 +2059,7 @@ func (w *WorkloadNetworksServerTransport) dispatchBeginUpdateSegments(req *http.
 		if matches == nil || len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		body, err := server.UnmarshalRequestAsJSON[armavs.WorkloadNetworkSegment](req)
+		body, err := server.UnmarshalRequestAsJSON[armavs.WorkloadNetworkSegmentUpdate](req)
 		if err != nil {
 			return nil, err
 		}
@@ -2121,7 +2111,7 @@ func (w *WorkloadNetworksServerTransport) dispatchBeginUpdateVMGroup(req *http.R
 		if matches == nil || len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		body, err := server.UnmarshalRequestAsJSON[armavs.WorkloadNetworkVMGroup](req)
+		body, err := server.UnmarshalRequestAsJSON[armavs.WorkloadNetworkVMGroupUpdate](req)
 		if err != nil {
 			return nil, err
 		}

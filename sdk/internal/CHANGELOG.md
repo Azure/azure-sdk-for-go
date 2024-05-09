@@ -2,6 +2,10 @@
 
 ## 1.8.0 (2024-05-09)
 
+### Breaking Changes
+
+* Unexported `Module` and `Version` constants
+
 ### Other Changes
 
 * Removed default sanitizers added in v1.6.0 (the test proxy itself now includes these)

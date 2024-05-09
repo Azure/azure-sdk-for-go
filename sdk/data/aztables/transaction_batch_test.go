@@ -15,6 +15,9 @@ import (
 )
 
 func TestBatchAdd(t *testing.T) {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
+	}
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
 			client, deleteAndStop := initClientTest(t, service, true, NewSpanValidator(t, SpanMatcher{
@@ -53,6 +56,9 @@ func TestBatchAdd(t *testing.T) {
 }
 
 func TestBatchInsert(t *testing.T) {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
+	}
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
 			client, deleteAndStop := initClientTest(t, service, true, tracing.Provider{})
@@ -94,6 +100,9 @@ func TestBatchInsert(t *testing.T) {
 }
 
 func TestBatchMixed(t *testing.T) {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
+	}
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
 			client, deleteAndStop := initClientTest(t, service, true, tracing.Provider{})

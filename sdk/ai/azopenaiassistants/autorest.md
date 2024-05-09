@@ -30,4 +30,13 @@ directive:
   - from: swagger-document
     where: $["x-ms-parameterized-host"].parameters.0
     transform: $["x-ms-parameter-location"] = "client";
+  
+  # fix a generation issue where "| null" in TypeSpec generates an allOf that 
+  # doesn't work with our polymorphic types.
+  - from: swagger-document
+    where: $.definitions.ThreadRun.properties.required_action
+    transform: |
+      $["$ref"] = "#/definitions/RequiredAction"
+      delete $["allOf"];
+      return $;
 ```

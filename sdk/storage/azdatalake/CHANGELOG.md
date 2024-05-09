@@ -9,6 +9,7 @@
 ### Bugs Fixed
 
 ### Other Changes
+* Updated `azidentity` version to `1.5.2`
 
 ## 1.1.2-beta.1 (2024-04-10)
 

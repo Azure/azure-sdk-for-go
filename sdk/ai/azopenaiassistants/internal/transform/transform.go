@@ -265,7 +265,6 @@ func (t *transformer) fixFiles() error {
 }
 
 func (t *transformer) addMissingDocComments() error {
-
 	return transformFiles(t.fileCache, "addMissingDocComments", []string{"models.go"}, func(text string) (string, error) {
 		tokens := map[string]string{
 			"CreateAssistantFileBody":    "// CreateAssistantFileBody - The request details to use when creating an assistant file.",

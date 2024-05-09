@@ -14,11 +14,11 @@ import (
 )
 
 func ExampleClient_GetEmbeddings() {
-	azureOpenAIKey := os.Getenv("AOAI_API_KEY")
+	azureOpenAIKey := os.Getenv("AOAI_EMBEDDINGS_API_KEY")
 	modelDeploymentID := os.Getenv("AOAI_EMBEDDINGS_MODEL")
 
 	// Ex: "https://<your-azure-openai-host>.openai.azure.com"
-	azureOpenAIEndpoint := os.Getenv("AOAI_ENDPOINT")
+	azureOpenAIEndpoint := os.Getenv("AOAI_EMBEDDINGS_ENDPOINT")
 
 	if azureOpenAIKey == "" || modelDeploymentID == "" || azureOpenAIEndpoint == "" {
 		fmt.Fprintf(os.Stderr, "Skipping example, environment variables missing\n")

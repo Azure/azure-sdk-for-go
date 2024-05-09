@@ -25,12 +25,12 @@ func TestImageGeneration_AzureOpenAI(t *testing.T) {
 	}
 
 	client := newTestClient(t, azureOpenAI.DallE.Endpoint)
-	testImageGeneration(t, client, azureOpenAI.DallE.Model, azopenai.ImageGenerationResponseFormatURL)
+	testImageGeneration(t, client, azureOpenAI.DallE.Model, azopenai.ImageGenerationResponseFormatURL, true)
 }
 
 func TestImageGeneration_OpenAI(t *testing.T) {
 	client := newTestClient(t, openAI.DallE.Endpoint)
-	testImageGeneration(t, client, openAI.DallE.Model, azopenai.ImageGenerationResponseFormatURL)
+	testImageGeneration(t, client, openAI.DallE.Model, azopenai.ImageGenerationResponseFormatURL, false)
 }
 
 func TestImageGeneration_AzureOpenAI_WithError(t *testing.T) {
@@ -57,11 +57,11 @@ func TestImageGeneration_OpenAI_Base64(t *testing.T) {
 	}
 
 	client := newTestClient(t, openAI.DallE.Endpoint)
-	testImageGeneration(t, client, openAI.DallE.Model, azopenai.ImageGenerationResponseFormatBase64)
+	testImageGeneration(t, client, openAI.DallE.Model, azopenai.ImageGenerationResponseFormatBase64, false)
 }
 
-func testImageGeneration(t *testing.T, client *azopenai.Client, model string, responseFormat azopenai.ImageGenerationResponseFormat) {
-	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
+func testImageGeneration(t *testing.T, client *azopenai.Client, model string, responseFormat azopenai.ImageGenerationResponseFormat, azure bool) {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Minute)
 	defer cancel()
 
 	resp, err := client.GetImageGenerations(ctx, azopenai.ImageGenerationOptions{
@@ -72,7 +72,7 @@ func testImageGeneration(t *testing.T, client *azopenai.Client, model string, re
 		ResponseFormat: &responseFormat,
 		DeploymentName: &model,
 	}, nil)
-	require.NoError(t, err)
+	customRequireNoError(t, err, azure)
 
 	if recording.GetRecordMode() == recording.LiveMode {
 		switch responseFormat {

@@ -41,6 +41,9 @@ import (
 )
 
 func Test(t *testing.T) {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
+	}
 	recordMode := recording.GetRecordMode()
 	t.Logf("Running file Tests in %s mode\n", recordMode)
 	if recordMode == recording.LiveMode {

@@ -19,7 +19,7 @@ modelerfour:
   seal-single-value-enum-by-default: true
   lenient-model-deduplication: true
 export-clients: true
-use: "@autorest/go@4.0.0-preview.49"
+use: "@autorest/go@4.0.0-preview.65"
 ```
 
 ### Undo breaking change with BlobName
@@ -263,7 +263,9 @@ directive:
 
 ``` yaml
 directive:
-- from: zz_models.go
+- from: 
+    - zz_options.go
+    - zz_models.go
   where: $
   transform: >-
     return $.
@@ -274,7 +276,7 @@ directive:
       replace(/SourceIfMatch\s+\*string/g, `SourceIfMatch *azcore.ETag`).
       replace(/SourceIfNoneMatch\s+\*string/g, `SourceIfNoneMatch *azcore.ETag`);
 
-- from: zz_response_types.go
+- from: zz_responses.go
   where: $
   transform: >-
     return $.

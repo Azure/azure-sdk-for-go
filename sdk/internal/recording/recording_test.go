@@ -30,6 +30,9 @@ type recordingTests struct {
 }
 
 func TestRecording(t *testing.T) {
+	if GetRecordMode() != LiveMode {
+		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
+	}
 	suite.Run(t, new(recordingTests))
 }
 

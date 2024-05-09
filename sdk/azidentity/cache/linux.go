@@ -93,11 +93,18 @@ func newKeyring(name string) (*keyring, error) {
 	if err != nil {
 		return nil, fmt.Errorf("couldn't get the user keyring due to error %q", err)
 	}
-	// Attempt to link a persistent keyring to the user's plain old keyring. This enables adding
-	// "persistent" keys that survive all the user's login sessions being deleted. Like all other
-	// keys, persistent keys exist only in kernel memory and are therefore lost on shutdown. If
-	// the attempt fails--some systems don't support persistent keyrings--we just use the plain
-	// old keyring.
+	// Link the session keyring to the user keyring so the process possesses any key[ring] it links
+	// to the user keyring and thereby has permission to read/write/search them (see the "Possession"
+	// section of the keyrings man page). This step isn't always necessary but in some cases prevents
+	// weirdness such as a process adding keys it can't read. Ignore errors because failure here
+	// doesn't guarantee this process can't perform all required operations on the user keyring.
+	if sessionID, err := unix.KeyctlGetKeyringID(unix.KEY_SPEC_SESSION_KEYRING, true); err == nil {
+		_, _ = unix.KeyctlInt(unix.KEYCTL_LINK, ringID, sessionID, 0, 0)
+	}
+	// Attempt to link a persistent keyring to the user keyring. This keyring is persistent in that
+	// its linked keys survive all the user's login sessions being deleted but like all user keys,
+	// they exist only in memory and are therefore lost on system shutdown. If the attempt fails
+	// (some systems don't support persistent keyrings) continue with the user keyring.
 	if persistentRing, err := unix.KeyctlInt(unix.KEYCTL_GET_PERSISTENT, -1, ringID, 0, 0); err == nil {
 		ringID = persistentRing
 	}

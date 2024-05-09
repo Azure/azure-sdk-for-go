@@ -121,6 +121,9 @@ func newTelemetryTestPolicy() policy.Policy {
 }
 
 func TestUserAgentForAzDatalake(t *testing.T) {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
+	}
 	client, err := file.NewClientWithNoCredential("https://fake/blob/testpath", &file.ClientOptions{
 		ClientOptions: policy.ClientOptions{
 			PerCallPolicies: []policy.Policy{newTelemetryTestPolicy()},
@@ -214,6 +217,9 @@ func (s *RecordedTestSuite) TestCreateFileWithNilAccessConditions() {
 }
 
 func (s *RecordedTestSuite) TestCreateFileWithCPK() {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
+	}
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -2045,6 +2051,9 @@ func (s *RecordedTestSuite) TestFileSetMetadataWithAccessConditions() {
 }
 
 func (s *RecordedTestSuite) TestFileSetMetadataWithCPK() {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
+	}
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -4000,6 +4009,9 @@ func (s *RecordedTestSuite) TestFileAppendAndFlushDataWithEmptyOpts() {
 }
 
 func (s *RecordedTestSuite) TestFileAppendAndFlushDataWithCPK() {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
+	}
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -4846,6 +4858,9 @@ func (s *RecordedTestSuite) TestFileUploadDownloadSmallFileWithAccessConditions(
 }
 
 func (s *RecordedTestSuite) TestFileUploadDownloadSmallFileWithCPK() {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
+	}
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -5209,6 +5224,9 @@ func (s *RecordedTestSuite) TestFileDownloadSmallBufferWithAccessConditions() {
 }
 
 func (s *RecordedTestSuite) TestFileDownloadBufferWithCPK() {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
+	}
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -5334,6 +5352,9 @@ func (s *RecordedTestSuite) TestFileGetPropertiesResponseCapture() {
 }
 
 func (s *RecordedTestSuite) TestFileGetPropertiesWithCPK() {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
+	}
 	_require := require.New(s.T())
 	testName := s.T().Name()
 

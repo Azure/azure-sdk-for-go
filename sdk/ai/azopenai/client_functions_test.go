@@ -11,6 +11,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/require"
 )
 
@@ -27,6 +28,9 @@ type ParamProperty struct {
 }
 
 func TestGetChatCompletions_usingFunctions(t *testing.T) {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
+	}
 	// https://platform.openai.com/docs/guides/gpt/function-calling
 
 	testFn := func(t *testing.T, chatClient *azopenai.Client, deploymentName string, toolChoice *azopenai.ChatCompletionsToolChoice) {
@@ -127,6 +131,9 @@ func TestGetChatCompletions_usingFunctions(t *testing.T) {
 }
 
 func TestGetChatCompletions_usingFunctions_legacy(t *testing.T) {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
+	}
 	testFn := func(t *testing.T, epm endpointWithModel) {
 		client := newTestClient(t, epm.Endpoint)
 

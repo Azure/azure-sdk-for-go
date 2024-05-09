@@ -16,6 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/require"
 )
 
@@ -35,6 +36,9 @@ var testId = "120823uid"
 // var testId = strconv.FormatInt(currTime, 10)[len(strconv.FormatInt(currTime, 10))-6:]
 
 func TestClient(t *testing.T) {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
+	}
 	const (
 		key   = "key-TestClient"
 		label = "label"
@@ -305,6 +309,9 @@ func TestClient(t *testing.T) {
 }
 
 func TestSettingNilValue(t *testing.T) {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
+	}
 	const (
 		key         = "key-TestSettingNilValue"
 		contentType = "content-type"
@@ -324,6 +331,9 @@ func TestSettingNilValue(t *testing.T) {
 }
 
 func TestSettingWithEscaping(t *testing.T) {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
+	}
 	const (
 		key         = ".appconfig.featureflag/TestSettingWithEscaping"
 		contentType = "application/vnd.microsoft.appconfig.ff+json;charset=utf-8"
@@ -348,6 +358,9 @@ func TestSettingWithEscaping(t *testing.T) {
 }
 
 func TestSnapshotListConfigurationSettings(t *testing.T) {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
+	}
 	snapshotName := "listConfigurationsSnapshotTest" + string(testId)
 	client := NewClientFromConnectionString(t)
 
@@ -482,6 +495,9 @@ func TestSnapshotListConfigurationSettings(t *testing.T) {
 }
 
 func TestGetSnapshots(t *testing.T) {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
+	}
 	snapshotName := "getSnapshotsTest" + string(testId)
 
 	const (
@@ -531,6 +547,9 @@ func TestGetSnapshots(t *testing.T) {
 }
 
 func TestSnapshotArchive(t *testing.T) {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
+	}
 	snapshotName := "archiveSnapshotsTest" + string(testId)
 
 	client := NewClientFromConnectionString(t)
@@ -553,6 +572,9 @@ func TestSnapshotArchive(t *testing.T) {
 }
 
 func TestSnapshotRecover(t *testing.T) {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
+	}
 	snapshotName := "recoverSnapshotsTest" + string(testId)
 
 	client := NewClientFromConnectionString(t)
@@ -581,6 +603,9 @@ func TestSnapshotRecover(t *testing.T) {
 }
 
 func TestSnapshotCreate(t *testing.T) {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
+	}
 	snapshotName := "createSnapshotsTest" + string(testId)
 
 	client := NewClientFromConnectionString(t)

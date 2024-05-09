@@ -54,6 +54,9 @@ func (testsuite *ApimportalsettingsTestSuite) TearDownSuite() {
 }
 
 func TestApimportalsettingsTestSuite(t *testing.T) {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
+	}
 	suite.Run(t, new(ApimportalsettingsTestSuite))
 }
 

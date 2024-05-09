@@ -1,12 +1,6 @@
 # Release History
 
-## 1.8.0 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.8.0 (2024-05-09)
 
 ### Other Changes
 

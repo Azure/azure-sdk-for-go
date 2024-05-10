@@ -541,71 +541,71 @@ func TestReleaseKey(t *testing.T) {
 		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
 	}
 	// Skipping managed HSM tests for now, service failure
-	//for _, mhsm := range []bool{false, true} {
-	name := "KV"
-	// if mhsm {
-	// 	name = "MHSM"
-	// }
-	t.Run(name, func(t *testing.T) {
-		client := startTest(t, false)
-		key := createRandomName(t, "testreleasekey")
-
-		// retry creating the key because Key Vault sometimes can't reach the fake
-		// attestation service we use in CI for several minutes after deployment
-		var createResp azkeys.CreateKeyResponse
-		var err error
-		for i := 0; i < 5; i++ {
-			params := azkeys.CreateKeyParameters{
-				Curve: to.Ptr(azkeys.CurveNameP256K),
-				KeyAttributes: &azkeys.KeyAttributes{
-					Exportable: to.Ptr(true),
-				},
-				Kty: to.Ptr(azkeys.KeyTypeECHSM),
-				ReleasePolicy: &azkeys.KeyReleasePolicy{
-					EncodedPolicy: getMarshalledReleasePolicy(attestationURL),
-					Immutable:     to.Ptr(true),
-				},
-			}
-			createResp, err = client.CreateKey(context.Background(), key, params, nil)
-			if err == nil {
-				break
-			}
-			if i < 4 {
-				recording.Sleep(30 * time.Second)
-			}
+	for _, mhsm := range []bool{false, true} {
+		name := "KV"
+		if mhsm {
+			name = "MHSM"
 		}
-		require.NoError(t, err)
-		require.NotNil(t, createResp.Key.KID)
-		defer cleanUpKey(t, client, createResp.Key.KID)
+		t.Run(name, func(t *testing.T) {
+			client := startTest(t, false)
+			key := createRandomName(t, "testreleasekey")
 
-		attestationClient, err := recording.NewRecordingHTTPClient(t, nil)
-		require.NoError(t, err)
-		req, err := http.NewRequest("GET", fmt.Sprintf("%s/generate-test-token", attestationURL), nil)
-		require.NoError(t, err)
-		resp, err := attestationClient.Do(req)
-		require.NoError(t, err)
-		require.Equal(t, resp.StatusCode, http.StatusOK)
-		defer resp.Body.Close()
+			// retry creating the key because Key Vault sometimes can't reach the fake
+			// attestation service we use in CI for several minutes after deployment
+			var createResp azkeys.CreateKeyResponse
+			var err error
+			for i := 0; i < 5; i++ {
+				params := azkeys.CreateKeyParameters{
+					Curve: to.Ptr(azkeys.CurveNameP256K),
+					KeyAttributes: &azkeys.KeyAttributes{
+						Exportable: to.Ptr(true),
+					},
+					Kty: to.Ptr(azkeys.KeyTypeECHSM),
+					ReleasePolicy: &azkeys.KeyReleasePolicy{
+						EncodedPolicy: getMarshalledReleasePolicy(attestationURL),
+						Immutable:     to.Ptr(true),
+					},
+				}
+				createResp, err = client.CreateKey(context.Background(), key, params, nil)
+				if err == nil {
+					break
+				}
+				if i < 4 {
+					recording.Sleep(30 * time.Second)
+				}
+			}
+			require.NoError(t, err)
+			require.NotNil(t, createResp.Key.KID)
+			defer cleanUpKey(t, client, createResp.Key.KID)
 
-		var tR struct {
-			Token *string `json:"token"`
-		}
-		err = json.NewDecoder(resp.Body).Decode(&tR)
-		require.NoError(t, err)
+			attestationClient, err := recording.NewRecordingHTTPClient(t, nil)
+			require.NoError(t, err)
+			req, err := http.NewRequest("GET", fmt.Sprintf("%s/generate-test-token", attestationURL), nil)
+			require.NoError(t, err)
+			resp, err := attestationClient.Do(req)
+			require.NoError(t, err)
+			require.Equal(t, resp.StatusCode, http.StatusOK)
+			defer resp.Body.Close()
 
-		params := azkeys.ReleaseParameters{TargetAttestationToken: tR.Token}
-		testSerde(t, &params)
-		releaseResp, err := client.Release(context.Background(), key, "", params, nil)
-		if err != nil && strings.Contains(err.Error(), "Target environment attestation statement cannot be verified.") {
-			t.Skip("test encountered a transient service fault; see https://github.com/Azure/azure-sdk-for-net/issues/27957")
-		}
-		require.NoError(t, err)
-		require.NotEmpty(t, releaseResp.KeyReleaseResult.Value)
-		testSerde(t, &releaseResp.KeyReleaseResult)
-	})
+			var tR struct {
+				Token *string `json:"token"`
+			}
+			err = json.NewDecoder(resp.Body).Decode(&tR)
+			require.NoError(t, err)
+
+			params := azkeys.ReleaseParameters{TargetAttestationToken: tR.Token}
+			testSerde(t, &params)
+			releaseResp, err := client.Release(context.Background(), key, "", params, nil)
+			if err != nil && strings.Contains(err.Error(), "Target environment attestation statement cannot be verified.") {
+				t.Skip("test encountered a transient service fault; see https://github.com/Azure/azure-sdk-for-net/issues/27957")
+			}
+			require.NoError(t, err)
+			require.NotEmpty(t, releaseResp.KeyReleaseResult.Value)
+			testSerde(t, &releaseResp.KeyReleaseResult)
+		})
+	}
+
 }
-
-//}
 
 func TestRotateKey(t *testing.T) {
 	for _, mhsm := range []bool{false, true} {

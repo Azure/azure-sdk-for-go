@@ -540,7 +540,6 @@ func TestReleaseKey(t *testing.T) {
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
 	}
-	// Skipping managed HSM tests for now, service failure
 	for _, mhsm := range []bool{false, true} {
 		name := "KV"
 		if mhsm {

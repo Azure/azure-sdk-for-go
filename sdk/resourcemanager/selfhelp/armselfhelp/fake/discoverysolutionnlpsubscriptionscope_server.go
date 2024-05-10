@@ -17,6 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/selfhelp/armselfhelp/v2"
 	"net/http"
+	"net/url"
 	"reflect"
 	"regexp"
 )
@@ -25,7 +26,7 @@ import (
 type DiscoverySolutionNLPSubscriptionScopeServer struct {
 	// Post is the fake for method DiscoverySolutionNLPSubscriptionScopeClient.Post
 	// HTTP status codes to indicate success: http.StatusOK
-	Post func(ctx context.Context, options *armselfhelp.DiscoverySolutionNLPSubscriptionScopeClientPostOptions) (resp azfake.Responder[armselfhelp.DiscoverySolutionNLPSubscriptionScopeClientPostResponse], errResp azfake.ErrorResponder)
+	Post func(ctx context.Context, subscriptionID string, options *armselfhelp.DiscoverySolutionNLPSubscriptionScopeClientPostOptions) (resp azfake.Responder[armselfhelp.DiscoverySolutionNLPSubscriptionScopeClientPostResponse], errResp azfake.ErrorResponder)
 }
 
 // NewDiscoverySolutionNLPSubscriptionScopeServerTransport creates a new instance of DiscoverySolutionNLPSubscriptionScopeServerTransport with the provided implementation.
@@ -80,13 +81,17 @@ func (d *DiscoverySolutionNLPSubscriptionScopeServerTransport) dispatchPost(req 
 	if err != nil {
 		return nil, err
 	}
+	subscriptionIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("subscriptionId")])
+	if err != nil {
+		return nil, err
+	}
 	var options *armselfhelp.DiscoverySolutionNLPSubscriptionScopeClientPostOptions
 	if !reflect.ValueOf(body).IsZero() {
 		options = &armselfhelp.DiscoverySolutionNLPSubscriptionScopeClientPostOptions{
 			DiscoverSolutionRequest: &body,
 		}
 	}
-	respr, errRespr := d.srv.Post(req.Context(), options)
+	respr, errRespr := d.srv.Post(req.Context(), subscriptionIDParam, options)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}

@@ -1,5 +1,11 @@
 # Release History
 
+## 2.0.0-beta.5 (2024-05-10)
+### Breaking Changes
+
+- Function `*DiscoverySolutionNLPSubscriptionScopeClient.Post` parameter(s) have been changed from `(context.Context, *DiscoverySolutionNLPSubscriptionScopeClientPostOptions)` to `(context.Context, string, *DiscoverySolutionNLPSubscriptionScopeClientPostOptions)`
+
+
 ## 2.0.0-beta.4 (2024-04-26)
 ### Breaking Changes
 

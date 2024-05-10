@@ -10,35 +10,30 @@ package armselfhelp
 
 import (
 	"context"
-	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
-	"net/url"
 	"strings"
 )
 
 // DiscoverySolutionNLPSubscriptionScopeClient contains the methods for the DiscoverySolutionNLPSubscriptionScope group.
 // Don't use this type directly, use NewDiscoverySolutionNLPSubscriptionScopeClient() instead.
 type DiscoverySolutionNLPSubscriptionScopeClient struct {
-	internal       *arm.Client
-	subscriptionID string
+	internal *arm.Client
 }
 
 // NewDiscoverySolutionNLPSubscriptionScopeClient creates a new instance of DiscoverySolutionNLPSubscriptionScopeClient with the specified values.
-//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
-func NewDiscoverySolutionNLPSubscriptionScopeClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DiscoverySolutionNLPSubscriptionScopeClient, error) {
+func NewDiscoverySolutionNLPSubscriptionScopeClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*DiscoverySolutionNLPSubscriptionScopeClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &DiscoverySolutionNLPSubscriptionScopeClient{
-		subscriptionID: subscriptionID,
-		internal:       cl,
+		internal: cl,
 	}
 	return client, nil
 }
@@ -48,15 +43,16 @@ func NewDiscoverySolutionNLPSubscriptionScopeClient(subscriptionID string, crede
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-03-01-preview
+//   - subscriptionID - The Azure subscription ID.
 //   - options - DiscoverySolutionNLPSubscriptionScopeClientPostOptions contains the optional parameters for the DiscoverySolutionNLPSubscriptionScopeClient.Post
 //     method.
-func (client *DiscoverySolutionNLPSubscriptionScopeClient) Post(ctx context.Context, options *DiscoverySolutionNLPSubscriptionScopeClientPostOptions) (DiscoverySolutionNLPSubscriptionScopeClientPostResponse, error) {
+func (client *DiscoverySolutionNLPSubscriptionScopeClient) Post(ctx context.Context, subscriptionID string, options *DiscoverySolutionNLPSubscriptionScopeClientPostOptions) (DiscoverySolutionNLPSubscriptionScopeClientPostResponse, error) {
 	var err error
 	const operationName = "DiscoverySolutionNLPSubscriptionScopeClient.Post"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.postCreateRequest(ctx, options)
+	req, err := client.postCreateRequest(ctx, subscriptionID, options)
 	if err != nil {
 		return DiscoverySolutionNLPSubscriptionScopeClientPostResponse{}, err
 	}
@@ -73,12 +69,9 @@ func (client *DiscoverySolutionNLPSubscriptionScopeClient) Post(ctx context.Cont
 }
 
 // postCreateRequest creates the Post request.
-func (client *DiscoverySolutionNLPSubscriptionScopeClient) postCreateRequest(ctx context.Context, options *DiscoverySolutionNLPSubscriptionScopeClientPostOptions) (*policy.Request, error) {
+func (client *DiscoverySolutionNLPSubscriptionScopeClient) postCreateRequest(ctx context.Context, subscriptionID string, options *DiscoverySolutionNLPSubscriptionScopeClientPostOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Help/discoverSolutions"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", subscriptionID)
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err

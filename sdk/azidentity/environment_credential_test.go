@@ -169,6 +169,9 @@ func TestEnvironmentCredential_SendCertificateChain(t *testing.T) {
 }
 
 func TestEnvironmentCredential_ClientSecretLive(t *testing.T) {
+	if recording.GetRecordMode() == recording.LiveMode {
+		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22879")
+	}
 	vars := map[string]string{
 		azureClientID:     liveSP.clientID,
 		azureClientSecret: liveSP.secret,

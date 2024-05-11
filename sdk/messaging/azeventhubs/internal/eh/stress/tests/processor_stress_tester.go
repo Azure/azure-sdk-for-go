@@ -80,10 +80,10 @@ func newProcessorStressTest(args []string) (*processorStressTest, error) {
 
 	containerName := testData.runID
 
-	containerClient, err := container.NewClientFromConnectionString(testData.StorageConnectionString, containerName, nil)
+	containerClient, err := container.NewClient(testData.StorageEndpoint+"/"+containerName, testData.Cred, nil)
 
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
 	blobStore, err := checkpoints.NewBlobStore(containerClient, nil)
@@ -160,7 +160,7 @@ func (inf *processorStressTest) Run(ctx context.Context) error {
 
 	// this is the main driver for the entire test - we send, wait for the events to all be
 	// accounted for, and then send again.
-	producerClient, err := azeventhubs.NewProducerClientFromConnectionString(inf.ConnectionString, inf.HubName, nil)
+	producerClient, err := azeventhubs.NewProducerClient(inf.Namespace, inf.HubName, inf.Cred, nil)
 
 	if err != nil {
 		return err
@@ -369,7 +369,7 @@ func sliceToMap[T any](values []T, key func(v T) string) map[string]T {
 }
 
 func (inf *processorStressTest) newProcessorForTest(ctx context.Context) (*azeventhubs.ConsumerClient, *azeventhubs.Processor, error) {
-	containerClient, err := container.NewClientFromConnectionString(inf.StorageConnectionString, inf.containerName, nil)
+	containerClient, err := container.NewClient(inf.StorageEndpoint+"/"+inf.containerName, inf.Cred, nil)
 
 	if err != nil {
 		panic(err)
@@ -381,7 +381,7 @@ func (inf *processorStressTest) newProcessorForTest(ctx context.Context) (*azeve
 		return nil, nil, err
 	}
 
-	cc, err := azeventhubs.NewConsumerClientFromConnectionString(inf.ConnectionString, inf.HubName, azeventhubs.DefaultConsumerGroup, nil)
+	cc, err := azeventhubs.NewConsumerClient(inf.Namespace, inf.HubName, azeventhubs.DefaultConsumerGroup, inf.Cred, nil)
 
 	if err != nil {
 		return nil, nil, err

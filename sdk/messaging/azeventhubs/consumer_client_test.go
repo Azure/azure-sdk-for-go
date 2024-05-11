@@ -40,7 +40,7 @@ func TestConsumerClient_UsingWebSockets(t *testing.T) {
 
 	testParams := test.GetConnectionParamsForTest(t)
 
-	producerClient, err := azeventhubs.NewProducerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, &azeventhubs.ProducerClientOptions{
+	producerClient, err := azeventhubs.NewProducerClient(testParams.EventHubNamespace, testParams.EventHubName, testParams.Cred, &azeventhubs.ProducerClientOptions{
 		NewWebSocketConn: newWebSocketConnFn,
 	})
 	require.NoError(t, err)
@@ -63,7 +63,7 @@ func TestConsumerClient_UsingWebSockets(t *testing.T) {
 	err = producerClient.SendEventDataBatch(context.Background(), batch, nil)
 	require.NoError(t, err)
 
-	consumerClient, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, &azeventhubs.ConsumerClientOptions{
+	consumerClient, err := azeventhubs.NewConsumerClient(testParams.EventHubNamespace, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, testParams.Cred, &azeventhubs.ConsumerClientOptions{
 		NewWebSocketConn: newWebSocketConnFn,
 	})
 	require.NoError(t, err)
@@ -221,7 +221,7 @@ func TestConsumerClient_DefaultAzureCredential(t *testing.T) {
 func TestConsumerClient_GetHubAndPartitionProperties(t *testing.T) {
 	testParams := test.GetConnectionParamsForTest(t)
 
-	consumer, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, nil)
+	consumer, err := azeventhubs.NewConsumerClient(testParams.EventHubNamespace, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, testParams.Cred, nil)
 	require.NoError(t, err)
 
 	defer func() {
@@ -251,7 +251,7 @@ func TestConsumerClient_Concurrent_NoEpoch(t *testing.T) {
 	const simultaneousClients = 5 // max you can have with a single consumer group for a single partition
 
 	for i := 0; i < simultaneousClients; i++ {
-		client, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, "$Default", nil)
+		client, err := azeventhubs.NewConsumerClient(testParams.EventHubNamespace, testParams.EventHubName, "$Default", testParams.Cred, nil)
 		require.NoError(t, err)
 
 		// We want all the clients open while this for loop is going.
@@ -382,7 +382,7 @@ func TestConsumerClient_LowerEpochsAreRejected(t *testing.T) {
 // TestConsumerClient_NoPrefetch turns off prefetching (prefetch is on by default)
 func TestConsumerClient_NoPrefetch(t *testing.T) {
 	testParams := test.GetConnectionParamsForTest(t)
-	producer, err := azeventhubs.NewProducerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, nil)
+	producer, err := azeventhubs.NewProducerClient(testParams.EventHubNamespace, testParams.EventHubName, testParams.Cred, nil)
 	require.NoError(t, err)
 
 	defer test.RequireClose(t, producer)
@@ -432,7 +432,7 @@ func TestConsumerClient_NoPrefetch(t *testing.T) {
 
 func TestConsumerClient_ReceiveEvents(t *testing.T) {
 	testParams := test.GetConnectionParamsForTest(t)
-	producer, err := azeventhubs.NewProducerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, nil)
+	producer, err := azeventhubs.NewProducerClient(testParams.EventHubNamespace, testParams.EventHubName, testParams.Cred, nil)
 	require.NoError(t, err)
 
 	defer test.RequireClose(t, producer)
@@ -503,7 +503,7 @@ func TestConsumerClient_Detaches(t *testing.T) {
 	require.NoError(t, err)
 
 	// create our event hub
-	producerClient, err := azeventhubs.NewProducerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, nil)
+	producerClient, err := azeventhubs.NewProducerClient(testParams.EventHubNamespace, testParams.EventHubName, testParams.Cred, nil)
 	require.NoError(t, err)
 
 	defer producerClient.Close(context.Background())
@@ -579,7 +579,7 @@ func enableOrDisableEventHub(t *testing.T, testParams test.ConnectionParamsForTe
 func newPartitionClientForTest(t *testing.T, partitionID string, subscribeOptions azeventhubs.PartitionClientOptions) (*azeventhubs.PartitionClient, func()) {
 	testParams := test.GetConnectionParamsForTest(t)
 
-	origClient, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, "$Default", &azeventhubs.ConsumerClientOptions{
+	origClient, err := azeventhubs.NewConsumerClient(testParams.EventHubNamespace, testParams.EventHubName, "$Default", testParams.Cred, &azeventhubs.ConsumerClientOptions{
 		// Today we treat the link stolen error as retryable. I've filed an issue to look at making this fatal
 		// instead since it's likely to be a configuration/runtime issue where the user has two consumers
 		//  starting up with the same ownerlevel. Having them fight with retries is probably undesirable.
@@ -604,7 +604,7 @@ func newPartitionClientForTest(t *testing.T, partitionID string, subscribeOption
 func TestConsumerClient_StartPositions(t *testing.T) {
 	testParams := test.GetConnectionParamsForTest(t)
 
-	producerClient, err := azeventhubs.NewProducerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, nil)
+	producerClient, err := azeventhubs.NewProducerClient(testParams.EventHubNamespace, testParams.EventHubName, testParams.Cred, nil)
 	require.NoError(t, err)
 
 	defer func() {
@@ -635,7 +635,7 @@ func TestConsumerClient_StartPositions(t *testing.T) {
 	require.NoError(t, err)
 
 	t.Run("offset", func(t *testing.T) {
-		consumerClient, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, nil)
+		consumerClient, err := azeventhubs.NewConsumerClient(testParams.EventHubNamespace, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, testParams.Cred, nil)
 		require.NoError(t, err)
 
 		defer func() {
@@ -664,7 +664,7 @@ func TestConsumerClient_StartPositions(t *testing.T) {
 	})
 
 	t.Run("enqueuedTime", func(t *testing.T) {
-		consumerClient, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, nil)
+		consumerClient, err := azeventhubs.NewConsumerClient(testParams.EventHubNamespace, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, testParams.Cred, nil)
 		require.NoError(t, err)
 
 		defer func() {
@@ -688,7 +688,7 @@ func TestConsumerClient_StartPositions(t *testing.T) {
 	})
 
 	t.Run("earliest", func(t *testing.T) {
-		consumerClient, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, nil)
+		consumerClient, err := azeventhubs.NewConsumerClient(testParams.EventHubNamespace, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, testParams.Cred, nil)
 		require.NoError(t, err)
 
 		defer func() {
@@ -720,7 +720,7 @@ func TestConsumerClient_StartPositions(t *testing.T) {
 func TestConsumerClient_StartPosition_Latest(t *testing.T) {
 	testParams := test.GetConnectionParamsForTest(t)
 
-	consumerClient, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, nil)
+	consumerClient, err := azeventhubs.NewConsumerClient(testParams.EventHubNamespace, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, testParams.Cred, nil)
 	require.NoError(t, err)
 
 	defer func() {
@@ -755,7 +755,7 @@ func TestConsumerClient_StartPosition_Latest(t *testing.T) {
 	// give the consumer link time to spin up and start listening on the partition
 	time.Sleep(5 * time.Second)
 
-	producerClient, err := azeventhubs.NewProducerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, nil)
+	producerClient, err := azeventhubs.NewProducerClient(testParams.EventHubNamespace, testParams.EventHubName, testParams.Cred, nil)
 	require.NoError(t, err)
 
 	defer func() {
@@ -793,7 +793,7 @@ func TestConsumerClient_InstanceID(t *testing.T) {
 
 	// create a partition client with owner level 1 that's fully initialized.
 	{
-		producerClient, err := azeventhubs.NewProducerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, nil)
+		producerClient, err := azeventhubs.NewProducerClient(testParams.EventHubNamespace, testParams.EventHubName, testParams.Cred, nil)
 		require.NoError(t, err)
 		defer test.RequireClose(t, producerClient)
 
@@ -801,7 +801,7 @@ func TestConsumerClient_InstanceID(t *testing.T) {
 			{Body: []byte("hello")},
 		})
 
-		consumerClient, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, &azeventhubs.ConsumerClientOptions{
+		consumerClient, err := azeventhubs.NewConsumerClient(testParams.EventHubNamespace, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, testParams.Cred, &azeventhubs.ConsumerClientOptions{
 			// We'll just let this one be auto-generated.
 			//InstanceID: "",
 		})
@@ -826,7 +826,7 @@ func TestConsumerClient_InstanceID(t *testing.T) {
 		require.NoError(t, err)
 	}
 
-	failedConsumerClient, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, &azeventhubs.ConsumerClientOptions{
+	failedConsumerClient, err := azeventhubs.NewConsumerClient(testParams.EventHubNamespace, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, testParams.Cred, &azeventhubs.ConsumerClientOptions{
 		InstanceID: "LosesBecauseOfLowOwnerLevel",
 		RetryOptions: azeventhubs.RetryOptions{
 			MaxRetries: -1, // just fail immediately, don't retry.
@@ -857,7 +857,7 @@ func TestConsumerClient_InstanceID(t *testing.T) {
 // we sent it to.
 func mustSendEventsToAllPartitions(t *testing.T, events []*azeventhubs.EventData) []azeventhubs.PartitionProperties {
 	testParams := test.GetConnectionParamsForTest(t)
-	producer, err := azeventhubs.NewProducerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, nil)
+	producer, err := azeventhubs.NewProducerClient(testParams.EventHubNamespace, testParams.EventHubName, testParams.Cred, nil)
 	require.NoError(t, err)
 
 	defer func() {

@@ -87,7 +87,7 @@ func TestProcessor_Contention(t *testing.T) {
 	}()
 
 	log.Printf("Producer client created")
-	producerClient, err := azeventhubs.NewProducerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, nil)
+	producerClient, err := azeventhubs.NewProducerClient(testParams.EventHubNamespace, testParams.EventHubName, testParams.Cred, nil)
 	require.NoError(t, err)
 
 	defer func() {
@@ -547,7 +547,7 @@ func testWithLoadBalancer(t *testing.T, loadBalancerStrategy azeventhubs.Process
 	ehProps, err := consumerClient.GetEventHubProperties(context.Background(), nil)
 	require.NoError(t, err)
 
-	producerClient, err := azeventhubs.NewProducerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, nil)
+	producerClient, err := azeventhubs.NewProducerClient(testParams.EventHubNamespace, testParams.EventHubName, testParams.Cred, nil)
 	require.NoError(t, err)
 
 	defer func() {

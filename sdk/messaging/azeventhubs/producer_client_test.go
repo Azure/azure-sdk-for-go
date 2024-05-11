@@ -179,7 +179,7 @@ func TestProducerClient_GetHubAndPartitionProperties(t *testing.T) {
 	getLogsFn := test.CaptureLogsForTest()
 	testParams := test.GetConnectionParamsForTest(t)
 
-	producer, err := azeventhubs.NewProducerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, nil)
+	producer, err := azeventhubs.NewProducerClient(testParams.EventHubNamespace, testParams.EventHubName, testParams.Cred, nil)
 	require.NoError(t, err)
 
 	defer func() {
@@ -200,7 +200,7 @@ func TestProducerClient_GetHubAndPartitionProperties(t *testing.T) {
 			defer wg.Done()
 
 			t.Run(fmt.Sprintf("Partition%s", pid), func(t *testing.T) {
-				sendAndReceiveToPartitionTest(t, testParams.ConnectionString, testParams.EventHubName, pid)
+				sendAndReceiveToPartitionTest(t, testParams, pid)
 			})
 		}(partitionID)
 	}
@@ -226,7 +226,7 @@ func checkForTokenRefresh(t *testing.T, logs []string, eventHubName string) {
 func TestProducerClient_GetEventHubsProperties(t *testing.T) {
 	testParams := test.GetConnectionParamsForTest(t)
 
-	producer, err := azeventhubs.NewProducerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, nil)
+	producer, err := azeventhubs.NewProducerClient(testParams.EventHubNamespace, testParams.EventHubName, testParams.Cred, nil)
 	require.NoError(t, err)
 
 	defer func() {
@@ -306,7 +306,7 @@ func testSendAny(t *testing.T, args struct {
 }) {
 	testParams := test.GetConnectionParamsForTest(t)
 
-	producer, err := azeventhubs.NewProducerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, nil)
+	producer, err := azeventhubs.NewProducerClient(testParams.EventHubName, testParams.EventHubName, testParams.Cred, nil)
 	require.NoError(t, err)
 
 	defer test.RequireClose(t, producer)
@@ -332,7 +332,7 @@ func testSendAny(t *testing.T, args struct {
 	err = producer.SendEventDataBatch(context.Background(), batch, nil)
 	require.NoError(t, err)
 
-	consumer, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, &azeventhubs.ConsumerClientOptions{
+	consumer, err := azeventhubs.NewConsumerClient(testParams.EventHubNamespace, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, testParams.Cred, &azeventhubs.ConsumerClientOptions{
 		InstanceID: args.instanceID,
 	})
 	require.NoError(t, err)
@@ -368,7 +368,7 @@ func testSendAny(t *testing.T, args struct {
 func TestProducerClient_AMQPAnnotatedMessages(t *testing.T) {
 	testParams := test.GetConnectionParamsForTest(t)
 
-	producer, err := azeventhubs.NewProducerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, nil)
+	producer, err := azeventhubs.NewProducerClient(testParams.EventHubNamespace, testParams.EventHubName, testParams.Cred, nil)
 	require.NoError(t, err)
 
 	defer test.RequireClose(t, producer)
@@ -448,7 +448,7 @@ func TestProducerClient_AMQPAnnotatedMessages(t *testing.T) {
 
 	require.Equal(t, numEvents, afterProps.LastEnqueuedSequenceNumber-beforeProps.LastEnqueuedSequenceNumber)
 
-	consumerClient, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, nil)
+	consumerClient, err := azeventhubs.NewConsumerClient(testParams.EventHubNamespace, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, testParams.Cred, nil)
 	require.NoError(t, err)
 
 	defer test.RequireClose(t, consumerClient)
@@ -511,7 +511,7 @@ func TestProducerClient_AMQPAnnotatedMessages(t *testing.T) {
 func TestProducerClient_SendBatchExample(t *testing.T) {
 	testParams := test.GetConnectionParamsForTest(t)
 
-	producerClient, err := azeventhubs.NewProducerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, nil)
+	producerClient, err := azeventhubs.NewProducerClient(testParams.EventHubNamespace, testParams.EventHubName, testParams.Cred, nil)
 	require.NoError(t, err)
 
 	beforeSend, err := producerClient.GetPartitionProperties(context.Background(), "0", nil)
@@ -600,7 +600,7 @@ func TestProducerClient_SendBatchExample(t *testing.T) {
 	require.Equal(t, 1, batchesSentFromExcess)
 	require.Equal(t, []int{2, 2}, numMessagesPerBatch)
 
-	consumerClient, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, nil)
+	consumerClient, err := azeventhubs.NewConsumerClient(testParams.EventHubNamespace, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, testParams.Cred, nil)
 	require.NoError(t, err)
 
 	defer consumerClient.Close(context.Background())
@@ -712,8 +712,8 @@ func getAllPartitionProperties(t *testing.T, client interface {
 	return partitions
 }
 
-func sendAndReceiveToPartitionTest(t *testing.T, cs string, eventHubName string, partitionID string) {
-	producer, err := azeventhubs.NewProducerClientFromConnectionString(cs, eventHubName, nil)
+func sendAndReceiveToPartitionTest(t *testing.T, testParams test.ConnectionParamsForTest, partitionID string) {
+	producer, err := azeventhubs.NewProducerClient(testParams.EventHubNamespace, testParams.EventHubName, testParams.Cred, nil)
 	require.NoError(t, err)
 
 	defer func() {
@@ -724,7 +724,7 @@ func sendAndReceiveToPartitionTest(t *testing.T, cs string, eventHubName string,
 	partProps, err := producer.GetPartitionProperties(context.Background(), partitionID, &azeventhubs.GetPartitionPropertiesOptions{})
 	require.NoError(t, err)
 
-	consumer, err := azeventhubs.NewConsumerClientFromConnectionString(cs, eventHubName, azeventhubs.DefaultConsumerGroup, nil)
+	consumer, err := azeventhubs.NewConsumerClient(testParams.EventHubNamespace, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, testParams.Cred, nil)
 	require.NoError(t, err)
 
 	defer func() {

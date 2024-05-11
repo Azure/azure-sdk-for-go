@@ -15,6 +15,8 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	azlog "github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/exported"
 	"github.com/joho/godotenv"
@@ -93,6 +95,7 @@ func RandomString(prefix string, length int) string {
 
 type ConnectionParamsForTest struct {
 	ClientID                   string
+	Cred                       azcore.TokenCredential
 	ConnectionString           string
 	ConnectionStringListenOnly string
 	ConnectionStringSendOnly   string
@@ -126,7 +129,11 @@ func GetConnectionParamsForTest(t *testing.T) ConnectionParamsForTest {
 	connProps, err := exported.ParseConnectionString(envVars["EVENTHUB_CONNECTION_STRING"])
 	require.NoError(t, err)
 
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	require.NoError(t, err)
+
 	return ConnectionParamsForTest{
+		Cred:                       cred,
 		ConnectionString:           envVars["EVENTHUB_CONNECTION_STRING"],
 		ConnectionStringListenOnly: envVars["EVENTHUB_CONNECTION_STRING_LISTEN_ONLY"],
 		ConnectionStringSendOnly:   envVars["EVENTHUB_CONNECTION_STRING_SEND_ONLY"],

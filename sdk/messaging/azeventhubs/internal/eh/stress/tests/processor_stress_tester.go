@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"log"
 	"math"
+	"net/url"
 	"os"
 	"strconv"
 	"strings"
@@ -80,7 +81,13 @@ func newProcessorStressTest(args []string) (*processorStressTest, error) {
 
 	containerName := testData.runID
 
-	containerClient, err := container.NewClient(testData.StorageEndpoint+"/"+containerName, testData.Cred, nil)
+	storageEndpoint, err := url.JoinPath(testData.StorageEndpoint, containerName)
+
+	if err != nil {
+		return nil, err
+	}
+
+	containerClient, err := container.NewClient(storageEndpoint, testData.Cred, nil)
 
 	if err != nil {
 		return nil, err
@@ -120,7 +127,7 @@ func (inf *processorStressTest) Run(ctx context.Context) error {
 
 	// start up the processors - they'll stay alive for the entire test.
 	for i := 0; i < inf.numProcessors; i++ {
-		cc, proc, err := inf.newProcessorForTest(ctx)
+		cc, proc, err := inf.newProcessorForTest()
 
 		if err != nil {
 			return err
@@ -368,11 +375,17 @@ func sliceToMap[T any](values []T, key func(v T) string) map[string]T {
 	return m
 }
 
-func (inf *processorStressTest) newProcessorForTest(ctx context.Context) (*azeventhubs.ConsumerClient, *azeventhubs.Processor, error) {
-	containerClient, err := container.NewClient(inf.StorageEndpoint+"/"+inf.containerName, inf.Cred, nil)
+func (inf *processorStressTest) newProcessorForTest() (*azeventhubs.ConsumerClient, *azeventhubs.Processor, error) {
+	storageEndpoint, err := url.JoinPath(inf.StorageEndpoint, inf.containerName)
 
 	if err != nil {
-		panic(err)
+		return nil, nil, err
+	}
+
+	containerClient, err := container.NewClient(storageEndpoint, inf.Cred, nil)
+
+	if err != nil {
+		return nil, nil, err
 	}
 
 	cps, err := checkpoints.NewBlobStore(containerClient, nil)

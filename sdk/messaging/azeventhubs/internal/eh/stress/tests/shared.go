@@ -9,6 +9,7 @@ import (
 	"flag"
 	"fmt"
 	"log"
+	"net/url"
 	"os"
 	"sort"
 	"strings"
@@ -256,7 +257,13 @@ func sendEventsToPartition(ctx context.Context, args sendEventsToPartitionArgs) 
 // Returns the checkpoints we updated, sorted by partition ID.
 func initCheckpointStore(ctx context.Context, containerName string, testData *stressTestData) ([]azeventhubs.Checkpoint, error) {
 	// create the container first - it shouldn't already exist
-	cc, err := container.NewClient(testData.StorageEndpoint+"/"+containerName, testData.Cred, nil)
+	storageEndpoint, err := url.JoinPath(testData.StorageEndpoint, containerName)
+
+	if err != nil {
+		return nil, err
+	}
+
+	cc, err := container.NewClient(storageEndpoint, testData.Cred, nil)
 
 	if err != nil {
 		return nil, err

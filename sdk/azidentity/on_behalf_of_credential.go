@@ -60,6 +60,16 @@ func NewOnBehalfOfCredentialWithCertificate(tenantID, clientID, userAssertion st
 	return newOnBehalfOfCredential(tenantID, clientID, userAssertion, cred, options)
 }
 
+// NewOnBehalfOfCredentialWithClientAssertions constructs an OnBehalfOfCredential that authenticates with client assertions.
+// userAssertion is the user's access token for the application. The getAssertion function should return client assertions
+// that authenticate the application to Microsoft Entra ID, such as federated credentials.
+func NewOnBehalfOfCredentialWithClientAssertions(tenantID, clientID, userAssertion string, getAssertion func(context.Context) (string, error), options *OnBehalfOfCredentialOptions) (*OnBehalfOfCredential, error) {
+	cred := confidential.NewCredFromAssertionCallback(func(ctx context.Context, _ confidential.AssertionRequestOptions) (string, error) {
+		return getAssertion(ctx)
+	})
+	return newOnBehalfOfCredential(tenantID, clientID, userAssertion, cred, options)
+}
+
 // NewOnBehalfOfCredentialWithSecret constructs an OnBehalfOfCredential that authenticates with a client secret.
 func NewOnBehalfOfCredentialWithSecret(tenantID, clientID, userAssertion, clientSecret string, options *OnBehalfOfCredentialOptions) (*OnBehalfOfCredential, error) {
 	cred, err := confidential.NewCredFromSecret(clientSecret)

@@ -26,7 +26,7 @@ type clientWrapper struct {
 }
 
 var fakeTestVars = testVars{
-	ConnectionString: "Endpoint=https://fake.eastus-1.webpubsub.azure.com;AccessKey=ABCDE;",
+	ConnectionString: fmt.Sprintf("Endpoint=https://%s.webpubsub.azure.com;AccessKey=ABCDE;", recording.SanitizedValue),
 }
 
 type testVars struct {
@@ -109,7 +109,7 @@ func loadClientOptions(t *testing.T) (testVars, *azcore.ClientOptions) {
 		}
 	} else {
 		options = &azcore.ClientOptions{
-			Transport: newRecordingTransporter(t, tv),
+			Transport: newRecordingTransporter(t),
 		}
 	}
 
@@ -141,59 +141,14 @@ func newClientWrapper(t *testing.T) clientWrapper {
 	}
 }
 
-func newRecordingTransporter(t *testing.T, testVars testVars) policy.Transporter {
+func newRecordingTransporter(t *testing.T) policy.Transporter {
 	transport, err := recording.NewRecordingHTTPClient(t, nil)
 	require.NoError(t, err)
 
 	err = recording.Start(t, "sdk/messaging/azwebpubsub/testdata", nil)
 	require.NoError(t, err)
-	err = recording.AddURISanitizer("https://fake_endpoint.com/", testVars.Endpoint, nil)
-	require.NoError(t, err)
 
 	err = recording.AddGeneralRegexSanitizer(`"Date": "Wed, 15 Nov 2023 08:00:00 GMT"`, `"Date":".+?"`, nil)
-	require.NoError(t, err)
-
-	err = recording.AddGeneralRegexSanitizer(
-		`"id":"00000000-0000-0000-0000-000000000000"`,
-		`"id":"[^"]+"`, nil)
-	require.NoError(t, err)
-
-	err = recording.AddGeneralRegexSanitizer(
-		`"lockToken":"fake-lock-token"`,
-		`"lockToken":\s*"[^"]+"`, nil)
-	require.NoError(t, err)
-
-	err = recording.AddGeneralRegexSanitizer(
-		`"lockTokens": ["fake-lock-token"]`,
-		`"lockTokens":\s*\[\s*"[^"]+"\s*\]`, nil)
-	require.NoError(t, err)
-
-	err = recording.AddGeneralRegexSanitizer(
-		`"succeededLockTokens": ["fake-lock-token"]`,
-		`"succeededLockTokens":\s*\[\s*"[^"]+"\s*\]`, nil)
-	require.NoError(t, err)
-
-	err = recording.AddGeneralRegexSanitizer(
-		`"succeededLockTokens": ["fake-lock-token", "fake-lock-token", "fake-lock-token"]`,
-		`"succeededLockTokens":\s*`+
-			`\[`+
-			`(\s*"[^"]+"\s*\,){2}`+
-			`\s*"[^"]+"\s*`+
-			`\]`, nil)
-	require.NoError(t, err)
-
-	err = recording.AddGeneralRegexSanitizer(
-		`"lockTokens": ["fake-lock-token", "fake-lock-token"]`,
-		`"lockTokens":\s*\[\s*"[^"]+"\s*\,\s*"[^"]+"\s*\]`, nil)
-	require.NoError(t, err)
-
-	err = recording.AddGeneralRegexSanitizer(
-		`"lockTokens": ["fake-lock-token", "fake-lock-token", "fake-lock-token"]`,
-		`"lockTokens":\s*`+
-			`\[`+
-			`(\s*"[^"]+"\s*\,){2}`+
-			`\s*"[^"]+"\s*`+
-			`\]`, nil)
 	require.NoError(t, err)
 
 	t.Cleanup(func() {

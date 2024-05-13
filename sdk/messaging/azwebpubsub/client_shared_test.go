@@ -26,7 +26,7 @@ type clientWrapper struct {
 }
 
 var fakeTestVars = testVars{
-	ConnectionString: fmt.Sprintf("Endpoint=https://%s.webpubsub.azure.com;AccessKey=ABCDE;", recording.SanitizedValue),
+	ConnectionString: "Endpoint=https://fake.webpubsub.azure.com;AccessKey=ABCDE;",
 }
 
 type testVars struct {

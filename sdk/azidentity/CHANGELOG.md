@@ -1,14 +1,10 @@
 # Release History
 
-## 1.6.0-beta.4 (Unreleased)
+## 1.6.0-beta.4 (2024-05-14)
 
 ### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+* `AzurePipelinesCredential` authenticates an Azure Pipeline service connection with
+  workload identity federation
 
 ## 1.6.0-beta.3 (2024-04-09)
 

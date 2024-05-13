@@ -1,12 +1,6 @@
 # Release History
 
-## 1.1.2 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.1.2 (2024-05-13)
 
 ### Other Changes
 * Updated `azidentity` version to `1.5.2`

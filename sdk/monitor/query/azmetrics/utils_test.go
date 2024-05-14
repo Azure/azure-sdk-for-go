@@ -25,10 +25,10 @@ import (
 )
 
 const (
-	recordingDirectory  = "sdk/monitor/query/azmetrics/testdata"
-	fakeResourceURI     = "/subscriptions/faa080af-c1d8-40ad-9cce-e1a451va7b87/resourceGroups/rg-example/providers/Microsoft.AppConfiguration/configurationStores/example"
-	fakeSubscrtiptionID = "faa080af-c1d8-40ad-9cce-e1a451va7b87"
-	fakeRegion          = "westus"
+	recordingDirectory = "sdk/monitor/query/azmetrics/testdata"
+	fakeResourceURI    = "/subscriptions/faa080af-c1d8-40ad-9cce-e1a451va7b87/resourceGroups/rg-example/providers/Microsoft.AppConfiguration/configurationStores/example"
+	fakeSubscriptionID = "faa080af-c1d8-40ad-9cce-e1a451va7b87"
+	fakeRegion         = "westus"
 )
 
 var (
@@ -60,7 +60,7 @@ func run(m *testing.M) int {
 	}
 
 	resourceURI = getEnvVar("RESOURCE_URI", fakeResourceURI)
-	subscriptionID = getEnvVar("AZMETRICS_SUBSCRIPTION_ID", fakeSubscrtiptionID)
+	subscriptionID = getEnvVar("AZMETRICS_SUBSCRIPTION_ID", fakeSubscriptionID)
 	region = getEnvVar("AZMETRICS_LOCATION", fakeRegion)
 
 	if recording.GetRecordMode() == recording.PlaybackMode {

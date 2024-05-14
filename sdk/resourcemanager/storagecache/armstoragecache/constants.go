@@ -208,22 +208,6 @@ func PossibleDomainJoinedTypeValues() []DomainJoinedType {
 	}
 }
 
-// FilesystemSubnetStatusType - The status of the AML file system subnet check.
-type FilesystemSubnetStatusType string
-
-const (
-	FilesystemSubnetStatusTypeInvalid FilesystemSubnetStatusType = "Invalid"
-	FilesystemSubnetStatusTypeOk      FilesystemSubnetStatusType = "Ok"
-)
-
-// PossibleFilesystemSubnetStatusTypeValues returns the possible values for the FilesystemSubnetStatusType const type.
-func PossibleFilesystemSubnetStatusTypeValues() []FilesystemSubnetStatusType {
-	return []FilesystemSubnetStatusType{
-		FilesystemSubnetStatusTypeInvalid,
-		FilesystemSubnetStatusTypeOk,
-	}
-}
-
 // FirmwareStatusType - True if there is a firmware update ready to install on this cache. The firmware will automatically
 // be installed after firmwareUpdateDeadline if not triggered earlier via the upgrade operation.
 type FirmwareStatusType string

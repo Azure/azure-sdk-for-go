@@ -4,7 +4,6 @@
 ### Breaking Changes
 
 - Type of `AscOperation.Error` has been changed from `*ErrorResponse` to `*AscOperationErrorResponse`
-- Field `Code`, `Message` of struct `ErrorResponse` has been removed
 
 ### Features Added
 
@@ -21,8 +20,6 @@
 - New function `*ImportJobsClient.BeginUpdate(context.Context, string, string, string, ImportJobUpdate, *ImportJobsClientBeginUpdateOptions) (*runtime.Poller[ImportJobsClientUpdateResponse], error)`
 - New struct `AmlFilesystemRootSquashSettings`
 - New struct `AscOperationErrorResponse`
-- New struct `ErrorAdditionalInfo`
-- New struct `ErrorDetail`
 - New struct `ImportJob`
 - New struct `ImportJobProperties`
 - New struct `ImportJobPropertiesStatus`
@@ -31,7 +28,6 @@
 - New field `ImportPrefixesInitial` in struct `AmlFilesystemHsmSettings`
 - New field `RootSquashSettings` in struct `AmlFilesystemProperties`
 - New field `RootSquashSettings` in struct `AmlFilesystemUpdateProperties`
-- New field `Error` in struct `ErrorResponse`
 
 
 ## 3.4.0-beta.1 (2024-02-23)

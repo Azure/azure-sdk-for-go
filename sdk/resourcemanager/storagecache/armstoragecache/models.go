@@ -137,21 +137,6 @@ type AmlFilesystemArchiveStatus struct {
 	State *ArchiveStatusType
 }
 
-// AmlFilesystemCheckSubnetError - The error details provided when the checkAmlFSSubnets call fails.
-type AmlFilesystemCheckSubnetError struct {
-	// The error details for the AML file system's subnet.
-	FilesystemSubnet *AmlFilesystemCheckSubnetErrorFilesystemSubnet
-}
-
-// AmlFilesystemCheckSubnetErrorFilesystemSubnet - The error details for the AML file system's subnet.
-type AmlFilesystemCheckSubnetErrorFilesystemSubnet struct {
-	// The details of the AML file system subnet check.
-	Message *string
-
-	// The status of the AML file system subnet check.
-	Status *FilesystemSubnetStatusType
-}
-
 // AmlFilesystemClientInfo - AML file system client information
 type AmlFilesystemClientInfo struct {
 	// READ-ONLY; Container Storage Interface information for the AML file system.
@@ -706,21 +691,6 @@ type ClfsTarget struct {
 	Target *string
 }
 
-// CloudErrorBody - An error response.
-type CloudErrorBody struct {
-	// An identifier for the error. Codes are invariant and are intended to be consumed programmatically.
-	Code *string
-
-	// A list of additional details about the error.
-	Details []*CloudErrorBody
-
-	// A message describing the error, intended to be suitable for display in a user interface.
-	Message *string
-
-	// The target of the particular error. For example, the name of the property in error.
-	Target *string
-}
-
 // Condition - Outstanding conditions that will need to be resolved.
 type Condition struct {
 	// READ-ONLY; The issue requiring attention.
@@ -728,40 +698,6 @@ type Condition struct {
 
 	// READ-ONLY; The time when the condition was raised.
 	Timestamp *time.Time
-}
-
-// ErrorAdditionalInfo - The resource management error additional info.
-type ErrorAdditionalInfo struct {
-	// READ-ONLY; The additional info.
-	Info any
-
-	// READ-ONLY; The additional info type.
-	Type *string
-}
-
-// ErrorDetail - The error detail.
-type ErrorDetail struct {
-	// READ-ONLY; The error additional info.
-	AdditionalInfo []*ErrorAdditionalInfo
-
-	// READ-ONLY; The error code.
-	Code *string
-
-	// READ-ONLY; The error details.
-	Details []*ErrorDetail
-
-	// READ-ONLY; The error message.
-	Message *string
-
-	// READ-ONLY; The error target.
-	Target *string
-}
-
-// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
-// (This also follows the OData error response format.).
-type ErrorResponse struct {
-	// The error object.
-	Error *ErrorDetail
 }
 
 // ImportJob - An import job instance. Follows Azure Resource Manager standards: https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/resource-api-reference.md
@@ -1051,21 +987,6 @@ type RequiredAmlFilesystemSubnetsSizeInfo struct {
 	StorageCapacityTiB *float32
 }
 
-// Resource - Common fields that are returned in the response for all Azure Resource Manager resources
-type Resource struct {
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
 // ResourceSKU - A resource SKU.
 type ResourceSKU struct {
 	// A list of capabilities of this SKU, such as throughput or ops/sec.
@@ -1221,24 +1142,6 @@ type StorageTargetProperties struct {
 	ProvisioningState *ProvisioningStateType
 }
 
-// StorageTargetResource - Resource used by a cache.
-type StorageTargetResource struct {
-	// READ-ONLY; Resource ID of the Storage Target.
-	ID *string
-
-	// READ-ONLY; Region name string.
-	Location *string
-
-	// READ-ONLY; Name of the Storage Target.
-	Name *string
-
-	// READ-ONLY; The system meta data relating to this resource.
-	SystemData *SystemData
-
-	// READ-ONLY; Type of the Storage Target; Microsoft.StorageCache/Cache/StorageTarget
-	Type *string
-}
-
 // StorageTargetSpaceAllocation - Storage Target space allocation properties.
 type StorageTargetSpaceAllocation struct {
 	// The percentage of cache space allocated for this storage target
@@ -1276,28 +1179,6 @@ type SystemData struct {
 
 	// The type of identity that last modified the resource.
 	LastModifiedByType *CreatedByType
-}
-
-// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
-// and a 'location'
-type TrackedResource struct {
-	// REQUIRED; The geo-location where the resource lives
-	Location *string
-
-	// Resource tags.
-	Tags map[string]*string
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
 }
 
 // UnknownTarget - Properties pertaining to the UnknownTarget

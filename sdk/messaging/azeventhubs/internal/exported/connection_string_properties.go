@@ -103,7 +103,6 @@ func ParseConnectionString(connStr string) (ConnectionStringProperties, error) {
 	}
 
 	if csp.Emulator {
-		// check that they're only connecting to localhost
 		endpointParts := strings.SplitN(csp.Endpoint, ":", 3) // allow for a port, if it exists.
 
 		if len(endpointParts) < 2 || endpointParts[0] != "sb" {

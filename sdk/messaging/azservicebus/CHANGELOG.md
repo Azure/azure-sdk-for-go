@@ -8,7 +8,7 @@
 
 ### Bugs Fixed
 
-- Emulator strings should allow for hosts other than localhost (PR#TBD)
+- Emulator strings should allow for hosts other than localhost (PR#22898)
 
 ### Other Changes
 

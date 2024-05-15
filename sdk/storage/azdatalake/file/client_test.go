@@ -239,7 +239,9 @@ func (s *RecordedTestSuite) TestCreateFileWithCPK() {
 	_require.NoError(err)
 	_require.NotNil(resp)
 	_require.Equal(*(resp.IsServerEncrypted), true)
-	_require.Equal(resp.EncryptionKeySHA256, testcommon.TestCPKByValue.EncryptionKeySHA256)
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		_require.Equal(resp.EncryptionKeySHA256, testcommon.TestCPKByValue.EncryptionKeySHA256)
+	}
 }
 
 func (s *RecordedTestSuite) TestCreateFileIfModifiedSinceTrue() {
@@ -5383,8 +5385,10 @@ func (s *RecordedTestSuite) TestFileGetPropertiesWithCPK() {
 	response, err := fClient.GetProperties(ctxWithRespFile, GetPropertiesOpts)
 	_require.NoError(err)
 	_require.NotNil(response)
-	_require.NotNil(respFromCtxFile.Header.Get("x-ms-encryption-key-sha256")) // validate that the x-ms-encryption-key-sha256 is actually populated
-	_require.Equal(testcommon.TestCPKByValue.EncryptionKeySHA256, response.EncryptionKeySHA256)
+	_require.NotNil(respFromCtxFile.Header.Get("x-ms-encryption-key-sha256"))
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		_require.Equal(testcommon.TestCPKByValue.EncryptionKeySHA256, response.EncryptionKeySHA256)
+	}
 }
 
 func (s *UnrecordedTestSuite) TestFileCreateDeleteUsingOAuth() {

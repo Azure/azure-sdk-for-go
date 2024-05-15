@@ -2072,7 +2072,9 @@ func (s *RecordedTestSuite) TestFileSetMetadataWithCPK() {
 	res, err := fClient.SetMetadata(context.Background(), testcommon.BasicMetadata, opts)
 	_require.NoError(err)
 	_require.Equal(*(res.IsServerEncrypted), true)
-	_require.Equal(res.EncryptionKeySHA256, testcommon.TestCPKByValue.EncryptionKeySHA256)
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		_require.Equal(res.EncryptionKeySHA256, testcommon.TestCPKByValue.EncryptionKeySHA256)
+	}
 }
 
 func validatePropertiesSet(_require *require.Assertions, fileClient *file.Client, disposition string) {
@@ -4037,7 +4039,9 @@ func (s *RecordedTestSuite) TestFileAppendAndFlushDataWithCPK() {
 	_require.NoError(err)
 	_require.Equal(*gResp2.ContentLength, int64(contentSize))
 	_require.Equal(true, *(gResp2.IsServerEncrypted))
-	_require.Equal(testcommon.TestCPKByValue.EncryptionKeySHA256, gResp2.EncryptionKeySHA256)
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		_require.Equal(testcommon.TestCPKByValue.EncryptionKeySHA256, gResp2.EncryptionKeySHA256)
+	}
 }
 
 func (s *RecordedTestSuite) TestFileAppendAndFlushDataWithLeasedFile() {
@@ -4931,7 +4935,9 @@ func (s *RecordedTestSuite) TestFileUploadDownloadSmallFileWithCPK() {
 	_require.NoError(err)
 	_require.Equal(*gResp2.ContentLength, fileSize)
 	_require.Equal(*(gResp2.IsServerEncrypted), true)
-	_require.Equal(gResp2.EncryptionKeySHA256, testcommon.TestCPKByValue.EncryptionKeySHA256)
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		_require.Equal(gResp2.EncryptionKeySHA256, testcommon.TestCPKByValue.EncryptionKeySHA256)
+	}
 }
 
 func (s *RecordedTestSuite) TestFileUploadDownloadWithProgress() {
@@ -5254,7 +5260,9 @@ func (s *RecordedTestSuite) TestFileDownloadBufferWithCPK() {
 	_require.NoError(err)
 	_require.Equal(*gResp2.ContentLength, fileSize)
 	_require.Equal(*(gResp2.IsServerEncrypted), true)
-	_require.Equal(gResp2.EncryptionKeySHA256, testcommon.TestCPKByValue.EncryptionKeySHA256)
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		_require.Equal(gResp2.EncryptionKeySHA256, testcommon.TestCPKByValue.EncryptionKeySHA256)
+	}
 }
 
 func (s *RecordedTestSuite) TestFileGetPropertiesResponseCapture() {

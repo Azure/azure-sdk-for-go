@@ -12,6 +12,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/issue/link"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/issue/query"
+	"github.com/golang-module/carbon/v2"
 	"github.com/google/go-github/v53/github"
 )
 
@@ -107,10 +108,13 @@ func NewReleaseRequestIssue(issue github.Issue) (*ReleaseRequestIssue, error) {
 	})
 
 	// get release date
-	targetDate := regexp.MustCompile(`\d*-\d*-\d*`).FindString(contents[releaseDateKeyword])
-	releaseDate, err := time.Parse("2006-01-02", targetDate)
-	if err != nil {
+	targetDate, _ := strings.CutPrefix(contents[releaseDateKeyword], "No later than ")
+	p := carbon.Parse(targetDate)
+	var releaseDate time.Time
+	if p.Error != nil {
 		releaseDate = time.Now()
+	} else {
+		releaseDate = p.StdTime()
 	}
 
 	return &ReleaseRequestIssue{

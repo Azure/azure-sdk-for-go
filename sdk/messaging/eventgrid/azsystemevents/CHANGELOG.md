@@ -1,14 +1,96 @@
 # Release History
 
-## 0.3.1 (Unreleased)
-
-### Features Added
+## 0.4.0 (Unreleased)
 
 ### Breaking Changes
 
-### Bugs Fixed
+- `Type` has been removed, making it simpler to compare the EventGridEvent.Type and CloudEvent.Type values against
+our provided constants.
 
-### Other Changes
+- The following models have had 'Advanced' removed from their name:
+  - ACSMessageButtonContent
+  - ACSMessageContext
+  - ACSMessageDeliveryStatusUpdatedEventData
+  - ACSMessageEventData
+  - ACSMessageInteractiveButtonReplyContent
+  - ACSMessageInteractiveContent
+  - ACSMessageInteractiveListReplyContent
+  - ACSMessageMediaContent
+  - ACSMessageReceivedEventData
+
+- Several models' fields have had renames to improve consistency with other languages:
+  - ACSEmailDeliveryReportReceivedEventData:
+    - DeliveryAttemptTimestamp -> DeliveryAttemptTimeStamp
+  - ACSEmailEngagementTrackingReportReceivedEventData:
+    - Engagement -> EngagementType
+    - UserActionTimestamp -> UserActionTimeStamp
+  - ACSIncomingCallEventData:
+    - FromCommunicationIdentifier -> From
+    - ToCommunicationIdentifier -> To
+  - ACSMessageContext:
+    - MessageID -> ID
+  - ACSMessageDeliveryStatusUpdatedEventData:
+    - ChannelKind -> ChannelType
+    - ReceivedTimestamp -> ReceivedTimeStamp
+  - ACSMessageEventData:
+    - ReceivedTimestamp -> ReceivedTimeStamp
+  - ACSMessageInteractiveButtonReplyContent:
+    - ButtonID -> ID
+  - ACSMessageInteractiveContent:
+    - ReplyKind -> Type
+  - ACSMessageInteractiveListReplyContent:
+    - ListItemID -> ID
+  - ACSMessageMediaContent:
+    - MediaID -> ID
+  - ACSMessageReceivedEventData:
+    - ChannelKind -> ChannelType
+    - InteractiveContent -> Interactive
+    - MediaContent -> Media
+    - ReceivedTimestamp -> ReceivedTimeStamp
+  - ACSRouterWorkerSelector:
+    - LabelOperator -> Operator
+    - State -> SelectorState
+    - TimeToLive -> TTLSeconds
+  - EventHubCaptureFileCreatedEventData:
+    - Fileurl -> FileURL
+  - HealthcareFhirResourceCreatedEventData
+    - FhirResourceID -> ResourceFhirID
+    - FhirResourceType -> ResourceType
+    - FhirResourceVersionID -> ResourceVersionID
+    - FhirServiceHostName -> ResourceFhirAccount
+  - HealthcareFhirResourceDeletedEventData
+    - FhirResourceID -> ResourceFhirID
+    - FhirResourceType -> ResourceType
+    - FhirResourceVersionID -> ResourceVersionID
+    - FhirServiceHostName -> ResourceFhirAccount
+  - HealthcareFhirResourceUpdatedEventData
+    - FhirResourceID -> ResourceFhirID
+    - FhirResourceType -> ResourceType
+    - FhirResourceVersionID -> ResourceVersionID
+    - FhirServiceHostName -> ResourceFhirAccount
+  - ResourceNotificationsHealthResourcesAnnotatedEventData
+    - OperationalDetails -> OperationalInfo
+    - ResourceDetails -> ResourceInfo
+  - ResourceNotificationsHealthResourcesAvailabilityStatusChangedEventData
+    - OperationalDetails -> OperationalInfo
+    - ResourceDetails -> ResourceInfo
+  - ResourceNotificationsResourceDeletedEventData
+    - OperationalDetails -> OperationalInfo
+    - ResourceDetails -> ResourceInfo
+  - ResourceNotificationsResourceManagementCreatedOrUpdatedEventData
+    - OperationalDetails -> OperationalInfo
+    - ResourceDetails -> ResourceInfo
+  - ResourceNotificationsResourceManagementDeletedEventData
+    - OperationalDetails -> OperationalInfo
+    - ResourceDetails -> ResourceInfo
+  - ResourceNotificationsResourceUpdatedEventData
+    - OperationalDetails -> OperationalInfo
+    - ResourceDetails -> ResourceInfo
+  - StorageTaskAssignmentCompletedEventData:
+    - CompletedOn -> CompletedDateTime
+    - SummaryReportBlobURI -> SummaryReportBlobURL
+  - StorageTaskAssignmentQueuedEventData:
+    - QueuedOn -> QueuedDateTime
 
 ## 0.3.0 (2024-04-03)
 

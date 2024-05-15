@@ -24,8 +24,8 @@ func TestConsumeCloudEventMachineLearningServicesModelRegisteredEvent(t *testing
 	sysEvent := deserializeSystemEvent[azsystemevents.MachineLearningServicesModelRegisteredEventData](t, events[0].Data)
 	require.Equal(t, "sklearn_regression_model", *sysEvent.ModelName)
 	require.Equal(t, "3", *sysEvent.ModelVersion)
-	require.Equal(t, "regression", sysEvent.ModelTags.(map[string]any)["type"])
-	require.Equal(t, "test", sysEvent.ModelProperties.(map[string]any)["area"])
+	require.Equal(t, "regression", sysEvent.ModelTags["type"])
+	require.Equal(t, "test", sysEvent.ModelProperties["area"])
 }
 
 func TestConsumeCloudEventMachineLearningServicesModelDeployedEvent(t *testing.T) {
@@ -831,11 +831,6 @@ func TestConsumeCloudEventAcsRecordingFileStatusUpdatedEventData(t *testing.T) {
 	require.NotEmpty(t, events)
 	sysEvent := deserializeSystemEvent[azsystemevents.ACSRecordingFileStatusUpdatedEventData](t, events[0].Data)
 
-	// TODO: rename, it seems?
-	// require.Equal(t, azsystemevents.RecordingChannelTypeMixed, sysEvent.ChannelType)
-	// require.Equal(t, azsystemevents.RecordingContentTypeAudio, sysEvent.ContentType)
-	// require.Equal(t, azsystemevents.RecordingFormatTypeMp3, sysEvent.FormatType)
-
 	// back compat
 	require.Equal(t, azsystemevents.RecordingChannelKindMixed, *sysEvent.RecordingChannelKind)
 	require.Equal(t, azsystemevents.RecordingContentTypeAudio, *sysEvent.RecordingContentType)
@@ -869,7 +864,7 @@ func TestConsumeCloudEventAcsEmailDeliveryReportReceivedEvent(t *testing.T) {
 	require.Equal(t, "test1@contoso.com", *sysEvent.Recipient)
 	require.Equal(t, azsystemevents.ACSEmailDeliveryReportStatusDelivered, *sysEvent.Status)
 	require.Equal(t, "DestinationMailboxFull", *sysEvent.DeliveryStatusDetails.StatusMessage)
-	require.Equal(t, mustParseTime(t, "2023-02-09T19:46:12.2480265+00:00"), *sysEvent.DeliveryAttemptTimestamp)
+	require.Equal(t, mustParseTime(t, "2023-02-09T19:46:12.2480265+00:00"), *sysEvent.DeliveryAttemptTimeStamp)
 }
 
 func TestConsumeCloudEventAcsIncomingCallEvent(t *testing.T) {
@@ -917,8 +912,8 @@ func TestConsumeCloudEventAcsIncomingCallEvent(t *testing.T) {
 	require.NotEmpty(t, event)
 	sysEvent := deserializeSystemEvent[azsystemevents.ACSIncomingCallEventData](t, event.Data)
 
-	require.Equal(t, "{recipient-id}", *sysEvent.ToCommunicationIdentifier.CommunicationUser.ID)
-	require.Equal(t, "{caller-id}", *sysEvent.FromCommunicationIdentifier.CommunicationUser.ID)
+	require.Equal(t, "{recipient-id}", *sysEvent.To.CommunicationUser.ID)
+	require.Equal(t, "{caller-id}", *sysEvent.From.CommunicationUser.ID)
 	require.Equal(t, "VOIP Caller", *sysEvent.CallerDisplayName)
 	require.Equal(t, "616d617a6f6e5f6368696;encoding=hex", *sysEvent.CustomContext.SipHeaders["userToUser"])
 	require.Equal(t, "35567842", *sysEvent.CustomContext.SipHeaders["X-MS-Custom-myheader1"])
@@ -974,7 +969,7 @@ func TestConsumeCloudEventAcsRouterJobClassificationFailedEvent(t *testing.T) {
 
 	var errors = sysEvent.Errors
 	require.Equal(t, 1, len(errors))
-	require.Equal(t, "Failure", (*errors[0]).Code)
+	require.Equal(t, "Failure", errors[0].Code)
 	require.Equal(t, "Code: Failure\n"+
 		"Message: Classification failed due to <reason>\n"+
 		"InnerError:\n"+

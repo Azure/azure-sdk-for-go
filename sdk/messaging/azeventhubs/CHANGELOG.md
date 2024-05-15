@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Emulator strings should allow for hosts other than localhost (PR#22898)
+
 ### Other Changes
 
 ## 1.2.0 (2024-05-07)

@@ -3,6 +3,8 @@
 ## 1.6.0-beta.5 (Unreleased)
 
 ### Features Added
+* `NewOnBehalfOfCredentialWithClientAssertions` creates an on-behalf-of credential
+  that authenticates with client assertions such as federated credentials
 
 ### Breaking Changes
 

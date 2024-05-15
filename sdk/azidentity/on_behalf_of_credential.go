@@ -10,6 +10,7 @@ import (
 	"context"
 	"crypto"
 	"crypto/x509"
+	"errors"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -64,6 +65,9 @@ func NewOnBehalfOfCredentialWithCertificate(tenantID, clientID, userAssertion st
 // userAssertion is the user's access token for the application. The getAssertion function should return client assertions
 // that authenticate the application to Microsoft Entra ID, such as federated credentials.
 func NewOnBehalfOfCredentialWithClientAssertions(tenantID, clientID, userAssertion string, getAssertion func(context.Context) (string, error), options *OnBehalfOfCredentialOptions) (*OnBehalfOfCredential, error) {
+	if getAssertion == nil {
+		return nil, errors.New("getAssertion can't be nil. It must be a function that returns client assertions")
+	}
 	cred := confidential.NewCredFromAssertionCallback(func(ctx context.Context, _ confidential.AssertionRequestOptions) (string, error) {
 		return getAssertion(ctx)
 	})

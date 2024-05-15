@@ -3275,9 +3275,9 @@ func (a ACSRouterWorkerSelector) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populateDateTimeRFC3339(objectMap, "expirationTime", a.ExpirationTime)
 	populate(objectMap, "key", a.Key)
+	populate(objectMap, "labelOperator", a.LabelOperator)
 	populateAny(objectMap, "labelValue", a.LabelValue)
-	populate(objectMap, "operator", a.Operator)
-	populate(objectMap, "selectorState", a.SelectorState)
+	populate(objectMap, "state", a.State)
 	populate(objectMap, "ttlSeconds", a.TTLSeconds)
 	return json.Marshal(objectMap)
 }
@@ -3297,14 +3297,14 @@ func (a *ACSRouterWorkerSelector) UnmarshalJSON(data []byte) error {
 		case "key":
 			err = unpopulate(val, "Key", &a.Key)
 			delete(rawMsg, key)
+		case "labelOperator":
+			err = unpopulate(val, "LabelOperator", &a.LabelOperator)
+			delete(rawMsg, key)
 		case "labelValue":
 			err = unpopulate(val, "LabelValue", &a.LabelValue)
 			delete(rawMsg, key)
-		case "operator":
-			err = unpopulate(val, "Operator", &a.Operator)
-			delete(rawMsg, key)
-		case "selectorState":
-			err = unpopulate(val, "SelectorState", &a.SelectorState)
+		case "state":
+			err = unpopulate(val, "State", &a.State)
 			delete(rawMsg, key)
 		case "ttlSeconds":
 			err = unpopulate(val, "TTLSeconds", &a.TTLSeconds)
@@ -8255,7 +8255,7 @@ func (m MediaJobOutputAsset) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "assetName", m.AssetName)
 	populate(objectMap, "error", m.Error)
 	populate(objectMap, "label", m.Label)
-	objectMap["@odataType"] = "#Microsoft.Media.JobOutputAsset"
+	objectMap["@odata.type"] = "#Microsoft.Media.JobOutputAsset"
 	populate(objectMap, "progress", m.Progress)
 	populate(objectMap, "state", m.State)
 	return json.Marshal(objectMap)
@@ -8279,7 +8279,7 @@ func (m *MediaJobOutputAsset) UnmarshalJSON(data []byte) error {
 		case "label":
 			err = unpopulate(val, "Label", &m.Label)
 			delete(rawMsg, key)
-		case "@odataType":
+		case "@odata.type":
 			err = unpopulate(val, "ODataType", &m.ODataType)
 			delete(rawMsg, key)
 		case "progress":

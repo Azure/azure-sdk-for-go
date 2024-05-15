@@ -16,15 +16,6 @@ import (
 )
 
 func TestConsumeCloudEventAcsRouterJobQueuedEvent(t *testing.T) {
-	t.Skipf("Skipping - we need to resolve what the actual expected format is")
-
-	// https://learn.microsoft.com/en-us/azure/event-grid/communication-services-router-events
-	// https://github.com/Azure/azure-rest-api-specs/blob/44cbf51b9eee8a2dbf55ced61a61032aaed0148b/specification/eventgrid/data-plane/Microsoft.Communication/stable/2018-01-01/AzureCommunicationServices.json#L2112
-
-	// Here's what I had in version 1:
-	// https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/eventgrid/azsystemevents#ACSRouterJobQueuedEventData
-	// https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/eventgrid/azsystemevents#ACSRouterWorkerSelector
-
 	requestContent := `{
 		"id": "b6d8687a-5a1a-42ae-b8b5-ff7ec338c872",
 		"source": "/subscriptions/{subscription-id}/resourceGroups/{group-name}/providers/Microsoft.Communication/communicationServices/{communication-services-resource-name}",
@@ -74,15 +65,13 @@ func TestConsumeCloudEventAcsRouterJobQueuedEvent(t *testing.T) {
 
 	var selectors = sysEvent.AttachedWorkerSelectors
 	require.Equal(t, 1, len(selectors))
-	require.Equal(t, float32(1000), *selectors[0].TTLSeconds)
+	require.Equal(t, float64(1000), *selectors[0].TTLSeconds)
 
-	require.Equal(t, azsystemevents.ACSRouterLabelOperatorEqual, *selectors[0].Operator)
-	require.Equal(t, azsystemevents.ACSRouterWorkerSelectorStateActive, *selectors[0].SelectorState)
+	require.Equal(t, azsystemevents.ACSRouterLabelOperatorEqual, *selectors[0].LabelOperator)
+	require.Equal(t, azsystemevents.ACSRouterWorkerSelectorStateActive, *selectors[0].State)
 }
 
 func TestConsumeCloudEventAcsRouterJobReceivedEvent(t *testing.T) {
-	t.Skipf("Skipping - we need to resolve what the actual expected format is")
-
 	requestContent := `{
 		"id": "acdf8fa5-8ab4-4a65-874a-c1d2a4a97f2e",
 		"source": "/subscriptions/{subscription-id}/resourceGroups/{group-name}/providers/Microsoft.Communication/communicationServices/{communication-services-resource-name}",

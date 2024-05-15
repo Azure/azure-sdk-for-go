@@ -31,11 +31,6 @@ func main() {
 			return err
 		}
 
-		// apply temporary fixes
-		if err := applyTempFixes(); err != nil {
-			return err
-		}
-
 		if err := generateSystemEventEnum(); err != nil {
 			return err
 		}
@@ -138,59 +133,6 @@ func deleteUnneededFiles() {
 			_ = os.Remove(file)
 		}
 	}
-}
-
-// TODO: this is temporary while the PR is still being developed.
-func applyTempFixes() error {
-	// See: https://github.com/Azure/azure-rest-api-specs/pull/28706/files#r1596180693
-	{
-		err := Replace(polymorphicHelpersGoFile, "@odata.type polymorphic fix", func(data string) (string, error) {
-			return strings.Replace(string(data), `switch m["@odataType"] {`, `	switch m["@odata.type"] {`, 1), nil
-		})
-
-		if err != nil {
-			return err
-		}
-
-		err = Replace(modelsSerdeGoFile, "@odata.type populate", func(data string) (string, error) {
-			return strings.Replace(string(data), `populate(objectMap, "@odataType", m.ODataType)`, `populate(objectMap, "@odata.type", m.ODataType)`, 1), nil
-		})
-
-		if err != nil {
-			return err
-		}
-
-		err = Replace(modelsSerdeGoFile, "@odata.type deserialize", func(data string) (string, error) {
-			return strings.Replace(string(data), `case "@odataType":`, `case "@odata.type":`, 1), nil
-		})
-
-		if err != nil {
-			return err
-		}
-	}
-
-	// See: https://github.com/Azure/azure-rest-api-specs/pull/28706/files#r1597270162
-	fixups := []string{
-		"Microsoft.EventGrid.SystemEvents.MQTTClientCreatedOrUpdated",
-		"Microsoft.EventGrid.SystemEvents.MQTTClientDeleted",
-		"Microsoft.EventGrid.SystemEvents.MQTTClientSessionConnected",
-		"Microsoft.EventGrid.SystemEvents.MQTTClientSessionDisconnected",
-		"Microsoft.EventGrid.SystemEvents.SubscriptionDeletedEvent",
-		"Microsoft.EventGrid.SystemEvents.SubscriptionValidationEvent",
-	}
-
-	for _, fixup := range fixups {
-		// there's some badly named constants for the system events.
-		err := Replace(modelsGoFile, fmt.Sprintf("fixing ID for %s", fixup), func(data string) (string, error) {
-			return strings.Replace(string(data), fixup, strings.Replace(fixup, ".SystemEvents.", ".", 1), 1), nil
-		})
-
-		if err != nil {
-			return err
-		}
-	}
-
-	return nil
 }
 
 func doRemove() error {

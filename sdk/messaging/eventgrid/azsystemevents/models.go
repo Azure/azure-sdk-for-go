@@ -1557,17 +1557,17 @@ type ACSRouterWorkerSelector struct {
 	// REQUIRED; Router Job Worker Selector Expiration Time
 	ExpirationTime *time.Time
 
+	// REQUIRED; Router Job Worker Selector Label Operator
+	LabelOperator *ACSRouterLabelOperator
+
 	// REQUIRED; Router Job Worker Selector Value
 	LabelValue any
 
-	// REQUIRED; Router Job Worker Selector Label Operator
-	Operator *ACSRouterLabelOperator
-
 	// REQUIRED; Router Job Worker Selector State
-	SelectorState *ACSRouterWorkerSelectorState
+	State *ACSRouterWorkerSelectorState
 
 	// REQUIRED; Router Job Worker Selector Time to Live in Seconds
-	TTLSeconds *string
+	TTLSeconds *float64
 
 	// Router Job Worker Selector Key
 	Key *string
@@ -2677,8 +2677,7 @@ type DeviceTwinProperties struct {
 	Version *float32
 }
 
-// EventGridMQTTClientCreatedOrUpdatedEventData - Event data for Microsoft.EventGrid.MQTTClientCreatedOrUpdated
-// event.
+// EventGridMQTTClientCreatedOrUpdatedEventData - Event data for Microsoft.EventGrid.MQTTClientCreatedOrUpdated event.
 type EventGridMQTTClientCreatedOrUpdatedEventData struct {
 	// REQUIRED; The key-value attributes that are assigned to the client resource.
 	Attributes map[string]*string
@@ -2734,8 +2733,7 @@ type EventGridMQTTClientEventData struct {
 	NamespaceName *string
 }
 
-// EventGridMQTTClientSessionConnectedEventData - Event data for Microsoft.EventGrid.MQTTClientSessionConnected
-// event.
+// EventGridMQTTClientSessionConnectedEventData - Event data for Microsoft.EventGrid.MQTTClientSessionConnected event.
 type EventGridMQTTClientSessionConnectedEventData struct {
 	// Unique identifier for the MQTT client that the client presents to the service
 	// for authentication. This case-sensitive string can be up to 128 characters
@@ -2758,8 +2756,7 @@ type EventGridMQTTClientSessionConnectedEventData struct {
 	SequenceNumber *int64
 }
 
-// EventGridMQTTClientSessionDisconnectedEventData - Event data for Microsoft.EventGrid.MQTTClientSessionDisconnected
-// event.
+// EventGridMQTTClientSessionDisconnectedEventData - Event data for Microsoft.EventGrid.MQTTClientSessionDisconnected event.
 type EventGridMQTTClientSessionDisconnectedEventData struct {
 	// REQUIRED; Reason for the disconnection of the MQTT client's session. The value could be
 	// one of the values in the disconnection reasons table.

@@ -20,9 +20,9 @@ import (
 )
 
 func TestGetSetting(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
+	// if recording.GetRecordMode() == recording.PlaybackMode {
+	// 	t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
+	// }
 	client := startSettingsTest(t)
 	settingName := "AllowKeyManagementOperationsThroughARM"
 
@@ -71,9 +71,9 @@ func TestGetSettings(t *testing.T) {
 }
 
 func TestUpdateSetting(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
+	// if recording.GetRecordMode() == recording.PlaybackMode {
+	// 	t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
+	// }
 	client := startSettingsTest(t)
 	settingName := "AllowKeyManagementOperationsThroughARM"
 	var updatedBool string

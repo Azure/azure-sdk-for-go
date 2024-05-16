@@ -20,9 +20,9 @@ import (
 )
 
 func TestRoleDefinition(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
+	// if recording.GetRecordMode() == recording.PlaybackMode {
+	// 	t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
+	// }
 	client := startAccessControlTest(t)
 
 	var name, roleName string
@@ -139,9 +139,9 @@ func TestDeleteRoleDefinition_FailureInvalidRole(t *testing.T) {
 }
 
 func TestRoleAssignment(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
+	// if recording.GetRecordMode() == recording.PlaybackMode {
+	// 	t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
+	// }
 	client := startAccessControlTest(t)
 
 	var name, principalID, roleDefinitionID string

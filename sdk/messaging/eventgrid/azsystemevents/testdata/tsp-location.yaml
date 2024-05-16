@@ -4,5 +4,5 @@ directory: specification/eventgrid/Azure.Messaging.EventGrid.SystemEvents
 #commit: b7b8fa670f7b3fdc697cde7f20ec146afa189817
 # From my PR to Libba's PR:
 # https://github.com/l0lawrence/azure-rest-api-specs/pull/3/commits
-commit: 300053f92fa13c977c740b19a6acaecef56f5171
+commit: 47d673c0411b765162f090d1b5e3d5d60ecc0857
 repo: Azure/azure-rest-api-specs

@@ -35,6 +35,7 @@ func PossibleACSEmailDeliveryReportStatusValues() []ACSEmailDeliveryReportStatus
 	}
 }
 
+// ACSInteractiveReplyKind - Interactive reply kind
 type ACSInteractiveReplyKind string
 
 const (
@@ -55,6 +56,7 @@ func PossibleACSInteractiveReplyKindValues() []ACSInteractiveReplyKind {
 	}
 }
 
+// ACSMessageChannelKind - Message channel kind
 type ACSMessageChannelKind string
 
 const (
@@ -69,6 +71,7 @@ func PossibleACSMessageChannelKindValues() []ACSMessageChannelKind {
 	}
 }
 
+// ACSMessageDeliveryStatus - Message delivery status
 type ACSMessageDeliveryStatus string
 
 const (
@@ -170,6 +173,7 @@ func PossibleACSRouterLabelOperatorValues() []ACSRouterLabelOperator {
 	}
 }
 
+// ACSRouterUpdatedWorkerProperty - Worker properties that can be updated
 type ACSRouterUpdatedWorkerProperty string
 
 const (
@@ -316,6 +320,7 @@ func PossibleCommunicationCloudEnvironmentModelValues() []CommunicationCloudEnvi
 	}
 }
 
+// CommunicationIdentifierModelKind - Communication model identifier kind
 type CommunicationIdentifierModelKind string
 
 const (

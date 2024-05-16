@@ -1740,7 +1740,6 @@ func (s *RecordedTestSuite) TestFilesystemListDeletedPaths() {
 	_require.NoError(err)
 
 	pager := fsClient.NewListDeletedPathsPager(nil)
-	time.Sleep(5 * time.Second)
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
 		_require.NoError(err)

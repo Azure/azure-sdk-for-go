@@ -9,7 +9,6 @@ import (
 	"fmt"
 	"log"
 	"math"
-	"net/url"
 	"os"
 	"strconv"
 	"strings"
@@ -18,6 +17,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/checkpoints"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/test"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 )
 
@@ -81,11 +81,7 @@ func newProcessorStressTest(args []string) (*processorStressTest, error) {
 
 	containerName := testData.runID
 
-	storageEndpoint, err := url.JoinPath(testData.StorageEndpoint, containerName)
-
-	if err != nil {
-		return nil, err
-	}
+	storageEndpoint := test.URLJoinPaths(testData.StorageEndpoint, containerName)
 
 	containerClient, err := container.NewClient(storageEndpoint, testData.Cred, nil)
 
@@ -376,12 +372,7 @@ func sliceToMap[T any](values []T, key func(v T) string) map[string]T {
 }
 
 func (inf *processorStressTest) newProcessorForTest() (*azeventhubs.ConsumerClient, *azeventhubs.Processor, error) {
-	storageEndpoint, err := url.JoinPath(inf.StorageEndpoint, inf.containerName)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
+	storageEndpoint := test.URLJoinPaths(inf.StorageEndpoint, inf.containerName)
 	containerClient, err := container.NewClient(storageEndpoint, inf.Cred, nil)
 
 	if err != nil {

@@ -94,18 +94,30 @@ func RandomString(prefix string, length int) string {
 }
 
 type ConnectionParamsForTest struct {
-	ClientID                   string
-	Cred                       azcore.TokenCredential
-	ConnectionString           string
-	ConnectionStringListenOnly string
-	ConnectionStringSendOnly   string
-	EventHubName               string
-	EventHubLinksOnlyName      string
-	EventHubNamespace          string
-	ResourceGroup              string
-	StorageConnectionString    string
-	SubscriptionID             string
-	TenantID                   string
+	ClientID              string
+	Cred                  azcore.TokenCredential
+	EventHubName          string
+	EventHubLinksOnlyName string
+	EventHubNamespace     string
+	StorageEndpoint       string
+	ResourceGroup         string
+	SubscriptionID        string
+	TenantID              string
+}
+
+func (c ConnectionParamsForTest) CS(t *testing.T) struct{ Primary, ListenOnly, SendOnly, Storage string } {
+	envVars := mustGetEnvironmentVars(t, []string{
+		"EVENTHUB_CONNECTION_STRING_LISTEN_ONLY",
+		"EVENTHUB_CONNECTION_STRING_SEND_ONLY",
+		"EVENTHUB_CONNECTION_STRING",
+	})
+
+	return struct{ Primary, ListenOnly, SendOnly, Storage string }{
+		envVars["EVENTHUB_CONNECTION_STRING"],
+		envVars["EVENTHUB_CONNECTION_STRING_LISTEN_ONLY"],
+		envVars["EVENTHUB_CONNECTION_STRING_SEND_ONLY"],
+		envVars["EVENTHUB_CONNECTION_STRING_SEND_ONLY"],
+	}
 }
 
 func GetConnectionParamsForTest(t *testing.T) ConnectionParamsForTest {
@@ -117,32 +129,24 @@ func GetConnectionParamsForTest(t *testing.T) ConnectionParamsForTest {
 
 	envVars := mustGetEnvironmentVars(t, []string{
 		"AZURE_SUBSCRIPTION_ID",
-		"CHECKPOINTSTORE_STORAGE_CONNECTION_STRING",
-		"EVENTHUB_CONNECTION_STRING_LISTEN_ONLY",
-		"EVENTHUB_CONNECTION_STRING_SEND_ONLY",
-		"EVENTHUB_CONNECTION_STRING",
+		"CHECKPOINTSTORE_STORAGE_ENDPOINT",
 		"EVENTHUB_NAME",
+		"EVENTHUB_NAMESPACE",
 		"EVENTHUB_LINKSONLY_NAME",
 		"RESOURCE_GROUP",
 	})
-
-	connProps, err := exported.ParseConnectionString(envVars["EVENTHUB_CONNECTION_STRING"])
-	require.NoError(t, err)
 
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	require.NoError(t, err)
 
 	return ConnectionParamsForTest{
-		Cred:                       cred,
-		ConnectionString:           envVars["EVENTHUB_CONNECTION_STRING"],
-		ConnectionStringListenOnly: envVars["EVENTHUB_CONNECTION_STRING_LISTEN_ONLY"],
-		ConnectionStringSendOnly:   envVars["EVENTHUB_CONNECTION_STRING_SEND_ONLY"],
-		EventHubName:               envVars["EVENTHUB_NAME"],
-		EventHubLinksOnlyName:      envVars["EVENTHUB_LINKSONLY_NAME"],
-		EventHubNamespace:          connProps.FullyQualifiedNamespace,
-		ResourceGroup:              envVars["RESOURCE_GROUP"],
-		StorageConnectionString:    envVars["CHECKPOINTSTORE_STORAGE_CONNECTION_STRING"],
-		SubscriptionID:             envVars["AZURE_SUBSCRIPTION_ID"],
+		Cred:                  cred,
+		EventHubName:          envVars["EVENTHUB_NAME"],
+		EventHubLinksOnlyName: envVars["EVENTHUB_LINKSONLY_NAME"],
+		EventHubNamespace:     envVars["EVENTHUB_NAMESPACE"],
+		ResourceGroup:         envVars["RESOURCE_GROUP"],
+		StorageEndpoint:       envVars["CHECKPOINTSTORE_STORAGE_ENDPOINT"],
+		SubscriptionID:        envVars["AZURE_SUBSCRIPTION_ID"],
 	}
 }
 
@@ -192,4 +196,14 @@ func RequireContextHasDefaultTimeout(t *testing.T, ctx context.Context, timeout 
 
 	require.Greater(t, duration, time.Duration(0))
 	require.LessOrEqual(t, duration, timeout)
+}
+
+func URLJoinPaths(base string, subPath string) string {
+	slash := "/"
+
+	if strings.HasSuffix(base, "/") {
+		slash = ""
+	}
+
+	return base + slash + subPath
 }

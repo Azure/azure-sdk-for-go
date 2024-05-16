@@ -9,7 +9,6 @@ import (
 	"flag"
 	"fmt"
 	"log"
-	"net/url"
 	"os"
 	"sort"
 	"strings"
@@ -21,6 +20,7 @@ import (
 	azlog "github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/checkpoints"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/test"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 	"github.com/joho/godotenv"
 	"github.com/microsoft/ApplicationInsights-Go/appinsights"
@@ -257,11 +257,7 @@ func sendEventsToPartition(ctx context.Context, args sendEventsToPartitionArgs) 
 // Returns the checkpoints we updated, sorted by partition ID.
 func initCheckpointStore(ctx context.Context, containerName string, testData *stressTestData) ([]azeventhubs.Checkpoint, error) {
 	// create the container first - it shouldn't already exist
-	storageEndpoint, err := url.JoinPath(testData.StorageEndpoint, containerName)
-
-	if err != nil {
-		return nil, err
-	}
+	storageEndpoint := test.URLJoinPaths(testData.StorageEndpoint, containerName)
 
 	cc, err := container.NewClient(storageEndpoint, testData.Cred, nil)
 

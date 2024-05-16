@@ -26,7 +26,7 @@ func TestProducerClient_SAS(t *testing.T) {
 	getLogsFn := test.CaptureLogsForTest()
 
 	testParams := test.GetConnectionParamsForTest(t)
-	sasCS, err := sas.CreateConnectionStringWithSASUsingExpiry(testParams.ConnectionString, time.Now().UTC().Add(time.Hour))
+	sasCS, err := sas.CreateConnectionStringWithSASUsingExpiry(testParams.CS(t).Primary, time.Now().UTC().Add(time.Hour))
 	require.NoError(t, err)
 
 	// sanity check - we did actually generate a connection string with an embedded SharedAccessSignature
@@ -79,7 +79,7 @@ func TestClientsUnauthorizedCreds(t *testing.T) {
 	testParams := test.GetConnectionParamsForTest(t)
 
 	t.Run("ListenOnly with Producer", func(t *testing.T) {
-		pc, err := azeventhubs.NewProducerClientFromConnectionString(testParams.ConnectionStringListenOnly, testParams.EventHubName, nil)
+		pc, err := azeventhubs.NewProducerClientFromConnectionString(testParams.CS(t).ListenOnly, testParams.EventHubName, nil)
 		require.NoError(t, err)
 		defer test.RequireClose(t, pc)
 
@@ -93,7 +93,7 @@ func TestClientsUnauthorizedCreds(t *testing.T) {
 	})
 
 	t.Run("SendOnly with Consumer", func(t *testing.T) {
-		client, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionStringSendOnly, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, nil)
+		client, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.CS(t).SendOnly, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, nil)
 		require.NoError(t, err)
 		defer test.RequireClose(t, client)
 
@@ -111,7 +111,7 @@ func TestClientsUnauthorizedCreds(t *testing.T) {
 	})
 
 	t.Run("Expired SAS", func(t *testing.T) {
-		expiredCS, err := sas.CreateConnectionStringWithSASUsingExpiry(testParams.ConnectionString, time.Now().Add(-10*time.Minute))
+		expiredCS, err := sas.CreateConnectionStringWithSASUsingExpiry(testParams.CS(t).Primary, time.Now().Add(-10*time.Minute))
 		require.NoError(t, err)
 
 		cc, err := azeventhubs.NewConsumerClientFromConnectionString(expiredCS, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, nil)
@@ -306,7 +306,7 @@ func testSendAny(t *testing.T, args struct {
 }) {
 	testParams := test.GetConnectionParamsForTest(t)
 
-	producer, err := azeventhubs.NewProducerClient(testParams.EventHubName, testParams.EventHubName, testParams.Cred, nil)
+	producer, err := azeventhubs.NewProducerClient(testParams.EventHubNamespace, testParams.EventHubName, testParams.Cred, nil)
 	require.NoError(t, err)
 
 	defer test.RequireClose(t, producer)

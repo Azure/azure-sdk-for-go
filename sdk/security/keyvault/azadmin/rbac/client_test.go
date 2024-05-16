@@ -20,14 +20,11 @@ import (
 )
 
 func TestRoleDefinition(t *testing.T) {
-	// if recording.GetRecordMode() == recording.PlaybackMode {
-	// 	t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	// }
 	client := startAccessControlTest(t)
 
 	var name, roleName string
-	if recording.GetRecordMode() == recording.PlaybackMode || recording.GetRecordMode() == recording.RecordingMode {
-		name, roleName = "bedc5fb2-8738-40a4-8b20-cedfb43a1922", "c023eb03-4e31-464c-84f7-001b7f23bd13"
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		name, roleName = "Sanitized", "Sanitized"
 	} else {
 		name, roleName = uuid.New().String(), uuid.New().String()
 	}
@@ -139,15 +136,12 @@ func TestDeleteRoleDefinition_FailureInvalidRole(t *testing.T) {
 }
 
 func TestRoleAssignment(t *testing.T) {
-	// if recording.GetRecordMode() == recording.PlaybackMode {
-	// 	t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	// }
 	client := startAccessControlTest(t)
 
 	var name, principalID, roleDefinitionID string
 	scope := rbac.RoleScopeGlobal
-	if recording.GetRecordMode() == recording.PlaybackMode || recording.GetRecordMode() == recording.RecordingMode {
-		name, principalID, roleDefinitionID = "bedc5fb2-8738-40a4-8b20-cedfb43a1922", "c023eb03-4e31-464c-84f7-001b7f23bd13", "Microsoft.KeyVault/providers/Microsoft.Authorization/roleDefinitions/33413926-3206-4cdd-b39a-83574fe37a17"
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		name, principalID, roleDefinitionID = "Sanitized", "Sanitized", "Sanitized"
 	} else {
 		name, principalID = uuid.New().String(), uuid.New().String()
 		// get random role definition to use for their service principal

@@ -65,15 +65,10 @@ func TestConsumeCloudEventAcsRouterJobQueuedEvent(t *testing.T) {
 
 	var selectors = sysEvent.AttachedWorkerSelectors
 	require.Equal(t, 1, len(selectors))
-	require.Equal(t, float32(1000), *selectors[0].TimeToLive)
+	require.Equal(t, float64(1000), *selectors[0].TimeToLive)
 
-	require.Equal(t, azsystemevents.ACSRouterLabelOperatorEqual, *selectors[0].LabelOperator)
-	// TODO: might have been a field rename?
-	//require.Equal(t, azsystemevents.AcsRouterLabelOperatorEqual, selectors[0].Operator)
-
-	require.Equal(t, azsystemevents.ACSRouterWorkerSelectorStateActive, *selectors[0].State)
-	// TODO: might have been a field rename?
-	//require.Equal(t, azsystemevents.AcsRouterWorkerSelectorStateActive, selectors[0].SelectorState)
+	require.Equal(t, azsystemevents.ACSRouterLabelOperatorEqual, *selectors[0].Operator)
+	require.Equal(t, azsystemevents.ACSRouterWorkerSelectorStateActive, *selectors[0].SelectorState)
 }
 
 func TestConsumeCloudEventAcsRouterJobReceivedEvent(t *testing.T) {
@@ -122,9 +117,6 @@ func TestConsumeCloudEventAcsRouterJobReceivedEvent(t *testing.T) {
 
 	sysEvent := deserializeSystemEvent[azsystemevents.ACSRouterJobReceivedEventData](t, event.Data)
 	require.Equal(t, azsystemevents.ACSRouterJobStatusPendingClassification, *sysEvent.JobStatus)
-
-	// TODO: don't have a .Status field?
-	//require.Equal(t, Azure.Messaging.EventGrid.azsystemevents.AcsRouterJobStatus.PendingClassification, sysEvent.Status)
 }
 
 // Health Data Services events
@@ -134,11 +126,11 @@ func TestConsumeCloudEventFhirResourceCreatedEvent(t *testing.T) {
 	events := parseManyCloudEvents(t, requestContent)
 
 	require.NotEmpty(t, events)
-	healthEvent := deserializeSystemEvent[azsystemevents.HealthcareFhirResourceCreatedEventData](t, events[0].Data)
-	require.Equal(t, azsystemevents.HealthcareFhirResourceTypePatient, *healthEvent.FhirResourceType)
-	require.Equal(t, "{fhir-account}.fhir.azurehealthcareapis.com", *healthEvent.FhirServiceHostName)
-	require.Equal(t, "e0a1f743-1a70-451f-830e-e96477163902", *healthEvent.FhirResourceID)
-	require.Equal(t, int64(1), *healthEvent.FhirResourceVersionID)
+	healthEvent := deserializeSystemEvent[azsystemevents.HealthcareFHIRResourceCreatedEventData](t, events[0].Data)
+	require.Equal(t, azsystemevents.HealthcareFhirResourceTypePatient, *healthEvent.FHIRResourceType)
+	require.Equal(t, "{fhir-account}.fhir.azurehealthcareapis.com", *healthEvent.FHIRServiceHostName)
+	require.Equal(t, "e0a1f743-1a70-451f-830e-e96477163902", *healthEvent.FHIRResourceID)
+	require.Equal(t, int64(1), *healthEvent.FHIRResourceVersionID)
 }
 
 func TestConsumeCloudEventFhirResourceUpdatedEvent(t *testing.T) {
@@ -147,12 +139,12 @@ func TestConsumeCloudEventFhirResourceUpdatedEvent(t *testing.T) {
 	events := parseManyCloudEvents(t, requestContent)
 
 	require.NotEmpty(t, events)
-	healthEvent := deserializeSystemEvent[azsystemevents.HealthcareFhirResourceUpdatedEventData](t, events[0].Data)
+	healthEvent := deserializeSystemEvent[azsystemevents.HealthcareFHIRResourceUpdatedEventData](t, events[0].Data)
 
-	require.Equal(t, azsystemevents.HealthcareFhirResourceTypePatient, *healthEvent.FhirResourceType)
-	require.Equal(t, "{fhir-account}.fhir.azurehealthcareapis.com", *healthEvent.FhirServiceHostName)
-	require.Equal(t, "e0a1f743-1a70-451f-830e-e96477163902", *healthEvent.FhirResourceID)
-	require.Equal(t, int64(1), *healthEvent.FhirResourceVersionID)
+	require.Equal(t, azsystemevents.HealthcareFhirResourceTypePatient, *healthEvent.FHIRResourceType)
+	require.Equal(t, "{fhir-account}.fhir.azurehealthcareapis.com", *healthEvent.FHIRServiceHostName)
+	require.Equal(t, "e0a1f743-1a70-451f-830e-e96477163902", *healthEvent.FHIRResourceID)
+	require.Equal(t, int64(1), *healthEvent.FHIRResourceVersionID)
 }
 
 func TestConsumeCloudEventFhirResourceDeletedEvent(t *testing.T) {
@@ -160,13 +152,13 @@ func TestConsumeCloudEventFhirResourceDeletedEvent(t *testing.T) {
 
 	events := parseManyCloudEvents(t, requestContent)
 
-	healthEvent := deserializeSystemEvent[azsystemevents.HealthcareFhirResourceDeletedEventData](t, events[0].Data)
+	healthEvent := deserializeSystemEvent[azsystemevents.HealthcareFHIRResourceDeletedEventData](t, events[0].Data)
 
 	require.NotNil(t, healthEvent)
-	require.Equal(t, azsystemevents.HealthcareFhirResourceTypePatient, *healthEvent.FhirResourceType)
-	require.Equal(t, "{fhir-account}.fhir.azurehealthcareapis.com", *healthEvent.FhirServiceHostName)
-	require.Equal(t, "e0a1f743-1a70-451f-830e-e96477163902", *healthEvent.FhirResourceID)
-	require.Equal(t, int64(1), *healthEvent.FhirResourceVersionID)
+	require.Equal(t, azsystemevents.HealthcareFhirResourceTypePatient, *healthEvent.FHIRResourceType)
+	require.Equal(t, "{fhir-account}.fhir.azurehealthcareapis.com", *healthEvent.FHIRServiceHostName)
+	require.Equal(t, "e0a1f743-1a70-451f-830e-e96477163902", *healthEvent.FHIRResourceID)
+	require.Equal(t, int64(1), *healthEvent.FHIRResourceVersionID)
 }
 
 func TestConsumeCloudEventDicomImageCreatedEvent(t *testing.T) {

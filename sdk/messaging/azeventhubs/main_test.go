@@ -24,8 +24,11 @@ func TestMain(m *testing.M) {
 
 func testMain(m *testing.M) int {
 	if recording.GetRecordMode() == recording.LiveMode {
-		if err := godotenv.Load(); err != nil {
-			log.Fatalf("Failed to load .env file when running live tests: %s", err.Error())
+		// if one of our vars isn't defined just assume that they're supposed to come from an .env file
+		if os.Getenv("CHECKPOINTSTORE_STORAGE_ENDPOINT") == "" {
+			if err := godotenv.Load(); err != nil {
+				log.Fatalf("Failed to load .env file when running live tests: %s", err.Error())
+			}
 		}
 
 		// create a test storage container so our examples can run.

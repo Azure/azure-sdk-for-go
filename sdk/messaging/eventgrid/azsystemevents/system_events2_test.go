@@ -1418,7 +1418,7 @@ func TestConsumeAcsEmailDeliveryReportReceivedEvent(t *testing.T) {
 	require.Equal(t, "test1@contoso.com", *emailEvent.Recipient)
 	require.Equal(t, azsystemevents.ACSEmailDeliveryReportStatusDelivered, *emailEvent.Status)
 	require.Equal(t, "DestinationMailboxFull", *emailEvent.DeliveryStatusDetails.StatusMessage)
-	require.Equal(t, mustParseTime(t, "2023-02-09T19:46:12.2480265+00:00"), *emailEvent.DeliveryAttemptTimeStamp)
+	require.Equal(t, mustParseTime(t, "2023-02-09T19:46:12.2480265+00:00"), *emailEvent.DeliveryAttemptTimestamp)
 }
 
 func TestConsumeAcsIncomingCallEvent(t *testing.T) {
@@ -1465,8 +1465,8 @@ func TestConsumeAcsIncomingCallEvent(t *testing.T) {
 	event := parseEvent(t, requestContent)
 
 	incomingCallEvent := deserializeSystemEvent[azsystemevents.ACSIncomingCallEventData](t, event.Data)
-	require.Equal(t, "{recipient-id}", *incomingCallEvent.To.CommunicationUser.ID)
-	require.Equal(t, "{caller-id}", *incomingCallEvent.From.CommunicationUser.ID)
+	require.Equal(t, "{recipient-id}", *incomingCallEvent.ToCommunicationIdentifier.CommunicationUser.ID)
+	require.Equal(t, "{caller-id}", *incomingCallEvent.FromCommunicationIdentifier.CommunicationUser.ID)
 	require.Equal(t, "VOIP Caller", *incomingCallEvent.CallerDisplayName)
 	require.Equal(t, "616d617a6f6e5f6368696;encoding=hex", *incomingCallEvent.CustomContext.SipHeaders["userToUser"])
 	require.Equal(t, "35567842", *incomingCallEvent.CustomContext.SipHeaders["X-MS-Custom-myheader1"])

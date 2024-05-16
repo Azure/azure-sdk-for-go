@@ -65,10 +65,10 @@ func TestConsumeCloudEventAcsRouterJobQueuedEvent(t *testing.T) {
 
 	var selectors = sysEvent.AttachedWorkerSelectors
 	require.Equal(t, 1, len(selectors))
-	require.Equal(t, float64(1000), *selectors[0].TTLSeconds)
+	require.Equal(t, float64(1000), *selectors[0].TimeToLive)
 
-	require.Equal(t, azsystemevents.ACSRouterLabelOperatorEqual, *selectors[0].LabelOperator)
-	require.Equal(t, azsystemevents.ACSRouterWorkerSelectorStateActive, *selectors[0].State)
+	require.Equal(t, azsystemevents.ACSRouterLabelOperatorEqual, *selectors[0].Operator)
+	require.Equal(t, azsystemevents.ACSRouterWorkerSelectorStateActive, *selectors[0].SelectorState)
 }
 
 func TestConsumeCloudEventAcsRouterJobReceivedEvent(t *testing.T) {
@@ -451,10 +451,10 @@ func TestConsumeCloudEventHealthResourcesAvailiabilityStatusChangedEvent(t *test
 	require.NotEmpty(t, event)
 	availabilityStatusChangedEventData := deserializeSystemEvent[azsystemevents.ResourceNotificationsHealthResourcesAvailabilityStatusChangedEventData](t, event.Data)
 
-	require.Equal(t, "{event-id}", *availabilityStatusChangedEventData.ResourceInfo.Name)
+	require.Equal(t, "{event-id}", *availabilityStatusChangedEventData.ResourceDetails.Name)
 	require.Equal(t,
 		"/subscriptions/319a9601-1ec0-0000-aebc-8fe82724c81e/resourceGroups/{rg-name}/providers/Microsoft.Compute/virtualMachines/{vm-name}/providers/Microsoft.ResourceHealth/availabilityStatuses/{event-id}",
-		*availabilityStatusChangedEventData.ResourceInfo.ID)
+		*availabilityStatusChangedEventData.ResourceDetails.ID)
 }
 
 func TestConsumeCloudEventResourceDeletedEvent(t *testing.T) {
@@ -483,7 +483,7 @@ func TestConsumeCloudEventResourceDeletedEvent(t *testing.T) {
 
 	require.Equal(t,
 		"/subscriptions/319a9601-1ec0-0000-aebc-8fe82724c81e/resourceGroups/{rg-name}/providers/Microsoft.Storage/storageAccounts/{storageAccount-name}",
-		*sysEvent.ResourceInfo.ID)
+		*sysEvent.ResourceDetails.ID)
 }
 
 func TestConsumeCloudEventResourceCreatedOrUpdatedEvent(t *testing.T) {
@@ -565,7 +565,7 @@ func TestConsumeCloudEventResourceCreatedOrUpdatedEvent(t *testing.T) {
 
 	require.Equal(t,
 		"/subscriptions/319a9601-1ec0-0000-aebc-8fe82724c81e/resourceGroups/{rg-name}/providers/Microsoft.Storage/storageAccounts/{storageAccount-name}",
-		*sysEvent.ResourceInfo.ID)
+		*sysEvent.ResourceDetails.ID)
 }
 
 func TestConsumeCloudEventAPICenter(t *testing.T) {

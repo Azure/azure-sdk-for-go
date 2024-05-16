@@ -1232,7 +1232,7 @@ func (a *ACSChatThreadWithUserDeletedEventData) UnmarshalJSON(data []byte) error
 // MarshalJSON implements the json.Marshaller interface for type ACSEmailDeliveryReportReceivedEventData.
 func (a ACSEmailDeliveryReportReceivedEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateDateTimeRFC3339(objectMap, "deliveryAttemptTimeStamp", a.DeliveryAttemptTimeStamp)
+	populateDateTimeRFC3339(objectMap, "deliveryAttemptTimeStamp", a.DeliveryAttemptTimestamp)
 	populate(objectMap, "deliveryStatusDetails", a.DeliveryStatusDetails)
 	populate(objectMap, "messageId", a.MessageID)
 	populate(objectMap, "recipient", a.Recipient)
@@ -1251,7 +1251,7 @@ func (a *ACSEmailDeliveryReportReceivedEventData) UnmarshalJSON(data []byte) err
 		var err error
 		switch key {
 		case "deliveryAttemptTimeStamp":
-			err = unpopulateDateTimeRFC3339(val, "DeliveryAttemptTimeStamp", &a.DeliveryAttemptTimeStamp)
+			err = unpopulateDateTimeRFC3339(val, "DeliveryAttemptTimestamp", &a.DeliveryAttemptTimestamp)
 			delete(rawMsg, key)
 		case "deliveryStatusDetails":
 			err = unpopulate(val, "DeliveryStatusDetails", &a.DeliveryStatusDetails)
@@ -1306,12 +1306,12 @@ func (a *ACSEmailDeliveryReportStatusDetails) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ACSEmailEngagementTrackingReportReceivedEventData.
 func (a ACSEmailEngagementTrackingReportReceivedEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "engagementType", a.Engagement)
 	populate(objectMap, "engagementContext", a.EngagementContext)
-	populate(objectMap, "engagementType", a.EngagementType)
 	populate(objectMap, "messageId", a.MessageID)
 	populate(objectMap, "recipient", a.Recipient)
 	populate(objectMap, "sender", a.Sender)
-	populateDateTimeRFC3339(objectMap, "userActionTimeStamp", a.UserActionTimeStamp)
+	populateDateTimeRFC3339(objectMap, "userActionTimeStamp", a.UserActionTimestamp)
 	populate(objectMap, "userAgent", a.UserAgent)
 	return json.Marshal(objectMap)
 }
@@ -1325,11 +1325,11 @@ func (a *ACSEmailEngagementTrackingReportReceivedEventData) UnmarshalJSON(data [
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "engagementType":
+			err = unpopulate(val, "Engagement", &a.Engagement)
+			delete(rawMsg, key)
 		case "engagementContext":
 			err = unpopulate(val, "EngagementContext", &a.EngagementContext)
-			delete(rawMsg, key)
-		case "engagementType":
-			err = unpopulate(val, "EngagementType", &a.EngagementType)
 			delete(rawMsg, key)
 		case "messageId":
 			err = unpopulate(val, "MessageID", &a.MessageID)
@@ -1341,7 +1341,7 @@ func (a *ACSEmailEngagementTrackingReportReceivedEventData) UnmarshalJSON(data [
 			err = unpopulate(val, "Sender", &a.Sender)
 			delete(rawMsg, key)
 		case "userActionTimeStamp":
-			err = unpopulateDateTimeRFC3339(val, "UserActionTimeStamp", &a.UserActionTimeStamp)
+			err = unpopulateDateTimeRFC3339(val, "UserActionTimestamp", &a.UserActionTimestamp)
 			delete(rawMsg, key)
 		case "userAgent":
 			err = unpopulate(val, "UserAgent", &a.UserAgent)
@@ -1391,10 +1391,10 @@ func (a ACSIncomingCallEventData) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "callerDisplayName", a.CallerDisplayName)
 	populate(objectMap, "correlationId", a.CorrelationID)
 	populate(objectMap, "customContext", a.CustomContext)
-	populate(objectMap, "from", a.From)
+	populate(objectMap, "from", a.FromCommunicationIdentifier)
 	populate(objectMap, "incomingCallContext", a.IncomingCallContext)
 	populate(objectMap, "serverCallId", a.ServerCallID)
-	populate(objectMap, "to", a.To)
+	populate(objectMap, "to", a.ToCommunicationIdentifier)
 	return json.Marshal(objectMap)
 }
 
@@ -1417,7 +1417,7 @@ func (a *ACSIncomingCallEventData) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "CustomContext", &a.CustomContext)
 			delete(rawMsg, key)
 		case "from":
-			err = unpopulate(val, "From", &a.From)
+			err = unpopulate(val, "FromCommunicationIdentifier", &a.FromCommunicationIdentifier)
 			delete(rawMsg, key)
 		case "incomingCallContext":
 			err = unpopulate(val, "IncomingCallContext", &a.IncomingCallContext)
@@ -1426,7 +1426,7 @@ func (a *ACSIncomingCallEventData) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "ServerCallID", &a.ServerCallID)
 			delete(rawMsg, key)
 		case "to":
-			err = unpopulate(val, "To", &a.To)
+			err = unpopulate(val, "ToCommunicationIdentifier", &a.ToCommunicationIdentifier)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -1471,7 +1471,7 @@ func (a *ACSMessageButtonContent) UnmarshalJSON(data []byte) error {
 func (a ACSMessageContext) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "from", a.From)
-	populate(objectMap, "id", a.ID)
+	populate(objectMap, "id", a.MessageID)
 	return json.Marshal(objectMap)
 }
 
@@ -1488,7 +1488,7 @@ func (a *ACSMessageContext) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "From", &a.From)
 			delete(rawMsg, key)
 		case "id":
-			err = unpopulate(val, "ID", &a.ID)
+			err = unpopulate(val, "MessageID", &a.MessageID)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -1501,11 +1501,11 @@ func (a *ACSMessageContext) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ACSMessageDeliveryStatusUpdatedEventData.
 func (a ACSMessageDeliveryStatusUpdatedEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "channelType", a.ChannelType)
+	populate(objectMap, "channelType", a.ChannelKind)
 	populate(objectMap, "error", a.Error)
 	populate(objectMap, "from", a.From)
 	populate(objectMap, "messageId", a.MessageID)
-	populateDateTimeRFC3339(objectMap, "receivedTimeStamp", a.ReceivedTimeStamp)
+	populateDateTimeRFC3339(objectMap, "receivedTimeStamp", a.ReceivedTimestamp)
 	populate(objectMap, "status", a.Status)
 	populate(objectMap, "to", a.To)
 	return json.Marshal(objectMap)
@@ -1521,7 +1521,7 @@ func (a *ACSMessageDeliveryStatusUpdatedEventData) UnmarshalJSON(data []byte) er
 		var err error
 		switch key {
 		case "channelType":
-			err = unpopulate(val, "ChannelType", &a.ChannelType)
+			err = unpopulate(val, "ChannelKind", &a.ChannelKind)
 			delete(rawMsg, key)
 		case "error":
 			err = unpopulate(val, "Error", &a.Error)
@@ -1533,7 +1533,7 @@ func (a *ACSMessageDeliveryStatusUpdatedEventData) UnmarshalJSON(data []byte) er
 			err = unpopulate(val, "MessageID", &a.MessageID)
 			delete(rawMsg, key)
 		case "receivedTimeStamp":
-			err = unpopulateDateTimeRFC3339(val, "ReceivedTimeStamp", &a.ReceivedTimeStamp)
+			err = unpopulateDateTimeRFC3339(val, "ReceivedTimestamp", &a.ReceivedTimestamp)
 			delete(rawMsg, key)
 		case "status":
 			err = unpopulate(val, "Status", &a.Status)
@@ -1554,7 +1554,7 @@ func (a ACSMessageEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "error", a.Error)
 	populate(objectMap, "from", a.From)
-	populateDateTimeRFC3339(objectMap, "receivedTimeStamp", a.ReceivedTimeStamp)
+	populateDateTimeRFC3339(objectMap, "receivedTimeStamp", a.ReceivedTimestamp)
 	populate(objectMap, "to", a.To)
 	return json.Marshal(objectMap)
 }
@@ -1575,7 +1575,7 @@ func (a *ACSMessageEventData) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "From", &a.From)
 			delete(rawMsg, key)
 		case "receivedTimeStamp":
-			err = unpopulateDateTimeRFC3339(val, "ReceivedTimeStamp", &a.ReceivedTimeStamp)
+			err = unpopulateDateTimeRFC3339(val, "ReceivedTimestamp", &a.ReceivedTimestamp)
 			delete(rawMsg, key)
 		case "to":
 			err = unpopulate(val, "To", &a.To)
@@ -1591,7 +1591,7 @@ func (a *ACSMessageEventData) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ACSMessageInteractiveButtonReplyContent.
 func (a ACSMessageInteractiveButtonReplyContent) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "id", a.ID)
+	populate(objectMap, "id", a.ButtonID)
 	populate(objectMap, "title", a.Title)
 	return json.Marshal(objectMap)
 }
@@ -1606,7 +1606,7 @@ func (a *ACSMessageInteractiveButtonReplyContent) UnmarshalJSON(data []byte) err
 		var err error
 		switch key {
 		case "id":
-			err = unpopulate(val, "ID", &a.ID)
+			err = unpopulate(val, "ButtonID", &a.ButtonID)
 			delete(rawMsg, key)
 		case "title":
 			err = unpopulate(val, "Title", &a.Title)
@@ -1624,7 +1624,7 @@ func (a ACSMessageInteractiveContent) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "buttonReply", a.ButtonReply)
 	populate(objectMap, "listReply", a.ListReply)
-	populate(objectMap, "type", a.Type)
+	populate(objectMap, "type", a.ReplyKind)
 	return json.Marshal(objectMap)
 }
 
@@ -1644,7 +1644,7 @@ func (a *ACSMessageInteractiveContent) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "ListReply", &a.ListReply)
 			delete(rawMsg, key)
 		case "type":
-			err = unpopulate(val, "Type", &a.Type)
+			err = unpopulate(val, "ReplyKind", &a.ReplyKind)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -1658,7 +1658,7 @@ func (a *ACSMessageInteractiveContent) UnmarshalJSON(data []byte) error {
 func (a ACSMessageInteractiveListReplyContent) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "description", a.Description)
-	populate(objectMap, "id", a.ID)
+	populate(objectMap, "id", a.ListItemID)
 	populate(objectMap, "title", a.Title)
 	return json.Marshal(objectMap)
 }
@@ -1676,7 +1676,7 @@ func (a *ACSMessageInteractiveListReplyContent) UnmarshalJSON(data []byte) error
 			err = unpopulate(val, "Description", &a.Description)
 			delete(rawMsg, key)
 		case "id":
-			err = unpopulate(val, "ID", &a.ID)
+			err = unpopulate(val, "ListItemID", &a.ListItemID)
 			delete(rawMsg, key)
 		case "title":
 			err = unpopulate(val, "Title", &a.Title)
@@ -1694,7 +1694,7 @@ func (a ACSMessageMediaContent) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "caption", a.Caption)
 	populate(objectMap, "fileName", a.FileName)
-	populate(objectMap, "id", a.ID)
+	populate(objectMap, "id", a.MediaID)
 	populate(objectMap, "mimeType", a.MimeType)
 	return json.Marshal(objectMap)
 }
@@ -1715,7 +1715,7 @@ func (a *ACSMessageMediaContent) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "FileName", &a.FileName)
 			delete(rawMsg, key)
 		case "id":
-			err = unpopulate(val, "ID", &a.ID)
+			err = unpopulate(val, "MediaID", &a.MediaID)
 			delete(rawMsg, key)
 		case "mimeType":
 			err = unpopulate(val, "MimeType", &a.MimeType)
@@ -1732,14 +1732,14 @@ func (a *ACSMessageMediaContent) UnmarshalJSON(data []byte) error {
 func (a ACSMessageReceivedEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "button", a.Button)
-	populate(objectMap, "channelType", a.ChannelType)
+	populate(objectMap, "channelType", a.ChannelKind)
 	populate(objectMap, "content", a.Content)
 	populate(objectMap, "context", a.Context)
 	populate(objectMap, "error", a.Error)
 	populate(objectMap, "from", a.From)
-	populate(objectMap, "interactive", a.Interactive)
-	populate(objectMap, "media", a.Media)
-	populateDateTimeRFC3339(objectMap, "receivedTimeStamp", a.ReceivedTimeStamp)
+	populate(objectMap, "interactive", a.InteractiveContent)
+	populate(objectMap, "media", a.MediaContent)
+	populateDateTimeRFC3339(objectMap, "receivedTimeStamp", a.ReceivedTimestamp)
 	populate(objectMap, "to", a.To)
 	return json.Marshal(objectMap)
 }
@@ -1757,7 +1757,7 @@ func (a *ACSMessageReceivedEventData) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Button", &a.Button)
 			delete(rawMsg, key)
 		case "channelType":
-			err = unpopulate(val, "ChannelType", &a.ChannelType)
+			err = unpopulate(val, "ChannelKind", &a.ChannelKind)
 			delete(rawMsg, key)
 		case "content":
 			err = unpopulate(val, "Content", &a.Content)
@@ -1772,13 +1772,13 @@ func (a *ACSMessageReceivedEventData) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "From", &a.From)
 			delete(rawMsg, key)
 		case "interactive":
-			err = unpopulate(val, "Interactive", &a.Interactive)
+			err = unpopulate(val, "InteractiveContent", &a.InteractiveContent)
 			delete(rawMsg, key)
 		case "media":
-			err = unpopulate(val, "Media", &a.Media)
+			err = unpopulate(val, "MediaContent", &a.MediaContent)
 			delete(rawMsg, key)
 		case "receivedTimeStamp":
-			err = unpopulateDateTimeRFC3339(val, "ReceivedTimeStamp", &a.ReceivedTimeStamp)
+			err = unpopulateDateTimeRFC3339(val, "ReceivedTimestamp", &a.ReceivedTimestamp)
 			delete(rawMsg, key)
 		case "to":
 			err = unpopulate(val, "To", &a.To)
@@ -3275,10 +3275,10 @@ func (a ACSRouterWorkerSelector) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populateDateTimeRFC3339(objectMap, "expirationTime", a.ExpirationTime)
 	populate(objectMap, "key", a.Key)
-	populate(objectMap, "labelOperator", a.LabelOperator)
 	populateAny(objectMap, "labelValue", a.LabelValue)
-	populate(objectMap, "state", a.State)
-	populate(objectMap, "ttlSeconds", a.TTLSeconds)
+	populate(objectMap, "labelOperator", a.Operator)
+	populate(objectMap, "state", a.SelectorState)
+	populate(objectMap, "ttlSeconds", a.TimeToLive)
 	return json.Marshal(objectMap)
 }
 
@@ -3297,17 +3297,17 @@ func (a *ACSRouterWorkerSelector) UnmarshalJSON(data []byte) error {
 		case "key":
 			err = unpopulate(val, "Key", &a.Key)
 			delete(rawMsg, key)
-		case "labelOperator":
-			err = unpopulate(val, "LabelOperator", &a.LabelOperator)
-			delete(rawMsg, key)
 		case "labelValue":
 			err = unpopulate(val, "LabelValue", &a.LabelValue)
 			delete(rawMsg, key)
+		case "labelOperator":
+			err = unpopulate(val, "Operator", &a.Operator)
+			delete(rawMsg, key)
 		case "state":
-			err = unpopulate(val, "State", &a.State)
+			err = unpopulate(val, "SelectorState", &a.SelectorState)
 			delete(rawMsg, key)
 		case "ttlSeconds":
-			err = unpopulate(val, "TTLSeconds", &a.TTLSeconds)
+			err = unpopulate(val, "TimeToLive", &a.TimeToLive)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -10037,8 +10037,8 @@ func (r *ResourceHTTPRequest) UnmarshalJSON(data []byte) error {
 func (r ResourceNotificationsHealthResourcesAnnotatedEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "apiVersion", r.APIVersion)
-	populate(objectMap, "operationalInfo", r.OperationalInfo)
-	populate(objectMap, "resourceInfo", r.ResourceInfo)
+	populate(objectMap, "operationalInfo", r.OperationalDetails)
+	populate(objectMap, "resourceInfo", r.ResourceDetails)
 	return json.Marshal(objectMap)
 }
 
@@ -10055,10 +10055,10 @@ func (r *ResourceNotificationsHealthResourcesAnnotatedEventData) UnmarshalJSON(d
 			err = unpopulate(val, "APIVersion", &r.APIVersion)
 			delete(rawMsg, key)
 		case "operationalInfo":
-			err = unpopulate(val, "OperationalInfo", &r.OperationalInfo)
+			err = unpopulate(val, "OperationalDetails", &r.OperationalDetails)
 			delete(rawMsg, key)
 		case "resourceInfo":
-			err = unpopulate(val, "ResourceInfo", &r.ResourceInfo)
+			err = unpopulate(val, "ResourceDetails", &r.ResourceDetails)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -10072,8 +10072,8 @@ func (r *ResourceNotificationsHealthResourcesAnnotatedEventData) UnmarshalJSON(d
 func (r ResourceNotificationsHealthResourcesAvailabilityStatusChangedEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "apiVersion", r.APIVersion)
-	populate(objectMap, "operationalInfo", r.OperationalInfo)
-	populate(objectMap, "resourceInfo", r.ResourceInfo)
+	populate(objectMap, "operationalInfo", r.OperationalDetails)
+	populate(objectMap, "resourceInfo", r.ResourceDetails)
 	return json.Marshal(objectMap)
 }
 
@@ -10090,10 +10090,10 @@ func (r *ResourceNotificationsHealthResourcesAvailabilityStatusChangedEventData)
 			err = unpopulate(val, "APIVersion", &r.APIVersion)
 			delete(rawMsg, key)
 		case "operationalInfo":
-			err = unpopulate(val, "OperationalInfo", &r.OperationalInfo)
+			err = unpopulate(val, "OperationalDetails", &r.OperationalDetails)
 			delete(rawMsg, key)
 		case "resourceInfo":
-			err = unpopulate(val, "ResourceInfo", &r.ResourceInfo)
+			err = unpopulate(val, "ResourceDetails", &r.ResourceDetails)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -10168,8 +10168,8 @@ func (r *ResourceNotificationsResourceDeletedDetails) UnmarshalJSON(data []byte)
 // MarshalJSON implements the json.Marshaller interface for type ResourceNotificationsResourceDeletedEventData.
 func (r ResourceNotificationsResourceDeletedEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "operationalInfo", r.OperationalInfo)
-	populate(objectMap, "resourceInfo", r.ResourceInfo)
+	populate(objectMap, "operationalInfo", r.OperationalDetails)
+	populate(objectMap, "resourceInfo", r.ResourceDetails)
 	return json.Marshal(objectMap)
 }
 
@@ -10183,10 +10183,10 @@ func (r *ResourceNotificationsResourceDeletedEventData) UnmarshalJSON(data []byt
 		var err error
 		switch key {
 		case "operationalInfo":
-			err = unpopulate(val, "OperationalInfo", &r.OperationalInfo)
+			err = unpopulate(val, "OperationalDetails", &r.OperationalDetails)
 			delete(rawMsg, key)
 		case "resourceInfo":
-			err = unpopulate(val, "ResourceInfo", &r.ResourceInfo)
+			err = unpopulate(val, "ResourceDetails", &r.ResourceDetails)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -10200,8 +10200,8 @@ func (r *ResourceNotificationsResourceDeletedEventData) UnmarshalJSON(data []byt
 func (r ResourceNotificationsResourceManagementCreatedOrUpdatedEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "apiVersion", r.APIVersion)
-	populate(objectMap, "operationalInfo", r.OperationalInfo)
-	populate(objectMap, "resourceInfo", r.ResourceInfo)
+	populate(objectMap, "operationalInfo", r.OperationalDetails)
+	populate(objectMap, "resourceInfo", r.ResourceDetails)
 	return json.Marshal(objectMap)
 }
 
@@ -10218,10 +10218,10 @@ func (r *ResourceNotificationsResourceManagementCreatedOrUpdatedEventData) Unmar
 			err = unpopulate(val, "APIVersion", &r.APIVersion)
 			delete(rawMsg, key)
 		case "operationalInfo":
-			err = unpopulate(val, "OperationalInfo", &r.OperationalInfo)
+			err = unpopulate(val, "OperationalDetails", &r.OperationalDetails)
 			delete(rawMsg, key)
 		case "resourceInfo":
-			err = unpopulate(val, "ResourceInfo", &r.ResourceInfo)
+			err = unpopulate(val, "ResourceDetails", &r.ResourceDetails)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -10234,8 +10234,8 @@ func (r *ResourceNotificationsResourceManagementCreatedOrUpdatedEventData) Unmar
 // MarshalJSON implements the json.Marshaller interface for type ResourceNotificationsResourceManagementDeletedEventData.
 func (r ResourceNotificationsResourceManagementDeletedEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "operationalInfo", r.OperationalInfo)
-	populate(objectMap, "resourceInfo", r.ResourceInfo)
+	populate(objectMap, "operationalInfo", r.OperationalDetails)
+	populate(objectMap, "resourceInfo", r.ResourceDetails)
 	return json.Marshal(objectMap)
 }
 
@@ -10249,10 +10249,10 @@ func (r *ResourceNotificationsResourceManagementDeletedEventData) UnmarshalJSON(
 		var err error
 		switch key {
 		case "operationalInfo":
-			err = unpopulate(val, "OperationalInfo", &r.OperationalInfo)
+			err = unpopulate(val, "OperationalDetails", &r.OperationalDetails)
 			delete(rawMsg, key)
 		case "resourceInfo":
-			err = unpopulate(val, "ResourceInfo", &r.ResourceInfo)
+			err = unpopulate(val, "ResourceDetails", &r.ResourceDetails)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -10313,8 +10313,8 @@ func (r *ResourceNotificationsResourceUpdatedDetails) UnmarshalJSON(data []byte)
 func (r ResourceNotificationsResourceUpdatedEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "apiVersion", r.APIVersion)
-	populate(objectMap, "operationalInfo", r.OperationalInfo)
-	populate(objectMap, "resourceInfo", r.ResourceInfo)
+	populate(objectMap, "operationalInfo", r.OperationalDetails)
+	populate(objectMap, "resourceInfo", r.ResourceDetails)
 	return json.Marshal(objectMap)
 }
 
@@ -10331,10 +10331,10 @@ func (r *ResourceNotificationsResourceUpdatedEventData) UnmarshalJSON(data []byt
 			err = unpopulate(val, "APIVersion", &r.APIVersion)
 			delete(rawMsg, key)
 		case "operationalInfo":
-			err = unpopulate(val, "OperationalInfo", &r.OperationalInfo)
+			err = unpopulate(val, "OperationalDetails", &r.OperationalDetails)
 			delete(rawMsg, key)
 		case "resourceInfo":
-			err = unpopulate(val, "ResourceInfo", &r.ResourceInfo)
+			err = unpopulate(val, "ResourceDetails", &r.ResourceDetails)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -11419,9 +11419,9 @@ func (s *StorageLifecyclePolicyCompletedEventData) UnmarshalJSON(data []byte) er
 // MarshalJSON implements the json.Marshaller interface for type StorageTaskAssignmentCompletedEventData.
 func (s StorageTaskAssignmentCompletedEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateDateTimeRFC3339(objectMap, "completedDateTime", s.CompletedDateTime)
+	populateDateTimeRFC3339(objectMap, "completedDateTime", s.CompletedOn)
 	populate(objectMap, "status", s.Status)
-	populate(objectMap, "summaryReportBlobUrl", s.SummaryReportBlobURL)
+	populate(objectMap, "summaryReportBlobUrl", s.SummaryReportBlobURI)
 	populate(objectMap, "taskExecutionId", s.TaskExecutionID)
 	populate(objectMap, "taskName", s.TaskName)
 	return json.Marshal(objectMap)
@@ -11437,13 +11437,13 @@ func (s *StorageTaskAssignmentCompletedEventData) UnmarshalJSON(data []byte) err
 		var err error
 		switch key {
 		case "completedDateTime":
-			err = unpopulateDateTimeRFC3339(val, "CompletedDateTime", &s.CompletedDateTime)
+			err = unpopulateDateTimeRFC3339(val, "CompletedOn", &s.CompletedOn)
 			delete(rawMsg, key)
 		case "status":
 			err = unpopulate(val, "Status", &s.Status)
 			delete(rawMsg, key)
 		case "summaryReportBlobUrl":
-			err = unpopulate(val, "SummaryReportBlobURL", &s.SummaryReportBlobURL)
+			err = unpopulate(val, "SummaryReportBlobURI", &s.SummaryReportBlobURI)
 			delete(rawMsg, key)
 		case "taskExecutionId":
 			err = unpopulate(val, "TaskExecutionID", &s.TaskExecutionID)
@@ -11462,7 +11462,7 @@ func (s *StorageTaskAssignmentCompletedEventData) UnmarshalJSON(data []byte) err
 // MarshalJSON implements the json.Marshaller interface for type StorageTaskAssignmentQueuedEventData.
 func (s StorageTaskAssignmentQueuedEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateDateTimeRFC3339(objectMap, "queuedDateTime", s.QueuedDateTime)
+	populateDateTimeRFC3339(objectMap, "queuedDateTime", s.QueuedOn)
 	populate(objectMap, "taskExecutionId", s.TaskExecutionID)
 	return json.Marshal(objectMap)
 }
@@ -11477,7 +11477,7 @@ func (s *StorageTaskAssignmentQueuedEventData) UnmarshalJSON(data []byte) error 
 		var err error
 		switch key {
 		case "queuedDateTime":
-			err = unpopulateDateTimeRFC3339(val, "QueuedDateTime", &s.QueuedDateTime)
+			err = unpopulateDateTimeRFC3339(val, "QueuedOn", &s.QueuedOn)
 			delete(rawMsg, key)
 		case "taskExecutionId":
 			err = unpopulate(val, "TaskExecutionID", &s.TaskExecutionID)

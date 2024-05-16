@@ -611,7 +611,7 @@ type ACSChatThreadWithUserDeletedEventData struct {
 // event.
 type ACSEmailDeliveryReportReceivedEventData struct {
 	// REQUIRED; The time at which the email delivery report received timestamp
-	DeliveryAttemptTimeStamp *time.Time
+	DeliveryAttemptTimestamp *time.Time
 
 	// REQUIRED; Detailed information about the status if any
 	DeliveryStatusDetails *ACSEmailDeliveryReportStatusDetails
@@ -639,10 +639,10 @@ type ACSEmailDeliveryReportStatusDetails struct {
 // event.
 type ACSEmailEngagementTrackingReportReceivedEventData struct {
 	// REQUIRED; The type of engagement user have with email
-	EngagementType *ACSUserEngagement
+	Engagement *ACSUserEngagement
 
 	// REQUIRED; The time at which the user interacted with the email
-	UserActionTimeStamp *time.Time
+	UserActionTimestamp *time.Time
 
 	// The context of the type of engagement user had with email
 	EngagementContext *string
@@ -676,10 +676,10 @@ type ACSIncomingCallEventData struct {
 	CustomContext *ACSIncomingCallCustomContext
 
 	// REQUIRED; The communication identifier of the user who initiated the call.
-	From *CommunicationIdentifierModel
+	FromCommunicationIdentifier *CommunicationIdentifierModel
 
 	// REQUIRED; The communication identifier of the target user.
-	To *CommunicationIdentifierModel
+	ToCommunicationIdentifier *CommunicationIdentifierModel
 
 	// Display name of caller.
 	CallerDisplayName *string
@@ -709,20 +709,20 @@ type ACSMessageContext struct {
 	From *string
 
 	// The message ID for the sent message for an inbound reply
-	ID *string
+	MessageID *string
 }
 
 // ACSMessageDeliveryStatusUpdatedEventData - Schema of the Data property of an EventGridEvent for a Microsoft.Communication.AdvancedMessageDeliveryStatusUpdated
 // event.
 type ACSMessageDeliveryStatusUpdatedEventData struct {
 	// REQUIRED; The updated message channel type
-	ChannelType *ACSMessageChannelKind
+	ChannelKind *ACSMessageChannelKind
 
 	// REQUIRED; The channel event error
 	Error *internalACSMessageChannelEventError
 
 	// REQUIRED; The time message was received
-	ReceivedTimeStamp *time.Time
+	ReceivedTimestamp *time.Time
 
 	// REQUIRED; The updated message status
 	Status *ACSMessageDeliveryStatus
@@ -743,7 +743,7 @@ type ACSMessageEventData struct {
 	Error *internalACSMessageChannelEventError
 
 	// REQUIRED; The time message was received
-	ReceivedTimeStamp *time.Time
+	ReceivedTimestamp *time.Time
 
 	// The message sender
 	From *string
@@ -755,7 +755,7 @@ type ACSMessageEventData struct {
 // ACSMessageInteractiveButtonReplyContent - Message Interactive button reply content for a user to business message
 type ACSMessageInteractiveButtonReplyContent struct {
 	// The ID of the button
-	ID *string
+	ButtonID *string
 
 	// The title of the button
 	Title *string
@@ -770,7 +770,7 @@ type ACSMessageInteractiveContent struct {
 	ListReply *ACSMessageInteractiveListReplyContent
 
 	// REQUIRED; The Message interactive reply type
-	Type *ACSInteractiveReplyKind
+	ReplyKind *ACSInteractiveReplyKind
 }
 
 // ACSMessageInteractiveListReplyContent - Message Interactive list reply content for a user to business message
@@ -779,7 +779,7 @@ type ACSMessageInteractiveListReplyContent struct {
 	Description *string
 
 	// The ID of the selected list item
-	ID *string
+	ListItemID *string
 
 	// The title of the selected list item
 	Title *string
@@ -794,7 +794,7 @@ type ACSMessageMediaContent struct {
 	FileName *string
 
 	// The media identifier
-	ID *string
+	MediaID *string
 
 	// The MIME type of the file this media represents
 	MimeType *string
@@ -807,7 +807,7 @@ type ACSMessageReceivedEventData struct {
 	Button *ACSMessageButtonContent
 
 	// REQUIRED; The message channel type
-	ChannelType *ACSMessageChannelKind
+	ChannelKind *ACSMessageChannelKind
 
 	// REQUIRED; The received message context
 	Context *ACSMessageContext
@@ -816,13 +816,13 @@ type ACSMessageReceivedEventData struct {
 	Error *Error
 
 	// REQUIRED; The received message interactive content
-	Interactive *ACSMessageInteractiveContent
+	InteractiveContent *ACSMessageInteractiveContent
 
 	// REQUIRED; The received message media content
-	Media *ACSMessageMediaContent
+	MediaContent *ACSMessageMediaContent
 
 	// REQUIRED; The time message was received
-	ReceivedTimeStamp *time.Time
+	ReceivedTimestamp *time.Time
 
 	// The message content
 	Content *string
@@ -1557,17 +1557,17 @@ type ACSRouterWorkerSelector struct {
 	// REQUIRED; Router Job Worker Selector Expiration Time
 	ExpirationTime *time.Time
 
-	// REQUIRED; Router Job Worker Selector Label Operator
-	LabelOperator *ACSRouterLabelOperator
-
 	// REQUIRED; Router Job Worker Selector Value
 	LabelValue any
 
+	// REQUIRED; Router Job Worker Selector Label Operator
+	Operator *ACSRouterLabelOperator
+
 	// REQUIRED; Router Job Worker Selector State
-	State *ACSRouterWorkerSelectorState
+	SelectorState *ACSRouterWorkerSelectorState
 
 	// REQUIRED; Router Job Worker Selector Time to Live in Seconds
-	TTLSeconds *float64
+	TimeToLive *float64
 
 	// Router Job Worker Selector Key
 	Key *string
@@ -4387,10 +4387,10 @@ type ResourceHTTPRequest struct {
 // Microsoft.ResourceNotifications.HealthResources.ResourceAnnotated event.
 type ResourceNotificationsHealthResourcesAnnotatedEventData struct {
 	// REQUIRED; details about operational info
-	OperationalInfo *ResourceNotificationsOperationalDetails
+	OperationalDetails *ResourceNotificationsOperationalDetails
 
 	// REQUIRED; resourceInfo details for update event
-	ResourceInfo *ResourceNotificationsResourceUpdatedDetails
+	ResourceDetails *ResourceNotificationsResourceUpdatedDetails
 
 	// api version of the resource properties bag
 	APIVersion *string
@@ -4402,10 +4402,10 @@ type ResourceNotificationsHealthResourcesAnnotatedEventData struct {
 // event.
 type ResourceNotificationsHealthResourcesAvailabilityStatusChangedEventData struct {
 	// REQUIRED; details about operational info
-	OperationalInfo *ResourceNotificationsOperationalDetails
+	OperationalDetails *ResourceNotificationsOperationalDetails
 
 	// REQUIRED; resourceInfo details for update event
-	ResourceInfo *ResourceNotificationsResourceUpdatedDetails
+	ResourceDetails *ResourceNotificationsResourceUpdatedDetails
 
 	// api version of the resource properties bag
 	APIVersion *string
@@ -4434,10 +4434,10 @@ type ResourceNotificationsResourceDeletedDetails struct {
 // delete events
 type ResourceNotificationsResourceDeletedEventData struct {
 	// REQUIRED; details about operational info
-	OperationalInfo *ResourceNotificationsOperationalDetails
+	OperationalDetails *ResourceNotificationsOperationalDetails
 
 	// REQUIRED; resourceInfo details for delete event
-	ResourceInfo *ResourceNotificationsResourceDeletedDetails
+	ResourceDetails *ResourceNotificationsResourceDeletedDetails
 }
 
 // ResourceNotificationsResourceManagementCreatedOrUpdatedEventData - Schema of the Data property of an EventGridEvent for
@@ -4445,10 +4445,10 @@ type ResourceNotificationsResourceDeletedEventData struct {
 // Microsoft.ResourceNotifications.Resources.CreatedOrUpdated event.
 type ResourceNotificationsResourceManagementCreatedOrUpdatedEventData struct {
 	// REQUIRED; details about operational info
-	OperationalInfo *ResourceNotificationsOperationalDetails
+	OperationalDetails *ResourceNotificationsOperationalDetails
 
 	// REQUIRED; resourceInfo details for update event
-	ResourceInfo *ResourceNotificationsResourceUpdatedDetails
+	ResourceDetails *ResourceNotificationsResourceUpdatedDetails
 
 	// api version of the resource properties bag
 	APIVersion *string
@@ -4458,10 +4458,10 @@ type ResourceNotificationsResourceManagementCreatedOrUpdatedEventData struct {
 // Microsoft.ResourceNotifications.Resources.Deleted event.
 type ResourceNotificationsResourceManagementDeletedEventData struct {
 	// REQUIRED; details about operational info
-	OperationalInfo *ResourceNotificationsOperationalDetails
+	OperationalDetails *ResourceNotificationsOperationalDetails
 
 	// REQUIRED; resourceInfo details for delete event
-	ResourceInfo *ResourceNotificationsResourceDeletedDetails
+	ResourceDetails *ResourceNotificationsResourceDeletedDetails
 }
 
 // ResourceNotificationsResourceUpdatedDetails - Describes the schema of the properties under resource info which are common
@@ -4490,10 +4490,10 @@ type ResourceNotificationsResourceUpdatedDetails struct {
 // events
 type ResourceNotificationsResourceUpdatedEventData struct {
 	// REQUIRED; details about operational info
-	OperationalInfo *ResourceNotificationsOperationalDetails
+	OperationalDetails *ResourceNotificationsOperationalDetails
 
 	// REQUIRED; resourceInfo details for update event
-	ResourceInfo *ResourceNotificationsResourceUpdatedDetails
+	ResourceDetails *ResourceNotificationsResourceUpdatedDetails
 
 	// api version of the resource properties bag
 	APIVersion *string
@@ -5058,13 +5058,13 @@ type StorageLifecyclePolicyCompletedEventData struct {
 // event.
 type StorageTaskAssignmentCompletedEventData struct {
 	// REQUIRED; The time at which a storage task was completed.
-	CompletedDateTime *time.Time
+	CompletedOn *time.Time
 
 	// REQUIRED; The status for a storage task.
 	Status *StorageTaskAssignmentCompletedStatus
 
 	// REQUIRED; The summary report blob url for a storage task
-	SummaryReportBlobURL *string
+	SummaryReportBlobURI *string
 
 	// The execution id for a storage task.
 	TaskExecutionID *string
@@ -5077,7 +5077,7 @@ type StorageTaskAssignmentCompletedEventData struct {
 // event.
 type StorageTaskAssignmentQueuedEventData struct {
 	// REQUIRED; The time at which a storage task was queued.
-	QueuedDateTime *time.Time
+	QueuedOn *time.Time
 
 	// The execution id for a storage task.
 	TaskExecutionID *string

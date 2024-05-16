@@ -21,7 +21,6 @@ import (
 const systemEventsGoFile = "system_events.go"
 const modelsGoFile = "models.go"
 const modelsSerdeGoFile = "models_serde.go"
-const polymorphicHelpersGoFile = "polymorphic_helpers.go"
 
 const header = `//go:build go1.18
 // +build go1.18

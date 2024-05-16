@@ -106,7 +106,7 @@ func BatchStressTester(ctx context.Context) error {
 
 	log.Printf("Starting test with: batch size %d, wait time %s, prefetch: %d", params.batchSize, params.batchDuration, params.prefetch)
 
-	producerClient, err := azeventhubs.NewProducerClientFromConnectionString(testData.ConnectionString, testData.HubName, nil)
+	producerClient, err := azeventhubs.NewProducerClient(testData.Namespace, testData.HubName, testData.Cred, nil)
 
 	if err != nil {
 		return err
@@ -132,7 +132,7 @@ func BatchStressTester(ctx context.Context) error {
 	log.Printf("Starting receive tests for partition %s", params.partitionID)
 	log.Printf("  Start position: %#v\nEnd position: %#v", sp, ep)
 
-	consumerClient, err := azeventhubs.NewConsumerClientFromConnectionString(testData.ConnectionString, testData.HubName, azeventhubs.DefaultConsumerGroup, nil)
+	consumerClient, err := azeventhubs.NewConsumerClient(testData.Namespace, testData.HubName, azeventhubs.DefaultConsumerGroup, testData.Cred, nil)
 
 	if err != nil {
 		return err

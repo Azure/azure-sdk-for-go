@@ -1256,7 +1256,7 @@ func (s *AppendBlobRecordedTestsSuite) TestBlobCreateAppendIfMatchTrue() {
 	validateAppendBlobPut(_require, abClient)
 }
 
-func (s *AppendBlobRecordedTestsSuite) immutabilityPolicySetting() {
+func (s *AppendBlobRecordedTestsSuite) TestAppendSetImmutabilityPolicy() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountImmutable, nil)

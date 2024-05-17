@@ -43,9 +43,6 @@ import (
 )
 
 func Test(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
 	recordMode := recording.GetRecordMode()
 	t.Logf("Running appendblob Tests in %s mode\n", recordMode)
 	if recordMode == recording.LiveMode {
@@ -1259,7 +1256,7 @@ func (s *AppendBlobRecordedTestsSuite) TestBlobCreateAppendIfMatchTrue() {
 	validateAppendBlobPut(_require, abClient)
 }
 
-func (s *AppendBlobRecordedTestsSuite) TestAppendSetImmutabilityPolicy() {
+func (s *AppendBlobRecordedTestsSuite) immutabilityPolicySetting() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountImmutable, nil)
@@ -1274,11 +1271,11 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendSetImmutabilityPolicy() {
 
 	currentTime, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 GMT 2049")
 	_require.NoError(err)
-	policy := blob.ImmutabilityPolicySetting(blob.ImmutabilityPolicySettingUnlocked)
+	immutabilityPolicySetting := blob.ImmutabilityPolicySetting(blob.ImmutabilityPolicySettingUnlocked)
 	_require.NoError(err)
 
 	setImmutabilityPolicyOptions := &blob.SetImmutabilityPolicyOptions{
-		Mode:                     &policy,
+		Mode:                     &immutabilityPolicySetting,
 		ModifiedAccessConditions: nil,
 	}
 	_, err = abClient.SetImmutabilityPolicy(context.Background(), currentTime, setImmutabilityPolicyOptions)
@@ -1313,11 +1310,11 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendDeleteImmutabilityPolicy() {
 	currentTime, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 GMT 2049")
 	_require.NoError(err)
 
-	policy := blob.ImmutabilityPolicySetting(blob.ImmutabilityPolicySettingUnlocked)
+	immutabilityPolicySetting := blob.ImmutabilityPolicySetting(blob.ImmutabilityPolicySettingUnlocked)
 	_require.NoError(err)
 
 	setImmutabilityPolicyOptions := &blob.SetImmutabilityPolicyOptions{
-		Mode:                     &policy,
+		Mode:                     &immutabilityPolicySetting,
 		ModifiedAccessConditions: nil,
 	}
 	_, err = abClient.SetImmutabilityPolicy(context.Background(), currentTime, setImmutabilityPolicyOptions)
@@ -2254,7 +2251,9 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockWithCPK() {
 		_require.NotNil(resp.Date)
 		_require.Equal((*resp.Date).IsZero(), false)
 		_require.Equal(*resp.IsServerEncrypted, true)
-		_require.EqualValues(resp.EncryptionKeySHA256, testcommon.TestCPKByValue.EncryptionKeySHA256)
+		if recording.GetRecordMode() != recording.PlaybackMode {
+			_require.EqualValues(resp.EncryptionKeySHA256, testcommon.TestCPKByValue.EncryptionKeySHA256)
+		}
 	}
 
 	// Get blob content without encryption key should fail the request.
@@ -2271,7 +2270,9 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockWithCPK() {
 	data, err := io.ReadAll(downloadResp.Body)
 	_require.NoError(err)
 	_require.EqualValues(string(data), "AAA BBB CCC ")
-	_require.EqualValues(*downloadResp.EncryptionKeySHA256, *testcommon.TestCPKByValue.EncryptionKeySHA256)
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		_require.EqualValues(*downloadResp.EncryptionKeySHA256, *testcommon.TestCPKByValue.EncryptionKeySHA256)
+	}
 }
 
 func (s *AppendBlobRecordedTestsSuite) TestAppendBlockWithCPKScope() {

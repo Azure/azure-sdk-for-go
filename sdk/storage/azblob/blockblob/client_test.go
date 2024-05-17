@@ -49,9 +49,6 @@ import (
 var proposedLeaseIDs = []*string{to.Ptr("c820a799-76d7-4ee2-6e15-546f19325c2c"), to.Ptr("326cc5e1-746e-4af8-4811-a50e6629a8ca")}
 
 func Test(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
 	recordMode := recording.GetRecordMode()
 	t.Logf("Running blockblob Tests in %s mode\n", recordMode)
 	if recordMode == recording.LiveMode {
@@ -1174,7 +1171,9 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlWithCPK() {
 
 	getResp, err := destBlob.GetProperties(context.Background(), &getBlobPropertiesOptions)
 	_require.NoError(err)
-	_require.EqualValues(getResp.EncryptionKeySHA256, testcommon.TestCPKByValue.EncryptionKeySHA256)
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		_require.EqualValues(getResp.EncryptionKeySHA256, testcommon.TestCPKByValue.EncryptionKeySHA256)
+	}
 }
 
 func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlCPKScope() {
@@ -3093,7 +3092,9 @@ func (s *BlockBlobRecordedTestsSuite) TestGetSetBlobMetadataWithCPK() {
 	}
 	resp, err := bbClient.SetMetadata(context.Background(), testcommon.BasicMetadata, &setBlobMetadataOptions)
 	_require.NoError(err)
-	_require.EqualValues(resp.EncryptionKeySHA256, testcommon.TestCPKByValue.EncryptionKeySHA256)
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		_require.EqualValues(resp.EncryptionKeySHA256, testcommon.TestCPKByValue.EncryptionKeySHA256)
+	}
 
 	// Get blob properties without encryption key should fail the request.
 	_, err = bbClient.GetProperties(context.Background(), nil)
@@ -3187,8 +3188,9 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobSnapshotWithCPK() {
 	}
 	dResp, err := snapshotURL.DownloadStream(context.Background(), &downloadBlobOptions)
 	_require.NoError(err)
-	_require.EqualValues(*dResp.EncryptionKeySHA256, *testcommon.TestCPKByValue.EncryptionKeySHA256)
-
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		_require.EqualValues(*dResp.EncryptionKeySHA256, *testcommon.TestCPKByValue.EncryptionKeySHA256)
+	}
 	_, err = snapshotURL.Delete(context.Background(), nil)
 	_require.NoError(err)
 
@@ -4421,7 +4423,9 @@ func (s *BlockBlobRecordedTestsSuite) TestPutBlockAndPutBlockListWithCPK() {
 	_require.NotNil(resp.ETag)
 	_require.NotNil(resp.LastModified)
 	_require.Equal(*resp.IsServerEncrypted, true)
-	_require.EqualValues(*resp.EncryptionKeySHA256, *(testcommon.TestCPKByValue.EncryptionKeySHA256))
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		_require.EqualValues(*resp.EncryptionKeySHA256, *(testcommon.TestCPKByValue.EncryptionKeySHA256))
+	}
 
 	// Get blob content without encryption key should fail the request.
 	_, err = bbClient.DownloadStream(context.Background(), nil)
@@ -4787,7 +4791,9 @@ func (s *BlockBlobRecordedTestsSuite) TestUploadBlobWithMD5WithCPK() {
 	_require.NoError(err)
 	// _require.Equal(uploadResp.RawResponse.StatusCode, 201)
 	_require.Equal(*uploadResp.IsServerEncrypted, true)
-	_require.EqualValues(uploadResp.EncryptionKeySHA256, testcommon.TestCPKByValue.EncryptionKeySHA256)
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		_require.EqualValues(uploadResp.EncryptionKeySHA256, testcommon.TestCPKByValue.EncryptionKeySHA256)
+	}
 
 	// Get blob content without encryption key should fail the request.
 	_, err = bbClient.DownloadStream(context.Background(), nil)
@@ -4807,7 +4813,9 @@ func (s *BlockBlobRecordedTestsSuite) TestUploadBlobWithMD5WithCPK() {
 	destData, err := io.ReadAll(downloadResp.Body)
 	_require.NoError(err)
 	_require.EqualValues(destData, srcData)
-	_require.EqualValues(downloadResp.EncryptionKeySHA256, testcommon.TestCPKByValue.EncryptionKeySHA256)
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		_require.EqualValues(downloadResp.EncryptionKeySHA256, testcommon.TestCPKByValue.EncryptionKeySHA256)
+	}
 }
 
 func (s *BlockBlobRecordedTestsSuite) TestUploadBlobWithMD5WithCPKScope() {

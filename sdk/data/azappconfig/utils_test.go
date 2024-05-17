@@ -7,6 +7,7 @@
 package azappconfig_test
 
 import (
+	"fmt"
 	"os"
 	"testing"
 
@@ -18,14 +19,18 @@ import (
 )
 
 const recordingDirectory = "sdk/data/azappconfig/testdata"
-const fakeConnStr = "Endpoint=https://contoso.azconfig.io;Id=fake-id:fake-value;Secret=ZmFrZS1zZWNyZXQ="
+
+var (
+	fakeConnStr  = fmt.Sprintf("Endpoint=%s;Id=fake;Secret=fake", fakeEndpoint)
+	fakeEndpoint = fmt.Sprintf("https://%s.azconfig.io", recording.SanitizedValue)
+)
 
 func TestMain(m *testing.M) {
 	os.Exit(run(m))
 }
 
 func run(m *testing.M) int {
-	if recording.GetRecordMode() == recording.PlaybackMode || recording.GetRecordMode() == recording.RecordingMode {
+	if recording.GetRecordMode() != recording.LiveMode {
 		proxy, err := recording.StartTestProxy(recordingDirectory, nil)
 		if err != nil {
 			panic(err)
@@ -37,18 +42,14 @@ func run(m *testing.M) int {
 				panic(err)
 			}
 		}()
-	}
 
-	switch recording.GetRecordMode() {
-	case recording.PlaybackMode:
-		if err := recording.SetDefaultMatcher(nil, &recording.SetDefaultMatcherOptions{
-			ExcludedHeaders: []string{"Date", "X-Ms-Content-Sha256"},
-		}); err != nil {
-			panic(err)
-		}
-
-	case recording.RecordingMode:
-		if err := recording.AddURISanitizer("https://contoso.azconfig.io", `https://\w+\.azconfig\.io`, nil); err != nil {
+		err = recording.RemoveRegisteredSanitizers([]string{
+			"AZSDK2030", // operation-location header
+			"AZSDK3447", // $.key
+			"AZSDK3490", // $..etag
+			"AZSDK3493", // $..name
+		}, nil)
+		if err != nil {
 			panic(err)
 		}
 
@@ -56,7 +57,7 @@ func run(m *testing.M) int {
 			panic(err)
 		}
 
-		if err := recording.AddHeaderRegexSanitizer("Operation-Location", "https://contoso.azconfig.io", `https://\w+\.azconfig\.io`, nil); err != nil {
+		if err := recording.AddHeaderRegexSanitizer("Operation-Location", fakeEndpoint, `https://\w+\.azconfig\.io`, nil); err != nil {
 			panic(err)
 		}
 	}

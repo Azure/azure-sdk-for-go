@@ -26,9 +26,6 @@ import (
 const alpineManifestDigest = "sha256:f271e74b17ced29b915d351685fd4644785c6d1559dd1f2d4189a5e851ef753a"
 
 func TestClient_DeleteManifest(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
 	startRecording(t)
 	endpoint, cred, options := getEndpointCredAndClientOptions(t)
 	ctx := context.Background()
@@ -43,9 +40,6 @@ func TestClient_DeleteManifest(t *testing.T) {
 }
 
 func TestClient_DeleteManifest_wrongDigest(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
 	startRecording(t)
 	endpoint, cred, options := getEndpointCredAndClientOptions(t)
 	ctx := context.Background()
@@ -137,7 +131,7 @@ func TestClient_DeleteTag_error(t *testing.T) {
 
 func TestClient_GetManifest(t *testing.T) {
 	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
+		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22919")
 	}
 	startRecording(t)
 	endpoint, cred, options := getEndpointCredAndClientOptions(t)
@@ -195,9 +189,6 @@ func TestClient_GetManifest_wrongTag(t *testing.T) {
 }
 
 func TestClient_GetManifestProperties(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
 	startRecording(t)
 	endpoint, cred, options := getEndpointCredAndClientOptions(t)
 	ctx := context.Background()
@@ -234,9 +225,6 @@ func TestClient_GetManifestProperties_wrongDigest(t *testing.T) {
 }
 
 func TestClient_GetRepositoryProperties(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
 	startRecording(t)
 	endpoint, cred, options := getEndpointCredAndClientOptions(t)
 	ctx := context.Background()
@@ -271,9 +259,6 @@ func TestClient_GetRepositoryProperties_wrongName(t *testing.T) {
 }
 
 func TestClient_GetTagProperties(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
 	startRecording(t)
 	endpoint, cred, options := getEndpointCredAndClientOptions(t)
 	ctx := context.Background()
@@ -308,9 +293,6 @@ func TestClient_GetTagProperties_wrongTag(t *testing.T) {
 }
 
 func TestClient_NewListManifestsPager(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
 	startRecording(t)
 	endpoint, cred, options := getEndpointCredAndClientOptions(t)
 	ctx := context.Background()
@@ -392,9 +374,6 @@ func TestClient_NewListManifestsPager_wrongRepositoryName(t *testing.T) {
 }
 
 func TestClient_NewListRepositoriesPager(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
 	startRecording(t)
 	endpoint, cred, options := getEndpointCredAndClientOptions(t)
 	ctx := context.Background()
@@ -440,9 +419,6 @@ func TestClient_NewListRepositoriesPager_error(t *testing.T) {
 }
 
 func TestClient_NewListTagsPager(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
 	startRecording(t)
 	endpoint, cred, options := getEndpointCredAndClientOptions(t)
 	ctx := context.Background()
@@ -525,9 +501,6 @@ func TestClient_NewListTagsPager_wrongRepositoryName(t *testing.T) {
 }
 
 func TestClient_UpdateManifestProperties(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
 	startRecording(t)
 	endpoint, cred, options := getEndpointCredAndClientOptions(t)
 	ctx := context.Background()
@@ -570,9 +543,6 @@ func TestClient_UpdateManifestProperties_wrongDigest(t *testing.T) {
 }
 
 func TestClient_UpdateRepositoryProperties(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
 	startRecording(t)
 	endpoint, cred, options := getEndpointCredAndClientOptions(t)
 	ctx := context.Background()
@@ -614,9 +584,6 @@ func TestClient_UpdateRepositoryProperties_wrongRepository(t *testing.T) {
 }
 
 func TestClient_UpdateTagProperties(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
 	startRecording(t)
 	endpoint, cred, options := getEndpointCredAndClientOptions(t)
 	ctx := context.Background()
@@ -661,7 +628,7 @@ func TestClient_UpdateTagProperties_wrongTag(t *testing.T) {
 
 func TestClient_UploadManifest(t *testing.T) {
 	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
+		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22919")
 	}
 	startRecording(t)
 	endpoint, cred, options := getEndpointCredAndClientOptions(t)

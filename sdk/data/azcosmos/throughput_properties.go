@@ -26,6 +26,7 @@ type ThroughputProperties struct {
 	// LastModified contains the last modified time of the throughput information.
 	LastModified time.Time
 
+	resource        string
 	version         string
 	offerType       string
 	offer           *offer
@@ -78,6 +79,7 @@ func (tp *ThroughputProperties) MarshalJSON() ([]byte, error) {
 	}
 
 	if tp.offerId != "" {
+		buffer.WriteString(fmt.Sprintf(",\"id\":\"%s\"", tp.offerId))
 		buffer.WriteString(fmt.Sprintf(",\"_rid\":\"%s\"", tp.offerId))
 	}
 
@@ -95,6 +97,10 @@ func (tp *ThroughputProperties) MarshalJSON() ([]byte, error) {
 
 	if tp.selfLink != "" {
 		buffer.WriteString(fmt.Sprintf(",\"_self\":\"%s\"", tp.selfLink))
+	}
+
+	if tp.resource != "" {
+		buffer.WriteString(fmt.Sprintf(",\"resource\":\"%s\"", tp.resource))
 	}
 
 	if !tp.LastModified.IsZero() {
@@ -151,8 +157,14 @@ func (tp *ThroughputProperties) UnmarshalJSON(b []byte) error {
 		tp.LastModified = time.Unix(timestamp, 0)
 	}
 
-	if id, ok := attributes["_rid"]; ok {
+	if id, ok := attributes["id"]; ok {
 		if err := json.Unmarshal(id, &tp.offerId); err != nil {
+			return err
+		}
+	}
+
+	if resource, ok := attributes["resource"]; ok {
+		if err := json.Unmarshal(resource, &tp.resource); err != nil {
 			return err
 		}
 	}

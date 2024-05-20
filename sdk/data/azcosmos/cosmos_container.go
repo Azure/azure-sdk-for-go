@@ -175,7 +175,7 @@ func (c *ContainerClient) ReplaceThroughput(
 	}
 
 	offers := &cosmosOffers{client: c.database.client}
-	return offers.ReadThroughputIfExists(ctx, rid, o)
+	return offers.ReplaceThroughputIfExists(ctx, throughputProperties, rid, o)
 }
 
 // CreateItem creates an item in a Cosmos container.

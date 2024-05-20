@@ -14,7 +14,7 @@ import (
 func TestThroughputPropertiesManualRawSerialization(t *testing.T) {
 	nowAsUnix := time.Unix(1630100602, 0)
 
-	jsonString := []byte("{\"offerType\":\"Invalid\",\"offerResourceId\":\"4SRTANCD3Dw=\",\"resource\":\"dbs/dbid/colls/collid/\", \"offerVersion\":\"V2\",\"content\":{\"offerThroughput\":400},\"_rid\":\"HFln\",\"_etag\":\"\\\"00000000-0000-0000-9b8c-8ea3e19601d7\\\"\",\"_ts\":1630100602}")
+	jsonString := []byte("{\"offerType\":\"Invalid\",\"offerResourceId\":\"4SRTANCD3Dw=\",\"resource\":\"dbs/dbid/colls/collid/\", \"offerVersion\":\"V2\",\"content\":{\"offerThroughput\":400},\"id\":\"HFln\",\"_etag\":\"\\\"00000000-0000-0000-9b8c-8ea3e19601d7\\\"\",\"_ts\":1630100602}")
 
 	otherProperties := &ThroughputProperties{}
 	err := json.Unmarshal(jsonString, otherProperties)

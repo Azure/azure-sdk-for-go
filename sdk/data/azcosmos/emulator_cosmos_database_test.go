@@ -108,7 +108,7 @@ func TestDatabaseWithOfferCRUD(t *testing.T) {
 	newScale := NewManualThroughputProperties(500)
 	throughputResponse, err = db.ReplaceThroughput(context.TODO(), newScale, nil)
 	if err != nil {
-		t.Errorf("Failed to replace throughput: %v", err)
+		t.Fatalf("Failed to replace throughput: %v", err)
 	}
 
 	mt, hasManualThroughput = throughputResponse.ThroughputProperties.ManualThroughput()

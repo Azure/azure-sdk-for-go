@@ -78,7 +78,7 @@ func (tp *ThroughputProperties) MarshalJSON() ([]byte, error) {
 	}
 
 	if tp.offerId != "" {
-		buffer.WriteString(fmt.Sprintf(",\"id\":\"%s\"", tp.offerId))
+		buffer.WriteString(fmt.Sprintf(",\"_rid\":\"%s\"", tp.offerId))
 	}
 
 	buffer.WriteString(fmt.Sprintf(",\"offerType\":\"%s\"", tp.offerType))

@@ -29,7 +29,7 @@ type MessageTextAnnotationClassification interface {
 // RequiredActionClassification provides polymorphic access to related types.
 // Call the interface's GetRequiredAction() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *RequiredAction, *SubmitToolOutputsAction, *ThreadRunRequiredAction
+// - *RequiredAction, *SubmitToolOutputsAction
 type RequiredActionClassification interface {
 	// GetRequiredAction returns the RequiredAction content of the underlying type.
 	GetRequiredAction() *RequiredAction

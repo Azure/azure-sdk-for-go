@@ -489,6 +489,29 @@ func unmarshalCopySourceClassification(rawMsg json.RawMessage) (CopySourceClassi
 	return b, nil
 }
 
+func unmarshalCredentialClassification(rawMsg json.RawMessage) (CredentialClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b CredentialClassification
+	switch m["type"] {
+	case "ManagedIdentity":
+		b = &ManagedIdentityCredential{}
+	case "ServicePrincipal":
+		b = &ServicePrincipalCredential{}
+	default:
+		b = &Credential{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
 func unmarshalCustomSetupBaseClassification(rawMsg json.RawMessage) (CustomSetupBaseClassification, error) {
 	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil

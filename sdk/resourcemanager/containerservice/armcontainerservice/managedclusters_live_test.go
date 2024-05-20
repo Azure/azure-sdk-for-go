@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice/v5"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v2/testutil"
 	"github.com/stretchr/testify/suite"
 )
@@ -66,6 +66,9 @@ func (testsuite *ManagedclustersTestSuite) TearDownSuite() {
 }
 
 func TestManagedclustersTestSuite(t *testing.T) {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
+	}
 	suite.Run(t, new(ManagedclustersTestSuite))
 }
 

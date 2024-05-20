@@ -4,18 +4,15 @@
 package azopenai_test
 
 import (
-	"fmt"
 	"os"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/joho/godotenv"
 )
 
 const RecordingDirectory = "sdk/ai/azopenai/testdata"
 
 func TestMain(m *testing.M) {
-	initEnvVars()
 	code := run(m)
 	os.Exit(code)
 }
@@ -33,10 +30,6 @@ func run(m *testing.M) int {
 				panic(err)
 			}
 		}()
-	} else {
-		if err := godotenv.Load(); err != nil {
-			fmt.Printf("Failed to load .env file: %s\n", err)
-		}
 	}
 
 	return m.Run()

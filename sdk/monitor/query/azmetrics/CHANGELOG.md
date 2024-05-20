@@ -1,13 +1,21 @@
 # Release History
 
-## 0.1.1 (Unreleased)
+## 1.0.1 (Unreleased)
 
 ### Features Added
+* Added sovereign cloud support
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.0.0 (2024-04-15)
 
 ### Breaking Changes
 * Removed pointers from slices
-
-### Bugs Fixed
+* Renamed `MetricValues` to `MetricData`
 
 ### Other Changes
 * Updated to use API version 2024-02-01

@@ -1,5 +1,21 @@
 # Release History
 
+## 1.0.2 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.0.1 (2024-05-02)
+
+### Bugs Fixed
+
+* Reduces minimum required go version to 1.21
+
 ## 1.0.0 (2024-04-09)
 
 ### Features Added
@@ -8,8 +24,8 @@
 * Added extended logging for requests, responses, and client configuration
 
 ### Breaking Changes
-* ItemOptions.SessionToken, QueryOptions.SessionToken, QueryOptions.ContinuationToken are now `*string`
-* ItemResponse.SessionToken, QueryItemsResponse.ContinuationToken are now `*string`
+* ItemOptions.SessionToken, QueryOptions.SessionToken, QueryOptions.ContinuationToken, QueryDatabasesOptions.ContinuationToken, QueryContainersOptions.ContinuationToken are now `*string`
+* ItemResponse.SessionToken, QueryItemsResponse.ContinuationToken, QueryContainersResponse.ContinuationToken, QueryDatabasesResponse.ContinuationToken are now `*string`
 
 ## 0.3.6 (2023-08-18)
 

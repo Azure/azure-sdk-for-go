@@ -42,7 +42,8 @@ func TestContainerRequestOptionsToHeaders(t *testing.T) {
 
 func TestQueryContainersRequestOptionsToHeaders(t *testing.T) {
 	options := &QueryContainersOptions{}
-	options.ContinuationToken = "continuationToken"
+	continuation := "continuationToken"
+	options.ContinuationToken = &continuation
 	header := options.toHeaders()
 	if header == nil {
 		t.Fatal("toHeaders should return non-nil")

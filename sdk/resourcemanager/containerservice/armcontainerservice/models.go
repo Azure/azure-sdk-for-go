@@ -93,6 +93,16 @@ type AgentPoolGPUProfile struct {
 	InstallGPUDriver *bool
 }
 
+// AgentPoolGatewayProfile - Profile of the managed cluster gateway agent pool.
+type AgentPoolGatewayProfile struct {
+	// The Gateway agent pool associates one public IPPrefix for each static egress gateway to provide public egress. The size
+	// of Public IPPrefix should be selected by the user. Each node in the agent pool
+	// is assigned with one IP from the IPPrefix. The IPPrefix size thus serves as a cap on the size of the Gateway agent pool.
+	// Due to Azure public IPPrefix size limitation, the valid value range is [28, 31]
+	// (/31 = 2 nodes/IPs, /30 = 4 nodes/IPs, /29 = 8 nodes/IPs, /28 = 16 nodes/IPs). The default value is 31.
+	PublicIPPrefixSize *int32
+}
+
 // AgentPoolListResult - The response from the List Agent Pools operation.
 type AgentPoolListResult struct {
 	// The list of agent pools.
@@ -427,9 +437,6 @@ type IstioComponents struct {
 type IstioEgressGateway struct {
 	// REQUIRED; Whether to enable the egress gateway.
 	Enabled *bool
-
-	// NodeSelector for scheduling the egress gateway.
-	NodeSelector map[string]*string
 }
 
 // IstioIngressGateway - Istio ingress gateway configuration. For now, we support up to one external ingress gateway named
@@ -529,6 +536,9 @@ type KubernetesPatchVersion struct {
 type KubernetesVersion struct {
 	// Capabilities on this Kubernetes version.
 	Capabilities *KubernetesVersionCapabilities
+
+	// Whether this version is default.
+	IsDefault *bool
 
 	// Whether this version is in preview mode.
 	IsPreview *bool
@@ -707,6 +717,9 @@ type ManagedCluster struct {
 	// The identity of the managed cluster, if configured.
 	Identity *ManagedClusterIdentity
 
+	// This is primarily used to expose different UI experiences in the portal for different kinds
+	Kind *string
+
 	// Properties of a managed cluster.
 	Properties *ManagedClusterProperties
 
@@ -883,6 +896,9 @@ type ManagedClusterAgentPoolProfile struct {
 
 	// Whether to enable UltraSSD
 	EnableUltraSSD *bool
+
+	// Profile specific to a managed agent pool in Gateway mode. This field cannot be set if agent pool mode is not Gateway.
+	GatewayProfile *AgentPoolGatewayProfile
 
 	// GPUInstanceProfile to be used to specify GPU MIG instance profile for supported GPU VM SKU.
 	GpuInstanceProfile *GPUInstanceProfile
@@ -1085,6 +1101,9 @@ type ManagedClusterAgentPoolProfileProperties struct {
 	// Whether to enable UltraSSD
 	EnableUltraSSD *bool
 
+	// Profile specific to a managed agent pool in Gateway mode. This field cannot be set if agent pool mode is not Gateway.
+	GatewayProfile *AgentPoolGatewayProfile
+
 	// GPUInstanceProfile to be used to specify GPU MIG instance profile for supported GPU VM SKU.
 	GpuInstanceProfile *GPUInstanceProfile
 
@@ -1253,10 +1272,14 @@ type ManagedClusterAutoUpgradeProfile struct {
 
 // ManagedClusterAzureMonitorProfile - Prometheus addon profile for the container service cluster
 type ManagedClusterAzureMonitorProfile struct {
-	// Logs profile for the Azure Monitor Infrastructure and Application Logs. Collect out-of-the-box Kubernetes infrastructure
-	// & application logs to send to Azure Monitor. See
-	// aka.ms/AzureMonitorContainerInsights for an overview.
-	Logs *ManagedClusterAzureMonitorProfileLogs
+	// Application Monitoring Profile for Kubernetes Application Container. Collects application logs, metrics and traces through
+	// auto-instrumentation of the application using Azure Monitor OpenTelemetry
+	// based SDKs. See aka.ms/AzureMonitorApplicationMonitoring for an overview.
+	AppMonitoring *ManagedClusterAzureMonitorProfileAppMonitoring
+
+	// Azure Monitor Container Insights Profile for Kubernetes Events, Inventory and Container stdout & stderr logs etc. See aka.ms/AzureMonitorContainerInsights
+	// for an overview.
+	ContainerInsights *ManagedClusterAzureMonitorProfileContainerInsights
 
 	// Metrics profile for the prometheus service addon
 	Metrics *ManagedClusterAzureMonitorProfileMetrics
@@ -1266,31 +1289,76 @@ type ManagedClusterAzureMonitorProfile struct {
 // application logs, metrics and traces through auto-instrumentation of the application using Azure Monitor OpenTelemetry
 // based SDKs. See aka.ms/AzureMonitorApplicationMonitoring for an overview.
 type ManagedClusterAzureMonitorProfileAppMonitoring struct {
-	// Indicates if Application Monitoring enabled or not.
+	// Application Monitoring Auto Instrumentation for Kubernetes Application Container. Deploys web hook to auto-instrument Azure
+	// Monitor OpenTelemetry based SDKs to collect OpenTelemetry metrics, logs and
+	// traces of the application. See aka.ms/AzureMonitorApplicationMonitoring for an overview.
+	AutoInstrumentation *ManagedClusterAzureMonitorProfileAppMonitoringAutoInstrumentation
+
+	// Application Monitoring Open Telemetry Metrics Profile for Kubernetes Application Container Logs and Traces. Collects OpenTelemetry
+	// logs and traces of the application using Azure Monitor OpenTelemetry
+	// based SDKs. See aka.ms/AzureMonitorApplicationMonitoring for an overview.
+	OpenTelemetryLogs *ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryLogs
+
+	// Application Monitoring Open Telemetry Metrics Profile for Kubernetes Application Container Metrics. Collects OpenTelemetry
+	// metrics of the application using Azure Monitor OpenTelemetry based SDKs. See
+	// aka.ms/AzureMonitorApplicationMonitoring for an overview.
+	OpenTelemetryMetrics *ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryMetrics
+}
+
+// ManagedClusterAzureMonitorProfileAppMonitoringAutoInstrumentation - Application Monitoring Auto Instrumentation for Kubernetes
+// Application Container. Deploys web hook to auto-instrument Azure Monitor OpenTelemetry based SDKs to collect OpenTelemetry
+// metrics, logs and
+// traces of the application. See aka.ms/AzureMonitorApplicationMonitoring for an overview.
+type ManagedClusterAzureMonitorProfileAppMonitoringAutoInstrumentation struct {
+	// Indicates if Application Monitoring Auto Instrumentation is enabled or not.
 	Enabled *bool
 }
 
+// ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryLogs - Application Monitoring Open Telemetry Metrics Profile
+// for Kubernetes Application Container Logs and Traces. Collects OpenTelemetry logs and traces of the application using Azure
+// Monitor OpenTelemetry
+// based SDKs. See aka.ms/AzureMonitorApplicationMonitoring for an overview.
+type ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryLogs struct {
+	// Indicates if Application Monitoring Open Telemetry Logs and traces is enabled or not.
+	Enabled *bool
+
+	// The Open Telemetry host port for Open Telemetry logs and traces. If not specified, the default port is 28331.
+	Port *int64
+}
+
 // ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryMetrics - Application Monitoring Open Telemetry Metrics Profile
-// for Kubernetes Application Container Metrics. Collects OpenTelemetry metrics through auto-instrumentation of the application
-// using Azure Monitor
-// OpenTelemetry based SDKs. See aka.ms/AzureMonitorApplicationMonitoring for an overview.
+// for Kubernetes Application Container Metrics. Collects OpenTelemetry metrics of the application using Azure Monitor OpenTelemetry
+// based SDKs. See
+// aka.ms/AzureMonitorApplicationMonitoring for an overview.
 type ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryMetrics struct {
 	// Indicates if Application Monitoring Open Telemetry Metrics is enabled or not.
 	Enabled *bool
+
+	// The Open Telemetry host port for Open Telemetry metrics. If not specified, the default port is 28333.
+	Port *int64
 }
 
 // ManagedClusterAzureMonitorProfileContainerInsights - Azure Monitor Container Insights Profile for Kubernetes Events, Inventory
 // and Container stdout & stderr logs etc. See aka.ms/AzureMonitorContainerInsights for an overview.
 type ManagedClusterAzureMonitorProfileContainerInsights struct {
+	// Indicates whether custom metrics collection has to be disabled or not. If not specified the default is false. No custom
+	// metrics will be emitted if this field is false but the container insights
+	// enabled field is false
+	DisableCustomMetrics *bool
+
+	// Indicates whether prometheus metrics scraping is disabled or not. If not specified the default is false. No prometheus
+	// metrics will be emitted if this field is false but the container insights enabled
+	// field is false
+	DisablePrometheusMetricsScraping *bool
+
 	// Indicates if Azure Monitor Container Insights Logs Addon is enabled or not.
 	Enabled *bool
 
 	// Fully Qualified ARM Resource Id of Azure Log Analytics Workspace for storing Azure Monitor Container Insights Logs.
 	LogAnalyticsWorkspaceResourceID *string
 
-	// Windows Host Logs Profile for Kubernetes Windows Nodes Log Collection. Collects ETW, Event Logs and Text logs etc. See
-	// aka.ms/AzureMonitorContainerInsights for an overview.
-	WindowsHostLogs *ManagedClusterAzureMonitorProfileWindowsHostLogs
+	// The syslog host port. If not specified, the default port is 28330.
+	SyslogPort *int64
 }
 
 // ManagedClusterAzureMonitorProfileKubeStateMetrics - Kube State Metrics for prometheus addon profile for the container service
@@ -1303,39 +1371,13 @@ type ManagedClusterAzureMonitorProfileKubeStateMetrics struct {
 	MetricLabelsAllowlist *string
 }
 
-// ManagedClusterAzureMonitorProfileLogs - Logs profile for the Azure Monitor Infrastructure and Application Logs. Collect
-// out-of-the-box Kubernetes infrastructure & application logs to send to Azure Monitor. See
-// aka.ms/AzureMonitorContainerInsights for an overview.
-type ManagedClusterAzureMonitorProfileLogs struct {
-	// Application Monitoring Profile for Kubernetes Application Container. Collects application logs, metrics and traces through
-	// auto-instrumentation of the application using Azure Monitor OpenTelemetry
-	// based SDKs. See aka.ms/AzureMonitorApplicationMonitoring for an overview.
-	AppMonitoring *ManagedClusterAzureMonitorProfileAppMonitoring
-
-	// Azure Monitor Container Insights Profile for Kubernetes Events, Inventory and Container stdout & stderr logs etc. See aka.ms/AzureMonitorContainerInsights
-	// for an overview.
-	ContainerInsights *ManagedClusterAzureMonitorProfileContainerInsights
-}
-
 // ManagedClusterAzureMonitorProfileMetrics - Metrics profile for the prometheus service addon
 type ManagedClusterAzureMonitorProfileMetrics struct {
 	// REQUIRED; Whether to enable the Prometheus collector
 	Enabled *bool
 
-	// Application Monitoring Open Telemetry Metrics Profile for Kubernetes Application Container Metrics. Collects OpenTelemetry
-	// metrics through auto-instrumentation of the application using Azure Monitor
-	// OpenTelemetry based SDKs. See aka.ms/AzureMonitorApplicationMonitoring for an overview.
-	AppMonitoringOpenTelemetryMetrics *ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryMetrics
-
 	// Kube State Metrics for prometheus addon profile for the container service cluster
 	KubeStateMetrics *ManagedClusterAzureMonitorProfileKubeStateMetrics
-}
-
-// ManagedClusterAzureMonitorProfileWindowsHostLogs - Windows Host Logs Profile for Kubernetes Windows Nodes Log Collection.
-// Collects ETW, Event Logs and Text logs etc. See aka.ms/AzureMonitorContainerInsights for an overview.
-type ManagedClusterAzureMonitorProfileWindowsHostLogs struct {
-	// Indicates if Windows Host Log Collection is enabled or not for Azure Monitor Container Insights Logs Addon.
-	Enabled *bool
 }
 
 // ManagedClusterBootstrapProfile - The bootstrap profile.
@@ -1349,9 +1391,9 @@ type ManagedClusterBootstrapProfile struct {
 
 // ManagedClusterCostAnalysis - The cost analysis configuration for the cluster
 type ManagedClusterCostAnalysis struct {
-	// The Managed Cluster sku.tier must be set to 'Standard' to enable this feature. Enabling this will add Kubernetes Namespace
-	// and Deployment details to the Cost Analysis views in the Azure portal. If not
-	// specified, the default is false. For more information see aka.ms/aks/docs/cost-analysis.
+	// The Managed Cluster sku.tier must be set to 'Standard' or 'Premium' to enable this feature. Enabling this will add Kubernetes
+	// Namespace and Deployment details to the Cost Analysis views in the Azure
+	// portal. If not specified, the default is false. For more information see aka.ms/aks/docs/cost-analysis.
 	Enabled *bool
 }
 
@@ -1434,6 +1476,9 @@ type ManagedClusterLoadBalancerProfile struct {
 
 	// The type of the managed inbound Load Balancer BackendPool.
 	BackendPoolType *BackendPoolType
+
+	// The health probing behavior for External Traffic Policy Cluster services.
+	ClusterServiceLoadBalancerHealthProbeMode *ClusterServiceLoadBalancerHealthProbeMode
 
 	// The effective outbound IP resources of the cluster load balancer.
 	EffectiveOutboundIPs []*ResourceReference
@@ -2015,6 +2060,12 @@ type ManagedClusterSnapshotProperties struct {
 	ManagedClusterPropertiesReadOnly *ManagedClusterPropertiesForSnapshot
 }
 
+// ManagedClusterStaticEgressGatewayProfile - The Static Egress Gateway addon configuration for the cluster.
+type ManagedClusterStaticEgressGatewayProfile struct {
+	// Indicates if Static Egress Gateway addon is enabled or not.
+	Enabled *bool
+}
+
 // ManagedClusterStorageProfile - Storage profile for the container service cluster.
 type ManagedClusterStorageProfile struct {
 	// AzureBlob CSI Driver settings for the storage profile.
@@ -2306,6 +2357,9 @@ type NetworkProfile struct {
 	// One IPv4 CIDR is expected for single-stack networking. Two CIDRs, one for each IP family (IPv4/IPv6), is expected for dual-stack
 	// networking. They must not overlap with any Subnet IP ranges.
 	ServiceCidrs []*string
+
+	// The profile for Static Egress Gateway addon. For more details about Static Egress Gateway, see https://aka.ms/aks/static-egress-gateway.
+	StaticEgressGatewayProfile *ManagedClusterStaticEgressGatewayProfile
 }
 
 // NetworkProfileForSnapshot - network profile for managed cluster snapshot, these properties are read only.

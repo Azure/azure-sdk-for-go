@@ -23,6 +23,9 @@ import (
 )
 
 func TestFailedAck(t *testing.T) {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
+	}
 	c := newClientWrapper(t)
 
 	ce, err := messaging.NewCloudEvent("hello-source", "world", []byte("ack this one"), &messaging.CloudEventOptions{
@@ -68,6 +71,9 @@ func TestFailedAck(t *testing.T) {
 }
 
 func TestPartialAckFailure(t *testing.T) {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
+	}
 	c := newClientWrapper(t)
 
 	ce, err := messaging.NewCloudEvent("hello-source", "world", []byte("event one"), &messaging.CloudEventOptions{
@@ -115,6 +121,9 @@ func TestPartialAckFailure(t *testing.T) {
 }
 
 func TestReject(t *testing.T) {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
+	}
 	c := newClientWrapper(t)
 
 	ce, err := messaging.NewCloudEvent("TestAbandon", "world", []byte("event one"), &messaging.CloudEventOptions{
@@ -155,6 +164,9 @@ func TestReject(t *testing.T) {
 }
 
 func TestRelease(t *testing.T) {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
+	}
 	c := newClientWrapper(t)
 
 	ce, err := messaging.NewCloudEvent("TestAbandon", "world", []byte("event one"), &messaging.CloudEventOptions{
@@ -194,6 +206,9 @@ func TestRelease(t *testing.T) {
 }
 
 func TestPublishBytes(t *testing.T) {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
+	}
 	c := newClientWrapper(t)
 
 	ce, err := messaging.NewCloudEvent("hello-source", "eventType", []byte("TestPublishBytes"), &messaging.CloudEventOptions{
@@ -217,6 +232,9 @@ func TestPublishBytes(t *testing.T) {
 }
 
 func TestPublishString(t *testing.T) {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
+	}
 	c := newClientWrapper(t)
 
 	ce, err := messaging.NewCloudEvent("hello-source", "eventType", "TestPublishString", &messaging.CloudEventOptions{
@@ -240,6 +258,9 @@ func TestPublishString(t *testing.T) {
 }
 
 func TestPublishingAndReceivingMultipleCloudEvents(t *testing.T) {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
+	}
 	c := newClientWrapper(t)
 
 	testData := []struct {
@@ -327,6 +348,9 @@ func TestSimpleErrors(t *testing.T) {
 }
 
 func TestRenewCloudEventLocks(t *testing.T) {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
+	}
 	c := newClientWrapper(t)
 
 	ce := mustCreateEvent(t, "source", "eventType", "hello world", nil)
@@ -345,6 +369,9 @@ func TestRenewCloudEventLocks(t *testing.T) {
 }
 
 func TestReleaseWithDelay(t *testing.T) {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
+	}
 	c := newClientWrapper(t)
 
 	ce := mustCreateEvent(t, "source", "eventType", "hello world", nil)
@@ -380,6 +407,9 @@ func TestReleaseWithDelay(t *testing.T) {
 }
 
 func TestPublishCloudEvent_binaryMode(t *testing.T) {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
+	}
 	client := newClientWrapper(t)
 
 	// you can send a variety of different payloads, all of which can be encoded by messaging.CloudEvent
@@ -420,6 +450,9 @@ func TestPublishCloudEvent_binaryMode(t *testing.T) {
 // send an event using the two methods (binary and non-binary mode) and make sure they both
 // produce the same content, when received.
 func TestPublishCloudEvent_worksSameInBinaryVsNonBinaryMode(t *testing.T) {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
+	}
 	client := newClientWrapper(t)
 
 	// you can send a variety of different payloads, all of which can be encoded by messaging.CloudEvent
@@ -514,6 +547,9 @@ func TestPublishCloudEvent_binaryModeNoContentTypeFails(t *testing.T) {
 }
 
 func TestPublishCloudEvent_binaryModeUseOptionalValues(t *testing.T) {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
+	}
 	client := newClientWrapper(t)
 
 	tm, err := time.Parse(time.RFC3339, "2006-01-02T15:04:05Z")

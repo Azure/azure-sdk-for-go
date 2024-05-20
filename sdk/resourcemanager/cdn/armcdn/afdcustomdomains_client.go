@@ -46,7 +46,7 @@ func NewAFDCustomDomainsClient(subscriptionID string, credential azcore.TokenCre
 // BeginCreate - Creates a new domain within the specified profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2024-02-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
 //     group.
@@ -75,7 +75,7 @@ func (client *AFDCustomDomainsClient) BeginCreate(ctx context.Context, resourceG
 // Create - Creates a new domain within the specified profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2024-02-01
 func (client *AFDCustomDomainsClient) create(ctx context.Context, resourceGroupName string, profileName string, customDomainName string, customDomain AFDDomain, options *AFDCustomDomainsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AFDCustomDomainsClient.BeginCreate"
@@ -121,7 +121,7 @@ func (client *AFDCustomDomainsClient) createCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2024-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, customDomain); err != nil {
@@ -134,7 +134,7 @@ func (client *AFDCustomDomainsClient) createCreateRequest(ctx context.Context, r
 // resource group and profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2024-02-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
 //     group.
@@ -163,7 +163,7 @@ func (client *AFDCustomDomainsClient) BeginDelete(ctx context.Context, resourceG
 // group and profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2024-02-01
 func (client *AFDCustomDomainsClient) deleteOperation(ctx context.Context, resourceGroupName string, profileName string, customDomainName string, options *AFDCustomDomainsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AFDCustomDomainsClient.BeginDelete"
@@ -209,7 +209,7 @@ func (client *AFDCustomDomainsClient) deleteCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2024-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -219,7 +219,7 @@ func (client *AFDCustomDomainsClient) deleteCreateRequest(ctx context.Context, r
 // group and profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2024-02-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
 //     group.
@@ -271,7 +271,7 @@ func (client *AFDCustomDomainsClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2024-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -288,7 +288,7 @@ func (client *AFDCustomDomainsClient) getHandleResponse(resp *http.Response) (AF
 
 // NewListByProfilePager - Lists existing AzureFrontDoor domains.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2024-02-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
 //     group.
@@ -337,7 +337,7 @@ func (client *AFDCustomDomainsClient) listByProfileCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2024-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -355,7 +355,7 @@ func (client *AFDCustomDomainsClient) listByProfileHandleResponse(resp *http.Res
 // BeginRefreshValidationToken - Updates the domain validation token.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2024-02-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
 //     group.
@@ -383,7 +383,7 @@ func (client *AFDCustomDomainsClient) BeginRefreshValidationToken(ctx context.Co
 // RefreshValidationToken - Updates the domain validation token.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2024-02-01
 func (client *AFDCustomDomainsClient) refreshValidationToken(ctx context.Context, resourceGroupName string, profileName string, customDomainName string, options *AFDCustomDomainsClientBeginRefreshValidationTokenOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AFDCustomDomainsClient.BeginRefreshValidationToken"
@@ -429,7 +429,7 @@ func (client *AFDCustomDomainsClient) refreshValidationTokenCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2024-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -438,7 +438,7 @@ func (client *AFDCustomDomainsClient) refreshValidationTokenCreateRequest(ctx co
 // BeginUpdate - Updates an existing domain within a profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2024-02-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
 //     group.
@@ -467,7 +467,7 @@ func (client *AFDCustomDomainsClient) BeginUpdate(ctx context.Context, resourceG
 // Update - Updates an existing domain within a profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2024-02-01
 func (client *AFDCustomDomainsClient) update(ctx context.Context, resourceGroupName string, profileName string, customDomainName string, customDomainUpdateProperties AFDDomainUpdateParameters, options *AFDCustomDomainsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AFDCustomDomainsClient.BeginUpdate"
@@ -513,7 +513,7 @@ func (client *AFDCustomDomainsClient) updateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2024-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, customDomainUpdateProperties); err != nil {

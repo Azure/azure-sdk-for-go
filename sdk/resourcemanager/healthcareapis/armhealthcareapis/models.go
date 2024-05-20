@@ -102,11 +102,17 @@ type DicomServiceProperties struct {
 	// Dicom Service Cors configuration.
 	CorsConfiguration *CorsConfiguration
 
+	// If data partitions is enabled or not.
+	EnableDataPartitions *bool
+
 	// The encryption settings of the DICOM service
 	Encryption *Encryption
 
 	// Control permission for data plane traffic coming from public networks while private endpoint is enabled.
 	PublicNetworkAccess *PublicNetworkAccess
+
+	// The configuration of external storage account
+	StorageConfiguration *StorageConfiguration
 
 	// READ-ONLY; DICOM Service event support status.
 	EventState *ServiceEventState
@@ -206,6 +212,9 @@ type FhirServiceAuthenticationConfiguration struct {
 
 	// The authority url for the service
 	Authority *string
+
+	// The array of identity provider configurations for SMART on FHIR authentication.
+	SmartIdentityProviders []*SmartIdentityProviderConfiguration
 
 	// If the SMART on FHIR proxy is enabled
 	SmartProxyEnabled *bool
@@ -1040,6 +1049,37 @@ type ServicesResourceIdentity struct {
 
 	// READ-ONLY; The tenant ID of the resource.
 	TenantID *string
+}
+
+// SmartIdentityProviderApplication - An Application configured in the Identity Provider used to access FHIR resources.
+type SmartIdentityProviderApplication struct {
+	// The actions that are permitted to be performed on FHIR resources for the application.
+	AllowedDataActions []*SmartDataActions
+
+	// The audience that will be used to validate bearer tokens against the given authority.
+	Audience *string
+
+	// The application client id defined in the identity provider. This value will be used to validate bearer tokens against the
+	// given authority.
+	ClientID *string
+}
+
+// SmartIdentityProviderConfiguration - An object to configure an identity provider for use with SMART on FHIR authentication.
+type SmartIdentityProviderConfiguration struct {
+	// The array of identity provider applications for SMART on FHIR authentication.
+	Applications []*SmartIdentityProviderApplication
+
+	// The identity provider token authority also known as the token issuing authority.
+	Authority *string
+}
+
+// StorageConfiguration - The configuration of connected storage
+type StorageConfiguration struct {
+	// The filesystem name of connected storage account.
+	FileSystemName *string
+
+	// The resource id of connected storage account.
+	StorageResourceID *string
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.

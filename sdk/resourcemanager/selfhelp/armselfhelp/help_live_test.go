@@ -54,6 +54,9 @@ func (testsuite *HelpTestSuite) TearDownSuite() {
 }
 
 func TestHelpTestSuite(t *testing.T) {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
+	}
 	suite.Run(t, new(HelpTestSuite))
 }
 
@@ -165,7 +168,7 @@ func (testsuite *HelpTestSuite) TestDiscoverySolution() {
 	fmt.Println("Call operation: DiscoverySolution_List")
 	discoverySolutionClient, err := armselfhelp.NewDiscoverySolutionClient(testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
-	discoverySolutionClientNewListPager := discoverySolutionClient.NewListPager("subscriptions/"+testsuite.subscriptionId, &armselfhelp.DiscoverySolutionClientListOptions{Filter: nil,
+	discoverySolutionClientNewListPager := discoverySolutionClient.NewListPager(&armselfhelp.DiscoverySolutionClientListOptions{Filter: nil,
 		Skiptoken: nil,
 	})
 	for discoverySolutionClientNewListPager.More() {

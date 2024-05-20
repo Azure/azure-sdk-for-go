@@ -16,6 +16,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
@@ -24,10 +25,10 @@ import (
 )
 
 const (
-	recordingDirectory  = "sdk/monitor/query/azmetrics/testdata"
-	fakeResourceURI     = "/subscriptions/faa080af-c1d8-40ad-9cce-e1a451va7b87/resourceGroups/rg-example/providers/Microsoft.AppConfiguration/configurationStores/example"
-	fakeSubscrtiptionID = "faa080af-c1d8-40ad-9cce-e1a451va7b87"
-	fakeRegion          = "westus"
+	recordingDirectory = "sdk/monitor/query/azmetrics/testdata"
+	fakeResourceURI    = "/subscriptions/faa080af-c1d8-40ad-9cce-e1a451va7b87/resourceGroups/rg-example/providers/Microsoft.AppConfiguration/configurationStores/example"
+	fakeSubscriptionID = "faa080af-c1d8-40ad-9cce-e1a451va7b87"
+	fakeRegion         = "westus"
 )
 
 var (
@@ -35,6 +36,8 @@ var (
 	resourceURI    string
 	subscriptionID string
 	region         string
+	endpoint       string
+	clientCloud    cloud.Configuration
 )
 
 func TestMain(m *testing.M) {
@@ -56,8 +59,13 @@ func run(m *testing.M) int {
 		}()
 	}
 
+	resourceURI = getEnvVar("RESOURCE_URI", fakeResourceURI)
+	subscriptionID = getEnvVar("AZMETRICS_SUBSCRIPTION_ID", fakeSubscriptionID)
+	region = getEnvVar("AZMETRICS_LOCATION", fakeRegion)
+
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		credential = &FakeCredential{}
+		endpoint = "https://" + region + ".metrics.monitor.azure.com"
 	} else {
 		tenantID := getEnvVar("AZMETRICS_TENANT_ID", "")
 		clientID := getEnvVar("AZMETRICS_CLIENT_ID", "")
@@ -67,11 +75,21 @@ func run(m *testing.M) int {
 		if err != nil {
 			panic(err)
 		}
-	}
 
-	resourceURI = getEnvVar("RESOURCE_URI", fakeResourceURI)
-	subscriptionID = getEnvVar("AZMETRICS_SUBSCRIPTION_ID", fakeSubscrtiptionID)
-	region = getEnvVar("AZMETRICS_LOCATION", fakeRegion)
+		if cloudEnv, ok := os.LookupEnv("AZMETRICS_ENVIRONMENT"); ok {
+			if strings.EqualFold(cloudEnv, "AzureCloud") {
+				endpoint = "https://" + region + ".metrics.monitor.azure.com"
+			}
+			if strings.EqualFold(cloudEnv, "AzureUSGovernment") {
+				clientCloud = cloud.AzureGovernment
+				endpoint = "https://" + region + ".metrics.monitor.azure.us"
+			}
+			if strings.EqualFold(cloudEnv, "AzureChinaCloud") {
+				clientCloud = cloud.AzureChina
+				endpoint = "https://" + region + ".metrics.monitor.azure.cn"
+			}
+		}
+	}
 
 	return m.Run()
 }
@@ -89,8 +107,7 @@ func startTest(t *testing.T) *azmetrics.Client {
 	startRecording(t)
 	transport, err := recording.NewRecordingHTTPClient(t, nil)
 	require.NoError(t, err)
-	opts := &azmetrics.ClientOptions{ClientOptions: azcore.ClientOptions{Transport: transport}}
-	endpoint := "https://" + region + ".metrics.monitor.azure.com"
+	opts := &azmetrics.ClientOptions{ClientOptions: azcore.ClientOptions{Transport: transport, Cloud: clientCloud}}
 	client, err := azmetrics.NewClient(endpoint, credential, opts)
 	require.NoError(t, err)
 	return client

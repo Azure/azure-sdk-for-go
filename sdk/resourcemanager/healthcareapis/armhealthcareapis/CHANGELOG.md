@@ -1,5 +1,16 @@
 # Release History
 
+## 2.1.0 (2024-04-26)
+### Features Added
+
+- New enum type `SmartDataActions` with values `SmartDataActionsRead`
+- New struct `SmartIdentityProviderApplication`
+- New struct `SmartIdentityProviderConfiguration`
+- New struct `StorageConfiguration`
+- New field `EnableDataPartitions`, `StorageConfiguration` in struct `DicomServiceProperties`
+- New field `SmartIdentityProviders` in struct `FhirServiceAuthenticationConfiguration`
+
+
 ## 2.0.0 (2023-12-22)
 ### Breaking Changes
 

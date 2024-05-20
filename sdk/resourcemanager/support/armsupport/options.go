@@ -153,19 +153,8 @@ type FilesNoSubscriptionClientUploadOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LookUpResourceIDClientPostOptions contains the optional parameters for the LookUpResourceIDClient.Post method.
-type LookUpResourceIDClientPostOptions struct {
-	// placeholder for future optional parameters
-}
-
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ProblemClassificationsClientClassifyProblemsOptions contains the optional parameters for the ProblemClassificationsClient.ClassifyProblems
-// method.
-type ProblemClassificationsClientClassifyProblemsOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -177,24 +166,6 @@ type ProblemClassificationsClientGetOptions struct {
 // ProblemClassificationsClientListOptions contains the optional parameters for the ProblemClassificationsClient.NewListPager
 // method.
 type ProblemClassificationsClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ProblemClassificationsNoSubscriptionClientClassifyProblemsOptions contains the optional parameters for the ProblemClassificationsNoSubscriptionClient.ClassifyProblems
-// method.
-type ProblemClassificationsNoSubscriptionClientClassifyProblemsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ServiceClassificationsClientClassifyServicesOptions contains the optional parameters for the ServiceClassificationsClient.ClassifyServices
-// method.
-type ServiceClassificationsClientClassifyServicesOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ServiceClassificationsNoSubscriptionClientClassifyServicesOptions contains the optional parameters for the ServiceClassificationsNoSubscriptionClient.ClassifyServices
-// method.
-type ServiceClassificationsNoSubscriptionClientClassifyServicesOptions struct {
 	// placeholder for future optional parameters
 }
 

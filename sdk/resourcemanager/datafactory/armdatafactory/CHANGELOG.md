@@ -1,5 +1,26 @@
 # Release History
 
+## 7.0.0 (2024-04-04)
+### Breaking Changes
+
+- Function `*CredentialOperationsClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, ManagedIdentityCredentialResource, *CredentialOperationsClientCreateOrUpdateOptions)` to `(context.Context, string, string, string, CredentialResource, *CredentialOperationsClientCreateOrUpdateOptions)`
+- Type of `AzureFunctionActivityTypeProperties.Headers` has been changed from `map[string]*string` to `map[string]any`
+- Type of `CredentialListResponse.Value` has been changed from `[]*ManagedIdentityCredentialResource` to `[]*CredentialResource`
+- Type of `WebActivityTypeProperties.Headers` has been changed from `map[string]*string` to `map[string]any`
+- Type of `WebHookActivityTypeProperties.Headers` has been changed from `map[string]*string` to `map[string]any`
+- Struct `ManagedIdentityCredentialResource` has been removed
+- Struct `ManagedIdentityTypeProperties` has been removed
+- Field `ManagedIdentityCredentialResource` of struct `CredentialOperationsClientCreateOrUpdateResponse` has been removed
+- Field `ManagedIdentityCredentialResource` of struct `CredentialOperationsClientGetResponse` has been removed
+- Field `TypeProperties` of struct `ManagedIdentityCredential` has been removed
+
+### Features Added
+
+- New struct `CredentialResource`
+- New anonymous field `CredentialResource` in struct `CredentialOperationsClientCreateOrUpdateResponse`
+- New anonymous field `CredentialResource` in struct `CredentialOperationsClientGetResponse`
+
+
 ## 6.1.0 (2024-03-22)
 ### Features Added
 

@@ -10,7 +10,7 @@ package armconfidentialledger
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/confidentialledger/armconfidentialledger"
-	moduleVersion = "v1.3.0-beta.1"
+	moduleVersion = "v1.3.0-beta.2"
 )
 
 // CheckNameAvailabilityReason - The reason why the given name is not available.
@@ -80,6 +80,24 @@ func PossibleLedgerRoleNameValues() []LedgerRoleName {
 		LedgerRoleNameAdministrator,
 		LedgerRoleNameContributor,
 		LedgerRoleNameReader,
+	}
+}
+
+// LedgerSKU - SKU associated with the ledger resource
+type LedgerSKU string
+
+const (
+	LedgerSKUBasic    LedgerSKU = "Basic"
+	LedgerSKUStandard LedgerSKU = "Standard"
+	LedgerSKUUnknown  LedgerSKU = "Unknown"
+)
+
+// PossibleLedgerSKUValues returns the possible values for the LedgerSKU const type.
+func PossibleLedgerSKUValues() []LedgerSKU {
+	return []LedgerSKU{
+		LedgerSKUBasic,
+		LedgerSKUStandard,
+		LedgerSKUUnknown,
 	}
 }
 

@@ -10,7 +10,7 @@ package armpostgresqlflexibleservers
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresqlflexibleservers"
-	moduleVersion = "v4.0.0-beta.4"
+	moduleVersion = "v4.0.0-beta.5"
 )
 
 // ActiveDirectoryAuthEnum - If Enabled, Azure Active Directory authentication is enabled.
@@ -388,6 +388,22 @@ func PossibleLogicalReplicationOnSourceDbEnumValues() []LogicalReplicationOnSour
 	return []LogicalReplicationOnSourceDbEnum{
 		LogicalReplicationOnSourceDbEnumFalse,
 		LogicalReplicationOnSourceDbEnumTrue,
+	}
+}
+
+// MigrateRolesEnum - To migrate roles and permissions we need to send this flag as True
+type MigrateRolesEnum string
+
+const (
+	MigrateRolesEnumFalse MigrateRolesEnum = "False"
+	MigrateRolesEnumTrue  MigrateRolesEnum = "True"
+)
+
+// PossibleMigrateRolesEnumValues returns the possible values for the MigrateRolesEnum const type.
+func PossibleMigrateRolesEnumValues() []MigrateRolesEnum {
+	return []MigrateRolesEnum{
+		MigrateRolesEnumFalse,
+		MigrateRolesEnumTrue,
 	}
 }
 
@@ -907,13 +923,21 @@ func PossibleServerVersionValues() []ServerVersion {
 	}
 }
 
-// SourceType - Migration source server type : OnPremises, AWS, GCP, AzureVM or PostgreSQLSingleServer
+// SourceType - Migration source server type : OnPremises, AWS, GCP, AzureVM, PostgreSQLSingleServer, AWSRDS, AWSAURORA, AWSEC2,
+// GCPCloudSQL, GCPAlloyDB, GCPCompute, or EDB
 type SourceType string
 
 const (
 	SourceTypeAWS                    SourceType = "AWS"
+	SourceTypeAWSAURORA              SourceType = "AWS_AURORA"
+	SourceTypeAWSEC2                 SourceType = "AWS_EC2"
+	SourceTypeAWSRDS                 SourceType = "AWS_RDS"
 	SourceTypeAzureVM                SourceType = "AzureVM"
+	SourceTypeEDB                    SourceType = "EDB"
 	SourceTypeGCP                    SourceType = "GCP"
+	SourceTypeGCPAlloyDB             SourceType = "GCP_AlloyDB"
+	SourceTypeGCPCloudSQL            SourceType = "GCP_CloudSQL"
+	SourceTypeGCPCompute             SourceType = "GCP_Compute"
 	SourceTypeOnPremises             SourceType = "OnPremises"
 	SourceTypePostgreSQLSingleServer SourceType = "PostgreSQLSingleServer"
 )
@@ -922,8 +946,15 @@ const (
 func PossibleSourceTypeValues() []SourceType {
 	return []SourceType{
 		SourceTypeAWS,
+		SourceTypeAWSAURORA,
+		SourceTypeAWSEC2,
+		SourceTypeAWSRDS,
 		SourceTypeAzureVM,
+		SourceTypeEDB,
 		SourceTypeGCP,
+		SourceTypeGCPAlloyDB,
+		SourceTypeGCPCloudSQL,
+		SourceTypeGCPCompute,
 		SourceTypeOnPremises,
 		SourceTypePostgreSQLSingleServer,
 	}

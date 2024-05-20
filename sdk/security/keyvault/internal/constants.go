@@ -7,5 +7,5 @@
 package internal
 
 const (
-	version = "v1.0.1" //nolint
+	version = "v1.0.2" //nolint
 )

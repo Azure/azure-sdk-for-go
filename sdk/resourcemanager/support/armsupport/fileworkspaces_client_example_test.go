@@ -14,10 +14,10 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/support/armsupport/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/support/armsupport"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/support/resource-manager/Microsoft.Support/preview/2023-06-01-preview/examples/GetFileWorkspaceDetailsForSubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/106483d9f698ac3b6c0d481ab0c5fab14152e21f/specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/GetFileWorkspaceDetailsForSubscription.json
 func ExampleFileWorkspacesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -38,7 +38,7 @@ func ExampleFileWorkspacesClient_Get() {
 	// res.FileWorkspaceDetails = armsupport.FileWorkspaceDetails{
 	// 	Name: to.Ptr("testworkspace"),
 	// 	Type: to.Ptr("Microsoft.Support/fileWorkspaces"),
-	// 	ID: to.Ptr("/subscriptions/subid/providers/Microsoft.Support/fileWorkspaces/testworkspace"),
+	// 	ID: to.Ptr("/subscriptions/132d901f-189d-4381-9214-fe68e27e05a1/providers/Microsoft.Support/fileWorkspaces/testworkspace"),
 	// 	Properties: &armsupport.FileWorkspaceDetailsProperties{
 	// 		CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-24T20:18:19.000Z"); return t}()),
 	// 		ExpirationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-25T20:18:19.000Z"); return t}()),
@@ -46,7 +46,7 @@ func ExampleFileWorkspacesClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/support/resource-manager/Microsoft.Support/preview/2023-06-01-preview/examples/CreateFileWorkspaceForSubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/106483d9f698ac3b6c0d481ab0c5fab14152e21f/specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/CreateFileWorkspaceForSubscription.json
 func ExampleFileWorkspacesClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

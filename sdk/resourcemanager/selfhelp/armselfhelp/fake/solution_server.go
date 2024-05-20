@@ -18,6 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/selfhelp/armselfhelp/v2"
 	"net/http"
 	"net/url"
+	"reflect"
 	"regexp"
 )
 
@@ -34,6 +35,10 @@ type SolutionServer struct {
 	// BeginUpdate is the fake for method SolutionClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdate func(ctx context.Context, scope string, solutionResourceName string, solutionPatchRequestBody armselfhelp.SolutionPatchRequestBody, options *armselfhelp.SolutionClientBeginUpdateOptions) (resp azfake.PollerResponder[armselfhelp.SolutionClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// WarmUp is the fake for method SolutionClient.WarmUp
+	// HTTP status codes to indicate success: http.StatusNoContent
+	WarmUp func(ctx context.Context, scope string, solutionResourceName string, options *armselfhelp.SolutionClientWarmUpOptions) (resp azfake.Responder[armselfhelp.SolutionClientWarmUpResponse], errResp azfake.ErrorResponder)
 }
 
 // NewSolutionServerTransport creates a new instance of SolutionServerTransport with the provided implementation.
@@ -73,6 +78,8 @@ func (s *SolutionServerTransport) Do(req *http.Request) (*http.Response, error) 
 		resp, err = s.dispatchGet(req)
 	case "SolutionClient.BeginUpdate":
 		resp, err = s.dispatchBeginUpdate(req)
+	case "SolutionClient.WarmUp":
+		resp, err = s.dispatchWarmUp(req)
 	default:
 		err = fmt.Errorf("unhandled API %s", method)
 	}
@@ -210,5 +217,48 @@ func (s *SolutionServerTransport) dispatchBeginUpdate(req *http.Request) (*http.
 		s.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (s *SolutionServerTransport) dispatchWarmUp(req *http.Request) (*http.Response, error) {
+	if s.srv.WarmUp == nil {
+		return nil, &nonRetriableError{errors.New("fake for method WarmUp not implemented")}
+	}
+	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Help/solutions/(?P<solutionResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/warmup`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armselfhelp.SolutionWarmUpRequestBody](req)
+	if err != nil {
+		return nil, err
+	}
+	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
+	if err != nil {
+		return nil, err
+	}
+	solutionResourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("solutionResourceName")])
+	if err != nil {
+		return nil, err
+	}
+	var options *armselfhelp.SolutionClientWarmUpOptions
+	if !reflect.ValueOf(body).IsZero() {
+		options = &armselfhelp.SolutionClientWarmUpOptions{
+			SolutionWarmUpRequestBody: &body,
+		}
+	}
+	respr, errRespr := s.srv.WarmUp(req.Context(), scopeParam, solutionResourceNameParam, options)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusNoContent}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusNoContent", respContent.HTTPStatus)}
+	}
+	resp, err := server.NewResponse(respContent, req, nil)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }

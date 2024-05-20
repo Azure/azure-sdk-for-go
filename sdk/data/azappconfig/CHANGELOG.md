@@ -9,6 +9,7 @@
 ### Bugs Fixed
 
 ### Other Changes
+* Updated dependencies.
 
 ## 1.1.0 (2024-01-17)
 

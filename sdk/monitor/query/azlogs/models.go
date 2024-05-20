@@ -14,7 +14,7 @@ type Column struct {
 	Name *string
 
 	// The data type of this column.
-	Type *LogsColumnType
+	Type *ColumnType
 }
 
 // QueryBody - The Analytics query. Learn more about the Analytics query syntax [https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/]

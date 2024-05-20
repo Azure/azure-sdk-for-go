@@ -47,24 +47,6 @@ type AttachedNetworksClientListByProjectOptions struct {
 	Top *int32
 }
 
-// CatalogDevBoxDefinitionsClientGetErrorDetailsOptions contains the optional parameters for the CatalogDevBoxDefinitionsClient.GetErrorDetails
-// method.
-type CatalogDevBoxDefinitionsClientGetErrorDetailsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// CatalogDevBoxDefinitionsClientGetOptions contains the optional parameters for the CatalogDevBoxDefinitionsClient.Get method.
-type CatalogDevBoxDefinitionsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// CatalogDevBoxDefinitionsClientListByCatalogOptions contains the optional parameters for the CatalogDevBoxDefinitionsClient.NewListByCatalogPager
-// method.
-type CatalogDevBoxDefinitionsClientListByCatalogOptions struct {
-	// The maximum number of resources to return from the operation. Example: '$top=10'.
-	Top *int32
-}
-
 // CatalogsClientBeginConnectOptions contains the optional parameters for the CatalogsClient.BeginConnect method.
 type CatalogsClientBeginConnectOptions struct {
 	// Resumes the LRO from the provided token.
@@ -117,22 +99,10 @@ type CheckNameAvailabilityClientExecuteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CustomizationTasksClientGetErrorDetailsOptions contains the optional parameters for the CustomizationTasksClient.GetErrorDetails
+// CheckScopedNameAvailabilityClientExecuteOptions contains the optional parameters for the CheckScopedNameAvailabilityClient.Execute
 // method.
-type CustomizationTasksClientGetErrorDetailsOptions struct {
+type CheckScopedNameAvailabilityClientExecuteOptions struct {
 	// placeholder for future optional parameters
-}
-
-// CustomizationTasksClientGetOptions contains the optional parameters for the CustomizationTasksClient.Get method.
-type CustomizationTasksClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// CustomizationTasksClientListByCatalogOptions contains the optional parameters for the CustomizationTasksClient.NewListByCatalogPager
-// method.
-type CustomizationTasksClientListByCatalogOptions struct {
-	// The maximum number of resources to return from the operation. Example: '$top=10'.
-	Top *int32
 }
 
 // DevBoxDefinitionsClientBeginCreateOrUpdateOptions contains the optional parameters for the DevBoxDefinitionsClient.BeginCreateOrUpdate
@@ -219,6 +189,12 @@ type DevCentersClientListBySubscriptionOptions struct {
 	Top *int32
 }
 
+// EnvironmentDefinitionsClientGetByProjectCatalogOptions contains the optional parameters for the EnvironmentDefinitionsClient.GetByProjectCatalog
+// method.
+type EnvironmentDefinitionsClientGetByProjectCatalogOptions struct {
+	// placeholder for future optional parameters
+}
+
 // EnvironmentDefinitionsClientGetErrorDetailsOptions contains the optional parameters for the EnvironmentDefinitionsClient.GetErrorDetails
 // method.
 type EnvironmentDefinitionsClientGetErrorDetailsOptions struct {
@@ -235,6 +211,12 @@ type EnvironmentDefinitionsClientGetOptions struct {
 type EnvironmentDefinitionsClientListByCatalogOptions struct {
 	// The maximum number of resources to return from the operation. Example: '$top=10'.
 	Top *int32
+}
+
+// EnvironmentDefinitionsClientListByProjectCatalogOptions contains the optional parameters for the EnvironmentDefinitionsClient.NewListByProjectCatalogPager
+// method.
+type EnvironmentDefinitionsClientListByProjectCatalogOptions struct {
+	// placeholder for future optional parameters
 }
 
 // EnvironmentTypesClientCreateOrUpdateOptions contains the optional parameters for the EnvironmentTypesClient.CreateOrUpdate
@@ -439,6 +421,60 @@ type ProjectAllowedEnvironmentTypesClientGetOptions struct {
 // ProjectAllowedEnvironmentTypesClientListOptions contains the optional parameters for the ProjectAllowedEnvironmentTypesClient.NewListPager
 // method.
 type ProjectAllowedEnvironmentTypesClientListOptions struct {
+	// The maximum number of resources to return from the operation. Example: '$top=10'.
+	Top *int32
+}
+
+// ProjectCatalogEnvironmentDefinitionsClientGetErrorDetailsOptions contains the optional parameters for the ProjectCatalogEnvironmentDefinitionsClient.GetErrorDetails
+// method.
+type ProjectCatalogEnvironmentDefinitionsClientGetErrorDetailsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ProjectCatalogsClientBeginConnectOptions contains the optional parameters for the ProjectCatalogsClient.BeginConnect method.
+type ProjectCatalogsClientBeginConnectOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ProjectCatalogsClientBeginCreateOrUpdateOptions contains the optional parameters for the ProjectCatalogsClient.BeginCreateOrUpdate
+// method.
+type ProjectCatalogsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ProjectCatalogsClientBeginDeleteOptions contains the optional parameters for the ProjectCatalogsClient.BeginDelete method.
+type ProjectCatalogsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ProjectCatalogsClientBeginPatchOptions contains the optional parameters for the ProjectCatalogsClient.BeginPatch method.
+type ProjectCatalogsClientBeginPatchOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ProjectCatalogsClientBeginSyncOptions contains the optional parameters for the ProjectCatalogsClient.BeginSync method.
+type ProjectCatalogsClientBeginSyncOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ProjectCatalogsClientGetOptions contains the optional parameters for the ProjectCatalogsClient.Get method.
+type ProjectCatalogsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ProjectCatalogsClientGetSyncErrorDetailsOptions contains the optional parameters for the ProjectCatalogsClient.GetSyncErrorDetails
+// method.
+type ProjectCatalogsClientGetSyncErrorDetailsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ProjectCatalogsClientListOptions contains the optional parameters for the ProjectCatalogsClient.NewListPager method.
+type ProjectCatalogsClientListOptions struct {
 	// The maximum number of resources to return from the operation. Example: '$top=10'.
 	Top *int32
 }

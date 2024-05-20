@@ -12,5 +12,8 @@ variables:
   # Set the default value so that 'Build Performance Tests' step can resolve it
   UseAzcoreFromMain: $[eq(variables['Use.AzcoreFromMain'], 'true')]
 
+  # Set to disable analyze step for requiring latest version of dependencies
+  SkipGoGetUAll: true
+
   # We enable this selectively to avoid overloading CG scanning/reporting on PR pipelines
   skipComponentGovernanceDetection: true

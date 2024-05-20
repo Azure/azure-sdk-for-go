@@ -103,11 +103,11 @@ func (c *DatabaseClient) NewQueryContainersPager(query string, o *QueryContainer
 
 	return runtime.NewPager(runtime.PagingHandler[QueryContainersResponse]{
 		More: func(page QueryContainersResponse) bool {
-			return page.ContinuationToken != ""
+			return page.ContinuationToken != nil
 		},
 		Fetcher: func(ctx context.Context, page *QueryContainersResponse) (QueryContainersResponse, error) {
 			if page != nil {
-				if page.ContinuationToken != "" {
+				if page.ContinuationToken != nil {
 					// Use the previous page continuation if available
 					queryOptions.ContinuationToken = page.ContinuationToken
 				}

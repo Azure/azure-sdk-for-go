@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devcenter/armdevcenter"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devcenter/armdevcenter/v2"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -30,7 +30,7 @@ type PoolsServer struct {
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, projectName string, poolName string, body armdevcenter.Pool, options *armdevcenter.PoolsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armdevcenter.PoolsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method PoolsClient.BeginDelete
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	// HTTP status codes to indicate success: http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, projectName string, poolName string, options *armdevcenter.PoolsClientBeginDeleteOptions) (resp azfake.PollerResponder[armdevcenter.PoolsClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method PoolsClient.Get
@@ -42,7 +42,7 @@ type PoolsServer struct {
 	NewListByProjectPager func(resourceGroupName string, projectName string, options *armdevcenter.PoolsClientListByProjectOptions) (resp azfake.PagerResponder[armdevcenter.PoolsClientListByProjectResponse])
 
 	// BeginRunHealthChecks is the fake for method PoolsClient.BeginRunHealthChecks
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	// HTTP status codes to indicate success: http.StatusAccepted
 	BeginRunHealthChecks func(ctx context.Context, resourceGroupName string, projectName string, poolName string, options *armdevcenter.PoolsClientBeginRunHealthChecksOptions) (resp azfake.PollerResponder[armdevcenter.PoolsClientRunHealthChecksResponse], errResp azfake.ErrorResponder)
 
 	// BeginUpdate is the fake for method PoolsClient.BeginUpdate
@@ -199,9 +199,9 @@ func (p *PoolsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Res
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !contains([]int{http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		p.beginDelete.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginDelete) {
 		p.beginDelete.remove(req)
@@ -346,9 +346,9 @@ func (p *PoolsServerTransport) dispatchBeginRunHealthChecks(req *http.Request) (
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !contains([]int{http.StatusAccepted}, resp.StatusCode) {
 		p.beginRunHealthChecks.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginRunHealthChecks) {
 		p.beginRunHealthChecks.remove(req)

@@ -14,9 +14,11 @@ import (
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/lease"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/directory"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/file"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/path"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/shared"
 	"hash/crc64"
 	"io"
@@ -386,4 +388,43 @@ func Example_file_AppendAndFlushDataWithValidation() {
 	gResp2, err := fClient.GetProperties(context.Background(), nil)
 	handleError(err)
 	fmt.Println(*gResp2.ContentLength, int64(contentSize))
+}
+
+func Example_file_AppendAndFlushDataWithAcquireAndReleaseLease() {
+	accountName, accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME"), os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
+
+	// Create a file client
+	u := fmt.Sprintf("https://%s.dfs.core.windows.net/fs/file.txt", accountName)
+	credential, err := azdatalake.NewSharedKeyCredential(accountName, accountKey)
+	handleError(err)
+	fClient, err := file.NewClientWithSharedKeyCredential(u, credential, nil)
+	handleError(err)
+
+	contentSize := 1024 * 8 // 8KB
+	content := make([]byte, contentSize)
+	body := bytes.NewReader(content)
+	rsc := streaming.NopCloser(body)
+
+	// Acquire lease during append data
+	opts := &file.AppendDataOptions{
+		LeaseAction:     &file.LeaseActionAcquire,
+		LeaseDuration:   to.Ptr(int64(15)),
+		ProposedLeaseID: proposedLeaseIDs[1],
+	}
+	_, err = fClient.AppendData(context.Background(), 0, rsc, opts)
+	handleError(err)
+
+	_, err = fClient.FlushData(context.Background(), int64(contentSize), &file.FlushDataOptions{
+		LeaseAction: &file.LeaseActionRelease,
+		AccessConditions: &path.AccessConditions{
+			LeaseAccessConditions: &path.LeaseAccessConditions{LeaseID: proposedLeaseIDs[0]},
+		},
+	})
+	handleError(err)
+
+	gResp2, err := fClient.GetProperties(context.Background(), nil)
+	handleError(err)
+	// Check if the lease is released
+	fmt.Println(lease.StateTypeAvailable, *gResp2.LeaseState)
+
 }

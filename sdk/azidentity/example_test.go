@@ -64,7 +64,9 @@ func ExampleNewOnBehalfOfCredentialWithCertificate() {
 		// TODO: handle error
 	}
 
-	cred, err = azidentity.NewClientCertificateCredential(tenantID, clientID, certs, key, nil)
+	// userAssertion is the user's access token for the application. Typically it comes from a client request.
+	userAssertion := "TODO"
+	cred, err = azidentity.NewOnBehalfOfCredentialWithCertificate(tenantID, clientID, userAssertion, certs, key, nil)
 	if err != nil {
 		// TODO: handle error
 	}

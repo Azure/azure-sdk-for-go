@@ -24,8 +24,8 @@ func TestConsumeCloudEventMachineLearningServicesModelRegisteredEvent(t *testing
 	sysEvent := deserializeSystemEvent[azsystemevents.MachineLearningServicesModelRegisteredEventData](t, events[0].Data)
 	require.Equal(t, "sklearn_regression_model", *sysEvent.ModelName)
 	require.Equal(t, "3", *sysEvent.ModelVersion)
-	require.Equal(t, "regression", sysEvent.ModelTags.(map[string]any)["type"])
-	require.Equal(t, "test", sysEvent.ModelProperties.(map[string]any)["area"])
+	require.Equal(t, "regression", sysEvent.ModelTags["type"])
+	require.Equal(t, "test", sysEvent.ModelProperties["area"])
 }
 
 func TestConsumeCloudEventMachineLearningServicesModelDeployedEvent(t *testing.T) {
@@ -831,11 +831,6 @@ func TestConsumeCloudEventAcsRecordingFileStatusUpdatedEventData(t *testing.T) {
 	require.NotEmpty(t, events)
 	sysEvent := deserializeSystemEvent[azsystemevents.ACSRecordingFileStatusUpdatedEventData](t, events[0].Data)
 
-	// TODO: rename, it seems?
-	// require.Equal(t, azsystemevents.RecordingChannelTypeMixed, sysEvent.ChannelType)
-	// require.Equal(t, azsystemevents.RecordingContentTypeAudio, sysEvent.ContentType)
-	// require.Equal(t, azsystemevents.RecordingFormatTypeMp3, sysEvent.FormatType)
-
 	// back compat
 	require.Equal(t, azsystemevents.RecordingChannelKindMixed, *sysEvent.RecordingChannelKind)
 	require.Equal(t, azsystemevents.RecordingContentTypeAudio, *sysEvent.RecordingContentType)
@@ -974,7 +969,7 @@ func TestConsumeCloudEventAcsRouterJobClassificationFailedEvent(t *testing.T) {
 
 	var errors = sysEvent.Errors
 	require.Equal(t, 1, len(errors))
-	require.Equal(t, "Failure", (*errors[0]).Code)
+	require.Equal(t, "Failure", errors[0].Code)
 	require.Equal(t, "Code: Failure\n"+
 		"Message: Classification failed due to <reason>\n"+
 		"InnerError:\n"+

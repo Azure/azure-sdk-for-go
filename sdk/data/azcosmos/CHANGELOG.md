@@ -8,7 +8,7 @@
 
 ### Bugs Fixed
 
-* Fixed ReplaceThroughput operations on Database and Container
+* Fixed ReplaceThroughput operations on Database and Container. See [PR 22923](https://github.com/Azure/azure-sdk-for-go/pull/22923)
 
 ### Other Changes
 

@@ -1,16 +1,10 @@
 # Release History
 
-## 1.7.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 1.7.1 (2024-05-20)
 
 ### Bugs Fixed
 
 - Emulator strings should allow for hosts other than localhost (PR#22898)
-
-### Other Changes
 
 ## 1.7.0 (2024-04-02)
 

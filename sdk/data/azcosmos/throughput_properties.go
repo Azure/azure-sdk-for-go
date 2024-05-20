@@ -151,7 +151,7 @@ func (tp *ThroughputProperties) UnmarshalJSON(b []byte) error {
 		tp.LastModified = time.Unix(timestamp, 0)
 	}
 
-	if id, ok := attributes["id"]; ok {
+	if id, ok := attributes["_rid"]; ok {
 		if err := json.Unmarshal(id, &tp.offerId); err != nil {
 			return err
 		}

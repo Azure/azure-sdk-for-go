@@ -15,9 +15,6 @@ import (
 )
 
 func TestBatchAdd(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
 			client, deleteAndStop := initClientTest(t, service, true, NewSpanValidator(t, SpanMatcher{
@@ -56,9 +53,6 @@ func TestBatchAdd(t *testing.T) {
 }
 
 func TestBatchInsert(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
 			client, deleteAndStop := initClientTest(t, service, true, tracing.Provider{})
@@ -100,9 +94,6 @@ func TestBatchInsert(t *testing.T) {
 }
 
 func TestBatchMixed(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
 			client, deleteAndStop := initClientTest(t, service, true, tracing.Provider{})
@@ -209,8 +200,6 @@ func TestBatchError(t *testing.T) {
 			defer deleteAndStop()
 			err := recording.SetBodilessMatcher(t, nil)
 			require.NoError(t, err)
-			err = recording.AddGeneralRegexSanitizer("batch_00000000-0000-0000-0000-000000000000", "batch_[0-9A-Fa-f]{8}[-]([0-9A-Fa-f]{4}[-]?){3}[0-9a-fA-F]{12}", nil)
-			require.NoError(t, err)
 
 			entitiesToCreate := createComplexEntities(3, "partition")
 
@@ -250,8 +239,6 @@ func TestBatchErrorHandleResponse(t *testing.T) {
 			defer deleteAndStop()
 			err := recording.SetBodilessMatcher(t, nil)
 			require.NoError(t, err)
-			err = recording.AddGeneralRegexSanitizer("batch_00000000-0000-0000-0000-000000000000", "batch_[0-9A-Fa-f]{8}[-]([0-9A-Fa-f]{4}[-]?){3}[0-9a-fA-F]{12}", nil)
-			require.NoError(t, err)
 
 			entitiesToCreate := createComplexEntities(3, "partition")
 
@@ -290,8 +277,6 @@ func TestBatchComplex(t *testing.T) {
 			client, deleteAndStop := initClientTest(t, service, true, tracing.Provider{})
 			defer deleteAndStop()
 			err := recording.SetBodilessMatcher(t, nil)
-			require.NoError(t, err)
-			err = recording.AddGeneralRegexSanitizer("batch_00000000-0000-0000-0000-000000000000", "batch_[0-9A-Fa-f]{8}[-]([0-9A-Fa-f]{4}[-]?){3}[0-9a-fA-F]{12}", nil)
 			require.NoError(t, err)
 
 			edmEntity := createEdmEntity(1, "pk01")

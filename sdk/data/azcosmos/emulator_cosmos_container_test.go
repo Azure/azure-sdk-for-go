@@ -107,9 +107,18 @@ func TestContainerCRUD(t *testing.T) {
 	}
 
 	newScale := NewManualThroughputProperties(500)
-	_, err = container.ReplaceThroughput(context.TODO(), newScale, nil)
+	throughputResponse, err = container.ReplaceThroughput(context.TODO(), newScale, nil)
 	if err != nil {
-		t.Errorf("Failed to read throughput: %v", err)
+		t.Errorf("Failed to replace throughput: %v", err)
+	}
+
+	mt, hasManualThroughput = throughputResponse.ThroughputProperties.ManualThroughput()
+	if !hasManualThroughput {
+		t.Fatalf("Expected manual throughput to be available")
+	}
+
+	if mt != 500 {
+		t.Errorf("Unexpected throughput: %v", mt)
 	}
 
 	resp, err = container.Delete(context.TODO(), nil)

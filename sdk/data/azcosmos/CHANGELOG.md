@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+* Fixed ReplaceThroughput operations on Database and Container
+
 ### Other Changes
 
 ## 1.0.1 (2024-05-02)

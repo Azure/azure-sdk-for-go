@@ -58,7 +58,9 @@ func ExampleNewOnBehalfOfCredentialWithCertificate() {
 
 	// NewOnBehalfOfCredentialFromCertificate requires at least one *x509.Certificate, and a crypto.PrivateKey.
 	// ParseCertificates returns these given certificate data in PEM or PKCS12 format. It handles common
-	// scenarios but has limitations, for example it doesn't load PEM encrypted private keys.
+	// scenarios but has limitations, for example it doesn't load PEM encrypted private keys or PKCS12 certs
+	// that use SHA256 for message authentication. If it isn't able to parse your certificate, consider
+	// using another module to load the certificate and private key.
 	certs, key, err := azidentity.ParseCertificates(data, nil)
 	if err != nil {
 		// TODO: handle error
@@ -79,8 +81,10 @@ func ExampleNewClientCertificateCredential() {
 	handleError(err)
 
 	// NewClientCertificateCredential requires at least one *x509.Certificate, and a crypto.PrivateKey.
-	// ParseCertificates returns these given certificate data in PEM or PKCS12 format. It handles common scenarios
-	// but has limitations, for example it doesn't load PEM encrypted private keys.
+	// ParseCertificates returns these given certificate data in PEM or PKCS12 format. It handles common
+	// scenarios but has limitations, for example it doesn't load PEM encrypted private keys or PKCS12 certs
+	// that use SHA256 for message authentication. If it isn't able to parse your certificate, consider
+	// using another module to load the certificate and private key.
 	certs, key, err := azidentity.ParseCertificates(data, nil)
 	handleError(err)
 

@@ -15,7 +15,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/require"
 	"io"
 	"net/http"
@@ -27,9 +26,6 @@ import (
 const alpineBlobDigest = "sha256:042a816809aac8d0f7d7cacac7965782ee2ecac3f21bcf9f24b1de1a7387b769"
 
 func TestBlobClient_CancelUpload(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
 	startRecording(t)
 	endpoint, cred, options := getEndpointCredAndClientOptions(t)
 	ctx := context.Background()
@@ -52,9 +48,6 @@ func TestBlobClient_CancelUpload_fail(t *testing.T) {
 }
 
 func TestBlobClient_CheckBlobExists(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
 	startRecording(t)
 	endpoint, cred, options := getEndpointCredAndClientOptions(t)
 	ctx := context.Background()
@@ -86,9 +79,6 @@ func TestBlobClient_CheckBlobExists_empty(t *testing.T) {
 }
 
 func TestBlobClient_CheckChunkExists(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
 	startRecording(t)
 	endpoint, cred, options := getEndpointCredAndClientOptions(t)
 	ctx := context.Background()
@@ -120,9 +110,6 @@ func TestBlobClient_CheckChunkExists_empty(t *testing.T) {
 }
 
 func TestBlobClient_completeUpload_wrongDigest(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
 	startRecording(t)
 	endpoint, cred, options := getEndpointCredAndClientOptions(t)
 	ctx := context.Background()
@@ -141,15 +128,14 @@ func TestBlobClient_completeUpload_wrongDigest(t *testing.T) {
 }
 
 func TestBlobClient_DeleteBlob(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
+	d := "sha256:bfe296a525011f7eb76075d688c681ca4feaad5afe3b142b36e30f1a171dc99a"
+	require.NotEqual(t, d, alpineBlobDigest, "test bug: deleting a blob used in other tests")
 	startRecording(t)
 	endpoint, cred, options := getEndpointCredAndClientOptions(t)
 	ctx := context.Background()
 	client, err := NewBlobClient(endpoint, cred, &BlobClientOptions{ClientOptions: options})
 	require.NoError(t, err)
-	_, err = client.DeleteBlob(ctx, "alpine", alpineBlobDigest, nil)
+	_, err = client.DeleteBlob(ctx, "alpine", d, nil)
 	require.NoError(t, err)
 }
 
@@ -174,9 +160,6 @@ func TestBlobClient_DeleteBlob_empty(t *testing.T) {
 }
 
 func TestBlobClient_GetBlob(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
 	startRecording(t)
 	endpoint, cred, options := getEndpointCredAndClientOptions(t)
 	ctx := context.Background()
@@ -232,9 +215,6 @@ func TestBlobClient_GetBlob_empty(t *testing.T) {
 }
 
 func TestBlobClient_GetChunk(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
 	startRecording(t)
 	endpoint, cred, options := getEndpointCredAndClientOptions(t)
 	ctx := context.Background()
@@ -284,9 +264,6 @@ func TestBlobClient_GetChunk_empty(t *testing.T) {
 }
 
 func TestBlobClient_GetUploadStatus(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
 	startRecording(t)
 	endpoint, cred, options := getEndpointCredAndClientOptions(t)
 	ctx := context.Background()
@@ -312,9 +289,6 @@ func TestBlobClient_GetUploadStatus_fail(t *testing.T) {
 }
 
 func TestBlobClient_MountBlob(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
 	startRecording(t)
 	endpoint, cred, options := getEndpointCredAndClientOptions(t)
 	ctx := context.Background()
@@ -344,9 +318,6 @@ func TestBlobClient_MountBlob_empty(t *testing.T) {
 }
 
 func TestBlobClient_StartUpload(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
 	startRecording(t)
 	endpoint, cred, options := getEndpointCredAndClientOptions(t)
 	ctx := context.Background()

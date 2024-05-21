@@ -98,6 +98,8 @@ func (c cosmosOffers) ReplaceThroughputIfExists(
 	readRequestCharge := readResponse.RequestCharge
 	readResponse.ThroughputProperties.offer = properties.offer
 
+	// EnableContentResponseOnWrite enforced to true for metadata operations
+	// Otherwise Offer updates return 404
 	returnResponse := true
 	h := &headerOptionsOverride{
 		enableContentResponseOnWrite: &returnResponse,

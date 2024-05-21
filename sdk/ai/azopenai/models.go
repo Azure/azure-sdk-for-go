@@ -253,10 +253,47 @@ type AzureChatExtensionDataSourceResponseCitation struct {
 	URL *string
 }
 
+// AzureChatExtensionRetrievedDocument - The retrieved document.
+type AzureChatExtensionRetrievedDocument struct {
+	// REQUIRED; The content of the citation.
+	Content *string
+
+	// REQUIRED; The index of the data source.
+	DataSourceIndex *int32
+
+	// REQUIRED; The search queries used to retrieve the document.
+	SearchQueries []string
+
+	// The chunk ID of the citation.
+	ChunkID *string
+
+	// The file path of the citation.
+	Filepath *string
+
+	// Represents the rationale for filtering the document. If the document does not undergo filtering, this field will remain
+	// unset.
+	FilterReason *AzureChatExtensionRetrieveDocumentFilterReason
+
+	// The original search score of the retrieved document.
+	OriginalSearchScore *float64
+
+	// The rerank score of the retrieved document.
+	RerankScore *float64
+
+	// The title of the citation.
+	Title *string
+
+	// The URL of the citation.
+	URL *string
+}
+
 // AzureChatExtensionsMessageContext - A representation of the additional context information available when Azure OpenAI
 // chat extensions are involved in the generation of a corresponding chat completions response. This context information
 // is only populated when using an Azure OpenAI request configured to use a matching extension.
 type AzureChatExtensionsMessageContext struct {
+	// All the retrieved documents.
+	AllRetrievedDocuments []AzureChatExtensionRetrievedDocument
+
 	// The contextual information associated with the Azure chat extensions used for a chat completions request. These messages
 	// describe the data source retrievals, plugin invocations, and other intermediate
 	// steps taken in the course of generating a chat completions response that was augmented by capabilities from Azure OpenAI
@@ -316,6 +353,11 @@ type AzureCosmosDBChatExtensionParameters struct {
 	// REQUIRED; The MongoDB vCore index name to use with Azure Cosmos DB.
 	IndexName *string
 
+	// If specified as true, the system will allow partial search results to be used and the request fails if all the queries
+	// fail. If not specified, or specified as false, the request will fail if any
+	// search query fails.
+	AllowPartialResult *bool
+
 	// The authentication method to use when accessing the defined data source. Each data source type supports a specific set
 	// of available authentication methods; please see the documentation of the data
 	// source for supported mechanisms. If not otherwise provided, On Your Data will attempt to use System Managed Identity (default
@@ -324,6 +366,13 @@ type AzureCosmosDBChatExtensionParameters struct {
 
 	// Whether queries should be restricted to use of indexed data.
 	InScope *bool
+
+	// The included properties of the output context. If not specified, the default value is citations and intent.
+	IncludeContexts []OnYourDataContextProperty
+
+	// The max number of rewritten queries should be send to search provider for one user message. If not specified, the system
+	// will decide the number of queries to send.
+	MaxSearchQueries *int32
 
 	// Give the model instructions about how it should behave and any context it should reference when generating a response.
 	// You can describe the assistant's personality and tell it how to format responses.
@@ -431,6 +480,11 @@ type AzureMachineLearningIndexChatExtensionParameters struct {
 	// REQUIRED; The version of the Azure Machine Learning vector index.
 	Version *string
 
+	// If specified as true, the system will allow partial search results to be used and the request fails if all the queries
+	// fail. If not specified, or specified as false, the request will fail if any
+	// search query fails.
+	AllowPartialResult *bool
+
 	// The authentication method to use when accessing the defined data source. Each data source type supports a specific set
 	// of available authentication methods; please see the documentation of the data
 	// source for supported mechanisms. If not otherwise provided, On Your Data will attempt to use System Managed Identity (default
@@ -442,6 +496,13 @@ type AzureMachineLearningIndexChatExtensionParameters struct {
 
 	// Whether queries should be restricted to use of indexed data.
 	InScope *bool
+
+	// The included properties of the output context. If not specified, the default value is citations and intent.
+	IncludeContexts []OnYourDataContextProperty
+
+	// The max number of rewritten queries should be send to search provider for one user message. If not specified, the system
+	// will decide the number of queries to send.
+	MaxSearchQueries *int32
 
 	// Give the model instructions about how it should behave and any context it should reference when generating a response.
 	// You can describe the assistant's personality and tell it how to format responses.
@@ -483,6 +544,11 @@ type AzureSearchChatExtensionParameters struct {
 	// REQUIRED; The name of the index to use as available in the referenced Azure Cognitive Search resource.
 	IndexName *string
 
+	// If specified as true, the system will allow partial search results to be used and the request fails if all the queries
+	// fail. If not specified, or specified as false, the request will fail if any
+	// search query fails.
+	AllowPartialResult *bool
+
 	// The authentication method to use when accessing the defined data source. Each data source type supports a specific set
 	// of available authentication methods; please see the documentation of the data
 	// source for supported mechanisms. If not otherwise provided, On Your Data will attempt to use System Managed Identity (default
@@ -500,6 +566,13 @@ type AzureSearchChatExtensionParameters struct {
 
 	// Whether queries should be restricted to use of indexed data.
 	InScope *bool
+
+	// The included properties of the output context. If not specified, the default value is citations and intent.
+	IncludeContexts []OnYourDataContextProperty
+
+	// The max number of rewritten queries should be send to search provider for one user message. If not specified, the system
+	// will decide the number of queries to send.
+	MaxSearchQueries *int32
 
 	// The query type to use with Azure Cognitive Search.
 	QueryType *AzureSearchQueryType
@@ -1463,6 +1536,11 @@ type ElasticsearchChatExtensionParameters struct {
 	// REQUIRED; The index name of Elasticsearch®.
 	IndexName *string
 
+	// If specified as true, the system will allow partial search results to be used and the request fails if all the queries
+	// fail. If not specified, or specified as false, the request will fail if any
+	// search query fails.
+	AllowPartialResult *bool
+
 	// The authentication method to use when accessing the defined data source. Each data source type supports a specific set
 	// of available authentication methods; please see the documentation of the data
 	// source for supported mechanisms. If not otherwise provided, On Your Data will attempt to use System Managed Identity (default
@@ -1477,6 +1555,13 @@ type ElasticsearchChatExtensionParameters struct {
 
 	// Whether queries should be restricted to use of indexed data.
 	InScope *bool
+
+	// The included properties of the output context. If not specified, the default value is citations and intent.
+	IncludeContexts []OnYourDataContextProperty
+
+	// The max number of rewritten queries should be send to search provider for one user message. If not specified, the system
+	// will decide the number of queries to send.
+	MaxSearchQueries *int32
 
 	// The query type of Elasticsearch®.
 	QueryType *ElasticsearchQueryType
@@ -1682,6 +1767,9 @@ type ImageGenerationOptions struct {
 
 // ImageGenerationPromptFilterResults - Describes the content filtering results for the prompt of a image generation request.
 type ImageGenerationPromptFilterResults struct {
+	// Information about customer block lists and if something was detected the associated list ID.
+	CustomBlocklists *ContentFilterDetailedResults
+
 	// Describes language attacks or uses that include pejorative or discriminatory language with reference to a person or identity
 	// group on the basis of certain differentiating attributes of these groups
 	// including but not limited to race, ethnicity, nationality, gender identity and expression, sexual orientation, religion,
@@ -1800,6 +1888,9 @@ type OnYourDataDeploymentNameVectorizationSource struct {
 
 	// REQUIRED; The type of vectorization source to use.
 	Type *OnYourDataVectorizationSourceType
+
+	// The number of dimensions the embeddings should have. Only supported in text-embedding-3 and later models.
+	Dimensions *int32
 }
 
 // GetOnYourDataVectorizationSource implements the OnYourDataVectorizationSourceClassification interface for type OnYourDataDeploymentNameVectorizationSource.
@@ -1830,7 +1921,7 @@ func (o *OnYourDataEncodedAPIKeyAuthenticationOptions) GetOnYourDataAuthenticati
 // applying vector search, that is based on a public Azure OpenAI endpoint call for embeddings.
 type OnYourDataEndpointVectorizationSource struct {
 	// REQUIRED; Specifies the authentication options to use when retrieving embeddings from the specified endpoint.
-	Authentication OnYourDataAuthenticationOptionsClassification
+	Authentication OnYourDataVectorSearchAuthenticationOptionsClassification
 
 	// REQUIRED; Specifies the resource endpoint URL from which embeddings should be retrieved. It should be in the format of
 	// https://YOURRESOURCENAME.openai.azure.com/openai/deployments/YOURDEPLOYMENTNAME/embeddings.
@@ -1916,6 +2007,54 @@ func (o *OnYourDataUserAssignedManagedIdentityAuthenticationOptions) GetOnYourDa
 	}
 }
 
+// OnYourDataVectorSearchAPIKeyAuthenticationOptions - The authentication options for Azure OpenAI On Your Data when using
+// an API key.
+type OnYourDataVectorSearchAPIKeyAuthenticationOptions struct {
+	// REQUIRED; The API key to use for authentication.
+	Key *string
+
+	// REQUIRED; The type of authentication to use.
+	Type *OnYourDataVectorSearchAuthenticationType
+}
+
+// GetOnYourDataVectorSearchAuthenticationOptions implements the OnYourDataVectorSearchAuthenticationOptionsClassification
+// interface for type OnYourDataVectorSearchAPIKeyAuthenticationOptions.
+func (o *OnYourDataVectorSearchAPIKeyAuthenticationOptions) GetOnYourDataVectorSearchAuthenticationOptions() *OnYourDataVectorSearchAuthenticationOptions {
+	return &OnYourDataVectorSearchAuthenticationOptions{
+		Type: o.Type,
+	}
+}
+
+// OnYourDataVectorSearchAccessTokenAuthenticationOptions - The authentication options for Azure OpenAI On Your Data vector
+// search when using access token.
+type OnYourDataVectorSearchAccessTokenAuthenticationOptions struct {
+	// REQUIRED; The access token to use for authentication.
+	AccessToken *string
+
+	// REQUIRED; The type of authentication to use.
+	Type *OnYourDataVectorSearchAuthenticationType
+}
+
+// GetOnYourDataVectorSearchAuthenticationOptions implements the OnYourDataVectorSearchAuthenticationOptionsClassification
+// interface for type OnYourDataVectorSearchAccessTokenAuthenticationOptions.
+func (o *OnYourDataVectorSearchAccessTokenAuthenticationOptions) GetOnYourDataVectorSearchAuthenticationOptions() *OnYourDataVectorSearchAuthenticationOptions {
+	return &OnYourDataVectorSearchAuthenticationOptions{
+		Type: o.Type,
+	}
+}
+
+// OnYourDataVectorSearchAuthenticationOptions - The authentication options for Azure OpenAI On Your Data vector search.
+type OnYourDataVectorSearchAuthenticationOptions struct {
+	// REQUIRED; The type of authentication to use.
+	Type *OnYourDataVectorSearchAuthenticationType
+}
+
+// GetOnYourDataVectorSearchAuthenticationOptions implements the OnYourDataVectorSearchAuthenticationOptionsClassification
+// interface for type OnYourDataVectorSearchAuthenticationOptions.
+func (o *OnYourDataVectorSearchAuthenticationOptions) GetOnYourDataVectorSearchAuthenticationOptions() *OnYourDataVectorSearchAuthenticationOptions {
+	return o
+}
+
 // OnYourDataVectorizationSource - An abstract representation of a vectorization source for Azure OpenAI On Your Data with
 // vector search.
 type OnYourDataVectorizationSource struct {
@@ -1961,6 +2100,11 @@ type PineconeChatExtensionParameters struct {
 	// REQUIRED; The name of the Pinecone database index.
 	IndexName *string
 
+	// If specified as true, the system will allow partial search results to be used and the request fails if all the queries
+	// fail. If not specified, or specified as false, the request will fail if any
+	// search query fails.
+	AllowPartialResult *bool
+
 	// The authentication method to use when accessing the defined data source. Each data source type supports a specific set
 	// of available authentication methods; please see the documentation of the data
 	// source for supported mechanisms. If not otherwise provided, On Your Data will attempt to use System Managed Identity (default
@@ -1969,6 +2113,13 @@ type PineconeChatExtensionParameters struct {
 
 	// Whether queries should be restricted to use of indexed data.
 	InScope *bool
+
+	// The included properties of the output context. If not specified, the default value is citations and intent.
+	IncludeContexts []OnYourDataContextProperty
+
+	// The max number of rewritten queries should be send to search provider for one user message. If not specified, the system
+	// will decide the number of queries to send.
+	MaxSearchQueries *int32
 
 	// Give the model instructions about how it should behave and any context it should reference when generating a response.
 	// You can describe the assistant's personality and tell it how to format responses.

@@ -18,6 +18,8 @@ import (
 )
 
 func TestChatCompletions_extensions_bringYourOwnData(t *testing.T) {
+	t.Skip("TEMP DISABLED: search index authentication has been disabled temporarily: https://github.com/Azure/azure-sdk-for-go/issues/22966")
+
 	client := newTestClient(t, azureOpenAI.ChatCompletionsOYD.Endpoint)
 
 	resp, err := client.GetChatCompletions(context.Background(), azopenai.ChatCompletionsOptions{
@@ -41,6 +43,8 @@ func TestChatCompletions_extensions_bringYourOwnData(t *testing.T) {
 }
 
 func TestChatExtensionsStreaming_extensions_bringYourOwnData(t *testing.T) {
+	t.Skip("TEMP DISABLED: search index authentication has been disabled temporarily: https://github.com/Azure/azure-sdk-for-go/issues/22966")
+
 	client := newTestClient(t, azureOpenAI.ChatCompletionsOYD.Endpoint)
 
 	streamResp, err := client.GetChatCompletionsStream(context.Background(), azopenai.ChatCompletionsOptions{

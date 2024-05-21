@@ -9,6 +9,7 @@ package azappconfig
 import (
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/internal/exported"
 )
 
@@ -58,6 +59,9 @@ type ListRevisionsPageResponse struct {
 type ListSettingsPageResponse struct {
 	// Contains the configuration settings that match the setting selector provided.
 	Settings []Setting
+
+	// An ETag indicating the state of a page of configuration settings within a configuration store.
+	ETag *azcore.ETag
 
 	// SyncToken contains the value returned in the Sync-Token header.
 	SyncToken SyncToken

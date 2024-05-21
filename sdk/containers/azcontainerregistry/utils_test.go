@@ -93,6 +93,8 @@ func run(m *testing.M) int {
 		switch {
 		case strings.EqualFold(env, "AzureUSGovernment"):
 			testConfig.cloud = azcloud.AzureGovernment
+		case strings.EqualFold(env, "AzureCloud"):
+			testConfig.cloud = azcloud.AzurePublic
 		case strings.EqualFold(env, "AzureChinaCloud"):
 			testConfig.cloud = azcloud.AzureChina
 		case len(env) > 0:

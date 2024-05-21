@@ -23,8 +23,8 @@ func TestRoleDefinition(t *testing.T) {
 	client := startAccessControlTest(t)
 
 	var name, roleName string
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		name, roleName = "Sanitized", "Sanitized"
+	if recording.GetRecordMode() == recording.PlaybackMode || recording.GetRecordMode() == recording.RecordingMode {
+		name, roleName = "bedc5fb2-8738-40a4-8b20-cedfb43a1922", "c023eb03-4e31-464c-84f7-001b7f23bd13"
 	} else {
 		name, roleName = uuid.New().String(), uuid.New().String()
 	}
@@ -45,7 +45,13 @@ func TestRoleDefinition(t *testing.T) {
 	// test create definition
 	createdDefinition, err := client.CreateOrUpdateRoleDefinition(context.Background(), scope, name, parameters, nil)
 	require.NoError(t, err)
-	require.Equal(t, name, *createdDefinition.Name)
+
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		require.Equal(t, "Sanitized", *createdDefinition.Name)
+	} else {
+		require.Equal(t, name, *createdDefinition.Name)
+	}
+
 	require.Len(t, createdDefinition.Properties.AssignableScopes, 1)
 	require.Equal(t, scope, *createdDefinition.Properties.AssignableScopes[0])
 	require.Equal(t, "test", *createdDefinition.Properties.Description)
@@ -70,29 +76,31 @@ func TestRoleDefinition(t *testing.T) {
 	require.Equal(t, *updatedDefinition.ID, *gotDefinition.ID)
 
 	// test list role definitions and check if created definition is in list exactly once
-	updatedDefinitionCount := 0
-	pager := client.NewListRoleDefinitionsPager(scope, nil)
-	require.True(t, pager.More())
-	for pager.More() {
-		res, err := pager.NextPage(context.Background())
-		require.NoError(t, err)
-		require.NotNil(t, res)
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		updatedDefinitionCount := 0
+		pager := client.NewListRoleDefinitionsPager(scope, nil)
+		require.True(t, pager.More())
+		for pager.More() {
+			res, err := pager.NextPage(context.Background())
+			require.NoError(t, err)
+			require.NotNil(t, res)
 
-		require.NotNil(t, res.Value)
-		for _, roleDefinition := range res.Value {
-			require.NotNil(t, roleDefinition.Properties)
-			require.NotNil(t, roleDefinition.ID)
-			require.NotNil(t, roleDefinition.Name)
-			require.NotNil(t, roleDefinition.Type)
+			require.NotNil(t, res.Value)
+			for _, roleDefinition := range res.Value {
+				require.NotNil(t, roleDefinition.Properties)
+				require.NotNil(t, roleDefinition.ID)
+				require.NotNil(t, roleDefinition.Name)
+				require.NotNil(t, roleDefinition.Type)
 
-			if *roleDefinition.ID == *updatedDefinition.ID {
-				updatedDefinitionCount++
+				if *roleDefinition.ID == *updatedDefinition.ID {
+					updatedDefinitionCount++
+				}
 			}
-		}
 
-		testSerde(t, &res)
+			testSerde(t, &res)
+		}
+		require.Equal(t, 1, updatedDefinitionCount)
 	}
-	require.Equal(t, 1, updatedDefinitionCount)
 
 	// test delete
 	deletedDefinition, err := client.DeleteRoleDefinition(context.Background(), scope, name, nil)
@@ -100,19 +108,21 @@ func TestRoleDefinition(t *testing.T) {
 	require.Equal(t, updatedDefinition.ID, deletedDefinition.ID)
 
 	// verify role definition is deleted
-	pager = client.NewListRoleDefinitionsPager(scope, nil)
-	for pager.More() {
-		res, err := pager.NextPage(context.Background())
-		require.NoError(t, err)
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		pager := client.NewListRoleDefinitionsPager(scope, nil)
+		for pager.More() {
+			res, err := pager.NextPage(context.Background())
+			require.NoError(t, err)
 
-		for _, roleDefinition := range res.Value {
-			require.NotNil(t, roleDefinition.Properties)
-			require.NotNil(t, roleDefinition.ID)
-			require.NotNil(t, roleDefinition.Name)
-			require.NotNil(t, roleDefinition.Type)
+			for _, roleDefinition := range res.Value {
+				require.NotNil(t, roleDefinition.Properties)
+				require.NotNil(t, roleDefinition.ID)
+				require.NotNil(t, roleDefinition.Name)
+				require.NotNil(t, roleDefinition.Type)
 
-			if *roleDefinition.ID == *updatedDefinition.ID {
-				t.Fatal("expected role definition to be deleted")
+				if *roleDefinition.ID == *updatedDefinition.ID {
+					t.Fatal("expected role definition to be deleted")
+				}
 			}
 		}
 	}
@@ -140,8 +150,8 @@ func TestRoleAssignment(t *testing.T) {
 
 	var name, principalID, roleDefinitionID string
 	scope := rbac.RoleScopeGlobal
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		name, principalID, roleDefinitionID = "Sanitized", "Sanitized", "Sanitized"
+	if recording.GetRecordMode() == recording.PlaybackMode || recording.GetRecordMode() == recording.RecordingMode {
+		name, principalID, roleDefinitionID = "bedc5fb2-8738-40a4-8b20-cedfb43a1922", "c023eb03-4e31-464c-84f7-001b7f23bd13", "Microsoft.KeyVault/providers/Microsoft.Authorization/roleDefinitions/33413926-3206-4cdd-b39a-83574fe37a17"
 	} else {
 		name, principalID = uuid.New().String(), uuid.New().String()
 		// get random role definition to use for their service principal
@@ -159,9 +169,21 @@ func TestRoleAssignment(t *testing.T) {
 	// create role assignment
 	createdAssignment, err := client.CreateRoleAssignment(context.Background(), scope, name, roleAssignment, nil)
 	require.NoError(t, err)
-	require.Equal(t, name, *createdAssignment.Name)
+
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		require.Equal(t, "Sanitized", *createdAssignment.Name)
+		require.Equal(t, "00000000-0000-0000-0000-000000000000", *createdAssignment.Properties.PrincipalID)
+	} else {
+		require.Equal(t, name, *createdAssignment.Name)
+		require.Equal(t, name, *createdAssignment.Name)
+		require.Equal(t, scope, *createdAssignment.Properties.Scope)
+		require.Equal(t, name, *createdAssignment.Name)
+		require.Equal(t, scope, *createdAssignment.Properties.Scope)
+		require.Equal(t, principalID, *createdAssignment.Properties.PrincipalID)
+	}
+
 	require.Equal(t, scope, *createdAssignment.Properties.Scope)
-	require.Equal(t, principalID, *createdAssignment.Properties.PrincipalID)
+
 	require.Equal(t, roleDefinitionID, *createdAssignment.Properties.RoleDefinitionID)
 
 	// test if able to get role assignment
@@ -200,25 +222,27 @@ func TestRoleAssignment(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, *createdAssignment.ID, *deletedAssignment.ID)
 
-	assignmentsPager = client.NewListRoleAssignmentsPager(scope, nil)
-	require.True(t, assignmentsPager.More())
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		assignmentsPager = client.NewListRoleAssignmentsPager(scope, nil)
+		require.True(t, assignmentsPager.More())
 
-	for assignmentsPager.More() {
-		res, err := assignmentsPager.NextPage(context.Background())
-		require.NoError(t, err)
-		require.NotNil(t, res)
+		for assignmentsPager.More() {
+			res, err := assignmentsPager.NextPage(context.Background())
+			require.NoError(t, err)
+			require.NotNil(t, res)
 
-		require.NotNil(t, res.Value)
-		for _, roleAssignment := range res.Value {
-			require.NotNil(t, roleAssignment.Properties)
-			require.NotNil(t, roleAssignment.ID)
-			require.NotNil(t, roleAssignment.Name)
-			require.NotNil(t, roleAssignment.Type)
+			require.NotNil(t, res.Value)
+			for _, roleAssignment := range res.Value {
+				require.NotNil(t, roleAssignment.Properties)
+				require.NotNil(t, roleAssignment.ID)
+				require.NotNil(t, roleAssignment.Name)
+				require.NotNil(t, roleAssignment.Type)
 
-			require.NotEqual(t, *roleAssignment.ID, *createdAssignment.ID)
+				require.NotEqual(t, *roleAssignment.ID, *createdAssignment.ID)
+			}
+
+			testSerde(t, &res)
 		}
-
-		testSerde(t, &res)
 	}
 }
 

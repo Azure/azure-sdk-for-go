@@ -23,12 +23,14 @@ func TestGetSetting(t *testing.T) {
 	client := startSettingsTest(t)
 
 	settingName := "AllowKeyManagementOperationsThroughARM"
+
+	res, err := client.GetSetting(context.Background(), settingName, nil)
+	require.NoError(t, err)
+
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		settingName = "Sanitized"
 	}
 
-	res, err := client.GetSetting(context.Background(), settingName, nil)
-	require.NoError(t, err)
 	require.NotNil(t, res)
 	require.Equal(t, settingName, *res.Name)
 	require.Equal(t, settings.SettingTypeBoolean, *res.Type)
@@ -75,9 +77,6 @@ func TestUpdateSetting(t *testing.T) {
 	client := startSettingsTest(t)
 
 	settingName := "AllowKeyManagementOperationsThroughARM"
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		settingName = "Sanitized"
-	}
 	var updatedBool string
 
 	res, err := client.GetSetting(context.Background(), settingName, nil)
@@ -95,6 +94,11 @@ func TestUpdateSetting(t *testing.T) {
 
 	update, err := client.UpdateSetting(context.Background(), settingName, updateSettingRequest, nil)
 	require.NoError(t, err)
+
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		settingName = "Sanitized"
+	}
+
 	require.NotNil(t, res)
 	require.Equal(t, settingName, *res.Name)
 	require.Equal(t, settings.SettingTypeBoolean, *res.Type)

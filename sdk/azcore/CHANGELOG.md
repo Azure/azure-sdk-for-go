@@ -4,6 +4,8 @@
 
 ### Features Added
 
+* Added field `StatusCodes` to `runtime.FetcherForNextLinkOptions` allowing for additional HTTP status codes indicating success.
+
 ### Breaking Changes
 
 ### Bugs Fixed

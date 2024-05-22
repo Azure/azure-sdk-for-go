@@ -97,7 +97,7 @@ type VaultsClientCreateOrUpdateResponse struct {
 	Vault
 }
 
-// VaultsClientDeleteResponse contains the response from method VaultsClient.Delete.
+// VaultsClientDeleteResponse contains the response from method VaultsClient.BeginDelete.
 type VaultsClientDeleteResponse struct {
 	// placeholder for future response values
 }

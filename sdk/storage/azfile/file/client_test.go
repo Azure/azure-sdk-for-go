@@ -4357,11 +4357,11 @@ func (f *FileRecordedTestsSuite) TestStartCopyTrailingDotOAuth() {
 
 	getResp, err := destFileClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
-	if recording.GetRecordMode() != recording.PlaybackMode {
-		_require.EqualValues(getResp.CopyID, copyResp.CopyID)
-	}
+	_require.EqualValues(getResp.CopyID, copyResp.CopyID)
 	_require.NotEqual(*getResp.CopyStatus, "")
-	_require.Equal(*getResp.CopySource, srcFileClient.URL())
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		_require.Equal(*getResp.CopySource, srcFileClient.URL())
+	}
 	_require.Equal(*getResp.CopyStatus, file.CopyStatusTypeSuccess)
 
 	// validate data copied

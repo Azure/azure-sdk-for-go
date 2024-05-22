@@ -153,7 +153,7 @@ func importTestImages() error {
 	if err != nil {
 		return err
 	}
-	images := []string{"hello-world:latest", "alpine:3.17.1", "alpine:3.16.3", "alpine:3.15.6", "alpine:3.14.8", "ubuntu:20.04", "nginx:latest"}
+	images := []string{"hello-world:latest", "alpine:3.17.1", "alpine:3.16.3", "alpine:3.14.8", "ubuntu:20.04", "nginx:latest"}
 	for _, image := range images {
 		poller, err := client.BeginImportImage(ctx, rg, registryName, armcontainerregistry.ImportImageParameters{
 			Source: &armcontainerregistry.ImportSource{

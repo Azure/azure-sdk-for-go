@@ -138,9 +138,6 @@ func TestBackupRestore(t *testing.T) {
 }
 
 func TestContactsCRUD(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
 	client := startTest(t)
 
 	contacts := azcertificates.Contacts{ContactList: []*azcertificates.Contact{
@@ -149,11 +146,19 @@ func TestContactsCRUD(t *testing.T) {
 	}}
 	setResp, err := client.SetContacts(ctx, contacts, nil)
 	require.NoError(t, err)
-	require.Equal(t, contacts.ContactList, setResp.ContactList)
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		require.Len(t, setResp.ContactList, 2)
+	} else {
+		require.Equal(t, contacts.ContactList, setResp.ContactList)
+	}
 
 	getResp, err := client.GetContacts(ctx, nil)
 	require.NoError(t, err)
-	require.Equal(t, contacts.ContactList, getResp.ContactList)
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		require.Len(t, getResp.ContactList, 2)
+	} else {
+		require.Equal(t, contacts.ContactList, getResp.ContactList)
+	}
 
 	_, err = client.DeleteContacts(ctx, nil)
 	require.NoError(t, err)
@@ -225,9 +230,6 @@ func TestCRUD(t *testing.T) {
 }
 
 func TestDeleteRecover(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
 	client := startTest(t)
 	certName := getName(t, "")
 	createParams := azcertificates.CreateCertificateParameters{CertificatePolicy: &selfSignedPolicy}
@@ -251,7 +253,9 @@ func TestDeleteRecover(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, deleteResp.Attributes, recoverResp.Attributes)
 	require.Equal(t, deleteResp.ID, recoverResp.ID)
-	require.Equal(t, deleteResp.ID.Name(), recoverResp.ID.Name())
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		require.Equal(t, deleteResp.ID.Name(), recoverResp.ID.Name())
+	}
 	require.Equal(t, deleteResp.ID.Version(), recoverResp.ID.Version())
 	require.Equal(t, deleteResp.Policy, recoverResp.Policy)
 	cleanUpCert(t, client, certName)
@@ -322,9 +326,6 @@ func TestID(t *testing.T) {
 }
 
 func TestImportCertificate(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
 	client := startTest(t)
 	certName := getName(t, "")
 	importParams := azcertificates.ImportCertificateParameters{
@@ -411,9 +412,6 @@ func TestIssuerCRUD(t *testing.T) {
 }
 
 func TestListCertificates(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
 	client := startTest(t)
 
 	tag := getName(t, "")
@@ -479,9 +477,6 @@ func TestListCertificates(t *testing.T) {
 }
 
 func TestListCertificateVersions(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
 	client := startTest(t)
 
 	name := getName(t, "")
@@ -617,9 +612,6 @@ func TestOperationCRUD(t *testing.T) {
 }
 
 func TestUpdateCertificatePolicy(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
 	client := startTest(t)
 
 	certName := getName(t, "")

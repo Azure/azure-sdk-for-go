@@ -36,7 +36,6 @@ resource servicebusPremium 'Microsoft.ServiceBus/namespaces@2018-01-01-preview' 
   }
 }
 
-
 resource authorizationRuleName 'Microsoft.ServiceBus/namespaces/AuthorizationRules@2015-08-01' = {
   parent: servicebus
   name: 'RootManageSharedAccessKey'
@@ -131,14 +130,38 @@ resource testQueueWithSessions 'Microsoft.ServiceBus/namespaces/queues@2017-04-0
   }
 }
 
-output SERVICEBUS_CONNECTION_STRING string = listKeys(resourceId('Microsoft.ServiceBus/namespaces/authorizationRules', baseName, 'RootManageSharedAccessKey'), apiVersion).primaryConnectionString
+output SERVICEBUS_CONNECTION_STRING string = listKeys(
+  resourceId('Microsoft.ServiceBus/namespaces/authorizationRules', baseName, 'RootManageSharedAccessKey'),
+  apiVersion
+).primaryConnectionString
 
 // connection strings with fewer rights - no manage rights, listen only (ie, receive) and send only.
-output SERVICEBUS_CONNECTION_STRING_NO_MANAGE string = listKeys(resourceId('Microsoft.ServiceBus/namespaces/authorizationRules', baseName, 'NoManage'), apiVersion).primaryConnectionString
-output SERVICEBUS_CONNECTION_STRING_SEND_ONLY string = listKeys(resourceId('Microsoft.ServiceBus/namespaces/authorizationRules', baseName, 'SendOnly'), apiVersion).primaryConnectionString
-output SERVICEBUS_CONNECTION_STRING_LISTEN_ONLY string = listKeys(resourceId('Microsoft.ServiceBus/namespaces/authorizationRules', baseName, 'ListenOnly'), apiVersion).primaryConnectionString
+output SERVICEBUS_CONNECTION_STRING_NO_MANAGE string = listKeys(
+  resourceId('Microsoft.ServiceBus/namespaces/authorizationRules', baseName, 'NoManage'),
+  apiVersion
+).primaryConnectionString
+output SERVICEBUS_CONNECTION_STRING_SEND_ONLY string = listKeys(
+  resourceId('Microsoft.ServiceBus/namespaces/authorizationRules', baseName, 'SendOnly'),
+  apiVersion
+).primaryConnectionString
+output SERVICEBUS_CONNECTION_STRING_LISTEN_ONLY string = listKeys(
+  resourceId('Microsoft.ServiceBus/namespaces/authorizationRules', baseName, 'ListenOnly'),
+  apiVersion
+).primaryConnectionString
 
-output SERVICEBUS_CONNECTION_STRING_PREMIUM string = listKeys(resourceId('Microsoft.ServiceBus/namespaces/authorizationRules', sbPremiumName, 'RootManageSharedAccessKey'), apiVersion).primaryConnectionString
-output SERVICEBUS_ENDPOINT string = replace(replace(servicebus.properties.serviceBusEndpoint, ':443/', ''), 'https://', '')
+output SERVICEBUS_CONNECTION_STRING_PREMIUM string = listKeys(
+  resourceId('Microsoft.ServiceBus/namespaces/authorizationRules', sbPremiumName, 'RootManageSharedAccessKey'),
+  apiVersion
+).primaryConnectionString
+output SERVICEBUS_ENDPOINT string = replace(
+  replace(servicebus.properties.serviceBusEndpoint, ':443/', ''),
+  'https://',
+  ''
+)
+output SERVICEBUS_ENDPOINT_PREMIUM string = replace(
+  replace(servicebusPremium.properties.serviceBusEndpoint, ':443/', ''),
+  'https://',
+  ''
+)
 output QUEUE_NAME string = 'testQueue'
 output QUEUE_NAME_WITH_SESSIONS string = 'testQueueWithSessions'

@@ -11,6 +11,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus"
 	"github.com/microsoft/ApplicationInsights-Go/appinsights"
@@ -29,8 +30,10 @@ type StressContext struct {
 	// Nano is the nanoseconds start time for the stress test run
 	Nano string
 
-	// ConnectionString represents the value of the environment variable SERVICEBUS_CONNECTION_STRING.
-	ConnectionString string
+	// Endpoint is the value from SERVICEBUS_ENDPOINT
+	Endpoint string
+
+	Cred azcore.TokenCredential
 
 	logMessages chan string
 
@@ -158,10 +161,9 @@ func MustCreateStressContext(testName string, options *StressContextOptions) *St
 	// })
 
 	sc := &StressContext{
-		TestRunID:        testRunID,
-		Nano:             testRunID, // the same for now
-		ConnectionString: cs,
-		TC:               telemetryClient,
+		TestRunID: testRunID,
+		Nano:      testRunID, // the same for now
+		TC:        telemetryClient,
 		// you could always change the interval here. A minute feels like often enough
 		// to know things are running, while not so often that you end up flooding logging
 		// with duplicate information.

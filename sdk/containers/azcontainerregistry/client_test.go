@@ -31,9 +31,9 @@ func TestClient_DeleteManifest(t *testing.T) {
 	ctx := context.Background()
 	client, err := NewClient(endpoint, cred, &ClientOptions{ClientOptions: options})
 	require.NoError(t, err)
-	resp, err := client.GetTagProperties(ctx, "ubuntu", "20.04", nil)
+	resp, err := client.GetTagProperties(ctx, "busybox", "1.36.1-uclibc", nil)
 	require.NoError(t, err)
-	_, err = client.DeleteManifest(ctx, "ubuntu", *resp.Tag.Digest, nil)
+	_, err = client.DeleteManifest(ctx, "busybox", *resp.Tag.Digest, nil)
 	require.NoError(t, err)
 	_, err = client.DeleteManifest(ctx, "hello-world", "sha256:sha256:aa0cc8055b82dc2509bed2e19b275c8f463506616377219d9642221ab53cf9fe", nil)
 	require.NoError(t, err)
@@ -548,13 +548,13 @@ func TestClient_UpdateRepositoryProperties(t *testing.T) {
 	ctx := context.Background()
 	client, err := NewClient(endpoint, cred, &ClientOptions{ClientOptions: options})
 	require.NoError(t, err)
-	res, err := client.UpdateRepositoryProperties(ctx, "ubuntu", &ClientUpdateRepositoryPropertiesOptions{Value: &RepositoryWriteableProperties{
+	res, err := client.UpdateRepositoryProperties(ctx, "busybox", &ClientUpdateRepositoryPropertiesOptions{Value: &RepositoryWriteableProperties{
 		CanWrite: to.Ptr(false),
 	},
 	})
 	require.NoError(t, err)
 	require.False(t, *res.ContainerRepositoryProperties.ChangeableAttributes.CanWrite)
-	res, err = client.UpdateRepositoryProperties(ctx, "ubuntu", &ClientUpdateRepositoryPropertiesOptions{Value: &RepositoryWriteableProperties{
+	res, err = client.UpdateRepositoryProperties(ctx, "busybox", &ClientUpdateRepositoryPropertiesOptions{Value: &RepositoryWriteableProperties{
 		CanWrite: to.Ptr(true),
 	},
 	})

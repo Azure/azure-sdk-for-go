@@ -241,20 +241,18 @@ func TestSessionReceiver_nonSessionReceiver(t *testing.T) {
 }
 
 func TestSessionReceiver_subscription(t *testing.T) {
-	cs := test.GetConnectionString(t)
-
-	topic, cleanupTopic := createSubscription(t, cs, nil, &admin.SubscriptionProperties{
+	topic, cleanupTopic := createSubscription(t, nil, &admin.SubscriptionProperties{
 		RequiresSession: to.Ptr(true),
 	})
 
 	defer cleanupTopic()
 
-	client, err := NewClientFromConnectionString(cs, &ClientOptions{
-		RetryOptions: RetryOptions{
-			MaxRetries: -1,
-		},
-	})
-	require.NoError(t, err)
+	client := newServiceBusClientForTest(t, &test.NewClientOptions[ClientOptions]{
+		ClientOptions: &ClientOptions{
+			RetryOptions: RetryOptions{
+				MaxRetries: -1,
+			},
+		}})
 
 	client.acceptNextTimeout = time.Second
 
@@ -329,8 +327,7 @@ func TestSessionReceiver_Detach(t *testing.T) {
 
 	test.EnableStdoutLogging(t)
 
-	adminClient, err := admin.NewClientFromConnectionString(test.GetConnectionString(t), nil)
-	require.NoError(t, err)
+	adminClient := newAdminClientForTest(t, nil)
 
 	receiver, err := serviceBusClient.AcceptSessionForQueue(context.Background(), queueName, "test-session", nil)
 	require.NoError(t, err)

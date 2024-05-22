@@ -52,7 +52,7 @@ func OpenCloseMeasurements(remainingArgs []string) {
 		queueName := fmt.Sprintf("OpenCloseMeasurements-%s", sc.Nano)
 		_ = shared.MustCreateAutoDeletingQueue(sc, queueName, &admin.QueueProperties{})
 
-		client, err := azservicebus.NewClientFromConnectionString(sc.ConnectionString, nil)
+		client, err := azservicebus.NewClient(sc.Endpoint, sc.Cred, nil)
 		sc.PanicOnError("failed to create client", err)
 
 		trackingSender, err := shared.NewTrackingSender(sc.TC, client, queueName, nil)

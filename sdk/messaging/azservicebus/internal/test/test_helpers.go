@@ -10,12 +10,16 @@ import (
 	"math/rand"
 	"net/http"
 	"os"
+	"sort"
 	"sync/atomic"
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	azlog "github.com/Azure/azure-sdk-for-go/sdk/internal/log"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/atom"
 	"github.com/Azure/go-amqp"
@@ -47,63 +51,126 @@ func RandomString(prefix string, length int) string {
 	return prefix + string(b)
 }
 
-func GetConnectionString(t *testing.T) string {
-	return getEnvOrSkipTest(t, "SERVICEBUS_CONNECTION_STRING")
+type IdentityVars struct {
+	Endpoint        string
+	PremiumEndpoint string
+	Cred            azcore.TokenCredential
 }
 
-func GetConnectionStringForPremiumSB(t *testing.T) string {
-	return getEnvOrSkipTest(t, "SERVICEBUS_CONNECTION_STRING_PREMIUM")
-}
-
-func GetConnectionStringWithoutManagePerms(t *testing.T) string {
-	return getEnvOrSkipTest(t, "SERVICEBUS_CONNECTION_STRING_NO_MANAGE")
-}
-
-func GetConnectionStringSendOnly(t *testing.T) string {
-	return getEnvOrSkipTest(t, "SERVICEBUS_CONNECTION_STRING_SEND_ONLY")
-}
-
-func GetConnectionStringListenOnly(t *testing.T) string {
-	return getEnvOrSkipTest(t, "SERVICEBUS_CONNECTION_STRING_LISTEN_ONLY")
-}
-
-func GetIdentityVars(t *testing.T) *struct {
-	TenantID string
-	ClientID string
-	Secret   string
-	Endpoint string
-} {
-	runningLiveTest := GetConnectionString(t) != ""
-
-	if !runningLiveTest {
+func GetIdentityVars(t *testing.T) *IdentityVars {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skipf("Skipping live test when in recording.PlaybackMode")
 		return nil
 	}
 
-	return &struct {
-		TenantID string
-		ClientID string
-		Secret   string
-		Endpoint string
-	}{
-		TenantID: getEnvOrSkipTest(t, "AZURE_TENANT_ID"),
-		ClientID: getEnvOrSkipTest(t, "AZURE_CLIENT_ID"),
-		Endpoint: getEnvOrSkipTest(t, "SERVICEBUS_ENDPOINT"),
-		Secret:   getEnvOrSkipTest(t, "AZURE_CLIENT_SECRET"),
+	defaultAzureCred, err := azidentity.NewDefaultAzureCredential(nil)
+	require.NoError(t, err)
+
+	envVars := MustGetEnvVars([]EnvKey{EnvKeyEndpoint, EnvKeyEndpointPremium})
+
+	return &IdentityVars{
+		Endpoint:        envVars[EnvKeyEndpoint],
+		PremiumEndpoint: envVars[EnvKeyEndpointPremium],
+		Cred:            defaultAzureCred,
 	}
 }
 
-func getEnvOrSkipTest(t *testing.T, name string) string {
-	cs := os.Getenv(name)
+type EnvKey string
 
-	if cs == "" {
-		t.Skip()
+const (
+	EnvKeyEndpoint                   EnvKey = "SERVICEBUS_ENDPOINT"
+	EnvKeyEndpointPremium            EnvKey = "SERVICEBUS_ENDPOINT_PREMIUM"
+	EnvKeyConnectionString           EnvKey = "SERVICEBUS_CONNECTION_STRING"
+	EnvKeyConnectionStringPremium    EnvKey = "SERVICEBUS_CONNECTION_STRING_PREMIUM"
+	EnvKeyConnectionStringNoManage   EnvKey = "SERVICEBUS_CONNECTION_STRING_NO_MANAGE"
+	EnvKeyConnectionStringSendOnly   EnvKey = "SERVICEBUS_CONNECTION_STRING_SEND_ONLY"
+	EnvKeyConnectionStringListenOnly EnvKey = "SERVICEBUS_CONNECTION_STRING_LISTEN_ONLY"
+)
+
+func MustGetEnvVars[KeyT ~string](keys []KeyT) map[KeyT]string {
+	m := map[KeyT]string{}
+	var missing []string
+
+	for _, k := range keys {
+		m[k] = os.Getenv(string(k))
+
+		if m[k] == "" {
+			missing = append(missing, string(k))
+		}
 	}
+
+	if len(missing) != 0 {
+		sort.Strings(missing)
+		log.Fatalf("Required env variables are missing: %#v", missing)
+	}
+
+	return m
+}
+
+func MustGetEnvVar(t *testing.T, name EnvKey) string {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skipf("Skipping live test when in recording.PlaybackMode")
+		return ""
+	}
+
+	cs := os.Getenv(string(name))
+	require.NotEmptyf(t, cs, "Env var %s should be set", name)
 
 	return cs
 }
 
+type NewClientArgs[OptionsT any, ClientT any] struct {
+	NewClientFromConnectionString func(connectionString string, options *OptionsT) (*ClientT, error)
+	NewClient                     func(endpoint string, cred azcore.TokenCredential, options *OptionsT) (*ClientT, error)
+}
+
+type NewClientOptions[OptionsT any] struct {
+	ClientOptions       *OptionsT
+	UseConnectionString bool
+	UsePremium          bool
+}
+
+func NewClient[OptionsT any, ClientT any](t *testing.T, args NewClientArgs[OptionsT, ClientT], options *NewClientOptions[OptionsT]) *ClientT {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skipf("Skipping live test when in recording.PlaybackMode")
+		return nil
+	}
+
+	if options == nil {
+		options = &NewClientOptions[OptionsT]{}
+	}
+
+	if options.UseConnectionString {
+		env := MustGetEnvVars([]EnvKey{EnvKeyConnectionString, EnvKeyConnectionStringPremium})
+
+		cs := env[EnvKeyConnectionString]
+
+		if options.UsePremium {
+			cs = env[EnvKeyConnectionStringPremium]
+		}
+
+		client, err := args.NewClientFromConnectionString(cs, options.ClientOptions)
+		require.NoError(t, err)
+
+		return client
+	}
+
+	iv := GetIdentityVars(t)
+
+	endpoint := iv.Endpoint
+
+	if options.UsePremium {
+		endpoint = iv.PremiumEndpoint
+	}
+
+	client, err := args.NewClient(endpoint, iv.Cred, options.ClientOptions)
+	require.NoError(t, err)
+
+	return client
+}
+
 func CreateExpiringQueue(t *testing.T, qd *atom.QueueDescription) (string, func()) {
-	cs := GetConnectionString(t)
+	cs := MustGetEnvVar(t, EnvKeyConnectionString)
 	em, err := atom.NewEntityManagerWithConnectionString(cs, "", nil)
 	require.NoError(t, err)
 

@@ -312,7 +312,7 @@ func (m *Message) toAMQPMessage() *amqp.Message {
 // serialized byte array in the Data section of the messsage.
 func newReceivedMessage(amqpMsg *amqp.Message, receiver amqpwrap.AMQPReceiver) *ReceivedMessage {
 	msg := &ReceivedMessage{
-		RawAMQPMessage: newAMQPAnnotatedMessage(amqpMsg, receiver.LinkName()),
+		RawAMQPMessage: newAMQPAnnotatedMessage(amqpMsg),
 		State:          MessageStateActive,
 		linkName:       receiver.LinkName(),
 	}

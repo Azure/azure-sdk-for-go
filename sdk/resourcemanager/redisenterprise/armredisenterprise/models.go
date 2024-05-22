@@ -155,6 +155,9 @@ type DatabaseProperties struct {
 	// Clustering policy - default is OSSCluster. Specified at create time.
 	ClusteringPolicy *ClusteringPolicy
 
+	// Option to defer upgrade when newest version is released - default is NotDeferred. Learn more: https://aka.ms/redisversionupgrade
+	DeferUpgrade *DeferUpgradeSetting
+
 	// Redis eviction policy - default is VolatileLRU
 	EvictionPolicy *EvictionPolicy
 
@@ -172,6 +175,9 @@ type DatabaseProperties struct {
 
 	// READ-ONLY; Current provisioning status of the database
 	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; Version of Redis the database is running on, e.g. '6.0'
+	RedisVersion *string
 
 	// READ-ONLY; Current resource status of the database
 	ResourceState *ResourceState
@@ -236,6 +242,18 @@ type ExportClusterParameters struct {
 type FlushParameters struct {
 	// The identifiers of all the other database resources in the georeplication group to be flushed.
 	IDs []*string
+}
+
+// ForceLinkParameters - Parameters for reconfiguring active geo-replication, of an existing database that was previously
+// unlinked from a replication group.
+type ForceLinkParameters struct {
+	// REQUIRED; The name of the group of linked database resources. This should match the existing replication group name.
+	GroupNickname *string
+
+	// REQUIRED; The resource IDs of the databases that are expected to be linked and included in the replication group. This
+	// parameter is used to validate that the linking is to the expected (unlinked) part of the
+	// replication group, if it is splintered.
+	LinkedDatabases []*LinkedDatabase
 }
 
 // ForceUnlinkParameters - Parameters for a Redis Enterprise Active Geo Replication Force Unlink operation.

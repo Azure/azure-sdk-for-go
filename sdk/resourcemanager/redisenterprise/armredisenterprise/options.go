@@ -65,6 +65,13 @@ type DatabasesClientBeginFlushOptions struct {
 	ResumeToken string
 }
 
+// DatabasesClientBeginForceLinkToReplicationGroupOptions contains the optional parameters for the DatabasesClient.BeginForceLinkToReplicationGroup
+// method.
+type DatabasesClientBeginForceLinkToReplicationGroupOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
 // DatabasesClientBeginForceUnlinkOptions contains the optional parameters for the DatabasesClient.BeginForceUnlink method.
 type DatabasesClientBeginForceUnlinkOptions struct {
 	// Resumes the LRO from the provided token.
@@ -85,6 +92,13 @@ type DatabasesClientBeginRegenerateKeyOptions struct {
 
 // DatabasesClientBeginUpdateOptions contains the optional parameters for the DatabasesClient.BeginUpdate method.
 type DatabasesClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// DatabasesClientBeginUpgradeDBRedisVersionOptions contains the optional parameters for the DatabasesClient.BeginUpgradeDBRedisVersion
+// method.
+type DatabasesClientBeginUpgradeDBRedisVersionOptions struct {
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }

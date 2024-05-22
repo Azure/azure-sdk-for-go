@@ -196,21 +196,6 @@ func (client *JobStepExecutionsClient) listByJobExecutionCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	if options != nil && options.CreateTimeMin != nil {
-		reqQP.Set("createTimeMin", options.CreateTimeMin.Format(time.RFC3339Nano))
-	}
-	if options != nil && options.CreateTimeMax != nil {
-		reqQP.Set("createTimeMax", options.CreateTimeMax.Format(time.RFC3339Nano))
-	}
-	if options != nil && options.EndTimeMin != nil {
-		reqQP.Set("endTimeMin", options.EndTimeMin.Format(time.RFC3339Nano))
-	}
-	if options != nil && options.EndTimeMax != nil {
-		reqQP.Set("endTimeMax", options.EndTimeMax.Format(time.RFC3339Nano))
-	}
-	if options != nil && options.IsActive != nil {
-		reqQP.Set("isActive", strconv.FormatBool(*options.IsActive))
-	}
 	if options != nil && options.Skip != nil {
 		reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
 	}
@@ -218,6 +203,21 @@ func (client *JobStepExecutionsClient) listByJobExecutionCreateRequest(ctx conte
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
 	reqQP.Set("api-version", "2020-11-01-preview")
+	if options != nil && options.CreateTimeMax != nil {
+		reqQP.Set("createTimeMax", options.CreateTimeMax.Format(time.RFC3339Nano))
+	}
+	if options != nil && options.CreateTimeMin != nil {
+		reqQP.Set("createTimeMin", options.CreateTimeMin.Format(time.RFC3339Nano))
+	}
+	if options != nil && options.EndTimeMax != nil {
+		reqQP.Set("endTimeMax", options.EndTimeMax.Format(time.RFC3339Nano))
+	}
+	if options != nil && options.EndTimeMin != nil {
+		reqQP.Set("endTimeMin", options.EndTimeMin.Format(time.RFC3339Nano))
+	}
+	if options != nil && options.IsActive != nil {
+		reqQP.Set("isActive", strconv.FormatBool(*options.IsActive))
+	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

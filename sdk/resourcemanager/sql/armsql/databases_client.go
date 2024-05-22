@@ -371,10 +371,10 @@ func (client *DatabasesClient) failoverCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2023-02-01-preview")
 	if options != nil && options.ReplicaType != nil {
 		reqQP.Set("replicaType", string(*options.ReplicaType))
 	}
-	reqQP.Set("api-version", "2023-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -876,8 +876,8 @@ func (client *DatabasesClient) listMetricsCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2014-04-01")
 	reqQP.Set("$filter", filter)
+	reqQP.Set("api-version", "2014-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

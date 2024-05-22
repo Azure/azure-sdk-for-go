@@ -11,6 +11,9 @@
 * Removed `AzurePipelinesCredential` and the persistent token caching API.
   They will return in v1.7.0-beta.1
 
+### Bugs Fixed
+* Managed identity bug fixes
+
 ## 1.6.0-beta.4 (2024-05-14)
 
 ### Features Added

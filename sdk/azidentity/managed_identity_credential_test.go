@@ -7,6 +7,7 @@
 package azidentity
 
 import (
+	"bytes"
 	"context"
 	"fmt"
 	"net/http"
@@ -32,7 +33,11 @@ const (
 )
 
 func TestManagedIdentityCredential_AzureArc(t *testing.T) {
-	file, err := os.Create(filepath.Join(t.TempDir(), "arc.key"))
+	d := t.TempDir()
+	before := arcKeyDirectory
+	arcKeyDirectory = func() (string, error) { return d, nil }
+	defer func() { arcKeyDirectory = before }()
+	file, err := os.Create(filepath.Join(d, "arc.key"))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -149,6 +154,54 @@ func TestManagedIdentityCredential_AzureArcErrors(t *testing.T) {
 		if err == nil {
 			t.Fatal("expected an error")
 		}
+	})
+	t.Run("key too large", func(t *testing.T) {
+		d := t.TempDir()
+		f := filepath.Join(d, "test.key")
+		err := os.WriteFile(f, bytes.Repeat([]byte("."), 4097), 0600)
+		require.NoError(t, err)
+		before := arcKeyDirectory
+		arcKeyDirectory = func() (string, error) { return d, nil }
+		defer func() { arcKeyDirectory = before }()
+		srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
+		defer close()
+		srv.AppendResponse(
+			mock.WithHeader("WWW-Authenticate", "Basic realm="+f),
+			mock.WithStatusCode(http.StatusUnauthorized),
+		)
+		cred, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{ClientOptions: azcore.ClientOptions{Transport: srv}})
+		require.NoError(t, err)
+		_, err = cred.GetToken(context.Background(), testTRO)
+		require.ErrorContains(t, err, "too large")
+	})
+	t.Run("unexpected file paths", func(t *testing.T) {
+		d, err := arcKeyDirectory()
+		if err != nil {
+			// test is running on an unsupported OS e.g. darwin
+			t.Skip(err)
+		}
+		srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
+		defer close()
+		srv.AppendResponse(
+			// unexpected directory
+			mock.WithHeader("WWW-Authenticate", "Basic realm="+filepath.Join("foo", "bar.key")),
+			mock.WithStatusCode(http.StatusUnauthorized),
+		)
+		o := ManagedIdentityCredentialOptions{ClientOptions: azcore.ClientOptions{Transport: srv}}
+		cred, err := NewManagedIdentityCredential(&o)
+		require.NoError(t, err)
+		_, err = cred.GetToken(context.Background(), testTRO)
+		require.ErrorContains(t, err, "unexpected file path")
+
+		srv.AppendResponse(
+			// unexpected extension
+			mock.WithHeader("WWW-Authenticate", "Basic realm="+filepath.Join(d, "foo")),
+			mock.WithStatusCode(http.StatusUnauthorized),
+		)
+		cred, err = NewManagedIdentityCredential(&o)
+		require.NoError(t, err)
+		_, err = cred.GetToken(context.Background(), testTRO)
+		require.ErrorContains(t, err, "unexpected file path")
 	})
 }
 

@@ -26,7 +26,10 @@ func (co *ClientOptions) PreferredRegionsAsStringArray() []string {
 	return regions
 }
 
+// ClientRegions is a list of regions to be used when initializing the client in case the default region fails.
 type ClientRegions []ClientRegion
+
+// ClientRegion type defines the region to be used when initializing the client in case the default region fails.
 type ClientRegion string
 
 const (

@@ -52,9 +52,41 @@ func (c *ClientFactory) NewBackupPoliciesClient() *BackupPoliciesClient {
 	}
 }
 
+// NewBackupVaultsClient creates a new instance of BackupVaultsClient.
+func (c *ClientFactory) NewBackupVaultsClient() *BackupVaultsClient {
+	return &BackupVaultsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewBackupsClient creates a new instance of BackupsClient.
 func (c *ClientFactory) NewBackupsClient() *BackupsClient {
 	return &BackupsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewBackupsUnderAccountClient creates a new instance of BackupsUnderAccountClient.
+func (c *ClientFactory) NewBackupsUnderAccountClient() *BackupsUnderAccountClient {
+	return &BackupsUnderAccountClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewBackupsUnderBackupVaultClient creates a new instance of BackupsUnderBackupVaultClient.
+func (c *ClientFactory) NewBackupsUnderBackupVaultClient() *BackupsUnderBackupVaultClient {
+	return &BackupsUnderBackupVaultClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewBackupsUnderVolumeClient creates a new instance of BackupsUnderVolumeClient.
+func (c *ClientFactory) NewBackupsUnderVolumeClient() *BackupsUnderVolumeClient {
+	return &BackupsUnderVolumeClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}
@@ -86,6 +118,14 @@ func (c *ClientFactory) NewResourceClient() *ResourceClient {
 // NewResourceQuotaLimitsClient creates a new instance of ResourceQuotaLimitsClient.
 func (c *ClientFactory) NewResourceQuotaLimitsClient() *ResourceQuotaLimitsClient {
 	return &ResourceQuotaLimitsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewResourceRegionInfosClient creates a new instance of ResourceRegionInfosClient.
+func (c *ClientFactory) NewResourceRegionInfosClient() *ResourceRegionInfosClient {
+	return &ResourceRegionInfosClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

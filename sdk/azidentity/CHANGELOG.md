@@ -1,6 +1,20 @@
 # Release History
 
-## 1.6.0-beta.5 (Unreleased)
+## 1.7.0-beta.1 (2024-06-10)
+
+### Features Added
+* Restored `AzurePipelinesCredential` and persistent token caching API
+
+## Breaking Changes
+> These changes affect only code written against a beta version such as v1.6.0-beta.4
+* Values which `NewAzurePipelinesCredential` read from environment variables in
+  prior versions are now parameters
+* Renamed `AzurePipelinesServiceConnectionCredentialOptions` to `AzurePipelinesCredentialOptions`
+
+### Bugs Fixed
+* Managed identity bug fixes
+
+## 1.6.0 (2024-06-10)
 
 ### Features Added
 * `NewOnBehalfOfCredentialWithClientAssertions` creates an on-behalf-of credential
@@ -8,12 +22,11 @@
 
 ### Breaking Changes
 > These changes affect only code written against a beta version such as v1.6.0-beta.4
-* Renamed `AzurePipelinesServiceConnectionCredentialOptions` to `AzurePipelinesCredentialOptions`
+* Removed `AzurePipelinesCredential` and the persistent token caching API.
+  They will return in v1.7.0-beta.1
 
 ### Bugs Fixed
-
-### Other Changes
-* Added more details to `AzurePipelinesCredential` error messages
+* Managed identity bug fixes
 
 ## 1.6.0-beta.4 (2024-05-14)
 

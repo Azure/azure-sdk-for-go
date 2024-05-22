@@ -79,7 +79,7 @@ func ExampleNewClientFromConnectionString() {
 }
 
 func ExampleClientOptions_PreferredRegions() {
-	clientOptions := azcosmos.ClientOptions{PreferredRegions: []string{"West US", "Central US"}}
+	clientOptions := azcosmos.ClientOptions{PreferredRegions: azcosmos.ClientRegions{azcosmos.ClientRegionWestUS, azcosmos.ClientRegionCentralUS}}
 
 	endpoint, ok := os.LookupEnv("AZURE_COSMOS_ENDPOINT")
 	if !ok {

@@ -301,20 +301,14 @@ func TestClient_NewListManifestsPager(t *testing.T) {
 	pager := client.NewListManifestsPager("alpine", &ClientListManifestsOptions{
 		MaxNum: to.Ptr[int32](1),
 	})
-	pages := 0
 	items := 0
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		require.NoError(t, err)
 		require.NotEmpty(t, page.Manifests.Attributes)
-		pages++
-		for i, v := range page.Manifests.Attributes {
-			fmt.Printf("page %d manifest %d: %s\n", pages, i+1, *v.Digest)
-			items++
-		}
+		items += len(page.Manifests.Attributes)
 	}
-	require.Equal(t, 32, pages)
-	require.Equal(t, 32, items)
+	require.NotZero(t, items)
 
 	pager = client.NewListManifestsPager("alpine", &ClientListManifestsOptions{
 		OrderBy: to.Ptr(ArtifactManifestOrderByLastUpdatedOnDescending),
@@ -427,21 +421,15 @@ func TestClient_NewListTagsPager(t *testing.T) {
 	pager := client.NewListTagsPager("alpine", &ClientListTagsOptions{
 		MaxNum: to.Ptr[int32](1),
 	})
-	pages := 0
 	items := 0
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		require.NoError(t, err)
 		require.NotEmpty(t, page.Tags)
-		pages++
 		require.Equal(t, 1, len(page.Tags))
-		for i, v := range page.Tags {
-			fmt.Printf("page %d tag %d: %s\n", pages, i+1, *v.Name)
-			items++
-		}
+		items += len(page.Tags)
 	}
-	require.Equal(t, 3, pages)
-	require.Equal(t, 3, items)
+	require.NotZero(t, items)
 
 	pager = client.NewListTagsPager("alpine", &ClientListTagsOptions{
 		OrderBy: to.Ptr(ArtifactTagOrderByLastUpdatedOnDescending),

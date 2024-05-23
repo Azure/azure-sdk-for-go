@@ -1,8 +1,8 @@
-# Azure Informaticadatamgmt Module for Go
+# Azure Informatica DataManagement Module for Go
 
 [![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/informaticadatamgmt/arminformaticadatamgmt)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/informaticadatamgmt/arminformaticadatamgmt)
 
-The `arminformaticadatamgmt` module provides operations for working with Azure Informaticadatamgmt.
+The `arminformaticadatamgmt` module provides operations for working with Azure Informatica DataManagement.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/informaticadatamgmt/arminformaticadatamgmt)
 
@@ -17,7 +17,7 @@ The `arminformaticadatamgmt` module provides operations for working with Azure I
 
 This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for versioning and dependency management.
 
-Install the Azure Informaticadatamgmt module:
+Install the Azure Informatica DataManagement module:
 
 ```sh
 go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/informaticadatamgmt/arminformaticadatamgmt
@@ -25,7 +25,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/informaticadatamgmt
 
 ## Authorization
 
-When creating a client, you will need to provide a credential for authenticating with Azure Informaticadatamgmt.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
+When creating a client, you will need to provide a credential for authenticating with Azure Informatica DataManagement.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
 
 ```go
 cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -35,7 +35,7 @@ For more information on authentication, please see the documentation for `aziden
 
 ## Client Factory
 
-Azure Informaticadatamgmt module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
+Azure Informatica DataManagement module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
 
 ```go
 clientFactory, err := arminformaticadatamgmt.NewClientFactory(<subscription ID>, cred, nil)
@@ -70,7 +70,7 @@ Please see https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/samples/fakes
 ## Provide Feedback
 
 If you encounter bugs or have suggestions, please
-[open an issue](https://github.com/Azure/azure-sdk-for-go/issues) and assign the `Informaticadatamgmt` label.
+[open an issue](https://github.com/Azure/azure-sdk-for-go/issues) and assign the `Informatica DataManagement` label.
 
 # Contributing
 

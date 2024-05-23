@@ -11,7 +11,6 @@ import (
 	"errors"
 	"os"
 	"strings"
-	"sync"
 	"testing"
 	"time"
 
@@ -154,33 +153,22 @@ func importTestImages() error {
 	if err != nil {
 		return err
 	}
-	wg := &sync.WaitGroup{}
-	images := []string{"hello-world:latest", "alpine:3.17.1", "alpine:3.16.3", "alpine:3.15.6", "alpine:3.14.8", "ubuntu:20.04", "nginx:latest"}
-	ec := make(chan error, len(images))
-	for _, img := range images {
-		wg.Add(1)
-		go func(image string) {
-			poller, err := client.BeginImportImage(ctx, rg, registryName, armcontainerregistry.ImportImageParameters{
-				Source: &armcontainerregistry.ImportSource{
-					SourceImage: to.Ptr("library/" + image),
-					RegistryURI: to.Ptr("docker.io"),
-				},
-				TargetTags: []*string{to.Ptr(image)},
-				Mode:       to.Ptr(armcontainerregistry.ImportModeForce),
-			}, nil)
-			if err == nil {
-				_, err = poller.PollUntilDone(ctx, nil)
-			}
-			if err != nil {
-				ec <- err
-			}
-			wg.Done()
-		}(img)
-	}
-	wg.Wait()
-	select {
-	case err = <-ec:
-	default:
+	images := []string{"hello-world:latest", "alpine:3.17.1", "alpine:3.16.3", "alpine:3.14.8", "busybox:1.36.1-uclibc", "nginx:latest"}
+	for _, image := range images {
+		poller, err := client.BeginImportImage(ctx, rg, registryName, armcontainerregistry.ImportImageParameters{
+			Source: &armcontainerregistry.ImportSource{
+				SourceImage: to.Ptr("library/" + image),
+				RegistryURI: to.Ptr("docker.io"),
+			},
+			TargetTags: []*string{to.Ptr(image)},
+			Mode:       to.Ptr(armcontainerregistry.ImportModeForce),
+		}, nil)
+		if err == nil {
+			_, err = poller.PollUntilDone(ctx, nil)
+		}
+		if err != nil {
+			return err
+		}
 	}
 	return err
 }

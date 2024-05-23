@@ -103,7 +103,11 @@ function Get-AllPackageInfoFromRepo($serviceDirectory)
     $searchPath = Join-Path $searchPath $serviceDirectory
   }
 
-  $pkgFiles = Get-ChildItem -Path $searchPath -Include "go.mod" -Recurse
+  [array]$pkgFiles = Get-ChildItem -Path $searchPath -Include "go.mod" -Recurse
+
+  if ($pkgFiles) {
+    Write-Host "[Get-AllPackageInfoFromRepo] Mod count: $($pkgFiles.Count)"
+  }
 
   foreach ($pkgFile in $pkgFiles)
   {

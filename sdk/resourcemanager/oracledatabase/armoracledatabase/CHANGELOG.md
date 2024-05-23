@@ -1,6 +1,6 @@
 # Release History
 
-## 0.1.0 (2024-05-11)
+## 0.1.0 (2024-05-24)
 
 The package of `github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/oracledatabase/armoracledatabase` is using our [next generation design principles](https://azure.github.io/azure-sdk/general_introduction.html).
 

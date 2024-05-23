@@ -21,7 +21,7 @@ type NewOptions struct{}
 // New constructs an [azcore.TokenCredential] for use in tests
 func New(*NewOptions) (azcore.TokenCredential, error) {
 	if recordMode == recording.PlaybackMode {
-		return &fakeCredential{}, nil
+		return &Fake{}, nil
 	}
 	if s := os.Getenv("AZURE_SERVICE_DIRECTORY"); s != "" {
 		// New-TestResources.ps1 has configured this environment, possibly with service principal details
@@ -35,10 +35,13 @@ func New(*NewOptions) (azcore.TokenCredential, error) {
 	return azidentity.NewDefaultAzureCredential(nil)
 }
 
-type fakeCredential struct{}
+// Fake always returns a valid token. Use this type to fake authentication in tests
+// that never send a real request. For live or recorded tests, call [New] instead.
+type Fake struct{}
 
-func (fakeCredential) GetToken(context.Context, policy.TokenRequestOptions) (azcore.AccessToken, error) {
+// GetToken returns a fake access token
+func (Fake) GetToken(context.Context, policy.TokenRequestOptions) (azcore.AccessToken, error) {
 	return azcore.AccessToken{ExpiresOn: time.Now().Add(time.Hour).UTC(), Token: recording.SanitizedValue}, nil
 }
 
-var _ azcore.TokenCredential = (*fakeCredential)(nil)
+var _ azcore.TokenCredential = (*Fake)(nil)

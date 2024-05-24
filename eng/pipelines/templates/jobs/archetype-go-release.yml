@@ -42,7 +42,7 @@ stages:
       - template: /eng/pipelines/templates/variables/globals.yml
     displayName: 'Release: ${{ parameters.ServiceDirectory }}'
     dependsOn: CheckRelease
-    condition: and(succeeded(), eq(dependencies.CheckRelease.outputs['CheckReleaseJob.Verify.NeedToRelease'], 'true'))
+      # condition: and(succeeded(), eq(dependencies.CheckRelease.outputs['CheckReleaseJob.Verify.NeedToRelease'], 'true'))
     jobs:
       - deployment: TagRepository
         displayName: "Create release tag"
@@ -85,37 +85,37 @@ stages:
                     filePath: ./eng/scripts/validate_go_mod.ps1
                     arguments: '${{ parameters.ServiceDirectory }}'
                     pwsh: true
-                - template: /eng/common/pipelines/templates/steps/create-tags-and-git-release.yml
-                  parameters:
-                    ArtifactLocation: $(Build.SourcesDirectory)/sdk/${{ parameters.ServiceDirectory }}
-                    PackageFilter: sdk/${{ parameters.ServiceDirectory }}
-                    ReleaseSha: $(Build.SourceVersion)
-                    RepoId: Azure/azure-sdk-for-go
-                    WorkingDirectory: $(System.DefaultWorkingDirectory)
+                      #                - template: /eng/common/pipelines/templates/steps/create-tags-and-git-release.yml
+                      #                  parameters:
+                      #                    ArtifactLocation: $(Build.SourcesDirectory)/sdk/${{ parameters.ServiceDirectory }}
+                      #                    PackageFilter: sdk/${{ parameters.ServiceDirectory }}
+                      #                    ReleaseSha: $(Build.SourceVersion)
+                      #                    RepoId: Azure/azure-sdk-for-go
+                      #                    WorkingDirectory: $(System.DefaultWorkingDirectory)
 
-      - ${{ if not(and(startsWith(parameters.ServiceDirectory, 'resourcemanager'), ne(parameters.ServiceDirectory, 'resourcemanager/internal'))) }}:
-        - deployment: UpdatePackageVersion
-          displayName: "Update Package Version"
-          condition: and(succeeded(), ne(variables['Skip.UpdatePackageVersion'], 'true'))
-          environment: github
-          dependsOn: TagRepository
-
-          pool:
-            name: azsdk-pool-mms-ubuntu-2004-general
-            image: azsdk-pool-mms-ubuntu-2004-1espt
-            os: linux
-
-          strategy:
-            runOnce:
-              deploy:
-                steps:
-                  - checkout: self
-                  - pwsh: |
-                      eng/scripts/Update-ModuleVersion.ps1 -ModulePath 'sdk/${{parameters.ServiceDirectory}}'
-                    displayName: Increment package version
-                  - template: /eng/common/pipelines/templates/steps/create-pull-request.yml
-                    parameters:
-                      PRBranchName: increment-package-version-${{ parameters.ServiceDirectory }}-$(Build.BuildId)
-                      CommitMsg: "Increment package version after release of ${{ parameters.ServiceDirectory }}"
-                      PRTitle: "Increment version for ${{ parameters.ServiceDirectory }} releases"
-                      CloseAfterOpenForTesting: '${{ parameters.TestPipeline }}'
+                      #      - ${{ if not(and(startsWith(parameters.ServiceDirectory, 'resourcemanager'), ne(parameters.ServiceDirectory, 'resourcemanager/internal'))) }}:
+                      #        - deployment: UpdatePackageVersion
+                      #          displayName: "Update Package Version"
+                      #          condition: and(succeeded(), ne(variables['Skip.UpdatePackageVersion'], 'true'))
+                      #          environment: github
+                      #          dependsOn: TagRepository
+                      #
+                      #          pool:
+                      #            name: azsdk-pool-mms-ubuntu-2004-general
+                      #            image: azsdk-pool-mms-ubuntu-2004-1espt
+                      #            os: linux
+                      #
+                      #          strategy:
+                      #            runOnce:
+                      #              deploy:
+                      #                steps:
+                      #                  - checkout: self
+                      #                  - pwsh: |
+                      #                      eng/scripts/Update-ModuleVersion.ps1 -ModulePath 'sdk/${{parameters.ServiceDirectory}}'
+                      #                    displayName: Increment package version
+                      #                  - template: /eng/common/pipelines/templates/steps/create-pull-request.yml
+                      #                    parameters:
+                      #                      PRBranchName: increment-package-version-${{ parameters.ServiceDirectory }}-$(Build.BuildId)
+                      #                      CommitMsg: "Increment package version after release of ${{ parameters.ServiceDirectory }}"
+                      #                      PRTitle: "Increment version for ${{ parameters.ServiceDirectory }} releases"
+                      #                      CloseAfterOpenForTesting: '${{ parameters.TestPipeline }}'

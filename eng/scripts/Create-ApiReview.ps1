@@ -24,10 +24,6 @@ $createReviewScript = (Join-Path $PSScriptRoot .. common scripts Create-APIRevie
 $artifactList = @()
 foreach ($sdk in (Get-AllPackageInfoFromRepo $ServiceDirectory))
 {
-    if ($sdk.ServiceDirectory -ne $ServiceDirectory) {
-        Write-Host "Skipping nested package $($sdk.ServiceDirectory)"
-        continue
-    }
     Write-Host "Creating API review artifact for $($sdk.Name)"
     New-Item -ItemType Directory -Path $OutPath/$($sdk.Name) -force
     $fileName = Split-Path -Path $sdk.Name -Leaf

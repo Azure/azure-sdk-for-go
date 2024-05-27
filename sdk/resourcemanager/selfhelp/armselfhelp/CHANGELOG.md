@@ -1,9 +1,11 @@
 # Release History
 
-## 2.0.0-beta.5 (2024-05-10)
+## 2.0.0-beta.5 (2024-05-31)
 ### Breaking Changes
 
-- Function `*DiscoverySolutionNLPSubscriptionScopeClient.Post` parameter(s) have been changed from `(context.Context, *DiscoverySolutionNLPSubscriptionScopeClientPostOptions)` to `(context.Context, string, *DiscoverySolutionNLPSubscriptionScopeClientPostOptions)`
+- Function `*CheckNameAvailabilityClient.Post` has been removed, use `*CheckNameAvailabilityClient.CheckAvailability` instead.
+- Function `*DiscoverySolutionNLPSubscriptionScopeClient.Post` has been removed, use `*DiscoverySolutionNLPClient.DiscoverSolutionsBySubscription` instead.
+- Function `*DiscoverySolutionNLPTenantScopeClient.Post` has been removed, use `*DiscoverySolutionNLPClient.DiscoverSolutions` instead.
 
 
 ## 2.0.0-beta.4 (2024-04-26)

@@ -54,16 +54,9 @@ func (c *ClientFactory) NewDiscoverySolutionClient() *DiscoverySolutionClient {
 	}
 }
 
-// NewDiscoverySolutionNLPSubscriptionScopeClient creates a new instance of DiscoverySolutionNLPSubscriptionScopeClient.
-func (c *ClientFactory) NewDiscoverySolutionNLPSubscriptionScopeClient() *DiscoverySolutionNLPSubscriptionScopeClient {
-	return &DiscoverySolutionNLPSubscriptionScopeClient{
-		internal: c.internal,
-	}
-}
-
-// NewDiscoverySolutionNLPTenantScopeClient creates a new instance of DiscoverySolutionNLPTenantScopeClient.
-func (c *ClientFactory) NewDiscoverySolutionNLPTenantScopeClient() *DiscoverySolutionNLPTenantScopeClient {
-	return &DiscoverySolutionNLPTenantScopeClient{
+// NewDiscoverySolutionNLPClient creates a new instance of DiscoverySolutionNLPClient.
+func (c *ClientFactory) NewDiscoverySolutionNLPClient() *DiscoverySolutionNLPClient {
+	return &DiscoverySolutionNLPClient{
 		internal: c.internal,
 	}
 }

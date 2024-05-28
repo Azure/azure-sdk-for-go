@@ -10,6 +10,10 @@ import (
 	"bytes"
 	"context"
 	"fmt"
+	"io"
+	"net/http"
+	"testing"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
@@ -18,9 +22,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/require"
-	"io"
-	"net/http"
-	"testing"
 )
 
 const alpineManifestDigest = "sha256:f271e74b17ced29b915d351685fd4644785c6d1559dd1f2d4189a5e851ef753a"
@@ -65,7 +66,7 @@ func TestClient_DeleteRepository(t *testing.T) {
 	ctx := context.Background()
 	client, err := NewClient(endpoint, cred, &ClientOptions{ClientOptions: options})
 	require.NoError(t, err)
-	_, err = client.DeleteRepository(ctx, "nginx", nil)
+	_, err = client.DeleteRepository(ctx, "eclipse-mosquitto", nil)
 	require.NoError(t, err)
 }
 

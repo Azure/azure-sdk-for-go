@@ -338,7 +338,9 @@ func TestImportCertificate(t *testing.T) {
 	cleanUpCert(t, client, certName)
 	require.Equal(t, importParams.CertificateAttributes.Enabled, impResp.Attributes.Enabled)
 	require.NotEmpty(t, impResp.ID)
-	require.Equal(t, certName, impResp.ID.Name())
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		require.Equal(t, certName, impResp.ID.Name())
+	}
 	require.NotEmpty(t, impResp.KID)
 	require.NotEmpty(t, impResp.SID)
 }
@@ -433,21 +435,23 @@ func TestListCertificates(t *testing.T) {
 	listCertsPager := client.NewListCertificatePropertiesPager(&azcertificates.ListCertificatePropertiesOptions{
 		IncludePending: to.Ptr(true),
 	})
-	for listCertsPager.More() {
-		page, err := listCertsPager.NextPage(ctx)
-		require.NoError(t, err)
-		testSerde(t, &page.CertificatePropertiesListResult)
-		for _, cert := range page.Value {
-			testSerde(t, cert)
-			if value, ok := cert.Tags[tag]; ok && *value == "yes" {
-				require.True(t, strings.HasPrefix(cert.ID.Name(), tag))
-				count--
-				_, err = client.DeleteCertificate(ctx, cert.ID.Name(), nil)
-				require.NoError(t, err)
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		for listCertsPager.More() {
+			page, err := listCertsPager.NextPage(ctx)
+			require.NoError(t, err)
+			testSerde(t, &page.CertificatePropertiesListResult)
+			for _, cert := range page.Value {
+				testSerde(t, cert)
+				if value, ok := cert.Tags[tag]; ok && *value == "yes" {
+					require.True(t, strings.HasPrefix(cert.ID.Name(), tag))
+					count--
+					_, err = client.DeleteCertificate(ctx, cert.ID.Name(), nil)
+					require.NoError(t, err)
+				}
 			}
 		}
+		require.Equal(t, 0, count)
 	}
-	require.Equal(t, 0, count)
 
 	for _, name := range certNames {
 		pollStatus(t, http.StatusNotFound, func() error {
@@ -460,20 +464,22 @@ func TestListCertificates(t *testing.T) {
 	listDeletedCertsPager := client.NewListDeletedCertificatePropertiesPager(&azcertificates.ListDeletedCertificatePropertiesOptions{
 		IncludePending: to.Ptr(true),
 	})
-	for listDeletedCertsPager.More() {
-		page, err := listDeletedCertsPager.NextPage(ctx)
-		require.NoError(t, err)
-		testSerde(t, &page.DeletedCertificatePropertiesListResult)
-		for _, cert := range page.Value {
-			testSerde(t, cert)
-			if value, ok := cert.Tags[tag]; ok && *value == "yes" {
-				count--
-				_, err = client.PurgeDeletedCertificate(ctx, cert.ID.Name(), nil)
-				require.NoError(t, err)
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		for listDeletedCertsPager.More() {
+			page, err := listDeletedCertsPager.NextPage(ctx)
+			require.NoError(t, err)
+			testSerde(t, &page.DeletedCertificatePropertiesListResult)
+			for _, cert := range page.Value {
+				testSerde(t, cert)
+				if value, ok := cert.Tags[tag]; ok && *value == "yes" {
+					count--
+					_, err = client.PurgeDeletedCertificate(ctx, cert.ID.Name(), nil)
+					require.NoError(t, err)
+				}
 			}
 		}
+		require.Equal(t, 0, count)
 	}
-	require.Equal(t, 0, count)
 }
 
 func TestListCertificateVersions(t *testing.T) {
@@ -496,7 +502,9 @@ func TestListCertificateVersions(t *testing.T) {
 		count -= len(page.Value)
 		for _, v := range page.Value {
 			testSerde(t, v)
-			require.Equal(t, name, v.ID.Name())
+			if recording.GetRecordMode() != recording.PlaybackMode {
+				require.Equal(t, name, v.ID.Name())
+			}
 		}
 	}
 	require.Equal(t, count, 0)
@@ -658,7 +666,9 @@ func TestUpdateCertificatePolicy(t *testing.T) {
 
 	getResp, err := client.GetCertificatePolicy(ctx, certName, nil)
 	require.NoError(t, err)
-	require.Equal(t, policy.IssuerParameters, getResp.CertificatePolicy.IssuerParameters)
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		require.Equal(t, policy.IssuerParameters, getResp.CertificatePolicy.IssuerParameters)
+	}
 	require.Equal(t, policy.KeyProperties, getResp.CertificatePolicy.KeyProperties)
 	require.Equal(t, policy.LifetimeActions, getResp.CertificatePolicy.LifetimeActions)
 	require.Equal(t, policy.SecretProperties, getResp.CertificatePolicy.SecretProperties)
@@ -675,7 +685,10 @@ func TestUpdateCertificatePolicy(t *testing.T) {
 	}
 	updateResp, err := client.UpdateCertificatePolicy(ctx, certName, updatedPolicy, nil)
 	require.NoError(t, err)
-	require.Equal(t, policy.IssuerParameters, updateResp.CertificatePolicy.IssuerParameters)
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		require.Equal(t, policy.IssuerParameters, updateResp.CertificatePolicy.IssuerParameters)
+	}
+
 	require.Equal(t, updatedPolicy.KeyProperties, updateResp.CertificatePolicy.KeyProperties)
 	require.Equal(t, policy.LifetimeActions, updateResp.CertificatePolicy.LifetimeActions)
 	require.Equal(t, policy.SecretProperties, updateResp.CertificatePolicy.SecretProperties)

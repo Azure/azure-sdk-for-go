@@ -30,9 +30,9 @@ import (
 )
 
 const recordingDirectory = "sdk/security/keyvault/azkeys/testdata"
-const fakeAttestationUrl = "https://fakeattestation"
-const fakeMHSMURL = "https://fakemhsm.local"
-const fakeVaultURL = "https://fakevault.local"
+const fakeAttestationUrl = "https://test.azurewebsites.net"
+const fakeMHSMURL = "https://test.managedhsm.azure.net"
+const fakeVaultURL = "https://test.vault.azure.net"
 
 var (
 	keysToPurge = struct {
@@ -101,12 +101,6 @@ func run(m *testing.M) int {
 			if err != nil {
 				panic(err)
 			}
-			opts := proxy.Options
-			opts.GroupForReplace = "1"
-			err = recording.AddHeaderRegexSanitizer("WWW-Authenticate", "https://local", `resource="(.*)"`, opts)
-			if err != nil {
-				panic(err)
-			}
 			err = recording.AddBodyRegexSanitizer(URI.fake, URI.real, nil)
 			if err != nil {
 				panic(err)
@@ -125,7 +119,7 @@ func run(m *testing.M) int {
 		// these values aren't secret but we redact them anyway to avoid
 		// alerts from automation scanning for JWTs or "token" values
 		for _, attestation := range []string{"$.target", "$.token"} {
-			err := recording.AddBodyKeySanitizer(attestation, "redacted", "", nil)
+			err := recording.AddBodyKeySanitizer(attestation, "Sanitized", "", nil)
 			if err != nil {
 				panic(err)
 			}

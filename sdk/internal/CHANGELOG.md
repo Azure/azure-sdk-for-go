@@ -1,8 +1,10 @@
 # Release History
 
-## 1.8.1 (Unreleased)
+## 1.9.0 (Unreleased)
 
 ### Features Added
+* Added `test/credential` package containing a credential factory for live and recorded tests
+  and a fake credential for offline tests.
 
 ### Breaking Changes
 

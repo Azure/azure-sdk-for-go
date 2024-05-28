@@ -5,6 +5,7 @@
 ### Features Added
 
 * Added field `StatusCodes` to `runtime.FetcherForNextLinkOptions` allowing for additional HTTP status codes indicating success.
+* Added func `NewUUID` to the `runtime` package for generating UUIDs.
 
 ### Breaking Changes
 

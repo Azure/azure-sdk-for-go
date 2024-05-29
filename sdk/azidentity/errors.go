@@ -53,7 +53,7 @@ func (e *AuthenticationFailedError) Error() string {
 		return e.credType + ": " + e.message
 	}
 	msg := &bytes.Buffer{}
-	fmt.Fprintf(msg, e.credType+" authentication failed\n")
+	fmt.Fprintf(msg, "%s authentication failed. %s\n", e.credType, e.message)
 	if e.RawResponse.Request != nil {
 		fmt.Fprintf(msg, "%s %s://%s%s\n", e.RawResponse.Request.Method, e.RawResponse.Request.URL.Scheme, e.RawResponse.Request.URL.Host, e.RawResponse.Request.URL.Path)
 	} else {

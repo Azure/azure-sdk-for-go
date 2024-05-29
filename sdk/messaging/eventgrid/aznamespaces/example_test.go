@@ -238,6 +238,10 @@ func ExampleSenderClient_Send() {
 func ExampleSenderClient_Send_binaryMode() {
 	sender, _ := getEventGridClients()
 
+	if sender == nil {
+		return
+	}
+
 	event, err := messaging.NewCloudEvent("source", "eventType", []byte{1, 2, 3}, &messaging.CloudEventOptions{
 		DataContentType: to.Ptr("application/octet-stream"),
 	})

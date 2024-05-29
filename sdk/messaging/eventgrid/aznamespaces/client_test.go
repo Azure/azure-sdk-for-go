@@ -365,6 +365,10 @@ func TestPublishingAndReceivingMultipleCloudEvents(t *testing.T) {
 }
 
 func TestSimpleErrors(t *testing.T) {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
+	}
+
 	sender, _ := newClients(t, false)
 
 	_, err := sender.SendEvents(context.Background(), []*messaging.CloudEvent{
@@ -554,6 +558,10 @@ func TestSend_worksSameInBinaryVsNonBinaryMode(t *testing.T) {
 }
 
 func TestSend_binaryModeNonByteSlicePayloadFails(t *testing.T) {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
+	}
+
 	sender, _ := newClients(t, false)
 
 	eventToSend, err := messaging.NewCloudEvent("source", "eventType", "you can't send strings (or any non []byte) using binary mode!", &messaging.CloudEventOptions{
@@ -569,6 +577,10 @@ func TestSend_binaryModeNonByteSlicePayloadFails(t *testing.T) {
 }
 
 func TestSend_binaryModeNoContentTypeFails(t *testing.T) {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
+	}
+
 	sender, _ := newClients(t, false)
 
 	eventToSend, err := messaging.NewCloudEvent("source", "eventType", []byte{1, 2, 3}, nil)
@@ -650,6 +662,10 @@ func TestSend_binaryModeUseOptionalValues(t *testing.T) {
 }
 
 func TestSend_binaryModeNoContentType(t *testing.T) {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
+	}
+
 	sender, _ := newClients(t, false)
 
 	binaryPayload := []byte{1, 2, 3}
@@ -672,6 +688,10 @@ func TestSend_binaryModeNoContentType(t *testing.T) {
 }
 
 func TestSend_binaryModeUnstringableExtension(t *testing.T) {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
+	}
+
 	sender, _ := newClients(t, false)
 
 	binaryPayload := []byte{1, 2, 3}

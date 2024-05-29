@@ -11,6 +11,7 @@
 ### Bugs Fixed
 
 ### Other Changes
+* Added more details to `AzurePipelinesCredential` error messages
 
 ## 1.6.0-beta.4 (2024-05-14)
 

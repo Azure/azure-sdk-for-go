@@ -98,27 +98,32 @@ func (a *AzurePipelinesCredential) getAssertion(ctx context.Context) (string, er
 	url := a.oidcURI + "?api-version=" + oidcAPIVersion + "&serviceConnectionId=" + a.connectionID
 	url, err := runtime.EncodeQueryParams(url)
 	if err != nil {
-		return "", err
+		return "", newAuthenticationFailedError(credNameAzurePipelines, "couldn't send OIDC token request: "+err.Error(), nil, nil)
 	}
 	req, err := http.NewRequestWithContext(ctx, http.MethodPost, url, nil)
 	if err != nil {
-		return "", err
+		return "", newAuthenticationFailedError(credNameAzurePipelines, "couldn't send OIDC token request: "+err.Error(), nil, nil)
 	}
 	req.Header.Set("Authorization", "Bearer "+a.systemAccessToken)
 	res, err := doForClient(a.cred.client.azClient, req)
 	if err != nil {
-		return "", err
+		return "", newAuthenticationFailedError(credNameAzurePipelines, "couldn't send OIDC token request: "+err.Error(), nil, nil)
+	}
+	if res.StatusCode != http.StatusOK {
+		msg := res.Status + " response from the OIDC endpoint. Check service connection ID and Pipeline configuration"
+		return "", newAuthenticationFailedError(credNameAzurePipelines, msg, nil, nil)
 	}
 	b, err := runtime.Payload(res)
 	if err != nil {
-		return "", err
+		return "", newAuthenticationFailedError(credNameAzurePipelines, "couldn't read OIDC response content: "+err.Error(), res, nil)
 	}
 	var r struct {
 		OIDCToken string `json:"oidcToken"`
 	}
 	err = json.Unmarshal(b, &r)
 	if err != nil {
-		return "", err
+		// the response content might be helpful in debugging this but may contain a secret
+		return "", newAuthenticationFailedError(credNameAzurePipelines, "unexpected response from OIDC endpoint", nil, nil)
 	}
 	return r.OIDCToken, nil
 }

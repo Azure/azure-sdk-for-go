@@ -98,11 +98,11 @@ func (a *AzurePipelinesCredential) getAssertion(ctx context.Context) (string, er
 	url := a.oidcURI + "?api-version=" + oidcAPIVersion + "&serviceConnectionId=" + a.connectionID
 	url, err := runtime.EncodeQueryParams(url)
 	if err != nil {
-		return "", newAuthenticationFailedError(credNameAzurePipelines, "couldn't send OIDC token request: "+err.Error(), nil, nil)
+		return "", newAuthenticationFailedError(credNameAzurePipelines, "couldn't encode OIDC URL: "+err.Error(), nil, nil)
 	}
 	req, err := http.NewRequestWithContext(ctx, http.MethodPost, url, nil)
 	if err != nil {
-		return "", newAuthenticationFailedError(credNameAzurePipelines, "couldn't send OIDC token request: "+err.Error(), nil, nil)
+		return "", newAuthenticationFailedError(credNameAzurePipelines, "couldn't create OIDC token request: "+err.Error(), nil, nil)
 	}
 	req.Header.Set("Authorization", "Bearer "+a.systemAccessToken)
 	res, err := doForClient(a.cred.client.azClient, req)

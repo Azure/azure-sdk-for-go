@@ -23,6 +23,10 @@ import (
 )
 
 func TestClients_UsingSASKey(t *testing.T) {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
+	}
+
 	sender, receiver := newClients(t, true)
 
 	ce, err := messaging.NewCloudEvent("source", "eventType", "hello world", nil)

@@ -111,18 +111,19 @@ func (a *AzurePipelinesCredential) getAssertion(ctx context.Context) (string, er
 	}
 	if res.StatusCode != http.StatusOK {
 		msg := res.Status + " response from the OIDC endpoint. Check service connection ID and Pipeline configuration"
-		return "", newAuthenticationFailedError(credNameAzurePipelines, msg, nil, nil)
+		// include the response because its body, if any, probably contains an error message.
+		// OK responses aren't included with errors because they probably contain secrets
+		return "", newAuthenticationFailedError(credNameAzurePipelines, msg, res, nil)
 	}
 	b, err := runtime.Payload(res)
 	if err != nil {
-		return "", newAuthenticationFailedError(credNameAzurePipelines, "couldn't read OIDC response content: "+err.Error(), res, nil)
+		return "", newAuthenticationFailedError(credNameAzurePipelines, "couldn't read OIDC response content: "+err.Error(), nil, nil)
 	}
 	var r struct {
 		OIDCToken string `json:"oidcToken"`
 	}
 	err = json.Unmarshal(b, &r)
 	if err != nil {
-		// the response content might be helpful in debugging this but may contain a secret
 		return "", newAuthenticationFailedError(credNameAzurePipelines, "unexpected response from OIDC endpoint", nil, nil)
 	}
 	return r.OIDCToken, nil

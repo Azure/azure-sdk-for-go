@@ -12,18 +12,21 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/messaging"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/eventgrid/aznamespaces"
 )
 
-func ExampleNewClientWithSharedKeyCredential() {
+func ExampleNewReceiverClientWithSharedKeyCredential() {
 	endpoint := os.Getenv("EVENTGRID_ENDPOINT")
 	sharedKey := os.Getenv("EVENTGRID_KEY")
+	topic := os.Getenv("EVENTGRID_TOPIC")
+	subscription := os.Getenv("EVENTGRID_SUBSCRIPTION")
 
-	if endpoint == "" || sharedKey == "" {
+	if endpoint == "" || sharedKey == "" || topic == "" || subscription == "" {
 		return
 	}
 
-	client, err := aznamespaces.NewClientWithSharedKeyCredential(endpoint, azcore.NewKeyCredential(sharedKey), nil)
+	client, err := aznamespaces.NewReceiverClientWithSharedKeyCredential(endpoint, topic, subscription, azcore.NewKeyCredential(sharedKey), nil)
 
 	if err != nil {
 		//  TODO: Update the following line with your application specific error handling logic
@@ -35,14 +38,88 @@ func ExampleNewClientWithSharedKeyCredential() {
 	// Output:
 }
 
-func ExampleClient_PublishCloudEvents() {
-	client := getEventGridClient()
+func ExampleNewReceiverClient() {
+	endpoint := os.Getenv("EVENTGRID_ENDPOINT")
+	topic := os.Getenv("EVENTGRID_TOPIC")
+	subscription := os.Getenv("EVENTGRID_SUBSCRIPTION")
 
-	if client == nil {
+	if endpoint == "" || topic == "" || subscription == "" {
 		return
 	}
 
+	tokenCredential, err := azidentity.NewDefaultAzureCredential(nil)
+
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	client, err := aznamespaces.NewReceiverClient(endpoint, topic, subscription, tokenCredential, nil)
+
+	if err != nil {
+		//  TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	_ = client // ignore
+
+	// Output:
+}
+
+func ExampleNewSenderClientWithSharedKeyCredential() {
+	endpoint := os.Getenv("EVENTGRID_ENDPOINT")
+	sharedKey := os.Getenv("EVENTGRID_KEY")
 	topic := os.Getenv("EVENTGRID_TOPIC")
+
+	if endpoint == "" || sharedKey == "" || topic == "" {
+		return
+	}
+
+	client, err := aznamespaces.NewSenderClientWithSharedKeyCredential(endpoint, topic, azcore.NewKeyCredential(sharedKey), nil)
+
+	if err != nil {
+		//  TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	_ = client // ignore
+
+	// Output:
+}
+
+func ExampleNewSenderClient() {
+	endpoint := os.Getenv("EVENTGRID_ENDPOINT")
+	topic := os.Getenv("EVENTGRID_TOPIC")
+
+	if endpoint == "" || topic == "" {
+		return
+	}
+
+	tokenCredential, err := azidentity.NewDefaultAzureCredential(nil)
+
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	client, err := aznamespaces.NewSenderClient(endpoint, topic, tokenCredential, nil)
+
+	if err != nil {
+		//  TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	_ = client // ignore
+
+	// Output:
+}
+
+func ExampleSenderClient_SendEvents() {
+	sender, receiver := getEventGridClients()
+
+	if sender == nil || receiver == nil {
+		return
+	}
 
 	// CloudEvent is in github.com/Azure/azure-sdk-for-go/azcore/messaging and can be
 	// used to transport
@@ -54,7 +131,7 @@ func ExampleClient_PublishCloudEvents() {
 		struct{ Value string }{Value: "hello world"},
 	}
 
-	var eventsToSend []messaging.CloudEvent
+	var eventsToSend []*messaging.CloudEvent
 
 	for _, payload := range payloads {
 		event, err := messaging.NewCloudEvent("source", "eventType", payload, &messaging.CloudEventOptions{
@@ -66,10 +143,10 @@ func ExampleClient_PublishCloudEvents() {
 			log.Fatalf("ERROR: %s", err)
 		}
 
-		eventsToSend = append(eventsToSend, event)
+		eventsToSend = append(eventsToSend, &event)
 	}
 
-	_, err := client.PublishCloudEvents(context.TODO(), topic, eventsToSend, nil)
+	_, err := sender.SendEvents(context.TODO(), eventsToSend, nil)
 
 	if err != nil {
 		//  TODO: Update the following line with your application specific error handling logic
@@ -79,17 +156,14 @@ func ExampleClient_PublishCloudEvents() {
 	// Output:
 }
 
-func ExampleClient_ReceiveCloudEvents() {
-	client := getEventGridClient()
+func ExampleReceiverClient_Receive() {
+	sender, receiver := getEventGridClients()
 
-	if client == nil {
+	if sender == nil || receiver == nil {
 		return
 	}
 
-	topic := os.Getenv("EVENTGRID_TOPIC")
-	subscription := os.Getenv("EVENTGRID_SUBSCRIPTION")
-
-	resp, err := client.ReceiveCloudEvents(context.TODO(), topic, subscription, &aznamespaces.ReceiveCloudEventsOptions{
+	resp, err := receiver.Receive(context.TODO(), &aznamespaces.ReceiveOptions{
 		MaxEvents:   to.Ptr[int32](1),
 		MaxWaitTime: to.Ptr[int32](10), // in seconds
 	})
@@ -99,7 +173,7 @@ func ExampleClient_ReceiveCloudEvents() {
 		log.Fatalf("ERROR: %s", err)
 	}
 
-	for _, rd := range resp.Value {
+	for _, rd := range resp.Details {
 		lockToken := rd.BrokerProperties.LockToken
 
 		// NOTE: See the documentation for CloudEvent.Data on how your data
@@ -109,7 +183,7 @@ func ExampleClient_ReceiveCloudEvents() {
 		fmt.Fprintf(os.Stderr, "Event ID:%s, data: %#v, lockToken: %s\n", rd.Event.ID, data, *lockToken)
 
 		// This will complete the message, deleting it from the subscription.
-		resp, err := client.AcknowledgeCloudEvents(context.TODO(), topic, subscription, []string{*lockToken}, nil)
+		resp, err := receiver.Acknowledge(context.TODO(), []string{*lockToken}, nil)
 
 		if err != nil {
 			//  TODO: Update the following line with your application specific error handling logic
@@ -124,14 +198,12 @@ func ExampleClient_ReceiveCloudEvents() {
 	// Output:
 }
 
-func ExampleClient_PublishCloudEvent() {
-	client := getEventGridClient()
+func ExampleSenderClient_Send() {
+	sender, receiver := getEventGridClients()
 
-	if client == nil {
+	if sender == nil || receiver == nil {
 		return
 	}
-
-	topic := os.Getenv("EVENTGRID_TOPIC")
 
 	// CloudEvent is in github.com/Azure/azure-sdk-for-go/azcore/messaging and can be
 	// used to transport
@@ -147,7 +219,7 @@ func ExampleClient_PublishCloudEvent() {
 		log.Fatalf("ERROR: %s", err)
 	}
 
-	_, err = client.PublishCloudEvent(context.TODO(), topic, eventToSend, nil)
+	_, err = sender.Send(context.TODO(), &eventToSend, nil)
 
 	if err != nil {
 		//  TODO: Update the following line with your application specific error handling logic
@@ -163,21 +235,8 @@ func ExampleClient_PublishCloudEvent() {
 //   - CloudEvent.Data must be of type []byte.
 //   - CloudEvent.DataContentType will be used as the Content-Type for the HTTP request.
 //   - CloudEvent.Extensions fields are converted to strings.
-func ExampleClient_PublishCloudEvent_binaryMode() {
-	endpoint := os.Getenv("EVENTGRID_ENDPOINT")
-	key := os.Getenv("EVENTGRID_KEY")
-	topicName := os.Getenv("EVENTGRID_TOPIC")
-	subscriptionName := os.Getenv("EVENTGRID_SUBSCRIPTION")
-
-	if endpoint == "" || key == "" || topicName == "" || subscriptionName == "" {
-		return
-	}
-
-	client, err := aznamespaces.NewClientWithSharedKeyCredential(endpoint, azcore.NewKeyCredential(key), nil)
-
-	if err != nil {
-		panic(err)
-	}
+func ExampleSenderClient_Send_binaryMode() {
+	sender, _ := getEventGridClients()
 
 	event, err := messaging.NewCloudEvent("source", "eventType", []byte{1, 2, 3}, &messaging.CloudEventOptions{
 		DataContentType: to.Ptr("application/octet-stream"),
@@ -193,7 +252,7 @@ func ExampleClient_PublishCloudEvent_binaryMode() {
 	// - [CloudEvent.Data] must be of type []byte.
 	// - [CloudEvent.DataContentType] will be used as the Content-Type for the HTTP request.
 	// - [CloudEvent.Extensions] fields are converted to strings.
-	_, err = client.PublishCloudEvent(context.TODO(), topicName, event, &aznamespaces.PublishCloudEventOptions{
+	_, err = sender.Send(context.TODO(), &event, &aznamespaces.SendOptions{
 		BinaryMode: true,
 	})
 
@@ -205,20 +264,29 @@ func ExampleClient_PublishCloudEvent_binaryMode() {
 	// Output:
 }
 
-func getEventGridClient() *aznamespaces.Client {
+func getEventGridClients() (*aznamespaces.SenderClient, *aznamespaces.ReceiverClient) {
 	endpoint := os.Getenv("EVENTGRID_ENDPOINT")
 	sharedKey := os.Getenv("EVENTGRID_KEY")
+	topic := os.Getenv("EVENTGRID_TOPIC")
+	subscription := os.Getenv("EVENTGRID_SUBSCRIPTION")
 
-	if endpoint == "" || sharedKey == "" {
-		return nil
+	if endpoint == "" || sharedKey == "" || topic == "" || subscription == "" {
+		return nil, nil
 	}
 
-	client, err := aznamespaces.NewClientWithSharedKeyCredential(endpoint, azcore.NewKeyCredential(sharedKey), nil)
+	sender, err := aznamespaces.NewSenderClientWithSharedKeyCredential(endpoint, topic, azcore.NewKeyCredential(sharedKey), nil)
 
 	if err != nil {
 		//  TODO: Update the following line with your application specific error handling logic
 		log.Fatalf("ERROR: %s", err)
 	}
 
-	return client
+	receiver, err := aznamespaces.NewReceiverClientWithSharedKeyCredential(endpoint, topic, subscription, azcore.NewKeyCredential(sharedKey), nil)
+
+	if err != nil {
+		//  TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	return sender, receiver
 }

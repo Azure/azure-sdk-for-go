@@ -22,51 +22,78 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func TestClients_UsingSASKey(t *testing.T) {
+	sender, receiver := newClients(t, true)
+
+	ce, err := messaging.NewCloudEvent("source", "eventType", "hello world", nil)
+	require.NoError(t, err)
+
+	sendResp, err := sender.Send(context.Background(), &ce, nil)
+	require.NoError(t, err)
+	require.Empty(t, sendResp)
+
+	recvResp, err := receiver.Receive(context.Background(), nil)
+	require.NoError(t, err)
+
+	require.Equal(t, 1, len(recvResp.Details))
+	lockToken := recvResp.Details[0].BrokerProperties.LockToken
+	require.NotEmpty(t, *lockToken)
+
+	// strings are json serialized (if you want to send the string as bytes you can just []byte("your string")
+	// when creating the CloudEvent)
+	require.Equal(t, "\"hello world\"", string(recvResp.Details[0].Event.Data.([]byte)))
+
+	ackResp, err := receiver.Acknowledge(context.Background(), []string{*lockToken}, nil)
+	require.NoError(t, err)
+	require.Equal(t, []string{*lockToken}, ackResp.SucceededLockTokens)
+}
+
 func TestFailedAck(t *testing.T) {
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
 	}
-	c := newClientWrapper(t)
 
-	ce, err := messaging.NewCloudEvent("hello-source", "world", []byte("ack this one"), &messaging.CloudEventOptions{
+	ce, err := messaging.NewCloudEvent("TestFailedAck", "world", []byte("ack this one"), &messaging.CloudEventOptions{
 		DataContentType: to.Ptr("application/octet-stream"),
 	})
 	require.NoError(t, err)
 
-	_, err = c.PublishCloudEvents(context.Background(), c.TestVars.Topic, []messaging.CloudEvent{ce}, nil)
+	sender, receiver := newClients(t, false)
+
+	_, err = sender.SendEvents(context.Background(), []*messaging.CloudEvent{&ce}, nil)
 	require.NoError(t, err)
 
-	recvResp, err := c.ReceiveCloudEvents(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, &aznamespaces.ReceiveCloudEventsOptions{
+	recvResp, err := receiver.Receive(context.Background(), &aznamespaces.ReceiveOptions{
 		MaxEvents:   to.Ptr[int32](1),
 		MaxWaitTime: to.Ptr[int32](10),
 	})
 	require.NoError(t, err)
 
-	ackResp, err := c.AcknowledgeCloudEvents(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, []string{*recvResp.Value[0].BrokerProperties.LockToken}, nil)
+	ackResp, err := receiver.Acknowledge(context.Background(), []string{*recvResp.Details[0].BrokerProperties.LockToken}, nil)
 	require.NoError(t, err)
 	require.Empty(t, ackResp.FailedLockTokens)
-	require.Equal(t, []string{*recvResp.Value[0].BrokerProperties.LockToken}, ackResp.SucceededLockTokens)
+	require.Equal(t, []string{*recvResp.Details[0].BrokerProperties.LockToken}, ackResp.SucceededLockTokens)
 
 	// now let's try to do stuff with an "out of date" token
-	t.Run("AcknowledgeCloudEvents", func(t *testing.T) {
-		resp, err := c.AcknowledgeCloudEvents(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, []string{*recvResp.Value[0].BrokerProperties.LockToken}, nil)
+	t.Run("Acknowledge", func(t *testing.T) {
+		resp, err := receiver.Acknowledge(context.Background(), []string{*recvResp.Details[0].BrokerProperties.LockToken}, nil)
 		require.NoError(t, err)
 		require.Empty(t, resp.SucceededLockTokens)
-		requireFailedLockTokens(t, []string{*recvResp.Value[0].BrokerProperties.LockToken}, resp.FailedLockTokens)
+		requireFailedLockTokens(t, []string{*recvResp.Details[0].BrokerProperties.LockToken}, resp.FailedLockTokens)
 	})
 
 	t.Run("RejectCloudEvents", func(t *testing.T) {
-		resp, err := c.RejectCloudEvents(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, []string{*recvResp.Value[0].BrokerProperties.LockToken}, nil)
+		resp, err := receiver.Reject(context.Background(), []string{*recvResp.Details[0].BrokerProperties.LockToken}, nil)
 		require.NoError(t, err)
 		require.Empty(t, resp.SucceededLockTokens)
-		requireFailedLockTokens(t, []string{*recvResp.Value[0].BrokerProperties.LockToken}, resp.FailedLockTokens)
+		requireFailedLockTokens(t, []string{*recvResp.Details[0].BrokerProperties.LockToken}, resp.FailedLockTokens)
 	})
 
 	t.Run("ReleaseCloudEvents", func(t *testing.T) {
-		resp, err := c.ReleaseCloudEvents(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, []string{*recvResp.Value[0].BrokerProperties.LockToken}, nil)
+		resp, err := receiver.Release(context.Background(), []string{*recvResp.Details[0].BrokerProperties.LockToken}, nil)
 		require.NoError(t, err)
 		require.Empty(t, resp.SucceededLockTokens)
-		requireFailedLockTokens(t, []string{*recvResp.Value[0].BrokerProperties.LockToken}, resp.FailedLockTokens)
+		requireFailedLockTokens(t, []string{*recvResp.Details[0].BrokerProperties.LockToken}, resp.FailedLockTokens)
 	})
 }
 
@@ -74,19 +101,20 @@ func TestPartialAckFailure(t *testing.T) {
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
 	}
-	c := newClientWrapper(t)
 
-	ce, err := messaging.NewCloudEvent("hello-source", "world", []byte("event one"), &messaging.CloudEventOptions{
+	ce, err := messaging.NewCloudEvent("TestPartialAckFailure", "world", []byte("event one"), &messaging.CloudEventOptions{
 		DataContentType: to.Ptr("application/octet-stream"),
 	})
 	require.NoError(t, err)
 
-	ce2, err := messaging.NewCloudEvent("hello-source", "world", []byte("event two"), &messaging.CloudEventOptions{
+	ce2, err := messaging.NewCloudEvent("TestPartialAckFailure", "world", []byte("event two"), &messaging.CloudEventOptions{
 		DataContentType: to.Ptr("application/octet-stream"),
 	})
 	require.NoError(t, err)
 
-	_, err = c.PublishCloudEvents(context.Background(), c.TestVars.Topic, []messaging.CloudEvent{ce, ce2}, nil)
+	sender, receiver := newClients(t, false)
+
+	_, err = sender.SendEvents(context.Background(), []*messaging.CloudEvent{&ce, &ce2}, nil)
 	require.NoError(t, err)
 
 	const numExpectedEvents = 2
@@ -97,20 +125,20 @@ func TestPartialAckFailure(t *testing.T) {
 	defer cancelReceive()
 
 	for len(events) < numExpectedEvents {
-		eventsResp, err := c.ReceiveCloudEvents(receiveCtx, c.TestVars.Topic, c.TestVars.Subscription, &aznamespaces.ReceiveCloudEventsOptions{
+		eventsResp, err := receiver.Receive(receiveCtx, &aznamespaces.ReceiveOptions{
 			MaxEvents: to.Ptr(int32(numExpectedEvents - len(events))),
 		})
 		require.NoError(t, err)
-		events = append(events, eventsResp.Value...)
+		events = append(events, eventsResp.Details...)
 	}
 
 	// we'll ack one now so we can force a failure to happen.
-	ackResp, err := c.AcknowledgeCloudEvents(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, []string{*events[0].BrokerProperties.LockToken}, nil)
+	ackResp, err := receiver.Acknowledge(context.Background(), []string{*events[0].BrokerProperties.LockToken}, nil)
 	require.NoError(t, err)
 	require.Empty(t, ackResp.FailedLockTokens)
 
 	// this will result in a partial failure.
-	ackResp, err = c.AcknowledgeCloudEvents(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, []string{
+	ackResp, err = receiver.Acknowledge(context.Background(), []string{
 		*events[0].BrokerProperties.LockToken,
 		*events[1].BrokerProperties.LockToken,
 	}, nil)
@@ -124,19 +152,20 @@ func TestReject(t *testing.T) {
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
 	}
-	c := newClientWrapper(t)
 
 	ce, err := messaging.NewCloudEvent("TestAbandon", "world", []byte("event one"), &messaging.CloudEventOptions{
 		DataContentType: to.Ptr("application/octet-stream"),
 	})
 	require.NoError(t, err)
 
+	sender, receiver := newClients(t, false)
+
 	t.Logf("Publishing cloud events")
-	_, err = c.PublishCloudEvents(context.Background(), c.TestVars.Topic, []messaging.CloudEvent{ce}, nil)
+	_, err = sender.Send(context.Background(), &ce, nil)
 	require.NoError(t, err)
 
 	t.Logf("Receiving cloud events")
-	events, err := c.ReceiveCloudEvents(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, nil)
+	events, err := receiver.Receive(context.Background(), nil)
 	require.NoError(t, err)
 
 	requireEqualCloudEvent(t, messaging.CloudEvent{
@@ -145,46 +174,47 @@ func TestReject(t *testing.T) {
 		Data:            []byte("event one"),
 		Source:          "TestAbandon",
 		Type:            "world",
-	}, events.Value[0].Event)
+	}, events.Details[0].Event)
 
-	require.Equal(t, int32(1), *events.Value[0].BrokerProperties.DeliveryCount, "DeliveryCount starts at 1")
+	require.Equal(t, int32(1), *events.Details[0].BrokerProperties.DeliveryCount, "DeliveryCount starts at 1")
 
 	t.Logf("Rejecting cloud events")
-	rejectResp, err := c.RejectCloudEvents(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, []string{*events.Value[0].BrokerProperties.LockToken}, nil)
+	rejectResp, err := receiver.Reject(context.Background(), []string{*events.Details[0].BrokerProperties.LockToken}, nil)
 	require.NoError(t, err)
 	require.Empty(t, rejectResp.FailedLockTokens)
 	t.Logf("Done rejecting cloud events")
 
-	events, err = c.ReceiveCloudEvents(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, &aznamespaces.ReceiveCloudEventsOptions{
+	events, err = receiver.Receive(context.Background(), &aznamespaces.ReceiveOptions{
 		MaxEvents:   to.Ptr[int32](1),
 		MaxWaitTime: to.Ptr[int32](10),
 	})
 	require.NoError(t, err)
-	require.Empty(t, events.Value)
+	require.Empty(t, events.Details)
 }
 
 func TestRelease(t *testing.T) {
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
 	}
-	c := newClientWrapper(t)
 
-	ce, err := messaging.NewCloudEvent("TestAbandon", "world", []byte("event one"), &messaging.CloudEventOptions{
+	ce, err := messaging.NewCloudEvent("TestRelease", "world", []byte("event one"), &messaging.CloudEventOptions{
 		DataContentType: to.Ptr("application/octet-stream"),
 	})
 	require.NoError(t, err)
 
-	_, err = c.PublishCloudEvents(context.Background(), c.TestVars.Topic, []messaging.CloudEvent{ce}, nil)
+	sender, receiver := newClients(t, false)
+
+	_, err = sender.Send(context.Background(), &ce, nil)
 	require.NoError(t, err)
 
-	events, err := c.ReceiveCloudEvents(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, nil)
+	events, err := receiver.Receive(context.Background(), nil)
 	require.NoError(t, err)
 
-	requireEqualCloudEvent(t, ce, events.Value[0].Event)
+	requireEqualCloudEvent(t, ce, events.Details[0].Event)
 
-	require.Equal(t, int32(1), *events.Value[0].BrokerProperties.DeliveryCount, "DeliveryCount starts at 1")
+	require.Equal(t, int32(1), *events.Details[0].BrokerProperties.DeliveryCount, "DeliveryCount starts at 1")
 
-	rejectResp, err := c.ReleaseCloudEvents(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, []string{*events.Value[0].BrokerProperties.LockToken}, nil)
+	rejectResp, err := receiver.Release(context.Background(), []string{*events.Details[0].BrokerProperties.LockToken}, nil)
 	require.NoError(t, err)
 
 	if len(rejectResp.FailedLockTokens) > 0 {
@@ -196,11 +226,11 @@ func TestRelease(t *testing.T) {
 
 	require.Empty(t, rejectResp.FailedLockTokens)
 
-	events, err = c.ReceiveCloudEvents(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, nil)
+	events, err = receiver.Receive(context.Background(), nil)
 	require.NoError(t, err)
 
-	require.Equal(t, int32(2), *events.Value[0].BrokerProperties.DeliveryCount, "DeliveryCount is incremented")
-	ackResp, err := c.AcknowledgeCloudEvents(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, []string{*events.Value[0].BrokerProperties.LockToken}, nil)
+	require.Equal(t, int32(2), *events.Details[0].BrokerProperties.DeliveryCount, "DeliveryCount is incremented")
+	ackResp, err := receiver.Acknowledge(context.Background(), []string{*events.Details[0].BrokerProperties.LockToken}, nil)
 	require.NoError(t, err)
 	require.Empty(t, ackResp.FailedLockTokens)
 }
@@ -209,128 +239,131 @@ func TestPublishBytes(t *testing.T) {
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
 	}
-	c := newClientWrapper(t)
 
-	ce, err := messaging.NewCloudEvent("hello-source", "eventType", []byte("TestPublishBytes"), &messaging.CloudEventOptions{
+	ce, err := messaging.NewCloudEvent("TestPublishBytes", "eventType", []byte("TestPublishBytes"), &messaging.CloudEventOptions{
 		DataContentType: to.Ptr("application/octet-stream"),
 	})
 	require.NoError(t, err)
 
-	_, err = c.PublishCloudEvent(context.Background(), c.TestVars.Topic, ce, nil)
+	sender, receiver := newClients(t, false)
+
+	_, err = sender.Send(context.Background(), &ce, nil)
 	require.NoError(t, err)
 
-	recvResp, err := c.ReceiveCloudEvents(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, nil)
+	recvResp, err := receiver.Receive(context.Background(), nil)
 	require.NoError(t, err)
 
 	requireEqualCloudEvent(t, messaging.CloudEvent{
-		Source:          "hello-source",
+		Source:          "TestPublishBytes",
 		SpecVersion:     "1.0",
 		Type:            "eventType",
 		Data:            []byte("TestPublishBytes"),
 		DataContentType: to.Ptr("application/octet-stream"),
-	}, recvResp.Value[0].Event)
+	}, recvResp.Details[0].Event)
 }
 
 func TestPublishString(t *testing.T) {
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
 	}
-	c := newClientWrapper(t)
+	sender, receiver := newClients(t, false)
 
-	ce, err := messaging.NewCloudEvent("hello-source", "eventType", "TestPublishString", &messaging.CloudEventOptions{
+	ce, err := messaging.NewCloudEvent("TestPublishString", "eventType", "TestPublishString", &messaging.CloudEventOptions{
 		DataContentType: to.Ptr("application/json"),
 	})
 	require.NoError(t, err)
 
-	_, err = c.PublishCloudEvent(context.Background(), c.TestVars.Topic, ce, nil)
+	_, err = sender.Send(context.Background(), &ce, nil)
 	require.NoError(t, err)
 
-	recvResp, err := c.ReceiveCloudEvents(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, nil)
+	recvResp, err := receiver.Receive(context.Background(), nil)
 	require.NoError(t, err)
 
 	requireEqualCloudEvent(t, messaging.CloudEvent{
-		Source:          "hello-source",
+		Source:          "TestPublishString",
 		SpecVersion:     "1.0",
 		Type:            "eventType",
 		Data:            []byte("\"TestPublishString\""), // non []byte returns as the JSON bytes
 		DataContentType: to.Ptr("application/json"),
-	}, recvResp.Value[0].Event)
+	}, recvResp.Details[0].Event)
 }
 
 func TestPublishingAndReceivingMultipleCloudEvents(t *testing.T) {
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
 	}
-	c := newClientWrapper(t)
+	sender, receiver := newClients(t, false)
 
 	testData := []struct {
 		Send     messaging.CloudEvent
 		Expected messaging.CloudEvent
 	}{
 		{
-			Send: mustCreateEvent(t, "hello-source", "eventType", []byte("TestPublishingAndReceivingMultipleCloudEvents 1"), &messaging.CloudEventOptions{
+			Send: mustCreateEvent(t, "TestPublishingAndReceivingMultipleCloudEvents", "eventType", []byte("TestPublishingAndReceivingMultipleCloudEvents 1"), &messaging.CloudEventOptions{
 				DataContentType: to.Ptr("application/octet-stream"),
 			}),
 			Expected: messaging.CloudEvent{
 				SpecVersion:     "1.0",
-				Source:          "hello-source",
+				Source:          "TestPublishingAndReceivingMultipleCloudEvents",
 				Type:            "eventType",
 				DataContentType: to.Ptr("application/octet-stream"),
 				Data:            []byte("TestPublishingAndReceivingMultipleCloudEvents 1"),
 			},
 		},
 		{
-			Send: mustCreateEvent(t, "hello-source", "eventType", "TestPublishingAndReceivingMultipleCloudEvents 2", &messaging.CloudEventOptions{
+			Send: mustCreateEvent(t, "TestPublishingAndReceivingMultipleCloudEvents", "eventType", "TestPublishingAndReceivingMultipleCloudEvents 2", &messaging.CloudEventOptions{
 				DataContentType: to.Ptr("application/json"),
 				DataSchema:      to.Ptr("https://dataschema"),
 				Extensions: map[string]any{
-					"extension1": "extension1value",
+					"extension2": "extension2value",
 				},
 				Subject: to.Ptr("subject"),
 			}),
 			Expected: messaging.CloudEvent{
 				SpecVersion:     "1.0",
-				Source:          "hello-source",
+				Source:          "TestPublishingAndReceivingMultipleCloudEvents",
 				Type:            "eventType",
 				DataSchema:      to.Ptr("https://dataschema"),
 				Data:            []byte("\"TestPublishingAndReceivingMultipleCloudEvents 2\""),
 				DataContentType: to.Ptr("application/json"),
 				Subject:         to.Ptr("subject"),
 				Extensions: map[string]any{
-					"extension1": "extension1value",
+					"extension2": "extension2value",
 				},
 			},
 		},
 	}
 
-	var batch []messaging.CloudEvent
+	var sentEvents []*messaging.CloudEvent
 
 	for _, td := range testData {
-		batch = append(batch, td.Send)
+		e := td.Send
+		sentEvents = append(sentEvents, &e)
 	}
 
-	_, err := c.PublishCloudEvents(context.Background(), c.TestVars.Topic, batch, nil)
+	_, err := sender.SendEvents(context.Background(), sentEvents, nil)
 	require.NoError(t, err)
 
-	resp, err := c.ReceiveCloudEvents(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, &aznamespaces.ReceiveCloudEventsOptions{
-		MaxEvents:   to.Ptr(int32(len(batch))),
+	resp, err := receiver.Receive(context.Background(), &aznamespaces.ReceiveOptions{
+		MaxEvents:   to.Ptr(int32(len(sentEvents))),
 		MaxWaitTime: to.Ptr(int32(60)),
 	})
 	require.NoError(t, err)
-	require.NotEmpty(t, resp.Value)
+	require.NotEmpty(t, resp.Details)
+	require.Equal(t, len(sentEvents), len(resp.Details))
 
-	for i := 0; i < len(batch); i++ {
-		_, err := c.AcknowledgeCloudEvents(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, []string{*resp.Value[i].BrokerProperties.LockToken}, nil)
+	for i := 0; i < len(sentEvents); i++ {
+		_, err := receiver.Acknowledge(context.Background(), []string{*resp.Details[i].BrokerProperties.LockToken}, nil)
 		require.NoError(t, err)
 
-		requireEqualCloudEvent(t, testData[i].Expected, resp.Value[i].Event)
+		requireEqualCloudEvent(t, testData[i].Expected, resp.Details[i].Event)
 	}
 }
 
 func TestSimpleErrors(t *testing.T) {
-	c := newClientWrapper(t)
+	sender, _ := newClients(t, false)
 
-	_, err := c.PublishCloudEvents(context.Background(), c.TestVars.Topic, []messaging.CloudEvent{
+	_, err := sender.SendEvents(context.Background(), []*messaging.CloudEvent{
 		{},
 	}, nil)
 
@@ -351,19 +384,19 @@ func TestRenewCloudEventLocks(t *testing.T) {
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
 	}
-	c := newClientWrapper(t)
+	sender, receiver := newClients(t, false)
 
-	ce := mustCreateEvent(t, "source", "eventType", "hello world", nil)
-	_, err := c.Client.PublishCloudEvent(context.Background(), c.TestVars.Topic, ce, nil)
+	ce := mustCreateEvent(t, "TestRenewCloudEventLocks", "eventType", "hello world", nil)
+	_, err := sender.Send(context.Background(), &ce, nil)
 	require.NoError(t, err)
 
-	recvResp, err := c.Client.ReceiveCloudEvents(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, nil)
+	recvResp, err := receiver.Receive(context.Background(), nil)
 	require.NoError(t, err)
 
-	_, err = c.Client.RenewCloudEventLocks(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, []string{*recvResp.Value[0].BrokerProperties.LockToken}, nil)
+	_, err = receiver.RenewLocks(context.Background(), []string{*recvResp.Details[0].BrokerProperties.LockToken}, nil)
 	require.NoError(t, err)
 
-	ackResp, err := c.Client.AcknowledgeCloudEvents(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, []string{*recvResp.Value[0].BrokerProperties.LockToken}, nil)
+	ackResp, err := receiver.Acknowledge(context.Background(), []string{*recvResp.Details[0].BrokerProperties.LockToken}, nil)
 	require.NoError(t, err)
 	require.Empty(t, ackResp.FailedLockTokens)
 }
@@ -372,17 +405,17 @@ func TestReleaseWithDelay(t *testing.T) {
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
 	}
-	c := newClientWrapper(t)
+	sender, receiver := newClients(t, false)
 
-	ce := mustCreateEvent(t, "source", "eventType", "hello world", nil)
-	_, err := c.Client.PublishCloudEvent(context.Background(), c.TestVars.Topic, ce, nil)
+	ce := mustCreateEvent(t, "TestReleaseWithDelay", "eventType", "hello world", nil)
+	_, err := sender.Send(context.Background(), &ce, nil)
 	require.NoError(t, err)
 
-	recvResp, err := c.Client.ReceiveCloudEvents(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, nil)
+	recvResp, err := receiver.Receive(context.Background(), nil)
 	require.NoError(t, err)
 
-	releaseResp, err := c.Client.ReleaseCloudEvents(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, []string{*recvResp.Value[0].BrokerProperties.LockToken}, &aznamespaces.ReleaseCloudEventsOptions{
-		ReleaseDelayInSeconds: to.Ptr(aznamespaces.ReleaseDelayBy10Seconds),
+	releaseResp, err := receiver.Release(context.Background(), []string{*recvResp.Details[0].BrokerProperties.LockToken}, &aznamespaces.ReleaseOptions{
+		ReleaseDelayInSeconds: to.Ptr(aznamespaces.ReleaseDelayTenSeconds),
 	})
 	require.NoError(t, err)
 	require.Empty(t, releaseResp.FailedLockTokens)
@@ -390,10 +423,10 @@ func TestReleaseWithDelay(t *testing.T) {
 	now := time.Now()
 
 	// message will be available, but not immediately.
-	recvResp, err = c.Client.ReceiveCloudEvents(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, nil)
+	recvResp, err = receiver.Receive(context.Background(), nil)
 	require.NoError(t, err)
-	require.NotEmpty(t, recvResp.Value)
-	require.Equal(t, int32(2), *recvResp.Value[0].BrokerProperties.DeliveryCount)
+	require.NotEmpty(t, recvResp.Details)
+	require.Equal(t, int32(2), *recvResp.Details[0].BrokerProperties.DeliveryCount)
 
 	if recording.GetRecordMode() == recording.LiveMode {
 		// doesn't work when recording but it's somewhat unimportant there.
@@ -401,21 +434,22 @@ func TestReleaseWithDelay(t *testing.T) {
 		require.GreaterOrEqual(t, int(elapsed/time.Second), 8) // give a little wiggle room for potential delays between requests, etc...
 	}
 
-	ackResp, err := c.Client.AcknowledgeCloudEvents(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, []string{*recvResp.Value[0].BrokerProperties.LockToken}, nil)
+	ackResp, err := receiver.Acknowledge(context.Background(), []string{*recvResp.Details[0].BrokerProperties.LockToken}, nil)
 	require.NoError(t, err)
 	require.Empty(t, ackResp.FailedLockTokens)
 }
 
-func TestPublishCloudEvent_binaryMode(t *testing.T) {
+func TestSend_binaryMode(t *testing.T) {
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
 	}
-	client := newClientWrapper(t)
+
+	sender, receiver := newClients(t, false)
 
 	// you can send a variety of different payloads, all of which can be encoded by messaging.CloudEvent
 	binaryPayload := []byte{1, 2, 3}
 	customContentType := "application/customcontenttype"
-	eventToSend, err := messaging.NewCloudEvent("source", "eventType", binaryPayload, &messaging.CloudEventOptions{
+	eventToSend, err := messaging.NewCloudEvent("TestSend_binaryMode", "eventType", binaryPayload, &messaging.CloudEventOptions{
 		// this will be used as the "Content-Type" for the request.
 		DataContentType: &customContentType,
 	})
@@ -427,7 +461,7 @@ func TestPublishCloudEvent_binaryMode(t *testing.T) {
 	captureCtx := policy.WithCaptureResponse(context.Background(), &actualResp)
 
 	// binary mode publish (CloudEvent attributes encoded as headers, CloudEvent.Data used as the request body)
-	_, err = client.PublishCloudEvent(captureCtx, client.TestVars.Topic, eventToSend, &aznamespaces.PublishCloudEventOptions{
+	_, err = sender.Send(captureCtx, &eventToSend, &aznamespaces.SendOptions{
 		BinaryMode: true,
 	})
 	require.NoError(t, err)
@@ -439,7 +473,7 @@ func TestPublishCloudEvent_binaryMode(t *testing.T) {
 	// (the body bytes stream is exhausted so we can't compare the contents but we can check that we only sent the body bytes.
 	require.Equal(t, int64(len(eventToSend.Data.([]byte))), actualResp.Request.ContentLength)
 
-	event := receiveAll(t, client, 1)[0]
+	event := receiveAll(t, receiver, 1)[0]
 
 	// zero out fields that always change
 	eventToSend.Time, event.Event.Time = nil, nil
@@ -449,11 +483,11 @@ func TestPublishCloudEvent_binaryMode(t *testing.T) {
 
 // send an event using the two methods (binary and non-binary mode) and make sure they both
 // produce the same content, when received.
-func TestPublishCloudEvent_worksSameInBinaryVsNonBinaryMode(t *testing.T) {
+func TestSend_worksSameInBinaryVsNonBinaryMode(t *testing.T) {
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
 	}
-	client := newClientWrapper(t)
+	sender, receiver := newClients(t, false)
 
 	// you can send a variety of different payloads, all of which can be encoded by messaging.CloudEvent
 	binaryPayload := []byte{1, 2, 3}
@@ -471,7 +505,7 @@ func TestPublishCloudEvent_worksSameInBinaryVsNonBinaryMode(t *testing.T) {
 
 	// binary mode publish (CloudEvent attributes encoded as headers, CloudEvent.Data used as the request body)
 	{
-		_, err = client.PublishCloudEvent(captureCtx, client.TestVars.Topic, eventToSend, &aznamespaces.PublishCloudEventOptions{
+		_, err = sender.Send(captureCtx, &eventToSend, &aznamespaces.SendOptions{
 			BinaryMode: true,
 		})
 		require.NoError(t, err)
@@ -486,7 +520,7 @@ func TestPublishCloudEvent_worksSameInBinaryVsNonBinaryMode(t *testing.T) {
 
 	// non-binary mode publish (ie, entire CloudEvent encoded as JSON as the body)
 	{
-		_, err = client.PublishCloudEvent(captureCtx, client.TestVars.Topic, eventToSend, &aznamespaces.PublishCloudEventOptions{
+		_, err = sender.Send(captureCtx, &eventToSend, &aznamespaces.SendOptions{
 			// Default is binary mode OFF.
 			//BinaryMode: true,
 		})
@@ -498,7 +532,7 @@ func TestPublishCloudEvent_worksSameInBinaryVsNonBinaryMode(t *testing.T) {
 	}
 
 	// receive the two events
-	events := receiveAll(t, client, 2)
+	events := receiveAll(t, receiver, 2)
 
 	// events sent via binary content mode and non-binary-content-mode should be the same.
 	// it only affects transport, Event Grid should persist them the same.
@@ -515,8 +549,8 @@ func TestPublishCloudEvent_worksSameInBinaryVsNonBinaryMode(t *testing.T) {
 	require.Equal(t, events[0], events[1])
 }
 
-func TestPublishCloudEvent_binaryModeNonByteSlicePayloadFails(t *testing.T) {
-	client := newClientWrapper(t)
+func TestSend_binaryModeNonByteSlicePayloadFails(t *testing.T) {
+	sender, _ := newClients(t, false)
 
 	eventToSend, err := messaging.NewCloudEvent("source", "eventType", "you can't send strings (or any non []byte) using binary mode!", &messaging.CloudEventOptions{
 		// this will be used as the "Content-Type" for the request.
@@ -524,20 +558,20 @@ func TestPublishCloudEvent_binaryModeNonByteSlicePayloadFails(t *testing.T) {
 	})
 	require.NoError(t, err)
 
-	_, err = client.PublishCloudEvent(context.Background(), client.TestVars.Topic, eventToSend, &aznamespaces.PublishCloudEventOptions{
+	_, err = sender.Send(context.Background(), &eventToSend, &aznamespaces.SendOptions{
 		BinaryMode: true,
 	})
 	require.EqualError(t, err, "CloudEvent.Data must be of type []byte, was type string")
 }
 
-func TestPublishCloudEvent_binaryModeNoContentTypeFails(t *testing.T) {
-	client := newClientWrapper(t)
+func TestSend_binaryModeNoContentTypeFails(t *testing.T) {
+	sender, _ := newClients(t, false)
 
 	eventToSend, err := messaging.NewCloudEvent("source", "eventType", []byte{1, 2, 3}, nil)
 	require.NoError(t, err)
 	fixCloudEvent(t, &eventToSend)
 
-	_, err = client.PublishCloudEvent(context.Background(), client.TestVars.Topic, eventToSend, &aznamespaces.PublishCloudEventOptions{
+	_, err = sender.Send(context.Background(), &eventToSend, &aznamespaces.SendOptions{
 		BinaryMode: true,
 	})
 	var respErr *azcore.ResponseError
@@ -546,11 +580,11 @@ func TestPublishCloudEvent_binaryModeNoContentTypeFails(t *testing.T) {
 	require.Equal(t, "BadRequest", respErr.ErrorCode)
 }
 
-func TestPublishCloudEvent_binaryModeUseOptionalValues(t *testing.T) {
+func TestSend_binaryModeUseOptionalValues(t *testing.T) {
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
 	}
-	client := newClientWrapper(t)
+	sender, receiver := newClients(t, false)
 
 	tm, err := time.Parse(time.RFC3339, "2006-01-02T15:04:05Z")
 	require.NoError(t, err)
@@ -561,7 +595,7 @@ func TestPublishCloudEvent_binaryModeUseOptionalValues(t *testing.T) {
 	binaryPayload := []byte{1, 2, 3}
 	customContentType := "application/customcontenttype"
 
-	eventToSend, err := messaging.NewCloudEvent("source", "eventType", binaryPayload, &messaging.CloudEventOptions{
+	eventToSend, err := messaging.NewCloudEvent("TestSend_binaryModeUseOptionalValues", "eventType", binaryPayload, &messaging.CloudEventOptions{
 		DataContentType: &customContentType,
 		Extensions: map[string]any{
 			"extensiondatastring":  "hello",
@@ -583,7 +617,7 @@ func TestPublishCloudEvent_binaryModeUseOptionalValues(t *testing.T) {
 	captureCtx := policy.WithCaptureResponse(context.Background(), &actualResp)
 
 	// binary mode publish (CloudEvent attributes encoded as headers, CloudEvent.Data used as the request body)
-	_, err = client.PublishCloudEvent(captureCtx, client.TestVars.Topic, eventToSend, &aznamespaces.PublishCloudEventOptions{
+	_, err = sender.Send(captureCtx, &eventToSend, &aznamespaces.SendOptions{
 		BinaryMode: true,
 	})
 	require.NoError(t, err)
@@ -591,12 +625,12 @@ func TestPublishCloudEvent_binaryModeUseOptionalValues(t *testing.T) {
 	req := actualResp.Request
 	require.NotNil(t, req)
 
-	message := receiveAll(t, client, 1)[0]
+	message := receiveAll(t, receiver, 1)[0]
 
 	require.Equal(t, customContentType, *message.Event.DataContentType)
 	require.Equal(t, []byte{1, 2, 3}, message.Event.Data)
 	require.Equal(t, "https://microsoft.com", *message.Event.DataSchema)
-	require.Equal(t, "source", message.Event.Source)
+	require.Equal(t, "TestSend_binaryModeUseOptionalValues", message.Event.Source)
 	require.Equal(t, "1.0", message.Event.SpecVersion)
 	require.Equal(t, "my subject", *message.Event.Subject)
 
@@ -611,8 +645,8 @@ func TestPublishCloudEvent_binaryModeUseOptionalValues(t *testing.T) {
 	}, message.Event.Extensions)
 }
 
-func TestPublishCloudEvent_binaryModeNoContentType(t *testing.T) {
-	client := newClientWrapper(t)
+func TestSend_binaryModeNoContentType(t *testing.T) {
+	sender, _ := newClients(t, false)
 
 	binaryPayload := []byte{1, 2, 3}
 	eventToSend, err := messaging.NewCloudEvent("source", "eventType", binaryPayload, nil)
@@ -624,7 +658,7 @@ func TestPublishCloudEvent_binaryModeNoContentType(t *testing.T) {
 	var actualResp *http.Response
 	captureCtx := policy.WithCaptureResponse(context.Background(), &actualResp)
 
-	_, err = client.PublishCloudEvent(captureCtx, client.TestVars.Topic, eventToSend, &aznamespaces.PublishCloudEventOptions{
+	_, err = sender.Send(captureCtx, &eventToSend, &aznamespaces.SendOptions{
 		BinaryMode: true,
 	})
 	var resp *azcore.ResponseError
@@ -633,21 +667,21 @@ func TestPublishCloudEvent_binaryModeNoContentType(t *testing.T) {
 	require.Equal(t, http.StatusBadRequest, resp.StatusCode)
 }
 
-func TestPublishCloudEvent_binaryModeUnstringableExtension(t *testing.T) {
-	client := newClientWrapper(t)
+func TestSend_binaryModeUnstringableExtension(t *testing.T) {
+	sender, _ := newClients(t, false)
 
 	binaryPayload := []byte{1, 2, 3}
 	eventToSend, err := messaging.NewCloudEvent("source", "eventType", binaryPayload, &messaging.CloudEventOptions{
 		Extensions: map[string]any{
-			"wontwork": aznamespaces.Client{},
+			"wontwork": aznamespaces.ReceiverClient{},
 		},
 	})
 	require.NoError(t, err)
 
-	_, err = client.PublishCloudEvent(context.Background(), client.TestVars.Topic, eventToSend, &aznamespaces.PublishCloudEventOptions{
+	_, err = sender.Send(context.Background(), &eventToSend, &aznamespaces.SendOptions{
 		BinaryMode: true,
 	})
-	require.EqualError(t, err, "type aznamespaces.Client cannot be converted to a string")
+	require.EqualError(t, err, "type aznamespaces.ReceiverClient cannot be converted to a string")
 }
 
 func mustCreateEvent(t *testing.T, source string, eventType string, data any, options *messaging.CloudEventOptions) messaging.CloudEvent {

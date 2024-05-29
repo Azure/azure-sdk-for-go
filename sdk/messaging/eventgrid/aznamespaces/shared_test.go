@@ -21,6 +21,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/messaging"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/eventgrid/aznamespaces"
 	"github.com/stretchr/testify/require"
@@ -76,22 +77,12 @@ func loadEnv() (testVars, error) {
 	return tv, nil
 }
 
-type clientWrapper struct {
-	*aznamespaces.Client
-	TestVars testVars
-}
-
 var initTopic sync.Once
-var topicCleanup = func() {}
 var tv testVars = fakeTestVars
 
-func newClientWrapper(t *testing.T) clientWrapper {
-	var client *aznamespaces.Client
-
+func newClientOptions(t *testing.T) *aznamespaces.ClientOptions {
 	if recording.GetRecordMode() != recording.PlaybackMode {
 		initTopic.Do(func() {
-			topicCleanup = createTopicAndUpdateEnv(t)
-
 			tmpTestVars, err := loadEnv()
 			require.NoError(t, err)
 			tv = tmpTestVars
@@ -128,6 +119,10 @@ func newClientWrapper(t *testing.T) clientWrapper {
 
 	options.Logging = policy.LogOptions{
 		IncludeBody: true,
+		AllowedQueryParams: []string{
+			"maxEvents",
+			"maxWaitTime",
+		},
 		AllowedHeaders: []string{
 			// these are the standard headers for binary content mode with CloudEvents
 			"ce-id",
@@ -144,16 +139,61 @@ func newClientWrapper(t *testing.T) clientWrapper {
 			"ce-extensiondatauint",
 			"ce-extensiondatatime",
 			"ce-extensiondatabytes",
+
+			"Authorization",
 		},
 	}
 
-	client, err := aznamespaces.NewClientWithSharedKeyCredential(tv.Endpoint, azcore.NewKeyCredential(tv.Key), options)
+	return options
+}
+
+func newClients(t *testing.T, useSASKey bool) (*aznamespaces.SenderClient, *aznamespaces.ReceiverClient) {
+	return newSenderClient(t, useSASKey), newReceiverClient(t, useSASKey)
+}
+
+func newSenderClient(t *testing.T, useSASKey bool) *aznamespaces.SenderClient {
+	options := newClientOptions(t)
+
+	if !useSASKey {
+		useSASKey = true
+	}
+
+	if useSASKey {
+		client, err := aznamespaces.NewSenderClientWithSharedKeyCredential(tv.Endpoint, tv.Topic, azcore.NewKeyCredential(tv.Key), options)
+		require.NoError(t, err)
+		return client
+	}
+
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	require.NoError(t, err)
 
-	return clientWrapper{
-		Client:   client,
-		TestVars: tv,
+	client, err := aznamespaces.NewSenderClient(tv.Endpoint, tv.Topic, cred, options)
+	require.NoError(t, err)
+
+	return client
+}
+
+func newReceiverClient(t *testing.T, useSASKey bool) *aznamespaces.ReceiverClient {
+	options := newClientOptions(t)
+
+	if !useSASKey {
+		t.Logf("WARNING: Forcing use of SASKey until https://github.com/Azure/azure-sdk-for-go/issues/22961 is resolved")
+		useSASKey = true
 	}
+
+	if useSASKey {
+		client, err := aznamespaces.NewReceiverClientWithSharedKeyCredential(tv.Endpoint, tv.Topic, tv.Subscription, azcore.NewKeyCredential(tv.Key), options)
+		require.NoError(t, err)
+		return client
+	}
+
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	require.NoError(t, err)
+
+	client, err := aznamespaces.NewReceiverClient(tv.Endpoint, tv.Topic, tv.Subscription, cred, options)
+	require.NoError(t, err)
+
+	return client
 }
 
 func newRecordingTransporter(t *testing.T, testVars testVars) policy.Transporter {
@@ -243,27 +283,27 @@ func requireEqualCloudEvent(t *testing.T, expected messaging.CloudEvent, actual 
 
 // receiveAll makes sure to receive all of count messages, even if it requires multiple calls.
 // It also acks all events it receives.
-func receiveAll(t *testing.T, client clientWrapper, count int) []aznamespaces.ReceiveDetails {
+func receiveAll(t *testing.T, client *aznamespaces.ReceiverClient, count int) []aznamespaces.ReceiveDetails {
 	var events []aznamespaces.ReceiveDetails
 
 	receiveCtx, cancelReceive := context.WithTimeout(context.Background(), 2*time.Minute)
 	defer cancelReceive()
 
 	for len(events) < count {
-		eventsResp, err := client.ReceiveCloudEvents(receiveCtx, client.TestVars.Topic, client.TestVars.Subscription, &aznamespaces.ReceiveCloudEventsOptions{
+		eventsResp, err := client.Receive(receiveCtx, &aznamespaces.ReceiveOptions{
 			MaxEvents: to.Ptr(int32(count - len(events))),
 		})
 		require.NoError(t, err)
 
 		var lockTokens []string
-		for _, evt := range eventsResp.Value {
+		for _, evt := range eventsResp.Details {
 			lockTokens = append(lockTokens, *evt.BrokerProperties.LockToken)
 		}
 
-		_, err = client.AcknowledgeCloudEvents(receiveCtx, client.TestVars.Topic, client.TestVars.Subscription, lockTokens, nil)
+		_, err = client.Acknowledge(receiveCtx, lockTokens, nil)
 		require.NoError(t, err)
 
-		events = append(events, eventsResp.Value...)
+		events = append(events, eventsResp.Details...)
 	}
 
 	require.Equal(t, count, len(events))

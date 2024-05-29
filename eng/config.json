@@ -102,6 +102,10 @@
             "CoverageGoal": 0.60
         },
         {
+            "Name": "messaging/eventgrid/aznamespaces",
+            "CoverageGoal": 0.02
+        },
+        {
             "Name": "messaging/internal",
             "CoverageGoal": 0.40
         },

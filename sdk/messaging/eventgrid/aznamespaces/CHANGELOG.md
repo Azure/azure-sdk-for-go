@@ -5,7 +5,6 @@
 ### Features Added
 
 - Supports API version `2024-06-01`, including support for release with delay.
-- Added in binary mode support, which can improve efficiency when sending a single event (PR#22582)
 
 ### Breaking Changes
 

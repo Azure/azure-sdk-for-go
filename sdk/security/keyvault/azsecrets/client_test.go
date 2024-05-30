@@ -22,9 +22,6 @@ import (
 )
 
 func TestBackupRestore(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
 	client := startTest(t)
 
 	name := createRandomName(t, "testbackupsecret")
@@ -56,14 +53,13 @@ func TestBackupRestore(t *testing.T) {
 		restoreResp, err = client.RestoreSecret(context.Background(), restoreParams, nil)
 		return err
 	})
-	require.Equal(t, restoreResp.ID.Name(), name)
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		require.Equal(t, restoreResp.ID.Name(), name)
+	}
 	require.Equal(t, setResp.ID, restoreResp.ID)
 }
 
 func TestCRUD(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
 	client := startTest(t)
 
 	name := createRandomName(t, "secret")
@@ -86,17 +82,21 @@ func TestCRUD(t *testing.T) {
 	require.Equal(t, setParams.SecretAttributes.NotBefore.Unix(), setResp.Attributes.NotBefore.Unix())
 	require.Equal(t, setParams.Tags, setResp.Tags)
 	require.Equal(t, setParams.Value, setResp.Value)
-	require.Equal(t, name, setResp.ID.Name())
-	require.NotEmpty(t, setResp.ID.Version())
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		require.Equal(t, name, setResp.ID.Name())
+		require.NotEmpty(t, setResp.ID.Version())
+	}
 	testSerde(t, &setResp.Secret)
 
-	getResp, err := client.GetSecret(context.Background(), setResp.ID.Name(), "", nil)
+	getResp, err := client.GetSecret(context.Background(), name, "", nil)
 	require.NoError(t, err)
 	require.Equal(t, setParams.ContentType, getResp.ContentType)
 	require.NotNil(t, setResp.ID)
 	require.Equal(t, setResp.ID, getResp.ID)
-	require.Equal(t, setResp.ID.Name(), getResp.ID.Name())
-	require.Equal(t, setResp.ID.Version(), getResp.ID.Version())
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		require.Equal(t, setResp.ID.Name(), getResp.ID.Name())
+		require.Equal(t, setResp.ID.Version(), getResp.ID.Version())
+	}
 	require.Equal(t, setParams.SecretAttributes.Enabled, getResp.Attributes.Enabled)
 	require.Equal(t, setParams.SecretAttributes.NotBefore.Unix(), getResp.Attributes.NotBefore.Unix())
 	require.Equal(t, setParams.Tags, getResp.Tags)
@@ -108,14 +108,17 @@ func TestCRUD(t *testing.T) {
 		},
 	}
 	testSerde(t, &updateParams)
-	updateResp, err := client.UpdateSecretProperties(context.Background(), name, setResp.ID.Version(), updateParams, nil)
-	require.NoError(t, err)
-	require.Equal(t, setParams.ContentType, updateResp.ContentType)
-	require.Equal(t, setResp.ID, updateResp.ID)
-	require.Equal(t, setParams.SecretAttributes.Enabled, updateResp.Attributes.Enabled)
-	require.Equal(t, setParams.SecretAttributes.NotBefore.Unix(), updateResp.Attributes.NotBefore.Unix())
-	require.Equal(t, setParams.Tags, updateResp.Tags)
-	require.Equal(t, setResp.ID.Version(), updateResp.ID.Version())
+	var updateResp azsecrets.UpdateSecretPropertiesResponse
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		updateResp, err = client.UpdateSecretProperties(context.Background(), name, setResp.ID.Version(), updateParams, nil)
+		require.NoError(t, err)
+		require.Equal(t, setParams.ContentType, updateResp.ContentType)
+		require.Equal(t, setResp.ID, updateResp.ID)
+		require.Equal(t, setParams.SecretAttributes.Enabled, updateResp.Attributes.Enabled)
+		require.Equal(t, setParams.SecretAttributes.NotBefore.Unix(), updateResp.Attributes.NotBefore.Unix())
+		require.Equal(t, setParams.Tags, updateResp.Tags)
+		require.Equal(t, setResp.ID.Version(), updateResp.ID.Version())
+	}
 
 	deleteResp, err := client.DeleteSecret(context.Background(), name, nil)
 	require.NoError(t, err)
@@ -125,8 +128,10 @@ func TestCRUD(t *testing.T) {
 	require.Equal(t, updateParams.SecretAttributes.Expires.Unix(), deleteResp.Attributes.Expires.Unix())
 	require.Equal(t, setParams.SecretAttributes.NotBefore.Unix(), deleteResp.Attributes.NotBefore.Unix())
 	require.Equal(t, setParams.Tags, deleteResp.Tags)
-	require.Equal(t, name, deleteResp.ID.Name())
-	require.Equal(t, updateResp.ID.Version(), deleteResp.ID.Version())
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		require.Equal(t, name, deleteResp.ID.Name())
+		require.Equal(t, updateResp.ID.Version(), deleteResp.ID.Version())
+	}
 	testSerde(t, &deleteResp.DeletedSecret)
 	pollStatus(t, 404, func() error {
 		_, err := client.GetDeletedSecret(context.Background(), name, nil)
@@ -140,7 +145,9 @@ func TestCRUD(t *testing.T) {
 	require.Equal(t, updateParams.SecretAttributes.Expires.Unix(), getDeletedResp.Attributes.Expires.Unix())
 	require.Equal(t, setParams.SecretAttributes.NotBefore.Unix(), getDeletedResp.Attributes.NotBefore.Unix())
 	require.Equal(t, setParams.Tags, getDeletedResp.Tags)
-	require.Equal(t, name, getDeletedResp.ID.Name())
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		require.Equal(t, name, getDeletedResp.ID.Name())
+	}
 	require.Equal(t, setResp.ID.Version(), getDeletedResp.ID.Version())
 
 	_, err = client.PurgeDeletedSecret(context.Background(), name, nil)
@@ -212,9 +219,6 @@ func TestID(t *testing.T) {
 }
 
 func TestListDeletedSecrets(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
 	client := startTest(t)
 
 	secret1 := createRandomName(t, "secret1")
@@ -246,27 +250,26 @@ func TestListDeletedSecrets(t *testing.T) {
 		return err
 	})
 
-	expected := map[string]struct{}{secret1: {}, secret2: {}}
-	pager := client.NewListDeletedSecretPropertiesPager(nil)
-	for pager.More() && len(expected) > 0 {
-		page, err := pager.NextPage(context.Background())
-		require.NoError(t, err)
-		testSerde(t, &page.DeletedSecretPropertiesListResult)
-		for _, secret := range page.Value {
-			testSerde(t, secret)
-			delete(expected, secret.ID.Name())
-			if len(expected) == 0 {
-				break
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		expected := map[string]struct{}{secret1: {}, secret2: {}}
+		pager := client.NewListDeletedSecretPropertiesPager(nil)
+		for pager.More() && len(expected) > 0 {
+			page, err := pager.NextPage(context.Background())
+			require.NoError(t, err)
+			testSerde(t, &page.DeletedSecretPropertiesListResult)
+			for _, secret := range page.Value {
+				testSerde(t, secret)
+				delete(expected, secret.ID.Name())
+				if len(expected) == 0 {
+					break
+				}
 			}
 		}
+		require.Empty(t, expected, "pager didn't return all expected secrets")
 	}
-	require.Empty(t, expected, "pager didn't return all expected secrets")
 }
 
 func TestListSecrets(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
 	client := startTest(t)
 
 	count := 4
@@ -278,25 +281,24 @@ func TestListSecrets(t *testing.T) {
 		defer cleanUpSecret(t, client, name)
 	}
 
-	pager := client.NewListSecretPropertiesPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(context.Background())
-		require.NoError(t, err)
-		testSerde(t, &page.SecretPropertiesListResult)
-		for _, secret := range page.Value {
-			testSerde(t, secret)
-			if strings.HasPrefix(secret.ID.Name(), "listsecrets") {
-				count--
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		pager := client.NewListSecretPropertiesPager(nil)
+		for pager.More() {
+			page, err := pager.NextPage(context.Background())
+			require.NoError(t, err)
+			testSerde(t, &page.SecretPropertiesListResult)
+			for _, secret := range page.Value {
+				testSerde(t, secret)
+				if strings.HasPrefix(secret.ID.Name(), "listsecrets") {
+					count--
+				}
 			}
 		}
+		require.Equal(t, count, 0)
 	}
-	require.Equal(t, count, 0)
 }
 
 func TestListSecretVersions(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
 	client := startTest(t)
 
 	name := createRandomName(t, "listversions")
@@ -318,28 +320,30 @@ func TestListSecretVersions(t *testing.T) {
 	}
 	defer cleanUpSecret(t, client, name)
 
-	pager := client.NewListSecretPropertiesVersionsPager(name, nil)
-	for pager.More() {
-		page, err := pager.NextPage(context.Background())
-		require.NoError(t, err)
-		testSerde(t, &page.SecretPropertiesListResult)
-		for i, secret := range page.Value {
-			testSerde(t, secret)
-			if i > 0 {
-				require.NotEqual(t, page.Value[i-1].ID.Version(), secret.ID.Version())
-			}
-			require.NotNil(t, secret.ID)
-			require.Equal(t, name, secret.ID.Name())
-			if strings.HasPrefix(secret.ID.Name(), name) {
-				count--
-				require.Equal(t, commonParams.ContentType, secret.ContentType)
-				require.Equal(t, commonParams.SecretAttributes.Expires.Unix(), secret.Attributes.Expires.Unix())
-				require.Equal(t, commonParams.SecretAttributes.NotBefore.Unix(), secret.Attributes.NotBefore.Unix())
-				require.Equal(t, commonParams.Tags, secret.Tags)
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		pager := client.NewListSecretPropertiesVersionsPager(name, nil)
+		for pager.More() {
+			page, err := pager.NextPage(context.Background())
+			require.NoError(t, err)
+			testSerde(t, &page.SecretPropertiesListResult)
+			for i, secret := range page.Value {
+				testSerde(t, secret)
+				if i > 0 {
+					require.NotEqual(t, page.Value[i-1].ID.Version(), secret.ID.Version())
+				}
+				require.NotNil(t, secret.ID)
+				require.Equal(t, name, secret.ID.Name())
+				if strings.HasPrefix(secret.ID.Name(), name) {
+					count--
+					require.Equal(t, commonParams.ContentType, secret.ContentType)
+					require.Equal(t, commonParams.SecretAttributes.Expires.Unix(), secret.Attributes.Expires.Unix())
+					require.Equal(t, commonParams.SecretAttributes.NotBefore.Unix(), secret.Attributes.NotBefore.Unix())
+					require.Equal(t, commonParams.Tags, secret.Tags)
+				}
 			}
 		}
+		require.Equal(t, count, 0)
 	}
-	require.Equal(t, count, 0)
 }
 
 func TestNameRequired(t *testing.T) {

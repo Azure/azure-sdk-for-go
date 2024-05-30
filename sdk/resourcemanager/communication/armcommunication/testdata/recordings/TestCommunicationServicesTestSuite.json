@@ -1,0 +1,1602 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://Sanitized.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg?api-version=2021-04-01",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "21",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-go-armresources.ResourceGroupsClient/v1.1.1 (go1.22.0; Windows_NT)"
+      },
+      "RequestBody": {
+        "location": "eastus"
+      },
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "148",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 30 May 2024 06:32:09 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-writes": "1199",
+        "x-ms-request-id": "Sanitized",
+        "x-ms-routing-request-id": "JAPANWEST:20240530T063210Z:00000000-0000-0000-0000-000000000000",
+        "X-MSEdge-Ref": "Ref A: 0433E399BAEA4391825B256F6E73A74E Ref B: TYO201151005062 Ref C: 2024-05-30T06:32:07Z"
+      },
+      "ResponseBody": {
+        "id": "Sanitized",
+        "name": "Sanitized",
+        "type": "Microsoft.Resources/resourceGroups",
+        "location": "eastus",
+        "properties": {
+          "provisioningState": "Succeeded"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://Sanitized.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Communication/checkNameAvailability?api-version=2023-04-01",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "75",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-go-armcommunication/v2.2.0 (go1.22.0; Windows_NT)"
+      },
+      "RequestBody": {
+        "name": "Sanitized",
+        "type": "Microsoft.Communication/CommunicationServices"
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "89",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 30 May 2024 06:32:12 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-providerhub-traffic": "True",
+        "x-ms-ratelimit-remaining-subscription-writes": "1198",
+        "x-ms-request-id": "Sanitized",
+        "x-ms-routing-request-id": "JAPANWEST:20240530T063212Z:00000000-0000-0000-0000-000000000000",
+        "X-MSEdge-Ref": "Ref A: C2B8BBF650A1421B8B2A912EB130234A Ref B: TYO201151005062 Ref C: 2024-05-30T06:32:11Z"
+      },
+      "ResponseBody": {
+        "nameAvailable": false,
+        "reason": "AlreadyExists",
+        "message": "Resource name already exists"
+      }
+    },
+    {
+      "RequestUri": "https://Sanitized.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Communication/communicationServices/communicjmdD0j?api-version=2023-04-01",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "67",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-go-armcommunication/v2.2.0 (go1.22.0; Windows_NT)"
+      },
+      "RequestBody": {
+        "location": "Global",
+        "properties": {
+          "dataLocation": "United States"
+        }
+      },
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Communication/locations/WESTUS2/operationStatuses/00000000-0000-0000-0000-000000000000*9E1D96BB126BA935F1A54761E43429532EAE3B7A54D33E21D0647138AB44B993?api-version=2023-04-01&t=638526475367674505&c=MIIHKjCCBhKgAwIBAgITHgRzbqCyQ18wMndEBQAABHNuoDANBgkqhkiG9w0BAQsFADBEMRMwEQYKCZImiZPyLGQBGRYDR0JMMRMwEQYKCZImiZPyLGQBGRYDQU1FMRgwFgYDVQQDEw9BTUUgSW5mcmEgQ0EgMDYwHhcNMjQwNTAxMDA1NzQyWhcNMjUwNDI2MDA1NzQyWjBAMT4wPAYDVQQDEzVhc3luY29wZXJhdGlvbnNpZ25pbmdjZXJ0aWZpY2F0ZS5tYW5hZ2VtZW50LmF6dXJlLmNvbTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMKR0qd6SsZNJFgW7BROfLH78VOdzQmMBVhtelcKZz5jnYIaBr5RtlEsdt7BbYCfFptSFfLWb-ZTIum7yA57IxyDmQ7JiqRidDiZexsD5c19Ro8X8Ovst5nbLpGhn6Pr8c5hHE1km0r8fxOAtTNTLSKEBjXH1ue8T9QOuFxjbC2crcKDsMMzdB-2NCtWkdJdlHXeWPqL1Ugte8LutWk1Gp1acb__Tt5nH16kf1FqsLebZV9YHRzSSdws78-SJXIBWdRzv-u7sPa_Dhwf1QyUgDpAX4CBZyDdI-3OLfE3ocZuKza3FkLKElN5VoRs1isVjfNetiqzWnKdJcyCr8_asbkCAwEAAaOCBBcwggQTMCcGCSsGAQQBgjcVCgQaMBgwCgYIKwYBBQUHAwEwCgYIKwYBBQUHAwIwPQYJKwYBBAGCNxUHBDAwLgYmKwYBBAGCNxUIhpDjDYTVtHiE8Ys-hZvdFs6dEoFggvX2K4Py0SACAWQCAQowggHLBggrBgEFBQcBAQSCAb0wggG5MGMGCCsGAQUFBzAChldodHRwOi8vY3JsLm1pY3Jvc29mdC5jb20vcGtpaW5mcmEvQ2VydHMvQkwyUEtJSU5UQ0EwMi5BTUUuR0JMX0FNRSUyMEluZnJhJTIwQ0ElMjAwNi5jcnQwUwYIKwYBBQUHMAKGR2h0dHA6Ly9jcmwxLmFtZS5nYmwvYWlhL0JMMlBLSUlOVENBMDIuQU1FLkdCTF9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3J0MFMGCCsGAQUFBzAChkdodHRwOi8vY3JsMi5hbWUuZ2JsL2FpYS9CTDJQS0lJTlRDQTAyLkFNRS5HQkxfQU1FJTIwSW5mcmElMjBDQSUyMDA2LmNydDBTBggrBgEFBQcwAoZHaHR0cDovL2NybDMuYW1lLmdibC9haWEvQkwyUEtJSU5UQ0EwMi5BTUUuR0JMX0FNRSUyMEluZnJhJTIwQ0ElMjAwNi5jcnQwUwYIKwYBBQUHMAKGR2h0dHA6Ly9jcmw0LmFtZS5nYmwvYWlhL0JMMlBLSUlOVENBMDIuQU1FLkdCTF9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3J0MB0GA1UdDgQWBBTYYOxyiBP7KsKQkNOhmt-DI4Oi8zAOBgNVHQ8BAf8EBAMCBaAwggEmBgNVHR8EggEdMIIBGTCCARWgggERoIIBDYY_aHR0cDovL2NybC5taWNyb3NvZnQuY29tL3BraWluZnJhL0NSTC9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3JshjFodHRwOi8vY3JsMS5hbWUuZ2JsL2NybC9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3JshjFodHRwOi8vY3JsMi5hbWUuZ2JsL2NybC9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3JshjFodHRwOi8vY3JsMy5hbWUuZ2JsL2NybC9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3JshjFodHRwOi8vY3JsNC5hbWUuZ2JsL2NybC9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3JsMEEGA1UdIAQ6MDgwDAYKKwYBBAGCN3sBATAMBgorBgEEAYI3ewIBMAwGCisGAQQBgjd7AwEwDAYKKwYBBAGCN3sEATAfBgNVHSMEGDAWgBTxRmjG8cPwKy19i2rhsvm-NfzRQTAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYBBQUHAwIwDQYJKoZIhvcNAQELBQADggEBAJBwyHHdAbRLLd6NdpWZ2_Te1qC8wnl7dJSjbCbiDdO0Lo5wlJlSsT3QFREJewXHLFpokqGXVOqtejImXRyGe1PXsaIpj-mshm-XkJ76mPsWSx7Rr8UXykFzpGeCOj4tRczNZGuHyO9JJ5yV3UkFteCXAqi5hcM2kCm7lxMpsfmRPJKOeBYInFfzmvEWH0HOZl8bkgFcVzrlqpVfBB8dMLkq0Qn2eU6Z3u2wFFnNXaovkz5lrumrxOKFGsgF1Z-HE1S7aIgkgFv3mfzDOQKrIKwoKx0lNr9_pxSswzr9J0q0S2Xbb567AC4hXNjj9tUOn-U2xtjWYBCml7C8Ndwo9Zw&s=k_LYQcr1UqPlCliSCZijAorLo3BMuQo-Hq4ui6_QXgiDv4TFZtIsQpIGNNIswFuAG5VYxDBmC5uzZc_dUBXSrUYZXthcYdBs5g1Jlol72BDVh_WbcnY_NVtOrdzPa9hQDnP31IE9Y1ruKazmrbDiVnRjbZ_ErvhKF0h1ZovmcEFjRyF-oUDRrX2TK_WBr5BHPPfmo0M29HkY1DIjn7_4ENaAKYB0G8O3zqmzXljPqjQaGf7fIPin_IO8eO-Thhfl7_0l6T4hLin63znfeBIURQcYoMmhSmo7gEXPMdVOTMyFr873B00Dgw38zx9F_o8db8OOfVJ7Scpp4lonkZ6KKA&h=pUH3iV3xNfrXmVGWJxnXZn-ItufYFpBiCHNr3Pv-dEM",
+        "Cache-Control": "no-cache",
+        "Content-Length": "399",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 30 May 2024 06:32:16 GMT",
+        "ETag": "\"00000000-0000-0000-0000-000000000000\"",
+        "Expires": "-1",
+        "mise-correlation-id": "00000000-0000-0000-0000-000000000000",
+        "Pragma": "no-cache",
+        "Request-Context": "appId=",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-providerhub-traffic": "True",
+        "x-ms-ratelimit-remaining-subscription-writes": "1199",
+        "x-ms-request-id": "Sanitized",
+        "x-ms-routing-request-id": "JAPANWEST:20240530T063216Z:00000000-0000-0000-0000-000000000000",
+        "X-MSEdge-Ref": "Ref A: ED849A85D6B24AC0A69E595EC66AD3C0 Ref B: TYO201151005062 Ref C: 2024-05-30T06:32:12Z"
+      },
+      "ResponseBody": {
+        "id": "Sanitized",
+        "name": "Sanitized",
+        "type": "microsoft.communication/communicationservices",
+        "location": "Global",
+        "systemData": {
+          "createdBy": "Sanitized",
+          "createdByType": "User",
+          "createdAt": "2024-05-30T06:32:14.7204603Z",
+          "lastModifiedBy": "Sanitized",
+          "lastModifiedByType": "User",
+          "lastModifiedAt": "2024-05-30T06:32:14.7204603Z"
+        },
+        "properties": {
+          "dataLocation": "United States",
+          "provisioningState": "Accepted"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://Sanitized.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Communication/locations/WESTUS2/operationStatuses/00000000-0000-0000-0000-000000000000*9E1D96BB126BA935F1A54761E43429532EAE3B7A54D33E21D0647138AB44B993?api-version=2023-04-01&t=638526475367674505&c=MIIHKjCCBhKgAwIBAgITHgRzbqCyQ18wMndEBQAABHNuoDANBgkqhkiG9w0BAQsFADBEMRMwEQYKCZImiZPyLGQBGRYDR0JMMRMwEQYKCZImiZPyLGQBGRYDQU1FMRgwFgYDVQQDEw9BTUUgSW5mcmEgQ0EgMDYwHhcNMjQwNTAxMDA1NzQyWhcNMjUwNDI2MDA1NzQyWjBAMT4wPAYDVQQDEzVhc3luY29wZXJhdGlvbnNpZ25pbmdjZXJ0aWZpY2F0ZS5tYW5hZ2VtZW50LmF6dXJlLmNvbTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMKR0qd6SsZNJFgW7BROfLH78VOdzQmMBVhtelcKZz5jnYIaBr5RtlEsdt7BbYCfFptSFfLWb-ZTIum7yA57IxyDmQ7JiqRidDiZexsD5c19Ro8X8Ovst5nbLpGhn6Pr8c5hHE1km0r8fxOAtTNTLSKEBjXH1ue8T9QOuFxjbC2crcKDsMMzdB-2NCtWkdJdlHXeWPqL1Ugte8LutWk1Gp1acb__Tt5nH16kf1FqsLebZV9YHRzSSdws78-SJXIBWdRzv-u7sPa_Dhwf1QyUgDpAX4CBZyDdI-3OLfE3ocZuKza3FkLKElN5VoRs1isVjfNetiqzWnKdJcyCr8_asbkCAwEAAaOCBBcwggQTMCcGCSsGAQQBgjcVCgQaMBgwCgYIKwYBBQUHAwEwCgYIKwYBBQUHAwIwPQYJKwYBBAGCNxUHBDAwLgYmKwYBBAGCNxUIhpDjDYTVtHiE8Ys-hZvdFs6dEoFggvX2K4Py0SACAWQCAQowggHLBggrBgEFBQcBAQSCAb0wggG5MGMGCCsGAQUFBzAChldodHRwOi8vY3JsLm1pY3Jvc29mdC5jb20vcGtpaW5mcmEvQ2VydHMvQkwyUEtJSU5UQ0EwMi5BTUUuR0JMX0FNRSUyMEluZnJhJTIwQ0ElMjAwNi5jcnQwUwYIKwYBBQUHMAKGR2h0dHA6Ly9jcmwxLmFtZS5nYmwvYWlhL0JMMlBLSUlOVENBMDIuQU1FLkdCTF9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3J0MFMGCCsGAQUFBzAChkdodHRwOi8vY3JsMi5hbWUuZ2JsL2FpYS9CTDJQS0lJTlRDQTAyLkFNRS5HQkxfQU1FJTIwSW5mcmElMjBDQSUyMDA2LmNydDBTBggrBgEFBQcwAoZHaHR0cDovL2NybDMuYW1lLmdibC9haWEvQkwyUEtJSU5UQ0EwMi5BTUUuR0JMX0FNRSUyMEluZnJhJTIwQ0ElMjAwNi5jcnQwUwYIKwYBBQUHMAKGR2h0dHA6Ly9jcmw0LmFtZS5nYmwvYWlhL0JMMlBLSUlOVENBMDIuQU1FLkdCTF9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3J0MB0GA1UdDgQWBBTYYOxyiBP7KsKQkNOhmt-DI4Oi8zAOBgNVHQ8BAf8EBAMCBaAwggEmBgNVHR8EggEdMIIBGTCCARWgggERoIIBDYY_aHR0cDovL2NybC5taWNyb3NvZnQuY29tL3BraWluZnJhL0NSTC9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3JshjFodHRwOi8vY3JsMS5hbWUuZ2JsL2NybC9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3JshjFodHRwOi8vY3JsMi5hbWUuZ2JsL2NybC9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3JshjFodHRwOi8vY3JsMy5hbWUuZ2JsL2NybC9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3JshjFodHRwOi8vY3JsNC5hbWUuZ2JsL2NybC9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3JsMEEGA1UdIAQ6MDgwDAYKKwYBBAGCN3sBATAMBgorBgEEAYI3ewIBMAwGCisGAQQBgjd7AwEwDAYKKwYBBAGCN3sEATAfBgNVHSMEGDAWgBTxRmjG8cPwKy19i2rhsvm-NfzRQTAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYBBQUHAwIwDQYJKoZIhvcNAQELBQADggEBAJBwyHHdAbRLLd6NdpWZ2_Te1qC8wnl7dJSjbCbiDdO0Lo5wlJlSsT3QFREJewXHLFpokqGXVOqtejImXRyGe1PXsaIpj-mshm-XkJ76mPsWSx7Rr8UXykFzpGeCOj4tRczNZGuHyO9JJ5yV3UkFteCXAqi5hcM2kCm7lxMpsfmRPJKOeBYInFfzmvEWH0HOZl8bkgFcVzrlqpVfBB8dMLkq0Qn2eU6Z3u2wFFnNXaovkz5lrumrxOKFGsgF1Z-HE1S7aIgkgFv3mfzDOQKrIKwoKx0lNr9_pxSswzr9J0q0S2Xbb567AC4hXNjj9tUOn-U2xtjWYBCml7C8Ndwo9Zw&s=k_LYQcr1UqPlCliSCZijAorLo3BMuQo-Hq4ui6_QXgiDv4TFZtIsQpIGNNIswFuAG5VYxDBmC5uzZc_dUBXSrUYZXthcYdBs5g1Jlol72BDVh_WbcnY_NVtOrdzPa9hQDnP31IE9Y1ruKazmrbDiVnRjbZ_ErvhKF0h1ZovmcEFjRyF-oUDRrX2TK_WBr5BHPPfmo0M29HkY1DIjn7_4ENaAKYB0G8O3zqmzXljPqjQaGf7fIPin_IO8eO-Thhfl7_0l6T4hLin63znfeBIURQcYoMmhSmo7gEXPMdVOTMyFr873B00Dgw38zx9F_o8db8OOfVJ7Scpp4lonkZ6KKA&h=pUH3iV3xNfrXmVGWJxnXZn-ItufYFpBiCHNr3Pv-dEM",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armcommunication/v2.2.0 (go1.22.0; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "268",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 30 May 2024 06:32:17 GMT",
+        "ETag": "\"00000000-0000-0000-0000-000000000000\"",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-reads": "11995",
+        "x-ms-request-id": "Sanitized",
+        "x-ms-routing-request-id": "JAPANWEST:20240530T063217Z:00000000-0000-0000-0000-000000000000",
+        "X-MSEdge-Ref": "Ref A: A5479B712C3C4CD8A37F3A5EB8B35FAC Ref B: TYO201151005062 Ref C: 2024-05-30T06:32:16Z"
+      },
+      "ResponseBody": {
+        "id": "Sanitized",
+        "name": "Sanitized",
+        "resourceId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Communication/communicationServices/communicjmdD0j",
+        "status": "Accepted",
+        "startTime": "2024-05-30T06:32:16.2873004Z"
+      }
+    },
+    {
+      "RequestUri": "https://Sanitized.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Communication/locations/WESTUS2/operationStatuses/00000000-0000-0000-0000-000000000000*9E1D96BB126BA935F1A54761E43429532EAE3B7A54D33E21D0647138AB44B993?api-version=2023-04-01&t=638526475367674505&c=MIIHKjCCBhKgAwIBAgITHgRzbqCyQ18wMndEBQAABHNuoDANBgkqhkiG9w0BAQsFADBEMRMwEQYKCZImiZPyLGQBGRYDR0JMMRMwEQYKCZImiZPyLGQBGRYDQU1FMRgwFgYDVQQDEw9BTUUgSW5mcmEgQ0EgMDYwHhcNMjQwNTAxMDA1NzQyWhcNMjUwNDI2MDA1NzQyWjBAMT4wPAYDVQQDEzVhc3luY29wZXJhdGlvbnNpZ25pbmdjZXJ0aWZpY2F0ZS5tYW5hZ2VtZW50LmF6dXJlLmNvbTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMKR0qd6SsZNJFgW7BROfLH78VOdzQmMBVhtelcKZz5jnYIaBr5RtlEsdt7BbYCfFptSFfLWb-ZTIum7yA57IxyDmQ7JiqRidDiZexsD5c19Ro8X8Ovst5nbLpGhn6Pr8c5hHE1km0r8fxOAtTNTLSKEBjXH1ue8T9QOuFxjbC2crcKDsMMzdB-2NCtWkdJdlHXeWPqL1Ugte8LutWk1Gp1acb__Tt5nH16kf1FqsLebZV9YHRzSSdws78-SJXIBWdRzv-u7sPa_Dhwf1QyUgDpAX4CBZyDdI-3OLfE3ocZuKza3FkLKElN5VoRs1isVjfNetiqzWnKdJcyCr8_asbkCAwEAAaOCBBcwggQTMCcGCSsGAQQBgjcVCgQaMBgwCgYIKwYBBQUHAwEwCgYIKwYBBQUHAwIwPQYJKwYBBAGCNxUHBDAwLgYmKwYBBAGCNxUIhpDjDYTVtHiE8Ys-hZvdFs6dEoFggvX2K4Py0SACAWQCAQowggHLBggrBgEFBQcBAQSCAb0wggG5MGMGCCsGAQUFBzAChldodHRwOi8vY3JsLm1pY3Jvc29mdC5jb20vcGtpaW5mcmEvQ2VydHMvQkwyUEtJSU5UQ0EwMi5BTUUuR0JMX0FNRSUyMEluZnJhJTIwQ0ElMjAwNi5jcnQwUwYIKwYBBQUHMAKGR2h0dHA6Ly9jcmwxLmFtZS5nYmwvYWlhL0JMMlBLSUlOVENBMDIuQU1FLkdCTF9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3J0MFMGCCsGAQUFBzAChkdodHRwOi8vY3JsMi5hbWUuZ2JsL2FpYS9CTDJQS0lJTlRDQTAyLkFNRS5HQkxfQU1FJTIwSW5mcmElMjBDQSUyMDA2LmNydDBTBggrBgEFBQcwAoZHaHR0cDovL2NybDMuYW1lLmdibC9haWEvQkwyUEtJSU5UQ0EwMi5BTUUuR0JMX0FNRSUyMEluZnJhJTIwQ0ElMjAwNi5jcnQwUwYIKwYBBQUHMAKGR2h0dHA6Ly9jcmw0LmFtZS5nYmwvYWlhL0JMMlBLSUlOVENBMDIuQU1FLkdCTF9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3J0MB0GA1UdDgQWBBTYYOxyiBP7KsKQkNOhmt-DI4Oi8zAOBgNVHQ8BAf8EBAMCBaAwggEmBgNVHR8EggEdMIIBGTCCARWgggERoIIBDYY_aHR0cDovL2NybC5taWNyb3NvZnQuY29tL3BraWluZnJhL0NSTC9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3JshjFodHRwOi8vY3JsMS5hbWUuZ2JsL2NybC9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3JshjFodHRwOi8vY3JsMi5hbWUuZ2JsL2NybC9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3JshjFodHRwOi8vY3JsMy5hbWUuZ2JsL2NybC9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3JshjFodHRwOi8vY3JsNC5hbWUuZ2JsL2NybC9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3JsMEEGA1UdIAQ6MDgwDAYKKwYBBAGCN3sBATAMBgorBgEEAYI3ewIBMAwGCisGAQQBgjd7AwEwDAYKKwYBBAGCN3sEATAfBgNVHSMEGDAWgBTxRmjG8cPwKy19i2rhsvm-NfzRQTAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYBBQUHAwIwDQYJKoZIhvcNAQELBQADggEBAJBwyHHdAbRLLd6NdpWZ2_Te1qC8wnl7dJSjbCbiDdO0Lo5wlJlSsT3QFREJewXHLFpokqGXVOqtejImXRyGe1PXsaIpj-mshm-XkJ76mPsWSx7Rr8UXykFzpGeCOj4tRczNZGuHyO9JJ5yV3UkFteCXAqi5hcM2kCm7lxMpsfmRPJKOeBYInFfzmvEWH0HOZl8bkgFcVzrlqpVfBB8dMLkq0Qn2eU6Z3u2wFFnNXaovkz5lrumrxOKFGsgF1Z-HE1S7aIgkgFv3mfzDOQKrIKwoKx0lNr9_pxSswzr9J0q0S2Xbb567AC4hXNjj9tUOn-U2xtjWYBCml7C8Ndwo9Zw&s=k_LYQcr1UqPlCliSCZijAorLo3BMuQo-Hq4ui6_QXgiDv4TFZtIsQpIGNNIswFuAG5VYxDBmC5uzZc_dUBXSrUYZXthcYdBs5g1Jlol72BDVh_WbcnY_NVtOrdzPa9hQDnP31IE9Y1ruKazmrbDiVnRjbZ_ErvhKF0h1ZovmcEFjRyF-oUDRrX2TK_WBr5BHPPfmo0M29HkY1DIjn7_4ENaAKYB0G8O3zqmzXljPqjQaGf7fIPin_IO8eO-Thhfl7_0l6T4hLin63znfeBIURQcYoMmhSmo7gEXPMdVOTMyFr873B00Dgw38zx9F_o8db8OOfVJ7Scpp4lonkZ6KKA&h=pUH3iV3xNfrXmVGWJxnXZn-ItufYFpBiCHNr3Pv-dEM",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armcommunication/v2.2.0 (go1.22.0; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "268",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 30 May 2024 06:32:47 GMT",
+        "ETag": "\"00000000-0000-0000-0000-000000000000\"",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-reads": "11999",
+        "x-ms-request-id": "Sanitized",
+        "x-ms-routing-request-id": "JAPANWEST:20240530T063247Z:00000000-0000-0000-0000-000000000000",
+        "X-MSEdge-Ref": "Ref A: 984D75F7DA1845CAB860FBD1B329AABD Ref B: TYO201151005062 Ref C: 2024-05-30T06:32:47Z"
+      },
+      "ResponseBody": {
+        "id": "Sanitized",
+        "name": "Sanitized",
+        "resourceId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Communication/communicationServices/communicjmdD0j",
+        "status": "Accepted",
+        "startTime": "2024-05-30T06:32:16.2873004Z"
+      }
+    },
+    {
+      "RequestUri": "https://Sanitized.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Communication/locations/WESTUS2/operationStatuses/00000000-0000-0000-0000-000000000000*9E1D96BB126BA935F1A54761E43429532EAE3B7A54D33E21D0647138AB44B993?api-version=2023-04-01&t=638526475367674505&c=MIIHKjCCBhKgAwIBAgITHgRzbqCyQ18wMndEBQAABHNuoDANBgkqhkiG9w0BAQsFADBEMRMwEQYKCZImiZPyLGQBGRYDR0JMMRMwEQYKCZImiZPyLGQBGRYDQU1FMRgwFgYDVQQDEw9BTUUgSW5mcmEgQ0EgMDYwHhcNMjQwNTAxMDA1NzQyWhcNMjUwNDI2MDA1NzQyWjBAMT4wPAYDVQQDEzVhc3luY29wZXJhdGlvbnNpZ25pbmdjZXJ0aWZpY2F0ZS5tYW5hZ2VtZW50LmF6dXJlLmNvbTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMKR0qd6SsZNJFgW7BROfLH78VOdzQmMBVhtelcKZz5jnYIaBr5RtlEsdt7BbYCfFptSFfLWb-ZTIum7yA57IxyDmQ7JiqRidDiZexsD5c19Ro8X8Ovst5nbLpGhn6Pr8c5hHE1km0r8fxOAtTNTLSKEBjXH1ue8T9QOuFxjbC2crcKDsMMzdB-2NCtWkdJdlHXeWPqL1Ugte8LutWk1Gp1acb__Tt5nH16kf1FqsLebZV9YHRzSSdws78-SJXIBWdRzv-u7sPa_Dhwf1QyUgDpAX4CBZyDdI-3OLfE3ocZuKza3FkLKElN5VoRs1isVjfNetiqzWnKdJcyCr8_asbkCAwEAAaOCBBcwggQTMCcGCSsGAQQBgjcVCgQaMBgwCgYIKwYBBQUHAwEwCgYIKwYBBQUHAwIwPQYJKwYBBAGCNxUHBDAwLgYmKwYBBAGCNxUIhpDjDYTVtHiE8Ys-hZvdFs6dEoFggvX2K4Py0SACAWQCAQowggHLBggrBgEFBQcBAQSCAb0wggG5MGMGCCsGAQUFBzAChldodHRwOi8vY3JsLm1pY3Jvc29mdC5jb20vcGtpaW5mcmEvQ2VydHMvQkwyUEtJSU5UQ0EwMi5BTUUuR0JMX0FNRSUyMEluZnJhJTIwQ0ElMjAwNi5jcnQwUwYIKwYBBQUHMAKGR2h0dHA6Ly9jcmwxLmFtZS5nYmwvYWlhL0JMMlBLSUlOVENBMDIuQU1FLkdCTF9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3J0MFMGCCsGAQUFBzAChkdodHRwOi8vY3JsMi5hbWUuZ2JsL2FpYS9CTDJQS0lJTlRDQTAyLkFNRS5HQkxfQU1FJTIwSW5mcmElMjBDQSUyMDA2LmNydDBTBggrBgEFBQcwAoZHaHR0cDovL2NybDMuYW1lLmdibC9haWEvQkwyUEtJSU5UQ0EwMi5BTUUuR0JMX0FNRSUyMEluZnJhJTIwQ0ElMjAwNi5jcnQwUwYIKwYBBQUHMAKGR2h0dHA6Ly9jcmw0LmFtZS5nYmwvYWlhL0JMMlBLSUlOVENBMDIuQU1FLkdCTF9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3J0MB0GA1UdDgQWBBTYYOxyiBP7KsKQkNOhmt-DI4Oi8zAOBgNVHQ8BAf8EBAMCBaAwggEmBgNVHR8EggEdMIIBGTCCARWgggERoIIBDYY_aHR0cDovL2NybC5taWNyb3NvZnQuY29tL3BraWluZnJhL0NSTC9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3JshjFodHRwOi8vY3JsMS5hbWUuZ2JsL2NybC9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3JshjFodHRwOi8vY3JsMi5hbWUuZ2JsL2NybC9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3JshjFodHRwOi8vY3JsMy5hbWUuZ2JsL2NybC9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3JshjFodHRwOi8vY3JsNC5hbWUuZ2JsL2NybC9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3JsMEEGA1UdIAQ6MDgwDAYKKwYBBAGCN3sBATAMBgorBgEEAYI3ewIBMAwGCisGAQQBgjd7AwEwDAYKKwYBBAGCN3sEATAfBgNVHSMEGDAWgBTxRmjG8cPwKy19i2rhsvm-NfzRQTAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYBBQUHAwIwDQYJKoZIhvcNAQELBQADggEBAJBwyHHdAbRLLd6NdpWZ2_Te1qC8wnl7dJSjbCbiDdO0Lo5wlJlSsT3QFREJewXHLFpokqGXVOqtejImXRyGe1PXsaIpj-mshm-XkJ76mPsWSx7Rr8UXykFzpGeCOj4tRczNZGuHyO9JJ5yV3UkFteCXAqi5hcM2kCm7lxMpsfmRPJKOeBYInFfzmvEWH0HOZl8bkgFcVzrlqpVfBB8dMLkq0Qn2eU6Z3u2wFFnNXaovkz5lrumrxOKFGsgF1Z-HE1S7aIgkgFv3mfzDOQKrIKwoKx0lNr9_pxSswzr9J0q0S2Xbb567AC4hXNjj9tUOn-U2xtjWYBCml7C8Ndwo9Zw&s=k_LYQcr1UqPlCliSCZijAorLo3BMuQo-Hq4ui6_QXgiDv4TFZtIsQpIGNNIswFuAG5VYxDBmC5uzZc_dUBXSrUYZXthcYdBs5g1Jlol72BDVh_WbcnY_NVtOrdzPa9hQDnP31IE9Y1ruKazmrbDiVnRjbZ_ErvhKF0h1ZovmcEFjRyF-oUDRrX2TK_WBr5BHPPfmo0M29HkY1DIjn7_4ENaAKYB0G8O3zqmzXljPqjQaGf7fIPin_IO8eO-Thhfl7_0l6T4hLin63znfeBIURQcYoMmhSmo7gEXPMdVOTMyFr873B00Dgw38zx9F_o8db8OOfVJ7Scpp4lonkZ6KKA&h=pUH3iV3xNfrXmVGWJxnXZn-ItufYFpBiCHNr3Pv-dEM",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armcommunication/v2.2.0 (go1.22.0; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "268",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 30 May 2024 06:33:17 GMT",
+        "ETag": "\"00000000-0000-0000-0000-000000000000\"",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-reads": "11998",
+        "x-ms-request-id": "Sanitized",
+        "x-ms-routing-request-id": "JAPANWEST:20240530T063318Z:00000000-0000-0000-0000-000000000000",
+        "X-MSEdge-Ref": "Ref A: 4F17889B532846F7A143D8484B055084 Ref B: TYO201151005062 Ref C: 2024-05-30T06:33:17Z"
+      },
+      "ResponseBody": {
+        "id": "Sanitized",
+        "name": "Sanitized",
+        "resourceId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Communication/communicationServices/communicjmdD0j",
+        "status": "Accepted",
+        "startTime": "2024-05-30T06:32:16.2873004Z"
+      }
+    },
+    {
+      "RequestUri": "https://Sanitized.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Communication/locations/WESTUS2/operationStatuses/00000000-0000-0000-0000-000000000000*9E1D96BB126BA935F1A54761E43429532EAE3B7A54D33E21D0647138AB44B993?api-version=2023-04-01&t=638526475367674505&c=MIIHKjCCBhKgAwIBAgITHgRzbqCyQ18wMndEBQAABHNuoDANBgkqhkiG9w0BAQsFADBEMRMwEQYKCZImiZPyLGQBGRYDR0JMMRMwEQYKCZImiZPyLGQBGRYDQU1FMRgwFgYDVQQDEw9BTUUgSW5mcmEgQ0EgMDYwHhcNMjQwNTAxMDA1NzQyWhcNMjUwNDI2MDA1NzQyWjBAMT4wPAYDVQQDEzVhc3luY29wZXJhdGlvbnNpZ25pbmdjZXJ0aWZpY2F0ZS5tYW5hZ2VtZW50LmF6dXJlLmNvbTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMKR0qd6SsZNJFgW7BROfLH78VOdzQmMBVhtelcKZz5jnYIaBr5RtlEsdt7BbYCfFptSFfLWb-ZTIum7yA57IxyDmQ7JiqRidDiZexsD5c19Ro8X8Ovst5nbLpGhn6Pr8c5hHE1km0r8fxOAtTNTLSKEBjXH1ue8T9QOuFxjbC2crcKDsMMzdB-2NCtWkdJdlHXeWPqL1Ugte8LutWk1Gp1acb__Tt5nH16kf1FqsLebZV9YHRzSSdws78-SJXIBWdRzv-u7sPa_Dhwf1QyUgDpAX4CBZyDdI-3OLfE3ocZuKza3FkLKElN5VoRs1isVjfNetiqzWnKdJcyCr8_asbkCAwEAAaOCBBcwggQTMCcGCSsGAQQBgjcVCgQaMBgwCgYIKwYBBQUHAwEwCgYIKwYBBQUHAwIwPQYJKwYBBAGCNxUHBDAwLgYmKwYBBAGCNxUIhpDjDYTVtHiE8Ys-hZvdFs6dEoFggvX2K4Py0SACAWQCAQowggHLBggrBgEFBQcBAQSCAb0wggG5MGMGCCsGAQUFBzAChldodHRwOi8vY3JsLm1pY3Jvc29mdC5jb20vcGtpaW5mcmEvQ2VydHMvQkwyUEtJSU5UQ0EwMi5BTUUuR0JMX0FNRSUyMEluZnJhJTIwQ0ElMjAwNi5jcnQwUwYIKwYBBQUHMAKGR2h0dHA6Ly9jcmwxLmFtZS5nYmwvYWlhL0JMMlBLSUlOVENBMDIuQU1FLkdCTF9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3J0MFMGCCsGAQUFBzAChkdodHRwOi8vY3JsMi5hbWUuZ2JsL2FpYS9CTDJQS0lJTlRDQTAyLkFNRS5HQkxfQU1FJTIwSW5mcmElMjBDQSUyMDA2LmNydDBTBggrBgEFBQcwAoZHaHR0cDovL2NybDMuYW1lLmdibC9haWEvQkwyUEtJSU5UQ0EwMi5BTUUuR0JMX0FNRSUyMEluZnJhJTIwQ0ElMjAwNi5jcnQwUwYIKwYBBQUHMAKGR2h0dHA6Ly9jcmw0LmFtZS5nYmwvYWlhL0JMMlBLSUlOVENBMDIuQU1FLkdCTF9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3J0MB0GA1UdDgQWBBTYYOxyiBP7KsKQkNOhmt-DI4Oi8zAOBgNVHQ8BAf8EBAMCBaAwggEmBgNVHR8EggEdMIIBGTCCARWgggERoIIBDYY_aHR0cDovL2NybC5taWNyb3NvZnQuY29tL3BraWluZnJhL0NSTC9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3JshjFodHRwOi8vY3JsMS5hbWUuZ2JsL2NybC9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3JshjFodHRwOi8vY3JsMi5hbWUuZ2JsL2NybC9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3JshjFodHRwOi8vY3JsMy5hbWUuZ2JsL2NybC9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3JshjFodHRwOi8vY3JsNC5hbWUuZ2JsL2NybC9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3JsMEEGA1UdIAQ6MDgwDAYKKwYBBAGCN3sBATAMBgorBgEEAYI3ewIBMAwGCisGAQQBgjd7AwEwDAYKKwYBBAGCN3sEATAfBgNVHSMEGDAWgBTxRmjG8cPwKy19i2rhsvm-NfzRQTAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYBBQUHAwIwDQYJKoZIhvcNAQELBQADggEBAJBwyHHdAbRLLd6NdpWZ2_Te1qC8wnl7dJSjbCbiDdO0Lo5wlJlSsT3QFREJewXHLFpokqGXVOqtejImXRyGe1PXsaIpj-mshm-XkJ76mPsWSx7Rr8UXykFzpGeCOj4tRczNZGuHyO9JJ5yV3UkFteCXAqi5hcM2kCm7lxMpsfmRPJKOeBYInFfzmvEWH0HOZl8bkgFcVzrlqpVfBB8dMLkq0Qn2eU6Z3u2wFFnNXaovkz5lrumrxOKFGsgF1Z-HE1S7aIgkgFv3mfzDOQKrIKwoKx0lNr9_pxSswzr9J0q0S2Xbb567AC4hXNjj9tUOn-U2xtjWYBCml7C8Ndwo9Zw&s=k_LYQcr1UqPlCliSCZijAorLo3BMuQo-Hq4ui6_QXgiDv4TFZtIsQpIGNNIswFuAG5VYxDBmC5uzZc_dUBXSrUYZXthcYdBs5g1Jlol72BDVh_WbcnY_NVtOrdzPa9hQDnP31IE9Y1ruKazmrbDiVnRjbZ_ErvhKF0h1ZovmcEFjRyF-oUDRrX2TK_WBr5BHPPfmo0M29HkY1DIjn7_4ENaAKYB0G8O3zqmzXljPqjQaGf7fIPin_IO8eO-Thhfl7_0l6T4hLin63znfeBIURQcYoMmhSmo7gEXPMdVOTMyFr873B00Dgw38zx9F_o8db8OOfVJ7Scpp4lonkZ6KKA&h=pUH3iV3xNfrXmVGWJxnXZn-ItufYFpBiCHNr3Pv-dEM",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armcommunication/v2.2.0 (go1.22.0; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "287",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 30 May 2024 06:33:48 GMT",
+        "ETag": "\"00000000-0000-0000-0000-000000000000\"",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-reads": "11997",
+        "x-ms-request-id": "Sanitized",
+        "x-ms-routing-request-id": "JAPANWEST:20240530T063348Z:00000000-0000-0000-0000-000000000000",
+        "X-MSEdge-Ref": "Ref A: BCF0D4A056FB43D0B881D708568A375C Ref B: TYO201151005062 Ref C: 2024-05-30T06:33:48Z"
+      },
+      "ResponseBody": {
+        "id": "Sanitized",
+        "name": "Sanitized",
+        "resourceId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Communication/communicationServices/communicjmdD0j",
+        "status": "Succeeded",
+        "startTime": "2024-05-30T06:32:16.2873004Z",
+        "properties": null
+      }
+    },
+    {
+      "RequestUri": "https://Sanitized.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Communication/communicationServices/communicjmdD0j?api-version=2023-04-01",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armcommunication/v2.2.0 (go1.22.0; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "526",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 30 May 2024 06:33:49 GMT",
+        "ETag": "\"00000000-0000-0000-0000-000000000000\"",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-providerhub-traffic": "True",
+        "x-ms-ratelimit-remaining-subscription-reads": "11999",
+        "x-ms-request-id": "Sanitized",
+        "x-ms-routing-request-id": "JAPANWEST:20240530T063349Z:00000000-0000-0000-0000-000000000000",
+        "X-MSEdge-Ref": "Ref A: 601D4BA2BA3D4A7887BEA553BD31210E Ref B: TYO201151005062 Ref C: 2024-05-30T06:33:49Z"
+      },
+      "ResponseBody": {
+        "id": "Sanitized",
+        "name": "Sanitized",
+        "type": "microsoft.communication/communicationservices",
+        "location": "Global",
+        "systemData": {
+          "createdBy": "Sanitized",
+          "createdByType": "User",
+          "createdAt": "2024-05-30T06:32:14.7204603Z",
+          "lastModifiedBy": "Sanitized",
+          "lastModifiedByType": "User",
+          "lastModifiedAt": "2024-05-30T06:32:14.7204603Z"
+        },
+        "properties": {
+          "provisioningState": "Succeeded",
+          "hostName": "communicjmdd0j.unitedstates.communication.azure.com",
+          "immutableResourceId": "00000000-0000-0000-0000-000000000000",
+          "dataLocation": "United States"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://Sanitized.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Communication/communicationServices?api-version=2023-04-01",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armcommunication/v2.2.0 (go1.22.0; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "2163",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 30 May 2024 06:33:49 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-providerhub-traffic": "True",
+        "x-ms-ratelimit-remaining-subscription-reads": "11997",
+        "x-ms-request-id": "Sanitized",
+        "x-ms-routing-request-id": "JAPANWEST:20240530T063350Z:00000000-0000-0000-0000-000000000000",
+        "X-MSEdge-Ref": "Ref A: 19F4691721244AAEA4BE3E70DFA3A985 Ref B: TYO201151005062 Ref C: 2024-05-30T06:33:50Z"
+      },
+      "ResponseBody": {
+        "value": [
+          {
+            "id": "Sanitized",
+            "name": "Sanitized",
+            "type": "microsoft.communication/communicationservices",
+            "location": "global",
+            "systemData": {
+              "createdBy": "Sanitized",
+              "createdByType": "Application",
+              "createdAt": "2021-04-01T21:12:55.5598661Z",
+              "lastModifiedBy": "Sanitized",
+              "lastModifiedByType": "Application",
+              "lastModifiedAt": "2021-04-01T21:12:55.5598661Z"
+            },
+            "properties": {
+              "provisioningState": "Failed",
+              "hostName": "tb22e124ccee94f90-communication.communication.azure.com",
+              "immutableResourceId": "00000000-0000-0000-0000-000000000000",
+              "dataLocation": "United States"
+            }
+          },
+          {
+            "id": "Sanitized",
+            "name": "Sanitized",
+            "type": "Microsoft.Communication/CommunicationServices",
+            "location": "global",
+            "systemData": {
+              "createdBy": "Sanitized",
+              "createdByType": "Application",
+              "createdAt": "2021-03-15T21:24:08.7260043Z",
+              "lastModifiedBy": "Sanitized",
+              "lastModifiedByType": "Application",
+              "lastModifiedAt": "2021-03-15T21:24:08.7260043Z"
+            },
+            "properties": {
+              "provisioningState": "Failed",
+              "hostName": "tc5adf098e3f64a0d-communication.communication.azure.com",
+              "immutableResourceId": "00000000-0000-0000-0000-000000000000",
+              "dataLocation": "United States"
+            }
+          },
+          {
+            "id": "Sanitized",
+            "name": "Sanitized",
+            "type": "Microsoft.Communication/CommunicationServices",
+            "location": "global",
+            "systemData": {
+              "createdBy": "Sanitized",
+              "createdByType": "Application",
+              "createdAt": "2021-03-16T20:49:23.7054864Z",
+              "lastModifiedBy": "Sanitized",
+              "lastModifiedByType": "Application",
+              "lastModifiedAt": "2021-03-16T20:49:23.7054864Z"
+            },
+            "properties": {
+              "provisioningState": "Failed",
+              "hostName": "tb01cc0bd8cde4086-communication.communication.azure.com",
+              "immutableResourceId": "00000000-0000-0000-0000-000000000000",
+              "dataLocation": "UnitedStates"
+            }
+          },
+          {
+            "id": "Sanitized",
+            "name": "Sanitized",
+            "type": "microsoft.communication/communicationservices",
+            "location": "Global",
+            "systemData": {
+              "createdBy": "Sanitized",
+              "createdByType": "User",
+              "createdAt": "2024-05-30T06:32:14.7204603Z",
+              "lastModifiedBy": "Sanitized",
+              "lastModifiedByType": "User",
+              "lastModifiedAt": "2024-05-30T06:32:14.7204603Z"
+            },
+            "properties": {
+              "provisioningState": "Succeeded",
+              "hostName": "communicjmdd0j.unitedstates.communication.azure.com",
+              "immutableResourceId": "00000000-0000-0000-0000-000000000000",
+              "dataLocation": "United States"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "RequestUri": "https://Sanitized.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Communication/communicationServices?api-version=2023-04-01",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armcommunication/v2.2.0 (go1.22.0; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "538",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 30 May 2024 06:33:51 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-providerhub-traffic": "True",
+        "x-ms-ratelimit-remaining-subscription-reads": "11994",
+        "x-ms-request-id": "Sanitized",
+        "x-ms-routing-request-id": "JAPANWEST:20240530T063351Z:00000000-0000-0000-0000-000000000000",
+        "X-MSEdge-Ref": "Ref A: 22277A6775A04961AF2396727B35B68A Ref B: TYO201151005062 Ref C: 2024-05-30T06:33:51Z"
+      },
+      "ResponseBody": {
+        "value": [
+          {
+            "id": "Sanitized",
+            "name": "Sanitized",
+            "type": "microsoft.communication/communicationservices",
+            "location": "Global",
+            "systemData": {
+              "createdBy": "Sanitized",
+              "createdByType": "User",
+              "createdAt": "2024-05-30T06:32:14.7204603Z",
+              "lastModifiedBy": "Sanitized",
+              "lastModifiedByType": "User",
+              "lastModifiedAt": "2024-05-30T06:32:14.7204603Z"
+            },
+            "properties": {
+              "provisioningState": "Succeeded",
+              "hostName": "communicjmdd0j.unitedstates.communication.azure.com",
+              "immutableResourceId": "00000000-0000-0000-0000-000000000000",
+              "dataLocation": "United States"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "RequestUri": "https://Sanitized.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Communication/communicationServices/communicjmdD0j?api-version=2023-04-01",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armcommunication/v2.2.0 (go1.22.0; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "526",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 30 May 2024 06:33:53 GMT",
+        "ETag": "\"00000000-0000-0000-0000-000000000000\"",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-providerhub-traffic": "True",
+        "x-ms-ratelimit-remaining-subscription-reads": "11998",
+        "x-ms-request-id": "Sanitized",
+        "x-ms-routing-request-id": "JAPANWEST:20240530T063354Z:00000000-0000-0000-0000-000000000000",
+        "X-MSEdge-Ref": "Ref A: 8236FD4AB5A14086AF4EC7364683DF5F Ref B: TYO201151005062 Ref C: 2024-05-30T06:33:52Z"
+      },
+      "ResponseBody": {
+        "id": "Sanitized",
+        "name": "Sanitized",
+        "type": "microsoft.communication/communicationservices",
+        "location": "Global",
+        "systemData": {
+          "createdBy": "Sanitized",
+          "createdByType": "User",
+          "createdAt": "2024-05-30T06:32:14.7204603Z",
+          "lastModifiedBy": "Sanitized",
+          "lastModifiedByType": "User",
+          "lastModifiedAt": "2024-05-30T06:32:14.7204603Z"
+        },
+        "properties": {
+          "provisioningState": "Succeeded",
+          "hostName": "communicjmdd0j.unitedstates.communication.azure.com",
+          "immutableResourceId": "00000000-0000-0000-0000-000000000000",
+          "dataLocation": "United States"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://Sanitized.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Communication/communicationServices/communicjmdD0j?api-version=2023-04-01",
+      "RequestMethod": "PATCH",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "28",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-go-armcommunication/v2.2.0 (go1.22.0; Windows_NT)"
+      },
+      "RequestBody": {
+        "tags": {
+          "newTag": "newVal"
+        }
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "553",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 30 May 2024 06:33:58 GMT",
+        "ETag": "\"00000000-0000-0000-0000-000000000000\"",
+        "Expires": "-1",
+        "mise-correlation-id": "00000000-0000-0000-0000-000000000000",
+        "Pragma": "no-cache",
+        "Request-Context": "appId=",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-providerhub-traffic": "True",
+        "x-ms-ratelimit-remaining-subscription-writes": "1199",
+        "x-ms-request-id": "Sanitized",
+        "x-ms-routing-request-id": "JAPANWEST:20240530T063359Z:00000000-0000-0000-0000-000000000000",
+        "X-MSEdge-Ref": "Ref A: D79DB789974E4F29B7C2C82602ABB1DE Ref B: TYO201151005062 Ref C: 2024-05-30T06:33:55Z"
+      },
+      "ResponseBody": {
+        "id": "Sanitized",
+        "name": "Sanitized",
+        "type": "microsoft.communication/communicationservices",
+        "location": "Global",
+        "tags": {
+          "newTag": "newVal"
+        },
+        "systemData": {
+          "createdBy": "Sanitized",
+          "createdByType": "User",
+          "createdAt": "2024-05-30T06:32:14.7204603Z",
+          "lastModifiedBy": "Sanitized",
+          "lastModifiedByType": "User",
+          "lastModifiedAt": "2024-05-30T06:33:56.7795334Z"
+        },
+        "properties": {
+          "hostName": "communicjmdd0j.unitedstates.communication.azure.com",
+          "immutableResourceId": "00000000-0000-0000-0000-000000000000",
+          "dataLocation": "United States",
+          "provisioningState": "Succeeded"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://Sanitized.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Communication/communicationServices/communicjmdD0j/regenerateKey?api-version=2023-04-01",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "21",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-go-armcommunication/v2.2.0 (go1.22.0; Windows_NT)"
+      },
+      "RequestBody": {
+        "keyType": "Primary"
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "142",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 30 May 2024 06:34:00 GMT",
+        "Expires": "-1",
+        "mise-correlation-id": "00000000-0000-0000-0000-000000000000",
+        "Pragma": "no-cache",
+        "Request-Context": "appId=",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-providerhub-traffic": "True",
+        "x-ms-ratelimit-remaining-subscription-writes": "1199",
+        "x-ms-request-id": "Sanitized",
+        "x-ms-routing-request-id": "JAPANWEST:20240530T063400Z:00000000-0000-0000-0000-000000000000",
+        "X-MSEdge-Ref": "Ref A: 48F024745CC24E76A9CF3AC8D3F981AA Ref B: TYO201151005062 Ref C: 2024-05-30T06:33:59Z"
+      },
+      "ResponseBody": "{\"primaryKey\":\"Sanitized\",\"primaryConnectionString\":\"endpoint=https://communicjmdd0j.unitedstates.communication.azure.com/;accesskey=Sanitized"
+    },
+    {
+      "RequestUri": "https://Sanitized.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Communication/communicationServices/communicjmdD0j/listKeys?api-version=2023-04-01",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "User-Agent": "azsdk-go-armcommunication/v2.2.0 (go1.22.0; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "169",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 30 May 2024 06:34:01 GMT",
+        "Expires": "-1",
+        "mise-correlation-id": "00000000-0000-0000-0000-000000000000",
+        "Pragma": "no-cache",
+        "Request-Context": "appId=",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-providerhub-traffic": "True",
+        "x-ms-ratelimit-remaining-subscription-writes": "1199",
+        "x-ms-request-id": "Sanitized",
+        "x-ms-routing-request-id": "JAPANWEST:20240530T063401Z:00000000-0000-0000-0000-000000000000",
+        "X-MSEdge-Ref": "Ref A: 0486FB4E5F904C82BF7EA12BA1551C85 Ref B: TYO201151005062 Ref C: 2024-05-30T06:34:00Z"
+      },
+      "ResponseBody": "{\"primaryKey\":\"Sanitized\",\"secondaryKey\":\"Sanitized\",\"primaryConnectionString\":\"endpoint=https://communicjmdd0j.unitedstates.communication.azure.com/;accesskey=Sanitized"
+    },
+    {
+      "RequestUri": "https://Sanitized.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Communication/communicationServices/communicjmdD0j?api-version=2023-04-01",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armcommunication/v2.2.0 (go1.22.0; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Communication/locations/WESTUS2/operationStatuses/00000000-0000-0000-0000-000000000000*9E1D96BB126BA935F1A54761E43429532EAE3B7A54D33E21D0647138AB44B993?api-version=2023-04-01&t=638526476436388504&c=MIIHKjCCBhKgAwIBAgITHgRzbqCyQ18wMndEBQAABHNuoDANBgkqhkiG9w0BAQsFADBEMRMwEQYKCZImiZPyLGQBGRYDR0JMMRMwEQYKCZImiZPyLGQBGRYDQU1FMRgwFgYDVQQDEw9BTUUgSW5mcmEgQ0EgMDYwHhcNMjQwNTAxMDA1NzQyWhcNMjUwNDI2MDA1NzQyWjBAMT4wPAYDVQQDEzVhc3luY29wZXJhdGlvbnNpZ25pbmdjZXJ0aWZpY2F0ZS5tYW5hZ2VtZW50LmF6dXJlLmNvbTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMKR0qd6SsZNJFgW7BROfLH78VOdzQmMBVhtelcKZz5jnYIaBr5RtlEsdt7BbYCfFptSFfLWb-ZTIum7yA57IxyDmQ7JiqRidDiZexsD5c19Ro8X8Ovst5nbLpGhn6Pr8c5hHE1km0r8fxOAtTNTLSKEBjXH1ue8T9QOuFxjbC2crcKDsMMzdB-2NCtWkdJdlHXeWPqL1Ugte8LutWk1Gp1acb__Tt5nH16kf1FqsLebZV9YHRzSSdws78-SJXIBWdRzv-u7sPa_Dhwf1QyUgDpAX4CBZyDdI-3OLfE3ocZuKza3FkLKElN5VoRs1isVjfNetiqzWnKdJcyCr8_asbkCAwEAAaOCBBcwggQTMCcGCSsGAQQBgjcVCgQaMBgwCgYIKwYBBQUHAwEwCgYIKwYBBQUHAwIwPQYJKwYBBAGCNxUHBDAwLgYmKwYBBAGCNxUIhpDjDYTVtHiE8Ys-hZvdFs6dEoFggvX2K4Py0SACAWQCAQowggHLBggrBgEFBQcBAQSCAb0wggG5MGMGCCsGAQUFBzAChldodHRwOi8vY3JsLm1pY3Jvc29mdC5jb20vcGtpaW5mcmEvQ2VydHMvQkwyUEtJSU5UQ0EwMi5BTUUuR0JMX0FNRSUyMEluZnJhJTIwQ0ElMjAwNi5jcnQwUwYIKwYBBQUHMAKGR2h0dHA6Ly9jcmwxLmFtZS5nYmwvYWlhL0JMMlBLSUlOVENBMDIuQU1FLkdCTF9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3J0MFMGCCsGAQUFBzAChkdodHRwOi8vY3JsMi5hbWUuZ2JsL2FpYS9CTDJQS0lJTlRDQTAyLkFNRS5HQkxfQU1FJTIwSW5mcmElMjBDQSUyMDA2LmNydDBTBggrBgEFBQcwAoZHaHR0cDovL2NybDMuYW1lLmdibC9haWEvQkwyUEtJSU5UQ0EwMi5BTUUuR0JMX0FNRSUyMEluZnJhJTIwQ0ElMjAwNi5jcnQwUwYIKwYBBQUHMAKGR2h0dHA6Ly9jcmw0LmFtZS5nYmwvYWlhL0JMMlBLSUlOVENBMDIuQU1FLkdCTF9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3J0MB0GA1UdDgQWBBTYYOxyiBP7KsKQkNOhmt-DI4Oi8zAOBgNVHQ8BAf8EBAMCBaAwggEmBgNVHR8EggEdMIIBGTCCARWgggERoIIBDYY_aHR0cDovL2NybC5taWNyb3NvZnQuY29tL3BraWluZnJhL0NSTC9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3JshjFodHRwOi8vY3JsMS5hbWUuZ2JsL2NybC9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3JshjFodHRwOi8vY3JsMi5hbWUuZ2JsL2NybC9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3JshjFodHRwOi8vY3JsMy5hbWUuZ2JsL2NybC9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3JshjFodHRwOi8vY3JsNC5hbWUuZ2JsL2NybC9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3JsMEEGA1UdIAQ6MDgwDAYKKwYBBAGCN3sBATAMBgorBgEEAYI3ewIBMAwGCisGAQQBgjd7AwEwDAYKKwYBBAGCN3sEATAfBgNVHSMEGDAWgBTxRmjG8cPwKy19i2rhsvm-NfzRQTAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYBBQUHAwIwDQYJKoZIhvcNAQELBQADggEBAJBwyHHdAbRLLd6NdpWZ2_Te1qC8wnl7dJSjbCbiDdO0Lo5wlJlSsT3QFREJewXHLFpokqGXVOqtejImXRyGe1PXsaIpj-mshm-XkJ76mPsWSx7Rr8UXykFzpGeCOj4tRczNZGuHyO9JJ5yV3UkFteCXAqi5hcM2kCm7lxMpsfmRPJKOeBYInFfzmvEWH0HOZl8bkgFcVzrlqpVfBB8dMLkq0Qn2eU6Z3u2wFFnNXaovkz5lrumrxOKFGsgF1Z-HE1S7aIgkgFv3mfzDOQKrIKwoKx0lNr9_pxSswzr9J0q0S2Xbb567AC4hXNjj9tUOn-U2xtjWYBCml7C8Ndwo9Zw&s=AKZIHLGhtFmlID1hvWbeWS9pxeZ8mmJuJwqxc4HIfWC14z0W7hGFPDR2zAmjKFV5ZjHPkyeMUTH3e5FTFEhsQ6BM7qPAziIzSHHuBDIR-xmSIRtQI-4xwESUtCy9mLxdUTOkwWWWgFVJtyFq7u1MZ396OzCHpVxStAg6CGfKIZ-GoZ9LbnEinmvfkJfkLXdNRGJPQtqlsF6afaxOyvWEpszkd2mEjXEiBh5HBFqYHa-iXPPpYust6IkyAX-9fuZKvahaGyV2sijkY9azhIe1TZ8J89EARlKZ5ZaDOFBhqt4cpxMhB6JJB_wECDG54sJWy64FOIAiMIM4ghJHHdp7RQ&h=vwhCVI0G3XNI6zlHma6fHEmb_fz3X6b4ykkb3eACQYk",
+        "Cache-Control": "no-cache",
+        "Content-Length": "4",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 30 May 2024 06:34:03 GMT",
+        "ETag": "\"00000000-0000-0000-0000-000000000000\"",
+        "Expires": "-1",
+        "Location": "Sanitized",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-providerhub-traffic": "True",
+        "x-ms-ratelimit-remaining-subscription-deletes": "14999",
+        "x-ms-request-id": "Sanitized",
+        "x-ms-routing-request-id": "JAPANWEST:20240530T063403Z:00000000-0000-0000-0000-000000000000",
+        "X-MSEdge-Ref": "Ref A: 178BE02F7AE341709CC22F8A6FADAF61 Ref B: TYO201151005062 Ref C: 2024-05-30T06:34:01Z"
+      },
+      "ResponseBody": "null"
+    },
+    {
+      "RequestUri": "https://Sanitized.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Communication/locations/WESTUS2/operationStatuses/00000000-0000-0000-0000-000000000000*9E1D96BB126BA935F1A54761E43429532EAE3B7A54D33E21D0647138AB44B993?api-version=2023-04-01&t=638526476436388504&c=MIIHKjCCBhKgAwIBAgITHgRzbqCyQ18wMndEBQAABHNuoDANBgkqhkiG9w0BAQsFADBEMRMwEQYKCZImiZPyLGQBGRYDR0JMMRMwEQYKCZImiZPyLGQBGRYDQU1FMRgwFgYDVQQDEw9BTUUgSW5mcmEgQ0EgMDYwHhcNMjQwNTAxMDA1NzQyWhcNMjUwNDI2MDA1NzQyWjBAMT4wPAYDVQQDEzVhc3luY29wZXJhdGlvbnNpZ25pbmdjZXJ0aWZpY2F0ZS5tYW5hZ2VtZW50LmF6dXJlLmNvbTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMKR0qd6SsZNJFgW7BROfLH78VOdzQmMBVhtelcKZz5jnYIaBr5RtlEsdt7BbYCfFptSFfLWb-ZTIum7yA57IxyDmQ7JiqRidDiZexsD5c19Ro8X8Ovst5nbLpGhn6Pr8c5hHE1km0r8fxOAtTNTLSKEBjXH1ue8T9QOuFxjbC2crcKDsMMzdB-2NCtWkdJdlHXeWPqL1Ugte8LutWk1Gp1acb__Tt5nH16kf1FqsLebZV9YHRzSSdws78-SJXIBWdRzv-u7sPa_Dhwf1QyUgDpAX4CBZyDdI-3OLfE3ocZuKza3FkLKElN5VoRs1isVjfNetiqzWnKdJcyCr8_asbkCAwEAAaOCBBcwggQTMCcGCSsGAQQBgjcVCgQaMBgwCgYIKwYBBQUHAwEwCgYIKwYBBQUHAwIwPQYJKwYBBAGCNxUHBDAwLgYmKwYBBAGCNxUIhpDjDYTVtHiE8Ys-hZvdFs6dEoFggvX2K4Py0SACAWQCAQowggHLBggrBgEFBQcBAQSCAb0wggG5MGMGCCsGAQUFBzAChldodHRwOi8vY3JsLm1pY3Jvc29mdC5jb20vcGtpaW5mcmEvQ2VydHMvQkwyUEtJSU5UQ0EwMi5BTUUuR0JMX0FNRSUyMEluZnJhJTIwQ0ElMjAwNi5jcnQwUwYIKwYBBQUHMAKGR2h0dHA6Ly9jcmwxLmFtZS5nYmwvYWlhL0JMMlBLSUlOVENBMDIuQU1FLkdCTF9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3J0MFMGCCsGAQUFBzAChkdodHRwOi8vY3JsMi5hbWUuZ2JsL2FpYS9CTDJQS0lJTlRDQTAyLkFNRS5HQkxfQU1FJTIwSW5mcmElMjBDQSUyMDA2LmNydDBTBggrBgEFBQcwAoZHaHR0cDovL2NybDMuYW1lLmdibC9haWEvQkwyUEtJSU5UQ0EwMi5BTUUuR0JMX0FNRSUyMEluZnJhJTIwQ0ElMjAwNi5jcnQwUwYIKwYBBQUHMAKGR2h0dHA6Ly9jcmw0LmFtZS5nYmwvYWlhL0JMMlBLSUlOVENBMDIuQU1FLkdCTF9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3J0MB0GA1UdDgQWBBTYYOxyiBP7KsKQkNOhmt-DI4Oi8zAOBgNVHQ8BAf8EBAMCBaAwggEmBgNVHR8EggEdMIIBGTCCARWgggERoIIBDYY_aHR0cDovL2NybC5taWNyb3NvZnQuY29tL3BraWluZnJhL0NSTC9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3JshjFodHRwOi8vY3JsMS5hbWUuZ2JsL2NybC9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3JshjFodHRwOi8vY3JsMi5hbWUuZ2JsL2NybC9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3JshjFodHRwOi8vY3JsMy5hbWUuZ2JsL2NybC9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3JshjFodHRwOi8vY3JsNC5hbWUuZ2JsL2NybC9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3JsMEEGA1UdIAQ6MDgwDAYKKwYBBAGCN3sBATAMBgorBgEEAYI3ewIBMAwGCisGAQQBgjd7AwEwDAYKKwYBBAGCN3sEATAfBgNVHSMEGDAWgBTxRmjG8cPwKy19i2rhsvm-NfzRQTAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYBBQUHAwIwDQYJKoZIhvcNAQELBQADggEBAJBwyHHdAbRLLd6NdpWZ2_Te1qC8wnl7dJSjbCbiDdO0Lo5wlJlSsT3QFREJewXHLFpokqGXVOqtejImXRyGe1PXsaIpj-mshm-XkJ76mPsWSx7Rr8UXykFzpGeCOj4tRczNZGuHyO9JJ5yV3UkFteCXAqi5hcM2kCm7lxMpsfmRPJKOeBYInFfzmvEWH0HOZl8bkgFcVzrlqpVfBB8dMLkq0Qn2eU6Z3u2wFFnNXaovkz5lrumrxOKFGsgF1Z-HE1S7aIgkgFv3mfzDOQKrIKwoKx0lNr9_pxSswzr9J0q0S2Xbb567AC4hXNjj9tUOn-U2xtjWYBCml7C8Ndwo9Zw&s=AKZIHLGhtFmlID1hvWbeWS9pxeZ8mmJuJwqxc4HIfWC14z0W7hGFPDR2zAmjKFV5ZjHPkyeMUTH3e5FTFEhsQ6BM7qPAziIzSHHuBDIR-xmSIRtQI-4xwESUtCy9mLxdUTOkwWWWgFVJtyFq7u1MZ396OzCHpVxStAg6CGfKIZ-GoZ9LbnEinmvfkJfkLXdNRGJPQtqlsF6afaxOyvWEpszkd2mEjXEiBh5HBFqYHa-iXPPpYust6IkyAX-9fuZKvahaGyV2sijkY9azhIe1TZ8J89EARlKZ5ZaDOFBhqt4cpxMhB6JJB_wECDG54sJWy64FOIAiMIM4ghJHHdp7RQ&h=vwhCVI0G3XNI6zlHma6fHEmb_fz3X6b4ykkb3eACQYk",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armcommunication/v2.2.0 (go1.22.0; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Communication/locations/westus2/operationStatuses/00000000-0000-0000-0000-000000000000*9E1D96BB126BA935F1A54761E43429532EAE3B7A54D33E21D0647138AB44B993?api-version=2023-04-01&t=638526476441777839&c=MIIHKjCCBhKgAwIBAgITHgRzbqCyQ18wMndEBQAABHNuoDANBgkqhkiG9w0BAQsFADBEMRMwEQYKCZImiZPyLGQBGRYDR0JMMRMwEQYKCZImiZPyLGQBGRYDQU1FMRgwFgYDVQQDEw9BTUUgSW5mcmEgQ0EgMDYwHhcNMjQwNTAxMDA1NzQyWhcNMjUwNDI2MDA1NzQyWjBAMT4wPAYDVQQDEzVhc3luY29wZXJhdGlvbnNpZ25pbmdjZXJ0aWZpY2F0ZS5tYW5hZ2VtZW50LmF6dXJlLmNvbTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMKR0qd6SsZNJFgW7BROfLH78VOdzQmMBVhtelcKZz5jnYIaBr5RtlEsdt7BbYCfFptSFfLWb-ZTIum7yA57IxyDmQ7JiqRidDiZexsD5c19Ro8X8Ovst5nbLpGhn6Pr8c5hHE1km0r8fxOAtTNTLSKEBjXH1ue8T9QOuFxjbC2crcKDsMMzdB-2NCtWkdJdlHXeWPqL1Ugte8LutWk1Gp1acb__Tt5nH16kf1FqsLebZV9YHRzSSdws78-SJXIBWdRzv-u7sPa_Dhwf1QyUgDpAX4CBZyDdI-3OLfE3ocZuKza3FkLKElN5VoRs1isVjfNetiqzWnKdJcyCr8_asbkCAwEAAaOCBBcwggQTMCcGCSsGAQQBgjcVCgQaMBgwCgYIKwYBBQUHAwEwCgYIKwYBBQUHAwIwPQYJKwYBBAGCNxUHBDAwLgYmKwYBBAGCNxUIhpDjDYTVtHiE8Ys-hZvdFs6dEoFggvX2K4Py0SACAWQCAQowggHLBggrBgEFBQcBAQSCAb0wggG5MGMGCCsGAQUFBzAChldodHRwOi8vY3JsLm1pY3Jvc29mdC5jb20vcGtpaW5mcmEvQ2VydHMvQkwyUEtJSU5UQ0EwMi5BTUUuR0JMX0FNRSUyMEluZnJhJTIwQ0ElMjAwNi5jcnQwUwYIKwYBBQUHMAKGR2h0dHA6Ly9jcmwxLmFtZS5nYmwvYWlhL0JMMlBLSUlOVENBMDIuQU1FLkdCTF9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3J0MFMGCCsGAQUFBzAChkdodHRwOi8vY3JsMi5hbWUuZ2JsL2FpYS9CTDJQS0lJTlRDQTAyLkFNRS5HQkxfQU1FJTIwSW5mcmElMjBDQSUyMDA2LmNydDBTBggrBgEFBQcwAoZHaHR0cDovL2NybDMuYW1lLmdibC9haWEvQkwyUEtJSU5UQ0EwMi5BTUUuR0JMX0FNRSUyMEluZnJhJTIwQ0ElMjAwNi5jcnQwUwYIKwYBBQUHMAKGR2h0dHA6Ly9jcmw0LmFtZS5nYmwvYWlhL0JMMlBLSUlOVENBMDIuQU1FLkdCTF9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3J0MB0GA1UdDgQWBBTYYOxyiBP7KsKQkNOhmt-DI4Oi8zAOBgNVHQ8BAf8EBAMCBaAwggEmBgNVHR8EggEdMIIBGTCCARWgggERoIIBDYY_aHR0cDovL2NybC5taWNyb3NvZnQuY29tL3BraWluZnJhL0NSTC9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3JshjFodHRwOi8vY3JsMS5hbWUuZ2JsL2NybC9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3JshjFodHRwOi8vY3JsMi5hbWUuZ2JsL2NybC9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3JshjFodHRwOi8vY3JsMy5hbWUuZ2JsL2NybC9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3JshjFodHRwOi8vY3JsNC5hbWUuZ2JsL2NybC9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3JsMEEGA1UdIAQ6MDgwDAYKKwYBBAGCN3sBATAMBgorBgEEAYI3ewIBMAwGCisGAQQBgjd7AwEwDAYKKwYBBAGCN3sEATAfBgNVHSMEGDAWgBTxRmjG8cPwKy19i2rhsvm-NfzRQTAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYBBQUHAwIwDQYJKoZIhvcNAQELBQADggEBAJBwyHHdAbRLLd6NdpWZ2_Te1qC8wnl7dJSjbCbiDdO0Lo5wlJlSsT3QFREJewXHLFpokqGXVOqtejImXRyGe1PXsaIpj-mshm-XkJ76mPsWSx7Rr8UXykFzpGeCOj4tRczNZGuHyO9JJ5yV3UkFteCXAqi5hcM2kCm7lxMpsfmRPJKOeBYInFfzmvEWH0HOZl8bkgFcVzrlqpVfBB8dMLkq0Qn2eU6Z3u2wFFnNXaovkz5lrumrxOKFGsgF1Z-HE1S7aIgkgFv3mfzDOQKrIKwoKx0lNr9_pxSswzr9J0q0S2Xbb567AC4hXNjj9tUOn-U2xtjWYBCml7C8Ndwo9Zw&s=aXO-xKtTRo8Gh_1cKa9u4yHrAY2lp8lj2rGwvtI4nu_hwdF3BSL6d6ug3LhHIjCKoBNtNu8xK4flT5PdS0TPl3Zvec0P7evJMarjTaIldr573kvjnzmyIJOReFGDJsspRlwFaN0ycmAlU4IYEiAw0Z9xtwOQvNdy9L_3uOhe4UVjUaC2UIaUi9yqQlWIFuzN6jQIUL2NnQrpQRrFIkQKlifeJwMVMahL6iveePSmD5OwslNVHcB0FNmQJYJLQkXZEzn4L_Y7SsCdynFY4C9tRpUQ-hvb7Z9L9CHghKHfiAGK32tzpd0dRqvJueD4-XnsMgyhbcr3GwvrlXh9__rMHQ&h=gaHVTK1JTTJ7piDHOJmkprg6YBw6YrPf85Pf33GX00c",
+        "Cache-Control": "no-cache",
+        "Content-Length": "268",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 30 May 2024 06:34:03 GMT",
+        "ETag": "\"00000000-0000-0000-0000-000000000000\"",
+        "Expires": "-1",
+        "Location": "Sanitized",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-reads": "11999",
+        "x-ms-request-id": "Sanitized",
+        "x-ms-routing-request-id": "JAPANWEST:20240530T063404Z:00000000-0000-0000-0000-000000000000",
+        "X-MSEdge-Ref": "Ref A: 0AB6B3E66B3C4B169418F91BB9C7A77C Ref B: TYO201151005062 Ref C: 2024-05-30T06:34:03Z"
+      },
+      "ResponseBody": {
+        "id": "Sanitized",
+        "name": "Sanitized",
+        "resourceId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Communication/communicationServices/communicjmdD0j",
+        "status": "Deleting",
+        "startTime": "2024-05-30T06:34:03.3729931Z"
+      }
+    },
+    {
+      "RequestUri": "https://Sanitized.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Communication/locations/WESTUS2/operationStatuses/00000000-0000-0000-0000-000000000000*9E1D96BB126BA935F1A54761E43429532EAE3B7A54D33E21D0647138AB44B993?api-version=2023-04-01&t=638526476436388504&c=MIIHKjCCBhKgAwIBAgITHgRzbqCyQ18wMndEBQAABHNuoDANBgkqhkiG9w0BAQsFADBEMRMwEQYKCZImiZPyLGQBGRYDR0JMMRMwEQYKCZImiZPyLGQBGRYDQU1FMRgwFgYDVQQDEw9BTUUgSW5mcmEgQ0EgMDYwHhcNMjQwNTAxMDA1NzQyWhcNMjUwNDI2MDA1NzQyWjBAMT4wPAYDVQQDEzVhc3luY29wZXJhdGlvbnNpZ25pbmdjZXJ0aWZpY2F0ZS5tYW5hZ2VtZW50LmF6dXJlLmNvbTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMKR0qd6SsZNJFgW7BROfLH78VOdzQmMBVhtelcKZz5jnYIaBr5RtlEsdt7BbYCfFptSFfLWb-ZTIum7yA57IxyDmQ7JiqRidDiZexsD5c19Ro8X8Ovst5nbLpGhn6Pr8c5hHE1km0r8fxOAtTNTLSKEBjXH1ue8T9QOuFxjbC2crcKDsMMzdB-2NCtWkdJdlHXeWPqL1Ugte8LutWk1Gp1acb__Tt5nH16kf1FqsLebZV9YHRzSSdws78-SJXIBWdRzv-u7sPa_Dhwf1QyUgDpAX4CBZyDdI-3OLfE3ocZuKza3FkLKElN5VoRs1isVjfNetiqzWnKdJcyCr8_asbkCAwEAAaOCBBcwggQTMCcGCSsGAQQBgjcVCgQaMBgwCgYIKwYBBQUHAwEwCgYIKwYBBQUHAwIwPQYJKwYBBAGCNxUHBDAwLgYmKwYBBAGCNxUIhpDjDYTVtHiE8Ys-hZvdFs6dEoFggvX2K4Py0SACAWQCAQowggHLBggrBgEFBQcBAQSCAb0wggG5MGMGCCsGAQUFBzAChldodHRwOi8vY3JsLm1pY3Jvc29mdC5jb20vcGtpaW5mcmEvQ2VydHMvQkwyUEtJSU5UQ0EwMi5BTUUuR0JMX0FNRSUyMEluZnJhJTIwQ0ElMjAwNi5jcnQwUwYIKwYBBQUHMAKGR2h0dHA6Ly9jcmwxLmFtZS5nYmwvYWlhL0JMMlBLSUlOVENBMDIuQU1FLkdCTF9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3J0MFMGCCsGAQUFBzAChkdodHRwOi8vY3JsMi5hbWUuZ2JsL2FpYS9CTDJQS0lJTlRDQTAyLkFNRS5HQkxfQU1FJTIwSW5mcmElMjBDQSUyMDA2LmNydDBTBggrBgEFBQcwAoZHaHR0cDovL2NybDMuYW1lLmdibC9haWEvQkwyUEtJSU5UQ0EwMi5BTUUuR0JMX0FNRSUyMEluZnJhJTIwQ0ElMjAwNi5jcnQwUwYIKwYBBQUHMAKGR2h0dHA6Ly9jcmw0LmFtZS5nYmwvYWlhL0JMMlBLSUlOVENBMDIuQU1FLkdCTF9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3J0MB0GA1UdDgQWBBTYYOxyiBP7KsKQkNOhmt-DI4Oi8zAOBgNVHQ8BAf8EBAMCBaAwggEmBgNVHR8EggEdMIIBGTCCARWgggERoIIBDYY_aHR0cDovL2NybC5taWNyb3NvZnQuY29tL3BraWluZnJhL0NSTC9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3JshjFodHRwOi8vY3JsMS5hbWUuZ2JsL2NybC9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3JshjFodHRwOi8vY3JsMi5hbWUuZ2JsL2NybC9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3JshjFodHRwOi8vY3JsMy5hbWUuZ2JsL2NybC9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3JshjFodHRwOi8vY3JsNC5hbWUuZ2JsL2NybC9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3JsMEEGA1UdIAQ6MDgwDAYKKwYBBAGCN3sBATAMBgorBgEEAYI3ewIBMAwGCisGAQQBgjd7AwEwDAYKKwYBBAGCN3sEATAfBgNVHSMEGDAWgBTxRmjG8cPwKy19i2rhsvm-NfzRQTAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYBBQUHAwIwDQYJKoZIhvcNAQELBQADggEBAJBwyHHdAbRLLd6NdpWZ2_Te1qC8wnl7dJSjbCbiDdO0Lo5wlJlSsT3QFREJewXHLFpokqGXVOqtejImXRyGe1PXsaIpj-mshm-XkJ76mPsWSx7Rr8UXykFzpGeCOj4tRczNZGuHyO9JJ5yV3UkFteCXAqi5hcM2kCm7lxMpsfmRPJKOeBYInFfzmvEWH0HOZl8bkgFcVzrlqpVfBB8dMLkq0Qn2eU6Z3u2wFFnNXaovkz5lrumrxOKFGsgF1Z-HE1S7aIgkgFv3mfzDOQKrIKwoKx0lNr9_pxSswzr9J0q0S2Xbb567AC4hXNjj9tUOn-U2xtjWYBCml7C8Ndwo9Zw&s=AKZIHLGhtFmlID1hvWbeWS9pxeZ8mmJuJwqxc4HIfWC14z0W7hGFPDR2zAmjKFV5ZjHPkyeMUTH3e5FTFEhsQ6BM7qPAziIzSHHuBDIR-xmSIRtQI-4xwESUtCy9mLxdUTOkwWWWgFVJtyFq7u1MZ396OzCHpVxStAg6CGfKIZ-GoZ9LbnEinmvfkJfkLXdNRGJPQtqlsF6afaxOyvWEpszkd2mEjXEiBh5HBFqYHa-iXPPpYust6IkyAX-9fuZKvahaGyV2sijkY9azhIe1TZ8J89EARlKZ5ZaDOFBhqt4cpxMhB6JJB_wECDG54sJWy64FOIAiMIM4ghJHHdp7RQ&h=vwhCVI0G3XNI6zlHma6fHEmb_fz3X6b4ykkb3eACQYk",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armcommunication/v2.2.0 (go1.22.0; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Communication/locations/westus2/operationStatuses/00000000-0000-0000-0000-000000000000*9E1D96BB126BA935F1A54761E43429532EAE3B7A54D33E21D0647138AB44B993?api-version=2023-04-01&t=638526476746923741&c=MIIHKjCCBhKgAwIBAgITHgRzbqCyQ18wMndEBQAABHNuoDANBgkqhkiG9w0BAQsFADBEMRMwEQYKCZImiZPyLGQBGRYDR0JMMRMwEQYKCZImiZPyLGQBGRYDQU1FMRgwFgYDVQQDEw9BTUUgSW5mcmEgQ0EgMDYwHhcNMjQwNTAxMDA1NzQyWhcNMjUwNDI2MDA1NzQyWjBAMT4wPAYDVQQDEzVhc3luY29wZXJhdGlvbnNpZ25pbmdjZXJ0aWZpY2F0ZS5tYW5hZ2VtZW50LmF6dXJlLmNvbTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMKR0qd6SsZNJFgW7BROfLH78VOdzQmMBVhtelcKZz5jnYIaBr5RtlEsdt7BbYCfFptSFfLWb-ZTIum7yA57IxyDmQ7JiqRidDiZexsD5c19Ro8X8Ovst5nbLpGhn6Pr8c5hHE1km0r8fxOAtTNTLSKEBjXH1ue8T9QOuFxjbC2crcKDsMMzdB-2NCtWkdJdlHXeWPqL1Ugte8LutWk1Gp1acb__Tt5nH16kf1FqsLebZV9YHRzSSdws78-SJXIBWdRzv-u7sPa_Dhwf1QyUgDpAX4CBZyDdI-3OLfE3ocZuKza3FkLKElN5VoRs1isVjfNetiqzWnKdJcyCr8_asbkCAwEAAaOCBBcwggQTMCcGCSsGAQQBgjcVCgQaMBgwCgYIKwYBBQUHAwEwCgYIKwYBBQUHAwIwPQYJKwYBBAGCNxUHBDAwLgYmKwYBBAGCNxUIhpDjDYTVtHiE8Ys-hZvdFs6dEoFggvX2K4Py0SACAWQCAQowggHLBggrBgEFBQcBAQSCAb0wggG5MGMGCCsGAQUFBzAChldodHRwOi8vY3JsLm1pY3Jvc29mdC5jb20vcGtpaW5mcmEvQ2VydHMvQkwyUEtJSU5UQ0EwMi5BTUUuR0JMX0FNRSUyMEluZnJhJTIwQ0ElMjAwNi5jcnQwUwYIKwYBBQUHMAKGR2h0dHA6Ly9jcmwxLmFtZS5nYmwvYWlhL0JMMlBLSUlOVENBMDIuQU1FLkdCTF9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3J0MFMGCCsGAQUFBzAChkdodHRwOi8vY3JsMi5hbWUuZ2JsL2FpYS9CTDJQS0lJTlRDQTAyLkFNRS5HQkxfQU1FJTIwSW5mcmElMjBDQSUyMDA2LmNydDBTBggrBgEFBQcwAoZHaHR0cDovL2NybDMuYW1lLmdibC9haWEvQkwyUEtJSU5UQ0EwMi5BTUUuR0JMX0FNRSUyMEluZnJhJTIwQ0ElMjAwNi5jcnQwUwYIKwYBBQUHMAKGR2h0dHA6Ly9jcmw0LmFtZS5nYmwvYWlhL0JMMlBLSUlOVENBMDIuQU1FLkdCTF9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3J0MB0GA1UdDgQWBBTYYOxyiBP7KsKQkNOhmt-DI4Oi8zAOBgNVHQ8BAf8EBAMCBaAwggEmBgNVHR8EggEdMIIBGTCCARWgggERoIIBDYY_aHR0cDovL2NybC5taWNyb3NvZnQuY29tL3BraWluZnJhL0NSTC9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3JshjFodHRwOi8vY3JsMS5hbWUuZ2JsL2NybC9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3JshjFodHRwOi8vY3JsMi5hbWUuZ2JsL2NybC9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3JshjFodHRwOi8vY3JsMy5hbWUuZ2JsL2NybC9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3JshjFodHRwOi8vY3JsNC5hbWUuZ2JsL2NybC9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3JsMEEGA1UdIAQ6MDgwDAYKKwYBBAGCN3sBATAMBgorBgEEAYI3ewIBMAwGCisGAQQBgjd7AwEwDAYKKwYBBAGCN3sEATAfBgNVHSMEGDAWgBTxRmjG8cPwKy19i2rhsvm-NfzRQTAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYBBQUHAwIwDQYJKoZIhvcNAQELBQADggEBAJBwyHHdAbRLLd6NdpWZ2_Te1qC8wnl7dJSjbCbiDdO0Lo5wlJlSsT3QFREJewXHLFpokqGXVOqtejImXRyGe1PXsaIpj-mshm-XkJ76mPsWSx7Rr8UXykFzpGeCOj4tRczNZGuHyO9JJ5yV3UkFteCXAqi5hcM2kCm7lxMpsfmRPJKOeBYInFfzmvEWH0HOZl8bkgFcVzrlqpVfBB8dMLkq0Qn2eU6Z3u2wFFnNXaovkz5lrumrxOKFGsgF1Z-HE1S7aIgkgFv3mfzDOQKrIKwoKx0lNr9_pxSswzr9J0q0S2Xbb567AC4hXNjj9tUOn-U2xtjWYBCml7C8Ndwo9Zw&s=m5C9_yMOXPOXO763cRqPMepO4LI5SeOY1ZEunIiYy_l_VHJPRkET3HeTPmlk2y-wp9SzFvfkKbjRMLN62e9TCnxkDjMIH_3KYqppbOS0JaaopePZIij-QNDlEKgFuZMPpS7M3SGCMmc8hXaqeVpgI8pgLwjkBkE9I6rxj9IsPmAgKlyFSR0RhU1yXizdWHEMaHtbB0hkLp1ENeYD13uEKzS1T8-hz3xuBoL0O37og5TjrBE0-SADngP8V1V-UcJij-QZugE4q6ua3zDgIPKKmDoUTg8wn17aIRrejFDOkx9kCRR9SEfxluw-b26yRwTxxe1dzxFjSy8jeWVAzr709w&h=nQ2z28mjwc60N0DRc01Ab6bMX9mCaeYFxDIzLP1xMfU",
+        "Cache-Control": "no-cache",
+        "Content-Length": "268",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 30 May 2024 06:34:34 GMT",
+        "ETag": "\"00000000-0000-0000-0000-000000000000\"",
+        "Expires": "-1",
+        "Location": "Sanitized",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-reads": "11999",
+        "x-ms-request-id": "Sanitized",
+        "x-ms-routing-request-id": "JAPANWEST:20240530T063434Z:00000000-0000-0000-0000-000000000000",
+        "X-MSEdge-Ref": "Ref A: DCF20F4DB45E48418AE914877A6E6086 Ref B: TYO201151005062 Ref C: 2024-05-30T06:34:34Z"
+      },
+      "ResponseBody": {
+        "id": "Sanitized",
+        "name": "Sanitized",
+        "resourceId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Communication/communicationServices/communicjmdD0j",
+        "status": "Deleting",
+        "startTime": "2024-05-30T06:34:03.3729931Z"
+      }
+    },
+    {
+      "RequestUri": "https://Sanitized.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Communication/locations/WESTUS2/operationStatuses/00000000-0000-0000-0000-000000000000*9E1D96BB126BA935F1A54761E43429532EAE3B7A54D33E21D0647138AB44B993?api-version=2023-04-01&t=638526476436388504&c=MIIHKjCCBhKgAwIBAgITHgRzbqCyQ18wMndEBQAABHNuoDANBgkqhkiG9w0BAQsFADBEMRMwEQYKCZImiZPyLGQBGRYDR0JMMRMwEQYKCZImiZPyLGQBGRYDQU1FMRgwFgYDVQQDEw9BTUUgSW5mcmEgQ0EgMDYwHhcNMjQwNTAxMDA1NzQyWhcNMjUwNDI2MDA1NzQyWjBAMT4wPAYDVQQDEzVhc3luY29wZXJhdGlvbnNpZ25pbmdjZXJ0aWZpY2F0ZS5tYW5hZ2VtZW50LmF6dXJlLmNvbTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMKR0qd6SsZNJFgW7BROfLH78VOdzQmMBVhtelcKZz5jnYIaBr5RtlEsdt7BbYCfFptSFfLWb-ZTIum7yA57IxyDmQ7JiqRidDiZexsD5c19Ro8X8Ovst5nbLpGhn6Pr8c5hHE1km0r8fxOAtTNTLSKEBjXH1ue8T9QOuFxjbC2crcKDsMMzdB-2NCtWkdJdlHXeWPqL1Ugte8LutWk1Gp1acb__Tt5nH16kf1FqsLebZV9YHRzSSdws78-SJXIBWdRzv-u7sPa_Dhwf1QyUgDpAX4CBZyDdI-3OLfE3ocZuKza3FkLKElN5VoRs1isVjfNetiqzWnKdJcyCr8_asbkCAwEAAaOCBBcwggQTMCcGCSsGAQQBgjcVCgQaMBgwCgYIKwYBBQUHAwEwCgYIKwYBBQUHAwIwPQYJKwYBBAGCNxUHBDAwLgYmKwYBBAGCNxUIhpDjDYTVtHiE8Ys-hZvdFs6dEoFggvX2K4Py0SACAWQCAQowggHLBggrBgEFBQcBAQSCAb0wggG5MGMGCCsGAQUFBzAChldodHRwOi8vY3JsLm1pY3Jvc29mdC5jb20vcGtpaW5mcmEvQ2VydHMvQkwyUEtJSU5UQ0EwMi5BTUUuR0JMX0FNRSUyMEluZnJhJTIwQ0ElMjAwNi5jcnQwUwYIKwYBBQUHMAKGR2h0dHA6Ly9jcmwxLmFtZS5nYmwvYWlhL0JMMlBLSUlOVENBMDIuQU1FLkdCTF9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3J0MFMGCCsGAQUFBzAChkdodHRwOi8vY3JsMi5hbWUuZ2JsL2FpYS9CTDJQS0lJTlRDQTAyLkFNRS5HQkxfQU1FJTIwSW5mcmElMjBDQSUyMDA2LmNydDBTBggrBgEFBQcwAoZHaHR0cDovL2NybDMuYW1lLmdibC9haWEvQkwyUEtJSU5UQ0EwMi5BTUUuR0JMX0FNRSUyMEluZnJhJTIwQ0ElMjAwNi5jcnQwUwYIKwYBBQUHMAKGR2h0dHA6Ly9jcmw0LmFtZS5nYmwvYWlhL0JMMlBLSUlOVENBMDIuQU1FLkdCTF9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3J0MB0GA1UdDgQWBBTYYOxyiBP7KsKQkNOhmt-DI4Oi8zAOBgNVHQ8BAf8EBAMCBaAwggEmBgNVHR8EggEdMIIBGTCCARWgggERoIIBDYY_aHR0cDovL2NybC5taWNyb3NvZnQuY29tL3BraWluZnJhL0NSTC9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3JshjFodHRwOi8vY3JsMS5hbWUuZ2JsL2NybC9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3JshjFodHRwOi8vY3JsMi5hbWUuZ2JsL2NybC9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3JshjFodHRwOi8vY3JsMy5hbWUuZ2JsL2NybC9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3JshjFodHRwOi8vY3JsNC5hbWUuZ2JsL2NybC9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3JsMEEGA1UdIAQ6MDgwDAYKKwYBBAGCN3sBATAMBgorBgEEAYI3ewIBMAwGCisGAQQBgjd7AwEwDAYKKwYBBAGCN3sEATAfBgNVHSMEGDAWgBTxRmjG8cPwKy19i2rhsvm-NfzRQTAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYBBQUHAwIwDQYJKoZIhvcNAQELBQADggEBAJBwyHHdAbRLLd6NdpWZ2_Te1qC8wnl7dJSjbCbiDdO0Lo5wlJlSsT3QFREJewXHLFpokqGXVOqtejImXRyGe1PXsaIpj-mshm-XkJ76mPsWSx7Rr8UXykFzpGeCOj4tRczNZGuHyO9JJ5yV3UkFteCXAqi5hcM2kCm7lxMpsfmRPJKOeBYInFfzmvEWH0HOZl8bkgFcVzrlqpVfBB8dMLkq0Qn2eU6Z3u2wFFnNXaovkz5lrumrxOKFGsgF1Z-HE1S7aIgkgFv3mfzDOQKrIKwoKx0lNr9_pxSswzr9J0q0S2Xbb567AC4hXNjj9tUOn-U2xtjWYBCml7C8Ndwo9Zw&s=AKZIHLGhtFmlID1hvWbeWS9pxeZ8mmJuJwqxc4HIfWC14z0W7hGFPDR2zAmjKFV5ZjHPkyeMUTH3e5FTFEhsQ6BM7qPAziIzSHHuBDIR-xmSIRtQI-4xwESUtCy9mLxdUTOkwWWWgFVJtyFq7u1MZ396OzCHpVxStAg6CGfKIZ-GoZ9LbnEinmvfkJfkLXdNRGJPQtqlsF6afaxOyvWEpszkd2mEjXEiBh5HBFqYHa-iXPPpYust6IkyAX-9fuZKvahaGyV2sijkY9azhIe1TZ8J89EARlKZ5ZaDOFBhqt4cpxMhB6JJB_wECDG54sJWy64FOIAiMIM4ghJHHdp7RQ&h=vwhCVI0G3XNI6zlHma6fHEmb_fz3X6b4ykkb3eACQYk",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armcommunication/v2.2.0 (go1.22.0; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Communication/locations/westus2/operationStatuses/00000000-0000-0000-0000-000000000000*9E1D96BB126BA935F1A54761E43429532EAE3B7A54D33E21D0647138AB44B993?api-version=2023-04-01&t=638526477052694124&c=MIIHKjCCBhKgAwIBAgITHgRzbqCyQ18wMndEBQAABHNuoDANBgkqhkiG9w0BAQsFADBEMRMwEQYKCZImiZPyLGQBGRYDR0JMMRMwEQYKCZImiZPyLGQBGRYDQU1FMRgwFgYDVQQDEw9BTUUgSW5mcmEgQ0EgMDYwHhcNMjQwNTAxMDA1NzQyWhcNMjUwNDI2MDA1NzQyWjBAMT4wPAYDVQQDEzVhc3luY29wZXJhdGlvbnNpZ25pbmdjZXJ0aWZpY2F0ZS5tYW5hZ2VtZW50LmF6dXJlLmNvbTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMKR0qd6SsZNJFgW7BROfLH78VOdzQmMBVhtelcKZz5jnYIaBr5RtlEsdt7BbYCfFptSFfLWb-ZTIum7yA57IxyDmQ7JiqRidDiZexsD5c19Ro8X8Ovst5nbLpGhn6Pr8c5hHE1km0r8fxOAtTNTLSKEBjXH1ue8T9QOuFxjbC2crcKDsMMzdB-2NCtWkdJdlHXeWPqL1Ugte8LutWk1Gp1acb__Tt5nH16kf1FqsLebZV9YHRzSSdws78-SJXIBWdRzv-u7sPa_Dhwf1QyUgDpAX4CBZyDdI-3OLfE3ocZuKza3FkLKElN5VoRs1isVjfNetiqzWnKdJcyCr8_asbkCAwEAAaOCBBcwggQTMCcGCSsGAQQBgjcVCgQaMBgwCgYIKwYBBQUHAwEwCgYIKwYBBQUHAwIwPQYJKwYBBAGCNxUHBDAwLgYmKwYBBAGCNxUIhpDjDYTVtHiE8Ys-hZvdFs6dEoFggvX2K4Py0SACAWQCAQowggHLBggrBgEFBQcBAQSCAb0wggG5MGMGCCsGAQUFBzAChldodHRwOi8vY3JsLm1pY3Jvc29mdC5jb20vcGtpaW5mcmEvQ2VydHMvQkwyUEtJSU5UQ0EwMi5BTUUuR0JMX0FNRSUyMEluZnJhJTIwQ0ElMjAwNi5jcnQwUwYIKwYBBQUHMAKGR2h0dHA6Ly9jcmwxLmFtZS5nYmwvYWlhL0JMMlBLSUlOVENBMDIuQU1FLkdCTF9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3J0MFMGCCsGAQUFBzAChkdodHRwOi8vY3JsMi5hbWUuZ2JsL2FpYS9CTDJQS0lJTlRDQTAyLkFNRS5HQkxfQU1FJTIwSW5mcmElMjBDQSUyMDA2LmNydDBTBggrBgEFBQcwAoZHaHR0cDovL2NybDMuYW1lLmdibC9haWEvQkwyUEtJSU5UQ0EwMi5BTUUuR0JMX0FNRSUyMEluZnJhJTIwQ0ElMjAwNi5jcnQwUwYIKwYBBQUHMAKGR2h0dHA6Ly9jcmw0LmFtZS5nYmwvYWlhL0JMMlBLSUlOVENBMDIuQU1FLkdCTF9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3J0MB0GA1UdDgQWBBTYYOxyiBP7KsKQkNOhmt-DI4Oi8zAOBgNVHQ8BAf8EBAMCBaAwggEmBgNVHR8EggEdMIIBGTCCARWgggERoIIBDYY_aHR0cDovL2NybC5taWNyb3NvZnQuY29tL3BraWluZnJhL0NSTC9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3JshjFodHRwOi8vY3JsMS5hbWUuZ2JsL2NybC9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3JshjFodHRwOi8vY3JsMi5hbWUuZ2JsL2NybC9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3JshjFodHRwOi8vY3JsMy5hbWUuZ2JsL2NybC9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3JshjFodHRwOi8vY3JsNC5hbWUuZ2JsL2NybC9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3JsMEEGA1UdIAQ6MDgwDAYKKwYBBAGCN3sBATAMBgorBgEEAYI3ewIBMAwGCisGAQQBgjd7AwEwDAYKKwYBBAGCN3sEATAfBgNVHSMEGDAWgBTxRmjG8cPwKy19i2rhsvm-NfzRQTAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYBBQUHAwIwDQYJKoZIhvcNAQELBQADggEBAJBwyHHdAbRLLd6NdpWZ2_Te1qC8wnl7dJSjbCbiDdO0Lo5wlJlSsT3QFREJewXHLFpokqGXVOqtejImXRyGe1PXsaIpj-mshm-XkJ76mPsWSx7Rr8UXykFzpGeCOj4tRczNZGuHyO9JJ5yV3UkFteCXAqi5hcM2kCm7lxMpsfmRPJKOeBYInFfzmvEWH0HOZl8bkgFcVzrlqpVfBB8dMLkq0Qn2eU6Z3u2wFFnNXaovkz5lrumrxOKFGsgF1Z-HE1S7aIgkgFv3mfzDOQKrIKwoKx0lNr9_pxSswzr9J0q0S2Xbb567AC4hXNjj9tUOn-U2xtjWYBCml7C8Ndwo9Zw&s=s6I-7lMjMS6xz6FBIwMY2LvWlfWTUsBub292mOJ6mocuKrryeS67HlmpQH0oV1YlHIFVbVhBVBQtAOPYSyw2KFvhB27AUFa4yRqR3EW18sc-u7s5NR_dheVGzvgWX6c4bTRs9rBz5-QvyMFk3ZNIHrDCS9AP17k29shyOhBbWYHn_BZsKFLvKW48IXXlO9KOQy_zL5LDGu4mScyry3sZB9rR18o3lJuPhdjRRE2rN_sJRYuLH3ME4OdseRFnNVpwKw99dCZgB0Tt_3_YAr_m7siFmjVMRFwbCskoitI8zuj8YFNh4LN4HukXkaXUk3BP5C0aJxFg6qyoKFjKB47I-g&h=mIezXwgy_UHyLo_6Ez0i4DRCzY8L9fxoqc8Yv4nPZFo",
+        "Cache-Control": "no-cache",
+        "Content-Length": "268",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 30 May 2024 06:35:04 GMT",
+        "ETag": "\"00000000-0000-0000-0000-000000000000\"",
+        "Expires": "-1",
+        "Location": "Sanitized",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-reads": "11997",
+        "x-ms-request-id": "Sanitized",
+        "x-ms-routing-request-id": "JAPANWEST:20240530T063505Z:00000000-0000-0000-0000-000000000000",
+        "X-MSEdge-Ref": "Ref A: E170B4344FDF4773A3E77893C9D9CB3F Ref B: TYO201151005062 Ref C: 2024-05-30T06:35:04Z"
+      },
+      "ResponseBody": {
+        "id": "Sanitized",
+        "name": "Sanitized",
+        "resourceId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Communication/communicationServices/communicjmdD0j",
+        "status": "Deleting",
+        "startTime": "2024-05-30T06:34:03.3729931Z"
+      }
+    },
+    {
+      "RequestUri": "https://Sanitized.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Communication/locations/WESTUS2/operationStatuses/00000000-0000-0000-0000-000000000000*9E1D96BB126BA935F1A54761E43429532EAE3B7A54D33E21D0647138AB44B993?api-version=2023-04-01&t=638526476436388504&c=MIIHKjCCBhKgAwIBAgITHgRzbqCyQ18wMndEBQAABHNuoDANBgkqhkiG9w0BAQsFADBEMRMwEQYKCZImiZPyLGQBGRYDR0JMMRMwEQYKCZImiZPyLGQBGRYDQU1FMRgwFgYDVQQDEw9BTUUgSW5mcmEgQ0EgMDYwHhcNMjQwNTAxMDA1NzQyWhcNMjUwNDI2MDA1NzQyWjBAMT4wPAYDVQQDEzVhc3luY29wZXJhdGlvbnNpZ25pbmdjZXJ0aWZpY2F0ZS5tYW5hZ2VtZW50LmF6dXJlLmNvbTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMKR0qd6SsZNJFgW7BROfLH78VOdzQmMBVhtelcKZz5jnYIaBr5RtlEsdt7BbYCfFptSFfLWb-ZTIum7yA57IxyDmQ7JiqRidDiZexsD5c19Ro8X8Ovst5nbLpGhn6Pr8c5hHE1km0r8fxOAtTNTLSKEBjXH1ue8T9QOuFxjbC2crcKDsMMzdB-2NCtWkdJdlHXeWPqL1Ugte8LutWk1Gp1acb__Tt5nH16kf1FqsLebZV9YHRzSSdws78-SJXIBWdRzv-u7sPa_Dhwf1QyUgDpAX4CBZyDdI-3OLfE3ocZuKza3FkLKElN5VoRs1isVjfNetiqzWnKdJcyCr8_asbkCAwEAAaOCBBcwggQTMCcGCSsGAQQBgjcVCgQaMBgwCgYIKwYBBQUHAwEwCgYIKwYBBQUHAwIwPQYJKwYBBAGCNxUHBDAwLgYmKwYBBAGCNxUIhpDjDYTVtHiE8Ys-hZvdFs6dEoFggvX2K4Py0SACAWQCAQowggHLBggrBgEFBQcBAQSCAb0wggG5MGMGCCsGAQUFBzAChldodHRwOi8vY3JsLm1pY3Jvc29mdC5jb20vcGtpaW5mcmEvQ2VydHMvQkwyUEtJSU5UQ0EwMi5BTUUuR0JMX0FNRSUyMEluZnJhJTIwQ0ElMjAwNi5jcnQwUwYIKwYBBQUHMAKGR2h0dHA6Ly9jcmwxLmFtZS5nYmwvYWlhL0JMMlBLSUlOVENBMDIuQU1FLkdCTF9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3J0MFMGCCsGAQUFBzAChkdodHRwOi8vY3JsMi5hbWUuZ2JsL2FpYS9CTDJQS0lJTlRDQTAyLkFNRS5HQkxfQU1FJTIwSW5mcmElMjBDQSUyMDA2LmNydDBTBggrBgEFBQcwAoZHaHR0cDovL2NybDMuYW1lLmdibC9haWEvQkwyUEtJSU5UQ0EwMi5BTUUuR0JMX0FNRSUyMEluZnJhJTIwQ0ElMjAwNi5jcnQwUwYIKwYBBQUHMAKGR2h0dHA6Ly9jcmw0LmFtZS5nYmwvYWlhL0JMMlBLSUlOVENBMDIuQU1FLkdCTF9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3J0MB0GA1UdDgQWBBTYYOxyiBP7KsKQkNOhmt-DI4Oi8zAOBgNVHQ8BAf8EBAMCBaAwggEmBgNVHR8EggEdMIIBGTCCARWgggERoIIBDYY_aHR0cDovL2NybC5taWNyb3NvZnQuY29tL3BraWluZnJhL0NSTC9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3JshjFodHRwOi8vY3JsMS5hbWUuZ2JsL2NybC9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3JshjFodHRwOi8vY3JsMi5hbWUuZ2JsL2NybC9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3JshjFodHRwOi8vY3JsMy5hbWUuZ2JsL2NybC9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3JshjFodHRwOi8vY3JsNC5hbWUuZ2JsL2NybC9BTUUlMjBJbmZyYSUyMENBJTIwMDYuY3JsMEEGA1UdIAQ6MDgwDAYKKwYBBAGCN3sBATAMBgorBgEEAYI3ewIBMAwGCisGAQQBgjd7AwEwDAYKKwYBBAGCN3sEATAfBgNVHSMEGDAWgBTxRmjG8cPwKy19i2rhsvm-NfzRQTAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYBBQUHAwIwDQYJKoZIhvcNAQELBQADggEBAJBwyHHdAbRLLd6NdpWZ2_Te1qC8wnl7dJSjbCbiDdO0Lo5wlJlSsT3QFREJewXHLFpokqGXVOqtejImXRyGe1PXsaIpj-mshm-XkJ76mPsWSx7Rr8UXykFzpGeCOj4tRczNZGuHyO9JJ5yV3UkFteCXAqi5hcM2kCm7lxMpsfmRPJKOeBYInFfzmvEWH0HOZl8bkgFcVzrlqpVfBB8dMLkq0Qn2eU6Z3u2wFFnNXaovkz5lrumrxOKFGsgF1Z-HE1S7aIgkgFv3mfzDOQKrIKwoKx0lNr9_pxSswzr9J0q0S2Xbb567AC4hXNjj9tUOn-U2xtjWYBCml7C8Ndwo9Zw&s=AKZIHLGhtFmlID1hvWbeWS9pxeZ8mmJuJwqxc4HIfWC14z0W7hGFPDR2zAmjKFV5ZjHPkyeMUTH3e5FTFEhsQ6BM7qPAziIzSHHuBDIR-xmSIRtQI-4xwESUtCy9mLxdUTOkwWWWgFVJtyFq7u1MZ396OzCHpVxStAg6CGfKIZ-GoZ9LbnEinmvfkJfkLXdNRGJPQtqlsF6afaxOyvWEpszkd2mEjXEiBh5HBFqYHa-iXPPpYust6IkyAX-9fuZKvahaGyV2sijkY9azhIe1TZ8J89EARlKZ5ZaDOFBhqt4cpxMhB6JJB_wECDG54sJWy64FOIAiMIM4ghJHHdp7RQ&h=vwhCVI0G3XNI6zlHma6fHEmb_fz3X6b4ykkb3eACQYk",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armcommunication/v2.2.0 (go1.22.0; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "287",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 30 May 2024 06:35:35 GMT",
+        "ETag": "\"00000000-0000-0000-0000-000000000000\"",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-reads": "11999",
+        "x-ms-request-id": "Sanitized",
+        "x-ms-routing-request-id": "JAPANWEST:20240530T063535Z:00000000-0000-0000-0000-000000000000",
+        "X-MSEdge-Ref": "Ref A: 1E70ABE6DFAA4E5BAB029C99CC2FF424 Ref B: TYO201151005062 Ref C: 2024-05-30T06:35:35Z"
+      },
+      "ResponseBody": {
+        "id": "Sanitized",
+        "name": "Sanitized",
+        "resourceId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Communication/communicationServices/communicjmdD0j",
+        "status": "Succeeded",
+        "startTime": "2024-05-30T06:34:03.3729931Z",
+        "properties": null
+      }
+    },
+    {
+      "RequestUri": "https://Sanitized.azure.com/providers/Microsoft.Communication/operations?api-version=2023-04-01",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armcommunication/v2.2.0 (go1.22.0; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "16174",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 30 May 2024 06:35:35 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-providerhub-traffic": "True",
+        "x-ms-ratelimit-remaining-tenant-reads": "11999",
+        "x-ms-request-id": "Sanitized",
+        "x-ms-routing-request-id": "JAPANWEST:20240530T063535Z:00000000-0000-0000-0000-000000000000",
+        "X-MSEdge-Ref": "Ref A: 54DEA62AFF5A4539A7F9A8DA4CA3BB3E Ref B: TYO201151005062 Ref C: 2024-05-30T06:35:35Z"
+      },
+      "ResponseBody": {
+        "value": [
+          {
+            "name": "Sanitized",
+            "isDataAction": false,
+            "display": {
+              "provider": "Azure Communication Services",
+              "resource": "Microsoft.Communication resource provider",
+              "operation": "Registers Microsoft.Communication resource provider",
+              "description": "Registers Microsoft.Communication resource provider"
+            },
+            "properties": null
+          },
+          {
+            "name": "Sanitized",
+            "isDataAction": false,
+            "display": {
+              "provider": "Azure Communication Services",
+              "resource": "Microsoft.Communication resource provider",
+              "operation": "Unregisters Microsoft.Communication resource provider",
+              "description": "Unregisters Microsoft.Communication resource provider"
+            },
+            "properties": null
+          },
+          {
+            "name": "Sanitized",
+            "isDataAction": false,
+            "display": {
+              "provider": "Azure Communication Services",
+              "resource": "Communication Service",
+              "operation": "Gets/Lists communication services",
+              "description": "Reads communication services"
+            },
+            "properties": null
+          },
+          {
+            "name": "Sanitized",
+            "isDataAction": false,
+            "display": {
+              "provider": "Azure Communication Services",
+              "resource": "Communication Service",
+              "operation": "Create/update communication services",
+              "description": "Writes communication services"
+            },
+            "properties": null
+          },
+          {
+            "name": "Sanitized",
+            "isDataAction": false,
+            "display": {
+              "provider": "Azure Communication Services",
+              "resource": "Communication Service",
+              "operation": "Deletes communication service",
+              "description": "Deletes communication services"
+            },
+            "properties": null
+          },
+          {
+            "name": "Sanitized",
+            "isDataAction": false,
+            "display": {
+              "provider": "Azure Communication Services",
+              "resource": "Communication Service",
+              "operation": "List keys for a communication service",
+              "description": "Reads the keys for a communication service"
+            },
+            "properties": null
+          },
+          {
+            "name": "Sanitized",
+            "isDataAction": false,
+            "display": {
+              "provider": "Azure Communication Services",
+              "resource": "Communication Service",
+              "operation": "Regenerate a key for a communication service",
+              "description": "Regenerates the primary or secondary key for a communication service"
+            },
+            "properties": null
+          },
+          {
+            "name": "Sanitized",
+            "isDataAction": false,
+            "display": {
+              "provider": "Azure Communication Services",
+              "resource": "Communication Service",
+              "operation": "Gets/Lists communication services",
+              "description": "Reads communication services"
+            },
+            "properties": null
+          },
+          {
+            "name": "Sanitized",
+            "isDataAction": false,
+            "display": {
+              "provider": "Azure Communication Services",
+              "resource": "Communication Service",
+              "operation": "Create/update communication services",
+              "description": "Writes communication services"
+            },
+            "properties": null
+          },
+          {
+            "name": "Sanitized",
+            "isDataAction": false,
+            "display": {
+              "provider": "Azure Communication Services",
+              "resource": "Communication Service",
+              "operation": "Deletes communication service",
+              "description": "Deletes communication services"
+            },
+            "properties": null
+          },
+          {
+            "name": "Sanitized",
+            "isDataAction": false,
+            "display": {
+              "provider": "Azure Communication Services",
+              "resource": "Communication Service",
+              "operation": "List keys for a communication service",
+              "description": "Reads the keys for a communication service"
+            },
+            "properties": null
+          },
+          {
+            "name": "Sanitized",
+            "isDataAction": false,
+            "display": {
+              "provider": "Azure Communication Services",
+              "resource": "Communication Service",
+              "operation": "Regenerate a key for a communication service",
+              "description": "Regenerates the primary or secondary key for a communication service"
+            },
+            "properties": null
+          },
+          {
+            "name": "Sanitized",
+            "isDataAction": false,
+            "display": {
+              "provider": "Azure Communication Services",
+              "resource": "ACS Check Name Availability",
+              "operation": "Check if a name is available",
+              "description": "Checks if a name is available"
+            },
+            "properties": null
+          },
+          {
+            "name": "Sanitized",
+            "isDataAction": false,
+            "display": {
+              "provider": "Azure Communication Services",
+              "resource": "Communication Service Link Notification Hub",
+              "operation": "Link an Azure Notification Hub to the communication service",
+              "description": "Links an Azure Notification Hub to the communication service"
+            },
+            "properties": null
+          },
+          {
+            "name": "Sanitized",
+            "isDataAction": false,
+            "origin": "System",
+            "display": {
+              "provider": "Azure Communication Services",
+              "resource": "ACS EventGrid Filters",
+              "operation": "Gets/Lists EventGrid filters on a communication service",
+              "description": "Reads EventGrid filters on communication services"
+            },
+            "actionType": "Internal",
+            "properties": null
+          },
+          {
+            "name": "Sanitized",
+            "isDataAction": false,
+            "origin": "System",
+            "display": {
+              "provider": "Azure Communication Services",
+              "resource": "ACS EventGrid Filters",
+              "operation": "Create/update EventGrid filters on a communication service",
+              "description": "Writes EventGrid filters on communication services"
+            },
+            "actionType": "Internal",
+            "properties": null
+          },
+          {
+            "name": "Sanitized",
+            "isDataAction": false,
+            "origin": "System",
+            "display": {
+              "provider": "Azure Communication Services",
+              "resource": "ACS EventGrid Filters",
+              "operation": "Removes an EventGrid filter on a communication service",
+              "description": "Removes an EventGrid filter on communication services"
+            },
+            "actionType": "Internal",
+            "properties": null
+          },
+          {
+            "name": "Sanitized",
+            "isDataAction": false,
+            "display": {
+              "provider": "Azure Communication Services",
+              "resource": "Communication Service Link Notification Hub",
+              "operation": "Link an Azure Notification Hub to the communication service",
+              "description": "Links an Azure Notification Hub to the communication service"
+            },
+            "properties": null
+          },
+          {
+            "name": "Sanitized",
+            "isDataAction": false,
+            "origin": "System",
+            "display": {
+              "provider": "Azure Communication Services",
+              "resource": "ACS EventGrid Filters",
+              "operation": "Gets/Lists EventGrid filters on a communication service",
+              "description": "Reads EventGrid filters on communication services"
+            },
+            "actionType": "Internal",
+            "properties": null
+          },
+          {
+            "name": "Sanitized",
+            "isDataAction": false,
+            "origin": "System",
+            "display": {
+              "provider": "Azure Communication Services",
+              "resource": "ACS EventGrid Filters",
+              "operation": "Create/update EventGrid filters on a communication service",
+              "description": "Writes EventGrid filters on communication services"
+            },
+            "actionType": "Internal",
+            "properties": null
+          },
+          {
+            "name": "Sanitized",
+            "isDataAction": false,
+            "origin": "System",
+            "display": {
+              "provider": "Azure Communication Services",
+              "resource": "ACS EventGrid Filters",
+              "operation": "Removes an EventGrid filter on a communication service",
+              "description": "Removes an EventGrid filter on communication services"
+            },
+            "actionType": "Internal",
+            "properties": null
+          },
+          {
+            "name": "Sanitized",
+            "isDataAction": false,
+            "origin": "System",
+            "display": {
+              "provider": "Azure Communication Services",
+              "resource": "ACS Registered Subscriptions",
+              "operation": "Gets/Lists registered subscriptions",
+              "description": "Reads registered subscriptions"
+            },
+            "actionType": "Internal",
+            "properties": null
+          },
+          {
+            "name": "Sanitized",
+            "isDataAction": false,
+            "display": {
+              "provider": "Azure Communication Services",
+              "resource": "Operations",
+              "operation": "Gets/Lists operations",
+              "description": "Reads operations"
+            },
+            "properties": null
+          },
+          {
+            "name": "Sanitized",
+            "isDataAction": false,
+            "display": {
+              "provider": "Azure Communication Services",
+              "resource": "OperationStatuses",
+              "operation": "OperationStatuses_Get",
+              "description": "Reads the status of an async operation"
+            },
+            "properties": null
+          },
+          {
+            "name": "Sanitized",
+            "isDataAction": false,
+            "origin": "System",
+            "display": {
+              "provider": "Azure Communication Services",
+              "resource": "OperationStatuses",
+              "operation": "OperationStatus_CreateOrUpdate",
+              "description": "Writes the status of an async operation"
+            },
+            "actionType": "Internal",
+            "properties": null
+          },
+          {
+            "name": "Sanitized",
+            "isDataAction": false,
+            "origin": "System",
+            "display": {
+              "provider": "Azure Communication Services",
+              "resource": "Network Security Perimeter Association Proxy",
+              "operation": "Creates/Updates a Network Security Perimeter Assocation",
+              "description": "Write Network Security Perimeter Assocation"
+            },
+            "actionType": "Internal",
+            "properties": null
+          },
+          {
+            "name": "Sanitized",
+            "isDataAction": false,
+            "origin": "System",
+            "display": {
+              "provider": "Azure Communication Services",
+              "resource": "Network Security Perimeter Association Proxy",
+              "operation": "Gets/Lists Network Security Perimeter Assocations",
+              "description": "Read Network Security Perimeter Assocation"
+            },
+            "actionType": "Internal",
+            "properties": null
+          },
+          {
+            "name": "Sanitized",
+            "isDataAction": false,
+            "origin": "System",
+            "display": {
+              "provider": "Azure Communication Services",
+              "resource": "Network Security Perimeter Association Proxy",
+              "operation": "Deletes a Network Security Perimeter Assocation",
+              "description": "Delete Network Security Perimeter Assocation"
+            },
+            "actionType": "Internal",
+            "properties": null
+          },
+          {
+            "name": "Sanitized",
+            "isDataAction": false,
+            "origin": "System",
+            "display": {
+              "provider": "Azure Communication Services",
+              "resource": "Network Security Perimeter Configuration",
+              "operation": "Gets a Network Security Perimeter Configuration",
+              "description": "Read Network Security Perimeter Configuration"
+            },
+            "actionType": "Internal",
+            "properties": null
+          },
+          {
+            "name": "Sanitized",
+            "isDataAction": false,
+            "origin": "System",
+            "display": {
+              "provider": "Azure Communication Services",
+              "resource": "Network Security Perimeter Configuration",
+              "operation": "Reconcile a Network Security Perimeter Configuration",
+              "description": "Refresh a Network Security Perimeter Configuration"
+            },
+            "actionType": "Internal",
+            "properties": null
+          },
+          {
+            "name": "Sanitized",
+            "isDataAction": false,
+            "origin": "System",
+            "display": {
+              "provider": "Azure Communication Services",
+              "resource": "Network Security Perimeter Configuration",
+              "operation": "Notify Network Security Perimeter updates available",
+              "description": "Notifies that new Network Security Perimeter updates are available"
+            },
+            "actionType": "Internal",
+            "properties": null
+          },
+          {
+            "name": "Sanitized",
+            "isDataAction": false,
+            "display": {
+              "provider": "Azure Communication Services",
+              "resource": "EmailServices",
+              "operation": "EmailService_Get",
+              "description": "Get the EmailService and its properties."
+            },
+            "properties": null
+          },
+          {
+            "name": "Sanitized",
+            "isDataAction": false,
+            "display": {
+              "provider": "Azure Communication Services",
+              "resource": "EmailServices",
+              "operation": "EmailService_CreateOrUpdate",
+              "description": "Get the EmailService and its properties."
+            },
+            "properties": null
+          },
+          {
+            "name": "Sanitized",
+            "isDataAction": false,
+            "display": {
+              "provider": "Azure Communication Services",
+              "resource": "EmailServices",
+              "operation": "EmailService_Delete",
+              "description": "Operation to delete a EmailService."
+            },
+            "properties": null
+          },
+          {
+            "name": "Sanitized",
+            "isDataAction": false,
+            "display": {
+              "provider": "Azure Communication Services",
+              "resource": "EmailServices",
+              "operation": "EmailService_ListVerifiedDomainsFromExchangeOnline",
+              "description": "List Verified Domains from the exchange online tenant."
+            },
+            "properties": null
+          },
+          {
+            "name": "Sanitized",
+            "isDataAction": false,
+            "display": {
+              "provider": "Azure Communication Services",
+              "resource": "Domains",
+              "operation": "Domain_Get",
+              "description": "Get the email Domain and its properties."
+            },
+            "properties": null
+          },
+          {
+            "name": "Sanitized",
+            "isDataAction": false,
+            "display": {
+              "provider": "Azure Communication Services",
+              "resource": "Domains",
+              "operation": "Domain_CreateOrUpdate",
+              "description": "Add a new Domain under the parent EmailService resource or update an existing Domain resource."
+            },
+            "properties": null
+          },
+          {
+            "name": "Sanitized",
+            "isDataAction": false,
+            "display": {
+              "provider": "Azure Communication Services",
+              "resource": "Domains",
+              "operation": "Domain_Delete",
+              "description": "Operation to delete a Domain resource."
+            },
+            "properties": null
+          },
+          {
+            "name": "Sanitized",
+            "isDataAction": false,
+            "display": {
+              "provider": "Azure Communication Services",
+              "resource": "Domains",
+              "operation": "Domain_InitiateVerification",
+              "description": "Initiate verification of Dns record."
+            },
+            "properties": null
+          },
+          {
+            "name": "Sanitized",
+            "isDataAction": false,
+            "display": {
+              "provider": "Azure Communication Services",
+              "resource": "Domains",
+              "operation": "Domain_CancelVerification",
+              "description": "Cancel verification of Dns record."
+            },
+            "properties": null
+          },
+          {
+            "name": "Sanitized",
+            "isDataAction": false,
+            "display": {
+              "provider": "Azure Communication Services",
+              "resource": "Domains",
+              "operation": "Domain_RevokeVerification",
+              "description": "Revoke existing verified status of a Dns record."
+            },
+            "properties": null
+          },
+          {
+            "name": "Sanitized",
+            "isDataAction": false,
+            "display": {
+              "provider": "Azure Communication Services",
+              "resource": "Domains",
+              "operation": "Domains_ListValidSenderUserNames",
+              "description": "Get a list of valid sender user names."
+            },
+            "properties": null
+          },
+          {
+            "name": "Sanitized",
+            "isDataAction": false,
+            "display": {
+              "provider": "Azure Communication Services",
+              "resource": "Domains",
+              "operation": "Domains_AddValidSenderUserNames",
+              "description": "Add to the list of valid sender user names."
+            },
+            "properties": null
+          },
+          {
+            "name": "Sanitized",
+            "isDataAction": false,
+            "display": {
+              "provider": "Azure Communication Services",
+              "resource": "Domains",
+              "operation": "Domains_RemoveValidSenderUserNames",
+              "description": "Remove from the list of valid sender user names."
+            },
+            "properties": null
+          },
+          {
+            "name": "Sanitized",
+            "isDataAction": false,
+            "display": {
+              "provider": "Azure Communication Services",
+              "resource": "Domains",
+              "operation": "Domains_ListSuppressedEmailAddresses",
+              "description": "Get a list of suppressed email addresses."
+            },
+            "properties": null
+          },
+          {
+            "name": "Sanitized",
+            "isDataAction": false,
+            "display": {
+              "provider": "Azure Communication Services",
+              "resource": "Domains",
+              "operation": "Domains_AddSuppressedEmailAddresses",
+              "description": "Add email addresses to the suppression list."
+            },
+            "properties": null
+          },
+          {
+            "name": "Sanitized",
+            "isDataAction": false,
+            "display": {
+              "provider": "Azure Communication Services",
+              "resource": "Domains",
+              "operation": "Domains_RemoveSuppressedEmailAddresses",
+              "description": "Remove email addresses from the suppression list."
+            },
+            "properties": null
+          },
+          {
+            "name": "Sanitized",
+            "isDataAction": false,
+            "display": {
+              "provider": "Azure Communication Services",
+              "resource": "SenderUsernames",
+              "operation": "SenderUsernames_ListByDomains",
+              "description": "List all valid sender usernames for a domains resource."
+            },
+            "properties": null
+          },
+          {
+            "name": "Sanitized",
+            "isDataAction": false,
+            "display": {
+              "provider": "Azure Communication Services",
+              "resource": "SenderUsernames",
+              "operation": "SenderUsernames_Get",
+              "description": "Get the email SenderUsername and its properties."
+            },
+            "properties": null
+          },
+          {
+            "name": "Sanitized",
+            "isDataAction": false,
+            "display": {
+              "provider": "Azure Communication Services",
+              "resource": "SenderUsernames",
+              "operation": "SenderUsernames_CreateOrUpdate",
+              "description": "Add a new SenderUsername under the parent Domain resource or update an existing SenderUsername resource."
+            },
+            "properties": null
+          },
+          {
+            "name": "Sanitized",
+            "isDataAction": false,
+            "display": {
+              "provider": "Azure Communication Services",
+              "resource": "SenderUsernames",
+              "operation": "SenderUsernames_Delete",
+              "description": "Operation to delete a SenderUsername resource."
+            },
+            "properties": null
+          },
+          {
+            "name": "Sanitized",
+            "isDataAction": false,
+            "display": {
+              "provider": "Azure Communication Services",
+              "resource": "SuppressionLists",
+              "operation": "SuppressionLists_List",
+              "description": "List all suppression lists for a domains resource."
+            },
+            "properties": null
+          },
+          {
+            "name": "Sanitized",
+            "isDataAction": false,
+            "display": {
+              "provider": "Azure Communication Services",
+              "resource": "SuppressionLists",
+              "operation": "SuppressionLists_Get",
+              "description": "Get the suppression list and its properties."
+            },
+            "properties": null
+          },
+          {
+            "name": "Sanitized",
+            "isDataAction": false,
+            "display": {
+              "provider": "Azure Communication Services",
+              "resource": "SuppressionLists",
+              "operation": "SuppressionLists_CreateOrUpdate",
+              "description": "Add a new suppression list under the parent Domain resource or update an existing suppression list."
+            },
+            "properties": null
+          },
+          {
+            "name": "Sanitized",
+            "isDataAction": false,
+            "display": {
+              "provider": "Azure Communication Services",
+              "resource": "SuppressionLists",
+              "operation": "SuppressionLists_Delete",
+              "description": "Operation to delete a suppressio lists."
+            },
+            "properties": null
+          },
+          {
+            "name": "Sanitized",
+            "isDataAction": false,
+            "display": {
+              "provider": "Azure Communication Services",
+              "resource": "SuppressionListAddresses",
+              "operation": "SuppressionListAddresses_List",
+              "description": "Get all the addresses in a suppression list."
+            },
+            "properties": null
+          },
+          {
+            "name": "Sanitized",
+            "isDataAction": false,
+            "display": {
+              "provider": "Azure Communication Services",
+              "resource": "SuppressionListAddresses",
+              "operation": "SuppressionListAddresses_Get",
+              "description": "Get all the addresses in a suppression list."
+            },
+            "properties": null
+          },
+          {
+            "name": "Sanitized",
+            "isDataAction": false,
+            "display": {
+              "provider": "Azure Communication Services",
+              "resource": "SuppressionListAddresses",
+              "operation": "SuppressionListAddresses_CreateOrUpdate",
+              "description": "Add a new suppression list under the parent Domain resource or update an existing suppression list."
+            },
+            "properties": null
+          },
+          {
+            "name": "Sanitized",
+            "isDataAction": false,
+            "display": {
+              "provider": "Azure Communication Services",
+              "resource": "SuppressionListAddresses",
+              "operation": "SuppressionListAddresses_Delete",
+              "description": "Operation to delete an address from a suppression list."
+            },
+            "properties": null
+          }
+        ]
+      }
+    },
+    {
+      "RequestUri": "https://Sanitized.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg?api-version=2021-04-01",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armresources.ResourceGroupsClient/v1.1.1 (go1.22.0; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "0",
+        "Date": "Thu, 30 May 2024 06:35:41 GMT",
+        "Expires": "-1",
+        "Location": "Sanitized",
+        "Pragma": "no-cache",
+        "Retry-After": "15",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-deletes": "14999",
+        "x-ms-request-id": "Sanitized",
+        "x-ms-routing-request-id": "JAPANWEST:20240530T063541Z:00000000-0000-0000-0000-000000000000",
+        "X-MSEdge-Ref": "Ref A: 05B0F53B774F4937B4E3C9A4E08415C0 Ref B: TYO201151005062 Ref C: 2024-05-30T06:35:37Z"
+      },
+      "ResponseBody": null
+    }
+  ],
+  "Variables": {
+    "randSeed": "1717050725",
+    "recordingRandomSeed": "0"
+  }
+}

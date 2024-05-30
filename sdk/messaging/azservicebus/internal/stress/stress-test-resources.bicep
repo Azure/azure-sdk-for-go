@@ -11,8 +11,6 @@ var apiVersion = '2017-04-01'
 // Uncomment this if you want to test against the southeastasia nodes.
 //var location = 'southeastasia'
 var location = resourceGroup().location
-var authorizationRuleName_var = '${baseName}/RootManageSharedAccessKey'
-var authorizationRuleNameNoManage_var = '${baseName}/NoManage'
 var serviceBusDataOwnerRoleId = '/subscriptions/${subscription().subscriptionId}/providers/Microsoft.Authorization/roleDefinitions/090c5cfd-751d-490a-894a-3ce6f1109419'
 
 resource servicebus 'Microsoft.ServiceBus/namespaces@2018-01-01-preview' = {
@@ -28,7 +26,7 @@ resource servicebus 'Microsoft.ServiceBus/namespaces@2018-01-01-preview' = {
 }
 
 resource authorizationRuleName 'Microsoft.ServiceBus/namespaces/AuthorizationRules@2015-08-01' = {
-  name: authorizationRuleName_var
+  name: '${baseName}/RootManageSharedAccessKey'
   location: location
   properties: {
     rights: [
@@ -43,7 +41,7 @@ resource authorizationRuleName 'Microsoft.ServiceBus/namespaces/AuthorizationRul
 }
 
 resource authorizationRuleNameNoManage 'Microsoft.ServiceBus/namespaces/AuthorizationRules@2015-08-01' = {
-  name: authorizationRuleNameNoManage_var
+  name: '${baseName}/NoManage'
   location: location
   properties: {
     rights: [
@@ -55,8 +53,6 @@ resource authorizationRuleNameNoManage 'Microsoft.ServiceBus/namespaces/Authoriz
     servicebus
   ]
 }
-
-
 
 resource dataOwnerRoleId 'Microsoft.Authorization/roleAssignments@2018-01-01-preview' = {
   name: guid('dataOwnerRoleId${baseName}')
@@ -105,8 +101,14 @@ resource testQueueWithSessions 'Microsoft.ServiceBus/namespaces/queues@2017-04-0
   }
 }
 
-output SERVICEBUS_CONNECTION_STRING string = listKeys(resourceId('Microsoft.ServiceBus/namespaces/authorizationRules', baseName, 'RootManageSharedAccessKey'), apiVersion).primaryConnectionString
-output SERVICEBUS_CONNECTION_STRING_NO_MANAGE string = listKeys(resourceId('Microsoft.ServiceBus/namespaces/authorizationRules', baseName, 'NoManage'), apiVersion).primaryConnectionString
+output SERVICEBUS_CONNECTION_STRING string = listKeys(
+  resourceId('Microsoft.ServiceBus/namespaces/authorizationRules', baseName, 'RootManageSharedAccessKey'),
+  apiVersion
+).primaryConnectionString
+output SERVICEBUS_CONNECTION_STRING_NO_MANAGE string = listKeys(
+  resourceId('Microsoft.ServiceBus/namespaces/authorizationRules', baseName, 'NoManage'),
+  apiVersion
+).primaryConnectionString
 output SERVICEBUS_ENDPOINT string = replace(servicebus.properties.serviceBusEndpoint, ':443/', '')
 output QUEUE_NAME string = 'testQueue'
 output QUEUE_NAME_WITH_SESSIONS string = 'testQueueWithSessions'

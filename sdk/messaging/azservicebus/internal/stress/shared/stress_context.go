@@ -13,6 +13,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus"
 	"github.com/microsoft/ApplicationInsights-Go/appinsights"
 )
@@ -94,16 +95,22 @@ type StressContextOptions struct {
 }
 
 func MustCreateStressContext(testName string, options *StressContextOptions) *StressContext {
-	cs := os.Getenv("SERVICEBUS_CONNECTION_STRING")
+	sbEndpoint := os.Getenv("SERVICEBUS_ENDPOINT")
 
-	if cs == "" {
-		log.Fatalf("missing SERVICEBUS_CONNECTION_STRING environment variable")
+	if sbEndpoint == "" {
+		log.Fatalf("missing SERVICEBUS_ENDPOINT environment variable")
 	}
 
 	aiKey := os.Getenv("APPINSIGHTS_INSTRUMENTATIONKEY")
 
 	if aiKey == "" {
 		log.Fatalf("missing APPINSIGHTS_INSTRUMENTATIONKEY environment variable")
+	}
+
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+
+	if err != nil {
+		log.Fatalf("failed to create DefaultAzureCredential: %s", err)
 	}
 
 	config := appinsights.NewTelemetryConfiguration(aiKey)
@@ -161,15 +168,14 @@ func MustCreateStressContext(testName string, options *StressContextOptions) *St
 	// })
 
 	sc := &StressContext{
-		TestRunID: testRunID,
-		Nano:      testRunID, // the same for now
-		TC:        telemetryClient,
-		// you could always change the interval here. A minute feels like often enough
-		// to know things are running, while not so often that you end up flooding logging
-		// with duplicate information.
-		logMessages: logMessages,
-		Context:     ctx,
 		cancel:      cancel,
+		Context:     ctx,
+		Cred:        cred,
+		Endpoint:    sbEndpoint,
+		logMessages: logMessages,
+		Nano:        testRunID, // the same for now
+		TC:          telemetryClient,
+		TestRunID:   testRunID,
 	}
 
 	if options != nil && options.EmitStartEvent {

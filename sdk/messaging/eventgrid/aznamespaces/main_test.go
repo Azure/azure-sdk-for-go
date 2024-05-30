@@ -60,6 +60,7 @@ func purgeEvents() {
 		panic(err)
 	}
 
+	// Disabled: Forcing use of SASKey until https://github.com/Azure/azure-sdk-for-go/issues/22961 is resolved
 	// cred, err := azidentity.NewDefaultAzureCredential(nil)
 
 	// if err != nil {

@@ -151,7 +151,8 @@ func newClients(t *testing.T, useSASKey bool) (*aznamespaces.SenderClient, *azna
 func newSenderClient(t *testing.T, useSASKey bool) *aznamespaces.SenderClient {
 	options := newClientOptions(t)
 
-	if !useSASKey {
+	if os.Getenv("AAD_DISABLED") == "true" {
+		t.Logf("Forcing AAD usage because AAD_DISABLED is true")
 		useSASKey = true
 	}
 

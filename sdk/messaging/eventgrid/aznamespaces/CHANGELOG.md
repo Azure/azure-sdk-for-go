@@ -9,7 +9,7 @@
 
 ### Breaking Changes
 
-- Sending and receiving opeations have been moved to separate clients (SenderClient and ReceiverClient).
+- Sending and receiving operations have been moved to separate clients (SenderClient and ReceiverClient).
 - Method names have been changed, removing `CloudEvent`. 
 - Topic and subscription name are now set at the Client level, as part of `NewSenderClient` or `NewReceiverClient`.
 

@@ -76,7 +76,7 @@ func NewReceiverClientWithSharedKeyCredential(endpoint string, topic string, sub
 	}, nil
 }
 
-// Reject - Reject batch of Cloud Events. The server responds with an HTTP 200 status code if the request is successfully
+// Reject rejects a batch of Cloud Events. The server responds with an HTTP 200 status code if the request is successfully
 // accepted. The response body will include the set of successfully rejected lockTokens,
 // along with other failed lockTokens with their corresponding error information.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -88,7 +88,7 @@ func (client *ReceiverClient) Reject(ctx context.Context, lockTokens []string, o
 	return client.reject(ctx, client.data.topic, client.data.subscription, rejectOptions{LockTokens: lockTokens}, options)
 }
 
-// Acknowledge - Acknowledge batch of Cloud Events. The server responds with an HTTP 200 status code if the request
+// Acknowledge acknowledges a batch of Cloud Events. The server responds with an HTTP 200 status code if the request
 // is successfully accepted. The response body will include the set of successfully acknowledged
 // lockTokens, along with other failed lockTokens with their corresponding error information. Successfully acknowledged events
 // will no longer be available to any consumer.
@@ -101,7 +101,7 @@ func (client *ReceiverClient) Acknowledge(ctx context.Context, lockTokens []stri
 	return client.acknowledge(ctx, client.data.topic, client.data.subscription, acknowledgeOptions{LockTokens: lockTokens}, options)
 }
 
-// Release - Release batch of Cloud Events. The server responds with an HTTP 200 status code if the request is
+// Release releases a batch of Cloud Events. The server responds with an HTTP 200 status code if the request is
 // successfully accepted. The response body will include the set of successfully released lockTokens,
 // along with other failed lockTokens with their corresponding error information.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -113,7 +113,7 @@ func (client *ReceiverClient) Release(ctx context.Context, lockTokens []string, 
 	return client.release(ctx, client.data.topic, client.data.subscription, releaseOptions{LockTokens: lockTokens}, options)
 }
 
-// RenewCloudEventLocks - Renew lock for batch of Cloud Events. The server responds with an HTTP 200 status code if the request
+// RenewLocks renews locks for batch of Cloud Events. The server responds with an HTTP 200 status code if the request
 // is successfully accepted. The response body will include the set of successfully renewed
 // lockTokens, along with other failed lockTokens with their corresponding error information.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -125,7 +125,7 @@ func (client *ReceiverClient) RenewLocks(ctx context.Context, lockTokens []strin
 	return client.renewLock(ctx, client.data.topic, client.data.subscription, renewLockOptions{LockTokens: lockTokens}, options)
 }
 
-// receive - Receive a batch of Cloud Events from a subscription.
+// Receive a batch of Cloud Events from a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-06-01

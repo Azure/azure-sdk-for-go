@@ -90,7 +90,7 @@ type SendOptions struct {
 	BinaryMode bool
 }
 
-// send - Publish a single Cloud Event to a namespace topic.
+// Send publishes a single Cloud Event to a namespace topic.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-06-01
@@ -100,7 +100,7 @@ func (client *SenderClient) Send(ctx context.Context, event *messaging.CloudEven
 	return client.send(ctx, client.data.Topic, event, options)
 }
 
-// sendEvents - Publish a batch of Cloud Events to a namespace topic.
+// SendEvents publishes a batch of Cloud Events to a namespace topic.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-06-01

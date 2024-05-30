@@ -41,10 +41,6 @@ func main() {
 		panic(err)
 	}
 
-	if err := injectHookForBinaryMode(); err != nil {
-		panic(err)
-	}
-
 	// Do a double check, we shouldn't have any other unexported symbols
 	// in generated code. If we do it's probably fallout from our unexporting
 	// in TypeSpec.
@@ -215,7 +211,8 @@ func exportPublicSymbols() error {
 		"failedLockToken": "FailedLockToken",
 		"receiveDetails":  "ReceiveDetails",
 
-		// sender doesn't have any results.
+		// sender
+		"publishResult": "PublishResult",
 
 		// other models that are embedded in results
 		"brokerProperties": "BrokerProperties",
@@ -386,8 +383,4 @@ func transformError() error {
 	}
 
 	return nil
-}
-
-func injectHookForBinaryMode() error {
-	return replaceAllInFile("sender_client.go", regexp.MustCompile(`client\.sendCreateRequest\(ctx`), []byte("client.createRequestForEitherSend(ctx"))
 }

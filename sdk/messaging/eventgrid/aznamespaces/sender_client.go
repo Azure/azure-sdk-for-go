@@ -35,7 +35,7 @@ type SenderClient struct {
 //   - options - SendOptions contains the optional parameters for the SenderClient.send method.
 func (client *SenderClient) send(ctx context.Context, topicName string, event *messaging.CloudEvent, options *SendOptions) (SendResponse, error) {
 	var err error
-	req, err := client.createRequestForEitherSend(ctx, topicName, event, options)
+	req, err := client.sendCreateRequest(ctx, topicName, event, options)
 	if err != nil {
 		return SendResponse{}, err
 	}
@@ -78,7 +78,7 @@ func (client *SenderClient) sendCreateRequest(ctx context.Context, topicName str
 // sendHandleResponse handles the send response.
 func (client *SenderClient) sendHandleResponse(resp *http.Response) (SendResponse, error) {
 	result := SendResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.publishResult); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.PublishResult); err != nil {
 		return SendResponse{}, err
 	}
 	return result, nil
@@ -136,7 +136,7 @@ func (client *SenderClient) sendEventsCreateRequest(ctx context.Context, topicNa
 // sendEventsHandleResponse handles the sendEvents response.
 func (client *SenderClient) sendEventsHandleResponse(resp *http.Response) (SendEventsResponse, error) {
 	result := SendEventsResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.publishResult); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.PublishResult); err != nil {
 		return SendEventsResponse{}, err
 	}
 	return result, nil

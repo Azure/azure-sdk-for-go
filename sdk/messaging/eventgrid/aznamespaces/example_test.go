@@ -229,45 +229,6 @@ func ExampleSenderClient_Send() {
 	// Output:
 }
 
-// BinaryMode sends a CloudEvent more efficiently by avoiding unnecessary encoding of the Body.
-// There are some caveats to be aware of:
-//
-//   - CloudEvent.Data must be of type []byte.
-//   - CloudEvent.DataContentType will be used as the Content-Type for the HTTP request.
-//   - CloudEvent.Extensions fields are converted to strings.
-func ExampleSenderClient_Send_binaryMode() {
-	sender, _ := getEventGridClients()
-
-	if sender == nil {
-		return
-	}
-
-	event, err := messaging.NewCloudEvent("source", "eventType", []byte{1, 2, 3}, &messaging.CloudEventOptions{
-		DataContentType: to.Ptr("application/octet-stream"),
-	})
-
-	if err != nil {
-		//  TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
-	}
-
-	// BinaryMode sends a CloudEvent more efficiently by avoiding unnecessary encoding of the Body.
-	// There are some caveats to be aware of:
-	// - [CloudEvent.Data] must be of type []byte.
-	// - [CloudEvent.DataContentType] will be used as the Content-Type for the HTTP request.
-	// - [CloudEvent.Extensions] fields are converted to strings.
-	_, err = sender.Send(context.TODO(), &event, &aznamespaces.SendOptions{
-		BinaryMode: true,
-	})
-
-	if err != nil {
-		//  TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
-	}
-
-	// Output:
-}
-
 func getEventGridClients() (*aznamespaces.SenderClient, *aznamespaces.ReceiverClient) {
 	endpoint := os.Getenv("EVENTGRID_ENDPOINT")
 	sharedKey := os.Getenv("EVENTGRID_KEY")

@@ -49,8 +49,8 @@ type FailedLockToken struct {
 	LockToken *string
 }
 
-// publishResult - The result of the Publish operation.
-type publishResult struct {
+// PublishResult - The result of the Publish operation.
+type PublishResult struct {
 }
 
 // ReceiveDetails - Receive operation details per Cloud Event.

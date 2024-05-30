@@ -37,11 +37,11 @@ type RenewLocksResponse struct {
 // SendEventsResponse contains the response from method SenderClient.sendEvents.
 type SendEventsResponse struct {
 	// The result of the Publish operation.
-	publishResult
+	PublishResult
 }
 
 // SendResponse contains the response from method SenderClient.send.
 type SendResponse struct {
 	// The result of the Publish operation.
-	publishResult
+	PublishResult
 }

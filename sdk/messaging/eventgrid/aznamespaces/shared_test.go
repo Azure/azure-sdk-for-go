@@ -7,7 +7,6 @@
 package aznamespaces_test
 
 import (
-	"context"
 	"crypto/tls"
 	"fmt"
 	"net/http"
@@ -15,12 +14,10 @@ import (
 	"strings"
 	"sync"
 	"testing"
-	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/messaging"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/eventgrid/aznamespaces"
@@ -279,33 +276,4 @@ func requireEqualCloudEvent(t *testing.T, expected messaging.CloudEvent, actual 
 	expected.Time = actual.Time
 
 	require.Equal(t, actual, expected)
-}
-
-// receiveAll makes sure to receive all of count messages, even if it requires multiple calls.
-// It also acks all events it receives.
-func receiveAll(t *testing.T, client *aznamespaces.ReceiverClient, count int) []aznamespaces.ReceiveDetails {
-	var events []aznamespaces.ReceiveDetails
-
-	receiveCtx, cancelReceive := context.WithTimeout(context.Background(), 2*time.Minute)
-	defer cancelReceive()
-
-	for len(events) < count {
-		eventsResp, err := client.Receive(receiveCtx, &aznamespaces.ReceiveOptions{
-			MaxEvents: to.Ptr(int32(count - len(events))),
-		})
-		require.NoError(t, err)
-
-		var lockTokens []string
-		for _, evt := range eventsResp.Details {
-			lockTokens = append(lockTokens, *evt.BrokerProperties.LockToken)
-		}
-
-		_, err = client.Acknowledge(receiveCtx, lockTokens, nil)
-		require.NoError(t, err)
-
-		events = append(events, eventsResp.Details...)
-	}
-
-	require.Equal(t, count, len(events))
-	return events
 }

@@ -41,9 +41,6 @@ import (
 )
 
 func Test(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
 	recordMode := recording.GetRecordMode()
 	t.Logf("Running file Tests in %s mode\n", recordMode)
 	if recordMode == recording.LiveMode {
@@ -848,7 +845,9 @@ func (f *FileRecordedTestsSuite) TestStartCopyDefault() {
 	_require.NoError(err)
 	_require.EqualValues(getResp.CopyID, copyResp.CopyID)
 	_require.NotEqual(*getResp.CopyStatus, "")
-	_require.Equal(*getResp.CopySource, srcFile.URL())
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		_require.Equal(*getResp.CopySource, srcFile.URL())
+	}
 	_require.Equal(*getResp.CopyStatus, file.CopyStatusTypeSuccess)
 
 	// Abort will fail after copy finished
@@ -4360,7 +4359,9 @@ func (f *FileRecordedTestsSuite) TestStartCopyTrailingDotOAuth() {
 	_require.NoError(err)
 	_require.EqualValues(getResp.CopyID, copyResp.CopyID)
 	_require.NotEqual(*getResp.CopyStatus, "")
-	_require.Equal(*getResp.CopySource, srcFileClient.URL())
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		_require.Equal(*getResp.CopySource, srcFileClient.URL())
+	}
 	_require.Equal(*getResp.CopyStatus, file.CopyStatusTypeSuccess)
 
 	// validate data copied

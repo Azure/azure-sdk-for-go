@@ -172,11 +172,9 @@ var azureOpenAI, openAI, servers = func() (testVars, testVars, []string) {
 			},
 			Cognitive: azopenai.AzureSearchChatExtensionConfiguration{
 				Parameters: &azopenai.AzureSearchChatExtensionParameters{
-					Endpoint:  to.Ptr(recording.GetEnvVariable("COGNITIVE_SEARCH_API_ENDPOINT", fakeCognitiveEndpoint)),
-					IndexName: to.Ptr(recording.GetEnvVariable("COGNITIVE_SEARCH_API_INDEX", fakeCognitiveIndexName)),
-					Authentication: &azopenai.OnYourDataAPIKeyAuthenticationOptions{
-						Key: to.Ptr(recording.GetEnvVariable("COGNITIVE_SEARCH_API_KEY", fakeAPIKey)),
-					},
+					Endpoint:       to.Ptr(recording.GetEnvVariable("COGNITIVE_SEARCH_API_ENDPOINT", fakeCognitiveEndpoint)),
+					IndexName:      to.Ptr(recording.GetEnvVariable("COGNITIVE_SEARCH_API_INDEX", fakeCognitiveIndexName)),
+					Authentication: &azopenai.OnYourDataSystemAssignedManagedIdentityAuthenticationOptions{},
 				},
 			},
 		}

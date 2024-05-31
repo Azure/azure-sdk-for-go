@@ -32,8 +32,8 @@ type AzurePipelinesCredential struct {
 	cred                                     *ClientAssertionCredential
 }
 
-// AzurePipelinesServiceConnectionCredentialOptions contains optional parameters for AzurePipelinesServiceConnectionCredential.
-type AzurePipelinesServiceConnectionCredentialOptions struct {
+// AzurePipelinesCredentialOptions contains optional parameters for AzurePipelinesCredential.
+type AzurePipelinesCredentialOptions struct {
 	azcore.ClientOptions
 
 	// AdditionallyAllowedTenants specifies additional tenants for which the credential may acquire tokens.
@@ -54,9 +54,9 @@ type AzurePipelinesServiceConnectionCredentialOptions struct {
 // this variable in build job YAML.
 //
 // [Azure Pipelines documentation]: https://learn.microsoft.com/azure/devops/pipelines/build/variables?view=azure-devops&tabs=yaml#systemaccesstoken
-func NewAzurePipelinesCredential(tenantID, clientID, serviceConnectionID string, options *AzurePipelinesServiceConnectionCredentialOptions) (*AzurePipelinesCredential, error) {
+func NewAzurePipelinesCredential(tenantID, clientID, serviceConnectionID string, options *AzurePipelinesCredentialOptions) (*AzurePipelinesCredential, error) {
 	if options == nil {
-		options = &AzurePipelinesServiceConnectionCredentialOptions{}
+		options = &AzurePipelinesCredentialOptions{}
 	}
 	u := os.Getenv(systemOIDCRequestURI)
 	if u == "" {

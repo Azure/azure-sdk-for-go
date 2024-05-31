@@ -4,7 +4,7 @@
 
 ### Features Added
 
-- Updating to the `2024-05-01-preview` API version for Azure OpenAI. (PR#TBD)
+- Updating to the `2024-05-01-preview` API version for Azure OpenAI. (PR#22967)
 
 ### Breaking Changes
 

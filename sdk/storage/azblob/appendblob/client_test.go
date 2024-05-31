@@ -2291,7 +2291,6 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockWithCPKScope() {
 	}
 	_, err = abClient.Create(context.Background(), &createAppendBlobOptions)
 	_require.NoError(err)
-	// _require.Equal(resp.RawResponse.StatusCode, 201)
 
 	words := []string{"AAA ", "BBB ", "CCC "}
 	for index, word := range words {
@@ -2300,7 +2299,6 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockWithCPKScope() {
 		}
 		resp, err := abClient.AppendBlock(context.Background(), streaming.NopCloser(strings.NewReader(word)), &appendBlockOptions)
 		_require.NoError(err)
-		// _require.Equal(resp.RawResponse.StatusCode, 201)
 		_require.Equal(*resp.BlobAppendOffset, strconv.Itoa(index*4))
 		_require.Equal(*resp.BlobCommittedBlockCount, int32(index+1))
 		_require.NotNil(resp.ETag)

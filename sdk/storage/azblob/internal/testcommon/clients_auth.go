@@ -267,10 +267,10 @@ func CreateNewBlockBlobWithCPK(ctx context.Context, _require *require.Assertions
 	_require.NoError(err)
 	// _require.Equal(cResp.RawResponse.StatusCode, 201)
 	_require.Equal(*cResp.IsServerEncrypted, true)
-	if cpkInfo != nil {
+	if cpkInfo != nil && recording.GetRecordMode() != recording.PlaybackMode {
 		_require.EqualValues(cResp.EncryptionKeySHA256, cpkInfo.EncryptionKeySHA256)
 	}
-	if cpkScopeInfo != nil {
+	if cpkScopeInfo != nil && recording.GetRecordMode() != recording.PlaybackMode {
 		_require.EqualValues(cResp.EncryptionScope, cpkScopeInfo.EncryptionScope)
 	}
 	return

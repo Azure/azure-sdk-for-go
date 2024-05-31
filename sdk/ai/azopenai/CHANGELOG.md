@@ -10,6 +10,11 @@
 
 - ContentFilterResultDetailsForPrompt.CustomBlocklists has been changed from a []ContentFilterBlocklistIDResult to a struct, 
   containing the slice of []ContentFilterBlocklistIDResult.
+- OnYourDataEndpointVectorizationSource.Authentication's type has changed to OnYourDataVectorSearchAuthenticationOptionsClassification
+- Casing has been corrected for fields:
+  - Filepath -> FilePath
+  - FilepathField -> FilePathField
+  - CustomBlocklists -> CustomBlockLists
 
 ### Bugs Fixed
 

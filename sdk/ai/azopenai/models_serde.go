@@ -468,7 +468,7 @@ func (a AzureChatExtensionDataSourceResponseCitation) MarshalJSON() ([]byte, err
 	objectMap := make(map[string]any)
 	populate(objectMap, "chunk_id", a.ChunkID)
 	populate(objectMap, "content", a.Content)
-	populate(objectMap, "filepath", a.Filepath)
+	populate(objectMap, "filepath", a.FilePath)
 	populate(objectMap, "title", a.Title)
 	populate(objectMap, "url", a.URL)
 	return json.Marshal(objectMap)
@@ -490,7 +490,7 @@ func (a *AzureChatExtensionDataSourceResponseCitation) UnmarshalJSON(data []byte
 			err = unpopulate(val, "Content", &a.Content)
 			delete(rawMsg, key)
 		case "filepath":
-			err = unpopulate(val, "Filepath", &a.Filepath)
+			err = unpopulate(val, "FilePath", &a.FilePath)
 			delete(rawMsg, key)
 		case "title":
 			err = unpopulate(val, "Title", &a.Title)
@@ -512,7 +512,7 @@ func (a AzureChatExtensionRetrievedDocument) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "chunk_id", a.ChunkID)
 	populate(objectMap, "content", a.Content)
 	populate(objectMap, "data_source_index", a.DataSourceIndex)
-	populate(objectMap, "filepath", a.Filepath)
+	populate(objectMap, "filepath", a.FilePath)
 	populate(objectMap, "filter_reason", a.FilterReason)
 	populate(objectMap, "original_search_score", a.OriginalSearchScore)
 	populate(objectMap, "rerank_score", a.RerankScore)
@@ -541,7 +541,7 @@ func (a *AzureChatExtensionRetrievedDocument) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "DataSourceIndex", &a.DataSourceIndex)
 			delete(rawMsg, key)
 		case "filepath":
-			err = unpopulate(val, "Filepath", &a.Filepath)
+			err = unpopulate(val, "FilePath", &a.FilePath)
 			delete(rawMsg, key)
 		case "filter_reason":
 			err = unpopulate(val, "FilterReason", &a.FilterReason)
@@ -769,7 +769,7 @@ func (a AzureCosmosDBFieldMappingOptions) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "content_fields", a.ContentFields)
 	populate(objectMap, "content_fields_separator", a.ContentFieldsSeparator)
-	populate(objectMap, "filepath_field", a.FilepathField)
+	populate(objectMap, "filepath_field", a.FilePathField)
 	populate(objectMap, "title_field", a.TitleField)
 	populate(objectMap, "url_field", a.URLField)
 	populate(objectMap, "vector_fields", a.VectorFields)
@@ -792,7 +792,7 @@ func (a *AzureCosmosDBFieldMappingOptions) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "ContentFieldsSeparator", &a.ContentFieldsSeparator)
 			delete(rawMsg, key)
 		case "filepath_field":
-			err = unpopulate(val, "FilepathField", &a.FilepathField)
+			err = unpopulate(val, "FilePathField", &a.FilePathField)
 			delete(rawMsg, key)
 		case "title_field":
 			err = unpopulate(val, "TitleField", &a.TitleField)
@@ -1160,7 +1160,7 @@ func (a AzureSearchIndexFieldMappingOptions) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "content_fields", a.ContentFields)
 	populate(objectMap, "content_fields_separator", a.ContentFieldsSeparator)
-	populate(objectMap, "filepath_field", a.FilepathField)
+	populate(objectMap, "filepath_field", a.FilePathField)
 	populate(objectMap, "image_vector_fields", a.ImageVectorFields)
 	populate(objectMap, "title_field", a.TitleField)
 	populate(objectMap, "url_field", a.URLField)
@@ -1184,7 +1184,7 @@ func (a *AzureSearchIndexFieldMappingOptions) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "ContentFieldsSeparator", &a.ContentFieldsSeparator)
 			delete(rawMsg, key)
 		case "filepath_field":
-			err = unpopulate(val, "FilepathField", &a.FilepathField)
+			err = unpopulate(val, "FilePathField", &a.FilePathField)
 			delete(rawMsg, key)
 		case "image_vector_fields":
 			err = unpopulate(val, "ImageVectorFields", &a.ImageVectorFields)
@@ -2809,7 +2809,7 @@ func (c *ContentFilterResult) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ContentFilterResultDetailsForPrompt.
 func (c ContentFilterResultDetailsForPrompt) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "custom_blocklists", c.CustomBlocklists)
+	populate(objectMap, "custom_blocklists", c.CustomBlockLists)
 	populate(objectMap, "error", c.Error)
 	populate(objectMap, "hate", c.Hate)
 	populate(objectMap, "indirect_attack", c.IndirectAttack)
@@ -2831,7 +2831,7 @@ func (c *ContentFilterResultDetailsForPrompt) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "custom_blocklists":
-			err = unpopulate(val, "CustomBlocklists", &c.CustomBlocklists)
+			err = unpopulate(val, "CustomBlockLists", &c.CustomBlockLists)
 			delete(rawMsg, key)
 		case "error":
 			err = unpopulate(val, "Error", &c.Error)
@@ -2868,7 +2868,7 @@ func (c *ContentFilterResultDetailsForPrompt) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ContentFilterResultsForChoice.
 func (c ContentFilterResultsForChoice) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "custom_blocklists", c.CustomBlocklists)
+	populate(objectMap, "custom_blocklists", c.CustomBlockLists)
 	populate(objectMap, "error", c.Error)
 	populate(objectMap, "hate", c.Hate)
 	populate(objectMap, "profanity", c.Profanity)
@@ -2890,7 +2890,7 @@ func (c *ContentFilterResultsForChoice) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "custom_blocklists":
-			err = unpopulate(val, "CustomBlocklists", &c.CustomBlocklists)
+			err = unpopulate(val, "CustomBlockLists", &c.CustomBlockLists)
 			delete(rawMsg, key)
 		case "error":
 			err = unpopulate(val, "Error", &c.Error)
@@ -3066,7 +3066,7 @@ func (e ElasticsearchIndexFieldMappingOptions) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "content_fields", e.ContentFields)
 	populate(objectMap, "content_fields_separator", e.ContentFieldsSeparator)
-	populate(objectMap, "filepath_field", e.FilepathField)
+	populate(objectMap, "filepath_field", e.FilePathField)
 	populate(objectMap, "title_field", e.TitleField)
 	populate(objectMap, "url_field", e.URLField)
 	populate(objectMap, "vector_fields", e.VectorFields)
@@ -3089,7 +3089,7 @@ func (e *ElasticsearchIndexFieldMappingOptions) UnmarshalJSON(data []byte) error
 			err = unpopulate(val, "ContentFieldsSeparator", &e.ContentFieldsSeparator)
 			delete(rawMsg, key)
 		case "filepath_field":
-			err = unpopulate(val, "FilepathField", &e.FilepathField)
+			err = unpopulate(val, "FilePathField", &e.FilePathField)
 			delete(rawMsg, key)
 		case "title_field":
 			err = unpopulate(val, "TitleField", &e.TitleField)
@@ -3514,7 +3514,7 @@ func (i *ImageGenerationOptions) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ImageGenerationPromptFilterResults.
 func (i ImageGenerationPromptFilterResults) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "custom_blocklists", i.CustomBlocklists)
+	populate(objectMap, "custom_blocklists", i.CustomBlockLists)
 	populate(objectMap, "hate", i.Hate)
 	populate(objectMap, "jailbreak", i.Jailbreak)
 	populate(objectMap, "profanity", i.Profanity)
@@ -3534,7 +3534,7 @@ func (i *ImageGenerationPromptFilterResults) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "custom_blocklists":
-			err = unpopulate(val, "CustomBlocklists", &i.CustomBlocklists)
+			err = unpopulate(val, "CustomBlockLists", &i.CustomBlockLists)
 			delete(rawMsg, key)
 		case "hate":
 			err = unpopulate(val, "Hate", &i.Hate)
@@ -4188,7 +4188,7 @@ func (p PineconeFieldMappingOptions) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "content_fields", p.ContentFields)
 	populate(objectMap, "content_fields_separator", p.ContentFieldsSeparator)
-	populate(objectMap, "filepath_field", p.FilepathField)
+	populate(objectMap, "filepath_field", p.FilePathField)
 	populate(objectMap, "title_field", p.TitleField)
 	populate(objectMap, "url_field", p.URLField)
 	return json.Marshal(objectMap)
@@ -4210,7 +4210,7 @@ func (p *PineconeFieldMappingOptions) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "ContentFieldsSeparator", &p.ContentFieldsSeparator)
 			delete(rawMsg, key)
 		case "filepath_field":
-			err = unpopulate(val, "FilepathField", &p.FilepathField)
+			err = unpopulate(val, "FilePathField", &p.FilePathField)
 			delete(rawMsg, key)
 		case "title_field":
 			err = unpopulate(val, "TitleField", &p.TitleField)

@@ -244,7 +244,7 @@ type AzureChatExtensionDataSourceResponseCitation struct {
 	ChunkID *string
 
 	// The file path of the citation.
-	Filepath *string
+	FilePath *string
 
 	// The title of the citation.
 	Title *string
@@ -268,7 +268,7 @@ type AzureChatExtensionRetrievedDocument struct {
 	ChunkID *string
 
 	// The file path of the citation.
-	Filepath *string
+	FilePath *string
 
 	// Represents the rationale for filtering the document. If the document does not undergo filtering, this field will remain
 	// unset.
@@ -400,7 +400,7 @@ type AzureCosmosDBFieldMappingOptions struct {
 	ContentFieldsSeparator *string
 
 	// The name of the index field to use as a filepath.
-	FilepathField *string
+	FilePathField *string
 
 	// The name of the index field to use as a title.
 	TitleField *string
@@ -603,7 +603,7 @@ type AzureSearchIndexFieldMappingOptions struct {
 	ContentFieldsSeparator *string
 
 	// The name of the index field to use as a filepath.
-	FilepathField *string
+	FilePathField *string
 
 	// The names of fields that represent image vector data.
 	ImageVectorFields []string
@@ -1431,7 +1431,7 @@ type ContentFilterResult struct {
 // ContentFilterResultDetailsForPrompt - Information about content filtering evaluated against input data to Azure OpenAI.
 type ContentFilterResultDetailsForPrompt struct {
 	// Describes detection results against configured custom blocklists.
-	CustomBlocklists *ContentFilterDetailedResults
+	CustomBlockLists *ContentFilterDetailedResults
 
 	// Describes an error returned if the content filtering system is down or otherwise unable to complete the operation in time.
 	Error *Error
@@ -1467,7 +1467,7 @@ type ContentFilterResultDetailsForPrompt struct {
 // ContentFilterResultsForChoice - Information about content filtering evaluated against generated model output.
 type ContentFilterResultsForChoice struct {
 	// Describes detection results against configured custom blocklists.
-	CustomBlocklists *ContentFilterDetailedResults
+	CustomBlockLists *ContentFilterDetailedResults
 
 	// Describes an error returned if the content filtering system is down or otherwise unable to complete the operation in time.
 	Error *Error
@@ -1589,7 +1589,7 @@ type ElasticsearchIndexFieldMappingOptions struct {
 	ContentFieldsSeparator *string
 
 	// The name of the index field to use as a filepath.
-	FilepathField *string
+	FilePathField *string
 
 	// The name of the index field to use as a title.
 	TitleField *string
@@ -1768,7 +1768,7 @@ type ImageGenerationOptions struct {
 // ImageGenerationPromptFilterResults - Describes the content filtering results for the prompt of a image generation request.
 type ImageGenerationPromptFilterResults struct {
 	// Information about customer block lists and if something was detected the associated list ID.
-	CustomBlocklists *ContentFilterDetailedResults
+	CustomBlockLists *ContentFilterDetailedResults
 
 	// Describes language attacks or uses that include pejorative or discriminatory language with reference to a person or identity
 	// group on the basis of certain differentiating attributes of these groups
@@ -2143,7 +2143,7 @@ type PineconeFieldMappingOptions struct {
 	ContentFieldsSeparator *string
 
 	// The name of the index field to use as a filepath.
-	FilepathField *string
+	FilePathField *string
 
 	// The name of the index field to use as a title.
 	TitleField *string

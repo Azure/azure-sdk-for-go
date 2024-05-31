@@ -18,10 +18,6 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-const (
-	pathToPackage = "sdk/resourcemanager/internal/testdata"
-)
-
 func TestCreateDeleteResourceGroup(t *testing.T) {
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")

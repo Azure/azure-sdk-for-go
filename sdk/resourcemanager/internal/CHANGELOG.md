@@ -1,10 +1,12 @@
 # Release History
 
-## 2.0.1 (Unreleased)
+## 3.0.0 (2024-05-31)
 
 ### Features Added
+* Add `StartRecordingProxy` and `StopRecordingProxy` to help start and stop build-in recording proxy for each module's test.
 
 ### Breaking Changes
+* Remove `NewRecordingPolicy`, use `GetCredAndClientOptions` directly.
 
 ### Bugs Fixed
 
@@ -14,7 +16,7 @@
 ## 2.0.0 (2023-11-16)
 
 ### Breaking Changes
-* Removed `testutil.GetEnv`, use `github.com/Azure/azure-sdk-for-go/sdk/internal/recording.GetEnvVariable` instead.
+* Remove `testutil.GetEnv`, use `github.com/Azure/azure-sdk-for-go/sdk/internal/recording.GetEnvVariable` instead.
 * Remove `testutil.GenerateAlphaNumericID`, use `github.com/Azure/azure-sdk-for-go/sdk/internal/recording.GenerateAlphaNumericID` instead.
 
 ### Other Changes

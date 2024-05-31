@@ -7,10 +7,21 @@
 package testutil
 
 import (
+	"os"
 	"testing"
 )
 
-func TestStartStopRecording(t *testing.T) {
-	stop := StartRecording(t, pathToPackage)
-	defer stop()
+const (
+	pathToPackage = "sdk/resourcemanager/internal/testdata"
+)
+
+func TestMain(m *testing.M) {
+	code := run(m)
+	os.Exit(code)
+}
+
+func run(m *testing.M) int {
+	f := StartRecordingProxy(pathToPackage)
+	defer f()
+	return m.Run()
 }

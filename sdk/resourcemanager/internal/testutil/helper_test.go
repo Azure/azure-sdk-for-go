@@ -8,7 +8,6 @@ package testutil
 
 import (
 	"context"
-	"strings"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
@@ -19,9 +18,6 @@ import (
 )
 
 func TestCreateDeleteResourceGroup(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
 	ctx := context.Background()
 	cred, options := GetCredAndClientOptions(t)
 	subscriptionID := recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
@@ -29,15 +25,11 @@ func TestCreateDeleteResourceGroup(t *testing.T) {
 	defer stop()
 	resourceGroup, _, err := CreateResourceGroup(ctx, subscriptionID, cred, options, "eastus")
 	require.NoError(t, err)
-	require.True(t, strings.HasPrefix(*resourceGroup.Name, "go-sdk-test-"))
 	_, err = DeleteResourceGroup(ctx, subscriptionID, cred, options, *resourceGroup.Name)
 	require.NoError(t, err)
 }
 
 func TestCreateDeployment(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
 	ctx := context.Background()
 	cred, options := GetCredAndClientOptions(t)
 	subscriptionID := recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")

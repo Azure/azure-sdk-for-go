@@ -29,7 +29,7 @@ func StartRecordingProxy(pathToPackage string) func() {
 			panic(fmt.Sprintf("Failed to add uuid sanitizer: %v", err))
 		}
 		// consolidate resource group name for recording and playback
-		err = recording.AddGeneralRegexSanitizer("go-sdk-test-rg", `go-sdk-test-\d+`, proxy.Options)
+		err = recording.AddGeneralRegexSanitizer("Sanitized", `go-sdk-test-\d+`, proxy.Options)
 		if err != nil {
 			panic(fmt.Sprintf("Failed to add resource group name sanitizer: %v", err))
 		}

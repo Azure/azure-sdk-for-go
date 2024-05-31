@@ -8,8 +8,6 @@
 ### Breaking Changes
 * Remove `NewRecordingPolicy`, use `GetCredAndClientOptions` directly.
 
-### Bugs Fixed
-
 ### Other Changes
 * Updated dependencies.
 

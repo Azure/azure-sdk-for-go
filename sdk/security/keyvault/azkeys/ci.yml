@@ -31,7 +31,7 @@ extends:
     SupportedClouds: 'Public,UsGov,China'
 
     # Due to the high cost of Managed HSMs, we only want to test using them weekly.
-    ${{ if contains(variables['Build.DefinitionName'], 'weekly') }}:
+    ${{ if and(contains(variables['Build.DefinitionName'], 'weekly'), eq(variables['Build.AzureCloud'], 'Public')) }}:
       AdditionalMatrixConfigs:
         - Name: keyvault_test_matrix_addons
           Path: sdk/security/keyvault/azkeys/platform-matrix.json

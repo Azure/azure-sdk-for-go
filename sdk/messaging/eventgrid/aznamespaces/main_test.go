@@ -75,7 +75,7 @@ func purgeEvents() {
 
 	cred := azcore.NewKeyCredential(testVars.Key)
 
-	receiver, err := aznamespaces.NewReceiverClientWithSharedKeyCredential(testVars.Endpoint, testVars.Topic, testVars.Subscription, cred, &aznamespaces.ClientOptions{
+	receiver, err := aznamespaces.NewReceiverClientWithSharedKeyCredential(testVars.Endpoint, testVars.Topic, testVars.Subscription, cred, &aznamespaces.ReceiverClientOptions{
 		ClientOptions: policy.ClientOptions{
 			Logging: policy.LogOptions{
 				IncludeBody:        true,

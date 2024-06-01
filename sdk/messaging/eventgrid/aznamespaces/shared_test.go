@@ -77,7 +77,7 @@ func loadEnv() (testVars, error) {
 var initTopic sync.Once
 var tv testVars = fakeTestVars
 
-func newClientOptions(t *testing.T) *aznamespaces.ClientOptions {
+func newClientOptions(t *testing.T) azcore.ClientOptions {
 	if recording.GetRecordMode() != recording.PlaybackMode {
 		initTopic.Do(func() {
 			tmpTestVars, err := loadEnv()
@@ -86,7 +86,7 @@ func newClientOptions(t *testing.T) *aznamespaces.ClientOptions {
 		})
 	}
 
-	options := &aznamespaces.ClientOptions{}
+	options := azcore.ClientOptions{}
 
 	if recording.GetRecordMode() == recording.LiveMode {
 		if tv.KeyLogPath != "" {
@@ -100,17 +100,13 @@ func newClientOptions(t *testing.T) *aznamespaces.ClientOptions {
 				KeyLogWriter: keyLogWriter,
 			}
 
-			options = &aznamespaces.ClientOptions{
-				ClientOptions: azcore.ClientOptions{
-					Transport: &http.Client{Transport: tp},
-				},
+			options = azcore.ClientOptions{
+				Transport: &http.Client{Transport: tp},
 			}
 		}
 	} else {
-		options = &aznamespaces.ClientOptions{
-			ClientOptions: azcore.ClientOptions{
-				Transport: newRecordingTransporter(t, tv),
-			},
+		options = azcore.ClientOptions{
+			Transport: newRecordingTransporter(t, tv),
 		}
 	}
 
@@ -157,7 +153,7 @@ func newSenderClient(t *testing.T, useSASKey bool) *aznamespaces.SenderClient {
 	}
 
 	if useSASKey {
-		client, err := aznamespaces.NewSenderClientWithSharedKeyCredential(tv.Endpoint, tv.Topic, azcore.NewKeyCredential(tv.Key), options)
+		client, err := aznamespaces.NewSenderClientWithSharedKeyCredential(tv.Endpoint, tv.Topic, azcore.NewKeyCredential(tv.Key), &aznamespaces.SenderClientOptions{ClientOptions: options})
 		require.NoError(t, err)
 		return client
 	}
@@ -165,7 +161,7 @@ func newSenderClient(t *testing.T, useSASKey bool) *aznamespaces.SenderClient {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	require.NoError(t, err)
 
-	client, err := aznamespaces.NewSenderClient(tv.Endpoint, tv.Topic, cred, options)
+	client, err := aznamespaces.NewSenderClient(tv.Endpoint, tv.Topic, cred, &aznamespaces.SenderClientOptions{ClientOptions: options})
 	require.NoError(t, err)
 
 	return client
@@ -180,7 +176,7 @@ func newReceiverClient(t *testing.T, useSASKey bool) *aznamespaces.ReceiverClien
 	}
 
 	if useSASKey {
-		client, err := aznamespaces.NewReceiverClientWithSharedKeyCredential(tv.Endpoint, tv.Topic, tv.Subscription, azcore.NewKeyCredential(tv.Key), options)
+		client, err := aznamespaces.NewReceiverClientWithSharedKeyCredential(tv.Endpoint, tv.Topic, tv.Subscription, azcore.NewKeyCredential(tv.Key), &aznamespaces.ReceiverClientOptions{ClientOptions: options})
 		require.NoError(t, err)
 		return client
 	}
@@ -188,7 +184,7 @@ func newReceiverClient(t *testing.T, useSASKey bool) *aznamespaces.ReceiverClien
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	require.NoError(t, err)
 
-	client, err := aznamespaces.NewReceiverClient(tv.Endpoint, tv.Topic, tv.Subscription, cred, options)
+	client, err := aznamespaces.NewReceiverClient(tv.Endpoint, tv.Topic, tv.Subscription, cred, &aznamespaces.ReceiverClientOptions{ClientOptions: options})
 	require.NoError(t, err)
 
 	return client

@@ -26,36 +26,37 @@ type ReceiverClient struct {
 	endpoint string
 }
 
-// acknowledge - Acknowledge a batch of Cloud Events. The response will include the set of successfully acknowledged lock
-// tokens, along with other failed lock tokens with their corresponding error information. Successfully acknowledged events
-// will no longer be available to be received by any consumer.
+// AcknowledgeEvents - Acknowledge a batch of Cloud Events. The response will include the set of successfully acknowledged
+// lock tokens, along with other failed lock tokens with their corresponding error information. Successfully acknowledged
+// events will no longer be available to be received by any consumer.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-06-01
 //   - topicName - Topic Name.
 //   - eventSubscriptionName - Event Subscription Name.
-//   - acknowledgeOptions - AcknowledgeOptions.
-//   - options - receiverClientacknowledgeOptions contains the optional parameters for the ReceiverClient.acknowledge method.
-func (client *ReceiverClient) acknowledge(ctx context.Context, topicName string, eventSubscriptionName string, acknowledgeOptions acknowledgeOptions, options *AcknowledgeOptions) (AcknowledgeResponse, error) {
+//   - lockTokens - Array of lock tokens.
+//   - options - ReceiverClientAcknowledgeEventsOptions contains the optional parameters for the ReceiverClient.AcknowledgeEvents
+//     method.
+func (client *ReceiverClient) internalAcknowledgeEvents(ctx context.Context, topicName string, eventSubscriptionName string, lockTokens []string, options *AcknowledgeEventsOptions) (AcknowledgeEventsResponse, error) {
 	var err error
-	req, err := client.acknowledgeCreateRequest(ctx, topicName, eventSubscriptionName, acknowledgeOptions, options)
+	req, err := client.acknowledgeEventsCreateRequest(ctx, topicName, eventSubscriptionName, lockTokens, options)
 	if err != nil {
-		return AcknowledgeResponse{}, err
+		return AcknowledgeEventsResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return AcknowledgeResponse{}, err
+		return AcknowledgeEventsResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return AcknowledgeResponse{}, err
+		return AcknowledgeEventsResponse{}, err
 	}
-	resp, err := client.acknowledgeHandleResponse(httpResp)
+	resp, err := client.acknowledgeEventsHandleResponse(httpResp)
 	return resp, err
 }
 
-// acknowledgeCreateRequest creates the acknowledge request.
-func (client *ReceiverClient) acknowledgeCreateRequest(ctx context.Context, topicName string, eventSubscriptionName string, acknowledgeOptions acknowledgeOptions, _ *AcknowledgeOptions) (*policy.Request, error) {
+// acknowledgeEventsCreateRequest creates the AcknowledgeEvents request.
+func (client *ReceiverClient) acknowledgeEventsCreateRequest(ctx context.Context, topicName string, eventSubscriptionName string, lockTokens []string, _ *AcknowledgeEventsOptions) (*policy.Request, error) {
 	host := "{endpoint}"
 	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
 	urlPath := "/topics/{topicName}/eventsubscriptions/{eventSubscriptionName}:acknowledge"
@@ -76,48 +77,53 @@ func (client *ReceiverClient) acknowledgeCreateRequest(ctx context.Context, topi
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, acknowledgeOptions); err != nil {
+	body := struct {
+		LockTokens []string `json:"lockTokens"`
+	}{
+		LockTokens: lockTokens,
+	}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
 		return nil, err
 	}
 	return req, nil
 }
 
-// acknowledgeHandleResponse handles the acknowledge response.
-func (client *ReceiverClient) acknowledgeHandleResponse(resp *http.Response) (AcknowledgeResponse, error) {
-	result := AcknowledgeResponse{}
+// acknowledgeEventsHandleResponse handles the AcknowledgeEvents response.
+func (client *ReceiverClient) acknowledgeEventsHandleResponse(resp *http.Response) (AcknowledgeEventsResponse, error) {
+	result := AcknowledgeEventsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AcknowledgeResult); err != nil {
-		return AcknowledgeResponse{}, err
+		return AcknowledgeEventsResponse{}, err
 	}
 	return result, nil
 }
 
-// receive - Receive a batch of Cloud Events from a subscription.
+// ReceiveEvents - Receive a batch of Cloud Events from a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-06-01
 //   - topicName - Topic Name.
 //   - eventSubscriptionName - Event Subscription Name.
-//   - options - receiverClientreceiveOptions contains the optional parameters for the ReceiverClient.receive method.
-func (client *ReceiverClient) receive(ctx context.Context, topicName string, eventSubscriptionName string, options *ReceiveOptions) (ReceiveResponse, error) {
+//   - options - ReceiverClientReceiveEventsOptions contains the optional parameters for the ReceiverClient.ReceiveEvents method.
+func (client *ReceiverClient) internalReceiveEvents(ctx context.Context, topicName string, eventSubscriptionName string, options *ReceiveEventsOptions) (ReceiveEventsResponse, error) {
 	var err error
-	req, err := client.receiveCreateRequest(ctx, topicName, eventSubscriptionName, options)
+	req, err := client.receiveEventsCreateRequest(ctx, topicName, eventSubscriptionName, options)
 	if err != nil {
-		return ReceiveResponse{}, err
+		return ReceiveEventsResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ReceiveResponse{}, err
+		return ReceiveEventsResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return ReceiveResponse{}, err
+		return ReceiveEventsResponse{}, err
 	}
-	resp, err := client.receiveHandleResponse(httpResp)
+	resp, err := client.receiveEventsHandleResponse(httpResp)
 	return resp, err
 }
 
-// receiveCreateRequest creates the receive request.
-func (client *ReceiverClient) receiveCreateRequest(ctx context.Context, topicName string, eventSubscriptionName string, options *ReceiveOptions) (*policy.Request, error) {
+// receiveEventsCreateRequest creates the ReceiveEvents request.
+func (client *ReceiverClient) receiveEventsCreateRequest(ctx context.Context, topicName string, eventSubscriptionName string, options *ReceiveEventsOptions) (*policy.Request, error) {
 	host := "{endpoint}"
 	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
 	urlPath := "/topics/{topicName}/eventsubscriptions/{eventSubscriptionName}:receive"
@@ -146,45 +152,45 @@ func (client *ReceiverClient) receiveCreateRequest(ctx context.Context, topicNam
 	return req, nil
 }
 
-// receiveHandleResponse handles the receive response.
-func (client *ReceiverClient) receiveHandleResponse(resp *http.Response) (ReceiveResponse, error) {
-	result := ReceiveResponse{}
+// receiveEventsHandleResponse handles the ReceiveEvents response.
+func (client *ReceiverClient) receiveEventsHandleResponse(resp *http.Response) (ReceiveEventsResponse, error) {
+	result := ReceiveEventsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReceiveResult); err != nil {
-		return ReceiveResponse{}, err
+		return ReceiveEventsResponse{}, err
 	}
 	return result, nil
 }
 
-// reject - Reject a batch of Cloud Events. The response will include the set of successfully rejected lock tokens, along
-// with other failed lock tokens with their corresponding error information. Successfully rejected events will be dead-lettered
+// RejectEvents - Reject a batch of Cloud Events. The response will include the set of successfully rejected lock tokens,
+// along with other failed lock tokens with their corresponding error information. Successfully rejected events will be dead-lettered
 // and can no longer be received by a consumer.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-06-01
 //   - topicName - Topic Name.
 //   - eventSubscriptionName - Event Subscription Name.
-//   - rejectOptions - RejectOptions
-//   - options - receiverClientrejectOptions contains the optional parameters for the ReceiverClient.reject method.
-func (client *ReceiverClient) reject(ctx context.Context, topicName string, eventSubscriptionName string, rejectOptions rejectOptions, options *RejectOptions) (RejectResponse, error) {
+//   - lockTokens - Array of lock tokens.
+//   - options - ReceiverClientRejectEventsOptions contains the optional parameters for the ReceiverClient.RejectEvents method.
+func (client *ReceiverClient) internalRejectEvents(ctx context.Context, topicName string, eventSubscriptionName string, lockTokens []string, options *RejectEventsOptions) (RejectEventsResponse, error) {
 	var err error
-	req, err := client.rejectCreateRequest(ctx, topicName, eventSubscriptionName, rejectOptions, options)
+	req, err := client.rejectEventsCreateRequest(ctx, topicName, eventSubscriptionName, lockTokens, options)
 	if err != nil {
-		return RejectResponse{}, err
+		return RejectEventsResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return RejectResponse{}, err
+		return RejectEventsResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return RejectResponse{}, err
+		return RejectEventsResponse{}, err
 	}
-	resp, err := client.rejectHandleResponse(httpResp)
+	resp, err := client.rejectEventsHandleResponse(httpResp)
 	return resp, err
 }
 
-// rejectCreateRequest creates the reject request.
-func (client *ReceiverClient) rejectCreateRequest(ctx context.Context, topicName string, eventSubscriptionName string, rejectOptions rejectOptions, _ *RejectOptions) (*policy.Request, error) {
+// rejectEventsCreateRequest creates the RejectEvents request.
+func (client *ReceiverClient) rejectEventsCreateRequest(ctx context.Context, topicName string, eventSubscriptionName string, lockTokens []string, _ *RejectEventsOptions) (*policy.Request, error) {
 	host := "{endpoint}"
 	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
 	urlPath := "/topics/{topicName}/eventsubscriptions/{eventSubscriptionName}:reject"
@@ -205,51 +211,56 @@ func (client *ReceiverClient) rejectCreateRequest(ctx context.Context, topicName
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, rejectOptions); err != nil {
+	body := struct {
+		LockTokens []string `json:"lockTokens"`
+	}{
+		LockTokens: lockTokens,
+	}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
 		return nil, err
 	}
 	return req, nil
 }
 
-// rejectHandleResponse handles the reject response.
-func (client *ReceiverClient) rejectHandleResponse(resp *http.Response) (RejectResponse, error) {
-	result := RejectResponse{}
+// rejectEventsHandleResponse handles the RejectEvents response.
+func (client *ReceiverClient) rejectEventsHandleResponse(resp *http.Response) (RejectEventsResponse, error) {
+	result := RejectEventsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RejectResult); err != nil {
-		return RejectResponse{}, err
+		return RejectEventsResponse{}, err
 	}
 	return result, nil
 }
 
-// release - Release a batch of Cloud Events. The response will include the set of successfully released lock tokens, along
-// with other failed lock tokens with their corresponding error information. Successfully released events can be received
+// ReleaseEvents - Release a batch of Cloud Events. The response will include the set of successfully released lock tokens,
+// along with other failed lock tokens with their corresponding error information. Successfully released events can be received
 // by consumers.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-06-01
 //   - topicName - Topic Name.
 //   - eventSubscriptionName - Event Subscription Name.
-//   - releaseOptions - ReleaseOptions
-//   - options - receiverClientreleaseOptions contains the optional parameters for the ReceiverClient.release method.
-func (client *ReceiverClient) release(ctx context.Context, topicName string, eventSubscriptionName string, releaseOptions releaseOptions, options *ReleaseOptions) (ReleaseResponse, error) {
+//   - lockTokens - Array of lock tokens.
+//   - options - ReceiverClientReleaseEventsOptions contains the optional parameters for the ReceiverClient.ReleaseEvents method.
+func (client *ReceiverClient) internalReleaseEvents(ctx context.Context, topicName string, eventSubscriptionName string, lockTokens []string, options *ReleaseEventsOptions) (ReleaseEventsResponse, error) {
 	var err error
-	req, err := client.releaseCreateRequest(ctx, topicName, eventSubscriptionName, releaseOptions, options)
+	req, err := client.releaseEventsCreateRequest(ctx, topicName, eventSubscriptionName, lockTokens, options)
 	if err != nil {
-		return ReleaseResponse{}, err
+		return ReleaseEventsResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ReleaseResponse{}, err
+		return ReleaseEventsResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return ReleaseResponse{}, err
+		return ReleaseEventsResponse{}, err
 	}
-	resp, err := client.releaseHandleResponse(httpResp)
+	resp, err := client.releaseEventsHandleResponse(httpResp)
 	return resp, err
 }
 
-// releaseCreateRequest creates the release request.
-func (client *ReceiverClient) releaseCreateRequest(ctx context.Context, topicName string, eventSubscriptionName string, releaseOptions releaseOptions, options *ReleaseOptions) (*policy.Request, error) {
+// releaseEventsCreateRequest creates the ReleaseEvents request.
+func (client *ReceiverClient) releaseEventsCreateRequest(ctx context.Context, topicName string, eventSubscriptionName string, lockTokens []string, options *ReleaseEventsOptions) (*policy.Request, error) {
 	host := "{endpoint}"
 	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
 	urlPath := "/topics/{topicName}/eventsubscriptions/{eventSubscriptionName}:release"
@@ -273,51 +284,57 @@ func (client *ReceiverClient) releaseCreateRequest(ctx context.Context, topicNam
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, releaseOptions); err != nil {
+	body := struct {
+		LockTokens []string `json:"lockTokens"`
+	}{
+		LockTokens: lockTokens,
+	}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
 		return nil, err
 	}
 	return req, nil
 }
 
-// releaseHandleResponse handles the release response.
-func (client *ReceiverClient) releaseHandleResponse(resp *http.Response) (ReleaseResponse, error) {
-	result := ReleaseResponse{}
+// releaseEventsHandleResponse handles the ReleaseEvents response.
+func (client *ReceiverClient) releaseEventsHandleResponse(resp *http.Response) (ReleaseEventsResponse, error) {
+	result := ReleaseEventsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReleaseResult); err != nil {
-		return ReleaseResponse{}, err
+		return ReleaseEventsResponse{}, err
 	}
 	return result, nil
 }
 
-// renewLock - Renew locks for a batch of Cloud Events. The response will include the set of successfully renewed lock tokens,
-// along with other failed lock tokens with their corresponding error information. Successfully renewed locks will ensure
-// that the associated event is only available to the consumer that holds the renewed lock.
+// RenewEventLocks - Renew locks for a batch of Cloud Events. The response will include the set of successfully renewed lock
+// tokens, along with other failed lock tokens with their corresponding error information. Successfully renewed locks will
+// ensure that the associated event is only available to the consumer that holds the renewed lock.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-06-01
 //   - topicName - Topic Name.
 //   - eventSubscriptionName - Event Subscription Name.
-//   - renewLockOptions - RenewLockOptions
-//   - options - receiverClientrenewLockOptions contains the optional parameters for the ReceiverClient.renewLock method.
-func (client *ReceiverClient) renewLock(ctx context.Context, topicName string, eventSubscriptionName string, renewLockOptions renewLockOptions, options *RenewLocksOptions) (RenewLocksResponse, error) {
+//   - lockTokens - Array of lock tokens.
+//   - options - ReceiverClientRenewEventLocksOptions contains the optional parameters for the ReceiverClient.RenewEventLocks
+//     method.
+func (client *ReceiverClient) internalRenewEventLocks(ctx context.Context, topicName string, eventSubscriptionName string, lockTokens []string, options *RenewEventLocksOptions) (RenewEventLocksResponse, error) {
 	var err error
-	req, err := client.renewLockCreateRequest(ctx, topicName, eventSubscriptionName, renewLockOptions, options)
+	req, err := client.renewEventLocksCreateRequest(ctx, topicName, eventSubscriptionName, lockTokens, options)
 	if err != nil {
-		return RenewLocksResponse{}, err
+		return RenewEventLocksResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return RenewLocksResponse{}, err
+		return RenewEventLocksResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return RenewLocksResponse{}, err
+		return RenewEventLocksResponse{}, err
 	}
-	resp, err := client.renewLockHandleResponse(httpResp)
+	resp, err := client.renewEventLocksHandleResponse(httpResp)
 	return resp, err
 }
 
-// renewLockCreateRequest creates the renewLock request.
-func (client *ReceiverClient) renewLockCreateRequest(ctx context.Context, topicName string, eventSubscriptionName string, renewLockOptions renewLockOptions, _ *RenewLocksOptions) (*policy.Request, error) {
+// renewEventLocksCreateRequest creates the RenewEventLocks request.
+func (client *ReceiverClient) renewEventLocksCreateRequest(ctx context.Context, topicName string, eventSubscriptionName string, lockTokens []string, _ *RenewEventLocksOptions) (*policy.Request, error) {
 	host := "{endpoint}"
 	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
 	urlPath := "/topics/{topicName}/eventsubscriptions/{eventSubscriptionName}:renewLock"
@@ -338,17 +355,22 @@ func (client *ReceiverClient) renewLockCreateRequest(ctx context.Context, topicN
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, renewLockOptions); err != nil {
+	body := struct {
+		LockTokens []string `json:"lockTokens"`
+	}{
+		LockTokens: lockTokens,
+	}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
 		return nil, err
 	}
 	return req, nil
 }
 
-// renewLockHandleResponse handles the renewLock response.
-func (client *ReceiverClient) renewLockHandleResponse(resp *http.Response) (RenewLocksResponse, error) {
-	result := RenewLocksResponse{}
+// renewEventLocksHandleResponse handles the RenewEventLocks response.
+func (client *ReceiverClient) renewEventLocksHandleResponse(resp *http.Response) (RenewEventLocksResponse, error) {
+	result := RenewEventLocksResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RenewLocksResult); err != nil {
-		return RenewLocksResponse{}, err
+		return RenewEventLocksResponse{}, err
 	}
 	return result, nil
 }

@@ -92,7 +92,7 @@ func purgeEvents() {
 	log.Printf("(setup) Purging any events in %s/%s...", testVars.Topic, testVars.Subscription)
 
 	for {
-		recvResp, err := receiver.Receive(context.Background(), &aznamespaces.ReceiveOptions{
+		recvResp, err := receiver.ReceiveEvents(context.Background(), &aznamespaces.ReceiveEventsOptions{
 			MaxEvents:   to.Ptr[int32](100),
 			MaxWaitTime: to.Ptr[int32](10),
 		})
@@ -113,7 +113,7 @@ func purgeEvents() {
 			lockTokens = append(lockTokens, *event.BrokerProperties.LockToken)
 		}
 
-		if _, err := receiver.Acknowledge(context.Background(), lockTokens, nil); err != nil {
+		if _, err := receiver.AcknowledgeEvents(context.Background(), lockTokens, nil); err != nil {
 			panic(err)
 		}
 	}

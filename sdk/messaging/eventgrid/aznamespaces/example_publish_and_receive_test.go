@@ -127,7 +127,7 @@ func sendAndReceiveEvent(sender *aznamespaces.SenderClient, receiver *aznamespac
 		return aznamespaces.ReceiveDetails{}, err
 	}
 
-	events, err := receiver.Receive(context.TODO(), &aznamespaces.ReceiveOptions{
+	events, err := receiver.ReceiveEvents(context.TODO(), &aznamespaces.ReceiveEventsOptions{
 		MaxEvents: to.Ptr(int32(1)),
 
 		// Wait for 60 seconds for events.
@@ -144,7 +144,7 @@ func sendAndReceiveEvent(sender *aznamespaces.SenderClient, receiver *aznamespac
 
 	// We can (optionally) renew the lock (multiple times) if we want to continue to
 	// extend the lock time on the event.
-	_, err = receiver.RenewLocks(context.TODO(), []string{
+	_, err = receiver.RenewEventLocks(context.TODO(), []string{
 		*events.Details[0].BrokerProperties.LockToken,
 	}, nil)
 
@@ -158,7 +158,7 @@ func sendAndReceiveEvent(sender *aznamespaces.SenderClient, receiver *aznamespac
 	// - client.RejectCloudEvents, which rejects the event.
 	//     If dead-lettering is configured, the event will be moved into the dead letter queue.
 	//     Otherwise the event is deleted.
-	ackResp, err := receiver.Acknowledge(context.TODO(), []string{
+	ackResp, err := receiver.AcknowledgeEvents(context.TODO(), []string{
 		*events.Details[0].BrokerProperties.LockToken,
 	}, nil)
 

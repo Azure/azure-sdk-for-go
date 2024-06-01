@@ -70,17 +70,14 @@ type senderData struct {
 	Topic string
 }
 
-// SendOptions contains the optional parameters for the [SenderClient.Send] method.
-type SendOptions struct{}
-
-// Send publishes a single Cloud Event to a namespace topic.
+// SendEvent publishes a single Cloud Event to a namespace topic.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-06-01
 //   - event - Cloud Event to publish.
-//   - options - SendOptions contains the optional parameters for the SenderClient.send method.
-func (client *SenderClient) Send(ctx context.Context, event *messaging.CloudEvent, options *SendOptions) (SendResponse, error) {
-	return client.send(ctx, client.data.Topic, event, options)
+//   - options - SendOptions contains the optional parameters for the SenderClient.SendEvent method.
+func (client *SenderClient) SendEvent(ctx context.Context, event *messaging.CloudEvent, options *SendEventOptions) (SendEventResponse, error) {
+	return client.internalSendEvent(ctx, client.data.Topic, event, options)
 }
 
 // SendEvents publishes a batch of Cloud Events to a namespace topic.
@@ -88,7 +85,7 @@ func (client *SenderClient) Send(ctx context.Context, event *messaging.CloudEven
 //
 // Generated from API version 2024-06-01
 //   - events - slice of Cloud Events to publish.
-//   - options - SendEventsOptions contains the optional parameters for the SenderClient.sendEvents method.
+//   - options - SendEventsOptions contains the optional parameters for the SenderClient.SendEvents method.
 func (client *SenderClient) SendEvents(ctx context.Context, events []*messaging.CloudEvent, options *SendEventsOptions) (SendEventsResponse, error) {
-	return client.sendEvents(ctx, client.data.Topic, events, options)
+	return client.internalSendEvents(ctx, client.data.Topic, events, options)
 }

@@ -9,7 +9,8 @@
 ### Breaking Changes
 
 - Sending and receiving operations have been moved to separate clients (SenderClient and ReceiverClient).
-- Method names have been changed, removing `CloudEvent`. 
+- Method names have been shortened from <Verb>CloudEvent(s) to <Verb>Event(s)
+- LockTokens for AcknowledgeEvents, RejectEvents and ReleaseEvents are now a positional argument, instead of optional.
 - Topic and subscription name are now set at the Client level, as part of `NewSenderClient` or `NewReceiverClient`.
 
 ### Bugs Fixed

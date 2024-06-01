@@ -6,12 +6,6 @@ package aznamespaces
 
 import "github.com/Azure/azure-sdk-for-go/sdk/azcore/messaging"
 
-// acknowledgeOptions - Array of lock tokens for the corresponding received Cloud Events to be acknowledged.
-type acknowledgeOptions struct {
-	// REQUIRED; Array of lock tokens.
-	LockTokens []string
-}
-
 // AcknowledgeResult - The result of the Acknowledge operation.
 type AcknowledgeResult struct {
 	// REQUIRED; Array of FailedLockToken for failed cloud events. Each FailedLockToken includes the lock token along with the
@@ -68,12 +62,6 @@ type ReceiveResult struct {
 	Details []ReceiveDetails
 }
 
-// rejectOptions - Array of lock tokens for the corresponding received Cloud Events to be rejected.
-type rejectOptions struct {
-	// REQUIRED; Array of lock tokens.
-	LockTokens []string
-}
-
 // RejectResult - The result of the Reject operation.
 type RejectResult struct {
 	// REQUIRED; Array of FailedLockToken for failed cloud events. Each FailedLockToken includes the lock token along with the
@@ -84,12 +72,6 @@ type RejectResult struct {
 	SucceededLockTokens []string
 }
 
-// releaseOptions - Array of lock tokens for the corresponding received Cloud Events to be released.
-type releaseOptions struct {
-	// REQUIRED; Array of lock tokens.
-	LockTokens []string
-}
-
 // ReleaseResult - The result of the Release operation.
 type ReleaseResult struct {
 	// REQUIRED; Array of FailedLockToken for failed cloud events. Each FailedLockToken includes the lock token along with the
@@ -98,12 +80,6 @@ type ReleaseResult struct {
 
 	// REQUIRED; Array of lock tokens for the successfully released cloud events.
 	SucceededLockTokens []string
-}
-
-// renewLockOptions - Array of lock tokens for the corresponding received Cloud Events to be renewed.
-type renewLockOptions struct {
-	// REQUIRED; Array of lock tokens.
-	LockTokens []string
 }
 
 // RenewLocksResult - The result of the RenewLock operation.

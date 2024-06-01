@@ -47,7 +47,7 @@ func NewSecurityGroupsClient(subscriptionID string, credential azcore.TokenCrede
 // BeginCreateOrUpdate - Creates or updates a network security group in the specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01
+// Generated from API version 2023-11-01
 //   - resourceGroupName - The name of the resource group.
 //   - networkSecurityGroupName - The name of the network security group.
 //   - parameters - Parameters supplied to the create or update network security group operation.
@@ -74,7 +74,7 @@ func (client *SecurityGroupsClient) BeginCreateOrUpdate(ctx context.Context, res
 // CreateOrUpdate - Creates or updates a network security group in the specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01
+// Generated from API version 2023-11-01
 func (client *SecurityGroupsClient) createOrUpdate(ctx context.Context, resourceGroupName string, networkSecurityGroupName string, parameters SecurityGroup, options *SecurityGroupsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SecurityGroupsClient.BeginCreateOrUpdate"
@@ -116,7 +116,7 @@ func (client *SecurityGroupsClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-01")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -128,7 +128,7 @@ func (client *SecurityGroupsClient) createOrUpdateCreateRequest(ctx context.Cont
 // BeginDelete - Deletes the specified network security group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01
+// Generated from API version 2023-11-01
 //   - resourceGroupName - The name of the resource group.
 //   - networkSecurityGroupName - The name of the network security group.
 //   - options - SecurityGroupsClientBeginDeleteOptions contains the optional parameters for the SecurityGroupsClient.BeginDelete
@@ -154,7 +154,7 @@ func (client *SecurityGroupsClient) BeginDelete(ctx context.Context, resourceGro
 // Delete - Deletes the specified network security group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01
+// Generated from API version 2023-11-01
 func (client *SecurityGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, networkSecurityGroupName string, options *SecurityGroupsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SecurityGroupsClient.BeginDelete"
@@ -196,7 +196,7 @@ func (client *SecurityGroupsClient) deleteCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-01")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -205,7 +205,7 @@ func (client *SecurityGroupsClient) deleteCreateRequest(ctx context.Context, res
 // Get - Gets the specified network security group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01
+// Generated from API version 2023-11-01
 //   - resourceGroupName - The name of the resource group.
 //   - networkSecurityGroupName - The name of the network security group.
 //   - options - SecurityGroupsClientGetOptions contains the optional parameters for the SecurityGroupsClient.Get method.
@@ -254,7 +254,7 @@ func (client *SecurityGroupsClient) getCreateRequest(ctx context.Context, resour
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
-	reqQP.Set("api-version", "2023-09-01")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -271,7 +271,7 @@ func (client *SecurityGroupsClient) getHandleResponse(resp *http.Response) (Secu
 
 // NewListPager - Gets all network security groups in a resource group.
 //
-// Generated from API version 2023-09-01
+// Generated from API version 2023-11-01
 //   - resourceGroupName - The name of the resource group.
 //   - options - SecurityGroupsClientListOptions contains the optional parameters for the SecurityGroupsClient.NewListPager method.
 func (client *SecurityGroupsClient) NewListPager(resourceGroupName string, options *SecurityGroupsClientListOptions) *runtime.Pager[SecurityGroupsClientListResponse] {
@@ -313,7 +313,7 @@ func (client *SecurityGroupsClient) listCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-01")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -330,7 +330,7 @@ func (client *SecurityGroupsClient) listHandleResponse(resp *http.Response) (Sec
 
 // NewListAllPager - Gets all network security groups in a subscription.
 //
-// Generated from API version 2023-09-01
+// Generated from API version 2023-11-01
 //   - options - SecurityGroupsClientListAllOptions contains the optional parameters for the SecurityGroupsClient.NewListAllPager
 //     method.
 func (client *SecurityGroupsClient) NewListAllPager(options *SecurityGroupsClientListAllOptions) *runtime.Pager[SecurityGroupsClientListAllResponse] {
@@ -368,7 +368,7 @@ func (client *SecurityGroupsClient) listAllCreateRequest(ctx context.Context, op
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-01")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -386,7 +386,7 @@ func (client *SecurityGroupsClient) listAllHandleResponse(resp *http.Response) (
 // UpdateTags - Updates a network security group tags.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01
+// Generated from API version 2023-11-01
 //   - resourceGroupName - The name of the resource group.
 //   - networkSecurityGroupName - The name of the network security group.
 //   - parameters - Parameters supplied to update network security group tags.
@@ -434,7 +434,7 @@ func (client *SecurityGroupsClient) updateTagsCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-01")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

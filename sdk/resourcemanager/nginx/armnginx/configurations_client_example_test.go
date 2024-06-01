@@ -13,11 +13,12 @@ import (
 	"context"
 	"log"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/nginx/armnginx/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e4009d2f8d3bf0271757e522c7d1c1997e193d44/specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Configurations_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Configurations_List.json
 func ExampleConfigurationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -61,7 +62,7 @@ func ExampleConfigurationsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e4009d2f8d3bf0271757e522c7d1c1997e193d44/specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Configurations_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Configurations_Get.json
 func ExampleConfigurationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -97,7 +98,7 @@ func ExampleConfigurationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e4009d2f8d3bf0271757e522c7d1c1997e193d44/specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Configurations_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Configurations_CreateOrUpdate.json
 func ExampleConfigurationsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -108,7 +109,18 @@ func ExampleConfigurationsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewConfigurationsClient().BeginCreateOrUpdate(ctx, "myResourceGroup", "myDeployment", "default", &armnginx.ConfigurationsClientBeginCreateOrUpdateOptions{Body: nil})
+	poller, err := clientFactory.NewConfigurationsClient().BeginCreateOrUpdate(ctx, "myResourceGroup", "myDeployment", "default", &armnginx.ConfigurationsClientBeginCreateOrUpdateOptions{Body: &armnginx.Configuration{
+		Properties: &armnginx.ConfigurationProperties{
+			Files: []*armnginx.ConfigurationFile{
+				{
+					Content:     to.Ptr("ABCDEF=="),
+					VirtualPath: to.Ptr("/etc/nginx/nginx.conf"),
+				}},
+			Package:  &armnginx.ConfigurationPackage{},
+			RootFile: to.Ptr("/etc/nginx/nginx.conf"),
+		},
+	},
+	})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -137,7 +149,7 @@ func ExampleConfigurationsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e4009d2f8d3bf0271757e522c7d1c1997e193d44/specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Configurations_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Configurations_Delete.json
 func ExampleConfigurationsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -158,7 +170,7 @@ func ExampleConfigurationsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e4009d2f8d3bf0271757e522c7d1c1997e193d44/specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Configurations_Analysis.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Configurations_Analysis.json
 func ExampleConfigurationsClient_Analysis() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -169,7 +181,18 @@ func ExampleConfigurationsClient_Analysis() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewConfigurationsClient().Analysis(ctx, "myResourceGroup", "myDeployment", "default", &armnginx.ConfigurationsClientAnalysisOptions{Body: nil})
+	res, err := clientFactory.NewConfigurationsClient().Analysis(ctx, "myResourceGroup", "myDeployment", "default", &armnginx.ConfigurationsClientAnalysisOptions{Body: &armnginx.AnalysisCreate{
+		Config: &armnginx.AnalysisCreateConfig{
+			Files: []*armnginx.ConfigurationFile{
+				{
+					Content:     to.Ptr("ABCDEF=="),
+					VirtualPath: to.Ptr("/etc/nginx/nginx.conf"),
+				}},
+			Package:  &armnginx.ConfigurationPackage{},
+			RootFile: to.Ptr("/etc/nginx/nginx.conf"),
+		},
+	},
+	})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

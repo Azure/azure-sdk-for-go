@@ -13,11 +13,12 @@ import (
 	"context"
 	"log"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/nginx/armnginx/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e4009d2f8d3bf0271757e522c7d1c1997e193d44/specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Deployments_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Deployments_Get.json
 func ExampleDeploymentsClient_Get_deploymentsGet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -74,7 +75,7 @@ func ExampleDeploymentsClient_Get_deploymentsGet() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e4009d2f8d3bf0271757e522c7d1c1997e193d44/specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Deployments_Get_AutoScale.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Deployments_Get_AutoScale.json
 func ExampleDeploymentsClient_Get_deploymentsGetAutoScale() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -140,7 +141,7 @@ func ExampleDeploymentsClient_Get_deploymentsGetAutoScale() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e4009d2f8d3bf0271757e522c7d1c1997e193d44/specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Deployments_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Deployments_Create.json
 func ExampleDeploymentsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -151,7 +152,43 @@ func ExampleDeploymentsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewDeploymentsClient().BeginCreateOrUpdate(ctx, "myResourceGroup", "myDeployment", &armnginx.DeploymentsClientBeginCreateOrUpdateOptions{Body: nil})
+	poller, err := clientFactory.NewDeploymentsClient().BeginCreateOrUpdate(ctx, "myResourceGroup", "myDeployment", &armnginx.DeploymentsClientBeginCreateOrUpdateOptions{Body: &armnginx.Deployment{
+		Name:     to.Ptr("myDeployment"),
+		Location: to.Ptr("West US"),
+		Properties: &armnginx.DeploymentProperties{
+			AutoUpgradeProfile: &armnginx.AutoUpgradeProfile{
+				UpgradeChannel: to.Ptr("stable"),
+			},
+			ManagedResourceGroup: to.Ptr("myManagedResourceGroup"),
+			NetworkProfile: &armnginx.NetworkProfile{
+				FrontEndIPConfiguration: &armnginx.FrontendIPConfiguration{
+					PrivateIPAddresses: []*armnginx.PrivateIPAddress{
+						{
+							PrivateIPAddress:          to.Ptr("1.1.1.1"),
+							PrivateIPAllocationMethod: to.Ptr(armnginx.NginxPrivateIPAllocationMethodStatic),
+							SubnetID:                  to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/mySubnet"),
+						}},
+					PublicIPAddresses: []*armnginx.PublicIPAddress{
+						{
+							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/publicIPAddresses/myPublicIPAddress"),
+						}},
+				},
+				NetworkInterfaceConfiguration: &armnginx.NetworkInterfaceConfiguration{
+					SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/mySubnet"),
+				},
+			},
+			ScalingProperties: &armnginx.DeploymentScalingProperties{
+				Capacity: to.Ptr[int32](10),
+			},
+			UserProfile: &armnginx.DeploymentUserProfile{
+				PreferredEmail: to.Ptr("example@example.email"),
+			},
+		},
+		Tags: map[string]*string{
+			"Environment": to.Ptr("Dev"),
+		},
+	},
+	})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -202,7 +239,7 @@ func ExampleDeploymentsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e4009d2f8d3bf0271757e522c7d1c1997e193d44/specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Deployments_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Deployments_Update.json
 func ExampleDeploymentsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -213,7 +250,12 @@ func ExampleDeploymentsClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewDeploymentsClient().BeginUpdate(ctx, "myResourceGroup", "myDeployment", &armnginx.DeploymentsClientBeginUpdateOptions{Body: nil})
+	poller, err := clientFactory.NewDeploymentsClient().BeginUpdate(ctx, "myResourceGroup", "myDeployment", &armnginx.DeploymentsClientBeginUpdateOptions{Body: &armnginx.DeploymentUpdateParameters{
+		Tags: map[string]*string{
+			"Environment": to.Ptr("Dev"),
+		},
+	},
+	})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -267,7 +309,7 @@ func ExampleDeploymentsClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e4009d2f8d3bf0271757e522c7d1c1997e193d44/specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Deployments_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Deployments_Delete.json
 func ExampleDeploymentsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -288,7 +330,7 @@ func ExampleDeploymentsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e4009d2f8d3bf0271757e522c7d1c1997e193d44/specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Deployments_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Deployments_List.json
 func ExampleDeploymentsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -351,7 +393,7 @@ func ExampleDeploymentsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e4009d2f8d3bf0271757e522c7d1c1997e193d44/specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Deployments_ListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Deployments_ListByResourceGroup.json
 func ExampleDeploymentsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

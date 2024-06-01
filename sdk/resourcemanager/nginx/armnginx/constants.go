@@ -10,7 +10,7 @@ package armnginx
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/nginx/armnginx"
-	moduleVersion = "v3.1.0-beta.1"
+	moduleVersion = "v3.1.0-beta.2"
 )
 
 // CreatedByType - The type of identity that created the resource.

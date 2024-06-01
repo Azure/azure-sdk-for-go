@@ -14,10 +14,15 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/eventgrid/aznamespaces/internal"
 )
 
+// SenderClientOptions contains the optional parameters when creating a SenderClient.
+type SenderClientOptions struct {
+	azcore.ClientOptions
+}
+
 // NewSenderClient creates a [SenderClient] which uses an azcore.TokenCredential for authentication.
-func NewSenderClient(endpoint string, topic string, cred azcore.TokenCredential, options *ClientOptions) (*SenderClient, error) {
+func NewSenderClient(endpoint string, topic string, cred azcore.TokenCredential, options *SenderClientOptions) (*SenderClient, error) {
 	if options == nil {
-		options = &ClientOptions{}
+		options = &SenderClientOptions{}
 	}
 
 	azc, err := azcore.NewClient(internal.ModuleName+".Client", internal.ModuleVersion, runtime.PipelineOptions{
@@ -40,9 +45,9 @@ func NewSenderClient(endpoint string, topic string, cred azcore.TokenCredential,
 }
 
 // NewSenderClientWithSharedKeyCredential creates a [SenderClient] using a shared key.
-func NewSenderClientWithSharedKeyCredential(endpoint string, topic string, keyCred *azcore.KeyCredential, options *ClientOptions) (*SenderClient, error) {
+func NewSenderClientWithSharedKeyCredential(endpoint string, topic string, keyCred *azcore.KeyCredential, options *SenderClientOptions) (*SenderClient, error) {
 	if options == nil {
-		options = &ClientOptions{}
+		options = &SenderClientOptions{}
 	}
 
 	azc, err := azcore.NewClient(internal.ModuleName+".Client", internal.ModuleVersion, runtime.PipelineOptions{

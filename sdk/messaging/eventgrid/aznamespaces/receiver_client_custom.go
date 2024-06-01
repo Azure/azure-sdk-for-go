@@ -13,17 +13,17 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/eventgrid/aznamespaces/internal"
 )
 
-type receiverData struct {
-	topic        string
-	subscription string
+// ReceiverClientOptions contains the optional parameters when creating a ReceiverClient.
+type ReceiverClientOptions struct {
+	azcore.ClientOptions
 }
 
 // NewReceiverClient creates a [ReceiverClient] which uses an azcore.TokenCredential for authentication.
 //   - topicName - Topic Name.
 //   - subscriptionName - Event Subscription Name.
-func NewReceiverClient(endpoint string, topic string, subscription string, cred azcore.TokenCredential, options *ClientOptions) (*ReceiverClient, error) {
+func NewReceiverClient(endpoint string, topic string, subscription string, cred azcore.TokenCredential, options *ReceiverClientOptions) (*ReceiverClient, error) {
 	if options == nil {
-		options = &ClientOptions{}
+		options = &ReceiverClientOptions{}
 	}
 
 	azc, err := azcore.NewClient(internal.ModuleName+".Client", internal.ModuleVersion, runtime.PipelineOptions{
@@ -49,9 +49,9 @@ func NewReceiverClient(endpoint string, topic string, subscription string, cred 
 // NewReceiverClientWithSharedKeyCredential creates a [ReceiverClient] using a shared key.
 //   - topicName - Topic Name.
 //   - subscriptionName - Event Subscription Name.
-func NewReceiverClientWithSharedKeyCredential(endpoint string, topic string, subscription string, keyCred *azcore.KeyCredential, options *ClientOptions) (*ReceiverClient, error) {
+func NewReceiverClientWithSharedKeyCredential(endpoint string, topic string, subscription string, keyCred *azcore.KeyCredential, options *ReceiverClientOptions) (*ReceiverClient, error) {
 	if options == nil {
-		options = &ClientOptions{}
+		options = &ReceiverClientOptions{}
 	}
 
 	azc, err := azcore.NewClient(internal.ModuleName+".Client", internal.ModuleVersion, runtime.PipelineOptions{
@@ -132,4 +132,9 @@ func (client *ReceiverClient) RenewEventLocks(ctx context.Context, lockTokens []
 //   - options - ReceiveEventsOptions contains the optional parameters for the ReceiverClient.ReceiveEvents method.
 func (client *ReceiverClient) ReceiveEvents(ctx context.Context, options *ReceiveEventsOptions) (ReceiveEventsResponse, error) {
 	return client.internalReceiveEvents(ctx, client.data.topic, client.data.subscription, options)
+}
+
+type receiverData struct {
+	topic        string
+	subscription string
 }

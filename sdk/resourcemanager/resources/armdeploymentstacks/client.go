@@ -17,6 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
+	"strconv"
 	"strings"
 )
 
@@ -28,7 +29,7 @@ type Client struct {
 }
 
 // NewClient creates a new instance of Client with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*Client, error) {
@@ -43,13 +44,13 @@ func NewClient(subscriptionID string, credential azcore.TokenCredential, options
 	return client, nil
 }
 
-// BeginCreateOrUpdateAtManagementGroup - Creates or updates a Deployment Stack.
+// BeginCreateOrUpdateAtManagementGroup - Creates or updates a Deployment stack at Management Group scope.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-01-preview
-//   - managementGroupID - Management Group.
+// Generated from API version 2024-03-01
+//   - managementGroupID - Management Group id.
 //   - deploymentStackName - Name of the deployment stack.
-//   - deploymentStack - Deployment Stack supplied to the operation.
+//   - deploymentStack - Deployment stack supplied to the operation.
 //   - options - ClientBeginCreateOrUpdateAtManagementGroupOptions contains the optional parameters for the Client.BeginCreateOrUpdateAtManagementGroup
 //     method.
 func (client *Client) BeginCreateOrUpdateAtManagementGroup(ctx context.Context, managementGroupID string, deploymentStackName string, deploymentStack DeploymentStack, options *ClientBeginCreateOrUpdateAtManagementGroupOptions) (*runtime.Poller[ClientCreateOrUpdateAtManagementGroupResponse], error) {
@@ -70,10 +71,10 @@ func (client *Client) BeginCreateOrUpdateAtManagementGroup(ctx context.Context, 
 	}
 }
 
-// CreateOrUpdateAtManagementGroup - Creates or updates a Deployment Stack.
+// CreateOrUpdateAtManagementGroup - Creates or updates a Deployment stack at Management Group scope.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-01-preview
+// Generated from API version 2024-03-01
 func (client *Client) createOrUpdateAtManagementGroup(ctx context.Context, managementGroupID string, deploymentStackName string, deploymentStack DeploymentStack, options *ClientBeginCreateOrUpdateAtManagementGroupOptions) (*http.Response, error) {
 	var err error
 	const operationName = "Client.BeginCreateOrUpdateAtManagementGroup"
@@ -111,7 +112,7 @@ func (client *Client) createOrUpdateAtManagementGroupCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-01-preview")
+	reqQP.Set("api-version", "2024-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, deploymentStack); err != nil {
@@ -120,13 +121,13 @@ func (client *Client) createOrUpdateAtManagementGroupCreateRequest(ctx context.C
 	return req, nil
 }
 
-// BeginCreateOrUpdateAtResourceGroup - Creates or updates a Deployment Stack.
+// BeginCreateOrUpdateAtResourceGroup - Creates or updates a Deployment stack at Resource Group scope.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-01-preview
+// Generated from API version 2024-03-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - deploymentStackName - Name of the deployment stack.
-//   - deploymentStack - Deployment Stack supplied to the operation.
+//   - deploymentStack - Deployment stack supplied to the operation.
 //   - options - ClientBeginCreateOrUpdateAtResourceGroupOptions contains the optional parameters for the Client.BeginCreateOrUpdateAtResourceGroup
 //     method.
 func (client *Client) BeginCreateOrUpdateAtResourceGroup(ctx context.Context, resourceGroupName string, deploymentStackName string, deploymentStack DeploymentStack, options *ClientBeginCreateOrUpdateAtResourceGroupOptions) (*runtime.Poller[ClientCreateOrUpdateAtResourceGroupResponse], error) {
@@ -147,10 +148,10 @@ func (client *Client) BeginCreateOrUpdateAtResourceGroup(ctx context.Context, re
 	}
 }
 
-// CreateOrUpdateAtResourceGroup - Creates or updates a Deployment Stack.
+// CreateOrUpdateAtResourceGroup - Creates or updates a Deployment stack at Resource Group scope.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-01-preview
+// Generated from API version 2024-03-01
 func (client *Client) createOrUpdateAtResourceGroup(ctx context.Context, resourceGroupName string, deploymentStackName string, deploymentStack DeploymentStack, options *ClientBeginCreateOrUpdateAtResourceGroupOptions) (*http.Response, error) {
 	var err error
 	const operationName = "Client.BeginCreateOrUpdateAtResourceGroup"
@@ -192,7 +193,7 @@ func (client *Client) createOrUpdateAtResourceGroupCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-01-preview")
+	reqQP.Set("api-version", "2024-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, deploymentStack); err != nil {
@@ -201,12 +202,12 @@ func (client *Client) createOrUpdateAtResourceGroupCreateRequest(ctx context.Con
 	return req, nil
 }
 
-// BeginCreateOrUpdateAtSubscription - Creates or updates a Deployment Stack.
+// BeginCreateOrUpdateAtSubscription - Creates or updates a Deployment stack at Subscription scope.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-01-preview
+// Generated from API version 2024-03-01
 //   - deploymentStackName - Name of the deployment stack.
-//   - deploymentStack - Deployment Stack supplied to the operation.
+//   - deploymentStack - Deployment stack supplied to the operation.
 //   - options - ClientBeginCreateOrUpdateAtSubscriptionOptions contains the optional parameters for the Client.BeginCreateOrUpdateAtSubscription
 //     method.
 func (client *Client) BeginCreateOrUpdateAtSubscription(ctx context.Context, deploymentStackName string, deploymentStack DeploymentStack, options *ClientBeginCreateOrUpdateAtSubscriptionOptions) (*runtime.Poller[ClientCreateOrUpdateAtSubscriptionResponse], error) {
@@ -227,10 +228,10 @@ func (client *Client) BeginCreateOrUpdateAtSubscription(ctx context.Context, dep
 	}
 }
 
-// CreateOrUpdateAtSubscription - Creates or updates a Deployment Stack.
+// CreateOrUpdateAtSubscription - Creates or updates a Deployment stack at Subscription scope.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-01-preview
+// Generated from API version 2024-03-01
 func (client *Client) createOrUpdateAtSubscription(ctx context.Context, deploymentStackName string, deploymentStack DeploymentStack, options *ClientBeginCreateOrUpdateAtSubscriptionOptions) (*http.Response, error) {
 	var err error
 	const operationName = "Client.BeginCreateOrUpdateAtSubscription"
@@ -268,7 +269,7 @@ func (client *Client) createOrUpdateAtSubscriptionCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-01-preview")
+	reqQP.Set("api-version", "2024-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, deploymentStack); err != nil {
@@ -277,12 +278,12 @@ func (client *Client) createOrUpdateAtSubscriptionCreateRequest(ctx context.Cont
 	return req, nil
 }
 
-// BeginDeleteAtManagementGroup - Deletes a Deployment Stack by name. When operation completes, status code 200 returned without
-// content.
+// BeginDeleteAtManagementGroup - Deletes a Deployment stack by name at Management Group scope. When operation completes,
+// status code 200 returned without content.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-01-preview
-//   - managementGroupID - Management Group.
+// Generated from API version 2024-03-01
+//   - managementGroupID - Management Group id.
 //   - deploymentStackName - Name of the deployment stack.
 //   - options - ClientBeginDeleteAtManagementGroupOptions contains the optional parameters for the Client.BeginDeleteAtManagementGroup
 //     method.
@@ -304,11 +305,11 @@ func (client *Client) BeginDeleteAtManagementGroup(ctx context.Context, manageme
 	}
 }
 
-// DeleteAtManagementGroup - Deletes a Deployment Stack by name. When operation completes, status code 200 returned without
-// content.
+// DeleteAtManagementGroup - Deletes a Deployment stack by name at Management Group scope. When operation completes, status
+// code 200 returned without content.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-01-preview
+// Generated from API version 2024-03-01
 func (client *Client) deleteAtManagementGroup(ctx context.Context, managementGroupID string, deploymentStackName string, options *ClientBeginDeleteAtManagementGroupOptions) (*http.Response, error) {
 	var err error
 	const operationName = "Client.BeginDeleteAtManagementGroup"
@@ -346,26 +347,29 @@ func (client *Client) deleteAtManagementGroupCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	if options != nil && options.UnmanageActionResources != nil {
-		reqQP.Set("unmanageAction.Resources", string(*options.UnmanageActionResources))
-	}
-	if options != nil && options.UnmanageActionResourceGroups != nil {
-		reqQP.Set("unmanageAction.ResourceGroups", string(*options.UnmanageActionResourceGroups))
+	reqQP.Set("api-version", "2024-03-01")
+	if options != nil && options.BypassStackOutOfSyncError != nil {
+		reqQP.Set("bypassStackOutOfSyncError", strconv.FormatBool(*options.BypassStackOutOfSyncError))
 	}
 	if options != nil && options.UnmanageActionManagementGroups != nil {
 		reqQP.Set("unmanageAction.ManagementGroups", string(*options.UnmanageActionManagementGroups))
 	}
-	reqQP.Set("api-version", "2022-08-01-preview")
+	if options != nil && options.UnmanageActionResourceGroups != nil {
+		reqQP.Set("unmanageAction.ResourceGroups", string(*options.UnmanageActionResourceGroups))
+	}
+	if options != nil && options.UnmanageActionResources != nil {
+		reqQP.Set("unmanageAction.Resources", string(*options.UnmanageActionResources))
+	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// BeginDeleteAtResourceGroup - Deletes a Deployment Stack by name. When operation completes, status code 200 returned without
-// content.
+// BeginDeleteAtResourceGroup - Deletes a Deployment stack by name at Resource Group scope. When operation completes, status
+// code 200 returned without content.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-01-preview
+// Generated from API version 2024-03-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - deploymentStackName - Name of the deployment stack.
 //   - options - ClientBeginDeleteAtResourceGroupOptions contains the optional parameters for the Client.BeginDeleteAtResourceGroup
@@ -388,11 +392,11 @@ func (client *Client) BeginDeleteAtResourceGroup(ctx context.Context, resourceGr
 	}
 }
 
-// DeleteAtResourceGroup - Deletes a Deployment Stack by name. When operation completes, status code 200 returned without
-// content.
+// DeleteAtResourceGroup - Deletes a Deployment stack by name at Resource Group scope. When operation completes, status code
+// 200 returned without content.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-01-preview
+// Generated from API version 2024-03-01
 func (client *Client) deleteAtResourceGroup(ctx context.Context, resourceGroupName string, deploymentStackName string, options *ClientBeginDeleteAtResourceGroupOptions) (*http.Response, error) {
 	var err error
 	const operationName = "Client.BeginDeleteAtResourceGroup"
@@ -434,23 +438,29 @@ func (client *Client) deleteAtResourceGroupCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	if options != nil && options.UnmanageActionResources != nil {
-		reqQP.Set("unmanageAction.Resources", string(*options.UnmanageActionResources))
+	reqQP.Set("api-version", "2024-03-01")
+	if options != nil && options.BypassStackOutOfSyncError != nil {
+		reqQP.Set("bypassStackOutOfSyncError", strconv.FormatBool(*options.BypassStackOutOfSyncError))
+	}
+	if options != nil && options.UnmanageActionManagementGroups != nil {
+		reqQP.Set("unmanageAction.ManagementGroups", string(*options.UnmanageActionManagementGroups))
 	}
 	if options != nil && options.UnmanageActionResourceGroups != nil {
 		reqQP.Set("unmanageAction.ResourceGroups", string(*options.UnmanageActionResourceGroups))
 	}
-	reqQP.Set("api-version", "2022-08-01-preview")
+	if options != nil && options.UnmanageActionResources != nil {
+		reqQP.Set("unmanageAction.Resources", string(*options.UnmanageActionResources))
+	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// BeginDeleteAtSubscription - Deletes a Deployment Stack by name. When operation completes, status code 200 returned without
-// content.
+// BeginDeleteAtSubscription - Deletes a Deployment stack by name at Subscription scope. When operation completes, status
+// code 200 returned without content.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-01-preview
+// Generated from API version 2024-03-01
 //   - deploymentStackName - Name of the deployment stack.
 //   - options - ClientBeginDeleteAtSubscriptionOptions contains the optional parameters for the Client.BeginDeleteAtSubscription
 //     method.
@@ -472,10 +482,11 @@ func (client *Client) BeginDeleteAtSubscription(ctx context.Context, deploymentS
 	}
 }
 
-// DeleteAtSubscription - Deletes a Deployment Stack by name. When operation completes, status code 200 returned without content.
+// DeleteAtSubscription - Deletes a Deployment stack by name at Subscription scope. When operation completes, status code
+// 200 returned without content.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-01-preview
+// Generated from API version 2024-03-01
 func (client *Client) deleteAtSubscription(ctx context.Context, deploymentStackName string, options *ClientBeginDeleteAtSubscriptionOptions) (*http.Response, error) {
 	var err error
 	const operationName = "Client.BeginDeleteAtSubscription"
@@ -513,23 +524,29 @@ func (client *Client) deleteAtSubscriptionCreateRequest(ctx context.Context, dep
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	if options != nil && options.UnmanageActionResources != nil {
-		reqQP.Set("unmanageAction.Resources", string(*options.UnmanageActionResources))
+	reqQP.Set("api-version", "2024-03-01")
+	if options != nil && options.BypassStackOutOfSyncError != nil {
+		reqQP.Set("bypassStackOutOfSyncError", strconv.FormatBool(*options.BypassStackOutOfSyncError))
+	}
+	if options != nil && options.UnmanageActionManagementGroups != nil {
+		reqQP.Set("unmanageAction.ManagementGroups", string(*options.UnmanageActionManagementGroups))
 	}
 	if options != nil && options.UnmanageActionResourceGroups != nil {
 		reqQP.Set("unmanageAction.ResourceGroups", string(*options.UnmanageActionResourceGroups))
 	}
-	reqQP.Set("api-version", "2022-08-01-preview")
+	if options != nil && options.UnmanageActionResources != nil {
+		reqQP.Set("unmanageAction.Resources", string(*options.UnmanageActionResources))
+	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// ExportTemplateAtManagementGroup - Exports the template used to create the deployment stack.
+// ExportTemplateAtManagementGroup - Exports the template used to create the Deployment stack at Management Group scope.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-01-preview
-//   - managementGroupID - Management Group.
+// Generated from API version 2024-03-01
+//   - managementGroupID - Management Group id.
 //   - deploymentStackName - Name of the deployment stack.
 //   - options - ClientExportTemplateAtManagementGroupOptions contains the optional parameters for the Client.ExportTemplateAtManagementGroup
 //     method.
@@ -571,7 +588,7 @@ func (client *Client) exportTemplateAtManagementGroupCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-01-preview")
+	reqQP.Set("api-version", "2024-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -586,10 +603,10 @@ func (client *Client) exportTemplateAtManagementGroupHandleResponse(resp *http.R
 	return result, nil
 }
 
-// ExportTemplateAtResourceGroup - Exports the template used to create the deployment stack.
+// ExportTemplateAtResourceGroup - Exports the template used to create the Deployment stack at Resource Group scope.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-01-preview
+// Generated from API version 2024-03-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - deploymentStackName - Name of the deployment stack.
 //   - options - ClientExportTemplateAtResourceGroupOptions contains the optional parameters for the Client.ExportTemplateAtResourceGroup
@@ -636,7 +653,7 @@ func (client *Client) exportTemplateAtResourceGroupCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-01-preview")
+	reqQP.Set("api-version", "2024-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -651,10 +668,10 @@ func (client *Client) exportTemplateAtResourceGroupHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// ExportTemplateAtSubscription - Exports the template used to create the deployment stack.
+// ExportTemplateAtSubscription - Exports the template used to create the Deployment stack at Subscription scope.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-01-preview
+// Generated from API version 2024-03-01
 //   - deploymentStackName - Name of the deployment stack.
 //   - options - ClientExportTemplateAtSubscriptionOptions contains the optional parameters for the Client.ExportTemplateAtSubscription
 //     method.
@@ -696,7 +713,7 @@ func (client *Client) exportTemplateAtSubscriptionCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-01-preview")
+	reqQP.Set("api-version", "2024-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -711,11 +728,11 @@ func (client *Client) exportTemplateAtSubscriptionHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// GetAtManagementGroup - Gets a Deployment Stack with a given name.
+// GetAtManagementGroup - Gets a Deployment stack with a given name at Management Group scope.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-01-preview
-//   - managementGroupID - Management Group.
+// Generated from API version 2024-03-01
+//   - managementGroupID - Management Group id.
 //   - deploymentStackName - Name of the deployment stack.
 //   - options - ClientGetAtManagementGroupOptions contains the optional parameters for the Client.GetAtManagementGroup method.
 func (client *Client) GetAtManagementGroup(ctx context.Context, managementGroupID string, deploymentStackName string, options *ClientGetAtManagementGroupOptions) (ClientGetAtManagementGroupResponse, error) {
@@ -756,7 +773,7 @@ func (client *Client) getAtManagementGroupCreateRequest(ctx context.Context, man
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-01-preview")
+	reqQP.Set("api-version", "2024-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -771,10 +788,10 @@ func (client *Client) getAtManagementGroupHandleResponse(resp *http.Response) (C
 	return result, nil
 }
 
-// GetAtResourceGroup - Gets a Deployment Stack with a given name.
+// GetAtResourceGroup - Gets a Deployment stack with a given name at Resource Group scope.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-01-preview
+// Generated from API version 2024-03-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - deploymentStackName - Name of the deployment stack.
 //   - options - ClientGetAtResourceGroupOptions contains the optional parameters for the Client.GetAtResourceGroup method.
@@ -820,7 +837,7 @@ func (client *Client) getAtResourceGroupCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-01-preview")
+	reqQP.Set("api-version", "2024-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -835,10 +852,10 @@ func (client *Client) getAtResourceGroupHandleResponse(resp *http.Response) (Cli
 	return result, nil
 }
 
-// GetAtSubscription - Gets a Deployment Stack with a given name.
+// GetAtSubscription - Gets a Deployment stack with a given name at Subscription scope.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-01-preview
+// Generated from API version 2024-03-01
 //   - deploymentStackName - Name of the deployment stack.
 //   - options - ClientGetAtSubscriptionOptions contains the optional parameters for the Client.GetAtSubscription method.
 func (client *Client) GetAtSubscription(ctx context.Context, deploymentStackName string, options *ClientGetAtSubscriptionOptions) (ClientGetAtSubscriptionResponse, error) {
@@ -879,7 +896,7 @@ func (client *Client) getAtSubscriptionCreateRequest(ctx context.Context, deploy
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-01-preview")
+	reqQP.Set("api-version", "2024-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -894,10 +911,10 @@ func (client *Client) getAtSubscriptionHandleResponse(resp *http.Response) (Clie
 	return result, nil
 }
 
-// NewListAtManagementGroupPager - Lists all the Deployment Stacks within the specified management group.
+// NewListAtManagementGroupPager - Lists all the Deployment stacks within the specified Management Group.
 //
-// Generated from API version 2022-08-01-preview
-//   - managementGroupID - Management Group.
+// Generated from API version 2024-03-01
+//   - managementGroupID - Management Group id.
 //   - options - ClientListAtManagementGroupOptions contains the optional parameters for the Client.NewListAtManagementGroupPager
 //     method.
 func (client *Client) NewListAtManagementGroupPager(managementGroupID string, options *ClientListAtManagementGroupOptions) *runtime.Pager[ClientListAtManagementGroupResponse] {
@@ -935,7 +952,7 @@ func (client *Client) listAtManagementGroupCreateRequest(ctx context.Context, ma
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-01-preview")
+	reqQP.Set("api-version", "2024-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -950,9 +967,9 @@ func (client *Client) listAtManagementGroupHandleResponse(resp *http.Response) (
 	return result, nil
 }
 
-// NewListAtResourceGroupPager - Lists all the Deployment Stacks within the specified resource group.
+// NewListAtResourceGroupPager - Lists all the Deployment stacks within the specified Resource Group.
 //
-// Generated from API version 2022-08-01-preview
+// Generated from API version 2024-03-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ClientListAtResourceGroupOptions contains the optional parameters for the Client.NewListAtResourceGroupPager
 //     method.
@@ -995,7 +1012,7 @@ func (client *Client) listAtResourceGroupCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-01-preview")
+	reqQP.Set("api-version", "2024-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -1010,9 +1027,9 @@ func (client *Client) listAtResourceGroupHandleResponse(resp *http.Response) (Cl
 	return result, nil
 }
 
-// NewListAtSubscriptionPager - Lists all the Deployment Stacks within the specified subscription.
+// NewListAtSubscriptionPager - Lists all the Deployment stacks within the specified Subscription.
 //
-// Generated from API version 2022-08-01-preview
+// Generated from API version 2024-03-01
 //   - options - ClientListAtSubscriptionOptions contains the optional parameters for the Client.NewListAtSubscriptionPager method.
 func (client *Client) NewListAtSubscriptionPager(options *ClientListAtSubscriptionOptions) *runtime.Pager[ClientListAtSubscriptionResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ClientListAtSubscriptionResponse]{
@@ -1049,7 +1066,7 @@ func (client *Client) listAtSubscriptionCreateRequest(ctx context.Context, optio
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-01-preview")
+	reqQP.Set("api-version", "2024-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -1062,4 +1079,244 @@ func (client *Client) listAtSubscriptionHandleResponse(resp *http.Response) (Cli
 		return ClientListAtSubscriptionResponse{}, err
 	}
 	return result, nil
+}
+
+// BeginValidateStackAtManagementGroup - Runs preflight validation on the Management Group scoped Deployment stack template
+// to verify its acceptance to Azure Resource Manager.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-03-01
+//   - managementGroupID - Management Group id.
+//   - deploymentStackName - Name of the deployment stack.
+//   - deploymentStack - Deployment stack to validate.
+//   - options - ClientBeginValidateStackAtManagementGroupOptions contains the optional parameters for the Client.BeginValidateStackAtManagementGroup
+//     method.
+func (client *Client) BeginValidateStackAtManagementGroup(ctx context.Context, managementGroupID string, deploymentStackName string, deploymentStack DeploymentStack, options *ClientBeginValidateStackAtManagementGroupOptions) (*runtime.Poller[ClientValidateStackAtManagementGroupResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.validateStackAtManagementGroup(ctx, managementGroupID, deploymentStackName, deploymentStack, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClientValidateStackAtManagementGroupResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClientValidateStackAtManagementGroupResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// ValidateStackAtManagementGroup - Runs preflight validation on the Management Group scoped Deployment stack template to
+// verify its acceptance to Azure Resource Manager.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-03-01
+func (client *Client) validateStackAtManagementGroup(ctx context.Context, managementGroupID string, deploymentStackName string, deploymentStack DeploymentStack, options *ClientBeginValidateStackAtManagementGroupOptions) (*http.Response, error) {
+	var err error
+	const operationName = "Client.BeginValidateStackAtManagementGroup"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.validateStackAtManagementGroupCreateRequest(ctx, managementGroupID, deploymentStackName, deploymentStack, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusBadRequest) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// validateStackAtManagementGroupCreateRequest creates the ValidateStackAtManagementGroup request.
+func (client *Client) validateStackAtManagementGroupCreateRequest(ctx context.Context, managementGroupID string, deploymentStackName string, deploymentStack DeploymentStack, options *ClientBeginValidateStackAtManagementGroupOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Resources/deploymentStacks/{deploymentStackName}/validate"
+	if managementGroupID == "" {
+		return nil, errors.New("parameter managementGroupID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{managementGroupId}", url.PathEscape(managementGroupID))
+	if deploymentStackName == "" {
+		return nil, errors.New("parameter deploymentStackName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{deploymentStackName}", url.PathEscape(deploymentStackName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-03-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, deploymentStack); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginValidateStackAtResourceGroup - Runs preflight validation on the Resource Group scoped Deployment stack template to
+// verify its acceptance to Azure Resource Manager.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-03-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - deploymentStackName - Name of the deployment stack.
+//   - deploymentStack - Deployment stack to validate.
+//   - options - ClientBeginValidateStackAtResourceGroupOptions contains the optional parameters for the Client.BeginValidateStackAtResourceGroup
+//     method.
+func (client *Client) BeginValidateStackAtResourceGroup(ctx context.Context, resourceGroupName string, deploymentStackName string, deploymentStack DeploymentStack, options *ClientBeginValidateStackAtResourceGroupOptions) (*runtime.Poller[ClientValidateStackAtResourceGroupResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.validateStackAtResourceGroup(ctx, resourceGroupName, deploymentStackName, deploymentStack, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClientValidateStackAtResourceGroupResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClientValidateStackAtResourceGroupResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// ValidateStackAtResourceGroup - Runs preflight validation on the Resource Group scoped Deployment stack template to verify
+// its acceptance to Azure Resource Manager.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-03-01
+func (client *Client) validateStackAtResourceGroup(ctx context.Context, resourceGroupName string, deploymentStackName string, deploymentStack DeploymentStack, options *ClientBeginValidateStackAtResourceGroupOptions) (*http.Response, error) {
+	var err error
+	const operationName = "Client.BeginValidateStackAtResourceGroup"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.validateStackAtResourceGroupCreateRequest(ctx, resourceGroupName, deploymentStackName, deploymentStack, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusBadRequest) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// validateStackAtResourceGroupCreateRequest creates the ValidateStackAtResourceGroup request.
+func (client *Client) validateStackAtResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, deploymentStackName string, deploymentStack DeploymentStack, options *ClientBeginValidateStackAtResourceGroupOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Resources/deploymentStacks/{deploymentStackName}/validate"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if deploymentStackName == "" {
+		return nil, errors.New("parameter deploymentStackName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{deploymentStackName}", url.PathEscape(deploymentStackName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-03-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, deploymentStack); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginValidateStackAtSubscription - Runs preflight validation on the Subscription scoped Deployment stack template to verify
+// its acceptance to Azure Resource Manager.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-03-01
+//   - deploymentStackName - Name of the deployment stack.
+//   - deploymentStack - Deployment stack to validate.
+//   - options - ClientBeginValidateStackAtSubscriptionOptions contains the optional parameters for the Client.BeginValidateStackAtSubscription
+//     method.
+func (client *Client) BeginValidateStackAtSubscription(ctx context.Context, deploymentStackName string, deploymentStack DeploymentStack, options *ClientBeginValidateStackAtSubscriptionOptions) (*runtime.Poller[ClientValidateStackAtSubscriptionResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.validateStackAtSubscription(ctx, deploymentStackName, deploymentStack, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClientValidateStackAtSubscriptionResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClientValidateStackAtSubscriptionResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// ValidateStackAtSubscription - Runs preflight validation on the Subscription scoped Deployment stack template to verify
+// its acceptance to Azure Resource Manager.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-03-01
+func (client *Client) validateStackAtSubscription(ctx context.Context, deploymentStackName string, deploymentStack DeploymentStack, options *ClientBeginValidateStackAtSubscriptionOptions) (*http.Response, error) {
+	var err error
+	const operationName = "Client.BeginValidateStackAtSubscription"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.validateStackAtSubscriptionCreateRequest(ctx, deploymentStackName, deploymentStack, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusBadRequest) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// validateStackAtSubscriptionCreateRequest creates the ValidateStackAtSubscription request.
+func (client *Client) validateStackAtSubscriptionCreateRequest(ctx context.Context, deploymentStackName string, deploymentStack DeploymentStack, options *ClientBeginValidateStackAtSubscriptionOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deploymentStacks/{deploymentStackName}/validate"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if deploymentStackName == "" {
+		return nil, errors.New("parameter deploymentStackName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{deploymentStackName}", url.PathEscape(deploymentStackName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-03-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, deploymentStack); err != nil {
+		return nil, err
+	}
+	return req, nil
 }

@@ -32,41 +32,77 @@ type ClientBeginCreateOrUpdateAtSubscriptionOptions struct {
 // ClientBeginDeleteAtManagementGroupOptions contains the optional parameters for the Client.BeginDeleteAtManagementGroup
 // method.
 type ClientBeginDeleteAtManagementGroupOptions struct {
+	// Flag to bypass service errors that indicate the stack resource list is not correctly synchronized.
+	BypassStackOutOfSyncError *bool
+
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 
-	// Flag to indicate delete rather than detach for the management groups.
+	// Flag to indicate delete rather than detach for unmanaged management groups.
 	UnmanageActionManagementGroups *UnmanageActionManagementGroupMode
 
-	// Flag to indicate delete rather than detach for the resource groups.
+	// Flag to indicate delete rather than detach for unmanaged resource groups.
 	UnmanageActionResourceGroups *UnmanageActionResourceGroupMode
 
-	// Flag to indicate delete rather than detach for the resources.
+	// Flag to indicate delete rather than detach for unmanaged resources.
 	UnmanageActionResources *UnmanageActionResourceMode
 }
 
 // ClientBeginDeleteAtResourceGroupOptions contains the optional parameters for the Client.BeginDeleteAtResourceGroup method.
 type ClientBeginDeleteAtResourceGroupOptions struct {
+	// Flag to bypass service errors that indicate the stack resource list is not correctly synchronized.
+	BypassStackOutOfSyncError *bool
+
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 
-	// Flag to indicate delete rather than detach for the resource groups.
+	// Flag to indicate delete rather than detach for unmanaged management groups.
+	UnmanageActionManagementGroups *UnmanageActionManagementGroupMode
+
+	// Flag to indicate delete rather than detach for unmanaged resource groups.
 	UnmanageActionResourceGroups *UnmanageActionResourceGroupMode
 
-	// Flag to indicate delete rather than detach for the resources.
+	// Flag to indicate delete rather than detach for unmanaged resources.
 	UnmanageActionResources *UnmanageActionResourceMode
 }
 
 // ClientBeginDeleteAtSubscriptionOptions contains the optional parameters for the Client.BeginDeleteAtSubscription method.
 type ClientBeginDeleteAtSubscriptionOptions struct {
+	// Flag to bypass service errors that indicate the stack resource list is not correctly synchronized.
+	BypassStackOutOfSyncError *bool
+
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 
-	// Flag to indicate delete rather than detach for the resource groups.
+	// Flag to indicate delete rather than detach for unmanaged management groups.
+	UnmanageActionManagementGroups *UnmanageActionManagementGroupMode
+
+	// Flag to indicate delete rather than detach for unmanaged resource groups.
 	UnmanageActionResourceGroups *UnmanageActionResourceGroupMode
 
-	// Flag to indicate delete rather than detach for the resources.
+	// Flag to indicate delete rather than detach for unmanaged resources.
 	UnmanageActionResources *UnmanageActionResourceMode
+}
+
+// ClientBeginValidateStackAtManagementGroupOptions contains the optional parameters for the Client.BeginValidateStackAtManagementGroup
+// method.
+type ClientBeginValidateStackAtManagementGroupOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ClientBeginValidateStackAtResourceGroupOptions contains the optional parameters for the Client.BeginValidateStackAtResourceGroup
+// method.
+type ClientBeginValidateStackAtResourceGroupOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ClientBeginValidateStackAtSubscriptionOptions contains the optional parameters for the Client.BeginValidateStackAtSubscription
+// method.
+type ClientBeginValidateStackAtSubscriptionOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ClientExportTemplateAtManagementGroupOptions contains the optional parameters for the Client.ExportTemplateAtManagementGroup

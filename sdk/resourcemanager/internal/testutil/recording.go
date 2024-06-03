@@ -33,6 +33,11 @@ func StartProxy(pathToPackage string) func() {
 		if err != nil {
 			panic(fmt.Sprintf("Failed to add resource group name sanitizer: %v", err))
 		}
+		// disable location header sanitizer
+		err = recording.RemoveRegisteredSanitizers([]string{"AZSDK2003", "AZSDK2030"}, proxy.Options)
+		if err != nil {
+			panic(fmt.Sprintf("Failed to remove location header sanitizer: %v", err))
+		}
 
 		return func() {
 			err := recording.StopTestProxy(proxy)

@@ -493,7 +493,7 @@ func TestOpPollerWithWidgetPOST(t *testing.T) {
 	srv.AppendResponse(mock.WithStatusCode(http.StatusAccepted), mock.WithBody([]byte(`{"status": "InProgress"}`)))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusAccepted), mock.WithBody([]byte(`{"status": "InProgress"}`)))
 	// POST with no location header means the success response returns the model
-	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(`{"status": "Succeeded", "size": 2}`)))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(`{"status": "Succeeded", "result": {"size": 2} }`)))
 	defer close()
 
 	reqURL, err := url.Parse(srv.URL())

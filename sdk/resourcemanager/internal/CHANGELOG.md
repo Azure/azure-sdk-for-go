@@ -3,7 +3,7 @@
 ## 3.0.0 (2024-05-31)
 
 ### Features Added
-* Add `StartRecordingProxy` to help start and stop build-in recording proxy for each module's test.
+* Add `StartProxy` to help start and stop build-in test proxy for each module's test.
 
 ### Breaking Changes
 * Remove `NewRecordingPolicy`, use `GetCredAndClientOptions` directly.

@@ -13,10 +13,10 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 )
 
-// StartRecordingProxy starts the recording proxy with the path to store recording file.
+// StartProxy starts the test proxy with the path to store test recording file.
 // It should be used in the module test preparation stage only once.
-// It will return a delegate function to stop recording proxy.
-func StartRecordingProxy(pathToPackage string) func() {
+// It will return a delegate function to stop test proxy.
+func StartProxy(pathToPackage string) func() {
 	if recording.GetRecordMode() == recording.PlaybackMode || recording.GetRecordMode() == recording.RecordingMode {
 		proxy, err := recording.StartTestProxy(pathToPackage, nil)
 		if err != nil {
@@ -34,17 +34,14 @@ func StartRecordingProxy(pathToPackage string) func() {
 			panic(fmt.Sprintf("Failed to add resource group name sanitizer: %v", err))
 		}
 
-		return func() { StopRecordingProxy(proxy) }
+		return func() {
+			err := recording.StopTestProxy(proxy)
+			if err != nil {
+				panic(fmt.Sprintf("Failed to stop recording proxy: %v", err))
+			}
+		}
 	}
 	return func() {}
-}
-
-// StopRecordingProxy stops the recording proxy.
-func StopRecordingProxy(proxy *recording.TestProxyInstance) {
-	err := recording.StopTestProxy(proxy)
-	if err != nil {
-		panic(fmt.Sprintf("Failed to stop recording proxy: %v", err))
-	}
 }
 
 // StartRecording starts the recording with the path to store recording file.

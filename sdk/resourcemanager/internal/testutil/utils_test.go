@@ -21,7 +21,7 @@ func TestMain(m *testing.M) {
 }
 
 func run(m *testing.M) int {
-	f := StartRecordingProxy(pathToPackage)
+	f := StartProxy(pathToPackage)
 	defer f()
 	return m.Run()
 }

@@ -7,6 +7,8 @@
   that authenticates with client assertions such as federated credentials
 
 ### Breaking Changes
+> These changes affect only code written against a beta version such as v1.6.0-beta.4
+* Renamed `AzurePipelinesServiceConnectionCredentialOptions` to `AzurePipelinesCredentialOptions`
 
 ### Bugs Fixed
 

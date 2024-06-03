@@ -127,7 +127,7 @@ func TestFinalStateViaOperationLocationWithPost(t *testing.T) {
 	poller, err := New[widget](exported.NewPipeline(shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
 		return &http.Response{
 			StatusCode: http.StatusOK,
-			Body:       io.NopCloser(strings.NewReader(`{ "status": "succeeded", "shape": "rhombus" }`)),
+			Body:       io.NopCloser(strings.NewReader(`{ "status": "succeeded", "result": { "shape": "rhombus" } }`)),
 		}, nil
 	})), resp, pollers.FinalStateViaOpLocation)
 	require.NoError(t, err)

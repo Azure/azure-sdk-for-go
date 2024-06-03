@@ -4,13 +4,13 @@
 
 package aznamespaces
 
-// AcknowledgeOptions contains the optional parameters for the ReceiverClient.acknowledge method.
-type AcknowledgeOptions struct {
+// AcknowledgeEventsOptions contains the optional parameters for the ReceiverClient.AcknowledgeEvents method.
+type AcknowledgeEventsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ReceiveOptions contains the optional parameters for the ReceiverClient.receive method.
-type ReceiveOptions struct {
+// ReceiveEventsOptions contains the optional parameters for the ReceiverClient.ReceiveEvents method.
+type ReceiveEventsOptions struct {
 	// Max Events count to be received. Minimum value is 1, while maximum value is 100 events. If not specified, the default value
 	// is 1.
 	MaxEvents *int32
@@ -22,23 +22,28 @@ type ReceiveOptions struct {
 	MaxWaitTime *int32
 }
 
-// RejectOptions contains the optional parameters for the ReceiverClient.reject method.
-type RejectOptions struct {
+// RejectEventsOptions contains the optional parameters for the ReceiverClient.RejectEvents method.
+type RejectEventsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ReleaseOptions contains the optional parameters for the ReceiverClient.release method.
-type ReleaseOptions struct {
+// ReleaseEventsOptions contains the optional parameters for the ReceiverClient.ReleaseEvents method.
+type ReleaseEventsOptions struct {
 	// Release cloud events with the specified delay in seconds.
 	ReleaseDelayInSeconds *ReleaseDelay
 }
 
-// RenewLocksOptions contains the optional parameters for the ReceiverClient.renewLock method.
-type RenewLocksOptions struct {
+// RenewEventLocksOptions contains the optional parameters for the ReceiverClient.RenewEventLocks method.
+type RenewEventLocksOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SendEventsOptions contains the optional parameters for the SenderClient.sendEvents method.
+// SendEventOptions contains the optional parameters for the SenderClient.SendEvent method.
+type SendEventOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SendEventsOptions contains the optional parameters for the SenderClient.SendEvents method.
 type SendEventsOptions struct {
 	// placeholder for future optional parameters
 }

@@ -8,24 +8,21 @@ function PullAzureRestAPISpecs() {
 
 Push-Location ./testdata
 
-# TODO
-# if (Test-Path -Path "TempTypeSpecFiles") {
-#     Remove-Item -Recurse -Force TempTypeSpecFiles
-# }
+if (Test-Path -Path "TempTypeSpecFiles") {
+    Remove-Item -Recurse -Force TempTypeSpecFiles
+}
 
-# npm install
+npm install
 
-# if ($LASTEXITCODE -ne 0) {
-#     Exit 1
-# }
+if ($LASTEXITCODE -ne 0) {
+    Exit 1
+}
 
 # If you want to test with a local copy of your azure-rest-api-specs changes
-# just comment out this line and uncomment the lines below.
+# just comment out PullAzureRestAPISpecs and uncomment the lines below.
+PullAzureRestAPISpecs
 
-# TODO
-# PullAzureRestAPISpecs
-
-# $LocalTestingGitRepo = "<path to your fork of the azure-rest-api-specs repo>"
+# $LocalTestingGitRepo = "<repo path>"
 # Copy-Item `
 #     -Path $LocalTestingGitRepo/specification/eventgrid/Azure.Messaging.EventGrid `
 #     -Destination TempTypeSpecFiles/Azure.Messaging.EventGrid `
@@ -39,3 +36,5 @@ if ($LASTEXITCODE -ne 0) {
 }
 
 Pop-Location
+
+Clear-Host

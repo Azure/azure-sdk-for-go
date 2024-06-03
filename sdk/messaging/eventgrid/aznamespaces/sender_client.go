@@ -26,33 +26,33 @@ type SenderClient struct {
 	endpoint string
 }
 
-// send - Publish a single Cloud Event to a namespace topic.
+// SendEvent - Publish a single Cloud Event to a namespace topic.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-06-01
 //   - topicName - Topic Name.
 //   - event - Single Cloud Event being published.
-//   - options - SendOptions contains the optional parameters for the SenderClient.send method.
-func (client *SenderClient) send(ctx context.Context, topicName string, event *messaging.CloudEvent, options *SendOptions) (SendResponse, error) {
+//   - options - SenderClientSendEventOptions contains the optional parameters for the SenderClient.SendEvent method.
+func (client *SenderClient) internalSendEvent(ctx context.Context, topicName string, event *messaging.CloudEvent, options *SendEventOptions) (SendEventResponse, error) {
 	var err error
-	req, err := client.sendCreateRequest(ctx, topicName, event, options)
+	req, err := client.sendEventCreateRequest(ctx, topicName, event, options)
 	if err != nil {
-		return SendResponse{}, err
+		return SendEventResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return SendResponse{}, err
+		return SendEventResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return SendResponse{}, err
+		return SendEventResponse{}, err
 	}
-	resp, err := client.sendHandleResponse(httpResp)
+	resp, err := client.sendEventHandleResponse(httpResp)
 	return resp, err
 }
 
-// sendCreateRequest creates the send request.
-func (client *SenderClient) sendCreateRequest(ctx context.Context, topicName string, event *messaging.CloudEvent, _ *SendOptions) (*policy.Request, error) {
+// sendEventCreateRequest creates the SendEvent request.
+func (client *SenderClient) sendEventCreateRequest(ctx context.Context, topicName string, event *messaging.CloudEvent, _ *SendEventOptions) (*policy.Request, error) {
 	host := "{endpoint}"
 	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
 	urlPath := "/topics/{topicName}:publish"
@@ -75,23 +75,23 @@ func (client *SenderClient) sendCreateRequest(ctx context.Context, topicName str
 	return req, nil
 }
 
-// sendHandleResponse handles the send response.
-func (client *SenderClient) sendHandleResponse(resp *http.Response) (SendResponse, error) {
-	result := SendResponse{}
+// sendEventHandleResponse handles the SendEvent response.
+func (client *SenderClient) sendEventHandleResponse(resp *http.Response) (SendEventResponse, error) {
+	result := SendEventResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PublishResult); err != nil {
-		return SendResponse{}, err
+		return SendEventResponse{}, err
 	}
 	return result, nil
 }
 
-// sendEvents - Publish a batch of Cloud Events to a namespace topic.
+// SendEvents - Publish a batch of Cloud Events to a namespace topic.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-06-01
 //   - topicName - Topic Name.
 //   - events - Array of Cloud Events being published.
-//   - options - senderClientsendEventsOptions contains the optional parameters for the SenderClient.sendEvents method.
-func (client *SenderClient) sendEvents(ctx context.Context, topicName string, events []*messaging.CloudEvent, options *SendEventsOptions) (SendEventsResponse, error) {
+//   - options - SenderClientSendEventsOptions contains the optional parameters for the SenderClient.SendEvents method.
+func (client *SenderClient) internalSendEvents(ctx context.Context, topicName string, events []*messaging.CloudEvent, options *SendEventsOptions) (SendEventsResponse, error) {
 	var err error
 	req, err := client.sendEventsCreateRequest(ctx, topicName, events, options)
 	if err != nil {
@@ -109,7 +109,7 @@ func (client *SenderClient) sendEvents(ctx context.Context, topicName string, ev
 	return resp, err
 }
 
-// sendEventsCreateRequest creates the sendEvents request.
+// sendEventsCreateRequest creates the SendEvents request.
 func (client *SenderClient) sendEventsCreateRequest(ctx context.Context, topicName string, events []*messaging.CloudEvent, _ *SendEventsOptions) (*policy.Request, error) {
 	host := "{endpoint}"
 	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
@@ -133,7 +133,7 @@ func (client *SenderClient) sendEventsCreateRequest(ctx context.Context, topicNa
 	return req, nil
 }
 
-// sendEventsHandleResponse handles the sendEvents response.
+// sendEventsHandleResponse handles the SendEvents response.
 func (client *SenderClient) sendEventsHandleResponse(resp *http.Response) (SendEventsResponse, error) {
 	result := SendEventsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PublishResult); err != nil {

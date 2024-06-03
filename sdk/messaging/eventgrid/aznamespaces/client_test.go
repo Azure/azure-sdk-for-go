@@ -30,11 +30,11 @@ func TestClients_UsingSASKey(t *testing.T) {
 	ce, err := messaging.NewCloudEvent("source", "eventType", "hello world", nil)
 	require.NoError(t, err)
 
-	sendResp, err := sender.Send(context.Background(), &ce, nil)
+	sendResp, err := sender.SendEvent(context.Background(), &ce, nil)
 	require.NoError(t, err)
 	require.Empty(t, sendResp)
 
-	recvResp, err := receiver.Receive(context.Background(), nil)
+	recvResp, err := receiver.ReceiveEvents(context.Background(), nil)
 	require.NoError(t, err)
 
 	require.Equal(t, 1, len(recvResp.Details))
@@ -45,7 +45,7 @@ func TestClients_UsingSASKey(t *testing.T) {
 	// when creating the CloudEvent)
 	require.Equal(t, "\"hello world\"", string(recvResp.Details[0].Event.Data.([]byte)))
 
-	ackResp, err := receiver.Acknowledge(context.Background(), []string{*lockToken}, nil)
+	ackResp, err := receiver.AcknowledgeEvents(context.Background(), []string{*lockToken}, nil)
 	require.NoError(t, err)
 	require.Equal(t, []string{*lockToken}, ackResp.SucceededLockTokens)
 }
@@ -66,34 +66,34 @@ func TestFailedAck(t *testing.T) {
 	require.Empty(t, sendResp)
 	require.NoError(t, err)
 
-	recvResp, err := receiver.Receive(context.Background(), &aznamespaces.ReceiveOptions{
+	recvResp, err := receiver.ReceiveEvents(context.Background(), &aznamespaces.ReceiveEventsOptions{
 		MaxEvents:   to.Ptr[int32](1),
 		MaxWaitTime: to.Ptr[int32](10),
 	})
 	require.NoError(t, err)
 
-	ackResp, err := receiver.Acknowledge(context.Background(), []string{*recvResp.Details[0].BrokerProperties.LockToken}, nil)
+	ackResp, err := receiver.AcknowledgeEvents(context.Background(), []string{*recvResp.Details[0].BrokerProperties.LockToken}, nil)
 	require.NoError(t, err)
 	require.Empty(t, ackResp.FailedLockTokens)
 	require.Equal(t, []string{*recvResp.Details[0].BrokerProperties.LockToken}, ackResp.SucceededLockTokens)
 
 	// now let's try to do stuff with an "out of date" token
 	t.Run("Acknowledge", func(t *testing.T) {
-		resp, err := receiver.Acknowledge(context.Background(), []string{*recvResp.Details[0].BrokerProperties.LockToken}, nil)
+		resp, err := receiver.AcknowledgeEvents(context.Background(), []string{*recvResp.Details[0].BrokerProperties.LockToken}, nil)
 		require.NoError(t, err)
 		require.Empty(t, resp.SucceededLockTokens)
 		requireFailedLockTokens(t, []string{*recvResp.Details[0].BrokerProperties.LockToken}, resp.FailedLockTokens)
 	})
 
 	t.Run("RejectCloudEvents", func(t *testing.T) {
-		resp, err := receiver.Reject(context.Background(), []string{*recvResp.Details[0].BrokerProperties.LockToken}, nil)
+		resp, err := receiver.RejectEvents(context.Background(), []string{*recvResp.Details[0].BrokerProperties.LockToken}, nil)
 		require.NoError(t, err)
 		require.Empty(t, resp.SucceededLockTokens)
 		requireFailedLockTokens(t, []string{*recvResp.Details[0].BrokerProperties.LockToken}, resp.FailedLockTokens)
 	})
 
 	t.Run("ReleaseCloudEvents", func(t *testing.T) {
-		resp, err := receiver.Release(context.Background(), []string{*recvResp.Details[0].BrokerProperties.LockToken}, nil)
+		resp, err := receiver.ReleaseEvents(context.Background(), []string{*recvResp.Details[0].BrokerProperties.LockToken}, nil)
 		require.NoError(t, err)
 		require.Empty(t, resp.SucceededLockTokens)
 		requireFailedLockTokens(t, []string{*recvResp.Details[0].BrokerProperties.LockToken}, resp.FailedLockTokens)
@@ -129,7 +129,7 @@ func TestPartialAckFailure(t *testing.T) {
 	defer cancelReceive()
 
 	for len(events) < numExpectedEvents {
-		eventsResp, err := receiver.Receive(receiveCtx, &aznamespaces.ReceiveOptions{
+		eventsResp, err := receiver.ReceiveEvents(receiveCtx, &aznamespaces.ReceiveEventsOptions{
 			MaxEvents: to.Ptr(int32(numExpectedEvents - len(events))),
 		})
 		require.NoError(t, err)
@@ -137,12 +137,12 @@ func TestPartialAckFailure(t *testing.T) {
 	}
 
 	// we'll ack one now so we can force a failure to happen.
-	ackResp, err := receiver.Acknowledge(context.Background(), []string{*events[0].BrokerProperties.LockToken}, nil)
+	ackResp, err := receiver.AcknowledgeEvents(context.Background(), []string{*events[0].BrokerProperties.LockToken}, nil)
 	require.NoError(t, err)
 	require.Empty(t, ackResp.FailedLockTokens)
 
 	// this will result in a partial failure.
-	ackResp, err = receiver.Acknowledge(context.Background(), []string{
+	ackResp, err = receiver.AcknowledgeEvents(context.Background(), []string{
 		*events[0].BrokerProperties.LockToken,
 		*events[1].BrokerProperties.LockToken,
 	}, nil)
@@ -152,7 +152,7 @@ func TestPartialAckFailure(t *testing.T) {
 	require.Equal(t, []string{*events[1].BrokerProperties.LockToken}, ackResp.SucceededLockTokens)
 }
 
-func TestReject(t *testing.T) {
+func TestRejectEvents(t *testing.T) {
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
 	}
@@ -165,11 +165,11 @@ func TestReject(t *testing.T) {
 	sender, receiver := newClients(t, false)
 
 	t.Logf("Publishing cloud events")
-	_, err = sender.Send(context.Background(), &ce, nil)
+	_, err = sender.SendEvent(context.Background(), &ce, nil)
 	require.NoError(t, err)
 
 	t.Logf("Receiving cloud events")
-	events, err := receiver.Receive(context.Background(), nil)
+	events, err := receiver.ReceiveEvents(context.Background(), nil)
 	require.NoError(t, err)
 
 	requireEqualCloudEvent(t, messaging.CloudEvent{
@@ -183,12 +183,12 @@ func TestReject(t *testing.T) {
 	require.Equal(t, int32(1), *events.Details[0].BrokerProperties.DeliveryCount, "DeliveryCount starts at 1")
 
 	t.Logf("Rejecting cloud events")
-	rejectResp, err := receiver.Reject(context.Background(), []string{*events.Details[0].BrokerProperties.LockToken}, nil)
+	rejectResp, err := receiver.RejectEvents(context.Background(), []string{*events.Details[0].BrokerProperties.LockToken}, nil)
 	require.NoError(t, err)
 	require.Empty(t, rejectResp.FailedLockTokens)
 	t.Logf("Done rejecting cloud events")
 
-	events, err = receiver.Receive(context.Background(), &aznamespaces.ReceiveOptions{
+	events, err = receiver.ReceiveEvents(context.Background(), &aznamespaces.ReceiveEventsOptions{
 		MaxEvents:   to.Ptr[int32](1),
 		MaxWaitTime: to.Ptr[int32](10),
 	})
@@ -196,7 +196,7 @@ func TestReject(t *testing.T) {
 	require.Empty(t, events.Details)
 }
 
-func TestRelease(t *testing.T) {
+func TestReleaseEvents(t *testing.T) {
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
 	}
@@ -208,17 +208,17 @@ func TestRelease(t *testing.T) {
 
 	sender, receiver := newClients(t, false)
 
-	_, err = sender.Send(context.Background(), &ce, nil)
+	_, err = sender.SendEvent(context.Background(), &ce, nil)
 	require.NoError(t, err)
 
-	events, err := receiver.Receive(context.Background(), nil)
+	events, err := receiver.ReceiveEvents(context.Background(), nil)
 	require.NoError(t, err)
 
 	requireEqualCloudEvent(t, ce, events.Details[0].Event)
 
 	require.Equal(t, int32(1), *events.Details[0].BrokerProperties.DeliveryCount, "DeliveryCount starts at 1")
 
-	rejectResp, err := receiver.Release(context.Background(), []string{*events.Details[0].BrokerProperties.LockToken}, nil)
+	rejectResp, err := receiver.ReleaseEvents(context.Background(), []string{*events.Details[0].BrokerProperties.LockToken}, nil)
 	require.NoError(t, err)
 
 	if len(rejectResp.FailedLockTokens) > 0 {
@@ -230,11 +230,11 @@ func TestRelease(t *testing.T) {
 
 	require.Empty(t, rejectResp.FailedLockTokens)
 
-	events, err = receiver.Receive(context.Background(), nil)
+	events, err = receiver.ReceiveEvents(context.Background(), nil)
 	require.NoError(t, err)
 
 	require.Equal(t, int32(2), *events.Details[0].BrokerProperties.DeliveryCount, "DeliveryCount is incremented")
-	ackResp, err := receiver.Acknowledge(context.Background(), []string{*events.Details[0].BrokerProperties.LockToken}, nil)
+	ackResp, err := receiver.AcknowledgeEvents(context.Background(), []string{*events.Details[0].BrokerProperties.LockToken}, nil)
 	require.NoError(t, err)
 	require.Empty(t, ackResp.FailedLockTokens)
 }
@@ -251,10 +251,10 @@ func TestPublishBytes(t *testing.T) {
 
 	sender, receiver := newClients(t, false)
 
-	_, err = sender.Send(context.Background(), &ce, nil)
+	_, err = sender.SendEvent(context.Background(), &ce, nil)
 	require.NoError(t, err)
 
-	recvResp, err := receiver.Receive(context.Background(), nil)
+	recvResp, err := receiver.ReceiveEvents(context.Background(), nil)
 	require.NoError(t, err)
 
 	requireEqualCloudEvent(t, messaging.CloudEvent{
@@ -266,7 +266,7 @@ func TestPublishBytes(t *testing.T) {
 	}, recvResp.Details[0].Event)
 }
 
-func TestPublishString(t *testing.T) {
+func TestSendEventWithStringPayload(t *testing.T) {
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
 	}
@@ -277,10 +277,10 @@ func TestPublishString(t *testing.T) {
 	})
 	require.NoError(t, err)
 
-	_, err = sender.Send(context.Background(), &ce, nil)
+	_, err = sender.SendEvent(context.Background(), &ce, nil)
 	require.NoError(t, err)
 
-	recvResp, err := receiver.Receive(context.Background(), nil)
+	recvResp, err := receiver.ReceiveEvents(context.Background(), nil)
 	require.NoError(t, err)
 
 	requireEqualCloudEvent(t, messaging.CloudEvent{
@@ -292,7 +292,7 @@ func TestPublishString(t *testing.T) {
 	}, recvResp.Details[0].Event)
 }
 
-func TestPublishingAndReceivingMultipleCloudEvents(t *testing.T) {
+func TestSendEventsAndReceiveEvents(t *testing.T) {
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
 	}
@@ -349,7 +349,7 @@ func TestPublishingAndReceivingMultipleCloudEvents(t *testing.T) {
 	require.NoError(t, err)
 	require.Empty(t, sendResp)
 
-	resp, err := receiver.Receive(context.Background(), &aznamespaces.ReceiveOptions{
+	resp, err := receiver.ReceiveEvents(context.Background(), &aznamespaces.ReceiveEventsOptions{
 		MaxEvents:   to.Ptr(int32(len(sentEvents))),
 		MaxWaitTime: to.Ptr(int32(60)),
 	})
@@ -358,7 +358,7 @@ func TestPublishingAndReceivingMultipleCloudEvents(t *testing.T) {
 	require.Equal(t, len(sentEvents), len(resp.Details))
 
 	for i := 0; i < len(sentEvents); i++ {
-		_, err := receiver.Acknowledge(context.Background(), []string{*resp.Details[i].BrokerProperties.LockToken}, nil)
+		_, err := receiver.AcknowledgeEvents(context.Background(), []string{*resp.Details[i].BrokerProperties.LockToken}, nil)
 		require.NoError(t, err)
 
 		requireEqualCloudEvent(t, testData[i].Expected, resp.Details[i].Event)
@@ -390,23 +390,23 @@ func TestSimpleErrors(t *testing.T) {
 	require.Equal(t, http.StatusBadRequest, respErr.StatusCode)
 }
 
-func TestRenewCloudEventLocks(t *testing.T) {
+func TestRenewEventLocks(t *testing.T) {
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
 	}
 	sender, receiver := newClients(t, false)
 
 	ce := mustCreateEvent(t, "TestRenewCloudEventLocks", "eventType", "hello world", nil)
-	_, err := sender.Send(context.Background(), &ce, nil)
+	_, err := sender.SendEvent(context.Background(), &ce, nil)
 	require.NoError(t, err)
 
-	recvResp, err := receiver.Receive(context.Background(), nil)
+	recvResp, err := receiver.ReceiveEvents(context.Background(), nil)
 	require.NoError(t, err)
 
-	_, err = receiver.RenewLocks(context.Background(), []string{*recvResp.Details[0].BrokerProperties.LockToken}, nil)
+	_, err = receiver.RenewEventLocks(context.Background(), []string{*recvResp.Details[0].BrokerProperties.LockToken}, nil)
 	require.NoError(t, err)
 
-	ackResp, err := receiver.Acknowledge(context.Background(), []string{*recvResp.Details[0].BrokerProperties.LockToken}, nil)
+	ackResp, err := receiver.AcknowledgeEvents(context.Background(), []string{*recvResp.Details[0].BrokerProperties.LockToken}, nil)
 	require.NoError(t, err)
 	require.Empty(t, ackResp.FailedLockTokens)
 }
@@ -418,13 +418,13 @@ func TestReleaseWithDelay(t *testing.T) {
 	sender, receiver := newClients(t, false)
 
 	ce := mustCreateEvent(t, "TestReleaseWithDelay", "eventType", "hello world", nil)
-	_, err := sender.Send(context.Background(), &ce, nil)
+	_, err := sender.SendEvent(context.Background(), &ce, nil)
 	require.NoError(t, err)
 
-	recvResp, err := receiver.Receive(context.Background(), nil)
+	recvResp, err := receiver.ReceiveEvents(context.Background(), nil)
 	require.NoError(t, err)
 
-	releaseResp, err := receiver.Release(context.Background(), []string{*recvResp.Details[0].BrokerProperties.LockToken}, &aznamespaces.ReleaseOptions{
+	releaseResp, err := receiver.ReleaseEvents(context.Background(), []string{*recvResp.Details[0].BrokerProperties.LockToken}, &aznamespaces.ReleaseEventsOptions{
 		ReleaseDelayInSeconds: to.Ptr(aznamespaces.ReleaseDelayTenSeconds),
 	})
 	require.NoError(t, err)
@@ -433,7 +433,7 @@ func TestReleaseWithDelay(t *testing.T) {
 	now := time.Now()
 
 	// message will be available, but not immediately.
-	recvResp, err = receiver.Receive(context.Background(), nil)
+	recvResp, err = receiver.ReceiveEvents(context.Background(), nil)
 	require.NoError(t, err)
 	require.NotEmpty(t, recvResp.Details)
 	require.Equal(t, int32(2), *recvResp.Details[0].BrokerProperties.DeliveryCount)
@@ -444,7 +444,7 @@ func TestReleaseWithDelay(t *testing.T) {
 		require.GreaterOrEqual(t, int(elapsed/time.Second), 8) // give a little wiggle room for potential delays between requests, etc...
 	}
 
-	ackResp, err := receiver.Acknowledge(context.Background(), []string{*recvResp.Details[0].BrokerProperties.LockToken}, nil)
+	ackResp, err := receiver.AcknowledgeEvents(context.Background(), []string{*recvResp.Details[0].BrokerProperties.LockToken}, nil)
 	require.NoError(t, err)
 	require.Empty(t, ackResp.FailedLockTokens)
 }

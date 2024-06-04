@@ -79,6 +79,8 @@ func testImageGeneration(t *testing.T, client *azopenai.Client, model string, re
 		case azopenai.ImageGenerationResponseFormatURL:
 			headResp, err := http.DefaultClient.Head(*resp.Data[0].URL)
 			require.NoError(t, err)
+
+			headResp.Body.Close()
 			require.Equal(t, http.StatusOK, headResp.StatusCode)
 			require.NotEmpty(t, resp.Data[0].RevisedPrompt)
 		case azopenai.ImageGenerationResponseFormatBase64:

@@ -75,7 +75,7 @@ func getEnvVariable(varName string, playbackValue string) string {
 	return val
 }
 
-var azureOpenAI, openAI, servers = func() (testVars, testVars, []string) {
+var azureOpenAI, openAI = func() (testVars, testVars) {
 	servers := struct {
 		USEast         endpoint
 		USNorthCentral endpoint
@@ -108,15 +108,6 @@ var azureOpenAI, openAI, servers = func() (testVars, testVars, []string) {
 			APIKey: getEnvVariable("AOAI_ENDPOINT_SWECENTRAL_API_KEY", fakeAPIKey),
 			Azure:  true,
 		},
-	}
-
-	// used when we setup the recording policy
-	endpoints := []string{
-		//servers.OpenAI.URL,		// omitted because we have to handle this one slightly differently to play well with sanitization.
-		servers.USEast.URL,
-		servers.USEast2.URL,
-		servers.USNorthCentral.URL,
-		servers.SWECentral.URL,
 	}
 
 	newTestVarsFn := func(azure bool) testVars {
@@ -203,7 +194,7 @@ var azureOpenAI, openAI, servers = func() (testVars, testVars, []string) {
 		}
 	}
 
-	return azureTestVars, newTestVarsFn(false), endpoints
+	return azureTestVars, newTestVarsFn(false)
 }()
 
 type testClientOption func(opt *azopenai.ClientOptions)

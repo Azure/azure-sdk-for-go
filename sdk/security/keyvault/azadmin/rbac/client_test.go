@@ -116,7 +116,6 @@ func TestRoleDefinition(t *testing.T) {
 			}
 		}
 	}
-	//}
 }
 
 func TestDeleteRoleDefinition_FailureInvalidRole(t *testing.T) {

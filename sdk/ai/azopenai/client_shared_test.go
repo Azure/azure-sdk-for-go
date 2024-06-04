@@ -13,7 +13,6 @@ import (
 	"mime"
 	"net/http"
 	"os"
-	"regexp"
 	"strings"
 	"testing"
 
@@ -85,27 +84,27 @@ var azureOpenAI, openAI, servers = func() (testVars, testVars, []string) {
 		OpenAI         endpoint
 	}{
 		OpenAI: endpoint{
-			URL:    getEndpoint("OPENAI_ENDPOINT"), // ex: https://api.openai.com/v1/
+			URL:    getEndpoint("OPENAI_ENDPOINT", false), // ex: https://api.openai.com/v1/
 			APIKey: getEnvVariable("OPENAI_API_KEY", fakeAPIKey),
 			Azure:  false,
 		},
 		USEast: endpoint{
-			URL:    getEndpoint("AOAI_ENDPOINT_USEAST"),
+			URL:    getEndpoint("AOAI_ENDPOINT_USEAST", true),
 			APIKey: getEnvVariable("AOAI_ENDPOINT_USEAST_API_KEY", fakeAPIKey),
 			Azure:  true,
 		},
 		USEast2: endpoint{
-			URL:    getEndpoint("AOAI_ENDPOINT_USEAST2"),
+			URL:    getEndpoint("AOAI_ENDPOINT_USEAST2", true),
 			APIKey: getEnvVariable("AOAI_ENDPOINT_USEAST2_API_KEY", fakeAPIKey),
 			Azure:  true,
 		},
 		USNorthCentral: endpoint{
-			URL:    getEndpoint("AOAI_ENDPOINT_USNORTHCENTRAL"),
+			URL:    getEndpoint("AOAI_ENDPOINT_USNORTHCENTRAL", true),
 			APIKey: getEnvVariable("AOAI_ENDPOINT_USNORTHCENTRAL_API_KEY", fakeAPIKey),
 			Azure:  true,
 		},
 		SWECentral: endpoint{
-			URL:    getEndpoint("AOAI_ENDPOINT_SWECENTRAL"),
+			URL:    getEndpoint("AOAI_ENDPOINT_SWECENTRAL", true),
 			APIKey: getEnvVariable("AOAI_ENDPOINT_SWECENTRAL_API_KEY", fakeAPIKey),
 			Azure:  true,
 		},
@@ -113,7 +112,7 @@ var azureOpenAI, openAI, servers = func() (testVars, testVars, []string) {
 
 	// used when we setup the recording policy
 	endpoints := []string{
-		servers.OpenAI.URL,
+		//servers.OpenAI.URL,		// omitted because we have to handle this one slightly differently to play well with sanitization.
 		servers.USEast.URL,
 		servers.USEast2.URL,
 		servers.USNorthCentral.URL,
@@ -239,9 +238,10 @@ func newTestClient(t *testing.T, ep endpoint, options ...testClientOption) *azop
 	}
 }
 
-const fakeEndpoint = "https://fake-recorded-host.microsoft.com/"
+const fakeAzureEndpoint = "https://Sanitized.openai.azure.com/"
+const fakeOpenAIEndpoint = "https://Sanitized.openai.com/v1"
 const fakeAPIKey = "redacted"
-const fakeCognitiveEndpoint = "https://fake-cognitive-endpoint.microsoft.com"
+const fakeCognitiveEndpoint = "https://Sanitized.openai.azure.com"
 const fakeCognitiveIndexName = "index"
 
 type MultipartRecordingPolicy struct {
@@ -264,22 +264,11 @@ func newRecordingTransporter(t *testing.T) policy.Transporter {
 		err = recording.AddHeaderRegexSanitizer("Api-Key", fakeAPIKey, "", nil)
 		require.NoError(t, err)
 
-		err = recording.AddHeaderRegexSanitizer("User-Agent", "fake-user-agent", "", nil)
+		err = recording.AddHeaderRegexSanitizer("Uer-Agent", "fake-user-agent", "", nil)
 		require.NoError(t, err)
-
-		for _, ep := range servers {
-			err = recording.AddURISanitizer(fakeEndpoint, regexp.QuoteMeta(ep), nil)
-			require.NoError(t, err)
-		}
 
 		err = recording.AddURISanitizer("/openai/operations/images/00000000-AAAA-BBBB-CCCC-DDDDDDDDDDDD", "/openai/operations/images/[A-Za-z-0-9]+", nil)
 		require.NoError(t, err)
-
-		// there's only one OpenAI endpoint
-		if openAI.ChatCompletions.Endpoint.URL != "" {
-			err = recording.AddURISanitizer(fakeEndpoint, regexp.QuoteMeta(openAI.ChatCompletions.Endpoint.URL), nil)
-			require.NoError(t, err)
-		}
 
 		err = recording.AddGeneralRegexSanitizer(
 			fmt.Sprintf(`"endpoint": "%s"`, fakeCognitiveEndpoint),
@@ -289,11 +278,6 @@ func newRecordingTransporter(t *testing.T) policy.Transporter {
 		err = recording.AddGeneralRegexSanitizer(
 			fmt.Sprintf(`"index_name": "%s"`, fakeCognitiveIndexName),
 			fmt.Sprintf(`"index_name":\s*"%s"`, *azureOpenAI.Cognitive.Parameters.IndexName), nil)
-		require.NoError(t, err)
-
-		err = recording.AddGeneralRegexSanitizer(
-			fmt.Sprintf(`"key": "%s"`, fakeAPIKey),
-			fmt.Sprintf(`"key":\s*"%s"`, *azureOpenAI.Cognitive.Parameters.Authentication.(*azopenai.OnYourDataAPIKeyAuthenticationOptions).Key), nil)
 		require.NoError(t, err)
 	}
 
@@ -375,11 +359,17 @@ func assertResponseIsError(t *testing.T, err error) {
 	require.Truef(t, respErr.StatusCode == http.StatusUnauthorized || respErr.StatusCode == http.StatusTooManyRequests, "An acceptable error comes back (actual: %d)", respErr.StatusCode)
 }
 
-func getEndpoint(ev string) string {
-	v := getEnvVariable(ev, fakeEndpoint)
+func getEndpoint(ev string, azure bool) string {
+	fakeEP := fakeAzureEndpoint
+
+	if !azure {
+		fakeEP = fakeOpenAIEndpoint
+	}
+
+	v := getEnvVariable(ev, fakeEP)
 
 	if !strings.HasSuffix(v, "/") {
-		// (this just makes recording replacement easier)
+		// (this just makes recording replacement easier)j
 		v += "/"
 	}
 

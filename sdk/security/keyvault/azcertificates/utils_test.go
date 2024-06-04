@@ -25,7 +25,7 @@ import (
 
 const recordingDirectory = "sdk/security/keyvault/azcertificates/testdata"
 
-const fakeVaultURL = "https://test.vault.azure.net"
+const fakeVaultURL = "https://test.vault.azure.net/"
 
 var (
 	certsToPurge = struct {
@@ -62,9 +62,9 @@ func run(m *testing.M) int {
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		credential = &FakeCredential{}
 	} else {
-		tenantId := os.Getenv("AZCERTIFICATES_TENANT_ID")
-		clientId := os.Getenv("AZCERTIFICATES_CLIENT_ID")
-		secret := os.Getenv("AZCERTIFICATES_CLIENT_SECRET")
+		tenantId := getEnvVar("AZCERTIFICATES_TENANT_ID", "")
+		clientId := getEnvVar("AZCERTIFICATES_CLIENT_ID", "")
+		secret := getEnvVar("AZCERTIFICATES_CLIENT_SECRET", "")
 		var err error
 		credential, err = azidentity.NewClientSecretCredential(tenantId, clientId, secret, nil)
 		if err != nil {
@@ -73,6 +73,16 @@ func run(m *testing.M) int {
 	}
 
 	vaultURL = getEnvVar("AZURE_KEYVAULT_URL", fakeVaultURL)
+
+	if recording.GetRecordMode() != recording.LiveMode {
+		err := recording.RemoveRegisteredSanitizers([]string{
+			"AZSDK3430", // id in body
+			"AZSDK3493", // name in body
+		}, nil)
+		if err != nil {
+			panic(err)
+		}
+	}
 
 	code := m.Run()
 	if recording.GetRecordMode() != recording.PlaybackMode {

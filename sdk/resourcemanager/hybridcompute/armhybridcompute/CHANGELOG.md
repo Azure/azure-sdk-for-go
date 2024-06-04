@@ -1,5 +1,72 @@
 # Release History
 
+## 2.0.0-beta.3 (2024-06-21)
+### Breaking Changes
+
+- Type of `EsuKey.LicenseStatus` has been changed from `*string` to `*int32`
+
+### Features Added
+
+- New value `PublicNetworkAccessTypeSecuredByPerimeter` added to enum type `PublicNetworkAccessType`
+- New enum type `AccessMode` with values `AccessModeAudit`, `AccessModeEnforced`, `AccessModeLearning`
+- New enum type `AccessRuleDirection` with values `AccessRuleDirectionInbound`, `AccessRuleDirectionOutbound`
+- New enum type `GatewayType` with values `GatewayTypePublic`
+- New enum type `ProgramYear` with values `ProgramYearYear1`, `ProgramYearYear2`, `ProgramYearYear3`
+- New enum type `ProvisioningIssueSeverity` with values `ProvisioningIssueSeverityError`, `ProvisioningIssueSeverityWarning`
+- New enum type `ProvisioningIssueType` with values `ProvisioningIssueTypeConfigurationPropagationFailure`, `ProvisioningIssueTypeMissingIdentityConfiguration`, `ProvisioningIssueTypeMissingPerimeterConfiguration`, `ProvisioningIssueTypeOther`
+- New function `*ClientFactory.NewGatewaysClient() *GatewaysClient`
+- New function `*ClientFactory.NewLicensesClient() *LicensesClient`
+- New function `*ClientFactory.NewNetworkSecurityPerimeterConfigurationsClient() *NetworkSecurityPerimeterConfigurationsClient`
+- New function `*ClientFactory.NewSettingsClient() *SettingsClient`
+- New function `NewGatewaysClient(string, azcore.TokenCredential, *arm.ClientOptions) (*GatewaysClient, error)`
+- New function `*GatewaysClient.BeginCreateOrUpdate(context.Context, string, string, Gateway, *GatewaysClientBeginCreateOrUpdateOptions) (*runtime.Poller[GatewaysClientCreateOrUpdateResponse], error)`
+- New function `*GatewaysClient.BeginDelete(context.Context, string, string, *GatewaysClientBeginDeleteOptions) (*runtime.Poller[GatewaysClientDeleteResponse], error)`
+- New function `*GatewaysClient.Get(context.Context, string, string, *GatewaysClientGetOptions) (GatewaysClientGetResponse, error)`
+- New function `*GatewaysClient.NewListByResourceGroupPager(string, *GatewaysClientListByResourceGroupOptions) *runtime.Pager[GatewaysClientListByResourceGroupResponse]`
+- New function `*GatewaysClient.NewListBySubscriptionPager(*GatewaysClientListBySubscriptionOptions) *runtime.Pager[GatewaysClientListBySubscriptionResponse]`
+- New function `*GatewaysClient.Update(context.Context, string, string, GatewayUpdate, *GatewaysClientUpdateOptions) (GatewaysClientUpdateResponse, error)`
+- New function `NewLicensesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*LicensesClient, error)`
+- New function `*LicensesClient.BeginCreateOrUpdate(context.Context, string, string, License, *LicensesClientBeginCreateOrUpdateOptions) (*runtime.Poller[LicensesClientCreateOrUpdateResponse], error)`
+- New function `*LicensesClient.BeginDelete(context.Context, string, string, *LicensesClientBeginDeleteOptions) (*runtime.Poller[LicensesClientDeleteResponse], error)`
+- New function `*LicensesClient.Get(context.Context, string, string, *LicensesClientGetOptions) (LicensesClientGetResponse, error)`
+- New function `*LicensesClient.NewListByResourceGroupPager(string, *LicensesClientListByResourceGroupOptions) *runtime.Pager[LicensesClientListByResourceGroupResponse]`
+- New function `*LicensesClient.NewListBySubscriptionPager(*LicensesClientListBySubscriptionOptions) *runtime.Pager[LicensesClientListBySubscriptionResponse]`
+- New function `*LicensesClient.BeginUpdate(context.Context, string, string, LicenseUpdate, *LicensesClientBeginUpdateOptions) (*runtime.Poller[LicensesClientUpdateResponse], error)`
+- New function `*MachineRunCommandsClient.BeginUpdate(context.Context, string, string, string, MachineRunCommandUpdate, *MachineRunCommandsClientBeginUpdateOptions) (*runtime.Poller[MachineRunCommandsClientUpdateResponse], error)`
+- New function `NewSettingsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*SettingsClient, error)`
+- New function `*SettingsClient.Get(context.Context, string, string, string, string, string, *SettingsClientGetOptions) (SettingsClientGetResponse, error)`
+- New function `*SettingsClient.Patch(context.Context, string, string, string, string, string, Settings, *SettingsClientPatchOptions) (SettingsClientPatchResponse, error)`
+- New function `*SettingsClient.Update(context.Context, string, string, string, string, string, Settings, *SettingsClientUpdateOptions) (SettingsClientUpdateResponse, error)`
+- New function `NewNetworkSecurityPerimeterConfigurationsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*NetworkSecurityPerimeterConfigurationsClient, error)`
+- New function `*NetworkSecurityPerimeterConfigurationsClient.GetByPrivateLinkScope(context.Context, string, string, string, *NetworkSecurityPerimeterConfigurationsClientGetByPrivateLinkScopeOptions) (NetworkSecurityPerimeterConfigurationsClientGetByPrivateLinkScopeResponse, error)`
+- New function `*NetworkSecurityPerimeterConfigurationsClient.NewListByPrivateLinkScopePager(string, string, *NetworkSecurityPerimeterConfigurationsClientListByPrivateLinkScopeOptions) *runtime.Pager[NetworkSecurityPerimeterConfigurationsClientListByPrivateLinkScopeResponse]`
+- New struct `AccessRule`
+- New struct `AccessRuleProperties`
+- New struct `Gateway`
+- New struct `GatewayProperties`
+- New struct `GatewayUpdate`
+- New struct `GatewayUpdateProperties`
+- New struct `GatewaysListResult`
+- New struct `LicenseUpdate`
+- New struct `LicenseUpdateProperties`
+- New struct `LicenseUpdatePropertiesLicenseDetails`
+- New struct `LicensesListResult`
+- New struct `MachineRunCommandUpdate`
+- New struct `NetworkSecurityPerimeter`
+- New struct `NetworkSecurityPerimeterConfiguration`
+- New struct `NetworkSecurityPerimeterConfigurationListResult`
+- New struct `NetworkSecurityPerimeterConfigurationProperties`
+- New struct `NetworkSecurityPerimeterProfile`
+- New struct `ProvisioningIssue`
+- New struct `ProvisioningIssueProperties`
+- New struct `ResourceAssociation`
+- New struct `Settings`
+- New struct `SettingsGatewayProperties`
+- New struct `SettingsProperties`
+- New struct `VolumeLicenseDetails`
+- New field `VolumeLicenseDetails` in struct `LicenseDetails`
+
+
 ## 2.0.0-beta.2 (2024-04-26)
 ### Breaking Changes
 

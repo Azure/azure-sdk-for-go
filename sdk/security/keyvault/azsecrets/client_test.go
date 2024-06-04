@@ -83,7 +83,7 @@ func TestCRUD(t *testing.T) {
 	require.NotEmpty(t, setResp.ID.Version())
 	testSerde(t, &setResp.Secret)
 
-	getResp, err := client.GetSecret(context.Background(), name, "", nil)
+	getResp, err := client.GetSecret(context.Background(), setResp.ID.Name(), "", nil)
 	require.NoError(t, err)
 	require.Equal(t, setParams.ContentType, getResp.ContentType)
 	require.NotNil(t, setResp.ID)
@@ -101,8 +101,7 @@ func TestCRUD(t *testing.T) {
 		},
 	}
 	testSerde(t, &updateParams)
-	var updateResp azsecrets.UpdateSecretPropertiesResponse
-	updateResp, err = client.UpdateSecretProperties(context.Background(), name, setResp.ID.Version(), updateParams, nil)
+	updateResp, err := client.UpdateSecretProperties(context.Background(), name, setResp.ID.Version(), updateParams, nil)
 	require.NoError(t, err)
 	require.Equal(t, setParams.ContentType, updateResp.ContentType)
 	require.Equal(t, setResp.ID, updateResp.ID)
@@ -252,7 +251,6 @@ func TestListDeletedSecrets(t *testing.T) {
 		}
 	}
 	require.Empty(t, expected, "pager didn't return all expected secrets")
-
 }
 
 func TestListSecrets(t *testing.T) {

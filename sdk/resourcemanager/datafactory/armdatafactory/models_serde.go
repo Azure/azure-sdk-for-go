@@ -1022,9 +1022,29 @@ func (a *AmazonRdsForSQLServerLinkedService) UnmarshalJSON(data []byte) error {
 func (a AmazonRdsForSQLServerLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "alwaysEncryptedSettings", a.AlwaysEncryptedSettings)
+	populateAny(objectMap, "applicationIntent", a.ApplicationIntent)
+	populate(objectMap, "authenticationType", a.AuthenticationType)
+	populateAny(objectMap, "commandTimeout", a.CommandTimeout)
+	populateAny(objectMap, "connectRetryCount", a.ConnectRetryCount)
+	populateAny(objectMap, "connectRetryInterval", a.ConnectRetryInterval)
+	populateAny(objectMap, "connectTimeout", a.ConnectTimeout)
 	populateAny(objectMap, "connectionString", a.ConnectionString)
+	populateAny(objectMap, "database", a.Database)
+	populateAny(objectMap, "encrypt", a.Encrypt)
 	populate(objectMap, "encryptedCredential", a.EncryptedCredential)
+	populateAny(objectMap, "failoverPartner", a.FailoverPartner)
+	populateAny(objectMap, "hostNameInCertificate", a.HostNameInCertificate)
+	populateAny(objectMap, "integratedSecurity", a.IntegratedSecurity)
+	populateAny(objectMap, "loadBalanceTimeout", a.LoadBalanceTimeout)
+	populateAny(objectMap, "maxPoolSize", a.MaxPoolSize)
+	populateAny(objectMap, "minPoolSize", a.MinPoolSize)
+	populateAny(objectMap, "multiSubnetFailover", a.MultiSubnetFailover)
+	populateAny(objectMap, "multipleActiveResultSets", a.MultipleActiveResultSets)
+	populateAny(objectMap, "packetSize", a.PacketSize)
 	populate(objectMap, "password", a.Password)
+	populateAny(objectMap, "pooling", a.Pooling)
+	populateAny(objectMap, "server", a.Server)
+	populateAny(objectMap, "trustServerCertificate", a.TrustServerCertificate)
 	populateAny(objectMap, "userName", a.UserName)
 	return json.Marshal(objectMap)
 }
@@ -1041,14 +1061,74 @@ func (a *AmazonRdsForSQLServerLinkedServiceTypeProperties) UnmarshalJSON(data []
 		case "alwaysEncryptedSettings":
 			err = unpopulate(val, "AlwaysEncryptedSettings", &a.AlwaysEncryptedSettings)
 			delete(rawMsg, key)
+		case "applicationIntent":
+			err = unpopulate(val, "ApplicationIntent", &a.ApplicationIntent)
+			delete(rawMsg, key)
+		case "authenticationType":
+			err = unpopulate(val, "AuthenticationType", &a.AuthenticationType)
+			delete(rawMsg, key)
+		case "commandTimeout":
+			err = unpopulate(val, "CommandTimeout", &a.CommandTimeout)
+			delete(rawMsg, key)
+		case "connectRetryCount":
+			err = unpopulate(val, "ConnectRetryCount", &a.ConnectRetryCount)
+			delete(rawMsg, key)
+		case "connectRetryInterval":
+			err = unpopulate(val, "ConnectRetryInterval", &a.ConnectRetryInterval)
+			delete(rawMsg, key)
+		case "connectTimeout":
+			err = unpopulate(val, "ConnectTimeout", &a.ConnectTimeout)
+			delete(rawMsg, key)
 		case "connectionString":
 			err = unpopulate(val, "ConnectionString", &a.ConnectionString)
+			delete(rawMsg, key)
+		case "database":
+			err = unpopulate(val, "Database", &a.Database)
+			delete(rawMsg, key)
+		case "encrypt":
+			err = unpopulate(val, "Encrypt", &a.Encrypt)
 			delete(rawMsg, key)
 		case "encryptedCredential":
 			err = unpopulate(val, "EncryptedCredential", &a.EncryptedCredential)
 			delete(rawMsg, key)
+		case "failoverPartner":
+			err = unpopulate(val, "FailoverPartner", &a.FailoverPartner)
+			delete(rawMsg, key)
+		case "hostNameInCertificate":
+			err = unpopulate(val, "HostNameInCertificate", &a.HostNameInCertificate)
+			delete(rawMsg, key)
+		case "integratedSecurity":
+			err = unpopulate(val, "IntegratedSecurity", &a.IntegratedSecurity)
+			delete(rawMsg, key)
+		case "loadBalanceTimeout":
+			err = unpopulate(val, "LoadBalanceTimeout", &a.LoadBalanceTimeout)
+			delete(rawMsg, key)
+		case "maxPoolSize":
+			err = unpopulate(val, "MaxPoolSize", &a.MaxPoolSize)
+			delete(rawMsg, key)
+		case "minPoolSize":
+			err = unpopulate(val, "MinPoolSize", &a.MinPoolSize)
+			delete(rawMsg, key)
+		case "multiSubnetFailover":
+			err = unpopulate(val, "MultiSubnetFailover", &a.MultiSubnetFailover)
+			delete(rawMsg, key)
+		case "multipleActiveResultSets":
+			err = unpopulate(val, "MultipleActiveResultSets", &a.MultipleActiveResultSets)
+			delete(rawMsg, key)
+		case "packetSize":
+			err = unpopulate(val, "PacketSize", &a.PacketSize)
+			delete(rawMsg, key)
 		case "password":
 			a.Password, err = unmarshalSecretBaseClassification(val)
+			delete(rawMsg, key)
+		case "pooling":
+			err = unpopulate(val, "Pooling", &a.Pooling)
+			delete(rawMsg, key)
+		case "server":
+			err = unpopulate(val, "Server", &a.Server)
+			delete(rawMsg, key)
+		case "trustServerCertificate":
+			err = unpopulate(val, "TrustServerCertificate", &a.TrustServerCertificate)
 			delete(rawMsg, key)
 		case "userName":
 			err = unpopulate(val, "UserName", &a.UserName)
@@ -8249,14 +8329,37 @@ func (a *AzureSQLDWLinkedService) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AzureSQLDWLinkedServiceTypeProperties.
 func (a AzureSQLDWLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populateAny(objectMap, "applicationIntent", a.ApplicationIntent)
+	populate(objectMap, "authenticationType", a.AuthenticationType)
 	populateAny(objectMap, "azureCloudType", a.AzureCloudType)
+	populateAny(objectMap, "commandTimeout", a.CommandTimeout)
+	populateAny(objectMap, "connectRetryCount", a.ConnectRetryCount)
+	populateAny(objectMap, "connectRetryInterval", a.ConnectRetryInterval)
+	populateAny(objectMap, "connectTimeout", a.ConnectTimeout)
 	populateAny(objectMap, "connectionString", a.ConnectionString)
 	populate(objectMap, "credential", a.Credential)
+	populateAny(objectMap, "database", a.Database)
+	populateAny(objectMap, "encrypt", a.Encrypt)
 	populate(objectMap, "encryptedCredential", a.EncryptedCredential)
+	populateAny(objectMap, "failoverPartner", a.FailoverPartner)
+	populateAny(objectMap, "hostNameInCertificate", a.HostNameInCertificate)
+	populateAny(objectMap, "integratedSecurity", a.IntegratedSecurity)
+	populateAny(objectMap, "loadBalanceTimeout", a.LoadBalanceTimeout)
+	populateAny(objectMap, "maxPoolSize", a.MaxPoolSize)
+	populateAny(objectMap, "minPoolSize", a.MinPoolSize)
+	populateAny(objectMap, "multiSubnetFailover", a.MultiSubnetFailover)
+	populateAny(objectMap, "multipleActiveResultSets", a.MultipleActiveResultSets)
+	populateAny(objectMap, "packetSize", a.PacketSize)
 	populate(objectMap, "password", a.Password)
+	populateAny(objectMap, "pooling", a.Pooling)
+	populateAny(objectMap, "server", a.Server)
+	populate(objectMap, "servicePrincipalCredential", a.ServicePrincipalCredential)
+	populateAny(objectMap, "servicePrincipalCredentialType", a.ServicePrincipalCredentialType)
 	populateAny(objectMap, "servicePrincipalId", a.ServicePrincipalID)
 	populate(objectMap, "servicePrincipalKey", a.ServicePrincipalKey)
 	populateAny(objectMap, "tenant", a.Tenant)
+	populateAny(objectMap, "trustServerCertificate", a.TrustServerCertificate)
+	populateAny(objectMap, "userName", a.UserName)
 	return json.Marshal(objectMap)
 }
 
@@ -8269,8 +8372,26 @@ func (a *AzureSQLDWLinkedServiceTypeProperties) UnmarshalJSON(data []byte) error
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "applicationIntent":
+			err = unpopulate(val, "ApplicationIntent", &a.ApplicationIntent)
+			delete(rawMsg, key)
+		case "authenticationType":
+			err = unpopulate(val, "AuthenticationType", &a.AuthenticationType)
+			delete(rawMsg, key)
 		case "azureCloudType":
 			err = unpopulate(val, "AzureCloudType", &a.AzureCloudType)
+			delete(rawMsg, key)
+		case "commandTimeout":
+			err = unpopulate(val, "CommandTimeout", &a.CommandTimeout)
+			delete(rawMsg, key)
+		case "connectRetryCount":
+			err = unpopulate(val, "ConnectRetryCount", &a.ConnectRetryCount)
+			delete(rawMsg, key)
+		case "connectRetryInterval":
+			err = unpopulate(val, "ConnectRetryInterval", &a.ConnectRetryInterval)
+			delete(rawMsg, key)
+		case "connectTimeout":
+			err = unpopulate(val, "ConnectTimeout", &a.ConnectTimeout)
 			delete(rawMsg, key)
 		case "connectionString":
 			err = unpopulate(val, "ConnectionString", &a.ConnectionString)
@@ -8278,11 +8399,56 @@ func (a *AzureSQLDWLinkedServiceTypeProperties) UnmarshalJSON(data []byte) error
 		case "credential":
 			err = unpopulate(val, "Credential", &a.Credential)
 			delete(rawMsg, key)
+		case "database":
+			err = unpopulate(val, "Database", &a.Database)
+			delete(rawMsg, key)
+		case "encrypt":
+			err = unpopulate(val, "Encrypt", &a.Encrypt)
+			delete(rawMsg, key)
 		case "encryptedCredential":
 			err = unpopulate(val, "EncryptedCredential", &a.EncryptedCredential)
 			delete(rawMsg, key)
+		case "failoverPartner":
+			err = unpopulate(val, "FailoverPartner", &a.FailoverPartner)
+			delete(rawMsg, key)
+		case "hostNameInCertificate":
+			err = unpopulate(val, "HostNameInCertificate", &a.HostNameInCertificate)
+			delete(rawMsg, key)
+		case "integratedSecurity":
+			err = unpopulate(val, "IntegratedSecurity", &a.IntegratedSecurity)
+			delete(rawMsg, key)
+		case "loadBalanceTimeout":
+			err = unpopulate(val, "LoadBalanceTimeout", &a.LoadBalanceTimeout)
+			delete(rawMsg, key)
+		case "maxPoolSize":
+			err = unpopulate(val, "MaxPoolSize", &a.MaxPoolSize)
+			delete(rawMsg, key)
+		case "minPoolSize":
+			err = unpopulate(val, "MinPoolSize", &a.MinPoolSize)
+			delete(rawMsg, key)
+		case "multiSubnetFailover":
+			err = unpopulate(val, "MultiSubnetFailover", &a.MultiSubnetFailover)
+			delete(rawMsg, key)
+		case "multipleActiveResultSets":
+			err = unpopulate(val, "MultipleActiveResultSets", &a.MultipleActiveResultSets)
+			delete(rawMsg, key)
+		case "packetSize":
+			err = unpopulate(val, "PacketSize", &a.PacketSize)
+			delete(rawMsg, key)
 		case "password":
 			err = unpopulate(val, "Password", &a.Password)
+			delete(rawMsg, key)
+		case "pooling":
+			err = unpopulate(val, "Pooling", &a.Pooling)
+			delete(rawMsg, key)
+		case "server":
+			err = unpopulate(val, "Server", &a.Server)
+			delete(rawMsg, key)
+		case "servicePrincipalCredential":
+			a.ServicePrincipalCredential, err = unmarshalSecretBaseClassification(val)
+			delete(rawMsg, key)
+		case "servicePrincipalCredentialType":
+			err = unpopulate(val, "ServicePrincipalCredentialType", &a.ServicePrincipalCredentialType)
 			delete(rawMsg, key)
 		case "servicePrincipalId":
 			err = unpopulate(val, "ServicePrincipalID", &a.ServicePrincipalID)
@@ -8292,6 +8458,12 @@ func (a *AzureSQLDWLinkedServiceTypeProperties) UnmarshalJSON(data []byte) error
 			delete(rawMsg, key)
 		case "tenant":
 			err = unpopulate(val, "Tenant", &a.Tenant)
+			delete(rawMsg, key)
+		case "trustServerCertificate":
+			err = unpopulate(val, "TrustServerCertificate", &a.TrustServerCertificate)
+			delete(rawMsg, key)
+		case "userName":
+			err = unpopulate(val, "UserName", &a.UserName)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -8476,14 +8648,37 @@ func (a *AzureSQLDatabaseLinkedService) UnmarshalJSON(data []byte) error {
 func (a AzureSQLDatabaseLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "alwaysEncryptedSettings", a.AlwaysEncryptedSettings)
+	populateAny(objectMap, "applicationIntent", a.ApplicationIntent)
+	populate(objectMap, "authenticationType", a.AuthenticationType)
 	populateAny(objectMap, "azureCloudType", a.AzureCloudType)
+	populateAny(objectMap, "commandTimeout", a.CommandTimeout)
+	populateAny(objectMap, "connectRetryCount", a.ConnectRetryCount)
+	populateAny(objectMap, "connectRetryInterval", a.ConnectRetryInterval)
+	populateAny(objectMap, "connectTimeout", a.ConnectTimeout)
 	populateAny(objectMap, "connectionString", a.ConnectionString)
 	populate(objectMap, "credential", a.Credential)
+	populateAny(objectMap, "database", a.Database)
+	populateAny(objectMap, "encrypt", a.Encrypt)
 	populate(objectMap, "encryptedCredential", a.EncryptedCredential)
+	populateAny(objectMap, "failoverPartner", a.FailoverPartner)
+	populateAny(objectMap, "hostNameInCertificate", a.HostNameInCertificate)
+	populateAny(objectMap, "integratedSecurity", a.IntegratedSecurity)
+	populateAny(objectMap, "loadBalanceTimeout", a.LoadBalanceTimeout)
+	populateAny(objectMap, "maxPoolSize", a.MaxPoolSize)
+	populateAny(objectMap, "minPoolSize", a.MinPoolSize)
+	populateAny(objectMap, "multiSubnetFailover", a.MultiSubnetFailover)
+	populateAny(objectMap, "multipleActiveResultSets", a.MultipleActiveResultSets)
+	populateAny(objectMap, "packetSize", a.PacketSize)
 	populate(objectMap, "password", a.Password)
+	populateAny(objectMap, "pooling", a.Pooling)
+	populateAny(objectMap, "server", a.Server)
+	populate(objectMap, "servicePrincipalCredential", a.ServicePrincipalCredential)
+	populateAny(objectMap, "servicePrincipalCredentialType", a.ServicePrincipalCredentialType)
 	populateAny(objectMap, "servicePrincipalId", a.ServicePrincipalID)
 	populate(objectMap, "servicePrincipalKey", a.ServicePrincipalKey)
 	populateAny(objectMap, "tenant", a.Tenant)
+	populateAny(objectMap, "trustServerCertificate", a.TrustServerCertificate)
+	populateAny(objectMap, "userName", a.UserName)
 	return json.Marshal(objectMap)
 }
 
@@ -8499,8 +8694,26 @@ func (a *AzureSQLDatabaseLinkedServiceTypeProperties) UnmarshalJSON(data []byte)
 		case "alwaysEncryptedSettings":
 			err = unpopulate(val, "AlwaysEncryptedSettings", &a.AlwaysEncryptedSettings)
 			delete(rawMsg, key)
+		case "applicationIntent":
+			err = unpopulate(val, "ApplicationIntent", &a.ApplicationIntent)
+			delete(rawMsg, key)
+		case "authenticationType":
+			err = unpopulate(val, "AuthenticationType", &a.AuthenticationType)
+			delete(rawMsg, key)
 		case "azureCloudType":
 			err = unpopulate(val, "AzureCloudType", &a.AzureCloudType)
+			delete(rawMsg, key)
+		case "commandTimeout":
+			err = unpopulate(val, "CommandTimeout", &a.CommandTimeout)
+			delete(rawMsg, key)
+		case "connectRetryCount":
+			err = unpopulate(val, "ConnectRetryCount", &a.ConnectRetryCount)
+			delete(rawMsg, key)
+		case "connectRetryInterval":
+			err = unpopulate(val, "ConnectRetryInterval", &a.ConnectRetryInterval)
+			delete(rawMsg, key)
+		case "connectTimeout":
+			err = unpopulate(val, "ConnectTimeout", &a.ConnectTimeout)
 			delete(rawMsg, key)
 		case "connectionString":
 			err = unpopulate(val, "ConnectionString", &a.ConnectionString)
@@ -8508,11 +8721,56 @@ func (a *AzureSQLDatabaseLinkedServiceTypeProperties) UnmarshalJSON(data []byte)
 		case "credential":
 			err = unpopulate(val, "Credential", &a.Credential)
 			delete(rawMsg, key)
+		case "database":
+			err = unpopulate(val, "Database", &a.Database)
+			delete(rawMsg, key)
+		case "encrypt":
+			err = unpopulate(val, "Encrypt", &a.Encrypt)
+			delete(rawMsg, key)
 		case "encryptedCredential":
 			err = unpopulate(val, "EncryptedCredential", &a.EncryptedCredential)
 			delete(rawMsg, key)
+		case "failoverPartner":
+			err = unpopulate(val, "FailoverPartner", &a.FailoverPartner)
+			delete(rawMsg, key)
+		case "hostNameInCertificate":
+			err = unpopulate(val, "HostNameInCertificate", &a.HostNameInCertificate)
+			delete(rawMsg, key)
+		case "integratedSecurity":
+			err = unpopulate(val, "IntegratedSecurity", &a.IntegratedSecurity)
+			delete(rawMsg, key)
+		case "loadBalanceTimeout":
+			err = unpopulate(val, "LoadBalanceTimeout", &a.LoadBalanceTimeout)
+			delete(rawMsg, key)
+		case "maxPoolSize":
+			err = unpopulate(val, "MaxPoolSize", &a.MaxPoolSize)
+			delete(rawMsg, key)
+		case "minPoolSize":
+			err = unpopulate(val, "MinPoolSize", &a.MinPoolSize)
+			delete(rawMsg, key)
+		case "multiSubnetFailover":
+			err = unpopulate(val, "MultiSubnetFailover", &a.MultiSubnetFailover)
+			delete(rawMsg, key)
+		case "multipleActiveResultSets":
+			err = unpopulate(val, "MultipleActiveResultSets", &a.MultipleActiveResultSets)
+			delete(rawMsg, key)
+		case "packetSize":
+			err = unpopulate(val, "PacketSize", &a.PacketSize)
+			delete(rawMsg, key)
 		case "password":
 			err = unpopulate(val, "Password", &a.Password)
+			delete(rawMsg, key)
+		case "pooling":
+			err = unpopulate(val, "Pooling", &a.Pooling)
+			delete(rawMsg, key)
+		case "server":
+			err = unpopulate(val, "Server", &a.Server)
+			delete(rawMsg, key)
+		case "servicePrincipalCredential":
+			a.ServicePrincipalCredential, err = unmarshalSecretBaseClassification(val)
+			delete(rawMsg, key)
+		case "servicePrincipalCredentialType":
+			err = unpopulate(val, "ServicePrincipalCredentialType", &a.ServicePrincipalCredentialType)
 			delete(rawMsg, key)
 		case "servicePrincipalId":
 			err = unpopulate(val, "ServicePrincipalID", &a.ServicePrincipalID)
@@ -8522,6 +8780,12 @@ func (a *AzureSQLDatabaseLinkedServiceTypeProperties) UnmarshalJSON(data []byte)
 			delete(rawMsg, key)
 		case "tenant":
 			err = unpopulate(val, "Tenant", &a.Tenant)
+			delete(rawMsg, key)
+		case "trustServerCertificate":
+			err = unpopulate(val, "TrustServerCertificate", &a.TrustServerCertificate)
+			delete(rawMsg, key)
+		case "userName":
+			err = unpopulate(val, "UserName", &a.UserName)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -8597,14 +8861,37 @@ func (a *AzureSQLMILinkedService) UnmarshalJSON(data []byte) error {
 func (a AzureSQLMILinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "alwaysEncryptedSettings", a.AlwaysEncryptedSettings)
+	populateAny(objectMap, "applicationIntent", a.ApplicationIntent)
+	populate(objectMap, "authenticationType", a.AuthenticationType)
 	populateAny(objectMap, "azureCloudType", a.AzureCloudType)
+	populateAny(objectMap, "commandTimeout", a.CommandTimeout)
+	populateAny(objectMap, "connectRetryCount", a.ConnectRetryCount)
+	populateAny(objectMap, "connectRetryInterval", a.ConnectRetryInterval)
+	populateAny(objectMap, "connectTimeout", a.ConnectTimeout)
 	populateAny(objectMap, "connectionString", a.ConnectionString)
 	populate(objectMap, "credential", a.Credential)
+	populateAny(objectMap, "database", a.Database)
+	populateAny(objectMap, "encrypt", a.Encrypt)
 	populate(objectMap, "encryptedCredential", a.EncryptedCredential)
+	populateAny(objectMap, "failoverPartner", a.FailoverPartner)
+	populateAny(objectMap, "hostNameInCertificate", a.HostNameInCertificate)
+	populateAny(objectMap, "integratedSecurity", a.IntegratedSecurity)
+	populateAny(objectMap, "loadBalanceTimeout", a.LoadBalanceTimeout)
+	populateAny(objectMap, "maxPoolSize", a.MaxPoolSize)
+	populateAny(objectMap, "minPoolSize", a.MinPoolSize)
+	populateAny(objectMap, "multiSubnetFailover", a.MultiSubnetFailover)
+	populateAny(objectMap, "multipleActiveResultSets", a.MultipleActiveResultSets)
+	populateAny(objectMap, "packetSize", a.PacketSize)
 	populate(objectMap, "password", a.Password)
+	populateAny(objectMap, "pooling", a.Pooling)
+	populateAny(objectMap, "server", a.Server)
+	populate(objectMap, "servicePrincipalCredential", a.ServicePrincipalCredential)
+	populateAny(objectMap, "servicePrincipalCredentialType", a.ServicePrincipalCredentialType)
 	populateAny(objectMap, "servicePrincipalId", a.ServicePrincipalID)
 	populate(objectMap, "servicePrincipalKey", a.ServicePrincipalKey)
 	populateAny(objectMap, "tenant", a.Tenant)
+	populateAny(objectMap, "trustServerCertificate", a.TrustServerCertificate)
+	populateAny(objectMap, "userName", a.UserName)
 	return json.Marshal(objectMap)
 }
 
@@ -8620,8 +8907,26 @@ func (a *AzureSQLMILinkedServiceTypeProperties) UnmarshalJSON(data []byte) error
 		case "alwaysEncryptedSettings":
 			err = unpopulate(val, "AlwaysEncryptedSettings", &a.AlwaysEncryptedSettings)
 			delete(rawMsg, key)
+		case "applicationIntent":
+			err = unpopulate(val, "ApplicationIntent", &a.ApplicationIntent)
+			delete(rawMsg, key)
+		case "authenticationType":
+			err = unpopulate(val, "AuthenticationType", &a.AuthenticationType)
+			delete(rawMsg, key)
 		case "azureCloudType":
 			err = unpopulate(val, "AzureCloudType", &a.AzureCloudType)
+			delete(rawMsg, key)
+		case "commandTimeout":
+			err = unpopulate(val, "CommandTimeout", &a.CommandTimeout)
+			delete(rawMsg, key)
+		case "connectRetryCount":
+			err = unpopulate(val, "ConnectRetryCount", &a.ConnectRetryCount)
+			delete(rawMsg, key)
+		case "connectRetryInterval":
+			err = unpopulate(val, "ConnectRetryInterval", &a.ConnectRetryInterval)
+			delete(rawMsg, key)
+		case "connectTimeout":
+			err = unpopulate(val, "ConnectTimeout", &a.ConnectTimeout)
 			delete(rawMsg, key)
 		case "connectionString":
 			err = unpopulate(val, "ConnectionString", &a.ConnectionString)
@@ -8629,11 +8934,56 @@ func (a *AzureSQLMILinkedServiceTypeProperties) UnmarshalJSON(data []byte) error
 		case "credential":
 			err = unpopulate(val, "Credential", &a.Credential)
 			delete(rawMsg, key)
+		case "database":
+			err = unpopulate(val, "Database", &a.Database)
+			delete(rawMsg, key)
+		case "encrypt":
+			err = unpopulate(val, "Encrypt", &a.Encrypt)
+			delete(rawMsg, key)
 		case "encryptedCredential":
 			err = unpopulate(val, "EncryptedCredential", &a.EncryptedCredential)
 			delete(rawMsg, key)
+		case "failoverPartner":
+			err = unpopulate(val, "FailoverPartner", &a.FailoverPartner)
+			delete(rawMsg, key)
+		case "hostNameInCertificate":
+			err = unpopulate(val, "HostNameInCertificate", &a.HostNameInCertificate)
+			delete(rawMsg, key)
+		case "integratedSecurity":
+			err = unpopulate(val, "IntegratedSecurity", &a.IntegratedSecurity)
+			delete(rawMsg, key)
+		case "loadBalanceTimeout":
+			err = unpopulate(val, "LoadBalanceTimeout", &a.LoadBalanceTimeout)
+			delete(rawMsg, key)
+		case "maxPoolSize":
+			err = unpopulate(val, "MaxPoolSize", &a.MaxPoolSize)
+			delete(rawMsg, key)
+		case "minPoolSize":
+			err = unpopulate(val, "MinPoolSize", &a.MinPoolSize)
+			delete(rawMsg, key)
+		case "multiSubnetFailover":
+			err = unpopulate(val, "MultiSubnetFailover", &a.MultiSubnetFailover)
+			delete(rawMsg, key)
+		case "multipleActiveResultSets":
+			err = unpopulate(val, "MultipleActiveResultSets", &a.MultipleActiveResultSets)
+			delete(rawMsg, key)
+		case "packetSize":
+			err = unpopulate(val, "PacketSize", &a.PacketSize)
+			delete(rawMsg, key)
 		case "password":
 			err = unpopulate(val, "Password", &a.Password)
+			delete(rawMsg, key)
+		case "pooling":
+			err = unpopulate(val, "Pooling", &a.Pooling)
+			delete(rawMsg, key)
+		case "server":
+			err = unpopulate(val, "Server", &a.Server)
+			delete(rawMsg, key)
+		case "servicePrincipalCredential":
+			a.ServicePrincipalCredential, err = unmarshalSecretBaseClassification(val)
+			delete(rawMsg, key)
+		case "servicePrincipalCredentialType":
+			err = unpopulate(val, "ServicePrincipalCredentialType", &a.ServicePrincipalCredentialType)
 			delete(rawMsg, key)
 		case "servicePrincipalId":
 			err = unpopulate(val, "ServicePrincipalID", &a.ServicePrincipalID)
@@ -8643,6 +8993,12 @@ func (a *AzureSQLMILinkedServiceTypeProperties) UnmarshalJSON(data []byte) error
 			delete(rawMsg, key)
 		case "tenant":
 			err = unpopulate(val, "Tenant", &a.Tenant)
+			delete(rawMsg, key)
+		case "trustServerCertificate":
+			err = unpopulate(val, "TrustServerCertificate", &a.TrustServerCertificate)
+			delete(rawMsg, key)
+		case "userName":
+			err = unpopulate(val, "UserName", &a.UserName)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -17662,6 +18018,7 @@ func (d *DynamicsCrmLinkedService) UnmarshalJSON(data []byte) error {
 func (d DynamicsCrmLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populateAny(objectMap, "authenticationType", d.AuthenticationType)
+	populate(objectMap, "credential", d.Credential)
 	populateAny(objectMap, "deploymentType", d.DeploymentType)
 	populate(objectMap, "encryptedCredential", d.EncryptedCredential)
 	populateAny(objectMap, "hostName", d.HostName)
@@ -17687,6 +18044,9 @@ func (d *DynamicsCrmLinkedServiceTypeProperties) UnmarshalJSON(data []byte) erro
 		switch key {
 		case "authenticationType":
 			err = unpopulate(val, "AuthenticationType", &d.AuthenticationType)
+			delete(rawMsg, key)
+		case "credential":
+			err = unpopulate(val, "Credential", &d.Credential)
 			delete(rawMsg, key)
 		case "deploymentType":
 			err = unpopulate(val, "DeploymentType", &d.DeploymentType)
@@ -19703,7 +20063,7 @@ func (e *Expression) UnmarshalJSON(data []byte) error {
 func (e ExpressionV2) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "operands", e.Operands)
-	populate(objectMap, "operator", e.Operator)
+	populate(objectMap, "operators", e.Operators)
 	populate(objectMap, "type", e.Type)
 	populate(objectMap, "value", e.Value)
 	return json.Marshal(objectMap)
@@ -19721,8 +20081,8 @@ func (e *ExpressionV2) UnmarshalJSON(data []byte) error {
 		case "operands":
 			err = unpopulate(val, "Operands", &e.Operands)
 			delete(rawMsg, key)
-		case "operator":
-			err = unpopulate(val, "Operator", &e.Operator)
+		case "operators":
+			err = unpopulate(val, "Operators", &e.Operators)
 			delete(rawMsg, key)
 		case "type":
 			err = unpopulate(val, "Type", &e.Type)
@@ -28869,6 +29229,7 @@ func (l *LakeHouseTableDataset) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type LakeHouseTableDatasetTypeProperties.
 func (l LakeHouseTableDatasetTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populateAny(objectMap, "schema", l.Schema)
 	populateAny(objectMap, "table", l.Table)
 	return json.Marshal(objectMap)
 }
@@ -28882,6 +29243,9 @@ func (l *LakeHouseTableDatasetTypeProperties) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "schema":
+			err = unpopulate(val, "Schema", &l.Schema)
+			delete(rawMsg, key)
 		case "table":
 			err = unpopulate(val, "Table", &l.Table)
 			delete(rawMsg, key)
@@ -29983,6 +30347,7 @@ func (m ManagedIdentityCredential) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "annotations", m.Annotations)
 	populate(objectMap, "description", m.Description)
 	objectMap["type"] = "ManagedIdentity"
+	populate(objectMap, "typeProperties", m.TypeProperties)
 	if m.AdditionalProperties != nil {
 		for key, val := range m.AdditionalProperties {
 			objectMap[key] = val
@@ -30009,6 +30374,9 @@ func (m *ManagedIdentityCredential) UnmarshalJSON(data []byte) error {
 		case "type":
 			err = unpopulate(val, "Type", &m.Type)
 			delete(rawMsg, key)
+		case "typeProperties":
+			err = unpopulate(val, "TypeProperties", &m.TypeProperties)
+			delete(rawMsg, key)
 		default:
 			if m.AdditionalProperties == nil {
 				m.AdditionalProperties = map[string]any{}
@@ -30018,6 +30386,33 @@ func (m *ManagedIdentityCredential) UnmarshalJSON(data []byte) error {
 				err = json.Unmarshal(val, &aux)
 				m.AdditionalProperties[key] = aux
 			}
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", m, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ManagedIdentityTypeProperties.
+func (m ManagedIdentityTypeProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "resourceId", m.ResourceID)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ManagedIdentityTypeProperties.
+func (m *ManagedIdentityTypeProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", m, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "resourceId":
+			err = unpopulate(val, "ResourceID", &m.ResourceID)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -41632,9 +42027,29 @@ func (s *SQLServerLinkedService) UnmarshalJSON(data []byte) error {
 func (s SQLServerLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "alwaysEncryptedSettings", s.AlwaysEncryptedSettings)
+	populateAny(objectMap, "applicationIntent", s.ApplicationIntent)
+	populate(objectMap, "authenticationType", s.AuthenticationType)
+	populateAny(objectMap, "commandTimeout", s.CommandTimeout)
+	populateAny(objectMap, "connectRetryCount", s.ConnectRetryCount)
+	populateAny(objectMap, "connectRetryInterval", s.ConnectRetryInterval)
+	populateAny(objectMap, "connectTimeout", s.ConnectTimeout)
 	populateAny(objectMap, "connectionString", s.ConnectionString)
+	populateAny(objectMap, "database", s.Database)
+	populateAny(objectMap, "encrypt", s.Encrypt)
 	populate(objectMap, "encryptedCredential", s.EncryptedCredential)
+	populateAny(objectMap, "failoverPartner", s.FailoverPartner)
+	populateAny(objectMap, "hostNameInCertificate", s.HostNameInCertificate)
+	populateAny(objectMap, "integratedSecurity", s.IntegratedSecurity)
+	populateAny(objectMap, "loadBalanceTimeout", s.LoadBalanceTimeout)
+	populateAny(objectMap, "maxPoolSize", s.MaxPoolSize)
+	populateAny(objectMap, "minPoolSize", s.MinPoolSize)
+	populateAny(objectMap, "multiSubnetFailover", s.MultiSubnetFailover)
+	populateAny(objectMap, "multipleActiveResultSets", s.MultipleActiveResultSets)
+	populateAny(objectMap, "packetSize", s.PacketSize)
 	populate(objectMap, "password", s.Password)
+	populateAny(objectMap, "pooling", s.Pooling)
+	populateAny(objectMap, "server", s.Server)
+	populateAny(objectMap, "trustServerCertificate", s.TrustServerCertificate)
 	populateAny(objectMap, "userName", s.UserName)
 	return json.Marshal(objectMap)
 }
@@ -41651,14 +42066,74 @@ func (s *SQLServerLinkedServiceTypeProperties) UnmarshalJSON(data []byte) error 
 		case "alwaysEncryptedSettings":
 			err = unpopulate(val, "AlwaysEncryptedSettings", &s.AlwaysEncryptedSettings)
 			delete(rawMsg, key)
+		case "applicationIntent":
+			err = unpopulate(val, "ApplicationIntent", &s.ApplicationIntent)
+			delete(rawMsg, key)
+		case "authenticationType":
+			err = unpopulate(val, "AuthenticationType", &s.AuthenticationType)
+			delete(rawMsg, key)
+		case "commandTimeout":
+			err = unpopulate(val, "CommandTimeout", &s.CommandTimeout)
+			delete(rawMsg, key)
+		case "connectRetryCount":
+			err = unpopulate(val, "ConnectRetryCount", &s.ConnectRetryCount)
+			delete(rawMsg, key)
+		case "connectRetryInterval":
+			err = unpopulate(val, "ConnectRetryInterval", &s.ConnectRetryInterval)
+			delete(rawMsg, key)
+		case "connectTimeout":
+			err = unpopulate(val, "ConnectTimeout", &s.ConnectTimeout)
+			delete(rawMsg, key)
 		case "connectionString":
 			err = unpopulate(val, "ConnectionString", &s.ConnectionString)
+			delete(rawMsg, key)
+		case "database":
+			err = unpopulate(val, "Database", &s.Database)
+			delete(rawMsg, key)
+		case "encrypt":
+			err = unpopulate(val, "Encrypt", &s.Encrypt)
 			delete(rawMsg, key)
 		case "encryptedCredential":
 			err = unpopulate(val, "EncryptedCredential", &s.EncryptedCredential)
 			delete(rawMsg, key)
+		case "failoverPartner":
+			err = unpopulate(val, "FailoverPartner", &s.FailoverPartner)
+			delete(rawMsg, key)
+		case "hostNameInCertificate":
+			err = unpopulate(val, "HostNameInCertificate", &s.HostNameInCertificate)
+			delete(rawMsg, key)
+		case "integratedSecurity":
+			err = unpopulate(val, "IntegratedSecurity", &s.IntegratedSecurity)
+			delete(rawMsg, key)
+		case "loadBalanceTimeout":
+			err = unpopulate(val, "LoadBalanceTimeout", &s.LoadBalanceTimeout)
+			delete(rawMsg, key)
+		case "maxPoolSize":
+			err = unpopulate(val, "MaxPoolSize", &s.MaxPoolSize)
+			delete(rawMsg, key)
+		case "minPoolSize":
+			err = unpopulate(val, "MinPoolSize", &s.MinPoolSize)
+			delete(rawMsg, key)
+		case "multiSubnetFailover":
+			err = unpopulate(val, "MultiSubnetFailover", &s.MultiSubnetFailover)
+			delete(rawMsg, key)
+		case "multipleActiveResultSets":
+			err = unpopulate(val, "MultipleActiveResultSets", &s.MultipleActiveResultSets)
+			delete(rawMsg, key)
+		case "packetSize":
+			err = unpopulate(val, "PacketSize", &s.PacketSize)
+			delete(rawMsg, key)
 		case "password":
 			s.Password, err = unmarshalSecretBaseClassification(val)
+			delete(rawMsg, key)
+		case "pooling":
+			err = unpopulate(val, "Pooling", &s.Pooling)
+			delete(rawMsg, key)
+		case "server":
+			err = unpopulate(val, "Server", &s.Server)
+			delete(rawMsg, key)
+		case "trustServerCertificate":
+			err = unpopulate(val, "TrustServerCertificate", &s.TrustServerCertificate)
 			delete(rawMsg, key)
 		case "userName":
 			err = unpopulate(val, "UserName", &s.UserName)
@@ -43763,6 +44238,7 @@ func (s SalesforceServiceCloudV2Source) MarshalJSON() ([]byte, error) {
 	populateAny(objectMap, "disableMetricsCollection", s.DisableMetricsCollection)
 	populateAny(objectMap, "includeDeletedObjects", s.IncludeDeletedObjects)
 	populateAny(objectMap, "maxConcurrentConnections", s.MaxConcurrentConnections)
+	populateAny(objectMap, "query", s.Query)
 	populateAny(objectMap, "SOQLQuery", s.SOQLQuery)
 	populateAny(objectMap, "sourceRetryCount", s.SourceRetryCount)
 	populateAny(objectMap, "sourceRetryWait", s.SourceRetryWait)
@@ -43795,6 +44271,9 @@ func (s *SalesforceServiceCloudV2Source) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "maxConcurrentConnections":
 			err = unpopulate(val, "MaxConcurrentConnections", &s.MaxConcurrentConnections)
+			delete(rawMsg, key)
+		case "query":
+			err = unpopulate(val, "Query", &s.Query)
 			delete(rawMsg, key)
 		case "SOQLQuery":
 			err = unpopulate(val, "SOQLQuery", &s.SOQLQuery)
@@ -44277,6 +44756,7 @@ func (s SalesforceV2Source) MarshalJSON() ([]byte, error) {
 	populateAny(objectMap, "disableMetricsCollection", s.DisableMetricsCollection)
 	populateAny(objectMap, "includeDeletedObjects", s.IncludeDeletedObjects)
 	populateAny(objectMap, "maxConcurrentConnections", s.MaxConcurrentConnections)
+	populateAny(objectMap, "query", s.Query)
 	populateAny(objectMap, "queryTimeout", s.QueryTimeout)
 	populateAny(objectMap, "SOQLQuery", s.SOQLQuery)
 	populateAny(objectMap, "sourceRetryCount", s.SourceRetryCount)
@@ -44310,6 +44790,9 @@ func (s *SalesforceV2Source) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "maxConcurrentConnections":
 			err = unpopulate(val, "MaxConcurrentConnections", &s.MaxConcurrentConnections)
+			delete(rawMsg, key)
+		case "query":
+			err = unpopulate(val, "Query", &s.Query)
 			delete(rawMsg, key)
 		case "queryTimeout":
 			err = unpopulate(val, "QueryTimeout", &s.QueryTimeout)
@@ -46913,7 +47396,7 @@ func (s ScriptActivityScriptBlock) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "parameters", s.Parameters)
 	populateAny(objectMap, "text", s.Text)
-	populate(objectMap, "type", s.Type)
+	populateAny(objectMap, "type", s.Type)
 	return json.Marshal(objectMap)
 }
 

@@ -51,6 +51,8 @@ Each set of metric values is a time series with the following characteristics:
 - The value itself
 - Some metrics may have multiple dimensions as described in [multi-dimensional metrics][multi-metrics]. Custom metrics can have up to 10 dimensions.
 
+To discover the metrics available to query, please reference the [supported metrics documentation][supported_metrics]. The documentation also describes important details like the valid unit, aggregation, and time grain for each metric.
+
 ## Examples
 
 Get started with our [examples][examples].

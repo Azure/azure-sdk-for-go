@@ -3362,6 +3362,25 @@ func (f *FileRecordedTestsSuite) TestFileListHandlesDefault() {
 	_require.Equal(*resp.NextMarker, "")
 }
 
+func (f *FileRecordedTestsSuite) TestFileListHandlesClientNameFieldCheck() {
+	if recording.GetRecordMode() == recording.LiveMode {
+		f.T().Skip("This test cannot be made live")
+	}
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareClient := testcommon.GetShareClient(testcommon.GenerateShareName(testName), svcClient)
+
+	fClient := testcommon.GetFileClientFromShare(testcommon.GenerateFileName(testName), shareClient)
+	resp, err := fClient.ListHandles(context.Background(), nil)
+	_require.NoError(err)
+	_require.Len(resp.Handles, 1)
+	_require.NotNil(*resp.Handles[0].ClientName)
+}
+
 func (f *FileRecordedTestsSuite) TestFileForceCloseHandlesDefault() {
 	_require := require.New(f.T())
 	testName := f.T().Name()

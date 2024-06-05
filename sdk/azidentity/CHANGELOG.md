@@ -1,6 +1,6 @@
 # Release History
 
-## 1.6.0-beta.5 (Unreleased)
+## 1.6.0 (2024-06-10)
 
 ### Features Added
 * `NewOnBehalfOfCredentialWithClientAssertions` creates an on-behalf-of credential
@@ -8,12 +8,11 @@
 
 ### Breaking Changes
 > These changes affect only code written against a beta version such as v1.6.0-beta.4
-* Renamed `AzurePipelinesServiceConnectionCredentialOptions` to `AzurePipelinesCredentialOptions`
+* Removed `AzurePipelinesCredential`. It will return in v1.7.0-beta.1
 
 ### Bugs Fixed
 
 ### Other Changes
-* Added more details to `AzurePipelinesCredential` error messages
 
 ## 1.6.0-beta.4 (2024-05-14)
 

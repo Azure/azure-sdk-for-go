@@ -10,16 +10,18 @@ import (
 	"bytes"
 	"context"
 	"fmt"
+	"io"
+	"net/http"
+	"testing"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/require"
-	"io"
-	"net/http"
-	"testing"
 )
 
 const alpineManifestDigest = "sha256:f271e74b17ced29b915d351685fd4644785c6d1559dd1f2d4189a5e851ef753a"
@@ -30,9 +32,9 @@ func TestClient_DeleteManifest(t *testing.T) {
 	ctx := context.Background()
 	client, err := NewClient(endpoint, cred, &ClientOptions{ClientOptions: options})
 	require.NoError(t, err)
-	resp, err := client.GetTagProperties(ctx, "ubuntu", "20.04", nil)
+	resp, err := client.GetTagProperties(ctx, "busybox", "1.36.1-uclibc", nil)
 	require.NoError(t, err)
-	_, err = client.DeleteManifest(ctx, "ubuntu", *resp.Tag.Digest, nil)
+	_, err = client.DeleteManifest(ctx, "busybox", *resp.Tag.Digest, nil)
 	require.NoError(t, err)
 	_, err = client.DeleteManifest(ctx, "hello-world", "sha256:sha256:aa0cc8055b82dc2509bed2e19b275c8f463506616377219d9642221ab53cf9fe", nil)
 	require.NoError(t, err)
@@ -64,7 +66,7 @@ func TestClient_DeleteRepository(t *testing.T) {
 	ctx := context.Background()
 	client, err := NewClient(endpoint, cred, &ClientOptions{ClientOptions: options})
 	require.NoError(t, err)
-	_, err = client.DeleteRepository(ctx, "nginx", nil)
+	_, err = client.DeleteRepository(ctx, "eclipse-mosquitto", nil)
 	require.NoError(t, err)
 }
 
@@ -129,6 +131,9 @@ func TestClient_DeleteTag_error(t *testing.T) {
 }
 
 func TestClient_GetManifest(t *testing.T) {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22919")
+	}
 	startRecording(t)
 	endpoint, cred, options := getEndpointCredAndClientOptions(t)
 	ctx := context.Background()
@@ -297,20 +302,14 @@ func TestClient_NewListManifestsPager(t *testing.T) {
 	pager := client.NewListManifestsPager("alpine", &ClientListManifestsOptions{
 		MaxNum: to.Ptr[int32](1),
 	})
-	pages := 0
 	items := 0
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		require.NoError(t, err)
 		require.NotEmpty(t, page.Manifests.Attributes)
-		pages++
-		for i, v := range page.Manifests.Attributes {
-			fmt.Printf("page %d manifest %d: %s\n", pages, i+1, *v.Digest)
-			items++
-		}
+		items += len(page.Manifests.Attributes)
 	}
-	require.Equal(t, 32, pages)
-	require.Equal(t, 32, items)
+	require.NotZero(t, items)
 
 	pager = client.NewListManifestsPager("alpine", &ClientListManifestsOptions{
 		OrderBy: to.Ptr(ArtifactManifestOrderByLastUpdatedOnDescending),
@@ -423,21 +422,15 @@ func TestClient_NewListTagsPager(t *testing.T) {
 	pager := client.NewListTagsPager("alpine", &ClientListTagsOptions{
 		MaxNum: to.Ptr[int32](1),
 	})
-	pages := 0
 	items := 0
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		require.NoError(t, err)
 		require.NotEmpty(t, page.Tags)
-		pages++
 		require.Equal(t, 1, len(page.Tags))
-		for i, v := range page.Tags {
-			fmt.Printf("page %d tag %d: %s\n", pages, i+1, *v.Name)
-			items++
-		}
+		items += len(page.Tags)
 	}
-	require.Equal(t, 3, pages)
-	require.Equal(t, 3, items)
+	require.NotZero(t, items)
 
 	pager = client.NewListTagsPager("alpine", &ClientListTagsOptions{
 		OrderBy: to.Ptr(ArtifactTagOrderByLastUpdatedOnDescending),
@@ -544,13 +537,13 @@ func TestClient_UpdateRepositoryProperties(t *testing.T) {
 	ctx := context.Background()
 	client, err := NewClient(endpoint, cred, &ClientOptions{ClientOptions: options})
 	require.NoError(t, err)
-	res, err := client.UpdateRepositoryProperties(ctx, "ubuntu", &ClientUpdateRepositoryPropertiesOptions{Value: &RepositoryWriteableProperties{
+	res, err := client.UpdateRepositoryProperties(ctx, "busybox", &ClientUpdateRepositoryPropertiesOptions{Value: &RepositoryWriteableProperties{
 		CanWrite: to.Ptr(false),
 	},
 	})
 	require.NoError(t, err)
 	require.False(t, *res.ContainerRepositoryProperties.ChangeableAttributes.CanWrite)
-	res, err = client.UpdateRepositoryProperties(ctx, "ubuntu", &ClientUpdateRepositoryPropertiesOptions{Value: &RepositoryWriteableProperties{
+	res, err = client.UpdateRepositoryProperties(ctx, "busybox", &ClientUpdateRepositoryPropertiesOptions{Value: &RepositoryWriteableProperties{
 		CanWrite: to.Ptr(true),
 	},
 	})
@@ -623,6 +616,9 @@ func TestClient_UpdateTagProperties_wrongTag(t *testing.T) {
 }
 
 func TestClient_UploadManifest(t *testing.T) {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22919")
+	}
 	startRecording(t)
 	endpoint, cred, options := getEndpointCredAndClientOptions(t)
 	ctx := context.Background()

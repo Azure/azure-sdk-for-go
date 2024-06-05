@@ -28,7 +28,7 @@ type Client struct {
 // GenerateSpeechFromText - Generates text-to-speech audio from the input text.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-01-preview
+// Generated from API version 2024-05-01-preview
 //   - options - GenerateSpeechFromTextOptions contains the optional parameters for the Client.GenerateSpeechFromText method.
 func (client *Client) GenerateSpeechFromText(ctx context.Context, body SpeechGenerationOptions, options *GenerateSpeechFromTextOptions) (GenerateSpeechFromTextResponse, error) {
 	var err error
@@ -55,7 +55,7 @@ func (client *Client) generateSpeechFromTextCreateRequest(ctx context.Context, b
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01-preview")
+	reqQP.Set("api-version", "2024-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	runtime.SkipBodyDownload(req)
 	req.Raw().Header["Accept"] = []string{"application/octet-stream, application/json"}
@@ -69,7 +69,7 @@ func (client *Client) generateSpeechFromTextCreateRequest(ctx context.Context, b
 // be transcribed in the written language corresponding to the language it was spoken in.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-01-preview
+// Generated from API version 2024-05-01-preview
 //   - deploymentID - Specifies either the model deployment name (when using Azure OpenAI) or model name (when using non-Azure
 //     OpenAI) to use for this request.
 //   - file - The audio data to transcribe. This must be the binary content of a file in one of the supported media formats: flac,
@@ -102,7 +102,7 @@ func (client *Client) getAudioTranscriptionInternalCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01-preview")
+	reqQP.Set("api-version", "2024-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := setMultipartFormData(req, file, *body); err != nil {
@@ -124,7 +124,7 @@ func (client *Client) getAudioTranscriptionInternalHandleResponse(resp *http.Res
 // data.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-01-preview
+// Generated from API version 2024-05-01-preview
 //   - deploymentID - Specifies either the model deployment name (when using Azure OpenAI) or model name (when using non-Azure
 //     OpenAI) to use for this request.
 //   - file - The audio data to translate. This must be the binary content of a file in one of the supported media formats: flac,
@@ -157,7 +157,7 @@ func (client *Client) getAudioTranslationInternalCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01-preview")
+	reqQP.Set("api-version", "2024-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := setMultipartFormData(req, file, *body); err != nil {
@@ -179,7 +179,7 @@ func (client *Client) getAudioTranslationInternalHandleResponse(resp *http.Respo
 // and generate text that continues from or "completes" provided prompt data.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-01-preview
+// Generated from API version 2024-05-01-preview
 //   - options - GetChatCompletionsOptions contains the optional parameters for the Client.GetChatCompletions method.
 func (client *Client) GetChatCompletions(ctx context.Context, body ChatCompletionsOptions, options *GetChatCompletionsOptions) (GetChatCompletionsResponse, error) {
 	var err error
@@ -207,7 +207,7 @@ func (client *Client) getChatCompletionsCreateRequest(ctx context.Context, body 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01-preview")
+	reqQP.Set("api-version", "2024-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -229,7 +229,7 @@ func (client *Client) getChatCompletionsHandleResponse(resp *http.Response) (Get
 // text that continues from or "completes" provided prompt data.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-01-preview
+// Generated from API version 2024-05-01-preview
 //   - options - GetCompletionsOptions contains the optional parameters for the Client.GetCompletions method.
 func (client *Client) GetCompletions(ctx context.Context, body CompletionsOptions, options *GetCompletionsOptions) (GetCompletionsResponse, error) {
 	var err error
@@ -257,7 +257,7 @@ func (client *Client) getCompletionsCreateRequest(ctx context.Context, body Comp
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01-preview")
+	reqQP.Set("api-version", "2024-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -278,7 +278,7 @@ func (client *Client) getCompletionsHandleResponse(resp *http.Response) (GetComp
 // GetEmbeddings - Return the embeddings for a given prompt.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-01-preview
+// Generated from API version 2024-05-01-preview
 //   - options - GetEmbeddingsOptions contains the optional parameters for the Client.GetEmbeddings method.
 func (client *Client) GetEmbeddings(ctx context.Context, body EmbeddingsOptions, options *GetEmbeddingsOptions) (GetEmbeddingsResponse, error) {
 	var err error
@@ -306,7 +306,7 @@ func (client *Client) getEmbeddingsCreateRequest(ctx context.Context, body Embed
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01-preview")
+	reqQP.Set("api-version", "2024-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -327,7 +327,7 @@ func (client *Client) getEmbeddingsHandleResponse(resp *http.Response) (GetEmbed
 // GetImageGenerations - Creates an image given a prompt.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-01-preview
+// Generated from API version 2024-05-01-preview
 //   - options - GetImageGenerationsOptions contains the optional parameters for the Client.GetImageGenerations method.
 func (client *Client) GetImageGenerations(ctx context.Context, body ImageGenerationOptions, options *GetImageGenerationsOptions) (GetImageGenerationsResponse, error) {
 	var err error
@@ -355,7 +355,7 @@ func (client *Client) getImageGenerationsCreateRequest(ctx context.Context, body
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01-preview")
+	reqQP.Set("api-version", "2024-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {

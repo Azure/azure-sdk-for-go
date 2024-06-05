@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.1 (Unreleased)
+## 1.0.2 (Unreleased)
 
 ### Features Added
 
@@ -8,7 +8,15 @@
 
 ### Bugs Fixed
 
+* Fixed ReplaceThroughput operations on Database and Container. See [PR 22923](https://github.com/Azure/azure-sdk-for-go/pull/22923)
+
 ### Other Changes
+
+## 1.0.1 (2024-05-02)
+
+### Bugs Fixed
+
+* Reduces minimum required go version to 1.21
 
 ## 1.0.0 (2024-04-09)
 

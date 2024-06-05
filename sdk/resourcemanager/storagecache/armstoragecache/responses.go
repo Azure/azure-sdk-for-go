@@ -153,6 +153,35 @@ type CachesClientUpgradeFirmwareResponse struct {
 	// placeholder for future response values
 }
 
+// ImportJobsClientCreateOrUpdateResponse contains the response from method ImportJobsClient.BeginCreateOrUpdate.
+type ImportJobsClientCreateOrUpdateResponse struct {
+	// An import job instance. Follows Azure Resource Manager standards: https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/resource-api-reference.md
+	ImportJob
+}
+
+// ImportJobsClientDeleteResponse contains the response from method ImportJobsClient.BeginDelete.
+type ImportJobsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ImportJobsClientGetResponse contains the response from method ImportJobsClient.Get.
+type ImportJobsClientGetResponse struct {
+	// An import job instance. Follows Azure Resource Manager standards: https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/resource-api-reference.md
+	ImportJob
+}
+
+// ImportJobsClientListByAmlFilesystemResponse contains the response from method ImportJobsClient.NewListByAmlFilesystemPager.
+type ImportJobsClientListByAmlFilesystemResponse struct {
+	// Result of the request to list import jobs. It contains a list of import jobs and a URL link to get the next set of results.
+	ImportJobsListResult
+}
+
+// ImportJobsClientUpdateResponse contains the response from method ImportJobsClient.BeginUpdate.
+type ImportJobsClientUpdateResponse struct {
+	// An import job instance. Follows Azure Resource Manager standards: https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/resource-api-reference.md
+	ImportJob
+}
+
 // ManagementClientCheckAmlFSSubnetsResponse contains the response from method ManagementClient.CheckAmlFSSubnets.
 type ManagementClientCheckAmlFSSubnetsResponse struct {
 	// placeholder for future response values

@@ -11,7 +11,7 @@ package armrecoveryservicesbackup
 import "encoding/json"
 
 func unmarshalBackupEngineBaseClassification(rawMsg json.RawMessage) (BackupEngineBaseClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -34,7 +34,7 @@ func unmarshalBackupEngineBaseClassification(rawMsg json.RawMessage) (BackupEngi
 }
 
 func unmarshalBackupRequestClassification(rawMsg json.RawMessage) (BackupRequestClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -59,7 +59,7 @@ func unmarshalBackupRequestClassification(rawMsg json.RawMessage) (BackupRequest
 }
 
 func unmarshalILRRequestClassification(rawMsg json.RawMessage) (ILRRequestClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -82,7 +82,7 @@ func unmarshalILRRequestClassification(rawMsg json.RawMessage) (ILRRequestClassi
 }
 
 func unmarshalJobClassification(rawMsg json.RawMessage) (JobClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -115,7 +115,7 @@ func unmarshalJobClassification(rawMsg json.RawMessage) (JobClassification, erro
 }
 
 func unmarshalOperationResultInfoBaseClassification(rawMsg json.RawMessage) (OperationResultInfoBaseClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -138,7 +138,7 @@ func unmarshalOperationResultInfoBaseClassification(rawMsg json.RawMessage) (Ope
 }
 
 func unmarshalOperationStatusExtendedInfoClassification(rawMsg json.RawMessage) (OperationStatusExtendedInfoClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -165,7 +165,7 @@ func unmarshalOperationStatusExtendedInfoClassification(rawMsg json.RawMessage) 
 }
 
 func unmarshalProtectableContainerClassification(rawMsg json.RawMessage) (ProtectableContainerClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -188,7 +188,7 @@ func unmarshalProtectableContainerClassification(rawMsg json.RawMessage) (Protec
 }
 
 func unmarshalProtectedItemClassification(rawMsg json.RawMessage) (ProtectedItemClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -233,7 +233,7 @@ func unmarshalProtectedItemClassification(rawMsg json.RawMessage) (ProtectedItem
 }
 
 func unmarshalProtectionContainerClassification(rawMsg json.RawMessage) (ProtectionContainerClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -276,7 +276,7 @@ func unmarshalProtectionContainerClassification(rawMsg json.RawMessage) (Protect
 }
 
 func unmarshalProtectionIntentClassification(rawMsg json.RawMessage) (ProtectionIntentClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -305,7 +305,7 @@ func unmarshalProtectionIntentClassification(rawMsg json.RawMessage) (Protection
 }
 
 func unmarshalProtectionPolicyClassification(rawMsg json.RawMessage) (ProtectionPolicyClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -336,7 +336,7 @@ func unmarshalProtectionPolicyClassification(rawMsg json.RawMessage) (Protection
 }
 
 func unmarshalRecoveryPointClassification(rawMsg json.RawMessage) (RecoveryPointClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -373,7 +373,7 @@ func unmarshalRecoveryPointClassification(rawMsg json.RawMessage) (RecoveryPoint
 }
 
 func unmarshalRestoreRequestClassification(rawMsg json.RawMessage) (RestoreRequestClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -418,7 +418,7 @@ func unmarshalRestoreRequestClassification(rawMsg json.RawMessage) (RestoreReque
 }
 
 func unmarshalRetentionPolicyClassification(rawMsg json.RawMessage) (RetentionPolicyClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -441,7 +441,7 @@ func unmarshalRetentionPolicyClassification(rawMsg json.RawMessage) (RetentionPo
 }
 
 func unmarshalSchedulePolicyClassification(rawMsg json.RawMessage) (SchedulePolicyClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -468,7 +468,7 @@ func unmarshalSchedulePolicyClassification(rawMsg json.RawMessage) (SchedulePoli
 }
 
 func unmarshalTieringCostInfoClassification(rawMsg json.RawMessage) (TieringCostInfoClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -491,7 +491,7 @@ func unmarshalTieringCostInfoClassification(rawMsg json.RawMessage) (TieringCost
 }
 
 func unmarshalValidateOperationRequestClassification(rawMsg json.RawMessage) (ValidateOperationRequestClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -514,7 +514,7 @@ func unmarshalValidateOperationRequestClassification(rawMsg json.RawMessage) (Va
 }
 
 func unmarshalVaultStorageConfigOperationResultResponseClassification(rawMsg json.RawMessage) (VaultStorageConfigOperationResultResponseClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -535,7 +535,7 @@ func unmarshalVaultStorageConfigOperationResultResponseClassification(rawMsg jso
 }
 
 func unmarshalWorkloadItemClassification(rawMsg json.RawMessage) (WorkloadItemClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -568,7 +568,7 @@ func unmarshalWorkloadItemClassification(rawMsg json.RawMessage) (WorkloadItemCl
 }
 
 func unmarshalWorkloadProtectableItemClassification(rawMsg json.RawMessage) (WorkloadProtectableItemClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any

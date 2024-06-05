@@ -26,3 +26,4 @@ extends:
   parameters:
     IncludeRelease: true
     ServiceDirectory: 'resourcemanager/storagemover/armstoragemover'
+    UsePipelineProxy: false

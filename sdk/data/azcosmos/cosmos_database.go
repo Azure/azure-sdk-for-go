@@ -201,7 +201,7 @@ func (db *DatabaseClient) ReplaceThroughput(
 	}
 
 	offers := &cosmosOffers{client: db.client}
-	return offers.ReadThroughputIfExists(ctx, rid, o)
+	return offers.ReplaceThroughputIfExists(ctx, throughputProperties, rid, o)
 }
 
 // Delete a Cosmos database.

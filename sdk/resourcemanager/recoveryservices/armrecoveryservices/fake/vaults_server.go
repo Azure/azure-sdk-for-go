@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservices"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservices/v2"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -28,9 +28,9 @@ type VaultsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, vaultName string, vault armrecoveryservices.Vault, options *armrecoveryservices.VaultsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armrecoveryservices.VaultsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
-	// Delete is the fake for method VaultsClient.Delete
-	// HTTP status codes to indicate success: http.StatusOK
-	Delete func(ctx context.Context, resourceGroupName string, vaultName string, options *armrecoveryservices.VaultsClientDeleteOptions) (resp azfake.Responder[armrecoveryservices.VaultsClientDeleteResponse], errResp azfake.ErrorResponder)
+	// BeginDelete is the fake for method VaultsClient.BeginDelete
+	// HTTP status codes to indicate success: http.StatusAccepted, http.StatusNoContent
+	BeginDelete func(ctx context.Context, resourceGroupName string, vaultName string, options *armrecoveryservices.VaultsClientBeginDeleteOptions) (resp azfake.PollerResponder[armrecoveryservices.VaultsClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method VaultsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -56,6 +56,7 @@ func NewVaultsServerTransport(srv *VaultsServer) *VaultsServerTransport {
 	return &VaultsServerTransport{
 		srv:                          srv,
 		beginCreateOrUpdate:          newTracker[azfake.PollerResponder[armrecoveryservices.VaultsClientCreateOrUpdateResponse]](),
+		beginDelete:                  newTracker[azfake.PollerResponder[armrecoveryservices.VaultsClientDeleteResponse]](),
 		newListByResourceGroupPager:  newTracker[azfake.PagerResponder[armrecoveryservices.VaultsClientListByResourceGroupResponse]](),
 		newListBySubscriptionIDPager: newTracker[azfake.PagerResponder[armrecoveryservices.VaultsClientListBySubscriptionIDResponse]](),
 		beginUpdate:                  newTracker[azfake.PollerResponder[armrecoveryservices.VaultsClientUpdateResponse]](),
@@ -67,6 +68,7 @@ func NewVaultsServerTransport(srv *VaultsServer) *VaultsServerTransport {
 type VaultsServerTransport struct {
 	srv                          *VaultsServer
 	beginCreateOrUpdate          *tracker[azfake.PollerResponder[armrecoveryservices.VaultsClientCreateOrUpdateResponse]]
+	beginDelete                  *tracker[azfake.PollerResponder[armrecoveryservices.VaultsClientDeleteResponse]]
 	newListByResourceGroupPager  *tracker[azfake.PagerResponder[armrecoveryservices.VaultsClientListByResourceGroupResponse]]
 	newListBySubscriptionIDPager *tracker[azfake.PagerResponder[armrecoveryservices.VaultsClientListBySubscriptionIDResponse]]
 	beginUpdate                  *tracker[azfake.PollerResponder[armrecoveryservices.VaultsClientUpdateResponse]]
@@ -86,8 +88,8 @@ func (v *VaultsServerTransport) Do(req *http.Request) (*http.Response, error) {
 	switch method {
 	case "VaultsClient.BeginCreateOrUpdate":
 		resp, err = v.dispatchBeginCreateOrUpdate(req)
-	case "VaultsClient.Delete":
-		resp, err = v.dispatchDelete(req)
+	case "VaultsClient.BeginDelete":
+		resp, err = v.dispatchBeginDelete(req)
 	case "VaultsClient.Get":
 		resp, err = v.dispatchGet(req)
 	case "VaultsClient.NewListByResourceGroupPager":
@@ -131,7 +133,14 @@ func (v *VaultsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := v.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, vaultNameParam, body, nil)
+		xMSAuthorizationAuxiliaryParam := getOptional(getHeaderValue(req.Header, "x-ms-authorization-auxiliary"))
+		var options *armrecoveryservices.VaultsClientBeginCreateOrUpdateOptions
+		if xMSAuthorizationAuxiliaryParam != nil {
+			options = &armrecoveryservices.VaultsClientBeginCreateOrUpdateOptions{
+				XMSAuthorizationAuxiliary: xMSAuthorizationAuxiliaryParam,
+			}
+		}
+		respr, errRespr := v.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, vaultNameParam, body, options)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -155,36 +164,47 @@ func (v *VaultsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (
 	return resp, nil
 }
 
-func (v *VaultsServerTransport) dispatchDelete(req *http.Request) (*http.Response, error) {
-	if v.srv.Delete == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
+func (v *VaultsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
+	if v.srv.BeginDelete == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<vaultName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	beginDelete := v.beginDelete.get(req)
+	if beginDelete == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<vaultName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		vaultNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("vaultName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := v.srv.BeginDelete(req.Context(), resourceGroupNameParam, vaultNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginDelete = &respr
+		v.beginDelete.add(req, beginDelete)
 	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+
+	resp, err := server.PollerResponderNext(beginDelete, req)
 	if err != nil {
 		return nil, err
 	}
-	vaultNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("vaultName")])
-	if err != nil {
-		return nil, err
+
+	if !contains([]int{http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		v.beginDelete.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	respr, errRespr := v.srv.Delete(req.Context(), resourceGroupNameParam, vaultNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
+	if !server.PollerResponderMore(beginDelete) {
+		v.beginDelete.remove(req)
 	}
-	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.NewResponse(respContent, req, nil)
-	if err != nil {
-		return nil, err
-	}
+
 	return resp, nil
 }
 
@@ -315,7 +335,14 @@ func (v *VaultsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Re
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := v.srv.BeginUpdate(req.Context(), resourceGroupNameParam, vaultNameParam, body, nil)
+		xMSAuthorizationAuxiliaryParam := getOptional(getHeaderValue(req.Header, "x-ms-authorization-auxiliary"))
+		var options *armrecoveryservices.VaultsClientBeginUpdateOptions
+		if xMSAuthorizationAuxiliaryParam != nil {
+			options = &armrecoveryservices.VaultsClientBeginUpdateOptions{
+				XMSAuthorizationAuxiliary: xMSAuthorizationAuxiliaryParam,
+			}
+		}
+		respr, errRespr := v.srv.BeginUpdate(req.Context(), resourceGroupNameParam, vaultNameParam, body, options)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}

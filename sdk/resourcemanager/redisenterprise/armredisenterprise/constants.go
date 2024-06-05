@@ -10,7 +10,7 @@ package armredisenterprise
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redisenterprise/armredisenterprise"
-	moduleVersion = "v2.0.0"
+	moduleVersion = "v2.1.0-beta.1"
 )
 
 // AccessKeyType - Which access key to regenerate.
@@ -88,6 +88,22 @@ func PossibleCmkIdentityTypeValues() []CmkIdentityType {
 	return []CmkIdentityType{
 		CmkIdentityTypeSystemAssignedIdentity,
 		CmkIdentityTypeUserAssignedIdentity,
+	}
+}
+
+// DeferUpgradeSetting - Option to defer upgrade when newest version is released - default is NotDeferred. Learn more: https://aka.ms/redisversionupgrade
+type DeferUpgradeSetting string
+
+const (
+	DeferUpgradeSettingDeferred    DeferUpgradeSetting = "Deferred"
+	DeferUpgradeSettingNotDeferred DeferUpgradeSetting = "NotDeferred"
+)
+
+// PossibleDeferUpgradeSettingValues returns the possible values for the DeferUpgradeSetting const type.
+func PossibleDeferUpgradeSettingValues() []DeferUpgradeSetting {
+	return []DeferUpgradeSetting{
+		DeferUpgradeSettingDeferred,
+		DeferUpgradeSettingNotDeferred,
 	}
 }
 
@@ -323,6 +339,7 @@ const (
 	SKUNameEnterpriseE10        SKUName = "Enterprise_E10"
 	SKUNameEnterpriseE100       SKUName = "Enterprise_E100"
 	SKUNameEnterpriseE20        SKUName = "Enterprise_E20"
+	SKUNameEnterpriseE5         SKUName = "Enterprise_E5"
 	SKUNameEnterpriseE50        SKUName = "Enterprise_E50"
 	SKUNameEnterpriseFlashF1500 SKUName = "EnterpriseFlash_F1500"
 	SKUNameEnterpriseFlashF300  SKUName = "EnterpriseFlash_F300"
@@ -335,6 +352,7 @@ func PossibleSKUNameValues() []SKUName {
 		SKUNameEnterpriseE10,
 		SKUNameEnterpriseE100,
 		SKUNameEnterpriseE20,
+		SKUNameEnterpriseE5,
 		SKUNameEnterpriseE50,
 		SKUNameEnterpriseFlashF1500,
 		SKUNameEnterpriseFlashF300,

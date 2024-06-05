@@ -312,6 +312,9 @@ type AzureFileShareRestoreRequest struct {
 	// Type of this recovery.
 	RecoveryType *RecoveryType
 
+	// ResourceGuardOperationRequests on which LAC check will be performed
+	ResourceGuardOperationRequests []*string
+
 	// List of Source Files/Folders(which need to recover) and TargetFolderPath details
 	RestoreFileSpecs []*RestoreFileSpecs
 
@@ -328,7 +331,8 @@ type AzureFileShareRestoreRequest struct {
 // GetRestoreRequest implements the RestoreRequestClassification interface for type AzureFileShareRestoreRequest.
 func (a *AzureFileShareRestoreRequest) GetRestoreRequest() *RestoreRequest {
 	return &RestoreRequest{
-		ObjectType: a.ObjectType,
+		ObjectType:                     a.ObjectType,
+		ResourceGuardOperationRequests: a.ResourceGuardOperationRequests,
 	}
 }
 
@@ -1361,7 +1365,8 @@ type AzureIaaSVMProtectionPolicy struct {
 	RetentionPolicy RetentionPolicyClassification
 
 	// Backup schedule specified as part of backup policy.
-	SchedulePolicy SchedulePolicyClassification
+	SchedulePolicy          SchedulePolicyClassification
+	SnapshotConsistencyType *IaasVMSnapshotConsistencyType
 
 	// Tiering policy to automatically move RPs to another tier Key is Target Tier, defined in RecoveryPointTierType enum. Tiering
 	// policy specifies the criteria to move RP to the target tier.
@@ -4269,6 +4274,9 @@ type AzureWorkloadPointInTimeRestoreRequest struct {
 	// Type of this recovery.
 	RecoveryType *RecoveryType
 
+	// ResourceGuardOperationRequests on which LAC check will be performed
+	ResourceGuardOperationRequests []*string
+
 	// Additional details for snapshot recovery Currently used for snapshot for SAP Hana.
 	SnapshotRestoreParameters *SnapshotRestoreParameters
 
@@ -4295,6 +4303,7 @@ func (a *AzureWorkloadPointInTimeRestoreRequest) GetAzureWorkloadRestoreRequest(
 		PropertyBag:                        a.PropertyBag,
 		RecoveryMode:                       a.RecoveryMode,
 		RecoveryType:                       a.RecoveryType,
+		ResourceGuardOperationRequests:     a.ResourceGuardOperationRequests,
 		SnapshotRestoreParameters:          a.SnapshotRestoreParameters,
 		SourceResourceID:                   a.SourceResourceID,
 		TargetInfo:                         a.TargetInfo,
@@ -4307,7 +4316,8 @@ func (a *AzureWorkloadPointInTimeRestoreRequest) GetAzureWorkloadRestoreRequest(
 // GetRestoreRequest implements the RestoreRequestClassification interface for type AzureWorkloadPointInTimeRestoreRequest.
 func (a *AzureWorkloadPointInTimeRestoreRequest) GetRestoreRequest() *RestoreRequest {
 	return &RestoreRequest{
-		ObjectType: a.ObjectType,
+		ObjectType:                     a.ObjectType,
+		ResourceGuardOperationRequests: a.ResourceGuardOperationRequests,
 	}
 }
 
@@ -4358,6 +4368,9 @@ type AzureWorkloadRestoreRequest struct {
 	// Type of this recovery.
 	RecoveryType *RecoveryType
 
+	// ResourceGuardOperationRequests on which LAC check will be performed
+	ResourceGuardOperationRequests []*string
+
 	// Additional details for snapshot recovery Currently used for snapshot for SAP Hana.
 	SnapshotRestoreParameters *SnapshotRestoreParameters
 
@@ -4385,7 +4398,8 @@ func (a *AzureWorkloadRestoreRequest) GetAzureWorkloadRestoreRequest() *AzureWor
 // GetRestoreRequest implements the RestoreRequestClassification interface for type AzureWorkloadRestoreRequest.
 func (a *AzureWorkloadRestoreRequest) GetRestoreRequest() *RestoreRequest {
 	return &RestoreRequest{
-		ObjectType: a.ObjectType,
+		ObjectType:                     a.ObjectType,
+		ResourceGuardOperationRequests: a.ResourceGuardOperationRequests,
 	}
 }
 
@@ -4464,6 +4478,9 @@ type AzureWorkloadSAPHanaPointInTimeRestoreRequest struct {
 	// Type of this recovery.
 	RecoveryType *RecoveryType
 
+	// ResourceGuardOperationRequests on which LAC check will be performed
+	ResourceGuardOperationRequests []*string
+
 	// Additional details for snapshot recovery Currently used for snapshot for SAP Hana.
 	SnapshotRestoreParameters *SnapshotRestoreParameters
 
@@ -4490,6 +4507,7 @@ func (a *AzureWorkloadSAPHanaPointInTimeRestoreRequest) GetAzureWorkloadRestoreR
 		PropertyBag:                        a.PropertyBag,
 		RecoveryMode:                       a.RecoveryMode,
 		RecoveryType:                       a.RecoveryType,
+		ResourceGuardOperationRequests:     a.ResourceGuardOperationRequests,
 		SnapshotRestoreParameters:          a.SnapshotRestoreParameters,
 		SourceResourceID:                   a.SourceResourceID,
 		TargetInfo:                         a.TargetInfo,
@@ -4513,6 +4531,7 @@ func (a *AzureWorkloadSAPHanaPointInTimeRestoreRequest) GetAzureWorkloadSAPHanaR
 		PropertyBag:                        a.PropertyBag,
 		RecoveryMode:                       a.RecoveryMode,
 		RecoveryType:                       a.RecoveryType,
+		ResourceGuardOperationRequests:     a.ResourceGuardOperationRequests,
 		SnapshotRestoreParameters:          a.SnapshotRestoreParameters,
 		SourceResourceID:                   a.SourceResourceID,
 		TargetInfo:                         a.TargetInfo,
@@ -4525,7 +4544,8 @@ func (a *AzureWorkloadSAPHanaPointInTimeRestoreRequest) GetAzureWorkloadSAPHanaR
 // GetRestoreRequest implements the RestoreRequestClassification interface for type AzureWorkloadSAPHanaPointInTimeRestoreRequest.
 func (a *AzureWorkloadSAPHanaPointInTimeRestoreRequest) GetRestoreRequest() *RestoreRequest {
 	return &RestoreRequest{
-		ObjectType: a.ObjectType,
+		ObjectType:                     a.ObjectType,
+		ResourceGuardOperationRequests: a.ResourceGuardOperationRequests,
 	}
 }
 
@@ -4549,6 +4569,9 @@ type AzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest struct {
 
 	// Type of this recovery.
 	RecoveryType *RecoveryType
+
+	// ResourceGuardOperationRequests on which LAC check will be performed
+	ResourceGuardOperationRequests []*string
 
 	// Additional details for snapshot recovery Currently used for snapshot for SAP Hana.
 	SnapshotRestoreParameters *SnapshotRestoreParameters
@@ -4576,6 +4599,7 @@ func (a *AzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest) GetAzureWor
 		PropertyBag:                        a.PropertyBag,
 		RecoveryMode:                       a.RecoveryMode,
 		RecoveryType:                       a.RecoveryType,
+		ResourceGuardOperationRequests:     a.ResourceGuardOperationRequests,
 		SnapshotRestoreParameters:          a.SnapshotRestoreParameters,
 		SourceResourceID:                   a.SourceResourceID,
 		TargetInfo:                         a.TargetInfo,
@@ -4594,6 +4618,7 @@ func (a *AzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest) GetAzureWor
 		PropertyBag:                        a.PropertyBag,
 		RecoveryMode:                       a.RecoveryMode,
 		RecoveryType:                       a.RecoveryType,
+		ResourceGuardOperationRequests:     a.ResourceGuardOperationRequests,
 		SnapshotRestoreParameters:          a.SnapshotRestoreParameters,
 		SourceResourceID:                   a.SourceResourceID,
 		TargetInfo:                         a.TargetInfo,
@@ -4611,6 +4636,7 @@ func (a *AzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest) GetAzureWor
 		PropertyBag:                        a.PropertyBag,
 		RecoveryMode:                       a.RecoveryMode,
 		RecoveryType:                       a.RecoveryType,
+		ResourceGuardOperationRequests:     a.ResourceGuardOperationRequests,
 		SnapshotRestoreParameters:          a.SnapshotRestoreParameters,
 		SourceResourceID:                   a.SourceResourceID,
 		TargetInfo:                         a.TargetInfo,
@@ -4623,7 +4649,8 @@ func (a *AzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest) GetAzureWor
 // GetRestoreRequest implements the RestoreRequestClassification interface for type AzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest.
 func (a *AzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest) GetRestoreRequest() *RestoreRequest {
 	return &RestoreRequest{
-		ObjectType: a.ObjectType,
+		ObjectType:                     a.ObjectType,
+		ResourceGuardOperationRequests: a.ResourceGuardOperationRequests,
 	}
 }
 
@@ -4681,6 +4708,9 @@ type AzureWorkloadSAPHanaRestoreRequest struct {
 	// Type of this recovery.
 	RecoveryType *RecoveryType
 
+	// ResourceGuardOperationRequests on which LAC check will be performed
+	ResourceGuardOperationRequests []*string
+
 	// Additional details for snapshot recovery Currently used for snapshot for SAP Hana.
 	SnapshotRestoreParameters *SnapshotRestoreParameters
 
@@ -4707,6 +4737,7 @@ func (a *AzureWorkloadSAPHanaRestoreRequest) GetAzureWorkloadRestoreRequest() *A
 		PropertyBag:                        a.PropertyBag,
 		RecoveryMode:                       a.RecoveryMode,
 		RecoveryType:                       a.RecoveryType,
+		ResourceGuardOperationRequests:     a.ResourceGuardOperationRequests,
 		SnapshotRestoreParameters:          a.SnapshotRestoreParameters,
 		SourceResourceID:                   a.SourceResourceID,
 		TargetInfo:                         a.TargetInfo,
@@ -4725,7 +4756,8 @@ func (a *AzureWorkloadSAPHanaRestoreRequest) GetAzureWorkloadSAPHanaRestoreReque
 // GetRestoreRequest implements the RestoreRequestClassification interface for type AzureWorkloadSAPHanaRestoreRequest.
 func (a *AzureWorkloadSAPHanaRestoreRequest) GetRestoreRequest() *RestoreRequest {
 	return &RestoreRequest{
-		ObjectType: a.ObjectType,
+		ObjectType:                     a.ObjectType,
+		ResourceGuardOperationRequests: a.ResourceGuardOperationRequests,
 	}
 }
 
@@ -4746,6 +4778,9 @@ type AzureWorkloadSAPHanaRestoreWithRehydrateRequest struct {
 
 	// Type of this recovery.
 	RecoveryType *RecoveryType
+
+	// ResourceGuardOperationRequests on which LAC check will be performed
+	ResourceGuardOperationRequests []*string
 
 	// Additional details for snapshot recovery Currently used for snapshot for SAP Hana.
 	SnapshotRestoreParameters *SnapshotRestoreParameters
@@ -4773,6 +4808,7 @@ func (a *AzureWorkloadSAPHanaRestoreWithRehydrateRequest) GetAzureWorkloadRestor
 		PropertyBag:                        a.PropertyBag,
 		RecoveryMode:                       a.RecoveryMode,
 		RecoveryType:                       a.RecoveryType,
+		ResourceGuardOperationRequests:     a.ResourceGuardOperationRequests,
 		SnapshotRestoreParameters:          a.SnapshotRestoreParameters,
 		SourceResourceID:                   a.SourceResourceID,
 		TargetInfo:                         a.TargetInfo,
@@ -4790,6 +4826,7 @@ func (a *AzureWorkloadSAPHanaRestoreWithRehydrateRequest) GetAzureWorkloadSAPHan
 		PropertyBag:                        a.PropertyBag,
 		RecoveryMode:                       a.RecoveryMode,
 		RecoveryType:                       a.RecoveryType,
+		ResourceGuardOperationRequests:     a.ResourceGuardOperationRequests,
 		SnapshotRestoreParameters:          a.SnapshotRestoreParameters,
 		SourceResourceID:                   a.SourceResourceID,
 		TargetInfo:                         a.TargetInfo,
@@ -4802,7 +4839,8 @@ func (a *AzureWorkloadSAPHanaRestoreWithRehydrateRequest) GetAzureWorkloadSAPHan
 // GetRestoreRequest implements the RestoreRequestClassification interface for type AzureWorkloadSAPHanaRestoreWithRehydrateRequest.
 func (a *AzureWorkloadSAPHanaRestoreWithRehydrateRequest) GetRestoreRequest() *RestoreRequest {
 	return &RestoreRequest{
-		ObjectType: a.ObjectType,
+		ObjectType:                     a.ObjectType,
+		ResourceGuardOperationRequests: a.ResourceGuardOperationRequests,
 	}
 }
 
@@ -4952,6 +4990,9 @@ type AzureWorkloadSQLPointInTimeRestoreRequest struct {
 	// Type of this recovery.
 	RecoveryType *RecoveryType
 
+	// ResourceGuardOperationRequests on which LAC check will be performed
+	ResourceGuardOperationRequests []*string
+
 	// Default option set to true. If this is set to false, alternate data directory must be provided
 	ShouldUseAlternateTargetLocation *bool
 
@@ -4981,6 +5022,7 @@ func (a *AzureWorkloadSQLPointInTimeRestoreRequest) GetAzureWorkloadRestoreReque
 		PropertyBag:                        a.PropertyBag,
 		RecoveryMode:                       a.RecoveryMode,
 		RecoveryType:                       a.RecoveryType,
+		ResourceGuardOperationRequests:     a.ResourceGuardOperationRequests,
 		SnapshotRestoreParameters:          a.SnapshotRestoreParameters,
 		SourceResourceID:                   a.SourceResourceID,
 		TargetInfo:                         a.TargetInfo,
@@ -5005,6 +5047,7 @@ func (a *AzureWorkloadSQLPointInTimeRestoreRequest) GetAzureWorkloadSQLRestoreRe
 		PropertyBag:                        a.PropertyBag,
 		RecoveryMode:                       a.RecoveryMode,
 		RecoveryType:                       a.RecoveryType,
+		ResourceGuardOperationRequests:     a.ResourceGuardOperationRequests,
 		ShouldUseAlternateTargetLocation:   a.ShouldUseAlternateTargetLocation,
 		SnapshotRestoreParameters:          a.SnapshotRestoreParameters,
 		SourceResourceID:                   a.SourceResourceID,
@@ -5018,7 +5061,8 @@ func (a *AzureWorkloadSQLPointInTimeRestoreRequest) GetAzureWorkloadSQLRestoreRe
 // GetRestoreRequest implements the RestoreRequestClassification interface for type AzureWorkloadSQLPointInTimeRestoreRequest.
 func (a *AzureWorkloadSQLPointInTimeRestoreRequest) GetRestoreRequest() *RestoreRequest {
 	return &RestoreRequest{
-		ObjectType: a.ObjectType,
+		ObjectType:                     a.ObjectType,
+		ResourceGuardOperationRequests: a.ResourceGuardOperationRequests,
 	}
 }
 
@@ -5049,6 +5093,9 @@ type AzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest struct {
 	// Type of this recovery.
 	RecoveryType *RecoveryType
 
+	// ResourceGuardOperationRequests on which LAC check will be performed
+	ResourceGuardOperationRequests []*string
+
 	// Default option set to true. If this is set to false, alternate data directory must be provided
 	ShouldUseAlternateTargetLocation *bool
 
@@ -5078,6 +5125,7 @@ func (a *AzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest) GetAzureWorkloa
 		PropertyBag:                        a.PropertyBag,
 		RecoveryMode:                       a.RecoveryMode,
 		RecoveryType:                       a.RecoveryType,
+		ResourceGuardOperationRequests:     a.ResourceGuardOperationRequests,
 		SnapshotRestoreParameters:          a.SnapshotRestoreParameters,
 		SourceResourceID:                   a.SourceResourceID,
 		TargetInfo:                         a.TargetInfo,
@@ -5098,6 +5146,7 @@ func (a *AzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest) GetAzureWorkloa
 		PropertyBag:                        a.PropertyBag,
 		RecoveryMode:                       a.RecoveryMode,
 		RecoveryType:                       a.RecoveryType,
+		ResourceGuardOperationRequests:     a.ResourceGuardOperationRequests,
 		ShouldUseAlternateTargetLocation:   a.ShouldUseAlternateTargetLocation,
 		SnapshotRestoreParameters:          a.SnapshotRestoreParameters,
 		SourceResourceID:                   a.SourceResourceID,
@@ -5117,6 +5166,7 @@ func (a *AzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest) GetAzureWorkloa
 		PropertyBag:                        a.PropertyBag,
 		RecoveryMode:                       a.RecoveryMode,
 		RecoveryType:                       a.RecoveryType,
+		ResourceGuardOperationRequests:     a.ResourceGuardOperationRequests,
 		ShouldUseAlternateTargetLocation:   a.ShouldUseAlternateTargetLocation,
 		SnapshotRestoreParameters:          a.SnapshotRestoreParameters,
 		SourceResourceID:                   a.SourceResourceID,
@@ -5130,7 +5180,8 @@ func (a *AzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest) GetAzureWorkloa
 // GetRestoreRequest implements the RestoreRequestClassification interface for type AzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest.
 func (a *AzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest) GetRestoreRequest() *RestoreRequest {
 	return &RestoreRequest{
-		ObjectType: a.ObjectType,
+		ObjectType:                     a.ObjectType,
+		ResourceGuardOperationRequests: a.ResourceGuardOperationRequests,
 	}
 }
 
@@ -5214,6 +5265,9 @@ type AzureWorkloadSQLRestoreRequest struct {
 	// Type of this recovery.
 	RecoveryType *RecoveryType
 
+	// ResourceGuardOperationRequests on which LAC check will be performed
+	ResourceGuardOperationRequests []*string
+
 	// Default option set to true. If this is set to false, alternate data directory must be provided
 	ShouldUseAlternateTargetLocation *bool
 
@@ -5243,6 +5297,7 @@ func (a *AzureWorkloadSQLRestoreRequest) GetAzureWorkloadRestoreRequest() *Azure
 		PropertyBag:                        a.PropertyBag,
 		RecoveryMode:                       a.RecoveryMode,
 		RecoveryType:                       a.RecoveryType,
+		ResourceGuardOperationRequests:     a.ResourceGuardOperationRequests,
 		SnapshotRestoreParameters:          a.SnapshotRestoreParameters,
 		SourceResourceID:                   a.SourceResourceID,
 		TargetInfo:                         a.TargetInfo,
@@ -5260,7 +5315,8 @@ func (a *AzureWorkloadSQLRestoreRequest) GetAzureWorkloadSQLRestoreRequest() *Az
 // GetRestoreRequest implements the RestoreRequestClassification interface for type AzureWorkloadSQLRestoreRequest.
 func (a *AzureWorkloadSQLRestoreRequest) GetRestoreRequest() *RestoreRequest {
 	return &RestoreRequest{
-		ObjectType: a.ObjectType,
+		ObjectType:                     a.ObjectType,
+		ResourceGuardOperationRequests: a.ResourceGuardOperationRequests,
 	}
 }
 
@@ -5287,6 +5343,9 @@ type AzureWorkloadSQLRestoreWithRehydrateRequest struct {
 
 	// Type of this recovery.
 	RecoveryType *RecoveryType
+
+	// ResourceGuardOperationRequests on which LAC check will be performed
+	ResourceGuardOperationRequests []*string
 
 	// Default option set to true. If this is set to false, alternate data directory must be provided
 	ShouldUseAlternateTargetLocation *bool
@@ -5317,6 +5376,7 @@ func (a *AzureWorkloadSQLRestoreWithRehydrateRequest) GetAzureWorkloadRestoreReq
 		PropertyBag:                        a.PropertyBag,
 		RecoveryMode:                       a.RecoveryMode,
 		RecoveryType:                       a.RecoveryType,
+		ResourceGuardOperationRequests:     a.ResourceGuardOperationRequests,
 		SnapshotRestoreParameters:          a.SnapshotRestoreParameters,
 		SourceResourceID:                   a.SourceResourceID,
 		TargetInfo:                         a.TargetInfo,
@@ -5335,6 +5395,7 @@ func (a *AzureWorkloadSQLRestoreWithRehydrateRequest) GetAzureWorkloadSQLRestore
 		PropertyBag:                        a.PropertyBag,
 		RecoveryMode:                       a.RecoveryMode,
 		RecoveryType:                       a.RecoveryType,
+		ResourceGuardOperationRequests:     a.ResourceGuardOperationRequests,
 		ShouldUseAlternateTargetLocation:   a.ShouldUseAlternateTargetLocation,
 		SnapshotRestoreParameters:          a.SnapshotRestoreParameters,
 		SourceResourceID:                   a.SourceResourceID,
@@ -5348,7 +5409,8 @@ func (a *AzureWorkloadSQLRestoreWithRehydrateRequest) GetAzureWorkloadSQLRestore
 // GetRestoreRequest implements the RestoreRequestClassification interface for type AzureWorkloadSQLRestoreWithRehydrateRequest.
 func (a *AzureWorkloadSQLRestoreWithRehydrateRequest) GetRestoreRequest() *RestoreRequest {
 	return &RestoreRequest{
-		ObjectType: a.ObjectType,
+		ObjectType:                     a.ObjectType,
+		ResourceGuardOperationRequests: a.ResourceGuardOperationRequests,
 	}
 }
 
@@ -7113,6 +7175,9 @@ type IaasVMRestoreRequest struct {
 	// Region in which the virtual machine is restored.
 	Region *string
 
+	// ResourceGuardOperationRequests on which LAC check will be performed
+	ResourceGuardOperationRequests []*string
+
 	// List of Disk LUNs for partial restore
 	RestoreDiskLunList []*int32
 
@@ -7161,7 +7226,8 @@ func (i *IaasVMRestoreRequest) GetIaasVMRestoreRequest() *IaasVMRestoreRequest {
 // GetRestoreRequest implements the RestoreRequestClassification interface for type IaasVMRestoreRequest.
 func (i *IaasVMRestoreRequest) GetRestoreRequest() *RestoreRequest {
 	return &RestoreRequest{
-		ObjectType: i.ObjectType,
+		ObjectType:                     i.ObjectType,
+		ResourceGuardOperationRequests: i.ResourceGuardOperationRequests,
 	}
 }
 
@@ -7206,6 +7272,9 @@ type IaasVMRestoreWithRehydrationRequest struct {
 
 	// Region in which the virtual machine is restored.
 	Region *string
+
+	// ResourceGuardOperationRequests on which LAC check will be performed
+	ResourceGuardOperationRequests []*string
 
 	// List of Disk LUNs for partial restore
 	RestoreDiskLunList []*int32
@@ -7264,6 +7333,7 @@ func (i *IaasVMRestoreWithRehydrationRequest) GetIaasVMRestoreRequest() *IaasVMR
 		RecoveryPointID:                 i.RecoveryPointID,
 		RecoveryType:                    i.RecoveryType,
 		Region:                          i.Region,
+		ResourceGuardOperationRequests:  i.ResourceGuardOperationRequests,
 		RestoreDiskLunList:              i.RestoreDiskLunList,
 		RestoreWithManagedDisks:         i.RestoreWithManagedDisks,
 		SecuredVMDetails:                i.SecuredVMDetails,
@@ -7282,7 +7352,8 @@ func (i *IaasVMRestoreWithRehydrationRequest) GetIaasVMRestoreRequest() *IaasVMR
 // GetRestoreRequest implements the RestoreRequestClassification interface for type IaasVMRestoreWithRehydrationRequest.
 func (i *IaasVMRestoreWithRehydrationRequest) GetRestoreRequest() *RestoreRequest {
 	return &RestoreRequest{
-		ObjectType: i.ObjectType,
+		ObjectType:                     i.ObjectType,
+		ResourceGuardOperationRequests: i.ResourceGuardOperationRequests,
 	}
 }
 
@@ -8824,6 +8895,9 @@ type RestoreFileSpecs struct {
 type RestoreRequest struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
 	ObjectType *string
+
+	// ResourceGuardOperationRequests on which LAC check will be performed
+	ResourceGuardOperationRequests []*string
 }
 
 // GetRestoreRequest implements the RestoreRequestClassification interface for type RestoreRequest.

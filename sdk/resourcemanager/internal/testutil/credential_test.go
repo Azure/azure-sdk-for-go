@@ -35,7 +35,7 @@ func (r *testBody) Seek(offset int64, whence int) (int64, error) {
 }
 
 func TestGetCredAndClientOptions(t *testing.T) {
-	testEndpoint := "http://test"
+	testEndpoint := "https://test"
 	cred, options := GetCredAndClientOptions(t)
 	pl, err := armruntime.NewPipeline("testmodule", "v0.1.0", cred, runtime.PipelineOptions{}, options)
 	require.NoError(t, err)
@@ -50,4 +50,5 @@ func TestGetCredAndClientOptions(t *testing.T) {
 		require.Equal(t, "Bearer FakeToken", resp.Request.Header.Get("Authorization"))
 	}
 	require.Equal(t, testEndpoint, resp.Request.URL.String())
+
 }

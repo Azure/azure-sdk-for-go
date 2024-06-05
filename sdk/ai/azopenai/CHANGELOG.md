@@ -1,16 +1,24 @@
 # Release History
 
-## 0.5.2 (Unreleased)
+## 0.6.0 (TBD)
 
 ### Features Added
 
+- Updating to the `2024-05-01-preview` API version for Azure OpenAI. (PR#22967)
+
 ### Breaking Changes
+
+- ContentFilterResultDetailsForPrompt.CustomBlocklists has been changed from a []ContentFilterBlocklistIDResult to a struct, 
+  containing the slice of []ContentFilterBlocklistIDResult.
+- OnYourDataEndpointVectorizationSource.Authentication's type has changed to OnYourDataVectorSearchAuthenticationOptionsClassification
+- Casing has been corrected for fields:
+  - Filepath -> FilePath
+  - FilepathField -> FilePathField
+  - CustomBlocklists -> CustomBlockLists
 
 ### Bugs Fixed
 
 - EventReader can now handle chunks of text larger than 64k. Thank you @ChrisTrenkamp for finding the issue and suggesting a fix. (PR#22703)
-
-### Other Changes
 
 ## 0.5.1 (2024-04-02)
 

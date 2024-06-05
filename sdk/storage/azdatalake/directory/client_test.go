@@ -170,7 +170,10 @@ func (s *RecordedTestSuite) TestCreateDirUsingCPK() {
 	_require.NotNil(resp)
 
 	_require.Equal(true, *(resp.IsServerEncrypted))
-	_require.Equal(testcommon.TestCPKByValue.EncryptionKeySHA256, resp.EncryptionKeySHA256)
+	// run the below check if the test is not in playback mode
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		_require.Equal(testcommon.TestCPKByValue.EncryptionKeySHA256, resp.EncryptionKeySHA256)
+	}
 }
 
 func (s *RecordedTestSuite) TestGetAndCreateFileClient() {
@@ -273,8 +276,9 @@ func (s *RecordedTestSuite) TestCreateNewSubdirectoryClient() {
 	_require.NotNil(resp.Permissions)
 	_require.Equal(perm, *resp.Permissions)
 	_require.Equal(*(resp.IsServerEncrypted), true)
-	_require.Equal(resp.EncryptionKeySHA256, testcommon.TestCPKByValue.EncryptionKeySHA256)
-
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		_require.Equal(resp.EncryptionKeySHA256, testcommon.TestCPKByValue.EncryptionKeySHA256)
+	}
 	// Create a file under the new directory just to make sure we're not secretly targeting the parent
 	fileName := testcommon.GenerateFileName("newFile")
 	subdirFileClient, err := subdirClient.NewFileClient(fileName)
@@ -2889,7 +2893,9 @@ func (s *RecordedTestSuite) TestDirGetPropertiesWithCPK() {
 	_require.NoError(err)
 	_require.NotNil(response)
 	_require.Equal(*(resp.IsServerEncrypted), true)
-	_require.Equal(resp.EncryptionKeySHA256, testcommon.TestCPKByValue.EncryptionKeySHA256)
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		_require.Equal(resp.EncryptionKeySHA256, testcommon.TestCPKByValue.EncryptionKeySHA256)
+	}
 }
 
 func (s *UnrecordedTestSuite) TestDirCreateDeleteUsingOAuth() {

@@ -64,6 +64,11 @@ type DatabasesClientFlushResponse struct {
 	// placeholder for future response values
 }
 
+// DatabasesClientForceLinkToReplicationGroupResponse contains the response from method DatabasesClient.BeginForceLinkToReplicationGroup.
+type DatabasesClientForceLinkToReplicationGroupResponse struct {
+	// placeholder for future response values
+}
+
 // DatabasesClientForceUnlinkResponse contains the response from method DatabasesClient.BeginForceUnlink.
 type DatabasesClientForceUnlinkResponse struct {
 	// placeholder for future response values
@@ -102,6 +107,11 @@ type DatabasesClientRegenerateKeyResponse struct {
 type DatabasesClientUpdateResponse struct {
 	// Describes a database on the RedisEnterprise cluster
 	Database
+}
+
+// DatabasesClientUpgradeDBRedisVersionResponse contains the response from method DatabasesClient.BeginUpgradeDBRedisVersion.
+type DatabasesClientUpgradeDBRedisVersionResponse struct {
+	// placeholder for future response values
 }
 
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.

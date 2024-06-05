@@ -87,6 +87,7 @@ func (e *ContentFilterResponseError) Unwrap() error {
 }
 
 func newContentFilterResponseError(resp *http.Response) error {
+	//nolint this error is an azcore.ResponseError by definition.
 	respErr := runtime.NewResponseError(resp).(*azcore.ResponseError)
 
 	if respErr.ErrorCode != "content_filter" {

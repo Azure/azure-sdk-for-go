@@ -99,8 +99,8 @@ func (client *MaintenanceWindowsClient) createOrUpdateCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("maintenanceWindowName", maintenanceWindowName)
 	reqQP.Set("api-version", "2020-11-01-preview")
+	reqQP.Set("maintenanceWindowName", maintenanceWindowName)
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
 		return nil, err
@@ -164,8 +164,8 @@ func (client *MaintenanceWindowsClient) getCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("maintenanceWindowName", maintenanceWindowName)
 	reqQP.Set("api-version", "2020-11-01-preview")
+	reqQP.Set("maintenanceWindowName", maintenanceWindowName)
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

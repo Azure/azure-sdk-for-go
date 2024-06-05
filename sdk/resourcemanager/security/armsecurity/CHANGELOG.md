@@ -1,5 +1,86 @@
 # Release History
 
+## 0.14.0 (2024-04-04)
+### Breaking Changes
+
+- Function `*ContactsClient.Create` parameter(s) have been changed from `(context.Context, string, Contact, *ContactsClientCreateOptions)` to `(context.Context, SecurityContactName, Contact, *ContactsClientCreateOptions)`
+- Function `*ContactsClient.Delete` parameter(s) have been changed from `(context.Context, string, *ContactsClientDeleteOptions)` to `(context.Context, SecurityContactName, *ContactsClientDeleteOptions)`
+- Function `*ContactsClient.Get` parameter(s) have been changed from `(context.Context, string, *ContactsClientGetOptions)` to `(context.Context, SecurityContactName, *ContactsClientGetOptions)`
+- Type of `ContactPropertiesNotificationsByRole.Roles` has been changed from `[]*Roles` to `[]*SecurityContactRole`
+- Type of `DefenderCspmAwsOfferingVMScanners.Configuration` has been changed from `*DefenderCspmAwsOfferingVMScannersConfiguration` to `*VMScannersBaseConfiguration`
+- Type of `DefenderCspmGcpOfferingVMScanners.Configuration` has been changed from `*DefenderCspmGcpOfferingVMScannersConfiguration` to `*VMScannersBaseConfiguration`
+- Type of `DefenderFoDatabasesAwsOfferingArcAutoProvisioning.Configuration` has been changed from `*DefenderFoDatabasesAwsOfferingArcAutoProvisioningConfiguration` to `*ArcAutoProvisioningConfiguration`
+- Type of `DefenderForDatabasesGcpOfferingArcAutoProvisioning.Configuration` has been changed from `*DefenderForDatabasesGcpOfferingArcAutoProvisioningConfiguration` to `*ArcAutoProvisioningConfiguration`
+- Type of `DefenderForServersAwsOfferingArcAutoProvisioning.Configuration` has been changed from `*DefenderForServersAwsOfferingArcAutoProvisioningConfiguration` to `*ArcAutoProvisioningConfiguration`
+- Type of `DefenderForServersAwsOfferingVMScanners.Configuration` has been changed from `*DefenderForServersAwsOfferingVMScannersConfiguration` to `*VMScannersBaseConfiguration`
+- Type of `DefenderForServersGcpOfferingArcAutoProvisioning.Configuration` has been changed from `*DefenderForServersGcpOfferingArcAutoProvisioningConfiguration` to `*ArcAutoProvisioningConfiguration`
+- Type of `DefenderForServersGcpOfferingVMScanners.Configuration` has been changed from `*DefenderForServersGcpOfferingVMScannersConfiguration` to `*VMScannersBaseConfiguration`
+- `OfferingTypeDefenderForDevOpsAzureDevOps`, `OfferingTypeDefenderForDevOpsGitLab`, `OfferingTypeDefenderForDevOpsGithub`, `OfferingTypeInformationProtectionAws` from enum `OfferingType` has been removed
+- Enum `Roles` has been removed
+- Function `NewCenterClient` has been removed
+- Function `*CenterClient.GetSensitivitySettings` has been removed
+- Function `*CenterClient.UpdateSensitivitySettings` has been removed
+- Function `*ClientFactory.NewCenterClient` has been removed
+- Function `*DefenderForDevOpsAzureDevOpsOffering.GetCloudOffering` has been removed
+- Function `*DefenderForDevOpsGitLabOffering.GetCloudOffering` has been removed
+- Function `*DefenderForDevOpsGithubOffering.GetCloudOffering` has been removed
+- Function `*InformationProtectionAwsOffering.GetCloudOffering` has been removed
+- Struct `ContactPropertiesAlertNotifications` has been removed
+- Struct `DefenderCspmAwsOfferingVMScannersConfiguration` has been removed
+- Struct `DefenderCspmGcpOfferingVMScannersConfiguration` has been removed
+- Struct `DefenderFoDatabasesAwsOfferingArcAutoProvisioningConfiguration` has been removed
+- Struct `DefenderForContainersAwsOfferingContainerVulnerabilityAssessment` has been removed
+- Struct `DefenderForContainersAwsOfferingContainerVulnerabilityAssessmentTask` has been removed
+- Struct `DefenderForContainersAwsOfferingKubernetesScubaReader` has been removed
+- Struct `DefenderForDatabasesGcpOfferingArcAutoProvisioningConfiguration` has been removed
+- Struct `DefenderForDevOpsAzureDevOpsOffering` has been removed
+- Struct `DefenderForDevOpsGitLabOffering` has been removed
+- Struct `DefenderForDevOpsGithubOffering` has been removed
+- Struct `DefenderForServersAwsOfferingArcAutoProvisioningConfiguration` has been removed
+- Struct `DefenderForServersAwsOfferingVMScannersConfiguration` has been removed
+- Struct `DefenderForServersGcpOfferingArcAutoProvisioningConfiguration` has been removed
+- Struct `DefenderForServersGcpOfferingVMScannersConfiguration` has been removed
+- Struct `InformationProtectionAwsOffering` has been removed
+- Struct `InformationProtectionAwsOfferingInformationProtection` has been removed
+- Field `AlertNotifications` of struct `ContactProperties` has been removed
+- Field `AutoProvisioning`, `ContainerVulnerabilityAssessment`, `ContainerVulnerabilityAssessmentTask`, `EnableContainerVulnerabilityAssessment`, `KubernetesScubaReader`, `ScubaExternalID` of struct `DefenderForContainersAwsOffering` has been removed
+- Field `AuditLogsAutoProvisioningFlag`, `DefenderAgentAutoProvisioningFlag`, `PolicyAgentAutoProvisioningFlag` of struct `DefenderForContainersGcpOffering` has been removed
+
+### Features Added
+
+- New value `EventSourceAttackPaths`, `EventSourceAttackPathsSnapshot` added to enum type `EventSource`
+- New enum type `MinimalRiskLevel` with values `MinimalRiskLevelCritical`, `MinimalRiskLevelHigh`, `MinimalRiskLevelLow`, `MinimalRiskLevelMedium`
+- New enum type `SecurityContactName` with values `SecurityContactNameDefault`
+- New enum type `SecurityContactRole` with values `SecurityContactRoleAccountAdmin`, `SecurityContactRoleContributor`, `SecurityContactRoleOwner`, `SecurityContactRoleServiceAdmin`
+- New enum type `SourceType` with values `SourceTypeAlert`, `SourceTypeAttackPath`
+- New function `*AutomationsClient.Update(context.Context, string, string, AutomationUpdateModel, *AutomationsClientUpdateOptions) (AutomationsClientUpdateResponse, error)`
+- New function `*SensitivitySettingsClient.CreateOrUpdate(context.Context, UpdateSensitivitySettingsRequest, *SensitivitySettingsClientCreateOrUpdateOptions) (SensitivitySettingsClientCreateOrUpdateResponse, error)`
+- New function `*SensitivitySettingsClient.Get(context.Context, *SensitivitySettingsClientGetOptions) (SensitivitySettingsClientGetResponse, error)`
+- New function `*NotificationsSource.GetNotificationsSource() *NotificationsSource`
+- New function `*NotificationsSourceAlert.GetNotificationsSource() *NotificationsSource`
+- New function `*NotificationsSourceAttackPath.GetNotificationsSource() *NotificationsSource`
+- New struct `ArcAutoProvisioning`
+- New struct `ArcAutoProvisioningAws`
+- New struct `ArcAutoProvisioningConfiguration`
+- New struct `ArcAutoProvisioningGcp`
+- New struct `AutomationUpdateModel`
+- New struct `DefenderForContainersAwsOfferingKubernetesDataCollection`
+- New struct `DefenderForContainersAwsOfferingVMScanners`
+- New struct `DefenderForContainersGcpOfferingVMScanners`
+- New struct `NotificationsSourceAlert`
+- New struct `NotificationsSourceAttackPath`
+- New struct `VMScannersAws`
+- New struct `VMScannersBase`
+- New struct `VMScannersBaseConfiguration`
+- New struct `VMScannersGcp`
+- New field `IsTrustedServiceEnabled` in struct `AutomationActionEventHub`
+- New field `IsEnabled`, `NotificationsSources` in struct `ContactProperties`
+- New field `CloudRoleArn` in struct `DefenderCspmAwsOfferingVMScanners`
+- New field `DataCollectionExternalID`, `EnableAuditLogsAutoProvisioning`, `EnableDefenderAgentAutoProvisioning`, `EnablePolicyAgentAutoProvisioning`, `KubernetesDataCollection`, `VMScanners` in struct `DefenderForContainersAwsOffering`
+- New field `EnableAuditLogsAutoProvisioning`, `EnableDefenderAgentAutoProvisioning`, `EnablePolicyAgentAutoProvisioning`, `VMScanners` in struct `DefenderForContainersGcpOffering`
+- New field `CloudRoleArn` in struct `DefenderForServersAwsOfferingVMScanners`
+
+
 ## 0.13.0 (2024-03-08)
 ### Breaking Changes
 

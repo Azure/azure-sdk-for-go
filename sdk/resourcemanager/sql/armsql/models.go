@@ -276,6 +276,15 @@ type BenchmarkReference struct {
 	Reference *string
 }
 
+// CertificateInfo - Certificate information
+type CertificateInfo struct {
+	// READ-ONLY; The certificate name
+	CertificateName *string
+
+	// READ-ONLY; The certificate expiry date
+	ExpiryDate *time.Time
+}
+
 // ChangeLongTermRetentionBackupAccessTierParameters - Contains the information necessary to change long term retention backup
 // access tier and related operation mode.
 type ChangeLongTermRetentionBackupAccessTierParameters struct {
@@ -291,7 +300,7 @@ type CheckNameAvailabilityRequest struct {
 	// REQUIRED
 	Name *string
 
-	// CONSTANT; Field has constant value "Microsoft.Sql/servers", any specified value is ignored.
+	// CONSTANT; undefinedField has constant value "Microsoft.Sql/servers", any specified value is ignored.
 	Type *string
 }
 
@@ -848,6 +857,9 @@ type DatabaseOperationProperties struct {
 
 	// READ-ONLY; The friendly name of operation.
 	OperationFriendlyName *string
+
+	// READ-ONLY; The operation phase details.
+	OperationPhaseDetails *PhaseDetails
 
 	// READ-ONLY; The percentage of the operation completed.
 	PercentComplete *int32
@@ -1647,37 +1659,122 @@ type DistributedAvailabilityGroup struct {
 	Type *string
 }
 
-// DistributedAvailabilityGroupProperties - The properties of a distributed availability group.
-type DistributedAvailabilityGroupProperties struct {
-	// The primary availability group name
-	PrimaryAvailabilityGroupName *string
+// DistributedAvailabilityGroupDatabase - Database specific information
+type DistributedAvailabilityGroupDatabase struct {
+	// The name of the database in link
+	DatabaseName *string
 
-	// The replication mode of a distributed availability group. Parameter will be ignored during link creation.
-	ReplicationMode *ReplicationMode
+	// READ-ONLY; Link connected state
+	ConnectedState *ReplicaConnectedState
 
-	// The secondary availability group name
-	SecondaryAvailabilityGroupName *string
+	// READ-ONLY; Redo lag when Managed Instance link side is primary
+	InstanceRedoReplicationLagSeconds *int32
 
-	// The source endpoint
-	SourceEndpoint *string
+	// READ-ONLY; Managed instance replica id
+	InstanceReplicaID *string
 
-	// The name of the target database
-	TargetDatabase *string
+	// READ-ONLY; Replication lag when Managed Instance link side is primary
+	InstanceSendReplicationLagSeconds *int32
 
-	// READ-ONLY; The distributed availability group id
-	DistributedAvailabilityGroupID *string
+	// READ-ONLY; Last backup LSN
+	LastBackupLsn *string
 
-	// READ-ONLY; The last hardened lsn
+	// READ-ONLY; Last backup LSN time
+	LastBackupTime *time.Time
+
+	// READ-ONLY; Last commit LSN
+	LastCommitLsn *string
+
+	// READ-ONLY; Last commit LSN time
+	LastCommitTime *time.Time
+
+	// READ-ONLY; Last hardened LSN
 	LastHardenedLsn *string
 
-	// READ-ONLY; The link state
-	LinkState *string
+	// READ-ONLY; Last hardened LSN time
+	LastHardenedTime *time.Time
 
-	// READ-ONLY; The source replica id
-	SourceReplicaID *string
+	// READ-ONLY; Last received LSN
+	LastReceivedLsn *string
 
-	// READ-ONLY; The target replica id
-	TargetReplicaID *string
+	// READ-ONLY; Last received LSN time
+	LastReceivedTime *time.Time
+
+	// READ-ONLY; Last sent LSN
+	LastSentLsn *string
+
+	// READ-ONLY; Last sent LSN time
+	LastSentTime *time.Time
+
+	// READ-ONLY; The most recent link connection error description
+	MostRecentLinkError *string
+
+	// READ-ONLY; SQL server certificate validity
+	PartnerAuthCertValidity *CertificateInfo
+
+	// READ-ONLY; SQL server replica id
+	PartnerReplicaID *string
+
+	// READ-ONLY; Current link state
+	ReplicaState *string
+
+	// READ-ONLY; Seeding progress
+	SeedingProgress *string
+
+	// READ-ONLY; Link health state
+	SynchronizationHealth *ReplicaSynchronizationHealth
+}
+
+// DistributedAvailabilityGroupProperties - The properties of a distributed availability group.
+type DistributedAvailabilityGroupProperties struct {
+	// Databases in the distributed availability group
+	Databases []*DistributedAvailabilityGroupDatabase
+
+	// The link failover mode - can be Manual if intended to be used for two-way failover with a supported SQL Server, or None
+	// for one-way failover to Azure.
+	FailoverMode *FailoverModeType
+
+	// Managed instance side availability group name
+	InstanceAvailabilityGroupName *string
+
+	// Managed instance side link role
+	InstanceLinkRole *LinkRole
+
+	// SQL server side availability group name
+	PartnerAvailabilityGroupName *string
+
+	// SQL server side endpoint - IP or DNS resolvable name
+	PartnerEndpoint *string
+
+	// Replication mode of the link
+	ReplicationMode *ReplicationModeType
+
+	// Database seeding mode – can be Automatic (default), or Manual for supported scenarios.
+	SeedingMode *SeedingModeType
+
+	// READ-ONLY; ID of the distributed availability group
+	DistributedAvailabilityGroupID *string
+
+	// READ-ONLY; Name of the distributed availability group
+	DistributedAvailabilityGroupName *string
+
+	// READ-ONLY; SQL server side link role
+	PartnerLinkRole *LinkRole
+}
+
+// DistributedAvailabilityGroupSetRole - Distributed availability group failover request.
+type DistributedAvailabilityGroupSetRole struct {
+	// REQUIRED; New role of managed instance in a distributed availability group, can be Primary or Secondary.
+	InstanceRole *InstanceRole
+
+	// REQUIRED; The type of the role change, can be Planned or Forced.
+	RoleChangeType *RoleChangeType
+}
+
+// DistributedAvailabilityGroupsFailoverRequest - Distributed availability group failover.
+type DistributedAvailabilityGroupsFailoverRequest struct {
+	// REQUIRED; The failover type, can be ForcedAllowDataLoss or Planned.
+	FailoverType *FailoverType
 }
 
 // DistributedAvailabilityGroupsListResult - A list of distributed availability groups in instance.
@@ -4885,14 +4982,27 @@ type ManagedInstanceProperties struct {
 	// individual APIs will need to be used.
 	Administrators *ManagedInstanceExternalAdministrator
 
+	// The managed instance's authentication metadata lookup mode.
+	AuthenticationMetadata *AuthMetadataLookupModes
+
 	// Collation of the managed instance.
 	Collation *string
 
 	// The resource id of another managed instance whose DNS zone this managed instance will share after creation.
 	DNSZonePartner *string
 
+	// Specifies the internal format of instance databases specific to the SQL engine version.
+	DatabaseFormat *ManagedInstanceDatabaseFormat
+
+	// Hybrid secondary usage. Possible values are 'Active' (default value) and 'Passive' (customer uses the secondary as Passive
+	// DR).
+	HybridSecondaryUsage *HybridSecondaryUsage
+
 	// The Id of the instance pool this managed server belongs to.
 	InstancePoolID *string
+
+	// Whether or not this is a GPv2 variant of General Purpose edition.
+	IsGeneralPurposeV2 *bool
 
 	// A CMK URI of the key to use for encryption.
 	KeyID *string
@@ -4912,6 +5022,9 @@ type ManagedInstanceProperties struct {
 
 	// Minimal TLS version. Allowed values: 'None', '1.0', '1.1', '1.2'
 	MinimalTLSVersion *string
+
+	// Weather or not Managed Instance is freemium.
+	PricingModel *FreemiumType
 
 	// The resource id of a user assigned identity to be used by default.
 	PrimaryUserAssignedIdentityID *string
@@ -4936,9 +5049,16 @@ type ManagedInstanceProperties struct {
 	// The resource identifier of the source managed instance associated with create operation of this instance.
 	SourceManagedInstanceID *string
 
+	// Storage IOps. Minimum value: 300. Maximum value: 80000. Increments of 1 IOps allowed only. Maximum value depends on the
+	// selected hardware family and number of vCores.
+	StorageIOps *int32
+
 	// Storage size in GB. Minimum value: 32. Maximum value: 16384. Increments of 32 GB allowed only. Maximum value depends on
 	// the selected hardware family and number of vCores.
 	StorageSizeInGB *int32
+
+	// Storage throughput MBps parameter is not supported in the instance create/update operation.
+	StorageThroughputMBps *int32
 
 	// Subnet resource ID for the managed instance.
 	SubnetID *string
@@ -4957,6 +5077,9 @@ type ManagedInstanceProperties struct {
 	// Whether or not the multi-az is enabled.
 	ZoneRedundant *bool
 
+	// READ-ONLY; Specifies the point in time (ISO8601 format) of the Managed Instance creation.
+	CreateTime *time.Time
+
 	// READ-ONLY; The storage account type used to store backups for this instance. The options are Local (LocallyRedundantStorage),
 	// Zone (ZoneRedundantStorage), Geo (GeoRedundantStorage) and
 	// GeoZone(GeoZoneRedundantStorage)
@@ -4965,17 +5088,28 @@ type ManagedInstanceProperties struct {
 	// READ-ONLY; The Dns Zone that the managed instance is in.
 	DNSZone *string
 
+	// READ-ONLY; Status of external governance.
+	ExternalGovernanceStatus *ExternalGovernanceStatus
+
 	// READ-ONLY; The fully qualified domain name of the managed instance.
 	FullyQualifiedDomainName *string
+
+	// READ-ONLY; Hybrid secondary usage detected. Possible values are 'Active' (customer does not meet the requirements to use
+	// the secondary as Passive DR) and 'Passive' (customer meets the requirements to use the
+	// secondary as Passive DR).
+	HybridSecondaryUsageDetected *HybridSecondaryUsageDetected
 
 	// READ-ONLY; List of private endpoint connections on a managed instance.
 	PrivateEndpointConnections []*ManagedInstancePecProperty
 
-	// READ-ONLY
-	ProvisioningState *ManagedInstancePropertiesProvisioningState
+	// READ-ONLY; Provisioning state of managed instance.
+	ProvisioningState *ProvisioningState
 
 	// READ-ONLY; The state of the managed instance.
 	State *string
+
+	// READ-ONLY; Virtual cluster resource id for the Managed Instance.
+	VirtualClusterID *string
 }
 
 // ManagedInstanceQuery - Database query.
@@ -5529,6 +5663,15 @@ type PerformanceLevelCapability struct {
 	Value *float64
 }
 
+// PhaseDetails - The phase details properties of a database operation.
+type PhaseDetails struct {
+	// READ-ONLY; The operation phase.
+	Phase *Phase
+
+	// READ-ONLY; The operation phase information.
+	PhaseInformation map[string]*string
+}
+
 // PrivateEndpointConnection - A private endpoint connection
 type PrivateEndpointConnection struct {
 	// Resource properties.
@@ -5683,6 +5826,21 @@ type QueryMetricInterval struct {
 	IntervalType *QueryTimeGrainType
 }
 
+// QueryMetricIntervalAutoGenerated - Properties of a query metrics interval.
+type QueryMetricIntervalAutoGenerated struct {
+	// List of metric objects for this interval
+	Metrics []*QueryMetricProperties
+
+	// READ-ONLY; Execution count of a query in this interval.
+	ExecutionCount *int64
+
+	// READ-ONLY; The start time for the metric interval (ISO-8601 format).
+	IntervalStartTime *string
+
+	// READ-ONLY; Interval type (length).
+	IntervalType *QueryTimeGrainType
+}
+
 // QueryMetricProperties - Properties of a topquery metric in one interval.
 type QueryMetricProperties struct {
 	// READ-ONLY; Metric value when avg() aggregate function is used over the interval.
@@ -5737,6 +5895,24 @@ type QueryStatistics struct {
 type QueryStatisticsProperties struct {
 	// List of intervals with appropriate metric data
 	Intervals []*QueryMetricInterval
+
+	// READ-ONLY; Database name of the database in which this query was executed.
+	DatabaseName *string
+
+	// READ-ONLY; The end time for the metric (ISO-8601 format).
+	EndTime *string
+
+	// READ-ONLY; Unique query id (unique within one database).
+	QueryID *string
+
+	// READ-ONLY; The start time for the metric (ISO-8601 format).
+	StartTime *string
+}
+
+// QueryStatisticsPropertiesAutoGenerated - Properties of a query execution statistics.
+type QueryStatisticsPropertiesAutoGenerated struct {
+	// List of intervals with appropriate metric data
+	Intervals []*QueryMetricIntervalAutoGenerated
 
 	// READ-ONLY; Database name of the database in which this query was executed.
 	DatabaseName *string
@@ -6063,6 +6239,21 @@ type RefreshExternalGovernanceStatusOperationResult struct {
 	Type *string
 }
 
+// RefreshExternalGovernanceStatusOperationResultMI - An RefreshExternalGovernanceStatus operation result resource.
+type RefreshExternalGovernanceStatusOperationResultMI struct {
+	// Resource properties.
+	Properties *RefreshExternalGovernanceStatusOperationResultPropertiesMI
+
+	// READ-ONLY; Resource ID.
+	ID *string
+
+	// READ-ONLY; Resource name.
+	Name *string
+
+	// READ-ONLY; Resource type.
+	Type *string
+}
+
 // RefreshExternalGovernanceStatusOperationResultProperties - Contains the operation result properties for refresh external
 // governance status operation.
 type RefreshExternalGovernanceStatusOperationResultProperties struct {
@@ -6080,6 +6271,28 @@ type RefreshExternalGovernanceStatusOperationResultProperties struct {
 
 	// READ-ONLY; Server name.
 	ServerName *string
+
+	// READ-ONLY; Operation status.
+	Status *string
+}
+
+// RefreshExternalGovernanceStatusOperationResultPropertiesMI - Contains the operation result properties for refresh external
+// governance status operation.
+type RefreshExternalGovernanceStatusOperationResultPropertiesMI struct {
+	// READ-ONLY; Error message.
+	ErrorMessage *string
+
+	// READ-ONLY; Managed instance name.
+	ManagedInstanceName *string
+
+	// READ-ONLY; Queued time.
+	QueuedTime *string
+
+	// READ-ONLY; Request Id.
+	RequestID *string
+
+	// READ-ONLY; Request type.
+	RequestType *string
 
 	// READ-ONLY; Operation status.
 	Status *string
@@ -8134,7 +8347,7 @@ type TimeZoneProperties struct {
 
 type TopQueries struct {
 	// List of top resource consuming queries with appropriate metric data
-	Queries []*QueryStatisticsProperties
+	Queries []*QueryStatisticsPropertiesAutoGenerated
 
 	// READ-ONLY; Aggregation function used to calculate query metrics.
 	AggregationFunction *string

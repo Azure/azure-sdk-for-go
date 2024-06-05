@@ -269,6 +269,12 @@ type Resource struct {
 	Type *string
 }
 
+// ScheduledEventApproveResponse - Response of scheduled event acknowledge
+type ScheduledEventApproveResponse struct {
+	// Successfully Approved
+	Value *string
+}
+
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).

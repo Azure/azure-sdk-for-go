@@ -28,7 +28,7 @@ func TestParsesEventGridEnvelope(t *testing.T) {
 	require.Equal(t, "/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx", *egEvent.Topic)
 	require.Equal(t, "2d1781af-3a4c-4d7c-bd0c-e34b19da4e66", *egEvent.ID)
 	require.Equal(t, "mySubject", *egEvent.Subject)
-	require.Equal(t, string(azsystemevents.TypeSubscriptionValidation), *egEvent.EventType)
+	require.Equal(t, azsystemevents.TypeSubscriptionValidation, *egEvent.EventType)
 	require.Equal(t, mustParseTime(t, "2018-01-25T22:12:19.4556811Z"), *egEvent.EventTime)
 	require.Equal(t, "1", *egEvent.DataVersion)
 }
@@ -41,7 +41,7 @@ func TestParsesEventGridEnvelopeUsingConverter(t *testing.T) {
 	require.Equal(t, "/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx", *egEvent.Topic)
 	require.Equal(t, "2d1781af-3a4c-4d7c-bd0c-e34b19da4e66", *egEvent.ID)
 	require.Equal(t, "mySubject", *egEvent.Subject)
-	require.Equal(t, string(azsystemevents.TypeSubscriptionValidation), *egEvent.EventType)
+	require.Equal(t, azsystemevents.TypeSubscriptionValidation, *egEvent.EventType)
 	require.Equal(t, mustParseTime(t, "2018-01-25T22:12:19.4556811Z"), *egEvent.EventTime)
 	require.Equal(t, "1", *egEvent.DataVersion)
 }
@@ -65,7 +65,7 @@ func TestConsumeStorageBlobDeletedEventWithExtraProperty(t *testing.T) {
 	require.NotEmpty(t, events)
 
 	for _, egEvent := range events {
-		require.Equal(t, string(azsystemevents.TypeStorageBlobDeleted), *egEvent.EventType)
+		require.Equal(t, azsystemevents.TypeStorageBlobDeleted, *egEvent.EventType)
 		sysEvent := deserializeSystemEvent[azsystemevents.StorageBlobDeletedEventData](t, events[0].Data)
 		require.Equal(t, "https://example.blob.core.windows.net/testcontainer/testfile.txt", *sysEvent.URL)
 		require.Equal(t, "/subscriptions/id/resourceGroups/Storage/providers/Microsoft.Storage/storageAccounts/xstoretestaccount", *egEvent.Topic)
@@ -78,7 +78,7 @@ func TestConsumeEventNotWrappedInAnArray(t *testing.T) {
 	egEvent := parseEvent(t, requestContent)
 	require.NotEmpty(t, egEvent)
 
-	require.Equal(t, string(azsystemevents.TypeStorageBlobDeleted), *egEvent.EventType)
+	require.Equal(t, azsystemevents.TypeStorageBlobDeleted, *egEvent.EventType)
 	sysEvent := deserializeSystemEvent[azsystemevents.StorageBlobDeletedEventData](t, egEvent.Data)
 	require.Equal(t, "https://example.blob.core.windows.net/testcontainer/testfile.txt", *sysEvent.URL)
 }
@@ -88,7 +88,7 @@ func TestConsumeEventNotWrappedInAnArrayWithConverter(t *testing.T) {
 
 	egEvent := parseEvent(t, requestContent)
 
-	require.Equal(t, string(azsystemevents.TypeStorageBlobDeleted), *egEvent.EventType)
+	require.Equal(t, azsystemevents.TypeStorageBlobDeleted, *egEvent.EventType)
 
 	sysEvent := deserializeSystemEvent[azsystemevents.StorageBlobDeletedEventData](t, egEvent.Data)
 	require.Equal(t, "https://example.blob.core.windows.net/testcontainer/testfile.txt", *sysEvent.URL)
@@ -106,7 +106,7 @@ func TestConsumeMultipleEventsInSameBatch(t *testing.T) {
 	require.Equal(t, 3, len(events))
 
 	for _, egEvent := range events {
-		switch azsystemevents.Type(*egEvent.EventType) {
+		switch *egEvent.EventType {
 		case azsystemevents.TypeStorageBlobCreated:
 			blobCreated := deserializeSystemEvent[azsystemevents.StorageBlobCreatedEventData](t, egEvent.Data)
 			require.Equal(t, "https://myaccount.blob.core.windows.net/testcontainer/file1.txt", *blobCreated.URL)
@@ -124,11 +124,9 @@ func TestConsumeEventUsingBinaryDataExtensionMethod(t *testing.T) {
 
 	require.NotEmpty(t, egEvent)
 
-	switch azsystemevents.Type(*egEvent.EventType) {
-	case azsystemevents.TypeStorageBlobDeleted:
-		blobDeleted := deserializeSystemEvent[azsystemevents.StorageBlobDeletedEventData](t, egEvent.Data)
-		require.Equal(t, "https://example.blob.core.windows.net/testcontainer/testfile.txt", *blobDeleted.URL)
-	}
+	require.Equal(t, azsystemevents.TypeStorageBlobDeleted, *egEvent.EventType)
+	blobDeleted := deserializeSystemEvent[azsystemevents.StorageBlobDeletedEventData](t, egEvent.Data)
+	require.Equal(t, "https://example.blob.core.windows.net/testcontainer/testfile.txt", *blobDeleted.URL)
 }
 
 // func TestParseBinaryDataThrowsOnMultipleEgEvents(t *testing.T) {
@@ -392,8 +390,8 @@ func TestConsumeMachineLearningServicesModelRegisteredEvent(t *testing.T) {
 	require.Equal(t, "sklearn_regression_model", *sysEvent.ModelName)
 	require.Equal(t, "3", *sysEvent.ModelVersion)
 
-	require.Equal(t, "regression", sysEvent.ModelTags.(map[string]any)["type"])
-	require.Equal(t, "test", sysEvent.ModelProperties.(map[string]any)["area"])
+	require.Equal(t, "regression", sysEvent.ModelTags["type"])
+	require.Equal(t, "test", sysEvent.ModelProperties["area"])
 }
 
 func TestConsumeMachineLearningServicesModelDeployedEvent(t *testing.T) {
@@ -485,6 +483,7 @@ func TestConsumeMediaJobOutputStateChangeEvent(t *testing.T) {
 
 	sysEvent := deserializeSystemEvent[azsystemevents.MediaJobOutputStateChangeEventData](t, events[0].Data)
 	require.Equal(t, azsystemevents.MediaJobStateScheduled, *sysEvent.PreviousState)
+
 	mediaOutputAsset := sysEvent.Output.(*azsystemevents.MediaJobOutputAsset)
 	require.Equal(t, azsystemevents.MediaJobStateProcessing, *mediaOutputAsset.State)
 
@@ -821,7 +820,7 @@ func TestConsumeMediaLiveEventIngestHeartbeatEvent(t *testing.T) {
 
 	events2 := parseManyEvents(t, requestContent)
 	sysEvent2 := deserializeSystemEvent[azsystemevents.MediaLiveEventIngestHeartbeatEventData](t, events2[0].Data)
-	require.Nil(t, sysEvent2.IngestDriftValue)
+	require.Equal(t, "n/a", *sysEvent2.IngestDriftValue)
 }
 
 func TestConsumeMediaLiveEventChannelArchiveHeartbeatEvent(t *testing.T) {
@@ -867,7 +866,7 @@ func TestConsumeMediaLiveEventChannelArchiveHeartbeatEvent(t *testing.T) {
 	sysEvent2 := deserializeSystemEvent[azsystemevents.MediaLiveEventChannelArchiveHeartbeatEventData](t, events2[0].Data)
 
 	// n/a should be translated to null ChannelLatency
-	require.Nil(t, sysEvent2.ChannelLatencyMS)
+	require.Equal(t, "n/a", *sysEvent2.ChannelLatencyMS)
 	require.Equal(t, "S_OK", *sysEvent2.LatencyResultCode)
 }
 
@@ -1019,7 +1018,7 @@ func assertResourceEventData(t *testing.T, rawEventData any) {
 	require.NotEmpty(t, eventData)
 	require.Equal(t, "72f988bf-86f1-41af-91ab-2d7cd011db47", eventData.TenantID)
 
-	//var authorizationJson = JsonDocument.Parse(eventData.Authorization).RootElement
+	// var authorizationJson = JsonDocument.Parse(eventData.Authorization).RootElement
 
 	require.Equal(t, "/subscriptions/sub/resourceGroups/rg/providers/Microsoft.Web/sites/function/host/default",
 		eventData.Authorization.Scope)
@@ -1484,11 +1483,12 @@ func TestConsumeFhirResourceCreatedEvent(t *testing.T) {
 	events := parseManyEvents(t, requestContent)
 
 	require.NotEmpty(t, events)
-	healthEvent := deserializeSystemEvent[azsystemevents.HealthcareFhirResourceCreatedEventData](t, events[0].Data)
-	require.Equal(t, azsystemevents.HealthcareFhirResourceTypePatient, *healthEvent.FhirResourceType)
-	require.Equal(t, "{fhir-account}.fhir.azurehealthcareapis.com", *healthEvent.FhirServiceHostName)
-	require.Equal(t, "e0a1f743-1a70-451f-830e-e96477163902", *healthEvent.FhirResourceID)
-	require.Equal(t, int64(1), *healthEvent.FhirResourceVersionID)
+	healthEvent := deserializeSystemEvent[azsystemevents.HealthcareFHIRResourceCreatedEventData](t, events[0].Data)
+
+	require.Equal(t, azsystemevents.HealthcareFhirResourceTypePatient, *healthEvent.FHIRResourceType)
+	require.Equal(t, "{fhir-account}.fhir.azurehealthcareapis.com", *healthEvent.FHIRServiceHostName)
+	require.Equal(t, "e0a1f743-1a70-451f-830e-e96477163902", *healthEvent.FHIRResourceID)
+	require.Equal(t, int64(1), *healthEvent.FHIRResourceVersionID)
 }
 
 func TestConsumeFhirResourceUpdatedEvent(t *testing.T) {
@@ -1497,12 +1497,12 @@ func TestConsumeFhirResourceUpdatedEvent(t *testing.T) {
 	events := parseManyEvents(t, requestContent)
 
 	require.NotEmpty(t, events)
-	healthEvent := deserializeSystemEvent[azsystemevents.HealthcareFhirResourceUpdatedEventData](t, events[0].Data)
+	healthEvent := deserializeSystemEvent[azsystemevents.HealthcareFHIRResourceUpdatedEventData](t, events[0].Data)
 
-	require.Equal(t, azsystemevents.HealthcareFhirResourceTypePatient, *healthEvent.FhirResourceType)
-	require.Equal(t, "{fhir-account}.fhir.azurehealthcareapis.com", *healthEvent.FhirServiceHostName)
-	require.Equal(t, "e0a1f743-1a70-451f-830e-e96477163902", *healthEvent.FhirResourceID)
-	require.Equal(t, int64(1), *healthEvent.FhirResourceVersionID)
+	require.Equal(t, azsystemevents.HealthcareFhirResourceTypePatient, *healthEvent.FHIRResourceType)
+	require.Equal(t, "{fhir-account}.fhir.azurehealthcareapis.com", *healthEvent.FHIRServiceHostName)
+	require.Equal(t, "e0a1f743-1a70-451f-830e-e96477163902", *healthEvent.FHIRResourceID)
+	require.Equal(t, int64(1), *healthEvent.FHIRResourceVersionID)
 }
 
 func TestConsumeFhirResourceDeletedEvent(t *testing.T) {
@@ -1511,12 +1511,12 @@ func TestConsumeFhirResourceDeletedEvent(t *testing.T) {
 	events := parseManyEvents(t, requestContent)
 
 	require.NotEmpty(t, events)
-	healthEvent := deserializeSystemEvent[azsystemevents.HealthcareFhirResourceDeletedEventData](t, events[0].Data)
+	healthEvent := deserializeSystemEvent[azsystemevents.HealthcareFHIRResourceDeletedEventData](t, events[0].Data)
 
-	require.Equal(t, azsystemevents.HealthcareFhirResourceTypePatient, *healthEvent.FhirResourceType)
-	require.Equal(t, "{fhir-account}.fhir.azurehealthcareapis.com", *healthEvent.FhirServiceHostName)
-	require.Equal(t, "e0a1f743-1a70-451f-830e-e96477163902", *healthEvent.FhirResourceID)
-	require.Equal(t, int64(1), *healthEvent.FhirResourceVersionID)
+	require.Equal(t, azsystemevents.HealthcareFhirResourceTypePatient, *healthEvent.FHIRResourceType)
+	require.Equal(t, "{fhir-account}.fhir.azurehealthcareapis.com", *healthEvent.FHIRServiceHostName)
+	require.Equal(t, "e0a1f743-1a70-451f-830e-e96477163902", *healthEvent.FHIRResourceID)
+	require.Equal(t, int64(1), *healthEvent.FHIRResourceVersionID)
 }
 
 func TestConsumeDicomImageCreatedEvent(t *testing.T) {
@@ -1623,7 +1623,7 @@ func TestParsesCloudEventEnvelope(t *testing.T) {
 
 	require.Equal(t, "994bc3f8-c90c-6fc3-9e83-6783db2221d5", cloudEvent.ID)
 	require.Equal(t, "Subject-0", cloudEvent.Source)
-	require.Equal(t, string(azsystemevents.TypeStorageBlobDeleted), cloudEvent.Type)
+	require.Equal(t, azsystemevents.TypeStorageBlobDeleted, cloudEvent.Type)
 	require.Equal(t, "text/plain", *cloudEvent.DataContentType)
 	require.Equal(t, "subject", *cloudEvent.Subject)
 	require.Equal(t, "1.0", *cloudEvent.DataSchema)
@@ -1637,7 +1637,7 @@ func TestConsumeCloudEventsWithAdditionalProperties(t *testing.T) {
 	events := parseManyCloudEvents(t, requestContent)
 	require.NotEmpty(t, events)
 
-	if events[0].Type == string(azsystemevents.TypeStorageBlobDeleted) {
+	if events[0].Type == azsystemevents.TypeStorageBlobDeleted {
 		eventData := deserializeSystemEvent[azsystemevents.StorageBlobDeletedEventData](t, events[0].Data)
 		require.Equal(t, "https://example.blob.core.windows.net/testcontainer/testfile.txt", *eventData.URL)
 	}
@@ -1651,7 +1651,7 @@ func TestConsumeCloudEventUsingBinaryDataExtensionMethod(t *testing.T) {
 	cloudEvent := parseCloudEvent(t, messageBody)
 
 	require.NotEmpty(t, cloudEvent)
-	require.Equal(t, string(azsystemevents.TypeStorageBlobDeleted), cloudEvent.Type)
+	require.Equal(t, azsystemevents.TypeStorageBlobDeleted, cloudEvent.Type)
 	blobDeleted := deserializeSystemEvent[azsystemevents.StorageBlobDeletedEventData](t, cloudEvent.Data)
 	require.Equal(t, "https://example.blob.core.windows.net/testcontainer/testfile.txt", *blobDeleted.URL)
 }
@@ -1662,7 +1662,7 @@ func TestConsumeCloudEventNotWrappedInAnArray(t *testing.T) {
 	event := parseCloudEvent(t, requestContent)
 
 	require.NotEmpty(t, event)
-	require.Equal(t, string(azsystemevents.TypeStorageBlobDeleted), event.Type)
+	require.Equal(t, azsystemevents.TypeStorageBlobDeleted, event.Type)
 	eventData := deserializeSystemEvent[azsystemevents.StorageBlobDeletedEventData](t, event.Data)
 	require.Equal(t, "https://example.blob.core.windows.net/testcontainer/testfile.txt", *eventData.URL)
 }

@@ -26,3 +26,4 @@ extends:
   parameters:
     IncludeRelease: true
     ServiceDirectory: 'resourcemanager/cosmos/armcosmos'
+    UsePipelineProxy: false

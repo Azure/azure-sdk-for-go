@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/test"
@@ -21,7 +22,7 @@ import (
 func TestLinksCBSLinkStillOpen(t *testing.T) {
 	// we're not going to use this client for these tests.
 	testParams := test.GetConnectionParamsForTest(t)
-	ns, err := NewNamespace(NamespaceWithConnectionString(testParams.ConnectionString))
+	ns, err := NewNamespace(NamespaceWithTokenCredential(testParams.EventHubNamespace, testParams.Cred))
 	require.NoError(t, err)
 
 	defer func() { _ = ns.Close(context.Background(), true) }()
@@ -330,7 +331,10 @@ func requireNewLinkNewConn(t *testing.T, oldLWID LinkWithID[AMQPSenderCloser], n
 
 func newLinksForTest(t *testing.T) (*Namespace, *Links[amqpwrap.AMQPSenderCloser]) {
 	testParams := test.GetConnectionParamsForTest(t)
-	ns, err := NewNamespace(NamespaceWithConnectionString(testParams.ConnectionString))
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	require.NoError(t, err)
+
+	ns, err := NewNamespace(NamespaceWithTokenCredential(testParams.EventHubNamespace, cred))
 	require.NoError(t, err)
 
 	links := NewLinks(ns, fmt.Sprintf("%s/$management", testParams.EventHubLinksOnlyName), func(partitionID string) string {

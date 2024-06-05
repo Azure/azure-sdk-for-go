@@ -1087,7 +1087,7 @@ type ThreadRun struct {
 	Tools []ToolDefinitionClassification
 
 	// The details of the action required for the assistant thread run to continue.
-	RequiredAction *ThreadRunRequiredAction
+	RequiredAction RequiredActionClassification
 }
 
 // ThreadRunLastError - The last error, if any, encountered by this assistant thread run.
@@ -1097,19 +1097,6 @@ type ThreadRunLastError struct {
 
 	// REQUIRED; The human-readable text associated with the error.
 	Message *string
-}
-
-// ThreadRunRequiredAction - The details of the action required for the assistant thread run to continue.
-type ThreadRunRequiredAction struct {
-	// REQUIRED; The object type.
-	Type *string
-}
-
-// GetRequiredAction implements the RequiredActionClassification interface for type ThreadRunRequiredAction.
-func (t *ThreadRunRequiredAction) GetRequiredAction() *RequiredAction {
-	return &RequiredAction{
-		Type: t.Type,
-	}
 }
 
 // ToolDefinition - An abstract representation of an input tool definition that an assistant can use.

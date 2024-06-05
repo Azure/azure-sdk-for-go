@@ -2,5 +2,5 @@
   "AssetsRepo": "Azure/azure-sdk-assets",
   "AssetsRepoPrefixPath": "go",
   "TagPrefix": "go/resourcemanager/eventgrid/armeventgrid",
-  "Tag": "go/resourcemanager/eventgrid/armeventgrid_29c3f1b99d"
+  "Tag": "go/resourcemanager/eventgrid/armeventgrid_e1e01dfc49"
 }

@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v2/testutil"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -41,7 +41,7 @@ type ContainerregistryTestSuite struct {
 }
 
 func (testsuite *ContainerregistryTestSuite) SetupSuite() {
-	testutil.StartRecording(testsuite.T(), "sdk/resourcemanager/containerregistry/armcontainerregistry/testdata")
+	testutil.StartRecording(testsuite.T(), pathToPackage)
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
 	testsuite.exportPipelineName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "exportpipe", 16, false)
@@ -69,9 +69,6 @@ func (testsuite *ContainerregistryTestSuite) TearDownSuite() {
 }
 
 func TestContainerregistryTestSuite(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
 	suite.Run(t, new(ContainerregistryTestSuite))
 }
 

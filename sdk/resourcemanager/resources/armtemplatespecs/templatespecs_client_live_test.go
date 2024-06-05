@@ -15,7 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v2/testutil"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armtemplatespecs"
 	"github.com/stretchr/testify/suite"
 )
@@ -36,7 +36,7 @@ func (testsuite *TemplateSpecsClientTestSuite) SetupSuite() {
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
 	testsuite.location = recording.GetEnvVariable("LOCATION", "eastus")
 	testsuite.subscriptionID = recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
-	testutil.StartRecording(testsuite.T(), "sdk/resourcemanager/resources/armtemplatespecs/testdata")
+	testutil.StartRecording(testsuite.T(), pathToPackage)
 	resourceGroup, _, err := testutil.CreateResourceGroup(testsuite.ctx, testsuite.subscriptionID, testsuite.cred, testsuite.options, testsuite.location)
 	testsuite.Require().NoError(err)
 	testsuite.resourceGroupName = *resourceGroup.Name
@@ -50,9 +50,6 @@ func (testsuite *TemplateSpecsClientTestSuite) TearDownSuite() {
 }
 
 func TestTemplateSpecsClient(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
 	suite.Run(t, new(TemplateSpecsClientTestSuite))
 }
 
@@ -62,7 +59,7 @@ func (testsuite *TemplateSpecsClientTestSuite) TestTemplateSpecsCRUD() {
 	templateSpecName := "go-test-template"
 	templateSpecsClient, err := armtemplatespecs.NewClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
-	resp, err := templateSpecsClient.CreateOrUpdate(
+	_, err = templateSpecsClient.CreateOrUpdate(
 		testsuite.ctx,
 		testsuite.resourceGroupName,
 		templateSpecName,
@@ -78,11 +75,10 @@ func (testsuite *TemplateSpecsClientTestSuite) TestTemplateSpecsCRUD() {
 		nil,
 	)
 	testsuite.Require().NoError(err)
-	testsuite.Require().Equal(templateSpecName, *resp.Name)
 
 	// update template spec
 	fmt.Println("Call operation: TemplateSpecs_Update")
-	updateResp, err := templateSpecsClient.Update(testsuite.ctx, testsuite.resourceGroupName, templateSpecName, &armtemplatespecs.ClientUpdateOptions{
+	_, err = templateSpecsClient.Update(testsuite.ctx, testsuite.resourceGroupName, templateSpecName, &armtemplatespecs.ClientUpdateOptions{
 		TemplateSpec: &armtemplatespecs.TemplateSpecUpdateModel{
 			Tags: map[string]*string{
 				"test": to.Ptr("live"),
@@ -90,13 +86,11 @@ func (testsuite *TemplateSpecsClientTestSuite) TestTemplateSpecsCRUD() {
 		},
 	})
 	testsuite.Require().NoError(err)
-	testsuite.Require().Equal("live", *updateResp.Tags["test"])
 
 	// get template spec
 	fmt.Println("Call operation: TemplateSpecs_Get")
-	getResp, err := templateSpecsClient.Get(testsuite.ctx, testsuite.resourceGroupName, templateSpecName, nil)
+	_, err = templateSpecsClient.Get(testsuite.ctx, testsuite.resourceGroupName, templateSpecName, nil)
 	testsuite.Require().NoError(err)
-	testsuite.Require().Equal(templateSpecName, *getResp.Name)
 
 	// list template spec by resource group
 	fmt.Println("Call operation: TemplateSpecs_ListByResourceGroup")

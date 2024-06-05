@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v2/testutil"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maps/armmaps"
 	"github.com/stretchr/testify/suite"
 )
@@ -36,7 +36,7 @@ type MapsTestSuite struct {
 }
 
 func (testsuite *MapsTestSuite) SetupSuite() {
-	testutil.StartRecording(testsuite.T(), "sdk/resourcemanager/maps/armmaps/testdata")
+	testutil.StartRecording(testsuite.T(), pathToPackage)
 
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
@@ -60,9 +60,6 @@ func (testsuite *MapsTestSuite) TearDownSuite() {
 }
 
 func TestMapsTestSuite(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
 	suite.Run(t, new(MapsTestSuite))
 }
 

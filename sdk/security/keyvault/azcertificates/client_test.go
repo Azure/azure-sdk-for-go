@@ -138,9 +138,6 @@ func TestBackupRestore(t *testing.T) {
 }
 
 func TestContactsCRUD(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
 	client := startTest(t)
 
 	contacts := azcertificates.Contacts{ContactList: []*azcertificates.Contact{
@@ -160,9 +157,6 @@ func TestContactsCRUD(t *testing.T) {
 }
 
 func TestCRUD(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
 	client := startTest(t)
 
 	certName := getName(t, "")
@@ -225,9 +219,6 @@ func TestCRUD(t *testing.T) {
 }
 
 func TestDeleteRecover(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
 	client := startTest(t)
 	certName := getName(t, "")
 	createParams := azcertificates.CreateCertificateParameters{CertificatePolicy: &selfSignedPolicy}
@@ -322,9 +313,6 @@ func TestID(t *testing.T) {
 }
 
 func TestImportCertificate(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
 	client := startTest(t)
 	certName := getName(t, "")
 	importParams := azcertificates.ImportCertificateParameters{
@@ -411,9 +399,6 @@ func TestIssuerCRUD(t *testing.T) {
 }
 
 func TestListCertificates(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
 	client := startTest(t)
 
 	tag := getName(t, "")
@@ -479,9 +464,6 @@ func TestListCertificates(t *testing.T) {
 }
 
 func TestListCertificateVersions(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
 	client := startTest(t)
 
 	name := getName(t, "")
@@ -617,9 +599,6 @@ func TestOperationCRUD(t *testing.T) {
 }
 
 func TestUpdateCertificatePolicy(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
 	client := startTest(t)
 
 	certName := getName(t, "")

@@ -14,7 +14,6 @@ import (
 	"hash/fnv"
 	"os"
 	"regexp"
-	"strings"
 	"sync"
 	"testing"
 	"time"
@@ -28,7 +27,7 @@ import (
 )
 
 const recordingDirectory = "sdk/security/keyvault/azsecrets/testdata"
-const fakeVaultURL = "https://fakevault.local"
+const fakeVaultURL = "https://test.vault.azure.net/"
 
 var (
 	secretsToPurge = struct {
@@ -62,42 +61,29 @@ func run(m *testing.M) int {
 		}()
 	}
 
-	vaultURL = fakeVaultURL
-	if recording.GetRecordMode() != recording.PlaybackMode {
-		if u, ok := os.LookupEnv("AZURE_KEYVAULT_URL"); ok && u != "" {
-			vaultURL = strings.TrimSuffix(u, "/")
-		} else {
-			panic("no value for AZURE_KEYVAULT_URL")
-		}
-	}
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		credential = &FakeCredential{}
 	} else {
-		tenantID := lookupEnvVar("AZSECRETS_TENANT_ID")
-		clientID := lookupEnvVar("AZSECRETS_CLIENT_ID")
-		secret := lookupEnvVar("AZSECRETS_CLIENT_SECRET")
+		tenantID := getEnvVar("AZSECRETS_TENANT_ID", "")
+		clientID := getEnvVar("AZSECRETS_CLIENT_ID", "")
+		secret := getEnvVar("AZSECRETS_CLIENT_SECRET", "")
 		var err error
 		credential, err = azidentity.NewClientSecretCredential(tenantID, clientID, secret, nil)
 		if err != nil {
 			panic(err)
 		}
 	}
-	if recording.GetRecordMode() == recording.RecordingMode {
-		err := recording.AddURISanitizer(fakeVaultURL, vaultURL, nil)
-		if err != nil {
-			panic(err)
-		}
-		opts := proxy.Options
-		opts.GroupForReplace = "1"
-		err = recording.AddHeaderRegexSanitizer("WWW-Authenticate", "https://local", `resource="(.*)"`, opts)
-		if err != nil {
-			panic(err)
-		}
-		err = recording.AddBodyRegexSanitizer(fakeVaultURL, vaultURL, nil)
+	vaultURL = getEnvVar("AZURE_KEYVAULT_URL", fakeVaultURL)
+
+	if recording.GetRecordMode() != recording.LiveMode {
+		err := recording.RemoveRegisteredSanitizers([]string{
+			"AZSDK3430", // id in body
+		}, nil)
 		if err != nil {
 			panic(err)
 		}
 	}
+
 	code := m.Run()
 	if recording.GetRecordMode() != recording.PlaybackMode {
 		// Purge test secrets using a client whose requests aren't recorded. This
@@ -150,12 +136,25 @@ func createRandomName(t *testing.T, prefix string) string {
 	return prefix + fmt.Sprint(h.Sum32())
 }
 
-func lookupEnvVar(s string) string {
-	ret, ok := os.LookupEnv(s)
-	if !ok {
-		panic(fmt.Sprintf("Could not find env var: '%s'", s))
+func getEnvVar(envVar string, fakeValue string) string {
+	// get value
+	value := fakeValue
+	if recording.GetRecordMode() == recording.LiveMode || recording.GetRecordMode() == recording.RecordingMode {
+		value = os.Getenv(envVar)
+		if value == "" {
+			panic("no value for " + envVar)
+		}
 	}
-	return ret
+
+	// sanitize value
+	if fakeValue != "" && recording.GetRecordMode() == recording.RecordingMode {
+		err := recording.AddGeneralRegexSanitizer(fakeValue, value, nil)
+		if err != nil {
+			panic(err)
+		}
+	}
+
+	return value
 }
 
 func cleanUpSecret(t *testing.T, client *azsecrets.Client, name string) {

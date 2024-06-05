@@ -15,7 +15,6 @@ import (
 	"hash/fnv"
 	"os"
 	"regexp"
-	"strings"
 	"sync"
 	"testing"
 	"time"
@@ -30,9 +29,9 @@ import (
 )
 
 const recordingDirectory = "sdk/security/keyvault/azkeys/testdata"
-const fakeAttestationUrl = "https://fakeattestation"
-const fakeMHSMURL = "https://fakemhsm.local"
-const fakeVaultURL = "https://fakevault.local"
+const fakeAttestationUrl = "https://test.azurewebsites.net/"
+const fakeMHSMURL = "https://test.managedhsm.azure.net/"
+const fakeVaultURL = "https://test.vault.azure.net/"
 
 var (
 	keysToPurge = struct {
@@ -69,49 +68,25 @@ func run(m *testing.M) int {
 		}()
 	}
 
-	attestationURL = strings.TrimSuffix(recording.GetEnvVariable("AZURE_KEYVAULT_ATTESTATION_URL", fakeAttestationUrl), "/")
-	mhsmURL = strings.TrimSuffix(recording.GetEnvVariable("AZURE_MANAGEDHSM_URL", fakeMHSMURL), "/")
-	vaultURL = strings.TrimSuffix(recording.GetEnvVariable("AZURE_KEYVAULT_URL", fakeVaultURL), "/")
-	if vaultURL == "" {
-		if recording.GetRecordMode() != recording.PlaybackMode {
-			panic("no value for AZURE_KEYVAULT_URL")
-		}
-		vaultURL = fakeVaultURL
-	}
-	enableHSM = mhsmURL != fakeMHSMURL
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		credential = &FakeCredential{}
 	} else {
-		tenantId := lookupEnvVar("AZKEYS_TENANT_ID")
-		clientId := lookupEnvVar("AZKEYS_CLIENT_ID")
-		secret := lookupEnvVar("AZKEYS_CLIENT_SECRET")
+		tenantId := getEnvVar("AZKEYS_TENANT_ID", "")
+		clientId := getEnvVar("AZKEYS_CLIENT_ID", "")
+		secret := getEnvVar("AZKEYS_CLIENT_SECRET", "")
 		var err error
 		credential, err = azidentity.NewClientSecretCredential(tenantId, clientId, secret, nil)
 		if err != nil {
 			panic(err)
 		}
 	}
+
+	attestationURL = getEnvVar("AZURE_KEYVAULT_ATTESTATION_URL", fakeAttestationUrl)
+	mhsmURL = getEnvVar("AZURE_MANAGEDHSM_URL", fakeMHSMURL)
+	vaultURL = getEnvVar("AZURE_KEYVAULT_URL", fakeVaultURL)
+	enableHSM = mhsmURL != fakeMHSMURL
+
 	if recording.GetRecordMode() == recording.RecordingMode {
-		for _, URI := range []struct{ real, fake string }{
-			{attestationURL, fakeAttestationUrl},
-			{mhsmURL, fakeMHSMURL},
-			{vaultURL, fakeVaultURL},
-		} {
-			err := recording.AddURISanitizer(URI.fake, URI.real, nil)
-			if err != nil {
-				panic(err)
-			}
-			opts := proxy.Options
-			opts.GroupForReplace = "1"
-			err = recording.AddHeaderRegexSanitizer("WWW-Authenticate", "https://local", `resource="(.*)"`, opts)
-			if err != nil {
-				panic(err)
-			}
-			err = recording.AddBodyRegexSanitizer(URI.fake, URI.real, nil)
-			if err != nil {
-				panic(err)
-			}
-		}
 		for _, path := range []string{"$.error.message", "$.key.kid", "$.recoveryId"} {
 			err := recording.AddBodyKeySanitizer(path, fakeVaultURL, vaultURL, nil)
 			if err != nil {
@@ -125,7 +100,7 @@ func run(m *testing.M) int {
 		// these values aren't secret but we redact them anyway to avoid
 		// alerts from automation scanning for JWTs or "token" values
 		for _, attestation := range []string{"$.target", "$.token"} {
-			err := recording.AddBodyKeySanitizer(attestation, "redacted", "", nil)
+			err := recording.AddBodyKeySanitizer(attestation, recording.SanitizedValue, "", nil)
 			if err != nil {
 				panic(err)
 			}
@@ -203,12 +178,25 @@ func createRandomName(t *testing.T, prefix string) string {
 	return prefix + fmt.Sprint(h.Sum32())
 }
 
-func lookupEnvVar(s string) string {
-	ret, ok := os.LookupEnv(s)
-	if !ok {
-		panic(fmt.Sprintf("Could not find env var: '%s'", s))
+func getEnvVar(envVar string, fakeValue string) string {
+	// get value
+	value := fakeValue
+	if recording.GetRecordMode() == recording.LiveMode || recording.GetRecordMode() == recording.RecordingMode {
+		value = os.Getenv(envVar)
+		if value == "" {
+			panic("no value for " + envVar)
+		}
 	}
-	return ret
+
+	// sanitize value
+	if fakeValue != "" && recording.GetRecordMode() == recording.RecordingMode {
+		err := recording.AddGeneralRegexSanitizer(fakeValue, value, nil)
+		if err != nil {
+			panic(err)
+		}
+	}
+
+	return value
 }
 
 func cleanUpKey(t *testing.T, client *azkeys.Client, ID *azkeys.ID) {

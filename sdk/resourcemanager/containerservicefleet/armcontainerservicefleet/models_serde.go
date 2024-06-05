@@ -20,8 +20,6 @@ import (
 func (a APIServerAccessProfile) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "enablePrivateCluster", a.EnablePrivateCluster)
-	populate(objectMap, "enableVnetIntegration", a.EnableVnetIntegration)
-	populate(objectMap, "subnetId", a.SubnetID)
 	return json.Marshal(objectMap)
 }
 
@@ -36,12 +34,6 @@ func (a *APIServerAccessProfile) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "enablePrivateCluster":
 			err = unpopulate(val, "EnablePrivateCluster", &a.EnablePrivateCluster)
-			delete(rawMsg, key)
-		case "enableVnetIntegration":
-			err = unpopulate(val, "EnableVnetIntegration", &a.EnableVnetIntegration)
-			delete(rawMsg, key)
-		case "subnetId":
-			err = unpopulate(val, "SubnetID", &a.SubnetID)
 			delete(rawMsg, key)
 		}
 		if err != nil {

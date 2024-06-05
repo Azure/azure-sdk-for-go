@@ -4028,8 +4028,9 @@ func (s *PageBlobUnrecordedTestsSuite) TestPageBlockWithCPK() {
 	}, &uploadPagesOptions)
 	_require.NoError(err)
 	// _require.Equal(uploadResp.RawResponse.StatusCode, 201)
-	_require.EqualValues(uploadResp.EncryptionKeySHA256, testcommon.TestCPKByValue.EncryptionKeySHA256)
-
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		_require.EqualValues(uploadResp.EncryptionKeySHA256, testcommon.TestCPKByValue.EncryptionKeySHA256)
+	}
 	pager := pbClient.NewGetPageRangesPager(nil)
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
@@ -4064,7 +4065,9 @@ func (s *PageBlobUnrecordedTestsSuite) TestPageBlockWithCPK() {
 	destData, err := io.ReadAll(downloadResp.Body)
 	_require.NoError(err)
 	_require.EqualValues(destData, srcData)
-	_require.EqualValues(*downloadResp.EncryptionKeySHA256, *testcommon.TestCPKByValue.EncryptionKeySHA256)
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		_require.EqualValues(*downloadResp.EncryptionKeySHA256, *testcommon.TestCPKByValue.EncryptionKeySHA256)
+	}
 }
 
 func (s *PageBlobUnrecordedTestsSuite) TestPageBlockWithCPKScope() {

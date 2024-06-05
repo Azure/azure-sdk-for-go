@@ -216,8 +216,7 @@ func TestMessageSettlementUsingOnlyBackupSettlement(t *testing.T) {
 		}, nil)
 		require.NoError(t, err)
 
-		oldConn, err := NewClientFromConnectionString(test.GetConnectionString(t), nil)
-		require.NoError(t, err)
+		oldConn := newServiceBusClientForTest(t, nil)
 		defer test.RequireClose(t, oldConn)
 
 		oldReceiver, err := oldConn.NewReceiverForQueue(queueName, nil)

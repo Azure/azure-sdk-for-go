@@ -27,7 +27,7 @@ func TestMain(m *testing.M) {
 }
 
 func run(m *testing.M) int {
-	if recording.GetRecordMode() == recording.PlaybackMode || recording.GetRecordMode() == recording.RecordingMode {
+	if recording.GetRecordMode() != recording.LiveMode {
 		proxy, err := recording.StartTestProxy(recordingDirectory, nil)
 		if err != nil {
 			panic(err)
@@ -40,32 +40,21 @@ func run(m *testing.M) int {
 			}
 		}()
 	}
-
-	// 1. Set up session level sanitizers
-	switch recording.GetRecordMode() {
-	case recording.PlaybackMode:
-		err := recording.SetDefaultMatcher(nil, &recording.SetDefaultMatcherOptions{
-			ExcludedHeaders: []string{":path", ":auth", ":method", ":scheme"},
-		})
-		if err != nil {
-			panic(err)
-		}
-	case recording.RecordingMode:
-		for _, val := range []string{"TABLES_COSMOS_ACCOUNT_NAME", "TABLES_STORAGE_ACCOUNT_NAME"} {
-			account, ok := os.LookupEnv(val)
-			if !ok {
-				fmt.Printf("Could not find environment variable: %s", val)
-				os.Exit(1)
-			}
-
-			err := recording.AddGeneralRegexSanitizer("fakeaccount", account, nil)
+	for _, v := range []string{"TABLES_COSMOS_ACCOUNT_NAME", "TABLES_STORAGE_ACCOUNT_NAME"} {
+		account := recording.GetEnvVariable(v, recording.SanitizedValue)
+		if account != recording.SanitizedValue {
+			err := recording.AddGeneralRegexSanitizer(recording.SanitizedValue, account, nil)
 			if err != nil {
 				panic(err)
 			}
+		} else if recording.GetRecordMode() != recording.PlaybackMode {
+			panic("no value for " + v)
 		}
-
 	}
-	// Run tests
+	err := recording.AddGeneralRegexSanitizer("batch_00000000-0000-0000-0000-000000000000", "batch_[0-9A-Fa-f]{8}[-]([0-9A-Fa-f]{4}[-]?){3}[0-9a-fA-F]{12}", nil)
+	if err != nil {
+		panic(err)
+	}
 	return m.Run()
 }
 

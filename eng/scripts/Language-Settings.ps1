@@ -99,11 +99,15 @@ function Get-AllPackageInfoFromRepo($serviceDirectory)
 {
   $allPackageProps = @()
   $searchPath = Join-Path $RepoRoot "sdk"
+  $pkgFiles = @()
   if ($serviceDirectory) {
     $searchPath = Join-Path $searchPath $serviceDirectory
+    # If we have a service directory only include the immediate match, no nested go.mod files
+    [array]$pkgFiles = Get-ChildItem -Path $searchPath -Include "go.mod" -Depth 1
+  } else {
+    # If service directory is not passed in, find all modules
+    [array]$pkgFiles = Get-ChildItem -Path $searchPath -Include "go.mod" -Recurse
   }
-
-  $pkgFiles = Get-ChildItem -Path $searchPath -Include "go.mod" -Recurse
 
   foreach ($pkgFile in $pkgFiles)
   {

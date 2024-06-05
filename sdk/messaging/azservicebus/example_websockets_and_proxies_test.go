@@ -28,9 +28,9 @@ func ExampleNewClient_usingWebsocketsAndProxies() {
 		return websocket.NetConn(ctx, wssConn, websocket.MessageBinary), nil
 	}
 
-	// NOTE: If you'd like to authenticate via Azure Active Directory look at
-	// the `NewClient` function instead.
-	client, err = azservicebus.NewClientFromConnectionString(connectionString, &azservicebus.ClientOptions{
+	// NOTE: If you'd like to authenticate using a Service Bus connection string
+	// look at `NewClientFromConnectionString` instead.
+	client, err = azservicebus.NewClient(endpoint, tokenCredential, &azservicebus.ClientOptions{
 		NewWebSocketConn: newWebSocketConnFn,
 	})
 

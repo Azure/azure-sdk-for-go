@@ -48,6 +48,7 @@ const (
 
 var (
 	accessTokenRespSuccess = []byte(fmt.Sprintf(`{"access_token": "%s","expires_in": %d,"token_type":"Bearer"}`, tokenValue, tokenExpiresIn))
+	ctx                    = context.Background()
 	testTRO                = policy.TokenRequestOptions{Scopes: []string{liveTestScope}}
 )
 

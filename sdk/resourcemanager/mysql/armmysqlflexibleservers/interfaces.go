@@ -16,3 +16,12 @@ type BackupStoreDetailsClassification interface {
 	// GetBackupStoreDetails returns the BackupStoreDetails content of the underlying type.
 	GetBackupStoreDetails() *BackupStoreDetails
 }
+
+// OperationProgressResponseTypeClassification provides polymorphic access to related types.
+// Call the interface's GetOperationProgressResponseType() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *BackupAndExportResponseType, *ImportFromStorageResponseType, *OperationProgressResponseType
+type OperationProgressResponseTypeClassification interface {
+	// GetOperationProgressResponseType returns the OperationProgressResponseType content of the underlying type.
+	GetOperationProgressResponseType() *OperationProgressResponseType
+}

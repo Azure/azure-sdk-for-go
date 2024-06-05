@@ -62,8 +62,7 @@ func TestClient_GetChatCompletions_AzureOpenAI_ContentFilter_WithResponse(t *tes
 		Temperature:    to.Ptr(float32(0.0)),
 		DeploymentName: &azureOpenAI.ChatCompletionsRAI.Model,
 	}, nil)
-
-	require.NoError(t, err)
+	customRequireNoError(t, err, true)
 
 	require.Equal(t, safeContentFilter, resp.ChatCompletions.Choices[0].ContentFilterResults)
 }

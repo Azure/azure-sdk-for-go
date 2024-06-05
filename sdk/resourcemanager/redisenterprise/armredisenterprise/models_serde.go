@@ -390,12 +390,14 @@ func (d DatabaseProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "clientProtocol", d.ClientProtocol)
 	populate(objectMap, "clusteringPolicy", d.ClusteringPolicy)
+	populate(objectMap, "deferUpgrade", d.DeferUpgrade)
 	populate(objectMap, "evictionPolicy", d.EvictionPolicy)
 	populate(objectMap, "geoReplication", d.GeoReplication)
 	populate(objectMap, "modules", d.Modules)
 	populate(objectMap, "persistence", d.Persistence)
 	populate(objectMap, "port", d.Port)
 	populate(objectMap, "provisioningState", d.ProvisioningState)
+	populate(objectMap, "redisVersion", d.RedisVersion)
 	populate(objectMap, "resourceState", d.ResourceState)
 	return json.Marshal(objectMap)
 }
@@ -415,6 +417,9 @@ func (d *DatabaseProperties) UnmarshalJSON(data []byte) error {
 		case "clusteringPolicy":
 			err = unpopulate(val, "ClusteringPolicy", &d.ClusteringPolicy)
 			delete(rawMsg, key)
+		case "deferUpgrade":
+			err = unpopulate(val, "DeferUpgrade", &d.DeferUpgrade)
+			delete(rawMsg, key)
 		case "evictionPolicy":
 			err = unpopulate(val, "EvictionPolicy", &d.EvictionPolicy)
 			delete(rawMsg, key)
@@ -432,6 +437,9 @@ func (d *DatabaseProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "provisioningState":
 			err = unpopulate(val, "ProvisioningState", &d.ProvisioningState)
+			delete(rawMsg, key)
+		case "redisVersion":
+			err = unpopulate(val, "RedisVersion", &d.RedisVersion)
 			delete(rawMsg, key)
 		case "resourceState":
 			err = unpopulate(val, "ResourceState", &d.ResourceState)
@@ -648,6 +656,37 @@ func (f *FlushParameters) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "ids":
 			err = unpopulate(val, "IDs", &f.IDs)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", f, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ForceLinkParameters.
+func (f ForceLinkParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "groupNickname", f.GroupNickname)
+	populate(objectMap, "linkedDatabases", f.LinkedDatabases)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ForceLinkParameters.
+func (f *ForceLinkParameters) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", f, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "groupNickname":
+			err = unpopulate(val, "GroupNickname", &f.GroupNickname)
+			delete(rawMsg, key)
+		case "linkedDatabases":
+			err = unpopulate(val, "LinkedDatabases", &f.LinkedDatabases)
 			delete(rawMsg, key)
 		}
 		if err != nil {

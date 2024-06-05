@@ -7,5 +7,5 @@ extends:
     Prefix: go
     CIConventionOptions: ''
     # Includes live test variable group 64 for unified pipeline (ci+live tests)
-    UPConventionOptions: '--variablegroups 58 76 56 93 64'
+    UPConventionOptions: '--variablegroups 58 76 93 64'
     GenerateUnifiedWeekly: true

@@ -77,10 +77,95 @@ type BackupPoliciesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BackupsClientGetVolumeRestoreStatusOptions contains the optional parameters for the BackupsClient.GetVolumeRestoreStatus
+// BackupVaultsClientBeginCreateOrUpdateOptions contains the optional parameters for the BackupVaultsClient.BeginCreateOrUpdate
 // method.
-type BackupsClientGetVolumeRestoreStatusOptions struct {
+type BackupVaultsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// BackupVaultsClientBeginDeleteOptions contains the optional parameters for the BackupVaultsClient.BeginDelete method.
+type BackupVaultsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// BackupVaultsClientBeginUpdateOptions contains the optional parameters for the BackupVaultsClient.BeginUpdate method.
+type BackupVaultsClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// BackupVaultsClientGetOptions contains the optional parameters for the BackupVaultsClient.Get method.
+type BackupVaultsClientGetOptions struct {
 	// placeholder for future optional parameters
+}
+
+// BackupVaultsClientListByNetAppAccountOptions contains the optional parameters for the BackupVaultsClient.NewListByNetAppAccountPager
+// method.
+type BackupVaultsClientListByNetAppAccountOptions struct {
+	// placeholder for future optional parameters
+}
+
+// BackupsClientBeginCreateOptions contains the optional parameters for the BackupsClient.BeginCreate method.
+type BackupsClientBeginCreateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// BackupsClientBeginDeleteOptions contains the optional parameters for the BackupsClient.BeginDelete method.
+type BackupsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// BackupsClientBeginUpdateOptions contains the optional parameters for the BackupsClient.BeginUpdate method.
+type BackupsClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// BackupsClientGetLatestStatusOptions contains the optional parameters for the BackupsClient.GetLatestStatus method.
+type BackupsClientGetLatestStatusOptions struct {
+	// placeholder for future optional parameters
+}
+
+// BackupsClientGetOptions contains the optional parameters for the BackupsClient.Get method.
+type BackupsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// BackupsClientGetVolumeLatestRestoreStatusOptions contains the optional parameters for the BackupsClient.GetVolumeLatestRestoreStatus
+// method.
+type BackupsClientGetVolumeLatestRestoreStatusOptions struct {
+	// placeholder for future optional parameters
+}
+
+// BackupsClientListByVaultOptions contains the optional parameters for the BackupsClient.NewListByVaultPager method.
+type BackupsClientListByVaultOptions struct {
+	// An option to specify the VolumeResourceId. If present, then only returns the backups under the specified volume
+	Filter *string
+}
+
+// BackupsUnderAccountClientBeginMigrateBackupsOptions contains the optional parameters for the BackupsUnderAccountClient.BeginMigrateBackups
+// method.
+type BackupsUnderAccountClientBeginMigrateBackupsOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// BackupsUnderBackupVaultClientBeginRestoreFilesOptions contains the optional parameters for the BackupsUnderBackupVaultClient.BeginRestoreFiles
+// method.
+type BackupsUnderBackupVaultClientBeginRestoreFilesOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// BackupsUnderVolumeClientBeginMigrateBackupsOptions contains the optional parameters for the BackupsUnderVolumeClient.BeginMigrateBackups
+// method.
+type BackupsUnderVolumeClientBeginMigrateBackupsOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
@@ -159,6 +244,16 @@ type ResourceQuotaLimitsClientGetOptions struct {
 
 // ResourceQuotaLimitsClientListOptions contains the optional parameters for the ResourceQuotaLimitsClient.NewListPager method.
 type ResourceQuotaLimitsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ResourceRegionInfosClientGetOptions contains the optional parameters for the ResourceRegionInfosClient.Get method.
+type ResourceRegionInfosClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ResourceRegionInfosClientListOptions contains the optional parameters for the ResourceRegionInfosClient.NewListPager method.
+type ResourceRegionInfosClientListOptions struct {
 	// placeholder for future optional parameters
 }
 

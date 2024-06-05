@@ -238,7 +238,7 @@ func (c *managedIdentityClient) authenticate(ctx context.Context, id ManagedIDKi
 		}
 	}
 
-	return azcore.AccessToken{}, newAuthenticationFailedError(credNameManagedIdentity, "authentication failed", resp, nil)
+	return azcore.AccessToken{}, newAuthenticationFailedError(credNameManagedIdentity, "", resp, nil)
 }
 
 func (c *managedIdentityClient) createAccessToken(res *http.Response) (azcore.AccessToken, error) {

@@ -10,7 +10,7 @@ package armselfhelp
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/selfhelp/armselfhelp"
-	moduleVersion = "v2.0.0-beta.4"
+	moduleVersion = "v2.0.0-beta.5"
 )
 
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.

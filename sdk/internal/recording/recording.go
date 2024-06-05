@@ -25,7 +25,6 @@ import (
 	"strconv"
 	"strings"
 	"sync"
-	"sync/atomic"
 	"testing"
 	"time"
 
@@ -79,12 +78,7 @@ const (
 	Secret_Base64String VariableType = "secret_base64String"
 )
 
-var (
-	// defaultSanitizersSet tracks whether default sanitizers have been added (this would be neater with Go 1.19's atomic.Bool)
-	defaultSanitizersSet int32
-
-	errUnsupportedAPI = errors.New("the vcr based test recording API isn't supported. Use the test proxy instead")
-)
+var errUnsupportedAPI = errors.New("the vcr based test recording API isn't supported. Use the test proxy instead")
 
 // NewRecording initializes a new Recording instance
 func NewRecording(c TestContext, mode RecordMode) (*Recording, error) {
@@ -399,13 +393,6 @@ func Start(t *testing.T, pathToRecordings string, options *RecordingOptions) err
 		if testStruct.liveOnly {
 			// test should only be run live, don't want to generate recording
 			return nil
-		}
-	}
-	if recordMode == RecordingMode && atomic.CompareAndSwapInt32(&defaultSanitizersSet, 0, 1) {
-		err := addSanitizers(defaultSanitizers, options)
-		if err != nil {
-			atomic.StoreInt32(&defaultSanitizersSet, 0)
-			return err
 		}
 	}
 	if options == nil {

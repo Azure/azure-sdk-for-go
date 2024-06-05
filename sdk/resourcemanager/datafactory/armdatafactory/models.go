@@ -3689,7 +3689,7 @@ type AzureFunctionActivityTypeProperties struct {
 	// Represents the headers that will be sent to the request. For example, to set the language and type on a request: "headers"
 	// : { "Accept-Language": "en-us", "Content-Type": "application/json" }. Type:
 	// string (or Expression with resultType string).
-	Headers map[string]*string
+	Headers map[string]any
 }
 
 // AzureFunctionLinkedService - Azure Function linked service.
@@ -7923,7 +7923,7 @@ func (c *Credential) GetCredential() *Credential { return c }
 // CredentialListResponse - A list of credential resources.
 type CredentialListResponse struct {
 	// REQUIRED; List of credentials.
-	Value []*ManagedIdentityCredentialResource
+	Value []*CredentialResource
 
 	// The link to the next page of results, if any remaining results exist.
 	NextLink *string
@@ -7939,6 +7939,24 @@ type CredentialReference struct {
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
 	AdditionalProperties map[string]any
+}
+
+// CredentialResource - Credential resource type.
+type CredentialResource struct {
+	// REQUIRED; Properties of credentials.
+	Properties CredentialClassification
+
+	// READ-ONLY; Etag identifies change in the resource.
+	Etag *string
+
+	// READ-ONLY; The resource identifier.
+	ID *string
+
+	// READ-ONLY; The resource name.
+	Name *string
+
+	// READ-ONLY; The resource type.
+	Type *string
 }
 
 // CustomActivity - Custom activity type.
@@ -17204,9 +17222,6 @@ type ManagedIdentityCredential struct {
 
 	// Credential description.
 	Description *string
-
-	// Managed identity credential properties.
-	TypeProperties *ManagedIdentityTypeProperties
 }
 
 // GetCredential implements the CredentialClassification interface for type ManagedIdentityCredential.
@@ -17217,30 +17232,6 @@ func (m *ManagedIdentityCredential) GetCredential() *Credential {
 		Description:          m.Description,
 		Type:                 m.Type,
 	}
-}
-
-// ManagedIdentityCredentialResource - Credential resource type.
-type ManagedIdentityCredentialResource struct {
-	// REQUIRED; Managed Identity Credential properties.
-	Properties *ManagedIdentityCredential
-
-	// READ-ONLY; Etag identifies change in the resource.
-	Etag *string
-
-	// READ-ONLY; The resource identifier.
-	ID *string
-
-	// READ-ONLY; The resource name.
-	Name *string
-
-	// READ-ONLY; The resource type.
-	Type *string
-}
-
-// ManagedIdentityTypeProperties - Managed identity type properties.
-type ManagedIdentityTypeProperties struct {
-	// The resource id of user assigned managed identity
-	ResourceID *string
 }
 
 // ManagedIntegrationRuntime - Managed integration runtime, including managed elastic and managed dedicated integration runtimes.
@@ -31357,7 +31348,7 @@ type WebActivityTypeProperties struct {
 	// Represents the headers that will be sent to the request. For example, to set the language and type on a request: "headers"
 	// : { "Accept-Language": "en-us", "Content-Type": "application/json" }. Type:
 	// string (or Expression with resultType string).
-	Headers map[string]*string
+	Headers map[string]any
 
 	// List of linked services passed to web endpoint.
 	LinkedServices []*LinkedServiceReference
@@ -31516,7 +31507,7 @@ type WebHookActivityTypeProperties struct {
 	// Represents the headers that will be sent to the request. For example, to set the language and type on a request: "headers"
 	// : { "Accept-Language": "en-us", "Content-Type": "application/json" }. Type:
 	// string (or Expression with resultType string).
-	Headers map[string]*string
+	Headers map[string]any
 
 	// When set to true, statusCode, output and error in callback request body will be consumed by activity. The activity can
 	// be marked as failed by setting statusCode >= 400 in callback request. Default is

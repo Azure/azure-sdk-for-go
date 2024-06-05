@@ -5,13 +5,25 @@ package azeventhubs_test
 
 import (
 	"context"
+	"fmt"
+	"log"
 	"net"
+	"os"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs"
 	"nhooyr.io/websocket"
 )
 
 func ExampleNewClient_usingWebsocketsAndProxies() {
+	eventHubNamespace := os.Getenv("EVENTHUB_NAMESPACE") // <ex: myeventhubnamespace.servicebus.windows.net>
+	eventHubName := os.Getenv("EVENTHUB_NAME")
+
+	if eventHubName == "" || eventHubNamespace == "" {
+		fmt.Fprintf(os.Stderr, "Skipping example, environment variables missing\n")
+		return
+	}
+
 	// You can use an HTTP proxy, with websockets, by setting the appropriate HTTP(s)_PROXY
 	// variable in your environment, as described in the https://pkg.go.dev/net/http#ProxyFromEnvironment
 	// function.
@@ -28,14 +40,20 @@ func ExampleNewClient_usingWebsocketsAndProxies() {
 		return websocket.NetConn(ctx, wssConn, websocket.MessageBinary), nil
 	}
 
-	// NOTE: If you'd like to authenticate via Azure Active Directory use the
-	// the `NewProducerClient` or `NewConsumerClient` functions.
-	consumerClient, err = azeventhubs.NewConsumerClientFromConnectionString("connection-string", "event-hub", azeventhubs.DefaultConsumerGroup, &azeventhubs.ConsumerClientOptions{
+	defaultAzureCred, err := azidentity.NewDefaultAzureCredential(nil)
+
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	consumerClient, err = azeventhubs.NewConsumerClient(eventHubNamespace, eventHubName, azeventhubs.DefaultConsumerGroup, defaultAzureCred, &azeventhubs.ConsumerClientOptions{
 		NewWebSocketConn: newWebSocketConnFn,
 	})
 
 	if err != nil {
-		panic(err)
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
 	}
 
 	// NOTE: For users of `nhooyr.io/websocket` there's an open discussion here:

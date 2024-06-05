@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory/v6"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory/v7"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -26,7 +26,7 @@ import (
 type CredentialOperationsServer struct {
 	// CreateOrUpdate is the fake for method CredentialOperationsClient.CreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK
-	CreateOrUpdate func(ctx context.Context, resourceGroupName string, factoryName string, credentialName string, credential armdatafactory.ManagedIdentityCredentialResource, options *armdatafactory.CredentialOperationsClientCreateOrUpdateOptions) (resp azfake.Responder[armdatafactory.CredentialOperationsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	CreateOrUpdate func(ctx context.Context, resourceGroupName string, factoryName string, credentialName string, credential armdatafactory.CredentialResource, options *armdatafactory.CredentialOperationsClientCreateOrUpdateOptions) (resp azfake.Responder[armdatafactory.CredentialOperationsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// Delete is the fake for method CredentialOperationsClient.Delete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
@@ -99,7 +99,7 @@ func (c *CredentialOperationsServerTransport) dispatchCreateOrUpdate(req *http.R
 	if matches == nil || len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	body, err := server.UnmarshalRequestAsJSON[armdatafactory.ManagedIdentityCredentialResource](req)
+	body, err := server.UnmarshalRequestAsJSON[armdatafactory.CredentialResource](req)
 	if err != nil {
 		return nil, err
 	}
@@ -130,7 +130,7 @@ func (c *CredentialOperationsServerTransport) dispatchCreateOrUpdate(req *http.R
 	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ManagedIdentityCredentialResource, req)
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CredentialResource, req)
 	if err != nil {
 		return nil, err
 	}
@@ -211,7 +211,7 @@ func (c *CredentialOperationsServerTransport) dispatchGet(req *http.Request) (*h
 	if !contains([]int{http.StatusOK, http.StatusNotModified}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNotModified", respContent.HTTPStatus)}
 	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ManagedIdentityCredentialResource, req)
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CredentialResource, req)
 	if err != nil {
 		return nil, err
 	}

@@ -1271,11 +1271,11 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendSetImmutabilityPolicy() {
 
 	currentTime, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 GMT 2049")
 	_require.NoError(err)
-	policy := blob.ImmutabilityPolicySetting(blob.ImmutabilityPolicySettingUnlocked)
+	immutabilityPolicySetting := blob.ImmutabilityPolicySetting(blob.ImmutabilityPolicySettingUnlocked)
 	_require.NoError(err)
 
 	setImmutabilityPolicyOptions := &blob.SetImmutabilityPolicyOptions{
-		Mode:                     &policy,
+		Mode:                     &immutabilityPolicySetting,
 		ModifiedAccessConditions: nil,
 	}
 	_, err = abClient.SetImmutabilityPolicy(context.Background(), currentTime, setImmutabilityPolicyOptions)
@@ -1310,11 +1310,11 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendDeleteImmutabilityPolicy() {
 	currentTime, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 GMT 2049")
 	_require.NoError(err)
 
-	policy := blob.ImmutabilityPolicySetting(blob.ImmutabilityPolicySettingUnlocked)
+	immutabilityPolicySetting := blob.ImmutabilityPolicySetting(blob.ImmutabilityPolicySettingUnlocked)
 	_require.NoError(err)
 
 	setImmutabilityPolicyOptions := &blob.SetImmutabilityPolicyOptions{
-		Mode:                     &policy,
+		Mode:                     &immutabilityPolicySetting,
 		ModifiedAccessConditions: nil,
 	}
 	_, err = abClient.SetImmutabilityPolicy(context.Background(), currentTime, setImmutabilityPolicyOptions)
@@ -2251,7 +2251,9 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockWithCPK() {
 		_require.NotNil(resp.Date)
 		_require.Equal((*resp.Date).IsZero(), false)
 		_require.Equal(*resp.IsServerEncrypted, true)
-		_require.EqualValues(resp.EncryptionKeySHA256, testcommon.TestCPKByValue.EncryptionKeySHA256)
+		if recording.GetRecordMode() != recording.PlaybackMode {
+			_require.EqualValues(resp.EncryptionKeySHA256, testcommon.TestCPKByValue.EncryptionKeySHA256)
+		}
 	}
 
 	// Get blob content without encryption key should fail the request.
@@ -2268,7 +2270,9 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockWithCPK() {
 	data, err := io.ReadAll(downloadResp.Body)
 	_require.NoError(err)
 	_require.EqualValues(string(data), "AAA BBB CCC ")
-	_require.EqualValues(*downloadResp.EncryptionKeySHA256, *testcommon.TestCPKByValue.EncryptionKeySHA256)
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		_require.EqualValues(*downloadResp.EncryptionKeySHA256, *testcommon.TestCPKByValue.EncryptionKeySHA256)
+	}
 }
 
 func (s *AppendBlobRecordedTestsSuite) TestAppendBlockWithCPKScope() {
@@ -2287,7 +2291,6 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockWithCPKScope() {
 	}
 	_, err = abClient.Create(context.Background(), &createAppendBlobOptions)
 	_require.NoError(err)
-	// _require.Equal(resp.RawResponse.StatusCode, 201)
 
 	words := []string{"AAA ", "BBB ", "CCC "}
 	for index, word := range words {
@@ -2296,7 +2299,6 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockWithCPKScope() {
 		}
 		resp, err := abClient.AppendBlock(context.Background(), streaming.NopCloser(strings.NewReader(word)), &appendBlockOptions)
 		_require.NoError(err)
-		// _require.Equal(resp.RawResponse.StatusCode, 201)
 		_require.Equal(*resp.BlobAppendOffset, strconv.Itoa(index*4))
 		_require.Equal(*resp.BlobCommittedBlockCount, int32(index+1))
 		_require.NotNil(resp.ETag)

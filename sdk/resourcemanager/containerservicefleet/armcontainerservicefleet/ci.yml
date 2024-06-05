@@ -26,3 +26,4 @@ extends:
   parameters:
     IncludeRelease: true
     ServiceDirectory: 'resourcemanager/containerservicefleet/armcontainerservicefleet'
+    UsePipelineProxy: false

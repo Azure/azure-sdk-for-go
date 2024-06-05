@@ -1,15 +1,40 @@
 # Release History
 
-## 1.7.0 (Unreleased)
+## 1.9.0 (Unreleased)
 
 ### Features Added
+* Added `test/credential` package containing a credential factory for live and recorded tests
+  and a fake credential for offline tests.
 
 ### Breaking Changes
-* Deprecated the `go-vcr` based test recording API. Its methods now return errors or panic.
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.8.0 (2024-05-09)
+
+### Breaking Changes
+
+* Unexported `Module` and `Version` constants
+
+### Other Changes
+
+* Removed default sanitizers added in v1.6.0 (the test proxy itself now includes these)
+
+## 1.7.0 (2024-05-01)
+
+### Features Added
+* Support for local repo override (via presence of eng/target_proxy_version.txt) of invoked test-proxy version.
+
+* `RemoveRegisteredSanitizers` selectively disables sanitizers the test proxy enables by
+  default since version 1.0.0-dev.20240422.1
+
+### Breaking Changes
+
+* Deprecated the `go-vcr` based test recording API. Its methods now return errors or panic.
+* Changed value of `recording.SanitizedValue` from "sanitized" to "Sanitized" to match the
+  test proxy
 
 ## 1.6.0 (2024-04-16)
 

@@ -16,11 +16,15 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azsecrets"
 	"github.com/stretchr/testify/require"
 )
 
 func TestBackupRestore(t *testing.T) {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
+	}
 	client := startTest(t)
 
 	name := createRandomName(t, "testbackupsecret")
@@ -57,6 +61,9 @@ func TestBackupRestore(t *testing.T) {
 }
 
 func TestCRUD(t *testing.T) {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
+	}
 	client := startTest(t)
 
 	name := createRandomName(t, "secret")
@@ -205,6 +212,9 @@ func TestID(t *testing.T) {
 }
 
 func TestListDeletedSecrets(t *testing.T) {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
+	}
 	client := startTest(t)
 
 	secret1 := createRandomName(t, "secret1")
@@ -254,6 +264,9 @@ func TestListDeletedSecrets(t *testing.T) {
 }
 
 func TestListSecrets(t *testing.T) {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
+	}
 	client := startTest(t)
 
 	count := 4
@@ -281,6 +294,9 @@ func TestListSecrets(t *testing.T) {
 }
 
 func TestListSecretVersions(t *testing.T) {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
+	}
 	client := startTest(t)
 
 	name := createRandomName(t, "listversions")

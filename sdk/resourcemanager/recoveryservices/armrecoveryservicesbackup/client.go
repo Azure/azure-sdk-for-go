@@ -46,7 +46,7 @@ func NewClient(subscriptionID string, credential azcore.TokenCredential, options
 // BeginBMSPrepareDataMove - Prepares source vault for Data Move operation
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-01
+// Generated from API version 2024-04-01
 //   - vaultName - The name of the recovery services vault.
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - parameters - Prepare data move request
@@ -72,7 +72,7 @@ func (client *Client) BeginBMSPrepareDataMove(ctx context.Context, vaultName str
 // BMSPrepareDataMove - Prepares source vault for Data Move operation
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-01
+// Generated from API version 2024-04-01
 func (client *Client) bMSPrepareDataMove(ctx context.Context, vaultName string, resourceGroupName string, parameters PrepareDataMoveRequest, options *ClientBeginBMSPrepareDataMoveOptions) (*http.Response, error) {
 	var err error
 	const operationName = "Client.BeginBMSPrepareDataMove"
@@ -114,7 +114,7 @@ func (client *Client) bmsPrepareDataMoveCreateRequest(ctx context.Context, vault
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-01")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -126,7 +126,7 @@ func (client *Client) bmsPrepareDataMoveCreateRequest(ctx context.Context, vault
 // BeginBMSTriggerDataMove - Triggers Data Move Operation on target vault
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-01
+// Generated from API version 2024-04-01
 //   - vaultName - The name of the recovery services vault.
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - parameters - Trigger data move request
@@ -152,7 +152,7 @@ func (client *Client) BeginBMSTriggerDataMove(ctx context.Context, vaultName str
 // BMSTriggerDataMove - Triggers Data Move Operation on target vault
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-01
+// Generated from API version 2024-04-01
 func (client *Client) bMSTriggerDataMove(ctx context.Context, vaultName string, resourceGroupName string, parameters TriggerDataMoveRequest, options *ClientBeginBMSTriggerDataMoveOptions) (*http.Response, error) {
 	var err error
 	const operationName = "Client.BeginBMSTriggerDataMove"
@@ -194,7 +194,7 @@ func (client *Client) bmsTriggerDataMoveCreateRequest(ctx context.Context, vault
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-01")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -206,7 +206,7 @@ func (client *Client) bmsTriggerDataMoveCreateRequest(ctx context.Context, vault
 // GetOperationStatus - Fetches operation status for data move operation on vault
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-01
+// Generated from API version 2024-04-01
 //   - vaultName - The name of the recovery services vault.
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - options - ClientGetOperationStatusOptions contains the optional parameters for the Client.GetOperationStatus method.
@@ -256,7 +256,7 @@ func (client *Client) getOperationStatusCreateRequest(ctx context.Context, vault
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-01")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -274,7 +274,7 @@ func (client *Client) getOperationStatusHandleResponse(resp *http.Response) (Cli
 // BeginMoveRecoveryPoint - Move recovery point from one datastore to another store.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-01
+// Generated from API version 2024-04-01
 //   - vaultName - The name of the recovery services vault.
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - parameters - Move Resource Across Tiers Request
@@ -299,7 +299,7 @@ func (client *Client) BeginMoveRecoveryPoint(ctx context.Context, vaultName stri
 // MoveRecoveryPoint - Move recovery point from one datastore to another store.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-01
+// Generated from API version 2024-04-01
 func (client *Client) moveRecoveryPoint(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, recoveryPointID string, parameters MoveRPAcrossTiersRequest, options *ClientBeginMoveRecoveryPointOptions) (*http.Response, error) {
 	var err error
 	const operationName = "Client.BeginMoveRecoveryPoint"
@@ -357,7 +357,7 @@ func (client *Client) moveRecoveryPointCreateRequest(ctx context.Context, vaultN
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-01")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

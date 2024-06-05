@@ -5,15 +5,14 @@ package azopenai_test
 
 import (
 	"bytes"
+	"context"
 	"crypto/tls"
 	"errors"
 	"fmt"
 	"io"
-	"log"
 	"mime"
 	"net/http"
 	"os"
-	"regexp"
 	"strings"
 	"testing"
 
@@ -23,7 +22,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/joho/godotenv"
 	"github.com/stretchr/testify/require"
 )
 
@@ -61,13 +59,23 @@ func ifAzure[T string | endpoint](azure bool, forAzure T, forOpenAI T) T {
 	return forOpenAI
 }
 
-var azureOpenAI, openAI, servers = func() (testVars, testVars, []string) {
-	if recording.GetRecordMode() != recording.PlaybackMode {
-		if err := godotenv.Load(); err != nil {
-			log.Fatalf("Failed to load .env file: %s\n", err)
-		}
+// getEnvVariable is recording.GetEnvVariable but it panics if the
+// value isn't found, rather than falling back to the playback value.
+func getEnvVariable(varName string, playbackValue string) string {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		return playbackValue
 	}
 
+	val := os.Getenv(varName)
+
+	if val == "" {
+		panic(fmt.Sprintf("Missing required environment variable %s", varName))
+	}
+
+	return val
+}
+
+var azureOpenAI, openAI = func() (testVars, testVars) {
 	servers := struct {
 		USEast         endpoint
 		USNorthCentral endpoint
@@ -76,39 +84,30 @@ var azureOpenAI, openAI, servers = func() (testVars, testVars, []string) {
 		OpenAI         endpoint
 	}{
 		OpenAI: endpoint{
-			URL:    getEndpoint("OPENAI_ENDPOINT"), // ex: https://api.openai.com/v1/
-			APIKey: recording.GetEnvVariable("OPENAI_API_KEY", fakeAPIKey),
+			URL:    getEndpoint("OPENAI_ENDPOINT", false), // ex: https://api.openai.com/v1/
+			APIKey: getEnvVariable("OPENAI_API_KEY", fakeAPIKey),
 			Azure:  false,
 		},
 		USEast: endpoint{
-			URL:    getEndpoint("ENDPOINT_USEAST"),
-			APIKey: recording.GetEnvVariable("ENDPOINT_USEAST_API_KEY", fakeAPIKey),
+			URL:    getEndpoint("AOAI_ENDPOINT_USEAST", true),
+			APIKey: getEnvVariable("AOAI_ENDPOINT_USEAST_API_KEY", fakeAPIKey),
 			Azure:  true,
 		},
 		USEast2: endpoint{
-			URL:    getEndpoint("ENDPOINT_USEAST2"),
-			APIKey: recording.GetEnvVariable("ENDPOINT_USEAST2_API_KEY", fakeAPIKey),
+			URL:    getEndpoint("AOAI_ENDPOINT_USEAST2", true),
+			APIKey: getEnvVariable("AOAI_ENDPOINT_USEAST2_API_KEY", fakeAPIKey),
 			Azure:  true,
 		},
 		USNorthCentral: endpoint{
-			URL:    getEndpoint("ENDPOINT_USNORTHCENTRAL"),
-			APIKey: recording.GetEnvVariable("ENDPOINT_USNORTHCENTRAL_API_KEY", fakeAPIKey),
+			URL:    getEndpoint("AOAI_ENDPOINT_USNORTHCENTRAL", true),
+			APIKey: getEnvVariable("AOAI_ENDPOINT_USNORTHCENTRAL_API_KEY", fakeAPIKey),
 			Azure:  true,
 		},
 		SWECentral: endpoint{
-			URL:    getEndpoint("ENDPOINT_SWECENTRAL"),
-			APIKey: recording.GetEnvVariable("ENDPOINT_SWECENTRAL_API_KEY", fakeAPIKey),
+			URL:    getEndpoint("AOAI_ENDPOINT_SWECENTRAL", true),
+			APIKey: getEnvVariable("AOAI_ENDPOINT_SWECENTRAL_API_KEY", fakeAPIKey),
 			Azure:  true,
 		},
-	}
-
-	// used when we setup the recording policy
-	endpoints := []string{
-		servers.OpenAI.URL,
-		servers.USEast.URL,
-		servers.USEast2.URL,
-		servers.USNorthCentral.URL,
-		servers.SWECentral.URL,
 	}
 
 	newTestVarsFn := func(azure bool) testVars {
@@ -158,22 +157,44 @@ var azureOpenAI, openAI, servers = func() (testVars, testVars, []string) {
 				Model:    ifAzure(azure, "gpt-4-vision-preview", "gpt-4-vision-preview"),
 			},
 			Whisper: endpointWithModel{
-				Endpoint: ifAzure(azure, servers.USEast2, servers.OpenAI),
-				Model:    ifAzure(azure, "whisper-deployment", "whisper-1"),
+				Endpoint: ifAzure(azure, servers.USNorthCentral, servers.OpenAI),
+				Model:    ifAzure(azure, "whisper", "whisper-1"),
 			},
 			Cognitive: azopenai.AzureSearchChatExtensionConfiguration{
 				Parameters: &azopenai.AzureSearchChatExtensionParameters{
-					Endpoint:  to.Ptr(recording.GetEnvVariable("COGNITIVE_SEARCH_API_ENDPOINT", fakeCognitiveEndpoint)),
-					IndexName: to.Ptr(recording.GetEnvVariable("COGNITIVE_SEARCH_API_INDEX", fakeCognitiveIndexName)),
-					Authentication: &azopenai.OnYourDataAPIKeyAuthenticationOptions{
-						Key: to.Ptr(recording.GetEnvVariable("COGNITIVE_SEARCH_API_KEY", fakeAPIKey)),
-					},
+					Endpoint:       to.Ptr(recording.GetEnvVariable("COGNITIVE_SEARCH_API_ENDPOINT", fakeCognitiveEndpoint)),
+					IndexName:      to.Ptr(recording.GetEnvVariable("COGNITIVE_SEARCH_API_INDEX", fakeCognitiveIndexName)),
+					Authentication: &azopenai.OnYourDataSystemAssignedManagedIdentityAuthenticationOptions{},
 				},
 			},
 		}
 	}
 
-	return newTestVarsFn(true), newTestVarsFn(false), endpoints
+	azureTestVars := newTestVarsFn(true)
+
+	if recording.GetRecordMode() == recording.LiveMode {
+		// these are for the examples - we don't want to mention regions or anything in them so the
+		// env variables have a more friendly naming scheme.
+		remaps := map[string]endpointWithModel{
+			"CHAT_COMPLETIONS_MODEL_LEGACY_FUNCTIONS": azureTestVars.ChatCompletionsLegacyFunctions,
+			"CHAT_COMPLETIONS_RAI":                    azureTestVars.ChatCompletionsRAI,
+			"CHAT_COMPLETIONS":                        azureTestVars.ChatCompletions,
+			"COMPLETIONS":                             azureTestVars.Completions,
+			"DALLE":                                   azureTestVars.DallE,
+			"EMBEDDINGS":                              azureTestVars.Embeddings,
+			// these resources are oversubscribed and occasionally fail in live testing.
+			// "VISION":                                  azureTestVars.Vision,
+			// "WHISPER": azureTestVars.Whisper,
+		}
+
+		for area, epm := range remaps {
+			os.Setenv("AOAI_"+area+"_ENDPOINT", epm.Endpoint.URL)
+			os.Setenv("AOAI_"+area+"_API_KEY", epm.Endpoint.APIKey)
+			os.Setenv("AOAI_"+area+"_MODEL", epm.Model)
+		}
+	}
+
+	return azureTestVars, newTestVarsFn(false)
 }()
 
 type testClientOption func(opt *azopenai.ClientOptions)
@@ -208,9 +229,10 @@ func newTestClient(t *testing.T, ep endpoint, options ...testClientOption) *azop
 	}
 }
 
-const fakeEndpoint = "https://fake-recorded-host.microsoft.com/"
+const fakeAzureEndpoint = "https://Sanitized.openai.azure.com/"
+const fakeOpenAIEndpoint = "https://Sanitized.openai.com/v1"
 const fakeAPIKey = "redacted"
-const fakeCognitiveEndpoint = "https://fake-cognitive-endpoint.microsoft.com"
+const fakeCognitiveEndpoint = "https://Sanitized.openai.azure.com"
 const fakeCognitiveIndexName = "index"
 
 type MultipartRecordingPolicy struct {
@@ -233,22 +255,11 @@ func newRecordingTransporter(t *testing.T) policy.Transporter {
 		err = recording.AddHeaderRegexSanitizer("Api-Key", fakeAPIKey, "", nil)
 		require.NoError(t, err)
 
-		err = recording.AddHeaderRegexSanitizer("User-Agent", "fake-user-agent", "", nil)
+		err = recording.AddHeaderRegexSanitizer("Uer-Agent", "fake-user-agent", "", nil)
 		require.NoError(t, err)
-
-		for _, ep := range servers {
-			err = recording.AddURISanitizer(fakeEndpoint, regexp.QuoteMeta(ep), nil)
-			require.NoError(t, err)
-		}
 
 		err = recording.AddURISanitizer("/openai/operations/images/00000000-AAAA-BBBB-CCCC-DDDDDDDDDDDD", "/openai/operations/images/[A-Za-z-0-9]+", nil)
 		require.NoError(t, err)
-
-		// there's only one OpenAI endpoint
-		if openAI.ChatCompletions.Endpoint.URL != "" {
-			err = recording.AddURISanitizer(fakeEndpoint, regexp.QuoteMeta(openAI.ChatCompletions.Endpoint.URL), nil)
-			require.NoError(t, err)
-		}
 
 		err = recording.AddGeneralRegexSanitizer(
 			fmt.Sprintf(`"endpoint": "%s"`, fakeCognitiveEndpoint),
@@ -258,11 +269,6 @@ func newRecordingTransporter(t *testing.T) policy.Transporter {
 		err = recording.AddGeneralRegexSanitizer(
 			fmt.Sprintf(`"index_name": "%s"`, fakeCognitiveIndexName),
 			fmt.Sprintf(`"index_name":\s*"%s"`, *azureOpenAI.Cognitive.Parameters.IndexName), nil)
-		require.NoError(t, err)
-
-		err = recording.AddGeneralRegexSanitizer(
-			fmt.Sprintf(`"key": "%s"`, fakeAPIKey),
-			fmt.Sprintf(`"key":\s*"%s"`, *azureOpenAI.Cognitive.Parameters.Authentication.(*azopenai.OnYourDataAPIKeyAuthenticationOptions).Key), nil)
 		require.NoError(t, err)
 	}
 
@@ -344,11 +350,17 @@ func assertResponseIsError(t *testing.T, err error) {
 	require.Truef(t, respErr.StatusCode == http.StatusUnauthorized || respErr.StatusCode == http.StatusTooManyRequests, "An acceptable error comes back (actual: %d)", respErr.StatusCode)
 }
 
-func getEndpoint(ev string) string {
-	v := recording.GetEnvVariable(ev, fakeEndpoint)
+func getEndpoint(ev string, azure bool) string {
+	fakeEP := fakeAzureEndpoint
+
+	if !azure {
+		fakeEP = fakeOpenAIEndpoint
+	}
+
+	v := getEnvVariable(ev, fakeEP)
 
 	if !strings.HasSuffix(v, "/") {
-		// (this just makes recording replacement easier)
+		// (this just makes recording replacement easier)j
 		v += "/"
 	}
 
@@ -406,4 +418,26 @@ func (mrp *mimeTypeRecordingPolicy) Do(req *policy.Request) (*http.Response, err
 	}
 
 	return req.Next()
+}
+
+// customRequireNoError checks the error but allows throttling errors to account for resources that are
+// constrained.
+func customRequireNoError(t *testing.T, err error, throttlingAllowed bool) {
+	if err == nil {
+		return
+	}
+
+	if throttlingAllowed {
+		if respErr := (*azcore.ResponseError)(nil); errors.As(err, &respErr) && respErr.StatusCode == http.StatusTooManyRequests {
+			t.Skip("Skipping test because of throttling (http.StatusTooManyRequests)")
+			return
+		}
+
+		if errors.Is(err, context.DeadlineExceeded) {
+			t.Skip("Skipping test because of throttling (DeadlineExceeded)")
+			return
+		}
+	}
+
+	require.NoError(t, err)
 }

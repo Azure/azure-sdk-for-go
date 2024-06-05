@@ -1,5 +1,16 @@
 # Release History
 
+## 2.1.0-beta.1 (2024-05-24)
+### Features Added
+
+- New value `SKUNameEnterpriseE5` added to enum type `SKUName`
+- New enum type `DeferUpgradeSetting` with values `DeferUpgradeSettingDeferred`, `DeferUpgradeSettingNotDeferred`
+- New function `*DatabasesClient.BeginForceLinkToReplicationGroup(context.Context, string, string, string, ForceLinkParameters, *DatabasesClientBeginForceLinkToReplicationGroupOptions) (*runtime.Poller[DatabasesClientForceLinkToReplicationGroupResponse], error)`
+- New function `*DatabasesClient.BeginUpgradeDBRedisVersion(context.Context, string, string, string, *DatabasesClientBeginUpgradeDBRedisVersionOptions) (*runtime.Poller[DatabasesClientUpgradeDBRedisVersionResponse], error)`
+- New struct `ForceLinkParameters`
+- New field `DeferUpgrade`, `RedisVersion` in struct `DatabaseProperties`
+
+
 ## 2.0.0 (2024-02-23)
 ### Breaking Changes
 

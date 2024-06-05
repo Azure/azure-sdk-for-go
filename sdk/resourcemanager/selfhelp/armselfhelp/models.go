@@ -135,7 +135,7 @@ type DiscoveryNlpRequest struct {
 	// Additional information in the form of a string.
 	AdditionalContext *string
 
-	// ARM resource Id of the resource that is having the issue.
+	// ARM resource Id of the resource that is having the issue. Only applicable for Discovery Solution NLP Subscription Scope.
 	ResourceID *string
 
 	// ARM service Id of the service that is having the issue. For more information on service Id see https://learn.microsoft.com/rest/api/support/services/list?tabs=HTTP.

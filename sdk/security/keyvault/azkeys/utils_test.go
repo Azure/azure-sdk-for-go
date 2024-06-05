@@ -71,12 +71,11 @@ func run(m *testing.M) int {
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		credential = &FakeCredential{}
 	} else {
-		// tenantId := getEnvVar("AZKEYS_TENANT_ID", "")
-		// clientId := getEnvVar("AZKEYS_CLIENT_ID", "")
-		// secret := getEnvVar("AZKEYS_CLIENT_SECRET", "")
+		tenantId := getEnvVar("AZKEYS_TENANT_ID", "")
+		clientId := getEnvVar("AZKEYS_CLIENT_ID", "")
+		secret := getEnvVar("AZKEYS_CLIENT_SECRET", "")
 		var err error
-		//credential, err = azidentity.NewClientSecretCredential(tenantId, clientId, secret, nil)
-		credential, err = azidentity.NewDefaultAzureCredential(nil)
+		credential, err = azidentity.NewClientSecretCredential(tenantId, clientId, secret, nil)
 		if err != nil {
 			panic(err)
 		}
@@ -101,7 +100,7 @@ func run(m *testing.M) int {
 		// these values aren't secret but we redact them anyway to avoid
 		// alerts from automation scanning for JWTs or "token" values
 		for _, attestation := range []string{"$.target", "$.token"} {
-			err := recording.AddBodyKeySanitizer(attestation, "Sanitized", "", nil)
+			err := recording.AddBodyKeySanitizer(attestation, recording.SanitizedValue, "", nil)
 			if err != nil {
 				panic(err)
 			}

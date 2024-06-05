@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v3"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v2/testutil"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
 	"github.com/stretchr/testify/suite"
 )
@@ -36,7 +36,7 @@ type PrivateEndpointConnectionTestSuite struct {
 }
 
 func (testsuite *PrivateEndpointConnectionTestSuite) SetupSuite() {
-	testutil.StartRecording(testsuite.T(), "sdk/resourcemanager/cosmos/armcosmos/testdata")
+	testutil.StartRecording(testsuite.T(), pathToPackage)
 
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
@@ -57,9 +57,6 @@ func (testsuite *PrivateEndpointConnectionTestSuite) TearDownSuite() {
 }
 
 func TestPrivateEndpointConnectionTestSuite(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
 	suite.Run(t, new(PrivateEndpointConnectionTestSuite))
 }
 

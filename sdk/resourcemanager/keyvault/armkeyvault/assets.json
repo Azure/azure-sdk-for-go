@@ -2,5 +2,5 @@
   "AssetsRepo": "Azure/azure-sdk-assets",
   "AssetsRepoPrefixPath": "go",
   "TagPrefix": "go/resourcemanager/keyvault/armkeyvault",
-  "Tag": "go/resourcemanager/keyvault/armkeyvault_820248387e"
+  "Tag": "go/resourcemanager/keyvault/armkeyvault_60fe05d05b"
 }

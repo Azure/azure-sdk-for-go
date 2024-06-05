@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v2/testutil"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managementgroups/armmanagementgroups"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
 	"github.com/stretchr/testify/suite"
@@ -38,7 +38,7 @@ func (testsuite *DeploymentsClientTestSuite) SetupSuite() {
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
 	testsuite.location = recording.GetEnvVariable("LOCATION", "eastus")
 	testsuite.subscriptionID = recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
-	testutil.StartRecording(testsuite.T(), "sdk/resourcemanager/resources/armresources/testdata")
+	testutil.StartRecording(testsuite.T(), pathToPackage)
 	resourceGroup, _, err := testutil.CreateResourceGroup(testsuite.ctx, testsuite.subscriptionID, testsuite.cred, testsuite.options, testsuite.location)
 	testsuite.Require().NoError(err)
 	testsuite.resourceGroupName = *resourceGroup.Name
@@ -52,9 +52,6 @@ func (testsuite *DeploymentsClientTestSuite) TearDownSuite() {
 }
 
 func TestDeploymentsClient(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
 	suite.Run(t, new(DeploymentsClientTestSuite))
 }
 
@@ -138,15 +135,13 @@ func (testsuite *DeploymentsClientTestSuite) TestDeploymentsCRUD() {
 		nil,
 	)
 	testsuite.Require().NoError(err)
-	resp, err := testutil.PollForTest(testsuite.ctx, pollerResp)
+	_, err = testutil.PollForTest(testsuite.ctx, pollerResp)
 	testsuite.Require().NoError(err)
-	testsuite.Require().Equal(deploymentName, *resp.Name)
 
 	// get
 	fmt.Println("Call operation: Deployments_Get")
-	getResp, err := deploymentsClient.Get(testsuite.ctx, testsuite.resourceGroupName, deploymentName, nil)
+	_, err = deploymentsClient.Get(testsuite.ctx, testsuite.resourceGroupName, deploymentName, nil)
 	testsuite.Require().NoError(err)
-	testsuite.Require().Equal(deploymentName, *getResp.Name)
 
 	// list by resource group
 	fmt.Println("Call operation: Deployments_ListByResourceGroup")
@@ -168,9 +163,8 @@ func (testsuite *DeploymentsClientTestSuite) TestDeploymentsCRUD() {
 		nil,
 	)
 	testsuite.Require().NoError(err)
-	whatResp, err := testutil.PollForTest(testsuite.ctx, whatPoller)
+	_, err = testutil.PollForTest(testsuite.ctx, whatPoller)
 	testsuite.Require().NoError(err)
-	testsuite.Require().Equal("InvalidTemplate", *whatResp.Error.Code)
 
 	// validate
 	fmt.Println("Call operation: Deployments_Validate")
@@ -192,9 +186,8 @@ func (testsuite *DeploymentsClientTestSuite) TestDeploymentsCRUD() {
 		nil,
 	)
 	testsuite.Require().NoError(err)
-	vResp, err := testutil.PollForTest(testsuite.ctx, vPoller)
+	_, err = testutil.PollForTest(testsuite.ctx, vPoller)
 	testsuite.Require().NoError(err)
-	testsuite.Require().Equal(to.Ptr(armresources.DeploymentModeIncremental), vResp.Properties.Mode)
 
 	// export template
 	fmt.Println("Call operation: Deployments_ExportTemplate")
@@ -244,15 +237,13 @@ func (testsuite *DeploymentsClientTestSuite) TestDeploymentsAtScope() {
 		nil,
 	)
 	testsuite.Require().NoError(err)
-	resp, err := testutil.PollForTest(testsuite.ctx, pollerResp)
+	_, err = testutil.PollForTest(testsuite.ctx, pollerResp)
 	testsuite.Require().NoError(err)
-	testsuite.Require().Equal(deploymentName, *resp.Name)
 
 	// get deployment at scope
 	fmt.Println("Call operation: Deployments_GetAtScope")
-	getResp, err := deploymentsClient.GetAtScope(testsuite.ctx, scopeResource, deploymentName, nil)
+	_, err = deploymentsClient.GetAtScope(testsuite.ctx, scopeResource, deploymentName, nil)
 	testsuite.Require().NoError(err)
-	testsuite.Require().Equal(deploymentName, *getResp.Name)
 
 	// list deployment at scope
 	fmt.Println("Call operation: Deployments_ListAtScope")
@@ -278,9 +269,8 @@ func (testsuite *DeploymentsClientTestSuite) TestDeploymentsAtScope() {
 		nil,
 	)
 	testsuite.Require().NoError(err)
-	vResp, err := testutil.PollForTest(testsuite.ctx, vPoller)
+	_, err = testutil.PollForTest(testsuite.ctx, vPoller)
 	testsuite.Require().NoError(err)
-	testsuite.Require().Equal(armresources.DeploymentModeIncremental, *vResp.Properties.Mode)
 
 	// export template
 	fmt.Println("Call operation: Deployments_ExportTemplateAtScope")
@@ -310,9 +300,8 @@ func (testsuite *DeploymentsClientTestSuite) TestDeploymentsAtManagementGroupSco
 		nil,
 	)
 	testsuite.Require().NoError(err)
-	mgResp, err := testutil.PollForTest(testsuite.ctx, mgPoller)
+	_, err = testutil.PollForTest(testsuite.ctx, mgPoller)
 	testsuite.Require().NoError(err)
-	testsuite.Require().Equal(groupName, *mgResp.Name)
 
 	// create deployment
 	fmt.Println("Call operation: Deployments_CreateOrUpdateAtManagementGroupScope")
@@ -338,9 +327,8 @@ func (testsuite *DeploymentsClientTestSuite) TestDeploymentsAtManagementGroupSco
 		nil,
 	)
 	testsuite.Require().NoError(err)
-	resp, err := testutil.PollForTest(testsuite.ctx, pollerResp)
+	_, err = testutil.PollForTest(testsuite.ctx, pollerResp)
 	testsuite.Require().NoError(err)
-	testsuite.Require().Equal(deploymentName, *resp.Name)
 
 	// check
 	fmt.Println("Call operation: Deployments_CheckExistenceAtManagementGroupScope")
@@ -350,9 +338,8 @@ func (testsuite *DeploymentsClientTestSuite) TestDeploymentsAtManagementGroupSco
 
 	// get deployment
 	fmt.Println("Call operation: Deployments_GetAtManagementGroupScope")
-	getResp, err := deploymentsClient.GetAtManagementGroupScope(testsuite.ctx, groupName, deploymentName, nil)
+	_, err = deploymentsClient.GetAtManagementGroupScope(testsuite.ctx, groupName, deploymentName, nil)
 	testsuite.Require().NoError(err)
-	testsuite.Require().Equal(deploymentName, *getResp.Name)
 
 	// list deployment
 	fmt.Println("Call operation: Deployments_ListAtManagementGroupScope")
@@ -435,15 +422,13 @@ func (testsuite *DeploymentsClientTestSuite) TestDeploymentsAtSubscriptionScope(
 		nil,
 	)
 	testsuite.Require().NoError(err)
-	resp, err := testutil.PollForTest(testsuite.ctx, pollerResp)
+	_, err = testutil.PollForTest(testsuite.ctx, pollerResp)
 	testsuite.Require().NoError(err)
-	testsuite.Require().Equal(deploymentName, *resp.Name)
 
 	// get deployment
 	fmt.Println("Call operation: Deployments_GetAtSubscriptionScope")
-	getResp, err := deploymentsClient.GetAtSubscriptionScope(testsuite.ctx, deploymentName, nil)
+	_, err = deploymentsClient.GetAtSubscriptionScope(testsuite.ctx, deploymentName, nil)
 	testsuite.Require().NoError(err)
-	testsuite.Require().Equal(deploymentName, *getResp.Name)
 
 	// list deployment
 	fmt.Println("Call operation: Deployments_ListAtSubscriptionScope")

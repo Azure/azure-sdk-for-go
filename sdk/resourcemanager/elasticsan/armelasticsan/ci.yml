@@ -26,3 +26,4 @@ extends:
   parameters:
     IncludeRelease: true
     ServiceDirectory: 'resourcemanager/elasticsan/armelasticsan'
+    UsePipelineProxy: false

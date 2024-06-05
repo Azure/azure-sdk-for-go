@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v2
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3
 
 go 1.18
 

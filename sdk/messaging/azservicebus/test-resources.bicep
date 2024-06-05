@@ -10,6 +10,9 @@ param testApplicationOid string
 @description('The resource location')
 param location string = resourceGroup().location
 
+@description('Enable deploying a premium service bus')
+param enablePremium bool = true
+
 var apiVersion = '2017-04-01'
 var serviceBusDataOwnerRoleId = '/subscriptions/${subscription().subscriptionId}/providers/Microsoft.Authorization/roleDefinitions/090c5cfd-751d-490a-894a-3ce6f1109419'
 
@@ -27,7 +30,7 @@ resource servicebus 'Microsoft.ServiceBus/namespaces@2018-01-01-preview' = {
   }
 }
 
-resource servicebusPremium 'Microsoft.ServiceBus/namespaces@2018-01-01-preview' = {
+resource servicebusPremium 'Microsoft.ServiceBus/namespaces@2018-01-01-preview' = if (enablePremium) {
   name: sbPremiumName
   location: location
   sku: {
@@ -149,19 +152,21 @@ output SERVICEBUS_CONNECTION_STRING_LISTEN_ONLY string = listKeys(
   apiVersion
 ).primaryConnectionString
 
-output SERVICEBUS_CONNECTION_STRING_PREMIUM string = listKeys(
-  resourceId('Microsoft.ServiceBus/namespaces/authorizationRules', sbPremiumName, 'RootManageSharedAccessKey'),
-  apiVersion
-).primaryConnectionString
+output SERVICEBUS_CONNECTION_STRING_PREMIUM string = enablePremium
+  ? listKeys(
+      resourceId('Microsoft.ServiceBus/namespaces/authorizationRules', sbPremiumName, 'RootManageSharedAccessKey'),
+      apiVersion
+    ).primaryConnectionString
+  : '<premium endpoint not deployed'
+
 output SERVICEBUS_ENDPOINT string = replace(
   replace(servicebus.properties.serviceBusEndpoint, ':443/', ''),
   'https://',
   ''
 )
-output SERVICEBUS_ENDPOINT_PREMIUM string = replace(
-  replace(servicebusPremium.properties.serviceBusEndpoint, ':443/', ''),
-  'https://',
-  ''
-)
+output SERVICEBUS_ENDPOINT_PREMIUM string = enablePremium
+  ? replace(replace(servicebusPremium.properties.serviceBusEndpoint, ':443/', ''), 'https://', '')
+  : '<premium endpoint not deployed'
+
 output QUEUE_NAME string = 'testQueue'
 output QUEUE_NAME_WITH_SESSIONS string = 'testQueueWithSessions'

@@ -4,12 +4,17 @@
 
 ### Features Added
 
-- Updating to the `2024-04-01-preview` API version for Azure OpenAI. (PR#22798)
+- Updating to the `2024-05-01-preview` API version for Azure OpenAI. (PR#22967)
 
 ### Breaking Changes
 
 - ContentFilterResultDetailsForPrompt.CustomBlocklists has been changed from a []ContentFilterBlocklistIDResult to a struct, 
   containing the slice of []ContentFilterBlocklistIDResult.
+- OnYourDataEndpointVectorizationSource.Authentication's type has changed to OnYourDataVectorSearchAuthenticationOptionsClassification
+- Casing has been corrected for fields:
+  - Filepath -> FilePath
+  - FilepathField -> FilePathField
+  - CustomBlocklists -> CustomBlockLists
 
 ### Bugs Fixed
 

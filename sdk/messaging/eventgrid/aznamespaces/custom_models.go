@@ -9,9 +9,9 @@ package aznamespaces
 // Error implements the error interface for type Error.
 // Note that the message contents are not contractual and can change over time.
 func (e *Error) Error() string {
-	if e.message == nil {
+	if e.Message == nil {
 		return ""
 	}
 
-	return *e.message
+	return *e.Message
 }

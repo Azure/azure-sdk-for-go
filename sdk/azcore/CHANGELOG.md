@@ -11,6 +11,8 @@
 
 ### Bugs Fixed
 
+* Fixed an issue that prevented pollers using the `Operation-Location` strategy from unmarshaling the final result in some cases.
+
 ### Other Changes
 
 ## 1.11.1 (2024-04-02)

@@ -468,7 +468,7 @@ func (a AzureChatExtensionDataSourceResponseCitation) MarshalJSON() ([]byte, err
 	objectMap := make(map[string]any)
 	populate(objectMap, "chunk_id", a.ChunkID)
 	populate(objectMap, "content", a.Content)
-	populate(objectMap, "filepath", a.Filepath)
+	populate(objectMap, "filepath", a.FilePath)
 	populate(objectMap, "title", a.Title)
 	populate(objectMap, "url", a.URL)
 	return json.Marshal(objectMap)
@@ -490,7 +490,70 @@ func (a *AzureChatExtensionDataSourceResponseCitation) UnmarshalJSON(data []byte
 			err = unpopulate(val, "Content", &a.Content)
 			delete(rawMsg, key)
 		case "filepath":
-			err = unpopulate(val, "Filepath", &a.Filepath)
+			err = unpopulate(val, "FilePath", &a.FilePath)
+			delete(rawMsg, key)
+		case "title":
+			err = unpopulate(val, "Title", &a.Title)
+			delete(rawMsg, key)
+		case "url":
+			err = unpopulate(val, "URL", &a.URL)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", a, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AzureChatExtensionRetrievedDocument.
+func (a AzureChatExtensionRetrievedDocument) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "chunk_id", a.ChunkID)
+	populate(objectMap, "content", a.Content)
+	populate(objectMap, "data_source_index", a.DataSourceIndex)
+	populate(objectMap, "filepath", a.FilePath)
+	populate(objectMap, "filter_reason", a.FilterReason)
+	populate(objectMap, "original_search_score", a.OriginalSearchScore)
+	populate(objectMap, "rerank_score", a.RerankScore)
+	populate(objectMap, "search_queries", a.SearchQueries)
+	populate(objectMap, "title", a.Title)
+	populate(objectMap, "url", a.URL)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AzureChatExtensionRetrievedDocument.
+func (a *AzureChatExtensionRetrievedDocument) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", a, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "chunk_id":
+			err = unpopulate(val, "ChunkID", &a.ChunkID)
+			delete(rawMsg, key)
+		case "content":
+			err = unpopulate(val, "Content", &a.Content)
+			delete(rawMsg, key)
+		case "data_source_index":
+			err = unpopulate(val, "DataSourceIndex", &a.DataSourceIndex)
+			delete(rawMsg, key)
+		case "filepath":
+			err = unpopulate(val, "FilePath", &a.FilePath)
+			delete(rawMsg, key)
+		case "filter_reason":
+			err = unpopulate(val, "FilterReason", &a.FilterReason)
+			delete(rawMsg, key)
+		case "original_search_score":
+			err = unpopulate(val, "OriginalSearchScore", &a.OriginalSearchScore)
+			delete(rawMsg, key)
+		case "rerank_score":
+			err = unpopulate(val, "RerankScore", &a.RerankScore)
+			delete(rawMsg, key)
+		case "search_queries":
+			err = unpopulate(val, "SearchQueries", &a.SearchQueries)
 			delete(rawMsg, key)
 		case "title":
 			err = unpopulate(val, "Title", &a.Title)
@@ -509,6 +572,7 @@ func (a *AzureChatExtensionDataSourceResponseCitation) UnmarshalJSON(data []byte
 // MarshalJSON implements the json.Marshaller interface for type AzureChatExtensionsMessageContext.
 func (a AzureChatExtensionsMessageContext) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "all_retrieved_documents", a.AllRetrievedDocuments)
 	populate(objectMap, "citations", a.Citations)
 	populate(objectMap, "intent", a.Intent)
 	return json.Marshal(objectMap)
@@ -523,6 +587,9 @@ func (a *AzureChatExtensionsMessageContext) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "all_retrieved_documents":
+			err = unpopulate(val, "AllRetrievedDocuments", &a.AllRetrievedDocuments)
+			delete(rawMsg, key)
 		case "citations":
 			err = unpopulate(val, "Citations", &a.Citations)
 			delete(rawMsg, key)
@@ -625,13 +692,16 @@ func (a *AzureCosmosDBChatExtensionConfiguration) UnmarshalJSON(data []byte) err
 // MarshalJSON implements the json.Marshaller interface for type AzureCosmosDBChatExtensionParameters.
 func (a AzureCosmosDBChatExtensionParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "allow_partial_result", a.AllowPartialResult)
 	populate(objectMap, "authentication", a.Authentication)
 	populate(objectMap, "container_name", a.ContainerName)
 	populate(objectMap, "database_name", a.DatabaseName)
 	populate(objectMap, "embedding_dependency", a.EmbeddingDependency)
 	populate(objectMap, "fields_mapping", a.FieldsMapping)
 	populate(objectMap, "in_scope", a.InScope)
+	populate(objectMap, "include_contexts", a.IncludeContexts)
 	populate(objectMap, "index_name", a.IndexName)
+	populate(objectMap, "max_search_queries", a.MaxSearchQueries)
 	populate(objectMap, "role_information", a.RoleInformation)
 	populate(objectMap, "strictness", a.Strictness)
 	populate(objectMap, "top_n_documents", a.TopNDocuments)
@@ -647,6 +717,9 @@ func (a *AzureCosmosDBChatExtensionParameters) UnmarshalJSON(data []byte) error 
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "allow_partial_result":
+			err = unpopulate(val, "AllowPartialResult", &a.AllowPartialResult)
+			delete(rawMsg, key)
 		case "authentication":
 			a.Authentication, err = unmarshalOnYourDataAuthenticationOptionsClassification(val)
 			delete(rawMsg, key)
@@ -665,8 +738,14 @@ func (a *AzureCosmosDBChatExtensionParameters) UnmarshalJSON(data []byte) error 
 		case "in_scope":
 			err = unpopulate(val, "InScope", &a.InScope)
 			delete(rawMsg, key)
+		case "include_contexts":
+			err = unpopulate(val, "IncludeContexts", &a.IncludeContexts)
+			delete(rawMsg, key)
 		case "index_name":
 			err = unpopulate(val, "IndexName", &a.IndexName)
+			delete(rawMsg, key)
+		case "max_search_queries":
+			err = unpopulate(val, "MaxSearchQueries", &a.MaxSearchQueries)
 			delete(rawMsg, key)
 		case "role_information":
 			err = unpopulate(val, "RoleInformation", &a.RoleInformation)
@@ -690,7 +769,7 @@ func (a AzureCosmosDBFieldMappingOptions) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "content_fields", a.ContentFields)
 	populate(objectMap, "content_fields_separator", a.ContentFieldsSeparator)
-	populate(objectMap, "filepath_field", a.FilepathField)
+	populate(objectMap, "filepath_field", a.FilePathField)
 	populate(objectMap, "title_field", a.TitleField)
 	populate(objectMap, "url_field", a.URLField)
 	populate(objectMap, "vector_fields", a.VectorFields)
@@ -713,7 +792,7 @@ func (a *AzureCosmosDBFieldMappingOptions) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "ContentFieldsSeparator", &a.ContentFieldsSeparator)
 			delete(rawMsg, key)
 		case "filepath_field":
-			err = unpopulate(val, "FilepathField", &a.FilepathField)
+			err = unpopulate(val, "FilePathField", &a.FilePathField)
 			delete(rawMsg, key)
 		case "title_field":
 			err = unpopulate(val, "TitleField", &a.TitleField)
@@ -894,9 +973,12 @@ func (a *AzureMachineLearningIndexChatExtensionConfiguration) UnmarshalJSON(data
 // MarshalJSON implements the json.Marshaller interface for type AzureMachineLearningIndexChatExtensionParameters.
 func (a AzureMachineLearningIndexChatExtensionParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "allow_partial_result", a.AllowPartialResult)
 	populate(objectMap, "authentication", a.Authentication)
 	populate(objectMap, "filter", a.Filter)
 	populate(objectMap, "in_scope", a.InScope)
+	populate(objectMap, "include_contexts", a.IncludeContexts)
+	populate(objectMap, "max_search_queries", a.MaxSearchQueries)
 	populate(objectMap, "name", a.Name)
 	populate(objectMap, "project_resource_id", a.ProjectResourceID)
 	populate(objectMap, "role_information", a.RoleInformation)
@@ -915,6 +997,9 @@ func (a *AzureMachineLearningIndexChatExtensionParameters) UnmarshalJSON(data []
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "allow_partial_result":
+			err = unpopulate(val, "AllowPartialResult", &a.AllowPartialResult)
+			delete(rawMsg, key)
 		case "authentication":
 			a.Authentication, err = unmarshalOnYourDataAuthenticationOptionsClassification(val)
 			delete(rawMsg, key)
@@ -923,6 +1008,12 @@ func (a *AzureMachineLearningIndexChatExtensionParameters) UnmarshalJSON(data []
 			delete(rawMsg, key)
 		case "in_scope":
 			err = unpopulate(val, "InScope", &a.InScope)
+			delete(rawMsg, key)
+		case "include_contexts":
+			err = unpopulate(val, "IncludeContexts", &a.IncludeContexts)
+			delete(rawMsg, key)
+		case "max_search_queries":
+			err = unpopulate(val, "MaxSearchQueries", &a.MaxSearchQueries)
 			delete(rawMsg, key)
 		case "name":
 			err = unpopulate(val, "Name", &a.Name)
@@ -984,13 +1075,16 @@ func (a *AzureSearchChatExtensionConfiguration) UnmarshalJSON(data []byte) error
 // MarshalJSON implements the json.Marshaller interface for type AzureSearchChatExtensionParameters.
 func (a AzureSearchChatExtensionParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "allow_partial_result", a.AllowPartialResult)
 	populate(objectMap, "authentication", a.Authentication)
 	populate(objectMap, "embedding_dependency", a.EmbeddingDependency)
 	populate(objectMap, "endpoint", a.Endpoint)
 	populate(objectMap, "fields_mapping", a.FieldsMapping)
 	populate(objectMap, "filter", a.Filter)
 	populate(objectMap, "in_scope", a.InScope)
+	populate(objectMap, "include_contexts", a.IncludeContexts)
 	populate(objectMap, "index_name", a.IndexName)
+	populate(objectMap, "max_search_queries", a.MaxSearchQueries)
 	populate(objectMap, "query_type", a.QueryType)
 	populate(objectMap, "role_information", a.RoleInformation)
 	populate(objectMap, "semantic_configuration", a.SemanticConfiguration)
@@ -1008,6 +1102,9 @@ func (a *AzureSearchChatExtensionParameters) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "allow_partial_result":
+			err = unpopulate(val, "AllowPartialResult", &a.AllowPartialResult)
+			delete(rawMsg, key)
 		case "authentication":
 			a.Authentication, err = unmarshalOnYourDataAuthenticationOptionsClassification(val)
 			delete(rawMsg, key)
@@ -1026,8 +1123,14 @@ func (a *AzureSearchChatExtensionParameters) UnmarshalJSON(data []byte) error {
 		case "in_scope":
 			err = unpopulate(val, "InScope", &a.InScope)
 			delete(rawMsg, key)
+		case "include_contexts":
+			err = unpopulate(val, "IncludeContexts", &a.IncludeContexts)
+			delete(rawMsg, key)
 		case "index_name":
 			err = unpopulate(val, "IndexName", &a.IndexName)
+			delete(rawMsg, key)
+		case "max_search_queries":
+			err = unpopulate(val, "MaxSearchQueries", &a.MaxSearchQueries)
 			delete(rawMsg, key)
 		case "query_type":
 			err = unpopulate(val, "QueryType", &a.QueryType)
@@ -1057,7 +1160,7 @@ func (a AzureSearchIndexFieldMappingOptions) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "content_fields", a.ContentFields)
 	populate(objectMap, "content_fields_separator", a.ContentFieldsSeparator)
-	populate(objectMap, "filepath_field", a.FilepathField)
+	populate(objectMap, "filepath_field", a.FilePathField)
 	populate(objectMap, "image_vector_fields", a.ImageVectorFields)
 	populate(objectMap, "title_field", a.TitleField)
 	populate(objectMap, "url_field", a.URLField)
@@ -1081,7 +1184,7 @@ func (a *AzureSearchIndexFieldMappingOptions) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "ContentFieldsSeparator", &a.ContentFieldsSeparator)
 			delete(rawMsg, key)
 		case "filepath_field":
-			err = unpopulate(val, "FilepathField", &a.FilepathField)
+			err = unpopulate(val, "FilePathField", &a.FilePathField)
 			delete(rawMsg, key)
 		case "image_vector_fields":
 			err = unpopulate(val, "ImageVectorFields", &a.ImageVectorFields)
@@ -2706,7 +2809,7 @@ func (c *ContentFilterResult) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ContentFilterResultDetailsForPrompt.
 func (c ContentFilterResultDetailsForPrompt) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "custom_blocklists", c.CustomBlocklists)
+	populate(objectMap, "custom_blocklists", c.CustomBlockLists)
 	populate(objectMap, "error", c.Error)
 	populate(objectMap, "hate", c.Hate)
 	populate(objectMap, "indirect_attack", c.IndirectAttack)
@@ -2728,7 +2831,7 @@ func (c *ContentFilterResultDetailsForPrompt) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "custom_blocklists":
-			err = unpopulate(val, "CustomBlocklists", &c.CustomBlocklists)
+			err = unpopulate(val, "CustomBlockLists", &c.CustomBlockLists)
 			delete(rawMsg, key)
 		case "error":
 			err = unpopulate(val, "Error", &c.Error)
@@ -2765,7 +2868,7 @@ func (c *ContentFilterResultDetailsForPrompt) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ContentFilterResultsForChoice.
 func (c ContentFilterResultsForChoice) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "custom_blocklists", c.CustomBlocklists)
+	populate(objectMap, "custom_blocklists", c.CustomBlockLists)
 	populate(objectMap, "error", c.Error)
 	populate(objectMap, "hate", c.Hate)
 	populate(objectMap, "profanity", c.Profanity)
@@ -2787,7 +2890,7 @@ func (c *ContentFilterResultsForChoice) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "custom_blocklists":
-			err = unpopulate(val, "CustomBlocklists", &c.CustomBlocklists)
+			err = unpopulate(val, "CustomBlockLists", &c.CustomBlockLists)
 			delete(rawMsg, key)
 		case "error":
 			err = unpopulate(val, "Error", &c.Error)
@@ -2886,12 +2989,15 @@ func (e *ElasticsearchChatExtensionConfiguration) UnmarshalJSON(data []byte) err
 // MarshalJSON implements the json.Marshaller interface for type ElasticsearchChatExtensionParameters.
 func (e ElasticsearchChatExtensionParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "allow_partial_result", e.AllowPartialResult)
 	populate(objectMap, "authentication", e.Authentication)
 	populate(objectMap, "embedding_dependency", e.EmbeddingDependency)
 	populate(objectMap, "endpoint", e.Endpoint)
 	populate(objectMap, "fields_mapping", e.FieldsMapping)
 	populate(objectMap, "in_scope", e.InScope)
+	populate(objectMap, "include_contexts", e.IncludeContexts)
 	populate(objectMap, "index_name", e.IndexName)
+	populate(objectMap, "max_search_queries", e.MaxSearchQueries)
 	populate(objectMap, "query_type", e.QueryType)
 	populate(objectMap, "role_information", e.RoleInformation)
 	populate(objectMap, "strictness", e.Strictness)
@@ -2908,6 +3014,9 @@ func (e *ElasticsearchChatExtensionParameters) UnmarshalJSON(data []byte) error 
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "allow_partial_result":
+			err = unpopulate(val, "AllowPartialResult", &e.AllowPartialResult)
+			delete(rawMsg, key)
 		case "authentication":
 			e.Authentication, err = unmarshalOnYourDataAuthenticationOptionsClassification(val)
 			delete(rawMsg, key)
@@ -2923,8 +3032,14 @@ func (e *ElasticsearchChatExtensionParameters) UnmarshalJSON(data []byte) error 
 		case "in_scope":
 			err = unpopulate(val, "InScope", &e.InScope)
 			delete(rawMsg, key)
+		case "include_contexts":
+			err = unpopulate(val, "IncludeContexts", &e.IncludeContexts)
+			delete(rawMsg, key)
 		case "index_name":
 			err = unpopulate(val, "IndexName", &e.IndexName)
+			delete(rawMsg, key)
+		case "max_search_queries":
+			err = unpopulate(val, "MaxSearchQueries", &e.MaxSearchQueries)
 			delete(rawMsg, key)
 		case "query_type":
 			err = unpopulate(val, "QueryType", &e.QueryType)
@@ -2951,7 +3066,7 @@ func (e ElasticsearchIndexFieldMappingOptions) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "content_fields", e.ContentFields)
 	populate(objectMap, "content_fields_separator", e.ContentFieldsSeparator)
-	populate(objectMap, "filepath_field", e.FilepathField)
+	populate(objectMap, "filepath_field", e.FilePathField)
 	populate(objectMap, "title_field", e.TitleField)
 	populate(objectMap, "url_field", e.URLField)
 	populate(objectMap, "vector_fields", e.VectorFields)
@@ -2974,7 +3089,7 @@ func (e *ElasticsearchIndexFieldMappingOptions) UnmarshalJSON(data []byte) error
 			err = unpopulate(val, "ContentFieldsSeparator", &e.ContentFieldsSeparator)
 			delete(rawMsg, key)
 		case "filepath_field":
-			err = unpopulate(val, "FilepathField", &e.FilepathField)
+			err = unpopulate(val, "FilePathField", &e.FilePathField)
 			delete(rawMsg, key)
 		case "title_field":
 			err = unpopulate(val, "TitleField", &e.TitleField)
@@ -3399,6 +3514,7 @@ func (i *ImageGenerationOptions) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ImageGenerationPromptFilterResults.
 func (i ImageGenerationPromptFilterResults) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "custom_blocklists", i.CustomBlockLists)
 	populate(objectMap, "hate", i.Hate)
 	populate(objectMap, "jailbreak", i.Jailbreak)
 	populate(objectMap, "profanity", i.Profanity)
@@ -3417,6 +3533,9 @@ func (i *ImageGenerationPromptFilterResults) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "custom_blocklists":
+			err = unpopulate(val, "CustomBlockLists", &i.CustomBlockLists)
+			delete(rawMsg, key)
 		case "hate":
 			err = unpopulate(val, "Hate", &i.Hate)
 			delete(rawMsg, key)
@@ -3625,6 +3744,7 @@ func (o *OnYourDataConnectionStringAuthenticationOptions) UnmarshalJSON(data []b
 func (o OnYourDataDeploymentNameVectorizationSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "deployment_name", o.DeploymentName)
+	populate(objectMap, "dimensions", o.Dimensions)
 	objectMap["type"] = OnYourDataVectorizationSourceTypeDeploymentName
 	return json.Marshal(objectMap)
 }
@@ -3640,6 +3760,9 @@ func (o *OnYourDataDeploymentNameVectorizationSource) UnmarshalJSON(data []byte)
 		switch key {
 		case "deployment_name":
 			err = unpopulate(val, "DeploymentName", &o.DeploymentName)
+			delete(rawMsg, key)
+		case "dimensions":
+			err = unpopulate(val, "Dimensions", &o.Dimensions)
 			delete(rawMsg, key)
 		case "type":
 			err = unpopulate(val, "Type", &o.Type)
@@ -3702,7 +3825,7 @@ func (o *OnYourDataEndpointVectorizationSource) UnmarshalJSON(data []byte) error
 		var err error
 		switch key {
 		case "authentication":
-			o.Authentication, err = unmarshalOnYourDataAuthenticationOptionsClassification(val)
+			o.Authentication, err = unmarshalOnYourDataVectorSearchAuthenticationOptionsClassification(val)
 			delete(rawMsg, key)
 		case "endpoint":
 			err = unpopulate(val, "Endpoint", &o.Endpoint)
@@ -3842,6 +3965,95 @@ func (o *OnYourDataUserAssignedManagedIdentityAuthenticationOptions) UnmarshalJS
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type OnYourDataVectorSearchAPIKeyAuthenticationOptions.
+func (o OnYourDataVectorSearchAPIKeyAuthenticationOptions) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "key", o.Key)
+	objectMap["type"] = OnYourDataVectorSearchAuthenticationTypeAPIKey
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type OnYourDataVectorSearchAPIKeyAuthenticationOptions.
+func (o *OnYourDataVectorSearchAPIKeyAuthenticationOptions) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", o, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "key":
+			err = unpopulate(val, "Key", &o.Key)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, "Type", &o.Type)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", o, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type OnYourDataVectorSearchAccessTokenAuthenticationOptions.
+func (o OnYourDataVectorSearchAccessTokenAuthenticationOptions) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "access_token", o.AccessToken)
+	objectMap["type"] = OnYourDataVectorSearchAuthenticationTypeAccessToken
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type OnYourDataVectorSearchAccessTokenAuthenticationOptions.
+func (o *OnYourDataVectorSearchAccessTokenAuthenticationOptions) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", o, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "access_token":
+			err = unpopulate(val, "AccessToken", &o.AccessToken)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, "Type", &o.Type)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", o, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type OnYourDataVectorSearchAuthenticationOptions.
+func (o OnYourDataVectorSearchAuthenticationOptions) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	objectMap["type"] = o.Type
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type OnYourDataVectorSearchAuthenticationOptions.
+func (o *OnYourDataVectorSearchAuthenticationOptions) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", o, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "type":
+			err = unpopulate(val, "Type", &o.Type)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", o, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type OnYourDataVectorizationSource.
 func (o OnYourDataVectorizationSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -3903,12 +4115,15 @@ func (p *PineconeChatExtensionConfiguration) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type PineconeChatExtensionParameters.
 func (p PineconeChatExtensionParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "allow_partial_result", p.AllowPartialResult)
 	populate(objectMap, "authentication", p.Authentication)
 	populate(objectMap, "embedding_dependency", p.EmbeddingDependency)
 	populate(objectMap, "environment", p.Environment)
 	populate(objectMap, "fields_mapping", p.FieldsMapping)
 	populate(objectMap, "in_scope", p.InScope)
+	populate(objectMap, "include_contexts", p.IncludeContexts)
 	populate(objectMap, "index_name", p.IndexName)
+	populate(objectMap, "max_search_queries", p.MaxSearchQueries)
 	populate(objectMap, "role_information", p.RoleInformation)
 	populate(objectMap, "strictness", p.Strictness)
 	populate(objectMap, "top_n_documents", p.TopNDocuments)
@@ -3924,6 +4139,9 @@ func (p *PineconeChatExtensionParameters) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "allow_partial_result":
+			err = unpopulate(val, "AllowPartialResult", &p.AllowPartialResult)
+			delete(rawMsg, key)
 		case "authentication":
 			p.Authentication, err = unmarshalOnYourDataAuthenticationOptionsClassification(val)
 			delete(rawMsg, key)
@@ -3939,8 +4157,14 @@ func (p *PineconeChatExtensionParameters) UnmarshalJSON(data []byte) error {
 		case "in_scope":
 			err = unpopulate(val, "InScope", &p.InScope)
 			delete(rawMsg, key)
+		case "include_contexts":
+			err = unpopulate(val, "IncludeContexts", &p.IncludeContexts)
+			delete(rawMsg, key)
 		case "index_name":
 			err = unpopulate(val, "IndexName", &p.IndexName)
+			delete(rawMsg, key)
+		case "max_search_queries":
+			err = unpopulate(val, "MaxSearchQueries", &p.MaxSearchQueries)
 			delete(rawMsg, key)
 		case "role_information":
 			err = unpopulate(val, "RoleInformation", &p.RoleInformation)
@@ -3964,7 +4188,7 @@ func (p PineconeFieldMappingOptions) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "content_fields", p.ContentFields)
 	populate(objectMap, "content_fields_separator", p.ContentFieldsSeparator)
-	populate(objectMap, "filepath_field", p.FilepathField)
+	populate(objectMap, "filepath_field", p.FilePathField)
 	populate(objectMap, "title_field", p.TitleField)
 	populate(objectMap, "url_field", p.URLField)
 	return json.Marshal(objectMap)
@@ -3986,7 +4210,7 @@ func (p *PineconeFieldMappingOptions) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "ContentFieldsSeparator", &p.ContentFieldsSeparator)
 			delete(rawMsg, key)
 		case "filepath_field":
-			err = unpopulate(val, "FilepathField", &p.FilepathField)
+			err = unpopulate(val, "FilePathField", &p.FilePathField)
 			delete(rawMsg, key)
 		case "title_field":
 			err = unpopulate(val, "TitleField", &p.TitleField)

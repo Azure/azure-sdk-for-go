@@ -2,5 +2,5 @@
   "AssetsRepo": "Azure/azure-sdk-assets",
   "AssetsRepoPrefixPath": "go",
   "TagPrefix": "go/resourcemanager/recoveryservices/armrecoveryservices",
-  "Tag": "go/resourcemanager/recoveryservices/armrecoveryservices_24ac6fc894"
+  "Tag": "go/resourcemanager/recoveryservices/armrecoveryservices_d6e5132f50"
 }

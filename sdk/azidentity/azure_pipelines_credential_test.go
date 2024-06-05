@@ -40,7 +40,7 @@ func TestAzurePipelinesCredential(t *testing.T) {
 			}),
 		)
 		srv.AppendResponse()
-		o := AzurePipelinesServiceConnectionCredentialOptions{
+		o := AzurePipelinesCredentialOptions{
 			ClientOptions: azcore.ClientOptions{
 				Transport: srv,
 			},

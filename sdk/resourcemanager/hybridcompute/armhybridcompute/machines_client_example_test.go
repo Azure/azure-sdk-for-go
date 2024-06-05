@@ -20,7 +20,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armhybridcompute/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/71a0c7adf2a6e169ab9a33c7cf36bb93db083e86/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2023-10-03-preview/examples/machine/Machines_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2024-03-31-preview/examples/machine/Machines_Update.json
 func ExampleMachinesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -79,11 +79,11 @@ func ExampleMachinesClient_Update() {
 	// 			EsuProfile: &armhybridcompute.LicenseProfileMachineInstanceViewEsuProperties{
 	// 				EsuKeys: []*armhybridcompute.EsuKey{
 	// 					{
-	// 						LicenseStatus: to.Ptr("licenseStatus1"),
+	// 						LicenseStatus: to.Ptr[int32](1),
 	// 						SKU: to.Ptr("skuNumber1"),
 	// 					},
 	// 					{
-	// 						LicenseStatus: to.Ptr("licenseStatus2"),
+	// 						LicenseStatus: to.Ptr[int32](1),
 	// 						SKU: to.Ptr("skuNumber2"),
 	// 				}},
 	// 				EsuEligibility: to.Ptr(armhybridcompute.EsuEligibilityIneligible),
@@ -138,7 +138,7 @@ func ExampleMachinesClient_Update() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/71a0c7adf2a6e169ab9a33c7cf36bb93db083e86/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2023-10-03-preview/examples/machine/Machines_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2024-03-31-preview/examples/machine/Machines_Delete.json
 func ExampleMachinesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -155,7 +155,7 @@ func ExampleMachinesClient_Delete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/71a0c7adf2a6e169ab9a33c7cf36bb93db083e86/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2023-10-03-preview/examples/machine/Machines_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2024-03-31-preview/examples/machine/Machines_Get.json
 func ExampleMachinesClient_Get_getMachine() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -206,11 +206,11 @@ func ExampleMachinesClient_Get_getMachine() {
 	// 					EsuProfile: &armhybridcompute.LicenseProfileMachineInstanceViewEsuProperties{
 	// 						EsuKeys: []*armhybridcompute.EsuKey{
 	// 							{
-	// 								LicenseStatus: to.Ptr("licenseStatus1"),
+	// 								LicenseStatus: to.Ptr[int32](1),
 	// 								SKU: to.Ptr("skuNumber1"),
 	// 							},
 	// 							{
-	// 								LicenseStatus: to.Ptr("licenseStatus2"),
+	// 								LicenseStatus: to.Ptr[int32](1),
 	// 								SKU: to.Ptr("skuNumber2"),
 	// 						}},
 	// 						EsuEligibility: to.Ptr(armhybridcompute.EsuEligibilityIneligible),
@@ -299,7 +299,7 @@ func ExampleMachinesClient_Get_getMachine() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/71a0c7adf2a6e169ab9a33c7cf36bb93db083e86/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2023-10-03-preview/examples/machine/Machines_Get_LicenseProfileInstanceView.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2024-03-31-preview/examples/machine/Machines_Get_LicenseProfileInstanceView.json
 func ExampleMachinesClient_Get_getMachineWithLicenseProfileInstanceView() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -350,11 +350,11 @@ func ExampleMachinesClient_Get_getMachineWithLicenseProfileInstanceView() {
 	// 					EsuProfile: &armhybridcompute.LicenseProfileMachineInstanceViewEsuProperties{
 	// 						EsuKeys: []*armhybridcompute.EsuKey{
 	// 							{
-	// 								LicenseStatus: to.Ptr("licenseStatus1"),
+	// 								LicenseStatus: to.Ptr[int32](1),
 	// 								SKU: to.Ptr("skuNumber1"),
 	// 							},
 	// 							{
-	// 								LicenseStatus: to.Ptr("licenseStatus2"),
+	// 								LicenseStatus: to.Ptr[int32](1),
 	// 								SKU: to.Ptr("skuNumber2"),
 	// 						}},
 	// 						EsuEligibility: to.Ptr(armhybridcompute.EsuEligibilityIneligible),
@@ -462,7 +462,7 @@ func ExampleMachinesClient_Get_getMachineWithLicenseProfileInstanceView() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/71a0c7adf2a6e169ab9a33c7cf36bb93db083e86/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2023-10-03-preview/examples/machine/Machine_AssessPatches.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2024-03-31-preview/examples/machine/Machine_AssessPatches.json
 func ExampleMachinesClient_BeginAssessPatches() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -505,7 +505,7 @@ func ExampleMachinesClient_BeginAssessPatches() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/71a0c7adf2a6e169ab9a33c7cf36bb93db083e86/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2023-10-03-preview/examples/machine/Machine_InstallPatches.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2024-03-31-preview/examples/machine/Machine_InstallPatches.json
 func ExampleMachinesClient_BeginInstallPatches() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -553,7 +553,7 @@ func ExampleMachinesClient_BeginInstallPatches() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/71a0c7adf2a6e169ab9a33c7cf36bb93db083e86/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2023-10-03-preview/examples/machine/Machines_ListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2024-03-31-preview/examples/machine/Machines_ListByResourceGroup.json
 func ExampleMachinesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -610,11 +610,11 @@ func ExampleMachinesClient_NewListByResourceGroupPager() {
 		// 							EsuProfile: &armhybridcompute.LicenseProfileMachineInstanceViewEsuProperties{
 		// 								EsuKeys: []*armhybridcompute.EsuKey{
 		// 									{
-		// 										LicenseStatus: to.Ptr("licenseStatus1"),
+		// 										LicenseStatus: to.Ptr[int32](1),
 		// 										SKU: to.Ptr("skuNumber1"),
 		// 									},
 		// 									{
-		// 										LicenseStatus: to.Ptr("licenseStatus2"),
+		// 										LicenseStatus: to.Ptr[int32](1),
 		// 										SKU: to.Ptr("skuNumber2"),
 		// 								}},
 		// 								EsuEligibility: to.Ptr(armhybridcompute.EsuEligibilityIneligible),
@@ -696,11 +696,11 @@ func ExampleMachinesClient_NewListByResourceGroupPager() {
 		// 									EsuProfile: &armhybridcompute.LicenseProfileMachineInstanceViewEsuProperties{
 		// 										EsuKeys: []*armhybridcompute.EsuKey{
 		// 											{
-		// 												LicenseStatus: to.Ptr("licenseStatus1"),
+		// 												LicenseStatus: to.Ptr[int32](1),
 		// 												SKU: to.Ptr("skuNumber1"),
 		// 											},
 		// 											{
-		// 												LicenseStatus: to.Ptr("licenseStatus2"),
+		// 												LicenseStatus: to.Ptr[int32](1),
 		// 												SKU: to.Ptr("skuNumber2"),
 		// 										}},
 		// 										EsuEligibility: to.Ptr(armhybridcompute.EsuEligibilityIneligible),
@@ -754,7 +754,7 @@ func ExampleMachinesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/71a0c7adf2a6e169ab9a33c7cf36bb93db083e86/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2023-10-03-preview/examples/machine/Machines_ListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2024-03-31-preview/examples/machine/Machines_ListBySubscription.json
 func ExampleMachinesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -811,11 +811,11 @@ func ExampleMachinesClient_NewListBySubscriptionPager() {
 		// 							EsuProfile: &armhybridcompute.LicenseProfileMachineInstanceViewEsuProperties{
 		// 								EsuKeys: []*armhybridcompute.EsuKey{
 		// 									{
-		// 										LicenseStatus: to.Ptr("licenseStatus1"),
+		// 										LicenseStatus: to.Ptr[int32](1),
 		// 										SKU: to.Ptr("skuNumber1"),
 		// 									},
 		// 									{
-		// 										LicenseStatus: to.Ptr("licenseStatus2"),
+		// 										LicenseStatus: to.Ptr[int32](1),
 		// 										SKU: to.Ptr("skuNumber2"),
 		// 								}},
 		// 								EsuEligibility: to.Ptr(armhybridcompute.EsuEligibilityIneligible),
@@ -897,11 +897,11 @@ func ExampleMachinesClient_NewListBySubscriptionPager() {
 		// 									EsuProfile: &armhybridcompute.LicenseProfileMachineInstanceViewEsuProperties{
 		// 										EsuKeys: []*armhybridcompute.EsuKey{
 		// 											{
-		// 												LicenseStatus: to.Ptr("licenseStatus1"),
+		// 												LicenseStatus: to.Ptr[int32](1),
 		// 												SKU: to.Ptr("skuNumber1"),
 		// 											},
 		// 											{
-		// 												LicenseStatus: to.Ptr("licenseStatus2"),
+		// 												LicenseStatus: to.Ptr[int32](1),
 		// 												SKU: to.Ptr("skuNumber2"),
 		// 										}},
 		// 										EsuEligibility: to.Ptr(armhybridcompute.EsuEligibilityIneligible),

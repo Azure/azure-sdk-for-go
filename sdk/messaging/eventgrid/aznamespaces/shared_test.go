@@ -7,7 +7,6 @@
 package aznamespaces_test
 
 import (
-	"context"
 	"crypto/tls"
 	"fmt"
 	"net/http"
@@ -15,12 +14,11 @@ import (
 	"strings"
 	"sync"
 	"testing"
-	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/messaging"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/eventgrid/aznamespaces"
 	"github.com/stretchr/testify/require"
@@ -76,29 +74,19 @@ func loadEnv() (testVars, error) {
 	return tv, nil
 }
 
-type clientWrapper struct {
-	*aznamespaces.Client
-	TestVars testVars
-}
-
 var initTopic sync.Once
-var topicCleanup = func() {}
 var tv testVars = fakeTestVars
 
-func newClientWrapper(t *testing.T) clientWrapper {
-	var client *aznamespaces.Client
-
+func newClientOptions(t *testing.T) azcore.ClientOptions {
 	if recording.GetRecordMode() != recording.PlaybackMode {
 		initTopic.Do(func() {
-			topicCleanup = createTopicAndUpdateEnv(t)
-
 			tmpTestVars, err := loadEnv()
 			require.NoError(t, err)
 			tv = tmpTestVars
 		})
 	}
 
-	options := &aznamespaces.ClientOptions{}
+	options := azcore.ClientOptions{}
 
 	if recording.GetRecordMode() == recording.LiveMode {
 		if tv.KeyLogPath != "" {
@@ -112,22 +100,22 @@ func newClientWrapper(t *testing.T) clientWrapper {
 				KeyLogWriter: keyLogWriter,
 			}
 
-			options = &aznamespaces.ClientOptions{
-				ClientOptions: azcore.ClientOptions{
-					Transport: &http.Client{Transport: tp},
-				},
+			options = azcore.ClientOptions{
+				Transport: &http.Client{Transport: tp},
 			}
 		}
 	} else {
-		options = &aznamespaces.ClientOptions{
-			ClientOptions: azcore.ClientOptions{
-				Transport: newRecordingTransporter(t, tv),
-			},
+		options = azcore.ClientOptions{
+			Transport: newRecordingTransporter(t, tv),
 		}
 	}
 
 	options.Logging = policy.LogOptions{
 		IncludeBody: true,
+		AllowedQueryParams: []string{
+			"maxEvents",
+			"maxWaitTime",
+		},
 		AllowedHeaders: []string{
 			// these are the standard headers for binary content mode with CloudEvents
 			"ce-id",
@@ -144,16 +132,62 @@ func newClientWrapper(t *testing.T) clientWrapper {
 			"ce-extensiondatauint",
 			"ce-extensiondatatime",
 			"ce-extensiondatabytes",
+
+			"Authorization",
 		},
 	}
 
-	client, err := aznamespaces.NewClientWithSharedKeyCredential(tv.Endpoint, azcore.NewKeyCredential(tv.Key), options)
+	return options
+}
+
+func newClients(t *testing.T, useSASKey bool) (*aznamespaces.SenderClient, *aznamespaces.ReceiverClient) {
+	return newSenderClient(t, useSASKey), newReceiverClient(t, useSASKey)
+}
+
+func newSenderClient(t *testing.T, useSASKey bool) *aznamespaces.SenderClient {
+	options := newClientOptions(t)
+
+	if os.Getenv("AAD_DISABLED") == "true" {
+		t.Logf("Forcing AAD usage because AAD_DISABLED is true")
+		useSASKey = true
+	}
+
+	if useSASKey {
+		client, err := aznamespaces.NewSenderClientWithSharedKeyCredential(tv.Endpoint, tv.Topic, azcore.NewKeyCredential(tv.Key), &aznamespaces.SenderClientOptions{ClientOptions: options})
+		require.NoError(t, err)
+		return client
+	}
+
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	require.NoError(t, err)
 
-	return clientWrapper{
-		Client:   client,
-		TestVars: tv,
+	client, err := aznamespaces.NewSenderClient(tv.Endpoint, tv.Topic, cred, &aznamespaces.SenderClientOptions{ClientOptions: options})
+	require.NoError(t, err)
+
+	return client
+}
+
+func newReceiverClient(t *testing.T, useSASKey bool) *aznamespaces.ReceiverClient {
+	options := newClientOptions(t)
+
+	if !useSASKey {
+		t.Logf("WARNING: Forcing use of SASKey until https://github.com/Azure/azure-sdk-for-go/issues/22961 is resolved")
+		useSASKey = true
 	}
+
+	if useSASKey {
+		client, err := aznamespaces.NewReceiverClientWithSharedKeyCredential(tv.Endpoint, tv.Topic, tv.Subscription, azcore.NewKeyCredential(tv.Key), &aznamespaces.ReceiverClientOptions{ClientOptions: options})
+		require.NoError(t, err)
+		return client
+	}
+
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	require.NoError(t, err)
+
+	client, err := aznamespaces.NewReceiverClient(tv.Endpoint, tv.Topic, tv.Subscription, cred, &aznamespaces.ReceiverClientOptions{ClientOptions: options})
+	require.NoError(t, err)
+
+	return client
 }
 
 func newRecordingTransporter(t *testing.T, testVars testVars) policy.Transporter {
@@ -239,33 +273,4 @@ func requireEqualCloudEvent(t *testing.T, expected messaging.CloudEvent, actual 
 	expected.Time = actual.Time
 
 	require.Equal(t, actual, expected)
-}
-
-// receiveAll makes sure to receive all of count messages, even if it requires multiple calls.
-// It also acks all events it receives.
-func receiveAll(t *testing.T, client clientWrapper, count int) []aznamespaces.ReceiveDetails {
-	var events []aznamespaces.ReceiveDetails
-
-	receiveCtx, cancelReceive := context.WithTimeout(context.Background(), 2*time.Minute)
-	defer cancelReceive()
-
-	for len(events) < count {
-		eventsResp, err := client.ReceiveCloudEvents(receiveCtx, client.TestVars.Topic, client.TestVars.Subscription, &aznamespaces.ReceiveCloudEventsOptions{
-			MaxEvents: to.Ptr(int32(count - len(events))),
-		})
-		require.NoError(t, err)
-
-		var lockTokens []string
-		for _, evt := range eventsResp.Value {
-			lockTokens = append(lockTokens, *evt.BrokerProperties.LockToken)
-		}
-
-		_, err = client.AcknowledgeCloudEvents(receiveCtx, client.TestVars.Topic, client.TestVars.Subscription, lockTokens, nil)
-		require.NoError(t, err)
-
-		events = append(events, eventsResp.Value...)
-	}
-
-	require.Equal(t, count, len(events))
-	return events
 }

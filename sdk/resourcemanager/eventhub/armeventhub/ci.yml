@@ -26,3 +26,4 @@ extends:
   parameters:
     IncludeRelease: true
     ServiceDirectory: 'resourcemanager/eventhub/armeventhub'
+    UsePipelineProxy: false

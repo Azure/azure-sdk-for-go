@@ -26,3 +26,4 @@ extends:
   parameters:
     IncludeRelease: true
     ServiceDirectory: 'resourcemanager/changeanalysis/armchangeanalysis'
+    UsePipelineProxy: false

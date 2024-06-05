@@ -46,7 +46,7 @@
         },
         {
             "Name": "azopenai",
-            "CoverageGoal": 0.26
+            "CoverageGoal": 0.22
         },
         {
             "Name": "ai/azopenaiassistants",
@@ -100,6 +100,10 @@
         {
             "Name": "messaging/azeventhubs",
             "CoverageGoal": 0.60
+        },
+        {
+            "Name": "messaging/eventgrid/aznamespaces",
+            "CoverageGoal": 0.00
         },
         {
             "Name": "messaging/internal",

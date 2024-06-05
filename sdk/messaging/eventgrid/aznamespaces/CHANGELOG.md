@@ -4,9 +4,14 @@
 
 ### Features Added
 
-- Added in "binary mode" support, which can improve efficiency when sending a single event (PR#22582)
+- Supports API version `2024-06-01`, including support for release with delay.
 
 ### Breaking Changes
+
+- Sending and receiving operations have been moved to separate clients (SenderClient and ReceiverClient).
+- Method names have been shortened from <Verb>CloudEvent(s) to <Verb>Event(s)
+- LockTokens for AcknowledgeEvents, RejectEvents and ReleaseEvents are now a positional argument, instead of optional.
+- Topic and subscription name are now set at the Client level, as part of `NewSenderClient` or `NewReceiverClient`.
 
 ### Bugs Fixed
 

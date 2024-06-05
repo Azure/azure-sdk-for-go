@@ -180,6 +180,7 @@ func (client *Client) GetCompletionsStream(ctx context.Context, body Completions
 	}
 
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		_ = resp.Body.Close()
 		return GetCompletionsStreamResponse{}, runtime.NewResponseError(resp)
 	}
 
@@ -214,6 +215,7 @@ func (client *Client) GetChatCompletionsStream(ctx context.Context, body ChatCom
 	}
 
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		_ = resp.Body.Close()
 		return GetChatCompletionsStreamResponse{}, runtime.NewResponseError(resp)
 	}
 

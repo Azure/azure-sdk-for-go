@@ -63,6 +63,7 @@ func ExampleClient_GetImageGenerations() {
 			log.Fatalf("ERROR: %s", err)
 		}
 
+		_ = resp.Body.Close()
 		fmt.Fprintf(os.Stderr, "Image generated, HEAD request on URL returned %d\n", resp.StatusCode)
 	}
 

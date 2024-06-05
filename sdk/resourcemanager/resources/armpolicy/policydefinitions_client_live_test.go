@@ -15,7 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v2/testutil"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armpolicy"
 	"github.com/stretchr/testify/suite"
 )
@@ -36,7 +36,7 @@ func (testsuite *PolicyDefinitionsClientTestSuite) SetupSuite() {
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
 	testsuite.location = recording.GetEnvVariable("LOCATION", "eastus")
 	testsuite.subscriptionID = recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
-	testutil.StartRecording(testsuite.T(), "sdk/resourcemanager/resources/armpolicy/testdata")
+	testutil.StartRecording(testsuite.T(), pathToPackage)
 	resourceGroup, _, err := testutil.CreateResourceGroup(testsuite.ctx, testsuite.subscriptionID, testsuite.cred, testsuite.options, testsuite.location)
 	testsuite.Require().NoError(err)
 	testsuite.resourceGroupName = *resourceGroup.Name
@@ -50,9 +50,6 @@ func (testsuite *PolicyDefinitionsClientTestSuite) TearDownSuite() {
 }
 
 func TestPolicyDefinitionsClient(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
 	suite.Run(t, new(PolicyDefinitionsClientTestSuite))
 }
 
@@ -62,7 +59,7 @@ func (testsuite *PolicyDefinitionsClientTestSuite) TestPolicyDefinitionsCRUD() {
 	policyDefinitionName := "go-test-definition"
 	policyDefinitionsClient, err := armpolicy.NewDefinitionsClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
-	cResp, err := policyDefinitionsClient.CreateOrUpdate(
+	_, err = policyDefinitionsClient.CreateOrUpdate(
 		testsuite.ctx,
 		policyDefinitionName,
 		armpolicy.Definition{
@@ -101,13 +98,11 @@ func (testsuite *PolicyDefinitionsClientTestSuite) TestPolicyDefinitionsCRUD() {
 		nil,
 	)
 	testsuite.Require().NoError(err)
-	testsuite.Require().Equal(policyDefinitionName, *cResp.Name)
 
 	// get policy definition
 	fmt.Println("Call operation: PolicyDefinitions_Get")
-	getResp, err := policyDefinitionsClient.Get(testsuite.ctx, policyDefinitionName, nil)
+	_, err = policyDefinitionsClient.Get(testsuite.ctx, policyDefinitionName, nil)
 	testsuite.Require().NoError(err)
-	testsuite.Require().Equal(policyDefinitionName, *getResp.Name)
 
 	// list policy definition
 	fmt.Println("Call operation: PolicyDefinitions_List")

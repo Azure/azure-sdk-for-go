@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventhub/armeventhub"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v2/testutil"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -37,7 +37,7 @@ type DisasterrecoveryconfigsTestSuite struct {
 }
 
 func (testsuite *DisasterrecoveryconfigsTestSuite) SetupSuite() {
-	testutil.StartRecording(testsuite.T(), "sdk/resourcemanager/eventhub/armeventhub/testdata")
+	testutil.StartRecording(testsuite.T(), pathToPackage)
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
 	testsuite.alias, _ = recording.GenerateAlphaNumericID(testsuite.T(), "alias", 11, false)
@@ -61,9 +61,6 @@ func (testsuite *DisasterrecoveryconfigsTestSuite) TearDownSuite() {
 }
 
 func TestDisasterrecoveryconfigsTestSuite(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
 	suite.Run(t, new(DisasterrecoveryconfigsTestSuite))
 }
 

@@ -270,6 +270,29 @@ func unmarshalOnYourDataAuthenticationOptionsClassification(rawMsg json.RawMessa
 	return b, nil
 }
 
+func unmarshalOnYourDataVectorSearchAuthenticationOptionsClassification(rawMsg json.RawMessage) (OnYourDataVectorSearchAuthenticationOptionsClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b OnYourDataVectorSearchAuthenticationOptionsClassification
+	switch m["type"] {
+	case string(OnYourDataVectorSearchAuthenticationTypeAccessToken):
+		b = &OnYourDataVectorSearchAccessTokenAuthenticationOptions{}
+	case string(OnYourDataVectorSearchAuthenticationTypeAPIKey):
+		b = &OnYourDataVectorSearchAPIKeyAuthenticationOptions{}
+	default:
+		b = &OnYourDataVectorSearchAuthenticationOptions{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
 func unmarshalOnYourDataVectorizationSourceClassification(rawMsg json.RawMessage) (OnYourDataVectorizationSourceClassification, error) {
 	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil

@@ -8,6 +8,7 @@ package azopenai_test
 
 import (
 	"context"
+	"errors"
 	"io"
 	"reflect"
 	"strings"
@@ -105,7 +106,7 @@ func TestGetCompletionsStream(t *testing.T) {
 		for {
 			completion, err := reader.Read()
 
-			if err == io.EOF {
+			if errors.Is(err, io.EOF) {
 				break
 			}
 

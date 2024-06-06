@@ -25,9 +25,9 @@ type UsernamePasswordCredentialOptions struct {
 	// application is registered.
 	AdditionallyAllowedTenants []string
 
-	// AuthenticationRecord returned by a call to a credential's Authenticate method. Set this option
+	// authenticationRecord returned by a call to a credential's Authenticate method. Set this option
 	// to enable the credential to use data from a previous authentication.
-	AuthenticationRecord AuthenticationRecord
+	authenticationRecord authenticationRecord
 
 	// DisableInstanceDiscovery should be set true only by applications authenticating in disconnected clouds, or
 	// private clouds such as Azure Stack. It determines whether the credential requests Microsoft Entra instance metadata
@@ -35,8 +35,8 @@ type UsernamePasswordCredentialOptions struct {
 	// the application responsible for ensuring the configured authority is valid and trustworthy.
 	DisableInstanceDiscovery bool
 
-	// TokenCachePersistenceOptions enables persistent token caching when not nil.
-	TokenCachePersistenceOptions *TokenCachePersistenceOptions
+	// tokenCachePersistenceOptions enables persistent token caching when not nil.
+	tokenCachePersistenceOptions *tokenCachePersistenceOptions
 }
 
 // UsernamePasswordCredential authenticates a user with a password. Microsoft doesn't recommend this kind of authentication,
@@ -58,8 +58,8 @@ func NewUsernamePasswordCredential(tenantID string, clientID string, username st
 		ClientOptions:                options.ClientOptions,
 		DisableInstanceDiscovery:     options.DisableInstanceDiscovery,
 		Password:                     password,
-		Record:                       options.AuthenticationRecord,
-		TokenCachePersistenceOptions: options.TokenCachePersistenceOptions,
+		Record:                       options.authenticationRecord,
+		TokenCachePersistenceOptions: options.tokenCachePersistenceOptions,
 		Username:                     username,
 	}
 	c, err := newPublicClient(tenantID, clientID, credNameUserPassword, opts)
@@ -70,7 +70,7 @@ func NewUsernamePasswordCredential(tenantID string, clientID string, username st
 }
 
 // Authenticate the user. Subsequent calls to GetToken will automatically use the returned AuthenticationRecord.
-func (c *UsernamePasswordCredential) Authenticate(ctx context.Context, opts *policy.TokenRequestOptions) (AuthenticationRecord, error) {
+func (c *UsernamePasswordCredential) authenticate(ctx context.Context, opts *policy.TokenRequestOptions) (authenticationRecord, error) {
 	var err error
 	ctx, endSpan := runtime.StartSpan(ctx, credNameUserPassword+"."+traceOpAuthenticate, c.client.azClient.Tracer(), nil)
 	defer func() { endSpan(err) }()

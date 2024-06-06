@@ -107,17 +107,17 @@ func (*AuthenticationFailedError) NonRetriable() {
 
 var _ errorinfo.NonRetriable = (*AuthenticationFailedError)(nil)
 
-// AuthenticationRequiredError indicates a credential's Authenticate method must be called to acquire a token
+// authenticationRequiredError indicates a credential's Authenticate method must be called to acquire a token
 // because the credential requires user interaction and is configured not to request it automatically.
-type AuthenticationRequiredError struct {
+type authenticationRequiredError struct {
 	credentialUnavailableError
 
 	// TokenRequestOptions for the required token. Pass this to the credential's Authenticate method.
 	TokenRequestOptions policy.TokenRequestOptions
 }
 
-func newAuthenticationRequiredError(credType string, tro policy.TokenRequestOptions) error {
-	return &AuthenticationRequiredError{
+func newauthenticationRequiredError(credType string, tro policy.TokenRequestOptions) error {
+	return &authenticationRequiredError{
 		credentialUnavailableError: credentialUnavailableError{
 			credType + " can't acquire a token without user interaction. Call Authenticate to authenticate a user interactively",
 		},
@@ -126,8 +126,8 @@ func newAuthenticationRequiredError(credType string, tro policy.TokenRequestOpti
 }
 
 var (
-	_ credentialUnavailable  = (*AuthenticationRequiredError)(nil)
-	_ errorinfo.NonRetriable = (*AuthenticationRequiredError)(nil)
+	_ credentialUnavailable  = (*authenticationRequiredError)(nil)
+	_ errorinfo.NonRetriable = (*authenticationRequiredError)(nil)
 )
 
 type credentialUnavailable interface {

@@ -40,12 +40,12 @@ func TestAzurePipelinesCredential(t *testing.T) {
 			}),
 		)
 		srv.AppendResponse()
-		o := AzurePipelinesCredentialOptions{
+		o := azurePipelinesCredentialOptions{
 			ClientOptions: azcore.ClientOptions{
 				Transport: srv,
 			},
 		}
-		cred, err := NewAzurePipelinesCredential(fakeTenantID, fakeClientID, connectionID, &o)
+		cred, err := newAzurePipelinesCredential(fakeTenantID, fakeClientID, connectionID, &o)
 		require.NoError(t, err)
 		actual, err := cred.getAssertion(ctx)
 		require.NoError(t, err)
@@ -63,7 +63,7 @@ func TestAzurePipelinesCredential(t *testing.T) {
 				t.Skip("set AZURE_SERVICE_CONNECTION_CLIENT_ID, AZURE_SERVICE_CONNECTION_ID and AZURE_SERVICE_CONNECTION_TENANT_ID to run this test")
 			}
 		}
-		cred, err := NewAzurePipelinesCredential(tenantID, clientID, connectionID, nil)
+		cred, err := newAzurePipelinesCredential(tenantID, clientID, connectionID, nil)
 		require.NoError(t, err)
 		testGetTokenSuccess(t, cred, "https://vault.azure.net/.default")
 	})

@@ -30,7 +30,7 @@ type confidentialClientOptions struct {
 	// Assertion for on-behalf-of authentication
 	Assertion                         string
 	DisableInstanceDiscovery, SendX5C bool
-	TokenCachePersistenceOptions      *TokenCachePersistenceOptions
+	tokenCachePersistenceOptions      *tokenCachePersistenceOptions
 }
 
 // confidentialClient wraps the MSAL confidential client
@@ -145,7 +145,7 @@ func (c *confidentialClient) client(tro policy.TokenRequestOptions) (msalConfide
 }
 
 func (c *confidentialClient) newMSALClient(enableCAE bool) (msalConfidentialClient, error) {
-	cache, err := internal.NewCache(c.opts.TokenCachePersistenceOptions, enableCAE)
+	cache, err := internal.NewCache(c.opts.tokenCachePersistenceOptions, enableCAE)
 	if err != nil {
 		return nil, err
 	}

@@ -3,6 +3,9 @@
 ## 1.1.1 (Unreleased)
 
 ### Features Added
+* Support ETag-per-page
+  * Added field `MatchConditions` to `ListSettingsOptions` which allows specifying request conditions when iterating over pages of settings.
+  * Added field `ETag` to `ListSettingsPageResponse` which contains the ETag for a page of configuration settings.
 
 ### Breaking Changes
 

@@ -9,7 +9,6 @@ package settings_test
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"os"
 	"regexp"
 	"testing"
@@ -54,9 +53,9 @@ func run(m *testing.M) int {
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		credential = &FakeCredential{}
 	} else {
-		tenantID := lookupEnvVar("AZADMIN_TENANT_ID")
-		clientID := lookupEnvVar("AZADMIN_CLIENT_ID")
-		secret := lookupEnvVar("AZADMIN_CLIENT_SECRET")
+		tenantID := getEnvVar("AZADMIN_TENANT_ID", "")
+		clientID := getEnvVar("AZADMIN_CLIENT_ID", "")
+		secret := getEnvVar("AZADMIN_CLIENT_SECRET", "")
 		var err error
 		credential, err = azidentity.NewClientSecretCredential(tenantID, clientID, secret, nil)
 		if err != nil {
@@ -65,6 +64,15 @@ func run(m *testing.M) int {
 	}
 
 	hsmURL = getEnvVar("AZURE_MANAGEDHSM_URL", fakeHsmURL)
+
+	if recording.GetRecordMode() != recording.LiveMode {
+		err := recording.RemoveRegisteredSanitizers([]string{
+			"AZSDK3493", // name in body
+		}, nil)
+		if err != nil {
+			panic(err)
+		}
+	}
 
 	return m.Run()
 }
@@ -88,26 +96,25 @@ func startSettingsTest(t *testing.T) *settings.Client {
 	return client
 }
 
-func getEnvVar(lookupValue string, fakeValue string) string {
-	envVar := fakeValue
-	if recording.GetRecordMode() != recording.PlaybackMode {
-		envVar = lookupEnvVar(lookupValue)
+func getEnvVar(envVar string, fakeValue string) string {
+	// get value
+	value := fakeValue
+	if recording.GetRecordMode() == recording.LiveMode || recording.GetRecordMode() == recording.RecordingMode {
+		value = os.Getenv(envVar)
+		if value == "" {
+			panic("no value for " + envVar)
+		}
 	}
-	if recording.GetRecordMode() == recording.RecordingMode {
-		err := recording.AddGeneralRegexSanitizer(fakeValue, envVar, nil)
+
+	// sanitize value
+	if fakeValue != "" && recording.GetRecordMode() == recording.RecordingMode {
+		err := recording.AddGeneralRegexSanitizer(fakeValue, value, nil)
 		if err != nil {
 			panic(err)
 		}
 	}
-	return envVar
-}
 
-func lookupEnvVar(s string) string {
-	v := os.Getenv(s)
-	if v == "" {
-		panic(fmt.Sprintf("Could not find env var: '%s'", s))
-	}
-	return v
+	return value
 }
 
 type FakeCredential struct{}

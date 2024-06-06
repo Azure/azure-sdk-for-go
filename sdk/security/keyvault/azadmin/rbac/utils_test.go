@@ -66,6 +66,16 @@ func run(m *testing.M) int {
 
 	hsmURL = getEnvVar("AZURE_MANAGEDHSM_URL", fakeHsmURL)
 
+	if recording.GetRecordMode() != recording.LiveMode {
+		err := recording.RemoveRegisteredSanitizers([]string{
+			"AZSDK3493", // name in body
+			"AZSDK3430", // ID in body
+		}, nil)
+		if err != nil {
+			panic(err)
+		}
+	}
+
 	return m.Run()
 }
 

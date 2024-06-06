@@ -11,7 +11,6 @@ import (
 	"fmt"
 	"hash/fnv"
 	"os"
-	"strings"
 	"sync"
 	"testing"
 	"time"
@@ -25,7 +24,8 @@ import (
 )
 
 const recordingDirectory = "sdk/security/keyvault/azcertificates/testdata"
-const fakeVaultURL = "https://fakevault.local"
+
+const fakeVaultURL = "https://test.vault.azure.net/"
 
 var (
 	certsToPurge = struct {
@@ -59,45 +59,31 @@ func run(m *testing.M) int {
 		}()
 	}
 
-	vaultURL = strings.TrimSuffix(recording.GetEnvVariable("AZURE_KEYVAULT_URL", fakeVaultURL), "/")
-	if vaultURL == "" {
-		if recording.GetRecordMode() != recording.PlaybackMode {
-			panic("no value for AZURE_KEYVAULT_URL")
-		}
-		vaultURL = fakeVaultURL
-	}
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		credential = &FakeCredential{}
 	} else {
-		tenantId := lookupEnvVar("AZCERTIFICATES_TENANT_ID")
-		clientId := lookupEnvVar("AZCERTIFICATES_CLIENT_ID")
-		secret := lookupEnvVar("AZCERTIFICATES_CLIENT_SECRET")
+		tenantId := getEnvVar("AZCERTIFICATES_TENANT_ID", "")
+		clientId := getEnvVar("AZCERTIFICATES_CLIENT_ID", "")
+		secret := getEnvVar("AZCERTIFICATES_CLIENT_SECRET", "")
 		var err error
 		credential, err = azidentity.NewClientSecretCredential(tenantId, clientId, secret, nil)
 		if err != nil {
 			panic(err)
 		}
 	}
-	if recording.GetRecordMode() == recording.RecordingMode {
-		err := recording.AddURISanitizer(fakeVaultURL, vaultURL, nil)
-		if err != nil {
-			panic(err)
-		}
-		opts := proxy.Options
-		opts.GroupForReplace = "1"
-		err = recording.AddHeaderRegexSanitizer("WWW-Authenticate", "https://local", `resource="(.*)"`, opts)
-		if err != nil {
-			panic(err)
-		}
-		err = recording.AddBodyRegexSanitizer(fakeVaultURL, vaultURL, nil)
-		if err != nil {
-			panic(err)
-		}
-		err = recording.AddHeaderRegexSanitizer("Location", fakeVaultURL, vaultURL, nil)
+
+	vaultURL = getEnvVar("AZURE_KEYVAULT_URL", fakeVaultURL)
+
+	if recording.GetRecordMode() != recording.LiveMode {
+		err := recording.RemoveRegisteredSanitizers([]string{
+			"AZSDK3430", // id in body
+			"AZSDK3493", // name in body
+		}, nil)
 		if err != nil {
 			panic(err)
 		}
 	}
+
 	code := m.Run()
 	if recording.GetRecordMode() != recording.PlaybackMode {
 		// Purge test certs using a client whose requests aren't recorded. This
@@ -150,12 +136,25 @@ func getName(t *testing.T, prefix string) string {
 	return prefix + fmt.Sprint(h.Sum32())
 }
 
-func lookupEnvVar(s string) string {
-	ret, ok := os.LookupEnv(s)
-	if !ok {
-		panic(fmt.Sprintf("Could not find env var: '%s'", s))
+func getEnvVar(envVar string, fakeValue string) string {
+	// get value
+	value := fakeValue
+	if recording.GetRecordMode() == recording.LiveMode || recording.GetRecordMode() == recording.RecordingMode {
+		value = os.Getenv(envVar)
+		if value == "" {
+			panic("no value for " + envVar)
+		}
 	}
-	return ret
+
+	// sanitize value
+	if fakeValue != "" && recording.GetRecordMode() == recording.RecordingMode {
+		err := recording.AddGeneralRegexSanitizer(fakeValue, value, nil)
+		if err != nil {
+			panic(err)
+		}
+	}
+
+	return value
 }
 
 type FakeCredential struct{}

@@ -537,9 +537,6 @@ func TestRecoverDeletedKey(t *testing.T) {
 }
 
 func TestReleaseKey(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
 	for _, mhsm := range []bool{false, true} {
 		name := "KV"
 		if mhsm {
@@ -583,7 +580,7 @@ func TestReleaseKey(t *testing.T) {
 			require.NoError(t, err)
 			resp, err := attestationClient.Do(req)
 			require.NoError(t, err)
-			require.Equal(t, resp.StatusCode, http.StatusOK)
+			require.Equal(t, http.StatusOK, resp.StatusCode)
 			defer resp.Body.Close()
 
 			var tR struct {

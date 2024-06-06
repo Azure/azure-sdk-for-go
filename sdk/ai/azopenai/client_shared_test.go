@@ -255,7 +255,7 @@ func newRecordingTransporter(t *testing.T) policy.Transporter {
 		err = recording.AddHeaderRegexSanitizer("Api-Key", fakeAPIKey, "", nil)
 		require.NoError(t, err)
 
-		err = recording.AddHeaderRegexSanitizer("Uer-Agent", "fake-user-agent", "", nil)
+		err = recording.AddHeaderRegexSanitizer("User-Agent", "fake-user-agent", "", nil)
 		require.NoError(t, err)
 
 		err = recording.AddURISanitizer("/openai/operations/images/00000000-AAAA-BBBB-CCCC-DDDDDDDDDDDD", "/openai/operations/images/[A-Za-z-0-9]+", nil)
@@ -360,7 +360,7 @@ func getEndpoint(ev string, azure bool) string {
 	v := getEnvVariable(ev, fakeEP)
 
 	if !strings.HasSuffix(v, "/") {
-		// (this just makes recording replacement easier)j
+		// (this just makes recording replacement easier)
 		v += "/"
 	}
 

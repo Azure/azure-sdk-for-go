@@ -76,7 +76,7 @@ steps:
 
   - ${{ if eq('true', parameters.UseFederatedAuth) }}:
     - task: AzurePowerShell@5
-      displayName: Run Tests
+      displayName: Run Tests (Federated Auth)
       inputs:
         azureSubscription: ${{ parameters.ServiceConnection }}
         azurePowerShellVersion: LatestVersion
@@ -93,7 +93,7 @@ steps:
         AZURE_SDK_GO_LOGGING: all
 
     - task: AzurePowerShell@5
-      displayName: Build Performance Tests
+      displayName: Build Performance Tests (Federated Auth)
       inputs:
         azureSubscription: ${{ parameters.ServiceConnection }}
         azurePowerShellVersion: LatestVersion

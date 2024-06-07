@@ -550,7 +550,7 @@ func TestSnapshotArchive(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, azappconfig.SnapshotStatusArchived, *archiveSnapshot.Snapshot.Status)
 
-	//Best effort snapshot cleanup
+	// Best effort snapshot cleanup
 	require.NoError(t, CleanupSnapshot(client, snapshotName))
 }
 
@@ -587,7 +587,7 @@ func TestSnapshotCreate(t *testing.T) {
 
 	client := NewClientFromConnectionString(t)
 
-	//Create a snapshot
+	// Create a snapshot
 	snapshot, err := CreateSnapshot(client, snapshotName, nil)
 
 	require.NoError(t, err)
@@ -722,7 +722,7 @@ func CreateSnapshot(c *azappconfig.Client, snapshotName string, sf []azappconfig
 		RetentionPeriod: to.Ptr[int64](3600),
 	}
 
-	//Create a snapshot
+	// Create a snapshot
 	resp, err := c.BeginCreateSnapshot(context.Background(), snapshotName, sf, opts)
 
 	if err != nil {
@@ -737,7 +737,7 @@ func CreateSnapshot(c *azappconfig.Client, snapshotName string, sf []azappconfig
 		return azappconfig.CreateSnapshotResponse{}, err
 	}
 
-	//Check if snapshot exists. If not fail the test
+	// Check if snapshot exists. If not fail the test
 	_, err = c.GetSnapshot(context.Background(), snapshotName, nil)
 
 	if err != nil {
@@ -758,7 +758,7 @@ func CleanupSnapshot(client *azappconfig.Client, snapshotName string) error {
 		return err
 	}
 
-	//Check if snapshot exists
+	// Check if snapshot exists
 	snapshot, err := client.GetSnapshot(context.Background(), snapshotName, nil)
 
 	if err != nil || *snapshot.Status != azappconfig.SnapshotStatusArchived {

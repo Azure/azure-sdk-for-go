@@ -6,7 +6,6 @@ package azidentity
 import (
 	"context"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"net/http"
 	"os"
@@ -19,7 +18,6 @@ import (
 const (
 	credNameAzurePipelines = "AzurePipelinesCredential"
 	oidcAPIVersion         = "7.1"
-	systemAccessToken      = "SYSTEM_ACCESSTOKEN"
 	systemOIDCRequestURI   = "SYSTEM_OIDCREQUESTURI"
 )
 
@@ -48,28 +46,36 @@ type AzurePipelinesCredentialOptions struct {
 	DisableInstanceDiscovery bool
 }
 
-// NewAzurePipelinesCredential is the constructor for AzurePipelinesCredential. In addition to its required arguments,
-// it reads a security token for the running build, which is required to authenticate the service connection, from the
-// environment variable SYSTEM_ACCESSTOKEN. See the [Azure Pipelines documentation] for an example showing how to set
-// this variable in build job YAML.
+// NewAzurePipelinesCredential is the constructor for AzurePipelinesCredential.
+//
+//   - tenantID: tenant ID of the service principal federated with the service connection
+//   - clientID: client ID of that service principal
+//   - serviceConnectionID: ID of the service connection to authenticate
+//   - systemAccessToken: security token for the running build. See [Azure Pipelines documentation] for
+//     an example showing how to get this value.
 //
 // [Azure Pipelines documentation]: https://learn.microsoft.com/azure/devops/pipelines/build/variables?view=azure-devops&tabs=yaml#systemaccesstoken
-func NewAzurePipelinesCredential(tenantID, clientID, serviceConnectionID string, options *AzurePipelinesCredentialOptions) (*AzurePipelinesCredential, error) {
-	if options == nil {
-		options = &AzurePipelinesCredentialOptions{}
+func NewAzurePipelinesCredential(tenantID, clientID, serviceConnectionID, systemAccessToken string, options *AzurePipelinesCredentialOptions) (*AzurePipelinesCredential, error) {
+	if !validTenantID(tenantID) {
+		return nil, errInvalidTenantID
 	}
 	u := os.Getenv(systemOIDCRequestURI)
 	if u == "" {
 		return nil, fmt.Errorf("no value for environment variable %s. This should be set by Azure Pipelines", systemOIDCRequestURI)
 	}
-	sat := os.Getenv(systemAccessToken)
-	if sat == "" {
-		return nil, errors.New("no value for environment variable " + systemAccessToken)
+	if clientID == "" {
+		return nil, fmt.Errorf("no client ID specified")
+	}
+	if serviceConnectionID == "" {
+		return nil, fmt.Errorf("no service connection ID specified")
 	}
 	a := AzurePipelinesCredential{
 		connectionID:      serviceConnectionID,
 		oidcURI:           u,
-		systemAccessToken: sat,
+		systemAccessToken: systemAccessToken,
+	}
+	if options == nil {
+		options = &AzurePipelinesCredentialOptions{}
 	}
 	caco := ClientAssertionCredentialOptions{
 		AdditionallyAllowedTenants: options.AdditionallyAllowedTenants,

@@ -21,8 +21,6 @@ func TestAzurePipelinesCredential(t *testing.T) {
 		srv, close := mock.NewServer()
 		defer close()
 		t.Setenv(systemOIDCRequestURI, srv.URL())
-		oidcAccessToken := "token"
-		t.Setenv(systemAccessToken, oidcAccessToken)
 		connectionID := "connection"
 		expected, err := url.Parse(fmt.Sprintf(
 			"%s/?api-version=%s&serviceConnectionId=%s",
@@ -30,7 +28,7 @@ func TestAzurePipelinesCredential(t *testing.T) {
 		))
 		require.NoError(t, err, "test bug: expected URL should parse")
 		srv.AppendResponse(
-			mock.WithBody([]byte(fmt.Sprintf(`{"oidcToken":%q}`, oidcAccessToken))),
+			mock.WithBody([]byte(fmt.Sprintf(`{"oidcToken":%q}`, tokenValue))),
 			mock.WithPredicate(func(r *http.Request) bool {
 				require.Equal(t, http.MethodPost, r.Method)
 				require.Equal(t, expected.Host, r.Host)
@@ -45,11 +43,11 @@ func TestAzurePipelinesCredential(t *testing.T) {
 				Transport: srv,
 			},
 		}
-		cred, err := NewAzurePipelinesCredential(fakeTenantID, fakeClientID, connectionID, &o)
+		cred, err := NewAzurePipelinesCredential(fakeTenantID, fakeClientID, connectionID, tokenValue, &o)
 		require.NoError(t, err)
 		actual, err := cred.getAssertion(ctx)
 		require.NoError(t, err)
-		require.Equal(t, oidcAccessToken, actual)
+		require.Equal(t, tokenValue, actual)
 	})
 	t.Run("Live", func(t *testing.T) {
 		if recording.GetRecordMode() != recording.LiveMode {
@@ -57,13 +55,14 @@ func TestAzurePipelinesCredential(t *testing.T) {
 		}
 		clientID := os.Getenv("AZURE_SERVICE_CONNECTION_CLIENT_ID")
 		connectionID := os.Getenv("AZURE_SERVICE_CONNECTION_ID")
+		systemAccessToken := os.Getenv("SYSTEM_ACCESSTOKEN")
 		tenantID := os.Getenv("AZURE_SERVICE_CONNECTION_TENANT_ID")
-		for _, s := range []string{clientID, connectionID, tenantID} {
+		for _, s := range []string{clientID, connectionID, systemAccessToken, tenantID} {
 			if s == "" {
-				t.Skip("set AZURE_SERVICE_CONNECTION_CLIENT_ID, AZURE_SERVICE_CONNECTION_ID and AZURE_SERVICE_CONNECTION_TENANT_ID to run this test")
+				t.Skip("set AZURE_SERVICE_CONNECTION_CLIENT_ID, AZURE_SERVICE_CONNECTION_ID, AZURE_SERVICE_CONNECTION_TENANT_ID and SYSTEM_ACCESSTOKEN to run this test")
 			}
 		}
-		cred, err := NewAzurePipelinesCredential(tenantID, clientID, connectionID, nil)
+		cred, err := NewAzurePipelinesCredential(tenantID, clientID, connectionID, systemAccessToken, nil)
 		require.NoError(t, err)
 		testGetTokenSuccess(t, cred, "https://vault.azure.net/.default")
 	})

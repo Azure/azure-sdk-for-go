@@ -317,7 +317,7 @@ func (r *perfRunner) printFinalUpdate(warmup bool) error {
 // runTest takes care of the semantics of running a single iteration.
 // It changes configuration on the proxy, increments counters, and
 // updates the running-time.
-func (r *perfRunner) runTest(p PerfTest, index int, ID string) {
+func (r *perfRunner) runTest(p PerfTest, index int, id string) {
 	defer wg.Done()
 	if debug {
 		log.Printf("number of proxies %d", len(r.proxyTransports))
@@ -330,17 +330,15 @@ func (r *perfRunner) runTest(p PerfTest, index int, ID string) {
 	// If we are using the test proxy need to set up the in-memory recording.
 	if testProxyURLs != "" {
 		// First request goes through in Live mode
-		r.proxyTransports[ID].SetMode("live")
+		r.proxyTransports[id].SetMode("live")
 		err := p.Run(context.Background())
 		if err != nil {
-			if err != nil {
-				panic(err)
-			}
+			panic(err)
 		}
 
 		// 2nd request goes through in Record mode
-		r.proxyTransports[ID].SetMode("record")
-		err = r.proxyTransports[ID].start()
+		r.proxyTransports[id].SetMode("record")
+		err = r.proxyTransports[id].start()
 		if err != nil {
 			panic(err)
 
@@ -348,18 +346,16 @@ func (r *perfRunner) runTest(p PerfTest, index int, ID string) {
 
 		err = p.Run(context.Background())
 		if err != nil {
-			if err != nil {
-				panic(err)
-			}
+			panic(err)
 		}
-		err = r.proxyTransports[ID].stop()
+		err = r.proxyTransports[id].stop()
 		if err != nil {
 			panic(err)
 		}
 
 		// All ensuing requests go through in Playback mode
-		r.proxyTransports[ID].SetMode("playback")
-		err = r.proxyTransports[ID].start()
+		r.proxyTransports[id].SetMode("playback")
+		err = r.proxyTransports[id].start()
 		if err != nil {
 			panic(err)
 		}
@@ -385,11 +381,10 @@ func (r *perfRunner) runTest(p PerfTest, index int, ID string) {
 
 	if testProxyURLs != "" {
 		// Stop the proxy now
-		err := proxyTransportsSuite[ID].stop()
-		if err != nil {
+		if err := proxyTransportsSuite[id].stop(); err != nil {
 			panic(err)
 		}
-		proxyTransportsSuite[ID].SetMode("live")
+		proxyTransportsSuite[id].SetMode("live")
 	}
 	opts.finished = true
 }

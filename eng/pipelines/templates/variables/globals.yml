@@ -1,5 +1,5 @@
 variables:
-  GoLintCLIVersion: 'v1.56.2'
+  GoLintCLIVersion: 'v1.59.0'
   Package.EnableSBOMSigning: true
   # Enable go native component governance detection
   # https://docs.opensource.microsoft.com/tools/cg/index.html

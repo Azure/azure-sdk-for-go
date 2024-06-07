@@ -27,3 +27,4 @@ extends:
       ServiceDirectory: 'data/azappconfig'
       RunLiveTests: true
       UsePipelineProxy: false
+      UseFederatedAuth: true

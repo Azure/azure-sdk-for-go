@@ -99,7 +99,7 @@ steps:
         azurePowerShellVersion: LatestVersion
         ScriptType: FilePath
         Inline: |
-          ./eng/scripts/Build_Perf.ps1 ${{ parameters.ServiceDirectory }} $$(UseAzcoreFromMain)
+          eng/scripts/Build_Perf.ps1 ${{ parameters.ServiceDirectory }} $$(UseAzcoreFromMain)
           exit $LASTEXITCODE
         pwsh: true
 

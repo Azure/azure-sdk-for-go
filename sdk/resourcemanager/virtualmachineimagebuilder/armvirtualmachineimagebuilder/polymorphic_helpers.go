@@ -11,7 +11,7 @@ package armvirtualmachineimagebuilder
 import "encoding/json"
 
 func unmarshalDistributeVersionerClassification(rawMsg json.RawMessage) (DistributeVersionerClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -34,7 +34,7 @@ func unmarshalDistributeVersionerClassification(rawMsg json.RawMessage) (Distrib
 }
 
 func unmarshalImageTemplateCustomizerClassification(rawMsg json.RawMessage) (ImageTemplateCustomizerClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -63,7 +63,7 @@ func unmarshalImageTemplateCustomizerClassification(rawMsg json.RawMessage) (Ima
 }
 
 func unmarshalImageTemplateCustomizerClassificationArray(rawMsg json.RawMessage) ([]ImageTemplateCustomizerClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var rawMessages []json.RawMessage
@@ -82,7 +82,7 @@ func unmarshalImageTemplateCustomizerClassificationArray(rawMsg json.RawMessage)
 }
 
 func unmarshalImageTemplateDistributorClassification(rawMsg json.RawMessage) (ImageTemplateDistributorClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -107,7 +107,7 @@ func unmarshalImageTemplateDistributorClassification(rawMsg json.RawMessage) (Im
 }
 
 func unmarshalImageTemplateDistributorClassificationArray(rawMsg json.RawMessage) ([]ImageTemplateDistributorClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var rawMessages []json.RawMessage
@@ -126,7 +126,7 @@ func unmarshalImageTemplateDistributorClassificationArray(rawMsg json.RawMessage
 }
 
 func unmarshalImageTemplateInVMValidatorClassification(rawMsg json.RawMessage) (ImageTemplateInVMValidatorClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -151,7 +151,7 @@ func unmarshalImageTemplateInVMValidatorClassification(rawMsg json.RawMessage) (
 }
 
 func unmarshalImageTemplateInVMValidatorClassificationArray(rawMsg json.RawMessage) ([]ImageTemplateInVMValidatorClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var rawMessages []json.RawMessage
@@ -170,7 +170,7 @@ func unmarshalImageTemplateInVMValidatorClassificationArray(rawMsg json.RawMessa
 }
 
 func unmarshalImageTemplateSourceClassification(rawMsg json.RawMessage) (ImageTemplateSourceClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -195,7 +195,7 @@ func unmarshalImageTemplateSourceClassification(rawMsg json.RawMessage) (ImageTe
 }
 
 func unmarshalTriggerPropertiesClassification(rawMsg json.RawMessage) (TriggerPropertiesClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any

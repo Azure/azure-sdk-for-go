@@ -81,8 +81,9 @@ steps:
         azureSubscription: ${{ parameters.ServiceConnection }}
         azurePowerShellVersion: LatestVersion
         ScriptType: FilePath
-        ScriptPath: ./eng/scripts/run_tests.ps1
-        ScriptArguments: '${{ parameters.ServiceDirectory }} ${{ parameters.TestRunTime }} $${{ parameters.EnableRaceDetector }}'
+        Inline: |
+          ./eng/scripts/run_tests.ps1 ${{ parameters.ServiceDirectory }} ${{ parameters.TestRunTime }} $${{ parameters.EnableRaceDetector }}
+          exit $LASTEXITCODE
         pwsh: true
       env:
         GO111MODULE: 'on'

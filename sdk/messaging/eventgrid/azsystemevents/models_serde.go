@@ -3275,7 +3275,7 @@ func (a ACSRouterWorkerSelector) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populateDateTimeRFC3339(objectMap, "expirationTime", a.ExpirationTime)
 	populate(objectMap, "key", a.Key)
-	populateAny(objectMap, "labelValue", a.LabelValue)
+	populateAny(objectMap, "value", a.LabelValue)
 	populate(objectMap, "labelOperator", a.Operator)
 	populate(objectMap, "state", a.SelectorState)
 	populate(objectMap, "ttlSeconds", a.TimeToLive)
@@ -3297,7 +3297,7 @@ func (a *ACSRouterWorkerSelector) UnmarshalJSON(data []byte) error {
 		case "key":
 			err = unpopulate(val, "Key", &a.Key)
 			delete(rawMsg, key)
-		case "labelValue":
+		case "value":
 			err = unpopulate(val, "LabelValue", &a.LabelValue)
 			delete(rawMsg, key)
 		case "labelOperator":

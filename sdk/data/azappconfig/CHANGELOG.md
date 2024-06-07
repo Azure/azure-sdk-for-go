@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.1-beta.1 (2024-06-11)
+## 1.2.0-beta.1 (2024-06-11)
 
 ### Features Added
 * Support ETag-per-page

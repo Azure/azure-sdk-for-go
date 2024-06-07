@@ -20,6 +20,12 @@ parameters:
   - name: EnableRaceDetector
     type: boolean
     default: false
+  - name: UseFederatedAuth
+    type: boolean
+    default: false
+  - name: ServiceConnection
+    type: string
+    default: ''
 
 steps:
   - task: Powershell@2
@@ -68,19 +74,37 @@ steps:
   - ${{ if eq(parameters.TestProxy, true) }}:
     - template: /eng/common/testproxy/test-proxy-tool.yml
 
-  - task: PowerShell@2
-    displayName: 'Run Tests'
-    inputs:
-      targetType: 'filePath'
-      filePath: ./eng/scripts/run_tests.ps1
-      arguments: '${{ parameters.ServiceDirectory }} ${{ parameters.TestRunTime }} $${{ parameters.EnableRaceDetector }}'
-      pwsh: true
-    env:
-      GO111MODULE: 'on'
-      PROXY_CERT: $(Build.SourcesDirectory)/eng/common/testproxy/dotnet-devcert.crt
-      ${{ insert }}: ${{ parameters.EnvVars }}
-      GOTRACEBACK: all
-      AZURE_SDK_GO_LOGGING: all
+  - ${{ if UseFederatedAuth }}:
+    - task: AzurePowerShell@5
+      displayName: Run Tests
+      inputs:
+        azureSubscription: ${{ parameters.ServiceConnection }}
+        azurePowerShellVersion: LatestVersion
+        ScriptType: FilePath
+        ScriptPath: ./eng/scripts/run_tests.ps1
+        ScriptArguments: '${{ parameters.ServiceDirectory }} ${{ parameters.TestRunTime }} $${{ parameters.EnableRaceDetector }}'
+        pwsh: true
+      env:
+        GO111MODULE: 'on'
+        PROXY_CERT: $(Build.SourcesDirectory)/eng/common/testproxy/dotnet-devcert.crt
+        ${{ insert }}: ${{ parameters.EnvVars }}
+        GOTRACEBACK: all
+        AZURE_SDK_GO_LOGGING: all
+
+  - ${{ else }}:
+    - task: PowerShell@2
+      displayName: 'Run Tests'
+      inputs:
+        targetType: 'filePath'
+        filePath: ./eng/scripts/run_tests.ps1
+        arguments: '${{ parameters.ServiceDirectory }} ${{ parameters.TestRunTime }} $${{ parameters.EnableRaceDetector }}'
+        pwsh: true
+      env:
+        GO111MODULE: 'on'
+        PROXY_CERT: $(Build.SourcesDirectory)/eng/common/testproxy/dotnet-devcert.crt
+        ${{ insert }}: ${{ parameters.EnvVars }}
+        GOTRACEBACK: all
+        AZURE_SDK_GO_LOGGING: all
 
   - task: PowerShell@2
     displayName: 'Build Performance Tests'

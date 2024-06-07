@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory/v7
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory/v8
 
 go 1.18
 

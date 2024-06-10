@@ -7,6 +7,7 @@
 package azidentity
 
 import (
+	"bytes"
 	"context"
 	"fmt"
 	"net/http"
@@ -14,13 +15,14 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"runtime"
 	"strings"
 	"testing"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/require"
@@ -32,7 +34,11 @@ const (
 )
 
 func TestManagedIdentityCredential_AzureArc(t *testing.T) {
-	file, err := os.Create(filepath.Join(t.TempDir(), "arc.key"))
+	d := t.TempDir()
+	before := arcKeyDirectory
+	arcKeyDirectory = func() (string, error) { return d, nil }
+	defer func() { arcKeyDirectory = before }()
+	file, err := os.Create(filepath.Join(d, "arc.key"))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -150,6 +156,69 @@ func TestManagedIdentityCredential_AzureArcErrors(t *testing.T) {
 			t.Fatal("expected an error")
 		}
 	})
+	t.Run("key too large", func(t *testing.T) {
+		d := t.TempDir()
+		f := filepath.Join(d, "test.key")
+		err := os.WriteFile(f, bytes.Repeat([]byte("."), 4097), 0600)
+		require.NoError(t, err)
+		before := arcKeyDirectory
+		arcKeyDirectory = func() (string, error) { return d, nil }
+		defer func() { arcKeyDirectory = before }()
+		srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
+		defer close()
+		srv.AppendResponse(
+			mock.WithHeader("WWW-Authenticate", "Basic realm="+f),
+			mock.WithStatusCode(http.StatusUnauthorized),
+		)
+		cred, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{ClientOptions: azcore.ClientOptions{Transport: srv}})
+		require.NoError(t, err)
+		_, err = cred.GetToken(ctx, testTRO)
+		require.ErrorContains(t, err, "too large")
+	})
+	t.Run("unexpected file paths", func(t *testing.T) {
+		d, err := arcKeyDirectory()
+		if err != nil {
+			// test is running on an unsupported OS e.g. darwin
+			t.Skip(err)
+		}
+		srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
+		defer close()
+		srv.AppendResponse(
+			// unexpected directory
+			mock.WithHeader("WWW-Authenticate", "Basic realm="+filepath.Join("foo", "bar.key")),
+			mock.WithStatusCode(http.StatusUnauthorized),
+		)
+		o := ManagedIdentityCredentialOptions{ClientOptions: azcore.ClientOptions{Transport: srv}}
+		cred, err := NewManagedIdentityCredential(&o)
+		require.NoError(t, err)
+		_, err = cred.GetToken(ctx, testTRO)
+		require.ErrorContains(t, err, "unexpected file path")
+
+		srv.AppendResponse(
+			// unexpected extension
+			mock.WithHeader("WWW-Authenticate", "Basic realm="+filepath.Join(d, "foo")),
+			mock.WithStatusCode(http.StatusUnauthorized),
+		)
+		cred, err = NewManagedIdentityCredential(&o)
+		require.NoError(t, err)
+		_, err = cred.GetToken(ctx, testTRO)
+		require.ErrorContains(t, err, "unexpected file path")
+	})
+	if runtime.GOOS == "windows" {
+		t.Run("ProgramData not set", func(t *testing.T) {
+			t.Setenv("ProgramData", "")
+			srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
+			defer close()
+			srv.AppendResponse(
+				mock.WithHeader("WWW-Authenticate", "Basic realm=foo"),
+				mock.WithStatusCode(http.StatusUnauthorized),
+			)
+			cred, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{ClientOptions: azcore.ClientOptions{Transport: srv}})
+			require.NoError(t, err)
+			_, err = cred.GetToken(ctx, testTRO)
+			require.ErrorContains(t, err, "ProgramData")
+		})
+	}
 }
 
 func TestManagedIdentityCredential_AzureContainerInstanceLive(t *testing.T) {
@@ -184,7 +253,7 @@ func TestManagedIdentityCredential_AzureFunctionsLive(t *testing.T) {
 	res, err := http.Get(url)
 	require.NoError(t, err)
 	if res.StatusCode != http.StatusOK {
-		b, err := runtime.Payload(res)
+		b, err := azruntime.Payload(res)
 		require.NoError(t, err)
 		t.Fatal("test application returned an error: " + string(b))
 	}

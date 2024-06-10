@@ -73,7 +73,11 @@ var arcKeyDirectory = func() (string, error) {
 	case "linux":
 		return "/var/opt/azcmagent/tokens", nil
 	case "windows":
-		return filepath.Join(os.Getenv("ProgramData"), "AzureConnectedMachineAgent", "Tokens"), nil
+		pd := os.Getenv("ProgramData")
+		if pd == "" {
+			return "", errors.New("environment variable ProgramData has no value")
+		}
+		return filepath.Join(pd, "AzureConnectedMachineAgent", "Tokens"), nil
 	default:
 		return "", fmt.Errorf("unsupported OS %q", runtime.GOOS)
 	}
@@ -252,7 +256,7 @@ func (c *managedIdentityClient) authenticate(ctx context.Context, id ManagedIDKi
 		}
 	}
 
-	return azcore.AccessToken{}, newAuthenticationFailedError(credNameManagedIdentity, "", resp, nil)
+	return azcore.AccessToken{}, newAuthenticationFailedError(credNameManagedIdentity, "authentication failed", resp, nil)
 }
 
 func (c *managedIdentityClient) createAccessToken(res *http.Response) (azcore.AccessToken, error) {
@@ -421,30 +425,30 @@ func (c *managedIdentityClient) getAzureArcSecretKey(ctx context.Context, resour
 	}
 	header := response.Header.Get("WWW-Authenticate")
 	if len(header) == 0 {
-		return "", errors.New("response has no WWW-Authenticate header")
+		return "", newAuthenticationFailedError(credNameManagedIdentity, "HIMDS response has no WWW-Authenticate header", nil, nil)
 	}
 	// the WWW-Authenticate header is expected in the following format: Basic realm=/some/file/path.key
 	_, p, found := strings.Cut(header, "=")
 	if !found {
-		return "", fmt.Errorf("unexpected WWW-Authenticate header: %s", header)
+		return "", newAuthenticationFailedError(credNameManagedIdentity, "unexpected WWW-Authenticate header from HIMDS: "+header, nil, nil)
 	}
 	expected, err := arcKeyDirectory()
 	if err != nil {
 		return "", err
 	}
 	if filepath.Dir(p) != expected || !strings.HasSuffix(p, ".key") {
-		return "", fmt.Errorf("unexpected file path from HIMDS service: %s", p)
+		return "", newAuthenticationFailedError(credNameManagedIdentity, "unexpected file path from HIMDS service: "+p, nil, nil)
 	}
 	f, err := os.Stat(p)
 	if err != nil {
-		return "", fmt.Errorf("could not stat %q: %v", p, err)
+		return "", newAuthenticationFailedError(credNameManagedIdentity, fmt.Sprintf("could not stat %q: %v", p, err), nil, nil)
 	}
 	if s := f.Size(); s > 4096 {
-		return "", fmt.Errorf("key is too large (%d bytes)", s)
+		return "", newAuthenticationFailedError(credNameManagedIdentity, fmt.Sprintf("key is too large (%d bytes)", s), nil, nil)
 	}
 	key, err := os.ReadFile(p)
 	if err != nil {
-		return "", fmt.Errorf("could not read %q: %v", p, err)
+		return "", newAuthenticationFailedError(credNameManagedIdentity, fmt.Sprintf("could not read %q: %v", p, err), nil, nil)
 	}
 	return string(key), nil
 }

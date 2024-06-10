@@ -15,13 +15,14 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"runtime"
 	"strings"
 	"testing"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/require"
@@ -171,7 +172,7 @@ func TestManagedIdentityCredential_AzureArcErrors(t *testing.T) {
 		)
 		cred, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{ClientOptions: azcore.ClientOptions{Transport: srv}})
 		require.NoError(t, err)
-		_, err = cred.GetToken(context.Background(), testTRO)
+		_, err = cred.GetToken(ctx, testTRO)
 		require.ErrorContains(t, err, "too large")
 	})
 	t.Run("unexpected file paths", func(t *testing.T) {
@@ -190,7 +191,7 @@ func TestManagedIdentityCredential_AzureArcErrors(t *testing.T) {
 		o := ManagedIdentityCredentialOptions{ClientOptions: azcore.ClientOptions{Transport: srv}}
 		cred, err := NewManagedIdentityCredential(&o)
 		require.NoError(t, err)
-		_, err = cred.GetToken(context.Background(), testTRO)
+		_, err = cred.GetToken(ctx, testTRO)
 		require.ErrorContains(t, err, "unexpected file path")
 
 		srv.AppendResponse(
@@ -200,9 +201,24 @@ func TestManagedIdentityCredential_AzureArcErrors(t *testing.T) {
 		)
 		cred, err = NewManagedIdentityCredential(&o)
 		require.NoError(t, err)
-		_, err = cred.GetToken(context.Background(), testTRO)
+		_, err = cred.GetToken(ctx, testTRO)
 		require.ErrorContains(t, err, "unexpected file path")
 	})
+	if runtime.GOOS == "windows" {
+		t.Run("ProgramData not set", func(t *testing.T) {
+			t.Setenv("ProgramData", "")
+			srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
+			defer close()
+			srv.AppendResponse(
+				mock.WithHeader("WWW-Authenticate", "Basic realm=foo"),
+				mock.WithStatusCode(http.StatusUnauthorized),
+			)
+			cred, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{ClientOptions: azcore.ClientOptions{Transport: srv}})
+			require.NoError(t, err)
+			_, err = cred.GetToken(ctx, testTRO)
+			require.ErrorContains(t, err, "ProgramData")
+		})
+	}
 }
 
 func TestManagedIdentityCredential_AzureContainerInstanceLive(t *testing.T) {
@@ -237,7 +253,7 @@ func TestManagedIdentityCredential_AzureFunctionsLive(t *testing.T) {
 	res, err := http.Get(url)
 	require.NoError(t, err)
 	if res.StatusCode != http.StatusOK {
-		b, err := runtime.Payload(res)
+		b, err := azruntime.Payload(res)
 		require.NoError(t, err)
 		t.Fatal("test application returned an error: " + string(b))
 	}

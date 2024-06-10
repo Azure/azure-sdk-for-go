@@ -69,7 +69,6 @@ output EVENTGRID_KEY string = listKeys(
   resourceId('Microsoft.EventGrid/namespaces', namespaceName),
   '2023-06-01-preview'
 ).key1
-// TODO: get this formatted properly
 output EVENTGRID_ENDPOINT string = 'https://${ns_resource.properties.topicsConfiguration.hostname}'
 
 output EVENTGRID_TOPIC string = nsTopicName

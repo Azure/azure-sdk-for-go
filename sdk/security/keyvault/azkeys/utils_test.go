@@ -149,8 +149,8 @@ func run(m *testing.M) int {
 	return code
 }
 
-func startTest(t *testing.T, MHSMtest bool) *azkeys.Client {
-	if recording.GetRecordMode() != recording.PlaybackMode && MHSMtest && !enableHSM {
+func startTest(t *testing.T, mhsmTest bool) *azkeys.Client {
+	if recording.GetRecordMode() != recording.PlaybackMode && mhsmTest && !enableHSM {
 		t.Skip("set AZURE_MANAGEDHSM_URL to run this test")
 	}
 	err := recording.Start(t, recordingDirectory, nil)
@@ -162,7 +162,7 @@ func startTest(t *testing.T, MHSMtest bool) *azkeys.Client {
 	transport, err := recording.NewRecordingHTTPClient(t, nil)
 	require.NoError(t, err)
 	URL := vaultURL
-	if MHSMtest {
+	if mhsmTest {
 		URL = mhsmURL
 	}
 	opts := &azkeys.ClientOptions{ClientOptions: azcore.ClientOptions{Transport: transport}}
@@ -199,11 +199,11 @@ func getEnvVar(envVar string, fakeValue string) string {
 	return value
 }
 
-func cleanUpKey(t *testing.T, client *azkeys.Client, ID *azkeys.ID) {
+func cleanUpKey(t *testing.T, client *azkeys.Client, id *azkeys.ID) {
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		return
 	}
-	URL, name, _ := internal.ParseID((*string)(ID))
+	URL, name, _ := internal.ParseID((*string)(id))
 	if _, err := client.DeleteKey(context.Background(), *name, nil); err == nil {
 		keysToPurge.mut.Lock()
 		defer keysToPurge.mut.Unlock()

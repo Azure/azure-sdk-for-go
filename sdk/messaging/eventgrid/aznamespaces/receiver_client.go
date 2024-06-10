@@ -91,7 +91,7 @@ func (client *ReceiverClient) acknowledgeEventsCreateRequest(ctx context.Context
 // acknowledgeEventsHandleResponse handles the AcknowledgeEvents response.
 func (client *ReceiverClient) acknowledgeEventsHandleResponse(resp *http.Response) (AcknowledgeEventsResponse, error) {
 	result := AcknowledgeEventsResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.AcknowledgeResult); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.AcknowledgeEventsResult); err != nil {
 		return AcknowledgeEventsResponse{}, err
 	}
 	return result, nil
@@ -155,7 +155,7 @@ func (client *ReceiverClient) receiveEventsCreateRequest(ctx context.Context, to
 // receiveEventsHandleResponse handles the ReceiveEvents response.
 func (client *ReceiverClient) receiveEventsHandleResponse(resp *http.Response) (ReceiveEventsResponse, error) {
 	result := ReceiveEventsResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ReceiveResult); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.ReceiveEventsResult); err != nil {
 		return ReceiveEventsResponse{}, err
 	}
 	return result, nil
@@ -225,7 +225,7 @@ func (client *ReceiverClient) rejectEventsCreateRequest(ctx context.Context, top
 // rejectEventsHandleResponse handles the RejectEvents response.
 func (client *ReceiverClient) rejectEventsHandleResponse(resp *http.Response) (RejectEventsResponse, error) {
 	result := RejectEventsResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.RejectResult); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.RejectEventsResult); err != nil {
 		return RejectEventsResponse{}, err
 	}
 	return result, nil
@@ -298,7 +298,7 @@ func (client *ReceiverClient) releaseEventsCreateRequest(ctx context.Context, to
 // releaseEventsHandleResponse handles the ReleaseEvents response.
 func (client *ReceiverClient) releaseEventsHandleResponse(resp *http.Response) (ReleaseEventsResponse, error) {
 	result := ReleaseEventsResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ReleaseResult); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.ReleaseEventsResult); err != nil {
 		return ReleaseEventsResponse{}, err
 	}
 	return result, nil
@@ -369,7 +369,7 @@ func (client *ReceiverClient) renewEventLocksCreateRequest(ctx context.Context, 
 // renewEventLocksHandleResponse handles the RenewEventLocks response.
 func (client *ReceiverClient) renewEventLocksHandleResponse(resp *http.Response) (RenewEventLocksResponse, error) {
 	result := RenewEventLocksResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.RenewLocksResult); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.RenewEventLocksResult); err != nil {
 		return RenewEventLocksResponse{}, err
 	}
 	return result, nil

@@ -6,6 +6,7 @@ package azidentity
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 	"os"
@@ -59,15 +60,18 @@ func NewAzurePipelinesCredential(tenantID, clientID, serviceConnectionID, system
 	if !validTenantID(tenantID) {
 		return nil, errInvalidTenantID
 	}
+	if clientID == "" {
+		return nil, errors.New("no client ID specified")
+	}
+	if serviceConnectionID == "" {
+		return nil, errors.New("no service connection ID specified")
+	}
+	if systemAccessToken == "" {
+		return nil, errors.New("no system access token specified")
+	}
 	u := os.Getenv(systemOIDCRequestURI)
 	if u == "" {
 		return nil, fmt.Errorf("no value for environment variable %s. This should be set by Azure Pipelines", systemOIDCRequestURI)
-	}
-	if clientID == "" {
-		return nil, fmt.Errorf("no client ID specified")
-	}
-	if serviceConnectionID == "" {
-		return nil, fmt.Errorf("no service connection ID specified")
 	}
 	a := AzurePipelinesCredential{
 		connectionID:      serviceConnectionID,

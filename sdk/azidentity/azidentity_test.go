@@ -134,6 +134,12 @@ func TestTenantID(t *testing.T) {
 			tenantOptional: true,
 		},
 		{
+			name: credNameAzurePipelines,
+			ctor: func(tenant string) (azcore.TokenCredential, error) {
+				return NewAzurePipelinesCredential(tenant, fakeClientID, "service-connection", tokenValue, nil)
+			},
+		},
+		{
 			name: credNameBrowser,
 			ctor: func(tenant string) (azcore.TokenCredential, error) {
 				return NewInteractiveBrowserCredential(&InteractiveBrowserCredentialOptions{
@@ -604,6 +610,14 @@ func TestAdditionallyAllowedTenants(t *testing.T) {
 				},
 			},
 			{
+				name: credNameAzurePipelines,
+				ctor: func(co azcore.ClientOptions) (azcore.TokenCredential, error) {
+					o := AzurePipelinesCredentialOptions{AdditionallyAllowedTenants: test.allowed, ClientOptions: co}
+					return NewAzurePipelinesCredential(fakeTenantID, fakeClientID, "service-connection", tokenValue, &o)
+				},
+				env: map[string]string{systemOIDCRequestURI: "https://localhost/instance"},
+			},
+			{
 				name: credNameCert,
 				ctor: func(co azcore.ClientOptions) (azcore.TokenCredential, error) {
 					o := ClientCertificateCredentialOptions{AdditionallyAllowedTenants: test.allowed, ClientOptions: co}
@@ -860,6 +874,7 @@ func TestClaims(t *testing.T) {
 	claim := `"test":"pass"`
 	for _, test := range []struct {
 		ctor func(azcore.ClientOptions) (azcore.TokenCredential, error)
+		env  map[string]string
 		name string
 	}{
 		{
@@ -868,6 +883,14 @@ func TestClaims(t *testing.T) {
 				o := ClientAssertionCredentialOptions{ClientOptions: co}
 				return NewClientAssertionCredential(fakeTenantID, fakeClientID, func(context.Context) (string, error) { return "...", nil }, &o)
 			},
+		},
+		{
+			name: credNameAzurePipelines,
+			ctor: func(co azcore.ClientOptions) (azcore.TokenCredential, error) {
+				o := AzurePipelinesCredentialOptions{ClientOptions: co}
+				return NewAzurePipelinesCredential(fakeTenantID, fakeClientID, "service-connection", tokenValue, &o)
+			},
+			env: map[string]string{systemOIDCRequestURI: "https://localhost/foo/UserRealm/foo"},
 		},
 		{
 			name: credNameCert,
@@ -925,6 +948,9 @@ func TestClaims(t *testing.T) {
 				name += " CAE"
 			}
 			t.Run(name, func(t *testing.T) {
+				for k, v := range test.env {
+					t.Setenv(k, v)
+				}
 				reqs := 0
 				sts := mockSTS{
 					tokenRequestCallback: func(r *http.Request) *http.Response {

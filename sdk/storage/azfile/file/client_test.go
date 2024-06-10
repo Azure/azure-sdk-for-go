@@ -3113,6 +3113,7 @@ func (f *FileRecordedTestsSuite) TestFileGetRangeListSupportRename() {
 
 	rsc, _ := testcommon.GenerateData(int(fileSize))
 	_, err = fClient.UploadRange(context.Background(), 0, rsc, nil)
+	_require.NoError(err)
 
 	renameResponse, err := fClient.Rename(context.Background(), "file2", nil)
 	_require.NoError(err)

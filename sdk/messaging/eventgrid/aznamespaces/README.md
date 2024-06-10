@@ -44,7 +44,7 @@ Using a shared key:
 # Key concepts
 
 An Event Grid namespace is a container for multiple types of resources, including [**namespace topics**][ms_topic]:
-- A [**namespace topic**][ms_topic] contains CloudEvents that you publish, via [SenderClient.PublishEvents][godoc_send].
+- A [**namespace topic**][ms_topic] contains CloudEvents that you publish, via [SenderClient.SendEvents][godoc_send].
 - A [**topic subscription**][ms_subscription], associated with a single topic, can be used to receive events via [ReceiverClient.ReceiveEvents][godoc_receive].
 
 Namespaces also offer access using MQTT, although that is not covered in this package.

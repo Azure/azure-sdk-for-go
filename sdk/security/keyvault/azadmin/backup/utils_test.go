@@ -20,8 +20,8 @@ import (
 )
 
 const recordingDirectory = "sdk/security/keyvault/azadmin/testdata"
-const fakeHsmURL = "https://fakehsm.managedhsm.azure.net/"
-const fakeBlobURL = "https://fakestorageaccount.blob.core.windows.net/backup"
+const fakeHsmURL = "https://Sanitized.managedhsm.azure.net/"
+const fakeBlobURL = "https://Sanitized.blob.core.windows.net/backup"
 const fakeToken = "fakeSasToken"
 
 var (
@@ -67,6 +67,14 @@ func run(m *testing.M) int {
 
 	if recording.GetRecordMode() == recording.RecordingMode {
 		err := recording.AddBodyRegexSanitizer(fakeToken, `sv=[^"]*`, nil)
+		if err != nil {
+			panic(err)
+		}
+		err = recording.AddGeneralRegexSanitizer(fakeHsmURL, hsmURL, nil)
+		if err != nil {
+			panic(err)
+		}
+		err = recording.AddGeneralRegexSanitizer(fakeBlobURL, blobURL, nil)
 		if err != nil {
 			panic(err)
 		}

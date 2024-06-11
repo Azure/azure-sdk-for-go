@@ -354,7 +354,8 @@ func ExampleClient_GetChatCompletionsStream() {
 
 		if err != nil {
 			//  TODO: Update the following line with your application specific error handling logic
-			log.Fatalf("ERROR: %s", err)
+			log.Printf("ERROR: %s", err)
+			return
 		}
 
 		for _, choice := range chatCompletions.Choices {

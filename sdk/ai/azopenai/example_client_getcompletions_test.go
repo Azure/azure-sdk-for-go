@@ -35,8 +35,9 @@ func ExampleClient_GetCompletions() {
 	client, err := azopenai.NewClientWithKeyCredential(azureOpenAIEndpoint, keyCredential, nil)
 
 	if err != nil {
-		//  TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
+		// TODO: Update the following line with your application specific error handling logic
+		log.Printf("ERROR: %s", err)
+		return
 	}
 
 	resp, err := client.GetCompletions(context.TODO(), azopenai.CompletionsOptions{
@@ -47,8 +48,9 @@ func ExampleClient_GetCompletions() {
 	}, nil)
 
 	if err != nil {
-		//  TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
+		// TODO: Update the following line with your application specific error handling logic
+		log.Printf("ERROR: %s", err)
+		return
 	}
 
 	for _, choice := range resp.Choices {
@@ -77,8 +79,9 @@ func ExampleClient_GetCompletionsStream() {
 	client, err := azopenai.NewClientWithKeyCredential(azureOpenAIEndpoint, keyCredential, nil)
 
 	if err != nil {
-		//  TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
+		// TODO: Update the following line with your application specific error handling logic
+		log.Printf("ERROR: %s", err)
+		return
 	}
 
 	resp, err := client.GetCompletionsStream(context.TODO(), azopenai.CompletionsOptions{
@@ -89,8 +92,9 @@ func ExampleClient_GetCompletionsStream() {
 	}, nil)
 
 	if err != nil {
-		//  TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
+		// TODO: Update the following line with your application specific error handling logic
+		log.Printf("ERROR: %s", err)
+		return
 	}
 
 	defer resp.CompletionsStream.Close()
@@ -105,7 +109,8 @@ func ExampleClient_GetCompletionsStream() {
 
 		if err != nil {
 			//  TODO: Update the following line with your application specific error handling logic
-			log.Fatalf("ERROR: %s", err)
+			log.Printf("ERROR: %s", err)
+			return
 		}
 
 		for _, choice := range entry.Choices {

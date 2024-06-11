@@ -36,8 +36,9 @@ func ExampleClient_GetImageGenerations() {
 	client, err := azopenai.NewClientWithKeyCredential(azureOpenAIEndpoint, keyCredential, nil)
 
 	if err != nil {
-		//  TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
+		// TODO: Update the following line with your application specific error handling logic
+		log.Printf("ERROR: %s", err)
+		return
 	}
 
 	resp, err := client.GetImageGenerations(context.TODO(), azopenai.ImageGenerationOptions{
@@ -47,8 +48,9 @@ func ExampleClient_GetImageGenerations() {
 	}, nil)
 
 	if err != nil {
-		//  TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
+		// TODO: Update the following line with your application specific error handling logic
+		log.Printf("ERROR: %s", err)
+		return
 	}
 
 	for _, generatedImage := range resp.Data {
@@ -59,8 +61,9 @@ func ExampleClient_GetImageGenerations() {
 		resp, err := http.Head(*generatedImage.URL)
 
 		if err != nil {
-			//  TODO: Update the following line with your application specific error handling logic
-			log.Fatalf("ERROR: %s", err)
+			// TODO: Update the following line with your application specific error handling logic
+			log.Printf("ERROR: %s", err)
+			return
 		}
 
 		_ = resp.Body.Close()

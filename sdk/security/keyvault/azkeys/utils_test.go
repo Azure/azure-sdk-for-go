@@ -20,18 +20,17 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	azcred "github.com/Azure/azure-sdk-for-go/sdk/internal/test/credential"
 	"github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azkeys"
 	"github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/internal"
 	"github.com/stretchr/testify/require"
 )
 
 const recordingDirectory = "sdk/security/keyvault/azkeys/testdata"
-const fakeAttestationUrl = "https://test.azurewebsites.net/"
-const fakeMHSMURL = "https://test.managedhsm.azure.net/"
-const fakeVaultURL = "https://test.vault.azure.net/"
+const fakeAttestationUrl = "https://Sanitized.azurewebsites.net/"
+const fakeMHSMURL = "https://Sanitized.managedhsm.azure.net/"
+const fakeVaultURL = "https://Sanitized.vault.azure.net/"
 
 var (
 	keysToPurge = struct {
@@ -69,21 +68,18 @@ func run(m *testing.M) int {
 	}
 
 	if recording.GetRecordMode() == recording.PlaybackMode {
-		credential = &FakeCredential{}
+		credential = &azcred.Fake{}
 	} else {
-		tenantId := getEnvVar("AZKEYS_TENANT_ID", "")
-		clientId := getEnvVar("AZKEYS_CLIENT_ID", "")
-		secret := getEnvVar("AZKEYS_CLIENT_SECRET", "")
 		var err error
-		credential, err = azidentity.NewClientSecretCredential(tenantId, clientId, secret, nil)
+		credential, err = azcred.New(nil)
 		if err != nil {
 			panic(err)
 		}
 	}
 
-	attestationURL = getEnvVar("AZURE_KEYVAULT_ATTESTATION_URL", fakeAttestationUrl)
-	mhsmURL = getEnvVar("AZURE_MANAGEDHSM_URL", fakeMHSMURL)
-	vaultURL = getEnvVar("AZURE_KEYVAULT_URL", fakeVaultURL)
+	attestationURL = recording.GetEnvVariable("AZURE_KEYVAULT_ATTESTATION_URL", fakeAttestationUrl)
+	mhsmURL = recording.GetEnvVariable("AZURE_MANAGEDHSM_URL", fakeMHSMURL)
+	vaultURL = recording.GetEnvVariable("AZURE_KEYVAULT_URL", fakeVaultURL)
 	enableHSM = mhsmURL != fakeMHSMURL
 
 	if recording.GetRecordMode() == recording.RecordingMode {
@@ -178,27 +174,6 @@ func createRandomName(t *testing.T, prefix string) string {
 	return prefix + fmt.Sprint(h.Sum32())
 }
 
-func getEnvVar(envVar string, fakeValue string) string {
-	// get value
-	value := fakeValue
-	if recording.GetRecordMode() == recording.LiveMode || recording.GetRecordMode() == recording.RecordingMode {
-		value = os.Getenv(envVar)
-		if value == "" {
-			panic("no value for " + envVar)
-		}
-	}
-
-	// sanitize value
-	if fakeValue != "" && recording.GetRecordMode() == recording.RecordingMode {
-		err := recording.AddGeneralRegexSanitizer(fakeValue, value, nil)
-		if err != nil {
-			panic(err)
-		}
-	}
-
-	return value
-}
-
 func cleanUpKey(t *testing.T, client *azkeys.Client, id *azkeys.ID) {
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		return
@@ -211,16 +186,6 @@ func cleanUpKey(t *testing.T, client *azkeys.Client, id *azkeys.ID) {
 	} else {
 		t.Logf(`cleanUpKey failed for "%s": %v`, *name, err)
 	}
-}
-
-type FakeCredential struct{}
-
-func NewFakeCredential(accountName, accountKey string) *FakeCredential {
-	return &FakeCredential{}
-}
-
-func (f *FakeCredential) GetToken(ctx context.Context, options policy.TokenRequestOptions) (azcore.AccessToken, error) {
-	return azcore.AccessToken{Token: "faketoken", ExpiresOn: time.Now().UTC().Add(time.Hour)}, nil
 }
 
 func toBytes(s string, t *testing.T) []byte {

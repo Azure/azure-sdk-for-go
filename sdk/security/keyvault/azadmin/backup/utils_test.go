@@ -7,18 +7,14 @@
 package backup_test
 
 import (
-	"context"
 	"encoding/json"
-	"fmt"
 	"os"
 	"regexp"
 	"testing"
-	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	azcred "github.com/Azure/azure-sdk-for-go/sdk/internal/test/credential"
 	"github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azadmin/backup"
 	"github.com/stretchr/testify/require"
 )
@@ -56,21 +52,18 @@ func run(m *testing.M) int {
 	}
 
 	if recording.GetRecordMode() == recording.PlaybackMode {
-		credential = &FakeCredential{}
+		credential = &azcred.Fake{}
 	} else {
-		tenantID := lookupEnvVar("AZADMIN_TENANT_ID")
-		clientID := lookupEnvVar("AZADMIN_CLIENT_ID")
-		secret := lookupEnvVar("AZADMIN_CLIENT_SECRET")
 		var err error
-		credential, err = azidentity.NewClientSecretCredential(tenantID, clientID, secret, nil)
+		credential, err = azcred.New(nil)
 		if err != nil {
 			panic(err)
 		}
 	}
 
-	hsmURL = getEnvVar("AZURE_MANAGEDHSM_URL", fakeHsmURL)
-	blobURL = getEnvVar("BLOB_CONTAINER_URL", fakeBlobURL)
-	token = getEnvVar("BLOB_STORAGE_SAS_TOKEN", fakeToken)
+	hsmURL = recording.GetEnvVariable("AZURE_MANAGEDHSM_URL", fakeHsmURL)
+	blobURL = recording.GetEnvVariable("BLOB_CONTAINER_URL", fakeBlobURL)
+	token = recording.GetEnvVariable("BLOB_STORAGE_SAS_TOKEN", fakeToken)
 
 	if recording.GetRecordMode() == recording.RecordingMode {
 		err := recording.AddBodyRegexSanitizer(fakeToken, `sv=[^"]*`, nil)
@@ -104,34 +97,6 @@ func startBackupTest(t *testing.T) (*backup.Client, backup.SASTokenParameters) {
 	}
 
 	return client, sasToken
-}
-
-func getEnvVar(lookupValue string, fakeValue string) string {
-	envVar := fakeValue
-	if recording.GetRecordMode() != recording.PlaybackMode {
-		envVar = lookupEnvVar(lookupValue)
-	}
-	if recording.GetRecordMode() == recording.RecordingMode {
-		err := recording.AddGeneralRegexSanitizer(fakeValue, envVar, nil)
-		if err != nil {
-			panic(err)
-		}
-	}
-	return envVar
-}
-
-func lookupEnvVar(s string) string {
-	v := os.Getenv(s)
-	if v == "" {
-		panic(fmt.Sprintf("Could not find env var: '%s'", s))
-	}
-	return v
-}
-
-type FakeCredential struct{}
-
-func (f *FakeCredential) GetToken(ctx context.Context, options policy.TokenRequestOptions) (azcore.AccessToken, error) {
-	return azcore.AccessToken{Token: "faketoken", ExpiresOn: time.Now().Add(time.Hour).UTC()}, nil
 }
 
 type serdeModel interface {

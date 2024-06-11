@@ -175,7 +175,7 @@ func NewClientFromConnectionString(connectionString string, filePath, fsName str
 }
 
 func (f *Client) generatedFileClientWithDFS() *generated.PathClient {
-	//base.SharedKeyComposite((*base.CompositeClient[generated.BlobClient, generated.BlockBlobClient])(bb))
+	// base.SharedKeyComposite((*base.CompositeClient[generated.BlobClient, generated.BlockBlobClient])(bb))
 	dirClientWithDFS, _, _ := base.InnerClients((*base.CompositeClient[generated.PathClient, generated_blob.BlobClient, blockblob.Client])(f))
 	return dirClientWithDFS
 }
@@ -295,12 +295,6 @@ func (f *Client) Rename(ctx context.Context, destinationPath string, options *Re
 	}
 	newFileClient := (*Client)(base.NewPathClient(newPathURL, newBlobURL, newBlobClient, f.generatedFileClientWithDFS().InternalClient().WithClientName(exported.ModuleName), f.sharedKey(), f.identityCredential(), f.getClientOptions()))
 	resp, err := newFileClient.generatedFileClientWithDFS().Create(ctx, createOpts, nil, lac, mac, smac, cpkOpts)
-
-	//return RenameResponse{
-	//	Response:      resp,
-	//	NewFileClient: newFileClient,
-	//}, exported.ConvertToDFSError(err)
-
 	return path.FormatRenameResponse(&resp), exported.ConvertToDFSError(err)
 }
 

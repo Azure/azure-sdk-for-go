@@ -113,7 +113,7 @@ func (o *CreateOptions) format() (*generated.LeaseAccessConditions, *generated.M
 
 // UpdateAccessControlOptions contains the optional parameters when calling the UpdateAccessControlRecursive operation.
 type UpdateAccessControlOptions struct {
-	//placeholder
+	// placeholder
 }
 
 func (o *UpdateAccessControlOptions) format(acl string) (*generated.PathClientSetAccessControlRecursiveOptions, generated.PathSetAccessControlRecursiveMode) {

@@ -125,7 +125,7 @@ func (o *UpdateAccessControlOptions) format(acl string) (*generated.PathClientSe
 
 // RemoveAccessControlOptions contains the optional parameters when calling the RemoveAccessControlRecursive operation.
 type RemoveAccessControlOptions struct {
-	//placeholder
+	// placeholder
 }
 
 func (o *RemoveAccessControlOptions) format(acl string) (*generated.PathClientSetAccessControlRecursiveOptions, generated.PathSetAccessControlRecursiveMode) {
@@ -267,7 +267,7 @@ type AppendDataOptions struct {
 	ProposedLeaseID *string
 	// CPKInfo contains optional parameters to perform encryption using customer-provided key.
 	CPKInfo *CPKInfo
-	//Flush Optional. If true, the file will be flushed after append.
+	// Flush Optional. If true, the file will be flushed after append.
 	Flush *bool
 }
 

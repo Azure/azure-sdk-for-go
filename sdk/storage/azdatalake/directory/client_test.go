@@ -2523,11 +2523,8 @@ func (s *RecordedTestSuite) TestDirRenameNoOptions() {
 	_require.NoError(err)
 	_require.NotNil(resp)
 
-	//resp1, err := dirClient.Rename(context.Background(), "newName", renameFileOpts)
 	_, err = dirClient.Rename(context.Background(), "newName", nil)
 	_require.NoError(err)
-	//_require.NotNil(resp1)
-	//_require.Contains(resp1.NewDirectoryClient.DFSURL(), "newName")
 }
 
 func (s *RecordedTestSuite) TestDirRenameRequestWithCPK() {
@@ -2586,11 +2583,8 @@ func (s *RecordedTestSuite) TestRenameDirWithNilAccessConditions() {
 		AccessConditions: nil,
 	}
 
-	//resp1, err := dirClient.Rename(context.Background(), "newName", renameFileOpts)
 	_, err = dirClient.Rename(context.Background(), "newName", renameFileOpts)
 	_require.NoError(err)
-	//_require.NotNil(resp1)
-	//_require.Contains(resp1.NewDirectoryClient.DFSURL(), "newName")
 }
 
 func (s *RecordedTestSuite) TestRenameDirIfModifiedSinceTrue() {
@@ -2622,11 +2616,8 @@ func (s *RecordedTestSuite) TestRenameDirIfModifiedSinceTrue() {
 			},
 		},
 	}
-	//resp1, err := dirClient.Rename(context.Background(), "newName", renameFileOpts)
 	_, err = dirClient.Rename(context.Background(), "newName", renameFileOpts)
 	_require.NoError(err)
-	//_require.NotNil(resp1)
-	//_require.Contains(resp1.NewDirectoryClient.DFSURL(), "newName")
 }
 
 func (s *RecordedTestSuite) TestRenameDirIfModifiedSinceFalse() {
@@ -2659,7 +2650,6 @@ func (s *RecordedTestSuite) TestRenameDirIfModifiedSinceFalse() {
 		},
 	}
 
-	//_, err = dirClient.Rename(context.Background(), "newName", renameFileOpts)
 	_, err = dirClient.Rename(context.Background(), "newName", renameFileOpts)
 
 	_require.Error(err)
@@ -2696,11 +2686,8 @@ func (s *RecordedTestSuite) TestRenameDirIfUnmodifiedSinceTrue() {
 		},
 	}
 
-	//resp1, err := dirClient.Rename(context.Background(), "newName", renameFileOpts)
 	_, err = dirClient.Rename(context.Background(), "newName", renameFileOpts)
 	_require.NoError(err)
-	//_require.NotNil(resp1)
-	//_require.Contains(resp1.NewDirectoryClient.DFSURL(), "newName")
 }
 
 func (s *RecordedTestSuite) TestRenameDirIfUnmodifiedSinceFalse() {
@@ -2733,7 +2720,6 @@ func (s *RecordedTestSuite) TestRenameDirIfUnmodifiedSinceFalse() {
 		},
 	}
 
-	//_, err = dirClient.Rename(context.Background(), "newName", renameFileOpts)
 	_, err = dirClient.Rename(context.Background(), "newName", renameFileOpts)
 
 	_require.Error(err)
@@ -2770,11 +2756,8 @@ func (s *RecordedTestSuite) TestRenameDirIfETagMatch() {
 		},
 	}
 
-	//resp1, err := dirClient.Rename(context.Background(), "newName", renameFileOpts)
 	_, err = dirClient.Rename(context.Background(), "newName", renameFileOpts)
 	_require.NoError(err)
-	//_require.NotNil(resp1)
-	//_require.Contains(resp1.NewDirectoryClient.DFSURL(), "newName")
 }
 
 func (s *RecordedTestSuite) TestRenameDirIfETagMatchFalse() {

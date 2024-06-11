@@ -13,6 +13,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"math/rand"
 	"mime"
 	"net/http"
 	"os"
@@ -52,7 +53,7 @@ type newClientArgs struct {
 	UseIdentity bool
 }
 
-func newClient(t *testing.T, args newClientArgs) *azopenaiassistants.Client {
+func mustGetClient(t *testing.T, args newClientArgs) *azopenaiassistants.Client {
 	var httpClient policy.Transporter
 	// var recordingPolicy
 	// PerRetryPolicies: []{&mimeTypeRecordingPolicy{}}
@@ -150,8 +151,26 @@ func newClient(t *testing.T, args newClientArgs) *azopenaiassistants.Client {
 	}
 }
 
+var weatherFunctionDefn = &assistants.FunctionDefinition{
+	Name: to.Ptr("get_current_weather"),
+	Parameters: map[string]any{
+		"required": []string{"location"},
+		"type":     "object",
+		"properties": map[string]any{
+			"location": map[string]any{
+				"type":        "string",
+				"description": "The city and state, e.g. San Francisco, CA",
+			},
+			"unit": map[string]any{
+				"type": "string",
+				"enum": []string{"celsius", "fahrenheit"},
+			},
+		},
+	},
+}
+
 func mustGetClientWithAssistant(t *testing.T, args mustGetClientWithAssistantArgs) (*azopenaiassistants.Client, azopenaiassistants.CreateAssistantResponse) {
-	client := newClient(t, args.newClientArgs)
+	client := mustGetClient(t, args.newClientArgs)
 
 	// give the assistant a random-ish name.
 	id, err := recording.GenerateAlphaNumericID(t, "your-assistant-name", 6+len("your-assistant-name"), true)
@@ -159,7 +178,7 @@ func mustGetClientWithAssistant(t *testing.T, args mustGetClientWithAssistantArg
 
 	assistantName := id
 
-	createResp, err := client.CreateAssistant(context.Background(), azopenaiassistants.AssistantCreationBody{
+	createResp, err := client.CreateAssistant(context.Background(), azopenaiassistants.CreateAssistantBody{
 		Name:           &assistantName,
 		DeploymentName: &assistantsModel,
 		Instructions:   to.Ptr("You are a personal math tutor. Write and run code to answer math questions."),
@@ -168,23 +187,7 @@ func mustGetClientWithAssistant(t *testing.T, args mustGetClientWithAssistantArg
 
 			// others...
 			&assistants.FunctionToolDefinition{
-				Function: &assistants.FunctionDefinition{
-					Name: to.Ptr("get_current_weather"),
-					Parameters: map[string]any{
-						"required": []string{"location"},
-						"type":     "object",
-						"properties": map[string]any{
-							"location": map[string]any{
-								"type":        "string",
-								"description": "The city and state, e.g. San Francisco, CA",
-							},
-							"unit": map[string]any{
-								"type": "string",
-								"enum": []string{"celsius", "fahrenheit"},
-							},
-						},
-					},
-				},
+				Function: weatherFunctionDefn,
 			},
 			// &assistants.RetrievalToolDefinition{}
 		},
@@ -201,12 +204,12 @@ func mustGetClientWithAssistant(t *testing.T, args mustGetClientWithAssistantArg
 
 type runThreadArgs struct {
 	newClientArgs
-	Assistant azopenaiassistants.AssistantCreationBody
-	Thread    azopenaiassistants.CreateAndRunThreadOptions
+	Assistant azopenaiassistants.CreateAssistantBody
+	Thread    azopenaiassistants.CreateAndRunThreadBody
 }
 
 func mustRunThread(ctx context.Context, t *testing.T, args runThreadArgs) (*azopenaiassistants.Client, []azopenaiassistants.ThreadMessage) {
-	client := newClient(t, args.newClientArgs)
+	client := mustGetClient(t, args.newClientArgs)
 
 	// give the assistant a random-ish name.
 	assistantName, err := recording.GenerateAlphaNumericID(t, "your-assistant-name", 6+len("your-assistant-name"), true)
@@ -232,7 +235,7 @@ func mustRunThread(ctx context.Context, t *testing.T, args runThreadArgs) (*azop
 	require.NoError(t, err)
 
 	// poll for the thread end
-	runStatus, err := pollUntilRunEnds(ctx, client, *threadRunResp.ThreadID, *threadRunResp.ID)
+	runStatus, err := pollForTests(t, ctx, client, *threadRunResp.ThreadID, *threadRunResp.ID)
 	require.NoError(t, err)
 	require.Equal(t, *runStatus.Status, azopenaiassistants.RunStatusCompleted)
 
@@ -250,23 +253,6 @@ func mustRunThread(ctx context.Context, t *testing.T, args runThreadArgs) (*azop
 	}
 
 	return client, allMessages
-}
-
-func mustUploadFile(t *testing.T, c *assistants.Client, text string) azopenaiassistants.UploadFileResponse {
-	textBytes := []byte(text)
-
-	uploadResp, err := c.UploadFile(context.Background(), bytes.NewReader(textBytes), azopenaiassistants.FilePurposeAssistants, &assistants.UploadFileOptions{
-		Filename: to.Ptr("a.txt"),
-	})
-	require.NoError(t, err)
-	require.Equal(t, len(textBytes), int(*uploadResp.Bytes))
-
-	t.Cleanup(func() {
-		_, err := c.DeleteFile(context.Background(), *uploadResp.ID, nil)
-		require.NoError(t, err)
-	})
-
-	return uploadResp
 }
 
 type mimeTypeRecordingPolicy struct{}
@@ -321,4 +307,11 @@ func (mrp *mimeTypeRecordingPolicy) Do(req *policy.Request) (*http.Response, err
 	}
 
 	return req.Next()
+}
+
+func getFileName(t *testing.T, ext string) *string {
+	fileName := fmt.Sprintf("go-%s-%d.%s",
+		t.Name(), rand.Int63(), ext)
+
+	return &fileName
 }

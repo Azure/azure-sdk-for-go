@@ -130,7 +130,7 @@ func (t *transformer) hideListFunctions() error {
 		}
 
 		for _, funcToHide := range funcsToHide {
-			text = strings.Replace(text, "func (client *Client) "+funcToHide, "func (client *Client) internal"+funcToHide, -1)
+			text = strings.ReplaceAll(text, "func (client *Client) "+funcToHide, "func (client *Client) internal"+funcToHide)
 		}
 
 		return text, nil

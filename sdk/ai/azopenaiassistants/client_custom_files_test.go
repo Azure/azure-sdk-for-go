@@ -33,16 +33,16 @@ func TestDownloadFileContent(t *testing.T) {
 	}
 
 	args := runThreadArgs{
-		Assistant: azopenaiassistants.AssistantCreationBody{
+		Assistant: azopenaiassistants.CreateAssistantBody{
 			DeploymentName: &assistantsModel,
 			Instructions:   to.Ptr("You are a helpful assistant that always draws images and provides files for download."),
 			Tools: []azopenaiassistants.ToolDefinitionClassification{
 				&azopenaiassistants.CodeInterpreterToolDefinition{},
 			},
 		},
-		Thread: azopenaiassistants.CreateAndRunThreadOptions{
-			Thread: &azopenaiassistants.AssistantThreadCreationOptions{
-				Messages: []azopenaiassistants.ThreadInitializationMessage{
+		Thread: azopenaiassistants.CreateAndRunThreadBody{
+			Thread: &azopenaiassistants.CreateThreadBody{
+				Messages: []azopenaiassistants.CreateMessageBody{
 					{
 						Role:    to.Ptr(azopenaiassistants.MessageRoleUser),
 						Content: to.Ptr("Draw an image of two squares, connected by a line, as a PNG file and make it available for download"),

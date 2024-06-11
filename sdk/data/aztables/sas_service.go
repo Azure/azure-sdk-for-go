@@ -32,28 +32,13 @@ type SASSignatureValues struct {
 func (v SASSignatureValues) Sign(credential *SharedKeyCredential) (string, error) {
 	resource := ""
 
-	if v.Version != "" {
-		//Make sure the permission characters are in the correct order
-		perms := &SASPermissions{}
-		if err := perms.Parse(v.Permissions); err != nil {
-			return "", err
-		}
-		v.Permissions = perms.String()
-	} else if v.TableName == "" {
-		// Make sure the permission characters are in the correct order
-		perms := &SASPermissions{}
-		if err := perms.Parse(v.Permissions); err != nil {
-			return "", err
-		}
-		v.Permissions = perms.String()
-	} else {
-		// Make sure the permission characters are in the correct order
-		perms := &SASPermissions{}
-		if err := perms.Parse(v.Permissions); err != nil {
-			return "", err
-		}
-		v.Permissions = perms.String()
+	// Make sure the permission characters are in the correct order
+	perms := &SASPermissions{}
+	if err := perms.Parse(v.Permissions); err != nil {
+		return "", err
 	}
+	v.Permissions = perms.String()
+
 	if v.Version == "" {
 		v.Version = SASVersion
 	}

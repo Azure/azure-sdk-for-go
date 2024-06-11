@@ -330,8 +330,8 @@ func (f *Client) SetAccessControl(ctx context.Context, options *SetAccessControl
 }
 
 // UpdateAccessControl updates the owner, owning group, and permissions for a file.
-func (f *Client) UpdateAccessControl(ctx context.Context, ACL string, options *UpdateAccessControlOptions) (UpdateAccessControlResponse, error) {
-	opts, mode := options.format(ACL)
+func (f *Client) UpdateAccessControl(ctx context.Context, acl string, options *UpdateAccessControlOptions) (UpdateAccessControlResponse, error) {
+	opts, mode := options.format(acl)
 	resp, err := f.generatedFileClientWithDFS().SetAccessControlRecursive(ctx, mode, opts)
 	err = exported.ConvertToDFSError(err)
 	return resp, err

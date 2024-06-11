@@ -414,7 +414,7 @@ func (d *Client) setAccessControlRecursiveHelper(ctx context.Context, mode gener
 		finalResponse.FilesSuccessful = to.Ptr(*finalResponse.FilesSuccessful + *resp.FilesSuccessful)
 		finalResponse.FailureCount = to.Ptr(*finalResponse.FailureCount + *resp.FailureCount)
 		finalResponse.FailedEntries = append(finalResponse.FailedEntries, resp.FailedEntries...)
-		counter = counter - 1
+		counter--
 		if !*continueOnFailure && *resp.FailureCount > 0 {
 			return finalResponse, exported.ConvertToDFSError(err)
 		}

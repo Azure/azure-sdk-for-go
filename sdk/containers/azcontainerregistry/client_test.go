@@ -131,9 +131,6 @@ func TestClient_DeleteTag_error(t *testing.T) {
 }
 
 func TestClient_GetManifest(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22919")
-	}
 	startRecording(t)
 	endpoint, cred, options := getEndpointCredAndClientOptions(t)
 	ctx := context.Background()
@@ -616,9 +613,6 @@ func TestClient_UpdateTagProperties_wrongTag(t *testing.T) {
 }
 
 func TestClient_UploadManifest(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22919")
-	}
 	startRecording(t)
 	endpoint, cred, options := getEndpointCredAndClientOptions(t)
 	ctx := context.Background()

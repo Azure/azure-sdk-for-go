@@ -346,8 +346,8 @@ func (f *Client) GetAccessControl(ctx context.Context, options *GetAccessControl
 }
 
 // RemoveAccessControl removes the owner, owning group, and permissions for a file.
-func (f *Client) RemoveAccessControl(ctx context.Context, ACL string, options *RemoveAccessControlOptions) (RemoveAccessControlResponse, error) {
-	opts, mode := options.format(ACL)
+func (f *Client) RemoveAccessControl(ctx context.Context, acl string, options *RemoveAccessControlOptions) (RemoveAccessControlResponse, error) {
+	opts, mode := options.format(acl)
 	resp, err := f.generatedFileClientWithDFS().SetAccessControlRecursive(ctx, mode, opts)
 	err = exported.ConvertToDFSError(err)
 	return resp, err

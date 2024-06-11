@@ -95,7 +95,7 @@ func (v DatalakeSignatureValues) SignWithSharedKey(sharedKeyCredential *SharedKe
 		string(v.Protocol),
 		v.Version,
 		resource,
-		"", //snapshot not supported
+		"", // snapshot not supported
 		v.EncryptionScope,
 		v.CacheControl,       // rscc
 		v.ContentDisposition, // rscd
@@ -199,7 +199,7 @@ func (v DatalakeSignatureValues) SignWithUserDelegation(userDelegationCredential
 		string(v.Protocol),
 		v.Version,
 		resource,
-		"", //snapshot not supported
+		"", // snapshot not supported
 		v.EncryptionScope,
 		v.CacheControl,       // rscc
 		v.ContentDisposition, // rscd
@@ -239,7 +239,7 @@ func (v DatalakeSignatureValues) SignWithUserDelegation(userDelegationCredential
 		signature: signature,
 	}
 
-	//User delegation SAS specific parameters
+	// User delegation SAS specific parameters
 	p.signedOID = *udk.SignedOID
 	p.signedTID = *udk.SignedTID
 	p.signedStart = *udk.SignedStart

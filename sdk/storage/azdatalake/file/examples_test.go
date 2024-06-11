@@ -249,7 +249,7 @@ func generateData(sizeInBytes int) (io.ReadSeekCloser, []byte) {
 		}
 		copy(data, strings.Repeat(random64BString, count))
 	} else {
-		copy(data[:], random64BString)
+		copy(data, random64BString)
 	}
 	return streaming.NopCloser(bytes.NewReader(data)), data
 }

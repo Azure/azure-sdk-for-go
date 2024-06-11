@@ -41,6 +41,12 @@ func main() {
 	if err := transformError(); err != nil {
 		panic(err)
 	}
+
+	// fix result types
+	fmt.Printf("fix result types...\n")
+	if err := fixResultTypes(); err != nil {
+		panic(err)
+	}
 }
 
 func useAZCoreCloudEvent() error {
@@ -60,7 +66,7 @@ func useAZCoreCloudEvent() error {
 }
 
 func deleteModels() error {
-	models := "CloudEvent|InnerError"
+	models := "CloudEvent|InnerError|PublishResult"
 
 	if err := replaceAllInFile(
 		"models_serde.go",
@@ -224,7 +230,6 @@ func replaceAllInFile(file string, re *regexp.Regexp, replacement []byte) error 
 }
 
 func transformError() error {
-
 	// clip out some of the internal fields
 	err := replaceAllInFile("models.go", regexp.MustCompile(`(?s)// [^/]+?\s+(Innererror \*InnerError|Details \[\]Error|Target \*string)\n`), nil)
 
@@ -262,6 +267,70 @@ func transformError() error {
 
 	if err != nil {
 		return fmt.Errorf("removing Error unpopulate lines: %w", err)
+	}
+
+	return nil
+}
+
+func fixResultTypes() error {
+	symbols, err := gopls.SymbolsSlice("models.go")
+
+	if err != nil {
+		return err
+	}
+
+	renames := map[string]string{
+		"AcknowledgeResult": "AcknowledgeEventsResult",
+		"ReceiveResult":     "ReceiveEventsResult",
+		"RejectResult":      "RejectEventsResult",
+		"ReleaseResult":     "ReleaseEventsResult",
+		"RenewLocksResult":  "RenewEventLocksResult",
+	}
+
+	for i := len(symbols) - 1; i >= 0; i-- {
+		newName := renames[symbols[i].Name]
+
+		if newName == "" {
+			continue
+		}
+
+		if err := gopls.Rename(symbols[i], newName); err != nil {
+			return err
+		}
+	}
+
+	{
+		re := regexp.MustCompile(`(?s)if err := runtime.UnmarshalAsJSON\(resp, &result.PublishResult\); err != nil \{.+?return result, nil`)
+		data, err := os.ReadFile("sender_client.go")
+
+		if err != nil {
+			return err
+		}
+
+		newData := re.ReplaceAll(data, []byte("return result, nil"))
+
+		newData = bytes.Replace(newData, []byte(`sendEventHandleResponse(resp *http.Response)`), []byte(`sendEventHandleResponse(_ *http.Response)`), 1)
+		newData = bytes.Replace(newData, []byte(`sendEventsHandleResponse(resp *http.Response)`), []byte(`sendEventsHandleResponse(_ *http.Response)`), 1)
+
+		if err := os.WriteFile("sender_client.go", newData, 0600); err != nil {
+			return err
+		}
+	}
+
+	{
+		data, err := os.ReadFile("responses.go")
+
+		if err != nil {
+			return err
+		}
+
+		re := regexp.MustCompile(`(?s)// The result of the Publish operation.\s+PublishResult`)
+
+		newData := re.ReplaceAll(data, nil)
+
+		if err := os.WriteFile("responses.go", newData, 0600); err != nil {
+			return err
+		}
 	}
 
 	return nil

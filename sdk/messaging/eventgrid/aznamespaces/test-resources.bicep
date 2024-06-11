@@ -69,7 +69,6 @@ output EVENTGRID_KEY string = listKeys(
   resourceId('Microsoft.EventGrid/namespaces', namespaceName),
   '2023-06-01-preview'
 ).key1
-// TODO: get this formatted properly
 output EVENTGRID_ENDPOINT string = 'https://${ns_resource.properties.topicsConfiguration.hostname}'
 
 output EVENTGRID_TOPIC string = nsTopicName
@@ -99,6 +98,7 @@ resource ceTopic 'Microsoft.EventGrid/topics@2023-06-01-preview' = {
   }
 }
 
+// https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#eventgrid-contributor
 resource egContributorRole 'Microsoft.Authorization/roleAssignments@2018-01-01-preview' = {
   name: guid('egContributorRoleId${baseName}')
   scope: resourceGroup()
@@ -108,6 +108,18 @@ resource egContributorRole 'Microsoft.Authorization/roleAssignments@2018-01-01-p
       '1e241071-0855-49ea-94dc-649edcd759de'
     )
     //    roleDefinitionId: '/subscriptions/${subscription().subscriptionId}/providers/Microsoft.Authorization/roleDefinitions/1e241071-0855-49ea-94dc-649edcd759de'
+    principalId: testApplicationOid
+  }
+}
+
+resource egDataContributorRole 'Microsoft.Authorization/roleAssignments@2018-01-01-preview' = {
+  name: guid('egDataContributorRoleId${baseName}')
+  scope: resourceGroup()
+  properties: {
+    roleDefinitionId: subscriptionResourceId(
+      'Microsoft.Authorization/roleDefinitions',
+      '1d8c3fe3-8864-474b-8749-01e3783e8157'
+    )
     principalId: testApplicationOid
   }
 }

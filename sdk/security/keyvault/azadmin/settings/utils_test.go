@@ -8,6 +8,7 @@ package settings_test
 
 import (
 	"encoding/json"
+	"fmt"
 	"os"
 	"regexp"
 	"testing"
@@ -20,7 +21,8 @@ import (
 )
 
 const recordingDirectory = "sdk/security/keyvault/azadmin/testdata"
-const fakeHsmURL = "https://Sanitized.managedhsm.azure.net/"
+
+var fakeHsmURL = fmt.Sprintf("https://%s.managedhsm.azure.net/", recording.SanitizedValue)
 
 var (
 	credential azcore.TokenCredential
@@ -47,14 +49,10 @@ func run(m *testing.M) int {
 		}()
 	}
 
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		credential = &azcred.Fake{}
-	} else {
-		var err error
-		credential, err = azcred.New(nil)
-		if err != nil {
-			panic(err)
-		}
+	var err error
+	credential, err = azcred.New(nil)
+	if err != nil {
+		panic(err)
 	}
 
 	hsmURL = recording.GetEnvVariable("AZURE_MANAGEDHSM_URL", fakeHsmURL)

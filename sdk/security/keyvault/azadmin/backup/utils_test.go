@@ -8,6 +8,7 @@ package backup_test
 
 import (
 	"encoding/json"
+	"fmt"
 	"os"
 	"regexp"
 	"testing"
@@ -20,9 +21,10 @@ import (
 )
 
 const recordingDirectory = "sdk/security/keyvault/azadmin/testdata"
-const fakeHsmURL = "https://Sanitized.managedhsm.azure.net/"
-const fakeBlobURL = "https://Sanitized.blob.core.windows.net/backup"
-const fakeToken = "fakeSasToken"
+const fakeToken = recording.SanitizedValue
+
+var fakeHsmURL = fmt.Sprintf("https://%s.managedhsm.azure.net/", recording.SanitizedValue)
+var fakeBlobURL = fmt.Sprintf("https://%s.blob.core.windows.net/", recording.SanitizedValue)
 
 var (
 	credential azcore.TokenCredential
@@ -51,14 +53,10 @@ func run(m *testing.M) int {
 		}()
 	}
 
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		credential = &azcred.Fake{}
-	} else {
-		var err error
-		credential, err = azcred.New(nil)
-		if err != nil {
-			panic(err)
-		}
+	var err error
+	credential, err = azcred.New(nil)
+	if err != nil {
+		panic(err)
 	}
 
 	hsmURL = recording.GetEnvVariable("AZURE_MANAGEDHSM_URL", fakeHsmURL)
@@ -66,10 +64,6 @@ func run(m *testing.M) int {
 	token = recording.GetEnvVariable("BLOB_STORAGE_SAS_TOKEN", fakeToken)
 
 	if recording.GetRecordMode() == recording.RecordingMode {
-		err := recording.AddBodyRegexSanitizer(fakeToken, `sv=[^"]*`, nil)
-		if err != nil {
-			panic(err)
-		}
 		err = recording.AddGeneralRegexSanitizer(fakeHsmURL, hsmURL, nil)
 		if err != nil {
 			panic(err)

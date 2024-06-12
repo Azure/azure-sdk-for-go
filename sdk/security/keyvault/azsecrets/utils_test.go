@@ -26,7 +26,8 @@ import (
 )
 
 const recordingDirectory = "sdk/security/keyvault/azsecrets/testdata"
-const fakeVaultURL = "https://test.vault.azure.net/"
+
+var fakeVaultURL = fmt.Sprintf("https://%s.vault.azure.net/", recording.SanitizedValue)
 
 var (
 	secretsToPurge = struct {
@@ -60,15 +61,12 @@ func run(m *testing.M) int {
 		}()
 	}
 
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		credential = &azcred.Fake{}
-	} else {
-		var err error
-		credential, err = azcred.New(nil)
-		if err != nil {
-			panic(err)
-		}
+	var err error
+	credential, err = azcred.New(nil)
+	if err != nil {
+		panic(err)
 	}
+
 	vaultURL = recording.GetEnvVariable("AZURE_KEYVAULT_URL", fakeVaultURL)
 
 	if recording.GetRecordMode() != recording.LiveMode {

@@ -28,9 +28,10 @@ import (
 )
 
 const recordingDirectory = "sdk/security/keyvault/azkeys/testdata"
-const fakeAttestationUrl = "https://Sanitized.azurewebsites.net/"
-const fakeMHSMURL = "https://Sanitized.managedhsm.azure.net/"
-const fakeVaultURL = "https://Sanitized.vault.azure.net/"
+
+var fakeVaultURL = fmt.Sprintf("https://%s.vault.azure.net/", recording.SanitizedValue)
+var fakeHsmURL = fmt.Sprintf("https://%s.managedhsm.azure.net/", recording.SanitizedValue)
+var fakeAttestationURL = fmt.Sprintf("https://%s.azurewebsites.net/", recording.SanitizedValue)
 
 var (
 	keysToPurge = struct {
@@ -67,20 +68,16 @@ func run(m *testing.M) int {
 		}()
 	}
 
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		credential = &azcred.Fake{}
-	} else {
-		var err error
-		credential, err = azcred.New(nil)
-		if err != nil {
-			panic(err)
-		}
+	var err error
+	credential, err = azcred.New(nil)
+	if err != nil {
+		panic(err)
 	}
 
-	attestationURL = recording.GetEnvVariable("AZURE_KEYVAULT_ATTESTATION_URL", fakeAttestationUrl)
-	mhsmURL = recording.GetEnvVariable("AZURE_MANAGEDHSM_URL", fakeMHSMURL)
+	attestationURL = recording.GetEnvVariable("AZURE_KEYVAULT_ATTESTATION_URL", fakeAttestationURL)
+	mhsmURL = recording.GetEnvVariable("AZURE_MANAGEDHSM_URL", fakeHsmURL)
 	vaultURL = recording.GetEnvVariable("AZURE_KEYVAULT_URL", fakeVaultURL)
-	enableHSM = mhsmURL != fakeMHSMURL
+	enableHSM = mhsmURL != fakeHsmURL
 
 	if recording.GetRecordMode() == recording.RecordingMode {
 		for _, path := range []string{"$.error.message", "$.key.kid", "$.recoveryId"} {
@@ -88,7 +85,7 @@ func run(m *testing.M) int {
 			if err != nil {
 				panic(err)
 			}
-			err = recording.AddBodyKeySanitizer(path, fakeMHSMURL, mhsmURL, nil)
+			err = recording.AddBodyKeySanitizer(path, fakeHsmURL, mhsmURL, nil)
 			if err != nil {
 				panic(err)
 			}
@@ -103,7 +100,7 @@ func run(m *testing.M) int {
 		}
 		// we need to replace release policy data because it has the attestation service URL encoded
 		// into it and therefore won't match in playback, when we don't have the URL used while recording
-		fakePolicyData := base64.RawStdEncoding.EncodeToString(getMarshalledReleasePolicy(fakeAttestationUrl))
+		fakePolicyData := base64.RawStdEncoding.EncodeToString(getMarshalledReleasePolicy(fakeAttestationURL))
 		err := recording.AddBodyKeySanitizer("$.release_policy.data", fakePolicyData, "", nil)
 		if err != nil {
 			panic(err)

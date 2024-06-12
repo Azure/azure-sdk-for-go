@@ -2459,11 +2459,8 @@ func (s *RecordedTestSuite) TestRenameFileWithNilAccessConditions() {
 		AccessConditions: nil,
 	}
 
-	//resp1, err := fClient.Rename(context.Background(), "newName", renameFileOpts)
 	_, err = fClient.Rename(context.Background(), "newName", renameFileOpts)
 	_require.NoError(err)
-	//_require.NotNil(resp1)
-	//_require.Contains(resp1.NewFileClient.DFSURL(), "newName")
 }
 
 func (s *RecordedTestSuite) TestRenameFileIfModifiedSinceTrue() {
@@ -2495,11 +2492,8 @@ func (s *RecordedTestSuite) TestRenameFileIfModifiedSinceTrue() {
 			},
 		},
 	}
-	//resp1, err := fClient.Rename(context.Background(), "newName", renameFileOpts)
 	_, err = fClient.Rename(context.Background(), "newName", renameFileOpts)
 	_require.NoError(err)
-	//_require.NotNil(resp1)
-	//_require.Contains(resp1.NewFileClient.DFSURL(), "newName")
 }
 
 func (s *RecordedTestSuite) TestRenameFileIfModifiedSinceFalse() {
@@ -2532,7 +2526,6 @@ func (s *RecordedTestSuite) TestRenameFileIfModifiedSinceFalse() {
 		},
 	}
 
-	//_, err = fClient.Rename(context.Background(), "newName", renameFileOpts)
 	_, err = fClient.Rename(context.Background(), "newName", renameFileOpts)
 
 	_require.Error(err)
@@ -2569,11 +2562,8 @@ func (s *RecordedTestSuite) TestRenameFileIfUnmodifiedSinceTrue() {
 		},
 	}
 
-	//resp1, err := fClient.Rename(context.Background(), "newName", renameFileOpts)
 	_, err = fClient.Rename(context.Background(), "newName", renameFileOpts)
 	_require.NoError(err)
-	//_require.NotNil(resp1)
-	//_require.Contains(resp1.NewFileClient.DFSURL(), "newName")
 }
 
 func (s *RecordedTestSuite) TestRenameFileIfUnmodifiedSinceFalse() {
@@ -2606,7 +2596,6 @@ func (s *RecordedTestSuite) TestRenameFileIfUnmodifiedSinceFalse() {
 		},
 	}
 
-	//_, err = fClient.Rename(context.Background(), "newName", renameFileOpts)
 	_, err = fClient.Rename(context.Background(), "newName", renameFileOpts)
 
 	_require.Error(err)
@@ -2643,11 +2632,8 @@ func (s *RecordedTestSuite) TestRenameFileIfETagMatch() {
 		},
 	}
 
-	//resp1, err := fClient.Rename(context.Background(), "newName", renameFileOpts)
 	_, err = fClient.Rename(context.Background(), "newName", renameFileOpts)
 	_require.NoError(err)
-	//_require.NotNil(resp1)
-	//_require.Contains(resp1.NewFileClient.DFSURL(), "newName")
 }
 
 func (s *RecordedTestSuite) TestRenameFileIfETagMatchFalse() {
@@ -2680,7 +2666,6 @@ func (s *RecordedTestSuite) TestRenameFileIfETagMatchFalse() {
 		},
 	}
 
-	//_, err = fClient.Rename(context.Background(), "newName", renameFileOpts)
 	_, err = fClient.Rename(context.Background(), "newName", renameFileOpts)
 
 	_require.Error(err)
@@ -3733,7 +3718,7 @@ func (s *RecordedTestSuite) TestFileAppendDataWithAcquireLease() {
 
 	time.Sleep(time.Second * 15)
 
-	//Check if the lease was acquired for the right duration
+	// Check if the lease was acquired for the right duration
 	gResp, err := srcFClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
 	_require.Equal(lease.StateTypeExpired, *gResp.LeaseState)
@@ -3769,7 +3754,7 @@ func (s *RecordedTestSuite) TestFileAppendDataWithRenewLease() {
 	_require.NoError(err)
 	_require.Equal(lease.StateTypeLeased, *gResp2.LeaseState)
 
-	//Wait for 15 seconds for lease to expire
+	// Wait for 15 seconds for lease to expire
 	time.Sleep(15 * time.Second)
 
 	gResp, err := srcFClient.GetProperties(context.Background(), nil)

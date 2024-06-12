@@ -2790,7 +2790,6 @@ func (s *RecordedTestSuite) TestRenameDirIfETagMatchFalse() {
 		},
 	}
 
-	//_, err = dirClient.Rename(context.Background(), "newName", renameFileOpts)
 	_, err = dirClient.Rename(context.Background(), "newName", renameFileOpts)
 
 	_require.Error(err)

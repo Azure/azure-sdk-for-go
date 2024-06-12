@@ -340,10 +340,6 @@ func (d *Client) Rename(ctx context.Context, destinationPath string, options *Re
 	}
 	newDirClient := (*Client)(base.NewPathClient(newPathURL, newBlobURL, newBlobClient, d.generatedDirClientWithDFS().InternalClient().WithClientName(exported.ModuleName), d.sharedKey(), d.identityCredential(), d.getClientOptions()))
 	resp, err := newDirClient.generatedDirClientWithDFS().Create(ctx, createOpts, nil, lac, mac, smac, cpkOpts)
-	//return RenameResponse{
-	//	Response:           resp,
-	//	NewDirectoryClient: newDirClient,
-	//}, exported.ConvertToDFSError(err)
 	return path.FormatRenameResponse(&resp), exported.ConvertToDFSError(err)
 }
 

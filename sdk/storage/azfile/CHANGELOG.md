@@ -3,6 +3,7 @@
 ## 1.2.3 (Unreleased)
 
 ### Features Added
+* Add Rename Support to List Ranges API
 
 ### Breaking Changes
 

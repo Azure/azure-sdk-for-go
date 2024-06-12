@@ -477,12 +477,10 @@ type ApplicationStackResource struct {
 }
 
 type ArcConfiguration struct {
-	ArtifactStorageAccessMode *string
-	ArtifactStorageClassName  *string
-	ArtifactStorageMountPath  *string
-	ArtifactStorageNodeName   *string
-
-	// Property to select Azure Storage type. Available options: blobContainer.
+	ArtifactStorageAccessMode    *string
+	ArtifactStorageClassName     *string
+	ArtifactStorageMountPath     *string
+	ArtifactStorageNodeName      *string
 	ArtifactsStorageType         *StorageType
 	FrontEndServiceConfiguration *FrontEndConfiguration
 	KubeConfig                   *string
@@ -3682,7 +3680,7 @@ type FunctionsDeploymentStorage struct {
 	Authentication *FunctionsDeploymentStorageAuthentication
 
 	// Property to select Azure Storage type. Available options: blobContainer.
-	Type *StorageType
+	Type *FunctionsDeploymentStorageType
 
 	// Property to set the URL for the selected Azure Storage type. Example: For blobContainer, the value could be https://.blob.core.windows.net/.
 	Value *string

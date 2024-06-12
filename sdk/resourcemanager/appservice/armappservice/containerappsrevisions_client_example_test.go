@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/73319147d7508a9621ff1a60fb8123711b04010e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/ListRevisions.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/ListRevisions.json
 func ExampleContainerAppsRevisionsClient_NewListRevisionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -85,7 +85,7 @@ func ExampleContainerAppsRevisionsClient_NewListRevisionsPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/73319147d7508a9621ff1a60fb8123711b04010e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/GetRevision.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/GetRevision.json
 func ExampleContainerAppsRevisionsClient_GetRevision() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -145,7 +145,7 @@ func ExampleContainerAppsRevisionsClient_GetRevision() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/73319147d7508a9621ff1a60fb8123711b04010e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/ActivateRevision.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/ActivateRevision.json
 func ExampleContainerAppsRevisionsClient_ActivateRevision() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -162,7 +162,7 @@ func ExampleContainerAppsRevisionsClient_ActivateRevision() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/73319147d7508a9621ff1a60fb8123711b04010e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/DeactivateRevision.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/DeactivateRevision.json
 func ExampleContainerAppsRevisionsClient_DeactivateRevision() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -179,7 +179,7 @@ func ExampleContainerAppsRevisionsClient_DeactivateRevision() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/73319147d7508a9621ff1a60fb8123711b04010e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/RestartRevision.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/RestartRevision.json
 func ExampleContainerAppsRevisionsClient_RestartRevision() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

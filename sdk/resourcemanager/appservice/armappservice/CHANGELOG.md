@@ -1,6 +1,6 @@
 # Release History
 
-## 3.0.0 (2024-05-08)
+## 3.0.0 (2024-06-21)
 ### Breaking Changes
 
 - Function `*EnvironmentsClient.BeginApproveOrRejectPrivateEndpointConnection` parameter(s) have been changed from `(context.Context, string, string, string, PrivateLinkConnectionApprovalRequestResource, *EnvironmentsClientBeginApproveOrRejectPrivateEndpointConnectionOptions)` to `(context.Context, string, string, string, RemotePrivateEndpointConnectionARMResource, *EnvironmentsClientBeginApproveOrRejectPrivateEndpointConnectionOptions)`
@@ -11,11 +11,11 @@
 ### Features Added
 
 - New value `SKUNameFlexConsumption` added to enum type `SKUName`
-- New value `StorageTypeBlobContainer` added to enum type `StorageType`
 - New value `SupportedTLSVersionsOne3` added to enum type `SupportedTLSVersions`
 - New enum type `AuthType` with values `AuthTypeAnonymous`, `AuthTypeSystemIdentity`, `AuthTypeUserAssigned`, `AuthTypeUserCredentials`
 - New enum type `AuthenticationType` with values `AuthenticationTypeStorageAccountConnectionString`, `AuthenticationTypeSystemAssignedIdentity`, `AuthenticationTypeUserAssignedIdentity`
 - New enum type `AzureStorageProtocol` with values `AzureStorageProtocolHTTP`, `AzureStorageProtocolNfs`, `AzureStorageProtocolSmb`
+- New enum type `FunctionsDeploymentStorageType` with values `FunctionsDeploymentStorageTypeBlobContainer`
 - New enum type `RuntimeName` with values `RuntimeNameCustom`, `RuntimeNameDotnetIsolated`, `RuntimeNameJava`, `RuntimeNameNode`, `RuntimeNamePowershell`, `RuntimeNamePython`
 - New function `*WebAppsClient.CreateOrUpdateSiteContainer(context.Context, string, string, string, SiteContainer, *WebAppsClientCreateOrUpdateSiteContainerOptions) (WebAppsClientCreateOrUpdateSiteContainerResponse, error)`
 - New function `*WebAppsClient.CreateOrUpdateSiteContainerSlot(context.Context, string, string, string, string, SiteContainer, *WebAppsClientCreateOrUpdateSiteContainerSlotOptions) (WebAppsClientCreateOrUpdateSiteContainerSlotResponse, error)`

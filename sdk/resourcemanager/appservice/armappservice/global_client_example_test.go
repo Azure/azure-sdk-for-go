@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/73319147d7508a9621ff1a60fb8123711b04010e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/GetDeletedWebApp.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/GetDeletedWebApp.json
 func ExampleGlobalClient_GetDeletedWebApp() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -52,7 +52,7 @@ func ExampleGlobalClient_GetDeletedWebApp() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/73319147d7508a9621ff1a60fb8123711b04010e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/GetDeletedWebAppSnapshots.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/GetDeletedWebAppSnapshots.json
 func ExampleGlobalClient_GetDeletedWebAppSnapshots() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -81,7 +81,7 @@ func ExampleGlobalClient_GetDeletedWebAppSnapshots() {
 	// }}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/73319147d7508a9621ff1a60fb8123711b04010e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/GetSubscriptionOperationWithAsyncResponse.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/GetSubscriptionOperationWithAsyncResponse.json
 func ExampleGlobalClient_GetSubscriptionOperationWithAsyncResponse() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

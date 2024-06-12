@@ -1005,6 +1005,20 @@ func PossibleFtpsStateValues() []FtpsState {
 	}
 }
 
+// FunctionsDeploymentStorageType - Property to select Azure Storage type. Available options: blobContainer.
+type FunctionsDeploymentStorageType string
+
+const (
+	FunctionsDeploymentStorageTypeBlobContainer FunctionsDeploymentStorageType = "blobContainer"
+)
+
+// PossibleFunctionsDeploymentStorageTypeValues returns the possible values for the FunctionsDeploymentStorageType const type.
+func PossibleFunctionsDeploymentStorageTypeValues() []FunctionsDeploymentStorageType {
+	return []FunctionsDeploymentStorageType{
+		FunctionsDeploymentStorageTypeBlobContainer,
+	}
+}
+
 // HostNameType - Type of the hostname.
 type HostNameType string
 
@@ -2081,11 +2095,9 @@ func PossibleStatusOptionsValues() []StatusOptions {
 	}
 }
 
-// StorageType - Property to select Azure Storage type. Available options: blobContainer.
 type StorageType string
 
 const (
-	StorageTypeBlobContainer     StorageType = "blobContainer"
 	StorageTypeLocalNode         StorageType = "LocalNode"
 	StorageTypeNetworkFileSystem StorageType = "NetworkFileSystem"
 )
@@ -2093,7 +2105,6 @@ const (
 // PossibleStorageTypeValues returns the possible values for the StorageType const type.
 func PossibleStorageTypeValues() []StorageType {
 	return []StorageType{
-		StorageTypeBlobContainer,
 		StorageTypeLocalNode,
 		StorageTypeNetworkFileSystem,
 	}

@@ -21,16 +21,15 @@ import (
 )
 
 const recordingDirectory = "sdk/security/keyvault/azadmin/testdata"
-const fakeToken = recording.SanitizedValue
-
-var fakeHsmURL = fmt.Sprintf("https://%s.managedhsm.azure.net/", recording.SanitizedValue)
-var fakeBlobURL = fmt.Sprintf("https://%s.blob.core.windows.net/", recording.SanitizedValue)
 
 var (
 	credential azcore.TokenCredential
 	hsmURL     string
 	token      string
 	blobURL    string
+
+	fakeHsmURL  = fmt.Sprintf("https://%s.managedhsm.azure.net/", recording.SanitizedValue)
+	fakeBlobURL = fmt.Sprintf("https://%s.blob.core.windows.net/backup", recording.SanitizedValue)
 )
 
 func TestMain(m *testing.M) {
@@ -61,7 +60,7 @@ func run(m *testing.M) int {
 
 	hsmURL = recording.GetEnvVariable("AZURE_MANAGEDHSM_URL", fakeHsmURL)
 	blobURL = recording.GetEnvVariable("BLOB_CONTAINER_URL", fakeBlobURL)
-	token = recording.GetEnvVariable("BLOB_STORAGE_SAS_TOKEN", fakeToken)
+	token = recording.GetEnvVariable("BLOB_STORAGE_SAS_TOKEN", recording.SanitizedValue)
 
 	if recording.GetRecordMode() == recording.RecordingMode {
 		err = recording.AddGeneralRegexSanitizer(fakeHsmURL, hsmURL, nil)

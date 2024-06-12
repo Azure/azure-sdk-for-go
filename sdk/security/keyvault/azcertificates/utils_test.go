@@ -24,8 +24,6 @@ import (
 
 const recordingDirectory = "sdk/security/keyvault/azcertificates/testdata"
 
-var fakeVaultURL = fmt.Sprintf("https://%s.vault.azure.net/", recording.SanitizedValue)
-
 var (
 	certsToPurge = struct {
 		mut   sync.Mutex
@@ -34,6 +32,8 @@ var (
 
 	credential azcore.TokenCredential
 	vaultURL   string
+
+	fakeVaultURL = fmt.Sprintf("https://%s.vault.azure.net/", recording.SanitizedValue)
 )
 
 func TestMain(m *testing.M) {

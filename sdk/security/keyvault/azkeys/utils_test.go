@@ -29,11 +29,11 @@ import (
 
 const recordingDirectory = "sdk/security/keyvault/azkeys/testdata"
 
-var fakeVaultURL = fmt.Sprintf("https://%s.vault.azure.net/", recording.SanitizedValue)
-var fakeHsmURL = fmt.Sprintf("https://%s.managedhsm.azure.net/", recording.SanitizedValue)
-var fakeAttestationURL = fmt.Sprintf("https://%s.azurewebsites.net/", recording.SanitizedValue)
-
 var (
+	fakeVaultURL       = fmt.Sprintf("https://%s.vault.azure.net/", recording.SanitizedValue)
+	fakeHsmURL         = fmt.Sprintf("https://%s.managedhsm.azure.net/", recording.SanitizedValue)
+	fakeAttestationURL = fmt.Sprintf("https://%s.azurewebsites.net/", recording.SanitizedValue)
+
 	keysToPurge = struct {
 		mut   sync.Mutex
 		names map[string][]string // maps vault URL to key names

@@ -22,11 +22,11 @@ import (
 
 const recordingDirectory = "sdk/security/keyvault/azadmin/testdata"
 
-var fakeHsmURL = fmt.Sprintf("https://%s.managedhsm.azure.net/", recording.SanitizedValue)
-
 var (
 	credential azcore.TokenCredential
 	hsmURL     string
+
+	fakeHsmURL = fmt.Sprintf("https://%s.managedhsm.azure.net/", recording.SanitizedValue)
 )
 
 func TestMain(m *testing.M) {

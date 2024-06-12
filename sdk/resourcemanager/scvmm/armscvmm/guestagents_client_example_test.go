@@ -18,8 +18,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/scvmm/armscvmm"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/InventoryItems_ListByVmmServer_MaximumSet_Gen.json
-func ExampleInventoryItemsClient_NewListByVmmServerPager_inventoryItemsListByVmmServerMaximumSet() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/GuestAgents_ListByVirtualMachineInstance_MaximumSet_Gen.json
+func ExampleGuestAgentsClient_NewListByVirtualMachineInstancePager_guestAgentsListByVirtualMachineInstanceMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,7 @@ func ExampleInventoryItemsClient_NewListByVmmServerPager_inventoryItemsListByVmm
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewInventoryItemsClient().NewListByVmmServerPager("rgscvmm", "X", nil)
+	pager := clientFactory.NewGuestAgentsClient().NewListByVirtualMachineInstancePager("gtgclehcbsyave", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -40,12 +40,12 @@ func ExampleInventoryItemsClient_NewListByVmmServerPager_inventoryItemsListByVmm
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.InventoryItemListResult = armscvmm.InventoryItemListResult{
-		// 	Value: []*armscvmm.InventoryItem{
+		// page.GuestAgentListResult = armscvmm.GuestAgentListResult{
+		// 	Value: []*armscvmm.GuestAgent{
 		// 		{
-		// 			Name: to.Ptr("oimmcgxagnhmasgsmhdaigznub"),
-		// 			Type: to.Ptr("lfhuayaplzxdqzubmjvtgcan"),
-		// 			ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-12345678abc/resourceGroups/exampleResourceGroup/providers/Microsoft.ScVmm/vmmServers/{vmmServerName}/inventoryItems/inventoryItemResourceName"),
+		// 			Name: to.Ptr("rwecpthzyt"),
+		// 			Type: to.Ptr("dkcgcbtlwtsedxzhvtu"),
+		// 			ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-12345678abc/resourceGroups/exampleResourceGroup/providers/Microsoft.ScVmm/virtualMachineInstances/default/guestAgents/default"),
 		// 			SystemData: &armscvmm.SystemData{
 		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-29T22:28:00.094Z"); return t}()),
 		// 				CreatedBy: to.Ptr("p"),
@@ -54,21 +54,26 @@ func ExampleInventoryItemsClient_NewListByVmmServerPager_inventoryItemsListByVmm
 		// 				LastModifiedBy: to.Ptr("goxcwpyyqlxndquly"),
 		// 				LastModifiedByType: to.Ptr(armscvmm.CreatedByTypeUser),
 		// 			},
-		// 			Kind: to.Ptr("M\\d_,V."),
-		// 			Properties: &armscvmm.InventoryItemProperties{
-		// 				InventoryItemName: to.Ptr("kspgdhmlmycalwrepfmshoaoumna"),
-		// 				InventoryType: to.Ptr(armscvmm.InventoryType("InventoryItemProperties")),
-		// 				ManagedResourceID: to.Ptr("ictxvjzvurnkdgwabqyyfyckkkdx"),
+		// 			Properties: &armscvmm.GuestAgentProperties{
+		// 				Credentials: &armscvmm.GuestCredential{
+		// 					Username: to.Ptr("jqxuwirrcpfv"),
+		// 				},
+		// 				CustomResourceName: to.Ptr("mhqymxkapuvsugd"),
+		// 				HTTPProxyConfig: &armscvmm.HTTPProxyConfiguration{
+		// 					HTTPSProxy: to.Ptr("uoyzyticmohohomlkwct"),
+		// 				},
+		// 				ProvisioningAction: to.Ptr(armscvmm.ProvisioningActionInstall),
 		// 				ProvisioningState: to.Ptr(armscvmm.ResourceProvisioningStateSucceeded),
-		// 				UUID: to.Ptr("jolmoxfopwfoje"),
+		// 				Status: to.Ptr("jpoukrzfenzrmjdahimkl"),
+		// 				UUID: to.Ptr("hbsgztyakewtgbuxbesezncnzu"),
 		// 			},
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/InventoryItems_ListByVmmServer_MinimumSet_Gen.json
-func ExampleInventoryItemsClient_NewListByVmmServerPager_inventoryItemsListByVmmServerMinimumSet() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/GuestAgents_ListByVirtualMachineInstance_MinimumSet_Gen.json
+func ExampleGuestAgentsClient_NewListByVirtualMachineInstancePager_guestAgentsListByVirtualMachineInstanceMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -78,7 +83,7 @@ func ExampleInventoryItemsClient_NewListByVmmServerPager_inventoryItemsListByVmm
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewInventoryItemsClient().NewListByVmmServerPager("rgscvmm", "H", nil)
+	pager := clientFactory.NewGuestAgentsClient().NewListByVirtualMachineInstancePager("gtgclehcbsyave", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -89,17 +94,17 @@ func ExampleInventoryItemsClient_NewListByVmmServerPager_inventoryItemsListByVmm
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.InventoryItemListResult = armscvmm.InventoryItemListResult{
-		// 	Value: []*armscvmm.InventoryItem{
+		// page.GuestAgentListResult = armscvmm.GuestAgentListResult{
+		// 	Value: []*armscvmm.GuestAgent{
 		// 		{
-		// 			ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-12345678abc/resourceGroups/exampleResourceGroup/providers/Microsoft.ScVmm/vmmServers/{vmmServerName}/inventoryItems/inventoryItemResourceName"),
+		// 			ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-12345678abc/resourceGroups/exampleResourceGroup/providers/Microsoft.ScVmm/virtualMachineInstances/default/guestAgents/default"),
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/InventoryItems_Get_MaximumSet_Gen.json
-func ExampleInventoryItemsClient_Get_inventoryItemsGetMaximumSet() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/GuestAgents_Get_MaximumSet_Gen.json
+func ExampleGuestAgentsClient_Get_guestAgentsGetMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -109,17 +114,17 @@ func ExampleInventoryItemsClient_Get_inventoryItemsGetMaximumSet() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewInventoryItemsClient().Get(ctx, "rgscvmm", "1", "2bFBede6-EEf8-becB-dBbd-B96DbBFdB3f3", nil)
+	res, err := clientFactory.NewGuestAgentsClient().Get(ctx, "gtgclehcbsyave", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.InventoryItem = armscvmm.InventoryItem{
-	// 	Name: to.Ptr("oimmcgxagnhmasgsmhdaigznub"),
-	// 	Type: to.Ptr("lfhuayaplzxdqzubmjvtgcan"),
-	// 	ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-12345678abc/resourceGroups/exampleResourceGroup/providers/Microsoft.ScVmm/vmmServers/{vmmServerName}/inventoryItems/inventoryItemResourceName"),
+	// res.GuestAgent = armscvmm.GuestAgent{
+	// 	Name: to.Ptr("rwecpthzyt"),
+	// 	Type: to.Ptr("dkcgcbtlwtsedxzhvtu"),
+	// 	ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-12345678abc/resourceGroups/exampleResourceGroup/providers/Microsoft.ScVmm/virtualMachineInstances/default/guestAgents/default"),
 	// 	SystemData: &armscvmm.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-29T22:28:00.094Z"); return t}()),
 	// 		CreatedBy: to.Ptr("p"),
@@ -128,19 +133,24 @@ func ExampleInventoryItemsClient_Get_inventoryItemsGetMaximumSet() {
 	// 		LastModifiedBy: to.Ptr("goxcwpyyqlxndquly"),
 	// 		LastModifiedByType: to.Ptr(armscvmm.CreatedByTypeUser),
 	// 	},
-	// 	Kind: to.Ptr("M\\d_,V."),
-	// 	Properties: &armscvmm.InventoryItemProperties{
-	// 		InventoryItemName: to.Ptr("kspgdhmlmycalwrepfmshoaoumna"),
-	// 		InventoryType: to.Ptr(armscvmm.InventoryType("InventoryItemProperties")),
-	// 		ManagedResourceID: to.Ptr("ictxvjzvurnkdgwabqyyfyckkkdx"),
+	// 	Properties: &armscvmm.GuestAgentProperties{
+	// 		Credentials: &armscvmm.GuestCredential{
+	// 			Username: to.Ptr("jqxuwirrcpfv"),
+	// 		},
+	// 		CustomResourceName: to.Ptr("mhqymxkapuvsugd"),
+	// 		HTTPProxyConfig: &armscvmm.HTTPProxyConfiguration{
+	// 			HTTPSProxy: to.Ptr("uoyzyticmohohomlkwct"),
+	// 		},
+	// 		ProvisioningAction: to.Ptr(armscvmm.ProvisioningActionInstall),
 	// 		ProvisioningState: to.Ptr(armscvmm.ResourceProvisioningStateSucceeded),
-	// 		UUID: to.Ptr("jolmoxfopwfoje"),
+	// 		Status: to.Ptr("jpoukrzfenzrmjdahimkl"),
+	// 		UUID: to.Ptr("hbsgztyakewtgbuxbesezncnzu"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/InventoryItems_Get_MinimumSet_Gen.json
-func ExampleInventoryItemsClient_Get_inventoryItemsGetMinimumSet() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/GuestAgents_Get_MinimumSet_Gen.json
+func ExampleGuestAgentsClient_Get_guestAgentsGetMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -150,19 +160,19 @@ func ExampleInventoryItemsClient_Get_inventoryItemsGetMinimumSet() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewInventoryItemsClient().Get(ctx, "rgscvmm", "_", "cacb8Ceb-efAC-bebb-ae7C-dec8C5Bb7100", nil)
+	res, err := clientFactory.NewGuestAgentsClient().Get(ctx, "gtgclehcbsyave", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.InventoryItem = armscvmm.InventoryItem{
+	// res.GuestAgent = armscvmm.GuestAgent{
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/InventoryItems_Create_MaximumSet_Gen.json
-func ExampleInventoryItemsClient_Create_inventoryItemsCreateMaximumSet() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/GuestAgents_Create_MaximumSet_Gen.json
+func ExampleGuestAgentsClient_BeginCreate_guestAgentsCreateMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -172,22 +182,32 @@ func ExampleInventoryItemsClient_Create_inventoryItemsCreateMaximumSet() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewInventoryItemsClient().Create(ctx, "rgscvmm", "O", "1BdDc2Ab-bDd9-Ebd6-bfdb-C0dbbdB5DEDf", armscvmm.InventoryItem{
-		Kind: to.Ptr("M\\d_,V."),
-		Properties: &armscvmm.InventoryItemProperties{
-			InventoryType: to.Ptr(armscvmm.InventoryType("InventoryItemProperties")),
+	poller, err := clientFactory.NewGuestAgentsClient().BeginCreate(ctx, "gtgclehcbsyave", armscvmm.GuestAgent{
+		Properties: &armscvmm.GuestAgentProperties{
+			Credentials: &armscvmm.GuestCredential{
+				Password: to.Ptr("gkvbnmuahumuoibvscoxzfdqwvfuf"),
+				Username: to.Ptr("jqxuwirrcpfv"),
+			},
+			HTTPProxyConfig: &armscvmm.HTTPProxyConfiguration{
+				HTTPSProxy: to.Ptr("uoyzyticmohohomlkwct"),
+			},
+			ProvisioningAction: to.Ptr(armscvmm.ProvisioningActionInstall),
 		},
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.InventoryItem = armscvmm.InventoryItem{
-	// 	Name: to.Ptr("oimmcgxagnhmasgsmhdaigznub"),
-	// 	Type: to.Ptr("lfhuayaplzxdqzubmjvtgcan"),
-	// 	ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-12345678abc/resourceGroups/exampleResourceGroup/providers/Microsoft.ScVmm/vmmServers/{vmmServerName}/inventoryItems/inventoryItemResourceName"),
+	// res.GuestAgent = armscvmm.GuestAgent{
+	// 	Name: to.Ptr("rwecpthzyt"),
+	// 	Type: to.Ptr("dkcgcbtlwtsedxzhvtu"),
+	// 	ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-12345678abc/resourceGroups/exampleResourceGroup/providers/Microsoft.ScVmm/virtualMachineInstances/default/guestAgents/default"),
 	// 	SystemData: &armscvmm.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-29T22:28:00.094Z"); return t}()),
 	// 		CreatedBy: to.Ptr("p"),
@@ -196,19 +216,24 @@ func ExampleInventoryItemsClient_Create_inventoryItemsCreateMaximumSet() {
 	// 		LastModifiedBy: to.Ptr("goxcwpyyqlxndquly"),
 	// 		LastModifiedByType: to.Ptr(armscvmm.CreatedByTypeUser),
 	// 	},
-	// 	Kind: to.Ptr("M\\d_,V."),
-	// 	Properties: &armscvmm.InventoryItemProperties{
-	// 		InventoryItemName: to.Ptr("kspgdhmlmycalwrepfmshoaoumna"),
-	// 		InventoryType: to.Ptr(armscvmm.InventoryType("InventoryItemProperties")),
-	// 		ManagedResourceID: to.Ptr("ictxvjzvurnkdgwabqyyfyckkkdx"),
+	// 	Properties: &armscvmm.GuestAgentProperties{
+	// 		Credentials: &armscvmm.GuestCredential{
+	// 			Username: to.Ptr("jqxuwirrcpfv"),
+	// 		},
+	// 		CustomResourceName: to.Ptr("mhqymxkapuvsugd"),
+	// 		HTTPProxyConfig: &armscvmm.HTTPProxyConfiguration{
+	// 			HTTPSProxy: to.Ptr("uoyzyticmohohomlkwct"),
+	// 		},
+	// 		ProvisioningAction: to.Ptr(armscvmm.ProvisioningActionInstall),
 	// 		ProvisioningState: to.Ptr(armscvmm.ResourceProvisioningStateSucceeded),
-	// 		UUID: to.Ptr("jolmoxfopwfoje"),
+	// 		Status: to.Ptr("jpoukrzfenzrmjdahimkl"),
+	// 		UUID: to.Ptr("hbsgztyakewtgbuxbesezncnzu"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/InventoryItems_Create_MinimumSet_Gen.json
-func ExampleInventoryItemsClient_Create_inventoryItemsCreateMinimumSet() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/GuestAgents_Create_MinimumSet_Gen.json
+func ExampleGuestAgentsClient_BeginCreate_guestAgentsCreateMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -218,19 +243,23 @@ func ExampleInventoryItemsClient_Create_inventoryItemsCreateMinimumSet() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewInventoryItemsClient().Create(ctx, "rgscvmm", ".", "bbFb0cBb-50ce-4bfc-3eeD-bC26AbCC257a", armscvmm.InventoryItem{}, nil)
+	poller, err := clientFactory.NewGuestAgentsClient().BeginCreate(ctx, "gtgclehcbsyave", armscvmm.GuestAgent{}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.InventoryItem = armscvmm.InventoryItem{
+	// res.GuestAgent = armscvmm.GuestAgent{
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/InventoryItems_Delete_MaximumSet_Gen.json
-func ExampleInventoryItemsClient_Delete_inventoryItemsDeleteMaximumSet() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/GuestAgents_Delete_MaximumSet_Gen.json
+func ExampleGuestAgentsClient_Delete_guestAgentsDeleteMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -240,14 +269,14 @@ func ExampleInventoryItemsClient_Delete_inventoryItemsDeleteMaximumSet() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = clientFactory.NewInventoryItemsClient().Delete(ctx, "rgscvmm", "b", "EcECadfd-Eaaa-e5Ce-ebdA-badeEd3c6af1", nil)
+	_, err = clientFactory.NewGuestAgentsClient().Delete(ctx, "gtgclehcbsyave", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/InventoryItems_Delete_MinimumSet_Gen.json
-func ExampleInventoryItemsClient_Delete_inventoryItemsDeleteMinimumSet() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/GuestAgents_Delete_MinimumSet_Gen.json
+func ExampleGuestAgentsClient_Delete_guestAgentsDeleteMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -257,7 +286,7 @@ func ExampleInventoryItemsClient_Delete_inventoryItemsDeleteMinimumSet() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = clientFactory.NewInventoryItemsClient().Delete(ctx, "rgscvmm", "_", "cDBcbae6-BC3d-52fe-CedC-7eFeaBFabb82", nil)
+	_, err = clientFactory.NewGuestAgentsClient().Delete(ctx, "gtgclehcbsyave", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

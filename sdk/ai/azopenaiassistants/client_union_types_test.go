@@ -17,6 +17,8 @@ import (
 )
 
 func TestResponseFormatTypeUnion(t *testing.T) {
+	skipRecordingsCantMatchRoutesTestHack(t)
+
 	testFn := func(t *testing.T, azure bool) {
 		client := mustGetClient(t, newClientArgs{
 			Azure: azure,
@@ -44,6 +46,8 @@ func TestResponseFormatTypeUnion(t *testing.T) {
 }
 
 func TestAPIToolChoiceUnion(t *testing.T) {
+	skipRecordingsCantMatchRoutesTestHack(t)
+
 	testFn := func(t *testing.T, azure bool) {
 		client := mustGetClient(t, newClientArgs{
 			Azure: azure,

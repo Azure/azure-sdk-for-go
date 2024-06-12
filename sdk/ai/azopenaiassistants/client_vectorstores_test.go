@@ -19,6 +19,8 @@ import (
 )
 
 func TestAssistantsWithVectorStores(t *testing.T) {
+	skipRecordingsCantMatchRoutesTestHack(t)
+
 	fn := func(t *testing.T, azure bool) {
 		client := mustGetClient(t, newClientArgs{
 			Azure: azure,
@@ -107,6 +109,8 @@ func TestAssistantsWithVectorStores(t *testing.T) {
 }
 
 func TestVectorStores(t *testing.T) {
+	skipRecordingsCantMatchRoutesTestHack(t)
+
 	fn := func(t *testing.T, azure bool) {
 		client := mustGetClient(t, newClientArgs{
 			Azure: azure,
@@ -168,6 +172,8 @@ func TestVectorStores(t *testing.T) {
 }
 
 func TestVectorStoresWithBatch(t *testing.T) {
+	skipRecordingsCantMatchRoutesTestHack(t)
+
 	fn := func(t *testing.T, azure bool) {
 		client := mustGetClient(t, newClientArgs{
 			Azure: azure,

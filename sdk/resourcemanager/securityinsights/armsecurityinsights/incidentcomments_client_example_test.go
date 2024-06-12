@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2021-10-01/examples/incidents/comments/GetAllIncidentComments.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c4f3c695f0250dcb261598a62004f0aef10b9db/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/incidents/comments/GetAllIncidentComments.json
 func ExampleIncidentCommentsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -49,8 +49,8 @@ func ExampleIncidentCommentsClient_NewListPager() {
 		// 		{
 		// 			Name: to.Ptr("4bb36b7b-26ff-4d1c-9cbe-0d8ab3da0014"),
 		// 			Type: to.Ptr("Microsoft.SecurityInsights/incidents/comments"),
-		// 			ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/incidents/73e01a99-5cd7-4139-a149-9f2736ff2ab5/comments/4bb36b7b-26ff-4d1c-9cbe-0d8ab3da0014"),
-		// 			Etag: to.Ptr("0300bf09-0000-0000-0000-5c37296e0000"),
+		// 			ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalIinsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/incidents/73e01a99-5cd7-4139-a149-9f2736ff2ab5/comments/4bb36b7b-26ff-4d1c-9cbe-0d8ab3da0014"),
+		// 			Etag: to.Ptr("190057d0-0000-0d00-0000-5c6f5adb0000"),
 		// 			Properties: &armsecurityinsights.IncidentCommentProperties{
 		// 				Author: &armsecurityinsights.ClientInfo{
 		// 					Name: to.Ptr("john doe"),
@@ -59,7 +59,7 @@ func ExampleIncidentCommentsClient_NewListPager() {
 		// 					UserPrincipalName: to.Ptr("john@contoso.com"),
 		// 				},
 		// 				CreatedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-01T13:15:30.000Z"); return t}()),
-		// 				LastModifiedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-01T13:15:30.000Z"); return t}()),
+		// 				LastModifiedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-03T11:10:30.000Z"); return t}()),
 		// 				Message: to.Ptr("Some message"),
 		// 			},
 		// 	}},
@@ -67,7 +67,7 @@ func ExampleIncidentCommentsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2021-10-01/examples/incidents/comments/GetIncidentCommentById.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c4f3c695f0250dcb261598a62004f0aef10b9db/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/incidents/comments/GetIncidentCommentById.json
 func ExampleIncidentCommentsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -88,8 +88,8 @@ func ExampleIncidentCommentsClient_Get() {
 	// res.IncidentComment = armsecurityinsights.IncidentComment{
 	// 	Name: to.Ptr("4bb36b7b-26ff-4d1c-9cbe-0d8ab3da0014"),
 	// 	Type: to.Ptr("Microsoft.SecurityInsights/incidents/comments"),
-	// 	ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/incidents/73e01a99-5cd7-4139-a149-9f2736ff2ab5/comments/4bb36b7b-26ff-4d1c-9cbe-0d8ab3da0014"),
-	// 	Etag: to.Ptr("0300bf09-0000-0000-0000-5c37296e0000"),
+	// 	ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalIinsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/incidents/73e01a99-5cd7-4139-a149-9f2736ff2ab5/comments/4bb36b7b-26ff-4d1c-9cbe-0d8ab3da0014"),
+	// 	Etag: to.Ptr("190057d0-0000-0d00-0000-5c6f5adb0000"),
 	// 	Properties: &armsecurityinsights.IncidentCommentProperties{
 	// 		Author: &armsecurityinsights.ClientInfo{
 	// 			Name: to.Ptr("john doe"),
@@ -98,13 +98,13 @@ func ExampleIncidentCommentsClient_Get() {
 	// 			UserPrincipalName: to.Ptr("john@contoso.com"),
 	// 		},
 	// 		CreatedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-01T13:15:30.000Z"); return t}()),
-	// 		LastModifiedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-01T13:15:30.000Z"); return t}()),
+	// 		LastModifiedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-03T11:10:30.000Z"); return t}()),
 	// 		Message: to.Ptr("Some message"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2021-10-01/examples/incidents/comments/CreateIncidentComment.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c4f3c695f0250dcb261598a62004f0aef10b9db/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/incidents/comments/CreateIncidentComment.json
 func ExampleIncidentCommentsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -130,7 +130,7 @@ func ExampleIncidentCommentsClient_CreateOrUpdate() {
 	// 	Name: to.Ptr("4bb36b7b-26ff-4d1c-9cbe-0d8ab3da0014"),
 	// 	Type: to.Ptr("Microsoft.SecurityInsights/incidents/comments"),
 	// 	ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalIinsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/incidents/73e01a99-5cd7-4139-a149-9f2736ff2ab5/comments/4bb36b7b-26ff-4d1c-9cbe-0d8ab3da0014"),
-	// 	Etag: to.Ptr("0300bf09-0000-0000-0000-5c37296e0000"),
+	// 	Etag: to.Ptr("190057d0-0000-0d00-0000-5c6f5adb0000"),
 	// 	Properties: &armsecurityinsights.IncidentCommentProperties{
 	// 		Author: &armsecurityinsights.ClientInfo{
 	// 			Name: to.Ptr("john doe"),
@@ -139,13 +139,13 @@ func ExampleIncidentCommentsClient_CreateOrUpdate() {
 	// 			UserPrincipalName: to.Ptr("john@contoso.com"),
 	// 		},
 	// 		CreatedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-01T13:15:30.000Z"); return t}()),
-	// 		LastModifiedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-04T13:15:30.000Z"); return t}()),
+	// 		LastModifiedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-03T11:10:30.000Z"); return t}()),
 	// 		Message: to.Ptr("Some message"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2021-10-01/examples/incidents/comments/DeleteIncidentComment.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c4f3c695f0250dcb261598a62004f0aef10b9db/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/incidents/comments/DeleteIncidentComment.json
 func ExampleIncidentCommentsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

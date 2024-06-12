@@ -72,10 +72,8 @@ func TestDownloadFileContent(t *testing.T) {
 				fileFound = true
 
 				t.Logf("[%s] image file ID: %s, file is %d bytes", *m.Role, *v.ImageFile.FileID, len(fileBytes))
-				break
 			case *azopenaiassistants.MessageTextContent:
 				t.Logf("[%s] %s", *m.Role, *v.Text.Value)
-				break
 			}
 		}
 	}

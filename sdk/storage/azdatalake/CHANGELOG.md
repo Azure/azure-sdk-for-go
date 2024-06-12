@@ -1,15 +1,9 @@
 # Release History
 
-## 1.1.3 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 1.1.3 (2024-06-13)
 
 ### Bugs Fixed
 * Fixed an issue where blob etag casing is different in the Path List API Spec is different from backend. Fixes [#29233](https://github.com/Azure/azure-rest-api-specs/issues/29233)
-
-### Other Changes
 
 ## 1.1.2 (2024-05-16)
 

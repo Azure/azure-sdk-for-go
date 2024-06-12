@@ -35,7 +35,6 @@ func (m MessageAttachmentToolDefinition) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON implements the json.Unmarshaller interface for type MessageAttachmentToolDefinition.
 func (m *MessageAttachmentToolDefinition) UnmarshalJSON(data []byte) error {
-
 	var v *struct {
 		Type string
 		// TODO: This type needs to include, uniquely, all the fields of the individual types.
@@ -108,7 +107,7 @@ func (a *AssistantsAPIToolChoiceOption) UnmarshalJSON(data []byte) error {
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AssistantsAPIToolChoiceOption.
-func (a *AssistantsAPIToolChoiceOption) MarshalJSON() ([]byte, error) {
+func (a AssistantsAPIToolChoiceOption) MarshalJSON() ([]byte, error) {
 	switch a.Mode {
 	case AssistantsAPIToolChoiceOptionModeAuto, AssistantsAPIToolChoiceOptionModeNone:
 		return json.Marshal(a.Mode)

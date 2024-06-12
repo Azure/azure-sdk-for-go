@@ -17,10 +17,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2021-10-01/examples/bookmarks/GetBookmarks.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c4f3c695f0250dcb261598a62004f0aef10b9db/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/bookmarks/GetBookmarks.json
 func ExampleBookmarksClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -50,13 +50,22 @@ func ExampleBookmarksClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/bookmarks/73e01a99-5cd7-4139-a149-9f2736ff2ab5"),
 		// 			Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
 		// 			Properties: &armsecurityinsights.BookmarkProperties{
-		// 				Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-01T13:15:30.000Z"); return t}()),
+		// 				Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-01T13:15:30.000Z"); return t}()),
 		// 				CreatedBy: &armsecurityinsights.UserInfo{
 		// 					Name: to.Ptr("john doe"),
 		// 					Email: to.Ptr("john@contoso.com"),
 		// 					ObjectID: to.Ptr("2046feea-040d-4a46-9e2b-91c2941bfa70"),
 		// 				},
 		// 				DisplayName: to.Ptr("My bookmark"),
+		// 				EntityMappings: []*armsecurityinsights.BookmarkEntityMappings{
+		// 					{
+		// 						EntityType: to.Ptr("Account"),
+		// 						FieldMappings: []*armsecurityinsights.EntityFieldMapping{
+		// 							{
+		// 								Identifier: to.Ptr("Fullname"),
+		// 								Value: to.Ptr("johndoe@microsoft.com"),
+		// 						}},
+		// 				}},
 		// 				IncidentInfo: &armsecurityinsights.IncidentInfo{
 		// 					IncidentID: to.Ptr("DDA55F97-170B-40B9-B8ED-CBFD05481E7D"),
 		// 					RelationName: to.Ptr("4bb36b7b-26ff-4d1c-9cbe-0d8ab3da0018"),
@@ -69,19 +78,23 @@ func ExampleBookmarksClient_NewListPager() {
 		// 					Notes: to.Ptr("Found a suspicious activity"),
 		// 					Query: to.Ptr("SecurityEvent | where TimeGenerated > ago(1d) and TimeGenerated < ago(2d)"),
 		// 					QueryResult: to.Ptr("Security Event query result"),
-		// 					Updated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-01T13:15:30.000Z"); return t}()),
-		// 					UpdatedBy: &armsecurityinsights.UserInfo{
-		// 						Name: to.Ptr("john doe"),
-		// 						Email: to.Ptr("john@contoso.com"),
-		// 						ObjectID: to.Ptr("2046feea-040d-4a46-9e2b-91c2941bfa70"),
-		// 					},
-		// 				},
-		// 		}},
-		// 	}
+		// 					Tactics: []*armsecurityinsights.AttackTactic{
+		// 						to.Ptr(armsecurityinsights.AttackTacticExecution)},
+		// 						Techniques: []*string{
+		// 							to.Ptr("T1609")},
+		// 							Updated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-01T13:15:30.000Z"); return t}()),
+		// 							UpdatedBy: &armsecurityinsights.UserInfo{
+		// 								Name: to.Ptr("john doe"),
+		// 								Email: to.Ptr("john@contoso.com"),
+		// 								ObjectID: to.Ptr("2046feea-040d-4a46-9e2b-91c2941bfa70"),
+		// 							},
+		// 						},
+		// 				}},
+		// 			}
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2021-10-01/examples/bookmarks/GetBookmarkById.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c4f3c695f0250dcb261598a62004f0aef10b9db/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/bookmarks/GetBookmarkById.json
 func ExampleBookmarksClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -105,13 +118,22 @@ func ExampleBookmarksClient_Get() {
 	// 	ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/bookmarks/73e01a99-5cd7-4139-a149-9f2736ff2ab5"),
 	// 	Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
 	// 	Properties: &armsecurityinsights.BookmarkProperties{
-	// 		Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-01T13:15:30.000Z"); return t}()),
+	// 		Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-01T13:15:30.000Z"); return t}()),
 	// 		CreatedBy: &armsecurityinsights.UserInfo{
 	// 			Name: to.Ptr("john doe"),
 	// 			Email: to.Ptr("john@contoso.com"),
 	// 			ObjectID: to.Ptr("2046feea-040d-4a46-9e2b-91c2941bfa70"),
 	// 		},
 	// 		DisplayName: to.Ptr("My bookmark"),
+	// 		EntityMappings: []*armsecurityinsights.BookmarkEntityMappings{
+	// 			{
+	// 				EntityType: to.Ptr("Account"),
+	// 				FieldMappings: []*armsecurityinsights.EntityFieldMapping{
+	// 					{
+	// 						Identifier: to.Ptr("Fullname"),
+	// 						Value: to.Ptr("johndoe@microsoft.com"),
+	// 				}},
+	// 		}},
 	// 		IncidentInfo: &armsecurityinsights.IncidentInfo{
 	// 			IncidentID: to.Ptr("DDA55F97-170B-40B9-B8ED-CBFD05481E7D"),
 	// 			RelationName: to.Ptr("4bb36b7b-26ff-4d1c-9cbe-0d8ab3da0018"),
@@ -124,17 +146,21 @@ func ExampleBookmarksClient_Get() {
 	// 			Notes: to.Ptr("Found a suspicious activity"),
 	// 			Query: to.Ptr("SecurityEvent | where TimeGenerated > ago(1d) and TimeGenerated < ago(2d)"),
 	// 			QueryResult: to.Ptr("Security Event query result"),
-	// 			Updated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-01T13:15:30.000Z"); return t}()),
-	// 			UpdatedBy: &armsecurityinsights.UserInfo{
-	// 				Name: to.Ptr("john doe"),
-	// 				Email: to.Ptr("john@contoso.com"),
-	// 				ObjectID: to.Ptr("2046feea-040d-4a46-9e2b-91c2941bfa70"),
-	// 			},
-	// 		},
-	// 	}
+	// 			Tactics: []*armsecurityinsights.AttackTactic{
+	// 				to.Ptr(armsecurityinsights.AttackTacticExecution)},
+	// 				Techniques: []*string{
+	// 					to.Ptr("T1609")},
+	// 					Updated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-01T13:15:30.000Z"); return t}()),
+	// 					UpdatedBy: &armsecurityinsights.UserInfo{
+	// 						Name: to.Ptr("john doe"),
+	// 						Email: to.Ptr("john@contoso.com"),
+	// 						ObjectID: to.Ptr("2046feea-040d-4a46-9e2b-91c2941bfa70"),
+	// 					},
+	// 				},
+	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2021-10-01/examples/bookmarks/CreateBookmark.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c4f3c695f0250dcb261598a62004f0aef10b9db/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/bookmarks/CreateBookmark.json
 func ExampleBookmarksClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -148,18 +174,31 @@ func ExampleBookmarksClient_CreateOrUpdate() {
 	res, err := clientFactory.NewBookmarksClient().CreateOrUpdate(ctx, "myRg", "myWorkspace", "73e01a99-5cd7-4139-a149-9f2736ff2ab5", armsecurityinsights.Bookmark{
 		Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
 		Properties: &armsecurityinsights.BookmarkProperties{
-			Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-01T13:15:30.000Z"); return t }()),
+			Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-01T13:15:30.000Z"); return t }()),
 			CreatedBy: &armsecurityinsights.UserInfo{
 				ObjectID: to.Ptr("2046feea-040d-4a46-9e2b-91c2941bfa70"),
 			},
 			DisplayName: to.Ptr("My bookmark"),
+			EntityMappings: []*armsecurityinsights.BookmarkEntityMappings{
+				{
+					EntityType: to.Ptr("Account"),
+					FieldMappings: []*armsecurityinsights.EntityFieldMapping{
+						{
+							Identifier: to.Ptr("Fullname"),
+							Value:      to.Ptr("johndoe@microsoft.com"),
+						}},
+				}},
 			Labels: []*string{
 				to.Ptr("Tag1"),
 				to.Ptr("Tag2")},
 			Notes:       to.Ptr("Found a suspicious activity"),
 			Query:       to.Ptr("SecurityEvent | where TimeGenerated > ago(1d) and TimeGenerated < ago(2d)"),
 			QueryResult: to.Ptr("Security Event query result"),
-			Updated:     to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-01T13:15:30.000Z"); return t }()),
+			Tactics: []*armsecurityinsights.AttackTactic{
+				to.Ptr(armsecurityinsights.AttackTacticExecution)},
+			Techniques: []*string{
+				to.Ptr("T1609")},
+			Updated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-01T13:15:30.000Z"); return t }()),
 			UpdatedBy: &armsecurityinsights.UserInfo{
 				ObjectID: to.Ptr("2046feea-040d-4a46-9e2b-91c2941bfa70"),
 			},
@@ -177,30 +216,43 @@ func ExampleBookmarksClient_CreateOrUpdate() {
 	// 	ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/bookmarks/73e01a99-5cd7-4139-a149-9f2736ff2ab5"),
 	// 	Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
 	// 	Properties: &armsecurityinsights.BookmarkProperties{
-	// 		Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-01T13:15:30.000Z"); return t}()),
+	// 		Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-01T13:15:30.000Z"); return t}()),
 	// 		CreatedBy: &armsecurityinsights.UserInfo{
 	// 			Name: to.Ptr("john doe"),
 	// 			Email: to.Ptr("john@contoso.com"),
 	// 			ObjectID: to.Ptr("2046feea-040d-4a46-9e2b-91c2941bfa70"),
 	// 		},
 	// 		DisplayName: to.Ptr("My bookmark"),
+	// 		EntityMappings: []*armsecurityinsights.BookmarkEntityMappings{
+	// 			{
+	// 				EntityType: to.Ptr("Account"),
+	// 				FieldMappings: []*armsecurityinsights.EntityFieldMapping{
+	// 					{
+	// 						Identifier: to.Ptr("Fullname"),
+	// 						Value: to.Ptr("johndoe@microsoft.com"),
+	// 				}},
+	// 		}},
 	// 		Labels: []*string{
 	// 			to.Ptr("Tag1"),
 	// 			to.Ptr("Tag2")},
 	// 			Notes: to.Ptr("Found a suspicious activity"),
 	// 			Query: to.Ptr("SecurityEvent | where TimeGenerated > ago(1d) and TimeGenerated < ago(2d)"),
 	// 			QueryResult: to.Ptr("Security Event query result"),
-	// 			Updated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-01T13:15:30.000Z"); return t}()),
-	// 			UpdatedBy: &armsecurityinsights.UserInfo{
-	// 				Name: to.Ptr("john doe"),
-	// 				Email: to.Ptr("john@contoso.com"),
-	// 				ObjectID: to.Ptr("2046feea-040d-4a46-9e2b-91c2941bfa70"),
-	// 			},
-	// 		},
-	// 	}
+	// 			Tactics: []*armsecurityinsights.AttackTactic{
+	// 				to.Ptr(armsecurityinsights.AttackTacticExecution)},
+	// 				Techniques: []*string{
+	// 					to.Ptr("T1609")},
+	// 					Updated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-01T13:15:30.000Z"); return t}()),
+	// 					UpdatedBy: &armsecurityinsights.UserInfo{
+	// 						Name: to.Ptr("john doe"),
+	// 						Email: to.Ptr("john@contoso.com"),
+	// 						ObjectID: to.Ptr("2046feea-040d-4a46-9e2b-91c2941bfa70"),
+	// 					},
+	// 				},
+	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2021-10-01/examples/bookmarks/DeleteBookmark.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c4f3c695f0250dcb261598a62004f0aef10b9db/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/bookmarks/DeleteBookmark.json
 func ExampleBookmarksClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

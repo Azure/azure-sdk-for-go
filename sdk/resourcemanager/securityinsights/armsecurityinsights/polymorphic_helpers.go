@@ -11,7 +11,7 @@ package armsecurityinsights
 import "encoding/json"
 
 func unmarshalAlertRuleClassification(rawMsg json.RawMessage) (AlertRuleClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -22,10 +22,16 @@ func unmarshalAlertRuleClassification(rawMsg json.RawMessage) (AlertRuleClassifi
 	switch m["kind"] {
 	case string(AlertRuleKindFusion):
 		b = &FusionAlertRule{}
+	case string(AlertRuleKindMLBehaviorAnalytics):
+		b = &MLBehaviorAnalyticsAlertRule{}
 	case string(AlertRuleKindMicrosoftSecurityIncidentCreation):
 		b = &MicrosoftSecurityIncidentCreationAlertRule{}
+	case string(AlertRuleKindNRT):
+		b = &NrtAlertRule{}
 	case string(AlertRuleKindScheduled):
 		b = &ScheduledAlertRule{}
+	case string(AlertRuleKindThreatIntelligence):
+		b = &ThreatIntelligenceAlertRule{}
 	default:
 		b = &AlertRule{}
 	}
@@ -36,7 +42,7 @@ func unmarshalAlertRuleClassification(rawMsg json.RawMessage) (AlertRuleClassifi
 }
 
 func unmarshalAlertRuleClassificationArray(rawMsg json.RawMessage) ([]AlertRuleClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var rawMessages []json.RawMessage
@@ -55,7 +61,7 @@ func unmarshalAlertRuleClassificationArray(rawMsg json.RawMessage) ([]AlertRuleC
 }
 
 func unmarshalAlertRuleTemplateClassification(rawMsg json.RawMessage) (AlertRuleTemplateClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -66,10 +72,16 @@ func unmarshalAlertRuleTemplateClassification(rawMsg json.RawMessage) (AlertRule
 	switch m["kind"] {
 	case string(AlertRuleKindFusion):
 		b = &FusionAlertRuleTemplate{}
+	case string(AlertRuleKindMLBehaviorAnalytics):
+		b = &MLBehaviorAnalyticsAlertRuleTemplate{}
 	case string(AlertRuleKindMicrosoftSecurityIncidentCreation):
 		b = &MicrosoftSecurityIncidentCreationAlertRuleTemplate{}
+	case string(AlertRuleKindNRT):
+		b = &NrtAlertRuleTemplate{}
 	case string(AlertRuleKindScheduled):
 		b = &ScheduledAlertRuleTemplate{}
+	case string(AlertRuleKindThreatIntelligence):
+		b = &ThreatIntelligenceAlertRuleTemplate{}
 	default:
 		b = &AlertRuleTemplate{}
 	}
@@ -80,7 +92,7 @@ func unmarshalAlertRuleTemplateClassification(rawMsg json.RawMessage) (AlertRule
 }
 
 func unmarshalAlertRuleTemplateClassificationArray(rawMsg json.RawMessage) ([]AlertRuleTemplateClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var rawMessages []json.RawMessage
@@ -99,7 +111,7 @@ func unmarshalAlertRuleTemplateClassificationArray(rawMsg json.RawMessage) ([]Al
 }
 
 func unmarshalAutomationRuleActionClassification(rawMsg json.RawMessage) (AutomationRuleActionClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -122,7 +134,7 @@ func unmarshalAutomationRuleActionClassification(rawMsg json.RawMessage) (Automa
 }
 
 func unmarshalAutomationRuleActionClassificationArray(rawMsg json.RawMessage) ([]AutomationRuleActionClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var rawMessages []json.RawMessage
@@ -141,7 +153,7 @@ func unmarshalAutomationRuleActionClassificationArray(rawMsg json.RawMessage) ([
 }
 
 func unmarshalAutomationRuleConditionClassification(rawMsg json.RawMessage) (AutomationRuleConditionClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -150,8 +162,16 @@ func unmarshalAutomationRuleConditionClassification(rawMsg json.RawMessage) (Aut
 	}
 	var b AutomationRuleConditionClassification
 	switch m["conditionType"] {
+	case string(ConditionTypeBoolean):
+		b = &BooleanConditionProperties{}
 	case string(ConditionTypeProperty):
 		b = &PropertyConditionProperties{}
+	case string(ConditionTypePropertyArray):
+		b = &PropertyArrayConditionProperties{}
+	case string(ConditionTypePropertyArrayChanged):
+		b = &PropertyArrayChangedConditionProperties{}
+	case string(ConditionTypePropertyChanged):
+		b = &PropertyChangedConditionProperties{}
 	default:
 		b = &AutomationRuleCondition{}
 	}
@@ -162,7 +182,7 @@ func unmarshalAutomationRuleConditionClassification(rawMsg json.RawMessage) (Aut
 }
 
 func unmarshalAutomationRuleConditionClassificationArray(rawMsg json.RawMessage) ([]AutomationRuleConditionClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var rawMessages []json.RawMessage
@@ -181,7 +201,7 @@ func unmarshalAutomationRuleConditionClassificationArray(rawMsg json.RawMessage)
 }
 
 func unmarshalDataConnectorClassification(rawMsg json.RawMessage) (DataConnectorClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -190,22 +210,46 @@ func unmarshalDataConnectorClassification(rawMsg json.RawMessage) (DataConnector
 	}
 	var b DataConnectorClassification
 	switch m["kind"] {
+	case string(DataConnectorKindAPIPolling):
+		b = &CodelessAPIPollingDataConnector{}
 	case string(DataConnectorKindAmazonWebServicesCloudTrail):
 		b = &AwsCloudTrailDataConnector{}
+	case string(DataConnectorKindAmazonWebServicesS3):
+		b = &AwsS3DataConnector{}
 	case string(DataConnectorKindAzureActiveDirectory):
 		b = &AADDataConnector{}
 	case string(DataConnectorKindAzureAdvancedThreatProtection):
 		b = &AATPDataConnector{}
 	case string(DataConnectorKindAzureSecurityCenter):
 		b = &ASCDataConnector{}
+	case string(DataConnectorKindDynamics365):
+		b = &Dynamics365DataConnector{}
+	case string(DataConnectorKindGenericUI):
+		b = &CodelessUIDataConnector{}
+	case string(DataConnectorKindIOT):
+		b = &IoTDataConnector{}
 	case string(DataConnectorKindMicrosoftCloudAppSecurity):
 		b = &MCASDataConnector{}
 	case string(DataConnectorKindMicrosoftDefenderAdvancedThreatProtection):
 		b = &MDATPDataConnector{}
+	case string(DataConnectorKindMicrosoftThreatIntelligence):
+		b = &MSTIDataConnector{}
+	case string(DataConnectorKindMicrosoftThreatProtection):
+		b = &MTPDataConnector{}
 	case string(DataConnectorKindOffice365):
 		b = &OfficeDataConnector{}
+	case string(DataConnectorKindOffice365Project):
+		b = &Office365ProjectDataConnector{}
+	case string(DataConnectorKindOfficeATP):
+		b = &OfficeATPDataConnector{}
+	case string(DataConnectorKindOfficeIRM):
+		b = &OfficeIRMDataConnector{}
+	case string(DataConnectorKindOfficePowerBI):
+		b = &OfficePowerBIDataConnector{}
 	case string(DataConnectorKindThreatIntelligence):
 		b = &TIDataConnector{}
+	case string(DataConnectorKindThreatIntelligenceTaxii):
+		b = &TiTaxiiDataConnector{}
 	default:
 		b = &DataConnector{}
 	}
@@ -216,7 +260,7 @@ func unmarshalDataConnectorClassification(rawMsg json.RawMessage) (DataConnector
 }
 
 func unmarshalDataConnectorClassificationArray(rawMsg json.RawMessage) ([]DataConnectorClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var rawMessages []json.RawMessage
@@ -235,7 +279,7 @@ func unmarshalDataConnectorClassificationArray(rawMsg json.RawMessage) ([]DataCo
 }
 
 func unmarshalEntityClassification(rawMsg json.RawMessage) (EntityClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -244,47 +288,49 @@ func unmarshalEntityClassification(rawMsg json.RawMessage) (EntityClassification
 	}
 	var b EntityClassification
 	switch m["kind"] {
-	case string(EntityKindEnumAccount):
+	case string(EntityKindAccount):
 		b = &AccountEntity{}
-	case string(EntityKindEnumAzureResource):
+	case string(EntityKindAzureResource):
 		b = &AzureResourceEntity{}
-	case string(EntityKindEnumBookmark):
+	case string(EntityKindBookmark):
 		b = &HuntingBookmark{}
-	case string(EntityKindEnumCloudApplication):
+	case string(EntityKindCloudApplication):
 		b = &CloudApplicationEntity{}
-	case string(EntityKindEnumDNSResolution):
+	case string(EntityKindDNSResolution):
 		b = &DNSEntity{}
-	case string(EntityKindEnumFile):
+	case string(EntityKindFile):
 		b = &FileEntity{}
-	case string(EntityKindEnumFileHash):
+	case string(EntityKindFileHash):
 		b = &FileHashEntity{}
-	case string(EntityKindEnumHost):
+	case string(EntityKindHost):
 		b = &HostEntity{}
-	case string(EntityKindEnumIP):
-		b = &IPEntity{}
-	case string(EntityKindEnumIoTDevice):
+	case string(EntityKindIoTDevice):
 		b = &IoTDeviceEntity{}
-	case string(EntityKindEnumMailCluster):
+	case string(EntityKindIP):
+		b = &IPEntity{}
+	case string(EntityKindMailCluster):
 		b = &MailClusterEntity{}
-	case string(EntityKindEnumMailMessage):
+	case string(EntityKindMailMessage):
 		b = &MailMessageEntity{}
-	case string(EntityKindEnumMailbox):
+	case string(EntityKindMailbox):
 		b = &MailboxEntity{}
-	case string(EntityKindEnumMalware):
+	case string(EntityKindMalware):
 		b = &MalwareEntity{}
-	case string(EntityKindEnumProcess):
+	case string(EntityKindNic):
+		b = &NicEntity{}
+	case string(EntityKindProcess):
 		b = &ProcessEntity{}
-	case string(EntityKindEnumRegistryKey):
+	case string(EntityKindRegistryKey):
 		b = &RegistryKeyEntity{}
-	case string(EntityKindEnumRegistryValue):
+	case string(EntityKindRegistryValue):
 		b = &RegistryValueEntity{}
-	case string(EntityKindEnumSecurityAlert):
+	case string(EntityKindSecurityAlert):
 		b = &SecurityAlert{}
-	case string(EntityKindEnumSecurityGroup):
+	case string(EntityKindSecurityGroup):
 		b = &SecurityGroupEntity{}
-	case string(EntityKindEnumSubmissionMail):
+	case string(EntityKindSubmissionMail):
 		b = &SubmissionMailEntity{}
-	case string(EntityKindEnumURL):
+	case string(EntityKindURL):
 		b = &URLEntity{}
 	default:
 		b = &Entity{}
@@ -296,7 +342,7 @@ func unmarshalEntityClassification(rawMsg json.RawMessage) (EntityClassification
 }
 
 func unmarshalEntityClassificationArray(rawMsg json.RawMessage) ([]EntityClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var rawMessages []json.RawMessage
@@ -314,8 +360,262 @@ func unmarshalEntityClassificationArray(rawMsg json.RawMessage) ([]EntityClassif
 	return fArray, nil
 }
 
+func unmarshalEntityQueryClassification(rawMsg json.RawMessage) (EntityQueryClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b EntityQueryClassification
+	switch m["kind"] {
+	case string(EntityQueryKindActivity):
+		b = &ActivityEntityQuery{}
+	case string(EntityQueryKindExpansion):
+		b = &ExpansionEntityQuery{}
+	default:
+		b = &EntityQuery{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
+func unmarshalEntityQueryClassificationArray(rawMsg json.RawMessage) ([]EntityQueryClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var rawMessages []json.RawMessage
+	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
+		return nil, err
+	}
+	fArray := make([]EntityQueryClassification, len(rawMessages))
+	for index, rawMessage := range rawMessages {
+		f, err := unmarshalEntityQueryClassification(rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		fArray[index] = f
+	}
+	return fArray, nil
+}
+
+func unmarshalEntityQueryItemClassification(rawMsg json.RawMessage) (EntityQueryItemClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b EntityQueryItemClassification
+	switch m["kind"] {
+	case string(EntityQueryKindInsight):
+		b = &InsightQueryItem{}
+	default:
+		b = &EntityQueryItem{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
+func unmarshalEntityQueryItemClassificationArray(rawMsg json.RawMessage) ([]EntityQueryItemClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var rawMessages []json.RawMessage
+	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
+		return nil, err
+	}
+	fArray := make([]EntityQueryItemClassification, len(rawMessages))
+	for index, rawMessage := range rawMessages {
+		f, err := unmarshalEntityQueryItemClassification(rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		fArray[index] = f
+	}
+	return fArray, nil
+}
+
+func unmarshalEntityQueryTemplateClassification(rawMsg json.RawMessage) (EntityQueryTemplateClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b EntityQueryTemplateClassification
+	switch m["kind"] {
+	case string(EntityQueryTemplateKindActivity):
+		b = &ActivityEntityQueryTemplate{}
+	default:
+		b = &EntityQueryTemplate{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
+func unmarshalEntityQueryTemplateClassificationArray(rawMsg json.RawMessage) ([]EntityQueryTemplateClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var rawMessages []json.RawMessage
+	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
+		return nil, err
+	}
+	fArray := make([]EntityQueryTemplateClassification, len(rawMessages))
+	for index, rawMessage := range rawMessages {
+		f, err := unmarshalEntityQueryTemplateClassification(rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		fArray[index] = f
+	}
+	return fArray, nil
+}
+
+func unmarshalEntityTimelineItemClassification(rawMsg json.RawMessage) (EntityTimelineItemClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b EntityTimelineItemClassification
+	switch m["kind"] {
+	case string(EntityTimelineKindActivity):
+		b = &ActivityTimelineItem{}
+	case string(EntityTimelineKindAnomaly):
+		b = &AnomalyTimelineItem{}
+	case string(EntityTimelineKindBookmark):
+		b = &BookmarkTimelineItem{}
+	case string(EntityTimelineKindSecurityAlert):
+		b = &SecurityAlertTimelineItem{}
+	default:
+		b = &EntityTimelineItem{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
+func unmarshalEntityTimelineItemClassificationArray(rawMsg json.RawMessage) ([]EntityTimelineItemClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var rawMessages []json.RawMessage
+	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
+		return nil, err
+	}
+	fArray := make([]EntityTimelineItemClassification, len(rawMessages))
+	for index, rawMessage := range rawMessages {
+		f, err := unmarshalEntityTimelineItemClassification(rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		fArray[index] = f
+	}
+	return fArray, nil
+}
+
+func unmarshalSecurityMLAnalyticsSettingClassification(rawMsg json.RawMessage) (SecurityMLAnalyticsSettingClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b SecurityMLAnalyticsSettingClassification
+	switch m["kind"] {
+	case string(SecurityMLAnalyticsSettingsKindAnomaly):
+		b = &AnomalySecurityMLAnalyticsSettings{}
+	default:
+		b = &SecurityMLAnalyticsSetting{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
+func unmarshalSecurityMLAnalyticsSettingClassificationArray(rawMsg json.RawMessage) ([]SecurityMLAnalyticsSettingClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var rawMessages []json.RawMessage
+	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
+		return nil, err
+	}
+	fArray := make([]SecurityMLAnalyticsSettingClassification, len(rawMessages))
+	for index, rawMessage := range rawMessages {
+		f, err := unmarshalSecurityMLAnalyticsSettingClassification(rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		fArray[index] = f
+	}
+	return fArray, nil
+}
+
+func unmarshalSettingsClassification(rawMsg json.RawMessage) (SettingsClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b SettingsClassification
+	switch m["kind"] {
+	case string(SettingKindAnomalies):
+		b = &Anomalies{}
+	case string(SettingKindEntityAnalytics):
+		b = &EntityAnalytics{}
+	case string(SettingKindEyesOn):
+		b = &EyesOn{}
+	case string(SettingKindUeba):
+		b = &Ueba{}
+	default:
+		b = &Settings{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
+func unmarshalSettingsClassificationArray(rawMsg json.RawMessage) ([]SettingsClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var rawMessages []json.RawMessage
+	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
+		return nil, err
+	}
+	fArray := make([]SettingsClassification, len(rawMessages))
+	for index, rawMessage := range rawMessages {
+		f, err := unmarshalSettingsClassification(rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		fArray[index] = f
+	}
+	return fArray, nil
+}
+
 func unmarshalThreatIntelligenceInformationClassification(rawMsg json.RawMessage) (ThreatIntelligenceInformationClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -324,7 +624,7 @@ func unmarshalThreatIntelligenceInformationClassification(rawMsg json.RawMessage
 	}
 	var b ThreatIntelligenceInformationClassification
 	switch m["kind"] {
-	case string(ThreatIntelligenceResourceInnerKindIndicator):
+	case string(ThreatIntelligenceResourceKindEnumIndicator):
 		b = &ThreatIntelligenceIndicatorModel{}
 	default:
 		b = &ThreatIntelligenceInformation{}
@@ -336,7 +636,7 @@ func unmarshalThreatIntelligenceInformationClassification(rawMsg json.RawMessage
 }
 
 func unmarshalThreatIntelligenceInformationClassificationArray(rawMsg json.RawMessage) ([]ThreatIntelligenceInformationClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var rawMessages []json.RawMessage

@@ -14,10 +14,10 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2021-10-01/examples/threatintelligence/GetThreatIntelligence.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c4f3c695f0250dcb261598a62004f0aef10b9db/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/threatintelligence/GetThreatIntelligence.json
 func ExampleThreatIntelligenceIndicatorsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -29,9 +29,9 @@ func ExampleThreatIntelligenceIndicatorsClient_NewListPager() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := clientFactory.NewThreatIntelligenceIndicatorsClient().NewListPager("myRg", "myWorkspace", &armsecurityinsights.ThreatIntelligenceIndicatorsClientListOptions{Filter: nil,
+		Orderby:   nil,
 		Top:       nil,
 		SkipToken: nil,
-		Orderby:   nil,
 	})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
@@ -50,11 +50,11 @@ func ExampleThreatIntelligenceIndicatorsClient_NewListPager() {
 		// 			Type: to.Ptr("Microsoft.SecurityInsights/ThreatIntelligence"),
 		// 			ID: to.Ptr("/subscriptions/bd794837-4d29-4647-9105-6339bfdb4e6a/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/ThreatIntelligence/27d963e6-e6e4-e0f9-e9d7-c53985b3bbe8"),
 		// 			Etag: to.Ptr("\"00002f2c-0000-0800-0000-5e976a8e0000\""),
-		// 			Kind: to.Ptr(armsecurityinsights.ThreatIntelligenceResourceInnerKindIndicator),
+		// 			Kind: to.Ptr(armsecurityinsights.ThreatIntelligenceResourceKindEnumIndicator),
 		// 			Properties: &armsecurityinsights.ThreatIntelligenceIndicatorProperties{
 		// 				Description: to.Ptr("debugging indicators"),
 		// 				Confidence: to.Ptr[int32](90),
-		// 				Created: to.Ptr("2020-04-15T20:11:57.9666134Z"),
+		// 				Created: to.Ptr("2021-04-15T20:11:57.9666134Z"),
 		// 				CreatedByRef: to.Ptr("contoso@contoso.com"),
 		// 				DisplayName: to.Ptr("new schema 2"),
 		// 				ExternalID: to.Ptr("indicator--8516d567-0daa-4614-8745-e3591e1b48cf"),
@@ -64,7 +64,7 @@ func ExampleThreatIntelligenceIndicatorsClient_NewListPager() {
 		// 				},
 		// 				KillChainPhases: []*armsecurityinsights.ThreatIntelligenceKillChainPhase{
 		// 				},
-		// 				LastUpdatedTimeUTC: to.Ptr("2020-04-15T20:15:11.0746926Z"),
+		// 				LastUpdatedTimeUTC: to.Ptr("2021-04-15T20:15:11.0746926Z"),
 		// 				Pattern: to.Ptr("[url:value = 'https://www.contoso.com']"),
 		// 				PatternType: to.Ptr("url"),
 		// 				Revoked: to.Ptr(false),
@@ -73,7 +73,7 @@ func ExampleThreatIntelligenceIndicatorsClient_NewListPager() {
 		// 					to.Ptr("new schema")},
 		// 					ThreatTypes: []*string{
 		// 						to.Ptr("compromised")},
-		// 						ValidFrom: to.Ptr("2020-04-15T17:44:00.114052Z"),
+		// 						ValidFrom: to.Ptr("2021-04-15T17:44:00.114052Z"),
 		// 					},
 		// 				},
 		// 				&armsecurityinsights.ThreatIntelligenceIndicatorModel{
@@ -81,11 +81,11 @@ func ExampleThreatIntelligenceIndicatorsClient_NewListPager() {
 		// 					Type: to.Ptr("Microsoft.SecurityInsights/ThreatIntelligence"),
 		// 					ID: to.Ptr("/subscriptions/bd794837-4d29-4647-9105-6339bfdb4e6a/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/ThreatIntelligence/e16ef847-962e-d7b6-9c8b-a33e4bd30e47"),
 		// 					Etag: to.Ptr("\"00002a2c-0000-0800-0000-5e97683b0000\""),
-		// 					Kind: to.Ptr(armsecurityinsights.ThreatIntelligenceResourceInnerKindIndicator),
+		// 					Kind: to.Ptr(armsecurityinsights.ThreatIntelligenceResourceKindEnumIndicator),
 		// 					Properties: &armsecurityinsights.ThreatIntelligenceIndicatorProperties{
 		// 						Description: to.Ptr("debugging indicators"),
 		// 						Confidence: to.Ptr[int32](78),
-		// 						Created: to.Ptr("2020-04-15T19:51:17.1050923Z"),
+		// 						Created: to.Ptr("2021-04-15T19:51:17.1050923Z"),
 		// 						CreatedByRef: to.Ptr("contoso@contoso.com"),
 		// 						DisplayName: to.Ptr("updated indicator"),
 		// 						ExternalID: to.Ptr("indicator--73be1729-babb-4348-a6c4-94621cae2530"),
@@ -95,7 +95,7 @@ func ExampleThreatIntelligenceIndicatorsClient_NewListPager() {
 		// 						},
 		// 						KillChainPhases: []*armsecurityinsights.ThreatIntelligenceKillChainPhase{
 		// 						},
-		// 						LastUpdatedTimeUTC: to.Ptr("2020-04-15T20:15:11.074903Z"),
+		// 						LastUpdatedTimeUTC: to.Ptr("2021-04-15T20:15:11.074903Z"),
 		// 						Pattern: to.Ptr("[url:value = 'https://www.contoso.com']"),
 		// 						PatternType: to.Ptr("url"),
 		// 						Revoked: to.Ptr(false),
@@ -104,7 +104,7 @@ func ExampleThreatIntelligenceIndicatorsClient_NewListPager() {
 		// 							to.Ptr("patching tags")},
 		// 							ThreatTypes: []*string{
 		// 								to.Ptr("compromised")},
-		// 								ValidFrom: to.Ptr("2020-04-15T17:44:00.114052Z"),
+		// 								ValidFrom: to.Ptr("2021-04-15T17:44:00.114052Z"),
 		// 							},
 		// 					}},
 		// 				}

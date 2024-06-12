@@ -114,6 +114,9 @@ func TestCodeInterpreterAndFileSearchMatchUnmarshaller(t *testing.T) {
 	fields := reflect.VisibleFields(reflect.TypeOf(azopenaiassistants.CodeInterpreterToolDefinition{}))
 	require.Equal(t, []string{"Type"}, getFieldNames(fields), "Fields match what we unmarshal")
 
-	reflect.VisibleFields(reflect.TypeOf(azopenaiassistants.FileSearchToolDefinition{}))
+	fields = reflect.VisibleFields(reflect.TypeOf(azopenaiassistants.FileSearchToolDefinition{}))
 	require.Equal(t, []string{"Type"}, getFieldNames(fields), "Fields match what we unmarshal")
+
+	fields = reflect.VisibleFields(reflect.TypeOf(azopenaiassistants.MessageAttachmentToolDefinition{}))
+	require.Equal(t, []string{"CodeInterpreterToolDefinition", "FileSearchToolDefinition"}, getFieldNames(fields), "Fields match what we marshal")
 }

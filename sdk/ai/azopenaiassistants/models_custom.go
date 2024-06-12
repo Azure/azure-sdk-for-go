@@ -5,7 +5,6 @@ package azopenaiassistants
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 )
 
@@ -23,14 +22,13 @@ type MessageAttachmentToolDefinition struct {
 
 // MarshalJSON implements the json.Marshaller interface for type MessageAttachmentToolDefinition.
 func (m MessageAttachmentToolDefinition) MarshalJSON() ([]byte, error) {
-	switch {
-	case m.CodeInterpreterToolDefinition != nil:
+	if m.CodeInterpreterToolDefinition != nil {
 		return json.Marshal(m.CodeInterpreterToolDefinition)
-	case m.FileSearchToolDefinition != nil:
-		return json.Marshal(m.FileSearchToolDefinition)
-	default:
-		return nil, errors.New("neither CodeInterpreterToolDefinition or FileSearchToolDefinition were set")
 	}
+
+	// if by chance neither of them is filled out then we'll just serialize a JSON null, which is correct. The service
+	// does its own validation.
+	return json.Marshal(m.FileSearchToolDefinition)
 }
 
 // UnmarshalJSON implements the json.Unmarshaller interface for type MessageAttachmentToolDefinition.

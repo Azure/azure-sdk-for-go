@@ -8,6 +8,7 @@ package azopenaiassistants_test
 
 import (
 	"context"
+	"reflect"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/ai/azopenaiassistants"
@@ -94,4 +95,25 @@ func TestAPIToolChoiceUnion(t *testing.T) {
 	t.Run("AzureOpenAI", func(t *testing.T) {
 		testFn(t, true)
 	})
+}
+
+func TestCodeInterpreterAndFileSearchMatchUnmarshaller(t *testing.T) {
+	// NOTE: we deserialize these as part of the union type `MessageAttachmentToolDefinition`. If
+	// fields are added to either one of these types they need to be accounted for in there so they
+	// can be unmarshalled properly.
+	getFieldNames := func(fields []reflect.StructField) []string {
+		var names []string
+
+		for _, field := range fields {
+			names = append(names, field.Name)
+		}
+
+		return names
+	}
+
+	fields := reflect.VisibleFields(reflect.TypeOf(azopenaiassistants.CodeInterpreterToolDefinition{}))
+	require.Equal(t, []string{"Type"}, getFieldNames(fields), "Fields match what we unmarshal")
+
+	reflect.VisibleFields(reflect.TypeOf(azopenaiassistants.FileSearchToolDefinition{}))
+	require.Equal(t, []string{"Type"}, getFieldNames(fields), "Fields match what we unmarshal")
 }

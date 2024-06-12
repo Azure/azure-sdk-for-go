@@ -22,7 +22,7 @@ type MessageAttachmentToolDefinition struct {
 }
 
 // MarshalJSON implements the json.Marshaller interface for type MessageAttachmentToolDefinition.
-func (m *MessageAttachmentToolDefinition) MarshalJSON() ([]byte, error) {
+func (m MessageAttachmentToolDefinition) MarshalJSON() ([]byte, error) {
 	switch {
 	case m.CodeInterpreterToolDefinition != nil:
 		return json.Marshal(m.CodeInterpreterToolDefinition)
@@ -37,16 +37,30 @@ func (m *MessageAttachmentToolDefinition) MarshalJSON() ([]byte, error) {
 func (m *MessageAttachmentToolDefinition) UnmarshalJSON(data []byte) error {
 
 	var v *struct {
-		CodeInterpreterToolDefinition *CodeInterpreterToolDefinition
-		FileSearchToolDefinition      *FileSearchToolDefinition
+		Type string
+		// TODO: This type needs to include, uniquely, all the fields of the individual types.
+		// You can't just embed them because fields that are common between them will
+		// just get ignored.
 	}
 
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
 	}
 
-	*m = *v
-	return nil
+	switch v.Type {
+	case "code_interpreter":
+		m.CodeInterpreterToolDefinition = &CodeInterpreterToolDefinition{
+			Type: &v.Type,
+		}
+		return nil
+	case "file_search":
+		m.FileSearchToolDefinition = &FileSearchToolDefinition{
+			Type: &v.Type,
+		}
+		return nil
+	default:
+		return fmt.Errorf("unhandled Type (%q) for MessageAttachmentToolDefinition", v.Type)
+	}
 }
 
 // AssistantsAPIToolChoiceOption controls which tools are called by the model.

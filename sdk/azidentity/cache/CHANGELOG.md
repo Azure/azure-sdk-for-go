@@ -1,10 +1,12 @@
 # Release History
 
-## 0.2.3 (Unreleased)
+## 0.3.0 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
+* Removed optional fallback to plaintext storage. `azidentity/cache` now
+  always returns an error when it can't encrypt a persistent cache.
 
 ### Bugs Fixed
 

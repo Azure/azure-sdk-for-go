@@ -72,7 +72,7 @@ var proposedLeaseIDs = []*string{to.Ptr("c820a799-76d7-4ee2-6e15-546f19325c2c"),
 func (s *LeaseRecordedTestsSuite) TestFilesystemAcquireLease() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	//ignoreHeaders(_context.recording, headersToIgnoreForLease)
+	// ignoreHeaders(_context.recording, headersToIgnoreForLease)
 
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
@@ -134,7 +134,7 @@ func (s *LeaseRecordedTestsSuite) TestFilesystemReleaseLease() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	//ignoreHeaders(_context.recording, headersToIgnoreForLease)
+	// ignoreHeaders(_context.recording, headersToIgnoreForLease)
 
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
@@ -167,7 +167,7 @@ func (s *LeaseRecordedTestsSuite) TestFilesystemRenewLease() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	//ignoreHeaders(_context.recording, headersToIgnoreForLease)
+	// ignoreHeaders(_context.recording, headersToIgnoreForLease)
 
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
@@ -197,7 +197,7 @@ func (s *LeaseRecordedTestsSuite) TestFilesystemChangeLease() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	//ignoreHeaders(_context.recording, headersToIgnoreForLease)
+	// ignoreHeaders(_context.recording, headersToIgnoreForLease)
 
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
@@ -232,7 +232,7 @@ func (s *LeaseRecordedTestsSuite) TestFileAcquireLease() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	//ignoreHeaders(_context.recording, headersToIgnoreForLease)
+	// ignoreHeaders(_context.recording, headersToIgnoreForLease)
 
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
@@ -262,7 +262,7 @@ func (s *LeaseRecordedTestsSuite) TestDeleteFileWithoutLeaseId() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	//ignoreHeaders(_context.recording, headersToIgnoreForLease)
+	// ignoreHeaders(_context.recording, headersToIgnoreForLease)
 
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
@@ -302,7 +302,7 @@ func (s *LeaseRecordedTestsSuite) TestFileReleaseLease() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	//ignoreHeaders(_context.recording, headersToIgnoreForLease)
+	// ignoreHeaders(_context.recording, headersToIgnoreForLease)
 
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
@@ -366,7 +366,7 @@ func (s *LeaseRecordedTestsSuite) TestFileChangeLease() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	//ignoreHeaders(_context.recording, headersToIgnoreForLease)
+	// ignoreHeaders(_context.recording, headersToIgnoreForLease)
 
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
@@ -402,7 +402,7 @@ func (s *LeaseRecordedTestsSuite) TestDirAcquireLease() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	//ignoreHeaders(_context.recording, headersToIgnoreForLease)
+	// ignoreHeaders(_context.recording, headersToIgnoreForLease)
 
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
@@ -432,7 +432,7 @@ func (s *LeaseRecordedTestsSuite) TestDeleteDirWithoutLeaseId() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	//ignoreHeaders(_context.recording, headersToIgnoreForLease)
+	// ignoreHeaders(_context.recording, headersToIgnoreForLease)
 
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
@@ -472,7 +472,7 @@ func (s *LeaseRecordedTestsSuite) TestDirReleaseLease() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	//ignoreHeaders(_context.recording, headersToIgnoreForLease)
+	// ignoreHeaders(_context.recording, headersToIgnoreForLease)
 
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
@@ -536,7 +536,7 @@ func (s *LeaseRecordedTestsSuite) TestDirChangeLease() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	//ignoreHeaders(_context.recording, headersToIgnoreForLease)
+	// ignoreHeaders(_context.recording, headersToIgnoreForLease)
 
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)

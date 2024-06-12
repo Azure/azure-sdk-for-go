@@ -175,7 +175,7 @@ func NewClientFromConnectionString(connectionString string, filePath, fsName str
 }
 
 func (f *Client) generatedFileClientWithDFS() *generated.PathClient {
-	//base.SharedKeyComposite((*base.CompositeClient[generated.BlobClient, generated.BlockBlobClient])(bb))
+	// base.SharedKeyComposite((*base.CompositeClient[generated.BlobClient, generated.BlockBlobClient])(bb))
 	dirClientWithDFS, _, _ := base.InnerClients((*base.CompositeClient[generated.PathClient, generated_blob.BlobClient, blockblob.Client])(f))
 	return dirClientWithDFS
 }
@@ -295,12 +295,6 @@ func (f *Client) Rename(ctx context.Context, destinationPath string, options *Re
 	}
 	newFileClient := (*Client)(base.NewPathClient(newPathURL, newBlobURL, newBlobClient, f.generatedFileClientWithDFS().InternalClient().WithClientName(exported.ModuleName), f.sharedKey(), f.identityCredential(), f.getClientOptions()))
 	resp, err := newFileClient.generatedFileClientWithDFS().Create(ctx, createOpts, nil, lac, mac, smac, cpkOpts)
-
-	//return RenameResponse{
-	//	Response:      resp,
-	//	NewFileClient: newFileClient,
-	//}, exported.ConvertToDFSError(err)
-
 	return path.FormatRenameResponse(&resp), exported.ConvertToDFSError(err)
 }
 
@@ -330,8 +324,8 @@ func (f *Client) SetAccessControl(ctx context.Context, options *SetAccessControl
 }
 
 // UpdateAccessControl updates the owner, owning group, and permissions for a file.
-func (f *Client) UpdateAccessControl(ctx context.Context, ACL string, options *UpdateAccessControlOptions) (UpdateAccessControlResponse, error) {
-	opts, mode := options.format(ACL)
+func (f *Client) UpdateAccessControl(ctx context.Context, acl string, options *UpdateAccessControlOptions) (UpdateAccessControlResponse, error) {
+	opts, mode := options.format(acl)
 	resp, err := f.generatedFileClientWithDFS().SetAccessControlRecursive(ctx, mode, opts)
 	err = exported.ConvertToDFSError(err)
 	return resp, err
@@ -346,8 +340,8 @@ func (f *Client) GetAccessControl(ctx context.Context, options *GetAccessControl
 }
 
 // RemoveAccessControl removes the owner, owning group, and permissions for a file.
-func (f *Client) RemoveAccessControl(ctx context.Context, ACL string, options *RemoveAccessControlOptions) (RemoveAccessControlResponse, error) {
-	opts, mode := options.format(ACL)
+func (f *Client) RemoveAccessControl(ctx context.Context, acl string, options *RemoveAccessControlOptions) (RemoveAccessControlResponse, error) {
+	opts, mode := options.format(acl)
 	resp, err := f.generatedFileClientWithDFS().SetAccessControlRecursive(ctx, mode, opts)
 	err = exported.ConvertToDFSError(err)
 	return resp, err

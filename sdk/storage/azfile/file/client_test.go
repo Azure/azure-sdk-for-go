@@ -3091,6 +3091,65 @@ func (f *FileRecordedTestsSuite) TestFileGetRangeListSnapshot() {
 	_require.EqualValues(*resp2.Ranges[0], file.ShareFileRange{Start: to.Ptr(int64(0)), End: to.Ptr(fileSize - 1)})
 }
 
+func (f *FileRecordedTestsSuite) TestFileGetRangeListSupportRename() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(testName), svcClient)
+	defer func() {
+		_, err := shareClient.Delete(context.Background(), &share.DeleteOptions{DeleteSnapshots: to.Ptr(share.DeleteSnapshotsOptionTypeInclude)})
+		_require.NoError(err)
+	}()
+
+	fileSize := int64(512)
+	fClient := setupGetRangeListTest(_require, testName, fileSize, shareClient)
+
+	snapshotResponse1, err := shareClient.CreateSnapshot(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(snapshotResponse1.Snapshot)
+
+	rsc, _ := testcommon.GenerateData(int(fileSize))
+	_, err = fClient.UploadRange(context.Background(), 0, rsc, nil)
+	_require.NoError(err)
+
+	renameResponse, err := fClient.Rename(context.Background(), "file2", nil)
+	_require.NoError(err)
+
+	newFileClient := testcommon.GetFileClientFromShare("file2", shareClient)
+	_require.NoError(err)
+
+	snapshotResponse2, err := shareClient.CreateSnapshot(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(snapshotResponse2.Snapshot)
+
+	_, err = newFileClient.GetRangeList(context.Background(), &file.GetRangeListOptions{
+		PrevShareSnapshot: snapshotResponse1.Snapshot,
+		ShareSnapshot:     snapshotResponse2.Snapshot,
+		SupportRename:     to.Ptr(false),
+	})
+	_require.Error(err, "PreviousSnapshotNotFound")
+
+	_, err = newFileClient.GetRangeList(context.Background(), &file.GetRangeListOptions{
+		PrevShareSnapshot: snapshotResponse1.Snapshot,
+		ShareSnapshot:     snapshotResponse2.Snapshot,
+		SupportRename:     nil,
+	})
+	_require.Error(err, "PreviousSnapshotNotFound")
+
+	resp, err := newFileClient.GetRangeList(context.Background(), &file.GetRangeListOptions{
+		PrevShareSnapshot: snapshotResponse1.Snapshot,
+		ShareSnapshot:     snapshotResponse2.Snapshot,
+		SupportRename:     to.Ptr(true),
+	})
+	_require.NoError(err)
+	_require.Len(resp.Ranges, 1)
+	_require.EqualValues(*resp.Ranges[0], file.ShareFileRange{Start: to.Ptr(int64(0)), End: to.Ptr(fileSize - 1)})
+	_require.Equal(resp.ETag, renameResponse.ETag)
+}
+
 func (f *FileRecordedTestsSuite) TestFileUploadDownloadSmallBuffer() {
 	_require := require.New(f.T())
 	testName := f.T().Name()

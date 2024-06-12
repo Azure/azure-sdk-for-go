@@ -1155,6 +1155,9 @@ func (client *FileClient) getRangeListCreateRequest(ctx context.Context, options
 	if client.fileRequestIntent != nil {
 		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
 	}
+	if options != nil && options.SupportRename != nil {
+		req.Raw().Header["x-ms-file-support-rename"] = []string{strconv.FormatBool(*options.SupportRename)}
+	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
 }

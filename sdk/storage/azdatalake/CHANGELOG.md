@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+* Fixed an issue where blob etag casing is different in the Path List API Spec is different from backend. Fixes [#29233](https://github.com/Azure/azure-rest-api-specs/issues/29233)
 
 ### Other Changes
 

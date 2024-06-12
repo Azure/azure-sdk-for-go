@@ -528,7 +528,7 @@ func (s *UnrecordedTestSuite) TestCreateFileWithExpiryAbsolute() {
 	resp1, err := fClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
 	_require.NotNil(resp1.ExpiresOn)
-	_require.Equal(expiryTimeAbsolute.UTC().Format(http.TimeFormat), resp1.ExpiresOn.UTC)
+	_require.Equal(expiryTimeAbsolute.UTC().Format(http.TimeFormat), resp1.ExpiresOn.UTC().Format(http.TimeFormat))
 }
 
 func (s *RecordedTestSuite) TestCreateFileWithExpiryNever() {

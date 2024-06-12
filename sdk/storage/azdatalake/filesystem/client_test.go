@@ -1498,10 +1498,6 @@ func (s *RecordedTestSuite) TestFilesystemListPathsRecursiveWithEtagCheck() {
 		resp, err := pager.NextPage(context.Background())
 		_require.NoError(err)
 
-		if err != nil {
-			break
-		}
-
 		for _, p := range resp.Paths {
 			_require.NotNil(p.ETag)
 		}

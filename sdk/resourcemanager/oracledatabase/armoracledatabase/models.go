@@ -97,7 +97,7 @@ type AutonomousDatabaseBackupListResult struct {
 	// REQUIRED; The AutonomousDatabaseBackup items on this page
 	Value []*AutonomousDatabaseBackup
 
-	// READ-ONLY; The link to the next page of items
+	// The link to the next page of items
 	NextLink *string
 }
 
@@ -110,10 +110,13 @@ type AutonomousDatabaseBackupProperties struct {
 	RetentionPeriodInDays *int32
 
 	// READ-ONLY; The OCID of the Autonomous Database.
-	AutonomousDatabaseID *string
+	AutonomousDatabaseOcid *string
+
+	// READ-ONLY; The type of backup.
+	BackupType *AutonomousDatabaseBackupType
 
 	// READ-ONLY; The size of the database in terabytes at the time the backup was taken.
-	DatabaseSizeInTBs *int32
+	DatabaseSizeInTbs *float64
 
 	// READ-ONLY; A valid Oracle Database version for Autonomous Database.
 	DbVersion *string
@@ -137,7 +140,7 @@ type AutonomousDatabaseBackupProperties struct {
 	ProvisioningState *AzureResourceProvisioningState
 
 	// READ-ONLY; The backup size in terabytes (TB).
-	SizeInTBs *int32
+	SizeInTbs *float64
 
 	// READ-ONLY; Timestamp until when the backup will be available.
 	TimeAvailableTil *time.Time
@@ -145,8 +148,8 @@ type AutonomousDatabaseBackupProperties struct {
 	// READ-ONLY; The date and time the backup completed.
 	TimeEnded *string
 
-	// READ-ONLY; The type of backup.
-	Type *AutonomousDatabaseBackupType
+	// READ-ONLY; The date and time the backup started.
+	TimeStarted *string
 }
 
 // AutonomousDatabaseBackupUpdate - The type used for update operations of the AutonomousDatabaseBackup.
@@ -232,6 +235,9 @@ type AutonomousDatabaseBaseProperties struct {
 	// Parameter that allows users to select an acceptable maximum data loss limit in seconds, up to which Automatic Failover
 	// will be triggered when necessary for a Local Autonomous Data Guard
 	LocalAdgAutoFailoverMaxDataLossLimit *int32
+
+	// Details for the long-term backup schedule.
+	LongTermBackupSchedule *LongTermBackUpScheduleDetails
 
 	// The character set for the Autonomous Database.
 	NcharacterSet *string
@@ -319,6 +325,9 @@ type AutonomousDatabaseBaseProperties struct {
 
 	// READ-ONLY; The amount of memory (in GBs) enabled per ECPU or OCPU.
 	MemoryPerOracleComputeUnitInGbs *int32
+
+	// READ-ONLY; The date and time when the next long-term backup would be created.
+	NextLongTermBackupTimeStamp *time.Time
 
 	// READ-ONLY; HTTPS link to OCI resources exposed to Azure Customer via Azure Interface.
 	OciURL *string
@@ -423,7 +432,7 @@ type AutonomousDatabaseCharacterSetListResult struct {
 	// REQUIRED; The AutonomousDatabaseCharacterSet items on this page
 	Value []*AutonomousDatabaseCharacterSet
 
-	// READ-ONLY; The link to the next page of items
+	// The link to the next page of items
 	NextLink *string
 }
 
@@ -510,6 +519,9 @@ type AutonomousDatabaseCloneProperties struct {
 	// Parameter that allows users to select an acceptable maximum data loss limit in seconds, up to which Automatic Failover
 	// will be triggered when necessary for a Local Autonomous Data Guard
 	LocalAdgAutoFailoverMaxDataLossLimit *int32
+
+	// Details for the long-term backup schedule.
+	LongTermBackupSchedule *LongTermBackUpScheduleDetails
 
 	// The character set for the Autonomous Database.
 	NcharacterSet *string
@@ -613,6 +625,9 @@ type AutonomousDatabaseCloneProperties struct {
 
 	// READ-ONLY; The amount of memory (in GBs) enabled per ECPU or OCPU.
 	MemoryPerOracleComputeUnitInGbs *int32
+
+	// READ-ONLY; The date and time when the next long-term backup would be created.
+	NextLongTermBackupTimeStamp *time.Time
 
 	// READ-ONLY; HTTPS link to OCI resources exposed to Azure Customer via Azure Interface.
 	OciURL *string
@@ -733,8 +748,10 @@ func (a *AutonomousDatabaseCloneProperties) GetAutonomousDatabaseBaseProperties(
 		LocalAdgAutoFailoverMaxDataLossLimit:     a.LocalAdgAutoFailoverMaxDataLossLimit,
 		LocalDisasterRecoveryType:                a.LocalDisasterRecoveryType,
 		LocalStandbyDb:                           a.LocalStandbyDb,
+		LongTermBackupSchedule:                   a.LongTermBackupSchedule,
 		MemoryPerOracleComputeUnitInGbs:          a.MemoryPerOracleComputeUnitInGbs,
 		NcharacterSet:                            a.NcharacterSet,
+		NextLongTermBackupTimeStamp:              a.NextLongTermBackupTimeStamp,
 		OciURL:                                   a.OciURL,
 		Ocid:                                     a.Ocid,
 		OpenMode:                                 a.OpenMode,
@@ -776,7 +793,7 @@ type AutonomousDatabaseListResult struct {
 	// REQUIRED; The AutonomousDatabase items on this page
 	Value []*AutonomousDatabase
 
-	// READ-ONLY; The link to the next page of items
+	// The link to the next page of items
 	NextLink *string
 }
 
@@ -803,7 +820,7 @@ type AutonomousDatabaseNationalCharacterSetListResult struct {
 	// REQUIRED; The AutonomousDatabaseNationalCharacterSet items on this page
 	Value []*AutonomousDatabaseNationalCharacterSet
 
-	// READ-ONLY; The link to the next page of items
+	// The link to the next page of items
 	NextLink *string
 }
 
@@ -884,6 +901,9 @@ type AutonomousDatabaseProperties struct {
 	// Parameter that allows users to select an acceptable maximum data loss limit in seconds, up to which Automatic Failover
 	// will be triggered when necessary for a Local Autonomous Data Guard
 	LocalAdgAutoFailoverMaxDataLossLimit *int32
+
+	// Details for the long-term backup schedule.
+	LongTermBackupSchedule *LongTermBackUpScheduleDetails
 
 	// The character set for the Autonomous Database.
 	NcharacterSet *string
@@ -971,6 +991,9 @@ type AutonomousDatabaseProperties struct {
 
 	// READ-ONLY; The amount of memory (in GBs) enabled per ECPU or OCPU.
 	MemoryPerOracleComputeUnitInGbs *int32
+
+	// READ-ONLY; The date and time when the next long-term backup would be created.
+	NextLongTermBackupTimeStamp *time.Time
 
 	// READ-ONLY; HTTPS link to OCI resources exposed to Azure Customer via Azure Interface.
 	OciURL *string
@@ -1088,8 +1111,10 @@ func (a *AutonomousDatabaseProperties) GetAutonomousDatabaseBaseProperties() *Au
 		LocalAdgAutoFailoverMaxDataLossLimit:     a.LocalAdgAutoFailoverMaxDataLossLimit,
 		LocalDisasterRecoveryType:                a.LocalDisasterRecoveryType,
 		LocalStandbyDb:                           a.LocalStandbyDb,
+		LongTermBackupSchedule:                   a.LongTermBackupSchedule,
 		MemoryPerOracleComputeUnitInGbs:          a.MemoryPerOracleComputeUnitInGbs,
 		NcharacterSet:                            a.NcharacterSet,
+		NextLongTermBackupTimeStamp:              a.NextLongTermBackupTimeStamp,
 		OciURL:                                   a.OciURL,
 		Ocid:                                     a.Ocid,
 		OpenMode:                                 a.OpenMode,
@@ -1205,6 +1230,9 @@ type AutonomousDatabaseUpdateProperties struct {
 	// will be triggered when necessary for a Local Autonomous Data Guard
 	LocalAdgAutoFailoverMaxDataLossLimit *int32
 
+	// Details for the long-term backup schedule.
+	LongTermBackupSchedule *LongTermBackUpScheduleDetails
+
 	// Indicates the Autonomous Database mode.
 	OpenMode *OpenModeType
 
@@ -1255,7 +1283,7 @@ type AutonomousDbVersionListResult struct {
 	// REQUIRED; The AutonomousDbVersion items on this page
 	Value []*AutonomousDbVersion
 
-	// READ-ONLY; The link to the next page of items
+	// The link to the next page of items
 	NextLink *string
 }
 
@@ -1321,7 +1349,7 @@ type CloudExadataInfrastructureListResult struct {
 	// REQUIRED; The CloudExadataInfrastructure items on this page
 	Value []*CloudExadataInfrastructure
 
-	// READ-ONLY; The link to the next page of items
+	// The link to the next page of items
 	NextLink *string
 }
 
@@ -1362,7 +1390,7 @@ type CloudExadataInfrastructureProperties struct {
 	CPUCount *int32
 
 	// READ-ONLY; The quantity of data in the database, in terabytes.
-	DataStorageSizeInTbs *int32
+	DataStorageSizeInTbs *float64
 
 	// READ-ONLY; The local node storage to be allocated in GBs.
 	DbNodeStorageSizeInGbs *int32
@@ -1489,7 +1517,7 @@ type CloudVMClusterListResult struct {
 	// REQUIRED; The CloudVmCluster items on this page
 	Value []*CloudVMCluster
 
-	// READ-ONLY; The link to the next page of items
+	// The link to the next page of items
 	NextLink *string
 }
 
@@ -1566,7 +1594,7 @@ type CloudVMClusterProperties struct {
 	MemorySizeInGbs *int32
 
 	// CIDR blocks for additional NSG ingress rules. The VNET CIDRs used to provision the VM Cluster will be added by default.
-	NsgCidrs []*NSGCidr
+	NsgCidrs []*NsgCidr
 
 	// The number of OCPU cores to enable on the cloud VM cluster. Only 1 decimal place is allowed for the fractional part.
 	OcpuCount *float32
@@ -1579,6 +1607,9 @@ type CloudVMClusterProperties struct {
 
 	// The data disk group size to be allocated in GBs per VM.
 	StorageSizeInGbs *int32
+
+	// Operating system version of the image.
+	SystemVersion *string
 
 	// The time zone of the cloud VM cluster. For details, see Exadata Infrastructure Time Zones [/Content/Database/References/timezones.htm].
 	TimeZone *string
@@ -1639,9 +1670,6 @@ type CloudVMClusterProperties struct {
 
 	// READ-ONLY; Cluster subnet ocid
 	SubnetOcid *string
-
-	// READ-ONLY; Operating system version of the image.
-	SystemVersion *string
 
 	// READ-ONLY; The date and time that the cloud VM cluster was created.
 	TimeCreated *time.Time
@@ -1778,7 +1806,7 @@ type DNSPrivateViewListResult struct {
 	// REQUIRED; The DnsPrivateView items on this page
 	Value []*DNSPrivateView
 
-	// READ-ONLY; The link to the next page of items
+	// The link to the next page of items
 	NextLink *string
 }
 
@@ -1832,7 +1860,7 @@ type DNSPrivateZoneListResult struct {
 	// REQUIRED; The DnsPrivateZone items on this page
 	Value []*DNSPrivateZone
 
-	// READ-ONLY; The link to the next page of items
+	// The link to the next page of items
 	NextLink *string
 }
 
@@ -1936,7 +1964,7 @@ type DbNodeListResult struct {
 	// REQUIRED; The DbNode items on this page
 	Value []*DbNode
 
-	// READ-ONLY; The link to the next page of items
+	// The link to the next page of items
 	NextLink *string
 }
 
@@ -2036,7 +2064,7 @@ type DbServerListResult struct {
 	// REQUIRED; The DbServer items on this page
 	Value []*DbServer
 
-	// READ-ONLY; The link to the next page of items
+	// The link to the next page of items
 	NextLink *string
 }
 
@@ -2141,7 +2169,7 @@ type DbSystemShapeListResult struct {
 	// REQUIRED; The DbSystemShape items on this page
 	Value []*DbSystemShape
 
-	// READ-ONLY; The link to the next page of items
+	// The link to the next page of items
 	NextLink *string
 }
 
@@ -2275,7 +2303,7 @@ type GiVersionListResult struct {
 	// REQUIRED; The GiVersion items on this page
 	Value []*GiVersion
 
-	// READ-ONLY; The link to the next page of items
+	// The link to the next page of items
 	NextLink *string
 }
 
@@ -2283,6 +2311,22 @@ type GiVersionListResult struct {
 type GiVersionProperties struct {
 	// READ-ONLY; A valid Oracle Grid Infrastructure (GI) software version.
 	Version *string
+}
+
+// LongTermBackUpScheduleDetails - Details for the long-term backup schedule.
+type LongTermBackUpScheduleDetails struct {
+	// Indicates if the long-term backup schedule should be deleted. The default value is FALSE.
+	IsDisabled *bool
+
+	// The frequency of the long-term backup schedule
+	RepeatCadence *RepeatCadenceType
+
+	// Retention period, in days, for backups.
+	RetentionPeriodInDays *int32
+
+	// The timestamp for the long-term backup schedule. For a MONTHLY cadence, months having fewer days than the provided date
+	// will have the backup taken on the last day of that month.
+	TimeOfBackup *time.Time
 }
 
 // MaintenanceWindow resource properties
@@ -2335,8 +2379,8 @@ type Month struct {
 	Name *MonthName
 }
 
-// NSGCidr - A rule for allowing inbound (INGRESS) IP packets
-type NSGCidr struct {
+// NsgCidr - A rule for allowing inbound (INGRESS) IP packets
+type NsgCidr struct {
 	// REQUIRED; Conceptually, this is the range of IP addresses that a packet coming into the instance can come from.
 	Source *string
 
@@ -2419,7 +2463,7 @@ type OracleSubscriptionListResult struct {
 	// REQUIRED; The OracleSubscription items on this page
 	Value []*OracleSubscription
 
-	// READ-ONLY; The link to the next page of items
+	// The link to the next page of items
 	NextLink *string
 }
 
@@ -2450,7 +2494,7 @@ type OracleSubscriptionProperties struct {
 // OracleSubscriptionUpdate - The type used for update operations of the OracleSubscription.
 type OracleSubscriptionUpdate struct {
 	// Details of the resource plan.
-	Plan *ResourcePlanTypeUpdate
+	Plan *PlanUpdate
 
 	// The updatable properties of the OracleSubscription.
 	Properties *OracleSubscriptionUpdateProperties
@@ -2486,6 +2530,25 @@ type Plan struct {
 
 	// A publisher provided promotion code as provisioned in Data Market for the said product/artifact.
 	PromotionCode *string
+
+	// The version of the desired product/artifact.
+	Version *string
+}
+
+// PlanUpdate - ResourcePlanTypeUpdate model definition
+type PlanUpdate struct {
+	// A user defined name of the 3rd Party Artifact that is being procured.
+	Name *string
+
+	// The 3rd Party artifact that is being procured. E.g. NewRelic. Product maps to the OfferID specified for the artifact at
+	// the time of Data Market onboarding.
+	Product *string
+
+	// A publisher provided promotion code as provisioned in Data Market for the said product/artifact.
+	PromotionCode *string
+
+	// The publisher of the 3rd Party Artifact that is being bought. E.g. NewRelic
+	Publisher *string
 
 	// The version of the desired product/artifact.
 	Version *string
@@ -2560,23 +2623,10 @@ type ProfileType struct {
 	TLSAuthentication *TLSAuthenticationType
 }
 
-// ResourcePlanTypeUpdate model definition
-type ResourcePlanTypeUpdate struct {
-	// A user defined name of the 3rd Party Artifact that is being procured.
-	Name *string
-
-	// The 3rd Party artifact that is being procured. E.g. NewRelic. Product maps to the OfferID specified for the artifact at
-	// the time of Data Market onboarding.
-	Product *string
-
-	// A publisher provided promotion code as provisioned in Data Market for the said product/artifact.
-	PromotionCode *string
-
-	// The publisher of the 3rd Party Artifact that is being bought. E.g. NewRelic
-	Publisher *string
-
-	// The version of the desired product/artifact.
-	Version *string
+// RestoreAutonomousDatabaseDetails - Details to restore an Oracle Autonomous Database.
+type RestoreAutonomousDatabaseDetails struct {
+	// REQUIRED; The time to restore the database to.
+	Timestamp *time.Time
 }
 
 // SaasSubscriptionDetails - SaaS Subscription Details model
@@ -2663,6 +2713,39 @@ type SystemData struct {
 	LastModifiedByType *CreatedByType
 }
 
+// SystemVersion resource Definition
+type SystemVersion struct {
+	// The resource-specific properties for this resource.
+	Properties *SystemVersionProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// SystemVersionListResult - The response of a SystemVersion list operation.
+type SystemVersionListResult struct {
+	// REQUIRED; The SystemVersion items on this page
+	Value []*SystemVersion
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// SystemVersionProperties - System Version Resource model
+type SystemVersionProperties struct {
+	// READ-ONLY; A valid Oracle System Version
+	SystemVersion *string
+}
+
 // VirtualNetworkAddress - Virtual IP resource belonging to a vm cluster resource.
 type VirtualNetworkAddress struct {
 	// The resource-specific properties for this resource.
@@ -2686,7 +2769,7 @@ type VirtualNetworkAddressListResult struct {
 	// REQUIRED; The VirtualNetworkAddress items on this page
 	Value []*VirtualNetworkAddress
 
-	// READ-ONLY; The link to the next page of items
+	// The link to the next page of items
 	NextLink *string
 }
 

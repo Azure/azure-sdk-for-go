@@ -52,6 +52,14 @@ type AutonomousDatabasesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armoracledatabase.AutonomousDatabasesClientListBySubscriptionOptions) (resp azfake.PagerResponder[armoracledatabase.AutonomousDatabasesClientListBySubscriptionResponse])
 
+	// BeginRestore is the fake for method AutonomousDatabasesClient.BeginRestore
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginRestore func(ctx context.Context, resourceGroupName string, autonomousdatabasename string, body armoracledatabase.RestoreAutonomousDatabaseDetails, options *armoracledatabase.AutonomousDatabasesClientBeginRestoreOptions) (resp azfake.PollerResponder[armoracledatabase.AutonomousDatabasesClientRestoreResponse], errResp azfake.ErrorResponder)
+
+	// BeginShrink is the fake for method AutonomousDatabasesClient.BeginShrink
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginShrink func(ctx context.Context, resourceGroupName string, autonomousdatabasename string, options *armoracledatabase.AutonomousDatabasesClientBeginShrinkOptions) (resp azfake.PollerResponder[armoracledatabase.AutonomousDatabasesClientShrinkResponse], errResp azfake.ErrorResponder)
+
 	// BeginSwitchover is the fake for method AutonomousDatabasesClient.BeginSwitchover
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginSwitchover func(ctx context.Context, resourceGroupName string, autonomousdatabasename string, body armoracledatabase.PeerDbDetails, options *armoracledatabase.AutonomousDatabasesClientBeginSwitchoverOptions) (resp azfake.PollerResponder[armoracledatabase.AutonomousDatabasesClientSwitchoverResponse], errResp azfake.ErrorResponder)
@@ -72,6 +80,8 @@ func NewAutonomousDatabasesServerTransport(srv *AutonomousDatabasesServer) *Auto
 		beginFailover:               newTracker[azfake.PollerResponder[armoracledatabase.AutonomousDatabasesClientFailoverResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armoracledatabase.AutonomousDatabasesClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armoracledatabase.AutonomousDatabasesClientListBySubscriptionResponse]](),
+		beginRestore:                newTracker[azfake.PollerResponder[armoracledatabase.AutonomousDatabasesClientRestoreResponse]](),
+		beginShrink:                 newTracker[azfake.PollerResponder[armoracledatabase.AutonomousDatabasesClientShrinkResponse]](),
 		beginSwitchover:             newTracker[azfake.PollerResponder[armoracledatabase.AutonomousDatabasesClientSwitchoverResponse]](),
 		beginUpdate:                 newTracker[azfake.PollerResponder[armoracledatabase.AutonomousDatabasesClientUpdateResponse]](),
 	}
@@ -86,6 +96,8 @@ type AutonomousDatabasesServerTransport struct {
 	beginFailover               *tracker[azfake.PollerResponder[armoracledatabase.AutonomousDatabasesClientFailoverResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armoracledatabase.AutonomousDatabasesClientListByResourceGroupResponse]]
 	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armoracledatabase.AutonomousDatabasesClientListBySubscriptionResponse]]
+	beginRestore                *tracker[azfake.PollerResponder[armoracledatabase.AutonomousDatabasesClientRestoreResponse]]
+	beginShrink                 *tracker[azfake.PollerResponder[armoracledatabase.AutonomousDatabasesClientShrinkResponse]]
 	beginSwitchover             *tracker[azfake.PollerResponder[armoracledatabase.AutonomousDatabasesClientSwitchoverResponse]]
 	beginUpdate                 *tracker[azfake.PollerResponder[armoracledatabase.AutonomousDatabasesClientUpdateResponse]]
 }
@@ -116,6 +128,10 @@ func (a *AutonomousDatabasesServerTransport) Do(req *http.Request) (*http.Respon
 		resp, err = a.dispatchNewListByResourceGroupPager(req)
 	case "AutonomousDatabasesClient.NewListBySubscriptionPager":
 		resp, err = a.dispatchNewListBySubscriptionPager(req)
+	case "AutonomousDatabasesClient.BeginRestore":
+		resp, err = a.dispatchBeginRestore(req)
+	case "AutonomousDatabasesClient.BeginShrink":
+		resp, err = a.dispatchBeginShrink(req)
 	case "AutonomousDatabasesClient.BeginSwitchover":
 		resp, err = a.dispatchBeginSwitchover(req)
 	case "AutonomousDatabasesClient.BeginUpdate":
@@ -408,6 +424,98 @@ func (a *AutonomousDatabasesServerTransport) dispatchNewListBySubscriptionPager(
 	if !server.PagerResponderMore(newListBySubscriptionPager) {
 		a.newListBySubscriptionPager.remove(req)
 	}
+	return resp, nil
+}
+
+func (a *AutonomousDatabasesServerTransport) dispatchBeginRestore(req *http.Request) (*http.Response, error) {
+	if a.srv.BeginRestore == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginRestore not implemented")}
+	}
+	beginRestore := a.beginRestore.get(req)
+	if beginRestore == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Oracle\.Database/autonomousDatabases/(?P<autonomousdatabasename>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/restore`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armoracledatabase.RestoreAutonomousDatabaseDetails](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		autonomousdatabasenameParam, err := url.PathUnescape(matches[regex.SubexpIndex("autonomousdatabasename")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := a.srv.BeginRestore(req.Context(), resourceGroupNameParam, autonomousdatabasenameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginRestore = &respr
+		a.beginRestore.add(req, beginRestore)
+	}
+
+	resp, err := server.PollerResponderNext(beginRestore, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		a.beginRestore.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginRestore) {
+		a.beginRestore.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (a *AutonomousDatabasesServerTransport) dispatchBeginShrink(req *http.Request) (*http.Response, error) {
+	if a.srv.BeginShrink == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginShrink not implemented")}
+	}
+	beginShrink := a.beginShrink.get(req)
+	if beginShrink == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Oracle\.Database/autonomousDatabases/(?P<autonomousdatabasename>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/shrink`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		autonomousdatabasenameParam, err := url.PathUnescape(matches[regex.SubexpIndex("autonomousdatabasename")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := a.srv.BeginShrink(req.Context(), resourceGroupNameParam, autonomousdatabasenameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginShrink = &respr
+		a.beginShrink.add(req, beginShrink)
+	}
+
+	resp, err := server.PollerResponderNext(beginShrink, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		a.beginShrink.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginShrink) {
+		a.beginShrink.remove(req)
+	}
+
 	return resp, nil
 }
 

@@ -34,6 +34,7 @@ type ServerFactory struct {
 	GiVersionsServer                              GiVersionsServer
 	OperationsServer                              OperationsServer
 	OracleSubscriptionsServer                     OracleSubscriptionsServer
+	SystemVersionsServer                          SystemVersionsServer
 	VirtualNetworkAddressesServer                 VirtualNetworkAddressesServer
 }
 
@@ -66,6 +67,7 @@ type ServerFactoryTransport struct {
 	trGiVersionsServer                              *GiVersionsServerTransport
 	trOperationsServer                              *OperationsServerTransport
 	trOracleSubscriptionsServer                     *OracleSubscriptionsServerTransport
+	trSystemVersionsServer                          *SystemVersionsServerTransport
 	trVirtualNetworkAddressesServer                 *VirtualNetworkAddressesServerTransport
 }
 
@@ -149,6 +151,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewOracleSubscriptionsServerTransport(&s.srv.OracleSubscriptionsServer)
 		})
 		resp, err = s.trOracleSubscriptionsServer.Do(req)
+	case "SystemVersionsClient":
+		initServer(s, &s.trSystemVersionsServer, func() *SystemVersionsServerTransport {
+			return NewSystemVersionsServerTransport(&s.srv.SystemVersionsServer)
+		})
+		resp, err = s.trSystemVersionsServer.Do(req)
 	case "VirtualNetworkAddressesClient":
 		initServer(s, &s.trVirtualNetworkAddressesServer, func() *VirtualNetworkAddressesServerTransport {
 			return NewVirtualNetworkAddressesServerTransport(&s.srv.VirtualNetworkAddressesServer)

@@ -155,6 +155,14 @@ func (c *ClientFactory) NewOracleSubscriptionsClient() *OracleSubscriptionsClien
 	}
 }
 
+// NewSystemVersionsClient creates a new instance of SystemVersionsClient.
+func (c *ClientFactory) NewSystemVersionsClient() *SystemVersionsClient {
+	return &SystemVersionsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewVirtualNetworkAddressesClient creates a new instance of VirtualNetworkAddressesClient.
 func (c *ClientFactory) NewVirtualNetworkAddressesClient() *VirtualNetworkAddressesClient {
 	return &VirtualNetworkAddressesClient{

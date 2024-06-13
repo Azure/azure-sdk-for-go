@@ -2769,6 +2769,45 @@ func (s *RecordedTestSuite) TestFileUploadDownloadSmallStream() {
 	_require.Equal(*gResp2.ContentLength, fileSize)
 }
 
+func (s *RecordedTestSuite) TestFileUploadDownloadStreamWithAcl() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	acl := "user::rwx,group::r-x,other::rwx"
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	var fileSize int64 = 10 * 1024
+	fileName := testcommon.GenerateFileName(testName)
+	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := fClient.Create(context.Background(), &file.CreateOptions{ACL: &acl})
+	_require.NoError(err)
+	_require.NotNil(resp)
+
+	_, content := testcommon.GenerateData(int(fileSize))
+
+	err = fClient.UploadStream(context.Background(), streaming.NopCloser(bytes.NewReader(content)), &file.UploadStreamOptions{
+		Concurrency: 5,
+		ChunkSize:   2 * 1024,
+	})
+	_require.NoError(err)
+
+	dResp, err := fClient.DownloadStream(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*dResp.AccessControlList, acl)
+
+	gResp2, err := fClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*gResp2.AccessControlList, acl)
+}
+
 func (s *RecordedTestSuite) TestFileUploadTinyStream() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

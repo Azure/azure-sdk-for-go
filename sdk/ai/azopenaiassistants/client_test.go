@@ -640,14 +640,12 @@ func pollForTests(t *testing.T, ctx context.Context, client *azopenaiassistants.
 	resp, err := pollUntilRunEnds(ctx, client, threadID, runID)
 
 	if err != nil {
-		requireErr(t, azure, err)
-
 		// it's possible we're oversubscribed, so we need to just skip this test
 		if resp.LastError.Code != nil && *resp.LastError.Code == "rate_limit_exceeded" {
 			t.Skipf("Test being skipped, we're rate limited")
 		}
 
-		require.NoError(t, err)
+		requireErr(t, azure, err)
 	}
 
 	return resp, err

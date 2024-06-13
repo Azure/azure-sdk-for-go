@@ -4,8 +4,13 @@
 
 ### Features Added
 * Added ACL response headers in GetBlobProperties API for Files.
+* Updated service version to `2024-05-04`
 
 ### Breaking Changes
+
+### Other Changes
+* Updated `azidentity` version to `1.6.0`
+* Updated `azcore` version to `1.12.0`
 
 ## 1.1.3 (2024-06-13)
 

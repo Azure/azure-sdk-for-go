@@ -1,6 +1,6 @@
 # Release History
 
-## 1.3.3 (Unreleased)
+## 1.3.3-beta.1 (Unreleased)
 
 ### Features Added
 * Updated service version to `2024-05-04`.

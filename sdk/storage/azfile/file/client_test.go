@@ -463,9 +463,9 @@ func (f *FileUnrecordedTestsSuite) TestFileGetSetPropertiesNonDefault() {
 	_require.True(fileAttributes2.Hidden)
 	_require.EqualValues(fileAttributes, fileAttributes2)
 
-	_require.EqualValues((*getResp.FileCreationTime).Format(testcommon.ISO8601), creationTime.UTC().Format(testcommon.ISO8601))
-	_require.EqualValues((*getResp.FileLastWriteTime).Format(testcommon.ISO8601), lastWriteTime.UTC().Format(testcommon.ISO8601))
-	_require.EqualValues((*getResp.FileChangeTime).Format(testcommon.ISO8601), changeTime.UTC().Format(testcommon.ISO8601))
+	_require.EqualValues(getResp.FileCreationTime.Format(testcommon.ISO8601), creationTime.UTC().Format(testcommon.ISO8601))
+	_require.EqualValues(getResp.FileCreationTime.Format(testcommon.ISO8601), lastWriteTime.UTC().Format(testcommon.ISO8601))
+	_require.EqualValues(getResp.FileCreationTime.Format(testcommon.ISO8601), changeTime.UTC().Format(testcommon.ISO8601))
 
 	_require.NotNil(getResp.ETag)
 	_require.NotNil(getResp.RequestID)
@@ -2467,7 +2467,7 @@ func (f *FileRecordedTestsSuite) TestUploadDownloadDefaultNonDefaultMD5() {
 
 	downloadedData, err = io.ReadAll(resp.Body)
 	_require.NoError(err)
-	_require.EqualValues(downloadedData, contentD[:])
+	_require.EqualValues(downloadedData, contentD)
 
 	_require.Equal(*resp.AcceptRanges, "bytes")
 	_require.Nil(resp.CacheControl)
@@ -2687,7 +2687,7 @@ func (f *FileRecordedTestsSuite) TestFileUploadRangeTransactionalMD5() {
 
 	downloadedData, err := io.ReadAll(resp.Body)
 	_require.NoError(err)
-	_require.EqualValues(downloadedData, contentD[:])
+	_require.EqualValues(downloadedData, contentD)
 }
 
 func (f *FileRecordedTestsSuite) TestFileUploadRangeIncorrectTransactionalMD5() {
@@ -2707,7 +2707,7 @@ func (f *FileRecordedTestsSuite) TestFileUploadRangeIncorrectTransactionalMD5() 
 
 	// Upload range with incorrect transactional MD5
 	_, err = fClient.UploadRange(context.Background(), 0, contentR, &file.UploadRangeOptions{
-		TransactionalValidation: file.TransferValidationTypeMD5(incorrectMD5[:]),
+		TransactionalValidation: file.TransferValidationTypeMD5(incorrectMD5),
 	})
 	_require.Error(err)
 	testcommon.ValidateFileErrorCode(_require, err, fileerror.MD5Mismatch)

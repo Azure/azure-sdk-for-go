@@ -1246,7 +1246,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlSourceContentMD5() {
 	_require.NotEqual(*resp.ETag, "")
 	_require.NotEqual(*resp.RequestID, "")
 	_require.NotEqual(*resp.Version, "")
-	_require.Equal(*resp.Date.IsZero(), false)
+	_require.Equal(resp.Date.IsZero(), false)
 	_require.EqualValues(resp.ContentMD5, sourceDataMD5Value[:])
 
 	// Try UploadBlobFromURL with bad MD5

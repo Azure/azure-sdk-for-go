@@ -3,6 +3,7 @@
 ## 1.1.3 (Unreleased)
 
 ### Features Added
+* Added ACL response headers in GetBlobProperties API for Files.
 
 ### Breaking Changes
 

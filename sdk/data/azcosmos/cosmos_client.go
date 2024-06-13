@@ -486,6 +486,15 @@ func (c *Client) executeAndEnsureSuccessResponse(request *policy.Request) (*http
 	return nil, azruntime.NewResponseErrorWithErrorCode(response, response.Status)
 }
 
+// Retry context for the request
+type retryContext struct {
+	useWriteEndpoint       bool
+	retryCount             int
+	sessionRetryCount      int
+	preferredLocationIndex int
+}
+
+// Request context passed through the pipeline policies
 type pipelineRequestOptions struct {
 	headerOptionsOverride *headerOptionsOverride
 	resourceType          resourceType

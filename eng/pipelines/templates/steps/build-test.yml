@@ -17,6 +17,9 @@ parameters:
   - name: TestRunTime
     type: string
     default: '600s'
+  - name: EnableRaceDetector
+    type: boolean
+    default: false
 
 steps:
   - task: Powershell@2
@@ -70,7 +73,7 @@ steps:
     inputs:
       targetType: 'filePath'
       filePath: ./eng/scripts/run_tests.ps1
-      arguments: '${{ parameters.ServiceDirectory }} ${{ parameters.TestRunTime }}'
+      arguments: '${{ parameters.ServiceDirectory }} ${{ parameters.TestRunTime }} $${{ parameters.EnableRaceDetector }}'
       pwsh: true
     env:
       GO111MODULE: 'on'

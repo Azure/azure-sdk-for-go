@@ -19,6 +19,14 @@ type clientRetryPolicy struct {
 	gem *globalEndpointManager
 }
 
+// Retry context for the request
+type retryContext struct {
+	useWriteEndpoint       bool
+	retryCount             int
+	sessionRetryCount      int
+	preferredLocationIndex int
+}
+
 const maxRetryCount = 120
 const defaultBackoff = 1
 
@@ -27,14 +35,18 @@ func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 	if !req.OperationValue(&o) {
 		return nil, fmt.Errorf("failed to obtain request options, please check request being sent: %s", req.Body())
 	}
+
+	retryContext := retryContext{}
 	for {
-		resolvedEndpoint := p.gem.ResolveServiceEndpoint(o.retryContext.retryCount, o.isWriteOperation, o.retryContext.useWriteEndpoint)
+		// Update the retry context with the latest retry values
+		req.SetOperationValue(retryContext)
+		resolvedEndpoint := p.gem.ResolveServiceEndpoint(retryContext.retryCount, o.isWriteOperation, retryContext.useWriteEndpoint)
 		req.Raw().Host = resolvedEndpoint.Host
 		req.Raw().URL.Host = resolvedEndpoint.Host
 		response, err := req.Next() // err can happen in weird scenarios (connectivity, etc)
 		if err != nil {
 			if p.isNetworkConnectionError(err) {
-				shouldRetry, errRetry := p.attemptRetryOnNetworkError(req, &o.retryContext)
+				shouldRetry, errRetry := p.attemptRetryOnNetworkError(req, &retryContext)
 				if errRetry != nil {
 					return nil, errRetry
 				}
@@ -45,16 +57,16 @@ func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 				if err != nil {
 					return nil, err
 				}
-				o.retryContext.retryCount += 1
+				retryContext.retryCount += 1
 				continue
 			}
 			return nil, err
 		}
 		subStatus := response.Header.Get(cosmosHeaderSubstatus)
 		if p.shouldRetryStatus(response.StatusCode, subStatus) {
-			o.retryContext.useWriteEndpoint = false
+			retryContext.useWriteEndpoint = false
 			if response.StatusCode == http.StatusForbidden {
-				shouldRetry, err := p.attemptRetryOnEndpointFailure(req, o.isWriteOperation, &o.retryContext)
+				shouldRetry, err := p.attemptRetryOnEndpointFailure(req, o.isWriteOperation, &retryContext)
 				if err != nil {
 					return nil, err
 				}
@@ -62,11 +74,11 @@ func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 					return nil, errorinfo.NonRetriableError(azruntime.NewResponseErrorWithErrorCode(response, response.Status))
 				}
 			} else if response.StatusCode == http.StatusNotFound {
-				if !p.attemptRetryOnSessionUnavailable(req, o.isWriteOperation, &o.retryContext) {
+				if !p.attemptRetryOnSessionUnavailable(req, o.isWriteOperation, &retryContext) {
 					return nil, errorinfo.NonRetriableError(azruntime.NewResponseErrorWithErrorCode(response, response.Status))
 				}
 			} else if response.StatusCode == http.StatusServiceUnavailable {
-				if !p.attemptRetryOnServiceUnavailable(req, o.isWriteOperation, &o.retryContext) {
+				if !p.attemptRetryOnServiceUnavailable(req, o.isWriteOperation, &retryContext) {
 					return nil, errorinfo.NonRetriableError(azruntime.NewResponseErrorWithErrorCode(response, response.Status))
 				}
 			}
@@ -74,7 +86,7 @@ func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 			if err != nil {
 				return response, err
 			}
-			o.retryContext.retryCount += 1
+			retryContext.retryCount += 1
 			continue
 		}
 

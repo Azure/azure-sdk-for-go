@@ -28,7 +28,7 @@ type PathClient struct {
 // AppendData - Append data to the file.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-03
+// Generated from API version 2024-05-04
 //   - body - Initial data
 //   - options - PathClientAppendDataOptions contains the optional parameters for the PathClient.AppendData method.
 //   - PathHTTPHeaders - PathHTTPHeaders contains a group of parameters for the PathClient.Create method.
@@ -175,7 +175,7 @@ func (client *PathClient) appendDataHandleResponse(resp *http.Response) (PathCli
 // If-None-Match: "*".
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-03
+// Generated from API version 2024-05-04
 //   - options - PathClientCreateOptions contains the optional parameters for the PathClient.Create method.
 //   - PathHTTPHeaders - PathHTTPHeaders contains a group of parameters for the PathClient.Create method.
 //   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the PathClient.Create method.
@@ -374,7 +374,7 @@ func (client *PathClient) createHandleResponse(resp *http.Response) (PathClientC
 // [https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations].
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-03
+// Generated from API version 2024-05-04
 //   - options - PathClientDeleteOptions contains the optional parameters for the PathClient.Delete method.
 //   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the PathClient.Create method.
 //   - ModifiedAccessConditions - ModifiedAccessConditions contains a group of parameters for the FileSystemClient.SetProperties
@@ -477,7 +477,7 @@ func (client *PathClient) deleteHandleResponse(resp *http.Response) (PathClientD
 // FlushData - Set the owner, group, permissions, or access control list for a path.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-03
+// Generated from API version 2024-05-04
 //   - options - PathClientFlushDataOptions contains the optional parameters for the PathClient.FlushData method.
 //   - PathHTTPHeaders - PathHTTPHeaders contains a group of parameters for the PathClient.Create method.
 //   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the PathClient.Create method.
@@ -648,7 +648,7 @@ func (client *PathClient) flushDataHandleResponse(resp *http.Response) (PathClie
 // [https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations].
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-03
+// Generated from API version 2024-05-04
 //   - options - PathClientGetPropertiesOptions contains the optional parameters for the PathClient.GetProperties method.
 //   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the PathClient.Create method.
 //   - ModifiedAccessConditions - ModifiedAccessConditions contains a group of parameters for the FileSystemClient.SetProperties
@@ -803,7 +803,7 @@ func (client *PathClient) getPropertiesHandleResponse(resp *http.Response) (Path
 // Operations [https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations].
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-03
+// Generated from API version 2024-05-04
 //   - xmsLeaseAction - There are five lease actions: "acquire", "break", "change", "renew", and "release". Use "acquire" and
 //     specify the "x-ms-proposed-lease-id" and "x-ms-lease-duration" to acquire a new lease. Use "break"
 //     to break an existing lease. When a lease is broken, the lease break period is allowed to elapse, during which time no lease
@@ -917,7 +917,7 @@ func (client *PathClient) leaseHandleResponse(resp *http.Response) (PathClientLe
 // Service Operations [https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations].
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-03
+// Generated from API version 2024-05-04
 //   - options - PathClientReadOptions contains the optional parameters for the PathClient.Read method.
 //   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the PathClient.Create method.
 //   - ModifiedAccessConditions - ModifiedAccessConditions contains a group of parameters for the FileSystemClient.SetProperties
@@ -1082,7 +1082,7 @@ func (client *PathClient) readHandleResponse(resp *http.Response) (PathClientRea
 // SetAccessControl - Set the owner, group, permissions, or access control list for a path.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-03
+// Generated from API version 2024-05-04
 //   - options - PathClientSetAccessControlOptions contains the optional parameters for the PathClient.SetAccessControl method.
 //   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the PathClient.Create method.
 //   - ModifiedAccessConditions - ModifiedAccessConditions contains a group of parameters for the FileSystemClient.SetProperties
@@ -1187,7 +1187,7 @@ func (client *PathClient) setAccessControlHandleResponse(resp *http.Response) (P
 // SetAccessControlRecursive - Set the access control list for a path and sub-paths.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-03
+// Generated from API version 2024-05-04
 //   - mode - Mode "set" sets POSIX access control rights on files and directories, "modify" modifies one or more POSIX access
 //     control rights that pre-exist on files and directories, "remove" removes one or more
 //     POSIX access control rights that were present earlier on files and directories
@@ -1275,7 +1275,7 @@ func (client *PathClient) SetAccessControlRecursiveHandleResponse(resp *http.Res
 // SetExpiry - Sets the time a blob will expire and be deleted.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-03
+// Generated from API version 2024-05-04
 //   - expiryOptions - Required. Indicates mode of the expiry time
 //   - options - PathClientSetExpiryOptions contains the optional parameters for the PathClient.SetExpiry method.
 func (client *PathClient) SetExpiry(ctx context.Context, expiryOptions ExpiryOptions, options *PathClientSetExpiryOptions) (PathClientSetExpiryResponse, error) {
@@ -1355,7 +1355,7 @@ func (client *PathClient) setExpiryHandleResponse(resp *http.Response) (PathClie
 // Undelete - Undelete a path that was previously soft deleted
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-03
+// Generated from API version 2024-05-04
 //   - options - PathClientUndeleteOptions contains the optional parameters for the PathClient.Undelete method.
 func (client *PathClient) Undelete(ctx context.Context, options *PathClientUndeleteOptions) (PathClientUndeleteResponse, error) {
 	var err error
@@ -1430,7 +1430,7 @@ func (client *PathClient) undeleteHandleResponse(resp *http.Response) (PathClien
 // Headers for Blob Service Operations [https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations].
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-03
+// Generated from API version 2024-05-04
 //   - action - The action must be "append" to upload data to be appended to a file, "flush" to flush previously uploaded data
 //     to a file, "setProperties" to set the properties of a file or directory,
 //     "setAccessControl" to set the owner, group, permissions, or access control list for a file or directory, or "setAccessControlRecursive"

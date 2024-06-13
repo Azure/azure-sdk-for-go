@@ -3283,6 +3283,43 @@ func (s *UnrecordedTestSuite) TestFileGetPropertiesWithEncryptionContext() {
 	_require.Nil(response2.EncryptionContext)
 }
 
+func (s *RecordedTestSuite) TestFileGetPropertiesACL() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	owner := "4cf4e284-f6a8-4540-b53e-c3469af032dc"
+	group := owner
+	acl := "user::rwx,group::r-x,other::rwx"
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	fileName := testcommon.GenerateFileName(testName)
+	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	createFileOpts := &file.CreateOptions{
+		Owner: &owner,
+		Group: &group,
+		ACL:   &acl,
+	}
+
+	resp, err := fClient.Create(context.Background(), createFileOpts)
+	_require.NoError(err)
+	_require.NotNil(resp)
+
+	response, err := fClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(*response.AccessControlList)
+	_require.Equal(*response.Owner, owner)
+	_require.Equal(*response.Group, group)
+	_require.Equal(*response.AccessControlList, acl)
+}
+
 func (s *RecordedTestSuite) TestSmallFileUploadFileWithAccessConditionsAndHTTPHeaders() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

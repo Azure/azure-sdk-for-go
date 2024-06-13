@@ -115,7 +115,7 @@ func ExampleNewSenderClient() {
 }
 
 func ExampleSenderClient_SendEvents() {
-	sender, receiver := getEventGridClients()
+	sender, receiver := newEventGridClients()
 
 	if sender == nil || receiver == nil {
 		return
@@ -156,14 +156,14 @@ func ExampleSenderClient_SendEvents() {
 	// Output:
 }
 
-func ExampleReceiverClient_Receive() {
-	sender, receiver := getEventGridClients()
+func ExampleReceiverClient_ReceiveEvents() {
+	sender, receiver := newEventGridClients()
 
 	if sender == nil || receiver == nil {
 		return
 	}
 
-	resp, err := receiver.Receive(context.TODO(), &aznamespaces.ReceiveOptions{
+	resp, err := receiver.ReceiveEvents(context.TODO(), &aznamespaces.ReceiveEventsOptions{
 		MaxEvents:   to.Ptr[int32](1),
 		MaxWaitTime: to.Ptr[int32](10), // in seconds
 	})
@@ -183,7 +183,7 @@ func ExampleReceiverClient_Receive() {
 		fmt.Fprintf(os.Stderr, "Event ID:%s, data: %#v, lockToken: %s\n", rd.Event.ID, data, *lockToken)
 
 		// This will complete the message, deleting it from the subscription.
-		resp, err := receiver.Acknowledge(context.TODO(), []string{*lockToken}, nil)
+		resp, err := receiver.AcknowledgeEvents(context.TODO(), []string{*lockToken}, nil)
 
 		if err != nil {
 			//  TODO: Update the following line with your application specific error handling logic
@@ -198,8 +198,8 @@ func ExampleReceiverClient_Receive() {
 	// Output:
 }
 
-func ExampleSenderClient_Send() {
-	sender, receiver := getEventGridClients()
+func ExampleSenderClient_SendEvent() {
+	sender, receiver := newEventGridClients()
 
 	if sender == nil || receiver == nil {
 		return
@@ -219,7 +219,7 @@ func ExampleSenderClient_Send() {
 		log.Fatalf("ERROR: %s", err)
 	}
 
-	_, err = sender.Send(context.TODO(), &eventToSend, nil)
+	_, err = sender.SendEvent(context.TODO(), &eventToSend, nil)
 
 	if err != nil {
 		//  TODO: Update the following line with your application specific error handling logic
@@ -229,7 +229,7 @@ func ExampleSenderClient_Send() {
 	// Output:
 }
 
-func getEventGridClients() (*aznamespaces.SenderClient, *aznamespaces.ReceiverClient) {
+func newEventGridClients() (*aznamespaces.SenderClient, *aznamespaces.ReceiverClient) {
 	endpoint := os.Getenv("EVENTGRID_ENDPOINT")
 	sharedKey := os.Getenv("EVENTGRID_KEY")
 	topic := os.Getenv("EVENTGRID_TOPIC")

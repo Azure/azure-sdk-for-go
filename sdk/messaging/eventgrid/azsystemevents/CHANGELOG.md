@@ -1,6 +1,16 @@
 # Release History
 
-## 0.4.0 (Unreleased)
+## 0.4.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 0.4.0 (2024-06-11)
 
 ### Breaking Changes
 

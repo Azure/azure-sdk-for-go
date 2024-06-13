@@ -1,17 +1,42 @@
 # Release History
 
-## 1.6.0-beta.5 (Unreleased)
+## 1.7.0-beta.2 (Unreleased)
 
 ### Features Added
-* `NewOnBehalfOfCredentialWithClientAssertions` creates an on-behalf-of credential
-  that authenticates with client assertions such as federated credentials
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
-* Added more details to `AzurePipelinesCredential` error messages
+
+## 1.7.0-beta.1 (2024-06-10)
+
+### Features Added
+* Restored `AzurePipelinesCredential` and persistent token caching API
+
+## Breaking Changes
+> These changes affect only code written against a beta version such as v1.6.0-beta.4
+* Values which `NewAzurePipelinesCredential` read from environment variables in
+  prior versions are now parameters
+* Renamed `AzurePipelinesServiceConnectionCredentialOptions` to `AzurePipelinesCredentialOptions`
+
+### Bugs Fixed
+* Managed identity bug fixes
+
+## 1.6.0 (2024-06-10)
+
+### Features Added
+* `NewOnBehalfOfCredentialWithClientAssertions` creates an on-behalf-of credential
+  that authenticates with client assertions such as federated credentials
+
+### Breaking Changes
+> These changes affect only code written against a beta version such as v1.6.0-beta.4
+* Removed `AzurePipelinesCredential` and the persistent token caching API.
+  They will return in v1.7.0-beta.1
+
+### Bugs Fixed
+* Managed identity bug fixes
 
 ## 1.6.0-beta.4 (2024-05-14)
 
@@ -28,6 +53,15 @@
 
 ### Bugs Fixed
 * `ManagedIdentityCredential` now specifies resource IDs correctly for Azure Container Instances
+
+## 1.5.2 (2024-04-09)
+
+### Bugs Fixed
+* `ManagedIdentityCredential` now specifies resource IDs correctly for Azure Container Instances
+
+### Other Changes
+* Restored v1.4.0 error behavior for empty tenant IDs
+* Upgraded dependencies
 
 ## 1.6.0-beta.2 (2024-02-06)
 

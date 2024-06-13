@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory/v7"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory/v8"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Credentials_ListByFactory.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f6f50c6388fd5836fa142384641b8353a99874ef/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Credentials_ListByFactory.json
 func ExampleCredentialOperationsClient_NewListByFactoryPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -50,10 +50,8 @@ func ExampleCredentialOperationsClient_NewListByFactoryPager() {
 		// 			Properties: &armdatafactory.ManagedIdentityCredential{
 		// 				Type: to.Ptr("ManagedIdentity"),
 		// 				Description: to.Ptr("Example description"),
-		// 				AdditionalProperties: map[string]any{
-		// 					"typeProperties": map[string]any{
-		// 						"resourceId": "/subscriptions/12345678-1234-1234-1234-12345678abc/resourcegroups/exampleResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/exampleUami",
-		// 					},
+		// 				TypeProperties: &armdatafactory.ManagedIdentityTypeProperties{
+		// 					ResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-12345678abc/resourcegroups/exampleResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/exampleUami"),
 		// 				},
 		// 			},
 		// 	}},
@@ -61,7 +59,7 @@ func ExampleCredentialOperationsClient_NewListByFactoryPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Credentials_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f6f50c6388fd5836fa142384641b8353a99874ef/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Credentials_Create.json
 func ExampleCredentialOperationsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -75,10 +73,8 @@ func ExampleCredentialOperationsClient_CreateOrUpdate() {
 	res, err := clientFactory.NewCredentialOperationsClient().CreateOrUpdate(ctx, "exampleResourceGroup", "exampleFactoryName", "exampleCredential", armdatafactory.CredentialResource{
 		Properties: &armdatafactory.ManagedIdentityCredential{
 			Type: to.Ptr("ManagedIdentity"),
-			AdditionalProperties: map[string]any{
-				"typeProperties": map[string]any{
-					"resourceId": "/subscriptions/12345678-1234-1234-1234-12345678abc/resourcegroups/exampleResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/exampleUami",
-				},
+			TypeProperties: &armdatafactory.ManagedIdentityTypeProperties{
+				ResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-12345678abc/resourcegroups/exampleResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/exampleUami"),
 			},
 		},
 	}, &armdatafactory.CredentialOperationsClientCreateOrUpdateOptions{IfMatch: nil})
@@ -95,16 +91,14 @@ func ExampleCredentialOperationsClient_CreateOrUpdate() {
 	// 	ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-12345678abc/resourceGroups/exampleResourceGroup/providers/Microsoft.DataFactory/factories/exampleFactoryName/credentials/exampleCredential"),
 	// 	Properties: &armdatafactory.ManagedIdentityCredential{
 	// 		Type: to.Ptr("ManagedIdentity"),
-	// 		AdditionalProperties: map[string]any{
-	// 			"typeProperties": map[string]any{
-	// 				"resourceId": "/subscriptions/12345678-1234-1234-1234-12345678abc/resourcegroups/exampleResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/exampleUami",
-	// 			},
+	// 		TypeProperties: &armdatafactory.ManagedIdentityTypeProperties{
+	// 			ResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-12345678abc/resourcegroups/exampleResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/exampleUami"),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Credentials_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f6f50c6388fd5836fa142384641b8353a99874ef/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Credentials_Get.json
 func ExampleCredentialOperationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -130,16 +124,14 @@ func ExampleCredentialOperationsClient_Get() {
 	// 	Properties: &armdatafactory.ManagedIdentityCredential{
 	// 		Type: to.Ptr("ManagedIdentity"),
 	// 		Description: to.Ptr("Example description"),
-	// 		AdditionalProperties: map[string]any{
-	// 			"typeProperties": map[string]any{
-	// 				"resourceId": "/subscriptions/12345678-1234-1234-1234-12345678abc/resourcegroups/exampleResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/exampleUami",
-	// 			},
+	// 		TypeProperties: &armdatafactory.ManagedIdentityTypeProperties{
+	// 			ResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-12345678abc/resourcegroups/exampleResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/exampleUami"),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Credentials_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f6f50c6388fd5836fa142384641b8353a99874ef/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Credentials_Delete.json
 func ExampleCredentialOperationsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

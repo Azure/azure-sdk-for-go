@@ -32,8 +32,9 @@ func ExampleClient_GetEmbeddings() {
 	client, err := azopenai.NewClientWithKeyCredential(azureOpenAIEndpoint, keyCredential, nil)
 
 	if err != nil {
-		//  TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
+		// TODO: Update the following line with your application specific error handling logic
+		log.Printf("ERROR: %s", err)
+		return
 	}
 
 	resp, err := client.GetEmbeddings(context.TODO(), azopenai.EmbeddingsOptions{
@@ -42,8 +43,9 @@ func ExampleClient_GetEmbeddings() {
 	}, nil)
 
 	if err != nil {
-		//  TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
+		// TODO: Update the following line with your application specific error handling logic
+		log.Printf("ERROR: %s", err)
+		return
 	}
 
 	for _, embed := range resp.Data {

@@ -60,7 +60,7 @@ func PossibleACSInteractiveReplyKindValues() []ACSInteractiveReplyKind {
 type ACSMessageChannelKind string
 
 const (
-	// ACSMessageChannelKindWhatsapp - Updated message channel type is Whatsapp
+	// ACSMessageChannelKindWhatsapp - Updated message channel type is WhatsApp
 	ACSMessageChannelKindWhatsapp ACSMessageChannelKind = "whatsapp"
 )
 
@@ -75,12 +75,18 @@ func PossibleACSMessageChannelKindValues() []ACSMessageChannelKind {
 type ACSMessageDeliveryStatus string
 
 const (
-	ACSMessageDeliveryStatusDelivered ACSMessageDeliveryStatus = "Delivered"
-	ACSMessageDeliveryStatusFailed    ACSMessageDeliveryStatus = "Failed"
-	ACSMessageDeliveryStatusRead      ACSMessageDeliveryStatus = "Read"
-	ACSMessageDeliveryStatusSent      ACSMessageDeliveryStatus = "Sent"
-	ACSMessageDeliveryStatusUnknown   ACSMessageDeliveryStatus = "Unknown"
-	ACSMessageDeliveryStatusWarning   ACSMessageDeliveryStatus = "Warning"
+	// ACSMessageDeliveryStatusDelivered - Delivered
+	ACSMessageDeliveryStatusDelivered ACSMessageDeliveryStatus = "delivered"
+	// ACSMessageDeliveryStatusFailed - Failed
+	ACSMessageDeliveryStatusFailed ACSMessageDeliveryStatus = "failed"
+	// ACSMessageDeliveryStatusRead - Read
+	ACSMessageDeliveryStatusRead ACSMessageDeliveryStatus = "read"
+	// ACSMessageDeliveryStatusSent - Sent
+	ACSMessageDeliveryStatusSent ACSMessageDeliveryStatus = "sent"
+	// ACSMessageDeliveryStatusUnknown - Unknown
+	ACSMessageDeliveryStatusUnknown ACSMessageDeliveryStatus = "unknown"
+	// ACSMessageDeliveryStatusWarning - Warning
+	ACSMessageDeliveryStatusWarning ACSMessageDeliveryStatus = "warning"
 )
 
 // PossibleACSMessageDeliveryStatusValues returns the possible values for the ACSMessageDeliveryStatus const type.
@@ -177,12 +183,18 @@ func PossibleACSRouterLabelOperatorValues() []ACSRouterLabelOperator {
 type ACSRouterUpdatedWorkerProperty string
 
 const (
-	ACSRouterUpdatedWorkerPropertyAvailableForOffers    ACSRouterUpdatedWorkerProperty = "AvailableForOffers"
+	// ACSRouterUpdatedWorkerPropertyAvailableForOffers - AvailableForOffers
+	ACSRouterUpdatedWorkerPropertyAvailableForOffers ACSRouterUpdatedWorkerProperty = "AvailableForOffers"
+	// ACSRouterUpdatedWorkerPropertyChannelConfigurations - ChannelConfigurations
 	ACSRouterUpdatedWorkerPropertyChannelConfigurations ACSRouterUpdatedWorkerProperty = "ChannelConfigurations"
-	ACSRouterUpdatedWorkerPropertyLabels                ACSRouterUpdatedWorkerProperty = "Labels"
-	ACSRouterUpdatedWorkerPropertyQueueAssignments      ACSRouterUpdatedWorkerProperty = "QueueAssignments"
-	ACSRouterUpdatedWorkerPropertyTags                  ACSRouterUpdatedWorkerProperty = "Tags"
-	ACSRouterUpdatedWorkerPropertyTotalCapacity         ACSRouterUpdatedWorkerProperty = "TotalCapacity"
+	// ACSRouterUpdatedWorkerPropertyLabels - Labels
+	ACSRouterUpdatedWorkerPropertyLabels ACSRouterUpdatedWorkerProperty = "Labels"
+	// ACSRouterUpdatedWorkerPropertyQueueAssignments - QueueAssignments
+	ACSRouterUpdatedWorkerPropertyQueueAssignments ACSRouterUpdatedWorkerProperty = "QueueAssignments"
+	// ACSRouterUpdatedWorkerPropertyTags - Tags
+	ACSRouterUpdatedWorkerPropertyTags ACSRouterUpdatedWorkerProperty = "Tags"
+	// ACSRouterUpdatedWorkerPropertyTotalCapacity - TotalCapacity
+	ACSRouterUpdatedWorkerPropertyTotalCapacity ACSRouterUpdatedWorkerProperty = "TotalCapacity"
 )
 
 // PossibleACSRouterUpdatedWorkerPropertyValues returns the possible values for the ACSRouterUpdatedWorkerProperty const type.
@@ -324,10 +336,14 @@ func PossibleCommunicationCloudEnvironmentModelValues() []CommunicationCloudEnvi
 type CommunicationIdentifierModelKind string
 
 const (
-	CommunicationIdentifierModelKindCommunicationUser  CommunicationIdentifierModelKind = "communicationUser"
+	// CommunicationIdentifierModelKindCommunicationUser - Communication User
+	CommunicationIdentifierModelKindCommunicationUser CommunicationIdentifierModelKind = "communicationUser"
+	// CommunicationIdentifierModelKindMicrosoftTeamsUser - Microsoft Teams User
 	CommunicationIdentifierModelKindMicrosoftTeamsUser CommunicationIdentifierModelKind = "microsoftTeamsUser"
-	CommunicationIdentifierModelKindPhoneNumber        CommunicationIdentifierModelKind = "phoneNumber"
-	CommunicationIdentifierModelKindUnknown            CommunicationIdentifierModelKind = "unknown"
+	// CommunicationIdentifierModelKindPhoneNumber - Phone Number
+	CommunicationIdentifierModelKindPhoneNumber CommunicationIdentifierModelKind = "phoneNumber"
+	// CommunicationIdentifierModelKindUnknown - Unknown
+	CommunicationIdentifierModelKindUnknown CommunicationIdentifierModelKind = "unknown"
 )
 
 // PossibleCommunicationIdentifierModelKindValues returns the possible values for the CommunicationIdentifierModelKind const type.

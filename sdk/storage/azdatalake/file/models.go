@@ -116,10 +116,10 @@ type UpdateAccessControlOptions struct {
 	// placeholder
 }
 
-func (o *UpdateAccessControlOptions) format(ACL string) (*generated.PathClientSetAccessControlRecursiveOptions, generated.PathSetAccessControlRecursiveMode) {
+func (o *UpdateAccessControlOptions) format(acl string) (*generated.PathClientSetAccessControlRecursiveOptions, generated.PathSetAccessControlRecursiveMode) {
 	mode := generated.PathSetAccessControlRecursiveModeModify
 	return &generated.PathClientSetAccessControlRecursiveOptions{
-		ACL: &ACL,
+		ACL: &acl,
 	}, mode
 }
 

@@ -4,44 +4,40 @@
 
 package aznamespaces
 
-// AcknowledgeResponse contains the response from method ReceiverClient.acknowledge.
-type AcknowledgeResponse struct {
+// AcknowledgeEventsResponse contains the response from method ReceiverClient.AcknowledgeEvents.
+type AcknowledgeEventsResponse struct {
 	// The result of the Acknowledge operation.
-	AcknowledgeResult
+	AcknowledgeEventsResult
 }
 
-// ReceiveResponse contains the response from method ReceiverClient.receive.
-type ReceiveResponse struct {
+// ReceiveEventsResponse contains the response from method ReceiverClient.ReceiveEvents.
+type ReceiveEventsResponse struct {
 	// Details of the Receive operation response.
-	ReceiveResult
+	ReceiveEventsResult
 }
 
-// RejectResponse contains the response from method ReceiverClient.reject.
-type RejectResponse struct {
+// RejectEventsResponse contains the response from method ReceiverClient.RejectEvents.
+type RejectEventsResponse struct {
 	// The result of the Reject operation.
-	RejectResult
+	RejectEventsResult
 }
 
-// ReleaseResponse contains the response from method ReceiverClient.release.
-type ReleaseResponse struct {
+// ReleaseEventsResponse contains the response from method ReceiverClient.ReleaseEvents.
+type ReleaseEventsResponse struct {
 	// The result of the Release operation.
-	ReleaseResult
+	ReleaseEventsResult
 }
 
-// RenewLocksResponse contains the response from method ReceiverClient.renewLock.
-type RenewLocksResponse struct {
+// RenewEventLocksResponse contains the response from method ReceiverClient.RenewEventLocks.
+type RenewEventLocksResponse struct {
 	// The result of the RenewLock operation.
-	RenewLocksResult
+	RenewEventLocksResult
 }
 
-// SendEventsResponse contains the response from method SenderClient.sendEvents.
+// SendEventResponse contains the response from method SenderClient.SendEvent.
+type SendEventResponse struct {
+}
+
+// SendEventsResponse contains the response from method SenderClient.SendEvents.
 type SendEventsResponse struct {
-	// The result of the Publish operation.
-	PublishResult
-}
-
-// SendResponse contains the response from method SenderClient.send.
-type SendResponse struct {
-	// The result of the Publish operation.
-	PublishResult
 }

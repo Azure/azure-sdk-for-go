@@ -389,7 +389,7 @@ func TestItemIdEncodingRoutingGW(t *testing.T) {
 	verifyEncodingScenario(t, container, "RoutingGW - IdEndingWithWhitespace", "Test ", http.StatusCreated, http.StatusUnauthorized, http.StatusUnauthorized, http.StatusUnauthorized)
 	verifyEncodingScenario(t, container, "RoutingGW - IdEndingWithWhitespaces", "Test  ", http.StatusCreated, http.StatusUnauthorized, http.StatusUnauthorized, http.StatusUnauthorized)
 	verifyEncodingScenario(t, container, "RoutingGW - IdWithAllowedSpecialCharacters", "WithAllowedSpecial,=.:~+-@()^${}[]!_Chars", http.StatusCreated, http.StatusOK, http.StatusOK, http.StatusNoContent)
-	verifyEncodingScenario(t, container, "RoutingGW - IdWithBase64EncodedIdCharacters", strings.Replace("BQE1D3PdG4N4bzU9TKaCIM3qc0TVcZ2/Y3jnsRfwdHC1ombkX3F1dot/SG0/UTq9AbgdX3kOWoP6qL6lJqWeKgV3zwWWPZO/t5X0ehJzv9LGkWld07LID2rhWhGT6huBM6Q=", "/", "-", -1), http.StatusCreated, http.StatusOK, http.StatusOK, http.StatusNoContent)
+	verifyEncodingScenario(t, container, "RoutingGW - IdWithBase64EncodedIdCharacters", strings.ReplaceAll("BQE1D3PdG4N4bzU9TKaCIM3qc0TVcZ2/Y3jnsRfwdHC1ombkX3F1dot/SG0/UTq9AbgdX3kOWoP6qL6lJqWeKgV3zwWWPZO/t5X0ehJzv9LGkWld07LID2rhWhGT6huBM6Q=", "/", "-"), http.StatusCreated, http.StatusOK, http.StatusOK, http.StatusNoContent)
 	verifyEncodingScenario(t, container, "RoutingGW - IdEndingWithPercentEncodedWhitespace", "IdEndingWithPercentEncodedWhitespace%20", http.StatusCreated, http.StatusUnauthorized, http.StatusUnauthorized, http.StatusUnauthorized)
 	verifyEncodingScenario(t, container, "RoutingGW - IdWithPercentEncodedSpecialChar", "WithPercentEncodedSpecialChar%E9%B1%80", http.StatusCreated, http.StatusUnauthorized, http.StatusUnauthorized, http.StatusUnauthorized)
 	verifyEncodingScenario(t, container, "RoutingGW - IdWithDisallowedCharQuestionMark", "Disallowed?Chars", http.StatusCreated, http.StatusOK, http.StatusOK, http.StatusNoContent)
@@ -428,7 +428,7 @@ func TestItemIdEncodingComputeGW(t *testing.T) {
 	verifyEncodingScenario(t, container, "ComputeGW-IdEndingWithWhitespace", "Test ", http.StatusCreated, http.StatusOK, http.StatusOK, http.StatusNoContent)
 	verifyEncodingScenario(t, container, "ComputeGW-IdEndingWithWhitespaces", "Test  ", http.StatusCreated, http.StatusOK, http.StatusOK, http.StatusNoContent)
 	verifyEncodingScenario(t, container, "ComputeGW-IdWithAllowedSpecialCharacters", "WithAllowedSpecial,=.:~+-@()^${}[]!_Chars", http.StatusCreated, http.StatusOK, http.StatusOK, http.StatusNoContent)
-	verifyEncodingScenario(t, container, "ComputeGW-IdWithBase64EncodedIdCharacters", strings.Replace("BQE1D3PdG4N4bzU9TKaCIM3qc0TVcZ2/Y3jnsRfwdHC1ombkX3F1dot/SG0/UTq9AbgdX3kOWoP6qL6lJqWeKgV3zwWWPZO/t5X0ehJzv9LGkWld07LID2rhWhGT6huBM6Q=", "/", "-", -1), http.StatusCreated, http.StatusOK, http.StatusOK, http.StatusNoContent)
+	verifyEncodingScenario(t, container, "ComputeGW-IdWithBase64EncodedIdCharacters", strings.ReplaceAll("BQE1D3PdG4N4bzU9TKaCIM3qc0TVcZ2/Y3jnsRfwdHC1ombkX3F1dot/SG0/UTq9AbgdX3kOWoP6qL6lJqWeKgV3zwWWPZO/t5X0ehJzv9LGkWld07LID2rhWhGT6huBM6Q=", "/", "-"), http.StatusCreated, http.StatusOK, http.StatusOK, http.StatusNoContent)
 	verifyEncodingScenario(t, container, "ComputeGW-IdEndingWithPercentEncodedWhitespace", "IdEndingWithPercentEncodedWhitespace%20", http.StatusCreated, http.StatusOK, http.StatusOK, http.StatusNoContent)
 	verifyEncodingScenario(t, container, "ComputeGW-IdWithPercentEncodedSpecialChar", "WithPercentEncodedSpecialChar%E9%B1%80", http.StatusCreated, http.StatusOK, http.StatusOK, http.StatusNoContent)
 	verifyEncodingScenario(t, container, "ComputeGW-IdWithDisallowedCharQuestionMark", "Disallowed?Chars", http.StatusCreated, http.StatusOK, http.StatusOK, http.StatusNoContent)
@@ -471,9 +471,7 @@ func verifyEncodingScenarioResponse(t *testing.T, name string, itemResponse Item
 		if responseErr.StatusCode != expectedStatus {
 			t.Fatalf("[%s] Expected status code %d, got %d, %s", name, expectedStatus, responseErr.StatusCode, err)
 		}
-	} else {
-		if itemResponse.RawResponse.StatusCode != expectedStatus {
-			t.Fatalf("[%s] Expected status code %d, got %d", name, expectedStatus, itemResponse.RawResponse.StatusCode)
-		}
+	} else if itemResponse.RawResponse.StatusCode != expectedStatus {
+		t.Fatalf("[%s] Expected status code %d, got %d", name, expectedStatus, itemResponse.RawResponse.StatusCode)
 	}
 }

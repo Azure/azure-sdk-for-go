@@ -41,6 +41,19 @@ directive:
     }
 ```
 
+### Turn Path eTag into etag
+
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.Path
+  transform: >
+    $.properties.etag = $.properties.eTag;
+    delete $.properties.eTag;
+    $.properties.etag["x-ms-client-name"] = "eTag";
+
+```
+
 ### Remove pager methods and export various generated methods in filesystem client
 
 ``` yaml

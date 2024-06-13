@@ -45,7 +45,7 @@ type DatalakeSignatureValues struct {
 	EncryptionScope      string `param:"ses"`
 }
 
-//TODO: add snapshot and versioning support in the future
+// TODO: add snapshot and versioning support in the future
 
 func getDirectoryDepth(path string) string {
 	if path == "" {

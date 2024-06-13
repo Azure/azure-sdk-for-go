@@ -11,6 +11,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig"
@@ -404,4 +405,49 @@ func ExampleClient_GetSnapshot() {
 	}
 
 	_ = snapshot // TODO: do something with snapshot
+}
+
+func ExampleClient_NewListSettingsPager_matchConditions() {
+	connectionString := os.Getenv("APPCONFIGURATION_CONNECTION_STRING")
+	if connectionString == "" {
+		return
+	}
+
+	client, err := azappconfig.NewClientFromConnectionString(connectionString, nil)
+
+	if err != nil {
+		//  TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	// matchConditions will contain an ETag for each page of settings returned
+	matchConditions := []azcore.MatchConditions{}
+
+	pager := client.NewListSettingsPager(azappconfig.SettingSelector{}, nil)
+	for pager.More() {
+		page, err := pager.NextPage(context.Background())
+		if err != nil {
+			//  TODO: Update the following line with your application specific error handling logic
+			log.Fatalf("ERROR: %s", err)
+		}
+
+		matchConditions = append(matchConditions, azcore.MatchConditions{
+			// filter out any pages that haven't changed since they were last retrieved
+			IfNoneMatch: page.ETag,
+		})
+	}
+
+	pager = client.NewListSettingsPager(azappconfig.SettingSelector{}, &azappconfig.ListSettingsOptions{
+		MatchConditions: matchConditions,
+	})
+	for pager.More() {
+		page, err := pager.NextPage(context.Background())
+		if err != nil {
+			//  TODO: Update the following line with your application specific error handling logic
+			log.Fatalf("ERROR: %s", err)
+		}
+
+		// if the values per page haven't changed, page.Settings will be empty
+		_ = page.Settings
+	}
 }

@@ -205,7 +205,6 @@ func (o *GetSASURLOptions) format() time.Time {
 // type UndeletePathOptions struct {
 //	// placeholder
 // }
-//
 // func (o *UndeletePathOptions) format() *UndeletePathOptions {
 //	if o == nil {
 //		return nil

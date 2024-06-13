@@ -775,7 +775,7 @@ type ACSMessageInteractiveContent struct {
 
 // ACSMessageInteractiveListReplyContent - Message Interactive list reply content for a user to business message
 type ACSMessageInteractiveListReplyContent struct {
-	// The sescription of the selected row
+	// The description of the selected row
 	Description *string
 
 	// The ID of the selected list item

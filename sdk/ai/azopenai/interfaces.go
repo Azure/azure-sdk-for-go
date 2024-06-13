@@ -102,6 +102,15 @@ type OnYourDataAuthenticationOptionsClassification interface {
 	GetOnYourDataAuthenticationOptions() *OnYourDataAuthenticationOptions
 }
 
+// OnYourDataVectorSearchAuthenticationOptionsClassification provides polymorphic access to related types.
+// Call the interface's GetOnYourDataVectorSearchAuthenticationOptions() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *OnYourDataVectorSearchAPIKeyAuthenticationOptions, *OnYourDataVectorSearchAccessTokenAuthenticationOptions, *OnYourDataVectorSearchAuthenticationOptions
+type OnYourDataVectorSearchAuthenticationOptionsClassification interface {
+	// GetOnYourDataVectorSearchAuthenticationOptions returns the OnYourDataVectorSearchAuthenticationOptions content of the underlying type.
+	GetOnYourDataVectorSearchAuthenticationOptions() *OnYourDataVectorSearchAuthenticationOptions
+}
+
 // OnYourDataVectorizationSourceClassification provides polymorphic access to related types.
 // Call the interface's GetOnYourDataVectorizationSource() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:

@@ -13,17 +13,17 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/eventgrid/aznamespaces/internal"
 )
 
-type receiverData struct {
-	topic        string
-	subscription string
+// ReceiverClientOptions contains the optional parameters when creating a ReceiverClient.
+type ReceiverClientOptions struct {
+	azcore.ClientOptions
 }
 
 // NewReceiverClient creates a [ReceiverClient] which uses an azcore.TokenCredential for authentication.
 //   - topicName - Topic Name.
 //   - subscriptionName - Event Subscription Name.
-func NewReceiverClient(endpoint string, topic string, subscription string, cred azcore.TokenCredential, options *ClientOptions) (*ReceiverClient, error) {
+func NewReceiverClient(endpoint string, topic string, subscription string, cred azcore.TokenCredential, options *ReceiverClientOptions) (*ReceiverClient, error) {
 	if options == nil {
-		options = &ClientOptions{}
+		options = &ReceiverClientOptions{}
 	}
 
 	azc, err := azcore.NewClient(internal.ModuleName+".Client", internal.ModuleVersion, runtime.PipelineOptions{
@@ -49,9 +49,9 @@ func NewReceiverClient(endpoint string, topic string, subscription string, cred 
 // NewReceiverClientWithSharedKeyCredential creates a [ReceiverClient] using a shared key.
 //   - topicName - Topic Name.
 //   - subscriptionName - Event Subscription Name.
-func NewReceiverClientWithSharedKeyCredential(endpoint string, topic string, subscription string, keyCred *azcore.KeyCredential, options *ClientOptions) (*ReceiverClient, error) {
+func NewReceiverClientWithSharedKeyCredential(endpoint string, topic string, subscription string, keyCred *azcore.KeyCredential, options *ReceiverClientOptions) (*ReceiverClient, error) {
 	if options == nil {
-		options = &ClientOptions{}
+		options = &ReceiverClientOptions{}
 	}
 
 	azc, err := azcore.NewClient(internal.ModuleName+".Client", internal.ModuleVersion, runtime.PipelineOptions{
@@ -76,19 +76,19 @@ func NewReceiverClientWithSharedKeyCredential(endpoint string, topic string, sub
 	}, nil
 }
 
-// Reject rejects a batch of Cloud Events. The server responds with an HTTP 200 status code if the request is successfully
+// RejectEvents rejects a batch of Cloud Events. The server responds with an HTTP 200 status code if the request is successfully
 // accepted. The response body will include the set of successfully rejected lockTokens,
 // along with other failed lockTokens with their corresponding error information.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-06-01
 //   - lockTokens - slice of lock tokens.
-//   - options - RejectOptions contains the optional parameters for the ReceiverClient.Reject method.
-func (client *ReceiverClient) Reject(ctx context.Context, lockTokens []string, options *RejectOptions) (RejectResponse, error) {
-	return client.reject(ctx, client.data.topic, client.data.subscription, rejectOptions{LockTokens: lockTokens}, options)
+//   - options - RejectEventsOptions contains the optional parameters for the ReceiverClient.RejectEvents method.
+func (client *ReceiverClient) RejectEvents(ctx context.Context, lockTokens []string, options *RejectEventsOptions) (RejectEventsResponse, error) {
+	return client.internalRejectEvents(ctx, client.data.topic, client.data.subscription, lockTokens, options)
 }
 
-// Acknowledge acknowledges a batch of Cloud Events. The server responds with an HTTP 200 status code if the request
+// AcknowledgeEvents acknowledges a batch of Cloud Events. The server responds with an HTTP 200 status code if the request
 // is successfully accepted. The response body will include the set of successfully acknowledged
 // lockTokens, along with other failed lockTokens with their corresponding error information. Successfully acknowledged events
 // will no longer be available to any consumer.
@@ -96,24 +96,24 @@ func (client *ReceiverClient) Reject(ctx context.Context, lockTokens []string, o
 //
 // Generated from API version 2024-06-01
 //   - lockTokens - slice of lock tokens.
-//   - options - AcknowledgeOptions contains the optional parameters for the ReceiverClient.Acknowledge method.
-func (client *ReceiverClient) Acknowledge(ctx context.Context, lockTokens []string, options *AcknowledgeOptions) (AcknowledgeResponse, error) {
-	return client.acknowledge(ctx, client.data.topic, client.data.subscription, acknowledgeOptions{LockTokens: lockTokens}, options)
+//   - options - AcknowledgeEventsOptions contains the optional parameters for the ReceiverClient.AcknowledgeEvents method.
+func (client *ReceiverClient) AcknowledgeEvents(ctx context.Context, lockTokens []string, options *AcknowledgeEventsOptions) (AcknowledgeEventsResponse, error) {
+	return client.internalAcknowledgeEvents(ctx, client.data.topic, client.data.subscription, lockTokens, options)
 }
 
-// Release releases a batch of Cloud Events. The server responds with an HTTP 200 status code if the request is
+// ReleaseEvents releases a batch of Cloud Events. The server responds with an HTTP 200 status code if the request is
 // successfully accepted. The response body will include the set of successfully released lockTokens,
 // along with other failed lockTokens with their corresponding error information.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-06-01
 //   - lockTokens - slice of lock tokens.
-//   - options - ReleaseOptions contains the optional parameters for the ReceiverClient.Release method.
-func (client *ReceiverClient) Release(ctx context.Context, lockTokens []string, options *ReleaseOptions) (ReleaseResponse, error) {
-	return client.release(ctx, client.data.topic, client.data.subscription, releaseOptions{LockTokens: lockTokens}, options)
+//   - options - ReleaseEventsOptions contains the optional parameters for the ReceiverClient.ReleaseEvents method.
+func (client *ReceiverClient) ReleaseEvents(ctx context.Context, lockTokens []string, options *ReleaseEventsOptions) (ReleaseEventsResponse, error) {
+	return client.internalReleaseEvents(ctx, client.data.topic, client.data.subscription, lockTokens, options)
 }
 
-// RenewLocks renews locks for batch of Cloud Events. The server responds with an HTTP 200 status code if the request
+// RenewEventLocks renews locks for batch of Cloud Events. The server responds with an HTTP 200 status code if the request
 // is successfully accepted. The response body will include the set of successfully renewed
 // lockTokens, along with other failed lockTokens with their corresponding error information.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -121,15 +121,20 @@ func (client *ReceiverClient) Release(ctx context.Context, lockTokens []string, 
 // Generated from API version 2024-06-01
 //   - lockTokens - slice of lock tokens.
 //   - options - RenewLocksOptions contains the optional parameters for the ReceiverClient.RenewLocks method.
-func (client *ReceiverClient) RenewLocks(ctx context.Context, lockTokens []string, options *RenewLocksOptions) (RenewLocksResponse, error) {
-	return client.renewLock(ctx, client.data.topic, client.data.subscription, renewLockOptions{LockTokens: lockTokens}, options)
+func (client *ReceiverClient) RenewEventLocks(ctx context.Context, lockTokens []string, options *RenewEventLocksOptions) (RenewEventLocksResponse, error) {
+	return client.internalRenewEventLocks(ctx, client.data.topic, client.data.subscription, lockTokens, options)
 }
 
-// Receive a batch of Cloud Events from a subscription.
+// ReceiveEvents receives a batch of Cloud Events from a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-06-01
-//   - options - ReceiveOptions contains the optional parameters for the ReceiverClient.Receive method.
-func (client *ReceiverClient) Receive(ctx context.Context, options *ReceiveOptions) (ReceiveResponse, error) {
-	return client.receive(ctx, client.data.topic, client.data.subscription, options)
+//   - options - ReceiveEventsOptions contains the optional parameters for the ReceiverClient.ReceiveEvents method.
+func (client *ReceiverClient) ReceiveEvents(ctx context.Context, options *ReceiveEventsOptions) (ReceiveEventsResponse, error) {
+	return client.internalReceiveEvents(ctx, client.data.topic, client.data.subscription, options)
+}
+
+type receiverData struct {
+	topic        string
+	subscription string
 }

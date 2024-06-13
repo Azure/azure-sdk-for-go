@@ -4,61 +4,61 @@ package main
 
 import (
 	"bytes"
-	"errors"
 	"fmt"
 	"os"
 	"regexp"
-	"sort"
-	"strings"
-	"unicode"
-	"unicode/utf8"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/eventgrid/aznamespaces/internal/generate/gopls"
 )
 
 func main() {
+	fmt.Printf("checkRequestMethods...\n")
 	if err := checkRequestMethods(); err != nil {
 		panic(err)
 	}
 
+	fmt.Printf("deleteModels...\n")
 	if err := deleteModels(); err != nil {
 		panic(err)
 	}
 
+	fmt.Printf("injectClientData...\n")
 	if err := injectClientData(); err != nil {
 		panic(err)
 	}
 
-	if err := exportPublicSymbols(); err != nil {
+	fmt.Printf("exportPublicSymbols...\n")
+	if err := renameSymbols(); err != nil {
 		panic(err)
 	}
 
+	fmt.Printf("useAZCoreCloudEvent...\n")
 	if err := useAZCoreCloudEvent(); err != nil {
 		panic(err)
 	}
 
+	fmt.Printf("transformError...\n")
 	if err := transformError(); err != nil {
 		panic(err)
 	}
 
-	// Do a double check, we shouldn't have any other unexported symbols
-	// in generated code. If we do it's probably fallout from our unexporting
-	// in TypeSpec.
-	if err := checkUnexportedSymbols(); err != nil {
+	// fix result types
+	fmt.Printf("fix result types...\n")
+	if err := fixResultTypes(); err != nil {
 		panic(err)
 	}
 }
 
 func useAZCoreCloudEvent() error {
-	if err := replaceAllInFile("models.go", regexp.MustCompile(`(?m)^\s+Event \*cloudEvent$`), []byte("\tEvent messaging.CloudEvent")); err != nil {
+	if err := replaceAllInFile("models.go", regexp.MustCompile(`(?m)^\s+Event \*CloudEvent$`), []byte("\tEvent messaging.CloudEvent")); err != nil {
 		return err
 	}
 
-	if err := replaceAllInFile("sender_client.go", regexp.MustCompile(`(?m)event cloudEvent`), []byte("\tevent *messaging.CloudEvent")); err != nil {
+	if err := replaceAllInFile("sender_client.go", regexp.MustCompile(`(?m)event CloudEvent`), []byte("\tevent *messaging.CloudEvent")); err != nil {
 		return err
 	}
 
-	if err := replaceAllInFile("sender_client.go", regexp.MustCompile(`(?m)events \[\]cloudEvent`), []byte("\tevents []*messaging.CloudEvent")); err != nil {
+	if err := replaceAllInFile("sender_client.go", regexp.MustCompile(`(?m)events \[\]CloudEvent`), []byte("\tevents []*messaging.CloudEvent")); err != nil {
 		return err
 	}
 
@@ -66,28 +66,18 @@ func useAZCoreCloudEvent() error {
 }
 
 func deleteModels() error {
-	models := "cloudEvent|innerError"
+	models := "CloudEvent|InnerError|PublishResult"
 
 	if err := replaceAllInFile(
 		"models_serde.go",
 		regexp.MustCompile(
 			fmt.Sprintf(`(?s)// (Unmarshal|Marshal)JSON implements the json\.(Unmarshaller|Marshaller) interface for type (%s).+?\n}`, models)), nil); err != nil {
-		return err
+		return fmt.Errorf("failed to remove marshaller/unmarshaller for %s: %w", models, err)
 	}
 
 	if err := replaceAllInFile(
 		"models.go",
 		regexp.MustCompile(fmt.Sprintf(`(?s)// (%s).+?type (%s) struct.+?\n}`, models, models)), nil); err != nil {
-		return err
-	}
-
-	if err := replaceAllInFile(
-		"options.go",
-		regexp.MustCompile(`(?s)// (senderClientsendOptions).+?type (senderClientsendOptions) struct.+?\n}`), nil); err != nil {
-		return err
-	}
-
-	if err := replaceAllInFile("sender_client.go", regexp.MustCompile(`senderClientsendOptions`), []byte("SendOptions")); err != nil {
 		return err
 	}
 
@@ -137,9 +127,9 @@ func checkRequestMethods() error {
 	typesToFlatten := map[string]bool{
 		// these were customized to already be unexported within the TypeSpec
 		// by unexporting the individual client methods.
-		"acknowledgeOptions": true,
-		"rejectOptions":      true,
-		"releaseOptions":     true,
+		"AcknowledgeEventsOptions": true,
+		"RejectEventsOptions":      true,
+		"ReleaseEventsOptions":     true,
 	}
 
 	// these are actually models, not options
@@ -165,121 +155,31 @@ func checkRequestMethods() error {
 // we specifically override the visiblity of the normal service operations because we
 // have to do mods like removing the topic and subscription parameters, or making some
 // parameters positional instead of being in a struct argument.
-func exportPublicSymbols() error {
-	err := multiRename("responses.go", map[string]string{
-		// receiver
-		"receiverClientacknowledgeResponse": "AcknowledgeResponse",
-		"receiverClientreceiveResponse":     "ReceiveResponse",
-		"receiverClientrejectResponse":      "RejectResponse",
-		"receiverClientreleaseResponse":     "ReleaseResponse",
-		"receiverClientrenewLockResponse":   "RenewLocksResponse",
-
-		// sender
-		"senderClientsendEventsResponse": "SendEventsResponse",
-		"senderClientsendResponse":       "SendResponse",
-	})
-
-	if err != nil {
-		return err
+func renameSymbols() error {
+	// find all the things we need to rename
+	if err := renameStructs("responses.go", regexp.MustCompile(`^(?:ReceiverClient|SenderClient)(.+)$`), "$1"); err != nil {
+		return fmt.Errorf("failed to rename ReceiverClient/SenderClient prefixed types in responses.go")
 	}
 
-	err = multiRename("options.go", map[string]string{
-		// receiver
-		"receiverClientacknowledgeOptions": "AcknowledgeOptions",
-		"receiverClientreceiveOptions":     "ReceiveOptions",
-		"receiverClientrejectOptions":      "RejectOptions",
-		"receiverClientreleaseOptions":     "ReleaseOptions",
-		"receiverClientrenewLockOptions":   "RenewLocksOptions",
-
-		// sender
-		"senderClientsendEventsOptions": "SendEventsOptions",
-		"senderClientsendOptions":       "SendOptions",
-	})
-
-	if err != nil {
-		return err
+	if err := renameStructs("options.go", regexp.MustCompile(`^(?:ReceiverClient|SenderClient)(.+)$`), "$1"); err != nil {
+		return fmt.Errorf("failed to rename ReceiverClient/SenderClient prefixed types in options.go")
 	}
 
-	err = multiRename("models.go", map[string]string{
-		// receiver
-		"acknowledgeResult": "AcknowledgeResult",
-		"receiveResult":     "ReceiveResult",
-		"rejectResult":      "RejectResult",
-		"releaseResult":     "ReleaseResult",
-		"renewLocksResult":  "RenewLocksResult",
+	re := regexp.MustCompile(`(?m)^func \(client \*SenderClient\) (SendEvent|SendEvents)\(`)
 
-		"failedLockToken": "FailedLockToken",
-		"receiveDetails":  "ReceiveDetails",
-
-		// sender
-		"publishResult": "PublishResult",
-
-		// other models that are embedded in results
-		"brokerProperties": "BrokerProperties",
-	})
-
-	if err != nil {
-		return err
+	if err := replaceAllInFile("sender_client.go", re, []byte("func (client *SenderClient) internal$1(")); err != nil {
+		return fmt.Errorf("failed to rename SendEvent/SendEvents to be internal: %w", err)
 	}
 
-	err = multiRename("constants.go", map[string]string{
-		"PossiblereleaseDelayValues": "PossibleReleaseDelayValues",
-		"releaseDelay":               "ReleaseDelay",
-		"releaseDelayNoDelay":        "ReleaseDelayNoDelay",
-		"releaseDelayOneHour":        "ReleaseDelayOneHour",
-		"releaseDelayOneMinute":      "ReleaseDelayOneMinute",
-		"releaseDelayTenMinutes":     "ReleaseDelayTenMinutes",
-		"releaseDelayTenSeconds":     "ReleaseDelayTenSeconds",
-	})
-
-	if err != nil {
-		return err
-	}
-
-	return replaceAllInFile("constants.go", regexp.MustCompile("releaseDelay const type"), []byte("ReleaseDelay const type"))
-}
-
-func checkUnexportedSymbols() error {
-	var unexported []string
-
-	whiteListed := map[string]bool{
-		"rejectOptions":      true,
-		"releaseOptions":     true,
-		"publishResult":      true,
-		"renewLockOptions":   true,
-		"acknowledgeOptions": true,
-	}
-
-	for _, file := range []string{"models.go", "options.go", "responses.go"} {
-		symbols, err := gopls.SymbolsSlice(file)
-
-		if err != nil {
-			return err
-		}
-
-		for _, sym := range symbols {
-			if sym.Type != gopls.SymbolTypeStruct || whiteListed[sym.Name] {
-				continue
-			}
-
-			rn, _ := utf8.DecodeRuneInString(sym.Name)
-
-			if unicode.IsLower(rn) {
-				unexported = append(unexported, fmt.Sprintf("[%s] %s", file, sym.Name))
-			}
-		}
-	}
-
-	sort.Strings(unexported)
-
-	if len(unexported) > 0 {
-		return fmt.Errorf("symbols are unexported:\n%s", strings.Join(unexported, "\n"))
+	re = regexp.MustCompile(`(?m)^func \(client \*ReceiverClient\) (AcknowledgeEvents|ReceiveEvents|ReleaseEvents|RejectEvents|RenewEventLocks)\(`)
+	if err := replaceAllInFile("receiver_client.go", re, []byte("func (client *ReceiverClient) internal$1(")); err != nil {
+		return fmt.Errorf("failed to rename Receiver functions to be internal: %w", err)
 	}
 
 	return nil
 }
 
-func multiRename(file string, renames map[string]string) error {
+func renameStructs(file string, re *regexp.Regexp, replace string) error {
 	symbols, err := gopls.SymbolsSlice(file)
 
 	if err != nil {
@@ -289,11 +189,19 @@ func multiRename(file string, renames map[string]string) error {
 	// we do it in reverse order so we can do all the renames without reloading the file
 	// since our positions should not shift.
 	for i := len(symbols) - 1; i >= 0; i-- {
-		if renames[symbols[i].Name] == "" {
+		if symbols[i].Type != gopls.SymbolTypeStruct {
 			continue
 		}
 
-		if err := gopls.Rename(symbols[i], renames[symbols[i].Name]); err != nil {
+		replaced := re.ReplaceAllString(symbols[i].Name, replace)
+
+		if replaced == symbols[i].Name {
+			continue
+		}
+
+		fmt.Printf("Renaming %s -> %s\n", symbols[i].Name, replaced)
+
+		if err := gopls.Rename(symbols[i], replaced); err != nil {
 			return err
 		}
 	}
@@ -322,32 +230,11 @@ func replaceAllInFile(file string, re *regexp.Regexp, replacement []byte) error 
 }
 
 func transformError() error {
-	symbols, err := gopls.SymbolsSlice("models.go")
-
-	if err != nil {
-		return err
-	}
-
-	renamed := false
-
-	for _, sym := range symbols {
-		if sym.Name == "errorModel" {
-			if err := gopls.Rename(sym, "Error"); err != nil {
-				return err
-			}
-			renamed = true
-		}
-	}
-
-	if !renamed {
-		return errors.New("errorModel wasn't present in models.go")
-	}
-
 	// clip out some of the internal fields
-	err = replaceAllInFile("models.go", regexp.MustCompile(`(?s)// [^/]+?\s+(Innererror \*innerError|Details \[\]Error|Target \*string)\n`), nil)
+	err := replaceAllInFile("models.go", regexp.MustCompile(`(?s)// [^/]+?\s+(Innererror \*InnerError|Details \[\]Error|Target \*string)\n`), nil)
 
 	if err != nil {
-		return err
+		return fmt.Errorf("failed to splice out the error fields in models.go: %w", err)
 	}
 
 	// delete these lines from the marshallers and ummarshallers
@@ -380,6 +267,70 @@ func transformError() error {
 
 	if err != nil {
 		return fmt.Errorf("removing Error unpopulate lines: %w", err)
+	}
+
+	return nil
+}
+
+func fixResultTypes() error {
+	symbols, err := gopls.SymbolsSlice("models.go")
+
+	if err != nil {
+		return err
+	}
+
+	renames := map[string]string{
+		"AcknowledgeResult": "AcknowledgeEventsResult",
+		"ReceiveResult":     "ReceiveEventsResult",
+		"RejectResult":      "RejectEventsResult",
+		"ReleaseResult":     "ReleaseEventsResult",
+		"RenewLocksResult":  "RenewEventLocksResult",
+	}
+
+	for i := len(symbols) - 1; i >= 0; i-- {
+		newName := renames[symbols[i].Name]
+
+		if newName == "" {
+			continue
+		}
+
+		if err := gopls.Rename(symbols[i], newName); err != nil {
+			return err
+		}
+	}
+
+	{
+		re := regexp.MustCompile(`(?s)if err := runtime.UnmarshalAsJSON\(resp, &result.PublishResult\); err != nil \{.+?return result, nil`)
+		data, err := os.ReadFile("sender_client.go")
+
+		if err != nil {
+			return err
+		}
+
+		newData := re.ReplaceAll(data, []byte("return result, nil"))
+
+		newData = bytes.Replace(newData, []byte(`sendEventHandleResponse(resp *http.Response)`), []byte(`sendEventHandleResponse(_ *http.Response)`), 1)
+		newData = bytes.Replace(newData, []byte(`sendEventsHandleResponse(resp *http.Response)`), []byte(`sendEventsHandleResponse(_ *http.Response)`), 1)
+
+		if err := os.WriteFile("sender_client.go", newData, 0600); err != nil {
+			return err
+		}
+	}
+
+	{
+		data, err := os.ReadFile("responses.go")
+
+		if err != nil {
+			return err
+		}
+
+		re := regexp.MustCompile(`(?s)// The result of the Publish operation.\s+PublishResult`)
+
+		newData := re.ReplaceAll(data, nil)
+
+		if err := os.WriteFile("responses.go", newData, 0600); err != nil {
+			return err
+		}
 	}
 
 	return nil

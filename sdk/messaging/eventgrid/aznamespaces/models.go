@@ -6,14 +6,8 @@ package aznamespaces
 
 import "github.com/Azure/azure-sdk-for-go/sdk/azcore/messaging"
 
-// acknowledgeOptions - Array of lock tokens for the corresponding received Cloud Events to be acknowledged.
-type acknowledgeOptions struct {
-	// REQUIRED; Array of lock tokens.
-	LockTokens []string
-}
-
-// AcknowledgeResult - The result of the Acknowledge operation.
-type AcknowledgeResult struct {
+// AcknowledgeEventsResult - The result of the Acknowledge operation.
+type AcknowledgeEventsResult struct {
 	// REQUIRED; Array of FailedLockToken for failed cloud events. Each FailedLockToken includes the lock token along with the
 	// related error information (namely, the error code and description).
 	FailedLockTokens []FailedLockToken
@@ -49,10 +43,6 @@ type FailedLockToken struct {
 	LockToken *string
 }
 
-// PublishResult - The result of the Publish operation.
-type PublishResult struct {
-}
-
 // ReceiveDetails - Receive operation details per Cloud Event.
 type ReceiveDetails struct {
 	// REQUIRED; The Event Broker details.
@@ -62,20 +52,14 @@ type ReceiveDetails struct {
 	Event messaging.CloudEvent
 }
 
-// ReceiveResult - Details of the Receive operation response.
-type ReceiveResult struct {
+// ReceiveEventsResult - Details of the Receive operation response.
+type ReceiveEventsResult struct {
 	// REQUIRED; Array of receive responses, one per cloud event.
 	Details []ReceiveDetails
 }
 
-// rejectOptions - Array of lock tokens for the corresponding received Cloud Events to be rejected.
-type rejectOptions struct {
-	// REQUIRED; Array of lock tokens.
-	LockTokens []string
-}
-
-// RejectResult - The result of the Reject operation.
-type RejectResult struct {
+// RejectEventsResult - The result of the Reject operation.
+type RejectEventsResult struct {
 	// REQUIRED; Array of FailedLockToken for failed cloud events. Each FailedLockToken includes the lock token along with the
 	// related error information (namely, the error code and description).
 	FailedLockTokens []FailedLockToken
@@ -84,14 +68,8 @@ type RejectResult struct {
 	SucceededLockTokens []string
 }
 
-// releaseOptions - Array of lock tokens for the corresponding received Cloud Events to be released.
-type releaseOptions struct {
-	// REQUIRED; Array of lock tokens.
-	LockTokens []string
-}
-
-// ReleaseResult - The result of the Release operation.
-type ReleaseResult struct {
+// ReleaseEventsResult - The result of the Release operation.
+type ReleaseEventsResult struct {
 	// REQUIRED; Array of FailedLockToken for failed cloud events. Each FailedLockToken includes the lock token along with the
 	// related error information (namely, the error code and description).
 	FailedLockTokens []FailedLockToken
@@ -100,14 +78,8 @@ type ReleaseResult struct {
 	SucceededLockTokens []string
 }
 
-// renewLockOptions - Array of lock tokens for the corresponding received Cloud Events to be renewed.
-type renewLockOptions struct {
-	// REQUIRED; Array of lock tokens.
-	LockTokens []string
-}
-
-// RenewLocksResult - The result of the RenewLock operation.
-type RenewLocksResult struct {
+// RenewEventLocksResult - The result of the RenewLock operation.
+type RenewEventLocksResult struct {
 	// REQUIRED; Array of FailedLockToken for failed cloud events. Each FailedLockToken includes the lock token along with the
 	// related error information (namely, the error code and description).
 	FailedLockTokens []FailedLockToken

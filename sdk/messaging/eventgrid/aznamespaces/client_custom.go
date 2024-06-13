@@ -6,13 +6,4 @@
 
 package aznamespaces
 
-import (
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-)
-
-// ClientOptions contains optional settings for [Client]
-type ClientOptions struct {
-	azcore.ClientOptions
-}
-
 var authScope = "https://eventgrid.azure.net/.default"

@@ -22,6 +22,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	azcred "github.com/Azure/azure-sdk-for-go/sdk/internal/test/credential"
 	"github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azkeys"
 	"github.com/stretchr/testify/require"
 )
@@ -228,7 +229,7 @@ func TestDisableChallengeResourceVerification(t *testing.T) {
 				},
 				DisableChallengeResourceVerification: test.disableVerify,
 			}
-			client, err := azkeys.NewClient(vaultURL, &FakeCredential{}, options)
+			client, err := azkeys.NewClient(vaultURL, &azcred.Fake{}, options)
 			require.NoError(t, err)
 			pager := client.NewListKeyPropertiesPager(nil)
 			_, err = pager.NextPage(context.Background())
@@ -537,9 +538,6 @@ func TestRecoverDeletedKey(t *testing.T) {
 }
 
 func TestReleaseKey(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
 	for _, mhsm := range []bool{false, true} {
 		name := "KV"
 		if mhsm {
@@ -583,7 +581,7 @@ func TestReleaseKey(t *testing.T) {
 			require.NoError(t, err)
 			resp, err := attestationClient.Do(req)
 			require.NoError(t, err)
-			require.Equal(t, resp.StatusCode, http.StatusOK)
+			require.Equal(t, http.StatusOK, resp.StatusCode)
 			defer resp.Body.Close()
 
 			var tR struct {

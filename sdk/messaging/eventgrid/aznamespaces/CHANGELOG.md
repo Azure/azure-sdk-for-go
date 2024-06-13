@@ -1,20 +1,27 @@
 # Release History
 
-## 0.5.0 (Unreleased)
+## 1.0.1 (Unreleased)
 
 ### Features Added
 
-- Supports API version `2024-06-01`, including support for release with delay.
-
 ### Breaking Changes
-
-- Sending and receiving operations have been moved to separate clients (SenderClient and ReceiverClient).
-- Method names have been changed, removing `CloudEvent`. 
-- Topic and subscription name are now set at the Client level, as part of `NewSenderClient` or `NewReceiverClient`.
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0 (2024-06-11)
+
+### Features Added
+
+- First stable release of the aznamespaces package targeted at API version `2024-06-01`.
+
+### Breaking Changes
+
+- Sending and receiving operations have been moved to separate clients (SenderClient and ReceiverClient).
+- Method names have been shortened from <Verb>CloudEvent(s) to <Verb>Event(s)
+- LockTokens for AcknowledgeEvents, RejectEvents and ReleaseEvents are now a positional argument, instead of optional.
+- Topic and subscription name are now set at the Client level, as part of `NewSenderClient` or `NewReceiverClient`.
 
 ## 0.4.1 (2024-03-05)
 

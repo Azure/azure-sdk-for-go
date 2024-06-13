@@ -409,7 +409,7 @@ func TestItemConcurrent(t *testing.T) {
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
-			_, err = container.ReadItem(context.TODO(), pk, "1", nil)
+			_, _ = container.ReadItem(context.TODO(), pk, "1", nil)
 		}()
 	}
 	wg.Wait()

@@ -296,11 +296,6 @@ func (f *Client) Rename(ctx context.Context, destinationPath string, options *Re
 	newFileClient := (*Client)(base.NewPathClient(newPathURL, newBlobURL, newBlobClient, f.generatedFileClientWithDFS().InternalClient().WithClientName(exported.ModuleName), f.sharedKey(), f.identityCredential(), f.getClientOptions()))
 	resp, err := newFileClient.generatedFileClientWithDFS().Create(ctx, createOpts, nil, lac, mac, smac, cpkOpts)
 
-	//return RenameResponse{
-	//	Response:      resp,
-	//	NewFileClient: newFileClient,
-	//}, exported.ConvertToDFSError(err)
-
 	return path.FormatRenameResponse(&resp), exported.ConvertToDFSError(err)
 }
 

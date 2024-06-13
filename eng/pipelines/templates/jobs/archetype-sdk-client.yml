@@ -83,6 +83,9 @@ parameters:
   - name: oneESTemplateTag
     type: string
     default: release
+  - name: EnableRaceDetector
+    type: boolean
+    default: false
 
 extends:
   template: /eng/pipelines/templates/stages/1es-redirect.yml
@@ -109,6 +112,7 @@ extends:
                       Selection: all
                       GenerateVMJobs: true
               AdditionalParameters:
+                EnableRaceDetector: ${{ parameters.EnableRaceDetector }}
                 ServiceDirectory: ${{ parameters.ServiceDirectory }}
                 TestRunTime: ${{ parameters.TestRunTime }}
                 UsePipelineProxy: ${{ parameters.UsePipelineProxy }}

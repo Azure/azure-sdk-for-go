@@ -9,6 +9,7 @@
 ### Bugs Fixed
 
 ### Other Changes
+* Removed `MetricsBatchClient`. Support for metrics batch in now GA in [azmetrics](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/query/azmetrics)
 
 ## 1.2.0-beta.1 (2023-11-16)
 

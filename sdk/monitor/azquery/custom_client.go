@@ -32,11 +32,6 @@ type LogsClientOptions struct {
 	azcore.ClientOptions
 }
 
-// MetricsBatchClientOptions contains optional settings for MetricsBatchClient.
-type MetricsBatchClientOptions struct {
-	azcore.ClientOptions
-}
-
 // NewLogsClient creates a client that accesses Azure Monitor logs data.
 func NewLogsClient(credential azcore.TokenCredential, options *LogsClientOptions) (*LogsClient, error) {
 	if options == nil {
@@ -77,25 +72,6 @@ func NewMetricsClient(credential azcore.TokenCredential, options *MetricsClientO
 		return nil, err
 	}
 	return &MetricsClient{host: c.Endpoint, internal: azcoreClient}, nil
-}
-
-// NewMetricsBatchClient creates a client that accesses Azure Monitor metrics data.
-// MetricsBatchClient should be used for performing metrics queries on multiple monitored resources in the same region.
-// A credential with authorization at the subscription level is required when using this client.
-//
-// endpoint - The regional endpoint to use, for example https://eastus.metrics.monitor.azure.com.
-// The region should match the region of the requested resources. For global resources, the region should be 'global'.
-func NewMetricsBatchClient(endpoint string, credential azcore.TokenCredential, options *MetricsBatchClientOptions) (*MetricsBatchClient, error) {
-	if options == nil {
-		options = &MetricsBatchClientOptions{}
-	}
-
-	authPolicy := runtime.NewBearerTokenPolicy(credential, []string{"https://metrics.monitor.azure.com" + "/.default"}, nil)
-	azcoreClient, err := azcore.NewClient(moduleName, version, runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}, &options.ClientOptions)
-	if err != nil {
-		return nil, err
-	}
-	return &MetricsBatchClient{endpoint: endpoint, internal: azcoreClient}, nil
 }
 
 // ErrorInfo - The code and message for an error.

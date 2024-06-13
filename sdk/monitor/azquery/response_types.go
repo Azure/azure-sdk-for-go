@@ -26,12 +26,6 @@ type LogsClientQueryWorkspaceResponse struct {
 	Results
 }
 
-// MetricsBatchClientQueryBatchResponse contains the response from method MetricsBatchClient.QueryBatch.
-type MetricsBatchClientQueryBatchResponse struct {
-	// The metrics result for a resource.
-	MetricResults
-}
-
 // MetricsClientListDefinitionsResponse contains the response from method MetricsClient.NewListDefinitionsPager.
 type MetricsClientListDefinitionsResponse struct {
 	// Represents collection of metric definitions.

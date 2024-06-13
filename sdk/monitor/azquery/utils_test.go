@@ -139,19 +139,6 @@ func startMetricsTest(t *testing.T) *azquery.MetricsClient {
 	return client
 }
 
-func startMetricsBatchTest(t *testing.T) *azquery.MetricsBatchClient {
-	startRecording(t)
-	transport, err := recording.NewRecordingHTTPClient(t, nil)
-	require.NoError(t, err)
-	opts := &azquery.MetricsBatchClientOptions{ClientOptions: azcore.ClientOptions{Transport: transport}}
-	endpoint := "https://" + region + ".metrics.monitor.azure.com"
-	client, err := azquery.NewMetricsBatchClient(endpoint, credential, opts)
-	if err != nil {
-		panic(err)
-	}
-	return client
-}
-
 func getEnvVar(envVar string, fakeValue string) string {
 	// get value
 	value := fakeValue

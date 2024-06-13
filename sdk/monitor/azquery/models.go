@@ -224,38 +224,6 @@ type MetricNamespaceName struct {
 	MetricNamespaceName *string
 }
 
-// MetricResults - The metrics result for a resource.
-type MetricResults struct {
-	// The collection of metric data responses per resource, per metric.
-	Values []*MetricValues
-}
-
-// MetricValues - Metric data values.
-type MetricValues struct {
-	// REQUIRED; The end time, in datetime format, for which the data was retrieved.
-	EndTime *string
-
-	// REQUIRED; The start time, in datetime format, for which the data was retrieved.
-	StartTime *string
-
-	// REQUIRED; The value of the collection.
-	Values []*Metric
-
-	// The interval (window size) for which the metric data was returned in. Follows the IS8601/RFC3339 duration format (e.g.
-	// 'P1D' for 1 day). This may be adjusted in the future and returned back from what
-	// was originally requested. This is not present if a metadata request was made.
-	Interval *string
-
-	// The namespace of the metrics been queried
-	Namespace *string
-
-	// The resource that has been queried for metrics.
-	ResourceID *string
-
-	// The region of the resource been queried for metrics.
-	ResourceRegion *string
-}
-
 // MetricValue - Represents a metric value.
 type MetricValue struct {
 	// REQUIRED; The timestamp for the metric value in ISO 8601 format.
@@ -276,12 +244,6 @@ type MetricValue struct {
 
 	// The sum of all of the values in the time range.
 	Total *float64
-}
-
-// ResourceIDList - The comma separated list of resource IDs to query metrics for.
-type ResourceIDList struct {
-	// The list of resource IDs to query metrics for.
-	ResourceIDs []*string
 }
 
 // Response - The response to a metrics query.

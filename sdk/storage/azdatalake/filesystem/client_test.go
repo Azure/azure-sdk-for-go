@@ -1471,6 +1471,39 @@ func (s *RecordedTestSuite) TestFilesystemListPathsWithRecursive() {
 	}
 }
 
+func (s *RecordedTestSuite) TestFilesystemListPathsRecursiveWithEtagCheck() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	client := fsClient.NewFileClient(testName + "file1")
+	_, err = client.Create(context.Background(), nil)
+	_require.NoError(err)
+	client = fsClient.NewFileClient(testName + "file2")
+	_, err = client.Create(context.Background(), nil)
+	_require.NoError(err)
+	dirClient := fsClient.NewDirectoryClient(testName + "dir1")
+	_, err = dirClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	pager := fsClient.NewListPathsPager(true, nil)
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.NoError(err)
+
+		for _, p := range resp.Paths {
+			_require.NotNil(p.ETag)
+		}
+	}
+}
+
 func (s *RecordedTestSuite) TestFilesystemListPathsWithRecursiveNoPrefix() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

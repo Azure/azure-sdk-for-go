@@ -7,41 +7,37 @@ package aznamespaces
 // AcknowledgeEventsResponse contains the response from method ReceiverClient.AcknowledgeEvents.
 type AcknowledgeEventsResponse struct {
 	// The result of the Acknowledge operation.
-	AcknowledgeResult
+	AcknowledgeEventsResult
 }
 
 // ReceiveEventsResponse contains the response from method ReceiverClient.ReceiveEvents.
 type ReceiveEventsResponse struct {
 	// Details of the Receive operation response.
-	ReceiveResult
+	ReceiveEventsResult
 }
 
 // RejectEventsResponse contains the response from method ReceiverClient.RejectEvents.
 type RejectEventsResponse struct {
 	// The result of the Reject operation.
-	RejectResult
+	RejectEventsResult
 }
 
 // ReleaseEventsResponse contains the response from method ReceiverClient.ReleaseEvents.
 type ReleaseEventsResponse struct {
 	// The result of the Release operation.
-	ReleaseResult
+	ReleaseEventsResult
 }
 
 // RenewEventLocksResponse contains the response from method ReceiverClient.RenewEventLocks.
 type RenewEventLocksResponse struct {
 	// The result of the RenewLock operation.
-	RenewLocksResult
+	RenewEventLocksResult
 }
 
 // SendEventResponse contains the response from method SenderClient.SendEvent.
 type SendEventResponse struct {
-	// The result of the Publish operation.
-	PublishResult
 }
 
 // SendEventsResponse contains the response from method SenderClient.SendEvents.
 type SendEventsResponse struct {
-	// The result of the Publish operation.
-	PublishResult
 }

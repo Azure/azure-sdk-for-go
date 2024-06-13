@@ -22,6 +22,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	azcred "github.com/Azure/azure-sdk-for-go/sdk/internal/test/credential"
 	"github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azkeys"
 	"github.com/stretchr/testify/require"
 )
@@ -228,7 +229,7 @@ func TestDisableChallengeResourceVerification(t *testing.T) {
 				},
 				DisableChallengeResourceVerification: test.disableVerify,
 			}
-			client, err := azkeys.NewClient(vaultURL, &FakeCredential{}, options)
+			client, err := azkeys.NewClient(vaultURL, &azcred.Fake{}, options)
 			require.NoError(t, err)
 			pager := client.NewListKeyPropertiesPager(nil)
 			_, err = pager.NextPage(context.Background())

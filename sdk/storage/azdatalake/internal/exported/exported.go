@@ -42,10 +42,10 @@ func ConvertToDFSError(err error) error {
 	var responseErr *azcore.ResponseError
 	isRespErr := errors.As(err, &responseErr)
 	if isRespErr {
-		responseErr.ErrorCode = strings.Replace(responseErr.ErrorCode, "blob", "path", -1)
-		responseErr.ErrorCode = strings.Replace(responseErr.ErrorCode, "Blob", "Path", -1)
-		responseErr.ErrorCode = strings.Replace(responseErr.ErrorCode, "container", "filesystem", -1)
-		responseErr.ErrorCode = strings.Replace(responseErr.ErrorCode, "Container", "FileSystem", -1)
+		responseErr.ErrorCode = strings.ReplaceAll(responseErr.ErrorCode, "blob", "path")
+		responseErr.ErrorCode = strings.ReplaceAll(responseErr.ErrorCode, "Blob", "Path")
+		responseErr.ErrorCode = strings.ReplaceAll(responseErr.ErrorCode, "container", "filesystem")
+		responseErr.ErrorCode = strings.ReplaceAll(responseErr.ErrorCode, "Container", "FileSystem")
 		return responseErr
 	}
 	return err

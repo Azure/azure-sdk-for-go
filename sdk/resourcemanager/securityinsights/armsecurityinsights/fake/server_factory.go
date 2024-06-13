@@ -23,13 +23,31 @@ type ServerFactory struct {
 	AlertRuleTemplatesServer                 AlertRuleTemplatesServer
 	AlertRulesServer                         AlertRulesServer
 	AutomationRulesServer                    AutomationRulesServer
+	BookmarkServer                           BookmarkServer
+	BookmarkRelationsServer                  BookmarkRelationsServer
 	BookmarksServer                          BookmarksServer
+	DataConnectorsCheckRequirementsServer    DataConnectorsCheckRequirementsServer
 	DataConnectorsServer                     DataConnectorsServer
+	DomainWhoisServer                        DomainWhoisServer
+	EntitiesServer                           EntitiesServer
+	EntitiesGetTimelineServer                EntitiesGetTimelineServer
+	EntitiesRelationsServer                  EntitiesRelationsServer
+	EntityQueriesServer                      EntityQueriesServer
+	EntityQueryTemplatesServer               EntityQueryTemplatesServer
+	EntityRelationsServer                    EntityRelationsServer
+	FileImportsServer                        FileImportsServer
+	IPGeodataServer                          IPGeodataServer
 	IncidentCommentsServer                   IncidentCommentsServer
 	IncidentRelationsServer                  IncidentRelationsServer
 	IncidentsServer                          IncidentsServer
+	MetadataServer                           MetadataServer
+	OfficeConsentsServer                     OfficeConsentsServer
 	OperationsServer                         OperationsServer
+	ProductSettingsServer                    ProductSettingsServer
+	SecurityMLAnalyticsSettingsServer        SecurityMLAnalyticsSettingsServer
 	SentinelOnboardingStatesServer           SentinelOnboardingStatesServer
+	SourceControlServer                      SourceControlServer
+	SourceControlsServer                     SourceControlsServer
 	ThreatIntelligenceIndicatorServer        ThreatIntelligenceIndicatorServer
 	ThreatIntelligenceIndicatorMetricsServer ThreatIntelligenceIndicatorMetricsServer
 	ThreatIntelligenceIndicatorsServer       ThreatIntelligenceIndicatorsServer
@@ -55,13 +73,31 @@ type ServerFactoryTransport struct {
 	trAlertRuleTemplatesServer                 *AlertRuleTemplatesServerTransport
 	trAlertRulesServer                         *AlertRulesServerTransport
 	trAutomationRulesServer                    *AutomationRulesServerTransport
+	trBookmarkServer                           *BookmarkServerTransport
+	trBookmarkRelationsServer                  *BookmarkRelationsServerTransport
 	trBookmarksServer                          *BookmarksServerTransport
+	trDataConnectorsCheckRequirementsServer    *DataConnectorsCheckRequirementsServerTransport
 	trDataConnectorsServer                     *DataConnectorsServerTransport
+	trDomainWhoisServer                        *DomainWhoisServerTransport
+	trEntitiesServer                           *EntitiesServerTransport
+	trEntitiesGetTimelineServer                *EntitiesGetTimelineServerTransport
+	trEntitiesRelationsServer                  *EntitiesRelationsServerTransport
+	trEntityQueriesServer                      *EntityQueriesServerTransport
+	trEntityQueryTemplatesServer               *EntityQueryTemplatesServerTransport
+	trEntityRelationsServer                    *EntityRelationsServerTransport
+	trFileImportsServer                        *FileImportsServerTransport
+	trIPGeodataServer                          *IPGeodataServerTransport
 	trIncidentCommentsServer                   *IncidentCommentsServerTransport
 	trIncidentRelationsServer                  *IncidentRelationsServerTransport
 	trIncidentsServer                          *IncidentsServerTransport
+	trMetadataServer                           *MetadataServerTransport
+	trOfficeConsentsServer                     *OfficeConsentsServerTransport
 	trOperationsServer                         *OperationsServerTransport
+	trProductSettingsServer                    *ProductSettingsServerTransport
+	trSecurityMLAnalyticsSettingsServer        *SecurityMLAnalyticsSettingsServerTransport
 	trSentinelOnboardingStatesServer           *SentinelOnboardingStatesServerTransport
+	trSourceControlServer                      *SourceControlServerTransport
+	trSourceControlsServer                     *SourceControlsServerTransport
 	trThreatIntelligenceIndicatorServer        *ThreatIntelligenceIndicatorServerTransport
 	trThreatIntelligenceIndicatorMetricsServer *ThreatIntelligenceIndicatorMetricsServerTransport
 	trThreatIntelligenceIndicatorsServer       *ThreatIntelligenceIndicatorsServerTransport
@@ -98,14 +134,64 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewAutomationRulesServerTransport(&s.srv.AutomationRulesServer)
 		})
 		resp, err = s.trAutomationRulesServer.Do(req)
+	case "BookmarkClient":
+		initServer(s, &s.trBookmarkServer, func() *BookmarkServerTransport { return NewBookmarkServerTransport(&s.srv.BookmarkServer) })
+		resp, err = s.trBookmarkServer.Do(req)
+	case "BookmarkRelationsClient":
+		initServer(s, &s.trBookmarkRelationsServer, func() *BookmarkRelationsServerTransport {
+			return NewBookmarkRelationsServerTransport(&s.srv.BookmarkRelationsServer)
+		})
+		resp, err = s.trBookmarkRelationsServer.Do(req)
 	case "BookmarksClient":
 		initServer(s, &s.trBookmarksServer, func() *BookmarksServerTransport { return NewBookmarksServerTransport(&s.srv.BookmarksServer) })
 		resp, err = s.trBookmarksServer.Do(req)
+	case "DataConnectorsCheckRequirementsClient":
+		initServer(s, &s.trDataConnectorsCheckRequirementsServer, func() *DataConnectorsCheckRequirementsServerTransport {
+			return NewDataConnectorsCheckRequirementsServerTransport(&s.srv.DataConnectorsCheckRequirementsServer)
+		})
+		resp, err = s.trDataConnectorsCheckRequirementsServer.Do(req)
 	case "DataConnectorsClient":
 		initServer(s, &s.trDataConnectorsServer, func() *DataConnectorsServerTransport {
 			return NewDataConnectorsServerTransport(&s.srv.DataConnectorsServer)
 		})
 		resp, err = s.trDataConnectorsServer.Do(req)
+	case "DomainWhoisClient":
+		initServer(s, &s.trDomainWhoisServer, func() *DomainWhoisServerTransport { return NewDomainWhoisServerTransport(&s.srv.DomainWhoisServer) })
+		resp, err = s.trDomainWhoisServer.Do(req)
+	case "EntitiesClient":
+		initServer(s, &s.trEntitiesServer, func() *EntitiesServerTransport { return NewEntitiesServerTransport(&s.srv.EntitiesServer) })
+		resp, err = s.trEntitiesServer.Do(req)
+	case "EntitiesGetTimelineClient":
+		initServer(s, &s.trEntitiesGetTimelineServer, func() *EntitiesGetTimelineServerTransport {
+			return NewEntitiesGetTimelineServerTransport(&s.srv.EntitiesGetTimelineServer)
+		})
+		resp, err = s.trEntitiesGetTimelineServer.Do(req)
+	case "EntitiesRelationsClient":
+		initServer(s, &s.trEntitiesRelationsServer, func() *EntitiesRelationsServerTransport {
+			return NewEntitiesRelationsServerTransport(&s.srv.EntitiesRelationsServer)
+		})
+		resp, err = s.trEntitiesRelationsServer.Do(req)
+	case "EntityQueriesClient":
+		initServer(s, &s.trEntityQueriesServer, func() *EntityQueriesServerTransport {
+			return NewEntityQueriesServerTransport(&s.srv.EntityQueriesServer)
+		})
+		resp, err = s.trEntityQueriesServer.Do(req)
+	case "EntityQueryTemplatesClient":
+		initServer(s, &s.trEntityQueryTemplatesServer, func() *EntityQueryTemplatesServerTransport {
+			return NewEntityQueryTemplatesServerTransport(&s.srv.EntityQueryTemplatesServer)
+		})
+		resp, err = s.trEntityQueryTemplatesServer.Do(req)
+	case "EntityRelationsClient":
+		initServer(s, &s.trEntityRelationsServer, func() *EntityRelationsServerTransport {
+			return NewEntityRelationsServerTransport(&s.srv.EntityRelationsServer)
+		})
+		resp, err = s.trEntityRelationsServer.Do(req)
+	case "FileImportsClient":
+		initServer(s, &s.trFileImportsServer, func() *FileImportsServerTransport { return NewFileImportsServerTransport(&s.srv.FileImportsServer) })
+		resp, err = s.trFileImportsServer.Do(req)
+	case "IPGeodataClient":
+		initServer(s, &s.trIPGeodataServer, func() *IPGeodataServerTransport { return NewIPGeodataServerTransport(&s.srv.IPGeodataServer) })
+		resp, err = s.trIPGeodataServer.Do(req)
 	case "IncidentCommentsClient":
 		initServer(s, &s.trIncidentCommentsServer, func() *IncidentCommentsServerTransport {
 			return NewIncidentCommentsServerTransport(&s.srv.IncidentCommentsServer)
@@ -119,14 +205,42 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "IncidentsClient":
 		initServer(s, &s.trIncidentsServer, func() *IncidentsServerTransport { return NewIncidentsServerTransport(&s.srv.IncidentsServer) })
 		resp, err = s.trIncidentsServer.Do(req)
+	case "MetadataClient":
+		initServer(s, &s.trMetadataServer, func() *MetadataServerTransport { return NewMetadataServerTransport(&s.srv.MetadataServer) })
+		resp, err = s.trMetadataServer.Do(req)
+	case "OfficeConsentsClient":
+		initServer(s, &s.trOfficeConsentsServer, func() *OfficeConsentsServerTransport {
+			return NewOfficeConsentsServerTransport(&s.srv.OfficeConsentsServer)
+		})
+		resp, err = s.trOfficeConsentsServer.Do(req)
 	case "OperationsClient":
 		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
+	case "ProductSettingsClient":
+		initServer(s, &s.trProductSettingsServer, func() *ProductSettingsServerTransport {
+			return NewProductSettingsServerTransport(&s.srv.ProductSettingsServer)
+		})
+		resp, err = s.trProductSettingsServer.Do(req)
+	case "SecurityMLAnalyticsSettingsClient":
+		initServer(s, &s.trSecurityMLAnalyticsSettingsServer, func() *SecurityMLAnalyticsSettingsServerTransport {
+			return NewSecurityMLAnalyticsSettingsServerTransport(&s.srv.SecurityMLAnalyticsSettingsServer)
+		})
+		resp, err = s.trSecurityMLAnalyticsSettingsServer.Do(req)
 	case "SentinelOnboardingStatesClient":
 		initServer(s, &s.trSentinelOnboardingStatesServer, func() *SentinelOnboardingStatesServerTransport {
 			return NewSentinelOnboardingStatesServerTransport(&s.srv.SentinelOnboardingStatesServer)
 		})
 		resp, err = s.trSentinelOnboardingStatesServer.Do(req)
+	case "SourceControlClient":
+		initServer(s, &s.trSourceControlServer, func() *SourceControlServerTransport {
+			return NewSourceControlServerTransport(&s.srv.SourceControlServer)
+		})
+		resp, err = s.trSourceControlServer.Do(req)
+	case "SourceControlsClient":
+		initServer(s, &s.trSourceControlsServer, func() *SourceControlsServerTransport {
+			return NewSourceControlsServerTransport(&s.srv.SourceControlsServer)
+		})
+		resp, err = s.trSourceControlsServer.Do(req)
 	case "ThreatIntelligenceIndicatorClient":
 		initServer(s, &s.trThreatIntelligenceIndicatorServer, func() *ThreatIntelligenceIndicatorServerTransport {
 			return NewThreatIntelligenceIndicatorServerTransport(&s.srv.ThreatIntelligenceIndicatorServer)

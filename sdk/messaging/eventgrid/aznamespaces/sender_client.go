@@ -76,11 +76,8 @@ func (client *SenderClient) sendEventCreateRequest(ctx context.Context, topicNam
 }
 
 // sendEventHandleResponse handles the SendEvent response.
-func (client *SenderClient) sendEventHandleResponse(resp *http.Response) (SendEventResponse, error) {
+func (client *SenderClient) sendEventHandleResponse(_ *http.Response) (SendEventResponse, error) {
 	result := SendEventResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.PublishResult); err != nil {
-		return SendEventResponse{}, err
-	}
 	return result, nil
 }
 
@@ -134,10 +131,7 @@ func (client *SenderClient) sendEventsCreateRequest(ctx context.Context, topicNa
 }
 
 // sendEventsHandleResponse handles the SendEvents response.
-func (client *SenderClient) sendEventsHandleResponse(resp *http.Response) (SendEventsResponse, error) {
+func (client *SenderClient) sendEventsHandleResponse(_ *http.Response) (SendEventsResponse, error) {
 	result := SendEventsResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.PublishResult); err != nil {
-		return SendEventsResponse{}, err
-	}
 	return result, nil
 }

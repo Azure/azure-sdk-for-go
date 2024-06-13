@@ -46,7 +46,7 @@ func NewThreatIntelligenceIndicatorMetricsClient(subscriptionID string, credenti
 // List - Get threat intelligence indicators metrics (Indicators counts by Type, Threat Type, Source).
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-10-01
+// Generated from API version 2022-09-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - options - ThreatIntelligenceIndicatorMetricsClientListOptions contains the optional parameters for the ThreatIntelligenceIndicatorMetricsClient.List
@@ -93,7 +93,7 @@ func (client *ThreatIntelligenceIndicatorMetricsClient) listCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2022-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

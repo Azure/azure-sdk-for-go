@@ -82,7 +82,7 @@ func TestQueryTable(t *testing.T) {
 			prefix2 := "zzzb"
 
 			defer require.NoError(t, clearAllTables(service))
-			//create 10 tables with our exected prefix and 1 with a different prefix
+			// create 10 tables with our exected prefix and 1 with a different prefix
 			for i := 0; i < tableCount; i++ {
 				if i < (tableCount - 1) {
 					name := fmt.Sprintf("%v%v", prefix1, i)

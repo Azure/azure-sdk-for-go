@@ -13,7 +13,7 @@ import (
 )
 
 // MarshalJSON implements the json.Marshaller interface for type AcknowledgeResult.
-func (a AcknowledgeResult) MarshalJSON() ([]byte, error) {
+func (a AcknowledgeEventsResult) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "failedLockTokens", a.FailedLockTokens)
 	populate(objectMap, "succeededLockTokens", a.SucceededLockTokens)
@@ -21,7 +21,7 @@ func (a AcknowledgeResult) MarshalJSON() ([]byte, error) {
 }
 
 // UnmarshalJSON implements the json.Unmarshaller interface for type AcknowledgeResult.
-func (a *AcknowledgeResult) UnmarshalJSON(data []byte) error {
+func (a *AcknowledgeEventsResult) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -170,14 +170,14 @@ func (r *ReceiveDetails) UnmarshalJSON(data []byte) error {
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ReceiveResult.
-func (r ReceiveResult) MarshalJSON() ([]byte, error) {
+func (r ReceiveEventsResult) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "value", r.Details)
 	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON implements the json.Unmarshaller interface for type ReceiveResult.
-func (r *ReceiveResult) UnmarshalJSON(data []byte) error {
+func (r *ReceiveEventsResult) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", r, err)
@@ -197,7 +197,7 @@ func (r *ReceiveResult) UnmarshalJSON(data []byte) error {
 }
 
 // MarshalJSON implements the json.Marshaller interface for type RejectResult.
-func (r RejectResult) MarshalJSON() ([]byte, error) {
+func (r RejectEventsResult) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "failedLockTokens", r.FailedLockTokens)
 	populate(objectMap, "succeededLockTokens", r.SucceededLockTokens)
@@ -205,7 +205,7 @@ func (r RejectResult) MarshalJSON() ([]byte, error) {
 }
 
 // UnmarshalJSON implements the json.Unmarshaller interface for type RejectResult.
-func (r *RejectResult) UnmarshalJSON(data []byte) error {
+func (r *RejectEventsResult) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", r, err)
@@ -228,7 +228,7 @@ func (r *RejectResult) UnmarshalJSON(data []byte) error {
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ReleaseResult.
-func (r ReleaseResult) MarshalJSON() ([]byte, error) {
+func (r ReleaseEventsResult) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "failedLockTokens", r.FailedLockTokens)
 	populate(objectMap, "succeededLockTokens", r.SucceededLockTokens)
@@ -236,7 +236,7 @@ func (r ReleaseResult) MarshalJSON() ([]byte, error) {
 }
 
 // UnmarshalJSON implements the json.Unmarshaller interface for type ReleaseResult.
-func (r *ReleaseResult) UnmarshalJSON(data []byte) error {
+func (r *ReleaseEventsResult) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", r, err)
@@ -259,7 +259,7 @@ func (r *ReleaseResult) UnmarshalJSON(data []byte) error {
 }
 
 // MarshalJSON implements the json.Marshaller interface for type RenewLocksResult.
-func (r RenewLocksResult) MarshalJSON() ([]byte, error) {
+func (r RenewEventLocksResult) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "failedLockTokens", r.FailedLockTokens)
 	populate(objectMap, "succeededLockTokens", r.SucceededLockTokens)
@@ -267,7 +267,7 @@ func (r RenewLocksResult) MarshalJSON() ([]byte, error) {
 }
 
 // UnmarshalJSON implements the json.Unmarshaller interface for type RenewLocksResult.
-func (r *RenewLocksResult) UnmarshalJSON(data []byte) error {
+func (r *RenewEventLocksResult) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", r, err)

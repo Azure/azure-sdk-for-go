@@ -4,7 +4,7 @@
 
 This client module allows you to publish events and receive events using the [Pull delivery](https://learn.microsoft.com/azure/event-grid/pull-delivery-overview) API.
 
-> NOTE: This client does not work with Event Grid Basic. Use the [publisher.Client][godoc_publisher_client] in the `publisher` sub-package instead.
+> NOTE: This client does not work with Event Grid Basic. Use the [azeventgrid.Client][godoc_egbasic_client] in the `azeventgrid` package instead.
 
 Key links:
 - [Source code][source]
@@ -31,13 +31,21 @@ go get github.com/Azure/azure-sdk-for-go/sdk/messaging/eventgrid/aznamespaces
 
 ### Authenticate the client
 
-Event Grid namespace clients authenticate using a shared key credential. An example of that can be viewed here: [ExampleNewClientWithSharedKeyCredential][godoc_example_newclient].
+Event Grid Namespaces clients (SenderClient and ReceiverClient) authenticate using a TokenCredential, provided by the [`azidentity` module](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/tree/main/sdk/azidentity), or using a shared key credential. 
+
+Using a TokenCredential:
+* **SenderClient**: [NewSenderClient example][godoc_example_newsender].
+* **ReceiverClient**: [NewReceiverClient example][godoc_example_newreceiver].
+
+Using a shared key:
+* **SenderClient**: [NewSenderClientWithSharedKeyCredential example][godoc_example_newsender_sharedkey].
+* **ReceiverClient**: [NewReceiverClientWithSharedKeyCredential example][godoc_example_newreceiver_sharedkey].
 
 # Key concepts
 
 An Event Grid namespace is a container for multiple types of resources, including [**namespace topics**][ms_topic]:
-- A [**namespace topic**][ms_topic] contains CloudEvents that you publish, via [Client.PublishCloudEvents][godoc_client_publish].
-- A [**topic subscription**][ms_subscription], associated with a single topic, can be used to receive events via [Client.ReceiveEvents][godoc_client_receive].
+- A [**namespace topic**][ms_topic] contains CloudEvents that you publish, via [SenderClient.SendEvents][godoc_send].
+- A [**topic subscription**][ms_subscription], associated with a single topic, can be used to receive events via [ReceiverClient.ReceiveEvents][godoc_receive].
 
 Namespaces also offer access using MQTT, although that is not covered in this package.
 
@@ -105,13 +113,16 @@ Azure SDK for Go is licensed under the [MIT](https://github.com/Azure/azure-sdk-
 [azure_sdk_for_go_contributing]: https://github.com/Azure/azure-sdk-for-go/blob/main/CONTRIBUTING.md
 [azure_sdk_for_go_contributing_developer_guide]: https://github.com/Azure/azure-sdk-for-go/blob/main/CONTRIBUTING.md#developer-guide
 [azure_sdk_for_go_contributing_pull_requests]: https://github.com/Azure/azure-sdk-for-go/blob/main/CONTRIBUTING.md#pull-requests
-[source]: https://aka.ms/azsdk/go/namespaces/src
-[godoc]: https://aka.ms/azsdk/go/namespaces/pkg
-[godoc_client_publish]: https://aka.ms/azsdk/go/namespaces/pkg#Client.PublishCloudEvents
-[godoc_client_receive]: https://aka.ms/azsdk/go/namespaces/pkg#Client.ReceiveCloudEvents
-[godoc_examples]: https://aka.ms/azsdk/go/namespaces/pkg#pkg-examples
-[godoc_example_newclient]: https://aka.ms/azsdk/go/namespaces/pkg#example-NewClientWithSharedKeyCredential
-[godoc_publisher_client]: https://aka.ms/azsdk/go/eventgrid/pkg/#Client
+[source]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/messaging/eventgrid/aznamespaces
+[godoc]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/eventgrid/aznamespaces
+[godoc_send]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/eventgrid/aznamespaces#SenderClient.SendEvents
+[godoc_receive]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/eventgrid/aznamespaces#ReceiverClient.ReceiveEvents
+[godoc_examples]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/eventgrid/aznamespaces#pkg-examples
+[godoc_example_newsender_sharedkey]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/eventgrid/aznamespaces#example-NewSenderClientWithSharedKeyCredential
+[godoc_example_newreceiver_sharedkey]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/eventgrid/aznamespaces#example-NewReceiverClientWithSharedKeyCredential
+[godoc_example_newsender]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/eventgrid/aznamespaces#example-NewSenderClient
+[godoc_example_newreceiver]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/eventgrid/aznamespaces#example-NewReceiverClient
+[godoc_egbasic_client]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/eventgrid/aznamespaces#Client
 [ms_namespace]: https://learn.microsoft.com/azure/event-grid/concepts-pull-delivery#namespaces
 [ms_topic]: https://learn.microsoft.com/azure/event-grid/concepts-pull-delivery#namespace-topics
 [ms_subscription]: https://learn.microsoft.com/azure/event-grid/concepts-pull-delivery#event-subscriptions

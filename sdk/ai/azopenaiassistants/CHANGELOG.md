@@ -1,6 +1,6 @@
 # Release History
 
-## 0.1.2 (TBD)
+## 0.2.0 (TBD)
 
 ### Features Added
 

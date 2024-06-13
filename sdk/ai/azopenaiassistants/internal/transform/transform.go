@@ -194,8 +194,29 @@ func (t *transformer) applyHacks() error {
 	// TODO: the 'fileID' parameter for "createVectorStoreFileCreateRequest" isn't being encoded as a body field, it's being encoded as the entire body.
 	re := regexp.MustCompile(`(?s)(func \(client \*Client\) createVectorStoreFileCreateRequest\(.+?if err := runtime.MarshalAsJSON\(req, )fileID`)
 
-	return transformFiles(t.fileCache, "createVectorStoreFileCreateRequest fix", []string{"client.go"}, func(text string) (string, error) {
+	err := transformFiles(t.fileCache, "createVectorStoreFileCreateRequest fix", []string{"client.go"}, func(text string) (string, error) {
 		text = re.ReplaceAllString(text, "${1}fileIDStruct{fileID}")
+		return text, nil
+	}, nil)
+
+	if err != nil {
+		return err
+	}
+
+	// TODO: for some reason the doc comments aren't making it over.
+	docs := map[string]string{
+		"CreateVectorStoreFileBatchBody": "// CreateVectorStoreFileBatchBody contains arguments for the [CreateVectorStoreFileBatch] method.",
+		"SubmitToolOutputsToRunBody":     "// SubmitToolOutputsToRunBody contains arguments for the [SubmitToolOutputsToRun] method.",
+		"UpdateMessageBody":              "// UpdateMessageBody contains arguments for the [UpdateMessage] method.",
+		"UpdateRunBody":                  "// UpdateRunBody contains arguments for the [UpdateRun] method.",
+	}
+
+	return transformFiles(t.fileCache, "update doc comments", []string{"models.go"}, func(text string) (string, error) {
+		for typeName, comment := range docs {
+			text = strings.Replace(text,
+				fmt.Sprintf("type %s struct {", typeName),
+				fmt.Sprintf("%s\ntype %s struct {", comment, typeName), 1)
+		}
 		return text, nil
 	}, nil)
 }

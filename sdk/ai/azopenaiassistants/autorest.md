@@ -225,7 +225,7 @@ directive:
       $[vectorStoresBase + "/{vectorStoreId}/files"].get.responses["200"].schema["x-ms-client-name"] = "VectorStoreFilesPage";
 
       // POSTs
-      $[vectorStoresBase + "/{vectorStoreId}/file_batches"].post.parameters[1].schema["x-ms-client-name"] = "CreateVectorStorageFileBatchBody";
+      $[vectorStoresBase + "/{vectorStoreId}/file_batches"].post.parameters[1].schema["x-ms-client-name"] = "CreateVectorStoreFileBatchBody";
 
       return $;
 ```

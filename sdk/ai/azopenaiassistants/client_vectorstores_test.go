@@ -202,7 +202,7 @@ func TestVectorStoresWithBatch(t *testing.T) {
 			fileIDs = append(fileIDs, *uploadFileResp.ID)
 		}
 
-		createBatchResp, err := client.CreateVectorStoreFileBatch(context.Background(), *createVectorResp.ID, azopenaiassistants.CreateVectorStorageFileBatchBody{
+		createBatchResp, err := client.CreateVectorStoreFileBatch(context.Background(), *createVectorResp.ID, azopenaiassistants.CreateVectorStoreFileBatchBody{
 			FileIDs: fileIDs,
 		}, nil)
 		require.NoError(t, err)

@@ -452,7 +452,8 @@ type CreateToolResourcesOptions struct {
 	FileSearch *CreateFileSearchToolResourceOptions
 }
 
-type CreateVectorStorageFileBatchBody struct {
+// CreateVectorStoreFileBatchBody contains arguments for the [CreateVectorStoreFileBatch] method.
+type CreateVectorStoreFileBatchBody struct {
 	// REQUIRED; A list of File IDs that the vector store should use. Useful for tools like file_search that can access files.
 	FileIDs []string
 }
@@ -1526,6 +1527,7 @@ type SubmitToolOutputsDetails struct {
 	ToolCalls []RequiredToolCallClassification
 }
 
+// SubmitToolOutputsToRunBody contains arguments for the [SubmitToolOutputsToRun] method.
 type SubmitToolOutputsToRunBody struct {
 	// REQUIRED; A list of tools for which the outputs are being submitted.
 	ToolOutputs []ToolOutput
@@ -1879,6 +1881,7 @@ type UpdateFileSearchToolResourceOptions struct {
 	VectorStoreIDs []string
 }
 
+// UpdateMessageBody contains arguments for the [UpdateMessage] method.
 type UpdateMessageBody struct {
 	// A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information about that
 	// object in a structured format. Keys may be up to 64 characters in length and
@@ -1886,6 +1889,7 @@ type UpdateMessageBody struct {
 	Metadata map[string]*string
 }
 
+// UpdateRunBody contains arguments for the [UpdateRun] method.
 type UpdateRunBody struct {
 	// A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information about that
 	// object in a structured format. Keys may be up to 64 characters in length and

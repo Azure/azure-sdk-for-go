@@ -486,7 +486,7 @@ func (client *Client) createVectorStoreFileHandleResponse(resp *http.Response) (
 //   - vectorStoreID - The ID of the vector store for which to create a File Batch.
 //   - options - CreateVectorStoreFileBatchOptions contains the optional parameters for the Client.CreateVectorStoreFileBatch
 //     method.
-func (client *Client) CreateVectorStoreFileBatch(ctx context.Context, vectorStoreID string, body CreateVectorStorageFileBatchBody, options *CreateVectorStoreFileBatchOptions) (CreateVectorStoreFileBatchResponse, error) {
+func (client *Client) CreateVectorStoreFileBatch(ctx context.Context, vectorStoreID string, body CreateVectorStoreFileBatchBody, options *CreateVectorStoreFileBatchOptions) (CreateVectorStoreFileBatchResponse, error) {
 	var err error
 	req, err := client.createVectorStoreFileBatchCreateRequest(ctx, vectorStoreID, body, options)
 	if err != nil {
@@ -505,7 +505,7 @@ func (client *Client) CreateVectorStoreFileBatch(ctx context.Context, vectorStor
 }
 
 // createVectorStoreFileBatchCreateRequest creates the CreateVectorStoreFileBatch request.
-func (client *Client) createVectorStoreFileBatchCreateRequest(ctx context.Context, vectorStoreID string, body CreateVectorStorageFileBatchBody, options *CreateVectorStoreFileBatchOptions) (*policy.Request, error) {
+func (client *Client) createVectorStoreFileBatchCreateRequest(ctx context.Context, vectorStoreID string, body CreateVectorStoreFileBatchBody, options *CreateVectorStoreFileBatchOptions) (*policy.Request, error) {
 	urlPath := client.formatURL("/vector_stores/{vectorStoreId}/file_batches")
 	if vectorStoreID == "" {
 		return nil, errors.New("parameter vectorStoreID cannot be empty")

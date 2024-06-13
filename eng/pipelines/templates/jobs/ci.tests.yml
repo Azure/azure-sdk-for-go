@@ -21,6 +21,9 @@ parameters:
   - name: UsePlatformContainer
     type: boolean
     default: false
+  - name: EnableRaceDetector
+    type: boolean
+    default: false
 
 jobs:
 - job:
@@ -67,6 +70,7 @@ jobs:
       GoVersion: $(go.version)
       TestProxy: ${{ parameters.UsePipelineProxy }}
       TestRunTime: ${{ parameters.TestRunTime }}
+      EnableRaceDetector: ${{ parameters.EnableRaceDetector }}
       EnvVars:
         AZURE_RECORD_MODE: 'playback'
 

@@ -45,7 +45,7 @@ func (v SignatureValues) SignWithSharedKey(sharedKeyCredential *SharedKeyCredent
 
 	resource := "s"
 	if v.FilePath == "" {
-		//Make sure the permission characters are in the correct order
+		// Make sure the permission characters are in the correct order
 		perms, err := parseSharePermissions(v.Permissions)
 		if err != nil {
 			return QueryParameters{}, err

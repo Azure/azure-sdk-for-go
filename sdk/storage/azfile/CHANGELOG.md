@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.3-beta.1 (Unreleased)
+## 1.3.0-beta.1 (Unreleased)
 
 ### Features Added
 * Add Rename Support to List Ranges API

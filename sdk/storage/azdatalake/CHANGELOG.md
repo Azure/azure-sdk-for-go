@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.4-beta.1 (Unreleased)
+## 1.2.0-beta.1 (Unreleased)
 
 ### Features Added
 * Added ACL response headers in GetBlobProperties API for Files.

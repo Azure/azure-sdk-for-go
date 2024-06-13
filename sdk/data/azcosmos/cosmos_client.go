@@ -501,6 +501,7 @@ type pipelineRequestOptions struct {
 	resourceAddress       string
 	isRidBased            bool
 	isWriteOperation      bool
+	retryContext          retryContext
 }
 
 func getAllowedHeaders() []string {

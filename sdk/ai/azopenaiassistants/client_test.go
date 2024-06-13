@@ -47,7 +47,7 @@ func Test_UsingIdentity(t *testing.T) {
 	PagingLoop:
 		for pager.More() {
 			page, err := pager.NextPage(context.Background())
-			require.NoError(t, err)
+			requireErr(t, true, err)
 
 			for _, a := range page.Data {
 				name := "<none>"
@@ -93,7 +93,7 @@ func TestAssistantCreationAndListing(t *testing.T) {
 	PagingLoop:
 		for pager.More() {
 			page, err := pager.NextPage(context.Background())
-			require.NoError(t, err)
+			requireErr(t, azure, err)
 
 			for _, a := range page.Data {
 				name := "<none>"
@@ -133,11 +133,11 @@ func TestAssistantMessages(t *testing.T) {
 		})
 
 		threadResp, err := client.CreateThread(context.Background(), azopenaiassistants.CreateThreadBody{}, nil)
-		require.NoError(t, err)
+		requireErr(t, azure, err)
 
 		defer func() {
 			_, err := client.DeleteThread(context.Background(), *threadResp.ID, nil)
-			require.NoError(t, err)
+			requireErr(t, azure, err)
 		}()
 
 		threadID := threadResp.ID
@@ -145,11 +145,11 @@ func TestAssistantMessages(t *testing.T) {
 		uploadResp, err := client.UploadFile(context.Background(), bytes.NewReader([]byte("hello world")), azopenaiassistants.FilePurposeAssistants, &azopenaiassistants.UploadFileOptions{
 			Filename: getFileName(t, "txt"),
 		})
-		require.NoError(t, err)
+		requireErr(t, azure, err)
 
 		defer func() {
 			_, err := client.DeleteFile(context.Background(), *uploadResp.ID, nil)
-			require.NoError(t, err)
+			requireErr(t, azure, err)
 		}()
 
 		messageResp, err := client.CreateMessage(context.Background(), *threadID, azopenaiassistants.CreateMessageBody{
@@ -165,7 +165,7 @@ func TestAssistantMessages(t *testing.T) {
 				},
 			},
 		}, nil)
-		require.NoError(t, err)
+		requireErr(t, azure, err)
 
 		// something interesting (but not API breaking). Azure OpenAI returns the attachments here in
 		// a different order than OpenAI does.
@@ -186,12 +186,12 @@ func TestAssistantMessages(t *testing.T) {
 		messageID := messageResp.ID
 
 		getMessageResp, err := client.GetMessage(context.Background(), *threadID, *messageID, nil)
-		require.NoError(t, err)
+		requireErr(t, azure, err)
 
 		require.Equal(t, "How many ears does a dog usually have?", *getMessageResp.Content[0].(*azopenaiassistants.MessageTextContent).Text.Value)
 
 		getMessageFileResp, err := client.GetFile(context.Background(), *uploadResp.ID, nil)
-		require.NoError(t, err)
+		requireErr(t, azure, err)
 
 		require.Equal(t, "file", *getMessageFileResp.Object)
 
@@ -199,7 +199,7 @@ func TestAssistantMessages(t *testing.T) {
 			listFilesResp, err := client.ListFiles(context.Background(), &azopenaiassistants.ListFilesOptions{
 				Purpose: to.Ptr(azopenaiassistants.FilePurposeAssistants),
 			})
-			require.NoError(t, err)
+			requireErr(t, azure, err)
 			require.Equal(t, *getMessageFileResp.ID, *listFilesResp.Data[0].ID)
 		}
 	}
@@ -230,11 +230,11 @@ func TestAssistantConversationLoop(t *testing.T) {
 		})
 
 		createThreadResp, err := client.CreateThread(context.Background(), azopenaiassistants.CreateThreadBody{}, nil)
-		require.NoError(t, err)
+		requireErr(t, azure, err)
 
 		t.Cleanup(func() {
 			_, err := client.DeleteThread(context.Background(), *createThreadResp.ID, nil)
-			require.NoError(t, err)
+			requireErr(t, azure, err)
 		})
 
 		threadID := *createThreadResp.ID
@@ -282,7 +282,7 @@ func TestAssistantConversationLoop(t *testing.T) {
 						Content: &msg,
 						Role:    to.Ptr(azopenaiassistants.MessageRoleUser),
 					}, nil)
-					require.NoError(t, err)
+					requireErr(t, azure, err)
 					require.NotEmpty(t, createMessageResp)
 
 					t.Logf("[ME] %s", msg)
@@ -305,7 +305,7 @@ func TestAssistantConversationLoop(t *testing.T) {
 					//   }
 					//AdditionalInstructions:
 				}, nil)
-				require.NoError(t, err)
+				requireErr(t, azure, err)
 
 				runID := *createRunResp.ID
 				var lastGetRunResp azopenaiassistants.GetRunResponse
@@ -326,7 +326,7 @@ func TestAssistantConversationLoop(t *testing.T) {
 
 				// grab any messages that occurred after our last known message
 				lastResponses, err = getLatestMessages(context.Background(), client, threadID, lastMessageID)
-				require.NoError(t, err)
+				requireErr(t, azure, err)
 			}
 		}
 
@@ -356,11 +356,11 @@ func TestAssistantRequiredAction(t *testing.T) {
 		var lastMessageID, runID, threadID string
 		{
 			createThreadResp, err := client.CreateThread(context.Background(), azopenaiassistants.CreateThreadBody{}, nil)
-			require.NoError(t, err)
+			requireErr(t, azure, err)
 
 			t.Cleanup(func() {
 				_, err := client.DeleteThread(context.Background(), *createThreadResp.ID, nil)
-				require.NoError(t, err)
+				requireErr(t, azure, err)
 			})
 
 			threadID = *createThreadResp.ID
@@ -369,7 +369,7 @@ func TestAssistantRequiredAction(t *testing.T) {
 				Content: to.Ptr("What's the weather like in Boston, MA, in celsius?"),
 				Role:    to.Ptr(azopenaiassistants.MessageRoleUser),
 			}, nil)
-			require.NoError(t, err)
+			requireErr(t, azure, err)
 
 			lastMessageID = *msgResponse.ID
 
@@ -378,12 +378,12 @@ func TestAssistantRequiredAction(t *testing.T) {
 				AssistantID:  createAssistantResp.ID,
 				Instructions: to.Ptr("Use functions to answer questions, when possible."),
 			}, nil)
-			require.NoError(t, err)
+			requireErr(t, azure, err)
 
 			runID = *createRunResp.ID
 		}
 
-		lastResp, err := pollForTests(t, context.Background(), client, threadID, runID)
+		lastResp, err := pollForTests(t, context.Background(), client, threadID, runID, azure)
 		require.NoError(t, err)
 		require.Equal(t, azopenaiassistants.RunStatusRequiresAction, *lastResp.Status, "More action would be required since we need to run the action and feed it's inputs back in")
 
@@ -419,18 +419,18 @@ func TestAssistantRequiredAction(t *testing.T) {
 					},
 				},
 			}, nil)
-			require.NoError(t, err)
+			requireErr(t, azure, err)
 			require.NotEmpty(t, submitToolOutputResp)
 		}
 
 		// the run will restart now, we just need to wait until it finishes
-		lastResp, err = pollForTests(t, context.Background(), client, threadID, runID)
+		lastResp, err = pollForTests(t, context.Background(), client, threadID, runID, azure)
 		require.NoError(t, err)
 		// note our status is Completed now, instead of RunStatusRequiresAction
 		require.Equal(t, azopenaiassistants.RunStatusCompleted, *lastResp.Status, "Run should complete now that we've submitted tool outputs")
 
 		latestMessages, err := getLatestMessages(context.Background(), client, threadID, &lastMessageID)
-		require.NoError(t, err)
+		requireErr(t, azure, err)
 
 		require.NotEmpty(t, latestMessages)
 
@@ -473,23 +473,23 @@ func TestNewListRunsPager(t *testing.T) {
 				},
 			},
 		}, nil)
-		require.NoError(t, err)
+		requireErr(t, azure, err)
 
 		runID := *threadAndRunResp.ID
 		threadID := *threadAndRunResp.ThreadID
 		runs[runID] = true
 
-		lastRun, err := pollForTests(t, context.Background(), client, threadID, runID)
+		lastRun, err := pollForTests(t, context.Background(), client, threadID, runID, azure)
 		require.NoError(t, err)
 		require.Equal(t, azopenaiassistants.RunStatusCompleted, *lastRun.Status)
 
 		run2Resp, err := client.CreateRun(context.Background(), threadID, azopenaiassistants.CreateRunBody{
 			AssistantID: &assistantID,
 		}, nil)
-		require.NoError(t, err)
+		requireErr(t, azure, err)
 		runs[*run2Resp.ID] = true
 
-		lastRun, err = pollForTests(t, context.Background(), client, threadID, runID)
+		lastRun, err = pollForTests(t, context.Background(), client, threadID, runID, azure)
 		require.NoError(t, err)
 		require.Equal(t, azopenaiassistants.RunStatusCompleted, *lastRun.Status)
 
@@ -543,12 +543,12 @@ func TestNewListRunStepsPager(t *testing.T) {
 				},
 			},
 		}, nil)
-		require.NoError(t, err)
+		requireErr(t, azure, err)
 
 		threadID := *createThreadAndRunResp.ThreadID
 		runID := *createThreadAndRunResp.ID
 
-		lastRun, err := pollForTests(t, context.Background(), client, threadID, runID)
+		lastRun, err := pollForTests(t, context.Background(), client, threadID, runID, azure)
 		require.NoError(t, err)
 		require.Equal(t, azopenaiassistants.RunStatusCompleted, *lastRun.Status)
 
@@ -564,7 +564,7 @@ func TestNewListRunStepsPager(t *testing.T) {
 
 		for pager.More() {
 			page, err := pager.NextPage(context.Background())
-			require.NoError(t, err)
+			requireErr(t, azure, err)
 
 			for _, runStep := range page.Data {
 				require.Equal(t, azopenaiassistants.RunStepStatusCompleted, *runStep.Status)
@@ -613,16 +613,16 @@ func TestFiles(t *testing.T) {
 		uploadResp, err := client.UploadFile(context.Background(), bytes.NewReader(textBytes), azopenaiassistants.FilePurposeAssistants, &azopenaiassistants.UploadFileOptions{
 			Filename: getFileName(t, "txt"),
 		})
-		require.NoError(t, err)
+		requireErr(t, azure, err)
 		require.Equal(t, expectedLen, *uploadResp.Bytes)
 
 		defer func() {
 			_, err := client.DeleteFile(context.Background(), *uploadResp.ID, nil)
-			require.NoError(t, err)
+			requireErr(t, azure, err)
 		}()
 
 		getFileResp, err := client.GetFile(context.Background(), *uploadResp.ID, nil)
-		require.NoError(t, err)
+		requireErr(t, azure, err)
 
 		require.Equal(t, expectedLen, *getFileResp.Bytes)
 	}
@@ -636,10 +636,12 @@ func TestFiles(t *testing.T) {
 	})
 }
 
-func pollForTests(t *testing.T, ctx context.Context, client *azopenaiassistants.Client, threadID string, runID string) (azopenaiassistants.GetRunResponse, error) {
+func pollForTests(t *testing.T, ctx context.Context, client *azopenaiassistants.Client, threadID string, runID string, azure bool) (azopenaiassistants.GetRunResponse, error) {
 	resp, err := pollUntilRunEnds(ctx, client, threadID, runID)
 
 	if err != nil {
+		requireErr(t, azure, err)
+
 		// it's possible we're oversubscribed, so we need to just skip this test
 		if resp.LastError.Code != nil && *resp.LastError.Code == "rate_limit_exceeded" {
 			t.Skipf("Test being skipped, we're rate limited")

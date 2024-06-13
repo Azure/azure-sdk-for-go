@@ -7,7 +7,6 @@
 package azquery_test
 
 import (
-	"context"
 	"crypto/tls"
 	"encoding/json"
 	"net/http"
@@ -15,13 +14,11 @@ import (
 	"regexp"
 	"strings"
 	"testing"
-	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	azcred "github.com/Azure/azure-sdk-for-go/sdk/internal/test/credential"
 	"github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery"
 	"github.com/stretchr/testify/require"
 )
@@ -62,18 +59,13 @@ func run(m *testing.M) int {
 		}()
 	}
 
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		credential = &FakeCredential{}
-	} else {
-		tenantID := getEnvVar("AZQUERY_TENANT_ID", "")
-		clientID := getEnvVar("AZQUERY_CLIENT_ID", "")
-		secret := getEnvVar("AZQUERY_CLIENT_SECRET", "")
-		var err error
-		credential, err = azidentity.NewClientSecretCredential(tenantID, clientID, secret, nil)
-		if err != nil {
-			panic(err)
-		}
+	var err error
+	credential, err = azcred.New(nil)
+	if err != nil {
+		panic(err)
+	}
 
+	if recording.GetRecordMode() != recording.PlaybackMode {
 		if cloudEnv, ok := os.LookupEnv("AZQUERY_ENVIRONMENT"); ok {
 			if strings.EqualFold(cloudEnv, "AzureUSGovernment") {
 				clientCloud = cloud.AzureGovernment
@@ -158,12 +150,6 @@ func getEnvVar(envVar string, fakeValue string) string {
 	}
 
 	return value
-}
-
-type FakeCredential struct{}
-
-func (f *FakeCredential) GetToken(ctx context.Context, options policy.TokenRequestOptions) (azcore.AccessToken, error) {
-	return azcore.AccessToken{Token: "faketoken", ExpiresOn: time.Now().Add(time.Hour).UTC()}, nil
 }
 
 type serdeModel interface {

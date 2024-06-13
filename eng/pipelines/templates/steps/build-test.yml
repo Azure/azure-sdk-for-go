@@ -73,7 +73,7 @@ steps:
     inputs:
       targetType: 'filePath'
       filePath: ./eng/scripts/run_tests.ps1
-      arguments: '${{ parameters.ServiceDirectory }} ${{ parameters.TestRunTime }} ${{ parameters.EnableRaceDetector }}'
+      arguments: '${{ parameters.ServiceDirectory }} ${{ parameters.TestRunTime }} $${{ parameters.EnableRaceDetector }}'
       pwsh: true
     env:
       GO111MODULE: 'on'

@@ -432,7 +432,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockFromURLWithMD5() {
 
 	// Test stage block from URL with bad MD5 value
 	_, badMD5 := testcommon.GetDataAndReader(testName, 16)
-	var badMD5Validator blob.SourceContentValidationTypeMD5 = badMD5[:]
+	var badMD5Validator blob.SourceContentValidationTypeMD5 = badMD5
 	opts = blockblob.StageBlockFromURLOptions{
 		SourceContentValidation: badMD5Validator,
 	}
@@ -3838,7 +3838,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestUploadBlockBlobWithSpecialCharacters
 
 	bbClient := testcommon.GetBlockBlobClient(testcommon.GenerateBlobName(testName), containerClient)
 	blobTagsMap := map[string]string{
-		"+-./:=_ ": "firsttag",
+		"+-./:=_ ": "firsttag", //nolint
 		"tag2":     "+-./:=_",
 		"+-./:=_1": "+-./:=_",
 	}
@@ -4247,7 +4247,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestListBlobReturnsTags() {
 	blobName := testcommon.GenerateBlobName(testName)
 	blobClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blobName, containerClient)
 	blobTagsMap := map[string]string{
-		"+-./:=_ ": "firsttag",
+		"+-./:=_ ": "firsttag", //nolint
 		"tag2":     "+-./:=_",
 		"+-./:=_1": "+-./:=_",
 	}
@@ -4762,7 +4762,7 @@ func (s *BlockBlobRecordedTestsSuite) TestUploadBlobWithMD5() {
 
 	// Test Upload with bad MD5
 	_, badMD5 := testcommon.GetDataAndReader(testName, 16)
-	var badMD5Validator blob.TransferValidationTypeMD5 = badMD5[:]
+	var badMD5Validator blob.TransferValidationTypeMD5 = badMD5
 
 	uploadBlockBlobOptions = blockblob.UploadOptions{
 		TransactionalValidation: badMD5Validator,
@@ -5131,7 +5131,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestBlobUploadStreamDownloadBuffer() {
 		n, err := srcBlob.DownloadBuffer(context.Background(), buff, &b)
 		_require.NoError(err)
 		_require.Equal(int64(contentSize), n)
-		_require.Equal(contentMD5, md5.Sum(buff[:]))
+		_require.Equal(contentMD5, md5.Sum(buff))
 	}
 
 	testUploadDownload(0) // zero byte blob

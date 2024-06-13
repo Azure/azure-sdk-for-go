@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+* Fixed a data race in `mock/Server.Do`.
 
 ### Other Changes
 

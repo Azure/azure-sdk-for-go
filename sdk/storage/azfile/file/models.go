@@ -691,6 +691,9 @@ type GetRangeListOptions struct {
 	ShareSnapshot *string
 	// LeaseAccessConditions contains optional parameters to access leased entity.
 	LeaseAccessConditions *LeaseAccessConditions
+	// SupportRename determines whether the changed ranges for a file should be listed when the file's location in the
+	// previous snapshot is different from the location in the Request URI, as a result of rename or move operations.
+	SupportRename *bool
 }
 
 func (o *GetRangeListOptions) format() (*generated.FileClientGetRangeListOptions, *generated.LeaseAccessConditions) {
@@ -702,6 +705,7 @@ func (o *GetRangeListOptions) format() (*generated.FileClientGetRangeListOptions
 		Prevsharesnapshot: o.PrevShareSnapshot,
 		Range:             exported.FormatHTTPRange(o.Range),
 		Sharesnapshot:     o.ShareSnapshot,
+		SupportRename:     o.SupportRename,
 	}, o.LeaseAccessConditions
 }
 

@@ -292,6 +292,7 @@ const (
 	StorageErrorCodeOutOfRangeInput                      StorageErrorCode = "OutOfRangeInput"
 	StorageErrorCodeOutOfRangeQueryParameterValue        StorageErrorCode = "OutOfRangeQueryParameterValue"
 	StorageErrorCodeParentNotFound                       StorageErrorCode = "ParentNotFound"
+	StorageErrorCodePreviousSnapshotNotFound             StorageErrorCode = "PreviousSnapshotNotFound"
 	StorageErrorCodeReadOnlyAttribute                    StorageErrorCode = "ReadOnlyAttribute"
 	StorageErrorCodeRequestBodyTooLarge                  StorageErrorCode = "RequestBodyTooLarge"
 	StorageErrorCodeRequestURLFailedToParse              StorageErrorCode = "RequestUrlFailedToParse"
@@ -363,6 +364,7 @@ func PossibleStorageErrorCodeValues() []StorageErrorCode {
 		StorageErrorCodeOutOfRangeInput,
 		StorageErrorCodeOutOfRangeQueryParameterValue,
 		StorageErrorCodeParentNotFound,
+		StorageErrorCodePreviousSnapshotNotFound,
 		StorageErrorCodeReadOnlyAttribute,
 		StorageErrorCodeRequestBodyTooLarge,
 		StorageErrorCodeRequestURLFailedToParse,

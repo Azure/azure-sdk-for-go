@@ -172,12 +172,12 @@ func TestFileSignatureValues_SignWithSharedKey(t *testing.T) {
 			expectedError: errors.New("service SAS is missing at least one of these: ExpiryTime or Permissions"),
 		},
 		{
-			object:        SignatureValues{ShareName: "fakestorageshare", Permissions: "r", ExpiryTime: *new(time.Time)},
+			object:        SignatureValues{ShareName: "fakestorageshare", Permissions: "r", ExpiryTime: time.Time{}},
 			expected:      QueryParameters{},
 			expectedError: errors.New("service SAS is missing at least one of these: ExpiryTime or Permissions"),
 		},
 		{
-			object:        SignatureValues{ShareName: "fakestorageshare", Permissions: "", ExpiryTime: *new(time.Time), Identifier: "fakepolicyname"},
+			object:        SignatureValues{ShareName: "fakestorageshare", Permissions: "", ExpiryTime: time.Time{}, Identifier: "fakepolicyname"},
 			expected:      QueryParameters{version: Version, resource: "s", identifier: "fakepolicyname"},
 			expectedError: nil,
 		},

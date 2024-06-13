@@ -2651,7 +2651,6 @@ func (s *RecordedTestSuite) TestRenameDirIfModifiedSinceFalse() {
 	}
 
 	_, err = dirClient.Rename(context.Background(), "newName", renameFileOpts)
-
 	_require.Error(err)
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.SourceConditionNotMet)
 }
@@ -2721,7 +2720,6 @@ func (s *RecordedTestSuite) TestRenameDirIfUnmodifiedSinceFalse() {
 	}
 
 	_, err = dirClient.Rename(context.Background(), "newName", renameFileOpts)
-
 	_require.Error(err)
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.SourceConditionNotMet)
 }

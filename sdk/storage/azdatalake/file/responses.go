@@ -73,6 +73,9 @@ type DownloadResponse struct {
 	// AcceptRanges contains the information returned from the Accept-Ranges header response.
 	AcceptRanges *string
 
+	// AccessControlList contains the combined list of access that are set for user, group and other on the file
+	AccessControlList *string
+
 	// Body contains the streaming response.
 	Body io.ReadCloser
 
@@ -244,6 +247,9 @@ func FormatDownloadStreamResponse(r *blob.DownloadStreamResponse, rawResponse *h
 	}
 	if val := rawResponse.Header.Get("x-ms-encryption-context"); val != "" {
 		newResp.EncryptionContext = &val
+	}
+	if val := rawResponse.Header.Get("x-ms-acl"); val != "" {
+		newResp.AccessControlList = &val
 	}
 	return newResp
 }

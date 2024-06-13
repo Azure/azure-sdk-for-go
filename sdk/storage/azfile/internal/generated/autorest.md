@@ -7,7 +7,7 @@ go: true
 clear-output-folder: false
 version: "^3.0.0"
 license-header: MICROSOFT_MIT_NO_VERSION
-input-file: "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/4bafbf3ab1532e390ad5757433679e9ebb5cbf38/specification/storage/data-plane/Microsoft.FileStorage/preview/2023-08-03/file.json"
+input-file: "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/70cfdba3d6acf2325fa5a9d264dfdf69c99fc0f9/specification/storage/data-plane/Microsoft.FileStorage/preview/2024-05-04/file.json"
 credential-scope: "https://storage.azure.com/.default"
 output-folder: ../generated
 file-prefix: "zz_"
@@ -22,7 +22,7 @@ export-clients: true
 use: "@autorest/go@4.0.0-preview.61"
 ```
 
-### Updating service version to 2023-11-03
+### Updating service version to 2024-05-04
 
 ```yaml
 directive:
@@ -35,7 +35,7 @@ directive:
   transform: >-
     return $.
       replaceAll(`[]string{"2023-08-03"}`, `[]string{ServiceVersion}`).
-      replaceAll(`2023-08-03`, `2023-11-03`);
+      replaceAll(`2023-08-03`, `2024-05-04`);
 ```
 
 ### Don't include share name, directory, or file name in path - we have direct URIs

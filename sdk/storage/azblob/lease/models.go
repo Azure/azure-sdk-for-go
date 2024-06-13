@@ -97,8 +97,6 @@ func (o *BlobReleaseOptions) format() (*generated.BlobClientReleaseLeaseOptions,
 	return nil, o.ModifiedAccessConditions
 }
 
-///////////////////////////
-
 // ContainerAcquireOptions contains the optional parameters for the LeaseClient.AcquireLease method.
 type ContainerAcquireOptions struct {
 	ModifiedAccessConditions *ModifiedAccessConditions

@@ -562,7 +562,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockFromURLWithCRC64() {
 //		// Prepare source bbClient for copy.
 //		_, err = srcBlob.Upload(context.Background(), streaming.NopCloser(body), nil)
 //		_require.NoError(err)
-//		//_require.Equal(uploadSrcResp.RawResponse.StatusCode, 201)
+//		// _require.Equal(uploadSrcResp.RawResponse.StatusCode, 201)
 //
 //		// Get source blob url with SAS for StageFromURL.
 //		srcBlobParts, _ := NewBlobURLParts(srcBlob.URL())
@@ -648,7 +648,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockFromURLWithCRC64() {
 //		const contentSize = 8 * 1024 // 8 KB
 //		content := make([]byte, contentSize)
 //		body := bytes.NewReader(content)
-//		//contentMD5 := md5.Sum(content)
+//		// contentMD5 := md5.Sum(content)
 //
 //		ctx := context.Background()
 //
@@ -656,7 +656,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockFromURLWithCRC64() {
 //
 //		_, err = bbClient.Upload(context.Background(), streaming.NopCloser(body), nil)
 //		_require.NoError(err)
-//		//_require.Equal(uploadSrcResp.RawResponse.StatusCode, 201)
+//		// _require.Equal(uploadSrcResp.RawResponse.StatusCode, 201)
 //
 //		// Get blob url with SAS.
 //		blobParts, _ := NewBlobURLParts(bbClient.URL())
@@ -1246,7 +1246,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlSourceContentMD5() {
 	_require.NotEqual(*resp.ETag, "")
 	_require.NotEqual(*resp.RequestID, "")
 	_require.NotEqual(*resp.Version, "")
-	_require.Equal((*resp.Date).IsZero(), false)
+	_require.Equal(*resp.Date.IsZero(), false)
 	_require.EqualValues(resp.ContentMD5, sourceDataMD5Value[:])
 
 	// Try UploadBlobFromURL with bad MD5
@@ -2015,7 +2015,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlobIfUnmodifiedSinceFalse() {
 	loc, err := time.LoadLocation("EST")
 	_require.NoError(err)
 	currentTime := testcommon.GetRelativeTimeFromAnchor(createResp.Date, -10)
-	currentTime = currentTime.In(loc) //converting to EST
+	currentTime = currentTime.In(loc) // converting to EST
 
 	uploadBlockBlobOptions := blockblob.UploadOptions{
 		AccessConditions: &blob.AccessConditions{
@@ -5420,7 +5420,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestBlockBlobSetExpiryToAbsolute() {
 	resp, err = bbClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
 	_require.NotNil(resp.ExpiresOn)
-	_require.Equal(expiryTimeAbsolute.UTC().Format(http.TimeFormat), (*resp.ExpiresOn).UTC().Format(http.TimeFormat))
+	_require.Equal(expiryTimeAbsolute.UTC().Format(http.TimeFormat), resp.ExpiresOn.UTC().Format(http.TimeFormat))
 
 	time.Sleep(time.Second * 10)
 

@@ -1,5 +1,7 @@
 # Azure Monitor Query client module for Go
 
+> This package is frozen. New feature work will be added in the following packages: [azlogs](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/query/azlogs), [azmetrics](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/query/azmetrics) (data plane metrics), and [armmonitor](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor) (control plane metrics).
+
 The Azure Monitor Query client module is used to execute read-only queries against [Azure Monitor][azure_monitor_overview]'s two data platforms:
 
 - [Logs][logs_overview] - Collects and organizes log and performance data from monitored resources. Data from different sources such as platform logs from Azure services, log and performance data from virtual machines agents, and usage and performance data from apps can be consolidated into a single [Azure Log Analytics workspace][log_analytics_workspace]. The various data types can be analyzed together using the [Kusto Query Language][kusto_query_language]. See the [Kusto to SQL cheat sheet][kusto_to_sql] for more information.

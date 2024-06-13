@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0-beta.2 (Unreleased)
+## 1.2.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,7 @@
 ### Bugs Fixed
 
 ### Other Changes
+* This package is frozen. New features will be added in the following packages: [azlogs](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/query/azlogs), [azmetrics](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/query/azmetrics) (data plane metrics), and [armmonitor](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor) (control plane metrics)
 * Removed `MetricsBatchClient`. Support for metrics batch in now GA in [azmetrics](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/query/azmetrics)
 
 ## 1.2.0-beta.1 (2023-11-16)

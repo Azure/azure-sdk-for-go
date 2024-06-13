@@ -9,6 +9,7 @@ import (
 	"errors"
 	"net/http"
 	"strings"
+	"sync"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -361,6 +362,57 @@ func TestItemCRUDforNullPartitionKey(t *testing.T) {
 	if len(itemResponse.Value) != 0 {
 		t.Fatalf("Expected empty response, got %v", itemResponse.Value)
 	}
+}
+
+func TestItemConcurrent(t *testing.T) {
+	emulatorTests := newEmulatorTests(t)
+	client := emulatorTests.getClient(t)
+
+	database := emulatorTests.createDatabase(t, context.TODO(), client, "itemCRUD")
+	defer emulatorTests.deleteDatabase(t, context.TODO(), database)
+	properties := ContainerProperties{
+		ID: "aContainer",
+		PartitionKeyDefinition: PartitionKeyDefinition{
+			Paths: []string{"/id"},
+		},
+	}
+
+	_, err := database.CreateContainer(context.TODO(), properties, nil)
+	if err != nil {
+		t.Fatalf("Failed to create container: %v", err)
+	}
+
+	container, _ := database.NewContainer("aContainer")
+
+	item := map[string]interface{}{
+		"id":          "1",
+		"value":       "2",
+		"count":       3,
+		"description": "4",
+	}
+
+	marshalled, err := json.Marshal(item)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	pk := NewPartitionKeyString("1")
+
+	_, err = container.CreateItem(context.TODO(), pk, marshalled, nil)
+	if err != nil {
+		t.Fatalf("Failed to create item: %v", err)
+	}
+
+	// Execute 50 concurrent operations
+	var wg sync.WaitGroup
+	for i := 0; i < 50; i++ {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			_, err = container.ReadItem(context.TODO(), pk, "1", nil)
+		}()
+	}
+	wg.Wait()
 }
 
 func TestItemIdEncodingRoutingGW(t *testing.T) {

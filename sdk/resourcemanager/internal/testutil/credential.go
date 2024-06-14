@@ -7,25 +7,19 @@
 package testutil
 
 import (
-	"context"
 	"testing"
-	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/test/credential"
 )
 
 // FakeCredential is an empty credential for testing.
-type FakeCredential struct {
-}
-
-// GetToken provide a fake access token.
-func (c *FakeCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
-	return azcore.AccessToken{Token: "FakeToken", ExpiresOn: time.Now().Add(time.Hour * 24).UTC()}, nil
-}
+//
+// Deprecated: use Fake from github.com/Azure/azure-sdk-for-go/sdk/internal/test/credential
+type FakeCredential = credential.Fake
 
 // GetCredAndClientOptions will create a credential and a client options for test application.
 // They can be used in any Azure resource management client.
@@ -44,14 +38,9 @@ func GetCredAndClientOptions(t *testing.T) (azcore.TokenCredential, *arm.ClientO
 		},
 	}
 
-	var cred azcore.TokenCredential
-	if recording.GetRecordMode() != recording.PlaybackMode {
-		cred, err = azidentity.NewDefaultAzureCredential(nil)
-		if err != nil {
-			t.Fatalf("Failed to create credential: %v", err)
-		}
-	} else {
-		cred = &FakeCredential{}
+	cred, err := credential.New(nil)
+	if err != nil {
+		t.Fatalf("Failed to create credential: %v", err)
 	}
 
 	return cred, options

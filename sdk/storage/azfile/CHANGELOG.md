@@ -1,14 +1,10 @@
 # Release History
 
-## 1.3.0-beta.1 (Unreleased)
+## 1.3.0-beta.1 (2024-06-14)
 
 ### Features Added
 * Add Rename Support to List Ranges API
 * Updated service version to `2024-05-04`
-
-### Breaking Changes
-
-### Bugs Fixed
 
 ### Other Changes
 * Updated `azidentity` version to `1.6.0`

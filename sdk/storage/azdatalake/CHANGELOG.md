@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 1.2.0-beta.1 (2024-06-14)
 
 ### Features Added
 * Added ACL response headers in GetBlobProperties API for Files.
@@ -9,6 +9,7 @@
 ### Other Changes
 * Updated `azidentity` version to `1.6.0`
 * Updated `azcore` version to `1.12.0`
+* Updated `azblob` version to `v1.4.0-beta.1`
 
 ## 1.1.3 (2024-06-13)
 

@@ -192,7 +192,7 @@ func mustGetClientWithAssistant(t *testing.T, args mustGetClientWithAssistantArg
 			// &assistants.RetrievalToolDefinition{}
 		},
 	}, nil)
-	requireErr(t, args.Azure, err)
+	requireNoErr(t, args.Azure, err)
 
 	t.Cleanup(func() {
 		_, err := client.DeleteAssistant(context.Background(), *createResp.ID, nil)
@@ -222,17 +222,17 @@ func mustRunThread(ctx context.Context, t *testing.T, args runThreadArgs) (*azop
 	args.Assistant.DeploymentName = &assistantsModel
 
 	createResp, err := client.CreateAssistant(ctx, args.Assistant, nil)
-	requireErr(t, args.Azure, err)
+	requireNoErr(t, args.Azure, err)
 
 	t.Cleanup(func() {
 		_, err := client.DeleteAssistant(ctx, *createResp.ID, nil)
-		requireErr(t, args.Azure, err)
+		requireNoErr(t, args.Azure, err)
 	})
 
 	// create a thread and run it
 	args.Thread.AssistantID = createResp.ID
 	threadRunResp, err := client.CreateThreadAndRun(ctx, args.Thread, nil)
-	requireErr(t, args.Azure, err)
+	requireNoErr(t, args.Azure, err)
 
 	// poll for the thread end
 	runStatus, err := pollForTests(t, ctx, client, *threadRunResp.ThreadID, *threadRunResp.ID, args.Azure)
@@ -247,7 +247,7 @@ func mustRunThread(ctx context.Context, t *testing.T, args runThreadArgs) (*azop
 
 	for messagePager.More() {
 		page, err := messagePager.NextPage(ctx)
-		requireErr(t, args.Azure, err)
+		requireNoErr(t, args.Azure, err)
 
 		allMessages = append(allMessages, page.Data...)
 	}
@@ -316,7 +316,7 @@ func getFileName(t *testing.T, ext string) *string {
 	return &fileName
 }
 
-func requireErr(t *testing.T, azure bool, err error) {
+func requireNoErr(t *testing.T, azure bool, err error) {
 	if responseErr := (*azcore.ResponseError)(nil); azure && errors.As(err, &responseErr) && responseErr.StatusCode == http.StatusTooManyRequests {
 		t.Skipf("Assistants API is being throttled: %s", responseErr)
 	}

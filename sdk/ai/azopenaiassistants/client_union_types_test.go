@@ -31,8 +31,8 @@ func TestResponseFormatTypeUnion(t *testing.T) {
 					Type: format,
 				},
 			}, nil)
-			require.NoError(t, err)
-			defer mustDeleteAssistant(t, client, *resp.ID)
+			requireNoErr(t, azure, err)
+			defer mustDeleteAssistant(t, client, *resp.ID, azure)
 		}
 	}
 
@@ -63,9 +63,9 @@ func TestAPIToolChoiceUnion(t *testing.T) {
 				},
 			},
 		}, nil)
-		require.NoError(t, err)
+		requireNoErr(t, azure, err)
 
-		defer mustDeleteAssistant(t, client, *createResp.ID)
+		defer mustDeleteAssistant(t, client, *createResp.ID, azure)
 
 		toolChoices := []*azopenaiassistants.AssistantsAPIToolChoiceOption{
 			{Mode: azopenaiassistants.AssistantsAPIToolChoiceOptionModeAuto},
@@ -87,7 +87,7 @@ func TestAPIToolChoiceUnion(t *testing.T) {
 					},
 				},
 			}, nil)
-			require.NoError(t, err)
+			requireNoErr(t, azure, err)
 			require.Equal(t, toolChoice, resp.ToolChoice)
 		}
 	}

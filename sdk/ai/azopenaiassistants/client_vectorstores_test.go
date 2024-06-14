@@ -70,7 +70,7 @@ func TestAssistantsWithVectorStores(t *testing.T) {
 			}, nil)
 			require.NoError(t, err)
 
-			defer mustDeleteAssistant(t, client, *createAsstResp.ID)
+			defer mustDeleteAssistant(t, client, *createAsstResp.ID, azure)
 		}
 
 		// this is the "create vector store using CreateAssistant" path
@@ -94,7 +94,7 @@ func TestAssistantsWithVectorStores(t *testing.T) {
 			vectorStoreID := createAsstResp.ToolResources.FileSearch.VectorStoreIDs[0]
 			requireVectorStoreState(t, client, vectorStoreID, fileID)
 
-			mustDeleteAssistant(t, client, *createAsstResp.ID)
+			mustDeleteAssistant(t, client, *createAsstResp.ID, azure)
 			mustDeleteVectorStore(t, client, createAsstResp.ToolResources.FileSearch.VectorStoreIDs[0])
 		}
 	}
@@ -275,7 +275,7 @@ func mustDeleteVectorStore(t *testing.T, client *azopenaiassistants.Client, vect
 	require.NoError(t, err)
 }
 
-func mustDeleteAssistant(t *testing.T, client *azopenaiassistants.Client, assistantID string) {
+func mustDeleteAssistant(t *testing.T, client *azopenaiassistants.Client, assistantID string, azure bool) {
 	_, err := client.DeleteAssistant(context.Background(), assistantID, nil)
-	require.NoError(t, err)
+	requireNoErr(t, azure, err)
 }

@@ -47,7 +47,6 @@
         "kvApiVersion": "2019-09-01",
         "kvName": "[parameters('baseName')]",
         "mgmtApiVersion": "2019-04-01",
-        "primaryAccountName": "[concat(parameters('baseName'), 'prim')]",
         "encryption": {
             "services": {
                 "blob": {

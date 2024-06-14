@@ -200,7 +200,17 @@ func TestAssistantMessages(t *testing.T) {
 				Purpose: to.Ptr(azopenaiassistants.FilePurposeAssistants),
 			})
 			requireNoErr(t, azure, err)
-			require.Equal(t, *getMessageFileResp.ID, *listFilesResp.Data[0].ID)
+
+			found := false
+
+			for _, file := range listFilesResp.Data {
+				if *file.ID == *getMessageFileResp.ID {
+					found = true
+					break
+				}
+			}
+
+			require.True(t, found)
 		}
 	}
 

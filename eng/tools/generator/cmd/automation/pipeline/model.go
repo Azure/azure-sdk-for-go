@@ -11,16 +11,17 @@ import (
 
 // GenerateInput ...
 type GenerateInput struct {
-	DryRun                  bool                          `json:"dryRun,omitempty"`
-	SpecFolder              string                        `json:"specFolder,omitempty"`
-	HeadSha                 string                        `json:"headSha,omitempty"`
-	HeadRef                 string                        `json:"headRef,omitempty"`
-	RepoHTTPSURL            string                        `json:"repoHttpsUrl,omitempty"`
-	Trigger                 string                        `json:"trigger,omitempty"`
-	ChangedFiles            []string                      `json:"changedFiles,omitempty"`
-	RelatedReadmeMdFile     string                        `json:"relatedReadmeMdFile,omitempty"`
-	RelatedReadmeMdFiles    []string                      `json:"relatedReadmeMdFiles,omitempty"`
-	InstallInstructionInput InstallInstructionScriptInput `json:"installInstructionInput,omitempty"`
+	DryRun                       bool                          `json:"dryRun,omitempty"`
+	SpecFolder                   string                        `json:"specFolder,omitempty"`
+	HeadSha                      string                        `json:"headSha,omitempty"`
+	HeadRef                      string                        `json:"headRef,omitempty"`
+	RepoHTTPSURL                 string                        `json:"repoHttpsUrl,omitempty"`
+	Trigger                      string                        `json:"trigger,omitempty"`
+	ChangedFiles                 []string                      `json:"changedFiles,omitempty"`
+	RelatedReadmeMdFile          string                        `json:"relatedReadmeMdFile,omitempty"`
+	RelatedReadmeMdFiles         []string                      `json:"relatedReadmeMdFiles,omitempty"`
+	InstallInstructionInput      InstallInstructionScriptInput `json:"installInstructionInput,omitempty"`
+	RelatedTypeSpecProjectFolder []string                      `json:"relatedTypeSpecProjectFolder"`
 }
 
 // NewGenerateInputFrom ...

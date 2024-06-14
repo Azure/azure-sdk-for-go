@@ -15,6 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/template"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/common"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/repo"
+	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/typespec"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/exports"
 	"github.com/Masterminds/semver"
 )
@@ -28,6 +29,10 @@ type GenerateContext struct {
 	SpecReadmeGoFile  string
 	SpecRepoURL       string
 	UpdateSpecVersion bool
+
+	// typespec
+	TypeSpecProjectFolder string
+	TypeSpecConfigPath    string
 }
 
 type GenerateResult struct {
@@ -52,6 +57,8 @@ type GenerateParam struct {
 	GoVersion           string
 	RemoveTagSet        bool
 	ForceStableVersion  bool
+
+	TypeSpecConfigPath string
 }
 
 func (ctx *GenerateContext) GenerateForAutomation(readme, repo, goVersion string) ([]GenerateResult, []error) {
@@ -292,7 +299,7 @@ func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *Generate
 	} else {
 		log.Printf("Calculate new version...")
 		if generateParam.SpecficVersion == "" {
-			version, prl, err = CalculateNewVersion(changelog, previousVersion, isCurrentPreview)
+			version, prl, _, err = CalculateNewVersion(changelog, previousVersion, isCurrentPreview)
 			if err != nil {
 				return nil, err
 			}
@@ -357,6 +364,224 @@ func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *Generate
 			if err := ExecuteExampleGenerate(packagePath, filepath.Join("resourcemanager", generateParam.RPName, generateParam.NamespaceName), flag); err != nil {
 				return nil, err
 			}
+		}
+
+		return &GenerateResult{
+			Version:           version.String(),
+			RPName:            generateParam.RPName,
+			PackageName:       generateParam.NamespaceName,
+			PackageAbsPath:    packagePath,
+			Changelog:         *changelog,
+			ChangelogMD:       changelogMd + "\n" + changelog.GetChangeSummary(),
+			PullRequestLabels: string(prl),
+		}, nil
+	}
+}
+
+func (ctx *GenerateContext) GenerateForAutomationTypeSpec(readme, repo, goVersion string) ([]GenerateResult, []error) {
+	return []GenerateResult{}, nil
+}
+
+func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam) (*GenerateResult, error) {
+	packagePath := filepath.Join(ctx.SDKPath, "sdk", "resourcemanager", generateParam.RPName, generateParam.NamespaceName)
+	tspLocationPath := filepath.Join(packagePath, common.TypeSpecLocationName)
+
+	version, err := semver.NewVersion("0.1.0")
+	if err != nil {
+		return nil, err
+	}
+	if generateParam.SpecficVersion != "" {
+		log.Printf("Use specfic version: %s", generateParam.SpecficVersion)
+		version, err = semver.NewVersion(generateParam.SpecficVersion)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	onBoard := false
+	if _, err := os.Stat(tspLocationPath); os.IsNotExist(err) {
+		onBoard = true
+		log.Printf("Package '%s' tsp-location.yaml not exist, do onboard process", packagePath)
+		if generateParam.SpecficPackageTitle == "" {
+			generateParam.SpecficPackageTitle = strings.Title(generateParam.RPName)
+		}
+
+		log.Printf("Use template to generate new rp folder and basic package files...")
+		sdkBasicInfo := map[string]any{
+			"rpName":         generateParam.RPName,
+			"packageName":    generateParam.NamespaceName,
+			"packageTitle":   generateParam.SpecficPackageTitle,
+			"packageVersion": version.String(),
+			"releaseDate":    generateParam.ReleaseDate,
+			"goVersion":      generateParam.GoVersion,
+		}
+		err = typespec.ParseTypeSpecTemplates(filepath.Join(ctx.SDKPath, "eng/tools/generator/template/typespec"), packagePath, sdkBasicInfo, nil)
+		if err != nil {
+			return nil, err
+		}
+	} else {
+		log.Printf("Package '%s' existed, do update process", packagePath)
+
+		log.Printf("Remove all the generated files ...")
+		if err = CleanSDKGeneratedFiles(packagePath); err != nil {
+			return nil, err
+		}
+	}
+
+	log.Printf("Run `tsp-client init` to regenerate the code...")
+	// tspconfig.yaml 路径只能再azure-rest-api-specs中
+	// tsc, err := typespec.ParseTypeSpecConfig(generateParam.TypeSpecConfigPath)
+	// if err != nil {
+	// 	return nil, err
+	// }
+
+	// if _, ok := tsc.Options[string(typespec.TypeSpec_GO)]; !ok {
+	// 	return nil, fmt.Errorf("typespec config file doesn't contain %s option", typespec.TypeSpec_GO)
+	// }
+
+	// use temp tspconfig.yaml file to generate code
+	// ttcf, err := typespec.TempTspConfigFile(tsc, string(typespec.TypeSpec_GO), map[string]any{
+	// 	"module-version": version.String(),
+	// })
+	// if err != nil {
+	// 	return nil, err
+	// }
+
+	err = ExecuteTypeSpecGenerate(ctx.SDKPath, generateParam.TypeSpecConfigPath, ctx.SpecCommitHash, ctx.SpecRepoURL, filepath.Dir(generateParam.TypeSpecConfigPath))
+	if err != nil {
+		return nil, err
+	}
+
+	if onBoard {
+		log.Printf("write module-version to tsp-location.yaml")
+		if err = typespec.WriteToFile(filepath.Join(packagePath, common.TypeSpecLocationName), fmt.Sprintf("module-version: %s", version.String())); err != nil {
+			return nil, err
+		}
+	}
+
+	previousVersion := ""
+	isCurrentPreview := false
+	var oriExports *exports.Content
+	if generateParam.SpecficVersion != "" {
+		// determine whether version is beta
+		isBeta, err := IsBetaVersion(version.String())
+		if err != nil {
+			return nil, err
+		}
+		isCurrentPreview = isBeta
+	} else {
+		isCurrentPreview, err = ContainsPreviewAPIVersion(packagePath)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	if !onBoard {
+		log.Printf("Get ori exports for changelog generation...")
+
+		tags, err := GetAllVersionTags(generateParam.RPName, generateParam.NamespaceName)
+		if err != nil {
+			return nil, err
+		}
+
+		if len(tags) == 0 {
+			return nil, fmt.Errorf("github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/%s/%s hasn't been released, it's supposed to OnBoard", generateParam.RPName, generateParam.NamespaceName)
+		}
+
+		previousVersionTag := GetPreviousVersionTag(isCurrentPreview, tags)
+
+		oriExports, err = GetExportsFromTag(*ctx.SDKRepo, packagePath, previousVersionTag)
+		if err != nil {
+			return nil, err
+		}
+
+		tagSplit := strings.Split(previousVersionTag, "/")
+		previousVersion = strings.TrimLeft(tagSplit[len(tagSplit)-1], "v")
+	}
+
+	log.Printf("Generate changelog for package...")
+	newExports, err := exports.Get(packagePath)
+	if err != nil {
+		return nil, err
+	}
+	changelog, err := autorest.GetChangelogForPackage(oriExports, &newExports)
+	if err != nil {
+		return nil, err
+	}
+
+	log.Printf("filter changelog...")
+	FilterChangelog(changelog, NonExportedFilter, MarshalUnmarshalFilter, EnumFilter, FuncFilter, LROFilter, PageableFilter, InterfaceToAnyFilter)
+
+	var prl PullRequestLabel
+	if onBoard {
+		log.Printf("Replace {{NewClientName}} placeholder in the README.md ")
+		if err = ReplaceNewClientNamePlaceholder(packagePath, newExports); err != nil {
+			return nil, err
+		}
+
+		prl = FirstBetaLabel
+		if !isCurrentPreview {
+			version, err = semver.NewVersion("1.0.0") // FirstGA must be v1.0.0
+			if err != nil {
+				return nil, err
+			}
+
+			log.Printf("Replace version in CHANGELOG.md...")
+			if err = UpdateOnboardChangelogVersion(packagePath, version.String()); err != nil {
+				return nil, err
+			}
+
+			log.Printf("Replace version in autorest.md and constants...")
+			if err = ReplaceVersion(packagePath, version.String()); err != nil {
+				return nil, err
+			}
+			prl = FirstGALabel
+		}
+
+		return &GenerateResult{
+			Version:           version.String(),
+			RPName:            generateParam.RPName,
+			PackageName:       generateParam.NamespaceName,
+			PackageAbsPath:    packagePath,
+			Changelog:         *changelog,
+			ChangelogMD:       changelog.ToCompactMarkdown() + "\n" + changelog.GetChangeSummary(),
+			PullRequestLabels: string(prl),
+		}, nil
+	} else {
+		log.Printf("Calculate new version...")
+		isIncMajor := false
+		if generateParam.SpecficVersion == "" {
+			version, prl, isIncMajor, err = CalculateNewVersion(changelog, previousVersion, isCurrentPreview)
+			if err != nil {
+				return nil, err
+			}
+		}
+
+		log.Printf("Add changelog to file...")
+		changelogMd, err := AddChangelogToFile(changelog, version, packagePath, generateParam.ReleaseDate)
+		if err != nil {
+			return nil, err
+		}
+
+		log.Printf("Replace README.md module...")
+		if err = replaceReadmeModule(packagePath, generateParam.RPName, generateParam.NamespaceName, version.String()); err != nil {
+			return nil, err
+		}
+
+		log.Printf("Replace README.md NewClient name...")
+		if err = ReplaceReadmeNewClientName(packagePath, newExports); err != nil {
+			return nil, err
+		}
+
+		if isIncMajor {
+			// regenerate sdk code ??? 应该在有major version升级时才需要
+			// ttcf.EditOptions(string(typespec.TypeSpec_GO), map[string]any{
+			// 	"module-version": version.String(),
+			// }, true)
+			// err = ExecuteTypeSpecGenerate(packagePath, ttcf.Path, ctx.SpecCommitHash, ctx.SpecRepoURL, filepath.Dir(generateParam.TypeSpecConfigPath))
+			// if err != nil {
+			// 	return nil, err
+			// }
 		}
 
 		return &GenerateResult{

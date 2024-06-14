@@ -1,0 +1,6 @@
+{
+    "main": "dist/src/index.js",
+    "dependencies": {
+      "@azure-tools/typespec-go": "D:/Go/src/github.com/Azure/autorest.go/packages/typespec-go"
+    }
+}

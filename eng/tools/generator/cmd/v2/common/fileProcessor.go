@@ -129,28 +129,53 @@ func ReadV2ModuleNameToGetNamespace(path string) (map[string][]PackageInfo, erro
 // remove all sdk generated files in given path
 func CleanSDKGeneratedFiles(path string) error {
 	log.Printf("Removing all sdk generated files in '%s'...", path)
-	files, err := ioutil.ReadDir(path)
-	if err != nil {
-		return err
-	}
+	// files, err := os.ReadDir(path)
+	// if err != nil {
+	// 	return err
+	// }
 
-	for _, file := range files {
-		if strings.HasSuffix(file.Name(), ".go") {
-			fileWithPath := filepath.Join(path, file.Name())
-			b, err := ioutil.ReadFile(fileWithPath)
+	// for _, file := range files {
+	// 	if strings.HasSuffix(file.Name(), ".go") {
+	// 		fileWithPath := filepath.Join(path, file.Name())
+	// 		b, err := os.ReadFile(fileWithPath)
+	// 		if err != nil {
+	// 			return err
+	// 		}
+
+	// 		if strings.Contains(string(b), generated_file_scan_string) {
+	// 			err = os.Remove(fileWithPath)
+	// 			if err != nil {
+	// 				return err
+	// 			}
+	// 		}
+	// 	}
+	// }
+
+	return filepath.Walk(path, func(path string, info fs.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+
+		if info.IsDir() {
+			return nil
+		}
+
+		if strings.HasSuffix(info.Name(), ".go") {
+			b, err := os.ReadFile(path)
 			if err != nil {
 				return err
 			}
 
 			if strings.Contains(string(b), generated_file_scan_string) {
-				err = os.Remove(fileWithPath)
+				err = os.Remove(path)
 				if err != nil {
 					return err
 				}
 			}
 		}
-	}
-	return nil
+
+		return nil
+	})
 }
 
 // replace repo commit with local path in autorest.md file
@@ -268,10 +293,11 @@ func ReplaceVersion(packageRootPath string, newVersion string) error {
 }
 
 // calculate new version by changelog using semver package
-func CalculateNewVersion(changelog *model.Changelog, previousVersion string, isCurrentPreview bool) (*semver.Version, PullRequestLabel, error) {
+func CalculateNewVersion(changelog *model.Changelog, previousVersion string, isCurrentPreview bool) (*semver.Version, PullRequestLabel, bool, error) {
+	var isIncMajor bool
 	version, err := semver.NewVersion(previousVersion)
 	if err != nil {
-		return nil, "", err
+		return nil, "", false, err
 	}
 	log.Printf("Lastest version is: %s", version.String())
 
@@ -282,7 +308,7 @@ func CalculateNewVersion(changelog *model.Changelog, previousVersion string, isC
 		if !isCurrentPreview {
 			tempVersion, err := semver.NewVersion("1.0.0")
 			if err != nil {
-				return nil, "", err
+				return nil, "", false, err
 			}
 			newVersion = *tempVersion
 			if changelog.HasBreakingChanges() {
@@ -305,11 +331,11 @@ func CalculateNewVersion(changelog *model.Changelog, previousVersion string, isC
 			if strings.Contains(previousVersion, "beta") {
 				betaNumber, err := strconv.Atoi(strings.Split(version.Prerelease(), "beta.")[1])
 				if err != nil {
-					return nil, "", err
+					return nil, "", false, err
 				}
 				newVersion, err = version.SetPrerelease("beta." + strconv.Itoa(betaNumber+1))
 				if err != nil {
-					return nil, "", err
+					return nil, "", false, err
 				}
 				if changelog.HasBreakingChanges() {
 					prl = BetaBreakingChangeLabel
@@ -320,6 +346,7 @@ func CalculateNewVersion(changelog *model.Changelog, previousVersion string, isC
 				if changelog.HasBreakingChanges() {
 					newVersion = version.IncMajor()
 					prl = BetaBreakingChangeLabel
+					isIncMajor = true
 				} else if changelog.Modified.HasAdditiveChanges() {
 					newVersion = version.IncMinor()
 					prl = BetaLabel
@@ -329,17 +356,18 @@ func CalculateNewVersion(changelog *model.Changelog, previousVersion string, isC
 				}
 				newVersion, err = newVersion.SetPrerelease("beta.1")
 				if err != nil {
-					return nil, "", err
+					return nil, "", false, err
 				}
 			}
 		} else {
 			if strings.Contains(previousVersion, "beta") {
-				return nil, "", fmt.Errorf("must have stable previous version")
+				return nil, "", false, fmt.Errorf("must have stable previous version")
 			}
 			// release version calculation
 			if changelog.HasBreakingChanges() {
 				newVersion = version.IncMajor()
 				prl = StableBreakingChangeLabel
+				isIncMajor = true
 			} else if changelog.Modified.HasAdditiveChanges() {
 				newVersion = version.IncMinor()
 				prl = StableLabel
@@ -351,7 +379,7 @@ func CalculateNewVersion(changelog *model.Changelog, previousVersion string, isC
 	}
 
 	log.Printf("New version is: %s", newVersion.String())
-	return &newVersion, prl, nil
+	return &newVersion, prl, isIncMajor, nil
 }
 
 // add new changelog md to changelog file

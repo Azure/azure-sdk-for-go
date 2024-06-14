@@ -17,6 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/config/validate"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/flags"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/repo"
+	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/typespec"
 	"github.com/go-git/go-git/v5/plumbing"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
@@ -76,6 +77,7 @@ type Flags struct {
 	Token               string
 	UpdateSpecVersion   bool
 	ForceStableVersion  bool
+	TypeSpecConfig      string
 }
 
 func BindFlags(flagSet *pflag.FlagSet) {
@@ -92,6 +94,7 @@ func BindFlags(flagSet *pflag.FlagSet) {
 	flagSet.StringP("token", "t", "", "Specify the personal access token of Github")
 	flagSet.Bool("update-spec-version", true, "Whether to update the commit id, the default is true")
 	flagSet.Bool("force-stable-version", false, "Even if input-files contains preview files, they are forced to be generated as stable versions. At the same time, the tag must not contain preview.")
+	flagSet.String("tsp-config", "", "The path of the typespec tspconfig.yaml")
 }
 
 func ParseFlags(flagSet *pflag.FlagSet) Flags {
@@ -109,6 +112,7 @@ func ParseFlags(flagSet *pflag.FlagSet) Flags {
 		Token:               flags.GetString(flagSet, "token"),
 		UpdateSpecVersion:   flags.GetBool(flagSet, "update-spec-version"),
 		ForceStableVersion:  flags.GetBool(flagSet, "force-stable-version"),
+		TypeSpecConfig:      flags.GetString(flagSet, "tsp-config"),
 	}
 }
 
@@ -150,21 +154,52 @@ func (c *commandContext) generate(sdkRepo repo.SDKRepository, specCommitHash str
 	if c.flags.SpecRPName == "" {
 		c.flags.SpecRPName = c.rpName
 	}
-	result, err := generateCtx.GenerateForSingleRPNamespace(&common.GenerateParam{
-		RPName:              c.rpName,
-		NamespaceName:       c.namespaceName,
-		NamespaceConfig:     c.flags.PackageConfig,
-		SpecficPackageTitle: c.flags.PackageTitle,
-		SpecficVersion:      c.flags.VersionNumber,
-		SpecRPName:          c.flags.SpecRPName,
-		ReleaseDate:         c.flags.ReleaseDate,
-		SkipGenerateExample: c.flags.SkipGenerateExample,
-		GoVersion:           c.flags.GoVersion,
-		ForceStableVersion:  c.flags.ForceStableVersion,
-	})
+
+	var err error
+	var result *common.GenerateResult
+	var existEmitOption bool
+	if c.flags.TypeSpecConfig != "" {
+		tsc, err := typespec.ParseTypeSpecConfig(c.flags.TypeSpecConfig)
+		if err != nil {
+			return err
+		}
+		existEmitOption = tsc.ExistEmitOption(string(typespec.TypeSpec_GO))
+	}
+
+	if existEmitOption {
+		log.Printf("Generate SDK through TypeSpec...")
+		result, err = generateCtx.GenerateForTypeSpec(&common.GenerateParam{
+			RPName:        c.rpName,
+			NamespaceName: c.namespaceName,
+			// NamespaceConfig:     c.flags.PackageConfig,
+			SpecficPackageTitle: c.flags.PackageTitle,
+			SpecficVersion:      c.flags.VersionNumber,
+			SpecRPName:          c.flags.SpecRPName,
+			ReleaseDate:         c.flags.ReleaseDate,
+			SkipGenerateExample: c.flags.SkipGenerateExample,
+			GoVersion:           c.flags.GoVersion,
+			// ForceStableVersion:  c.flags.ForceStableVersion,
+			TypeSpecConfigPath: c.flags.TypeSpecConfig,
+		})
+	} else {
+		log.Printf("Generate SDK through AutoRest...")
+		result, err = generateCtx.GenerateForSingleRPNamespace(&common.GenerateParam{
+			RPName:              c.rpName,
+			NamespaceName:       c.namespaceName,
+			NamespaceConfig:     c.flags.PackageConfig,
+			SpecficPackageTitle: c.flags.PackageTitle,
+			SpecficVersion:      c.flags.VersionNumber,
+			SpecRPName:          c.flags.SpecRPName,
+			ReleaseDate:         c.flags.ReleaseDate,
+			SkipGenerateExample: c.flags.SkipGenerateExample,
+			GoVersion:           c.flags.GoVersion,
+			ForceStableVersion:  c.flags.ForceStableVersion,
+		})
+	}
 	if err != nil {
 		return fmt.Errorf("failed to finish release generation process: %+v", err)
 	}
+
 	// print generation result
 	log.Printf("Generation result: %v", result)
 	c.pullRequestLabels = result.PullRequestLabels

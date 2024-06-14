@@ -107,3 +107,27 @@ func ExecuteAddIssueLabels(path, repoOwner, repoName, issueNumber, authToken str
 	}
 	return nil
 }
+
+// execute tsp-client command
+func ExecuteTspClient(path string, args ...string) error {
+	cmd := exec.Command("tsp-client", args...)
+	cmd.Dir = path
+	output, err := cmd.CombinedOutput()
+	// todo: 如何捕获tsp-client执行失败的情况
+	log.Printf("Result of `tsp-client %s` execution: \n%s", strings.Join(args, " "), string(output))
+	if err != nil {
+		return fmt.Errorf("failed to execute `tsp-client %s` '%s': %+v", strings.Join(args, " "), string(output), err)
+	}
+	return nil
+}
+
+func ExecuteTypeSpecGenerate(path string, tspConfigPath, specCommit, specRepo, tspDir string) error {
+
+	return ExecuteTspClient(path,
+		"init",
+		"--tsp-config", tspConfigPath,
+		"--commit", specCommit,
+		"--repo", specRepo,
+		"--local-spec-repo", tspDir,
+	)
+}

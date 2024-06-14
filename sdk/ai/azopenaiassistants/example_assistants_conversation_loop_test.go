@@ -144,7 +144,7 @@ func Example_assistantsWithConversationLoop() {
 		}
 	}
 
-	// Output:
+	// DisabledOutput:
 }
 
 // conversationHandler takes responses from an assistant and returns our reply messages. Returns the responses

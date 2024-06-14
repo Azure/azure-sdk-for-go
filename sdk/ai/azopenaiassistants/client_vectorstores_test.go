@@ -68,7 +68,7 @@ func TestAssistantsWithVectorStores(t *testing.T) {
 					},
 				},
 			}, nil)
-			require.NoError(t, err)
+			requireNoErr(t, azure, err)
 
 			defer mustDeleteAssistant(t, client, *createAsstResp.ID, azure)
 		}
@@ -89,7 +89,7 @@ func TestAssistantsWithVectorStores(t *testing.T) {
 					},
 				},
 			}, nil)
-			require.NoError(t, err)
+			requireNoErr(t, azure, err)
 
 			vectorStoreID := createAsstResp.ToolResources.FileSearch.VectorStoreIDs[0]
 			requireVectorStoreState(t, client, vectorStoreID, fileID)

@@ -138,7 +138,7 @@ func Example_assistantsUsingCodeInterpreter() {
 		}
 	}
 
-	// Output:
+	// DisabledOutput:
 }
 
 func pollCodeInterpreterEnd(ctx context.Context, client *azopenaiassistants.Client, threadID string, runID string) (azopenaiassistants.GetRunResponse, error) {

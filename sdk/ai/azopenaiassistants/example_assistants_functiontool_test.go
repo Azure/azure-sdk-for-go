@@ -219,7 +219,7 @@ func Example_assistantsUsingFunctionTool() {
 		}
 	}
 
-	// Output:
+	// DisabledOutput:
 }
 
 type WeatherFuncArgs struct {

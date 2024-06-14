@@ -21,7 +21,6 @@ import (
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/ai/azopenaiassistants"
-	assistants "github.com/Azure/azure-sdk-for-go/sdk/ai/azopenaiassistants"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -151,7 +150,7 @@ func mustGetClient(t *testing.T, args newClientArgs) *azopenaiassistants.Client 
 	}
 }
 
-var weatherFunctionDefn = &assistants.FunctionDefinition{
+var weatherFunctionDefn = &azopenaiassistants.FunctionDefinition{
 	Name: to.Ptr("get_current_weather"),
 	Parameters: map[string]any{
 		"required": []string{"location"},
@@ -182,14 +181,14 @@ func mustGetClientWithAssistant(t *testing.T, args mustGetClientWithAssistantArg
 		Name:           &assistantName,
 		DeploymentName: &assistantsModel,
 		Instructions:   to.Ptr("You are a personal math tutor. Write and run code to answer math questions."),
-		Tools: []assistants.ToolDefinitionClassification{
-			&assistants.CodeInterpreterToolDefinition{},
+		Tools: []azopenaiassistants.ToolDefinitionClassification{
+			&azopenaiassistants.CodeInterpreterToolDefinition{},
 
 			// others...
-			&assistants.FunctionToolDefinition{
+			&azopenaiassistants.FunctionToolDefinition{
 				Function: weatherFunctionDefn,
 			},
-			// &assistants.RetrievalToolDefinition{}
+			// &azopenaiassistants.RetrievalToolDefinition{}
 		},
 	}, nil)
 	requireNoErr(t, args.Azure, err)
@@ -235,13 +234,12 @@ func mustRunThread(ctx context.Context, t *testing.T, args runThreadArgs) (*azop
 	requireNoErr(t, args.Azure, err)
 
 	// poll for the thread end
-	runStatus, err := pollForTests(t, ctx, client, *threadRunResp.ThreadID, *threadRunResp.ID, args.Azure)
-	require.NoError(t, err)
+	runStatus := pollForTests(t, ctx, client, *threadRunResp.ThreadID, *threadRunResp.ID, args.Azure)
 	require.Equal(t, *runStatus.Status, azopenaiassistants.RunStatusCompleted)
 
 	var allMessages []azopenaiassistants.ThreadMessage
 
-	messagePager := client.NewListMessagesPager(*threadRunResp.ThreadID, &assistants.ListMessagesOptions{
+	messagePager := client.NewListMessagesPager(*threadRunResp.ThreadID, &azopenaiassistants.ListMessagesOptions{
 		Order: to.Ptr(azopenaiassistants.ListSortOrderAscending),
 	})
 
@@ -322,4 +320,13 @@ func requireNoErr(t *testing.T, azure bool, err error) {
 	}
 
 	require.NoError(t, err)
+}
+
+func requireSuccessfulPolling(t *testing.T, azure bool, resp azopenaiassistants.GetRunResponse, err error) {
+	// it's possible we're oversubscribed, so we need to just skip this test
+	if azure && resp.LastError != nil && resp.LastError.Code != nil && *resp.LastError.Code == "rate_limit_exceeded" {
+		t.Skipf("Test being skipped, we're rate limited")
+	}
+
+	requireNoErr(t, azure, err)
 }

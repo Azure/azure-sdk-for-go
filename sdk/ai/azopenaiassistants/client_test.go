@@ -308,20 +308,8 @@ func TestAssistantConversationLoop(t *testing.T) {
 				requireNoErr(t, azure, err)
 
 				runID := *createRunResp.ID
-				var lastGetRunResp azopenaiassistants.GetRunResponse
 
-				for {
-					var err error
-					lastGetRunResp, err = client.GetRun(context.Background(), *createThreadResp.ID, runID, nil)
-					require.NoError(t, err)
-
-					if *lastGetRunResp.Status != azopenaiassistants.RunStatusQueued && *lastGetRunResp.Status != azopenaiassistants.RunStatusInProgress {
-						break
-					}
-
-					time.Sleep(500 * time.Millisecond)
-				}
-
+				lastGetRunResp := pollForTests(t, context.Background(), client, threadID, runID, azure)
 				require.Equal(t, azopenaiassistants.RunStatusCompleted, *lastGetRunResp.Status)
 
 				// grab any messages that occurred after our last known message
@@ -383,8 +371,7 @@ func TestAssistantRequiredAction(t *testing.T) {
 			runID = *createRunResp.ID
 		}
 
-		lastResp, err := pollForTests(t, context.Background(), client, threadID, runID, azure)
-		require.NoError(t, err)
+		lastResp := pollForTests(t, context.Background(), client, threadID, runID, azure)
 		require.Equal(t, azopenaiassistants.RunStatusRequiresAction, *lastResp.Status, "More action would be required since we need to run the action and feed it's inputs back in")
 
 		// extract the tool we need to call and the arguments we need to call it with
@@ -424,8 +411,8 @@ func TestAssistantRequiredAction(t *testing.T) {
 		}
 
 		// the run will restart now, we just need to wait until it finishes
-		lastResp, err = pollForTests(t, context.Background(), client, threadID, runID, azure)
-		require.NoError(t, err)
+		lastResp = pollForTests(t, context.Background(), client, threadID, runID, azure)
+
 		// note our status is Completed now, instead of RunStatusRequiresAction
 		require.Equal(t, azopenaiassistants.RunStatusCompleted, *lastResp.Status, "Run should complete now that we've submitted tool outputs")
 
@@ -479,8 +466,7 @@ func TestNewListRunsPager(t *testing.T) {
 		threadID := *threadAndRunResp.ThreadID
 		runs[runID] = true
 
-		lastRun, err := pollForTests(t, context.Background(), client, threadID, runID, azure)
-		require.NoError(t, err)
+		lastRun := pollForTests(t, context.Background(), client, threadID, runID, azure)
 		require.Equal(t, azopenaiassistants.RunStatusCompleted, *lastRun.Status)
 
 		run2Resp, err := client.CreateRun(context.Background(), threadID, azopenaiassistants.CreateRunBody{
@@ -489,8 +475,7 @@ func TestNewListRunsPager(t *testing.T) {
 		requireNoErr(t, azure, err)
 		runs[*run2Resp.ID] = true
 
-		lastRun, err = pollForTests(t, context.Background(), client, threadID, runID, azure)
-		require.NoError(t, err)
+		lastRun = pollForTests(t, context.Background(), client, threadID, runID, azure)
 		require.Equal(t, azopenaiassistants.RunStatusCompleted, *lastRun.Status)
 
 		pager := client.NewListRunsPager(threadID, &azopenaiassistants.ListRunsOptions{
@@ -548,8 +533,7 @@ func TestNewListRunStepsPager(t *testing.T) {
 		threadID := *createThreadAndRunResp.ThreadID
 		runID := *createThreadAndRunResp.ID
 
-		lastRun, err := pollForTests(t, context.Background(), client, threadID, runID, azure)
-		require.NoError(t, err)
+		lastRun := pollForTests(t, context.Background(), client, threadID, runID, azure)
 		require.Equal(t, azopenaiassistants.RunStatusCompleted, *lastRun.Status)
 
 		// Run steps are described here:
@@ -636,17 +620,8 @@ func TestFiles(t *testing.T) {
 	})
 }
 
-func pollForTests(t *testing.T, ctx context.Context, client *azopenaiassistants.Client, threadID string, runID string, azure bool) (azopenaiassistants.GetRunResponse, error) {
+func pollForTests(t *testing.T, ctx context.Context, client *azopenaiassistants.Client, threadID string, runID string, azure bool) azopenaiassistants.GetRunResponse {
 	resp, err := pollUntilRunEnds(ctx, client, threadID, runID)
-
-	if err != nil {
-		// it's possible we're oversubscribed, so we need to just skip this test
-		if resp.LastError.Code != nil && *resp.LastError.Code == "rate_limit_exceeded" {
-			t.Skipf("Test being skipped, we're rate limited")
-		}
-
-		requireNoErr(t, azure, err)
-	}
-
-	return resp, err
+	requireSuccessfulPolling(t, azure, resp, err)
+	return resp
 }

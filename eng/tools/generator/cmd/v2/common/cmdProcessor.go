@@ -121,7 +121,7 @@ func ExecuteTspClient(path string, args ...string) error {
 	return nil
 }
 
-func ExecuteTypeSpecGenerate(path string, tspConfigPath, specCommit, specRepo, tspDir string) error {
+func ExecuteTypeSpecGenerate(path string, tspConfigPath, specCommit, specRepo, tspDir string, emitOptions string) error {
 
 	return ExecuteTspClient(path,
 		"init",
@@ -129,5 +129,6 @@ func ExecuteTypeSpecGenerate(path string, tspConfigPath, specCommit, specRepo, t
 		"--commit", specCommit,
 		"--repo", specRepo,
 		"--local-spec-repo", tspDir,
+		"--emitter-options", emitOptions,
 	)
 }

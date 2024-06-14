@@ -179,7 +179,7 @@ func (c *commandContext) generate(sdkRepo repo.SDKRepository, specCommitHash str
 			SkipGenerateExample: c.flags.SkipGenerateExample,
 			GoVersion:           c.flags.GoVersion,
 			// ForceStableVersion:  c.flags.ForceStableVersion,
-			TypeSpecConfigPath: c.flags.TypeSpecConfig,
+			TypeSpecConfigPath:  c.flags.TypeSpecConfig,
 		})
 	} else {
 		log.Printf("Generate SDK through AutoRest...")

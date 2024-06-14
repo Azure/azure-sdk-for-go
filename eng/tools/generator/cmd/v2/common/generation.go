@@ -31,7 +31,6 @@ type GenerateContext struct {
 	UpdateSpecVersion bool
 
 	// typespec
-	TypeSpecProjectFolder string
 	TypeSpecConfigPath    string
 }
 
@@ -384,7 +383,7 @@ func (ctx *GenerateContext) GenerateForAutomationTypeSpec(readme, repo, goVersio
 
 func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam) (*GenerateResult, error) {
 	packagePath := filepath.Join(ctx.SDKPath, "sdk", "resourcemanager", generateParam.RPName, generateParam.NamespaceName)
-	tspLocationPath := filepath.Join(packagePath, common.TypeSpecLocationName)
+	changelogPath := filepath.Join(packagePath, common.ChangelogFilename)
 
 	version, err := semver.NewVersion("0.1.0")
 	if err != nil {
@@ -399,9 +398,9 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam) (*
 	}
 
 	onBoard := false
-	if _, err := os.Stat(tspLocationPath); os.IsNotExist(err) {
+	if _, err := os.Stat(changelogPath); os.IsNotExist(err) {
 		onBoard = true
-		log.Printf("Package '%s' tsp-location.yaml not exist, do onboard process", packagePath)
+		log.Printf("Package '%s' changelog not exist, do onboard process", packagePath)
 		if generateParam.SpecficPackageTitle == "" {
 			generateParam.SpecficPackageTitle = strings.Title(generateParam.RPName)
 		}
@@ -429,25 +428,8 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam) (*
 	}
 
 	log.Printf("Run `tsp-client init` to regenerate the code...")
-	// tspconfig.yaml 路径只能再azure-rest-api-specs中
-	// tsc, err := typespec.ParseTypeSpecConfig(generateParam.TypeSpecConfigPath)
-	// if err != nil {
-	// 	return nil, err
-	// }
-
-	// if _, ok := tsc.Options[string(typespec.TypeSpec_GO)]; !ok {
-	// 	return nil, fmt.Errorf("typespec config file doesn't contain %s option", typespec.TypeSpec_GO)
-	// }
-
-	// use temp tspconfig.yaml file to generate code
-	// ttcf, err := typespec.TempTspConfigFile(tsc, string(typespec.TypeSpec_GO), map[string]any{
-	// 	"module-version": version.String(),
-	// })
-	// if err != nil {
-	// 	return nil, err
-	// }
-
-	err = ExecuteTypeSpecGenerate(ctx.SDKPath, generateParam.TypeSpecConfigPath, ctx.SpecCommitHash, ctx.SpecRepoURL, filepath.Dir(generateParam.TypeSpecConfigPath))
+	emitOption := fmt.Sprintf("module-version=%s", version.String())
+	err = ExecuteTypeSpecGenerate(ctx.SDKPath, generateParam.TypeSpecConfigPath, ctx.SpecCommitHash, ctx.SpecRepoURL, filepath.Dir(generateParam.TypeSpecConfigPath), emitOption)
 	if err != nil {
 		return nil, err
 	}

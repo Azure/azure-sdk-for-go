@@ -91,16 +91,12 @@ comments.
 <!-- LINKS -->
 [azure_openai_access]: https://learn.microsoft.com/azure/cognitive-services/openai/overview#how-do-i-get-access-to-azure-openai
 [azopenaiassistants_repo]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/ai/azopenaiassistants
-
-<!-- TODO: BEGIN: will replace once the link is actually available. -->
 [azopenaiassistants_pkg_go]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/ai/azopenaiassistants
 [azopenaiassistants_examples]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/ai/azopenaiassistants#pkg-examples
 [azopenaiassistants_example_tokencredential]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/ai/azopenaiassistants#example-NewClient
 [azopenaiassistants_example_keycredential]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/ai/azopenaiassistants#example-NewClientWithKeyCredential
 [azopenaiassistants_example_openai]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/ai/azopenaiassistants#example-NewClientForOpenAI
 [azopenaiassistants_github]: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/ai/azopenaiassistants
-<!-- TODO: END: will replace once the link is actually available. -->
-
 [azure_identity]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity
 [azure_sub]: https://azure.microsoft.com/free/
 [openai_docs]: https://learn.microsoft.com/azure/cognitive-services/openai

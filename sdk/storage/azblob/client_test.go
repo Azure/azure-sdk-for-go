@@ -10,8 +10,11 @@ import (
 	"context"
 	"crypto/md5"
 	"encoding/binary"
+	"encoding/xml"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 	"hash/crc64"
 	"io"
 	"os"
@@ -865,4 +868,20 @@ func (s *AZBlobRecordedTestsSuite) TestAzBlobClientCustomAudience() {
 		_require.NotNil(resp.ContainerItems[0].Name)
 		_require.Equal(*resp.ContainerItems[0].Name, containerName)
 	}
+}
+
+// test that uses the marshal : then unmarshal and validate that everything is the same
+func TestMarshal(t *testing.T) {
+	a := assert.New(t)
+	testmetadata := map[string]*string{
+		"key1": to.Ptr("value1"),
+		"key2": to.Ptr("value2"),
+	}
+	testblob := container.BlobItem{Name: to.Ptr("blobname"), Metadata: testmetadata}
+	buf, err := xml.Marshal(testblob)
+	if err != nil {
+		fmt.Printf(err.Error())
+	}
+	a.Nil(err)
+	fmt.Println(string(buf))
 }

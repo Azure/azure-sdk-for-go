@@ -4,40 +4,33 @@
 package azlogs_test
 
 import (
-	"context"
 	"encoding/json"
 	"os"
 	"regexp"
 	"strings"
 	"testing"
-	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	azcred "github.com/Azure/azure-sdk-for-go/sdk/internal/test/credential"
 	"github.com/Azure/azure-sdk-for-go/sdk/monitor/query/azlogs"
 	"github.com/stretchr/testify/require"
 )
 
 const (
-	recordingDirectory  = "sdk/monitor/query/azlogs/testdata"
-	fakeWorkspaceID     = "32d1e136-gg81-4b0a-b647-260cdc471f68"
-	fakeWorkspaceID2    = "asdjkfj8k20-gg81-4b0a-9fu2-260c09fn1f68"
-	fakeResourceURI     = "/subscriptions/faa080af-c1d8-40ad-9cce-e1a451va7b87/resourceGroups/rg-example/providers/Microsoft.AppConfiguration/configurationStores/example"
-	fakeSubscrtiptionID = "faa080af-c1d8-40ad-9cce-e1a451va7b87"
-	fakeRegion          = "westus2"
+	recordingDirectory = "sdk/monitor/query/azlogs/testdata"
+	fakeWorkspaceID    = "32d1e136-gg81-4b0a-b647-260cdc471f68"
+	fakeWorkspaceID2   = "asdjkfj8k20-gg81-4b0a-9fu2-260c09fn1f68"
+	fakeResourceURI    = "/subscriptions/faa080af-c1d8-40ad-9cce-e1a451va7b87/resourceGroups/rg-example/providers/Microsoft.AppConfiguration/configurationStores/example"
 )
 
 var (
-	credential     azcore.TokenCredential
-	workspaceID    string
-	workspaceID2   string
-	resourceURI    string
-	subscriptionID string
-	region         string
-	clientCloud    cloud.Configuration
+	credential   azcore.TokenCredential
+	workspaceID  string
+	workspaceID2 string
+	resourceURI  string
+	clientCloud  cloud.Configuration
 )
 
 func TestMain(m *testing.M) {
@@ -59,18 +52,13 @@ func run(m *testing.M) int {
 		}()
 	}
 
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		credential = &FakeCredential{}
-	} else {
-		tenantID := getEnvVar("AZLOGS_TENANT_ID", "")
-		clientID := getEnvVar("AZLOGS_CLIENT_ID", "")
-		secret := getEnvVar("AZLOGS_CLIENT_SECRET", "")
-		var err error
-		credential, err = azidentity.NewClientSecretCredential(tenantID, clientID, secret, nil)
-		if err != nil {
-			panic(err)
-		}
+	var err error
+	credential, err = azcred.New(nil)
+	if err != nil {
+		panic(err)
+	}
 
+	if recording.GetRecordMode() != recording.PlaybackMode {
 		if cloudEnv, ok := os.LookupEnv("AZLOGS_ENVIRONMENT"); ok {
 			if strings.EqualFold(cloudEnv, "AzureUSGovernment") {
 				clientCloud = cloud.AzureGovernment
@@ -84,8 +72,6 @@ func run(m *testing.M) int {
 	workspaceID = getEnvVar("WORKSPACE_ID", fakeWorkspaceID)
 	workspaceID2 = getEnvVar("WORKSPACE_ID2", fakeWorkspaceID2)
 	resourceURI = getEnvVar("RESOURCE_URI", fakeResourceURI)
-	subscriptionID = getEnvVar("AZLOGS_SUBSCRIPTION_ID", fakeSubscrtiptionID)
-	region = getEnvVar("AZLOGS_LOCATION", fakeRegion)
 
 	return m.Run()
 }
@@ -130,12 +116,6 @@ func getEnvVar(envVar string, fakeValue string) string {
 	}
 
 	return value
-}
-
-type FakeCredential struct{}
-
-func (f *FakeCredential) GetToken(ctx context.Context, options policy.TokenRequestOptions) (azcore.AccessToken, error) {
-	return azcore.AccessToken{Token: "faketoken", ExpiresOn: time.Now().Add(time.Hour).UTC()}, nil
 }
 
 type serdeModel interface {

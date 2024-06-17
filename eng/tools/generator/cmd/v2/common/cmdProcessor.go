@@ -108,6 +108,30 @@ func ExecuteAddIssueLabels(path, repoOwner, repoName, issueNumber, authToken str
 	return nil
 }
 
+func ExecuteGo(dir string, args ...string) error {
+	cmd := exec.Command("go", args...)
+	cmd.Dir = dir
+	combinedOutput, err := cmd.CombinedOutput()
+	log.Printf("Result of `go %s` execution: \n%s", strings.Join(args, " "), string(combinedOutput))
+	if err != nil {
+		return fmt.Errorf("failed to execute `go %s` '%s': %+v", strings.Join(args, " "), string(combinedOutput), err)
+	}
+
+	return nil
+}
+
+func ExecuteGoFmt(dir string, args ...string) error {
+	cmd := exec.Command("gofmt", args...)
+	cmd.Dir = dir
+	combinedOutput, err := cmd.CombinedOutput()
+	log.Printf("Result of `gofmt %s` execution: \n%s", strings.Join(args, " "), string(combinedOutput))
+	if err != nil {
+		return fmt.Errorf("failed to execute `gofmt %s` '%s': %+v", strings.Join(args, " "), string(combinedOutput), err)
+	}
+
+	return nil
+}
+
 // execute tsp-client command
 func ExecuteTspClient(path string, args ...string) error {
 	cmd := exec.Command("tsp-client", args...)
@@ -123,7 +147,7 @@ func ExecuteTspClient(path string, args ...string) error {
 
 func ExecuteTypeSpecGenerate(path string, tspConfigPath, specCommit, specRepo, tspDir string, emitOptions string) error {
 
-	return ExecuteTspClient(path,
+	err := ExecuteTspClient(path,
 		"init",
 		"--tsp-config", tspConfigPath,
 		"--commit", specCommit,
@@ -131,4 +155,14 @@ func ExecuteTypeSpecGenerate(path string, tspConfigPath, specCommit, specRepo, t
 		"--local-spec-repo", tspDir,
 		"--emitter-options", emitOptions,
 	)
+	if err != nil {
+		return err
+	}
+
+	err = ExecuteGoFmt(path, "-s", "-w", ".")
+	if err != nil {
+		return err
+	}
+
+	return ExecuteGo(path, "mod", "tidy")
 }

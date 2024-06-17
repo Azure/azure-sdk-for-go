@@ -58,6 +58,7 @@ type GenerateParam struct {
 	ForceStableVersion  bool
 
 	TypeSpecConfigPath string
+	TypeSpecEmitOption string
 }
 
 func (ctx *GenerateContext) GenerateForAutomation(readme, repo, goVersion string) ([]GenerateResult, []error) {
@@ -384,6 +385,7 @@ func (ctx *GenerateContext) GenerateForAutomationTypeSpec(readme, repo, goVersio
 func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam) (*GenerateResult, error) {
 	packagePath := filepath.Join(ctx.SDKPath, "sdk", "resourcemanager", generateParam.RPName, generateParam.NamespaceName)
 	changelogPath := filepath.Join(packagePath, common.ChangelogFilename)
+	tspLocationPath := filepath.Join(packagePath, common.TypeSpecLocationName)
 
 	version, err := semver.NewVersion("0.1.0")
 	if err != nil {
@@ -429,28 +431,22 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam) (*
 
 	log.Printf("Run `tsp-client init` to regenerate the code...")
 	emitOption := fmt.Sprintf("module-version=%s", version.String())
+	if generateParam.TypeSpecEmitOption != "" {
+		emitOption = fmt.Sprintf("%s;%s", emitOption, generateParam.TypeSpecEmitOption)
+	}
 	err = ExecuteTypeSpecGenerate(ctx.SDKPath, generateParam.TypeSpecConfigPath, ctx.SpecCommitHash, ctx.SpecRepoURL, filepath.Dir(generateParam.TypeSpecConfigPath), emitOption)
 	if err != nil {
 		return nil, err
-	}
-
-	if onBoard {
-		log.Printf("write module-version to tsp-location.yaml")
-		if err = typespec.WriteToFile(filepath.Join(packagePath, common.TypeSpecLocationName), fmt.Sprintf("module-version: %s", version.String())); err != nil {
-			return nil, err
-		}
 	}
 
 	previousVersion := ""
 	isCurrentPreview := false
 	var oriExports *exports.Content
 	if generateParam.SpecficVersion != "" {
-		// determine whether version is beta
-		isBeta, err := IsBetaVersion(version.String())
+		isCurrentPreview, err = IsBetaVersion(version.String())
 		if err != nil {
 			return nil, err
 		}
-		isCurrentPreview = isBeta
 	} else {
 		isCurrentPreview, err = ContainsPreviewAPIVersion(packagePath)
 		if err != nil {
@@ -513,8 +509,8 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam) (*
 				return nil, err
 			}
 
-			log.Printf("Replace version in autorest.md and constants...")
-			if err = ReplaceVersion(packagePath, version.String()); err != nil {
+			log.Printf("Replace version in tsp-location.yaml...")
+			if err = UpdateModuleVersion(tspLocationPath, version.String()); err != nil {
 				return nil, err
 			}
 			prl = FirstGALabel
@@ -539,6 +535,17 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam) (*
 			}
 		}
 
+		if isIncMajor {
+			// regenerate sdk code ??? 应该在有major version升级时才需要
+			// ttcf.EditOptions(string(typespec.TypeSpec_GO), map[string]any{
+			// 	"module-version": version.String(),
+			// }, true)
+			// err = ExecuteTypeSpecGenerate(packagePath, ttcf.Path, ctx.SpecCommitHash, ctx.SpecRepoURL, filepath.Dir(generateParam.TypeSpecConfigPath))
+			// if err != nil {
+			// 	return nil, err
+			// }
+		}
+
 		log.Printf("Add changelog to file...")
 		changelogMd, err := AddChangelogToFile(changelog, version, packagePath, generateParam.ReleaseDate)
 		if err != nil {
@@ -555,15 +562,9 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam) (*
 			return nil, err
 		}
 
-		if isIncMajor {
-			// regenerate sdk code ??? 应该在有major version升级时才需要
-			// ttcf.EditOptions(string(typespec.TypeSpec_GO), map[string]any{
-			// 	"module-version": version.String(),
-			// }, true)
-			// err = ExecuteTypeSpecGenerate(packagePath, ttcf.Path, ctx.SpecCommitHash, ctx.SpecRepoURL, filepath.Dir(generateParam.TypeSpecConfigPath))
-			// if err != nil {
-			// 	return nil, err
-			// }
+		log.Printf("Replace version in tsp-location.yaml...")
+		if err = UpdateModuleVersion(tspLocationPath, version.String()); err != nil {
+			return nil, err
 		}
 
 		return &GenerateResult{

@@ -78,6 +78,7 @@ type Flags struct {
 	UpdateSpecVersion   bool
 	ForceStableVersion  bool
 	TypeSpecConfig      string
+	TypeSpecGoOption string
 }
 
 func BindFlags(flagSet *pflag.FlagSet) {
@@ -95,6 +96,7 @@ func BindFlags(flagSet *pflag.FlagSet) {
 	flagSet.Bool("update-spec-version", true, "Whether to update the commit id, the default is true")
 	flagSet.Bool("force-stable-version", false, "Even if input-files contains preview files, they are forced to be generated as stable versions. At the same time, the tag must not contain preview.")
 	flagSet.String("tsp-config", "", "The path of the typespec tspconfig.yaml")
+	flagSet.String("tsp-option", "", "Emit typespec-go options, only valid when tsp-config is configured. e: option1=value1;option2=value2")
 }
 
 func ParseFlags(flagSet *pflag.FlagSet) Flags {
@@ -113,6 +115,7 @@ func ParseFlags(flagSet *pflag.FlagSet) Flags {
 		UpdateSpecVersion:   flags.GetBool(flagSet, "update-spec-version"),
 		ForceStableVersion:  flags.GetBool(flagSet, "force-stable-version"),
 		TypeSpecConfig:      flags.GetString(flagSet, "tsp-config"),
+		TypeSpecGoOption: flags.GetString(flagSet, "tsp-option"),
 	}
 }
 
@@ -180,6 +183,7 @@ func (c *commandContext) generate(sdkRepo repo.SDKRepository, specCommitHash str
 			GoVersion:           c.flags.GoVersion,
 			// ForceStableVersion:  c.flags.ForceStableVersion,
 			TypeSpecConfigPath:  c.flags.TypeSpecConfig,
+			TypeSpecEmitOption: c.flags.TypeSpecGoOption,
 		})
 	} else {
 		log.Printf("Generate SDK through AutoRest...")

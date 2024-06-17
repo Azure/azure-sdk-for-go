@@ -1,16 +1,10 @@
 # Release History
 
-## 1.0.3 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 1.0.3 (2024-06-17)
 
 ### Bugs Fixed
 
 * Fixed data race on clientRetryPolicy. See [PR 23061](https://github.com/Azure/azure-sdk-for-go/pull/23061)
-
-### Other Changes
 
 ## 1.0.2 (2024-06-11)
 

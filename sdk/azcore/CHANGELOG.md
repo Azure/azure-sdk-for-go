@@ -4,6 +4,8 @@
 
 ### Features Added
 
+* Added package `runtime/datetime` containing helpers for date/time wire formats.
+
 ### Breaking Changes
 
 ### Bugs Fixed
@@ -14,7 +16,7 @@
 
 ### Features Added
 
-- Added runtime.NewRequestFromRequest(), allowing for a policy.Request to be created from an existing *http.Request.
+* Added runtime.NewRequestFromRequest(), allowing for a policy.Request to be created from an existing *http.Request.
 
 ## 1.12.0 (2024-06-06)
 

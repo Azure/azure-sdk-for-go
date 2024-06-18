@@ -167,6 +167,7 @@ func (c *commandContext) generate(sdkRepo repo.SDKRepository, specCommitHash str
 			return err
 		}
 		existEmitOption = tsc.ExistEmitOption(string(typespec.TypeSpec_GO))
+		generateCtx.TypeSpecConfig = tsc
 	}
 
 	if existEmitOption {
@@ -174,15 +175,12 @@ func (c *commandContext) generate(sdkRepo repo.SDKRepository, specCommitHash str
 		result, err = generateCtx.GenerateForTypeSpec(&common.GenerateParam{
 			RPName:        c.rpName,
 			NamespaceName: c.namespaceName,
-			// NamespaceConfig:     c.flags.PackageConfig,
 			SpecficPackageTitle: c.flags.PackageTitle,
 			SpecficVersion:      c.flags.VersionNumber,
 			SpecRPName:          c.flags.SpecRPName,
 			ReleaseDate:         c.flags.ReleaseDate,
 			SkipGenerateExample: c.flags.SkipGenerateExample,
 			GoVersion:           c.flags.GoVersion,
-			// ForceStableVersion:  c.flags.ForceStableVersion,
-			TypeSpecConfigPath:  c.flags.TypeSpecConfig,
 			TypeSpecEmitOption: c.flags.TypeSpecGoOption,
 		})
 	} else {

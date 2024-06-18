@@ -271,11 +271,10 @@ func ReplaceVersion(packageRootPath string, newVersion string) error {
 }
 
 // calculate new version by changelog using semver package
-func CalculateNewVersion(changelog *model.Changelog, previousVersion string, isCurrentPreview bool) (*semver.Version, PullRequestLabel, bool, error) {
-	var isIncMajor bool
+func CalculateNewVersion(changelog *model.Changelog, previousVersion string, isCurrentPreview bool) (*semver.Version, PullRequestLabel, error) {
 	version, err := semver.NewVersion(previousVersion)
 	if err != nil {
-		return nil, "", false, err
+		return nil, "", err
 	}
 	log.Printf("Lastest version is: %s", version.String())
 
@@ -286,7 +285,7 @@ func CalculateNewVersion(changelog *model.Changelog, previousVersion string, isC
 		if !isCurrentPreview {
 			tempVersion, err := semver.NewVersion("1.0.0")
 			if err != nil {
-				return nil, "", false, err
+				return nil, "", err
 			}
 			newVersion = *tempVersion
 			if changelog.HasBreakingChanges() {
@@ -309,11 +308,11 @@ func CalculateNewVersion(changelog *model.Changelog, previousVersion string, isC
 			if strings.Contains(previousVersion, "beta") {
 				betaNumber, err := strconv.Atoi(strings.Split(version.Prerelease(), "beta.")[1])
 				if err != nil {
-					return nil, "", false, err
+					return nil, "", err
 				}
 				newVersion, err = version.SetPrerelease("beta." + strconv.Itoa(betaNumber+1))
 				if err != nil {
-					return nil, "", false, err
+					return nil, "", err
 				}
 				if changelog.HasBreakingChanges() {
 					prl = BetaBreakingChangeLabel
@@ -324,7 +323,6 @@ func CalculateNewVersion(changelog *model.Changelog, previousVersion string, isC
 				if changelog.HasBreakingChanges() {
 					newVersion = version.IncMajor()
 					prl = BetaBreakingChangeLabel
-					isIncMajor = true
 				} else if changelog.Modified.HasAdditiveChanges() {
 					newVersion = version.IncMinor()
 					prl = BetaLabel
@@ -334,18 +332,17 @@ func CalculateNewVersion(changelog *model.Changelog, previousVersion string, isC
 				}
 				newVersion, err = newVersion.SetPrerelease("beta.1")
 				if err != nil {
-					return nil, "", false, err
+					return nil, "", err
 				}
 			}
 		} else {
 			if strings.Contains(previousVersion, "beta") {
-				return nil, "", false, fmt.Errorf("must have stable previous version")
+				return nil, "", fmt.Errorf("must have stable previous version")
 			}
 			// release version calculation
 			if changelog.HasBreakingChanges() {
 				newVersion = version.IncMajor()
 				prl = StableBreakingChangeLabel
-				isIncMajor = true
 			} else if changelog.Modified.HasAdditiveChanges() {
 				newVersion = version.IncMinor()
 				prl = StableLabel
@@ -357,7 +354,7 @@ func CalculateNewVersion(changelog *model.Changelog, previousVersion string, isC
 	}
 
 	log.Printf("New version is: %s", newVersion.String())
-	return &newVersion, prl, isIncMajor, nil
+	return &newVersion, prl, nil
 }
 
 // add new changelog md to changelog file

@@ -31,7 +31,7 @@ type GenerateContext struct {
 	UpdateSpecVersion bool
 
 	// typespec
-	TypeSpecConfigPath    string
+	TypeSpecConfig 	*typespec.TypeSpecConfig
 }
 
 type GenerateResult struct {
@@ -56,8 +56,6 @@ type GenerateParam struct {
 	GoVersion           string
 	RemoveTagSet        bool
 	ForceStableVersion  bool
-
-	TypeSpecConfigPath string
 	TypeSpecEmitOption string
 }
 
@@ -299,7 +297,7 @@ func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *Generate
 	} else {
 		log.Printf("Calculate new version...")
 		if generateParam.SpecficVersion == "" {
-			version, prl, _, err = CalculateNewVersion(changelog, previousVersion, isCurrentPreview)
+			version, prl, err = CalculateNewVersion(changelog, previousVersion, isCurrentPreview)
 			if err != nil {
 				return nil, err
 			}
@@ -378,10 +376,6 @@ func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *Generate
 	}
 }
 
-func (ctx *GenerateContext) GenerateForAutomationTypeSpec(readme, repo, goVersion string) ([]GenerateResult, []error) {
-	return []GenerateResult{}, nil
-}
-
 func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam) (*GenerateResult, error) {
 	packagePath := filepath.Join(ctx.SDKPath, "sdk", "resourcemanager", generateParam.RPName, generateParam.NamespaceName)
 	changelogPath := filepath.Join(packagePath, common.ChangelogFilename)
@@ -433,7 +427,7 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam) (*
 	if generateParam.TypeSpecEmitOption != "" {
 		emitOption = fmt.Sprintf("%s;%s", emitOption, generateParam.TypeSpecEmitOption)
 	}
-	err = ExecuteTypeSpecGenerate(ctx.SDKPath, generateParam.TypeSpecConfigPath, ctx.SpecCommitHash, ctx.SpecRepoURL, filepath.Dir(generateParam.TypeSpecConfigPath), emitOption)
+	err = ExecuteTypeSpecGenerate(ctx.SDKPath, ctx.TypeSpecConfig.Path, ctx.SpecCommitHash, ctx.SpecRepoURL, filepath.Dir(ctx.TypeSpecConfig.Path), emitOption)
 	if err != nil {
 		return nil, err
 	}
@@ -526,23 +520,21 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam) (*
 		}, nil
 	} else {
 		log.Printf("Calculate new version...")
-		isIncMajor := false
 		if generateParam.SpecficVersion == "" {
-			version, prl, isIncMajor, err = CalculateNewVersion(changelog, previousVersion, isCurrentPreview)
+			version, prl, err = CalculateNewVersion(changelog, previousVersion, isCurrentPreview)
 			if err != nil {
 				return nil, err
 			}
-		}
 
-		if isIncMajor {
-			// regenerate sdk code ??? 应该在有major version升级时才需要
-			// ttcf.EditOptions(string(typespec.TypeSpec_GO), map[string]any{
-			// 	"module-version": version.String(),
-			// }, true)
-			// err = ExecuteTypeSpecGenerate(packagePath, ttcf.Path, ctx.SpecCommitHash, ctx.SpecRepoURL, filepath.Dir(generateParam.TypeSpecConfigPath))
-			// if err != nil {
-			// 	return nil, err
-			// }
+			// regenerate sdk code
+			emitOption = fmt.Sprintf("module-version=%s", version.String())
+			if generateParam.TypeSpecEmitOption != "" {
+				emitOption = fmt.Sprintf("%s;%s", emitOption, generateParam.TypeSpecEmitOption)
+			}
+			err = ExecuteTypeSpecGenerate(ctx.SDKPath, ctx.TypeSpecConfig.Path, ctx.SpecCommitHash, ctx.SpecRepoURL, filepath.Dir(ctx.TypeSpecConfig.Path), emitOption)
+			if err != nil {
+				return nil, err
+			}
 		}
 
 		log.Printf("Add changelog to file...")

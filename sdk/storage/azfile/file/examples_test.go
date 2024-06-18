@@ -39,11 +39,11 @@ func generateData(sizeInBytes int) (io.ReadSeekCloser, []byte) {
 	if sizeInBytes > _len {
 		count := sizeInBytes / _len
 		if sizeInBytes%_len != 0 {
-			count = count + 1
+			count++
 		}
-		copy(data[:], strings.Repeat(random64BString, count))
+		copy(data, strings.Repeat(random64BString, count))
 	} else {
-		copy(data[:], random64BString)
+		copy(data, random64BString)
 	}
 	return streaming.NopCloser(bytes.NewReader(data)), data
 }

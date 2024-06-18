@@ -72,7 +72,6 @@ var proposedLeaseIDs = []*string{to.Ptr("c820a799-76d7-4ee2-6e15-546f19325c2c"),
 func (s *LeaseRecordedTestsSuite) TestContainerAcquireLease() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	//ignoreHeaders(_context.recording, headersToIgnoreForLease)
 
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
@@ -134,8 +133,6 @@ func (s *LeaseRecordedTestsSuite) TestContainerReleaseLease() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	//ignoreHeaders(_context.recording, headersToIgnoreForLease)
-
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
@@ -167,8 +164,6 @@ func (s *LeaseRecordedTestsSuite) TestContainerRenewLease() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	//ignoreHeaders(_context.recording, headersToIgnoreForLease)
-
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
@@ -196,8 +191,6 @@ func (s *LeaseRecordedTestsSuite) TestContainerRenewLease() {
 func (s *LeaseRecordedTestsSuite) TestContainerChangeLease() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-
-	//ignoreHeaders(_context.recording, headersToIgnoreForLease)
 
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
@@ -232,8 +225,6 @@ func (s *LeaseRecordedTestsSuite) TestBlobAcquireLease() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	//ignoreHeaders(_context.recording, headersToIgnoreForLease)
-
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
@@ -261,8 +252,6 @@ func (s *LeaseRecordedTestsSuite) TestBlobAcquireLease() {
 func (s *LeaseRecordedTestsSuite) TestDeleteBlobWithoutLeaseId() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-
-	//ignoreHeaders(_context.recording, headersToIgnoreForLease)
 
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
@@ -301,8 +290,6 @@ func (s *LeaseRecordedTestsSuite) TestDeleteBlobWithoutLeaseId() {
 func (s *LeaseRecordedTestsSuite) TestBlobReleaseLease() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-
-	//ignoreHeaders(_context.recording, headersToIgnoreForLease)
 
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
@@ -365,8 +352,6 @@ func (s *LeaseRecordedTestsSuite) TestBlobRenewLease() {
 func (s *LeaseRecordedTestsSuite) TestBlobChangeLease() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-
-	//ignoreHeaders(_context.recording, headersToIgnoreForLease)
 
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)

@@ -573,6 +573,20 @@ type DistributedAvailabilityGroupsClientBeginDeleteOptions struct {
 	ResumeToken string
 }
 
+// DistributedAvailabilityGroupsClientBeginFailoverOptions contains the optional parameters for the DistributedAvailabilityGroupsClient.BeginFailover
+// method.
+type DistributedAvailabilityGroupsClientBeginFailoverOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// DistributedAvailabilityGroupsClientBeginSetRoleOptions contains the optional parameters for the DistributedAvailabilityGroupsClient.BeginSetRole
+// method.
+type DistributedAvailabilityGroupsClientBeginSetRoleOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
 // DistributedAvailabilityGroupsClientBeginUpdateOptions contains the optional parameters for the DistributedAvailabilityGroupsClient.BeginUpdate
 // method.
 type DistributedAvailabilityGroupsClientBeginUpdateOptions struct {
@@ -2157,6 +2171,13 @@ type ManagedInstancesClientBeginFailoverOptions struct {
 	// The type of replica to be failed over.
 	ReplicaType *ReplicaType
 
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ManagedInstancesClientBeginRefreshStatusOptions contains the optional parameters for the ManagedInstancesClient.BeginRefreshStatus
+// method.
+type ManagedInstancesClientBeginRefreshStatusOptions struct {
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }

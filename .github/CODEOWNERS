@@ -41,7 +41,7 @@
 # ServiceOwner: @ealsur
 # ServiceLabel: %Cosmos
 # PRLabel: %Cosmos
-/sdk/data/azcosmos/           @ealsur @kirankumarkolli @simorenoh @kushagraThapar
+/sdk/data/azcosmos/           @ealsur @kirankumarkolli @simorenoh @kushagraThapar @Pilchie
 
 # AzureSDKOwners: @jhendrixMSFT
 # ServiceLabel: %Tables
@@ -93,6 +93,7 @@
 # Eng Sys
 ###########
 /eng/                         @benbp @weshaggard
+/eng/common/                  @Azure/azure-sdk-eng
 
 # Add owners for notifications for specific pipelines
 /eng/common/pipelines/codeowners-linter.yml       @rickwinter
@@ -271,7 +272,7 @@
 #/<NotInRepo>/          @qike-ms @jwilder @thomas1206 @seanmck
 
 # ServiceLabel: %Cosmos
-#/<NotInRepo>/          @Wmengmsft @MehaKaushik
+#/<NotInRepo>/          @Wmengmsft @MehaKaushik @Pilchie
 
 # ServiceLabel: %Customer Insights
 #/<NotInRepo>/          @shefymk
@@ -571,7 +572,7 @@
 #/<NotInRepo>/          @bastionsuppgithub
 
 # ServiceLabel: %Azure.Spring - Cosmos
-#/<NotInRepo>/          @kushagraThapar
+#/<NotInRepo>/          @kushagraThapar @Pilchie
 
 # ServiceLabel: %Network - Private Link
 #/<NotInRepo>/          @privlinksuppgithub

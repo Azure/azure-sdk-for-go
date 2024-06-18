@@ -185,16 +185,10 @@ func (client *ManagedDatabaseColumnsClient) listByDatabaseCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Schema != nil {
-		for _, qv := range options.Schema {
-			reqQP.Add("schema", qv)
-		}
+	if options != nil && options.Skiptoken != nil {
+		reqQP.Set("$skiptoken", *options.Skiptoken)
 	}
-	if options != nil && options.Table != nil {
-		for _, qv := range options.Table {
-			reqQP.Add("table", qv)
-		}
-	}
+	reqQP.Set("api-version", "2020-11-01-preview")
 	if options != nil && options.Column != nil {
 		for _, qv := range options.Column {
 			reqQP.Add("column", qv)
@@ -205,10 +199,16 @@ func (client *ManagedDatabaseColumnsClient) listByDatabaseCreateRequest(ctx cont
 			reqQP.Add("orderBy", qv)
 		}
 	}
-	if options != nil && options.Skiptoken != nil {
-		reqQP.Set("$skiptoken", *options.Skiptoken)
+	if options != nil && options.Schema != nil {
+		for _, qv := range options.Schema {
+			reqQP.Add("schema", qv)
+		}
 	}
-	reqQP.Set("api-version", "2020-11-01-preview")
+	if options != nil && options.Table != nil {
+		for _, qv := range options.Table {
+			reqQP.Add("table", qv)
+		}
+	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

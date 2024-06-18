@@ -17,10 +17,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2021-10-01/examples/dataConnectors/GetDataConnectors.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c4f3c695f0250dcb261598a62004f0aef10b9db/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/dataConnectors/GetDataConnectors.json
 func ExampleDataConnectorsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -66,12 +66,34 @@ func ExampleDataConnectorsClient_NewListPager() {
 		// 			Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
 		// 			Kind: to.Ptr(armsecurityinsights.DataConnectorKindThreatIntelligence),
 		// 			Properties: &armsecurityinsights.TIDataConnectorProperties{
+		// 				TenantID: to.Ptr("2070ecc9-b4d5-4ae4-adaa-936fa1954fa8"),
 		// 				DataTypes: &armsecurityinsights.TIDataConnectorDataTypes{
 		// 					Indicators: &armsecurityinsights.TIDataConnectorDataTypesIndicators{
 		// 						State: to.Ptr(armsecurityinsights.DataTypeStateEnabled),
 		// 					},
 		// 				},
+		// 			},
+		// 		},
+		// 		&armsecurityinsights.TiTaxiiDataConnector{
+		// 			Name: to.Ptr("c39bb458-02a7-4b3f-b0c8-71a1d2692652"),
+		// 			Type: to.Ptr("Microsoft.SecurityInsights/dataConnectors"),
+		// 			ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/dataConnectors/c39bb458-02a7-4b3f-b0c8-71a1d2692652"),
+		// 			Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
+		// 			Kind: to.Ptr(armsecurityinsights.DataConnectorKindThreatIntelligenceTaxii),
+		// 			Properties: &armsecurityinsights.TiTaxiiDataConnectorProperties{
 		// 				TenantID: to.Ptr("2070ecc9-b4d5-4ae4-adaa-936fa1954fa8"),
+		// 				CollectionID: to.Ptr("e0b1f32d-1188-48f7-a7a3-de71924e4b5e"),
+		// 				DataTypes: &armsecurityinsights.TiTaxiiDataConnectorDataTypes{
+		// 					TaxiiClient: &armsecurityinsights.TiTaxiiDataConnectorDataTypesTaxiiClient{
+		// 						State: to.Ptr(armsecurityinsights.DataTypeStateEnabled),
+		// 					},
+		// 				},
+		// 				FriendlyName: to.Ptr("My TI Taxii Connector"),
+		// 				Password: to.Ptr(""),
+		// 				PollingFrequency: to.Ptr(armsecurityinsights.PollingFrequencyOnceAMinute),
+		// 				TaxiiServer: to.Ptr("https://mytaxiiserver.com/taxiing/v2/api"),
+		// 				UserName: to.Ptr(""),
+		// 				WorkspaceID: to.Ptr("8b014a77-4695-4ef4-96bb-6623afb121a2"),
 		// 			},
 		// 		},
 		// 		&armsecurityinsights.AADDataConnector{
@@ -81,12 +103,12 @@ func ExampleDataConnectorsClient_NewListPager() {
 		// 			Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
 		// 			Kind: to.Ptr(armsecurityinsights.DataConnectorKindAzureActiveDirectory),
 		// 			Properties: &armsecurityinsights.AADDataConnectorProperties{
+		// 				TenantID: to.Ptr("2070ecc9-b4d5-4ae4-adaa-936fa1954fa8"),
 		// 				DataTypes: &armsecurityinsights.AlertsDataTypeOfDataConnector{
 		// 					Alerts: &armsecurityinsights.DataConnectorDataTypeCommon{
 		// 						State: to.Ptr(armsecurityinsights.DataTypeStateEnabled),
 		// 					},
 		// 				},
-		// 				TenantID: to.Ptr("2070ecc9-b4d5-4ae4-adaa-936fa1954fa8"),
 		// 			},
 		// 		},
 		// 		&armsecurityinsights.OfficeDataConnector{
@@ -96,6 +118,7 @@ func ExampleDataConnectorsClient_NewListPager() {
 		// 			Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
 		// 			Kind: to.Ptr(armsecurityinsights.DataConnectorKindOffice365),
 		// 			Properties: &armsecurityinsights.OfficeDataConnectorProperties{
+		// 				TenantID: to.Ptr("2070ecc9-b4d5-4ae4-adaa-936fa1954fa8"),
 		// 				DataTypes: &armsecurityinsights.OfficeDataConnectorDataTypes{
 		// 					Exchange: &armsecurityinsights.OfficeDataConnectorDataTypesExchange{
 		// 						State: to.Ptr(armsecurityinsights.DataTypeStateEnabled),
@@ -103,8 +126,10 @@ func ExampleDataConnectorsClient_NewListPager() {
 		// 					SharePoint: &armsecurityinsights.OfficeDataConnectorDataTypesSharePoint{
 		// 						State: to.Ptr(armsecurityinsights.DataTypeStateEnabled),
 		// 					},
+		// 					Teams: &armsecurityinsights.OfficeDataConnectorDataTypesTeams{
+		// 						State: to.Ptr(armsecurityinsights.DataTypeStateEnabled),
+		// 					},
 		// 				},
-		// 				TenantID: to.Ptr("2070ecc9-b4d5-4ae4-adaa-936fa1954fa8"),
 		// 			},
 		// 		},
 		// 		&armsecurityinsights.MCASDataConnector{
@@ -114,6 +139,7 @@ func ExampleDataConnectorsClient_NewListPager() {
 		// 			Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
 		// 			Kind: to.Ptr(armsecurityinsights.DataConnectorKindMicrosoftCloudAppSecurity),
 		// 			Properties: &armsecurityinsights.MCASDataConnectorProperties{
+		// 				TenantID: to.Ptr("2070ecc9-b4d5-4ae4-adaa-936fa1954fa8"),
 		// 				DataTypes: &armsecurityinsights.MCASDataConnectorDataTypes{
 		// 					Alerts: &armsecurityinsights.DataConnectorDataTypeCommon{
 		// 						State: to.Ptr(armsecurityinsights.DataTypeStateEnabled),
@@ -122,7 +148,6 @@ func ExampleDataConnectorsClient_NewListPager() {
 		// 						State: to.Ptr(armsecurityinsights.DataTypeStateEnabled),
 		// 					},
 		// 				},
-		// 				TenantID: to.Ptr("2070ecc9-b4d5-4ae4-adaa-936fa1954fa8"),
 		// 			},
 		// 		},
 		// 		&armsecurityinsights.AATPDataConnector{
@@ -132,12 +157,12 @@ func ExampleDataConnectorsClient_NewListPager() {
 		// 			Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
 		// 			Kind: to.Ptr(armsecurityinsights.DataConnectorKindAzureAdvancedThreatProtection),
 		// 			Properties: &armsecurityinsights.AATPDataConnectorProperties{
+		// 				TenantID: to.Ptr("2070ecc9-b4d5-4ae4-adaa-936fa1954fa8"),
 		// 				DataTypes: &armsecurityinsights.AlertsDataTypeOfDataConnector{
 		// 					Alerts: &armsecurityinsights.DataConnectorDataTypeCommon{
 		// 						State: to.Ptr(armsecurityinsights.DataTypeStateEnabled),
 		// 					},
 		// 				},
-		// 				TenantID: to.Ptr("2070ecc9-b4d5-4ae4-adaa-936fa1954fa8"),
 		// 			},
 		// 		},
 		// 		&armsecurityinsights.AwsCloudTrailDataConnector{
@@ -155,26 +180,483 @@ func ExampleDataConnectorsClient_NewListPager() {
 		// 				},
 		// 			},
 		// 		},
-		// 		&armsecurityinsights.MDATPDataConnector{
-		// 			Name: to.Ptr("06b3ccb8-1384-4bcc-aec7-852f6d57161b"),
+		// 		&armsecurityinsights.AwsS3DataConnector{
+		// 			Name: to.Ptr("afef3743-0c88-469c-84ff-ca2e87dc1e48"),
 		// 			Type: to.Ptr("Microsoft.SecurityInsights/dataConnectors"),
-		// 			ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/dataConnectors/06b3ccb8-1384-4bcc-aec7-852f6d57161b"),
+		// 			ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/dataConnectors/afef3743-0c88-469c-84ff-ca2e87dc1e48"),
 		// 			Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
-		// 			Kind: to.Ptr(armsecurityinsights.DataConnectorKindMicrosoftDefenderAdvancedThreatProtection),
-		// 			Properties: &armsecurityinsights.MDATPDataConnectorProperties{
-		// 				DataTypes: &armsecurityinsights.AlertsDataTypeOfDataConnector{
-		// 					Alerts: &armsecurityinsights.DataConnectorDataTypeCommon{
+		// 			Kind: to.Ptr(armsecurityinsights.DataConnectorKindAmazonWebServicesS3),
+		// 			Properties: &armsecurityinsights.AwsS3DataConnectorProperties{
+		// 				DataTypes: &armsecurityinsights.AwsS3DataConnectorDataTypes{
+		// 					Logs: &armsecurityinsights.AwsS3DataConnectorDataTypesLogs{
 		// 						State: to.Ptr(armsecurityinsights.DataTypeStateEnabled),
 		// 					},
 		// 				},
-		// 				TenantID: to.Ptr("2070ecc9-b4d5-4ae4-adaa-936fa1954fa8"),
+		// 				DestinationTable: to.Ptr("AWSVPCFlow"),
+		// 				RoleArn: to.Ptr("arn:aws:iam::072643944673:role/RoleName"),
+		// 				SqsUrls: []*string{
+		// 					to.Ptr("https://sqs.us-west-1.amazonaws.com/111111111111/sqsTestName")},
+		// 				},
 		// 			},
-		// 	}},
-		// }
+		// 			&armsecurityinsights.MDATPDataConnector{
+		// 				Name: to.Ptr("06b3ccb8-1384-4bcc-aec7-852f6d57161b"),
+		// 				Type: to.Ptr("Microsoft.SecurityInsights/dataConnectors"),
+		// 				ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/dataConnectors/06b3ccb8-1384-4bcc-aec7-852f6d57161b"),
+		// 				Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
+		// 				Kind: to.Ptr(armsecurityinsights.DataConnectorKindMicrosoftDefenderAdvancedThreatProtection),
+		// 				Properties: &armsecurityinsights.MDATPDataConnectorProperties{
+		// 					TenantID: to.Ptr("2070ecc9-b4d5-4ae4-adaa-936fa1954fa8"),
+		// 					DataTypes: &armsecurityinsights.AlertsDataTypeOfDataConnector{
+		// 						Alerts: &armsecurityinsights.DataConnectorDataTypeCommon{
+		// 							State: to.Ptr(armsecurityinsights.DataTypeStateEnabled),
+		// 						},
+		// 					},
+		// 				},
+		// 			},
+		// 			&armsecurityinsights.OfficeATPDataConnector{
+		// 				Name: to.Ptr("3d3e955e-33eb-401d-89a7-251c81ddd660"),
+		// 				Type: to.Ptr("Microsoft.SecurityInsights/dataConnectors"),
+		// 				ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/dataConnectors/3d3e955e-33eb-401d-89a7-251c81ddd660"),
+		// 				Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
+		// 				Kind: to.Ptr(armsecurityinsights.DataConnectorKindOfficeATP),
+		// 				Properties: &armsecurityinsights.OfficeATPDataConnectorProperties{
+		// 					TenantID: to.Ptr("2070ecc9-b4d5-4ae4-adaa-936fa1954fa8"),
+		// 					DataTypes: &armsecurityinsights.AlertsDataTypeOfDataConnector{
+		// 						Alerts: &armsecurityinsights.DataConnectorDataTypeCommon{
+		// 							State: to.Ptr(armsecurityinsights.DataTypeStateEnabled),
+		// 						},
+		// 					},
+		// 				},
+		// 			},
+		// 			&armsecurityinsights.Office365ProjectDataConnector{
+		// 				Name: to.Ptr("3d3e955e-33eb-401d-89a7-251c81ddd660"),
+		// 				Type: to.Ptr("Microsoft.SecurityInsights/dataConnectors"),
+		// 				ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/dataConnectors/3d3e955e-33eb-401d-89a7-251c81ddd660"),
+		// 				Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
+		// 				Kind: to.Ptr(armsecurityinsights.DataConnectorKindOffice365Project),
+		// 				Properties: &armsecurityinsights.Office365ProjectDataConnectorProperties{
+		// 					TenantID: to.Ptr("2070ecc9-b4d5-4ae4-adaa-936fa1954fa8"),
+		// 					DataTypes: &armsecurityinsights.Office365ProjectConnectorDataTypes{
+		// 						Logs: &armsecurityinsights.Office365ProjectConnectorDataTypesLogs{
+		// 							State: to.Ptr(armsecurityinsights.DataTypeStateEnabled),
+		// 						},
+		// 					},
+		// 				},
+		// 			},
+		// 			&armsecurityinsights.OfficePowerBIDataConnector{
+		// 				Name: to.Ptr("3d3e955e-33eb-401d-89a7-251c81ddd660"),
+		// 				Type: to.Ptr("Microsoft.SecurityInsights/dataConnectors"),
+		// 				ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/dataConnectors/3d3e955e-33eb-401d-89a7-251c81ddd660"),
+		// 				Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
+		// 				Kind: to.Ptr(armsecurityinsights.DataConnectorKindOfficePowerBI),
+		// 				Properties: &armsecurityinsights.OfficePowerBIDataConnectorProperties{
+		// 					TenantID: to.Ptr("2070ecc9-b4d5-4ae4-adaa-936fa1954fa8"),
+		// 					DataTypes: &armsecurityinsights.OfficePowerBIConnectorDataTypes{
+		// 						Logs: &armsecurityinsights.OfficePowerBIConnectorDataTypesLogs{
+		// 							State: to.Ptr(armsecurityinsights.DataTypeStateEnabled),
+		// 						},
+		// 					},
+		// 				},
+		// 			},
+		// 			&armsecurityinsights.Dynamics365DataConnector{
+		// 				Name: to.Ptr("c2541efb-c9a6-47fe-9501-87d1017d1512"),
+		// 				Type: to.Ptr("Microsoft.SecurityInsights/dataConnectors"),
+		// 				ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/dataConnectors/3d3e955e-33eb-401d-89a7-251c81ddd660"),
+		// 				Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
+		// 				Kind: to.Ptr(armsecurityinsights.DataConnectorKindDynamics365),
+		// 				Properties: &armsecurityinsights.Dynamics365DataConnectorProperties{
+		// 					TenantID: to.Ptr("2070ecc9-b4d5-4ae4-adaa-936fa1954fa8"),
+		// 					DataTypes: &armsecurityinsights.Dynamics365DataConnectorDataTypes{
+		// 						Dynamics365CdsActivities: &armsecurityinsights.Dynamics365DataConnectorDataTypesDynamics365CdsActivities{
+		// 							State: to.Ptr(armsecurityinsights.DataTypeStateEnabled),
+		// 						},
+		// 					},
+		// 				},
+		// 			},
+		// 			&armsecurityinsights.CodelessUIDataConnector{
+		// 				Name: to.Ptr("316ec55e-7138-4d63-ab18-90c8a60fd1c8"),
+		// 				Type: to.Ptr("Microsoft.SecurityInsights/dataConnectors"),
+		// 				ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/dataConnectors/316ec55e-7138-4d63-ab18-90c8a60fd1c8"),
+		// 				Etag: to.Ptr("\"1a00b074-0000-0100-0000-606ef5bd0000\""),
+		// 				Kind: to.Ptr(armsecurityinsights.DataConnectorKindGenericUI),
+		// 				Properties: &armsecurityinsights.CodelessParameters{
+		// 					ConnectorUIConfig: &armsecurityinsights.CodelessUIConnectorConfigProperties{
+		// 						Availability: &armsecurityinsights.Availability{
+		// 							IsPreview: to.Ptr(true),
+		// 							Status: to.Ptr[int32](1),
+		// 						},
+		// 						ConnectivityCriteria: []*armsecurityinsights.CodelessUIConnectorConfigPropertiesConnectivityCriteriaItem{
+		// 							{
+		// 								Type: to.Ptr(armsecurityinsights.ConnectivityTypeIsConnectedQuery),
+		// 								Value: []*string{
+		// 									to.Ptr("{{graphQueriesTableName}}\n            | summarize LastLogReceived = max(TimeGenerated)\n            | project IsConnected = LastLogReceived > ago(30d)")},
+		// 							}},
+		// 							CustomImage: to.Ptr("The image connector content"),
+		// 							DataTypes: []*armsecurityinsights.CodelessUIConnectorConfigPropertiesDataTypesItem{
+		// 								{
+		// 									Name: to.Ptr("{{graphQueriesTableName}}"),
+		// 									LastDataReceivedQuery: to.Ptr("{{graphQueriesTableName}}\n            | summarize Time = max(TimeGenerated)\n            | where isnotempty(Time)"),
+		// 							}},
+		// 							DescriptionMarkdown: to.Ptr("The [Qualys Vulnerability Management (VM)](https://www.qualys.com/apps/vulnerability-management/) data connector provides the capability to ingest vulnerability host detection data into Azure Sentinel through the Qualys API. The connector provides visibility into host detection data from vulerability scans. This connector provides Azure Sentinel the capability to view dashboards, create custom alerts, and improve investigation "),
+		// 							GraphQueries: []*armsecurityinsights.CodelessUIConnectorConfigPropertiesGraphQueriesItem{
+		// 								{
+		// 									BaseQuery: to.Ptr("{{graphQueriesTableName}}"),
+		// 									Legend: to.Ptr("{{graphQueriesTableName}}"),
+		// 									MetricName: to.Ptr("Total data received"),
+		// 							}},
+		// 							GraphQueriesTableName: to.Ptr("QualysHostDetection_CL"),
+		// 							InstructionSteps: []*armsecurityinsights.CodelessUIConnectorConfigPropertiesInstructionStepsItem{
+		// 								{
+		// 									Description: to.Ptr(">**NOTE:** This connector uses Azure Functions to connect to Qualys VM to pull its logs into Azure Sentinel. This might result in additional data ingestion costs. Check the [Azure Functions pricing page](https://azure.microsoft.com/pricing/details/functions/) for details."),
+		// 									Title: to.Ptr(""),
+		// 								},
+		// 								{
+		// 									Description: to.Ptr(">**(Optional Step)** Securely store workspace and API authorization key(s) or token(s) in Azure Key Vault. Azure Key Vault provides a secure mechanism to store and retrieve key values. [Follow these instructions](https://docs.microsoft.com/azure/app-service/app-service-key-vault-references) to use Azure Key Vault with an Azure Function App."),
+		// 									Title: to.Ptr(""),
+		// 								},
+		// 								{
+		// 									Description: to.Ptr("**STEP 1 - Configuration steps for the Qualys VM API**\n\n1. Log into the Qualys Vulnerability Management console with an administrator account, select the **Users** tab and the **Users** subtab. \n2. Click on the **New** drop-down menu and select **Users..**\n3. Create a username and password for the API account. \n4. In the **User Roles** tab, ensure the account role is set to **Manager** and access is allowed to **GUI** and **API**\n4. Log out of the administrator account and log into the console with the new API credentials for validation, then log out of the API account. \n5. Log back into the console using an administrator account and modify the API accounts User Roles, removing access to **GUI**. \n6. Save all changes."),
+		// 									Title: to.Ptr(""),
+		// 								},
+		// 								{
+		// 									Description: to.Ptr("**STEP 2 - Choose ONE from the following two deployment options to deploy the connector and the associated Azure Function**\n\n>**IMPORTANT:** Before deploying the Qualys VM connector, have the Workspace ID and Workspace Primary Key (can be copied from the following), as well as the Qualys VM API Authorization Key(s), readily available."),
+		// 									Instructions: []*armsecurityinsights.InstructionStepsInstructionsItem{
+		// 										{
+		// 											Type: to.Ptr(armsecurityinsights.SettingTypeCopyableLabel),
+		// 											Parameters: map[string]any{
+		// 												"fillWith":[]any{
+		// 													"WorkspaceId",
+		// 												},
+		// 												"label": "Workspace ID",
+		// 											},
+		// 										},
+		// 										{
+		// 											Type: to.Ptr(armsecurityinsights.SettingTypeCopyableLabel),
+		// 											Parameters: map[string]any{
+		// 												"fillWith":[]any{
+		// 													"PrimaryKey",
+		// 												},
+		// 												"label": "Primary Key",
+		// 											},
+		// 									}},
+		// 									Title: to.Ptr(""),
+		// 								},
+		// 								{
+		// 									Description: to.Ptr("Use this method for automated deployment of the Qualys VM connector using an ARM Tempate.\n\n1. Click the **Deploy to Azure** button below. \n\n	[![Deploy To Azure](https://aka.ms/deploytoazurebutton)](https://aka.ms/sentinelqualysvmazuredeploy)\n2. Select the preferred **Subscription**, **Resource Group** and **Location**. \n3. Enter the **Workspace ID**, **Workspace Key**, **API Username**, **API Password** , update the **URI**, and any additional URI **Filter Parameters** (each filter should be separated by an \"&\" symbol, no spaces.) \n> - Enter the URI that corresponds to your region. The complete list of API Server URLs can be [found here](https://www.qualys.com/docs/qualys-api-vmpc-user-guide.pdf#G4.735348) -- There is no need to add a time suffix to the URI, the Function App will dynamically append the Time Value to the URI in the proper format. \n - The default **Time Interval** is set to pull the last five (5) minutes of data. If the time interval needs to be modified, it is recommended to change the Function App Timer Trigger accordingly (in the function.json file, post deployment) to prevent overlapping data ingestion. \n> - Note: If using Azure Key Vault secrets for any of the values above, use the`@Microsoft.KeyVault(SecretUri={Security Identifier})`schema in place of the string values. Refer to [Key Vault references documentation](https://docs.microsoft.com/azure/app-service/app-service-key-vault-references) for further details. \n4. Mark the checkbox labeled **I agree to the terms and conditions stated above**. \n5. Click **Purchase** to deploy."),
+		// 									Title: to.Ptr("Option 1 - Azure Resource Manager (ARM) Template"),
+		// 								},
+		// 								{
+		// 									Description: to.Ptr("Use the following step-by-step instructions to deploy the Quayls VM connector manually with Azure Functions."),
+		// 									Title: to.Ptr("Option 2 - Manual Deployment of Azure Functions"),
+		// 								},
+		// 								{
+		// 									Description: to.Ptr("**1. Create a Function App**\n\n1.  From the Azure Portal, navigate to [Function App](https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Web%2Fsites/kind/functionapp), and select **+ Add**.\n2. In the **Basics** tab, ensure Runtime stack is set to **Powershell Core**. \n3. In the **Hosting** tab, ensure the **Consumption (Serverless)** plan type is selected.\n4. Make other preferrable configuration changes, if needed, then click **Create**."),
+		// 									Title: to.Ptr(""),
+		// 								},
+		// 								{
+		// 									Description: to.Ptr("**2. Import Function App Code**\n\n1. In the newly created Function App, select **Functions** on the left pane and click **+ New Function**.\n2. Select **Timer Trigger**.\n3. Enter a unique Function **Name** and leave the default cron schedule of every 5 minutes, then click **Create**.\n5. Click on **Code + Test** on the left pane. \n6. Copy the [Function App Code](https://aka.ms/sentinelqualysvmazurefunctioncode) and paste into the Function App `run.ps1` editor.\n7. Click **Save**."),
+		// 									Title: to.Ptr(""),
+		// 								},
+		// 								{
+		// 									Description: to.Ptr("**3. Configure the Function App**\n\n1. In the Function App, select the Function App Name and select **Configuration**.\n2. In the **Application settings** tab, select **+ New application setting**.\n3. Add each of the following seven (7) application settings individually, with their respective string values (case-sensitive): \n		apiUsername\n		apiPassword\n		workspaceID\n		workspaceKey\n		uri\n		filterParameters\n		timeInterval\n> - Enter the URI that corresponds to your region. The complete list of API Server URLs can be [found here](https://www.qualys.com/docs/qualys-api-vmpc-user-guide.pdf#G4.735348). The `uri` value must follow the following schema: `https://<API Server>/api/2.0/fo/asset/host/vm/detection/?action=list&vm_processed_after=` -- There is no need to add a time suffix to the URI, the Function App will dynamically append the Time Value to the URI in the proper format.\n> - Add any additional filter parameters, for the `filterParameters` variable, that need to be appended to the URI. Each parameter should be seperated by an \"&\" symbol and should not include any spaces.\n> - Set the `timeInterval` (in minutes) to the value of `5` to correspond to the Timer Trigger of every `5` minutes. If the time interval needs to be modified, it is recommended to change the Function App Timer Trigger accordingly to prevent overlapping data ingestion.\n> - Note: If using Azure Key Vault, use the`@Microsoft.KeyVault(SecretUri={Security Identifier})`schema in place of the string values. Refer to [Key Vault references documentation](https://docs.microsoft.com/azure/app-service/app-service-key-vault-references) for further details.\n4. Once all application settings have been entered, click **Save**."),
+		// 									Title: to.Ptr(""),
+		// 								},
+		// 								{
+		// 									Description: to.Ptr("**4. Configure the host.json**.\n\nDue to the potentially large amount of Qualys host detection data being ingested, it can cause the execution time to surpass the default Function App timeout of five (5) minutes. Increase the default timeout duration to the maximum of ten (10) minutes, under the Consumption Plan, to allow more time for the Function App to execute.\n\n1. In the Function App, select the Function App Name and select the **App Service Editor** blade.\n2. Click **Go** to open the editor, then select the **host.json** file under the **wwwroot** directory.\n3. Add the line `\"functionTimeout\": \"00:10:00\",` above the `managedDependancy` line \n4. Ensure **SAVED** appears on the top right corner of the editor, then exit the editor.\n\n> NOTE: If a longer timeout duration is required, consider upgrading to an [App Service Plan](https://docs.microsoft.com/azure/azure-functions/functions-scale#timeout)"),
+		// 									Title: to.Ptr(""),
+		// 							}},
+		// 							Permissions: &armsecurityinsights.Permissions{
+		// 								Customs: []*armsecurityinsights.PermissionsCustomsItem{
+		// 									{
+		// 										Name: to.Ptr("Microsoft.Web/sites permissions"),
+		// 										Description: to.Ptr("Read and write permissions to Azure Functions to create a Function App is required. [See the documentation to learn more about Azure Functions](https://docs.microsoft.com/azure/azure-functions/)."),
+		// 									},
+		// 									{
+		// 										Name: to.Ptr("Qualys API Key"),
+		// 										Description: to.Ptr("A Qualys VM API username and password is required. [See the documentation to learn more about Qualys VM API](https://www.qualys.com/docs/qualys-api-vmpc-user-guide.pdf)."),
+		// 								}},
+		// 								ResourceProvider: []*armsecurityinsights.PermissionsResourceProviderItem{
+		// 									{
+		// 										PermissionsDisplayText: to.Ptr("read and write permissions on the workspace are required."),
+		// 										Provider: to.Ptr(armsecurityinsights.ProviderNameMicrosoftOperationalInsightsWorkspaces),
+		// 										ProviderDisplayName: to.Ptr("Workspace"),
+		// 										RequiredPermissions: &armsecurityinsights.RequiredPermissions{
+		// 											Delete: to.Ptr(true),
+		// 											Read: to.Ptr(true),
+		// 											Write: to.Ptr(true),
+		// 										},
+		// 										Scope: to.Ptr(armsecurityinsights.PermissionProviderScopeWorkspace),
+		// 									},
+		// 									{
+		// 										PermissionsDisplayText: to.Ptr("read permissions to shared keys for the workspace are required. [See the documentation to learn more about workspace keys](https://docs.microsoft.com/azure/azure-monitor/platform/agent-windows#obtain-workspace-id-and-key)."),
+		// 										Provider: to.Ptr(armsecurityinsights.ProviderNameMicrosoftOperationalInsightsWorkspacesSharedKeys),
+		// 										ProviderDisplayName: to.Ptr("Keys"),
+		// 										RequiredPermissions: &armsecurityinsights.RequiredPermissions{
+		// 											Action: to.Ptr(true),
+		// 										},
+		// 										Scope: to.Ptr(armsecurityinsights.PermissionProviderScopeWorkspace),
+		// 								}},
+		// 							},
+		// 							Publisher: to.Ptr("Qualys"),
+		// 							SampleQueries: []*armsecurityinsights.CodelessUIConnectorConfigPropertiesSampleQueriesItem{
+		// 								{
+		// 									Description: to.Ptr("Top 10 Vulerabilities detected"),
+		// 									Query: to.Ptr("{{graphQueriesTableName}}\n | mv-expand todynamic(Detections_s)\n | extend Vulnerability = tostring(Detections_s.Results)\n | summarize count() by Vulnerability\n | top 10 by count_"),
+		// 							}},
+		// 							Title: to.Ptr("Qualys Vulnerability Management (CCP DEMO)"),
+		// 						},
+		// 					},
+		// 				},
+		// 				&armsecurityinsights.CodelessAPIPollingDataConnector{
+		// 					Name: to.Ptr("316ec55e-7138-4d63-ab18-90c8a60fd1c8"),
+		// 					Type: to.Ptr("Microsoft.SecurityInsights/dataConnectors"),
+		// 					ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/dataConnectors/316ec55e-7138-4d63-ab18-90c8a60fd1c8"),
+		// 					Etag: to.Ptr("\"1a00b074-0000-0100-0000-606ef5bd0000\""),
+		// 					Kind: to.Ptr(armsecurityinsights.DataConnectorKindAPIPolling),
+		// 					Properties: &armsecurityinsights.APIPollingParameters{
+		// 						ConnectorUIConfig: &armsecurityinsights.CodelessUIConnectorConfigProperties{
+		// 							Availability: &armsecurityinsights.Availability{
+		// 								IsPreview: to.Ptr(true),
+		// 								Status: to.Ptr[int32](1),
+		// 							},
+		// 							ConnectivityCriteria: []*armsecurityinsights.CodelessUIConnectorConfigPropertiesConnectivityCriteriaItem{
+		// 								{
+		// 									Type: to.Ptr(armsecurityinsights.ConnectivityType("SentinelKindsV2")),
+		// 									Value: []*string{
+		// 									},
+		// 							}},
+		// 							DataTypes: []*armsecurityinsights.CodelessUIConnectorConfigPropertiesDataTypesItem{
+		// 								{
+		// 									Name: to.Ptr("{{graphQueriesTableName}}"),
+		// 									LastDataReceivedQuery: to.Ptr("{{graphQueriesTableName}}\n            | summarize Time = max(TimeGenerated)\n            | where isnotempty(Time)"),
+		// 							}},
+		// 							DescriptionMarkdown: to.Ptr("The GitHub audit log connector provides the capability to ingest GitHub logs into Azure Sentinel. By connecting GitHub audit logs into Azure Sentinel, you can view this data in workbooks, use it to create custom alerts, and improve your investigation process."),
+		// 							GraphQueries: []*armsecurityinsights.CodelessUIConnectorConfigPropertiesGraphQueriesItem{
+		// 								{
+		// 									BaseQuery: to.Ptr("{{graphQueriesTableName}}"),
+		// 									Legend: to.Ptr("GitHub audit log events"),
+		// 									MetricName: to.Ptr("Total events received"),
+		// 							}},
+		// 							GraphQueriesTableName: to.Ptr("GitHubAuditLogPolling_CL"),
+		// 							InstructionSteps: []*armsecurityinsights.CodelessUIConnectorConfigPropertiesInstructionStepsItem{
+		// 								{
+		// 									Description: to.Ptr("Enable GitHub audit Logs. \n Follow [this](https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token) to create or find your personal key"),
+		// 									Instructions: []*armsecurityinsights.InstructionStepsInstructionsItem{
+		// 										{
+		// 											Type: to.Ptr(armsecurityinsights.SettingType("APIKey")),
+		// 											Parameters: map[string]any{
+		// 												"enable": "true",
+		// 												"userRequestPlaceHoldersInput":[]any{
+		// 													map[string]any{
+		// 														"displayText": "Organization Name",
+		// 														"placeHolderName": "{{placeHolder1}}",
+		// 														"placeHolderValue": "",
+		// 														"requestObjectKey": "apiEndpoint",
+		// 													},
+		// 												},
+		// 											},
+		// 									}},
+		// 									Title: to.Ptr("Connect GitHub Enterprise Audit Log to Azure Sentinel"),
+		// 							}},
+		// 							Permissions: &armsecurityinsights.Permissions{
+		// 								Customs: []*armsecurityinsights.PermissionsCustomsItem{
+		// 									{
+		// 										Name: to.Ptr("GitHub API personal token Key"),
+		// 										Description: to.Ptr("You need access to GitHub personal token, the key should have 'admin:org' scope"),
+		// 								}},
+		// 								ResourceProvider: []*armsecurityinsights.PermissionsResourceProviderItem{
+		// 									{
+		// 										PermissionsDisplayText: to.Ptr("read and write permissions are required."),
+		// 										Provider: to.Ptr(armsecurityinsights.ProviderNameMicrosoftOperationalInsightsWorkspaces),
+		// 										ProviderDisplayName: to.Ptr("Workspace"),
+		// 										RequiredPermissions: &armsecurityinsights.RequiredPermissions{
+		// 											Delete: to.Ptr(true),
+		// 											Read: to.Ptr(true),
+		// 											Write: to.Ptr(true),
+		// 										},
+		// 										Scope: to.Ptr(armsecurityinsights.PermissionProviderScopeWorkspace),
+		// 								}},
+		// 							},
+		// 							Publisher: to.Ptr("GitHub"),
+		// 							SampleQueries: []*armsecurityinsights.CodelessUIConnectorConfigPropertiesSampleQueriesItem{
+		// 								{
+		// 									Description: to.Ptr("All logs"),
+		// 									Query: to.Ptr("{{graphQueriesTableName}}\n | take 10 <change>"),
+		// 							}},
+		// 							Title: to.Ptr("GitHub Enterprise Audit Log"),
+		// 						},
+		// 						PollingConfig: &armsecurityinsights.CodelessConnectorPollingConfigProperties{
+		// 							Auth: &armsecurityinsights.CodelessConnectorPollingAuthProperties{
+		// 								APIKeyIdentifier: to.Ptr("token"),
+		// 								APIKeyName: to.Ptr("Authorization"),
+		// 								AuthType: to.Ptr("APIKey"),
+		// 							},
+		// 							Paging: &armsecurityinsights.CodelessConnectorPollingPagingProperties{
+		// 								PageSizeParaName: to.Ptr("per_page"),
+		// 								PagingType: to.Ptr("LinkHeader"),
+		// 							},
+		// 							Response: &armsecurityinsights.CodelessConnectorPollingResponseProperties{
+		// 								EventsJSONPaths: []*string{
+		// 									to.Ptr("$")},
+		// 								},
+		// 								Request: &armsecurityinsights.CodelessConnectorPollingRequestProperties{
+		// 									APIEndpoint: to.Ptr("https://api.github.com/organizations/{{placeHolder1}}/audit-log"),
+		// 									Headers: map[string]any{
+		// 										"Accept": "application/json",
+		// 										"User-Agent": "Scuba",
+		// 									},
+		// 									HTTPMethod: to.Ptr("Get"),
+		// 									QueryParameters: map[string]any{
+		// 										"phrase": "created:{_QueryWindowStartTime}..{_QueryWindowEndTime}",
+		// 									},
+		// 									QueryTimeFormat: to.Ptr("yyyy-MM-ddTHH:mm:ssZ"),
+		// 									QueryWindowInMin: to.Ptr[int32](15),
+		// 									RateLimitQPS: to.Ptr[int32](50),
+		// 									RetryCount: to.Ptr[int32](2),
+		// 									TimeoutInSeconds: to.Ptr[int32](60),
+		// 								},
+		// 							},
+		// 						},
+		// 				}},
+		// 			}
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2021-10-01/examples/dataConnectors/GetAzureSecurityCenterById.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c4f3c695f0250dcb261598a62004f0aef10b9db/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/dataConnectors/GetAPIPolling.json
+func ExampleDataConnectorsClient_Get_getAApiPollingDataConnector() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsecurityinsights.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewDataConnectorsClient().Get(ctx, "myRg", "myWorkspace", "316ec55e-7138-4d63-ab18-90c8a60fd1c8", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsecurityinsights.DataConnectorsClientGetResponse{
+	// 	                            DataConnectorClassification: &armsecurityinsights.CodelessAPIPollingDataConnector{
+	// 		Name: to.Ptr("316ec55e-7138-4d63-ab18-90c8a60fd1c8"),
+	// 		Type: to.Ptr("Microsoft.SecurityInsights/dataConnectors"),
+	// 		ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/dataConnectors/316ec55e-7138-4d63-ab18-90c8a60fd1c8"),
+	// 		Etag: to.Ptr("\"1a00b074-0000-0100-0000-606ef5bd0000\""),
+	// 		Kind: to.Ptr(armsecurityinsights.DataConnectorKindAPIPolling),
+	// 		Properties: &armsecurityinsights.APIPollingParameters{
+	// 			ConnectorUIConfig: &armsecurityinsights.CodelessUIConnectorConfigProperties{
+	// 				Availability: &armsecurityinsights.Availability{
+	// 					IsPreview: to.Ptr(true),
+	// 					Status: to.Ptr[int32](1),
+	// 				},
+	// 				ConnectivityCriteria: []*armsecurityinsights.CodelessUIConnectorConfigPropertiesConnectivityCriteriaItem{
+	// 					{
+	// 						Type: to.Ptr(armsecurityinsights.ConnectivityType("SentinelKindsV2")),
+	// 						Value: []*string{
+	// 						},
+	// 				}},
+	// 				CustomImage: to.Ptr("The image connector content"),
+	// 				DataTypes: []*armsecurityinsights.CodelessUIConnectorConfigPropertiesDataTypesItem{
+	// 					{
+	// 						Name: to.Ptr("{{graphQueriesTableName}}"),
+	// 						LastDataReceivedQuery: to.Ptr("{{graphQueriesTableName}}\n            | summarize Time = max(TimeGenerated)\n            | where isnotempty(Time)"),
+	// 				}},
+	// 				DescriptionMarkdown: to.Ptr("The GitHub audit log connector provides the capability to ingest GitHub logs into Azure Sentinel. By connecting GitHub audit logs into Azure Sentinel, you can view this data in workbooks, use it to create custom alerts, and improve your investigation process."),
+	// 				GraphQueries: []*armsecurityinsights.CodelessUIConnectorConfigPropertiesGraphQueriesItem{
+	// 					{
+	// 						BaseQuery: to.Ptr("{{graphQueriesTableName}}"),
+	// 						Legend: to.Ptr("GitHub audit log events"),
+	// 						MetricName: to.Ptr("Total events received"),
+	// 				}},
+	// 				GraphQueriesTableName: to.Ptr("GitHubAuditLogPolling_CL"),
+	// 				InstructionSteps: []*armsecurityinsights.CodelessUIConnectorConfigPropertiesInstructionStepsItem{
+	// 					{
+	// 						Description: to.Ptr("Enable GitHub audit Logs. \n Follow [this](https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token) to create or find your personal key"),
+	// 						Instructions: []*armsecurityinsights.InstructionStepsInstructionsItem{
+	// 							{
+	// 								Type: to.Ptr(armsecurityinsights.SettingType("APIKey")),
+	// 								Parameters: map[string]any{
+	// 									"enable": "true",
+	// 									"userRequestPlaceHoldersInput":[]any{
+	// 										map[string]any{
+	// 											"displayText": "Organization Name",
+	// 											"placeHolderName": "{{placeHolder1}}",
+	// 											"placeHolderValue": "",
+	// 											"requestObjectKey": "apiEndpoint",
+	// 										},
+	// 									},
+	// 								},
+	// 						}},
+	// 						Title: to.Ptr("Connect GitHub Enterprise Audit Log to Azure Sentinel"),
+	// 				}},
+	// 				Permissions: &armsecurityinsights.Permissions{
+	// 					Customs: []*armsecurityinsights.PermissionsCustomsItem{
+	// 						{
+	// 							Name: to.Ptr("GitHub API personal token Key"),
+	// 							Description: to.Ptr("You need access to GitHub personal token, the key should have 'admin:org' scope"),
+	// 					}},
+	// 					ResourceProvider: []*armsecurityinsights.PermissionsResourceProviderItem{
+	// 						{
+	// 							PermissionsDisplayText: to.Ptr("read and write permissions are required."),
+	// 							Provider: to.Ptr(armsecurityinsights.ProviderNameMicrosoftOperationalInsightsWorkspaces),
+	// 							ProviderDisplayName: to.Ptr("Workspace"),
+	// 							RequiredPermissions: &armsecurityinsights.RequiredPermissions{
+	// 								Delete: to.Ptr(true),
+	// 								Read: to.Ptr(true),
+	// 								Write: to.Ptr(true),
+	// 							},
+	// 							Scope: to.Ptr(armsecurityinsights.PermissionProviderScopeWorkspace),
+	// 					}},
+	// 				},
+	// 				Publisher: to.Ptr("GitHub"),
+	// 				SampleQueries: []*armsecurityinsights.CodelessUIConnectorConfigPropertiesSampleQueriesItem{
+	// 					{
+	// 						Description: to.Ptr("All logs"),
+	// 						Query: to.Ptr("{{graphQueriesTableName}}\n | take 10 <change>"),
+	// 				}},
+	// 				Title: to.Ptr("GitHub Enterprise Audit Log"),
+	// 			},
+	// 			PollingConfig: &armsecurityinsights.CodelessConnectorPollingConfigProperties{
+	// 				Auth: &armsecurityinsights.CodelessConnectorPollingAuthProperties{
+	// 					APIKeyIdentifier: to.Ptr("token"),
+	// 					APIKeyName: to.Ptr("Authorization"),
+	// 					AuthType: to.Ptr("APIKey"),
+	// 				},
+	// 				Paging: &armsecurityinsights.CodelessConnectorPollingPagingProperties{
+	// 					PageSizeParaName: to.Ptr("per_page"),
+	// 					PagingType: to.Ptr("LinkHeader"),
+	// 				},
+	// 				Response: &armsecurityinsights.CodelessConnectorPollingResponseProperties{
+	// 					EventsJSONPaths: []*string{
+	// 						to.Ptr("$")},
+	// 					},
+	// 					Request: &armsecurityinsights.CodelessConnectorPollingRequestProperties{
+	// 						APIEndpoint: to.Ptr("https://api.github.com/organizations/{{placeHolder1}}/audit-log"),
+	// 						Headers: map[string]any{
+	// 							"Accept": "application/json",
+	// 							"User-Agent": "Scuba",
+	// 						},
+	// 						HTTPMethod: to.Ptr("Get"),
+	// 						QueryParameters: map[string]any{
+	// 							"phrase": "created:{_QueryWindowStartTime}..{_QueryWindowEndTime}",
+	// 						},
+	// 						QueryTimeFormat: to.Ptr("yyyy-MM-ddTHH:mm:ssZ"),
+	// 						QueryWindowInMin: to.Ptr[int32](15),
+	// 						RateLimitQPS: to.Ptr[int32](50),
+	// 						RetryCount: to.Ptr[int32](2),
+	// 						TimeoutInSeconds: to.Ptr[int32](60),
+	// 					},
+	// 				},
+	// 			},
+	// 		},
+	// 		                        }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c4f3c695f0250dcb261598a62004f0aef10b9db/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/dataConnectors/GetAzureSecurityCenterById.json
 func ExampleDataConnectorsClient_Get_getAAscDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -211,7 +693,237 @@ func ExampleDataConnectorsClient_Get_getAAscDataConnector() {
 	// 	                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2021-10-01/examples/dataConnectors/GetMicrosoftCloudAppSecurityById.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c4f3c695f0250dcb261598a62004f0aef10b9db/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/dataConnectors/GetDynamics365DataConnectorById.json
+func ExampleDataConnectorsClient_Get_getADynamics365DataConnector() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsecurityinsights.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewDataConnectorsClient().Get(ctx, "myRg", "myWorkspace", "c2541efb-c9a6-47fe-9501-87d1017d1512", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsecurityinsights.DataConnectorsClientGetResponse{
+	// 	                            DataConnectorClassification: &armsecurityinsights.Dynamics365DataConnector{
+	// 		Name: to.Ptr("c2541efb-c9a6-47fe-9501-87d1017d1512"),
+	// 		Type: to.Ptr("Microsoft.SecurityInsights/dataConnectors"),
+	// 		ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/dataConnectors/3d3e955e-33eb-401d-89a7-251c81ddd660"),
+	// 		Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
+	// 		Kind: to.Ptr(armsecurityinsights.DataConnectorKindDynamics365),
+	// 		Properties: &armsecurityinsights.Dynamics365DataConnectorProperties{
+	// 			TenantID: to.Ptr("2070ecc9-b4d5-4ae4-adaa-936fa1954fa8"),
+	// 			DataTypes: &armsecurityinsights.Dynamics365DataConnectorDataTypes{
+	// 				Dynamics365CdsActivities: &armsecurityinsights.Dynamics365DataConnectorDataTypesDynamics365CdsActivities{
+	// 					State: to.Ptr(armsecurityinsights.DataTypeStateEnabled),
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// 	                        }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c4f3c695f0250dcb261598a62004f0aef10b9db/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/dataConnectors/GetGenericUI.json
+func ExampleDataConnectorsClient_Get_getAGenericUiDataConnector() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsecurityinsights.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewDataConnectorsClient().Get(ctx, "myRg", "myWorkspace", "316ec55e-7138-4d63-ab18-90c8a60fd1c8", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsecurityinsights.DataConnectorsClientGetResponse{
+	// 	                            DataConnectorClassification: &armsecurityinsights.CodelessUIDataConnector{
+	// 		Name: to.Ptr("316ec55e-7138-4d63-ab18-90c8a60fd1c8"),
+	// 		Type: to.Ptr("Microsoft.SecurityInsights/dataConnectors"),
+	// 		ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/dataConnectors/316ec55e-7138-4d63-ab18-90c8a60fd1c8"),
+	// 		Etag: to.Ptr("\"1a00b074-0000-0100-0000-606ef5bd0000\""),
+	// 		Kind: to.Ptr(armsecurityinsights.DataConnectorKindGenericUI),
+	// 		Properties: &armsecurityinsights.CodelessParameters{
+	// 			ConnectorUIConfig: &armsecurityinsights.CodelessUIConnectorConfigProperties{
+	// 				Availability: &armsecurityinsights.Availability{
+	// 					IsPreview: to.Ptr(true),
+	// 					Status: to.Ptr[int32](1),
+	// 				},
+	// 				ConnectivityCriteria: []*armsecurityinsights.CodelessUIConnectorConfigPropertiesConnectivityCriteriaItem{
+	// 					{
+	// 						Type: to.Ptr(armsecurityinsights.ConnectivityTypeIsConnectedQuery),
+	// 						Value: []*string{
+	// 							to.Ptr("{{graphQueriesTableName}}\n            | summarize LastLogReceived = max(TimeGenerated)\n            | project IsConnected = LastLogReceived > ago(30d)")},
+	// 					}},
+	// 					CustomImage: to.Ptr("The image connector content"),
+	// 					DataTypes: []*armsecurityinsights.CodelessUIConnectorConfigPropertiesDataTypesItem{
+	// 						{
+	// 							Name: to.Ptr("{{graphQueriesTableName}}"),
+	// 							LastDataReceivedQuery: to.Ptr("{{graphQueriesTableName}}\n            | summarize Time = max(TimeGenerated)\n            | where isnotempty(Time)"),
+	// 					}},
+	// 					DescriptionMarkdown: to.Ptr("The [Qualys Vulnerability Management (VM)](https://www.qualys.com/apps/vulnerability-management/) data connector provides the capability to ingest vulnerability host detection data into Azure Sentinel through the Qualys API. The connector provides visibility into host detection data from vulerability scans. This connector provides Azure Sentinel the capability to view dashboards, create custom alerts, and improve investigation "),
+	// 					GraphQueries: []*armsecurityinsights.CodelessUIConnectorConfigPropertiesGraphQueriesItem{
+	// 						{
+	// 							BaseQuery: to.Ptr("{{graphQueriesTableName}}"),
+	// 							Legend: to.Ptr("{{graphQueriesTableName}}"),
+	// 							MetricName: to.Ptr("Total data received"),
+	// 					}},
+	// 					GraphQueriesTableName: to.Ptr("QualysHostDetection_CL"),
+	// 					InstructionSteps: []*armsecurityinsights.CodelessUIConnectorConfigPropertiesInstructionStepsItem{
+	// 						{
+	// 							Description: to.Ptr(">**NOTE:** This connector uses Azure Functions to connect to Qualys VM to pull its logs into Azure Sentinel. This might result in additional data ingestion costs. Check the [Azure Functions pricing page](https://azure.microsoft.com/pricing/details/functions/) for details."),
+	// 							Title: to.Ptr(""),
+	// 						},
+	// 						{
+	// 							Description: to.Ptr(">**(Optional Step)** Securely store workspace and API authorization key(s) or token(s) in Azure Key Vault. Azure Key Vault provides a secure mechanism to store and retrieve key values. [Follow these instructions](https://docs.microsoft.com/azure/app-service/app-service-key-vault-references) to use Azure Key Vault with an Azure Function App."),
+	// 							Title: to.Ptr(""),
+	// 						},
+	// 						{
+	// 							Description: to.Ptr("**STEP 1 - Configuration steps for the Qualys VM API**\n\n1. Log into the Qualys Vulnerability Management console with an administrator account, select the **Users** tab and the **Users** subtab. \n2. Click on the **New** drop-down menu and select **Users..**\n3. Create a username and password for the API account. \n4. In the **User Roles** tab, ensure the account role is set to **Manager** and access is allowed to **GUI** and **API**\n4. Log out of the administrator account and log into the console with the new API credentials for validation, then log out of the API account. \n5. Log back into the console using an administrator account and modify the API accounts User Roles, removing access to **GUI**. \n6. Save all changes."),
+	// 							Title: to.Ptr(""),
+	// 						},
+	// 						{
+	// 							Description: to.Ptr("**STEP 2 - Choose ONE from the following two deployment options to deploy the connector and the associated Azure Function**\n\n>**IMPORTANT:** Before deploying the Qualys VM connector, have the Workspace ID and Workspace Primary Key (can be copied from the following), as well as the Qualys VM API Authorization Key(s), readily available."),
+	// 							Instructions: []*armsecurityinsights.InstructionStepsInstructionsItem{
+	// 								{
+	// 									Type: to.Ptr(armsecurityinsights.SettingTypeCopyableLabel),
+	// 									Parameters: map[string]any{
+	// 										"fillWith":[]any{
+	// 											"WorkspaceId",
+	// 										},
+	// 										"label": "Workspace ID",
+	// 									},
+	// 								},
+	// 								{
+	// 									Type: to.Ptr(armsecurityinsights.SettingTypeCopyableLabel),
+	// 									Parameters: map[string]any{
+	// 										"fillWith":[]any{
+	// 											"PrimaryKey",
+	// 										},
+	// 										"label": "Primary Key",
+	// 									},
+	// 							}},
+	// 							Title: to.Ptr(""),
+	// 						},
+	// 						{
+	// 							Description: to.Ptr("Use this method for automated deployment of the Qualys VM connector using an ARM Tempate.\n\n1. Click the **Deploy to Azure** button below. \n\n	[![Deploy To Azure](https://aka.ms/deploytoazurebutton)](https://aka.ms/sentinelqualysvmazuredeploy)\n2. Select the preferred **Subscription**, **Resource Group** and **Location**. \n3. Enter the **Workspace ID**, **Workspace Key**, **API Username**, **API Password** , update the **URI**, and any additional URI **Filter Parameters** (each filter should be separated by an \"&\" symbol, no spaces.) \n> - Enter the URI that corresponds to your region. The complete list of API Server URLs can be [found here](https://www.qualys.com/docs/qualys-api-vmpc-user-guide.pdf#G4.735348) -- There is no need to add a time suffix to the URI, the Function App will dynamically append the Time Value to the URI in the proper format. \n - The default **Time Interval** is set to pull the last five (5) minutes of data. If the time interval needs to be modified, it is recommended to change the Function App Timer Trigger accordingly (in the function.json file, post deployment) to prevent overlapping data ingestion. \n> - Note: If using Azure Key Vault secrets for any of the values above, use the`@Microsoft.KeyVault(SecretUri={Security Identifier})`schema in place of the string values. Refer to [Key Vault references documentation](https://docs.microsoft.com/azure/app-service/app-service-key-vault-references) for further details. \n4. Mark the checkbox labeled **I agree to the terms and conditions stated above**. \n5. Click **Purchase** to deploy."),
+	// 							Title: to.Ptr("Option 1 - Azure Resource Manager (ARM) Template"),
+	// 						},
+	// 						{
+	// 							Description: to.Ptr("Use the following step-by-step instructions to deploy the Quayls VM connector manually with Azure Functions."),
+	// 							Title: to.Ptr("Option 2 - Manual Deployment of Azure Functions"),
+	// 						},
+	// 						{
+	// 							Description: to.Ptr("**1. Create a Function App**\n\n1.  From the Azure Portal, navigate to [Function App](https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Web%2Fsites/kind/functionapp), and select **+ Add**.\n2. In the **Basics** tab, ensure Runtime stack is set to **Powershell Core**. \n3. In the **Hosting** tab, ensure the **Consumption (Serverless)** plan type is selected.\n4. Make other preferrable configuration changes, if needed, then click **Create**."),
+	// 							Title: to.Ptr(""),
+	// 						},
+	// 						{
+	// 							Description: to.Ptr("**2. Import Function App Code**\n\n1. In the newly created Function App, select **Functions** on the left pane and click **+ New Function**.\n2. Select **Timer Trigger**.\n3. Enter a unique Function **Name** and leave the default cron schedule of every 5 minutes, then click **Create**.\n5. Click on **Code + Test** on the left pane. \n6. Copy the [Function App Code](https://aka.ms/sentinelqualysvmazurefunctioncode) and paste into the Function App `run.ps1` editor.\n7. Click **Save**."),
+	// 							Title: to.Ptr(""),
+	// 						},
+	// 						{
+	// 							Description: to.Ptr("**3. Configure the Function App**\n\n1. In the Function App, select the Function App Name and select **Configuration**.\n2. In the **Application settings** tab, select **+ New application setting**.\n3. Add each of the following seven (7) application settings individually, with their respective string values (case-sensitive): \n		apiUsername\n		apiPassword\n		workspaceID\n		workspaceKey\n		uri\n		filterParameters\n		timeInterval\n> - Enter the URI that corresponds to your region. The complete list of API Server URLs can be [found here](https://www.qualys.com/docs/qualys-api-vmpc-user-guide.pdf#G4.735348). The `uri` value must follow the following schema: `https://<API Server>/api/2.0/fo/asset/host/vm/detection/?action=list&vm_processed_after=` -- There is no need to add a time suffix to the URI, the Function App will dynamically append the Time Value to the URI in the proper format.\n> - Add any additional filter parameters, for the `filterParameters` variable, that need to be appended to the URI. Each parameter should be seperated by an \"&\" symbol and should not include any spaces.\n> - Set the `timeInterval` (in minutes) to the value of `5` to correspond to the Timer Trigger of every `5` minutes. If the time interval needs to be modified, it is recommended to change the Function App Timer Trigger accordingly to prevent overlapping data ingestion.\n> - Note: If using Azure Key Vault, use the`@Microsoft.KeyVault(SecretUri={Security Identifier})`schema in place of the string values. Refer to [Key Vault references documentation](https://docs.microsoft.com/azure/app-service/app-service-key-vault-references) for further details.\n4. Once all application settings have been entered, click **Save**."),
+	// 							Title: to.Ptr(""),
+	// 						},
+	// 						{
+	// 							Description: to.Ptr("**4. Configure the host.json**.\n\nDue to the potentially large amount of Qualys host detection data being ingested, it can cause the execution time to surpass the default Function App timeout of five (5) minutes. Increase the default timeout duration to the maximum of ten (10) minutes, under the Consumption Plan, to allow more time for the Function App to execute.\n\n1. In the Function App, select the Function App Name and select the **App Service Editor** blade.\n2. Click **Go** to open the editor, then select the **host.json** file under the **wwwroot** directory.\n3. Add the line `\"functionTimeout\": \"00:10:00\",` above the `managedDependancy` line \n4. Ensure **SAVED** appears on the top right corner of the editor, then exit the editor.\n\n> NOTE: If a longer timeout duration is required, consider upgrading to an [App Service Plan](https://docs.microsoft.com/azure/azure-functions/functions-scale#timeout)"),
+	// 							Title: to.Ptr(""),
+	// 					}},
+	// 					Permissions: &armsecurityinsights.Permissions{
+	// 						Customs: []*armsecurityinsights.PermissionsCustomsItem{
+	// 							{
+	// 								Name: to.Ptr("Microsoft.Web/sites permissions"),
+	// 								Description: to.Ptr("Read and write permissions to Azure Functions to create a Function App is required. [See the documentation to learn more about Azure Functions](https://docs.microsoft.com/azure/azure-functions/)."),
+	// 							},
+	// 							{
+	// 								Name: to.Ptr("Qualys API Key"),
+	// 								Description: to.Ptr("A Qualys VM API username and password is required. [See the documentation to learn more about Qualys VM API](https://www.qualys.com/docs/qualys-api-vmpc-user-guide.pdf)."),
+	// 						}},
+	// 						ResourceProvider: []*armsecurityinsights.PermissionsResourceProviderItem{
+	// 							{
+	// 								PermissionsDisplayText: to.Ptr("read and write permissions on the workspace are required."),
+	// 								Provider: to.Ptr(armsecurityinsights.ProviderNameMicrosoftOperationalInsightsWorkspaces),
+	// 								ProviderDisplayName: to.Ptr("Workspace"),
+	// 								RequiredPermissions: &armsecurityinsights.RequiredPermissions{
+	// 									Delete: to.Ptr(true),
+	// 									Read: to.Ptr(true),
+	// 									Write: to.Ptr(true),
+	// 								},
+	// 								Scope: to.Ptr(armsecurityinsights.PermissionProviderScopeWorkspace),
+	// 							},
+	// 							{
+	// 								PermissionsDisplayText: to.Ptr("read permissions to shared keys for the workspace are required. [See the documentation to learn more about workspace keys](https://docs.microsoft.com/azure/azure-monitor/platform/agent-windows#obtain-workspace-id-and-key)."),
+	// 								Provider: to.Ptr(armsecurityinsights.ProviderNameMicrosoftOperationalInsightsWorkspacesSharedKeys),
+	// 								ProviderDisplayName: to.Ptr("Keys"),
+	// 								RequiredPermissions: &armsecurityinsights.RequiredPermissions{
+	// 									Action: to.Ptr(true),
+	// 								},
+	// 								Scope: to.Ptr(armsecurityinsights.PermissionProviderScopeWorkspace),
+	// 						}},
+	// 					},
+	// 					Publisher: to.Ptr("Qualys"),
+	// 					SampleQueries: []*armsecurityinsights.CodelessUIConnectorConfigPropertiesSampleQueriesItem{
+	// 						{
+	// 							Description: to.Ptr("Top 10 Vulerabilities detected"),
+	// 							Query: to.Ptr("{{graphQueriesTableName}}\n | mv-expand todynamic(Detections_s)\n | extend Vulnerability = tostring(Detections_s.Results)\n | summarize count() by Vulnerability\n | top 10 by count_"),
+	// 					}},
+	// 					Title: to.Ptr("Qualys Vulnerability Management (CCP DEMO)"),
+	// 				},
+	// 			},
+	// 		},
+	// 		                        }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c4f3c695f0250dcb261598a62004f0aef10b9db/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/dataConnectors/GetIoTById.json
+func ExampleDataConnectorsClient_Get_getAIoTDataConnector() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsecurityinsights.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewDataConnectorsClient().Get(ctx, "myRg", "myWorkspace", "d2e5dc7a-f3a2-429d-954b-939fa8c2932e", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsecurityinsights.DataConnectorsClientGetResponse{
+	// 	                            DataConnectorClassification: &armsecurityinsights.IoTDataConnector{
+	// 		Name: to.Ptr("d2e5dc7a-f3a2-429d-954b-939fa8c2932e"),
+	// 		Type: to.Ptr("Microsoft.SecurityInsights/dataConnectors"),
+	// 		ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/dataConnectors/d2e5dc7a-f3a2-429d-954b-939fa8c2932e"),
+	// 		Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
+	// 		Kind: to.Ptr(armsecurityinsights.DataConnectorKindIOT),
+	// 		Properties: &armsecurityinsights.IoTDataConnectorProperties{
+	// 			DataTypes: &armsecurityinsights.AlertsDataTypeOfDataConnector{
+	// 				Alerts: &armsecurityinsights.DataConnectorDataTypeCommon{
+	// 					State: to.Ptr(armsecurityinsights.DataTypeStateEnabled),
+	// 				},
+	// 			},
+	// 			SubscriptionID: to.Ptr("c0688291-89d7-4bed-87a2-a7b1bff43f4c"),
+	// 		},
+	// 	},
+	// 	                        }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c4f3c695f0250dcb261598a62004f0aef10b9db/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/dataConnectors/GetMicrosoftCloudAppSecurityById.json
 func ExampleDataConnectorsClient_Get_getAMcasDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -237,6 +949,7 @@ func ExampleDataConnectorsClient_Get_getAMcasDataConnector() {
 	// 		Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
 	// 		Kind: to.Ptr(armsecurityinsights.DataConnectorKindMicrosoftCloudAppSecurity),
 	// 		Properties: &armsecurityinsights.MCASDataConnectorProperties{
+	// 			TenantID: to.Ptr("2070ecc9-b4d5-4ae4-adaa-936fa1954fa8"),
 	// 			DataTypes: &armsecurityinsights.MCASDataConnectorDataTypes{
 	// 				Alerts: &armsecurityinsights.DataConnectorDataTypeCommon{
 	// 					State: to.Ptr(armsecurityinsights.DataTypeStateEnabled),
@@ -245,13 +958,12 @@ func ExampleDataConnectorsClient_Get_getAMcasDataConnector() {
 	// 					State: to.Ptr(armsecurityinsights.DataTypeStateEnabled),
 	// 				},
 	// 			},
-	// 			TenantID: to.Ptr("2070ecc9-b4d5-4ae4-adaa-936fa1954fa8"),
 	// 		},
 	// 	},
 	// 	                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2021-10-01/examples/dataConnectors/GetMicrosoftDefenderAdvancedThreatProtectionById.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c4f3c695f0250dcb261598a62004f0aef10b9db/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/dataConnectors/GetMicrosoftDefenderAdvancedThreatProtectionById.json
 func ExampleDataConnectorsClient_Get_getAMdatpDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -277,18 +989,142 @@ func ExampleDataConnectorsClient_Get_getAMdatpDataConnector() {
 	// 		Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
 	// 		Kind: to.Ptr(armsecurityinsights.DataConnectorKindMicrosoftDefenderAdvancedThreatProtection),
 	// 		Properties: &armsecurityinsights.MDATPDataConnectorProperties{
+	// 			TenantID: to.Ptr("2070ecc9-b4d5-4ae4-adaa-936fa1954fa8"),
 	// 			DataTypes: &armsecurityinsights.AlertsDataTypeOfDataConnector{
 	// 				Alerts: &armsecurityinsights.DataConnectorDataTypeCommon{
 	// 					State: to.Ptr(armsecurityinsights.DataTypeStateEnabled),
 	// 				},
 	// 			},
-	// 			TenantID: to.Ptr("2070ecc9-b4d5-4ae4-adaa-936fa1954fa8"),
 	// 		},
 	// 	},
 	// 	                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2021-10-01/examples/dataConnectors/GetThreatIntelligenceById.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c4f3c695f0250dcb261598a62004f0aef10b9db/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/dataConnectors/GetMicrosoftThreatIntelligenceById.json
+func ExampleDataConnectorsClient_Get_getAMicrosoftThreatIntelligenceDataConnector() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsecurityinsights.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewDataConnectorsClient().Get(ctx, "myRg", "myWorkspace", "c345bf40-8509-4ed2-b947-50cb773aaf04", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsecurityinsights.DataConnectorsClientGetResponse{
+	// 	                            DataConnectorClassification: &armsecurityinsights.MSTIDataConnector{
+	// 		Name: to.Ptr("c345bf40-8509-4ed2-b947-50cb773aaf04"),
+	// 		Type: to.Ptr("Microsoft.SecurityInsights/dataConnectors"),
+	// 		ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/dataConnectors/c345bf40-8509-4ed2-b947-50cb773aaf04"),
+	// 		Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
+	// 		Kind: to.Ptr(armsecurityinsights.DataConnectorKindMicrosoftThreatIntelligence),
+	// 		Properties: &armsecurityinsights.MSTIDataConnectorProperties{
+	// 			TenantID: to.Ptr("2070ecc9-b4d5-4ae4-adaa-936fa1954fa8"),
+	// 			DataTypes: &armsecurityinsights.MSTIDataConnectorDataTypes{
+	// 				BingSafetyPhishingURL: &armsecurityinsights.MSTIDataConnectorDataTypesBingSafetyPhishingURL{
+	// 					State: to.Ptr(armsecurityinsights.DataTypeStateEnabled),
+	// 					LookbackPeriod: to.Ptr("example ??"),
+	// 				},
+	// 				MicrosoftEmergingThreatFeed: &armsecurityinsights.MSTIDataConnectorDataTypesMicrosoftEmergingThreatFeed{
+	// 					State: to.Ptr(armsecurityinsights.DataTypeStateEnabled),
+	// 					LookbackPeriod: to.Ptr("example"),
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// 	                        }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c4f3c695f0250dcb261598a62004f0aef10b9db/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/dataConnectors/GetMicrosoftThreatProtectionById.json
+func ExampleDataConnectorsClient_Get_getAMicrosoftThreatProtectionDataConnector() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsecurityinsights.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewDataConnectorsClient().Get(ctx, "myRg", "myWorkspace", "c345bf40-8509-4ed2-b947-50cb773aaf04", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsecurityinsights.DataConnectorsClientGetResponse{
+	// 	                            DataConnectorClassification: &armsecurityinsights.MTPDataConnector{
+	// 		Name: to.Ptr("c345bf40-8509-4ed2-b947-50cb773aaf04"),
+	// 		Type: to.Ptr("Microsoft.SecurityInsights/dataConnectors"),
+	// 		ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/dataConnectors/c345bf40-8509-4ed2-b947-50cb773aaf04"),
+	// 		Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
+	// 		Kind: to.Ptr(armsecurityinsights.DataConnectorKindMicrosoftThreatProtection),
+	// 		Properties: &armsecurityinsights.MTPDataConnectorProperties{
+	// 			TenantID: to.Ptr("2070ecc9-b4d5-4ae4-adaa-936fa1954fa8"),
+	// 			DataTypes: &armsecurityinsights.MTPDataConnectorDataTypes{
+	// 				Incidents: &armsecurityinsights.MTPDataConnectorDataTypesIncidents{
+	// 					State: to.Ptr(armsecurityinsights.DataTypeStateEnabled),
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// 	                        }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c4f3c695f0250dcb261598a62004f0aef10b9db/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/dataConnectors/GetThreatIntelligenceTaxiiById.json
+func ExampleDataConnectorsClient_Get_getATiTaxiiDataConnector() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsecurityinsights.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewDataConnectorsClient().Get(ctx, "myRg", "myWorkspace", "c39bb458-02a7-4b3f-b0c8-71a1d2692652", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsecurityinsights.DataConnectorsClientGetResponse{
+	// 	                            DataConnectorClassification: &armsecurityinsights.TiTaxiiDataConnector{
+	// 		Name: to.Ptr("c39bb458-02a7-4b3f-b0c8-71a1d2692652"),
+	// 		Type: to.Ptr("Microsoft.SecurityInsights/dataConnectors"),
+	// 		ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/dataConnectors/c39bb458-02a7-4b3f-b0c8-71a1d2692652"),
+	// 		Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
+	// 		Kind: to.Ptr(armsecurityinsights.DataConnectorKindThreatIntelligenceTaxii),
+	// 		Properties: &armsecurityinsights.TiTaxiiDataConnectorProperties{
+	// 			TenantID: to.Ptr("2070ecc9-b4d5-4ae4-adaa-936fa1954fa8"),
+	// 			CollectionID: to.Ptr("e0b1f32d-1188-48f7-a7a3-de71924e4b5e"),
+	// 			DataTypes: &armsecurityinsights.TiTaxiiDataConnectorDataTypes{
+	// 				TaxiiClient: &armsecurityinsights.TiTaxiiDataConnectorDataTypesTaxiiClient{
+	// 					State: to.Ptr(armsecurityinsights.DataTypeStateEnabled),
+	// 				},
+	// 			},
+	// 			FriendlyName: to.Ptr("My TI Taxii Connector"),
+	// 			Password: to.Ptr(""),
+	// 			PollingFrequency: to.Ptr(armsecurityinsights.PollingFrequencyOnceADay),
+	// 			TaxiiLookbackPeriod: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T13:00:30.123Z"); return t}()),
+	// 			TaxiiServer: to.Ptr("https://mytaxiiserver.com/taxiing/v2/api"),
+	// 			UserName: to.Ptr(""),
+	// 			WorkspaceID: to.Ptr("8b014a77-4695-4ef4-96bb-6623afb121a2"),
+	// 		},
+	// 	},
+	// 	                        }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c4f3c695f0250dcb261598a62004f0aef10b9db/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/dataConnectors/GetThreatIntelligenceById.json
 func ExampleDataConnectorsClient_Get_getATiDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -314,19 +1150,19 @@ func ExampleDataConnectorsClient_Get_getATiDataConnector() {
 	// 		Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
 	// 		Kind: to.Ptr(armsecurityinsights.DataConnectorKindThreatIntelligence),
 	// 		Properties: &armsecurityinsights.TIDataConnectorProperties{
+	// 			TenantID: to.Ptr("2070ecc9-b4d5-4ae4-adaa-936fa1954fa8"),
 	// 			DataTypes: &armsecurityinsights.TIDataConnectorDataTypes{
 	// 				Indicators: &armsecurityinsights.TIDataConnectorDataTypesIndicators{
 	// 					State: to.Ptr(armsecurityinsights.DataTypeStateEnabled),
 	// 				},
 	// 			},
-	// 			TenantID: to.Ptr("2070ecc9-b4d5-4ae4-adaa-936fa1954fa8"),
 	// 			TipLookbackPeriod: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T13:00:30.123Z"); return t}()),
 	// 		},
 	// 	},
 	// 	                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2021-10-01/examples/dataConnectors/GetAzureActiveDirectoryById.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c4f3c695f0250dcb261598a62004f0aef10b9db/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/dataConnectors/GetAzureActiveDirectoryById.json
 func ExampleDataConnectorsClient_Get_getAnAadDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -352,18 +1188,18 @@ func ExampleDataConnectorsClient_Get_getAnAadDataConnector() {
 	// 		Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
 	// 		Kind: to.Ptr(armsecurityinsights.DataConnectorKindAzureActiveDirectory),
 	// 		Properties: &armsecurityinsights.AADDataConnectorProperties{
+	// 			TenantID: to.Ptr("2070ecc9-b4d5-4ae4-adaa-936fa1954fa8"),
 	// 			DataTypes: &armsecurityinsights.AlertsDataTypeOfDataConnector{
 	// 				Alerts: &armsecurityinsights.DataConnectorDataTypeCommon{
 	// 					State: to.Ptr(armsecurityinsights.DataTypeStateEnabled),
 	// 				},
 	// 			},
-	// 			TenantID: to.Ptr("2070ecc9-b4d5-4ae4-adaa-936fa1954fa8"),
 	// 		},
 	// 	},
 	// 	                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2021-10-01/examples/dataConnectors/GetAzureAdvancedThreatProtectionById.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c4f3c695f0250dcb261598a62004f0aef10b9db/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/dataConnectors/GetAzureAdvancedThreatProtectionById.json
 func ExampleDataConnectorsClient_Get_getAnAatpDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -389,18 +1225,58 @@ func ExampleDataConnectorsClient_Get_getAnAatpDataConnector() {
 	// 		Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
 	// 		Kind: to.Ptr(armsecurityinsights.DataConnectorKindAzureAdvancedThreatProtection),
 	// 		Properties: &armsecurityinsights.AATPDataConnectorProperties{
+	// 			TenantID: to.Ptr("2070ecc9-b4d5-4ae4-adaa-936fa1954fa8"),
 	// 			DataTypes: &armsecurityinsights.AlertsDataTypeOfDataConnector{
 	// 				Alerts: &armsecurityinsights.DataConnectorDataTypeCommon{
 	// 					State: to.Ptr(armsecurityinsights.DataTypeStateEnabled),
 	// 				},
 	// 			},
-	// 			TenantID: to.Ptr("2070ecc9-b4d5-4ae4-adaa-936fa1954fa8"),
 	// 		},
 	// 	},
 	// 	                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2021-10-01/examples/dataConnectors/GetAmazonWebServicesCloudTrailById.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c4f3c695f0250dcb261598a62004f0aef10b9db/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/dataConnectors/GetAmazonWebServicesS3ById.json
+func ExampleDataConnectorsClient_Get_getAnAwsS3DataConnector() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsecurityinsights.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewDataConnectorsClient().Get(ctx, "myRg", "myWorkspace", "afef3743-0c88-469c-84ff-ca2e87dc1e48", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsecurityinsights.DataConnectorsClientGetResponse{
+	// 	                            DataConnectorClassification: &armsecurityinsights.AwsS3DataConnector{
+	// 		Name: to.Ptr("afef3743-0c88-469c-84ff-ca2e87dc1e48"),
+	// 		Type: to.Ptr("Microsoft.SecurityInsights/dataConnectors"),
+	// 		ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/dataConnectors/afef3743-0c88-469c-84ff-ca2e87dc1e48"),
+	// 		Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
+	// 		Kind: to.Ptr(armsecurityinsights.DataConnectorKindAmazonWebServicesS3),
+	// 		Properties: &armsecurityinsights.AwsS3DataConnectorProperties{
+	// 			DataTypes: &armsecurityinsights.AwsS3DataConnectorDataTypes{
+	// 				Logs: &armsecurityinsights.AwsS3DataConnectorDataTypesLogs{
+	// 					State: to.Ptr(armsecurityinsights.DataTypeStateEnabled),
+	// 				},
+	// 			},
+	// 			DestinationTable: to.Ptr("AWSVPCFlow"),
+	// 			RoleArn: to.Ptr("arn:aws:iam::072643944673:role/RoleName"),
+	// 			SqsUrls: []*string{
+	// 				to.Ptr("https://sqs.us-west-1.amazonaws.com/111111111111/sqsTestName")},
+	// 			},
+	// 		},
+	// 		                        }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c4f3c695f0250dcb261598a62004f0aef10b9db/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/dataConnectors/GetAmazonWebServicesCloudTrailById.json
 func ExampleDataConnectorsClient_Get_getAnAwsCloudTrailDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -437,7 +1313,155 @@ func ExampleDataConnectorsClient_Get_getAnAwsCloudTrailDataConnector() {
 	// 	                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2021-10-01/examples/dataConnectors/GetOfficeDataConnetorById.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c4f3c695f0250dcb261598a62004f0aef10b9db/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/dataConnectors/GetOffice365AdvancedThreatProtectionById.json
+func ExampleDataConnectorsClient_Get_getAnOfficeAtpDataConnector() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsecurityinsights.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewDataConnectorsClient().Get(ctx, "myRg", "myWorkspace", "3d3e955e-33eb-401d-89a7-251c81ddd660", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsecurityinsights.DataConnectorsClientGetResponse{
+	// 	                            DataConnectorClassification: &armsecurityinsights.OfficeATPDataConnector{
+	// 		Name: to.Ptr("3d3e955e-33eb-401d-89a7-251c81ddd660"),
+	// 		Type: to.Ptr("Microsoft.SecurityInsights/dataConnectors"),
+	// 		ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/dataConnectors/3d3e955e-33eb-401d-89a7-251c81ddd660"),
+	// 		Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
+	// 		Kind: to.Ptr(armsecurityinsights.DataConnectorKindOfficeATP),
+	// 		Properties: &armsecurityinsights.OfficeATPDataConnectorProperties{
+	// 			TenantID: to.Ptr("2070ecc9-b4d5-4ae4-adaa-936fa1954fa8"),
+	// 			DataTypes: &armsecurityinsights.AlertsDataTypeOfDataConnector{
+	// 				Alerts: &armsecurityinsights.DataConnectorDataTypeCommon{
+	// 					State: to.Ptr(armsecurityinsights.DataTypeStateEnabled),
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// 	                        }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c4f3c695f0250dcb261598a62004f0aef10b9db/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/dataConnectors/GetMicrosoftInsiderRiskManagementById.json
+func ExampleDataConnectorsClient_Get_getAnOfficeIrmDataConnector() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsecurityinsights.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewDataConnectorsClient().Get(ctx, "myRg", "myWorkspace", "3d3e955e-33eb-401d-89a7-251c81ddd660", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsecurityinsights.DataConnectorsClientGetResponse{
+	// 	                            DataConnectorClassification: &armsecurityinsights.OfficeIRMDataConnector{
+	// 		Name: to.Ptr("3d3e955e-33eb-401d-89a7-251c81ddd660"),
+	// 		Type: to.Ptr("Microsoft.SecurityInsights/dataConnectors"),
+	// 		ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/dataConnectors/3d3e955e-33eb-401d-89a7-251c81ddd660"),
+	// 		Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
+	// 		Kind: to.Ptr(armsecurityinsights.DataConnectorKindOfficeIRM),
+	// 		Properties: &armsecurityinsights.OfficeIRMDataConnectorProperties{
+	// 			TenantID: to.Ptr("2070ecc9-b4d5-4ae4-adaa-936fa1954fa8"),
+	// 			DataTypes: &armsecurityinsights.AlertsDataTypeOfDataConnector{
+	// 				Alerts: &armsecurityinsights.DataConnectorDataTypeCommon{
+	// 					State: to.Ptr(armsecurityinsights.DataTypeStateEnabled),
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// 	                        }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c4f3c695f0250dcb261598a62004f0aef10b9db/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/dataConnectors/GetOfficePowerBIDataConnetorById.json
+func ExampleDataConnectorsClient_Get_getAnOffice365PowerBiDataConnector() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsecurityinsights.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewDataConnectorsClient().Get(ctx, "myRg", "myWorkspace", "73e01a99-5cd7-4139-a149-9f2736ff2ab5", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsecurityinsights.DataConnectorsClientGetResponse{
+	// 	                            DataConnectorClassification: &armsecurityinsights.OfficePowerBIDataConnector{
+	// 		Name: to.Ptr("73e01a99-5cd7-4139-a149-9f2736ff2ab5"),
+	// 		Type: to.Ptr("Microsoft.SecurityInsights/dataConnectors"),
+	// 		ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/dataConnectors/73e01a99-5cd7-4139-a149-9f2736ff2ab5"),
+	// 		Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
+	// 		Kind: to.Ptr(armsecurityinsights.DataConnectorKindOfficePowerBI),
+	// 		Properties: &armsecurityinsights.OfficePowerBIDataConnectorProperties{
+	// 			TenantID: to.Ptr("2070ecc9-b4d5-4ae4-adaa-936fa1954fa8"),
+	// 			DataTypes: &armsecurityinsights.OfficePowerBIConnectorDataTypes{
+	// 				Logs: &armsecurityinsights.OfficePowerBIConnectorDataTypesLogs{
+	// 					State: to.Ptr(armsecurityinsights.DataTypeStateEnabled),
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// 	                        }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c4f3c695f0250dcb261598a62004f0aef10b9db/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/dataConnectors/GetOffice365ProjectDataConnetorById.json
+func ExampleDataConnectorsClient_Get_getAnOffice365ProjectDataConnector() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsecurityinsights.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewDataConnectorsClient().Get(ctx, "myRg", "myWorkspace", "73e01a99-5cd7-4139-a149-9f2736ff2ab5", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsecurityinsights.DataConnectorsClientGetResponse{
+	// 	                            DataConnectorClassification: &armsecurityinsights.Office365ProjectDataConnector{
+	// 		Name: to.Ptr("73e01a99-5cd7-4139-a149-9f2736ff2ab5"),
+	// 		Type: to.Ptr("Microsoft.SecurityInsights/dataConnectors"),
+	// 		ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/dataConnectors/73e01a99-5cd7-4139-a149-9f2736ff2ab5"),
+	// 		Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
+	// 		Kind: to.Ptr(armsecurityinsights.DataConnectorKindOffice365Project),
+	// 		Properties: &armsecurityinsights.Office365ProjectDataConnectorProperties{
+	// 			TenantID: to.Ptr("2070ecc9-b4d5-4ae4-adaa-936fa1954fa8"),
+	// 			DataTypes: &armsecurityinsights.Office365ProjectConnectorDataTypes{
+	// 				Logs: &armsecurityinsights.Office365ProjectConnectorDataTypesLogs{
+	// 					State: to.Ptr(armsecurityinsights.DataTypeStateEnabled),
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// 	                        }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c4f3c695f0250dcb261598a62004f0aef10b9db/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/dataConnectors/GetOfficeDataConnetorById.json
 func ExampleDataConnectorsClient_Get_getAnOffice365DataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -463,6 +1487,7 @@ func ExampleDataConnectorsClient_Get_getAnOffice365DataConnector() {
 	// 		Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
 	// 		Kind: to.Ptr(armsecurityinsights.DataConnectorKindOffice365),
 	// 		Properties: &armsecurityinsights.OfficeDataConnectorProperties{
+	// 			TenantID: to.Ptr("2070ecc9-b4d5-4ae4-adaa-936fa1954fa8"),
 	// 			DataTypes: &armsecurityinsights.OfficeDataConnectorDataTypes{
 	// 				Exchange: &armsecurityinsights.OfficeDataConnectorDataTypesExchange{
 	// 					State: to.Ptr(armsecurityinsights.DataTypeStateEnabled),
@@ -474,13 +1499,739 @@ func ExampleDataConnectorsClient_Get_getAnOffice365DataConnector() {
 	// 					State: to.Ptr(armsecurityinsights.DataTypeStateEnabled),
 	// 				},
 	// 			},
-	// 			TenantID: to.Ptr("2070ecc9-b4d5-4ae4-adaa-936fa1954fa8"),
 	// 		},
 	// 	},
 	// 	                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2021-10-01/examples/dataConnectors/CreateOfficeDataConnetor.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c4f3c695f0250dcb261598a62004f0aef10b9db/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/dataConnectors/CreateAPIPolling.json
+func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAApiPollingDataConnector() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsecurityinsights.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewDataConnectorsClient().CreateOrUpdate(ctx, "myRg", "myWorkspace", "316ec55e-7138-4d63-ab18-90c8a60fd1c8", &armsecurityinsights.CodelessAPIPollingDataConnector{
+		Kind: to.Ptr(armsecurityinsights.DataConnectorKindAPIPolling),
+		Properties: &armsecurityinsights.APIPollingParameters{
+			ConnectorUIConfig: &armsecurityinsights.CodelessUIConnectorConfigProperties{
+				Availability: &armsecurityinsights.Availability{
+					IsPreview: to.Ptr(true),
+					Status:    to.Ptr[int32](1),
+				},
+				ConnectivityCriteria: []*armsecurityinsights.CodelessUIConnectorConfigPropertiesConnectivityCriteriaItem{
+					{
+						Type:  to.Ptr(armsecurityinsights.ConnectivityType("SentinelKindsV2")),
+						Value: []*string{},
+					}},
+				DataTypes: []*armsecurityinsights.CodelessUIConnectorConfigPropertiesDataTypesItem{
+					{
+						Name:                  to.Ptr("{{graphQueriesTableName}}"),
+						LastDataReceivedQuery: to.Ptr("{{graphQueriesTableName}}\n            | summarize Time = max(TimeGenerated)\n            | where isnotempty(Time)"),
+					}},
+				DescriptionMarkdown: to.Ptr("The GitHub audit log connector provides the capability to ingest GitHub logs into Azure Sentinel. By connecting GitHub audit logs into Azure Sentinel, you can view this data in workbooks, use it to create custom alerts, and improve your investigation process."),
+				GraphQueries: []*armsecurityinsights.CodelessUIConnectorConfigPropertiesGraphQueriesItem{
+					{
+						BaseQuery:  to.Ptr("{{graphQueriesTableName}}"),
+						Legend:     to.Ptr("GitHub audit log events"),
+						MetricName: to.Ptr("Total events received"),
+					}},
+				GraphQueriesTableName: to.Ptr("GitHubAuditLogPolling_CL"),
+				InstructionSteps: []*armsecurityinsights.CodelessUIConnectorConfigPropertiesInstructionStepsItem{
+					{
+						Description: to.Ptr("Enable GitHub audit Logs. \n Follow [this](https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token) to create or find your personal key"),
+						Instructions: []*armsecurityinsights.InstructionStepsInstructionsItem{
+							{
+								Type: to.Ptr(armsecurityinsights.SettingType("APIKey")),
+								Parameters: map[string]any{
+									"enable": "true",
+									"userRequestPlaceHoldersInput": []any{
+										map[string]any{
+											"displayText":      "Organization Name",
+											"placeHolderName":  "{{placeHolder1}}",
+											"placeHolderValue": "",
+											"requestObjectKey": "apiEndpoint",
+										},
+									},
+								},
+							}},
+						Title: to.Ptr("Connect GitHub Enterprise Audit Log to Azure Sentinel"),
+					}},
+				Permissions: &armsecurityinsights.Permissions{
+					Customs: []*armsecurityinsights.PermissionsCustomsItem{
+						{
+							Name:        to.Ptr("GitHub API personal token Key"),
+							Description: to.Ptr("You need access to GitHub personal token, the key should have 'admin:org' scope"),
+						}},
+					ResourceProvider: []*armsecurityinsights.PermissionsResourceProviderItem{
+						{
+							PermissionsDisplayText: to.Ptr("read and write permissions are required."),
+							Provider:               to.Ptr(armsecurityinsights.ProviderNameMicrosoftOperationalInsightsWorkspaces),
+							ProviderDisplayName:    to.Ptr("Workspace"),
+							RequiredPermissions: &armsecurityinsights.RequiredPermissions{
+								Delete: to.Ptr(true),
+								Read:   to.Ptr(true),
+								Write:  to.Ptr(true),
+							},
+							Scope: to.Ptr(armsecurityinsights.PermissionProviderScopeWorkspace),
+						}},
+				},
+				Publisher: to.Ptr("GitHub"),
+				SampleQueries: []*armsecurityinsights.CodelessUIConnectorConfigPropertiesSampleQueriesItem{
+					{
+						Description: to.Ptr("All logs"),
+						Query:       to.Ptr("{{graphQueriesTableName}}\n | take 10 <change>"),
+					}},
+				Title: to.Ptr("GitHub Enterprise Audit Log"),
+			},
+			PollingConfig: &armsecurityinsights.CodelessConnectorPollingConfigProperties{
+				Auth: &armsecurityinsights.CodelessConnectorPollingAuthProperties{
+					APIKeyIdentifier: to.Ptr("token"),
+					APIKeyName:       to.Ptr("Authorization"),
+					AuthType:         to.Ptr("APIKey"),
+				},
+				Paging: &armsecurityinsights.CodelessConnectorPollingPagingProperties{
+					PageSizeParaName: to.Ptr("per_page"),
+					PagingType:       to.Ptr("LinkHeader"),
+				},
+				Response: &armsecurityinsights.CodelessConnectorPollingResponseProperties{
+					EventsJSONPaths: []*string{
+						to.Ptr("$")},
+				},
+				Request: &armsecurityinsights.CodelessConnectorPollingRequestProperties{
+					APIEndpoint: to.Ptr("https://api.github.com/organizations/{{placeHolder1}}/audit-log"),
+					Headers: map[string]any{
+						"Accept":     "application/json",
+						"User-Agent": "Scuba",
+					},
+					HTTPMethod: to.Ptr("Get"),
+					QueryParameters: map[string]any{
+						"phrase": "created:{_QueryWindowStartTime}..{_QueryWindowEndTime}",
+					},
+					QueryTimeFormat:  to.Ptr("yyyy-MM-ddTHH:mm:ssZ"),
+					QueryWindowInMin: to.Ptr[int32](15),
+					RateLimitQPS:     to.Ptr[int32](50),
+					RetryCount:       to.Ptr[int32](2),
+					TimeoutInSeconds: to.Ptr[int32](60),
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsecurityinsights.DataConnectorsClientCreateOrUpdateResponse{
+	// 	                            DataConnectorClassification: &armsecurityinsights.CodelessAPIPollingDataConnector{
+	// 		Name: to.Ptr("316ec55e-7138-4d63-ab18-90c8a60fd1c8"),
+	// 		Type: to.Ptr("Microsoft.SecurityInsights/dataConnectors"),
+	// 		ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/dataConnectors/316ec55e-7138-4d63-ab18-90c8a60fd1c8"),
+	// 		Etag: to.Ptr("\"1a00b074-0000-0100-0000-606ef5bd0000\""),
+	// 		Kind: to.Ptr(armsecurityinsights.DataConnectorKindAPIPolling),
+	// 		Properties: &armsecurityinsights.APIPollingParameters{
+	// 			ConnectorUIConfig: &armsecurityinsights.CodelessUIConnectorConfigProperties{
+	// 				Availability: &armsecurityinsights.Availability{
+	// 					IsPreview: to.Ptr(true),
+	// 					Status: to.Ptr[int32](1),
+	// 				},
+	// 				ConnectivityCriteria: []*armsecurityinsights.CodelessUIConnectorConfigPropertiesConnectivityCriteriaItem{
+	// 					{
+	// 						Type: to.Ptr(armsecurityinsights.ConnectivityType("SentinelKindsV2")),
+	// 						Value: []*string{
+	// 						},
+	// 				}},
+	// 				DataTypes: []*armsecurityinsights.CodelessUIConnectorConfigPropertiesDataTypesItem{
+	// 					{
+	// 						Name: to.Ptr("{{graphQueriesTableName}}"),
+	// 						LastDataReceivedQuery: to.Ptr("{{graphQueriesTableName}}\n            | summarize Time = max(TimeGenerated)\n            | where isnotempty(Time)"),
+	// 				}},
+	// 				DescriptionMarkdown: to.Ptr("The GitHub audit log connector provides the capability to ingest GitHub logs into Azure Sentinel. By connecting GitHub audit logs into Azure Sentinel, you can view this data in workbooks, use it to create custom alerts, and improve your investigation process."),
+	// 				GraphQueries: []*armsecurityinsights.CodelessUIConnectorConfigPropertiesGraphQueriesItem{
+	// 					{
+	// 						BaseQuery: to.Ptr("{{graphQueriesTableName}}"),
+	// 						Legend: to.Ptr("GitHub audit log events"),
+	// 						MetricName: to.Ptr("Total events received"),
+	// 				}},
+	// 				GraphQueriesTableName: to.Ptr("GitHubAuditLogPolling_CL"),
+	// 				InstructionSteps: []*armsecurityinsights.CodelessUIConnectorConfigPropertiesInstructionStepsItem{
+	// 					{
+	// 						Description: to.Ptr("Enable GitHub audit Logs. \n Follow [this](https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token) to create or find your personal key"),
+	// 						Instructions: []*armsecurityinsights.InstructionStepsInstructionsItem{
+	// 							{
+	// 								Type: to.Ptr(armsecurityinsights.SettingType("APIKey")),
+	// 								Parameters: map[string]any{
+	// 									"enable": "true",
+	// 									"userRequestPlaceHoldersInput":[]any{
+	// 										map[string]any{
+	// 											"displayText": "Organization Name",
+	// 											"placeHolderName": "{{placeHolder1}}",
+	// 											"placeHolderValue": "",
+	// 											"requestObjectKey": "apiEndpoint",
+	// 										},
+	// 									},
+	// 								},
+	// 						}},
+	// 						Title: to.Ptr("Connect GitHub Enterprise Audit Log to Azure Sentinel"),
+	// 				}},
+	// 				Permissions: &armsecurityinsights.Permissions{
+	// 					Customs: []*armsecurityinsights.PermissionsCustomsItem{
+	// 						{
+	// 							Name: to.Ptr("GitHub API personal token Key"),
+	// 							Description: to.Ptr("You need access to GitHub personal token, the key should have 'admin:org' scope"),
+	// 					}},
+	// 					ResourceProvider: []*armsecurityinsights.PermissionsResourceProviderItem{
+	// 						{
+	// 							PermissionsDisplayText: to.Ptr("read and write permissions are required."),
+	// 							Provider: to.Ptr(armsecurityinsights.ProviderNameMicrosoftOperationalInsightsWorkspaces),
+	// 							ProviderDisplayName: to.Ptr("Workspace"),
+	// 							RequiredPermissions: &armsecurityinsights.RequiredPermissions{
+	// 								Delete: to.Ptr(true),
+	// 								Read: to.Ptr(true),
+	// 								Write: to.Ptr(true),
+	// 							},
+	// 							Scope: to.Ptr(armsecurityinsights.PermissionProviderScopeWorkspace),
+	// 					}},
+	// 				},
+	// 				Publisher: to.Ptr("GitHub"),
+	// 				SampleQueries: []*armsecurityinsights.CodelessUIConnectorConfigPropertiesSampleQueriesItem{
+	// 					{
+	// 						Description: to.Ptr("All logs"),
+	// 						Query: to.Ptr("{{graphQueriesTableName}}\n | take 10 <change>"),
+	// 				}},
+	// 				Title: to.Ptr("GitHub Enterprise Audit Log"),
+	// 			},
+	// 			PollingConfig: &armsecurityinsights.CodelessConnectorPollingConfigProperties{
+	// 				Auth: &armsecurityinsights.CodelessConnectorPollingAuthProperties{
+	// 					APIKeyIdentifier: to.Ptr("token"),
+	// 					APIKeyName: to.Ptr("Authorization"),
+	// 					AuthType: to.Ptr("APIKey"),
+	// 				},
+	// 				Paging: &armsecurityinsights.CodelessConnectorPollingPagingProperties{
+	// 					PageSizeParaName: to.Ptr("per_page"),
+	// 					PagingType: to.Ptr("LinkHeader"),
+	// 				},
+	// 				Response: &armsecurityinsights.CodelessConnectorPollingResponseProperties{
+	// 					EventsJSONPaths: []*string{
+	// 						to.Ptr("$")},
+	// 					},
+	// 					Request: &armsecurityinsights.CodelessConnectorPollingRequestProperties{
+	// 						APIEndpoint: to.Ptr("https://api.github.com/organizations/{{placeHolder1}}/audit-log"),
+	// 						Headers: map[string]any{
+	// 							"Accept": "application/json",
+	// 							"User-Agent": "Scuba",
+	// 						},
+	// 						HTTPMethod: to.Ptr("Get"),
+	// 						QueryParameters: map[string]any{
+	// 							"phrase": "created:{_QueryWindowStartTime}..{_QueryWindowEndTime}",
+	// 						},
+	// 						QueryTimeFormat: to.Ptr("yyyy-MM-ddTHH:mm:ssZ"),
+	// 						QueryWindowInMin: to.Ptr[int32](15),
+	// 						RateLimitQPS: to.Ptr[int32](50),
+	// 						RetryCount: to.Ptr[int32](2),
+	// 						TimeoutInSeconds: to.Ptr[int32](60),
+	// 					},
+	// 				},
+	// 			},
+	// 		},
+	// 		                        }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c4f3c695f0250dcb261598a62004f0aef10b9db/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/dataConnectors/CreateDynamics365DataConnetor.json
+func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesADynamics365DataConnector() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsecurityinsights.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewDataConnectorsClient().CreateOrUpdate(ctx, "myRg", "myWorkspace", "c2541efb-c9a6-47fe-9501-87d1017d1512", &armsecurityinsights.Dynamics365DataConnector{
+		Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
+		Kind: to.Ptr(armsecurityinsights.DataConnectorKindDynamics365),
+		Properties: &armsecurityinsights.Dynamics365DataConnectorProperties{
+			TenantID: to.Ptr("2070ecc9-b4d5-4ae4-adaa-936fa1954fa8"),
+			DataTypes: &armsecurityinsights.Dynamics365DataConnectorDataTypes{
+				Dynamics365CdsActivities: &armsecurityinsights.Dynamics365DataConnectorDataTypesDynamics365CdsActivities{
+					State: to.Ptr(armsecurityinsights.DataTypeStateEnabled),
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsecurityinsights.DataConnectorsClientCreateOrUpdateResponse{
+	// 	                            DataConnectorClassification: &armsecurityinsights.Dynamics365DataConnector{
+	// 		Name: to.Ptr("c2541efb-c9a6-47fe-9501-87d1017d1512"),
+	// 		Type: to.Ptr("Microsoft.SecurityInsights/dataConnectors"),
+	// 		ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/dataConnectors/73e01a99-5cd7-4139-a149-9f2736ff2ab5"),
+	// 		Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
+	// 		Kind: to.Ptr(armsecurityinsights.DataConnectorKindDynamics365),
+	// 		Properties: &armsecurityinsights.Dynamics365DataConnectorProperties{
+	// 			TenantID: to.Ptr("2070ecc9-b4d5-4ae4-adaa-936fa1954fa8"),
+	// 			DataTypes: &armsecurityinsights.Dynamics365DataConnectorDataTypes{
+	// 				Dynamics365CdsActivities: &armsecurityinsights.Dynamics365DataConnectorDataTypesDynamics365CdsActivities{
+	// 					State: to.Ptr(armsecurityinsights.DataTypeStateEnabled),
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// 	                        }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c4f3c695f0250dcb261598a62004f0aef10b9db/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/dataConnectors/CreateGenericUI.json
+func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAGenericUiDataConnector() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsecurityinsights.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewDataConnectorsClient().CreateOrUpdate(ctx, "myRg", "myWorkspace", "316ec55e-7138-4d63-ab18-90c8a60fd1c8", &armsecurityinsights.CodelessUIDataConnector{
+		Kind: to.Ptr(armsecurityinsights.DataConnectorKindGenericUI),
+		Properties: &armsecurityinsights.CodelessParameters{
+			ConnectorUIConfig: &armsecurityinsights.CodelessUIConnectorConfigProperties{
+				Availability: &armsecurityinsights.Availability{
+					IsPreview: to.Ptr(true),
+					Status:    to.Ptr[int32](1),
+				},
+				ConnectivityCriteria: []*armsecurityinsights.CodelessUIConnectorConfigPropertiesConnectivityCriteriaItem{
+					{
+						Type: to.Ptr(armsecurityinsights.ConnectivityTypeIsConnectedQuery),
+						Value: []*string{
+							to.Ptr("{{graphQueriesTableName}}\n            | summarize LastLogReceived = max(TimeGenerated)\n            | project IsConnected = LastLogReceived > ago(30d)")},
+					}},
+				DataTypes: []*armsecurityinsights.CodelessUIConnectorConfigPropertiesDataTypesItem{
+					{
+						Name:                  to.Ptr("{{graphQueriesTableName}}"),
+						LastDataReceivedQuery: to.Ptr("{{graphQueriesTableName}}\n            | summarize Time = max(TimeGenerated)\n            | where isnotempty(Time)"),
+					}},
+				DescriptionMarkdown: to.Ptr("The [Qualys Vulnerability Management (VM)](https://www.qualys.com/apps/vulnerability-management/) data connector provides the capability to ingest vulnerability host detection data into Azure Sentinel through the Qualys API. The connector provides visibility into host detection data from vulerability scans. This connector provides Azure Sentinel the capability to view dashboards, create custom alerts, and improve investigation "),
+				GraphQueries: []*armsecurityinsights.CodelessUIConnectorConfigPropertiesGraphQueriesItem{
+					{
+						BaseQuery:  to.Ptr("{{graphQueriesTableName}}"),
+						Legend:     to.Ptr("{{graphQueriesTableName}}"),
+						MetricName: to.Ptr("Total data received"),
+					}},
+				GraphQueriesTableName: to.Ptr("QualysHostDetection_CL"),
+				InstructionSteps: []*armsecurityinsights.CodelessUIConnectorConfigPropertiesInstructionStepsItem{
+					{
+						Description: to.Ptr(">**NOTE:** This connector uses Azure Functions to connect to Qualys VM to pull its logs into Azure Sentinel. This might result in additional data ingestion costs. Check the [Azure Functions pricing page](https://azure.microsoft.com/pricing/details/functions/) for details."),
+						Title:       to.Ptr(""),
+					},
+					{
+						Description: to.Ptr(">**(Optional Step)** Securely store workspace and API authorization key(s) or token(s) in Azure Key Vault. Azure Key Vault provides a secure mechanism to store and retrieve key values. [Follow these instructions](https://docs.microsoft.com/azure/app-service/app-service-key-vault-references) to use Azure Key Vault with an Azure Function App."),
+						Title:       to.Ptr(""),
+					},
+					{
+						Description: to.Ptr("**STEP 1 - Configuration steps for the Qualys VM API**\n\n1. Log into the Qualys Vulnerability Management console with an administrator account, select the **Users** tab and the **Users** subtab. \n2. Click on the **New** drop-down menu and select **Users..**\n3. Create a username and password for the API account. \n4. In the **User Roles** tab, ensure the account role is set to **Manager** and access is allowed to **GUI** and **API**\n4. Log out of the administrator account and log into the console with the new API credentials for validation, then log out of the API account. \n5. Log back into the console using an administrator account and modify the API accounts User Roles, removing access to **GUI**. \n6. Save all changes."),
+						Title:       to.Ptr(""),
+					},
+					{
+						Description: to.Ptr("**STEP 2 - Choose ONE from the following two deployment options to deploy the connector and the associated Azure Function**\n\n>**IMPORTANT:** Before deploying the Qualys VM connector, have the Workspace ID and Workspace Primary Key (can be copied from the following), as well as the Qualys VM API Authorization Key(s), readily available."),
+						Instructions: []*armsecurityinsights.InstructionStepsInstructionsItem{
+							{
+								Type: to.Ptr(armsecurityinsights.SettingTypeCopyableLabel),
+								Parameters: map[string]any{
+									"fillWith": []any{
+										"WorkspaceId",
+									},
+									"label": "Workspace ID",
+								},
+							},
+							{
+								Type: to.Ptr(armsecurityinsights.SettingTypeCopyableLabel),
+								Parameters: map[string]any{
+									"fillWith": []any{
+										"PrimaryKey",
+									},
+									"label": "Primary Key",
+								},
+							}},
+						Title: to.Ptr(""),
+					},
+					{
+						Description: to.Ptr("Use this method for automated deployment of the Qualys VM connector using an ARM Tempate.\n\n1. Click the **Deploy to Azure** button below. \n\n	[![Deploy To Azure](https://aka.ms/deploytoazurebutton)](https://aka.ms/sentinelqualysvmazuredeploy)\n2. Select the preferred **Subscription**, **Resource Group** and **Location**. \n3. Enter the **Workspace ID**, **Workspace Key**, **API Username**, **API Password** , update the **URI**, and any additional URI **Filter Parameters** (each filter should be separated by an \"&\" symbol, no spaces.) \n> - Enter the URI that corresponds to your region. The complete list of API Server URLs can be [found here](https://www.qualys.com/docs/qualys-api-vmpc-user-guide.pdf#G4.735348) -- There is no need to add a time suffix to the URI, the Function App will dynamically append the Time Value to the URI in the proper format. \n - The default **Time Interval** is set to pull the last five (5) minutes of data. If the time interval needs to be modified, it is recommended to change the Function App Timer Trigger accordingly (in the function.json file, post deployment) to prevent overlapping data ingestion. \n> - Note: If using Azure Key Vault secrets for any of the values above, use the`@Microsoft.KeyVault(SecretUri={Security Identifier})`schema in place of the string values. Refer to [Key Vault references documentation](https://docs.microsoft.com/azure/app-service/app-service-key-vault-references) for further details. \n4. Mark the checkbox labeled **I agree to the terms and conditions stated above**. \n5. Click **Purchase** to deploy."),
+						Title:       to.Ptr("Option 1 - Azure Resource Manager (ARM) Template"),
+					},
+					{
+						Description: to.Ptr("Use the following step-by-step instructions to deploy the Quayls VM connector manually with Azure Functions."),
+						Title:       to.Ptr("Option 2 - Manual Deployment of Azure Functions"),
+					},
+					{
+						Description: to.Ptr("**1. Create a Function App**\n\n1.  From the Azure Portal, navigate to [Function App](https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Web%2Fsites/kind/functionapp), and select **+ Add**.\n2. In the **Basics** tab, ensure Runtime stack is set to **Powershell Core**. \n3. In the **Hosting** tab, ensure the **Consumption (Serverless)** plan type is selected.\n4. Make other preferrable configuration changes, if needed, then click **Create**."),
+						Title:       to.Ptr(""),
+					},
+					{
+						Description: to.Ptr("**2. Import Function App Code**\n\n1. In the newly created Function App, select **Functions** on the left pane and click **+ New Function**.\n2. Select **Timer Trigger**.\n3. Enter a unique Function **Name** and leave the default cron schedule of every 5 minutes, then click **Create**.\n5. Click on **Code + Test** on the left pane. \n6. Copy the [Function App Code](https://aka.ms/sentinelqualysvmazurefunctioncode) and paste into the Function App `run.ps1` editor.\n7. Click **Save**."),
+						Title:       to.Ptr(""),
+					},
+					{
+						Description: to.Ptr("**3. Configure the Function App**\n\n1. In the Function App, select the Function App Name and select **Configuration**.\n2. In the **Application settings** tab, select **+ New application setting**.\n3. Add each of the following seven (7) application settings individually, with their respective string values (case-sensitive): \n		apiUsername\n		apiPassword\n		workspaceID\n		workspaceKey\n		uri\n		filterParameters\n		timeInterval\n> - Enter the URI that corresponds to your region. The complete list of API Server URLs can be [found here](https://www.qualys.com/docs/qualys-api-vmpc-user-guide.pdf#G4.735348). The `uri` value must follow the following schema: `https://<API Server>/api/2.0/fo/asset/host/vm/detection/?action=list&vm_processed_after=` -- There is no need to add a time suffix to the URI, the Function App will dynamically append the Time Value to the URI in the proper format.\n> - Add any additional filter parameters, for the `filterParameters` variable, that need to be appended to the URI. Each parameter should be seperated by an \"&\" symbol and should not include any spaces.\n> - Set the `timeInterval` (in minutes) to the value of `5` to correspond to the Timer Trigger of every `5` minutes. If the time interval needs to be modified, it is recommended to change the Function App Timer Trigger accordingly to prevent overlapping data ingestion.\n> - Note: If using Azure Key Vault, use the`@Microsoft.KeyVault(SecretUri={Security Identifier})`schema in place of the string values. Refer to [Key Vault references documentation](https://docs.microsoft.com/azure/app-service/app-service-key-vault-references) for further details.\n4. Once all application settings have been entered, click **Save**."),
+						Title:       to.Ptr(""),
+					},
+					{
+						Description: to.Ptr("**4. Configure the host.json**.\n\nDue to the potentially large amount of Qualys host detection data being ingested, it can cause the execution time to surpass the default Function App timeout of five (5) minutes. Increase the default timeout duration to the maximum of ten (10) minutes, under the Consumption Plan, to allow more time for the Function App to execute.\n\n1. In the Function App, select the Function App Name and select the **App Service Editor** blade.\n2. Click **Go** to open the editor, then select the **host.json** file under the **wwwroot** directory.\n3. Add the line `\"functionTimeout\": \"00:10:00\",` above the `managedDependancy` line \n4. Ensure **SAVED** appears on the top right corner of the editor, then exit the editor.\n\n> NOTE: If a longer timeout duration is required, consider upgrading to an [App Service Plan](https://docs.microsoft.com/azure/azure-functions/functions-scale#timeout)"),
+						Title:       to.Ptr(""),
+					}},
+				Permissions: &armsecurityinsights.Permissions{
+					Customs: []*armsecurityinsights.PermissionsCustomsItem{
+						{
+							Name:        to.Ptr("Microsoft.Web/sites permissions"),
+							Description: to.Ptr("Read and write permissions to Azure Functions to create a Function App is required. [See the documentation to learn more about Azure Functions](https://docs.microsoft.com/azure/azure-functions/)."),
+						},
+						{
+							Name:        to.Ptr("Qualys API Key"),
+							Description: to.Ptr("A Qualys VM API username and password is required. [See the documentation to learn more about Qualys VM API](https://www.qualys.com/docs/qualys-api-vmpc-user-guide.pdf)."),
+						}},
+					ResourceProvider: []*armsecurityinsights.PermissionsResourceProviderItem{
+						{
+							PermissionsDisplayText: to.Ptr("read and write permissions on the workspace are required."),
+							Provider:               to.Ptr(armsecurityinsights.ProviderNameMicrosoftOperationalInsightsWorkspaces),
+							ProviderDisplayName:    to.Ptr("Workspace"),
+							RequiredPermissions: &armsecurityinsights.RequiredPermissions{
+								Delete: to.Ptr(true),
+								Read:   to.Ptr(true),
+								Write:  to.Ptr(true),
+							},
+							Scope: to.Ptr(armsecurityinsights.PermissionProviderScopeWorkspace),
+						},
+						{
+							PermissionsDisplayText: to.Ptr("read permissions to shared keys for the workspace are required. [See the documentation to learn more about workspace keys](https://docs.microsoft.com/azure/azure-monitor/platform/agent-windows#obtain-workspace-id-and-key)."),
+							Provider:               to.Ptr(armsecurityinsights.ProviderNameMicrosoftOperationalInsightsWorkspacesSharedKeys),
+							ProviderDisplayName:    to.Ptr("Keys"),
+							RequiredPermissions: &armsecurityinsights.RequiredPermissions{
+								Action: to.Ptr(true),
+							},
+							Scope: to.Ptr(armsecurityinsights.PermissionProviderScopeWorkspace),
+						}},
+				},
+				Publisher: to.Ptr("Qualys"),
+				SampleQueries: []*armsecurityinsights.CodelessUIConnectorConfigPropertiesSampleQueriesItem{
+					{
+						Description: to.Ptr("Top 10 Vulerabilities detected"),
+						Query:       to.Ptr("{{graphQueriesTableName}}\n | mv-expand todynamic(Detections_s)\n | extend Vulnerability = tostring(Detections_s.Results)\n | summarize count() by Vulnerability\n | top 10 by count_"),
+					}},
+				Title: to.Ptr("Qualys Vulnerability Management (CCP DEMO)"),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsecurityinsights.DataConnectorsClientCreateOrUpdateResponse{
+	// 	                            DataConnectorClassification: &armsecurityinsights.CodelessUIDataConnector{
+	// 		Name: to.Ptr("316ec55e-7138-4d63-ab18-90c8a60fd1c8"),
+	// 		Type: to.Ptr("Microsoft.SecurityInsights/dataConnectors"),
+	// 		ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/dataConnectors/316ec55e-7138-4d63-ab18-90c8a60fd1c8"),
+	// 		Etag: to.Ptr("\"1a00b074-0000-0100-0000-606ef5bd0000\""),
+	// 		Kind: to.Ptr(armsecurityinsights.DataConnectorKindGenericUI),
+	// 		Properties: &armsecurityinsights.CodelessParameters{
+	// 			ConnectorUIConfig: &armsecurityinsights.CodelessUIConnectorConfigProperties{
+	// 				Availability: &armsecurityinsights.Availability{
+	// 					IsPreview: to.Ptr(true),
+	// 					Status: to.Ptr[int32](1),
+	// 				},
+	// 				ConnectivityCriteria: []*armsecurityinsights.CodelessUIConnectorConfigPropertiesConnectivityCriteriaItem{
+	// 					{
+	// 						Type: to.Ptr(armsecurityinsights.ConnectivityTypeIsConnectedQuery),
+	// 						Value: []*string{
+	// 							to.Ptr("{{graphQueriesTableName}}\n            | summarize LastLogReceived = max(TimeGenerated)\n            | project IsConnected = LastLogReceived > ago(30d)")},
+	// 					}},
+	// 					DataTypes: []*armsecurityinsights.CodelessUIConnectorConfigPropertiesDataTypesItem{
+	// 						{
+	// 							Name: to.Ptr("{{graphQueriesTableName}}"),
+	// 							LastDataReceivedQuery: to.Ptr("{{graphQueriesTableName}}\n            | summarize Time = max(TimeGenerated)\n            | where isnotempty(Time)"),
+	// 					}},
+	// 					DescriptionMarkdown: to.Ptr("The [Qualys Vulnerability Management (VM)](https://www.qualys.com/apps/vulnerability-management/) data connector provides the capability to ingest vulnerability host detection data into Azure Sentinel through the Qualys API. The connector provides visibility into host detection data from vulerability scans. This connector provides Azure Sentinel the capability to view dashboards, create custom alerts, and improve investigation "),
+	// 					GraphQueries: []*armsecurityinsights.CodelessUIConnectorConfigPropertiesGraphQueriesItem{
+	// 						{
+	// 							BaseQuery: to.Ptr("{{graphQueriesTableName}}"),
+	// 							Legend: to.Ptr("{{graphQueriesTableName}}"),
+	// 							MetricName: to.Ptr("Total data received"),
+	// 					}},
+	// 					GraphQueriesTableName: to.Ptr("QualysHostDetection_CL"),
+	// 					InstructionSteps: []*armsecurityinsights.CodelessUIConnectorConfigPropertiesInstructionStepsItem{
+	// 						{
+	// 							Description: to.Ptr(">**NOTE:** This connector uses Azure Functions to connect to Qualys VM to pull its logs into Azure Sentinel. This might result in additional data ingestion costs. Check the [Azure Functions pricing page](https://azure.microsoft.com/pricing/details/functions/) for details."),
+	// 							Title: to.Ptr(""),
+	// 						},
+	// 						{
+	// 							Description: to.Ptr(">**(Optional Step)** Securely store workspace and API authorization key(s) or token(s) in Azure Key Vault. Azure Key Vault provides a secure mechanism to store and retrieve key values. [Follow these instructions](https://docs.microsoft.com/azure/app-service/app-service-key-vault-references) to use Azure Key Vault with an Azure Function App."),
+	// 							Title: to.Ptr(""),
+	// 						},
+	// 						{
+	// 							Description: to.Ptr("**STEP 1 - Configuration steps for the Qualys VM API**\n\n1. Log into the Qualys Vulnerability Management console with an administrator account, select the **Users** tab and the **Users** subtab. \n2. Click on the **New** drop-down menu and select **Users..**\n3. Create a username and password for the API account. \n4. In the **User Roles** tab, ensure the account role is set to **Manager** and access is allowed to **GUI** and **API**\n4. Log out of the administrator account and log into the console with the new API credentials for validation, then log out of the API account. \n5. Log back into the console using an administrator account and modify the API accounts User Roles, removing access to **GUI**. \n6. Save all changes."),
+	// 							Title: to.Ptr(""),
+	// 						},
+	// 						{
+	// 							Description: to.Ptr("**STEP 2 - Choose ONE from the following two deployment options to deploy the connector and the associated Azure Function**\n\n>**IMPORTANT:** Before deploying the Qualys VM connector, have the Workspace ID and Workspace Primary Key (can be copied from the following), as well as the Qualys VM API Authorization Key(s), readily available."),
+	// 							Instructions: []*armsecurityinsights.InstructionStepsInstructionsItem{
+	// 								{
+	// 									Type: to.Ptr(armsecurityinsights.SettingTypeCopyableLabel),
+	// 									Parameters: map[string]any{
+	// 										"fillWith":[]any{
+	// 											"WorkspaceId",
+	// 										},
+	// 										"label": "Workspace ID",
+	// 									},
+	// 								},
+	// 								{
+	// 									Type: to.Ptr(armsecurityinsights.SettingTypeCopyableLabel),
+	// 									Parameters: map[string]any{
+	// 										"fillWith":[]any{
+	// 											"PrimaryKey",
+	// 										},
+	// 										"label": "Primary Key",
+	// 									},
+	// 							}},
+	// 							Title: to.Ptr(""),
+	// 						},
+	// 						{
+	// 							Description: to.Ptr("Use this method for automated deployment of the Qualys VM connector using an ARM Tempate.\n\n1. Click the **Deploy to Azure** button below. \n\n	[![Deploy To Azure](https://aka.ms/deploytoazurebutton)](https://aka.ms/sentinelqualysvmazuredeploy)\n2. Select the preferred **Subscription**, **Resource Group** and **Location**. \n3. Enter the **Workspace ID**, **Workspace Key**, **API Username**, **API Password** , update the **URI**, and any additional URI **Filter Parameters** (each filter should be separated by an \"&\" symbol, no spaces.) \n> - Enter the URI that corresponds to your region. The complete list of API Server URLs can be [found here](https://www.qualys.com/docs/qualys-api-vmpc-user-guide.pdf#G4.735348) -- There is no need to add a time suffix to the URI, the Function App will dynamically append the Time Value to the URI in the proper format. \n - The default **Time Interval** is set to pull the last five (5) minutes of data. If the time interval needs to be modified, it is recommended to change the Function App Timer Trigger accordingly (in the function.json file, post deployment) to prevent overlapping data ingestion. \n> - Note: If using Azure Key Vault secrets for any of the values above, use the`@Microsoft.KeyVault(SecretUri={Security Identifier})`schema in place of the string values. Refer to [Key Vault references documentation](https://docs.microsoft.com/azure/app-service/app-service-key-vault-references) for further details. \n4. Mark the checkbox labeled **I agree to the terms and conditions stated above**. \n5. Click **Purchase** to deploy."),
+	// 							Title: to.Ptr("Option 1 - Azure Resource Manager (ARM) Template"),
+	// 						},
+	// 						{
+	// 							Description: to.Ptr("Use the following step-by-step instructions to deploy the Quayls VM connector manually with Azure Functions."),
+	// 							Title: to.Ptr("Option 2 - Manual Deployment of Azure Functions"),
+	// 						},
+	// 						{
+	// 							Description: to.Ptr("**1. Create a Function App**\n\n1.  From the Azure Portal, navigate to [Function App](https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Web%2Fsites/kind/functionapp), and select **+ Add**.\n2. In the **Basics** tab, ensure Runtime stack is set to **Powershell Core**. \n3. In the **Hosting** tab, ensure the **Consumption (Serverless)** plan type is selected.\n4. Make other preferrable configuration changes, if needed, then click **Create**."),
+	// 							Title: to.Ptr(""),
+	// 						},
+	// 						{
+	// 							Description: to.Ptr("**2. Import Function App Code**\n\n1. In the newly created Function App, select **Functions** on the left pane and click **+ New Function**.\n2. Select **Timer Trigger**.\n3. Enter a unique Function **Name** and leave the default cron schedule of every 5 minutes, then click **Create**.\n5. Click on **Code + Test** on the left pane. \n6. Copy the [Function App Code](https://aka.ms/sentinelqualysvmazurefunctioncode) and paste into the Function App `run.ps1` editor.\n7. Click **Save**."),
+	// 							Title: to.Ptr(""),
+	// 						},
+	// 						{
+	// 							Description: to.Ptr("**3. Configure the Function App**\n\n1. In the Function App, select the Function App Name and select **Configuration**.\n2. In the **Application settings** tab, select **+ New application setting**.\n3. Add each of the following seven (7) application settings individually, with their respective string values (case-sensitive): \n		apiUsername\n		apiPassword\n		workspaceID\n		workspaceKey\n		uri\n		filterParameters\n		timeInterval\n> - Enter the URI that corresponds to your region. The complete list of API Server URLs can be [found here](https://www.qualys.com/docs/qualys-api-vmpc-user-guide.pdf#G4.735348). The `uri` value must follow the following schema: `https://<API Server>/api/2.0/fo/asset/host/vm/detection/?action=list&vm_processed_after=` -- There is no need to add a time suffix to the URI, the Function App will dynamically append the Time Value to the URI in the proper format.\n> - Add any additional filter parameters, for the `filterParameters` variable, that need to be appended to the URI. Each parameter should be seperated by an \"&\" symbol and should not include any spaces.\n> - Set the `timeInterval` (in minutes) to the value of `5` to correspond to the Timer Trigger of every `5` minutes. If the time interval needs to be modified, it is recommended to change the Function App Timer Trigger accordingly to prevent overlapping data ingestion.\n> - Note: If using Azure Key Vault, use the`@Microsoft.KeyVault(SecretUri={Security Identifier})`schema in place of the string values. Refer to [Key Vault references documentation](https://docs.microsoft.com/azure/app-service/app-service-key-vault-references) for further details.\n4. Once all application settings have been entered, click **Save**."),
+	// 							Title: to.Ptr(""),
+	// 						},
+	// 						{
+	// 							Description: to.Ptr("**4. Configure the host.json**.\n\nDue to the potentially large amount of Qualys host detection data being ingested, it can cause the execution time to surpass the default Function App timeout of five (5) minutes. Increase the default timeout duration to the maximum of ten (10) minutes, under the Consumption Plan, to allow more time for the Function App to execute.\n\n1. In the Function App, select the Function App Name and select the **App Service Editor** blade.\n2. Click **Go** to open the editor, then select the **host.json** file under the **wwwroot** directory.\n3. Add the line `\"functionTimeout\": \"00:10:00\",` above the `managedDependancy` line \n4. Ensure **SAVED** appears on the top right corner of the editor, then exit the editor.\n\n> NOTE: If a longer timeout duration is required, consider upgrading to an [App Service Plan](https://docs.microsoft.com/azure/azure-functions/functions-scale#timeout)"),
+	// 							Title: to.Ptr(""),
+	// 					}},
+	// 					Permissions: &armsecurityinsights.Permissions{
+	// 						Customs: []*armsecurityinsights.PermissionsCustomsItem{
+	// 							{
+	// 								Name: to.Ptr("Microsoft.Web/sites permissions"),
+	// 								Description: to.Ptr("Read and write permissions to Azure Functions to create a Function App is required. [See the documentation to learn more about Azure Functions](https://docs.microsoft.com/azure/azure-functions/)."),
+	// 							},
+	// 							{
+	// 								Name: to.Ptr("Qualys API Key"),
+	// 								Description: to.Ptr("A Qualys VM API username and password is required. [See the documentation to learn more about Qualys VM API](https://www.qualys.com/docs/qualys-api-vmpc-user-guide.pdf)."),
+	// 						}},
+	// 						ResourceProvider: []*armsecurityinsights.PermissionsResourceProviderItem{
+	// 							{
+	// 								PermissionsDisplayText: to.Ptr("read and write permissions on the workspace are required."),
+	// 								Provider: to.Ptr(armsecurityinsights.ProviderNameMicrosoftOperationalInsightsWorkspaces),
+	// 								ProviderDisplayName: to.Ptr("Workspace"),
+	// 								RequiredPermissions: &armsecurityinsights.RequiredPermissions{
+	// 									Delete: to.Ptr(true),
+	// 									Read: to.Ptr(true),
+	// 									Write: to.Ptr(true),
+	// 								},
+	// 								Scope: to.Ptr(armsecurityinsights.PermissionProviderScopeWorkspace),
+	// 							},
+	// 							{
+	// 								PermissionsDisplayText: to.Ptr("read permissions to shared keys for the workspace are required. [See the documentation to learn more about workspace keys](https://docs.microsoft.com/azure/azure-monitor/platform/agent-windows#obtain-workspace-id-and-key)."),
+	// 								Provider: to.Ptr(armsecurityinsights.ProviderNameMicrosoftOperationalInsightsWorkspacesSharedKeys),
+	// 								ProviderDisplayName: to.Ptr("Keys"),
+	// 								RequiredPermissions: &armsecurityinsights.RequiredPermissions{
+	// 									Action: to.Ptr(true),
+	// 								},
+	// 								Scope: to.Ptr(armsecurityinsights.PermissionProviderScopeWorkspace),
+	// 						}},
+	// 					},
+	// 					Publisher: to.Ptr("Qualys"),
+	// 					SampleQueries: []*armsecurityinsights.CodelessUIConnectorConfigPropertiesSampleQueriesItem{
+	// 						{
+	// 							Description: to.Ptr("Top 10 Vulerabilities detected"),
+	// 							Query: to.Ptr("{{graphQueriesTableName}}\n | mv-expand todynamic(Detections_s)\n | extend Vulnerability = tostring(Detections_s.Results)\n | summarize count() by Vulnerability\n | top 10 by count_"),
+	// 					}},
+	// 					Title: to.Ptr("Qualys Vulnerability Management (CCP DEMO)"),
+	// 				},
+	// 			},
+	// 		},
+	// 		                        }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c4f3c695f0250dcb261598a62004f0aef10b9db/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/dataConnectors/CreateThreatIntelligenceTaxiiDataConnector.json
+func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAThreatIntelligenceTaxiiDataConnector() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsecurityinsights.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewDataConnectorsClient().CreateOrUpdate(ctx, "myRg", "myWorkspace", "73e01a99-5cd7-4139-a149-9f2736ff2ab5", &armsecurityinsights.TiTaxiiDataConnector{
+		Etag: to.Ptr("d12423f6-a60b-4ca5-88c0-feb1a182d0f0"),
+		Kind: to.Ptr(armsecurityinsights.DataConnectorKindThreatIntelligenceTaxii),
+		Properties: &armsecurityinsights.TiTaxiiDataConnectorProperties{
+			TenantID:     to.Ptr("06b3ccb8-1384-4bcc-aec7-852f6d57161b"),
+			CollectionID: to.Ptr("135"),
+			DataTypes: &armsecurityinsights.TiTaxiiDataConnectorDataTypes{
+				TaxiiClient: &armsecurityinsights.TiTaxiiDataConnectorDataTypesTaxiiClient{
+					State: to.Ptr(armsecurityinsights.DataTypeStateEnabled),
+				},
+			},
+			FriendlyName:        to.Ptr("testTaxii"),
+			Password:            to.Ptr("--"),
+			PollingFrequency:    to.Ptr(armsecurityinsights.PollingFrequencyOnceADay),
+			TaxiiLookbackPeriod: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T13:00:30.123Z"); return t }()),
+			TaxiiServer:         to.Ptr("https://limo.anomali.com/api/v1/taxii2/feeds"),
+			UserName:            to.Ptr("--"),
+			WorkspaceID:         to.Ptr("dd124572-4962-4495-9bd2-9dade12314b4"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsecurityinsights.DataConnectorsClientCreateOrUpdateResponse{
+	// 	                            DataConnectorClassification: &armsecurityinsights.TiTaxiiDataConnector{
+	// 		Name: to.Ptr("73e01a99-5cd7-4139-a149-9f2736ff2ab5"),
+	// 		Type: to.Ptr("Microsoft.SecurityInsights/dataConnectors"),
+	// 		ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/dataConnectors/73e01a99-5cd7-4139-a149-9f2736ff2ab5"),
+	// 		Etag: to.Ptr("d12423f6-a60b-4ca5-88c0-feb1a182d0f0"),
+	// 		Kind: to.Ptr(armsecurityinsights.DataConnectorKindThreatIntelligenceTaxii),
+	// 		Properties: &armsecurityinsights.TiTaxiiDataConnectorProperties{
+	// 			TenantID: to.Ptr("06b3ccb8-1384-4bcc-aec7-852f6d57161b"),
+	// 			CollectionID: to.Ptr("135"),
+	// 			DataTypes: &armsecurityinsights.TiTaxiiDataConnectorDataTypes{
+	// 				TaxiiClient: &armsecurityinsights.TiTaxiiDataConnectorDataTypesTaxiiClient{
+	// 					State: to.Ptr(armsecurityinsights.DataTypeStateEnabled),
+	// 				},
+	// 			},
+	// 			FriendlyName: to.Ptr("testTaxii"),
+	// 			PollingFrequency: to.Ptr(armsecurityinsights.PollingFrequencyOnceADay),
+	// 			TaxiiLookbackPeriod: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T13:00:30.123Z"); return t}()),
+	// 			TaxiiServer: to.Ptr("https://limo.anomali.com/api/v1/taxii2/feeds"),
+	// 			WorkspaceID: to.Ptr("28e5f051-34cb-4208-9037-693e5342a871"),
+	// 		},
+	// 	},
+	// 	                        }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c4f3c695f0250dcb261598a62004f0aef10b9db/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/dataConnectors/CreateOfficePowerBIDataConnector.json
+func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAnOfficePowerBiDataConnector() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsecurityinsights.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewDataConnectorsClient().CreateOrUpdate(ctx, "myRg", "myWorkspace", "73e01a99-5cd7-4139-a149-9f2736ff2ab5", &armsecurityinsights.OfficePowerBIDataConnector{
+		Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
+		Kind: to.Ptr(armsecurityinsights.DataConnectorKindOfficePowerBI),
+		Properties: &armsecurityinsights.OfficePowerBIDataConnectorProperties{
+			TenantID: to.Ptr("2070ecc9-b4d5-4ae4-adaa-936fa1954fa8"),
+			DataTypes: &armsecurityinsights.OfficePowerBIConnectorDataTypes{
+				Logs: &armsecurityinsights.OfficePowerBIConnectorDataTypesLogs{
+					State: to.Ptr(armsecurityinsights.DataTypeStateEnabled),
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsecurityinsights.DataConnectorsClientCreateOrUpdateResponse{
+	// 	                            DataConnectorClassification: &armsecurityinsights.OfficePowerBIDataConnector{
+	// 		Name: to.Ptr("73e01a99-5cd7-4139-a149-9f2736ff2ab5"),
+	// 		Type: to.Ptr("Microsoft.SecurityInsights/dataConnectors"),
+	// 		ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/dataConnectors/73e01a99-5cd7-4139-a149-9f2736ff2ab5"),
+	// 		Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
+	// 		Kind: to.Ptr(armsecurityinsights.DataConnectorKindOfficePowerBI),
+	// 		Properties: &armsecurityinsights.OfficePowerBIDataConnectorProperties{
+	// 			TenantID: to.Ptr("2070ecc9-b4d5-4ae4-adaa-936fa1954fa8"),
+	// 			DataTypes: &armsecurityinsights.OfficePowerBIConnectorDataTypes{
+	// 				Logs: &armsecurityinsights.OfficePowerBIConnectorDataTypesLogs{
+	// 					State: to.Ptr(armsecurityinsights.DataTypeStateEnabled),
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// 	                        }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c4f3c695f0250dcb261598a62004f0aef10b9db/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/dataConnectors/CreateOffice365ProjectDataConnetor.json
+func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAnOffice365ProjectDataConnector() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsecurityinsights.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewDataConnectorsClient().CreateOrUpdate(ctx, "myRg", "myWorkspace", "73e01a99-5cd7-4139-a149-9f2736ff2ab5", &armsecurityinsights.Office365ProjectDataConnector{
+		Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
+		Kind: to.Ptr(armsecurityinsights.DataConnectorKindOffice365Project),
+		Properties: &armsecurityinsights.Office365ProjectDataConnectorProperties{
+			TenantID: to.Ptr("2070ecc9-b4d5-4ae4-adaa-936fa1954fa8"),
+			DataTypes: &armsecurityinsights.Office365ProjectConnectorDataTypes{
+				Logs: &armsecurityinsights.Office365ProjectConnectorDataTypesLogs{
+					State: to.Ptr(armsecurityinsights.DataTypeStateEnabled),
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsecurityinsights.DataConnectorsClientCreateOrUpdateResponse{
+	// 	                            DataConnectorClassification: &armsecurityinsights.Office365ProjectDataConnector{
+	// 		Name: to.Ptr("73e01a99-5cd7-4139-a149-9f2736ff2ab5"),
+	// 		Type: to.Ptr("Microsoft.SecurityInsights/dataConnectors"),
+	// 		ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/dataConnectors/73e01a99-5cd7-4139-a149-9f2736ff2ab5"),
+	// 		Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
+	// 		Kind: to.Ptr(armsecurityinsights.DataConnectorKindOffice365Project),
+	// 		Properties: &armsecurityinsights.Office365ProjectDataConnectorProperties{
+	// 			TenantID: to.Ptr("2070ecc9-b4d5-4ae4-adaa-936fa1954fa8"),
+	// 			DataTypes: &armsecurityinsights.Office365ProjectConnectorDataTypes{
+	// 				Logs: &armsecurityinsights.Office365ProjectConnectorDataTypesLogs{
+	// 					State: to.Ptr(armsecurityinsights.DataTypeStateEnabled),
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// 	                        }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c4f3c695f0250dcb261598a62004f0aef10b9db/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/dataConnectors/CreateOfficeDataConnetor.json
 func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAnOffice365DataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -495,6 +2246,7 @@ func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAnOffice365DataC
 		Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
 		Kind: to.Ptr(armsecurityinsights.DataConnectorKindOffice365),
 		Properties: &armsecurityinsights.OfficeDataConnectorProperties{
+			TenantID: to.Ptr("2070ecc9-b4d5-4ae4-adaa-936fa1954fa8"),
 			DataTypes: &armsecurityinsights.OfficeDataConnectorDataTypes{
 				Exchange: &armsecurityinsights.OfficeDataConnectorDataTypesExchange{
 					State: to.Ptr(armsecurityinsights.DataTypeStateEnabled),
@@ -506,7 +2258,6 @@ func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAnOffice365DataC
 					State: to.Ptr(armsecurityinsights.DataTypeStateEnabled),
 				},
 			},
-			TenantID: to.Ptr("2070ecc9-b4d5-4ae4-adaa-936fa1954fa8"),
 		},
 	}, nil)
 	if err != nil {
@@ -523,6 +2274,7 @@ func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAnOffice365DataC
 	// 		Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
 	// 		Kind: to.Ptr(armsecurityinsights.DataConnectorKindOffice365),
 	// 		Properties: &armsecurityinsights.OfficeDataConnectorProperties{
+	// 			TenantID: to.Ptr("2070ecc9-b4d5-4ae4-adaa-936fa1954fa8"),
 	// 			DataTypes: &armsecurityinsights.OfficeDataConnectorDataTypes{
 	// 				Exchange: &armsecurityinsights.OfficeDataConnectorDataTypesExchange{
 	// 					State: to.Ptr(armsecurityinsights.DataTypeStateEnabled),
@@ -534,13 +2286,12 @@ func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAnOffice365DataC
 	// 					State: to.Ptr(armsecurityinsights.DataTypeStateEnabled),
 	// 				},
 	// 			},
-	// 			TenantID: to.Ptr("2070ecc9-b4d5-4ae4-adaa-936fa1954fa8"),
 	// 		},
 	// 	},
 	// 	                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2021-10-01/examples/dataConnectors/CreateThreatIntelligenceDataConnector.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c4f3c695f0250dcb261598a62004f0aef10b9db/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/dataConnectors/CreateThreatIntelligenceDataConnector.json
 func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAnThreatIntelligencePlatformDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -554,12 +2305,12 @@ func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAnThreatIntellig
 	res, err := clientFactory.NewDataConnectorsClient().CreateOrUpdate(ctx, "myRg", "myWorkspace", "73e01a99-5cd7-4139-a149-9f2736ff2ab5", &armsecurityinsights.TIDataConnector{
 		Kind: to.Ptr(armsecurityinsights.DataConnectorKindThreatIntelligence),
 		Properties: &armsecurityinsights.TIDataConnectorProperties{
+			TenantID: to.Ptr("06b3ccb8-1384-4bcc-aec7-852f6d57161b"),
 			DataTypes: &armsecurityinsights.TIDataConnectorDataTypes{
 				Indicators: &armsecurityinsights.TIDataConnectorDataTypesIndicators{
 					State: to.Ptr(armsecurityinsights.DataTypeStateEnabled),
 				},
 			},
-			TenantID:          to.Ptr("06b3ccb8-1384-4bcc-aec7-852f6d57161b"),
 			TipLookbackPeriod: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T13:00:30.123Z"); return t }()),
 		},
 	}, nil)
@@ -577,20 +2328,54 @@ func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAnThreatIntellig
 	// 		Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
 	// 		Kind: to.Ptr(armsecurityinsights.DataConnectorKindThreatIntelligence),
 	// 		Properties: &armsecurityinsights.TIDataConnectorProperties{
+	// 			TenantID: to.Ptr("06b3ccb8-1384-4bcc-aec7-852f6d57161b"),
 	// 			DataTypes: &armsecurityinsights.TIDataConnectorDataTypes{
 	// 				Indicators: &armsecurityinsights.TIDataConnectorDataTypesIndicators{
 	// 					State: to.Ptr(armsecurityinsights.DataTypeStateEnabled),
 	// 				},
 	// 			},
-	// 			TenantID: to.Ptr("06b3ccb8-1384-4bcc-aec7-852f6d57161b"),
 	// 			TipLookbackPeriod: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T13:00:30.123Z"); return t}()),
 	// 		},
 	// 	},
 	// 	                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2021-10-01/examples/dataConnectors/DeleteOfficeDataConnetor.json
-func ExampleDataConnectorsClient_Delete() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c4f3c695f0250dcb261598a62004f0aef10b9db/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/dataConnectors/DeleteAPIPolling.json
+func ExampleDataConnectorsClient_Delete_deleteAApiPollingDataConnector() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsecurityinsights.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	_, err = clientFactory.NewDataConnectorsClient().Delete(ctx, "myRg", "myWorkspace", "316ec55e-7138-4d63-ab18-90c8a60fd1c8", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c4f3c695f0250dcb261598a62004f0aef10b9db/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/dataConnectors/DeleteGenericUI.json
+func ExampleDataConnectorsClient_Delete_deleteAGenericUiDataConnector() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsecurityinsights.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	_, err = clientFactory.NewDataConnectorsClient().Delete(ctx, "myRg", "myWorkspace", "316ec55e-7138-4d63-ab18-90c8a60fd1c8", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c4f3c695f0250dcb261598a62004f0aef10b9db/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/dataConnectors/DeleteOfficePowerBIDataConnetor.json
+func ExampleDataConnectorsClient_Delete_deleteAnOfficePowerBiDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -601,6 +2386,114 @@ func ExampleDataConnectorsClient_Delete() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = clientFactory.NewDataConnectorsClient().Delete(ctx, "myRg", "myWorkspace", "73e01a99-5cd7-4139-a149-9f2736ff2ab5", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c4f3c695f0250dcb261598a62004f0aef10b9db/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/dataConnectors/DeleteOffice365ProjectDataConnetor.json
+func ExampleDataConnectorsClient_Delete_deleteAnOffice365ProjectDataConnector() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsecurityinsights.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	_, err = clientFactory.NewDataConnectorsClient().Delete(ctx, "myRg", "myWorkspace", "73e01a99-5cd7-4139-a149-9f2736ff2ab5", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c4f3c695f0250dcb261598a62004f0aef10b9db/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/dataConnectors/DeleteOfficeDataConnetor.json
+func ExampleDataConnectorsClient_Delete_deleteAnOffice365DataConnector() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsecurityinsights.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	_, err = clientFactory.NewDataConnectorsClient().Delete(ctx, "myRg", "myWorkspace", "73e01a99-5cd7-4139-a149-9f2736ff2ab5", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c4f3c695f0250dcb261598a62004f0aef10b9db/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/dataConnectors/ConnectAPIPollingV2Logs.json
+func ExampleDataConnectorsClient_Connect_connectAnApiPollingV2LogsDataConnector() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsecurityinsights.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	_, err = clientFactory.NewDataConnectorsClient().Connect(ctx, "myRg", "myWorkspace", "316ec55e-7138-4d63-ab18-90c8a60fd1c8", armsecurityinsights.DataConnectorConnectBody{
+		APIKey:                        to.Ptr("123456789"),
+		DataCollectionEndpoint:        to.Ptr("https://test.eastus.ingest.monitor.azure.com"),
+		DataCollectionRuleImmutableID: to.Ptr("dcr-34adsj9o7d6f9de204478b9cgb43b631"),
+		Kind:                          to.Ptr(armsecurityinsights.ConnectAuthKindAPIKey),
+		OutputStream:                  to.Ptr("Custom-MyTableRawData"),
+		RequestConfigUserInputValues: []any{
+			map[string]any{
+				"displayText":      "Organization Name",
+				"placeHolderName":  "{{placeHolder1}}",
+				"placeHolderValue": "somePlaceHolderValue",
+				"requestObjectKey": "apiEndpoint",
+			}},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c4f3c695f0250dcb261598a62004f0aef10b9db/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/dataConnectors/ConnectAPIPolling.json
+func ExampleDataConnectorsClient_Connect_connectAnApiPollingDataConnector() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsecurityinsights.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	_, err = clientFactory.NewDataConnectorsClient().Connect(ctx, "myRg", "myWorkspace", "316ec55e-7138-4d63-ab18-90c8a60fd1c8", armsecurityinsights.DataConnectorConnectBody{
+		APIKey: to.Ptr("123456789"),
+		Kind:   to.Ptr(armsecurityinsights.ConnectAuthKindAPIKey),
+		RequestConfigUserInputValues: []any{
+			map[string]any{
+				"displayText":      "Organization Name",
+				"placeHolderName":  "{{placeHolder1}}",
+				"placeHolderValue": "somePlaceHolderValue",
+				"requestObjectKey": "apiEndpoint",
+			}},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c4f3c695f0250dcb261598a62004f0aef10b9db/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/dataConnectors/DisconnectAPIPolling.json
+func ExampleDataConnectorsClient_Disconnect() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsecurityinsights.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	_, err = clientFactory.NewDataConnectorsClient().Disconnect(ctx, "myRg", "myWorkspace", "316ec55e-7138-4d63-ab18-90c8a60fd1c8", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

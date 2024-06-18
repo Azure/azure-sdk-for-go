@@ -28,7 +28,7 @@ type FileSystemClient struct {
 // operation does not support conditional HTTP requests.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-03
+// Generated from API version 2024-05-04
 //   - options - FileSystemClientCreateOptions contains the optional parameters for the FileSystemClient.Create method.
 func (client *FileSystemClient) Create(ctx context.Context, options *FileSystemClientCreateOptions) (FileSystemClientCreateResponse, error) {
 	var err error
@@ -113,7 +113,7 @@ func (client *FileSystemClient) createHandleResponse(resp *http.Response) (FileS
 // [https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations].
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-03
+// Generated from API version 2024-05-04
 //   - options - FileSystemClientDeleteOptions contains the optional parameters for the FileSystemClient.Delete method.
 //   - ModifiedAccessConditions - ModifiedAccessConditions contains a group of parameters for the FileSystemClient.SetProperties
 //     method.
@@ -183,7 +183,7 @@ func (client *FileSystemClient) deleteHandleResponse(resp *http.Response) (FileS
 // GetProperties - All system and user-defined filesystem properties are specified in the response headers.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-03
+// Generated from API version 2024-05-04
 //   - options - FileSystemClientGetPropertiesOptions contains the optional parameters for the FileSystemClient.GetProperties
 //     method.
 func (client *FileSystemClient) GetProperties(ctx context.Context, options *FileSystemClientGetPropertiesOptions) (FileSystemClientGetPropertiesResponse, error) {
@@ -261,7 +261,7 @@ func (client *FileSystemClient) getPropertiesHandleResponse(resp *http.Response)
 
 // NewListBlobHierarchySegmentPager - The List Blobs operation returns a list of the blobs under the specified container
 //
-// Generated from API version 2023-11-03
+// Generated from API version 2024-05-04
 //   - options - FileSystemClientListBlobHierarchySegmentOptions contains the optional parameters for the FileSystemClient.NewListBlobHierarchySegmentPager
 //     method.
 //
@@ -334,7 +334,7 @@ func (client *FileSystemClient) ListBlobHierarchySegmentHandleResponse(resp *htt
 
 // NewListPathsPager - List FileSystem paths and their properties.
 //
-// Generated from API version 2023-11-03
+// Generated from API version 2024-05-04
 //   - recursive - Required
 //   - options - FileSystemClientListPathsOptions contains the optional parameters for the FileSystemClient.NewListPathsPager
 //     method.
@@ -412,7 +412,7 @@ func (client *FileSystemClient) ListPathsHandleResponse(resp *http.Response) (Fi
 // [https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations].
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-03
+// Generated from API version 2024-05-04
 //   - options - FileSystemClientSetPropertiesOptions contains the optional parameters for the FileSystemClient.SetProperties
 //     method.
 //   - ModifiedAccessConditions - ModifiedAccessConditions contains a group of parameters for the FileSystemClient.SetProperties

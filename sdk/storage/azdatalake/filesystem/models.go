@@ -201,17 +201,16 @@ func (o *GetSASURLOptions) format() time.Time {
 	return st
 }
 
-//// UndeletePathOptions contains the optional parameters for the FileSystem.UndeletePath operation.
-//type UndeletePathOptions struct {
+// UndeletePathOptions contains the optional parameters for the FileSystem.UndeletePath operation.
+// type UndeletePathOptions struct {
 //	// placeholder
-//}
-//
-//func (o *UndeletePathOptions) format() *UndeletePathOptions {
+// }
+// func (o *UndeletePathOptions) format() *UndeletePathOptions {
 //	if o == nil {
 //		return nil
 //	}
 //	return &UndeletePathOptions{}
-//}
+// }
 
 // CPKScopeInfo contains a group of parameters for the FileSystemClient.Create method.
 type CPKScopeInfo = container.CPKScopeInfo

@@ -473,8 +473,6 @@ func newQueryParameters(values url.Values, deleteSASParametersFromValues bool) Q
 			p.resource = val
 		case "sp":
 			p.permissions = val
-			//case "snapshot":
-			//	p.snapshotTime, _ = time.Parse(exported.SnapshotTimeFormat, val)
 		case "sig":
 			p.signature = val
 		case "rscc":

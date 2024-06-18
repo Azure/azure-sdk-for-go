@@ -1,5 +1,60 @@
 # Release History
 
+## 7.0.0 (2024-05-24)
+### Breaking Changes
+
+- Function `*BackupsClient.GetVolumeRestoreStatus` has been removed
+
+### Features Added
+
+- New enum type `BackupType` with values `BackupTypeManual`, `BackupTypeScheduled`
+- New function `NewBackupVaultsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*BackupVaultsClient, error)`
+- New function `*BackupVaultsClient.BeginCreateOrUpdate(context.Context, string, string, string, BackupVault, *BackupVaultsClientBeginCreateOrUpdateOptions) (*runtime.Poller[BackupVaultsClientCreateOrUpdateResponse], error)`
+- New function `*BackupVaultsClient.BeginDelete(context.Context, string, string, string, *BackupVaultsClientBeginDeleteOptions) (*runtime.Poller[BackupVaultsClientDeleteResponse], error)`
+- New function `*BackupVaultsClient.Get(context.Context, string, string, string, *BackupVaultsClientGetOptions) (BackupVaultsClientGetResponse, error)`
+- New function `*BackupVaultsClient.NewListByNetAppAccountPager(string, string, *BackupVaultsClientListByNetAppAccountOptions) *runtime.Pager[BackupVaultsClientListByNetAppAccountResponse]`
+- New function `*BackupVaultsClient.BeginUpdate(context.Context, string, string, string, BackupVaultPatch, *BackupVaultsClientBeginUpdateOptions) (*runtime.Poller[BackupVaultsClientUpdateResponse], error)`
+- New function `*BackupsClient.BeginCreate(context.Context, string, string, string, string, Backup, *BackupsClientBeginCreateOptions) (*runtime.Poller[BackupsClientCreateResponse], error)`
+- New function `*BackupsClient.BeginDelete(context.Context, string, string, string, string, *BackupsClientBeginDeleteOptions) (*runtime.Poller[BackupsClientDeleteResponse], error)`
+- New function `*BackupsClient.Get(context.Context, string, string, string, string, *BackupsClientGetOptions) (BackupsClientGetResponse, error)`
+- New function `*BackupsClient.GetLatestStatus(context.Context, string, string, string, string, *BackupsClientGetLatestStatusOptions) (BackupsClientGetLatestStatusResponse, error)`
+- New function `*BackupsClient.GetVolumeLatestRestoreStatus(context.Context, string, string, string, string, *BackupsClientGetVolumeLatestRestoreStatusOptions) (BackupsClientGetVolumeLatestRestoreStatusResponse, error)`
+- New function `*BackupsClient.NewListByVaultPager(string, string, string, *BackupsClientListByVaultOptions) *runtime.Pager[BackupsClientListByVaultResponse]`
+- New function `*BackupsClient.BeginUpdate(context.Context, string, string, string, string, BackupPatch, *BackupsClientBeginUpdateOptions) (*runtime.Poller[BackupsClientUpdateResponse], error)`
+- New function `NewBackupsUnderAccountClient(string, azcore.TokenCredential, *arm.ClientOptions) (*BackupsUnderAccountClient, error)`
+- New function `*BackupsUnderAccountClient.BeginMigrateBackups(context.Context, string, string, BackupsMigrationRequest, *BackupsUnderAccountClientBeginMigrateBackupsOptions) (*runtime.Poller[BackupsUnderAccountClientMigrateBackupsResponse], error)`
+- New function `NewBackupsUnderBackupVaultClient(string, azcore.TokenCredential, *arm.ClientOptions) (*BackupsUnderBackupVaultClient, error)`
+- New function `*BackupsUnderBackupVaultClient.BeginRestoreFiles(context.Context, string, string, string, string, BackupRestoreFiles, *BackupsUnderBackupVaultClientBeginRestoreFilesOptions) (*runtime.Poller[BackupsUnderBackupVaultClientRestoreFilesResponse], error)`
+- New function `NewBackupsUnderVolumeClient(string, azcore.TokenCredential, *arm.ClientOptions) (*BackupsUnderVolumeClient, error)`
+- New function `*BackupsUnderVolumeClient.BeginMigrateBackups(context.Context, string, string, string, string, BackupsMigrationRequest, *BackupsUnderVolumeClientBeginMigrateBackupsOptions) (*runtime.Poller[BackupsUnderVolumeClientMigrateBackupsResponse], error)`
+- New function `*ClientFactory.NewBackupVaultsClient() *BackupVaultsClient`
+- New function `*ClientFactory.NewBackupsUnderAccountClient() *BackupsUnderAccountClient`
+- New function `*ClientFactory.NewBackupsUnderBackupVaultClient() *BackupsUnderBackupVaultClient`
+- New function `*ClientFactory.NewBackupsUnderVolumeClient() *BackupsUnderVolumeClient`
+- New function `*ClientFactory.NewResourceRegionInfosClient() *ResourceRegionInfosClient`
+- New function `NewResourceRegionInfosClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ResourceRegionInfosClient, error)`
+- New function `*ResourceRegionInfosClient.Get(context.Context, string, *ResourceRegionInfosClientGetOptions) (ResourceRegionInfosClientGetResponse, error)`
+- New function `*ResourceRegionInfosClient.NewListPager(string, *ResourceRegionInfosClientListOptions) *runtime.Pager[ResourceRegionInfosClientListResponse]`
+- New struct `Backup`
+- New struct `BackupPatch`
+- New struct `BackupPatchProperties`
+- New struct `BackupProperties`
+- New struct `BackupRestoreFiles`
+- New struct `BackupStatus`
+- New struct `BackupVault`
+- New struct `BackupVaultPatch`
+- New struct `BackupVaultProperties`
+- New struct `BackupVaultsList`
+- New struct `BackupsList`
+- New struct `BackupsMigrationRequest`
+- New struct `RegionInfoResource`
+- New struct `RegionInfosList`
+- New struct `VolumeBackupProperties`
+- New field `VolumeResourceID` in struct `VolumeBackups`
+- New field `Backup` in struct `VolumePatchPropertiesDataProtection`
+- New field `Backup` in struct `VolumePropertiesDataProtection`
+
+
 ## 6.0.0 (2024-03-22)
 ### Breaking Changes
 

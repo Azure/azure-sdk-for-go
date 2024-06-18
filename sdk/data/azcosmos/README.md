@@ -2,21 +2,21 @@
 
 ## Introduction
 
-This client library enables client applications to connect to Azure Cosmos DB via the SQL API. Azure Cosmos DB is a globally distributed, multi-model database service.
+This client library enables client applications to connect to Azure Cosmos DB via the NoSQL API. Azure Cosmos DB is a globally distributed, multi-model database service.
 
 ## Getting Started
 
 ### Prerequisites
 
-* Go versions 1.18 or higher
+* Go versions 1.21 or higher
 * An Azure subscription or free Azure Cosmos DB trial account
 
 Note: If you don't have an Azure subscription, create a free account before you begin.
-You can Try Azure Cosmos DB for free without an Azure subscription, free of charge and commitments, or create an Azure Cosmos DB free tier account, with the first 400 RU/s and 5 GB of storage for free. You can also use the Azure Cosmos DB Emulator with a URI of https://localhost:8081. For the key to use with the emulator, see Authenticating requests.
+You can Try Azure Cosmos DB for free without an Azure subscription, free of charge and commitments, or create an Azure Cosmos DB free tier account, with the first 400 RU/s and 5 GB of storage for free. You can also use the Azure Cosmos DB Emulator with a URI of https://localhost:8081. For the key to use with the emulator, see [how to develop with the emulator](https://learn.microsoft.com/azure/cosmos-db/how-to-develop-emulator).
 
 ### Create an Azure Cosmos DB account
 
-You can create an Azure Cosmos account using:
+You can create an Azure Cosmos DB account using:
 
 * [Azure Portal](https://portal.azure.com).
 * [Azure CLI](https://docs.microsoft.com/cli/azure).
@@ -32,7 +32,7 @@ You can create an Azure Cosmos account using:
 
 #### Authenticate the client
 
-In order to interact with the Azure Cosmos DB service you'll need to create an instance of the Cosmos client class. To make this possible you will need an URL and key of the Azure Cosmos DB service.
+In order to interact with the Azure Cosmos DB service you'll need to create an instance of the `Client` struct. To make this possible you will need a URL and key of the Azure Cosmos DB service.
 
 #### Logging
 
@@ -63,7 +63,7 @@ azlog.SetEvents(azlog.EventRequest, azlog.EventResponse, azlog.EventRetryPolicy,
 
 ## Examples
 
-The following section provides several code snippets covering some of the most common Cosmos DB SQL API tasks, including:
+The following section provides several code snippets covering some of the most common Azure Cosmos DB NoSQL API tasks, including:
 * [Create Client](#create-cosmos-db-client "Create Cosmos DB client")
 * [Create Database](#create-database "Create Database")
 * [Create Container](#create-container "Create Container")
@@ -71,9 +71,9 @@ The following section provides several code snippets covering some of the most c
 
 ### Create Cosmos DB Client
 
-The clients support different forms of authentication. The azcosmos library supports authorization via Azure Active Directory or an account key.
+The clients support different forms of authentication. The azcosmos library supports authorization via Microsoft Entra identities or an account key.
 
-**Using Azure Active Directory**
+**Using Microsoft Entra identities**
 
 ```go
 import "github.com/Azure/azure-sdk-for-go/sdk/azidentity"
@@ -103,10 +103,10 @@ handle(err)
 Using the client created in previous example, you can create a database like this:
 
 ```go
-database := azcosmos.DatabaseProperties{Id: dbName}
-response, err := client.CreateDatabase(context, database, nil)
+databaseProperties := azcosmos.DatabaseProperties{ID: dbName}
+response, err := client.CreateDatabase(context, databaseProperties, nil)
 handle(err)
-database, err := azcosmos.NewDatabase(dbName)
+database, err := client.NewDatabase(dbName)
 handle(err)
 ```
 
@@ -116,14 +116,14 @@ Using the above created database for creating a container, like this:
 
 ```go
 properties := azcosmos.ContainerProperties{
-    Id: "aContainer",
+    ID: "aContainer",
     PartitionKeyDefinition: azcosmos.PartitionKeyDefinition{
         Paths: []string{"/id"},
     },
 }
 
 throughput := azcosmos.NewManualThroughputProperties(400)
-response, err := database.CreateContainer(context, properties, &CreateContainerOptions{ThroughputProperties: &throughput})
+response, err := database.CreateContainer(context, properties, &azcosmos.CreateContainerOptions{ThroughputProperties: &throughput})
 handle(err)
 ```
 
@@ -186,7 +186,7 @@ handle(err)
 ## Next steps
 
 - [Resource Model of Azure Cosmos DB Service](https://docs.microsoft.com/azure/cosmos-db/sql-api-resources)
-- [Cosmos DB Resource URI](https://docs.microsoft.com/rest/api/documentdb/documentdb-resource-uri-syntax-for-rest)
+- [Azure Cosmos DB Resource URI](https://docs.microsoft.com/rest/api/documentdb/documentdb-resource-uri-syntax-for-rest)
 - [Partitioning](https://docs.microsoft.com/azure/cosmos-db/partition-data)
 - [Using emulator](https://github.com/Azure/azure-documentdb-dotnet/blob/master/docs/documentdb-nosql-local-emulator.md)
 

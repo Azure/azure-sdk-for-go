@@ -47,7 +47,7 @@ func NewRestoresClient(subscriptionID string, credential azcore.TokenCredential,
 // call, use GetProtectedItemOperationResult API.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-01
+// Generated from API version 2024-04-01
 //   - vaultName - The name of the recovery services vault.
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - fabricName - Fabric name associated with the backed up items.
@@ -77,7 +77,7 @@ func (client *RestoresClient) BeginTrigger(ctx context.Context, vaultName string
 // use GetProtectedItemOperationResult API.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-01
+// Generated from API version 2024-04-01
 func (client *RestoresClient) trigger(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, recoveryPointID string, parameters RestoreRequestResource, options *RestoresClientBeginTriggerOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RestoresClient.BeginTrigger"
@@ -135,9 +135,12 @@ func (client *RestoresClient) triggerCreateRequest(ctx context.Context, vaultNam
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-01")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
+	if options != nil && options.XMSAuthorizationAuxiliary != nil {
+		req.Raw().Header["x-ms-authorization-auxiliary"] = []string{*options.XMSAuthorizationAuxiliary}
+	}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
 		return nil, err
 	}

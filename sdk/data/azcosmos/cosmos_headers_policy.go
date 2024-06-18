@@ -39,7 +39,7 @@ func (p *headerPolicies) Do(req *policy.Request) (*http.Response, error) {
 			}
 
 			if o.headerOptionsOverride.correlatedActivityId != nil {
-				req.Raw().Header.Add(cosmosHeaderCorrelatedActivityId, (*o.headerOptionsOverride.correlatedActivityId).String())
+				req.Raw().Header.Add(cosmosHeaderCorrelatedActivityId, o.headerOptionsOverride.correlatedActivityId.String())
 			}
 		}
 

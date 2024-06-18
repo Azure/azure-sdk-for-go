@@ -9,6 +9,7 @@ package azopenai_test
 import (
 	"context"
 	"net/http"
+	"reflect"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai"
@@ -38,4 +39,21 @@ func TestClient_OpenAI_InvalidModel(t *testing.T) {
 	require.ErrorAs(t, err, &respErr)
 	require.Equal(t, http.StatusNotFound, respErr.StatusCode)
 	require.Contains(t, respErr.Error(), "The model `non-existent-model` does not exist")
+}
+
+func TestClient_EmptyOptionsChecking(t *testing.T) {
+	// I'm ignoring these in the methods so if they ever actually have relevant config
+	// you should revisit them and make sure they're used properly.
+	emptyOptionsType := []any{
+		azopenai.GenerateSpeechFromTextOptions{},
+		azopenai.GetChatCompletionsOptions{},
+		azopenai.GetCompletionsOptions{},
+		azopenai.GetEmbeddingsOptions{},
+		azopenai.GetImageGenerationsOptions{},
+	}
+
+	for _, v := range emptyOptionsType {
+		fields := reflect.VisibleFields(reflect.TypeOf(v))
+		require.Emptyf(t, fields, "%T is ignored in our function signatures because it's empty", v)
+	}
 }

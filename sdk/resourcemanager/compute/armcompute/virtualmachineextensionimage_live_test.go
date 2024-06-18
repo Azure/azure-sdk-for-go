@@ -15,7 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v5"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v2/testutil"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -31,7 +31,7 @@ type VirtualMachineExtensionImageTestSuite struct {
 }
 
 func (testsuite *VirtualMachineExtensionImageTestSuite) SetupSuite() {
-	testutil.StartRecording(testsuite.T(), "sdk/resourcemanager/compute/armcompute/testdata")
+	testutil.StartRecording(testsuite.T(), pathToPackage)
 
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())

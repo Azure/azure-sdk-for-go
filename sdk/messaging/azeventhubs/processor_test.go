@@ -74,7 +74,7 @@ func TestProcessor_Contention(t *testing.T) {
 	testParams := test.GetConnectionParamsForTest(t)
 
 	containerName := test.RandomString("proctest", 10)
-	cc, err := container.NewClientFromConnectionString(testParams.StorageConnectionString, containerName, nil)
+	cc, err := container.NewClient(test.URLJoinPaths(testParams.StorageEndpoint, containerName), testParams.Cred, nil)
 	require.NoError(t, err)
 
 	_, err = cc.Create(context.Background(), nil)
@@ -87,7 +87,7 @@ func TestProcessor_Contention(t *testing.T) {
 	}()
 
 	log.Printf("Producer client created")
-	producerClient, err := azeventhubs.NewProducerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, nil)
+	producerClient, err := azeventhubs.NewProducerClient(testParams.EventHubNamespace, testParams.EventHubName, testParams.Cred, nil)
 	require.NoError(t, err)
 
 	defer func() {
@@ -119,7 +119,7 @@ func TestProcessor_Contention(t *testing.T) {
 	for i := 0; i < numConsumers; i++ {
 		log.Printf("Consumer client %d created", i)
 
-		consumerClient, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, nil)
+		consumerClient, err := azeventhubs.NewConsumerClient(testParams.EventHubNamespace, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, testParams.Cred, nil)
 		require.NoError(t, err)
 
 		// warm up the connection itself.
@@ -403,7 +403,7 @@ func setupProcessorTest(t *testing.T) func(*azeventhubs.ProcessorOptions) *azeve
 	testParams := test.GetConnectionParamsForTest(t)
 
 	containerName := test.RandomString("proctest", 10)
-	cc, err := container.NewClientFromConnectionString(testParams.StorageConnectionString, containerName, nil)
+	cc, err := container.NewClient(test.URLJoinPaths(testParams.StorageEndpoint, containerName), testParams.Cred, nil)
 	require.NoError(t, err)
 
 	t.Logf("Creating storage container %s", containerName)
@@ -423,7 +423,7 @@ func setupProcessorTest(t *testing.T) func(*azeventhubs.ProcessorOptions) *azeve
 	require.NoError(t, err)
 
 	t.Logf("Consumer client created")
-	consumerClient, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, nil)
+	consumerClient, err := azeventhubs.NewConsumerClient(testParams.EventHubNamespace, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, testParams.Cred, nil)
 	require.NoError(t, err)
 
 	t.Cleanup(func() {
@@ -444,7 +444,7 @@ func testPartitionAcquisition(t *testing.T, loadBalancerStrategy azeventhubs.Pro
 	testParams := test.GetConnectionParamsForTest(t)
 
 	containerName := test.RandomString("proctest", 10)
-	cc, err := container.NewClientFromConnectionString(testParams.StorageConnectionString, containerName, nil)
+	cc, err := container.NewClient(test.URLJoinPaths(testParams.StorageEndpoint, containerName), testParams.Cred, nil)
 	require.NoError(t, err)
 
 	t.Logf("Creating storage container %s", containerName)
@@ -464,7 +464,7 @@ func testPartitionAcquisition(t *testing.T, loadBalancerStrategy azeventhubs.Pro
 	require.NoError(t, err)
 
 	t.Logf("Consumer client created")
-	consumerClient, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, nil)
+	consumerClient, err := azeventhubs.NewConsumerClient(testParams.EventHubNamespace, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, testParams.Cred, nil)
 	require.NoError(t, err)
 
 	t.Logf("Processor created")
@@ -513,7 +513,7 @@ func testWithLoadBalancer(t *testing.T, loadBalancerStrategy azeventhubs.Process
 	testParams := test.GetConnectionParamsForTest(t)
 
 	containerName := test.RandomString("proctest", 10)
-	cc, err := container.NewClientFromConnectionString(testParams.StorageConnectionString, containerName, nil)
+	cc, err := container.NewClient(test.URLJoinPaths(testParams.StorageEndpoint, containerName), testParams.Cred, nil)
 	require.NoError(t, err)
 
 	t.Logf("Creating storage container %s", containerName)
@@ -533,7 +533,7 @@ func testWithLoadBalancer(t *testing.T, loadBalancerStrategy azeventhubs.Process
 	require.NoError(t, err)
 
 	t.Logf("Consumer client created")
-	consumerClient, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, nil)
+	consumerClient, err := azeventhubs.NewConsumerClient(testParams.EventHubNamespace, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, testParams.Cred, nil)
 	require.NoError(t, err)
 
 	t.Logf("Processor created")
@@ -547,7 +547,7 @@ func testWithLoadBalancer(t *testing.T, loadBalancerStrategy azeventhubs.Process
 	ehProps, err := consumerClient.GetEventHubProperties(context.Background(), nil)
 	require.NoError(t, err)
 
-	producerClient, err := azeventhubs.NewProducerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, nil)
+	producerClient, err := azeventhubs.NewProducerClient(testParams.EventHubNamespace, testParams.EventHubName, testParams.Cred, nil)
 	require.NoError(t, err)
 
 	defer func() {
@@ -739,7 +739,7 @@ func mustCreateProcessorForTest(t *testing.T, args TestProcessorArgs) TestProces
 	testParams := test.GetConnectionParamsForTest(t)
 
 	containerName := test.RandomString(args.Prefix, 10)
-	cc, err := container.NewClientFromConnectionString(testParams.StorageConnectionString, containerName, nil)
+	cc, err := container.NewClient(test.URLJoinPaths(testParams.StorageEndpoint, containerName), testParams.Cred, nil)
 	require.NoError(t, err)
 
 	t.Logf("Creating storage container %s", containerName)
@@ -759,7 +759,7 @@ func mustCreateProcessorForTest(t *testing.T, args TestProcessorArgs) TestProces
 	require.NoError(t, err)
 
 	t.Logf("Consumer client created")
-	consumerClient, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, args.ConsumerOptions)
+	consumerClient, err := azeventhubs.NewConsumerClient(testParams.EventHubNamespace, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, testParams.Cred, args.ConsumerOptions)
 	require.NoError(t, err)
 
 	t.Cleanup(func() { test.RequireClose(t, consumerClient) })

@@ -109,6 +109,26 @@ func PossibleAudioTranslationFormatValues() []AudioTranslationFormat {
 	}
 }
 
+// AzureChatExtensionRetrieveDocumentFilterReason - The reason for filtering the retrieved document.
+type AzureChatExtensionRetrieveDocumentFilterReason string
+
+const (
+	// AzureChatExtensionRetrieveDocumentFilterReasonRerank - The document is not filtered by original search score threshold,
+	// but is filtered by rerank score and `top_n_documents` configure.
+	AzureChatExtensionRetrieveDocumentFilterReasonRerank AzureChatExtensionRetrieveDocumentFilterReason = "rerank"
+	// AzureChatExtensionRetrieveDocumentFilterReasonScore - The document is filtered by original search score threshold defined
+	// by `strictness` configure.
+	AzureChatExtensionRetrieveDocumentFilterReasonScore AzureChatExtensionRetrieveDocumentFilterReason = "score"
+)
+
+// PossibleAzureChatExtensionRetrieveDocumentFilterReasonValues returns the possible values for the AzureChatExtensionRetrieveDocumentFilterReason const type.
+func PossibleAzureChatExtensionRetrieveDocumentFilterReasonValues() []AzureChatExtensionRetrieveDocumentFilterReason {
+	return []AzureChatExtensionRetrieveDocumentFilterReason{
+		AzureChatExtensionRetrieveDocumentFilterReasonRerank,
+		AzureChatExtensionRetrieveDocumentFilterReasonScore,
+	}
+}
+
 // AzureChatExtensionType - A representation of configuration data for a single Azure OpenAI chat extension. This will be
 // used by a chat completions request that should use Azure OpenAI chat extensions to augment the response
 // behavior. The use of this configuration is compatible only with Azure OpenAI.
@@ -522,6 +542,45 @@ func PossibleOnYourDataAuthenticationTypeValues() []OnYourDataAuthenticationType
 		OnYourDataAuthenticationTypeKeyAndKeyID,
 		OnYourDataAuthenticationTypeSystemAssignedManagedIdentity,
 		OnYourDataAuthenticationTypeUserAssignedManagedIdentity,
+	}
+}
+
+// OnYourDataContextProperty - The context property.
+type OnYourDataContextProperty string
+
+const (
+	// OnYourDataContextPropertyAllRetrievedDocuments - The `all_retrieved_documents` property.
+	OnYourDataContextPropertyAllRetrievedDocuments OnYourDataContextProperty = "all_retrieved_documents"
+	// OnYourDataContextPropertyCitations - The `citations` property.
+	OnYourDataContextPropertyCitations OnYourDataContextProperty = "citations"
+	// OnYourDataContextPropertyIntent - The `intent` property.
+	OnYourDataContextPropertyIntent OnYourDataContextProperty = "intent"
+)
+
+// PossibleOnYourDataContextPropertyValues returns the possible values for the OnYourDataContextProperty const type.
+func PossibleOnYourDataContextPropertyValues() []OnYourDataContextProperty {
+	return []OnYourDataContextProperty{
+		OnYourDataContextPropertyAllRetrievedDocuments,
+		OnYourDataContextPropertyCitations,
+		OnYourDataContextPropertyIntent,
+	}
+}
+
+// OnYourDataVectorSearchAuthenticationType - The authentication types supported with Azure OpenAI On Your Data vector search.
+type OnYourDataVectorSearchAuthenticationType string
+
+const (
+	// OnYourDataVectorSearchAuthenticationTypeAPIKey - Authentication via API key.
+	OnYourDataVectorSearchAuthenticationTypeAPIKey OnYourDataVectorSearchAuthenticationType = "api_key"
+	// OnYourDataVectorSearchAuthenticationTypeAccessToken - Authentication via access token.
+	OnYourDataVectorSearchAuthenticationTypeAccessToken OnYourDataVectorSearchAuthenticationType = "access_token"
+)
+
+// PossibleOnYourDataVectorSearchAuthenticationTypeValues returns the possible values for the OnYourDataVectorSearchAuthenticationType const type.
+func PossibleOnYourDataVectorSearchAuthenticationTypeValues() []OnYourDataVectorSearchAuthenticationType {
+	return []OnYourDataVectorSearchAuthenticationType{
+		OnYourDataVectorSearchAuthenticationTypeAPIKey,
+		OnYourDataVectorSearchAuthenticationTypeAccessToken,
 	}
 }
 

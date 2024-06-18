@@ -25,7 +25,7 @@ func ConstantDetachment(remainingArgs []string) {
 
 	shared.MustCreateAutoDeletingQueue(sc, queueName, nil)
 
-	client, err := azservicebus.NewClientFromConnectionString(sc.ConnectionString, nil)
+	client, err := azservicebus.NewClient(sc.Endpoint, sc.Cred, nil)
 	sc.PanicOnError("failed to create client", err)
 
 	sender, err := shared.NewTrackingSender(sc.TC, client, queueName, nil)
@@ -44,7 +44,7 @@ func ConstantDetachment(remainingArgs []string) {
 	// they all exist on the remote entity.
 	time.Sleep(10 * time.Second)
 
-	adminClient, err := admin.NewClientFromConnectionString(sc.ConnectionString, nil)
+	adminClient, err := admin.NewClient(sc.Endpoint, sc.Cred, nil)
 	sc.PanicOnError("creating admin client to check properties", err)
 
 	queueProps, err := adminClient.GetQueueRuntimeProperties(sc.Context, queueName, nil)

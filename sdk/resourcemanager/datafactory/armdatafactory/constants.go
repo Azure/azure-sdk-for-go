@@ -10,7 +10,7 @@ package armdatafactory
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory"
-	moduleVersion = "v7.0.0"
+	moduleVersion = "v8.0.0"
 )
 
 // ActivityOnInactiveMarkAs - Status result of the activity when the state is set to Inactive. This is an optional property
@@ -48,6 +48,22 @@ func PossibleActivityStateValues() []ActivityState {
 	}
 }
 
+// AmazonRdsForSQLAuthenticationType - The type used for authentication. Type: string.
+type AmazonRdsForSQLAuthenticationType string
+
+const (
+	AmazonRdsForSQLAuthenticationTypeSQL     AmazonRdsForSQLAuthenticationType = "SQL"
+	AmazonRdsForSQLAuthenticationTypeWindows AmazonRdsForSQLAuthenticationType = "Windows"
+)
+
+// PossibleAmazonRdsForSQLAuthenticationTypeValues returns the possible values for the AmazonRdsForSQLAuthenticationType const type.
+func PossibleAmazonRdsForSQLAuthenticationTypeValues() []AmazonRdsForSQLAuthenticationType {
+	return []AmazonRdsForSQLAuthenticationType{
+		AmazonRdsForSQLAuthenticationTypeSQL,
+		AmazonRdsForSQLAuthenticationTypeWindows,
+	}
+}
+
 // AzureFunctionActivityMethod - The list of HTTP methods supported by a AzureFunctionActivity.
 type AzureFunctionActivityMethod string
 
@@ -71,6 +87,66 @@ func PossibleAzureFunctionActivityMethodValues() []AzureFunctionActivityMethod {
 		AzureFunctionActivityMethodPOST,
 		AzureFunctionActivityMethodPUT,
 		AzureFunctionActivityMethodTRACE,
+	}
+}
+
+// AzureSQLDWAuthenticationType - The type used for authentication. Type: string.
+type AzureSQLDWAuthenticationType string
+
+const (
+	AzureSQLDWAuthenticationTypeSQL                           AzureSQLDWAuthenticationType = "SQL"
+	AzureSQLDWAuthenticationTypeServicePrincipal              AzureSQLDWAuthenticationType = "ServicePrincipal"
+	AzureSQLDWAuthenticationTypeSystemAssignedManagedIdentity AzureSQLDWAuthenticationType = "SystemAssignedManagedIdentity"
+	AzureSQLDWAuthenticationTypeUserAssignedManagedIdentity   AzureSQLDWAuthenticationType = "UserAssignedManagedIdentity"
+)
+
+// PossibleAzureSQLDWAuthenticationTypeValues returns the possible values for the AzureSQLDWAuthenticationType const type.
+func PossibleAzureSQLDWAuthenticationTypeValues() []AzureSQLDWAuthenticationType {
+	return []AzureSQLDWAuthenticationType{
+		AzureSQLDWAuthenticationTypeSQL,
+		AzureSQLDWAuthenticationTypeServicePrincipal,
+		AzureSQLDWAuthenticationTypeSystemAssignedManagedIdentity,
+		AzureSQLDWAuthenticationTypeUserAssignedManagedIdentity,
+	}
+}
+
+// AzureSQLDatabaseAuthenticationType - The type used for authentication. Type: string.
+type AzureSQLDatabaseAuthenticationType string
+
+const (
+	AzureSQLDatabaseAuthenticationTypeSQL                           AzureSQLDatabaseAuthenticationType = "SQL"
+	AzureSQLDatabaseAuthenticationTypeServicePrincipal              AzureSQLDatabaseAuthenticationType = "ServicePrincipal"
+	AzureSQLDatabaseAuthenticationTypeSystemAssignedManagedIdentity AzureSQLDatabaseAuthenticationType = "SystemAssignedManagedIdentity"
+	AzureSQLDatabaseAuthenticationTypeUserAssignedManagedIdentity   AzureSQLDatabaseAuthenticationType = "UserAssignedManagedIdentity"
+)
+
+// PossibleAzureSQLDatabaseAuthenticationTypeValues returns the possible values for the AzureSQLDatabaseAuthenticationType const type.
+func PossibleAzureSQLDatabaseAuthenticationTypeValues() []AzureSQLDatabaseAuthenticationType {
+	return []AzureSQLDatabaseAuthenticationType{
+		AzureSQLDatabaseAuthenticationTypeSQL,
+		AzureSQLDatabaseAuthenticationTypeServicePrincipal,
+		AzureSQLDatabaseAuthenticationTypeSystemAssignedManagedIdentity,
+		AzureSQLDatabaseAuthenticationTypeUserAssignedManagedIdentity,
+	}
+}
+
+// AzureSQLMIAuthenticationType - The type used for authentication. Type: string.
+type AzureSQLMIAuthenticationType string
+
+const (
+	AzureSQLMIAuthenticationTypeSQL                           AzureSQLMIAuthenticationType = "SQL"
+	AzureSQLMIAuthenticationTypeServicePrincipal              AzureSQLMIAuthenticationType = "ServicePrincipal"
+	AzureSQLMIAuthenticationTypeSystemAssignedManagedIdentity AzureSQLMIAuthenticationType = "SystemAssignedManagedIdentity"
+	AzureSQLMIAuthenticationTypeUserAssignedManagedIdentity   AzureSQLMIAuthenticationType = "UserAssignedManagedIdentity"
+)
+
+// PossibleAzureSQLMIAuthenticationTypeValues returns the possible values for the AzureSQLMIAuthenticationType const type.
+func PossibleAzureSQLMIAuthenticationTypeValues() []AzureSQLMIAuthenticationType {
+	return []AzureSQLMIAuthenticationType{
+		AzureSQLMIAuthenticationTypeSQL,
+		AzureSQLMIAuthenticationTypeServicePrincipal,
+		AzureSQLMIAuthenticationTypeSystemAssignedManagedIdentity,
+		AzureSQLMIAuthenticationTypeUserAssignedManagedIdentity,
 	}
 }
 
@@ -443,6 +519,7 @@ const (
 	ExpressionV2TypeBinary   ExpressionV2Type = "Binary"
 	ExpressionV2TypeConstant ExpressionV2Type = "Constant"
 	ExpressionV2TypeField    ExpressionV2Type = "Field"
+	ExpressionV2TypeNAry     ExpressionV2Type = "NAry"
 	ExpressionV2TypeUnary    ExpressionV2Type = "Unary"
 )
 
@@ -452,6 +529,7 @@ func PossibleExpressionV2TypeValues() []ExpressionV2Type {
 		ExpressionV2TypeBinary,
 		ExpressionV2TypeConstant,
 		ExpressionV2TypeField,
+		ExpressionV2TypeNAry,
 		ExpressionV2TypeUnary,
 	}
 }
@@ -1344,6 +1422,22 @@ func PossibleSQLAlwaysEncryptedAkvAuthTypeValues() []SQLAlwaysEncryptedAkvAuthTy
 	}
 }
 
+// SQLServerAuthenticationType - The type used for authentication. Type: string.
+type SQLServerAuthenticationType string
+
+const (
+	SQLServerAuthenticationTypeSQL     SQLServerAuthenticationType = "SQL"
+	SQLServerAuthenticationTypeWindows SQLServerAuthenticationType = "Windows"
+)
+
+// PossibleSQLServerAuthenticationTypeValues returns the possible values for the SQLServerAuthenticationType const type.
+func PossibleSQLServerAuthenticationTypeValues() []SQLServerAuthenticationType {
+	return []SQLServerAuthenticationType{
+		SQLServerAuthenticationTypeSQL,
+		SQLServerAuthenticationTypeWindows,
+	}
+}
+
 // SalesforceSinkWriteBehavior - The write behavior for the operation. Default is Insert.
 type SalesforceSinkWriteBehavior string
 
@@ -1475,22 +1569,6 @@ func PossibleScriptActivityParameterTypeValues() []ScriptActivityParameterType {
 		ScriptActivityParameterTypeSingle,
 		ScriptActivityParameterTypeString,
 		ScriptActivityParameterTypeTimespan,
-	}
-}
-
-// ScriptType - The type of the query. Type: string.
-type ScriptType string
-
-const (
-	ScriptTypeNonQuery ScriptType = "NonQuery"
-	ScriptTypeQuery    ScriptType = "Query"
-)
-
-// PossibleScriptTypeValues returns the possible values for the ScriptType const type.
-func PossibleScriptTypeValues() []ScriptType {
-	return []ScriptType{
-		ScriptTypeNonQuery,
-		ScriptTypeQuery,
 	}
 }
 

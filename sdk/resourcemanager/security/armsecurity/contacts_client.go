@@ -46,11 +46,11 @@ func NewContactsClient(subscriptionID string, credential azcore.TokenCredential,
 // Create - Create security contact configurations for the subscription
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-01-01-preview
+// Generated from API version 2023-12-01-preview
 //   - securityContactName - Name of the security contact object
 //   - securityContact - Security contact object
 //   - options - ContactsClientCreateOptions contains the optional parameters for the ContactsClient.Create method.
-func (client *ContactsClient) Create(ctx context.Context, securityContactName string, securityContact Contact, options *ContactsClientCreateOptions) (ContactsClientCreateResponse, error) {
+func (client *ContactsClient) Create(ctx context.Context, securityContactName SecurityContactName, securityContact Contact, options *ContactsClientCreateOptions) (ContactsClientCreateResponse, error) {
 	var err error
 	const operationName = "ContactsClient.Create"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -73,7 +73,7 @@ func (client *ContactsClient) Create(ctx context.Context, securityContactName st
 }
 
 // createCreateRequest creates the Create request.
-func (client *ContactsClient) createCreateRequest(ctx context.Context, securityContactName string, securityContact Contact, options *ContactsClientCreateOptions) (*policy.Request, error) {
+func (client *ContactsClient) createCreateRequest(ctx context.Context, securityContactName SecurityContactName, securityContact Contact, options *ContactsClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/securityContacts/{securityContactName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -82,13 +82,13 @@ func (client *ContactsClient) createCreateRequest(ctx context.Context, securityC
 	if securityContactName == "" {
 		return nil, errors.New("parameter securityContactName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{securityContactName}", url.PathEscape(securityContactName))
+	urlPath = strings.ReplaceAll(urlPath, "{securityContactName}", url.PathEscape(string(securityContactName)))
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-01-01-preview")
+	reqQP.Set("api-version", "2023-12-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, securityContact); err != nil {
@@ -109,10 +109,10 @@ func (client *ContactsClient) createHandleResponse(resp *http.Response) (Contact
 // Delete - Delete security contact configurations for the subscription
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-01-01-preview
+// Generated from API version 2023-12-01-preview
 //   - securityContactName - Name of the security contact object
 //   - options - ContactsClientDeleteOptions contains the optional parameters for the ContactsClient.Delete method.
-func (client *ContactsClient) Delete(ctx context.Context, securityContactName string, options *ContactsClientDeleteOptions) (ContactsClientDeleteResponse, error) {
+func (client *ContactsClient) Delete(ctx context.Context, securityContactName SecurityContactName, options *ContactsClientDeleteOptions) (ContactsClientDeleteResponse, error) {
 	var err error
 	const operationName = "ContactsClient.Delete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -134,7 +134,7 @@ func (client *ContactsClient) Delete(ctx context.Context, securityContactName st
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ContactsClient) deleteCreateRequest(ctx context.Context, securityContactName string, options *ContactsClientDeleteOptions) (*policy.Request, error) {
+func (client *ContactsClient) deleteCreateRequest(ctx context.Context, securityContactName SecurityContactName, options *ContactsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/securityContacts/{securityContactName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -143,13 +143,13 @@ func (client *ContactsClient) deleteCreateRequest(ctx context.Context, securityC
 	if securityContactName == "" {
 		return nil, errors.New("parameter securityContactName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{securityContactName}", url.PathEscape(securityContactName))
+	urlPath = strings.ReplaceAll(urlPath, "{securityContactName}", url.PathEscape(string(securityContactName)))
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-01-01-preview")
+	reqQP.Set("api-version", "2023-12-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -158,10 +158,10 @@ func (client *ContactsClient) deleteCreateRequest(ctx context.Context, securityC
 // Get - Get Default Security contact configurations for the subscription
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-01-01-preview
+// Generated from API version 2023-12-01-preview
 //   - securityContactName - Name of the security contact object
 //   - options - ContactsClientGetOptions contains the optional parameters for the ContactsClient.Get method.
-func (client *ContactsClient) Get(ctx context.Context, securityContactName string, options *ContactsClientGetOptions) (ContactsClientGetResponse, error) {
+func (client *ContactsClient) Get(ctx context.Context, securityContactName SecurityContactName, options *ContactsClientGetOptions) (ContactsClientGetResponse, error) {
 	var err error
 	const operationName = "ContactsClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -184,7 +184,7 @@ func (client *ContactsClient) Get(ctx context.Context, securityContactName strin
 }
 
 // getCreateRequest creates the Get request.
-func (client *ContactsClient) getCreateRequest(ctx context.Context, securityContactName string, options *ContactsClientGetOptions) (*policy.Request, error) {
+func (client *ContactsClient) getCreateRequest(ctx context.Context, securityContactName SecurityContactName, options *ContactsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/securityContacts/{securityContactName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -193,13 +193,13 @@ func (client *ContactsClient) getCreateRequest(ctx context.Context, securityCont
 	if securityContactName == "" {
 		return nil, errors.New("parameter securityContactName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{securityContactName}", url.PathEscape(securityContactName))
+	urlPath = strings.ReplaceAll(urlPath, "{securityContactName}", url.PathEscape(string(securityContactName)))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-01-01-preview")
+	reqQP.Set("api-version", "2023-12-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -216,7 +216,7 @@ func (client *ContactsClient) getHandleResponse(resp *http.Response) (ContactsCl
 
 // NewListPager - List all security contact configurations for the subscription
 //
-// Generated from API version 2020-01-01-preview
+// Generated from API version 2023-12-01-preview
 //   - options - ContactsClientListOptions contains the optional parameters for the ContactsClient.NewListPager method.
 func (client *ContactsClient) NewListPager(options *ContactsClientListOptions) *runtime.Pager[ContactsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ContactsClientListResponse]{
@@ -253,7 +253,7 @@ func (client *ContactsClient) listCreateRequest(ctx context.Context, options *Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-01-01-preview")
+	reqQP.Set("api-version", "2023-12-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

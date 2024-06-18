@@ -1,5 +1,34 @@
 # Release History
 
+## 8.0.0 (2024-06-05)
+### Breaking Changes
+
+- Enum `ScriptType` has been removed
+- Field `Operator` of struct `ExpressionV2` has been removed
+
+### Features Added
+
+- Type of `ScriptActivityScriptBlock.Type` has been changed from `*ScriptType` to `any`
+- New value `ExpressionV2TypeNAry` added to enum type `ExpressionV2Type`
+- New enum type `AmazonRdsForSQLAuthenticationType` with values `AmazonRdsForSQLAuthenticationTypeSQL`, `AmazonRdsForSQLAuthenticationTypeWindows`
+- New enum type `AzureSQLDWAuthenticationType` with values `AzureSQLDWAuthenticationTypeSQL`, `AzureSQLDWAuthenticationTypeServicePrincipal`, `AzureSQLDWAuthenticationTypeSystemAssignedManagedIdentity`, `AzureSQLDWAuthenticationTypeUserAssignedManagedIdentity`
+- New enum type `AzureSQLDatabaseAuthenticationType` with values `AzureSQLDatabaseAuthenticationTypeSQL`, `AzureSQLDatabaseAuthenticationTypeServicePrincipal`, `AzureSQLDatabaseAuthenticationTypeSystemAssignedManagedIdentity`, `AzureSQLDatabaseAuthenticationTypeUserAssignedManagedIdentity`
+- New enum type `AzureSQLMIAuthenticationType` with values `AzureSQLMIAuthenticationTypeSQL`, `AzureSQLMIAuthenticationTypeServicePrincipal`, `AzureSQLMIAuthenticationTypeSystemAssignedManagedIdentity`, `AzureSQLMIAuthenticationTypeUserAssignedManagedIdentity`
+- New enum type `SQLServerAuthenticationType` with values `SQLServerAuthenticationTypeSQL`, `SQLServerAuthenticationTypeWindows`
+- New struct `ManagedIdentityTypeProperties`
+- New field `ApplicationIntent`, `AuthenticationType`, `CommandTimeout`, `ConnectRetryCount`, `ConnectRetryInterval`, `ConnectTimeout`, `Database`, `Encrypt`, `FailoverPartner`, `HostNameInCertificate`, `IntegratedSecurity`, `LoadBalanceTimeout`, `MaxPoolSize`, `MinPoolSize`, `MultiSubnetFailover`, `MultipleActiveResultSets`, `PacketSize`, `Pooling`, `Server`, `TrustServerCertificate` in struct `AmazonRdsForSQLServerLinkedServiceTypeProperties`
+- New field `ApplicationIntent`, `AuthenticationType`, `CommandTimeout`, `ConnectRetryCount`, `ConnectRetryInterval`, `ConnectTimeout`, `Database`, `Encrypt`, `FailoverPartner`, `HostNameInCertificate`, `IntegratedSecurity`, `LoadBalanceTimeout`, `MaxPoolSize`, `MinPoolSize`, `MultiSubnetFailover`, `MultipleActiveResultSets`, `PacketSize`, `Pooling`, `Server`, `ServicePrincipalCredential`, `ServicePrincipalCredentialType`, `TrustServerCertificate`, `UserName` in struct `AzureSQLDWLinkedServiceTypeProperties`
+- New field `ApplicationIntent`, `AuthenticationType`, `CommandTimeout`, `ConnectRetryCount`, `ConnectRetryInterval`, `ConnectTimeout`, `Database`, `Encrypt`, `FailoverPartner`, `HostNameInCertificate`, `IntegratedSecurity`, `LoadBalanceTimeout`, `MaxPoolSize`, `MinPoolSize`, `MultiSubnetFailover`, `MultipleActiveResultSets`, `PacketSize`, `Pooling`, `Server`, `ServicePrincipalCredential`, `ServicePrincipalCredentialType`, `TrustServerCertificate`, `UserName` in struct `AzureSQLDatabaseLinkedServiceTypeProperties`
+- New field `ApplicationIntent`, `AuthenticationType`, `CommandTimeout`, `ConnectRetryCount`, `ConnectRetryInterval`, `ConnectTimeout`, `Database`, `Encrypt`, `FailoverPartner`, `HostNameInCertificate`, `IntegratedSecurity`, `LoadBalanceTimeout`, `MaxPoolSize`, `MinPoolSize`, `MultiSubnetFailover`, `MultipleActiveResultSets`, `PacketSize`, `Pooling`, `Server`, `ServicePrincipalCredential`, `ServicePrincipalCredentialType`, `TrustServerCertificate`, `UserName` in struct `AzureSQLMILinkedServiceTypeProperties`
+- New field `Credential` in struct `DynamicsCrmLinkedServiceTypeProperties`
+- New field `Operators` in struct `ExpressionV2`
+- New field `Schema` in struct `LakeHouseTableDatasetTypeProperties`
+- New field `TypeProperties` in struct `ManagedIdentityCredential`
+- New field `ApplicationIntent`, `AuthenticationType`, `CommandTimeout`, `ConnectRetryCount`, `ConnectRetryInterval`, `ConnectTimeout`, `Database`, `Encrypt`, `FailoverPartner`, `HostNameInCertificate`, `IntegratedSecurity`, `LoadBalanceTimeout`, `MaxPoolSize`, `MinPoolSize`, `MultiSubnetFailover`, `MultipleActiveResultSets`, `PacketSize`, `Pooling`, `Server`, `TrustServerCertificate` in struct `SQLServerLinkedServiceTypeProperties`
+- New field `Query` in struct `SalesforceServiceCloudV2Source`
+- New field `Query` in struct `SalesforceV2Source`
+
+
 ## 7.0.0 (2024-04-04)
 ### Breaking Changes
 

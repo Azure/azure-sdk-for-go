@@ -1,0 +1,13 @@
+parameters:
+  "service-dir":
+    default: "sdk/messaging/eventgrid/aznamespaces"
+  "dependencies":
+    default: ""
+emit:
+  - "@azure-tools/typespec-go"
+options:
+  "@azure-tools/typespec-go":
+    module: "github.com/Azure/azure-sdk-for-go/sdk/messaging/eventgrid/aznamespaces"
+    module-version: "0.0.1"
+    emitter-output-dir: "{project-root}/../../aznamespaces"
+    slice-elements-byval: "true"

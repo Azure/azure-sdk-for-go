@@ -36,8 +36,9 @@ func ExampleClient_GetChatCompletions() {
 	client, err := azopenai.NewClientWithKeyCredential(azureOpenAIEndpoint, keyCredential, nil)
 
 	if err != nil {
-		//  TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
+		// TODO: Update the following line with your application specific error handling logic
+		log.Printf("ERROR: %s", err)
+		return
 	}
 
 	// This is a conversation in progress.
@@ -68,8 +69,9 @@ func ExampleClient_GetChatCompletions() {
 	}, nil)
 
 	if err != nil {
-		//  TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
+		// TODO: Update the following line with your application specific error handling logic
+		log.Printf("ERROR: %s", err)
+		return
 	}
 
 	for _, choice := range resp.Choices {
@@ -124,8 +126,9 @@ func ExampleClient_GetChatCompletions_functions() {
 	client, err := azopenai.NewClientWithKeyCredential(azureOpenAIEndpoint, keyCredential, nil)
 
 	if err != nil {
-		//  TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
+		// TODO: Update the following line with your application specific error handling logic
+		log.Printf("ERROR: %s", err)
+		return
 	}
 
 	resp, err := client.GetChatCompletions(context.TODO(), azopenai.ChatCompletionsOptions{
@@ -161,8 +164,9 @@ func ExampleClient_GetChatCompletions_functions() {
 	}, nil)
 
 	if err != nil {
-		//  TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
+		// TODO: Update the following line with your application specific error handling logic
+		log.Printf("ERROR: %s", err)
+		return
 	}
 
 	funcCall := resp.Choices[0].Message.ToolCalls[0].(*azopenai.ChatCompletionsFunctionToolCall).Function
@@ -179,8 +183,9 @@ func ExampleClient_GetChatCompletions_functions() {
 	err = json.Unmarshal([]byte(*funcCall.Arguments), &funcParams)
 
 	if err != nil {
-		//  TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
+		// TODO: Update the following line with your application specific error handling logic
+		log.Printf("ERROR: %s", err)
+		return
 	}
 
 	// Prints:
@@ -209,8 +214,9 @@ func ExampleClient_GetChatCompletions_legacyFunctions() {
 	client, err := azopenai.NewClientWithKeyCredential(azureOpenAIEndpoint, keyCredential, nil)
 
 	if err != nil {
-		//  TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
+		// TODO: Update the following line with your application specific error handling logic
+		log.Printf("ERROR: %s", err)
+		return
 	}
 
 	resp, err := client.GetChatCompletions(context.TODO(), azopenai.ChatCompletionsOptions{
@@ -248,8 +254,9 @@ func ExampleClient_GetChatCompletions_legacyFunctions() {
 	}, nil)
 
 	if err != nil {
-		//  TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
+		// TODO: Update the following line with your application specific error handling logic
+		log.Printf("ERROR: %s", err)
+		return
 	}
 
 	funcCall := resp.Choices[0].Message.FunctionCall
@@ -266,8 +273,9 @@ func ExampleClient_GetChatCompletions_legacyFunctions() {
 	err = json.Unmarshal([]byte(*funcCall.Arguments), &funcParams)
 
 	if err != nil {
-		//  TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
+		// TODO: Update the following line with your application specific error handling logic
+		log.Printf("ERROR: %s", err)
+		return
 	}
 
 	// Prints:
@@ -296,8 +304,9 @@ func ExampleClient_GetChatCompletionsStream() {
 	client, err := azopenai.NewClientWithKeyCredential(azureOpenAIEndpoint, keyCredential, nil)
 
 	if err != nil {
-		//  TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
+		// TODO: Update the following line with your application specific error handling logic
+		log.Printf("ERROR: %s", err)
+		return
 	}
 
 	// This is a conversation in progress.
@@ -327,8 +336,9 @@ func ExampleClient_GetChatCompletionsStream() {
 	}, nil)
 
 	if err != nil {
-		//  TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
+		// TODO: Update the following line with your application specific error handling logic
+		log.Printf("ERROR: %s", err)
+		return
 	}
 
 	defer resp.ChatCompletionsStream.Close()
@@ -344,7 +354,8 @@ func ExampleClient_GetChatCompletionsStream() {
 
 		if err != nil {
 			//  TODO: Update the following line with your application specific error handling logic
-			log.Fatalf("ERROR: %s", err)
+			log.Printf("ERROR: %s", err)
+			return
 		}
 
 		for _, choice := range chatCompletions.Choices {

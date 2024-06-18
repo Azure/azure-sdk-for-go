@@ -34,7 +34,7 @@ type DirectoryClient struct {
 // Create - Creates a new directory under the specified share or parent directory.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-03
+// Generated from API version 2024-05-04
 //   - options - DirectoryClientCreateOptions contains the optional parameters for the DirectoryClient.Create method.
 func (client *DirectoryClient) Create(ctx context.Context, options *DirectoryClientCreateOptions) (DirectoryClientCreateResponse, error) {
 	var err error
@@ -76,7 +76,7 @@ func (client *DirectoryClient) createCreateRequest(ctx context.Context, options 
 			}
 		}
 	}
-	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
+	req.Raw().Header["x-ms-version"] = []string{"2024-05-04"}
 	if options != nil && options.FilePermission != nil {
 		req.Raw().Header["x-ms-file-permission"] = []string{*options.FilePermission}
 	}
@@ -174,7 +174,7 @@ func (client *DirectoryClient) createHandleResponse(resp *http.Response) (Direct
 // Delete - Removes the specified empty directory. Note that the directory must be empty before it can be deleted.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-03
+// Generated from API version 2024-05-04
 //   - options - DirectoryClientDeleteOptions contains the optional parameters for the DirectoryClient.Delete method.
 func (client *DirectoryClient) Delete(ctx context.Context, options *DirectoryClientDeleteOptions) (DirectoryClientDeleteResponse, error) {
 	var err error
@@ -209,7 +209,7 @@ func (client *DirectoryClient) deleteCreateRequest(ctx context.Context, options 
 	if client.allowTrailingDot != nil {
 		req.Raw().Header["x-ms-allow-trailing-dot"] = []string{strconv.FormatBool(*client.allowTrailingDot)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
+	req.Raw().Header["x-ms-version"] = []string{"2024-05-04"}
 	if client.fileRequestIntent != nil {
 		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
 	}
@@ -239,7 +239,7 @@ func (client *DirectoryClient) deleteHandleResponse(resp *http.Response) (Direct
 // ForceCloseHandles - Closes all handles open for given directory.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-03
+// Generated from API version 2024-05-04
 //   - handleID - Specifies handle ID opened on the file or directory to be closed. Asterisk (‘*’) is a wildcard that specifies
 //     all handles.
 //   - options - DirectoryClientForceCloseHandlesOptions contains the optional parameters for the DirectoryClient.ForceCloseHandles
@@ -284,7 +284,7 @@ func (client *DirectoryClient) forceCloseHandlesCreateRequest(ctx context.Contex
 	if options != nil && options.Recursive != nil {
 		req.Raw().Header["x-ms-recursive"] = []string{strconv.FormatBool(*options.Recursive)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
+	req.Raw().Header["x-ms-version"] = []string{"2024-05-04"}
 	if client.allowTrailingDot != nil {
 		req.Raw().Header["x-ms-allow-trailing-dot"] = []string{strconv.FormatBool(*client.allowTrailingDot)}
 	}
@@ -338,7 +338,7 @@ func (client *DirectoryClient) forceCloseHandlesHandleResponse(resp *http.Respon
 // subdirectories.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-03
+// Generated from API version 2024-05-04
 //   - options - DirectoryClientGetPropertiesOptions contains the optional parameters for the DirectoryClient.GetProperties method.
 func (client *DirectoryClient) GetProperties(ctx context.Context, options *DirectoryClientGetPropertiesOptions) (DirectoryClientGetPropertiesResponse, error) {
 	var err error
@@ -376,7 +376,7 @@ func (client *DirectoryClient) getPropertiesCreateRequest(ctx context.Context, o
 	if client.allowTrailingDot != nil {
 		req.Raw().Header["x-ms-allow-trailing-dot"] = []string{strconv.FormatBool(*client.allowTrailingDot)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
+	req.Raw().Header["x-ms-version"] = []string{"2024-05-04"}
 	if client.fileRequestIntent != nil {
 		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
 	}
@@ -464,7 +464,7 @@ func (client *DirectoryClient) getPropertiesHandleResponse(resp *http.Response) 
 // NewListFilesAndDirectoriesSegmentPager - Returns a list of files or directories under the specified share or directory.
 // It lists the contents only for a single level of the directory hierarchy.
 //
-// Generated from API version 2023-11-03
+// Generated from API version 2024-05-04
 //   - options - DirectoryClientListFilesAndDirectoriesSegmentOptions contains the optional parameters for the DirectoryClient.NewListFilesAndDirectoriesSegmentPager
 //     method.
 //
@@ -496,7 +496,7 @@ func (client *DirectoryClient) ListFilesAndDirectoriesSegmentCreateRequest(ctx c
 		reqQP.Set("include", strings.Join(strings.Fields(strings.Trim(fmt.Sprint(options.Include), "[]")), ","))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
+	req.Raw().Header["x-ms-version"] = []string{"2024-05-04"}
 	if options != nil && options.IncludeExtendedInfo != nil {
 		req.Raw().Header["x-ms-file-extended-info"] = []string{strconv.FormatBool(*options.IncludeExtendedInfo)}
 	}
@@ -538,7 +538,7 @@ func (client *DirectoryClient) ListFilesAndDirectoriesSegmentHandleResponse(resp
 // ListHandles - Lists handles for directory.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-03
+// Generated from API version 2024-05-04
 //   - options - DirectoryClientListHandlesOptions contains the optional parameters for the DirectoryClient.ListHandles method.
 func (client *DirectoryClient) ListHandles(ctx context.Context, options *DirectoryClientListHandlesOptions) (DirectoryClientListHandlesResponse, error) {
 	var err error
@@ -582,7 +582,7 @@ func (client *DirectoryClient) listHandlesCreateRequest(ctx context.Context, opt
 	if options != nil && options.Recursive != nil {
 		req.Raw().Header["x-ms-recursive"] = []string{strconv.FormatBool(*options.Recursive)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
+	req.Raw().Header["x-ms-version"] = []string{"2024-05-04"}
 	if client.allowTrailingDot != nil {
 		req.Raw().Header["x-ms-allow-trailing-dot"] = []string{strconv.FormatBool(*client.allowTrailingDot)}
 	}
@@ -621,7 +621,7 @@ func (client *DirectoryClient) listHandlesHandleResponse(resp *http.Response) (D
 // Rename - Renames a directory
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-03
+// Generated from API version 2024-05-04
 //   - renameSource - Required. Specifies the URI-style path of the source file, up to 2 KB in length.
 //   - options - DirectoryClientRenameOptions contains the optional parameters for the DirectoryClient.Rename method.
 //   - SourceLeaseAccessConditions - SourceLeaseAccessConditions contains a group of parameters for the DirectoryClient.Rename
@@ -660,7 +660,7 @@ func (client *DirectoryClient) renameCreateRequest(ctx context.Context, renameSo
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
+	req.Raw().Header["x-ms-version"] = []string{"2024-05-04"}
 	req.Raw().Header["x-ms-file-rename-source"] = []string{renameSource}
 	if options != nil && options.ReplaceIfExists != nil {
 		req.Raw().Header["x-ms-file-rename-replace-if-exists"] = []string{strconv.FormatBool(*options.ReplaceIfExists)}
@@ -784,7 +784,7 @@ func (client *DirectoryClient) renameHandleResponse(resp *http.Response) (Direct
 // SetMetadata - Updates user defined metadata for the specified directory.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-03
+// Generated from API version 2024-05-04
 //   - options - DirectoryClientSetMetadataOptions contains the optional parameters for the DirectoryClient.SetMetadata method.
 func (client *DirectoryClient) SetMetadata(ctx context.Context, options *DirectoryClientSetMetadataOptions) (DirectoryClientSetMetadataResponse, error) {
 	var err error
@@ -824,7 +824,7 @@ func (client *DirectoryClient) setMetadataCreateRequest(ctx context.Context, opt
 			}
 		}
 	}
-	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
+	req.Raw().Header["x-ms-version"] = []string{"2024-05-04"}
 	if client.allowTrailingDot != nil {
 		req.Raw().Header["x-ms-allow-trailing-dot"] = []string{strconv.FormatBool(*client.allowTrailingDot)}
 	}
@@ -867,7 +867,7 @@ func (client *DirectoryClient) setMetadataHandleResponse(resp *http.Response) (D
 // SetProperties - Sets properties on the directory.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-03
+// Generated from API version 2024-05-04
 //   - options - DirectoryClientSetPropertiesOptions contains the optional parameters for the DirectoryClient.SetProperties method.
 func (client *DirectoryClient) SetProperties(ctx context.Context, options *DirectoryClientSetPropertiesOptions) (DirectoryClientSetPropertiesResponse, error) {
 	var err error
@@ -900,7 +900,7 @@ func (client *DirectoryClient) setPropertiesCreateRequest(ctx context.Context, o
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
+	req.Raw().Header["x-ms-version"] = []string{"2024-05-04"}
 	if options != nil && options.FilePermission != nil {
 		req.Raw().Header["x-ms-file-permission"] = []string{*options.FilePermission}
 	}

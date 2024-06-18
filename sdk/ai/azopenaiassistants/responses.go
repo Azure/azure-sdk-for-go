@@ -14,10 +14,10 @@ type CancelRunResponse struct {
 	ThreadRun
 }
 
-// CreateAssistantFileResponse contains the response from method Client.CreateAssistantFile.
-type CreateAssistantFileResponse struct {
-	// Information about a file attached to an assistant, as used by tools that can read files.
-	AssistantFile
+// CancelVectorStoreFileBatchResponse contains the response from method Client.CancelVectorStoreFileBatch.
+type CancelVectorStoreFileBatchResponse struct {
+	// A batch of files attached to a vector store.
+	VectorStoreFileBatch
 }
 
 // CreateAssistantResponse contains the response from method Client.CreateAssistant.
@@ -50,10 +50,22 @@ type CreateThreadResponse struct {
 	AssistantThread
 }
 
-// DeleteAssistantFileResponse contains the response from method Client.DeleteAssistantFile.
-type DeleteAssistantFileResponse struct {
-	// The status of an assistant file deletion operation.
-	AssistantFileDeletionStatus
+// CreateVectorStoreFileBatchResponse contains the response from method Client.CreateVectorStoreFileBatch.
+type CreateVectorStoreFileBatchResponse struct {
+	// A batch of files attached to a vector store.
+	VectorStoreFileBatch
+}
+
+// CreateVectorStoreFileResponse contains the response from method Client.CreateVectorStoreFile.
+type CreateVectorStoreFileResponse struct {
+	// Description of a file attached to a vector store.
+	VectorStoreFile
+}
+
+// CreateVectorStoreResponse contains the response from method Client.CreateVectorStore.
+type CreateVectorStoreResponse struct {
+	// A vector store is a collection of processed files can be used by the `file_search` tool.
+	VectorStore
 }
 
 // DeleteAssistantResponse contains the response from method Client.DeleteAssistant.
@@ -74,10 +86,16 @@ type DeleteThreadResponse struct {
 	ThreadDeletionStatus
 }
 
-// GetAssistantFileResponse contains the response from method Client.GetAssistantFile.
-type GetAssistantFileResponse struct {
-	// Information about a file attached to an assistant, as used by tools that can read files.
-	AssistantFile
+// DeleteVectorStoreFileResponse contains the response from method Client.DeleteVectorStoreFile.
+type DeleteVectorStoreFileResponse struct {
+	// Response object for deleting a vector store file relationship.
+	VectorStoreFileDeletionStatus
+}
+
+// DeleteVectorStoreResponse contains the response from method Client.DeleteVectorStore.
+type DeleteVectorStoreResponse struct {
+	// Response object for deleting a vector store.
+	VectorStoreDeletionStatus
 }
 
 // GetAssistantResponse contains the response from method Client.GetAssistant.
@@ -90,12 +108,6 @@ type GetAssistantResponse struct {
 type GetFileResponse struct {
 	// Represents an assistant that can call the model and use tools.
 	OpenAIFile
-}
-
-// GetMessageFileResponse contains the response from method Client.GetMessageFile.
-type GetMessageFileResponse struct {
-	// Information about a file attached to an assistant thread message.
-	MessageFile
 }
 
 // GetMessageResponse contains the response from method Client.GetMessage.
@@ -122,10 +134,22 @@ type GetThreadResponse struct {
 	AssistantThread
 }
 
-// ListAssistantFilesResponse contains the response from method Client.ListAssistantFiles.
-type ListAssistantFilesResponse struct {
-	// The response data for a requested list of items.
-	AssistantFilesPage
+// GetVectorStoreFileBatchResponse contains the response from method Client.GetVectorStoreFileBatch.
+type GetVectorStoreFileBatchResponse struct {
+	// A batch of files attached to a vector store.
+	VectorStoreFileBatch
+}
+
+// GetVectorStoreFileResponse contains the response from method Client.GetVectorStoreFile.
+type GetVectorStoreFileResponse struct {
+	// Description of a file attached to a vector store.
+	VectorStoreFile
+}
+
+// GetVectorStoreResponse contains the response from method Client.GetVectorStore.
+type GetVectorStoreResponse struct {
+	// A vector store is a collection of processed files can be used by the `file_search` tool.
+	VectorStore
 }
 
 // ListAssistantsResponse contains the response from method Client.ListAssistants.
@@ -140,28 +164,46 @@ type ListFilesResponse struct {
 	FileListResponse
 }
 
-// ListMessageFilesResponse contains the response from method Client.ListMessageFiles.
-type ListMessageFilesResponse struct {
-	// The response data for a requested list of items.
-	MessageFilesPage
-}
-
 // ListMessagesResponse contains the response from method Client.ListMessages.
 type ListMessagesResponse struct {
 	// The response data for a requested list of items.
-	MessagesPage
+	ThreadMessagesPage
 }
 
 // ListRunStepsResponse contains the response from method Client.ListRunSteps.
 type ListRunStepsResponse struct {
 	// The response data for a requested list of items.
-	RunStepsPage
+	ThreadRunStepsPage
 }
 
 // ListRunsResponse contains the response from method Client.ListRuns.
 type ListRunsResponse struct {
 	// The response data for a requested list of items.
 	ThreadRunsPage
+}
+
+// ListVectorStoreFileBatchFilesResponse contains the response from method Client.ListVectorStoreFileBatchFiles.
+type ListVectorStoreFileBatchFilesResponse struct {
+	// The response data for a requested list of items.
+	VectorStoreFileBatchesPage
+}
+
+// ListVectorStoreFilesResponse contains the response from method Client.ListVectorStoreFiles.
+type ListVectorStoreFilesResponse struct {
+	// The response data for a requested list of items.
+	VectorStoreFilesPage
+}
+
+// ListVectorStoresResponse contains the response from method Client.ListVectorStores.
+type ListVectorStoresResponse struct {
+	// The response data for a requested list of items.
+	VectorStoresPage
+}
+
+// ModifyVectorStoreResponse contains the response from method Client.ModifyVectorStore.
+type ModifyVectorStoreResponse struct {
+	// A vector store is a collection of processed files can be used by the `file_search` tool.
+	VectorStore
 }
 
 // SubmitToolOutputsToRunResponse contains the response from method Client.SubmitToolOutputsToRun.

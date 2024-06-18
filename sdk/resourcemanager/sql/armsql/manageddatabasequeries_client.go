@@ -178,16 +178,16 @@ func (client *ManagedDatabaseQueriesClient) listByQueryCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	if options != nil && options.StartTime != nil {
-		reqQP.Set("startTime", *options.StartTime)
-	}
+	reqQP.Set("api-version", "2020-11-01-preview")
 	if options != nil && options.EndTime != nil {
 		reqQP.Set("endTime", *options.EndTime)
 	}
 	if options != nil && options.Interval != nil {
 		reqQP.Set("interval", string(*options.Interval))
 	}
-	reqQP.Set("api-version", "2020-11-01-preview")
+	if options != nil && options.StartTime != nil {
+		reqQP.Set("startTime", *options.StartTime)
+	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

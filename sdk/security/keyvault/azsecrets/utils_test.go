@@ -14,21 +14,18 @@ import (
 	"hash/fnv"
 	"os"
 	"regexp"
-	"strings"
 	"sync"
 	"testing"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	azcred "github.com/Azure/azure-sdk-for-go/sdk/internal/test/credential"
 	"github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azsecrets"
 	"github.com/stretchr/testify/require"
 )
 
 const recordingDirectory = "sdk/security/keyvault/azsecrets/testdata"
-const fakeVaultURL = "https://fakevault.local"
 
 var (
 	secretsToPurge = struct {
@@ -38,6 +35,8 @@ var (
 
 	credential azcore.TokenCredential
 	vaultURL   string
+
+	fakeVaultURL = fmt.Sprintf("https://%s.vault.azure.net/", recording.SanitizedValue)
 )
 
 func TestMain(m *testing.M) {
@@ -62,42 +61,23 @@ func run(m *testing.M) int {
 		}()
 	}
 
-	vaultURL = fakeVaultURL
-	if recording.GetRecordMode() != recording.PlaybackMode {
-		if u, ok := os.LookupEnv("AZURE_KEYVAULT_URL"); ok && u != "" {
-			vaultURL = strings.TrimSuffix(u, "/")
-		} else {
-			panic("no value for AZURE_KEYVAULT_URL")
-		}
+	var err error
+	credential, err = azcred.New(nil)
+	if err != nil {
+		panic(err)
 	}
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		credential = &FakeCredential{}
-	} else {
-		tenantID := lookupEnvVar("AZSECRETS_TENANT_ID")
-		clientID := lookupEnvVar("AZSECRETS_CLIENT_ID")
-		secret := lookupEnvVar("AZSECRETS_CLIENT_SECRET")
-		var err error
-		credential, err = azidentity.NewClientSecretCredential(tenantID, clientID, secret, nil)
+
+	vaultURL = recording.GetEnvVariable("AZURE_KEYVAULT_URL", fakeVaultURL)
+
+	if recording.GetRecordMode() != recording.LiveMode {
+		err := recording.RemoveRegisteredSanitizers([]string{
+			"AZSDK3430", // id in body
+		}, nil)
 		if err != nil {
 			panic(err)
 		}
 	}
-	if recording.GetRecordMode() == recording.RecordingMode {
-		err := recording.AddURISanitizer(fakeVaultURL, vaultURL, nil)
-		if err != nil {
-			panic(err)
-		}
-		opts := proxy.Options
-		opts.GroupForReplace = "1"
-		err = recording.AddHeaderRegexSanitizer("WWW-Authenticate", "https://local", `resource="(.*)"`, opts)
-		if err != nil {
-			panic(err)
-		}
-		err = recording.AddBodyRegexSanitizer(fakeVaultURL, vaultURL, nil)
-		if err != nil {
-			panic(err)
-		}
-	}
+
 	code := m.Run()
 	if recording.GetRecordMode() != recording.PlaybackMode {
 		// Purge test secrets using a client whose requests aren't recorded. This
@@ -150,14 +130,6 @@ func createRandomName(t *testing.T, prefix string) string {
 	return prefix + fmt.Sprint(h.Sum32())
 }
 
-func lookupEnvVar(s string) string {
-	ret, ok := os.LookupEnv(s)
-	if !ok {
-		panic(fmt.Sprintf("Could not find env var: '%s'", s))
-	}
-	return ret
-}
-
 func cleanUpSecret(t *testing.T, client *azsecrets.Client, name string) {
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		return
@@ -169,12 +141,6 @@ func cleanUpSecret(t *testing.T, client *azsecrets.Client, name string) {
 	} else {
 		t.Logf(`cleanUpSecret failed for "%s": %v`, name, err)
 	}
-}
-
-type FakeCredential struct{}
-
-func (f *FakeCredential) GetToken(ctx context.Context, options policy.TokenRequestOptions) (azcore.AccessToken, error) {
-	return azcore.AccessToken{Token: "faketoken", ExpiresOn: time.Now().Add(time.Hour).UTC()}, nil
 }
 
 // pollStatus calls a function until it stops returning a response error with the given status code.

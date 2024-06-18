@@ -19,16 +19,15 @@ import (
 
 // ServerFactory is a fake server for instances of the armselfhelp.ClientFactory type.
 type ServerFactory struct {
-	CheckNameAvailabilityServer                 CheckNameAvailabilityServer
-	DiagnosticsServer                           DiagnosticsServer
-	DiscoverySolutionServer                     DiscoverySolutionServer
-	DiscoverySolutionNLPSubscriptionScopeServer DiscoverySolutionNLPSubscriptionScopeServer
-	DiscoverySolutionNLPTenantScopeServer       DiscoverySolutionNLPTenantScopeServer
-	OperationsServer                            OperationsServer
-	SimplifiedSolutionsServer                   SimplifiedSolutionsServer
-	SolutionServer                              SolutionServer
-	SolutionSelfHelpServer                      SolutionSelfHelpServer
-	TroubleshootersServer                       TroubleshootersServer
+	CheckNameAvailabilityServer CheckNameAvailabilityServer
+	DiagnosticsServer           DiagnosticsServer
+	DiscoverySolutionServer     DiscoverySolutionServer
+	DiscoverySolutionNLPServer  DiscoverySolutionNLPServer
+	OperationsServer            OperationsServer
+	SimplifiedSolutionsServer   SimplifiedSolutionsServer
+	SolutionServer              SolutionServer
+	SolutionSelfHelpServer      SolutionSelfHelpServer
+	TroubleshootersServer       TroubleshootersServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -43,18 +42,17 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armselfhelp.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                                           *ServerFactory
-	trMu                                          sync.Mutex
-	trCheckNameAvailabilityServer                 *CheckNameAvailabilityServerTransport
-	trDiagnosticsServer                           *DiagnosticsServerTransport
-	trDiscoverySolutionServer                     *DiscoverySolutionServerTransport
-	trDiscoverySolutionNLPSubscriptionScopeServer *DiscoverySolutionNLPSubscriptionScopeServerTransport
-	trDiscoverySolutionNLPTenantScopeServer       *DiscoverySolutionNLPTenantScopeServerTransport
-	trOperationsServer                            *OperationsServerTransport
-	trSimplifiedSolutionsServer                   *SimplifiedSolutionsServerTransport
-	trSolutionServer                              *SolutionServerTransport
-	trSolutionSelfHelpServer                      *SolutionSelfHelpServerTransport
-	trTroubleshootersServer                       *TroubleshootersServerTransport
+	srv                           *ServerFactory
+	trMu                          sync.Mutex
+	trCheckNameAvailabilityServer *CheckNameAvailabilityServerTransport
+	trDiagnosticsServer           *DiagnosticsServerTransport
+	trDiscoverySolutionServer     *DiscoverySolutionServerTransport
+	trDiscoverySolutionNLPServer  *DiscoverySolutionNLPServerTransport
+	trOperationsServer            *OperationsServerTransport
+	trSimplifiedSolutionsServer   *SimplifiedSolutionsServerTransport
+	trSolutionServer              *SolutionServerTransport
+	trSolutionSelfHelpServer      *SolutionSelfHelpServerTransport
+	trTroubleshootersServer       *TroubleshootersServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -83,16 +81,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewDiscoverySolutionServerTransport(&s.srv.DiscoverySolutionServer)
 		})
 		resp, err = s.trDiscoverySolutionServer.Do(req)
-	case "DiscoverySolutionNLPSubscriptionScopeClient":
-		initServer(s, &s.trDiscoverySolutionNLPSubscriptionScopeServer, func() *DiscoverySolutionNLPSubscriptionScopeServerTransport {
-			return NewDiscoverySolutionNLPSubscriptionScopeServerTransport(&s.srv.DiscoverySolutionNLPSubscriptionScopeServer)
+	case "DiscoverySolutionNLPClient":
+		initServer(s, &s.trDiscoverySolutionNLPServer, func() *DiscoverySolutionNLPServerTransport {
+			return NewDiscoverySolutionNLPServerTransport(&s.srv.DiscoverySolutionNLPServer)
 		})
-		resp, err = s.trDiscoverySolutionNLPSubscriptionScopeServer.Do(req)
-	case "DiscoverySolutionNLPTenantScopeClient":
-		initServer(s, &s.trDiscoverySolutionNLPTenantScopeServer, func() *DiscoverySolutionNLPTenantScopeServerTransport {
-			return NewDiscoverySolutionNLPTenantScopeServerTransport(&s.srv.DiscoverySolutionNLPTenantScopeServer)
-		})
-		resp, err = s.trDiscoverySolutionNLPTenantScopeServer.Do(req)
+		resp, err = s.trDiscoverySolutionNLPServer.Do(req)
 	case "OperationsClient":
 		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)

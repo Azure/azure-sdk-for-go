@@ -128,12 +128,14 @@ func TestBlobClient_completeUpload_wrongDigest(t *testing.T) {
 }
 
 func TestBlobClient_DeleteBlob(t *testing.T) {
+	d := "sha256:bfe296a525011f7eb76075d688c681ca4feaad5afe3b142b36e30f1a171dc99a"
+	require.NotEqual(t, d, alpineBlobDigest, "test bug: deleting a blob used in other tests")
 	startRecording(t)
 	endpoint, cred, options := getEndpointCredAndClientOptions(t)
 	ctx := context.Background()
 	client, err := NewBlobClient(endpoint, cred, &BlobClientOptions{ClientOptions: options})
 	require.NoError(t, err)
-	_, err = client.DeleteBlob(ctx, "alpine", alpineBlobDigest, nil)
+	_, err = client.DeleteBlob(ctx, "alpine", d, nil)
 	require.NoError(t, err)
 }
 

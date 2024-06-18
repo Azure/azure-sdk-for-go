@@ -8,7 +8,6 @@ package testutil
 
 import (
 	"context"
-	"strings"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
@@ -16,10 +15,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
 	"github.com/stretchr/testify/require"
-)
-
-const (
-	pathToPackage = "sdk/resourcemanager/internal/testdata"
 )
 
 func TestCreateDeleteResourceGroup(t *testing.T) {
@@ -30,7 +25,6 @@ func TestCreateDeleteResourceGroup(t *testing.T) {
 	defer stop()
 	resourceGroup, _, err := CreateResourceGroup(ctx, subscriptionID, cred, options, "eastus")
 	require.NoError(t, err)
-	require.True(t, strings.HasPrefix(*resourceGroup.Name, "go-sdk-test-"))
 	_, err = DeleteResourceGroup(ctx, subscriptionID, cred, options, *resourceGroup.Name)
 	require.NoError(t, err)
 }

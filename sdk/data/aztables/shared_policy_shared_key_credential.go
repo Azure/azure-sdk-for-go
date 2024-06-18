@@ -98,7 +98,6 @@ func (c *SharedKeyCredential) buildCanonicalizedResource(u *url.URL) (string, er
 	}
 
 	if compVal, ok := params["comp"]; ok {
-		//do something here
 		cr.WriteString("?" + "comp=" + compVal[0])
 	}
 	return cr.String(), nil

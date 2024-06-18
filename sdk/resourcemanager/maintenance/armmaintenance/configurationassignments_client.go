@@ -28,8 +28,7 @@ type ConfigurationAssignmentsClient struct {
 }
 
 // NewConfigurationAssignmentsClient creates a new instance of ConfigurationAssignmentsClient with the specified values.
-//   - subscriptionID - Subscription credentials that uniquely identify a Microsoft Azure subscription. The subscription ID forms
-//     part of the URI for every service call.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewConfigurationAssignmentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ConfigurationAssignmentsClient, error) {
@@ -47,7 +46,7 @@ func NewConfigurationAssignmentsClient(subscriptionID string, credential azcore.
 // CreateOrUpdate - Register configuration for resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-10-01-preview
 //   - resourceGroupName - Resource group name
 //   - providerName - Resource provider name
 //   - resourceType - Resource type
@@ -110,7 +109,7 @@ func (client *ConfigurationAssignmentsClient) createOrUpdateCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, configurationAssignment); err != nil {
@@ -131,7 +130,7 @@ func (client *ConfigurationAssignmentsClient) createOrUpdateHandleResponse(resp 
 // CreateOrUpdateParent - Register configuration for resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-10-01-preview
 //   - resourceGroupName - Resource group name
 //   - providerName - Resource provider name
 //   - resourceParentType - Resource parent type
@@ -204,7 +203,7 @@ func (client *ConfigurationAssignmentsClient) createOrUpdateParentCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, configurationAssignment); err != nil {
@@ -225,7 +224,7 @@ func (client *ConfigurationAssignmentsClient) createOrUpdateParentHandleResponse
 // Delete - Unregister configuration for resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-10-01-preview
 //   - resourceGroupName - Resource group name
 //   - providerName - Resource provider name
 //   - resourceType - Resource type
@@ -287,7 +286,7 @@ func (client *ConfigurationAssignmentsClient) deleteCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -305,7 +304,7 @@ func (client *ConfigurationAssignmentsClient) deleteHandleResponse(resp *http.Re
 // DeleteParent - Unregister configuration for resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-10-01-preview
 //   - resourceGroupName - Resource group name
 //   - providerName - Resource provider name
 //   - resourceParentType - Resource parent type
@@ -377,7 +376,7 @@ func (client *ConfigurationAssignmentsClient) deleteParentCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -395,7 +394,7 @@ func (client *ConfigurationAssignmentsClient) deleteParentHandleResponse(resp *h
 // Get - Get configuration assignment for resource..
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-10-01-preview
 //   - resourceGroupName - Resource group name
 //   - providerName - Resource provider name
 //   - resourceType - Resource type
@@ -457,7 +456,7 @@ func (client *ConfigurationAssignmentsClient) getCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -475,7 +474,7 @@ func (client *ConfigurationAssignmentsClient) getHandleResponse(resp *http.Respo
 // GetParent - Get configuration assignment for resource..
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-10-01-preview
 //   - resourceGroupName - Resource group name
 //   - providerName - Resource provider name
 //   - resourceParentType - Resource parent type
@@ -547,7 +546,7 @@ func (client *ConfigurationAssignmentsClient) getParentCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -564,7 +563,7 @@ func (client *ConfigurationAssignmentsClient) getParentHandleResponse(resp *http
 
 // NewListPager - List configurationAssignments for resource.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-10-01-preview
 //   - resourceGroupName - Resource group name
 //   - providerName - Resource provider name
 //   - resourceType - Resource type
@@ -623,7 +622,7 @@ func (client *ConfigurationAssignmentsClient) listCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -640,7 +639,7 @@ func (client *ConfigurationAssignmentsClient) listHandleResponse(resp *http.Resp
 
 // NewListParentPager - List configurationAssignments for resource.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-10-01-preview
 //   - resourceGroupName - Resource group name
 //   - providerName - Resource provider name
 //   - resourceParentType - Resource parent type
@@ -709,7 +708,7 @@ func (client *ConfigurationAssignmentsClient) listParentCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

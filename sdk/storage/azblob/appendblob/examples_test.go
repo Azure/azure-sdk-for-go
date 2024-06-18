@@ -94,7 +94,7 @@ func Example_appendblob_SetExpiry() {
 	// validate set expiry operation
 	resp, err := appendBlobClient.GetProperties(context.TODO(), nil)
 	handleError(err)
-	if resp.ExpiresOn == nil || expiryTimeAbsolute.UTC().Format(http.TimeFormat) != (*resp.ExpiresOn).UTC().Format(http.TimeFormat) {
+	if resp.ExpiresOn == nil || expiryTimeAbsolute.UTC().Format(http.TimeFormat) != resp.ExpiresOn.UTC().Format(http.TimeFormat) {
 		return
 	}
 }

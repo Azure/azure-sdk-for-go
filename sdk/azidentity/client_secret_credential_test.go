@@ -18,6 +18,9 @@ import (
 const fakeSecret = "secret"
 
 func TestClientSecretCredential_Live(t *testing.T) {
+	if recording.GetRecordMode() == recording.LiveMode {
+		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22879")
+	}
 	for _, disabledID := range []bool{true, false} {
 		name := "default options"
 		if disabledID {

@@ -55,7 +55,9 @@ type ListRevisionsOptions struct {
 
 // ListSettingsOptions contains the optional parameters for the NewListSettingsPager method.
 type ListSettingsOptions struct {
-	// placeholder for future options
+	// The match conditions used when making the request.
+	// Conditions are applied to pages one by one in the order specified.
+	MatchConditions []azcore.MatchConditions
 }
 
 // SetReadOnlyOptions contains the optional parameters for the SetReadOnly method.

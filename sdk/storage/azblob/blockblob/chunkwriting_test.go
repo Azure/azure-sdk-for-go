@@ -151,7 +151,7 @@ func (pool *bufMgrTracker) Free() {
 }
 
 func TestSlowDestCopyFrom(t *testing.T) {
-	bigSrc := make([]byte, _1MiB+500*1024) //This should cause 2 reads
+	bigSrc := make([]byte, _1MiB+500*1024) // This should cause 2 reads
 
 	fakeBB := newFakeBlockBlob()
 

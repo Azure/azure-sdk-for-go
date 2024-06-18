@@ -71,13 +71,19 @@ func assertLinks(t *testing.T, lwid *LinksWithID) {
 	require.NotNil(t, msg)
 }
 
+func newNamespaceForTest(t *testing.T) *Namespace {
+	iv := test.GetIdentityVars(t)
+	ns, err := NewNamespace(NamespaceWithTokenCredential(iv.Endpoint, iv.Cred))
+	require.NoError(t, err)
+
+	return ns
+}
+
 func TestAMQPLinksBasic(t *testing.T) {
 	entityPath, cleanup := test.CreateExpiringQueue(t, nil)
 	defer cleanup()
 
-	cs := test.GetConnectionString(t)
-	ns, err := NewNamespace(NamespaceWithConnectionString(cs))
-	require.NoError(t, err)
+	ns := newNamespaceForTest(t)
 
 	links := NewAMQPLinks(NewAMQPLinksArgs{
 		NS:         ns,
@@ -104,9 +110,7 @@ func TestAMQPLinksLiveCloseConnectionUnexpectedly(t *testing.T) {
 	entityPath, cleanup := test.CreateExpiringQueue(t, nil)
 	defer cleanup()
 
-	cs := test.GetConnectionString(t)
-	ns, err := NewNamespace(NamespaceWithConnectionString(cs))
-	require.NoError(t, err)
+	ns := newNamespaceForTest(t)
 
 	defer func() { _ = ns.Close(false) }()
 
@@ -165,9 +169,7 @@ func TestAMQPLinksLiveCloseConnectionUnexpectedly(t *testing.T) {
 }
 
 func TestAMQPLinksLiveCloseLinksUnexpectedly(t *testing.T) {
-	cs := test.GetConnectionString(t)
-	ns, err := NewNamespace(NamespaceWithConnectionString(cs))
-	require.NoError(t, err)
+	ns := newNamespaceForTest(t)
 
 	defer func() { _ = ns.Close(false) }()
 
@@ -220,9 +222,7 @@ func TestAMQPLinksLiveCloseLinksUnexpectedly(t *testing.T) {
 }
 
 func TestAMQPLinks_LinkWithConnectionFailure(t *testing.T) {
-	cs := test.GetConnectionString(t)
-	ns, err := NewNamespace(NamespaceWithConnectionString(cs))
-	require.NoError(t, err)
+	ns := newNamespaceForTest(t)
 
 	defer func() { _ = ns.Close(false) }()
 
@@ -268,9 +268,7 @@ func TestAMQPLinks_LinkWithConnectionFailure(t *testing.T) {
 }
 
 func TestAMQPLinks_LinkWithConnectionFailureAndExpiredContext(t *testing.T) {
-	cs := test.GetConnectionString(t)
-	ns, err := NewNamespace(NamespaceWithConnectionString(cs))
-	require.NoError(t, err)
+	ns := newNamespaceForTest(t)
 
 	defer test.RequireNSClose(t, ns)
 
@@ -318,9 +316,7 @@ func TestAMQPLinks_LinkWithConnectionFailureAndExpiredContext(t *testing.T) {
 }
 
 func TestAMQPLinks_LinkFailure(t *testing.T) {
-	cs := test.GetConnectionString(t)
-	ns, err := NewNamespace(NamespaceWithConnectionString(cs))
-	require.NoError(t, err)
+	ns := newNamespaceForTest(t)
 
 	defer test.RequireNSClose(t, ns)
 
@@ -362,9 +358,7 @@ func TestAMQPLinks_LinkFailure(t *testing.T) {
 }
 
 func TestAMQPLinks_LinkFailureUpgradedToConnectionError(t *testing.T) {
-	cs := test.GetConnectionString(t)
-	ns, err := NewNamespace(NamespaceWithConnectionString(cs))
-	require.NoError(t, err)
+	ns := newNamespaceForTest(t)
 
 	defer test.RequireNSClose(t, ns)
 
@@ -432,9 +426,7 @@ func TestAMQPLinksCBSLinkStillOpen(t *testing.T) {
 	entityPath, cleanup := test.CreateExpiringQueue(t, nil)
 	defer cleanup()
 
-	cs := test.GetConnectionString(t)
-	ns, err := NewNamespace(NamespaceWithConnectionString(cs))
-	require.NoError(t, err)
+	ns := newNamespaceForTest(t)
 
 	defer func() { _ = ns.Close(false) }()
 
@@ -479,9 +471,7 @@ func TestAMQPLinksLiveRecoverLink(t *testing.T) {
 	entityPath, cleanup := test.CreateExpiringQueue(t, nil)
 	defer cleanup()
 
-	cs := test.GetConnectionString(t)
-	ns, err := NewNamespace(NamespaceWithConnectionString(cs))
-	require.NoError(t, err)
+	ns := newNamespaceForTest(t)
 
 	defer func() { _ = ns.Close(false) }()
 
@@ -517,9 +507,7 @@ func TestAMQPLinksLiveRace(t *testing.T) {
 	entityPath, cleanup := test.CreateExpiringQueue(t, nil)
 	defer cleanup()
 
-	cs := test.GetConnectionString(t)
-	ns, err := NewNamespace(NamespaceWithConnectionString(cs))
-	require.NoError(t, err)
+	ns := newNamespaceForTest(t)
 
 	defer func() { _ = ns.Close(false) }()
 
@@ -569,9 +557,7 @@ func TestAMQPLinksLiveRaceLink(t *testing.T) {
 	entityPath, cleanup := test.CreateExpiringQueue(t, nil)
 	defer cleanup()
 
-	cs := test.GetConnectionString(t)
-	ns, err := NewNamespace(NamespaceWithConnectionString(cs))
-	require.NoError(t, err)
+	ns := newNamespaceForTest(t)
 
 	defer func() { _ = ns.Close(false) }()
 
@@ -613,9 +599,7 @@ func TestAMQPLinksRetry(t *testing.T) {
 	entityPath, cleanup := test.CreateExpiringQueue(t, nil)
 	defer cleanup()
 
-	cs := test.GetConnectionString(t)
-	ns, err := NewNamespace(NamespaceWithConnectionString(cs))
-	require.NoError(t, err)
+	ns := newNamespaceForTest(t)
 
 	defer func() { _ = ns.Close(false) }()
 
@@ -636,7 +620,7 @@ func TestAMQPLinksRetry(t *testing.T) {
 		require.NoError(t, err)
 	}()
 
-	err = links.Retry(context.Background(), log.Event("NotUsed"), "NotUsed", func(ctx context.Context, lwid *LinksWithID, args *utils.RetryFnArgs) error {
+	err := links.Retry(context.Background(), log.Event("NotUsed"), "NotUsed", func(ctx context.Context, lwid *LinksWithID, args *utils.RetryFnArgs) error {
 		// force recoveries
 		return &amqp.ConnError{}
 	}, exported.RetryOptions{
@@ -656,9 +640,7 @@ func TestAMQPLinksMultipleWithSameConnection(t *testing.T) {
 	entityPath, cleanup := test.CreateExpiringQueue(t, nil)
 	defer cleanup()
 
-	cs := test.GetConnectionString(t)
-	ns, err := NewNamespace(NamespaceWithConnectionString(cs))
-	require.NoError(t, err)
+	ns := newNamespaceForTest(t)
 
 	defer func() { _ = ns.Close(false) }()
 
@@ -888,9 +870,7 @@ func TestAMQPLinksCreditTracking(t *testing.T) {
 	entityPath, cleanup := test.CreateExpiringQueue(t, nil)
 	defer cleanup()
 
-	cs := test.GetConnectionString(t)
-	ns, err := NewNamespace(NamespaceWithConnectionString(cs))
-	require.NoError(t, err)
+	ns := newNamespaceForTest(t)
 
 	links := NewAMQPLinks(NewAMQPLinksArgs{
 		NS:         ns,

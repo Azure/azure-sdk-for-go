@@ -28,7 +28,7 @@ type RestorableMongodbDatabasesClient struct {
 }
 
 // NewRestorableMongodbDatabasesClient creates a new instance of RestorableMongodbDatabasesClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewRestorableMongodbDatabasesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RestorableMongodbDatabasesClient, error) {
@@ -47,7 +47,7 @@ func NewRestorableMongodbDatabasesClient(subscriptionID string, credential azcor
 // account. This helps in scenario where database was accidentally deleted to get the deletion
 // time. This API requires 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/…/read' permission
 //
-// Generated from API version 2024-02-15-preview
+// Generated from API version 2024-05-15-preview
 //   - location - Cosmos DB region, with spaces between words and each word capitalized.
 //   - instanceID - The instanceId GUID of a restorable database account.
 //   - options - RestorableMongodbDatabasesClientListOptions contains the optional parameters for the RestorableMongodbDatabasesClient.NewListPager
@@ -96,7 +96,7 @@ func (client *RestorableMongodbDatabasesClient) listCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-15-preview")
+	reqQP.Set("api-version", "2024-05-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

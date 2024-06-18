@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/data-transfer-service/CosmosDBDataTransferJobCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/51cbd0e070cbbe29abbef09b29066f0bace78527/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-05-15-preview/examples/data-transfer-service/CosmosDBDataTransferJobCreate.json
 func ExampleDataTransferJobsClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -73,7 +73,7 @@ func ExampleDataTransferJobsClient_Create() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/data-transfer-service/CosmosDBDataTransferJobGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/51cbd0e070cbbe29abbef09b29066f0bace78527/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-05-15-preview/examples/data-transfer-service/CosmosDBDataTransferJobGet.json
 func ExampleDataTransferJobsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -115,7 +115,7 @@ func ExampleDataTransferJobsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/data-transfer-service/CosmosDBDataTransferJobPause.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/51cbd0e070cbbe29abbef09b29066f0bace78527/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-05-15-preview/examples/data-transfer-service/CosmosDBDataTransferJobPause.json
 func ExampleDataTransferJobsClient_Pause() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -157,7 +157,7 @@ func ExampleDataTransferJobsClient_Pause() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/data-transfer-service/CosmosDBDataTransferJobResume.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/51cbd0e070cbbe29abbef09b29066f0bace78527/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-05-15-preview/examples/data-transfer-service/CosmosDBDataTransferJobResume.json
 func ExampleDataTransferJobsClient_Resume() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -199,7 +199,7 @@ func ExampleDataTransferJobsClient_Resume() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/data-transfer-service/CosmosDBDataTransferJobCancel.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/51cbd0e070cbbe29abbef09b29066f0bace78527/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-05-15-preview/examples/data-transfer-service/CosmosDBDataTransferJobCancel.json
 func ExampleDataTransferJobsClient_Cancel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -241,7 +241,7 @@ func ExampleDataTransferJobsClient_Cancel() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/data-transfer-service/CosmosDBDataTransferJobComplete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/51cbd0e070cbbe29abbef09b29066f0bace78527/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-05-15-preview/examples/data-transfer-service/CosmosDBDataTransferJobComplete.json
 func ExampleDataTransferJobsClient_Complete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -283,7 +283,7 @@ func ExampleDataTransferJobsClient_Complete() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/data-transfer-service/CosmosDBDataTransferJobFeed.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/51cbd0e070cbbe29abbef09b29066f0bace78527/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-05-15-preview/examples/data-transfer-service/CosmosDBDataTransferJobFeed.json
 func ExampleDataTransferJobsClient_NewListByDatabaseAccountPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

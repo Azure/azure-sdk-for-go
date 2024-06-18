@@ -28,7 +28,7 @@ type PercentileSourceTargetClient struct {
 }
 
 // NewPercentileSourceTargetClient creates a new instance of PercentileSourceTargetClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewPercentileSourceTargetClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PercentileSourceTargetClient, error) {
@@ -46,7 +46,7 @@ func NewPercentileSourceTargetClient(subscriptionID string, credential azcore.To
 // NewListMetricsPager - Retrieves the metrics determined by the given filter for the given account, source and target region.
 // This url is only for PBS and Replication Latency data
 //
-// Generated from API version 2024-02-15-preview
+// Generated from API version 2024-05-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - sourceRegion - Source region from which data is written. Cosmos DB region, with spaces between words and each word capitalized.
@@ -109,7 +109,7 @@ func (client *PercentileSourceTargetClient) listMetricsCreateRequest(ctx context
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("$filter", filter)
-	reqQP.Set("api-version", "2024-02-15-preview")
+	reqQP.Set("api-version", "2024-05-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

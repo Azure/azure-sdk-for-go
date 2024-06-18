@@ -611,76 +611,6 @@ type LocationsClientListResponse struct {
 	LocationListResult
 }
 
-// MongoClustersClientCheckNameAvailabilityResponse contains the response from method MongoClustersClient.CheckNameAvailability.
-type MongoClustersClientCheckNameAvailabilityResponse struct {
-	// The check availability result.
-	CheckNameAvailabilityResponse
-}
-
-// MongoClustersClientCreateOrUpdateFirewallRuleResponse contains the response from method MongoClustersClient.BeginCreateOrUpdateFirewallRule.
-type MongoClustersClientCreateOrUpdateFirewallRuleResponse struct {
-	// Represents a mongo cluster firewall rule.
-	FirewallRule
-}
-
-// MongoClustersClientCreateOrUpdateResponse contains the response from method MongoClustersClient.BeginCreateOrUpdate.
-type MongoClustersClientCreateOrUpdateResponse struct {
-	// Represents a mongo cluster resource.
-	MongoCluster
-}
-
-// MongoClustersClientDeleteFirewallRuleResponse contains the response from method MongoClustersClient.BeginDeleteFirewallRule.
-type MongoClustersClientDeleteFirewallRuleResponse struct {
-	// placeholder for future response values
-}
-
-// MongoClustersClientDeleteResponse contains the response from method MongoClustersClient.BeginDelete.
-type MongoClustersClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// MongoClustersClientGetFirewallRuleResponse contains the response from method MongoClustersClient.GetFirewallRule.
-type MongoClustersClientGetFirewallRuleResponse struct {
-	// Represents a mongo cluster firewall rule.
-	FirewallRule
-}
-
-// MongoClustersClientGetResponse contains the response from method MongoClustersClient.Get.
-type MongoClustersClientGetResponse struct {
-	// Represents a mongo cluster resource.
-	MongoCluster
-}
-
-// MongoClustersClientListByResourceGroupResponse contains the response from method MongoClustersClient.NewListByResourceGroupPager.
-type MongoClustersClientListByResourceGroupResponse struct {
-	// A list of mongo clusters.
-	MongoClusterListResult
-}
-
-// MongoClustersClientListConnectionStringsResponse contains the response from method MongoClustersClient.ListConnectionStrings.
-type MongoClustersClientListConnectionStringsResponse struct {
-	// The connection strings for the given mongo cluster.
-	ListConnectionStringsResult
-}
-
-// MongoClustersClientListFirewallRulesResponse contains the response from method MongoClustersClient.NewListFirewallRulesPager.
-type MongoClustersClientListFirewallRulesResponse struct {
-	// A list of firewall rules.
-	FirewallRuleListResult
-}
-
-// MongoClustersClientListResponse contains the response from method MongoClustersClient.NewListPager.
-type MongoClustersClientListResponse struct {
-	// A list of mongo clusters.
-	MongoClusterListResult
-}
-
-// MongoClustersClientUpdateResponse contains the response from method MongoClustersClient.BeginUpdate.
-type MongoClustersClientUpdateResponse struct {
-	// Represents a mongo cluster resource.
-	MongoCluster
-}
-
 // MongoDBResourcesClientCreateUpdateMongoDBCollectionResponse contains the response from method MongoDBResourcesClient.BeginCreateUpdateMongoDBCollection.
 type MongoDBResourcesClientCreateUpdateMongoDBCollectionResponse struct {
 	// An Azure Cosmos DB MongoDB collection.
@@ -861,6 +791,23 @@ type MongoDBResourcesClientUpdateMongoDBCollectionThroughputResponse struct {
 type MongoDBResourcesClientUpdateMongoDBDatabaseThroughputResponse struct {
 	// An Azure Cosmos DB resource throughput.
 	ThroughputSettingsGetResults
+}
+
+// NetworkSecurityPerimeterConfigurationsClientGetResponse contains the response from method NetworkSecurityPerimeterConfigurationsClient.Get.
+type NetworkSecurityPerimeterConfigurationsClientGetResponse struct {
+	// Network security perimeter (NSP) configuration resource
+	NetworkSecurityPerimeterConfiguration
+}
+
+// NetworkSecurityPerimeterConfigurationsClientListResponse contains the response from method NetworkSecurityPerimeterConfigurationsClient.NewListPager.
+type NetworkSecurityPerimeterConfigurationsClientListResponse struct {
+	// Result of a list NSP (network security perimeter) configurations request.
+	NetworkSecurityPerimeterConfigurationListResult
+}
+
+// NetworkSecurityPerimeterConfigurationsClientReconcileResponse contains the response from method NetworkSecurityPerimeterConfigurationsClient.BeginReconcile.
+type NetworkSecurityPerimeterConfigurationsClientReconcileResponse struct {
+	// placeholder for future response values
 }
 
 // NotebookWorkspacesClientCreateOrUpdateResponse contains the response from method NotebookWorkspacesClient.BeginCreateOrUpdate.

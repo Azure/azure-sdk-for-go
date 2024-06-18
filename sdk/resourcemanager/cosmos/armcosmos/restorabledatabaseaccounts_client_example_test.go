@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/CosmosDBRestorableDatabaseAccountList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/51cbd0e070cbbe29abbef09b29066f0bace78527/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-05-15-preview/examples/CosmosDBRestorableDatabaseAccountList.json
 func ExampleRestorableDatabaseAccountsClient_NewListByLocationPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -94,7 +94,7 @@ func ExampleRestorableDatabaseAccountsClient_NewListByLocationPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/CosmosDBRestorableDatabaseAccountNoLocationList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/51cbd0e070cbbe29abbef09b29066f0bace78527/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-05-15-preview/examples/CosmosDBRestorableDatabaseAccountNoLocationList.json
 func ExampleRestorableDatabaseAccountsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -171,7 +171,7 @@ func ExampleRestorableDatabaseAccountsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/CosmosDBRestorableDatabaseAccountGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/51cbd0e070cbbe29abbef09b29066f0bace78527/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-05-15-preview/examples/CosmosDBRestorableDatabaseAccountGet.json
 func ExampleRestorableDatabaseAccountsClient_GetByLocation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -28,7 +28,7 @@ type RestorableGremlinGraphsClient struct {
 }
 
 // NewRestorableGremlinGraphsClient creates a new instance of RestorableGremlinGraphsClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewRestorableGremlinGraphsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RestorableGremlinGraphsClient, error) {
@@ -47,7 +47,7 @@ func NewRestorableGremlinGraphsClient(subscriptionID string, credential azcore.T
 // This helps in scenario where container was accidentally deleted. This API requires
 // 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/…/read' permission
 //
-// Generated from API version 2024-02-15-preview
+// Generated from API version 2024-05-15-preview
 //   - location - Cosmos DB region, with spaces between words and each word capitalized.
 //   - instanceID - The instanceId GUID of a restorable database account.
 //   - options - RestorableGremlinGraphsClientListOptions contains the optional parameters for the RestorableGremlinGraphsClient.NewListPager
@@ -96,7 +96,7 @@ func (client *RestorableGremlinGraphsClient) listCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-15-preview")
+	reqQP.Set("api-version", "2024-05-15-preview")
 	if options != nil && options.EndTime != nil {
 		reqQP.Set("endTime", *options.EndTime)
 	}

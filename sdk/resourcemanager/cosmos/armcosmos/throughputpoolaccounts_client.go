@@ -28,7 +28,7 @@ type ThroughputPoolAccountsClient struct {
 }
 
 // NewThroughputPoolAccountsClient creates a new instance of ThroughputPoolAccountsClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewThroughputPoolAccountsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ThroughputPoolAccountsClient, error) {
@@ -45,7 +45,7 @@ func NewThroughputPoolAccountsClient(subscriptionID string, credential azcore.To
 
 // NewListPager - Lists all the Azure Cosmos DB accounts available under the subscription.
 //
-// Generated from API version 2024-02-15-preview
+// Generated from API version 2024-05-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - throughputPoolName - Cosmos DB Throughput Pool name.
 //   - options - ThroughputPoolAccountsClientListOptions contains the optional parameters for the ThroughputPoolAccountsClient.NewListPager
@@ -93,7 +93,7 @@ func (client *ThroughputPoolAccountsClient) listCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-15-preview")
+	reqQP.Set("api-version", "2024-05-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

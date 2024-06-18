@@ -660,79 +660,6 @@ type LocationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// MongoClustersClientBeginCreateOrUpdateFirewallRuleOptions contains the optional parameters for the MongoClustersClient.BeginCreateOrUpdateFirewallRule
-// method.
-type MongoClustersClientBeginCreateOrUpdateFirewallRuleOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// MongoClustersClientBeginCreateOrUpdateOptions contains the optional parameters for the MongoClustersClient.BeginCreateOrUpdate
-// method.
-type MongoClustersClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// MongoClustersClientBeginDeleteFirewallRuleOptions contains the optional parameters for the MongoClustersClient.BeginDeleteFirewallRule
-// method.
-type MongoClustersClientBeginDeleteFirewallRuleOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// MongoClustersClientBeginDeleteOptions contains the optional parameters for the MongoClustersClient.BeginDelete method.
-type MongoClustersClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// MongoClustersClientBeginUpdateOptions contains the optional parameters for the MongoClustersClient.BeginUpdate method.
-type MongoClustersClientBeginUpdateOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// MongoClustersClientCheckNameAvailabilityOptions contains the optional parameters for the MongoClustersClient.CheckNameAvailability
-// method.
-type MongoClustersClientCheckNameAvailabilityOptions struct {
-	// placeholder for future optional parameters
-}
-
-// MongoClustersClientGetFirewallRuleOptions contains the optional parameters for the MongoClustersClient.GetFirewallRule
-// method.
-type MongoClustersClientGetFirewallRuleOptions struct {
-	// placeholder for future optional parameters
-}
-
-// MongoClustersClientGetOptions contains the optional parameters for the MongoClustersClient.Get method.
-type MongoClustersClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// MongoClustersClientListByResourceGroupOptions contains the optional parameters for the MongoClustersClient.NewListByResourceGroupPager
-// method.
-type MongoClustersClientListByResourceGroupOptions struct {
-	// placeholder for future optional parameters
-}
-
-// MongoClustersClientListConnectionStringsOptions contains the optional parameters for the MongoClustersClient.ListConnectionStrings
-// method.
-type MongoClustersClientListConnectionStringsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// MongoClustersClientListFirewallRulesOptions contains the optional parameters for the MongoClustersClient.NewListFirewallRulesPager
-// method.
-type MongoClustersClientListFirewallRulesOptions struct {
-	// placeholder for future optional parameters
-}
-
-// MongoClustersClientListOptions contains the optional parameters for the MongoClustersClient.NewListPager method.
-type MongoClustersClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
 // MongoDBResourcesClientBeginCreateUpdateMongoDBCollectionOptions contains the optional parameters for the MongoDBResourcesClient.BeginCreateUpdateMongoDBCollection
 // method.
 type MongoDBResourcesClientBeginCreateUpdateMongoDBCollectionOptions struct {
@@ -937,6 +864,25 @@ type MongoDBResourcesClientListMongoRoleDefinitionsOptions struct {
 // MongoDBResourcesClientListMongoUserDefinitionsOptions contains the optional parameters for the MongoDBResourcesClient.NewListMongoUserDefinitionsPager
 // method.
 type MongoDBResourcesClientListMongoUserDefinitionsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NetworkSecurityPerimeterConfigurationsClientBeginReconcileOptions contains the optional parameters for the NetworkSecurityPerimeterConfigurationsClient.BeginReconcile
+// method.
+type NetworkSecurityPerimeterConfigurationsClientBeginReconcileOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// NetworkSecurityPerimeterConfigurationsClientGetOptions contains the optional parameters for the NetworkSecurityPerimeterConfigurationsClient.Get
+// method.
+type NetworkSecurityPerimeterConfigurationsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NetworkSecurityPerimeterConfigurationsClientListOptions contains the optional parameters for the NetworkSecurityPerimeterConfigurationsClient.NewListPager
+// method.
+type NetworkSecurityPerimeterConfigurationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 

@@ -62,6 +62,33 @@ func unmarshalDataTransferDataSourceSinkClassification(rawMsg json.RawMessage) (
 	return b, nil
 }
 
+func unmarshalServiceResourceCreateUpdatePropertiesClassification(rawMsg json.RawMessage) (ServiceResourceCreateUpdatePropertiesClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b ServiceResourceCreateUpdatePropertiesClassification
+	switch m["serviceType"] {
+	case string(ServiceTypeDataTransfer):
+		b = &DataTransferServiceResourceCreateUpdateProperties{}
+	case string(ServiceTypeGraphAPICompute):
+		b = &GraphAPIComputeServiceResourceCreateUpdateProperties{}
+	case string(ServiceTypeMaterializedViewsBuilder):
+		b = &MaterializedViewsBuilderServiceResourceCreateUpdateProperties{}
+	case string(ServiceTypeSQLDedicatedGateway):
+		b = &SQLDedicatedGatewayServiceResourceCreateUpdateProperties{}
+	default:
+		b = &ServiceResourceCreateUpdateProperties{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
 func unmarshalServiceResourcePropertiesClassification(rawMsg json.RawMessage) (ServiceResourcePropertiesClassification, error) {
 	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil

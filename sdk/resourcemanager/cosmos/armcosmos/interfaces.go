@@ -37,6 +37,16 @@ type DataTransferDataSourceSinkClassification interface {
 	GetDataTransferDataSourceSink() *DataTransferDataSourceSink
 }
 
+// ServiceResourceCreateUpdatePropertiesClassification provides polymorphic access to related types.
+// Call the interface's GetServiceResourceCreateUpdateProperties() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *DataTransferServiceResourceCreateUpdateProperties, *GraphAPIComputeServiceResourceCreateUpdateProperties, *MaterializedViewsBuilderServiceResourceCreateUpdateProperties,
+// - *SQLDedicatedGatewayServiceResourceCreateUpdateProperties, *ServiceResourceCreateUpdateProperties
+type ServiceResourceCreateUpdatePropertiesClassification interface {
+	// GetServiceResourceCreateUpdateProperties returns the ServiceResourceCreateUpdateProperties content of the underlying type.
+	GetServiceResourceCreateUpdateProperties() *ServiceResourceCreateUpdateProperties
+}
+
 // ServiceResourcePropertiesClassification provides polymorphic access to related types.
 // Call the interface's GetServiceResourceProperties() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:

@@ -19,50 +19,50 @@ import (
 
 // ServerFactory is a fake server for instances of the armcosmos.ClientFactory type.
 type ServerFactory struct {
-	CassandraClustersServer            CassandraClustersServer
-	CassandraDataCentersServer         CassandraDataCentersServer
-	CassandraResourcesServer           CassandraResourcesServer
-	CollectionServer                   CollectionServer
-	CollectionPartitionServer          CollectionPartitionServer
-	CollectionPartitionRegionServer    CollectionPartitionRegionServer
-	CollectionRegionServer             CollectionRegionServer
-	DataTransferJobsServer             DataTransferJobsServer
-	DatabaseAccountRegionServer        DatabaseAccountRegionServer
-	DatabaseAccountsServer             DatabaseAccountsServer
-	DatabaseServer                     DatabaseServer
-	GraphResourcesServer               GraphResourcesServer
-	GremlinResourcesServer             GremlinResourcesServer
-	LocationsServer                    LocationsServer
-	MongoClustersServer                MongoClustersServer
-	MongoDBResourcesServer             MongoDBResourcesServer
-	NotebookWorkspacesServer           NotebookWorkspacesServer
-	OperationsServer                   OperationsServer
-	PartitionKeyRangeIDServer          PartitionKeyRangeIDServer
-	PartitionKeyRangeIDRegionServer    PartitionKeyRangeIDRegionServer
-	PercentileServer                   PercentileServer
-	PercentileSourceTargetServer       PercentileSourceTargetServer
-	PercentileTargetServer             PercentileTargetServer
-	PrivateEndpointConnectionsServer   PrivateEndpointConnectionsServer
-	PrivateLinkResourcesServer         PrivateLinkResourcesServer
-	RestorableDatabaseAccountsServer   RestorableDatabaseAccountsServer
-	RestorableGremlinDatabasesServer   RestorableGremlinDatabasesServer
-	RestorableGremlinGraphsServer      RestorableGremlinGraphsServer
-	RestorableGremlinResourcesServer   RestorableGremlinResourcesServer
-	RestorableMongodbCollectionsServer RestorableMongodbCollectionsServer
-	RestorableMongodbDatabasesServer   RestorableMongodbDatabasesServer
-	RestorableMongodbResourcesServer   RestorableMongodbResourcesServer
-	RestorableSQLContainersServer      RestorableSQLContainersServer
-	RestorableSQLDatabasesServer       RestorableSQLDatabasesServer
-	RestorableSQLResourcesServer       RestorableSQLResourcesServer
-	RestorableTableResourcesServer     RestorableTableResourcesServer
-	RestorableTablesServer             RestorableTablesServer
-	SQLResourcesServer                 SQLResourcesServer
-	ServiceServer                      ServiceServer
-	TableResourcesServer               TableResourcesServer
-	ThroughputPoolAccountServer        ThroughputPoolAccountServer
-	ThroughputPoolAccountsServer       ThroughputPoolAccountsServer
-	ThroughputPoolServer               ThroughputPoolServer
-	ThroughputPoolsServer              ThroughputPoolsServer
+	CassandraClustersServer                      CassandraClustersServer
+	CassandraDataCentersServer                   CassandraDataCentersServer
+	CassandraResourcesServer                     CassandraResourcesServer
+	CollectionServer                             CollectionServer
+	CollectionPartitionServer                    CollectionPartitionServer
+	CollectionPartitionRegionServer              CollectionPartitionRegionServer
+	CollectionRegionServer                       CollectionRegionServer
+	DataTransferJobsServer                       DataTransferJobsServer
+	DatabaseAccountRegionServer                  DatabaseAccountRegionServer
+	DatabaseAccountsServer                       DatabaseAccountsServer
+	DatabaseServer                               DatabaseServer
+	GraphResourcesServer                         GraphResourcesServer
+	GremlinResourcesServer                       GremlinResourcesServer
+	LocationsServer                              LocationsServer
+	MongoDBResourcesServer                       MongoDBResourcesServer
+	NetworkSecurityPerimeterConfigurationsServer NetworkSecurityPerimeterConfigurationsServer
+	NotebookWorkspacesServer                     NotebookWorkspacesServer
+	OperationsServer                             OperationsServer
+	PartitionKeyRangeIDServer                    PartitionKeyRangeIDServer
+	PartitionKeyRangeIDRegionServer              PartitionKeyRangeIDRegionServer
+	PercentileServer                             PercentileServer
+	PercentileSourceTargetServer                 PercentileSourceTargetServer
+	PercentileTargetServer                       PercentileTargetServer
+	PrivateEndpointConnectionsServer             PrivateEndpointConnectionsServer
+	PrivateLinkResourcesServer                   PrivateLinkResourcesServer
+	RestorableDatabaseAccountsServer             RestorableDatabaseAccountsServer
+	RestorableGremlinDatabasesServer             RestorableGremlinDatabasesServer
+	RestorableGremlinGraphsServer                RestorableGremlinGraphsServer
+	RestorableGremlinResourcesServer             RestorableGremlinResourcesServer
+	RestorableMongodbCollectionsServer           RestorableMongodbCollectionsServer
+	RestorableMongodbDatabasesServer             RestorableMongodbDatabasesServer
+	RestorableMongodbResourcesServer             RestorableMongodbResourcesServer
+	RestorableSQLContainersServer                RestorableSQLContainersServer
+	RestorableSQLDatabasesServer                 RestorableSQLDatabasesServer
+	RestorableSQLResourcesServer                 RestorableSQLResourcesServer
+	RestorableTableResourcesServer               RestorableTableResourcesServer
+	RestorableTablesServer                       RestorableTablesServer
+	SQLResourcesServer                           SQLResourcesServer
+	ServiceServer                                ServiceServer
+	TableResourcesServer                         TableResourcesServer
+	ThroughputPoolAccountServer                  ThroughputPoolAccountServer
+	ThroughputPoolAccountsServer                 ThroughputPoolAccountsServer
+	ThroughputPoolServer                         ThroughputPoolServer
+	ThroughputPoolsServer                        ThroughputPoolsServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -77,52 +77,52 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armcosmos.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                                  *ServerFactory
-	trMu                                 sync.Mutex
-	trCassandraClustersServer            *CassandraClustersServerTransport
-	trCassandraDataCentersServer         *CassandraDataCentersServerTransport
-	trCassandraResourcesServer           *CassandraResourcesServerTransport
-	trCollectionServer                   *CollectionServerTransport
-	trCollectionPartitionServer          *CollectionPartitionServerTransport
-	trCollectionPartitionRegionServer    *CollectionPartitionRegionServerTransport
-	trCollectionRegionServer             *CollectionRegionServerTransport
-	trDataTransferJobsServer             *DataTransferJobsServerTransport
-	trDatabaseAccountRegionServer        *DatabaseAccountRegionServerTransport
-	trDatabaseAccountsServer             *DatabaseAccountsServerTransport
-	trDatabaseServer                     *DatabaseServerTransport
-	trGraphResourcesServer               *GraphResourcesServerTransport
-	trGremlinResourcesServer             *GremlinResourcesServerTransport
-	trLocationsServer                    *LocationsServerTransport
-	trMongoClustersServer                *MongoClustersServerTransport
-	trMongoDBResourcesServer             *MongoDBResourcesServerTransport
-	trNotebookWorkspacesServer           *NotebookWorkspacesServerTransport
-	trOperationsServer                   *OperationsServerTransport
-	trPartitionKeyRangeIDServer          *PartitionKeyRangeIDServerTransport
-	trPartitionKeyRangeIDRegionServer    *PartitionKeyRangeIDRegionServerTransport
-	trPercentileServer                   *PercentileServerTransport
-	trPercentileSourceTargetServer       *PercentileSourceTargetServerTransport
-	trPercentileTargetServer             *PercentileTargetServerTransport
-	trPrivateEndpointConnectionsServer   *PrivateEndpointConnectionsServerTransport
-	trPrivateLinkResourcesServer         *PrivateLinkResourcesServerTransport
-	trRestorableDatabaseAccountsServer   *RestorableDatabaseAccountsServerTransport
-	trRestorableGremlinDatabasesServer   *RestorableGremlinDatabasesServerTransport
-	trRestorableGremlinGraphsServer      *RestorableGremlinGraphsServerTransport
-	trRestorableGremlinResourcesServer   *RestorableGremlinResourcesServerTransport
-	trRestorableMongodbCollectionsServer *RestorableMongodbCollectionsServerTransport
-	trRestorableMongodbDatabasesServer   *RestorableMongodbDatabasesServerTransport
-	trRestorableMongodbResourcesServer   *RestorableMongodbResourcesServerTransport
-	trRestorableSQLContainersServer      *RestorableSQLContainersServerTransport
-	trRestorableSQLDatabasesServer       *RestorableSQLDatabasesServerTransport
-	trRestorableSQLResourcesServer       *RestorableSQLResourcesServerTransport
-	trRestorableTableResourcesServer     *RestorableTableResourcesServerTransport
-	trRestorableTablesServer             *RestorableTablesServerTransport
-	trSQLResourcesServer                 *SQLResourcesServerTransport
-	trServiceServer                      *ServiceServerTransport
-	trTableResourcesServer               *TableResourcesServerTransport
-	trThroughputPoolAccountServer        *ThroughputPoolAccountServerTransport
-	trThroughputPoolAccountsServer       *ThroughputPoolAccountsServerTransport
-	trThroughputPoolServer               *ThroughputPoolServerTransport
-	trThroughputPoolsServer              *ThroughputPoolsServerTransport
+	srv                                            *ServerFactory
+	trMu                                           sync.Mutex
+	trCassandraClustersServer                      *CassandraClustersServerTransport
+	trCassandraDataCentersServer                   *CassandraDataCentersServerTransport
+	trCassandraResourcesServer                     *CassandraResourcesServerTransport
+	trCollectionServer                             *CollectionServerTransport
+	trCollectionPartitionServer                    *CollectionPartitionServerTransport
+	trCollectionPartitionRegionServer              *CollectionPartitionRegionServerTransport
+	trCollectionRegionServer                       *CollectionRegionServerTransport
+	trDataTransferJobsServer                       *DataTransferJobsServerTransport
+	trDatabaseAccountRegionServer                  *DatabaseAccountRegionServerTransport
+	trDatabaseAccountsServer                       *DatabaseAccountsServerTransport
+	trDatabaseServer                               *DatabaseServerTransport
+	trGraphResourcesServer                         *GraphResourcesServerTransport
+	trGremlinResourcesServer                       *GremlinResourcesServerTransport
+	trLocationsServer                              *LocationsServerTransport
+	trMongoDBResourcesServer                       *MongoDBResourcesServerTransport
+	trNetworkSecurityPerimeterConfigurationsServer *NetworkSecurityPerimeterConfigurationsServerTransport
+	trNotebookWorkspacesServer                     *NotebookWorkspacesServerTransport
+	trOperationsServer                             *OperationsServerTransport
+	trPartitionKeyRangeIDServer                    *PartitionKeyRangeIDServerTransport
+	trPartitionKeyRangeIDRegionServer              *PartitionKeyRangeIDRegionServerTransport
+	trPercentileServer                             *PercentileServerTransport
+	trPercentileSourceTargetServer                 *PercentileSourceTargetServerTransport
+	trPercentileTargetServer                       *PercentileTargetServerTransport
+	trPrivateEndpointConnectionsServer             *PrivateEndpointConnectionsServerTransport
+	trPrivateLinkResourcesServer                   *PrivateLinkResourcesServerTransport
+	trRestorableDatabaseAccountsServer             *RestorableDatabaseAccountsServerTransport
+	trRestorableGremlinDatabasesServer             *RestorableGremlinDatabasesServerTransport
+	trRestorableGremlinGraphsServer                *RestorableGremlinGraphsServerTransport
+	trRestorableGremlinResourcesServer             *RestorableGremlinResourcesServerTransport
+	trRestorableMongodbCollectionsServer           *RestorableMongodbCollectionsServerTransport
+	trRestorableMongodbDatabasesServer             *RestorableMongodbDatabasesServerTransport
+	trRestorableMongodbResourcesServer             *RestorableMongodbResourcesServerTransport
+	trRestorableSQLContainersServer                *RestorableSQLContainersServerTransport
+	trRestorableSQLDatabasesServer                 *RestorableSQLDatabasesServerTransport
+	trRestorableSQLResourcesServer                 *RestorableSQLResourcesServerTransport
+	trRestorableTableResourcesServer               *RestorableTableResourcesServerTransport
+	trRestorableTablesServer                       *RestorableTablesServerTransport
+	trSQLResourcesServer                           *SQLResourcesServerTransport
+	trServiceServer                                *ServiceServerTransport
+	trTableResourcesServer                         *TableResourcesServerTransport
+	trThroughputPoolAccountServer                  *ThroughputPoolAccountServerTransport
+	trThroughputPoolAccountsServer                 *ThroughputPoolAccountsServerTransport
+	trThroughputPoolServer                         *ThroughputPoolServerTransport
+	trThroughputPoolsServer                        *ThroughputPoolsServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -202,16 +202,16 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "LocationsClient":
 		initServer(s, &s.trLocationsServer, func() *LocationsServerTransport { return NewLocationsServerTransport(&s.srv.LocationsServer) })
 		resp, err = s.trLocationsServer.Do(req)
-	case "MongoClustersClient":
-		initServer(s, &s.trMongoClustersServer, func() *MongoClustersServerTransport {
-			return NewMongoClustersServerTransport(&s.srv.MongoClustersServer)
-		})
-		resp, err = s.trMongoClustersServer.Do(req)
 	case "MongoDBResourcesClient":
 		initServer(s, &s.trMongoDBResourcesServer, func() *MongoDBResourcesServerTransport {
 			return NewMongoDBResourcesServerTransport(&s.srv.MongoDBResourcesServer)
 		})
 		resp, err = s.trMongoDBResourcesServer.Do(req)
+	case "NetworkSecurityPerimeterConfigurationsClient":
+		initServer(s, &s.trNetworkSecurityPerimeterConfigurationsServer, func() *NetworkSecurityPerimeterConfigurationsServerTransport {
+			return NewNetworkSecurityPerimeterConfigurationsServerTransport(&s.srv.NetworkSecurityPerimeterConfigurationsServer)
+		})
+		resp, err = s.trNetworkSecurityPerimeterConfigurationsServer.Do(req)
 	case "NotebookWorkspacesClient":
 		initServer(s, &s.trNotebookWorkspacesServer, func() *NotebookWorkspacesServerTransport {
 			return NewNotebookWorkspacesServerTransport(&s.srv.NotebookWorkspacesServer)

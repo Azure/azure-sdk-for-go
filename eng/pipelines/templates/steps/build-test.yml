@@ -91,6 +91,7 @@ steps:
         ${{ insert }}: ${{ parameters.EnvVars }}
         GOTRACEBACK: all
         AZURE_SDK_GO_LOGGING: all
+        SYSTEM_ACCESSTOKEN: $(System.AccessToken)
 
     - task: AzurePowerShell@5
       displayName: Build Performance Tests (Federated Auth)
@@ -102,6 +103,8 @@ steps:
           eng/scripts/Build_Perf.ps1 ${{ parameters.ServiceDirectory }} $$(UseAzcoreFromMain)
           exit $LASTEXITCODE
         pwsh: true
+      env:
+        SYSTEM_ACCESSTOKEN: $(System.AccessToken)
 
   - ${{ else }}:
     - task: PowerShell@2

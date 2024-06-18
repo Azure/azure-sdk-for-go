@@ -106,7 +106,7 @@ type openAIPolicy struct{}
 // Do returns a function which adapts a request to target OpenAI.
 // Specifically, it removes the api-version query parameter.
 func (b *openAIPolicy) Do(req *policy.Request) (*http.Response, error) {
-	req.Raw().Header.Add("OpenAI-Beta", "assistants=v1")
+	req.Raw().Header.Add("OpenAI-Beta", "assistants=v2")
 	return req.Next()
 }
 
@@ -114,9 +114,12 @@ type azureOpenAIPolicy struct{}
 
 func (b *azureOpenAIPolicy) Do(req *policy.Request) (*http.Response, error) {
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", string(ServiceAPIVersionsV20240215Preview))
+
+	// TODO: there used to be a constant with this value but it doesn't appear to be generated anymore.
+	reqQP.Set("api-version", string("2024-05-01-preview"))
+
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Add("OpenAI-Beta", "assistants=v1")
+	req.Raw().Header.Add("OpenAI-Beta", "assistants=v2")
 	return req.Next()
 }
 

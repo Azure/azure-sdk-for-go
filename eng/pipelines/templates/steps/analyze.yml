@@ -65,19 +65,21 @@ steps:
       displayName: "Set as release build"
       condition: and(succeeded(), eq(variables['SetAsReleaseBuild'], ''))
 
-    - task: Powershell@2
+    - task: AzureCLI@2
       inputs:
-        filePath: $(Build.SourcesDirectory)/eng/common/scripts/Validate-All-Packages.ps1
-        arguments: >
-          -ArtifactList ('$(ArtifactsList)' | ConvertFrom-Json | Select-Object Name)
-          -ArtifactPath $(Build.ArtifactStagingDirectory)
-          -RepoRoot $(Build.SourcesDirectory)
-          -APIKey $(azuresdk-apiview-apikey)
-          -ConfigFileDir '$(Build.ArtifactStagingDirectory)/PackageInfo'
-          -BuildDefinition $(System.CollectionUri)$(System.TeamProject)/_build?definitionId=$(System.DefinitionId)
-          -PipelineUrl $(System.CollectionUri)$(System.TeamProject)/_build/results?buildId=$(Build.BuildId)
-          -Devops_pat '$(azuresdk-azure-sdk-devops-release-work-item-pat)'
-          -IsReleaseBuild $$(SetAsReleaseBuild)
+        azureSubscription: opensource-api-connection
+        scriptType: pscore
+        scriptLocation: inlineScript
+        inlineScript: |
+          $(Build.SourcesDirectory)/eng/common/scripts/Validate-All-Packages.ps1 `
+            -ArtifactList ('$(ArtifactsList)' | ConvertFrom-Json | Select-Object Name) `
+            -ArtifactPath $(Build.ArtifactStagingDirectory) `
+            -RepoRoot $(Build.SourcesDirectory) `
+            -APIKey $(azuresdk-apiview-apikey) `
+            -ConfigFileDir '$(Build.ArtifactStagingDirectory)/PackageInfo' `
+            -BuildDefinition $(System.CollectionUri)$(System.TeamProject)/_build?definitionId=$(System.DefinitionId) `
+            -PipelineUrl $(System.CollectionUri)$(System.TeamProject)/_build/results?buildId=$(Build.BuildId) `
+            -IsReleaseBuild $$(SetAsReleaseBuild)
         pwsh: true
         workingDirectory: $(Pipeline.Workspace)
       displayName: Validate packages and update work items

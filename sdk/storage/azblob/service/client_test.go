@@ -469,7 +469,7 @@ func (s *ServiceUnrecordedTestsSuite) TestListContainersPaged() {
 
 }
 
-//func (s *ServiceRecordedTestsSuite) TestListContainersPaged() {
+// func (s *ServiceRecordedTestsSuite) TestListContainersPaged() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
 //	_context := getTestContext(testName)
@@ -533,7 +533,7 @@ func (s *ServiceUnrecordedTestsSuite) TestListContainersPaged() {
 //	for _, seen := range expectedResults {
 //		_require.(seen, chk.Equals, true)
 //	}
-//}
+// }
 
 func (s *ServiceRecordedTestsSuite) TestAccountListContainersEmptyPrefix() {
 	_require := require.New(s.T())
@@ -564,49 +564,49 @@ func (s *ServiceRecordedTestsSuite) TestAccountListContainersEmptyPrefix() {
 	_require.GreaterOrEqual(count, 2)
 }
 
-//// TODO re-enable after fixing error handling
-////func (s *ServiceRecordedTestsSuite) TestAccountListContainersMaxResultsNegative() {
-////	svcClient := testcommon.GetServiceClient()
-////	containerClient, _ := createNewContainer(c, svcClient)
-////	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
-////
-////	illegalMaxResults := []int32{-2, 0}
-////	for _, num := range illegalMaxResults {
-////		options := ServiceListContainersOptions{MaxResults: &num}
-////
-////		// getting the pager should still work
-////		pager, err := svcClient.NewListContainersPager(context.Background(), 100, time.Hour, &options)
-////		_require.NoError(err)
-////
-////		// getting the next page should fail
-////
-////	}
-////}
+// TODO re-enable after fixing error handling
+// func (s *ServiceRecordedTestsSuite) TestAccountListContainersMaxResultsNegative() {
+//	svcClient := testcommon.GetServiceClient()
+//	containerClient, _ := createNewContainer(c, svcClient)
+//	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 //
-////func (s *ServiceRecordedTestsSuite) TestAccountListContainersMaxResultsExact() {
-////	// If this test fails, ensure there are no extra containers prefixed with go in the account. These may be left over if a test is interrupted.
-////	svcClient := testcommon.GetServiceClient()
-////	containerClient1, containerName1 := createNewContainerWithSuffix(c, svcClient, "abc")
-////	defer deleteContainer(containerClient1)
-////	containerClient2, containerName2 := createNewContainerWithSuffix(c, svcClient, "abcde")
-////	defer deleteContainer(containerClient2)
-////
-////	prefix := testcommon.ContainerPrefix + "abc"
-////	maxResults := int32(2)
-////	options := ServiceListContainersOptions{Prefix: &prefix, MaxResults: &maxResults}
-////	pager, err := svcClient.NewListContainersPager(&options)
-////	_require.NoError(err)
-////
-////	// getting the next page should work
-////	hasPage := pager.NextPage(context.Background())
-////	_require.(hasPage, chk.Equals, true)
-////
-////	page := pager.PageResponse()
-////	_require.NoError(err)
-////	_require.(*page.EnumerationResults.ContainerItems, chk.HasLen, 2)
-////	_require.(*(*page.EnumerationResults.ContainerItems)[0].Name, chk.DeepEquals, containerName1)
-////	_require.(*(*page.EnumerationResults.ContainerItems)[1].Name, chk.DeepEquals, containerName2)
-////}
+//	illegalMaxResults := []int32{-2, 0}
+//	for _, num := range illegalMaxResults {
+//		options := ServiceListContainersOptions{MaxResults: &num}
+//
+//		// getting the pager should still work
+//		pager, err := svcClient.NewListContainersPager(context.Background(), 100, time.Hour, &options)
+//		_require.NoError(err)
+//
+//		// getting the next page should fail
+//
+//	}
+// }
+//
+// func (s *ServiceRecordedTestsSuite) TestAccountListContainersMaxResultsExact() {
+//	// If this test fails, ensure there are no extra containers prefixed with go in the account. These may be left over if a test is interrupted.
+//	svcClient := testcommon.GetServiceClient()
+//	containerClient1, containerName1 := createNewContainerWithSuffix(c, svcClient, "abc")
+//	defer deleteContainer(containerClient1)
+//	containerClient2, containerName2 := createNewContainerWithSuffix(c, svcClient, "abcde")
+//	defer deleteContainer(containerClient2)
+//
+//	prefix := testcommon.ContainerPrefix + "abc"
+//	maxResults := int32(2)
+//	options := ServiceListContainersOptions{Prefix: &prefix, MaxResults: &maxResults}
+//	pager, err := svcClient.NewListContainersPager(&options)
+//	_require.NoError(err)
+//
+//	// getting the next page should work
+//	hasPage := pager.NextPage(context.Background())
+//	_require.(hasPage, chk.Equals, true)
+//
+//	page := pager.PageResponse()
+//	_require.NoError(err)
+//	_require.(*page.EnumerationResults.ContainerItems, chk.HasLen, 2)
+//	_require.(*(*page.EnumerationResults.ContainerItems)[0].Name, chk.DeepEquals, containerName1)
+//	_require.(*(*page.EnumerationResults.ContainerItems)[1].Name, chk.DeepEquals, containerName2)
+// }
 
 func (s *ServiceRecordedTestsSuite) TestAccountDeleteRetentionPolicy() {
 	_require := require.New(s.T())

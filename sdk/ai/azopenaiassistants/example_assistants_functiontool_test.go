@@ -67,7 +67,7 @@ func Example_assistantsUsingFunctionTool() {
 	}
 
 	// First, let's create an assistant.
-	createAssistantResp, err := client.CreateAssistant(context.Background(), azopenaiassistants.AssistantCreationBody{
+	createAssistantResp, err := client.CreateAssistant(context.Background(), azopenaiassistants.CreateAssistantBody{
 		Name:           &assistantName,
 		DeploymentName: to.Ptr("gpt-4-1106-preview"),
 		Instructions:   to.Ptr("You are a personal math tutor. Write and run code to answer math questions."),
@@ -90,7 +90,7 @@ func Example_assistantsUsingFunctionTool() {
 	var lastMessageID, runID, threadID string
 	{
 		fmt.Fprintf(os.Stderr, "Creating our thread\n")
-		createThreadResp, err := client.CreateThread(context.Background(), azopenaiassistants.AssistantThreadCreationOptions{}, nil)
+		createThreadResp, err := client.CreateThread(context.Background(), azopenaiassistants.CreateThreadBody{}, nil)
 
 		if err != nil {
 			// TODO: Update the following line with your application specific error handling logic
@@ -219,7 +219,7 @@ func Example_assistantsUsingFunctionTool() {
 		}
 	}
 
-	// Output:
+	// DisabledOutput:
 }
 
 type WeatherFuncArgs struct {

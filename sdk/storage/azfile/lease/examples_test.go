@@ -67,11 +67,6 @@ func Example_lease_ShareClient_AcquireLease() {
 
 	fmt.Println("The share cannot be deleted while there is an active lease")
 
-	// share can be deleted by providing the lease id
-	//_, err = shareClient.Delete(context.TODO(), &share.DeleteOptions{
-	//	LeaseAccessConditions: &share.LeaseAccessConditions{LeaseID: acquireLeaseResponse.LeaseID},
-	//})
-
 	// We can release the lease now and the share can be deleted.
 	_, err = shareLeaseClient.Release(context.TODO(), nil)
 	handleError(err)

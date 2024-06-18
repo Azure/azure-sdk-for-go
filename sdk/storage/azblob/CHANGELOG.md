@@ -1,6 +1,6 @@
 # Release History
 
-## 1.3.3 (Unreleased)
+## 1.4.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,7 +9,15 @@
 ### Bugs Fixed
 
 ### Other Changes
-* Updated `azidentity` version to `1.5.2`
+
+## 1.4.0-beta.1 (2024-06-14)
+
+### Features Added
+* Updated service version to `2024-05-04`.
+
+### Other Changes
+* Updated `azidentity` version to `1.6.0`
+* Updated `azcore` version to `1.12.0`
 
 ## 1.3.2 (2024-04-09)
 

@@ -528,7 +528,7 @@ func (s *UnrecordedTestSuite) TestCreateFileWithExpiryAbsolute() {
 	resp1, err := fClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
 	_require.NotNil(resp1.ExpiresOn)
-	_require.Equal(expiryTimeAbsolute.UTC().Format(http.TimeFormat), (*resp1.ExpiresOn).UTC().Format(http.TimeFormat))
+	_require.Equal(expiryTimeAbsolute.UTC().Format(http.TimeFormat), resp1.ExpiresOn.UTC().Format(http.TimeFormat))
 }
 
 func (s *RecordedTestSuite) TestCreateFileWithExpiryNever() {
@@ -2459,11 +2459,8 @@ func (s *RecordedTestSuite) TestRenameFileWithNilAccessConditions() {
 		AccessConditions: nil,
 	}
 
-	//resp1, err := fClient.Rename(context.Background(), "newName", renameFileOpts)
 	_, err = fClient.Rename(context.Background(), "newName", renameFileOpts)
 	_require.NoError(err)
-	//_require.NotNil(resp1)
-	//_require.Contains(resp1.NewFileClient.DFSURL(), "newName")
 }
 
 func (s *RecordedTestSuite) TestRenameFileIfModifiedSinceTrue() {
@@ -2495,11 +2492,8 @@ func (s *RecordedTestSuite) TestRenameFileIfModifiedSinceTrue() {
 			},
 		},
 	}
-	//resp1, err := fClient.Rename(context.Background(), "newName", renameFileOpts)
 	_, err = fClient.Rename(context.Background(), "newName", renameFileOpts)
 	_require.NoError(err)
-	//_require.NotNil(resp1)
-	//_require.Contains(resp1.NewFileClient.DFSURL(), "newName")
 }
 
 func (s *RecordedTestSuite) TestRenameFileIfModifiedSinceFalse() {
@@ -2532,7 +2526,6 @@ func (s *RecordedTestSuite) TestRenameFileIfModifiedSinceFalse() {
 		},
 	}
 
-	//_, err = fClient.Rename(context.Background(), "newName", renameFileOpts)
 	_, err = fClient.Rename(context.Background(), "newName", renameFileOpts)
 
 	_require.Error(err)
@@ -2569,11 +2562,8 @@ func (s *RecordedTestSuite) TestRenameFileIfUnmodifiedSinceTrue() {
 		},
 	}
 
-	//resp1, err := fClient.Rename(context.Background(), "newName", renameFileOpts)
 	_, err = fClient.Rename(context.Background(), "newName", renameFileOpts)
 	_require.NoError(err)
-	//_require.NotNil(resp1)
-	//_require.Contains(resp1.NewFileClient.DFSURL(), "newName")
 }
 
 func (s *RecordedTestSuite) TestRenameFileIfUnmodifiedSinceFalse() {
@@ -2606,7 +2596,6 @@ func (s *RecordedTestSuite) TestRenameFileIfUnmodifiedSinceFalse() {
 		},
 	}
 
-	//_, err = fClient.Rename(context.Background(), "newName", renameFileOpts)
 	_, err = fClient.Rename(context.Background(), "newName", renameFileOpts)
 
 	_require.Error(err)
@@ -2643,11 +2632,8 @@ func (s *RecordedTestSuite) TestRenameFileIfETagMatch() {
 		},
 	}
 
-	//resp1, err := fClient.Rename(context.Background(), "newName", renameFileOpts)
 	_, err = fClient.Rename(context.Background(), "newName", renameFileOpts)
 	_require.NoError(err)
-	//_require.NotNil(resp1)
-	//_require.Contains(resp1.NewFileClient.DFSURL(), "newName")
 }
 
 func (s *RecordedTestSuite) TestRenameFileIfETagMatchFalse() {
@@ -2680,7 +2666,6 @@ func (s *RecordedTestSuite) TestRenameFileIfETagMatchFalse() {
 		},
 	}
 
-	//_, err = fClient.Rename(context.Background(), "newName", renameFileOpts)
 	_, err = fClient.Rename(context.Background(), "newName", renameFileOpts)
 
 	_require.Error(err)
@@ -2782,6 +2767,45 @@ func (s *RecordedTestSuite) TestFileUploadDownloadSmallStream() {
 	gResp2, err := fClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
 	_require.Equal(*gResp2.ContentLength, fileSize)
+}
+
+func (s *RecordedTestSuite) TestFileUploadDownloadStreamWithAcl() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	acl := "user::rwx,group::r-x,other::rwx"
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	var fileSize int64 = 10 * 1024
+	fileName := testcommon.GenerateFileName(testName)
+	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := fClient.Create(context.Background(), &file.CreateOptions{ACL: &acl})
+	_require.NoError(err)
+	_require.NotNil(resp)
+
+	_, content := testcommon.GenerateData(int(fileSize))
+
+	err = fClient.UploadStream(context.Background(), streaming.NopCloser(bytes.NewReader(content)), &file.UploadStreamOptions{
+		Concurrency: 5,
+		ChunkSize:   2 * 1024,
+	})
+	_require.NoError(err)
+
+	dResp, err := fClient.DownloadStream(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*dResp.AccessControlList, acl)
+
+	gResp2, err := fClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*gResp2.AccessControlList, acl)
 }
 
 func (s *RecordedTestSuite) TestFileUploadTinyStream() {
@@ -3283,6 +3307,43 @@ func (s *UnrecordedTestSuite) TestFileGetPropertiesWithEncryptionContext() {
 	_require.Nil(response2.EncryptionContext)
 }
 
+func (s *RecordedTestSuite) TestFileGetPropertiesACL() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	owner := "4cf4e284-f6a8-4540-b53e-c3469af032dc"
+	group := owner
+	acl := "user::rwx,group::r-x,other::rwx"
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	fileName := testcommon.GenerateFileName(testName)
+	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	createFileOpts := &file.CreateOptions{
+		Owner: &owner,
+		Group: &group,
+		ACL:   &acl,
+	}
+
+	resp, err := fClient.Create(context.Background(), createFileOpts)
+	_require.NoError(err)
+	_require.NotNil(resp)
+
+	response, err := fClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(*response.AccessControlList)
+	_require.Equal(*response.Owner, owner)
+	_require.Equal(*response.Group, group)
+	_require.Equal(*response.AccessControlList, acl)
+}
+
 func (s *RecordedTestSuite) TestSmallFileUploadFileWithAccessConditionsAndHTTPHeaders() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -3733,7 +3794,7 @@ func (s *RecordedTestSuite) TestFileAppendDataWithAcquireLease() {
 
 	time.Sleep(time.Second * 15)
 
-	//Check if the lease was acquired for the right duration
+	// Check if the lease was acquired for the right duration
 	gResp, err := srcFClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
 	_require.Equal(lease.StateTypeExpired, *gResp.LeaseState)
@@ -3769,7 +3830,7 @@ func (s *RecordedTestSuite) TestFileAppendDataWithRenewLease() {
 	_require.NoError(err)
 	_require.Equal(lease.StateTypeLeased, *gResp2.LeaseState)
 
-	//Wait for 15 seconds for lease to expire
+	// Wait for 15 seconds for lease to expire
 	time.Sleep(15 * time.Second)
 
 	gResp, err := srcFClient.GetProperties(context.Background(), nil)

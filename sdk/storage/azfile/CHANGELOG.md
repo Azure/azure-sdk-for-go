@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.3 (Unreleased)
+## 1.3.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,7 +9,16 @@
 ### Bugs Fixed
 
 ### Other Changes
-* Updated `azblob` version to `1.3.2`
+
+## 1.3.0-beta.1 (2024-06-14)
+
+### Features Added
+* Add Rename Support to List Ranges API
+* Updated service version to `2024-05-04`
+
+### Other Changes
+* Updated `azidentity` version to `1.6.0`
+* Updated `azcore` version to `1.12.0`
 
 ## 1.2.2 (2024-04-09)
 

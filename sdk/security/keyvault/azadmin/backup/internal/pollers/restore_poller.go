@@ -95,7 +95,6 @@ func NewRestorePoller[T any](pl runtime.Pipeline, resp *http.Response, finalStat
 	if resp == nil {
 		return &restorePoller[T]{pl: pl}, nil
 	}
-	//log.Write(log.EventLRO, "Using Azure-AsyncOperation poller.")
 	asyncURL := resp.Header.Get("Azure-AsyncOperation")
 	if asyncURL == "" {
 		return nil, errors.New("response is missing Azure-AsyncOperation header")

@@ -88,7 +88,7 @@ jobs:
           ArmTemplateParameters: $(ArmTemplateParameters)
           UseFederatedAuth: ${{ parameters.UseFederatedAuth }}
           ServiceConnection: ${{ parameters.CloudConfig.ServiceConnection }}
-          SubscriptionConfigurationFilePath: ${{ parameters.CloudConfig.SubscriptionConfigurationFilePath}}
+          SubscriptionConfigurationFilePaths: ${{ parameters.CloudConfig.SubscriptionConfigurationFilePaths}}
           EnvVars: ${{ parameters.EnvVars }}
 
       - task: GoTool@0

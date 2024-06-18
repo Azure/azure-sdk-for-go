@@ -793,22 +793,6 @@ func PossibleNodeStateValues() []NodeState {
 	}
 }
 
-// NodeStatus - Indicates whether the node is functioning or not.
-type NodeStatus string
-
-const (
-	NodeStatusDown NodeStatus = "Down"
-	NodeStatusUp   NodeStatus = "Up"
-)
-
-// PossibleNodeStatusValues returns the possible values for the NodeStatus const type.
-func PossibleNodeStatusValues() []NodeStatus {
-	return []NodeStatus{
-		NodeStatusDown,
-		NodeStatusUp,
-	}
-}
-
 type NotebookWorkspaceName string
 
 const (

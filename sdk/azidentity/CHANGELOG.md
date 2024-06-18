@@ -1,6 +1,6 @@
 # Release History
 
-## 1.7.0 (2024-06-18)
+## 1.7.0 (2024-06-20)
 
 ### Features Added
 * `AzurePipelinesCredential` authenticates an Azure Pipeline service connection with

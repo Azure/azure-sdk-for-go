@@ -27,5 +27,3 @@ extends:
       ServiceDirectory: 'data/azappconfig'
       RunLiveTests: true
       UsePipelineProxy: false
-      # TODO: Testing only. Remove before merging.
-      UseFederatedAuth: true

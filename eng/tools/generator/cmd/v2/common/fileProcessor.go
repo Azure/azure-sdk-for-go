@@ -129,28 +129,6 @@ func ReadV2ModuleNameToGetNamespace(path string) (map[string][]PackageInfo, erro
 // remove all sdk generated files in given path
 func CleanSDKGeneratedFiles(path string) error {
 	log.Printf("Removing all sdk generated files in '%s'...", path)
-	// files, err := os.ReadDir(path)
-	// if err != nil {
-	// 	return err
-	// }
-
-	// for _, file := range files {
-	// 	if strings.HasSuffix(file.Name(), ".go") {
-	// 		fileWithPath := filepath.Join(path, file.Name())
-	// 		b, err := os.ReadFile(fileWithPath)
-	// 		if err != nil {
-	// 			return err
-	// 		}
-
-	// 		if strings.Contains(string(b), generated_file_scan_string) {
-	// 			err = os.Remove(fileWithPath)
-	// 			if err != nil {
-	// 				return err
-	// 			}
-	// 		}
-	// 	}
-	// }
-
 	return filepath.Walk(path, func(path string, info fs.FileInfo, err error) error {
 		if err != nil {
 			return err

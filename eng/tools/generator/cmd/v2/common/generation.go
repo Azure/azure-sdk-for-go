@@ -422,7 +422,6 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam) (*
 		}
 	} else {
 		log.Printf("Package '%s' existed, do update process", packagePath)
-
 		log.Printf("Remove all the generated files ...")
 		if err = CleanSDKGeneratedFiles(packagePath); err != nil {
 			return nil, err

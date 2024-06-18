@@ -427,7 +427,7 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam) (*
 	if generateParam.TypeSpecEmitOption != "" {
 		emitOption = fmt.Sprintf("%s;%s", emitOption, generateParam.TypeSpecEmitOption)
 	}
-	err = ExecuteTypeSpecGenerate(ctx.SDKPath, ctx.TypeSpecConfig.Path, ctx.SpecCommitHash, ctx.SpecRepoURL, filepath.Dir(ctx.TypeSpecConfig.Path), emitOption)
+	err = ExecuteTypeSpecGenerate(ctx.SDKPath, packagePath, ctx.TypeSpecConfig.Path, ctx.SpecCommitHash, ctx.SpecRepoURL, filepath.Dir(ctx.TypeSpecConfig.Path), emitOption)
 	if err != nil {
 		return nil, err
 	}
@@ -531,7 +531,7 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam) (*
 			if generateParam.TypeSpecEmitOption != "" {
 				emitOption = fmt.Sprintf("%s;%s", emitOption, generateParam.TypeSpecEmitOption)
 			}
-			err = ExecuteTypeSpecGenerate(ctx.SDKPath, ctx.TypeSpecConfig.Path, ctx.SpecCommitHash, ctx.SpecRepoURL, filepath.Dir(ctx.TypeSpecConfig.Path), emitOption)
+			err = ExecuteTypeSpecGenerate(ctx.SDKPath, packagePath, ctx.TypeSpecConfig.Path, ctx.SpecCommitHash, ctx.SpecRepoURL, filepath.Dir(ctx.TypeSpecConfig.Path), emitOption)
 			if err != nil {
 				return nil, err
 			}
@@ -556,6 +556,15 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam) (*
 		log.Printf("Replace version in tsp-location.yaml...")
 		if err = UpdateModuleVersion(tspLocationPath, version.String()); err != nil {
 			return nil, err
+		}
+
+		// If autorest.md exists, delete it
+		autorestMdPath := filepath.Join(packagePath, "autorest.md")
+		if _, err := os.Stat(autorestMdPath); !os.IsNotExist(err) {
+			log.Println("Remove autorest.md")
+			if err = os.Remove(autorestMdPath); err != nil {
+				return nil, err
+			}
 		}
 
 		return &GenerateResult{

@@ -112,7 +112,6 @@ func ExecuteGo(dir string, args ...string) error {
 	cmd := exec.Command("go", args...)
 	cmd.Dir = dir
 	combinedOutput, err := cmd.CombinedOutput()
-	log.Printf("Result of `go %s` execution: \n%s", strings.Join(args, " "), string(combinedOutput))
 	if err != nil {
 		return fmt.Errorf("failed to execute `go %s` '%s': %+v", strings.Join(args, " "), string(combinedOutput), err)
 	}
@@ -124,7 +123,6 @@ func ExecuteGoFmt(dir string, args ...string) error {
 	cmd := exec.Command("gofmt", args...)
 	cmd.Dir = dir
 	combinedOutput, err := cmd.CombinedOutput()
-	log.Printf("Result of `gofmt %s` execution: \n%s", strings.Join(args, " "), string(combinedOutput))
 	if err != nil {
 		return fmt.Errorf("failed to execute `gofmt %s` '%s': %+v", strings.Join(args, " "), string(combinedOutput), err)
 	}
@@ -145,7 +143,7 @@ func ExecuteTspClient(path string, args ...string) error {
 	return nil
 }
 
-func ExecuteTypeSpecGenerate(path string, tspConfigPath, specCommit, specRepo, tspDir string, emitOptions string) error {
+func ExecuteTypeSpecGenerate(path, packagePath, tspConfigPath, specCommit, specRepo, tspDir, emitOptions string) error {
 
 	err := ExecuteTspClient(path,
 		"init",
@@ -159,10 +157,12 @@ func ExecuteTypeSpecGenerate(path string, tspConfigPath, specCommit, specRepo, t
 		return err
 	}
 
-	err = ExecuteGoFmt(path, "-s", "-w", ".")
+	log.Printf("##[command]Executing gofmt -s -w . in %s\n", packagePath)
+	err = ExecuteGoFmt(packagePath, "-s", "-w", ".")
 	if err != nil {
 		return err
 	}
 
-	return ExecuteGo(path, "mod", "tidy")
+	log.Printf("##[command]Executing go mod tidy in %s\n", packagePath)
+	return ExecuteGo(packagePath, "mod", "tidy")
 }

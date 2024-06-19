@@ -10,7 +10,6 @@ This troubleshooting guide covers failure investigation techniques, common error
 - [Enable and configure logging](#enable-and-configure-logging)
 - [Troubleshoot AzureCLICredential authentication issues](#troubleshoot-azureclicredential-authentication-issues)
 - [Troubleshoot AzureDeveloperCLICredential authentication issues](#troubleshoot-azuredeveloperclicredential-authentication-issues)
-- [Troubleshoot AzurePipelinesCredential authentication issues](#troubleshoot-azurepipelinescredential-authentication-issues)
 - [Troubleshoot ClientCertificateCredential authentication issues](#troubleshoot-clientcertificatecredential-authentication-issues)
 - [Troubleshoot ClientSecretCredential authentication issues](#troubleshoot-clientsecretcredential-authentication-issues)
 - [Troubleshoot DefaultAzureCredential authentication issues](#troubleshoot-defaultazurecredential-authentication-issues)
@@ -21,6 +20,7 @@ This troubleshooting guide covers failure investigation techniques, common error
   - [Azure Virtual Machine managed identity](#azure-virtual-machine-managed-identity)
 - [Troubleshoot UsernamePasswordCredential authentication issues](#troubleshoot-usernamepasswordcredential-authentication-issues)
 - [Troubleshoot WorkloadIdentityCredential authentication issues](#troubleshoot-workloadidentitycredential-authentication-issues)
+- [Troubleshoot AzurePipelinesCredential authentication issues](#troubleshoot-azurepipelinescredential-authentication-issues)
 - [Get additional help](#get-additional-help)
 
 ## Handle azidentity errors

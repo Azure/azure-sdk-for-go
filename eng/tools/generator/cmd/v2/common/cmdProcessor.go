@@ -135,10 +135,12 @@ func ExecuteTspClient(path string, args ...string) error {
 	cmd := exec.Command("tsp-client", args...)
 	cmd.Dir = path
 	output, err := cmd.CombinedOutput()
-	// todo: 如何捕获tsp-client执行失败的情况
 	log.Printf("Result of `tsp-client %s` execution: \n%s", strings.Join(args, " "), string(output))
 	if err != nil {
 		return fmt.Errorf("failed to execute `tsp-client %s` '%s': %+v", strings.Join(args, " "), string(output), err)
+	}
+	if strings.Contains(string(output), "error:") {
+		return fmt.Errorf("failed to execute `tsp-client %s` '%s'", strings.Join(args, " "), string(output))
 	}
 	return nil
 }

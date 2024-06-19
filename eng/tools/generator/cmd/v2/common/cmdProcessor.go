@@ -145,9 +145,10 @@ func ExecuteTspClient(path string, args ...string) error {
 	return nil
 }
 
-func ExecuteTypeSpecGenerate(path, packagePath, tspConfigPath, specCommit, specRepo, tspDir, emitOptions string) error {
+func ExecuteTypeSpecGenerate(path, tspConfigPath, specCommit, specRepo, tspDir, emitOptions string) error {
 
-	err := ExecuteTspClient(path,
+	return ExecuteTspClient(
+		path,
 		"init",
 		"--tsp-config", tspConfigPath,
 		"--commit", specCommit,
@@ -155,16 +156,4 @@ func ExecuteTypeSpecGenerate(path, packagePath, tspConfigPath, specCommit, specR
 		"--local-spec-repo", tspDir,
 		"--emitter-options", emitOptions,
 	)
-	if err != nil {
-		return err
-	}
-
-	log.Printf("##[command]Executing gofmt -s -w . in %s\n", packagePath)
-	err = ExecuteGoFmt(packagePath, "-s", "-w", ".")
-	if err != nil {
-		return err
-	}
-
-	log.Printf("##[command]Executing go mod tidy in %s\n", packagePath)
-	return ExecuteGo(packagePath, "mod", "tidy")
 }

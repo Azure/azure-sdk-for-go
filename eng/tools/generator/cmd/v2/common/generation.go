@@ -436,7 +436,7 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam) (*
 	if generateParam.TypeSpecEmitOption != "" {
 		emitOption = fmt.Sprintf("%s;%s", emitOption, generateParam.TypeSpecEmitOption)
 	}
-	err = ExecuteTypeSpecGenerate(ctx.SDKPath, packagePath, ctx.TypeSpecConfig.Path, ctx.SpecCommitHash, ctx.SpecRepoURL, filepath.Dir(ctx.TypeSpecConfig.Path), emitOption)
+	err = ExecuteTypeSpecGenerate(ctx.SDKPath, ctx.TypeSpecConfig.Path, ctx.SpecCommitHash, ctx.SpecRepoURL, filepath.Dir(ctx.TypeSpecConfig.Path), emitOption)
 	if err != nil {
 		return nil, err
 	}
@@ -518,6 +518,16 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam) (*
 			prl = FirstGALabel
 		}
 
+		log.Printf("##[command]Executing gofmt -s -w . in %s\n", packagePath)
+		if err = ExecuteGoFmt(packagePath, "-s", "-w", "."); err != nil {
+			return nil, err
+		}
+	
+		log.Printf("##[command]Executing go mod tidy in %s\n", packagePath)
+		if err = ExecuteGo(packagePath, "mod", "tidy"); err != nil {
+			return nil, err
+		}
+
 		return &GenerateResult{
 			Version:           version.String(),
 			RPName:            generateParam.RPName,
@@ -540,7 +550,7 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam) (*
 			if generateParam.TypeSpecEmitOption != "" {
 				emitOption = fmt.Sprintf("%s;%s", emitOption, generateParam.TypeSpecEmitOption)
 			}
-			err = ExecuteTypeSpecGenerate(ctx.SDKPath, packagePath, ctx.TypeSpecConfig.Path, ctx.SpecCommitHash, ctx.SpecRepoURL, filepath.Dir(ctx.TypeSpecConfig.Path), emitOption)
+			err = ExecuteTypeSpecGenerate(ctx.SDKPath, ctx.TypeSpecConfig.Path, ctx.SpecCommitHash, ctx.SpecRepoURL, filepath.Dir(ctx.TypeSpecConfig.Path), emitOption)
 			if err != nil {
 				return nil, err
 			}
@@ -590,6 +600,16 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam) (*
 			if err = os.Remove(filepath.Join(packagePath, "build.go")); err != nil {
 				return nil, err
 			}
+		}
+
+		log.Printf("##[command]Executing gofmt -s -w . in %s\n", packagePath)
+		if err = ExecuteGoFmt(packagePath, "-s", "-w", "."); err != nil {
+			return nil, err
+		}
+	
+		log.Printf("##[command]Executing go mod tidy in %s\n", packagePath)
+		if err = ExecuteGo(packagePath, "mod", "tidy"); err != nil {
+			return nil, err
 		}
 
 		return &GenerateResult{

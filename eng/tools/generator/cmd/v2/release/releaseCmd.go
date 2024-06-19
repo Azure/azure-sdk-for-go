@@ -78,7 +78,7 @@ type Flags struct {
 	UpdateSpecVersion   bool
 	ForceStableVersion  bool
 	TypeSpecConfig      string
-	TypeSpecGoOption string
+	TypeSpecGoOption    string
 }
 
 func BindFlags(flagSet *pflag.FlagSet) {
@@ -115,7 +115,7 @@ func ParseFlags(flagSet *pflag.FlagSet) Flags {
 		UpdateSpecVersion:   flags.GetBool(flagSet, "update-spec-version"),
 		ForceStableVersion:  flags.GetBool(flagSet, "force-stable-version"),
 		TypeSpecConfig:      flags.GetString(flagSet, "tsp-config"),
-		TypeSpecGoOption: flags.GetString(flagSet, "tsp-option"),
+		TypeSpecGoOption:    flags.GetString(flagSet, "tsp-option"),
 	}
 }
 
@@ -173,15 +173,15 @@ func (c *commandContext) generate(sdkRepo repo.SDKRepository, specCommitHash str
 	if existEmitOption {
 		log.Printf("Generate SDK through TypeSpec...")
 		result, err = generateCtx.GenerateForTypeSpec(&common.GenerateParam{
-			RPName:        c.rpName,
-			NamespaceName: c.namespaceName,
+			RPName:              c.rpName,
+			NamespaceName:       c.namespaceName,
 			SpecficPackageTitle: c.flags.PackageTitle,
 			SpecficVersion:      c.flags.VersionNumber,
 			SpecRPName:          c.flags.SpecRPName,
 			ReleaseDate:         c.flags.ReleaseDate,
 			SkipGenerateExample: c.flags.SkipGenerateExample,
 			GoVersion:           c.flags.GoVersion,
-			TypeSpecEmitOption: c.flags.TypeSpecGoOption,
+			TypeSpecEmitOption:  c.flags.TypeSpecGoOption,
 		})
 	} else {
 		log.Printf("Generate SDK through AutoRest...")

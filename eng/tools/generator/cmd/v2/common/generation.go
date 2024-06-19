@@ -31,7 +31,7 @@ type GenerateContext struct {
 	UpdateSpecVersion bool
 
 	// typespec
-	TypeSpecConfig 	*typespec.TypeSpecConfig
+	TypeSpecConfig *typespec.TypeSpecConfig
 }
 
 type GenerateResult struct {
@@ -56,7 +56,7 @@ type GenerateParam struct {
 	GoVersion           string
 	RemoveTagSet        bool
 	ForceStableVersion  bool
-	TypeSpecEmitOption string
+	TypeSpecEmitOption  string
 }
 
 func (ctx *GenerateContext) GenerateForAutomation(readme, repo, goVersion string) ([]GenerateResult, []error) {
@@ -423,7 +423,17 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam) (*
 	}
 
 	log.Printf("Run `tsp-client init` to regenerate the code...")
-	emitOption := fmt.Sprintf("module-version=%s", version.String())
+	moduleVersion := version.String()
+	if generateParam.SpecficVersion == "" {
+		tspLocation, err := typespec.ParseTspLocation(tspLocationPath)
+		if err != nil {
+			return nil, err
+		}
+		if tspLocation.ModuleVersion != "" {
+			moduleVersion = tspLocation.ModuleVersion
+		}
+	}
+	emitOption := fmt.Sprintf("module-version=%s", moduleVersion)
 	if generateParam.TypeSpecEmitOption != "" {
 		emitOption = fmt.Sprintf("%s;%s", emitOption, generateParam.TypeSpecEmitOption)
 	}

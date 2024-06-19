@@ -116,9 +116,9 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 			if _, ok := tsc.TypeSpecProjectSchema.Options[string(typespec.TypeSpec_GO)]; ok {
 				existTypeSpecProject = true
 				generateCtx := common.GenerateContext{
-					SDKPath: sdkRepo.Root(),
-					SDKRepo: &sdkRepo,
-					SpecPath: ctx.specRoot,
+					SDKPath:        sdkRepo.Root(),
+					SDKRepo:        &sdkRepo,
+					SpecPath:       ctx.specRoot,
 					SpecCommitHash: ctx.commitHash,
 					TypeSpecConfig: tsc,
 				}
@@ -129,26 +129,26 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 				}
 
 				namespaceResult, err := generateCtx.GenerateForTypeSpec(&common.GenerateParam{
-					RPName:        module[0],
-					NamespaceName: module[1],
+					RPName:              module[0],
+					NamespaceName:       module[1],
 					SkipGenerateExample: true,
 					GoVersion:           ctx.goVersion,
 				})
 				if err != nil {
 					errorBuilder.add(err)
 					continue
-				}else {
+				} else {
 					content := namespaceResult.ChangelogMD
 					breaking := namespaceResult.Changelog.HasBreakingChanges()
 					breakingChangeItems := namespaceResult.Changelog.GetBreakingChangeItems()
-		
+
 					srcFolder := filepath.Join(sdkRepo.Root(), "sdk", "resourcemanager", namespaceResult.RPName, namespaceResult.PackageName)
 					apiViewArtifact := filepath.Join(sdkRepo.Root(), "sdk", "resourcemanager", namespaceResult.RPName, namespaceResult.PackageName+".gosource")
 					err := zipDirectory(srcFolder, apiViewArtifact)
 					if err != nil {
 						fmt.Println(err)
 					}
-		
+
 					results = append(results, pipeline.PackageResult{
 						Version:       namespaceResult.Version,
 						PackageName:   fmt.Sprintf("sdk/resourcemanager/%s/%s", namespaceResult.RPName, namespaceResult.PackageName),
@@ -163,7 +163,7 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 						APIViewArtifact: fmt.Sprintf("sdk/resourcemanager/%s/%s", namespaceResult.RPName, namespaceResult.PackageName+".gosource"),
 						Language:        "Go",
 					})
-					
+
 					log.Printf("Finish to process typespec file: %s", tspconfigPath)
 				}
 			}

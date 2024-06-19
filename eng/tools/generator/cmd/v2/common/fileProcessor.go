@@ -681,7 +681,7 @@ func ReplaceReadmeNewClientName(packageRootPath string, exports exports.Content)
 
 func UpdateModuleVersion(path string, newVersion string) error {
 	if newVersion == "" {
-		newVersion = "0.1.0" 
+		newVersion = "0.1.0"
 	}
 
 	data, err := os.ReadFile(path)
@@ -699,13 +699,13 @@ func UpdateModuleVersion(path string, newVersion string) error {
 		}
 
 		return os.WriteFile(path, []byte(strings.Join(lines, "\n")), 0644)
-	}else {
+	} else {
 		f, err := os.OpenFile(path, os.O_APPEND|os.O_WRONLY, 0644)
 		if err != nil {
 			return err
 		}
 		defer f.Close()
-	
+
 		_, err = f.WriteString(fmt.Sprintf("%s%s\n", autorest_md_module_version_prefix, newVersion))
 		return err
 	}

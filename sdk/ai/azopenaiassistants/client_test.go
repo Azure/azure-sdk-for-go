@@ -12,7 +12,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
-	"sort"
 	"testing"
 	"time"
 
@@ -167,21 +166,22 @@ func TestAssistantMessages(t *testing.T) {
 		}, nil)
 		requireNoErr(t, azure, err)
 
-		// something interesting (but not API breaking). Azure OpenAI returns the attachments here in
-		// a different order than OpenAI does.
-		sort.Slice(messageResp.Attachments[0].Tools, func(i, j int) bool {
-			return messageResp.Attachments[0].Tools[i].CodeInterpreterToolDefinition != nil
-		})
+		attachmentTools := messageResp.Attachments[0].Tools
+
+		// just trying to keep a consistent ordering of the tools for our checks.
+		if attachmentTools[0].CodeInterpreterToolDefinition == nil {
+			attachmentTools[0], attachmentTools[1] = attachmentTools[1], attachmentTools[0]
+		}
 
 		require.Equal(t, azopenaiassistants.CodeInterpreterToolDefinition{
 			Type: to.Ptr("code_interpreter"),
-		}, *messageResp.Attachments[0].Tools[0].CodeInterpreterToolDefinition)
-		require.Nil(t, messageResp.Attachments[0].Tools[0].FileSearchToolDefinition)
+		}, *attachmentTools[0].CodeInterpreterToolDefinition)
+		require.Nil(t, attachmentTools[0].FileSearchToolDefinition)
 
 		require.Equal(t, azopenaiassistants.FileSearchToolDefinition{
 			Type: to.Ptr("file_search"),
-		}, *messageResp.Attachments[0].Tools[1].FileSearchToolDefinition)
-		require.Nil(t, messageResp.Attachments[0].Tools[1].CodeInterpreterToolDefinition)
+		}, *attachmentTools[1].FileSearchToolDefinition)
+		require.Nil(t, attachmentTools[1].CodeInterpreterToolDefinition)
 
 		messageID := messageResp.ID
 

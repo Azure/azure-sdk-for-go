@@ -427,7 +427,7 @@ func (c CreateAndRunThreadBody) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "max_prompt_tokens", c.MaxPromptTokens)
 	populate(objectMap, "metadata", c.Metadata)
 	populate(objectMap, "response_format", c.ResponseFormat)
-	populate(objectMap, "stream", c.Stream)
+	populate(objectMap, "stream", c.stream)
 	populate(objectMap, "temperature", c.Temperature)
 	populate(objectMap, "thread", c.Thread)
 	populate(objectMap, "tool_choice", c.ToolChoice)
@@ -469,7 +469,7 @@ func (c *CreateAndRunThreadBody) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "ResponseFormat", &c.ResponseFormat)
 			delete(rawMsg, key)
 		case "stream":
-			err = unpopulate(val, "Stream", &c.Stream)
+			err = unpopulate(val, "Stream", &c.stream)
 			delete(rawMsg, key)
 		case "temperature":
 			err = unpopulate(val, "Temperature", &c.Temperature)
@@ -734,7 +734,7 @@ func (c CreateRunBody) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "metadata", c.Metadata)
 	populate(objectMap, "model", c.Model)
 	populate(objectMap, "response_format", c.ResponseFormat)
-	populate(objectMap, "stream", c.Stream)
+	populate(objectMap, "stream", c.stream)
 	populate(objectMap, "temperature", c.Temperature)
 	populate(objectMap, "tool_choice", c.ToolChoice)
 	populate(objectMap, "tools", c.Tools)
@@ -780,7 +780,7 @@ func (c *CreateRunBody) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "ResponseFormat", &c.ResponseFormat)
 			delete(rawMsg, key)
 		case "stream":
-			err = unpopulate(val, "Stream", &c.Stream)
+			err = unpopulate(val, "Stream", &c.stream)
 			delete(rawMsg, key)
 		case "temperature":
 			err = unpopulate(val, "Temperature", &c.Temperature)
@@ -3413,7 +3413,7 @@ func (s *SubmitToolOutputsDetails) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SubmitToolOutputsToRunBody.
 func (s SubmitToolOutputsToRunBody) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "stream", s.Stream)
+	populate(objectMap, "stream", s.stream)
 	populate(objectMap, "tool_outputs", s.ToolOutputs)
 	return json.Marshal(objectMap)
 }
@@ -3428,7 +3428,7 @@ func (s *SubmitToolOutputsToRunBody) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "stream":
-			err = unpopulate(val, "Stream", &s.Stream)
+			err = unpopulate(val, "Stream", &s.stream)
 			delete(rawMsg, key)
 		case "tool_outputs":
 			err = unpopulate(val, "ToolOutputs", &s.ToolOutputs)

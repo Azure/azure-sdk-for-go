@@ -35,7 +35,7 @@ func (m MessageAttachmentToolDefinition) MarshalJSON() ([]byte, error) {
 func (m *MessageAttachmentToolDefinition) UnmarshalJSON(data []byte) error {
 	var v *struct {
 		Type string
-		// TODO: This type needs to include, uniquely, all the fields of the individual types.
+		// NOTE: This type needs to include, uniquely, all the fields of the individual types.
 		// You can't just embed them because fields that are common between them will
 		// just get ignored.
 	}

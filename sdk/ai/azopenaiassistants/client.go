@@ -242,11 +242,11 @@ func (client *Client) createMessageHandleResponse(resp *http.Response) (CreateMe
 //
 // Generated from API version 2024-05-01-preview
 //   - threadID - The ID of the thread to run.
-//   - createRunOptions - The details for the run to create.
+//   - createRunBody - The details for the run to create.
 //   - options - CreateRunOptions contains the optional parameters for the Client.CreateRun method.
-func (client *Client) CreateRun(ctx context.Context, threadID string, createRunOptions CreateRunBody, options *CreateRunOptions) (CreateRunResponse, error) {
+func (client *Client) CreateRun(ctx context.Context, threadID string, createRunBody CreateRunBody, options *CreateRunOptions) (CreateRunResponse, error) {
 	var err error
-	req, err := client.createRunCreateRequest(ctx, threadID, createRunOptions, options)
+	req, err := client.createRunCreateRequest(ctx, threadID, createRunBody, options)
 	if err != nil {
 		return CreateRunResponse{}, err
 	}
@@ -263,7 +263,7 @@ func (client *Client) CreateRun(ctx context.Context, threadID string, createRunO
 }
 
 // createRunCreateRequest creates the CreateRun request.
-func (client *Client) createRunCreateRequest(ctx context.Context, threadID string, createRunOptions CreateRunBody, options *CreateRunOptions) (*policy.Request, error) {
+func (client *Client) createRunCreateRequest(ctx context.Context, threadID string, createRunBody CreateRunBody, options *CreateRunOptions) (*policy.Request, error) {
 	urlPath := client.formatURL("/threads/{threadId}/runs")
 	if threadID == "" {
 		return nil, errors.New("parameter threadID cannot be empty")
@@ -274,7 +274,7 @@ func (client *Client) createRunCreateRequest(ctx context.Context, threadID strin
 		return nil, err
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, createRunOptions); err != nil {
+	if err := runtime.MarshalAsJSON(req, createRunBody); err != nil {
 		return nil, err
 	}
 	return req, nil

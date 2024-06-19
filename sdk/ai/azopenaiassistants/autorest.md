@@ -212,6 +212,7 @@ directive:
       // POSTs
       $[threadsBase + "/messages/{messageId}"].post.parameters[2].schema["x-ms-client-name"] = "UpdateMessageBody";
       $[threadsBase + "/runs/{runId}"].post.parameters[2].schema["x-ms-client-name"] = "UpdateRunBody";
+      $[threadsBase + "/runs"].post.parameters[1]["x-ms-client-name"] = "CreateRunBody";
       $[threadsBase + "/runs/{runId}/submit_tool_outputs"].post.parameters[2].schema["x-ms-client-name"] = "SubmitToolOutputsToRunBody";
 
       // 

@@ -492,7 +492,7 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam) (*
 
 		prl = FirstBetaLabel
 		if !isCurrentPreview {
-			version, err = semver.NewVersion("1.0.0") // FirstGA must be v1.0.0
+			version, err = semver.NewVersion("1.0.0")
 			if err != nil {
 				return nil, err
 			}
@@ -558,11 +558,14 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam) (*
 			return nil, err
 		}
 
-		// If autorest.md exists, delete it
+		// If autorest.md exists, delete autorest.md and build.go
 		autorestMdPath := filepath.Join(packagePath, "autorest.md")
 		if _, err := os.Stat(autorestMdPath); !os.IsNotExist(err) {
-			log.Println("Remove autorest.md")
+			log.Println("Remove autorest.md and build.go...")
 			if err = os.Remove(autorestMdPath); err != nil {
+				return nil, err
+			}
+			if err = os.Remove(filepath.Join(packagePath, "build.go")); err != nil {
 				return nil, err
 			}
 		}

@@ -5,22 +5,13 @@ import (
 	"path/filepath"
 	"strings"
 	"text/template"
+	"time"
 )
 
-/*
-const (
-	RPNameKey        = "{{rpName}}"
-	PackageNameKey   = "{{packageName}}"
-	PackageTitleKey  = "{{packageTitle}}"
-	CommitIDKey      = "{{commitID}}"
-	FilenameSuffix   = ".tpl"
-	ReleaseDate      = "{{releaseDate}}"
-	PackageConfigKey = "{{packageConfig}}"
-	GoVersion        = "{{goVersion}}"
-	PackageVersion   = "{{packageVersion}}"
-)
-*/
-func ParseTypeSpecTemplates(templateDir, outputDir string, data any, funcMap template.FuncMap) error {
+func ParseTypeSpecTemplates(templateDir, outputDir string, data map[string]any, funcMap template.FuncMap) error {
+	if data["releaseDate"] == "" {
+		data["releaseDate"] = time.Now().Format("2006-01-02")
+	}
 
 	tpl := template.New("parse.tpl").Funcs(funcMap)
 	tpl, err := tpl.ParseGlob(filepath.Join(templateDir, "*.tpl"))

@@ -710,3 +710,20 @@ func UpdateModuleVersion(path string, newVersion string) error {
 		return err
 	}
 }
+
+func getConstantModuleVersion(packagePath string) (string, error) {
+	data, err := os.ReadFile(filepath.Join(packagePath, "constants.go"))
+	if err != nil {
+		return "", err
+	}
+
+	for _, line := range strings.Split(string(data), "\n") {
+		if strings.Contains(line, "moduleVersion") {
+			// cut: moduleVersion = "v0.1.0"
+			_, after, _ := strings.Cut(line, "\"")
+			return strings.TrimPrefix(strings.TrimSuffix(strings.TrimSpace(after), "\""), "v"), nil
+		}
+	}
+
+	return "", nil
+}

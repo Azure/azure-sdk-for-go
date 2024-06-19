@@ -553,6 +553,19 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam) (*
 			return nil, err
 		}
 
+		// When sdk has major version bump, the live test needs to update the module referenced in the code.
+		oldModuleVersion, err := getModuleVersion(tspLocationPath)
+		if err != nil {
+			return nil, err
+		}
+		if oldModuleVersion.Major() != version.Major() && existSuffixFile(packagePath, "_live_test.go") {
+			log.Printf("Replace live test module v2+...")
+			if err = replaceModuleImport(packagePath, generateParam.RPName, generateParam.NamespaceName, oldModuleVersion.String(), version.String(),
+				"", "_live_test.go"); err != nil {
+				return nil, err
+			}
+		}
+
 		log.Printf("Replace README.md module...")
 		if err = replaceReadmeModule(packagePath, generateParam.RPName, generateParam.NamespaceName, version.String()); err != nil {
 			return nil, err

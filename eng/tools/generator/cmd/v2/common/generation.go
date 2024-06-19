@@ -380,6 +380,10 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam) (*
 	packagePath := filepath.Join(ctx.SDKPath, "sdk", "resourcemanager", generateParam.RPName, generateParam.NamespaceName)
 	changelogPath := filepath.Join(packagePath, common.ChangelogFilename)
 	tspLocationPath := filepath.Join(packagePath, common.TypeSpecLocationName)
+	tspLocation, err := typespec.ParseTspLocation(tspLocationPath)
+	if err != nil {
+		return nil, err
+	}
 
 	version, err := semver.NewVersion("0.1.0")
 	if err != nil {
@@ -424,14 +428,8 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam) (*
 
 	log.Printf("Run `tsp-client init` to regenerate the code...")
 	moduleVersion := version.String()
-	if generateParam.SpecficVersion == "" {
-		tspLocation, err := typespec.ParseTspLocation(tspLocationPath)
-		if err != nil {
-			return nil, err
-		}
-		if tspLocation.ModuleVersion != "" {
-			moduleVersion = tspLocation.ModuleVersion
-		}
+	if generateParam.SpecficVersion == "" && tspLocation.ModuleVersion != "" {
+		moduleVersion = tspLocation.ModuleVersion
 	}
 	emitOption := fmt.Sprintf("module-version=%s", moduleVersion)
 	if generateParam.TypeSpecEmitOption != "" {
@@ -554,7 +552,7 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam) (*
 		}
 
 		// When sdk has major version bump, the live test needs to update the module referenced in the code.
-		oldModuleVersion, err := getModuleVersion(tspLocationPath)
+		oldModuleVersion, err := semver.NewVersion(tspLocation.ModuleVersion)
 		if err != nil {
 			return nil, err
 		}

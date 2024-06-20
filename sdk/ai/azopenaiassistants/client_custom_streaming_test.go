@@ -43,7 +43,7 @@ func TestStreaming_CreateThreadAndRunStream(t *testing.T) {
 				},
 			},
 		}, nil)
-		require.NoError(t, err)
+		requireNoErr(t, azure, err)
 
 		defer func() {
 			err = resp.Stream.Close()
@@ -83,12 +83,12 @@ func TestStreaming_CreateRunStream(t *testing.T) {
 				},
 			},
 		}, nil)
-		require.NoError(t, err)
+		requireNoErr(t, azure, err)
 
 		createRunResp, err := client.CreateRunStream(context.Background(), *createThreadResp.ID, azopenaiassistants.CreateRunBody{
 			AssistantID: &asstID,
 		}, nil)
-		require.NoError(t, err)
+		requireNoErr(t, azure, err)
 
 		defer func() {
 			err = createRunResp.Stream.Close()
@@ -121,11 +121,11 @@ func TestStreaming_SubmitToolOutputsAndRunStream(t *testing.T) {
 		var threadID string
 		{
 			createThreadResp, err := client.CreateThread(context.Background(), azopenaiassistants.CreateThreadBody{}, nil)
-			require.NoError(t, err)
+			requireNoErr(t, azure, err)
 
 			t.Cleanup(func() {
 				_, err := client.DeleteThread(context.Background(), *createThreadResp.ID, nil)
-				require.NoError(t, err)
+				requireNoErr(t, azure, err)
 			})
 
 			threadID = *createThreadResp.ID
@@ -134,14 +134,14 @@ func TestStreaming_SubmitToolOutputsAndRunStream(t *testing.T) {
 				Content: to.Ptr("What's the weather like in Boston, MA, in celsius?"),
 				Role:    to.Ptr(azopenaiassistants.MessageRoleUser),
 			}, nil)
-			require.NoError(t, err)
+			requireNoErr(t, azure, err)
 
 			// run the thread
 			createRunResp, err := client.CreateRunStream(context.Background(), *createThreadResp.ID, azopenaiassistants.CreateRunBody{
 				AssistantID:  createAssistantResp.ID,
 				Instructions: to.Ptr("Use functions to answer questions, when possible."),
 			}, nil)
-			require.NoError(t, err)
+			requireNoErr(t, azure, err)
 
 			defer func() {
 				err = createRunResp.Stream.Close()
@@ -195,7 +195,7 @@ func submitToolOutputsWithStreaming(t *testing.T, client *azopenaiassistants.Cli
 				},
 			},
 		}, nil)
-		require.NoError(t, err)
+		requireNoErr(t, azure, err)
 
 		defer func() {
 			err = resp.Stream.Close()

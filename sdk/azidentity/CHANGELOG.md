@@ -3,7 +3,7 @@
 ## 1.7.0 (2024-06-20)
 
 ### Features Added
-* `AzurePipelinesCredential` authenticates an Azure Pipeline service connection with
+* `AzurePipelinesCredential` authenticates an Azure Pipelines service connection with
   workload identity federation
 
 ### Breaking Changes

@@ -160,17 +160,17 @@ func (c *commandContext) generate(sdkRepo repo.SDKRepository, specCommitHash str
 
 	var err error
 	var result *common.GenerateResult
-	var byTypeSpec bool
+	var existTypeSpec bool
 	if c.flags.TypeSpecConfig != "" {
 		tsc, err := typespec.ParseTypeSpecConfig(c.flags.TypeSpecConfig)
 		if err != nil {
 			return err
 		}
-		byTypeSpec = tsc.ExistEmitOption(string(typespec.TypeSpec_GO))
+		existTypeSpec = tsc.ExistEmitOption(string(typespec.TypeSpec_GO))
 		generateCtx.TypeSpecConfig = tsc
 	}
 
-	if byTypeSpec {
+	if existTypeSpec {
 		log.Printf("Generate SDK through TypeSpec...")
 		result, err = generateCtx.GenerateForTypeSpec(&common.GenerateParam{
 			RPName:              c.rpName,

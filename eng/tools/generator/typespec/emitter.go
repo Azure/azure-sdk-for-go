@@ -8,4 +8,5 @@ const (
 	TypeSpec_CSHARP   TypeSpecEmitters = "@azure-tools/typespec-csharp"
 	TypeSpec_PYTHON   TypeSpecEmitters = "@azure-tools/typespec-python"
 	TypeSpec_TS       TypeSpecEmitters = "@azure-tools/typespec-ts"
+	TypeSpec_JAVA     TypeSpecEmitters = "@azure-tools/typespec-java"
 )

@@ -113,7 +113,7 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 				return nil, fmt.Errorf("failed to parse tspconfig.yaml: %+v", err)
 			}
 
-			if _, ok := tsc.TypeSpecProjectSchema.Options[string(typespec.TypeSpec_GO)]; ok {
+			if ok := tsc.ExistEmitOption(string(typespec.TypeSpec_GO)); ok {
 				log.Printf("Start to process typespec project: %s", tspProjectFolder)
 				existTypeSpecProject = true
 				generateCtx := common.GenerateContext{

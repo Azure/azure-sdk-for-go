@@ -173,29 +173,29 @@ func (c *commandContext) generate(sdkRepo repo.SDKRepository, specCommitHash str
 	if existTypeSpec {
 		log.Printf("Generate SDK through TypeSpec...")
 		result, err = generateCtx.GenerateForTypeSpec(&common.GenerateParam{
-			RPName:              c.rpName,
-			NamespaceName:       c.namespaceName,
+			RPName:               c.rpName,
+			NamespaceName:        c.namespaceName,
 			SpecificPackageTitle: c.flags.PackageTitle,
 			SpecificVersion:      c.flags.VersionNumber,
-			SpecRPName:          c.flags.SpecRPName,
-			ReleaseDate:         c.flags.ReleaseDate,
-			SkipGenerateExample: c.flags.SkipGenerateExample,
-			GoVersion:           c.flags.GoVersion,
-			TypeSpecEmitOption:  c.flags.TypeSpecGoOption,
+			SpecRPName:           c.flags.SpecRPName,
+			ReleaseDate:          c.flags.ReleaseDate,
+			SkipGenerateExample:  c.flags.SkipGenerateExample,
+			GoVersion:            c.flags.GoVersion,
+			TypeSpecEmitOption:   c.flags.TypeSpecGoOption,
 		})
 	} else {
 		log.Printf("Generate SDK through AutoRest...")
 		result, err = generateCtx.GenerateForSingleRPNamespace(&common.GenerateParam{
-			RPName:              c.rpName,
-			NamespaceName:       c.namespaceName,
-			NamespaceConfig:     c.flags.PackageConfig,
+			RPName:               c.rpName,
+			NamespaceName:        c.namespaceName,
+			NamespaceConfig:      c.flags.PackageConfig,
 			SpecificPackageTitle: c.flags.PackageTitle,
 			SpecificVersion:      c.flags.VersionNumber,
-			SpecRPName:          c.flags.SpecRPName,
-			ReleaseDate:         c.flags.ReleaseDate,
-			SkipGenerateExample: c.flags.SkipGenerateExample,
-			GoVersion:           c.flags.GoVersion,
-			ForceStableVersion:  c.flags.ForceStableVersion,
+			SpecRPName:           c.flags.SpecRPName,
+			ReleaseDate:          c.flags.ReleaseDate,
+			SkipGenerateExample:  c.flags.SkipGenerateExample,
+			GoVersion:            c.flags.GoVersion,
+			ForceStableVersion:   c.flags.ForceStableVersion,
 		})
 	}
 	if err != nil {

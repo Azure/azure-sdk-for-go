@@ -9,6 +9,10 @@ import (
 )
 
 func ParseTypeSpecTemplates(templateDir, outputDir string, data map[string]any, funcMap template.FuncMap) error {
+	if err := os.MkdirAll(outputDir, 0755); err != nil {
+		return err
+	}
+
 	if data["releaseDate"] == "" {
 		data["releaseDate"] = time.Now().Format("2006-01-02")
 	}

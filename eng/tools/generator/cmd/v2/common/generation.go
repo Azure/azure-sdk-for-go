@@ -45,18 +45,18 @@ type GenerateResult struct {
 }
 
 type GenerateParam struct {
-	RPName              string
-	NamespaceName       string
-	NamespaceConfig     string
+	RPName               string
+	NamespaceName        string
+	NamespaceConfig      string
 	SpecificVersion      string
 	SpecificPackageTitle string
-	SpecRPName          string
-	ReleaseDate         string
-	SkipGenerateExample bool
-	GoVersion           string
-	RemoveTagSet        bool
-	ForceStableVersion  bool
-	TypeSpecEmitOption  string
+	SpecRPName           string
+	ReleaseDate          string
+	SkipGenerateExample  bool
+	GoVersion            string
+	RemoveTagSet         bool
+	ForceStableVersion   bool
+	TypeSpecEmitOption   string
 }
 
 func (ctx *GenerateContext) GenerateForAutomation(readme, repo, goVersion string) ([]GenerateResult, []error) {

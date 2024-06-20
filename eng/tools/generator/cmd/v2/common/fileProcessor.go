@@ -620,7 +620,7 @@ func replaceReadmeModule(path, rpName, namespaceName, currentVersion string) err
 	module := fmt.Sprintf("github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/%s/%s", rpName, namespaceName)
 
 	readmeModule := module
-	match := regexp.MustCompile(fmt.Sprintf(`%s/v\d`, module))
+	match := regexp.MustCompile(fmt.Sprintf(`%s/v\d+`, module))
 	if match.Match(readmeFile) {
 		readmeModule = match.FindString(string(readmeFile))
 	}
@@ -711,19 +711,52 @@ func UpdateModuleVersion(path string, newVersion string) error {
 	}
 }
 
-func getConstantModuleVersion(packagePath string) (string, error) {
-	data, err := os.ReadFile(filepath.Join(packagePath, "constants.go"))
+func ReplaceConstModuleVersion(packagePath string, newVersion string) error {
+	path := filepath.Join(packagePath, "constants.go")
+	data, err := os.ReadFile(path)
 	if err != nil {
-		return "", err
+		return err
 	}
 
-	for _, line := range strings.Split(string(data), "\n") {
-		if strings.Contains(line, "moduleVersion") {
-			// cut: moduleVersion = "v0.1.0"
-			_, after, _ := strings.Cut(line, "\"")
-			return strings.TrimPrefix(strings.TrimSuffix(strings.TrimSpace(after), "\""), "v"), nil
+	contents := versionLineRegex.ReplaceAllString(string(data), "moduleVersion = \"v"+newVersion+"\"")
+	if contents == string(data) {
+		return nil
+	}
+
+	return os.WriteFile(path, []byte(contents), 0644)
+}
+
+func ReplaceLiveTestModule(newVersion *semver.Version, packagePath, rpName, packageName string) error {
+
+	return filepath.Walk(packagePath, func(path string, info fs.FileInfo, err error) error {
+		if err != nil {
+			return err
 		}
-	}
 
-	return "", nil
+		if info.IsDir() {
+			return nil
+		}
+
+		if strings.HasSuffix(info.Name(), "_live_test.go") {
+			data, err := os.ReadFile(path)
+			if err != nil {
+				return err
+			}
+
+			lines := strings.Split(string(data), "\n")
+			for i, line := range lines {
+				if strings.Contains(line, fmt.Sprintf("github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/%s/%s", rpName, packageName)) {
+					parts := strings.Split(strings.Trim(strings.TrimSpace(line), "\""), "/")
+					if parts[len(parts)-1] != fmt.Sprintf("v%d", newVersion.Major()) {
+						lines[i] = fmt.Sprintf("\t\"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/%s/%s/v%d\"", rpName, packageName, newVersion.Major())
+					}
+					break
+				}
+			}
+
+			return os.WriteFile(path, []byte(strings.Join(lines, "\n")), 0644)
+		}
+
+		return nil
+	})
 }

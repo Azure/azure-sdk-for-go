@@ -379,7 +379,6 @@ func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *Generate
 func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam) (*GenerateResult, error) {
 	packagePath := filepath.Join(ctx.SDKPath, "sdk", "resourcemanager", generateParam.RPName, generateParam.NamespaceName)
 	changelogPath := filepath.Join(packagePath, common.ChangelogFilename)
-	tspLocationPath := filepath.Join(packagePath, common.TypeSpecLocationName)
 
 	version, err := semver.NewVersion("0.1.0")
 	if err != nil {
@@ -423,16 +422,8 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam) (*
 	}
 
 	log.Printf("Run `tsp-client init` to regenerate the code...")
-	moduleVersion := version.String()
-	constantModuleVersion := "0.1.0"
-	if generateParam.SpecficVersion == "" && !onBoard {
-		constantModuleVersion, err = getConstantModuleVersion(packagePath)
-		if err != nil {
-			return nil, err
-		}
-		moduleVersion = constantModuleVersion
-	}
-	emitOption := fmt.Sprintf("module-version=%s", moduleVersion)
+	defaultModuleVersion := version.String()
+	emitOption := fmt.Sprintf("module-version=%s", defaultModuleVersion)
 	if generateParam.TypeSpecEmitOption != "" {
 		emitOption = fmt.Sprintf("%s;%s", emitOption, generateParam.TypeSpecEmitOption)
 	}
@@ -499,6 +490,10 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam) (*
 			return nil, err
 		}
 
+		if !generateParam.SkipGenerateExample {
+			log.Printf("Generate examples...")
+		}
+
 		prl = FirstBetaLabel
 		if !isCurrentPreview {
 			version, err = semver.NewVersion("1.0.0")
@@ -511,8 +506,8 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam) (*
 				return nil, err
 			}
 
-			log.Printf("Replace version in tsp-location.yaml...")
-			if err = UpdateModuleVersion(tspLocationPath, version.String()); err != nil {
+			log.Printf("Replace version in constants.go...")
+			if err = ReplaceConstModuleVersion(packagePath, version.String()); err != nil {
 				return nil, err
 			}
 			prl = FirstGALabel
@@ -522,7 +517,7 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam) (*
 		if err = ExecuteGoFmt(packagePath, "-s", "-w", "."); err != nil {
 			return nil, err
 		}
-	
+
 		log.Printf("##[command]Executing go mod tidy in %s\n", packagePath)
 		if err = ExecuteGo(packagePath, "mod", "tidy"); err != nil {
 			return nil, err
@@ -544,16 +539,6 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam) (*
 			if err != nil {
 				return nil, err
 			}
-
-			// regenerate sdk code
-			emitOption = fmt.Sprintf("module-version=%s", version.String())
-			if generateParam.TypeSpecEmitOption != "" {
-				emitOption = fmt.Sprintf("%s;%s", emitOption, generateParam.TypeSpecEmitOption)
-			}
-			err = ExecuteTypeSpecGenerate(ctx.SDKPath, ctx.TypeSpecConfig.Path, ctx.SpecCommitHash, ctx.SpecRepoURL, filepath.Dir(ctx.TypeSpecConfig.Path), emitOption)
-			if err != nil {
-				return nil, err
-			}
 		}
 
 		log.Printf("Add changelog to file...")
@@ -562,15 +547,34 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam) (*
 			return nil, err
 		}
 
-		// When sdk has major version bump, the live test needs to update the module referenced in the code.
-		oldModuleVersion, err := semver.NewVersion(constantModuleVersion)
+		log.Printf("Update module definition if v2+...")
+		err = UpdateModuleDefinition(packagePath, generateParam.RPName, generateParam.NamespaceName, version)
 		if err != nil {
 			return nil, err
 		}
-		if oldModuleVersion.Major() != version.Major() && existSuffixFile(packagePath, "_live_test.go") {
-			log.Printf("Replace live test module v2+...")
+
+		log.Printf("Replace version in constants.go...")
+		if err = ReplaceConstModuleVersion(packagePath, version.String()); err != nil {
+			return nil, err
+		}
+
+		oldModuleVersion, err := semver.NewVersion(defaultModuleVersion)
+		if err != nil {
+			return nil, err
+		}
+
+		if _, err := os.Stat(filepath.Join(packagePath, "fake")); !os.IsNotExist(err) && oldModuleVersion.Major() != version.Major() {
+			log.Printf("Replace fake module v2+...")
 			if err = replaceModuleImport(packagePath, generateParam.RPName, generateParam.NamespaceName, oldModuleVersion.String(), version.String(),
-				"", "_live_test.go"); err != nil {
+				"fake", ".go"); err != nil {
+				return nil, err
+			}
+		}
+
+		// When sdk has major version bump, the live test needs to update the module referenced in the code.
+		if existSuffixFile(packagePath, "_live_test.go") {
+			log.Printf("Replace live test module v2+...")
+			if err = ReplaceLiveTestModule(version, packagePath, generateParam.RPName, generateParam.NamespaceName); err != nil {
 				return nil, err
 			}
 		}
@@ -585,19 +589,24 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam) (*
 			return nil, err
 		}
 
-		log.Printf("Replace version in tsp-location.yaml...")
-		if err = UpdateModuleVersion(tspLocationPath, version.String()); err != nil {
-			return nil, err
+		// Example generation should be the last step because the package import relay on the new calculated version
+		if !generateParam.SkipGenerateExample {
+			log.Printf("Generate examples...")
 		}
 
-		// If autorest.md exists, delete autorest.md and build.go
+		// remove autorest.md and build.go
 		autorestMdPath := filepath.Join(packagePath, "autorest.md")
 		if _, err := os.Stat(autorestMdPath); !os.IsNotExist(err) {
-			log.Println("Remove autorest.md and build.go...")
+			log.Println("Remove autorest.md...")
 			if err = os.Remove(autorestMdPath); err != nil {
 				return nil, err
 			}
-			if err = os.Remove(filepath.Join(packagePath, "build.go")); err != nil {
+
+		}
+		buildGoPath := filepath.Join(packagePath, "build.go")
+		if _, err := os.Stat(autorestMdPath); !os.IsNotExist(err) {
+			log.Println("Remove build.go...")
+			if err = os.Remove(buildGoPath); err != nil {
 				return nil, err
 			}
 		}
@@ -606,7 +615,7 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam) (*
 		if err = ExecuteGoFmt(packagePath, "-s", "-w", "."); err != nil {
 			return nil, err
 		}
-	
+
 		log.Printf("##[command]Executing go mod tidy in %s\n", packagePath)
 		if err = ExecuteGo(packagePath, "mod", "tidy"); err != nil {
 			return nil, err

@@ -56,45 +56,45 @@ func processStream(t *testing.T, azure bool, asstID string, scenario streamScena
 
 		switch event.Kind {
 		case azopenaiassistants.AssistantStreamEventThreadCreated:
-			v := requireType[azopenaiassistants.AssistantThread](t, event)
+			v := requireType[*azopenaiassistants.AssistantThread](t, event)
 			t.Logf("(%s): %s", event.Kind, *v.ID)
 
 		case azopenaiassistants.AssistantStreamEventThreadRunCreated:
-			v := requireType[azopenaiassistants.ThreadRun](t, event)
+			v := requireType[*azopenaiassistants.ThreadRun](t, event)
 			t.Logf("(%s): %s", event.Kind, *v.ID)
 			require.Equal(t, asstID, *v.AssistantID)
 
 		case azopenaiassistants.AssistantStreamEventThreadRunQueued:
-			v := requireType[azopenaiassistants.ThreadRun](t, event)
+			v := requireType[*azopenaiassistants.ThreadRun](t, event)
 			t.Logf("(%s): %s", event.Kind, *v.ID)
 			require.Equal(t, asstID, *v.AssistantID)
 			require.Equal(t, azopenaiassistants.RunStatusQueued, *v.Status)
 
 		case azopenaiassistants.AssistantStreamEventThreadRunInProgress:
-			v := requireType[azopenaiassistants.ThreadRun](t, event)
+			v := requireType[*azopenaiassistants.ThreadRun](t, event)
 			t.Logf("(%s): %s", event.Kind, *v.ID)
 			require.Equal(t, asstID, *v.AssistantID)
 			require.Equal(t, azopenaiassistants.RunStatusInProgress, *v.Status)
 
 		case azopenaiassistants.AssistantStreamEventThreadMessageCreated:
-			v := requireType[azopenaiassistants.ThreadMessage](t, event)
+			v := requireType[*azopenaiassistants.ThreadMessage](t, event)
 			t.Logf("(%s): %s", event.Kind, *v.ID)
 			require.Equal(t, azopenaiassistants.MessageRoleAssistant, *v.Role)
 
 		case azopenaiassistants.AssistantStreamEventThreadMessageCompleted:
-			v := requireType[azopenaiassistants.ThreadMessage](t, event)
+			v := requireType[*azopenaiassistants.ThreadMessage](t, event)
 			t.Logf("(%s): %s", event.Kind, *v.ID)
 			require.Equal(t, azopenaiassistants.MessageStatusCompleted, *v.Status)
 			require.Equal(t, azopenaiassistants.MessageRoleAssistant, *v.Role)
 
 		case azopenaiassistants.AssistantStreamEventThreadMessageInProgress:
-			v := requireType[azopenaiassistants.ThreadMessage](t, event)
+			v := requireType[*azopenaiassistants.ThreadMessage](t, event)
 			t.Logf("(%s): %s", event.Kind, *v.ID)
 			require.Equal(t, azopenaiassistants.MessageStatusInProgress, *v.Status)
 			require.Equal(t, azopenaiassistants.MessageRoleAssistant, *v.Role)
 
 		case azopenaiassistants.AssistantStreamEventThreadMessageDelta:
-			v := requireType[azopenaiassistants.MessageDeltaChunk](t, event)
+			v := requireType[*azopenaiassistants.MessageDeltaChunk](t, event)
 			require.NotEmpty(t, *v.Delta)
 
 			for _, c := range v.Delta.Content {
@@ -107,13 +107,13 @@ func processStream(t *testing.T, azure bool, asstID string, scenario streamScena
 			}
 
 		case azopenaiassistants.AssistantStreamEventThreadRunCompleted:
-			v := requireType[azopenaiassistants.ThreadRun](t, event)
+			v := requireType[*azopenaiassistants.ThreadRun](t, event)
 			t.Logf("(%s): %s", event.Kind, *v.ID)
 
 			require.Equal(t, asstID, *v.AssistantID)
 
 		case azopenaiassistants.AssistantStreamEventThreadRunFailed:
-			v := requireType[azopenaiassistants.ThreadRun](t, event)
+			v := requireType[*azopenaiassistants.ThreadRun](t, event)
 
 			if azure {
 				skipifThrottled(t, v.LastError)
@@ -128,7 +128,7 @@ func processStream(t *testing.T, azure bool, asstID string, scenario streamScena
 			}
 
 		case azopenaiassistants.AssistantStreamEventThreadRunRequiresAction:
-			v := requireType[azopenaiassistants.ThreadRun](t, event)
+			v := requireType[*azopenaiassistants.ThreadRun](t, event)
 			t.Logf("(%s) %s", event.Kind, *v.ID)
 			t.Logf("We need to run tool outputs, stream is going to end.")
 
@@ -136,7 +136,7 @@ func processStream(t *testing.T, azure bool, asstID string, scenario streamScena
 			toolOutputsRequiredRet = v
 
 		case azopenaiassistants.AssistantStreamEventThreadRunStepDelta:
-			v := requireType[azopenaiassistants.RunStepDeltaChunk](t, event)
+			v := requireType[*azopenaiassistants.RunStepDeltaChunk](t, event)
 			switch details := v.Delta.StepDetails.(type) {
 			case *azopenaiassistants.RunStepDeltaMessageCreation:
 				t.Logf("(%s): %s, message created: %s", event.Kind, *v.ID, *details.MessageCreation.MessageID)
@@ -166,7 +166,7 @@ func processStream(t *testing.T, azure bool, asstID string, scenario streamScena
 		case azopenaiassistants.AssistantStreamEventThreadRunStepCompleted,
 			azopenaiassistants.AssistantStreamEventThreadRunStepCreated,
 			azopenaiassistants.AssistantStreamEventThreadRunStepInProgress:
-			v := requireType[azopenaiassistants.RunStep](t, event)
+			v := requireType[*azopenaiassistants.RunStep](t, event)
 			t.Logf("(%s): %s", event.Kind, *v.ID)
 		case azopenaiassistants.AssistantStreamEventError,
 			azopenaiassistants.AssistantStreamEventThreadRunStepExpired,

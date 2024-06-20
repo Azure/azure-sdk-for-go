@@ -8,9 +8,6 @@ package azopenaiassistants
 
 import (
 	"context"
-	"encoding/json"
-	"fmt"
-	"io"
 	"net/http"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
@@ -18,21 +15,6 @@ import (
 )
 
 // API Reference: https://platform.openai.com/docs/api-reference/assistants-streaming
-
-// StreamEvent contains an event from an Assistants API stream.
-type StreamEvent struct {
-	// Kind identifies the type of event in Event.
-	Kind AssistantStreamEvent
-
-	// Event is one of the following types, based on the Kind:
-	// - [*AssistantThread]
-	// - [*MessageDeltaChunk]
-	// - [*RunStep]
-	// - [*RunStepDeltaChunk]
-	// - [*ThreadMessage]
-	// - [*ThreadRun]
-	Event any
-}
 
 // CreateThreadAndRunStreamResponse contains the response from [CreateThreadAndRunStream].
 type CreateThreadAndRunStreamResponse struct {
@@ -151,94 +133,4 @@ func (client *Client) SubmitToolOutputsToRunStream(ctx context.Context, threadID
 	return SubmitToolOutputsToRunStreamResponse{
 		Stream: newEventReader[StreamEvent](httpResp.Body, unmarshalStreamEvent),
 	}, nil
-}
-
-func unmarshalStreamEvent(eventName string, data []byte) (StreamEvent, error) {
-	kind := AssistantStreamEvent(eventName)
-
-	switch kind {
-	case AssistantStreamEventDone: // AssistantStreamEventDone - Event sent when the stream is done.
-		// This should never get hit - EventReader takes care of processing this event for us.
-		return StreamEvent{}, io.EOF
-	case AssistantStreamEventError: // AssistantStreamEventError - Event sent when an error occurs, such as an internal server error or a timeout.
-		return StreamEvent{}, fmt.Errorf("error occurred while streaming: %s", string(data))
-	case AssistantStreamEventThreadCreated:
-		var v *AssistantThread
-		if err := json.Unmarshal(data, &v); err != nil {
-			return StreamEvent{}, err
-		}
-
-		return StreamEvent{
-			Event: v,
-			Kind:  kind,
-		}, nil
-	case AssistantStreamEventThreadMessageCompleted,
-		AssistantStreamEventThreadMessageCreated,
-		AssistantStreamEventThreadMessageInProgress,
-		AssistantStreamEventThreadMessageIncomplete:
-		var v *ThreadMessage
-		if err := json.Unmarshal(data, &v); err != nil {
-			return StreamEvent{}, err
-		}
-
-		return StreamEvent{
-			Event: v,
-			Kind:  kind,
-		}, nil
-
-	case AssistantStreamEventThreadMessageDelta:
-		var v *MessageDeltaChunk
-		if err := json.Unmarshal(data, &v); err != nil {
-			return StreamEvent{}, err
-		}
-
-		return StreamEvent{
-			Event: v,
-			Kind:  kind,
-		}, nil
-
-	case AssistantStreamEventThreadRunCancelled,
-		AssistantStreamEventThreadRunCancelling,
-		AssistantStreamEventThreadRunCompleted,
-		AssistantStreamEventThreadRunCreated,
-		AssistantStreamEventThreadRunExpired,
-		AssistantStreamEventThreadRunFailed,
-		AssistantStreamEventThreadRunInProgress,
-		AssistantStreamEventThreadRunQueued,
-		AssistantStreamEventThreadRunRequiresAction:
-		var v *ThreadRun
-		if err := json.Unmarshal(data, &v); err != nil {
-			return StreamEvent{}, err
-		}
-
-		return StreamEvent{
-			Event: v,
-			Kind:  kind,
-		}, nil
-
-	case AssistantStreamEventThreadRunStepCancelled, AssistantStreamEventThreadRunStepCompleted, AssistantStreamEventThreadRunStepCreated, AssistantStreamEventThreadRunStepExpired, AssistantStreamEventThreadRunStepFailed, AssistantStreamEventThreadRunStepInProgress:
-		var v *RunStep
-		if err := json.Unmarshal(data, &v); err != nil {
-			return StreamEvent{}, err
-		}
-
-		return StreamEvent{
-			Event: v,
-			Kind:  kind,
-		}, nil
-
-	case AssistantStreamEventThreadRunStepDelta:
-		var v *RunStepDeltaChunk
-		if err := json.Unmarshal(data, &v); err != nil {
-			return StreamEvent{}, err
-		}
-
-		return StreamEvent{
-			Event: v,
-			Kind:  kind,
-		}, nil
-
-	default:
-		return StreamEvent{}, fmt.Errorf("unhandled kind %s", kind)
-	}
 }

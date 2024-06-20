@@ -331,8 +331,8 @@ func requireSuccessfulPolling(t *testing.T, azure bool, resp azopenaiassistants.
 	requireNoErr(t, azure, err)
 }
 
-func requireType[T any](t *testing.T, event azopenaiassistants.StreamEvent) *T {
-	v, ok := event.Event.(*T)
+func requireType[T azopenaiassistants.StreamEventDataClassification](t *testing.T, event azopenaiassistants.StreamEvent) T {
+	v, ok := event.Event.(T)
 
 	var zero T
 	require.Truef(t, ok, "Expecting %T (%T)", zero, event.Event)

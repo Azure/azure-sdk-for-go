@@ -48,8 +48,8 @@ type GenerateParam struct {
 	RPName              string
 	NamespaceName       string
 	NamespaceConfig     string
-	SpecficVersion      string
-	SpecficPackageTitle string
+	SpecificVersion      string
+	SpecificPackageTitle string
 	SpecRPName          string
 	ReleaseDate         string
 	SkipGenerateExample bool
@@ -114,9 +114,9 @@ func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *Generate
 	if err != nil {
 		return nil, err
 	}
-	if generateParam.SpecficVersion != "" {
-		log.Printf("Use specfic version: %s", generateParam.SpecficVersion)
-		version, err = semver.NewVersion(generateParam.SpecficVersion)
+	if generateParam.SpecificVersion != "" {
+		log.Printf("Use specific version: %s", generateParam.SpecificVersion)
+		version, err = semver.NewVersion(generateParam.SpecificVersion)
 		if err != nil {
 			return nil, err
 		}
@@ -126,15 +126,15 @@ func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *Generate
 		onBoard = true
 		log.Printf("Package '%s' changelog not exist, do onboard process", packagePath)
 
-		if generateParam.SpecficPackageTitle == "" {
-			generateParam.SpecficPackageTitle = strings.Title(generateParam.RPName)
+		if generateParam.SpecificPackageTitle == "" {
+			generateParam.SpecificPackageTitle = strings.Title(generateParam.RPName)
 		}
 
 		log.Printf("Use template to generate new rp folder and basic package files...")
 		if err = template.GeneratePackageByTemplate(generateParam.RPName, generateParam.NamespaceName, template.Flags{
 			SDKRoot:        ctx.SDKPath,
 			TemplatePath:   "eng/tools/generator/template/rpName/packageName",
-			PackageTitle:   generateParam.SpecficPackageTitle,
+			PackageTitle:   generateParam.SpecificPackageTitle,
 			Commit:         ctx.SpecCommitHash,
 			PackageConfig:  generateParam.NamespaceConfig,
 			GoVersion:      generateParam.GoVersion,
@@ -296,7 +296,7 @@ func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *Generate
 		}, nil
 	} else {
 		log.Printf("Calculate new version...")
-		if generateParam.SpecficVersion == "" {
+		if generateParam.SpecificVersion == "" {
 			version, prl, err = CalculateNewVersion(changelog, previousVersion, isCurrentPreview)
 			if err != nil {
 				return nil, err
@@ -384,9 +384,9 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam) (*
 	if err != nil {
 		return nil, err
 	}
-	if generateParam.SpecficVersion != "" {
-		log.Printf("Use specfic version: %s", generateParam.SpecficVersion)
-		version, err = semver.NewVersion(generateParam.SpecficVersion)
+	if generateParam.SpecificVersion != "" {
+		log.Printf("Use specific version: %s", generateParam.SpecificVersion)
+		version, err = semver.NewVersion(generateParam.SpecificVersion)
 		if err != nil {
 			return nil, err
 		}
@@ -396,15 +396,15 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam) (*
 	if _, err := os.Stat(changelogPath); os.IsNotExist(err) {
 		onBoard = true
 		log.Printf("Package '%s' changelog not exist, do onboard process", packagePath)
-		if generateParam.SpecficPackageTitle == "" {
-			generateParam.SpecficPackageTitle = strings.Title(generateParam.RPName)
+		if generateParam.SpecificPackageTitle == "" {
+			generateParam.SpecificPackageTitle = strings.Title(generateParam.RPName)
 		}
 
 		log.Printf("Use template to generate new rp folder and basic package files...")
 		sdkBasicInfo := map[string]any{
 			"rpName":         generateParam.RPName,
 			"packageName":    generateParam.NamespaceName,
-			"packageTitle":   generateParam.SpecficPackageTitle,
+			"packageTitle":   generateParam.SpecificPackageTitle,
 			"packageVersion": version.String(),
 			"releaseDate":    generateParam.ReleaseDate,
 			"goVersion":      generateParam.GoVersion,
@@ -435,7 +435,7 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam) (*
 	previousVersion := ""
 	isCurrentPreview := false
 	var oriExports *exports.Content
-	if generateParam.SpecficVersion != "" {
+	if generateParam.SpecificVersion != "" {
 		isCurrentPreview, err = IsBetaVersion(version.String())
 		if err != nil {
 			return nil, err
@@ -534,7 +534,7 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam) (*
 		}, nil
 	} else {
 		log.Printf("Calculate new version...")
-		if generateParam.SpecficVersion == "" {
+		if generateParam.SpecificVersion == "" {
 			version, prl, err = CalculateNewVersion(changelog, previousVersion, isCurrentPreview)
 			if err != nil {
 				return nil, err

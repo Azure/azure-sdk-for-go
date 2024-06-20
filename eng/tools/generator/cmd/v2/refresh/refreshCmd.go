@@ -143,8 +143,8 @@ func (c *commandContext) execute(sdkRepoParam, specRepoParam string) error {
 			result, err := generateCtx.GenerateForSingleRPNamespace(&common.GenerateParam{
 				RPName:              rpName,
 				NamespaceName:       namespace.Name(),
-				SpecficPackageTitle: "",
-				SpecficVersion:      c.flags.VersionNumber,
+				SpecificPackageTitle: "",
+				SpecificVersion:      c.flags.VersionNumber,
 				SpecRPName:          specRpName,
 				ReleaseDate:         c.flags.ReleaseDate,
 				SkipGenerateExample: c.flags.SkipGenerateExample,

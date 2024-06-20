@@ -145,7 +145,7 @@ func (tc *TypeSpecConfig) EmitOption(emit string) (any, error) {
 		return v, nil
 	}
 
-	return nil, fmt.Errorf("emit %s not found in %s", emit, tc.Path)
+	return nil, fmt.Errorf("emit %s option not found in %s", emit, tc.Path)
 }
 
 func (tc TypeSpecConfig) ExistEmitOption(emit string) bool {

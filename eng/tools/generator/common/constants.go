@@ -13,8 +13,4 @@ const (
 	RelativeVersionGo = "version/version.go"
 
 	Root = "github.com/Azure/azure-sdk-for-go"
-
-	// typespec
-	TypeSpecConfigName   = "tspconfig.yaml"
-	TypeSpecLocationName = "tsp-location.yaml"
 )

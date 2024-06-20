@@ -6,7 +6,6 @@ import (
 	"net/http"
 	"os"
 	"regexp"
-	"slices"
 	"strings"
 
 	"github.com/goccy/go-yaml"
@@ -81,20 +80,6 @@ func ParseTypeSpecConfig(tspconfigPath string) (*TypeSpecConfig, error) {
 	return &tspConfig, err
 }
 
-func (tc *TypeSpecConfig) EditEmit(emits []string) {
-	if tc.Emit == nil {
-		tc.Emit = emits
-		return
-	}
-
-	tc.Emit = append(tc.Emit, emits...)
-	tc.Emit = slices.Compact(tc.Emit)
-}
-
-func (tc *TypeSpecConfig) OnlyEmit(emit string) {
-	tc.Emit = []string{emit}
-}
-
 func (tc *TypeSpecConfig) EditOptions(emit string, option map[string]any, append bool) {
 	if tc.Options == nil {
 		tc.Options = make(map[string]any)
@@ -115,7 +100,7 @@ func (tc *TypeSpecConfig) EditOptions(emit string, option map[string]any, append
 	}
 }
 
-func (tc *TypeSpecConfig) Write() error {
+func (tc *TypeSpecConfig) Save() error {
 	data, err := yaml.MarshalWithOptions(tc.TypeSpecProjectSchema, yaml.IndentSequence(true))
 	if err != nil {
 		return err
@@ -124,17 +109,11 @@ func (tc *TypeSpecConfig) Write() error {
 	return os.WriteFile(tc.Path, data, 0666)
 }
 
-func (tc *TypeSpecConfig) WriteTo(w io.Writer) (int64, error) {
-	data, err := yaml.MarshalWithOptions(tc.TypeSpecProjectSchema, yaml.IndentSequence(true))
-	if err != nil {
-		return 0, err
+func (tc *TypeSpecConfig) EmitOption(emit string) (any, error) {
+	if tc.Options == nil {
+		return nil, fmt.Errorf("no options found in %s", tc.Path)
 	}
 
-	n, err := w.Write(data)
-	return int64(n), err
-}
-
-func (tc *TypeSpecConfig) EmitOption(emit string) (any, error) {
 	if v, ok := tc.Options[emit]; ok {
 		return v, nil
 	}
@@ -143,8 +122,8 @@ func (tc *TypeSpecConfig) EmitOption(emit string) (any, error) {
 }
 
 func (tc TypeSpecConfig) ExistEmitOption(emit string) bool {
-	_, ok := tc.Options[emit]
-	return ok
+	_, err := tc.EmitOption(emit)
+	return err == nil
 }
 
 func (tc TypeSpecConfig) GetModuleName() ([2]string, error) {

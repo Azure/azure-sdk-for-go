@@ -78,31 +78,30 @@ func ParseTypeSpecConfig(tspconfigPath string) (*TypeSpecConfig, error) {
 	}
 
 	// replace {service-dir} and {package-dir}
-	emitOption, err := tspConfig.EmitOption(string(TypeSpec_GO))
-	if err != nil {
-		return nil, err
+	exist := tspConfig.ExistEmitOption(string(TypeSpec_GO))
+	if exist {
+		emitOption, err := tspConfig.EmitOption(string(TypeSpec_GO))
+		if err != nil {
+			return nil, err
+		}
+	
+		goOption := emitOption.(map[string]any)
+		module, ok := goOption["module"].(string)
+		if !ok {
+			return nil, fmt.Errorf("the module must be set in %s option", TypeSpec_GO)
+		}
+	
+		if strings.Contains(module, "{service-dir}") {
+			module = strings.ReplaceAll(module, "{service-dir}", goOption["service-dir"].(string))
+		}
+	
+		if strings.Contains(module, "{package-dir}") {
+			module = strings.ReplaceAll(module, "{package-dir}", goOption["package-dir"].(string))
+		}
+	
+		goOption["module"] = module
+		tspConfig.EditOptions(string(TypeSpec_GO), goOption, false)
 	}
-
-	goOption, ok := emitOption.(map[string]any)
-	if !ok {
-		return nil, fmt.Errorf("go option is invalid in %s", tspconfigPath)
-	}
-
-	module, ok := goOption["module"].(string)
-	if !ok {
-		return nil, fmt.Errorf("the module must be set in %s option", TypeSpec_GO)
-	}
-
-	if strings.Contains(module, "{service-dir}") {
-		module = strings.ReplaceAll(module, "{service-dir}", goOption["service-dir"].(string))
-	}
-
-	if strings.Contains(module, "{package-dir}") {
-		module = strings.ReplaceAll(module, "{package-dir}", goOption["package-dir"].(string))
-	}
-
-	goOption["module"] = module
-	tspConfig.EditOptions(string(TypeSpec_GO), goOption, false)
 
 	return &tspConfig, err
 }

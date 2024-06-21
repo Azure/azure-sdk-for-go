@@ -47,7 +47,7 @@ func NewCustomIPPrefixesClient(subscriptionID string, credential azcore.TokenCre
 // BeginCreateOrUpdate - Creates or updates a custom IP prefix.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01
+// Generated from API version 2023-11-01
 //   - resourceGroupName - The name of the resource group.
 //   - customIPPrefixName - The name of the custom IP prefix.
 //   - parameters - Parameters supplied to the create or update custom IP prefix operation.
@@ -74,7 +74,7 @@ func (client *CustomIPPrefixesClient) BeginCreateOrUpdate(ctx context.Context, r
 // CreateOrUpdate - Creates or updates a custom IP prefix.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01
+// Generated from API version 2023-11-01
 func (client *CustomIPPrefixesClient) createOrUpdate(ctx context.Context, resourceGroupName string, customIPPrefixName string, parameters CustomIPPrefix, options *CustomIPPrefixesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CustomIPPrefixesClient.BeginCreateOrUpdate"
@@ -116,7 +116,7 @@ func (client *CustomIPPrefixesClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-01")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -128,7 +128,7 @@ func (client *CustomIPPrefixesClient) createOrUpdateCreateRequest(ctx context.Co
 // BeginDelete - Deletes the specified custom IP prefix.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01
+// Generated from API version 2023-11-01
 //   - resourceGroupName - The name of the resource group.
 //   - customIPPrefixName - The name of the CustomIpPrefix.
 //   - options - CustomIPPrefixesClientBeginDeleteOptions contains the optional parameters for the CustomIPPrefixesClient.BeginDelete
@@ -154,7 +154,7 @@ func (client *CustomIPPrefixesClient) BeginDelete(ctx context.Context, resourceG
 // Delete - Deletes the specified custom IP prefix.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01
+// Generated from API version 2023-11-01
 func (client *CustomIPPrefixesClient) deleteOperation(ctx context.Context, resourceGroupName string, customIPPrefixName string, options *CustomIPPrefixesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CustomIPPrefixesClient.BeginDelete"
@@ -196,7 +196,7 @@ func (client *CustomIPPrefixesClient) deleteCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-01")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -205,7 +205,7 @@ func (client *CustomIPPrefixesClient) deleteCreateRequest(ctx context.Context, r
 // Get - Gets the specified custom IP prefix in a specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01
+// Generated from API version 2023-11-01
 //   - resourceGroupName - The name of the resource group.
 //   - customIPPrefixName - The name of the custom IP prefix.
 //   - options - CustomIPPrefixesClientGetOptions contains the optional parameters for the CustomIPPrefixesClient.Get method.
@@ -254,7 +254,7 @@ func (client *CustomIPPrefixesClient) getCreateRequest(ctx context.Context, reso
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
-	reqQP.Set("api-version", "2023-09-01")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -271,7 +271,7 @@ func (client *CustomIPPrefixesClient) getHandleResponse(resp *http.Response) (Cu
 
 // NewListPager - Gets all custom IP prefixes in a resource group.
 //
-// Generated from API version 2023-09-01
+// Generated from API version 2023-11-01
 //   - resourceGroupName - The name of the resource group.
 //   - options - CustomIPPrefixesClientListOptions contains the optional parameters for the CustomIPPrefixesClient.NewListPager
 //     method.
@@ -314,7 +314,7 @@ func (client *CustomIPPrefixesClient) listCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-01")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -331,7 +331,7 @@ func (client *CustomIPPrefixesClient) listHandleResponse(resp *http.Response) (C
 
 // NewListAllPager - Gets all the custom IP prefixes in a subscription.
 //
-// Generated from API version 2023-09-01
+// Generated from API version 2023-11-01
 //   - options - CustomIPPrefixesClientListAllOptions contains the optional parameters for the CustomIPPrefixesClient.NewListAllPager
 //     method.
 func (client *CustomIPPrefixesClient) NewListAllPager(options *CustomIPPrefixesClientListAllOptions) *runtime.Pager[CustomIPPrefixesClientListAllResponse] {
@@ -369,7 +369,7 @@ func (client *CustomIPPrefixesClient) listAllCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-01")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -387,7 +387,7 @@ func (client *CustomIPPrefixesClient) listAllHandleResponse(resp *http.Response)
 // UpdateTags - Updates custom IP prefix tags.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01
+// Generated from API version 2023-11-01
 //   - resourceGroupName - The name of the resource group.
 //   - customIPPrefixName - The name of the custom IP prefix.
 //   - parameters - Parameters supplied to update custom IP prefix tags.
@@ -435,7 +435,7 @@ func (client *CustomIPPrefixesClient) updateTagsCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-01")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

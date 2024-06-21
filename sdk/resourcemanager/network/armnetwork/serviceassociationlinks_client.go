@@ -47,7 +47,7 @@ func NewServiceAssociationLinksClient(subscriptionID string, credential azcore.T
 // List - Gets a list of service association links for a subnet.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01
+// Generated from API version 2023-11-01
 //   - resourceGroupName - The name of the resource group.
 //   - virtualNetworkName - The name of the virtual network.
 //   - subnetName - The name of the subnet.
@@ -99,7 +99,7 @@ func (client *ServiceAssociationLinksClient) listCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-01")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

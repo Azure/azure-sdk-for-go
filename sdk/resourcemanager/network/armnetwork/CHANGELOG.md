@@ -1,5 +1,59 @@
 # Release History
 
+## 5.2.0 (2024-06-21)
+### Features Added
+
+- New value `EndpointTypeAzureArcNetwork` added to enum type `EndpointType`
+- New enum type `ApplicationGatewaySKUFamily` with values `ApplicationGatewaySKUFamilyGeneration1`, `ApplicationGatewaySKUFamilyGeneration2`
+- New enum type `InboundSecurityRuleType` with values `InboundSecurityRuleTypeAutoExpire`, `InboundSecurityRuleTypePermanent`
+- New enum type `NicTypeInRequest` with values `NicTypeInRequestPrivateNic`, `NicTypeInRequestPublicNic`
+- New enum type `NicTypeInResponse` with values `NicTypeInResponseAdditionalNic`, `NicTypeInResponsePrivateNic`, `NicTypeInResponsePublicNic`
+- New enum type `SharingScope` with values `SharingScopeDelegatedServices`, `SharingScopeTenant`
+- New function `*ClientFactory.NewFirewallPolicyDeploymentsClient() *FirewallPolicyDeploymentsClient`
+- New function `*ClientFactory.NewFirewallPolicyDraftsClient() *FirewallPolicyDraftsClient`
+- New function `*ClientFactory.NewFirewallPolicyRuleCollectionGroupDraftsClient() *FirewallPolicyRuleCollectionGroupDraftsClient`
+- New function `NewFirewallPolicyDeploymentsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*FirewallPolicyDeploymentsClient, error)`
+- New function `*FirewallPolicyDeploymentsClient.BeginDeploy(context.Context, string, string, *FirewallPolicyDeploymentsClientBeginDeployOptions) (*runtime.Poller[FirewallPolicyDeploymentsClientDeployResponse], error)`
+- New function `NewFirewallPolicyDraftsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*FirewallPolicyDraftsClient, error)`
+- New function `*FirewallPolicyDraftsClient.CreateOrUpdate(context.Context, string, string, FirewallPolicyDraft, *FirewallPolicyDraftsClientCreateOrUpdateOptions) (FirewallPolicyDraftsClientCreateOrUpdateResponse, error)`
+- New function `*FirewallPolicyDraftsClient.Delete(context.Context, string, string, *FirewallPolicyDraftsClientDeleteOptions) (FirewallPolicyDraftsClientDeleteResponse, error)`
+- New function `*FirewallPolicyDraftsClient.Get(context.Context, string, string, *FirewallPolicyDraftsClientGetOptions) (FirewallPolicyDraftsClientGetResponse, error)`
+- New function `NewFirewallPolicyRuleCollectionGroupDraftsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*FirewallPolicyRuleCollectionGroupDraftsClient, error)`
+- New function `*FirewallPolicyRuleCollectionGroupDraftsClient.CreateOrUpdate(context.Context, string, string, string, FirewallPolicyRuleCollectionGroupDraft, *FirewallPolicyRuleCollectionGroupDraftsClientCreateOrUpdateOptions) (FirewallPolicyRuleCollectionGroupDraftsClientCreateOrUpdateResponse, error)`
+- New function `*FirewallPolicyRuleCollectionGroupDraftsClient.Delete(context.Context, string, string, string, *FirewallPolicyRuleCollectionGroupDraftsClientDeleteOptions) (FirewallPolicyRuleCollectionGroupDraftsClientDeleteResponse, error)`
+- New function `*FirewallPolicyRuleCollectionGroupDraftsClient.Get(context.Context, string, string, string, *FirewallPolicyRuleCollectionGroupDraftsClientGetOptions) (FirewallPolicyRuleCollectionGroupDraftsClientGetResponse, error)`
+- New function `*VirtualAppliancesClient.BeginRestart(context.Context, string, string, *VirtualAppliancesClientBeginRestartOptions) (*runtime.Poller[VirtualAppliancesClientRestartResponse], error)`
+- New struct `ConnectionMonitorEndpointLocationDetails`
+- New struct `FirewallPolicyDraft`
+- New struct `FirewallPolicyDraftProperties`
+- New struct `FirewallPolicyRuleCollectionGroupDraft`
+- New struct `FirewallPolicyRuleCollectionGroupDraftProperties`
+- New struct `HeaderValueMatcher`
+- New struct `PacketCaptureSettings`
+- New struct `VirtualApplianceIPConfiguration`
+- New struct `VirtualApplianceIPConfigurationProperties`
+- New struct `VirtualApplianceInstanceIDs`
+- New struct `VirtualApplianceNetworkInterfaceConfiguration`
+- New struct `VirtualApplianceNetworkInterfaceConfigurationProperties`
+- New struct `VirtualAppliancePropertiesFormatNetworkProfile`
+- New field `HeaderValueMatcher` in struct `ApplicationGatewayHeaderConfiguration`
+- New field `Family` in struct `ApplicationGatewaySKU`
+- New field `LocationDetails`, `SubscriptionID` in struct `ConnectionMonitorEndpoint`
+- New field `EnableDirectPortRateLimit` in struct `ExpressRouteCircuitPropertiesFormat`
+- New field `RuleType` in struct `InboundSecurityRuleProperties`
+- New field `AppliesOn`, `DestinationPortRanges`, `Name` in struct `InboundSecurityRules`
+- New field `PrivateIPAddressPrefixLength` in struct `InterfaceIPConfigurationPropertiesFormat`
+- New field `CaptureSettings`, `ContinuousCapture` in struct `PacketCaptureParameters`
+- New field `CaptureSettings`, `ContinuousCapture` in struct `PacketCaptureResultProperties`
+- New field `LocalPath` in struct `PacketCaptureStorageLocation`
+- New field `JsChallengeCookieExpirationInMins` in struct `PolicySettings`
+- New field `SharingScope` in struct `SubnetPropertiesFormat`
+- New field `DpdTimeoutSeconds` in struct `VPNSiteLinkConnectionProperties`
+- New field `NicType` in struct `VirtualApplianceNicProperties`
+- New field `NetworkProfile` in struct `VirtualAppliancePropertiesFormat`
+- New field `EnableOnlyIPv6Peering`, `LocalAddressSpace`, `LocalSubnetNames`, `LocalVirtualNetworkAddressSpace`, `PeerCompleteVnets`, `RemoteSubnetNames` in struct `VirtualNetworkPeeringPropertiesFormat`
+
+
 ## 5.1.1 (2024-04-02)
 ### Other Changes
 

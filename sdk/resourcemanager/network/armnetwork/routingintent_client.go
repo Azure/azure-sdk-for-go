@@ -47,7 +47,7 @@ func NewRoutingIntentClient(subscriptionID string, credential azcore.TokenCreden
 // BeginCreateOrUpdate - Creates a RoutingIntent resource if it doesn't exist else updates the existing RoutingIntent.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01
+// Generated from API version 2023-11-01
 //   - resourceGroupName - The resource group name of the RoutingIntent.
 //   - virtualHubName - The name of the VirtualHub.
 //   - routingIntentName - The name of the per VirtualHub singleton Routing Intent resource.
@@ -75,7 +75,7 @@ func (client *RoutingIntentClient) BeginCreateOrUpdate(ctx context.Context, reso
 // CreateOrUpdate - Creates a RoutingIntent resource if it doesn't exist else updates the existing RoutingIntent.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01
+// Generated from API version 2023-11-01
 func (client *RoutingIntentClient) createOrUpdate(ctx context.Context, resourceGroupName string, virtualHubName string, routingIntentName string, routingIntentParameters RoutingIntent, options *RoutingIntentClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RoutingIntentClient.BeginCreateOrUpdate"
@@ -121,7 +121,7 @@ func (client *RoutingIntentClient) createOrUpdateCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-01")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, routingIntentParameters); err != nil {
@@ -133,7 +133,7 @@ func (client *RoutingIntentClient) createOrUpdateCreateRequest(ctx context.Conte
 // BeginDelete - Deletes a RoutingIntent.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01
+// Generated from API version 2023-11-01
 //   - resourceGroupName - The resource group name of the RoutingIntent.
 //   - virtualHubName - The name of the VirtualHub.
 //   - routingIntentName - The name of the RoutingIntent.
@@ -160,7 +160,7 @@ func (client *RoutingIntentClient) BeginDelete(ctx context.Context, resourceGrou
 // Delete - Deletes a RoutingIntent.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01
+// Generated from API version 2023-11-01
 func (client *RoutingIntentClient) deleteOperation(ctx context.Context, resourceGroupName string, virtualHubName string, routingIntentName string, options *RoutingIntentClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RoutingIntentClient.BeginDelete"
@@ -206,7 +206,7 @@ func (client *RoutingIntentClient) deleteCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-01")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -215,7 +215,7 @@ func (client *RoutingIntentClient) deleteCreateRequest(ctx context.Context, reso
 // Get - Retrieves the details of a RoutingIntent.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01
+// Generated from API version 2023-11-01
 //   - resourceGroupName - The resource group name of the RoutingIntent.
 //   - virtualHubName - The name of the VirtualHub.
 //   - routingIntentName - The name of the RoutingIntent.
@@ -266,7 +266,7 @@ func (client *RoutingIntentClient) getCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-01")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -283,7 +283,7 @@ func (client *RoutingIntentClient) getHandleResponse(resp *http.Response) (Routi
 
 // NewListPager - Retrieves the details of all RoutingIntent child resources of the VirtualHub.
 //
-// Generated from API version 2023-09-01
+// Generated from API version 2023-11-01
 //   - resourceGroupName - The resource group name of the VirtualHub.
 //   - virtualHubName - The name of the VirtualHub.
 //   - options - RoutingIntentClientListOptions contains the optional parameters for the RoutingIntentClient.NewListPager method.
@@ -330,7 +330,7 @@ func (client *RoutingIntentClient) listCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-01")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

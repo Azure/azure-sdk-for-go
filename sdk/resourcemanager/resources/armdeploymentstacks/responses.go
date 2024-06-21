@@ -43,19 +43,19 @@ type ClientDeleteAtSubscriptionResponse struct {
 
 // ClientExportTemplateAtManagementGroupResponse contains the response from method Client.ExportTemplateAtManagementGroup.
 type ClientExportTemplateAtManagementGroupResponse struct {
-	// Export Template specific properties of the Stack.
+	// Export Template specific properties of the Deployment stack.
 	DeploymentStackTemplateDefinition
 }
 
 // ClientExportTemplateAtResourceGroupResponse contains the response from method Client.ExportTemplateAtResourceGroup.
 type ClientExportTemplateAtResourceGroupResponse struct {
-	// Export Template specific properties of the Stack.
+	// Export Template specific properties of the Deployment stack.
 	DeploymentStackTemplateDefinition
 }
 
 // ClientExportTemplateAtSubscriptionResponse contains the response from method Client.ExportTemplateAtSubscription.
 type ClientExportTemplateAtSubscriptionResponse struct {
-	// Export Template specific properties of the Stack.
+	// Export Template specific properties of the Deployment stack.
 	DeploymentStackTemplateDefinition
 }
 
@@ -79,18 +79,36 @@ type ClientGetAtSubscriptionResponse struct {
 
 // ClientListAtManagementGroupResponse contains the response from method Client.NewListAtManagementGroupPager.
 type ClientListAtManagementGroupResponse struct {
-	// List of deployment stacks.
+	// List of Deployment stacks.
 	DeploymentStackListResult
 }
 
 // ClientListAtResourceGroupResponse contains the response from method Client.NewListAtResourceGroupPager.
 type ClientListAtResourceGroupResponse struct {
-	// List of deployment stacks.
+	// List of Deployment stacks.
 	DeploymentStackListResult
 }
 
 // ClientListAtSubscriptionResponse contains the response from method Client.NewListAtSubscriptionPager.
 type ClientListAtSubscriptionResponse struct {
-	// List of deployment stacks.
+	// List of Deployment stacks.
 	DeploymentStackListResult
+}
+
+// ClientValidateStackAtManagementGroupResponse contains the response from method Client.BeginValidateStackAtManagementGroup.
+type ClientValidateStackAtManagementGroupResponse struct {
+	// The Deployment stack validation result.
+	DeploymentStackValidateResult
+}
+
+// ClientValidateStackAtResourceGroupResponse contains the response from method Client.BeginValidateStackAtResourceGroup.
+type ClientValidateStackAtResourceGroupResponse struct {
+	// The Deployment stack validation result.
+	DeploymentStackValidateResult
+}
+
+// ClientValidateStackAtSubscriptionResponse contains the response from method Client.BeginValidateStackAtSubscription.
+type ClientValidateStackAtSubscriptionResponse struct {
+	// The Deployment stack validation result.
+	DeploymentStackValidateResult
 }

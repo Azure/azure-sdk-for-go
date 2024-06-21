@@ -604,7 +604,7 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam) (*
 
 		}
 		buildGoPath := filepath.Join(packagePath, "build.go")
-		if _, err := os.Stat(autorestMdPath); !os.IsNotExist(err) {
+		if _, err := os.Stat(buildGoPath); !os.IsNotExist(err) {
 			log.Println("Remove build.go...")
 			if err = os.Remove(buildGoPath); err != nil {
 				return nil, err

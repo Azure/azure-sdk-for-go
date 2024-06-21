@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/scvmm/armscvmm"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/GuestAgents_ListByVirtualMachineInstance_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/GuestAgents_ListByVirtualMachineInstance_MaximumSet_Gen.json
 func ExampleGuestAgentsClient_NewListByVirtualMachineInstancePager_guestAgentsListByVirtualMachineInstanceMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -63,7 +63,7 @@ func ExampleGuestAgentsClient_NewListByVirtualMachineInstancePager_guestAgentsLi
 		// 					HTTPSProxy: to.Ptr("uoyzyticmohohomlkwct"),
 		// 				},
 		// 				ProvisioningAction: to.Ptr(armscvmm.ProvisioningActionInstall),
-		// 				ProvisioningState: to.Ptr(armscvmm.ResourceProvisioningStateSucceeded),
+		// 				ProvisioningState: to.Ptr(armscvmm.ProvisioningStateSucceeded),
 		// 				Status: to.Ptr("jpoukrzfenzrmjdahimkl"),
 		// 				UUID: to.Ptr("hbsgztyakewtgbuxbesezncnzu"),
 		// 			},
@@ -72,7 +72,7 @@ func ExampleGuestAgentsClient_NewListByVirtualMachineInstancePager_guestAgentsLi
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/GuestAgents_ListByVirtualMachineInstance_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/GuestAgents_ListByVirtualMachineInstance_MinimumSet_Gen.json
 func ExampleGuestAgentsClient_NewListByVirtualMachineInstancePager_guestAgentsListByVirtualMachineInstanceMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -103,7 +103,7 @@ func ExampleGuestAgentsClient_NewListByVirtualMachineInstancePager_guestAgentsLi
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/GuestAgents_Get_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/GuestAgents_Get_MaximumSet_Gen.json
 func ExampleGuestAgentsClient_Get_guestAgentsGetMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -142,14 +142,14 @@ func ExampleGuestAgentsClient_Get_guestAgentsGetMaximumSet() {
 	// 			HTTPSProxy: to.Ptr("uoyzyticmohohomlkwct"),
 	// 		},
 	// 		ProvisioningAction: to.Ptr(armscvmm.ProvisioningActionInstall),
-	// 		ProvisioningState: to.Ptr(armscvmm.ResourceProvisioningStateSucceeded),
+	// 		ProvisioningState: to.Ptr(armscvmm.ProvisioningStateSucceeded),
 	// 		Status: to.Ptr("jpoukrzfenzrmjdahimkl"),
 	// 		UUID: to.Ptr("hbsgztyakewtgbuxbesezncnzu"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/GuestAgents_Get_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/GuestAgents_Get_MinimumSet_Gen.json
 func ExampleGuestAgentsClient_Get_guestAgentsGetMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -171,7 +171,7 @@ func ExampleGuestAgentsClient_Get_guestAgentsGetMinimumSet() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/GuestAgents_Create_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/GuestAgents_Create_MaximumSet_Gen.json
 func ExampleGuestAgentsClient_BeginCreate_guestAgentsCreateMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -225,14 +225,14 @@ func ExampleGuestAgentsClient_BeginCreate_guestAgentsCreateMaximumSet() {
 	// 			HTTPSProxy: to.Ptr("uoyzyticmohohomlkwct"),
 	// 		},
 	// 		ProvisioningAction: to.Ptr(armscvmm.ProvisioningActionInstall),
-	// 		ProvisioningState: to.Ptr(armscvmm.ResourceProvisioningStateSucceeded),
+	// 		ProvisioningState: to.Ptr(armscvmm.ProvisioningStateSucceeded),
 	// 		Status: to.Ptr("jpoukrzfenzrmjdahimkl"),
 	// 		UUID: to.Ptr("hbsgztyakewtgbuxbesezncnzu"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/GuestAgents_Create_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/GuestAgents_Create_MinimumSet_Gen.json
 func ExampleGuestAgentsClient_BeginCreate_guestAgentsCreateMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -258,7 +258,7 @@ func ExampleGuestAgentsClient_BeginCreate_guestAgentsCreateMinimumSet() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/GuestAgents_Delete_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/GuestAgents_Delete_MaximumSet_Gen.json
 func ExampleGuestAgentsClient_Delete_guestAgentsDeleteMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -275,7 +275,7 @@ func ExampleGuestAgentsClient_Delete_guestAgentsDeleteMaximumSet() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/GuestAgents_Delete_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/GuestAgents_Delete_MinimumSet_Gen.json
 func ExampleGuestAgentsClient_Delete_guestAgentsDeleteMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/scvmm/armscvmm"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/AvailabilitySets_ListBySubscription_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/AvailabilitySets_ListBySubscription_MaximumSet_Gen.json
 func ExampleAvailabilitySetsClient_NewListBySubscriptionPager_availabilitySetsListBySubscriptionMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -64,7 +64,7 @@ func ExampleAvailabilitySetsClient_NewListBySubscriptionPager_availabilitySetsLi
 		// 			},
 		// 			Properties: &armscvmm.AvailabilitySetProperties{
 		// 				AvailabilitySetName: to.Ptr("njrpftunzo"),
-		// 				ProvisioningState: to.Ptr(armscvmm.ResourceProvisioningStateSucceeded),
+		// 				ProvisioningState: to.Ptr(armscvmm.ProvisioningStateSucceeded),
 		// 				VmmServerID: to.Ptr("/subscriptions/12345678-1234-1234-1234-12345678abc/resourceGroups/exampleResourceGroup/providers/Microsoft.ScVmm/vmmServers/vmmServerName"),
 		// 			},
 		// 	}},
@@ -72,7 +72,7 @@ func ExampleAvailabilitySetsClient_NewListBySubscriptionPager_availabilitySetsLi
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/AvailabilitySets_ListBySubscription_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/AvailabilitySets_ListBySubscription_MinimumSet_Gen.json
 func ExampleAvailabilitySetsClient_NewListBySubscriptionPager_availabilitySetsListBySubscriptionMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -106,7 +106,7 @@ func ExampleAvailabilitySetsClient_NewListBySubscriptionPager_availabilitySetsLi
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/AvailabilitySets_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/AvailabilitySets_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleAvailabilitySetsClient_NewListByResourceGroupPager_availabilitySetsListByResourceGroupMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -152,7 +152,7 @@ func ExampleAvailabilitySetsClient_NewListByResourceGroupPager_availabilitySetsL
 		// 			},
 		// 			Properties: &armscvmm.AvailabilitySetProperties{
 		// 				AvailabilitySetName: to.Ptr("njrpftunzo"),
-		// 				ProvisioningState: to.Ptr(armscvmm.ResourceProvisioningStateSucceeded),
+		// 				ProvisioningState: to.Ptr(armscvmm.ProvisioningStateSucceeded),
 		// 				VmmServerID: to.Ptr("/subscriptions/12345678-1234-1234-1234-12345678abc/resourceGroups/exampleResourceGroup/providers/Microsoft.ScVmm/vmmServers/vmmServerName"),
 		// 			},
 		// 	}},
@@ -160,7 +160,7 @@ func ExampleAvailabilitySetsClient_NewListByResourceGroupPager_availabilitySetsL
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/AvailabilitySets_ListByResourceGroup_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/AvailabilitySets_ListByResourceGroup_MinimumSet_Gen.json
 func ExampleAvailabilitySetsClient_NewListByResourceGroupPager_availabilitySetsListByResourceGroupMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -194,7 +194,7 @@ func ExampleAvailabilitySetsClient_NewListByResourceGroupPager_availabilitySetsL
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/AvailabilitySets_Get_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/AvailabilitySets_Get_MaximumSet_Gen.json
 func ExampleAvailabilitySetsClient_Get_availabilitySetsGetMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -234,13 +234,13 @@ func ExampleAvailabilitySetsClient_Get_availabilitySetsGetMaximumSet() {
 	// 	},
 	// 	Properties: &armscvmm.AvailabilitySetProperties{
 	// 		AvailabilitySetName: to.Ptr("njrpftunzo"),
-	// 		ProvisioningState: to.Ptr(armscvmm.ResourceProvisioningStateSucceeded),
+	// 		ProvisioningState: to.Ptr(armscvmm.ProvisioningStateSucceeded),
 	// 		VmmServerID: to.Ptr("/subscriptions/12345678-1234-1234-1234-12345678abc/resourceGroups/exampleResourceGroup/providers/Microsoft.ScVmm/vmmServers/vmmServerName"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/AvailabilitySets_Get_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/AvailabilitySets_Get_MinimumSet_Gen.json
 func ExampleAvailabilitySetsClient_Get_availabilitySetsGetMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -266,7 +266,7 @@ func ExampleAvailabilitySetsClient_Get_availabilitySetsGetMinimumSet() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/AvailabilitySets_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/AvailabilitySets_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleAvailabilitySetsClient_BeginCreateOrUpdate_availabilitySetsCreateOrUpdateMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -323,13 +323,13 @@ func ExampleAvailabilitySetsClient_BeginCreateOrUpdate_availabilitySetsCreateOrU
 	// 	},
 	// 	Properties: &armscvmm.AvailabilitySetProperties{
 	// 		AvailabilitySetName: to.Ptr("njrpftunzo"),
-	// 		ProvisioningState: to.Ptr(armscvmm.ResourceProvisioningStateSucceeded),
+	// 		ProvisioningState: to.Ptr(armscvmm.ProvisioningStateSucceeded),
 	// 		VmmServerID: to.Ptr("/subscriptions/12345678-1234-1234-1234-12345678abc/resourceGroups/exampleResourceGroup/providers/Microsoft.ScVmm/vmmServers/vmmServerName"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/AvailabilitySets_CreateOrUpdate_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/AvailabilitySets_CreateOrUpdate_MinimumSet_Gen.json
 func ExampleAvailabilitySetsClient_BeginCreateOrUpdate_availabilitySetsCreateOrUpdateMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -362,7 +362,7 @@ func ExampleAvailabilitySetsClient_BeginCreateOrUpdate_availabilitySetsCreateOrU
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/AvailabilitySets_Update_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/AvailabilitySets_Update_MaximumSet_Gen.json
 func ExampleAvailabilitySetsClient_BeginUpdate_availabilitySetsUpdateMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -410,13 +410,13 @@ func ExampleAvailabilitySetsClient_BeginUpdate_availabilitySetsUpdateMaximumSet(
 	// 	},
 	// 	Properties: &armscvmm.AvailabilitySetProperties{
 	// 		AvailabilitySetName: to.Ptr("njrpftunzo"),
-	// 		ProvisioningState: to.Ptr(armscvmm.ResourceProvisioningStateSucceeded),
+	// 		ProvisioningState: to.Ptr(armscvmm.ProvisioningStateSucceeded),
 	// 		VmmServerID: to.Ptr("/subscriptions/12345678-1234-1234-1234-12345678abc/resourceGroups/exampleResourceGroup/providers/Microsoft.ScVmm/vmmServers/vmmServerName"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/AvailabilitySets_Update_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/AvailabilitySets_Update_MinimumSet_Gen.json
 func ExampleAvailabilitySetsClient_BeginUpdate_availabilitySetsUpdateMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -445,7 +445,7 @@ func ExampleAvailabilitySetsClient_BeginUpdate_availabilitySetsUpdateMinimumSet(
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/AvailabilitySets_Delete_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/AvailabilitySets_Delete_MaximumSet_Gen.json
 func ExampleAvailabilitySetsClient_BeginDelete_availabilitySetsDeleteMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -466,7 +466,7 @@ func ExampleAvailabilitySetsClient_BeginDelete_availabilitySetsDeleteMaximumSet(
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/AvailabilitySets_Delete_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/AvailabilitySets_Delete_MinimumSet_Gen.json
 func ExampleAvailabilitySetsClient_BeginDelete_availabilitySetsDeleteMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

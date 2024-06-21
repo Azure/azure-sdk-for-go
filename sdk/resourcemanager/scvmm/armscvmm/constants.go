@@ -274,39 +274,39 @@ func PossibleProvisioningActionValues() []ProvisioningAction {
 	}
 }
 
-// ResourceProvisioningState - The provisioning state of the resource.
-type ResourceProvisioningState string
+// ProvisioningState - The provisioning state of the resource.
+type ProvisioningState string
 
 const (
-	// ResourceProvisioningStateAccepted - The resource has been accepted.
-	ResourceProvisioningStateAccepted ResourceProvisioningState = "Accepted"
-	// ResourceProvisioningStateCanceled - Resource creation was canceled.
-	ResourceProvisioningStateCanceled ResourceProvisioningState = "Canceled"
-	// ResourceProvisioningStateCreated - The resource was created.
-	ResourceProvisioningStateCreated ResourceProvisioningState = "Created"
-	// ResourceProvisioningStateDeleting - The resource is being deleted.
-	ResourceProvisioningStateDeleting ResourceProvisioningState = "Deleting"
-	// ResourceProvisioningStateFailed - Resource creation failed.
-	ResourceProvisioningStateFailed ResourceProvisioningState = "Failed"
-	// ResourceProvisioningStateProvisioning - The resource is provisioning.
-	ResourceProvisioningStateProvisioning ResourceProvisioningState = "Provisioning"
-	// ResourceProvisioningStateSucceeded - Resource has been created.
-	ResourceProvisioningStateSucceeded ResourceProvisioningState = "Succeeded"
-	// ResourceProvisioningStateUpdating - The resource is updating.
-	ResourceProvisioningStateUpdating ResourceProvisioningState = "Updating"
+	// ProvisioningStateAccepted - The resource has been accepted.
+	ProvisioningStateAccepted ProvisioningState = "Accepted"
+	// ProvisioningStateCanceled - Resource creation was canceled.
+	ProvisioningStateCanceled ProvisioningState = "Canceled"
+	// ProvisioningStateCreated - The resource was created.
+	ProvisioningStateCreated ProvisioningState = "Created"
+	// ProvisioningStateDeleting - The resource is being deleted.
+	ProvisioningStateDeleting ProvisioningState = "Deleting"
+	// ProvisioningStateFailed - Resource creation failed.
+	ProvisioningStateFailed ProvisioningState = "Failed"
+	// ProvisioningStateProvisioning - The resource is provisioning.
+	ProvisioningStateProvisioning ProvisioningState = "Provisioning"
+	// ProvisioningStateSucceeded - Resource has been created.
+	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
+	// ProvisioningStateUpdating - The resource is updating.
+	ProvisioningStateUpdating ProvisioningState = "Updating"
 )
 
-// PossibleResourceProvisioningStateValues returns the possible values for the ResourceProvisioningState const type.
-func PossibleResourceProvisioningStateValues() []ResourceProvisioningState {
-	return []ResourceProvisioningState{
-		ResourceProvisioningStateAccepted,
-		ResourceProvisioningStateCanceled,
-		ResourceProvisioningStateCreated,
-		ResourceProvisioningStateDeleting,
-		ResourceProvisioningStateFailed,
-		ResourceProvisioningStateProvisioning,
-		ResourceProvisioningStateSucceeded,
-		ResourceProvisioningStateUpdating,
+// PossibleProvisioningStateValues returns the possible values for the ProvisioningState const type.
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return []ProvisioningState{
+		ProvisioningStateAccepted,
+		ProvisioningStateCanceled,
+		ProvisioningStateCreated,
+		ProvisioningStateDeleting,
+		ProvisioningStateFailed,
+		ProvisioningStateProvisioning,
+		ProvisioningStateSucceeded,
+		ProvisioningStateUpdating,
 	}
 }
 

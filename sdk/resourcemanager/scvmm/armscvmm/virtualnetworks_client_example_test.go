@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/scvmm/armscvmm"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualNetworks_ListBySubscription_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualNetworks_ListBySubscription_MaximumSet_Gen.json
 func ExampleVirtualNetworksClient_NewListBySubscriptionPager_virtualNetworksListBySubscriptionMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -65,7 +65,7 @@ func ExampleVirtualNetworksClient_NewListBySubscriptionPager_virtualNetworksList
 		// 			Properties: &armscvmm.VirtualNetworkProperties{
 		// 				InventoryItemID: to.Ptr("bxn"),
 		// 				NetworkName: to.Ptr("eeqahvnbblsdeeqezqdinggretyeg"),
-		// 				ProvisioningState: to.Ptr(armscvmm.ResourceProvisioningStateSucceeded),
+		// 				ProvisioningState: to.Ptr(armscvmm.ProvisioningStateSucceeded),
 		// 				UUID: to.Ptr("12345678-1234-1234-1234-12345678abcd"),
 		// 				VmmServerID: to.Ptr("/subscriptions/12345678-1234-1234-1234-12345678abc/resourceGroups/exampleResourceGroup/providers/Microsoft.ScVmm/vmmServers/vmmServerName"),
 		// 			},
@@ -74,7 +74,7 @@ func ExampleVirtualNetworksClient_NewListBySubscriptionPager_virtualNetworksList
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualNetworks_ListBySubscription_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualNetworks_ListBySubscription_MinimumSet_Gen.json
 func ExampleVirtualNetworksClient_NewListBySubscriptionPager_virtualNetworksListBySubscriptionMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -108,7 +108,7 @@ func ExampleVirtualNetworksClient_NewListBySubscriptionPager_virtualNetworksList
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualNetworks_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualNetworks_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleVirtualNetworksClient_NewListByResourceGroupPager_virtualNetworksListByResourceGroupMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -155,7 +155,7 @@ func ExampleVirtualNetworksClient_NewListByResourceGroupPager_virtualNetworksLis
 		// 			Properties: &armscvmm.VirtualNetworkProperties{
 		// 				InventoryItemID: to.Ptr("bxn"),
 		// 				NetworkName: to.Ptr("eeqahvnbblsdeeqezqdinggretyeg"),
-		// 				ProvisioningState: to.Ptr(armscvmm.ResourceProvisioningStateSucceeded),
+		// 				ProvisioningState: to.Ptr(armscvmm.ProvisioningStateSucceeded),
 		// 				UUID: to.Ptr("12345678-1234-1234-1234-12345678abcd"),
 		// 				VmmServerID: to.Ptr("/subscriptions/12345678-1234-1234-1234-12345678abc/resourceGroups/exampleResourceGroup/providers/Microsoft.ScVmm/vmmServers/vmmServerName"),
 		// 			},
@@ -164,7 +164,7 @@ func ExampleVirtualNetworksClient_NewListByResourceGroupPager_virtualNetworksLis
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualNetworks_ListByResourceGroup_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualNetworks_ListByResourceGroup_MinimumSet_Gen.json
 func ExampleVirtualNetworksClient_NewListByResourceGroupPager_virtualNetworksListByResourceGroupMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -198,7 +198,7 @@ func ExampleVirtualNetworksClient_NewListByResourceGroupPager_virtualNetworksLis
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualNetworks_Get_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualNetworks_Get_MaximumSet_Gen.json
 func ExampleVirtualNetworksClient_Get_virtualNetworksGetMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -239,14 +239,14 @@ func ExampleVirtualNetworksClient_Get_virtualNetworksGetMaximumSet() {
 	// 	Properties: &armscvmm.VirtualNetworkProperties{
 	// 		InventoryItemID: to.Ptr("bxn"),
 	// 		NetworkName: to.Ptr("eeqahvnbblsdeeqezqdinggretyeg"),
-	// 		ProvisioningState: to.Ptr(armscvmm.ResourceProvisioningStateSucceeded),
+	// 		ProvisioningState: to.Ptr(armscvmm.ProvisioningStateSucceeded),
 	// 		UUID: to.Ptr("12345678-1234-1234-1234-12345678abcd"),
 	// 		VmmServerID: to.Ptr("/subscriptions/12345678-1234-1234-1234-12345678abc/resourceGroups/exampleResourceGroup/providers/Microsoft.ScVmm/vmmServers/vmmServerName"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualNetworks_Get_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualNetworks_Get_MinimumSet_Gen.json
 func ExampleVirtualNetworksClient_Get_virtualNetworksGetMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -272,7 +272,7 @@ func ExampleVirtualNetworksClient_Get_virtualNetworksGetMinimumSet() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualNetworks_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualNetworks_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleVirtualNetworksClient_BeginCreateOrUpdate_virtualNetworksCreateOrUpdateMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -331,14 +331,14 @@ func ExampleVirtualNetworksClient_BeginCreateOrUpdate_virtualNetworksCreateOrUpd
 	// 	Properties: &armscvmm.VirtualNetworkProperties{
 	// 		InventoryItemID: to.Ptr("bxn"),
 	// 		NetworkName: to.Ptr("eeqahvnbblsdeeqezqdinggretyeg"),
-	// 		ProvisioningState: to.Ptr(armscvmm.ResourceProvisioningStateSucceeded),
+	// 		ProvisioningState: to.Ptr(armscvmm.ProvisioningStateSucceeded),
 	// 		UUID: to.Ptr("12345678-1234-1234-1234-12345678abcd"),
 	// 		VmmServerID: to.Ptr("/subscriptions/12345678-1234-1234-1234-12345678abc/resourceGroups/exampleResourceGroup/providers/Microsoft.ScVmm/vmmServers/vmmServerName"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualNetworks_CreateOrUpdate_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualNetworks_CreateOrUpdate_MinimumSet_Gen.json
 func ExampleVirtualNetworksClient_BeginCreateOrUpdate_virtualNetworksCreateOrUpdateMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -371,7 +371,7 @@ func ExampleVirtualNetworksClient_BeginCreateOrUpdate_virtualNetworksCreateOrUpd
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualNetworks_Update_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualNetworks_Update_MaximumSet_Gen.json
 func ExampleVirtualNetworksClient_BeginUpdate_virtualNetworksUpdateMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -420,14 +420,14 @@ func ExampleVirtualNetworksClient_BeginUpdate_virtualNetworksUpdateMaximumSet() 
 	// 	Properties: &armscvmm.VirtualNetworkProperties{
 	// 		InventoryItemID: to.Ptr("bxn"),
 	// 		NetworkName: to.Ptr("eeqahvnbblsdeeqezqdinggretyeg"),
-	// 		ProvisioningState: to.Ptr(armscvmm.ResourceProvisioningStateSucceeded),
+	// 		ProvisioningState: to.Ptr(armscvmm.ProvisioningStateSucceeded),
 	// 		UUID: to.Ptr("12345678-1234-1234-1234-12345678abcd"),
 	// 		VmmServerID: to.Ptr("/subscriptions/12345678-1234-1234-1234-12345678abc/resourceGroups/exampleResourceGroup/providers/Microsoft.ScVmm/vmmServers/vmmServerName"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualNetworks_Update_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualNetworks_Update_MinimumSet_Gen.json
 func ExampleVirtualNetworksClient_BeginUpdate_virtualNetworksUpdateMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -457,7 +457,7 @@ func ExampleVirtualNetworksClient_BeginUpdate_virtualNetworksUpdateMinimumSet() 
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualNetworks_Delete_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualNetworks_Delete_MaximumSet_Gen.json
 func ExampleVirtualNetworksClient_BeginDelete_virtualNetworksDeleteMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -478,7 +478,7 @@ func ExampleVirtualNetworksClient_BeginDelete_virtualNetworksDeleteMaximumSet() 
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualNetworks_Delete_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualNetworks_Delete_MinimumSet_Gen.json
 func ExampleVirtualNetworksClient_BeginDelete_virtualNetworksDeleteMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

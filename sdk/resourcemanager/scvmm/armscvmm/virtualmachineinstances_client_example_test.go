@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/scvmm/armscvmm"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualMachineInstances_List_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualMachineInstances_List_MaximumSet_Gen.json
 func ExampleVirtualMachineInstancesClient_NewListPager_virtualMachineInstancesListMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -122,7 +122,7 @@ func ExampleVirtualMachineInstancesClient_NewListPager_virtualMachineInstancesLi
 		// 							OSVersion: to.Ptr("djt"),
 		// 						},
 		// 						PowerState: to.Ptr("dbqyxewvrbqcifpwfvxyllwyaffmvm"),
-		// 						ProvisioningState: to.Ptr(armscvmm.ResourceProvisioningStateSucceeded),
+		// 						ProvisioningState: to.Ptr(armscvmm.ProvisioningStateSucceeded),
 		// 						StorageProfile: &armscvmm.StorageProfile{
 		// 							Disks: []*armscvmm.VirtualDisk{
 		// 								{
@@ -151,7 +151,7 @@ func ExampleVirtualMachineInstancesClient_NewListPager_virtualMachineInstancesLi
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualMachineInstances_List_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualMachineInstances_List_MinimumSet_Gen.json
 func ExampleVirtualMachineInstancesClient_NewListPager_virtualMachineInstancesListMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -184,7 +184,7 @@ func ExampleVirtualMachineInstancesClient_NewListPager_virtualMachineInstancesLi
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualMachineInstances_Get_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualMachineInstances_Get_MaximumSet_Gen.json
 func ExampleVirtualMachineInstancesClient_Get_virtualMachineInstancesGetMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -282,7 +282,7 @@ func ExampleVirtualMachineInstancesClient_Get_virtualMachineInstancesGetMaximumS
 	// 					OSVersion: to.Ptr("djt"),
 	// 				},
 	// 				PowerState: to.Ptr("dbqyxewvrbqcifpwfvxyllwyaffmvm"),
-	// 				ProvisioningState: to.Ptr(armscvmm.ResourceProvisioningStateSucceeded),
+	// 				ProvisioningState: to.Ptr(armscvmm.ProvisioningStateSucceeded),
 	// 				StorageProfile: &armscvmm.StorageProfile{
 	// 					Disks: []*armscvmm.VirtualDisk{
 	// 						{
@@ -309,7 +309,7 @@ func ExampleVirtualMachineInstancesClient_Get_virtualMachineInstancesGetMaximumS
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualMachineInstances_Get_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualMachineInstances_Get_MinimumSet_Gen.json
 func ExampleVirtualMachineInstancesClient_Get_virtualMachineInstancesGetMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -334,7 +334,7 @@ func ExampleVirtualMachineInstancesClient_Get_virtualMachineInstancesGetMinimumS
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualMachineInstances_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualMachineInstances_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleVirtualMachineInstancesClient_BeginCreateOrUpdate_virtualMachineInstancesCreateOrUpdateMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -509,7 +509,7 @@ func ExampleVirtualMachineInstancesClient_BeginCreateOrUpdate_virtualMachineInst
 	// 					OSVersion: to.Ptr("djt"),
 	// 				},
 	// 				PowerState: to.Ptr("dbqyxewvrbqcifpwfvxyllwyaffmvm"),
-	// 				ProvisioningState: to.Ptr(armscvmm.ResourceProvisioningStateSucceeded),
+	// 				ProvisioningState: to.Ptr(armscvmm.ProvisioningStateSucceeded),
 	// 				StorageProfile: &armscvmm.StorageProfile{
 	// 					Disks: []*armscvmm.VirtualDisk{
 	// 						{
@@ -536,7 +536,7 @@ func ExampleVirtualMachineInstancesClient_BeginCreateOrUpdate_virtualMachineInst
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualMachineInstances_CreateOrUpdate_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualMachineInstances_CreateOrUpdate_MinimumSet_Gen.json
 func ExampleVirtualMachineInstancesClient_BeginCreateOrUpdate_virtualMachineInstancesCreateOrUpdateMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -567,7 +567,7 @@ func ExampleVirtualMachineInstancesClient_BeginCreateOrUpdate_virtualMachineInst
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualMachineInstances_Update_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualMachineInstances_Update_MaximumSet_Gen.json
 func ExampleVirtualMachineInstancesClient_BeginUpdate_virtualMachineInstancesUpdateMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -716,7 +716,7 @@ func ExampleVirtualMachineInstancesClient_BeginUpdate_virtualMachineInstancesUpd
 	// 					OSVersion: to.Ptr("djt"),
 	// 				},
 	// 				PowerState: to.Ptr("dbqyxewvrbqcifpwfvxyllwyaffmvm"),
-	// 				ProvisioningState: to.Ptr(armscvmm.ResourceProvisioningStateSucceeded),
+	// 				ProvisioningState: to.Ptr(armscvmm.ProvisioningStateSucceeded),
 	// 				StorageProfile: &armscvmm.StorageProfile{
 	// 					Disks: []*armscvmm.VirtualDisk{
 	// 						{
@@ -743,7 +743,7 @@ func ExampleVirtualMachineInstancesClient_BeginUpdate_virtualMachineInstancesUpd
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualMachineInstances_Update_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualMachineInstances_Update_MinimumSet_Gen.json
 func ExampleVirtualMachineInstancesClient_BeginUpdate_virtualMachineInstancesUpdateMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -771,7 +771,7 @@ func ExampleVirtualMachineInstancesClient_BeginUpdate_virtualMachineInstancesUpd
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualMachineInstances_Delete_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualMachineInstances_Delete_MaximumSet_Gen.json
 func ExampleVirtualMachineInstancesClient_BeginDelete_virtualMachineInstancesDeleteMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -794,7 +794,7 @@ func ExampleVirtualMachineInstancesClient_BeginDelete_virtualMachineInstancesDel
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualMachineInstances_Delete_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualMachineInstances_Delete_MinimumSet_Gen.json
 func ExampleVirtualMachineInstancesClient_BeginDelete_virtualMachineInstancesDeleteMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -817,7 +817,7 @@ func ExampleVirtualMachineInstancesClient_BeginDelete_virtualMachineInstancesDel
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualMachineInstances_CreateCheckpoint_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualMachineInstances_CreateCheckpoint_MaximumSet_Gen.json
 func ExampleVirtualMachineInstancesClient_BeginCreateCheckpoint_virtualMachineInstancesCreateCheckpointMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -841,7 +841,7 @@ func ExampleVirtualMachineInstancesClient_BeginCreateCheckpoint_virtualMachineIn
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualMachineInstances_CreateCheckpoint_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualMachineInstances_CreateCheckpoint_MinimumSet_Gen.json
 func ExampleVirtualMachineInstancesClient_BeginCreateCheckpoint_virtualMachineInstancesCreateCheckpointMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -862,7 +862,7 @@ func ExampleVirtualMachineInstancesClient_BeginCreateCheckpoint_virtualMachineIn
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualMachineInstances_DeleteCheckpoint_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualMachineInstances_DeleteCheckpoint_MaximumSet_Gen.json
 func ExampleVirtualMachineInstancesClient_BeginDeleteCheckpoint_virtualMachineInstancesDeleteCheckpointMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -885,7 +885,7 @@ func ExampleVirtualMachineInstancesClient_BeginDeleteCheckpoint_virtualMachineIn
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualMachineInstances_DeleteCheckpoint_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualMachineInstances_DeleteCheckpoint_MinimumSet_Gen.json
 func ExampleVirtualMachineInstancesClient_BeginDeleteCheckpoint_virtualMachineInstancesDeleteCheckpointMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -906,7 +906,7 @@ func ExampleVirtualMachineInstancesClient_BeginDeleteCheckpoint_virtualMachineIn
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualMachineInstances_Restart_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualMachineInstances_Restart_MaximumSet_Gen.json
 func ExampleVirtualMachineInstancesClient_BeginRestart_virtualMachineInstancesRestartMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -927,7 +927,7 @@ func ExampleVirtualMachineInstancesClient_BeginRestart_virtualMachineInstancesRe
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualMachineInstances_Restart_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualMachineInstances_Restart_MinimumSet_Gen.json
 func ExampleVirtualMachineInstancesClient_BeginRestart_virtualMachineInstancesRestartMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -948,7 +948,7 @@ func ExampleVirtualMachineInstancesClient_BeginRestart_virtualMachineInstancesRe
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualMachineInstances_RestoreCheckpoint_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualMachineInstances_RestoreCheckpoint_MaximumSet_Gen.json
 func ExampleVirtualMachineInstancesClient_BeginRestoreCheckpoint_virtualMachineInstancesRestoreCheckpointMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -971,7 +971,7 @@ func ExampleVirtualMachineInstancesClient_BeginRestoreCheckpoint_virtualMachineI
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualMachineInstances_RestoreCheckpoint_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualMachineInstances_RestoreCheckpoint_MinimumSet_Gen.json
 func ExampleVirtualMachineInstancesClient_BeginRestoreCheckpoint_virtualMachineInstancesRestoreCheckpointMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -992,7 +992,7 @@ func ExampleVirtualMachineInstancesClient_BeginRestoreCheckpoint_virtualMachineI
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualMachineInstances_Start_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualMachineInstances_Start_MaximumSet_Gen.json
 func ExampleVirtualMachineInstancesClient_BeginStart_virtualMachineInstancesStartMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1013,7 +1013,7 @@ func ExampleVirtualMachineInstancesClient_BeginStart_virtualMachineInstancesStar
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualMachineInstances_Start_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualMachineInstances_Start_MinimumSet_Gen.json
 func ExampleVirtualMachineInstancesClient_BeginStart_virtualMachineInstancesStartMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1034,7 +1034,7 @@ func ExampleVirtualMachineInstancesClient_BeginStart_virtualMachineInstancesStar
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualMachineInstances_Stop_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualMachineInstances_Stop_MaximumSet_Gen.json
 func ExampleVirtualMachineInstancesClient_BeginStop_virtualMachineInstancesStopMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1057,7 +1057,7 @@ func ExampleVirtualMachineInstancesClient_BeginStop_virtualMachineInstancesStopM
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualMachineInstances_Stop_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualMachineInstances_Stop_MinimumSet_Gen.json
 func ExampleVirtualMachineInstancesClient_BeginStop_virtualMachineInstancesStopMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

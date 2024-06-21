@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/scvmm/armscvmm"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/InventoryItems_ListByVmmServer_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/InventoryItems_ListByVmmServer_MaximumSet_Gen.json
 func ExampleInventoryItemsClient_NewListByVmmServerPager_inventoryItemsListByVmmServerMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -59,7 +59,7 @@ func ExampleInventoryItemsClient_NewListByVmmServerPager_inventoryItemsListByVmm
 		// 				InventoryItemName: to.Ptr("kspgdhmlmycalwrepfmshoaoumna"),
 		// 				InventoryType: to.Ptr(armscvmm.InventoryType("InventoryItemProperties")),
 		// 				ManagedResourceID: to.Ptr("ictxvjzvurnkdgwabqyyfyckkkdx"),
-		// 				ProvisioningState: to.Ptr(armscvmm.ResourceProvisioningStateSucceeded),
+		// 				ProvisioningState: to.Ptr(armscvmm.ProvisioningStateSucceeded),
 		// 				UUID: to.Ptr("jolmoxfopwfoje"),
 		// 			},
 		// 	}},
@@ -67,7 +67,7 @@ func ExampleInventoryItemsClient_NewListByVmmServerPager_inventoryItemsListByVmm
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/InventoryItems_ListByVmmServer_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/InventoryItems_ListByVmmServer_MinimumSet_Gen.json
 func ExampleInventoryItemsClient_NewListByVmmServerPager_inventoryItemsListByVmmServerMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -98,7 +98,7 @@ func ExampleInventoryItemsClient_NewListByVmmServerPager_inventoryItemsListByVmm
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/InventoryItems_Get_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/InventoryItems_Get_MaximumSet_Gen.json
 func ExampleInventoryItemsClient_Get_inventoryItemsGetMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -133,13 +133,13 @@ func ExampleInventoryItemsClient_Get_inventoryItemsGetMaximumSet() {
 	// 		InventoryItemName: to.Ptr("kspgdhmlmycalwrepfmshoaoumna"),
 	// 		InventoryType: to.Ptr(armscvmm.InventoryType("InventoryItemProperties")),
 	// 		ManagedResourceID: to.Ptr("ictxvjzvurnkdgwabqyyfyckkkdx"),
-	// 		ProvisioningState: to.Ptr(armscvmm.ResourceProvisioningStateSucceeded),
+	// 		ProvisioningState: to.Ptr(armscvmm.ProvisioningStateSucceeded),
 	// 		UUID: to.Ptr("jolmoxfopwfoje"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/InventoryItems_Get_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/InventoryItems_Get_MinimumSet_Gen.json
 func ExampleInventoryItemsClient_Get_inventoryItemsGetMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -161,7 +161,7 @@ func ExampleInventoryItemsClient_Get_inventoryItemsGetMinimumSet() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/InventoryItems_Create_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/InventoryItems_Create_MaximumSet_Gen.json
 func ExampleInventoryItemsClient_Create_inventoryItemsCreateMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -201,13 +201,13 @@ func ExampleInventoryItemsClient_Create_inventoryItemsCreateMaximumSet() {
 	// 		InventoryItemName: to.Ptr("kspgdhmlmycalwrepfmshoaoumna"),
 	// 		InventoryType: to.Ptr(armscvmm.InventoryType("InventoryItemProperties")),
 	// 		ManagedResourceID: to.Ptr("ictxvjzvurnkdgwabqyyfyckkkdx"),
-	// 		ProvisioningState: to.Ptr(armscvmm.ResourceProvisioningStateSucceeded),
+	// 		ProvisioningState: to.Ptr(armscvmm.ProvisioningStateSucceeded),
 	// 		UUID: to.Ptr("jolmoxfopwfoje"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/InventoryItems_Create_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/InventoryItems_Create_MinimumSet_Gen.json
 func ExampleInventoryItemsClient_Create_inventoryItemsCreateMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -229,7 +229,7 @@ func ExampleInventoryItemsClient_Create_inventoryItemsCreateMinimumSet() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/InventoryItems_Delete_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/InventoryItems_Delete_MaximumSet_Gen.json
 func ExampleInventoryItemsClient_Delete_inventoryItemsDeleteMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -246,7 +246,7 @@ func ExampleInventoryItemsClient_Delete_inventoryItemsDeleteMaximumSet() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/InventoryItems_Delete_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/InventoryItems_Delete_MinimumSet_Gen.json
 func ExampleInventoryItemsClient_Delete_inventoryItemsDeleteMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -64,7 +64,7 @@ type AvailabilitySetProperties struct {
 	VmmServerID *string
 
 	// READ-ONLY; Provisioning state of the resource.
-	ProvisioningState *ResourceProvisioningState
+	ProvisioningState *ProvisioningState
 }
 
 // AvailabilitySetTagsUpdate - The type used for updating tags in AvailabilitySet resources.
@@ -139,7 +139,7 @@ type CloudInventoryItem struct {
 	ManagedResourceID *string
 
 	// READ-ONLY; Provisioning state of the resource.
-	ProvisioningState *ResourceProvisioningState
+	ProvisioningState *ProvisioningState
 
 	// READ-ONLY; Gets the UUID (which is assigned by Vmm) for the inventory item.
 	UUID *string
@@ -183,7 +183,7 @@ type CloudProperties struct {
 	CloudName *string
 
 	// READ-ONLY; Provisioning state of the resource.
-	ProvisioningState *ResourceProvisioningState
+	ProvisioningState *ProvisioningState
 
 	// READ-ONLY; List of QoS policies available for the cloud.
 	StorageQosPolicies []*StorageQosPolicy
@@ -280,7 +280,7 @@ type GuestAgentProperties struct {
 	CustomResourceName *string
 
 	// READ-ONLY; Provisioning state of the resource.
-	ProvisioningState *ResourceProvisioningState
+	ProvisioningState *ProvisioningState
 
 	// READ-ONLY; Gets the guest agent status.
 	Status *string
@@ -444,7 +444,7 @@ type InventoryItemProperties struct {
 	ManagedResourceID *string
 
 	// READ-ONLY; Provisioning state of the resource.
-	ProvisioningState *ResourceProvisioningState
+	ProvisioningState *ProvisioningState
 
 	// READ-ONLY; Gets the UUID (which is assigned by Vmm) for the inventory item.
 	UUID *string
@@ -752,7 +752,7 @@ type VMInstanceHybridIdentityMetadataProperties struct {
 	ResourceUID *string
 
 	// READ-ONLY; Provisioning state of the resource.
-	ProvisioningState *ResourceProvisioningState
+	ProvisioningState *ProvisioningState
 }
 
 // VirtualDisk - Virtual disk model
@@ -897,7 +897,7 @@ type VirtualMachineInstanceProperties struct {
 	PowerState *string
 
 	// READ-ONLY; Provisioning state of the resource.
-	ProvisioningState *ResourceProvisioningState
+	ProvisioningState *ProvisioningState
 }
 
 // VirtualMachineInstanceUpdate - The type used for update operations of the VirtualMachineInstance.
@@ -960,7 +960,7 @@ type VirtualMachineInventoryItem struct {
 	PowerState *string
 
 	// READ-ONLY; Provisioning state of the resource.
-	ProvisioningState *ResourceProvisioningState
+	ProvisioningState *ProvisioningState
 
 	// READ-ONLY; Gets the UUID (which is assigned by Vmm) for the inventory item.
 	UUID *string
@@ -1034,7 +1034,7 @@ type VirtualMachineTemplateInventoryItem struct {
 	OSType *OsType
 
 	// READ-ONLY; Provisioning state of the resource.
-	ProvisioningState *ResourceProvisioningState
+	ProvisioningState *ProvisioningState
 
 	// READ-ONLY; Gets the UUID (which is assigned by Vmm) for the inventory item.
 	UUID *string
@@ -1114,7 +1114,7 @@ type VirtualMachineTemplateProperties struct {
 	OSType *OsType
 
 	// READ-ONLY; Provisioning state of the resource.
-	ProvisioningState *ResourceProvisioningState
+	ProvisioningState *ProvisioningState
 }
 
 // VirtualMachineTemplateTagsUpdate - The type used for updating tags in VirtualMachineTemplate resources.
@@ -1162,7 +1162,7 @@ type VirtualNetworkInventoryItem struct {
 	ManagedResourceID *string
 
 	// READ-ONLY; Provisioning state of the resource.
-	ProvisioningState *ResourceProvisioningState
+	ProvisioningState *ProvisioningState
 
 	// READ-ONLY; Gets the UUID (which is assigned by Vmm) for the inventory item.
 	UUID *string
@@ -1203,7 +1203,7 @@ type VirtualNetworkProperties struct {
 	NetworkName *string
 
 	// READ-ONLY; Provisioning state of the resource.
-	ProvisioningState *ResourceProvisioningState
+	ProvisioningState *ProvisioningState
 }
 
 // VirtualNetworkTagsUpdate - The type used for updating tags in VirtualNetwork resources.
@@ -1275,7 +1275,7 @@ type VmmServerProperties struct {
 	ErrorMessage *string
 
 	// READ-ONLY; Provisioning state of the resource.
-	ProvisioningState *ResourceProvisioningState
+	ProvisioningState *ProvisioningState
 
 	// READ-ONLY; Unique ID of vmmServer.
 	UUID *string

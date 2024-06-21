@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/scvmm/armscvmm"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VmmServers_ListBySubscription_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VmmServers_ListBySubscription_MaximumSet_Gen.json
 func ExampleVmmServersClient_NewListBySubscriptionPager_vmmServersListBySubscriptionMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -70,7 +70,7 @@ func ExampleVmmServersClient_NewListBySubscriptionPager_vmmServersListBySubscrip
 		// 				ErrorMessage: to.Ptr("ndkzeiipz"),
 		// 				Fqdn: to.Ptr("pvzcjaqrswbvptgx"),
 		// 				Port: to.Ptr[int32](4),
-		// 				ProvisioningState: to.Ptr(armscvmm.ResourceProvisioningStateSucceeded),
+		// 				ProvisioningState: to.Ptr(armscvmm.ProvisioningStateSucceeded),
 		// 				UUID: to.Ptr("vmwbukuqbuz"),
 		// 				Version: to.Ptr("tawfjzbqrlkqzqyomxiahnfqg"),
 		// 			},
@@ -79,7 +79,7 @@ func ExampleVmmServersClient_NewListBySubscriptionPager_vmmServersListBySubscrip
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VmmServers_ListBySubscription_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VmmServers_ListBySubscription_MinimumSet_Gen.json
 func ExampleVmmServersClient_NewListBySubscriptionPager_vmmServersListBySubscriptionMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -113,7 +113,7 @@ func ExampleVmmServersClient_NewListBySubscriptionPager_vmmServersListBySubscrip
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VmmServers_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VmmServers_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleVmmServersClient_NewListByResourceGroupPager_vmmServersListByResourceGroupMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -165,7 +165,7 @@ func ExampleVmmServersClient_NewListByResourceGroupPager_vmmServersListByResourc
 		// 				ErrorMessage: to.Ptr("ndkzeiipz"),
 		// 				Fqdn: to.Ptr("pvzcjaqrswbvptgx"),
 		// 				Port: to.Ptr[int32](4),
-		// 				ProvisioningState: to.Ptr(armscvmm.ResourceProvisioningStateSucceeded),
+		// 				ProvisioningState: to.Ptr(armscvmm.ProvisioningStateSucceeded),
 		// 				UUID: to.Ptr("vmwbukuqbuz"),
 		// 				Version: to.Ptr("tawfjzbqrlkqzqyomxiahnfqg"),
 		// 			},
@@ -174,7 +174,7 @@ func ExampleVmmServersClient_NewListByResourceGroupPager_vmmServersListByResourc
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VmmServers_ListByResourceGroup_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VmmServers_ListByResourceGroup_MinimumSet_Gen.json
 func ExampleVmmServersClient_NewListByResourceGroupPager_vmmServersListByResourceGroupMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -208,7 +208,7 @@ func ExampleVmmServersClient_NewListByResourceGroupPager_vmmServersListByResourc
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VmmServers_Get_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VmmServers_Get_MaximumSet_Gen.json
 func ExampleVmmServersClient_Get_vmmServersGetMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -254,14 +254,14 @@ func ExampleVmmServersClient_Get_vmmServersGetMaximumSet() {
 	// 		ErrorMessage: to.Ptr("ndkzeiipz"),
 	// 		Fqdn: to.Ptr("pvzcjaqrswbvptgx"),
 	// 		Port: to.Ptr[int32](4),
-	// 		ProvisioningState: to.Ptr(armscvmm.ResourceProvisioningStateSucceeded),
+	// 		ProvisioningState: to.Ptr(armscvmm.ProvisioningStateSucceeded),
 	// 		UUID: to.Ptr("vmwbukuqbuz"),
 	// 		Version: to.Ptr("tawfjzbqrlkqzqyomxiahnfqg"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VmmServers_Get_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VmmServers_Get_MinimumSet_Gen.json
 func ExampleVmmServersClient_Get_vmmServersGetMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -287,7 +287,7 @@ func ExampleVmmServersClient_Get_vmmServersGetMinimumSet() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VmmServers_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VmmServers_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleVmmServersClient_BeginCreateOrUpdate_vmmServersCreateOrUpdateMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -354,14 +354,14 @@ func ExampleVmmServersClient_BeginCreateOrUpdate_vmmServersCreateOrUpdateMaximum
 	// 		ErrorMessage: to.Ptr("ndkzeiipz"),
 	// 		Fqdn: to.Ptr("pvzcjaqrswbvptgx"),
 	// 		Port: to.Ptr[int32](4),
-	// 		ProvisioningState: to.Ptr(armscvmm.ResourceProvisioningStateSucceeded),
+	// 		ProvisioningState: to.Ptr(armscvmm.ProvisioningStateSucceeded),
 	// 		UUID: to.Ptr("vmwbukuqbuz"),
 	// 		Version: to.Ptr("tawfjzbqrlkqzqyomxiahnfqg"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VmmServers_CreateOrUpdate_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VmmServers_CreateOrUpdate_MinimumSet_Gen.json
 func ExampleVmmServersClient_BeginCreateOrUpdate_vmmServersCreateOrUpdateMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -394,7 +394,7 @@ func ExampleVmmServersClient_BeginCreateOrUpdate_vmmServersCreateOrUpdateMinimum
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VmmServers_Update_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VmmServers_Update_MaximumSet_Gen.json
 func ExampleVmmServersClient_BeginUpdate_vmmServersUpdateMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -448,14 +448,14 @@ func ExampleVmmServersClient_BeginUpdate_vmmServersUpdateMaximumSet() {
 	// 		ErrorMessage: to.Ptr("ndkzeiipz"),
 	// 		Fqdn: to.Ptr("pvzcjaqrswbvptgx"),
 	// 		Port: to.Ptr[int32](4),
-	// 		ProvisioningState: to.Ptr(armscvmm.ResourceProvisioningStateSucceeded),
+	// 		ProvisioningState: to.Ptr(armscvmm.ProvisioningStateSucceeded),
 	// 		UUID: to.Ptr("vmwbukuqbuz"),
 	// 		Version: to.Ptr("tawfjzbqrlkqzqyomxiahnfqg"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VmmServers_Update_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VmmServers_Update_MinimumSet_Gen.json
 func ExampleVmmServersClient_BeginUpdate_vmmServersUpdateMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -485,7 +485,7 @@ func ExampleVmmServersClient_BeginUpdate_vmmServersUpdateMinimumSet() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VmmServers_Delete_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VmmServers_Delete_MaximumSet_Gen.json
 func ExampleVmmServersClient_BeginDelete_vmmServersDeleteMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -506,7 +506,7 @@ func ExampleVmmServersClient_BeginDelete_vmmServersDeleteMaximumSet() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VmmServers_Delete_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VmmServers_Delete_MinimumSet_Gen.json
 func ExampleVmmServersClient_BeginDelete_vmmServersDeleteMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

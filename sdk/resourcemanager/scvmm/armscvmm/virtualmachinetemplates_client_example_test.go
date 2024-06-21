@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/scvmm/armscvmm"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualMachineTemplates_ListBySubscription_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualMachineTemplates_ListBySubscription_MaximumSet_Gen.json
 func ExampleVirtualMachineTemplatesClient_NewListBySubscriptionPager_virtualMachineTemplatesListBySubscriptionMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -112,7 +112,7 @@ func ExampleVirtualMachineTemplatesClient_NewListBySubscriptionPager_virtualMach
 		// 						}},
 		// 						OSName: to.Ptr("qcbolnbisklo"),
 		// 						OSType: to.Ptr(armscvmm.OsTypeWindows),
-		// 						ProvisioningState: to.Ptr(armscvmm.ResourceProvisioningStateSucceeded),
+		// 						ProvisioningState: to.Ptr(armscvmm.ProvisioningStateSucceeded),
 		// 						UUID: to.Ptr("12345678-1234-1234-1234-12345678abcd"),
 		// 						VmmServerID: to.Ptr("/subscriptions/12345678-1234-1234-1234-12345678abc/resourceGroups/exampleResourceGroup/providers/Microsoft.ScVmm/vmmServers/vmmServerName"),
 		// 					},
@@ -121,7 +121,7 @@ func ExampleVirtualMachineTemplatesClient_NewListBySubscriptionPager_virtualMach
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualMachineTemplates_ListBySubscription_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualMachineTemplates_ListBySubscription_MinimumSet_Gen.json
 func ExampleVirtualMachineTemplatesClient_NewListBySubscriptionPager_virtualMachineTemplatesListBySubscriptionMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -155,7 +155,7 @@ func ExampleVirtualMachineTemplatesClient_NewListBySubscriptionPager_virtualMach
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualMachineTemplates_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualMachineTemplates_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleVirtualMachineTemplatesClient_NewListByResourceGroupPager_virtualMachineTemplatesListByResourceGroupMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -249,7 +249,7 @@ func ExampleVirtualMachineTemplatesClient_NewListByResourceGroupPager_virtualMac
 		// 						}},
 		// 						OSName: to.Ptr("qcbolnbisklo"),
 		// 						OSType: to.Ptr(armscvmm.OsTypeWindows),
-		// 						ProvisioningState: to.Ptr(armscvmm.ResourceProvisioningStateSucceeded),
+		// 						ProvisioningState: to.Ptr(armscvmm.ProvisioningStateSucceeded),
 		// 						UUID: to.Ptr("12345678-1234-1234-1234-12345678abcd"),
 		// 						VmmServerID: to.Ptr("/subscriptions/12345678-1234-1234-1234-12345678abc/resourceGroups/exampleResourceGroup/providers/Microsoft.ScVmm/vmmServers/vmmServerName"),
 		// 					},
@@ -258,7 +258,7 @@ func ExampleVirtualMachineTemplatesClient_NewListByResourceGroupPager_virtualMac
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualMachineTemplates_ListByResourceGroup_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualMachineTemplates_ListByResourceGroup_MinimumSet_Gen.json
 func ExampleVirtualMachineTemplatesClient_NewListByResourceGroupPager_virtualMachineTemplatesListByResourceGroupMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -292,7 +292,7 @@ func ExampleVirtualMachineTemplatesClient_NewListByResourceGroupPager_virtualMac
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualMachineTemplates_Get_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualMachineTemplates_Get_MaximumSet_Gen.json
 func ExampleVirtualMachineTemplatesClient_Get_virtualMachineTemplatesGetMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -380,14 +380,14 @@ func ExampleVirtualMachineTemplatesClient_Get_virtualMachineTemplatesGetMaximumS
 	// 				}},
 	// 				OSName: to.Ptr("qcbolnbisklo"),
 	// 				OSType: to.Ptr(armscvmm.OsTypeWindows),
-	// 				ProvisioningState: to.Ptr(armscvmm.ResourceProvisioningStateSucceeded),
+	// 				ProvisioningState: to.Ptr(armscvmm.ProvisioningStateSucceeded),
 	// 				UUID: to.Ptr("12345678-1234-1234-1234-12345678abcd"),
 	// 				VmmServerID: to.Ptr("/subscriptions/12345678-1234-1234-1234-12345678abc/resourceGroups/exampleResourceGroup/providers/Microsoft.ScVmm/vmmServers/vmmServerName"),
 	// 			},
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualMachineTemplates_Get_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualMachineTemplates_Get_MinimumSet_Gen.json
 func ExampleVirtualMachineTemplatesClient_Get_virtualMachineTemplatesGetMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -413,7 +413,7 @@ func ExampleVirtualMachineTemplatesClient_Get_virtualMachineTemplatesGetMinimumS
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualMachineTemplates_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualMachineTemplates_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleVirtualMachineTemplatesClient_BeginCreateOrUpdate_virtualMachineTemplatesCreateOrUpdateMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -524,14 +524,14 @@ func ExampleVirtualMachineTemplatesClient_BeginCreateOrUpdate_virtualMachineTemp
 	// 				}},
 	// 				OSName: to.Ptr("qcbolnbisklo"),
 	// 				OSType: to.Ptr(armscvmm.OsTypeWindows),
-	// 				ProvisioningState: to.Ptr(armscvmm.ResourceProvisioningStateSucceeded),
+	// 				ProvisioningState: to.Ptr(armscvmm.ProvisioningStateSucceeded),
 	// 				UUID: to.Ptr("12345678-1234-1234-1234-12345678abcd"),
 	// 				VmmServerID: to.Ptr("/subscriptions/12345678-1234-1234-1234-12345678abc/resourceGroups/exampleResourceGroup/providers/Microsoft.ScVmm/vmmServers/vmmServerName"),
 	// 			},
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualMachineTemplates_CreateOrUpdate_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualMachineTemplates_CreateOrUpdate_MinimumSet_Gen.json
 func ExampleVirtualMachineTemplatesClient_BeginCreateOrUpdate_virtualMachineTemplatesCreateOrUpdateMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -564,7 +564,7 @@ func ExampleVirtualMachineTemplatesClient_BeginCreateOrUpdate_virtualMachineTemp
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualMachineTemplates_Update_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualMachineTemplates_Update_MaximumSet_Gen.json
 func ExampleVirtualMachineTemplatesClient_BeginUpdate_virtualMachineTemplatesUpdateMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -660,14 +660,14 @@ func ExampleVirtualMachineTemplatesClient_BeginUpdate_virtualMachineTemplatesUpd
 	// 				}},
 	// 				OSName: to.Ptr("qcbolnbisklo"),
 	// 				OSType: to.Ptr(armscvmm.OsTypeWindows),
-	// 				ProvisioningState: to.Ptr(armscvmm.ResourceProvisioningStateSucceeded),
+	// 				ProvisioningState: to.Ptr(armscvmm.ProvisioningStateSucceeded),
 	// 				UUID: to.Ptr("12345678-1234-1234-1234-12345678abcd"),
 	// 				VmmServerID: to.Ptr("/subscriptions/12345678-1234-1234-1234-12345678abc/resourceGroups/exampleResourceGroup/providers/Microsoft.ScVmm/vmmServers/vmmServerName"),
 	// 			},
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualMachineTemplates_Update_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualMachineTemplates_Update_MinimumSet_Gen.json
 func ExampleVirtualMachineTemplatesClient_BeginUpdate_virtualMachineTemplatesUpdateMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -696,7 +696,7 @@ func ExampleVirtualMachineTemplatesClient_BeginUpdate_virtualMachineTemplatesUpd
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualMachineTemplates_Delete_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualMachineTemplates_Delete_MaximumSet_Gen.json
 func ExampleVirtualMachineTemplatesClient_BeginDelete_virtualMachineTemplatesDeleteMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -717,7 +717,7 @@ func ExampleVirtualMachineTemplatesClient_BeginDelete_virtualMachineTemplatesDel
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualMachineTemplates_Delete_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VirtualMachineTemplates_Delete_MinimumSet_Gen.json
 func ExampleVirtualMachineTemplatesClient_BeginDelete_virtualMachineTemplatesDeleteMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

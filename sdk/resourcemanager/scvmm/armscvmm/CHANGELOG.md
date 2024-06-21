@@ -10,25 +10,25 @@
 - Function `*VirtualNetworksClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, ResourcePatch, *VirtualNetworksClientBeginUpdateOptions)` to `(context.Context, string, string, VirtualNetworkTagsUpdate, *VirtualNetworksClientBeginUpdateOptions)`
 - Function `*VmmServersClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, VMMServer, *VmmServersClientBeginCreateOrUpdateOptions)` to `(context.Context, string, string, VmmServer, *VmmServersClientBeginCreateOrUpdateOptions)`
 - Function `*VmmServersClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, ResourcePatch, *VmmServersClientBeginUpdateOptions)` to `(context.Context, string, string, VmmServerTagsUpdate, *VmmServersClientBeginUpdateOptions)`
-- Type of `AvailabilitySetProperties.ProvisioningState` has been changed from `*string` to `*ResourceProvisioningState`
+- Type of `AvailabilitySetProperties.ProvisioningState` has been changed from `*string` to `*ProvisioningState`
 - Type of `AvailabilitySetsClientBeginDeleteOptions.Force` has been changed from `*bool` to `*ForceDelete`
-- Type of `CloudInventoryItem.ProvisioningState` has been changed from `*string` to `*ResourceProvisioningState`
-- Type of `CloudProperties.ProvisioningState` has been changed from `*string` to `*ResourceProvisioningState`
+- Type of `CloudInventoryItem.ProvisioningState` has been changed from `*string` to `*ProvisioningState`
+- Type of `CloudProperties.ProvisioningState` has been changed from `*string` to `*ProvisioningState`
 - Type of `CloudsClientBeginDeleteOptions.Force` has been changed from `*bool` to `*ForceDelete`
 - Type of `ErrorResponse.Error` has been changed from `*ErrorDefinition` to `*ErrorDetail`
 - Type of `HardwareProfile.IsHighlyAvailable` has been changed from `*string` to `*IsHighlyAvailable`
-- Type of `InventoryItemProperties.ProvisioningState` has been changed from `*string` to `*ResourceProvisioningState`
+- Type of `InventoryItemProperties.ProvisioningState` has been changed from `*string` to `*ProvisioningState`
 - Type of `NetworkProfile.NetworkInterfaces` has been changed from `[]*NetworkInterfaces` to `[]*NetworkInterface`
 - Type of `NetworkProfileUpdate.NetworkInterfaces` has been changed from `[]*NetworkInterfacesUpdate` to `[]*NetworkInterfaceUpdate`
 - Type of `StopVirtualMachineOptions.SkipShutdown` has been changed from `*bool` to `*SkipShutdown`
-- Type of `VirtualMachineInventoryItem.ProvisioningState` has been changed from `*string` to `*ResourceProvisioningState`
-- Type of `VirtualMachineTemplateInventoryItem.ProvisioningState` has been changed from `*string` to `*ResourceProvisioningState`
+- Type of `VirtualMachineInventoryItem.ProvisioningState` has been changed from `*string` to `*ProvisioningState`
+- Type of `VirtualMachineTemplateInventoryItem.ProvisioningState` has been changed from `*string` to `*ProvisioningState`
 - Type of `VirtualMachineTemplateProperties.IsHighlyAvailable` has been changed from `*string` to `*IsHighlyAvailable`
 - Type of `VirtualMachineTemplateProperties.NetworkInterfaces` has been changed from `[]*NetworkInterfaces` to `[]*NetworkInterface`
-- Type of `VirtualMachineTemplateProperties.ProvisioningState` has been changed from `*string` to `*ResourceProvisioningState`
+- Type of `VirtualMachineTemplateProperties.ProvisioningState` has been changed from `*string` to `*ProvisioningState`
 - Type of `VirtualMachineTemplatesClientBeginDeleteOptions.Force` has been changed from `*bool` to `*ForceDelete`
-- Type of `VirtualNetworkInventoryItem.ProvisioningState` has been changed from `*string` to `*ResourceProvisioningState`
-- Type of `VirtualNetworkProperties.ProvisioningState` has been changed from `*string` to `*ResourceProvisioningState`
+- Type of `VirtualNetworkInventoryItem.ProvisioningState` has been changed from `*string` to `*ProvisioningState`
+- Type of `VirtualNetworkProperties.ProvisioningState` has been changed from `*string` to `*ProvisioningState`
 - Type of `VirtualNetworksClientBeginDeleteOptions.Force` has been changed from `*bool` to `*ForceDelete`
 - Type of `VmmServersClientBeginDeleteOptions.Force` has been changed from `*bool` to `*ForceDelete`
 - Function `*ClientFactory.NewVirtualMachinesClient` has been removed
@@ -85,7 +85,7 @@
 - New enum type `IsHighlyAvailable` with values `IsHighlyAvailableFalse`, `IsHighlyAvailableTrue`
 - New enum type `Origin` with values `OriginSystem`, `OriginUser`, `OriginUserSystem`
 - New enum type `ProvisioningAction` with values `ProvisioningActionInstall`, `ProvisioningActionRepair`, `ProvisioningActionUninstall`
-- New enum type `ResourceProvisioningState` with values `ResourceProvisioningStateAccepted`, `ResourceProvisioningStateCanceled`, `ResourceProvisioningStateCreated`, `ResourceProvisioningStateDeleting`, `ResourceProvisioningStateFailed`, `ResourceProvisioningStateProvisioning`, `ResourceProvisioningStateSucceeded`, `ResourceProvisioningStateUpdating`
+- New enum type `ProvisioningState` with values `ProvisioningStateAccepted`, `ProvisioningStateCanceled`, `ProvisioningStateCreated`, `ProvisioningStateDeleting`, `ProvisioningStateFailed`, `ProvisioningStateProvisioning`, `ProvisioningStateSucceeded`, `ProvisioningStateUpdating`
 - New enum type `SkipShutdown` with values `SkipShutdownFalse`, `SkipShutdownTrue`
 - New function `*ClientFactory.NewGuestAgentsClient() *GuestAgentsClient`
 - New function `*ClientFactory.NewVMInstanceHybridIdentityMetadatasClient() *VMInstanceHybridIdentityMetadatasClient`

@@ -17,10 +17,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/ListWebApps.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/ListWebApps.json
 func ExampleWebAppsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -266,7 +266,7 @@ func ExampleWebAppsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/ListWebAppsByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/ListWebAppsByResourceGroup.json
 func ExampleWebAppsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -512,7 +512,7 @@ func ExampleWebAppsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/GetWebApp.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/GetWebApp.json
 func ExampleWebAppsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -641,7 +641,7 @@ func ExampleWebAppsClient_Get() {
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/CloneWebApp.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/CloneWebApp.json
 func ExampleWebAppsClient_BeginCreateOrUpdate_cloneWebApp() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -787,7 +787,409 @@ func ExampleWebAppsClient_BeginCreateOrUpdate_cloneWebApp() {
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/CreateOrUpdateWebApp.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/CreateOrUpdateFunctionAppFlexConsumption.json
+func ExampleWebAppsClient_BeginCreateOrUpdate_createOrUpdateFlexConsumptionFunctionApp() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewWebAppsClient().BeginCreateOrUpdate(ctx, "testrg123", "sitef6141", armappservice.Site{
+		Kind:     to.Ptr("functionapp,linux"),
+		Location: to.Ptr("East US"),
+		Properties: &armappservice.SiteProperties{
+			FunctionAppConfig: &armappservice.FunctionAppConfig{
+				Deployment: &armappservice.FunctionsDeployment{
+					Storage: &armappservice.FunctionsDeploymentStorage{
+						Type: to.Ptr(armappservice.FunctionsDeploymentStorageTypeBlobContainer),
+						Authentication: &armappservice.FunctionsDeploymentStorageAuthentication{
+							Type:                               to.Ptr(armappservice.AuthenticationTypeStorageAccountConnectionString),
+							StorageAccountConnectionStringName: to.Ptr("TheAppSettingName"),
+						},
+						Value: to.Ptr("https://storageAccountName.blob.core.windows.net/containername"),
+					},
+				},
+				Runtime: &armappservice.FunctionsRuntime{
+					Name:    to.Ptr(armappservice.RuntimeNamePython),
+					Version: to.Ptr("3.11"),
+				},
+				ScaleAndConcurrency: &armappservice.FunctionsScaleAndConcurrency{
+					InstanceMemoryMB:     to.Ptr[float32](2048),
+					MaximumInstanceCount: to.Ptr[float32](100),
+				},
+			},
+			SiteConfig: &armappservice.SiteConfig{
+				AppSettings: []*armappservice.NameValuePair{
+					{
+						Name:  to.Ptr("AzureWebJobsStorage"),
+						Value: to.Ptr("DefaultEndpointsProtocol=https;AccountName=StorageAccountName;AccountKey=Sanitized;EndpointSuffix=core.windows.net"),
+					},
+					{
+						Name:  to.Ptr("APPLICATIONINSIGHTS_CONNECTION_STRING"),
+						Value: to.Ptr("InstrumentationKey=Sanitized;IngestionEndpoint=Sanitized;LiveEndpoint=Sanitized"),
+					}},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Site = armappservice.Site{
+	// 	Name: to.Ptr("sitef6141"),
+	// 	Type: to.Ptr("Microsoft.Web/sites"),
+	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/sites/sitef6141"),
+	// 	Location: to.Ptr("East US"),
+	// 	Properties: &armappservice.SiteProperties{
+	// 		AvailabilityState: to.Ptr(armappservice.SiteAvailabilityStateNormal),
+	// 		ClientAffinityEnabled: to.Ptr(false),
+	// 		ClientCertEnabled: to.Ptr(false),
+	// 		ContainerSize: to.Ptr[int32](2048),
+	// 		DailyMemoryTimeQuota: to.Ptr[int32](0),
+	// 		DefaultHostName: to.Ptr("sitef6141.azurewebsites.net"),
+	// 		Enabled: to.Ptr(true),
+	// 		EnabledHostNames: []*string{
+	// 			to.Ptr("sitef6141.azurewebsites.net"),
+	// 			to.Ptr("sitef6141.scm.azurewebsites.net")},
+	// 			FunctionAppConfig: &armappservice.FunctionAppConfig{
+	// 				Deployment: &armappservice.FunctionsDeployment{
+	// 					Storage: &armappservice.FunctionsDeploymentStorage{
+	// 						Type: to.Ptr(armappservice.FunctionsDeploymentStorageTypeBlobContainer),
+	// 						Authentication: &armappservice.FunctionsDeploymentStorageAuthentication{
+	// 							Type: to.Ptr(armappservice.AuthenticationTypeStorageAccountConnectionString),
+	// 							StorageAccountConnectionStringName: to.Ptr("TheAppSettingName"),
+	// 						},
+	// 						Value: to.Ptr("https://storageAccountName.blob.core.windows.net/containername"),
+	// 					},
+	// 				},
+	// 				Runtime: &armappservice.FunctionsRuntime{
+	// 					Name: to.Ptr(armappservice.RuntimeNamePython),
+	// 					Version: to.Ptr("3.11"),
+	// 				},
+	// 				ScaleAndConcurrency: &armappservice.FunctionsScaleAndConcurrency{
+	// 					InstanceMemoryMB: to.Ptr[float32](2048),
+	// 					MaximumInstanceCount: to.Ptr[float32](100),
+	// 				},
+	// 			},
+	// 			HostNameSSLStates: []*armappservice.HostNameSSLState{
+	// 				{
+	// 					Name: to.Ptr("sitef6141.azurewebsites.net"),
+	// 					HostType: to.Ptr(armappservice.HostTypeStandard),
+	// 					SSLState: to.Ptr(armappservice.SSLStateDisabled),
+	// 				},
+	// 				{
+	// 					Name: to.Ptr("sitef6141.scm.azurewebsites.net"),
+	// 					HostType: to.Ptr(armappservice.HostTypeRepository),
+	// 					SSLState: to.Ptr(armappservice.SSLStateDisabled),
+	// 			}},
+	// 			HostNames: []*string{
+	// 				to.Ptr("sitef6141.azurewebsites.net")},
+	// 				HTTPSOnly: to.Ptr(true),
+	// 				HyperV: to.Ptr(false),
+	// 				IsXenon: to.Ptr(false),
+	// 				LastModifiedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-08T16:24:54.800Z"); return t}()),
+	// 				OutboundIPAddresses: to.Ptr("70.37.102.201,20.225.43.144"),
+	// 				PossibleOutboundIPAddresses: to.Ptr("70.37.102.201,20.225.43.144,20.225.184.122,20.225.184.188"),
+	// 				PublicNetworkAccess: to.Ptr("Enabled"),
+	// 				RedundancyMode: to.Ptr(armappservice.RedundancyModeNone),
+	// 				RepositorySiteName: to.Ptr("sitef6141"),
+	// 				ResourceConfig: &armappservice.ResourceConfig{
+	// 					CPU: to.Ptr[float64](1),
+	// 					Memory: to.Ptr("2.0Gi"),
+	// 				},
+	// 				ResourceGroup: to.Ptr("testrg123"),
+	// 				ScmSiteAlsoStopped: to.Ptr(false),
+	// 				ServerFarmID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/serverfarms/DefaultAsp"),
+	// 				SiteConfig: &armappservice.SiteConfig{
+	// 					AcrUseManagedIdentityCreds: to.Ptr(false),
+	// 					AlwaysOn: to.Ptr(false),
+	// 					AppCommandLine: to.Ptr(""),
+	// 					AutoHealEnabled: to.Ptr(false),
+	// 					AzureStorageAccounts: map[string]*armappservice.AzureStorageInfoValue{
+	// 					},
+	// 					DetailedErrorLoggingEnabled: to.Ptr(false),
+	// 					FtpsState: to.Ptr(armappservice.FtpsStateAllAllowed),
+	// 					FunctionAppScaleLimit: to.Ptr[int32](0),
+	// 					FunctionsRuntimeScaleMonitoringEnabled: to.Ptr(false),
+	// 					Http20Enabled: to.Ptr(false),
+	// 					HTTPLoggingEnabled: to.Ptr(false),
+	// 					IPSecurityRestrictions: []*armappservice.IPSecurityRestriction{
+	// 						{
+	// 							Name: to.Ptr("Allow all"),
+	// 							Description: to.Ptr("Allow all access"),
+	// 							Action: to.Ptr("Allow"),
+	// 							IPAddress: to.Ptr("Any"),
+	// 							Priority: to.Ptr[int32](2147483647),
+	// 					}},
+	// 					KeyVaultReferenceIdentity: to.Ptr(""),
+	// 					LinuxFxVersion: to.Ptr(""),
+	// 					LoadBalancing: to.Ptr(armappservice.SiteLoadBalancingLeastRequests),
+	// 					LogsDirectorySizeLimit: to.Ptr[int32](35),
+	// 					ManagedPipelineMode: to.Ptr(armappservice.ManagedPipelineModeIntegrated),
+	// 					MinTLSVersion: to.Ptr(armappservice.SupportedTLSVersionsOne2),
+	// 					MinimumElasticInstanceCount: to.Ptr[int32](0),
+	// 					NetFrameworkVersion: to.Ptr(""),
+	// 					NodeVersion: to.Ptr(""),
+	// 					NumberOfWorkers: to.Ptr[int32](1),
+	// 					PhpVersion: to.Ptr(""),
+	// 					PowerShellVersion: to.Ptr(""),
+	// 					PythonVersion: to.Ptr(""),
+	// 					RemoteDebuggingEnabled: to.Ptr(false),
+	// 					RequestTracingEnabled: to.Ptr(false),
+	// 					ScmIPSecurityRestrictions: []*armappservice.IPSecurityRestriction{
+	// 						{
+	// 							Name: to.Ptr("Allow all"),
+	// 							Description: to.Ptr("Allow all access"),
+	// 							Action: to.Ptr("Allow"),
+	// 							IPAddress: to.Ptr("Any"),
+	// 							Priority: to.Ptr[int32](2147483647),
+	// 					}},
+	// 					ScmMinTLSVersion: to.Ptr(armappservice.SupportedTLSVersionsOne2),
+	// 					Use32BitWorkerProcess: to.Ptr(false),
+	// 					VirtualApplications: []*armappservice.VirtualApplication{
+	// 						{
+	// 							PhysicalPath: to.Ptr("site\\wwwroot"),
+	// 							PreloadEnabled: to.Ptr(false),
+	// 							VirtualPath: to.Ptr("/"),
+	// 					}},
+	// 					VnetName: to.Ptr(""),
+	// 					VnetPrivatePortsCount: to.Ptr[int32](0),
+	// 					VnetRouteAllEnabled: to.Ptr(false),
+	// 					WebSocketsEnabled: to.Ptr(false),
+	// 				},
+	// 				State: to.Ptr("Running"),
+	// 				StorageAccountRequired: to.Ptr(false),
+	// 				UsageState: to.Ptr(armappservice.UsageStateNormal),
+	// 				VnetBackupRestoreEnabled: to.Ptr(false),
+	// 				VnetContentShareEnabled: to.Ptr(false),
+	// 				VnetImagePullEnabled: to.Ptr(false),
+	// 				VnetRouteAllEnabled: to.Ptr(false),
+	// 			},
+	// 		}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/CreateOrUpdateFunctionAppFlexConsumptionWithDetails.json
+func ExampleWebAppsClient_BeginCreateOrUpdate_createOrUpdateFlexConsumptionFunctionAppWithDetails() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewWebAppsClient().BeginCreateOrUpdate(ctx, "testrg123", "sitef6141", armappservice.Site{
+		Kind:     to.Ptr("functionapp,linux"),
+		Location: to.Ptr("East US"),
+		Properties: &armappservice.SiteProperties{
+			FunctionAppConfig: &armappservice.FunctionAppConfig{
+				Deployment: &armappservice.FunctionsDeployment{
+					Storage: &armappservice.FunctionsDeploymentStorage{
+						Type: to.Ptr(armappservice.FunctionsDeploymentStorageTypeBlobContainer),
+						Authentication: &armappservice.FunctionsDeploymentStorageAuthentication{
+							Type:                               to.Ptr(armappservice.AuthenticationTypeStorageAccountConnectionString),
+							StorageAccountConnectionStringName: to.Ptr("TheAppSettingName"),
+						},
+						Value: to.Ptr("https://storageAccountName.blob.core.windows.net/containername"),
+					},
+				},
+				Runtime: &armappservice.FunctionsRuntime{
+					Name:    to.Ptr(armappservice.RuntimeNamePython),
+					Version: to.Ptr("3.11"),
+				},
+				ScaleAndConcurrency: &armappservice.FunctionsScaleAndConcurrency{
+					AlwaysReady: []*armappservice.FunctionsAlwaysReadyConfig{
+						{
+							Name:          to.Ptr("http"),
+							InstanceCount: to.Ptr[float32](2),
+						}},
+					InstanceMemoryMB:     to.Ptr[float32](2048),
+					MaximumInstanceCount: to.Ptr[float32](100),
+					Triggers: &armappservice.FunctionsScaleAndConcurrencyTriggers{
+						HTTP: &armappservice.FunctionsScaleAndConcurrencyTriggersHTTP{
+							PerInstanceConcurrency: to.Ptr[float32](16),
+						},
+					},
+				},
+			},
+			SiteConfig: &armappservice.SiteConfig{
+				AppSettings: []*armappservice.NameValuePair{
+					{
+						Name:  to.Ptr("AzureWebJobsStorage"),
+						Value: to.Ptr("DefaultEndpointsProtocol=https;AccountName=StorageAccountName;AccountKey=Sanitized;EndpointSuffix=core.windows.net"),
+					},
+					{
+						Name:  to.Ptr("APPLICATIONINSIGHTS_CONNECTION_STRING"),
+						Value: to.Ptr("InstrumentationKey=Sanitized;IngestionEndpoint=Sanitized;LiveEndpoint=Sanitized"),
+					}},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Site = armappservice.Site{
+	// 	Name: to.Ptr("sitef6141"),
+	// 	Type: to.Ptr("Microsoft.Web/sites"),
+	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/sites/sitef6141"),
+	// 	Location: to.Ptr("East US"),
+	// 	Properties: &armappservice.SiteProperties{
+	// 		AvailabilityState: to.Ptr(armappservice.SiteAvailabilityStateNormal),
+	// 		ClientAffinityEnabled: to.Ptr(false),
+	// 		ClientCertEnabled: to.Ptr(false),
+	// 		ContainerSize: to.Ptr[int32](2048),
+	// 		DailyMemoryTimeQuota: to.Ptr[int32](0),
+	// 		DefaultHostName: to.Ptr("sitef6141.azurewebsites.net"),
+	// 		Enabled: to.Ptr(true),
+	// 		EnabledHostNames: []*string{
+	// 			to.Ptr("sitef6141.azurewebsites.net"),
+	// 			to.Ptr("sitef6141.scm.azurewebsites.net")},
+	// 			FunctionAppConfig: &armappservice.FunctionAppConfig{
+	// 				Deployment: &armappservice.FunctionsDeployment{
+	// 					Storage: &armappservice.FunctionsDeploymentStorage{
+	// 						Type: to.Ptr(armappservice.FunctionsDeploymentStorageTypeBlobContainer),
+	// 						Authentication: &armappservice.FunctionsDeploymentStorageAuthentication{
+	// 							Type: to.Ptr(armappservice.AuthenticationTypeStorageAccountConnectionString),
+	// 							StorageAccountConnectionStringName: to.Ptr("TheAppSettingName"),
+	// 						},
+	// 						Value: to.Ptr("https://storageAccountName.blob.core.windows.net/containername"),
+	// 					},
+	// 				},
+	// 				Runtime: &armappservice.FunctionsRuntime{
+	// 					Name: to.Ptr(armappservice.RuntimeNamePython),
+	// 					Version: to.Ptr("3.11"),
+	// 				},
+	// 				ScaleAndConcurrency: &armappservice.FunctionsScaleAndConcurrency{
+	// 					AlwaysReady: []*armappservice.FunctionsAlwaysReadyConfig{
+	// 						{
+	// 							Name: to.Ptr("http"),
+	// 							InstanceCount: to.Ptr[float32](2),
+	// 					}},
+	// 					InstanceMemoryMB: to.Ptr[float32](2048),
+	// 					MaximumInstanceCount: to.Ptr[float32](100),
+	// 					Triggers: &armappservice.FunctionsScaleAndConcurrencyTriggers{
+	// 						HTTP: &armappservice.FunctionsScaleAndConcurrencyTriggersHTTP{
+	// 							PerInstanceConcurrency: to.Ptr[float32](16),
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 			HostNameSSLStates: []*armappservice.HostNameSSLState{
+	// 				{
+	// 					Name: to.Ptr("sitef6141.azurewebsites.net"),
+	// 					HostType: to.Ptr(armappservice.HostTypeStandard),
+	// 					SSLState: to.Ptr(armappservice.SSLStateDisabled),
+	// 				},
+	// 				{
+	// 					Name: to.Ptr("sitef6141.scm.azurewebsites.net"),
+	// 					HostType: to.Ptr(armappservice.HostTypeRepository),
+	// 					SSLState: to.Ptr(armappservice.SSLStateDisabled),
+	// 			}},
+	// 			HostNames: []*string{
+	// 				to.Ptr("sitef6141.azurewebsites.net")},
+	// 				HTTPSOnly: to.Ptr(true),
+	// 				HyperV: to.Ptr(false),
+	// 				IsXenon: to.Ptr(false),
+	// 				LastModifiedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-08T16:24:54.800Z"); return t}()),
+	// 				OutboundIPAddresses: to.Ptr("70.37.102.201,20.225.43.144"),
+	// 				PossibleOutboundIPAddresses: to.Ptr("70.37.102.201,20.225.43.144,20.225.184.122,20.225.184.188"),
+	// 				PublicNetworkAccess: to.Ptr("Enabled"),
+	// 				RedundancyMode: to.Ptr(armappservice.RedundancyModeNone),
+	// 				RepositorySiteName: to.Ptr("sitef6141"),
+	// 				ResourceConfig: &armappservice.ResourceConfig{
+	// 					CPU: to.Ptr[float64](1),
+	// 					Memory: to.Ptr("2.0Gi"),
+	// 				},
+	// 				ResourceGroup: to.Ptr("testrg123"),
+	// 				ScmSiteAlsoStopped: to.Ptr(false),
+	// 				ServerFarmID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/serverfarms/DefaultAsp"),
+	// 				SiteConfig: &armappservice.SiteConfig{
+	// 					AcrUseManagedIdentityCreds: to.Ptr(false),
+	// 					AlwaysOn: to.Ptr(false),
+	// 					AppCommandLine: to.Ptr(""),
+	// 					AutoHealEnabled: to.Ptr(false),
+	// 					AzureStorageAccounts: map[string]*armappservice.AzureStorageInfoValue{
+	// 					},
+	// 					DetailedErrorLoggingEnabled: to.Ptr(false),
+	// 					FtpsState: to.Ptr(armappservice.FtpsStateAllAllowed),
+	// 					FunctionAppScaleLimit: to.Ptr[int32](0),
+	// 					FunctionsRuntimeScaleMonitoringEnabled: to.Ptr(false),
+	// 					Http20Enabled: to.Ptr(false),
+	// 					HTTPLoggingEnabled: to.Ptr(false),
+	// 					IPSecurityRestrictions: []*armappservice.IPSecurityRestriction{
+	// 						{
+	// 							Name: to.Ptr("Allow all"),
+	// 							Description: to.Ptr("Allow all access"),
+	// 							Action: to.Ptr("Allow"),
+	// 							IPAddress: to.Ptr("Any"),
+	// 							Priority: to.Ptr[int32](2147483647),
+	// 					}},
+	// 					KeyVaultReferenceIdentity: to.Ptr(""),
+	// 					LinuxFxVersion: to.Ptr(""),
+	// 					LoadBalancing: to.Ptr(armappservice.SiteLoadBalancingLeastRequests),
+	// 					LogsDirectorySizeLimit: to.Ptr[int32](35),
+	// 					ManagedPipelineMode: to.Ptr(armappservice.ManagedPipelineModeIntegrated),
+	// 					MinTLSVersion: to.Ptr(armappservice.SupportedTLSVersionsOne2),
+	// 					MinimumElasticInstanceCount: to.Ptr[int32](0),
+	// 					NetFrameworkVersion: to.Ptr(""),
+	// 					NodeVersion: to.Ptr(""),
+	// 					NumberOfWorkers: to.Ptr[int32](1),
+	// 					PhpVersion: to.Ptr(""),
+	// 					PowerShellVersion: to.Ptr(""),
+	// 					PythonVersion: to.Ptr(""),
+	// 					RemoteDebuggingEnabled: to.Ptr(false),
+	// 					RequestTracingEnabled: to.Ptr(false),
+	// 					ScmIPSecurityRestrictions: []*armappservice.IPSecurityRestriction{
+	// 						{
+	// 							Name: to.Ptr("Allow all"),
+	// 							Description: to.Ptr("Allow all access"),
+	// 							Action: to.Ptr("Allow"),
+	// 							IPAddress: to.Ptr("Any"),
+	// 							Priority: to.Ptr[int32](2147483647),
+	// 					}},
+	// 					ScmMinTLSVersion: to.Ptr(armappservice.SupportedTLSVersionsOne2),
+	// 					Use32BitWorkerProcess: to.Ptr(false),
+	// 					VirtualApplications: []*armappservice.VirtualApplication{
+	// 						{
+	// 							PhysicalPath: to.Ptr("site\\wwwroot"),
+	// 							PreloadEnabled: to.Ptr(false),
+	// 							VirtualPath: to.Ptr("/"),
+	// 					}},
+	// 					VnetName: to.Ptr(""),
+	// 					VnetPrivatePortsCount: to.Ptr[int32](0),
+	// 					VnetRouteAllEnabled: to.Ptr(false),
+	// 					WebSocketsEnabled: to.Ptr(false),
+	// 				},
+	// 				State: to.Ptr("Running"),
+	// 				StorageAccountRequired: to.Ptr(false),
+	// 				UsageState: to.Ptr(armappservice.UsageStateNormal),
+	// 				VnetBackupRestoreEnabled: to.Ptr(false),
+	// 				VnetContentShareEnabled: to.Ptr(false),
+	// 				VnetImagePullEnabled: to.Ptr(false),
+	// 				VnetRouteAllEnabled: to.Ptr(false),
+	// 			},
+	// 		}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/CreateOrUpdateWebApp.json
 func ExampleWebAppsClient_BeginCreateOrUpdate_createOrUpdateWebApp() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -926,7 +1328,7 @@ func ExampleWebAppsClient_BeginCreateOrUpdate_createOrUpdateWebApp() {
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/DeleteWebApp.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/DeleteWebApp.json
 func ExampleWebAppsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -945,7 +1347,7 @@ func ExampleWebAppsClient_Delete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/UpdateWebApp.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/UpdateWebApp.json
 func ExampleWebAppsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1078,7 +1480,7 @@ func ExampleWebAppsClient_Update() {
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/AnalyzeCustomHostName.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/AnalyzeCustomHostName.json
 func ExampleWebAppsClient_AnalyzeCustomHostname() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1116,7 +1518,7 @@ func ExampleWebAppsClient_AnalyzeCustomHostname() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/ApplySlotConfig.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/ApplySlotConfig.json
 func ExampleWebAppsClient_ApplySlotConfigToProduction() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1136,7 +1538,7 @@ func ExampleWebAppsClient_ApplySlotConfigToProduction() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/BackupWebApp.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/BackupWebApp.json
 func ExampleWebAppsClient_Backup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1185,8 +1587,8 @@ func ExampleWebAppsClient_Backup() {
 	// 	Type: to.Ptr("Microsoft.Web/sites"),
 	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/sites/sitef6141"),
 	// 	Properties: &armappservice.BackupItemProperties{
-	// 		Name: to.Ptr("sitef6141_2023-01-01"),
-	// 		BlobName: to.Ptr("sitef6141_2023-01-01"),
+	// 		Name: to.Ptr("sitef6141_2023-12-01"),
+	// 		BlobName: to.Ptr("sitef6141_2023-12-01"),
 	// 		Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-03T17:33:11.641Z"); return t}()),
 	// 		Databases: []*armappservice.DatabaseBackupSetting{
 	// 			{
@@ -1214,7 +1616,7 @@ func ExampleWebAppsClient_Backup() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/ListWebAppBackups.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/ListWebAppBackups.json
 func ExampleWebAppsClient_NewListBackupsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1243,8 +1645,8 @@ func ExampleWebAppsClient_NewListBackupsPager() {
 		// 			Type: to.Ptr("Microsoft.Web/sites"),
 		// 			ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/sites/sitef6141/backups/12345"),
 		// 			Properties: &armappservice.BackupItemProperties{
-		// 				Name: to.Ptr("sitef6141_2023-01-01"),
-		// 				BlobName: to.Ptr("sitef6141_2023-01-01"),
+		// 				Name: to.Ptr("sitef6141_2023-12-01"),
+		// 				BlobName: to.Ptr("sitef6141_2023-12-01"),
 		// 				Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-03T17:33:11.641Z"); return t}()),
 		// 				Databases: []*armappservice.DatabaseBackupSetting{
 		// 					{
@@ -1274,7 +1676,7 @@ func ExampleWebAppsClient_NewListBackupsPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/GetWebAppBackup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/GetWebAppBackup.json
 func ExampleWebAppsClient_GetBackupStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1297,8 +1699,8 @@ func ExampleWebAppsClient_GetBackupStatus() {
 	// 	Type: to.Ptr("Microsoft.Web/sites"),
 	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/sites/sitef6141/backups/12345"),
 	// 	Properties: &armappservice.BackupItemProperties{
-	// 		Name: to.Ptr("sitef6141_2023-01-01"),
-	// 		BlobName: to.Ptr("sitef6141_2023-01-01"),
+	// 		Name: to.Ptr("sitef6141_2023-12-01"),
+	// 		BlobName: to.Ptr("sitef6141_2023-12-01"),
 	// 		Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-03T17:33:11.641Z"); return t}()),
 	// 		Databases: []*armappservice.DatabaseBackupSetting{
 	// 			{
@@ -1326,7 +1728,7 @@ func ExampleWebAppsClient_GetBackupStatus() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/DeleteWebAppBackup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/DeleteWebAppBackup.json
 func ExampleWebAppsClient_DeleteBackup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1343,7 +1745,7 @@ func ExampleWebAppsClient_DeleteBackup() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/GetWebAppBackupWithSecrets.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/GetWebAppBackupWithSecrets.json
 func ExampleWebAppsClient_ListBackupStatusSecrets() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1392,8 +1794,8 @@ func ExampleWebAppsClient_ListBackupStatusSecrets() {
 	// 	Type: to.Ptr("Microsoft.Web/sites"),
 	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/sites/sitef6141/backups/12345"),
 	// 	Properties: &armappservice.BackupItemProperties{
-	// 		Name: to.Ptr("sitef6141_2023-01-01"),
-	// 		BlobName: to.Ptr("sitef6141_2023-01-01"),
+	// 		Name: to.Ptr("sitef6141_2023-12-01"),
+	// 		BlobName: to.Ptr("sitef6141_2023-12-01"),
 	// 		Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-03T17:33:11.641Z"); return t}()),
 	// 		Databases: []*armappservice.DatabaseBackupSetting{
 	// 			{
@@ -1421,7 +1823,7 @@ func ExampleWebAppsClient_ListBackupStatusSecrets() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/RestoreWebAppBackup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/RestoreWebAppBackup.json
 func ExampleWebAppsClient_BeginRestore() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1461,7 +1863,7 @@ func ExampleWebAppsClient_BeginRestore() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/ListPublishingCredentialsPolicies.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/ListPublishingCredentialsPolicies.json
 func ExampleWebAppsClient_NewListBasicPublishingCredentialsPoliciesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1505,7 +1907,7 @@ func ExampleWebAppsClient_NewListBasicPublishingCredentialsPoliciesPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/GetPublishingCredentialsPolicy.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/GetPublishingCredentialsPolicy.json
 func ExampleWebAppsClient_GetFtpAllowed() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1531,7 +1933,7 @@ func ExampleWebAppsClient_GetFtpAllowed() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/UpdatePublishingCredentialsPolicy.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/UpdatePublishingCredentialsPolicy.json
 func ExampleWebAppsClient_UpdateFtpAllowed() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1561,7 +1963,7 @@ func ExampleWebAppsClient_UpdateFtpAllowed() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/ListWebAppConfigurations.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/ListWebAppConfigurations.json
 func ExampleWebAppsClient_NewListConfigurationsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1645,7 +2047,7 @@ func ExampleWebAppsClient_NewListConfigurationsPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/UpdateAppSettings.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/UpdateAppSettings.json
 func ExampleWebAppsClient_UpdateApplicationSettings() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1680,7 +2082,7 @@ func ExampleWebAppsClient_UpdateApplicationSettings() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/ListAppSettings.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/ListAppSettings.json
 func ExampleWebAppsClient_ListApplicationSettings() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1710,7 +2112,7 @@ func ExampleWebAppsClient_ListApplicationSettings() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/UpdateAuthSettings.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/UpdateAuthSettings.json
 func ExampleWebAppsClient_UpdateAuthSettings() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1761,7 +2163,7 @@ func ExampleWebAppsClient_UpdateAuthSettings() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/ListAuthSettings.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/ListAuthSettings.json
 func ExampleWebAppsClient_GetAuthSettings() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1799,7 +2201,7 @@ func ExampleWebAppsClient_GetAuthSettings() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/GetAuthSettingsV2WithoutSecrets.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/GetAuthSettingsV2WithoutSecrets.json
 func ExampleWebAppsClient_GetAuthSettingsV2WithoutSecrets() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1888,7 +2290,7 @@ func ExampleWebAppsClient_GetAuthSettingsV2WithoutSecrets() {
 	// 				}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/UpdateAuthSettingsV2.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/UpdateAuthSettingsV2.json
 func ExampleWebAppsClient_UpdateAuthSettingsV2() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2041,7 +2443,7 @@ func ExampleWebAppsClient_UpdateAuthSettingsV2() {
 	// 				}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/ListAuthSettingsV2.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/ListAuthSettingsV2.json
 func ExampleWebAppsClient_GetAuthSettingsV2() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2130,7 +2532,7 @@ func ExampleWebAppsClient_GetAuthSettingsV2() {
 	// 				}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/UpdateAzureStorageAccounts.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/UpdateAzureStorageAccounts.json
 func ExampleWebAppsClient_UpdateAzureStorageAccounts() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2175,7 +2577,7 @@ func ExampleWebAppsClient_UpdateAzureStorageAccounts() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/GetKeyVaultReferencesForAppSettings.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/GetKeyVaultReferencesForAppSettings.json
 func ExampleWebAppsClient_NewGetAppSettingsKeyVaultReferencesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2219,7 +2621,7 @@ func ExampleWebAppsClient_NewGetAppSettingsKeyVaultReferencesPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/GetKeyVaultReferencesForAppSetting.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/GetKeyVaultReferencesForAppSetting.json
 func ExampleWebAppsClient_GetAppSettingKeyVaultReference() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2247,7 +2649,7 @@ func ExampleWebAppsClient_GetAppSettingKeyVaultReference() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/GetSiteConfig.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/GetSiteConfig.json
 func ExampleWebAppsClient_GetConfiguration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2323,7 +2725,7 @@ func ExampleWebAppsClient_GetConfiguration() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/UpdateSiteConfig.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/UpdateSiteConfig.json
 func ExampleWebAppsClient_CreateOrUpdateConfiguration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2449,7 +2851,7 @@ func ExampleWebAppsClient_CreateOrUpdateConfiguration() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/ListSiteDeploymentStatus.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/ListSiteDeploymentStatus.json
 func ExampleWebAppsClient_NewListProductionSiteDeploymentStatusesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2478,7 +2880,7 @@ func ExampleWebAppsClient_NewListProductionSiteDeploymentStatusesPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/GetSiteDeploymentStatus.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/GetSiteDeploymentStatus.json
 func ExampleWebAppsClient_BeginGetProductionSiteDeploymentStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2516,7 +2918,7 @@ func ExampleWebAppsClient_BeginGetProductionSiteDeploymentStatus() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/GetSiteInstanceInfo.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/GetSiteInstanceInfo.json
 func ExampleWebAppsClient_GetInstanceInfo() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2551,7 +2953,7 @@ func ExampleWebAppsClient_GetInstanceInfo() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/ListSlotBackups.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/ListSlotBackups.json
 func ExampleWebAppsClient_NewListSiteBackupsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2589,7 +2991,7 @@ func ExampleWebAppsClient_NewListSiteBackupsPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/GetWebSiteNetworkTraceOperation.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/GetWebSiteNetworkTraceOperation.json
 func ExampleWebAppsClient_GetNetworkTraceOperation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2615,7 +3017,7 @@ func ExampleWebAppsClient_GetNetworkTraceOperation() {
 	// }}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/StartWebSiteNetworkTraceOperation.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/StartWebSiteNetworkTraceOperation.json
 func ExampleWebAppsClient_BeginStartWebSiteNetworkTraceOperation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2648,7 +3050,7 @@ func ExampleWebAppsClient_BeginStartWebSiteNetworkTraceOperation() {
 	// }}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/StopWebSiteNetworkTrace.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/StopWebSiteNetworkTrace.json
 func ExampleWebAppsClient_StopWebSiteNetworkTrace() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2665,7 +3067,7 @@ func ExampleWebAppsClient_StopWebSiteNetworkTrace() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/GetWebSiteNetworkTraces.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/GetWebSiteNetworkTraces.json
 func ExampleWebAppsClient_GetNetworkTraces() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2691,7 +3093,7 @@ func ExampleWebAppsClient_GetNetworkTraces() {
 	// }}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/GetSitePrivateEndpointConnection.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/GetSitePrivateEndpointConnection.json
 func ExampleWebAppsClient_GetPrivateEndpointConnection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2725,7 +3127,7 @@ func ExampleWebAppsClient_GetPrivateEndpointConnection() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/ApproveRejectSitePrivateEndpointConnection.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/ApproveRejectSitePrivateEndpointConnection.json
 func ExampleWebAppsClient_BeginApproveOrRejectPrivateEndpointConnection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2736,8 +3138,8 @@ func ExampleWebAppsClient_BeginApproveOrRejectPrivateEndpointConnection() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewWebAppsClient().BeginApproveOrRejectPrivateEndpointConnection(ctx, "rg", "testSite", "connection", armappservice.PrivateLinkConnectionApprovalRequestResource{
-		Properties: &armappservice.PrivateLinkConnectionApprovalRequest{
+	poller, err := clientFactory.NewWebAppsClient().BeginApproveOrRejectPrivateEndpointConnection(ctx, "rg", "testSite", "connection", armappservice.RemotePrivateEndpointConnectionARMResource{
+		Properties: &armappservice.RemotePrivateEndpointConnectionARMResourceProperties{
 			PrivateLinkServiceConnectionState: &armappservice.PrivateLinkConnectionState{
 				Description:     to.Ptr("Approved by admin."),
 				ActionsRequired: to.Ptr(""),
@@ -2756,6 +3158,8 @@ func ExampleWebAppsClient_BeginApproveOrRejectPrivateEndpointConnection() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.RemotePrivateEndpointConnectionARMResource = armappservice.RemotePrivateEndpointConnectionARMResource{
+	// 	Name: to.Ptr("connection"),
+	// 	Type: to.Ptr("Microsoft.Web/sites/privateEndpointConnections"),
 	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/sites/testSite/privateEndpointConnections/connection"),
 	// 	Properties: &armappservice.RemotePrivateEndpointConnectionARMResourceProperties{
 	// 		PrivateEndpoint: &armappservice.ArmIDWrapper{
@@ -2771,7 +3175,7 @@ func ExampleWebAppsClient_BeginApproveOrRejectPrivateEndpointConnection() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/DeleteSitePrivateEndpointConnection.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/DeleteSitePrivateEndpointConnection.json
 func ExampleWebAppsClient_BeginDeletePrivateEndpointConnection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2797,7 +3201,7 @@ func ExampleWebAppsClient_BeginDeletePrivateEndpointConnection() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/GetSitePrivateLinkResources.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/GetSitePrivateLinkResources.json
 func ExampleWebAppsClient_GetPrivateLinkResources() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2832,7 +3236,7 @@ func ExampleWebAppsClient_GetPrivateLinkResources() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/ListWebAppSlots.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/ListWebAppSlots.json
 func ExampleWebAppsClient_NewListSlotsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3068,7 +3472,7 @@ func ExampleWebAppsClient_NewListSlotsPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/GetWebAppSlot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/GetWebAppSlot.json
 func ExampleWebAppsClient_GetSlot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3192,7 +3596,7 @@ func ExampleWebAppsClient_GetSlot() {
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/CloneWebAppSlot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/CloneWebAppSlot.json
 func ExampleWebAppsClient_BeginCreateOrUpdateSlot_cloneWebAppSlot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3338,7 +3742,7 @@ func ExampleWebAppsClient_BeginCreateOrUpdateSlot_cloneWebAppSlot() {
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/CreateOrUpdateWebAppSlot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/CreateOrUpdateWebAppSlot.json
 func ExampleWebAppsClient_BeginCreateOrUpdateSlot_createOrUpdateWebAppSlot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3472,7 +3876,7 @@ func ExampleWebAppsClient_BeginCreateOrUpdateSlot_createOrUpdateWebAppSlot() {
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/DeleteWebAppSlot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/DeleteWebAppSlot.json
 func ExampleWebAppsClient_DeleteSlot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3491,7 +3895,7 @@ func ExampleWebAppsClient_DeleteSlot() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/UpdateWebAppSlot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/UpdateWebAppSlot.json
 func ExampleWebAppsClient_UpdateSlot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3619,7 +4023,7 @@ func ExampleWebAppsClient_UpdateSlot() {
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/AnalyzeCustomHostNameSlot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/AnalyzeCustomHostNameSlot.json
 func ExampleWebAppsClient_AnalyzeCustomHostnameSlot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3657,7 +4061,7 @@ func ExampleWebAppsClient_AnalyzeCustomHostnameSlot() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/ListPublishingCredentialsPoliciesSlot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/ListPublishingCredentialsPoliciesSlot.json
 func ExampleWebAppsClient_NewListBasicPublishingCredentialsPoliciesSlotPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3701,7 +4105,7 @@ func ExampleWebAppsClient_NewListBasicPublishingCredentialsPoliciesSlotPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/GetPublishingCredentialsPolicySlot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/GetPublishingCredentialsPolicySlot.json
 func ExampleWebAppsClient_GetFtpAllowedSlot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3727,7 +4131,7 @@ func ExampleWebAppsClient_GetFtpAllowedSlot() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/UpdatePublishingCredentialsPolicySlot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/UpdatePublishingCredentialsPolicySlot.json
 func ExampleWebAppsClient_UpdateFtpAllowedSlot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3757,7 +4161,7 @@ func ExampleWebAppsClient_UpdateFtpAllowedSlot() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/GetKeyVaultReferencesForAppSettingsSlot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/GetKeyVaultReferencesForAppSettingsSlot.json
 func ExampleWebAppsClient_NewGetAppSettingsKeyVaultReferencesSlotPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3801,7 +4205,7 @@ func ExampleWebAppsClient_NewGetAppSettingsKeyVaultReferencesSlotPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/GetKeyVaultReferencesForAppSettingSlot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/GetKeyVaultReferencesForAppSettingSlot.json
 func ExampleWebAppsClient_GetAppSettingKeyVaultReferenceSlot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3829,7 +4233,7 @@ func ExampleWebAppsClient_GetAppSettingKeyVaultReferenceSlot() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/ListSiteDeploymentStatusSlot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/ListSiteDeploymentStatusSlot.json
 func ExampleWebAppsClient_NewListSlotSiteDeploymentStatusesSlotPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3858,7 +4262,7 @@ func ExampleWebAppsClient_NewListSlotSiteDeploymentStatusesSlotPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/GetSiteDeploymentStatusSlot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/GetSiteDeploymentStatusSlot.json
 func ExampleWebAppsClient_BeginGetSlotSiteDeploymentStatusSlot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3896,7 +4300,7 @@ func ExampleWebAppsClient_BeginGetSlotSiteDeploymentStatusSlot() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/GetSitePrivateEndpointConnectionSlot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/GetSitePrivateEndpointConnectionSlot.json
 func ExampleWebAppsClient_GetPrivateEndpointConnectionSlot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3930,7 +4334,7 @@ func ExampleWebAppsClient_GetPrivateEndpointConnectionSlot() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/ApproveRejectSitePrivateEndpointConnectionSlot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/ApproveRejectSitePrivateEndpointConnectionSlot.json
 func ExampleWebAppsClient_BeginApproveOrRejectPrivateEndpointConnectionSlot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3941,8 +4345,8 @@ func ExampleWebAppsClient_BeginApproveOrRejectPrivateEndpointConnectionSlot() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewWebAppsClient().BeginApproveOrRejectPrivateEndpointConnectionSlot(ctx, "rg", "testSite", "connection", "stage", armappservice.PrivateLinkConnectionApprovalRequestResource{
-		Properties: &armappservice.PrivateLinkConnectionApprovalRequest{
+	poller, err := clientFactory.NewWebAppsClient().BeginApproveOrRejectPrivateEndpointConnectionSlot(ctx, "rg", "testSite", "connection", "stage", armappservice.RemotePrivateEndpointConnectionARMResource{
+		Properties: &armappservice.RemotePrivateEndpointConnectionARMResourceProperties{
 			PrivateLinkServiceConnectionState: &armappservice.PrivateLinkConnectionState{
 				Description:     to.Ptr("Approved by admin."),
 				ActionsRequired: to.Ptr(""),
@@ -3961,6 +4365,8 @@ func ExampleWebAppsClient_BeginApproveOrRejectPrivateEndpointConnectionSlot() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.RemotePrivateEndpointConnectionARMResource = armappservice.RemotePrivateEndpointConnectionARMResource{
+	// 	Name: to.Ptr("connection"),
+	// 	Type: to.Ptr("Microsoft.Web/sites/privateEndpointConnections"),
 	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/sites/testSite/slots/stage/privateEndpointConnections/connection"),
 	// 	Properties: &armappservice.RemotePrivateEndpointConnectionARMResourceProperties{
 	// 		PrivateEndpoint: &armappservice.ArmIDWrapper{
@@ -3976,7 +4382,7 @@ func ExampleWebAppsClient_BeginApproveOrRejectPrivateEndpointConnectionSlot() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/DeleteSitePrivateEndpointConnectionSlot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/DeleteSitePrivateEndpointConnectionSlot.json
 func ExampleWebAppsClient_BeginDeletePrivateEndpointConnectionSlot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -4002,7 +4408,7 @@ func ExampleWebAppsClient_BeginDeletePrivateEndpointConnectionSlot() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/GetSitePrivateLinkResourcesSlot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/GetSitePrivateLinkResourcesSlot.json
 func ExampleWebAppsClient_GetPrivateLinkResourcesSlot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -4037,7 +4443,7 @@ func ExampleWebAppsClient_GetPrivateLinkResourcesSlot() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/DeleteDeployWorkflowArtifacts.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/DeleteDeployWorkflowArtifacts.json
 func ExampleWebAppsClient_DeployWorkflowArtifacts_deleteWorkflowArtifacts() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -4059,7 +4465,7 @@ func ExampleWebAppsClient_DeployWorkflowArtifacts_deleteWorkflowArtifacts() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/PostDeployWorkflowArtifacts.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/PostDeployWorkflowArtifacts.json
 func ExampleWebAppsClient_DeployWorkflowArtifacts_deploysWorkflowArtifacts() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -4122,7 +4528,7 @@ func ExampleWebAppsClient_DeployWorkflowArtifacts_deploysWorkflowArtifacts() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/PostDeployWorkflowArtifactsSlot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/PostDeployWorkflowArtifactsSlot.json
 func ExampleWebAppsClient_DeployWorkflowArtifactsSlot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -4185,7 +4591,7 @@ func ExampleWebAppsClient_DeployWorkflowArtifactsSlot() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/ListWorkflows.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/ListWorkflows.json
 func ExampleWebAppsClient_NewListInstanceWorkflowsSlotPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -4243,7 +4649,7 @@ func ExampleWebAppsClient_NewListInstanceWorkflowsSlotPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/GetWorkflow.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/GetWorkflow.json
 func ExampleWebAppsClient_GetInstanceWorkflowSlot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -4310,7 +4716,7 @@ func ExampleWebAppsClient_GetInstanceWorkflowSlot() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/ListWorkflowsConfigurationConnections.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/ListWorkflowsConfigurationConnections.json
 func ExampleWebAppsClient_ListWorkflowsConnectionsSlot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

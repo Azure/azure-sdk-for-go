@@ -40,7 +40,7 @@ func NewCertificateRegistrationProviderClient(credential azcore.TokenCredential,
 // NewListOperationsPager - Description for Implements Csm operations Api to exposes the list of available Csm Apis under
 // the resource provider
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2023-12-01
 //   - options - CertificateRegistrationProviderClientListOperationsOptions contains the optional parameters for the CertificateRegistrationProviderClient.NewListOperationsPager
 //     method.
 func (client *CertificateRegistrationProviderClient) NewListOperationsPager(options *CertificateRegistrationProviderClientListOperationsOptions) *runtime.Pager[CertificateRegistrationProviderClientListOperationsResponse] {
@@ -74,7 +74,7 @@ func (client *CertificateRegistrationProviderClient) listOperationsCreateRequest
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

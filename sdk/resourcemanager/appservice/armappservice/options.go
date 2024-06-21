@@ -2172,6 +2172,18 @@ type WebAppsClientCreateOrUpdateRelayServiceConnectionSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
+// WebAppsClientCreateOrUpdateSiteContainerOptions contains the optional parameters for the WebAppsClient.CreateOrUpdateSiteContainer
+// method.
+type WebAppsClientCreateOrUpdateSiteContainerOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientCreateOrUpdateSiteContainerSlotOptions contains the optional parameters for the WebAppsClient.CreateOrUpdateSiteContainerSlot
+// method.
+type WebAppsClientCreateOrUpdateSiteContainerSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
 // WebAppsClientCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckOptions contains the optional parameters for the WebAppsClient.CreateOrUpdateSwiftVirtualNetworkConnectionWithCheck
 // method.
 type WebAppsClientCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckOptions struct {
@@ -2383,6 +2395,17 @@ type WebAppsClientDeleteRelayServiceConnectionOptions struct {
 // WebAppsClientDeleteRelayServiceConnectionSlotOptions contains the optional parameters for the WebAppsClient.DeleteRelayServiceConnectionSlot
 // method.
 type WebAppsClientDeleteRelayServiceConnectionSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientDeleteSiteContainerOptions contains the optional parameters for the WebAppsClient.DeleteSiteContainer method.
+type WebAppsClientDeleteSiteContainerOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientDeleteSiteContainerSlotOptions contains the optional parameters for the WebAppsClient.DeleteSiteContainerSlot
+// method.
+type WebAppsClientDeleteSiteContainerSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -3006,6 +3029,16 @@ type WebAppsClientGetSiteConnectionStringKeyVaultReferencesSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
+// WebAppsClientGetSiteContainerOptions contains the optional parameters for the WebAppsClient.GetSiteContainer method.
+type WebAppsClientGetSiteContainerOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetSiteContainerSlotOptions contains the optional parameters for the WebAppsClient.GetSiteContainerSlot method.
+type WebAppsClientGetSiteContainerSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
 // WebAppsClientGetSiteExtensionOptions contains the optional parameters for the WebAppsClient.GetSiteExtension method.
 type WebAppsClientGetSiteExtensionOptions struct {
 	// placeholder for future optional parameters
@@ -3546,6 +3579,18 @@ type WebAppsClientListSiteBackupsOptions struct {
 // WebAppsClientListSiteBackupsSlotOptions contains the optional parameters for the WebAppsClient.NewListSiteBackupsSlotPager
 // method.
 type WebAppsClientListSiteBackupsSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientListSiteContainersOptions contains the optional parameters for the WebAppsClient.NewListSiteContainersPager
+// method.
+type WebAppsClientListSiteContainersOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientListSiteContainersSlotOptions contains the optional parameters for the WebAppsClient.NewListSiteContainersSlotPager
+// method.
+type WebAppsClientListSiteContainersSlotOptions struct {
 	// placeholder for future optional parameters
 }
 

@@ -24,7 +24,7 @@ type StreamEvent struct {
 // StreamEventData is the common data for all stream events.
 type StreamEventData struct{}
 
-// StreamEventClassification provides polymorphic access to related types.
+// StreamEventDataClassification provides polymorphic access to related types.
 // Call the interface's GetStreamEventDataContent() method to access the common type.
 // Use a type switch to determine the concrete type. The possible types are:
 // - [*AssistantThread]

@@ -1,5 +1,15 @@
 # Release History
 
+## 2.3.0 (2024-06-21)
+### Features Added
+
+- New enum type `AutoRunState` with values `AutoRunStateAutoRunDisabled`, `AutoRunStateAutoRunEnabled`
+- New struct `ImageTemplateAutoRun`
+- New field `AutoRun`, `ManagedResourceTags` in struct `ImageTemplateProperties`
+- New field `VMProfile` in struct `ImageTemplateUpdateParametersProperties`
+- New field `ContainerInstanceSubnetID` in struct `VirtualNetworkConfig`
+
+
 ## 2.2.0 (2023-12-22)
 ### Features Added
 

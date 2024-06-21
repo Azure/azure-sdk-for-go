@@ -107,7 +107,7 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 	existTypeSpecProject := false
 	if len(input.RelatedTypeSpecProjectFolder) > 0 {
 		for _, tspProjectFolder := range input.RelatedTypeSpecProjectFolder {
-			tspconfigPath := filepath.Join(tspProjectFolder, "tspconfig.yaml")
+			tspconfigPath := filepath.Join(input.SpecFolder, tspProjectFolder, "tspconfig.yaml")
 			tsc, err := typespec.ParseTypeSpecConfig(tspconfigPath)
 			if err != nil {
 				return nil, fmt.Errorf("failed to parse tspconfig.yaml: %+v", err)
@@ -121,6 +121,7 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 					SDKRepo:        &sdkRepo,
 					SpecPath:       ctx.specRoot,
 					SpecCommitHash: ctx.commitHash,
+					SpecRepoURL:    input.RepoHTTPSURL,
 					TypeSpecConfig: tsc,
 				}
 

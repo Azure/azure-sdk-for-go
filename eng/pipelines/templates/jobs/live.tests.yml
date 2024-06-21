@@ -89,7 +89,9 @@ jobs:
           UseFederatedAuth: ${{ parameters.UseFederatedAuth }}
           ServiceConnection: ${{ parameters.CloudConfig.ServiceConnection }}
           SubscriptionConfigurationFilePaths: ${{ parameters.CloudConfig.SubscriptionConfigurationFilePaths}}
-          EnvVars: ${{ parameters.EnvVars }}
+          EnvVars:
+            Pool: $(Pool)
+            ${{ insert }}: ${{ parameters.EnvVars }}
 
       - task: GoTool@0
         inputs:

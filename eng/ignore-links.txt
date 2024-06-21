@@ -3,3 +3,4 @@ https://github.com/Azure/azure-sdk-tools/blob/main/eng/common/testproxy/transiti
 https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory/v8
 https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/avs/armavs/v2
 https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v3
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v3

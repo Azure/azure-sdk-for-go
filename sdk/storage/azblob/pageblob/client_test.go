@@ -205,14 +205,14 @@ func (s *PageBlobRecordedTestsSuite) TestPutGetPages() {
 	putResp, err := pbClient.UploadPages(context.Background(), reader, blob.HTTPRange{Count: count}, nil)
 	_require.NoError(err)
 	_require.NotNil(putResp.LastModified)
-	_require.Equal((*putResp.LastModified).IsZero(), false)
+	_require.Equal(putResp.LastModified.IsZero(), false)
 	_require.NotNil(putResp.ETag)
 	_require.Nil(putResp.ContentMD5)
 	_require.Equal(*putResp.BlobSequenceNumber, int64(0))
 	_require.NotNil(*putResp.RequestID)
 	_require.NotNil(*putResp.Version)
 	_require.NotNil(putResp.Date)
-	_require.Equal((*putResp.Date).IsZero(), false)
+	_require.Equal(putResp.Date.IsZero(), false)
 
 	pager := pbClient.NewGetPageRangesPager(&pageblob.GetPageRangesOptions{
 		Range: blob.HTTPRange{
@@ -224,13 +224,13 @@ func (s *PageBlobRecordedTestsSuite) TestPutGetPages() {
 		pageListResp, err := pager.NextPage(context.Background())
 		_require.NoError(err)
 		_require.NotNil(pageListResp.LastModified)
-		_require.Equal((*pageListResp.LastModified).IsZero(), false)
+		_require.Equal(pageListResp.LastModified.IsZero(), false)
 		_require.NotNil(pageListResp.ETag)
 		_require.Equal(*pageListResp.BlobContentLength, int64(512*10))
 		_require.NotNil(*pageListResp.RequestID)
 		_require.NotNil(*pageListResp.Version)
 		_require.NotNil(pageListResp.Date)
-		_require.Equal((*pageListResp.Date).IsZero(), false)
+		_require.Equal(pageListResp.Date.IsZero(), false)
 		_require.NotNil(pageListResp.PageList)
 		pageRangeResp := pageListResp.PageList.PageRange
 		_require.Len(pageRangeResp, 1)
@@ -398,7 +398,7 @@ func (s *PageBlobUnrecordedTestsSuite) TestUploadPagesFromURLWithMD5() {
 
 	// Upload page from URL with bad MD5
 	_, badMD5 := testcommon.GetDataAndReader(testName+"bad-md5", contentSize)
-	badContentMD5 := badMD5[:]
+	badContentMD5 := badMD5
 	uploadPagesFromURLOptions = pageblob.UploadPagesFromURLOptions{
 		SourceContentValidation: blob.SourceContentValidationTypeMD5(badContentMD5),
 	}
@@ -633,12 +633,12 @@ func (s *PageBlobUnrecordedTestsSuite) TestIncrementalCopy() {
 	resp, err := dstBlob.StartCopyIncremental(context.Background(), srcBlob.URL(), *snapshotResp.Snapshot, nil)
 	_require.NoError(err)
 	_require.NotNil(resp.LastModified)
-	_require.Equal((*resp.LastModified).IsZero(), false)
+	_require.Equal(resp.LastModified.IsZero(), false)
 	_require.NotNil(resp.ETag)
 	_require.NotEqual(*resp.RequestID, "")
 	_require.NotEqual(*resp.Version, "")
 	_require.NotNil(resp.Date)
-	_require.Equal((*resp.Date).IsZero(), false)
+	_require.Equal(resp.Date.IsZero(), false)
 	_require.NotEqual(*resp.CopyID, "")
 	_require.Equal(*resp.CopyStatus, blob.CopyStatusTypePending)
 

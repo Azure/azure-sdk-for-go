@@ -463,9 +463,9 @@ func (f *FileUnrecordedTestsSuite) TestFileGetSetPropertiesNonDefault() {
 	_require.True(fileAttributes2.Hidden)
 	_require.EqualValues(fileAttributes, fileAttributes2)
 
-	_require.EqualValues((*getResp.FileCreationTime).Format(testcommon.ISO8601), creationTime.UTC().Format(testcommon.ISO8601))
-	_require.EqualValues((*getResp.FileLastWriteTime).Format(testcommon.ISO8601), lastWriteTime.UTC().Format(testcommon.ISO8601))
-	_require.EqualValues((*getResp.FileChangeTime).Format(testcommon.ISO8601), changeTime.UTC().Format(testcommon.ISO8601))
+	_require.EqualValues(getResp.FileCreationTime.Format(testcommon.ISO8601), creationTime.UTC().Format(testcommon.ISO8601))
+	_require.EqualValues(getResp.FileCreationTime.Format(testcommon.ISO8601), lastWriteTime.UTC().Format(testcommon.ISO8601))
+	_require.EqualValues(getResp.FileCreationTime.Format(testcommon.ISO8601), changeTime.UTC().Format(testcommon.ISO8601))
 
 	_require.NotNil(getResp.ETag)
 	_require.NotNil(getResp.RequestID)
@@ -2467,7 +2467,7 @@ func (f *FileRecordedTestsSuite) TestUploadDownloadDefaultNonDefaultMD5() {
 
 	downloadedData, err = io.ReadAll(resp.Body)
 	_require.NoError(err)
-	_require.EqualValues(downloadedData, contentD[:])
+	_require.EqualValues(downloadedData, contentD)
 
 	_require.Equal(*resp.AcceptRanges, "bytes")
 	_require.Nil(resp.CacheControl)
@@ -2687,7 +2687,7 @@ func (f *FileRecordedTestsSuite) TestFileUploadRangeTransactionalMD5() {
 
 	downloadedData, err := io.ReadAll(resp.Body)
 	_require.NoError(err)
-	_require.EqualValues(downloadedData, contentD[:])
+	_require.EqualValues(downloadedData, contentD)
 }
 
 func (f *FileRecordedTestsSuite) TestFileUploadRangeIncorrectTransactionalMD5() {
@@ -2707,7 +2707,7 @@ func (f *FileRecordedTestsSuite) TestFileUploadRangeIncorrectTransactionalMD5() 
 
 	// Upload range with incorrect transactional MD5
 	_, err = fClient.UploadRange(context.Background(), 0, contentR, &file.UploadRangeOptions{
-		TransactionalValidation: file.TransferValidationTypeMD5(incorrectMD5[:]),
+		TransactionalValidation: file.TransferValidationTypeMD5(incorrectMD5),
 	})
 	_require.Error(err)
 	testcommon.ValidateFileErrorCode(_require, err, fileerror.MD5Mismatch)
@@ -3091,6 +3091,65 @@ func (f *FileRecordedTestsSuite) TestFileGetRangeListSnapshot() {
 	_require.EqualValues(*resp2.Ranges[0], file.ShareFileRange{Start: to.Ptr(int64(0)), End: to.Ptr(fileSize - 1)})
 }
 
+func (f *FileRecordedTestsSuite) TestFileGetRangeListSupportRename() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(testName), svcClient)
+	defer func() {
+		_, err := shareClient.Delete(context.Background(), &share.DeleteOptions{DeleteSnapshots: to.Ptr(share.DeleteSnapshotsOptionTypeInclude)})
+		_require.NoError(err)
+	}()
+
+	fileSize := int64(512)
+	fClient := setupGetRangeListTest(_require, testName, fileSize, shareClient)
+
+	snapshotResponse1, err := shareClient.CreateSnapshot(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(snapshotResponse1.Snapshot)
+
+	rsc, _ := testcommon.GenerateData(int(fileSize))
+	_, err = fClient.UploadRange(context.Background(), 0, rsc, nil)
+	_require.NoError(err)
+
+	renameResponse, err := fClient.Rename(context.Background(), "file2", nil)
+	_require.NoError(err)
+
+	newFileClient := testcommon.GetFileClientFromShare("file2", shareClient)
+	_require.NoError(err)
+
+	snapshotResponse2, err := shareClient.CreateSnapshot(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(snapshotResponse2.Snapshot)
+
+	_, err = newFileClient.GetRangeList(context.Background(), &file.GetRangeListOptions{
+		PrevShareSnapshot: snapshotResponse1.Snapshot,
+		ShareSnapshot:     snapshotResponse2.Snapshot,
+		SupportRename:     to.Ptr(false),
+	})
+	_require.Error(err, "PreviousSnapshotNotFound")
+
+	_, err = newFileClient.GetRangeList(context.Background(), &file.GetRangeListOptions{
+		PrevShareSnapshot: snapshotResponse1.Snapshot,
+		ShareSnapshot:     snapshotResponse2.Snapshot,
+		SupportRename:     nil,
+	})
+	_require.Error(err, "PreviousSnapshotNotFound")
+
+	resp, err := newFileClient.GetRangeList(context.Background(), &file.GetRangeListOptions{
+		PrevShareSnapshot: snapshotResponse1.Snapshot,
+		ShareSnapshot:     snapshotResponse2.Snapshot,
+		SupportRename:     to.Ptr(true),
+	})
+	_require.NoError(err)
+	_require.Len(resp.Ranges, 1)
+	_require.EqualValues(*resp.Ranges[0], file.ShareFileRange{Start: to.Ptr(int64(0)), End: to.Ptr(fileSize - 1)})
+	_require.Equal(resp.ETag, renameResponse.ETag)
+}
+
 func (f *FileRecordedTestsSuite) TestFileUploadDownloadSmallBuffer() {
 	_require := require.New(f.T())
 	testName := f.T().Name()
@@ -3360,6 +3419,25 @@ func (f *FileRecordedTestsSuite) TestFileListHandlesDefault() {
 	_require.Len(resp.Handles, 0)
 	_require.NotNil(resp.NextMarker)
 	_require.Equal(*resp.NextMarker, "")
+}
+
+func (f *FileRecordedTestsSuite) TestFileListHandlesClientNameFieldCheck() {
+	if recording.GetRecordMode() == recording.LiveMode {
+		f.T().Skip("This test cannot be made live")
+	}
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareClient := testcommon.GetShareClient(testcommon.GenerateShareName(testName), svcClient)
+
+	fClient := testcommon.GetFileClientFromShare(testcommon.GenerateFileName(testName), shareClient)
+	resp, err := fClient.ListHandles(context.Background(), nil)
+	_require.NoError(err)
+	_require.Len(resp.Handles, 1)
+	_require.NotNil(*resp.Handles[0].ClientName)
 }
 
 func (f *FileRecordedTestsSuite) TestFileForceCloseHandlesDefault() {

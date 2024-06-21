@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v5"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/InboundSecurityRulePut.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/InboundSecurityRulePut.json
 func ExampleInboundSecurityRuleClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -31,11 +31,17 @@ func ExampleInboundSecurityRuleClient_BeginCreateOrUpdate() {
 	}
 	poller, err := clientFactory.NewInboundSecurityRuleClient().BeginCreateOrUpdate(ctx, "rg1", "nva", "rule1", armnetwork.InboundSecurityRule{
 		Properties: &armnetwork.InboundSecurityRuleProperties{
+			RuleType: to.Ptr(armnetwork.InboundSecurityRuleTypePermanent),
 			Rules: []*armnetwork.InboundSecurityRules{
 				{
+					Name: to.Ptr("inboundRule1"),
+					AppliesOn: []*string{
+						to.Ptr("slbip1")},
 					DestinationPortRange: to.Ptr[int32](22),
-					SourceAddressPrefix:  to.Ptr("50.20.121.5/32"),
-					Protocol:             to.Ptr(armnetwork.InboundSecurityRulesProtocolTCP),
+					DestinationPortRanges: []*string{
+						to.Ptr("80-100")},
+					SourceAddressPrefix: to.Ptr("50.20.121.5/32"),
+					Protocol:            to.Ptr(armnetwork.InboundSecurityRulesProtocolTCP),
 				}},
 		},
 	}, nil)
@@ -55,12 +61,18 @@ func ExampleInboundSecurityRuleClient_BeginCreateOrUpdate() {
 	// 	Etag: to.Ptr("W/\"72090554-7e3b-43f2-80ad-99a9020dcb11\""),
 	// 	Properties: &armnetwork.InboundSecurityRuleProperties{
 	// 		ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+	// 		RuleType: to.Ptr(armnetwork.InboundSecurityRuleTypePermanent),
 	// 		Rules: []*armnetwork.InboundSecurityRules{
 	// 			{
-	// 				DestinationPortRange: to.Ptr[int32](22),
-	// 				SourceAddressPrefix: to.Ptr("50.20.121.5/32"),
-	// 				Protocol: to.Ptr(armnetwork.InboundSecurityRulesProtocolTCP),
-	// 		}},
-	// 	},
-	// }
+	// 				Name: to.Ptr("inboundRule1"),
+	// 				AppliesOn: []*string{
+	// 					to.Ptr("slbip1")},
+	// 					DestinationPortRange: to.Ptr[int32](22),
+	// 					DestinationPortRanges: []*string{
+	// 						to.Ptr("80-100")},
+	// 						SourceAddressPrefix: to.Ptr("50.20.121.5/32"),
+	// 						Protocol: to.Ptr(armnetwork.InboundSecurityRulesProtocolTCP),
+	// 				}},
+	// 			},
+	// 		}
 }

@@ -35,18 +35,14 @@ func Example_assistantsUsingCodeInterpreter() {
 
 	if err != nil {
 		//  TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
+		log.Printf("ERROR: %s", err)
+		return
 	}
 
 	assistantName := fmt.Sprintf("your-assistant-name-%d", time.Now().UnixNano())
 
-	if err != nil {
-		//  TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
-	}
-
 	// First, let's create an assistant.
-	createAssistantResp, err := client.CreateAssistant(context.Background(), azopenaiassistants.AssistantCreationBody{
+	createAssistantResp, err := client.CreateAssistant(context.Background(), azopenaiassistants.CreateAssistantBody{
 		Name:           &assistantName,
 		DeploymentName: to.Ptr("gpt-4-1106-preview"),
 		Instructions:   to.Ptr("You are an AI assistant that can write code to help answer math questions."),
@@ -77,11 +73,12 @@ func Example_assistantsUsingCodeInterpreter() {
 
 	// Now we'll create a thread. The thread is where you will add messages, which can later
 	// be evaluated using a Run. A thread can be re-used by multiple Runs.
-	createThreadResp, err := client.CreateThread(context.TODO(), azopenaiassistants.AssistantThreadCreationOptions{}, nil)
+	createThreadResp, err := client.CreateThread(context.TODO(), azopenaiassistants.CreateThreadBody{}, nil)
 
 	if err != nil {
 		//  TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
+		log.Printf("ERROR: %s", err)
+		return
 	}
 
 	threadID := *createThreadResp.ID
@@ -93,8 +90,9 @@ func Example_assistantsUsingCodeInterpreter() {
 	}, nil)
 
 	if err != nil {
-		// TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
+		//  TODO: Update the following line with your application specific error handling logic
+		log.Printf("ERROR: %s", err)
+		return
 	}
 
 	fmt.Fprintf(os.Stderr, "[USER] I need to solve the equation `3x + 11 = 14`. Can you help me?\n")
@@ -105,14 +103,16 @@ func Example_assistantsUsingCodeInterpreter() {
 	}, nil)
 
 	if err != nil {
-		// TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
+		//  TODO: Update the following line with your application specific error handling logic
+		log.Printf("ERROR: %s", err)
+		return
 	}
 
 	// Wait till the assistant has responded
-	if err := pollCodeInterpreterEnd(context.TODO(), client, threadID, *threadRun.ID); err != nil {
-		// TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
+	if _, err := pollCodeInterpreterEnd(context.TODO(), client, threadID, *threadRun.ID); err != nil {
+		//  TODO: Update the following line with your application specific error handling logic
+		log.Printf("ERROR: %s", err)
+		return
 	}
 
 	// retrieve any messages added after we asked our question.
@@ -125,43 +125,61 @@ func Example_assistantsUsingCodeInterpreter() {
 		page, err := listMessagesPager.NextPage(context.Background())
 
 		if err != nil {
-			// TODO: Update the following line with your application specific error handling logic
-			log.Fatalf("ERROR: %s", err)
+			//  TODO: Update the following line with your application specific error handling logic
+			log.Printf("ERROR: %s", err)
+			return
 		}
-
 		for _, threadMessage := range page.Data {
 			for _, content := range threadMessage.Content {
-				switch v := content.(type) {
-				case *azopenaiassistants.MessageTextContent:
+				if v, ok := content.(*azopenaiassistants.MessageTextContent); ok {
 					fmt.Fprintf(os.Stderr, "[ASSISTANT] %s: Text response: %s\n", *threadMessage.ID, *v.Text.Value)
 				}
 			}
 		}
 	}
 
-	// Output:
+	// DisabledOutput:
 }
 
-func pollCodeInterpreterEnd(ctx context.Context, client *azopenaiassistants.Client, threadID string, runID string) error {
+func pollCodeInterpreterEnd(ctx context.Context, client *azopenaiassistants.Client, threadID string, runID string) (azopenaiassistants.GetRunResponse, error) {
 	for {
 		lastGetRunResp, err := client.GetRun(context.Background(), threadID, runID, nil)
 
 		if err != nil {
-			return err
+			return azopenaiassistants.GetRunResponse{}, err
 		}
 
-		if *lastGetRunResp.Status != azopenaiassistants.RunStatusQueued && *lastGetRunResp.Status != azopenaiassistants.RunStatusInProgress {
-			if *lastGetRunResp.Status == azopenaiassistants.RunStatusCompleted {
-				return nil
+		switch *lastGetRunResp.Status {
+		case azopenaiassistants.RunStatusInProgress, azopenaiassistants.RunStatusQueued:
+			// we're either running or about to run so we'll just keep polling for the end.
+			select {
+			case <-time.After(500 * time.Millisecond):
+			case <-ctx.Done():
+				return azopenaiassistants.GetRunResponse{}, ctx.Err()
+			}
+		case azopenaiassistants.RunStatusRequiresAction:
+			// The assistant run has stopped because a tool requires you to submit inputs.
+			// You can see an example of this in Example_assistantsUsingFunctionTool.
+			return lastGetRunResp, nil
+		case azopenaiassistants.RunStatusCompleted:
+			// The run has completed successfully
+			return lastGetRunResp, nil
+		case azopenaiassistants.RunStatusFailed:
+			// The run has failed. We can use the code and message to give us an idea of why.
+			var code, description string
+
+			if lastGetRunResp.LastError != nil && lastGetRunResp.LastError.Code != nil {
+				code = *lastGetRunResp.LastError.Code
 			}
 
-			return fmt.Errorf("run ended but status was not complete: %s", *lastGetRunResp.Status)
-		}
+			if lastGetRunResp.LastError != nil && lastGetRunResp.LastError.Message != nil {
+				description = *lastGetRunResp.LastError.Message
+			}
 
-		select {
-		case <-time.After(500 * time.Millisecond):
-		case <-ctx.Done():
-			return ctx.Err()
+			return lastGetRunResp, fmt.Errorf("run failed, code: %s, message: %s", code, description)
+
+		default:
+			return azopenaiassistants.GetRunResponse{}, fmt.Errorf("run ended but status was not complete: %s", *lastGetRunResp.Status)
 		}
 	}
 }

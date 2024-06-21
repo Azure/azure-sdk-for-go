@@ -11,5 +11,5 @@ const (
 	Module = "internal"
 
 	// Version is the semantic version (see http://semver.org) of this module.
-	Version = "v3.0.0"
+	Version = "v3.1.0"
 )

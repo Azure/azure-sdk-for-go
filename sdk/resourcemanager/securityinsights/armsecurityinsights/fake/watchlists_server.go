@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights/v2"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -127,6 +127,9 @@ func (w *WatchlistsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*
 	if err != nil {
 		return nil, err
 	}
+	if val := server.GetResponse(respr).AzureAsyncOperation; val != nil {
+		resp.Header.Set("Azure-AsyncOperation", *val)
+	}
 	return resp, nil
 }
 
@@ -163,6 +166,9 @@ func (w *WatchlistsServerTransport) dispatchDelete(req *http.Request) (*http.Res
 	resp, err := server.NewResponse(respContent, req, nil)
 	if err != nil {
 		return nil, err
+	}
+	if val := server.GetResponse(respr).AzureAsyncOperation; val != nil {
+		resp.Header.Set("Azure-AsyncOperation", *val)
 	}
 	return resp, nil
 }

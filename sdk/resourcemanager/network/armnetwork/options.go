@@ -1079,6 +1079,29 @@ type FirewallPoliciesClientUpdateTagsOptions struct {
 	// placeholder for future optional parameters
 }
 
+// FirewallPolicyDeploymentsClientBeginDeployOptions contains the optional parameters for the FirewallPolicyDeploymentsClient.BeginDeploy
+// method.
+type FirewallPolicyDeploymentsClientBeginDeployOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// FirewallPolicyDraftsClientCreateOrUpdateOptions contains the optional parameters for the FirewallPolicyDraftsClient.CreateOrUpdate
+// method.
+type FirewallPolicyDraftsClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// FirewallPolicyDraftsClientDeleteOptions contains the optional parameters for the FirewallPolicyDraftsClient.Delete method.
+type FirewallPolicyDraftsClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// FirewallPolicyDraftsClientGetOptions contains the optional parameters for the FirewallPolicyDraftsClient.Get method.
+type FirewallPolicyDraftsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
 // FirewallPolicyIdpsSignaturesClientListOptions contains the optional parameters for the FirewallPolicyIdpsSignaturesClient.List
 // method.
 type FirewallPolicyIdpsSignaturesClientListOptions struct {
@@ -1112,6 +1135,24 @@ type FirewallPolicyIdpsSignaturesOverridesClientPatchOptions struct {
 // FirewallPolicyIdpsSignaturesOverridesClientPutOptions contains the optional parameters for the FirewallPolicyIdpsSignaturesOverridesClient.Put
 // method.
 type FirewallPolicyIdpsSignaturesOverridesClientPutOptions struct {
+	// placeholder for future optional parameters
+}
+
+// FirewallPolicyRuleCollectionGroupDraftsClientCreateOrUpdateOptions contains the optional parameters for the FirewallPolicyRuleCollectionGroupDraftsClient.CreateOrUpdate
+// method.
+type FirewallPolicyRuleCollectionGroupDraftsClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// FirewallPolicyRuleCollectionGroupDraftsClientDeleteOptions contains the optional parameters for the FirewallPolicyRuleCollectionGroupDraftsClient.Delete
+// method.
+type FirewallPolicyRuleCollectionGroupDraftsClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// FirewallPolicyRuleCollectionGroupDraftsClientGetOptions contains the optional parameters for the FirewallPolicyRuleCollectionGroupDraftsClient.Get
+// method.
+type FirewallPolicyRuleCollectionGroupDraftsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -3125,6 +3166,16 @@ type VirtualAppliancesClientBeginCreateOrUpdateOptions struct {
 // VirtualAppliancesClientBeginDeleteOptions contains the optional parameters for the VirtualAppliancesClient.BeginDelete
 // method.
 type VirtualAppliancesClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// VirtualAppliancesClientBeginRestartOptions contains the optional parameters for the VirtualAppliancesClient.BeginRestart
+// method.
+type VirtualAppliancesClientBeginRestartOptions struct {
+	// Specifies a list of virtual machine instance IDs from the Network Virtual Appliance VM instances.
+	NetworkVirtualApplianceInstanceIDs *VirtualApplianceInstanceIDs
+
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }

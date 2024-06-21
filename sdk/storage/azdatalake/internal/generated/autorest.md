@@ -41,6 +41,19 @@ directive:
     }
 ```
 
+### Turn Path eTag into etag
+
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.Path
+  transform: >
+    $.properties.etag = $.properties.eTag;
+    delete $.properties.eTag;
+    $.properties.etag["x-ms-client-name"] = "eTag";
+
+```
+
 ### Remove pager methods and export various generated methods in filesystem client
 
 ``` yaml
@@ -301,7 +314,7 @@ directive:
         replace(/err = unpopulate\((.*), "IsDirectory", &p\.IsDirectory\)/g, 'var rawVal string\nerr = unpopulate(val, "IsDirectory", &rawVal)\nboolVal, _ := strconv.ParseBool(rawVal)\np.IsDirectory = &boolVal');
 ```
 
-### Updating service version to 2023-11-03
+### Updating service version to 2024-05-04
 ```yaml
 directive:
 - from: 
@@ -312,5 +325,5 @@ directive:
   transform: >-
     return $.
       replaceAll(`[]string{"2023-05-03"}`, `[]string{ServiceVersion}`).
-      replaceAll(`2023-05-03`, `2023-11-03`);
+      replaceAll(`2023-05-03`, `2024-05-04`);
 ```

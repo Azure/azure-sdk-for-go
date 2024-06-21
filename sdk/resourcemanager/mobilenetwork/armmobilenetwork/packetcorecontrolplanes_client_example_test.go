@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mobilenetwork/armmobilenetwork/v4"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-02-01/examples/PacketCoreControlPlaneDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d88c94b22a8efdd47c0cadfe6d8d489107db2b23/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/PacketCoreControlPlaneDelete.json
 func ExamplePacketCoreControlPlanesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -39,7 +39,7 @@ func ExamplePacketCoreControlPlanesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-02-01/examples/PacketCoreControlPlaneGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d88c94b22a8efdd47c0cadfe6d8d489107db2b23/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/PacketCoreControlPlaneGet.json
 func ExamplePacketCoreControlPlanesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -122,22 +122,26 @@ func ExamplePacketCoreControlPlanesClient_Get() {
 	// 		ProvisioningState: to.Ptr(armmobilenetwork.ProvisioningStateSucceeded),
 	// 		RollbackVersion: to.Ptr("0.1.0"),
 	// 		Signaling: &armmobilenetwork.SignalingConfiguration{
-	// 			NasReroute: &armmobilenetwork.NASRerouteConfiguration{
-	// 				MacroMmeGroupID: to.Ptr[int32](1024),
+	// 			NasEncryption: []*armmobilenetwork.NasEncryptionType{
+	// 				to.Ptr(armmobilenetwork.NasEncryptionTypeNEA2EEA2),
+	// 				to.Ptr(armmobilenetwork.NasEncryptionTypeNEA1EEA1),
+	// 				to.Ptr(armmobilenetwork.NasEncryptionTypeNEA0EEA0)},
+	// 				NasReroute: &armmobilenetwork.NASRerouteConfiguration{
+	// 					MacroMmeGroupID: to.Ptr[int32](1024),
+	// 				},
 	// 			},
+	// 			Sites: []*armmobilenetwork.SiteResourceID{
+	// 				{
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/sites/testSite"),
+	// 			}},
+	// 			SKU: to.Ptr(armmobilenetwork.BillingSKUG0),
+	// 			UeMtu: to.Ptr[int32](1600),
+	// 			Version: to.Ptr("0.2.0"),
 	// 		},
-	// 		Sites: []*armmobilenetwork.SiteResourceID{
-	// 			{
-	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/sites/testSite"),
-	// 		}},
-	// 		SKU: to.Ptr(armmobilenetwork.BillingSKUG0),
-	// 		UeMtu: to.Ptr[int32](1600),
-	// 		Version: to.Ptr("0.2.0"),
-	// 	},
-	// }
+	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-02-01/examples/PacketCoreControlPlaneCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d88c94b22a8efdd47c0cadfe6d8d489107db2b23/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/PacketCoreControlPlaneCreate.json
 func ExamplePacketCoreControlPlanesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -181,6 +185,10 @@ func ExamplePacketCoreControlPlanesClient_BeginCreateOrUpdate() {
 				},
 			},
 			Signaling: &armmobilenetwork.SignalingConfiguration{
+				NasEncryption: []*armmobilenetwork.NasEncryptionType{
+					to.Ptr(armmobilenetwork.NasEncryptionTypeNEA2EEA2),
+					to.Ptr(armmobilenetwork.NasEncryptionTypeNEA1EEA1),
+					to.Ptr(armmobilenetwork.NasEncryptionTypeNEA0EEA0)},
 				NasReroute: &armmobilenetwork.NASRerouteConfiguration{
 					MacroMmeGroupID: to.Ptr[int32](1024),
 				},
@@ -263,22 +271,26 @@ func ExamplePacketCoreControlPlanesClient_BeginCreateOrUpdate() {
 	// 		},
 	// 		ProvisioningState: to.Ptr(armmobilenetwork.ProvisioningStateSucceeded),
 	// 		Signaling: &armmobilenetwork.SignalingConfiguration{
-	// 			NasReroute: &armmobilenetwork.NASRerouteConfiguration{
-	// 				MacroMmeGroupID: to.Ptr[int32](1024),
+	// 			NasEncryption: []*armmobilenetwork.NasEncryptionType{
+	// 				to.Ptr(armmobilenetwork.NasEncryptionTypeNEA2EEA2),
+	// 				to.Ptr(armmobilenetwork.NasEncryptionTypeNEA1EEA1),
+	// 				to.Ptr(armmobilenetwork.NasEncryptionTypeNEA0EEA0)},
+	// 				NasReroute: &armmobilenetwork.NASRerouteConfiguration{
+	// 					MacroMmeGroupID: to.Ptr[int32](1024),
+	// 				},
 	// 			},
+	// 			Sites: []*armmobilenetwork.SiteResourceID{
+	// 				{
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/sites/testSite"),
+	// 			}},
+	// 			SKU: to.Ptr(armmobilenetwork.BillingSKUG0),
+	// 			UeMtu: to.Ptr[int32](1600),
+	// 			Version: to.Ptr("0.2.0"),
 	// 		},
-	// 		Sites: []*armmobilenetwork.SiteResourceID{
-	// 			{
-	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/sites/testSite"),
-	// 		}},
-	// 		SKU: to.Ptr(armmobilenetwork.BillingSKUG0),
-	// 		UeMtu: to.Ptr[int32](1600),
-	// 		Version: to.Ptr("0.2.0"),
-	// 	},
-	// }
+	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-02-01/examples/PacketCoreControlPlanePatch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d88c94b22a8efdd47c0cadfe6d8d489107db2b23/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/PacketCoreControlPlanePatch.json
 func ExamplePacketCoreControlPlanesClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -383,7 +395,7 @@ func ExamplePacketCoreControlPlanesClient_UpdateTags() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-02-01/examples/PacketCoreControlPlaneListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d88c94b22a8efdd47c0cadfe6d8d489107db2b23/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/PacketCoreControlPlaneListBySubscription.json
 func ExamplePacketCoreControlPlanesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -474,7 +486,7 @@ func ExamplePacketCoreControlPlanesClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-02-01/examples/PacketCoreControlPlaneListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d88c94b22a8efdd47c0cadfe6d8d489107db2b23/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/PacketCoreControlPlaneListByResourceGroup.json
 func ExamplePacketCoreControlPlanesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -570,7 +582,7 @@ func ExamplePacketCoreControlPlanesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-02-01/examples/PacketCoreControlPlaneRollback.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d88c94b22a8efdd47c0cadfe6d8d489107db2b23/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/PacketCoreControlPlaneRollback.json
 func ExamplePacketCoreControlPlanesClient_BeginRollback() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -601,7 +613,7 @@ func ExamplePacketCoreControlPlanesClient_BeginRollback() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-02-01/examples/PacketCoreControlPlaneReinstall.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d88c94b22a8efdd47c0cadfe6d8d489107db2b23/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/PacketCoreControlPlaneReinstall.json
 func ExamplePacketCoreControlPlanesClient_BeginReinstall() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -632,7 +644,7 @@ func ExamplePacketCoreControlPlanesClient_BeginReinstall() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-02-01/examples/PacketCoreControlPlaneCollectDiagnosticsPackage.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d88c94b22a8efdd47c0cadfe6d8d489107db2b23/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/PacketCoreControlPlaneCollectDiagnosticsPackage.json
 func ExamplePacketCoreControlPlanesClient_BeginCollectDiagnosticsPackage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

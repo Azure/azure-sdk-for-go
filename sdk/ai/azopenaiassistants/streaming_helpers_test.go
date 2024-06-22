@@ -52,44 +52,44 @@ func processStream(t *testing.T, azure bool, asstID string, scenario streamScena
 
 		require.NoError(t, err)
 
-		thread.EventCounts[event.Kind]++
+		thread.EventCounts[event.Reason]++
 
-		switch event.Kind {
+		switch event.Reason {
 		case azopenaiassistants.AssistantStreamEventThreadCreated:
 			v := requireType[*azopenaiassistants.AssistantThread](t, event)
-			t.Logf("(%s): %s", event.Kind, *v.ID)
+			t.Logf("(%s): %s", event.Reason, *v.ID)
 
 		case azopenaiassistants.AssistantStreamEventThreadRunCreated:
 			v := requireType[*azopenaiassistants.ThreadRun](t, event)
-			t.Logf("(%s): %s", event.Kind, *v.ID)
+			t.Logf("(%s): %s", event.Reason, *v.ID)
 			require.Equal(t, asstID, *v.AssistantID)
 
 		case azopenaiassistants.AssistantStreamEventThreadRunQueued:
 			v := requireType[*azopenaiassistants.ThreadRun](t, event)
-			t.Logf("(%s): %s", event.Kind, *v.ID)
+			t.Logf("(%s): %s", event.Reason, *v.ID)
 			require.Equal(t, asstID, *v.AssistantID)
 			require.Equal(t, azopenaiassistants.RunStatusQueued, *v.Status)
 
 		case azopenaiassistants.AssistantStreamEventThreadRunInProgress:
 			v := requireType[*azopenaiassistants.ThreadRun](t, event)
-			t.Logf("(%s): %s", event.Kind, *v.ID)
+			t.Logf("(%s): %s", event.Reason, *v.ID)
 			require.Equal(t, asstID, *v.AssistantID)
 			require.Equal(t, azopenaiassistants.RunStatusInProgress, *v.Status)
 
 		case azopenaiassistants.AssistantStreamEventThreadMessageCreated:
 			v := requireType[*azopenaiassistants.ThreadMessage](t, event)
-			t.Logf("(%s): %s", event.Kind, *v.ID)
+			t.Logf("(%s): %s", event.Reason, *v.ID)
 			require.Equal(t, azopenaiassistants.MessageRoleAssistant, *v.Role)
 
 		case azopenaiassistants.AssistantStreamEventThreadMessageCompleted:
 			v := requireType[*azopenaiassistants.ThreadMessage](t, event)
-			t.Logf("(%s): %s", event.Kind, *v.ID)
+			t.Logf("(%s): %s", event.Reason, *v.ID)
 			require.Equal(t, azopenaiassistants.MessageStatusCompleted, *v.Status)
 			require.Equal(t, azopenaiassistants.MessageRoleAssistant, *v.Role)
 
 		case azopenaiassistants.AssistantStreamEventThreadMessageInProgress:
 			v := requireType[*azopenaiassistants.ThreadMessage](t, event)
-			t.Logf("(%s): %s", event.Kind, *v.ID)
+			t.Logf("(%s): %s", event.Reason, *v.ID)
 			require.Equal(t, azopenaiassistants.MessageStatusInProgress, *v.Status)
 			require.Equal(t, azopenaiassistants.MessageRoleAssistant, *v.Role)
 
@@ -108,7 +108,7 @@ func processStream(t *testing.T, azure bool, asstID string, scenario streamScena
 
 		case azopenaiassistants.AssistantStreamEventThreadRunCompleted:
 			v := requireType[*azopenaiassistants.ThreadRun](t, event)
-			t.Logf("(%s): %s", event.Kind, *v.ID)
+			t.Logf("(%s): %s", event.Reason, *v.ID)
 
 			require.Equal(t, asstID, *v.AssistantID)
 
@@ -129,7 +129,7 @@ func processStream(t *testing.T, azure bool, asstID string, scenario streamScena
 
 		case azopenaiassistants.AssistantStreamEventThreadRunRequiresAction:
 			v := requireType[*azopenaiassistants.ThreadRun](t, event)
-			t.Logf("(%s) %s", event.Kind, *v.ID)
+			t.Logf("(%s) %s", event.Reason, *v.ID)
 			t.Logf("We need to run tool outputs, stream is going to end.")
 
 			// we'll need this in order to properly submit tool outputs.
@@ -139,9 +139,9 @@ func processStream(t *testing.T, azure bool, asstID string, scenario streamScena
 			v := requireType[*azopenaiassistants.RunStepDeltaChunk](t, event)
 			switch details := v.Delta.StepDetails.(type) {
 			case *azopenaiassistants.RunStepDeltaMessageCreation:
-				t.Logf("(%s): %s, message created: %s", event.Kind, *v.ID, *details.MessageCreation.MessageID)
+				t.Logf("(%s): %s, message created: %s", event.Reason, *v.ID, *details.MessageCreation.MessageID)
 			case *azopenaiassistants.RunStepDeltaToolCallObject:
-				t.Logf("(%s): %s", event.Kind, *v.ID)
+				t.Logf("(%s): %s", event.Reason, *v.ID)
 
 				for _, toolCallClassification := range details.ToolCalls {
 					switch tc := toolCallClassification.(type) {
@@ -167,7 +167,7 @@ func processStream(t *testing.T, azure bool, asstID string, scenario streamScena
 			azopenaiassistants.AssistantStreamEventThreadRunStepCreated,
 			azopenaiassistants.AssistantStreamEventThreadRunStepInProgress:
 			v := requireType[*azopenaiassistants.RunStep](t, event)
-			t.Logf("(%s): %s", event.Kind, *v.ID)
+			t.Logf("(%s): %s", event.Reason, *v.ID)
 		case azopenaiassistants.AssistantStreamEventError,
 			azopenaiassistants.AssistantStreamEventThreadRunStepExpired,
 			azopenaiassistants.AssistantStreamEventThreadRunStepFailed,
@@ -176,12 +176,12 @@ func processStream(t *testing.T, azure bool, asstID string, scenario streamScena
 			azopenaiassistants.AssistantStreamEventThreadMessageIncomplete,
 			azopenaiassistants.AssistantStreamEventThreadRunCancelling,
 			azopenaiassistants.AssistantStreamEventThreadRunExpired:
-			require.Failf(t, "Failure", "kind %s should not happen in this test", string(event.Kind))
+			require.Failf(t, "Failure", "kind %s should not happen in this test", string(event.Reason))
 		case azopenaiassistants.AssistantStreamEventDone:
 			// this is handled by the EventReader, causing it to return io.EOF
-			require.Failf(t, "Unhandled kind", "kind %s should not happen in this test", string(event.Kind))
+			require.Failf(t, "Unhandled kind", "kind %s should not happen in this test", string(event.Reason))
 		default:
-			require.Failf(t, "Unhandled kind", "kind %s should not happen in this test", string(event.Kind))
+			require.Failf(t, "Unhandled kind", "kind %s should not happen in this test", string(event.Reason))
 		}
 	}
 

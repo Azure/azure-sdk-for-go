@@ -110,28 +110,28 @@ func Example_assistantsStreaming() {
 
 		// NOTE: for this example we're handling a small subset of the events that are
 		// streaming in. See [AssistantStreamEvent] for the full list of available events.
-		switch event.Kind {
+		switch event.Reason {
 		// Assistant events
 		case azopenaiassistants.AssistantStreamEventThreadCreated:
-			log.Printf("(%s): %s", event.Kind, *event.Event.(*azopenaiassistants.AssistantThread).ID)
+			log.Printf("(%s): %s", event.Reason, *event.Event.(*azopenaiassistants.AssistantThread).ID)
 
 		// Thread events
 		case azopenaiassistants.AssistantStreamEventThreadRunCreated:
-			log.Printf("(%s): %s", event.Kind, *event.Event.(*azopenaiassistants.ThreadRun).ID)
+			log.Printf("(%s): %s", event.Reason, *event.Event.(*azopenaiassistants.ThreadRun).ID)
 		case azopenaiassistants.AssistantStreamEventThreadRunInProgress:
-			log.Printf("(%s): %s", event.Kind, *event.Event.(*azopenaiassistants.ThreadRun).ID)
+			log.Printf("(%s): %s", event.Reason, *event.Event.(*azopenaiassistants.ThreadRun).ID)
 		case azopenaiassistants.AssistantStreamEventThreadRunCompleted:
-			log.Printf("(%s): %s", event.Kind, *event.Event.(*azopenaiassistants.ThreadRun).ID)
+			log.Printf("(%s): %s", event.Reason, *event.Event.(*azopenaiassistants.ThreadRun).ID)
 		case azopenaiassistants.AssistantStreamEventThreadRunFailed: // failure
 			threadRun := event.Event.(*azopenaiassistants.ThreadRun)
-			log.Printf("(%s): %#v", event.Kind, *threadRun.LastError)
+			log.Printf("(%s): %#v", event.Reason, *threadRun.LastError)
 
 		// Message events
 		case azopenaiassistants.AssistantStreamEventThreadMessageCreated:
-			log.Printf("(%s): %s", event.Kind, *event.Event.(*azopenaiassistants.ThreadMessage).ID)
+			log.Printf("(%s): %s", event.Reason, *event.Event.(*azopenaiassistants.ThreadMessage).ID)
 		case azopenaiassistants.AssistantStreamEventThreadMessageDelta:
 			messageChunk := event.Event.(*azopenaiassistants.MessageDeltaChunk)
-			log.Printf("(%s): %s", event.Kind, *event.Event.(*azopenaiassistants.MessageDeltaChunk).ID)
+			log.Printf("(%s): %s", event.Reason, *event.Event.(*azopenaiassistants.MessageDeltaChunk).ID)
 
 			for _, c := range messageChunk.Delta.Content {
 				switch actualContent := c.(type) {
@@ -142,7 +142,7 @@ func Example_assistantsStreaming() {
 				}
 			}
 		case azopenaiassistants.AssistantStreamEventThreadMessageCompleted:
-			log.Printf("(%s): %s", event.Kind, *event.Event.(*azopenaiassistants.ThreadMessage).ID)
+			log.Printf("(%s): %s", event.Reason, *event.Event.(*azopenaiassistants.ThreadMessage).ID)
 		}
 	}
 }

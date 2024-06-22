@@ -14,8 +14,8 @@ import (
 
 // StreamEvent contains an event from an Assistants API stream.
 type StreamEvent struct {
-	// Kind identifies the event.
-	Kind AssistantStreamEvent
+	// Reason identifies the reason this event was sent.
+	Reason AssistantStreamEvent
 
 	// Event is the payload for the StreamEvent.
 	Event StreamEventDataClassification
@@ -54,8 +54,8 @@ func unmarshalStreamEvent(eventName string, data []byte) (StreamEvent, error) {
 		}
 
 		return StreamEvent{
-			Event: v,
-			Kind:  kind,
+			Event:  v,
+			Reason: kind,
 		}, nil
 	case AssistantStreamEventThreadMessageCompleted,
 		AssistantStreamEventThreadMessageCreated,
@@ -67,8 +67,8 @@ func unmarshalStreamEvent(eventName string, data []byte) (StreamEvent, error) {
 		}
 
 		return StreamEvent{
-			Event: v,
-			Kind:  kind,
+			Event:  v,
+			Reason: kind,
 		}, nil
 
 	case AssistantStreamEventThreadMessageDelta:
@@ -78,8 +78,8 @@ func unmarshalStreamEvent(eventName string, data []byte) (StreamEvent, error) {
 		}
 
 		return StreamEvent{
-			Event: v,
-			Kind:  kind,
+			Event:  v,
+			Reason: kind,
 		}, nil
 
 	case AssistantStreamEventThreadRunCancelled,
@@ -97,8 +97,8 @@ func unmarshalStreamEvent(eventName string, data []byte) (StreamEvent, error) {
 		}
 
 		return StreamEvent{
-			Event: v,
-			Kind:  kind,
+			Event:  v,
+			Reason: kind,
 		}, nil
 
 	case AssistantStreamEventThreadRunStepCancelled, AssistantStreamEventThreadRunStepCompleted, AssistantStreamEventThreadRunStepCreated, AssistantStreamEventThreadRunStepExpired, AssistantStreamEventThreadRunStepFailed, AssistantStreamEventThreadRunStepInProgress:
@@ -108,8 +108,8 @@ func unmarshalStreamEvent(eventName string, data []byte) (StreamEvent, error) {
 		}
 
 		return StreamEvent{
-			Event: v,
-			Kind:  kind,
+			Event:  v,
+			Reason: kind,
 		}, nil
 
 	case AssistantStreamEventThreadRunStepDelta:
@@ -119,8 +119,8 @@ func unmarshalStreamEvent(eventName string, data []byte) (StreamEvent, error) {
 		}
 
 		return StreamEvent{
-			Event: v,
-			Kind:  kind,
+			Event:  v,
+			Reason: kind,
 		}, nil
 
 	default:

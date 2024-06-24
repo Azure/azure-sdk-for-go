@@ -17,24 +17,14 @@ type BackupPolicyClassification interface {
 	GetBackupPolicy() *BackupPolicy
 }
 
-// BaseCosmosDataTransferDataSourceSinkClassification provides polymorphic access to related types.
-// Call the interface's GetBaseCosmosDataTransferDataSourceSink() method to access the common type.
+// ServiceResourceCreateUpdatePropertiesClassification provides polymorphic access to related types.
+// Call the interface's GetServiceResourceCreateUpdateProperties() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *BaseCosmosDataTransferDataSourceSink, *CassandraDataTransferDataSourceSink, *MongoDataTransferDataSourceSink, *SQLDataTransferDataSourceSink
-type BaseCosmosDataTransferDataSourceSinkClassification interface {
-	DataTransferDataSourceSinkClassification
-	// GetBaseCosmosDataTransferDataSourceSink returns the BaseCosmosDataTransferDataSourceSink content of the underlying type.
-	GetBaseCosmosDataTransferDataSourceSink() *BaseCosmosDataTransferDataSourceSink
-}
-
-// DataTransferDataSourceSinkClassification provides polymorphic access to related types.
-// Call the interface's GetDataTransferDataSourceSink() method to access the common type.
-// Use a type switch to determine the concrete type.  The possible types are:
-// - *AzureBlobDataTransferDataSourceSink, *BaseCosmosDataTransferDataSourceSink, *CassandraDataTransferDataSourceSink, *DataTransferDataSourceSink,
-// - *MongoDataTransferDataSourceSink, *SQLDataTransferDataSourceSink
-type DataTransferDataSourceSinkClassification interface {
-	// GetDataTransferDataSourceSink returns the DataTransferDataSourceSink content of the underlying type.
-	GetDataTransferDataSourceSink() *DataTransferDataSourceSink
+// - *DataTransferServiceResourceCreateUpdateProperties, *GraphAPIComputeServiceResourceCreateUpdateProperties, *MaterializedViewsBuilderServiceResourceCreateUpdateProperties,
+// - *SQLDedicatedGatewayServiceResourceCreateUpdateProperties, *ServiceResourceCreateUpdateProperties
+type ServiceResourceCreateUpdatePropertiesClassification interface {
+	// GetServiceResourceCreateUpdateProperties returns the ServiceResourceCreateUpdateProperties content of the underlying type.
+	GetServiceResourceCreateUpdateProperties() *ServiceResourceCreateUpdateProperties
 }
 
 // ServiceResourcePropertiesClassification provides polymorphic access to related types.

@@ -33,7 +33,7 @@ func unmarshalBackupPolicyClassification(rawMsg json.RawMessage) (BackupPolicyCl
 	return b, nil
 }
 
-func unmarshalDataTransferDataSourceSinkClassification(rawMsg json.RawMessage) (DataTransferDataSourceSinkClassification, error) {
+func unmarshalServiceResourceCreateUpdatePropertiesClassification(rawMsg json.RawMessage) (ServiceResourceCreateUpdatePropertiesClassification, error) {
 	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
@@ -41,20 +41,18 @@ func unmarshalDataTransferDataSourceSinkClassification(rawMsg json.RawMessage) (
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
-	var b DataTransferDataSourceSinkClassification
-	switch m["component"] {
-	case "BaseCosmosDataTransferDataSourceSink":
-		b = &BaseCosmosDataTransferDataSourceSink{}
-	case string(DataTransferComponentAzureBlobStorage):
-		b = &AzureBlobDataTransferDataSourceSink{}
-	case string(DataTransferComponentCosmosDBCassandra):
-		b = &CassandraDataTransferDataSourceSink{}
-	case string(DataTransferComponentCosmosDBMongo):
-		b = &MongoDataTransferDataSourceSink{}
-	case string(DataTransferComponentCosmosDBSQL):
-		b = &SQLDataTransferDataSourceSink{}
+	var b ServiceResourceCreateUpdatePropertiesClassification
+	switch m["serviceType"] {
+	case string(ServiceTypeDataTransfer):
+		b = &DataTransferServiceResourceCreateUpdateProperties{}
+	case string(ServiceTypeGraphAPICompute):
+		b = &GraphAPIComputeServiceResourceCreateUpdateProperties{}
+	case string(ServiceTypeMaterializedViewsBuilder):
+		b = &MaterializedViewsBuilderServiceResourceCreateUpdateProperties{}
+	case string(ServiceTypeSQLDedicatedGateway):
+		b = &SQLDedicatedGatewayServiceResourceCreateUpdateProperties{}
 	default:
-		b = &DataTransferDataSourceSink{}
+		b = &ServiceResourceCreateUpdateProperties{}
 	}
 	if err := json.Unmarshal(rawMsg, b); err != nil {
 		return nil, err

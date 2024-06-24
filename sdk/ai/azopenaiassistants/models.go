@@ -219,9 +219,8 @@ type CreateAndRunThreadBody struct {
 	// Specifies the format that the model must output.
 	ResponseFormat *AssistantResponseFormat
 
-	// If true, returns a stream of events that happen during the Run as server-sent events, terminating when the Run enters a
-	// terminal state with a data: [DONE] message.
-	Stream *bool
+	// NOTE: Use the Stream version of this function (ex: [CreateThreadAndRunStream], [CreateRunStream] or [SubmitToolOutputsToRunStream]) to stream results.
+	stream *bool
 
 	// What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower
 	// values like 0.2 will make it more focused and deterministic.
@@ -389,9 +388,8 @@ type CreateRunBody struct {
 	// Specifies the format that the model must output.
 	ResponseFormat *AssistantResponseFormat
 
-	// If true, returns a stream of events that happen during the Run as server-sent events, terminating when the Run enters a
-	// terminal state with a data: [DONE] message.
-	Stream *bool
+	// NOTE: Use the Stream version of this function (ex: [CreateThreadAndRunStream], [CreateRunStream] or [SubmitToolOutputsToRunStream]) to stream results.
+	stream *bool
 
 	// What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower
 	// values like 0.2 will make it more focused and deterministic.
@@ -1532,9 +1530,8 @@ type SubmitToolOutputsToRunBody struct {
 	// REQUIRED; A list of tools for which the outputs are being submitted.
 	ToolOutputs []ToolOutput
 
-	// If true, returns a stream of events that happen during the Run as server-sent events, terminating when the Run enters a
-	// terminal state with a data: [DONE] message.
-	Stream *bool
+	// NOTE: Use the Stream version of this function (ex: [CreateThreadAndRunStream], [CreateRunStream] or [SubmitToolOutputsToRunStream]) to stream results.
+	stream *bool
 }
 
 // ThreadDeletionStatus - The status of a thread deletion operation.

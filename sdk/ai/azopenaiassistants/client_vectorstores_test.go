@@ -148,7 +148,7 @@ func TestVectorStores(t *testing.T) {
 
 			// it's highly likely that other people have (like me) polluted the global namespace with a ton of vector stores
 			// so I'm not really looking for mine, just ensuring that the paging parameters work.
-			require.Equal(t, 1, len(resp.Data))
+			require.Len(t, resp.Data, 1)
 		}
 
 		modifyResp, err := client.ModifyVectorStore(context.Background(), *resp1.ID, azopenaiassistants.VectorStoreUpdateBody{

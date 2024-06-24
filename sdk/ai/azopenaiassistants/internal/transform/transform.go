@@ -77,6 +77,7 @@ func (t *transformer) Do() error {
 		t.injectFormatURLHelper,
 		t.hideListFunctions,
 		t.fixFiles,
+		t.fixStreaming,
 		t.applyHacks,
 	}
 
@@ -211,12 +212,44 @@ func (t *transformer) applyHacks() error {
 		"UpdateRunBody":                  "// UpdateRunBody contains arguments for the [UpdateRun] method.",
 	}
 
-	return transformFiles(t.fileCache, "update doc comments", []string{"models.go"}, func(text string) (string, error) {
-		for typeName, comment := range docs {
-			text = strings.Replace(text,
+	for typeName, comment := range docs {
+		err := transformFiles(t.fileCache, "update doc comments("+typeName+")", []string{"models.go"}, func(text string) (string, error) {
+			return strings.Replace(text,
 				fmt.Sprintf("type %s struct {", typeName),
-				fmt.Sprintf("%s\ntype %s struct {", comment, typeName), 1)
+				fmt.Sprintf("%s\ntype %s struct {", comment, typeName), 1), nil
+		}, nil)
+
+		if err != nil {
+			return err
 		}
+	}
+
+	return nil
+}
+
+func (t *transformer) fixStreaming() error {
+	log.Printf("fixStreaming()...")
+
+	// internalize all the 'stream' variables. We expose custom methods so we can give them back our streaming type.
+	re := regexp.MustCompile(`(?s)// If true, returns a stream of events that.+?Stream \*bool`)
+
+	err := transformFiles(t.fileCache, "make Stream an internal member with a doc that points to our stream functions", []string{"models.go"}, func(text string) (string, error) {
+		text = re.ReplaceAllString(text, "// NOTE: Use the Stream version of this function (ex: [CreateThreadAndRunStream], [CreateRunStream] or [SubmitToolOutputsToRunStream]) to stream results.\nstream *bool")
 		return text, nil
 	}, nil)
+
+	if err != nil {
+		return err
+	}
+
+	err = transformFiles(t.fileCache, "fix serde for Stream", []string{"models_serde.go"}, func(text string) (string, error) {
+
+		text = strings.ReplaceAll(text, `populate(objectMap, "stream", s.Stream)`, `populate(objectMap, "stream", s.stream)`)
+		text = strings.ReplaceAll(text, `err = unpopulate(val, "Stream", &s.Stream)`, `err = unpopulate(val, "Stream", &s.stream)`)
+		text = strings.ReplaceAll(text, `populate(objectMap, "stream", c.Stream)`, `populate(objectMap, "stream", c.stream)`)
+		text = strings.ReplaceAll(text, `err = unpopulate(val, "Stream", &c.Stream)`, `err = unpopulate(val, "Stream", &c.stream)`)
+		return text, nil
+	}, nil)
+
+	return err
 }

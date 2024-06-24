@@ -14,7 +14,7 @@ import (
 
 // NewListMessagesPager returns a pager for messages associated with a thread.
 func (c *Client) NewListMessagesPager(threadID string, options *ListMessagesOptions) *runtime.Pager[ListMessagesResponse] {
-	nextPageFn := func(client *Client, ctx context.Context, opts *ListMessagesOptions) (ListMessagesResponse, error) {
+	nextPageFn := func(ctx context.Context, opts *ListMessagesOptions) (ListMessagesResponse, error) {
 		return c.internalListMessages(ctx, threadID, opts)
 	}
 	return newOpenAIPager(c, nextPageFn, options)
@@ -26,7 +26,7 @@ func (r ListMessagesResponse) hasMore() bool             { return *r.HasMore }
 
 // NewListAssistantsPager returns a pager for assistants.
 func (c *Client) NewListAssistantsPager(options *ListAssistantsOptions) *runtime.Pager[ListAssistantsResponse] {
-	nextPageFn := func(client *Client, ctx context.Context, opts *ListAssistantsOptions) (ListAssistantsResponse, error) {
+	nextPageFn := func(ctx context.Context, opts *ListAssistantsOptions) (ListAssistantsResponse, error) {
 		return c.internalListAssistants(ctx, opts)
 	}
 	return newOpenAIPager(c, nextPageFn, options)
@@ -38,7 +38,7 @@ func (r ListAssistantsResponse) hasMore() bool             { return *r.HasMore }
 
 // NewListRunStepsPager returns a pager for a Run's steps.
 func (c *Client) NewListRunStepsPager(threadID string, runID string, options *ListRunStepsOptions) *runtime.Pager[ListRunStepsResponse] {
-	nextPageFn := func(client *Client, ctx context.Context, opts *ListRunStepsOptions) (ListRunStepsResponse, error) {
+	nextPageFn := func(ctx context.Context, opts *ListRunStepsOptions) (ListRunStepsResponse, error) {
 		return c.internalListRunSteps(ctx, threadID, runID, opts)
 	}
 
@@ -51,7 +51,7 @@ func (r ListRunStepsResponse) hasMore() bool             { return *r.HasMore }
 
 // NewListRunsPager returns a pager for a Thread's runs.
 func (c *Client) NewListRunsPager(threadID string, options *ListRunsOptions) *runtime.Pager[ListRunsResponse] {
-	nextPageFn := func(client *Client, ctx context.Context, opts *ListRunsOptions) (ListRunsResponse, error) {
+	nextPageFn := func(ctx context.Context, opts *ListRunsOptions) (ListRunsResponse, error) {
 		return c.internalListRuns(ctx, threadID, opts)
 	}
 	return newOpenAIPager(c, nextPageFn, options)
@@ -63,7 +63,7 @@ func (r ListRunsResponse) hasMore() bool             { return *r.HasMore }
 
 // NewListVectorStoresPager returns a pager for a VectorStores.
 func (c *Client) NewListVectorStoresPager(options *ListVectorStoresOptions) *runtime.Pager[ListVectorStoresResponse] {
-	nextPageFn := func(client *Client, ctx context.Context, opts *ListVectorStoresOptions) (ListVectorStoresResponse, error) {
+	nextPageFn := func(ctx context.Context, opts *ListVectorStoresOptions) (ListVectorStoresResponse, error) {
 		return c.internalListVectorStores(ctx, opts)
 	}
 	return newOpenAIPager(c, nextPageFn, options)
@@ -75,7 +75,7 @@ func (r ListVectorStoresResponse) hasMore() bool             { return *r.HasMore
 
 // NewListVectorStoreFilesPager returns a pager for a vector store files.
 func (c *Client) NewListVectorStoreFilesPager(vectorStoreID string, options *ListVectorStoreFilesOptions) *runtime.Pager[ListVectorStoreFilesResponse] {
-	nextPageFn := func(client *Client, ctx context.Context, opts *ListVectorStoreFilesOptions) (ListVectorStoreFilesResponse, error) {
+	nextPageFn := func(ctx context.Context, opts *ListVectorStoreFilesOptions) (ListVectorStoreFilesResponse, error) {
 		return c.internalListVectorStoreFiles(ctx, vectorStoreID, opts)
 	}
 	return newOpenAIPager(c, nextPageFn, options)
@@ -87,7 +87,7 @@ func (r ListVectorStoreFilesResponse) hasMore() bool             { return *r.Has
 
 // NewListVectorStoreFileBatchFilesPager returns a pager for vector store files in a batch.
 func (c *Client) NewListVectorStoreFileBatchFilesPager(vectorStoreID string, batchID string, options *ListVectorStoreFileBatchFilesOptions) *runtime.Pager[ListVectorStoreFileBatchFilesResponse] {
-	nextPageFn := func(client *Client, ctx context.Context, opts *ListVectorStoreFileBatchFilesOptions) (ListVectorStoreFileBatchFilesResponse, error) {
+	nextPageFn := func(ctx context.Context, opts *ListVectorStoreFileBatchFilesOptions) (ListVectorStoreFileBatchFilesResponse, error) {
 		return c.internalListVectorStoreFileBatchFiles(ctx, vectorStoreID, batchID, opts)
 	}
 	return newOpenAIPager(c, nextPageFn, options)
@@ -112,7 +112,7 @@ func newOpenAIPager[ResponseT respType, OptionsT any, POptionsT interface {
 	updateAfter(after *string)
 }](
 	client *Client,
-	nextPageFn func(client *Client, ctx context.Context, opts POptionsT) (ResponseT, error),
+	nextPageFn func(ctx context.Context, opts POptionsT) (ResponseT, error),
 	options POptionsT) *runtime.Pager[ResponseT] {
 	var lastID *string
 
@@ -137,7 +137,7 @@ func newOpenAIPager[ResponseT respType, OptionsT any, POptionsT interface {
 
 			first = false
 
-			resp, err := nextPageFn(client, ctx, newOptions)
+			resp, err := nextPageFn(ctx, newOptions)
 
 			if err != nil {
 				var zero ResponseT

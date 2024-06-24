@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0 (2024-06-24)
+## 1.0.0 (2024-06-28)
 ### Breaking Changes
 
 - Function `*AvailabilitySetsClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, ResourcePatch, *AvailabilitySetsClientBeginUpdateOptions)` to `(context.Context, string, string, AvailabilitySetTagsUpdate, *AvailabilitySetsClientBeginUpdateOptions)`
@@ -15,7 +15,6 @@
 - Type of `CloudInventoryItem.ProvisioningState` has been changed from `*string` to `*ProvisioningState`
 - Type of `CloudProperties.ProvisioningState` has been changed from `*string` to `*ProvisioningState`
 - Type of `CloudsClientBeginDeleteOptions.Force` has been changed from `*bool` to `*ForceDelete`
-- Type of `ErrorResponse.Error` has been changed from `*ErrorDefinition` to `*ErrorDetail`
 - Type of `HardwareProfile.IsHighlyAvailable` has been changed from `*string` to `*IsHighlyAvailable`
 - Type of `InventoryItemProperties.ProvisioningState` has been changed from `*string` to `*ProvisioningState`
 - Type of `NetworkProfile.NetworkInterfaces` has been changed from `[]*NetworkInterfaces` to `[]*NetworkInterface`
@@ -113,8 +112,6 @@
 - New function `*VirtualMachineInstancesClient.BeginUpdate(context.Context, string, VirtualMachineInstanceUpdate, *VirtualMachineInstancesClientBeginUpdateOptions) (*runtime.Poller[VirtualMachineInstancesClientUpdateResponse], error)`
 - New struct `AvailabilitySetTagsUpdate`
 - New struct `CloudTagsUpdate`
-- New struct `ErrorAdditionalInfo`
-- New struct `ErrorDetail`
 - New struct `GuestAgent`
 - New struct `GuestAgentListResult`
 - New struct `GuestAgentProperties`
@@ -131,7 +128,6 @@
 - New struct `OsProfileForVMInstance`
 - New struct `StorageQosPolicy`
 - New struct `StorageQosPolicyDetails`
-- New struct `TrackedResource`
 - New struct `VMInstanceHybridIdentityMetadata`
 - New struct `VMInstanceHybridIdentityMetadataListResult`
 - New struct `VMInstanceHybridIdentityMetadataProperties`
@@ -149,8 +145,6 @@
 - New struct `VmmServerTagsUpdate`
 - New field `StorageQosPolicies` in struct `CloudProperties`
 - New anonymous field `OperationListResult` in struct `OperationsClientListResponse`
-- New field `SystemData` in struct `ProxyResource`
-- New field `SystemData` in struct `Resource`
 - New field `StorageQosPolicy` in struct `VirtualDisk`
 - New field `StorageQosPolicy` in struct `VirtualDiskUpdate`
 - New field `BiosGUID`, `ManagedMachineResourceID`, `OSVersion` in struct `VirtualMachineInventoryItem`

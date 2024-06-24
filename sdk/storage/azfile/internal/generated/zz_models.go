@@ -119,6 +119,9 @@ type Handle struct {
 	// REQUIRED; Client IP that opened the handle
 	ClientIP *string `xml:"ClientIp"`
 
+	// REQUIRED; Name of the client machine where the share is being mounted
+	ClientName *string `xml:"ClientName"`
+
 	// REQUIRED; FileId uniquely identifies the file or directory.
 	FileID *string `xml:"FileId"`
 

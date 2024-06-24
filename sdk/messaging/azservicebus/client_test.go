@@ -5,10 +5,9 @@ package azservicebus
 
 import (
 	"context"
-	"io/ioutil"
+	"io"
 	"net"
 	"net/http"
-	"os"
 	"strings"
 	"testing"
 	"time"
@@ -25,35 +24,10 @@ import (
 )
 
 func TestNewClientWithAzureIdentity(t *testing.T) {
-	queue, cleanup := createQueue(t, test.GetConnectionString(t), nil)
+	queue, cleanup := createQueue(t, nil, nil)
 	defer cleanup()
 
-	// test with azure identity support
-	ns := os.Getenv("SERVICEBUS_ENDPOINT")
-
-	var credsToAdd []azcore.TokenCredential
-
-	cliCred, err := azidentity.NewAzureCLICredential(nil)
-	require.NoError(t, err)
-
-	envCred, err := azidentity.NewEnvironmentCredential(nil)
-
-	if err == nil {
-		t.Logf("Env cred works, being added to our chained token credential")
-		credsToAdd = append(credsToAdd, envCred)
-	}
-
-	credsToAdd = append(credsToAdd, cliCred)
-
-	cred, err := azidentity.NewChainedTokenCredential(credsToAdd, nil)
-	require.NoError(t, err)
-
-	if err != nil || ns == "" {
-		t.Skip("Azure Identity compatible credentials not configured")
-	}
-
-	client, err := NewClient(ns, cred, nil)
-	require.NoError(t, err)
+	client := newServiceBusClientForTest(t, nil)
 
 	sender, err := client.NewSender(queue, nil)
 	require.NoError(t, err)
@@ -81,7 +55,7 @@ func TestNewClientWithAzureIdentity(t *testing.T) {
 	require.NoError(t, err)
 
 	require.EqualValues(t, []string{"hello - authenticating with a TokenCredential"}, getSortedBodies(messages))
-	forceManagementSettlement(t, messages)
+	forceManagementSettlement(messages)
 
 	for _, m := range messages {
 		err = receiver.CompleteMessage(context.TODO(), m, nil)
@@ -92,31 +66,30 @@ func TestNewClientWithAzureIdentity(t *testing.T) {
 }
 
 func TestNewClientWithWebsockets(t *testing.T) {
-	connectionString := test.GetConnectionString(t)
-
-	queue, cleanup := createQueue(t, connectionString, nil)
+	queue, cleanup := createQueue(t, nil, nil)
 	defer cleanup()
 
-	client, err := NewClientFromConnectionString(connectionString, &ClientOptions{
-		NewWebSocketConn: func(ctx context.Context, args NewWebSocketConnArgs) (net.Conn, error) {
-			transport := http.DefaultTransport.(*http.Transport).Clone()
-			transport.TLSClientConfig.KeyLogWriter = ioutil.Discard
+	client := newServiceBusClientForTest(t, &test.NewClientOptions[ClientOptions]{
+		ClientOptions: &ClientOptions{
+			NewWebSocketConn: func(ctx context.Context, args NewWebSocketConnArgs) (net.Conn, error) {
+				transport := http.DefaultTransport.(*http.Transport).Clone()
+				transport.TLSClientConfig.KeyLogWriter = io.Discard
 
-			opts := &websocket.DialOptions{Subprotocols: []string{"amqp"}, HTTPClient: &http.Client{
-				Transport: transport,
-			}}
+				opts := &websocket.DialOptions{Subprotocols: []string{"amqp"}, HTTPClient: &http.Client{
+					Transport: transport,
+				}}
 
-			wssConn, _, err := websocket.Dial(ctx, args.Host, opts)
+				wssConn, _, err := websocket.Dial(ctx, args.Host, opts)
 
-			if err != nil {
-				return nil, err
-			}
+				if err != nil {
+					return nil, err
+				}
 
-			conn := websocket.NetConn(context.Background(), wssConn, websocket.MessageBinary)
-			return conn, nil
+				conn := websocket.NetConn(context.Background(), wssConn, websocket.MessageBinary)
+				return conn, nil
+			},
 		},
 	})
-	require.NoError(t, err)
 
 	defer test.RequireClose(t, client)
 
@@ -132,16 +105,20 @@ func TestNewClientWithWebsockets(t *testing.T) {
 func TestNewClientUsingSharedAccessSignature(t *testing.T) {
 	getLogsFn := test.CaptureLogsForTest(false)
 
-	sasCS, err := sas.CreateConnectionStringWithSASUsingExpiry(test.GetConnectionString(t), time.Now().UTC().Add(time.Hour))
+	cs := test.MustGetEnvVar(t, test.EnvKeyConnectionString)
+	sasCS, err := sas.CreateConnectionStringWithSASUsingExpiry(cs, time.Now().UTC().Add(time.Hour))
 	require.NoError(t, err)
 
 	// sanity check - we did actually generate a connection string with an embedded SharedAccessSignature
 	require.Contains(t, sasCS, "SharedAccessSignature=SharedAccessSignature")
 
-	queue, cleanup := createQueue(t, sasCS, nil)
+	adminClient, err := admin.NewClientFromConnectionString(sasCS, nil) // allowed connection string
+	require.NoError(t, err)
+
+	queue, cleanup := createQueueUsingClient(t, adminClient, nil)
 	defer cleanup()
 
-	client, err := NewClientFromConnectionString(sasCS, nil)
+	client, err := NewClientFromConnectionString(sasCS, nil) // allowed connection string
 	require.NoError(t, err)
 
 	sender, err := client.NewSender(queue, nil)
@@ -171,9 +148,7 @@ const backgroundRenewalDisabledMsg = "[azsb.Auth] Token does not have an expirat
 const fastNotFoundDuration = 10 * time.Second
 
 func TestNewClientNewSenderNotFound(t *testing.T) {
-	connectionString := test.GetConnectionString(t)
-	client, err := NewClientFromConnectionString(connectionString, nil)
-	require.NoError(t, err)
+	client := newServiceBusClientForTest(t, nil)
 
 	defer client.Close(context.Background())
 
@@ -188,9 +163,7 @@ func TestNewClientNewSenderNotFound(t *testing.T) {
 }
 
 func TestNewClientNewReceiverNotFound(t *testing.T) {
-	connectionString := test.GetConnectionString(t)
-	client, err := NewClientFromConnectionString(connectionString, nil)
-	require.NoError(t, err)
+	client := newServiceBusClientForTest(t, nil)
 
 	defer client.Close(context.Background())
 
@@ -216,9 +189,7 @@ func TestNewClientNewReceiverNotFound(t *testing.T) {
 }
 
 func TestClientNewSessionReceiverNotFound(t *testing.T) {
-	connectionString := test.GetConnectionString(t)
-	client, err := NewClientFromConnectionString(connectionString, nil)
-	require.NoError(t, err)
+	client := newServiceBusClientForTest(t, nil)
 
 	defer client.Close(context.Background())
 
@@ -238,9 +209,7 @@ func TestClientNewSessionReceiverNotFound(t *testing.T) {
 }
 
 func TestClientCloseVsClosePermanently(t *testing.T) {
-	connectionString := test.GetConnectionString(t)
-	client, err := NewClientFromConnectionString(connectionString, nil)
-	require.NoError(t, err)
+	client := newServiceBusClientForTest(t, nil)
 
 	require.NoError(t, client.Close(context.Background()))
 
@@ -272,16 +241,13 @@ func TestClientCloseVsClosePermanently(t *testing.T) {
 func TestClientNewSessionReceiverCancel(t *testing.T) {
 	// Both the session APIs create the receiver immediately however AcceptNextSession() has a quirk
 	// where it takes an excessively long time.
-	connectionString := test.GetConnectionString(t)
-
-	queue, cleanup := createQueue(t, connectionString, &admin.QueueProperties{
+	queue, cleanup := createQueue(t, nil, &admin.QueueProperties{
 		RequiresSession: to.Ptr(true),
 	})
 
 	defer cleanup()
 
-	client, err := NewClientFromConnectionString(connectionString, nil)
-	require.NoError(t, err)
+	client := newServiceBusClientForTest(t, nil)
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
@@ -293,15 +259,13 @@ func TestClientNewSessionReceiverCancel(t *testing.T) {
 }
 
 func TestClientPropagatesRetryOptionsForSessions(t *testing.T) {
-	connectionString := test.GetConnectionString(t)
-
-	queue, cleanupQueue := createQueue(t, connectionString, &admin.QueueProperties{
+	queue, cleanupQueue := createQueue(t, nil, &admin.QueueProperties{
 		RequiresSession: to.Ptr(true),
 	})
 
 	defer cleanupQueue()
 
-	topic, cleanupTopic := createSubscription(t, connectionString, nil, &admin.SubscriptionProperties{
+	topic, cleanupTopic := createSubscription(t, nil, &admin.SubscriptionProperties{
 		RequiresSession: to.Ptr(true),
 	})
 
@@ -313,10 +277,11 @@ func TestClientPropagatesRetryOptionsForSessions(t *testing.T) {
 		MaxRetryDelay: time.Millisecond,
 	}
 
-	client, err := NewClientFromConnectionString(connectionString, &ClientOptions{
-		RetryOptions: expectedRetryOptions,
+	client := newServiceBusClientForTest(t, &test.NewClientOptions[ClientOptions]{
+		ClientOptions: &ClientOptions{
+			RetryOptions: expectedRetryOptions,
+		},
 	})
-	require.NoError(t, err)
 
 	actualNS := client.namespace.(*internal.Namespace)
 	require.Equal(t, expectedRetryOptions, actualNS.RetryOptions)
@@ -363,13 +328,13 @@ func TestClientPropagatesRetryOptionsForSessions(t *testing.T) {
 }
 
 func TestClientUnauthorizedCreds(t *testing.T) {
-	allPowerfulCS := test.GetConnectionString(t)
+	allPowerfulCS := test.MustGetEnvVar(t, test.EnvKeyConnectionString)
 	queueName := "testqueue"
 
 	t.Run("ListenOnly with Sender", func(t *testing.T) {
-		cs := test.GetConnectionStringListenOnly(t)
+		cs := test.MustGetEnvVar(t, test.EnvKeyConnectionStringListenOnly)
 
-		client, err := NewClientFromConnectionString(cs, nil)
+		client, err := NewClientFromConnectionString(cs, nil) // allowed connection string
 		require.NoError(t, err)
 
 		defer test.RequireClose(t, client)
@@ -388,9 +353,9 @@ func TestClientUnauthorizedCreds(t *testing.T) {
 	})
 
 	t.Run("SenderOnly with Receiver", func(t *testing.T) {
-		cs := test.GetConnectionStringSendOnly(t)
+		cs := test.MustGetEnvVar(t, test.EnvKeyConnectionStringSendOnly)
 
-		client, err := NewClientFromConnectionString(cs, nil)
+		client, err := NewClientFromConnectionString(cs, nil) // allowed connection string
 		require.NoError(t, err)
 
 		defer test.RequireClose(t, client)
@@ -411,7 +376,7 @@ func TestClientUnauthorizedCreds(t *testing.T) {
 		expiredCS, err := sas.CreateConnectionStringWithSASUsingExpiry(allPowerfulCS, time.Now().Add(-10*time.Minute))
 		require.NoError(t, err)
 
-		client, err := NewClientFromConnectionString(expiredCS, nil)
+		client, err := NewClientFromConnectionString(expiredCS, nil) // allowed connection string
 		require.NoError(t, err)
 
 		defer test.RequireClose(t, client)
@@ -447,7 +412,7 @@ func TestClientUnauthorizedCreds(t *testing.T) {
 			return
 		}
 
-		cliCred, err := azidentity.NewClientSecretCredential(identityVars.TenantID, identityVars.ClientID, "bogus-client-secret", nil)
+		cliCred, err := azidentity.NewClientSecretCredential("00000000-0000-0000-0000-000000000000", "00000000-0000-0000-0000-000000000000", "bogus-client-secret", nil)
 		require.NoError(t, err)
 
 		client, err := NewClient(identityVars.Endpoint, cliCred, nil)
@@ -489,7 +454,7 @@ func TestNewClientUnitTests(t *testing.T) {
 		require.EqualValues(t, fakeTokenCredential, client.creds.credential)
 		require.EqualValues(t, "mysb.windows.servicebus.net", client.creds.fullyQualifiedNamespace)
 
-		_, err = NewClientFromConnectionString("", nil)
+		_, err = NewClientFromConnectionString("", nil) // allowed connection string
 		require.EqualError(t, err, "connectionString must not be empty")
 
 		_, err = NewClient("", fakeTokenCredential, nil)
@@ -580,7 +545,7 @@ func assertRPCNotFound(t *testing.T, err error) {
 	require.Equal(t, http.StatusNotFound, rpcError.RPCCode())
 }
 
-func forceManagementSettlement(t *testing.T, messages []*ReceivedMessage) {
+func forceManagementSettlement(messages []*ReceivedMessage) {
 	for _, m := range messages {
 		m.settleOnMgmtLink = true
 	}

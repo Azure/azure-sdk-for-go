@@ -30,7 +30,7 @@ The [azidentity][azure_identity] module is used for client authentication.
 
 An authenticated client object is required to execute a query. The examples demonstrate using [azidentity.NewDefaultAzureCredential][default_cred_ref] to authenticate; however, the client accepts any [azidentity][azure_identity] credential. See the [azidentity][azure_identity] documentation for more information about other credential types.
 
-The clients default to the Azure public cloud. For other cloud configurations, see the [cloud][cloud_documentation] package documentation.
+The client defaults to the Azure public cloud. For other cloud configurations, see the [cloud][cloud_documentation] package documentation.
 
 #### Create a client
 
@@ -50,6 +50,8 @@ Each set of metric values is a time series with the following characteristics:
 - A metric name
 - The value itself
 - Some metrics may have multiple dimensions as described in [multi-dimensional metrics][multi-metrics]. Custom metrics can have up to 10 dimensions.
+
+To discover the metrics available to query, please reference the [supported metrics documentation][supported_metrics]. The documentation also describes important details like the valid unit, aggregation, and time grain for each metric.
 
 ## Examples
 

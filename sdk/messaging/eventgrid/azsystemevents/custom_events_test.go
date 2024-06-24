@@ -146,7 +146,7 @@ func TestUnmarshalInternalAcsRouterCCSmunicationErrorRecursive(t *testing.T) {
 
 func TestFormattingErrors(t *testing.T) {
 	t.Run("simple", func(t *testing.T) {
-		msg := unpackMsg(&internalAcsRouterCommunicationError{
+		msg := unpackMsg(internalACSRouterCommunicationError{
 			Code:    to.Ptr("code"),
 			Message: to.Ptr("message"),
 		}, "")
@@ -156,10 +156,10 @@ func TestFormattingErrors(t *testing.T) {
 	})
 
 	t.Run("InnerError", func(t *testing.T) {
-		msg := unpackMsg(&internalAcsRouterCommunicationError{
+		msg := unpackMsg(internalACSRouterCommunicationError{
 			Code:    to.Ptr("code"),
 			Message: to.Ptr("message"),
-			Innererror: &internalAcsRouterCommunicationError{
+			Innererror: &internalACSRouterCommunicationError{
 				Code:    to.Ptr("inner.code"),
 				Message: to.Ptr("inner.message"),
 			},
@@ -173,13 +173,13 @@ func TestFormattingErrors(t *testing.T) {
 	})
 
 	t.Run("InnerInnerError", func(t *testing.T) {
-		msg := unpackMsg(&internalAcsRouterCommunicationError{
+		msg := unpackMsg(internalACSRouterCommunicationError{
 			Code:    to.Ptr("code"),
 			Message: to.Ptr("message"),
-			Innererror: &internalAcsRouterCommunicationError{
+			Innererror: &internalACSRouterCommunicationError{
 				Code:    to.Ptr("inner.code"),
 				Message: to.Ptr("inner.message"),
-				Innererror: &internalAcsRouterCommunicationError{
+				Innererror: &internalACSRouterCommunicationError{
 					Code:    to.Ptr("inner->inner.code"),
 					Message: to.Ptr("inner->inner.message"),
 				},
@@ -197,14 +197,14 @@ func TestFormattingErrors(t *testing.T) {
 	})
 
 	t.Run("Details", func(t *testing.T) {
-		msg := unpackMsg(&internalAcsRouterCommunicationError{
+		msg := unpackMsg(internalACSRouterCommunicationError{
 			Code:    to.Ptr("code"),
 			Message: to.Ptr("message"),
-			Details: []internalAcsRouterCommunicationError{
+			Details: []internalACSRouterCommunicationError{
 				{
 					Code:    to.Ptr("details[0].code"),
 					Message: to.Ptr("details[0].message"),
-					Details: []internalAcsRouterCommunicationError{
+					Details: []internalACSRouterCommunicationError{
 						{
 							Code:    to.Ptr("details[0]->details[0].code"),
 							Message: to.Ptr("details[0]->details[0].message"),
@@ -228,10 +228,5 @@ func TestFormattingErrors(t *testing.T) {
 			"  Details[1]:\n"+
 			"    Code: details[0]->details[1].code\n"+
 			"    Message: details[0]->details[1].message\n", msg)
-	})
-
-	t.Run("Errors", func(t *testing.T) {
-		require.Empty(t, unpackMsg(nil, ""))
-		require.Equal(t, "Code: \nMessage: \n", unpackMsg(&internalAcsRouterCommunicationError{}, ""))
 	})
 }

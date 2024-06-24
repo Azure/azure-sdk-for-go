@@ -45,7 +45,7 @@ func NewGetUsagesInLocationClient(subscriptionID string, credential azcore.Token
 
 // NewListPager - List usages in cores for all skus used by a subscription in a given location, for a specific quota type.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2023-12-01
 //   - location - The name of the Azure region.
 //   - options - GetUsagesInLocationClientListOptions contains the optional parameters for the GetUsagesInLocationClient.NewListPager
 //     method.
@@ -88,7 +88,7 @@ func (client *GetUsagesInLocationClient) listCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

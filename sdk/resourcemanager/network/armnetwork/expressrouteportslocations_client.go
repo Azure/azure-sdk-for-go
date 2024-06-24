@@ -48,7 +48,7 @@ func NewExpressRoutePortsLocationsClient(subscriptionID string, credential azcor
 // peering location.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01
+// Generated from API version 2023-11-01
 //   - locationName - Name of the requested ExpressRoutePort peering location.
 //   - options - ExpressRoutePortsLocationsClientGetOptions contains the optional parameters for the ExpressRoutePortsLocationsClient.Get
 //     method.
@@ -90,7 +90,7 @@ func (client *ExpressRoutePortsLocationsClient) getCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-01")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -108,7 +108,7 @@ func (client *ExpressRoutePortsLocationsClient) getHandleResponse(resp *http.Res
 // NewListPager - Retrieves all ExpressRoutePort peering locations. Does not return available bandwidths for each location.
 // Available bandwidths can only be obtained when retrieving a specific peering location.
 //
-// Generated from API version 2023-09-01
+// Generated from API version 2023-11-01
 //   - options - ExpressRoutePortsLocationsClientListOptions contains the optional parameters for the ExpressRoutePortsLocationsClient.NewListPager
 //     method.
 func (client *ExpressRoutePortsLocationsClient) NewListPager(options *ExpressRoutePortsLocationsClientListOptions) *runtime.Pager[ExpressRoutePortsLocationsClientListResponse] {
@@ -146,7 +146,7 @@ func (client *ExpressRoutePortsLocationsClient) listCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-01")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -383,6 +383,13 @@ type FileClientGetRangeListOptions struct {
 	// The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.
 	Sharesnapshot *string
 
+	// This header is allowed only when PrevShareSnapshot query parameter is set. Determines whether the changed ranges for a
+	// file that has been renamed or moved between the target snapshot (or the live
+	// file) and the previous snapshot should be listed. If the value is true, the valid changed ranges for the file will be returned.
+	// If the value is false, the operation will result in a failure with 409
+	// (Conflict) response. The default value is false.
+	SupportRename *bool
+
 	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
 	// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
 	Timeout *int32

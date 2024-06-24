@@ -40,15 +40,30 @@ parameters:
     default:
       Public:
         SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
+        ServiceConnection: azure-sdk-tests
+        SubscriptionConfigurationFilePaths:
+          - eng/common/TestResources/sub-config/AzurePublicMsft.json
       Preview:
         SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources-preview)
+        ServiceConnection: azure-sdk-tests
+        # TODO:
+        SubscriptionConfigurationFilePaths:
       Canary:
         SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
+        ServiceConnection: azure-sdk-tests
+        # TODO:
+        SubscriptionConfigurationFilePaths:
         Location: 'centraluseuap'
       UsGov:
         SubscriptionConfiguration: $(sub-config-gov-test-resources)
+        ServiceConnection: usgov_azure-sdk-tests
+        # TODO:
+        SubscriptionConfigurationFilePaths:
       China:
         SubscriptionConfiguration: $(sub-config-cn-test-resources)
+        ServiceConnection: china_azure-sdk-tests
+        # TODO:
+        SubscriptionConfigurationFilePaths:
   - name: MatrixConfigs
     type: object
     default:
@@ -83,6 +98,12 @@ parameters:
   - name: oneESTemplateTag
     type: string
     default: release
+  - name: EnableRaceDetector
+    type: boolean
+    default: false
+  - name: UseFederatedAuth
+    type: boolean
+    default: false
 
 extends:
   template: /eng/pipelines/templates/stages/1es-redirect.yml
@@ -109,6 +130,7 @@ extends:
                       Selection: all
                       GenerateVMJobs: true
               AdditionalParameters:
+                EnableRaceDetector: ${{ parameters.EnableRaceDetector }}
                 ServiceDirectory: ${{ parameters.ServiceDirectory }}
                 TestRunTime: ${{ parameters.TestRunTime }}
                 UsePipelineProxy: ${{ parameters.UsePipelineProxy }}
@@ -176,6 +198,7 @@ extends:
                                   - ${{ parameters.PreSteps }}
                                 PostSteps:
                                   - ${{ parameters.PostSteps }}
+                                UseFederatedAuth: ${{ parameters.UseFederatedAuth }}
                               MatrixConfigs:
                                 # Enumerate platforms and additional platforms based on supported clouds (sparse platform<-->cloud matrix).
                                 - ${{ each config in parameters.MatrixConfigs }}:
@@ -195,6 +218,8 @@ extends:
                                 SubscriptionConfigurations: ${{ cloud.value.SubscriptionConfigurations }}
                                 Location: ${{ coalesce(parameters.Location, cloud.value.Location) }}
                                 Cloud: ${{ cloud.key }}
+                                ServiceConnection: ${{ cloud.value.ServiceConnection }}
+                                SubscriptionConfigurationFilePaths: ${{ cloud.value.SubscriptionConfigurationFilePaths }}
 
       # The Prerelease and Release stages are conditioned on:
       # 1. Internal trigger, not Pull Request trigger

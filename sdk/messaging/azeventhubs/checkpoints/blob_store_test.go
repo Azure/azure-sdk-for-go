@@ -12,8 +12,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/checkpoints"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/test"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 	"github.com/joho/godotenv"
 	"github.com/stretchr/testify/require"
@@ -341,17 +343,24 @@ type blobStoreTestData struct {
 func newBlobStoreTestData(t *testing.T) blobStoreTestData {
 	_ = godotenv.Load("../.env")
 
-	storageCS := os.Getenv("CHECKPOINTSTORE_STORAGE_CONNECTION_STRING")
+	storageEndpoint := os.Getenv("CHECKPOINTSTORE_STORAGE_ENDPOINT")
 
-	if storageCS == "" {
-		t.Skipf("CHECKPOINTSTORE_STORAGE_CONNECTION_STRING is not defined in the environment. Skipping blob checkpoint store live tests")
+	if storageEndpoint == "" {
+		t.Skipf("CHECKPOINTSTORE_STORAGE_ENDPOINT is not defined in the environment. Skipping blob checkpoint store live tests")
 		return blobStoreTestData{}
 	}
 
 	nano := time.Now().UTC().UnixNano()
 
 	containerName := strconv.FormatInt(nano, 10)
-	client, err := container.NewClientFromConnectionString(storageCS, containerName, nil)
+
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	require.NoError(t, err)
+
+	containerURL := test.URLJoinPaths(storageEndpoint, containerName)
+	require.NoError(t, err)
+
+	client, err := container.NewClient(containerURL, cred, nil)
 	require.NoError(t, err)
 
 	_, err = client.Create(context.Background(), nil)

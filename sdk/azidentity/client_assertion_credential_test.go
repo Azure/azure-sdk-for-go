@@ -14,6 +14,7 @@ import (
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 )
 
 func TestClientAssertionCredential(t *testing.T) {
@@ -73,6 +74,9 @@ func TestClientAssertionCredentialNilCallback(t *testing.T) {
 }
 
 func TestClientAssertionCredential_Live(t *testing.T) {
+	if recording.GetRecordMode() == recording.LiveMode {
+		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22879")
+	}
 	data, err := os.ReadFile(liveSP.pemPath)
 	if err != nil {
 		t.Fatalf(`failed to read cert: %v`, err)

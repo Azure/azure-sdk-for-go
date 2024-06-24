@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v5"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/VpnSiteLinkConnectionReset.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/VpnSiteLinkConnectionReset.json
 func ExampleVPNLinkConnectionsClient_BeginResetConnection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -38,7 +38,7 @@ func ExampleVPNLinkConnectionsClient_BeginResetConnection() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/VpnSiteLinkConnectionGetIkeSas.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/VpnSiteLinkConnectionGetIkeSas.json
 func ExampleVPNLinkConnectionsClient_BeginGetIkeSas() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -63,7 +63,7 @@ func ExampleVPNLinkConnectionsClient_BeginGetIkeSas() {
 	// res.Value = "\"{\"Status\":\"Successful\",\"Data\":null}\""
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/VpnSiteLinkConnectionList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/VpnSiteLinkConnectionList.json
 func ExampleVPNLinkConnectionsClient_NewListByVPNConnectionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

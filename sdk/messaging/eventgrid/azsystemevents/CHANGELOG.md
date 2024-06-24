@@ -1,6 +1,6 @@
 # Release History
 
-## 0.3.1 (Unreleased)
+## 0.4.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,24 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 0.4.0 (2024-06-11)
+
+### Breaking Changes
+
+- `Type` has been removed, making it simpler to compare the EventGridEvent.Type and CloudEvent.Type values against
+our provided constants.
+
+- The following models have had 'Advanced' removed from their name:
+  - ACSMessageButtonContent
+  - ACSMessageContext
+  - ACSMessageDeliveryStatusUpdatedEventData
+  - ACSMessageEventData
+  - ACSMessageInteractiveButtonReplyContent
+  - ACSMessageInteractiveContent
+  - ACSMessageInteractiveListReplyContent
+  - ACSMessageMediaContent
+  - ACSMessageReceivedEventData
 
 ## 0.3.0 (2024-04-03)
 

@@ -14,7 +14,7 @@ import (
 )
 
 func unmarshalFeatureSupportRequestClassification(rawMsg json.RawMessage) (armrecoveryservicesbackup.FeatureSupportRequestClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -37,7 +37,7 @@ func unmarshalFeatureSupportRequestClassification(rawMsg json.RawMessage) (armre
 }
 
 func unmarshalFetchTieringCostInfoRequestClassification(rawMsg json.RawMessage) (armrecoveryservicesbackup.FetchTieringCostInfoRequestClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any

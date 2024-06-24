@@ -28,4 +28,4 @@ extends:
     ServiceDirectory: 'monitor/query/azmetrics'
     RunLiveTests: true
     UsePipelineProxy: false
-    SupportedClouds: 'Public'
+    SupportedClouds: 'Public,UsGov,China'

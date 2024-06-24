@@ -46,10 +46,10 @@ func NewDatabasesClient(subscriptionID string, credential azcore.TokenCredential
 // BeginCreate - Creates a database
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01
+// Generated from API version 2024-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - clusterName - The name of the RedisEnterprise cluster.
-//   - databaseName - The name of the database.
+//   - clusterName - The name of the Redis Enterprise cluster.
+//   - databaseName - The name of the Redis Enterprise database.
 //   - parameters - Parameters supplied to the create or update database operation.
 //   - options - DatabasesClientBeginCreateOptions contains the optional parameters for the DatabasesClient.BeginCreate method.
 func (client *DatabasesClient) BeginCreate(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, parameters Database, options *DatabasesClientBeginCreateOptions) (*runtime.Poller[DatabasesClientCreateResponse], error) {
@@ -73,7 +73,7 @@ func (client *DatabasesClient) BeginCreate(ctx context.Context, resourceGroupNam
 // Create - Creates a database
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01
+// Generated from API version 2024-03-01-preview
 func (client *DatabasesClient) create(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, parameters Database, options *DatabasesClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DatabasesClient.BeginCreate"
@@ -119,7 +119,7 @@ func (client *DatabasesClient) createCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-01")
+	reqQP.Set("api-version", "2024-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -131,10 +131,10 @@ func (client *DatabasesClient) createCreateRequest(ctx context.Context, resource
 // BeginDelete - Deletes a single database
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01
+// Generated from API version 2024-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - clusterName - The name of the RedisEnterprise cluster.
-//   - databaseName - The name of the database.
+//   - clusterName - The name of the Redis Enterprise cluster.
+//   - databaseName - The name of the Redis Enterprise database.
 //   - options - DatabasesClientBeginDeleteOptions contains the optional parameters for the DatabasesClient.BeginDelete method.
 func (client *DatabasesClient) BeginDelete(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, options *DatabasesClientBeginDeleteOptions) (*runtime.Poller[DatabasesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
@@ -157,7 +157,7 @@ func (client *DatabasesClient) BeginDelete(ctx context.Context, resourceGroupNam
 // Delete - Deletes a single database
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01
+// Generated from API version 2024-03-01-preview
 func (client *DatabasesClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, options *DatabasesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DatabasesClient.BeginDelete"
@@ -203,7 +203,7 @@ func (client *DatabasesClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-01")
+	reqQP.Set("api-version", "2024-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -212,10 +212,10 @@ func (client *DatabasesClient) deleteCreateRequest(ctx context.Context, resource
 // BeginExport - Exports a database file from target database.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01
+// Generated from API version 2024-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - clusterName - The name of the RedisEnterprise cluster.
-//   - databaseName - The name of the database.
+//   - clusterName - The name of the Redis Enterprise cluster.
+//   - databaseName - The name of the Redis Enterprise database.
 //   - parameters - Storage information for exporting into the cluster
 //   - options - DatabasesClientBeginExportOptions contains the optional parameters for the DatabasesClient.BeginExport method.
 func (client *DatabasesClient) BeginExport(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, parameters ExportClusterParameters, options *DatabasesClientBeginExportOptions) (*runtime.Poller[DatabasesClientExportResponse], error) {
@@ -239,7 +239,7 @@ func (client *DatabasesClient) BeginExport(ctx context.Context, resourceGroupNam
 // Export - Exports a database file from target database.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01
+// Generated from API version 2024-03-01-preview
 func (client *DatabasesClient) export(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, parameters ExportClusterParameters, options *DatabasesClientBeginExportOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DatabasesClient.BeginExport"
@@ -285,7 +285,7 @@ func (client *DatabasesClient) exportCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-01")
+	reqQP.Set("api-version", "2024-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -297,10 +297,10 @@ func (client *DatabasesClient) exportCreateRequest(ctx context.Context, resource
 // BeginFlush - Flushes all the keys in this database and also from its linked databases.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01
+// Generated from API version 2024-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - clusterName - The name of the RedisEnterprise cluster.
-//   - databaseName - The name of the database.
+//   - clusterName - The name of the Redis Enterprise cluster.
+//   - databaseName - The name of the Redis Enterprise database.
 //   - parameters - Information identifying the databases to be flushed
 //   - options - DatabasesClientBeginFlushOptions contains the optional parameters for the DatabasesClient.BeginFlush method.
 func (client *DatabasesClient) BeginFlush(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, parameters FlushParameters, options *DatabasesClientBeginFlushOptions) (*runtime.Poller[DatabasesClientFlushResponse], error) {
@@ -324,7 +324,7 @@ func (client *DatabasesClient) BeginFlush(ctx context.Context, resourceGroupName
 // Flush - Flushes all the keys in this database and also from its linked databases.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01
+// Generated from API version 2024-03-01-preview
 func (client *DatabasesClient) flush(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, parameters FlushParameters, options *DatabasesClientBeginFlushOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DatabasesClient.BeginFlush"
@@ -370,7 +370,97 @@ func (client *DatabasesClient) flushCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-01")
+	reqQP.Set("api-version", "2024-03-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginForceLinkToReplicationGroup - Forcibly recreates an existing database on the specified cluster, and rejoins it to
+// an existing replication group. IMPORTANT NOTE: All data in this database will be discarded, and the database will
+// temporarily be unavailable while rejoining the replication group.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-03-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - clusterName - The name of the Redis Enterprise cluster.
+//   - databaseName - The name of the Redis Enterprise database.
+//   - parameters - Information identifying the database to be unlinked.
+//   - options - DatabasesClientBeginForceLinkToReplicationGroupOptions contains the optional parameters for the DatabasesClient.BeginForceLinkToReplicationGroup
+//     method.
+func (client *DatabasesClient) BeginForceLinkToReplicationGroup(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, parameters ForceLinkParameters, options *DatabasesClientBeginForceLinkToReplicationGroupOptions) (*runtime.Poller[DatabasesClientForceLinkToReplicationGroupResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.forceLinkToReplicationGroup(ctx, resourceGroupName, clusterName, databaseName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DatabasesClientForceLinkToReplicationGroupResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DatabasesClientForceLinkToReplicationGroupResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// ForceLinkToReplicationGroup - Forcibly recreates an existing database on the specified cluster, and rejoins it to an existing
+// replication group. IMPORTANT NOTE: All data in this database will be discarded, and the database will
+// temporarily be unavailable while rejoining the replication group.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-03-01-preview
+func (client *DatabasesClient) forceLinkToReplicationGroup(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, parameters ForceLinkParameters, options *DatabasesClientBeginForceLinkToReplicationGroupOptions) (*http.Response, error) {
+	var err error
+	const operationName = "DatabasesClient.BeginForceLinkToReplicationGroup"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.forceLinkToReplicationGroupCreateRequest(ctx, resourceGroupName, clusterName, databaseName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// forceLinkToReplicationGroupCreateRequest creates the ForceLinkToReplicationGroup request.
+func (client *DatabasesClient) forceLinkToReplicationGroupCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, parameters ForceLinkParameters, options *DatabasesClientBeginForceLinkToReplicationGroupOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redisEnterprise/{clusterName}/databases/{databaseName}/forceLinkToReplicationGroup"
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if clusterName == "" {
+		return nil, errors.New("parameter clusterName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
+	if databaseName == "" {
+		return nil, errors.New("parameter databaseName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -382,10 +472,10 @@ func (client *DatabasesClient) flushCreateRequest(ctx context.Context, resourceG
 // BeginForceUnlink - Forcibly removes the link to the specified database resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01
+// Generated from API version 2024-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - clusterName - The name of the RedisEnterprise cluster.
-//   - databaseName - The name of the database.
+//   - clusterName - The name of the Redis Enterprise cluster.
+//   - databaseName - The name of the Redis Enterprise database.
 //   - parameters - Information identifying the database to be unlinked.
 //   - options - DatabasesClientBeginForceUnlinkOptions contains the optional parameters for the DatabasesClient.BeginForceUnlink
 //     method.
@@ -410,7 +500,7 @@ func (client *DatabasesClient) BeginForceUnlink(ctx context.Context, resourceGro
 // ForceUnlink - Forcibly removes the link to the specified database resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01
+// Generated from API version 2024-03-01-preview
 func (client *DatabasesClient) forceUnlink(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, parameters ForceUnlinkParameters, options *DatabasesClientBeginForceUnlinkOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DatabasesClient.BeginForceUnlink"
@@ -456,7 +546,7 @@ func (client *DatabasesClient) forceUnlinkCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-01")
+	reqQP.Set("api-version", "2024-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -468,10 +558,10 @@ func (client *DatabasesClient) forceUnlinkCreateRequest(ctx context.Context, res
 // Get - Gets information about a database in a RedisEnterprise cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01
+// Generated from API version 2024-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - clusterName - The name of the RedisEnterprise cluster.
-//   - databaseName - The name of the database.
+//   - clusterName - The name of the Redis Enterprise cluster.
+//   - databaseName - The name of the Redis Enterprise database.
 //   - options - DatabasesClientGetOptions contains the optional parameters for the DatabasesClient.Get method.
 func (client *DatabasesClient) Get(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, options *DatabasesClientGetOptions) (DatabasesClientGetResponse, error) {
 	var err error
@@ -519,7 +609,7 @@ func (client *DatabasesClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-01")
+	reqQP.Set("api-version", "2024-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -537,10 +627,10 @@ func (client *DatabasesClient) getHandleResponse(resp *http.Response) (Databases
 // BeginImport - Imports database files to target database.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01
+// Generated from API version 2024-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - clusterName - The name of the RedisEnterprise cluster.
-//   - databaseName - The name of the database.
+//   - clusterName - The name of the Redis Enterprise cluster.
+//   - databaseName - The name of the Redis Enterprise database.
 //   - parameters - Storage information for importing into the cluster
 //   - options - DatabasesClientBeginImportOptions contains the optional parameters for the DatabasesClient.BeginImport method.
 func (client *DatabasesClient) BeginImport(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, parameters ImportClusterParameters, options *DatabasesClientBeginImportOptions) (*runtime.Poller[DatabasesClientImportResponse], error) {
@@ -564,7 +654,7 @@ func (client *DatabasesClient) BeginImport(ctx context.Context, resourceGroupNam
 // Import - Imports database files to target database.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01
+// Generated from API version 2024-03-01-preview
 func (client *DatabasesClient) importOperation(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, parameters ImportClusterParameters, options *DatabasesClientBeginImportOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DatabasesClient.BeginImport"
@@ -610,7 +700,7 @@ func (client *DatabasesClient) importCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-01")
+	reqQP.Set("api-version", "2024-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -621,9 +711,9 @@ func (client *DatabasesClient) importCreateRequest(ctx context.Context, resource
 
 // NewListByClusterPager - Gets all databases in the specified RedisEnterprise cluster.
 //
-// Generated from API version 2023-11-01
+// Generated from API version 2024-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - clusterName - The name of the RedisEnterprise cluster.
+//   - clusterName - The name of the Redis Enterprise cluster.
 //   - options - DatabasesClientListByClusterOptions contains the optional parameters for the DatabasesClient.NewListByClusterPager
 //     method.
 func (client *DatabasesClient) NewListByClusterPager(resourceGroupName string, clusterName string, options *DatabasesClientListByClusterOptions) *runtime.Pager[DatabasesClientListByClusterResponse] {
@@ -669,7 +759,7 @@ func (client *DatabasesClient) listByClusterCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-01")
+	reqQP.Set("api-version", "2024-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -687,10 +777,10 @@ func (client *DatabasesClient) listByClusterHandleResponse(resp *http.Response) 
 // ListKeys - Retrieves the access keys for the RedisEnterprise database.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01
+// Generated from API version 2024-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - clusterName - The name of the RedisEnterprise cluster.
-//   - databaseName - The name of the database.
+//   - clusterName - The name of the Redis Enterprise cluster.
+//   - databaseName - The name of the Redis Enterprise database.
 //   - options - DatabasesClientListKeysOptions contains the optional parameters for the DatabasesClient.ListKeys method.
 func (client *DatabasesClient) ListKeys(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, options *DatabasesClientListKeysOptions) (DatabasesClientListKeysResponse, error) {
 	var err error
@@ -738,7 +828,7 @@ func (client *DatabasesClient) listKeysCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-01")
+	reqQP.Set("api-version", "2024-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -756,10 +846,10 @@ func (client *DatabasesClient) listKeysHandleResponse(resp *http.Response) (Data
 // BeginRegenerateKey - Regenerates the RedisEnterprise database's access keys.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01
+// Generated from API version 2024-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - clusterName - The name of the RedisEnterprise cluster.
-//   - databaseName - The name of the database.
+//   - clusterName - The name of the Redis Enterprise cluster.
+//   - databaseName - The name of the Redis Enterprise database.
 //   - parameters - Specifies which key to regenerate.
 //   - options - DatabasesClientBeginRegenerateKeyOptions contains the optional parameters for the DatabasesClient.BeginRegenerateKey
 //     method.
@@ -784,7 +874,7 @@ func (client *DatabasesClient) BeginRegenerateKey(ctx context.Context, resourceG
 // RegenerateKey - Regenerates the RedisEnterprise database's access keys.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01
+// Generated from API version 2024-03-01-preview
 func (client *DatabasesClient) regenerateKey(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, parameters RegenerateKeyParameters, options *DatabasesClientBeginRegenerateKeyOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DatabasesClient.BeginRegenerateKey"
@@ -830,7 +920,7 @@ func (client *DatabasesClient) regenerateKeyCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-01")
+	reqQP.Set("api-version", "2024-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -842,10 +932,10 @@ func (client *DatabasesClient) regenerateKeyCreateRequest(ctx context.Context, r
 // BeginUpdate - Updates a database
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01
+// Generated from API version 2024-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - clusterName - The name of the RedisEnterprise cluster.
-//   - databaseName - The name of the database.
+//   - clusterName - The name of the Redis Enterprise cluster.
+//   - databaseName - The name of the Redis Enterprise database.
 //   - parameters - Parameters supplied to the create or update database operation.
 //   - options - DatabasesClientBeginUpdateOptions contains the optional parameters for the DatabasesClient.BeginUpdate method.
 func (client *DatabasesClient) BeginUpdate(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, parameters DatabaseUpdate, options *DatabasesClientBeginUpdateOptions) (*runtime.Poller[DatabasesClientUpdateResponse], error) {
@@ -869,7 +959,7 @@ func (client *DatabasesClient) BeginUpdate(ctx context.Context, resourceGroupNam
 // Update - Updates a database
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01
+// Generated from API version 2024-03-01-preview
 func (client *DatabasesClient) update(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, parameters DatabaseUpdate, options *DatabasesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DatabasesClient.BeginUpdate"
@@ -915,11 +1005,93 @@ func (client *DatabasesClient) updateCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-01")
+	reqQP.Set("api-version", "2024-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
 		return nil, err
 	}
+	return req, nil
+}
+
+// BeginUpgradeDBRedisVersion - Upgrades the database Redis version to the latest available.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-03-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - clusterName - The name of the Redis Enterprise cluster.
+//   - databaseName - The name of the Redis Enterprise database.
+//   - options - DatabasesClientBeginUpgradeDBRedisVersionOptions contains the optional parameters for the DatabasesClient.BeginUpgradeDBRedisVersion
+//     method.
+func (client *DatabasesClient) BeginUpgradeDBRedisVersion(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, options *DatabasesClientBeginUpgradeDBRedisVersionOptions) (*runtime.Poller[DatabasesClientUpgradeDBRedisVersionResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.upgradeDBRedisVersion(ctx, resourceGroupName, clusterName, databaseName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DatabasesClientUpgradeDBRedisVersionResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DatabasesClientUpgradeDBRedisVersionResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// UpgradeDBRedisVersion - Upgrades the database Redis version to the latest available.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-03-01-preview
+func (client *DatabasesClient) upgradeDBRedisVersion(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, options *DatabasesClientBeginUpgradeDBRedisVersionOptions) (*http.Response, error) {
+	var err error
+	const operationName = "DatabasesClient.BeginUpgradeDBRedisVersion"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.upgradeDBRedisVersionCreateRequest(ctx, resourceGroupName, clusterName, databaseName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// upgradeDBRedisVersionCreateRequest creates the UpgradeDBRedisVersion request.
+func (client *DatabasesClient) upgradeDBRedisVersionCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, options *DatabasesClientBeginUpgradeDBRedisVersionOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redisEnterprise/{clusterName}/databases/{databaseName}/upgradeDBRedisVersion"
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if clusterName == "" {
+		return nil, errors.New("parameter clusterName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
+	if databaseName == "" {
+		return nil, errors.New("parameter databaseName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-03-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

@@ -13,6 +13,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig"
@@ -36,9 +37,6 @@ var testId = "120823uid"
 // var testId = strconv.FormatInt(currTime, 10)[len(strconv.FormatInt(currTime, 10))-6:]
 
 func TestClient(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
 	const (
 		key   = "key-TestClient"
 		label = "label"
@@ -309,9 +307,6 @@ func TestClient(t *testing.T) {
 }
 
 func TestSettingNilValue(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
 	const (
 		key         = "key-TestSettingNilValue"
 		contentType = "content-type"
@@ -331,9 +326,6 @@ func TestSettingNilValue(t *testing.T) {
 }
 
 func TestSettingWithEscaping(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
 	const (
 		key         = ".appconfig.featureflag/TestSettingWithEscaping"
 		contentType = "application/vnd.microsoft.appconfig.ff+json;charset=utf-8"
@@ -358,9 +350,6 @@ func TestSettingWithEscaping(t *testing.T) {
 }
 
 func TestSnapshotListConfigurationSettings(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
 	snapshotName := "listConfigurationsSnapshotTest" + string(testId)
 	client := NewClientFromConnectionString(t)
 
@@ -495,9 +484,6 @@ func TestSnapshotListConfigurationSettings(t *testing.T) {
 }
 
 func TestGetSnapshots(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
 	snapshotName := "getSnapshotsTest" + string(testId)
 
 	const (
@@ -547,9 +533,6 @@ func TestGetSnapshots(t *testing.T) {
 }
 
 func TestSnapshotArchive(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
 	snapshotName := "archiveSnapshotsTest" + string(testId)
 
 	client := NewClientFromConnectionString(t)
@@ -567,14 +550,11 @@ func TestSnapshotArchive(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, azappconfig.SnapshotStatusArchived, *archiveSnapshot.Snapshot.Status)
 
-	//Best effort snapshot cleanup
+	// Best effort snapshot cleanup
 	require.NoError(t, CleanupSnapshot(client, snapshotName))
 }
 
 func TestSnapshotRecover(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
 	snapshotName := "recoverSnapshotsTest" + string(testId)
 
 	client := NewClientFromConnectionString(t)
@@ -603,14 +583,11 @@ func TestSnapshotRecover(t *testing.T) {
 }
 
 func TestSnapshotCreate(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
 	snapshotName := "createSnapshotsTest" + string(testId)
 
 	client := NewClientFromConnectionString(t)
 
-	//Create a snapshot
+	// Create a snapshot
 	snapshot, err := CreateSnapshot(client, snapshotName, nil)
 
 	require.NoError(t, err)
@@ -618,6 +595,117 @@ func TestSnapshotCreate(t *testing.T) {
 
 	// Best effort cleanup snapshot
 	require.NoError(t, CleanupSnapshot(client, snapshotName))
+}
+
+func createMultipleKeys(t *testing.T, client *azappconfig.Client, batchKey string, count int) string {
+	resp, err := client.GetSetting(context.Background(), batchKey, nil)
+	if err == nil {
+		return *resp.Value
+	}
+
+	key, err := recording.GenerateAlphaNumericID(t, "key-", 10, true)
+	require.NoError(t, err)
+
+	for i := 0; i < count; i++ {
+		_, err = client.AddSetting(context.Background(), key, to.Ptr("test_value"), &azappconfig.AddSettingOptions{
+			Label: to.Ptr(fmt.Sprintf("%d", i)),
+		})
+		require.NoError(t, err)
+	}
+	_, err = client.SetSetting(context.Background(), batchKey, &key, nil)
+	require.NoError(t, err)
+	return key
+}
+
+func TestListSettingsPagerWithETagUnmodifiedPage(t *testing.T) {
+	client := NewClientFromConnectionString(t)
+
+	key := createMultipleKeys(t, client, "TestListSettingsPagerWithETagUnmodifiedPage", 105)
+
+	selector := azappconfig.SettingSelector{
+		KeyFilter: &key,
+	}
+
+	// get all page ETags
+	pager := client.NewListSettingsPager(selector, nil)
+	matchConditions := []azcore.MatchConditions{}
+	countPages := 0
+	for pager.More() {
+		page, err := pager.NextPage(context.Background())
+		require.NoError(t, err)
+		matchConditions = append(matchConditions, azcore.MatchConditions{
+			IfNoneMatch: page.ETag,
+		})
+		countPages++
+	}
+	require.EqualValues(t, 2, countPages)
+
+	// validate all pages are not modified and returns an empty list of settings
+	countPages = 0
+	pager = client.NewListSettingsPager(selector, &azappconfig.ListSettingsOptions{
+		MatchConditions: matchConditions,
+	})
+	for pager.More() {
+		page, err := pager.NextPage(context.Background())
+		require.NoError(t, err)
+		require.Empty(t, page.Settings)
+		countPages++
+	}
+	require.EqualValues(t, 2, countPages)
+}
+
+func TestListSettingsPagerWithETagModifiedPage(t *testing.T) {
+	client := NewClientFromConnectionString(t)
+
+	key := createMultipleKeys(t, client, "TestListSettingsPagerWithETagModifiedPage", 105)
+
+	selector := azappconfig.SettingSelector{
+		KeyFilter: &key,
+	}
+
+	// get all page ETags
+	var lastSetting azappconfig.Setting
+	pager := client.NewListSettingsPager(selector, nil)
+	matchConditions := []azcore.MatchConditions{}
+	countPages := 0
+	for pager.More() {
+		page, err := pager.NextPage(context.Background())
+		require.NoError(t, err)
+		for _, setting := range page.Settings {
+			lastSetting = setting
+		}
+		matchConditions = append(matchConditions, azcore.MatchConditions{
+			IfNoneMatch: page.ETag,
+		})
+		countPages++
+	}
+	require.EqualValues(t, 2, countPages)
+
+	// modify the last setting
+	require.NotNil(t, lastSetting.Key)
+	require.NotNil(t, lastSetting.Value)
+	lastSetting.Value = to.Ptr(fmt.Sprintf("%s-1", *lastSetting.Value))
+	_, err := client.SetSetting(context.Background(), *lastSetting.Key, lastSetting.Value, &azappconfig.SetSettingOptions{
+		Label: lastSetting.Label,
+	})
+	require.NoError(t, err)
+
+	// validate second page is modified
+	countPages = 0
+	pager = client.NewListSettingsPager(selector, &azappconfig.ListSettingsOptions{
+		MatchConditions: matchConditions,
+	})
+	for pager.More() {
+		page, err := pager.NextPage(context.Background())
+		require.NoError(t, err)
+		if countPages == 0 {
+			require.Empty(t, page.Settings)
+		} else {
+			require.NotEmpty(t, page.Settings)
+		}
+		countPages++
+	}
+	require.EqualValues(t, 2, countPages)
 }
 
 func CreateSnapshot(c *azappconfig.Client, snapshotName string, sf []azappconfig.SettingFilter) (azappconfig.CreateSnapshotResponse, error) {
@@ -634,7 +722,7 @@ func CreateSnapshot(c *azappconfig.Client, snapshotName string, sf []azappconfig
 		RetentionPeriod: to.Ptr[int64](3600),
 	}
 
-	//Create a snapshot
+	// Create a snapshot
 	resp, err := c.BeginCreateSnapshot(context.Background(), snapshotName, sf, opts)
 
 	if err != nil {
@@ -649,7 +737,7 @@ func CreateSnapshot(c *azappconfig.Client, snapshotName string, sf []azappconfig
 		return azappconfig.CreateSnapshotResponse{}, err
 	}
 
-	//Check if snapshot exists. If not fail the test
+	// Check if snapshot exists. If not fail the test
 	_, err = c.GetSnapshot(context.Background(), snapshotName, nil)
 
 	if err != nil {
@@ -670,7 +758,7 @@ func CleanupSnapshot(client *azappconfig.Client, snapshotName string) error {
 		return err
 	}
 
-	//Check if snapshot exists
+	// Check if snapshot exists
 	snapshot, err := client.GetSnapshot(context.Background(), snapshotName, nil)
 
 	if err != nil || *snapshot.Status != azappconfig.SnapshotStatusArchived {

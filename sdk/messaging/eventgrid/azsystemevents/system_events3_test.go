@@ -340,5 +340,5 @@ func TestConsumeCloudEventEventHubCaptureFileCreatedEvent(t *testing.T) {
 	require.NotEmpty(t, events)
 	sysEvent := deserializeSystemEvent[azsystemevents.EventHubCaptureFileCreatedEventData](t, events[0].Data)
 	require.Equal(t, "AzureBlockBlob", *sysEvent.FileType)
-	require.Equal(t, "https://tf0831datamigrate.blob.core.windows.net/windturbinecapture/tfdatamigratens/hubdatamigration/1/2017/08/31/19/11/45.avro", *sysEvent.Fileurl)
+	require.Equal(t, "https://tf0831datamigrate.blob.core.windows.net/windturbinecapture/tfdatamigratens/hubdatamigration/1/2017/08/31/19/11/45.avro", *sysEvent.FileURL)
 }

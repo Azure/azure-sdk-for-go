@@ -46,7 +46,7 @@ func NewDiagnosticsPackagesClient(subscriptionID string, credential azcore.Token
 // BeginCreateOrUpdate - Creates or updates a diagnostics package.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2024-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - packetCoreControlPlaneName - The name of the packet core control plane.
 //   - diagnosticsPackageName - The name of the diagnostics package.
@@ -73,7 +73,7 @@ func (client *DiagnosticsPackagesClient) BeginCreateOrUpdate(ctx context.Context
 // CreateOrUpdate - Creates or updates a diagnostics package.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2024-04-01
 func (client *DiagnosticsPackagesClient) createOrUpdate(ctx context.Context, resourceGroupName string, packetCoreControlPlaneName string, diagnosticsPackageName string, options *DiagnosticsPackagesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DiagnosticsPackagesClient.BeginCreateOrUpdate"
@@ -119,7 +119,7 @@ func (client *DiagnosticsPackagesClient) createOrUpdateCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -128,7 +128,7 @@ func (client *DiagnosticsPackagesClient) createOrUpdateCreateRequest(ctx context
 // BeginDelete - Deletes the specified diagnostics package.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2024-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - packetCoreControlPlaneName - The name of the packet core control plane.
 //   - diagnosticsPackageName - The name of the diagnostics package.
@@ -155,7 +155,7 @@ func (client *DiagnosticsPackagesClient) BeginDelete(ctx context.Context, resour
 // Delete - Deletes the specified diagnostics package.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2024-04-01
 func (client *DiagnosticsPackagesClient) deleteOperation(ctx context.Context, resourceGroupName string, packetCoreControlPlaneName string, diagnosticsPackageName string, options *DiagnosticsPackagesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DiagnosticsPackagesClient.BeginDelete"
@@ -201,7 +201,7 @@ func (client *DiagnosticsPackagesClient) deleteCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -210,7 +210,7 @@ func (client *DiagnosticsPackagesClient) deleteCreateRequest(ctx context.Context
 // Get - Gets information about the specified diagnostics package.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2024-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - packetCoreControlPlaneName - The name of the packet core control plane.
 //   - diagnosticsPackageName - The name of the diagnostics package.
@@ -261,7 +261,7 @@ func (client *DiagnosticsPackagesClient) getCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -278,7 +278,7 @@ func (client *DiagnosticsPackagesClient) getHandleResponse(resp *http.Response) 
 
 // NewListByPacketCoreControlPlanePager - Lists all the diagnostics packages under a packet core control plane.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2024-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - packetCoreControlPlaneName - The name of the packet core control plane.
 //   - options - DiagnosticsPackagesClientListByPacketCoreControlPlaneOptions contains the optional parameters for the DiagnosticsPackagesClient.NewListByPacketCoreControlPlanePager
@@ -326,7 +326,7 @@ func (client *DiagnosticsPackagesClient) listByPacketCoreControlPlaneCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

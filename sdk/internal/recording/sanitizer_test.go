@@ -79,7 +79,6 @@ func (e Entry) ResponseBodyByValue(k string) interface{} {
 }
 
 func (s *sanitizerTests) TestRemoveRegisteredSanitizers() {
-	s.T().Skip("this feature requires proxy version 1.0.0-dev.20240506.5 or later. Unskip this test after upgrading the proxy version specified in eng/target_proxy_version.txt")
 	require := require.New(s.T())
 	defer reset(s.T())
 

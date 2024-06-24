@@ -48,7 +48,7 @@ func Example_assistantsWithConversationLoop() {
 	}
 
 	// First, let's create an assistant.
-	createAssistantResp, err := client.CreateAssistant(context.Background(), azopenaiassistants.AssistantCreationBody{
+	createAssistantResp, err := client.CreateAssistant(context.Background(), azopenaiassistants.CreateAssistantBody{
 		Name:           &assistantName,
 		DeploymentName: to.Ptr("gpt-4-1106-preview"),
 		Instructions:   to.Ptr("You are a personal math tutor. Write and run code to answer math questions."),
@@ -79,11 +79,12 @@ func Example_assistantsWithConversationLoop() {
 
 	// Now we'll create a thread. The thread is where you will add messages, which can later
 	// be evaluated using a Run. A thread can be re-used by multiple Runs.
-	createThreadResp, err := client.CreateThread(context.Background(), azopenaiassistants.AssistantThreadCreationOptions{}, nil)
+	createThreadResp, err := client.CreateThread(context.Background(), azopenaiassistants.CreateThreadBody{}, nil)
 
 	if err != nil {
 		//  TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
+		log.Printf("ERROR: %s", err)
+		return
 	}
 
 	threadID := createThreadResp.ID
@@ -138,11 +139,12 @@ func Example_assistantsWithConversationLoop() {
 			fmt.Fprintf(os.Stderr, "Assistant stopped cleanly\n")
 		} else {
 			//  TODO: Update the following line with your application specific error handling logic
-			log.Fatalf("ERROR: %s\n", err)
+			log.Printf("ERROR: %s", err)
+			return
 		}
 	}
 
-	// Output:
+	// DisabledOutput:
 }
 
 // conversationHandler takes responses from an assistant and returns our reply messages. Returns the responses
@@ -243,19 +245,37 @@ func pollUntilRunEnds(ctx context.Context, client *azopenaiassistants.Client, th
 			return azopenaiassistants.GetRunResponse{}, err
 		}
 
-		if *lastGetRunResp.Status == azopenaiassistants.RunStatusCompleted ||
-			*lastGetRunResp.Status == azopenaiassistants.RunStatusRequiresAction {
+		switch *lastGetRunResp.Status {
+		case azopenaiassistants.RunStatusInProgress, azopenaiassistants.RunStatusQueued:
+			// we're either running or about to run so we'll just keep polling for the end.
+			select {
+			case <-time.After(500 * time.Millisecond):
+			case <-ctx.Done():
+				return azopenaiassistants.GetRunResponse{}, ctx.Err()
+			}
+		case azopenaiassistants.RunStatusRequiresAction:
+			// The assistant run has stopped because a tool requires you to submit inputs.
+			// You can see an example of this in Example_assistantsUsingFunctionTool.
 			return lastGetRunResp, nil
-		}
+		case azopenaiassistants.RunStatusCompleted:
+			// The run has completed successfully
+			return lastGetRunResp, nil
+		case azopenaiassistants.RunStatusFailed:
+			// The run has failed. We can use the code and message to give us an idea of why.
+			var code, description string
 
-		if *lastGetRunResp.Status != azopenaiassistants.RunStatusQueued && *lastGetRunResp.Status != azopenaiassistants.RunStatusInProgress {
+			if lastGetRunResp.LastError != nil && lastGetRunResp.LastError.Code != nil {
+				code = *lastGetRunResp.LastError.Code
+			}
+
+			if lastGetRunResp.LastError != nil && lastGetRunResp.LastError.Message != nil {
+				description = *lastGetRunResp.LastError.Message
+			}
+
+			return lastGetRunResp, fmt.Errorf("run failed, code: %s, message: %s", code, description)
+
+		default:
 			return azopenaiassistants.GetRunResponse{}, fmt.Errorf("run ended but status was not complete: %s", *lastGetRunResp.Status)
-		}
-
-		select {
-		case <-time.After(500 * time.Millisecond):
-		case <-ctx.Done():
-			return azopenaiassistants.GetRunResponse{}, ctx.Err()
 		}
 	}
 }

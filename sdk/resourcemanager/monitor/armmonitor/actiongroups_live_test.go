@@ -15,7 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v2/testutil"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor"
 	"github.com/stretchr/testify/suite"
 )
@@ -33,7 +33,7 @@ type ActiongroupsTestSuite struct {
 }
 
 func (testsuite *ActiongroupsTestSuite) SetupSuite() {
-	testutil.StartRecording(testsuite.T(), "sdk/resourcemanager/monitor/armmonitor/testdata")
+	testutil.StartRecording(testsuite.T(), pathToPackage)
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
 	testsuite.actionGroupName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "actiongroupna", 19, false)
@@ -53,9 +53,6 @@ func (testsuite *ActiongroupsTestSuite) TearDownSuite() {
 }
 
 func TestActiongroupsTestSuite(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
 	suite.Run(t, new(ActiongroupsTestSuite))
 }
 

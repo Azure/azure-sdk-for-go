@@ -49,9 +49,6 @@ import (
 var proposedLeaseIDs = []*string{to.Ptr("c820a799-76d7-4ee2-6e15-546f19325c2c"), to.Ptr("326cc5e1-746e-4af8-4811-a50e6629a8ca")}
 
 func Test(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
 	recordMode := recording.GetRecordMode()
 	t.Logf("Running blockblob Tests in %s mode\n", recordMode)
 	if recordMode == recording.LiveMode {
@@ -435,7 +432,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockFromURLWithMD5() {
 
 	// Test stage block from URL with bad MD5 value
 	_, badMD5 := testcommon.GetDataAndReader(testName, 16)
-	var badMD5Validator blob.SourceContentValidationTypeMD5 = badMD5[:]
+	var badMD5Validator blob.SourceContentValidationTypeMD5 = badMD5
 	opts = blockblob.StageBlockFromURLOptions{
 		SourceContentValidation: badMD5Validator,
 	}
@@ -565,7 +562,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockFromURLWithCRC64() {
 //		// Prepare source bbClient for copy.
 //		_, err = srcBlob.Upload(context.Background(), streaming.NopCloser(body), nil)
 //		_require.NoError(err)
-//		//_require.Equal(uploadSrcResp.RawResponse.StatusCode, 201)
+//		// _require.Equal(uploadSrcResp.RawResponse.StatusCode, 201)
 //
 //		// Get source blob url with SAS for StageFromURL.
 //		srcBlobParts, _ := NewBlobURLParts(srcBlob.URL())
@@ -651,7 +648,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockFromURLWithCRC64() {
 //		const contentSize = 8 * 1024 // 8 KB
 //		content := make([]byte, contentSize)
 //		body := bytes.NewReader(content)
-//		//contentMD5 := md5.Sum(content)
+//		// contentMD5 := md5.Sum(content)
 //
 //		ctx := context.Background()
 //
@@ -659,7 +656,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockFromURLWithCRC64() {
 //
 //		_, err = bbClient.Upload(context.Background(), streaming.NopCloser(body), nil)
 //		_require.NoError(err)
-//		//_require.Equal(uploadSrcResp.RawResponse.StatusCode, 201)
+//		// _require.Equal(uploadSrcResp.RawResponse.StatusCode, 201)
 //
 //		// Get blob url with SAS.
 //		blobParts, _ := NewBlobURLParts(bbClient.URL())
@@ -1174,7 +1171,9 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlWithCPK() {
 
 	getResp, err := destBlob.GetProperties(context.Background(), &getBlobPropertiesOptions)
 	_require.NoError(err)
-	_require.EqualValues(getResp.EncryptionKeySHA256, testcommon.TestCPKByValue.EncryptionKeySHA256)
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		_require.EqualValues(getResp.EncryptionKeySHA256, testcommon.TestCPKByValue.EncryptionKeySHA256)
+	}
 }
 
 func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlCPKScope() {
@@ -1247,7 +1246,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlSourceContentMD5() {
 	_require.NotEqual(*resp.ETag, "")
 	_require.NotEqual(*resp.RequestID, "")
 	_require.NotEqual(*resp.Version, "")
-	_require.Equal((*resp.Date).IsZero(), false)
+	_require.Equal(resp.Date.IsZero(), false)
 	_require.EqualValues(resp.ContentMD5, sourceDataMD5Value[:])
 
 	// Try UploadBlobFromURL with bad MD5
@@ -2016,7 +2015,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlobIfUnmodifiedSinceFalse() {
 	loc, err := time.LoadLocation("EST")
 	_require.NoError(err)
 	currentTime := testcommon.GetRelativeTimeFromAnchor(createResp.Date, -10)
-	currentTime = currentTime.In(loc) //converting to EST
+	currentTime = currentTime.In(loc) // converting to EST
 
 	uploadBlockBlobOptions := blockblob.UploadOptions{
 		AccessConditions: &blob.AccessConditions{
@@ -3093,7 +3092,9 @@ func (s *BlockBlobRecordedTestsSuite) TestGetSetBlobMetadataWithCPK() {
 	}
 	resp, err := bbClient.SetMetadata(context.Background(), testcommon.BasicMetadata, &setBlobMetadataOptions)
 	_require.NoError(err)
-	_require.EqualValues(resp.EncryptionKeySHA256, testcommon.TestCPKByValue.EncryptionKeySHA256)
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		_require.EqualValues(resp.EncryptionKeySHA256, testcommon.TestCPKByValue.EncryptionKeySHA256)
+	}
 
 	// Get blob properties without encryption key should fail the request.
 	_, err = bbClient.GetProperties(context.Background(), nil)
@@ -3187,8 +3188,9 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobSnapshotWithCPK() {
 	}
 	dResp, err := snapshotURL.DownloadStream(context.Background(), &downloadBlobOptions)
 	_require.NoError(err)
-	_require.EqualValues(*dResp.EncryptionKeySHA256, *testcommon.TestCPKByValue.EncryptionKeySHA256)
-
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		_require.EqualValues(*dResp.EncryptionKeySHA256, *testcommon.TestCPKByValue.EncryptionKeySHA256)
+	}
 	_, err = snapshotURL.Delete(context.Background(), nil)
 	_require.NoError(err)
 
@@ -3836,7 +3838,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestUploadBlockBlobWithSpecialCharacters
 
 	bbClient := testcommon.GetBlockBlobClient(testcommon.GenerateBlobName(testName), containerClient)
 	blobTagsMap := map[string]string{
-		"+-./:=_ ": "firsttag",
+		"+-./:=_ ": "firsttag", //nolint
 		"tag2":     "+-./:=_",
 		"+-./:=_1": "+-./:=_",
 	}
@@ -4245,7 +4247,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestListBlobReturnsTags() {
 	blobName := testcommon.GenerateBlobName(testName)
 	blobClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blobName, containerClient)
 	blobTagsMap := map[string]string{
-		"+-./:=_ ": "firsttag",
+		"+-./:=_ ": "firsttag", //nolint
 		"tag2":     "+-./:=_",
 		"+-./:=_1": "+-./:=_",
 	}
@@ -4421,7 +4423,9 @@ func (s *BlockBlobRecordedTestsSuite) TestPutBlockAndPutBlockListWithCPK() {
 	_require.NotNil(resp.ETag)
 	_require.NotNil(resp.LastModified)
 	_require.Equal(*resp.IsServerEncrypted, true)
-	_require.EqualValues(*resp.EncryptionKeySHA256, *(testcommon.TestCPKByValue.EncryptionKeySHA256))
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		_require.EqualValues(*resp.EncryptionKeySHA256, *(testcommon.TestCPKByValue.EncryptionKeySHA256))
+	}
 
 	// Get blob content without encryption key should fail the request.
 	_, err = bbClient.DownloadStream(context.Background(), nil)
@@ -4758,7 +4762,7 @@ func (s *BlockBlobRecordedTestsSuite) TestUploadBlobWithMD5() {
 
 	// Test Upload with bad MD5
 	_, badMD5 := testcommon.GetDataAndReader(testName, 16)
-	var badMD5Validator blob.TransferValidationTypeMD5 = badMD5[:]
+	var badMD5Validator blob.TransferValidationTypeMD5 = badMD5
 
 	uploadBlockBlobOptions = blockblob.UploadOptions{
 		TransactionalValidation: badMD5Validator,
@@ -4787,7 +4791,9 @@ func (s *BlockBlobRecordedTestsSuite) TestUploadBlobWithMD5WithCPK() {
 	_require.NoError(err)
 	// _require.Equal(uploadResp.RawResponse.StatusCode, 201)
 	_require.Equal(*uploadResp.IsServerEncrypted, true)
-	_require.EqualValues(uploadResp.EncryptionKeySHA256, testcommon.TestCPKByValue.EncryptionKeySHA256)
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		_require.EqualValues(uploadResp.EncryptionKeySHA256, testcommon.TestCPKByValue.EncryptionKeySHA256)
+	}
 
 	// Get blob content without encryption key should fail the request.
 	_, err = bbClient.DownloadStream(context.Background(), nil)
@@ -4807,7 +4813,9 @@ func (s *BlockBlobRecordedTestsSuite) TestUploadBlobWithMD5WithCPK() {
 	destData, err := io.ReadAll(downloadResp.Body)
 	_require.NoError(err)
 	_require.EqualValues(destData, srcData)
-	_require.EqualValues(downloadResp.EncryptionKeySHA256, testcommon.TestCPKByValue.EncryptionKeySHA256)
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		_require.EqualValues(downloadResp.EncryptionKeySHA256, testcommon.TestCPKByValue.EncryptionKeySHA256)
+	}
 }
 
 func (s *BlockBlobRecordedTestsSuite) TestUploadBlobWithMD5WithCPKScope() {
@@ -5123,7 +5131,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestBlobUploadStreamDownloadBuffer() {
 		n, err := srcBlob.DownloadBuffer(context.Background(), buff, &b)
 		_require.NoError(err)
 		_require.Equal(int64(contentSize), n)
-		_require.Equal(contentMD5, md5.Sum(buff[:]))
+		_require.Equal(contentMD5, md5.Sum(buff))
 	}
 
 	testUploadDownload(0) // zero byte blob
@@ -5412,7 +5420,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestBlockBlobSetExpiryToAbsolute() {
 	resp, err = bbClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
 	_require.NotNil(resp.ExpiresOn)
-	_require.Equal(expiryTimeAbsolute.UTC().Format(http.TimeFormat), (*resp.ExpiresOn).UTC().Format(http.TimeFormat))
+	_require.Equal(expiryTimeAbsolute.UTC().Format(http.TimeFormat), resp.ExpiresOn.UTC().Format(http.TimeFormat))
 
 	time.Sleep(time.Second * 10)
 

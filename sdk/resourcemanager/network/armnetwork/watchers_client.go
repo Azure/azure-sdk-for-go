@@ -48,7 +48,7 @@ func NewWatchersClient(subscriptionID string, credential azcore.TokenCredential,
 // endpoint including another VM or an arbitrary remote server.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01
+// Generated from API version 2023-11-01
 //   - resourceGroupName - The name of the network watcher resource group.
 //   - networkWatcherName - The name of the network watcher resource.
 //   - parameters - Parameters that determine how the connectivity check will be performed.
@@ -76,7 +76,7 @@ func (client *WatchersClient) BeginCheckConnectivity(ctx context.Context, resour
 // endpoint including another VM or an arbitrary remote server.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01
+// Generated from API version 2023-11-01
 func (client *WatchersClient) checkConnectivity(ctx context.Context, resourceGroupName string, networkWatcherName string, parameters ConnectivityParameters, options *WatchersClientBeginCheckConnectivityOptions) (*http.Response, error) {
 	var err error
 	const operationName = "WatchersClient.BeginCheckConnectivity"
@@ -118,7 +118,7 @@ func (client *WatchersClient) checkConnectivityCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-01")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -130,7 +130,7 @@ func (client *WatchersClient) checkConnectivityCreateRequest(ctx context.Context
 // CreateOrUpdate - Creates or updates a network watcher in the specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01
+// Generated from API version 2023-11-01
 //   - resourceGroupName - The name of the resource group.
 //   - networkWatcherName - The name of the network watcher.
 //   - parameters - Parameters that define the network watcher resource.
@@ -177,7 +177,7 @@ func (client *WatchersClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-01")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -198,7 +198,7 @@ func (client *WatchersClient) createOrUpdateHandleResponse(resp *http.Response) 
 // BeginDelete - Deletes the specified network watcher resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01
+// Generated from API version 2023-11-01
 //   - resourceGroupName - The name of the resource group.
 //   - networkWatcherName - The name of the network watcher.
 //   - options - WatchersClientBeginDeleteOptions contains the optional parameters for the WatchersClient.BeginDelete method.
@@ -223,7 +223,7 @@ func (client *WatchersClient) BeginDelete(ctx context.Context, resourceGroupName
 // Delete - Deletes the specified network watcher resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01
+// Generated from API version 2023-11-01
 func (client *WatchersClient) deleteOperation(ctx context.Context, resourceGroupName string, networkWatcherName string, options *WatchersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "WatchersClient.BeginDelete"
@@ -265,7 +265,7 @@ func (client *WatchersClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-01")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -274,7 +274,7 @@ func (client *WatchersClient) deleteCreateRequest(ctx context.Context, resourceG
 // Get - Gets the specified network watcher by resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01
+// Generated from API version 2023-11-01
 //   - resourceGroupName - The name of the resource group.
 //   - networkWatcherName - The name of the network watcher.
 //   - options - WatchersClientGetOptions contains the optional parameters for the WatchersClient.Get method.
@@ -320,7 +320,7 @@ func (client *WatchersClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-01")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -339,7 +339,7 @@ func (client *WatchersClient) getHandleResponse(resp *http.Response) (WatchersCl
 // the relative latency score for internet service providers from a specified location to Azure regions.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01
+// Generated from API version 2023-11-01
 //   - resourceGroupName - The name of the network watcher resource group.
 //   - networkWatcherName - The name of the network watcher resource.
 //   - parameters - Parameters that determine Azure reachability report configuration.
@@ -367,7 +367,7 @@ func (client *WatchersClient) BeginGetAzureReachabilityReport(ctx context.Contex
 // relative latency score for internet service providers from a specified location to Azure regions.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01
+// Generated from API version 2023-11-01
 func (client *WatchersClient) getAzureReachabilityReport(ctx context.Context, resourceGroupName string, networkWatcherName string, parameters AzureReachabilityReportParameters, options *WatchersClientBeginGetAzureReachabilityReportOptions) (*http.Response, error) {
 	var err error
 	const operationName = "WatchersClient.BeginGetAzureReachabilityReport"
@@ -409,7 +409,7 @@ func (client *WatchersClient) getAzureReachabilityReportCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-01")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -421,7 +421,7 @@ func (client *WatchersClient) getAzureReachabilityReportCreateRequest(ctx contex
 // BeginGetFlowLogStatus - Queries status of flow log and traffic analytics (optional) on a specified resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01
+// Generated from API version 2023-11-01
 //   - resourceGroupName - The name of the network watcher resource group.
 //   - networkWatcherName - The name of the network watcher resource.
 //   - parameters - Parameters that define a resource to query flow log and traffic analytics (optional) status.
@@ -448,7 +448,7 @@ func (client *WatchersClient) BeginGetFlowLogStatus(ctx context.Context, resourc
 // GetFlowLogStatus - Queries status of flow log and traffic analytics (optional) on a specified resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01
+// Generated from API version 2023-11-01
 func (client *WatchersClient) getFlowLogStatus(ctx context.Context, resourceGroupName string, networkWatcherName string, parameters FlowLogStatusParameters, options *WatchersClientBeginGetFlowLogStatusOptions) (*http.Response, error) {
 	var err error
 	const operationName = "WatchersClient.BeginGetFlowLogStatus"
@@ -490,7 +490,7 @@ func (client *WatchersClient) getFlowLogStatusCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-01")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -506,7 +506,7 @@ func (client *WatchersClient) getFlowLogStatusCreateRequest(ctx context.Context,
 // the specified flow and the evaluation results.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01
+// Generated from API version 2023-11-01
 //   - resourceGroupName - The name of the resource group.
 //   - networkWatcherName - The name of the network watcher.
 //   - parameters - Parameters to get network configuration diagnostic.
@@ -537,7 +537,7 @@ func (client *WatchersClient) BeginGetNetworkConfigurationDiagnostic(ctx context
 // the specified flow and the evaluation results.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01
+// Generated from API version 2023-11-01
 func (client *WatchersClient) getNetworkConfigurationDiagnostic(ctx context.Context, resourceGroupName string, networkWatcherName string, parameters ConfigurationDiagnosticParameters, options *WatchersClientBeginGetNetworkConfigurationDiagnosticOptions) (*http.Response, error) {
 	var err error
 	const operationName = "WatchersClient.BeginGetNetworkConfigurationDiagnostic"
@@ -579,7 +579,7 @@ func (client *WatchersClient) getNetworkConfigurationDiagnosticCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-01")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -591,7 +591,7 @@ func (client *WatchersClient) getNetworkConfigurationDiagnosticCreateRequest(ctx
 // BeginGetNextHop - Gets the next hop from the specified VM.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01
+// Generated from API version 2023-11-01
 //   - resourceGroupName - The name of the resource group.
 //   - networkWatcherName - The name of the network watcher.
 //   - parameters - Parameters that define the source and destination endpoint.
@@ -618,7 +618,7 @@ func (client *WatchersClient) BeginGetNextHop(ctx context.Context, resourceGroup
 // GetNextHop - Gets the next hop from the specified VM.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01
+// Generated from API version 2023-11-01
 func (client *WatchersClient) getNextHop(ctx context.Context, resourceGroupName string, networkWatcherName string, parameters NextHopParameters, options *WatchersClientBeginGetNextHopOptions) (*http.Response, error) {
 	var err error
 	const operationName = "WatchersClient.BeginGetNextHop"
@@ -660,7 +660,7 @@ func (client *WatchersClient) getNextHopCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-01")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -672,7 +672,7 @@ func (client *WatchersClient) getNextHopCreateRequest(ctx context.Context, resou
 // GetTopology - Gets the current network topology by resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01
+// Generated from API version 2023-11-01
 //   - resourceGroupName - The name of the resource group.
 //   - networkWatcherName - The name of the network watcher.
 //   - parameters - Parameters that define the representation of topology.
@@ -719,7 +719,7 @@ func (client *WatchersClient) getTopologyCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-01")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -740,7 +740,7 @@ func (client *WatchersClient) getTopologyHandleResponse(resp *http.Response) (Wa
 // BeginGetTroubleshooting - Initiate troubleshooting on a specified resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01
+// Generated from API version 2023-11-01
 //   - resourceGroupName - The name of the resource group.
 //   - networkWatcherName - The name of the network watcher resource.
 //   - parameters - Parameters that define the resource to troubleshoot.
@@ -767,7 +767,7 @@ func (client *WatchersClient) BeginGetTroubleshooting(ctx context.Context, resou
 // GetTroubleshooting - Initiate troubleshooting on a specified resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01
+// Generated from API version 2023-11-01
 func (client *WatchersClient) getTroubleshooting(ctx context.Context, resourceGroupName string, networkWatcherName string, parameters TroubleshootingParameters, options *WatchersClientBeginGetTroubleshootingOptions) (*http.Response, error) {
 	var err error
 	const operationName = "WatchersClient.BeginGetTroubleshooting"
@@ -809,7 +809,7 @@ func (client *WatchersClient) getTroubleshootingCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-01")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -821,7 +821,7 @@ func (client *WatchersClient) getTroubleshootingCreateRequest(ctx context.Contex
 // BeginGetTroubleshootingResult - Get the last completed troubleshooting result on a specified resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01
+// Generated from API version 2023-11-01
 //   - resourceGroupName - The name of the resource group.
 //   - networkWatcherName - The name of the network watcher resource.
 //   - parameters - Parameters that define the resource to query the troubleshooting result.
@@ -848,7 +848,7 @@ func (client *WatchersClient) BeginGetTroubleshootingResult(ctx context.Context,
 // GetTroubleshootingResult - Get the last completed troubleshooting result on a specified resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01
+// Generated from API version 2023-11-01
 func (client *WatchersClient) getTroubleshootingResult(ctx context.Context, resourceGroupName string, networkWatcherName string, parameters QueryTroubleshootingParameters, options *WatchersClientBeginGetTroubleshootingResultOptions) (*http.Response, error) {
 	var err error
 	const operationName = "WatchersClient.BeginGetTroubleshootingResult"
@@ -890,7 +890,7 @@ func (client *WatchersClient) getTroubleshootingResultCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-01")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -902,7 +902,7 @@ func (client *WatchersClient) getTroubleshootingResultCreateRequest(ctx context.
 // BeginGetVMSecurityRules - Gets the configured and effective security group rules on the specified VM.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01
+// Generated from API version 2023-11-01
 //   - resourceGroupName - The name of the resource group.
 //   - networkWatcherName - The name of the network watcher.
 //   - parameters - Parameters that define the VM to check security groups for.
@@ -929,7 +929,7 @@ func (client *WatchersClient) BeginGetVMSecurityRules(ctx context.Context, resou
 // GetVMSecurityRules - Gets the configured and effective security group rules on the specified VM.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01
+// Generated from API version 2023-11-01
 func (client *WatchersClient) getVMSecurityRules(ctx context.Context, resourceGroupName string, networkWatcherName string, parameters SecurityGroupViewParameters, options *WatchersClientBeginGetVMSecurityRulesOptions) (*http.Response, error) {
 	var err error
 	const operationName = "WatchersClient.BeginGetVMSecurityRules"
@@ -971,7 +971,7 @@ func (client *WatchersClient) getVMSecurityRulesCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-01")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -982,7 +982,7 @@ func (client *WatchersClient) getVMSecurityRulesCreateRequest(ctx context.Contex
 
 // NewListPager - Gets all network watchers by resource group.
 //
-// Generated from API version 2023-09-01
+// Generated from API version 2023-11-01
 //   - resourceGroupName - The name of the resource group.
 //   - options - WatchersClientListOptions contains the optional parameters for the WatchersClient.NewListPager method.
 func (client *WatchersClient) NewListPager(resourceGroupName string, options *WatchersClientListOptions) *runtime.Pager[WatchersClientListResponse] {
@@ -1025,7 +1025,7 @@ func (client *WatchersClient) listCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-01")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -1042,7 +1042,7 @@ func (client *WatchersClient) listHandleResponse(resp *http.Response) (WatchersC
 
 // NewListAllPager - Gets all network watchers by subscription.
 //
-// Generated from API version 2023-09-01
+// Generated from API version 2023-11-01
 //   - options - WatchersClientListAllOptions contains the optional parameters for the WatchersClient.NewListAllPager method.
 func (client *WatchersClient) NewListAllPager(options *WatchersClientListAllOptions) *runtime.Pager[WatchersClientListAllResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WatchersClientListAllResponse]{
@@ -1080,7 +1080,7 @@ func (client *WatchersClient) listAllCreateRequest(ctx context.Context, options 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-01")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -1099,7 +1099,7 @@ func (client *WatchersClient) listAllHandleResponse(resp *http.Response) (Watche
 // available internet service providers for a specified Azure region.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01
+// Generated from API version 2023-11-01
 //   - resourceGroupName - The name of the network watcher resource group.
 //   - networkWatcherName - The name of the network watcher resource.
 //   - parameters - Parameters that scope the list of available providers.
@@ -1127,7 +1127,7 @@ func (client *WatchersClient) BeginListAvailableProviders(ctx context.Context, r
 // internet service providers for a specified Azure region.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01
+// Generated from API version 2023-11-01
 func (client *WatchersClient) listAvailableProviders(ctx context.Context, resourceGroupName string, networkWatcherName string, parameters AvailableProvidersListParameters, options *WatchersClientBeginListAvailableProvidersOptions) (*http.Response, error) {
 	var err error
 	const operationName = "WatchersClient.BeginListAvailableProviders"
@@ -1169,7 +1169,7 @@ func (client *WatchersClient) listAvailableProvidersCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-01")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -1181,7 +1181,7 @@ func (client *WatchersClient) listAvailableProvidersCreateRequest(ctx context.Co
 // BeginSetFlowLogConfiguration - Configures flow log and traffic analytics (optional) on a specified resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01
+// Generated from API version 2023-11-01
 //   - resourceGroupName - The name of the network watcher resource group.
 //   - networkWatcherName - The name of the network watcher resource.
 //   - parameters - Parameters that define the configuration of flow log.
@@ -1208,7 +1208,7 @@ func (client *WatchersClient) BeginSetFlowLogConfiguration(ctx context.Context, 
 // SetFlowLogConfiguration - Configures flow log and traffic analytics (optional) on a specified resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01
+// Generated from API version 2023-11-01
 func (client *WatchersClient) setFlowLogConfiguration(ctx context.Context, resourceGroupName string, networkWatcherName string, parameters FlowLogInformation, options *WatchersClientBeginSetFlowLogConfigurationOptions) (*http.Response, error) {
 	var err error
 	const operationName = "WatchersClient.BeginSetFlowLogConfiguration"
@@ -1250,7 +1250,7 @@ func (client *WatchersClient) setFlowLogConfigurationCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-01")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -1262,7 +1262,7 @@ func (client *WatchersClient) setFlowLogConfigurationCreateRequest(ctx context.C
 // UpdateTags - Updates a network watcher tags.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01
+// Generated from API version 2023-11-01
 //   - resourceGroupName - The name of the resource group.
 //   - networkWatcherName - The name of the network watcher.
 //   - parameters - Parameters supplied to update network watcher tags.
@@ -1309,7 +1309,7 @@ func (client *WatchersClient) updateTagsCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-01")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -1330,7 +1330,7 @@ func (client *WatchersClient) updateTagsHandleResponse(resp *http.Response) (Wat
 // BeginVerifyIPFlow - Verify IP flow from the specified VM to a location given the currently configured NSG rules.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01
+// Generated from API version 2023-11-01
 //   - resourceGroupName - The name of the resource group.
 //   - networkWatcherName - The name of the network watcher.
 //   - parameters - Parameters that define the IP flow to be verified.
@@ -1357,7 +1357,7 @@ func (client *WatchersClient) BeginVerifyIPFlow(ctx context.Context, resourceGro
 // VerifyIPFlow - Verify IP flow from the specified VM to a location given the currently configured NSG rules.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01
+// Generated from API version 2023-11-01
 func (client *WatchersClient) verifyIPFlow(ctx context.Context, resourceGroupName string, networkWatcherName string, parameters VerificationIPFlowParameters, options *WatchersClientBeginVerifyIPFlowOptions) (*http.Response, error) {
 	var err error
 	const operationName = "WatchersClient.BeginVerifyIPFlow"
@@ -1399,7 +1399,7 @@ func (client *WatchersClient) verifyIPFlowCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-01")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

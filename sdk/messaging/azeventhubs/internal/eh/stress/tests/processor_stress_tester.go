@@ -17,6 +17,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/checkpoints"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/test"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 )
 
@@ -80,10 +81,12 @@ func newProcessorStressTest(args []string) (*processorStressTest, error) {
 
 	containerName := testData.runID
 
-	containerClient, err := container.NewClientFromConnectionString(testData.StorageConnectionString, containerName, nil)
+	storageEndpoint := test.URLJoinPaths(testData.StorageEndpoint, containerName)
+
+	containerClient, err := container.NewClient(storageEndpoint, testData.Cred, nil)
 
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
 	blobStore, err := checkpoints.NewBlobStore(containerClient, nil)
@@ -120,7 +123,7 @@ func (inf *processorStressTest) Run(ctx context.Context) error {
 
 	// start up the processors - they'll stay alive for the entire test.
 	for i := 0; i < inf.numProcessors; i++ {
-		cc, proc, err := inf.newProcessorForTest(ctx)
+		cc, proc, err := inf.newProcessorForTest()
 
 		if err != nil {
 			return err
@@ -160,7 +163,7 @@ func (inf *processorStressTest) Run(ctx context.Context) error {
 
 	// this is the main driver for the entire test - we send, wait for the events to all be
 	// accounted for, and then send again.
-	producerClient, err := azeventhubs.NewProducerClientFromConnectionString(inf.ConnectionString, inf.HubName, nil)
+	producerClient, err := azeventhubs.NewProducerClient(inf.Namespace, inf.HubName, inf.Cred, nil)
 
 	if err != nil {
 		return err
@@ -368,11 +371,12 @@ func sliceToMap[T any](values []T, key func(v T) string) map[string]T {
 	return m
 }
 
-func (inf *processorStressTest) newProcessorForTest(ctx context.Context) (*azeventhubs.ConsumerClient, *azeventhubs.Processor, error) {
-	containerClient, err := container.NewClientFromConnectionString(inf.StorageConnectionString, inf.containerName, nil)
+func (inf *processorStressTest) newProcessorForTest() (*azeventhubs.ConsumerClient, *azeventhubs.Processor, error) {
+	storageEndpoint := test.URLJoinPaths(inf.StorageEndpoint, inf.containerName)
+	containerClient, err := container.NewClient(storageEndpoint, inf.Cred, nil)
 
 	if err != nil {
-		panic(err)
+		return nil, nil, err
 	}
 
 	cps, err := checkpoints.NewBlobStore(containerClient, nil)
@@ -381,7 +385,7 @@ func (inf *processorStressTest) newProcessorForTest(ctx context.Context) (*azeve
 		return nil, nil, err
 	}
 
-	cc, err := azeventhubs.NewConsumerClientFromConnectionString(inf.ConnectionString, inf.HubName, azeventhubs.DefaultConsumerGroup, nil)
+	cc, err := azeventhubs.NewConsumerClient(inf.Namespace, inf.HubName, azeventhubs.DefaultConsumerGroup, inf.Cred, nil)
 
 	if err != nil {
 		return nil, nil, err

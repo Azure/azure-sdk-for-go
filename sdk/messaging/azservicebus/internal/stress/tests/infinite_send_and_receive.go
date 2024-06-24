@@ -33,7 +33,7 @@ func InfiniteSendAndReceiveRun(remainingArgs []string) {
 }
 
 func runBatchReceiver(sc *shared.StressContext, topicName string, subscriptionName string) {
-	client, err := azservicebus.NewClientFromConnectionString(sc.ConnectionString, nil)
+	client, err := azservicebus.NewClient(sc.Endpoint, sc.Cred, nil)
 	sc.PanicOnError("failed to create a client", err)
 
 	defer client.Close(context.Background())
@@ -65,7 +65,7 @@ func runBatchReceiver(sc *shared.StressContext, topicName string, subscriptionNa
 }
 
 func continuallySend(sc *shared.StressContext, queueName string) {
-	client, err := azservicebus.NewClientFromConnectionString(sc.ConnectionString, nil)
+	client, err := azservicebus.NewClient(sc.Endpoint, sc.Cred, nil)
 	sc.PanicOnError("failed to create a connection string", err)
 
 	sender, err := shared.NewTrackingSender(sc.TC, client, queueName, nil)

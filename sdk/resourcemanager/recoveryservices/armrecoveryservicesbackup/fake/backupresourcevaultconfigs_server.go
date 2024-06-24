@@ -133,7 +133,14 @@ func (b *BackupResourceVaultConfigsServerTransport) dispatchPut(req *http.Reques
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := b.srv.Put(req.Context(), vaultNameParam, resourceGroupNameParam, body, nil)
+	xMSAuthorizationAuxiliaryParam := getOptional(getHeaderValue(req.Header, "x-ms-authorization-auxiliary"))
+	var options *armrecoveryservicesbackup.BackupResourceVaultConfigsClientPutOptions
+	if xMSAuthorizationAuxiliaryParam != nil {
+		options = &armrecoveryservicesbackup.BackupResourceVaultConfigsClientPutOptions{
+			XMSAuthorizationAuxiliary: xMSAuthorizationAuxiliaryParam,
+		}
+	}
+	respr, errRespr := b.srv.Put(req.Context(), vaultNameParam, resourceGroupNameParam, body, options)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -170,7 +177,14 @@ func (b *BackupResourceVaultConfigsServerTransport) dispatchUpdate(req *http.Req
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := b.srv.Update(req.Context(), vaultNameParam, resourceGroupNameParam, body, nil)
+	xMSAuthorizationAuxiliaryParam := getOptional(getHeaderValue(req.Header, "x-ms-authorization-auxiliary"))
+	var options *armrecoveryservicesbackup.BackupResourceVaultConfigsClientUpdateOptions
+	if xMSAuthorizationAuxiliaryParam != nil {
+		options = &armrecoveryservicesbackup.BackupResourceVaultConfigsClientUpdateOptions{
+			XMSAuthorizationAuxiliary: xMSAuthorizationAuxiliaryParam,
+		}
+	}
+	respr, errRespr := b.srv.Update(req.Context(), vaultNameParam, resourceGroupNameParam, body, options)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}

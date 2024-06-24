@@ -89,6 +89,7 @@ func (client *Client) GetFileContent(ctx context.Context, fileID string, options
 	}
 
 	runtime.SkipBodyDownload(req)
+	//nolint:bodyclose	// caller is responsible for closing this request after they stream the contents of the body.
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return GetFileContentResponse{}, err

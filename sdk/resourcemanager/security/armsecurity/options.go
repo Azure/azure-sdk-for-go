@@ -369,6 +369,11 @@ type AutomationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// AutomationsClientUpdateOptions contains the optional parameters for the AutomationsClient.Update method.
+type AutomationsClientUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
 // AutomationsClientValidateOptions contains the optional parameters for the AutomationsClient.Validate method.
 type AutomationsClientValidateOptions struct {
 	// placeholder for future optional parameters
@@ -447,18 +452,6 @@ type AzureDevOpsReposClientGetOptions struct {
 
 // AzureDevOpsReposClientListOptions contains the optional parameters for the AzureDevOpsReposClient.NewListPager method.
 type AzureDevOpsReposClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// CenterClientGetSensitivitySettingsOptions contains the optional parameters for the CenterClient.GetSensitivitySettings
-// method.
-type CenterClientGetSensitivitySettingsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// CenterClientUpdateSensitivitySettingsOptions contains the optional parameters for the CenterClient.UpdateSensitivitySettings
-// method.
-type CenterClientUpdateSensitivitySettingsOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1181,6 +1174,17 @@ type SecureScoresClientGetOptions struct {
 
 // SecureScoresClientListOptions contains the optional parameters for the SecureScoresClient.NewListPager method.
 type SecureScoresClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SensitivitySettingsClientCreateOrUpdateOptions contains the optional parameters for the SensitivitySettingsClient.CreateOrUpdate
+// method.
+type SensitivitySettingsClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SensitivitySettingsClientGetOptions contains the optional parameters for the SensitivitySettingsClient.Get method.
+type SensitivitySettingsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 

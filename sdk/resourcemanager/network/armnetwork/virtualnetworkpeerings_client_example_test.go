@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v5"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/VirtualNetworkPeeringDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/VirtualNetworkPeeringDelete.json
 func ExampleVirtualNetworkPeeringsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -39,7 +39,7 @@ func ExampleVirtualNetworkPeeringsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/VirtualNetworkPeeringGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/VirtualNetworkPeeringGet.json
 func ExampleVirtualNetworkPeeringsClient_Get_getPeering() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -87,7 +87,7 @@ func ExampleVirtualNetworkPeeringsClient_Get_getPeering() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/VirtualNetworkPeeringGetWithRemoteVirtualNetworkEncryption.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/VirtualNetworkPeeringGetWithRemoteVirtualNetworkEncryption.json
 func ExampleVirtualNetworkPeeringsClient_Get_getPeeringWithRemoteVirtualNetworkEncryption() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -134,7 +134,7 @@ func ExampleVirtualNetworkPeeringsClient_Get_getPeeringWithRemoteVirtualNetworkE
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/VirtualNetworkPeeringCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/VirtualNetworkPeeringCreate.json
 func ExampleVirtualNetworkPeeringsClient_BeginCreateOrUpdate_createPeering() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -196,7 +196,7 @@ func ExampleVirtualNetworkPeeringsClient_BeginCreateOrUpdate_createPeering() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/VirtualNetworkPeeringCreateWithRemoteVirtualNetworkEncryption.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/VirtualNetworkPeeringCreateWithRemoteVirtualNetworkEncryption.json
 func ExampleVirtualNetworkPeeringsClient_BeginCreateOrUpdate_createPeeringWithRemoteVirtualNetworkEncryption() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -257,7 +257,7 @@ func ExampleVirtualNetworkPeeringsClient_BeginCreateOrUpdate_createPeeringWithRe
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/VirtualNetworkPeeringSync.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/VirtualNetworkPeeringSync.json
 func ExampleVirtualNetworkPeeringsClient_BeginCreateOrUpdate_syncPeering() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -319,7 +319,7 @@ func ExampleVirtualNetworkPeeringsClient_BeginCreateOrUpdate_syncPeering() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/VirtualNetworkPeeringList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/VirtualNetworkPeeringList.json
 func ExampleVirtualNetworkPeeringsClient_NewListPager_listPeerings() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -403,7 +403,7 @@ func ExampleVirtualNetworkPeeringsClient_NewListPager_listPeerings() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/VirtualNetworkPeeringListWithRemoteVirtualNetworkEncryption.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/VirtualNetworkPeeringListWithRemoteVirtualNetworkEncryption.json
 func ExampleVirtualNetworkPeeringsClient_NewListPager_listPeeringsWithRemoteVirtualNetworkEncryption() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -1,6 +1,6 @@
 # Azure Data Factory Module for Go
 
-[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory/v7)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory/v7)
+[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory/v8)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory/v8)
 
 The `armdatafactory` module provides operations for working with Azure Data Factory.
 
@@ -20,7 +20,7 @@ This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for ve
 Install the Azure Data Factory module:
 
 ```sh
-go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory/v7
+go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory/v8
 ```
 
 ## Authorization

@@ -30,9 +30,6 @@ type recordingTests struct {
 }
 
 func TestRecording(t *testing.T) {
-	if GetRecordMode() != LiveMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
 	suite.Run(t, new(recordingTests))
 }
 
@@ -154,10 +151,11 @@ func (s *recordingTests) TestStartStopRecordingClient() {
 	require.NoError(err)
 	err = json.Unmarshal(byteValue, &data)
 	require.NoError(err)
-	require.Equal("https://azsdkengsys.azurecr.io/acr/v1/some_registry/_tags",
-		data.Entries[0].RequestURI)
-	require.Equal("https://azsdkengsys.azurecr.io/acr/v1/some_registry/_tags",
-		resp.Request.URL.String())
+	require.Equal(
+		fmt.Sprintf("https://%s.azurecr.io/acr/v1/some_registry/_tags", SanitizedValue),
+		data.Entries[0].RequestURI,
+	)
+	require.Equal(req.URL.String(), resp.Request.URL.String())
 }
 
 func (s *recordingTests) TestStopRecordingNoStart() {

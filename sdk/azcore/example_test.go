@@ -74,12 +74,13 @@ func ExampleResponseError() {
 	var respErr *azcore.ResponseError
 	if errors.As(err, &respErr) {
 		// Handle Error
-		if respErr.StatusCode == http.StatusNotFound {
-			fmt.Printf("Repository could not be found: %v", respErr)
-		} else if respErr.StatusCode == http.StatusForbidden {
-			fmt.Printf("You do not have permission to access this repository: %v", respErr)
-		} else {
-			// ...
+		switch respErr.StatusCode {
+		case http.StatusNotFound:
+			fmt.Printf("Repository could not be found: %v\n", respErr)
+		case http.StatusForbidden:
+			fmt.Printf("You do not have permission to access this repository: %v\n", respErr)
+		default:
+			fmt.Println(respErr.Error())
 		}
 	}
 	// Do something with response

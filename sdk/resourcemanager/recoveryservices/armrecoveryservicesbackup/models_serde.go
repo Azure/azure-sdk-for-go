@@ -426,6 +426,7 @@ func (a AzureFileShareRestoreRequest) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "copyOptions", a.CopyOptions)
 	objectMap["objectType"] = "AzureFileShareRestoreRequest"
 	populate(objectMap, "recoveryType", a.RecoveryType)
+	populate(objectMap, "resourceGuardOperationRequests", a.ResourceGuardOperationRequests)
 	populate(objectMap, "restoreFileSpecs", a.RestoreFileSpecs)
 	populate(objectMap, "restoreRequestType", a.RestoreRequestType)
 	populate(objectMap, "sourceResourceId", a.SourceResourceID)
@@ -450,6 +451,9 @@ func (a *AzureFileShareRestoreRequest) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "recoveryType":
 			err = unpopulate(val, "RecoveryType", &a.RecoveryType)
+			delete(rawMsg, key)
+		case "resourceGuardOperationRequests":
+			err = unpopulate(val, "ResourceGuardOperationRequests", &a.ResourceGuardOperationRequests)
 			delete(rawMsg, key)
 		case "restoreFileSpecs":
 			err = unpopulate(val, "RestoreFileSpecs", &a.RestoreFileSpecs)
@@ -1710,6 +1714,7 @@ func (a AzureIaaSVMProtectionPolicy) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "resourceGuardOperationRequests", a.ResourceGuardOperationRequests)
 	populate(objectMap, "retentionPolicy", a.RetentionPolicy)
 	populate(objectMap, "schedulePolicy", a.SchedulePolicy)
+	populate(objectMap, "snapshotConsistencyType", a.SnapshotConsistencyType)
 	populate(objectMap, "tieringPolicy", a.TieringPolicy)
 	populate(objectMap, "timeZone", a.TimeZone)
 	return json.Marshal(objectMap)
@@ -1747,6 +1752,9 @@ func (a *AzureIaaSVMProtectionPolicy) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "schedulePolicy":
 			a.SchedulePolicy, err = unmarshalSchedulePolicyClassification(val)
+			delete(rawMsg, key)
+		case "snapshotConsistencyType":
+			err = unpopulate(val, "SnapshotConsistencyType", &a.SnapshotConsistencyType)
 			delete(rawMsg, key)
 		case "tieringPolicy":
 			err = unpopulate(val, "TieringPolicy", &a.TieringPolicy)
@@ -5140,6 +5148,7 @@ func (a AzureWorkloadPointInTimeRestoreRequest) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "propertyBag", a.PropertyBag)
 	populate(objectMap, "recoveryMode", a.RecoveryMode)
 	populate(objectMap, "recoveryType", a.RecoveryType)
+	populate(objectMap, "resourceGuardOperationRequests", a.ResourceGuardOperationRequests)
 	populate(objectMap, "snapshotRestoreParameters", a.SnapshotRestoreParameters)
 	populate(objectMap, "sourceResourceId", a.SourceResourceID)
 	populate(objectMap, "targetInfo", a.TargetInfo)
@@ -5172,6 +5181,9 @@ func (a *AzureWorkloadPointInTimeRestoreRequest) UnmarshalJSON(data []byte) erro
 			delete(rawMsg, key)
 		case "recoveryType":
 			err = unpopulate(val, "RecoveryType", &a.RecoveryType)
+			delete(rawMsg, key)
+		case "resourceGuardOperationRequests":
+			err = unpopulate(val, "ResourceGuardOperationRequests", &a.ResourceGuardOperationRequests)
 			delete(rawMsg, key)
 		case "snapshotRestoreParameters":
 			err = unpopulate(val, "SnapshotRestoreParameters", &a.SnapshotRestoreParameters)
@@ -5253,6 +5265,7 @@ func (a AzureWorkloadRestoreRequest) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "propertyBag", a.PropertyBag)
 	populate(objectMap, "recoveryMode", a.RecoveryMode)
 	populate(objectMap, "recoveryType", a.RecoveryType)
+	populate(objectMap, "resourceGuardOperationRequests", a.ResourceGuardOperationRequests)
 	populate(objectMap, "snapshotRestoreParameters", a.SnapshotRestoreParameters)
 	populate(objectMap, "sourceResourceId", a.SourceResourceID)
 	populate(objectMap, "targetInfo", a.TargetInfo)
@@ -5282,6 +5295,9 @@ func (a *AzureWorkloadRestoreRequest) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "recoveryType":
 			err = unpopulate(val, "RecoveryType", &a.RecoveryType)
+			delete(rawMsg, key)
+		case "resourceGuardOperationRequests":
+			err = unpopulate(val, "ResourceGuardOperationRequests", &a.ResourceGuardOperationRequests)
 			delete(rawMsg, key)
 		case "snapshotRestoreParameters":
 			err = unpopulate(val, "SnapshotRestoreParameters", &a.SnapshotRestoreParameters)
@@ -5368,6 +5384,7 @@ func (a AzureWorkloadSAPHanaPointInTimeRestoreRequest) MarshalJSON() ([]byte, er
 	populate(objectMap, "propertyBag", a.PropertyBag)
 	populate(objectMap, "recoveryMode", a.RecoveryMode)
 	populate(objectMap, "recoveryType", a.RecoveryType)
+	populate(objectMap, "resourceGuardOperationRequests", a.ResourceGuardOperationRequests)
 	populate(objectMap, "snapshotRestoreParameters", a.SnapshotRestoreParameters)
 	populate(objectMap, "sourceResourceId", a.SourceResourceID)
 	populate(objectMap, "targetInfo", a.TargetInfo)
@@ -5400,6 +5417,9 @@ func (a *AzureWorkloadSAPHanaPointInTimeRestoreRequest) UnmarshalJSON(data []byt
 			delete(rawMsg, key)
 		case "recoveryType":
 			err = unpopulate(val, "RecoveryType", &a.RecoveryType)
+			delete(rawMsg, key)
+		case "resourceGuardOperationRequests":
+			err = unpopulate(val, "ResourceGuardOperationRequests", &a.ResourceGuardOperationRequests)
 			delete(rawMsg, key)
 		case "snapshotRestoreParameters":
 			err = unpopulate(val, "SnapshotRestoreParameters", &a.SnapshotRestoreParameters)
@@ -5436,6 +5456,7 @@ func (a AzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest) MarshalJSON(
 	populate(objectMap, "recoveryMode", a.RecoveryMode)
 	populate(objectMap, "recoveryPointRehydrationInfo", a.RecoveryPointRehydrationInfo)
 	populate(objectMap, "recoveryType", a.RecoveryType)
+	populate(objectMap, "resourceGuardOperationRequests", a.ResourceGuardOperationRequests)
 	populate(objectMap, "snapshotRestoreParameters", a.SnapshotRestoreParameters)
 	populate(objectMap, "sourceResourceId", a.SourceResourceID)
 	populate(objectMap, "targetInfo", a.TargetInfo)
@@ -5471,6 +5492,9 @@ func (a *AzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest) UnmarshalJS
 			delete(rawMsg, key)
 		case "recoveryType":
 			err = unpopulate(val, "RecoveryType", &a.RecoveryType)
+			delete(rawMsg, key)
+		case "resourceGuardOperationRequests":
+			err = unpopulate(val, "ResourceGuardOperationRequests", &a.ResourceGuardOperationRequests)
 			delete(rawMsg, key)
 		case "snapshotRestoreParameters":
 			err = unpopulate(val, "SnapshotRestoreParameters", &a.SnapshotRestoreParameters)
@@ -5552,6 +5576,7 @@ func (a AzureWorkloadSAPHanaRestoreRequest) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "propertyBag", a.PropertyBag)
 	populate(objectMap, "recoveryMode", a.RecoveryMode)
 	populate(objectMap, "recoveryType", a.RecoveryType)
+	populate(objectMap, "resourceGuardOperationRequests", a.ResourceGuardOperationRequests)
 	populate(objectMap, "snapshotRestoreParameters", a.SnapshotRestoreParameters)
 	populate(objectMap, "sourceResourceId", a.SourceResourceID)
 	populate(objectMap, "targetInfo", a.TargetInfo)
@@ -5581,6 +5606,9 @@ func (a *AzureWorkloadSAPHanaRestoreRequest) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "recoveryType":
 			err = unpopulate(val, "RecoveryType", &a.RecoveryType)
+			delete(rawMsg, key)
+		case "resourceGuardOperationRequests":
+			err = unpopulate(val, "ResourceGuardOperationRequests", &a.ResourceGuardOperationRequests)
 			delete(rawMsg, key)
 		case "snapshotRestoreParameters":
 			err = unpopulate(val, "SnapshotRestoreParameters", &a.SnapshotRestoreParameters)
@@ -5616,6 +5644,7 @@ func (a AzureWorkloadSAPHanaRestoreWithRehydrateRequest) MarshalJSON() ([]byte, 
 	populate(objectMap, "recoveryMode", a.RecoveryMode)
 	populate(objectMap, "recoveryPointRehydrationInfo", a.RecoveryPointRehydrationInfo)
 	populate(objectMap, "recoveryType", a.RecoveryType)
+	populate(objectMap, "resourceGuardOperationRequests", a.ResourceGuardOperationRequests)
 	populate(objectMap, "snapshotRestoreParameters", a.SnapshotRestoreParameters)
 	populate(objectMap, "sourceResourceId", a.SourceResourceID)
 	populate(objectMap, "targetInfo", a.TargetInfo)
@@ -5648,6 +5677,9 @@ func (a *AzureWorkloadSAPHanaRestoreWithRehydrateRequest) UnmarshalJSON(data []b
 			delete(rawMsg, key)
 		case "recoveryType":
 			err = unpopulate(val, "RecoveryType", &a.RecoveryType)
+			delete(rawMsg, key)
+		case "resourceGuardOperationRequests":
+			err = unpopulate(val, "ResourceGuardOperationRequests", &a.ResourceGuardOperationRequests)
 			delete(rawMsg, key)
 		case "snapshotRestoreParameters":
 			err = unpopulate(val, "SnapshotRestoreParameters", &a.SnapshotRestoreParameters)
@@ -5791,6 +5823,7 @@ func (a AzureWorkloadSQLPointInTimeRestoreRequest) MarshalJSON() ([]byte, error)
 	populate(objectMap, "propertyBag", a.PropertyBag)
 	populate(objectMap, "recoveryMode", a.RecoveryMode)
 	populate(objectMap, "recoveryType", a.RecoveryType)
+	populate(objectMap, "resourceGuardOperationRequests", a.ResourceGuardOperationRequests)
 	populate(objectMap, "shouldUseAlternateTargetLocation", a.ShouldUseAlternateTargetLocation)
 	populate(objectMap, "snapshotRestoreParameters", a.SnapshotRestoreParameters)
 	populate(objectMap, "sourceResourceId", a.SourceResourceID)
@@ -5830,6 +5863,9 @@ func (a *AzureWorkloadSQLPointInTimeRestoreRequest) UnmarshalJSON(data []byte) e
 			delete(rawMsg, key)
 		case "recoveryType":
 			err = unpopulate(val, "RecoveryType", &a.RecoveryType)
+			delete(rawMsg, key)
+		case "resourceGuardOperationRequests":
+			err = unpopulate(val, "ResourceGuardOperationRequests", &a.ResourceGuardOperationRequests)
 			delete(rawMsg, key)
 		case "shouldUseAlternateTargetLocation":
 			err = unpopulate(val, "ShouldUseAlternateTargetLocation", &a.ShouldUseAlternateTargetLocation)
@@ -5871,6 +5907,7 @@ func (a AzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest) MarshalJSON() ([
 	populate(objectMap, "recoveryMode", a.RecoveryMode)
 	populate(objectMap, "recoveryPointRehydrationInfo", a.RecoveryPointRehydrationInfo)
 	populate(objectMap, "recoveryType", a.RecoveryType)
+	populate(objectMap, "resourceGuardOperationRequests", a.ResourceGuardOperationRequests)
 	populate(objectMap, "shouldUseAlternateTargetLocation", a.ShouldUseAlternateTargetLocation)
 	populate(objectMap, "snapshotRestoreParameters", a.SnapshotRestoreParameters)
 	populate(objectMap, "sourceResourceId", a.SourceResourceID)
@@ -5913,6 +5950,9 @@ func (a *AzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest) UnmarshalJSON(d
 			delete(rawMsg, key)
 		case "recoveryType":
 			err = unpopulate(val, "RecoveryType", &a.RecoveryType)
+			delete(rawMsg, key)
+		case "resourceGuardOperationRequests":
+			err = unpopulate(val, "ResourceGuardOperationRequests", &a.ResourceGuardOperationRequests)
 			delete(rawMsg, key)
 		case "shouldUseAlternateTargetLocation":
 			err = unpopulate(val, "ShouldUseAlternateTargetLocation", &a.ShouldUseAlternateTargetLocation)
@@ -6034,6 +6074,7 @@ func (a AzureWorkloadSQLRestoreRequest) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "propertyBag", a.PropertyBag)
 	populate(objectMap, "recoveryMode", a.RecoveryMode)
 	populate(objectMap, "recoveryType", a.RecoveryType)
+	populate(objectMap, "resourceGuardOperationRequests", a.ResourceGuardOperationRequests)
 	populate(objectMap, "shouldUseAlternateTargetLocation", a.ShouldUseAlternateTargetLocation)
 	populate(objectMap, "snapshotRestoreParameters", a.SnapshotRestoreParameters)
 	populate(objectMap, "sourceResourceId", a.SourceResourceID)
@@ -6070,6 +6111,9 @@ func (a *AzureWorkloadSQLRestoreRequest) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "recoveryType":
 			err = unpopulate(val, "RecoveryType", &a.RecoveryType)
+			delete(rawMsg, key)
+		case "resourceGuardOperationRequests":
+			err = unpopulate(val, "ResourceGuardOperationRequests", &a.ResourceGuardOperationRequests)
 			delete(rawMsg, key)
 		case "shouldUseAlternateTargetLocation":
 			err = unpopulate(val, "ShouldUseAlternateTargetLocation", &a.ShouldUseAlternateTargetLocation)
@@ -6110,6 +6154,7 @@ func (a AzureWorkloadSQLRestoreWithRehydrateRequest) MarshalJSON() ([]byte, erro
 	populate(objectMap, "recoveryMode", a.RecoveryMode)
 	populate(objectMap, "recoveryPointRehydrationInfo", a.RecoveryPointRehydrationInfo)
 	populate(objectMap, "recoveryType", a.RecoveryType)
+	populate(objectMap, "resourceGuardOperationRequests", a.ResourceGuardOperationRequests)
 	populate(objectMap, "shouldUseAlternateTargetLocation", a.ShouldUseAlternateTargetLocation)
 	populate(objectMap, "snapshotRestoreParameters", a.SnapshotRestoreParameters)
 	populate(objectMap, "sourceResourceId", a.SourceResourceID)
@@ -6149,6 +6194,9 @@ func (a *AzureWorkloadSQLRestoreWithRehydrateRequest) UnmarshalJSON(data []byte)
 			delete(rawMsg, key)
 		case "recoveryType":
 			err = unpopulate(val, "RecoveryType", &a.RecoveryType)
+			delete(rawMsg, key)
+		case "resourceGuardOperationRequests":
+			err = unpopulate(val, "ResourceGuardOperationRequests", &a.ResourceGuardOperationRequests)
 			delete(rawMsg, key)
 		case "shouldUseAlternateTargetLocation":
 			err = unpopulate(val, "ShouldUseAlternateTargetLocation", &a.ShouldUseAlternateTargetLocation)
@@ -9684,6 +9732,7 @@ func (i IaasVMRestoreRequest) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "recoveryPointId", i.RecoveryPointID)
 	populate(objectMap, "recoveryType", i.RecoveryType)
 	populate(objectMap, "region", i.Region)
+	populate(objectMap, "resourceGuardOperationRequests", i.ResourceGuardOperationRequests)
 	populate(objectMap, "restoreDiskLunList", i.RestoreDiskLunList)
 	populate(objectMap, "restoreWithManagedDisks", i.RestoreWithManagedDisks)
 	populate(objectMap, "securedVMDetails", i.SecuredVMDetails)
@@ -9743,6 +9792,9 @@ func (i *IaasVMRestoreRequest) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "region":
 			err = unpopulate(val, "Region", &i.Region)
+			delete(rawMsg, key)
+		case "resourceGuardOperationRequests":
+			err = unpopulate(val, "ResourceGuardOperationRequests", &i.ResourceGuardOperationRequests)
 			delete(rawMsg, key)
 		case "restoreDiskLunList":
 			err = unpopulate(val, "RestoreDiskLunList", &i.RestoreDiskLunList)
@@ -9804,6 +9856,7 @@ func (i IaasVMRestoreWithRehydrationRequest) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "recoveryPointRehydrationInfo", i.RecoveryPointRehydrationInfo)
 	populate(objectMap, "recoveryType", i.RecoveryType)
 	populate(objectMap, "region", i.Region)
+	populate(objectMap, "resourceGuardOperationRequests", i.ResourceGuardOperationRequests)
 	populate(objectMap, "restoreDiskLunList", i.RestoreDiskLunList)
 	populate(objectMap, "restoreWithManagedDisks", i.RestoreWithManagedDisks)
 	populate(objectMap, "securedVMDetails", i.SecuredVMDetails)
@@ -9866,6 +9919,9 @@ func (i *IaasVMRestoreWithRehydrationRequest) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "region":
 			err = unpopulate(val, "Region", &i.Region)
+			delete(rawMsg, key)
+		case "resourceGuardOperationRequests":
+			err = unpopulate(val, "ResourceGuardOperationRequests", &i.ResourceGuardOperationRequests)
 			delete(rawMsg, key)
 		case "restoreDiskLunList":
 			err = unpopulate(val, "RestoreDiskLunList", &i.RestoreDiskLunList)
@@ -13439,6 +13495,7 @@ func (r *RestoreFileSpecs) UnmarshalJSON(data []byte) error {
 func (r RestoreRequest) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	objectMap["objectType"] = r.ObjectType
+	populate(objectMap, "resourceGuardOperationRequests", r.ResourceGuardOperationRequests)
 	return json.Marshal(objectMap)
 }
 
@@ -13453,6 +13510,9 @@ func (r *RestoreRequest) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "objectType":
 			err = unpopulate(val, "ObjectType", &r.ObjectType)
+			delete(rawMsg, key)
+		case "resourceGuardOperationRequests":
+			err = unpopulate(val, "ResourceGuardOperationRequests", &r.ResourceGuardOperationRequests)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -15285,7 +15345,7 @@ func populateAny(m map[string]any, k string, v any) {
 }
 
 func unpopulate(data json.RawMessage, fn string, v any) error {
-	if data == nil {
+	if data == nil || string(data) == "null" {
 		return nil
 	}
 	if err := json.Unmarshal(data, v); err != nil {

@@ -24,7 +24,7 @@ func IdleFastReconnect(remainingArgs []string) {
 	cleanup := shared.MustCreateSubscriptions(sc, topicName, []string{"subscriptionA"}, nil)
 	defer cleanup()
 
-	client, err := azservicebus.NewClientFromConnectionString(sc.ConnectionString, &azservicebus.ClientOptions{
+	client, err := azservicebus.NewClient(sc.Endpoint, sc.Cred, &azservicebus.ClientOptions{
 		RetryOptions: azservicebus.RetryOptions{
 			// NOTE: we'll _never_ use this timeout - the idle detach below
 			// should use the "quick" reconnect.

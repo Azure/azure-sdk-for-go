@@ -253,7 +253,10 @@ func (c *Client) NewListRevisionsPager(selector SettingSelector, options *ListRe
 
 // NewListSettingsPager creates a pager that retrieves setting entities that match the specified setting selector.
 func (c *Client) NewListSettingsPager(selector SettingSelector, options *ListSettingsOptions) *runtime.Pager[ListSettingsPageResponse] {
-	pagerInternal := c.appConfigClient.NewGetKeyValuesPager(selector.toGeneratedGetKeyValues())
+	if options == nil {
+		options = &ListSettingsOptions{}
+	}
+	pagerInternal := c.appConfigClient.NewGetKeyValuesPagerWithMatchConditions(options.MatchConditions, selector.toGeneratedGetKeyValues())
 	return runtime.NewPager(runtime.PagingHandler[ListSettingsPageResponse]{
 		More: func(ListSettingsPageResponse) bool {
 			return pagerInternal.More()
@@ -270,6 +273,7 @@ func (c *Client) NewListSettingsPager(selector SettingSelector, options *ListSet
 
 			return ListSettingsPageResponse{
 				Settings:  css,
+				ETag:      (*azcore.ETag)(page.ETag),
 				SyncToken: SyncToken(*page.SyncToken),
 			}, nil
 		},

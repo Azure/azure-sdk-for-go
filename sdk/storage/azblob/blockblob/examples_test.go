@@ -121,7 +121,7 @@ func Example_blockblob_Client_UploadFile() {
 	}(file)
 	fileSize, err := file.Stat() // Get the size of the file (stream)
 	if err != nil {
-		log.Fatal(err)
+		log.Panic(err)
 	}
 
 	// From the Azure portal, get your Storage account blob service URL endpoint.
@@ -131,7 +131,7 @@ func Example_blockblob_Client_UploadFile() {
 	u := fmt.Sprintf("https://%s.blob.core.windows.net/mycontainer/BigBlockBlob.bin", accountName)
 	credential, err := azblob.NewSharedKeyCredential(accountName, accountKey)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal(err) //nolint
 	}
 	blockBlobClient, err := blockblob.NewClientWithSharedKeyCredential(u, credential, nil)
 	if err != nil {

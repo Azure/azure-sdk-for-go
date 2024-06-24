@@ -17,7 +17,9 @@ parameters:
   - name: ExcludeGoNMinus2
     type: boolean
     default: false
-
+  - name: EnableRaceDetector
+    type: boolean
+    default: false
 
 stages:
   - stage: Build
@@ -79,6 +81,7 @@ stages:
           GoVersion: $(go.version)
           TestProxy: true
           TestRunTime: ${{ parameters.TestRunTime }}
+          EnableRaceDetector: ${{ parameters.EnableRaceDetector }}
           EnvVars:
             AZURE_RECORD_MODE: 'playback'
 

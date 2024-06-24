@@ -1,5 +1,50 @@
 # Release History
 
+## 3.0.0 (2024-06-21)
+### Breaking Changes
+
+- Function `*EnvironmentsClient.BeginApproveOrRejectPrivateEndpointConnection` parameter(s) have been changed from `(context.Context, string, string, string, PrivateLinkConnectionApprovalRequestResource, *EnvironmentsClientBeginApproveOrRejectPrivateEndpointConnectionOptions)` to `(context.Context, string, string, string, RemotePrivateEndpointConnectionARMResource, *EnvironmentsClientBeginApproveOrRejectPrivateEndpointConnectionOptions)`
+- Function `*StaticSitesClient.BeginApproveOrRejectPrivateEndpointConnection` parameter(s) have been changed from `(context.Context, string, string, string, PrivateLinkConnectionApprovalRequestResource, *StaticSitesClientBeginApproveOrRejectPrivateEndpointConnectionOptions)` to `(context.Context, string, string, string, RemotePrivateEndpointConnectionARMResource, *StaticSitesClientBeginApproveOrRejectPrivateEndpointConnectionOptions)`
+- Function `*WebAppsClient.BeginApproveOrRejectPrivateEndpointConnection` parameter(s) have been changed from `(context.Context, string, string, string, PrivateLinkConnectionApprovalRequestResource, *WebAppsClientBeginApproveOrRejectPrivateEndpointConnectionOptions)` to `(context.Context, string, string, string, RemotePrivateEndpointConnectionARMResource, *WebAppsClientBeginApproveOrRejectPrivateEndpointConnectionOptions)`
+- Function `*WebAppsClient.BeginApproveOrRejectPrivateEndpointConnectionSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, PrivateLinkConnectionApprovalRequestResource, *WebAppsClientBeginApproveOrRejectPrivateEndpointConnectionSlotOptions)` to `(context.Context, string, string, string, string, RemotePrivateEndpointConnectionARMResource, *WebAppsClientBeginApproveOrRejectPrivateEndpointConnectionSlotOptions)`
+
+### Features Added
+
+- New value `SKUNameFlexConsumption` added to enum type `SKUName`
+- New value `SupportedTLSVersionsOne3` added to enum type `SupportedTLSVersions`
+- New enum type `AuthType` with values `AuthTypeAnonymous`, `AuthTypeSystemIdentity`, `AuthTypeUserAssigned`, `AuthTypeUserCredentials`
+- New enum type `AuthenticationType` with values `AuthenticationTypeStorageAccountConnectionString`, `AuthenticationTypeSystemAssignedIdentity`, `AuthenticationTypeUserAssignedIdentity`
+- New enum type `AzureStorageProtocol` with values `AzureStorageProtocolHTTP`, `AzureStorageProtocolNfs`, `AzureStorageProtocolSmb`
+- New enum type `FunctionsDeploymentStorageType` with values `FunctionsDeploymentStorageTypeBlobContainer`
+- New enum type `RuntimeName` with values `RuntimeNameCustom`, `RuntimeNameDotnetIsolated`, `RuntimeNameJava`, `RuntimeNameNode`, `RuntimeNamePowershell`, `RuntimeNamePython`
+- New function `*WebAppsClient.CreateOrUpdateSiteContainer(context.Context, string, string, string, SiteContainer, *WebAppsClientCreateOrUpdateSiteContainerOptions) (WebAppsClientCreateOrUpdateSiteContainerResponse, error)`
+- New function `*WebAppsClient.CreateOrUpdateSiteContainerSlot(context.Context, string, string, string, string, SiteContainer, *WebAppsClientCreateOrUpdateSiteContainerSlotOptions) (WebAppsClientCreateOrUpdateSiteContainerSlotResponse, error)`
+- New function `*WebAppsClient.DeleteSiteContainer(context.Context, string, string, string, *WebAppsClientDeleteSiteContainerOptions) (WebAppsClientDeleteSiteContainerResponse, error)`
+- New function `*WebAppsClient.DeleteSiteContainerSlot(context.Context, string, string, string, string, *WebAppsClientDeleteSiteContainerSlotOptions) (WebAppsClientDeleteSiteContainerSlotResponse, error)`
+- New function `*WebAppsClient.GetSiteContainer(context.Context, string, string, string, *WebAppsClientGetSiteContainerOptions) (WebAppsClientGetSiteContainerResponse, error)`
+- New function `*WebAppsClient.GetSiteContainerSlot(context.Context, string, string, string, string, *WebAppsClientGetSiteContainerSlotOptions) (WebAppsClientGetSiteContainerSlotResponse, error)`
+- New function `*WebAppsClient.NewListSiteContainersPager(string, string, *WebAppsClientListSiteContainersOptions) *runtime.Pager[WebAppsClientListSiteContainersResponse]`
+- New function `*WebAppsClient.NewListSiteContainersSlotPager(string, string, string, *WebAppsClientListSiteContainersSlotOptions) *runtime.Pager[WebAppsClientListSiteContainersSlotResponse]`
+- New struct `EnvironmentVariable`
+- New struct `FunctionAppConfig`
+- New struct `FunctionsAlwaysReadyConfig`
+- New struct `FunctionsDeployment`
+- New struct `FunctionsDeploymentStorage`
+- New struct `FunctionsDeploymentStorageAuthentication`
+- New struct `FunctionsRuntime`
+- New struct `FunctionsScaleAndConcurrency`
+- New struct `FunctionsScaleAndConcurrencyTriggers`
+- New struct `FunctionsScaleAndConcurrencyTriggersHTTP`
+- New struct `SiteContainer`
+- New struct `SiteContainerCollection`
+- New struct `SiteContainerProperties`
+- New struct `SiteDNSConfig`
+- New struct `VolumeMount`
+- New field `Protocol` in struct `AzureStorageInfoValue`
+- New field `DNSConfiguration` in struct `SitePatchResourceProperties`
+- New field `DNSConfiguration`, `FunctionAppConfig`, `VnetBackupRestoreEnabled` in struct `SiteProperties`
+
+
 ## 2.3.0 (2023-11-30)
 ### Features Added
 

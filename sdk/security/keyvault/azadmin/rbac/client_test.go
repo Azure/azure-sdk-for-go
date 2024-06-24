@@ -20,9 +20,6 @@ import (
 )
 
 func TestRoleDefinition(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
 	client := startAccessControlTest(t)
 
 	var name, roleName string
@@ -139,9 +136,6 @@ func TestDeleteRoleDefinition_FailureInvalidRole(t *testing.T) {
 }
 
 func TestRoleAssignment(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
 	client := startAccessControlTest(t)
 
 	var name, principalID, roleDefinitionID string
@@ -167,8 +161,13 @@ func TestRoleAssignment(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, name, *createdAssignment.Name)
 	require.Equal(t, scope, *createdAssignment.Properties.Scope)
-	require.Equal(t, principalID, *createdAssignment.Properties.PrincipalID)
 	require.Equal(t, roleDefinitionID, *createdAssignment.Properties.RoleDefinitionID)
+
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		require.Equal(t, "00000000-0000-0000-0000-000000000000", *createdAssignment.Properties.PrincipalID)
+	} else {
+		require.Equal(t, principalID, *createdAssignment.Properties.PrincipalID)
+	}
 
 	// test if able to get role assignment
 	gotAssignment, err := client.GetRoleAssignment(context.Background(), scope, name, nil)

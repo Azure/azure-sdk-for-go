@@ -15,3 +15,5 @@ linters-settings:
   gocritic:
     enabled-checks:
       - evalOrder
+    disabled-checks:
+      - ifElseChain

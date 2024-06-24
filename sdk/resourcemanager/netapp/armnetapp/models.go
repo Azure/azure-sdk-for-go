@@ -183,6 +183,36 @@ type AuthorizeRequest struct {
 	RemoteVolumeResourceID *string
 }
 
+// Backup under a Backup Vault
+type Backup struct {
+	// REQUIRED; Backup Properties
+	Properties *BackupProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// BackupPatch - Backup patch
+type BackupPatch struct {
+	// Backup Patch Properties
+	Properties *BackupPatchProperties
+}
+
+// BackupPatchProperties - Backup patch properties
+type BackupPatchProperties struct {
+	// Label for backup
+	Label *string
+}
+
 // BackupPoliciesList - List of Backup Policies
 type BackupPoliciesList struct {
 	// A list of backup policies
@@ -262,6 +292,146 @@ type BackupPolicyProperties struct {
 
 	// READ-ONLY; Volumes using current backup policy
 	VolumesAssigned *int32
+}
+
+// BackupProperties - Backup properties
+type BackupProperties struct {
+	// REQUIRED; ResourceId used to identify the Volume
+	VolumeResourceID *string
+
+	// Label for backup
+	Label *string
+
+	// The name of the snapshot
+	SnapshotName *string
+
+	// Manual backup an already existing snapshot. This will always be false for scheduled backups and true/false for manual backups
+	UseExistingSnapshot *bool
+
+	// READ-ONLY; UUID v4 used to identify the Backup
+	BackupID *string
+
+	// READ-ONLY; ResourceId used to identify the backup policy
+	BackupPolicyResourceID *string
+
+	// READ-ONLY; Type of backup Manual or Scheduled
+	BackupType *BackupType
+
+	// READ-ONLY; The creation date of the backup
+	CreationDate *time.Time
+
+	// READ-ONLY; Failure reason
+	FailureReason *string
+
+	// READ-ONLY; Azure lifecycle management
+	ProvisioningState *string
+
+	// READ-ONLY; Size of backup in bytes
+	Size *int64
+}
+
+// BackupRestoreFiles - Restore payload for Single File Backup Restore
+type BackupRestoreFiles struct {
+	// REQUIRED; Resource Id of the destination volume on which the files need to be restored
+	DestinationVolumeID *string
+
+	// REQUIRED; List of files to be restored
+	FileList []*string
+
+	// Destination folder where the files will be restored. The path name should start with a forward slash. If it is omitted
+	// from request then restore is done at the root folder of the destination volume by
+	// default
+	RestoreFilePath *string
+}
+
+// BackupStatus - Backup status
+type BackupStatus struct {
+	// READ-ONLY; Displays error message if the backup is in an error state
+	ErrorMessage *string
+
+	// READ-ONLY; Backup health status
+	Healthy *bool
+
+	// READ-ONLY; Displays the last transfer size
+	LastTransferSize *int64
+
+	// READ-ONLY; Displays the last transfer type
+	LastTransferType *string
+
+	// READ-ONLY; The status of the backup
+	MirrorState *MirrorState
+
+	// READ-ONLY; Status of the backup mirror relationship
+	RelationshipStatus *RelationshipStatus
+
+	// READ-ONLY; Displays the total bytes transferred
+	TotalTransferBytes *int64
+
+	// READ-ONLY; Displays the total number of bytes transferred for the ongoing operation
+	TransferProgressBytes *int64
+
+	// READ-ONLY; Reason for the unhealthy backup relationship
+	UnhealthyReason *string
+}
+
+// BackupVault - Backup Vault information
+type BackupVault struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// Backup Vault Properties
+	Properties *BackupVaultProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// BackupVaultPatch - Backup Vault information
+type BackupVaultPatch struct {
+	// Resource tags
+	Tags map[string]*string
+}
+
+// BackupVaultProperties - Backup Vault properties
+type BackupVaultProperties struct {
+	// READ-ONLY; Azure lifecycle management
+	ProvisioningState *string
+}
+
+// BackupVaultsList - List of Backup Vaults
+type BackupVaultsList struct {
+	// URL to get the next set of results.
+	NextLink *string
+
+	// A list of Backup Vaults
+	Value []*BackupVault
+}
+
+// BackupsList - List of Backups
+type BackupsList struct {
+	// URL to get the next set of results.
+	NextLink *string
+
+	// A list of Backups
+	Value []*Backup
+}
+
+// BackupsMigrationRequest - Migrate Backups Request
+type BackupsMigrationRequest struct {
+	// REQUIRED; The ResourceId of the Backup Vault
+	BackupVaultID *string
 }
 
 // BreakFileLocksRequest - Break file locks request
@@ -715,7 +885,7 @@ type PoolPatchProperties struct {
 	// The qos type of the pool
 	QosType *QosType
 
-	// Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value must be multiply of 4398046511104).
+	// Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value must be multiply of 1099511627776).
 	Size *int64
 }
 
@@ -724,7 +894,7 @@ type PoolProperties struct {
 	// REQUIRED; The service level of the file system
 	ServiceLevel *ServiceLevel
 
-	// REQUIRED; Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value must be multiply of 4398046511104).
+	// REQUIRED; Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value must be multiply of 1099511627776).
 	Size *int64
 
 	// If enabled (true) the pool can contain cool Access enabled volumes.
@@ -793,6 +963,33 @@ type RegionInfoAvailabilityZoneMappingsItem struct {
 
 	// Available availability zone
 	IsAvailable *bool
+}
+
+// RegionInfoResource - Information regarding regionInfo Item.
+type RegionInfoResource struct {
+	// regionInfo properties
+	Properties *RegionInfo
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// RegionInfosList - List of regionInfo resources
+type RegionInfosList struct {
+	// URL to get the next set of results.
+	NextLink *string
+
+	// A list of regionInfo resources
+	Value []*RegionInfoResource
 }
 
 // RelocateVolumeRequest - Relocate volume request
@@ -1184,7 +1381,7 @@ type SystemData struct {
 
 // UpdateNetworkSiblingSetRequest - Network sibling set update.
 type UpdateNetworkSiblingSetRequest struct {
-	// REQUIRED; Network features available to the volume, some such
+	// REQUIRED; Network features available to the volume.
 	NetworkFeatures *NetworkFeatures
 
 	// REQUIRED; Network Sibling Set ID for a group of volumes sharing networking resources in a subnet.
@@ -1237,6 +1434,18 @@ type Volume struct {
 	Type *string
 }
 
+// VolumeBackupProperties - Volume Backup Properties
+type VolumeBackupProperties struct {
+	// Backup Policy Resource ID
+	BackupPolicyID *string
+
+	// Backup Vault Resource ID
+	BackupVaultID *string
+
+	// Policy Enforced
+	PolicyEnforced *bool
+}
+
 // VolumeBackups - Volume details using the backup policy
 type VolumeBackups struct {
 	// Total count of backups for volume
@@ -1247,6 +1456,9 @@ type VolumeBackups struct {
 
 	// Volume name
 	VolumeName *string
+
+	// ResourceId used to identify the Volume
+	VolumeResourceID *string
 }
 
 // VolumeGroup - Volume group resource
@@ -1443,6 +1655,9 @@ type VolumePatchProperties struct {
 
 // VolumePatchPropertiesDataProtection - DataProtection type volumes include an object containing details of the replication
 type VolumePatchPropertiesDataProtection struct {
+	// Backup Properties
+	Backup *VolumeBackupProperties
+
 	// Snapshot properties.
 	Snapshot *VolumeSnapshotProperties
 }
@@ -1469,7 +1684,7 @@ type VolumeProperties struct {
 	// Specifies whether the volume is enabled for Azure VMware Solution (AVS) datastore purpose
 	AvsDataStore *AvsDataStore
 
-	// UUID v4 or resource identifier used to identify the Backup.
+	// Resource identifier used to identify the Backup.
 	BackupID *string
 
 	// Pool Resource Id used in case of creating a volume through volume group
@@ -1566,7 +1781,7 @@ type VolumeProperties struct {
 	// snapshots (defaults to true).
 	SnapshotDirectoryVisible *bool
 
-	// UUID v4 or resource identifier used to identify the Snapshot.
+	// Resource identifier used to identify the Snapshot.
 	SnapshotID *string
 
 	// Maximum throughput in MiB/s that can be achieved by this volume and this will be accepted as input only for manual qosType
@@ -1643,6 +1858,9 @@ type VolumeProperties struct {
 
 // VolumePropertiesDataProtection - DataProtection type volumes include an object containing details of the replication
 type VolumePropertiesDataProtection struct {
+	// Backup Properties
+	Backup *VolumeBackupProperties
+
 	// Replication properties
 	Replication *ReplicationObject
 

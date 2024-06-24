@@ -337,7 +337,7 @@ func (client *CloudLinksClient) listCreateRequest(ctx context.Context, resourceG
 // listHandleResponse handles the List response.
 func (client *CloudLinksClient) listHandleResponse(resp *http.Response) (CloudLinksClientListResponse, error) {
 	result := CloudLinksClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.CloudLinkListResult); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.CloudLinkList); err != nil {
 		return CloudLinksClientListResponse{}, err
 	}
 	return result, nil

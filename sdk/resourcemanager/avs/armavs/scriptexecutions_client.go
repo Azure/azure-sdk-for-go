@@ -415,7 +415,7 @@ func (client *ScriptExecutionsClient) listCreateRequest(ctx context.Context, res
 // listHandleResponse handles the List response.
 func (client *ScriptExecutionsClient) listHandleResponse(resp *http.Response) (ScriptExecutionsClientListResponse, error) {
 	result := ScriptExecutionsClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ScriptExecutionListResult); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.ScriptExecutionsList); err != nil {
 		return ScriptExecutionsClientListResponse{}, err
 	}
 	return result, nil

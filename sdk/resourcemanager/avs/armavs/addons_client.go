@@ -337,7 +337,7 @@ func (client *AddonsClient) listCreateRequest(ctx context.Context, resourceGroup
 // listHandleResponse handles the List response.
 func (client *AddonsClient) listHandleResponse(resp *http.Response) (AddonsClientListResponse, error) {
 	result := AddonsClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.AddonListResult); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.AddonList); err != nil {
 		return AddonsClientListResponse{}, err
 	}
 	return result, nil

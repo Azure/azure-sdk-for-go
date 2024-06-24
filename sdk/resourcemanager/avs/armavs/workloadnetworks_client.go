@@ -1972,7 +1972,7 @@ func (client *WorkloadNetworksClient) listCreateRequest(ctx context.Context, res
 // listHandleResponse handles the List response.
 func (client *WorkloadNetworksClient) listHandleResponse(resp *http.Response) (WorkloadNetworksClientListResponse, error) {
 	result := WorkloadNetworksClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.WorkloadNetworkListResult); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.WorkloadNetworkList); err != nil {
 		return WorkloadNetworksClientListResponse{}, err
 	}
 	return result, nil
@@ -2037,7 +2037,7 @@ func (client *WorkloadNetworksClient) listDNSServicesCreateRequest(ctx context.C
 // listDNSServicesHandleResponse handles the ListDNSServices response.
 func (client *WorkloadNetworksClient) listDNSServicesHandleResponse(resp *http.Response) (WorkloadNetworksClientListDNSServicesResponse, error) {
 	result := WorkloadNetworksClientListDNSServicesResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.WorkloadNetworkDNSServiceListResult); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.WorkloadNetworkDNSServicesList); err != nil {
 		return WorkloadNetworksClientListDNSServicesResponse{}, err
 	}
 	return result, nil
@@ -2102,7 +2102,7 @@ func (client *WorkloadNetworksClient) listDNSZonesCreateRequest(ctx context.Cont
 // listDNSZonesHandleResponse handles the ListDNSZones response.
 func (client *WorkloadNetworksClient) listDNSZonesHandleResponse(resp *http.Response) (WorkloadNetworksClientListDNSZonesResponse, error) {
 	result := WorkloadNetworksClientListDNSZonesResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.WorkloadNetworkDNSZoneListResult); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.WorkloadNetworkDNSZonesList); err != nil {
 		return WorkloadNetworksClientListDNSZonesResponse{}, err
 	}
 	return result, nil
@@ -2167,7 +2167,7 @@ func (client *WorkloadNetworksClient) listDhcpCreateRequest(ctx context.Context,
 // listDhcpHandleResponse handles the ListDhcp response.
 func (client *WorkloadNetworksClient) listDhcpHandleResponse(resp *http.Response) (WorkloadNetworksClientListDhcpResponse, error) {
 	result := WorkloadNetworksClientListDhcpResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.WorkloadNetworkDhcpListResult); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.WorkloadNetworkDhcpList); err != nil {
 		return WorkloadNetworksClientListDhcpResponse{}, err
 	}
 	return result, nil
@@ -2232,7 +2232,7 @@ func (client *WorkloadNetworksClient) listGatewaysCreateRequest(ctx context.Cont
 // listGatewaysHandleResponse handles the ListGateways response.
 func (client *WorkloadNetworksClient) listGatewaysHandleResponse(resp *http.Response) (WorkloadNetworksClientListGatewaysResponse, error) {
 	result := WorkloadNetworksClientListGatewaysResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.WorkloadNetworkGatewayListResult); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.WorkloadNetworkGatewayList); err != nil {
 		return WorkloadNetworksClientListGatewaysResponse{}, err
 	}
 	return result, nil
@@ -2297,7 +2297,7 @@ func (client *WorkloadNetworksClient) listPortMirroringCreateRequest(ctx context
 // listPortMirroringHandleResponse handles the ListPortMirroring response.
 func (client *WorkloadNetworksClient) listPortMirroringHandleResponse(resp *http.Response) (WorkloadNetworksClientListPortMirroringResponse, error) {
 	result := WorkloadNetworksClientListPortMirroringResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.WorkloadNetworkPortMirroringListResult); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.WorkloadNetworkPortMirroringList); err != nil {
 		return WorkloadNetworksClientListPortMirroringResponse{}, err
 	}
 	return result, nil
@@ -2362,7 +2362,7 @@ func (client *WorkloadNetworksClient) listPublicIPsCreateRequest(ctx context.Con
 // listPublicIPsHandleResponse handles the ListPublicIPs response.
 func (client *WorkloadNetworksClient) listPublicIPsHandleResponse(resp *http.Response) (WorkloadNetworksClientListPublicIPsResponse, error) {
 	result := WorkloadNetworksClientListPublicIPsResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.WorkloadNetworkPublicIPListResult); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.WorkloadNetworkPublicIPsList); err != nil {
 		return WorkloadNetworksClientListPublicIPsResponse{}, err
 	}
 	return result, nil
@@ -2427,7 +2427,7 @@ func (client *WorkloadNetworksClient) listSegmentsCreateRequest(ctx context.Cont
 // listSegmentsHandleResponse handles the ListSegments response.
 func (client *WorkloadNetworksClient) listSegmentsHandleResponse(resp *http.Response) (WorkloadNetworksClientListSegmentsResponse, error) {
 	result := WorkloadNetworksClientListSegmentsResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.WorkloadNetworkSegmentListResult); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.WorkloadNetworkSegmentsList); err != nil {
 		return WorkloadNetworksClientListSegmentsResponse{}, err
 	}
 	return result, nil
@@ -2492,7 +2492,7 @@ func (client *WorkloadNetworksClient) listVMGroupsCreateRequest(ctx context.Cont
 // listVMGroupsHandleResponse handles the ListVMGroups response.
 func (client *WorkloadNetworksClient) listVMGroupsHandleResponse(resp *http.Response) (WorkloadNetworksClientListVMGroupsResponse, error) {
 	result := WorkloadNetworksClientListVMGroupsResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.WorkloadNetworkVMGroupListResult); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.WorkloadNetworkVMGroupsList); err != nil {
 		return WorkloadNetworksClientListVMGroupsResponse{}, err
 	}
 	return result, nil
@@ -2557,7 +2557,7 @@ func (client *WorkloadNetworksClient) listVirtualMachinesCreateRequest(ctx conte
 // listVirtualMachinesHandleResponse handles the ListVirtualMachines response.
 func (client *WorkloadNetworksClient) listVirtualMachinesHandleResponse(resp *http.Response) (WorkloadNetworksClientListVirtualMachinesResponse, error) {
 	result := WorkloadNetworksClientListVirtualMachinesResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.WorkloadNetworkVirtualMachineListResult); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.WorkloadNetworkVirtualMachinesList); err != nil {
 		return WorkloadNetworksClientListVirtualMachinesResponse{}, err
 	}
 	return result, nil
@@ -2573,7 +2573,7 @@ func (client *WorkloadNetworksClient) listVirtualMachinesHandleResponse(resp *ht
 //   - workloadNetworkDNSService - The resource properties to be updated.
 //   - options - WorkloadNetworksClientBeginUpdateDNSServiceOptions contains the optional parameters for the WorkloadNetworksClient.BeginUpdateDNSService
 //     method.
-func (client *WorkloadNetworksClient) BeginUpdateDNSService(ctx context.Context, resourceGroupName string, privateCloudName string, dnsServiceID string, workloadNetworkDNSService WorkloadNetworkDNSServiceUpdate, options *WorkloadNetworksClientBeginUpdateDNSServiceOptions) (*runtime.Poller[WorkloadNetworksClientUpdateDNSServiceResponse], error) {
+func (client *WorkloadNetworksClient) BeginUpdateDNSService(ctx context.Context, resourceGroupName string, privateCloudName string, dnsServiceID string, workloadNetworkDNSService WorkloadNetworkDNSService, options *WorkloadNetworksClientBeginUpdateDNSServiceOptions) (*runtime.Poller[WorkloadNetworksClientUpdateDNSServiceResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.updateDNSService(ctx, resourceGroupName, privateCloudName, dnsServiceID, workloadNetworkDNSService, options)
 		if err != nil {
@@ -2595,7 +2595,7 @@ func (client *WorkloadNetworksClient) BeginUpdateDNSService(ctx context.Context,
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-09-01
-func (client *WorkloadNetworksClient) updateDNSService(ctx context.Context, resourceGroupName string, privateCloudName string, dnsServiceID string, workloadNetworkDNSService WorkloadNetworkDNSServiceUpdate, options *WorkloadNetworksClientBeginUpdateDNSServiceOptions) (*http.Response, error) {
+func (client *WorkloadNetworksClient) updateDNSService(ctx context.Context, resourceGroupName string, privateCloudName string, dnsServiceID string, workloadNetworkDNSService WorkloadNetworkDNSService, options *WorkloadNetworksClientBeginUpdateDNSServiceOptions) (*http.Response, error) {
 	var err error
 	const operationName = "WorkloadNetworksClient.BeginUpdateDNSService"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -2617,7 +2617,7 @@ func (client *WorkloadNetworksClient) updateDNSService(ctx context.Context, reso
 }
 
 // updateDNSServiceCreateRequest creates the UpdateDNSService request.
-func (client *WorkloadNetworksClient) updateDNSServiceCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, dnsServiceID string, workloadNetworkDNSService WorkloadNetworkDNSServiceUpdate, options *WorkloadNetworksClientBeginUpdateDNSServiceOptions) (*policy.Request, error) {
+func (client *WorkloadNetworksClient) updateDNSServiceCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, dnsServiceID string, workloadNetworkDNSService WorkloadNetworkDNSService, options *WorkloadNetworksClientBeginUpdateDNSServiceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/dnsServices/{dnsServiceId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -2659,7 +2659,7 @@ func (client *WorkloadNetworksClient) updateDNSServiceCreateRequest(ctx context.
 //   - workloadNetworkDNSZone - The resource properties to be updated.
 //   - options - WorkloadNetworksClientBeginUpdateDNSZoneOptions contains the optional parameters for the WorkloadNetworksClient.BeginUpdateDNSZone
 //     method.
-func (client *WorkloadNetworksClient) BeginUpdateDNSZone(ctx context.Context, resourceGroupName string, privateCloudName string, dnsZoneID string, workloadNetworkDNSZone WorkloadNetworkDNSZoneUpdate, options *WorkloadNetworksClientBeginUpdateDNSZoneOptions) (*runtime.Poller[WorkloadNetworksClientUpdateDNSZoneResponse], error) {
+func (client *WorkloadNetworksClient) BeginUpdateDNSZone(ctx context.Context, resourceGroupName string, privateCloudName string, dnsZoneID string, workloadNetworkDNSZone WorkloadNetworkDNSZone, options *WorkloadNetworksClientBeginUpdateDNSZoneOptions) (*runtime.Poller[WorkloadNetworksClientUpdateDNSZoneResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.updateDNSZone(ctx, resourceGroupName, privateCloudName, dnsZoneID, workloadNetworkDNSZone, options)
 		if err != nil {
@@ -2681,7 +2681,7 @@ func (client *WorkloadNetworksClient) BeginUpdateDNSZone(ctx context.Context, re
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-09-01
-func (client *WorkloadNetworksClient) updateDNSZone(ctx context.Context, resourceGroupName string, privateCloudName string, dnsZoneID string, workloadNetworkDNSZone WorkloadNetworkDNSZoneUpdate, options *WorkloadNetworksClientBeginUpdateDNSZoneOptions) (*http.Response, error) {
+func (client *WorkloadNetworksClient) updateDNSZone(ctx context.Context, resourceGroupName string, privateCloudName string, dnsZoneID string, workloadNetworkDNSZone WorkloadNetworkDNSZone, options *WorkloadNetworksClientBeginUpdateDNSZoneOptions) (*http.Response, error) {
 	var err error
 	const operationName = "WorkloadNetworksClient.BeginUpdateDNSZone"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -2703,7 +2703,7 @@ func (client *WorkloadNetworksClient) updateDNSZone(ctx context.Context, resourc
 }
 
 // updateDNSZoneCreateRequest creates the UpdateDNSZone request.
-func (client *WorkloadNetworksClient) updateDNSZoneCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, dnsZoneID string, workloadNetworkDNSZone WorkloadNetworkDNSZoneUpdate, options *WorkloadNetworksClientBeginUpdateDNSZoneOptions) (*policy.Request, error) {
+func (client *WorkloadNetworksClient) updateDNSZoneCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, dnsZoneID string, workloadNetworkDNSZone WorkloadNetworkDNSZone, options *WorkloadNetworksClientBeginUpdateDNSZoneOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/dnsZones/{dnsZoneId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -2745,7 +2745,7 @@ func (client *WorkloadNetworksClient) updateDNSZoneCreateRequest(ctx context.Con
 //   - workloadNetworkDhcp - The resource properties to be updated.
 //   - options - WorkloadNetworksClientBeginUpdateDhcpOptions contains the optional parameters for the WorkloadNetworksClient.BeginUpdateDhcp
 //     method.
-func (client *WorkloadNetworksClient) BeginUpdateDhcp(ctx context.Context, resourceGroupName string, privateCloudName string, dhcpID string, workloadNetworkDhcp WorkloadNetworkDhcpUpdate, options *WorkloadNetworksClientBeginUpdateDhcpOptions) (*runtime.Poller[WorkloadNetworksClientUpdateDhcpResponse], error) {
+func (client *WorkloadNetworksClient) BeginUpdateDhcp(ctx context.Context, resourceGroupName string, privateCloudName string, dhcpID string, workloadNetworkDhcp WorkloadNetworkDhcp, options *WorkloadNetworksClientBeginUpdateDhcpOptions) (*runtime.Poller[WorkloadNetworksClientUpdateDhcpResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.updateDhcp(ctx, resourceGroupName, privateCloudName, dhcpID, workloadNetworkDhcp, options)
 		if err != nil {
@@ -2767,7 +2767,7 @@ func (client *WorkloadNetworksClient) BeginUpdateDhcp(ctx context.Context, resou
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-09-01
-func (client *WorkloadNetworksClient) updateDhcp(ctx context.Context, resourceGroupName string, privateCloudName string, dhcpID string, workloadNetworkDhcp WorkloadNetworkDhcpUpdate, options *WorkloadNetworksClientBeginUpdateDhcpOptions) (*http.Response, error) {
+func (client *WorkloadNetworksClient) updateDhcp(ctx context.Context, resourceGroupName string, privateCloudName string, dhcpID string, workloadNetworkDhcp WorkloadNetworkDhcp, options *WorkloadNetworksClientBeginUpdateDhcpOptions) (*http.Response, error) {
 	var err error
 	const operationName = "WorkloadNetworksClient.BeginUpdateDhcp"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -2789,7 +2789,7 @@ func (client *WorkloadNetworksClient) updateDhcp(ctx context.Context, resourceGr
 }
 
 // updateDhcpCreateRequest creates the UpdateDhcp request.
-func (client *WorkloadNetworksClient) updateDhcpCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, dhcpID string, workloadNetworkDhcp WorkloadNetworkDhcpUpdate, options *WorkloadNetworksClientBeginUpdateDhcpOptions) (*policy.Request, error) {
+func (client *WorkloadNetworksClient) updateDhcpCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, dhcpID string, workloadNetworkDhcp WorkloadNetworkDhcp, options *WorkloadNetworksClientBeginUpdateDhcpOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/dhcpConfigurations/{dhcpId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -2831,7 +2831,7 @@ func (client *WorkloadNetworksClient) updateDhcpCreateRequest(ctx context.Contex
 //   - workloadNetworkPortMirroring - The resource properties to be updated.
 //   - options - WorkloadNetworksClientBeginUpdatePortMirroringOptions contains the optional parameters for the WorkloadNetworksClient.BeginUpdatePortMirroring
 //     method.
-func (client *WorkloadNetworksClient) BeginUpdatePortMirroring(ctx context.Context, resourceGroupName string, privateCloudName string, portMirroringID string, workloadNetworkPortMirroring WorkloadNetworkPortMirroringUpdate, options *WorkloadNetworksClientBeginUpdatePortMirroringOptions) (*runtime.Poller[WorkloadNetworksClientUpdatePortMirroringResponse], error) {
+func (client *WorkloadNetworksClient) BeginUpdatePortMirroring(ctx context.Context, resourceGroupName string, privateCloudName string, portMirroringID string, workloadNetworkPortMirroring WorkloadNetworkPortMirroring, options *WorkloadNetworksClientBeginUpdatePortMirroringOptions) (*runtime.Poller[WorkloadNetworksClientUpdatePortMirroringResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.updatePortMirroring(ctx, resourceGroupName, privateCloudName, portMirroringID, workloadNetworkPortMirroring, options)
 		if err != nil {
@@ -2853,7 +2853,7 @@ func (client *WorkloadNetworksClient) BeginUpdatePortMirroring(ctx context.Conte
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-09-01
-func (client *WorkloadNetworksClient) updatePortMirroring(ctx context.Context, resourceGroupName string, privateCloudName string, portMirroringID string, workloadNetworkPortMirroring WorkloadNetworkPortMirroringUpdate, options *WorkloadNetworksClientBeginUpdatePortMirroringOptions) (*http.Response, error) {
+func (client *WorkloadNetworksClient) updatePortMirroring(ctx context.Context, resourceGroupName string, privateCloudName string, portMirroringID string, workloadNetworkPortMirroring WorkloadNetworkPortMirroring, options *WorkloadNetworksClientBeginUpdatePortMirroringOptions) (*http.Response, error) {
 	var err error
 	const operationName = "WorkloadNetworksClient.BeginUpdatePortMirroring"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -2875,7 +2875,7 @@ func (client *WorkloadNetworksClient) updatePortMirroring(ctx context.Context, r
 }
 
 // updatePortMirroringCreateRequest creates the UpdatePortMirroring request.
-func (client *WorkloadNetworksClient) updatePortMirroringCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, portMirroringID string, workloadNetworkPortMirroring WorkloadNetworkPortMirroringUpdate, options *WorkloadNetworksClientBeginUpdatePortMirroringOptions) (*policy.Request, error) {
+func (client *WorkloadNetworksClient) updatePortMirroringCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, portMirroringID string, workloadNetworkPortMirroring WorkloadNetworkPortMirroring, options *WorkloadNetworksClientBeginUpdatePortMirroringOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/portMirroringProfiles/{portMirroringId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -2917,7 +2917,7 @@ func (client *WorkloadNetworksClient) updatePortMirroringCreateRequest(ctx conte
 //   - workloadNetworkSegment - The resource properties to be updated.
 //   - options - WorkloadNetworksClientBeginUpdateSegmentsOptions contains the optional parameters for the WorkloadNetworksClient.BeginUpdateSegments
 //     method.
-func (client *WorkloadNetworksClient) BeginUpdateSegments(ctx context.Context, resourceGroupName string, privateCloudName string, segmentID string, workloadNetworkSegment WorkloadNetworkSegmentUpdate, options *WorkloadNetworksClientBeginUpdateSegmentsOptions) (*runtime.Poller[WorkloadNetworksClientUpdateSegmentsResponse], error) {
+func (client *WorkloadNetworksClient) BeginUpdateSegments(ctx context.Context, resourceGroupName string, privateCloudName string, segmentID string, workloadNetworkSegment WorkloadNetworkSegment, options *WorkloadNetworksClientBeginUpdateSegmentsOptions) (*runtime.Poller[WorkloadNetworksClientUpdateSegmentsResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.updateSegments(ctx, resourceGroupName, privateCloudName, segmentID, workloadNetworkSegment, options)
 		if err != nil {
@@ -2939,7 +2939,7 @@ func (client *WorkloadNetworksClient) BeginUpdateSegments(ctx context.Context, r
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-09-01
-func (client *WorkloadNetworksClient) updateSegments(ctx context.Context, resourceGroupName string, privateCloudName string, segmentID string, workloadNetworkSegment WorkloadNetworkSegmentUpdate, options *WorkloadNetworksClientBeginUpdateSegmentsOptions) (*http.Response, error) {
+func (client *WorkloadNetworksClient) updateSegments(ctx context.Context, resourceGroupName string, privateCloudName string, segmentID string, workloadNetworkSegment WorkloadNetworkSegment, options *WorkloadNetworksClientBeginUpdateSegmentsOptions) (*http.Response, error) {
 	var err error
 	const operationName = "WorkloadNetworksClient.BeginUpdateSegments"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -2961,7 +2961,7 @@ func (client *WorkloadNetworksClient) updateSegments(ctx context.Context, resour
 }
 
 // updateSegmentsCreateRequest creates the UpdateSegments request.
-func (client *WorkloadNetworksClient) updateSegmentsCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, segmentID string, workloadNetworkSegment WorkloadNetworkSegmentUpdate, options *WorkloadNetworksClientBeginUpdateSegmentsOptions) (*policy.Request, error) {
+func (client *WorkloadNetworksClient) updateSegmentsCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, segmentID string, workloadNetworkSegment WorkloadNetworkSegment, options *WorkloadNetworksClientBeginUpdateSegmentsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/segments/{segmentId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -3003,7 +3003,7 @@ func (client *WorkloadNetworksClient) updateSegmentsCreateRequest(ctx context.Co
 //   - workloadNetworkVMGroup - The resource properties to be updated.
 //   - options - WorkloadNetworksClientBeginUpdateVMGroupOptions contains the optional parameters for the WorkloadNetworksClient.BeginUpdateVMGroup
 //     method.
-func (client *WorkloadNetworksClient) BeginUpdateVMGroup(ctx context.Context, resourceGroupName string, privateCloudName string, vmGroupID string, workloadNetworkVMGroup WorkloadNetworkVMGroupUpdate, options *WorkloadNetworksClientBeginUpdateVMGroupOptions) (*runtime.Poller[WorkloadNetworksClientUpdateVMGroupResponse], error) {
+func (client *WorkloadNetworksClient) BeginUpdateVMGroup(ctx context.Context, resourceGroupName string, privateCloudName string, vmGroupID string, workloadNetworkVMGroup WorkloadNetworkVMGroup, options *WorkloadNetworksClientBeginUpdateVMGroupOptions) (*runtime.Poller[WorkloadNetworksClientUpdateVMGroupResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.updateVMGroup(ctx, resourceGroupName, privateCloudName, vmGroupID, workloadNetworkVMGroup, options)
 		if err != nil {
@@ -3025,7 +3025,7 @@ func (client *WorkloadNetworksClient) BeginUpdateVMGroup(ctx context.Context, re
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-09-01
-func (client *WorkloadNetworksClient) updateVMGroup(ctx context.Context, resourceGroupName string, privateCloudName string, vmGroupID string, workloadNetworkVMGroup WorkloadNetworkVMGroupUpdate, options *WorkloadNetworksClientBeginUpdateVMGroupOptions) (*http.Response, error) {
+func (client *WorkloadNetworksClient) updateVMGroup(ctx context.Context, resourceGroupName string, privateCloudName string, vmGroupID string, workloadNetworkVMGroup WorkloadNetworkVMGroup, options *WorkloadNetworksClientBeginUpdateVMGroupOptions) (*http.Response, error) {
 	var err error
 	const operationName = "WorkloadNetworksClient.BeginUpdateVMGroup"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -3047,7 +3047,7 @@ func (client *WorkloadNetworksClient) updateVMGroup(ctx context.Context, resourc
 }
 
 // updateVMGroupCreateRequest creates the UpdateVMGroup request.
-func (client *WorkloadNetworksClient) updateVMGroupCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, vmGroupID string, workloadNetworkVMGroup WorkloadNetworkVMGroupUpdate, options *WorkloadNetworksClientBeginUpdateVMGroupOptions) (*policy.Request, error) {
+func (client *WorkloadNetworksClient) updateVMGroupCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, vmGroupID string, workloadNetworkVMGroup WorkloadNetworkVMGroup, options *WorkloadNetworksClientBeginUpdateVMGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/vmGroups/{vmGroupId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

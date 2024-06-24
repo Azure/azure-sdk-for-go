@@ -68,8 +68,8 @@ func (a *AddonHcxProperties) GetAddonProperties() *AddonProperties {
 	}
 }
 
-// AddonListResult - The response of a Addon list operation.
-type AddonListResult struct {
+// AddonList - The response of a Addon list operation.
+type AddonList struct {
 	// REQUIRED; The Addon items on this page
 	Value []*Addon
 
@@ -189,8 +189,8 @@ type CloudLink struct {
 	Type *string
 }
 
-// CloudLinkListResult - The response of a CloudLink list operation.
-type CloudLinkListResult struct {
+// CloudLinkList - The response of a CloudLink list operation.
+type CloudLinkList struct {
 	// REQUIRED; The CloudLink items on this page
 	Value []*CloudLink
 
@@ -231,8 +231,8 @@ type Cluster struct {
 	Type *string
 }
 
-// ClusterListResult - The response of a Cluster list operation.
-type ClusterListResult struct {
+// ClusterList - The response of a Cluster list operation.
+type ClusterList struct {
 	// REQUIRED; The Cluster items on this page
 	Value []*Cluster
 
@@ -309,8 +309,8 @@ type Datastore struct {
 	Type *string
 }
 
-// DatastoreListResult - The response of a Datastore list operation.
-type DatastoreListResult struct {
+// DatastoreList - The response of a Datastore list operation.
+type DatastoreList struct {
 	// REQUIRED; The Datastore items on this page
 	Value []*Datastore
 
@@ -426,8 +426,8 @@ type ExpressRouteAuthorization struct {
 	Type *string
 }
 
-// ExpressRouteAuthorizationListResult - The response of a ExpressRouteAuthorization list operation.
-type ExpressRouteAuthorizationListResult struct {
+// ExpressRouteAuthorizationList - The response of a ExpressRouteAuthorization list operation.
+type ExpressRouteAuthorizationList struct {
 	// REQUIRED; The ExpressRouteAuthorization items on this page
 	Value []*ExpressRouteAuthorization
 
@@ -468,8 +468,8 @@ type GlobalReachConnection struct {
 	Type *string
 }
 
-// GlobalReachConnectionListResult - The response of a GlobalReachConnection list operation.
-type GlobalReachConnectionListResult struct {
+// GlobalReachConnectionList - The response of a GlobalReachConnection list operation.
+type GlobalReachConnectionList struct {
 	// REQUIRED; The GlobalReachConnection items on this page
 	Value []*GlobalReachConnection
 
@@ -516,8 +516,8 @@ type HcxEnterpriseSite struct {
 	Type *string
 }
 
-// HcxEnterpriseSiteListResult - The response of a HcxEnterpriseSite list operation.
-type HcxEnterpriseSiteListResult struct {
+// HcxEnterpriseSiteList - The response of a HcxEnterpriseSite list operation.
+type HcxEnterpriseSiteList struct {
 	// REQUIRED; The HcxEnterpriseSite items on this page
 	Value []*HcxEnterpriseSite
 
@@ -702,6 +702,15 @@ func (p *PSCredentialExecutionParameter) GetScriptExecutionParameter() *ScriptEx
 	}
 }
 
+// PlacementPoliciesList - The response of a PlacementPolicy list operation.
+type PlacementPoliciesList struct {
+	// REQUIRED; The PlacementPolicy items on this page
+	Value []*PlacementPolicy
+
+	// The link to the next page of items
+	NextLink *string
+}
+
 // PlacementPolicy - A vSphere Distributed Resource Scheduler (DRS) placement policy
 type PlacementPolicy struct {
 	// The resource-specific properties for this resource.
@@ -718,15 +727,6 @@ type PlacementPolicy struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
-}
-
-// PlacementPolicyListResult - The response of a PlacementPolicy list operation.
-type PlacementPolicyListResult struct {
-	// REQUIRED; The PlacementPolicy items on this page
-	Value []*PlacementPolicy
-
-	// The link to the next page of items
-	NextLink *string
 }
 
 // PlacementPolicyProperties - Abstract placement policy properties
@@ -782,7 +782,7 @@ type PrivateCloud struct {
 	SKU *SKU
 
 	// The managed service identities assigned to this resource.
-	Identity *SystemAssignedServiceIdentity
+	Identity *PrivateCloudIdentity
 
 	// The resource-specific properties for this resource.
 	Properties *PrivateCloudProperties
@@ -803,8 +803,21 @@ type PrivateCloud struct {
 	Type *string
 }
 
-// PrivateCloudListResult - The response of a PrivateCloud list operation.
-type PrivateCloudListResult struct {
+// PrivateCloudIdentity - Managed service identity (either system assigned, or none)
+type PrivateCloudIdentity struct {
+	// REQUIRED; Type of managed service identity (either system assigned, or none).
+	Type *ResourceIdentityType
+
+	// READ-ONLY; The service principal ID of the system assigned identity. This property will only be provided for a system assigned
+	// identity.
+	PrincipalID *string
+
+	// READ-ONLY; The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity.
+	TenantID *string
+}
+
+// PrivateCloudList - The response of a PrivateCloud list operation.
+type PrivateCloudList struct {
 	// REQUIRED; The PrivateCloud items on this page
 	Value []*PrivateCloud
 
@@ -889,7 +902,7 @@ type PrivateCloudProperties struct {
 // PrivateCloudUpdate - An update to a private cloud resource
 type PrivateCloudUpdate struct {
 	// The managed service identities assigned to this resource.
-	Identity *SystemAssignedServiceIdentity
+	Identity *PrivateCloudIdentity
 
 	// The updatable properties of a private cloud resource
 	Properties *PrivateCloudUpdateProperties
@@ -974,15 +987,6 @@ type ScriptCmdlet struct {
 	Type *string
 }
 
-// ScriptCmdletListResult - The response of a ScriptCmdlet list operation.
-type ScriptCmdletListResult struct {
-	// REQUIRED; The ScriptCmdlet items on this page
-	Value []*ScriptCmdlet
-
-	// The link to the next page of items
-	NextLink *string
-}
-
 // ScriptCmdletProperties - Properties of a pre-canned script
 type ScriptCmdletProperties struct {
 	// READ-ONLY; Specifies whether a script cmdlet is intended to be invoked only through automation or visible to customers
@@ -1001,6 +1005,15 @@ type ScriptCmdletProperties struct {
 	Timeout *string
 }
 
+// ScriptCmdletsList - The response of a ScriptCmdlet list operation.
+type ScriptCmdletsList struct {
+	// REQUIRED; The ScriptCmdlet items on this page
+	Value []*ScriptCmdlet
+
+	// The link to the next page of items
+	NextLink *string
+}
+
 // ScriptExecution - An instance of a script executed by a user - custom or AVS
 type ScriptExecution struct {
 	// The resource-specific properties for this resource.
@@ -1017,15 +1030,6 @@ type ScriptExecution struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
-}
-
-// ScriptExecutionListResult - The response of a ScriptExecution list operation.
-type ScriptExecutionListResult struct {
-	// REQUIRED; The ScriptExecution items on this page
-	Value []*ScriptExecution
-
-	// The link to the next page of items
-	NextLink *string
 }
 
 // ScriptExecutionParameter - The arguments passed in to the execution
@@ -1088,6 +1092,15 @@ type ScriptExecutionProperties struct {
 	Warnings []*string
 }
 
+// ScriptExecutionsList - The response of a ScriptExecution list operation.
+type ScriptExecutionsList struct {
+	// REQUIRED; The ScriptExecution items on this page
+	Value []*ScriptExecution
+
+	// The link to the next page of items
+	NextLink *string
+}
+
 // ScriptPackage - Script Package resources available for execution
 type ScriptPackage struct {
 	// The resource-specific properties for this resource.
@@ -1106,15 +1119,6 @@ type ScriptPackage struct {
 	Type *string
 }
 
-// ScriptPackageListResult - The response of a ScriptPackage list operation.
-type ScriptPackageListResult struct {
-	// REQUIRED; The ScriptPackage items on this page
-	Value []*ScriptPackage
-
-	// The link to the next page of items
-	NextLink *string
-}
-
 // ScriptPackageProperties - Properties of a Script Package subresource
 type ScriptPackageProperties struct {
 	// READ-ONLY; Company that created and supports the package
@@ -1131,6 +1135,15 @@ type ScriptPackageProperties struct {
 
 	// READ-ONLY; Module version
 	Version *string
+}
+
+// ScriptPackagesList - The response of a ScriptPackage list operation.
+type ScriptPackagesList struct {
+	// REQUIRED; The ScriptPackage items on this page
+	Value []*ScriptPackage
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // ScriptParameter - An parameter that the script will accept
@@ -1189,19 +1202,6 @@ func (s *ScriptStringExecutionParameter) GetScriptExecutionParameter() *ScriptEx
 		Name: s.Name,
 		Type: s.Type,
 	}
-}
-
-// SystemAssignedServiceIdentity - Managed service identity (either system assigned, or none)
-type SystemAssignedServiceIdentity struct {
-	// REQUIRED; Type of managed service identity (either system assigned, or none).
-	Type *SystemAssignedServiceIdentityType
-
-	// READ-ONLY; The service principal ID of the system assigned identity. This property will only be provided for a system assigned
-	// identity.
-	PrincipalID *string
-
-	// READ-ONLY; The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity.
-	TenantID *string
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
@@ -1323,15 +1323,6 @@ type VirtualMachine struct {
 	Type *string
 }
 
-// VirtualMachineListResult - The response of a VirtualMachine list operation.
-type VirtualMachineListResult struct {
-	// REQUIRED; The VirtualMachine items on this page
-	Value []*VirtualMachine
-
-	// The link to the next page of items
-	NextLink *string
-}
-
 // VirtualMachineProperties - Virtual Machine Properties
 type VirtualMachineProperties struct {
 	// READ-ONLY; Display name of the VM.
@@ -1354,6 +1345,15 @@ type VirtualMachineProperties struct {
 type VirtualMachineRestrictMovement struct {
 	// Whether VM DRS-driven movement is restricted (enabled) or not (disabled)
 	RestrictMovement *VirtualMachineRestrictMovementState
+}
+
+// VirtualMachinesList - The response of a VirtualMachine list operation.
+type VirtualMachinesList struct {
+	// REQUIRED; The VirtualMachine items on this page
+	Value []*VirtualMachine
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // WorkloadNetwork - Workload Network
@@ -1392,15 +1392,6 @@ type WorkloadNetworkDNSService struct {
 	Type *string
 }
 
-// WorkloadNetworkDNSServiceListResult - The response of a WorkloadNetworkDnsService list operation.
-type WorkloadNetworkDNSServiceListResult struct {
-	// REQUIRED; The WorkloadNetworkDnsService items on this page
-	Value []*WorkloadNetworkDNSService
-
-	// The link to the next page of items
-	NextLink *string
-}
-
 // WorkloadNetworkDNSServiceProperties - NSX DNS Service Properties
 type WorkloadNetworkDNSServiceProperties struct {
 	// DNS service IP of the DNS Service.
@@ -1428,10 +1419,13 @@ type WorkloadNetworkDNSServiceProperties struct {
 	Status *DNSServiceStatusEnum
 }
 
-// WorkloadNetworkDNSServiceUpdate - NSX DNS Service update
-type WorkloadNetworkDNSServiceUpdate struct {
-	// The updatable properties of a DNS Service update
-	Properties *WorkloadNetworkDNSServiceProperties
+// WorkloadNetworkDNSServicesList - The response of a WorkloadNetworkDnsService list operation.
+type WorkloadNetworkDNSServicesList struct {
+	// REQUIRED; The WorkloadNetworkDnsService items on this page
+	Value []*WorkloadNetworkDNSService
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // WorkloadNetworkDNSZone - NSX DNS Zone
@@ -1452,22 +1446,13 @@ type WorkloadNetworkDNSZone struct {
 	Type *string
 }
 
-// WorkloadNetworkDNSZoneListResult - The response of a WorkloadNetworkDnsZone list operation.
-type WorkloadNetworkDNSZoneListResult struct {
-	// REQUIRED; The WorkloadNetworkDnsZone items on this page
-	Value []*WorkloadNetworkDNSZone
-
-	// The link to the next page of items
-	NextLink *string
-}
-
 // WorkloadNetworkDNSZoneProperties - NSX DNS Zone Properties
 type WorkloadNetworkDNSZoneProperties struct {
 	// DNS Server IP array of the DNS Zone.
 	DNSServerIPs []*string
 
 	// Number of DNS Services using the DNS zone.
-	DNSServices *int32
+	DNSServices *int64
 
 	// Display name of the DNS Zone.
 	DisplayName *string
@@ -1485,10 +1470,13 @@ type WorkloadNetworkDNSZoneProperties struct {
 	ProvisioningState *WorkloadNetworkDNSZoneProvisioningState
 }
 
-// WorkloadNetworkDNSZoneUpdate - NSX DNS Zone update
-type WorkloadNetworkDNSZoneUpdate struct {
-	// The updatable properties of a DNS Zone update
-	Properties *WorkloadNetworkDNSZoneProperties
+// WorkloadNetworkDNSZonesList - The response of a WorkloadNetworkDnsZone list operation.
+type WorkloadNetworkDNSZonesList struct {
+	// REQUIRED; The WorkloadNetworkDnsZone items on this page
+	Value []*WorkloadNetworkDNSZone
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // WorkloadNetworkDhcp - NSX DHCP
@@ -1532,25 +1520,8 @@ func (w *WorkloadNetworkDhcpEntity) GetWorkloadNetworkDhcpEntity() *WorkloadNetw
 	return w
 }
 
-// WorkloadNetworkDhcpEntityUpdate - Base class for WorkloadNetworkDhcpServer and WorkloadNetworkDhcpRelay to inherit from
-type WorkloadNetworkDhcpEntityUpdate struct {
-	// REQUIRED; Type of DHCP: SERVER or RELAY.
-	DhcpType *DhcpTypeEnum
-
-	// Display name of the DHCP entity.
-	DisplayName *string
-
-	// NSX revision number.
-	Revision *int64
-}
-
-// GetWorkloadNetworkDhcpEntityUpdate implements the WorkloadNetworkDhcpEntityUpdateClassification interface for type WorkloadNetworkDhcpEntityUpdate.
-func (w *WorkloadNetworkDhcpEntityUpdate) GetWorkloadNetworkDhcpEntityUpdate() *WorkloadNetworkDhcpEntityUpdate {
-	return w
-}
-
-// WorkloadNetworkDhcpListResult - The response of a WorkloadNetworkDhcp list operation.
-type WorkloadNetworkDhcpListResult struct {
+// WorkloadNetworkDhcpList - The response of a WorkloadNetworkDhcp list operation.
+type WorkloadNetworkDhcpList struct {
 	// REQUIRED; The WorkloadNetworkDhcp items on this page
 	Value []*WorkloadNetworkDhcp
 
@@ -1590,30 +1561,6 @@ func (w *WorkloadNetworkDhcpRelay) GetWorkloadNetworkDhcpEntity() *WorkloadNetwo
 	}
 }
 
-// WorkloadNetworkDhcpRelayUpdate - NSX DHCP Relay
-type WorkloadNetworkDhcpRelayUpdate struct {
-	// REQUIRED; Type of DHCP: SERVER or RELAY.
-	DhcpType *DhcpTypeEnum
-
-	// Display name of the DHCP entity.
-	DisplayName *string
-
-	// NSX revision number.
-	Revision *int64
-
-	// DHCP Relay Addresses. Max 3.
-	ServerAddresses []*string
-}
-
-// GetWorkloadNetworkDhcpEntityUpdate implements the WorkloadNetworkDhcpEntityUpdateClassification interface for type WorkloadNetworkDhcpRelayUpdate.
-func (w *WorkloadNetworkDhcpRelayUpdate) GetWorkloadNetworkDhcpEntityUpdate() *WorkloadNetworkDhcpEntityUpdate {
-	return &WorkloadNetworkDhcpEntityUpdate{
-		DhcpType:    w.DhcpType,
-		DisplayName: w.DisplayName,
-		Revision:    w.Revision,
-	}
-}
-
 // WorkloadNetworkDhcpServer - NSX DHCP Server
 type WorkloadNetworkDhcpServer struct {
 	// REQUIRED; Type of DHCP: SERVER or RELAY.
@@ -1623,7 +1570,7 @@ type WorkloadNetworkDhcpServer struct {
 	DisplayName *string
 
 	// DHCP Server Lease Time.
-	LeaseTime *int32
+	LeaseTime *int64
 
 	// NSX revision number.
 	Revision *int64
@@ -1649,39 +1596,6 @@ func (w *WorkloadNetworkDhcpServer) GetWorkloadNetworkDhcpEntity() *WorkloadNetw
 	}
 }
 
-// WorkloadNetworkDhcpServerUpdate - NSX DHCP Server
-type WorkloadNetworkDhcpServerUpdate struct {
-	// REQUIRED; Type of DHCP: SERVER or RELAY.
-	DhcpType *DhcpTypeEnum
-
-	// Display name of the DHCP entity.
-	DisplayName *string
-
-	// DHCP Server Lease Time.
-	LeaseTime *int32
-
-	// NSX revision number.
-	Revision *int64
-
-	// DHCP Server Address.
-	ServerAddress *string
-}
-
-// GetWorkloadNetworkDhcpEntityUpdate implements the WorkloadNetworkDhcpEntityUpdateClassification interface for type WorkloadNetworkDhcpServerUpdate.
-func (w *WorkloadNetworkDhcpServerUpdate) GetWorkloadNetworkDhcpEntityUpdate() *WorkloadNetworkDhcpEntityUpdate {
-	return &WorkloadNetworkDhcpEntityUpdate{
-		DhcpType:    w.DhcpType,
-		DisplayName: w.DisplayName,
-		Revision:    w.Revision,
-	}
-}
-
-// WorkloadNetworkDhcpUpdate - NSX DHCP update
-type WorkloadNetworkDhcpUpdate struct {
-	// The updatable properties of a DHCP update
-	Properties WorkloadNetworkDhcpEntityUpdateClassification
-}
-
 // WorkloadNetworkGateway - NSX Gateway.
 type WorkloadNetworkGateway struct {
 	// The resource-specific properties for this resource.
@@ -1700,8 +1614,8 @@ type WorkloadNetworkGateway struct {
 	Type *string
 }
 
-// WorkloadNetworkGatewayListResult - The response of a WorkloadNetworkGateway list operation.
-type WorkloadNetworkGatewayListResult struct {
+// WorkloadNetworkGatewayList - The response of a WorkloadNetworkGateway list operation.
+type WorkloadNetworkGatewayList struct {
 	// REQUIRED; The WorkloadNetworkGateway items on this page
 	Value []*WorkloadNetworkGateway
 
@@ -1721,8 +1635,8 @@ type WorkloadNetworkGatewayProperties struct {
 	ProvisioningState *WorkloadNetworkProvisioningState
 }
 
-// WorkloadNetworkListResult - The response of a WorkloadNetwork list operation.
-type WorkloadNetworkListResult struct {
+// WorkloadNetworkList - The response of a WorkloadNetwork list operation.
+type WorkloadNetworkList struct {
 	// REQUIRED; The WorkloadNetwork items on this page
 	Value []*WorkloadNetwork
 
@@ -1748,8 +1662,8 @@ type WorkloadNetworkPortMirroring struct {
 	Type *string
 }
 
-// WorkloadNetworkPortMirroringListResult - The response of a WorkloadNetworkPortMirroring list operation.
-type WorkloadNetworkPortMirroringListResult struct {
+// WorkloadNetworkPortMirroringList - The response of a WorkloadNetworkPortMirroring list operation.
+type WorkloadNetworkPortMirroringList struct {
 	// REQUIRED; The WorkloadNetworkPortMirroring items on this page
 	Value []*WorkloadNetworkPortMirroring
 
@@ -1781,12 +1695,6 @@ type WorkloadNetworkPortMirroringProperties struct {
 	Status *PortMirroringStatusEnum
 }
 
-// WorkloadNetworkPortMirroringUpdate - NSX Port Mirroring update
-type WorkloadNetworkPortMirroringUpdate struct {
-	// The updatable properties of a Port Mirroring update
-	Properties *WorkloadNetworkPortMirroringProperties
-}
-
 // WorkloadNetworkProperties - The properties of a workload network
 type WorkloadNetworkProperties struct {
 	// READ-ONLY; The provisioning state of the resource.
@@ -1811,15 +1719,6 @@ type WorkloadNetworkPublicIP struct {
 	Type *string
 }
 
-// WorkloadNetworkPublicIPListResult - The response of a WorkloadNetworkPublicIP list operation.
-type WorkloadNetworkPublicIPListResult struct {
-	// REQUIRED; The WorkloadNetworkPublicIP items on this page
-	Value []*WorkloadNetworkPublicIP
-
-	// The link to the next page of items
-	NextLink *string
-}
-
 // WorkloadNetworkPublicIPProperties - NSX Public IP Block Properties
 type WorkloadNetworkPublicIPProperties struct {
 	// Display name of the Public IP Block.
@@ -1833,6 +1732,15 @@ type WorkloadNetworkPublicIPProperties struct {
 
 	// READ-ONLY; CIDR Block of the Public IP Block.
 	PublicIPBlock *string
+}
+
+// WorkloadNetworkPublicIPsList - The response of a WorkloadNetworkPublicIP list operation.
+type WorkloadNetworkPublicIPsList struct {
+	// REQUIRED; The WorkloadNetworkPublicIP items on this page
+	Value []*WorkloadNetworkPublicIP
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // WorkloadNetworkSegment - NSX Segment
@@ -1851,15 +1759,6 @@ type WorkloadNetworkSegment struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
-}
-
-// WorkloadNetworkSegmentListResult - The response of a WorkloadNetworkSegment list operation.
-type WorkloadNetworkSegmentListResult struct {
-	// REQUIRED; The WorkloadNetworkSegment items on this page
-	Value []*WorkloadNetworkSegment
-
-	// The link to the next page of items
-	NextLink *string
 }
 
 // WorkloadNetworkSegmentPortVif - Ports and any VIF attached to segment.
@@ -1901,10 +1800,13 @@ type WorkloadNetworkSegmentSubnet struct {
 	GatewayAddress *string
 }
 
-// WorkloadNetworkSegmentUpdate - NSX Segment update
-type WorkloadNetworkSegmentUpdate struct {
-	// The updatable properties of a Segment update
-	Properties *WorkloadNetworkSegmentProperties
+// WorkloadNetworkSegmentsList - The response of a WorkloadNetworkSegment list operation.
+type WorkloadNetworkSegmentsList struct {
+	// REQUIRED; The WorkloadNetworkSegment items on this page
+	Value []*WorkloadNetworkSegment
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // WorkloadNetworkVMGroup - NSX VM Group
@@ -1925,15 +1827,6 @@ type WorkloadNetworkVMGroup struct {
 	Type *string
 }
 
-// WorkloadNetworkVMGroupListResult - The response of a WorkloadNetworkVMGroup list operation.
-type WorkloadNetworkVMGroupListResult struct {
-	// REQUIRED; The WorkloadNetworkVMGroup items on this page
-	Value []*WorkloadNetworkVMGroup
-
-	// The link to the next page of items
-	NextLink *string
-}
-
 // WorkloadNetworkVMGroupProperties - NSX VM Group Properties
 type WorkloadNetworkVMGroupProperties struct {
 	// Display name of the VM group.
@@ -1952,10 +1845,13 @@ type WorkloadNetworkVMGroupProperties struct {
 	Status *VMGroupStatusEnum
 }
 
-// WorkloadNetworkVMGroupUpdate - NSX VM Group update
-type WorkloadNetworkVMGroupUpdate struct {
-	// The updatable properties of a VM Group update
-	Properties *WorkloadNetworkVMGroupProperties
+// WorkloadNetworkVMGroupsList - The response of a WorkloadNetworkVMGroup list operation.
+type WorkloadNetworkVMGroupsList struct {
+	// REQUIRED; The WorkloadNetworkVMGroup items on this page
+	Value []*WorkloadNetworkVMGroup
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // WorkloadNetworkVirtualMachine - NSX Virtual Machine
@@ -1976,15 +1872,6 @@ type WorkloadNetworkVirtualMachine struct {
 	Type *string
 }
 
-// WorkloadNetworkVirtualMachineListResult - The response of a WorkloadNetworkVirtualMachine list operation.
-type WorkloadNetworkVirtualMachineListResult struct {
-	// REQUIRED; The WorkloadNetworkVirtualMachine items on this page
-	Value []*WorkloadNetworkVirtualMachine
-
-	// The link to the next page of items
-	NextLink *string
-}
-
 // WorkloadNetworkVirtualMachineProperties - NSX Virtual Machine Properties
 type WorkloadNetworkVirtualMachineProperties struct {
 	// Display name of the VM.
@@ -1995,4 +1882,13 @@ type WorkloadNetworkVirtualMachineProperties struct {
 
 	// READ-ONLY; Virtual machine type.
 	VMType *VMTypeEnum
+}
+
+// WorkloadNetworkVirtualMachinesList - The response of a WorkloadNetworkVirtualMachine list operation.
+type WorkloadNetworkVirtualMachinesList struct {
+	// REQUIRED; The WorkloadNetworkVirtualMachine items on this page
+	Value []*WorkloadNetworkVirtualMachine
+
+	// The link to the next page of items
+	NextLink *string
 }

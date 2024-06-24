@@ -43,12 +43,3 @@ type WorkloadNetworkDhcpEntityClassification interface {
 	// GetWorkloadNetworkDhcpEntity returns the WorkloadNetworkDhcpEntity content of the underlying type.
 	GetWorkloadNetworkDhcpEntity() *WorkloadNetworkDhcpEntity
 }
-
-// WorkloadNetworkDhcpEntityUpdateClassification provides polymorphic access to related types.
-// Call the interface's GetWorkloadNetworkDhcpEntityUpdate() method to access the common type.
-// Use a type switch to determine the concrete type.  The possible types are:
-// - *WorkloadNetworkDhcpEntityUpdate, *WorkloadNetworkDhcpRelayUpdate, *WorkloadNetworkDhcpServerUpdate
-type WorkloadNetworkDhcpEntityUpdateClassification interface {
-	// GetWorkloadNetworkDhcpEntityUpdate returns the WorkloadNetworkDhcpEntityUpdate content of the underlying type.
-	GetWorkloadNetworkDhcpEntityUpdate() *WorkloadNetworkDhcpEntityUpdate
-}

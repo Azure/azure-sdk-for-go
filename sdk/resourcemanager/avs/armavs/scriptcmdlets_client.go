@@ -180,7 +180,7 @@ func (client *ScriptCmdletsClient) listCreateRequest(ctx context.Context, resour
 // listHandleResponse handles the List response.
 func (client *ScriptCmdletsClient) listHandleResponse(resp *http.Response) (ScriptCmdletsClientListResponse, error) {
 	result := ScriptCmdletsClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ScriptCmdletListResult); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.ScriptCmdletsList); err != nil {
 		return ScriptCmdletsClientListResponse{}, err
 	}
 	return result, nil

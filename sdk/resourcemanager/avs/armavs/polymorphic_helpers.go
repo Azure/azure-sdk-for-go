@@ -126,26 +126,3 @@ func unmarshalWorkloadNetworkDhcpEntityClassification(rawMsg json.RawMessage) (W
 	}
 	return b, nil
 }
-
-func unmarshalWorkloadNetworkDhcpEntityUpdateClassification(rawMsg json.RawMessage) (WorkloadNetworkDhcpEntityUpdateClassification, error) {
-	if rawMsg == nil || string(rawMsg) == "null" {
-		return nil, nil
-	}
-	var m map[string]any
-	if err := json.Unmarshal(rawMsg, &m); err != nil {
-		return nil, err
-	}
-	var b WorkloadNetworkDhcpEntityUpdateClassification
-	switch m["dhcpType"] {
-	case string(DhcpTypeEnumRELAY):
-		b = &WorkloadNetworkDhcpRelayUpdate{}
-	case string(DhcpTypeEnumSERVER):
-		b = &WorkloadNetworkDhcpServerUpdate{}
-	default:
-		b = &WorkloadNetworkDhcpEntityUpdate{}
-	}
-	if err := json.Unmarshal(rawMsg, b); err != nil {
-		return nil, err
-	}
-	return b, nil
-}

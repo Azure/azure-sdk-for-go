@@ -337,7 +337,7 @@ func (client *ClustersClient) listCreateRequest(ctx context.Context, resourceGro
 // listHandleResponse handles the List response.
 func (client *ClustersClient) listHandleResponse(resp *http.Response) (ClustersClientListResponse, error) {
 	result := ClustersClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ClusterListResult); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.ClusterList); err != nil {
 		return ClustersClientListResponse{}, err
 	}
 	return result, nil

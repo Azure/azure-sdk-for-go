@@ -305,7 +305,7 @@ func (client *HcxEnterpriseSitesClient) listCreateRequest(ctx context.Context, r
 // listHandleResponse handles the List response.
 func (client *HcxEnterpriseSitesClient) listHandleResponse(resp *http.Response) (HcxEnterpriseSitesClientListResponse, error) {
 	result := HcxEnterpriseSitesClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.HcxEnterpriseSiteListResult); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.HcxEnterpriseSiteList); err != nil {
 		return HcxEnterpriseSitesClientListResponse{}, err
 	}
 	return result, nil

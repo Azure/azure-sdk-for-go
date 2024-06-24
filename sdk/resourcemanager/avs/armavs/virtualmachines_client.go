@@ -181,7 +181,7 @@ func (client *VirtualMachinesClient) listCreateRequest(ctx context.Context, reso
 // listHandleResponse handles the List response.
 func (client *VirtualMachinesClient) listHandleResponse(resp *http.Response) (VirtualMachinesClientListResponse, error) {
 	result := VirtualMachinesClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualMachineListResult); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualMachinesList); err != nil {
 		return VirtualMachinesClientListResponse{}, err
 	}
 	return result, nil
@@ -205,7 +205,8 @@ func (client *VirtualMachinesClient) BeginRestrictMovement(ctx context.Context, 
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VirtualMachinesClientRestrictMovementResponse]{
-			Tracer: client.internal.Tracer(),
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {

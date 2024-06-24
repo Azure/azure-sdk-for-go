@@ -338,7 +338,7 @@ func (client *AuthorizationsClient) listCreateRequest(ctx context.Context, resou
 // listHandleResponse handles the List response.
 func (client *AuthorizationsClient) listHandleResponse(resp *http.Response) (AuthorizationsClientListResponse, error) {
 	result := AuthorizationsClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ExpressRouteAuthorizationListResult); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.ExpressRouteAuthorizationList); err != nil {
 		return AuthorizationsClientListResponse{}, err
 	}
 	return result, nil

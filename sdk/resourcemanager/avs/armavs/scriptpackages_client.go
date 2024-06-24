@@ -170,7 +170,7 @@ func (client *ScriptPackagesClient) listCreateRequest(ctx context.Context, resou
 // listHandleResponse handles the List response.
 func (client *ScriptPackagesClient) listHandleResponse(resp *http.Response) (ScriptPackagesClientListResponse, error) {
 	result := ScriptPackagesClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ScriptPackageListResult); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.ScriptPackagesList); err != nil {
 		return ScriptPackagesClientListResponse{}, err
 	}
 	return result, nil

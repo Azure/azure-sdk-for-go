@@ -359,7 +359,7 @@ func (client *PlacementPoliciesClient) listCreateRequest(ctx context.Context, re
 // listHandleResponse handles the List response.
 func (client *PlacementPoliciesClient) listHandleResponse(resp *http.Response) (PlacementPoliciesClientListResponse, error) {
 	result := PlacementPoliciesClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.PlacementPolicyListResult); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.PlacementPoliciesList); err != nil {
 		return PlacementPoliciesClientListResponse{}, err
 	}
 	return result, nil

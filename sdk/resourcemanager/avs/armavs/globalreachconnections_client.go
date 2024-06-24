@@ -340,7 +340,7 @@ func (client *GlobalReachConnectionsClient) listCreateRequest(ctx context.Contex
 // listHandleResponse handles the List response.
 func (client *GlobalReachConnectionsClient) listHandleResponse(resp *http.Response) (GlobalReachConnectionsClientListResponse, error) {
 	result := GlobalReachConnectionsClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.GlobalReachConnectionListResult); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.GlobalReachConnectionList); err != nil {
 		return GlobalReachConnectionsClientListResponse{}, err
 	}
 	return result, nil

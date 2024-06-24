@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/avs/armavs/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9c51b17f1c544eea0f6a67c01a6b763995521f52/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_List.json
 func ExampleWorkloadNetworksClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -40,7 +40,7 @@ func ExampleWorkloadNetworksClient_NewListPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.WorkloadNetworkListResult = armavs.WorkloadNetworkListResult{
+		// page.WorkloadNetworkList = armavs.WorkloadNetworkList{
 		// 	Value: []*armavs.WorkloadNetwork{
 		// 		{
 		// 			Name: to.Ptr("default"),
@@ -51,7 +51,7 @@ func ExampleWorkloadNetworksClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9c51b17f1c544eea0f6a67c01a6b763995521f52/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_Get.json
 func ExampleWorkloadNetworksClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -76,7 +76,7 @@ func ExampleWorkloadNetworksClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9c51b17f1c544eea0f6a67c01a6b763995521f52/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_ListDhcp.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_ListDhcp.json
 func ExampleWorkloadNetworksClient_NewListDhcpPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -98,7 +98,7 @@ func ExampleWorkloadNetworksClient_NewListDhcpPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.WorkloadNetworkDhcpListResult = armavs.WorkloadNetworkDhcpListResult{
+		// page.WorkloadNetworkDhcpList = armavs.WorkloadNetworkDhcpList{
 		// 	Value: []*armavs.WorkloadNetworkDhcp{
 		// 		{
 		// 			Name: to.Ptr("dhcp1"),
@@ -111,7 +111,7 @@ func ExampleWorkloadNetworksClient_NewListDhcpPager() {
 		// 				Segments: []*string{
 		// 					to.Ptr("segment1"),
 		// 					to.Ptr("segment2")},
-		// 					LeaseTime: to.Ptr[int32](86400),
+		// 					LeaseTime: to.Ptr[int64](86400),
 		// 					ServerAddress: to.Ptr("40.1.5.1/24"),
 		// 				},
 		// 		}},
@@ -119,7 +119,7 @@ func ExampleWorkloadNetworksClient_NewListDhcpPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9c51b17f1c544eea0f6a67c01a6b763995521f52/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_GetDhcp.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_GetDhcp.json
 func ExampleWorkloadNetworksClient_GetDhcp() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -148,13 +148,13 @@ func ExampleWorkloadNetworksClient_GetDhcp() {
 	// 		Segments: []*string{
 	// 			to.Ptr("segment1"),
 	// 			to.Ptr("segment2")},
-	// 			LeaseTime: to.Ptr[int32](86400),
+	// 			LeaseTime: to.Ptr[int64](86400),
 	// 			ServerAddress: to.Ptr("40.1.5.1/24"),
 	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9c51b17f1c544eea0f6a67c01a6b763995521f52/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_CreateDhcp.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_CreateDhcp.json
 func ExampleWorkloadNetworksClient_BeginCreateDhcp() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -170,7 +170,7 @@ func ExampleWorkloadNetworksClient_BeginCreateDhcp() {
 			DhcpType:      to.Ptr(armavs.DhcpTypeEnumSERVER),
 			DisplayName:   to.Ptr("dhcpConfigurations1"),
 			Revision:      to.Ptr[int64](1),
-			LeaseTime:     to.Ptr[int32](86400),
+			LeaseTime:     to.Ptr[int64](86400),
 			ServerAddress: to.Ptr("40.1.5.1/24"),
 		},
 	}, nil)
@@ -195,13 +195,13 @@ func ExampleWorkloadNetworksClient_BeginCreateDhcp() {
 	// 		Segments: []*string{
 	// 			to.Ptr("segment1"),
 	// 			to.Ptr("segment2")},
-	// 			LeaseTime: to.Ptr[int32](86400),
+	// 			LeaseTime: to.Ptr[int64](86400),
 	// 			ServerAddress: to.Ptr("40.1.5.1/24"),
 	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9c51b17f1c544eea0f6a67c01a6b763995521f52/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_UpdateDhcp.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_UpdateDhcp.json
 func ExampleWorkloadNetworksClient_BeginUpdateDhcp() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -212,11 +212,11 @@ func ExampleWorkloadNetworksClient_BeginUpdateDhcp() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewWorkloadNetworksClient().BeginUpdateDhcp(ctx, "group1", "cloud1", "dhcp1", armavs.WorkloadNetworkDhcpUpdate{
-		Properties: &armavs.WorkloadNetworkDhcpServerUpdate{
+	poller, err := clientFactory.NewWorkloadNetworksClient().BeginUpdateDhcp(ctx, "group1", "cloud1", "dhcp1", armavs.WorkloadNetworkDhcp{
+		Properties: &armavs.WorkloadNetworkDhcpServer{
 			DhcpType:      to.Ptr(armavs.DhcpTypeEnumSERVER),
 			Revision:      to.Ptr[int64](1),
-			LeaseTime:     to.Ptr[int32](86400),
+			LeaseTime:     to.Ptr[int64](86400),
 			ServerAddress: to.Ptr("40.1.5.1/24"),
 		},
 	}, nil)
@@ -241,13 +241,13 @@ func ExampleWorkloadNetworksClient_BeginUpdateDhcp() {
 	// 		Segments: []*string{
 	// 			to.Ptr("segment1"),
 	// 			to.Ptr("segment2")},
-	// 			LeaseTime: to.Ptr[int32](86400),
+	// 			LeaseTime: to.Ptr[int64](86400),
 	// 			ServerAddress: to.Ptr("40.1.5.1/24"),
 	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9c51b17f1c544eea0f6a67c01a6b763995521f52/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_DeleteDhcp.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_DeleteDhcp.json
 func ExampleWorkloadNetworksClient_BeginDeleteDhcp() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -268,7 +268,7 @@ func ExampleWorkloadNetworksClient_BeginDeleteDhcp() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9c51b17f1c544eea0f6a67c01a6b763995521f52/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_ListDnsServices.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_ListDnsServices.json
 func ExampleWorkloadNetworksClient_NewListDNSServicesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -290,7 +290,7 @@ func ExampleWorkloadNetworksClient_NewListDNSServicesPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.WorkloadNetworkDNSServiceListResult = armavs.WorkloadNetworkDNSServiceListResult{
+		// page.WorkloadNetworkDNSServicesList = armavs.WorkloadNetworkDNSServicesList{
 		// 	Value: []*armavs.WorkloadNetworkDNSService{
 		// 		{
 		// 			Name: to.Ptr("portMirroring1"),
@@ -311,7 +311,7 @@ func ExampleWorkloadNetworksClient_NewListDNSServicesPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9c51b17f1c544eea0f6a67c01a6b763995521f52/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_GetDnsService.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_GetDnsService.json
 func ExampleWorkloadNetworksClient_GetDNSService() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -346,7 +346,7 @@ func ExampleWorkloadNetworksClient_GetDNSService() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9c51b17f1c544eea0f6a67c01a6b763995521f52/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_CreateDnsService.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_CreateDnsService.json
 func ExampleWorkloadNetworksClient_BeginCreateDNSService() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -395,7 +395,7 @@ func ExampleWorkloadNetworksClient_BeginCreateDNSService() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9c51b17f1c544eea0f6a67c01a6b763995521f52/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_UpdateDnsService.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_UpdateDnsService.json
 func ExampleWorkloadNetworksClient_BeginUpdateDNSService() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -406,7 +406,7 @@ func ExampleWorkloadNetworksClient_BeginUpdateDNSService() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewWorkloadNetworksClient().BeginUpdateDNSService(ctx, "group1", "cloud1", "dnsService1", armavs.WorkloadNetworkDNSServiceUpdate{
+	poller, err := clientFactory.NewWorkloadNetworksClient().BeginUpdateDNSService(ctx, "group1", "cloud1", "dnsService1", armavs.WorkloadNetworkDNSService{
 		Properties: &armavs.WorkloadNetworkDNSServiceProperties{
 			DefaultDNSZone: to.Ptr("defaultDnsZone1"),
 			DisplayName:    to.Ptr("dnsService1"),
@@ -444,7 +444,7 @@ func ExampleWorkloadNetworksClient_BeginUpdateDNSService() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9c51b17f1c544eea0f6a67c01a6b763995521f52/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_DeleteDnsService.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_DeleteDnsService.json
 func ExampleWorkloadNetworksClient_BeginDeleteDNSService() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -465,7 +465,7 @@ func ExampleWorkloadNetworksClient_BeginDeleteDNSService() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9c51b17f1c544eea0f6a67c01a6b763995521f52/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_ListDnsZones.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_ListDnsZones.json
 func ExampleWorkloadNetworksClient_NewListDNSZonesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -487,7 +487,7 @@ func ExampleWorkloadNetworksClient_NewListDNSZonesPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.WorkloadNetworkDNSZoneListResult = armavs.WorkloadNetworkDNSZoneListResult{
+		// page.WorkloadNetworkDNSZonesList = armavs.WorkloadNetworkDNSZonesList{
 		// 	Value: []*armavs.WorkloadNetworkDNSZone{
 		// 		{
 		// 			Name: to.Ptr("portMirroring1"),
@@ -497,7 +497,7 @@ func ExampleWorkloadNetworksClient_NewListDNSZonesPager() {
 		// 				DisplayName: to.Ptr("dnsZone1"),
 		// 				DNSServerIPs: []*string{
 		// 					to.Ptr("1.1.1.1")},
-		// 					DNSServices: to.Ptr[int32](0),
+		// 					DNSServices: to.Ptr[int64](0),
 		// 					Domain: []*string{
 		// 					},
 		// 					Revision: to.Ptr[int64](1),
@@ -508,7 +508,7 @@ func ExampleWorkloadNetworksClient_NewListDNSZonesPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9c51b17f1c544eea0f6a67c01a6b763995521f52/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_GetDnsZone.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_GetDnsZone.json
 func ExampleWorkloadNetworksClient_GetDNSZone() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -534,7 +534,7 @@ func ExampleWorkloadNetworksClient_GetDNSZone() {
 	// 		DisplayName: to.Ptr("dnsZone1"),
 	// 		DNSServerIPs: []*string{
 	// 			to.Ptr("1.1.1.1")},
-	// 			DNSServices: to.Ptr[int32](0),
+	// 			DNSServices: to.Ptr[int64](0),
 	// 			Domain: []*string{
 	// 			},
 	// 			Revision: to.Ptr[int64](1),
@@ -543,7 +543,7 @@ func ExampleWorkloadNetworksClient_GetDNSZone() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9c51b17f1c544eea0f6a67c01a6b763995521f52/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_CreateDnsZone.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_CreateDnsZone.json
 func ExampleWorkloadNetworksClient_BeginCreateDNSZone() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -582,7 +582,7 @@ func ExampleWorkloadNetworksClient_BeginCreateDNSZone() {
 	// 		DisplayName: to.Ptr("dnsZone1"),
 	// 		DNSServerIPs: []*string{
 	// 			to.Ptr("1.1.1.1")},
-	// 			DNSServices: to.Ptr[int32](0),
+	// 			DNSServices: to.Ptr[int64](0),
 	// 			Domain: []*string{
 	// 			},
 	// 			Revision: to.Ptr[int64](1),
@@ -591,7 +591,7 @@ func ExampleWorkloadNetworksClient_BeginCreateDNSZone() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9c51b17f1c544eea0f6a67c01a6b763995521f52/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_UpdateDnsZone.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_UpdateDnsZone.json
 func ExampleWorkloadNetworksClient_BeginUpdateDNSZone() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -602,7 +602,7 @@ func ExampleWorkloadNetworksClient_BeginUpdateDNSZone() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewWorkloadNetworksClient().BeginUpdateDNSZone(ctx, "group1", "cloud1", "dnsZone1", armavs.WorkloadNetworkDNSZoneUpdate{
+	poller, err := clientFactory.NewWorkloadNetworksClient().BeginUpdateDNSZone(ctx, "group1", "cloud1", "dnsZone1", armavs.WorkloadNetworkDNSZone{
 		Properties: &armavs.WorkloadNetworkDNSZoneProperties{
 			DisplayName: to.Ptr("dnsZone1"),
 			DNSServerIPs: []*string{
@@ -630,7 +630,7 @@ func ExampleWorkloadNetworksClient_BeginUpdateDNSZone() {
 	// 		DisplayName: to.Ptr("dnsZone1"),
 	// 		DNSServerIPs: []*string{
 	// 			to.Ptr("1.1.1.1")},
-	// 			DNSServices: to.Ptr[int32](0),
+	// 			DNSServices: to.Ptr[int64](0),
 	// 			Domain: []*string{
 	// 			},
 	// 			Revision: to.Ptr[int64](1),
@@ -639,7 +639,7 @@ func ExampleWorkloadNetworksClient_BeginUpdateDNSZone() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9c51b17f1c544eea0f6a67c01a6b763995521f52/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_DeleteDnsZone.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_DeleteDnsZone.json
 func ExampleWorkloadNetworksClient_BeginDeleteDNSZone() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -660,7 +660,7 @@ func ExampleWorkloadNetworksClient_BeginDeleteDNSZone() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9c51b17f1c544eea0f6a67c01a6b763995521f52/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_ListGateways.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_ListGateways.json
 func ExampleWorkloadNetworksClient_NewListGatewaysPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -682,7 +682,7 @@ func ExampleWorkloadNetworksClient_NewListGatewaysPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.WorkloadNetworkGatewayListResult = armavs.WorkloadNetworkGatewayListResult{
+		// page.WorkloadNetworkGatewayList = armavs.WorkloadNetworkGatewayList{
 		// 	Value: []*armavs.WorkloadNetworkGateway{
 		// 		{
 		// 			Name: to.Ptr("gateway1"),
@@ -697,7 +697,7 @@ func ExampleWorkloadNetworksClient_NewListGatewaysPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9c51b17f1c544eea0f6a67c01a6b763995521f52/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_GetGateway.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_GetGateway.json
 func ExampleWorkloadNetworksClient_GetGateway() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -726,7 +726,7 @@ func ExampleWorkloadNetworksClient_GetGateway() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9c51b17f1c544eea0f6a67c01a6b763995521f52/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_ListPortMirroring.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_ListPortMirroring.json
 func ExampleWorkloadNetworksClient_NewListPortMirroringPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -748,7 +748,7 @@ func ExampleWorkloadNetworksClient_NewListPortMirroringPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.WorkloadNetworkPortMirroringListResult = armavs.WorkloadNetworkPortMirroringListResult{
+		// page.WorkloadNetworkPortMirroringList = armavs.WorkloadNetworkPortMirroringList{
 		// 	Value: []*armavs.WorkloadNetworkPortMirroring{
 		// 		{
 		// 			Name: to.Ptr("cloud1"),
@@ -767,7 +767,7 @@ func ExampleWorkloadNetworksClient_NewListPortMirroringPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9c51b17f1c544eea0f6a67c01a6b763995521f52/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_GetPortMirroring.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_GetPortMirroring.json
 func ExampleWorkloadNetworksClient_GetPortMirroring() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -800,7 +800,7 @@ func ExampleWorkloadNetworksClient_GetPortMirroring() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9c51b17f1c544eea0f6a67c01a6b763995521f52/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_CreatePortMirroring.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_CreatePortMirroring.json
 func ExampleWorkloadNetworksClient_BeginCreatePortMirroring() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -845,7 +845,7 @@ func ExampleWorkloadNetworksClient_BeginCreatePortMirroring() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9c51b17f1c544eea0f6a67c01a6b763995521f52/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_UpdatePortMirroring.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_UpdatePortMirroring.json
 func ExampleWorkloadNetworksClient_BeginUpdatePortMirroring() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -856,7 +856,7 @@ func ExampleWorkloadNetworksClient_BeginUpdatePortMirroring() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewWorkloadNetworksClient().BeginUpdatePortMirroring(ctx, "group1", "cloud1", "portMirroring1", armavs.WorkloadNetworkPortMirroringUpdate{
+	poller, err := clientFactory.NewWorkloadNetworksClient().BeginUpdatePortMirroring(ctx, "group1", "cloud1", "portMirroring1", armavs.WorkloadNetworkPortMirroring{
 		Properties: &armavs.WorkloadNetworkPortMirroringProperties{
 			Destination: to.Ptr("vmGroup2"),
 			Direction:   to.Ptr(armavs.PortMirroringDirectionEnumBIDIRECTIONAL),
@@ -889,7 +889,7 @@ func ExampleWorkloadNetworksClient_BeginUpdatePortMirroring() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9c51b17f1c544eea0f6a67c01a6b763995521f52/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_DeletePortMirroring.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_DeletePortMirroring.json
 func ExampleWorkloadNetworksClient_BeginDeletePortMirroring() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -910,7 +910,7 @@ func ExampleWorkloadNetworksClient_BeginDeletePortMirroring() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9c51b17f1c544eea0f6a67c01a6b763995521f52/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_ListPublicIPs.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_ListPublicIPs.json
 func ExampleWorkloadNetworksClient_NewListPublicIPsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -932,7 +932,7 @@ func ExampleWorkloadNetworksClient_NewListPublicIPsPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.WorkloadNetworkPublicIPListResult = armavs.WorkloadNetworkPublicIPListResult{
+		// page.WorkloadNetworkPublicIPsList = armavs.WorkloadNetworkPublicIPsList{
 		// 	Value: []*armavs.WorkloadNetworkPublicIP{
 		// 		{
 		// 			Name: to.Ptr("publicIP1"),
@@ -947,7 +947,7 @@ func ExampleWorkloadNetworksClient_NewListPublicIPsPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9c51b17f1c544eea0f6a67c01a6b763995521f52/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_GetPublicIP.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_GetPublicIP.json
 func ExampleWorkloadNetworksClient_GetPublicIP() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -976,7 +976,7 @@ func ExampleWorkloadNetworksClient_GetPublicIP() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9c51b17f1c544eea0f6a67c01a6b763995521f52/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_CreatePublicIP.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_CreatePublicIP.json
 func ExampleWorkloadNetworksClient_BeginCreatePublicIP() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1014,7 +1014,7 @@ func ExampleWorkloadNetworksClient_BeginCreatePublicIP() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9c51b17f1c544eea0f6a67c01a6b763995521f52/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_DeletePublicIP.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_DeletePublicIP.json
 func ExampleWorkloadNetworksClient_BeginDeletePublicIP() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1035,7 +1035,7 @@ func ExampleWorkloadNetworksClient_BeginDeletePublicIP() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9c51b17f1c544eea0f6a67c01a6b763995521f52/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_ListSegments.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_ListSegments.json
 func ExampleWorkloadNetworksClient_NewListSegmentsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1057,7 +1057,7 @@ func ExampleWorkloadNetworksClient_NewListSegmentsPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.WorkloadNetworkSegmentListResult = armavs.WorkloadNetworkSegmentListResult{
+		// page.WorkloadNetworkSegmentsList = armavs.WorkloadNetworkSegmentsList{
 		// 	Value: []*armavs.WorkloadNetworkSegment{
 		// 		{
 		// 			Name: to.Ptr("segment1"),
@@ -1083,7 +1083,7 @@ func ExampleWorkloadNetworksClient_NewListSegmentsPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9c51b17f1c544eea0f6a67c01a6b763995521f52/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_GetSegment.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_GetSegment.json
 func ExampleWorkloadNetworksClient_GetSegment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1123,7 +1123,7 @@ func ExampleWorkloadNetworksClient_GetSegment() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9c51b17f1c544eea0f6a67c01a6b763995521f52/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_CreateSegments.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_CreateSegments.json
 func ExampleWorkloadNetworksClient_BeginCreateSegments() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1176,7 +1176,7 @@ func ExampleWorkloadNetworksClient_BeginCreateSegments() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9c51b17f1c544eea0f6a67c01a6b763995521f52/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_UpdateSegments.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_UpdateSegments.json
 func ExampleWorkloadNetworksClient_BeginUpdateSegments() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1187,7 +1187,7 @@ func ExampleWorkloadNetworksClient_BeginUpdateSegments() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewWorkloadNetworksClient().BeginUpdateSegments(ctx, "group1", "cloud1", "segment1", armavs.WorkloadNetworkSegmentUpdate{
+	poller, err := clientFactory.NewWorkloadNetworksClient().BeginUpdateSegments(ctx, "group1", "cloud1", "segment1", armavs.WorkloadNetworkSegment{
 		Properties: &armavs.WorkloadNetworkSegmentProperties{
 			ConnectedGateway: to.Ptr("/infra/tier-1s/gateway"),
 			Revision:         to.Ptr[int64](1),
@@ -1230,7 +1230,7 @@ func ExampleWorkloadNetworksClient_BeginUpdateSegments() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9c51b17f1c544eea0f6a67c01a6b763995521f52/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_DeleteSegment.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_DeleteSegment.json
 func ExampleWorkloadNetworksClient_BeginDeleteSegment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1251,7 +1251,7 @@ func ExampleWorkloadNetworksClient_BeginDeleteSegment() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9c51b17f1c544eea0f6a67c01a6b763995521f52/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_ListVirtualMachines.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_ListVirtualMachines.json
 func ExampleWorkloadNetworksClient_NewListVirtualMachinesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1273,7 +1273,7 @@ func ExampleWorkloadNetworksClient_NewListVirtualMachinesPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.WorkloadNetworkVirtualMachineListResult = armavs.WorkloadNetworkVirtualMachineListResult{
+		// page.WorkloadNetworkVirtualMachinesList = armavs.WorkloadNetworkVirtualMachinesList{
 		// 	Value: []*armavs.WorkloadNetworkVirtualMachine{
 		// 		{
 		// 			Name: to.Ptr("vm1"),
@@ -1288,7 +1288,7 @@ func ExampleWorkloadNetworksClient_NewListVirtualMachinesPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9c51b17f1c544eea0f6a67c01a6b763995521f52/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_GetVirtualMachine.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_GetVirtualMachine.json
 func ExampleWorkloadNetworksClient_GetVirtualMachine() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1317,7 +1317,7 @@ func ExampleWorkloadNetworksClient_GetVirtualMachine() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9c51b17f1c544eea0f6a67c01a6b763995521f52/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_ListVMGroups.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_ListVMGroups.json
 func ExampleWorkloadNetworksClient_NewListVMGroupsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1339,7 +1339,7 @@ func ExampleWorkloadNetworksClient_NewListVMGroupsPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.WorkloadNetworkVMGroupListResult = armavs.WorkloadNetworkVMGroupListResult{
+		// page.WorkloadNetworkVMGroupsList = armavs.WorkloadNetworkVMGroupsList{
 		// 	Value: []*armavs.WorkloadNetworkVMGroup{
 		// 		{
 		// 			Name: to.Ptr("cloud1"),
@@ -1357,7 +1357,7 @@ func ExampleWorkloadNetworksClient_NewListVMGroupsPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9c51b17f1c544eea0f6a67c01a6b763995521f52/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_GetVMGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_GetVMGroup.json
 func ExampleWorkloadNetworksClient_GetVMGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1389,7 +1389,7 @@ func ExampleWorkloadNetworksClient_GetVMGroup() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9c51b17f1c544eea0f6a67c01a6b763995521f52/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_CreateVMGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_CreateVMGroup.json
 func ExampleWorkloadNetworksClient_BeginCreateVMGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1432,7 +1432,7 @@ func ExampleWorkloadNetworksClient_BeginCreateVMGroup() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9c51b17f1c544eea0f6a67c01a6b763995521f52/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_UpdateVMGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_UpdateVMGroup.json
 func ExampleWorkloadNetworksClient_BeginUpdateVMGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1443,7 +1443,7 @@ func ExampleWorkloadNetworksClient_BeginUpdateVMGroup() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewWorkloadNetworksClient().BeginUpdateVMGroup(ctx, "group1", "cloud1", "vmGroup1", armavs.WorkloadNetworkVMGroupUpdate{
+	poller, err := clientFactory.NewWorkloadNetworksClient().BeginUpdateVMGroup(ctx, "group1", "cloud1", "vmGroup1", armavs.WorkloadNetworkVMGroup{
 		Properties: &armavs.WorkloadNetworkVMGroupProperties{
 			Members: []*string{
 				to.Ptr("564d43da-fefc-2a3b-1d92-42855622fa50")},
@@ -1474,7 +1474,7 @@ func ExampleWorkloadNetworksClient_BeginUpdateVMGroup() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9c51b17f1c544eea0f6a67c01a6b763995521f52/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_DeleteVMGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_DeleteVMGroup.json
 func ExampleWorkloadNetworksClient_BeginDeleteVMGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

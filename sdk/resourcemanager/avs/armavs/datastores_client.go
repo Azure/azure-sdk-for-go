@@ -357,7 +357,7 @@ func (client *DatastoresClient) listCreateRequest(ctx context.Context, resourceG
 // listHandleResponse handles the List response.
 func (client *DatastoresClient) listHandleResponse(resp *http.Response) (DatastoresClientListResponse, error) {
 	result := DatastoresClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.DatastoreListResult); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.DatastoreList); err != nil {
 		return DatastoresClientListResponse{}, err
 	}
 	return result, nil

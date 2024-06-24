@@ -28,7 +28,7 @@ type AddonsClientGetResponse struct {
 // AddonsClientListResponse contains the response from method AddonsClient.NewListPager.
 type AddonsClientListResponse struct {
 	// The response of a Addon list operation.
-	AddonListResult
+	AddonList
 }
 
 // AuthorizationsClientCreateOrUpdateResponse contains the response from method AuthorizationsClient.BeginCreateOrUpdate.
@@ -51,7 +51,7 @@ type AuthorizationsClientGetResponse struct {
 // AuthorizationsClientListResponse contains the response from method AuthorizationsClient.NewListPager.
 type AuthorizationsClientListResponse struct {
 	// The response of a ExpressRouteAuthorization list operation.
-	ExpressRouteAuthorizationListResult
+	ExpressRouteAuthorizationList
 }
 
 // CloudLinksClientCreateOrUpdateResponse contains the response from method CloudLinksClient.BeginCreateOrUpdate.
@@ -74,7 +74,7 @@ type CloudLinksClientGetResponse struct {
 // CloudLinksClientListResponse contains the response from method CloudLinksClient.NewListPager.
 type CloudLinksClientListResponse struct {
 	// The response of a CloudLink list operation.
-	CloudLinkListResult
+	CloudLinkList
 }
 
 // ClustersClientCreateOrUpdateResponse contains the response from method ClustersClient.BeginCreateOrUpdate.
@@ -97,7 +97,7 @@ type ClustersClientGetResponse struct {
 // ClustersClientListResponse contains the response from method ClustersClient.NewListPager.
 type ClustersClientListResponse struct {
 	// The response of a Cluster list operation.
-	ClusterListResult
+	ClusterList
 }
 
 // ClustersClientListZonesResponse contains the response from method ClustersClient.ListZones.
@@ -132,7 +132,7 @@ type DatastoresClientGetResponse struct {
 // DatastoresClientListResponse contains the response from method DatastoresClient.NewListPager.
 type DatastoresClientListResponse struct {
 	// The response of a Datastore list operation.
-	DatastoreListResult
+	DatastoreList
 }
 
 // GlobalReachConnectionsClientCreateOrUpdateResponse contains the response from method GlobalReachConnectionsClient.BeginCreateOrUpdate.
@@ -155,7 +155,7 @@ type GlobalReachConnectionsClientGetResponse struct {
 // GlobalReachConnectionsClientListResponse contains the response from method GlobalReachConnectionsClient.NewListPager.
 type GlobalReachConnectionsClientListResponse struct {
 	// The response of a GlobalReachConnection list operation.
-	GlobalReachConnectionListResult
+	GlobalReachConnectionList
 }
 
 // HcxEnterpriseSitesClientCreateOrUpdateResponse contains the response from method HcxEnterpriseSitesClient.CreateOrUpdate.
@@ -178,7 +178,7 @@ type HcxEnterpriseSitesClientGetResponse struct {
 // HcxEnterpriseSitesClientListResponse contains the response from method HcxEnterpriseSitesClient.NewListPager.
 type HcxEnterpriseSitesClientListResponse struct {
 	// The response of a HcxEnterpriseSite list operation.
-	HcxEnterpriseSiteListResult
+	HcxEnterpriseSiteList
 }
 
 // IscsiPathsClientCreateOrUpdateResponse contains the response from method IscsiPathsClient.BeginCreateOrUpdate.
@@ -242,7 +242,7 @@ type PlacementPoliciesClientGetResponse struct {
 // PlacementPoliciesClientListResponse contains the response from method PlacementPoliciesClient.NewListPager.
 type PlacementPoliciesClientListResponse struct {
 	// The response of a PlacementPolicy list operation.
-	PlacementPolicyListResult
+	PlacementPoliciesList
 }
 
 // PlacementPoliciesClientUpdateResponse contains the response from method PlacementPoliciesClient.BeginUpdate.
@@ -277,13 +277,13 @@ type PrivateCloudsClientListAdminCredentialsResponse struct {
 // PrivateCloudsClientListInSubscriptionResponse contains the response from method PrivateCloudsClient.NewListInSubscriptionPager.
 type PrivateCloudsClientListInSubscriptionResponse struct {
 	// The response of a PrivateCloud list operation.
-	PrivateCloudListResult
+	PrivateCloudList
 }
 
 // PrivateCloudsClientListResponse contains the response from method PrivateCloudsClient.NewListPager.
 type PrivateCloudsClientListResponse struct {
 	// The response of a PrivateCloud list operation.
-	PrivateCloudListResult
+	PrivateCloudList
 }
 
 // PrivateCloudsClientRotateNsxtPasswordResponse contains the response from method PrivateCloudsClient.BeginRotateNsxtPassword.
@@ -311,7 +311,7 @@ type ScriptCmdletsClientGetResponse struct {
 // ScriptCmdletsClientListResponse contains the response from method ScriptCmdletsClient.NewListPager.
 type ScriptCmdletsClientListResponse struct {
 	// The response of a ScriptCmdlet list operation.
-	ScriptCmdletListResult
+	ScriptCmdletsList
 }
 
 // ScriptExecutionsClientCreateOrUpdateResponse contains the response from method ScriptExecutionsClient.BeginCreateOrUpdate.
@@ -340,7 +340,7 @@ type ScriptExecutionsClientGetResponse struct {
 // ScriptExecutionsClientListResponse contains the response from method ScriptExecutionsClient.NewListPager.
 type ScriptExecutionsClientListResponse struct {
 	// The response of a ScriptExecution list operation.
-	ScriptExecutionListResult
+	ScriptExecutionsList
 }
 
 // ScriptPackagesClientGetResponse contains the response from method ScriptPackagesClient.Get.
@@ -352,7 +352,7 @@ type ScriptPackagesClientGetResponse struct {
 // ScriptPackagesClientListResponse contains the response from method ScriptPackagesClient.NewListPager.
 type ScriptPackagesClientListResponse struct {
 	// The response of a ScriptPackage list operation.
-	ScriptPackageListResult
+	ScriptPackagesList
 }
 
 // VirtualMachinesClientGetResponse contains the response from method VirtualMachinesClient.Get.
@@ -364,7 +364,7 @@ type VirtualMachinesClientGetResponse struct {
 // VirtualMachinesClientListResponse contains the response from method VirtualMachinesClient.NewListPager.
 type VirtualMachinesClientListResponse struct {
 	// The response of a VirtualMachine list operation.
-	VirtualMachineListResult
+	VirtualMachinesList
 }
 
 // VirtualMachinesClientRestrictMovementResponse contains the response from method VirtualMachinesClient.BeginRestrictMovement.
@@ -512,61 +512,61 @@ type WorkloadNetworksClientGetVirtualMachineResponse struct {
 // WorkloadNetworksClientListDNSServicesResponse contains the response from method WorkloadNetworksClient.NewListDNSServicesPager.
 type WorkloadNetworksClientListDNSServicesResponse struct {
 	// The response of a WorkloadNetworkDnsService list operation.
-	WorkloadNetworkDNSServiceListResult
+	WorkloadNetworkDNSServicesList
 }
 
 // WorkloadNetworksClientListDNSZonesResponse contains the response from method WorkloadNetworksClient.NewListDNSZonesPager.
 type WorkloadNetworksClientListDNSZonesResponse struct {
 	// The response of a WorkloadNetworkDnsZone list operation.
-	WorkloadNetworkDNSZoneListResult
+	WorkloadNetworkDNSZonesList
 }
 
 // WorkloadNetworksClientListDhcpResponse contains the response from method WorkloadNetworksClient.NewListDhcpPager.
 type WorkloadNetworksClientListDhcpResponse struct {
 	// The response of a WorkloadNetworkDhcp list operation.
-	WorkloadNetworkDhcpListResult
+	WorkloadNetworkDhcpList
 }
 
 // WorkloadNetworksClientListGatewaysResponse contains the response from method WorkloadNetworksClient.NewListGatewaysPager.
 type WorkloadNetworksClientListGatewaysResponse struct {
 	// The response of a WorkloadNetworkGateway list operation.
-	WorkloadNetworkGatewayListResult
+	WorkloadNetworkGatewayList
 }
 
 // WorkloadNetworksClientListPortMirroringResponse contains the response from method WorkloadNetworksClient.NewListPortMirroringPager.
 type WorkloadNetworksClientListPortMirroringResponse struct {
 	// The response of a WorkloadNetworkPortMirroring list operation.
-	WorkloadNetworkPortMirroringListResult
+	WorkloadNetworkPortMirroringList
 }
 
 // WorkloadNetworksClientListPublicIPsResponse contains the response from method WorkloadNetworksClient.NewListPublicIPsPager.
 type WorkloadNetworksClientListPublicIPsResponse struct {
 	// The response of a WorkloadNetworkPublicIP list operation.
-	WorkloadNetworkPublicIPListResult
+	WorkloadNetworkPublicIPsList
 }
 
 // WorkloadNetworksClientListResponse contains the response from method WorkloadNetworksClient.NewListPager.
 type WorkloadNetworksClientListResponse struct {
 	// The response of a WorkloadNetwork list operation.
-	WorkloadNetworkListResult
+	WorkloadNetworkList
 }
 
 // WorkloadNetworksClientListSegmentsResponse contains the response from method WorkloadNetworksClient.NewListSegmentsPager.
 type WorkloadNetworksClientListSegmentsResponse struct {
 	// The response of a WorkloadNetworkSegment list operation.
-	WorkloadNetworkSegmentListResult
+	WorkloadNetworkSegmentsList
 }
 
 // WorkloadNetworksClientListVMGroupsResponse contains the response from method WorkloadNetworksClient.NewListVMGroupsPager.
 type WorkloadNetworksClientListVMGroupsResponse struct {
 	// The response of a WorkloadNetworkVMGroup list operation.
-	WorkloadNetworkVMGroupListResult
+	WorkloadNetworkVMGroupsList
 }
 
 // WorkloadNetworksClientListVirtualMachinesResponse contains the response from method WorkloadNetworksClient.NewListVirtualMachinesPager.
 type WorkloadNetworksClientListVirtualMachinesResponse struct {
 	// The response of a WorkloadNetworkVirtualMachine list operation.
-	WorkloadNetworkVirtualMachineListResult
+	WorkloadNetworkVirtualMachinesList
 }
 
 // WorkloadNetworksClientUpdateDNSServiceResponse contains the response from method WorkloadNetworksClient.BeginUpdateDNSService.

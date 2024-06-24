@@ -847,6 +847,22 @@ func PossibleQuotaEnabledValues() []QuotaEnabled {
 	}
 }
 
+// ResourceIdentityType - Type of managed service identity (either system assigned, or none).
+type ResourceIdentityType string
+
+const (
+	ResourceIdentityTypeNone           ResourceIdentityType = "None"
+	ResourceIdentityTypeSystemAssigned ResourceIdentityType = "SystemAssigned"
+)
+
+// PossibleResourceIdentityTypeValues returns the possible values for the ResourceIdentityType const type.
+func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
+	return []ResourceIdentityType{
+		ResourceIdentityTypeNone,
+		ResourceIdentityTypeSystemAssigned,
+	}
+}
+
 // SKUTier - This field is required to be implemented by the Resource Provider if the service has more than one tier, but
 // is not required on a PUT.
 type SKUTier string
@@ -1070,22 +1086,6 @@ func PossibleSegmentStatusEnumValues() []SegmentStatusEnum {
 	return []SegmentStatusEnum{
 		SegmentStatusEnumFAILURE,
 		SegmentStatusEnumSUCCESS,
-	}
-}
-
-// SystemAssignedServiceIdentityType - Type of managed service identity (either system assigned, or none).
-type SystemAssignedServiceIdentityType string
-
-const (
-	SystemAssignedServiceIdentityTypeNone           SystemAssignedServiceIdentityType = "None"
-	SystemAssignedServiceIdentityTypeSystemAssigned SystemAssignedServiceIdentityType = "SystemAssigned"
-)
-
-// PossibleSystemAssignedServiceIdentityTypeValues returns the possible values for the SystemAssignedServiceIdentityType const type.
-func PossibleSystemAssignedServiceIdentityTypeValues() []SystemAssignedServiceIdentityType {
-	return []SystemAssignedServiceIdentityType{
-		SystemAssignedServiceIdentityTypeNone,
-		SystemAssignedServiceIdentityTypeSystemAssigned,
 	}
 }
 

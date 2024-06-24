@@ -318,7 +318,7 @@ func (client *PrivateCloudsClient) listCreateRequest(ctx context.Context, resour
 // listHandleResponse handles the List response.
 func (client *PrivateCloudsClient) listHandleResponse(resp *http.Response) (PrivateCloudsClientListResponse, error) {
 	result := PrivateCloudsClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateCloudListResult); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateCloudList); err != nil {
 		return PrivateCloudsClientListResponse{}, err
 	}
 	return result, nil
@@ -438,7 +438,7 @@ func (client *PrivateCloudsClient) listInSubscriptionCreateRequest(ctx context.C
 // listInSubscriptionHandleResponse handles the ListInSubscription response.
 func (client *PrivateCloudsClient) listInSubscriptionHandleResponse(resp *http.Response) (PrivateCloudsClientListInSubscriptionResponse, error) {
 	result := PrivateCloudsClientListInSubscriptionResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateCloudListResult); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateCloudList); err != nil {
 		return PrivateCloudsClientListInSubscriptionResponse{}, err
 	}
 	return result, nil

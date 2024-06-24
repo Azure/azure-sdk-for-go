@@ -20,17 +20,16 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
-	"strconv"
 )
 
 // VirtualNetworksServer is a fake server for instances of the armscvmm.VirtualNetworksClient type.
 type VirtualNetworksServer struct {
 	// BeginCreateOrUpdate is the fake for method VirtualNetworksClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, virtualNetworkName string, body armscvmm.VirtualNetwork, options *armscvmm.VirtualNetworksClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armscvmm.VirtualNetworksClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, virtualNetworkName string, resource armscvmm.VirtualNetwork, options *armscvmm.VirtualNetworksClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armscvmm.VirtualNetworksClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method VirtualNetworksClient.BeginDelete
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	// HTTP status codes to indicate success: http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, virtualNetworkName string, options *armscvmm.VirtualNetworksClientBeginDeleteOptions) (resp azfake.PollerResponder[armscvmm.VirtualNetworksClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method VirtualNetworksClient.Get
@@ -46,8 +45,8 @@ type VirtualNetworksServer struct {
 	NewListBySubscriptionPager func(options *armscvmm.VirtualNetworksClientListBySubscriptionOptions) (resp azfake.PagerResponder[armscvmm.VirtualNetworksClientListBySubscriptionResponse])
 
 	// BeginUpdate is the fake for method VirtualNetworksClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, virtualNetworkName string, body armscvmm.ResourcePatch, options *armscvmm.VirtualNetworksClientBeginUpdateOptions) (resp azfake.PollerResponder[armscvmm.VirtualNetworksClientUpdateResponse], errResp azfake.ErrorResponder)
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, virtualNetworkName string, properties armscvmm.VirtualNetworkTagsUpdate, options *armscvmm.VirtualNetworksClientBeginUpdateOptions) (resp azfake.PollerResponder[armscvmm.VirtualNetworksClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewVirtualNetworksServerTransport creates a new instance of VirtualNetworksServerTransport with the provided implementation.
@@ -175,15 +174,12 @@ func (v *VirtualNetworksServerTransport) dispatchBeginDelete(req *http.Request) 
 		if err != nil {
 			return nil, err
 		}
-		virtualNetworkNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("virtualNetworkName")])
-		if err != nil {
-			return nil, err
-		}
 		forceUnescaped, err := url.QueryUnescape(qp.Get("force"))
 		if err != nil {
 			return nil, err
 		}
-		forceParam, err := parseOptional(forceUnescaped, strconv.ParseBool)
+		forceParam := getOptional(armscvmm.ForceDelete(forceUnescaped))
+		virtualNetworkNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("virtualNetworkName")])
 		if err != nil {
 			return nil, err
 		}
@@ -206,9 +202,9 @@ func (v *VirtualNetworksServerTransport) dispatchBeginDelete(req *http.Request) 
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !contains([]int{http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		v.beginDelete.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginDelete) {
 		v.beginDelete.remove(req)
@@ -332,7 +328,7 @@ func (v *VirtualNetworksServerTransport) dispatchBeginUpdate(req *http.Request) 
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		body, err := server.UnmarshalRequestAsJSON[armscvmm.ResourcePatch](req)
+		body, err := server.UnmarshalRequestAsJSON[armscvmm.VirtualNetworkTagsUpdate](req)
 		if err != nil {
 			return nil, err
 		}
@@ -357,9 +353,9 @@ func (v *VirtualNetworksServerTransport) dispatchBeginUpdate(req *http.Request) 
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusCreated, http.StatusAccepted}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		v.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated, http.StatusAccepted", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginUpdate) {
 		v.beginUpdate.remove(req)

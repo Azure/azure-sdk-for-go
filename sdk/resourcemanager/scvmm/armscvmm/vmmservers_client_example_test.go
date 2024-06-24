@@ -18,220 +18,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/scvmm/armscvmm"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/scvmm/resource-manager/Microsoft.ScVmm/preview/2020-06-05-preview/examples/GetVMMServer.json
-func ExampleVmmServersClient_Get() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armscvmm.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewVmmServersClient().Get(ctx, "testrg", "ContosoVMMServer", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.VMMServer = armscvmm.VMMServer{
-	// 	Name: to.Ptr("ContosoVMMServer"),
-	// 	Type: to.Ptr("Microsoft.SCVMM/VMMServers"),
-	// 	ExtendedLocation: &armscvmm.ExtendedLocation{
-	// 		Name: to.Ptr("/subscriptions/a5015e1c-867f-4533-8541-85cd470d0cfb/resourceGroups/demoRG/providers/Microsoft.Arc/customLocations/contoso"),
-	// 		Type: to.Ptr("customLocation"),
-	// 	},
-	// 	ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/VMMServers/ContosoVMMServer"),
-	// 	Location: to.Ptr("East US"),
-	// 	Properties: &armscvmm.VMMServerProperties{
-	// 		ConnectionStatus: to.Ptr("Connected"),
-	// 		Fqdn: to.Ptr("VMM.contoso.com"),
-	// 		Port: to.Ptr[int32](1234),
-	// 		ProvisioningState: to.Ptr("Succeeded"),
-	// 		UUID: to.Ptr("fd3c3665-1729-4b7b-9a38-238e83b0f98b"),
-	// 		Version: to.Ptr("2.0"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/scvmm/resource-manager/Microsoft.ScVmm/preview/2020-06-05-preview/examples/CreateVMMServer.json
-func ExampleVmmServersClient_BeginCreateOrUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armscvmm.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewVmmServersClient().BeginCreateOrUpdate(ctx, "testrg", "ContosoVMMServer", armscvmm.VMMServer{
-		ExtendedLocation: &armscvmm.ExtendedLocation{
-			Name: to.Ptr("/subscriptions/a5015e1c-867f-4533-8541-85cd470d0cfb/resourceGroups/demoRG/providers/Microsoft.Arc/customLocations/contoso"),
-			Type: to.Ptr("customLocation"),
-		},
-		Location: to.Ptr("East US"),
-		Properties: &armscvmm.VMMServerProperties{
-			Credentials: &armscvmm.VMMServerPropertiesCredentials{
-				Password: to.Ptr("password"),
-				Username: to.Ptr("testuser"),
-			},
-			Fqdn: to.Ptr("VMM.contoso.com"),
-			Port: to.Ptr[int32](1234),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.VMMServer = armscvmm.VMMServer{
-	// 	Name: to.Ptr("ContosoVMMServer"),
-	// 	Type: to.Ptr("Microsoft.SCVMM/VMMServers"),
-	// 	ExtendedLocation: &armscvmm.ExtendedLocation{
-	// 		Name: to.Ptr("/subscriptions/a5015e1c-867f-4533-8541-85cd470d0cfb/resourceGroups/demoRG/providers/Microsoft.Arc/customLocations/contoso"),
-	// 		Type: to.Ptr("customLocation"),
-	// 	},
-	// 	ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/VMMServers/ContosoVMMServer"),
-	// 	Location: to.Ptr("East US"),
-	// 	Properties: &armscvmm.VMMServerProperties{
-	// 		ConnectionStatus: to.Ptr("Connected"),
-	// 		Fqdn: to.Ptr("VMM.contoso.com"),
-	// 		Port: to.Ptr[int32](1234),
-	// 		ProvisioningState: to.Ptr("Succeeded"),
-	// 		UUID: to.Ptr("fd3c3665-1729-4b7b-9a38-238e83b0f98b"),
-	// 		Version: to.Ptr("2.0"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/scvmm/resource-manager/Microsoft.ScVmm/preview/2020-06-05-preview/examples/DeleteVMMServer.json
-func ExampleVmmServersClient_BeginDelete() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armscvmm.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewVmmServersClient().BeginDelete(ctx, "testrg", "ContosoVMMServer", &armscvmm.VmmServersClientBeginDeleteOptions{Force: nil})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/scvmm/resource-manager/Microsoft.ScVmm/preview/2020-06-05-preview/examples/UpdateVMMServer.json
-func ExampleVmmServersClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armscvmm.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewVmmServersClient().BeginUpdate(ctx, "testrg", "ContosoVMMServer", armscvmm.ResourcePatch{
-		Tags: map[string]*string{
-			"tag1": to.Ptr("value1"),
-			"tag2": to.Ptr("value2"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.VMMServer = armscvmm.VMMServer{
-	// 	Name: to.Ptr("ContosoVMMServer"),
-	// 	Type: to.Ptr("Microsoft.SCVMM/VMMServers"),
-	// 	ExtendedLocation: &armscvmm.ExtendedLocation{
-	// 		Name: to.Ptr("/subscriptions/a5015e1c-867f-4533-8541-85cd470d0cfb/resourceGroups/demoRG/providers/Microsoft.Arc/customLocations/contoso"),
-	// 		Type: to.Ptr("customLocation"),
-	// 	},
-	// 	ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/VMMServers/ContosoVMMServer"),
-	// 	Location: to.Ptr("East US"),
-	// 	Properties: &armscvmm.VMMServerProperties{
-	// 		ConnectionStatus: to.Ptr("Connected"),
-	// 		Fqdn: to.Ptr("VMM.contoso.com"),
-	// 		Port: to.Ptr[int32](1234),
-	// 		ProvisioningState: to.Ptr("Succeeded"),
-	// 		UUID: to.Ptr("fd3c3665-1729-4b7b-9a38-238e83b0f98b"),
-	// 		Version: to.Ptr("2.0"),
-	// 	},
-	// 	Tags: map[string]*string{
-	// 		"tag1": to.Ptr("value1"),
-	// 		"tag2": to.Ptr("value2"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/scvmm/resource-manager/Microsoft.ScVmm/preview/2020-06-05-preview/examples/ListVMMServersByResourceGroup.json
-func ExampleVmmServersClient_NewListByResourceGroupPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armscvmm.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewVmmServersClient().NewListByResourceGroupPager("testrg", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.VMMServerListResult = armscvmm.VMMServerListResult{
-		// 	Value: []*armscvmm.VMMServer{
-		// 		{
-		// 			Name: to.Ptr("ContosoVMMServer"),
-		// 			Type: to.Ptr("Microsoft.SCVMM/VMMServers"),
-		// 			ExtendedLocation: &armscvmm.ExtendedLocation{
-		// 				Name: to.Ptr("/subscriptions/a5015e1c-867f-4533-8541-85cd470d0cfb/resourceGroups/demoRG/providers/Microsoft.Arc/customLocations/contoso"),
-		// 				Type: to.Ptr("customLocation"),
-		// 			},
-		// 			ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/VMMServers/ContosoVMMServer"),
-		// 			Location: to.Ptr("East US"),
-		// 			Properties: &armscvmm.VMMServerProperties{
-		// 				ConnectionStatus: to.Ptr("Connected"),
-		// 				Fqdn: to.Ptr("VMM.contoso.com"),
-		// 				Port: to.Ptr[int32](1234),
-		// 				ProvisioningState: to.Ptr("Succeeded"),
-		// 				UUID: to.Ptr("fd3c3665-1729-4b7b-9a38-238e83b0f98b"),
-		// 				Version: to.Ptr("2.0"),
-		// 			},
-		// 	}},
-		// }
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/scvmm/resource-manager/Microsoft.ScVmm/preview/2020-06-05-preview/examples/ListVMMServersBySubscription.json
-func ExampleVmmServersClient_NewListBySubscriptionPager() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VmmServers_ListBySubscription_MaximumSet_Gen.json
+func ExampleVmmServersClient_NewListBySubscriptionPager_vmmServersListBySubscriptionMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -252,26 +40,489 @@ func ExampleVmmServersClient_NewListBySubscriptionPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.VMMServerListResult = armscvmm.VMMServerListResult{
-		// 	Value: []*armscvmm.VMMServer{
+		// page.VmmServerListResult = armscvmm.VmmServerListResult{
+		// 	Value: []*armscvmm.VmmServer{
 		// 		{
-		// 			Name: to.Ptr("ContosoVMMServer"),
-		// 			Type: to.Ptr("Microsoft.SCVMM/VMMServers"),
+		// 			Name: to.Ptr("gyoxmcbnbbfajvzygtffpaufxxjzs"),
+		// 			Type: to.Ptr("nwiimbcjryiggdcbpvrqdnlrklcwbr"),
+		// 			ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-12345678abc/resourceGroups/exampleResourceGroup/providers/Microsoft.ScVmm/vmmServers/vmmServerName"),
+		// 			SystemData: &armscvmm.SystemData{
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-29T22:28:00.094Z"); return t}()),
+		// 				CreatedBy: to.Ptr("p"),
+		// 				CreatedByType: to.Ptr(armscvmm.CreatedByTypeUser),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-29T22:28:00.095Z"); return t}()),
+		// 				LastModifiedBy: to.Ptr("goxcwpyyqlxndquly"),
+		// 				LastModifiedByType: to.Ptr(armscvmm.CreatedByTypeUser),
+		// 			},
+		// 			Location: to.Ptr("hslxkyzktvwpqbypvs"),
+		// 			Tags: map[string]*string{
+		// 				"key4834": to.Ptr("vycgfkzjcyyuotwwq"),
+		// 			},
 		// 			ExtendedLocation: &armscvmm.ExtendedLocation{
-		// 				Name: to.Ptr("/subscriptions/a5015e1c-867f-4533-8541-85cd470d0cfb/resourceGroups/demoRG/providers/Microsoft.Arc/customLocations/contoso"),
+		// 				Name: to.Ptr("/subscriptions/12345678-1234-1234-1234-12345678abc/resourceGroups/exampleResourceGroup/providers/Microsoft.ExtendedLocation/customLocations/customLocationName"),
 		// 				Type: to.Ptr("customLocation"),
 		// 			},
-		// 			ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/VMMServers/ContosoVMMServer"),
-		// 			Location: to.Ptr("East US"),
-		// 			Properties: &armscvmm.VMMServerProperties{
-		// 				ConnectionStatus: to.Ptr("Connected"),
-		// 				Fqdn: to.Ptr("VMM.contoso.com"),
-		// 				Port: to.Ptr[int32](1234),
-		// 				ProvisioningState: to.Ptr("Succeeded"),
-		// 				UUID: to.Ptr("fd3c3665-1729-4b7b-9a38-238e83b0f98b"),
-		// 				Version: to.Ptr("2.0"),
+		// 			Properties: &armscvmm.VmmServerProperties{
+		// 				ConnectionStatus: to.Ptr("vlmrrigzmutgbzrgjtolnamfxm"),
+		// 				Credentials: &armscvmm.VmmCredential{
+		// 					Username: to.Ptr("jbuoltypmrgqfi"),
+		// 				},
+		// 				ErrorMessage: to.Ptr("ndkzeiipz"),
+		// 				Fqdn: to.Ptr("pvzcjaqrswbvptgx"),
+		// 				Port: to.Ptr[int32](4),
+		// 				ProvisioningState: to.Ptr(armscvmm.ProvisioningStateSucceeded),
+		// 				UUID: to.Ptr("vmwbukuqbuz"),
+		// 				Version: to.Ptr("tawfjzbqrlkqzqyomxiahnfqg"),
 		// 			},
 		// 	}},
 		// }
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VmmServers_ListBySubscription_MinimumSet_Gen.json
+func ExampleVmmServersClient_NewListBySubscriptionPager_vmmServersListBySubscriptionMinimumSet() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armscvmm.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewVmmServersClient().NewListBySubscriptionPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.VmmServerListResult = armscvmm.VmmServerListResult{
+		// 	Value: []*armscvmm.VmmServer{
+		// 		{
+		// 			ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-12345678abc/resourceGroups/exampleResourceGroup/providers/Microsoft.ScVmm/vmmServers/vmmServerName"),
+		// 			Location: to.Ptr("hslxkyzktvwpqbypvs"),
+		// 			ExtendedLocation: &armscvmm.ExtendedLocation{
+		// 			},
+		// 	}},
+		// }
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VmmServers_ListByResourceGroup_MaximumSet_Gen.json
+func ExampleVmmServersClient_NewListByResourceGroupPager_vmmServersListByResourceGroupMaximumSet() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armscvmm.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewVmmServersClient().NewListByResourceGroupPager("rgscvmm", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.VmmServerListResult = armscvmm.VmmServerListResult{
+		// 	Value: []*armscvmm.VmmServer{
+		// 		{
+		// 			Name: to.Ptr("gyoxmcbnbbfajvzygtffpaufxxjzs"),
+		// 			Type: to.Ptr("nwiimbcjryiggdcbpvrqdnlrklcwbr"),
+		// 			ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-12345678abc/resourceGroups/exampleResourceGroup/providers/Microsoft.ScVmm/vmmServers/vmmServerName"),
+		// 			SystemData: &armscvmm.SystemData{
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-29T22:28:00.094Z"); return t}()),
+		// 				CreatedBy: to.Ptr("p"),
+		// 				CreatedByType: to.Ptr(armscvmm.CreatedByTypeUser),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-29T22:28:00.095Z"); return t}()),
+		// 				LastModifiedBy: to.Ptr("goxcwpyyqlxndquly"),
+		// 				LastModifiedByType: to.Ptr(armscvmm.CreatedByTypeUser),
+		// 			},
+		// 			Location: to.Ptr("hslxkyzktvwpqbypvs"),
+		// 			Tags: map[string]*string{
+		// 				"key4834": to.Ptr("vycgfkzjcyyuotwwq"),
+		// 			},
+		// 			ExtendedLocation: &armscvmm.ExtendedLocation{
+		// 				Name: to.Ptr("/subscriptions/12345678-1234-1234-1234-12345678abc/resourceGroups/exampleResourceGroup/providers/Microsoft.ExtendedLocation/customLocations/customLocationName"),
+		// 				Type: to.Ptr("customLocation"),
+		// 			},
+		// 			Properties: &armscvmm.VmmServerProperties{
+		// 				ConnectionStatus: to.Ptr("vlmrrigzmutgbzrgjtolnamfxm"),
+		// 				Credentials: &armscvmm.VmmCredential{
+		// 					Username: to.Ptr("jbuoltypmrgqfi"),
+		// 				},
+		// 				ErrorMessage: to.Ptr("ndkzeiipz"),
+		// 				Fqdn: to.Ptr("pvzcjaqrswbvptgx"),
+		// 				Port: to.Ptr[int32](4),
+		// 				ProvisioningState: to.Ptr(armscvmm.ProvisioningStateSucceeded),
+		// 				UUID: to.Ptr("vmwbukuqbuz"),
+		// 				Version: to.Ptr("tawfjzbqrlkqzqyomxiahnfqg"),
+		// 			},
+		// 	}},
+		// }
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VmmServers_ListByResourceGroup_MinimumSet_Gen.json
+func ExampleVmmServersClient_NewListByResourceGroupPager_vmmServersListByResourceGroupMinimumSet() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armscvmm.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewVmmServersClient().NewListByResourceGroupPager("rgscvmm", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.VmmServerListResult = armscvmm.VmmServerListResult{
+		// 	Value: []*armscvmm.VmmServer{
+		// 		{
+		// 			ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-12345678abc/resourceGroups/exampleResourceGroup/providers/Microsoft.ScVmm/vmmServers/vmmServerName"),
+		// 			Location: to.Ptr("hslxkyzktvwpqbypvs"),
+		// 			ExtendedLocation: &armscvmm.ExtendedLocation{
+		// 			},
+		// 	}},
+		// }
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VmmServers_Get_MaximumSet_Gen.json
+func ExampleVmmServersClient_Get_vmmServersGetMaximumSet() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armscvmm.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewVmmServersClient().Get(ctx, "rgscvmm", ".", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.VmmServer = armscvmm.VmmServer{
+	// 	Name: to.Ptr("gyoxmcbnbbfajvzygtffpaufxxjzs"),
+	// 	Type: to.Ptr("nwiimbcjryiggdcbpvrqdnlrklcwbr"),
+	// 	ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-12345678abc/resourceGroups/exampleResourceGroup/providers/Microsoft.ScVmm/vmmServers/vmmServerName"),
+	// 	SystemData: &armscvmm.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-29T22:28:00.094Z"); return t}()),
+	// 		CreatedBy: to.Ptr("p"),
+	// 		CreatedByType: to.Ptr(armscvmm.CreatedByTypeUser),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-29T22:28:00.095Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("goxcwpyyqlxndquly"),
+	// 		LastModifiedByType: to.Ptr(armscvmm.CreatedByTypeUser),
+	// 	},
+	// 	Location: to.Ptr("hslxkyzktvwpqbypvs"),
+	// 	Tags: map[string]*string{
+	// 		"key4834": to.Ptr("vycgfkzjcyyuotwwq"),
+	// 	},
+	// 	ExtendedLocation: &armscvmm.ExtendedLocation{
+	// 		Name: to.Ptr("/subscriptions/12345678-1234-1234-1234-12345678abc/resourceGroups/exampleResourceGroup/providers/Microsoft.ExtendedLocation/customLocations/customLocationName"),
+	// 		Type: to.Ptr("customLocation"),
+	// 	},
+	// 	Properties: &armscvmm.VmmServerProperties{
+	// 		ConnectionStatus: to.Ptr("vlmrrigzmutgbzrgjtolnamfxm"),
+	// 		Credentials: &armscvmm.VmmCredential{
+	// 			Username: to.Ptr("jbuoltypmrgqfi"),
+	// 		},
+	// 		ErrorMessage: to.Ptr("ndkzeiipz"),
+	// 		Fqdn: to.Ptr("pvzcjaqrswbvptgx"),
+	// 		Port: to.Ptr[int32](4),
+	// 		ProvisioningState: to.Ptr(armscvmm.ProvisioningStateSucceeded),
+	// 		UUID: to.Ptr("vmwbukuqbuz"),
+	// 		Version: to.Ptr("tawfjzbqrlkqzqyomxiahnfqg"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VmmServers_Get_MinimumSet_Gen.json
+func ExampleVmmServersClient_Get_vmmServersGetMinimumSet() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armscvmm.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewVmmServersClient().Get(ctx, "rgscvmm", "D", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.VmmServer = armscvmm.VmmServer{
+	// 	ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-12345678abc/resourceGroups/exampleResourceGroup/providers/Microsoft.ScVmm/vmmServers/vmmServerName"),
+	// 	Location: to.Ptr("hslxkyzktvwpqbypvs"),
+	// 	ExtendedLocation: &armscvmm.ExtendedLocation{
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VmmServers_CreateOrUpdate_MaximumSet_Gen.json
+func ExampleVmmServersClient_BeginCreateOrUpdate_vmmServersCreateOrUpdateMaximumSet() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armscvmm.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVmmServersClient().BeginCreateOrUpdate(ctx, "rgscvmm", "-", armscvmm.VmmServer{
+		Location: to.Ptr("hslxkyzktvwpqbypvs"),
+		Tags: map[string]*string{
+			"key4834": to.Ptr("vycgfkzjcyyuotwwq"),
+		},
+		ExtendedLocation: &armscvmm.ExtendedLocation{
+			Name: to.Ptr("/subscriptions/12345678-1234-1234-1234-12345678abc/resourceGroups/exampleResourceGroup/providers/Microsoft.ExtendedLocation/customLocations/customLocationName"),
+			Type: to.Ptr("customLocation"),
+		},
+		Properties: &armscvmm.VmmServerProperties{
+			Credentials: &armscvmm.VmmCredential{
+				Password: to.Ptr("gaecsnkjr"),
+				Username: to.Ptr("jbuoltypmrgqfi"),
+			},
+			Fqdn: to.Ptr("pvzcjaqrswbvptgx"),
+			Port: to.Ptr[int32](4),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.VmmServer = armscvmm.VmmServer{
+	// 	Name: to.Ptr("gyoxmcbnbbfajvzygtffpaufxxjzs"),
+	// 	Type: to.Ptr("nwiimbcjryiggdcbpvrqdnlrklcwbr"),
+	// 	ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-12345678abc/resourceGroups/exampleResourceGroup/providers/Microsoft.ScVmm/vmmServers/vmmServerName"),
+	// 	SystemData: &armscvmm.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-29T22:28:00.094Z"); return t}()),
+	// 		CreatedBy: to.Ptr("p"),
+	// 		CreatedByType: to.Ptr(armscvmm.CreatedByTypeUser),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-29T22:28:00.095Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("goxcwpyyqlxndquly"),
+	// 		LastModifiedByType: to.Ptr(armscvmm.CreatedByTypeUser),
+	// 	},
+	// 	Location: to.Ptr("hslxkyzktvwpqbypvs"),
+	// 	Tags: map[string]*string{
+	// 		"key4834": to.Ptr("vycgfkzjcyyuotwwq"),
+	// 	},
+	// 	ExtendedLocation: &armscvmm.ExtendedLocation{
+	// 		Name: to.Ptr("/subscriptions/12345678-1234-1234-1234-12345678abc/resourceGroups/exampleResourceGroup/providers/Microsoft.ExtendedLocation/customLocations/customLocationName"),
+	// 		Type: to.Ptr("customLocation"),
+	// 	},
+	// 	Properties: &armscvmm.VmmServerProperties{
+	// 		ConnectionStatus: to.Ptr("vlmrrigzmutgbzrgjtolnamfxm"),
+	// 		Credentials: &armscvmm.VmmCredential{
+	// 			Username: to.Ptr("jbuoltypmrgqfi"),
+	// 		},
+	// 		ErrorMessage: to.Ptr("ndkzeiipz"),
+	// 		Fqdn: to.Ptr("pvzcjaqrswbvptgx"),
+	// 		Port: to.Ptr[int32](4),
+	// 		ProvisioningState: to.Ptr(armscvmm.ProvisioningStateSucceeded),
+	// 		UUID: to.Ptr("vmwbukuqbuz"),
+	// 		Version: to.Ptr("tawfjzbqrlkqzqyomxiahnfqg"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VmmServers_CreateOrUpdate_MinimumSet_Gen.json
+func ExampleVmmServersClient_BeginCreateOrUpdate_vmmServersCreateOrUpdateMinimumSet() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armscvmm.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVmmServersClient().BeginCreateOrUpdate(ctx, "rgscvmm", "w", armscvmm.VmmServer{
+		Location:         to.Ptr("hslxkyzktvwpqbypvs"),
+		ExtendedLocation: &armscvmm.ExtendedLocation{},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.VmmServer = armscvmm.VmmServer{
+	// 	ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-12345678abc/resourceGroups/exampleResourceGroup/providers/Microsoft.ScVmm/vmmServers/vmmServerName"),
+	// 	Location: to.Ptr("hslxkyzktvwpqbypvs"),
+	// 	ExtendedLocation: &armscvmm.ExtendedLocation{
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VmmServers_Update_MaximumSet_Gen.json
+func ExampleVmmServersClient_BeginUpdate_vmmServersUpdateMaximumSet() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armscvmm.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVmmServersClient().BeginUpdate(ctx, "rgscvmm", "Y", armscvmm.VmmServerTagsUpdate{
+		Tags: map[string]*string{
+			"key7187": to.Ptr("oktnfvklfchnquelzzdagtpwfskzc"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.VmmServer = armscvmm.VmmServer{
+	// 	Name: to.Ptr("gyoxmcbnbbfajvzygtffpaufxxjzs"),
+	// 	Type: to.Ptr("nwiimbcjryiggdcbpvrqdnlrklcwbr"),
+	// 	ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-12345678abc/resourceGroups/exampleResourceGroup/providers/Microsoft.ScVmm/vmmServers/vmmServerName"),
+	// 	SystemData: &armscvmm.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-29T22:28:00.094Z"); return t}()),
+	// 		CreatedBy: to.Ptr("p"),
+	// 		CreatedByType: to.Ptr(armscvmm.CreatedByTypeUser),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-29T22:28:00.095Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("goxcwpyyqlxndquly"),
+	// 		LastModifiedByType: to.Ptr(armscvmm.CreatedByTypeUser),
+	// 	},
+	// 	Location: to.Ptr("hslxkyzktvwpqbypvs"),
+	// 	Tags: map[string]*string{
+	// 		"key4834": to.Ptr("vycgfkzjcyyuotwwq"),
+	// 	},
+	// 	ExtendedLocation: &armscvmm.ExtendedLocation{
+	// 		Name: to.Ptr("/subscriptions/12345678-1234-1234-1234-12345678abc/resourceGroups/exampleResourceGroup/providers/Microsoft.ExtendedLocation/customLocations/customLocationName"),
+	// 		Type: to.Ptr("customLocation"),
+	// 	},
+	// 	Properties: &armscvmm.VmmServerProperties{
+	// 		ConnectionStatus: to.Ptr("vlmrrigzmutgbzrgjtolnamfxm"),
+	// 		Credentials: &armscvmm.VmmCredential{
+	// 			Username: to.Ptr("jbuoltypmrgqfi"),
+	// 		},
+	// 		ErrorMessage: to.Ptr("ndkzeiipz"),
+	// 		Fqdn: to.Ptr("pvzcjaqrswbvptgx"),
+	// 		Port: to.Ptr[int32](4),
+	// 		ProvisioningState: to.Ptr(armscvmm.ProvisioningStateSucceeded),
+	// 		UUID: to.Ptr("vmwbukuqbuz"),
+	// 		Version: to.Ptr("tawfjzbqrlkqzqyomxiahnfqg"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VmmServers_Update_MinimumSet_Gen.json
+func ExampleVmmServersClient_BeginUpdate_vmmServersUpdateMinimumSet() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armscvmm.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVmmServersClient().BeginUpdate(ctx, "rgscvmm", "_", armscvmm.VmmServerTagsUpdate{}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.VmmServer = armscvmm.VmmServer{
+	// 	ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-12345678abc/resourceGroups/exampleResourceGroup/providers/Microsoft.ScVmm/vmmServers/vmmServerName"),
+	// 	Location: to.Ptr("hslxkyzktvwpqbypvs"),
+	// 	ExtendedLocation: &armscvmm.ExtendedLocation{
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VmmServers_Delete_MaximumSet_Gen.json
+func ExampleVmmServersClient_BeginDelete_vmmServersDeleteMaximumSet() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armscvmm.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVmmServersClient().BeginDelete(ctx, "rgscvmm", ".", &armscvmm.VmmServersClientBeginDeleteOptions{Force: to.Ptr(armscvmm.ForceDeleteTrue)})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/VmmServers_Delete_MinimumSet_Gen.json
+func ExampleVmmServersClient_BeginDelete_vmmServersDeleteMinimumSet() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armscvmm.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVmmServersClient().BeginDelete(ctx, "rgscvmm", "8", &armscvmm.VmmServersClientBeginDeleteOptions{Force: nil})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }

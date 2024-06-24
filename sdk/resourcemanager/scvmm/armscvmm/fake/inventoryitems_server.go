@@ -19,27 +19,26 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/scvmm/armscvmm"
 	"net/http"
 	"net/url"
-	"reflect"
 	"regexp"
 )
 
 // InventoryItemsServer is a fake server for instances of the armscvmm.InventoryItemsClient type.
 type InventoryItemsServer struct {
 	// Create is the fake for method InventoryItemsClient.Create
-	// HTTP status codes to indicate success: http.StatusOK
-	Create func(ctx context.Context, resourceGroupName string, vmmServerName string, inventoryItemName string, options *armscvmm.InventoryItemsClientCreateOptions) (resp azfake.Responder[armscvmm.InventoryItemsClientCreateResponse], errResp azfake.ErrorResponder)
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	Create func(ctx context.Context, resourceGroupName string, vmmServerName string, inventoryItemResourceName string, resource armscvmm.InventoryItem, options *armscvmm.InventoryItemsClientCreateOptions) (resp azfake.Responder[armscvmm.InventoryItemsClientCreateResponse], errResp azfake.ErrorResponder)
 
 	// Delete is the fake for method InventoryItemsClient.Delete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
-	Delete func(ctx context.Context, resourceGroupName string, vmmServerName string, inventoryItemName string, options *armscvmm.InventoryItemsClientDeleteOptions) (resp azfake.Responder[armscvmm.InventoryItemsClientDeleteResponse], errResp azfake.ErrorResponder)
+	Delete func(ctx context.Context, resourceGroupName string, vmmServerName string, inventoryItemResourceName string, options *armscvmm.InventoryItemsClientDeleteOptions) (resp azfake.Responder[armscvmm.InventoryItemsClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method InventoryItemsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, vmmServerName string, inventoryItemName string, options *armscvmm.InventoryItemsClientGetOptions) (resp azfake.Responder[armscvmm.InventoryItemsClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, resourceGroupName string, vmmServerName string, inventoryItemResourceName string, options *armscvmm.InventoryItemsClientGetOptions) (resp azfake.Responder[armscvmm.InventoryItemsClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListByVMMServerPager is the fake for method InventoryItemsClient.NewListByVMMServerPager
+	// NewListByVmmServerPager is the fake for method InventoryItemsClient.NewListByVmmServerPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListByVMMServerPager func(resourceGroupName string, vmmServerName string, options *armscvmm.InventoryItemsClientListByVMMServerOptions) (resp azfake.PagerResponder[armscvmm.InventoryItemsClientListByVMMServerResponse])
+	NewListByVmmServerPager func(resourceGroupName string, vmmServerName string, options *armscvmm.InventoryItemsClientListByVmmServerOptions) (resp azfake.PagerResponder[armscvmm.InventoryItemsClientListByVmmServerResponse])
 }
 
 // NewInventoryItemsServerTransport creates a new instance of InventoryItemsServerTransport with the provided implementation.
@@ -48,7 +47,7 @@ type InventoryItemsServer struct {
 func NewInventoryItemsServerTransport(srv *InventoryItemsServer) *InventoryItemsServerTransport {
 	return &InventoryItemsServerTransport{
 		srv:                     srv,
-		newListByVMMServerPager: newTracker[azfake.PagerResponder[armscvmm.InventoryItemsClientListByVMMServerResponse]](),
+		newListByVmmServerPager: newTracker[azfake.PagerResponder[armscvmm.InventoryItemsClientListByVmmServerResponse]](),
 	}
 }
 
@@ -56,7 +55,7 @@ func NewInventoryItemsServerTransport(srv *InventoryItemsServer) *InventoryItems
 // Don't use this type directly, use NewInventoryItemsServerTransport instead.
 type InventoryItemsServerTransport struct {
 	srv                     *InventoryItemsServer
-	newListByVMMServerPager *tracker[azfake.PagerResponder[armscvmm.InventoryItemsClientListByVMMServerResponse]]
+	newListByVmmServerPager *tracker[azfake.PagerResponder[armscvmm.InventoryItemsClientListByVmmServerResponse]]
 }
 
 // Do implements the policy.Transporter interface for InventoryItemsServerTransport.
@@ -77,8 +76,8 @@ func (i *InventoryItemsServerTransport) Do(req *http.Request) (*http.Response, e
 		resp, err = i.dispatchDelete(req)
 	case "InventoryItemsClient.Get":
 		resp, err = i.dispatchGet(req)
-	case "InventoryItemsClient.NewListByVMMServerPager":
-		resp, err = i.dispatchNewListByVMMServerPager(req)
+	case "InventoryItemsClient.NewListByVmmServerPager":
+		resp, err = i.dispatchNewListByVmmServerPager(req)
 	default:
 		err = fmt.Errorf("unhandled API %s", method)
 	}
@@ -94,7 +93,7 @@ func (i *InventoryItemsServerTransport) dispatchCreate(req *http.Request) (*http
 	if i.srv.Create == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Create not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ScVmm/vmmServers/(?P<vmmServerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/inventoryItems/(?P<inventoryItemName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ScVmm/vmmServers/(?P<vmmServerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/inventoryItems/(?P<inventoryItemResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 4 {
@@ -112,23 +111,17 @@ func (i *InventoryItemsServerTransport) dispatchCreate(req *http.Request) (*http
 	if err != nil {
 		return nil, err
 	}
-	inventoryItemNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("inventoryItemName")])
+	inventoryItemResourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("inventoryItemResourceName")])
 	if err != nil {
 		return nil, err
 	}
-	var options *armscvmm.InventoryItemsClientCreateOptions
-	if !reflect.ValueOf(body).IsZero() {
-		options = &armscvmm.InventoryItemsClientCreateOptions{
-			Body: &body,
-		}
-	}
-	respr, errRespr := i.srv.Create(req.Context(), resourceGroupNameParam, vmmServerNameParam, inventoryItemNameParam, options)
+	respr, errRespr := i.srv.Create(req.Context(), resourceGroupNameParam, vmmServerNameParam, inventoryItemResourceNameParam, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	if !contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).InventoryItem, req)
 	if err != nil {
@@ -141,7 +134,7 @@ func (i *InventoryItemsServerTransport) dispatchDelete(req *http.Request) (*http
 	if i.srv.Delete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ScVmm/vmmServers/(?P<vmmServerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/inventoryItems/(?P<inventoryItemName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ScVmm/vmmServers/(?P<vmmServerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/inventoryItems/(?P<inventoryItemResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 4 {
@@ -155,11 +148,11 @@ func (i *InventoryItemsServerTransport) dispatchDelete(req *http.Request) (*http
 	if err != nil {
 		return nil, err
 	}
-	inventoryItemNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("inventoryItemName")])
+	inventoryItemResourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("inventoryItemResourceName")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := i.srv.Delete(req.Context(), resourceGroupNameParam, vmmServerNameParam, inventoryItemNameParam, nil)
+	respr, errRespr := i.srv.Delete(req.Context(), resourceGroupNameParam, vmmServerNameParam, inventoryItemResourceNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -178,7 +171,7 @@ func (i *InventoryItemsServerTransport) dispatchGet(req *http.Request) (*http.Re
 	if i.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ScVmm/vmmServers/(?P<vmmServerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/inventoryItems/(?P<inventoryItemName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ScVmm/vmmServers/(?P<vmmServerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/inventoryItems/(?P<inventoryItemResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 4 {
@@ -192,11 +185,11 @@ func (i *InventoryItemsServerTransport) dispatchGet(req *http.Request) (*http.Re
 	if err != nil {
 		return nil, err
 	}
-	inventoryItemNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("inventoryItemName")])
+	inventoryItemResourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("inventoryItemResourceName")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := i.srv.Get(req.Context(), resourceGroupNameParam, vmmServerNameParam, inventoryItemNameParam, nil)
+	respr, errRespr := i.srv.Get(req.Context(), resourceGroupNameParam, vmmServerNameParam, inventoryItemResourceNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -211,12 +204,12 @@ func (i *InventoryItemsServerTransport) dispatchGet(req *http.Request) (*http.Re
 	return resp, nil
 }
 
-func (i *InventoryItemsServerTransport) dispatchNewListByVMMServerPager(req *http.Request) (*http.Response, error) {
-	if i.srv.NewListByVMMServerPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByVMMServerPager not implemented")}
+func (i *InventoryItemsServerTransport) dispatchNewListByVmmServerPager(req *http.Request) (*http.Response, error) {
+	if i.srv.NewListByVmmServerPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByVmmServerPager not implemented")}
 	}
-	newListByVMMServerPager := i.newListByVMMServerPager.get(req)
-	if newListByVMMServerPager == nil {
+	newListByVmmServerPager := i.newListByVmmServerPager.get(req)
+	if newListByVmmServerPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ScVmm/vmmServers/(?P<vmmServerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/inventoryItems`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -231,23 +224,23 @@ func (i *InventoryItemsServerTransport) dispatchNewListByVMMServerPager(req *htt
 		if err != nil {
 			return nil, err
 		}
-		resp := i.srv.NewListByVMMServerPager(resourceGroupNameParam, vmmServerNameParam, nil)
-		newListByVMMServerPager = &resp
-		i.newListByVMMServerPager.add(req, newListByVMMServerPager)
-		server.PagerResponderInjectNextLinks(newListByVMMServerPager, req, func(page *armscvmm.InventoryItemsClientListByVMMServerResponse, createLink func() string) {
+		resp := i.srv.NewListByVmmServerPager(resourceGroupNameParam, vmmServerNameParam, nil)
+		newListByVmmServerPager = &resp
+		i.newListByVmmServerPager.add(req, newListByVmmServerPager)
+		server.PagerResponderInjectNextLinks(newListByVmmServerPager, req, func(page *armscvmm.InventoryItemsClientListByVmmServerResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(newListByVMMServerPager, req)
+	resp, err := server.PagerResponderNext(newListByVmmServerPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
-		i.newListByVMMServerPager.remove(req)
+		i.newListByVmmServerPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(newListByVMMServerPager) {
-		i.newListByVMMServerPager.remove(req)
+	if !server.PagerResponderMore(newListByVmmServerPager) {
+		i.newListByVmmServerPager.remove(req)
 	}
 	return resp, nil
 }

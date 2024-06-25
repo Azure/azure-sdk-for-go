@@ -48,7 +48,7 @@ func Example_assistantsWithConversationLoop() {
 	}
 
 	// First, let's create an assistant.
-	createAssistantResp, err := client.CreateAssistant(context.Background(), azopenaiassistants.CreateAssistantBody{
+	createAssistantResp, err := client.CreateAssistant(context.TODO(), azopenaiassistants.CreateAssistantBody{
 		Name:           &assistantName,
 		DeploymentName: to.Ptr("gpt-4-1106-preview"),
 		Instructions:   to.Ptr("You are a personal math tutor. Write and run code to answer math questions."),
@@ -79,7 +79,7 @@ func Example_assistantsWithConversationLoop() {
 
 	// Now we'll create a thread. The thread is where you will add messages, which can later
 	// be evaluated using a Run. A thread can be re-used by multiple Runs.
-	createThreadResp, err := client.CreateThread(context.Background(), azopenaiassistants.CreateThreadBody{}, nil)
+	createThreadResp, err := client.CreateThread(context.TODO(), azopenaiassistants.CreateThreadBody{}, nil)
 
 	if err != nil {
 		//  TODO: Update the following line with your application specific error handling logic
@@ -172,7 +172,7 @@ func assistantLoop(ctx context.Context, client *azopenaiassistants.Client,
 		for _, yourResponse := range yourResponses {
 			// Add some messages to the thread. We will use Run the thread later to evaluate these and to get
 			// responses from the assistant.
-			createMessageResp, err := client.CreateMessage(context.Background(), threadID, yourResponse, nil)
+			createMessageResp, err := client.CreateMessage(context.TODO(), threadID, yourResponse, nil)
 
 			if err != nil {
 				return err
@@ -183,7 +183,7 @@ func assistantLoop(ctx context.Context, client *azopenaiassistants.Client,
 			lastMessageID = createMessageResp.ID
 		}
 
-		createRunResp, err := client.CreateRun(context.Background(), threadID, azopenaiassistants.CreateRunBody{
+		createRunResp, err := client.CreateRun(context.TODO(), threadID, azopenaiassistants.CreateRunBody{
 			AssistantID: &assistantID,
 		}, nil)
 
@@ -239,7 +239,7 @@ func printAssistantMessages(ctx context.Context, client *azopenaiassistants.Clie
 
 func pollUntilRunEnds(ctx context.Context, client *azopenaiassistants.Client, threadID string, runID string) (azopenaiassistants.GetRunResponse, error) {
 	for {
-		lastGetRunResp, err := client.GetRun(context.Background(), threadID, runID, nil)
+		lastGetRunResp, err := client.GetRun(context.TODO(), threadID, runID, nil)
 
 		if err != nil {
 			return azopenaiassistants.GetRunResponse{}, err

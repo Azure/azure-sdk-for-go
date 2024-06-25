@@ -67,7 +67,7 @@ func Example_assistantsUsingFunctionTool() {
 	}
 
 	// First, let's create an assistant.
-	createAssistantResp, err := client.CreateAssistant(context.Background(), azopenaiassistants.CreateAssistantBody{
+	createAssistantResp, err := client.CreateAssistant(context.TODO(), azopenaiassistants.CreateAssistantBody{
 		Name:           &assistantName,
 		DeploymentName: to.Ptr("gpt-4-1106-preview"),
 		Instructions:   to.Ptr("You are a personal math tutor. Write and run code to answer math questions."),
@@ -90,7 +90,7 @@ func Example_assistantsUsingFunctionTool() {
 	var lastMessageID, runID, threadID string
 	{
 		fmt.Fprintf(os.Stderr, "Creating our thread\n")
-		createThreadResp, err := client.CreateThread(context.Background(), azopenaiassistants.CreateThreadBody{}, nil)
+		createThreadResp, err := client.CreateThread(context.TODO(), azopenaiassistants.CreateThreadBody{}, nil)
 
 		if err != nil {
 			// TODO: Update the following line with your application specific error handling logic
@@ -99,7 +99,7 @@ func Example_assistantsUsingFunctionTool() {
 
 		threadID = *createThreadResp.ID
 
-		msgResponse, err := client.CreateMessage(context.Background(), threadID, azopenaiassistants.CreateMessageBody{
+		msgResponse, err := client.CreateMessage(context.TODO(), threadID, azopenaiassistants.CreateMessageBody{
 			Content: &question,
 			Role:    to.Ptr(azopenaiassistants.MessageRoleUser),
 		}, nil)
@@ -114,7 +114,7 @@ func Example_assistantsUsingFunctionTool() {
 		// run the thread
 		fmt.Fprintf(os.Stderr, "Creating our run for thread %s\n", *createThreadResp.ID)
 
-		createRunResp, err := client.CreateRun(context.Background(), *createThreadResp.ID, azopenaiassistants.CreateRunBody{
+		createRunResp, err := client.CreateRun(context.TODO(), *createThreadResp.ID, azopenaiassistants.CreateRunBody{
 			AssistantID:  createAssistantResp.ID,
 			Instructions: to.Ptr("Use functions to answer questions, when possible."),
 		}, nil)
@@ -130,7 +130,7 @@ func Example_assistantsUsingFunctionTool() {
 	fmt.Fprintf(os.Stderr, "Waiting for the Run status to indicate it needs tool outputs\n")
 	// NOTE: see https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/ai/azopenaiassistants#example-package-AssistantsConversationLoop
 	// for the pollUntilRunEnds function.
-	lastResp, err := pollUntilRunEnds(context.Background(), client, threadID, runID)
+	lastResp, err := pollUntilRunEnds(context.TODO(), client, threadID, runID)
 	if err != nil {
 		// TODO: Update the following line with your application specific error handling logic
 		log.Fatalf("ERROR: %s", err)
@@ -171,7 +171,7 @@ func Example_assistantsUsingFunctionTool() {
 	fmt.Fprintf(os.Stderr, "Call our own function to get the weather for %s, in %s\n", weatherFuncArgs.Location, weatherFuncArgs.Unit)
 	{
 		// submit our outputs from evaluating the tool
-		_, err := client.SubmitToolOutputsToRun(context.Background(), threadID, runID, azopenaiassistants.SubmitToolOutputsToRunBody{
+		_, err := client.SubmitToolOutputsToRun(context.TODO(), threadID, runID, azopenaiassistants.SubmitToolOutputsToRunBody{
 			ToolOutputs: []azopenaiassistants.ToolOutput{
 				{
 					Output:     to.Ptr("0C"),
@@ -189,7 +189,7 @@ func Example_assistantsUsingFunctionTool() {
 	// the run will restart now, we just need to wait until it finishes
 	// NOTE: see https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/ai/azopenaiassistants#example-package-AssistantsConversationLoop
 	// for the pollUntilRunEnds function.
-	lastResp, err = pollUntilRunEnds(context.Background(), client, threadID, runID)
+	lastResp, err = pollUntilRunEnds(context.TODO(), client, threadID, runID)
 
 	if err != nil || *lastResp.Status != azopenaiassistants.RunStatusCompleted {
 		// TODO: Update the following line with your application specific error handling logic
@@ -200,7 +200,7 @@ func Example_assistantsUsingFunctionTool() {
 
 	// NOTE: see https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/ai/azopenaiassistants#example-package-AssistantsConversationLoop
 	// for the getLatestMessages function.
-	latestMessages, err := getLatestMessages(context.Background(), client, threadID, &lastMessageID)
+	latestMessages, err := getLatestMessages(context.TODO(), client, threadID, &lastMessageID)
 	if err != nil {
 		// TODO: Update the following line with your application specific error handling logic
 		log.Fatalf("ERROR: %s", err)
@@ -211,7 +211,7 @@ func Example_assistantsUsingFunctionTool() {
 		// [ASSISTANT] <id>: Text response: The current weather in Boston, MA, measured in Celsius, is 0°C.
 		// NOTE: see https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/ai/azopenaiassistants#example-package-AssistantsConversationLoop
 		// for the printAssistantMessages function.
-		err = printAssistantMessages(context.Background(), client, latestMessages)
+		err = printAssistantMessages(context.TODO(), client, latestMessages)
 
 		if err != nil {
 			// TODO: Update the following line with your application specific error handling logic

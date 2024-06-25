@@ -42,7 +42,7 @@ func Example_assistantsUsingCodeInterpreter() {
 	assistantName := fmt.Sprintf("your-assistant-name-%d", time.Now().UnixNano())
 
 	// First, let's create an assistant.
-	createAssistantResp, err := client.CreateAssistant(context.Background(), azopenaiassistants.CreateAssistantBody{
+	createAssistantResp, err := client.CreateAssistant(context.TODO(), azopenaiassistants.CreateAssistantBody{
 		Name:           &assistantName,
 		DeploymentName: to.Ptr("gpt-4-1106-preview"),
 		Instructions:   to.Ptr("You are an AI assistant that can write code to help answer math questions."),
@@ -122,7 +122,7 @@ func Example_assistantsUsingCodeInterpreter() {
 	})
 
 	for listMessagesPager.More() {
-		page, err := listMessagesPager.NextPage(context.Background())
+		page, err := listMessagesPager.NextPage(context.TODO())
 
 		if err != nil {
 			//  TODO: Update the following line with your application specific error handling logic
@@ -143,7 +143,7 @@ func Example_assistantsUsingCodeInterpreter() {
 
 func pollCodeInterpreterEnd(ctx context.Context, client *azopenaiassistants.Client, threadID string, runID string) (azopenaiassistants.GetRunResponse, error) {
 	for {
-		lastGetRunResp, err := client.GetRun(context.Background(), threadID, runID, nil)
+		lastGetRunResp, err := client.GetRun(context.TODO(), threadID, runID, nil)
 
 		if err != nil {
 			return azopenaiassistants.GetRunResponse{}, err

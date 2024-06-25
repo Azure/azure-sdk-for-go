@@ -190,7 +190,7 @@ func submitToolOutputsWithStreaming(t *testing.T, client *azopenaiassistants.Cli
 		resp, err := client.SubmitToolOutputsToRunStream(context.Background(), *lastResp.ThreadID, *lastResp.ID, azopenaiassistants.SubmitToolOutputsToRunBody{
 			ToolOutputs: []azopenaiassistants.ToolOutput{
 				{
-					Output:     to.Ptr("0C"),
+					Output:     to.Ptr("26C"),
 					ToolCallID: funcToolCall.ID,
 				},
 			},

@@ -109,7 +109,7 @@ func Example_assistantsStreaming() {
 		}
 
 		// NOTE: for this example we're handling a small subset of the events that are
-		// streaming in. See [AssistantStreamEvent] for the full list of available events.
+		// streaming in. See [azopenaiassistants.AssistantStreamEvent] for the full list of available events.
 		switch event.Reason {
 		// Assistant events
 		case azopenaiassistants.AssistantStreamEventThreadCreated:

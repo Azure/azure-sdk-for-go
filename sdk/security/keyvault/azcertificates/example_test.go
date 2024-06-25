@@ -94,3 +94,46 @@ func ExampleClient_DeleteCertificate() {
 	// In a soft-delete enabled vault, deleted resources can be recovered until they're purged (permanently deleted).
 	fmt.Printf("Certificate will be purged at %v", *resp.ScheduledPurgeDate)
 }
+
+func ExampleClient_ImportCertificate_pfx() {
+	// This example uses `ImportCertificate` to import a PFX certificate.
+
+	// Assuming you already have a PFX containing your key pair, you can import it into Key Vault.
+	// You can do this without setting a policy, but the policy is needed if you want the private key to be exportable
+	// or to configure actions when a certificate is close to expiration.
+	parameters := azcertificates.ImportCertificateParameters{
+		Base64EncodedCertificate: to.Ptr("<TODO: pfx cert value>"),
+	}
+
+	resp, err := client.ImportCertificate(context.TODO(), "pfxCertName", parameters, nil)
+	if err != nil {
+		// TODO: handle error
+	}
+
+	fmt.Printf("PFX certificate %s imported successfully.", resp.ID.Name())
+}
+
+func ExampleClient_ImportCertificate_pem() {
+	// This example uses `ImportCertificate` to import a PEM certificate.
+
+	// To import a PEM-formatted certificate, you must provide a CertificatePolicy that sets the ContentType to
+	// CertificateContentType.pem or the certificate will fail to import (the default content type is PFX).
+	parameters := azcertificates.ImportCertificateParameters{
+		Base64EncodedCertificate: to.Ptr("<TODO: pem cert value>"),
+		CertificatePolicy: &azcertificates.CertificatePolicy{
+
+			SecretProperties: &azcertificates.SecretProperties{
+
+				ContentType: to.Ptr("application/x-pem-file"),
+			},
+		},
+	}
+
+	resp, err := client.ImportCertificate(context.TODO(), "pemCertName", parameters, nil)
+	if err != nil {
+		// TODO: handle error
+	}
+
+	fmt.Printf("PFX certificate %s imported successfully.", resp.ID.Name())
+
+}

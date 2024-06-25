@@ -191,7 +191,7 @@ func Example_assistantsUsingSubmitToolOutputsStreaming() {
 		}
 	}
 
-	// Output:
+	// DisabledOutput:
 }
 
 // processToolOutputsStream continually processes events from the stream.

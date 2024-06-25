@@ -80,7 +80,7 @@ type PackageResult struct {
 	PackageName         string                          `json:"packageName,omitempty"`
 	Path                []string                        `json:"path"`
 	PackageFolder       string                          `json:"packageFolder"`
-	ReadmeMd            []string                        `json:"readmeMd"`
+	ReadmeMd            []string                        `json:"readmeMd,omitempty"`
 	Changelog           *Changelog                      `json:"changelog,omitempty"`
 	Artifacts           []string                        `json:"artifacts,omitempty"`
 	InstallInstructions *InstallInstructionScriptOutput `json:"installInstructions,omitempty"`

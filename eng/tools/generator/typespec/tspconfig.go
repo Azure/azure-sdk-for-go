@@ -84,21 +84,21 @@ func ParseTypeSpecConfig(tspconfigPath string) (*TypeSpecConfig, error) {
 		if err != nil {
 			return nil, err
 		}
-	
+
 		goOption := emitOption.(map[string]any)
 		module, ok := goOption["module"].(string)
 		if !ok {
 			return nil, fmt.Errorf("the module must be set in %s option", TypeSpec_GO)
 		}
-	
+
 		if strings.Contains(module, "{service-dir}") {
 			module = strings.ReplaceAll(module, "{service-dir}", goOption["service-dir"].(string))
 		}
-	
+
 		if strings.Contains(module, "{package-dir}") {
 			module = strings.ReplaceAll(module, "{package-dir}", goOption["package-dir"].(string))
 		}
-	
+
 		goOption["module"] = module
 		tspConfig.EditOptions(string(TypeSpec_GO), goOption, false)
 	}
@@ -152,6 +152,8 @@ func (tc TypeSpecConfig) ExistEmitOption(emit string) bool {
 	return err == nil
 }
 
+// GetModuleName return [rpName, packageName]
+// module: github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/{rpName}/{packageName}
 func (tc TypeSpecConfig) GetModuleName() ([2]string, error) {
 	option, err := tc.EmitOption(string(TypeSpec_GO))
 	if err != nil {

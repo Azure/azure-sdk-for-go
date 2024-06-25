@@ -152,11 +152,11 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 					}
 
 					results = append(results, pipeline.PackageResult{
-						Version:       namespaceResult.Version,
-						PackageName:   fmt.Sprintf("sdk/resourcemanager/%s/%s", namespaceResult.RPName, namespaceResult.PackageName),
-						Path:          []string{fmt.Sprintf("sdk/resourcemanager/%s/%s", namespaceResult.RPName, namespaceResult.PackageName)},
-						PackageFolder: fmt.Sprintf("sdk/resourcemanager/%s/%s", namespaceResult.RPName, namespaceResult.PackageName),
-						// ReadmeMd:      []string{readme},
+						Version:         namespaceResult.Version,
+						PackageName:     fmt.Sprintf("sdk/resourcemanager/%s/%s", namespaceResult.RPName, namespaceResult.PackageName),
+						Path:            []string{fmt.Sprintf("sdk/resourcemanager/%s/%s", namespaceResult.RPName, namespaceResult.PackageName)},
+						PackageFolder:   fmt.Sprintf("sdk/resourcemanager/%s/%s", namespaceResult.RPName, namespaceResult.PackageName),
+						TypespecProject: []string{tspProjectFolder},
 						Changelog: &pipeline.Changelog{
 							Content:             &content,
 							HasBreakingChange:   &breaking,

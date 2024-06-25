@@ -86,6 +86,7 @@ type PackageResult struct {
 	InstallInstructions *InstallInstructionScriptOutput `json:"installInstructions,omitempty"`
 	APIViewArtifact     string                          `json:"apiViewArtifact,omitempty"`
 	Language            string                          `json:"language,omitempty"`
+	TypespecProject     []string                        `json:"typespecProject,omitempty"`
 }
 
 // Changelog ...

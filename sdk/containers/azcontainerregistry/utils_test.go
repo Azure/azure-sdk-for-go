@@ -12,15 +12,13 @@ import (
 	"os"
 	"strings"
 	"testing"
-	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	azcloud "github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/test/credential"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry"
 	"github.com/stretchr/testify/require"
 )
@@ -37,17 +35,8 @@ var testConfig = struct {
 	loginServer string
 }{
 	cloud:       azcloud.AzurePublic,
-	credential:  &FakeCredential{},
+	credential:  &credential.Fake{},
 	loginServer: fakeLoginServer,
-}
-
-// FakeCredential is an empty credential for testing.
-type FakeCredential struct {
-}
-
-// GetToken provide a fake access token.
-func (c *FakeCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
-	return azcore.AccessToken{Token: recording.SanitizedValue, ExpiresOn: time.Now().Add(time.Hour * 24).UTC()}, nil
 }
 
 // getEndpointCredAndClientOptions will create a credential and a client options for test application.
@@ -81,7 +70,7 @@ func TestMain(m *testing.M) {
 func run(m *testing.M) int {
 	if recording.GetRecordMode() != recording.PlaybackMode {
 		var err error
-		testConfig.credential, err = azidentity.NewDefaultAzureCredential(nil)
+		testConfig.credential, err = credential.New(nil)
 		if err != nil {
 			panic(err)
 		}

@@ -10,7 +10,7 @@ package armoracledatabase
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/oracledatabase/armoracledatabase"
-	moduleVersion = "v0.1.0"
+	moduleVersion = "v1.0.0"
 )
 
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -27,14 +27,19 @@ func PossibleActionTypeValues() []ActionType {
 	}
 }
 
-// AutonomousDatabaseBackupLifecycleState - AutonomousDatabaseBackupLifecycleState enum
+// AutonomousDatabaseBackupLifecycleState - Autonomous database backup lifecycle state enum
 type AutonomousDatabaseBackupLifecycleState string
 
 const (
-	AutonomousDatabaseBackupLifecycleStateActive   AutonomousDatabaseBackupLifecycleState = "Active"
+	// AutonomousDatabaseBackupLifecycleStateActive - AutonomousDatabase backup is active
+	AutonomousDatabaseBackupLifecycleStateActive AutonomousDatabaseBackupLifecycleState = "Active"
+	// AutonomousDatabaseBackupLifecycleStateCreating - AutonomousDatabase backup is creating
 	AutonomousDatabaseBackupLifecycleStateCreating AutonomousDatabaseBackupLifecycleState = "Creating"
+	// AutonomousDatabaseBackupLifecycleStateDeleting - AutonomousDatabase backup is deleting
 	AutonomousDatabaseBackupLifecycleStateDeleting AutonomousDatabaseBackupLifecycleState = "Deleting"
-	AutonomousDatabaseBackupLifecycleStateFailed   AutonomousDatabaseBackupLifecycleState = "Failed"
+	// AutonomousDatabaseBackupLifecycleStateFailed - AutonomousDatabase backup is failed
+	AutonomousDatabaseBackupLifecycleStateFailed AutonomousDatabaseBackupLifecycleState = "Failed"
+	// AutonomousDatabaseBackupLifecycleStateUpdating - AutonomousDatabase backup is updating
 	AutonomousDatabaseBackupLifecycleStateUpdating AutonomousDatabaseBackupLifecycleState = "Updating"
 )
 
@@ -49,13 +54,16 @@ func PossibleAutonomousDatabaseBackupLifecycleStateValues() []AutonomousDatabase
 	}
 }
 
-// AutonomousDatabaseBackupType - AutonomousDatabaseBackupType enum
+// AutonomousDatabaseBackupType - Autonomous database backup type enum
 type AutonomousDatabaseBackupType string
 
 const (
-	AutonomousDatabaseBackupTypeFull        AutonomousDatabaseBackupType = "Full"
+	// AutonomousDatabaseBackupTypeFull - Full backup
+	AutonomousDatabaseBackupTypeFull AutonomousDatabaseBackupType = "Full"
+	// AutonomousDatabaseBackupTypeIncremental - Incremental backup
 	AutonomousDatabaseBackupTypeIncremental AutonomousDatabaseBackupType = "Incremental"
-	AutonomousDatabaseBackupTypeLongTerm    AutonomousDatabaseBackupType = "LongTerm"
+	// AutonomousDatabaseBackupTypeLongTerm - LongTerm backup
+	AutonomousDatabaseBackupTypeLongTerm AutonomousDatabaseBackupType = "LongTerm"
 )
 
 // PossibleAutonomousDatabaseBackupTypeValues returns the possible values for the AutonomousDatabaseBackupType const type.
@@ -67,51 +75,51 @@ func PossibleAutonomousDatabaseBackupTypeValues() []AutonomousDatabaseBackupType
 	}
 }
 
-// AutonomousDatabaseLifecycleState - AutonomousDatabaseLifecycleState enum
+// AutonomousDatabaseLifecycleState - Autonomous database lifecycle state enum
 type AutonomousDatabaseLifecycleState string
 
 const (
-	// AutonomousDatabaseLifecycleStateAvailable - AVAILABLE value
+	// AutonomousDatabaseLifecycleStateAvailable - Indicates that resource in Available state
 	AutonomousDatabaseLifecycleStateAvailable AutonomousDatabaseLifecycleState = "Available"
-	// AutonomousDatabaseLifecycleStateAvailableNeedsAttention - AVAILABLE_NEEDS_ATTENTION value
+	// AutonomousDatabaseLifecycleStateAvailableNeedsAttention - Indicates that resource is available but needs attention
 	AutonomousDatabaseLifecycleStateAvailableNeedsAttention AutonomousDatabaseLifecycleState = "AvailableNeedsAttention"
-	// AutonomousDatabaseLifecycleStateBackupInProgress - BACKUP_IN_PROGRESS value
+	// AutonomousDatabaseLifecycleStateBackupInProgress - Indicates that resource in BackupInProgress state
 	AutonomousDatabaseLifecycleStateBackupInProgress AutonomousDatabaseLifecycleState = "BackupInProgress"
-	// AutonomousDatabaseLifecycleStateInaccessible - INACCESSIBLE value
+	// AutonomousDatabaseLifecycleStateInaccessible - IIndicates that resource in Inaccessible state
 	AutonomousDatabaseLifecycleStateInaccessible AutonomousDatabaseLifecycleState = "Inaccessible"
-	// AutonomousDatabaseLifecycleStateMaintenanceInProgress - MAINTENANCE_IN_PROGRESS value
+	// AutonomousDatabaseLifecycleStateMaintenanceInProgress - Indicates that resource maintenance in progress state
 	AutonomousDatabaseLifecycleStateMaintenanceInProgress AutonomousDatabaseLifecycleState = "MaintenanceInProgress"
-	// AutonomousDatabaseLifecycleStateProvisioning - PROVISIONING value
+	// AutonomousDatabaseLifecycleStateProvisioning - Indicates that resource in Provisioning state
 	AutonomousDatabaseLifecycleStateProvisioning AutonomousDatabaseLifecycleState = "Provisioning"
-	// AutonomousDatabaseLifecycleStateRecreating - RECREATING value
+	// AutonomousDatabaseLifecycleStateRecreating - Indicates that resource in Recreating state
 	AutonomousDatabaseLifecycleStateRecreating AutonomousDatabaseLifecycleState = "Recreating"
-	// AutonomousDatabaseLifecycleStateRestarting - RESTARTING value
+	// AutonomousDatabaseLifecycleStateRestarting - Indicates that resource in Restarting state
 	AutonomousDatabaseLifecycleStateRestarting AutonomousDatabaseLifecycleState = "Restarting"
-	// AutonomousDatabaseLifecycleStateRestoreFailed - RESTORE_FAILED value
+	// AutonomousDatabaseLifecycleStateRestoreFailed - Indicates that resource in RestoreFailed state
 	AutonomousDatabaseLifecycleStateRestoreFailed AutonomousDatabaseLifecycleState = "RestoreFailed"
-	// AutonomousDatabaseLifecycleStateRestoreInProgress - RESTORE_IN_PROGRESS value
+	// AutonomousDatabaseLifecycleStateRestoreInProgress - Indicates that resource in RestoreInProgress state
 	AutonomousDatabaseLifecycleStateRestoreInProgress AutonomousDatabaseLifecycleState = "RestoreInProgress"
-	// AutonomousDatabaseLifecycleStateRoleChangeInProgress - ROLE_CHANGE_IN_PROGRESS value
+	// AutonomousDatabaseLifecycleStateRoleChangeInProgress - Indicates that resource role change in progress state
 	AutonomousDatabaseLifecycleStateRoleChangeInProgress AutonomousDatabaseLifecycleState = "RoleChangeInProgress"
-	// AutonomousDatabaseLifecycleStateScaleInProgress - SCALE_IN_PROGRESS value
+	// AutonomousDatabaseLifecycleStateScaleInProgress - Indicates that resource in ScaleInProgress state
 	AutonomousDatabaseLifecycleStateScaleInProgress AutonomousDatabaseLifecycleState = "ScaleInProgress"
-	// AutonomousDatabaseLifecycleStateStandby - STANDBY value
+	// AutonomousDatabaseLifecycleStateStandby - Indicates that resource in Standby state
 	AutonomousDatabaseLifecycleStateStandby AutonomousDatabaseLifecycleState = "Standby"
-	// AutonomousDatabaseLifecycleStateStarting - STARTING value
+	// AutonomousDatabaseLifecycleStateStarting - Indicates that resource in Starting state
 	AutonomousDatabaseLifecycleStateStarting AutonomousDatabaseLifecycleState = "Starting"
-	// AutonomousDatabaseLifecycleStateStopped - STOPPED value
+	// AutonomousDatabaseLifecycleStateStopped - Indicates that resource in Stopped state
 	AutonomousDatabaseLifecycleStateStopped AutonomousDatabaseLifecycleState = "Stopped"
-	// AutonomousDatabaseLifecycleStateStopping - STOPPING value
+	// AutonomousDatabaseLifecycleStateStopping - Indicates that resource in Stopping state
 	AutonomousDatabaseLifecycleStateStopping AutonomousDatabaseLifecycleState = "Stopping"
-	// AutonomousDatabaseLifecycleStateTerminated - TERMINATED value
+	// AutonomousDatabaseLifecycleStateTerminated - Indicates that resource in Terminated state
 	AutonomousDatabaseLifecycleStateTerminated AutonomousDatabaseLifecycleState = "Terminated"
-	// AutonomousDatabaseLifecycleStateTerminating - TERMINATING value
+	// AutonomousDatabaseLifecycleStateTerminating - Indicates that resource in Terminating state
 	AutonomousDatabaseLifecycleStateTerminating AutonomousDatabaseLifecycleState = "Terminating"
-	// AutonomousDatabaseLifecycleStateUnavailable - UNAVAILABLE value
+	// AutonomousDatabaseLifecycleStateUnavailable - Indicates that resource in Unavailable state
 	AutonomousDatabaseLifecycleStateUnavailable AutonomousDatabaseLifecycleState = "Unavailable"
-	// AutonomousDatabaseLifecycleStateUpdating - UPDATING value
+	// AutonomousDatabaseLifecycleStateUpdating - Indicates that resource in Updating state
 	AutonomousDatabaseLifecycleStateUpdating AutonomousDatabaseLifecycleState = "Updating"
-	// AutonomousDatabaseLifecycleStateUpgrading - UPGRADING value
+	// AutonomousDatabaseLifecycleStateUpgrading - Indicates that resource in Upgrading state
 	AutonomousDatabaseLifecycleStateUpgrading AutonomousDatabaseLifecycleState = "Upgrading"
 )
 
@@ -142,13 +150,13 @@ func PossibleAutonomousDatabaseLifecycleStateValues() []AutonomousDatabaseLifecy
 	}
 }
 
-// AutonomousMaintenanceScheduleType - AutonomousMaintenanceScheduleType enum.
+// AutonomousMaintenanceScheduleType - Autonomous database maintenance schedule type enum.
 type AutonomousMaintenanceScheduleType string
 
 const (
-	// AutonomousMaintenanceScheduleTypeEarly - EARLY value
+	// AutonomousMaintenanceScheduleTypeEarly - Early maintenance schedule
 	AutonomousMaintenanceScheduleTypeEarly AutonomousMaintenanceScheduleType = "Early"
-	// AutonomousMaintenanceScheduleTypeRegular - REGULAR value
+	// AutonomousMaintenanceScheduleTypeRegular - Regular maintenance schedule
 	AutonomousMaintenanceScheduleTypeRegular AutonomousMaintenanceScheduleType = "Regular"
 )
 
@@ -168,7 +176,7 @@ const (
 	AzureResourceProvisioningStateCanceled AzureResourceProvisioningState = "Canceled"
 	// AzureResourceProvisioningStateFailed - Resource creation failed.
 	AzureResourceProvisioningStateFailed AzureResourceProvisioningState = "Failed"
-	// AzureResourceProvisioningStateProvisioning - Provisioning value
+	// AzureResourceProvisioningStateProvisioning - Indicates that resource in Provisioning state
 	AzureResourceProvisioningStateProvisioning AzureResourceProvisioningState = "Provisioning"
 	// AzureResourceProvisioningStateSucceeded - Resource has been created.
 	AzureResourceProvisioningStateSucceeded AzureResourceProvisioningState = "Succeeded"
@@ -184,13 +192,13 @@ func PossibleAzureResourceProvisioningStateValues() []AzureResourceProvisioningS
 	}
 }
 
-// CloneType - CloneType enum
+// CloneType - Clone type enum
 type CloneType string
 
 const (
-	// CloneTypeFull - FULL value
+	// CloneTypeFull - Full clone
 	CloneTypeFull CloneType = "Full"
-	// CloneTypeMetadata - METADATA value
+	// CloneTypeMetadata - Metadata only
 	CloneTypeMetadata CloneType = "Metadata"
 )
 
@@ -206,11 +214,12 @@ func PossibleCloneTypeValues() []CloneType {
 type CloudAccountProvisioningState string
 
 const (
-	// CloudAccountProvisioningStateAvailable - Available value
+	// CloudAccountProvisioningStateAvailable - Available - State when Oracle cloud account cloud linking is complete and it is
+	// available
 	CloudAccountProvisioningStateAvailable CloudAccountProvisioningState = "Available"
-	// CloudAccountProvisioningStatePending - Pending value
+	// CloudAccountProvisioningStatePending - Pending - Initial state when Oracle cloud account is not configured
 	CloudAccountProvisioningStatePending CloudAccountProvisioningState = "Pending"
-	// CloudAccountProvisioningStateProvisioning - Provisioning value
+	// CloudAccountProvisioningStateProvisioning - Provisioning - State when Oracle cloud account is being provisioned
 	CloudAccountProvisioningStateProvisioning CloudAccountProvisioningState = "Provisioning"
 )
 
@@ -227,19 +236,19 @@ func PossibleCloudAccountProvisioningStateValues() []CloudAccountProvisioningSta
 type CloudExadataInfrastructureLifecycleState string
 
 const (
-	// CloudExadataInfrastructureLifecycleStateAvailable - AVAILABLE value
+	// CloudExadataInfrastructureLifecycleStateAvailable - Indicates that resource in Available state
 	CloudExadataInfrastructureLifecycleStateAvailable CloudExadataInfrastructureLifecycleState = "Available"
-	// CloudExadataInfrastructureLifecycleStateFailed - FAILED value
+	// CloudExadataInfrastructureLifecycleStateFailed - Indicates that resource in Failed state
 	CloudExadataInfrastructureLifecycleStateFailed CloudExadataInfrastructureLifecycleState = "Failed"
-	// CloudExadataInfrastructureLifecycleStateMaintenanceInProgress - MAINTENANCE_IN_PROGRESS value
+	// CloudExadataInfrastructureLifecycleStateMaintenanceInProgress - Indicates that resource maintenance in progress state
 	CloudExadataInfrastructureLifecycleStateMaintenanceInProgress CloudExadataInfrastructureLifecycleState = "MaintenanceInProgress"
-	// CloudExadataInfrastructureLifecycleStateProvisioning - PROVISIONING value
+	// CloudExadataInfrastructureLifecycleStateProvisioning - Indicates that resource in Provisioning state
 	CloudExadataInfrastructureLifecycleStateProvisioning CloudExadataInfrastructureLifecycleState = "Provisioning"
-	// CloudExadataInfrastructureLifecycleStateTerminated - TERMINATED value
+	// CloudExadataInfrastructureLifecycleStateTerminated - Indicates that resource in Terminated state
 	CloudExadataInfrastructureLifecycleStateTerminated CloudExadataInfrastructureLifecycleState = "Terminated"
-	// CloudExadataInfrastructureLifecycleStateTerminating - TERMINATING value
+	// CloudExadataInfrastructureLifecycleStateTerminating - Indicates that resource in Terminating state
 	CloudExadataInfrastructureLifecycleStateTerminating CloudExadataInfrastructureLifecycleState = "Terminating"
-	// CloudExadataInfrastructureLifecycleStateUpdating - UPDATING value
+	// CloudExadataInfrastructureLifecycleStateUpdating - Indicates that resource in Updating state
 	CloudExadataInfrastructureLifecycleStateUpdating CloudExadataInfrastructureLifecycleState = "Updating"
 )
 
@@ -256,23 +265,23 @@ func PossibleCloudExadataInfrastructureLifecycleStateValues() []CloudExadataInfr
 	}
 }
 
-// CloudVMClusterLifecycleState - CloudVmClusterLifecycleState enum
+// CloudVMClusterLifecycleState - Cloud VM Cluster lifecycle state enum
 type CloudVMClusterLifecycleState string
 
 const (
-	// CloudVMClusterLifecycleStateAvailable - AVAILABLE value
+	// CloudVMClusterLifecycleStateAvailable - Indicates that resource in Available state
 	CloudVMClusterLifecycleStateAvailable CloudVMClusterLifecycleState = "Available"
-	// CloudVMClusterLifecycleStateFailed - FAILED value
+	// CloudVMClusterLifecycleStateFailed - Indicates that resource in Failed state
 	CloudVMClusterLifecycleStateFailed CloudVMClusterLifecycleState = "Failed"
-	// CloudVMClusterLifecycleStateMaintenanceInProgress - MAINTENANCE_IN_PROGRESS value
+	// CloudVMClusterLifecycleStateMaintenanceInProgress - Indicates that resource Maintenance in progress state
 	CloudVMClusterLifecycleStateMaintenanceInProgress CloudVMClusterLifecycleState = "MaintenanceInProgress"
-	// CloudVMClusterLifecycleStateProvisioning - PROVISIONING value
+	// CloudVMClusterLifecycleStateProvisioning - Indicates that resource in Provisioning state
 	CloudVMClusterLifecycleStateProvisioning CloudVMClusterLifecycleState = "Provisioning"
-	// CloudVMClusterLifecycleStateTerminated - TERMINATED value
+	// CloudVMClusterLifecycleStateTerminated - Indicates that resource in Terminated state
 	CloudVMClusterLifecycleStateTerminated CloudVMClusterLifecycleState = "Terminated"
-	// CloudVMClusterLifecycleStateTerminating - TERMINATING value
+	// CloudVMClusterLifecycleStateTerminating - Indicates that resource in Terminating state
 	CloudVMClusterLifecycleStateTerminating CloudVMClusterLifecycleState = "Terminating"
-	// CloudVMClusterLifecycleStateUpdating - UPDATING value
+	// CloudVMClusterLifecycleStateUpdating - Indicates that resource in Updating state
 	CloudVMClusterLifecycleStateUpdating CloudVMClusterLifecycleState = "Updating"
 )
 
@@ -289,13 +298,13 @@ func PossibleCloudVMClusterLifecycleStateValues() []CloudVMClusterLifecycleState
 	}
 }
 
-// ComputeModel - ComputeModel enum
+// ComputeModel - Compute model enum
 type ComputeModel string
 
 const (
-	// ComputeModelECPU - ECPU value
+	// ComputeModelECPU - ECPU model type
 	ComputeModelECPU ComputeModel = "ECPU"
-	// ComputeModelOCPU - OCPU value
+	// ComputeModelOCPU - OCPU model type
 	ComputeModelOCPU ComputeModel = "OCPU"
 )
 
@@ -307,19 +316,19 @@ func PossibleComputeModelValues() []ComputeModel {
 	}
 }
 
-// ConsumerGroup - ConsumerGroup enum.
+// ConsumerGroup - Consumer group enum.
 type ConsumerGroup string
 
 const (
-	// ConsumerGroupHigh - HIGH value
+	// ConsumerGroupHigh - High group
 	ConsumerGroupHigh ConsumerGroup = "High"
-	// ConsumerGroupLow - LOW value
+	// ConsumerGroupLow - Low group
 	ConsumerGroupLow ConsumerGroup = "Low"
-	// ConsumerGroupMedium - MEDIUM value
+	// ConsumerGroupMedium - Medium group
 	ConsumerGroupMedium ConsumerGroup = "Medium"
-	// ConsumerGroupTp - TP value
+	// ConsumerGroupTp - TP group
 	ConsumerGroupTp ConsumerGroup = "Tp"
-	// ConsumerGroupTpurgent - TPURGENT value
+	// ConsumerGroupTpurgent - TPurgent group
 	ConsumerGroupTpurgent ConsumerGroup = "Tpurgent"
 )
 
@@ -354,17 +363,17 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// DNSPrivateViewsLifecycleState - DnsPrivateViews lifecycle state enum
+// DNSPrivateViewsLifecycleState - DNS Private Views lifecycle state enum
 type DNSPrivateViewsLifecycleState string
 
 const (
-	// DNSPrivateViewsLifecycleStateActive - Active value
+	// DNSPrivateViewsLifecycleStateActive - DNS Private View is active
 	DNSPrivateViewsLifecycleStateActive DNSPrivateViewsLifecycleState = "Active"
-	// DNSPrivateViewsLifecycleStateDeleted - Deleted value
+	// DNSPrivateViewsLifecycleStateDeleted - DNS Private View is deleted
 	DNSPrivateViewsLifecycleStateDeleted DNSPrivateViewsLifecycleState = "Deleted"
-	// DNSPrivateViewsLifecycleStateDeleting - Deleting value
+	// DNSPrivateViewsLifecycleStateDeleting - DNS Private View is deleting
 	DNSPrivateViewsLifecycleStateDeleting DNSPrivateViewsLifecycleState = "Deleting"
-	// DNSPrivateViewsLifecycleStateUpdating - Updating value
+	// DNSPrivateViewsLifecycleStateUpdating - DNS Private View is updating
 	DNSPrivateViewsLifecycleStateUpdating DNSPrivateViewsLifecycleState = "Updating"
 )
 
@@ -378,19 +387,19 @@ func PossibleDNSPrivateViewsLifecycleStateValues() []DNSPrivateViewsLifecycleSta
 	}
 }
 
-// DNSPrivateZonesLifecycleState - DnsPrivateZones lifecycle state enum
+// DNSPrivateZonesLifecycleState - DNS Private Zones lifecycle state enum
 type DNSPrivateZonesLifecycleState string
 
 const (
-	// DNSPrivateZonesLifecycleStateActive - Active value
+	// DNSPrivateZonesLifecycleStateActive - DNS Private Zones is active
 	DNSPrivateZonesLifecycleStateActive DNSPrivateZonesLifecycleState = "Active"
-	// DNSPrivateZonesLifecycleStateCreating - Creating value
+	// DNSPrivateZonesLifecycleStateCreating - DNS Private Zones is creating
 	DNSPrivateZonesLifecycleStateCreating DNSPrivateZonesLifecycleState = "Creating"
-	// DNSPrivateZonesLifecycleStateDeleted - Deleted value
+	// DNSPrivateZonesLifecycleStateDeleted - DNS Private Zones is deleted
 	DNSPrivateZonesLifecycleStateDeleted DNSPrivateZonesLifecycleState = "Deleted"
-	// DNSPrivateZonesLifecycleStateDeleting - Deleting value
+	// DNSPrivateZonesLifecycleStateDeleting - DNS Private Zones is deleting
 	DNSPrivateZonesLifecycleStateDeleting DNSPrivateZonesLifecycleState = "Deleting"
-	// DNSPrivateZonesLifecycleStateUpdating - Updating value
+	// DNSPrivateZonesLifecycleStateUpdating - DNS Private Zones is updating
 	DNSPrivateZonesLifecycleStateUpdating DNSPrivateZonesLifecycleState = "Updating"
 )
 
@@ -405,13 +414,13 @@ func PossibleDNSPrivateZonesLifecycleStateValues() []DNSPrivateZonesLifecycleSta
 	}
 }
 
-// DataBaseType - DataBaseType enum
+// DataBaseType - Database type enum
 type DataBaseType string
 
 const (
-	// DataBaseTypeClone - CLONE value
+	// DataBaseTypeClone - Clone DB
 	DataBaseTypeClone DataBaseType = "Clone"
-	// DataBaseTypeRegular - REGULAR value
+	// DataBaseTypeRegular - Regular DB
 	DataBaseTypeRegular DataBaseType = "Regular"
 )
 
@@ -423,19 +432,19 @@ func PossibleDataBaseTypeValues() []DataBaseType {
 	}
 }
 
-// DataSafeStatusType - DataSafeStatusType enum.
+// DataSafeStatusType - DataSafe status type enum.
 type DataSafeStatusType string
 
 const (
-	// DataSafeStatusTypeDeregistering - DEREGISTERING value
+	// DataSafeStatusTypeDeregistering - Deregistering status
 	DataSafeStatusTypeDeregistering DataSafeStatusType = "Deregistering"
-	// DataSafeStatusTypeFailed - FAILED value
+	// DataSafeStatusTypeFailed - Failed status
 	DataSafeStatusTypeFailed DataSafeStatusType = "Failed"
-	// DataSafeStatusTypeNotRegistered - NOT_REGISTERED value
+	// DataSafeStatusTypeNotRegistered - NotRegistered status
 	DataSafeStatusTypeNotRegistered DataSafeStatusType = "NotRegistered"
-	// DataSafeStatusTypeRegistered - REGISTERED value
+	// DataSafeStatusTypeRegistered - Registered status
 	DataSafeStatusTypeRegistered DataSafeStatusType = "Registered"
-	// DataSafeStatusTypeRegistering - REGISTERING value
+	// DataSafeStatusTypeRegistering - Registering status
 	DataSafeStatusTypeRegistering DataSafeStatusType = "Registering"
 )
 
@@ -450,13 +459,13 @@ func PossibleDataSafeStatusTypeValues() []DataSafeStatusType {
 	}
 }
 
-// DatabaseEditionType - DatabaseEditionType enum.
+// DatabaseEditionType - Database edition type enum.
 type DatabaseEditionType string
 
 const (
-	// DatabaseEditionTypeEnterpriseEdition - ENTERPRISE_EDITION value
+	// DatabaseEditionTypeEnterpriseEdition - Enterprise edition
 	DatabaseEditionTypeEnterpriseEdition DatabaseEditionType = "EnterpriseEdition"
-	// DatabaseEditionTypeStandardEdition - STANDARD_EDITION value
+	// DatabaseEditionTypeStandardEdition - Standard edition
 	DatabaseEditionTypeStandardEdition DatabaseEditionType = "StandardEdition"
 )
 
@@ -529,7 +538,7 @@ func PossibleDbNodeActionEnumValues() []DbNodeActionEnum {
 type DbNodeMaintenanceType string
 
 const (
-	// DbNodeMaintenanceTypeVmdbRebootMigration - Provisioning value
+	// DbNodeMaintenanceTypeVmdbRebootMigration - VMDB reboot migration maintenance type
 	DbNodeMaintenanceTypeVmdbRebootMigration DbNodeMaintenanceType = "VmdbRebootMigration"
 )
 
@@ -544,23 +553,23 @@ func PossibleDbNodeMaintenanceTypeValues() []DbNodeMaintenanceType {
 type DbNodeProvisioningState string
 
 const (
-	// DbNodeProvisioningStateAvailable - AVAILABLE value
+	// DbNodeProvisioningStateAvailable - Indicates that resource in Available state
 	DbNodeProvisioningStateAvailable DbNodeProvisioningState = "Available"
-	// DbNodeProvisioningStateFailed - FAILED value
+	// DbNodeProvisioningStateFailed - Indicates that resource in Failed state
 	DbNodeProvisioningStateFailed DbNodeProvisioningState = "Failed"
-	// DbNodeProvisioningStateProvisioning - PROVISIONING value
+	// DbNodeProvisioningStateProvisioning - Indicates that resource in Provisioning state
 	DbNodeProvisioningStateProvisioning DbNodeProvisioningState = "Provisioning"
-	// DbNodeProvisioningStateStarting - STARTING value
+	// DbNodeProvisioningStateStarting - Indicates that resource in Starting state
 	DbNodeProvisioningStateStarting DbNodeProvisioningState = "Starting"
-	// DbNodeProvisioningStateStopped - STOPPED value
+	// DbNodeProvisioningStateStopped - Indicates that resource in Stopped state
 	DbNodeProvisioningStateStopped DbNodeProvisioningState = "Stopped"
-	// DbNodeProvisioningStateStopping - STOPPING value
+	// DbNodeProvisioningStateStopping - Indicates that resource in Stopping state
 	DbNodeProvisioningStateStopping DbNodeProvisioningState = "Stopping"
-	// DbNodeProvisioningStateTerminated - TERMINATED value
+	// DbNodeProvisioningStateTerminated - Indicates that resource in Terminated state
 	DbNodeProvisioningStateTerminated DbNodeProvisioningState = "Terminated"
-	// DbNodeProvisioningStateTerminating - TERMINATING value
+	// DbNodeProvisioningStateTerminating - Indicates that resource in Terminating state
 	DbNodeProvisioningStateTerminating DbNodeProvisioningState = "Terminating"
-	// DbNodeProvisioningStateUpdating - UPDATING value
+	// DbNodeProvisioningStateUpdating - Indicates that resource in Updating state
 	DbNodeProvisioningStateUpdating DbNodeProvisioningState = "Updating"
 )
 
@@ -579,17 +588,17 @@ func PossibleDbNodeProvisioningStateValues() []DbNodeProvisioningState {
 	}
 }
 
-// DbServerPatchingStatus - Db Server patching status enum
+// DbServerPatchingStatus - DB Server patching status enum
 type DbServerPatchingStatus string
 
 const (
-	// DbServerPatchingStatusComplete - COMPLETE value
+	// DbServerPatchingStatusComplete - Patching completed
 	DbServerPatchingStatusComplete DbServerPatchingStatus = "Complete"
-	// DbServerPatchingStatusFailed - FAILED value
+	// DbServerPatchingStatusFailed - Patching failed
 	DbServerPatchingStatusFailed DbServerPatchingStatus = "Failed"
-	// DbServerPatchingStatusMaintenanceInProgress - MAINTENANCE_IN_PROGRESS value
+	// DbServerPatchingStatusMaintenanceInProgress - Patching in progress
 	DbServerPatchingStatusMaintenanceInProgress DbServerPatchingStatus = "MaintenanceInProgress"
-	// DbServerPatchingStatusScheduled - SCHEDULED value
+	// DbServerPatchingStatusScheduled - Patching scheduled
 	DbServerPatchingStatusScheduled DbServerPatchingStatus = "Scheduled"
 )
 
@@ -607,17 +616,17 @@ func PossibleDbServerPatchingStatusValues() []DbServerPatchingStatus {
 type DbServerProvisioningState string
 
 const (
-	// DbServerProvisioningStateAvailable - AVAILABLE value
+	// DbServerProvisioningStateAvailable - Indicates that resource in Available state
 	DbServerProvisioningStateAvailable DbServerProvisioningState = "Available"
-	// DbServerProvisioningStateCreating - CREATING value
+	// DbServerProvisioningStateCreating - Indicates that resource in Creating state
 	DbServerProvisioningStateCreating DbServerProvisioningState = "Creating"
-	// DbServerProvisioningStateDeleted - DELETED value
+	// DbServerProvisioningStateDeleted - Indicates that resource in Deleted state
 	DbServerProvisioningStateDeleted DbServerProvisioningState = "Deleted"
-	// DbServerProvisioningStateDeleting - DELETING value
+	// DbServerProvisioningStateDeleting - Indicates that resource in Deleting state
 	DbServerProvisioningStateDeleting DbServerProvisioningState = "Deleting"
-	// DbServerProvisioningStateMaintenanceInProgress - MAINTENANCE_IN_PROGRESS value
+	// DbServerProvisioningStateMaintenanceInProgress - Indicates that resource maintenance in progress state
 	DbServerProvisioningStateMaintenanceInProgress DbServerProvisioningState = "MaintenanceInProgress"
-	// DbServerProvisioningStateUnavailable - UNAVAILABLE value
+	// DbServerProvisioningStateUnavailable - Indicates that resource in Unavailable state
 	DbServerProvisioningStateUnavailable DbServerProvisioningState = "Unavailable"
 )
 
@@ -633,13 +642,13 @@ func PossibleDbServerProvisioningStateValues() []DbServerProvisioningState {
 	}
 }
 
-// DisasterRecoveryType - DisasterRecoveryType enum.
+// DisasterRecoveryType - Disaster recovery type enum.
 type DisasterRecoveryType string
 
 const (
-	// DisasterRecoveryTypeAdg - ADG value
+	// DisasterRecoveryTypeAdg - ADG type
 	DisasterRecoveryTypeAdg DisasterRecoveryType = "Adg"
-	// DisasterRecoveryTypeBackupBased - BACKUP_BASED value
+	// DisasterRecoveryTypeBackupBased - Backup based type
 	DisasterRecoveryTypeBackupBased DisasterRecoveryType = "BackupBased"
 )
 
@@ -651,13 +660,13 @@ func PossibleDisasterRecoveryTypeValues() []DisasterRecoveryType {
 	}
 }
 
-// DiskRedundancy - DiskRedundancy enum
+// DiskRedundancy - Disk redundancy enum
 type DiskRedundancy string
 
 const (
-	// DiskRedundancyHigh - High value
+	// DiskRedundancyHigh - High redundancy
 	DiskRedundancyHigh DiskRedundancy = "High"
-	// DiskRedundancyNormal - Normal value
+	// DiskRedundancyNormal - Normal redundancy
 	DiskRedundancyNormal DiskRedundancy = "Normal"
 )
 
@@ -669,13 +678,13 @@ func PossibleDiskRedundancyValues() []DiskRedundancy {
 	}
 }
 
-// GenerateType - GenerateType enum
+// GenerateType - Generate type enum
 type GenerateType string
 
 const (
-	// GenerateTypeAll - ALL value
+	// GenerateTypeAll - Generate all
 	GenerateTypeAll GenerateType = "All"
-	// GenerateTypeSingle - SINGLE value
+	// GenerateTypeSingle - Generate single
 	GenerateTypeSingle GenerateType = "Single"
 )
 
@@ -687,13 +696,13 @@ func PossibleGenerateTypeValues() []GenerateType {
 	}
 }
 
-// HostFormatType - HostFormatType enum.
+// HostFormatType - Host format type enum.
 type HostFormatType string
 
 const (
-	// HostFormatTypeFqdn - FQDN value
+	// HostFormatTypeFqdn - FQDN format
 	HostFormatTypeFqdn HostFormatType = "Fqdn"
-	// HostFormatTypeIP - IP value
+	// HostFormatTypeIP - IP format
 	HostFormatTypeIP HostFormatType = "Ip"
 )
 
@@ -709,9 +718,9 @@ func PossibleHostFormatTypeValues() []HostFormatType {
 type Intent string
 
 const (
-	// IntentReset - Reset value
+	// IntentReset - Reset intent
 	IntentReset Intent = "Reset"
-	// IntentRetain - Retain value
+	// IntentRetain - Retain intent
 	IntentRetain Intent = "Retain"
 )
 
@@ -723,19 +732,19 @@ func PossibleIntentValues() []Intent {
 	}
 }
 
-// IormLifecycleState - IORMLifecycleState enum
+// IormLifecycleState - ORM lifecycle state enum
 type IormLifecycleState string
 
 const (
-	// IormLifecycleStateBootStrapping - BOOTSTRAPPING value
+	// IormLifecycleStateBootStrapping - Indicates that resource in Provisioning state
 	IormLifecycleStateBootStrapping IormLifecycleState = "BootStrapping"
-	// IormLifecycleStateDisabled - DISABLED value
+	// IormLifecycleStateDisabled - Indicates that resource in Disabled state
 	IormLifecycleStateDisabled IormLifecycleState = "Disabled"
-	// IormLifecycleStateEnabled - ENABLED value
+	// IormLifecycleStateEnabled - Indicates that resource in Enabled state
 	IormLifecycleStateEnabled IormLifecycleState = "Enabled"
-	// IormLifecycleStateFailed - FAILED value
+	// IormLifecycleStateFailed - Indicates that resource in Failed state
 	IormLifecycleStateFailed IormLifecycleState = "Failed"
-	// IormLifecycleStateUpdating - UPDATING value
+	// IormLifecycleStateUpdating - Indicates that resource in Updating state
 	IormLifecycleStateUpdating IormLifecycleState = "Updating"
 )
 
@@ -754,9 +763,9 @@ func PossibleIormLifecycleStateValues() []IormLifecycleState {
 type LicenseModel string
 
 const (
-	// LicenseModelBringYourOwnLicense - BringYourOwnLicense value
+	// LicenseModelBringYourOwnLicense - Bring Your Own License
 	LicenseModelBringYourOwnLicense LicenseModel = "BringYourOwnLicense"
-	// LicenseModelLicenseIncluded - LicenseIncluded value
+	// LicenseModelLicenseIncluded - License included
 	LicenseModelLicenseIncluded LicenseModel = "LicenseIncluded"
 )
 
@@ -820,15 +829,15 @@ func PossibleMonthNameValues() []MonthName {
 type Objective string
 
 const (
-	// ObjectiveAuto - AUTO value
+	// ObjectiveAuto - Auto objective
 	ObjectiveAuto Objective = "Auto"
-	// ObjectiveBalanced - BALANCED value
+	// ObjectiveBalanced - Balanced objective
 	ObjectiveBalanced Objective = "Balanced"
-	// ObjectiveBasic - BASIC value
+	// ObjectiveBasic - Basic objective
 	ObjectiveBasic Objective = "Basic"
-	// ObjectiveHighThroughput - HIGH_THROUGHPUT value
+	// ObjectiveHighThroughput - High throughput objective
 	ObjectiveHighThroughput Objective = "HighThroughput"
-	// ObjectiveLowLatency - LOW_LATENCY value
+	// ObjectiveLowLatency - Low latency objective
 	ObjectiveLowLatency Objective = "LowLatency"
 )
 
@@ -843,13 +852,13 @@ func PossibleObjectiveValues() []Objective {
 	}
 }
 
-// OpenModeType - OpenModeType enum.
+// OpenModeType - Open mode type enum.
 type OpenModeType string
 
 const (
-	// OpenModeTypeReadOnly - READ_ONLY value
+	// OpenModeTypeReadOnly - ReadOnly mode
 	OpenModeTypeReadOnly OpenModeType = "ReadOnly"
-	// OpenModeTypeReadWrite - READ_WRITE value
+	// OpenModeTypeReadWrite - ReadWrite mode
 	OpenModeTypeReadWrite OpenModeType = "ReadWrite"
 )
 
@@ -861,21 +870,21 @@ func PossibleOpenModeTypeValues() []OpenModeType {
 	}
 }
 
-// OperationsInsightsStatusType - OperationsInsightsStatusType enum.
+// OperationsInsightsStatusType - Operations Insights status type enum.
 type OperationsInsightsStatusType string
 
 const (
-	// OperationsInsightsStatusTypeDisabling - DISABLING value
+	// OperationsInsightsStatusTypeDisabling - Disabling status
 	OperationsInsightsStatusTypeDisabling OperationsInsightsStatusType = "Disabling"
-	// OperationsInsightsStatusTypeEnabled - ENABLED value
+	// OperationsInsightsStatusTypeEnabled - Enabled status
 	OperationsInsightsStatusTypeEnabled OperationsInsightsStatusType = "Enabled"
-	// OperationsInsightsStatusTypeEnabling - ENABLING value
+	// OperationsInsightsStatusTypeEnabling - Enabling status
 	OperationsInsightsStatusTypeEnabling OperationsInsightsStatusType = "Enabling"
-	// OperationsInsightsStatusTypeFailedDisabling - FAILED_DISABLING value
+	// OperationsInsightsStatusTypeFailedDisabling - FailedDisabling status
 	OperationsInsightsStatusTypeFailedDisabling OperationsInsightsStatusType = "FailedDisabling"
-	// OperationsInsightsStatusTypeFailedEnabling - FAILED_ENABLING value
+	// OperationsInsightsStatusTypeFailedEnabling - FailedEnabling status
 	OperationsInsightsStatusTypeFailedEnabling OperationsInsightsStatusType = "FailedEnabling"
-	// OperationsInsightsStatusTypeNotEnabled - NOT_ENABLED value
+	// OperationsInsightsStatusTypeNotEnabled - NotEnabled status
 	OperationsInsightsStatusTypeNotEnabled OperationsInsightsStatusType = "NotEnabled"
 )
 
@@ -931,13 +940,13 @@ func PossibleOriginValues() []Origin {
 	}
 }
 
-// PatchingMode - PatchingMode enum
+// PatchingMode - Patching mode enum
 type PatchingMode string
 
 const (
-	// PatchingModeNonRolling - Non Rolling value
+	// PatchingModeNonRolling - Non Rolling patching
 	PatchingModeNonRolling PatchingMode = "NonRolling"
-	// PatchingModeRolling - Rolling value
+	// PatchingModeRolling - Rolling patching
 	PatchingModeRolling PatchingMode = "Rolling"
 )
 
@@ -949,13 +958,13 @@ func PossiblePatchingModeValues() []PatchingMode {
 	}
 }
 
-// PermissionLevelType - PermissionLevelType enum.
+// PermissionLevelType - Permission level type enum.
 type PermissionLevelType string
 
 const (
-	// PermissionLevelTypeRestricted - RESTRICTED value
+	// PermissionLevelTypeRestricted - Restricted permission level
 	PermissionLevelTypeRestricted PermissionLevelType = "Restricted"
-	// PermissionLevelTypeUnrestricted - UNRESTRICTED value
+	// PermissionLevelTypeUnrestricted - Unrestricted permission level
 	PermissionLevelTypeUnrestricted PermissionLevelType = "Unrestricted"
 )
 
@@ -971,9 +980,9 @@ func PossiblePermissionLevelTypeValues() []PermissionLevelType {
 type Preference string
 
 const (
-	// PreferenceCustomPreference - CustomPreference value
+	// PreferenceCustomPreference - Custom preference
 	PreferenceCustomPreference Preference = "CustomPreference"
-	// PreferenceNoPreference - NoPreference value
+	// PreferenceNoPreference - No preference
 	PreferenceNoPreference Preference = "NoPreference"
 )
 
@@ -985,13 +994,13 @@ func PossiblePreferenceValues() []Preference {
 	}
 }
 
-// ProtocolType - ProtocolType enum.
+// ProtocolType - Protocol type enum.
 type ProtocolType string
 
 const (
-	// ProtocolTypeTCP - TCP value
+	// ProtocolTypeTCP - TCP protocol
 	ProtocolTypeTCP ProtocolType = "TCP"
-	// ProtocolTypeTCPS - TCPS value
+	// ProtocolTypeTCPS - TCPS protocol
 	ProtocolTypeTCPS ProtocolType = "TCPS"
 )
 
@@ -1003,13 +1012,13 @@ func PossibleProtocolTypeValues() []ProtocolType {
 	}
 }
 
-// RefreshableModelType - RefreshableModelType enum
+// RefreshableModelType - Refreshable model type enum
 type RefreshableModelType string
 
 const (
-	// RefreshableModelTypeAutomatic - AUTOMATIC value
+	// RefreshableModelTypeAutomatic - Automatic refreshable model type
 	RefreshableModelTypeAutomatic RefreshableModelType = "Automatic"
-	// RefreshableModelTypeManual - MANUAL value
+	// RefreshableModelTypeManual - Manual refreshable model type
 	RefreshableModelTypeManual RefreshableModelType = "Manual"
 )
 
@@ -1021,13 +1030,13 @@ func PossibleRefreshableModelTypeValues() []RefreshableModelType {
 	}
 }
 
-// RefreshableStatusType - RefreshableStatusType enum.
+// RefreshableStatusType - Refreshable status type enum.
 type RefreshableStatusType string
 
 const (
-	// RefreshableStatusTypeNotRefreshing - NOT_REFRESHING value
+	// RefreshableStatusTypeNotRefreshing - NotRefreshing status
 	RefreshableStatusTypeNotRefreshing RefreshableStatusType = "NotRefreshing"
-	// RefreshableStatusTypeRefreshing - REFRESHING value
+	// RefreshableStatusTypeRefreshing - Refreshing status
 	RefreshableStatusTypeRefreshing RefreshableStatusType = "Refreshing"
 )
 
@@ -1036,6 +1045,30 @@ func PossibleRefreshableStatusTypeValues() []RefreshableStatusType {
 	return []RefreshableStatusType{
 		RefreshableStatusTypeNotRefreshing,
 		RefreshableStatusTypeRefreshing,
+	}
+}
+
+// RepeatCadenceType - Repeat cadence type enum
+type RepeatCadenceType string
+
+const (
+	// RepeatCadenceTypeMonthly - Repeat monthly
+	RepeatCadenceTypeMonthly RepeatCadenceType = "Monthly"
+	// RepeatCadenceTypeOneTime - Repeat one time
+	RepeatCadenceTypeOneTime RepeatCadenceType = "OneTime"
+	// RepeatCadenceTypeWeekly - Repeat weekly
+	RepeatCadenceTypeWeekly RepeatCadenceType = "Weekly"
+	// RepeatCadenceTypeYearly - Repeat yearly
+	RepeatCadenceTypeYearly RepeatCadenceType = "Yearly"
+)
+
+// PossibleRepeatCadenceTypeValues returns the possible values for the RepeatCadenceType const type.
+func PossibleRepeatCadenceTypeValues() []RepeatCadenceType {
+	return []RepeatCadenceType{
+		RepeatCadenceTypeMonthly,
+		RepeatCadenceTypeOneTime,
+		RepeatCadenceTypeWeekly,
+		RepeatCadenceTypeYearly,
 	}
 }
 
@@ -1060,19 +1093,19 @@ func PossibleResourceProvisioningStateValues() []ResourceProvisioningState {
 	}
 }
 
-// RoleType - RoleType enum.
+// RoleType - Role type enum.
 type RoleType string
 
 const (
-	// RoleTypeBackupCopy - BACKUP_COPY value
+	// RoleTypeBackupCopy - BackupCopy role
 	RoleTypeBackupCopy RoleType = "BackupCopy"
-	// RoleTypeDisabledStandby - DISABLED_STANDBY value
+	// RoleTypeDisabledStandby - DisabledStandby role
 	RoleTypeDisabledStandby RoleType = "DisabledStandby"
-	// RoleTypePrimary - PRIMARY value
+	// RoleTypePrimary - Primary role
 	RoleTypePrimary RoleType = "Primary"
-	// RoleTypeSnapshotStandby - SNAPSHOT_STANDBY value
+	// RoleTypeSnapshotStandby - SnapshotStandby role
 	RoleTypeSnapshotStandby RoleType = "SnapshotStandby"
-	// RoleTypeStandby - STANDBY value
+	// RoleTypeStandby - Standby role
 	RoleTypeStandby RoleType = "Standby"
 )
 
@@ -1087,13 +1120,13 @@ func PossibleRoleTypeValues() []RoleType {
 	}
 }
 
-// SessionModeType - SessionModeType enum.
+// SessionModeType - Session mode type enum.
 type SessionModeType string
 
 const (
-	// SessionModeTypeDirect - DIRECT value
+	// SessionModeTypeDirect - Direct session mode
 	SessionModeTypeDirect SessionModeType = "Direct"
-	// SessionModeTypeRedirect - REDIRECT value
+	// SessionModeTypeRedirect - Redirect session mode
 	SessionModeTypeRedirect SessionModeType = "Redirect"
 )
 
@@ -1105,23 +1138,23 @@ func PossibleSessionModeTypeValues() []SessionModeType {
 	}
 }
 
-// SourceType - SourceType enum.
+// SourceType - Source type enum.
 type SourceType string
 
 const (
-	// SourceTypeBackupFromID - BACKUP_FROM_ID value
+	// SourceTypeBackupFromID - Backup from ID source
 	SourceTypeBackupFromID SourceType = "BackupFromId"
-	// SourceTypeBackupFromTimestamp - BACKUP_FROM_TIMESTAMP value
+	// SourceTypeBackupFromTimestamp - Backup from timestamp source
 	SourceTypeBackupFromTimestamp SourceType = "BackupFromTimestamp"
-	// SourceTypeCloneToRefreshable - CLONE_TO_REFRESHABLE value
+	// SourceTypeCloneToRefreshable - Clone to refreshable source
 	SourceTypeCloneToRefreshable SourceType = "CloneToRefreshable"
-	// SourceTypeCrossRegionDataguard - CROSS_REGION_DATAGUARD value
+	// SourceTypeCrossRegionDataguard - Cross region dataguard source
 	SourceTypeCrossRegionDataguard SourceType = "CrossRegionDataguard"
-	// SourceTypeCrossRegionDisasterRecovery - CROSS_REGION_DISASTER_RECOVERY value
+	// SourceTypeCrossRegionDisasterRecovery - cross region disaster recovery source
 	SourceTypeCrossRegionDisasterRecovery SourceType = "CrossRegionDisasterRecovery"
-	// SourceTypeDatabase - DATABASE value
+	// SourceTypeDatabase - Database source
 	SourceTypeDatabase SourceType = "Database"
-	// SourceTypeNone - NONE value
+	// SourceTypeNone - None source
 	SourceTypeNone SourceType = "None"
 )
 
@@ -1138,15 +1171,15 @@ func PossibleSourceTypeValues() []SourceType {
 	}
 }
 
-// SyntaxFormatType - SyntaxFormatType enum.
+// SyntaxFormatType - Syntax format type enum.
 type SyntaxFormatType string
 
 const (
-	// SyntaxFormatTypeEzconnect - EZCONNECT value
+	// SyntaxFormatTypeEzconnect - Ezconnect format
 	SyntaxFormatTypeEzconnect SyntaxFormatType = "Ezconnect"
-	// SyntaxFormatTypeEzconnectplus - EZCONNECTPLUS value
+	// SyntaxFormatTypeEzconnectplus - Ezconnectplus format
 	SyntaxFormatTypeEzconnectplus SyntaxFormatType = "Ezconnectplus"
-	// SyntaxFormatTypeLong - LONG value
+	// SyntaxFormatTypeLong - Long format
 	SyntaxFormatTypeLong SyntaxFormatType = "Long"
 )
 
@@ -1159,13 +1192,13 @@ func PossibleSyntaxFormatTypeValues() []SyntaxFormatType {
 	}
 }
 
-// TLSAuthenticationType - TlsAuthenticationType enum.
+// TLSAuthenticationType - TLS authentication type enum.
 type TLSAuthenticationType string
 
 const (
-	// TLSAuthenticationTypeMutual - MUTUAL value
+	// TLSAuthenticationTypeMutual - Mutual TLS
 	TLSAuthenticationTypeMutual TLSAuthenticationType = "Mutual"
-	// TLSAuthenticationTypeServer - SERVER value
+	// TLSAuthenticationTypeServer - Server authentication
 	TLSAuthenticationTypeServer TLSAuthenticationType = "Server"
 )
 
@@ -1181,15 +1214,15 @@ func PossibleTLSAuthenticationTypeValues() []TLSAuthenticationType {
 type VirtualNetworkAddressLifecycleState string
 
 const (
-	// VirtualNetworkAddressLifecycleStateAvailable - Available value
+	// VirtualNetworkAddressLifecycleStateAvailable - Indicates that resource in Available state
 	VirtualNetworkAddressLifecycleStateAvailable VirtualNetworkAddressLifecycleState = "Available"
-	// VirtualNetworkAddressLifecycleStateFailed - Failed value
+	// VirtualNetworkAddressLifecycleStateFailed - Indicates that resource in Failed state
 	VirtualNetworkAddressLifecycleStateFailed VirtualNetworkAddressLifecycleState = "Failed"
-	// VirtualNetworkAddressLifecycleStateProvisioning - Provisioning value
+	// VirtualNetworkAddressLifecycleStateProvisioning - Indicates that resource in Provisioning state
 	VirtualNetworkAddressLifecycleStateProvisioning VirtualNetworkAddressLifecycleState = "Provisioning"
-	// VirtualNetworkAddressLifecycleStateTerminated - Terminated value
+	// VirtualNetworkAddressLifecycleStateTerminated - Indicates that resource in Terminated state
 	VirtualNetworkAddressLifecycleStateTerminated VirtualNetworkAddressLifecycleState = "Terminated"
-	// VirtualNetworkAddressLifecycleStateTerminating - Terminating value
+	// VirtualNetworkAddressLifecycleStateTerminating - Indicates that resource in Terminating state
 	VirtualNetworkAddressLifecycleStateTerminating VirtualNetworkAddressLifecycleState = "Terminating"
 )
 
@@ -1228,13 +1261,13 @@ func PossibleWorkloadTypeValues() []WorkloadType {
 	}
 }
 
-// ZoneType - ZoneType enum
+// ZoneType - Zone type enum
 type ZoneType string
 
 const (
-	// ZoneTypePrimary - Primary value
+	// ZoneTypePrimary - Primary zone
 	ZoneTypePrimary ZoneType = "Primary"
-	// ZoneTypeSecondary - Secondary value
+	// ZoneTypeSecondary - Secondary zone
 	ZoneTypeSecondary ZoneType = "Secondary"
 )
 

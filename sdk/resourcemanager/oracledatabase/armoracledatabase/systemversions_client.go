@@ -20,61 +20,61 @@ import (
 	"strings"
 )
 
-// DNSPrivateViewsClient contains the methods for the DNSPrivateViews group.
-// Don't use this type directly, use NewDNSPrivateViewsClient() instead.
-type DNSPrivateViewsClient struct {
+// SystemVersionsClient contains the methods for the SystemVersions group.
+// Don't use this type directly, use NewSystemVersionsClient() instead.
+type SystemVersionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewDNSPrivateViewsClient creates a new instance of DNSPrivateViewsClient with the specified values.
+// NewSystemVersionsClient creates a new instance of SystemVersionsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
-func NewDNSPrivateViewsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DNSPrivateViewsClient, error) {
+func NewSystemVersionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SystemVersionsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
-	client := &DNSPrivateViewsClient{
+	client := &SystemVersionsClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
 	return client, nil
 }
 
-// Get - Get a DnsPrivateView
+// Get - Get a SystemVersion
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-09-01
 //   - location - The name of the Azure region.
-//   - dnsprivateviewocid - DnsPrivateView OCID
-//   - options - DNSPrivateViewsClientGetOptions contains the optional parameters for the DNSPrivateViewsClient.Get method.
-func (client *DNSPrivateViewsClient) Get(ctx context.Context, location string, dnsprivateviewocid string, options *DNSPrivateViewsClientGetOptions) (DNSPrivateViewsClientGetResponse, error) {
+//   - systemversionname - SystemVersion name
+//   - options - SystemVersionsClientGetOptions contains the optional parameters for the SystemVersionsClient.Get method.
+func (client *SystemVersionsClient) Get(ctx context.Context, location string, systemversionname string, options *SystemVersionsClientGetOptions) (SystemVersionsClientGetResponse, error) {
 	var err error
-	const operationName = "DNSPrivateViewsClient.Get"
+	const operationName = "SystemVersionsClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, location, dnsprivateviewocid, options)
+	req, err := client.getCreateRequest(ctx, location, systemversionname, options)
 	if err != nil {
-		return DNSPrivateViewsClientGetResponse{}, err
+		return SystemVersionsClientGetResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return DNSPrivateViewsClientGetResponse{}, err
+		return SystemVersionsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return DNSPrivateViewsClientGetResponse{}, err
+		return SystemVersionsClientGetResponse{}, err
 	}
 	resp, err := client.getHandleResponse(httpResp)
 	return resp, err
 }
 
 // getCreateRequest creates the Get request.
-func (client *DNSPrivateViewsClient) getCreateRequest(ctx context.Context, location string, dnsprivateviewocid string, options *DNSPrivateViewsClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Oracle.Database/locations/{location}/dnsPrivateViews/{dnsprivateviewocid}"
+func (client *SystemVersionsClient) getCreateRequest(ctx context.Context, location string, systemversionname string, options *SystemVersionsClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Oracle.Database/locations/{location}/systemVersions/{systemversionname}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -83,10 +83,10 @@ func (client *DNSPrivateViewsClient) getCreateRequest(ctx context.Context, locat
 		return nil, errors.New("parameter location cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	if dnsprivateviewocid == "" {
-		return nil, errors.New("parameter dnsprivateviewocid cannot be empty")
+	if systemversionname == "" {
+		return nil, errors.New("parameter systemversionname cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{dnsprivateviewocid}", url.PathEscape(dnsprivateviewocid))
+	urlPath = strings.ReplaceAll(urlPath, "{systemversionname}", url.PathEscape(systemversionname))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -99,27 +99,27 @@ func (client *DNSPrivateViewsClient) getCreateRequest(ctx context.Context, locat
 }
 
 // getHandleResponse handles the Get response.
-func (client *DNSPrivateViewsClient) getHandleResponse(resp *http.Response) (DNSPrivateViewsClientGetResponse, error) {
-	result := DNSPrivateViewsClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.DNSPrivateView); err != nil {
-		return DNSPrivateViewsClientGetResponse{}, err
+func (client *SystemVersionsClient) getHandleResponse(resp *http.Response) (SystemVersionsClientGetResponse, error) {
+	result := SystemVersionsClientGetResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SystemVersion); err != nil {
+		return SystemVersionsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// NewListByLocationPager - List DnsPrivateView resources by Location
+// NewListByLocationPager - List SystemVersion resources by Location
 //
 // Generated from API version 2023-09-01
 //   - location - The name of the Azure region.
-//   - options - DNSPrivateViewsClientListByLocationOptions contains the optional parameters for the DNSPrivateViewsClient.NewListByLocationPager
+//   - options - SystemVersionsClientListByLocationOptions contains the optional parameters for the SystemVersionsClient.NewListByLocationPager
 //     method.
-func (client *DNSPrivateViewsClient) NewListByLocationPager(location string, options *DNSPrivateViewsClientListByLocationOptions) *runtime.Pager[DNSPrivateViewsClientListByLocationResponse] {
-	return runtime.NewPager(runtime.PagingHandler[DNSPrivateViewsClientListByLocationResponse]{
-		More: func(page DNSPrivateViewsClientListByLocationResponse) bool {
+func (client *SystemVersionsClient) NewListByLocationPager(location string, options *SystemVersionsClientListByLocationOptions) *runtime.Pager[SystemVersionsClientListByLocationResponse] {
+	return runtime.NewPager(runtime.PagingHandler[SystemVersionsClientListByLocationResponse]{
+		More: func(page SystemVersionsClientListByLocationResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *DNSPrivateViewsClientListByLocationResponse) (DNSPrivateViewsClientListByLocationResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DNSPrivateViewsClient.NewListByLocationPager")
+		Fetcher: func(ctx context.Context, page *SystemVersionsClientListByLocationResponse) (SystemVersionsClientListByLocationResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SystemVersionsClient.NewListByLocationPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -128,7 +128,7 @@ func (client *DNSPrivateViewsClient) NewListByLocationPager(location string, opt
 				return client.listByLocationCreateRequest(ctx, location, options)
 			}, nil)
 			if err != nil {
-				return DNSPrivateViewsClientListByLocationResponse{}, err
+				return SystemVersionsClientListByLocationResponse{}, err
 			}
 			return client.listByLocationHandleResponse(resp)
 		},
@@ -137,8 +137,8 @@ func (client *DNSPrivateViewsClient) NewListByLocationPager(location string, opt
 }
 
 // listByLocationCreateRequest creates the ListByLocation request.
-func (client *DNSPrivateViewsClient) listByLocationCreateRequest(ctx context.Context, location string, options *DNSPrivateViewsClientListByLocationOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Oracle.Database/locations/{location}/dnsPrivateViews"
+func (client *SystemVersionsClient) listByLocationCreateRequest(ctx context.Context, location string, options *SystemVersionsClientListByLocationOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Oracle.Database/locations/{location}/systemVersions"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -159,10 +159,10 @@ func (client *DNSPrivateViewsClient) listByLocationCreateRequest(ctx context.Con
 }
 
 // listByLocationHandleResponse handles the ListByLocation response.
-func (client *DNSPrivateViewsClient) listByLocationHandleResponse(resp *http.Response) (DNSPrivateViewsClientListByLocationResponse, error) {
-	result := DNSPrivateViewsClientListByLocationResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.DNSPrivateViewListResult); err != nil {
-		return DNSPrivateViewsClientListByLocationResponse{}, err
+func (client *SystemVersionsClient) listByLocationHandleResponse(resp *http.Response) (SystemVersionsClientListByLocationResponse, error) {
+	result := SystemVersionsClientListByLocationResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SystemVersionListResult); err != nil {
+		return SystemVersionsClientListByLocationResponse{}, err
 	}
 	return result, nil
 }

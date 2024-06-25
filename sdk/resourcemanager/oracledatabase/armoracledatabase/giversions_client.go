@@ -46,7 +46,7 @@ func NewGiVersionsClient(subscriptionID string, credential azcore.TokenCredentia
 // Get - Get a GiVersion
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01-preview
+// Generated from API version 2023-09-01
 //   - location - The name of the Azure region.
 //   - giversionname - GiVersion name
 //   - options - GiVersionsClientGetOptions contains the optional parameters for the GiVersionsClient.Get method.
@@ -92,7 +92,7 @@ func (client *GiVersionsClient) getCreateRequest(ctx context.Context, location s
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-01-preview")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -109,7 +109,7 @@ func (client *GiVersionsClient) getHandleResponse(resp *http.Response) (GiVersio
 
 // NewListByLocationPager - List GiVersion resources by Location
 //
-// Generated from API version 2023-09-01-preview
+// Generated from API version 2023-09-01
 //   - location - The name of the Azure region.
 //   - options - GiVersionsClientListByLocationOptions contains the optional parameters for the GiVersionsClient.NewListByLocationPager
 //     method.
@@ -152,7 +152,7 @@ func (client *GiVersionsClient) listByLocationCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-01-preview")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

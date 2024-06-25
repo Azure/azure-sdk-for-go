@@ -46,7 +46,7 @@ func NewPercentileClient(subscriptionID string, credential azcore.TokenCredentia
 // NewListMetricsPager - Retrieves the metrics determined by the given filter for the given database account. This url is
 // only for PBS and Replication Latency data
 //
-// Generated from API version 2024-02-15-preview
+// Generated from API version 2024-05-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - filter - An OData filter expression that describes a subset of metrics to return. The parameters that can be filtered are
@@ -99,7 +99,7 @@ func (client *PercentileClient) listMetricsCreateRequest(ctx context.Context, re
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("$filter", filter)
-	reqQP.Set("api-version", "2024-02-15-preview")
+	reqQP.Set("api-version", "2024-05-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/CosmosDBServicesList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ec7ee8842bf615c2f0354bf8b5b8725fdac9454a/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBServicesList.json
 func ExampleServiceClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -66,7 +66,7 @@ func ExampleServiceClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/CosmosDBDataTransferServiceCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ec7ee8842bf615c2f0354bf8b5b8725fdac9454a/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBDataTransferServiceCreate.json
 func ExampleServiceClient_BeginCreate_dataTransferServiceCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -78,7 +78,7 @@ func ExampleServiceClient_BeginCreate_dataTransferServiceCreate() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewServiceClient().BeginCreate(ctx, "rg1", "ddb1", "DataTransfer", armcosmos.ServiceResourceCreateUpdateParameters{
-		Properties: &armcosmos.ServiceResourceCreateUpdateProperties{
+		Properties: &armcosmos.DataTransferServiceResourceCreateUpdateProperties{
 			InstanceCount: to.Ptr[int32](1),
 			InstanceSize:  to.Ptr(armcosmos.ServiceSizeCosmosD4S),
 			ServiceType:   to.Ptr(armcosmos.ServiceTypeDataTransfer),
@@ -114,7 +114,7 @@ func ExampleServiceClient_BeginCreate_dataTransferServiceCreate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/CosmosDBGraphAPIComputeServiceCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ec7ee8842bf615c2f0354bf8b5b8725fdac9454a/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBGraphAPIComputeServiceCreate.json
 func ExampleServiceClient_BeginCreate_graphApiComputeServiceCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -126,7 +126,7 @@ func ExampleServiceClient_BeginCreate_graphApiComputeServiceCreate() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewServiceClient().BeginCreate(ctx, "rg1", "ddb1", "GraphAPICompute", armcosmos.ServiceResourceCreateUpdateParameters{
-		Properties: &armcosmos.ServiceResourceCreateUpdateProperties{
+		Properties: &armcosmos.GraphAPIComputeServiceResourceCreateUpdateProperties{
 			InstanceCount: to.Ptr[int32](1),
 			InstanceSize:  to.Ptr(armcosmos.ServiceSizeCosmosD4S),
 			ServiceType:   to.Ptr(armcosmos.ServiceTypeGraphAPICompute),
@@ -164,7 +164,7 @@ func ExampleServiceClient_BeginCreate_graphApiComputeServiceCreate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/CosmosDBMaterializedViewsBuilderServiceCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ec7ee8842bf615c2f0354bf8b5b8725fdac9454a/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBMaterializedViewsBuilderServiceCreate.json
 func ExampleServiceClient_BeginCreate_materializedViewsBuilderServiceCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -176,7 +176,7 @@ func ExampleServiceClient_BeginCreate_materializedViewsBuilderServiceCreate() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewServiceClient().BeginCreate(ctx, "rg1", "ddb1", "MaterializedViewsBuilder", armcosmos.ServiceResourceCreateUpdateParameters{
-		Properties: &armcosmos.ServiceResourceCreateUpdateProperties{
+		Properties: &armcosmos.MaterializedViewsBuilderServiceResourceCreateUpdateProperties{
 			InstanceCount: to.Ptr[int32](1),
 			InstanceSize:  to.Ptr(armcosmos.ServiceSizeCosmosD4S),
 			ServiceType:   to.Ptr(armcosmos.ServiceTypeMaterializedViewsBuilder),
@@ -212,7 +212,7 @@ func ExampleServiceClient_BeginCreate_materializedViewsBuilderServiceCreate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/CosmosDBSqlDedicatedGatewayServiceCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ec7ee8842bf615c2f0354bf8b5b8725fdac9454a/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/services/sqldedicatedgateway/CosmosDBSqlDedicatedGatewayServiceCreate.json
 func ExampleServiceClient_BeginCreate_sqlDedicatedGatewayServiceCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -224,10 +224,11 @@ func ExampleServiceClient_BeginCreate_sqlDedicatedGatewayServiceCreate() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewServiceClient().BeginCreate(ctx, "rg1", "ddb1", "SqlDedicatedGateway", armcosmos.ServiceResourceCreateUpdateParameters{
-		Properties: &armcosmos.ServiceResourceCreateUpdateProperties{
-			InstanceCount: to.Ptr[int32](1),
-			InstanceSize:  to.Ptr(armcosmos.ServiceSizeCosmosD4S),
-			ServiceType:   to.Ptr(armcosmos.ServiceTypeSQLDedicatedGateway),
+		Properties: &armcosmos.SQLDedicatedGatewayServiceResourceCreateUpdateProperties{
+			InstanceCount:        to.Ptr[int32](1),
+			InstanceSize:         to.Ptr(armcosmos.ServiceSizeCosmosD4S),
+			ServiceType:          to.Ptr(armcosmos.ServiceTypeSQLDedicatedGateway),
+			DedicatedGatewayType: to.Ptr(armcosmos.DedicatedGatewayTypeIntegratedCache),
 		},
 	}, nil)
 	if err != nil {
@@ -250,6 +251,7 @@ func ExampleServiceClient_BeginCreate_sqlDedicatedGatewayServiceCreate() {
 	// 		InstanceSize: to.Ptr(armcosmos.ServiceSizeCosmosD4S),
 	// 		ServiceType: to.Ptr(armcosmos.ServiceTypeSQLDedicatedGateway),
 	// 		Status: to.Ptr(armcosmos.ServiceStatusRunning),
+	// 		DedicatedGatewayType: to.Ptr(armcosmos.DedicatedGatewayTypeIntegratedCache),
 	// 		Locations: []*armcosmos.SQLDedicatedGatewayRegionalServiceResource{
 	// 			{
 	// 				Name: to.Ptr("SqlDedicatedGateway-westus2"),
@@ -262,7 +264,7 @@ func ExampleServiceClient_BeginCreate_sqlDedicatedGatewayServiceCreate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/CosmosDBDataTransferServiceGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ec7ee8842bf615c2f0354bf8b5b8725fdac9454a/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBDataTransferServiceGet.json
 func ExampleServiceClient_Get_dataTransferServiceGet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -300,7 +302,7 @@ func ExampleServiceClient_Get_dataTransferServiceGet() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/CosmosDBGraphAPIComputeServiceGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ec7ee8842bf615c2f0354bf8b5b8725fdac9454a/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBGraphAPIComputeServiceGet.json
 func ExampleServiceClient_Get_graphApiComputeServiceGet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -340,7 +342,7 @@ func ExampleServiceClient_Get_graphApiComputeServiceGet() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/CosmosDBMaterializedViewsBuilderServiceGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ec7ee8842bf615c2f0354bf8b5b8725fdac9454a/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBMaterializedViewsBuilderServiceGet.json
 func ExampleServiceClient_Get_materializedViewsBuilderServiceGet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -378,7 +380,7 @@ func ExampleServiceClient_Get_materializedViewsBuilderServiceGet() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/CosmosDBSqlDedicatedGatewayServiceGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ec7ee8842bf615c2f0354bf8b5b8725fdac9454a/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/services/sqldedicatedgateway/CosmosDBSqlDedicatedGatewayServiceGet.json
 func ExampleServiceClient_Get_sqlDedicatedGatewayServiceGet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -406,6 +408,7 @@ func ExampleServiceClient_Get_sqlDedicatedGatewayServiceGet() {
 	// 		InstanceSize: to.Ptr(armcosmos.ServiceSizeCosmosD4S),
 	// 		ServiceType: to.Ptr(armcosmos.ServiceTypeSQLDedicatedGateway),
 	// 		Status: to.Ptr(armcosmos.ServiceStatusRunning),
+	// 		DedicatedGatewayType: to.Ptr(armcosmos.DedicatedGatewayTypeIntegratedCache),
 	// 		Locations: []*armcosmos.SQLDedicatedGatewayRegionalServiceResource{
 	// 			{
 	// 				Name: to.Ptr("SqlDedicatedGateway-westus2"),
@@ -418,7 +421,7 @@ func ExampleServiceClient_Get_sqlDedicatedGatewayServiceGet() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/CosmosDBDataTransferServiceDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ec7ee8842bf615c2f0354bf8b5b8725fdac9454a/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBDataTransferServiceDelete.json
 func ExampleServiceClient_BeginDelete_dataTransferServiceDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -439,7 +442,7 @@ func ExampleServiceClient_BeginDelete_dataTransferServiceDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/CosmosDBGraphAPIComputeServiceDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ec7ee8842bf615c2f0354bf8b5b8725fdac9454a/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBGraphAPIComputeServiceDelete.json
 func ExampleServiceClient_BeginDelete_graphApiComputeServiceDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -460,7 +463,7 @@ func ExampleServiceClient_BeginDelete_graphApiComputeServiceDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/CosmosDBMaterializedViewsBuilderServiceDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ec7ee8842bf615c2f0354bf8b5b8725fdac9454a/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBMaterializedViewsBuilderServiceDelete.json
 func ExampleServiceClient_BeginDelete_materializedViewsBuilderServiceDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -481,7 +484,7 @@ func ExampleServiceClient_BeginDelete_materializedViewsBuilderServiceDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/CosmosDBSqlDedicatedGatewayServiceDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ec7ee8842bf615c2f0354bf8b5b8725fdac9454a/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/services/sqldedicatedgateway/CosmosDBSqlDedicatedGatewayServiceDelete.json
 func ExampleServiceClient_BeginDelete_sqlDedicatedGatewayServiceDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

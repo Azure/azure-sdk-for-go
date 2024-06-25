@@ -48,7 +48,7 @@ func Example_assistantsUsingSubmitToolOutputsStreaming() {
 	// questions about the current weather.
 
 	// First, let's create an assistant.
-	createAssistantResp, err := client.CreateAssistant(context.Background(), azopenaiassistants.CreateAssistantBody{
+	createAssistantResp, err := client.CreateAssistant(context.TODO(), azopenaiassistants.CreateAssistantBody{
 		Name:           &assistantName,
 		DeploymentName: to.Ptr("gpt-4-1106-preview"),
 		Instructions:   to.Ptr("You are an AI assistant that answers questions about the weather using functions like get_current_weather."),
@@ -99,7 +99,7 @@ func Example_assistantsUsingSubmitToolOutputsStreaming() {
 	var runID string
 
 	{
-		resp, err := client.CreateThreadAndRunStream(context.Background(), azopenaiassistants.CreateAndRunThreadBody{
+		resp, err := client.CreateThreadAndRunStream(context.TODO(), azopenaiassistants.CreateAndRunThreadBody{
 			AssistantID:    assistantID,
 			DeploymentName: &assistantsModel,
 			Thread: &azopenaiassistants.CreateThreadBody{
@@ -174,7 +174,7 @@ func Example_assistantsUsingSubmitToolOutputsStreaming() {
 
 	// 3/3: now we'll submit the outputs and continue streaming results.
 	{
-		resp, err := client.SubmitToolOutputsToRunStream(context.Background(), threadID, runID, azopenaiassistants.SubmitToolOutputsToRunBody{
+		resp, err := client.SubmitToolOutputsToRunStream(context.TODO(), threadID, runID, azopenaiassistants.SubmitToolOutputsToRunBody{
 			ToolOutputs: toolOutputToBeSubmitted,
 		}, nil)
 

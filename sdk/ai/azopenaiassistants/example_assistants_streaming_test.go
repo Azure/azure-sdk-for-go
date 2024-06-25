@@ -44,7 +44,7 @@ func Example_assistantsStreaming() {
 	assistantName := fmt.Sprintf("your-assistant-name-%d", time.Now().UnixNano())
 
 	// First, let's create an assistant.
-	createAssistantResp, err := client.CreateAssistant(context.Background(), azopenaiassistants.CreateAssistantBody{
+	createAssistantResp, err := client.CreateAssistant(context.TODO(), azopenaiassistants.CreateAssistantBody{
 		Name:           &assistantName,
 		DeploymentName: to.Ptr("gpt-4-1106-preview"),
 		Instructions:   to.Ptr("You are an AI assistant that can write code to help answer math questions."),
@@ -73,7 +73,7 @@ func Example_assistantsStreaming() {
 		}
 	}()
 
-	resp, err := client.CreateThreadAndRunStream(context.Background(), azopenaiassistants.CreateAndRunThreadBody{
+	resp, err := client.CreateThreadAndRunStream(context.TODO(), azopenaiassistants.CreateAndRunThreadBody{
 		AssistantID:    assistantID,
 		DeploymentName: &assistantsModel,
 		Instructions:   to.Ptr("You're a helpful assistant that provides answers on questions about beetles."),

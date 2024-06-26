@@ -18,8 +18,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/avs/armavs/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/CloudLinks_List.json
-func ExampleCloudLinksClient_NewListPager() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/IscsiPaths_List.json
+func ExampleIscsiPathsClient_NewListByPrivateCloudPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,7 @@ func ExampleCloudLinksClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewCloudLinksClient().NewListPager("group1", "cloud1", nil)
+	pager := clientFactory.NewIscsiPathsClient().NewListByPrivateCloudPager("group1", "cloud1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -40,23 +40,23 @@ func ExampleCloudLinksClient_NewListPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.CloudLinkList = armavs.CloudLinkList{
-		// 	Value: []*armavs.CloudLink{
+		// page.IscsiPathListResult = armavs.IscsiPathListResult{
+		// 	Value: []*armavs.IscsiPath{
 		// 		{
-		// 			Name: to.Ptr("cloudLink1"),
-		// 			Type: to.Ptr("Microsoft.AVS/privateClouds/cloudLinks"),
-		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/cloudLinks/cloudLink1"),
-		// 			Properties: &armavs.CloudLinkProperties{
-		// 				LinkedCloud: to.Ptr("/subscriptions/12341234-1234-1234-1234-123412341234/resourceGroups/mygroup/providers/Microsoft.AVS/privateClouds/cloud2"),
-		// 				Status: to.Ptr(armavs.CloudLinkStatusActive),
+		// 			Name: to.Ptr("default"),
+		// 			Type: to.Ptr("Microsoft.AVS/privateClouds/iscsiPaths"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/iscsiPaths/default"),
+		// 			Properties: &armavs.IscsiPathProperties{
+		// 				NetworkBlock: to.Ptr("192.168.0.0/24"),
+		// 				ProvisioningState: to.Ptr(armavs.IscsiPathProvisioningStateSucceeded),
 		// 			},
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/CloudLinks_Get.json
-func ExampleCloudLinksClient_Get() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/IscsiPaths_Get.json
+func ExampleIscsiPathsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -66,26 +66,26 @@ func ExampleCloudLinksClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewCloudLinksClient().Get(ctx, "group1", "cloud1", "cloudLink1", nil)
+	res, err := clientFactory.NewIscsiPathsClient().Get(ctx, "group1", "cloud1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.CloudLink = armavs.CloudLink{
-	// 	Name: to.Ptr("cloudLink1"),
-	// 	Type: to.Ptr("Microsoft.AVS/privateClouds/cloudLinks"),
-	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/cloudLinks/cloudLink1"),
-	// 	Properties: &armavs.CloudLinkProperties{
-	// 		LinkedCloud: to.Ptr("/subscriptions/12341234-1234-1234-1234-123412341234/resourceGroups/mygroup/providers/Microsoft.AVS/privateClouds/cloud2"),
-	// 		Status: to.Ptr(armavs.CloudLinkStatusActive),
+	// res.IscsiPath = armavs.IscsiPath{
+	// 	Name: to.Ptr("default"),
+	// 	Type: to.Ptr("Microsoft.AVS/privateClouds/iscsiPaths"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/iscsiPaths/default"),
+	// 	Properties: &armavs.IscsiPathProperties{
+	// 		NetworkBlock: to.Ptr("192.168.0.0/24"),
+	// 		ProvisioningState: to.Ptr(armavs.IscsiPathProvisioningStateSucceeded),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/CloudLinks_CreateOrUpdate.json
-func ExampleCloudLinksClient_BeginCreateOrUpdate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/IscsiPaths_CreateOrUpdate.json
+func ExampleIscsiPathsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -95,9 +95,9 @@ func ExampleCloudLinksClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewCloudLinksClient().BeginCreateOrUpdate(ctx, "group1", "cloud1", "cloudLink1", armavs.CloudLink{
-		Properties: &armavs.CloudLinkProperties{
-			LinkedCloud: to.Ptr("/subscriptions/12341234-1234-1234-1234-123412341234/resourceGroups/mygroup/providers/Microsoft.AVS/privateClouds/cloud2"),
+	poller, err := clientFactory.NewIscsiPathsClient().BeginCreateOrUpdate(ctx, "group1", "cloud1", armavs.IscsiPath{
+		Properties: &armavs.IscsiPathProperties{
+			NetworkBlock: to.Ptr("192.168.0.0/24"),
 		},
 	}, nil)
 	if err != nil {
@@ -110,19 +110,19 @@ func ExampleCloudLinksClient_BeginCreateOrUpdate() {
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.CloudLink = armavs.CloudLink{
-	// 	Name: to.Ptr("cloudLink1"),
-	// 	Type: to.Ptr("Microsoft.AVS/privateClouds/cloudLinks"),
-	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/cloudLinks/cloudLink1"),
-	// 	Properties: &armavs.CloudLinkProperties{
-	// 		LinkedCloud: to.Ptr("/subscriptions/12341234-1234-1234-1234-123412341234/resourceGroups/mygroup/providers/Microsoft.AVS/privateClouds/cloud2"),
-	// 		Status: to.Ptr(armavs.CloudLinkStatusActive),
+	// res.IscsiPath = armavs.IscsiPath{
+	// 	Name: to.Ptr("default"),
+	// 	Type: to.Ptr("Microsoft.AVS/privateClouds/iscsiPaths"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/iscsiPaths/default"),
+	// 	Properties: &armavs.IscsiPathProperties{
+	// 		NetworkBlock: to.Ptr("192.168.0.0/24"),
+	// 		ProvisioningState: to.Ptr(armavs.IscsiPathProvisioningStateSucceeded),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/CloudLinks_Delete.json
-func ExampleCloudLinksClient_BeginDelete() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/IscsiPaths_Delete.json
+func ExampleIscsiPathsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -132,7 +132,7 @@ func ExampleCloudLinksClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewCloudLinksClient().BeginDelete(ctx, "group1", "cloud1", "cloudLink1", nil)
+	poller, err := clientFactory.NewIscsiPathsClient().BeginDelete(ctx, "group1", "cloud1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

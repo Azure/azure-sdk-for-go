@@ -28,7 +28,7 @@ type ScriptExecutionsClient struct {
 }
 
 // NewScriptExecutionsClient creates a new instance of ScriptExecutionsClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewScriptExecutionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ScriptExecutionsClient, error) {
@@ -43,14 +43,14 @@ func NewScriptExecutionsClient(subscriptionID string, credential azcore.TokenCre
 	return client, nil
 }
 
-// BeginCreateOrUpdate - Create or update a script execution in a private cloud
+// BeginCreateOrUpdate - Create a ScriptExecution
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2023-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - privateCloudName - The name of the private cloud.
-//   - scriptExecutionName - Name of the user-invoked script execution resource
-//   - scriptExecution - A script running in the private cloud
+//   - privateCloudName - Name of the private cloud
+//   - scriptExecutionName - Name of the script cmdlet.
+//   - scriptExecution - Resource create parameters.
 //   - options - ScriptExecutionsClientBeginCreateOrUpdateOptions contains the optional parameters for the ScriptExecutionsClient.BeginCreateOrUpdate
 //     method.
 func (client *ScriptExecutionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, scriptExecutionName string, scriptExecution ScriptExecution, options *ScriptExecutionsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ScriptExecutionsClientCreateOrUpdateResponse], error) {
@@ -60,7 +60,8 @@ func (client *ScriptExecutionsClient) BeginCreateOrUpdate(ctx context.Context, r
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ScriptExecutionsClientCreateOrUpdateResponse]{
-			Tracer: client.internal.Tracer(),
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
@@ -70,10 +71,10 @@ func (client *ScriptExecutionsClient) BeginCreateOrUpdate(ctx context.Context, r
 	}
 }
 
-// CreateOrUpdate - Create or update a script execution in a private cloud
+// CreateOrUpdate - Create a ScriptExecution
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2023-09-01
 func (client *ScriptExecutionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, scriptExecutionName string, scriptExecution ScriptExecution, options *ScriptExecutionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ScriptExecutionsClient.BeginCreateOrUpdate"
@@ -119,7 +120,7 @@ func (client *ScriptExecutionsClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, scriptExecution); err != nil {
@@ -128,13 +129,13 @@ func (client *ScriptExecutionsClient) createOrUpdateCreateRequest(ctx context.Co
 	return req, nil
 }
 
-// BeginDelete - Cancel a ScriptExecution in a private cloud
+// BeginDelete - Delete a ScriptExecution
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2023-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
-//   - scriptExecutionName - Name of the user-invoked script execution resource
+//   - scriptExecutionName - Name of the script cmdlet.
 //   - options - ScriptExecutionsClientBeginDeleteOptions contains the optional parameters for the ScriptExecutionsClient.BeginDelete
 //     method.
 func (client *ScriptExecutionsClient) BeginDelete(ctx context.Context, resourceGroupName string, privateCloudName string, scriptExecutionName string, options *ScriptExecutionsClientBeginDeleteOptions) (*runtime.Poller[ScriptExecutionsClientDeleteResponse], error) {
@@ -144,7 +145,8 @@ func (client *ScriptExecutionsClient) BeginDelete(ctx context.Context, resourceG
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ScriptExecutionsClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
@@ -154,10 +156,10 @@ func (client *ScriptExecutionsClient) BeginDelete(ctx context.Context, resourceG
 	}
 }
 
-// Delete - Cancel a ScriptExecution in a private cloud
+// Delete - Delete a ScriptExecution
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2023-09-01
 func (client *ScriptExecutionsClient) deleteOperation(ctx context.Context, resourceGroupName string, privateCloudName string, scriptExecutionName string, options *ScriptExecutionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ScriptExecutionsClient.BeginDelete"
@@ -203,19 +205,19 @@ func (client *ScriptExecutionsClient) deleteCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// Get - Get an script execution by name in a private cloud
+// Get - Get a ScriptExecution
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2023-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
-//   - scriptExecutionName - Name of the user-invoked script execution resource
+//   - scriptExecutionName - Name of the script cmdlet.
 //   - options - ScriptExecutionsClientGetOptions contains the optional parameters for the ScriptExecutionsClient.Get method.
 func (client *ScriptExecutionsClient) Get(ctx context.Context, resourceGroupName string, privateCloudName string, scriptExecutionName string, options *ScriptExecutionsClientGetOptions) (ScriptExecutionsClientGetResponse, error) {
 	var err error
@@ -263,7 +265,7 @@ func (client *ScriptExecutionsClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -281,10 +283,10 @@ func (client *ScriptExecutionsClient) getHandleResponse(resp *http.Response) (Sc
 // GetExecutionLogs - Return the logs for a script execution resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2023-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
-//   - scriptExecutionName - Name of the user-invoked script execution resource
+//   - scriptExecutionName - Name of the script cmdlet.
 //   - options - ScriptExecutionsClientGetExecutionLogsOptions contains the optional parameters for the ScriptExecutionsClient.GetExecutionLogs
 //     method.
 func (client *ScriptExecutionsClient) GetExecutionLogs(ctx context.Context, resourceGroupName string, privateCloudName string, scriptExecutionName string, options *ScriptExecutionsClientGetExecutionLogsOptions) (ScriptExecutionsClientGetExecutionLogsResponse, error) {
@@ -333,7 +335,7 @@ func (client *ScriptExecutionsClient) getExecutionLogsCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.ScriptOutputStreamType != nil {
@@ -354,9 +356,9 @@ func (client *ScriptExecutionsClient) getExecutionLogsHandleResponse(resp *http.
 	return result, nil
 }
 
-// NewListPager - List script executions in a private cloud
+// NewListPager - List ScriptExecution resources by PrivateCloud
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2023-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
 //   - options - ScriptExecutionsClientListOptions contains the optional parameters for the ScriptExecutionsClient.NewListPager
@@ -404,7 +406,7 @@ func (client *ScriptExecutionsClient) listCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

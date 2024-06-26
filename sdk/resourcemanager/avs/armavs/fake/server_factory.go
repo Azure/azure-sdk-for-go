@@ -26,6 +26,7 @@ type ServerFactory struct {
 	DatastoresServer             DatastoresServer
 	GlobalReachConnectionsServer GlobalReachConnectionsServer
 	HcxEnterpriseSitesServer     HcxEnterpriseSitesServer
+	IscsiPathsServer             IscsiPathsServer
 	LocationsServer              LocationsServer
 	OperationsServer             OperationsServer
 	PlacementPoliciesServer      PlacementPoliciesServer
@@ -58,6 +59,7 @@ type ServerFactoryTransport struct {
 	trDatastoresServer             *DatastoresServerTransport
 	trGlobalReachConnectionsServer *GlobalReachConnectionsServerTransport
 	trHcxEnterpriseSitesServer     *HcxEnterpriseSitesServerTransport
+	trIscsiPathsServer             *IscsiPathsServerTransport
 	trLocationsServer              *LocationsServerTransport
 	trOperationsServer             *OperationsServerTransport
 	trPlacementPoliciesServer      *PlacementPoliciesServerTransport
@@ -109,6 +111,9 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewHcxEnterpriseSitesServerTransport(&s.srv.HcxEnterpriseSitesServer)
 		})
 		resp, err = s.trHcxEnterpriseSitesServer.Do(req)
+	case "IscsiPathsClient":
+		initServer(s, &s.trIscsiPathsServer, func() *IscsiPathsServerTransport { return NewIscsiPathsServerTransport(&s.srv.IscsiPathsServer) })
+		resp, err = s.trIscsiPathsServer.Do(req)
 	case "LocationsClient":
 		initServer(s, &s.trLocationsServer, func() *LocationsServerTransport { return NewLocationsServerTransport(&s.srv.LocationsServer) })
 		resp, err = s.trLocationsServer.Do(req)

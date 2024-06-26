@@ -15,35 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/avs/armavs"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/avs/armavs/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a5e7ff51c8af3781e7f6dd3b82a3fc922e2f6f93/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_Get.json
-func ExampleWorkloadNetworksClient_Get() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armavs.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewWorkloadNetworksClient().Get(ctx, "group1", "cloud1", armavs.WorkloadNetworkNameDefault, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.WorkloadNetwork = armavs.WorkloadNetwork{
-	// 	Name: to.Ptr("default"),
-	// 	Type: to.Ptr("Microsoft.AVS/privateClouds/workloadNetworks"),
-	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default"),
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a5e7ff51c8af3781e7f6dd3b82a3fc922e2f6f93/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_List.json
 func ExampleWorkloadNetworksClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -76,7 +51,991 @@ func ExampleWorkloadNetworksClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a5e7ff51c8af3781e7f6dd3b82a3fc922e2f6f93/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_ListSegments.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_Get.json
+func ExampleWorkloadNetworksClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armavs.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewWorkloadNetworksClient().Get(ctx, "group1", "cloud1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.WorkloadNetwork = armavs.WorkloadNetwork{
+	// 	Name: to.Ptr("default"),
+	// 	Type: to.Ptr("Microsoft.AVS/privateClouds/workloadNetworks"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default"),
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_ListDhcp.json
+func ExampleWorkloadNetworksClient_NewListDhcpPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armavs.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewWorkloadNetworksClient().NewListDhcpPager("group1", "cloud1", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.WorkloadNetworkDhcpList = armavs.WorkloadNetworkDhcpList{
+		// 	Value: []*armavs.WorkloadNetworkDhcp{
+		// 		{
+		// 			Name: to.Ptr("dhcp1"),
+		// 			Type: to.Ptr("Microsoft.AVS/privateClouds/workloadNetworks/dhcpConfigurations"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default/dhcpConfigurations/dhcpConfigurations1"),
+		// 			Properties: &armavs.WorkloadNetworkDhcpServer{
+		// 				DhcpType: to.Ptr(armavs.DhcpTypeEnumSERVER),
+		// 				DisplayName: to.Ptr("dhcpConfigurations1"),
+		// 				Revision: to.Ptr[int64](1),
+		// 				Segments: []*string{
+		// 					to.Ptr("segment1"),
+		// 					to.Ptr("segment2")},
+		// 					LeaseTime: to.Ptr[int64](86400),
+		// 					ServerAddress: to.Ptr("40.1.5.1/24"),
+		// 				},
+		// 		}},
+		// 	}
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_GetDhcp.json
+func ExampleWorkloadNetworksClient_GetDhcp() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armavs.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewWorkloadNetworksClient().GetDhcp(ctx, "group1", "dhcp1", "cloud1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.WorkloadNetworkDhcp = armavs.WorkloadNetworkDhcp{
+	// 	Name: to.Ptr("dhcp1"),
+	// 	Type: to.Ptr("Microsoft.AVS/privateClouds/workloadNetworks/dhcpConfigurations"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default/dhcpConfigurations/dhcpConfigurations1"),
+	// 	Properties: &armavs.WorkloadNetworkDhcpServer{
+	// 		DhcpType: to.Ptr(armavs.DhcpTypeEnumSERVER),
+	// 		DisplayName: to.Ptr("dhcpConfigurations1"),
+	// 		Revision: to.Ptr[int64](1),
+	// 		Segments: []*string{
+	// 			to.Ptr("segment1"),
+	// 			to.Ptr("segment2")},
+	// 			LeaseTime: to.Ptr[int64](86400),
+	// 			ServerAddress: to.Ptr("40.1.5.1/24"),
+	// 		},
+	// 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_CreateDhcp.json
+func ExampleWorkloadNetworksClient_BeginCreateDhcp() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armavs.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewWorkloadNetworksClient().BeginCreateDhcp(ctx, "group1", "cloud1", "dhcp1", armavs.WorkloadNetworkDhcp{
+		Properties: &armavs.WorkloadNetworkDhcpServer{
+			DhcpType:      to.Ptr(armavs.DhcpTypeEnumSERVER),
+			DisplayName:   to.Ptr("dhcpConfigurations1"),
+			Revision:      to.Ptr[int64](1),
+			LeaseTime:     to.Ptr[int64](86400),
+			ServerAddress: to.Ptr("40.1.5.1/24"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.WorkloadNetworkDhcp = armavs.WorkloadNetworkDhcp{
+	// 	Name: to.Ptr("dhcp1"),
+	// 	Type: to.Ptr("Microsoft.AVS/privateClouds/workloadNetworks/dhcpConfigurations"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default/dhcpConfigurations/dhcpConfigurations1"),
+	// 	Properties: &armavs.WorkloadNetworkDhcpServer{
+	// 		DhcpType: to.Ptr(armavs.DhcpTypeEnumSERVER),
+	// 		DisplayName: to.Ptr("dhcpConfigurations1"),
+	// 		Revision: to.Ptr[int64](1),
+	// 		Segments: []*string{
+	// 			to.Ptr("segment1"),
+	// 			to.Ptr("segment2")},
+	// 			LeaseTime: to.Ptr[int64](86400),
+	// 			ServerAddress: to.Ptr("40.1.5.1/24"),
+	// 		},
+	// 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_UpdateDhcp.json
+func ExampleWorkloadNetworksClient_BeginUpdateDhcp() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armavs.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewWorkloadNetworksClient().BeginUpdateDhcp(ctx, "group1", "cloud1", "dhcp1", armavs.WorkloadNetworkDhcp{
+		Properties: &armavs.WorkloadNetworkDhcpServer{
+			DhcpType:      to.Ptr(armavs.DhcpTypeEnumSERVER),
+			Revision:      to.Ptr[int64](1),
+			LeaseTime:     to.Ptr[int64](86400),
+			ServerAddress: to.Ptr("40.1.5.1/24"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.WorkloadNetworkDhcp = armavs.WorkloadNetworkDhcp{
+	// 	Name: to.Ptr("dhcp1"),
+	// 	Type: to.Ptr("Microsoft.AVS/privateClouds/workloadNetworks/dhcpConfigurations"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default/dhcpConfigurations/dhcpConfigurations1"),
+	// 	Properties: &armavs.WorkloadNetworkDhcpServer{
+	// 		DhcpType: to.Ptr(armavs.DhcpTypeEnumSERVER),
+	// 		DisplayName: to.Ptr("dhcpConfigurations1"),
+	// 		Revision: to.Ptr[int64](2),
+	// 		Segments: []*string{
+	// 			to.Ptr("segment1"),
+	// 			to.Ptr("segment2")},
+	// 			LeaseTime: to.Ptr[int64](86400),
+	// 			ServerAddress: to.Ptr("40.1.5.1/24"),
+	// 		},
+	// 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_DeleteDhcp.json
+func ExampleWorkloadNetworksClient_BeginDeleteDhcp() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armavs.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewWorkloadNetworksClient().BeginDeleteDhcp(ctx, "group1", "cloud1", "dhcp1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_ListDnsServices.json
+func ExampleWorkloadNetworksClient_NewListDNSServicesPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armavs.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewWorkloadNetworksClient().NewListDNSServicesPager("group1", "cloud1", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.WorkloadNetworkDNSServicesList = armavs.WorkloadNetworkDNSServicesList{
+		// 	Value: []*armavs.WorkloadNetworkDNSService{
+		// 		{
+		// 			Name: to.Ptr("portMirroring1"),
+		// 			Type: to.Ptr("Microsoft.AVS/privateClouds/workloadNetworks/dnsServices"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default/dnsServices/dnsService1"),
+		// 			Properties: &armavs.WorkloadNetworkDNSServiceProperties{
+		// 				DefaultDNSZone: to.Ptr("defaultDnsZone1"),
+		// 				DisplayName: to.Ptr("dnsService1"),
+		// 				DNSServiceIP: to.Ptr("5.5.5.5"),
+		// 				FqdnZones: []*string{
+		// 					to.Ptr("fqdnZone1")},
+		// 					LogLevel: to.Ptr(armavs.DNSServiceLogLevelEnumINFO),
+		// 					Revision: to.Ptr[int64](1),
+		// 					Status: to.Ptr(armavs.DNSServiceStatusEnumSUCCESS),
+		// 				},
+		// 		}},
+		// 	}
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_GetDnsService.json
+func ExampleWorkloadNetworksClient_GetDNSService() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armavs.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewWorkloadNetworksClient().GetDNSService(ctx, "group1", "cloud1", "dnsService1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.WorkloadNetworkDNSService = armavs.WorkloadNetworkDNSService{
+	// 	Name: to.Ptr("portMirroring1"),
+	// 	Type: to.Ptr("Microsoft.AVS/privateClouds/workloadNetworks/dnsServices"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default/dnsServices/dnsService1"),
+	// 	Properties: &armavs.WorkloadNetworkDNSServiceProperties{
+	// 		DefaultDNSZone: to.Ptr("defaultDnsZone1"),
+	// 		DisplayName: to.Ptr("dnsService1"),
+	// 		DNSServiceIP: to.Ptr("5.5.5.5"),
+	// 		FqdnZones: []*string{
+	// 			to.Ptr("fqdnZone1")},
+	// 			LogLevel: to.Ptr(armavs.DNSServiceLogLevelEnumINFO),
+	// 			Revision: to.Ptr[int64](1),
+	// 			Status: to.Ptr(armavs.DNSServiceStatusEnumSUCCESS),
+	// 		},
+	// 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_CreateDnsService.json
+func ExampleWorkloadNetworksClient_BeginCreateDNSService() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armavs.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewWorkloadNetworksClient().BeginCreateDNSService(ctx, "group1", "cloud1", "dnsService1", armavs.WorkloadNetworkDNSService{
+		Properties: &armavs.WorkloadNetworkDNSServiceProperties{
+			DefaultDNSZone: to.Ptr("defaultDnsZone1"),
+			DisplayName:    to.Ptr("dnsService1"),
+			DNSServiceIP:   to.Ptr("5.5.5.5"),
+			FqdnZones: []*string{
+				to.Ptr("fqdnZone1")},
+			LogLevel: to.Ptr(armavs.DNSServiceLogLevelEnumINFO),
+			Revision: to.Ptr[int64](1),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.WorkloadNetworkDNSService = armavs.WorkloadNetworkDNSService{
+	// 	Name: to.Ptr("dnsService1"),
+	// 	Type: to.Ptr("Microsoft.AVS/privateClouds/workloadNetworks/dnsServices"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default/dnsServices/dnsService1"),
+	// 	Properties: &armavs.WorkloadNetworkDNSServiceProperties{
+	// 		DefaultDNSZone: to.Ptr("defaultDnsZone1"),
+	// 		DisplayName: to.Ptr("dnsService1"),
+	// 		DNSServiceIP: to.Ptr("5.5.5.5"),
+	// 		FqdnZones: []*string{
+	// 			to.Ptr("fqdnZone1")},
+	// 			LogLevel: to.Ptr(armavs.DNSServiceLogLevelEnumINFO),
+	// 			Revision: to.Ptr[int64](1),
+	// 			Status: to.Ptr(armavs.DNSServiceStatusEnumSUCCESS),
+	// 		},
+	// 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_UpdateDnsService.json
+func ExampleWorkloadNetworksClient_BeginUpdateDNSService() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armavs.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewWorkloadNetworksClient().BeginUpdateDNSService(ctx, "group1", "cloud1", "dnsService1", armavs.WorkloadNetworkDNSService{
+		Properties: &armavs.WorkloadNetworkDNSServiceProperties{
+			DefaultDNSZone: to.Ptr("defaultDnsZone1"),
+			DisplayName:    to.Ptr("dnsService1"),
+			DNSServiceIP:   to.Ptr("5.5.5.5"),
+			FqdnZones: []*string{
+				to.Ptr("fqdnZone1")},
+			LogLevel: to.Ptr(armavs.DNSServiceLogLevelEnumINFO),
+			Revision: to.Ptr[int64](1),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.WorkloadNetworkDNSService = armavs.WorkloadNetworkDNSService{
+	// 	Name: to.Ptr("dnsService1"),
+	// 	Type: to.Ptr("Microsoft.AVS/privateClouds/workloadNetworks/dnsServices"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default/dnsServices/dnsService1"),
+	// 	Properties: &armavs.WorkloadNetworkDNSServiceProperties{
+	// 		DefaultDNSZone: to.Ptr("defaultDnsZone1"),
+	// 		DisplayName: to.Ptr("dnsService1"),
+	// 		DNSServiceIP: to.Ptr("5.5.5.5"),
+	// 		FqdnZones: []*string{
+	// 			to.Ptr("fqdnZone1")},
+	// 			LogLevel: to.Ptr(armavs.DNSServiceLogLevelEnumINFO),
+	// 			Revision: to.Ptr[int64](1),
+	// 			Status: to.Ptr(armavs.DNSServiceStatusEnumSUCCESS),
+	// 		},
+	// 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_DeleteDnsService.json
+func ExampleWorkloadNetworksClient_BeginDeleteDNSService() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armavs.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewWorkloadNetworksClient().BeginDeleteDNSService(ctx, "group1", "dnsService1", "cloud1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_ListDnsZones.json
+func ExampleWorkloadNetworksClient_NewListDNSZonesPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armavs.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewWorkloadNetworksClient().NewListDNSZonesPager("group1", "cloud1", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.WorkloadNetworkDNSZonesList = armavs.WorkloadNetworkDNSZonesList{
+		// 	Value: []*armavs.WorkloadNetworkDNSZone{
+		// 		{
+		// 			Name: to.Ptr("portMirroring1"),
+		// 			Type: to.Ptr("Microsoft.AVS/privateClouds/workloadNetworks/dnsZones"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default/dnsZones/dnsZone1"),
+		// 			Properties: &armavs.WorkloadNetworkDNSZoneProperties{
+		// 				DisplayName: to.Ptr("dnsZone1"),
+		// 				DNSServerIPs: []*string{
+		// 					to.Ptr("1.1.1.1")},
+		// 					DNSServices: to.Ptr[int64](0),
+		// 					Domain: []*string{
+		// 					},
+		// 					Revision: to.Ptr[int64](1),
+		// 					SourceIP: to.Ptr("8.8.8.8"),
+		// 				},
+		// 		}},
+		// 	}
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_GetDnsZone.json
+func ExampleWorkloadNetworksClient_GetDNSZone() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armavs.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewWorkloadNetworksClient().GetDNSZone(ctx, "group1", "cloud1", "dnsZone1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.WorkloadNetworkDNSZone = armavs.WorkloadNetworkDNSZone{
+	// 	Name: to.Ptr("portMirroring1"),
+	// 	Type: to.Ptr("Microsoft.AVS/privateClouds/workloadNetworks/dnsZones"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default/dnsZones/dnsZone1"),
+	// 	Properties: &armavs.WorkloadNetworkDNSZoneProperties{
+	// 		DisplayName: to.Ptr("dnsZone1"),
+	// 		DNSServerIPs: []*string{
+	// 			to.Ptr("1.1.1.1")},
+	// 			DNSServices: to.Ptr[int64](0),
+	// 			Domain: []*string{
+	// 			},
+	// 			Revision: to.Ptr[int64](1),
+	// 			SourceIP: to.Ptr("8.8.8.8"),
+	// 		},
+	// 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_CreateDnsZone.json
+func ExampleWorkloadNetworksClient_BeginCreateDNSZone() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armavs.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewWorkloadNetworksClient().BeginCreateDNSZone(ctx, "group1", "cloud1", "dnsZone1", armavs.WorkloadNetworkDNSZone{
+		Properties: &armavs.WorkloadNetworkDNSZoneProperties{
+			DisplayName: to.Ptr("dnsZone1"),
+			DNSServerIPs: []*string{
+				to.Ptr("1.1.1.1")},
+			Domain:   []*string{},
+			Revision: to.Ptr[int64](1),
+			SourceIP: to.Ptr("8.8.8.8"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.WorkloadNetworkDNSZone = armavs.WorkloadNetworkDNSZone{
+	// 	Name: to.Ptr("dnsZone1"),
+	// 	Type: to.Ptr("Microsoft.AVS/privateClouds/workloadNetworks/dnsZones"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default/dnsZones/dnsZone1"),
+	// 	Properties: &armavs.WorkloadNetworkDNSZoneProperties{
+	// 		DisplayName: to.Ptr("dnsZone1"),
+	// 		DNSServerIPs: []*string{
+	// 			to.Ptr("1.1.1.1")},
+	// 			DNSServices: to.Ptr[int64](0),
+	// 			Domain: []*string{
+	// 			},
+	// 			Revision: to.Ptr[int64](1),
+	// 			SourceIP: to.Ptr("8.8.8.8"),
+	// 		},
+	// 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_UpdateDnsZone.json
+func ExampleWorkloadNetworksClient_BeginUpdateDNSZone() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armavs.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewWorkloadNetworksClient().BeginUpdateDNSZone(ctx, "group1", "cloud1", "dnsZone1", armavs.WorkloadNetworkDNSZone{
+		Properties: &armavs.WorkloadNetworkDNSZoneProperties{
+			DisplayName: to.Ptr("dnsZone1"),
+			DNSServerIPs: []*string{
+				to.Ptr("1.1.1.1")},
+			Domain:   []*string{},
+			Revision: to.Ptr[int64](1),
+			SourceIP: to.Ptr("8.8.8.8"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.WorkloadNetworkDNSZone = armavs.WorkloadNetworkDNSZone{
+	// 	Name: to.Ptr("dnsZone1"),
+	// 	Type: to.Ptr("Microsoft.AVS/privateClouds/workloadNetworks/dnsZones"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default/dnsZones/dnsZone1"),
+	// 	Properties: &armavs.WorkloadNetworkDNSZoneProperties{
+	// 		DisplayName: to.Ptr("dnsZone1"),
+	// 		DNSServerIPs: []*string{
+	// 			to.Ptr("1.1.1.1")},
+	// 			DNSServices: to.Ptr[int64](0),
+	// 			Domain: []*string{
+	// 			},
+	// 			Revision: to.Ptr[int64](1),
+	// 			SourceIP: to.Ptr("8.8.8.8"),
+	// 		},
+	// 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_DeleteDnsZone.json
+func ExampleWorkloadNetworksClient_BeginDeleteDNSZone() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armavs.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewWorkloadNetworksClient().BeginDeleteDNSZone(ctx, "group1", "dnsZone1", "cloud1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_ListGateways.json
+func ExampleWorkloadNetworksClient_NewListGatewaysPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armavs.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewWorkloadNetworksClient().NewListGatewaysPager("group1", "cloud1", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.WorkloadNetworkGatewayList = armavs.WorkloadNetworkGatewayList{
+		// 	Value: []*armavs.WorkloadNetworkGateway{
+		// 		{
+		// 			Name: to.Ptr("gateway1"),
+		// 			Type: to.Ptr("Microsoft.AVS/privateClouds/workloadNetworks/segments"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default/gateways/gateway1"),
+		// 			Properties: &armavs.WorkloadNetworkGatewayProperties{
+		// 				Path: to.Ptr("/infra/tier-1s/gateway1"),
+		// 				DisplayName: to.Ptr("gateway1"),
+		// 			},
+		// 	}},
+		// }
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_GetGateway.json
+func ExampleWorkloadNetworksClient_GetGateway() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armavs.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewWorkloadNetworksClient().GetGateway(ctx, "group1", "cloud1", "gateway1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.WorkloadNetworkGateway = armavs.WorkloadNetworkGateway{
+	// 	Name: to.Ptr("gateway1"),
+	// 	Type: to.Ptr("Microsoft.AVS/privateClouds/workloadNetworks/gateways"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default/gateways/gateway1"),
+	// 	Properties: &armavs.WorkloadNetworkGatewayProperties{
+	// 		Path: to.Ptr("/infra/tier-1s/gateway1"),
+	// 		DisplayName: to.Ptr("gateway1"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_ListPortMirroring.json
+func ExampleWorkloadNetworksClient_NewListPortMirroringPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armavs.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewWorkloadNetworksClient().NewListPortMirroringPager("group1", "cloud1", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.WorkloadNetworkPortMirroringList = armavs.WorkloadNetworkPortMirroringList{
+		// 	Value: []*armavs.WorkloadNetworkPortMirroring{
+		// 		{
+		// 			Name: to.Ptr("cloud1"),
+		// 			Type: to.Ptr("Microsoft.AVS/privateClouds/workloadNetworks/portMirroringProfiles"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default/portMirroringProfiles/portMirroring1"),
+		// 			Properties: &armavs.WorkloadNetworkPortMirroringProperties{
+		// 				Destination: to.Ptr("vmGroup2"),
+		// 				Direction: to.Ptr(armavs.PortMirroringDirectionEnumBIDIRECTIONAL),
+		// 				DisplayName: to.Ptr("portMirroring1"),
+		// 				Revision: to.Ptr[int64](1),
+		// 				Source: to.Ptr("vmGroup1"),
+		// 				Status: to.Ptr(armavs.PortMirroringStatusEnumSUCCESS),
+		// 			},
+		// 	}},
+		// }
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_GetPortMirroring.json
+func ExampleWorkloadNetworksClient_GetPortMirroring() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armavs.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewWorkloadNetworksClient().GetPortMirroring(ctx, "group1", "cloud1", "portMirroring1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.WorkloadNetworkPortMirroring = armavs.WorkloadNetworkPortMirroring{
+	// 	Name: to.Ptr("portMirroring1"),
+	// 	Type: to.Ptr("Microsoft.AVS/privateClouds/workloadNetworks/portMirroringProfiles"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default/portMirroringProfiles/portMirroring1"),
+	// 	Properties: &armavs.WorkloadNetworkPortMirroringProperties{
+	// 		Destination: to.Ptr("vmGroup2"),
+	// 		Direction: to.Ptr(armavs.PortMirroringDirectionEnumBIDIRECTIONAL),
+	// 		DisplayName: to.Ptr("portMirroring1"),
+	// 		Revision: to.Ptr[int64](1),
+	// 		Source: to.Ptr("vmGroup1"),
+	// 		Status: to.Ptr(armavs.PortMirroringStatusEnumSUCCESS),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_CreatePortMirroring.json
+func ExampleWorkloadNetworksClient_BeginCreatePortMirroring() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armavs.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewWorkloadNetworksClient().BeginCreatePortMirroring(ctx, "group1", "cloud1", "portMirroring1", armavs.WorkloadNetworkPortMirroring{
+		Properties: &armavs.WorkloadNetworkPortMirroringProperties{
+			Destination: to.Ptr("vmGroup2"),
+			Direction:   to.Ptr(armavs.PortMirroringDirectionEnumBIDIRECTIONAL),
+			DisplayName: to.Ptr("portMirroring1"),
+			Revision:    to.Ptr[int64](1),
+			Source:      to.Ptr("vmGroup1"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.WorkloadNetworkPortMirroring = armavs.WorkloadNetworkPortMirroring{
+	// 	Name: to.Ptr("portMirroring1"),
+	// 	Type: to.Ptr("Microsoft.AVS/privateClouds/workloadNetworks/portMirroringProfiles"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default/portMirroringProfiles/portMirroring1"),
+	// 	Properties: &armavs.WorkloadNetworkPortMirroringProperties{
+	// 		Destination: to.Ptr("vmGroup2"),
+	// 		Direction: to.Ptr(armavs.PortMirroringDirectionEnumBIDIRECTIONAL),
+	// 		DisplayName: to.Ptr("portMirroring1"),
+	// 		Revision: to.Ptr[int64](1),
+	// 		Source: to.Ptr("vmGroup1"),
+	// 		Status: to.Ptr(armavs.PortMirroringStatusEnumSUCCESS),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_UpdatePortMirroring.json
+func ExampleWorkloadNetworksClient_BeginUpdatePortMirroring() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armavs.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewWorkloadNetworksClient().BeginUpdatePortMirroring(ctx, "group1", "cloud1", "portMirroring1", armavs.WorkloadNetworkPortMirroring{
+		Properties: &armavs.WorkloadNetworkPortMirroringProperties{
+			Destination: to.Ptr("vmGroup2"),
+			Direction:   to.Ptr(armavs.PortMirroringDirectionEnumBIDIRECTIONAL),
+			Revision:    to.Ptr[int64](1),
+			Source:      to.Ptr("vmGroup1"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.WorkloadNetworkPortMirroring = armavs.WorkloadNetworkPortMirroring{
+	// 	Name: to.Ptr("portMirroring1"),
+	// 	Type: to.Ptr("Microsoft.AVS/privateClouds/workloadNetworks/portMirroringProfiles"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default/portMirroringProfiles/portMirroring1"),
+	// 	Properties: &armavs.WorkloadNetworkPortMirroringProperties{
+	// 		Destination: to.Ptr("vmGroup2"),
+	// 		Direction: to.Ptr(armavs.PortMirroringDirectionEnumBIDIRECTIONAL),
+	// 		DisplayName: to.Ptr("portMirroring1"),
+	// 		Revision: to.Ptr[int64](2),
+	// 		Source: to.Ptr("vmGroup1"),
+	// 		Status: to.Ptr(armavs.PortMirroringStatusEnumSUCCESS),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_DeletePortMirroring.json
+func ExampleWorkloadNetworksClient_BeginDeletePortMirroring() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armavs.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewWorkloadNetworksClient().BeginDeletePortMirroring(ctx, "group1", "portMirroring1", "cloud1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_ListPublicIPs.json
+func ExampleWorkloadNetworksClient_NewListPublicIPsPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armavs.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewWorkloadNetworksClient().NewListPublicIPsPager("group1", "cloud1", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.WorkloadNetworkPublicIPsList = armavs.WorkloadNetworkPublicIPsList{
+		// 	Value: []*armavs.WorkloadNetworkPublicIP{
+		// 		{
+		// 			Name: to.Ptr("publicIP1"),
+		// 			Type: to.Ptr("Microsoft.AVS/privateClouds/workloadNetworks/publicIPs"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default/publicIPs/publicIP1"),
+		// 			Properties: &armavs.WorkloadNetworkPublicIPProperties{
+		// 				DisplayName: to.Ptr("publicIP1"),
+		// 				PublicIPBlock: to.Ptr("20.20.40.50/32"),
+		// 			},
+		// 	}},
+		// }
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_GetPublicIP.json
+func ExampleWorkloadNetworksClient_GetPublicIP() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armavs.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewWorkloadNetworksClient().GetPublicIP(ctx, "group1", "cloud1", "publicIP1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.WorkloadNetworkPublicIP = armavs.WorkloadNetworkPublicIP{
+	// 	Name: to.Ptr("publicIP1"),
+	// 	Type: to.Ptr("Microsoft.AVS/privateClouds/workloadNetworks/publicIPs"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default/publicIPs/publicIP1"),
+	// 	Properties: &armavs.WorkloadNetworkPublicIPProperties{
+	// 		DisplayName: to.Ptr("publicIP1"),
+	// 		PublicIPBlock: to.Ptr("20.20.40.50/32"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_CreatePublicIP.json
+func ExampleWorkloadNetworksClient_BeginCreatePublicIP() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armavs.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewWorkloadNetworksClient().BeginCreatePublicIP(ctx, "group1", "cloud1", "publicIP1", armavs.WorkloadNetworkPublicIP{
+		Properties: &armavs.WorkloadNetworkPublicIPProperties{
+			DisplayName:       to.Ptr("publicIP1"),
+			NumberOfPublicIPs: to.Ptr[int64](32),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.WorkloadNetworkPublicIP = armavs.WorkloadNetworkPublicIP{
+	// 	Name: to.Ptr("publicIP1"),
+	// 	Type: to.Ptr("Microsoft.AVS/privateClouds/workloadNetworks/publicIPs"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default/publicIPs/publicIP1"),
+	// 	Properties: &armavs.WorkloadNetworkPublicIPProperties{
+	// 		DisplayName: to.Ptr("publicIP1"),
+	// 		PublicIPBlock: to.Ptr("20.20.40.50/32"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_DeletePublicIP.json
+func ExampleWorkloadNetworksClient_BeginDeletePublicIP() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armavs.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewWorkloadNetworksClient().BeginDeletePublicIP(ctx, "group1", "publicIP1", "cloud1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_ListSegments.json
 func ExampleWorkloadNetworksClient_NewListSegmentsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -124,7 +1083,7 @@ func ExampleWorkloadNetworksClient_NewListSegmentsPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a5e7ff51c8af3781e7f6dd3b82a3fc922e2f6f93/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_GetSegments.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_GetSegment.json
 func ExampleWorkloadNetworksClient_GetSegment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -164,7 +1123,7 @@ func ExampleWorkloadNetworksClient_GetSegment() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a5e7ff51c8af3781e7f6dd3b82a3fc922e2f6f93/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_CreateSegments.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_CreateSegments.json
 func ExampleWorkloadNetworksClient_BeginCreateSegments() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -217,7 +1176,7 @@ func ExampleWorkloadNetworksClient_BeginCreateSegments() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a5e7ff51c8af3781e7f6dd3b82a3fc922e2f6f93/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_UpdateSegments.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_UpdateSegments.json
 func ExampleWorkloadNetworksClient_BeginUpdateSegments() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -271,7 +1230,7 @@ func ExampleWorkloadNetworksClient_BeginUpdateSegments() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a5e7ff51c8af3781e7f6dd3b82a3fc922e2f6f93/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_DeleteSegments.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_DeleteSegment.json
 func ExampleWorkloadNetworksClient_BeginDeleteSegment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -292,8 +1251,8 @@ func ExampleWorkloadNetworksClient_BeginDeleteSegment() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a5e7ff51c8af3781e7f6dd3b82a3fc922e2f6f93/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_ListDhcpConfigurations.json
-func ExampleWorkloadNetworksClient_NewListDhcpPager() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_ListVirtualMachines.json
+func ExampleWorkloadNetworksClient_NewListVirtualMachinesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -303,7 +1262,7 @@ func ExampleWorkloadNetworksClient_NewListDhcpPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewWorkloadNetworksClient().NewListDhcpPager("group1", "cloud1", nil)
+	pager := clientFactory.NewWorkloadNetworksClient().NewListVirtualMachinesPager("group1", "cloud1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -314,215 +1273,23 @@ func ExampleWorkloadNetworksClient_NewListDhcpPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.WorkloadNetworkDhcpList = armavs.WorkloadNetworkDhcpList{
-		// 	Value: []*armavs.WorkloadNetworkDhcp{
+		// page.WorkloadNetworkVirtualMachinesList = armavs.WorkloadNetworkVirtualMachinesList{
+		// 	Value: []*armavs.WorkloadNetworkVirtualMachine{
 		// 		{
-		// 			Name: to.Ptr("dhcp1"),
-		// 			Type: to.Ptr("Microsoft.AVS/privateClouds/workloadNetworks/dhcpConfigurations"),
-		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default/dhcpConfigurations/dhcpConfigurations1"),
-		// 			Properties: &armavs.WorkloadNetworkDhcpServer{
-		// 				DhcpType: to.Ptr(armavs.DhcpTypeEnumSERVER),
-		// 				DisplayName: to.Ptr("dhcpConfigurations1"),
-		// 				Revision: to.Ptr[int64](1),
-		// 				Segments: []*string{
-		// 					to.Ptr("segment1"),
-		// 					to.Ptr("segment2")},
-		// 					LeaseTime: to.Ptr[int64](86400),
-		// 					ServerAddress: to.Ptr("40.1.5.1/24"),
-		// 				},
-		// 		}},
-		// 	}
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a5e7ff51c8af3781e7f6dd3b82a3fc922e2f6f93/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_GetDhcpConfigurations.json
-func ExampleWorkloadNetworksClient_GetDhcp() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armavs.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewWorkloadNetworksClient().GetDhcp(ctx, "group1", "dhcp1", "cloud1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.WorkloadNetworkDhcp = armavs.WorkloadNetworkDhcp{
-	// 	Name: to.Ptr("dhcp1"),
-	// 	Type: to.Ptr("Microsoft.AVS/privateClouds/workloadNetworks/dhcpConfigurations"),
-	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default/dhcpConfigurations/dhcpConfigurations1"),
-	// 	Properties: &armavs.WorkloadNetworkDhcpServer{
-	// 		DhcpType: to.Ptr(armavs.DhcpTypeEnumSERVER),
-	// 		DisplayName: to.Ptr("dhcpConfigurations1"),
-	// 		Revision: to.Ptr[int64](1),
-	// 		Segments: []*string{
-	// 			to.Ptr("segment1"),
-	// 			to.Ptr("segment2")},
-	// 			LeaseTime: to.Ptr[int64](86400),
-	// 			ServerAddress: to.Ptr("40.1.5.1/24"),
-	// 		},
-	// 	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a5e7ff51c8af3781e7f6dd3b82a3fc922e2f6f93/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_CreateDhcpConfigurations.json
-func ExampleWorkloadNetworksClient_BeginCreateDhcp() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armavs.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewWorkloadNetworksClient().BeginCreateDhcp(ctx, "group1", "cloud1", "dhcp1", armavs.WorkloadNetworkDhcp{
-		Properties: &armavs.WorkloadNetworkDhcpServer{
-			DhcpType:      to.Ptr(armavs.DhcpTypeEnumSERVER),
-			DisplayName:   to.Ptr("dhcpConfigurations1"),
-			Revision:      to.Ptr[int64](1),
-			LeaseTime:     to.Ptr[int64](86400),
-			ServerAddress: to.Ptr("40.1.5.1/24"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.WorkloadNetworkDhcp = armavs.WorkloadNetworkDhcp{
-	// 	Name: to.Ptr("dhcp1"),
-	// 	Type: to.Ptr("Microsoft.AVS/privateClouds/workloadNetworks/dhcpConfigurations"),
-	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default/dhcpConfigurations/dhcpConfigurations1"),
-	// 	Properties: &armavs.WorkloadNetworkDhcpServer{
-	// 		DhcpType: to.Ptr(armavs.DhcpTypeEnumSERVER),
-	// 		DisplayName: to.Ptr("dhcpConfigurations1"),
-	// 		Revision: to.Ptr[int64](1),
-	// 		Segments: []*string{
-	// 			to.Ptr("segment1"),
-	// 			to.Ptr("segment2")},
-	// 			LeaseTime: to.Ptr[int64](86400),
-	// 			ServerAddress: to.Ptr("40.1.5.1/24"),
-	// 		},
-	// 	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a5e7ff51c8af3781e7f6dd3b82a3fc922e2f6f93/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_UpdateDhcpConfigurations.json
-func ExampleWorkloadNetworksClient_BeginUpdateDhcp() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armavs.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewWorkloadNetworksClient().BeginUpdateDhcp(ctx, "group1", "cloud1", "dhcp1", armavs.WorkloadNetworkDhcp{
-		Properties: &armavs.WorkloadNetworkDhcpServer{
-			DhcpType:      to.Ptr(armavs.DhcpTypeEnumSERVER),
-			Revision:      to.Ptr[int64](1),
-			LeaseTime:     to.Ptr[int64](86400),
-			ServerAddress: to.Ptr("40.1.5.1/24"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.WorkloadNetworkDhcp = armavs.WorkloadNetworkDhcp{
-	// 	Name: to.Ptr("dhcp1"),
-	// 	Type: to.Ptr("Microsoft.AVS/privateClouds/workloadNetworks/dhcpConfigurations"),
-	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default/dhcpConfigurations/dhcpConfigurations1"),
-	// 	Properties: &armavs.WorkloadNetworkDhcpServer{
-	// 		DhcpType: to.Ptr(armavs.DhcpTypeEnumSERVER),
-	// 		DisplayName: to.Ptr("dhcpConfigurations1"),
-	// 		Revision: to.Ptr[int64](2),
-	// 		Segments: []*string{
-	// 			to.Ptr("segment1"),
-	// 			to.Ptr("segment2")},
-	// 			LeaseTime: to.Ptr[int64](86400),
-	// 			ServerAddress: to.Ptr("40.1.5.1/24"),
-	// 		},
-	// 	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a5e7ff51c8af3781e7f6dd3b82a3fc922e2f6f93/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_DeleteDhcpConfigurations.json
-func ExampleWorkloadNetworksClient_BeginDeleteDhcp() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armavs.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewWorkloadNetworksClient().BeginDeleteDhcp(ctx, "group1", "cloud1", "dhcp1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a5e7ff51c8af3781e7f6dd3b82a3fc922e2f6f93/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_ListGateways.json
-func ExampleWorkloadNetworksClient_NewListGatewaysPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armavs.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewWorkloadNetworksClient().NewListGatewaysPager("group1", "cloud1", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.WorkloadNetworkGatewayList = armavs.WorkloadNetworkGatewayList{
-		// 	Value: []*armavs.WorkloadNetworkGateway{
-		// 		{
-		// 			Name: to.Ptr("gateway1"),
-		// 			Type: to.Ptr("Microsoft.AVS/privateClouds/workloadNetworks/segments"),
-		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default/gateways/gateway1"),
-		// 			Properties: &armavs.WorkloadNetworkGatewayProperties{
-		// 				Path: to.Ptr("/infra/tier-1s/gateway1"),
-		// 				DisplayName: to.Ptr("gateway1"),
+		// 			Name: to.Ptr("vm1"),
+		// 			Type: to.Ptr("Microsoft.AVS/privateClouds/workloadNetworks/virtualMachines"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default/virtualMachines/vm1"),
+		// 			Properties: &armavs.WorkloadNetworkVirtualMachineProperties{
+		// 				DisplayName: to.Ptr("vm1"),
+		// 				VMType: to.Ptr(armavs.VMTypeEnumREGULAR),
 		// 			},
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a5e7ff51c8af3781e7f6dd3b82a3fc922e2f6f93/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_GetGateway.json
-func ExampleWorkloadNetworksClient_GetGateway() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_GetVirtualMachine.json
+func ExampleWorkloadNetworksClient_GetVirtualMachine() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -532,209 +1299,25 @@ func ExampleWorkloadNetworksClient_GetGateway() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewWorkloadNetworksClient().GetGateway(ctx, "group1", "cloud1", "gateway1", nil)
+	res, err := clientFactory.NewWorkloadNetworksClient().GetVirtualMachine(ctx, "group1", "cloud1", "vm1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.WorkloadNetworkGateway = armavs.WorkloadNetworkGateway{
-	// 	Name: to.Ptr("gateway1"),
-	// 	Type: to.Ptr("Microsoft.AVS/privateClouds/workloadNetworks/gateways"),
-	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default/gateways/gateway1"),
-	// 	Properties: &armavs.WorkloadNetworkGatewayProperties{
-	// 		Path: to.Ptr("/infra/tier-1s/gateway1"),
-	// 		DisplayName: to.Ptr("gateway1"),
+	// res.WorkloadNetworkVirtualMachine = armavs.WorkloadNetworkVirtualMachine{
+	// 	Name: to.Ptr("vm1"),
+	// 	Type: to.Ptr("Microsoft.AVS/privateClouds/workloadNetworks/virtualMachines"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default/virtualMachines/vm1"),
+	// 	Properties: &armavs.WorkloadNetworkVirtualMachineProperties{
+	// 		DisplayName: to.Ptr("vm1"),
+	// 		VMType: to.Ptr(armavs.VMTypeEnumREGULAR),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a5e7ff51c8af3781e7f6dd3b82a3fc922e2f6f93/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_ListPortMirroringProfiles.json
-func ExampleWorkloadNetworksClient_NewListPortMirroringPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armavs.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewWorkloadNetworksClient().NewListPortMirroringPager("group1", "cloud1", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.WorkloadNetworkPortMirroringList = armavs.WorkloadNetworkPortMirroringList{
-		// 	Value: []*armavs.WorkloadNetworkPortMirroring{
-		// 		{
-		// 			Name: to.Ptr("cloud1"),
-		// 			Type: to.Ptr("Microsoft.AVS/privateClouds/workloadNetworks/portMirroringProfiles"),
-		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default/portMirroringProfiles/portMirroring1"),
-		// 			Properties: &armavs.WorkloadNetworkPortMirroringProperties{
-		// 				Destination: to.Ptr("vmGroup2"),
-		// 				Direction: to.Ptr(armavs.PortMirroringDirectionEnumBIDIRECTIONAL),
-		// 				DisplayName: to.Ptr("portMirroring1"),
-		// 				Revision: to.Ptr[int64](1),
-		// 				Source: to.Ptr("vmGroup1"),
-		// 				Status: to.Ptr(armavs.PortMirroringStatusEnumSUCCESS),
-		// 			},
-		// 	}},
-		// }
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a5e7ff51c8af3781e7f6dd3b82a3fc922e2f6f93/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_GetPortMirroringProfiles.json
-func ExampleWorkloadNetworksClient_GetPortMirroring() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armavs.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewWorkloadNetworksClient().GetPortMirroring(ctx, "group1", "cloud1", "portMirroring1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.WorkloadNetworkPortMirroring = armavs.WorkloadNetworkPortMirroring{
-	// 	Name: to.Ptr("portMirroring1"),
-	// 	Type: to.Ptr("Microsoft.AVS/privateClouds/workloadNetworks/portMirroringProfiles"),
-	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default/portMirroringProfiles/portMirroring1"),
-	// 	Properties: &armavs.WorkloadNetworkPortMirroringProperties{
-	// 		Destination: to.Ptr("vmGroup2"),
-	// 		Direction: to.Ptr(armavs.PortMirroringDirectionEnumBIDIRECTIONAL),
-	// 		DisplayName: to.Ptr("portMirroring1"),
-	// 		Revision: to.Ptr[int64](1),
-	// 		Source: to.Ptr("vmGroup1"),
-	// 		Status: to.Ptr(armavs.PortMirroringStatusEnumSUCCESS),
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a5e7ff51c8af3781e7f6dd3b82a3fc922e2f6f93/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_CreatePortMirroringProfiles.json
-func ExampleWorkloadNetworksClient_BeginCreatePortMirroring() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armavs.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewWorkloadNetworksClient().BeginCreatePortMirroring(ctx, "group1", "cloud1", "portMirroring1", armavs.WorkloadNetworkPortMirroring{
-		Properties: &armavs.WorkloadNetworkPortMirroringProperties{
-			Destination: to.Ptr("vmGroup2"),
-			Direction:   to.Ptr(armavs.PortMirroringDirectionEnumBIDIRECTIONAL),
-			DisplayName: to.Ptr("portMirroring1"),
-			Revision:    to.Ptr[int64](1),
-			Source:      to.Ptr("vmGroup1"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.WorkloadNetworkPortMirroring = armavs.WorkloadNetworkPortMirroring{
-	// 	Name: to.Ptr("portMirroring1"),
-	// 	Type: to.Ptr("Microsoft.AVS/privateClouds/workloadNetworks/portMirroringProfiles"),
-	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default/portMirroringProfiles/portMirroring1"),
-	// 	Properties: &armavs.WorkloadNetworkPortMirroringProperties{
-	// 		Destination: to.Ptr("vmGroup2"),
-	// 		Direction: to.Ptr(armavs.PortMirroringDirectionEnumBIDIRECTIONAL),
-	// 		DisplayName: to.Ptr("portMirroring1"),
-	// 		Revision: to.Ptr[int64](1),
-	// 		Source: to.Ptr("vmGroup1"),
-	// 		Status: to.Ptr(armavs.PortMirroringStatusEnumSUCCESS),
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a5e7ff51c8af3781e7f6dd3b82a3fc922e2f6f93/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_UpdatePortMirroringProfiles.json
-func ExampleWorkloadNetworksClient_BeginUpdatePortMirroring() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armavs.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewWorkloadNetworksClient().BeginUpdatePortMirroring(ctx, "group1", "cloud1", "portMirroring1", armavs.WorkloadNetworkPortMirroring{
-		Properties: &armavs.WorkloadNetworkPortMirroringProperties{
-			Destination: to.Ptr("vmGroup2"),
-			Direction:   to.Ptr(armavs.PortMirroringDirectionEnumBIDIRECTIONAL),
-			Revision:    to.Ptr[int64](1),
-			Source:      to.Ptr("vmGroup1"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.WorkloadNetworkPortMirroring = armavs.WorkloadNetworkPortMirroring{
-	// 	Name: to.Ptr("portMirroring1"),
-	// 	Type: to.Ptr("Microsoft.AVS/privateClouds/workloadNetworks/portMirroringProfiles"),
-	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default/portMirroringProfiles/portMirroring1"),
-	// 	Properties: &armavs.WorkloadNetworkPortMirroringProperties{
-	// 		Destination: to.Ptr("vmGroup2"),
-	// 		Direction: to.Ptr(armavs.PortMirroringDirectionEnumBIDIRECTIONAL),
-	// 		DisplayName: to.Ptr("portMirroring1"),
-	// 		Revision: to.Ptr[int64](2),
-	// 		Source: to.Ptr("vmGroup1"),
-	// 		Status: to.Ptr(armavs.PortMirroringStatusEnumSUCCESS),
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a5e7ff51c8af3781e7f6dd3b82a3fc922e2f6f93/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_DeletePortMirroringProfiles.json
-func ExampleWorkloadNetworksClient_BeginDeletePortMirroring() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armavs.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewWorkloadNetworksClient().BeginDeletePortMirroring(ctx, "group1", "portMirroring1", "cloud1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a5e7ff51c8af3781e7f6dd3b82a3fc922e2f6f93/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_ListVMGroups.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_ListVMGroups.json
 func ExampleWorkloadNetworksClient_NewListVMGroupsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -774,7 +1357,7 @@ func ExampleWorkloadNetworksClient_NewListVMGroupsPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a5e7ff51c8af3781e7f6dd3b82a3fc922e2f6f93/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_GetVMGroups.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_GetVMGroup.json
 func ExampleWorkloadNetworksClient_GetVMGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -806,7 +1389,7 @@ func ExampleWorkloadNetworksClient_GetVMGroup() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a5e7ff51c8af3781e7f6dd3b82a3fc922e2f6f93/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_CreateVMGroups.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_CreateVMGroup.json
 func ExampleWorkloadNetworksClient_BeginCreateVMGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -849,7 +1432,7 @@ func ExampleWorkloadNetworksClient_BeginCreateVMGroup() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a5e7ff51c8af3781e7f6dd3b82a3fc922e2f6f93/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_UpdateVMGroups.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_UpdateVMGroup.json
 func ExampleWorkloadNetworksClient_BeginUpdateVMGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -891,7 +1474,7 @@ func ExampleWorkloadNetworksClient_BeginUpdateVMGroup() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a5e7ff51c8af3781e7f6dd3b82a3fc922e2f6f93/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_DeleteVMGroups.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_DeleteVMGroup.json
 func ExampleWorkloadNetworksClient_BeginDeleteVMGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -903,589 +1486,6 @@ func ExampleWorkloadNetworksClient_BeginDeleteVMGroup() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewWorkloadNetworksClient().BeginDeleteVMGroup(ctx, "group1", "vmGroup1", "cloud1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a5e7ff51c8af3781e7f6dd3b82a3fc922e2f6f93/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_ListVirtualMachines.json
-func ExampleWorkloadNetworksClient_NewListVirtualMachinesPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armavs.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewWorkloadNetworksClient().NewListVirtualMachinesPager("group1", "cloud1", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.WorkloadNetworkVirtualMachinesList = armavs.WorkloadNetworkVirtualMachinesList{
-		// 	Value: []*armavs.WorkloadNetworkVirtualMachine{
-		// 		{
-		// 			Name: to.Ptr("vm1"),
-		// 			Type: to.Ptr("Microsoft.AVS/privateClouds/workloadNetworks/virtualMachines"),
-		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default/virtualMachines/vm1"),
-		// 			Properties: &armavs.WorkloadNetworkVirtualMachineProperties{
-		// 				DisplayName: to.Ptr("vm1"),
-		// 				VMType: to.Ptr(armavs.VMTypeEnumREGULAR),
-		// 			},
-		// 	}},
-		// }
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a5e7ff51c8af3781e7f6dd3b82a3fc922e2f6f93/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_GetVirtualMachine.json
-func ExampleWorkloadNetworksClient_GetVirtualMachine() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armavs.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewWorkloadNetworksClient().GetVirtualMachine(ctx, "group1", "cloud1", "vm1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.WorkloadNetworkVirtualMachine = armavs.WorkloadNetworkVirtualMachine{
-	// 	Name: to.Ptr("vm1"),
-	// 	Type: to.Ptr("Microsoft.AVS/privateClouds/workloadNetworks/virtualMachines"),
-	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default/virtualMachines/vm1"),
-	// 	Properties: &armavs.WorkloadNetworkVirtualMachineProperties{
-	// 		DisplayName: to.Ptr("vm1"),
-	// 		VMType: to.Ptr(armavs.VMTypeEnumREGULAR),
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a5e7ff51c8af3781e7f6dd3b82a3fc922e2f6f93/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_ListDnsServices.json
-func ExampleWorkloadNetworksClient_NewListDNSServicesPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armavs.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewWorkloadNetworksClient().NewListDNSServicesPager("group1", "cloud1", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.WorkloadNetworkDNSServicesList = armavs.WorkloadNetworkDNSServicesList{
-		// 	Value: []*armavs.WorkloadNetworkDNSService{
-		// 		{
-		// 			Name: to.Ptr("portMirroring1"),
-		// 			Type: to.Ptr("Microsoft.AVS/privateClouds/workloadNetworks/dnsServices"),
-		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default/dnsServices/dnsService1"),
-		// 			Properties: &armavs.WorkloadNetworkDNSServiceProperties{
-		// 				DefaultDNSZone: to.Ptr("defaultDnsZone1"),
-		// 				DisplayName: to.Ptr("dnsService1"),
-		// 				DNSServiceIP: to.Ptr("5.5.5.5"),
-		// 				FqdnZones: []*string{
-		// 					to.Ptr("fqdnZone1")},
-		// 					LogLevel: to.Ptr(armavs.DNSServiceLogLevelEnumINFO),
-		// 					Revision: to.Ptr[int64](1),
-		// 					Status: to.Ptr(armavs.DNSServiceStatusEnumSUCCESS),
-		// 				},
-		// 		}},
-		// 	}
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a5e7ff51c8af3781e7f6dd3b82a3fc922e2f6f93/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_GetDnsServices.json
-func ExampleWorkloadNetworksClient_GetDNSService() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armavs.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewWorkloadNetworksClient().GetDNSService(ctx, "group1", "cloud1", "dnsService1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.WorkloadNetworkDNSService = armavs.WorkloadNetworkDNSService{
-	// 	Name: to.Ptr("portMirroring1"),
-	// 	Type: to.Ptr("Microsoft.AVS/privateClouds/workloadNetworks/dnsServices"),
-	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default/dnsServices/dnsService1"),
-	// 	Properties: &armavs.WorkloadNetworkDNSServiceProperties{
-	// 		DefaultDNSZone: to.Ptr("defaultDnsZone1"),
-	// 		DisplayName: to.Ptr("dnsService1"),
-	// 		DNSServiceIP: to.Ptr("5.5.5.5"),
-	// 		FqdnZones: []*string{
-	// 			to.Ptr("fqdnZone1")},
-	// 			LogLevel: to.Ptr(armavs.DNSServiceLogLevelEnumINFO),
-	// 			Revision: to.Ptr[int64](1),
-	// 			Status: to.Ptr(armavs.DNSServiceStatusEnumSUCCESS),
-	// 		},
-	// 	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a5e7ff51c8af3781e7f6dd3b82a3fc922e2f6f93/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_CreateDnsServices.json
-func ExampleWorkloadNetworksClient_BeginCreateDNSService() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armavs.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewWorkloadNetworksClient().BeginCreateDNSService(ctx, "group1", "cloud1", "dnsService1", armavs.WorkloadNetworkDNSService{
-		Properties: &armavs.WorkloadNetworkDNSServiceProperties{
-			DefaultDNSZone: to.Ptr("defaultDnsZone1"),
-			DisplayName:    to.Ptr("dnsService1"),
-			DNSServiceIP:   to.Ptr("5.5.5.5"),
-			FqdnZones: []*string{
-				to.Ptr("fqdnZone1")},
-			LogLevel: to.Ptr(armavs.DNSServiceLogLevelEnumINFO),
-			Revision: to.Ptr[int64](1),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.WorkloadNetworkDNSService = armavs.WorkloadNetworkDNSService{
-	// 	Name: to.Ptr("dnsService1"),
-	// 	Type: to.Ptr("Microsoft.AVS/privateClouds/workloadNetworks/dnsServices"),
-	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default/dnsServices/dnsService1"),
-	// 	Properties: &armavs.WorkloadNetworkDNSServiceProperties{
-	// 		DefaultDNSZone: to.Ptr("defaultDnsZone1"),
-	// 		DisplayName: to.Ptr("dnsService1"),
-	// 		DNSServiceIP: to.Ptr("5.5.5.5"),
-	// 		FqdnZones: []*string{
-	// 			to.Ptr("fqdnZone1")},
-	// 			LogLevel: to.Ptr(armavs.DNSServiceLogLevelEnumINFO),
-	// 			Revision: to.Ptr[int64](1),
-	// 			Status: to.Ptr(armavs.DNSServiceStatusEnumSUCCESS),
-	// 		},
-	// 	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a5e7ff51c8af3781e7f6dd3b82a3fc922e2f6f93/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_UpdateDnsServices.json
-func ExampleWorkloadNetworksClient_BeginUpdateDNSService() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armavs.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewWorkloadNetworksClient().BeginUpdateDNSService(ctx, "group1", "cloud1", "dnsService1", armavs.WorkloadNetworkDNSService{
-		Properties: &armavs.WorkloadNetworkDNSServiceProperties{
-			DefaultDNSZone: to.Ptr("defaultDnsZone1"),
-			DisplayName:    to.Ptr("dnsService1"),
-			DNSServiceIP:   to.Ptr("5.5.5.5"),
-			FqdnZones: []*string{
-				to.Ptr("fqdnZone1")},
-			LogLevel: to.Ptr(armavs.DNSServiceLogLevelEnumINFO),
-			Revision: to.Ptr[int64](1),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.WorkloadNetworkDNSService = armavs.WorkloadNetworkDNSService{
-	// 	Name: to.Ptr("dnsService1"),
-	// 	Type: to.Ptr("Microsoft.AVS/privateClouds/workloadNetworks/dnsServices"),
-	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default/dnsServices/dnsService1"),
-	// 	Properties: &armavs.WorkloadNetworkDNSServiceProperties{
-	// 		DefaultDNSZone: to.Ptr("defaultDnsZone1"),
-	// 		DisplayName: to.Ptr("dnsService1"),
-	// 		DNSServiceIP: to.Ptr("5.5.5.5"),
-	// 		FqdnZones: []*string{
-	// 			to.Ptr("fqdnZone1")},
-	// 			LogLevel: to.Ptr(armavs.DNSServiceLogLevelEnumINFO),
-	// 			Revision: to.Ptr[int64](1),
-	// 			Status: to.Ptr(armavs.DNSServiceStatusEnumSUCCESS),
-	// 		},
-	// 	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a5e7ff51c8af3781e7f6dd3b82a3fc922e2f6f93/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_DeleteDnsServices.json
-func ExampleWorkloadNetworksClient_BeginDeleteDNSService() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armavs.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewWorkloadNetworksClient().BeginDeleteDNSService(ctx, "group1", "dnsService1", "cloud1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a5e7ff51c8af3781e7f6dd3b82a3fc922e2f6f93/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_ListDnsZones.json
-func ExampleWorkloadNetworksClient_NewListDNSZonesPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armavs.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewWorkloadNetworksClient().NewListDNSZonesPager("group1", "cloud1", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.WorkloadNetworkDNSZonesList = armavs.WorkloadNetworkDNSZonesList{
-		// 	Value: []*armavs.WorkloadNetworkDNSZone{
-		// 		{
-		// 			Name: to.Ptr("portMirroring1"),
-		// 			Type: to.Ptr("Microsoft.AVS/privateClouds/workloadNetworks/dnsZones"),
-		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default/dnsZones/dnsZone1"),
-		// 			Properties: &armavs.WorkloadNetworkDNSZoneProperties{
-		// 				DisplayName: to.Ptr("dnsZone1"),
-		// 				DNSServerIPs: []*string{
-		// 					to.Ptr("1.1.1.1")},
-		// 					DNSServices: to.Ptr[int64](0),
-		// 					Domain: []*string{
-		// 					},
-		// 					Revision: to.Ptr[int64](1),
-		// 					SourceIP: to.Ptr("8.8.8.8"),
-		// 				},
-		// 		}},
-		// 	}
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a5e7ff51c8af3781e7f6dd3b82a3fc922e2f6f93/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_GetDnsZones.json
-func ExampleWorkloadNetworksClient_GetDNSZone() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armavs.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewWorkloadNetworksClient().GetDNSZone(ctx, "group1", "cloud1", "dnsZone1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.WorkloadNetworkDNSZone = armavs.WorkloadNetworkDNSZone{
-	// 	Name: to.Ptr("portMirroring1"),
-	// 	Type: to.Ptr("Microsoft.AVS/privateClouds/workloadNetworks/dnsZones"),
-	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default/dnsZones/dnsZone1"),
-	// 	Properties: &armavs.WorkloadNetworkDNSZoneProperties{
-	// 		DisplayName: to.Ptr("dnsZone1"),
-	// 		DNSServerIPs: []*string{
-	// 			to.Ptr("1.1.1.1")},
-	// 			DNSServices: to.Ptr[int64](0),
-	// 			Domain: []*string{
-	// 			},
-	// 			Revision: to.Ptr[int64](1),
-	// 			SourceIP: to.Ptr("8.8.8.8"),
-	// 		},
-	// 	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a5e7ff51c8af3781e7f6dd3b82a3fc922e2f6f93/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_CreateDnsZones.json
-func ExampleWorkloadNetworksClient_BeginCreateDNSZone() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armavs.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewWorkloadNetworksClient().BeginCreateDNSZone(ctx, "group1", "cloud1", "dnsZone1", armavs.WorkloadNetworkDNSZone{
-		Properties: &armavs.WorkloadNetworkDNSZoneProperties{
-			DisplayName: to.Ptr("dnsZone1"),
-			DNSServerIPs: []*string{
-				to.Ptr("1.1.1.1")},
-			Domain:   []*string{},
-			Revision: to.Ptr[int64](1),
-			SourceIP: to.Ptr("8.8.8.8"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.WorkloadNetworkDNSZone = armavs.WorkloadNetworkDNSZone{
-	// 	Name: to.Ptr("dnsZone1"),
-	// 	Type: to.Ptr("Microsoft.AVS/privateClouds/workloadNetworks/dnsZones"),
-	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default/dnsZones/dnsZone1"),
-	// 	Properties: &armavs.WorkloadNetworkDNSZoneProperties{
-	// 		DisplayName: to.Ptr("dnsZone1"),
-	// 		DNSServerIPs: []*string{
-	// 			to.Ptr("1.1.1.1")},
-	// 			DNSServices: to.Ptr[int64](0),
-	// 			Domain: []*string{
-	// 			},
-	// 			Revision: to.Ptr[int64](1),
-	// 			SourceIP: to.Ptr("8.8.8.8"),
-	// 		},
-	// 	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a5e7ff51c8af3781e7f6dd3b82a3fc922e2f6f93/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_UpdateDnsZones.json
-func ExampleWorkloadNetworksClient_BeginUpdateDNSZone() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armavs.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewWorkloadNetworksClient().BeginUpdateDNSZone(ctx, "group1", "cloud1", "dnsZone1", armavs.WorkloadNetworkDNSZone{
-		Properties: &armavs.WorkloadNetworkDNSZoneProperties{
-			DisplayName: to.Ptr("dnsZone1"),
-			DNSServerIPs: []*string{
-				to.Ptr("1.1.1.1")},
-			Domain:   []*string{},
-			Revision: to.Ptr[int64](1),
-			SourceIP: to.Ptr("8.8.8.8"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.WorkloadNetworkDNSZone = armavs.WorkloadNetworkDNSZone{
-	// 	Name: to.Ptr("dnsZone1"),
-	// 	Type: to.Ptr("Microsoft.AVS/privateClouds/workloadNetworks/dnsZones"),
-	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default/dnsZones/dnsZone1"),
-	// 	Properties: &armavs.WorkloadNetworkDNSZoneProperties{
-	// 		DisplayName: to.Ptr("dnsZone1"),
-	// 		DNSServerIPs: []*string{
-	// 			to.Ptr("1.1.1.1")},
-	// 			DNSServices: to.Ptr[int64](0),
-	// 			Domain: []*string{
-	// 			},
-	// 			Revision: to.Ptr[int64](1),
-	// 			SourceIP: to.Ptr("8.8.8.8"),
-	// 		},
-	// 	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a5e7ff51c8af3781e7f6dd3b82a3fc922e2f6f93/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_DeleteDnsZones.json
-func ExampleWorkloadNetworksClient_BeginDeleteDNSZone() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armavs.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewWorkloadNetworksClient().BeginDeleteDNSZone(ctx, "group1", "dnsZone1", "cloud1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a5e7ff51c8af3781e7f6dd3b82a3fc922e2f6f93/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_ListPublicIPs.json
-func ExampleWorkloadNetworksClient_NewListPublicIPsPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armavs.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewWorkloadNetworksClient().NewListPublicIPsPager("group1", "cloud1", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.WorkloadNetworkPublicIPsList = armavs.WorkloadNetworkPublicIPsList{
-		// 	Value: []*armavs.WorkloadNetworkPublicIP{
-		// 		{
-		// 			Name: to.Ptr("publicIP1"),
-		// 			Type: to.Ptr("Microsoft.AVS/privateClouds/workloadNetworks/publicIPs"),
-		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default/publicIPs/publicIP1"),
-		// 			Properties: &armavs.WorkloadNetworkPublicIPProperties{
-		// 				DisplayName: to.Ptr("publicIP1"),
-		// 				PublicIPBlock: to.Ptr("20.20.40.50/32"),
-		// 			},
-		// 	}},
-		// }
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a5e7ff51c8af3781e7f6dd3b82a3fc922e2f6f93/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_GetPublicIPs.json
-func ExampleWorkloadNetworksClient_GetPublicIP() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armavs.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewWorkloadNetworksClient().GetPublicIP(ctx, "group1", "cloud1", "publicIP1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.WorkloadNetworkPublicIP = armavs.WorkloadNetworkPublicIP{
-	// 	Name: to.Ptr("publicIP1"),
-	// 	Type: to.Ptr("Microsoft.AVS/privateClouds/workloadNetworks/publicIPs"),
-	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default/publicIPs/publicIP1"),
-	// 	Properties: &armavs.WorkloadNetworkPublicIPProperties{
-	// 		DisplayName: to.Ptr("publicIP1"),
-	// 		PublicIPBlock: to.Ptr("20.20.40.50/32"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a5e7ff51c8af3781e7f6dd3b82a3fc922e2f6f93/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_CreatePublicIPs.json
-func ExampleWorkloadNetworksClient_BeginCreatePublicIP() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armavs.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewWorkloadNetworksClient().BeginCreatePublicIP(ctx, "group1", "cloud1", "publicIP1", armavs.WorkloadNetworkPublicIP{
-		Properties: &armavs.WorkloadNetworkPublicIPProperties{
-			DisplayName:       to.Ptr("publicIP1"),
-			NumberOfPublicIPs: to.Ptr[int64](32),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.WorkloadNetworkPublicIP = armavs.WorkloadNetworkPublicIP{
-	// 	Name: to.Ptr("publicIP1"),
-	// 	Type: to.Ptr("Microsoft.AVS/privateClouds/workloadNetworks/publicIPs"),
-	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default/publicIPs/publicIP1"),
-	// 	Properties: &armavs.WorkloadNetworkPublicIPProperties{
-	// 		DisplayName: to.Ptr("publicIP1"),
-	// 		PublicIPBlock: to.Ptr("20.20.40.50/32"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a5e7ff51c8af3781e7f6dd3b82a3fc922e2f6f93/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_DeletePublicIPs.json
-func ExampleWorkloadNetworksClient_BeginDeletePublicIP() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armavs.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewWorkloadNetworksClient().BeginDeletePublicIP(ctx, "group1", "publicIP1", "cloud1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

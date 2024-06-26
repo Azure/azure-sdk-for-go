@@ -1,10 +1,10 @@
-module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/avs/armavs
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/avs/armavs/v2
 
 go 1.18
 
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.12.0
-	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.6.0
+	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.7.0
 )
 
 require (

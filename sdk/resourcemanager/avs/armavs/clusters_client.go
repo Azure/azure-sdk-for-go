@@ -28,7 +28,7 @@ type ClustersClient struct {
 }
 
 // NewClustersClient creates a new instance of ClustersClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewClustersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClustersClient, error) {
@@ -43,14 +43,14 @@ func NewClustersClient(subscriptionID string, credential azcore.TokenCredential,
 	return client, nil
 }
 
-// BeginCreateOrUpdate - Create or update a cluster in a private cloud
+// BeginCreateOrUpdate - Create a Cluster
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2023-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - privateCloudName - The name of the private cloud.
-//   - clusterName - Name of the cluster in the private cloud
-//   - cluster - A cluster in the private cloud
+//   - privateCloudName - Name of the private cloud
+//   - clusterName - Name of the cluster
+//   - cluster - Resource create parameters.
 //   - options - ClustersClientBeginCreateOrUpdateOptions contains the optional parameters for the ClustersClient.BeginCreateOrUpdate
 //     method.
 func (client *ClustersClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, cluster Cluster, options *ClustersClientBeginCreateOrUpdateOptions) (*runtime.Poller[ClustersClientCreateOrUpdateResponse], error) {
@@ -60,7 +60,8 @@ func (client *ClustersClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClustersClientCreateOrUpdateResponse]{
-			Tracer: client.internal.Tracer(),
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
@@ -70,10 +71,10 @@ func (client *ClustersClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 	}
 }
 
-// CreateOrUpdate - Create or update a cluster in a private cloud
+// CreateOrUpdate - Create a Cluster
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2023-09-01
 func (client *ClustersClient) createOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, cluster Cluster, options *ClustersClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ClustersClient.BeginCreateOrUpdate"
@@ -119,7 +120,7 @@ func (client *ClustersClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, cluster); err != nil {
@@ -128,13 +129,13 @@ func (client *ClustersClient) createOrUpdateCreateRequest(ctx context.Context, r
 	return req, nil
 }
 
-// BeginDelete - Delete a cluster in a private cloud
+// BeginDelete - Delete a Cluster
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2023-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
-//   - clusterName - Name of the cluster in the private cloud
+//   - clusterName - Name of the cluster
 //   - options - ClustersClientBeginDeleteOptions contains the optional parameters for the ClustersClient.BeginDelete method.
 func (client *ClustersClient) BeginDelete(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, options *ClustersClientBeginDeleteOptions) (*runtime.Poller[ClustersClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
@@ -143,7 +144,8 @@ func (client *ClustersClient) BeginDelete(ctx context.Context, resourceGroupName
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClustersClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
@@ -153,10 +155,10 @@ func (client *ClustersClient) BeginDelete(ctx context.Context, resourceGroupName
 	}
 }
 
-// Delete - Delete a cluster in a private cloud
+// Delete - Delete a Cluster
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2023-09-01
 func (client *ClustersClient) deleteOperation(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, options *ClustersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ClustersClient.BeginDelete"
@@ -202,19 +204,19 @@ func (client *ClustersClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// Get - Get a cluster by name in a private cloud
+// Get - Get a Cluster
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2023-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
-//   - clusterName - Name of the cluster in the private cloud
+//   - clusterName - Name of the cluster
 //   - options - ClustersClientGetOptions contains the optional parameters for the ClustersClient.Get method.
 func (client *ClustersClient) Get(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, options *ClustersClientGetOptions) (ClustersClientGetResponse, error) {
 	var err error
@@ -262,7 +264,7 @@ func (client *ClustersClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -277,9 +279,9 @@ func (client *ClustersClient) getHandleResponse(resp *http.Response) (ClustersCl
 	return result, nil
 }
 
-// NewListPager - List clusters in a private cloud
+// NewListPager - List Cluster resources by PrivateCloud
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2023-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
 //   - options - ClustersClientListOptions contains the optional parameters for the ClustersClient.NewListPager method.
@@ -326,7 +328,7 @@ func (client *ClustersClient) listCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -344,10 +346,10 @@ func (client *ClustersClient) listHandleResponse(resp *http.Response) (ClustersC
 // ListZones - List hosts by zone in a cluster
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2023-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
-//   - clusterName - Name of the cluster in the private cloud
+//   - clusterName - Name of the cluster
 //   - options - ClustersClientListZonesOptions contains the optional parameters for the ClustersClient.ListZones method.
 func (client *ClustersClient) ListZones(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, options *ClustersClientListZonesOptions) (ClustersClientListZonesResponse, error) {
 	var err error
@@ -395,7 +397,7 @@ func (client *ClustersClient) listZonesCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -410,14 +412,14 @@ func (client *ClustersClient) listZonesHandleResponse(resp *http.Response) (Clus
 	return result, nil
 }
 
-// BeginUpdate - Update a cluster in a private cloud
+// BeginUpdate - Update a Cluster
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2023-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
-//   - clusterName - Name of the cluster in the private cloud
-//   - clusterUpdate - The cluster properties to be updated
+//   - clusterName - Name of the cluster
+//   - clusterUpdate - The cluster properties to be updated.
 //   - options - ClustersClientBeginUpdateOptions contains the optional parameters for the ClustersClient.BeginUpdate method.
 func (client *ClustersClient) BeginUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, clusterUpdate ClusterUpdate, options *ClustersClientBeginUpdateOptions) (*runtime.Poller[ClustersClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
@@ -426,7 +428,8 @@ func (client *ClustersClient) BeginUpdate(ctx context.Context, resourceGroupName
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClustersClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
@@ -436,10 +439,10 @@ func (client *ClustersClient) BeginUpdate(ctx context.Context, resourceGroupName
 	}
 }
 
-// Update - Update a cluster in a private cloud
+// Update - Update a Cluster
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2023-09-01
 func (client *ClustersClient) update(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, clusterUpdate ClusterUpdate, options *ClustersClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ClustersClient.BeginUpdate"
@@ -485,7 +488,7 @@ func (client *ClustersClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, clusterUpdate); err != nil {

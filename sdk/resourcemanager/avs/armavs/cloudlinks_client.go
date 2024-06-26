@@ -28,7 +28,7 @@ type CloudLinksClient struct {
 }
 
 // NewCloudLinksClient creates a new instance of CloudLinksClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewCloudLinksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CloudLinksClient, error) {
@@ -43,14 +43,14 @@ func NewCloudLinksClient(subscriptionID string, credential azcore.TokenCredentia
 	return client, nil
 }
 
-// BeginCreateOrUpdate - Create or update a cloud link in a private cloud
+// BeginCreateOrUpdate - Create a CloudLink
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2023-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - privateCloudName - The name of the private cloud.
-//   - cloudLinkName - Name of the cloud link resource
-//   - cloudLink - A cloud link in the private cloud
+//   - privateCloudName - Name of the private cloud
+//   - cloudLinkName - Name of the cloud link.
+//   - cloudLink - Resource create parameters.
 //   - options - CloudLinksClientBeginCreateOrUpdateOptions contains the optional parameters for the CloudLinksClient.BeginCreateOrUpdate
 //     method.
 func (client *CloudLinksClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, cloudLinkName string, cloudLink CloudLink, options *CloudLinksClientBeginCreateOrUpdateOptions) (*runtime.Poller[CloudLinksClientCreateOrUpdateResponse], error) {
@@ -60,7 +60,8 @@ func (client *CloudLinksClient) BeginCreateOrUpdate(ctx context.Context, resourc
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CloudLinksClientCreateOrUpdateResponse]{
-			Tracer: client.internal.Tracer(),
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
@@ -70,10 +71,10 @@ func (client *CloudLinksClient) BeginCreateOrUpdate(ctx context.Context, resourc
 	}
 }
 
-// CreateOrUpdate - Create or update a cloud link in a private cloud
+// CreateOrUpdate - Create a CloudLink
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2023-09-01
 func (client *CloudLinksClient) createOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, cloudLinkName string, cloudLink CloudLink, options *CloudLinksClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CloudLinksClient.BeginCreateOrUpdate"
@@ -119,7 +120,7 @@ func (client *CloudLinksClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, cloudLink); err != nil {
@@ -128,13 +129,13 @@ func (client *CloudLinksClient) createOrUpdateCreateRequest(ctx context.Context,
 	return req, nil
 }
 
-// BeginDelete - Delete a cloud link in a private cloud
+// BeginDelete - Delete a CloudLink
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2023-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
-//   - cloudLinkName - Name of the cloud link resource
+//   - cloudLinkName - Name of the cloud link.
 //   - options - CloudLinksClientBeginDeleteOptions contains the optional parameters for the CloudLinksClient.BeginDelete method.
 func (client *CloudLinksClient) BeginDelete(ctx context.Context, resourceGroupName string, privateCloudName string, cloudLinkName string, options *CloudLinksClientBeginDeleteOptions) (*runtime.Poller[CloudLinksClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
@@ -143,7 +144,8 @@ func (client *CloudLinksClient) BeginDelete(ctx context.Context, resourceGroupNa
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CloudLinksClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
@@ -153,10 +155,10 @@ func (client *CloudLinksClient) BeginDelete(ctx context.Context, resourceGroupNa
 	}
 }
 
-// Delete - Delete a cloud link in a private cloud
+// Delete - Delete a CloudLink
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2023-09-01
 func (client *CloudLinksClient) deleteOperation(ctx context.Context, resourceGroupName string, privateCloudName string, cloudLinkName string, options *CloudLinksClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CloudLinksClient.BeginDelete"
@@ -202,19 +204,19 @@ func (client *CloudLinksClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// Get - Get an cloud link by name in a private cloud
+// Get - Get a CloudLink
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2023-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
-//   - cloudLinkName - Name of the cloud link resource
+//   - cloudLinkName - Name of the cloud link.
 //   - options - CloudLinksClientGetOptions contains the optional parameters for the CloudLinksClient.Get method.
 func (client *CloudLinksClient) Get(ctx context.Context, resourceGroupName string, privateCloudName string, cloudLinkName string, options *CloudLinksClientGetOptions) (CloudLinksClientGetResponse, error) {
 	var err error
@@ -262,7 +264,7 @@ func (client *CloudLinksClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -277,9 +279,9 @@ func (client *CloudLinksClient) getHandleResponse(resp *http.Response) (CloudLin
 	return result, nil
 }
 
-// NewListPager - List cloud link in a private cloud
+// NewListPager - List CloudLink resources by PrivateCloud
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2023-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
 //   - options - CloudLinksClientListOptions contains the optional parameters for the CloudLinksClient.NewListPager method.
@@ -326,7 +328,7 @@ func (client *CloudLinksClient) listCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

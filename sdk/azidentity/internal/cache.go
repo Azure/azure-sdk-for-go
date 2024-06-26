@@ -7,9 +7,8 @@ import "github.com/AzureAD/microsoft-authentication-library-for-go/apps/cache"
 
 // Cache represents a persistent token cache
 type Cache struct {
-	// impl is embedded as a pointer so a Cache
-	// can carry persistent state across copies
-	*impl
+	// impl is a pointer so a Cache can carry persistent state across copies
+	impl *impl
 }
 
 // impl is a Cache's private implementation

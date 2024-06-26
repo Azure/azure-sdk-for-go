@@ -22,7 +22,7 @@ var ctx = context.Background()
 
 func TestKeyExistsButNotFile(t *testing.T) {
 	expected := []byte(t.Name())
-	a, err := storage(internal.TokenCachePersistenceOptions{Name: t.Name()})
+	a, err := storage(t.Name())
 	require.NoError(t, err)
 	err = a.Write(ctx, append([]byte("not"), expected...))
 	require.NoError(t, err)
@@ -146,7 +146,7 @@ func TestKeyringUnusable(t *testing.T) {
 	expected := errors.New("it didn't work")
 	tryKeyring = func() error { return expected }
 
-	_, err := storage(internal.TokenCachePersistenceOptions{})
+	_, err := storage(t.Name())
 	require.Error(t, err)
 	require.Contains(t, err.Error(), expected.Error())
 }

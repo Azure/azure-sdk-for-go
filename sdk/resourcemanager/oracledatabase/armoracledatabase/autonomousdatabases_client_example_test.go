@@ -20,7 +20,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/oracledatabase/armoracledatabase"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0ce2859b2f018adcea3d14346951ff4270dcff3d/specification/oracle/resource-manager/Oracle.Database/stable/2023-09-01/examples/autonomousDatabase_listBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1c63635d66ae38cff18045ab416a6572d3e15f6e/specification/oracle/resource-manager/Oracle.Database/stable/2023-09-01/examples/autonomousDatabase_listBySubscription.json
 func ExampleAutonomousDatabasesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -88,7 +88,7 @@ func ExampleAutonomousDatabasesClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0ce2859b2f018adcea3d14346951ff4270dcff3d/specification/oracle/resource-manager/Oracle.Database/stable/2023-09-01/examples/autonomousDatabase_listByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1c63635d66ae38cff18045ab416a6572d3e15f6e/specification/oracle/resource-manager/Oracle.Database/stable/2023-09-01/examples/autonomousDatabase_listByResourceGroup.json
 func ExampleAutonomousDatabasesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -156,7 +156,7 @@ func ExampleAutonomousDatabasesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0ce2859b2f018adcea3d14346951ff4270dcff3d/specification/oracle/resource-manager/Oracle.Database/stable/2023-09-01/examples/autonomousDatabase_get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1c63635d66ae38cff18045ab416a6572d3e15f6e/specification/oracle/resource-manager/Oracle.Database/stable/2023-09-01/examples/autonomousDatabase_get.json
 func ExampleAutonomousDatabasesClient_Get_autonomousDatabasesGet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -216,7 +216,7 @@ func ExampleAutonomousDatabasesClient_Get_autonomousDatabasesGet() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0ce2859b2f018adcea3d14346951ff4270dcff3d/specification/oracle/resource-manager/Oracle.Database/stable/2023-09-01/examples/autonomousDatabase_create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1c63635d66ae38cff18045ab416a6572d3e15f6e/specification/oracle/resource-manager/Oracle.Database/stable/2023-09-01/examples/autonomousDatabase_create.json
 func ExampleAutonomousDatabasesClient_BeginCreateOrUpdate_autonomousDatabasesCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -298,7 +298,7 @@ func ExampleAutonomousDatabasesClient_BeginCreateOrUpdate_autonomousDatabasesCre
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0ce2859b2f018adcea3d14346951ff4270dcff3d/specification/oracle/resource-manager/Oracle.Database/stable/2023-09-01/examples/autonomousDatabaseClone_create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1c63635d66ae38cff18045ab416a6572d3e15f6e/specification/oracle/resource-manager/Oracle.Database/stable/2023-09-01/examples/autonomousDatabaseClone_create.json
 func ExampleAutonomousDatabasesClient_BeginCreateOrUpdate_autonomousDatabasesCreateOrUpdateClone() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -383,7 +383,7 @@ func ExampleAutonomousDatabasesClient_BeginCreateOrUpdate_autonomousDatabasesCre
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0ce2859b2f018adcea3d14346951ff4270dcff3d/specification/oracle/resource-manager/Oracle.Database/stable/2023-09-01/examples/autonomousDatabase_patch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1c63635d66ae38cff18045ab416a6572d3e15f6e/specification/oracle/resource-manager/Oracle.Database/stable/2023-09-01/examples/autonomousDatabase_patch.json
 func ExampleAutonomousDatabasesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -447,7 +447,7 @@ func ExampleAutonomousDatabasesClient_BeginUpdate() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0ce2859b2f018adcea3d14346951ff4270dcff3d/specification/oracle/resource-manager/Oracle.Database/stable/2023-09-01/examples/autonomousDatabase_delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1c63635d66ae38cff18045ab416a6572d3e15f6e/specification/oracle/resource-manager/Oracle.Database/stable/2023-09-01/examples/autonomousDatabase_delete.json
 func ExampleAutonomousDatabasesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -468,7 +468,7 @@ func ExampleAutonomousDatabasesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0ce2859b2f018adcea3d14346951ff4270dcff3d/specification/oracle/resource-manager/Oracle.Database/stable/2023-09-01/examples/autonomousDatabase_failover.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1c63635d66ae38cff18045ab416a6572d3e15f6e/specification/oracle/resource-manager/Oracle.Database/stable/2023-09-01/examples/autonomousDatabase_failover.json
 func ExampleAutonomousDatabasesClient_BeginFailover_autonomousDatabasesFailover() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -540,7 +540,7 @@ func ExampleAutonomousDatabasesClient_BeginFailover_autonomousDatabasesFailover(
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0ce2859b2f018adcea3d14346951ff4270dcff3d/specification/oracle/resource-manager/Oracle.Database/stable/2023-09-01/examples/autonomousDatabase_generateWallet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1c63635d66ae38cff18045ab416a6572d3e15f6e/specification/oracle/resource-manager/Oracle.Database/stable/2023-09-01/examples/autonomousDatabase_generateWallet.json
 func ExampleAutonomousDatabasesClient_GenerateWallet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -567,7 +567,7 @@ func ExampleAutonomousDatabasesClient_GenerateWallet() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0ce2859b2f018adcea3d14346951ff4270dcff3d/specification/oracle/resource-manager/Oracle.Database/stable/2023-09-01/examples/autonomousDatabase_restore.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1c63635d66ae38cff18045ab416a6572d3e15f6e/specification/oracle/resource-manager/Oracle.Database/stable/2023-09-01/examples/autonomousDatabase_restore.json
 func ExampleAutonomousDatabasesClient_BeginRestore_autonomousDatabasesRestore() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -640,7 +640,7 @@ func ExampleAutonomousDatabasesClient_BeginRestore_autonomousDatabasesRestore() 
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0ce2859b2f018adcea3d14346951ff4270dcff3d/specification/oracle/resource-manager/Oracle.Database/stable/2023-09-01/examples/autonomousDatabase_shrink.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1c63635d66ae38cff18045ab416a6572d3e15f6e/specification/oracle/resource-manager/Oracle.Database/stable/2023-09-01/examples/autonomousDatabase_shrink.json
 func ExampleAutonomousDatabasesClient_BeginShrink() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -711,7 +711,7 @@ func ExampleAutonomousDatabasesClient_BeginShrink() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0ce2859b2f018adcea3d14346951ff4270dcff3d/specification/oracle/resource-manager/Oracle.Database/stable/2023-09-01/examples/autonomousDatabase_switchover.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1c63635d66ae38cff18045ab416a6572d3e15f6e/specification/oracle/resource-manager/Oracle.Database/stable/2023-09-01/examples/autonomousDatabase_switchover.json
 func ExampleAutonomousDatabasesClient_BeginSwitchover_autonomousDatabasesSwitchover() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

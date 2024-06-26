@@ -12,17 +12,12 @@ import (
 	"os"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity/internal"
 	"github.com/AzureAD/microsoft-authentication-extensions-for-go/cache/accessor"
 )
 
 var cacheDir = os.UserHomeDir
 
-func storage(o internal.TokenCachePersistenceOptions) (accessor.Accessor, error) {
-	name := o.Name
-	if name == "" {
-		name = defaultName
-	}
+func storage(name string) (accessor.Accessor, error) {
 	if err := tryAccessor(); err != nil {
 		return nil, errors.New("cache encryption is impossible because the keychain isn't usable: " + err.Error())
 	}

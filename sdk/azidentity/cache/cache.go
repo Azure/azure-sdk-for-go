@@ -11,37 +11,15 @@ import (
 	"fmt"
 	"path/filepath"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity/internal"
 	extcache "github.com/AzureAD/microsoft-authentication-extensions-for-go/cache"
-	"github.com/AzureAD/microsoft-authentication-library-for-go/apps/cache"
+	msal "github.com/AzureAD/microsoft-authentication-library-for-go/apps/cache"
 )
 
 const defaultName = "msal.cache"
 
 func init() {
-	internal.NewCache = func(o *internal.TokenCachePersistenceOptions, enableCAE bool) (cache.ExportReplace, error) {
-		if o == nil {
-			return nil, nil
-		}
-		cp := *o
-		if cp.Name == "" {
-			cp.Name = defaultName
-		}
-		suffix := ".nocae"
-		if enableCAE {
-			suffix = ".cae"
-		}
-		cp.Name += suffix
-		a, err := storage(cp)
-		if err != nil {
-			return nil, err
-		}
-		p, err := internal.CacheFilePath(cp.Name)
-		if err != nil {
-			return nil, err
-		}
-		return extcache.New(a, p)
-	}
 	internal.CacheFilePath = func(name string) (string, error) {
 		dir, err := cacheDir()
 		if err != nil {
@@ -49,4 +27,40 @@ func init() {
 		}
 		return filepath.Join(dir, ".IdentityService", name), nil
 	}
+}
+
+// Options for persistent token caches.
+type Options struct {
+	// Name distinguishes the cache from other caches.
+	// Set this to isolate data from other applications.
+	Name string
+}
+
+// New is the constructor for persistent token caches.
+func New(opts *Options) (azidentity.Cache, error) {
+	// TODO: try the storage implementation, return any error
+
+	o := Options{}
+	if opts != nil {
+		o = *opts
+	}
+	if o.Name == "" {
+		o.Name = defaultName
+	}
+	factory := func(cae bool) (msal.ExportReplace, error) {
+		name := o.Name
+		if cae {
+			name += ".cae"
+		}
+		p, err := internal.CacheFilePath(name)
+		if err != nil {
+			return nil, err
+		}
+		s, err := storage(name)
+		if err != nil {
+			return nil, err
+		}
+		return extcache.New(s, p)
+	}
+	return internal.NewCache(factory), nil
 }

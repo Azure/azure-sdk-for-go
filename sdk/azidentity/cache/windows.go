@@ -12,12 +12,12 @@ import (
 	"golang.org/x/sys/windows"
 )
 
-func cacheDir() (string, error) {
+var cacheDir = func() (string, error) {
 	return windows.KnownFolderPath(windows.FOLDERID_LocalAppData, 0)
 }
 
-func storage(o internal.TokenCachePersistenceOptions) (accessor.Accessor, error) {
-	p, err := internal.CacheFilePath(o.Name)
+func storage(name string) (accessor.Accessor, error) {
+	p, err := internal.CacheFilePath(name)
 	if err != nil {
 		return nil, err
 	}

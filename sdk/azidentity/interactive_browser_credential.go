@@ -28,6 +28,11 @@ type InteractiveBrowserCredentialOptions struct {
 	// to enable the credential to use data from a previous authentication.
 	AuthenticationRecord AuthenticationRecord
 
+	// Cache is a persistent cache the credential will use to store the tokens it acquires, making them available to
+	// other processes and credential instances. The default, zero value means the credential will store tokens in memory
+	// and not share them.
+	Cache Cache
+
 	// ClientID is the ID of the application users will authenticate to.
 	// Defaults to the ID of an Azure development application.
 	ClientID string
@@ -54,9 +59,6 @@ type InteractiveBrowserCredentialOptions struct {
 	// TenantID is the Microsoft Entra tenant the credential authenticates in. Defaults to the
 	// "organizations" tenant, which can authenticate work and school accounts.
 	TenantID string
-
-	// TokenCachePersistenceOptions enables persistent token caching when not nil.
-	TokenCachePersistenceOptions *TokenCachePersistenceOptions
 }
 
 func (o *InteractiveBrowserCredentialOptions) init() {
@@ -82,13 +84,13 @@ func NewInteractiveBrowserCredential(options *InteractiveBrowserCredentialOption
 	cp.init()
 	msalOpts := publicClientOptions{
 		AdditionallyAllowedTenants:     cp.AdditionallyAllowedTenants,
+		Cache:                          cp.Cache,
 		ClientOptions:                  cp.ClientOptions,
 		DisableAutomaticAuthentication: cp.DisableAutomaticAuthentication,
 		DisableInstanceDiscovery:       cp.DisableInstanceDiscovery,
 		LoginHint:                      cp.LoginHint,
 		Record:                         cp.AuthenticationRecord,
 		RedirectURL:                    cp.RedirectURL,
-		TokenCachePersistenceOptions:   cp.TokenCachePersistenceOptions,
 	}
 	c, err := newPublicClient(cp.TenantID, cp.ClientID, credNameBrowser, msalOpts)
 	if err != nil {

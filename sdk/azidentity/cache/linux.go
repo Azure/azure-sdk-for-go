@@ -48,11 +48,7 @@ var (
 	}
 )
 
-func storage(o internal.TokenCachePersistenceOptions) (accessor.Accessor, error) {
-	name := o.Name
-	if name == "" {
-		name = defaultName
-	}
+func storage(name string) (accessor.Accessor, error) {
 	if err := tryKeyring(); err != nil {
 		return nil, errors.New("cache encryption is impossible because the kernel key retention facility isn't usable: " + err.Error())
 	}

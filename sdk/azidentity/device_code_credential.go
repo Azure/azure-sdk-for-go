@@ -29,6 +29,11 @@ type DeviceCodeCredentialOptions struct {
 	// to enable the credential to use data from a previous authentication.
 	AuthenticationRecord AuthenticationRecord
 
+	// Cache is a persistent cache the credential will use to store the tokens it acquires, making them available to
+	// other processes and credential instances. The default, zero value means the credential will store tokens in memory
+	// and not share them.
+	Cache Cache
+
 	// ClientID is the ID of the application users will authenticate to.
 	// Defaults to the ID of an Azure development application.
 	ClientID string
@@ -48,9 +53,6 @@ type DeviceCodeCredentialOptions struct {
 	// "organizations" tenant, which can authenticate work and school accounts. Required for single-tenant
 	// applications.
 	TenantID string
-
-	// TokenCachePersistenceOptions enables persistent token caching when not nil.
-	TokenCachePersistenceOptions *TokenCachePersistenceOptions
 
 	// UserPrompt controls how the credential presents authentication instructions. The credential calls
 	// this function with authentication details when it receives a device code. By default, the credential
@@ -101,12 +103,12 @@ func NewDeviceCodeCredential(options *DeviceCodeCredentialOptions) (*DeviceCodeC
 	cp.init()
 	msalOpts := publicClientOptions{
 		AdditionallyAllowedTenants:     cp.AdditionallyAllowedTenants,
+		Cache:                          cp.Cache,
 		ClientOptions:                  cp.ClientOptions,
 		DeviceCodePrompt:               cp.UserPrompt,
 		DisableAutomaticAuthentication: cp.DisableAutomaticAuthentication,
 		DisableInstanceDiscovery:       cp.DisableInstanceDiscovery,
 		Record:                         cp.AuthenticationRecord,
-		TokenCachePersistenceOptions:   cp.TokenCachePersistenceOptions,
 	}
 	c, err := newPublicClient(cp.TenantID, cp.ClientID, credNameDeviceCode, msalOpts)
 	if err != nil {

@@ -17,8 +17,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/oracledatabase/armoracledatabase"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/autonomousDatabaseVersion_listByLocation.json
-func ExampleAutonomousDatabaseVersionsClient_NewListByLocationPager() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/systemVersions_listByLocation.json
+func ExampleSystemVersionsClient_NewListByLocationPager_listExadataSystemVersionsByTheProvidedFilter() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -28,7 +28,7 @@ func ExampleAutonomousDatabaseVersionsClient_NewListByLocationPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewAutonomousDatabaseVersionsClient().NewListByLocationPager("eastus", nil)
+	pager := clientFactory.NewSystemVersionsClient().NewListByLocationPager("eastus", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -39,21 +39,20 @@ func ExampleAutonomousDatabaseVersionsClient_NewListByLocationPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.AutonomousDbVersionListResult = armoracledatabase.AutonomousDbVersionListResult{
-		// 	Value: []*armoracledatabase.AutonomousDbVersion{
+		// page.SystemVersionListResult = armoracledatabase.SystemVersionListResult{
+		// 	Value: []*armoracledatabase.SystemVersion{
 		// 		{
-		// 			Type: to.Ptr("Oracle.Database/locations/autonomousDbVersions"),
-		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/locations/eastus/autonomousDbVersions/18.4.0.0"),
-		// 			Properties: &armoracledatabase.AutonomousDbVersionProperties{
-		// 				Version: to.Ptr("18.4.0.0"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Oracle.Database/locations/eastus/systemVersion/22.1.7.0.0.230113"),
+		// 			Properties: &armoracledatabase.SystemVersionProperties{
+		// 				SystemVersion: to.Ptr("22.1.7.0.0.230113"),
 		// 			},
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/autonomousDatabaseVersion_get.json
-func ExampleAutonomousDatabaseVersionsClient_Get() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ee6d9fd7687d4b67117c5a167c191a7e7e70b53/specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/systemVersions_get.json
+func ExampleSystemVersionsClient_Get_getExadataSystemVersion() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -63,18 +62,17 @@ func ExampleAutonomousDatabaseVersionsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewAutonomousDatabaseVersionsClient().Get(ctx, "eastus", "18.4.0.0", nil)
+	res, err := clientFactory.NewSystemVersionsClient().Get(ctx, "eastus", "22.x", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.AutonomousDbVersion = armoracledatabase.AutonomousDbVersion{
-	// 	Type: to.Ptr("Oracle.Database/locations/autonomousDbVersions"),
-	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/locations/eastus/autonomousDbVersions/18.4.0.0"),
-	// 	Properties: &armoracledatabase.AutonomousDbVersionProperties{
-	// 		Version: to.Ptr("18.4.0.0"),
+	// res.SystemVersion = armoracledatabase.SystemVersion{
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Oracle.Database/locations/eastus/systemVersion/22.1.7.0.0.230113"),
+	// 	Properties: &armoracledatabase.SystemVersionProperties{
+	// 		SystemVersion: to.Ptr("22.1.7.0.0.230113"),
 	// 	},
 	// }
 }

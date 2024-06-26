@@ -98,6 +98,20 @@ type AutonomousDatabasesClientBeginFailoverOptions struct {
 	ResumeToken string
 }
 
+// AutonomousDatabasesClientBeginRestoreOptions contains the optional parameters for the AutonomousDatabasesClient.BeginRestore
+// method.
+type AutonomousDatabasesClientBeginRestoreOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// AutonomousDatabasesClientBeginShrinkOptions contains the optional parameters for the AutonomousDatabasesClient.BeginShrink
+// method.
+type AutonomousDatabasesClientBeginShrinkOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
 // AutonomousDatabasesClientBeginSwitchoverOptions contains the optional parameters for the AutonomousDatabasesClient.BeginSwitchover
 // method.
 type AutonomousDatabasesClientBeginSwitchoverOptions struct {
@@ -363,6 +377,17 @@ type OracleSubscriptionsClientGetOptions struct {
 // OracleSubscriptionsClientListBySubscriptionOptions contains the optional parameters for the OracleSubscriptionsClient.NewListBySubscriptionPager
 // method.
 type OracleSubscriptionsClientListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SystemVersionsClientGetOptions contains the optional parameters for the SystemVersionsClient.Get method.
+type SystemVersionsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SystemVersionsClientListByLocationOptions contains the optional parameters for the SystemVersionsClient.NewListByLocationPager
+// method.
+type SystemVersionsClientListByLocationOptions struct {
 	// placeholder for future optional parameters
 }
 

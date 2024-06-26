@@ -114,6 +114,18 @@ type AutonomousDatabasesClientListBySubscriptionResponse struct {
 	AutonomousDatabaseListResult
 }
 
+// AutonomousDatabasesClientRestoreResponse contains the response from method AutonomousDatabasesClient.BeginRestore.
+type AutonomousDatabasesClientRestoreResponse struct {
+	// Autonomous Database resource model.
+	AutonomousDatabase
+}
+
+// AutonomousDatabasesClientShrinkResponse contains the response from method AutonomousDatabasesClient.BeginShrink.
+type AutonomousDatabasesClientShrinkResponse struct {
+	// Autonomous Database resource model.
+	AutonomousDatabase
+}
+
 // AutonomousDatabasesClientSwitchoverResponse contains the response from method AutonomousDatabasesClient.BeginSwitchover.
 type AutonomousDatabasesClientSwitchoverResponse struct {
 	// Autonomous Database resource model.
@@ -349,6 +361,18 @@ type OracleSubscriptionsClientListSaasSubscriptionDetailsResponse struct {
 type OracleSubscriptionsClientUpdateResponse struct {
 	// OracleSubscription resource definition
 	OracleSubscription
+}
+
+// SystemVersionsClientGetResponse contains the response from method SystemVersionsClient.Get.
+type SystemVersionsClientGetResponse struct {
+	// SystemVersion resource Definition
+	SystemVersion
+}
+
+// SystemVersionsClientListByLocationResponse contains the response from method SystemVersionsClient.NewListByLocationPager.
+type SystemVersionsClientListByLocationResponse struct {
+	// The response of a SystemVersion list operation.
+	SystemVersionListResult
 }
 
 // VirtualNetworkAddressesClientCreateOrUpdateResponse contains the response from method VirtualNetworkAddressesClient.BeginCreateOrUpdate.

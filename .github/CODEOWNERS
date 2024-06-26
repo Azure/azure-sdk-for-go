@@ -76,7 +76,7 @@
 # AzureSDKOwners: @lirenhe
 # ServiceLabel: %Mgmt
 # PRLabel: %Mgmt
-/sdk/resourcemanager/         @ArcturusZhang @lirenhe @tadelesh
+/sdk/resourcemanager/         @ArcturusZhang @lirenhe @tadelesh @raych1
 
 # AzureSDKOwners: @jhendrixMSFT
 # ServiceOwner: @siminsavani-msft

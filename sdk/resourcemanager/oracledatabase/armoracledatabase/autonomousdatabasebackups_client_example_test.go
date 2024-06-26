@@ -45,7 +45,12 @@ func ExampleAutonomousDatabaseBackupsClient_NewListByAutonomousDatabasePager_aut
 		// 		{
 		// 			Type: to.Ptr("Oracle.Database/autonomousDatabases/autonomousDatabaseBackups"),
 		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/autonomousDatabases/databasedb1/autonomousDatabaseBackups/1711644130"),
+		// 			Type: to.Ptr("Oracle.Database/autonomousDatabases/autonomousDatabaseBackups"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/autonomousDatabases/databasedb1/autonomousDatabaseBackups/1711644130"),
 		// 			Properties: &armoracledatabase.AutonomousDatabaseBackupProperties{
+		// 				AutonomousDatabaseOcid: to.Ptr("ocid1.autonomousdatabase.oc1..aaaaa3klq"),
+		// 				BackupType: to.Ptr(armoracledatabase.AutonomousDatabaseBackupTypeFull),
+		// 				DatabaseSizeInTbs: to.Ptr[float64](2),
 		// 				AutonomousDatabaseOcid: to.Ptr("ocid1.autonomousdatabase.oc1..aaaaa3klq"),
 		// 				BackupType: to.Ptr(armoracledatabase.AutonomousDatabaseBackupTypeFull),
 		// 				DatabaseSizeInTbs: to.Ptr[float64](2),
@@ -58,6 +63,7 @@ func ExampleAutonomousDatabaseBackupsClient_NewListByAutonomousDatabasePager_aut
 		// 				Ocid: to.Ptr("ocid1.autonomousdatabasebackup.oc1..aaaaaaaavwpj"),
 		// 				ProvisioningState: to.Ptr(armoracledatabase.AzureResourceProvisioningStateSucceeded),
 		// 				RetentionPeriodInDays: to.Ptr[int32](365),
+		// 				SizeInTbs: to.Ptr[float64](2),
 		// 				SizeInTbs: to.Ptr[float64](2),
 		// 				TimeAvailableTil: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-09T20:44:09.466Z"); return t}()),
 		// 				TimeEnded: to.Ptr("2024-01-09T20:44:09.466Z"),
@@ -88,7 +94,12 @@ func ExampleAutonomousDatabaseBackupsClient_Get_autonomousDatabaseBackupsGet() {
 	// res.AutonomousDatabaseBackup = armoracledatabase.AutonomousDatabaseBackup{
 	// 	Type: to.Ptr("Oracle.Database/autonomousDatabases/autonomousDatabaseBackups"),
 	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/autonomousDatabases/databasedb1/autonomousDatabaseBackups/1711644130"),
+	// 	Type: to.Ptr("Oracle.Database/autonomousDatabases/autonomousDatabaseBackups"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/autonomousDatabases/databasedb1/autonomousDatabaseBackups/1711644130"),
 	// 	Properties: &armoracledatabase.AutonomousDatabaseBackupProperties{
+	// 		AutonomousDatabaseOcid: to.Ptr("ocid1.autonomousdatabase.oc1..aaaaa3klq"),
+	// 		BackupType: to.Ptr(armoracledatabase.AutonomousDatabaseBackupTypeFull),
+	// 		DatabaseSizeInTbs: to.Ptr[float64](2),
 	// 		AutonomousDatabaseOcid: to.Ptr("ocid1.autonomousdatabase.oc1..aaaaa3klq"),
 	// 		BackupType: to.Ptr(armoracledatabase.AutonomousDatabaseBackupTypeFull),
 	// 		DatabaseSizeInTbs: to.Ptr[float64](2),
@@ -102,8 +113,10 @@ func ExampleAutonomousDatabaseBackupsClient_Get_autonomousDatabaseBackupsGet() {
 	// 		ProvisioningState: to.Ptr(armoracledatabase.AzureResourceProvisioningStateSucceeded),
 	// 		RetentionPeriodInDays: to.Ptr[int32](365),
 	// 		SizeInTbs: to.Ptr[float64](2),
+	// 		SizeInTbs: to.Ptr[float64](2),
 	// 		TimeAvailableTil: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-09T20:44:09.466Z"); return t}()),
 	// 		TimeEnded: to.Ptr("2024-01-09T20:44:09.466Z"),
+	// 		TimeStarted: to.Ptr("2024-01-09T19:44:09.466Z"),
 	// 		TimeStarted: to.Ptr("2024-01-09T19:44:09.466Z"),
 	// 	},
 	// }
@@ -125,6 +138,9 @@ func ExampleAutonomousDatabaseBackupsClient_BeginCreateOrUpdate_autonomousDataba
 			AutonomousDatabaseOcid: to.Ptr("ocid1.autonomousdatabase.oc1..aaaaa3klq"),
 			DisplayName:            to.Ptr("Nightly Backup"),
 			RetentionPeriodInDays:  to.Ptr[int32](365),
+			AutonomousDatabaseOcid: to.Ptr("ocid1.autonomousdatabase.oc1..aaaaa3klq"),
+			DisplayName:            to.Ptr("Nightly Backup"),
+			RetentionPeriodInDays:  to.Ptr[int32](365),
 		},
 	}, nil)
 	if err != nil {
@@ -140,7 +156,12 @@ func ExampleAutonomousDatabaseBackupsClient_BeginCreateOrUpdate_autonomousDataba
 	// res.AutonomousDatabaseBackup = armoracledatabase.AutonomousDatabaseBackup{
 	// 	Type: to.Ptr("Oracle.Database/autonomousDatabases/autonomousDatabaseBackups"),
 	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/autonomousDatabases/databasedb1/autonomousDatabaseBackups/1711644130"),
+	// 	Type: to.Ptr("Oracle.Database/autonomousDatabases/autonomousDatabaseBackups"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/autonomousDatabases/databasedb1/autonomousDatabaseBackups/1711644130"),
 	// 	Properties: &armoracledatabase.AutonomousDatabaseBackupProperties{
+	// 		AutonomousDatabaseOcid: to.Ptr("ocid1.autonomousdatabase.oc1..aaaaa3klq"),
+	// 		BackupType: to.Ptr(armoracledatabase.AutonomousDatabaseBackupTypeFull),
+	// 		DatabaseSizeInTbs: to.Ptr[float64](2),
 	// 		AutonomousDatabaseOcid: to.Ptr("ocid1.autonomousdatabase.oc1..aaaaa3klq"),
 	// 		BackupType: to.Ptr(armoracledatabase.AutonomousDatabaseBackupTypeFull),
 	// 		DatabaseSizeInTbs: to.Ptr[float64](2),
@@ -154,8 +175,10 @@ func ExampleAutonomousDatabaseBackupsClient_BeginCreateOrUpdate_autonomousDataba
 	// 		ProvisioningState: to.Ptr(armoracledatabase.AzureResourceProvisioningStateSucceeded),
 	// 		RetentionPeriodInDays: to.Ptr[int32](365),
 	// 		SizeInTbs: to.Ptr[float64](2),
+	// 		SizeInTbs: to.Ptr[float64](2),
 	// 		TimeAvailableTil: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-09T20:44:09.466Z"); return t}()),
 	// 		TimeEnded: to.Ptr("2024-01-09T20:44:09.466Z"),
+	// 		TimeStarted: to.Ptr("2024-01-09T19:44:09.466Z"),
 	// 		TimeStarted: to.Ptr("2024-01-09T19:44:09.466Z"),
 	// 	},
 	// }
@@ -186,7 +209,12 @@ func ExampleAutonomousDatabaseBackupsClient_BeginUpdate_autonomousDatabaseBackup
 	// res.AutonomousDatabaseBackup = armoracledatabase.AutonomousDatabaseBackup{
 	// 	Type: to.Ptr("Oracle.Database/autonomousDatabases/autonomousDatabaseBackups"),
 	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/autonomousDatabases/databasedb1/autonomousDatabaseBackups/1711644130"),
+	// 	Type: to.Ptr("Oracle.Database/autonomousDatabases/autonomousDatabaseBackups"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/autonomousDatabases/databasedb1/autonomousDatabaseBackups/1711644130"),
 	// 	Properties: &armoracledatabase.AutonomousDatabaseBackupProperties{
+	// 		AutonomousDatabaseOcid: to.Ptr("ocid1.autonomousdatabase.oc1..aaaaa3klq"),
+	// 		BackupType: to.Ptr(armoracledatabase.AutonomousDatabaseBackupTypeFull),
+	// 		DatabaseSizeInTbs: to.Ptr[float64](2),
 	// 		AutonomousDatabaseOcid: to.Ptr("ocid1.autonomousdatabase.oc1..aaaaa3klq"),
 	// 		BackupType: to.Ptr(armoracledatabase.AutonomousDatabaseBackupTypeFull),
 	// 		DatabaseSizeInTbs: to.Ptr[float64](2),
@@ -199,6 +227,7 @@ func ExampleAutonomousDatabaseBackupsClient_BeginUpdate_autonomousDatabaseBackup
 	// 		Ocid: to.Ptr("ocid1.autonomousdatabasebackup.oc1..aaaaaaaavwpj"),
 	// 		ProvisioningState: to.Ptr(armoracledatabase.AzureResourceProvisioningStateSucceeded),
 	// 		RetentionPeriodInDays: to.Ptr[int32](400),
+	// 		SizeInTbs: to.Ptr[float64](2),
 	// 		SizeInTbs: to.Ptr[float64](2),
 	// 	},
 	// }

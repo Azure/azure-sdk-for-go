@@ -20,7 +20,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/CosmosDBDatabaseAccountGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ec7ee8842bf615c2f0354bf8b5b8725fdac9454a/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBDatabaseAccountGet.json
 func ExampleDatabaseAccountsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -42,6 +42,9 @@ func ExampleDatabaseAccountsClient_Get() {
 	// 	Name: to.Ptr("ddb1"),
 	// 	Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts"),
 	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1"),
+	// 	Location: to.Ptr("West US"),
+	// 	Tags: map[string]*string{
+	// 	},
 	// 	Identity: &armcosmos.ManagedServiceIdentity{
 	// 		Type: to.Ptr(armcosmos.ResourceIdentityTypeSystemAssignedUserAssigned),
 	// 		PrincipalID: to.Ptr("52f4fef3-3c3f-4ff3-b52e-b5c9eeb68656"),
@@ -52,9 +55,6 @@ func ExampleDatabaseAccountsClient_Get() {
 	// 				PrincipalID: to.Ptr("33e01921-4d64-4f8c-a055-5bdaffd5e33d"),
 	// 			},
 	// 		},
-	// 	},
-	// 	Location: to.Ptr("West US"),
-	// 	Tags: map[string]*string{
 	// 	},
 	// 	Kind: to.Ptr(armcosmos.DatabaseAccountKindGlobalDocumentDB),
 	// 	Properties: &armcosmos.DatabaseAccountGetProperties{
@@ -86,19 +86,12 @@ func ExampleDatabaseAccountsClient_Get() {
 	// 		CreateMode: to.Ptr(armcosmos.CreateModeDefault),
 	// 		DatabaseAccountOfferType: to.Ptr("Standard"),
 	// 		DefaultIdentity: to.Ptr("FirstPartyIdentity"),
-	// 		DefaultPriorityLevel: to.Ptr(armcosmos.DefaultPriorityLevelLow),
-	// 		DiagnosticLogSettings: &armcosmos.DiagnosticLogSettings{
-	// 			EnableFullTextQuery: to.Ptr(armcosmos.EnableFullTextQueryFalse),
-	// 		},
 	// 		DisableKeyBasedMetadataWriteAccess: to.Ptr(false),
 	// 		DocumentEndpoint: to.Ptr("https://ddb1.documents.azure.com:443/"),
 	// 		EnableAnalyticalStorage: to.Ptr(true),
 	// 		EnableBurstCapacity: to.Ptr(true),
 	// 		EnableFreeTier: to.Ptr(false),
-	// 		EnableMaterializedViews: to.Ptr(false),
 	// 		EnablePartitionMerge: to.Ptr(true),
-	// 		EnablePerRegionPerPartitionAutoscale: to.Ptr(true),
-	// 		EnablePriorityBasedExecution: to.Ptr(true),
 	// 		FailoverPolicies: []*armcosmos.FailoverPolicy{
 	// 			{
 	// 				FailoverPriority: to.Ptr[int32](0),
@@ -171,7 +164,7 @@ func ExampleDatabaseAccountsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/CosmosDBDatabaseAccountPatch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ec7ee8842bf615c2f0354bf8b5b8725fdac9454a/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBDatabaseAccountPatch.json
 func ExampleDatabaseAccountsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -199,7 +192,7 @@ func ExampleDatabaseAccountsClient_BeginUpdate() {
 				PeriodicModeProperties: &armcosmos.PeriodicModeProperties{
 					BackupIntervalInMinutes:        to.Ptr[int32](240),
 					BackupRetentionIntervalInHours: to.Ptr[int32](720),
-					BackupStorageRedundancy:        to.Ptr(armcosmos.BackupStorageRedundancyGeo),
+					BackupStorageRedundancy:        to.Ptr(armcosmos.BackupStorageRedundancyLocal),
 				},
 			},
 			Capacity: &armcosmos.Capacity{
@@ -210,17 +203,11 @@ func ExampleDatabaseAccountsClient_BeginUpdate() {
 				MaxIntervalInSeconds:    to.Ptr[int32](10),
 				MaxStalenessPrefix:      to.Ptr[int64](200),
 			},
-			DefaultIdentity:      to.Ptr("FirstPartyIdentity"),
-			DefaultPriorityLevel: to.Ptr(armcosmos.DefaultPriorityLevelLow),
-			DiagnosticLogSettings: &armcosmos.DiagnosticLogSettings{
-				EnableFullTextQuery: to.Ptr(armcosmos.EnableFullTextQueryTrue),
-			},
-			EnableAnalyticalStorage:              to.Ptr(true),
-			EnableBurstCapacity:                  to.Ptr(true),
-			EnableFreeTier:                       to.Ptr(false),
-			EnablePartitionMerge:                 to.Ptr(true),
-			EnablePerRegionPerPartitionAutoscale: to.Ptr(true),
-			EnablePriorityBasedExecution:         to.Ptr(true),
+			DefaultIdentity:         to.Ptr("FirstPartyIdentity"),
+			EnableAnalyticalStorage: to.Ptr(true),
+			EnableBurstCapacity:     to.Ptr(true),
+			EnableFreeTier:          to.Ptr(false),
+			EnablePartitionMerge:    to.Ptr(true),
 			IPRules: []*armcosmos.IPAddressOrRange{
 				{
 					IPAddressOrRange: to.Ptr("23.43.230.120"),
@@ -257,6 +244,10 @@ func ExampleDatabaseAccountsClient_BeginUpdate() {
 	// 	Name: to.Ptr("ddb1"),
 	// 	Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts"),
 	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1"),
+	// 	Location: to.Ptr("West US"),
+	// 	Tags: map[string]*string{
+	// 		"dept": to.Ptr("finance"),
+	// 	},
 	// 	Identity: &armcosmos.ManagedServiceIdentity{
 	// 		Type: to.Ptr(armcosmos.ResourceIdentityTypeSystemAssignedUserAssigned),
 	// 		PrincipalID: to.Ptr("52f4fef3-3c3f-4ff3-b52e-b5c9eeb68656"),
@@ -264,13 +255,9 @@ func ExampleDatabaseAccountsClient_BeginUpdate() {
 	// 		UserAssignedIdentities: map[string]*armcosmos.Components1Jq1T4ISchemasManagedserviceidentityPropertiesUserassignedidentitiesAdditionalproperties{
 	// 			"/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/eu2cgroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1": &armcosmos.Components1Jq1T4ISchemasManagedserviceidentityPropertiesUserassignedidentitiesAdditionalproperties{
 	// 				ClientID: to.Ptr("fbe75b66-01c5-4f87-a220-233af3270436"),
-	// 				PrincipalID: to.Ptr("075a0ca6-43f6-4434-9abf-c9b1b79f9219"),
+	// 				PrincipalID: to.Ptr("33e01921-4d64-4f8c-a055-5bdaffd5e33d"),
 	// 			},
 	// 		},
-	// 	},
-	// 	Location: to.Ptr("West US"),
-	// 	Tags: map[string]*string{
-	// 		"dept": to.Ptr("finance"),
 	// 	},
 	// 	Kind: to.Ptr(armcosmos.DatabaseAccountKindGlobalDocumentDB),
 	// 	Properties: &armcosmos.DatabaseAccountGetProperties{
@@ -284,7 +271,7 @@ func ExampleDatabaseAccountsClient_BeginUpdate() {
 	// 			PeriodicModeProperties: &armcosmos.PeriodicModeProperties{
 	// 				BackupIntervalInMinutes: to.Ptr[int32](240),
 	// 				BackupRetentionIntervalInHours: to.Ptr[int32](720),
-	// 				BackupStorageRedundancy: to.Ptr(armcosmos.BackupStorageRedundancyGeo),
+	// 				BackupStorageRedundancy: to.Ptr(armcosmos.BackupStorageRedundancyLocal),
 	// 			},
 	// 		},
 	// 		Capacity: &armcosmos.Capacity{
@@ -297,28 +284,20 @@ func ExampleDatabaseAccountsClient_BeginUpdate() {
 	// 		},
 	// 		Cors: []*armcosmos.CorsPolicy{
 	// 		},
-	// 		CreateMode: to.Ptr(armcosmos.CreateModeDefault),
 	// 		DatabaseAccountOfferType: to.Ptr("Standard"),
 	// 		DefaultIdentity: to.Ptr("FirstPartyIdentity"),
-	// 		DefaultPriorityLevel: to.Ptr(armcosmos.DefaultPriorityLevelLow),
-	// 		DiagnosticLogSettings: &armcosmos.DiagnosticLogSettings{
-	// 			EnableFullTextQuery: to.Ptr(armcosmos.EnableFullTextQueryTrue),
-	// 		},
 	// 		DisableKeyBasedMetadataWriteAccess: to.Ptr(false),
 	// 		DocumentEndpoint: to.Ptr("https://ddb1.documents.azure.com:443/"),
 	// 		EnableAnalyticalStorage: to.Ptr(true),
 	// 		EnableBurstCapacity: to.Ptr(true),
 	// 		EnableFreeTier: to.Ptr(false),
-	// 		EnableMaterializedViews: to.Ptr(false),
-	// 		EnablePerRegionPerPartitionAutoscale: to.Ptr(true),
-	// 		EnablePriorityBasedExecution: to.Ptr(true),
+	// 		EnablePartitionMerge: to.Ptr(true),
 	// 		FailoverPolicies: []*armcosmos.FailoverPolicy{
 	// 			{
 	// 				FailoverPriority: to.Ptr[int32](0),
 	// 				ID: to.Ptr("ddb1-eastus"),
 	// 				LocationName: to.Ptr("East US"),
 	// 		}},
-	// 		InstanceID: to.Ptr("d9b26648-2f53-4541-b3d8-3044f4f9810d"),
 	// 		IPRules: []*armcosmos.IPAddressOrRange{
 	// 			{
 	// 				IPAddressOrRange: to.Ptr("23.43.230.120"),
@@ -389,13 +368,10 @@ func ExampleDatabaseAccountsClient_BeginUpdate() {
 	// 					ProvisioningState: to.Ptr("Succeeded"),
 	// 			}},
 	// 		},
-	// 		SystemData: &armcosmos.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-12T22:05:09.000Z"); return t}()),
-	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/CosmosDBDatabaseAccountCreateMax.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ec7ee8842bf615c2f0354bf8b5b8725fdac9454a/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBDatabaseAccountCreateMax.json
 func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbDatabaseAccountCreateMax() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -407,15 +383,15 @@ func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbDatabaseAccountCr
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewDatabaseAccountsClient().BeginCreateOrUpdate(ctx, "rg1", "ddb1", armcosmos.DatabaseAccountCreateUpdateParameters{
+		Location: to.Ptr("westus"),
+		Tags:     map[string]*string{},
 		Identity: &armcosmos.ManagedServiceIdentity{
 			Type: to.Ptr(armcosmos.ResourceIdentityTypeSystemAssignedUserAssigned),
 			UserAssignedIdentities: map[string]*armcosmos.Components1Jq1T4ISchemasManagedserviceidentityPropertiesUserassignedidentitiesAdditionalproperties{
 				"/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/eu2cgroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1": {},
 			},
 		},
-		Location: to.Ptr("westus"),
-		Tags:     map[string]*string{},
-		Kind:     to.Ptr(armcosmos.DatabaseAccountKindMongoDB),
+		Kind: to.Ptr(armcosmos.DatabaseAccountKindMongoDB),
 		Properties: &armcosmos.DatabaseAccountCreateUpdateProperties{
 			AnalyticalStorageConfiguration: &armcosmos.AnalyticalStorageConfiguration{
 				SchemaType: to.Ptr(armcosmos.AnalyticalStorageSchemaTypeWellDefined),
@@ -443,16 +419,12 @@ func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbDatabaseAccountCr
 				{
 					AllowedOrigins: to.Ptr("https://test"),
 				}},
-			CreateMode:                           to.Ptr(armcosmos.CreateModeDefault),
-			DatabaseAccountOfferType:             to.Ptr("Standard"),
-			DefaultIdentity:                      to.Ptr("FirstPartyIdentity"),
-			DefaultPriorityLevel:                 to.Ptr(armcosmos.DefaultPriorityLevelLow),
-			EnableAnalyticalStorage:              to.Ptr(true),
-			EnableBurstCapacity:                  to.Ptr(true),
-			EnableFreeTier:                       to.Ptr(false),
-			EnableMaterializedViews:              to.Ptr(false),
-			EnablePerRegionPerPartitionAutoscale: to.Ptr(true),
-			EnablePriorityBasedExecution:         to.Ptr(true),
+			CreateMode:               to.Ptr(armcosmos.CreateModeDefault),
+			DatabaseAccountOfferType: to.Ptr("Standard"),
+			DefaultIdentity:          to.Ptr("FirstPartyIdentity"),
+			EnableAnalyticalStorage:  to.Ptr(true),
+			EnableBurstCapacity:      to.Ptr(true),
+			EnableFreeTier:           to.Ptr(false),
 			IPRules: []*armcosmos.IPAddressOrRange{
 				{
 					IPAddressOrRange: to.Ptr("23.43.230.120"),
@@ -499,6 +471,9 @@ func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbDatabaseAccountCr
 	// 	Name: to.Ptr("ddb1"),
 	// 	Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts"),
 	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1"),
+	// 	Location: to.Ptr("West US"),
+	// 	Tags: map[string]*string{
+	// 	},
 	// 	Identity: &armcosmos.ManagedServiceIdentity{
 	// 		Type: to.Ptr(armcosmos.ResourceIdentityTypeSystemAssignedUserAssigned),
 	// 		PrincipalID: to.Ptr("52f4fef3-3c3f-4ff3-b52e-b5c9eeb68656"),
@@ -506,12 +481,9 @@ func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbDatabaseAccountCr
 	// 		UserAssignedIdentities: map[string]*armcosmos.Components1Jq1T4ISchemasManagedserviceidentityPropertiesUserassignedidentitiesAdditionalproperties{
 	// 			"/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/eu2cgroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1": &armcosmos.Components1Jq1T4ISchemasManagedserviceidentityPropertiesUserassignedidentitiesAdditionalproperties{
 	// 				ClientID: to.Ptr("fbe75b66-01c5-4f87-a220-233af3270436"),
-	// 				PrincipalID: to.Ptr("075a0ca6-43f6-4434-9abf-c9b1b79f9219"),
+	// 				PrincipalID: to.Ptr("33e01921-4d64-4f8c-a055-5bdaffd5e33d"),
 	// 			},
 	// 		},
-	// 	},
-	// 	Location: to.Ptr("West US"),
-	// 	Tags: map[string]*string{
 	// 	},
 	// 	Kind: to.Ptr(armcosmos.DatabaseAccountKindMongoDB),
 	// 	Properties: &armcosmos.DatabaseAccountGetProperties{
@@ -544,14 +516,10 @@ func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbDatabaseAccountCr
 	// 		CreateMode: to.Ptr(armcosmos.CreateModeDefault),
 	// 		DatabaseAccountOfferType: to.Ptr("Standard"),
 	// 		DefaultIdentity: to.Ptr("FirstPartyIdentity"),
-	// 		DefaultPriorityLevel: to.Ptr(armcosmos.DefaultPriorityLevelLow),
 	// 		DisableKeyBasedMetadataWriteAccess: to.Ptr(false),
 	// 		EnableAnalyticalStorage: to.Ptr(true),
 	// 		EnableBurstCapacity: to.Ptr(true),
 	// 		EnableFreeTier: to.Ptr(false),
-	// 		EnableMaterializedViews: to.Ptr(false),
-	// 		EnablePerRegionPerPartitionAutoscale: to.Ptr(true),
-	// 		EnablePriorityBasedExecution: to.Ptr(true),
 	// 		FailoverPolicies: []*armcosmos.FailoverPolicy{
 	// 			{
 	// 				FailoverPriority: to.Ptr[int32](0),
@@ -575,16 +543,16 @@ func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbDatabaseAccountCr
 	// 		KeyVaultKeyURI: to.Ptr("https://myKeyVault.vault.azure.net"),
 	// 		KeysMetadata: &armcosmos.DatabaseAccountKeysMetadata{
 	// 			PrimaryMasterKey: &armcosmos.AccountKeyMetadata{
-	// 				GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-25T20:30:11.000Z"); return t}()),
+	// 				GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-12T22:05:09.000Z"); return t}()),
 	// 			},
 	// 			PrimaryReadonlyMasterKey: &armcosmos.AccountKeyMetadata{
-	// 				GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-25T20:30:11.000Z"); return t}()),
+	// 				GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-12T22:05:09.000Z"); return t}()),
 	// 			},
 	// 			SecondaryMasterKey: &armcosmos.AccountKeyMetadata{
-	// 				GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-25T20:30:11.000Z"); return t}()),
+	// 				GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-12T22:05:09.000Z"); return t}()),
 	// 			},
 	// 			SecondaryReadonlyMasterKey: &armcosmos.AccountKeyMetadata{
-	// 				GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-25T20:30:11.000Z"); return t}()),
+	// 				GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-12T22:05:09.000Z"); return t}()),
 	// 			},
 	// 		},
 	// 		Locations: []*armcosmos.Location{
@@ -642,7 +610,7 @@ func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbDatabaseAccountCr
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/CosmosDBDatabaseAccountCreateMin.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ec7ee8842bf615c2f0354bf8b5b8725fdac9454a/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBDatabaseAccountCreateMin.json
 func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbDatabaseAccountCreateMin() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -707,7 +675,6 @@ func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbDatabaseAccountCr
 	// 		DisableKeyBasedMetadataWriteAccess: to.Ptr(false),
 	// 		EnableAnalyticalStorage: to.Ptr(false),
 	// 		EnableFreeTier: to.Ptr(false),
-	// 		EnableMaterializedViews: to.Ptr(false),
 	// 		FailoverPolicies: []*armcosmos.FailoverPolicy{
 	// 			{
 	// 				FailoverPriority: to.Ptr[int32](0),
@@ -719,16 +686,16 @@ func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbDatabaseAccountCr
 	// 		},
 	// 		KeysMetadata: &armcosmos.DatabaseAccountKeysMetadata{
 	// 			PrimaryMasterKey: &armcosmos.AccountKeyMetadata{
-	// 				GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-25T20:30:11.000Z"); return t}()),
+	// 				GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-12T22:05:09.000Z"); return t}()),
 	// 			},
 	// 			PrimaryReadonlyMasterKey: &armcosmos.AccountKeyMetadata{
-	// 				GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-25T20:30:11.000Z"); return t}()),
+	// 				GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-12T22:05:09.000Z"); return t}()),
 	// 			},
 	// 			SecondaryMasterKey: &armcosmos.AccountKeyMetadata{
-	// 				GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-25T20:30:11.000Z"); return t}()),
+	// 				GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-12T22:05:09.000Z"); return t}()),
 	// 			},
 	// 			SecondaryReadonlyMasterKey: &armcosmos.AccountKeyMetadata{
-	// 				GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-25T20:30:11.000Z"); return t}()),
+	// 				GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-12T22:05:09.000Z"); return t}()),
 	// 			},
 	// 		},
 	// 		Locations: []*armcosmos.Location{
@@ -767,7 +734,7 @@ func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbDatabaseAccountCr
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/CosmosDBRestoreDatabaseAccountCreateUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ec7ee8842bf615c2f0354bf8b5b8725fdac9454a/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBRestoreDatabaseAccountCreateUpdate.json
 func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbRestoreDatabaseAccountCreateUpdateJson() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -801,7 +768,6 @@ func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbRestoreDatabaseAc
 			DatabaseAccountOfferType: to.Ptr("Standard"),
 			EnableAnalyticalStorage:  to.Ptr(true),
 			EnableFreeTier:           to.Ptr(false),
-			EnableMaterializedViews:  to.Ptr(false),
 			KeyVaultKeyURI:           to.Ptr("https://myKeyVault.vault.azure.net"),
 			Locations: []*armcosmos.Location{
 				{
@@ -811,9 +777,8 @@ func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbRestoreDatabaseAc
 				}},
 			MinimalTLSVersion: to.Ptr(armcosmos.MinimalTLSVersionTLS),
 			RestoreParameters: &armcosmos.RestoreParameters{
-				RestoreSource:          to.Ptr("/subscriptions/subid/providers/Microsoft.DocumentDB/locations/westus/restorableDatabaseAccounts/1a97b4bb-f6a0-430e-ade1-638d781830cc"),
-				RestoreTimestampInUTC:  to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-11T22:05:09.000Z"); return t }()),
-				RestoreWithTTLDisabled: to.Ptr(false),
+				RestoreSource:         to.Ptr("/subscriptions/subid/providers/Microsoft.DocumentDB/locations/westus/restorableDatabaseAccounts/1a97b4bb-f6a0-430e-ade1-638d781830cc"),
+				RestoreTimestampInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-11T22:05:09.000Z"); return t }()),
 				DatabasesToRestore: []*armcosmos.DatabaseRestoreResource{
 					{
 						CollectionNames: []*string{
@@ -827,8 +792,7 @@ func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbRestoreDatabaseAc
 							to.Ptr("collection4")},
 						DatabaseName: to.Ptr("db2"),
 					}},
-				RestoreMode:          to.Ptr(armcosmos.RestoreModePointInTime),
-				SourceBackupLocation: to.Ptr("westus"),
+				RestoreMode: to.Ptr(armcosmos.RestoreModePointInTime),
 			},
 		},
 	}, nil)
@@ -869,7 +833,6 @@ func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbRestoreDatabaseAc
 	// 		DisableKeyBasedMetadataWriteAccess: to.Ptr(false),
 	// 		EnableAnalyticalStorage: to.Ptr(false),
 	// 		EnableFreeTier: to.Ptr(false),
-	// 		EnableMaterializedViews: to.Ptr(false),
 	// 		FailoverPolicies: []*armcosmos.FailoverPolicy{
 	// 			{
 	// 				FailoverPriority: to.Ptr[int32](0),
@@ -902,9 +865,6 @@ func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbRestoreDatabaseAc
 	// 				ProvisioningState: to.Ptr("Succeeded"),
 	// 		}},
 	// 		MinimalTLSVersion: to.Ptr(armcosmos.MinimalTLSVersionTLS),
-	// 		NetworkACLBypass: to.Ptr(armcosmos.NetworkACLBypassNone),
-	// 		NetworkACLBypassResourceIDs: []*string{
-	// 		},
 	// 		ProvisioningState: to.Ptr("Succeeded"),
 	// 		ReadLocations: []*armcosmos.Location{
 	// 			{
@@ -929,7 +889,7 @@ func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbRestoreDatabaseAc
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/CosmosDBDatabaseAccountDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ec7ee8842bf615c2f0354bf8b5b8725fdac9454a/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBDatabaseAccountDelete.json
 func ExampleDatabaseAccountsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -950,7 +910,7 @@ func ExampleDatabaseAccountsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/CosmosDBDatabaseAccountFailoverPriorityChange.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ec7ee8842bf615c2f0354bf8b5b8725fdac9454a/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBDatabaseAccountFailoverPriorityChange.json
 func ExampleDatabaseAccountsClient_BeginFailoverPriorityChange() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -981,7 +941,7 @@ func ExampleDatabaseAccountsClient_BeginFailoverPriorityChange() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/CosmosDBDatabaseAccountList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ec7ee8842bf615c2f0354bf8b5b8725fdac9454a/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBDatabaseAccountList.json
 func ExampleDatabaseAccountsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1009,6 +969,9 @@ func ExampleDatabaseAccountsClient_NewListPager() {
 		// 			Name: to.Ptr("ddb1"),
 		// 			Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts"),
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1"),
+		// 			Location: to.Ptr("West US"),
+		// 			Tags: map[string]*string{
+		// 			},
 		// 			Identity: &armcosmos.ManagedServiceIdentity{
 		// 				Type: to.Ptr(armcosmos.ResourceIdentityTypeSystemAssignedUserAssigned),
 		// 				PrincipalID: to.Ptr("52f4fef3-3c3f-4ff3-b52e-b5c9eeb68656"),
@@ -1019,9 +982,6 @@ func ExampleDatabaseAccountsClient_NewListPager() {
 		// 						PrincipalID: to.Ptr("33e01921-4d64-4f8c-a055-5bdaffd5e33d"),
 		// 					},
 		// 				},
-		// 			},
-		// 			Location: to.Ptr("West US"),
-		// 			Tags: map[string]*string{
 		// 			},
 		// 			Kind: to.Ptr(armcosmos.DatabaseAccountKindGlobalDocumentDB),
 		// 			Properties: &armcosmos.DatabaseAccountGetProperties{
@@ -1048,16 +1008,12 @@ func ExampleDatabaseAccountsClient_NewListPager() {
 		// 				CreateMode: to.Ptr(armcosmos.CreateModeDefault),
 		// 				DatabaseAccountOfferType: to.Ptr("Standard"),
 		// 				DefaultIdentity: to.Ptr("FirstPartyIdentity"),
-		// 				DefaultPriorityLevel: to.Ptr(armcosmos.DefaultPriorityLevelLow),
 		// 				DisableKeyBasedMetadataWriteAccess: to.Ptr(false),
 		// 				DocumentEndpoint: to.Ptr("https://ddb1.documents.azure.com:443/"),
 		// 				EnableAnalyticalStorage: to.Ptr(true),
 		// 				EnableBurstCapacity: to.Ptr(true),
 		// 				EnableFreeTier: to.Ptr(false),
-		// 				EnableMaterializedViews: to.Ptr(false),
 		// 				EnablePartitionMerge: to.Ptr(true),
-		// 				EnablePerRegionPerPartitionAutoscale: to.Ptr(true),
-		// 				EnablePriorityBasedExecution: to.Ptr(true),
 		// 				FailoverPolicies: []*armcosmos.FailoverPolicy{
 		// 					{
 		// 						FailoverPriority: to.Ptr[int32](0),
@@ -1132,7 +1088,7 @@ func ExampleDatabaseAccountsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/CosmosDBDatabaseAccountListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ec7ee8842bf615c2f0354bf8b5b8725fdac9454a/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBDatabaseAccountListByResourceGroup.json
 func ExampleDatabaseAccountsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1160,6 +1116,9 @@ func ExampleDatabaseAccountsClient_NewListByResourceGroupPager() {
 		// 			Name: to.Ptr("ddb1"),
 		// 			Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts"),
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1"),
+		// 			Location: to.Ptr("West US"),
+		// 			Tags: map[string]*string{
+		// 			},
 		// 			Identity: &armcosmos.ManagedServiceIdentity{
 		// 				Type: to.Ptr(armcosmos.ResourceIdentityTypeSystemAssignedUserAssigned),
 		// 				PrincipalID: to.Ptr("52f4fef3-3c3f-4ff3-b52e-b5c9eeb68656"),
@@ -1171,19 +1130,8 @@ func ExampleDatabaseAccountsClient_NewListByResourceGroupPager() {
 		// 					},
 		// 				},
 		// 			},
-		// 			Location: to.Ptr("West US"),
-		// 			Tags: map[string]*string{
-		// 			},
 		// 			Kind: to.Ptr(armcosmos.DatabaseAccountKindGlobalDocumentDB),
 		// 			Properties: &armcosmos.DatabaseAccountGetProperties{
-		// 				BackupPolicy: &armcosmos.PeriodicModeBackupPolicy{
-		// 					Type: to.Ptr(armcosmos.BackupPolicyTypePeriodic),
-		// 					PeriodicModeProperties: &armcosmos.PeriodicModeProperties{
-		// 						BackupIntervalInMinutes: to.Ptr[int32](240),
-		// 						BackupRetentionIntervalInHours: to.Ptr[int32](720),
-		// 						BackupStorageRedundancy: to.Ptr(armcosmos.BackupStorageRedundancyGeo),
-		// 					},
-		// 				},
 		// 				ConsistencyPolicy: &armcosmos.ConsistencyPolicy{
 		// 					DefaultConsistencyLevel: to.Ptr(armcosmos.DefaultConsistencyLevelSession),
 		// 					MaxIntervalInSeconds: to.Ptr[int32](5),
@@ -1191,20 +1139,17 @@ func ExampleDatabaseAccountsClient_NewListByResourceGroupPager() {
 		// 				},
 		// 				Cors: []*armcosmos.CorsPolicy{
 		// 				},
-		// 				CreateMode: to.Ptr(armcosmos.CreateModeDefault),
 		// 				DatabaseAccountOfferType: to.Ptr("Standard"),
 		// 				DefaultIdentity: to.Ptr("FirstPartyIdentity"),
 		// 				DisableKeyBasedMetadataWriteAccess: to.Ptr(false),
 		// 				DocumentEndpoint: to.Ptr("https://ddb1.documents.azure.com:443/"),
 		// 				EnableFreeTier: to.Ptr(false),
-		// 				EnableMaterializedViews: to.Ptr(false),
 		// 				FailoverPolicies: []*armcosmos.FailoverPolicy{
 		// 					{
 		// 						FailoverPriority: to.Ptr[int32](0),
 		// 						ID: to.Ptr("ddb1-eastus"),
 		// 						LocationName: to.Ptr("East US"),
 		// 				}},
-		// 				InstanceID: to.Ptr("d9b26648-2f53-4541-b3d8-3044f4f9810d"),
 		// 				IPRules: []*armcosmos.IPAddressOrRange{
 		// 				},
 		// 				KeysMetadata: &armcosmos.DatabaseAccountKeysMetadata{
@@ -1251,15 +1196,12 @@ func ExampleDatabaseAccountsClient_NewListByResourceGroupPager() {
 		// 						ProvisioningState: to.Ptr("Succeeded"),
 		// 				}},
 		// 			},
-		// 			SystemData: &armcosmos.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-12T22:05:09.000Z"); return t}()),
-		// 			},
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/CosmosDBDatabaseAccountListKeys.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ec7ee8842bf615c2f0354bf8b5b8725fdac9454a/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBDatabaseAccountListKeys.json
 func ExampleDatabaseAccountsClient_ListKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1285,7 +1227,7 @@ func ExampleDatabaseAccountsClient_ListKeys() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/CosmosDBDatabaseAccountListConnectionStrings.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ec7ee8842bf615c2f0354bf8b5b8725fdac9454a/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBDatabaseAccountListConnectionStrings.json
 func ExampleDatabaseAccountsClient_ListConnectionStrings_cosmosDbDatabaseAccountListConnectionStrings() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1314,7 +1256,7 @@ func ExampleDatabaseAccountsClient_ListConnectionStrings_cosmosDbDatabaseAccount
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/CosmosDBDatabaseAccountListConnectionStringsMongo.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ec7ee8842bf615c2f0354bf8b5b8725fdac9454a/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBDatabaseAccountListConnectionStringsMongo.json
 func ExampleDatabaseAccountsClient_ListConnectionStrings_cosmosDbDatabaseAccountListConnectionStringsMongo() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1341,7 +1283,7 @@ func ExampleDatabaseAccountsClient_ListConnectionStrings_cosmosDbDatabaseAccount
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/CosmosDBDatabaseAccountOfflineRegion.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ec7ee8842bf615c2f0354bf8b5b8725fdac9454a/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBDatabaseAccountOfflineRegion.json
 func ExampleDatabaseAccountsClient_BeginOfflineRegion() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1352,9 +1294,7 @@ func ExampleDatabaseAccountsClient_BeginOfflineRegion() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewDatabaseAccountsClient().BeginOfflineRegion(ctx, "rg1", "ddb1", armcosmos.RegionForOnlineOffline{
-		Region: to.Ptr("North Europe"),
-	}, nil)
+	poller, err := clientFactory.NewDatabaseAccountsClient().BeginOfflineRegion(ctx, "rg1", "ddb1", armcosmos.RegionForOnlineOffline{}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1364,7 +1304,7 @@ func ExampleDatabaseAccountsClient_BeginOfflineRegion() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/CosmosDBDatabaseAccountOnlineRegion.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ec7ee8842bf615c2f0354bf8b5b8725fdac9454a/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBDatabaseAccountOnlineRegion.json
 func ExampleDatabaseAccountsClient_BeginOnlineRegion() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1375,9 +1315,7 @@ func ExampleDatabaseAccountsClient_BeginOnlineRegion() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewDatabaseAccountsClient().BeginOnlineRegion(ctx, "rg1", "ddb1", armcosmos.RegionForOnlineOffline{
-		Region: to.Ptr("North Europe"),
-	}, nil)
+	poller, err := clientFactory.NewDatabaseAccountsClient().BeginOnlineRegion(ctx, "rg1", "ddb1", armcosmos.RegionForOnlineOffline{}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1387,7 +1325,7 @@ func ExampleDatabaseAccountsClient_BeginOnlineRegion() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/CosmosDBDatabaseAccountListReadOnlyKeys.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ec7ee8842bf615c2f0354bf8b5b8725fdac9454a/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBDatabaseAccountListReadOnlyKeys.json
 func ExampleDatabaseAccountsClient_GetReadOnlyKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1411,7 +1349,7 @@ func ExampleDatabaseAccountsClient_GetReadOnlyKeys() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/CosmosDBDatabaseAccountRegenerateKey.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ec7ee8842bf615c2f0354bf8b5b8725fdac9454a/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBDatabaseAccountRegenerateKey.json
 func ExampleDatabaseAccountsClient_BeginRegenerateKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1434,7 +1372,7 @@ func ExampleDatabaseAccountsClient_BeginRegenerateKey() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/CosmosDBDatabaseAccountCheckNameExists.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ec7ee8842bf615c2f0354bf8b5b8725fdac9454a/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBDatabaseAccountCheckNameExists.json
 func ExampleDatabaseAccountsClient_CheckNameExists() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1451,7 +1389,7 @@ func ExampleDatabaseAccountsClient_CheckNameExists() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/CosmosDBDatabaseAccountGetMetrics.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ec7ee8842bf615c2f0354bf8b5b8725fdac9454a/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBDatabaseAccountGetMetrics.json
 func ExampleDatabaseAccountsClient_NewListMetricsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1514,7 +1452,7 @@ func ExampleDatabaseAccountsClient_NewListMetricsPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/CosmosDBDatabaseAccountGetUsages.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ec7ee8842bf615c2f0354bf8b5b8725fdac9454a/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBDatabaseAccountGetUsages.json
 func ExampleDatabaseAccountsClient_NewListUsagesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1552,7 +1490,7 @@ func ExampleDatabaseAccountsClient_NewListUsagesPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/CosmosDBDatabaseAccountGetMetricDefinitions.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ec7ee8842bf615c2f0354bf8b5b8725fdac9454a/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBDatabaseAccountGetMetricDefinitions.json
 func ExampleDatabaseAccountsClient_NewListMetricDefinitionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

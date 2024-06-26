@@ -60,6 +60,7 @@ func ExampleCloudExadataInfrastructuresClient_NewListBySubscriptionPager() {
 		// 						Email: to.Ptr("noreply@oracle.com"),
 		// 				}},
 		// 				DataStorageSizeInTbs: to.Ptr[float64](10),
+		// 				DataStorageSizeInTbs: to.Ptr[float64](10),
 		// 				DbNodeStorageSizeInGbs: to.Ptr[int32](10),
 		// 				DbServerVersion: to.Ptr("19.0.0.0"),
 		// 				DisplayName: to.Ptr("infra 1"),
@@ -157,6 +158,7 @@ func ExampleCloudExadataInfrastructuresClient_NewListByResourceGroupPager() {
 		// 						Email: to.Ptr("noreply@oracle.com"),
 		// 				}},
 		// 				DataStorageSizeInTbs: to.Ptr[float64](10),
+		// 				DataStorageSizeInTbs: to.Ptr[float64](10),
 		// 				DbNodeStorageSizeInGbs: to.Ptr[int32](10),
 		// 				DbServerVersion: to.Ptr("19.0.0.0"),
 		// 				DisplayName: to.Ptr("infra 1"),
@@ -247,6 +249,7 @@ func ExampleCloudExadataInfrastructuresClient_Get() {
 	// 			{
 	// 				Email: to.Ptr("noreply@oracle.com"),
 	// 		}},
+	// 		DataStorageSizeInTbs: to.Ptr[float64](10),
 	// 		DataStorageSizeInTbs: to.Ptr[float64](10),
 	// 		DbNodeStorageSizeInGbs: to.Ptr[int32](10),
 	// 		DbServerVersion: to.Ptr("19.0.0.0"),
@@ -354,6 +357,7 @@ func ExampleCloudExadataInfrastructuresClient_BeginCreateOrUpdate() {
 	// 				Email: to.Ptr("noreply@oracle.com"),
 	// 		}},
 	// 		DataStorageSizeInTbs: to.Ptr[float64](10),
+	// 		DataStorageSizeInTbs: to.Ptr[float64](10),
 	// 		DbNodeStorageSizeInGbs: to.Ptr[int32](10),
 	// 		DbServerVersion: to.Ptr("19.0.0.0"),
 	// 		DisplayName: to.Ptr("infra 1"),
@@ -446,6 +450,7 @@ func ExampleCloudExadataInfrastructuresClient_BeginUpdate() {
 	// 			{
 	// 				Email: to.Ptr("noreply@oracle.com"),
 	// 		}},
+	// 		DataStorageSizeInTbs: to.Ptr[float64](10),
 	// 		DataStorageSizeInTbs: to.Ptr[float64](10),
 	// 		DbNodeStorageSizeInGbs: to.Ptr[int32](10),
 	// 		DbServerVersion: to.Ptr("19.0.0.0"),
@@ -560,6 +565,7 @@ func ExampleCloudExadataInfrastructuresClient_BeginAddStorageCapacity() {
 	// 			{
 	// 				Email: to.Ptr("noreply@oracle.com"),
 	// 		}},
+	// 		DataStorageSizeInTbs: to.Ptr[float64](10),
 	// 		DataStorageSizeInTbs: to.Ptr[float64](10),
 	// 		DbNodeStorageSizeInGbs: to.Ptr[int32](10),
 	// 		DbServerVersion: to.Ptr("19.0.0.0"),

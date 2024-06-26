@@ -1,12 +1,10 @@
 # Release History
 
-## 0.2.0 (TBD)
+## 0.2.0 (2024-06-25)
 
 ### Features Added
 
-- Now supports the Assistants V2 API, with support for vector stores.
-
-### Bugs Fixed
+- Now supports the Assistants V2 API, with support for vector stores as well as streaming.
 
 ### Breaking Changes
 

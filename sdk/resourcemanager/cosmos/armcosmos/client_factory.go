@@ -92,14 +92,6 @@ func (c *ClientFactory) NewCollectionRegionClient() *CollectionRegionClient {
 	}
 }
 
-// NewDataTransferJobsClient creates a new instance of DataTransferJobsClient.
-func (c *ClientFactory) NewDataTransferJobsClient() *DataTransferJobsClient {
-	return &DataTransferJobsClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
 // NewDatabaseAccountRegionClient creates a new instance of DatabaseAccountRegionClient.
 func (c *ClientFactory) NewDatabaseAccountRegionClient() *DatabaseAccountRegionClient {
 	return &DatabaseAccountRegionClient{
@@ -124,14 +116,6 @@ func (c *ClientFactory) NewDatabaseClient() *DatabaseClient {
 	}
 }
 
-// NewGraphResourcesClient creates a new instance of GraphResourcesClient.
-func (c *ClientFactory) NewGraphResourcesClient() *GraphResourcesClient {
-	return &GraphResourcesClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
 // NewGremlinResourcesClient creates a new instance of GremlinResourcesClient.
 func (c *ClientFactory) NewGremlinResourcesClient() *GremlinResourcesClient {
 	return &GremlinResourcesClient{
@@ -143,14 +127,6 @@ func (c *ClientFactory) NewGremlinResourcesClient() *GremlinResourcesClient {
 // NewLocationsClient creates a new instance of LocationsClient.
 func (c *ClientFactory) NewLocationsClient() *LocationsClient {
 	return &LocationsClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewMongoClustersClient creates a new instance of MongoClustersClient.
-func (c *ClientFactory) NewMongoClustersClient() *MongoClustersClient {
-	return &MongoClustersClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}
@@ -350,38 +326,6 @@ func (c *ClientFactory) NewServiceClient() *ServiceClient {
 // NewTableResourcesClient creates a new instance of TableResourcesClient.
 func (c *ClientFactory) NewTableResourcesClient() *TableResourcesClient {
 	return &TableResourcesClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewThroughputPoolAccountClient creates a new instance of ThroughputPoolAccountClient.
-func (c *ClientFactory) NewThroughputPoolAccountClient() *ThroughputPoolAccountClient {
-	return &ThroughputPoolAccountClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewThroughputPoolAccountsClient creates a new instance of ThroughputPoolAccountsClient.
-func (c *ClientFactory) NewThroughputPoolAccountsClient() *ThroughputPoolAccountsClient {
-	return &ThroughputPoolAccountsClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewThroughputPoolClient creates a new instance of ThroughputPoolClient.
-func (c *ClientFactory) NewThroughputPoolClient() *ThroughputPoolClient {
-	return &ThroughputPoolClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewThroughputPoolsClient creates a new instance of ThroughputPoolsClient.
-func (c *ClientFactory) NewThroughputPoolsClient() *ThroughputPoolsClient {
-	return &ThroughputPoolsClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

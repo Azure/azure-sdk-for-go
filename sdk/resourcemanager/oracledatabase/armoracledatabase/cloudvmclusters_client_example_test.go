@@ -284,6 +284,7 @@ func ExampleCloudVMClustersClient_Get() {
 	// 			MemorySizeInGbs: to.Ptr[int32](1000),
 	// 			NodeCount: to.Ptr[int32](100),
 	// 			NsgCidrs: []*armoracledatabase.NsgCidr{
+	// 			NsgCidrs: []*armoracledatabase.NsgCidr{
 	// 				{
 	// 					DestinationPortRange: &armoracledatabase.PortRange{
 	// 						Max: to.Ptr[int32](1522),
@@ -361,6 +362,7 @@ func ExampleCloudVMClustersClient_BeginCreateOrUpdate() {
 			IsSparseDiskgroupEnabled: to.Ptr(false),
 			LicenseModel:             to.Ptr(armoracledatabase.LicenseModelLicenseIncluded),
 			MemorySizeInGbs:          to.Ptr[int32](1000),
+			NsgCidrs: []*armoracledatabase.NsgCidr{
 			NsgCidrs: []*armoracledatabase.NsgCidr{
 				{
 					DestinationPortRange: &armoracledatabase.PortRange{

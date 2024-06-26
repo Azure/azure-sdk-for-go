@@ -9,15 +9,11 @@ package cache
 import (
 	"context"
 	"errors"
-	"fmt"
 	"os"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity/internal"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/AzureAD/microsoft-authentication-extensions-for-go/cache/accessor"
-	"github.com/AzureAD/microsoft-authentication-extensions-for-go/cache/accessor/file"
 )
 
 var cacheDir = os.UserHomeDir
@@ -27,24 +23,10 @@ func storage(o internal.TokenCachePersistenceOptions) (accessor.Accessor, error)
 	if name == "" {
 		name = defaultName
 	}
-	var a accessor.Accessor
-	err := tryAccessor()
-	if err != nil {
-		msg := fmt.Sprintf("cache encryption is impossible because the keychain isn't usable: %s", err)
-		if o.AllowUnencryptedStorage {
-			f := ""
-			f, err = internal.CacheFilePath(name)
-			if err == nil {
-				log.Write(azidentity.EventAuthentication, msg+". Falling back to unencrypted storage")
-				a, err = file.New(f)
-			}
-		} else {
-			err = errors.New(msg + ". Set AllowUnencryptedStorage on TokenCachePersistenceOptions to store the cache in plaintext instead of returning this error")
-		}
-	} else {
-		a, err = accessor.New(name, accessor.WithAccount("MSALCache"))
+	if err := tryAccessor(); err != nil {
+		return nil, errors.New("cache encryption is impossible because the keychain isn't usable: " + err.Error())
 	}
-	return a, err
+	return accessor.New(name, accessor.WithAccount("MSALCache"))
 }
 
 func tryAccessor() error {

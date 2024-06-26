@@ -1,6 +1,6 @@
 # Release History
 
-## 2.0.0 (2024-06-28)
+## 2.0.0-beta.1 (2024-06-28)
 ### Breaking Changes
 
 - Function `*WorkloadNetworksClient.Get` parameter(s) have been changed from `(context.Context, string, string, WorkloadNetworkName, *WorkloadNetworksClientGetOptions)` to `(context.Context, string, string, *WorkloadNetworksClientGetOptions)`

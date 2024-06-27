@@ -12,14 +12,15 @@ import (
 	"golang.org/x/sys/windows"
 )
 
-var cacheDir = func() (string, error) {
-	return windows.KnownFolderPath(windows.FOLDERID_LocalAppData, 0)
-}
-
-func storage(name string) (accessor.Accessor, error) {
-	p, err := internal.CacheFilePath(name)
-	if err != nil {
-		return nil, err
+var (
+	cacheDir = func() (string, error) {
+		return windows.KnownFolderPath(windows.FOLDERID_LocalAppData, 0)
 	}
-	return accessor.New(p)
-}
+	storage = func(name string) (accessor.Accessor, error) {
+		p, err := internal.CacheFilePath(name)
+		if err != nil {
+			return nil, err
+		}
+		return accessor.New(p)
+	}
+)

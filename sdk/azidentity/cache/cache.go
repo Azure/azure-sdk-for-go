@@ -8,16 +8,18 @@
 package cache
 
 import (
+	"bytes"
+	"context"
 	"fmt"
 	"path/filepath"
+	"sync"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity/internal"
 	extcache "github.com/AzureAD/microsoft-authentication-extensions-for-go/cache"
 	msal "github.com/AzureAD/microsoft-authentication-library-for-go/apps/cache"
 )
-
-const defaultName = "msal.cache"
 
 func init() {
 	internal.CacheFilePath = func(name string) (string, error) {
@@ -29,6 +31,44 @@ func init() {
 	}
 }
 
+const defaultName = "msal.cache"
+
+var (
+	// once ensures New tests the storage implementation only once
+	once = &sync.Once{}
+	// storageError is the error from the storage test
+	storageError error
+	// tryStorage tests the storage implementation by round-tripping data
+	tryStorage = func() {
+		const errFmt = "persistent storage isn't available due to error %q"
+		s, err := storage("azidentity-test-cache")
+		if err != nil {
+			storageError = fmt.Errorf(errFmt, err)
+			return
+		}
+		ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
+		defer cancel()
+		in := []byte("test")
+		err = s.Write(ctx, in)
+		if err != nil {
+			storageError = fmt.Errorf(errFmt, err)
+			return
+		}
+		out, err := s.Read(ctx)
+		if err != nil {
+			storageError = fmt.Errorf(errFmt, err)
+			return
+		}
+		if !bytes.Equal(in, out) {
+			storageError = fmt.Errorf(errFmt, "read doesn't match write")
+		}
+		err = s.Delete(ctx)
+		if err != nil {
+			storageError = fmt.Errorf(errFmt, err)
+		}
+	}
+)
+
 // Options for persistent token caches.
 type Options struct {
 	// Name distinguishes the cache from other caches.
@@ -38,8 +78,10 @@ type Options struct {
 
 // New is the constructor for persistent token caches.
 func New(opts *Options) (azidentity.Cache, error) {
-	// TODO: try the storage implementation, return any error
-
+	once.Do(tryStorage)
+	if storageError != nil {
+		return azidentity.Cache{}, storageError
+	}
 	o := Options{}
 	if opts != nil {
 		o = *opts

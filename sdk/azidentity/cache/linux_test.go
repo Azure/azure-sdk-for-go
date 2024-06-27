@@ -8,12 +8,10 @@ package cache
 
 import (
 	"context"
-	"errors"
 	"os"
 	"path/filepath"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity/internal"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/require"
 )
@@ -138,15 +136,4 @@ func TestTwoInstances(t *testing.T) {
 			require.NoError(t, b.Delete(ctx))
 		})
 	}
-}
-
-func TestKeyringUnusable(t *testing.T) {
-	before := tryKeyring
-	t.Cleanup(func() { tryKeyring = before })
-	expected := errors.New("it didn't work")
-	tryKeyring = func() error { return expected }
-
-	_, err := storage(t.Name())
-	require.Error(t, err)
-	require.Contains(t, err.Error(), expected.Error())
 }

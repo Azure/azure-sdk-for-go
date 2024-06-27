@@ -26,7 +26,7 @@ func TestKeyExistsButNotFile(t *testing.T) {
 	require.NoError(t, err)
 	t.Cleanup(func() { require.NoError(t, a.Delete(ctx)) })
 
-	p, err := internal.CacheFilePath(t.Name())
+	p, err := cacheFilePath(t.Name())
 	require.NoError(t, err)
 	require.NoError(t, os.Remove(p))
 

@@ -7,7 +7,6 @@
 package cache
 
 import (
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity/internal"
 	"github.com/AzureAD/microsoft-authentication-extensions-for-go/cache/accessor"
 	"golang.org/x/sys/windows"
 )
@@ -17,7 +16,7 @@ var (
 		return windows.KnownFolderPath(windows.FOLDERID_LocalAppData, 0)
 	}
 	storage = func(name string) (accessor.Accessor, error) {
-		p, err := internal.CacheFilePath(name)
+		p, err := cacheFilePath(name)
 		if err != nil {
 			return nil, err
 		}

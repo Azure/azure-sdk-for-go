@@ -21,18 +21,6 @@ import (
 	msal "github.com/AzureAD/microsoft-authentication-library-for-go/apps/cache"
 )
 
-func init() {
-	internal.CacheFilePath = func(name string) (string, error) {
-		dir, err := cacheDir()
-		if err != nil {
-			return "", fmt.Errorf("couldn't create a cache file due to error %q", err)
-		}
-		return filepath.Join(dir, ".IdentityService", name), nil
-	}
-}
-
-const defaultName = "msal.cache"
-
 var (
 	// once ensures New tests the storage implementation only once
 	once = &sync.Once{}
@@ -87,14 +75,14 @@ func New(opts *Options) (azidentity.Cache, error) {
 		o = *opts
 	}
 	if o.Name == "" {
-		o.Name = defaultName
+		o.Name = "msal.cache"
 	}
 	factory := func(cae bool) (msal.ExportReplace, error) {
 		name := o.Name
 		if cae {
 			name += ".cae"
 		}
-		p, err := internal.CacheFilePath(name)
+		p, err := cacheFilePath(name)
 		if err != nil {
 			return nil, err
 		}
@@ -105,4 +93,12 @@ func New(opts *Options) (azidentity.Cache, error) {
 		return extcache.New(s, p)
 	}
 	return internal.NewCache(factory), nil
+}
+
+func cacheFilePath(name string) (string, error) {
+	dir, err := cacheDir()
+	if err != nil {
+		return "", fmt.Errorf("couldn't create a cache file due to error %q", err)
+	}
+	return filepath.Join(dir, ".IdentityService", name), nil
 }

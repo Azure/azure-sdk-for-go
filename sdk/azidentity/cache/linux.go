@@ -16,7 +16,6 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity/cache/internal/aescbc"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity/cache/internal/jwe"
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity/internal"
 	"github.com/AzureAD/microsoft-authentication-extensions-for-go/cache/accessor"
 	"golang.org/x/sys/unix"
 )
@@ -42,7 +41,7 @@ type keyring struct {
 }
 
 func newKeyring(name string) (*keyring, error) {
-	p, err := internal.CacheFilePath(name)
+	p, err := cacheFilePath(name)
 	if err != nil {
 		return nil, err
 	}

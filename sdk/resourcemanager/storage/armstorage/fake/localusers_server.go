@@ -19,6 +19,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"strconv"
 )
 
 // LocalUsersServer is a fake server for instances of the armstorage.LocalUsersClient type.
@@ -227,6 +228,7 @@ func (l *LocalUsersServerTransport) dispatchNewListPager(req *http.Request) (*ht
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
+		qp := req.URL.Query()
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
@@ -235,7 +237,39 @@ func (l *LocalUsersServerTransport) dispatchNewListPager(req *http.Request) (*ht
 		if err != nil {
 			return nil, err
 		}
-		resp := l.srv.NewListPager(resourceGroupNameParam, accountNameParam, nil)
+		maxpagesizeUnescaped, err := url.QueryUnescape(qp.Get("$maxpagesize"))
+		if err != nil {
+			return nil, err
+		}
+		maxpagesizeParam, err := parseOptional(maxpagesizeUnescaped, func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+		if err != nil {
+			return nil, err
+		}
+		filterParam := getOptional(filterUnescaped)
+		includeUnescaped, err := url.QueryUnescape(qp.Get("$include"))
+		if err != nil {
+			return nil, err
+		}
+		includeParam := getOptional(armstorage.ListLocalUserIncludeParam(includeUnescaped))
+		var options *armstorage.LocalUsersClientListOptions
+		if maxpagesizeParam != nil || filterParam != nil || includeParam != nil {
+			options = &armstorage.LocalUsersClientListOptions{
+				Maxpagesize: maxpagesizeParam,
+				Filter:      filterParam,
+				Include:     includeParam,
+			}
+		}
+		resp := l.srv.NewListPager(resourceGroupNameParam, accountNameParam, options)
 		newListPager = &resp
 		l.newListPager.add(req, newListPager)
 	}

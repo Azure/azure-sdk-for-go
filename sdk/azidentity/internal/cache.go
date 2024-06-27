@@ -3,7 +3,11 @@
 
 package internal
 
-import "github.com/AzureAD/microsoft-authentication-library-for-go/apps/cache"
+import (
+	"sync"
+
+	"github.com/AzureAD/microsoft-authentication-library-for-go/apps/cache"
+)
 
 // Cache represents a persistent token cache
 type Cache struct {
@@ -17,6 +21,8 @@ type impl struct {
 	factory func(bool) (cache.ExportReplace, error)
 	// cae and noCAE are previously constructed implementations
 	cae, noCAE cache.ExportReplace
+	// l synchronizes around cae and noCAE
+	l *sync.RWMutex
 }
 
 func (i *impl) exportReplace(cae bool) (cache.ExportReplace, error) {
@@ -28,6 +34,18 @@ func (i *impl) exportReplace(cae bool) (cache.ExportReplace, error) {
 		err error
 		xr  cache.ExportReplace
 	)
+	i.l.RLock()
+	xr = i.cae
+	if !cae {
+		xr = i.noCAE
+	}
+	i.l.RUnlock()
+	if xr != nil {
+		return xr, nil
+	}
+	i.l.Lock()
+	defer i.l.Unlock()
+	// double-check because another goroutine may have constructed the cache while this one locked
 	if cae {
 		if i.cae == nil {
 			if xr, err = i.factory(cae); err == nil {
@@ -48,7 +66,7 @@ func (i *impl) exportReplace(cae bool) (cache.ExportReplace, error) {
 // because it doesn't know whether the Cache will store both CAE and non-CAE tokens
 // (these must be stored separately).
 func NewCache(factory func(cae bool) (cache.ExportReplace, error)) Cache {
-	return Cache{&impl{factory: factory}}
+	return Cache{&impl{factory: factory, l: &sync.RWMutex{}}}
 }
 
 // ExportReplace returns an implementation satisfying MSAL's ExportReplace interface.

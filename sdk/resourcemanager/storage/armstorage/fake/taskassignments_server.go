@@ -20,6 +20,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"strconv"
 )
 
 // TaskAssignmentsServer is a fake server for instances of the armstorage.TaskAssignmentsClient type.
@@ -263,7 +264,16 @@ func (t *TaskAssignmentsServerTransport) dispatchNewListPager(req *http.Request)
 		if err != nil {
 			return nil, err
 		}
-		maxpagesizeParam := getOptional(maxpagesizeUnescaped)
+		maxpagesizeParam, err := parseOptional(maxpagesizeUnescaped, func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
 		var options *armstorage.TaskAssignmentsClientListOptions
 		if maxpagesizeParam != nil {
 			options = &armstorage.TaskAssignmentsClientListOptions{

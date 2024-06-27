@@ -17,6 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
+	"strconv"
 	"strings"
 )
 
@@ -104,7 +105,7 @@ func (client *TaskAssignmentInstancesReportClient) listCreateRequest(ctx context
 		reqQP.Set("$filter", *options.Filter)
 	}
 	if options != nil && options.Maxpagesize != nil {
-		reqQP.Set("$maxpagesize", *options.Maxpagesize)
+		reqQP.Set("$maxpagesize", strconv.FormatInt(int64(*options.Maxpagesize), 10))
 	}
 	reqQP.Set("api-version", "2023-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()

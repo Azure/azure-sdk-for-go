@@ -606,7 +606,7 @@ type TaskAssignmentInstancesReportClientListOptions struct {
 	Filter *string
 
 	// Optional, specifies the maximum number of storage task assignment instances to be included in the list response.
-	Maxpagesize *string
+	Maxpagesize *int32
 }
 
 // TaskAssignmentsClientBeginCreateOptions contains the optional parameters for the TaskAssignmentsClient.BeginCreate method.
@@ -635,7 +635,7 @@ type TaskAssignmentsClientGetOptions struct {
 // TaskAssignmentsClientListOptions contains the optional parameters for the TaskAssignmentsClient.NewListPager method.
 type TaskAssignmentsClientListOptions struct {
 	// Optional, specifies the maximum number of storage task assignment Ids to be included in the list response.
-	Maxpagesize *string
+	Maxpagesize *int32
 }
 
 // TaskAssignmentsInstancesReportClientListOptions contains the optional parameters for the TaskAssignmentsInstancesReportClient.NewListPager
@@ -647,7 +647,7 @@ type TaskAssignmentsInstancesReportClientListOptions struct {
 	Filter *string
 
 	// Optional, specifies the maximum number of storage task assignment instances to be included in the list response.
-	Maxpagesize *string
+	Maxpagesize *int32
 }
 
 // UsagesClientListByLocationOptions contains the optional parameters for the UsagesClient.NewListByLocationPager method.

@@ -46,7 +46,7 @@ func NewDbSystemShapesClient(subscriptionID string, credential azcore.TokenCrede
 // Get - Get a DbSystemShape
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01-preview
+// Generated from API version 2023-09-01
 //   - location - The name of the Azure region.
 //   - dbsystemshapename - DbSystemShape name
 //   - options - DbSystemShapesClientGetOptions contains the optional parameters for the DbSystemShapesClient.Get method.
@@ -92,7 +92,7 @@ func (client *DbSystemShapesClient) getCreateRequest(ctx context.Context, locati
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-01-preview")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -109,7 +109,7 @@ func (client *DbSystemShapesClient) getHandleResponse(resp *http.Response) (DbSy
 
 // NewListByLocationPager - List DbSystemShape resources by Location
 //
-// Generated from API version 2023-09-01-preview
+// Generated from API version 2023-09-01
 //   - location - The name of the Azure region.
 //   - options - DbSystemShapesClientListByLocationOptions contains the optional parameters for the DbSystemShapesClient.NewListByLocationPager
 //     method.
@@ -152,7 +152,7 @@ func (client *DbSystemShapesClient) listByLocationCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-01-preview")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -1,6 +1,12 @@
 # Release History
 
-## 0.2.0 (2024-06-28)
+## 1.0.0 (2024-06-28)
+### Other Changes
+
+- Release stable version.
+
+
+## 0.2.0 (2024-06-26)
 ### Breaking Changes
 
 - Type of `CloudExadataInfrastructureProperties.DataStorageSizeInTbs` has been changed from `*int32` to `*float64`

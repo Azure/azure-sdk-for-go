@@ -326,7 +326,6 @@ func newReceivedMessage(amqpMsg *amqp.Message, receiver amqpwrap.AMQPReceiver) *
 			msg.MessageID = id
 		}
 		msg.SessionID = amqpMsg.Properties.GroupID
-		//msg.GroupSequence = &amqpMsg.Properties.GroupSequence
 
 		if id, ok := amqpMsg.Properties.CorrelationID.(string); ok {
 			msg.CorrelationID = &id

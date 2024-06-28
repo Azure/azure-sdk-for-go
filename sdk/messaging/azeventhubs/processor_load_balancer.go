@@ -69,7 +69,7 @@ func (lb *processorLoadBalancer) LoadBalance(ctx context.Context, partitionIDs [
 		return nil, err
 	}
 
-	ownerships := lbinfo.current
+	var ownerships []Ownership
 
 	if lbinfo.claimMorePartitions {
 		switch lb.strategy {
@@ -80,8 +80,10 @@ func (lb *processorLoadBalancer) LoadBalance(ctx context.Context, partitionIDs [
 			log.Writef(EventConsumer, "[%s] Using balanced strategy to claim partitions", lb.details.ClientID)
 			o := lb.balancedLoadBalancer(ctx, lbinfo)
 
+			ownerships = lbinfo.current
+
 			if o != nil {
-				ownerships = append(lbinfo.current, *o)
+				ownerships = append(ownerships, *o)
 			}
 		default:
 			return nil, fmt.Errorf("[%s] invalid load balancing strategy '%s'", lb.details.ClientID, lb.strategy)

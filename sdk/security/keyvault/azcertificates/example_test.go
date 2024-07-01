@@ -106,9 +106,6 @@ func ExampleClient_ImportCertificate_pfx() {
 	}
 	encodedData := base64.StdEncoding.EncodeToString(data)
 
-	// Assuming you already have a PFX containing your key pair, you can import it into Key Vault.
-	// You can do this without setting a policy, but the policy is needed if you want the private key to be exportable
-	// or to configure actions when a certificate is close to expiration.
 	parameters := azcertificates.ImportCertificateParameters{
 		Base64EncodedCertificate: to.Ptr(encodedData),
 		CertificatePolicy: &azcertificates.CertificatePolicy{
@@ -128,14 +125,12 @@ func ExampleClient_ImportCertificate_pfx() {
 
 // This example uses `ImportCertificate` to import an existing PEM certificate.
 func ExampleClient_ImportCertificate_pem() {
-	// Getting certificate data from locally stored PEM file. Contents of .pem file are already base64 encoded
+	// Getting certificate data from locally stored PEM file. Contents of .pem file are already base64 encoded.
 	data, err := os.ReadFile("PEM_CERT_PATH")
 	if err != nil {
 		// TODO: handle error
 	}
 
-	// To import a PEM-formatted certificate, you must provide a CertificatePolicy that sets the ContentType to
-	// CertificateContentType.pem or the certificate will fail to import (the default content type is PFX).
 	parameters := azcertificates.ImportCertificateParameters{
 		Base64EncodedCertificate: to.Ptr(string(data)),
 		CertificatePolicy: &azcertificates.CertificatePolicy{

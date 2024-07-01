@@ -47,7 +47,7 @@ func NewVirtualAppliancesClient(subscriptionID string, credential azcore.TokenCr
 // BeginCreateOrUpdate - Creates or updates the specified Network Virtual Appliance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01
+// Generated from API version 2024-01-01
 //   - resourceGroupName - The name of the resource group.
 //   - networkVirtualApplianceName - The name of Network Virtual Appliance.
 //   - parameters - Parameters supplied to the create or update Network Virtual Appliance.
@@ -74,7 +74,7 @@ func (client *VirtualAppliancesClient) BeginCreateOrUpdate(ctx context.Context, 
 // CreateOrUpdate - Creates or updates the specified Network Virtual Appliance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01
+// Generated from API version 2024-01-01
 func (client *VirtualAppliancesClient) createOrUpdate(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, parameters VirtualAppliance, options *VirtualAppliancesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualAppliancesClient.BeginCreateOrUpdate"
@@ -116,7 +116,7 @@ func (client *VirtualAppliancesClient) createOrUpdateCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-01")
+	reqQP.Set("api-version", "2024-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -128,7 +128,7 @@ func (client *VirtualAppliancesClient) createOrUpdateCreateRequest(ctx context.C
 // BeginDelete - Deletes the specified Network Virtual Appliance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01
+// Generated from API version 2024-01-01
 //   - resourceGroupName - The name of the resource group.
 //   - networkVirtualApplianceName - The name of Network Virtual Appliance.
 //   - options - VirtualAppliancesClientBeginDeleteOptions contains the optional parameters for the VirtualAppliancesClient.BeginDelete
@@ -154,7 +154,7 @@ func (client *VirtualAppliancesClient) BeginDelete(ctx context.Context, resource
 // Delete - Deletes the specified Network Virtual Appliance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01
+// Generated from API version 2024-01-01
 func (client *VirtualAppliancesClient) deleteOperation(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, options *VirtualAppliancesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualAppliancesClient.BeginDelete"
@@ -196,7 +196,7 @@ func (client *VirtualAppliancesClient) deleteCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-01")
+	reqQP.Set("api-version", "2024-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -205,7 +205,7 @@ func (client *VirtualAppliancesClient) deleteCreateRequest(ctx context.Context, 
 // Get - Gets the specified Network Virtual Appliance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01
+// Generated from API version 2024-01-01
 //   - resourceGroupName - The name of the resource group.
 //   - networkVirtualApplianceName - The name of Network Virtual Appliance.
 //   - options - VirtualAppliancesClientGetOptions contains the optional parameters for the VirtualAppliancesClient.Get method.
@@ -254,7 +254,7 @@ func (client *VirtualAppliancesClient) getCreateRequest(ctx context.Context, res
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
-	reqQP.Set("api-version", "2023-11-01")
+	reqQP.Set("api-version", "2024-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -271,7 +271,7 @@ func (client *VirtualAppliancesClient) getHandleResponse(resp *http.Response) (V
 
 // NewListPager - Gets all Network Virtual Appliances in a subscription.
 //
-// Generated from API version 2023-11-01
+// Generated from API version 2024-01-01
 //   - options - VirtualAppliancesClientListOptions contains the optional parameters for the VirtualAppliancesClient.NewListPager
 //     method.
 func (client *VirtualAppliancesClient) NewListPager(options *VirtualAppliancesClientListOptions) *runtime.Pager[VirtualAppliancesClientListResponse] {
@@ -309,7 +309,7 @@ func (client *VirtualAppliancesClient) listCreateRequest(ctx context.Context, op
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-01")
+	reqQP.Set("api-version", "2024-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -326,7 +326,7 @@ func (client *VirtualAppliancesClient) listHandleResponse(resp *http.Response) (
 
 // NewListByResourceGroupPager - Lists all Network Virtual Appliances in a resource group.
 //
-// Generated from API version 2023-11-01
+// Generated from API version 2024-01-01
 //   - resourceGroupName - The name of the resource group.
 //   - options - VirtualAppliancesClientListByResourceGroupOptions contains the optional parameters for the VirtualAppliancesClient.NewListByResourceGroupPager
 //     method.
@@ -369,7 +369,7 @@ func (client *VirtualAppliancesClient) listByResourceGroupCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-01")
+	reqQP.Set("api-version", "2024-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -387,7 +387,7 @@ func (client *VirtualAppliancesClient) listByResourceGroupHandleResponse(resp *h
 // BeginRestart - Restarts one or more VMs belonging to the specified Network Virtual Appliance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01
+// Generated from API version 2024-01-01
 //   - resourceGroupName - The name of the resource group.
 //   - networkVirtualApplianceName - The name of Network Virtual Appliance.
 //   - options - VirtualAppliancesClientBeginRestartOptions contains the optional parameters for the VirtualAppliancesClient.BeginRestart
@@ -413,7 +413,7 @@ func (client *VirtualAppliancesClient) BeginRestart(ctx context.Context, resourc
 // Restart - Restarts one or more VMs belonging to the specified Network Virtual Appliance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01
+// Generated from API version 2024-01-01
 func (client *VirtualAppliancesClient) restart(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, options *VirtualAppliancesClientBeginRestartOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualAppliancesClient.BeginRestart"
@@ -455,7 +455,7 @@ func (client *VirtualAppliancesClient) restartCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-01")
+	reqQP.Set("api-version", "2024-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.NetworkVirtualApplianceInstanceIDs != nil {
@@ -470,7 +470,7 @@ func (client *VirtualAppliancesClient) restartCreateRequest(ctx context.Context,
 // UpdateTags - Updates a Network Virtual Appliance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01
+// Generated from API version 2024-01-01
 //   - resourceGroupName - The resource group name of Network Virtual Appliance.
 //   - networkVirtualApplianceName - The name of Network Virtual Appliance being updated.
 //   - parameters - Parameters supplied to Update Network Virtual Appliance Tags.
@@ -518,7 +518,7 @@ func (client *VirtualAppliancesClient) updateTagsCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-01")
+	reqQP.Set("api-version", "2024-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

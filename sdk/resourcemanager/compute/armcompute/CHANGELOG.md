@@ -1,5 +1,17 @@
 # Release History
 
+## 6.0.0 (2024-07-26)
+### Breaking Changes
+
+- Type of `SecurityPostureReference.ExcludeExtensions` has been changed from `[]*VirtualMachineExtension` to `[]*string`
+
+### Features Added
+
+- New struct `SecurityPostureReferenceUpdate`
+- New field `IsOverridable` in struct `SecurityPostureReference`
+- New field `SecurityPostureReference` in struct `VirtualMachineScaleSetUpdateVMProfile`
+
+
 ## 5.7.0 (2024-04-26)
 ### Features Added
 

@@ -1819,7 +1819,7 @@ type VirtualMachinesClientBeginCreateOrUpdateOptions struct {
 // VirtualMachinesClientBeginDeallocateOptions contains the optional parameters for the VirtualMachinesClient.BeginDeallocate
 // method.
 type VirtualMachinesClientBeginDeallocateOptions struct {
-	// Optional parameter to hibernate a virtual machine. (Feature in Preview)
+	// Optional parameter to hibernate a virtual machine.
 	Hibernate *bool
 
 	// Resumes the LRO from the provided token.

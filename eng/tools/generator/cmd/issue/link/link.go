@@ -85,6 +85,8 @@ func getResult(readme Readme) ResolveResult {
 	code := CodeDataPlane
 	if readme.IsMgmt() {
 		code = CodeSuccess
+	} else if readme.IsTsp() {
+		code = CodeSuccess
 	}
 	return result{
 		readme: readme,

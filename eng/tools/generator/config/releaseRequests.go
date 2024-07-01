@@ -82,3 +82,22 @@ func (c TagForRelease) Contains(tag string) bool {
 	_, ok := c[tag]
 	return ok
 }
+
+type TypeSpecReleaseRequests map[string][]Track2Request
+
+func (c TypeSpecReleaseRequests) String() string {
+	b, _ := json.Marshal(c)
+	return string(b)
+}
+
+func (c TypeSpecReleaseRequests) Add(readme string, info Track2Request) {
+	if !c.Contains(readme) {
+		c[readme] = make([]Track2Request, 0)
+	}
+	c[readme] = append(c[readme], info)
+}
+
+func (c TypeSpecReleaseRequests) Contains(readme string) bool {
+	_, ok := c[readme]
+	return ok
+}

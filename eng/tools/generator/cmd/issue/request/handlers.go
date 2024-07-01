@@ -43,6 +43,10 @@ func getTrack(issue ReleaseRequestIssue) Track {
 		if l != nil && l.GetName() == "Track1" {
 			return Track1
 		}
+
+		if l != nil && l.GetName() == string(TypeSpec) {
+			return TypeSpec
+		}
 	}
 
 	return Track2

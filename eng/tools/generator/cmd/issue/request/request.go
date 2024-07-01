@@ -47,6 +47,9 @@ const (
 	Track1 Track = "Track1"
 	// Track2 ...
 	Track2 Track = "Track2"
+
+	// TypeSpec ...
+	TypeSpec Track = "TypeSpec"
 )
 
 const (

@@ -144,6 +144,7 @@ func (c *commandContext) listOpenIssues() ([]*github.Issue, error) {
 		ListOptions: github.ListOptions{
 			PerPage: 10,
 		},
+		State: "all", // test 。。。。
 	}
 	var issues []*github.Issue
 	for {
@@ -196,10 +197,11 @@ func issueHasLabel(issue *github.Issue, label IssueLabel) bool {
 type IssueLabel string
 
 const (
-	GoLabel              IssueLabel = "GO"
+	GoLabel              IssueLabel = "Go"
 	AutoLinkLabel        IssueLabel = "auto-link"
 	PRreadyLabel         IssueLabel = "PRready"
 	InconsistentTagLabel IssueLabel = "Inconsistent tag"
+	TypeSpecLabel        IssueLabel = "TypeSpec"
 )
 
 func isGoReleaseRequest(issue *github.Issue) bool {
@@ -218,6 +220,10 @@ func isInconsistentTag(issue *github.Issue) bool {
 	return issueHasLabel(issue, InconsistentTagLabel)
 }
 
+func isTypeSpec(issue *github.Issue) bool {
+	return issueHasLabel(issue, TypeSpecLabel)
+}
+
 func (c *commandContext) parseIssues(issues []*github.Issue) ([]request.Request, error) {
 	var requests []request.Request
 	var errResult error
@@ -225,20 +231,24 @@ func (c *commandContext) parseIssues(issues []*github.Issue) ([]request.Request,
 		if issue == nil {
 			continue
 		}
-		if isPRReady(issue) {
-			continue
-		}
+		// if isPRReady(issue) {
+		// 	continue
+		// }
 		if !isAutoLink(issue) {
 			continue
 		}
-		if isInconsistentTag(issue) {
-			log.Printf("[ERROR] %s Readme tag is inconsistent with default tag\n", issue.GetHTMLURL())
-			errResult = errors.Join(errResult, fmt.Errorf("%s: readme tag is inconsistent with default tag", issue.GetHTMLURL()))
-			continue
-		}
+		// if isInconsistentTag(issue) {
+		// 	log.Printf("[ERROR] %s Readme tag is inconsistent with default tag\n", issue.GetHTMLURL())
+		// 	errResult = errors.Join(errResult, fmt.Errorf("%s: readme tag is inconsistent with default tag", issue.GetHTMLURL()))
+		// 	continue
+		// }
 
+		ctx := c.ctx
+		if isTypeSpec(issue) {
+			ctx = context.WithValue(c.ctx, "TypeSpec", true)
+		}
 		log.Printf("Parsing issue %s (%s)", issue.GetHTMLURL(), issue.GetTitle())
-		req, err := request.ParseIssue(c.ctx, c.client, *issue, request.ParsingOptions{
+		req, err := request.ParseIssue(ctx, c.client, *issue, request.ParsingOptions{
 			IncludeDataPlaneRequests: c.flags.IncludeDataPlaneRequests,
 		})
 		if err != nil {
@@ -257,6 +267,8 @@ func (c *commandContext) parseIssues(issues []*github.Issue) ([]request.Request,
 func (c *commandContext) buildConfig(requests []request.Request) (*config.Config, error) {
 	track1Requests := config.Track1ReleaseRequests{}
 	track2Requests := config.Track2ReleaseRequests{}
+	typespecRequests := config.TypeSpecReleaseRequests{}
+
 	for _, req := range requests {
 		switch req.Track {
 		case request.Track1:
@@ -272,14 +284,23 @@ func (c *commandContext) buildConfig(requests []request.Request) (*config.Config
 				},
 				PackageFlag: req.Tag, // TODO -- we need a better place to put this in the request
 			})
+		case request.TypeSpec:
+			typespecRequests.Add(req.ReadmePath, config.Track2Request{
+				ReleaseRequestInfo: config.ReleaseRequestInfo{
+					TargetDate:  timePtr(req.TargetDate),
+					RequestLink: req.RequestLink,
+				},
+				PackageFlag: req.Tag, // TODO -- we need a better place to put this in the request
+			})
 		default:
 			panic("unhandled track " + req.Track)
 		}
 	}
 	return &config.Config{
-		Track1Requests:  track1Requests,
-		Track2Requests:  track2Requests,
-		AdditionalFlags: c.flags.AdditionalOptions,
+		Track1Requests:   track1Requests,
+		Track2Requests:   track2Requests,
+		TypeSpecRequests: typespecRequests,
+		AdditionalFlags:  c.flags.AdditionalOptions,
 	}, nil
 }
 

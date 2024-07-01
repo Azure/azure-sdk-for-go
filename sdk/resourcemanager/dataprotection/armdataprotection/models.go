@@ -317,6 +317,9 @@ type AzureBackupRecoveryPointBasedRestoreRequest struct {
 	// Contains information of the Identity Details for the BI. If it is null, default will be considered as System Assigned.
 	IdentityDetails *IdentityDetails
 
+	// ResourceGuardOperationRequests on which LAC check will be performed
+	ResourceGuardOperationRequests []*string
+
 	// Fully qualified Azure Resource Manager ID of the datasource which is being recovered.
 	SourceResourceID *string
 }
@@ -330,11 +333,12 @@ func (a *AzureBackupRecoveryPointBasedRestoreRequest) GetAzureBackupRecoveryPoin
 // GetAzureBackupRestoreRequest implements the AzureBackupRestoreRequestClassification interface for type AzureBackupRecoveryPointBasedRestoreRequest.
 func (a *AzureBackupRecoveryPointBasedRestoreRequest) GetAzureBackupRestoreRequest() *AzureBackupRestoreRequest {
 	return &AzureBackupRestoreRequest{
-		IdentityDetails:     a.IdentityDetails,
-		ObjectType:          a.ObjectType,
-		RestoreTargetInfo:   a.RestoreTargetInfo,
-		SourceDataStoreType: a.SourceDataStoreType,
-		SourceResourceID:    a.SourceResourceID,
+		IdentityDetails:                a.IdentityDetails,
+		ObjectType:                     a.ObjectType,
+		ResourceGuardOperationRequests: a.ResourceGuardOperationRequests,
+		RestoreTargetInfo:              a.RestoreTargetInfo,
+		SourceDataStoreType:            a.SourceDataStoreType,
+		SourceResourceID:               a.SourceResourceID,
 	}
 }
 
@@ -382,6 +386,9 @@ type AzureBackupRecoveryTimeBasedRestoreRequest struct {
 	// Contains information of the Identity Details for the BI. If it is null, default will be considered as System Assigned.
 	IdentityDetails *IdentityDetails
 
+	// ResourceGuardOperationRequests on which LAC check will be performed
+	ResourceGuardOperationRequests []*string
+
 	// Fully qualified Azure Resource Manager ID of the datasource which is being recovered.
 	SourceResourceID *string
 }
@@ -389,11 +396,12 @@ type AzureBackupRecoveryTimeBasedRestoreRequest struct {
 // GetAzureBackupRestoreRequest implements the AzureBackupRestoreRequestClassification interface for type AzureBackupRecoveryTimeBasedRestoreRequest.
 func (a *AzureBackupRecoveryTimeBasedRestoreRequest) GetAzureBackupRestoreRequest() *AzureBackupRestoreRequest {
 	return &AzureBackupRestoreRequest{
-		IdentityDetails:     a.IdentityDetails,
-		ObjectType:          a.ObjectType,
-		RestoreTargetInfo:   a.RestoreTargetInfo,
-		SourceDataStoreType: a.SourceDataStoreType,
-		SourceResourceID:    a.SourceResourceID,
+		IdentityDetails:                a.IdentityDetails,
+		ObjectType:                     a.ObjectType,
+		ResourceGuardOperationRequests: a.ResourceGuardOperationRequests,
+		RestoreTargetInfo:              a.RestoreTargetInfo,
+		SourceDataStoreType:            a.SourceDataStoreType,
+		SourceResourceID:               a.SourceResourceID,
 	}
 }
 
@@ -422,6 +430,9 @@ type AzureBackupRestoreRequest struct {
 
 	// Contains information of the Identity Details for the BI. If it is null, default will be considered as System Assigned.
 	IdentityDetails *IdentityDetails
+
+	// ResourceGuardOperationRequests on which LAC check will be performed
+	ResourceGuardOperationRequests []*string
 
 	// Fully qualified Azure Resource Manager ID of the datasource which is being recovered.
 	SourceResourceID *string
@@ -455,6 +466,9 @@ type AzureBackupRestoreWithRehydrationRequest struct {
 	// Contains information of the Identity Details for the BI. If it is null, default will be considered as System Assigned.
 	IdentityDetails *IdentityDetails
 
+	// ResourceGuardOperationRequests on which LAC check will be performed
+	ResourceGuardOperationRequests []*string
+
 	// Fully qualified Azure Resource Manager ID of the datasource which is being recovered.
 	SourceResourceID *string
 }
@@ -463,23 +477,25 @@ type AzureBackupRestoreWithRehydrationRequest struct {
 // interface for type AzureBackupRestoreWithRehydrationRequest.
 func (a *AzureBackupRestoreWithRehydrationRequest) GetAzureBackupRecoveryPointBasedRestoreRequest() *AzureBackupRecoveryPointBasedRestoreRequest {
 	return &AzureBackupRecoveryPointBasedRestoreRequest{
-		IdentityDetails:     a.IdentityDetails,
-		ObjectType:          a.ObjectType,
-		RecoveryPointID:     a.RecoveryPointID,
-		RestoreTargetInfo:   a.RestoreTargetInfo,
-		SourceDataStoreType: a.SourceDataStoreType,
-		SourceResourceID:    a.SourceResourceID,
+		IdentityDetails:                a.IdentityDetails,
+		ObjectType:                     a.ObjectType,
+		RecoveryPointID:                a.RecoveryPointID,
+		ResourceGuardOperationRequests: a.ResourceGuardOperationRequests,
+		RestoreTargetInfo:              a.RestoreTargetInfo,
+		SourceDataStoreType:            a.SourceDataStoreType,
+		SourceResourceID:               a.SourceResourceID,
 	}
 }
 
 // GetAzureBackupRestoreRequest implements the AzureBackupRestoreRequestClassification interface for type AzureBackupRestoreWithRehydrationRequest.
 func (a *AzureBackupRestoreWithRehydrationRequest) GetAzureBackupRestoreRequest() *AzureBackupRestoreRequest {
 	return &AzureBackupRestoreRequest{
-		IdentityDetails:     a.IdentityDetails,
-		ObjectType:          a.ObjectType,
-		RestoreTargetInfo:   a.RestoreTargetInfo,
-		SourceDataStoreType: a.SourceDataStoreType,
-		SourceResourceID:    a.SourceResourceID,
+		IdentityDetails:                a.IdentityDetails,
+		ObjectType:                     a.ObjectType,
+		ResourceGuardOperationRequests: a.ResourceGuardOperationRequests,
+		RestoreTargetInfo:              a.RestoreTargetInfo,
+		SourceDataStoreType:            a.SourceDataStoreType,
+		SourceResourceID:               a.SourceResourceID,
 	}
 }
 
@@ -598,6 +614,9 @@ type BackupInstance struct {
 	// Contains information of the Identity Details for the BI. If it is null, default will be considered as System Assigned.
 	IdentityDetails *IdentityDetails
 
+	// ResourceGuardOperationRequests on which LAC check will be performed
+	ResourceGuardOperationRequests []*string
+
 	// Specifies the type of validation. In case of DeepValidation, all validations from /validateForBackup API will run again.
 	ValidationType *ValidationType
 
@@ -696,8 +715,14 @@ type BackupVault struct {
 	// List of replicated regions for Backup Vault
 	ReplicatedRegions []*string
 
+	// ResourceGuardOperationRequests on which LAC check will be performed
+	ResourceGuardOperationRequests []*string
+
 	// Security Settings
 	SecuritySettings *SecuritySettings
+
+	// READ-ONLY; Security Level of Backup Vault
+	BcdrSecurityLevel *BCDRSecurityLevel
 
 	// READ-ONLY; Is vault protected by resource guard
 	IsVaultProtectedByResourceGuard *bool
@@ -915,6 +940,23 @@ type ClientDiscoveryValueForSingleAPI struct {
 
 	// Properties for the given operation.
 	Properties *ClientDiscoveryForProperties
+}
+
+// CmkKekIdentity - The details of the managed identity used for CMK
+type CmkKekIdentity struct {
+	// The managed identity to be used which has access permissions to the Key Vault. Provide a value here in case identity types:
+	// 'UserAssigned' only.
+	IdentityID *string
+
+	// The identity type. 'SystemAssigned' and 'UserAssigned' are mutually exclusive. 'SystemAssigned' will use implicitly created
+	// managed identity.
+	IdentityType *IdentityType
+}
+
+// CmkKeyVaultProperties - The properties of the Key Vault which hosts CMK
+type CmkKeyVaultProperties struct {
+	// The key uri of the Customer Managed Key
+	KeyURI *string
 }
 
 // CopyOnExpiryOption - Copy on Expiry Option
@@ -1139,6 +1181,9 @@ type DeletedBackupInstance struct {
 	// Contains information of the Identity Details for the BI. If it is null, default will be considered as System Assigned.
 	IdentityDetails *IdentityDetails
 
+	// ResourceGuardOperationRequests on which LAC check will be performed
+	ResourceGuardOperationRequests []*string
+
 	// Specifies the type of validation. In case of DeepValidation, all validations from /validateForBackup API will run again.
 	ValidationType *ValidationType
 
@@ -1341,6 +1386,21 @@ type DppWorkerRequest struct {
 	SubscriptionID         *string
 	SupportedGroupVersions []*string
 	URI                    *string
+}
+
+// EncryptionSettings - Customer Managed Key details of the resource.
+type EncryptionSettings struct {
+	// Enabling/Disabling the Double Encryption state
+	InfrastructureEncryption *InfrastructureEncryptionState
+
+	// The details of the managed identity used for CMK
+	KekIdentity *CmkKekIdentity
+
+	// The properties of the Key Vault which hosts CMK
+	KeyVaultProperties *CmkKeyVaultProperties
+
+	// Encryption state of the Backup Vault.
+	State *EncryptionState
 }
 
 // Error - The resource management error response.
@@ -1710,6 +1770,9 @@ type KubernetesClusterRestoreCriteria struct {
 	// Gets or sets the PV (Persistent Volume) Restore Mode property. This property sets whether volumes needs to be restored.
 	PersistentVolumeRestoreMode *PersistentVolumeRestoreMode
 
+	// Gets or sets the resource modifier reference. This property sets the reference for resource modifier during restore.
+	ResourceModifierReference *NamespacedNameResource
+
 	// Gets or sets the restore hook references. This property sets the hook reference to be executed during restore.
 	RestoreHookReferences []*NamespacedNameResource
 }
@@ -1757,6 +1820,9 @@ type KubernetesClusterVaultTierRestoreCriteria struct {
 	// Gets or sets the PV (Persistent Volume) Restore Mode property. This property sets whether volumes needs to be restored
 	// from vault.
 	PersistentVolumeRestoreMode *PersistentVolumeRestoreMode
+
+	// Gets or sets the resource modifier reference. This property sets the reference for resource modifier during restore.
+	ResourceModifierReference *NamespacedNameResource
 
 	// Gets or sets the restore hook references. This property sets the hook reference to be executed during restore from vault.
 	RestoreHookReferences []*NamespacedNameResource
@@ -1884,6 +1950,9 @@ type PatchBackupVaultInput struct {
 
 	// Monitoring Settings
 	MonitoringSettings *MonitoringSettings
+
+	// ResourceGuardOperationRequests on which LAC check will be performed
+	ResourceGuardOperationRequests []*string
 
 	// Security Settings
 	SecuritySettings *SecuritySettings
@@ -2278,6 +2347,9 @@ type SecretStoreResource struct {
 
 // SecuritySettings - Class containing security settings of vault
 type SecuritySettings struct {
+	// Customer Managed Key details of the resource.
+	EncryptionSettings *EncryptionSettings
+
 	// Immutability Settings at vault level
 	ImmutabilitySettings *ImmutabilitySettings
 
@@ -2304,6 +2376,12 @@ type SourceLifeCycle struct {
 	TargetDataStoreCopySettings []*TargetCopySetting
 }
 
+// StopProtectionRequest - Request body of Stop protection when MUA is Enabled
+type StopProtectionRequest struct {
+	// ResourceGuardOperationRequests on which LAC check will be performed
+	ResourceGuardOperationRequests []*string
+}
+
 // StorageSetting - Storage setting
 type StorageSetting struct {
 	// Gets or sets the type of the datastore.
@@ -2323,6 +2401,12 @@ type SupportedFeature struct {
 
 	// feature support status
 	SupportStatus *FeatureSupportStatus
+}
+
+// SuspendBackupRequest - Request body of Suspend backup when MUA is Enabled
+type SuspendBackupRequest struct {
+	// ResourceGuardOperationRequests on which LAC check will be performed
+	ResourceGuardOperationRequests []*string
 }
 
 // SyncBackupInstanceRequest - Sync BackupInstance Request
@@ -2411,6 +2495,7 @@ func (t *TriggerContext) GetTriggerContext() *TriggerContext { return t }
 
 // UnlockDeleteRequest - Request body of unlock delete API.
 type UnlockDeleteRequest struct {
+	// ResourceGuardOperationRequests on which LAC check will be performed
 	ResourceGuardOperationRequests []*string
 	ResourceToBeDeleted            *string
 }

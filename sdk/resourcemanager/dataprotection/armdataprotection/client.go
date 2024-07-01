@@ -46,7 +46,7 @@ func NewClient(subscriptionID string, credential azcore.TokenCredential, options
 // CheckFeatureSupport - Validates if a feature is supported
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01
+// Generated from API version 2024-04-01
 //   - parameters - Feature support request object
 //   - options - ClientCheckFeatureSupportOptions contains the optional parameters for the Client.CheckFeatureSupport method.
 func (client *Client) CheckFeatureSupport(ctx context.Context, location string, parameters FeatureValidationRequestBaseClassification, options *ClientCheckFeatureSupportOptions) (ClientCheckFeatureSupportResponse, error) {
@@ -87,7 +87,7 @@ func (client *Client) checkFeatureSupportCreateRequest(ctx context.Context, loca
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-01")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

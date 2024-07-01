@@ -45,7 +45,7 @@ func NewClientWithKey(endpoint string, cred KeyCredential, o *ClientOptions) (*C
 	preferredRegions := []string{}
 	enableCrossRegionRetries := true
 	if o != nil {
-		preferredRegions = o.PreferredRegions
+		preferredRegions = o.PreferredRegionsAsStringArray()
 	}
 	gem, err := newGlobalEndpointManager(endpoint, newInternalPipeline(newSharedKeyCredPolicy(cred), o), preferredRegions, 0, enableCrossRegionRetries)
 	if err != nil {
@@ -66,7 +66,7 @@ func NewClient(endpoint string, cred azcore.TokenCredential, o *ClientOptions) (
 	preferredRegions := []string{}
 	enableCrossRegionRetries := true
 	if o != nil {
-		preferredRegions = o.PreferredRegions
+		preferredRegions = o.PreferredRegionsAsStringArray()
 	}
 	gem, err := newGlobalEndpointManager(endpoint, newInternalPipeline(newCosmosBearerTokenPolicy(cred, scope, nil), o), preferredRegions, 0, enableCrossRegionRetries)
 	if err != nil {

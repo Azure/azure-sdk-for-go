@@ -286,6 +286,50 @@ func (c *commandContext) generateFromRequest(sdkRepo repo.SDKRepository, specRep
 		}
 	}
 
+	tspServices, err := config.GetTypeSpecFromConfig(cfg, specRepoParam)
+	if err != nil {
+		return err
+	}
+	for rpName, packageInfos := range tspServices {
+		for _, packageInfo := range packageInfos {
+			originalHead, err := sdkRepo.Head()
+			if err != nil {
+				return err
+			}
+
+			// run tsp generator
+			c.rpName = rpName
+			c.namespaceName = packageInfo.Name
+			c.flags.TypeSpecConfig = packageInfo.TspConfigPath
+			if packageInfo.ReleaseDate != nil {
+				c.flags.ReleaseDate = packageInfo.ReleaseDate.Format("2006-01-02")
+			}
+			err = c.generate(sdkRepo, specCommitHash)
+			if err != nil {
+				generateErr = append(generateErr, err)
+				continue
+			}
+
+			// get current branch name
+			generateHead, err := sdkRepo.Head()
+			if err != nil {
+				return err
+			}
+			pushBranch[generateHead.Name().Short()] = struct {
+				requestLink      string
+				pullRequestLabel string
+			}{requestLink: packageInfo.RequestLink, pullRequestLabel: c.pullRequestLabels}
+
+			log.Printf("git checkout %v", originalHead.Name().Short())
+			if err := sdkRepo.Checkout(&repo.CheckoutOptions{
+				Branch: plumbing.ReferenceName(originalHead.Name().Short()),
+				Force:  true,
+			}); err != nil {
+				return err
+			}
+		}
+	}
+
 	for branch := range pushBranch {
 		log.Printf("Fixes: %s\n", branch)
 	}

@@ -28,7 +28,6 @@ func TestParseConnectionStringInvalid(t *testing.T) {
 		parsed, err := ParseConnectionString(badConnStr)
 		require.Error(t, err)
 		require.Zero(t, parsed)
-		//require.Contains(t, err.Error(), errConnectionString.Error())
 	}
 }
 

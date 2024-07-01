@@ -8,7 +8,9 @@ package azcertificates_test
 
 import (
 	"context"
+	"encoding/base64"
 	"fmt"
+	"os"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
@@ -95,14 +97,25 @@ func ExampleClient_DeleteCertificate() {
 	fmt.Printf("Certificate will be purged at %v", *resp.ScheduledPurgeDate)
 }
 
+// This example uses `ImportCertificate` to import an existing PFX certificate.
 func ExampleClient_ImportCertificate_pfx() {
-	// This example uses `ImportCertificate` to import a PFX certificate.
+	// Getting certificate data from locally stored PFX file then encoding to base64
+	data, err := os.ReadFile("PFX_CERT_PATH")
+	if err != nil {
+		// TODO: handle error
+	}
+	encodedData := base64.StdEncoding.EncodeToString(data)
 
 	// Assuming you already have a PFX containing your key pair, you can import it into Key Vault.
 	// You can do this without setting a policy, but the policy is needed if you want the private key to be exportable
 	// or to configure actions when a certificate is close to expiration.
 	parameters := azcertificates.ImportCertificateParameters{
-		Base64EncodedCertificate: to.Ptr("<TODO: pfx cert value>"),
+		Base64EncodedCertificate: to.Ptr(encodedData),
+		CertificatePolicy: &azcertificates.CertificatePolicy{
+			SecretProperties: &azcertificates.SecretProperties{
+				ContentType: to.Ptr("application/x-pkcs12"),
+			},
+		},
 	}
 
 	resp, err := client.ImportCertificate(context.TODO(), "pfxCertName", parameters, nil)
@@ -113,17 +126,20 @@ func ExampleClient_ImportCertificate_pfx() {
 	fmt.Printf("PFX certificate %s imported successfully.", resp.ID.Name())
 }
 
+// This example uses `ImportCertificate` to import an existing PEM certificate.
 func ExampleClient_ImportCertificate_pem() {
-	// This example uses `ImportCertificate` to import a PEM certificate.
+	// Getting certificate data from locally stored PEM file. Contents of .pem file are already base64 encoded
+	data, err := os.ReadFile("PEM_CERT_PATH")
+	if err != nil {
+		// TODO: handle error
+	}
 
 	// To import a PEM-formatted certificate, you must provide a CertificatePolicy that sets the ContentType to
 	// CertificateContentType.pem or the certificate will fail to import (the default content type is PFX).
 	parameters := azcertificates.ImportCertificateParameters{
-		Base64EncodedCertificate: to.Ptr("<TODO: pem cert value>"),
+		Base64EncodedCertificate: to.Ptr(string(data)),
 		CertificatePolicy: &azcertificates.CertificatePolicy{
-
 			SecretProperties: &azcertificates.SecretProperties{
-
 				ContentType: to.Ptr("application/x-pem-file"),
 			},
 		},
@@ -134,6 +150,5 @@ func ExampleClient_ImportCertificate_pem() {
 		// TODO: handle error
 	}
 
-	fmt.Printf("PFX certificate %s imported successfully.", resp.ID.Name())
-
+	fmt.Printf("PEM certificate %s imported successfully.", resp.ID.Name())
 }

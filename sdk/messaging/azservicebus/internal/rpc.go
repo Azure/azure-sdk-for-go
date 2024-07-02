@@ -99,7 +99,7 @@ func NewRPCLink(ctx context.Context, args RPCLinkArgs) (amqpwrap.RPCLink, error)
 	id := linkID.String()
 	link := &rpcLink{
 		session:       session,
-		clientAddress: strings.Replace("$", "", args.Address, -1) + replyPostfix + id,
+		clientAddress: strings.ReplaceAll("$", "", args.Address) + replyPostfix + id,
 		id:            id,
 
 		uuidNewV4:            uuid.New,

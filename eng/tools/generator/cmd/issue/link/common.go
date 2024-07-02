@@ -84,21 +84,6 @@ func GetReadmeFromPath(ctx context.Context, client *query.Client, path string) (
 	// we do not need to determine this is a path of file or directory
 	// we could always assume this is a directory path even if it is a file path - just waste a try in the first attempt if it is a filepath
 	tempCache = make(map[Readme]Readme)
-	// isTypeSpec := ctx.Value("TypeSpec")
-	// if isTypeSpec != nil {
-	// 	if isTypeSpec.(bool) {
-	// 		return getTspConfigFromDirectoryPath(ctx, client, path)
-	// 	}
-	// }
-
-	// tspConfig, err := getTspConfigFromDirectoryPath(ctx, client, path)
-	// if err != nil {
-	// 	return "", err
-	// }
-	// if tspConfig != "" {
-	// 	return tspConfig, nil
-	// }
-
 	return getReadmeFromDirectoryPath(ctx, client, path)
 }
 

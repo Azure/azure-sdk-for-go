@@ -26,3 +26,4 @@ extends:
   parameters:
     IncludeRelease: true
     ServiceDirectory: 'resourcemanager/mongocluster/armmongocluster'
+    UsePipelineProxy: false

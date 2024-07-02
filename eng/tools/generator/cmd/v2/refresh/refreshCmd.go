@@ -141,14 +141,14 @@ func (c *commandContext) execute(sdkRepoParam, specRepoParam string) error {
 				continue
 			}
 			result, err := generateCtx.GenerateForSingleRPNamespace(&common.GenerateParam{
-				RPName:              rpName,
-				NamespaceName:       namespace.Name(),
-				SpecficPackageTitle: "",
-				SpecficVersion:      c.flags.VersionNumber,
-				SpecRPName:          specRpName,
-				ReleaseDate:         c.flags.ReleaseDate,
-				SkipGenerateExample: c.flags.SkipGenerateExample,
-				GoVersion:           c.flags.GoVersion,
+				RPName:               rpName,
+				NamespaceName:        namespace.Name(),
+				SpecificPackageTitle: "",
+				SpecificVersion:      c.flags.VersionNumber,
+				SpecRPName:           specRpName,
+				ReleaseDate:          c.flags.ReleaseDate,
+				SkipGenerateExample:  c.flags.SkipGenerateExample,
+				GoVersion:            c.flags.GoVersion,
 			})
 			if err != nil {
 				fmt.Printf("failed to finish release generation process: %+v", err)

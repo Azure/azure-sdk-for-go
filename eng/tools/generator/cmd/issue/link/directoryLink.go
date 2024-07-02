@@ -5,10 +5,12 @@ package link
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/issue/query"
+	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/typespec"
 )
 
 type directoryLink struct {
@@ -38,6 +40,23 @@ func (l directoryLink) Resolve() (ResolveResult, error) {
 		return nil, err
 	}
 	l.path = strings.TrimPrefix(l.GetReleaseLink(), DirectoryPrefix+commitRef+"/")
+
+	tspConfig, err := GetTspConfigFromPath(l.ctx, l.client, l.path)
+	if err != nil {
+		if !errors.Is(err, errNoTspConfig) {
+			return nil, err
+		}
+	} else if tspConfig != "" {
+		remoteTspConfigPath := fmt.Sprintf("https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/%s", tspConfig)
+		exist, err := typespec.TspConfigExistEmitOption(remoteTspConfigPath, string(typespec.TypeSpec_GO))
+		if err != nil {
+			return nil, err
+		}
+		if exist {
+			return getResult(tspConfig), nil
+		}
+	}
+
 	readme, err := GetReadmeFromPath(l.ctx, l.client, l.path)
 	if err != nil {
 		return nil, fmt.Errorf("cannot resolve directory link '%s': %+v", l.GetReleaseLink(), err)

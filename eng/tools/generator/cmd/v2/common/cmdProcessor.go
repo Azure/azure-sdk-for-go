@@ -107,3 +107,53 @@ func ExecuteAddIssueLabels(path, repoOwner, repoName, issueNumber, authToken str
 	}
 	return nil
 }
+
+func ExecuteGo(dir string, args ...string) error {
+	cmd := exec.Command("go", args...)
+	cmd.Dir = dir
+	combinedOutput, err := cmd.CombinedOutput()
+	if err != nil {
+		return fmt.Errorf("failed to execute `go %s` '%s': %+v", strings.Join(args, " "), string(combinedOutput), err)
+	}
+
+	return nil
+}
+
+func ExecuteGoFmt(dir string, args ...string) error {
+	cmd := exec.Command("gofmt", args...)
+	cmd.Dir = dir
+	combinedOutput, err := cmd.CombinedOutput()
+	if err != nil {
+		return fmt.Errorf("failed to execute `gofmt %s` '%s': %+v", strings.Join(args, " "), string(combinedOutput), err)
+	}
+
+	return nil
+}
+
+// execute tsp-client command
+func ExecuteTspClient(path string, args ...string) error {
+	cmd := exec.Command("tsp-client", args...)
+	cmd.Dir = path
+	output, err := cmd.CombinedOutput()
+	log.Printf("Result of `tsp-client %s` execution: \n%s", strings.Join(args, " "), string(output))
+	if err != nil {
+		return fmt.Errorf("failed to execute `tsp-client %s` '%s': %+v", strings.Join(args, " "), string(output), err)
+	}
+	if strings.Contains(string(output), "error:") {
+		return fmt.Errorf("failed to execute `tsp-client %s` '%s'", strings.Join(args, " "), string(output))
+	}
+	return nil
+}
+
+func ExecuteTypeSpecGenerate(path, tspConfigPath, specCommit, specRepo, tspDir, emitOptions string) error {
+
+	return ExecuteTspClient(
+		path,
+		"init",
+		"--tsp-config", tspConfigPath,
+		"--commit", specCommit,
+		"--repo", specRepo,
+		"--local-spec-repo", tspDir,
+		"--emitter-options", emitOptions,
+	)
+}

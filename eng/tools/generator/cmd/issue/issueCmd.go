@@ -196,7 +196,7 @@ func issueHasLabel(issue *github.Issue, label IssueLabel) bool {
 type IssueLabel string
 
 const (
-	GoLabel              IssueLabel = "GO"
+	GoLabel              IssueLabel = "Go"
 	AutoLinkLabel        IssueLabel = "auto-link"
 	PRreadyLabel         IssueLabel = "PRready"
 	InconsistentTagLabel IssueLabel = "Inconsistent tag"
@@ -257,6 +257,8 @@ func (c *commandContext) parseIssues(issues []*github.Issue) ([]request.Request,
 func (c *commandContext) buildConfig(requests []request.Request) (*config.Config, error) {
 	track1Requests := config.Track1ReleaseRequests{}
 	track2Requests := config.Track2ReleaseRequests{}
+	typespecRequests := config.TypeSpecReleaseRequests{}
+
 	for _, req := range requests {
 		switch req.Track {
 		case request.Track1:
@@ -272,14 +274,23 @@ func (c *commandContext) buildConfig(requests []request.Request) (*config.Config
 				},
 				PackageFlag: req.Tag, // TODO -- we need a better place to put this in the request
 			})
+		case request.TypeSpec:
+			typespecRequests.Add(req.ReadmePath, config.Track2Request{
+				ReleaseRequestInfo: config.ReleaseRequestInfo{
+					TargetDate:  timePtr(req.TargetDate),
+					RequestLink: req.RequestLink,
+				},
+				PackageFlag: req.Tag, // TODO -- we need a better place to put this in the request
+			})
 		default:
 			panic("unhandled track " + req.Track)
 		}
 	}
 	return &config.Config{
-		Track1Requests:  track1Requests,
-		Track2Requests:  track2Requests,
-		AdditionalFlags: c.flags.AdditionalOptions,
+		Track1Requests:   track1Requests,
+		Track2Requests:   track2Requests,
+		TypeSpecRequests: typespecRequests,
+		AdditionalFlags:  c.flags.AdditionalOptions,
 	}, nil
 }
 

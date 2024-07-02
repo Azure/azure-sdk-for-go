@@ -129,28 +129,31 @@ func ReadV2ModuleNameToGetNamespace(path string) (map[string][]PackageInfo, erro
 // remove all sdk generated files in given path
 func CleanSDKGeneratedFiles(path string) error {
 	log.Printf("Removing all sdk generated files in '%s'...", path)
-	files, err := ioutil.ReadDir(path)
-	if err != nil {
-		return err
-	}
+	return filepath.Walk(path, func(path string, info fs.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
 
-	for _, file := range files {
-		if strings.HasSuffix(file.Name(), ".go") {
-			fileWithPath := filepath.Join(path, file.Name())
-			b, err := ioutil.ReadFile(fileWithPath)
+		if info.IsDir() {
+			return nil
+		}
+
+		if strings.HasSuffix(info.Name(), ".go") {
+			b, err := os.ReadFile(path)
 			if err != nil {
 				return err
 			}
 
 			if strings.Contains(string(b), generated_file_scan_string) {
-				err = os.Remove(fileWithPath)
+				err = os.Remove(path)
 				if err != nil {
 					return err
 				}
 			}
 		}
-	}
-	return nil
+
+		return nil
+	})
 }
 
 // replace repo commit with local path in autorest.md file
@@ -617,7 +620,7 @@ func replaceReadmeModule(path, rpName, namespaceName, currentVersion string) err
 	module := fmt.Sprintf("github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/%s/%s", rpName, namespaceName)
 
 	readmeModule := module
-	match := regexp.MustCompile(fmt.Sprintf(`%s/v\d`, module))
+	match := regexp.MustCompile(fmt.Sprintf(`%s/v\d+`, module))
 	if match.Match(readmeFile) {
 		readmeModule = match.FindString(string(readmeFile))
 	}
@@ -674,4 +677,86 @@ func ReplaceReadmeNewClientName(packageRootPath string, exports exports.Content)
 
 	var content = strings.ReplaceAll(string(b), oldClientName, fmt.Sprintf("%s()", clientName))
 	return os.WriteFile(path, []byte(content), 0644)
+}
+
+func UpdateModuleVersion(path string, newVersion string) error {
+	if newVersion == "" {
+		newVersion = "0.1.0"
+	}
+
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return err
+	}
+
+	if strings.Contains(string(data), autorest_md_module_version_prefix) {
+		lines := strings.Split(string(data), "\n")
+		for i, line := range lines {
+			if strings.HasPrefix(line, autorest_md_module_version_prefix) {
+				lines[i] = line[:len(autorest_md_module_version_prefix)] + newVersion
+				break
+			}
+		}
+
+		return os.WriteFile(path, []byte(strings.Join(lines, "\n")), 0644)
+	} else {
+		f, err := os.OpenFile(path, os.O_APPEND|os.O_WRONLY, 0644)
+		if err != nil {
+			return err
+		}
+		defer f.Close()
+
+		_, err = f.WriteString(fmt.Sprintf("%s%s\n", autorest_md_module_version_prefix, newVersion))
+		return err
+	}
+}
+
+func ReplaceConstModuleVersion(packagePath string, newVersion string) error {
+	path := filepath.Join(packagePath, "constants.go")
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return err
+	}
+
+	contents := versionLineRegex.ReplaceAllString(string(data), "moduleVersion = \"v"+newVersion+"\"")
+	if contents == string(data) {
+		return nil
+	}
+
+	return os.WriteFile(path, []byte(contents), 0644)
+}
+
+func ReplaceLiveTestModule(newVersion *semver.Version, packagePath, rpName, packageName string) error {
+
+	return filepath.Walk(packagePath, func(path string, info fs.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+
+		if info.IsDir() {
+			return nil
+		}
+
+		if strings.HasSuffix(info.Name(), "_live_test.go") {
+			data, err := os.ReadFile(path)
+			if err != nil {
+				return err
+			}
+
+			lines := strings.Split(string(data), "\n")
+			for i, line := range lines {
+				if strings.Contains(line, fmt.Sprintf("github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/%s/%s", rpName, packageName)) {
+					parts := strings.Split(strings.Trim(strings.TrimSpace(line), "\""), "/")
+					if parts[len(parts)-1] != fmt.Sprintf("v%d", newVersion.Major()) {
+						lines[i] = fmt.Sprintf("\t\"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/%s/%s/v%d\"", rpName, packageName, newVersion.Major())
+					}
+					break
+				}
+			}
+
+			return os.WriteFile(path, []byte(strings.Join(lines, "\n")), 0644)
+		}
+
+		return nil
+	})
 }

@@ -38,6 +38,16 @@ func handlePRNotMerged(_ context.Context, _ *query.Client, reqIssue ReleaseReque
 	return nil, nil
 }
 
+func handleTypeSpec(_ context.Context, _ *query.Client, reqIssue ReleaseRequestIssue, result link.ResolveResult) (*Request, error) {
+	return &Request{
+		RequestLink: reqIssue.IssueLink,
+		TargetDate:  reqIssue.ReleaseDate,
+		ReadmePath:  string(result.GetReadme()),
+		Tag:         reqIssue.Tag,
+		Track:       TypeSpec,
+	}, nil
+}
+
 func getTrack(issue ReleaseRequestIssue) Track {
 	for _, l := range issue.Labels {
 		if l != nil && l.GetName() == "Track1" {

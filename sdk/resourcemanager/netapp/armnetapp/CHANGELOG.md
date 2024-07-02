@@ -1,5 +1,11 @@
 # Release History
 
+## 7.1.0 (2024-07-26)
+### Features Added
+
+- New field `ProtocolTypes` in struct `VolumePatchProperties`
+
+
 ## 7.0.0 (2024-05-24)
 ### Breaking Changes
 

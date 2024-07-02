@@ -1637,14 +1637,17 @@ func (em *emwrap) Get(ctx context.Context, entityPath string, respObj any) (*htt
 }
 
 func (*emwrap) makeFilterAndActionUnknown(respObj any) {
-	switch actual := respObj.(type) {
-	case **atom.RuleEnvelope:
-		f := (*actual).Content.RuleDescription.Filter
-		f.Type = "PurposefullyChangedFilterType_" + f.Type
+	actual, ok := respObj.(**atom.RuleEnvelope)
 
-		a := (*actual).Content.RuleDescription.Action
-		a.Type = "PurposefullyChangedActionType_" + a.Type
+	if !ok {
+		return
 	}
+
+	f := (*actual).Content.RuleDescription.Filter
+	f.Type = "PurposefullyChangedFilterType_" + f.Type
+
+	a := (*actual).Content.RuleDescription.Action
+	a.Type = "PurposefullyChangedActionType_" + a.Type
 }
 
 func TestAdminClient_UnknownFilterRoundtrippingWorks(t *testing.T) {
@@ -1991,9 +1994,6 @@ func setupLowPrivTest(t *testing.T) *struct {
 	topicName := fmt.Sprintf("topic-%d", nanoSeconds)
 	queueName := fmt.Sprintf("queue-%d", nanoSeconds)
 	subName := "subscription1"
-
-	// TODO: add in rule management
-	//ruleName := "rule"
 
 	// create some entities that we need (there's a diff between something not being
 	// found and something failing because of lack of authorization)

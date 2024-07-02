@@ -126,7 +126,7 @@ func BatchStressTester(ctx context.Context) error {
 	closeOrPanic(producerClient)
 
 	if err != nil {
-		log.Fatalf("Failed to send events to partition %s: %s", params.partitionID, err)
+		return fmt.Errorf("Failed to send events to partition %s: %s", params.partitionID, err)
 	}
 
 	log.Printf("Starting receive tests for partition %s", params.partitionID)
@@ -142,12 +142,12 @@ func BatchStressTester(ctx context.Context) error {
 
 	// warm up the connection
 	if _, err := consumerClient.GetEventHubProperties(ctx, nil); err != nil {
-		log.Fatalf("Failed to warm up connection for consumer client: %s", err.Error())
+		return fmt.Errorf("Failed to warm up connection for consumer client: %s", err.Error())
 	}
 
 	for i := int64(0); i < params.rounds; i++ {
 		if err := consumeForBatchTester(context.Background(), i, consumerClient, sp, params, testData); err != nil {
-			log.Fatalf("Failed running round %d: %s", i, err.Error())
+			return fmt.Errorf("Failed running round %d: %s", i, err.Error())
 		}
 	}
 

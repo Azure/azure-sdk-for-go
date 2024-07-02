@@ -7,7 +7,6 @@ import (
 	"flag"
 	"fmt"
 	"log"
-	"os"
 	"regexp"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/stress/shared"
@@ -59,7 +58,7 @@ func DeleteUsingRegexp(remainingArgs []string) int {
 
 			if err != nil {
 				log.Printf("Failed to get queues: %s", err)
-				os.Exit(1)
+				return 1
 			}
 
 			for _, queueProps := range page.Queues {

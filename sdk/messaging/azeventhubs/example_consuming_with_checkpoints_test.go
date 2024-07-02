@@ -49,7 +49,8 @@ func Example_consumingEventsWithCheckpoints() {
 
 	if err != nil {
 		// TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
+		log.Printf("ERROR: %s", err)
+		return
 	}
 
 	defer consumerClient.Close(context.TODO())
@@ -63,7 +64,8 @@ func Example_consumingEventsWithCheckpoints() {
 
 	if err != nil {
 		// TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
+		log.Printf("ERROR: %s", err)
+		return
 	}
 
 	// Run in the background, launching goroutines to process each partition
@@ -79,7 +81,8 @@ func Example_consumingEventsWithCheckpoints() {
 
 	if err := processor.Run(processorCtx); err != nil {
 		// TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
+		log.Printf("ERROR: %s", err)
+		return
 	}
 }
 

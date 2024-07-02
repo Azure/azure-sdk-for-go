@@ -11,7 +11,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/test/credential"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/test"
@@ -331,7 +331,7 @@ func requireNewLinkNewConn(t *testing.T, oldLWID LinkWithID[AMQPSenderCloser], n
 
 func newLinksForTest(t *testing.T) (*Namespace, *Links[amqpwrap.AMQPSenderCloser]) {
 	testParams := test.GetConnectionParamsForTest(t)
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	cred, err := credential.New(nil)
 	require.NoError(t, err)
 
 	ns, err := NewNamespace(NamespaceWithTokenCredential(testParams.EventHubNamespace, cred))

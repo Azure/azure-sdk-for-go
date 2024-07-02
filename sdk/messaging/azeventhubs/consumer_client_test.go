@@ -12,10 +12,11 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/test/credential"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/test"
@@ -85,11 +86,11 @@ func TestConsumerClient_UsingWebSockets(t *testing.T) {
 func TestConsumerClient_DefaultAzureCredential(t *testing.T) {
 	testParams := test.GetConnectionParamsForTest(t)
 
-	dac, err := azidentity.NewDefaultAzureCredential(nil)
+	tokenCred, err := credential.New(nil)
 	require.NoError(t, err)
 
 	t.Run("EventHubProperties and PartitionProperties", func(t *testing.T) {
-		consumerClient, err := azeventhubs.NewConsumerClient(testParams.EventHubNamespace, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, dac, nil)
+		consumerClient, err := azeventhubs.NewConsumerClient(testParams.EventHubNamespace, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, tokenCred, nil)
 		require.NoError(t, err)
 
 		defer func() {
@@ -97,7 +98,7 @@ func TestConsumerClient_DefaultAzureCredential(t *testing.T) {
 			require.NoError(t, err)
 		}()
 
-		producerClient, err := azeventhubs.NewProducerClient(testParams.EventHubNamespace, testParams.EventHubName, dac, nil)
+		producerClient, err := azeventhubs.NewProducerClient(testParams.EventHubNamespace, testParams.EventHubName, tokenCred, nil)
 		require.NoError(t, err)
 
 		defer func() {
@@ -123,7 +124,7 @@ func TestConsumerClient_DefaultAzureCredential(t *testing.T) {
 	})
 
 	t.Run("send and receive", func(t *testing.T) {
-		producerClient, err := azeventhubs.NewProducerClient(testParams.EventHubNamespace, testParams.EventHubName, dac, nil)
+		producerClient, err := azeventhubs.NewProducerClient(testParams.EventHubNamespace, testParams.EventHubName, tokenCred, nil)
 		require.NoError(t, err)
 
 		defer func() {
@@ -134,7 +135,7 @@ func TestConsumerClient_DefaultAzureCredential(t *testing.T) {
 		firstPartition, err := producerClient.GetPartitionProperties(context.Background(), "0", nil)
 		require.NoError(t, err)
 
-		consumerClient, err := azeventhubs.NewConsumerClient(testParams.EventHubNamespace, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, dac, nil)
+		consumerClient, err := azeventhubs.NewConsumerClient(testParams.EventHubNamespace, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, tokenCred, nil)
 		require.NoError(t, err)
 
 		defer func() {
@@ -184,7 +185,7 @@ func TestConsumerClient_DefaultAzureCredential(t *testing.T) {
 	})
 
 	t.Run("EventHubProperties and PartitionProperties after send", func(t *testing.T) {
-		consumerClient, err := azeventhubs.NewConsumerClient(testParams.EventHubNamespace, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, dac, nil)
+		consumerClient, err := azeventhubs.NewConsumerClient(testParams.EventHubNamespace, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, tokenCred, nil)
 		require.NoError(t, err)
 
 		defer func() {
@@ -192,7 +193,7 @@ func TestConsumerClient_DefaultAzureCredential(t *testing.T) {
 			require.NoError(t, err)
 		}()
 
-		producerClient, err := azeventhubs.NewProducerClient(testParams.EventHubNamespace, testParams.EventHubName, dac, nil)
+		producerClient, err := azeventhubs.NewProducerClient(testParams.EventHubNamespace, testParams.EventHubName, tokenCred, nil)
 		require.NoError(t, err)
 
 		defer func() {
@@ -499,7 +500,7 @@ func TestConsumerClient_Detaches(t *testing.T) {
 
 	test.EnableStdoutLogging()
 
-	dac, err := azidentity.NewDefaultAzureCredential(nil)
+	tokenCred, err := credential.New(nil)
 	require.NoError(t, err)
 
 	// create our event hub
@@ -520,17 +521,17 @@ func TestConsumerClient_Detaches(t *testing.T) {
 		return producerClient.SendEventDataBatch(context.Background(), batch, nil)
 	}
 
-	enableOrDisableEventHub(t, testParams, dac, true)
+	enableOrDisableEventHub(t, testParams, tokenCred, true)
 	t.Logf("Sending events, connection should be fine")
 	err = sendEvent("TestConsumerClient_Detaches: connection should be fine")
 	require.NoError(t, err)
 
-	enableOrDisableEventHub(t, testParams, dac, false)
+	enableOrDisableEventHub(t, testParams, tokenCred, false)
 	t.Logf("Sending events, expected to fail since entity is disabled")
 	err = sendEvent("TestConsumerClient_Detaches: expected to fail since entity is disabled")
 	require.Error(t, err, "fails, entity has become disabled")
 
-	enableOrDisableEventHub(t, testParams, dac, true)
+	enableOrDisableEventHub(t, testParams, tokenCred, true)
 	t.Logf("Sending events, should reconnect")
 	err = sendEvent("TestConsumerClient_Detaches: should reconnect")
 	require.NoError(t, err, "reattach happens")
@@ -540,7 +541,7 @@ func TestConsumerClient_Detaches(t *testing.T) {
 //
 // This is useful when testing attach/detach type scenarios where you want the service to force links
 // to detach.
-func enableOrDisableEventHub(t *testing.T, testParams test.ConnectionParamsForTest, dac *azidentity.DefaultAzureCredential, active bool) {
+func enableOrDisableEventHub(t *testing.T, testParams test.ConnectionParamsForTest, dac azcore.TokenCredential, active bool) {
 	clientOptions := &arm.ClientOptions{}
 
 	switch os.Getenv("AZEVENTHUBS_ENVIRONMENT") {

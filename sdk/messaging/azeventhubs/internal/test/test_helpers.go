@@ -16,8 +16,8 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	azlog "github.com/Azure/azure-sdk-for-go/sdk/internal/log"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/test/credential"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/exported"
 	"github.com/joho/godotenv"
 	"github.com/stretchr/testify/require"
@@ -136,7 +136,7 @@ func GetConnectionParamsForTest(t *testing.T) ConnectionParamsForTest {
 		"RESOURCE_GROUP",
 	})
 
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	cred, err := credential.New(nil)
 	require.NoError(t, err)
 
 	return ConnectionParamsForTest{

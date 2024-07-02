@@ -1,15 +1,12 @@
 # Release History
 
-## 1.9.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 1.9.1 (2024-07-02)
 
 ### Bugs Fixed
 * Fixed a data race in `mock/Server.Do`.
 
 ### Other Changes
+* Upgraded dependencies
 
 ## 1.9.0 (2024-06-06)
 

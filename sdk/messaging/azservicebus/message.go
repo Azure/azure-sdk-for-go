@@ -448,27 +448,21 @@ func newReceivedMessage(amqpMsg *amqp.Message, receiver amqpwrap.AMQPReceiver) *
 }
 
 func lockTokenFromMessageTag(msg *amqp.Message) (*amqp.UUID, error) {
-	return uuidFromLockTokenBytes(msg.DeliveryTag)
-}
-
-func uuidFromLockTokenBytes(bytes []byte) (*amqp.UUID, error) {
-	if len(bytes) != 16 {
+	if len(msg.DeliveryTag) != 16 {
 		return nil, fmt.Errorf("invalid lock token, token was not 16 bytes long")
 	}
 
-	var swapIndex = func(indexOne, indexTwo int, array *[16]byte) {
-		array[indexOne], array[indexTwo] = array[indexTwo], array[indexOne]
-	}
+	var token [16]byte
 
-	// Get lock token from the deliveryTag
-	var lockTokenBytes [16]byte
-	copy(lockTokenBytes[:], bytes[:16])
+	copy(token[:], msg.DeliveryTag[:16])
+
 	// translate from .net guid byte serialisation format to amqp rfc standard
-	swapIndex(0, 3, &lockTokenBytes)
-	swapIndex(1, 2, &lockTokenBytes)
-	swapIndex(4, 5, &lockTokenBytes)
-	swapIndex(6, 7, &lockTokenBytes)
-	amqpUUID := amqp.UUID(lockTokenBytes)
+	token[0], token[3] = token[3], token[0]
+	token[1], token[2] = token[2], token[1]
+	token[4], token[5] = token[5], token[4]
+	token[6], token[7] = token[7], token[6]
+
+	amqpUUID := amqp.UUID(token)
 
 	return &amqpUUID, nil
 }

@@ -11,8 +11,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/test/credential"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 	"github.com/joho/godotenv"
 )
@@ -33,14 +33,14 @@ func testMain(m *testing.M) int {
 		}
 
 		// create a test storage container so our examples can run.
-		defaultAzureCred, err := azidentity.NewDefaultAzureCredential(nil)
+		tokenCred, err := credential.New(nil)
 
 		if err != nil {
 			log.Printf("Failed to create DAC: %s", err)
 			return 1
 		}
 
-		blobClient, err := azblob.NewClient(os.Getenv("CHECKPOINTSTORE_STORAGE_ENDPOINT"), defaultAzureCred, nil)
+		blobClient, err := azblob.NewClient(os.Getenv("CHECKPOINTSTORE_STORAGE_ENDPOINT"), tokenCred, nil)
 
 		if err != nil {
 			log.Printf("Failed to create blob client: %s", err)

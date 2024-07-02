@@ -12,7 +12,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/test/credential"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/test"
@@ -25,7 +25,7 @@ func TestConsumerClient_Recovery(t *testing.T) {
 	// Uncomment to see the entire recovery playbook run.
 	test.EnableStdoutLogging()
 
-	dac, err := azidentity.NewDefaultAzureCredential(nil)
+	tokenCred, err := credential.New(nil)
 	require.NoError(t, err)
 
 	// Overview:
@@ -33,7 +33,7 @@ func TestConsumerClient_Recovery(t *testing.T) {
 	// 2. Receive one event per partition. This'll ensure the links are live.
 	// 3. Grub into the client to get access to it's connection and shut it off.
 	// 4. Try again, everything should recover.
-	producerClient, err := NewProducerClient(testParams.EventHubNamespace, testParams.EventHubName, dac, nil)
+	producerClient, err := NewProducerClient(testParams.EventHubNamespace, testParams.EventHubName, tokenCred, nil)
 	require.NoError(t, err)
 
 	ehProps, err := producerClient.GetEventHubProperties(context.Background(), nil)
@@ -98,7 +98,7 @@ func TestConsumerClient_Recovery(t *testing.T) {
 
 	// now we'll receive an event (so we know each partition client is alive)
 	// each partition actually has two offsets.
-	consumerClient, err := NewConsumerClient(testParams.EventHubNamespace, testParams.EventHubName, DefaultConsumerGroup, dac, nil)
+	consumerClient, err := NewConsumerClient(testParams.EventHubNamespace, testParams.EventHubName, DefaultConsumerGroup, tokenCred, nil)
 	require.NoError(t, err)
 
 	partitionClients := make([]*PartitionClient, len(sendResults))
@@ -174,7 +174,7 @@ func TestConsumerClient_RecoveryLink(t *testing.T) {
 	// Uncomment to see the entire recovery playbook run.
 	test.EnableStdoutLogging()
 
-	dac, err := azidentity.NewDefaultAzureCredential(nil)
+	tokenCred, err := credential.New(nil)
 	require.NoError(t, err)
 
 	// Overview:
@@ -182,7 +182,7 @@ func TestConsumerClient_RecoveryLink(t *testing.T) {
 	// 2. Receive one event per partition. This'll ensure the links are live.
 	// 3. Grub into the client to get access to it's connection and shut it off.
 	// 4. Try again, everything should recover.
-	producerClient, err := NewProducerClient(testParams.EventHubNamespace, testParams.EventHubName, dac, nil)
+	producerClient, err := NewProducerClient(testParams.EventHubNamespace, testParams.EventHubName, tokenCred, nil)
 	require.NoError(t, err)
 
 	ehProps, err := producerClient.GetEventHubProperties(context.Background(), nil)
@@ -236,7 +236,7 @@ func TestConsumerClient_RecoveryLink(t *testing.T) {
 
 	// now we'll receive an event (so we know each partition client is alive)
 	// each partition actually has two offsets.
-	consumerClient, err := NewConsumerClient(testParams.EventHubNamespace, testParams.EventHubName, DefaultConsumerGroup, dac, nil)
+	consumerClient, err := NewConsumerClient(testParams.EventHubNamespace, testParams.EventHubName, DefaultConsumerGroup, tokenCred, nil)
 	require.NoError(t, err)
 
 	partitionClients := make([]*PartitionClient, len(sendResults))

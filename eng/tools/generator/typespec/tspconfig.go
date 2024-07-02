@@ -172,3 +172,16 @@ func (tc TypeSpecConfig) GetModuleName() ([2]string, error) {
 
 	return [2]string{s[l-2], s[l-1]}, nil
 }
+
+func TspConfigExistEmitOption(tspconfig string, emit string) (bool, error) {
+	if tspconfig == "" {
+		return false, fmt.Errorf("tspconfig path is empty")
+	}
+
+	tsc, err := ParseTypeSpecConfig(tspconfig)
+	if err != nil {
+		return false, err
+	}
+
+	return tsc.ExistEmitOption(string(TypeSpec_GO)), nil
+}

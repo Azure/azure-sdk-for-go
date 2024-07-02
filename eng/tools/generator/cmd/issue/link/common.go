@@ -5,8 +5,10 @@ package link
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"log"
+	"path"
 	"path/filepath"
 	"strings"
 
@@ -43,7 +45,7 @@ func GetReadmePathFromChangedFiles(ctx context.Context, client *query.Client, fi
 	// find readme files one by one
 	readmeFiles := make(map[Readme]bool)
 	for _, file := range files {
-		readme, err := GetReadmeFromPath(ctx, client, file)
+		readme, err := GetReadmeFromPath(ctx, client, path.Dir(file))
 		if err != nil {
 			log.Printf("Changed file '%s' does not belong to any RP, ignoring", file)
 			continue
@@ -82,17 +84,26 @@ func GetReadmeFromPath(ctx context.Context, client *query.Client, path string) (
 	// we do not need to determine this is a path of file or directory
 	// we could always assume this is a directory path even if it is a file path - just waste a try in the first attempt if it is a filepath
 	tempCache = make(map[Readme]Readme)
-	isTypeSpec := ctx.Value("TypeSpec")
-	if isTypeSpec != nil {
-		if isTypeSpec.(bool) {
-			return getTspConfigFromDirectoryPath(ctx, client, path)
-		}
-	}
+	// isTypeSpec := ctx.Value("TypeSpec")
+	// if isTypeSpec != nil {
+	// 	if isTypeSpec.(bool) {
+	// 		return getTspConfigFromDirectoryPath(ctx, client, path)
+	// 	}
+	// }
+
+	// tspConfig, err := getTspConfigFromDirectoryPath(ctx, client, path)
+	// if err != nil {
+	// 	return "", err
+	// }
+	// if tspConfig != "" {
+	// 	return tspConfig, nil
+	// }
 
 	return getReadmeFromDirectoryPath(ctx, client, path)
 }
 
 func getReadmeFromDirectoryPath(ctx context.Context, client *query.Client, dir string) (Readme, error) {
+	log.Println("###readme...", dir)
 	if len(dir) == 0 || dir == "." {
 		return "", fmt.Errorf("cannot determine the readme.md path")
 	}
@@ -134,9 +145,45 @@ func filepathDir(path string) string {
 	return strings.ReplaceAll(filepath.Dir(path), "\\", "/")
 }
 
+// GetTspConfigPathFromChangedFiles ...
+func GetTspConfigPathFromChangedFiles(ctx context.Context, client *query.Client, files []string) (Readme, error) {
+	// find readme files one by one
+	tspConfigFiles := make(map[Readme]bool)
+	for _, file := range files {
+		tspConfig, err := GetTspConfigFromPath(ctx, client, path.Dir(file))
+		if err != nil {
+			log.Printf("Changed file '%s' does not belong to any RP, ignoring", file)
+			continue
+		}
+		if tspConfig != "" {
+			tspConfigFiles[tspConfig] = true
+		}
+	}
+	if len(tspConfigFiles) > 1 {
+		return "", fmt.Errorf("cannot determine which RP to release because we have the following tspconfig files involved: %+v", getMapKeys(tspConfigFiles))
+	}
+	if len(tspConfigFiles) == 0 {
+		return "", fmt.Errorf("cannot get any tspconfig files from these changed files: [%s]", strings.Join(files, ", "))
+	}
+	// we only have one readme file
+	return getMapKeys(tspConfigFiles)[0], nil
+}
+
+func GetTspConfigFromPath(ctx context.Context, client *query.Client, path string) (Readme, error) {
+	tempCache = make(map[Readme]Readme)
+	return getTspConfigFromDirectoryPath(ctx, client, path)
+}
+
+var errNoTspConfig = errors.New("cannot determine the tspconfig.yaml path")
+
 func getTspConfigFromDirectoryPath(ctx context.Context, client *query.Client, dir string) (Readme, error) {
+	log.Println("###typespec...", dir)
 	if len(dir) == 0 || dir == "." {
-		return "", fmt.Errorf("cannot determine the readme.md path")
+		return "", errNoTspConfig
+	}
+
+	if strings.Contains(dir, "/resource-manager/") {
+		return "", nil
 	}
 
 	file := tryTspConfigPath(dir)
@@ -175,7 +222,7 @@ func tryTspConfigPath(base string) Readme {
 
 func setMapValue(cache map[Readme]Readme, value Readme) map[Readme]Readme {
 	newCache := make(map[Readme]Readme, len(cache))
-	for k, _ := range cache {
+	for k := range cache {
 		newCache[k] = value
 	}
 

@@ -20,6 +20,7 @@ var (
 		link.CodeSuccess:     handleSuccess,
 		link.CodeDataPlane:   handleDataPlane,
 		link.CodePRNotMerged: handlePRNotMerged,
+		link.CodeTypeSpec:    handleTypeSpec,
 	}
 )
 

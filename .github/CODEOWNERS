@@ -56,17 +56,17 @@
 # AzureSDKOwners: @richardpark-msft
 # ServiceLabel: %Service Bus
 # PRLabel: %Service Bus
-/sdk/messaging/azservicebus/  @richardpark-msft @jhendrixMSFT
+/sdk/messaging/azservicebus/  @richardpark-msft @chlowell @jhendrixMSFT
 
 # AzureSDKOwners: @richardpark-msft
 # ServiceLabel: %Event Grid
 # PRLabel: %Event Grid
-/sdk/messaging/eventgrid/  @richardpark-msft @jhendrixMSFT
+/sdk/messaging/eventgrid/  @richardpark-msft @chlowell @jhendrixMSFT
 
 # AzureSDKOwners: @richardpark-msft
 # ServiceLabel: %Event Hubs
 # PRLabel: %Event Hubs
-/sdk/messaging/azeventhubs/   @richardpark-msft @jhendrixMSFT
+/sdk/messaging/azeventhubs/   @richardpark-msft @chlowell @jhendrixMSFT
 
 # AzureSDKOwners: @gracewilcox
 # ServiceLabel: %Monitor

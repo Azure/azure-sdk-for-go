@@ -84,7 +84,8 @@ func (testsuite *MongoClusterTestSuite) Prepare() {
 					Kind:       to.Ptr(armmongocluster.NodeKindShard),
 					NodeCount:  to.Ptr[int32](1),
 					SKU:        to.Ptr("M30"),
-				}},
+				},
+			},
 			ServerVersion: to.Ptr("5.0"),
 		},
 	}, nil)

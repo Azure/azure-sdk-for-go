@@ -370,6 +370,7 @@ type SystemData struct {
 
 // Update - The type used for update operations of the MongoCluster.
 type Update struct {
+	// The updatable properties of the MongoCluster.
 	Properties *UpdateProperties
 
 	// Resource tags.

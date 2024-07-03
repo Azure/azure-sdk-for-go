@@ -16,7 +16,7 @@ import (
 	"strings"
 )
 
-// FirewallRulesClient contains the methods for the Microsoft.DocumentDB namespace.
+// FirewallRulesClient contains the methods for the FirewallRules group.
 // Don't use this type directly, use NewFirewallRulesClient() instead.
 type FirewallRulesClient struct {
 	internal       *arm.Client

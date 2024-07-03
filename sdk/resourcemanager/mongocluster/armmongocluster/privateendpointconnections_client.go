@@ -16,7 +16,7 @@ import (
 	"strings"
 )
 
-// PrivateEndpointConnectionsClient contains the methods for the Microsoft.DocumentDB namespace.
+// PrivateEndpointConnectionsClient contains the methods for the PrivateEndpointConnections group.
 // Don't use this type directly, use NewPrivateEndpointConnectionsClient() instead.
 type PrivateEndpointConnectionsClient struct {
 	internal       *arm.Client

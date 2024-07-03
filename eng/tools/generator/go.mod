@@ -5,11 +5,11 @@ go 1.21
 toolchain go1.21.6
 
 require (
-	github.com/Azure/azure-sdk-for-go/eng/tools/internal v0.0.0-20240702220607-99bf66f829d5
+	github.com/Azure/azure-sdk-for-go/eng/tools/internal v0.0.0-20240703182357-b8eb3b37602d
 	github.com/Masterminds/semver v1.5.0
 	github.com/ahmetb/go-linq/v3 v3.2.0
 	github.com/go-git/go-git/v5 v5.12.0
-	github.com/google/go-github/v53 v53.2.0
+	github.com/google/go-github/v62 v62.0.0
 	github.com/spf13/cobra v1.8.1
 	github.com/spf13/pflag v1.0.5
 	github.com/stretchr/testify v1.9.0

@@ -11,7 +11,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/issue/query"
 	"github.com/ahmetb/go-linq/v3"
-	"github.com/google/go-github/v53/github"
+	"github.com/google/go-github/v62/github"
 )
 
 var (

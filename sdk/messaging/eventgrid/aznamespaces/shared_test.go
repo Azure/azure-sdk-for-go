@@ -141,11 +141,6 @@ func newClientOptions(t *testing.T) azcore.ClientOptions {
 }
 
 func newClients(t *testing.T, useSASKey bool) (*aznamespaces.SenderClient, *aznamespaces.ReceiverClient) {
-	if os.Getenv("FORCE_SASKEY") == "true" {
-		t.Logf("Switching from TokenCredential -> SAS Key because FORCE_SASKEY is true. See https://github.com/Azure/azure-sdk-for-go/issues/22961 for more details")
-		useSASKey = true
-	}
-
 	return newSenderClient(t, useSASKey), newReceiverClient(t, useSASKey)
 }
 

@@ -59,12 +59,14 @@ var (
 
 // Options for persistent token caches.
 type Options struct {
-	// Name distinguishes the cache from other caches.
-	// Set this to isolate data from other applications.
+	// Name distinguishes caches. Set this to isolate data from other applications.
 	Name string
 }
 
-// New is the constructor for persistent token caches.
+// New constructs persistent token caches. See the [token caching guide] for details
+// about the storage implementation.
+//
+// [token caching guide]: https://aka.ms/azsdk/go/identity/caching#Persistent-token-caching
 func New(opts *Options) (azidentity.Cache, error) {
 	once.Do(tryStorage)
 	if storageError != nil {
@@ -95,6 +97,8 @@ func New(opts *Options) (azidentity.Cache, error) {
 	return internal.NewCache(factory), nil
 }
 
+// cacheFilePath maps a cache name to a file path. This path is the base for a lockfile.
+// Storage implementations may also use it directly to store cache data.
 func cacheFilePath(name string) (string, error) {
 	dir, err := cacheDir()
 	if err != nil {

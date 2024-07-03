@@ -28,9 +28,9 @@ type InteractiveBrowserCredentialOptions struct {
 	// to enable the credential to use data from a previous authentication.
 	AuthenticationRecord AuthenticationRecord
 
-	// Cache is a persistent cache the credential will use to store the tokens it acquires, making them available to
-	// other processes and credential instances. The default, zero value means the credential will store tokens in memory
-	// and not share them.
+	// Cache is a persistent cache the credential will use to store the tokens it acquires, making
+	// them available to other processes and credential instances. The default, zero value means the
+	// credential will store tokens in memory and not share them.
 	Cache Cache
 
 	// ClientID is the ID of the application users will authenticate to.

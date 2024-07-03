@@ -37,7 +37,7 @@ func storeRecord(record azidentity.AuthenticationRecord) error {
 // interactively every time the application runs. The example uses [InteractiveBrowserCredential], however
 // [DeviceCodeCredential] has the same API. The key steps are:
 //
-//  1. Construct a persistent cache from "github.com/Azure/azure-sdk-for-go/sdk/azidentity/cache"
+//  1. Call [github.com/Azure/azure-sdk-for-go/sdk/azidentity/cache.New] to construct a persistent cache
 //  2. Set the Cache field in the credential's options
 //  3. Call Authenticate to acquire an [AuthenticationRecord] and store that for future use. An [AuthenticationRecord]
 //     enables credentials to access data in the persistent cache. The record contains no authentication secrets.
@@ -49,11 +49,14 @@ func Example_persistentUserAuthentication() {
 	}
 	c, err := cache.New(nil)
 	if err != nil {
-		// TODO: handle error
+		// TODO: handle error. An error here means persistent
+		// caching is impossible in the runtime environment.
 	}
 	cred, err := azidentity.NewInteractiveBrowserCredential(&azidentity.InteractiveBrowserCredentialOptions{
+		// If record is zero, the credential will start with no user logged in
 		AuthenticationRecord: record,
-		// Credentials cache in memory by default. Setting Cache with a nonzero value enables persistent caching.
+		// Credentials cache in memory by default. Setting Cache with a
+		// nonzero value from cache.New() enables persistent caching.
 		Cache: c,
 	})
 	if err != nil {

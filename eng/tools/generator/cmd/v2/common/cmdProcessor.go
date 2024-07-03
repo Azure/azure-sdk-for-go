@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"log"
 	"os/exec"
+	"path/filepath"
 	"regexp"
 	"strings"
 )
@@ -145,15 +146,19 @@ func ExecuteTspClient(path string, args ...string) error {
 	return nil
 }
 
-func ExecuteTypeSpecGenerate(path, tspConfigPath, specCommit, specRepo, tspDir, emitOptions string) error {
-
-	return ExecuteTspClient(
-		path,
+func ExecuteTypeSpecGenerate(ctx *GenerateContext, emitOptions string, tspClientOptions []string) error {
+	args := []string{
 		"init",
-		"--tsp-config", tspConfigPath,
-		"--commit", specCommit,
-		"--repo", specRepo,
-		"--local-spec-repo", tspDir,
+		"--tsp-config", ctx.TypeSpecConfig.Path,
+		"--commit", ctx.SpecCommitHash,
+		"--repo", ctx.SpecRepoURL,
+		"--local-spec-repo", filepath.Dir(ctx.TypeSpecConfig.Path),
 		"--emitter-options", emitOptions,
-	)
+	}
+
+	if len(tspClientOptions) > 0 {
+		args = append(args, tspClientOptions...)
+	}
+
+	return ExecuteTspClient(ctx.SDKPath, args...)
 }

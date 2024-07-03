@@ -111,8 +111,8 @@ type TypeSpecPakcageInfo struct {
 	TspConfigPath string
 }
 
-func GetTypeSpecFromConfig(config *Config, specRoot string) (tspServices map[string][]TypeSpecPakcageInfo, errResult error) {
-	tspServices = make(map[string][]TypeSpecPakcageInfo)
+func GetTypeSpecProjectsFromConfig(config *Config, specRoot string) (tspProjects map[string][]TypeSpecPakcageInfo, errResult error) {
+	tspProjects = make(map[string][]TypeSpecPakcageInfo)
 	for tspConfigPath, typespecRequests := range config.TypeSpecRequests {
 		for _, releaseRequestInfo := range typespecRequests {
 			localTspConfigPath := filepath.Join(specRoot, tspConfigPath)
@@ -125,7 +125,7 @@ func GetTypeSpecFromConfig(config *Config, specRoot string) (tspServices map[str
 				return nil, err
 			}
 
-			tspServices[module[0]] = append(tspServices[localTspConfigPath], TypeSpecPakcageInfo{
+			tspProjects[module[0]] = append(tspProjects[localTspConfigPath], TypeSpecPakcageInfo{
 				PackageInfo: common.PackageInfo{
 					Name:        module[1],
 					RequestLink: releaseRequestInfo.RequestLink,

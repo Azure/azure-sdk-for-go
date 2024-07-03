@@ -57,6 +57,7 @@ type GenerateParam struct {
 	RemoveTagSet         bool
 	ForceStableVersion   bool
 	TypeSpecEmitOption   string
+	TspClientOptions     []string
 }
 
 func (ctx *GenerateContext) GenerateForAutomation(readme, repo, goVersion string) ([]GenerateResult, []error) {
@@ -427,7 +428,7 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam) (*
 	if generateParam.TypeSpecEmitOption != "" {
 		emitOption = fmt.Sprintf("%s;%s", emitOption, generateParam.TypeSpecEmitOption)
 	}
-	err = ExecuteTypeSpecGenerate(ctx.SDKPath, ctx.TypeSpecConfig.Path, ctx.SpecCommitHash, ctx.SpecRepoURL, filepath.Dir(ctx.TypeSpecConfig.Path), emitOption)
+	err = ExecuteTypeSpecGenerate(ctx, emitOption, generateParam.TspClientOptions)
 	if err != nil {
 		return nil, err
 	}

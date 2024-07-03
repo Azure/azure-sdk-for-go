@@ -4,8 +4,8 @@ go 1.18
 
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.12.0
-	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.6.0
-	github.com/Azure/azure-sdk-for-go/sdk/internal v1.9.0
+	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.7.0
+	github.com/Azure/azure-sdk-for-go/sdk/internal v1.9.1
 	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3 v3.0.0
 	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/msi/armmsi v0.6.0
 	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armdeploymentscripts v1.0.0

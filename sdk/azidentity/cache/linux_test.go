@@ -7,7 +7,6 @@
 package cache
 
 import (
-	"context"
 	"os"
 	"path/filepath"
 	"testing"
@@ -15,8 +14,6 @@ import (
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/require"
 )
-
-var ctx = context.Background()
 
 func TestKeyExistsButNotFile(t *testing.T) {
 	expected := []byte(t.Name())

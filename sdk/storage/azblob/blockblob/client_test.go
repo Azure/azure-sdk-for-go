@@ -29,8 +29,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/test/credential"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/bloberror"
@@ -108,7 +108,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestBlockBlobClient() {
 	blobName := testName
 	blobURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s/%s", accountName, containerName, blobName)
 
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	cred, err := credential.New(nil)
 	_require.NoError(err)
 
 	bbClient, err := blockblob.NewClient(blobURL, cred, nil)

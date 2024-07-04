@@ -6,10 +6,7 @@ package model
 import (
 	"encoding/json"
 	"fmt"
-	"io"
-	"io/ioutil"
 	"reflect"
-	"strings"
 )
 
 // Options ...
@@ -116,41 +113,4 @@ func getKey(o Option) string {
 	default:
 		panic(fmt.Sprintf("unknown type of option %v", reflect.TypeOf(o)))
 	}
-}
-
-type RawOptions struct {
-	AutorestArguments []string `json:"autorestArguments,omitempty"`
-}
-
-func NewRawOptionsFrom(reader io.Reader) (*RawOptions, error) {
-	b, err := ioutil.ReadAll(reader)
-	if err != nil {
-		return nil, err
-	}
-	var result RawOptions
-	if err := json.Unmarshal(b, &result); err != nil {
-		return nil, err
-	}
-	return &result, nil
-}
-
-func (r RawOptions) Parse(absSDK string) (Options, error) {
-	// replace go-sdk-folder value by the absolute path
-	var argument []Option
-	for _, v := range r.AutorestArguments {
-		if strings.HasPrefix(v, "--go-sdk-folder") {
-			continue
-		}
-		if v == "--multiapi" {
-			continue
-		}
-		o, err := NewOption(v)
-		if err != nil {
-			return nil, err
-		}
-		argument = append(argument, o)
-	}
-	argument = append(argument, NewKeyValueOption("go-sdk-folder", absSDK))
-	o := NewOptions(argument...)
-	return o, nil
 }

@@ -18,15 +18,15 @@ func (c TypeSpecReleaseRequests) String() string {
 	return string(b)
 }
 
-func (c TypeSpecReleaseRequests) Add(readme string, info Track2Request) {
-	if !c.Contains(readme) {
-		c[readme] = make([]Track2Request, 0)
+func (c TypeSpecReleaseRequests) Add(tspConfig string, info Track2Request) {
+	if !c.Contains(tspConfig) {
+		c[tspConfig] = make([]Track2Request, 0)
 	}
-	c[readme] = append(c[readme], info)
+	c[tspConfig] = append(c[tspConfig], info)
 }
 
-func (c TypeSpecReleaseRequests) Contains(readme string) bool {
-	_, ok := c[readme]
+func (c TypeSpecReleaseRequests) Contains(tspConfig string) bool {
+	_, ok := c[tspConfig]
 	return ok
 }
 

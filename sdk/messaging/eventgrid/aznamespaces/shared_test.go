@@ -18,15 +18,15 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/messaging"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/test/credential"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/eventgrid/aznamespaces"
 	"github.com/stretchr/testify/require"
 )
 
 var fakeTestVars = testVars{
 	Key:          "key",
-	Endpoint:     "https://fake.eastus-1.eventgrid.azure.net",
+	Endpoint:     "https://fake.region.eventgrid.azure.net/",
 	Topic:        "topic",
 	Subscription: "subscription",
 }
@@ -141,19 +141,19 @@ func newClientOptions(t *testing.T) azcore.ClientOptions {
 }
 
 func newClients(t *testing.T, useSASKey bool) (*aznamespaces.SenderClient, *aznamespaces.ReceiverClient) {
-	return newSenderClient(t, useSASKey), newReceiverClient(t, useSASKey)
-}
-
-func newSenderClient(t *testing.T, useSASKey bool) *aznamespaces.SenderClient {
 	options := newClientOptions(t)
 
+	return newSenderClient(t, useSASKey, options), newReceiverClient(t, useSASKey, options)
+}
+
+func newSenderClient(t *testing.T, useSASKey bool, options azcore.ClientOptions) *aznamespaces.SenderClient {
 	if useSASKey {
 		client, err := aznamespaces.NewSenderClientWithSharedKeyCredential(tv.Endpoint, tv.Topic, azcore.NewKeyCredential(tv.Key), &aznamespaces.SenderClientOptions{ClientOptions: options})
 		require.NoError(t, err)
 		return client
 	}
 
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	cred, err := credential.New(nil)
 	require.NoError(t, err)
 
 	client, err := aznamespaces.NewSenderClient(tv.Endpoint, tv.Topic, cred, &aznamespaces.SenderClientOptions{ClientOptions: options})
@@ -162,16 +162,14 @@ func newSenderClient(t *testing.T, useSASKey bool) *aznamespaces.SenderClient {
 	return client
 }
 
-func newReceiverClient(t *testing.T, useSASKey bool) *aznamespaces.ReceiverClient {
-	options := newClientOptions(t)
-
+func newReceiverClient(t *testing.T, useSASKey bool, options azcore.ClientOptions) *aznamespaces.ReceiverClient {
 	if useSASKey {
 		client, err := aznamespaces.NewReceiverClientWithSharedKeyCredential(tv.Endpoint, tv.Topic, tv.Subscription, azcore.NewKeyCredential(tv.Key), &aznamespaces.ReceiverClientOptions{ClientOptions: options})
 		require.NoError(t, err)
 		return client
 	}
 
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	cred, err := credential.New(nil)
 	require.NoError(t, err)
 
 	client, err := aznamespaces.NewReceiverClient(tv.Endpoint, tv.Topic, tv.Subscription, cred, &aznamespaces.ReceiverClientOptions{ClientOptions: options})
@@ -181,72 +179,75 @@ func newReceiverClient(t *testing.T, useSASKey bool) *aznamespaces.ReceiverClien
 }
 
 func newRecordingTransporter(t *testing.T, testVars testVars) policy.Transporter {
-	transport, err := recording.NewRecordingHTTPClient(t, nil)
+	recordingOpts := &recording.RecordingOptions{
+		ProxyPort:    os.Getpid()%10000 + 20000,
+		UseHTTPS:     true,
+		TestInstance: t,
+	}
+
+	transport, err := recording.NewRecordingHTTPClient(t, recordingOpts)
 	require.NoError(t, err)
 
-	err = recording.Start(t, recordingDirectory, nil)
+	err = recording.Start(t, recordingDirectory, recordingOpts)
 	require.NoError(t, err)
 
-	// err = recording.ResetProxy(nil)
-	// require.NoError(t, err)
-
-	err = recording.AddURISanitizer(fakeTestVars.Endpoint, testVars.Endpoint, nil)
+	err = recording.AddURISanitizer(fakeTestVars.Endpoint, "https://[^/]+?/", recordingOpts)
 	require.NoError(t, err)
 
-	err = recording.AddURISanitizer(fakeTestVars.Topic, testVars.Topic, nil)
+	err = recording.AddURISanitizer(fakeTestVars.Topic, testVars.Topic, recordingOpts)
 	require.NoError(t, err)
 
-	err = recording.AddURISanitizer(fakeTestVars.Subscription, testVars.Subscription, nil)
+	err = recording.AddURISanitizer(fakeTestVars.Subscription, testVars.Subscription, recordingOpts)
 	require.NoError(t, err)
 
-	err = recording.AddGeneralRegexSanitizer(`"time": "2023-06-17T00:33:32Z"`, `"time":".+?"`, nil)
+	err = recording.AddGeneralRegexSanitizer(`"time":"2023-06-17T00:33:32Z"`, `"time":".+?"`, recordingOpts)
 	require.NoError(t, err)
 
 	err = recording.AddGeneralRegexSanitizer(
 		`"id":"00000000-0000-0000-0000-000000000000"`,
-		`"id":"[^"]+"`, nil)
+		`"id":"[^"]+"`, recordingOpts)
 	require.NoError(t, err)
 
 	err = recording.AddGeneralRegexSanitizer(
 		`"lockToken":"fake-lock-token"`,
-		`"lockToken":\s*"[^"]+"`, nil)
+		`"lockToken":\s*"[^"]+"`, recordingOpts)
 	require.NoError(t, err)
 
 	err = recording.AddGeneralRegexSanitizer(
-		`"lockTokens": ["fake-lock-token"]`,
-		`"lockTokens":\s*\[\s*"[^"]+"\s*\]`, nil)
+		`"lockTokens":["fake-lock-token"]`,
+		`"lockTokens":\s*\[\s*"[^"]+"\s*\]`, recordingOpts)
 	require.NoError(t, err)
 
 	err = recording.AddGeneralRegexSanitizer(
-		`"succeededLockTokens": ["fake-lock-token"]`,
-		`"succeededLockTokens":\s*\[\s*"[^"]+"\s*\]`, nil)
+		`"succeededLockTokens":["fake-lock-token"]`,
+		`"succeededLockTokens":\s*\[\s*"[^"]+"\s*\]`, recordingOpts)
 	require.NoError(t, err)
 
 	err = recording.AddGeneralRegexSanitizer(
-		`"succeededLockTokens": ["fake-lock-token", "fake-lock-token", "fake-lock-token"]`,
+		`"succeededLockTokens":["fake-lock-token","fake-lock-token","fake-lock-token"]`,
 		`"succeededLockTokens":\s*`+
 			`\[`+
 			`(\s*"[^"]+"\s*\,){2}`+
 			`\s*"[^"]+"\s*`+
-			`\]`, nil)
+			`\]`, recordingOpts)
 	require.NoError(t, err)
 
 	err = recording.AddGeneralRegexSanitizer(
-		`"lockTokens": ["fake-lock-token", "fake-lock-token"]`,
-		`"lockTokens":\s*\[\s*"[^"]+"\s*\,\s*"[^"]+"\s*\]`, nil)
+		`"lockTokens":["fake-lock-token","fake-lock-token"]`,
+		`"lockTokens":\s*\[\s*"[^"]+"\s*\,\s*"[^"]+"\s*\]`, recordingOpts)
 	require.NoError(t, err)
 
 	err = recording.AddGeneralRegexSanitizer(
-		`"lockTokens": ["fake-lock-token", "fake-lock-token", "fake-lock-token"]`,
+		`"lockTokens":["fake-lock-token","fake-lock-token", "fake-lock-token"]`,
 		`"lockTokens":\s*`+
 			`\[`+
 			`(\s*"[^"]+"\s*\,){2}`+
 			`\s*"[^"]+"\s*`+
-			`\]`, nil)
+			`\]`, recordingOpts)
 	require.NoError(t, err)
 
 	t.Cleanup(func() {
-		err := recording.Stop(t, nil)
+		err := recording.Stop(t, recordingOpts)
 		require.NoError(t, err)
 	})
 
@@ -255,6 +256,13 @@ func newRecordingTransporter(t *testing.T, testVars testVars) policy.Transporter
 
 func requireEqualCloudEvent(t *testing.T, expected messaging.CloudEvent, actual messaging.CloudEvent) {
 	t.Helper()
+
+	// the built-in sanitizers are now clearing out my CloudEvent's source attribute so we
+	// just have to assume it's 'Sanitized'.
+
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		expected.Source = "Sanitized"
+	}
 
 	require.NotEmpty(t, actual.ID, "ID is not empty")
 	require.NotEmpty(t, actual.SpecVersion, "SpecVersion is not empty")

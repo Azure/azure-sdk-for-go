@@ -8,8 +8,93 @@
 
 package armappcomplianceautomation
 
+// EvidenceClientCreateOrUpdateOptions contains the optional parameters for the EvidenceClient.CreateOrUpdate method.
+type EvidenceClientCreateOrUpdateOptions struct {
+	// The offerGuid which mapping to the reports.
+	OfferGUID *string
+
+	// The tenant id of the report creator.
+	ReportCreatorTenantID *string
+}
+
+// EvidenceClientDeleteOptions contains the optional parameters for the EvidenceClient.Delete method.
+type EvidenceClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EvidenceClientDownloadOptions contains the optional parameters for the EvidenceClient.Download method.
+type EvidenceClientDownloadOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EvidenceClientGetOptions contains the optional parameters for the EvidenceClient.Get method.
+type EvidenceClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EvidenceClientListByReportOptions contains the optional parameters for the EvidenceClient.NewListByReportPager method.
+type EvidenceClientListByReportOptions struct {
+	// The filter to apply on the operation.
+	Filter *string
+
+	// The offerGuid which mapping to the reports.
+	OfferGUID *string
+
+	// OData order by query option.
+	Orderby *string
+
+	// The tenant id of the report creator.
+	ReportCreatorTenantID *string
+
+	// OData Select statement. Limits the properties on each entry to just those requested, e.g. ?$select=reportName,id.
+	Select *string
+
+	// Skip over when retrieving results.
+	SkipToken *string
+
+	// Number of elements to return when retrieving results.
+	Top *int32
+}
+
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ProviderActionsClientBeginOnboardOptions contains the optional parameters for the ProviderActionsClient.BeginOnboard method.
+type ProviderActionsClientBeginOnboardOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ProviderActionsClientBeginTriggerEvaluationOptions contains the optional parameters for the ProviderActionsClient.BeginTriggerEvaluation
+// method.
+type ProviderActionsClientBeginTriggerEvaluationOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ProviderActionsClientCheckNameAvailabilityOptions contains the optional parameters for the ProviderActionsClient.CheckNameAvailability
+// method.
+type ProviderActionsClientCheckNameAvailabilityOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ProviderActionsClientGetCollectionCountOptions contains the optional parameters for the ProviderActionsClient.GetCollectionCount
+// method.
+type ProviderActionsClientGetCollectionCountOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ProviderActionsClientGetOverviewStatusOptions contains the optional parameters for the ProviderActionsClient.GetOverviewStatus
+// method.
+type ProviderActionsClientGetOverviewStatusOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ProviderActionsClientListInUseStorageAccountsOptions contains the optional parameters for the ProviderActionsClient.ListInUseStorageAccounts
+// method.
+type ProviderActionsClientListInUseStorageAccountsOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -25,8 +110,26 @@ type ReportClientBeginDeleteOptions struct {
 	ResumeToken string
 }
 
+// ReportClientBeginFixOptions contains the optional parameters for the ReportClient.BeginFix method.
+type ReportClientBeginFixOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ReportClientBeginSyncCertRecordOptions contains the optional parameters for the ReportClient.BeginSyncCertRecord method.
+type ReportClientBeginSyncCertRecordOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
 // ReportClientBeginUpdateOptions contains the optional parameters for the ReportClient.BeginUpdate method.
 type ReportClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ReportClientBeginVerifyOptions contains the optional parameters for the ReportClient.BeginVerify method.
+type ReportClientBeginVerifyOptions struct {
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }
@@ -36,10 +139,21 @@ type ReportClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ReportsClientListOptions contains the optional parameters for the ReportsClient.NewListPager method.
-type ReportsClientListOptions struct {
+// ReportClientGetScopingQuestionsOptions contains the optional parameters for the ReportClient.GetScopingQuestions method.
+type ReportClientGetScopingQuestionsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ReportClientListOptions contains the optional parameters for the ReportClient.NewListPager method.
+type ReportClientListOptions struct {
+	// The filter to apply on the operation.
+	Filter *string
+
 	// The offerGuid which mapping to the reports.
 	OfferGUID *string
+
+	// OData order by query option.
+	Orderby *string
 
 	// The tenant id of the report creator.
 	ReportCreatorTenantID *string
@@ -52,6 +166,34 @@ type ReportsClientListOptions struct {
 
 	// Number of elements to return when retrieving results.
 	Top *int32
+}
+
+// ReportClientNestedResourceCheckNameAvailabilityOptions contains the optional parameters for the ReportClient.NestedResourceCheckNameAvailability
+// method.
+type ReportClientNestedResourceCheckNameAvailabilityOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ScopingConfigurationClientCreateOrUpdateOptions contains the optional parameters for the ScopingConfigurationClient.CreateOrUpdate
+// method.
+type ScopingConfigurationClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ScopingConfigurationClientDeleteOptions contains the optional parameters for the ScopingConfigurationClient.Delete method.
+type ScopingConfigurationClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ScopingConfigurationClientGetOptions contains the optional parameters for the ScopingConfigurationClient.Get method.
+type ScopingConfigurationClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ScopingConfigurationClientListOptions contains the optional parameters for the ScopingConfigurationClient.NewListPager
+// method.
+type ScopingConfigurationClientListOptions struct {
+	// placeholder for future optional parameters
 }
 
 // SnapshotClientBeginDownloadOptions contains the optional parameters for the SnapshotClient.BeginDownload method.
@@ -65,10 +207,16 @@ type SnapshotClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SnapshotsClientListOptions contains the optional parameters for the SnapshotsClient.NewListPager method.
-type SnapshotsClientListOptions struct {
+// SnapshotClientListOptions contains the optional parameters for the SnapshotClient.NewListPager method.
+type SnapshotClientListOptions struct {
+	// The filter to apply on the operation.
+	Filter *string
+
 	// The offerGuid which mapping to the reports.
 	OfferGUID *string
+
+	// OData order by query option.
+	Orderby *string
 
 	// The tenant id of the report creator.
 	ReportCreatorTenantID *string
@@ -81,4 +229,48 @@ type SnapshotsClientListOptions struct {
 
 	// Number of elements to return when retrieving results.
 	Top *int32
+}
+
+// WebhookClientCreateOrUpdateOptions contains the optional parameters for the WebhookClient.CreateOrUpdate method.
+type WebhookClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebhookClientDeleteOptions contains the optional parameters for the WebhookClient.Delete method.
+type WebhookClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebhookClientGetOptions contains the optional parameters for the WebhookClient.Get method.
+type WebhookClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebhookClientListOptions contains the optional parameters for the WebhookClient.NewListPager method.
+type WebhookClientListOptions struct {
+	// The filter to apply on the operation.
+	Filter *string
+
+	// The offerGuid which mapping to the reports.
+	OfferGUID *string
+
+	// OData order by query option.
+	Orderby *string
+
+	// The tenant id of the report creator.
+	ReportCreatorTenantID *string
+
+	// OData Select statement. Limits the properties on each entry to just those requested, e.g. ?$select=reportName,id.
+	Select *string
+
+	// Skip over when retrieving results.
+	SkipToken *string
+
+	// Number of elements to return when retrieving results.
+	Top *int32
+}
+
+// WebhookClientUpdateOptions contains the optional parameters for the WebhookClient.Update method.
+type WebhookClientUpdateOptions struct {
+	// placeholder for future optional parameters
 }

@@ -46,7 +46,7 @@ func NewOracleSubscriptionsClient(subscriptionID string, credential azcore.Token
 // BeginCreateOrUpdate - Create a OracleSubscription
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01-preview
+// Generated from API version 2023-09-01
 //   - resource - Resource create parameters.
 //   - options - OracleSubscriptionsClientBeginCreateOrUpdateOptions contains the optional parameters for the OracleSubscriptionsClient.BeginCreateOrUpdate
 //     method.
@@ -71,7 +71,7 @@ func (client *OracleSubscriptionsClient) BeginCreateOrUpdate(ctx context.Context
 // CreateOrUpdate - Create a OracleSubscription
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01-preview
+// Generated from API version 2023-09-01
 func (client *OracleSubscriptionsClient) createOrUpdate(ctx context.Context, resource OracleSubscription, options *OracleSubscriptionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "OracleSubscriptionsClient.BeginCreateOrUpdate"
@@ -105,7 +105,7 @@ func (client *OracleSubscriptionsClient) createOrUpdateCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-01-preview")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -117,7 +117,7 @@ func (client *OracleSubscriptionsClient) createOrUpdateCreateRequest(ctx context
 // BeginDelete - Delete a OracleSubscription
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01-preview
+// Generated from API version 2023-09-01
 //   - options - OracleSubscriptionsClientBeginDeleteOptions contains the optional parameters for the OracleSubscriptionsClient.BeginDelete
 //     method.
 func (client *OracleSubscriptionsClient) BeginDelete(ctx context.Context, options *OracleSubscriptionsClientBeginDeleteOptions) (*runtime.Poller[OracleSubscriptionsClientDeleteResponse], error) {
@@ -141,7 +141,7 @@ func (client *OracleSubscriptionsClient) BeginDelete(ctx context.Context, option
 // Delete - Delete a OracleSubscription
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01-preview
+// Generated from API version 2023-09-01
 func (client *OracleSubscriptionsClient) deleteOperation(ctx context.Context, options *OracleSubscriptionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "OracleSubscriptionsClient.BeginDelete"
@@ -175,7 +175,7 @@ func (client *OracleSubscriptionsClient) deleteCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-01-preview")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -184,7 +184,7 @@ func (client *OracleSubscriptionsClient) deleteCreateRequest(ctx context.Context
 // Get - Get a OracleSubscription
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01-preview
+// Generated from API version 2023-09-01
 //   - options - OracleSubscriptionsClientGetOptions contains the optional parameters for the OracleSubscriptionsClient.Get method.
 func (client *OracleSubscriptionsClient) Get(ctx context.Context, options *OracleSubscriptionsClientGetOptions) (OracleSubscriptionsClientGetResponse, error) {
 	var err error
@@ -220,7 +220,7 @@ func (client *OracleSubscriptionsClient) getCreateRequest(ctx context.Context, o
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-01-preview")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -238,7 +238,7 @@ func (client *OracleSubscriptionsClient) getHandleResponse(resp *http.Response) 
 // BeginListActivationLinks - List Activation Links
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01-preview
+// Generated from API version 2023-09-01
 //   - options - OracleSubscriptionsClientBeginListActivationLinksOptions contains the optional parameters for the OracleSubscriptionsClient.BeginListActivationLinks
 //     method.
 func (client *OracleSubscriptionsClient) BeginListActivationLinks(ctx context.Context, options *OracleSubscriptionsClientBeginListActivationLinksOptions) (*runtime.Poller[OracleSubscriptionsClientListActivationLinksResponse], error) {
@@ -262,7 +262,7 @@ func (client *OracleSubscriptionsClient) BeginListActivationLinks(ctx context.Co
 // ListActivationLinks - List Activation Links
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01-preview
+// Generated from API version 2023-09-01
 func (client *OracleSubscriptionsClient) listActivationLinks(ctx context.Context, options *OracleSubscriptionsClientBeginListActivationLinksOptions) (*http.Response, error) {
 	var err error
 	const operationName = "OracleSubscriptionsClient.BeginListActivationLinks"
@@ -296,7 +296,7 @@ func (client *OracleSubscriptionsClient) listActivationLinksCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-01-preview")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -304,7 +304,7 @@ func (client *OracleSubscriptionsClient) listActivationLinksCreateRequest(ctx co
 
 // NewListBySubscriptionPager - List OracleSubscription resources by subscription ID
 //
-// Generated from API version 2023-09-01-preview
+// Generated from API version 2023-09-01
 //   - options - OracleSubscriptionsClientListBySubscriptionOptions contains the optional parameters for the OracleSubscriptionsClient.NewListBySubscriptionPager
 //     method.
 func (client *OracleSubscriptionsClient) NewListBySubscriptionPager(options *OracleSubscriptionsClientListBySubscriptionOptions) *runtime.Pager[OracleSubscriptionsClientListBySubscriptionResponse] {
@@ -342,7 +342,7 @@ func (client *OracleSubscriptionsClient) listBySubscriptionCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-01-preview")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -360,7 +360,7 @@ func (client *OracleSubscriptionsClient) listBySubscriptionHandleResponse(resp *
 // BeginListCloudAccountDetails - List Cloud Account Details
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01-preview
+// Generated from API version 2023-09-01
 //   - options - OracleSubscriptionsClientBeginListCloudAccountDetailsOptions contains the optional parameters for the OracleSubscriptionsClient.BeginListCloudAccountDetails
 //     method.
 func (client *OracleSubscriptionsClient) BeginListCloudAccountDetails(ctx context.Context, options *OracleSubscriptionsClientBeginListCloudAccountDetailsOptions) (*runtime.Poller[OracleSubscriptionsClientListCloudAccountDetailsResponse], error) {
@@ -384,7 +384,7 @@ func (client *OracleSubscriptionsClient) BeginListCloudAccountDetails(ctx contex
 // ListCloudAccountDetails - List Cloud Account Details
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01-preview
+// Generated from API version 2023-09-01
 func (client *OracleSubscriptionsClient) listCloudAccountDetails(ctx context.Context, options *OracleSubscriptionsClientBeginListCloudAccountDetailsOptions) (*http.Response, error) {
 	var err error
 	const operationName = "OracleSubscriptionsClient.BeginListCloudAccountDetails"
@@ -418,7 +418,7 @@ func (client *OracleSubscriptionsClient) listCloudAccountDetailsCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-01-preview")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -427,7 +427,7 @@ func (client *OracleSubscriptionsClient) listCloudAccountDetailsCreateRequest(ct
 // BeginListSaasSubscriptionDetails - List Saas Subscription Details
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01-preview
+// Generated from API version 2023-09-01
 //   - options - OracleSubscriptionsClientBeginListSaasSubscriptionDetailsOptions contains the optional parameters for the OracleSubscriptionsClient.BeginListSaasSubscriptionDetails
 //     method.
 func (client *OracleSubscriptionsClient) BeginListSaasSubscriptionDetails(ctx context.Context, options *OracleSubscriptionsClientBeginListSaasSubscriptionDetailsOptions) (*runtime.Poller[OracleSubscriptionsClientListSaasSubscriptionDetailsResponse], error) {
@@ -451,7 +451,7 @@ func (client *OracleSubscriptionsClient) BeginListSaasSubscriptionDetails(ctx co
 // ListSaasSubscriptionDetails - List Saas Subscription Details
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01-preview
+// Generated from API version 2023-09-01
 func (client *OracleSubscriptionsClient) listSaasSubscriptionDetails(ctx context.Context, options *OracleSubscriptionsClientBeginListSaasSubscriptionDetailsOptions) (*http.Response, error) {
 	var err error
 	const operationName = "OracleSubscriptionsClient.BeginListSaasSubscriptionDetails"
@@ -485,7 +485,7 @@ func (client *OracleSubscriptionsClient) listSaasSubscriptionDetailsCreateReques
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-01-preview")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -494,7 +494,7 @@ func (client *OracleSubscriptionsClient) listSaasSubscriptionDetailsCreateReques
 // BeginUpdate - Update a OracleSubscription
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01-preview
+// Generated from API version 2023-09-01
 //   - properties - The resource properties to be updated.
 //   - options - OracleSubscriptionsClientBeginUpdateOptions contains the optional parameters for the OracleSubscriptionsClient.BeginUpdate
 //     method.
@@ -519,7 +519,7 @@ func (client *OracleSubscriptionsClient) BeginUpdate(ctx context.Context, proper
 // Update - Update a OracleSubscription
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01-preview
+// Generated from API version 2023-09-01
 func (client *OracleSubscriptionsClient) update(ctx context.Context, properties OracleSubscriptionUpdate, options *OracleSubscriptionsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "OracleSubscriptionsClient.BeginUpdate"
@@ -553,7 +553,7 @@ func (client *OracleSubscriptionsClient) updateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-01-preview")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {

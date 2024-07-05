@@ -46,7 +46,7 @@ func NewAvailableDelegationsClient(subscriptionID string, credential azcore.Toke
 
 // NewListPager - Gets all of the available subnet delegations for this subscription in this region.
 //
-// Generated from API version 2023-09-01
+// Generated from API version 2023-11-01
 //   - location - The location of the subnet.
 //   - options - AvailableDelegationsClientListOptions contains the optional parameters for the AvailableDelegationsClient.NewListPager
 //     method.
@@ -89,7 +89,7 @@ func (client *AvailableDelegationsClient) listCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-01")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

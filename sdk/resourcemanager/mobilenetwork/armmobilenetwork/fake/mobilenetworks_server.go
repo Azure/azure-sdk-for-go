@@ -44,6 +44,10 @@ type MobileNetworksServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armmobilenetwork.MobileNetworksClientListBySubscriptionOptions) (resp azfake.PagerResponder[armmobilenetwork.MobileNetworksClientListBySubscriptionResponse])
 
+	// NewListSimGroupsPager is the fake for method MobileNetworksClient.NewListSimGroupsPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListSimGroupsPager func(resourceGroupName string, mobileNetworkName string, options *armmobilenetwork.MobileNetworksClientListSimGroupsOptions) (resp azfake.PagerResponder[armmobilenetwork.MobileNetworksClientListSimGroupsResponse])
+
 	// UpdateTags is the fake for method MobileNetworksClient.UpdateTags
 	// HTTP status codes to indicate success: http.StatusOK
 	UpdateTags func(ctx context.Context, resourceGroupName string, mobileNetworkName string, parameters armmobilenetwork.IdentityAndTagsObject, options *armmobilenetwork.MobileNetworksClientUpdateTagsOptions) (resp azfake.Responder[armmobilenetwork.MobileNetworksClientUpdateTagsResponse], errResp azfake.ErrorResponder)
@@ -59,6 +63,7 @@ func NewMobileNetworksServerTransport(srv *MobileNetworksServer) *MobileNetworks
 		beginDelete:                 newTracker[azfake.PollerResponder[armmobilenetwork.MobileNetworksClientDeleteResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armmobilenetwork.MobileNetworksClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armmobilenetwork.MobileNetworksClientListBySubscriptionResponse]](),
+		newListSimGroupsPager:       newTracker[azfake.PagerResponder[armmobilenetwork.MobileNetworksClientListSimGroupsResponse]](),
 	}
 }
 
@@ -70,6 +75,7 @@ type MobileNetworksServerTransport struct {
 	beginDelete                 *tracker[azfake.PollerResponder[armmobilenetwork.MobileNetworksClientDeleteResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armmobilenetwork.MobileNetworksClientListByResourceGroupResponse]]
 	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armmobilenetwork.MobileNetworksClientListBySubscriptionResponse]]
+	newListSimGroupsPager       *tracker[azfake.PagerResponder[armmobilenetwork.MobileNetworksClientListSimGroupsResponse]]
 }
 
 // Do implements the policy.Transporter interface for MobileNetworksServerTransport.
@@ -94,6 +100,8 @@ func (m *MobileNetworksServerTransport) Do(req *http.Request) (*http.Response, e
 		resp, err = m.dispatchNewListByResourceGroupPager(req)
 	case "MobileNetworksClient.NewListBySubscriptionPager":
 		resp, err = m.dispatchNewListBySubscriptionPager(req)
+	case "MobileNetworksClient.NewListSimGroupsPager":
+		resp, err = m.dispatchNewListSimGroupsPager(req)
 	case "MobileNetworksClient.UpdateTags":
 		resp, err = m.dispatchUpdateTags(req)
 	default:
@@ -298,6 +306,47 @@ func (m *MobileNetworksServerTransport) dispatchNewListBySubscriptionPager(req *
 	}
 	if !server.PagerResponderMore(newListBySubscriptionPager) {
 		m.newListBySubscriptionPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (m *MobileNetworksServerTransport) dispatchNewListSimGroupsPager(req *http.Request) (*http.Response, error) {
+	if m.srv.NewListSimGroupsPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListSimGroupsPager not implemented")}
+	}
+	newListSimGroupsPager := m.newListSimGroupsPager.get(req)
+	if newListSimGroupsPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.MobileNetwork/mobileNetworks/(?P<mobileNetworkName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listSimGroups`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		mobileNetworkNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("mobileNetworkName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := m.srv.NewListSimGroupsPager(resourceGroupNameParam, mobileNetworkNameParam, nil)
+		newListSimGroupsPager = &resp
+		m.newListSimGroupsPager.add(req, newListSimGroupsPager)
+		server.PagerResponderInjectNextLinks(newListSimGroupsPager, req, func(page *armmobilenetwork.MobileNetworksClientListSimGroupsResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListSimGroupsPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		m.newListSimGroupsPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListSimGroupsPager) {
+		m.newListSimGroupsPager.remove(req)
 	}
 	return resp, nil
 }

@@ -13,12 +13,14 @@ import (
 	"context"
 	"log"
 
+	"time"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/oracledatabase/armoracledatabase"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/520e274d7d95fc6d1002dd3c1fcaf8d55d27f63e/specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/autonomousDatabase_listBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1c63635d66ae38cff18045ab416a6572d3e15f6e/specification/oracle/resource-manager/Oracle.Database/stable/2023-09-01/examples/autonomousDatabase_listBySubscription.json
 func ExampleAutonomousDatabasesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -86,7 +88,7 @@ func ExampleAutonomousDatabasesClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/520e274d7d95fc6d1002dd3c1fcaf8d55d27f63e/specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/autonomousDatabase_listByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1c63635d66ae38cff18045ab416a6572d3e15f6e/specification/oracle/resource-manager/Oracle.Database/stable/2023-09-01/examples/autonomousDatabase_listByResourceGroup.json
 func ExampleAutonomousDatabasesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -154,8 +156,8 @@ func ExampleAutonomousDatabasesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/520e274d7d95fc6d1002dd3c1fcaf8d55d27f63e/specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/autonomousDatabase_get.json
-func ExampleAutonomousDatabasesClient_Get() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1c63635d66ae38cff18045ab416a6572d3e15f6e/specification/oracle/resource-manager/Oracle.Database/stable/2023-09-01/examples/autonomousDatabase_get.json
+func ExampleAutonomousDatabasesClient_Get_autonomousDatabasesGet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -214,8 +216,8 @@ func ExampleAutonomousDatabasesClient_Get() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/520e274d7d95fc6d1002dd3c1fcaf8d55d27f63e/specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/autonomousDatabase_create.json
-func ExampleAutonomousDatabasesClient_BeginCreateOrUpdate_createAutonomousDatabase() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1c63635d66ae38cff18045ab416a6572d3e15f6e/specification/oracle/resource-manager/Oracle.Database/stable/2023-09-01/examples/autonomousDatabase_create.json
+func ExampleAutonomousDatabasesClient_BeginCreateOrUpdate_autonomousDatabasesCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -231,7 +233,7 @@ func ExampleAutonomousDatabasesClient_BeginCreateOrUpdate_createAutonomousDataba
 			"tagK1": to.Ptr("tagV1"),
 		},
 		Properties: &armoracledatabase.AutonomousDatabaseProperties{
-			AdminPassword:        to.Ptr(""),
+			AdminPassword:        to.Ptr("********"),
 			CharacterSet:         to.Ptr("AL32UTF8"),
 			ComputeCount:         to.Ptr[float32](2),
 			ComputeModel:         to.Ptr(armoracledatabase.ComputeModelECPU),
@@ -296,8 +298,8 @@ func ExampleAutonomousDatabasesClient_BeginCreateOrUpdate_createAutonomousDataba
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/520e274d7d95fc6d1002dd3c1fcaf8d55d27f63e/specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/autonomousDatabaseClone_create.json
-func ExampleAutonomousDatabasesClient_BeginCreateOrUpdate_createCloneAutonomousDatabase() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1c63635d66ae38cff18045ab416a6572d3e15f6e/specification/oracle/resource-manager/Oracle.Database/stable/2023-09-01/examples/autonomousDatabaseClone_create.json
+func ExampleAutonomousDatabasesClient_BeginCreateOrUpdate_autonomousDatabasesCreateOrUpdateClone() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -313,7 +315,7 @@ func ExampleAutonomousDatabasesClient_BeginCreateOrUpdate_createCloneAutonomousD
 			"tagK1": to.Ptr("tagV1"),
 		},
 		Properties: &armoracledatabase.AutonomousDatabaseCloneProperties{
-			AdminPassword:        to.Ptr(""),
+			AdminPassword:        to.Ptr("********"),
 			CharacterSet:         to.Ptr("AL32UTF8"),
 			ComputeCount:         to.Ptr[float32](2),
 			ComputeModel:         to.Ptr(armoracledatabase.ComputeModelECPU),
@@ -381,7 +383,7 @@ func ExampleAutonomousDatabasesClient_BeginCreateOrUpdate_createCloneAutonomousD
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/520e274d7d95fc6d1002dd3c1fcaf8d55d27f63e/specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/autonomousDatabase_patch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1c63635d66ae38cff18045ab416a6572d3e15f6e/specification/oracle/resource-manager/Oracle.Database/stable/2023-09-01/examples/autonomousDatabase_patch.json
 func ExampleAutonomousDatabasesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -445,7 +447,7 @@ func ExampleAutonomousDatabasesClient_BeginUpdate() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/520e274d7d95fc6d1002dd3c1fcaf8d55d27f63e/specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/autonomousDatabase_delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1c63635d66ae38cff18045ab416a6572d3e15f6e/specification/oracle/resource-manager/Oracle.Database/stable/2023-09-01/examples/autonomousDatabase_delete.json
 func ExampleAutonomousDatabasesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -466,8 +468,8 @@ func ExampleAutonomousDatabasesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/520e274d7d95fc6d1002dd3c1fcaf8d55d27f63e/specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/autonomousDatabase_failover.json
-func ExampleAutonomousDatabasesClient_BeginFailover() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1c63635d66ae38cff18045ab416a6572d3e15f6e/specification/oracle/resource-manager/Oracle.Database/stable/2023-09-01/examples/autonomousDatabase_failover.json
+func ExampleAutonomousDatabasesClient_BeginFailover_autonomousDatabasesFailover() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -538,7 +540,7 @@ func ExampleAutonomousDatabasesClient_BeginFailover() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/520e274d7d95fc6d1002dd3c1fcaf8d55d27f63e/specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/autonomousDatabase_generateWallet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1c63635d66ae38cff18045ab416a6572d3e15f6e/specification/oracle/resource-manager/Oracle.Database/stable/2023-09-01/examples/autonomousDatabase_generateWallet.json
 func ExampleAutonomousDatabasesClient_GenerateWallet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -552,7 +554,7 @@ func ExampleAutonomousDatabasesClient_GenerateWallet() {
 	res, err := clientFactory.NewAutonomousDatabasesClient().GenerateWallet(ctx, "rg000", "databasedb1", armoracledatabase.GenerateAutonomousDatabaseWalletDetails{
 		GenerateType: to.Ptr(armoracledatabase.GenerateTypeSingle),
 		IsRegional:   to.Ptr(false),
-		Password:     to.Ptr("ExamplePassword12345"),
+		Password:     to.Ptr("********"),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -565,8 +567,152 @@ func ExampleAutonomousDatabasesClient_GenerateWallet() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/520e274d7d95fc6d1002dd3c1fcaf8d55d27f63e/specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/autonomousDatabase_switchover.json
-func ExampleAutonomousDatabasesClient_BeginSwitchover() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1c63635d66ae38cff18045ab416a6572d3e15f6e/specification/oracle/resource-manager/Oracle.Database/stable/2023-09-01/examples/autonomousDatabase_restore.json
+func ExampleAutonomousDatabasesClient_BeginRestore_autonomousDatabasesRestore() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewAutonomousDatabasesClient().BeginRestore(ctx, "rg000", "databasedb1", armoracledatabase.RestoreAutonomousDatabaseDetails{
+		Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-23T00:00:00.000Z"); return t }()),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.AutonomousDatabase = armoracledatabase.AutonomousDatabase{
+	// 	Type: to.Ptr("Oracle.Database/autonomousDatabases"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/autonomousDatabases/databasedb1"),
+	// 	Location: to.Ptr("eastus"),
+	// 	Tags: map[string]*string{
+	// 		"tagK1": to.Ptr("tagV1"),
+	// 	},
+	// 	Properties: &armoracledatabase.AutonomousDatabaseProperties{
+	// 		AutonomousDatabaseID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/autonomousDatabases/databasedb1"),
+	// 		AutonomousMaintenanceScheduleType: to.Ptr(armoracledatabase.AutonomousMaintenanceScheduleTypeRegular),
+	// 		BackupRetentionPeriodInDays: to.Ptr[int32](60),
+	// 		CharacterSet: to.Ptr("AL32UTF8"),
+	// 		ComputeCount: to.Ptr[float32](2),
+	// 		ComputeModel: to.Ptr(armoracledatabase.ComputeModelECPU),
+	// 		CPUCoreCount: to.Ptr[int32](1),
+	// 		DataBaseType: to.Ptr(armoracledatabase.DataBaseTypeRegular),
+	// 		DataStorageSizeInGbs: to.Ptr[int32](1024),
+	// 		DataStorageSizeInTbs: to.Ptr[int32](1),
+	// 		DatabaseEdition: to.Ptr(armoracledatabase.DatabaseEditionTypeEnterpriseEdition),
+	// 		DbVersion: to.Ptr("18.4.0.0"),
+	// 		DisplayName: to.Ptr("example_autonomous_databasedb1"),
+	// 		IsAutoScalingEnabled: to.Ptr(false),
+	// 		IsAutoScalingForStorageEnabled: to.Ptr(false),
+	// 		IsLocalDataGuardEnabled: to.Ptr(false),
+	// 		IsMtlsConnectionRequired: to.Ptr(true),
+	// 		LicenseModel: to.Ptr(armoracledatabase.LicenseModelBringYourOwnLicense),
+	// 		LifecycleDetails: to.Ptr(""),
+	// 		LifecycleState: to.Ptr(armoracledatabase.AutonomousDatabaseLifecycleStateRestoreInProgress),
+	// 		LongTermBackupSchedule: &armoracledatabase.LongTermBackUpScheduleDetails{
+	// 			RepeatCadence: to.Ptr(armoracledatabase.RepeatCadenceTypeWeekly),
+	// 			RetentionPeriodInDays: to.Ptr[int32](365),
+	// 			TimeOfBackup: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-21T21:03:41.309Z"); return t}()),
+	// 		},
+	// 		NcharacterSet: to.Ptr("AL16UTF16"),
+	// 		NextLongTermBackupTimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-24T21:03:41.000Z"); return t}()),
+	// 		OciURL: to.Ptr("https://fake"),
+	// 		Ocid: to.Ptr("ocid1..aaaaa"),
+	// 		ProvisioningState: to.Ptr(armoracledatabase.AzureResourceProvisioningStateSucceeded),
+	// 		SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
+	// 		TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-09T20:44:09.466Z"); return t}()),
+	// 		VnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Microsoft.Network/virtualNetworks/vnet1"),
+	// 		WhitelistedIPs: []*string{
+	// 			to.Ptr("1.1.1.1"),
+	// 			to.Ptr("1.1.1.0/24"),
+	// 			to.Ptr("1.1.2.25")},
+	// 		},
+	// 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1c63635d66ae38cff18045ab416a6572d3e15f6e/specification/oracle/resource-manager/Oracle.Database/stable/2023-09-01/examples/autonomousDatabase_shrink.json
+func ExampleAutonomousDatabasesClient_BeginShrink() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewAutonomousDatabasesClient().BeginShrink(ctx, "rg000", "databasedb1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.AutonomousDatabase = armoracledatabase.AutonomousDatabase{
+	// 	Type: to.Ptr("Oracle.Database/autonomousDatabases"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/autonomousDatabases/databasedb1"),
+	// 	Location: to.Ptr("eastus"),
+	// 	Tags: map[string]*string{
+	// 		"tagK1": to.Ptr("tagV1"),
+	// 	},
+	// 	Properties: &armoracledatabase.AutonomousDatabaseProperties{
+	// 		AutonomousDatabaseID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/autonomousDatabases/databasedb1"),
+	// 		AutonomousMaintenanceScheduleType: to.Ptr(armoracledatabase.AutonomousMaintenanceScheduleTypeRegular),
+	// 		BackupRetentionPeriodInDays: to.Ptr[int32](90),
+	// 		CharacterSet: to.Ptr("AL32UTF8"),
+	// 		ComputeCount: to.Ptr[float32](2),
+	// 		ComputeModel: to.Ptr(armoracledatabase.ComputeModelECPU),
+	// 		CPUCoreCount: to.Ptr[int32](1),
+	// 		DataBaseType: to.Ptr(armoracledatabase.DataBaseTypeRegular),
+	// 		DataStorageSizeInGbs: to.Ptr[int32](1024),
+	// 		DataStorageSizeInTbs: to.Ptr[int32](1),
+	// 		DatabaseEdition: to.Ptr(armoracledatabase.DatabaseEditionTypeEnterpriseEdition),
+	// 		DbVersion: to.Ptr("18.4.0.0"),
+	// 		DisplayName: to.Ptr("example_autonomous_databasedb1"),
+	// 		IsAutoScalingEnabled: to.Ptr(false),
+	// 		IsAutoScalingForStorageEnabled: to.Ptr(false),
+	// 		IsLocalDataGuardEnabled: to.Ptr(false),
+	// 		IsMtlsConnectionRequired: to.Ptr(true),
+	// 		LicenseModel: to.Ptr(armoracledatabase.LicenseModelBringYourOwnLicense),
+	// 		LifecycleDetails: to.Ptr(""),
+	// 		LifecycleState: to.Ptr(armoracledatabase.AutonomousDatabaseLifecycleStateScaleInProgress),
+	// 		LongTermBackupSchedule: &armoracledatabase.LongTermBackUpScheduleDetails{
+	// 			RepeatCadence: to.Ptr(armoracledatabase.RepeatCadenceTypeWeekly),
+	// 			RetentionPeriodInDays: to.Ptr[int32](365),
+	// 			TimeOfBackup: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-21T21:03:41.309Z"); return t}()),
+	// 		},
+	// 		NcharacterSet: to.Ptr("AL16UTF16"),
+	// 		NextLongTermBackupTimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-24T21:03:41.000Z"); return t}()),
+	// 		OciURL: to.Ptr("https://fake"),
+	// 		Ocid: to.Ptr("ocid1..aaaaa"),
+	// 		ProvisioningState: to.Ptr(armoracledatabase.AzureResourceProvisioningStateSucceeded),
+	// 		SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
+	// 		TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-09T20:44:09.466Z"); return t}()),
+	// 		VnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Microsoft.Network/virtualNetworks/vnet1"),
+	// 		WhitelistedIPs: []*string{
+	// 			to.Ptr("1.1.1.1"),
+	// 			to.Ptr("1.1.1.0/24"),
+	// 			to.Ptr("1.1.2.25")},
+	// 		},
+	// 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1c63635d66ae38cff18045ab416a6572d3e15f6e/specification/oracle/resource-manager/Oracle.Database/stable/2023-09-01/examples/autonomousDatabase_switchover.json
+func ExampleAutonomousDatabasesClient_BeginSwitchover_autonomousDatabasesSwitchover() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)

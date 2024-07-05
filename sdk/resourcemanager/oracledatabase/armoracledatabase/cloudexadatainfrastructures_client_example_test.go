@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/oracledatabase/armoracledatabase"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/520e274d7d95fc6d1002dd3c1fcaf8d55d27f63e/specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/exaInfra_listBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1c63635d66ae38cff18045ab416a6572d3e15f6e/specification/oracle/resource-manager/Oracle.Database/stable/2023-09-01/examples/exaInfra_listBySubscription.json
 func ExampleCloudExadataInfrastructuresClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -59,7 +59,7 @@ func ExampleCloudExadataInfrastructuresClient_NewListBySubscriptionPager() {
 		// 					{
 		// 						Email: to.Ptr("noreply@oracle.com"),
 		// 				}},
-		// 				DataStorageSizeInTbs: to.Ptr[int32](10),
+		// 				DataStorageSizeInTbs: to.Ptr[float64](10),
 		// 				DbNodeStorageSizeInGbs: to.Ptr[int32](10),
 		// 				DbServerVersion: to.Ptr("19.0.0.0"),
 		// 				DisplayName: to.Ptr("infra 1"),
@@ -115,7 +115,7 @@ func ExampleCloudExadataInfrastructuresClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/520e274d7d95fc6d1002dd3c1fcaf8d55d27f63e/specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/exaInfra_listByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1c63635d66ae38cff18045ab416a6572d3e15f6e/specification/oracle/resource-manager/Oracle.Database/stable/2023-09-01/examples/exaInfra_listByResourceGroup.json
 func ExampleCloudExadataInfrastructuresClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -156,7 +156,7 @@ func ExampleCloudExadataInfrastructuresClient_NewListByResourceGroupPager() {
 		// 					{
 		// 						Email: to.Ptr("noreply@oracle.com"),
 		// 				}},
-		// 				DataStorageSizeInTbs: to.Ptr[int32](10),
+		// 				DataStorageSizeInTbs: to.Ptr[float64](10),
 		// 				DbNodeStorageSizeInGbs: to.Ptr[int32](10),
 		// 				DbServerVersion: to.Ptr("19.0.0.0"),
 		// 				DisplayName: to.Ptr("infra 1"),
@@ -212,7 +212,7 @@ func ExampleCloudExadataInfrastructuresClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/520e274d7d95fc6d1002dd3c1fcaf8d55d27f63e/specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/exaInfra_get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1c63635d66ae38cff18045ab416a6572d3e15f6e/specification/oracle/resource-manager/Oracle.Database/stable/2023-09-01/examples/exaInfra_get.json
 func ExampleCloudExadataInfrastructuresClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -247,7 +247,7 @@ func ExampleCloudExadataInfrastructuresClient_Get() {
 	// 			{
 	// 				Email: to.Ptr("noreply@oracle.com"),
 	// 		}},
-	// 		DataStorageSizeInTbs: to.Ptr[int32](10),
+	// 		DataStorageSizeInTbs: to.Ptr[float64](10),
 	// 		DbNodeStorageSizeInGbs: to.Ptr[int32](10),
 	// 		DbServerVersion: to.Ptr("19.0.0.0"),
 	// 		DisplayName: to.Ptr("infra 1"),
@@ -301,7 +301,7 @@ func ExampleCloudExadataInfrastructuresClient_Get() {
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/520e274d7d95fc6d1002dd3c1fcaf8d55d27f63e/specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/exaInfra_create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1c63635d66ae38cff18045ab416a6572d3e15f6e/specification/oracle/resource-manager/Oracle.Database/stable/2023-09-01/examples/exaInfra_create.json
 func ExampleCloudExadataInfrastructuresClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -353,7 +353,7 @@ func ExampleCloudExadataInfrastructuresClient_BeginCreateOrUpdate() {
 	// 			{
 	// 				Email: to.Ptr("noreply@oracle.com"),
 	// 		}},
-	// 		DataStorageSizeInTbs: to.Ptr[int32](10),
+	// 		DataStorageSizeInTbs: to.Ptr[float64](10),
 	// 		DbNodeStorageSizeInGbs: to.Ptr[int32](10),
 	// 		DbServerVersion: to.Ptr("19.0.0.0"),
 	// 		DisplayName: to.Ptr("infra 1"),
@@ -407,7 +407,7 @@ func ExampleCloudExadataInfrastructuresClient_BeginCreateOrUpdate() {
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/520e274d7d95fc6d1002dd3c1fcaf8d55d27f63e/specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/exaInfra_patch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1c63635d66ae38cff18045ab416a6572d3e15f6e/specification/oracle/resource-manager/Oracle.Database/stable/2023-09-01/examples/exaInfra_patch.json
 func ExampleCloudExadataInfrastructuresClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -446,7 +446,7 @@ func ExampleCloudExadataInfrastructuresClient_BeginUpdate() {
 	// 			{
 	// 				Email: to.Ptr("noreply@oracle.com"),
 	// 		}},
-	// 		DataStorageSizeInTbs: to.Ptr[int32](10),
+	// 		DataStorageSizeInTbs: to.Ptr[float64](10),
 	// 		DbNodeStorageSizeInGbs: to.Ptr[int32](10),
 	// 		DbServerVersion: to.Ptr("19.0.0.0"),
 	// 		DisplayName: to.Ptr("infra 1"),
@@ -500,7 +500,7 @@ func ExampleCloudExadataInfrastructuresClient_BeginUpdate() {
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/520e274d7d95fc6d1002dd3c1fcaf8d55d27f63e/specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/exaInfra_delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1c63635d66ae38cff18045ab416a6572d3e15f6e/specification/oracle/resource-manager/Oracle.Database/stable/2023-09-01/examples/exaInfra_delete.json
 func ExampleCloudExadataInfrastructuresClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -521,7 +521,7 @@ func ExampleCloudExadataInfrastructuresClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/520e274d7d95fc6d1002dd3c1fcaf8d55d27f63e/specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/exaInfra_addStorageCapacity.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1c63635d66ae38cff18045ab416a6572d3e15f6e/specification/oracle/resource-manager/Oracle.Database/stable/2023-09-01/examples/exaInfra_addStorageCapacity.json
 func ExampleCloudExadataInfrastructuresClient_BeginAddStorageCapacity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -560,7 +560,7 @@ func ExampleCloudExadataInfrastructuresClient_BeginAddStorageCapacity() {
 	// 			{
 	// 				Email: to.Ptr("noreply@oracle.com"),
 	// 		}},
-	// 		DataStorageSizeInTbs: to.Ptr[int32](10),
+	// 		DataStorageSizeInTbs: to.Ptr[float64](10),
 	// 		DbNodeStorageSizeInGbs: to.Ptr[int32](10),
 	// 		DbServerVersion: to.Ptr("19.0.0.0"),
 	// 		DisplayName: to.Ptr("infra 1"),

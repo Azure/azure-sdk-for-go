@@ -18,8 +18,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/oracledatabase/armoracledatabase"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/520e274d7d95fc6d1002dd3c1fcaf8d55d27f63e/specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/autonomousDatabaseBackup_listByParent.json
-func ExampleAutonomousDatabaseBackupsClient_NewListByAutonomousDatabasePager() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1c63635d66ae38cff18045ab416a6572d3e15f6e/specification/oracle/resource-manager/Oracle.Database/stable/2023-09-01/examples/autonomousDatabaseBackup_listByParent.json
+func ExampleAutonomousDatabaseBackupsClient_NewListByAutonomousDatabasePager_autonomousDatabaseBackupsListByAutonomousDatabase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -43,12 +43,12 @@ func ExampleAutonomousDatabaseBackupsClient_NewListByAutonomousDatabasePager() {
 		// page.AutonomousDatabaseBackupListResult = armoracledatabase.AutonomousDatabaseBackupListResult{
 		// 	Value: []*armoracledatabase.AutonomousDatabaseBackup{
 		// 		{
-		// 			Type: to.Ptr("Oracle.Database/autonomousDatabaseBackups"),
-		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/autonomousDatabaseBackups/1711644130"),
+		// 			Type: to.Ptr("Oracle.Database/autonomousDatabases/autonomousDatabaseBackups"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/autonomousDatabases/databasedb1/autonomousDatabaseBackups/1711644130"),
 		// 			Properties: &armoracledatabase.AutonomousDatabaseBackupProperties{
-		// 				Type: to.Ptr(armoracledatabase.AutonomousDatabaseBackupTypeFull),
-		// 				AutonomousDatabaseID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/autonomousDatabases/databasedb1"),
-		// 				DatabaseSizeInTBs: to.Ptr[int32](2),
+		// 				AutonomousDatabaseOcid: to.Ptr("ocid1.autonomousdatabase.oc1..aaaaa3klq"),
+		// 				BackupType: to.Ptr(armoracledatabase.AutonomousDatabaseBackupTypeFull),
+		// 				DatabaseSizeInTbs: to.Ptr[float64](2),
 		// 				DbVersion: to.Ptr("19.6.0.0"),
 		// 				DisplayName: to.Ptr("Nightly Backup"),
 		// 				IsAutomatic: to.Ptr(true),
@@ -58,7 +58,7 @@ func ExampleAutonomousDatabaseBackupsClient_NewListByAutonomousDatabasePager() {
 		// 				Ocid: to.Ptr("ocid1.autonomousdatabasebackup.oc1..aaaaaaaavwpj"),
 		// 				ProvisioningState: to.Ptr(armoracledatabase.AzureResourceProvisioningStateSucceeded),
 		// 				RetentionPeriodInDays: to.Ptr[int32](365),
-		// 				SizeInTBs: to.Ptr[int32](2),
+		// 				SizeInTbs: to.Ptr[float64](2),
 		// 				TimeAvailableTil: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-09T20:44:09.466Z"); return t}()),
 		// 				TimeEnded: to.Ptr("2024-01-09T20:44:09.466Z"),
 		// 			},
@@ -67,8 +67,8 @@ func ExampleAutonomousDatabaseBackupsClient_NewListByAutonomousDatabasePager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/520e274d7d95fc6d1002dd3c1fcaf8d55d27f63e/specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/autonomousDatabaseBackup_get.json
-func ExampleAutonomousDatabaseBackupsClient_Get() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1c63635d66ae38cff18045ab416a6572d3e15f6e/specification/oracle/resource-manager/Oracle.Database/stable/2023-09-01/examples/autonomousDatabaseBackup_get.json
+func ExampleAutonomousDatabaseBackupsClient_Get_autonomousDatabaseBackupsGet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -86,12 +86,12 @@ func ExampleAutonomousDatabaseBackupsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.AutonomousDatabaseBackup = armoracledatabase.AutonomousDatabaseBackup{
-	// 	Type: to.Ptr("Oracle.Database/autonomousDatabaseBackups"),
-	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/autonomousDatabaseBackups/1711644130"),
+	// 	Type: to.Ptr("Oracle.Database/autonomousDatabases/autonomousDatabaseBackups"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/autonomousDatabases/databasedb1/autonomousDatabaseBackups/1711644130"),
 	// 	Properties: &armoracledatabase.AutonomousDatabaseBackupProperties{
-	// 		Type: to.Ptr(armoracledatabase.AutonomousDatabaseBackupTypeFull),
-	// 		AutonomousDatabaseID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/autonomousDatabases/databasedb1"),
-	// 		DatabaseSizeInTBs: to.Ptr[int32](2),
+	// 		AutonomousDatabaseOcid: to.Ptr("ocid1.autonomousdatabase.oc1..aaaaa3klq"),
+	// 		BackupType: to.Ptr(armoracledatabase.AutonomousDatabaseBackupTypeFull),
+	// 		DatabaseSizeInTbs: to.Ptr[float64](2),
 	// 		DbVersion: to.Ptr("19.6.0.0"),
 	// 		DisplayName: to.Ptr("Nightly Backup"),
 	// 		IsAutomatic: to.Ptr(true),
@@ -101,15 +101,16 @@ func ExampleAutonomousDatabaseBackupsClient_Get() {
 	// 		Ocid: to.Ptr("ocid1.autonomousdatabasebackup.oc1..aaaaaaaavwpj"),
 	// 		ProvisioningState: to.Ptr(armoracledatabase.AzureResourceProvisioningStateSucceeded),
 	// 		RetentionPeriodInDays: to.Ptr[int32](365),
-	// 		SizeInTBs: to.Ptr[int32](2),
+	// 		SizeInTbs: to.Ptr[float64](2),
 	// 		TimeAvailableTil: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-09T20:44:09.466Z"); return t}()),
 	// 		TimeEnded: to.Ptr("2024-01-09T20:44:09.466Z"),
+	// 		TimeStarted: to.Ptr("2024-01-09T19:44:09.466Z"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/520e274d7d95fc6d1002dd3c1fcaf8d55d27f63e/specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/autonomousDatabaseBackup_create.json
-func ExampleAutonomousDatabaseBackupsClient_BeginCreateOrUpdate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1c63635d66ae38cff18045ab416a6572d3e15f6e/specification/oracle/resource-manager/Oracle.Database/stable/2023-09-01/examples/autonomousDatabaseBackup_create.json
+func ExampleAutonomousDatabaseBackupsClient_BeginCreateOrUpdate_autonomousDatabaseBackupsCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -121,9 +122,9 @@ func ExampleAutonomousDatabaseBackupsClient_BeginCreateOrUpdate() {
 	}
 	poller, err := clientFactory.NewAutonomousDatabaseBackupsClient().BeginCreateOrUpdate(ctx, "rg000", "databasedb1", "1711644130", armoracledatabase.AutonomousDatabaseBackup{
 		Properties: &armoracledatabase.AutonomousDatabaseBackupProperties{
-			AutonomousDatabaseID:  to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/autonomousDatabases/databasedb1"),
-			DisplayName:           to.Ptr("Nightly Backup"),
-			RetentionPeriodInDays: to.Ptr[int32](365),
+			AutonomousDatabaseOcid: to.Ptr("ocid1.autonomousdatabase.oc1..aaaaa3klq"),
+			DisplayName:            to.Ptr("Nightly Backup"),
+			RetentionPeriodInDays:  to.Ptr[int32](365),
 		},
 	}, nil)
 	if err != nil {
@@ -137,12 +138,12 @@ func ExampleAutonomousDatabaseBackupsClient_BeginCreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.AutonomousDatabaseBackup = armoracledatabase.AutonomousDatabaseBackup{
-	// 	Type: to.Ptr("Oracle.Database/autonomousDatabaseBackups"),
-	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/autonomousDatabaseBackups/1711644130"),
+	// 	Type: to.Ptr("Oracle.Database/autonomousDatabases/autonomousDatabaseBackups"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/autonomousDatabases/databasedb1/autonomousDatabaseBackups/1711644130"),
 	// 	Properties: &armoracledatabase.AutonomousDatabaseBackupProperties{
-	// 		Type: to.Ptr(armoracledatabase.AutonomousDatabaseBackupTypeFull),
-	// 		AutonomousDatabaseID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/autonomousDatabases/databasedb1"),
-	// 		DatabaseSizeInTBs: to.Ptr[int32](2),
+	// 		AutonomousDatabaseOcid: to.Ptr("ocid1.autonomousdatabase.oc1..aaaaa3klq"),
+	// 		BackupType: to.Ptr(armoracledatabase.AutonomousDatabaseBackupTypeFull),
+	// 		DatabaseSizeInTbs: to.Ptr[float64](2),
 	// 		DbVersion: to.Ptr("19.6.0.0"),
 	// 		DisplayName: to.Ptr("Nightly Backup"),
 	// 		IsAutomatic: to.Ptr(true),
@@ -152,15 +153,16 @@ func ExampleAutonomousDatabaseBackupsClient_BeginCreateOrUpdate() {
 	// 		Ocid: to.Ptr("ocid1.autonomousdatabasebackup.oc1..aaaaaaaavwpj"),
 	// 		ProvisioningState: to.Ptr(armoracledatabase.AzureResourceProvisioningStateSucceeded),
 	// 		RetentionPeriodInDays: to.Ptr[int32](365),
-	// 		SizeInTBs: to.Ptr[int32](2),
+	// 		SizeInTbs: to.Ptr[float64](2),
 	// 		TimeAvailableTil: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-09T20:44:09.466Z"); return t}()),
 	// 		TimeEnded: to.Ptr("2024-01-09T20:44:09.466Z"),
+	// 		TimeStarted: to.Ptr("2024-01-09T19:44:09.466Z"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/520e274d7d95fc6d1002dd3c1fcaf8d55d27f63e/specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/autonomousDatabaseBackup_patch.json
-func ExampleAutonomousDatabaseBackupsClient_BeginUpdate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1c63635d66ae38cff18045ab416a6572d3e15f6e/specification/oracle/resource-manager/Oracle.Database/stable/2023-09-01/examples/autonomousDatabaseBackup_patch.json
+func ExampleAutonomousDatabaseBackupsClient_BeginUpdate_autonomousDatabaseBackupsUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -182,12 +184,12 @@ func ExampleAutonomousDatabaseBackupsClient_BeginUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.AutonomousDatabaseBackup = armoracledatabase.AutonomousDatabaseBackup{
-	// 	Type: to.Ptr("Oracle.Database/autonomousDatabaseBackups"),
-	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/autonomousDatabaseBackups/1711644130"),
+	// 	Type: to.Ptr("Oracle.Database/autonomousDatabases/autonomousDatabaseBackups"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/autonomousDatabases/databasedb1/autonomousDatabaseBackups/1711644130"),
 	// 	Properties: &armoracledatabase.AutonomousDatabaseBackupProperties{
-	// 		Type: to.Ptr(armoracledatabase.AutonomousDatabaseBackupTypeFull),
-	// 		AutonomousDatabaseID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/autonomousDatabases/databasedb1"),
-	// 		DatabaseSizeInTBs: to.Ptr[int32](2),
+	// 		AutonomousDatabaseOcid: to.Ptr("ocid1.autonomousdatabase.oc1..aaaaa3klq"),
+	// 		BackupType: to.Ptr(armoracledatabase.AutonomousDatabaseBackupTypeFull),
+	// 		DatabaseSizeInTbs: to.Ptr[float64](2),
 	// 		DbVersion: to.Ptr("19.6.0.0"),
 	// 		DisplayName: to.Ptr("Nightly Backup"),
 	// 		IsAutomatic: to.Ptr(true),
@@ -197,13 +199,13 @@ func ExampleAutonomousDatabaseBackupsClient_BeginUpdate() {
 	// 		Ocid: to.Ptr("ocid1.autonomousdatabasebackup.oc1..aaaaaaaavwpj"),
 	// 		ProvisioningState: to.Ptr(armoracledatabase.AzureResourceProvisioningStateSucceeded),
 	// 		RetentionPeriodInDays: to.Ptr[int32](400),
-	// 		SizeInTBs: to.Ptr[int32](2),
+	// 		SizeInTbs: to.Ptr[float64](2),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/520e274d7d95fc6d1002dd3c1fcaf8d55d27f63e/specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/autonomousDatabaseBackup_delete.json
-func ExampleAutonomousDatabaseBackupsClient_BeginDelete() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1c63635d66ae38cff18045ab416a6572d3e15f6e/specification/oracle/resource-manager/Oracle.Database/stable/2023-09-01/examples/autonomousDatabaseBackup_delete.json
+func ExampleAutonomousDatabaseBackupsClient_BeginDelete_autonomousDatabaseBackupsDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)

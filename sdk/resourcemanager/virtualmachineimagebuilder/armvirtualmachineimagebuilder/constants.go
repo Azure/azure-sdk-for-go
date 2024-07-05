@@ -10,8 +10,26 @@ package armvirtualmachineimagebuilder
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/virtualmachineimagebuilder/armvirtualmachineimagebuilder"
-	moduleVersion = "v2.2.0"
+	moduleVersion = "v2.3.0"
 )
+
+// AutoRunState - Enabling this field will trigger an automatic build on image template creation or update.
+type AutoRunState string
+
+const (
+	// AutoRunStateAutoRunDisabled - Autorun is disabled
+	AutoRunStateAutoRunDisabled AutoRunState = "Disabled"
+	// AutoRunStateAutoRunEnabled - Autorun is enabled
+	AutoRunStateAutoRunEnabled AutoRunState = "Enabled"
+)
+
+// PossibleAutoRunStateValues returns the possible values for the AutoRunState const type.
+func PossibleAutoRunStateValues() []AutoRunState {
+	return []AutoRunState{
+		AutoRunStateAutoRunDisabled,
+		AutoRunStateAutoRunEnabled,
+	}
+}
 
 // CreatedByType - The type of identity that created the resource.
 type CreatedByType string

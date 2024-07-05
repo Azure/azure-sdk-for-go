@@ -1,8 +1,9 @@
 # Release History
 
-## 1.0.1 (Unreleased)
+## 1.1.0-beta.1 (Unreleased)
 
 ### Features Added
+* Added batch query functionality
 
 ### Breaking Changes
 

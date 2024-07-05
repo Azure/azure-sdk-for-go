@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armdeploymentstacks"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ca162308f1010bfb85b9c85021e863e7bd397a1f/specification/resources/resource-manager/Microsoft.Resources/preview/2022-08-01-preview/examples/DeploymentStackResourceGroupList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/DeploymentStackResourceGroupList.json
 func ExampleClient_NewListAtResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -56,7 +56,7 @@ func ExampleClient_NewListAtResourceGroupPager() {
 		// 			},
 		// 			Location: to.Ptr("eastus"),
 		// 			Properties: &armdeploymentstacks.DeploymentStackProperties{
-		// 				ActionOnUnmanage: &armdeploymentstacks.DeploymentStackPropertiesActionOnUnmanage{
+		// 				ActionOnUnmanage: &armdeploymentstacks.ActionOnUnmanage{
 		// 					ManagementGroups: to.Ptr(armdeploymentstacks.DeploymentStacksDeleteDetachEnumDetach),
 		// 					ResourceGroups: to.Ptr(armdeploymentstacks.DeploymentStacksDeleteDetachEnumDelete),
 		// 					Resources: to.Ptr(armdeploymentstacks.DeploymentStacksDeleteDetachEnumDelete),
@@ -73,9 +73,9 @@ func ExampleClient_NewListAtResourceGroupPager() {
 		// 						Outputs: map[string]any{
 		// 							"myOut": "myVal",
 		// 						},
-		// 						Parameters: map[string]any{
-		// 							"parameter1":map[string]any{
-		// 								"value": "a string",
+		// 						Parameters: map[string]*armdeploymentstacks.DeploymentParameter{
+		// 							"parameter1": &armdeploymentstacks.DeploymentParameter{
+		// 								Value: "a string",
 		// 							},
 		// 						},
 		// 					},
@@ -97,7 +97,7 @@ func ExampleClient_NewListAtResourceGroupPager() {
 		// 					},
 		// 					Location: to.Ptr("eastus"),
 		// 					Properties: &armdeploymentstacks.DeploymentStackProperties{
-		// 						ActionOnUnmanage: &armdeploymentstacks.DeploymentStackPropertiesActionOnUnmanage{
+		// 						ActionOnUnmanage: &armdeploymentstacks.ActionOnUnmanage{
 		// 							ManagementGroups: to.Ptr(armdeploymentstacks.DeploymentStacksDeleteDetachEnumDetach),
 		// 							ResourceGroups: to.Ptr(armdeploymentstacks.DeploymentStacksDeleteDetachEnumDelete),
 		// 							Resources: to.Ptr(armdeploymentstacks.DeploymentStacksDeleteDetachEnumDelete),
@@ -115,12 +115,12 @@ func ExampleClient_NewListAtResourceGroupPager() {
 		// 								Outputs: map[string]any{
 		// 									"myOut": "myVal",
 		// 								},
-		// 								Parameters: map[string]any{
-		// 									"parameter1":map[string]any{
-		// 										"value": "a string",
+		// 								Parameters: map[string]*armdeploymentstacks.DeploymentParameter{
+		// 									"parameter1": &armdeploymentstacks.DeploymentParameter{
+		// 										Value: "a string",
 		// 									},
 		// 								},
-		// 								ProvisioningState: to.Ptr(armdeploymentstacks.DeploymentStackProvisioningStateSucceeded),
+		// 								ProvisioningState: to.Ptr(armdeploymentstacks.DeploymentStackProvisioningState("Succeeded")),
 		// 								Resources: []*armdeploymentstacks.ManagedResourceReference{
 		// 									{
 		// 										ID: to.Ptr("/subscriptions/00000000-2222-2222-2222-000000000000/resourceGroups/templateSpecsRG/providers/Microsoft.Resources/templateSpecs/templateSpec/versions/1.0"),
@@ -141,7 +141,7 @@ func ExampleClient_NewListAtResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ca162308f1010bfb85b9c85021e863e7bd397a1f/specification/resources/resource-manager/Microsoft.Resources/preview/2022-08-01-preview/examples/DeploymentStackSubscriptionList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/DeploymentStackSubscriptionList.json
 func ExampleClient_NewListAtSubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -179,7 +179,7 @@ func ExampleClient_NewListAtSubscriptionPager() {
 		// 			},
 		// 			Location: to.Ptr("eastus"),
 		// 			Properties: &armdeploymentstacks.DeploymentStackProperties{
-		// 				ActionOnUnmanage: &armdeploymentstacks.DeploymentStackPropertiesActionOnUnmanage{
+		// 				ActionOnUnmanage: &armdeploymentstacks.ActionOnUnmanage{
 		// 					ManagementGroups: to.Ptr(armdeploymentstacks.DeploymentStacksDeleteDetachEnumDetach),
 		// 					ResourceGroups: to.Ptr(armdeploymentstacks.DeploymentStacksDeleteDetachEnumDelete),
 		// 					Resources: to.Ptr(armdeploymentstacks.DeploymentStacksDeleteDetachEnumDelete),
@@ -196,9 +196,9 @@ func ExampleClient_NewListAtSubscriptionPager() {
 		// 						Outputs: map[string]any{
 		// 							"myOut": "myVal",
 		// 						},
-		// 						Parameters: map[string]any{
-		// 							"parameter1":map[string]any{
-		// 								"value": "a string",
+		// 						Parameters: map[string]*armdeploymentstacks.DeploymentParameter{
+		// 							"parameter1": &armdeploymentstacks.DeploymentParameter{
+		// 								Value: "a string",
 		// 							},
 		// 						},
 		// 					},
@@ -220,7 +220,7 @@ func ExampleClient_NewListAtSubscriptionPager() {
 		// 					},
 		// 					Location: to.Ptr("eastus"),
 		// 					Properties: &armdeploymentstacks.DeploymentStackProperties{
-		// 						ActionOnUnmanage: &armdeploymentstacks.DeploymentStackPropertiesActionOnUnmanage{
+		// 						ActionOnUnmanage: &armdeploymentstacks.ActionOnUnmanage{
 		// 							ManagementGroups: to.Ptr(armdeploymentstacks.DeploymentStacksDeleteDetachEnumDetach),
 		// 							ResourceGroups: to.Ptr(armdeploymentstacks.DeploymentStacksDeleteDetachEnumDelete),
 		// 							Resources: to.Ptr(armdeploymentstacks.DeploymentStacksDeleteDetachEnumDelete),
@@ -238,12 +238,12 @@ func ExampleClient_NewListAtSubscriptionPager() {
 		// 								Outputs: map[string]any{
 		// 									"myOut": "myVal",
 		// 								},
-		// 								Parameters: map[string]any{
-		// 									"parameter1":map[string]any{
-		// 										"value": "a string",
+		// 								Parameters: map[string]*armdeploymentstacks.DeploymentParameter{
+		// 									"parameter1": &armdeploymentstacks.DeploymentParameter{
+		// 										Value: "a string",
 		// 									},
 		// 								},
-		// 								ProvisioningState: to.Ptr(armdeploymentstacks.DeploymentStackProvisioningStateSucceeded),
+		// 								ProvisioningState: to.Ptr(armdeploymentstacks.DeploymentStackProvisioningState("Succeeded")),
 		// 								Resources: []*armdeploymentstacks.ManagedResourceReference{
 		// 									{
 		// 										ID: to.Ptr("/subscriptions/00000000-2222-2222-2222-000000000000/resourceGroups/templateSpecsRG/providers/Microsoft.Resources/templateSpecs/templateSpec/versions/1.0"),
@@ -264,7 +264,7 @@ func ExampleClient_NewListAtSubscriptionPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ca162308f1010bfb85b9c85021e863e7bd397a1f/specification/resources/resource-manager/Microsoft.Resources/preview/2022-08-01-preview/examples/DeploymentStackManagementGroupList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/DeploymentStackManagementGroupList.json
 func ExampleClient_NewListAtManagementGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -302,7 +302,7 @@ func ExampleClient_NewListAtManagementGroupPager() {
 		// 			},
 		// 			Location: to.Ptr("eastus"),
 		// 			Properties: &armdeploymentstacks.DeploymentStackProperties{
-		// 				ActionOnUnmanage: &armdeploymentstacks.DeploymentStackPropertiesActionOnUnmanage{
+		// 				ActionOnUnmanage: &armdeploymentstacks.ActionOnUnmanage{
 		// 					ManagementGroups: to.Ptr(armdeploymentstacks.DeploymentStacksDeleteDetachEnumDetach),
 		// 					ResourceGroups: to.Ptr(armdeploymentstacks.DeploymentStacksDeleteDetachEnumDelete),
 		// 					Resources: to.Ptr(armdeploymentstacks.DeploymentStacksDeleteDetachEnumDelete),
@@ -319,9 +319,9 @@ func ExampleClient_NewListAtManagementGroupPager() {
 		// 						Outputs: map[string]any{
 		// 							"myOut": "myVal",
 		// 						},
-		// 						Parameters: map[string]any{
-		// 							"parameter1":map[string]any{
-		// 								"value": "a string",
+		// 						Parameters: map[string]*armdeploymentstacks.DeploymentParameter{
+		// 							"parameter1": &armdeploymentstacks.DeploymentParameter{
+		// 								Value: "a string",
 		// 							},
 		// 						},
 		// 					},
@@ -343,7 +343,7 @@ func ExampleClient_NewListAtManagementGroupPager() {
 		// 					},
 		// 					Location: to.Ptr("eastus"),
 		// 					Properties: &armdeploymentstacks.DeploymentStackProperties{
-		// 						ActionOnUnmanage: &armdeploymentstacks.DeploymentStackPropertiesActionOnUnmanage{
+		// 						ActionOnUnmanage: &armdeploymentstacks.ActionOnUnmanage{
 		// 							ManagementGroups: to.Ptr(armdeploymentstacks.DeploymentStacksDeleteDetachEnumDetach),
 		// 							ResourceGroups: to.Ptr(armdeploymentstacks.DeploymentStacksDeleteDetachEnumDelete),
 		// 							Resources: to.Ptr(armdeploymentstacks.DeploymentStacksDeleteDetachEnumDelete),
@@ -361,12 +361,12 @@ func ExampleClient_NewListAtManagementGroupPager() {
 		// 								Outputs: map[string]any{
 		// 									"myOut": "myVal",
 		// 								},
-		// 								Parameters: map[string]any{
-		// 									"parameter1":map[string]any{
-		// 										"value": "a string",
+		// 								Parameters: map[string]*armdeploymentstacks.DeploymentParameter{
+		// 									"parameter1": &armdeploymentstacks.DeploymentParameter{
+		// 										Value: "a string",
 		// 									},
 		// 								},
-		// 								ProvisioningState: to.Ptr(armdeploymentstacks.DeploymentStackProvisioningStateSucceeded),
+		// 								ProvisioningState: to.Ptr(armdeploymentstacks.DeploymentStackProvisioningState("Succeeded")),
 		// 								Resources: []*armdeploymentstacks.ManagedResourceReference{
 		// 									{
 		// 										ID: to.Ptr("/providers/Microsoft.Management/managementGroups/myMg/providers/Microsoft.Resources/templateSpecs/templateSpec/versions/1.0"),
@@ -387,7 +387,7 @@ func ExampleClient_NewListAtManagementGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ca162308f1010bfb85b9c85021e863e7bd397a1f/specification/resources/resource-manager/Microsoft.Resources/preview/2022-08-01-preview/examples/DeploymentStackResourceGroupCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/DeploymentStackResourceGroupCreate.json
 func ExampleClient_BeginCreateOrUpdateAtResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -401,7 +401,7 @@ func ExampleClient_BeginCreateOrUpdateAtResourceGroup() {
 	poller, err := clientFactory.NewClient().BeginCreateOrUpdateAtResourceGroup(ctx, "deploymentStacksRG", "simpleDeploymentStack", armdeploymentstacks.DeploymentStack{
 		Location: to.Ptr("eastus"),
 		Properties: &armdeploymentstacks.DeploymentStackProperties{
-			ActionOnUnmanage: &armdeploymentstacks.DeploymentStackPropertiesActionOnUnmanage{
+			ActionOnUnmanage: &armdeploymentstacks.ActionOnUnmanage{
 				ManagementGroups: to.Ptr(armdeploymentstacks.DeploymentStacksDeleteDetachEnumDetach),
 				ResourceGroups:   to.Ptr(armdeploymentstacks.DeploymentStacksDeleteDetachEnumDelete),
 				Resources:        to.Ptr(armdeploymentstacks.DeploymentStacksDeleteDetachEnumDelete),
@@ -414,9 +414,9 @@ func ExampleClient_BeginCreateOrUpdateAtResourceGroup() {
 					to.Ptr("principal")},
 				Mode: to.Ptr(armdeploymentstacks.DenySettingsModeDenyDelete),
 			},
-			Parameters: map[string]any{
-				"parameter1": map[string]any{
-					"value": "a string",
+			Parameters: map[string]*armdeploymentstacks.DeploymentParameter{
+				"parameter1": {
+					Value: "a string",
 				},
 			},
 		},
@@ -449,7 +449,7 @@ func ExampleClient_BeginCreateOrUpdateAtResourceGroup() {
 	// 	Location: to.Ptr("eastus"),
 	// 	Properties: &armdeploymentstacks.DeploymentStackProperties{
 	// 		Description: to.Ptr("my Description"),
-	// 		ActionOnUnmanage: &armdeploymentstacks.DeploymentStackPropertiesActionOnUnmanage{
+	// 		ActionOnUnmanage: &armdeploymentstacks.ActionOnUnmanage{
 	// 			ManagementGroups: to.Ptr(armdeploymentstacks.DeploymentStacksDeleteDetachEnumDetach),
 	// 			ResourceGroups: to.Ptr(armdeploymentstacks.DeploymentStacksDeleteDetachEnumDelete),
 	// 			Resources: to.Ptr(armdeploymentstacks.DeploymentStacksDeleteDetachEnumDelete),
@@ -462,12 +462,12 @@ func ExampleClient_BeginCreateOrUpdateAtResourceGroup() {
 	// 					to.Ptr("principal")},
 	// 					Mode: to.Ptr(armdeploymentstacks.DenySettingsModeDenyDelete),
 	// 				},
-	// 				Parameters: map[string]any{
-	// 					"parameter1":map[string]any{
-	// 						"value": "a string",
+	// 				Parameters: map[string]*armdeploymentstacks.DeploymentParameter{
+	// 					"parameter1": &armdeploymentstacks.DeploymentParameter{
+	// 						Value: "a string",
 	// 					},
 	// 				},
-	// 				ProvisioningState: to.Ptr(armdeploymentstacks.DeploymentStackProvisioningStateSucceeded),
+	// 				ProvisioningState: to.Ptr(armdeploymentstacks.DeploymentStackProvisioningState("Succeeded")),
 	// 			},
 	// 			Tags: map[string]*string{
 	// 				"tagkey": to.Ptr("tagVal"),
@@ -475,7 +475,7 @@ func ExampleClient_BeginCreateOrUpdateAtResourceGroup() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ca162308f1010bfb85b9c85021e863e7bd397a1f/specification/resources/resource-manager/Microsoft.Resources/preview/2022-08-01-preview/examples/DeploymentStackResourceGroupGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/DeploymentStackResourceGroupGet.json
 func ExampleClient_GetAtResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -508,7 +508,7 @@ func ExampleClient_GetAtResourceGroup() {
 	// 	Location: to.Ptr("eastus"),
 	// 	Properties: &armdeploymentstacks.DeploymentStackProperties{
 	// 		Description: to.Ptr("my Description"),
-	// 		ActionOnUnmanage: &armdeploymentstacks.DeploymentStackPropertiesActionOnUnmanage{
+	// 		ActionOnUnmanage: &armdeploymentstacks.ActionOnUnmanage{
 	// 			ManagementGroups: to.Ptr(armdeploymentstacks.DeploymentStacksDeleteDetachEnumDetach),
 	// 			ResourceGroups: to.Ptr(armdeploymentstacks.DeploymentStacksDeleteDetachEnumDelete),
 	// 			Resources: to.Ptr(armdeploymentstacks.DeploymentStacksDeleteDetachEnumDelete),
@@ -527,12 +527,12 @@ func ExampleClient_GetAtResourceGroup() {
 	// 				Outputs: map[string]any{
 	// 					"myOut": "myVal",
 	// 				},
-	// 				Parameters: map[string]any{
-	// 					"parameter1":map[string]any{
-	// 						"value": "a string",
+	// 				Parameters: map[string]*armdeploymentstacks.DeploymentParameter{
+	// 					"parameter1": &armdeploymentstacks.DeploymentParameter{
+	// 						Value: "a string",
 	// 					},
 	// 				},
-	// 				ProvisioningState: to.Ptr(armdeploymentstacks.DeploymentStackProvisioningStateSucceeded),
+	// 				ProvisioningState: to.Ptr(armdeploymentstacks.DeploymentStackProvisioningState("Succeeded")),
 	// 				Resources: []*armdeploymentstacks.ManagedResourceReference{
 	// 					{
 	// 						ID: to.Ptr("/subscriptions/00000000-2222-2222-2222-000000000000/resourceGroups/templateSpecsRG/providers/Microsoft.Resources/templateSpecs/templateSpec/versions/1.0"),
@@ -551,7 +551,7 @@ func ExampleClient_GetAtResourceGroup() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ca162308f1010bfb85b9c85021e863e7bd397a1f/specification/resources/resource-manager/Microsoft.Resources/preview/2022-08-01-preview/examples/DeploymentStackResourceGroupDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/DeploymentStackResourceGroupDelete.json
 func ExampleClient_BeginDeleteAtResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -563,7 +563,9 @@ func ExampleClient_BeginDeleteAtResourceGroup() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewClient().BeginDeleteAtResourceGroup(ctx, "deploymentStacksRG", "simpleDeploymentStack", &armdeploymentstacks.ClientBeginDeleteAtResourceGroupOptions{UnmanageActionResources: nil,
-		UnmanageActionResourceGroups: nil,
+		UnmanageActionResourceGroups:   nil,
+		UnmanageActionManagementGroups: nil,
+		BypassStackOutOfSyncError:      nil,
 	})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -574,7 +576,7 @@ func ExampleClient_BeginDeleteAtResourceGroup() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ca162308f1010bfb85b9c85021e863e7bd397a1f/specification/resources/resource-manager/Microsoft.Resources/preview/2022-08-01-preview/examples/DeploymentStackSubscriptionCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/DeploymentStackSubscriptionCreate.json
 func ExampleClient_BeginCreateOrUpdateAtSubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -588,7 +590,7 @@ func ExampleClient_BeginCreateOrUpdateAtSubscription() {
 	poller, err := clientFactory.NewClient().BeginCreateOrUpdateAtSubscription(ctx, "simpleDeploymentStack", armdeploymentstacks.DeploymentStack{
 		Location: to.Ptr("eastus"),
 		Properties: &armdeploymentstacks.DeploymentStackProperties{
-			ActionOnUnmanage: &armdeploymentstacks.DeploymentStackPropertiesActionOnUnmanage{
+			ActionOnUnmanage: &armdeploymentstacks.ActionOnUnmanage{
 				ManagementGroups: to.Ptr(armdeploymentstacks.DeploymentStacksDeleteDetachEnumDetach),
 				ResourceGroups:   to.Ptr(armdeploymentstacks.DeploymentStacksDeleteDetachEnumDelete),
 				Resources:        to.Ptr(armdeploymentstacks.DeploymentStacksDeleteDetachEnumDelete),
@@ -601,9 +603,9 @@ func ExampleClient_BeginCreateOrUpdateAtSubscription() {
 					to.Ptr("principal")},
 				Mode: to.Ptr(armdeploymentstacks.DenySettingsModeDenyDelete),
 			},
-			Parameters: map[string]any{
-				"parameter1": map[string]any{
-					"value": "a string",
+			Parameters: map[string]*armdeploymentstacks.DeploymentParameter{
+				"parameter1": {
+					Value: "a string",
 				},
 			},
 		},
@@ -636,7 +638,7 @@ func ExampleClient_BeginCreateOrUpdateAtSubscription() {
 	// 	Location: to.Ptr("eastus"),
 	// 	Properties: &armdeploymentstacks.DeploymentStackProperties{
 	// 		Description: to.Ptr("my Description"),
-	// 		ActionOnUnmanage: &armdeploymentstacks.DeploymentStackPropertiesActionOnUnmanage{
+	// 		ActionOnUnmanage: &armdeploymentstacks.ActionOnUnmanage{
 	// 			ManagementGroups: to.Ptr(armdeploymentstacks.DeploymentStacksDeleteDetachEnumDetach),
 	// 			ResourceGroups: to.Ptr(armdeploymentstacks.DeploymentStacksDeleteDetachEnumDelete),
 	// 			Resources: to.Ptr(armdeploymentstacks.DeploymentStacksDeleteDetachEnumDelete),
@@ -649,12 +651,12 @@ func ExampleClient_BeginCreateOrUpdateAtSubscription() {
 	// 					to.Ptr("principal")},
 	// 					Mode: to.Ptr(armdeploymentstacks.DenySettingsModeDenyDelete),
 	// 				},
-	// 				Parameters: map[string]any{
-	// 					"parameter1":map[string]any{
-	// 						"value": "a string",
+	// 				Parameters: map[string]*armdeploymentstacks.DeploymentParameter{
+	// 					"parameter1": &armdeploymentstacks.DeploymentParameter{
+	// 						Value: "a string",
 	// 					},
 	// 				},
-	// 				ProvisioningState: to.Ptr(armdeploymentstacks.DeploymentStackProvisioningStateSucceeded),
+	// 				ProvisioningState: to.Ptr(armdeploymentstacks.DeploymentStackProvisioningState("Succeeded")),
 	// 			},
 	// 			Tags: map[string]*string{
 	// 				"tagkey": to.Ptr("tagVal"),
@@ -662,7 +664,7 @@ func ExampleClient_BeginCreateOrUpdateAtSubscription() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ca162308f1010bfb85b9c85021e863e7bd397a1f/specification/resources/resource-manager/Microsoft.Resources/preview/2022-08-01-preview/examples/DeploymentStackSubscriptionGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/DeploymentStackSubscriptionGet.json
 func ExampleClient_GetAtSubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -695,7 +697,7 @@ func ExampleClient_GetAtSubscription() {
 	// 	Location: to.Ptr("eastus"),
 	// 	Properties: &armdeploymentstacks.DeploymentStackProperties{
 	// 		Description: to.Ptr("my Description"),
-	// 		ActionOnUnmanage: &armdeploymentstacks.DeploymentStackPropertiesActionOnUnmanage{
+	// 		ActionOnUnmanage: &armdeploymentstacks.ActionOnUnmanage{
 	// 			ManagementGroups: to.Ptr(armdeploymentstacks.DeploymentStacksDeleteDetachEnumDetach),
 	// 			ResourceGroups: to.Ptr(armdeploymentstacks.DeploymentStacksDeleteDetachEnumDelete),
 	// 			Resources: to.Ptr(armdeploymentstacks.DeploymentStacksDeleteDetachEnumDelete),
@@ -714,12 +716,12 @@ func ExampleClient_GetAtSubscription() {
 	// 				Outputs: map[string]any{
 	// 					"myOut": "myVal",
 	// 				},
-	// 				Parameters: map[string]any{
-	// 					"parameter1":map[string]any{
-	// 						"value": "a string",
+	// 				Parameters: map[string]*armdeploymentstacks.DeploymentParameter{
+	// 					"parameter1": &armdeploymentstacks.DeploymentParameter{
+	// 						Value: "a string",
 	// 					},
 	// 				},
-	// 				ProvisioningState: to.Ptr(armdeploymentstacks.DeploymentStackProvisioningStateSucceeded),
+	// 				ProvisioningState: to.Ptr(armdeploymentstacks.DeploymentStackProvisioningState("Succeeded")),
 	// 				Resources: []*armdeploymentstacks.ManagedResourceReference{
 	// 					{
 	// 						ID: to.Ptr("/subscriptions/00000000-2222-2222-2222-000000000000/resourceGroups/templateSpecsRG/providers/Microsoft.Resources/templateSpecs/templateSpec/versions/1.0"),
@@ -738,7 +740,7 @@ func ExampleClient_GetAtSubscription() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ca162308f1010bfb85b9c85021e863e7bd397a1f/specification/resources/resource-manager/Microsoft.Resources/preview/2022-08-01-preview/examples/DeploymentStackSubscriptionDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/DeploymentStackSubscriptionDelete.json
 func ExampleClient_BeginDeleteAtSubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -750,7 +752,9 @@ func ExampleClient_BeginDeleteAtSubscription() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewClient().BeginDeleteAtSubscription(ctx, "simpleDeploymentStack", &armdeploymentstacks.ClientBeginDeleteAtSubscriptionOptions{UnmanageActionResources: nil,
-		UnmanageActionResourceGroups: nil,
+		UnmanageActionResourceGroups:   nil,
+		UnmanageActionManagementGroups: nil,
+		BypassStackOutOfSyncError:      nil,
 	})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -761,7 +765,7 @@ func ExampleClient_BeginDeleteAtSubscription() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ca162308f1010bfb85b9c85021e863e7bd397a1f/specification/resources/resource-manager/Microsoft.Resources/preview/2022-08-01-preview/examples/DeploymentStackManagementGroupCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/DeploymentStackManagementGroupCreate.json
 func ExampleClient_BeginCreateOrUpdateAtManagementGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -775,7 +779,7 @@ func ExampleClient_BeginCreateOrUpdateAtManagementGroup() {
 	poller, err := clientFactory.NewClient().BeginCreateOrUpdateAtManagementGroup(ctx, "myMg", "simpleDeploymentStack", armdeploymentstacks.DeploymentStack{
 		Location: to.Ptr("eastus"),
 		Properties: &armdeploymentstacks.DeploymentStackProperties{
-			ActionOnUnmanage: &armdeploymentstacks.DeploymentStackPropertiesActionOnUnmanage{
+			ActionOnUnmanage: &armdeploymentstacks.ActionOnUnmanage{
 				ManagementGroups: to.Ptr(armdeploymentstacks.DeploymentStacksDeleteDetachEnumDetach),
 				ResourceGroups:   to.Ptr(armdeploymentstacks.DeploymentStacksDeleteDetachEnumDelete),
 				Resources:        to.Ptr(armdeploymentstacks.DeploymentStacksDeleteDetachEnumDelete),
@@ -788,9 +792,9 @@ func ExampleClient_BeginCreateOrUpdateAtManagementGroup() {
 					to.Ptr("principal")},
 				Mode: to.Ptr(armdeploymentstacks.DenySettingsModeDenyDelete),
 			},
-			Parameters: map[string]any{
-				"parameter1": map[string]any{
-					"value": "a string",
+			Parameters: map[string]*armdeploymentstacks.DeploymentParameter{
+				"parameter1": {
+					Value: "a string",
 				},
 			},
 		},
@@ -823,7 +827,7 @@ func ExampleClient_BeginCreateOrUpdateAtManagementGroup() {
 	// 	Location: to.Ptr("eastus"),
 	// 	Properties: &armdeploymentstacks.DeploymentStackProperties{
 	// 		Description: to.Ptr("my Description"),
-	// 		ActionOnUnmanage: &armdeploymentstacks.DeploymentStackPropertiesActionOnUnmanage{
+	// 		ActionOnUnmanage: &armdeploymentstacks.ActionOnUnmanage{
 	// 			ManagementGroups: to.Ptr(armdeploymentstacks.DeploymentStacksDeleteDetachEnumDetach),
 	// 			ResourceGroups: to.Ptr(armdeploymentstacks.DeploymentStacksDeleteDetachEnumDelete),
 	// 			Resources: to.Ptr(armdeploymentstacks.DeploymentStacksDeleteDetachEnumDelete),
@@ -836,12 +840,12 @@ func ExampleClient_BeginCreateOrUpdateAtManagementGroup() {
 	// 					to.Ptr("principal")},
 	// 					Mode: to.Ptr(armdeploymentstacks.DenySettingsModeDenyDelete),
 	// 				},
-	// 				Parameters: map[string]any{
-	// 					"parameter1":map[string]any{
-	// 						"value": "a string",
+	// 				Parameters: map[string]*armdeploymentstacks.DeploymentParameter{
+	// 					"parameter1": &armdeploymentstacks.DeploymentParameter{
+	// 						Value: "a string",
 	// 					},
 	// 				},
-	// 				ProvisioningState: to.Ptr(armdeploymentstacks.DeploymentStackProvisioningStateSucceeded),
+	// 				ProvisioningState: to.Ptr(armdeploymentstacks.DeploymentStackProvisioningState("Succeeded")),
 	// 			},
 	// 			Tags: map[string]*string{
 	// 				"tagkey": to.Ptr("tagVal"),
@@ -849,7 +853,7 @@ func ExampleClient_BeginCreateOrUpdateAtManagementGroup() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ca162308f1010bfb85b9c85021e863e7bd397a1f/specification/resources/resource-manager/Microsoft.Resources/preview/2022-08-01-preview/examples/DeploymentStackManagementGroupGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/DeploymentStackManagementGroupGet.json
 func ExampleClient_GetAtManagementGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -882,7 +886,7 @@ func ExampleClient_GetAtManagementGroup() {
 	// 	Location: to.Ptr("eastus"),
 	// 	Properties: &armdeploymentstacks.DeploymentStackProperties{
 	// 		Description: to.Ptr("my Description"),
-	// 		ActionOnUnmanage: &armdeploymentstacks.DeploymentStackPropertiesActionOnUnmanage{
+	// 		ActionOnUnmanage: &armdeploymentstacks.ActionOnUnmanage{
 	// 			ManagementGroups: to.Ptr(armdeploymentstacks.DeploymentStacksDeleteDetachEnumDetach),
 	// 			ResourceGroups: to.Ptr(armdeploymentstacks.DeploymentStacksDeleteDetachEnumDelete),
 	// 			Resources: to.Ptr(armdeploymentstacks.DeploymentStacksDeleteDetachEnumDelete),
@@ -901,12 +905,12 @@ func ExampleClient_GetAtManagementGroup() {
 	// 				Outputs: map[string]any{
 	// 					"myOut": "myVal",
 	// 				},
-	// 				Parameters: map[string]any{
-	// 					"parameter1":map[string]any{
-	// 						"value": "a string",
+	// 				Parameters: map[string]*armdeploymentstacks.DeploymentParameter{
+	// 					"parameter1": &armdeploymentstacks.DeploymentParameter{
+	// 						Value: "a string",
 	// 					},
 	// 				},
-	// 				ProvisioningState: to.Ptr(armdeploymentstacks.DeploymentStackProvisioningStateSucceeded),
+	// 				ProvisioningState: to.Ptr(armdeploymentstacks.DeploymentStackProvisioningState("Succeeded")),
 	// 				Resources: []*armdeploymentstacks.ManagedResourceReference{
 	// 					{
 	// 						ID: to.Ptr("/providers/Microsoft.Management/managementGroups/myMg/providers/Microsoft.Resources/templateSpecs/templateSpec/versions/1.0"),
@@ -925,7 +929,7 @@ func ExampleClient_GetAtManagementGroup() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ca162308f1010bfb85b9c85021e863e7bd397a1f/specification/resources/resource-manager/Microsoft.Resources/preview/2022-08-01-preview/examples/DeploymentStackManagementGroupDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/DeploymentStackManagementGroupDelete.json
 func ExampleClient_BeginDeleteAtManagementGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -939,6 +943,7 @@ func ExampleClient_BeginDeleteAtManagementGroup() {
 	poller, err := clientFactory.NewClient().BeginDeleteAtManagementGroup(ctx, "myMg", "simpleDeploymentStack", &armdeploymentstacks.ClientBeginDeleteAtManagementGroupOptions{UnmanageActionResources: nil,
 		UnmanageActionResourceGroups:   nil,
 		UnmanageActionManagementGroups: nil,
+		BypassStackOutOfSyncError:      nil,
 	})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -949,7 +954,7 @@ func ExampleClient_BeginDeleteAtManagementGroup() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ca162308f1010bfb85b9c85021e863e7bd397a1f/specification/resources/resource-manager/Microsoft.Resources/preview/2022-08-01-preview/examples/DeploymentStackExportTemplate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/DeploymentStackExportTemplate.json
 func ExampleClient_ExportTemplateAtResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -995,7 +1000,7 @@ func ExampleClient_ExportTemplateAtResourceGroup() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ca162308f1010bfb85b9c85021e863e7bd397a1f/specification/resources/resource-manager/Microsoft.Resources/preview/2022-08-01-preview/examples/DeploymentStackSubscriptionExportTemplate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/DeploymentStackSubscriptionExportTemplate.json
 func ExampleClient_ExportTemplateAtSubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1041,7 +1046,7 @@ func ExampleClient_ExportTemplateAtSubscription() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ca162308f1010bfb85b9c85021e863e7bd397a1f/specification/resources/resource-manager/Microsoft.Resources/preview/2022-08-01-preview/examples/DeploymentStackManagementGroupExportTemplate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/DeploymentStackManagementGroupExportTemplate.json
 func ExampleClient_ExportTemplateAtManagementGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1085,4 +1090,246 @@ func ExampleClient_ExportTemplateAtManagementGroup() {
 	// 		ID: to.Ptr("/providers/Microsoft.Management/managementGroups/myMg/providers/Microsoft.Resources/templateSpecs/templateSpec/versions/1.0"),
 	// 	},
 	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/DeploymentStackResourceGroupValidate.json
+func ExampleClient_BeginValidateStackAtResourceGroup() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdeploymentstacks.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewClient().BeginValidateStackAtResourceGroup(ctx, "deploymentStacksRG", "simpleDeploymentStack", armdeploymentstacks.DeploymentStack{
+		Properties: &armdeploymentstacks.DeploymentStackProperties{
+			ActionOnUnmanage: &armdeploymentstacks.ActionOnUnmanage{
+				ManagementGroups: to.Ptr(armdeploymentstacks.DeploymentStacksDeleteDetachEnumDelete),
+				ResourceGroups:   to.Ptr(armdeploymentstacks.DeploymentStacksDeleteDetachEnumDelete),
+				Resources:        to.Ptr(armdeploymentstacks.DeploymentStacksDeleteDetachEnumDelete),
+			},
+			DenySettings: &armdeploymentstacks.DenySettings{
+				ApplyToChildScopes: to.Ptr(false),
+				ExcludedActions: []*string{
+					to.Ptr("action")},
+				ExcludedPrincipals: []*string{
+					to.Ptr("principal")},
+				Mode: to.Ptr(armdeploymentstacks.DenySettingsModeDenyDelete),
+			},
+			Parameters: map[string]*armdeploymentstacks.DeploymentParameter{
+				"parameter1": {
+					Value: "a string",
+				},
+			},
+			TemplateLink: &armdeploymentstacks.TemplateLink{
+				URI: to.Ptr("https://example.com/exampleTemplate.json"),
+			},
+		},
+		Tags: map[string]*string{
+			"tagkey": to.Ptr("tagVal"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.DeploymentStackValidateResult = armdeploymentstacks.DeploymentStackValidateResult{
+	// 	Name: to.Ptr("simpleDeploymentStack"),
+	// 	Type: to.Ptr("Microsoft.Resources/deploymentStacks"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/deploymentStacksRG/providers/Microsoft.Resources/deploymentStacks/simpleDeploymentStack"),
+	// 	Properties: &armdeploymentstacks.DeploymentStackValidateProperties{
+	// 		Description: to.Ptr("A validation description."),
+	// 		CorrelationID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 		DenySettings: &armdeploymentstacks.DenySettings{
+	// 			ApplyToChildScopes: to.Ptr(false),
+	// 			ExcludedActions: []*string{
+	// 				to.Ptr("action")},
+	// 				ExcludedPrincipals: []*string{
+	// 					to.Ptr("principal")},
+	// 					Mode: to.Ptr(armdeploymentstacks.DenySettingsModeDenyDelete),
+	// 				},
+	// 				DeploymentScope: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/deploymentStacksRG"),
+	// 				Parameters: map[string]*armdeploymentstacks.DeploymentParameter{
+	// 					"parameter1": &armdeploymentstacks.DeploymentParameter{
+	// 						Type: to.Ptr("string"),
+	// 						Value: "a string",
+	// 					},
+	// 				},
+	// 				ValidatedResources: []*armdeploymentstacks.ResourceReference{
+	// 					{
+	// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/deploymentStacksRG/providers/Microsoft.Sql/servers/server1"),
+	// 					},
+	// 					{
+	// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/deploymentStacksRG/providers/Microsoft.Sql/servers/server2"),
+	// 				}},
+	// 			},
+	// 		}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/DeploymentStackSubscriptionValidate.json
+func ExampleClient_BeginValidateStackAtSubscription() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdeploymentstacks.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewClient().BeginValidateStackAtSubscription(ctx, "simpleDeploymentStack", armdeploymentstacks.DeploymentStack{
+		Location: to.Ptr("eastus"),
+		Properties: &armdeploymentstacks.DeploymentStackProperties{
+			ActionOnUnmanage: &armdeploymentstacks.ActionOnUnmanage{
+				ManagementGroups: to.Ptr(armdeploymentstacks.DeploymentStacksDeleteDetachEnumDelete),
+				ResourceGroups:   to.Ptr(armdeploymentstacks.DeploymentStacksDeleteDetachEnumDelete),
+				Resources:        to.Ptr(armdeploymentstacks.DeploymentStacksDeleteDetachEnumDelete),
+			},
+			DenySettings: &armdeploymentstacks.DenySettings{
+				ApplyToChildScopes: to.Ptr(false),
+				ExcludedActions: []*string{
+					to.Ptr("action")},
+				ExcludedPrincipals: []*string{
+					to.Ptr("principal")},
+				Mode: to.Ptr(armdeploymentstacks.DenySettingsModeDenyDelete),
+			},
+			Parameters: map[string]*armdeploymentstacks.DeploymentParameter{
+				"parameter1": {
+					Value: "a string",
+				},
+			},
+			TemplateLink: &armdeploymentstacks.TemplateLink{
+				URI: to.Ptr("https://example.com/exampleTemplate.json"),
+			},
+		},
+		Tags: map[string]*string{
+			"tagkey": to.Ptr("tagVal"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.DeploymentStackValidateResult = armdeploymentstacks.DeploymentStackValidateResult{
+	// 	Name: to.Ptr("simpleDeploymentStack"),
+	// 	Type: to.Ptr("Microsoft.Resources/deploymentStacks"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deploymentStacks/simpleDeploymentStack"),
+	// 	Properties: &armdeploymentstacks.DeploymentStackValidateProperties{
+	// 		Description: to.Ptr("A validation description."),
+	// 		CorrelationID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 		DenySettings: &armdeploymentstacks.DenySettings{
+	// 			ApplyToChildScopes: to.Ptr(false),
+	// 			ExcludedActions: []*string{
+	// 				to.Ptr("action")},
+	// 				ExcludedPrincipals: []*string{
+	// 					to.Ptr("principal")},
+	// 					Mode: to.Ptr(armdeploymentstacks.DenySettingsModeDenyDelete),
+	// 				},
+	// 				DeploymentScope: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000"),
+	// 				Parameters: map[string]*armdeploymentstacks.DeploymentParameter{
+	// 					"parameter1": &armdeploymentstacks.DeploymentParameter{
+	// 						Type: to.Ptr("string"),
+	// 						Value: "a string",
+	// 					},
+	// 				},
+	// 				ValidatedResources: []*armdeploymentstacks.ResourceReference{
+	// 					{
+	// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/roleAssignment/roleassignment1"),
+	// 				}},
+	// 			},
+	// 		}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/DeploymentStackManagementGroupValidate.json
+func ExampleClient_BeginValidateStackAtManagementGroup() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdeploymentstacks.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewClient().BeginValidateStackAtManagementGroup(ctx, "myMg", "simpleDeploymentStack", armdeploymentstacks.DeploymentStack{
+		Location: to.Ptr("eastus"),
+		Properties: &armdeploymentstacks.DeploymentStackProperties{
+			ActionOnUnmanage: &armdeploymentstacks.ActionOnUnmanage{
+				ManagementGroups: to.Ptr(armdeploymentstacks.DeploymentStacksDeleteDetachEnumDetach),
+				ResourceGroups:   to.Ptr(armdeploymentstacks.DeploymentStacksDeleteDetachEnumDetach),
+				Resources:        to.Ptr(armdeploymentstacks.DeploymentStacksDeleteDetachEnumDetach),
+			},
+			DenySettings: &armdeploymentstacks.DenySettings{
+				ApplyToChildScopes: to.Ptr(false),
+				ExcludedActions: []*string{
+					to.Ptr("action")},
+				ExcludedPrincipals: []*string{
+					to.Ptr("principal")},
+				Mode: to.Ptr(armdeploymentstacks.DenySettingsModeDenyDelete),
+			},
+			Parameters: map[string]*armdeploymentstacks.DeploymentParameter{
+				"parameter1": {
+					Value: "a string",
+				},
+			},
+			TemplateLink: &armdeploymentstacks.TemplateLink{
+				URI: to.Ptr("https://example.com/exampleTemplate.json"),
+			},
+		},
+		Tags: map[string]*string{
+			"tagkey": to.Ptr("tagVal"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.DeploymentStackValidateResult = armdeploymentstacks.DeploymentStackValidateResult{
+	// 	Name: to.Ptr("simpleDeploymentStack"),
+	// 	Type: to.Ptr("Microsoft.Resources/deploymentStacks"),
+	// 	ID: to.Ptr("/providers/Microsoft.Management/managementGroups/myMg/providers/Microsoft.Resources/deploymentStacks/simpleDeploymentStack"),
+	// 	Properties: &armdeploymentstacks.DeploymentStackValidateProperties{
+	// 		Description: to.Ptr("A validation description."),
+	// 		CorrelationID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 		DenySettings: &armdeploymentstacks.DenySettings{
+	// 			ApplyToChildScopes: to.Ptr(false),
+	// 			ExcludedActions: []*string{
+	// 				to.Ptr("action")},
+	// 				ExcludedPrincipals: []*string{
+	// 					to.Ptr("principal")},
+	// 					Mode: to.Ptr(armdeploymentstacks.DenySettingsModeDenyDelete),
+	// 				},
+	// 				DeploymentScope: to.Ptr("/providers/Microsoft.Management/managementGroups/myMg"),
+	// 				Parameters: map[string]*armdeploymentstacks.DeploymentParameter{
+	// 					"parameter1": &armdeploymentstacks.DeploymentParameter{
+	// 						Type: to.Ptr("string"),
+	// 						Value: "a string",
+	// 					},
+	// 				},
+	// 				ValidatedResources: []*armdeploymentstacks.ResourceReference{
+	// 					{
+	// 						ID: to.Ptr("/providers/Microsoft.Management/managementGroups/myMg/providers/Microsoft.Authorization/policyDefinitions/Policy1"),
+	// 				}},
+	// 			},
+	// 		}
 }

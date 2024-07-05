@@ -19,11 +19,13 @@ import (
 
 // ServerFactory is a fake server for instances of the armappcomplianceautomation.ClientFactory type.
 type ServerFactory struct {
-	OperationsServer OperationsServer
-	ReportServer     ReportServer
-	ReportsServer    ReportsServer
-	SnapshotServer   SnapshotServer
-	SnapshotsServer  SnapshotsServer
+	EvidenceServer             EvidenceServer
+	OperationsServer           OperationsServer
+	ProviderActionsServer      ProviderActionsServer
+	ReportServer               ReportServer
+	ScopingConfigurationServer ScopingConfigurationServer
+	SnapshotServer             SnapshotServer
+	WebhookServer              WebhookServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -38,13 +40,15 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armappcomplianceautomation.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                *ServerFactory
-	trMu               sync.Mutex
-	trOperationsServer *OperationsServerTransport
-	trReportServer     *ReportServerTransport
-	trReportsServer    *ReportsServerTransport
-	trSnapshotServer   *SnapshotServerTransport
-	trSnapshotsServer  *SnapshotsServerTransport
+	srv                          *ServerFactory
+	trMu                         sync.Mutex
+	trEvidenceServer             *EvidenceServerTransport
+	trOperationsServer           *OperationsServerTransport
+	trProviderActionsServer      *ProviderActionsServerTransport
+	trReportServer               *ReportServerTransport
+	trScopingConfigurationServer *ScopingConfigurationServerTransport
+	trSnapshotServer             *SnapshotServerTransport
+	trWebhookServer              *WebhookServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -60,21 +64,31 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	var err error
 
 	switch client {
+	case "EvidenceClient":
+		initServer(s, &s.trEvidenceServer, func() *EvidenceServerTransport { return NewEvidenceServerTransport(&s.srv.EvidenceServer) })
+		resp, err = s.trEvidenceServer.Do(req)
 	case "OperationsClient":
 		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
+	case "ProviderActionsClient":
+		initServer(s, &s.trProviderActionsServer, func() *ProviderActionsServerTransport {
+			return NewProviderActionsServerTransport(&s.srv.ProviderActionsServer)
+		})
+		resp, err = s.trProviderActionsServer.Do(req)
 	case "ReportClient":
 		initServer(s, &s.trReportServer, func() *ReportServerTransport { return NewReportServerTransport(&s.srv.ReportServer) })
 		resp, err = s.trReportServer.Do(req)
-	case "ReportsClient":
-		initServer(s, &s.trReportsServer, func() *ReportsServerTransport { return NewReportsServerTransport(&s.srv.ReportsServer) })
-		resp, err = s.trReportsServer.Do(req)
+	case "ScopingConfigurationClient":
+		initServer(s, &s.trScopingConfigurationServer, func() *ScopingConfigurationServerTransport {
+			return NewScopingConfigurationServerTransport(&s.srv.ScopingConfigurationServer)
+		})
+		resp, err = s.trScopingConfigurationServer.Do(req)
 	case "SnapshotClient":
 		initServer(s, &s.trSnapshotServer, func() *SnapshotServerTransport { return NewSnapshotServerTransport(&s.srv.SnapshotServer) })
 		resp, err = s.trSnapshotServer.Do(req)
-	case "SnapshotsClient":
-		initServer(s, &s.trSnapshotsServer, func() *SnapshotsServerTransport { return NewSnapshotsServerTransport(&s.srv.SnapshotsServer) })
-		resp, err = s.trSnapshotsServer.Do(req)
+	case "WebhookClient":
+		initServer(s, &s.trWebhookServer, func() *WebhookServerTransport { return NewWebhookServerTransport(&s.srv.WebhookServer) })
+		resp, err = s.trWebhookServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
 	}

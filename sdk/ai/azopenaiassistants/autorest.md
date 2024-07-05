@@ -40,3 +40,194 @@ directive:
       delete $["allOf"];
       return $;
 ```
+
+Renaming the `Options` models to be `Body` so they don't clash with our methods names.
+
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions
+    transform: |
+      $.VectorStoreUpdateOptions["x-ms-client-name"] = "VectorStoreUpdateBody";
+      $.VectorStoreOptions["x-ms-client-name"] = "VectorStoreBody";
+      $.UpdateAssistantThreadOptions["x-ms-client-name"] = "UpdateThreadBody";
+      $.UpdateAssistantOptions["x-ms-client-name"] = "UpdateAssistantBody";
+      $.ThreadMessageOptions["x-ms-client-name"] = "CreateMessageBody";
+      $.CreateRunOptions["x-ms-client-name"] = "CreateRunBody";
+      $.CreateAndRunThreadOptions["x-ms-client-name"] = "CreateAndRunThreadBody";
+      $.AssistantThreadCreationOptions["x-ms-client-name"] = "CreateThreadBody";
+      $.AssistantCreationOptions["x-ms-client-name"] = "CreateAssistantBody";
+
+      // These have 'Options' in the name, but they're not the main arguments for a function
+      // and don't conflict with the normal functions options bag. So we don't need to rename these.
+      // $.CreateFileSearchToolResourceVectorStoreOptions["x-ms-client-name"] = "CreateFileSearchToolResourceVectorStoreBody";
+      // $.CreateToolResourcesOptions["x-ms-client-name"] = "CreateToolResourcesBody";
+      // $.UpdateFileSearchToolResourceOptions["x-ms-client-name"] = "UpdateFileSearchToolResourceBody";
+      // $.UpdateCodeInterpreterToolResourceOptions["x-ms-client-name"] = "UpdateCodeInterpreterToolResourceBody";      
+      // $.UpdateToolResourcesOptions["x-ms-client-name"] = "UpdateToolResourcesBody";
+      // $.CreateCodeInterpreterToolResourceOptions["x-ms-client-name"] = "CreateCodeInterpreterToolResourceBody";
+      return $;
+```
+
+## Unions
+
+MessageAttachmentToolDefinition
+
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions
+    transform: |
+      // this is the minimum needed to get autorest to generate a reference
+      // for this type that I can then fill in manually.
+      $.MessageAttachmentToolDefinition = {
+        "x-ms-external": true,
+        "type": "object",
+        "properties": { "ignored": { "type": "string" } }
+      };
+```
+
+APIToolChoice
+
+```yaml   
+directive:
+  - from: swagger-document
+    where: $.definitions
+    transform: |
+      // we manually generate this type
+      $.AssistantsApiToolChoiceOption = {
+        "x-ms-external": true,
+        "type": "object",
+        "properties": { "ignored": { "type": "string" } },
+        "x-ms-client-name": "AssistantsAPIToolChoiceOption"
+      };
+
+      // combine the two AssistantsApiToolChoiceOptionMode and AssistantsNamedToolChoiceType
+      // into a single enum (similar to what they're doing in TypeSpec).
+      $.AssistantsApiToolChoiceOptionMode["enum"] = [
+        ...$.AssistantsApiToolChoiceOptionMode["enum"],
+        ...$.AssistantsNamedToolChoiceType["enum"]
+      ];
+      $.AssistantsApiToolChoiceOptionMode["x-ms-enum"].values = [
+        ...$.AssistantsApiToolChoiceOptionMode["x-ms-enum"].values,
+        ...$.AssistantsNamedToolChoiceType["x-ms-enum"].values
+      ];
+      // fix the API casing of the mode
+      $.AssistantsApiToolChoiceOptionMode["x-ms-client-name"] = "AssistantsAPIToolChoiceOptionMode";
+      delete $.AssistantsNamedToolChoiceType;
+      delete $.AssistantsNamedToolChoice;
+```
+
+ResponseFormat
+
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions
+    transform: |
+      // combine the two AssistantsApiResponseFormatMode and ApiResponseFormat
+      // into a single enum (similar to what they're doing in TypeSpec).
+      $.AssistantsApiResponseFormatOption = {
+        "x-ms-external": true,
+        "type": "object",
+        "properties": { "ignored": { "type": "string" } },
+        "x-ms-client-name": "AssistantResponseFormat"
+      };
+
+      const dest = $.AssistantsApiResponseFormatMode;
+
+      dest["enum"] = [
+        ...dest["enum"],
+        ...$.ApiResponseFormat["enum"]
+      ];
+      dest["x-ms-enum"].values = [
+        ...dest["x-ms-enum"].values,
+        ...$.ApiResponseFormat["x-ms-enum"].values
+      ];
+      dest["x-ms-enum"].name = "AssistantResponseFormatType";
+
+      // The 'none' option should be deleted - it seems to only be specified so you can get a 404? Let's just remove it.
+      dest.enum = dest.enum.filter(name => name !== "none");
+      dest["x-ms-enum"].values = dest["x-ms-enum"].values.filter(value => value.name !== "none");
+
+      delete $.ApiResponseFormat;
+      return $;
+```
+
+CreateFileSearchToolResourceOptions
+
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions
+    transform: |
+      // combine the two AssistantsApiResponseFormatMode and ApiResponseFormat
+      // into a single enum (similar to what they're doing in TypeSpec).
+      $.CreateFileSearchToolResourceOptions = {
+        "x-ms-external": true,
+        "type": "object",
+        "properties": { "ignored": { "type": "string" } },
+      };
+      return $;
+```
+
+## Model -> DeploymentName
+
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions
+    transform: |
+      $.UpdateAssistantOptions.properties["model"]["x-ms-client-name"] = "DeploymentName";
+      $.AssistantCreationOptions.properties["model"]["x-ms-client-name"] = "DeploymentName";
+      $.CreateAndRunThreadOptions.properties["model"]["x-ms-client-name"] = "DeploymentName";
+      return $;
+```
+
+## Fix anonymous named objects
+
+Give names to anonymous objects defined within the operation definitions (paging operations). These are easily identified because the comment is always 'The response data for a requested list of items'
+
+```yaml
+directive:
+  - from: swagger-document
+    where: $.paths
+    transform: |
+      // 
+      // assistants
+      //
+      $["/assistants"].get.responses["200"].schema["x-ms-client-name"] = "AssistantsPage";
+
+      // 
+      // threads
+      // 
+
+      const threadsBase = '/threads/{threadId}';
+      
+      // GETs
+      $[threadsBase + "/messages"].get.responses["200"].schema["x-ms-client-name"] = "ThreadMessagesPage";
+      $[threadsBase + "/runs"].get.responses["200"].schema["x-ms-client-name"] = "ThreadRunsPage";
+      $[threadsBase + "/runs/{runId}/steps"].get.responses["200"].schema["x-ms-client-name"] = "ThreadRunStepsPage";
+
+      // POSTs
+      $[threadsBase + "/messages/{messageId}"].post.parameters[2].schema["x-ms-client-name"] = "UpdateMessageBody";
+      $[threadsBase + "/runs/{runId}"].post.parameters[2].schema["x-ms-client-name"] = "UpdateRunBody";
+      $[threadsBase + "/runs"].post.parameters[1]["x-ms-client-name"] = "CreateRunBody";
+      $[threadsBase + "/runs/{runId}/submit_tool_outputs"].post.parameters[2].schema["x-ms-client-name"] = "SubmitToolOutputsToRunBody";
+
+      // 
+      // vector stores
+      // 
+      const vectorStoresBase = '/vector_stores';
+
+      // GETs
+      $[vectorStoresBase].get.responses["200"].schema["x-ms-client-name"] = "VectorStoresPage";
+      $[vectorStoresBase + "/{vectorStoreId}/file_batches/{batchId}/files"].get.responses["200"].schema["x-ms-client-name"] = "VectorStoreFileBatchesPage";
+      $[vectorStoresBase + "/{vectorStoreId}/files"].get.responses["200"].schema["x-ms-client-name"] = "VectorStoreFilesPage";
+
+      // POSTs
+      $[vectorStoresBase + "/{vectorStoreId}/file_batches"].post.parameters[1].schema["x-ms-client-name"] = "CreateVectorStoreFileBatchBody";
+
+      return $;
+```
+

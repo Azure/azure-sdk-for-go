@@ -33,7 +33,7 @@ type Client struct {
 // CancelRun - Cancels a run of an in progress thread.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-15-preview
+// Generated from API version 2024-05-01-preview
 //   - threadID - The ID of the thread being run.
 //   - runID - The ID of the run to cancel.
 //   - options - CancelRunOptions contains the optional parameters for the Client.CancelRun method.
@@ -83,12 +83,67 @@ func (client *Client) cancelRunHandleResponse(resp *http.Response) (CancelRunRes
 	return result, nil
 }
 
+// CancelVectorStoreFileBatch - Cancel a vector store file batch. This attempts to cancel the processing of files in this
+// batch as soon as possible.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-05-01-preview
+//   - vectorStoreID - The ID of the vector store that the file batch belongs to.
+//   - batchID - The ID of the file batch to cancel.
+//   - options - CancelVectorStoreFileBatchOptions contains the optional parameters for the Client.CancelVectorStoreFileBatch
+//     method.
+func (client *Client) CancelVectorStoreFileBatch(ctx context.Context, vectorStoreID string, batchID string, options *CancelVectorStoreFileBatchOptions) (CancelVectorStoreFileBatchResponse, error) {
+	var err error
+	req, err := client.cancelVectorStoreFileBatchCreateRequest(ctx, vectorStoreID, batchID, options)
+	if err != nil {
+		return CancelVectorStoreFileBatchResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return CancelVectorStoreFileBatchResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return CancelVectorStoreFileBatchResponse{}, err
+	}
+	resp, err := client.cancelVectorStoreFileBatchHandleResponse(httpResp)
+	return resp, err
+}
+
+// cancelVectorStoreFileBatchCreateRequest creates the CancelVectorStoreFileBatch request.
+func (client *Client) cancelVectorStoreFileBatchCreateRequest(ctx context.Context, vectorStoreID string, batchID string, options *CancelVectorStoreFileBatchOptions) (*policy.Request, error) {
+	urlPath := client.formatURL("/vector_stores/{vectorStoreId}/file_batches/{batchId}/cancel")
+	if vectorStoreID == "" {
+		return nil, errors.New("parameter vectorStoreID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{vectorStoreId}", url.PathEscape(vectorStoreID))
+	if batchID == "" {
+		return nil, errors.New("parameter batchID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{batchId}", url.PathEscape(batchID))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.endpoint, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// cancelVectorStoreFileBatchHandleResponse handles the CancelVectorStoreFileBatch response.
+func (client *Client) cancelVectorStoreFileBatchHandleResponse(resp *http.Response) (CancelVectorStoreFileBatchResponse, error) {
+	result := CancelVectorStoreFileBatchResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.VectorStoreFileBatch); err != nil {
+		return CancelVectorStoreFileBatchResponse{}, err
+	}
+	return result, nil
+}
+
 // CreateAssistant - Creates a new assistant.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-15-preview
+// Generated from API version 2024-05-01-preview
 //   - options - CreateAssistantOptions contains the optional parameters for the Client.CreateAssistant method.
-func (client *Client) CreateAssistant(ctx context.Context, body AssistantCreationBody, options *CreateAssistantOptions) (CreateAssistantResponse, error) {
+func (client *Client) CreateAssistant(ctx context.Context, body CreateAssistantBody, options *CreateAssistantOptions) (CreateAssistantResponse, error) {
 	var err error
 	req, err := client.createAssistantCreateRequest(ctx, body, options)
 	if err != nil {
@@ -107,7 +162,7 @@ func (client *Client) CreateAssistant(ctx context.Context, body AssistantCreatio
 }
 
 // createAssistantCreateRequest creates the CreateAssistant request.
-func (client *Client) createAssistantCreateRequest(ctx context.Context, body AssistantCreationBody, options *CreateAssistantOptions) (*policy.Request, error) {
+func (client *Client) createAssistantCreateRequest(ctx context.Context, body CreateAssistantBody, options *CreateAssistantOptions) (*policy.Request, error) {
 	urlPath := client.formatURL("/assistants")
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
@@ -129,66 +184,17 @@ func (client *Client) createAssistantHandleResponse(resp *http.Response) (Create
 	return result, nil
 }
 
-// CreateAssistantFile - Attaches a previously uploaded file to an assistant for use by tools that can read files.
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-02-15-preview
-//   - assistantID - The ID of the assistant to attach the file to.
-//   - options - CreateAssistantFileOptions contains the optional parameters for the Client.CreateAssistantFile method.
-func (client *Client) CreateAssistantFile(ctx context.Context, assistantID string, body CreateAssistantFileBody, options *CreateAssistantFileOptions) (CreateAssistantFileResponse, error) {
-	var err error
-	req, err := client.createAssistantFileCreateRequest(ctx, assistantID, body, options)
-	if err != nil {
-		return CreateAssistantFileResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return CreateAssistantFileResponse{}, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return CreateAssistantFileResponse{}, err
-	}
-	resp, err := client.createAssistantFileHandleResponse(httpResp)
-	return resp, err
-}
-
-// createAssistantFileCreateRequest creates the CreateAssistantFile request.
-func (client *Client) createAssistantFileCreateRequest(ctx context.Context, assistantID string, body CreateAssistantFileBody, options *CreateAssistantFileOptions) (*policy.Request, error) {
-	urlPath := client.formatURL("/assistants/{assistantId}/files")
-	if assistantID == "" {
-		return nil, errors.New("parameter assistantID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{assistantId}", url.PathEscape(assistantID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.endpoint, urlPath))
-	if err != nil {
-		return nil, err
-	}
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// createAssistantFileHandleResponse handles the CreateAssistantFile response.
-func (client *Client) createAssistantFileHandleResponse(resp *http.Response) (CreateAssistantFileResponse, error) {
-	result := CreateAssistantFileResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.AssistantFile); err != nil {
-		return CreateAssistantFileResponse{}, err
-	}
-	return result, nil
-}
-
 // CreateMessage - Creates a new message on a specified thread.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-15-preview
+// Generated from API version 2024-05-01-preview
 //   - threadID - The ID of the thread to create the new message on.
+//   - threadMessageOptions - A single message within an assistant thread, as provided during that thread's creation for its initial
+//     state.
 //   - options - CreateMessageOptions contains the optional parameters for the Client.CreateMessage method.
-func (client *Client) CreateMessage(ctx context.Context, threadID string, body CreateMessageBody, options *CreateMessageOptions) (CreateMessageResponse, error) {
+func (client *Client) CreateMessage(ctx context.Context, threadID string, threadMessageOptions CreateMessageBody, options *CreateMessageOptions) (CreateMessageResponse, error) {
 	var err error
-	req, err := client.createMessageCreateRequest(ctx, threadID, body, options)
+	req, err := client.createMessageCreateRequest(ctx, threadID, threadMessageOptions, options)
 	if err != nil {
 		return CreateMessageResponse{}, err
 	}
@@ -205,7 +211,7 @@ func (client *Client) CreateMessage(ctx context.Context, threadID string, body C
 }
 
 // createMessageCreateRequest creates the CreateMessage request.
-func (client *Client) createMessageCreateRequest(ctx context.Context, threadID string, body CreateMessageBody, options *CreateMessageOptions) (*policy.Request, error) {
+func (client *Client) createMessageCreateRequest(ctx context.Context, threadID string, threadMessageOptions CreateMessageBody, options *CreateMessageOptions) (*policy.Request, error) {
 	urlPath := client.formatURL("/threads/{threadId}/messages")
 	if threadID == "" {
 		return nil, errors.New("parameter threadID cannot be empty")
@@ -216,7 +222,7 @@ func (client *Client) createMessageCreateRequest(ctx context.Context, threadID s
 		return nil, err
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
+	if err := runtime.MarshalAsJSON(req, threadMessageOptions); err != nil {
 		return nil, err
 	}
 	return req, nil
@@ -234,13 +240,13 @@ func (client *Client) createMessageHandleResponse(resp *http.Response) (CreateMe
 // CreateRun - Creates a new run for an assistant thread.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-15-preview
+// Generated from API version 2024-05-01-preview
 //   - threadID - The ID of the thread to run.
-//   - createRunOptions - The details for the run to create.
+//   - createRunBody - The details for the run to create.
 //   - options - CreateRunOptions contains the optional parameters for the Client.CreateRun method.
-func (client *Client) CreateRun(ctx context.Context, threadID string, body CreateRunBody, options *CreateRunOptions) (CreateRunResponse, error) {
+func (client *Client) CreateRun(ctx context.Context, threadID string, createRunBody CreateRunBody, options *CreateRunOptions) (CreateRunResponse, error) {
 	var err error
-	req, err := client.createRunCreateRequest(ctx, threadID, body, options)
+	req, err := client.createRunCreateRequest(ctx, threadID, createRunBody, options)
 	if err != nil {
 		return CreateRunResponse{}, err
 	}
@@ -257,7 +263,7 @@ func (client *Client) CreateRun(ctx context.Context, threadID string, body Creat
 }
 
 // createRunCreateRequest creates the CreateRun request.
-func (client *Client) createRunCreateRequest(ctx context.Context, threadID string, body CreateRunBody, options *CreateRunOptions) (*policy.Request, error) {
+func (client *Client) createRunCreateRequest(ctx context.Context, threadID string, createRunBody CreateRunBody, options *CreateRunOptions) (*policy.Request, error) {
 	urlPath := client.formatURL("/threads/{threadId}/runs")
 	if threadID == "" {
 		return nil, errors.New("parameter threadID cannot be empty")
@@ -268,7 +274,7 @@ func (client *Client) createRunCreateRequest(ctx context.Context, threadID strin
 		return nil, err
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
+	if err := runtime.MarshalAsJSON(req, createRunBody); err != nil {
 		return nil, err
 	}
 	return req, nil
@@ -286,9 +292,9 @@ func (client *Client) createRunHandleResponse(resp *http.Response) (CreateRunRes
 // CreateThread - Creates a new thread. Threads contain messages and can be run by assistants.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-15-preview
+// Generated from API version 2024-05-01-preview
 //   - options - CreateThreadOptions contains the optional parameters for the Client.CreateThread method.
-func (client *Client) CreateThread(ctx context.Context, body AssistantThreadCreationOptions, options *CreateThreadOptions) (CreateThreadResponse, error) {
+func (client *Client) CreateThread(ctx context.Context, body CreateThreadBody, options *CreateThreadOptions) (CreateThreadResponse, error) {
 	var err error
 	req, err := client.createThreadCreateRequest(ctx, body, options)
 	if err != nil {
@@ -307,7 +313,7 @@ func (client *Client) CreateThread(ctx context.Context, body AssistantThreadCrea
 }
 
 // createThreadCreateRequest creates the CreateThread request.
-func (client *Client) createThreadCreateRequest(ctx context.Context, body AssistantThreadCreationOptions, options *CreateThreadOptions) (*policy.Request, error) {
+func (client *Client) createThreadCreateRequest(ctx context.Context, body CreateThreadBody, options *CreateThreadOptions) (*policy.Request, error) {
 	urlPath := client.formatURL("/threads")
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
@@ -332,9 +338,9 @@ func (client *Client) createThreadHandleResponse(resp *http.Response) (CreateThr
 // CreateThreadAndRun - Creates a new assistant thread and immediately starts a run using that new thread.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-15-preview
+// Generated from API version 2024-05-01-preview
 //   - options - CreateThreadAndRunOptions contains the optional parameters for the Client.CreateThreadAndRun method.
-func (client *Client) CreateThreadAndRun(ctx context.Context, body CreateAndRunThreadOptions, options *CreateThreadAndRunOptions) (CreateThreadAndRunResponse, error) {
+func (client *Client) CreateThreadAndRun(ctx context.Context, body CreateAndRunThreadBody, options *CreateThreadAndRunOptions) (CreateThreadAndRunResponse, error) {
 	var err error
 	req, err := client.createThreadAndRunCreateRequest(ctx, body, options)
 	if err != nil {
@@ -353,7 +359,7 @@ func (client *Client) CreateThreadAndRun(ctx context.Context, body CreateAndRunT
 }
 
 // createThreadAndRunCreateRequest creates the CreateThreadAndRun request.
-func (client *Client) createThreadAndRunCreateRequest(ctx context.Context, body CreateAndRunThreadOptions, options *CreateThreadAndRunOptions) (*policy.Request, error) {
+func (client *Client) createThreadAndRunCreateRequest(ctx context.Context, body CreateAndRunThreadBody, options *CreateThreadAndRunOptions) (*policy.Request, error) {
 	urlPath := client.formatURL("/threads/runs")
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
@@ -375,10 +381,160 @@ func (client *Client) createThreadAndRunHandleResponse(resp *http.Response) (Cre
 	return result, nil
 }
 
+// CreateVectorStore - Creates a vector store.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-05-01-preview
+//   - options - CreateVectorStoreOptions contains the optional parameters for the Client.CreateVectorStore method.
+func (client *Client) CreateVectorStore(ctx context.Context, body VectorStoreBody, options *CreateVectorStoreOptions) (CreateVectorStoreResponse, error) {
+	var err error
+	req, err := client.createVectorStoreCreateRequest(ctx, body, options)
+	if err != nil {
+		return CreateVectorStoreResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return CreateVectorStoreResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return CreateVectorStoreResponse{}, err
+	}
+	resp, err := client.createVectorStoreHandleResponse(httpResp)
+	return resp, err
+}
+
+// createVectorStoreCreateRequest creates the CreateVectorStore request.
+func (client *Client) createVectorStoreCreateRequest(ctx context.Context, body VectorStoreBody, options *CreateVectorStoreOptions) (*policy.Request, error) {
+	urlPath := client.formatURL("/vector_stores")
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.endpoint, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// createVectorStoreHandleResponse handles the CreateVectorStore response.
+func (client *Client) createVectorStoreHandleResponse(resp *http.Response) (CreateVectorStoreResponse, error) {
+	result := CreateVectorStoreResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.VectorStore); err != nil {
+		return CreateVectorStoreResponse{}, err
+	}
+	return result, nil
+}
+
+// CreateVectorStoreFile - Create a vector store file by attaching a file to a vector store.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-05-01-preview
+//   - vectorStoreID - The ID of the vector store for which to create a File.
+//   - fileID - A File ID that the vector store should use. Useful for tools like file_search that can access files.
+//   - options - CreateVectorStoreFileOptions contains the optional parameters for the Client.CreateVectorStoreFile method.
+func (client *Client) CreateVectorStoreFile(ctx context.Context, vectorStoreID string, fileID string, options *CreateVectorStoreFileOptions) (CreateVectorStoreFileResponse, error) {
+	var err error
+	req, err := client.createVectorStoreFileCreateRequest(ctx, vectorStoreID, fileID, options)
+	if err != nil {
+		return CreateVectorStoreFileResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return CreateVectorStoreFileResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return CreateVectorStoreFileResponse{}, err
+	}
+	resp, err := client.createVectorStoreFileHandleResponse(httpResp)
+	return resp, err
+}
+
+// createVectorStoreFileCreateRequest creates the CreateVectorStoreFile request.
+func (client *Client) createVectorStoreFileCreateRequest(ctx context.Context, vectorStoreID string, fileID string, options *CreateVectorStoreFileOptions) (*policy.Request, error) {
+	urlPath := client.formatURL("/vector_stores/{vectorStoreId}/files")
+	if vectorStoreID == "" {
+		return nil, errors.New("parameter vectorStoreID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{vectorStoreId}", url.PathEscape(vectorStoreID))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.endpoint, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, fileIDStruct{fileID}); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// createVectorStoreFileHandleResponse handles the CreateVectorStoreFile response.
+func (client *Client) createVectorStoreFileHandleResponse(resp *http.Response) (CreateVectorStoreFileResponse, error) {
+	result := CreateVectorStoreFileResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.VectorStoreFile); err != nil {
+		return CreateVectorStoreFileResponse{}, err
+	}
+	return result, nil
+}
+
+// CreateVectorStoreFileBatch - Create a vector store file batch.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-05-01-preview
+//   - vectorStoreID - The ID of the vector store for which to create a File Batch.
+//   - options - CreateVectorStoreFileBatchOptions contains the optional parameters for the Client.CreateVectorStoreFileBatch
+//     method.
+func (client *Client) CreateVectorStoreFileBatch(ctx context.Context, vectorStoreID string, body CreateVectorStoreFileBatchBody, options *CreateVectorStoreFileBatchOptions) (CreateVectorStoreFileBatchResponse, error) {
+	var err error
+	req, err := client.createVectorStoreFileBatchCreateRequest(ctx, vectorStoreID, body, options)
+	if err != nil {
+		return CreateVectorStoreFileBatchResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return CreateVectorStoreFileBatchResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return CreateVectorStoreFileBatchResponse{}, err
+	}
+	resp, err := client.createVectorStoreFileBatchHandleResponse(httpResp)
+	return resp, err
+}
+
+// createVectorStoreFileBatchCreateRequest creates the CreateVectorStoreFileBatch request.
+func (client *Client) createVectorStoreFileBatchCreateRequest(ctx context.Context, vectorStoreID string, body CreateVectorStoreFileBatchBody, options *CreateVectorStoreFileBatchOptions) (*policy.Request, error) {
+	urlPath := client.formatURL("/vector_stores/{vectorStoreId}/file_batches")
+	if vectorStoreID == "" {
+		return nil, errors.New("parameter vectorStoreID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{vectorStoreId}", url.PathEscape(vectorStoreID))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.endpoint, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// createVectorStoreFileBatchHandleResponse handles the CreateVectorStoreFileBatch response.
+func (client *Client) createVectorStoreFileBatchHandleResponse(resp *http.Response) (CreateVectorStoreFileBatchResponse, error) {
+	result := CreateVectorStoreFileBatchResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.VectorStoreFileBatch); err != nil {
+		return CreateVectorStoreFileBatchResponse{}, err
+	}
+	return result, nil
+}
+
 // DeleteAssistant - Deletes an assistant.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-15-preview
+// Generated from API version 2024-05-01-preview
 //   - assistantID - The ID of the assistant to delete.
 //   - options - DeleteAssistantOptions contains the optional parameters for the Client.DeleteAssistant method.
 func (client *Client) DeleteAssistant(ctx context.Context, assistantID string, options *DeleteAssistantOptions) (DeleteAssistantResponse, error) {
@@ -423,64 +579,10 @@ func (client *Client) deleteAssistantHandleResponse(resp *http.Response) (Delete
 	return result, nil
 }
 
-// DeleteAssistantFile - Unlinks a previously attached file from an assistant, rendering it unavailable for use by tools that
-// can read files.
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-02-15-preview
-//   - assistantID - The ID of the assistant from which the specified file should be unlinked.
-//   - fileID - The ID of the file to unlink from the specified assistant.
-//   - options - DeleteAssistantFileOptions contains the optional parameters for the Client.DeleteAssistantFile method.
-func (client *Client) DeleteAssistantFile(ctx context.Context, assistantID string, fileID string, options *DeleteAssistantFileOptions) (DeleteAssistantFileResponse, error) {
-	var err error
-	req, err := client.deleteAssistantFileCreateRequest(ctx, assistantID, fileID, options)
-	if err != nil {
-		return DeleteAssistantFileResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return DeleteAssistantFileResponse{}, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DeleteAssistantFileResponse{}, err
-	}
-	resp, err := client.deleteAssistantFileHandleResponse(httpResp)
-	return resp, err
-}
-
-// deleteAssistantFileCreateRequest creates the DeleteAssistantFile request.
-func (client *Client) deleteAssistantFileCreateRequest(ctx context.Context, assistantID string, fileID string, options *DeleteAssistantFileOptions) (*policy.Request, error) {
-	urlPath := client.formatURL("/assistants/{assistantId}/files/{fileId}")
-	if assistantID == "" {
-		return nil, errors.New("parameter assistantID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{assistantId}", url.PathEscape(assistantID))
-	if fileID == "" {
-		return nil, errors.New("parameter fileID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{fileId}", url.PathEscape(fileID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.endpoint, urlPath))
-	if err != nil {
-		return nil, err
-	}
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// deleteAssistantFileHandleResponse handles the DeleteAssistantFile response.
-func (client *Client) deleteAssistantFileHandleResponse(resp *http.Response) (DeleteAssistantFileResponse, error) {
-	result := DeleteAssistantFileResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.AssistantFileDeletionStatus); err != nil {
-		return DeleteAssistantFileResponse{}, err
-	}
-	return result, nil
-}
-
 // DeleteFile - Delete a previously uploaded file.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-15-preview
+// Generated from API version 2024-05-01-preview
 //   - fileID - The ID of the file to delete.
 //   - options - DeleteFileOptions contains the optional parameters for the Client.DeleteFile method.
 func (client *Client) DeleteFile(ctx context.Context, fileID string, options *DeleteFileOptions) (DeleteFileResponse, error) {
@@ -528,7 +630,7 @@ func (client *Client) deleteFileHandleResponse(resp *http.Response) (DeleteFileR
 // DeleteThread - Deletes an existing thread.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-15-preview
+// Generated from API version 2024-05-01-preview
 //   - threadID - The ID of the thread to delete.
 //   - options - DeleteThreadOptions contains the optional parameters for the Client.DeleteThread method.
 func (client *Client) DeleteThread(ctx context.Context, threadID string, options *DeleteThreadOptions) (DeleteThreadResponse, error) {
@@ -573,10 +675,112 @@ func (client *Client) deleteThreadHandleResponse(resp *http.Response) (DeleteThr
 	return result, nil
 }
 
+// DeleteVectorStore - Deletes the vector store object matching the specified ID.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-05-01-preview
+//   - vectorStoreID - The ID of the vector store to delete.
+//   - options - DeleteVectorStoreOptions contains the optional parameters for the Client.DeleteVectorStore method.
+func (client *Client) DeleteVectorStore(ctx context.Context, vectorStoreID string, options *DeleteVectorStoreOptions) (DeleteVectorStoreResponse, error) {
+	var err error
+	req, err := client.deleteVectorStoreCreateRequest(ctx, vectorStoreID, options)
+	if err != nil {
+		return DeleteVectorStoreResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return DeleteVectorStoreResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return DeleteVectorStoreResponse{}, err
+	}
+	resp, err := client.deleteVectorStoreHandleResponse(httpResp)
+	return resp, err
+}
+
+// deleteVectorStoreCreateRequest creates the DeleteVectorStore request.
+func (client *Client) deleteVectorStoreCreateRequest(ctx context.Context, vectorStoreID string, options *DeleteVectorStoreOptions) (*policy.Request, error) {
+	urlPath := client.formatURL("/vector_stores/{vectorStoreId}")
+	if vectorStoreID == "" {
+		return nil, errors.New("parameter vectorStoreID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{vectorStoreId}", url.PathEscape(vectorStoreID))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.endpoint, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// deleteVectorStoreHandleResponse handles the DeleteVectorStore response.
+func (client *Client) deleteVectorStoreHandleResponse(resp *http.Response) (DeleteVectorStoreResponse, error) {
+	result := DeleteVectorStoreResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.VectorStoreDeletionStatus); err != nil {
+		return DeleteVectorStoreResponse{}, err
+	}
+	return result, nil
+}
+
+// DeleteVectorStoreFile - Delete a vector store file. This will remove the file from the vector store but the file itself
+// will not be deleted. To delete the file, use the delete file endpoint.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-05-01-preview
+//   - vectorStoreID - The ID of the vector store that the file belongs to.
+//   - fileID - The ID of the file to delete its relationship to the vector store.
+//   - options - DeleteVectorStoreFileOptions contains the optional parameters for the Client.DeleteVectorStoreFile method.
+func (client *Client) DeleteVectorStoreFile(ctx context.Context, vectorStoreID string, fileID string, options *DeleteVectorStoreFileOptions) (DeleteVectorStoreFileResponse, error) {
+	var err error
+	req, err := client.deleteVectorStoreFileCreateRequest(ctx, vectorStoreID, fileID, options)
+	if err != nil {
+		return DeleteVectorStoreFileResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return DeleteVectorStoreFileResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return DeleteVectorStoreFileResponse{}, err
+	}
+	resp, err := client.deleteVectorStoreFileHandleResponse(httpResp)
+	return resp, err
+}
+
+// deleteVectorStoreFileCreateRequest creates the DeleteVectorStoreFile request.
+func (client *Client) deleteVectorStoreFileCreateRequest(ctx context.Context, vectorStoreID string, fileID string, options *DeleteVectorStoreFileOptions) (*policy.Request, error) {
+	urlPath := client.formatURL("/vector_stores/{vectorStoreId}/files/{fileId}")
+	if vectorStoreID == "" {
+		return nil, errors.New("parameter vectorStoreID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{vectorStoreId}", url.PathEscape(vectorStoreID))
+	if fileID == "" {
+		return nil, errors.New("parameter fileID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{fileId}", url.PathEscape(fileID))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.endpoint, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// deleteVectorStoreFileHandleResponse handles the DeleteVectorStoreFile response.
+func (client *Client) deleteVectorStoreFileHandleResponse(resp *http.Response) (DeleteVectorStoreFileResponse, error) {
+	result := DeleteVectorStoreFileResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.VectorStoreFileDeletionStatus); err != nil {
+		return DeleteVectorStoreFileResponse{}, err
+	}
+	return result, nil
+}
+
 // GetAssistant - Retrieves an existing assistant.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-15-preview
+// Generated from API version 2024-05-01-preview
 //   - assistantID - The ID of the assistant to retrieve.
 //   - options - GetAssistantOptions contains the optional parameters for the Client.GetAssistant method.
 func (client *Client) GetAssistant(ctx context.Context, assistantID string, options *GetAssistantOptions) (GetAssistantResponse, error) {
@@ -621,63 +825,10 @@ func (client *Client) getAssistantHandleResponse(resp *http.Response) (GetAssist
 	return result, nil
 }
 
-// GetAssistantFile - Retrieves a file attached to an assistant.
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-02-15-preview
-//   - assistantID - The ID of the assistant associated with the attached file.
-//   - fileID - The ID of the file to retrieve.
-//   - options - GetAssistantFileOptions contains the optional parameters for the Client.GetAssistantFile method.
-func (client *Client) GetAssistantFile(ctx context.Context, assistantID string, fileID string, options *GetAssistantFileOptions) (GetAssistantFileResponse, error) {
-	var err error
-	req, err := client.getAssistantFileCreateRequest(ctx, assistantID, fileID, options)
-	if err != nil {
-		return GetAssistantFileResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return GetAssistantFileResponse{}, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GetAssistantFileResponse{}, err
-	}
-	resp, err := client.getAssistantFileHandleResponse(httpResp)
-	return resp, err
-}
-
-// getAssistantFileCreateRequest creates the GetAssistantFile request.
-func (client *Client) getAssistantFileCreateRequest(ctx context.Context, assistantID string, fileID string, options *GetAssistantFileOptions) (*policy.Request, error) {
-	urlPath := client.formatURL("/assistants/{assistantId}/files/{fileId}")
-	if assistantID == "" {
-		return nil, errors.New("parameter assistantID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{assistantId}", url.PathEscape(assistantID))
-	if fileID == "" {
-		return nil, errors.New("parameter fileID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{fileId}", url.PathEscape(fileID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
-	if err != nil {
-		return nil, err
-	}
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// getAssistantFileHandleResponse handles the GetAssistantFile response.
-func (client *Client) getAssistantFileHandleResponse(resp *http.Response) (GetAssistantFileResponse, error) {
-	result := GetAssistantFileResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.AssistantFile); err != nil {
-		return GetAssistantFileResponse{}, err
-	}
-	return result, nil
-}
-
 // GetFile - Returns information about a specific file. Does not retrieve file content.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-15-preview
+// Generated from API version 2024-05-01-preview
 //   - fileID - The ID of the file to retrieve.
 //   - options - GetFileOptions contains the optional parameters for the Client.GetFile method.
 func (client *Client) GetFile(ctx context.Context, fileID string, options *GetFileOptions) (GetFileResponse, error) {
@@ -725,7 +876,7 @@ func (client *Client) getFileHandleResponse(resp *http.Response) (GetFileRespons
 // GetMessage - Gets an existing message from an existing thread.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-15-preview
+// Generated from API version 2024-05-01-preview
 //   - threadID - The ID of the thread to retrieve the specified message from.
 //   - messageID - The ID of the message to retrieve from the specified thread.
 //   - options - GetMessageOptions contains the optional parameters for the Client.GetMessage method.
@@ -775,68 +926,10 @@ func (client *Client) getMessageHandleResponse(resp *http.Response) (GetMessageR
 	return result, nil
 }
 
-// GetMessageFile - Gets information about a file attachment to a message within a thread.
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-02-15-preview
-//   - threadID - The ID of the thread containing the message to get information from.
-//   - messageID - The ID of the message to get information from.
-//   - fileID - The ID of the file to get information about.
-//   - options - GetMessageFileOptions contains the optional parameters for the Client.GetMessageFile method.
-func (client *Client) GetMessageFile(ctx context.Context, threadID string, messageID string, fileID string, options *GetMessageFileOptions) (GetMessageFileResponse, error) {
-	var err error
-	req, err := client.getMessageFileCreateRequest(ctx, threadID, messageID, fileID, options)
-	if err != nil {
-		return GetMessageFileResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return GetMessageFileResponse{}, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GetMessageFileResponse{}, err
-	}
-	resp, err := client.getMessageFileHandleResponse(httpResp)
-	return resp, err
-}
-
-// getMessageFileCreateRequest creates the GetMessageFile request.
-func (client *Client) getMessageFileCreateRequest(ctx context.Context, threadID string, messageID string, fileID string, options *GetMessageFileOptions) (*policy.Request, error) {
-	urlPath := client.formatURL("/threads/{threadId}/messages/{messageId}/files/{fileId}")
-	if threadID == "" {
-		return nil, errors.New("parameter threadID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{threadId}", url.PathEscape(threadID))
-	if messageID == "" {
-		return nil, errors.New("parameter messageID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{messageId}", url.PathEscape(messageID))
-	if fileID == "" {
-		return nil, errors.New("parameter fileID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{fileId}", url.PathEscape(fileID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
-	if err != nil {
-		return nil, err
-	}
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// getMessageFileHandleResponse handles the GetMessageFile response.
-func (client *Client) getMessageFileHandleResponse(resp *http.Response) (GetMessageFileResponse, error) {
-	result := GetMessageFileResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.MessageFile); err != nil {
-		return GetMessageFileResponse{}, err
-	}
-	return result, nil
-}
-
 // GetRun - Gets an existing run from an existing thread.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-15-preview
+// Generated from API version 2024-05-01-preview
 //   - threadID - The ID of the thread to retrieve run information from.
 //   - runID - The ID of the thread to retrieve information about.
 //   - options - GetRunOptions contains the optional parameters for the Client.GetRun method.
@@ -889,7 +982,7 @@ func (client *Client) getRunHandleResponse(resp *http.Response) (GetRunResponse,
 // GetRunStep - Gets a single run step from a thread run.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-15-preview
+// Generated from API version 2024-05-01-preview
 //   - threadID - The ID of the thread that was run.
 //   - runID - The ID of the specific run to retrieve the step from.
 //   - stepID - The ID of the step to retrieve information about.
@@ -947,7 +1040,7 @@ func (client *Client) getRunStepHandleResponse(resp *http.Response) (GetRunStepR
 // GetThread - Gets information about an existing thread.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-15-preview
+// Generated from API version 2024-05-01-preview
 //   - threadID - The ID of the thread to retrieve information about.
 //   - options - GetThreadOptions contains the optional parameters for the Client.GetThread method.
 func (client *Client) GetThread(ctx context.Context, threadID string, options *GetThreadOptions) (GetThreadResponse, error) {
@@ -992,64 +1085,157 @@ func (client *Client) getThreadHandleResponse(resp *http.Response) (GetThreadRes
 	return result, nil
 }
 
-// ListAssistantFiles - Gets a list of files attached to a specific assistant, as used by tools that can read files.
+// GetVectorStore - Returns the vector store object matching the specified ID.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-15-preview
-//   - assistantID - The ID of the assistant to retrieve the list of attached files for.
-//   - options - ListAssistantFilesOptions contains the optional parameters for the Client.ListAssistantFiles method.
-func (client *Client) internalListAssistantFiles(ctx context.Context, assistantID string, options *ListAssistantFilesOptions) (ListAssistantFilesResponse, error) {
+// Generated from API version 2024-05-01-preview
+//   - vectorStoreID - The ID of the vector store to retrieve.
+//   - options - GetVectorStoreOptions contains the optional parameters for the Client.GetVectorStore method.
+func (client *Client) GetVectorStore(ctx context.Context, vectorStoreID string, options *GetVectorStoreOptions) (GetVectorStoreResponse, error) {
 	var err error
-	req, err := client.listAssistantFilesCreateRequest(ctx, assistantID, options)
+	req, err := client.getVectorStoreCreateRequest(ctx, vectorStoreID, options)
 	if err != nil {
-		return ListAssistantFilesResponse{}, err
+		return GetVectorStoreResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ListAssistantFilesResponse{}, err
+		return GetVectorStoreResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return ListAssistantFilesResponse{}, err
+		return GetVectorStoreResponse{}, err
 	}
-	resp, err := client.listAssistantFilesHandleResponse(httpResp)
+	resp, err := client.getVectorStoreHandleResponse(httpResp)
 	return resp, err
 }
 
-// listAssistantFilesCreateRequest creates the ListAssistantFiles request.
-func (client *Client) listAssistantFilesCreateRequest(ctx context.Context, assistantID string, options *ListAssistantFilesOptions) (*policy.Request, error) {
-	urlPath := client.formatURL("/assistants/{assistantId}/files")
-	if assistantID == "" {
-		return nil, errors.New("parameter assistantID cannot be empty")
+// getVectorStoreCreateRequest creates the GetVectorStore request.
+func (client *Client) getVectorStoreCreateRequest(ctx context.Context, vectorStoreID string, options *GetVectorStoreOptions) (*policy.Request, error) {
+	urlPath := client.formatURL("/vector_stores/{vectorStoreId}")
+	if vectorStoreID == "" {
+		return nil, errors.New("parameter vectorStoreID cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{assistantId}", url.PathEscape(assistantID))
+	urlPath = strings.ReplaceAll(urlPath, "{vectorStoreId}", url.PathEscape(vectorStoreID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.After != nil {
-		reqQP.Set("after", *options.After)
-	}
-	if options != nil && options.Before != nil {
-		reqQP.Set("before", *options.Before)
-	}
-	if options != nil && options.Limit != nil {
-		reqQP.Set("limit", strconv.FormatInt(int64(*options.Limit), 10))
-	}
-	if options != nil && options.Order != nil {
-		reqQP.Set("order", string(*options.Order))
-	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// listAssistantFilesHandleResponse handles the ListAssistantFiles response.
-func (client *Client) listAssistantFilesHandleResponse(resp *http.Response) (ListAssistantFilesResponse, error) {
-	result := ListAssistantFilesResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.AssistantFilesPage); err != nil {
-		return ListAssistantFilesResponse{}, err
+// getVectorStoreHandleResponse handles the GetVectorStore response.
+func (client *Client) getVectorStoreHandleResponse(resp *http.Response) (GetVectorStoreResponse, error) {
+	result := GetVectorStoreResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.VectorStore); err != nil {
+		return GetVectorStoreResponse{}, err
+	}
+	return result, nil
+}
+
+// GetVectorStoreFile - Retrieves a vector store file.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-05-01-preview
+//   - vectorStoreID - The ID of the vector store that the file belongs to.
+//   - fileID - The ID of the file being retrieved.
+//   - options - GetVectorStoreFileOptions contains the optional parameters for the Client.GetVectorStoreFile method.
+func (client *Client) GetVectorStoreFile(ctx context.Context, vectorStoreID string, fileID string, options *GetVectorStoreFileOptions) (GetVectorStoreFileResponse, error) {
+	var err error
+	req, err := client.getVectorStoreFileCreateRequest(ctx, vectorStoreID, fileID, options)
+	if err != nil {
+		return GetVectorStoreFileResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return GetVectorStoreFileResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return GetVectorStoreFileResponse{}, err
+	}
+	resp, err := client.getVectorStoreFileHandleResponse(httpResp)
+	return resp, err
+}
+
+// getVectorStoreFileCreateRequest creates the GetVectorStoreFile request.
+func (client *Client) getVectorStoreFileCreateRequest(ctx context.Context, vectorStoreID string, fileID string, options *GetVectorStoreFileOptions) (*policy.Request, error) {
+	urlPath := client.formatURL("/vector_stores/{vectorStoreId}/files/{fileId}")
+	if vectorStoreID == "" {
+		return nil, errors.New("parameter vectorStoreID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{vectorStoreId}", url.PathEscape(vectorStoreID))
+	if fileID == "" {
+		return nil, errors.New("parameter fileID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{fileId}", url.PathEscape(fileID))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getVectorStoreFileHandleResponse handles the GetVectorStoreFile response.
+func (client *Client) getVectorStoreFileHandleResponse(resp *http.Response) (GetVectorStoreFileResponse, error) {
+	result := GetVectorStoreFileResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.VectorStoreFile); err != nil {
+		return GetVectorStoreFileResponse{}, err
+	}
+	return result, nil
+}
+
+// GetVectorStoreFileBatch - Retrieve a vector store file batch.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-05-01-preview
+//   - vectorStoreID - The ID of the vector store that the file batch belongs to.
+//   - batchID - The ID of the file batch being retrieved.
+//   - options - GetVectorStoreFileBatchOptions contains the optional parameters for the Client.GetVectorStoreFileBatch
+//     method.
+func (client *Client) GetVectorStoreFileBatch(ctx context.Context, vectorStoreID string, batchID string, options *GetVectorStoreFileBatchOptions) (GetVectorStoreFileBatchResponse, error) {
+	var err error
+	req, err := client.getVectorStoreFileBatchCreateRequest(ctx, vectorStoreID, batchID, options)
+	if err != nil {
+		return GetVectorStoreFileBatchResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return GetVectorStoreFileBatchResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return GetVectorStoreFileBatchResponse{}, err
+	}
+	resp, err := client.getVectorStoreFileBatchHandleResponse(httpResp)
+	return resp, err
+}
+
+// getVectorStoreFileBatchCreateRequest creates the GetVectorStoreFileBatch request.
+func (client *Client) getVectorStoreFileBatchCreateRequest(ctx context.Context, vectorStoreID string, batchID string, options *GetVectorStoreFileBatchOptions) (*policy.Request, error) {
+	urlPath := client.formatURL("/vector_stores/{vectorStoreId}/file_batches/{batchId}")
+	if vectorStoreID == "" {
+		return nil, errors.New("parameter vectorStoreID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{vectorStoreId}", url.PathEscape(vectorStoreID))
+	if batchID == "" {
+		return nil, errors.New("parameter batchID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{batchId}", url.PathEscape(batchID))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getVectorStoreFileBatchHandleResponse handles the GetVectorStoreFileBatch response.
+func (client *Client) getVectorStoreFileBatchHandleResponse(resp *http.Response) (GetVectorStoreFileBatchResponse, error) {
+	result := GetVectorStoreFileBatchResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.VectorStoreFileBatch); err != nil {
+		return GetVectorStoreFileBatchResponse{}, err
 	}
 	return result, nil
 }
@@ -1057,7 +1243,7 @@ func (client *Client) listAssistantFilesHandleResponse(resp *http.Response) (Lis
 // ListAssistants - Gets a list of assistants that were previously created.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-15-preview
+// Generated from API version 2024-05-01-preview
 //   - options - ListAssistantsOptions contains the optional parameters for the Client.ListAssistants method.
 func (client *Client) internalListAssistants(ctx context.Context, options *ListAssistantsOptions) (ListAssistantsResponse, error) {
 	var err error
@@ -1114,7 +1300,7 @@ func (client *Client) listAssistantsHandleResponse(resp *http.Response) (ListAss
 // ListFiles - Gets a list of previously uploaded files.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-15-preview
+// Generated from API version 2024-05-01-preview
 //   - options - ListFilesOptions contains the optional parameters for the Client.ListFiles method.
 func (client *Client) ListFiles(ctx context.Context, options *ListFilesOptions) (ListFilesResponse, error) {
 	var err error
@@ -1159,77 +1345,10 @@ func (client *Client) listFilesHandleResponse(resp *http.Response) (ListFilesRes
 	return result, nil
 }
 
-// ListMessageFiles - Gets a list of previously uploaded files associated with a message from a thread.
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-02-15-preview
-//   - threadID - The ID of the thread containing the message to list files from.
-//   - messageID - The ID of the message to list files from.
-//   - options - ListMessageFilesOptions contains the optional parameters for the Client.ListMessageFiles method.
-func (client *Client) internalListMessageFiles(ctx context.Context, threadID string, messageID string, options *ListMessageFilesOptions) (ListMessageFilesResponse, error) {
-	var err error
-	req, err := client.listMessageFilesCreateRequest(ctx, threadID, messageID, options)
-	if err != nil {
-		return ListMessageFilesResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return ListMessageFilesResponse{}, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ListMessageFilesResponse{}, err
-	}
-	resp, err := client.listMessageFilesHandleResponse(httpResp)
-	return resp, err
-}
-
-// listMessageFilesCreateRequest creates the ListMessageFiles request.
-func (client *Client) listMessageFilesCreateRequest(ctx context.Context, threadID string, messageID string, options *ListMessageFilesOptions) (*policy.Request, error) {
-	urlPath := client.formatURL("/threads/{threadId}/messages/{messageId}/files")
-	if threadID == "" {
-		return nil, errors.New("parameter threadID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{threadId}", url.PathEscape(threadID))
-	if messageID == "" {
-		return nil, errors.New("parameter messageID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{messageId}", url.PathEscape(messageID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.After != nil {
-		reqQP.Set("after", *options.After)
-	}
-	if options != nil && options.Before != nil {
-		reqQP.Set("before", *options.Before)
-	}
-	if options != nil && options.Limit != nil {
-		reqQP.Set("limit", strconv.FormatInt(int64(*options.Limit), 10))
-	}
-	if options != nil && options.Order != nil {
-		reqQP.Set("order", string(*options.Order))
-	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listMessageFilesHandleResponse handles the ListMessageFiles response.
-func (client *Client) listMessageFilesHandleResponse(resp *http.Response) (ListMessageFilesResponse, error) {
-	result := ListMessageFilesResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.MessageFilesPage); err != nil {
-		return ListMessageFilesResponse{}, err
-	}
-	return result, nil
-}
-
 // ListMessages - Gets a list of messages that exist on a thread.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-15-preview
+// Generated from API version 2024-05-01-preview
 //   - threadID - The ID of the thread to list messages from.
 //   - options - ListMessagesOptions contains the optional parameters for the Client.ListMessages method.
 func (client *Client) internalListMessages(ctx context.Context, threadID string, options *ListMessagesOptions) (ListMessagesResponse, error) {
@@ -1274,6 +1393,9 @@ func (client *Client) listMessagesCreateRequest(ctx context.Context, threadID st
 	if options != nil && options.Order != nil {
 		reqQP.Set("order", string(*options.Order))
 	}
+	if options != nil && options.RunID != nil {
+		reqQP.Set("runId", *options.RunID)
+	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -1282,7 +1404,7 @@ func (client *Client) listMessagesCreateRequest(ctx context.Context, threadID st
 // listMessagesHandleResponse handles the ListMessages response.
 func (client *Client) listMessagesHandleResponse(resp *http.Response) (ListMessagesResponse, error) {
 	result := ListMessagesResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.MessagesPage); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.ThreadMessagesPage); err != nil {
 		return ListMessagesResponse{}, err
 	}
 	return result, nil
@@ -1291,7 +1413,7 @@ func (client *Client) listMessagesHandleResponse(resp *http.Response) (ListMessa
 // ListRunSteps - Gets a list of run steps from a thread run.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-15-preview
+// Generated from API version 2024-05-01-preview
 //   - threadID - The ID of the thread that was run.
 //   - runID - The ID of the run to list steps from.
 //   - options - ListRunStepsOptions contains the optional parameters for the Client.ListRunSteps method.
@@ -1349,7 +1471,7 @@ func (client *Client) listRunStepsCreateRequest(ctx context.Context, threadID st
 // listRunStepsHandleResponse handles the ListRunSteps response.
 func (client *Client) listRunStepsHandleResponse(resp *http.Response) (ListRunStepsResponse, error) {
 	result := ListRunStepsResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.RunStepsPage); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.ThreadRunStepsPage); err != nil {
 		return ListRunStepsResponse{}, err
 	}
 	return result, nil
@@ -1358,7 +1480,7 @@ func (client *Client) listRunStepsHandleResponse(resp *http.Response) (ListRunSt
 // ListRuns - Gets a list of runs for a specified thread.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-15-preview
+// Generated from API version 2024-05-01-preview
 //   - threadID - The ID of the thread to list runs from.
 //   - options - ListRunsOptions contains the optional parameters for the Client.ListRuns method.
 func (client *Client) internalListRuns(ctx context.Context, threadID string, options *ListRunsOptions) (ListRunsResponse, error) {
@@ -1417,11 +1539,255 @@ func (client *Client) listRunsHandleResponse(resp *http.Response) (ListRunsRespo
 	return result, nil
 }
 
+// ListVectorStoreFileBatchFiles - Returns a list of vector store files in a batch.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-05-01-preview
+//   - vectorStoreID - The ID of the vector store that the file batch belongs to.
+//   - batchID - The ID of the file batch that the files belong to.
+//   - options - ListVectorStoreFileBatchFilesOptions contains the optional parameters for the Client.ListVectorStoreFileBatchFiles
+//     method.
+func (client *Client) internalListVectorStoreFileBatchFiles(ctx context.Context, vectorStoreID string, batchID string, options *ListVectorStoreFileBatchFilesOptions) (ListVectorStoreFileBatchFilesResponse, error) {
+	var err error
+	req, err := client.listVectorStoreFileBatchFilesCreateRequest(ctx, vectorStoreID, batchID, options)
+	if err != nil {
+		return ListVectorStoreFileBatchFilesResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return ListVectorStoreFileBatchFilesResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return ListVectorStoreFileBatchFilesResponse{}, err
+	}
+	resp, err := client.listVectorStoreFileBatchFilesHandleResponse(httpResp)
+	return resp, err
+}
+
+// listVectorStoreFileBatchFilesCreateRequest creates the ListVectorStoreFileBatchFiles request.
+func (client *Client) listVectorStoreFileBatchFilesCreateRequest(ctx context.Context, vectorStoreID string, batchID string, options *ListVectorStoreFileBatchFilesOptions) (*policy.Request, error) {
+	urlPath := client.formatURL("/vector_stores/{vectorStoreId}/file_batches/{batchId}/files")
+	if vectorStoreID == "" {
+		return nil, errors.New("parameter vectorStoreID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{vectorStoreId}", url.PathEscape(vectorStoreID))
+	if batchID == "" {
+		return nil, errors.New("parameter batchID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{batchId}", url.PathEscape(batchID))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	if options != nil && options.After != nil {
+		reqQP.Set("after", *options.After)
+	}
+	if options != nil && options.Before != nil {
+		reqQP.Set("before", *options.Before)
+	}
+	if options != nil && options.Filter != nil {
+		reqQP.Set("filter", string(*options.Filter))
+	}
+	if options != nil && options.Limit != nil {
+		reqQP.Set("limit", strconv.FormatInt(int64(*options.Limit), 10))
+	}
+	if options != nil && options.Order != nil {
+		reqQP.Set("order", string(*options.Order))
+	}
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listVectorStoreFileBatchFilesHandleResponse handles the ListVectorStoreFileBatchFiles response.
+func (client *Client) listVectorStoreFileBatchFilesHandleResponse(resp *http.Response) (ListVectorStoreFileBatchFilesResponse, error) {
+	result := ListVectorStoreFileBatchFilesResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.VectorStoreFileBatchesPage); err != nil {
+		return ListVectorStoreFileBatchFilesResponse{}, err
+	}
+	return result, nil
+}
+
+// ListVectorStoreFiles - Returns a list of vector store files.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-05-01-preview
+//   - vectorStoreID - The ID of the vector store that the files belong to.
+//   - options - ListVectorStoreFilesOptions contains the optional parameters for the Client.ListVectorStoreFiles method.
+func (client *Client) internalListVectorStoreFiles(ctx context.Context, vectorStoreID string, options *ListVectorStoreFilesOptions) (ListVectorStoreFilesResponse, error) {
+	var err error
+	req, err := client.listVectorStoreFilesCreateRequest(ctx, vectorStoreID, options)
+	if err != nil {
+		return ListVectorStoreFilesResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return ListVectorStoreFilesResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return ListVectorStoreFilesResponse{}, err
+	}
+	resp, err := client.listVectorStoreFilesHandleResponse(httpResp)
+	return resp, err
+}
+
+// listVectorStoreFilesCreateRequest creates the ListVectorStoreFiles request.
+func (client *Client) listVectorStoreFilesCreateRequest(ctx context.Context, vectorStoreID string, options *ListVectorStoreFilesOptions) (*policy.Request, error) {
+	urlPath := client.formatURL("/vector_stores/{vectorStoreId}/files")
+	if vectorStoreID == "" {
+		return nil, errors.New("parameter vectorStoreID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{vectorStoreId}", url.PathEscape(vectorStoreID))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	if options != nil && options.After != nil {
+		reqQP.Set("after", *options.After)
+	}
+	if options != nil && options.Before != nil {
+		reqQP.Set("before", *options.Before)
+	}
+	if options != nil && options.Filter != nil {
+		reqQP.Set("filter", string(*options.Filter))
+	}
+	if options != nil && options.Limit != nil {
+		reqQP.Set("limit", strconv.FormatInt(int64(*options.Limit), 10))
+	}
+	if options != nil && options.Order != nil {
+		reqQP.Set("order", string(*options.Order))
+	}
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listVectorStoreFilesHandleResponse handles the ListVectorStoreFiles response.
+func (client *Client) listVectorStoreFilesHandleResponse(resp *http.Response) (ListVectorStoreFilesResponse, error) {
+	result := ListVectorStoreFilesResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.VectorStoreFilesPage); err != nil {
+		return ListVectorStoreFilesResponse{}, err
+	}
+	return result, nil
+}
+
+// ListVectorStores - Returns a list of vector stores.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-05-01-preview
+//   - options - ListVectorStoresOptions contains the optional parameters for the Client.ListVectorStores method.
+func (client *Client) internalListVectorStores(ctx context.Context, options *ListVectorStoresOptions) (ListVectorStoresResponse, error) {
+	var err error
+	req, err := client.listVectorStoresCreateRequest(ctx, options)
+	if err != nil {
+		return ListVectorStoresResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return ListVectorStoresResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return ListVectorStoresResponse{}, err
+	}
+	resp, err := client.listVectorStoresHandleResponse(httpResp)
+	return resp, err
+}
+
+// listVectorStoresCreateRequest creates the ListVectorStores request.
+func (client *Client) listVectorStoresCreateRequest(ctx context.Context, options *ListVectorStoresOptions) (*policy.Request, error) {
+	urlPath := client.formatURL("/vector_stores")
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	if options != nil && options.After != nil {
+		reqQP.Set("after", *options.After)
+	}
+	if options != nil && options.Before != nil {
+		reqQP.Set("before", *options.Before)
+	}
+	if options != nil && options.Limit != nil {
+		reqQP.Set("limit", strconv.FormatInt(int64(*options.Limit), 10))
+	}
+	if options != nil && options.Order != nil {
+		reqQP.Set("order", string(*options.Order))
+	}
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listVectorStoresHandleResponse handles the ListVectorStores response.
+func (client *Client) listVectorStoresHandleResponse(resp *http.Response) (ListVectorStoresResponse, error) {
+	result := ListVectorStoresResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.VectorStoresPage); err != nil {
+		return ListVectorStoresResponse{}, err
+	}
+	return result, nil
+}
+
+// ModifyVectorStore - The ID of the vector store to modify.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-05-01-preview
+//   - vectorStoreID - The ID of the vector store to modify.
+//   - options - ModifyVectorStoreOptions contains the optional parameters for the Client.ModifyVectorStore method.
+func (client *Client) ModifyVectorStore(ctx context.Context, vectorStoreID string, body VectorStoreUpdateBody, options *ModifyVectorStoreOptions) (ModifyVectorStoreResponse, error) {
+	var err error
+	req, err := client.modifyVectorStoreCreateRequest(ctx, vectorStoreID, body, options)
+	if err != nil {
+		return ModifyVectorStoreResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return ModifyVectorStoreResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return ModifyVectorStoreResponse{}, err
+	}
+	resp, err := client.modifyVectorStoreHandleResponse(httpResp)
+	return resp, err
+}
+
+// modifyVectorStoreCreateRequest creates the ModifyVectorStore request.
+func (client *Client) modifyVectorStoreCreateRequest(ctx context.Context, vectorStoreID string, body VectorStoreUpdateBody, options *ModifyVectorStoreOptions) (*policy.Request, error) {
+	urlPath := client.formatURL("/vector_stores/{vectorStoreId}")
+	if vectorStoreID == "" {
+		return nil, errors.New("parameter vectorStoreID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{vectorStoreId}", url.PathEscape(vectorStoreID))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.endpoint, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// modifyVectorStoreHandleResponse handles the ModifyVectorStore response.
+func (client *Client) modifyVectorStoreHandleResponse(resp *http.Response) (ModifyVectorStoreResponse, error) {
+	result := ModifyVectorStoreResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.VectorStore); err != nil {
+		return ModifyVectorStoreResponse{}, err
+	}
+	return result, nil
+}
+
 // SubmitToolOutputsToRun - Submits outputs from tools as requested by tool calls in a run. Runs that need submitted tool
 // outputs will have a status of 'requiresaction' with a requiredaction.type of 'submittooloutputs'.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-15-preview
+// Generated from API version 2024-05-01-preview
 //   - threadID - The ID of the thread that was run.
 //   - runID - The ID of the run that requires tool outputs.
 //   - options - SubmitToolOutputsToRunOptions contains the optional parameters for the Client.SubmitToolOutputsToRun method.
@@ -1477,10 +1843,10 @@ func (client *Client) submitToolOutputsToRunHandleResponse(resp *http.Response) 
 // UpdateAssistant - Modifies an existing assistant.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-15-preview
+// Generated from API version 2024-05-01-preview
 //   - assistantID - The ID of the assistant to modify.
 //   - options - UpdateAssistantOptions contains the optional parameters for the Client.UpdateAssistant method.
-func (client *Client) UpdateAssistant(ctx context.Context, assistantID string, body UpdateAssistantOptions, options *UpdateAssistantOptions) (UpdateAssistantResponse, error) {
+func (client *Client) UpdateAssistant(ctx context.Context, assistantID string, body UpdateAssistantBody, options *UpdateAssistantOptions) (UpdateAssistantResponse, error) {
 	var err error
 	req, err := client.updateAssistantCreateRequest(ctx, assistantID, body, options)
 	if err != nil {
@@ -1499,7 +1865,7 @@ func (client *Client) UpdateAssistant(ctx context.Context, assistantID string, b
 }
 
 // updateAssistantCreateRequest creates the UpdateAssistant request.
-func (client *Client) updateAssistantCreateRequest(ctx context.Context, assistantID string, body UpdateAssistantOptions, options *UpdateAssistantOptions) (*policy.Request, error) {
+func (client *Client) updateAssistantCreateRequest(ctx context.Context, assistantID string, body UpdateAssistantBody, options *UpdateAssistantOptions) (*policy.Request, error) {
 	urlPath := client.formatURL("/assistants/{assistantId}")
 	if assistantID == "" {
 		return nil, errors.New("parameter assistantID cannot be empty")
@@ -1528,7 +1894,7 @@ func (client *Client) updateAssistantHandleResponse(resp *http.Response) (Update
 // UpdateMessage - Modifies an existing message on an existing thread.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-15-preview
+// Generated from API version 2024-05-01-preview
 //   - threadID - The ID of the thread containing the specified message to modify.
 //   - messageID - The ID of the message to modify on the specified thread.
 //   - options - UpdateMessageOptions contains the optional parameters for the Client.UpdateMessage method.
@@ -1584,7 +1950,7 @@ func (client *Client) updateMessageHandleResponse(resp *http.Response) (UpdateMe
 // UpdateRun - Modifies an existing thread run.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-15-preview
+// Generated from API version 2024-05-01-preview
 //   - threadID - The ID of the thread associated with the specified run.
 //   - runID - The ID of the run to modify.
 //   - options - UpdateRunOptions contains the optional parameters for the Client.UpdateRun method.
@@ -1640,7 +2006,7 @@ func (client *Client) updateRunHandleResponse(resp *http.Response) (UpdateRunRes
 // UpdateThread - Modifies an existing thread.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-15-preview
+// Generated from API version 2024-05-01-preview
 //   - threadID - The ID of the thread to modify.
 //   - options - UpdateThreadOptions contains the optional parameters for the Client.UpdateThread method.
 func (client *Client) UpdateThread(ctx context.Context, threadID string, body UpdateThreadBody, options *UpdateThreadOptions) (UpdateThreadResponse, error) {
@@ -1691,7 +2057,7 @@ func (client *Client) updateThreadHandleResponse(resp *http.Response) (UpdateThr
 // UploadFile - Uploads a file for use by other operations.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-15-preview
+// Generated from API version 2024-05-01-preview
 //   - file - The file data (not filename) to upload.
 //   - purpose - The intended purpose of the file.
 //   - options - UploadFileOptions contains the optional parameters for the Client.UploadFile method.

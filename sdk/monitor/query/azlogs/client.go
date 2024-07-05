@@ -26,6 +26,56 @@ type Client struct {
 	internal *azcore.Client
 }
 
+// QueryBatch - Executes a batch of Analytics queries for data. Here [https://learn.microsoft.com/azure/azure-monitor/logs/api/batch-queries]
+// is an example for using POST with an Analytics query.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2022-10-27
+//   - body - The batch request body
+//   - options - QueryBatchOptions contains the optional parameters for the Client.QueryBatch method.
+func (client *Client) QueryBatch(ctx context.Context, body BatchRequest, options *QueryBatchOptions) (QueryBatchResponse, error) {
+	var err error
+	ctx, endSpan := runtime.StartSpan(ctx, "Client.QueryBatch", client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.queryBatchCreateRequest(ctx, body, options)
+	if err != nil {
+		return QueryBatchResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return QueryBatchResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return QueryBatchResponse{}, err
+	}
+	resp, err := client.queryBatchHandleResponse(httpResp)
+	return resp, err
+}
+
+// queryBatchCreateRequest creates the QueryBatch request.
+func (client *Client) queryBatchCreateRequest(ctx context.Context, body BatchRequest, options *QueryBatchOptions) (*policy.Request, error) {
+	urlPath := "/$batch"
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// queryBatchHandleResponse handles the QueryBatch response.
+func (client *Client) queryBatchHandleResponse(resp *http.Response) (QueryBatchResponse, error) {
+	result := QueryBatchResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.BatchResponse); err != nil {
+		return QueryBatchResponse{}, err
+	}
+	return result, nil
+}
+
 // QueryResource - Executes an Analytics query for data in the context of a resource. Here [https://learn.microsoft.com/azure/azure-monitor/logs/api/azure-resource-queries]
 // is an example for using POST with an Analytics
 // query.

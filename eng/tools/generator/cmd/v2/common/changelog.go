@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
-package model
+package common
 
 import (
 	"fmt"
@@ -473,4 +473,28 @@ func typeToAny(b *report.BreakingChanges, flag bool) []string {
 	}
 
 	return items
+}
+
+// GetChangelogForPackage generates the changelog report with the given two Contents
+func GetChangelogForPackage(lhs, rhs *exports.Content) (*Changelog, error) {
+	if lhs == nil && rhs == nil {
+		return nil, fmt.Errorf("this package does not exist even after the generation, this should never happen")
+	}
+	if lhs == nil {
+		// the package does not exist before the generation: this is a new package
+		return &Changelog{
+			NewPackage: true,
+		}, nil
+	}
+	if rhs == nil {
+		// the package no longer exists after the generation: this package was removed
+		return &Changelog{
+			RemovedPackage: true,
+		}, nil
+	}
+	// lhs and rhs are both non-nil
+	p := report.Generate(*lhs, *rhs, nil)
+	return &Changelog{
+		Modified: &p,
+	}, nil
 }

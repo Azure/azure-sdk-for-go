@@ -6,7 +6,6 @@ package common
 import (
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/autorest/model"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/delta"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/exports"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/report"
@@ -14,9 +13,9 @@ import (
 )
 
 func TestCalculateNewVersion(t *testing.T) {
-	fixChange := &model.Changelog{Modified: &report.Package{}}
-	breakingChange := &model.Changelog{RemovedPackage: true, Modified: &report.Package{}}
-	additiveChange := &model.Changelog{Modified: &report.Package{AdditiveChanges: &delta.Content{Content: exports.Content{Consts: map[string]exports.Const{"test": {}}}}}}
+	fixChange := &Changelog{Modified: &report.Package{}}
+	breakingChange := &Changelog{RemovedPackage: true, Modified: &report.Package{}}
+	additiveChange := &Changelog{Modified: &report.Package{AdditiveChanges: &delta.Content{Content: exports.Content{Consts: map[string]exports.Const{"test": {}}}}}}
 
 	// previous 0.x.x
 	// fix with stable

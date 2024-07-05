@@ -15,7 +15,6 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/autorest/model"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/repo"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/delta"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/exports"
@@ -194,7 +193,7 @@ func GetExportsFromTag(sdkRepo repo.SDKRepository, packagePath, tag string) (*ex
 	return &result, nil
 }
 
-func MarshalUnmarshalFilter(changelog *model.Changelog) {
+func MarshalUnmarshalFilter(changelog *Changelog) {
 	if changelog.Modified != nil {
 		if changelog.Modified.AdditiveChanges != nil {
 			removeMarshalUnmarshalFunc(changelog.Modified.AdditiveChanges.Funcs)
@@ -213,7 +212,7 @@ func removeMarshalUnmarshalFunc(funcs map[string]exports.Func) {
 	}
 }
 
-func FilterChangelog(changelog *model.Changelog, opts ...func(changelog *model.Changelog)) {
+func FilterChangelog(changelog *Changelog, opts ...func(changelog *Changelog)) {
 	if changelog.Modified != nil {
 		for _, opt := range opts {
 			opt(changelog)
@@ -221,7 +220,7 @@ func FilterChangelog(changelog *model.Changelog, opts ...func(changelog *model.C
 	}
 }
 
-func EnumFilter(changelog *model.Changelog) {
+func EnumFilter(changelog *Changelog) {
 	if changelog.Modified.HasAdditiveChanges() {
 		if changelog.Modified.AdditiveChanges != nil && changelog.Modified.AdditiveChanges.TypeAliases != nil {
 			for typeAliases := range changelog.Modified.AdditiveChanges.TypeAliases {
@@ -271,7 +270,7 @@ func searchKey[T exports.Const | exports.Func | exports.Struct](m map[string]T, 
 	return nil, false
 }
 
-func FuncFilter(changelog *model.Changelog) {
+func FuncFilter(changelog *Changelog) {
 	if changelog.Modified.HasAdditiveChanges() {
 		funcOperation(changelog.Modified.AdditiveChanges)
 	}
@@ -356,7 +355,7 @@ func funcOperation(content *delta.Content) {
 }
 
 // LROFilter LROFilter after OperationFilter
-func LROFilter(changelog *model.Changelog) {
+func LROFilter(changelog *Changelog) {
 	if changelog.Modified.HasBreakingChanges() && changelog.Modified.HasAdditiveChanges() && changelog.Modified.BreakingChanges.Removed != nil && changelog.Modified.BreakingChanges.Removed.Funcs != nil {
 		removedContent := changelog.Modified.BreakingChanges.Removed
 		for bFunc, v := range removedContent.Funcs {
@@ -380,7 +379,7 @@ func LROFilter(changelog *model.Changelog) {
 }
 
 // PageableFilter PageableFilter after OperationFilter
-func PageableFilter(changelog *model.Changelog) {
+func PageableFilter(changelog *Changelog) {
 	if changelog.Modified.HasBreakingChanges() && changelog.Modified.HasAdditiveChanges() && changelog.Modified.BreakingChanges.Removed != nil && changelog.Modified.BreakingChanges.Removed.Funcs != nil {
 		removedContent := changelog.Modified.BreakingChanges.Removed
 		for bFunc, v := range removedContent.Funcs {
@@ -403,7 +402,7 @@ func PageableFilter(changelog *model.Changelog) {
 	}
 }
 
-func InterfaceToAnyFilter(changelog *model.Changelog) {
+func InterfaceToAnyFilter(changelog *Changelog) {
 	if changelog.HasBreakingChanges() {
 		for structName, s := range changelog.Modified.BreakingChanges.Structs {
 			for k, v := range s.Fields {
@@ -419,7 +418,7 @@ func InterfaceToAnyFilter(changelog *model.Changelog) {
 	}
 }
 
-func NonExportedFilter(changelog *model.Changelog) {
+func NonExportedFilter(changelog *Changelog) {
 	if !changelog.Modified.IsEmpty() {
 		if changelog.Modified.HasAdditiveChanges() {
 			nonExportOperation(changelog.Modified.AdditiveChanges)

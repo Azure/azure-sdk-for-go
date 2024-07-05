@@ -18,8 +18,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/autorest/model"
-	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/common"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/exports"
 	"github.com/Masterminds/semver"
 )
@@ -268,7 +266,7 @@ func ReplaceVersion(packageRootPath string, newVersion string) error {
 }
 
 // calculate new version by changelog using semver package
-func CalculateNewVersion(changelog *model.Changelog, previousVersion string, isCurrentPreview bool) (*semver.Version, PullRequestLabel, error) {
+func CalculateNewVersion(changelog *Changelog, previousVersion string, isCurrentPreview bool) (*semver.Version, PullRequestLabel, error) {
 	version, err := semver.NewVersion(previousVersion)
 	if err != nil {
 		return nil, "", err
@@ -355,8 +353,8 @@ func CalculateNewVersion(changelog *model.Changelog, previousVersion string, isC
 }
 
 // add new changelog md to changelog file
-func AddChangelogToFile(changelog *model.Changelog, version *semver.Version, packageRootPath, releaseDate string) (string, error) {
-	path := filepath.Join(packageRootPath, common.ChangelogFilename)
+func AddChangelogToFile(changelog *Changelog, version *semver.Version, packageRootPath, releaseDate string) (string, error) {
+	path := filepath.Join(packageRootPath, "CHANGELOG.md")
 	b, err := ioutil.ReadFile(path)
 	if err != nil {
 		return "", err
@@ -386,7 +384,7 @@ func AddChangelogToFile(changelog *model.Changelog, version *semver.Version, pac
 func ReplaceNewClientNamePlaceholder(packageRootPath string, exports exports.Content) error {
 	path := filepath.Join(packageRootPath, "README.md")
 	var clientName string
-	for _, k := range model.SortFuncItem(exports.Funcs) {
+	for _, k := range SortFuncItem(exports.Funcs) {
 		v := exports.Funcs[k]
 		if newClientMethodNameRegex.MatchString(k) && *v.Params == "string, azcore.TokenCredential, *arm.ClientOptions" {
 			clientName = k
@@ -431,7 +429,7 @@ func UpdateModuleDefinition(packageRootPath, rpName, namespaceName string, versi
 }
 
 func UpdateOnboardChangelogVersion(packageRootPath, versionNumber string) error {
-	changelogPath := filepath.Join(packageRootPath, common.ChangelogFilename)
+	changelogPath := filepath.Join(packageRootPath, "CHANGELOG.md")
 	b, err := ioutil.ReadFile(changelogPath)
 	if err != nil {
 		return err
@@ -647,7 +645,7 @@ func replaceReadmeModule(path, rpName, namespaceName, currentVersion string) err
 func ReplaceReadmeNewClientName(packageRootPath string, exports exports.Content) error {
 	path := filepath.Join(packageRootPath, "README.md")
 	var clientName string
-	for _, k := range model.SortFuncItem(exports.Funcs) {
+	for _, k := range SortFuncItem(exports.Funcs) {
 		v := exports.Funcs[k]
 		if newClientMethodNameRegex.MatchString(k) && *v.Params == "string, azcore.TokenCredential, *arm.ClientOptions" {
 			clientName = k

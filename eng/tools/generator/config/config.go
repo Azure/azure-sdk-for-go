@@ -5,8 +5,6 @@ package config
 
 import (
 	"encoding/json"
-
-	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/autorest/model"
 )
 
 type Config struct {
@@ -21,6 +19,6 @@ func (c Config) String() string {
 	return string(b)
 }
 
-func (c Config) AdditionalOptions() ([]model.Option, error) {
+func (c Config) AdditionalOptions() ([]Option, error) {
 	return parseAdditionalOptions(c.AdditionalFlags)
 }

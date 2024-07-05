@@ -10,10 +10,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/autorest"
-	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/autorest/model"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/template"
-	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/common"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/repo"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/exports"
 	"github.com/Masterminds/semver"
@@ -35,7 +32,7 @@ type GenerateResult struct {
 	RPName            string
 	PackageName       string
 	PackageAbsPath    string
-	Changelog         model.Changelog
+	Changelog         Changelog
 	ChangelogMD       string
 	PullRequestLabels string
 }
@@ -101,7 +98,7 @@ func (ctx *GenerateContext) GenerateForAutomation(readme, repo, goVersion string
 
 func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *GenerateParam) (*GenerateResult, error) {
 	packagePath := filepath.Join(ctx.SDKPath, "sdk", "resourcemanager", generateParam.RPName, generateParam.NamespaceName)
-	changelogPath := filepath.Join(packagePath, common.ChangelogFilename)
+	changelogPath := filepath.Join(packagePath, "CHANGELOG.md")
 
 	onBoard := false
 
@@ -235,7 +232,7 @@ func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *Generate
 	if err != nil {
 		return nil, err
 	}
-	changelog, err := autorest.GetChangelogForPackage(oriExports, &newExports)
+	changelog, err := GetChangelogForPackage(oriExports, &newExports)
 	if err != nil {
 		return nil, err
 	}

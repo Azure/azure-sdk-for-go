@@ -97,6 +97,7 @@ func TestChallengePolicy(t *testing.T) {
 			cred := credentialFunc(func(ctx context.Context, tro policy.TokenRequestOptions) (azcore.AccessToken, error) {
 				authenticated = true
 				require.Equal(t, []string{test.expectedScope}, tro.Scopes)
+				require.Equal(t, "{tenant}", tro.TenantID)
 				return azcore.AccessToken{Token: accessToken, ExpiresOn: time.Now().Add(time.Hour)}, nil
 			})
 			p := NewKeyVaultChallengePolicy(cred, &KeyVaultChallengePolicyOptions{DisableChallengeResourceVerification: test.disableVerify})

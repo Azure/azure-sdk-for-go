@@ -7,9 +7,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"go/ast"
-	"io/ioutil"
+	"io"
 	"log"
 	"net/http"
+	"os"
 	"path"
 	"regexp"
 	"sort"
@@ -36,7 +37,7 @@ func GetAllVersionTags(rpName, namespaceName string) ([]string, error) {
 	if err != nil {
 		return nil, err
 	}
-	body, err := ioutil.ReadAll(res.Body)
+	body, err := io.ReadAll(res.Body)
 	if err != nil {
 		return nil, err
 	}
@@ -78,14 +79,14 @@ func GetAllVersionTags(rpName, namespaceName string) ([]string, error) {
 func ContainsPreviewAPIVersion(packagePath string) (bool, error) {
 	log.Printf("Judge whether contains preview API version from '%s' ...", packagePath)
 
-	files, err := ioutil.ReadDir(packagePath)
+	files, err := os.ReadDir(packagePath)
 	if err != nil {
 		return false, err
 	}
 
 	for _, file := range files {
 		if strings.HasSuffix(file.Name(), ".go") {
-			b, err := ioutil.ReadFile(path.Join(packagePath, file.Name()))
+			b, err := os.ReadFile(path.Join(packagePath, file.Name()))
 			if err != nil {
 				return false, err
 			}
@@ -332,7 +333,7 @@ func funcOperation(content *delta.Content) {
 					rs := strings.Split(*funcValue.Returns, ",")
 					clientFuncResponse := rs[0]
 					if strings.Contains(clientFuncResponse, "runtime") {
-						re := regexp.MustCompile("\\[(?P<response>.*)\\]")
+						re := regexp.MustCompile(`\[(?P<response>.*)\]`)
 						clientFuncResponse = re.FindString(clientFuncResponse)
 						clientFuncResponse = re.ReplaceAllString(clientFuncResponse, "${response}")
 					} else {

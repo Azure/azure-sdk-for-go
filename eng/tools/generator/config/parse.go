@@ -7,7 +7,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"io/ioutil"
 )
 
 type parser struct {
@@ -21,7 +20,7 @@ func FromReader(reader io.Reader) *parser {
 }
 
 func (p *parser) Parse() (*Config, error) {
-	b, err := ioutil.ReadAll(p.reader)
+	b, err := io.ReadAll(p.reader)
 	if err != nil {
 		return nil, err
 	}

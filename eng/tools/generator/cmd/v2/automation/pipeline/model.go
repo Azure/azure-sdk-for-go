@@ -6,7 +6,6 @@ package pipeline
 import (
 	"encoding/json"
 	"io"
-	"io/ioutil"
 )
 
 // GenerateInput ...
@@ -25,7 +24,7 @@ type GenerateInput struct {
 
 // NewGenerateInputFrom ...
 func NewGenerateInputFrom(reader io.Reader) (*GenerateInput, error) {
-	b, err := ioutil.ReadAll(reader)
+	b, err := io.ReadAll(reader)
 	if err != nil {
 		return nil, err
 	}

@@ -14,6 +14,7 @@
 
 ### Features Added
 * Restored `AzurePipelinesCredential` and persistent token caching API
+* Added support for a proxy IMDS client via the `IMDS_PROXY` environment variable
 
 ## Breaking Changes
 > These changes affect only code written against a beta version such as v1.6.0-beta.4

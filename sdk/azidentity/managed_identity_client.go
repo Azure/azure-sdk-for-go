@@ -36,6 +36,7 @@ const (
 	identityServerThumbprint = "IDENTITY_SERVER_THUMBPRINT"
 	headerMetadata           = "Metadata"
 	imdsEndpoint             = "http://169.254.169.254/metadata/identity/oauth2/token"
+	imdsProxyEndpoint        = "IMDS_PROXY"
 	miResID                  = "mi_res_id"
 	msiEndpoint              = "MSI_ENDPOINT"
 	msiResID                 = "msi_res_id"
@@ -165,6 +166,8 @@ func newManagedIdentityClient(options *ManagedIdentityCredentialOptions) (*manag
 			env = "Cloud Shell"
 			c.msiType = msiTypeCloudShell
 		}
+	} else if endpoint, ok := os.LookupEnv(imdsProxyEndpoint); ok {
+		c.endpoint = endpoint
 	} else {
 		c.probeIMDS = options.dac
 		setIMDSRetryOptionDefaults(&cp.Retry)

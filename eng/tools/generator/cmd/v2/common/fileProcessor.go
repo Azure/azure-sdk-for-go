@@ -748,7 +748,11 @@ func ReplaceLiveTestModule(newVersion *semver.Version, packagePath, rpName, pack
 				if strings.Contains(line, fmt.Sprintf("github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/%s/%s", rpName, packageName)) {
 					parts := strings.Split(strings.Trim(strings.TrimSpace(line), "\""), "/")
 					if parts[len(parts)-1] != fmt.Sprintf("v%d", newVersion.Major()) {
-						lines[i] = fmt.Sprintf("\t\"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/%s/%s/v%d\"", rpName, packageName, newVersion.Major())
+						if newVersion.Major() > 0 {
+							lines[i] = fmt.Sprintf("\t\"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/%s/%s/v%d\"", rpName, packageName, newVersion.Major())
+						} else {
+							lines[i] = fmt.Sprintf("\t\"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/%s/%s\"", rpName, packageName)
+						}
 					}
 					break
 				}

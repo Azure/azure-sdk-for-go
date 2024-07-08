@@ -104,6 +104,14 @@ func ParseTypeSpecConfig(tspconfigPath string) (*TypeSpecConfig, error) {
 
 		goOption["module"] = module
 		tspConfig.EditOptions(string(TypeSpec_GO), goOption, false)
+
+		typespecGoOption, err := NewGoEmitterOptions(goOption)
+		if err != nil {
+			return nil, err
+		}
+		if err = typespecGoOption.Validate(); err != nil {
+			return nil, err
+		}
 	}
 
 	return &tspConfig, err

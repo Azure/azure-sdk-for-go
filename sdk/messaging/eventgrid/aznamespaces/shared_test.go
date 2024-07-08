@@ -106,7 +106,7 @@ func newClientOptions(t *testing.T) azcore.ClientOptions {
 		}
 	} else {
 		options = azcore.ClientOptions{
-			Transport: newRecordingTransporter(t, tv),
+			Transport: newRecordingTransporter(t),
 		}
 	}
 
@@ -178,49 +178,38 @@ func newReceiverClient(t *testing.T, useSASKey bool, options azcore.ClientOption
 	return client
 }
 
-func newRecordingTransporter(t *testing.T, testVars testVars) policy.Transporter {
-	recordingOpts := &recording.RecordingOptions{
-		ProxyPort:    os.Getpid()%10000 + 20000,
-		UseHTTPS:     true,
-		TestInstance: t,
-	}
-
-	transport, err := recording.NewRecordingHTTPClient(t, recordingOpts)
+func addSanitizers(t *testing.T) {
+	t.Logf("Setting up sanitizers")
+	err := recording.AddURISanitizer(fakeTestVars.Endpoint, "https://[^/]+?/", nil)
 	require.NoError(t, err)
 
-	err = recording.Start(t, recordingDirectory, recordingOpts)
+	err = recording.AddURISanitizer(fakeTestVars.Topic, tv.Topic, nil)
 	require.NoError(t, err)
 
-	err = recording.AddURISanitizer(fakeTestVars.Endpoint, "https://[^/]+?/", recordingOpts)
+	err = recording.AddURISanitizer(fakeTestVars.Subscription, tv.Subscription, nil)
 	require.NoError(t, err)
 
-	err = recording.AddURISanitizer(fakeTestVars.Topic, testVars.Topic, recordingOpts)
-	require.NoError(t, err)
-
-	err = recording.AddURISanitizer(fakeTestVars.Subscription, testVars.Subscription, recordingOpts)
-	require.NoError(t, err)
-
-	err = recording.AddGeneralRegexSanitizer(`"time":"2023-06-17T00:33:32Z"`, `"time":".+?"`, recordingOpts)
+	err = recording.AddGeneralRegexSanitizer(`"time":"2023-06-17T00:33:32Z"`, `"time":".+?"`, nil)
 	require.NoError(t, err)
 
 	err = recording.AddGeneralRegexSanitizer(
 		`"id":"00000000-0000-0000-0000-000000000000"`,
-		`"id":"[^"]+"`, recordingOpts)
+		`"id":"[^"]+"`, nil)
 	require.NoError(t, err)
 
 	err = recording.AddGeneralRegexSanitizer(
 		`"lockToken":"fake-lock-token"`,
-		`"lockToken":\s*"[^"]+"`, recordingOpts)
+		`"lockToken":\s*"[^"]+"`, nil)
 	require.NoError(t, err)
 
 	err = recording.AddGeneralRegexSanitizer(
 		`"lockTokens":["fake-lock-token"]`,
-		`"lockTokens":\s*\[\s*"[^"]+"\s*\]`, recordingOpts)
+		`"lockTokens":\s*\[\s*"[^"]+"\s*\]`, nil)
 	require.NoError(t, err)
 
 	err = recording.AddGeneralRegexSanitizer(
 		`"succeededLockTokens":["fake-lock-token"]`,
-		`"succeededLockTokens":\s*\[\s*"[^"]+"\s*\]`, recordingOpts)
+		`"succeededLockTokens":\s*\[\s*"[^"]+"\s*\]`, nil)
 	require.NoError(t, err)
 
 	err = recording.AddGeneralRegexSanitizer(
@@ -229,12 +218,12 @@ func newRecordingTransporter(t *testing.T, testVars testVars) policy.Transporter
 			`\[`+
 			`(\s*"[^"]+"\s*\,){2}`+
 			`\s*"[^"]+"\s*`+
-			`\]`, recordingOpts)
+			`\]`, nil)
 	require.NoError(t, err)
 
 	err = recording.AddGeneralRegexSanitizer(
 		`"lockTokens":["fake-lock-token","fake-lock-token"]`,
-		`"lockTokens":\s*\[\s*"[^"]+"\s*\,\s*"[^"]+"\s*\]`, recordingOpts)
+		`"lockTokens":\s*\[\s*"[^"]+"\s*\,\s*"[^"]+"\s*\]`, nil)
 	require.NoError(t, err)
 
 	err = recording.AddGeneralRegexSanitizer(
@@ -243,11 +232,25 @@ func newRecordingTransporter(t *testing.T, testVars testVars) policy.Transporter
 			`\[`+
 			`(\s*"[^"]+"\s*\,){2}`+
 			`\s*"[^"]+"\s*`+
-			`\]`, recordingOpts)
+			`\]`, nil)
+	require.NoError(t, err)
+}
+
+var initSanitizers sync.Once
+
+func newRecordingTransporter(t *testing.T) policy.Transporter {
+	transport, err := recording.NewRecordingHTTPClient(t, nil)
+	require.NoError(t, err)
+
+	initSanitizers.Do(func() {
+		addSanitizers(t)
+	})
+
+	err = recording.Start(t, recordingDirectory, nil)
 	require.NoError(t, err)
 
 	t.Cleanup(func() {
-		err := recording.Stop(t, recordingOpts)
+		err := recording.Stop(t, nil)
 		require.NoError(t, err)
 	})
 

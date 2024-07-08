@@ -727,7 +727,6 @@ func ReplaceConstModuleVersion(packagePath string, newVersion string) error {
 }
 
 func ReplaceLiveTestModule(newVersion *semver.Version, packagePath, rpName, packageName string) error {
-
 	return filepath.Walk(packagePath, func(path string, info fs.FileInfo, err error) error {
 		if err != nil {
 			return err
@@ -756,6 +755,9 @@ func ReplaceLiveTestModule(newVersion *semver.Version, packagePath, rpName, pack
 					}
 					break
 				}
+			}
+			if string(data) == strings.Join(lines, "\n") {
+				return nil
 			}
 
 			return os.WriteFile(path, []byte(strings.Join(lines, "\n")), 0644)

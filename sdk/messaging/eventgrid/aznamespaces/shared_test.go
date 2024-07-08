@@ -261,7 +261,7 @@ func requireEqualCloudEvent(t *testing.T, expected messaging.CloudEvent, actual 
 	// just have to assume it's 'Sanitized'.
 
 	if recording.GetRecordMode() == recording.PlaybackMode {
-		expected.Source = "Sanitized"
+		expected.Source = recording.SanitizedValue
 	}
 
 	require.NotEmpty(t, actual.ID, "ID is not empty")

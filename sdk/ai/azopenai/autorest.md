@@ -15,6 +15,7 @@ go: true
 use: "@autorest/go@4.0.0-preview.63"
 title: "OpenAI"
 slice-elements-byval: true
+rawjson-as-bytes: true
 # can't use this since it removes an innererror type that we want ()
 # remove-non-reference-schema: true
 ```

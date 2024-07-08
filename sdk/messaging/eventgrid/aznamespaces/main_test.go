@@ -12,10 +12,10 @@ import (
 	"os"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/test/credential"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/eventgrid/aznamespaces"
 	"github.com/joho/godotenv"
 )
@@ -60,26 +60,16 @@ func purgeEvents() {
 		panic(err)
 	}
 
-	// Disabled: Forcing use of SASKey until https://github.com/Azure/azure-sdk-for-go/issues/22961 is resolved
-	// cred, err := azidentity.NewDefaultAzureCredential(nil)
+	cred, err := credential.New(nil)
 
-	// if err != nil {
-	// 	panic(err)
-	// }
+	if err != nil {
+		panic(err)
+	}
 
-	// receiver, err := aznamespaces.NewReceiverClient(testVars.Endpoint, testVars.Topic, testVars.Subscription, cred, nil)
-
-	// if err != nil {
-	// 	panic(err)
-	// }
-
-	cred := azcore.NewKeyCredential(testVars.Key)
-
-	receiver, err := aznamespaces.NewReceiverClientWithSharedKeyCredential(testVars.Endpoint, testVars.Topic, testVars.Subscription, cred, &aznamespaces.ReceiverClientOptions{
+	receiver, err := aznamespaces.NewReceiverClient(testVars.Endpoint, testVars.Topic, testVars.Subscription, cred, &aznamespaces.ReceiverClientOptions{
 		ClientOptions: policy.ClientOptions{
 			Logging: policy.LogOptions{
 				IncludeBody:        true,
-				AllowedHeaders:     []string{"Authorization"},
 				AllowedQueryParams: []string{"maxWaitTime", "maxEvents"},
 			},
 		},

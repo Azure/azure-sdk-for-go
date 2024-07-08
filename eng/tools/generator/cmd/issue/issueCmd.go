@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/config"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/config/validate"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/flags"
-	"github.com/google/go-github/v53/github"
+	"github.com/google/go-github/v62/github"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
 )

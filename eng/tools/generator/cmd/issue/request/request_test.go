@@ -10,7 +10,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/issue/link"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/issue/query"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/issue/request"
-	"github.com/google/go-github/v53/github"
+	"github.com/google/go-github/v62/github"
 )
 
 func TestParseReadmeFromLink(t *testing.T) {

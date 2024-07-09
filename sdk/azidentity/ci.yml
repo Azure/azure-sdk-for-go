@@ -30,6 +30,8 @@ extends:
           SubscriptionConfigurations:
             - $(sub-config-azure-cloud-test-resources)
             - $(sub-config-identity-test-resources)
+      EnvVars:
+          SYSTEM_ACCESS_TOKEN: $(System.AccessToken)
       RunLiveTests: true
       ServiceDirectory: azidentity
       UseFederatedAuth: true

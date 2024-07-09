@@ -16,7 +16,22 @@ if ($CI) {
     Write-Host "Skipping post-provisioning script because resources weren't deployed"
     return
   }
-  az login --service-principal -u $DeploymentOutputs['AZIDENTITY_CLIENT_ID'] -p $DeploymentOutputs['AZIDENTITY_CLIENT_SECRET'] --tenant $DeploymentOutputs['AZIDENTITY_TENANT_ID']
+  if (!${env:SYSTEM_ACCESS_TOKEN}) {
+    throw "no value for SYSTEM_ACCESS_TOKEN"
+  }
+
+  $oidcTokenResponse = Invoke-RestMethod -Headers @{
+    Authorization  = "Bearer ${env:SYSTEM_ACCESS_TOKEN}"
+    'Content-Type' = 'application/json'
+  } `
+    -Method Post `
+    -Uri "${env:SYSTEM_OIDCREQUESTURI}?api-version=7.1&serviceConnectionId=${env:AZURESUBSCRIPTION_SERVICE_CONNECTION_ID}"`
+
+  $oidcToken = $oidcTokenResponse.oidcToken
+  if (!$oidcToken) {
+    throw "failed to get OIDC token"
+  }
+  az login --allow-no-subscriptions --service-principal -u $env:AZURESUBSCRIPTION_CLIENT_ID --tenant $env:AZURESUBSCRIPTION_TENANT_ID --federated-token $oidcToken
   az account set --subscription $DeploymentOutputs['AZIDENTITY_SUBSCRIPTION_ID']
 }
 
@@ -53,9 +68,9 @@ az container create -g $rg -n $aciName --image $image `
   --role "Storage Blob Data Reader" `
   --scope $($DeploymentOutputs['AZIDENTITY_STORAGE_ID']) `
   -e AZIDENTITY_STORAGE_NAME=$($DeploymentOutputs['AZIDENTITY_STORAGE_NAME']) `
-     AZIDENTITY_STORAGE_NAME_USER_ASSIGNED=$($DeploymentOutputs['AZIDENTITY_STORAGE_NAME_USER_ASSIGNED']) `
-     AZIDENTITY_USER_ASSIGNED_IDENTITY=$($DeploymentOutputs['AZIDENTITY_USER_ASSIGNED_IDENTITY']) `
-     FUNCTIONS_CUSTOMHANDLER_PORT=80
+  AZIDENTITY_STORAGE_NAME_USER_ASSIGNED=$($DeploymentOutputs['AZIDENTITY_STORAGE_NAME_USER_ASSIGNED']) `
+  AZIDENTITY_USER_ASSIGNED_IDENTITY=$($DeploymentOutputs['AZIDENTITY_USER_ASSIGNED_IDENTITY']) `
+  FUNCTIONS_CUSTOMHANDLER_PORT=80
 Write-Host "##vso[task.setvariable variable=AZIDENTITY_ACI_NAME;]$aciName"
 
 # Azure Functions deployment: copy the Windows binary from the Docker image, deploy it in a zip

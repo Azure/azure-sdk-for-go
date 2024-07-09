@@ -20,7 +20,6 @@ $contents = ""
 Get-AzServiceBusNamespace -ResourceGroup $rg
 | ForEach-Object {
     $cs = (Get-AzServiceBusKey -ResourceGroup $rg -NamespaceName $_.Name -AuthorizationRuleName RootManageSharedAccessKey).PrimaryConnectionString
-    #$name = $_.Name
     $endpoint = $_.ServiceBusEndpoint.Replace("https://", "").Replace(":443/", "")
 
     if ($_.SkuTier -eq "Standard") {

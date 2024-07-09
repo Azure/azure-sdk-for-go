@@ -151,7 +151,7 @@ func ExecuteTypeSpecGenerate(ctx *GenerateContext, emitOptions string, tspClient
 		"init",
 		"--tsp-config", ctx.TypeSpecConfig.Path,
 		"--commit", ctx.SpecCommitHash,
-		"--repo", ctx.SpecRepoURL,
+		"--repo", ctx.SpecRepoURL[len("https://github.com/"):],
 		"--local-spec-repo", filepath.Dir(ctx.TypeSpecConfig.Path),
 		"--emitter-options", emitOptions,
 	}

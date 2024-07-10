@@ -1,5 +1,6 @@
 https://github.com/Azure/azure-sdk-tools/blob/main/eng/common/testproxy/transition-scripts/generate-assets-json.ps1
 
-https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory/v8
-https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/avs/armavs/v2
-https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v3
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/liftrqumulo/armqumulo/v2
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v6
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v6
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice/v6

@@ -14,6 +14,7 @@ import (
 	"path"
 	"path/filepath"
 	"regexp"
+	"slices"
 	"strconv"
 	"strings"
 	"time"
@@ -726,7 +727,7 @@ func ReplaceConstModuleVersion(packagePath string, newVersion string) error {
 	return os.WriteFile(path, []byte(contents), 0644)
 }
 
-func ReplaceLiveTestModule(newVersion *semver.Version, packagePath, rpName, packageName string) error {
+func ReplaceModule(newVersion *semver.Version, packagePath, baseModule string, suffixs ...string) error {
 	return filepath.Walk(packagePath, func(path string, info fs.FileInfo, err error) error {
 		if err != nil {
 			return err
@@ -736,21 +737,26 @@ func ReplaceLiveTestModule(newVersion *semver.Version, packagePath, rpName, pack
 			return nil
 		}
 
-		if strings.HasSuffix(info.Name(), "_live_test.go") {
+		hasSuffix := slices.ContainsFunc(suffixs, func(s string) bool { return strings.HasSuffix(info.Name(), s) })
+		if len(suffixs) == 0 || hasSuffix {
 			data, err := os.ReadFile(path)
 			if err != nil {
 				return err
 			}
 
+			if !strings.Contains(string(data), baseModule) {
+				return nil
+			}
+
 			lines := strings.Split(string(data), "\n")
 			for i, line := range lines {
-				if strings.Contains(line, fmt.Sprintf("github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/%s/%s", rpName, packageName)) {
+				if strings.HasPrefix(strings.TrimSpace(line), fmt.Sprintf("\"%s", baseModule)) {
 					parts := strings.Split(strings.Trim(strings.TrimSpace(line), "\""), "/")
 					if parts[len(parts)-1] != fmt.Sprintf("v%d", newVersion.Major()) {
-						if newVersion.Major() > 0 {
-							lines[i] = fmt.Sprintf("\t\"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/%s/%s/v%d\"", rpName, packageName, newVersion.Major())
+						if newVersion.Major() > 1 {
+							lines[i] = fmt.Sprintf("\t\"%s/v%d\"", baseModule, newVersion.Major())
 						} else {
-							lines[i] = fmt.Sprintf("\t\"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/%s/%s\"", rpName, packageName)
+							lines[i] = fmt.Sprintf("\t\"%s\"", baseModule)
 						}
 					}
 					break

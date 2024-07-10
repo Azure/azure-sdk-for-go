@@ -575,7 +575,8 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam) (*
 		// When sdk has major version bump, the live test needs to update the module referenced in the code.
 		if existSuffixFile(packagePath, "_live_test.go") {
 			log.Printf("Replace live test module v2+...")
-			if err = ReplaceLiveTestModule(version, packagePath, generateParam.RPName, generateParam.NamespaceName); err != nil {
+			baseModule := fmt.Sprintf("github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/%s/%s", generateParam.RPName, generateParam.NamespaceName)
+			if err = ReplaceModule(version, packagePath, baseModule, "_live_test.go"); err != nil {
 				return nil, err
 			}
 		}

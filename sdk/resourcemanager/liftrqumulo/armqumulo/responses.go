@@ -10,7 +10,7 @@ package armqumulo
 
 // FileSystemsClientCreateOrUpdateResponse contains the response from method FileSystemsClient.BeginCreateOrUpdate.
 type FileSystemsClientCreateOrUpdateResponse struct {
-	// A FileSystem Resource by Qumulo
+	// Concrete tracked resource types can be created by aliasing this type using a specific property type.
 	FileSystemResource
 }
 
@@ -21,7 +21,7 @@ type FileSystemsClientDeleteResponse struct {
 
 // FileSystemsClientGetResponse contains the response from method FileSystemsClient.Get.
 type FileSystemsClientGetResponse struct {
-	// A FileSystem Resource by Qumulo
+	// Concrete tracked resource types can be created by aliasing this type using a specific property type.
 	FileSystemResource
 }
 
@@ -39,7 +39,7 @@ type FileSystemsClientListBySubscriptionResponse struct {
 
 // FileSystemsClientUpdateResponse contains the response from method FileSystemsClient.Update.
 type FileSystemsClientUpdateResponse struct {
-	// A FileSystem Resource by Qumulo
+	// Concrete tracked resource types can be created by aliasing this type using a specific property type.
 	FileSystemResource
 }
 

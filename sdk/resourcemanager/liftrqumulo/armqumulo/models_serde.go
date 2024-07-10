@@ -108,7 +108,6 @@ func (f FileSystemResourceProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "availabilityZone", f.AvailabilityZone)
 	populate(objectMap, "clusterLoginUrl", f.ClusterLoginURL)
 	populate(objectMap, "delegatedSubnetId", f.DelegatedSubnetID)
-	populate(objectMap, "initialCapacity", f.InitialCapacity)
 	populate(objectMap, "marketplaceDetails", f.MarketplaceDetails)
 	populate(objectMap, "privateIPs", f.PrivateIPs)
 	populate(objectMap, "provisioningState", f.ProvisioningState)
@@ -137,9 +136,6 @@ func (f *FileSystemResourceProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "delegatedSubnetId":
 			err = unpopulate(val, "DelegatedSubnetID", &f.DelegatedSubnetID)
-			delete(rawMsg, key)
-		case "initialCapacity":
-			err = unpopulate(val, "InitialCapacity", &f.InitialCapacity)
 			delete(rawMsg, key)
 		case "marketplaceDetails":
 			err = unpopulate(val, "MarketplaceDetails", &f.MarketplaceDetails)
@@ -202,10 +198,8 @@ func (f *FileSystemResourceUpdate) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type FileSystemResourceUpdateProperties.
 func (f FileSystemResourceUpdateProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "clusterLoginUrl", f.ClusterLoginURL)
 	populate(objectMap, "delegatedSubnetId", f.DelegatedSubnetID)
 	populate(objectMap, "marketplaceDetails", f.MarketplaceDetails)
-	populate(objectMap, "privateIPs", f.PrivateIPs)
 	populate(objectMap, "userDetails", f.UserDetails)
 	return json.Marshal(objectMap)
 }
@@ -219,17 +213,11 @@ func (f *FileSystemResourceUpdateProperties) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
-		case "clusterLoginUrl":
-			err = unpopulate(val, "ClusterLoginURL", &f.ClusterLoginURL)
-			delete(rawMsg, key)
 		case "delegatedSubnetId":
 			err = unpopulate(val, "DelegatedSubnetID", &f.DelegatedSubnetID)
 			delete(rawMsg, key)
 		case "marketplaceDetails":
 			err = unpopulate(val, "MarketplaceDetails", &f.MarketplaceDetails)
-			delete(rawMsg, key)
-		case "privateIPs":
-			err = unpopulate(val, "PrivateIPs", &f.PrivateIPs)
 			delete(rawMsg, key)
 		case "userDetails":
 			err = unpopulate(val, "UserDetails", &f.UserDetails)
@@ -289,6 +277,7 @@ func (m MarketplaceDetails) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "offerId", m.OfferID)
 	populate(objectMap, "planId", m.PlanID)
 	populate(objectMap, "publisherId", m.PublisherID)
+	populate(objectMap, "termUnit", m.TermUnit)
 	return json.Marshal(objectMap)
 }
 
@@ -315,6 +304,9 @@ func (m *MarketplaceDetails) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "publisherId":
 			err = unpopulate(val, "PublisherID", &m.PublisherID)
+			delete(rawMsg, key)
+		case "termUnit":
+			err = unpopulate(val, "TermUnit", &m.TermUnit)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -553,7 +545,7 @@ func populate(m map[string]any, k string, v any) {
 }
 
 func unpopulate(data json.RawMessage, fn string, v any) error {
-	if data == nil {
+	if data == nil || string(data) == "null" {
 		return nil
 	}
 	if err := json.Unmarshal(data, v); err != nil {

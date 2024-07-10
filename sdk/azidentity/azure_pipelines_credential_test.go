@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"strings"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -53,17 +54,28 @@ func TestAzurePipelinesCredential(t *testing.T) {
 		if recording.GetRecordMode() != recording.LiveMode {
 			t.Skip("this test runs only live in an Azure Pipeline with a configured service connection")
 		}
-		clientID := os.Getenv("AZURE_SERVICE_CONNECTION_CLIENT_ID")
-		connectionID := os.Getenv("AZURE_SERVICE_CONNECTION_ID")
+		clientID := os.Getenv("AZURESUBSCRIPTION_CLIENT_ID")
+		connectionID := os.Getenv("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID")
 		systemAccessToken := os.Getenv("SYSTEM_ACCESSTOKEN")
-		tenantID := os.Getenv("AZURE_SERVICE_CONNECTION_TENANT_ID")
-		for _, s := range []string{clientID, connectionID, systemAccessToken, tenantID} {
-			if s == "" {
-				t.Skip("set AZURE_SERVICE_CONNECTION_CLIENT_ID, AZURE_SERVICE_CONNECTION_ID, AZURE_SERVICE_CONNECTION_TENANT_ID and SYSTEM_ACCESSTOKEN to run this test")
-			}
+		tenantID := os.Getenv("AZURESUBSCRIPTION_TENANT_ID")
+		unset := []string{}
+		if clientID == "" {
+			unset = append(unset, "AZURESUBSCRIPTION_CLIENT_ID")
+		}
+		if connectionID == "" {
+			unset = append(unset, "AZURESUBSCRIPTION_SERVICE_CONNECTION_ID")
+		}
+		if systemAccessToken == "" {
+			unset = append(unset, "SYSTEM_ACCESSTOKEN")
+		}
+		if tenantID == "" {
+			unset = append(unset, "AZURESUBSCRIPTION_TENANT_ID")
+		}
+		if len(unset) > 0 {
+			t.Skip("no value for ", strings.Join(unset, ", "))
 		}
 		cred, err := NewAzurePipelinesCredential(tenantID, clientID, connectionID, systemAccessToken, nil)
 		require.NoError(t, err)
-		testGetTokenSuccess(t, cred, "https://vault.azure.net/.default")
+		testGetTokenSuccess(t, cred)
 	})
 }

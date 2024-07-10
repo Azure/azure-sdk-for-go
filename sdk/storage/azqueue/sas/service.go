@@ -36,7 +36,7 @@ func (v QueueSignatureValues) SignWithSharedKey(sharedKeyCredential *SharedKeyCr
 		return QueryParameters{}, errors.New("service SAS is missing at least one of these: ExpiryTime or Permissions")
 	}
 
-	//Make sure the permission characters are in the correct order
+	// Make sure the permission characters are in the correct order
 	perms, err := parseQueuePermissions(v.Permissions)
 	if err != nil {
 		return QueryParameters{}, err

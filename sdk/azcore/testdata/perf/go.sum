@@ -1,5 +1,5 @@
-github.com/Azure/azure-sdk-for-go/sdk/internal v1.9.0 h1:H+U3Gk9zY56G3u872L82bk4thcsy2Gghb9ExT4Zvm1o=
-github.com/Azure/azure-sdk-for-go/sdk/internal v1.9.0/go.mod h1:mgrmMSgaLp9hmax62XQTd0N4aAqSE5E0DulSpVYK7vc=
+github.com/Azure/azure-sdk-for-go/sdk/internal v1.9.1 h1:Xy/qV1DyOhhqsU/z0PyFMJfYCxnzna+vBEUtFW0ksQo=
+github.com/Azure/azure-sdk-for-go/sdk/internal v1.9.1/go.mod h1:oib6iWdC+sILvNUoJbbBn3xv7TXow7mEp/WRcsYvmow=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
 github.com/stretchr/testify v1.9.0 h1:HtqpIVDClZ4nwg75+f6Lvsy/wHu+3BoSGCbBAcpTsTg=

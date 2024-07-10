@@ -17,9 +17,9 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	azlog "github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/test/credential"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/atom"
 	"github.com/Azure/go-amqp"
@@ -63,7 +63,7 @@ func GetIdentityVars(t *testing.T) *IdentityVars {
 		return nil
 	}
 
-	defaultAzureCred, err := azidentity.NewDefaultAzureCredential(nil)
+	tokenCred, err := credential.New(nil)
 	require.NoError(t, err)
 
 	envVars := MustGetEnvVars([]EnvKey{EnvKeyEndpoint, EnvKeyEndpointPremium})
@@ -71,7 +71,7 @@ func GetIdentityVars(t *testing.T) *IdentityVars {
 	return &IdentityVars{
 		Endpoint:        envVars[EnvKeyEndpoint],
 		PremiumEndpoint: envVars[EnvKeyEndpointPremium],
-		Cred:            defaultAzureCred,
+		Cred:            tokenCred,
 	}
 }
 

@@ -21,10 +21,6 @@ import (
 )
 
 func TestClients_UsingSASKey(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
-
 	sender, receiver := newClients(t, true)
 
 	ce, err := messaging.NewCloudEvent("source", "eventType", "hello world", nil)
@@ -51,10 +47,6 @@ func TestClients_UsingSASKey(t *testing.T) {
 }
 
 func TestFailedAck(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
-
 	ce, err := messaging.NewCloudEvent("TestFailedAck", "world", []byte("ack this one"), &messaging.CloudEventOptions{
 		DataContentType: to.Ptr("application/octet-stream"),
 	})
@@ -101,10 +93,6 @@ func TestFailedAck(t *testing.T) {
 }
 
 func TestPartialAckFailure(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
-
 	ce, err := messaging.NewCloudEvent("TestPartialAckFailure", "world", []byte("event one"), &messaging.CloudEventOptions{
 		DataContentType: to.Ptr("application/octet-stream"),
 	})
@@ -153,9 +141,6 @@ func TestPartialAckFailure(t *testing.T) {
 }
 
 func TestRejectEvents(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
 
 	ce, err := messaging.NewCloudEvent("TestAbandon", "world", []byte("event one"), &messaging.CloudEventOptions{
 		DataContentType: to.Ptr("application/octet-stream"),
@@ -197,10 +182,6 @@ func TestRejectEvents(t *testing.T) {
 }
 
 func TestReleaseEvents(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
-
 	ce, err := messaging.NewCloudEvent("TestRelease", "world", []byte("event one"), &messaging.CloudEventOptions{
 		DataContentType: to.Ptr("application/octet-stream"),
 	})
@@ -240,10 +221,6 @@ func TestReleaseEvents(t *testing.T) {
 }
 
 func TestPublishBytes(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
-
 	ce, err := messaging.NewCloudEvent("TestPublishBytes", "eventType", []byte("TestPublishBytes"), &messaging.CloudEventOptions{
 		DataContentType: to.Ptr("application/octet-stream"),
 	})
@@ -267,9 +244,6 @@ func TestPublishBytes(t *testing.T) {
 }
 
 func TestSendEventWithStringPayload(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
 	sender, receiver := newClients(t, false)
 
 	ce, err := messaging.NewCloudEvent("TestPublishString", "eventType", "TestPublishString", &messaging.CloudEventOptions{
@@ -293,9 +267,6 @@ func TestSendEventWithStringPayload(t *testing.T) {
 }
 
 func TestSendEventsAndReceiveEvents(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
 	sender, receiver := newClients(t, false)
 
 	testData := []struct {
@@ -366,10 +337,6 @@ func TestSendEventsAndReceiveEvents(t *testing.T) {
 }
 
 func TestSimpleErrors(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
-
 	sender, _ := newClients(t, false)
 
 	sendResp, err := sender.SendEvents(context.Background(), []*messaging.CloudEvent{
@@ -391,9 +358,6 @@ func TestSimpleErrors(t *testing.T) {
 }
 
 func TestRenewEventLocks(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
 	sender, receiver := newClients(t, false)
 
 	ce := mustCreateEvent(t, "TestRenewCloudEventLocks", "eventType", "hello world", nil)
@@ -412,9 +376,6 @@ func TestRenewEventLocks(t *testing.T) {
 }
 
 func TestReleaseWithDelay(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
 	sender, receiver := newClients(t, false)
 
 	ce := mustCreateEvent(t, "TestReleaseWithDelay", "eventType", "hello world", nil)

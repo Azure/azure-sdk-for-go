@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/informaticadatamgmt/arminformaticadatamgmt"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a07cb79078c828c5404a5154fea6c60d6e43256e/specification/informatica/resource-manager/Informatica.DataManagement/stable/2024-05-08/examples/ServerlessRuntimes_ListByInformaticaOrganizationResource_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/56537883b7cdb95618c3d1ec1c0ee37b59d88d72/specification/informatica/resource-manager/Informatica.DataManagement/stable/2024-05-08/examples/ServerlessRuntimes_ListByInformaticaOrganizationResource_MaximumSet_Gen.json
 func ExampleServerlessRuntimesClient_NewListByInformaticaOrganizationResourcePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -99,8 +99,8 @@ func ExampleServerlessRuntimesClient_NewListByInformaticaOrganizationResourcePag
 		// 				},
 		// 				ServerlessRuntimeNetworkProfile: &arminformaticadatamgmt.ServerlessRuntimeNetworkProfile{
 		// 					NetworkInterfaceConfiguration: &arminformaticadatamgmt.NetworkInterfaceConfiguration{
-		// 						SubnetID: to.Ptr("s"),
-		// 						VnetID: to.Ptr("uaqjvtubxccjs"),
+		// 						SubnetID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Networks/virtualNetworks/test-vnet/subnets/subnet1"),
+		// 						VnetID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/HypernetVnet1"),
 		// 					},
 		// 				},
 		// 				ServerlessRuntimeTags: []*arminformaticadatamgmt.ServerlessRuntimeTag{
@@ -118,7 +118,7 @@ func ExampleServerlessRuntimesClient_NewListByInformaticaOrganizationResourcePag
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a07cb79078c828c5404a5154fea6c60d6e43256e/specification/informatica/resource-manager/Informatica.DataManagement/stable/2024-05-08/examples/ServerlessRuntimes_Get_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/56537883b7cdb95618c3d1ec1c0ee37b59d88d72/specification/informatica/resource-manager/Informatica.DataManagement/stable/2024-05-08/examples/ServerlessRuntimes_Get_MaximumSet_Gen.json
 func ExampleServerlessRuntimesClient_Get_serverlessRuntimesGet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -193,8 +193,8 @@ func ExampleServerlessRuntimesClient_Get_serverlessRuntimesGet() {
 	// 		},
 	// 		ServerlessRuntimeNetworkProfile: &arminformaticadatamgmt.ServerlessRuntimeNetworkProfile{
 	// 			NetworkInterfaceConfiguration: &arminformaticadatamgmt.NetworkInterfaceConfiguration{
-	// 				SubnetID: to.Ptr("s"),
-	// 				VnetID: to.Ptr("uaqjvtubxccjs"),
+	// 				SubnetID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Networks/virtualNetworks/test-vnet/subnets/subnet1"),
+	// 				VnetID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/HypernetVnet1"),
 	// 				VnetResourceGUID: to.Ptr("5328d299-1462-4be0-bef1-303a28e556a0"),
 	// 			},
 	// 		},
@@ -211,7 +211,7 @@ func ExampleServerlessRuntimesClient_Get_serverlessRuntimesGet() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a07cb79078c828c5404a5154fea6c60d6e43256e/specification/informatica/resource-manager/Informatica.DataManagement/stable/2024-05-08/examples/ServerlessRuntimes_Get_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/56537883b7cdb95618c3d1ec1c0ee37b59d88d72/specification/informatica/resource-manager/Informatica.DataManagement/stable/2024-05-08/examples/ServerlessRuntimes_Get_MinimumSet_Gen.json
 func ExampleServerlessRuntimesClient_Get_serverlessRuntimesGetMin() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -234,7 +234,7 @@ func ExampleServerlessRuntimesClient_Get_serverlessRuntimesGetMin() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a07cb79078c828c5404a5154fea6c60d6e43256e/specification/informatica/resource-manager/Informatica.DataManagement/stable/2024-05-08/examples/ServerlessRuntimes_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/56537883b7cdb95618c3d1ec1c0ee37b59d88d72/specification/informatica/resource-manager/Informatica.DataManagement/stable/2024-05-08/examples/ServerlessRuntimes_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleServerlessRuntimesClient_BeginCreateOrUpdate_serverlessRuntimesCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -291,8 +291,8 @@ func ExampleServerlessRuntimesClient_BeginCreateOrUpdate_serverlessRuntimesCreat
 			},
 			ServerlessRuntimeNetworkProfile: &arminformaticadatamgmt.ServerlessRuntimeNetworkProfile{
 				NetworkInterfaceConfiguration: &arminformaticadatamgmt.NetworkInterfaceConfiguration{
-					SubnetID:         to.Ptr("s"),
-					VnetID:           to.Ptr("uaqjvtubxccjs"),
+					SubnetID:         to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Networks/virtualNetworks/test-vnet/subnets/subnet1"),
+					VnetID:           to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/HypernetVnet1"),
 					VnetResourceGUID: to.Ptr("5328d299-1462-4be0-bef1-303a28e556a0"),
 				},
 			},
@@ -374,8 +374,8 @@ func ExampleServerlessRuntimesClient_BeginCreateOrUpdate_serverlessRuntimesCreat
 	// 		},
 	// 		ServerlessRuntimeNetworkProfile: &arminformaticadatamgmt.ServerlessRuntimeNetworkProfile{
 	// 			NetworkInterfaceConfiguration: &arminformaticadatamgmt.NetworkInterfaceConfiguration{
-	// 				SubnetID: to.Ptr("s"),
-	// 				VnetID: to.Ptr("uaqjvtubxccjs"),
+	// 				SubnetID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Networks/virtualNetworks/test-vnet/subnets/subnet1"),
+	// 				VnetID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/HypernetVnet1"),
 	// 				VnetResourceGUID: to.Ptr("5328d299-1462-4be0-bef1-303a28e556a0"),
 	// 			},
 	// 		},
@@ -392,7 +392,7 @@ func ExampleServerlessRuntimesClient_BeginCreateOrUpdate_serverlessRuntimesCreat
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a07cb79078c828c5404a5154fea6c60d6e43256e/specification/informatica/resource-manager/Informatica.DataManagement/stable/2024-05-08/examples/ServerlessRuntimes_CreateOrUpdate_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/56537883b7cdb95618c3d1ec1c0ee37b59d88d72/specification/informatica/resource-manager/Informatica.DataManagement/stable/2024-05-08/examples/ServerlessRuntimes_CreateOrUpdate_MinimumSet_Gen.json
 func ExampleServerlessRuntimesClient_BeginCreateOrUpdate_serverlessRuntimesCreateOrUpdateMin() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -419,7 +419,7 @@ func ExampleServerlessRuntimesClient_BeginCreateOrUpdate_serverlessRuntimesCreat
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a07cb79078c828c5404a5154fea6c60d6e43256e/specification/informatica/resource-manager/Informatica.DataManagement/stable/2024-05-08/examples/ServerlessRuntimes_Update_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/56537883b7cdb95618c3d1ec1c0ee37b59d88d72/specification/informatica/resource-manager/Informatica.DataManagement/stable/2024-05-08/examples/ServerlessRuntimes_Update_MaximumSet_Gen.json
 func ExampleServerlessRuntimesClient_Update_serverlessRuntimesUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -475,8 +475,8 @@ func ExampleServerlessRuntimesClient_Update_serverlessRuntimesUpdate() {
 			},
 			ServerlessRuntimeNetworkProfile: &arminformaticadatamgmt.ServerlessRuntimeNetworkProfileUpdate{
 				NetworkInterfaceConfiguration: &arminformaticadatamgmt.NetworkInterfaceConfigurationUpdate{
-					SubnetID:         to.Ptr("dctcuhgttxhcarwcrgdmsfwksyrzj"),
-					VnetID:           to.Ptr("tnsqwwoxydeqqffumdnxlkkb"),
+					SubnetID:         to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Networks/virtualNetworks/test-vnet/subnets/subnet1"),
+					VnetID:           to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/HypernetVnet1"),
 					VnetResourceGUID: to.Ptr("5328d299-1462-4be0-bef1-303a28e556a0"),
 				},
 			},
@@ -554,8 +554,8 @@ func ExampleServerlessRuntimesClient_Update_serverlessRuntimesUpdate() {
 	// 		},
 	// 		ServerlessRuntimeNetworkProfile: &arminformaticadatamgmt.ServerlessRuntimeNetworkProfile{
 	// 			NetworkInterfaceConfiguration: &arminformaticadatamgmt.NetworkInterfaceConfiguration{
-	// 				SubnetID: to.Ptr("dctcuhgttxhcarwcrgdmsfwksyrzj"),
-	// 				VnetID: to.Ptr("tnsqwwoxydeqqffumdnxlkkb"),
+	// 				SubnetID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Networks/virtualNetworks/test-vnet/subnets/subnet1"),
+	// 				VnetID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/HypernetVnet1"),
 	// 				VnetResourceGUID: to.Ptr("5328d299-1462-4be0-bef1-303a28e556a0"),
 	// 			},
 	// 		},
@@ -572,7 +572,7 @@ func ExampleServerlessRuntimesClient_Update_serverlessRuntimesUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a07cb79078c828c5404a5154fea6c60d6e43256e/specification/informatica/resource-manager/Informatica.DataManagement/stable/2024-05-08/examples/ServerlessRuntimes_Update_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/56537883b7cdb95618c3d1ec1c0ee37b59d88d72/specification/informatica/resource-manager/Informatica.DataManagement/stable/2024-05-08/examples/ServerlessRuntimes_Update_MinimumSet_Gen.json
 func ExampleServerlessRuntimesClient_Update_serverlessRuntimesUpdateMin() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -595,7 +595,7 @@ func ExampleServerlessRuntimesClient_Update_serverlessRuntimesUpdateMin() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a07cb79078c828c5404a5154fea6c60d6e43256e/specification/informatica/resource-manager/Informatica.DataManagement/stable/2024-05-08/examples/ServerlessRuntimes_Delete_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/56537883b7cdb95618c3d1ec1c0ee37b59d88d72/specification/informatica/resource-manager/Informatica.DataManagement/stable/2024-05-08/examples/ServerlessRuntimes_Delete_MaximumSet_Gen.json
 func ExampleServerlessRuntimesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -616,7 +616,7 @@ func ExampleServerlessRuntimesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a07cb79078c828c5404a5154fea6c60d6e43256e/specification/informatica/resource-manager/Informatica.DataManagement/stable/2024-05-08/examples/ServerlessRuntimes_CheckDependencies_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/56537883b7cdb95618c3d1ec1c0ee37b59d88d72/specification/informatica/resource-manager/Informatica.DataManagement/stable/2024-05-08/examples/ServerlessRuntimes_CheckDependencies_MaximumSet_Gen.json
 func ExampleServerlessRuntimesClient_CheckDependencies_serverlessRuntimesCheckDependencies() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -649,7 +649,7 @@ func ExampleServerlessRuntimesClient_CheckDependencies_serverlessRuntimesCheckDe
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a07cb79078c828c5404a5154fea6c60d6e43256e/specification/informatica/resource-manager/Informatica.DataManagement/stable/2024-05-08/examples/ServerlessRuntimes_CheckDependencies_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/56537883b7cdb95618c3d1ec1c0ee37b59d88d72/specification/informatica/resource-manager/Informatica.DataManagement/stable/2024-05-08/examples/ServerlessRuntimes_CheckDependencies_MinimumSet_Gen.json
 func ExampleServerlessRuntimesClient_CheckDependencies_serverlessRuntimesCheckDependenciesMin() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -682,7 +682,7 @@ func ExampleServerlessRuntimesClient_CheckDependencies_serverlessRuntimesCheckDe
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a07cb79078c828c5404a5154fea6c60d6e43256e/specification/informatica/resource-manager/Informatica.DataManagement/stable/2024-05-08/examples/ServerlessRuntimes_ServerlessResourceById_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/56537883b7cdb95618c3d1ec1c0ee37b59d88d72/specification/informatica/resource-manager/Informatica.DataManagement/stable/2024-05-08/examples/ServerlessRuntimes_ServerlessResourceById_MaximumSet_Gen.json
 func ExampleServerlessRuntimesClient_ServerlessResourceByID() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -757,8 +757,8 @@ func ExampleServerlessRuntimesClient_ServerlessResourceByID() {
 	// 		},
 	// 		ServerlessRuntimeNetworkProfile: &arminformaticadatamgmt.ServerlessRuntimeNetworkProfile{
 	// 			NetworkInterfaceConfiguration: &arminformaticadatamgmt.NetworkInterfaceConfiguration{
-	// 				SubnetID: to.Ptr("s"),
-	// 				VnetID: to.Ptr("uaqjvtubxccjs"),
+	// 				SubnetID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Networks/virtualNetworks/test-vnet/subnets/subnet1"),
+	// 				VnetID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/HypernetVnet1"),
 	// 				VnetResourceGUID: to.Ptr("5328d299-1462-4be0-bef1-303a28e556a0"),
 	// 			},
 	// 		},
@@ -775,7 +775,7 @@ func ExampleServerlessRuntimesClient_ServerlessResourceByID() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a07cb79078c828c5404a5154fea6c60d6e43256e/specification/informatica/resource-manager/Informatica.DataManagement/stable/2024-05-08/examples/ServerlessRuntimes_StartFailedServerlessRuntime_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/56537883b7cdb95618c3d1ec1c0ee37b59d88d72/specification/informatica/resource-manager/Informatica.DataManagement/stable/2024-05-08/examples/ServerlessRuntimes_StartFailedServerlessRuntime_MaximumSet_Gen.json
 func ExampleServerlessRuntimesClient_StartFailedServerlessRuntime() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

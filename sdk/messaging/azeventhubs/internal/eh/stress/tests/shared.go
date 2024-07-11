@@ -16,8 +16,8 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	azlog "github.com/Azure/azure-sdk-for-go/sdk/internal/log"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/test/credential"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/checkpoints"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/test"
@@ -109,7 +109,7 @@ func newStressTestData(name string, baggage map[string]string) (*stressTestData,
 
 	td.TC = telemetryClient{tc}
 
-	td.Cred, err = azidentity.NewDefaultAzureCredential(nil)
+	td.Cred, err = credential.New(nil)
 
 	if err != nil {
 		return nil, err

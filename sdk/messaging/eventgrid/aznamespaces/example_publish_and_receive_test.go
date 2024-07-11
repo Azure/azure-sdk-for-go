@@ -102,8 +102,7 @@ func Example_publishAndReceiveCloudEvents() {
 	fmt.Fprintf(os.Stderr, "  Body: %#v\n", sampleData) // prints 'Body: &azeventgrid_test.SampleData{Name:"hello"}'
 	fmt.Fprintf(os.Stderr, "  Delivery count: %d\n", eventWithStruct.BrokerProperties.DeliveryCount)
 
-	// Disabled: WARNING: Forcing use of SASKey until https://github.com/Azure/azure-sdk-for-go/issues/22961 is resolved
-	// TempDisabledOutput:
+	// Output:
 }
 
 func sendAndReceiveEvent(sender *aznamespaces.SenderClient, receiver *aznamespaces.ReceiverClient, dataContentType string, payload any) (aznamespaces.ReceiveDetails, error) {

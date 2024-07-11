@@ -25,7 +25,7 @@
 # AzureSDKOwners: @richardpark-msft
 # ServiceLabel: %OpenAI
 # PRLabel: %OpenAI
-/sdk/ai                       @richardpark-msft @jhendrixMSFT
+/sdk/ai                       @richardpark-msft @jhendrixMSFT @chlowell
 
 # AzureSDKOwners: @jhendrixMSFT
 # ServiceLabel: %Internal
@@ -56,17 +56,17 @@
 # AzureSDKOwners: @richardpark-msft
 # ServiceLabel: %Service Bus
 # PRLabel: %Service Bus
-/sdk/messaging/azservicebus/  @richardpark-msft @jhendrixMSFT
+/sdk/messaging/azservicebus/  @richardpark-msft @chlowell @jhendrixMSFT
 
 # AzureSDKOwners: @richardpark-msft
 # ServiceLabel: %Event Grid
 # PRLabel: %Event Grid
-/sdk/messaging/eventgrid/  @richardpark-msft @jhendrixMSFT
+/sdk/messaging/eventgrid/  @richardpark-msft @chlowell @jhendrixMSFT
 
 # AzureSDKOwners: @richardpark-msft
 # ServiceLabel: %Event Hubs
 # PRLabel: %Event Hubs
-/sdk/messaging/azeventhubs/   @richardpark-msft @jhendrixMSFT
+/sdk/messaging/azeventhubs/   @richardpark-msft @chlowell @jhendrixMSFT
 
 # AzureSDKOwners: @gracewilcox
 # ServiceLabel: %Monitor
@@ -94,6 +94,8 @@
 ###########
 /eng/                         @benbp @weshaggard
 /eng/common/                  @Azure/azure-sdk-eng
+/.github/workflows/           @Azure/azure-sdk-eng
+
 
 # Add owners for notifications for specific pipelines
 /eng/common/pipelines/codeowners-linter.yml       @rickwinter

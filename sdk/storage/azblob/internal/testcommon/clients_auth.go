@@ -16,12 +16,11 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/test/credential"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/appendblob"
@@ -148,18 +147,8 @@ func GetServiceClientNoCredential(t *testing.T, sasUrl string, options *service.
 	return serviceClient, err
 }
 
-type FakeCredential struct {
-}
-
-func (c *FakeCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
-	return azcore.AccessToken{Token: FakeToken, ExpiresOn: time.Now().Add(time.Hour).UTC()}, nil
-}
-
 func GetGenericTokenCredential() (azcore.TokenCredential, error) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		return &FakeCredential{}, nil
-	}
-	return azidentity.NewDefaultAzureCredential(nil)
+	return credential.New(nil)
 }
 
 func GetGenericAccountInfo(accountType TestAccountType) (string, string) {
@@ -418,7 +407,7 @@ func DeleteContainerUsingManagementClient(_require *require.Assertions, accountT
 	resourceGroupName, err := GetRequiredEnv(ResourceGroupName)
 	_require.NoError(err)
 
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	cred, err := credential.New(nil)
 	_require.NoError(err)
 
 	managementClient, err := armstorage.NewBlobContainersClient(subscriptionID, cred, nil)

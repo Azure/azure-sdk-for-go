@@ -12,5 +12,8 @@
     "@typespec/compiler": "^0.56.0",
     "@typespec/versioning": "^0.56.0"
   },
+  "overrides": {
+    "braces": "^3.0.3"
+  },
   "private": true
 }

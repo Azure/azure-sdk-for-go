@@ -4,13 +4,13 @@ go 1.18
 
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.12.0
-	github.com/Azure/azure-sdk-for-go/sdk/internal v1.9.0
+	github.com/Azure/azure-sdk-for-go/sdk/internal v1.9.1
 
 )
 
 require (
 	// test dependencies
-	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.6.0
+	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.7.0
 	github.com/joho/godotenv v1.5.1
 	github.com/stretchr/testify v1.9.0
 )

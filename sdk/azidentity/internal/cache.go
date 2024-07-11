@@ -26,8 +26,8 @@ type impl struct {
 	factory func(bool) (cache.ExportReplace, error)
 	// cae and noCAE are previously constructed implementations
 	cae, noCAE cache.ExportReplace
-	// l synchronizes around cae and noCAE
-	l *sync.RWMutex
+	// mu synchronizes around cae and noCAE
+	mu *sync.RWMutex
 }
 
 func (i *impl) exportReplace(cae bool) (cache.ExportReplace, error) {
@@ -39,17 +39,17 @@ func (i *impl) exportReplace(cae bool) (cache.ExportReplace, error) {
 		err error
 		xr  cache.ExportReplace
 	)
-	i.l.RLock()
+	i.mu.RLock()
 	xr = i.cae
 	if !cae {
 		xr = i.noCAE
 	}
-	i.l.RUnlock()
+	i.mu.RUnlock()
 	if xr != nil {
 		return xr, nil
 	}
-	i.l.Lock()
-	defer i.l.Unlock()
+	i.mu.Lock()
+	defer i.mu.Unlock()
 	// double-check because another goroutine may have constructed the cache while this one locked
 	if cae {
 		if i.cae == nil {
@@ -71,7 +71,7 @@ func (i *impl) exportReplace(cae bool) (cache.ExportReplace, error) {
 // because it doesn't know whether the Cache will store both CAE and non-CAE tokens
 // (these must be stored separately).
 func NewCache(factory func(cae bool) (cache.ExportReplace, error)) Cache {
-	return Cache{&impl{factory: factory, l: &sync.RWMutex{}}}
+	return Cache{&impl{factory: factory, mu: &sync.RWMutex{}}}
 }
 
 // ExportReplace returns an implementation satisfying MSAL's ExportReplace interface.

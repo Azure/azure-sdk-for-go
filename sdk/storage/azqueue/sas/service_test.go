@@ -106,12 +106,12 @@ func TestQueueSignatureValues_SignWithSharedKey(t *testing.T) {
 			expectedError: errors.New("service SAS is missing at least one of these: ExpiryTime or Permissions"),
 		},
 		{
-			object:        QueueSignatureValues{QueueName: "fakestoragequeue", Permissions: "r", ExpiryTime: *new(time.Time)},
+			object:        QueueSignatureValues{QueueName: "fakestoragequeue", Permissions: "r", ExpiryTime: time.Time{}},
 			expected:      QueryParameters{},
 			expectedError: errors.New("service SAS is missing at least one of these: ExpiryTime or Permissions"),
 		},
 		{
-			object:        QueueSignatureValues{QueueName: "fakestoragequeue", Permissions: "", ExpiryTime: *new(time.Time), Identifier: "fakepolicyname"},
+			object:        QueueSignatureValues{QueueName: "fakestoragequeue", Permissions: "", ExpiryTime: time.Time{}, Identifier: "fakepolicyname"},
 			expected:      QueryParameters{version: Version, identifier: "fakepolicyname"},
 			expectedError: nil,
 		},

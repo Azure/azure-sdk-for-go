@@ -728,6 +728,7 @@ func ReplaceImport(sourceFile string, baseModule string, majorVersion int64) err
 		return err
 	}
 
+	rewrote := false
 	for _, i := range f.Imports {
 		if strings.HasPrefix(i.Path.Value, fmt.Sprintf("\"%s", baseModule)) {
 			oldPath := importPath(i)
@@ -761,18 +762,22 @@ func ReplaceImport(sourceFile string, baseModule string, majorVersion int64) err
 			}
 
 			if newPath != oldPath {
-				astutil.RewriteImport(fset, f, oldPath, newPath)
+				rewrote = astutil.RewriteImport(fset, f, oldPath, newPath)
 			}
 		}
 	}
 
-	w, err := os.Create(sourceFile)
-	if err != nil {
-		return err
-	}
-	defer w.Close()
+	if rewrote {
+		w, err := os.Create(sourceFile)
+		if err != nil {
+			return err
+		}
+		defer w.Close()
 
-	return printer.Fprint(w, fset, f)
+		return printer.Fprint(w, fset, f)
+	}
+
+	return nil
 }
 
 func importPath(s *ast.ImportSpec) string {

@@ -19,14 +19,14 @@ import (
 type EdgezonesTestSuite struct {
 	suite.Suite
 
-	ctx               context.Context
-	cred              azcore.TokenCredential
-	options           *arm.ClientOptions
-	clientFactory     *armedgezones.ClientFactory
-	armEndpoint       string
-	extendedZoneName  string
-	location          string
-	subscriptionId    string
+	ctx              context.Context
+	cred             azcore.TokenCredential
+	options          *arm.ClientOptions
+	clientFactory    *armedgezones.ClientFactory
+	armEndpoint      string
+	extendedZoneName string
+	location         string
+	subscriptionId   string
 }
 
 func (testsuite *EdgezonesTestSuite) SetupSuite() {

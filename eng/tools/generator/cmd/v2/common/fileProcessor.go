@@ -7,6 +7,10 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
+	"go/ast"
+	"go/parser"
+	"go/printer"
+	"go/token"
 	"io/fs"
 	"io/ioutil"
 	"log"
@@ -23,6 +27,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/common"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/exports"
 	"github.com/Masterminds/semver"
+	"golang.org/x/tools/go/ast/astutil"
 )
 
 const (
@@ -680,38 +685,6 @@ func ReplaceReadmeNewClientName(packageRootPath string, exports exports.Content)
 	return os.WriteFile(path, []byte(content), 0644)
 }
 
-func UpdateModuleVersion(path string, newVersion string) error {
-	if newVersion == "" {
-		newVersion = "0.1.0"
-	}
-
-	data, err := os.ReadFile(path)
-	if err != nil {
-		return err
-	}
-
-	if strings.Contains(string(data), autorest_md_module_version_prefix) {
-		lines := strings.Split(string(data), "\n")
-		for i, line := range lines {
-			if strings.HasPrefix(line, autorest_md_module_version_prefix) {
-				lines[i] = line[:len(autorest_md_module_version_prefix)] + newVersion
-				break
-			}
-		}
-
-		return os.WriteFile(path, []byte(strings.Join(lines, "\n")), 0644)
-	} else {
-		f, err := os.OpenFile(path, os.O_APPEND|os.O_WRONLY, 0644)
-		if err != nil {
-			return err
-		}
-		defer f.Close()
-
-		_, err = f.WriteString(fmt.Sprintf("%s%s\n", autorest_md_module_version_prefix, newVersion))
-		return err
-	}
-}
-
 func ReplaceConstModuleVersion(packagePath string, newVersion string) error {
 	path := filepath.Join(packagePath, "constants.go")
 	data, err := os.ReadFile(path)
@@ -739,36 +712,73 @@ func ReplaceModule(newVersion *semver.Version, packagePath, baseModule string, s
 
 		hasSuffix := slices.ContainsFunc(suffixs, func(s string) bool { return strings.HasSuffix(info.Name(), s) })
 		if len(suffixs) == 0 || hasSuffix {
-			data, err := os.ReadFile(path)
-			if err != nil {
+			if err = ReplaceImport(path, baseModule, newVersion.Major()); err != nil {
 				return err
 			}
-
-			if !strings.Contains(string(data), baseModule) {
-				return nil
-			}
-
-			lines := strings.Split(string(data), "\n")
-			for i, line := range lines {
-				if strings.HasPrefix(strings.TrimSpace(line), fmt.Sprintf("\"%s", baseModule)) {
-					parts := strings.Split(strings.Trim(strings.TrimSpace(line), "\""), "/")
-					if parts[len(parts)-1] != fmt.Sprintf("v%d", newVersion.Major()) {
-						if newVersion.Major() > 1 {
-							lines[i] = fmt.Sprintf("\t\"%s/v%d\"", baseModule, newVersion.Major())
-						} else {
-							lines[i] = fmt.Sprintf("\t\"%s\"", baseModule)
-						}
-					}
-					break
-				}
-			}
-			if string(data) == strings.Join(lines, "\n") {
-				return nil
-			}
-
-			return os.WriteFile(path, []byte(strings.Join(lines, "\n")), 0644)
 		}
 
 		return nil
 	})
+}
+
+func ReplaceImport(sourceFile string, baseModule string, majorVersion int64) error {
+	fset := token.NewFileSet()
+	f, err := parser.ParseFile(fset, sourceFile, nil, parser.ParseComments)
+	if err != nil {
+		return err
+	}
+
+	for _, i := range f.Imports {
+		if strings.HasPrefix(i.Path.Value, fmt.Sprintf("\"%s", baseModule)) {
+			oldPath := importPath(i)
+			after, _ := strings.CutPrefix(oldPath, baseModule)
+
+			newPath := baseModule
+			if after != "" {
+				before, sub, _ := strings.Cut(strings.TrimLeft(after, "/"), "/")
+				if regexp.MustCompile(`^v\d+$`).MatchString(before) {
+					newPath = baseModule
+					if majorVersion > 1 {
+						newPath = fmt.Sprintf("%s/v%d", baseModule, majorVersion)
+					}
+					if sub != "" {
+						newPath = fmt.Sprintf("%s/%s", newPath, sub)
+					}
+				} else {
+					newPath = baseModule
+					if majorVersion > 1 {
+						newPath = fmt.Sprintf("%s/v%d", baseModule, majorVersion)
+					}
+					newPath = fmt.Sprintf("%s/%s", newPath, before)
+					if sub != "" {
+						newPath = fmt.Sprintf("%s/%s", newPath, sub)
+					}
+				}
+			} else {
+				if majorVersion > 1 {
+					newPath = fmt.Sprintf("%s/v%d", baseModule, majorVersion)
+				}
+			}
+
+			if newPath != oldPath {
+				astutil.RewriteImport(fset, f, oldPath, newPath)
+			}
+		}
+	}
+
+	w, err := os.Create(sourceFile)
+	if err != nil {
+		return err
+	}
+	defer w.Close()
+
+	return printer.Fprint(w, fset, f)
+}
+
+func importPath(s *ast.ImportSpec) string {
+	t, err := strconv.Unquote(s.Path.Value)
+	if err != nil {
+		return ""
+	}
+	return t
 }

@@ -6,7 +6,6 @@ package validate
 import (
 	"errors"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -71,7 +70,7 @@ func (v *localValidator) validateReadmeExistence(readme string) error {
 
 func getReadmeContent(specRoot, readme string) ([]byte, error) {
 	full := filepath.Join(specRoot, readme)
-	return ioutil.ReadFile(full)
+	return os.ReadFile(full)
 }
 
 func findTagInReadme(content []byte, tag string) bool {

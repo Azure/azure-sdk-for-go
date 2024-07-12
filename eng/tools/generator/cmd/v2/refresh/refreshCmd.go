@@ -5,8 +5,8 @@ package refresh
 
 import (
 	"fmt"
-	"io/ioutil"
 	"log"
+	"os"
 	"path"
 	"strings"
 	"time"
@@ -117,7 +117,7 @@ func (c *commandContext) execute(sdkRepoParam, specRepoParam string) error {
 
 	var rpNames []string
 	if c.flags.RPs == "" {
-		rps, err := ioutil.ReadDir(path.Join(generateCtx.SDKPath, "sdk", "resourcemanager"))
+		rps, err := os.ReadDir(path.Join(generateCtx.SDKPath, "sdk", "resourcemanager"))
 		if err != nil {
 			return fmt.Errorf("failed to get all rps: %+v", err)
 		}
@@ -129,7 +129,7 @@ func (c *commandContext) execute(sdkRepoParam, specRepoParam string) error {
 	}
 
 	for _, rpName := range rpNames {
-		namespaces, err := ioutil.ReadDir(path.Join(generateCtx.SDKPath, "sdk", "resourcemanager", rpName))
+		namespaces, err := os.ReadDir(path.Join(generateCtx.SDKPath, "sdk", "resourcemanager", rpName))
 		if err != nil {
 			continue
 		}

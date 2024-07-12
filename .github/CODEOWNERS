@@ -25,7 +25,7 @@
 # AzureSDKOwners: @richardpark-msft
 # ServiceLabel: %OpenAI
 # PRLabel: %OpenAI
-/sdk/ai                       @richardpark-msft @jhendrixMSFT
+/sdk/ai                       @richardpark-msft @jhendrixMSFT @chlowell
 
 # AzureSDKOwners: @jhendrixMSFT
 # ServiceLabel: %Internal
@@ -94,9 +94,14 @@
 ###########
 /eng/                         @benbp @weshaggard
 /eng/common/                  @Azure/azure-sdk-eng
+/.github/workflows/           @Azure/azure-sdk-eng
+
 
 # Add owners for notifications for specific pipelines
 /eng/common/pipelines/codeowners-linter.yml       @rickwinter
+
+# Add owners for go sdk tool
+/eng/tools/generator          @ArcturusZhang @lirenhe @tadelesh @raych1
 
 # AzureSDKOwners: @benbp
 # ServiceLabel: %EngSys

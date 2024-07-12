@@ -6,7 +6,6 @@ package common
 import (
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/autorest/model"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/delta"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/exports"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/report"
@@ -14,9 +13,9 @@ import (
 )
 
 func TestCalculateNewVersion(t *testing.T) {
-	fixChange := &model.Changelog{Modified: &report.Package{}}
-	breakingChange := &model.Changelog{RemovedPackage: true, Modified: &report.Package{}}
-	additiveChange := &model.Changelog{Modified: &report.Package{AdditiveChanges: &delta.Content{Content: exports.Content{Consts: map[string]exports.Const{"test": {}}}}}}
+	fixChange := &Changelog{Modified: &report.Package{}}
+	breakingChange := &Changelog{RemovedPackage: true, Modified: &report.Package{}}
+	additiveChange := &Changelog{Modified: &report.Package{AdditiveChanges: &delta.Content{Content: exports.Content{Consts: map[string]exports.Const{"test": {}}}}}}
 
 	// previous 0.x.x
 	// fix with stable
@@ -94,7 +93,7 @@ func TestCalculateNewVersion(t *testing.T) {
 
 	// previous 1.2.0-beta.1
 	// fix with stable
-	newVersion, _, err = CalculateNewVersion(fixChange, "1.2.0-beta.1", false)
+	_, _, err = CalculateNewVersion(fixChange, "1.2.0-beta.1", false)
 	assert.NotEmpty(t, err)
 
 	// fix with beat
@@ -104,7 +103,7 @@ func TestCalculateNewVersion(t *testing.T) {
 	assert.Equal(t, BetaLabel, prl)
 
 	// breaking with stable
-	newVersion, _, err = CalculateNewVersion(breakingChange, "1.2.0-beta.1", false)
+	_, _, err = CalculateNewVersion(breakingChange, "1.2.0-beta.1", false)
 	assert.NotEmpty(t, err)
 
 	// breaking with beta
@@ -114,7 +113,7 @@ func TestCalculateNewVersion(t *testing.T) {
 	assert.Equal(t, BetaBreakingChangeLabel, prl)
 
 	// additive with stable
-	newVersion, _, err = CalculateNewVersion(additiveChange, "1.2.0-beta.1", false)
+	_, _, err = CalculateNewVersion(additiveChange, "1.2.0-beta.1", false)
 	assert.NotEmpty(t, err)
 
 	// additive with beta

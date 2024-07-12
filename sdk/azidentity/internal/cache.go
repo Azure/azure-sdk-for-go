@@ -22,9 +22,13 @@ type Cache struct {
 
 // impl is a Cache's private implementation
 type impl struct {
-	// factory constructs implementations
+	// factory constructs storage implementations
 	factory func(bool) (cache.ExportReplace, error)
-	// cae and noCAE are previously constructed implementations
+	// cae and noCAE are previously constructed storage implementations. CAE
+	// and non-CAE tokens must be stored separately because MSAL's cache doesn't
+	// observe token claims. If a single storage implementation held both kinds
+	// of tokens, it could create a reauthentication or error loop by returning
+	// a non-CAE token lacking a required claim.
 	cae, noCAE cache.ExportReplace
 	// mu synchronizes around cae and noCAE
 	mu *sync.RWMutex
@@ -50,7 +54,6 @@ func (i *impl) exportReplace(cae bool) (cache.ExportReplace, error) {
 	}
 	i.mu.Lock()
 	defer i.mu.Unlock()
-	// double-check because another goroutine may have constructed the cache while this one locked
 	if cae {
 		if i.cae == nil {
 			if xr, err = i.factory(cae); err == nil {
@@ -68,16 +71,15 @@ func (i *impl) exportReplace(cae bool) (cache.ExportReplace, error) {
 }
 
 // NewCache is the constructor for Cache. It takes a factory instead of an instance
-// because it doesn't know whether the Cache will store both CAE and non-CAE tokens
-// (these must be stored separately).
+// because it doesn't know whether the Cache will store both CAE and non-CAE tokens.
 func NewCache(factory func(cae bool) (cache.ExportReplace, error)) Cache {
 	return Cache{&impl{factory: factory, mu: &sync.RWMutex{}}}
 }
 
 // ExportReplace returns an implementation satisfying MSAL's ExportReplace interface.
-// It's an internal function instead of an exported method so packages in azidentity
-// and azidentity/cache can call it without exporting it to applications. "cae"
-// controls whether the desired implementation will store CAE tokens.
+// It's a function instead of a method on Cache so packages in azidentity and
+// azidentity/cache can call it while applications can't. "cae" declares whether the
+// caller intends this implementation to store CAE tokens.
 func ExportReplace(c Cache, cae bool) (cache.ExportReplace, error) {
 	return c.impl.exportReplace(cae)
 }

@@ -1,7 +1,6 @@
 # Release History
 
 ## 1.4.0 (2024-07-12)
-* Updated service version to `2024-05-04`.
 
 ### Other Changes
 * Updated `azidentity` version to `1.7.0`

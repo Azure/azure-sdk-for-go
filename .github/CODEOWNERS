@@ -100,6 +100,9 @@
 # Add owners for notifications for specific pipelines
 /eng/common/pipelines/codeowners-linter.yml       @rickwinter
 
+# Add owners for go sdk tool
+/eng/tools/generator          @ArcturusZhang @lirenhe @tadelesh @raych1
+
 # AzureSDKOwners: @benbp
 # ServiceLabel: %EngSys
 # PRLabel: %EngSys

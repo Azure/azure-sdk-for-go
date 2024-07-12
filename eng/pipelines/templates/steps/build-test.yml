@@ -82,6 +82,10 @@ steps:
         azurePowerShellVersion: LatestVersion
         ScriptType: InlineScript
         Inline: |
+          $account = (Get-AzContext).Account
+          $env:AZURESUBSCRIPTION_CLIENT_ID = $account.Id
+          $env:AZURESUBSCRIPTION_TENANT_ID = $account.Tenants
+
           ./eng/scripts/run_tests.ps1 ${{ parameters.ServiceDirectory }} ${{ parameters.TestRunTime }} $${{ parameters.EnableRaceDetector }}
           exit $LASTEXITCODE
         pwsh: true
@@ -100,6 +104,10 @@ steps:
         azurePowerShellVersion: LatestVersion
         ScriptType: InlineScript
         Inline: |
+          $account = (Get-AzContext).Account
+          $env:AZURESUBSCRIPTION_CLIENT_ID = $account.Id
+          $env:AZURESUBSCRIPTION_TENANT_ID = $account.Tenants
+
           eng/scripts/Build_Perf.ps1 ${{ parameters.ServiceDirectory }} $$(UseAzcoreFromMain)
           exit $LASTEXITCODE
         pwsh: true

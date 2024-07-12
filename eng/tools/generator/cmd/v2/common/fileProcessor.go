@@ -363,7 +363,7 @@ func CalculateNewVersion(changelog *Changelog, previousVersion string, isCurrent
 
 // add new changelog md to changelog file
 func AddChangelogToFile(changelog *Changelog, version *semver.Version, packageRootPath, releaseDate string) (string, error) {
-	path := filepath.Join(packageRootPath, "CHANGELOG.md")
+	path := filepath.Join(packageRootPath, ChangelogFileName)
 	b, err := os.ReadFile(path)
 	if err != nil {
 		return "", err
@@ -438,7 +438,7 @@ func UpdateModuleDefinition(packageRootPath, rpName, namespaceName string, versi
 }
 
 func UpdateOnboardChangelogVersion(packageRootPath, versionNumber string) error {
-	changelogPath := filepath.Join(packageRootPath, "CHANGELOG.md")
+	changelogPath := filepath.Join(packageRootPath, ChangelogFileName)
 	b, err := os.ReadFile(changelogPath)
 	if err != nil {
 		return err

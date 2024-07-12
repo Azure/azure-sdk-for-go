@@ -104,7 +104,7 @@ func (ctx *GenerateContext) GenerateForAutomation(readme, repo, goVersion string
 
 func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *GenerateParam) (*GenerateResult, error) {
 	packagePath := filepath.Join(ctx.SDKPath, "sdk", "resourcemanager", generateParam.RPName, generateParam.NamespaceName)
-	changelogPath := filepath.Join(packagePath, "CHANGELOG.md")
+	changelogPath := filepath.Join(packagePath, ChangelogFileName)
 
 	onBoard := false
 
@@ -376,7 +376,7 @@ func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *Generate
 
 func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam) (*GenerateResult, error) {
 	packagePath := filepath.Join(ctx.SDKPath, "sdk", "resourcemanager", generateParam.RPName, generateParam.NamespaceName)
-	changelogPath := filepath.Join(packagePath, "CHANGELOG.md")
+	changelogPath := filepath.Join(packagePath, ChangelogFileName)
 
 	version, err := semver.NewVersion("0.1.0")
 	if err != nil {
@@ -572,7 +572,7 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam) (*
 		// When sdk has major version bump, the live test needs to update the module referenced in the code.
 		if existSuffixFile(packagePath, "_live_test.go") {
 			log.Printf("Replace live test module v2+...")
-			baseModule := fmt.Sprintf("github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/%s/%s", generateParam.RPName, generateParam.NamespaceName)
+			baseModule := fmt.Sprintf("%s/%s/%s", MgmtSDKModulePrefix, generateParam.RPName, generateParam.NamespaceName)
 			if err = ReplaceModule(version, packagePath, baseModule, "_live_test.go"); err != nil {
 				return nil, err
 			}

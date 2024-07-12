@@ -26,7 +26,7 @@ func loadFile(t *testing.T, path string) string {
 func TestFunction(t *testing.T) {
 	text := loadFile(t, "testdata/update_func.txt")
 
-	newText, err := updateFunction(text, "Client", "uploadFileCreateRequest", func(text string) (string, error) {
+	newText, err := updateFunction(text, "Client", "uploadFileCreateRequest", func(_ string) (string, error) {
 		return "MIDDLE", nil
 	}, &updateFunctionOptions{
 		IgnoreComment: true,
@@ -34,7 +34,7 @@ func TestFunction(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, "BEGIN\n// uploadFileCreateRequest creates the UploadFile request.\n// another line of documentation.\nMIDDLE\nEND\n", newText)
 
-	newText, err = updateFunction(text, "Client", "uploadFileCreateRequest", func(text string) (string, error) {
+	newText, err = updateFunction(text, "Client", "uploadFileCreateRequest", func(_ string) (string, error) {
 		return "MIDDLE", nil
 	}, &updateFunctionOptions{
 		IgnoreComment: false,

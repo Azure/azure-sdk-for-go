@@ -234,7 +234,6 @@ func newProducerClientImpl(creds producerClientCreds, options *ProducerClientOpt
 		eventHub: creds.eventHub,
 	}
 
-	var err error
 	var nsOptions []internal.NamespaceOption
 
 	if creds.connectionString != "" {
@@ -263,10 +262,6 @@ func newProducerClientImpl(creds producerClientCreds, options *ProducerClientOpt
 		}
 
 		nsOptions = append(nsOptions, internal.NamespaceWithRetryOptions(options.RetryOptions))
-	}
-
-	if err != nil {
-		return nil, err
 	}
 
 	tmpNS, err := internal.NewNamespace(nsOptions...)
@@ -299,10 +294,8 @@ func parseConn(connectionString string, eventHub string) (exported.ConnectionStr
 			return exported.ConnectionStringProperties{}, errors.New("connection string does not contain an EntityPath. eventHub cannot be an empty string")
 		}
 		props.EntityPath = &eventHub
-	} else {
-		if eventHub != "" {
-			return exported.ConnectionStringProperties{}, errors.New("connection string contains an EntityPath. eventHub must be an empty string")
-		}
+	} else if eventHub != "" {
+		return exported.ConnectionStringProperties{}, errors.New("connection string contains an EntityPath. eventHub must be an empty string")
 	}
 
 	return props, nil

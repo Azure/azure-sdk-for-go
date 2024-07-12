@@ -40,6 +40,10 @@ type DatabasesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginFlush func(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, parameters armredisenterprise.FlushParameters, options *armredisenterprise.DatabasesClientBeginFlushOptions) (resp azfake.PollerResponder[armredisenterprise.DatabasesClientFlushResponse], errResp azfake.ErrorResponder)
 
+	// BeginForceLinkToReplicationGroup is the fake for method DatabasesClient.BeginForceLinkToReplicationGroup
+	// HTTP status codes to indicate success: http.StatusAccepted
+	BeginForceLinkToReplicationGroup func(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, parameters armredisenterprise.ForceLinkParameters, options *armredisenterprise.DatabasesClientBeginForceLinkToReplicationGroupOptions) (resp azfake.PollerResponder[armredisenterprise.DatabasesClientForceLinkToReplicationGroupResponse], errResp azfake.ErrorResponder)
+
 	// BeginForceUnlink is the fake for method DatabasesClient.BeginForceUnlink
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginForceUnlink func(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, parameters armredisenterprise.ForceUnlinkParameters, options *armredisenterprise.DatabasesClientBeginForceUnlinkOptions) (resp azfake.PollerResponder[armredisenterprise.DatabasesClientForceUnlinkResponse], errResp azfake.ErrorResponder)
@@ -67,6 +71,10 @@ type DatabasesServer struct {
 	// BeginUpdate is the fake for method DatabasesClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdate func(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, parameters armredisenterprise.DatabaseUpdate, options *armredisenterprise.DatabasesClientBeginUpdateOptions) (resp azfake.PollerResponder[armredisenterprise.DatabasesClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// BeginUpgradeDBRedisVersion is the fake for method DatabasesClient.BeginUpgradeDBRedisVersion
+	// HTTP status codes to indicate success: http.StatusAccepted
+	BeginUpgradeDBRedisVersion func(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, options *armredisenterprise.DatabasesClientBeginUpgradeDBRedisVersionOptions) (resp azfake.PollerResponder[armredisenterprise.DatabasesClientUpgradeDBRedisVersionResponse], errResp azfake.ErrorResponder)
 }
 
 // NewDatabasesServerTransport creates a new instance of DatabasesServerTransport with the provided implementation.
@@ -74,32 +82,36 @@ type DatabasesServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewDatabasesServerTransport(srv *DatabasesServer) *DatabasesServerTransport {
 	return &DatabasesServerTransport{
-		srv:                   srv,
-		beginCreate:           newTracker[azfake.PollerResponder[armredisenterprise.DatabasesClientCreateResponse]](),
-		beginDelete:           newTracker[azfake.PollerResponder[armredisenterprise.DatabasesClientDeleteResponse]](),
-		beginExport:           newTracker[azfake.PollerResponder[armredisenterprise.DatabasesClientExportResponse]](),
-		beginFlush:            newTracker[azfake.PollerResponder[armredisenterprise.DatabasesClientFlushResponse]](),
-		beginForceUnlink:      newTracker[azfake.PollerResponder[armredisenterprise.DatabasesClientForceUnlinkResponse]](),
-		beginImport:           newTracker[azfake.PollerResponder[armredisenterprise.DatabasesClientImportResponse]](),
-		newListByClusterPager: newTracker[azfake.PagerResponder[armredisenterprise.DatabasesClientListByClusterResponse]](),
-		beginRegenerateKey:    newTracker[azfake.PollerResponder[armredisenterprise.DatabasesClientRegenerateKeyResponse]](),
-		beginUpdate:           newTracker[azfake.PollerResponder[armredisenterprise.DatabasesClientUpdateResponse]](),
+		srv:                              srv,
+		beginCreate:                      newTracker[azfake.PollerResponder[armredisenterprise.DatabasesClientCreateResponse]](),
+		beginDelete:                      newTracker[azfake.PollerResponder[armredisenterprise.DatabasesClientDeleteResponse]](),
+		beginExport:                      newTracker[azfake.PollerResponder[armredisenterprise.DatabasesClientExportResponse]](),
+		beginFlush:                       newTracker[azfake.PollerResponder[armredisenterprise.DatabasesClientFlushResponse]](),
+		beginForceLinkToReplicationGroup: newTracker[azfake.PollerResponder[armredisenterprise.DatabasesClientForceLinkToReplicationGroupResponse]](),
+		beginForceUnlink:                 newTracker[azfake.PollerResponder[armredisenterprise.DatabasesClientForceUnlinkResponse]](),
+		beginImport:                      newTracker[azfake.PollerResponder[armredisenterprise.DatabasesClientImportResponse]](),
+		newListByClusterPager:            newTracker[azfake.PagerResponder[armredisenterprise.DatabasesClientListByClusterResponse]](),
+		beginRegenerateKey:               newTracker[azfake.PollerResponder[armredisenterprise.DatabasesClientRegenerateKeyResponse]](),
+		beginUpdate:                      newTracker[azfake.PollerResponder[armredisenterprise.DatabasesClientUpdateResponse]](),
+		beginUpgradeDBRedisVersion:       newTracker[azfake.PollerResponder[armredisenterprise.DatabasesClientUpgradeDBRedisVersionResponse]](),
 	}
 }
 
 // DatabasesServerTransport connects instances of armredisenterprise.DatabasesClient to instances of DatabasesServer.
 // Don't use this type directly, use NewDatabasesServerTransport instead.
 type DatabasesServerTransport struct {
-	srv                   *DatabasesServer
-	beginCreate           *tracker[azfake.PollerResponder[armredisenterprise.DatabasesClientCreateResponse]]
-	beginDelete           *tracker[azfake.PollerResponder[armredisenterprise.DatabasesClientDeleteResponse]]
-	beginExport           *tracker[azfake.PollerResponder[armredisenterprise.DatabasesClientExportResponse]]
-	beginFlush            *tracker[azfake.PollerResponder[armredisenterprise.DatabasesClientFlushResponse]]
-	beginForceUnlink      *tracker[azfake.PollerResponder[armredisenterprise.DatabasesClientForceUnlinkResponse]]
-	beginImport           *tracker[azfake.PollerResponder[armredisenterprise.DatabasesClientImportResponse]]
-	newListByClusterPager *tracker[azfake.PagerResponder[armredisenterprise.DatabasesClientListByClusterResponse]]
-	beginRegenerateKey    *tracker[azfake.PollerResponder[armredisenterprise.DatabasesClientRegenerateKeyResponse]]
-	beginUpdate           *tracker[azfake.PollerResponder[armredisenterprise.DatabasesClientUpdateResponse]]
+	srv                              *DatabasesServer
+	beginCreate                      *tracker[azfake.PollerResponder[armredisenterprise.DatabasesClientCreateResponse]]
+	beginDelete                      *tracker[azfake.PollerResponder[armredisenterprise.DatabasesClientDeleteResponse]]
+	beginExport                      *tracker[azfake.PollerResponder[armredisenterprise.DatabasesClientExportResponse]]
+	beginFlush                       *tracker[azfake.PollerResponder[armredisenterprise.DatabasesClientFlushResponse]]
+	beginForceLinkToReplicationGroup *tracker[azfake.PollerResponder[armredisenterprise.DatabasesClientForceLinkToReplicationGroupResponse]]
+	beginForceUnlink                 *tracker[azfake.PollerResponder[armredisenterprise.DatabasesClientForceUnlinkResponse]]
+	beginImport                      *tracker[azfake.PollerResponder[armredisenterprise.DatabasesClientImportResponse]]
+	newListByClusterPager            *tracker[azfake.PagerResponder[armredisenterprise.DatabasesClientListByClusterResponse]]
+	beginRegenerateKey               *tracker[azfake.PollerResponder[armredisenterprise.DatabasesClientRegenerateKeyResponse]]
+	beginUpdate                      *tracker[azfake.PollerResponder[armredisenterprise.DatabasesClientUpdateResponse]]
+	beginUpgradeDBRedisVersion       *tracker[azfake.PollerResponder[armredisenterprise.DatabasesClientUpgradeDBRedisVersionResponse]]
 }
 
 // Do implements the policy.Transporter interface for DatabasesServerTransport.
@@ -122,6 +134,8 @@ func (d *DatabasesServerTransport) Do(req *http.Request) (*http.Response, error)
 		resp, err = d.dispatchBeginExport(req)
 	case "DatabasesClient.BeginFlush":
 		resp, err = d.dispatchBeginFlush(req)
+	case "DatabasesClient.BeginForceLinkToReplicationGroup":
+		resp, err = d.dispatchBeginForceLinkToReplicationGroup(req)
 	case "DatabasesClient.BeginForceUnlink":
 		resp, err = d.dispatchBeginForceUnlink(req)
 	case "DatabasesClient.Get":
@@ -136,6 +150,8 @@ func (d *DatabasesServerTransport) Do(req *http.Request) (*http.Response, error)
 		resp, err = d.dispatchBeginRegenerateKey(req)
 	case "DatabasesClient.BeginUpdate":
 		resp, err = d.dispatchBeginUpdate(req)
+	case "DatabasesClient.BeginUpgradeDBRedisVersion":
+		resp, err = d.dispatchBeginUpgradeDBRedisVersion(req)
 	default:
 		err = fmt.Errorf("unhandled API %s", method)
 	}
@@ -346,6 +362,58 @@ func (d *DatabasesServerTransport) dispatchBeginFlush(req *http.Request) (*http.
 	}
 	if !server.PollerResponderMore(beginFlush) {
 		d.beginFlush.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (d *DatabasesServerTransport) dispatchBeginForceLinkToReplicationGroup(req *http.Request) (*http.Response, error) {
+	if d.srv.BeginForceLinkToReplicationGroup == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginForceLinkToReplicationGroup not implemented")}
+	}
+	beginForceLinkToReplicationGroup := d.beginForceLinkToReplicationGroup.get(req)
+	if beginForceLinkToReplicationGroup == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Cache/redisEnterprise/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/databases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/forceLinkToReplicationGroup`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armredisenterprise.ForceLinkParameters](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
+		if err != nil {
+			return nil, err
+		}
+		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := d.srv.BeginForceLinkToReplicationGroup(req.Context(), resourceGroupNameParam, clusterNameParam, databaseNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginForceLinkToReplicationGroup = &respr
+		d.beginForceLinkToReplicationGroup.add(req, beginForceLinkToReplicationGroup)
+	}
+
+	resp, err := server.PollerResponderNext(beginForceLinkToReplicationGroup, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusAccepted}, resp.StatusCode) {
+		d.beginForceLinkToReplicationGroup.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginForceLinkToReplicationGroup) {
+		d.beginForceLinkToReplicationGroup.remove(req)
 	}
 
 	return resp, nil
@@ -669,6 +737,54 @@ func (d *DatabasesServerTransport) dispatchBeginUpdate(req *http.Request) (*http
 	}
 	if !server.PollerResponderMore(beginUpdate) {
 		d.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (d *DatabasesServerTransport) dispatchBeginUpgradeDBRedisVersion(req *http.Request) (*http.Response, error) {
+	if d.srv.BeginUpgradeDBRedisVersion == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpgradeDBRedisVersion not implemented")}
+	}
+	beginUpgradeDBRedisVersion := d.beginUpgradeDBRedisVersion.get(req)
+	if beginUpgradeDBRedisVersion == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Cache/redisEnterprise/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/databases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/upgradeDBRedisVersion`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
+		if err != nil {
+			return nil, err
+		}
+		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := d.srv.BeginUpgradeDBRedisVersion(req.Context(), resourceGroupNameParam, clusterNameParam, databaseNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpgradeDBRedisVersion = &respr
+		d.beginUpgradeDBRedisVersion.add(req, beginUpgradeDBRedisVersion)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpgradeDBRedisVersion, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusAccepted}, resp.StatusCode) {
+		d.beginUpgradeDBRedisVersion.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpgradeDBRedisVersion) {
+		d.beginUpgradeDBRedisVersion.remove(req)
 	}
 
 	return resp, nil

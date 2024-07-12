@@ -120,7 +120,7 @@ func removeFunctions(text string, objectName string, funcNames ...string) (strin
 		log.Printf("Removing function %s.%s", objectName, funcName)
 
 		var err error
-		text, err = updateFunctionImpl(text, objectName, funcName, func(text string) (string, error) {
+		text, err = updateFunctionImpl(text, objectName, funcName, func(_ string) (string, error) {
 			return "", nil
 		}, nil)
 

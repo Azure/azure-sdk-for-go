@@ -8,6 +8,65 @@
 
 package azlogs
 
+// BatchQueryRequest - An single request in a batch.
+type BatchQueryRequest struct {
+	// REQUIRED; The Analytics query. Learn more about the Analytics query syntax [https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/]
+	Body *QueryBody
+
+	// REQUIRED; Unique ID corresponding to each request in the batch.
+	ID *string
+
+	// REQUIRED; Primary Workspace ID of the query. This is the Workspace ID from the Properties blade in the Azure portal.
+	WorkspaceID *string
+
+	// Headers of the request. Can use prefer header to set server timeout and to query statistics and visualization information.
+	Headers map[string]*string
+
+	// The method of a single request in a batch, defaults to POST
+	Method *string
+
+	// The query path of a single request in a batch, defaults to /query
+	Path *string
+}
+
+// BatchQueryResponse - Contains the batch query response and the headers, id, and status of the request
+type BatchQueryResponse struct {
+	// Contains the tables, columns & rows resulting from a query.
+	Body *BatchQueryResults
+
+	// Dictionary of
+	Headers map[string]*string
+	ID      *string
+	Status  *int32
+}
+
+// BatchQueryResults - Contains the tables, columns & rows resulting from a query.
+type BatchQueryResults struct {
+	// The code and message for an error.
+	Error *ErrorInfo
+
+	// Statistics represented in JSON format.
+	Statistics []byte
+
+	// The results of the query in tabular format.
+	Tables []Table
+
+	// Visualization data in JSON format.
+	Visualization []byte
+}
+
+// BatchRequest - An array of requests.
+type BatchRequest struct {
+	// REQUIRED; An single request in a batch.
+	Requests []BatchQueryRequest
+}
+
+// BatchResponse - Response to a batch query.
+type BatchResponse struct {
+	// An array of responses corresponding to each individual request in a batch.
+	Responses []BatchQueryResponse
+}
+
 // Column - A column in a table.
 type Column struct {
 	// The name of this column.

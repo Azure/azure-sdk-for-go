@@ -67,7 +67,7 @@ type GetFileContentOptions struct {
 //
 //   - fileID - The ID of the file to retrieve.
 //   - options - GetFileContentOptions contains the optional parameters for the Client.GetFileContent method.
-func (client *Client) GetFileContent(ctx context.Context, fileID string, options *GetFileContentOptions) (GetFileContentResponse, error) {
+func (client *Client) GetFileContent(ctx context.Context, fileID string, _ *GetFileContentOptions) (GetFileContentResponse, error) {
 	var err error
 
 	req, err := func() (*policy.Request, error) {
@@ -89,6 +89,7 @@ func (client *Client) GetFileContent(ctx context.Context, fileID string, options
 	}
 
 	runtime.SkipBodyDownload(req)
+	//nolint:bodyclose	// caller is responsible for closing this request after they stream the contents of the body.
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return GetFileContentResponse{}, err

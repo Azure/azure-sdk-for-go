@@ -113,25 +113,25 @@ func (o *CreateOptions) format() (*generated.LeaseAccessConditions, *generated.M
 
 // UpdateAccessControlOptions contains the optional parameters when calling the UpdateAccessControlRecursive operation.
 type UpdateAccessControlOptions struct {
-	//placeholder
+	// placeholder
 }
 
-func (o *UpdateAccessControlOptions) format(ACL string) (*generated.PathClientSetAccessControlRecursiveOptions, generated.PathSetAccessControlRecursiveMode) {
+func (o *UpdateAccessControlOptions) format(acl string) (*generated.PathClientSetAccessControlRecursiveOptions, generated.PathSetAccessControlRecursiveMode) {
 	mode := generated.PathSetAccessControlRecursiveModeModify
 	return &generated.PathClientSetAccessControlRecursiveOptions{
-		ACL: &ACL,
+		ACL: &acl,
 	}, mode
 }
 
 // RemoveAccessControlOptions contains the optional parameters when calling the RemoveAccessControlRecursive operation.
 type RemoveAccessControlOptions struct {
-	//placeholder
+	// placeholder
 }
 
-func (o *RemoveAccessControlOptions) format(ACL string) (*generated.PathClientSetAccessControlRecursiveOptions, generated.PathSetAccessControlRecursiveMode) {
+func (o *RemoveAccessControlOptions) format(acl string) (*generated.PathClientSetAccessControlRecursiveOptions, generated.PathSetAccessControlRecursiveMode) {
 	mode := generated.PathSetAccessControlRecursiveModeRemove
 	return &generated.PathClientSetAccessControlRecursiveOptions{
-		ACL: &ACL,
+		ACL: &acl,
 	}, mode
 }
 
@@ -267,7 +267,7 @@ type AppendDataOptions struct {
 	ProposedLeaseID *string
 	// CPKInfo contains optional parameters to perform encryption using customer-provided key.
 	CPKInfo *CPKInfo
-	//Flush Optional. If true, the file will be flushed after append.
+	// Flush Optional. If true, the file will be flushed after append.
 	Flush *bool
 }
 

@@ -17,7 +17,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
-	"strconv"
 	"strings"
 )
 
@@ -29,7 +28,7 @@ type VmmServersClient struct {
 }
 
 // NewVmmServersClient creates a new instance of VmmServersClient with the specified values.
-//   - subscriptionID - The Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewVmmServersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VmmServersClient, error) {
@@ -44,18 +43,18 @@ func NewVmmServersClient(subscriptionID string, credential azcore.TokenCredentia
 	return client, nil
 }
 
-// BeginCreateOrUpdate - Onboards the SCVMM fabric as an Azure VmmServer resource.
+// BeginCreateOrUpdate - Onboards the SCVmm fabric as an Azure VmmServer resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-06-05-preview
-//   - resourceGroupName - The name of the resource group.
-//   - vmmServerName - Name of the VMMServer.
-//   - body - Request payload.
+// Generated from API version 2023-10-07
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - vmmServerName - Name of the VmmServer.
+//   - resource - Resource create parameters.
 //   - options - VmmServersClientBeginCreateOrUpdateOptions contains the optional parameters for the VmmServersClient.BeginCreateOrUpdate
 //     method.
-func (client *VmmServersClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, vmmServerName string, body VMMServer, options *VmmServersClientBeginCreateOrUpdateOptions) (*runtime.Poller[VmmServersClientCreateOrUpdateResponse], error) {
+func (client *VmmServersClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, vmmServerName string, resource VmmServer, options *VmmServersClientBeginCreateOrUpdateOptions) (*runtime.Poller[VmmServersClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.createOrUpdate(ctx, resourceGroupName, vmmServerName, body, options)
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, vmmServerName, resource, options)
 		if err != nil {
 			return nil, err
 		}
@@ -71,17 +70,17 @@ func (client *VmmServersClient) BeginCreateOrUpdate(ctx context.Context, resourc
 	}
 }
 
-// CreateOrUpdate - Onboards the SCVMM fabric as an Azure VmmServer resource.
+// CreateOrUpdate - Onboards the SCVmm fabric as an Azure VmmServer resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-06-05-preview
-func (client *VmmServersClient) createOrUpdate(ctx context.Context, resourceGroupName string, vmmServerName string, body VMMServer, options *VmmServersClientBeginCreateOrUpdateOptions) (*http.Response, error) {
+// Generated from API version 2023-10-07
+func (client *VmmServersClient) createOrUpdate(ctx context.Context, resourceGroupName string, vmmServerName string, resource VmmServer, options *VmmServersClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VmmServersClient.BeginCreateOrUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, vmmServerName, body, options)
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, vmmServerName, resource, options)
 	if err != nil {
 		return nil, err
 	}
@@ -97,7 +96,7 @@ func (client *VmmServersClient) createOrUpdate(ctx context.Context, resourceGrou
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *VmmServersClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, vmmServerName string, body VMMServer, options *VmmServersClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *VmmServersClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, vmmServerName string, resource VmmServer, options *VmmServersClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ScVmm/vmmServers/{vmmServerName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -116,21 +115,21 @@ func (client *VmmServersClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-06-05-preview")
+	reqQP.Set("api-version", "2023-10-07")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
+	if err := runtime.MarshalAsJSON(req, resource); err != nil {
 		return nil, err
 	}
 	return req, nil
 }
 
-// BeginDelete - Deboards the SCVMM fabric from Azure.
+// BeginDelete - Removes the SCVmm fabric from Azure.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-06-05-preview
-//   - resourceGroupName - The name of the resource group.
-//   - vmmServerName - Name of the VMMServer.
+// Generated from API version 2023-10-07
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - vmmServerName - Name of the VmmServer.
 //   - options - VmmServersClientBeginDeleteOptions contains the optional parameters for the VmmServersClient.BeginDelete method.
 func (client *VmmServersClient) BeginDelete(ctx context.Context, resourceGroupName string, vmmServerName string, options *VmmServersClientBeginDeleteOptions) (*runtime.Poller[VmmServersClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
@@ -150,10 +149,10 @@ func (client *VmmServersClient) BeginDelete(ctx context.Context, resourceGroupNa
 	}
 }
 
-// Delete - Deboards the SCVMM fabric from Azure.
+// Delete - Removes the SCVmm fabric from Azure.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-06-05-preview
+// Generated from API version 2023-10-07
 func (client *VmmServersClient) deleteOperation(ctx context.Context, resourceGroupName string, vmmServerName string, options *VmmServersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VmmServersClient.BeginDelete"
@@ -168,7 +167,7 @@ func (client *VmmServersClient) deleteOperation(ctx context.Context, resourceGro
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
 		err = runtime.NewResponseError(httpResp)
 		return nil, err
 	}
@@ -195,21 +194,21 @@ func (client *VmmServersClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-06-05-preview")
+	reqQP.Set("api-version", "2023-10-07")
 	if options != nil && options.Force != nil {
-		reqQP.Set("force", strconv.FormatBool(*options.Force))
+		reqQP.Set("force", string(*options.Force))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// Get - Implements VMMServer GET method.
+// Get - Implements VmmServer GET method.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-06-05-preview
-//   - resourceGroupName - The name of the resource group.
-//   - vmmServerName - Name of the VMMServer.
+// Generated from API version 2023-10-07
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - vmmServerName - Name of the VmmServer.
 //   - options - VmmServersClientGetOptions contains the optional parameters for the VmmServersClient.Get method.
 func (client *VmmServersClient) Get(ctx context.Context, resourceGroupName string, vmmServerName string, options *VmmServersClientGetOptions) (VmmServersClientGetResponse, error) {
 	var err error
@@ -253,7 +252,7 @@ func (client *VmmServersClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-06-05-preview")
+	reqQP.Set("api-version", "2023-10-07")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -262,7 +261,7 @@ func (client *VmmServersClient) getCreateRequest(ctx context.Context, resourceGr
 // getHandleResponse handles the Get response.
 func (client *VmmServersClient) getHandleResponse(resp *http.Response) (VmmServersClientGetResponse, error) {
 	result := VmmServersClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.VMMServer); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.VmmServer); err != nil {
 		return VmmServersClientGetResponse{}, err
 	}
 	return result, nil
@@ -270,8 +269,8 @@ func (client *VmmServersClient) getHandleResponse(resp *http.Response) (VmmServe
 
 // NewListByResourceGroupPager - List of VmmServers in a resource group.
 //
-// Generated from API version 2020-06-05-preview
-//   - resourceGroupName - The name of the resource group.
+// Generated from API version 2023-10-07
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - VmmServersClientListByResourceGroupOptions contains the optional parameters for the VmmServersClient.NewListByResourceGroupPager
 //     method.
 func (client *VmmServersClient) NewListByResourceGroupPager(resourceGroupName string, options *VmmServersClientListByResourceGroupOptions) *runtime.Pager[VmmServersClientListByResourceGroupResponse] {
@@ -313,7 +312,7 @@ func (client *VmmServersClient) listByResourceGroupCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-06-05-preview")
+	reqQP.Set("api-version", "2023-10-07")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -322,7 +321,7 @@ func (client *VmmServersClient) listByResourceGroupCreateRequest(ctx context.Con
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *VmmServersClient) listByResourceGroupHandleResponse(resp *http.Response) (VmmServersClientListByResourceGroupResponse, error) {
 	result := VmmServersClientListByResourceGroupResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.VMMServerListResult); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.VmmServerListResult); err != nil {
 		return VmmServersClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
@@ -330,7 +329,7 @@ func (client *VmmServersClient) listByResourceGroupHandleResponse(resp *http.Res
 
 // NewListBySubscriptionPager - List of VmmServers in a subscription.
 //
-// Generated from API version 2020-06-05-preview
+// Generated from API version 2023-10-07
 //   - options - VmmServersClientListBySubscriptionOptions contains the optional parameters for the VmmServersClient.NewListBySubscriptionPager
 //     method.
 func (client *VmmServersClient) NewListBySubscriptionPager(options *VmmServersClientListBySubscriptionOptions) *runtime.Pager[VmmServersClientListBySubscriptionResponse] {
@@ -368,7 +367,7 @@ func (client *VmmServersClient) listBySubscriptionCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-06-05-preview")
+	reqQP.Set("api-version", "2023-10-07")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -377,7 +376,7 @@ func (client *VmmServersClient) listBySubscriptionCreateRequest(ctx context.Cont
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
 func (client *VmmServersClient) listBySubscriptionHandleResponse(resp *http.Response) (VmmServersClientListBySubscriptionResponse, error) {
 	result := VmmServersClientListBySubscriptionResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.VMMServerListResult); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.VmmServerListResult); err != nil {
 		return VmmServersClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
@@ -386,14 +385,14 @@ func (client *VmmServersClient) listBySubscriptionHandleResponse(resp *http.Resp
 // BeginUpdate - Updates the VmmServers resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-06-05-preview
-//   - resourceGroupName - The name of the resource group.
-//   - vmmServerName - Name of the VMMServer.
-//   - body - VmmServers patch payload.
+// Generated from API version 2023-10-07
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - vmmServerName - Name of the VmmServer.
+//   - properties - The resource properties to be updated.
 //   - options - VmmServersClientBeginUpdateOptions contains the optional parameters for the VmmServersClient.BeginUpdate method.
-func (client *VmmServersClient) BeginUpdate(ctx context.Context, resourceGroupName string, vmmServerName string, body ResourcePatch, options *VmmServersClientBeginUpdateOptions) (*runtime.Poller[VmmServersClientUpdateResponse], error) {
+func (client *VmmServersClient) BeginUpdate(ctx context.Context, resourceGroupName string, vmmServerName string, properties VmmServerTagsUpdate, options *VmmServersClientBeginUpdateOptions) (*runtime.Poller[VmmServersClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, vmmServerName, body, options)
+		resp, err := client.update(ctx, resourceGroupName, vmmServerName, properties, options)
 		if err != nil {
 			return nil, err
 		}
@@ -412,14 +411,14 @@ func (client *VmmServersClient) BeginUpdate(ctx context.Context, resourceGroupNa
 // Update - Updates the VmmServers resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-06-05-preview
-func (client *VmmServersClient) update(ctx context.Context, resourceGroupName string, vmmServerName string, body ResourcePatch, options *VmmServersClientBeginUpdateOptions) (*http.Response, error) {
+// Generated from API version 2023-10-07
+func (client *VmmServersClient) update(ctx context.Context, resourceGroupName string, vmmServerName string, properties VmmServerTagsUpdate, options *VmmServersClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VmmServersClient.BeginUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, vmmServerName, body, options)
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, vmmServerName, properties, options)
 	if err != nil {
 		return nil, err
 	}
@@ -427,7 +426,7 @@ func (client *VmmServersClient) update(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
 		err = runtime.NewResponseError(httpResp)
 		return nil, err
 	}
@@ -435,16 +434,16 @@ func (client *VmmServersClient) update(ctx context.Context, resourceGroupName st
 }
 
 // updateCreateRequest creates the Update request.
-func (client *VmmServersClient) updateCreateRequest(ctx context.Context, resourceGroupName string, vmmServerName string, body ResourcePatch, options *VmmServersClientBeginUpdateOptions) (*policy.Request, error) {
+func (client *VmmServersClient) updateCreateRequest(ctx context.Context, resourceGroupName string, vmmServerName string, properties VmmServerTagsUpdate, options *VmmServersClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ScVmm/vmmServers/{vmmServerName}"
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	if vmmServerName == "" {
 		return nil, errors.New("parameter vmmServerName cannot be empty")
 	}
@@ -454,10 +453,10 @@ func (client *VmmServersClient) updateCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-06-05-preview")
+	reqQP.Set("api-version", "2023-10-07")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
+	if err := runtime.MarshalAsJSON(req, properties); err != nil {
 		return nil, err
 	}
 	return req, nil

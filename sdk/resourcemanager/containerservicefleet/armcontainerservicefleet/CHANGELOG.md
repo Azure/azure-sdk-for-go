@@ -1,5 +1,19 @@
 # Release History
 
+## 1.2.0 (2024-05-24)
+### Features Added
+
+- New value `ManagedClusterUpgradeTypeControlPlaneOnly` added to enum type `ManagedClusterUpgradeType`
+- New enum type `TargetType` with values `TargetTypeAfterStageWait`, `TargetTypeGroup`, `TargetTypeMember`, `TargetTypeStage`
+- New function `*UpdateRunsClient.BeginSkip(context.Context, string, string, string, SkipProperties, *UpdateRunsClientBeginSkipOptions) (*runtime.Poller[UpdateRunsClientSkipResponse], error)`
+- New struct `APIServerAccessProfile`
+- New struct `AgentProfile`
+- New struct `FleetHubProfile`
+- New struct `SkipProperties`
+- New struct `SkipTarget`
+- New field `HubProfile` in struct `FleetProperties`
+
+
 ## 1.2.0-beta.1 (2024-04-26)
 ### Features Added
 

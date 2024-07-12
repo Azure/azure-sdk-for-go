@@ -59,9 +59,12 @@ type ServerFactory struct {
 	ExpressRouteProviderPortsLocationServer               ExpressRouteProviderPortsLocationServer
 	ExpressRouteServiceProvidersServer                    ExpressRouteServiceProvidersServer
 	FirewallPoliciesServer                                FirewallPoliciesServer
+	FirewallPolicyDeploymentsServer                       FirewallPolicyDeploymentsServer
+	FirewallPolicyDraftsServer                            FirewallPolicyDraftsServer
 	FirewallPolicyIdpsSignaturesServer                    FirewallPolicyIdpsSignaturesServer
 	FirewallPolicyIdpsSignaturesFilterValuesServer        FirewallPolicyIdpsSignaturesFilterValuesServer
 	FirewallPolicyIdpsSignaturesOverridesServer           FirewallPolicyIdpsSignaturesOverridesServer
+	FirewallPolicyRuleCollectionGroupDraftsServer         FirewallPolicyRuleCollectionGroupDraftsServer
 	FirewallPolicyRuleCollectionGroupsServer              FirewallPolicyRuleCollectionGroupsServer
 	FlowLogsServer                                        FlowLogsServer
 	GroupsServer                                          GroupsServer
@@ -208,9 +211,12 @@ type ServerFactoryTransport struct {
 	trExpressRouteProviderPortsLocationServer               *ExpressRouteProviderPortsLocationServerTransport
 	trExpressRouteServiceProvidersServer                    *ExpressRouteServiceProvidersServerTransport
 	trFirewallPoliciesServer                                *FirewallPoliciesServerTransport
+	trFirewallPolicyDeploymentsServer                       *FirewallPolicyDeploymentsServerTransport
+	trFirewallPolicyDraftsServer                            *FirewallPolicyDraftsServerTransport
 	trFirewallPolicyIdpsSignaturesServer                    *FirewallPolicyIdpsSignaturesServerTransport
 	trFirewallPolicyIdpsSignaturesFilterValuesServer        *FirewallPolicyIdpsSignaturesFilterValuesServerTransport
 	trFirewallPolicyIdpsSignaturesOverridesServer           *FirewallPolicyIdpsSignaturesOverridesServerTransport
+	trFirewallPolicyRuleCollectionGroupDraftsServer         *FirewallPolicyRuleCollectionGroupDraftsServerTransport
 	trFirewallPolicyRuleCollectionGroupsServer              *FirewallPolicyRuleCollectionGroupsServerTransport
 	trFlowLogsServer                                        *FlowLogsServerTransport
 	trGroupsServer                                          *GroupsServerTransport
@@ -512,6 +518,16 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewFirewallPoliciesServerTransport(&s.srv.FirewallPoliciesServer)
 		})
 		resp, err = s.trFirewallPoliciesServer.Do(req)
+	case "FirewallPolicyDeploymentsClient":
+		initServer(s, &s.trFirewallPolicyDeploymentsServer, func() *FirewallPolicyDeploymentsServerTransport {
+			return NewFirewallPolicyDeploymentsServerTransport(&s.srv.FirewallPolicyDeploymentsServer)
+		})
+		resp, err = s.trFirewallPolicyDeploymentsServer.Do(req)
+	case "FirewallPolicyDraftsClient":
+		initServer(s, &s.trFirewallPolicyDraftsServer, func() *FirewallPolicyDraftsServerTransport {
+			return NewFirewallPolicyDraftsServerTransport(&s.srv.FirewallPolicyDraftsServer)
+		})
+		resp, err = s.trFirewallPolicyDraftsServer.Do(req)
 	case "FirewallPolicyIdpsSignaturesClient":
 		initServer(s, &s.trFirewallPolicyIdpsSignaturesServer, func() *FirewallPolicyIdpsSignaturesServerTransport {
 			return NewFirewallPolicyIdpsSignaturesServerTransport(&s.srv.FirewallPolicyIdpsSignaturesServer)
@@ -527,6 +543,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewFirewallPolicyIdpsSignaturesOverridesServerTransport(&s.srv.FirewallPolicyIdpsSignaturesOverridesServer)
 		})
 		resp, err = s.trFirewallPolicyIdpsSignaturesOverridesServer.Do(req)
+	case "FirewallPolicyRuleCollectionGroupDraftsClient":
+		initServer(s, &s.trFirewallPolicyRuleCollectionGroupDraftsServer, func() *FirewallPolicyRuleCollectionGroupDraftsServerTransport {
+			return NewFirewallPolicyRuleCollectionGroupDraftsServerTransport(&s.srv.FirewallPolicyRuleCollectionGroupDraftsServer)
+		})
+		resp, err = s.trFirewallPolicyRuleCollectionGroupDraftsServer.Do(req)
 	case "FirewallPolicyRuleCollectionGroupsClient":
 		initServer(s, &s.trFirewallPolicyRuleCollectionGroupsServer, func() *FirewallPolicyRuleCollectionGroupsServerTransport {
 			return NewFirewallPolicyRuleCollectionGroupsServerTransport(&s.srv.FirewallPolicyRuleCollectionGroupsServer)

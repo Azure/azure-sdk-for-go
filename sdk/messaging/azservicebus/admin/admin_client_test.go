@@ -22,7 +22,6 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/atom"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/auth"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/conn"
@@ -32,16 +31,7 @@ import (
 )
 
 func TestAdminClient_UsingIdentity(t *testing.T) {
-	// test with azure identity support
-	ns := os.Getenv("SERVICEBUS_ENDPOINT")
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-
-	if err != nil || ns == "" {
-		t.Skip("Azure Identity compatible credentials not configured")
-	}
-
-	adminClient, err := NewClient(ns, cred, nil)
-	require.NoError(t, err)
+	adminClient := newAdminClientForTest(t, nil)
 
 	queueName := fmt.Sprintf("queue-%X", time.Now().UnixNano())
 	props, err := adminClient.CreateQueue(context.Background(), queueName, nil)
@@ -54,8 +44,7 @@ func TestAdminClient_UsingIdentity(t *testing.T) {
 }
 
 func TestAdminClient_GetNamespaceProperties(t *testing.T) {
-	adminClient, err := NewClientFromConnectionString(test.GetConnectionString(t), nil)
-	require.NoError(t, err)
+	adminClient := newAdminClientForTest(t, nil)
 	resp, err := adminClient.GetNamespaceProperties(context.Background(), nil)
 	require.NoError(t, err)
 	require.NotNil(t, resp)
@@ -79,8 +68,7 @@ func TestAdminClient_QueueWithMaxValues(t *testing.T) {
 	// infinite "time"
 	var MaxTimeSpanForTests = to.Ptr("P10675199DT2H48M5.4775807S")
 
-	adminClient, err := NewClientFromConnectionString(test.GetConnectionString(t), nil)
-	require.NoError(t, err)
+	adminClient := newAdminClientForTest(t, nil)
 
 	es := EntityStatusReceiveDisabled
 
@@ -88,7 +76,7 @@ func TestAdminClient_QueueWithMaxValues(t *testing.T) {
 
 	queueName := fmt.Sprintf("queue-%X", time.Now().UnixNano())
 
-	_, err = adminClient.CreateQueue(context.Background(), queueName, &CreateQueueOptions{
+	_, err := adminClient.CreateQueue(context.Background(), queueName, &CreateQueueOptions{
 		Properties: &QueueProperties{
 			LockDuration: to.Ptr("PT45S"),
 			// when you enable partitioning Service Bus will automatically create 16 partitions, each with the size
@@ -156,16 +144,9 @@ func TestAdminClient_CreateQueue_Premium(t *testing.T) {
 }
 
 func testCreateQueue(t *testing.T, isPremium bool) {
-	var cs string
-
-	if isPremium {
-		cs = test.GetConnectionStringForPremiumSB(t)
-	} else {
-		cs = test.GetConnectionString(t)
-	}
-
-	adminClient, err := NewClientFromConnectionString(cs, nil)
-	require.NoError(t, err)
+	adminClient := newAdminClientForTest(t, &test.NewClientOptions[ClientOptions]{
+		UsePremium: isPremium,
+	})
 
 	queueName := fmt.Sprintf("queue-%X", time.Now().UnixNano())
 
@@ -262,8 +243,7 @@ func testCreateQueue(t *testing.T, isPremium bool) {
 }
 
 func TestAdminClient_UpdateQueue(t *testing.T) {
-	adminClient, err := NewClientFromConnectionString(test.GetConnectionString(t), nil)
-	require.NoError(t, err)
+	adminClient := newAdminClientForTest(t, nil)
 
 	queueName := fmt.Sprintf("queue-%X", time.Now().UnixNano())
 	createdProps, err := adminClient.CreateQueue(context.Background(), queueName, nil)
@@ -297,8 +277,7 @@ func TestAdminClient_UpdateQueue(t *testing.T) {
 }
 
 func TestAdminClient_ListQueues(t *testing.T) {
-	adminClient, err := NewClientFromConnectionString(test.GetConnectionString(t), nil)
-	require.NoError(t, err)
+	adminClient := newAdminClientForTest(t, nil)
 
 	var expectedQueues []string
 	now := time.Now().UnixNano()
@@ -307,7 +286,7 @@ func TestAdminClient_ListQueues(t *testing.T) {
 		queueName := strings.ToLower(fmt.Sprintf("list-queues-%d-%X", i, now))
 		expectedQueues = append(expectedQueues, queueName)
 
-		_, err = adminClient.CreateQueue(context.Background(), queueName, &CreateQueueOptions{
+		_, err := adminClient.CreateQueue(context.Background(), queueName, &CreateQueueOptions{
 			Properties: &QueueProperties{
 				MaxDeliveryCount: to.Ptr(int32(int32(i + 10))),
 			},
@@ -340,8 +319,7 @@ func TestAdminClient_ListQueues(t *testing.T) {
 }
 
 func TestAdminClient_ListQueuesRuntimeProperties(t *testing.T) {
-	adminClient, err := NewClientFromConnectionString(test.GetConnectionString(t), nil)
-	require.NoError(t, err)
+	adminClient := newAdminClientForTest(t, nil)
 
 	var expectedQueues []string
 	now := time.Now().UnixNano()
@@ -350,7 +328,7 @@ func TestAdminClient_ListQueuesRuntimeProperties(t *testing.T) {
 		queueName := strings.ToLower(fmt.Sprintf("list-queuert-%d-%X", i, now))
 		expectedQueues = append(expectedQueues, queueName)
 
-		_, err = adminClient.CreateQueue(context.Background(), queueName, &CreateQueueOptions{
+		_, err := adminClient.CreateQueue(context.Background(), queueName, &CreateQueueOptions{
 			Properties: &QueueProperties{
 				MaxDeliveryCount: to.Ptr(int32(int32(i + 10))),
 			}})
@@ -446,16 +424,9 @@ func TestAdminClient_TopicAndSubscription_Premium(t *testing.T) {
 }
 
 func testTopicCreation(t *testing.T, isPremium bool) {
-	var cs string
-
-	if isPremium {
-		cs = test.GetConnectionStringForPremiumSB(t)
-	} else {
-		cs = test.GetConnectionString(t)
-	}
-
-	adminClient, err := NewClientFromConnectionString(cs, nil)
-	require.NoError(t, err)
+	adminClient := newAdminClientForTest(t, &test.NewClientOptions[ClientOptions]{
+		UsePremium: isPremium,
+	})
 
 	topicName := fmt.Sprintf("topic-%X", time.Now().UnixNano())
 	subscriptionName := fmt.Sprintf("sub-%X", time.Now().UnixNano())
@@ -701,11 +672,10 @@ func TestAdminClient_TopicAndSubscription_WithActionAndFilterDefaultSubscription
 }
 
 func createAdminClientWithTestTopic(t *testing.T) (*Client, string) {
-	adminClient, err := NewClientFromConnectionString(test.GetConnectionString(t), nil)
-	require.NoError(t, err)
+	adminClient := newAdminClientForTest(t, nil)
 
 	topicName := fmt.Sprintf("topic-%X", time.Now().UnixNano())
-	_, err = adminClient.CreateTopic(context.Background(), topicName, nil)
+	_, err := adminClient.CreateTopic(context.Background(), topicName, nil)
 	require.NoError(t, err)
 
 	return adminClient, topicName
@@ -735,14 +705,13 @@ func createTestSubscriptionWithDefaultRule(t *testing.T, adminClient *Client, to
 }
 
 func TestAdminClient_Forwarding(t *testing.T) {
-	adminClient, err := NewClientFromConnectionString(test.GetConnectionString(t), nil)
-	require.NoError(t, err)
+	adminClient := newAdminClientForTest(t, nil)
 
 	topicName := fmt.Sprintf("topic-%X", time.Now().UnixNano())
 	queueName := fmt.Sprintf("queue-%X", time.Now().UnixNano())
 	forwardToQueueName := fmt.Sprintf("queue-fwd-%X", time.Now().UnixNano())
 
-	_, err = adminClient.CreateQueue(context.Background(), forwardToQueueName, nil)
+	_, err := adminClient.CreateQueue(context.Background(), forwardToQueueName, nil)
 	require.NoError(t, err)
 
 	defer deleteQueue(t, adminClient, forwardToQueueName)
@@ -752,7 +721,8 @@ func TestAdminClient_Forwarding(t *testing.T) {
 
 	defer deleteTopic(t, adminClient, topicName)
 
-	parsed, err := conn.ParseConnectionString(test.GetConnectionString(t))
+	cs := test.MustGetEnvVar(t, test.EnvKeyConnectionString)
+	parsed, err := conn.ParseConnectionString(cs)
 	require.NoError(t, err)
 	forwardToName := to.Ptr(fmt.Sprintf("sb://%s/%s", parsed.FullyQualifiedNamespace, forwardToQueueName))
 
@@ -788,8 +758,7 @@ func TestAdminClient_Forwarding(t *testing.T) {
 }
 
 func TestAdminClient_UpdateTopic(t *testing.T) {
-	adminClient, err := NewClientFromConnectionString(test.GetConnectionString(t), nil)
-	require.NoError(t, err)
+	adminClient := newAdminClientForTest(t, nil)
 
 	topicName := fmt.Sprintf("topic-%X", time.Now().UnixNano())
 	addResp, err := adminClient.CreateTopic(context.Background(), topicName, nil)
@@ -826,8 +795,7 @@ func TestAdminClient_UpdateTopic(t *testing.T) {
 }
 
 func TestAdminClient_ListTopics(t *testing.T) {
-	adminClient, err := NewClientFromConnectionString(test.GetConnectionString(t), nil)
-	require.NoError(t, err)
+	adminClient := newAdminClientForTest(t, nil)
 
 	var expectedTopics []string
 	now := time.Now().UnixNano()
@@ -889,8 +857,7 @@ func TestAdminClient_ListTopics(t *testing.T) {
 }
 
 func TestAdminClient_ListTopicsRuntimeProperties(t *testing.T) {
-	adminClient, err := NewClientFromConnectionString(test.GetConnectionString(t), nil)
-	require.NoError(t, err)
+	adminClient := newAdminClientForTest(t, nil)
 
 	var expectedTopics []string
 	now := time.Now().UnixNano()
@@ -899,7 +866,7 @@ func TestAdminClient_ListTopicsRuntimeProperties(t *testing.T) {
 		topicName := strings.ToLower(fmt.Sprintf("list-topicrt-%d-%X", i, now))
 		expectedTopics = append(expectedTopics, topicName)
 
-		_, err = adminClient.CreateTopic(context.Background(), topicName, nil)
+		_, err := adminClient.CreateTopic(context.Background(), topicName, nil)
 		require.NoError(t, err)
 
 		defer deleteTopic(t, adminClient, topicName)
@@ -940,13 +907,12 @@ func TestAdminClient_ListTopicsRuntimeProperties(t *testing.T) {
 }
 
 func TestAdminClient_ListSubscriptions(t *testing.T) {
-	adminClient, err := NewClientFromConnectionString(test.GetConnectionString(t), nil)
-	require.NoError(t, err)
+	adminClient := newAdminClientForTest(t, nil)
 
 	now := time.Now().UnixNano()
 	topicName := strings.ToLower(fmt.Sprintf("listsub-%X", now))
 
-	_, err = adminClient.CreateTopic(context.Background(), topicName, nil)
+	_, err := adminClient.CreateTopic(context.Background(), topicName, nil)
 	require.NoError(t, err)
 
 	defer deleteTopic(t, adminClient, topicName)
@@ -1002,13 +968,12 @@ func TestAdminClient_ListSubscriptions(t *testing.T) {
 }
 
 func TestAdminClient_ListSubscriptionRuntimeProperties(t *testing.T) {
-	adminClient, err := NewClientFromConnectionString(test.GetConnectionString(t), nil)
-	require.NoError(t, err)
+	adminClient := newAdminClientForTest(t, nil)
 
 	now := time.Now().UnixNano()
 	topicName := strings.ToLower(fmt.Sprintf("listsubrt-%X", now))
 
-	_, err = adminClient.CreateTopic(context.Background(), topicName, nil)
+	_, err := adminClient.CreateTopic(context.Background(), topicName, nil)
 	require.NoError(t, err)
 
 	var expectedSubs []string
@@ -1063,11 +1028,10 @@ func TestAdminClient_ListSubscriptionRuntimeProperties(t *testing.T) {
 }
 
 func TestAdminClient_UpdateSubscription(t *testing.T) {
-	adminClient, err := NewClientFromConnectionString(test.GetConnectionString(t), nil)
-	require.NoError(t, err)
+	adminClient := newAdminClientForTest(t, nil)
 
 	topicName := fmt.Sprintf("topic-%X", time.Now().UnixNano())
-	_, err = adminClient.CreateTopic(context.Background(), topicName, nil)
+	_, err := adminClient.CreateTopic(context.Background(), topicName, nil)
 	require.NoError(t, err)
 
 	defer deleteTopic(t, adminClient, topicName)
@@ -1191,8 +1155,7 @@ func TestAdminClient_LackPermissions_Topic(t *testing.T) {
 // TestAdminClient_NotFound makes sure that the "GET as LIST" behavior maps to nil when we are trying
 // to get an entity by name and it is not found.
 func TestAdminClient_NotFound(t *testing.T) {
-	adminClient, err := NewClientFromConnectionString(test.GetConnectionString(t), nil)
-	require.NoError(t, err)
+	adminClient := newAdminClientForTest(t, nil)
 
 	queue, err := adminClient.GetQueue(context.Background(), "non-existent-queue", nil)
 	require.NoError(t, err)
@@ -1674,14 +1637,17 @@ func (em *emwrap) Get(ctx context.Context, entityPath string, respObj any) (*htt
 }
 
 func (*emwrap) makeFilterAndActionUnknown(respObj any) {
-	switch actual := respObj.(type) {
-	case **atom.RuleEnvelope:
-		f := (*actual).Content.RuleDescription.Filter
-		f.Type = "PurposefullyChangedFilterType_" + f.Type
+	actual, ok := respObj.(**atom.RuleEnvelope)
 
-		a := (*actual).Content.RuleDescription.Action
-		a.Type = "PurposefullyChangedActionType_" + a.Type
+	if !ok {
+		return
 	}
+
+	f := (*actual).Content.RuleDescription.Filter
+	f.Type = "PurposefullyChangedFilterType_" + f.Type
+
+	a := (*actual).Content.RuleDescription.Action
+	a.Type = "PurposefullyChangedActionType_" + a.Type
 }
 
 func TestAdminClient_UnknownFilterRoundtrippingWorks(t *testing.T) {
@@ -1767,11 +1733,10 @@ func TestAdminClient_UnknownFilterRoundtrippingWorks(t *testing.T) {
 }
 
 func createTestSub(t *testing.T) (*Client, string) {
-	adminClient, err := NewClientFromConnectionString(test.GetConnectionString(t), nil)
-	require.NoError(t, err)
+	adminClient := newAdminClientForTest(t, nil)
 
 	topicName := fmt.Sprintf("rule-topic-%X", time.Now().UnixNano())
-	_, err = adminClient.CreateTopic(context.Background(), topicName, &CreateTopicOptions{
+	_, err := adminClient.CreateTopic(context.Background(), topicName, &CreateTopicOptions{
 		Properties: &TopicProperties{
 			AutoDeleteOnIdle: to.Ptr("PT5M"),
 		},
@@ -1809,7 +1774,7 @@ func (em *entityManagerForPagerTests) Get(ctx context.Context, entityPath string
 }
 
 func TestAdminClient_pagerWithLightPage(t *testing.T) {
-	adminClient, err := NewClientFromConnectionString("Endpoint=sb://fakeendpoint.something/;SharedAccessKeyName=fakekeyname;SharedAccessKey=CHANGEME", nil)
+	adminClient, err := NewClientFromConnectionString("Endpoint=sb://fakeendpoint.something/;SharedAccessKeyName=fakekeyname;SharedAccessKey=CHANGEME", nil) // allowed connection string
 	require.NoError(t, err)
 
 	em := &entityManagerForPagerTests{}
@@ -1849,7 +1814,7 @@ func TestAdminClient_pagerWithLightPage(t *testing.T) {
 }
 
 func TestAdminClient_pagerWithFullPage(t *testing.T) {
-	adminClient, err := NewClientFromConnectionString("Endpoint=sb://fakeendpoint.something/;SharedAccessKeyName=fakekeyname;SharedAccessKey=CHANGEME", nil)
+	adminClient, err := NewClientFromConnectionString("Endpoint=sb://fakeendpoint.something/;SharedAccessKeyName=fakekeyname;SharedAccessKey=CHANGEME", nil) // allowed connection string
 	require.NoError(t, err)
 
 	em := &entityManagerForPagerTests{}
@@ -2019,10 +1984,9 @@ func setupLowPrivTest(t *testing.T) *struct {
 	QueueName string
 	Cleanup   func()
 } {
-	adminClient, err := NewClientFromConnectionString(test.GetConnectionString(t), nil)
-	require.NoError(t, err)
+	adminClient := newAdminClientForTest(t, nil)
 
-	lowPrivAdminClient, err := NewClientFromConnectionString(test.GetConnectionStringWithoutManagePerms(t), nil)
+	lowPrivAdminClient, err := NewClientFromConnectionString(test.MustGetEnvVar(t, test.EnvKeyConnectionStringNoManage), nil) // allowed connection string
 	require.NoError(t, err)
 
 	nanoSeconds := time.Now().UnixNano()
@@ -2030,9 +1994,6 @@ func setupLowPrivTest(t *testing.T) *struct {
 	topicName := fmt.Sprintf("topic-%d", nanoSeconds)
 	queueName := fmt.Sprintf("queue-%d", nanoSeconds)
 	subName := "subscription1"
-
-	// TODO: add in rule management
-	//ruleName := "rule"
 
 	// create some entities that we need (there's a diff between something not being
 	// found and something failing because of lack of authorization)
@@ -2108,8 +2069,7 @@ func TestATOMNoCountDetails(t *testing.T) {
 }
 
 func TestATOMEntitiesHaveNames(t *testing.T) {
-	adminClient, err := NewClientFromConnectionString(test.GetConnectionString(t), nil)
-	require.NoError(t, err)
+	adminClient := newAdminClientForTest(t, nil)
 
 	nano := time.Now().UnixNano()
 	topicName := fmt.Sprintf("topic-%X", nano)
@@ -2144,4 +2104,11 @@ func TestATOMEntitiesHaveNames(t *testing.T) {
 		require.Equal(t, subResp.TopicName, topicName)
 		require.Equal(t, subResp.SubscriptionName, "sub1")
 	})
+}
+
+func newAdminClientForTest(t *testing.T, options *test.NewClientOptions[ClientOptions]) *Client {
+	return test.NewClient(t, test.NewClientArgs[ClientOptions, Client]{
+		NewClientFromConnectionString: NewClientFromConnectionString, // allowed connection string
+		NewClient:                     NewClient,
+	}, options)
 }

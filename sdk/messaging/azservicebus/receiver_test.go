@@ -439,8 +439,7 @@ func TestReceiverDetachWithPeekLock(t *testing.T) {
 	serviceBusClient, cleanup, queueName := setupLiveTest(t, nil)
 	defer cleanup()
 
-	adminClient, err := admin.NewClientFromConnectionString(test.GetConnectionString(t), nil)
-	require.NoError(t, err)
+	adminClient := newAdminClientForTest(t, nil)
 
 	receiver, err := serviceBusClient.NewReceiverForQueue(queueName, nil)
 	require.NoError(t, err)
@@ -503,8 +502,7 @@ func TestReceiverDetachWithReceiveAndDelete(t *testing.T) {
 	serviceBusClient, cleanup, queueName := setupLiveTest(t, nil)
 	defer cleanup()
 
-	adminClient, err := admin.NewClientFromConnectionString(test.GetConnectionString(t), nil)
-	require.NoError(t, err)
+	adminClient := newAdminClientForTest(t, nil)
 
 	receiver, err := serviceBusClient.NewReceiverForQueue(queueName, &ReceiverOptions{
 		ReceiveMode: ReceiveModeReceiveAndDelete,
@@ -737,7 +735,7 @@ func TestReceiverMultiReceiver(t *testing.T) {
 }
 
 func TestReceiverMultiTopic(t *testing.T) {
-	otherQueueName, cleanupOtherQueue := createQueue(t, test.GetConnectionString(t), nil)
+	otherQueueName, cleanupOtherQueue := createQueue(t, nil, nil)
 	defer cleanupOtherQueue()
 
 	client, cleanup, queueName := setupLiveTest(t, nil)
@@ -824,13 +822,13 @@ func TestReceiverMessageLockExpires(t *testing.T) {
 }
 
 func TestReceiverUnauthorizedCreds(t *testing.T) {
-	allPowerfulCS := test.GetConnectionString(t)
+	allPowerfulCS := test.MustGetEnvVar(t, test.EnvKeyConnectionString)
 	queueName := "testqueue"
 
 	t.Run("ListenOnly with Sender", func(t *testing.T) {
-		cs := test.GetConnectionStringListenOnly(t)
+		cs := test.MustGetEnvVar(t, test.EnvKeyConnectionStringListenOnly)
 
-		client, err := NewClientFromConnectionString(cs, nil)
+		client, err := NewClientFromConnectionString(cs, nil) // allowed connection string
 		require.NoError(t, err)
 
 		defer test.RequireClose(t, client)
@@ -849,9 +847,9 @@ func TestReceiverUnauthorizedCreds(t *testing.T) {
 	})
 
 	t.Run("SenderOnly with Receiver", func(t *testing.T) {
-		cs := test.GetConnectionStringSendOnly(t)
+		cs := test.MustGetEnvVar(t, test.EnvKeyConnectionStringSendOnly)
 
-		client, err := NewClientFromConnectionString(cs, nil)
+		client, err := NewClientFromConnectionString(cs, nil) // allowed connection string
 		require.NoError(t, err)
 
 		defer test.RequireClose(t, client)
@@ -872,7 +870,7 @@ func TestReceiverUnauthorizedCreds(t *testing.T) {
 		expiredCS, err := sas.CreateConnectionStringWithSASUsingExpiry(allPowerfulCS, time.Now().Add(-10*time.Minute))
 		require.NoError(t, err)
 
-		client, err := NewClientFromConnectionString(expiredCS, nil)
+		client, err := NewClientFromConnectionString(expiredCS, nil) // allowed connection string
 		require.NoError(t, err)
 
 		defer test.RequireClose(t, client)
@@ -907,7 +905,7 @@ func TestReceiverUnauthorizedCreds(t *testing.T) {
 			return
 		}
 
-		cliCred, err := azidentity.NewClientSecretCredential(identityVars.TenantID, identityVars.ClientID, "bogus-client-secret", nil)
+		cliCred, err := azidentity.NewClientSecretCredential("00000000-0000-0000-0000-000000000000", "00000000-0000-0000-0000-000000000000", "bogus-client-secret", nil)
 		require.NoError(t, err)
 
 		client, err := NewClient(identityVars.Endpoint, cliCred, nil)

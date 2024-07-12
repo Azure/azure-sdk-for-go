@@ -7,12 +7,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"log"
 	"os"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/checkpoints"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 )
 
 // Shows how to use the [Processor] type, using a [ConsumerClient] and [CheckpointStore].
@@ -32,16 +34,23 @@ func Example_consumingEventsWithCheckpoints() {
 	// The built-in checkpoint store (available in the `azeventhubs/checkpoints` package) uses
 	// Azure Blob storage.
 
-	eventHubConnectionString := os.Getenv("EVENTHUB_CONNECTION_STRING")
+	eventHubNamespace := os.Getenv("EVENTHUB_NAMESPACE")
 	eventHubName := os.Getenv("EVENTHUB_NAME")
 
-	storageConnectionString := os.Getenv("CHECKPOINTSTORE_STORAGE_CONNECTION_STRING")
+	storageEndpoint := os.Getenv("CHECKPOINTSTORE_STORAGE_ENDPOINT")
 	storageContainerName := os.Getenv("CHECKPOINTSTORE_STORAGE_CONTAINER_NAME")
 
-	consumerClient, checkpointStore, err := createClientsForExample(eventHubConnectionString, eventHubName, storageConnectionString, storageContainerName)
+	if eventHubName == "" || eventHubNamespace == "" || storageEndpoint == "" || storageContainerName == "" {
+		fmt.Fprintf(os.Stderr, "Skipping example, environment variables missing\n")
+		return
+	}
+
+	consumerClient, checkpointStore, err := createClientsForExample(eventHubNamespace, eventHubName, storageEndpoint, storageContainerName)
 
 	if err != nil {
-		panic(err)
+		// TODO: Update the following line with your application specific error handling logic
+		log.Printf("ERROR: %s", err)
+		return
 	}
 
 	defer consumerClient.Close(context.TODO())
@@ -54,7 +63,9 @@ func Example_consumingEventsWithCheckpoints() {
 	processor, err := azeventhubs.NewProcessor(consumerClient, checkpointStore, nil)
 
 	if err != nil {
-		panic(err)
+		// TODO: Update the following line with your application specific error handling logic
+		log.Printf("ERROR: %s", err)
+		return
 	}
 
 	// Run in the background, launching goroutines to process each partition
@@ -69,7 +80,9 @@ func Example_consumingEventsWithCheckpoints() {
 	defer processorCancel()
 
 	if err := processor.Run(processorCtx); err != nil {
-		panic(err)
+		// TODO: Update the following line with your application specific error handling logic
+		log.Printf("ERROR: %s", err)
+		return
 	}
 }
 
@@ -84,7 +97,8 @@ func dispatchPartitionClients(processor *azeventhubs.Processor) {
 
 		go func() {
 			if err := processEventsForPartition(processorPartitionClient); err != nil {
-				panic(err)
+				// TODO: Update the following line with your application specific error handling logic
+				log.Fatalf("ERROR: %s", err)
 			}
 		}()
 	}
@@ -108,6 +122,7 @@ func processEventsForPartition(partitionClient *azeventhubs.ProcessorPartitionCl
 	}
 
 	// 2/3 [CONTINUOUS] Receive events, checkpointing as needed using UpdateCheckpoint.
+	log.Printf("Starting to receive for partition %s", partitionClient.PartitionID())
 	for {
 		// Wait up to a minute for 100 events, otherwise returns whatever we collected during that time.
 		receiveCtx, cancelReceive := context.WithTimeout(context.TODO(), time.Minute)
@@ -128,10 +143,10 @@ func processEventsForPartition(partitionClient *azeventhubs.ProcessorPartitionCl
 			continue
 		}
 
-		fmt.Printf("Received %d event(s)\n", len(events))
+		log.Printf("Received %d event(s)", len(events))
 
 		for _, event := range events {
-			fmt.Printf("Event received with body %v\n", event.Body)
+			log.Printf("Event received with body %v", event.Body)
 		}
 
 		// Updates the checkpoint with the latest event received. If processing needs to restart
@@ -145,6 +160,7 @@ func processEventsForPartition(partitionClient *azeventhubs.ProcessorPartitionCl
 func initializePartitionResources(partitionID string) error {
 	// initialize things that might be partition specific, like a
 	// database connection.
+	log.Printf("Initializing partition related resources for partition %s", partitionID)
 	return nil
 }
 
@@ -152,15 +168,25 @@ func shutdownPartitionResources(partitionClient *azeventhubs.ProcessorPartitionC
 	// Each PartitionClient holds onto an external resource and should be closed if you're
 	// not processing them anymore.
 	defer partitionClient.Close(context.TODO())
+
+	log.Printf("Shutting down partition related resources for partition %s", partitionClient.PartitionID())
 }
 
-func createClientsForExample(eventHubConnectionString, eventHubName, storageConnectionString, storageContainerName string) (*azeventhubs.ConsumerClient, azeventhubs.CheckpointStore, error) {
-	// NOTE: the storageContainerName must exist before the checkpoint store can be used.
-	azBlobContainerClient, err := container.NewClientFromConnectionString(storageConnectionString, storageContainerName, nil)
+func createClientsForExample(eventHubNamespace, eventHubName, storageServiceURL, storageContainerName string) (*azeventhubs.ConsumerClient, azeventhubs.CheckpointStore, error) {
+	defaultAzureCred, err := azidentity.NewDefaultAzureCredential(nil)
 
 	if err != nil {
 		return nil, nil, err
 	}
+
+	// NOTE: the storageContainerName must exist before the checkpoint store can be used.
+	blobClient, err := azblob.NewClient(storageServiceURL, defaultAzureCred, nil)
+
+	if err != nil {
+		return nil, nil, err
+	}
+
+	azBlobContainerClient := blobClient.ServiceClient().NewContainerClient(storageContainerName)
 
 	checkpointStore, err := checkpoints.NewBlobStore(azBlobContainerClient, nil)
 
@@ -168,7 +194,7 @@ func createClientsForExample(eventHubConnectionString, eventHubName, storageConn
 		return nil, nil, err
 	}
 
-	consumerClient, err := azeventhubs.NewConsumerClientFromConnectionString(eventHubConnectionString, eventHubName, azeventhubs.DefaultConsumerGroup, nil)
+	consumerClient, err := azeventhubs.NewConsumerClient(eventHubNamespace, eventHubName, azeventhubs.DefaultConsumerGroup, defaultAzureCred, nil)
 
 	if err != nil {
 		return nil, nil, err

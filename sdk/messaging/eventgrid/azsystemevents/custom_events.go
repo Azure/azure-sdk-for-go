@@ -12,19 +12,11 @@ import (
 	"strings"
 )
 
-//type IotHubDeviceConnectedEventData DeviceConnectionStateEventProperties
-
-func fixNAValue(s **string) {
-	if *s != nil && **s == "n/a" {
-		*s = nil
-	}
-}
-
-func unmarshalInternalACSAdvancedMessageChannelEventError(val json.RawMessage, fn string, re **Error) error {
-	var realErr *internalACSAdvancedMessageChannelEventError
+func unmarshalInternalACSMessageChannelEventError(val json.RawMessage, fn string, re **Error) error {
+	var realErr *internalACSMessageChannelEventError
 
 	if err := json.Unmarshal(val, &realErr); err != nil {
-		return fmt.Errorf("struct field %s: %v", fn, err)
+		return fmt.Errorf("struct field %s: %w", fn, err)
 	}
 
 	*re = &Error{
@@ -35,11 +27,7 @@ func unmarshalInternalACSAdvancedMessageChannelEventError(val json.RawMessage, f
 	return nil
 }
 
-func unpackMsg(err *internalAcsRouterCommunicationError, indent string) string {
-	if err == nil {
-		return ""
-	}
-
+func unpackMsg(err internalACSRouterCommunicationError, indent string) string {
 	sb := strings.Builder{}
 
 	code := ""
@@ -56,22 +44,22 @@ func unpackMsg(err *internalAcsRouterCommunicationError, indent string) string {
 
 	if len(err.Details) > 0 {
 		for i, detailErr := range err.Details {
-			sb.WriteString(fmt.Sprintf("%sDetails[%d]:\n%s", indent, i, unpackMsg(&detailErr, indent+"  ")))
+			sb.WriteString(fmt.Sprintf("%sDetails[%d]:\n%s", indent, i, unpackMsg(detailErr, indent+"  ")))
 		}
 	}
 
 	if err.Innererror != nil {
-		sb.WriteString(fmt.Sprintf("%sInnerError:\n%s", indent, unpackMsg(err.Innererror, indent+"  ")))
+		sb.WriteString(fmt.Sprintf("%sInnerError:\n%s", indent, unpackMsg(*err.Innererror, indent+"  ")))
 	}
 
 	return sb.String()
 }
 
 func unmarshalInternalACSRouterCommunicationError(val json.RawMessage, fn string, re *[]*Error) error {
-	var tmp []internalAcsRouterCommunicationError
+	var tmp []internalACSRouterCommunicationError
 
 	if err := json.Unmarshal(val, &tmp); err != nil {
-		return fmt.Errorf("struct field %s: %v", fn, err)
+		return fmt.Errorf("struct field %s: %w", fn, err)
 	}
 
 	for _, se := range tmp {
@@ -85,7 +73,7 @@ func unmarshalInternalACSRouterCommunicationError(val json.RawMessage, fn string
 			Code: code,
 			// we're going to compress the remainder of these details into a
 			// string.
-			message: unpackMsg(&se, ""),
+			message: unpackMsg(se, ""),
 		}
 
 		*re = append(*re, e)

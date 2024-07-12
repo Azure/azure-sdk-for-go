@@ -26,11 +26,13 @@ extends:
     parameters:
       CloudConfig:
         Public:
+          ServiceConnection: azure-sdk-tests
           SubscriptionConfigurations:
             - $(sub-config-azure-cloud-test-resources)
             - $(sub-config-identity-test-resources)
       RunLiveTests: true
       ServiceDirectory: azidentity
+      UseFederatedAuth: true
       UsePipelineProxy: false
 
       ${{ if endsWith(variables['Build.DefinitionName'], 'weekly') }}:

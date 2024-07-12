@@ -72,7 +72,6 @@ type UnrecordedTestSuite struct {
 
 func (s *UnrecordedTestSuite) TestServiceClientFromConnectionString() {
 	_require := require.New(s.T())
-	//testName := s.T().Name()
 
 	accountName, _ := testcommon.GetAccountInfo(testcommon.TestAccountDefault)
 	connectionString := testcommon.GetConnectionString(testcommon.TestAccountDefault)

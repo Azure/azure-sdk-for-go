@@ -7,9 +7,7 @@
 package internal
 
 const (
-	// Module is the name of the calling module used in telemetry data.
-	Module = "internal"
-
-	// Version is the semantic version (see http://semver.org) of this module.
-	Version = "v1.7.1"
+	// version is the semantic version (see http://semver.org) of this module.
+	//lint:ignore U1000 reason: "this constant is used by release automation"
+	version = "v1.9.2"
 )

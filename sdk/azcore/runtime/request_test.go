@@ -15,6 +15,7 @@ import (
 	"mime"
 	"mime/multipart"
 	"net/http"
+	"regexp"
 	"strconv"
 	"strings"
 	"testing"
@@ -427,4 +428,11 @@ func TestEncodeQueryParams(t *testing.T) {
 	nextLink, err = EncodeQueryParams(testURL + "query?compound=thing1;thing2;thing3")
 	require.NoError(t, err)
 	require.EqualValues(t, testURL+"query?compound=thing1%3Bthing2%3Bthing3", nextLink)
+}
+
+func TestNewUUID(t *testing.T) {
+	u, err := NewUUID()
+	require.NoError(t, err)
+	// xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+	require.Regexp(t, regexp.MustCompile(`[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}`), u)
 }

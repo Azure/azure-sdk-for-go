@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus"
@@ -43,9 +44,9 @@ func ExampleNewClientFromConnectionString() {
 }
 
 func ExampleNewClient_configuringRetries() {
-	// NOTE: If you'd like to authenticate via Azure Active Directory look at
-	// the `NewClient` function instead.
-	client, err = azservicebus.NewClientFromConnectionString(connectionString, &azservicebus.ClientOptions{
+	// NOTE: If you'd like to authenticate using a Service Bus connection string
+	// look at `NewClientFromConnectionString` instead.
+	client, err = azservicebus.NewClient(endpoint, tokenCredential, &azservicebus.ClientOptions{
 		// NOTE: you don't need to configure these explicitly if you like the defaults.
 		// For more information see:
 		//  https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus#RetryOptions
@@ -88,3 +89,7 @@ func Example_enablingLogging() {
 		azservicebus.EventAdmin,
 	)
 }
+
+// fakes for examples
+var endpoint string
+var tokenCredential azcore.TokenCredential

@@ -24,9 +24,9 @@ import (
 
 // CheckNameAvailabilityServer is a fake server for instances of the armselfhelp.CheckNameAvailabilityClient type.
 type CheckNameAvailabilityServer struct {
-	// Post is the fake for method CheckNameAvailabilityClient.Post
+	// CheckAvailability is the fake for method CheckNameAvailabilityClient.CheckAvailability
 	// HTTP status codes to indicate success: http.StatusOK
-	Post func(ctx context.Context, scope string, options *armselfhelp.CheckNameAvailabilityClientPostOptions) (resp azfake.Responder[armselfhelp.CheckNameAvailabilityClientPostResponse], errResp azfake.ErrorResponder)
+	CheckAvailability func(ctx context.Context, scope string, options *armselfhelp.CheckNameAvailabilityClientCheckAvailabilityOptions) (resp azfake.Responder[armselfhelp.CheckNameAvailabilityClientCheckAvailabilityResponse], errResp azfake.ErrorResponder)
 }
 
 // NewCheckNameAvailabilityServerTransport creates a new instance of CheckNameAvailabilityServerTransport with the provided implementation.
@@ -54,8 +54,8 @@ func (c *CheckNameAvailabilityServerTransport) Do(req *http.Request) (*http.Resp
 	var err error
 
 	switch method {
-	case "CheckNameAvailabilityClient.Post":
-		resp, err = c.dispatchPost(req)
+	case "CheckNameAvailabilityClient.CheckAvailability":
+		resp, err = c.dispatchCheckAvailability(req)
 	default:
 		err = fmt.Errorf("unhandled API %s", method)
 	}
@@ -67,9 +67,9 @@ func (c *CheckNameAvailabilityServerTransport) Do(req *http.Request) (*http.Resp
 	return resp, nil
 }
 
-func (c *CheckNameAvailabilityServerTransport) dispatchPost(req *http.Request) (*http.Response, error) {
-	if c.srv.Post == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Post not implemented")}
+func (c *CheckNameAvailabilityServerTransport) dispatchCheckAvailability(req *http.Request) (*http.Response, error) {
+	if c.srv.CheckAvailability == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CheckAvailability not implemented")}
 	}
 	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Help/checkNameAvailability`
 	regex := regexp.MustCompile(regexStr)
@@ -85,13 +85,13 @@ func (c *CheckNameAvailabilityServerTransport) dispatchPost(req *http.Request) (
 	if err != nil {
 		return nil, err
 	}
-	var options *armselfhelp.CheckNameAvailabilityClientPostOptions
+	var options *armselfhelp.CheckNameAvailabilityClientCheckAvailabilityOptions
 	if !reflect.ValueOf(body).IsZero() {
-		options = &armselfhelp.CheckNameAvailabilityClientPostOptions{
+		options = &armselfhelp.CheckNameAvailabilityClientCheckAvailabilityOptions{
 			CheckNameAvailabilityRequest: &body,
 		}
 	}
-	respr, errRespr := c.srv.Post(req.Context(), scopeParam, options)
+	respr, errRespr := c.srv.CheckAvailability(req.Context(), scopeParam, options)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}

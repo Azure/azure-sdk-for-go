@@ -14,52 +14,88 @@ import (
 
 // NewListMessagesPager returns a pager for messages associated with a thread.
 func (c *Client) NewListMessagesPager(threadID string, options *ListMessagesOptions) *runtime.Pager[ListMessagesResponse] {
-	nextPageFn := func(client *Client, ctx context.Context, opts *ListMessagesOptions) (ListMessagesResponse, error) {
+	nextPageFn := func(ctx context.Context, opts *ListMessagesOptions) (ListMessagesResponse, error) {
 		return c.internalListMessages(ctx, threadID, opts)
 	}
 	return newOpenAIPager(c, nextPageFn, options)
 }
 
+func (o *ListMessagesOptions) updateAfter(after *string) { o.After = after }
+func (r ListMessagesResponse) lastID() *string           { return r.LastID }
+func (r ListMessagesResponse) hasMore() bool             { return *r.HasMore }
+
 // NewListAssistantsPager returns a pager for assistants.
 func (c *Client) NewListAssistantsPager(options *ListAssistantsOptions) *runtime.Pager[ListAssistantsResponse] {
-	nextPageFn := func(client *Client, ctx context.Context, opts *ListAssistantsOptions) (ListAssistantsResponse, error) {
+	nextPageFn := func(ctx context.Context, opts *ListAssistantsOptions) (ListAssistantsResponse, error) {
 		return c.internalListAssistants(ctx, opts)
 	}
 	return newOpenAIPager(c, nextPageFn, options)
 }
 
-// NewListAssistantFilesPager returns a pager for an assistant's files.
-func (c *Client) NewListAssistantFilesPager(assistantID string, options *ListAssistantFilesOptions) *runtime.Pager[ListAssistantFilesResponse] {
-	nextPageFn := func(client *Client, ctx context.Context, opts *ListAssistantFilesOptions) (ListAssistantFilesResponse, error) {
-		return c.internalListAssistantFiles(ctx, assistantID, opts)
-	}
-	return newOpenAIPager(c, nextPageFn, options)
-}
-
-// NewListMessageFilesPager returns a pager for a message's files.
-func (c *Client) NewListMessageFilesPager(threadID string, messageID string, options *ListMessageFilesOptions) *runtime.Pager[ListMessageFilesResponse] {
-	nextPageFn := func(client *Client, ctx context.Context, opts *ListMessageFilesOptions) (ListMessageFilesResponse, error) {
-		return c.internalListMessageFiles(ctx, threadID, messageID, opts)
-	}
-	return newOpenAIPager(c, nextPageFn, options)
-}
+func (o *ListAssistantsOptions) updateAfter(after *string) { o.After = after }
+func (r ListAssistantsResponse) lastID() *string           { return r.LastID }
+func (r ListAssistantsResponse) hasMore() bool             { return *r.HasMore }
 
 // NewListRunStepsPager returns a pager for a Run's steps.
 func (c *Client) NewListRunStepsPager(threadID string, runID string, options *ListRunStepsOptions) *runtime.Pager[ListRunStepsResponse] {
-	nextPageFn := func(client *Client, ctx context.Context, opts *ListRunStepsOptions) (ListRunStepsResponse, error) {
+	nextPageFn := func(ctx context.Context, opts *ListRunStepsOptions) (ListRunStepsResponse, error) {
 		return c.internalListRunSteps(ctx, threadID, runID, opts)
 	}
 
 	return newOpenAIPager(c, nextPageFn, options)
 }
 
+func (o *ListRunStepsOptions) updateAfter(after *string) { o.After = after }
+func (r ListRunStepsResponse) lastID() *string           { return r.LastID }
+func (r ListRunStepsResponse) hasMore() bool             { return *r.HasMore }
+
 // NewListRunsPager returns a pager for a Thread's runs.
 func (c *Client) NewListRunsPager(threadID string, options *ListRunsOptions) *runtime.Pager[ListRunsResponse] {
-	nextPageFn := func(client *Client, ctx context.Context, opts *ListRunsOptions) (ListRunsResponse, error) {
+	nextPageFn := func(ctx context.Context, opts *ListRunsOptions) (ListRunsResponse, error) {
 		return c.internalListRuns(ctx, threadID, opts)
 	}
 	return newOpenAIPager(c, nextPageFn, options)
 }
+
+func (o *ListRunsOptions) updateAfter(after *string) { o.After = after }
+func (r ListRunsResponse) lastID() *string           { return r.LastID }
+func (r ListRunsResponse) hasMore() bool             { return *r.HasMore }
+
+// NewListVectorStoresPager returns a pager for a VectorStores.
+func (c *Client) NewListVectorStoresPager(options *ListVectorStoresOptions) *runtime.Pager[ListVectorStoresResponse] {
+	nextPageFn := func(ctx context.Context, opts *ListVectorStoresOptions) (ListVectorStoresResponse, error) {
+		return c.internalListVectorStores(ctx, opts)
+	}
+	return newOpenAIPager(c, nextPageFn, options)
+}
+
+func (o *ListVectorStoresOptions) updateAfter(after *string) { o.After = after }
+func (r ListVectorStoresResponse) lastID() *string           { return r.LastID }
+func (r ListVectorStoresResponse) hasMore() bool             { return *r.HasMore }
+
+// NewListVectorStoreFilesPager returns a pager for a vector store files.
+func (c *Client) NewListVectorStoreFilesPager(vectorStoreID string, options *ListVectorStoreFilesOptions) *runtime.Pager[ListVectorStoreFilesResponse] {
+	nextPageFn := func(ctx context.Context, opts *ListVectorStoreFilesOptions) (ListVectorStoreFilesResponse, error) {
+		return c.internalListVectorStoreFiles(ctx, vectorStoreID, opts)
+	}
+	return newOpenAIPager(c, nextPageFn, options)
+}
+
+func (o *ListVectorStoreFilesOptions) updateAfter(after *string) { o.After = after }
+func (r ListVectorStoreFilesResponse) lastID() *string           { return r.LastID }
+func (r ListVectorStoreFilesResponse) hasMore() bool             { return *r.HasMore }
+
+// NewListVectorStoreFileBatchFilesPager returns a pager for vector store files in a batch.
+func (c *Client) NewListVectorStoreFileBatchFilesPager(vectorStoreID string, batchID string, options *ListVectorStoreFileBatchFilesOptions) *runtime.Pager[ListVectorStoreFileBatchFilesResponse] {
+	nextPageFn := func(ctx context.Context, opts *ListVectorStoreFileBatchFilesOptions) (ListVectorStoreFileBatchFilesResponse, error) {
+		return c.internalListVectorStoreFileBatchFiles(ctx, vectorStoreID, batchID, opts)
+	}
+	return newOpenAIPager(c, nextPageFn, options)
+}
+
+func (o *ListVectorStoreFileBatchFilesOptions) updateAfter(after *string) { o.After = after }
+func (r ListVectorStoreFileBatchFilesResponse) lastID() *string           { return r.LastID }
+func (r ListVectorStoreFileBatchFilesResponse) hasMore() bool             { return *r.HasMore }
 
 type respType interface {
 	hasMore() bool
@@ -76,7 +112,7 @@ func newOpenAIPager[ResponseT respType, OptionsT any, POptionsT interface {
 	updateAfter(after *string)
 }](
 	client *Client,
-	nextPageFn func(client *Client, ctx context.Context, opts POptionsT) (ResponseT, error),
+	nextPageFn func(ctx context.Context, opts POptionsT) (ResponseT, error),
 	options POptionsT) *runtime.Pager[ResponseT] {
 	var lastID *string
 
@@ -101,7 +137,7 @@ func newOpenAIPager[ResponseT respType, OptionsT any, POptionsT interface {
 
 			first = false
 
-			resp, err := nextPageFn(client, ctx, newOptions)
+			resp, err := nextPageFn(ctx, newOptions)
 
 			if err != nil {
 				var zero ResponseT
@@ -114,24 +150,3 @@ func newOpenAIPager[ResponseT respType, OptionsT any, POptionsT interface {
 		Tracer: client.internal.Tracer(),
 	})
 }
-
-func (r ListAssistantsResponse) lastID() *string     { return r.LastID }
-func (r ListMessagesResponse) lastID() *string       { return r.LastID }
-func (r ListAssistantFilesResponse) lastID() *string { return r.LastID }
-func (r ListMessageFilesResponse) lastID() *string   { return r.LastID }
-func (r ListRunStepsResponse) lastID() *string       { return r.LastID }
-func (r ListRunsResponse) lastID() *string           { return r.LastID }
-
-func (r ListAssistantsResponse) hasMore() bool     { return *r.HasMore }
-func (r ListMessagesResponse) hasMore() bool       { return *r.HasMore }
-func (r ListAssistantFilesResponse) hasMore() bool { return *r.HasMore }
-func (r ListMessageFilesResponse) hasMore() bool   { return *r.HasMore }
-func (r ListRunStepsResponse) hasMore() bool       { return *r.HasMore }
-func (r ListRunsResponse) hasMore() bool           { return *r.HasMore }
-
-func (o *ListAssistantsOptions) updateAfter(after *string)     { o.After = after }
-func (o *ListMessagesOptions) updateAfter(after *string)       { o.After = after }
-func (o *ListAssistantFilesOptions) updateAfter(after *string) { o.After = after }
-func (o *ListMessageFilesOptions) updateAfter(after *string)   { o.After = after }
-func (o *ListRunStepsOptions) updateAfter(after *string)       { o.After = after }
-func (o *ListRunsOptions) updateAfter(after *string)           { o.After = after }

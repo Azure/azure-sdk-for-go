@@ -140,22 +140,13 @@ func TestTwoInstances(t *testing.T) {
 	}
 }
 
-func TestUnencryptedFallback(t *testing.T) {
+func TestKeyringUnusable(t *testing.T) {
 	before := tryKeyring
 	t.Cleanup(func() { tryKeyring = before })
-	tryKeyring = func() error { return errors.New("it didn't work") }
+	expected := errors.New("it didn't work")
+	tryKeyring = func() error { return expected }
 
-	o := internal.TokenCachePersistenceOptions{Name: t.Name()}
 	_, err := storage(internal.TokenCachePersistenceOptions{})
 	require.Error(t, err)
-
-	p, err := internal.CacheFilePath(o.Name)
-	require.NoError(t, err)
-	require.NoFileExists(t, p)
-	defer os.Remove(p)
-	o.AllowUnencryptedStorage = true
-	k, err := storage(o)
-	require.NoError(t, err)
-	require.NoError(t, k.Write(ctx, []byte("data")))
-	require.FileExists(t, p)
+	require.Contains(t, err.Error(), expected.Error())
 }

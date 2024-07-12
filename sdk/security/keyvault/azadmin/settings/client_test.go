@@ -21,13 +21,14 @@ import (
 
 func TestGetSetting(t *testing.T) {
 	client := startSettingsTest(t)
+
 	settingName := "AllowKeyManagementOperationsThroughARM"
 
 	res, err := client.GetSetting(context.Background(), settingName, nil)
 	require.NoError(t, err)
 	require.NotNil(t, res)
-	require.Equal(t, *res.Name, settingName)
-	require.Equal(t, *res.Type, settings.SettingTypeBoolean)
+	require.Equal(t, settingName, *res.Name)
+	require.Equal(t, settings.SettingTypeBoolean, *res.Type)
 	require.NotNil(t, res.Value)
 	testSerde(t, &res)
 }
@@ -69,6 +70,7 @@ func TestGetSettings(t *testing.T) {
 
 func TestUpdateSetting(t *testing.T) {
 	client := startSettingsTest(t)
+
 	settingName := "AllowKeyManagementOperationsThroughARM"
 	var updatedBool string
 

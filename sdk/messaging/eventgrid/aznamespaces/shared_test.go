@@ -7,7 +7,6 @@
 package aznamespaces_test
 
 import (
-	"context"
 	"crypto/tls"
 	"fmt"
 	"net/http"
@@ -15,20 +14,19 @@ import (
 	"strings"
 	"sync"
 	"testing"
-	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/messaging"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/test/credential"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/eventgrid/aznamespaces"
 	"github.com/stretchr/testify/require"
 )
 
 var fakeTestVars = testVars{
 	Key:          "key",
-	Endpoint:     "https://fake.eastus-1.eventgrid.azure.net",
+	Endpoint:     "https://fake.region.eventgrid.azure.net/",
 	Topic:        "topic",
 	Subscription: "subscription",
 }
@@ -76,29 +74,19 @@ func loadEnv() (testVars, error) {
 	return tv, nil
 }
 
-type clientWrapper struct {
-	*aznamespaces.Client
-	TestVars testVars
-}
-
 var initTopic sync.Once
-var topicCleanup = func() {}
 var tv testVars = fakeTestVars
 
-func newClientWrapper(t *testing.T) clientWrapper {
-	var client *aznamespaces.Client
-
+func newClientOptions(t *testing.T) azcore.ClientOptions {
 	if recording.GetRecordMode() != recording.PlaybackMode {
 		initTopic.Do(func() {
-			topicCleanup = createTopicAndUpdateEnv(t)
-
 			tmpTestVars, err := loadEnv()
 			require.NoError(t, err)
 			tv = tmpTestVars
 		})
 	}
 
-	options := &aznamespaces.ClientOptions{}
+	options := azcore.ClientOptions{}
 
 	if recording.GetRecordMode() == recording.LiveMode {
 		if tv.KeyLogPath != "" {
@@ -112,22 +100,22 @@ func newClientWrapper(t *testing.T) clientWrapper {
 				KeyLogWriter: keyLogWriter,
 			}
 
-			options = &aznamespaces.ClientOptions{
-				ClientOptions: azcore.ClientOptions{
-					Transport: &http.Client{Transport: tp},
-				},
+			options = azcore.ClientOptions{
+				Transport: &http.Client{Transport: tp},
 			}
 		}
 	} else {
-		options = &aznamespaces.ClientOptions{
-			ClientOptions: azcore.ClientOptions{
-				Transport: newRecordingTransporter(t, tv),
-			},
+		options = azcore.ClientOptions{
+			Transport: newRecordingTransporter(t),
 		}
 	}
 
 	options.Logging = policy.LogOptions{
 		IncludeBody: true,
+		AllowedQueryParams: []string{
+			"maxEvents",
+			"maxWaitTime",
+		},
 		AllowedHeaders: []string{
 			// these are the standard headers for binary content mode with CloudEvents
 			"ce-id",
@@ -144,38 +132,64 @@ func newClientWrapper(t *testing.T) clientWrapper {
 			"ce-extensiondatauint",
 			"ce-extensiondatatime",
 			"ce-extensiondatabytes",
+
+			"Authorization",
 		},
 	}
 
-	client, err := aznamespaces.NewClientWithSharedKeyCredential(tv.Endpoint, azcore.NewKeyCredential(tv.Key), options)
-	require.NoError(t, err)
-
-	return clientWrapper{
-		Client:   client,
-		TestVars: tv,
-	}
+	return options
 }
 
-func newRecordingTransporter(t *testing.T, testVars testVars) policy.Transporter {
-	transport, err := recording.NewRecordingHTTPClient(t, nil)
+func newClients(t *testing.T, useSASKey bool) (*aznamespaces.SenderClient, *aznamespaces.ReceiverClient) {
+	options := newClientOptions(t)
+
+	return newSenderClient(t, useSASKey, options), newReceiverClient(t, useSASKey, options)
+}
+
+func newSenderClient(t *testing.T, useSASKey bool, options azcore.ClientOptions) *aznamespaces.SenderClient {
+	if useSASKey {
+		client, err := aznamespaces.NewSenderClientWithSharedKeyCredential(tv.Endpoint, tv.Topic, azcore.NewKeyCredential(tv.Key), &aznamespaces.SenderClientOptions{ClientOptions: options})
+		require.NoError(t, err)
+		return client
+	}
+
+	cred, err := credential.New(nil)
 	require.NoError(t, err)
 
-	err = recording.Start(t, recordingDirectory, nil)
+	client, err := aznamespaces.NewSenderClient(tv.Endpoint, tv.Topic, cred, &aznamespaces.SenderClientOptions{ClientOptions: options})
 	require.NoError(t, err)
 
-	// err = recording.ResetProxy(nil)
-	// require.NoError(t, err)
+	return client
+}
 
-	err = recording.AddURISanitizer(fakeTestVars.Endpoint, testVars.Endpoint, nil)
+func newReceiverClient(t *testing.T, useSASKey bool, options azcore.ClientOptions) *aznamespaces.ReceiverClient {
+	if useSASKey {
+		client, err := aznamespaces.NewReceiverClientWithSharedKeyCredential(tv.Endpoint, tv.Topic, tv.Subscription, azcore.NewKeyCredential(tv.Key), &aznamespaces.ReceiverClientOptions{ClientOptions: options})
+		require.NoError(t, err)
+		return client
+	}
+
+	cred, err := credential.New(nil)
 	require.NoError(t, err)
 
-	err = recording.AddURISanitizer(fakeTestVars.Topic, testVars.Topic, nil)
+	client, err := aznamespaces.NewReceiverClient(tv.Endpoint, tv.Topic, tv.Subscription, cred, &aznamespaces.ReceiverClientOptions{ClientOptions: options})
 	require.NoError(t, err)
 
-	err = recording.AddURISanitizer(fakeTestVars.Subscription, testVars.Subscription, nil)
+	return client
+}
+
+func addSanitizers(t *testing.T) {
+	t.Logf("Setting up sanitizers")
+	err := recording.AddURISanitizer(fakeTestVars.Endpoint, "https://[^/]+?/", nil)
 	require.NoError(t, err)
 
-	err = recording.AddGeneralRegexSanitizer(`"time": "2023-06-17T00:33:32Z"`, `"time":".+?"`, nil)
+	err = recording.AddURISanitizer(fakeTestVars.Topic, tv.Topic, nil)
+	require.NoError(t, err)
+
+	err = recording.AddURISanitizer(fakeTestVars.Subscription, tv.Subscription, nil)
+	require.NoError(t, err)
+
+	err = recording.AddGeneralRegexSanitizer(`"time":"2023-06-17T00:33:32Z"`, `"time":".+?"`, nil)
 	require.NoError(t, err)
 
 	err = recording.AddGeneralRegexSanitizer(
@@ -189,17 +203,17 @@ func newRecordingTransporter(t *testing.T, testVars testVars) policy.Transporter
 	require.NoError(t, err)
 
 	err = recording.AddGeneralRegexSanitizer(
-		`"lockTokens": ["fake-lock-token"]`,
+		`"lockTokens":["fake-lock-token"]`,
 		`"lockTokens":\s*\[\s*"[^"]+"\s*\]`, nil)
 	require.NoError(t, err)
 
 	err = recording.AddGeneralRegexSanitizer(
-		`"succeededLockTokens": ["fake-lock-token"]`,
+		`"succeededLockTokens":["fake-lock-token"]`,
 		`"succeededLockTokens":\s*\[\s*"[^"]+"\s*\]`, nil)
 	require.NoError(t, err)
 
 	err = recording.AddGeneralRegexSanitizer(
-		`"succeededLockTokens": ["fake-lock-token", "fake-lock-token", "fake-lock-token"]`,
+		`"succeededLockTokens":["fake-lock-token","fake-lock-token","fake-lock-token"]`,
 		`"succeededLockTokens":\s*`+
 			`\[`+
 			`(\s*"[^"]+"\s*\,){2}`+
@@ -208,17 +222,31 @@ func newRecordingTransporter(t *testing.T, testVars testVars) policy.Transporter
 	require.NoError(t, err)
 
 	err = recording.AddGeneralRegexSanitizer(
-		`"lockTokens": ["fake-lock-token", "fake-lock-token"]`,
+		`"lockTokens":["fake-lock-token","fake-lock-token"]`,
 		`"lockTokens":\s*\[\s*"[^"]+"\s*\,\s*"[^"]+"\s*\]`, nil)
 	require.NoError(t, err)
 
 	err = recording.AddGeneralRegexSanitizer(
-		`"lockTokens": ["fake-lock-token", "fake-lock-token", "fake-lock-token"]`,
+		`"lockTokens":["fake-lock-token","fake-lock-token", "fake-lock-token"]`,
 		`"lockTokens":\s*`+
 			`\[`+
 			`(\s*"[^"]+"\s*\,){2}`+
 			`\s*"[^"]+"\s*`+
 			`\]`, nil)
+	require.NoError(t, err)
+}
+
+var initSanitizers sync.Once
+
+func newRecordingTransporter(t *testing.T) policy.Transporter {
+	transport, err := recording.NewRecordingHTTPClient(t, nil)
+	require.NoError(t, err)
+
+	initSanitizers.Do(func() {
+		addSanitizers(t)
+	})
+
+	err = recording.Start(t, recordingDirectory, nil)
 	require.NoError(t, err)
 
 	t.Cleanup(func() {
@@ -232,40 +260,18 @@ func newRecordingTransporter(t *testing.T, testVars testVars) policy.Transporter
 func requireEqualCloudEvent(t *testing.T, expected messaging.CloudEvent, actual messaging.CloudEvent) {
 	t.Helper()
 
+	// the built-in sanitizers are now clearing out my CloudEvent's source attribute so we
+	// just have to assume it's 'Sanitized'.
+
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		expected.Source = recording.SanitizedValue
+	}
+
 	require.NotEmpty(t, actual.ID, "ID is not empty")
 	require.NotEmpty(t, actual.SpecVersion, "SpecVersion is not empty")
 
 	expected.ID = actual.ID
 	expected.Time = actual.Time
 
-	require.Equal(t, actual, expected)
-}
-
-// receiveAll makes sure to receive all of count messages, even if it requires multiple calls.
-// It also acks all events it receives.
-func receiveAll(t *testing.T, client clientWrapper, count int) []aznamespaces.ReceiveDetails {
-	var events []aznamespaces.ReceiveDetails
-
-	receiveCtx, cancelReceive := context.WithTimeout(context.Background(), 2*time.Minute)
-	defer cancelReceive()
-
-	for len(events) < count {
-		eventsResp, err := client.ReceiveCloudEvents(receiveCtx, client.TestVars.Topic, client.TestVars.Subscription, &aznamespaces.ReceiveCloudEventsOptions{
-			MaxEvents: to.Ptr(int32(count - len(events))),
-		})
-		require.NoError(t, err)
-
-		var lockTokens []string
-		for _, evt := range eventsResp.Value {
-			lockTokens = append(lockTokens, *evt.BrokerProperties.LockToken)
-		}
-
-		_, err = client.AcknowledgeCloudEvents(receiveCtx, client.TestVars.Topic, client.TestVars.Subscription, lockTokens, nil)
-		require.NoError(t, err)
-
-		events = append(events, eventsResp.Value...)
-	}
-
-	require.Equal(t, count, len(events))
-	return events
+	require.Equal(t, expected, actual)
 }

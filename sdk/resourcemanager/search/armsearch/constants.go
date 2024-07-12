@@ -10,7 +10,7 @@ package armsearch
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/search/armsearch"
-	moduleVersion = "v1.4.0-beta.1"
+	moduleVersion = "v1.4.0-beta.2"
 )
 
 // AADAuthFailureMode - Describes what response the data plane API of a search service would send for requests that failed
@@ -163,20 +163,20 @@ func PossiblePrivateLinkServiceConnectionStatusValues() []PrivateLinkServiceConn
 
 // ProvisioningState - The state of the last provisioning operation performed on the search service. Provisioning is an intermediate
 // state that occurs while service capacity is being established. After capacity is set up,
-// provisioningState changes to either 'succeeded' or 'failed'. Client applications can poll provisioning status (the recommended
+// provisioningState changes to either 'Succeeded' or 'Failed'. Client applications can poll provisioning status (the recommended
 // polling interval is from 30 seconds to one minute) by using the Get
 // Search Service operation to see when an operation is completed. If you are using the free service, this value tends to
-// come back as 'succeeded' directly in the call to Create search service. This is
+// come back as 'Succeeded' directly in the call to Create search service. This is
 // because the free service uses capacity that is already set up.
 type ProvisioningState string
 
 const (
 	// ProvisioningStateFailed - The last provisioning operation has failed.
-	ProvisioningStateFailed ProvisioningState = "failed"
+	ProvisioningStateFailed ProvisioningState = "Failed"
 	// ProvisioningStateProvisioning - The search service is being provisioned or scaled up or down.
-	ProvisioningStateProvisioning ProvisioningState = "provisioning"
+	ProvisioningStateProvisioning ProvisioningState = "Provisioning"
 	// ProvisioningStateSucceeded - The last provisioning operation has completed successfully.
-	ProvisioningStateSucceeded ProvisioningState = "succeeded"
+	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
 )
 
 // PossibleProvisioningStateValues returns the possible values for the ProvisioningState const type.
@@ -256,6 +256,9 @@ const (
 	// SearchBypassAzurePortal - Indicates that requests originating from the Azure portal can bypass the rules defined in the
 	// 'ipRules' section.
 	SearchBypassAzurePortal SearchBypass = "AzurePortal"
+	// SearchBypassAzureServices - Indicates that requests originating from Azure trusted services can bypass the rules defined
+	// in the 'ipRules' section.
+	SearchBypassAzureServices SearchBypass = "AzureServices"
 	// SearchBypassNone - Indicates that no origin can bypass the rules defined in the 'ipRules' section. This is the default.
 	SearchBypassNone SearchBypass = "None"
 )
@@ -264,6 +267,7 @@ const (
 func PossibleSearchBypassValues() []SearchBypass {
 	return []SearchBypass{
 		SearchBypassAzurePortal,
+		SearchBypassAzureServices,
 		SearchBypassNone,
 	}
 }

@@ -15,6 +15,7 @@ go: true
 use: "@autorest/go@4.0.0-preview.63"
 title: "OpenAI"
 slice-elements-byval: true
+rawjson-as-bytes: true
 # can't use this since it removes an innererror type that we want ()
 # remove-non-reference-schema: true
 ```
@@ -131,6 +132,44 @@ directive:
     - models_serde.go
     where: $
     transform: return $.replace(/InternalChatCompletionsResponseFormat/g, "respType")
+```
+
+Fix casing of some fields
+
+```yaml
+directive:
+  # Filepath -> FilePath
+  - from: swagger-document
+    where: $.definitions.AzureChatExtensionRetrievedDocument
+    transform: $.properties.filepath["x-ms-client-name"] = "FilePath"
+  - from: swagger-document
+    where: $.definitions.AzureChatExtensionDataSourceResponseCitation
+    transform: $.properties.filepath["x-ms-client-name"] = "FilePath"
+  
+  # FilepathField -> FilePathField
+  - from: swagger-document
+    where: $.definitions.AzureCosmosDBFieldMappingOptions
+    transform: $.properties.filepath_field["x-ms-client-name"] = "FilePathField"
+  - from: swagger-document
+    where: $.definitions.AzureSearchIndexFieldMappingOptions
+    transform: $.properties.filepath_field["x-ms-client-name"] = "FilePathField"
+  - from: swagger-document
+    where: $.definitions.ElasticsearchIndexFieldMappingOptions
+    transform: $.properties.filepath_field["x-ms-client-name"] = "FilePathField"
+  - from: swagger-document
+    where: $.definitions.PineconeFieldMappingOptions
+    transform: $.properties.filepath_field["x-ms-client-name"] = "FilePathField"
+
+  # CustomBlocklist -> CustomBlockList
+  - from: swagger-document
+    where: $.definitions.ImageGenerationPromptFilterResults
+    transform: $.properties.custom_blocklists["x-ms-client-name"] = "CustomBlockLists"
+  - from: swagger-document
+    where: $.definitions.ContentFilterResultDetailsForPrompt
+    transform: $.properties.custom_blocklists["x-ms-client-name"] = "CustomBlockLists"    
+  - from: swagger-document
+    where: $.definitions.ContentFilterResultsForChoice
+    transform: $.properties.custom_blocklists["x-ms-client-name"] = "CustomBlockLists"    
 ```
 
 ## Cleanup the audio transcription APIs

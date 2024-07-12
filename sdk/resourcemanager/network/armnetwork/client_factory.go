@@ -357,6 +357,22 @@ func (c *ClientFactory) NewFirewallPoliciesClient() *FirewallPoliciesClient {
 	}
 }
 
+// NewFirewallPolicyDeploymentsClient creates a new instance of FirewallPolicyDeploymentsClient.
+func (c *ClientFactory) NewFirewallPolicyDeploymentsClient() *FirewallPolicyDeploymentsClient {
+	return &FirewallPolicyDeploymentsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewFirewallPolicyDraftsClient creates a new instance of FirewallPolicyDraftsClient.
+func (c *ClientFactory) NewFirewallPolicyDraftsClient() *FirewallPolicyDraftsClient {
+	return &FirewallPolicyDraftsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewFirewallPolicyIdpsSignaturesClient creates a new instance of FirewallPolicyIdpsSignaturesClient.
 func (c *ClientFactory) NewFirewallPolicyIdpsSignaturesClient() *FirewallPolicyIdpsSignaturesClient {
 	return &FirewallPolicyIdpsSignaturesClient{
@@ -376,6 +392,14 @@ func (c *ClientFactory) NewFirewallPolicyIdpsSignaturesFilterValuesClient() *Fir
 // NewFirewallPolicyIdpsSignaturesOverridesClient creates a new instance of FirewallPolicyIdpsSignaturesOverridesClient.
 func (c *ClientFactory) NewFirewallPolicyIdpsSignaturesOverridesClient() *FirewallPolicyIdpsSignaturesOverridesClient {
 	return &FirewallPolicyIdpsSignaturesOverridesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewFirewallPolicyRuleCollectionGroupDraftsClient creates a new instance of FirewallPolicyRuleCollectionGroupDraftsClient.
+func (c *ClientFactory) NewFirewallPolicyRuleCollectionGroupDraftsClient() *FirewallPolicyRuleCollectionGroupDraftsClient {
+	return &FirewallPolicyRuleCollectionGroupDraftsClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

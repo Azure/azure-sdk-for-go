@@ -20,9 +20,6 @@ type Assistant struct {
 	// REQUIRED; The description of the assistant.
 	Description *string
 
-	// REQUIRED; A list of attached file IDs, ordered by creation date in ascending order.
-	FileIDs []string
-
 	// REQUIRED; The identifier, which can be referenced in API endpoints.
 	ID *string
 
@@ -35,7 +32,7 @@ type Assistant struct {
 	Metadata map[string]*string
 
 	// REQUIRED; The ID of the model to use.
-	DeploymentName *string
+	Model *string
 
 	// REQUIRED; The name of the assistant.
 	Name *string
@@ -43,34 +40,38 @@ type Assistant struct {
 	// REQUIRED; The object type, which is always assistant.
 	Object *string
 
+	// REQUIRED; What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while
+	// lower values like 0.2 will make it more focused and deterministic.
+	Temperature *float32
+
+	// REQUIRED; A set of resources that are used by the assistant's tools. The resources are specific to the type of tool. For
+	// example, the code_interpretertool requires a list of file IDs, while the file_search tool
+	// requires a list of vector store IDs.
+	ToolResources *AssistantToolResources
+
 	// REQUIRED; The collection of tools enabled for the assistant.
 	Tools []ToolDefinitionClassification
+
+	// REQUIRED; An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of
+	// the tokens with top_p probability mass. So 0.1 means only the tokens comprising the top
+	// 10% probability mass are considered.
+	// We generally recommend altering this or temperature but not both.
+	TopP *float32
+
+	// The response format of the tool calls used by this assistant.
+	ResponseFormat *AssistantResponseFormat
 }
 
-// AssistantCreationBody - The request details to use when creating a new assistant.
-type AssistantCreationBody struct {
-	// REQUIRED; The ID of the model to use.
-	DeploymentName *string
+// AssistantCreationOptionsToolResources - A set of resources that are used by the assistant's tools. The resources are specific
+// to the type of tool. For example, the code_interpretertool requires a list of file IDs, while the file_search tool
+// requires a list of vector store IDs.
+type AssistantCreationOptionsToolResources struct {
+	// A list of file IDs made available to the code_interpreter tool. There can be a maximum of 20 files associated with the
+	// tool.
+	CodeInterpreter *CreateCodeInterpreterToolResourceOptions
 
-	// The description of the new assistant.
-	Description *string
-
-	// A list of previously uploaded file IDs to attach to the assistant.
-	FileIDs []string
-
-	// The system instructions for the new assistant to use.
-	Instructions *string
-
-	// A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information about that
-	// object in a structured format. Keys may be up to 64 characters in length and
-	// values may be up to 512 characters in length.
-	Metadata map[string]*string
-
-	// The name of the new assistant.
-	Name *string
-
-	// The collection of tools to enable for the new assistant.
-	Tools []ToolDefinitionClassification
+	// A list of vector stores or their IDs made available to the file_search tool.
+	FileSearch *CreateFileSearchToolResourceOptions
 }
 
 // AssistantDeletionStatus - The status of an assistant deletion operation.
@@ -82,33 +83,6 @@ type AssistantDeletionStatus struct {
 	ID *string
 
 	// REQUIRED; The object type, which is always 'assistant.deleted'.
-	Object *string
-}
-
-// AssistantFile - Information about a file attached to an assistant, as used by tools that can read files.
-type AssistantFile struct {
-	// REQUIRED; The assistant ID that the file is attached to.
-	AssistantID *string
-
-	// REQUIRED; The Unix timestamp, in seconds, representing when this object was created.
-	CreatedAt *time.Time
-
-	// REQUIRED; The identifier, which can be referenced in API endpoints.
-	ID *string
-
-	// REQUIRED; The object type, which is always 'assistant.file'.
-	Object *string
-}
-
-// AssistantFileDeletionStatus - The status of an assistant file deletion operation.
-type AssistantFileDeletionStatus struct {
-	// REQUIRED; A value indicating whether deletion was successful.
-	Deleted *bool
-
-	// REQUIRED; The ID of the resource specified for deletion.
-	ID *string
-
-	// REQUIRED; The object type, which is always 'assistant.file.deleted'.
 	Object *string
 }
 
@@ -127,17 +101,71 @@ type AssistantThread struct {
 
 	// REQUIRED; The object type, which is always 'thread'.
 	Object *string
+
+	// REQUIRED; A set of resources that are made available to the assistant's tools in this thread. The resources are specific
+	// to the type of tool. For example, the code_interpreter tool requires a list of file IDs,
+	// while the file_search tool requires a list of vector store IDs.
+	ToolResources *AssistantThreadToolResources
 }
 
-// AssistantThreadCreationOptions - The details used to create a new assistant thread.
-type AssistantThreadCreationOptions struct {
-	// The initial messages to associate with the new thread.
-	Messages []ThreadInitializationMessage
+// AssistantThreadCreationOptionsToolResources - A set of resources that are made available to the assistant's tools in this
+// thread. The resources are specific to the type of tool. For example, the code_interpreter tool requires a list of file
+// IDs,
+// while the file_search tool requires a list of vector store IDs.
+type AssistantThreadCreationOptionsToolResources struct {
+	// A list of file IDs made available to the code_interpreter tool. There can be a maximum of 20 files associated with the
+	// tool.
+	CodeInterpreter *CreateCodeInterpreterToolResourceOptions
 
-	// A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information about that
-	// object in a structured format. Keys may be up to 64 characters in length and
-	// values may be up to 512 characters in length.
-	Metadata map[string]*string
+	// A list of vector stores or their IDs made available to the file_search tool.
+	FileSearch *CreateFileSearchToolResourceOptions
+}
+
+// AssistantThreadToolResources - A set of resources that are made available to the assistant's tools in this thread. The
+// resources are specific to the type of tool. For example, the code_interpreter tool requires a list of file IDs,
+// while the file_search tool requires a list of vector store IDs.
+type AssistantThreadToolResources struct {
+	// Resources to be used by the code_interpreter tool consisting of file IDs.
+	CodeInterpreter *CodeInterpreterToolResource
+
+	// Resources to be used by the file_search tool consisting of vector store IDs.
+	FileSearch *FileSearchToolResource
+}
+
+// AssistantToolResources - A set of resources that are used by the assistant's tools. The resources are specific to the type
+// of tool. For example, the code_interpretertool requires a list of file IDs, while the file_search tool
+// requires a list of vector store IDs.
+type AssistantToolResources struct {
+	// Resources to be used by the code_interpreter tool consisting of file IDs.
+	CodeInterpreter *CodeInterpreterToolResource
+
+	// Resources to be used by the file_search tool consisting of vector store IDs.
+	FileSearch *FileSearchToolResource
+}
+
+// AssistantsAPIResponseFormat - An object describing the expected output of the model. If json_object only function type
+// tools are allowed to be passed to the Run. If text the model can return text or any value needed.
+type AssistantsAPIResponseFormat struct {
+	// Must be one of text or json_object.
+	Type *APIResponseFormat
+}
+
+// AssistantsPage - The response data for a requested list of items.
+type AssistantsPage struct {
+	// REQUIRED; The requested list of items.
+	Data []Assistant
+
+	// REQUIRED; The first ID represented in this list.
+	FirstID *string
+
+	// REQUIRED; A value indicating whether there are additional values available not captured in this list.
+	HasMore *bool
+
+	// REQUIRED; The last ID represented in this list.
+	LastID *string
+
+	// REQUIRED; The object type, which is always list.
+	Object *string
 }
 
 // CodeInterpreterToolDefinition - The input definition information for a code interpreter tool as used to configure an assistant.
@@ -153,12 +181,104 @@ func (c *CodeInterpreterToolDefinition) GetToolDefinition() *ToolDefinition {
 	}
 }
 
-// CreateAndRunThreadOptions - The details used when creating and immediately running a new assistant thread.
-type CreateAndRunThreadOptions struct {
+// CodeInterpreterToolResource - A set of resources that are used by the code_interpreter tool.
+type CodeInterpreterToolResource struct {
+	// REQUIRED; A list of file IDs made available to the code_interpreter tool. There can be a maximum of 20 files associated
+	// with the tool.
+	FileIDs []string
+}
+
+// CreateAndRunThreadBody - The details used when creating and immediately running a new assistant thread.
+type CreateAndRunThreadBody struct {
 	// REQUIRED; The ID of the assistant for which the thread should be created.
 	AssistantID *string
 
+	// The overridden model that the assistant should use to run the thread.
+	DeploymentName *string
+
 	// The overridden system instructions the assistant should use to run the thread.
+	Instructions *string
+
+	// The maximum number of completion tokens that may be used over the course of the run. The run will make a best effort to
+	// use only the number of completion tokens specified, across multiple turns of the
+	// run. If the run exceeds the number of completion tokens specified, the run will end with status incomplete. See incomplete_details
+	// for more info.
+	MaxCompletionTokens *int32
+
+	// The maximum number of prompt tokens that may be used over the course of the run. The run will make a best effort to use
+	// only the number of prompt tokens specified, across multiple turns of the run. If
+	// the run exceeds the number of prompt tokens specified, the run will end with status incomplete. See incomplete_details
+	// for more info.
+	MaxPromptTokens *int32
+
+	// A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information about that
+	// object in a structured format. Keys may be up to 64 characters in length and
+	// values may be up to 512 characters in length.
+	Metadata map[string]*string
+
+	// Specifies the format that the model must output.
+	ResponseFormat *AssistantResponseFormat
+
+	// NOTE: Use the Stream version of this function (ex: [CreateThreadAndRunStream], [CreateRunStream] or [SubmitToolOutputsToRunStream]) to stream results.
+	stream *bool
+
+	// What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower
+	// values like 0.2 will make it more focused and deterministic.
+	Temperature *float32
+
+	// The details used to create the new thread. If no thread is provided, an empty one will be created.
+	Thread *CreateThreadBody
+
+	// Controls whether or not and which tool is called by the model.
+	ToolChoice *AssistantsAPIToolChoiceOption
+
+	// Override the tools the assistant can use for this run. This is useful for modifying the behavior on a per-run basis.
+	ToolResources *CreateAndRunThreadOptionsToolResources
+
+	// The overridden list of enabled tools the assistant should use to run the thread.
+	Tools []ToolDefinitionClassification
+
+	// An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens
+	// with top_p probability mass. So 0.1 means only the tokens comprising the top
+	// 10% probability mass are considered.
+	// We generally recommend altering this or temperature but not both.
+	TopP *float32
+
+	// The strategy to use for dropping messages as the context windows moves forward.
+	TruncationStrategy *CreateAndRunThreadOptionsTruncationStrategy
+}
+
+// CreateAndRunThreadOptionsToolResources - Override the tools the assistant can use for this run. This is useful for modifying
+// the behavior on a per-run basis.
+type CreateAndRunThreadOptionsToolResources struct {
+	// Overrides the list of file IDs made available to the code_interpreter tool. There can be a maximum of 20 files associated
+	// with the tool.
+	CodeInterpreter *UpdateCodeInterpreterToolResourceOptions
+
+	// Overrides the vector store attached to this assistant. There can be a maximum of 1 vector store attached to the assistant.
+	FileSearch *UpdateFileSearchToolResourceOptions
+}
+
+// CreateAndRunThreadOptionsTruncationStrategy - The strategy to use for dropping messages as the context windows moves forward.
+type CreateAndRunThreadOptionsTruncationStrategy struct {
+	// REQUIRED; The truncation strategy to use for the thread. The default is auto. If set to last_messages, the thread will
+	// be truncated to the lastMessages count most recent messages in the thread. When set to auto
+	// , messages in the middle of the thread will be dropped to fit the context length of the model, max_prompt_tokens.
+	Type *TruncationStrategy
+
+	// The number of most recent messages from the thread when constructing the context for the run.
+	LastMessages *int32
+}
+
+// CreateAssistantBody - The request details to use when creating a new assistant.
+type CreateAssistantBody struct {
+	// REQUIRED; The ID of the model to use.
+	DeploymentName *string
+
+	// The description of the new assistant.
+	Description *string
+
+	// The system instructions for the new assistant to use.
 	Instructions *string
 
 	// A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information about that
@@ -166,14 +286,68 @@ type CreateAndRunThreadOptions struct {
 	// values may be up to 512 characters in length.
 	Metadata map[string]*string
 
-	// The overridden model that the assistant should use to run the thread.
-	DeploymentName *string
+	// The name of the new assistant.
+	Name *string
 
-	// The details used to create the new thread.
-	Thread *AssistantThreadCreationOptions
+	// The response format of the tool calls used by this assistant.
+	ResponseFormat *AssistantResponseFormat
 
-	// The overridden list of enabled tools the assistant should use to run the thread.
+	// What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower
+	// values like 0.2 will make it more focused and deterministic.
+	Temperature *float32
+
+	// A set of resources that are used by the assistant's tools. The resources are specific to the type of tool. For example,
+	// the code_interpretertool requires a list of file IDs, while the file_search tool
+	// requires a list of vector store IDs.
+	ToolResources *AssistantCreationOptionsToolResources
+
+	// The collection of tools to enable for the new assistant.
 	Tools []ToolDefinitionClassification
+
+	// An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens
+	// with top_p probability mass. So 0.1 means only the tokens comprising the top
+	// 10% probability mass are considered.
+	// We generally recommend altering this or temperature but not both.
+	TopP *float32
+}
+
+// CreateCodeInterpreterToolResourceOptions - A set of resources that will be used by the code_interpreter tool. Request object.
+type CreateCodeInterpreterToolResourceOptions struct {
+	// A list of file IDs made available to the code_interpreter tool.
+	FileIDs []string
+}
+
+// CreateFileSearchToolResourceVectorStoreOptions - File IDs associated to the vector store to be passed to the helper.
+type CreateFileSearchToolResourceVectorStoreOptions struct {
+	// REQUIRED; A list of file IDs to add to the vector store. There can be a maximum of 10000 files in a vector store.
+	FileIDs []string
+
+	// A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information about that
+	// object in a structured format. Keys may be up to 64 characters in length and
+	// values may be up to 512 characters in length.
+	Metadata map[string]*string
+}
+
+// CreateMessageBody - A single message within an assistant thread, as provided during that thread's creation for its initial
+// state.
+type CreateMessageBody struct {
+	// REQUIRED; The textual content of the initial message. Currently, robust input including images and annotated text may only
+	// be provided via a separate call to the create message API.
+	Content *string
+
+	// REQUIRED; The role of the entity that is creating the message. Allowed values include:
+	// * user: Indicates the message is sent by an actual user and should be used in most cases to represent user-generated messages.
+	// * assistant: Indicates the message is generated by the assistant. Use this value to insert messages from the assistant
+	// into the conversation.
+	Role *MessageRole
+
+	// A list of files attached to the message, and the tools they should be added to.
+	Attachments []MessageAttachment
+
+	// A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information about that
+	// object in a structured format. Keys may be up to 64 characters in length and
+	// values may be up to 512 characters in length.
+	Metadata map[string]*string
 }
 
 // CreateRunBody - The details used when creating a new run of an assistant thread.
@@ -185,8 +359,23 @@ type CreateRunBody struct {
 	// on a per-run basis without overriding other instructions.
 	AdditionalInstructions *string
 
+	// Adds additional messages to the thread before creating the run.
+	AdditionalMessages []ThreadMessage
+
 	// The overridden system instructions that the assistant should use to run the thread.
 	Instructions *string
+
+	// The maximum number of completion tokens that may be used over the course of the run. The run will make a best effort to
+	// use only the number of completion tokens specified, across multiple turns of the
+	// run. If the run exceeds the number of completion tokens specified, the run will end with status incomplete. See incomplete_details
+	// for more info.
+	MaxCompletionTokens *int32
+
+	// The maximum number of prompt tokens that may be used over the course of the run. The run will make a best effort to use
+	// only the number of prompt tokens specified, across multiple turns of the run. If
+	// the run exceeds the number of prompt tokens specified, the run will end with status incomplete. See incomplete_details
+	// for more info.
+	MaxPromptTokens *int32
 
 	// A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information about that
 	// object in a structured format. Keys may be up to 64 characters in length and
@@ -194,10 +383,77 @@ type CreateRunBody struct {
 	Metadata map[string]*string
 
 	// The overridden model name that the assistant should use to run the thread.
-	DeploymentName *string
+	Model *string
+
+	// Specifies the format that the model must output.
+	ResponseFormat *AssistantResponseFormat
+
+	// NOTE: Use the Stream version of this function (ex: [CreateThreadAndRunStream], [CreateRunStream] or [SubmitToolOutputsToRunStream]) to stream results.
+	stream *bool
+
+	// What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower
+	// values like 0.2 will make it more focused and deterministic.
+	Temperature *float32
+
+	// Controls whether or not and which tool is called by the model.
+	ToolChoice *AssistantsAPIToolChoiceOption
 
 	// The overridden list of enabled tools that the assistant should use to run the thread.
 	Tools []ToolDefinitionClassification
+
+	// An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens
+	// with top_p probability mass. So 0.1 means only the tokens comprising the top
+	// 10% probability mass are considered.
+	// We generally recommend altering this or temperature but not both.
+	TopP *float32
+
+	// The strategy to use for dropping messages as the context windows moves forward.
+	TruncationStrategy *CreateRunOptionsTruncationStrategy
+}
+
+// CreateRunOptionsTruncationStrategy - The strategy to use for dropping messages as the context windows moves forward.
+type CreateRunOptionsTruncationStrategy struct {
+	// REQUIRED; The truncation strategy to use for the thread. The default is auto. If set to last_messages, the thread will
+	// be truncated to the lastMessages count most recent messages in the thread. When set to auto
+	// , messages in the middle of the thread will be dropped to fit the context length of the model, max_prompt_tokens.
+	Type *TruncationStrategy
+
+	// The number of most recent messages from the thread when constructing the context for the run.
+	LastMessages *int32
+}
+
+// CreateThreadBody - The details used to create a new assistant thread.
+type CreateThreadBody struct {
+	// The initial messages to associate with the new thread.
+	Messages []CreateMessageBody
+
+	// A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information about that
+	// object in a structured format. Keys may be up to 64 characters in length and
+	// values may be up to 512 characters in length.
+	Metadata map[string]*string
+
+	// A set of resources that are made available to the assistant's tools in this thread. The resources are specific to the type
+	// of tool. For example, the code_interpreter tool requires a list of file IDs,
+	// while the file_search tool requires a list of vector store IDs.
+	ToolResources *AssistantThreadCreationOptionsToolResources
+}
+
+// CreateToolResourcesOptions - Request object. A set of resources that are used by the assistant's tools. The resources are
+// specific to the type of tool. For example, the code_interpreter tool requires a list of file IDs, while the
+// file_searchtool requires a list of vector store IDs.
+type CreateToolResourcesOptions struct {
+	// A list of file IDs made available to the code_interpreter tool. There can be a maximum of 20 files associated with the
+	// tool.
+	CodeInterpreter *CreateCodeInterpreterToolResourceOptions
+
+	// A list of vector stores or their IDs made available to the file_search tool.
+	FileSearch *CreateFileSearchToolResourceOptions
+}
+
+// CreateVectorStoreFileBatchBody contains arguments for the [CreateVectorStoreFileBatch] method.
+type CreateVectorStoreFileBatchBody struct {
+	// REQUIRED; A list of File IDs that the vector store should use. Useful for tools like file_search that can access files.
+	FileIDs []string
 }
 
 // FileDeletionStatus - A status response from a file deletion operation.
@@ -221,6 +477,25 @@ type FileListResponse struct {
 	Object *string
 }
 
+// FileSearchToolDefinition - The input definition information for a file search tool as used to configure an assistant.
+type FileSearchToolDefinition struct {
+	// REQUIRED; The object type.
+	Type *string
+}
+
+// GetToolDefinition implements the ToolDefinitionClassification interface for type FileSearchToolDefinition.
+func (f *FileSearchToolDefinition) GetToolDefinition() *ToolDefinition {
+	return &ToolDefinition{
+		Type: f.Type,
+	}
+}
+
+// FileSearchToolResource - A set of resources that are used by the file_search tool.
+type FileSearchToolResource struct {
+	// The ID of the vector store attached to this assistant. There can be a maximum of 1 vector store attached to the assistant.
+	VectorStoreIDs []string
+}
+
 // FunctionDefinition - The input definition information for a function.
 type FunctionDefinition struct {
 	// REQUIRED; The name of the function to be called.
@@ -231,6 +506,12 @@ type FunctionDefinition struct {
 
 	// A description of what the function does, used by the model to choose when and how to call the function.
 	Description *string
+}
+
+// FunctionName - The function name that will be used, if using the funtion tool
+type FunctionName struct {
+	// REQUIRED; The name of the function to call
+	Name *string
 }
 
 // FunctionToolDefinition - The input definition information for a function tool as used to configure an assistant.
@@ -249,6 +530,15 @@ func (f *FunctionToolDefinition) GetToolDefinition() *ToolDefinition {
 	}
 }
 
+// MessageAttachment - This describes to which tools a file has been attached.
+type MessageAttachment struct {
+	// REQUIRED; The ID of the file to attach to the message.
+	FileID *string
+
+	// REQUIRED; The tools to add to this file.
+	Tools []MessageAttachmentToolDefinition
+}
+
 // MessageContent - An abstract representation of a single item of thread message content.
 type MessageContent struct {
 	// REQUIRED; The object type.
@@ -258,19 +548,184 @@ type MessageContent struct {
 // GetMessageContent implements the MessageContentClassification interface for type MessageContent.
 func (m *MessageContent) GetMessageContent() *MessageContent { return m }
 
-// MessageFile - Information about a file attached to an assistant thread message.
-type MessageFile struct {
-	// REQUIRED; The Unix timestamp, in seconds, representing when this object was created.
-	CreatedAt *time.Time
+// MessageDelta - Represents the typed 'delta' payload within a streaming message delta chunk.
+type MessageDelta struct {
+	// REQUIRED; The content of the message as an array of text and/or images.
+	Content []MessageDeltaContentClassification
 
-	// REQUIRED; The identifier, which can be referenced in API endpoints.
+	// REQUIRED; The entity that produced the message.
+	Role *MessageRole
+}
+
+// MessageDeltaChunk - Represents a message delta i.e. any changed fields on a message during streaming.
+type MessageDeltaChunk struct {
+	// REQUIRED; The delta containing the fields that have changed on the Message.
+	Delta *MessageDelta
+
+	// REQUIRED; The identifier of the message, which can be referenced in API endpoints.
 	ID *string
 
-	// REQUIRED; The ID of the message that this file is attached to.
-	MessageID *string
-
-	// REQUIRED; The object type, which is always 'thread.message.file'.
+	// CONSTANT; The object type, which is always thread.message.delta.
+	// Field has constant value "thread.message.delta", any specified value is ignored.
 	Object *string
+}
+
+// MessageDeltaContent - The abstract base representation of a partial streamed message content payload.
+type MessageDeltaContent struct {
+	// REQUIRED; The index of the content part of the message.
+	Index *int32
+
+	// REQUIRED; The type of content for this content part.
+	Type *string
+}
+
+// GetMessageDeltaContent implements the MessageDeltaContentClassification interface for type MessageDeltaContent.
+func (m *MessageDeltaContent) GetMessageDeltaContent() *MessageDeltaContent { return m }
+
+// MessageDeltaImageFileContent - Represents a streamed image file content part within a streaming message delta chunk.
+type MessageDeltaImageFileContent struct {
+	// REQUIRED; The index of the content part of the message.
+	Index *int32
+
+	// REQUIRED; The type of content for this content part.
+	Type *string
+
+	// The image_file data.
+	ImageFile *MessageDeltaImageFileContentObject
+}
+
+// GetMessageDeltaContent implements the MessageDeltaContentClassification interface for type MessageDeltaImageFileContent.
+func (m *MessageDeltaImageFileContent) GetMessageDeltaContent() *MessageDeltaContent {
+	return &MessageDeltaContent{
+		Index: m.Index,
+		Type:  m.Type,
+	}
+}
+
+// MessageDeltaImageFileContentObject - Represents the 'image_file' payload within streaming image file content.
+type MessageDeltaImageFileContentObject struct {
+	// The file ID of the image in the message content.
+	FileID *string
+}
+
+// MessageDeltaTextAnnotation - The abstract base representation of a streamed text content part's text annotation.
+type MessageDeltaTextAnnotation struct {
+	// REQUIRED; The index of the annotation within a text content part.
+	Index *int32
+
+	// REQUIRED; The type of the text content annotation.
+	Type *string
+}
+
+// GetMessageDeltaTextAnnotation implements the MessageDeltaTextAnnotationClassification interface for type MessageDeltaTextAnnotation.
+func (m *MessageDeltaTextAnnotation) GetMessageDeltaTextAnnotation() *MessageDeltaTextAnnotation {
+	return m
+}
+
+// MessageDeltaTextContent - Represents the data of a streamed text content part within a streaming message delta chunk.
+type MessageDeltaTextContent struct {
+	// Annotations for the text.
+	Annotations []MessageDeltaTextAnnotationClassification
+
+	// The data that makes up the text.
+	Value *string
+}
+
+// MessageDeltaTextContentObject - Represents a streamed text content part within a streaming message delta chunk.
+type MessageDeltaTextContentObject struct {
+	// REQUIRED; The index of the content part of the message.
+	Index *int32
+
+	// REQUIRED; The type of content for this content part.
+	Type *string
+
+	// The text content details.
+	Text *MessageDeltaTextContent
+}
+
+// GetMessageDeltaContent implements the MessageDeltaContentClassification interface for type MessageDeltaTextContentObject.
+func (m *MessageDeltaTextContentObject) GetMessageDeltaContent() *MessageDeltaContent {
+	return &MessageDeltaContent{
+		Index: m.Index,
+		Type:  m.Type,
+	}
+}
+
+// MessageDeltaTextFileCitationAnnotation - Represents the data of a streamed file citation as applied to a streaming text
+// content part.
+type MessageDeltaTextFileCitationAnnotation struct {
+	// The ID of the specific file the citation is from.
+	FileID *string
+
+	// The specific quote in the cited file.
+	Quote *string
+}
+
+// MessageDeltaTextFileCitationAnnotationObject - Represents a streamed file citation applied to a streaming text content
+// part.
+type MessageDeltaTextFileCitationAnnotationObject struct {
+	// REQUIRED; The index of the annotation within a text content part.
+	Index *int32
+
+	// REQUIRED; The type of the text content annotation.
+	Type *string
+
+	// The end index of this annotation in the content text.
+	EndIndex *int32
+
+	// The file citation information.
+	FileCitation *MessageDeltaTextFileCitationAnnotation
+
+	// The start index of this annotation in the content text.
+	StartIndex *int32
+
+	// The text in the message content that needs to be replaced
+	Text *string
+}
+
+// GetMessageDeltaTextAnnotation implements the MessageDeltaTextAnnotationClassification interface for type MessageDeltaTextFileCitationAnnotationObject.
+func (m *MessageDeltaTextFileCitationAnnotationObject) GetMessageDeltaTextAnnotation() *MessageDeltaTextAnnotation {
+	return &MessageDeltaTextAnnotation{
+		Index: m.Index,
+		Type:  m.Type,
+	}
+}
+
+// MessageDeltaTextFilePathAnnotation - Represents the data of a streamed file path annotation as applied to a streaming text
+// content part.
+type MessageDeltaTextFilePathAnnotation struct {
+	// The file ID for the annotation.
+	FileID *string
+}
+
+// MessageDeltaTextFilePathAnnotationObject - Represents a streamed file path annotation applied to a streaming text content
+// part.
+type MessageDeltaTextFilePathAnnotationObject struct {
+	// REQUIRED; The index of the annotation within a text content part.
+	Index *int32
+
+	// REQUIRED; The type of the text content annotation.
+	Type *string
+
+	// The end index of this annotation in the content text.
+	EndIndex *int32
+
+	// The file path information.
+	FilePath *MessageDeltaTextFilePathAnnotation
+
+	// The start index of this annotation in the content text.
+	StartIndex *int32
+
+	// The text in the message content that needs to be replaced
+	Text *string
+}
+
+// GetMessageDeltaTextAnnotation implements the MessageDeltaTextAnnotationClassification interface for type MessageDeltaTextFilePathAnnotationObject.
+func (m *MessageDeltaTextFilePathAnnotationObject) GetMessageDeltaTextAnnotation() *MessageDeltaTextAnnotation {
+	return &MessageDeltaTextAnnotation{
+		Index: m.Index,
+		Type:  m.Type,
+	}
 }
 
 // MessageImageFileContent - A representation of image file content in a thread message.
@@ -295,14 +750,14 @@ type MessageImageFileDetails struct {
 	FileID *string
 }
 
+// MessageIncompleteDetails - Information providing additional detail about a message entering an incomplete status.
+type MessageIncompleteDetails struct {
+	// REQUIRED; The provided reason describing why the message was marked as incomplete.
+	Reason *MessageIncompleteDetailsReason
+}
+
 // MessageTextAnnotation - An abstract representation of an annotation to text thread message content.
 type MessageTextAnnotation struct {
-	// REQUIRED; The last text index associated with this text annotation.
-	EndIndex *int32
-
-	// REQUIRED; The first text index associated with this text annotation.
-	StartIndex *int32
-
 	// REQUIRED; The textual content associated with this text annotation item.
 	Text *string
 
@@ -339,32 +794,31 @@ type MessageTextDetails struct {
 }
 
 // MessageTextFileCitationAnnotation - A citation within the message that points to a specific quote from a specific File
-// associated with the assistant or the message. Generated when the assistant uses the 'retrieval' tool to search files.
+// associated with the assistant or the message. Generated when the assistant uses the 'file_search' tool to search
+// files.
 type MessageTextFileCitationAnnotation struct {
-	// REQUIRED; The last text index associated with this text annotation.
-	EndIndex *int32
-
 	// REQUIRED; A citation within the message that points to a specific quote from a specific file. Generated when the assistant
-	// uses the "retrieval" tool to search files.
+	// uses the "file_search" tool to search files.
 	FileCitation *MessageTextFileCitationDetails
-
-	// REQUIRED; The first text index associated with this text annotation.
-	StartIndex *int32
 
 	// REQUIRED; The textual content associated with this text annotation item.
 	Text *string
 
 	// REQUIRED; The object type.
 	Type *string
+
+	// The last text index associated with this text annotation.
+	EndIndex *int32
+
+	// The first text index associated with this text annotation.
+	StartIndex *int32
 }
 
 // GetMessageTextAnnotation implements the MessageTextAnnotationClassification interface for type MessageTextFileCitationAnnotation.
 func (m *MessageTextFileCitationAnnotation) GetMessageTextAnnotation() *MessageTextAnnotation {
 	return &MessageTextAnnotation{
-		EndIndex:   m.EndIndex,
-		StartIndex: m.StartIndex,
-		Text:       m.Text,
-		Type:       m.Type,
+		Text: m.Text,
+		Type: m.Type,
 	}
 }
 
@@ -380,29 +834,27 @@ type MessageTextFileCitationDetails struct {
 
 // MessageTextFilePathAnnotation - A citation within the message that points to a file located at a specific path.
 type MessageTextFilePathAnnotation struct {
-	// REQUIRED; The last text index associated with this text annotation.
-	EndIndex *int32
-
 	// REQUIRED; A URL for the file that's generated when the assistant used the code_interpreter tool to generate a file.
 	FilePath *MessageTextFilePathDetails
-
-	// REQUIRED; The first text index associated with this text annotation.
-	StartIndex *int32
 
 	// REQUIRED; The textual content associated with this text annotation item.
 	Text *string
 
 	// REQUIRED; The object type.
 	Type *string
+
+	// The last text index associated with this text annotation.
+	EndIndex *int32
+
+	// The first text index associated with this text annotation.
+	StartIndex *int32
 }
 
 // GetMessageTextAnnotation implements the MessageTextAnnotationClassification interface for type MessageTextFilePathAnnotation.
 func (m *MessageTextFilePathAnnotation) GetMessageTextAnnotation() *MessageTextAnnotation {
 	return &MessageTextAnnotation{
-		EndIndex:   m.EndIndex,
-		StartIndex: m.StartIndex,
-		Text:       m.Text,
-		Type:       m.Type,
+		Text: m.Text,
+		Type: m.Type,
 	}
 }
 
@@ -431,172 +883,12 @@ type OpenAIFile struct {
 
 	// REQUIRED; The intended purpose of a file.
 	Purpose *FilePurpose
-}
 
-// UpdateMessageBody - The request details to use when updating a message.
-type UpdateMessageBody struct {
-	// A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information about that
-	// object in a structured format. Keys may be up to 64 characters in length and
-	// values may be up to 512 characters in length.
-	Metadata map[string]*string
-}
+	// The state of the file. This field is available in Azure OpenAI only.
+	Status *FileState
 
-// SubmitToolOutputsToRunBody - The request details to use when submitting tool outputs.
-type SubmitToolOutputsToRunBody struct {
-	// REQUIRED; The list of tool outputs requested by tool calls from the specified run.
-	ToolOutputs []ToolOutput
-}
-
-// MessageFilesPage - The response data for a
-// requested list of items.
-type MessageFilesPage struct {
-	// REQUIRED; The requested list of items.
-	Data []MessageFile
-
-	// REQUIRED; The first ID represented in this list.
-	FirstID *string
-
-	// REQUIRED; A value indicating whether there are additional values available not captured in this list.
-	HasMore *bool
-
-	// REQUIRED; The last ID represented in this list.
-	LastID *string
-
-	// REQUIRED; The object type, which is always list.
-	Object *string
-}
-
-// AssistantsPage - The response data for a requested list of items.
-type AssistantsPage struct {
-	// REQUIRED; The requested list of items.
-	Data []Assistant
-
-	// REQUIRED; The first ID represented in this list.
-	FirstID *string
-
-	// REQUIRED; A value indicating whether there are additional values available not captured in this list.
-	HasMore *bool
-
-	// REQUIRED; The last ID represented in this list.
-	LastID *string
-
-	// REQUIRED; The object type, which is always list.
-	Object *string
-}
-
-// CreateAssistantFileBody - The request details to use when creating an assistant file.
-type CreateAssistantFileBody struct {
-	// REQUIRED; The ID of the previously uploaded file to attach.
-	FileID *string
-}
-
-// MessagesPage - The response data for a requested list
-// of items.
-type MessagesPage struct {
-	// REQUIRED; The requested list of items.
-	Data []ThreadMessage
-
-	// REQUIRED; The first ID represented in this list.
-	FirstID *string
-
-	// REQUIRED; A value indicating whether there are additional values available not captured in this list.
-	HasMore *bool
-
-	// REQUIRED; The last ID represented in this list.
-	LastID *string
-
-	// REQUIRED; The object type, which is always list.
-	Object *string
-}
-
-// UpdateRunBody - The request details to use when updating a run.
-type UpdateRunBody struct {
-	// A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information about that
-	// object in a structured format. Keys may be up to 64 characters in length and
-	// values may be up to 512 characters in length.
-	Metadata map[string]*string
-}
-
-// UpdateThreadBody - The request details to use when creating a thread.
-type UpdateThreadBody struct {
-	// A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information about that
-	// object in a structured format. Keys may be up to 64 characters in length and
-	// values may be up to 512 characters in length.
-	Metadata map[string]*string
-}
-
-// ThreadRunsPage - The response data for a requested list of items.
-type ThreadRunsPage struct {
-	// REQUIRED; The requested list of items.
-	Data []ThreadRun
-
-	// REQUIRED; The first ID represented in this list.
-	FirstID *string
-
-	// REQUIRED; A value indicating whether there are additional values available not captured in this list.
-	HasMore *bool
-
-	// REQUIRED; The last ID represented in this list.
-	LastID *string
-
-	// REQUIRED; The object type, which is always list.
-	Object *string
-}
-
-// RunStepsPage - The response data for a requested
-// list of items.
-type RunStepsPage struct {
-	// REQUIRED; The requested list of items.
-	Data []RunStep
-
-	// REQUIRED; The first ID represented in this list.
-	FirstID *string
-
-	// REQUIRED; A value indicating whether there are additional values available not captured in this list.
-	HasMore *bool
-
-	// REQUIRED; The last ID represented in this list.
-	LastID *string
-
-	// REQUIRED; The object type, which is always list.
-	Object *string
-}
-
-// CreateMessageBody - The request details to use when creating a message.
-type CreateMessageBody struct {
-	// REQUIRED; The textual content for the new message.
-	Content *string
-
-	// REQUIRED; The role to associate with the new message.
-	Role *MessageRole
-
-	// A list of up to 10 file IDs to associate with the message, as used by tools like 'code_interpreter' or 'retrieval' that
-	// can read files.
-	FileIDs []string
-
-	// A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information about that
-	// object in a structured format. Keys may be up to 64 characters in length and
-	// values may be up to 512 characters in length.
-	Metadata map[string]*string
-}
-
-// AssistantFilesPage - The response data for a requested list
-// of items.
-type AssistantFilesPage struct {
-	// REQUIRED; The requested list of items.
-	Data []AssistantFile
-
-	// REQUIRED; The first ID represented in this list.
-	FirstID *string
-
-	// REQUIRED; A value indicating whether there are additional values available not captured in this list.
-	HasMore *bool
-
-	// REQUIRED; The last ID represented in this list.
-	LastID *string
-
-	// REQUIRED; The object type, which is always list.
-	Object *string
+	// The error message with details in case processing of this file failed. This field is available in Azure OpenAI only.
+	StatusDetails *string
 }
 
 // RequiredAction - An abstract representation of a required action for an assistant thread run to continue.
@@ -652,17 +944,17 @@ type RequiredToolCall struct {
 // GetRequiredToolCall implements the RequiredToolCallClassification interface for type RequiredToolCall.
 func (r *RequiredToolCall) GetRequiredToolCall() *RequiredToolCall { return r }
 
-// RetrievalToolDefinition - The input definition information for a retrieval tool as used to configure an assistant.
-type RetrievalToolDefinition struct {
-	// REQUIRED; The object type.
-	Type *string
-}
+// RunCompletionUsage - Usage statistics related to the run. This value will be null if the run is not in a terminal state
+// (i.e. in_progress, queued, etc.).
+type RunCompletionUsage struct {
+	// REQUIRED; Number of completion tokens used over the course of the run.
+	CompletionTokens *int64
 
-// GetToolDefinition implements the ToolDefinitionClassification interface for type RetrievalToolDefinition.
-func (r *RetrievalToolDefinition) GetToolDefinition() *ToolDefinition {
-	return &ToolDefinition{
-		Type: r.Type,
-	}
+	// REQUIRED; Number of prompt tokens used over the course of the run.
+	PromptTokens *int64
+
+	// REQUIRED; Total number of tokens used (prompt + completion).
+	TotalTokens *int64
 }
 
 // RunError - The details of an error as encountered by an assistant thread run.
@@ -722,6 +1014,9 @@ type RunStep struct {
 
 	// REQUIRED; The type of run step, which can be either messagecreation or toolcalls.
 	Type *RunStepType
+
+	// Usage statistics related to the run step. This value will be null while the run step's status is in_progress.
+	Usage *RunStepUsage
 }
 
 // RunStepCodeInterpreterImageOutput - A representation of an image output emitted by a code interpreter tool in response
@@ -809,6 +1104,262 @@ func (r *RunStepCodeInterpreterToolCallOutput) GetRunStepCodeInterpreterToolCall
 	return r
 }
 
+// RunStepCompletionUsage - Usage statistics related to the run step.
+type RunStepCompletionUsage struct {
+	// REQUIRED; Number of completion tokens used over the course of the run step.
+	CompletionTokens *int64
+
+	// REQUIRED; Number of prompt tokens used over the course of the run step.
+	PromptTokens *int64
+
+	// REQUIRED; Total number of tokens used (prompt + completion).
+	TotalTokens *int64
+}
+
+// RunStepDelta - Represents the delta payload in a streaming run step delta chunk.
+type RunStepDelta struct {
+	// The details of the run step.
+	StepDetails RunStepDeltaDetailClassification
+}
+
+// RunStepDeltaChunk - Represents a run step delta i.e. any changed fields on a run step during streaming.
+type RunStepDeltaChunk struct {
+	// REQUIRED; The delta containing the fields that have changed on the run step.
+	Delta *RunStepDelta
+
+	// REQUIRED; The identifier of the run step, which can be referenced in API endpoints.
+	ID *string
+
+	// CONSTANT; The object type, which is always thread.run.step.delta.
+	// Field has constant value "thread.run.step.delta", any specified value is ignored.
+	Object *string
+}
+
+// RunStepDeltaCodeInterpreterDetailItemObject - Represents the Code Interpreter tool call data in a streaming run step's
+// tool calls.
+type RunStepDeltaCodeInterpreterDetailItemObject struct {
+	// The input into the Code Interpreter tool call.
+	Input *string
+
+	// The outputs from the Code Interpreter tool call. Code Interpreter can output one or more items, including text (logs) or
+	// images (image). Each of these are represented by a different object type.
+	Outputs []RunStepDeltaCodeInterpreterOutputClassification
+}
+
+// RunStepDeltaCodeInterpreterImageOutput - Represents an image output as produced the Code interpreter tool and as represented
+// in a streaming run step's delta tool calls collection.
+type RunStepDeltaCodeInterpreterImageOutput struct {
+	// REQUIRED; The index of the output in the streaming run step tool call's Code Interpreter outputs array.
+	Index *int32
+
+	// REQUIRED; The type of the streaming run step tool call's Code Interpreter output.
+	Type *string
+
+	// The image data for the Code Interpreter tool call output.
+	Image *RunStepDeltaCodeInterpreterImageOutputObject
+}
+
+// GetRunStepDeltaCodeInterpreterOutput implements the RunStepDeltaCodeInterpreterOutputClassification interface for type
+// RunStepDeltaCodeInterpreterImageOutput.
+func (r *RunStepDeltaCodeInterpreterImageOutput) GetRunStepDeltaCodeInterpreterOutput() *RunStepDeltaCodeInterpreterOutput {
+	return &RunStepDeltaCodeInterpreterOutput{
+		Index: r.Index,
+		Type:  r.Type,
+	}
+}
+
+// RunStepDeltaCodeInterpreterImageOutputObject - Represents the data for a streaming run step's Code Interpreter tool call
+// image output.
+type RunStepDeltaCodeInterpreterImageOutputObject struct {
+	// The file ID for the image.
+	FileID *string
+}
+
+// RunStepDeltaCodeInterpreterLogOutput - Represents a log output as produced by the Code Interpreter tool and as represented
+// in a streaming run step's delta tool calls collection.
+type RunStepDeltaCodeInterpreterLogOutput struct {
+	// REQUIRED; The index of the output in the streaming run step tool call's Code Interpreter outputs array.
+	Index *int32
+
+	// REQUIRED; The type of the streaming run step tool call's Code Interpreter output.
+	Type *string
+
+	// The text output from the Code Interpreter tool call.
+	Logs *string
+}
+
+// GetRunStepDeltaCodeInterpreterOutput implements the RunStepDeltaCodeInterpreterOutputClassification interface for type
+// RunStepDeltaCodeInterpreterLogOutput.
+func (r *RunStepDeltaCodeInterpreterLogOutput) GetRunStepDeltaCodeInterpreterOutput() *RunStepDeltaCodeInterpreterOutput {
+	return &RunStepDeltaCodeInterpreterOutput{
+		Index: r.Index,
+		Type:  r.Type,
+	}
+}
+
+// RunStepDeltaCodeInterpreterOutput - The abstract base representation of a streaming run step tool call's Code Interpreter
+// tool output.
+type RunStepDeltaCodeInterpreterOutput struct {
+	// REQUIRED; The index of the output in the streaming run step tool call's Code Interpreter outputs array.
+	Index *int32
+
+	// REQUIRED; The type of the streaming run step tool call's Code Interpreter output.
+	Type *string
+}
+
+// GetRunStepDeltaCodeInterpreterOutput implements the RunStepDeltaCodeInterpreterOutputClassification interface for type
+// RunStepDeltaCodeInterpreterOutput.
+func (r *RunStepDeltaCodeInterpreterOutput) GetRunStepDeltaCodeInterpreterOutput() *RunStepDeltaCodeInterpreterOutput {
+	return r
+}
+
+// RunStepDeltaCodeInterpreterToolCall - Represents a Code Interpreter tool call within a streaming run step's tool call details.
+type RunStepDeltaCodeInterpreterToolCall struct {
+	// REQUIRED; The ID of the tool call, used when submitting outputs to the run.
+	ID *string
+
+	// REQUIRED; The index of the tool call detail in the run step's tool_calls array.
+	Index *int32
+
+	// REQUIRED; The type of the tool call detail item in a streaming run step's details.
+	Type *string
+
+	// The Code Interpreter data for the tool call.
+	CodeInterpreter *RunStepDeltaCodeInterpreterDetailItemObject
+}
+
+// GetRunStepDeltaToolCall implements the RunStepDeltaToolCallClassification interface for type RunStepDeltaCodeInterpreterToolCall.
+func (r *RunStepDeltaCodeInterpreterToolCall) GetRunStepDeltaToolCall() *RunStepDeltaToolCall {
+	return &RunStepDeltaToolCall{
+		ID:    r.ID,
+		Index: r.Index,
+		Type:  r.Type,
+	}
+}
+
+// RunStepDeltaDetail - Represents a single run step detail item in a streaming run step's delta payload.
+type RunStepDeltaDetail struct {
+	// REQUIRED; The object type for the run step detail object.
+	Type *string
+}
+
+// GetRunStepDeltaDetail implements the RunStepDeltaDetailClassification interface for type RunStepDeltaDetail.
+func (r *RunStepDeltaDetail) GetRunStepDeltaDetail() *RunStepDeltaDetail { return r }
+
+// RunStepDeltaFileSearchToolCall - Represents a file search tool call within a streaming run step's tool call details.
+type RunStepDeltaFileSearchToolCall struct {
+	// REQUIRED; The ID of the tool call, used when submitting outputs to the run.
+	ID *string
+
+	// REQUIRED; The index of the tool call detail in the run step's tool_calls array.
+	Index *int32
+
+	// REQUIRED; The type of the tool call detail item in a streaming run step's details.
+	Type *string
+
+	// Reserved for future use.
+	FileSearch map[string]*string
+}
+
+// GetRunStepDeltaToolCall implements the RunStepDeltaToolCallClassification interface for type RunStepDeltaFileSearchToolCall.
+func (r *RunStepDeltaFileSearchToolCall) GetRunStepDeltaToolCall() *RunStepDeltaToolCall {
+	return &RunStepDeltaToolCall{
+		ID:    r.ID,
+		Index: r.Index,
+		Type:  r.Type,
+	}
+}
+
+// RunStepDeltaFunction - Represents the function data in a streaming run step delta's function tool call.
+type RunStepDeltaFunction struct {
+	// The arguments passed to the function as input.
+	Arguments *string
+
+	// The name of the function.
+	Name *string
+
+	// The output of the function, null if outputs have not yet been submitted.
+	Output *string
+}
+
+// RunStepDeltaFunctionToolCall - Represents a function tool call within a streaming run step's tool call details.
+type RunStepDeltaFunctionToolCall struct {
+	// REQUIRED; The ID of the tool call, used when submitting outputs to the run.
+	ID *string
+
+	// REQUIRED; The index of the tool call detail in the run step's tool_calls array.
+	Index *int32
+
+	// REQUIRED; The type of the tool call detail item in a streaming run step's details.
+	Type *string
+
+	// The function data for the tool call.
+	Function *RunStepDeltaFunction
+}
+
+// GetRunStepDeltaToolCall implements the RunStepDeltaToolCallClassification interface for type RunStepDeltaFunctionToolCall.
+func (r *RunStepDeltaFunctionToolCall) GetRunStepDeltaToolCall() *RunStepDeltaToolCall {
+	return &RunStepDeltaToolCall{
+		ID:    r.ID,
+		Index: r.Index,
+		Type:  r.Type,
+	}
+}
+
+// RunStepDeltaMessageCreation - Represents a message creation within a streaming run step delta.
+type RunStepDeltaMessageCreation struct {
+	// REQUIRED; The object type for the run step detail object.
+	Type *string
+
+	// The message creation data.
+	MessageCreation *RunStepDeltaMessageCreationObject
+}
+
+// GetRunStepDeltaDetail implements the RunStepDeltaDetailClassification interface for type RunStepDeltaMessageCreation.
+func (r *RunStepDeltaMessageCreation) GetRunStepDeltaDetail() *RunStepDeltaDetail {
+	return &RunStepDeltaDetail{
+		Type: r.Type,
+	}
+}
+
+// RunStepDeltaMessageCreationObject - Represents the data within a streaming run step message creation response object.
+type RunStepDeltaMessageCreationObject struct {
+	// The ID of the newly-created message.
+	MessageID *string
+}
+
+// RunStepDeltaToolCall - The abstract base representation of a single tool call within a streaming run step's delta tool
+// call details.
+type RunStepDeltaToolCall struct {
+	// REQUIRED; The ID of the tool call, used when submitting outputs to the run.
+	ID *string
+
+	// REQUIRED; The index of the tool call detail in the run step's tool_calls array.
+	Index *int32
+
+	// REQUIRED; The type of the tool call detail item in a streaming run step's details.
+	Type *string
+}
+
+// GetRunStepDeltaToolCall implements the RunStepDeltaToolCallClassification interface for type RunStepDeltaToolCall.
+func (r *RunStepDeltaToolCall) GetRunStepDeltaToolCall() *RunStepDeltaToolCall { return r }
+
+// RunStepDeltaToolCallObject - Represents an invocation of tool calls as part of a streaming run step.
+type RunStepDeltaToolCallObject struct {
+	// REQUIRED; The object type for the run step detail object.
+	Type *string
+
+	// The collection of tool calls for the tool call detail item.
+	ToolCalls []RunStepDeltaToolCallClassification
+}
+
+// GetRunStepDeltaDetail implements the RunStepDeltaDetailClassification interface for type RunStepDeltaToolCallObject.
+func (r *RunStepDeltaToolCallObject) GetRunStepDeltaDetail() *RunStepDeltaDetail {
+	return &RunStepDeltaDetail{
+		Type: r.Type,
+	}
+}
+
 // RunStepDetails - An abstract representation of the details for a run step.
 type RunStepDetails struct {
 	// REQUIRED; The object type.
@@ -825,6 +1376,27 @@ type RunStepError struct {
 
 	// REQUIRED; The human-readable text associated with this error.
 	Message *string
+}
+
+// RunStepFileSearchToolCall - A record of a call to a file search tool, issued by the model in evaluation of a defined tool,
+// that represents executed file search.
+type RunStepFileSearchToolCall struct {
+	// REQUIRED; Reserved for future use.
+	FileSearch map[string]*string
+
+	// REQUIRED; The ID of the tool call. This ID must be referenced when you submit tool outputs.
+	ID *string
+
+	// REQUIRED; The object type.
+	Type *string
+}
+
+// GetRunStepToolCall implements the RunStepToolCallClassification interface for type RunStepFileSearchToolCall.
+func (r *RunStepFileSearchToolCall) GetRunStepToolCall() *RunStepToolCall {
+	return &RunStepToolCall{
+		ID:   r.ID,
+		Type: r.Type,
+	}
 }
 
 // RunStepFunctionToolCall - A record of a call to a function tool, issued by the model in evaluation of a defined tool, that
@@ -891,27 +1463,6 @@ type RunStepMessageCreationReference struct {
 	MessageID *string
 }
 
-// RunStepRetrievalToolCall - A record of a call to a retrieval tool, issued by the model in evaluation of a defined tool,
-// that represents executed retrieval actions.
-type RunStepRetrievalToolCall struct {
-	// REQUIRED; The ID of the tool call. This ID must be referenced when you submit tool outputs.
-	ID *string
-
-	// REQUIRED; The key/value pairs produced by the retrieval tool.
-	Retrieval map[string]*string
-
-	// REQUIRED; The object type.
-	Type *string
-}
-
-// GetRunStepToolCall implements the RunStepToolCallClassification interface for type RunStepRetrievalToolCall.
-func (r *RunStepRetrievalToolCall) GetRunStepToolCall() *RunStepToolCall {
-	return &RunStepToolCall{
-		ID:   r.ID,
-		Type: r.Type,
-	}
-}
-
 // RunStepToolCall - An abstract representation of a detailed tool call as recorded within a run step for an existing run.
 type RunStepToolCall struct {
 	// REQUIRED; The ID of the tool call. This ID must be referenced when you submit tool outputs.
@@ -940,6 +1491,18 @@ func (r *RunStepToolCallDetails) GetRunStepDetails() *RunStepDetails {
 	}
 }
 
+// RunStepUsage - Usage statistics related to the run step. This value will be null while the run step's status is in_progress.
+type RunStepUsage struct {
+	// REQUIRED; Number of completion tokens used over the course of the run step.
+	CompletionTokens *int64
+
+	// REQUIRED; Number of prompt tokens used over the course of the run step.
+	PromptTokens *int64
+
+	// REQUIRED; Total number of tokens used (prompt + completion).
+	TotalTokens *int64
+}
+
 // SubmitToolOutputsAction - The details for required tool calls that must be submitted for an assistant thread run to continue.
 type SubmitToolOutputsAction struct {
 	// REQUIRED; The details describing tools that should be called to submit tool outputs.
@@ -962,6 +1525,15 @@ type SubmitToolOutputsDetails struct {
 	ToolCalls []RequiredToolCallClassification
 }
 
+// SubmitToolOutputsToRunBody contains arguments for the [SubmitToolOutputsToRun] method.
+type SubmitToolOutputsToRunBody struct {
+	// REQUIRED; A list of tools for which the outputs are being submitted.
+	ToolOutputs []ToolOutput
+
+	// NOTE: Use the Stream version of this function (ex: [CreateThreadAndRunStream], [CreateRunStream] or [SubmitToolOutputsToRunStream]) to stream results.
+	stream *bool
+}
+
 // ThreadDeletionStatus - The status of a thread deletion operation.
 type ThreadDeletionStatus struct {
 	// REQUIRED; A value indicating whether deletion was successful.
@@ -974,61 +1546,76 @@ type ThreadDeletionStatus struct {
 	Object *string
 }
 
-// ThreadInitializationMessage - A single message within an assistant thread, as provided during that thread's creation for
-// its initial state.
-type ThreadInitializationMessage struct {
-	// REQUIRED; The textual content of the initial message. Currently, robust input including images and annotated text may only
-	// be provided via a separate call to the create message API.
-	Content *string
-
-	// REQUIRED; The role associated with the assistant thread message. Currently, only 'user' is supported when providing initial
-	// messages to a new thread.
-	Role *MessageRole
-
-	// A list of file IDs that the assistant should use. Useful for tools like retrieval and code_interpreter that can access
-	// files.
-	FileIDs []string
-
-	// A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information about that
-	// object in a structured format. Keys may be up to 64 characters in length and
-	// values may be up to 512 characters in length.
-	Metadata map[string]*string
-}
-
 // ThreadMessage - A single, existing message within an assistant thread.
 type ThreadMessage struct {
+	// REQUIRED; If applicable, the ID of the assistant that authored this message.
+	AssistantID *string
+
+	// REQUIRED; A list of files attached to the message, and the tools they were added to.
+	Attachments []MessageAttachment
+
+	// REQUIRED; The Unix timestamp (in seconds) for when the message was completed.
+	CompletedAt *time.Time
+
 	// REQUIRED; The list of content items associated with the assistant thread message.
 	Content []MessageContentClassification
 
 	// REQUIRED; The Unix timestamp, in seconds, representing when this object was created.
 	CreatedAt *time.Time
 
-	// REQUIRED; A list of file IDs that the assistant should use. Useful for tools like retrieval and code_interpreter that can
-	// access files.
-	FileIDs []string
-
 	// REQUIRED; The identifier, which can be referenced in API endpoints.
 	ID *string
+
+	// REQUIRED; The Unix timestamp (in seconds) for when the message was marked as incomplete.
+	IncompleteAt *time.Time
+
+	// REQUIRED; On an incomplete message, details about why the message is incomplete.
+	IncompleteDetails *ThreadMessageIncompleteDetails
 
 	// REQUIRED; A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information
 	// about that object in a structured format. Keys may be up to 64 characters in length and
 	// values may be up to 512 characters in length.
 	Metadata map[string]*string
 
-	// REQUIRED; The object type, which is always 'thread.message'.
+	// CONSTANT; The object type, which is always 'thread.message'.
+	// Field has constant value "thread.message", any specified value is ignored.
 	Object *string
 
 	// REQUIRED; The role associated with the assistant thread message.
 	Role *MessageRole
 
+	// REQUIRED; If applicable, the ID of the run associated with the authoring of this message.
+	RunID *string
+
+	// REQUIRED; The status of the message.
+	Status *MessageStatus
+
 	// REQUIRED; The ID of the thread that this message belongs to.
 	ThreadID *string
+}
 
-	// If applicable, the ID of the assistant that authored this message.
-	AssistantID *string
+// ThreadMessageIncompleteDetails - On an incomplete message, details about why the message is incomplete.
+type ThreadMessageIncompleteDetails struct {
+	// REQUIRED; The provided reason describing why the message was marked as incomplete.
+	Reason *MessageIncompleteDetailsReason
+}
 
-	// If applicable, the ID of the run associated with the authoring of this message.
-	RunID *string
+// ThreadMessagesPage - The response data for a requested list of items.
+type ThreadMessagesPage struct {
+	// REQUIRED; The requested list of items.
+	Data []ThreadMessage
+
+	// REQUIRED; The first ID represented in this list.
+	FirstID *string
+
+	// REQUIRED; A value indicating whether there are additional values available not captured in this list.
+	HasMore *bool
+
+	// REQUIRED; The last ID represented in this list.
+	LastID *string
+
+	// REQUIRED; The object type, which is always list.
+	Object *string
 }
 
 // ThreadRun - Data representing a single evaluation run of an assistant thread.
@@ -1051,11 +1638,11 @@ type ThreadRun struct {
 	// REQUIRED; The Unix timestamp, in seconds, representing when this failed.
 	FailedAt *time.Time
 
-	// REQUIRED; A list of attached file IDs, ordered by creation date in ascending order.
-	FileIDs []string
-
 	// REQUIRED; The identifier, which can be referenced in API endpoints.
 	ID *string
+
+	// REQUIRED; Details on why the run is incomplete. Will be null if the run is not incomplete.
+	IncompleteDetails *IncompleteRunDetails
 
 	// REQUIRED; The overridden system instructions used for this assistant thread run.
 	Instructions *string
@@ -1063,16 +1650,25 @@ type ThreadRun struct {
 	// REQUIRED; The last error, if any, encountered by this assistant thread run.
 	LastError *ThreadRunLastError
 
+	// REQUIRED; The maximum number of completion tokens specified to have been used over the course of the run.
+	MaxCompletionTokens *int32
+
+	// REQUIRED; The maximum number of prompt tokens specified to have been used over the course of the run.
+	MaxPromptTokens *int32
+
 	// REQUIRED; A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information
 	// about that object in a structured format. Keys may be up to 64 characters in length and
 	// values may be up to 512 characters in length.
 	Metadata map[string]*string
 
 	// REQUIRED; The ID of the model to use.
-	DeploymentName *string
+	Model *string
 
 	// REQUIRED; The object type, which is always 'thread.run'.
 	Object *string
+
+	// REQUIRED; The response format of the tool calls used in this run.
+	ResponseFormat *AssistantResponseFormat
 
 	// REQUIRED; The Unix timestamp, in seconds, representing when this item was started.
 	StartedAt *time.Time
@@ -1083,11 +1679,27 @@ type ThreadRun struct {
 	// REQUIRED; The ID of the thread associated with this run.
 	ThreadID *string
 
+	// REQUIRED; Controls whether or not and which tool is called by the model.
+	ToolChoice *AssistantsAPIToolChoiceOption
+
 	// REQUIRED; The overridden enabled tools used for this assistant thread run.
 	Tools []ToolDefinitionClassification
 
+	// REQUIRED; The strategy to use for dropping messages as the context windows moves forward.
+	TruncationStrategy *ThreadRunTruncationStrategy
+
+	// REQUIRED; Usage statistics related to the run. This value will be null if the run is not in a terminal state (i.e. in_progress,
+	// queued, etc.).
+	Usage *ThreadRunUsage
+
 	// The details of the action required for the assistant thread run to continue.
 	RequiredAction RequiredActionClassification
+
+	// The sampling temperature used for this run. If not set, defaults to 1.
+	Temperature *float32
+
+	// The nucleus sampling value used for this run. If not set, defaults to 1.
+	TopP *float32
 }
 
 // ThreadRunLastError - The last error, if any, encountered by this assistant thread run.
@@ -1097,6 +1709,66 @@ type ThreadRunLastError struct {
 
 	// REQUIRED; The human-readable text associated with the error.
 	Message *string
+}
+
+// ThreadRunStepsPage - The response data for a requested list of items.
+type ThreadRunStepsPage struct {
+	// REQUIRED; The requested list of items.
+	Data []RunStep
+
+	// REQUIRED; The first ID represented in this list.
+	FirstID *string
+
+	// REQUIRED; A value indicating whether there are additional values available not captured in this list.
+	HasMore *bool
+
+	// REQUIRED; The last ID represented in this list.
+	LastID *string
+
+	// REQUIRED; The object type, which is always list.
+	Object *string
+}
+
+// ThreadRunTruncationStrategy - The strategy to use for dropping messages as the context windows moves forward.
+type ThreadRunTruncationStrategy struct {
+	// REQUIRED; The truncation strategy to use for the thread. The default is auto. If set to last_messages, the thread will
+	// be truncated to the lastMessages count most recent messages in the thread. When set to auto
+	// , messages in the middle of the thread will be dropped to fit the context length of the model, max_prompt_tokens.
+	Type *TruncationStrategy
+
+	// The number of most recent messages from the thread when constructing the context for the run.
+	LastMessages *int32
+}
+
+// ThreadRunUsage - Usage statistics related to the run. This value will be null if the run is not in a terminal state (i.e.
+// in_progress, queued, etc.).
+type ThreadRunUsage struct {
+	// REQUIRED; Number of completion tokens used over the course of the run.
+	CompletionTokens *int64
+
+	// REQUIRED; Number of prompt tokens used over the course of the run.
+	PromptTokens *int64
+
+	// REQUIRED; Total number of tokens used (prompt + completion).
+	TotalTokens *int64
+}
+
+// ThreadRunsPage - The response data for a requested list of items.
+type ThreadRunsPage struct {
+	// REQUIRED; The requested list of items.
+	Data []ThreadRun
+
+	// REQUIRED; The first ID represented in this list.
+	FirstID *string
+
+	// REQUIRED; A value indicating whether there are additional values available not captured in this list.
+	HasMore *bool
+
+	// REQUIRED; The last ID represented in this list.
+	LastID *string
+
+	// REQUIRED; The object type, which is always list.
+	Object *string
 }
 
 // ToolDefinition - An abstract representation of an input tool definition that an assistant can use.
@@ -1117,13 +1789,36 @@ type ToolOutput struct {
 	ToolCallID *string
 }
 
+// ToolResources - A set of resources that are used by the assistant's tools. The resources are specific to the type of tool.
+// For example, the code_interpreter tool requires a list of file IDs, while the file_searchtool
+// requires a list of vector store IDs.
+type ToolResources struct {
+	// Resources to be used by the code_interpreter tool consisting of file IDs.
+	CodeInterpreter *CodeInterpreterToolResource
+
+	// Resources to be used by the file_search tool consisting of vector store IDs.
+	FileSearch *FileSearchToolResource
+}
+
+// TruncationObject - Controls for how a thread will be truncated prior to the run. Use this to control the initial context
+// window of the run.
+type TruncationObject struct {
+	// REQUIRED; The truncation strategy to use for the thread. The default is auto. If set to last_messages, the thread will
+	// be truncated to the lastMessages count most recent messages in the thread. When set to auto
+	// , messages in the middle of the thread will be dropped to fit the context length of the model, max_prompt_tokens.
+	Type *TruncationStrategy
+
+	// The number of most recent messages from the thread when constructing the context for the run.
+	LastMessages *int32
+}
+
 // UpdateAssistantBody - The request details to use when modifying an existing assistant.
 type UpdateAssistantBody struct {
+	// The ID of the model to use.
+	DeploymentName *string
+
 	// The modified description for the assistant to use.
 	Description *string
-
-	// The modified list of previously uploaded fileIDs to attach to the assistant.
-	FileIDs []string
 
 	// The modified system instructions for the new assistant to use.
 	Instructions *string
@@ -1133,12 +1828,341 @@ type UpdateAssistantBody struct {
 	// values may be up to 512 characters in length.
 	Metadata map[string]*string
 
-	// The ID of the model to use.
-	DeploymentName *string
-
 	// The modified name for the assistant to use.
 	Name *string
 
+	// The response format of the tool calls used by this assistant.
+	ResponseFormat *AssistantResponseFormat
+
+	// What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower
+	// values like 0.2 will make it more focused and deterministic.
+	Temperature *float32
+
+	// A set of resources that are used by the assistant's tools. The resources are specific to the type of tool. For example,
+	// the code_interpreter tool requires a list of file IDs, while the file_search
+	// tool requires a list of vector store IDs.
+	ToolResources *UpdateToolResourcesOptions
+
 	// The modified collection of tools to enable for the assistant.
 	Tools []ToolDefinitionClassification
+
+	// An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens
+	// with top_p probability mass. So 0.1 means only the tokens comprising the top
+	// 10% probability mass are considered.
+	// We generally recommend altering this or temperature but not both.
+	TopP *float32
+}
+
+// UpdateAssistantThreadOptionsToolResources - A set of resources that are made available to the assistant's tools in this
+// thread. The resources are specific to the type of tool. For example, the code_interpreter tool requires a list of file
+// IDs,
+// while the file_search tool requires a list of vector store IDs
+type UpdateAssistantThreadOptionsToolResources struct {
+	// Overrides the list of file IDs made available to the code_interpreter tool. There can be a maximum of 20 files associated
+	// with the tool.
+	CodeInterpreter *UpdateCodeInterpreterToolResourceOptions
+
+	// Overrides the vector store attached to this assistant. There can be a maximum of 1 vector store attached to the assistant.
+	FileSearch *UpdateFileSearchToolResourceOptions
+}
+
+// UpdateCodeInterpreterToolResourceOptions - Request object to update code_interpreted tool resources.
+type UpdateCodeInterpreterToolResourceOptions struct {
+	// A list of file IDs to override the current list of the assistant.
+	FileIDs []string
+}
+
+// UpdateFileSearchToolResourceOptions - Request object to update file_search tool resources.
+type UpdateFileSearchToolResourceOptions struct {
+	// A list of vector store IDs to override the current list of the assistant.
+	VectorStoreIDs []string
+}
+
+// UpdateMessageBody contains arguments for the [UpdateMessage] method.
+type UpdateMessageBody struct {
+	// A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information about that
+	// object in a structured format. Keys may be up to 64 characters in length and
+	// values may be up to 512 characters in length.
+	Metadata map[string]*string
+}
+
+// UpdateRunBody contains arguments for the [UpdateRun] method.
+type UpdateRunBody struct {
+	// A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information about that
+	// object in a structured format. Keys may be up to 64 characters in length and
+	// values may be up to 512 characters in length.
+	Metadata map[string]*string
+}
+
+// UpdateThreadBody - The details used to update an existing assistant thread
+type UpdateThreadBody struct {
+	// A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information about that
+	// object in a structured format. Keys may be up to 64 characters in length and
+	// values may be up to 512 characters in length.
+	Metadata map[string]*string
+
+	// A set of resources that are made available to the assistant's tools in this thread. The resources are specific to the type
+	// of tool. For example, the code_interpreter tool requires a list of file IDs,
+	// while the file_search tool requires a list of vector store IDs
+	ToolResources *UpdateAssistantThreadOptionsToolResources
+}
+
+// UpdateToolResourcesOptions - Request object. A set of resources that are used by the assistant's tools. The resources are
+// specific to the type of tool. For example, the code_interpreter tool requires a list of file IDs, while the
+// file_search tool requires a list of vector store IDs.
+type UpdateToolResourcesOptions struct {
+	// Overrides the list of file IDs made available to the code_interpreter tool. There can be a maximum of 20 files associated
+	// with the tool.
+	CodeInterpreter *UpdateCodeInterpreterToolResourceOptions
+
+	// Overrides the vector store attached to this assistant. There can be a maximum of 1 vector store attached to the assistant.
+	FileSearch *UpdateFileSearchToolResourceOptions
+}
+
+// VectorStore - A vector store is a collection of processed files can be used by the file_search tool.
+type VectorStore struct {
+	// REQUIRED; The Unix timestamp (in seconds) for when the vector store was created.
+	CreatedAt *time.Time
+
+	// REQUIRED; Files count grouped by status processed or being processed by this vector store.
+	FileCounts *VectorStoreFileCount
+
+	// REQUIRED; The identifier, which can be referenced in API endpoints.
+	ID *string
+
+	// REQUIRED; The Unix timestamp (in seconds) for when the vector store was last active.
+	LastActiveAt *time.Time
+
+	// REQUIRED; A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information
+	// about that object in a structured format. Keys may be up to 64 characters in length and
+	// values may be up to 512 characters in length.
+	Metadata map[string]*string
+
+	// REQUIRED; The name of the vector store.
+	Name *string
+
+	// REQUIRED; The object type, which is always vector_store
+	Object *string
+
+	// REQUIRED; The status of the vector store, which can be either expired, in_progress, or completed. A status of completed
+	// indicates that the vector store is ready for use.
+	Status *VectorStoreStatus
+
+	// REQUIRED; The total number of bytes used by the files in the vector store.
+	UsageBytes *int32
+
+	// Details on when this vector store expires
+	ExpiresAfter *VectorStoreExpirationPolicy
+
+	// The Unix timestamp (in seconds) for when the vector store will expire.
+	ExpiresAt *time.Time
+}
+
+// VectorStoreBody - Request object for creating a vector store.
+type VectorStoreBody struct {
+	// Details on when this vector store expires
+	ExpiresAfter *VectorStoreExpirationPolicy
+
+	// A list of file IDs that the vector store should use. Useful for tools like file_search that can access files.
+	FileIDs []string
+
+	// A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information about that
+	// object in a structured format. Keys may be up to 64 characters in length and
+	// values may be up to 512 characters in length.
+	Metadata map[string]*string
+
+	// The name of the vector store.
+	Name *string
+}
+
+// VectorStoreDeletionStatus - Response object for deleting a vector store.
+type VectorStoreDeletionStatus struct {
+	// REQUIRED; A value indicating whether deletion was successful.
+	Deleted *bool
+
+	// REQUIRED; The ID of the resource specified for deletion.
+	ID *string
+
+	// REQUIRED; The object type, which is always 'vector_store.deleted'.
+	Object *string
+}
+
+// VectorStoreExpirationPolicy - The expiration policy for a vector store.
+type VectorStoreExpirationPolicy struct {
+	// REQUIRED; Anchor timestamp after which the expiration policy applies. Supported anchors: last_active_at.
+	Anchor *VectorStoreExpirationPolicyAnchor
+
+	// REQUIRED; The anchor timestamp after which the expiration policy applies.
+	Days *int32
+}
+
+// VectorStoreFile - Description of a file attached to a vector store.
+type VectorStoreFile struct {
+	// REQUIRED; The Unix timestamp (in seconds) for when the vector store file was created.
+	CreatedAt *time.Time
+
+	// REQUIRED; The identifier, which can be referenced in API endpoints.
+	ID *string
+
+	// REQUIRED; The last error associated with this vector store file. Will be null if there are no errors.
+	LastError *VectorStoreFileLastError
+
+	// REQUIRED; The object type, which is always vector_store.file.
+	Object *string
+
+	// REQUIRED; The status of the vector store file, which can be either in_progress, completed, cancelled, or failed. The status
+	// completed indicates that the vector store file is ready for use.
+	Status *VectorStoreFileStatus
+
+	// REQUIRED; The total vector store usage in bytes. Note that this may be different from the original file size.
+	UsageBytes *int32
+
+	// REQUIRED; The ID of the vector store that the file is attached to.
+	VectorStoreID *string
+}
+
+// VectorStoreFileBatch - A batch of files attached to a vector store.
+type VectorStoreFileBatch struct {
+	// REQUIRED; The Unix timestamp (in seconds) for when the vector store files batch was created.
+	CreatedAt *time.Time
+
+	// REQUIRED; Files count grouped by status processed or being processed by this vector store.
+	FileCounts *VectorStoreFileCount
+
+	// REQUIRED; The identifier, which can be referenced in API endpoints.
+	ID *string
+
+	// REQUIRED; The object type, which is always vector_store.file_batch.
+	Object *string
+
+	// REQUIRED; The status of the vector store files batch, which can be either in_progress, completed, cancelled or failed.
+	Status *VectorStoreFileBatchStatus
+
+	// REQUIRED; The ID of the vector store that the file is attached to.
+	VectorStoreID *string
+}
+
+// VectorStoreFileBatchesPage - The response data for a requested list of items.
+type VectorStoreFileBatchesPage struct {
+	// REQUIRED; The requested list of items.
+	Data []VectorStoreFile
+
+	// REQUIRED; The first ID represented in this list.
+	FirstID *string
+
+	// REQUIRED; A value indicating whether there are additional values available not captured in this list.
+	HasMore *bool
+
+	// REQUIRED; The last ID represented in this list.
+	LastID *string
+
+	// REQUIRED; The object type, which is always list.
+	Object *string
+}
+
+// VectorStoreFileCount - Counts of files processed or being processed by this vector store grouped by status.
+type VectorStoreFileCount struct {
+	// REQUIRED; The number of files that were cancelled.
+	Cancelled *int32
+
+	// REQUIRED; The number of files that have been successfully processed.
+	Completed *int32
+
+	// REQUIRED; The number of files that have failed to process.
+	Failed *int32
+
+	// REQUIRED; The number of files that are currently being processed.
+	InProgress *int32
+
+	// REQUIRED; The total number of files.
+	Total *int32
+}
+
+// VectorStoreFileDeletionStatus - Response object for deleting a vector store file relationship.
+type VectorStoreFileDeletionStatus struct {
+	// REQUIRED; A value indicating whether deletion was successful.
+	Deleted *bool
+
+	// REQUIRED; The ID of the resource specified for deletion.
+	ID *string
+
+	// REQUIRED; The object type, which is always 'vector_store.deleted'.
+	Object *string
+}
+
+// VectorStoreFileError - Details on the error that may have ocurred while processing a file for this vector store
+type VectorStoreFileError struct {
+	// REQUIRED; One of server_error or rate_limit_exceeded.
+	Code *VectorStoreFileErrorCode
+
+	// REQUIRED; A human-readable description of the error.
+	Message *string
+}
+
+// VectorStoreFileLastError - The last error associated with this vector store file. Will be null if there are no errors.
+type VectorStoreFileLastError struct {
+	// REQUIRED; One of server_error or rate_limit_exceeded.
+	Code *VectorStoreFileErrorCode
+
+	// REQUIRED; A human-readable description of the error.
+	Message *string
+}
+
+// VectorStoreFilesPage - The response data for a requested list of items.
+type VectorStoreFilesPage struct {
+	// REQUIRED; The requested list of items.
+	Data []VectorStoreFile
+
+	// REQUIRED; The first ID represented in this list.
+	FirstID *string
+
+	// REQUIRED; A value indicating whether there are additional values available not captured in this list.
+	HasMore *bool
+
+	// REQUIRED; The last ID represented in this list.
+	LastID *string
+
+	// REQUIRED; The object type, which is always list.
+	Object *string
+}
+
+// VectorStoreUpdateBody - Request object for updating a vector store.
+type VectorStoreUpdateBody struct {
+	// Details on when this vector store expires
+	ExpiresAfter *VectorStoreUpdateOptionsExpiresAfter
+
+	// A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information about that
+	// object in a structured format. Keys may be up to 64 characters in length and
+	// values may be up to 512 characters in length.
+	Metadata map[string]*string
+
+	// The name of the vector store.
+	Name *string
+}
+
+// VectorStoreUpdateOptionsExpiresAfter - Details on when this vector store expires
+type VectorStoreUpdateOptionsExpiresAfter struct {
+	// REQUIRED; Anchor timestamp after which the expiration policy applies. Supported anchors: last_active_at.
+	Anchor *VectorStoreExpirationPolicyAnchor
+
+	// REQUIRED; The anchor timestamp after which the expiration policy applies.
+	Days *int32
+}
+
+// VectorStoresPage - The response data for a requested list of items.
+type VectorStoresPage struct {
+	// REQUIRED; The requested list of items.
+	Data []VectorStore
+
+	// REQUIRED; The first ID represented in this list.
+	FirstID *string
+
+	// REQUIRED; A value indicating whether there are additional values available not captured in this list.
+	HasMore *bool
+
+	// REQUIRED; The last ID represented in this list.
+	LastID *string
+
+	// REQUIRED; The object type, which is always list.
+	Object *string
 }

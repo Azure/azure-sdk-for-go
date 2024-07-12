@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v5"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/NetworkVirtualApplianceDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/NetworkVirtualApplianceDelete.json
 func ExampleVirtualAppliancesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -39,7 +39,7 @@ func ExampleVirtualAppliancesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/NetworkVirtualApplianceGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/NetworkVirtualApplianceGet.json
 func ExampleVirtualAppliancesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -92,6 +92,45 @@ func ExampleVirtualAppliancesClient_Get() {
 	// 					{
 	// 						ID: to.Ptr("/subscriptions/{{subscriptionId}}/resourceGroups/{{rg}}/providers/Microsoft.Network/publicIPAddresses/slbip"),
 	// 				}},
+	// 				NetworkProfile: &armnetwork.VirtualAppliancePropertiesFormatNetworkProfile{
+	// 					NetworkInterfaceConfigurations: []*armnetwork.VirtualApplianceNetworkInterfaceConfiguration{
+	// 						{
+	// 							NicType: to.Ptr(armnetwork.NicTypeInRequestPublicNic),
+	// 							Properties: &armnetwork.VirtualApplianceNetworkInterfaceConfigurationProperties{
+	// 								IPConfigurations: []*armnetwork.VirtualApplianceIPConfiguration{
+	// 									{
+	// 										Name: to.Ptr("publicnicipconfig"),
+	// 										Properties: &armnetwork.VirtualApplianceIPConfigurationProperties{
+	// 											Primary: to.Ptr(true),
+	// 										},
+	// 									},
+	// 									{
+	// 										Name: to.Ptr("publicnicipconfig-2"),
+	// 										Properties: &armnetwork.VirtualApplianceIPConfigurationProperties{
+	// 											Primary: to.Ptr(false),
+	// 										},
+	// 								}},
+	// 							},
+	// 						},
+	// 						{
+	// 							NicType: to.Ptr(armnetwork.NicTypeInRequestPrivateNic),
+	// 							Properties: &armnetwork.VirtualApplianceNetworkInterfaceConfigurationProperties{
+	// 								IPConfigurations: []*armnetwork.VirtualApplianceIPConfiguration{
+	// 									{
+	// 										Name: to.Ptr("privatenicipconfig"),
+	// 										Properties: &armnetwork.VirtualApplianceIPConfigurationProperties{
+	// 											Primary: to.Ptr(true),
+	// 										},
+	// 									},
+	// 									{
+	// 										Name: to.Ptr("privatenicipconfig-2"),
+	// 										Properties: &armnetwork.VirtualApplianceIPConfigurationProperties{
+	// 											Primary: to.Ptr(false),
+	// 										},
+	// 								}},
+	// 							},
+	// 					}},
+	// 				},
 	// 				NvaSKU: &armnetwork.VirtualApplianceSKUProperties{
 	// 					BundledScaleUnit: to.Ptr("1"),
 	// 					MarketPlaceVersion: to.Ptr("12.1"),
@@ -107,18 +146,35 @@ func ExampleVirtualAppliancesClient_Get() {
 	// 					{
 	// 						Name: to.Ptr("publicnicipconfig"),
 	// 						InstanceName: to.Ptr("nva_0"),
+	// 						NicType: to.Ptr(armnetwork.NicTypeInResponsePublicNic),
 	// 						PrivateIPAddress: to.Ptr("192.168.12.1"),
 	// 						PublicIPAddress: to.Ptr("40.30.2.2"),
 	// 					},
 	// 					{
+	// 						Name: to.Ptr("publicnicipconfig-2"),
+	// 						InstanceName: to.Ptr("nva_0"),
+	// 						NicType: to.Ptr(armnetwork.NicTypeInResponsePublicNic),
+	// 						PrivateIPAddress: to.Ptr("192.168.12.2"),
+	// 						PublicIPAddress: to.Ptr("40.30.2.3"),
+	// 					},
+	// 					{
 	// 						Name: to.Ptr("privatenicipconfig"),
 	// 						InstanceName: to.Ptr("nva_0"),
-	// 						PrivateIPAddress: to.Ptr("192.168.12.2"),
+	// 						NicType: to.Ptr(armnetwork.NicTypeInResponsePrivateNic),
+	// 						PrivateIPAddress: to.Ptr("192.168.12.3"),
+	// 						PublicIPAddress: to.Ptr(""),
+	// 					},
+	// 					{
+	// 						Name: to.Ptr("privatenicipconfig-2"),
+	// 						InstanceName: to.Ptr("nva_0"),
+	// 						NicType: to.Ptr(armnetwork.NicTypeInResponsePrivateNic),
+	// 						PrivateIPAddress: to.Ptr("192.168.12.4"),
 	// 						PublicIPAddress: to.Ptr(""),
 	// 					},
 	// 					{
 	// 						Name: to.Ptr("exrsdwan"),
 	// 						InstanceName: to.Ptr("nva_0"),
+	// 						NicType: to.Ptr(armnetwork.NicTypeInResponseAdditionalNic),
 	// 						PrivateIPAddress: to.Ptr("10.1.113.4"),
 	// 						PublicIPAddress: to.Ptr("4.231.25.19"),
 	// 				}},
@@ -133,7 +189,7 @@ func ExampleVirtualAppliancesClient_Get() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/NetworkVirtualApplianceUpdateTags.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/NetworkVirtualApplianceUpdateTags.json
 func ExampleVirtualAppliancesClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -207,7 +263,7 @@ func ExampleVirtualAppliancesClient_UpdateTags() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/NetworkVirtualAppliancePut.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/NetworkVirtualAppliancePut.json
 func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNetworkVirtualAppliance() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -243,6 +299,45 @@ func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNetworkVirtualAppl
 				{
 					ID: to.Ptr("/subscriptions/{{subscriptionId}}/resourceGroups/{{rg}}/providers/Microsoft.Network/publicIPAddresses/slbip"),
 				}},
+			NetworkProfile: &armnetwork.VirtualAppliancePropertiesFormatNetworkProfile{
+				NetworkInterfaceConfigurations: []*armnetwork.VirtualApplianceNetworkInterfaceConfiguration{
+					{
+						NicType: to.Ptr(armnetwork.NicTypeInRequestPublicNic),
+						Properties: &armnetwork.VirtualApplianceNetworkInterfaceConfigurationProperties{
+							IPConfigurations: []*armnetwork.VirtualApplianceIPConfiguration{
+								{
+									Name: to.Ptr("publicnicipconfig"),
+									Properties: &armnetwork.VirtualApplianceIPConfigurationProperties{
+										Primary: to.Ptr(true),
+									},
+								},
+								{
+									Name: to.Ptr("publicnicipconfig-2"),
+									Properties: &armnetwork.VirtualApplianceIPConfigurationProperties{
+										Primary: to.Ptr(false),
+									},
+								}},
+						},
+					},
+					{
+						NicType: to.Ptr(armnetwork.NicTypeInRequestPrivateNic),
+						Properties: &armnetwork.VirtualApplianceNetworkInterfaceConfigurationProperties{
+							IPConfigurations: []*armnetwork.VirtualApplianceIPConfiguration{
+								{
+									Name: to.Ptr("privatenicipconfig"),
+									Properties: &armnetwork.VirtualApplianceIPConfigurationProperties{
+										Primary: to.Ptr(true),
+									},
+								},
+								{
+									Name: to.Ptr("privatenicipconfig-2"),
+									Properties: &armnetwork.VirtualApplianceIPConfigurationProperties{
+										Primary: to.Ptr(false),
+									},
+								}},
+						},
+					}},
+			},
 			NvaSKU: &armnetwork.VirtualApplianceSKUProperties{
 				BundledScaleUnit:   to.Ptr("1"),
 				MarketPlaceVersion: to.Ptr("12.1"),
@@ -281,6 +376,11 @@ func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNetworkVirtualAppl
 	// 		},
 	// 	},
 	// 	Properties: &armnetwork.VirtualAppliancePropertiesFormat{
+	// 		AdditionalNics: []*armnetwork.VirtualApplianceAdditionalNicProperties{
+	// 			{
+	// 				Name: to.Ptr("exrsdwan"),
+	// 				HasPublicIP: to.Ptr(true),
+	// 		}},
 	// 		AddressPrefix: to.Ptr("192.168.1.0/16"),
 	// 		BootStrapConfigurationBlobs: []*string{
 	// 			to.Ptr("https://csrncvhdstorage1.blob.core.windows.net/csrncvhdstoragecont/csrbootstrapconfig")},
@@ -290,6 +390,49 @@ func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNetworkVirtualAppl
 	// 					{
 	// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/networkVirtualAppliances/nva/InboundSecurityRules/rule1"),
 	// 				}},
+	// 				InternetIngressPublicIPs: []*armnetwork.InternetIngressPublicIPsProperties{
+	// 					{
+	// 						ID: to.Ptr("/subscriptions/{{subscriptionId}}/resourceGroups/{{rg}}/providers/Microsoft.Network/publicIPAddresses/slbip"),
+	// 				}},
+	// 				NetworkProfile: &armnetwork.VirtualAppliancePropertiesFormatNetworkProfile{
+	// 					NetworkInterfaceConfigurations: []*armnetwork.VirtualApplianceNetworkInterfaceConfiguration{
+	// 						{
+	// 							NicType: to.Ptr(armnetwork.NicTypeInRequestPublicNic),
+	// 							Properties: &armnetwork.VirtualApplianceNetworkInterfaceConfigurationProperties{
+	// 								IPConfigurations: []*armnetwork.VirtualApplianceIPConfiguration{
+	// 									{
+	// 										Name: to.Ptr("publicnicipconfig"),
+	// 										Properties: &armnetwork.VirtualApplianceIPConfigurationProperties{
+	// 											Primary: to.Ptr(true),
+	// 										},
+	// 									},
+	// 									{
+	// 										Name: to.Ptr("publicnicipconfig-2"),
+	// 										Properties: &armnetwork.VirtualApplianceIPConfigurationProperties{
+	// 											Primary: to.Ptr(false),
+	// 										},
+	// 								}},
+	// 							},
+	// 						},
+	// 						{
+	// 							NicType: to.Ptr(armnetwork.NicTypeInRequestPrivateNic),
+	// 							Properties: &armnetwork.VirtualApplianceNetworkInterfaceConfigurationProperties{
+	// 								IPConfigurations: []*armnetwork.VirtualApplianceIPConfiguration{
+	// 									{
+	// 										Name: to.Ptr("privatenicipconfig"),
+	// 										Properties: &armnetwork.VirtualApplianceIPConfigurationProperties{
+	// 											Primary: to.Ptr(true),
+	// 										},
+	// 									},
+	// 									{
+	// 										Name: to.Ptr("privatenicipconfig-2"),
+	// 										Properties: &armnetwork.VirtualApplianceIPConfigurationProperties{
+	// 											Primary: to.Ptr(false),
+	// 										},
+	// 								}},
+	// 							},
+	// 					}},
+	// 				},
 	// 				NvaSKU: &armnetwork.VirtualApplianceSKUProperties{
 	// 					BundledScaleUnit: to.Ptr("1"),
 	// 					MarketPlaceVersion: to.Ptr("12.1"),
@@ -301,18 +444,35 @@ func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNetworkVirtualAppl
 	// 					{
 	// 						Name: to.Ptr("publicnicipconfig"),
 	// 						InstanceName: to.Ptr("nva_0"),
+	// 						NicType: to.Ptr(armnetwork.NicTypeInResponsePublicNic),
 	// 						PrivateIPAddress: to.Ptr("192.168.12.1"),
 	// 						PublicIPAddress: to.Ptr("40.30.2.2"),
 	// 					},
 	// 					{
+	// 						Name: to.Ptr("publicnicipconfig-2"),
+	// 						InstanceName: to.Ptr("nva_0"),
+	// 						NicType: to.Ptr(armnetwork.NicTypeInResponsePublicNic),
+	// 						PrivateIPAddress: to.Ptr("192.168.12.2"),
+	// 						PublicIPAddress: to.Ptr("40.30.2.3"),
+	// 					},
+	// 					{
 	// 						Name: to.Ptr("privatenicipconfig"),
 	// 						InstanceName: to.Ptr("nva_0"),
-	// 						PrivateIPAddress: to.Ptr("192.168.12.2"),
+	// 						NicType: to.Ptr(armnetwork.NicTypeInResponsePrivateNic),
+	// 						PrivateIPAddress: to.Ptr("192.168.12.3"),
+	// 						PublicIPAddress: to.Ptr(""),
+	// 					},
+	// 					{
+	// 						Name: to.Ptr("privatenicipconfig-2"),
+	// 						InstanceName: to.Ptr("nva_0"),
+	// 						NicType: to.Ptr(armnetwork.NicTypeInResponsePrivateNic),
+	// 						PrivateIPAddress: to.Ptr("192.168.12.4"),
 	// 						PublicIPAddress: to.Ptr(""),
 	// 					},
 	// 					{
 	// 						Name: to.Ptr("exrsdwan"),
 	// 						InstanceName: to.Ptr("nva_0"),
+	// 						NicType: to.Ptr(armnetwork.NicTypeInResponseAdditionalNic),
 	// 						PrivateIPAddress: to.Ptr("10.1.113.4"),
 	// 						PublicIPAddress: to.Ptr("4.231.25.19"),
 	// 				}},
@@ -327,7 +487,7 @@ func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNetworkVirtualAppl
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/NetworkVirtualApplianceSaaSPut.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/NetworkVirtualApplianceSaaSPut.json
 func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createSaaSNetworkVirtualAppliance() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -390,7 +550,64 @@ func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createSaaSNetworkVirtual
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/NetworkVirtualApplianceListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/NetworkVirtualApplianceEmptyRestart.json
+func ExampleVirtualAppliancesClient_BeginRestart_restartAllNetworkVirtualApplianceVMsInVmScaleSet() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVirtualAppliancesClient().BeginRestart(ctx, "rg1", "nva", &armnetwork.VirtualAppliancesClientBeginRestartOptions{NetworkVirtualApplianceInstanceIDs: nil})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.VirtualApplianceInstanceIDs = armnetwork.VirtualApplianceInstanceIDs{
+	// 	InstanceIDs: []*string{
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/NetworkVirtualApplianceSpecificRestart.json
+func ExampleVirtualAppliancesClient_BeginRestart_restartSpecificNetworkVirtualApplianceVMsInVmScaleSet() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVirtualAppliancesClient().BeginRestart(ctx, "rg1", "nva", &armnetwork.VirtualAppliancesClientBeginRestartOptions{NetworkVirtualApplianceInstanceIDs: nil})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.VirtualApplianceInstanceIDs = armnetwork.VirtualApplianceInstanceIDs{
+	// 	InstanceIDs: []*string{
+	// 		to.Ptr("0"),
+	// 		to.Ptr("1")},
+	// 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/NetworkVirtualApplianceListByResourceGroup.json
 func ExampleVirtualAppliancesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -431,6 +648,11 @@ func ExampleVirtualAppliancesClient_NewListByResourceGroupPager() {
 		// 				},
 		// 			},
 		// 			Properties: &armnetwork.VirtualAppliancePropertiesFormat{
+		// 				AdditionalNics: []*armnetwork.VirtualApplianceAdditionalNicProperties{
+		// 					{
+		// 						Name: to.Ptr("exrsdwan"),
+		// 						HasPublicIP: to.Ptr(true),
+		// 				}},
 		// 				AddressPrefix: to.Ptr("192.168.1.0/16"),
 		// 				BootStrapConfigurationBlobs: []*string{
 		// 					to.Ptr("https://csrncvhdstorage1.blob.core.windows.net/csrncvhdstoragecont/csrbootstrapconfig")},
@@ -440,6 +662,49 @@ func ExampleVirtualAppliancesClient_NewListByResourceGroupPager() {
 		// 							{
 		// 								ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/networkVirtualAppliances/nva/InboundSecurityRules/rule1"),
 		// 						}},
+		// 						InternetIngressPublicIPs: []*armnetwork.InternetIngressPublicIPsProperties{
+		// 							{
+		// 								ID: to.Ptr("/subscriptions/{{subscriptionId}}/resourceGroups/{{rg}}/providers/Microsoft.Network/publicIPAddresses/slbip"),
+		// 						}},
+		// 						NetworkProfile: &armnetwork.VirtualAppliancePropertiesFormatNetworkProfile{
+		// 							NetworkInterfaceConfigurations: []*armnetwork.VirtualApplianceNetworkInterfaceConfiguration{
+		// 								{
+		// 									NicType: to.Ptr(armnetwork.NicTypeInRequestPublicNic),
+		// 									Properties: &armnetwork.VirtualApplianceNetworkInterfaceConfigurationProperties{
+		// 										IPConfigurations: []*armnetwork.VirtualApplianceIPConfiguration{
+		// 											{
+		// 												Name: to.Ptr("publicnicipconfig"),
+		// 												Properties: &armnetwork.VirtualApplianceIPConfigurationProperties{
+		// 													Primary: to.Ptr(true),
+		// 												},
+		// 											},
+		// 											{
+		// 												Name: to.Ptr("publicnicipconfig-2"),
+		// 												Properties: &armnetwork.VirtualApplianceIPConfigurationProperties{
+		// 													Primary: to.Ptr(false),
+		// 												},
+		// 										}},
+		// 									},
+		// 								},
+		// 								{
+		// 									NicType: to.Ptr(armnetwork.NicTypeInRequestPrivateNic),
+		// 									Properties: &armnetwork.VirtualApplianceNetworkInterfaceConfigurationProperties{
+		// 										IPConfigurations: []*armnetwork.VirtualApplianceIPConfiguration{
+		// 											{
+		// 												Name: to.Ptr("privatenicipconfig"),
+		// 												Properties: &armnetwork.VirtualApplianceIPConfigurationProperties{
+		// 													Primary: to.Ptr(true),
+		// 												},
+		// 											},
+		// 											{
+		// 												Name: to.Ptr("privatenicipconfig-2"),
+		// 												Properties: &armnetwork.VirtualApplianceIPConfigurationProperties{
+		// 													Primary: to.Ptr(false),
+		// 												},
+		// 										}},
+		// 									},
+		// 							}},
+		// 						},
 		// 						NvaSKU: &armnetwork.VirtualApplianceSKUProperties{
 		// 							BundledScaleUnit: to.Ptr("1"),
 		// 							MarketPlaceVersion: to.Ptr("12.1"),
@@ -449,13 +714,39 @@ func ExampleVirtualAppliancesClient_NewListByResourceGroupPager() {
 		// 						VirtualApplianceAsn: to.Ptr[int64](10000),
 		// 						VirtualApplianceNics: []*armnetwork.VirtualApplianceNicProperties{
 		// 							{
-		// 								Name: to.Ptr("managementNic"),
+		// 								Name: to.Ptr("publicnicipconfig"),
+		// 								InstanceName: to.Ptr("nva_0"),
+		// 								NicType: to.Ptr(armnetwork.NicTypeInResponsePublicNic),
 		// 								PrivateIPAddress: to.Ptr("192.168.12.1"),
 		// 								PublicIPAddress: to.Ptr("40.30.2.2"),
 		// 							},
 		// 							{
-		// 								Name: to.Ptr("privateNic-1"),
+		// 								Name: to.Ptr("publicnicipconfig-2"),
+		// 								InstanceName: to.Ptr("nva_0"),
+		// 								NicType: to.Ptr(armnetwork.NicTypeInResponsePublicNic),
 		// 								PrivateIPAddress: to.Ptr("192.168.12.2"),
+		// 								PublicIPAddress: to.Ptr("40.30.2.3"),
+		// 							},
+		// 							{
+		// 								Name: to.Ptr("privatenicipconfig"),
+		// 								InstanceName: to.Ptr("nva_0"),
+		// 								NicType: to.Ptr(armnetwork.NicTypeInResponsePrivateNic),
+		// 								PrivateIPAddress: to.Ptr("192.168.12.3"),
+		// 								PublicIPAddress: to.Ptr(""),
+		// 							},
+		// 							{
+		// 								Name: to.Ptr("privatenicipconfig-2"),
+		// 								InstanceName: to.Ptr("nva_0"),
+		// 								NicType: to.Ptr(armnetwork.NicTypeInResponsePrivateNic),
+		// 								PrivateIPAddress: to.Ptr("192.168.12.4"),
+		// 								PublicIPAddress: to.Ptr(""),
+		// 							},
+		// 							{
+		// 								Name: to.Ptr("exrsdwan"),
+		// 								InstanceName: to.Ptr("nva_0"),
+		// 								NicType: to.Ptr(armnetwork.NicTypeInResponseAdditionalNic),
+		// 								PrivateIPAddress: to.Ptr("10.1.113.4"),
+		// 								PublicIPAddress: to.Ptr("4.231.25.19"),
 		// 						}},
 		// 						VirtualApplianceSites: []*armnetwork.SubResource{
 		// 							{
@@ -470,7 +761,7 @@ func ExampleVirtualAppliancesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/NetworkVirtualApplianceListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/NetworkVirtualApplianceListBySubscription.json
 func ExampleVirtualAppliancesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -511,6 +802,11 @@ func ExampleVirtualAppliancesClient_NewListPager() {
 		// 				},
 		// 			},
 		// 			Properties: &armnetwork.VirtualAppliancePropertiesFormat{
+		// 				AdditionalNics: []*armnetwork.VirtualApplianceAdditionalNicProperties{
+		// 					{
+		// 						Name: to.Ptr("exrsdwan"),
+		// 						HasPublicIP: to.Ptr(true),
+		// 				}},
 		// 				AddressPrefix: to.Ptr("192.168.1.0/16"),
 		// 				BootStrapConfigurationBlobs: []*string{
 		// 					to.Ptr("https://csrncvhdstorage1.blob.core.windows.net/csrncvhdstoragecont/csrbootstrapconfig")},
@@ -520,6 +816,49 @@ func ExampleVirtualAppliancesClient_NewListPager() {
 		// 							{
 		// 								ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/networkVirtualAppliances/nva/InboundSecurityRules/rule1"),
 		// 						}},
+		// 						InternetIngressPublicIPs: []*armnetwork.InternetIngressPublicIPsProperties{
+		// 							{
+		// 								ID: to.Ptr("/subscriptions/{{subscriptionId}}/resourceGroups/{{rg}}/providers/Microsoft.Network/publicIPAddresses/slbip"),
+		// 						}},
+		// 						NetworkProfile: &armnetwork.VirtualAppliancePropertiesFormatNetworkProfile{
+		// 							NetworkInterfaceConfigurations: []*armnetwork.VirtualApplianceNetworkInterfaceConfiguration{
+		// 								{
+		// 									NicType: to.Ptr(armnetwork.NicTypeInRequestPublicNic),
+		// 									Properties: &armnetwork.VirtualApplianceNetworkInterfaceConfigurationProperties{
+		// 										IPConfigurations: []*armnetwork.VirtualApplianceIPConfiguration{
+		// 											{
+		// 												Name: to.Ptr("publicnicipconfig"),
+		// 												Properties: &armnetwork.VirtualApplianceIPConfigurationProperties{
+		// 													Primary: to.Ptr(true),
+		// 												},
+		// 											},
+		// 											{
+		// 												Name: to.Ptr("publicnicipconfig-2"),
+		// 												Properties: &armnetwork.VirtualApplianceIPConfigurationProperties{
+		// 													Primary: to.Ptr(false),
+		// 												},
+		// 										}},
+		// 									},
+		// 								},
+		// 								{
+		// 									NicType: to.Ptr(armnetwork.NicTypeInRequestPrivateNic),
+		// 									Properties: &armnetwork.VirtualApplianceNetworkInterfaceConfigurationProperties{
+		// 										IPConfigurations: []*armnetwork.VirtualApplianceIPConfiguration{
+		// 											{
+		// 												Name: to.Ptr("privatenicipconfig"),
+		// 												Properties: &armnetwork.VirtualApplianceIPConfigurationProperties{
+		// 													Primary: to.Ptr(true),
+		// 												},
+		// 											},
+		// 											{
+		// 												Name: to.Ptr("privatenicipconfig-2"),
+		// 												Properties: &armnetwork.VirtualApplianceIPConfigurationProperties{
+		// 													Primary: to.Ptr(false),
+		// 												},
+		// 										}},
+		// 									},
+		// 							}},
+		// 						},
 		// 						NvaSKU: &armnetwork.VirtualApplianceSKUProperties{
 		// 							BundledScaleUnit: to.Ptr("1"),
 		// 							MarketPlaceVersion: to.Ptr("12.1"),
@@ -529,13 +868,39 @@ func ExampleVirtualAppliancesClient_NewListPager() {
 		// 						VirtualApplianceAsn: to.Ptr[int64](10000),
 		// 						VirtualApplianceNics: []*armnetwork.VirtualApplianceNicProperties{
 		// 							{
-		// 								Name: to.Ptr("managementNic"),
+		// 								Name: to.Ptr("publicnicipconfig"),
+		// 								InstanceName: to.Ptr("nva_0"),
+		// 								NicType: to.Ptr(armnetwork.NicTypeInResponsePublicNic),
 		// 								PrivateIPAddress: to.Ptr("192.168.12.1"),
 		// 								PublicIPAddress: to.Ptr("40.30.2.2"),
 		// 							},
 		// 							{
-		// 								Name: to.Ptr("privateNic-1"),
+		// 								Name: to.Ptr("publicnicipconfig-2"),
+		// 								InstanceName: to.Ptr("nva_0"),
+		// 								NicType: to.Ptr(armnetwork.NicTypeInResponsePublicNic),
 		// 								PrivateIPAddress: to.Ptr("192.168.12.2"),
+		// 								PublicIPAddress: to.Ptr("40.30.2.3"),
+		// 							},
+		// 							{
+		// 								Name: to.Ptr("privatenicipconfig"),
+		// 								InstanceName: to.Ptr("nva_0"),
+		// 								NicType: to.Ptr(armnetwork.NicTypeInResponsePrivateNic),
+		// 								PrivateIPAddress: to.Ptr("192.168.12.3"),
+		// 								PublicIPAddress: to.Ptr(""),
+		// 							},
+		// 							{
+		// 								Name: to.Ptr("privatenicipconfig-2"),
+		// 								InstanceName: to.Ptr("nva_0"),
+		// 								NicType: to.Ptr(armnetwork.NicTypeInResponsePrivateNic),
+		// 								PrivateIPAddress: to.Ptr("192.168.12.4"),
+		// 								PublicIPAddress: to.Ptr(""),
+		// 							},
+		// 							{
+		// 								Name: to.Ptr("exrsdwan"),
+		// 								InstanceName: to.Ptr("nva_0"),
+		// 								NicType: to.Ptr(armnetwork.NicTypeInResponseAdditionalNic),
+		// 								PrivateIPAddress: to.Ptr("10.1.113.4"),
+		// 								PublicIPAddress: to.Ptr("4.231.25.19"),
 		// 						}},
 		// 						VirtualApplianceSites: []*armnetwork.SubResource{
 		// 							{

@@ -1,5 +1,29 @@
 # Release History
 
+## 3.0.0 (2024-06-21)
+### Breaking Changes
+
+- Type of `ServiceResourceCreateUpdateParameters.Properties` has been changed from `*ServiceResourceCreateUpdateProperties` to `ServiceResourceCreateUpdatePropertiesClassification`
+
+### Features Added
+
+- New value `ServerVersionFive0`, `ServerVersionSix0` added to enum type `ServerVersion`
+- New enum type `AzureConnectionType` with values `AzureConnectionTypeNone`, `AzureConnectionTypeVPN`
+- New enum type `DedicatedGatewayType` with values `DedicatedGatewayTypeDistributedQuery`, `DedicatedGatewayTypeIntegratedCache`
+- New function `*DataTransferServiceResourceCreateUpdateProperties.GetServiceResourceCreateUpdateProperties() *ServiceResourceCreateUpdateProperties`
+- New function `*GraphAPIComputeServiceResourceCreateUpdateProperties.GetServiceResourceCreateUpdateProperties() *ServiceResourceCreateUpdateProperties`
+- New function `*MaterializedViewsBuilderServiceResourceCreateUpdateProperties.GetServiceResourceCreateUpdateProperties() *ServiceResourceCreateUpdateProperties`
+- New function `*SQLDedicatedGatewayServiceResourceCreateUpdateProperties.GetServiceResourceCreateUpdateProperties() *ServiceResourceCreateUpdateProperties`
+- New function `*ServiceResourceCreateUpdateProperties.GetServiceResourceCreateUpdateProperties() *ServiceResourceCreateUpdateProperties`
+- New struct `DataTransferServiceResourceCreateUpdateProperties`
+- New struct `GraphAPIComputeServiceResourceCreateUpdateProperties`
+- New struct `MaterializedViewsBuilderServiceResourceCreateUpdateProperties`
+- New struct `SQLDedicatedGatewayServiceResourceCreateUpdateProperties`
+- New field `AzureConnectionMethod`, `PrivateLinkResourceID` in struct `ClusterResourceProperties`
+- New field `PrivateEndpointIPAddress` in struct `DataCenterResourceProperties`
+- New field `DedicatedGatewayType` in struct `SQLDedicatedGatewayServiceResourceProperties`
+
+
 ## 3.0.0-beta.4 (2024-03-22)
 ### Breaking Changes
 

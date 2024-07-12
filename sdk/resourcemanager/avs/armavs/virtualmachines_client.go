@@ -28,7 +28,7 @@ type VirtualMachinesClient struct {
 }
 
 // NewVirtualMachinesClient creates a new instance of VirtualMachinesClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewVirtualMachinesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VirtualMachinesClient, error) {
@@ -43,14 +43,14 @@ func NewVirtualMachinesClient(subscriptionID string, credential azcore.TokenCred
 	return client, nil
 }
 
-// Get - Get a virtual machine by id in a private cloud cluster
+// Get - Get a VirtualMachine
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2023-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
-//   - clusterName - Name of the cluster in the private cloud
-//   - virtualMachineID - Virtual Machine identifier
+//   - clusterName - Name of the cluster
+//   - virtualMachineID - ID of the virtual machine.
 //   - options - VirtualMachinesClientGetOptions contains the optional parameters for the VirtualMachinesClient.Get method.
 func (client *VirtualMachinesClient) Get(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, virtualMachineID string, options *VirtualMachinesClientGetOptions) (VirtualMachinesClientGetResponse, error) {
 	var err error
@@ -102,7 +102,7 @@ func (client *VirtualMachinesClient) getCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -117,12 +117,12 @@ func (client *VirtualMachinesClient) getHandleResponse(resp *http.Response) (Vir
 	return result, nil
 }
 
-// NewListPager - List of virtual machines in a private cloud cluster
+// NewListPager - List VirtualMachine resources by Cluster
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2023-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
-//   - clusterName - Name of the cluster in the private cloud
+//   - clusterName - Name of the cluster
 //   - options - VirtualMachinesClientListOptions contains the optional parameters for the VirtualMachinesClient.NewListPager
 //     method.
 func (client *VirtualMachinesClient) NewListPager(resourceGroupName string, privateCloudName string, clusterName string, options *VirtualMachinesClientListOptions) *runtime.Pager[VirtualMachinesClientListResponse] {
@@ -172,7 +172,7 @@ func (client *VirtualMachinesClient) listCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -190,12 +190,12 @@ func (client *VirtualMachinesClient) listHandleResponse(resp *http.Response) (Vi
 // BeginRestrictMovement - Enable or disable DRS-driven VM movement restriction
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2023-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
-//   - clusterName - Name of the cluster in the private cloud
-//   - virtualMachineID - Virtual Machine identifier
-//   - restrictMovement - Whether VM DRS-driven movement is restricted (Enabled) or not (Disabled)
+//   - clusterName - Name of the cluster
+//   - virtualMachineID - ID of the virtual machine.
+//   - restrictMovement - The body type of the operation request.
 //   - options - VirtualMachinesClientBeginRestrictMovementOptions contains the optional parameters for the VirtualMachinesClient.BeginRestrictMovement
 //     method.
 func (client *VirtualMachinesClient) BeginRestrictMovement(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, virtualMachineID string, restrictMovement VirtualMachineRestrictMovement, options *VirtualMachinesClientBeginRestrictMovementOptions) (*runtime.Poller[VirtualMachinesClientRestrictMovementResponse], error) {
@@ -205,7 +205,8 @@ func (client *VirtualMachinesClient) BeginRestrictMovement(ctx context.Context, 
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VirtualMachinesClientRestrictMovementResponse]{
-			Tracer: client.internal.Tracer(),
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
@@ -218,7 +219,7 @@ func (client *VirtualMachinesClient) BeginRestrictMovement(ctx context.Context, 
 // RestrictMovement - Enable or disable DRS-driven VM movement restriction
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2023-09-01
 func (client *VirtualMachinesClient) restrictMovement(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, virtualMachineID string, restrictMovement VirtualMachineRestrictMovement, options *VirtualMachinesClientBeginRestrictMovementOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualMachinesClient.BeginRestrictMovement"
@@ -268,7 +269,7 @@ func (client *VirtualMachinesClient) restrictMovementCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, restrictMovement); err != nil {

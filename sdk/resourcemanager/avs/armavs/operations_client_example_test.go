@@ -14,10 +14,10 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/avs/armavs"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/avs/armavs/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a5e7ff51c8af3781e7f6dd3b82a3fc922e2f6f93/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/Operations_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f9d14b5db982b1d554651348adc9bef4b098bdb/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/Operations_List.json
 func ExampleOperationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -39,7 +39,7 @@ func ExampleOperationsClient_NewListPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.OperationList = armavs.OperationList{
+		// page.OperationListResult = armavs.OperationListResult{
 		// 	Value: []*armavs.Operation{
 		// 		{
 		// 			Name: to.Ptr("Microsoft.AVS/operations/read"),
@@ -50,9 +50,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Resource: to.Ptr("operations"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
-		// 			Origin: to.Ptr("user,system"),
-		// 			Properties: &armavs.OperationProperties{
-		// 			},
+		// 			Origin: to.Ptr(armavs.OriginUserSystem),
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.AVS/register/action"),
@@ -63,9 +61,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Resource: to.Ptr(""),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
-		// 			Origin: to.Ptr("user,system"),
-		// 			Properties: &armavs.OperationProperties{
-		// 			},
+		// 			Origin: to.Ptr(armavs.OriginUserSystem),
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.AVS/unregister/action"),
@@ -76,9 +72,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Resource: to.Ptr(""),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
-		// 			Origin: to.Ptr("user,system"),
-		// 			Properties: &armavs.OperationProperties{
-		// 			},
+		// 			Origin: to.Ptr(armavs.OriginUserSystem),
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.AVS/checkNameAvailability/read"),
@@ -89,9 +83,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Resource: to.Ptr("checkNameAvailability"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
-		// 			Origin: to.Ptr("user,system"),
-		// 			Properties: &armavs.OperationProperties{
-		// 			},
+		// 			Origin: to.Ptr(armavs.OriginUserSystem),
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.AVS/locations/checkNameAvailability/read"),
@@ -102,9 +94,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Resource: to.Ptr("locations/checkNameAvailability"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
-		// 			Origin: to.Ptr("user,system"),
-		// 			Properties: &armavs.OperationProperties{
-		// 			},
+		// 			Origin: to.Ptr(armavs.OriginUserSystem),
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.AVS/locations/checkQuotaAvailability/read"),
@@ -115,9 +105,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Resource: to.Ptr("locations/checkQuotaAvailability"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
-		// 			Origin: to.Ptr("user,system"),
-		// 			Properties: &armavs.OperationProperties{
-		// 			},
+		// 			Origin: to.Ptr(armavs.OriginUserSystem),
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.AVS/locations/checkTrialAvailability/read"),
@@ -128,9 +116,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Resource: to.Ptr("locations/checkTrialAvailability"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
-		// 			Origin: to.Ptr("user,system"),
-		// 			Properties: &armavs.OperationProperties{
-		// 			},
+		// 			Origin: to.Ptr(armavs.OriginUserSystem),
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.AVS/privateClouds/register/action"),
@@ -141,9 +127,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Resource: to.Ptr("privateClouds"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
-		// 			Origin: to.Ptr("user,system"),
-		// 			Properties: &armavs.OperationProperties{
-		// 			},
+		// 			Origin: to.Ptr(armavs.OriginUserSystem),
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.AVS/privateClouds/write"),
@@ -154,9 +138,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Resource: to.Ptr("privateClouds"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
-		// 			Origin: to.Ptr("user,system"),
-		// 			Properties: &armavs.OperationProperties{
-		// 			},
+		// 			Origin: to.Ptr(armavs.OriginUserSystem),
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.AVS/privateClouds/read"),
@@ -167,9 +149,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Resource: to.Ptr("privateClouds"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
-		// 			Origin: to.Ptr("user,system"),
-		// 			Properties: &armavs.OperationProperties{
-		// 			},
+		// 			Origin: to.Ptr(armavs.OriginUserSystem),
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.AVS/privateClouds/delete"),
@@ -180,9 +160,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Resource: to.Ptr("privateClouds"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
-		// 			Origin: to.Ptr("user,system"),
-		// 			Properties: &armavs.OperationProperties{
-		// 			},
+		// 			Origin: to.Ptr(armavs.OriginUserSystem),
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.AVS/privateClouds/operationstatuses/read"),
@@ -193,9 +171,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Resource: to.Ptr("privateClouds/operationstatuses"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
-		// 			Origin: to.Ptr("user,system"),
-		// 			Properties: &armavs.OperationProperties{
-		// 			},
+		// 			Origin: to.Ptr(armavs.OriginUserSystem),
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.AVS/privateClouds/clusters/read"),
@@ -206,9 +182,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Resource: to.Ptr("privateClouds/clusters"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
-		// 			Origin: to.Ptr("user,system"),
-		// 			Properties: &armavs.OperationProperties{
-		// 			},
+		// 			Origin: to.Ptr(armavs.OriginUserSystem),
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.AVS/privateClouds/clusters/write"),
@@ -219,9 +193,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Resource: to.Ptr("privateClouds/clusters"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
-		// 			Origin: to.Ptr("user,system"),
-		// 			Properties: &armavs.OperationProperties{
-		// 			},
+		// 			Origin: to.Ptr(armavs.OriginUserSystem),
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.AVS/privateClouds/clusters/delete"),
@@ -232,9 +204,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Resource: to.Ptr("privateClouds/clusters"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
-		// 			Origin: to.Ptr("user,system"),
-		// 			Properties: &armavs.OperationProperties{
-		// 			},
+		// 			Origin: to.Ptr(armavs.OriginUserSystem),
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.AVS/privateClouds/clusters/operationstatuses/read"),
@@ -245,9 +215,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Resource: to.Ptr("privateClouds/clusters/operationstatuses"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
-		// 			Origin: to.Ptr("user,system"),
-		// 			Properties: &armavs.OperationProperties{
-		// 			},
+		// 			Origin: to.Ptr(armavs.OriginUserSystem),
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.AVS/privateclouds/clusters/operationresults/read"),
@@ -258,9 +226,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Resource: to.Ptr("privateclouds/clusters/operationresults"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
-		// 			Origin: to.Ptr("user,system"),
-		// 			Properties: &armavs.OperationProperties{
-		// 			},
+		// 			Origin: to.Ptr(armavs.OriginUserSystem),
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.AVS/privateClouds/operationresults/read"),
@@ -271,9 +237,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Resource: to.Ptr("privateClouds/operationresults"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
-		// 			Origin: to.Ptr("user,system"),
-		// 			Properties: &armavs.OperationProperties{
-		// 			},
+		// 			Origin: to.Ptr(armavs.OriginUserSystem),
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.AVS/privateClouds/authorizations/read"),
@@ -284,9 +248,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Resource: to.Ptr("privateClouds/authorizations"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
-		// 			Origin: to.Ptr("user,system"),
-		// 			Properties: &armavs.OperationProperties{
-		// 			},
+		// 			Origin: to.Ptr(armavs.OriginUserSystem),
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.AVS/privateClouds/authorizations/write"),
@@ -297,9 +259,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Resource: to.Ptr("privateClouds/authorizations"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
-		// 			Origin: to.Ptr("user,system"),
-		// 			Properties: &armavs.OperationProperties{
-		// 			},
+		// 			Origin: to.Ptr(armavs.OriginUserSystem),
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.AVS/privateClouds/authorizations/delete"),
@@ -310,9 +270,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Resource: to.Ptr("privateClouds/authorizations"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
-		// 			Origin: to.Ptr("user,system"),
-		// 			Properties: &armavs.OperationProperties{
-		// 			},
+		// 			Origin: to.Ptr(armavs.OriginUserSystem),
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.AVS/privateClouds/listAdminCredentials/action"),
@@ -323,9 +281,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Resource: to.Ptr("privateClouds"),
 		// 			},
 		// 			IsDataAction: to.Ptr(true),
-		// 			Origin: to.Ptr("user,system"),
-		// 			Properties: &armavs.OperationProperties{
-		// 			},
+		// 			Origin: to.Ptr(armavs.OriginUserSystem),
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.AVS/privateClouds/hcxEnterpriseSites/read"),
@@ -336,9 +292,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Resource: to.Ptr("privateClouds/hcxEnterpriseSites"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
-		// 			Origin: to.Ptr("user,system"),
-		// 			Properties: &armavs.OperationProperties{
-		// 			},
+		// 			Origin: to.Ptr(armavs.OriginUserSystem),
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.AVS/privateClouds/hcxEnterpriseSites/write"),
@@ -349,9 +303,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Resource: to.Ptr("privateClouds/hcxEnterpriseSites"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
-		// 			Origin: to.Ptr("user,system"),
-		// 			Properties: &armavs.OperationProperties{
-		// 			},
+		// 			Origin: to.Ptr(armavs.OriginUserSystem),
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.AVS/privateClouds/hcxEnterpriseSites/delete"),
@@ -362,9 +314,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Resource: to.Ptr("privateClouds/hcxEnterpriseSites"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
-		// 			Origin: to.Ptr("user,system"),
-		// 			Properties: &armavs.OperationProperties{
-		// 			},
+		// 			Origin: to.Ptr(armavs.OriginUserSystem),
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.AVS/privateClouds/hostInstances/read"),
@@ -375,9 +325,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Resource: to.Ptr("privateClouds/hostInstances"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
-		// 			Origin: to.Ptr("user,system"),
-		// 			Properties: &armavs.OperationProperties{
-		// 			},
+		// 			Origin: to.Ptr(armavs.OriginUserSystem),
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.AVS/privateClouds/hostInstances/write"),
@@ -388,9 +336,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Resource: to.Ptr("privateClouds/hostInstances"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
-		// 			Origin: to.Ptr("user,system"),
-		// 			Properties: &armavs.OperationProperties{
-		// 			},
+		// 			Origin: to.Ptr(armavs.OriginUserSystem),
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.AVS/privateClouds/hostInstances/delete"),
@@ -401,178 +347,8 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Resource: to.Ptr("privateClouds/hostInstances"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
-		// 			Origin: to.Ptr("user,system"),
-		// 			Properties: &armavs.OperationProperties{
-		// 			},
-		// 		},
-		// 		{
-		// 			Name: to.Ptr("Microsoft.AVS/privateClouds/providers/Microsoft.Insights/metricDefinitions/read"),
-		// 			Display: &armavs.OperationDisplay{
-		// 				Description: to.Ptr("Gets the available metrics for Private Cloud"),
-		// 				Operation: to.Ptr("Read Private Cloud metric definitions"),
-		// 				Provider: to.Ptr("Microsoft Azure Dedicated"),
-		// 				Resource: to.Ptr("privateClouds"),
-		// 			},
-		// 			IsDataAction: to.Ptr(false),
-		// 			Origin: to.Ptr("system"),
-		// 			Properties: &armavs.OperationProperties{
-		// 				ServiceSpecification: &armavs.ServiceSpecification{
-		// 					MetricSpecifications: []*armavs.MetricSpecification{
-		// 						{
-		// 							Name: to.Ptr("UsedLatest"),
-		// 							AggregationType: to.Ptr("Average"),
-		// 							DisplayDescription: to.Ptr("The total amount of disk used in SDDC"),
-		// 							DisplayName: to.Ptr("Datastore disk used"),
-		// 							EnableRegionalMdmAccount: to.Ptr("true"),
-		// 							SourceMdmAccount: to.Ptr("AVSShoebox2"),
-		// 							SourceMdmNamespace: to.Ptr("Vsphere.Datastore.Disk"),
-		// 							SupportedTimeGrainTypes: []*string{
-		// 								to.Ptr("PT5M"),
-		// 								to.Ptr("PT15M"),
-		// 								to.Ptr("PT30M"),
-		// 								to.Ptr("PT1H"),
-		// 								to.Ptr("PT6H"),
-		// 								to.Ptr("PT12H"),
-		// 								to.Ptr("P1D")},
-		// 								Unit: to.Ptr("Bytes"),
-		// 							},
-		// 							{
-		// 								Name: to.Ptr("CapacityLatest"),
-		// 								AggregationType: to.Ptr("Average"),
-		// 								DisplayDescription: to.Ptr("The total capacity of disk in SDDC"),
-		// 								DisplayName: to.Ptr("Datastore disk total capacity"),
-		// 								EnableRegionalMdmAccount: to.Ptr("true"),
-		// 								SourceMdmAccount: to.Ptr("AVSShoebox2"),
-		// 								SourceMdmNamespace: to.Ptr("Vsphere.Datastore.Disk"),
-		// 								SupportedTimeGrainTypes: []*string{
-		// 									to.Ptr("PT5M"),
-		// 									to.Ptr("PT15M"),
-		// 									to.Ptr("PT30M"),
-		// 									to.Ptr("PT1H"),
-		// 									to.Ptr("PT6H"),
-		// 									to.Ptr("PT12H"),
-		// 									to.Ptr("P1D")},
-		// 									Unit: to.Ptr("Bytes"),
-		// 								},
-		// 								{
-		// 									Name: to.Ptr("EffectiveMemAverage"),
-		// 									AggregationType: to.Ptr("Average"),
-		// 									DisplayDescription: to.Ptr("Total amount of machine memory in cluster that is available"),
-		// 									DisplayName: to.Ptr("Average Effective Memory"),
-		// 									EnableRegionalMdmAccount: to.Ptr("true"),
-		// 									SourceMdmAccount: to.Ptr("AVSShoebox2"),
-		// 									SourceMdmNamespace: to.Ptr("Vsphere.Cluster.ClusterServices"),
-		// 									SupportedTimeGrainTypes: []*string{
-		// 										to.Ptr("PT5M"),
-		// 										to.Ptr("PT15M"),
-		// 										to.Ptr("PT30M"),
-		// 										to.Ptr("PT1H"),
-		// 										to.Ptr("PT6H"),
-		// 										to.Ptr("PT12H"),
-		// 										to.Ptr("P1D")},
-		// 										Unit: to.Ptr("Bytes"),
-		// 									},
-		// 									{
-		// 										Name: to.Ptr("TotalMbAverage"),
-		// 										AggregationType: to.Ptr("Average"),
-		// 										DisplayDescription: to.Ptr("Total memory in cluster"),
-		// 										DisplayName: to.Ptr("Average Total Memory"),
-		// 										EnableRegionalMdmAccount: to.Ptr("true"),
-		// 										SourceMdmAccount: to.Ptr("AVSShoebox2"),
-		// 										SourceMdmNamespace: to.Ptr("Vsphere.Cluster.Mem"),
-		// 										SupportedTimeGrainTypes: []*string{
-		// 											to.Ptr("PT5M"),
-		// 											to.Ptr("PT15M"),
-		// 											to.Ptr("PT30M"),
-		// 											to.Ptr("PT1H"),
-		// 											to.Ptr("PT6H"),
-		// 											to.Ptr("PT12H"),
-		// 											to.Ptr("P1D")},
-		// 											Unit: to.Ptr("Bytes"),
-		// 										},
-		// 										{
-		// 											Name: to.Ptr("OverheadAverage"),
-		// 											AggregationType: to.Ptr("Average"),
-		// 											DisplayDescription: to.Ptr("Host physical memory consumed by the virtualization infrastructure"),
-		// 											DisplayName: to.Ptr("Average Memory Overhead"),
-		// 											EnableRegionalMdmAccount: to.Ptr("true"),
-		// 											SourceMdmAccount: to.Ptr("AVSShoebox2"),
-		// 											SourceMdmNamespace: to.Ptr("Vsphere.Cluster.Mem"),
-		// 											SupportedTimeGrainTypes: []*string{
-		// 												to.Ptr("PT5M"),
-		// 												to.Ptr("PT15M"),
-		// 												to.Ptr("PT30M"),
-		// 												to.Ptr("PT1H"),
-		// 												to.Ptr("PT6H"),
-		// 												to.Ptr("PT12H"),
-		// 												to.Ptr("P1D")},
-		// 												Unit: to.Ptr("Bytes"),
-		// 											},
-		// 											{
-		// 												Name: to.Ptr("UsageAverage"),
-		// 												AggregationType: to.Ptr("Average"),
-		// 												DisplayDescription: to.Ptr("Memory usage as percentage of total configured or available memory"),
-		// 												DisplayName: to.Ptr("Average Memory Usage"),
-		// 												EnableRegionalMdmAccount: to.Ptr("true"),
-		// 												SourceMdmAccount: to.Ptr("AVSShoebox2"),
-		// 												SourceMdmNamespace: to.Ptr("Vsphere.Cluster.Mem"),
-		// 												SupportedTimeGrainTypes: []*string{
-		// 													to.Ptr("PT5M"),
-		// 													to.Ptr("PT15M"),
-		// 													to.Ptr("PT30M"),
-		// 													to.Ptr("PT1H"),
-		// 													to.Ptr("PT6H"),
-		// 													to.Ptr("PT12H"),
-		// 													to.Ptr("P1D")},
-		// 													Unit: to.Ptr("Percent"),
-		// 												},
-		// 												{
-		// 													Name: to.Ptr("EffectiveCpuAverage"),
-		// 													AggregationType: to.Ptr("Average"),
-		// 													DisplayDescription: to.Ptr("Total available CPU resources in cluster"),
-		// 													DisplayName: to.Ptr("Effective CPU available"),
-		// 													EnableRegionalMdmAccount: to.Ptr("true"),
-		// 													SourceMdmAccount: to.Ptr("AVSShoebox2"),
-		// 													SourceMdmNamespace: to.Ptr("Vsphere.Cluster.ClusterServices"),
-		// 													SupportedTimeGrainTypes: []*string{
-		// 														to.Ptr("PT5M"),
-		// 														to.Ptr("PT15M"),
-		// 														to.Ptr("PT30M"),
-		// 														to.Ptr("PT1H"),
-		// 														to.Ptr("PT6H"),
-		// 														to.Ptr("PT12H"),
-		// 														to.Ptr("P1D")},
-		// 														Unit: to.Ptr("Percent"),
-		// 												}},
-		// 											},
-		// 										},
-		// 									},
-		// 									{
-		// 										Name: to.Ptr("Microsoft.AVS/privateClouds/providers/Microsoft.Insights/diagnosticSettings/read"),
-		// 										Display: &armavs.OperationDisplay{
-		// 											Description: to.Ptr("Gets the diagnostic setting for the resource"),
-		// 											Operation: to.Ptr("Read diagnostic setting"),
-		// 											Provider: to.Ptr("Microsoft.AVS"),
-		// 											Resource: to.Ptr("privateClouds"),
-		// 										},
-		// 										IsDataAction: to.Ptr(false),
-		// 										Origin: to.Ptr("system"),
-		// 										Properties: &armavs.OperationProperties{
-		// 										},
-		// 									},
-		// 									{
-		// 										Name: to.Ptr("Microsoft.AVS/privateClouds/providers/Microsoft.Insights/diagnosticSettings/write"),
-		// 										Display: &armavs.OperationDisplay{
-		// 											Description: to.Ptr("Creates or updates the diagnostic setting for the resource"),
-		// 											Operation: to.Ptr("Write diagnostic setting"),
-		// 											Provider: to.Ptr("Microsoft.AVS"),
-		// 											Resource: to.Ptr("privateClouds"),
-		// 										},
-		// 										IsDataAction: to.Ptr(false),
-		// 										Origin: to.Ptr("system"),
-		// 										Properties: &armavs.OperationProperties{
-		// 										},
-		// 								}},
-		// 							}
+		// 			Origin: to.Ptr(armavs.OriginUserSystem),
+		// 	}},
+		// }
 	}
 }

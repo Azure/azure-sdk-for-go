@@ -10,6 +10,13 @@ import (
 	"bytes"
 	"context"
 	"fmt"
+	"net/http"
+	"reflect"
+	"strings"
+	"sync/atomic"
+	"testing"
+	"time"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -18,13 +25,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/temporal"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/test/credential"
 	"github.com/stretchr/testify/require"
-	"net/http"
-	"reflect"
-	"strings"
-	"sync/atomic"
-	"testing"
-	"time"
 )
 
 func Test_getJWTExpireTime(t *testing.T) {
@@ -161,7 +163,7 @@ func Test_authenticationPolicy_getAccessToken_error(t *testing.T) {
 	p := &authenticationPolicy{
 		temporal.NewResource(acquireRefreshToken),
 		atomic.Value{},
-		&FakeCredential{},
+		&credential.Fake{},
 		[]string{"test"},
 		authClient,
 	}
@@ -245,7 +247,7 @@ func Test_authenticationPolicy(t *testing.T) {
 	authPolicy := &authenticationPolicy{
 		temporal.NewResource(acquireRefreshToken),
 		atomic.Value{},
-		&FakeCredential{},
+		&credential.Fake{},
 		[]string{"test"},
 		authClient,
 	}

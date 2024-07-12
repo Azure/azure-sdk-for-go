@@ -95,10 +95,10 @@ func (client *UsagesClient) listByInstancePoolCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01-preview")
 	if options != nil && options.ExpandChildren != nil {
 		reqQP.Set("expandChildren", strconv.FormatBool(*options.ExpandChildren))
 	}
-	reqQP.Set("api-version", "2021-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

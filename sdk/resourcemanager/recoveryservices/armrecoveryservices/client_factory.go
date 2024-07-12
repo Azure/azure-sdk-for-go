@@ -17,8 +17,7 @@ import (
 // Don't use this type directly, use NewClientFactory instead.
 type ClientFactory struct {
 	subscriptionID string
-	credential     azcore.TokenCredential
-	options        *arm.ClientOptions
+	internal       *arm.Client
 }
 
 // NewClientFactory creates a new instance of ClientFactory with the specified values.
@@ -27,66 +26,84 @@ type ClientFactory struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClientFactory, error) {
-	_, err := arm.NewClient(moduleName, moduleVersion, credential, options)
+	internal, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	return &ClientFactory{
-		subscriptionID: subscriptionID, credential: credential,
-		options: options.Clone(),
+		subscriptionID: subscriptionID,
+		internal:       internal,
 	}, nil
 }
 
 // NewClient creates a new instance of Client.
 func (c *ClientFactory) NewClient() *Client {
-	subClient, _ := NewClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &Client{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewOperationsClient creates a new instance of OperationsClient.
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
-	subClient, _ := NewOperationsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &OperationsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewPrivateLinkResourcesClient creates a new instance of PrivateLinkResourcesClient.
 func (c *ClientFactory) NewPrivateLinkResourcesClient() *PrivateLinkResourcesClient {
-	subClient, _ := NewPrivateLinkResourcesClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &PrivateLinkResourcesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewRegisteredIdentitiesClient creates a new instance of RegisteredIdentitiesClient.
 func (c *ClientFactory) NewRegisteredIdentitiesClient() *RegisteredIdentitiesClient {
-	subClient, _ := NewRegisteredIdentitiesClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &RegisteredIdentitiesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewReplicationUsagesClient creates a new instance of ReplicationUsagesClient.
 func (c *ClientFactory) NewReplicationUsagesClient() *ReplicationUsagesClient {
-	subClient, _ := NewReplicationUsagesClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &ReplicationUsagesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewUsagesClient creates a new instance of UsagesClient.
 func (c *ClientFactory) NewUsagesClient() *UsagesClient {
-	subClient, _ := NewUsagesClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &UsagesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewVaultCertificatesClient creates a new instance of VaultCertificatesClient.
 func (c *ClientFactory) NewVaultCertificatesClient() *VaultCertificatesClient {
-	subClient, _ := NewVaultCertificatesClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &VaultCertificatesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewVaultExtendedInfoClient creates a new instance of VaultExtendedInfoClient.
 func (c *ClientFactory) NewVaultExtendedInfoClient() *VaultExtendedInfoClient {
-	subClient, _ := NewVaultExtendedInfoClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &VaultExtendedInfoClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewVaultsClient creates a new instance of VaultsClient.
 func (c *ClientFactory) NewVaultsClient() *VaultsClient {
-	subClient, _ := NewVaultsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &VaultsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }

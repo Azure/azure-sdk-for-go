@@ -10,20 +10,41 @@ package armavs
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/avs/armavs"
-	moduleVersion = "v1.4.0"
+	moduleVersion = "v2.0.0-beta.1"
 )
 
-// AddonProvisioningState - The state of the addon provisioning
+// ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
+type ActionType string
+
+const (
+	ActionTypeInternal ActionType = "Internal"
+)
+
+// PossibleActionTypeValues returns the possible values for the ActionType const type.
+func PossibleActionTypeValues() []ActionType {
+	return []ActionType{
+		ActionTypeInternal,
+	}
+}
+
+// AddonProvisioningState - Addon provisioning state
 type AddonProvisioningState string
 
 const (
-	AddonProvisioningStateBuilding  AddonProvisioningState = "Building"
-	AddonProvisioningStateCanceled  AddonProvisioningState = "Canceled"
+	// AddonProvisioningStateBuilding - is building
+	AddonProvisioningStateBuilding AddonProvisioningState = "Building"
+	// AddonProvisioningStateCanceled - Resource creation was canceled.
+	AddonProvisioningStateCanceled AddonProvisioningState = "Canceled"
+	// AddonProvisioningStateCancelled - is cancelled
 	AddonProvisioningStateCancelled AddonProvisioningState = "Cancelled"
-	AddonProvisioningStateDeleting  AddonProvisioningState = "Deleting"
-	AddonProvisioningStateFailed    AddonProvisioningState = "Failed"
+	// AddonProvisioningStateDeleting - is deleting
+	AddonProvisioningStateDeleting AddonProvisioningState = "Deleting"
+	// AddonProvisioningStateFailed - Resource creation failed.
+	AddonProvisioningStateFailed AddonProvisioningState = "Failed"
+	// AddonProvisioningStateSucceeded - Resource has been created.
 	AddonProvisioningStateSucceeded AddonProvisioningState = "Succeeded"
-	AddonProvisioningStateUpdating  AddonProvisioningState = "Updating"
+	// AddonProvisioningStateUpdating - is updating
+	AddonProvisioningStateUpdating AddonProvisioningState = "Updating"
 )
 
 // PossibleAddonProvisioningStateValues returns the possible values for the AddonProvisioningState const type.
@@ -39,7 +60,7 @@ func PossibleAddonProvisioningStateValues() []AddonProvisioningState {
 	}
 }
 
-// AddonType - The type of private cloud addon
+// AddonType - Addon type
 type AddonType string
 
 const (
@@ -59,11 +80,13 @@ func PossibleAddonTypeValues() []AddonType {
 	}
 }
 
-// AffinityStrength - VM-Host placement policy affinity strength (should/must)
+// AffinityStrength - Affinity Strength
 type AffinityStrength string
 
 const (
-	AffinityStrengthMust   AffinityStrength = "Must"
+	// AffinityStrengthMust - is must
+	AffinityStrengthMust AffinityStrength = "Must"
+	// AffinityStrengthShould - is should
 	AffinityStrengthShould AffinityStrength = "Should"
 )
 
@@ -75,11 +98,13 @@ func PossibleAffinityStrengthValues() []AffinityStrength {
 	}
 }
 
-// AffinityType - Placement policy affinity type
+// AffinityType - Affinity type
 type AffinityType string
 
 const (
-	AffinityTypeAffinity     AffinityType = "Affinity"
+	// AffinityTypeAffinity - is affinity
+	AffinityTypeAffinity AffinityType = "Affinity"
+	// AffinityTypeAntiAffinity - is anti-affinity
 	AffinityTypeAntiAffinity AffinityType = "AntiAffinity"
 )
 
@@ -91,11 +116,13 @@ func PossibleAffinityTypeValues() []AffinityType {
 	}
 }
 
-// AvailabilityStrategy - The availability strategy for the private cloud
+// AvailabilityStrategy - Whether the private clouds is available in a single zone or two zones
 type AvailabilityStrategy string
 
 const (
-	AvailabilityStrategyDualZone   AvailabilityStrategy = "DualZone"
+	// AvailabilityStrategyDualZone - in two zones
+	AvailabilityStrategyDualZone AvailabilityStrategy = "DualZone"
+	// AvailabilityStrategySingleZone - in single zone
 	AvailabilityStrategySingleZone AvailabilityStrategy = "SingleZone"
 )
 
@@ -107,11 +134,13 @@ func PossibleAvailabilityStrategyValues() []AvailabilityStrategy {
 	}
 }
 
-// AzureHybridBenefitType - Placement policy hosts opt-in Azure Hybrid Benefit type
+// AzureHybridBenefitType - Azure Hybrid Benefit type
 type AzureHybridBenefitType string
 
 const (
-	AzureHybridBenefitTypeNone    AzureHybridBenefitType = "None"
+	// AzureHybridBenefitTypeNone - is None
+	AzureHybridBenefitTypeNone AzureHybridBenefitType = "None"
+	// AzureHybridBenefitTypeSQLHost - is SqlHost
 	AzureHybridBenefitTypeSQLHost AzureHybridBenefitType = "SqlHost"
 )
 
@@ -123,15 +152,41 @@ func PossibleAzureHybridBenefitTypeValues() []AzureHybridBenefitType {
 	}
 }
 
-// CloudLinkStatus - The state of the cloud link.
+// CloudLinkProvisioningState - cloud link provisioning state
+type CloudLinkProvisioningState string
+
+const (
+	// CloudLinkProvisioningStateCanceled - Resource creation was canceled.
+	CloudLinkProvisioningStateCanceled CloudLinkProvisioningState = "Canceled"
+	// CloudLinkProvisioningStateFailed - Resource creation failed.
+	CloudLinkProvisioningStateFailed CloudLinkProvisioningState = "Failed"
+	// CloudLinkProvisioningStateSucceeded - Resource has been created.
+	CloudLinkProvisioningStateSucceeded CloudLinkProvisioningState = "Succeeded"
+)
+
+// PossibleCloudLinkProvisioningStateValues returns the possible values for the CloudLinkProvisioningState const type.
+func PossibleCloudLinkProvisioningStateValues() []CloudLinkProvisioningState {
+	return []CloudLinkProvisioningState{
+		CloudLinkProvisioningStateCanceled,
+		CloudLinkProvisioningStateFailed,
+		CloudLinkProvisioningStateSucceeded,
+	}
+}
+
+// CloudLinkStatus - Cloud Link status
 type CloudLinkStatus string
 
 const (
-	CloudLinkStatusActive       CloudLinkStatus = "Active"
-	CloudLinkStatusBuilding     CloudLinkStatus = "Building"
-	CloudLinkStatusDeleting     CloudLinkStatus = "Deleting"
+	// CloudLinkStatusActive - is active
+	CloudLinkStatusActive CloudLinkStatus = "Active"
+	// CloudLinkStatusBuilding - is building
+	CloudLinkStatusBuilding CloudLinkStatus = "Building"
+	// CloudLinkStatusDeleting - is deleting
+	CloudLinkStatusDeleting CloudLinkStatus = "Deleting"
+	// CloudLinkStatusDisconnected - is disconnected
 	CloudLinkStatusDisconnected CloudLinkStatus = "Disconnected"
-	CloudLinkStatusFailed       CloudLinkStatus = "Failed"
+	// CloudLinkStatusFailed - is failed
+	CloudLinkStatusFailed CloudLinkStatus = "Failed"
 )
 
 // PossibleCloudLinkStatusValues returns the possible values for the CloudLinkStatus const type.
@@ -145,16 +200,22 @@ func PossibleCloudLinkStatusValues() []CloudLinkStatus {
 	}
 }
 
-// ClusterProvisioningState - The state of the cluster provisioning
+// ClusterProvisioningState - Cluster provisioning state
 type ClusterProvisioningState string
 
 const (
-	ClusterProvisioningStateCanceled  ClusterProvisioningState = "Canceled"
+	// ClusterProvisioningStateCanceled - Resource creation was canceled.
+	ClusterProvisioningStateCanceled ClusterProvisioningState = "Canceled"
+	// ClusterProvisioningStateCancelled - is cancelled
 	ClusterProvisioningStateCancelled ClusterProvisioningState = "Cancelled"
-	ClusterProvisioningStateDeleting  ClusterProvisioningState = "Deleting"
-	ClusterProvisioningStateFailed    ClusterProvisioningState = "Failed"
+	// ClusterProvisioningStateDeleting - is deleting
+	ClusterProvisioningStateDeleting ClusterProvisioningState = "Deleting"
+	// ClusterProvisioningStateFailed - Resource creation failed.
+	ClusterProvisioningStateFailed ClusterProvisioningState = "Failed"
+	// ClusterProvisioningStateSucceeded - Resource has been created.
 	ClusterProvisioningStateSucceeded ClusterProvisioningState = "Succeeded"
-	ClusterProvisioningStateUpdating  ClusterProvisioningState = "Updating"
+	// ClusterProvisioningStateUpdating - is updating
+	ClusterProvisioningStateUpdating ClusterProvisioningState = "Updating"
 )
 
 // PossibleClusterProvisioningStateValues returns the possible values for the ClusterProvisioningState const type.
@@ -169,14 +230,39 @@ func PossibleClusterProvisioningStateValues() []ClusterProvisioningState {
 	}
 }
 
-// DNSServiceLogLevelEnum - DNS Service log level.
+// CreatedByType - The type of identity that created the resource.
+type CreatedByType string
+
+const (
+	CreatedByTypeApplication     CreatedByType = "Application"
+	CreatedByTypeKey             CreatedByType = "Key"
+	CreatedByTypeManagedIdentity CreatedByType = "ManagedIdentity"
+	CreatedByTypeUser            CreatedByType = "User"
+)
+
+// PossibleCreatedByTypeValues returns the possible values for the CreatedByType const type.
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return []CreatedByType{
+		CreatedByTypeApplication,
+		CreatedByTypeKey,
+		CreatedByTypeManagedIdentity,
+		CreatedByTypeUser,
+	}
+}
+
+// DNSServiceLogLevelEnum - DNS service log level
 type DNSServiceLogLevelEnum string
 
 const (
-	DNSServiceLogLevelEnumDEBUG   DNSServiceLogLevelEnum = "DEBUG"
-	DNSServiceLogLevelEnumERROR   DNSServiceLogLevelEnum = "ERROR"
-	DNSServiceLogLevelEnumFATAL   DNSServiceLogLevelEnum = "FATAL"
-	DNSServiceLogLevelEnumINFO    DNSServiceLogLevelEnum = "INFO"
+	// DNSServiceLogLevelEnumDEBUG - is debug
+	DNSServiceLogLevelEnumDEBUG DNSServiceLogLevelEnum = "DEBUG"
+	// DNSServiceLogLevelEnumERROR - is error
+	DNSServiceLogLevelEnumERROR DNSServiceLogLevelEnum = "ERROR"
+	// DNSServiceLogLevelEnumFATAL - is fatal
+	DNSServiceLogLevelEnumFATAL DNSServiceLogLevelEnum = "FATAL"
+	// DNSServiceLogLevelEnumINFO - is info
+	DNSServiceLogLevelEnumINFO DNSServiceLogLevelEnum = "INFO"
+	// DNSServiceLogLevelEnumWARNING - is warning
 	DNSServiceLogLevelEnumWARNING DNSServiceLogLevelEnum = "WARNING"
 )
 
@@ -191,11 +277,13 @@ func PossibleDNSServiceLogLevelEnumValues() []DNSServiceLogLevelEnum {
 	}
 }
 
-// DNSServiceStatusEnum - DNS Service status.
+// DNSServiceStatusEnum - DNS service status
 type DNSServiceStatusEnum string
 
 const (
+	// DNSServiceStatusEnumFAILURE - is failure
 	DNSServiceStatusEnumFAILURE DNSServiceStatusEnum = "FAILURE"
+	// DNSServiceStatusEnumSUCCESS - is success
 	DNSServiceStatusEnumSUCCESS DNSServiceStatusEnum = "SUCCESS"
 )
 
@@ -207,18 +295,44 @@ func PossibleDNSServiceStatusEnumValues() []DNSServiceStatusEnum {
 	}
 }
 
-// DatastoreProvisioningState - The state of the datastore provisioning
+// DNSZoneType - The type of DNS zone.
+type DNSZoneType string
+
+const (
+	// DNSZoneTypePrivate - Private DNS zone.
+	DNSZoneTypePrivate DNSZoneType = "Private"
+	// DNSZoneTypePublic - Primary DNS zone.
+	DNSZoneTypePublic DNSZoneType = "Public"
+)
+
+// PossibleDNSZoneTypeValues returns the possible values for the DNSZoneType const type.
+func PossibleDNSZoneTypeValues() []DNSZoneType {
+	return []DNSZoneType{
+		DNSZoneTypePrivate,
+		DNSZoneTypePublic,
+	}
+}
+
+// DatastoreProvisioningState - datastore provisioning state
 type DatastoreProvisioningState string
 
 const (
-	DatastoreProvisioningStateCanceled  DatastoreProvisioningState = "Canceled"
+	// DatastoreProvisioningStateCanceled - Resource creation was canceled.
+	DatastoreProvisioningStateCanceled DatastoreProvisioningState = "Canceled"
+	// DatastoreProvisioningStateCancelled - is cancelled
 	DatastoreProvisioningStateCancelled DatastoreProvisioningState = "Cancelled"
-	DatastoreProvisioningStateCreating  DatastoreProvisioningState = "Creating"
-	DatastoreProvisioningStateDeleting  DatastoreProvisioningState = "Deleting"
-	DatastoreProvisioningStateFailed    DatastoreProvisioningState = "Failed"
-	DatastoreProvisioningStatePending   DatastoreProvisioningState = "Pending"
+	// DatastoreProvisioningStateCreating - is creating
+	DatastoreProvisioningStateCreating DatastoreProvisioningState = "Creating"
+	// DatastoreProvisioningStateDeleting - is deleting
+	DatastoreProvisioningStateDeleting DatastoreProvisioningState = "Deleting"
+	// DatastoreProvisioningStateFailed - Resource creation failed.
+	DatastoreProvisioningStateFailed DatastoreProvisioningState = "Failed"
+	// DatastoreProvisioningStatePending - is pending
+	DatastoreProvisioningStatePending DatastoreProvisioningState = "Pending"
+	// DatastoreProvisioningStateSucceeded - Resource has been created.
 	DatastoreProvisioningStateSucceeded DatastoreProvisioningState = "Succeeded"
-	DatastoreProvisioningStateUpdating  DatastoreProvisioningState = "Updating"
+	// DatastoreProvisioningStateUpdating - is updating
+	DatastoreProvisioningStateUpdating DatastoreProvisioningState = "Updating"
 )
 
 // PossibleDatastoreProvisioningStateValues returns the possible values for the DatastoreProvisioningState const type.
@@ -235,17 +349,24 @@ func PossibleDatastoreProvisioningStateValues() []DatastoreProvisioningState {
 	}
 }
 
-// DatastoreStatus - The operational status of the datastore
+// DatastoreStatus - datastore status
 type DatastoreStatus string
 
 const (
-	DatastoreStatusAccessible        DatastoreStatus = "Accessible"
-	DatastoreStatusAttached          DatastoreStatus = "Attached"
-	DatastoreStatusDeadOrError       DatastoreStatus = "DeadOrError"
-	DatastoreStatusDetached          DatastoreStatus = "Detached"
-	DatastoreStatusInaccessible      DatastoreStatus = "Inaccessible"
+	// DatastoreStatusAccessible - is accessible
+	DatastoreStatusAccessible DatastoreStatus = "Accessible"
+	// DatastoreStatusAttached - is attached
+	DatastoreStatusAttached DatastoreStatus = "Attached"
+	// DatastoreStatusDeadOrError - is dead or error
+	DatastoreStatusDeadOrError DatastoreStatus = "DeadOrError"
+	// DatastoreStatusDetached - is detached
+	DatastoreStatusDetached DatastoreStatus = "Detached"
+	// DatastoreStatusInaccessible - is inaccessible
+	DatastoreStatusInaccessible DatastoreStatus = "Inaccessible"
+	// DatastoreStatusLostCommunication - is lost communication
 	DatastoreStatusLostCommunication DatastoreStatus = "LostCommunication"
-	DatastoreStatusUnknown           DatastoreStatus = "Unknown"
+	// DatastoreStatusUnknown - is unknown
+	DatastoreStatusUnknown DatastoreStatus = "Unknown"
 )
 
 // PossibleDatastoreStatusValues returns the possible values for the DatastoreStatus const type.
@@ -277,12 +398,14 @@ func PossibleDhcpTypeEnumValues() []DhcpTypeEnum {
 	}
 }
 
-// EncryptionKeyStatus - The state of key provided
+// EncryptionKeyStatus - Whether the the encryption key is connected or access denied
 type EncryptionKeyStatus string
 
 const (
+	// EncryptionKeyStatusAccessDenied - is access denied
 	EncryptionKeyStatusAccessDenied EncryptionKeyStatus = "AccessDenied"
-	EncryptionKeyStatusConnected    EncryptionKeyStatus = "Connected"
+	// EncryptionKeyStatusConnected - is connected
+	EncryptionKeyStatusConnected EncryptionKeyStatus = "Connected"
 )
 
 // PossibleEncryptionKeyStatusValues returns the possible values for the EncryptionKeyStatus const type.
@@ -293,12 +416,14 @@ func PossibleEncryptionKeyStatusValues() []EncryptionKeyStatus {
 	}
 }
 
-// EncryptionState - Status of customer managed encryption key
+// EncryptionState - Whether encryption is enabled or disabled
 type EncryptionState string
 
 const (
+	// EncryptionStateDisabled - is disabled
 	EncryptionStateDisabled EncryptionState = "Disabled"
-	EncryptionStateEnabled  EncryptionState = "Enabled"
+	// EncryptionStateEnabled - is enabled
+	EncryptionStateEnabled EncryptionState = "Enabled"
 )
 
 // PossibleEncryptionStateValues returns the possible values for the EncryptionState const type.
@@ -309,12 +434,14 @@ func PossibleEncryptionStateValues() []EncryptionState {
 	}
 }
 
-// EncryptionVersionType - Property of the key if user provided or auto detected
+// EncryptionVersionType - Whether the encryption version is fixed or auto-detected
 type EncryptionVersionType string
 
 const (
+	// EncryptionVersionTypeAutoDetected - is auto-detected
 	EncryptionVersionTypeAutoDetected EncryptionVersionType = "AutoDetected"
-	EncryptionVersionTypeFixed        EncryptionVersionType = "Fixed"
+	// EncryptionVersionTypeFixed - is fixed
+	EncryptionVersionTypeFixed EncryptionVersionType = "Fixed"
 )
 
 // PossibleEncryptionVersionTypeValues returns the possible values for the EncryptionVersionType const type.
@@ -325,14 +452,18 @@ func PossibleEncryptionVersionTypeValues() []EncryptionVersionType {
 	}
 }
 
-// ExpressRouteAuthorizationProvisioningState - The state of the ExpressRoute Circuit Authorization provisioning
+// ExpressRouteAuthorizationProvisioningState - Express Route Circuit Authorization provisioning state
 type ExpressRouteAuthorizationProvisioningState string
 
 const (
-	ExpressRouteAuthorizationProvisioningStateCanceled  ExpressRouteAuthorizationProvisioningState = "Canceled"
-	ExpressRouteAuthorizationProvisioningStateFailed    ExpressRouteAuthorizationProvisioningState = "Failed"
+	// ExpressRouteAuthorizationProvisioningStateCanceled - Resource creation was canceled.
+	ExpressRouteAuthorizationProvisioningStateCanceled ExpressRouteAuthorizationProvisioningState = "Canceled"
+	// ExpressRouteAuthorizationProvisioningStateFailed - Resource creation failed.
+	ExpressRouteAuthorizationProvisioningStateFailed ExpressRouteAuthorizationProvisioningState = "Failed"
+	// ExpressRouteAuthorizationProvisioningStateSucceeded - Resource has been created.
 	ExpressRouteAuthorizationProvisioningStateSucceeded ExpressRouteAuthorizationProvisioningState = "Succeeded"
-	ExpressRouteAuthorizationProvisioningStateUpdating  ExpressRouteAuthorizationProvisioningState = "Updating"
+	// ExpressRouteAuthorizationProvisioningStateUpdating - is updating
+	ExpressRouteAuthorizationProvisioningStateUpdating ExpressRouteAuthorizationProvisioningState = "Updating"
 )
 
 // PossibleExpressRouteAuthorizationProvisioningStateValues returns the possible values for the ExpressRouteAuthorizationProvisioningState const type.
@@ -345,14 +476,18 @@ func PossibleExpressRouteAuthorizationProvisioningStateValues() []ExpressRouteAu
 	}
 }
 
-// GlobalReachConnectionProvisioningState - The state of the ExpressRoute Circuit Authorization provisioning
+// GlobalReachConnectionProvisioningState - Global Reach Connection provisioning state
 type GlobalReachConnectionProvisioningState string
 
 const (
-	GlobalReachConnectionProvisioningStateCanceled  GlobalReachConnectionProvisioningState = "Canceled"
-	GlobalReachConnectionProvisioningStateFailed    GlobalReachConnectionProvisioningState = "Failed"
+	// GlobalReachConnectionProvisioningStateCanceled - Resource creation was canceled.
+	GlobalReachConnectionProvisioningStateCanceled GlobalReachConnectionProvisioningState = "Canceled"
+	// GlobalReachConnectionProvisioningStateFailed - Resource creation failed.
+	GlobalReachConnectionProvisioningStateFailed GlobalReachConnectionProvisioningState = "Failed"
+	// GlobalReachConnectionProvisioningStateSucceeded - Resource has been created.
 	GlobalReachConnectionProvisioningStateSucceeded GlobalReachConnectionProvisioningState = "Succeeded"
-	GlobalReachConnectionProvisioningStateUpdating  GlobalReachConnectionProvisioningState = "Updating"
+	// GlobalReachConnectionProvisioningStateUpdating - is updating
+	GlobalReachConnectionProvisioningStateUpdating GlobalReachConnectionProvisioningState = "Updating"
 )
 
 // PossibleGlobalReachConnectionProvisioningStateValues returns the possible values for the GlobalReachConnectionProvisioningState const type.
@@ -365,12 +500,15 @@ func PossibleGlobalReachConnectionProvisioningStateValues() []GlobalReachConnect
 	}
 }
 
-// GlobalReachConnectionStatus - The connection status of the global reach connection
+// GlobalReachConnectionStatus - Global Reach Connection status
 type GlobalReachConnectionStatus string
 
 const (
-	GlobalReachConnectionStatusConnected    GlobalReachConnectionStatus = "Connected"
-	GlobalReachConnectionStatusConnecting   GlobalReachConnectionStatus = "Connecting"
+	// GlobalReachConnectionStatusConnected - is connected
+	GlobalReachConnectionStatusConnected GlobalReachConnectionStatus = "Connected"
+	// GlobalReachConnectionStatusConnecting - is connecting
+	GlobalReachConnectionStatusConnecting GlobalReachConnectionStatus = "Connecting"
+	// GlobalReachConnectionStatusDisconnected - is disconnected
 	GlobalReachConnectionStatusDisconnected GlobalReachConnectionStatus = "Disconnected"
 )
 
@@ -383,14 +521,39 @@ func PossibleGlobalReachConnectionStatusValues() []GlobalReachConnectionStatus {
 	}
 }
 
-// HcxEnterpriseSiteStatus - The status of the HCX Enterprise Site
+// HcxEnterpriseSiteProvisioningState - HCX Enterprise Site provisioning state
+type HcxEnterpriseSiteProvisioningState string
+
+const (
+	// HcxEnterpriseSiteProvisioningStateCanceled - Resource creation was canceled.
+	HcxEnterpriseSiteProvisioningStateCanceled HcxEnterpriseSiteProvisioningState = "Canceled"
+	// HcxEnterpriseSiteProvisioningStateFailed - Resource creation failed.
+	HcxEnterpriseSiteProvisioningStateFailed HcxEnterpriseSiteProvisioningState = "Failed"
+	// HcxEnterpriseSiteProvisioningStateSucceeded - Resource has been created.
+	HcxEnterpriseSiteProvisioningStateSucceeded HcxEnterpriseSiteProvisioningState = "Succeeded"
+)
+
+// PossibleHcxEnterpriseSiteProvisioningStateValues returns the possible values for the HcxEnterpriseSiteProvisioningState const type.
+func PossibleHcxEnterpriseSiteProvisioningStateValues() []HcxEnterpriseSiteProvisioningState {
+	return []HcxEnterpriseSiteProvisioningState{
+		HcxEnterpriseSiteProvisioningStateCanceled,
+		HcxEnterpriseSiteProvisioningStateFailed,
+		HcxEnterpriseSiteProvisioningStateSucceeded,
+	}
+}
+
+// HcxEnterpriseSiteStatus - HCX Enterprise Site status
 type HcxEnterpriseSiteStatus string
 
 const (
-	HcxEnterpriseSiteStatusAvailable   HcxEnterpriseSiteStatus = "Available"
-	HcxEnterpriseSiteStatusConsumed    HcxEnterpriseSiteStatus = "Consumed"
+	// HcxEnterpriseSiteStatusAvailable - is available
+	HcxEnterpriseSiteStatusAvailable HcxEnterpriseSiteStatus = "Available"
+	// HcxEnterpriseSiteStatusConsumed - is consumed
+	HcxEnterpriseSiteStatusConsumed HcxEnterpriseSiteStatus = "Consumed"
+	// HcxEnterpriseSiteStatusDeactivated - is deactivated
 	HcxEnterpriseSiteStatusDeactivated HcxEnterpriseSiteStatus = "Deactivated"
-	HcxEnterpriseSiteStatusDeleted     HcxEnterpriseSiteStatus = "Deleted"
+	// HcxEnterpriseSiteStatusDeleted - is deleted
+	HcxEnterpriseSiteStatusDeleted HcxEnterpriseSiteStatus = "Deleted"
 )
 
 // PossibleHcxEnterpriseSiteStatusValues returns the possible values for the HcxEnterpriseSiteStatus const type.
@@ -403,12 +566,14 @@ func PossibleHcxEnterpriseSiteStatusValues() []HcxEnterpriseSiteStatus {
 	}
 }
 
-// InternetEnum - Connectivity to internet is enabled or disabled
+// InternetEnum - Whether internet is enabled or disabled
 type InternetEnum string
 
 const (
+	// InternetEnumDisabled - is disabled
 	InternetEnumDisabled InternetEnum = "Disabled"
-	InternetEnumEnabled  InternetEnum = "Enabled"
+	// InternetEnumEnabled - is enabled
+	InternetEnumEnabled InternetEnum = "Enabled"
 )
 
 // PossibleInternetEnumValues returns the possible values for the InternetEnum const type.
@@ -419,12 +584,47 @@ func PossibleInternetEnumValues() []InternetEnum {
 	}
 }
 
+// IscsiPathProvisioningState - private cloud provisioning state
+type IscsiPathProvisioningState string
+
+const (
+	// IscsiPathProvisioningStateBuilding - is building
+	IscsiPathProvisioningStateBuilding IscsiPathProvisioningState = "Building"
+	// IscsiPathProvisioningStateCanceled - Resource creation was canceled.
+	IscsiPathProvisioningStateCanceled IscsiPathProvisioningState = "Canceled"
+	// IscsiPathProvisioningStateDeleting - is deleting
+	IscsiPathProvisioningStateDeleting IscsiPathProvisioningState = "Deleting"
+	// IscsiPathProvisioningStateFailed - Resource creation failed.
+	IscsiPathProvisioningStateFailed IscsiPathProvisioningState = "Failed"
+	// IscsiPathProvisioningStatePending - is pending
+	IscsiPathProvisioningStatePending IscsiPathProvisioningState = "Pending"
+	// IscsiPathProvisioningStateSucceeded - Resource has been created.
+	IscsiPathProvisioningStateSucceeded IscsiPathProvisioningState = "Succeeded"
+	// IscsiPathProvisioningStateUpdating - is updating
+	IscsiPathProvisioningStateUpdating IscsiPathProvisioningState = "Updating"
+)
+
+// PossibleIscsiPathProvisioningStateValues returns the possible values for the IscsiPathProvisioningState const type.
+func PossibleIscsiPathProvisioningStateValues() []IscsiPathProvisioningState {
+	return []IscsiPathProvisioningState{
+		IscsiPathProvisioningStateBuilding,
+		IscsiPathProvisioningStateCanceled,
+		IscsiPathProvisioningStateDeleting,
+		IscsiPathProvisioningStateFailed,
+		IscsiPathProvisioningStatePending,
+		IscsiPathProvisioningStateSucceeded,
+		IscsiPathProvisioningStateUpdating,
+	}
+}
+
 // MountOptionEnum - Mode that describes whether the LUN has to be mounted as a datastore or attached as a LUN
 type MountOptionEnum string
 
 const (
+	// MountOptionEnumATTACH - is attach
 	MountOptionEnumATTACH MountOptionEnum = "ATTACH"
-	MountOptionEnumMOUNT  MountOptionEnum = "MOUNT"
+	// MountOptionEnumMOUNT - is mount
+	MountOptionEnumMOUNT MountOptionEnum = "MOUNT"
 )
 
 // PossibleMountOptionEnumValues returns the possible values for the MountOptionEnum const type.
@@ -435,13 +635,14 @@ func PossibleMountOptionEnumValues() []MountOptionEnum {
 	}
 }
 
-// NsxPublicIPQuotaRaisedEnum - Flag to indicate whether the private cloud has the quota for provisioned NSX Public IP count
-// raised from 64 to 1024
+// NsxPublicIPQuotaRaisedEnum - NSX public IP quota raised
 type NsxPublicIPQuotaRaisedEnum string
 
 const (
+	// NsxPublicIPQuotaRaisedEnumDisabled - is disabled
 	NsxPublicIPQuotaRaisedEnumDisabled NsxPublicIPQuotaRaisedEnum = "Disabled"
-	NsxPublicIPQuotaRaisedEnumEnabled  NsxPublicIPQuotaRaisedEnum = "Enabled"
+	// NsxPublicIPQuotaRaisedEnumEnabled - is enabled
+	NsxPublicIPQuotaRaisedEnumEnabled NsxPublicIPQuotaRaisedEnum = "Enabled"
 )
 
 // PossibleNsxPublicIPQuotaRaisedEnumValues returns the possible values for the NsxPublicIPQuotaRaisedEnum const type.
@@ -452,11 +653,13 @@ func PossibleNsxPublicIPQuotaRaisedEnumValues() []NsxPublicIPQuotaRaisedEnum {
 	}
 }
 
-// OptionalParamEnum - Is this parameter required or optional
+// OptionalParamEnum - Optional Param
 type OptionalParamEnum string
 
 const (
+	// OptionalParamEnumOptional - is optional
 	OptionalParamEnumOptional OptionalParamEnum = "Optional"
+	// OptionalParamEnumRequired - is required
 	OptionalParamEnumRequired OptionalParamEnum = "Required"
 )
 
@@ -468,16 +671,41 @@ func PossibleOptionalParamEnumValues() []OptionalParamEnum {
 	}
 }
 
-// PlacementPolicyProvisioningState - The provisioning state
+// Origin - The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
+// value is "user,system"
+type Origin string
+
+const (
+	OriginSystem     Origin = "system"
+	OriginUser       Origin = "user"
+	OriginUserSystem Origin = "user,system"
+)
+
+// PossibleOriginValues returns the possible values for the Origin const type.
+func PossibleOriginValues() []Origin {
+	return []Origin{
+		OriginSystem,
+		OriginUser,
+		OriginUserSystem,
+	}
+}
+
+// PlacementPolicyProvisioningState - Placement Policy provisioning state
 type PlacementPolicyProvisioningState string
 
 const (
-	PlacementPolicyProvisioningStateBuilding  PlacementPolicyProvisioningState = "Building"
-	PlacementPolicyProvisioningStateCanceled  PlacementPolicyProvisioningState = "Canceled"
-	PlacementPolicyProvisioningStateDeleting  PlacementPolicyProvisioningState = "Deleting"
-	PlacementPolicyProvisioningStateFailed    PlacementPolicyProvisioningState = "Failed"
+	// PlacementPolicyProvisioningStateBuilding - is building
+	PlacementPolicyProvisioningStateBuilding PlacementPolicyProvisioningState = "Building"
+	// PlacementPolicyProvisioningStateCanceled - Resource creation was canceled.
+	PlacementPolicyProvisioningStateCanceled PlacementPolicyProvisioningState = "Canceled"
+	// PlacementPolicyProvisioningStateDeleting - is deleting
+	PlacementPolicyProvisioningStateDeleting PlacementPolicyProvisioningState = "Deleting"
+	// PlacementPolicyProvisioningStateFailed - Resource creation failed.
+	PlacementPolicyProvisioningStateFailed PlacementPolicyProvisioningState = "Failed"
+	// PlacementPolicyProvisioningStateSucceeded - Resource has been created.
 	PlacementPolicyProvisioningStateSucceeded PlacementPolicyProvisioningState = "Succeeded"
-	PlacementPolicyProvisioningStateUpdating  PlacementPolicyProvisioningState = "Updating"
+	// PlacementPolicyProvisioningStateUpdating - is updating
+	PlacementPolicyProvisioningStateUpdating PlacementPolicyProvisioningState = "Updating"
 )
 
 // PossiblePlacementPolicyProvisioningStateValues returns the possible values for the PlacementPolicyProvisioningState const type.
@@ -492,12 +720,14 @@ func PossiblePlacementPolicyProvisioningStateValues() []PlacementPolicyProvision
 	}
 }
 
-// PlacementPolicyState - Whether the placement policy is enabled or disabled
+// PlacementPolicyState - Placement Policy state
 type PlacementPolicyState string
 
 const (
+	// PlacementPolicyStateDisabled - is disabled
 	PlacementPolicyStateDisabled PlacementPolicyState = "Disabled"
-	PlacementPolicyStateEnabled  PlacementPolicyState = "Enabled"
+	// PlacementPolicyStateEnabled - is enabled
+	PlacementPolicyStateEnabled PlacementPolicyState = "Enabled"
 )
 
 // PossiblePlacementPolicyStateValues returns the possible values for the PlacementPolicyState const type.
@@ -508,7 +738,7 @@ func PossiblePlacementPolicyStateValues() []PlacementPolicyState {
 	}
 }
 
-// PlacementPolicyType - placement policy type
+// PlacementPolicyType - Placement Policy type
 type PlacementPolicyType string
 
 const (
@@ -524,13 +754,16 @@ func PossiblePlacementPolicyTypeValues() []PlacementPolicyType {
 	}
 }
 
-// PortMirroringDirectionEnum - Direction of port mirroring profile.
+// PortMirroringDirectionEnum - Port Mirroring Direction
 type PortMirroringDirectionEnum string
 
 const (
+	// PortMirroringDirectionEnumBIDIRECTIONAL - is bidirectional
 	PortMirroringDirectionEnumBIDIRECTIONAL PortMirroringDirectionEnum = "BIDIRECTIONAL"
-	PortMirroringDirectionEnumEGRESS        PortMirroringDirectionEnum = "EGRESS"
-	PortMirroringDirectionEnumINGRESS       PortMirroringDirectionEnum = "INGRESS"
+	// PortMirroringDirectionEnumEGRESS - is egress
+	PortMirroringDirectionEnumEGRESS PortMirroringDirectionEnum = "EGRESS"
+	// PortMirroringDirectionEnumINGRESS - is ingress
+	PortMirroringDirectionEnumINGRESS PortMirroringDirectionEnum = "INGRESS"
 )
 
 // PossiblePortMirroringDirectionEnumValues returns the possible values for the PortMirroringDirectionEnum const type.
@@ -542,11 +775,13 @@ func PossiblePortMirroringDirectionEnumValues() []PortMirroringDirectionEnum {
 	}
 }
 
-// PortMirroringStatusEnum - Port Mirroring Status.
+// PortMirroringStatusEnum - Port Mirroring status
 type PortMirroringStatusEnum string
 
 const (
+	// PortMirroringStatusEnumFAILURE - is failure
 	PortMirroringStatusEnumFAILURE PortMirroringStatusEnum = "FAILURE"
+	// PortMirroringStatusEnumSUCCESS - is success
 	PortMirroringStatusEnumSUCCESS PortMirroringStatusEnum = "SUCCESS"
 )
 
@@ -558,18 +793,26 @@ func PossiblePortMirroringStatusEnumValues() []PortMirroringStatusEnum {
 	}
 }
 
-// PrivateCloudProvisioningState - The provisioning state
+// PrivateCloudProvisioningState - private cloud provisioning state
 type PrivateCloudProvisioningState string
 
 const (
-	PrivateCloudProvisioningStateBuilding  PrivateCloudProvisioningState = "Building"
-	PrivateCloudProvisioningStateCanceled  PrivateCloudProvisioningState = "Canceled"
+	// PrivateCloudProvisioningStateBuilding - is building
+	PrivateCloudProvisioningStateBuilding PrivateCloudProvisioningState = "Building"
+	// PrivateCloudProvisioningStateCanceled - Resource creation was canceled.
+	PrivateCloudProvisioningStateCanceled PrivateCloudProvisioningState = "Canceled"
+	// PrivateCloudProvisioningStateCancelled - is cancelled
 	PrivateCloudProvisioningStateCancelled PrivateCloudProvisioningState = "Cancelled"
-	PrivateCloudProvisioningStateDeleting  PrivateCloudProvisioningState = "Deleting"
-	PrivateCloudProvisioningStateFailed    PrivateCloudProvisioningState = "Failed"
-	PrivateCloudProvisioningStatePending   PrivateCloudProvisioningState = "Pending"
+	// PrivateCloudProvisioningStateDeleting - is deleting
+	PrivateCloudProvisioningStateDeleting PrivateCloudProvisioningState = "Deleting"
+	// PrivateCloudProvisioningStateFailed - Resource creation failed.
+	PrivateCloudProvisioningStateFailed PrivateCloudProvisioningState = "Failed"
+	// PrivateCloudProvisioningStatePending - is pending
+	PrivateCloudProvisioningStatePending PrivateCloudProvisioningState = "Pending"
+	// PrivateCloudProvisioningStateSucceeded - Resource has been created.
 	PrivateCloudProvisioningStateSucceeded PrivateCloudProvisioningState = "Succeeded"
-	PrivateCloudProvisioningStateUpdating  PrivateCloudProvisioningState = "Updating"
+	// PrivateCloudProvisioningStateUpdating - is updating
+	PrivateCloudProvisioningStateUpdating PrivateCloudProvisioningState = "Updating"
 )
 
 // PossiblePrivateCloudProvisioningStateValues returns the possible values for the PrivateCloudProvisioningState const type.
@@ -586,12 +829,14 @@ func PossiblePrivateCloudProvisioningStateValues() []PrivateCloudProvisioningSta
 	}
 }
 
-// QuotaEnabled - Host quota is active for current subscription
+// QuotaEnabled - quota enabled
 type QuotaEnabled string
 
 const (
+	// QuotaEnabledDisabled - is disabled
 	QuotaEnabledDisabled QuotaEnabled = "Disabled"
-	QuotaEnabledEnabled  QuotaEnabled = "Enabled"
+	// QuotaEnabledEnabled - is enabled
+	QuotaEnabledEnabled QuotaEnabled = "Enabled"
 )
 
 // PossibleQuotaEnabledValues returns the possible values for the QuotaEnabled const type.
@@ -602,8 +847,7 @@ func PossibleQuotaEnabledValues() []QuotaEnabled {
 	}
 }
 
-// ResourceIdentityType - The type of identity used for the private cloud. The type 'SystemAssigned' refers to an implicitly
-// created identity. The type 'None' will remove any identities from the Private Cloud.
+// ResourceIdentityType - Type of managed service identity (either system assigned, or none).
 type ResourceIdentityType string
 
 const (
@@ -619,12 +863,35 @@ func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 	}
 }
 
-// SSLEnum - Protect LDAP communication using SSL certificate (LDAPS)
+// SKUTier - This field is required to be implemented by the Resource Provider if the service has more than one tier, but
+// is not required on a PUT.
+type SKUTier string
+
+const (
+	SKUTierBasic    SKUTier = "Basic"
+	SKUTierFree     SKUTier = "Free"
+	SKUTierPremium  SKUTier = "Premium"
+	SKUTierStandard SKUTier = "Standard"
+)
+
+// PossibleSKUTierValues returns the possible values for the SKUTier const type.
+func PossibleSKUTierValues() []SKUTier {
+	return []SKUTier{
+		SKUTierBasic,
+		SKUTierFree,
+		SKUTierPremium,
+		SKUTierStandard,
+	}
+}
+
+// SSLEnum - Whether SSL is enabled or disabled
 type SSLEnum string
 
 const (
+	// SSLEnumDisabled - is disabled
 	SSLEnumDisabled SSLEnum = "Disabled"
-	SSLEnumEnabled  SSLEnum = "Enabled"
+	// SSLEnumEnabled - is enabled
+	SSLEnumEnabled SSLEnum = "Enabled"
 )
 
 // PossibleSSLEnumValues returns the possible values for the SSLEnum const type.
@@ -635,7 +902,47 @@ func PossibleSSLEnumValues() []SSLEnum {
 	}
 }
 
-// ScriptExecutionParameterType - The type of execution parameter
+// ScriptCmdletAudience - Specifies whether a script cmdlet is intended to be invoked only through automation or visible to
+// customers
+type ScriptCmdletAudience string
+
+const (
+	// ScriptCmdletAudienceAny - is any
+	ScriptCmdletAudienceAny ScriptCmdletAudience = "Any"
+	// ScriptCmdletAudienceAutomation - is automation
+	ScriptCmdletAudienceAutomation ScriptCmdletAudience = "Automation"
+)
+
+// PossibleScriptCmdletAudienceValues returns the possible values for the ScriptCmdletAudience const type.
+func PossibleScriptCmdletAudienceValues() []ScriptCmdletAudience {
+	return []ScriptCmdletAudience{
+		ScriptCmdletAudienceAny,
+		ScriptCmdletAudienceAutomation,
+	}
+}
+
+// ScriptCmdletProvisioningState - A script cmdlet provisioning state
+type ScriptCmdletProvisioningState string
+
+const (
+	// ScriptCmdletProvisioningStateCanceled - Resource creation was canceled.
+	ScriptCmdletProvisioningStateCanceled ScriptCmdletProvisioningState = "Canceled"
+	// ScriptCmdletProvisioningStateFailed - Resource creation failed.
+	ScriptCmdletProvisioningStateFailed ScriptCmdletProvisioningState = "Failed"
+	// ScriptCmdletProvisioningStateSucceeded - Resource has been created.
+	ScriptCmdletProvisioningStateSucceeded ScriptCmdletProvisioningState = "Succeeded"
+)
+
+// PossibleScriptCmdletProvisioningStateValues returns the possible values for the ScriptCmdletProvisioningState const type.
+func PossibleScriptCmdletProvisioningStateValues() []ScriptCmdletProvisioningState {
+	return []ScriptCmdletProvisioningState{
+		ScriptCmdletProvisioningStateCanceled,
+		ScriptCmdletProvisioningStateFailed,
+		ScriptCmdletProvisioningStateSucceeded,
+	}
+}
+
+// ScriptExecutionParameterType - script execution parameter type
 type ScriptExecutionParameterType string
 
 const (
@@ -653,18 +960,26 @@ func PossibleScriptExecutionParameterTypeValues() []ScriptExecutionParameterType
 	}
 }
 
-// ScriptExecutionProvisioningState - The state of the script execution resource
+// ScriptExecutionProvisioningState - Script Execution provisioning state
 type ScriptExecutionProvisioningState string
 
 const (
-	ScriptExecutionProvisioningStateCanceled   ScriptExecutionProvisioningState = "Canceled"
-	ScriptExecutionProvisioningStateCancelled  ScriptExecutionProvisioningState = "Cancelled"
+	// ScriptExecutionProvisioningStateCanceled - Resource creation was canceled.
+	ScriptExecutionProvisioningStateCanceled ScriptExecutionProvisioningState = "Canceled"
+	// ScriptExecutionProvisioningStateCancelled - is cancelled
+	ScriptExecutionProvisioningStateCancelled ScriptExecutionProvisioningState = "Cancelled"
+	// ScriptExecutionProvisioningStateCancelling - is cancelling
 	ScriptExecutionProvisioningStateCancelling ScriptExecutionProvisioningState = "Cancelling"
-	ScriptExecutionProvisioningStateDeleting   ScriptExecutionProvisioningState = "Deleting"
-	ScriptExecutionProvisioningStateFailed     ScriptExecutionProvisioningState = "Failed"
-	ScriptExecutionProvisioningStatePending    ScriptExecutionProvisioningState = "Pending"
-	ScriptExecutionProvisioningStateRunning    ScriptExecutionProvisioningState = "Running"
-	ScriptExecutionProvisioningStateSucceeded  ScriptExecutionProvisioningState = "Succeeded"
+	// ScriptExecutionProvisioningStateDeleting - is deleting
+	ScriptExecutionProvisioningStateDeleting ScriptExecutionProvisioningState = "Deleting"
+	// ScriptExecutionProvisioningStateFailed - Resource creation failed.
+	ScriptExecutionProvisioningStateFailed ScriptExecutionProvisioningState = "Failed"
+	// ScriptExecutionProvisioningStatePending - is pending
+	ScriptExecutionProvisioningStatePending ScriptExecutionProvisioningState = "Pending"
+	// ScriptExecutionProvisioningStateRunning - is running
+	ScriptExecutionProvisioningStateRunning ScriptExecutionProvisioningState = "Running"
+	// ScriptExecutionProvisioningStateSucceeded - Resource has been created.
+	ScriptExecutionProvisioningStateSucceeded ScriptExecutionProvisioningState = "Succeeded"
 )
 
 // PossibleScriptExecutionProvisioningStateValues returns the possible values for the ScriptExecutionProvisioningState const type.
@@ -681,13 +996,18 @@ func PossibleScriptExecutionProvisioningStateValues() []ScriptExecutionProvision
 	}
 }
 
+// ScriptOutputStreamType - Script Output Stream type
 type ScriptOutputStreamType string
 
 const (
-	ScriptOutputStreamTypeError       ScriptOutputStreamType = "Error"
+	// ScriptOutputStreamTypeError - is error
+	ScriptOutputStreamTypeError ScriptOutputStreamType = "Error"
+	// ScriptOutputStreamTypeInformation - is information
 	ScriptOutputStreamTypeInformation ScriptOutputStreamType = "Information"
-	ScriptOutputStreamTypeOutput      ScriptOutputStreamType = "Output"
-	ScriptOutputStreamTypeWarning     ScriptOutputStreamType = "Warning"
+	// ScriptOutputStreamTypeOutput - is output
+	ScriptOutputStreamTypeOutput ScriptOutputStreamType = "Output"
+	// ScriptOutputStreamTypeWarning - is warning
+	ScriptOutputStreamTypeWarning ScriptOutputStreamType = "Warning"
 )
 
 // PossibleScriptOutputStreamTypeValues returns the possible values for the ScriptOutputStreamType const type.
@@ -700,16 +1020,43 @@ func PossibleScriptOutputStreamTypeValues() []ScriptOutputStreamType {
 	}
 }
 
-// ScriptParameterTypes - The type of parameter the script is expecting. psCredential is a PSCredentialObject
+// ScriptPackageProvisioningState - Script Package provisioning state
+type ScriptPackageProvisioningState string
+
+const (
+	// ScriptPackageProvisioningStateCanceled - Resource creation was canceled.
+	ScriptPackageProvisioningStateCanceled ScriptPackageProvisioningState = "Canceled"
+	// ScriptPackageProvisioningStateFailed - Resource creation failed.
+	ScriptPackageProvisioningStateFailed ScriptPackageProvisioningState = "Failed"
+	// ScriptPackageProvisioningStateSucceeded - Resource has been created.
+	ScriptPackageProvisioningStateSucceeded ScriptPackageProvisioningState = "Succeeded"
+)
+
+// PossibleScriptPackageProvisioningStateValues returns the possible values for the ScriptPackageProvisioningState const type.
+func PossibleScriptPackageProvisioningStateValues() []ScriptPackageProvisioningState {
+	return []ScriptPackageProvisioningState{
+		ScriptPackageProvisioningStateCanceled,
+		ScriptPackageProvisioningStateFailed,
+		ScriptPackageProvisioningStateSucceeded,
+	}
+}
+
+// ScriptParameterTypes - Script Parameter types
 type ScriptParameterTypes string
 
 const (
-	ScriptParameterTypesBool         ScriptParameterTypes = "Bool"
-	ScriptParameterTypesCredential   ScriptParameterTypes = "Credential"
-	ScriptParameterTypesFloat        ScriptParameterTypes = "Float"
-	ScriptParameterTypesInt          ScriptParameterTypes = "Int"
+	// ScriptParameterTypesBool - is bool
+	ScriptParameterTypesBool ScriptParameterTypes = "Bool"
+	// ScriptParameterTypesCredential - is credential
+	ScriptParameterTypesCredential ScriptParameterTypes = "Credential"
+	// ScriptParameterTypesFloat - is float
+	ScriptParameterTypesFloat ScriptParameterTypes = "Float"
+	// ScriptParameterTypesInt - is int
+	ScriptParameterTypesInt ScriptParameterTypes = "Int"
+	// ScriptParameterTypesSecureString - is secure string
 	ScriptParameterTypesSecureString ScriptParameterTypes = "SecureString"
-	ScriptParameterTypesString       ScriptParameterTypes = "String"
+	// ScriptParameterTypesString - is string
+	ScriptParameterTypesString ScriptParameterTypes = "String"
 )
 
 // PossibleScriptParameterTypesValues returns the possible values for the ScriptParameterTypes const type.
@@ -724,11 +1071,13 @@ func PossibleScriptParameterTypesValues() []ScriptParameterTypes {
 	}
 }
 
-// SegmentStatusEnum - Segment status.
+// SegmentStatusEnum - Segment status
 type SegmentStatusEnum string
 
 const (
+	// SegmentStatusEnumFAILURE - is failure
 	SegmentStatusEnumFAILURE SegmentStatusEnum = "FAILURE"
+	// SegmentStatusEnumSUCCESS - is success
 	SegmentStatusEnumSUCCESS SegmentStatusEnum = "SUCCESS"
 )
 
@@ -740,13 +1089,16 @@ func PossibleSegmentStatusEnumValues() []SegmentStatusEnum {
 	}
 }
 
-// TrialStatus - Trial status
+// TrialStatus - trial status
 type TrialStatus string
 
 const (
+	// TrialStatusTrialAvailable - is available
 	TrialStatusTrialAvailable TrialStatus = "TrialAvailable"
-	TrialStatusTrialDisabled  TrialStatus = "TrialDisabled"
-	TrialStatusTrialUsed      TrialStatus = "TrialUsed"
+	// TrialStatusTrialDisabled - is disabled
+	TrialStatusTrialDisabled TrialStatus = "TrialDisabled"
+	// TrialStatusTrialUsed - is used
+	TrialStatusTrialUsed TrialStatus = "TrialUsed"
 )
 
 // PossibleTrialStatusValues returns the possible values for the TrialStatus const type.
@@ -758,11 +1110,13 @@ func PossibleTrialStatusValues() []TrialStatus {
 	}
 }
 
-// VMGroupStatusEnum - VM Group status.
+// VMGroupStatusEnum - VM group status
 type VMGroupStatusEnum string
 
 const (
+	// VMGroupStatusEnumFAILURE - is failure
 	VMGroupStatusEnumFAILURE VMGroupStatusEnum = "FAILURE"
+	// VMGroupStatusEnumSUCCESS - is success
 	VMGroupStatusEnumSUCCESS VMGroupStatusEnum = "SUCCESS"
 )
 
@@ -774,12 +1128,15 @@ func PossibleVMGroupStatusEnumValues() []VMGroupStatusEnum {
 	}
 }
 
-// VMTypeEnum - Virtual machine type.
+// VMTypeEnum - VM type
 type VMTypeEnum string
 
 const (
-	VMTypeEnumEDGE    VMTypeEnum = "EDGE"
+	// VMTypeEnumEDGE - is edge
+	VMTypeEnumEDGE VMTypeEnum = "EDGE"
+	// VMTypeEnumREGULAR - is regular
 	VMTypeEnumREGULAR VMTypeEnum = "REGULAR"
+	// VMTypeEnumSERVICE - is service
 	VMTypeEnumSERVICE VMTypeEnum = "SERVICE"
 )
 
@@ -792,12 +1149,35 @@ func PossibleVMTypeEnumValues() []VMTypeEnum {
 	}
 }
 
-// VirtualMachineRestrictMovementState - Whether VM DRS-driven movement is restricted (enabled) or not (disabled)
+// VirtualMachineProvisioningState - Virtual Machine provisioning state
+type VirtualMachineProvisioningState string
+
+const (
+	// VirtualMachineProvisioningStateCanceled - Resource creation was canceled.
+	VirtualMachineProvisioningStateCanceled VirtualMachineProvisioningState = "Canceled"
+	// VirtualMachineProvisioningStateFailed - Resource creation failed.
+	VirtualMachineProvisioningStateFailed VirtualMachineProvisioningState = "Failed"
+	// VirtualMachineProvisioningStateSucceeded - Resource has been created.
+	VirtualMachineProvisioningStateSucceeded VirtualMachineProvisioningState = "Succeeded"
+)
+
+// PossibleVirtualMachineProvisioningStateValues returns the possible values for the VirtualMachineProvisioningState const type.
+func PossibleVirtualMachineProvisioningStateValues() []VirtualMachineProvisioningState {
+	return []VirtualMachineProvisioningState{
+		VirtualMachineProvisioningStateCanceled,
+		VirtualMachineProvisioningStateFailed,
+		VirtualMachineProvisioningStateSucceeded,
+	}
+}
+
+// VirtualMachineRestrictMovementState - Virtual Machine Restrict Movement state
 type VirtualMachineRestrictMovementState string
 
 const (
+	// VirtualMachineRestrictMovementStateDisabled - is disabled
 	VirtualMachineRestrictMovementStateDisabled VirtualMachineRestrictMovementState = "Disabled"
-	VirtualMachineRestrictMovementStateEnabled  VirtualMachineRestrictMovementState = "Enabled"
+	// VirtualMachineRestrictMovementStateEnabled - is enabled
+	VirtualMachineRestrictMovementStateEnabled VirtualMachineRestrictMovementState = "Enabled"
 )
 
 // PossibleVirtualMachineRestrictMovementStateValues returns the possible values for the VirtualMachineRestrictMovementState const type.
@@ -808,11 +1188,13 @@ func PossibleVirtualMachineRestrictMovementStateValues() []VirtualMachineRestric
 	}
 }
 
-// VisibilityParameterEnum - Should this parameter be visible to arm and passed in the parameters argument when executing
+// VisibilityParameterEnum - Visibility Parameter
 type VisibilityParameterEnum string
 
 const (
-	VisibilityParameterEnumHidden  VisibilityParameterEnum = "Hidden"
+	// VisibilityParameterEnumHidden - is hidden
+	VisibilityParameterEnumHidden VisibilityParameterEnum = "Hidden"
+	// VisibilityParameterEnumVisible - is visible
 	VisibilityParameterEnumVisible VisibilityParameterEnum = "Visible"
 )
 
@@ -824,16 +1206,22 @@ func PossibleVisibilityParameterEnumValues() []VisibilityParameterEnum {
 	}
 }
 
-// WorkloadNetworkDNSServiceProvisioningState - The provisioning state
+// WorkloadNetworkDNSServiceProvisioningState - Workload Network DNS Service provisioning state
 type WorkloadNetworkDNSServiceProvisioningState string
 
 const (
-	WorkloadNetworkDNSServiceProvisioningStateBuilding  WorkloadNetworkDNSServiceProvisioningState = "Building"
-	WorkloadNetworkDNSServiceProvisioningStateCanceled  WorkloadNetworkDNSServiceProvisioningState = "Canceled"
-	WorkloadNetworkDNSServiceProvisioningStateDeleting  WorkloadNetworkDNSServiceProvisioningState = "Deleting"
-	WorkloadNetworkDNSServiceProvisioningStateFailed    WorkloadNetworkDNSServiceProvisioningState = "Failed"
+	// WorkloadNetworkDNSServiceProvisioningStateBuilding - is building
+	WorkloadNetworkDNSServiceProvisioningStateBuilding WorkloadNetworkDNSServiceProvisioningState = "Building"
+	// WorkloadNetworkDNSServiceProvisioningStateCanceled - Resource creation was canceled.
+	WorkloadNetworkDNSServiceProvisioningStateCanceled WorkloadNetworkDNSServiceProvisioningState = "Canceled"
+	// WorkloadNetworkDNSServiceProvisioningStateDeleting - is deleting
+	WorkloadNetworkDNSServiceProvisioningStateDeleting WorkloadNetworkDNSServiceProvisioningState = "Deleting"
+	// WorkloadNetworkDNSServiceProvisioningStateFailed - Resource creation failed.
+	WorkloadNetworkDNSServiceProvisioningStateFailed WorkloadNetworkDNSServiceProvisioningState = "Failed"
+	// WorkloadNetworkDNSServiceProvisioningStateSucceeded - Resource has been created.
 	WorkloadNetworkDNSServiceProvisioningStateSucceeded WorkloadNetworkDNSServiceProvisioningState = "Succeeded"
-	WorkloadNetworkDNSServiceProvisioningStateUpdating  WorkloadNetworkDNSServiceProvisioningState = "Updating"
+	// WorkloadNetworkDNSServiceProvisioningStateUpdating - is updating
+	WorkloadNetworkDNSServiceProvisioningStateUpdating WorkloadNetworkDNSServiceProvisioningState = "Updating"
 )
 
 // PossibleWorkloadNetworkDNSServiceProvisioningStateValues returns the possible values for the WorkloadNetworkDNSServiceProvisioningState const type.
@@ -848,16 +1236,22 @@ func PossibleWorkloadNetworkDNSServiceProvisioningStateValues() []WorkloadNetwor
 	}
 }
 
-// WorkloadNetworkDNSZoneProvisioningState - The provisioning state
+// WorkloadNetworkDNSZoneProvisioningState - Workload Network DNS Zone provisioning state
 type WorkloadNetworkDNSZoneProvisioningState string
 
 const (
-	WorkloadNetworkDNSZoneProvisioningStateBuilding  WorkloadNetworkDNSZoneProvisioningState = "Building"
-	WorkloadNetworkDNSZoneProvisioningStateCanceled  WorkloadNetworkDNSZoneProvisioningState = "Canceled"
-	WorkloadNetworkDNSZoneProvisioningStateDeleting  WorkloadNetworkDNSZoneProvisioningState = "Deleting"
-	WorkloadNetworkDNSZoneProvisioningStateFailed    WorkloadNetworkDNSZoneProvisioningState = "Failed"
+	// WorkloadNetworkDNSZoneProvisioningStateBuilding - is building
+	WorkloadNetworkDNSZoneProvisioningStateBuilding WorkloadNetworkDNSZoneProvisioningState = "Building"
+	// WorkloadNetworkDNSZoneProvisioningStateCanceled - Resource creation was canceled.
+	WorkloadNetworkDNSZoneProvisioningStateCanceled WorkloadNetworkDNSZoneProvisioningState = "Canceled"
+	// WorkloadNetworkDNSZoneProvisioningStateDeleting - is deleting
+	WorkloadNetworkDNSZoneProvisioningStateDeleting WorkloadNetworkDNSZoneProvisioningState = "Deleting"
+	// WorkloadNetworkDNSZoneProvisioningStateFailed - Resource creation failed.
+	WorkloadNetworkDNSZoneProvisioningStateFailed WorkloadNetworkDNSZoneProvisioningState = "Failed"
+	// WorkloadNetworkDNSZoneProvisioningStateSucceeded - Resource has been created.
 	WorkloadNetworkDNSZoneProvisioningStateSucceeded WorkloadNetworkDNSZoneProvisioningState = "Succeeded"
-	WorkloadNetworkDNSZoneProvisioningStateUpdating  WorkloadNetworkDNSZoneProvisioningState = "Updating"
+	// WorkloadNetworkDNSZoneProvisioningStateUpdating - is updating
+	WorkloadNetworkDNSZoneProvisioningStateUpdating WorkloadNetworkDNSZoneProvisioningState = "Updating"
 )
 
 // PossibleWorkloadNetworkDNSZoneProvisioningStateValues returns the possible values for the WorkloadNetworkDNSZoneProvisioningState const type.
@@ -872,16 +1266,22 @@ func PossibleWorkloadNetworkDNSZoneProvisioningStateValues() []WorkloadNetworkDN
 	}
 }
 
-// WorkloadNetworkDhcpProvisioningState - The provisioning state
+// WorkloadNetworkDhcpProvisioningState - Workload Network DHCP provisioning state
 type WorkloadNetworkDhcpProvisioningState string
 
 const (
-	WorkloadNetworkDhcpProvisioningStateBuilding  WorkloadNetworkDhcpProvisioningState = "Building"
-	WorkloadNetworkDhcpProvisioningStateCanceled  WorkloadNetworkDhcpProvisioningState = "Canceled"
-	WorkloadNetworkDhcpProvisioningStateDeleting  WorkloadNetworkDhcpProvisioningState = "Deleting"
-	WorkloadNetworkDhcpProvisioningStateFailed    WorkloadNetworkDhcpProvisioningState = "Failed"
+	// WorkloadNetworkDhcpProvisioningStateBuilding - is building
+	WorkloadNetworkDhcpProvisioningStateBuilding WorkloadNetworkDhcpProvisioningState = "Building"
+	// WorkloadNetworkDhcpProvisioningStateCanceled - Resource creation was canceled.
+	WorkloadNetworkDhcpProvisioningStateCanceled WorkloadNetworkDhcpProvisioningState = "Canceled"
+	// WorkloadNetworkDhcpProvisioningStateDeleting - is deleting
+	WorkloadNetworkDhcpProvisioningStateDeleting WorkloadNetworkDhcpProvisioningState = "Deleting"
+	// WorkloadNetworkDhcpProvisioningStateFailed - Resource creation failed.
+	WorkloadNetworkDhcpProvisioningStateFailed WorkloadNetworkDhcpProvisioningState = "Failed"
+	// WorkloadNetworkDhcpProvisioningStateSucceeded - Resource has been created.
 	WorkloadNetworkDhcpProvisioningStateSucceeded WorkloadNetworkDhcpProvisioningState = "Succeeded"
-	WorkloadNetworkDhcpProvisioningStateUpdating  WorkloadNetworkDhcpProvisioningState = "Updating"
+	// WorkloadNetworkDhcpProvisioningStateUpdating - is updating
+	WorkloadNetworkDhcpProvisioningStateUpdating WorkloadNetworkDhcpProvisioningState = "Updating"
 )
 
 // PossibleWorkloadNetworkDhcpProvisioningStateValues returns the possible values for the WorkloadNetworkDhcpProvisioningState const type.
@@ -896,29 +1296,22 @@ func PossibleWorkloadNetworkDhcpProvisioningStateValues() []WorkloadNetworkDhcpP
 	}
 }
 
-type WorkloadNetworkName string
-
-const (
-	WorkloadNetworkNameDefault WorkloadNetworkName = "default"
-)
-
-// PossibleWorkloadNetworkNameValues returns the possible values for the WorkloadNetworkName const type.
-func PossibleWorkloadNetworkNameValues() []WorkloadNetworkName {
-	return []WorkloadNetworkName{
-		WorkloadNetworkNameDefault,
-	}
-}
-
-// WorkloadNetworkPortMirroringProvisioningState - The provisioning state
+// WorkloadNetworkPortMirroringProvisioningState - Workload Network Port Mirroring provisioning state
 type WorkloadNetworkPortMirroringProvisioningState string
 
 const (
-	WorkloadNetworkPortMirroringProvisioningStateBuilding  WorkloadNetworkPortMirroringProvisioningState = "Building"
-	WorkloadNetworkPortMirroringProvisioningStateCanceled  WorkloadNetworkPortMirroringProvisioningState = "Canceled"
-	WorkloadNetworkPortMirroringProvisioningStateDeleting  WorkloadNetworkPortMirroringProvisioningState = "Deleting"
-	WorkloadNetworkPortMirroringProvisioningStateFailed    WorkloadNetworkPortMirroringProvisioningState = "Failed"
+	// WorkloadNetworkPortMirroringProvisioningStateBuilding - is building
+	WorkloadNetworkPortMirroringProvisioningStateBuilding WorkloadNetworkPortMirroringProvisioningState = "Building"
+	// WorkloadNetworkPortMirroringProvisioningStateCanceled - Resource creation was canceled.
+	WorkloadNetworkPortMirroringProvisioningStateCanceled WorkloadNetworkPortMirroringProvisioningState = "Canceled"
+	// WorkloadNetworkPortMirroringProvisioningStateDeleting - is deleting
+	WorkloadNetworkPortMirroringProvisioningStateDeleting WorkloadNetworkPortMirroringProvisioningState = "Deleting"
+	// WorkloadNetworkPortMirroringProvisioningStateFailed - Resource creation failed.
+	WorkloadNetworkPortMirroringProvisioningStateFailed WorkloadNetworkPortMirroringProvisioningState = "Failed"
+	// WorkloadNetworkPortMirroringProvisioningStateSucceeded - Resource has been created.
 	WorkloadNetworkPortMirroringProvisioningStateSucceeded WorkloadNetworkPortMirroringProvisioningState = "Succeeded"
-	WorkloadNetworkPortMirroringProvisioningStateUpdating  WorkloadNetworkPortMirroringProvisioningState = "Updating"
+	// WorkloadNetworkPortMirroringProvisioningStateUpdating - is updating
+	WorkloadNetworkPortMirroringProvisioningStateUpdating WorkloadNetworkPortMirroringProvisioningState = "Updating"
 )
 
 // PossibleWorkloadNetworkPortMirroringProvisioningStateValues returns the possible values for the WorkloadNetworkPortMirroringProvisioningState const type.
@@ -933,16 +1326,52 @@ func PossibleWorkloadNetworkPortMirroringProvisioningStateValues() []WorkloadNet
 	}
 }
 
-// WorkloadNetworkPublicIPProvisioningState - The provisioning state
+// WorkloadNetworkProvisioningState - base Workload Network provisioning state
+type WorkloadNetworkProvisioningState string
+
+const (
+	// WorkloadNetworkProvisioningStateBuilding - is building
+	WorkloadNetworkProvisioningStateBuilding WorkloadNetworkProvisioningState = "Building"
+	// WorkloadNetworkProvisioningStateCanceled - Resource creation was canceled.
+	WorkloadNetworkProvisioningStateCanceled WorkloadNetworkProvisioningState = "Canceled"
+	// WorkloadNetworkProvisioningStateDeleting - is deleting
+	WorkloadNetworkProvisioningStateDeleting WorkloadNetworkProvisioningState = "Deleting"
+	// WorkloadNetworkProvisioningStateFailed - Resource creation failed.
+	WorkloadNetworkProvisioningStateFailed WorkloadNetworkProvisioningState = "Failed"
+	// WorkloadNetworkProvisioningStateSucceeded - Resource has been created.
+	WorkloadNetworkProvisioningStateSucceeded WorkloadNetworkProvisioningState = "Succeeded"
+	// WorkloadNetworkProvisioningStateUpdating - is updating
+	WorkloadNetworkProvisioningStateUpdating WorkloadNetworkProvisioningState = "Updating"
+)
+
+// PossibleWorkloadNetworkProvisioningStateValues returns the possible values for the WorkloadNetworkProvisioningState const type.
+func PossibleWorkloadNetworkProvisioningStateValues() []WorkloadNetworkProvisioningState {
+	return []WorkloadNetworkProvisioningState{
+		WorkloadNetworkProvisioningStateBuilding,
+		WorkloadNetworkProvisioningStateCanceled,
+		WorkloadNetworkProvisioningStateDeleting,
+		WorkloadNetworkProvisioningStateFailed,
+		WorkloadNetworkProvisioningStateSucceeded,
+		WorkloadNetworkProvisioningStateUpdating,
+	}
+}
+
+// WorkloadNetworkPublicIPProvisioningState - Workload Network Public IP provisioning state
 type WorkloadNetworkPublicIPProvisioningState string
 
 const (
-	WorkloadNetworkPublicIPProvisioningStateBuilding  WorkloadNetworkPublicIPProvisioningState = "Building"
-	WorkloadNetworkPublicIPProvisioningStateCanceled  WorkloadNetworkPublicIPProvisioningState = "Canceled"
-	WorkloadNetworkPublicIPProvisioningStateDeleting  WorkloadNetworkPublicIPProvisioningState = "Deleting"
-	WorkloadNetworkPublicIPProvisioningStateFailed    WorkloadNetworkPublicIPProvisioningState = "Failed"
+	// WorkloadNetworkPublicIPProvisioningStateBuilding - is building
+	WorkloadNetworkPublicIPProvisioningStateBuilding WorkloadNetworkPublicIPProvisioningState = "Building"
+	// WorkloadNetworkPublicIPProvisioningStateCanceled - Resource creation was canceled.
+	WorkloadNetworkPublicIPProvisioningStateCanceled WorkloadNetworkPublicIPProvisioningState = "Canceled"
+	// WorkloadNetworkPublicIPProvisioningStateDeleting - is deleting
+	WorkloadNetworkPublicIPProvisioningStateDeleting WorkloadNetworkPublicIPProvisioningState = "Deleting"
+	// WorkloadNetworkPublicIPProvisioningStateFailed - Resource creation failed.
+	WorkloadNetworkPublicIPProvisioningStateFailed WorkloadNetworkPublicIPProvisioningState = "Failed"
+	// WorkloadNetworkPublicIPProvisioningStateSucceeded - Resource has been created.
 	WorkloadNetworkPublicIPProvisioningStateSucceeded WorkloadNetworkPublicIPProvisioningState = "Succeeded"
-	WorkloadNetworkPublicIPProvisioningStateUpdating  WorkloadNetworkPublicIPProvisioningState = "Updating"
+	// WorkloadNetworkPublicIPProvisioningStateUpdating - is updating
+	WorkloadNetworkPublicIPProvisioningStateUpdating WorkloadNetworkPublicIPProvisioningState = "Updating"
 )
 
 // PossibleWorkloadNetworkPublicIPProvisioningStateValues returns the possible values for the WorkloadNetworkPublicIPProvisioningState const type.
@@ -957,16 +1386,22 @@ func PossibleWorkloadNetworkPublicIPProvisioningStateValues() []WorkloadNetworkP
 	}
 }
 
-// WorkloadNetworkSegmentProvisioningState - The provisioning state
+// WorkloadNetworkSegmentProvisioningState - Workload Network Segment provisioning state
 type WorkloadNetworkSegmentProvisioningState string
 
 const (
-	WorkloadNetworkSegmentProvisioningStateBuilding  WorkloadNetworkSegmentProvisioningState = "Building"
-	WorkloadNetworkSegmentProvisioningStateCanceled  WorkloadNetworkSegmentProvisioningState = "Canceled"
-	WorkloadNetworkSegmentProvisioningStateDeleting  WorkloadNetworkSegmentProvisioningState = "Deleting"
-	WorkloadNetworkSegmentProvisioningStateFailed    WorkloadNetworkSegmentProvisioningState = "Failed"
+	// WorkloadNetworkSegmentProvisioningStateBuilding - is building
+	WorkloadNetworkSegmentProvisioningStateBuilding WorkloadNetworkSegmentProvisioningState = "Building"
+	// WorkloadNetworkSegmentProvisioningStateCanceled - Resource creation was canceled.
+	WorkloadNetworkSegmentProvisioningStateCanceled WorkloadNetworkSegmentProvisioningState = "Canceled"
+	// WorkloadNetworkSegmentProvisioningStateDeleting - is deleting
+	WorkloadNetworkSegmentProvisioningStateDeleting WorkloadNetworkSegmentProvisioningState = "Deleting"
+	// WorkloadNetworkSegmentProvisioningStateFailed - Resource creation failed.
+	WorkloadNetworkSegmentProvisioningStateFailed WorkloadNetworkSegmentProvisioningState = "Failed"
+	// WorkloadNetworkSegmentProvisioningStateSucceeded - Resource has been created.
 	WorkloadNetworkSegmentProvisioningStateSucceeded WorkloadNetworkSegmentProvisioningState = "Succeeded"
-	WorkloadNetworkSegmentProvisioningStateUpdating  WorkloadNetworkSegmentProvisioningState = "Updating"
+	// WorkloadNetworkSegmentProvisioningStateUpdating - is updating
+	WorkloadNetworkSegmentProvisioningStateUpdating WorkloadNetworkSegmentProvisioningState = "Updating"
 )
 
 // PossibleWorkloadNetworkSegmentProvisioningStateValues returns the possible values for the WorkloadNetworkSegmentProvisioningState const type.
@@ -981,16 +1416,22 @@ func PossibleWorkloadNetworkSegmentProvisioningStateValues() []WorkloadNetworkSe
 	}
 }
 
-// WorkloadNetworkVMGroupProvisioningState - The provisioning state
+// WorkloadNetworkVMGroupProvisioningState - Workload Network VM Group provisioning state
 type WorkloadNetworkVMGroupProvisioningState string
 
 const (
-	WorkloadNetworkVMGroupProvisioningStateBuilding  WorkloadNetworkVMGroupProvisioningState = "Building"
-	WorkloadNetworkVMGroupProvisioningStateCanceled  WorkloadNetworkVMGroupProvisioningState = "Canceled"
-	WorkloadNetworkVMGroupProvisioningStateDeleting  WorkloadNetworkVMGroupProvisioningState = "Deleting"
-	WorkloadNetworkVMGroupProvisioningStateFailed    WorkloadNetworkVMGroupProvisioningState = "Failed"
+	// WorkloadNetworkVMGroupProvisioningStateBuilding - is building
+	WorkloadNetworkVMGroupProvisioningStateBuilding WorkloadNetworkVMGroupProvisioningState = "Building"
+	// WorkloadNetworkVMGroupProvisioningStateCanceled - Resource creation was canceled.
+	WorkloadNetworkVMGroupProvisioningStateCanceled WorkloadNetworkVMGroupProvisioningState = "Canceled"
+	// WorkloadNetworkVMGroupProvisioningStateDeleting - is deleting
+	WorkloadNetworkVMGroupProvisioningStateDeleting WorkloadNetworkVMGroupProvisioningState = "Deleting"
+	// WorkloadNetworkVMGroupProvisioningStateFailed - Resource creation failed.
+	WorkloadNetworkVMGroupProvisioningStateFailed WorkloadNetworkVMGroupProvisioningState = "Failed"
+	// WorkloadNetworkVMGroupProvisioningStateSucceeded - Resource has been created.
 	WorkloadNetworkVMGroupProvisioningStateSucceeded WorkloadNetworkVMGroupProvisioningState = "Succeeded"
-	WorkloadNetworkVMGroupProvisioningStateUpdating  WorkloadNetworkVMGroupProvisioningState = "Updating"
+	// WorkloadNetworkVMGroupProvisioningStateUpdating - is updating
+	WorkloadNetworkVMGroupProvisioningStateUpdating WorkloadNetworkVMGroupProvisioningState = "Updating"
 )
 
 // PossibleWorkloadNetworkVMGroupProvisioningStateValues returns the possible values for the WorkloadNetworkVMGroupProvisioningState const type.

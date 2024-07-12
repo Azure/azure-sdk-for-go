@@ -25,7 +25,7 @@
 # AzureSDKOwners: @richardpark-msft
 # ServiceLabel: %OpenAI
 # PRLabel: %OpenAI
-/sdk/ai                       @richardpark-msft @jhendrixMSFT
+/sdk/ai                       @richardpark-msft @jhendrixMSFT @chlowell
 
 # AzureSDKOwners: @jhendrixMSFT
 # ServiceLabel: %Internal
@@ -41,7 +41,7 @@
 # ServiceOwner: @ealsur
 # ServiceLabel: %Cosmos
 # PRLabel: %Cosmos
-/sdk/data/azcosmos/           @ealsur @kirankumarkolli @simorenoh @kushagraThapar
+/sdk/data/azcosmos/           @ealsur @kirankumarkolli @simorenoh @kushagraThapar @Pilchie
 
 # AzureSDKOwners: @jhendrixMSFT
 # ServiceLabel: %Tables
@@ -56,17 +56,17 @@
 # AzureSDKOwners: @richardpark-msft
 # ServiceLabel: %Service Bus
 # PRLabel: %Service Bus
-/sdk/messaging/azservicebus/  @richardpark-msft @jhendrixMSFT
+/sdk/messaging/azservicebus/  @richardpark-msft @chlowell @jhendrixMSFT
 
 # AzureSDKOwners: @richardpark-msft
 # ServiceLabel: %Event Grid
 # PRLabel: %Event Grid
-/sdk/messaging/eventgrid/  @richardpark-msft @jhendrixMSFT
+/sdk/messaging/eventgrid/  @richardpark-msft @chlowell @jhendrixMSFT
 
 # AzureSDKOwners: @richardpark-msft
 # ServiceLabel: %Event Hubs
 # PRLabel: %Event Hubs
-/sdk/messaging/azeventhubs/   @richardpark-msft @jhendrixMSFT
+/sdk/messaging/azeventhubs/   @richardpark-msft @chlowell @jhendrixMSFT
 
 # AzureSDKOwners: @gracewilcox
 # ServiceLabel: %Monitor
@@ -76,7 +76,7 @@
 # AzureSDKOwners: @lirenhe
 # ServiceLabel: %Mgmt
 # PRLabel: %Mgmt
-/sdk/resourcemanager/         @ArcturusZhang @lirenhe @tadelesh
+/sdk/resourcemanager/         @ArcturusZhang @lirenhe @tadelesh @raych1
 
 # AzureSDKOwners: @jhendrixMSFT
 # ServiceOwner: @siminsavani-msft
@@ -93,9 +93,15 @@
 # Eng Sys
 ###########
 /eng/                         @benbp @weshaggard
+/eng/common/                  @Azure/azure-sdk-eng
+/.github/workflows/           @Azure/azure-sdk-eng
+
 
 # Add owners for notifications for specific pipelines
 /eng/common/pipelines/codeowners-linter.yml       @rickwinter
+
+# Add owners for go sdk tool
+/eng/tools/generator          @ArcturusZhang @lirenhe @tadelesh @raych1
 
 # AzureSDKOwners: @benbp
 # ServiceLabel: %EngSys
@@ -271,7 +277,7 @@
 #/<NotInRepo>/          @qike-ms @jwilder @thomas1206 @seanmck
 
 # ServiceLabel: %Cosmos
-#/<NotInRepo>/          @Wmengmsft @MehaKaushik
+#/<NotInRepo>/          @Wmengmsft @MehaKaushik @Pilchie
 
 # ServiceLabel: %Customer Insights
 #/<NotInRepo>/          @shefymk
@@ -571,7 +577,7 @@
 #/<NotInRepo>/          @bastionsuppgithub
 
 # ServiceLabel: %Azure.Spring - Cosmos
-#/<NotInRepo>/          @kushagraThapar
+#/<NotInRepo>/          @kushagraThapar @Pilchie
 
 # ServiceLabel: %Network - Private Link
 #/<NotInRepo>/          @privlinksuppgithub

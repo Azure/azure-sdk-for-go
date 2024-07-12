@@ -1,5 +1,91 @@
 # Release History
 
+## 2.0.0-beta.1 (2024-06-28)
+### Breaking Changes
+
+- Function `*WorkloadNetworksClient.Get` parameter(s) have been changed from `(context.Context, string, string, WorkloadNetworkName, *WorkloadNetworksClientGetOptions)` to `(context.Context, string, string, *WorkloadNetworksClientGetOptions)`
+- Type of `Operation.Origin` has been changed from `*string` to `*Origin`
+- Enum `WorkloadNetworkName` has been removed
+- Struct `LogSpecification` has been removed
+- Struct `MetricDimension` has been removed
+- Struct `MetricSpecification` has been removed
+- Struct `OperationList` has been removed
+- Struct `OperationProperties` has been removed
+- Struct `ServiceSpecification` has been removed
+- Field `Properties` of struct `Operation` has been removed
+- Field `OperationList` of struct `OperationsClientListResponse` has been removed
+
+### Features Added
+
+- New enum type `ActionType` with values `ActionTypeInternal`
+- New enum type `CloudLinkProvisioningState` with values `CloudLinkProvisioningStateCanceled`, `CloudLinkProvisioningStateFailed`, `CloudLinkProvisioningStateSucceeded`
+- New enum type `CreatedByType` with values `CreatedByTypeApplication`, `CreatedByTypeKey`, `CreatedByTypeManagedIdentity`, `CreatedByTypeUser`
+- New enum type `DNSZoneType` with values `DNSZoneTypePrivate`, `DNSZoneTypePublic`
+- New enum type `HcxEnterpriseSiteProvisioningState` with values `HcxEnterpriseSiteProvisioningStateCanceled`, `HcxEnterpriseSiteProvisioningStateFailed`, `HcxEnterpriseSiteProvisioningStateSucceeded`
+- New enum type `IscsiPathProvisioningState` with values `IscsiPathProvisioningStateBuilding`, `IscsiPathProvisioningStateCanceled`, `IscsiPathProvisioningStateDeleting`, `IscsiPathProvisioningStateFailed`, `IscsiPathProvisioningStatePending`, `IscsiPathProvisioningStateSucceeded`, `IscsiPathProvisioningStateUpdating`
+- New enum type `Origin` with values `OriginSystem`, `OriginUser`, `OriginUserSystem`
+- New enum type `SKUTier` with values `SKUTierBasic`, `SKUTierFree`, `SKUTierPremium`, `SKUTierStandard`
+- New enum type `ScriptCmdletAudience` with values `ScriptCmdletAudienceAny`, `ScriptCmdletAudienceAutomation`
+- New enum type `ScriptCmdletProvisioningState` with values `ScriptCmdletProvisioningStateCanceled`, `ScriptCmdletProvisioningStateFailed`, `ScriptCmdletProvisioningStateSucceeded`
+- New enum type `ScriptPackageProvisioningState` with values `ScriptPackageProvisioningStateCanceled`, `ScriptPackageProvisioningStateFailed`, `ScriptPackageProvisioningStateSucceeded`
+- New enum type `VirtualMachineProvisioningState` with values `VirtualMachineProvisioningStateCanceled`, `VirtualMachineProvisioningStateFailed`, `VirtualMachineProvisioningStateSucceeded`
+- New enum type `WorkloadNetworkProvisioningState` with values `WorkloadNetworkProvisioningStateBuilding`, `WorkloadNetworkProvisioningStateCanceled`, `WorkloadNetworkProvisioningStateDeleting`, `WorkloadNetworkProvisioningStateFailed`, `WorkloadNetworkProvisioningStateSucceeded`, `WorkloadNetworkProvisioningStateUpdating`
+- New function `*ClientFactory.NewIscsiPathsClient() *IscsiPathsClient`
+- New function `NewIscsiPathsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*IscsiPathsClient, error)`
+- New function `*IscsiPathsClient.BeginCreateOrUpdate(context.Context, string, string, IscsiPath, *IscsiPathsClientBeginCreateOrUpdateOptions) (*runtime.Poller[IscsiPathsClientCreateOrUpdateResponse], error)`
+- New function `*IscsiPathsClient.BeginDelete(context.Context, string, string, *IscsiPathsClientBeginDeleteOptions) (*runtime.Poller[IscsiPathsClientDeleteResponse], error)`
+- New function `*IscsiPathsClient.Get(context.Context, string, string, *IscsiPathsClientGetOptions) (IscsiPathsClientGetResponse, error)`
+- New function `*IscsiPathsClient.NewListByPrivateCloudPager(string, string, *IscsiPathsClientListByPrivateCloudOptions) *runtime.Pager[IscsiPathsClientListByPrivateCloudResponse]`
+- New struct `ElasticSanVolume`
+- New struct `IscsiPath`
+- New struct `IscsiPathListResult`
+- New struct `IscsiPathProperties`
+- New struct `OperationListResult`
+- New struct `SystemData`
+- New struct `WorkloadNetworkProperties`
+- New field `SystemData` in struct `Addon`
+- New field `SystemData` in struct `CloudLink`
+- New field `ProvisioningState` in struct `CloudLinkProperties`
+- New field `SystemData` in struct `Cluster`
+- New field `VsanDatastoreName` in struct `ClusterProperties`
+- New field `SKU` in struct `ClusterUpdate`
+- New field `SystemData` in struct `Datastore`
+- New field `ElasticSanVolume` in struct `DatastoreProperties`
+- New field `HcxCloudManagerIP`, `NsxtManagerIP`, `VcenterIP` in struct `Endpoints`
+- New field `SystemData` in struct `ExpressRouteAuthorization`
+- New field `SystemData` in struct `GlobalReachConnection`
+- New field `SystemData` in struct `HcxEnterpriseSite`
+- New field `ProvisioningState` in struct `HcxEnterpriseSiteProperties`
+- New field `VsanDatastoreName` in struct `ManagementCluster`
+- New field `ActionType` in struct `Operation`
+- New anonymous field `OperationListResult` in struct `OperationsClientListResponse`
+- New field `SystemData` in struct `PlacementPolicy`
+- New field `SystemData` in struct `PrivateCloud`
+- New field `DNSZoneType`, `VirtualNetworkID` in struct `PrivateCloudProperties`
+- New field `SKU` in struct `PrivateCloudUpdate`
+- New field `DNSZoneType` in struct `PrivateCloudUpdateProperties`
+- New field `Capacity`, `Family`, `Size`, `Tier` in struct `SKU`
+- New field `SystemData` in struct `ScriptCmdlet`
+- New field `Audience`, `ProvisioningState` in struct `ScriptCmdletProperties`
+- New field `SystemData` in struct `ScriptExecution`
+- New field `SystemData` in struct `ScriptPackage`
+- New field `ProvisioningState` in struct `ScriptPackageProperties`
+- New field `SystemData` in struct `VirtualMachine`
+- New field `ProvisioningState` in struct `VirtualMachineProperties`
+- New field `Properties`, `SystemData` in struct `WorkloadNetwork`
+- New field `SystemData` in struct `WorkloadNetworkDNSService`
+- New field `SystemData` in struct `WorkloadNetworkDNSZone`
+- New field `SystemData` in struct `WorkloadNetworkDhcp`
+- New field `SystemData` in struct `WorkloadNetworkGateway`
+- New field `ProvisioningState` in struct `WorkloadNetworkGatewayProperties`
+- New field `SystemData` in struct `WorkloadNetworkPortMirroring`
+- New field `SystemData` in struct `WorkloadNetworkPublicIP`
+- New field `SystemData` in struct `WorkloadNetworkSegment`
+- New field `SystemData` in struct `WorkloadNetworkVMGroup`
+- New field `SystemData` in struct `WorkloadNetworkVirtualMachine`
+- New field `ProvisioningState` in struct `WorkloadNetworkVirtualMachineProperties`
+
+
 ## 1.4.0 (2023-11-24)
 ### Features Added
 

@@ -14,10 +14,10 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/GetFunctionAppStacks.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/GetFunctionAppStacks.json
 func ExampleProviderClient_NewGetFunctionAppStacksPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -767,7 +767,7 @@ func ExampleProviderClient_NewGetFunctionAppStacksPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/GetFunctionAppStacksForLocation.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/GetFunctionAppStacksForLocation.json
 func ExampleProviderClient_NewGetFunctionAppStacksForLocationPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1523,7 +1523,7 @@ func ExampleProviderClient_NewGetFunctionAppStacksForLocationPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/GetWebAppStacksForLocation.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/GetWebAppStacksForLocation.json
 func ExampleProviderClient_NewGetWebAppStacksForLocationPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2959,7 +2959,7 @@ func ExampleProviderClient_NewGetWebAppStacksForLocationPager() {
 		// 										AppInsightsSettings: &armappservice.AppInsightsWebAppStackSettings{
 		// 											IsSupported: to.Ptr(false),
 		// 										},
-		// 										EndOfLifeDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-01T00:00:00.000Z"); return t}()),
+		// 										EndOfLifeDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-12-01T00:00:00.000Z"); return t}()),
 		// 										GitHubActionSettings: &armappservice.GitHubActionWebAppStackSettings{
 		// 											IsSupported: to.Ptr(false),
 		// 										},
@@ -2971,7 +2971,7 @@ func ExampleProviderClient_NewGetWebAppStacksForLocationPager() {
 		// 										AppInsightsSettings: &armappservice.AppInsightsWebAppStackSettings{
 		// 											IsSupported: to.Ptr(false),
 		// 										},
-		// 										EndOfLifeDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-01T00:00:00.000Z"); return t}()),
+		// 										EndOfLifeDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-12-01T00:00:00.000Z"); return t}()),
 		// 										GitHubActionSettings: &armappservice.GitHubActionWebAppStackSettings{
 		// 											IsSupported: to.Ptr(false),
 		// 										},
@@ -4420,7 +4420,7 @@ func ExampleProviderClient_NewGetWebAppStacksForLocationPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/ListOperations.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/ListOperations.json
 func ExampleProviderClient_NewListOperationsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -10133,7 +10133,7 @@ func ExampleProviderClient_NewListOperationsPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/GetWebAppStacks.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de1f3772629b6f4d3ac01548a5f6d719bfb97c9e/specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/GetWebAppStacks.json
 func ExampleProviderClient_NewGetWebAppStacksPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -11565,7 +11565,7 @@ func ExampleProviderClient_NewGetWebAppStacksPager() {
 		// 										AppInsightsSettings: &armappservice.AppInsightsWebAppStackSettings{
 		// 											IsSupported: to.Ptr(false),
 		// 										},
-		// 										EndOfLifeDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-01T00:00:00.000Z"); return t}()),
+		// 										EndOfLifeDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-12-01T00:00:00.000Z"); return t}()),
 		// 										GitHubActionSettings: &armappservice.GitHubActionWebAppStackSettings{
 		// 											IsSupported: to.Ptr(false),
 		// 										},
@@ -11577,7 +11577,7 @@ func ExampleProviderClient_NewGetWebAppStacksPager() {
 		// 										AppInsightsSettings: &armappservice.AppInsightsWebAppStackSettings{
 		// 											IsSupported: to.Ptr(false),
 		// 										},
-		// 										EndOfLifeDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-01T00:00:00.000Z"); return t}()),
+		// 										EndOfLifeDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-12-01T00:00:00.000Z"); return t}()),
 		// 										GitHubActionSettings: &armappservice.GitHubActionWebAppStackSettings{
 		// 											IsSupported: to.Ptr(false),
 		// 										},

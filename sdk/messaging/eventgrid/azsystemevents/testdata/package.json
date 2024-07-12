@@ -1,0 +1,19 @@
+{
+  "name": "testdata",
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "pull": "pwsh ../../../../../eng/common/scripts/TypeSpec-Project-Sync.ps1 -ProjectDirectory . && rm ./TempTypeSpecFiles/Azure.Messaging.EventGrid.SystemEvents/tspconfig.yaml",
+    "build": "tsp compile ./TempTypeSpecFiles/Azure.Messaging.EventGrid.SystemEvents/client.tsp"
+  },
+  "dependencies": {
+    "@azure-tools/typespec-client-generator-core": "^0.42.0",
+    "@azure-tools/typespec-go": "https://github.com/Azure/autorest.go/releases/download/v0.1.0-dev.3-20240508.1/azure-tools-typespec-go-0.1.0-dev.3-20240508.1.tgz",
+    "@typespec/compiler": "^0.56.0",
+    "@typespec/versioning": "^0.56.0"
+  },
+  "overrides": {
+    "braces": "^3.0.3"
+  },
+  "private": true
+}

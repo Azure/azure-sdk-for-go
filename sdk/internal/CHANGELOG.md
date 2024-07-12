@@ -1,6 +1,6 @@
 # Release History
 
-## 1.7.1 (Unreleased)
+## 1.9.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,30 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.9.1 (2024-07-02)
+
+### Bugs Fixed
+* Fixed a data race in `mock/Server.Do`.
+
+### Other Changes
+* Upgraded dependencies
+
+## 1.9.0 (2024-06-06)
+
+### Features Added
+* Added `test/credential` package containing a credential factory for live and recorded tests
+  and a fake credential for offline tests.
+
+## 1.8.0 (2024-05-09)
+
+### Breaking Changes
+
+* Unexported `Module` and `Version` constants
+
+### Other Changes
+
+* Removed default sanitizers added in v1.6.0 (the test proxy itself now includes these)
 
 ## 1.7.0 (2024-05-01)
 

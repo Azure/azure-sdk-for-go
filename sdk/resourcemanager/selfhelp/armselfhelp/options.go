@@ -8,8 +8,9 @@
 
 package armselfhelp
 
-// CheckNameAvailabilityClientPostOptions contains the optional parameters for the CheckNameAvailabilityClient.Post method.
-type CheckNameAvailabilityClientPostOptions struct {
+// CheckNameAvailabilityClientCheckAvailabilityOptions contains the optional parameters for the CheckNameAvailabilityClient.CheckAvailability
+// method.
+type CheckNameAvailabilityClientCheckAvailabilityOptions struct {
 	// The required parameters for availability check.
 	CheckNameAvailabilityRequest *CheckNameAvailabilityRequest
 }
@@ -37,16 +38,16 @@ type DiscoverySolutionClientListOptions struct {
 	Skiptoken *string
 }
 
-// DiscoverySolutionNLPSubscriptionScopeClientPostOptions contains the optional parameters for the DiscoverySolutionNLPSubscriptionScopeClient.Post
+// DiscoverySolutionNLPClientDiscoverSolutionsBySubscriptionOptions contains the optional parameters for the DiscoverySolutionNLPClient.DiscoverSolutionsBySubscription
 // method.
-type DiscoverySolutionNLPSubscriptionScopeClientPostOptions struct {
+type DiscoverySolutionNLPClientDiscoverSolutionsBySubscriptionOptions struct {
 	// Request body for discovering solutions using NLP.
 	DiscoverSolutionRequest *DiscoveryNlpRequest
 }
 
-// DiscoverySolutionNLPTenantScopeClientPostOptions contains the optional parameters for the DiscoverySolutionNLPTenantScopeClient.Post
+// DiscoverySolutionNLPClientDiscoverSolutionsOptions contains the optional parameters for the DiscoverySolutionNLPClient.DiscoverSolutions
 // method.
-type DiscoverySolutionNLPTenantScopeClientPostOptions struct {
+type DiscoverySolutionNLPClientDiscoverSolutionsOptions struct {
 	// Request body for discovering solutions using NLP.
 	DiscoverSolutionRequest *DiscoveryNlpRequest
 }

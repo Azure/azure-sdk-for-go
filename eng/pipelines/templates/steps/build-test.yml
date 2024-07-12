@@ -17,6 +17,15 @@ parameters:
   - name: TestRunTime
     type: string
     default: '600s'
+  - name: EnableRaceDetector
+    type: boolean
+    default: false
+  - name: UseFederatedAuth
+    type: boolean
+    default: false
+  - name: ServiceConnection
+    type: string
+    default: ''
 
 steps:
   - task: Powershell@2
@@ -65,27 +74,60 @@ steps:
   - ${{ if eq(parameters.TestProxy, true) }}:
     - template: /eng/common/testproxy/test-proxy-tool.yml
 
-  - task: PowerShell@2
-    displayName: 'Run Tests'
-    inputs:
-      targetType: 'filePath'
-      filePath: ./eng/scripts/run_tests.ps1
-      arguments: '${{ parameters.ServiceDirectory }} ${{ parameters.TestRunTime }}'
-      pwsh: true
-    env:
-      GO111MODULE: 'on'
-      PROXY_CERT: $(Build.SourcesDirectory)/eng/common/testproxy/dotnet-devcert.crt
-      ${{ insert }}: ${{ parameters.EnvVars }}
-      GOTRACEBACK: all
-      AZURE_SDK_GO_LOGGING: all
+  - ${{ if parameters.UseFederatedAuth }}:
+    - task: AzurePowerShell@5
+      displayName: Run Tests (Federated Auth)
+      inputs:
+        azureSubscription: ${{ parameters.ServiceConnection }}
+        azurePowerShellVersion: LatestVersion
+        ScriptType: InlineScript
+        Inline: |
+          ./eng/scripts/run_tests.ps1 ${{ parameters.ServiceDirectory }} ${{ parameters.TestRunTime }} $${{ parameters.EnableRaceDetector }}
+          exit $LASTEXITCODE
+        pwsh: true
+      env:
+        GO111MODULE: 'on'
+        PROXY_CERT: $(Build.SourcesDirectory)/eng/common/testproxy/dotnet-devcert.crt
+        ${{ insert }}: ${{ parameters.EnvVars }}
+        GOTRACEBACK: all
+        AZURE_SDK_GO_LOGGING: all
+        SYSTEM_ACCESSTOKEN: $(System.AccessToken)
 
-  - task: PowerShell@2
-    displayName: 'Build Performance Tests'
-    inputs:
-      targetType: 'filePath'
-      filePath: ./eng/scripts/Build_Perf.ps1
-      arguments: '${{ parameters.ServiceDirectory }} $$(UseAzcoreFromMain)'
-      pwsh: true
+    - task: AzurePowerShell@5
+      displayName: Build Performance Tests (Federated Auth)
+      inputs:
+        azureSubscription: ${{ parameters.ServiceConnection }}
+        azurePowerShellVersion: LatestVersion
+        ScriptType: InlineScript
+        Inline: |
+          eng/scripts/Build_Perf.ps1 ${{ parameters.ServiceDirectory }} $$(UseAzcoreFromMain)
+          exit $LASTEXITCODE
+        pwsh: true
+      env:
+        SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+
+  - ${{ else }}:
+    - task: PowerShell@2
+      displayName: 'Run Tests'
+      inputs:
+        targetType: 'filePath'
+        filePath: ./eng/scripts/run_tests.ps1
+        arguments: '${{ parameters.ServiceDirectory }} ${{ parameters.TestRunTime }} $${{ parameters.EnableRaceDetector }}'
+        pwsh: true
+      env:
+        GO111MODULE: 'on'
+        PROXY_CERT: $(Build.SourcesDirectory)/eng/common/testproxy/dotnet-devcert.crt
+        ${{ insert }}: ${{ parameters.EnvVars }}
+        GOTRACEBACK: all
+        AZURE_SDK_GO_LOGGING: all
+
+    - task: PowerShell@2
+      displayName: 'Build Performance Tests'
+      inputs:
+        targetType: 'filePath'
+        filePath: ./eng/scripts/Build_Perf.ps1
+        arguments: '${{ parameters.ServiceDirectory }} $$(UseAzcoreFromMain)'
+        pwsh: true
 
   - ${{ if eq(parameters.TestProxy, true) }}:
     - pwsh: |

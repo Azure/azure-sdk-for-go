@@ -20,17 +20,16 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
-	"strconv"
 )
 
 // VmmServersServer is a fake server for instances of the armscvmm.VmmServersClient type.
 type VmmServersServer struct {
 	// BeginCreateOrUpdate is the fake for method VmmServersClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, vmmServerName string, body armscvmm.VMMServer, options *armscvmm.VmmServersClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armscvmm.VmmServersClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, vmmServerName string, resource armscvmm.VmmServer, options *armscvmm.VmmServersClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armscvmm.VmmServersClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method VmmServersClient.BeginDelete
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	// HTTP status codes to indicate success: http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, vmmServerName string, options *armscvmm.VmmServersClientBeginDeleteOptions) (resp azfake.PollerResponder[armscvmm.VmmServersClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method VmmServersClient.Get
@@ -46,8 +45,8 @@ type VmmServersServer struct {
 	NewListBySubscriptionPager func(options *armscvmm.VmmServersClientListBySubscriptionOptions) (resp azfake.PagerResponder[armscvmm.VmmServersClientListBySubscriptionResponse])
 
 	// BeginUpdate is the fake for method VmmServersClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, vmmServerName string, body armscvmm.ResourcePatch, options *armscvmm.VmmServersClientBeginUpdateOptions) (resp azfake.PollerResponder[armscvmm.VmmServersClientUpdateResponse], errResp azfake.ErrorResponder)
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, vmmServerName string, properties armscvmm.VmmServerTagsUpdate, options *armscvmm.VmmServersClientBeginUpdateOptions) (resp azfake.PollerResponder[armscvmm.VmmServersClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewVmmServersServerTransport creates a new instance of VmmServersServerTransport with the provided implementation.
@@ -122,7 +121,7 @@ func (v *VmmServersServerTransport) dispatchBeginCreateOrUpdate(req *http.Reques
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		body, err := server.UnmarshalRequestAsJSON[armscvmm.VMMServer](req)
+		body, err := server.UnmarshalRequestAsJSON[armscvmm.VmmServer](req)
 		if err != nil {
 			return nil, err
 		}
@@ -175,15 +174,12 @@ func (v *VmmServersServerTransport) dispatchBeginDelete(req *http.Request) (*htt
 		if err != nil {
 			return nil, err
 		}
-		vmmServerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("vmmServerName")])
-		if err != nil {
-			return nil, err
-		}
 		forceUnescaped, err := url.QueryUnescape(qp.Get("force"))
 		if err != nil {
 			return nil, err
 		}
-		forceParam, err := parseOptional(forceUnescaped, strconv.ParseBool)
+		forceParam := getOptional(armscvmm.ForceDelete(forceUnescaped))
+		vmmServerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("vmmServerName")])
 		if err != nil {
 			return nil, err
 		}
@@ -206,9 +202,9 @@ func (v *VmmServersServerTransport) dispatchBeginDelete(req *http.Request) (*htt
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !contains([]int{http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		v.beginDelete.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginDelete) {
 		v.beginDelete.remove(req)
@@ -243,7 +239,7 @@ func (v *VmmServersServerTransport) dispatchGet(req *http.Request) (*http.Respon
 	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).VMMServer, req)
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).VmmServer, req)
 	if err != nil {
 		return nil, err
 	}
@@ -332,7 +328,7 @@ func (v *VmmServersServerTransport) dispatchBeginUpdate(req *http.Request) (*htt
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		body, err := server.UnmarshalRequestAsJSON[armscvmm.ResourcePatch](req)
+		body, err := server.UnmarshalRequestAsJSON[armscvmm.VmmServerTagsUpdate](req)
 		if err != nil {
 			return nil, err
 		}
@@ -357,9 +353,9 @@ func (v *VmmServersServerTransport) dispatchBeginUpdate(req *http.Request) (*htt
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusCreated, http.StatusAccepted}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		v.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated, http.StatusAccepted", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginUpdate) {
 		v.beginUpdate.remove(req)

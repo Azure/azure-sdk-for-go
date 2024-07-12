@@ -15,37 +15,62 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/stretchr/testify/require"
 )
 
 func TestOnBehalfOfCredential(t *testing.T) {
-	expectedAssertion := "user-assertion"
+	clientAssertion := "client-assertion"
+	userAssertion := "user-assertion"
 	certs, key := allCertTests[0].certs, allCertTests[0].key
 	for _, test := range []struct {
-		ctor    func(policy.Transporter) (*OnBehalfOfCredential, error)
-		name    string
-		sendX5C bool
+		ctor             func(policy.Transporter) (*OnBehalfOfCredential, error)
+		name             string
+		sendX5C          bool
+		verifyCredential func(*testing.T, *http.Request)
 	}{
 		{
 			ctor: func(tp policy.Transporter) (*OnBehalfOfCredential, error) {
 				o := OnBehalfOfCredentialOptions{ClientOptions: policy.ClientOptions{Transport: tp}}
-				return NewOnBehalfOfCredentialWithCertificate(fakeTenantID, fakeClientID, expectedAssertion, certs, key, &o)
+				getAssertions := func(context.Context) (string, error) {
+					return clientAssertion, nil
+				}
+				return NewOnBehalfOfCredentialWithClientAssertions(fakeTenantID, fakeClientID, userAssertion, getAssertions, &o)
 			},
-			name: "certificate",
-		},
-		{
-			ctor: func(tp policy.Transporter) (*OnBehalfOfCredential, error) {
-				o := OnBehalfOfCredentialOptions{ClientOptions: policy.ClientOptions{Transport: tp}, SendCertificateChain: true}
-				return NewOnBehalfOfCredentialWithCertificate(fakeTenantID, fakeClientID, expectedAssertion, certs, key, &o)
+			name: "client assertions",
+			verifyCredential: func(t *testing.T, r *http.Request) {
+				require.Equal(t, clientAssertion, r.FormValue("client_assertion"))
 			},
-			name:    "SNI",
-			sendX5C: true,
 		},
 		{
 			ctor: func(tp policy.Transporter) (*OnBehalfOfCredential, error) {
 				o := OnBehalfOfCredentialOptions{ClientOptions: policy.ClientOptions{Transport: tp}}
-				return NewOnBehalfOfCredentialWithSecret(fakeTenantID, fakeClientID, expectedAssertion, "secret", &o)
+				return NewOnBehalfOfCredentialWithCertificate(fakeTenantID, fakeClientID, userAssertion, certs, key, &o)
+			},
+			name: "certificate",
+			verifyCredential: func(t *testing.T, r *http.Request) {
+				require.NotEmpty(t, r.FormValue("client_assertion"))
+			},
+		},
+		{
+			ctor: func(tp policy.Transporter) (*OnBehalfOfCredential, error) {
+				o := OnBehalfOfCredentialOptions{ClientOptions: policy.ClientOptions{Transport: tp}, SendCertificateChain: true}
+				return NewOnBehalfOfCredentialWithCertificate(fakeTenantID, fakeClientID, userAssertion, certs, key, &o)
+			},
+			name:    "SNI",
+			sendX5C: true,
+			verifyCredential: func(t *testing.T, r *http.Request) {
+				require.NotEmpty(t, r.FormValue("client_assertion"))
+			},
+		},
+		{
+			ctor: func(tp policy.Transporter) (*OnBehalfOfCredential, error) {
+				o := OnBehalfOfCredentialOptions{ClientOptions: policy.ClientOptions{Transport: tp}}
+				return NewOnBehalfOfCredentialWithSecret(fakeTenantID, fakeClientID, userAssertion, fakeSecret, &o)
 			},
 			name: "secret",
+			verifyCredential: func(t *testing.T, r *http.Request) {
+				require.Equal(t, fakeSecret, r.FormValue("client_secret"))
+			},
 		},
 	} {
 		t.Run(test.name, func(t *testing.T) {
@@ -63,12 +88,13 @@ func TestOnBehalfOfCredential(t *testing.T) {
 				if scope := r.FormValue("scope"); !strings.Contains(scope, liveTestScope) {
 					t.Errorf(`unexpected scopes "%v"`, scope)
 				}
-				if assertion := r.FormValue("assertion"); assertion != expectedAssertion {
-					t.Errorf(`unexpected assertion "%s"`, assertion)
+				if assertion := r.FormValue("assertion"); assertion != userAssertion {
+					t.Errorf(`unexpected user assertion "%s"`, assertion)
 				}
 				if test.sendX5C {
 					validateX5C(t, certs)(r)
 				}
+				test.verifyCredential(t, r)
 				return nil
 			}}
 			cred, err := test.ctor(&srv)

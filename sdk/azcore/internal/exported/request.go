@@ -7,6 +7,7 @@
 package exported
 
 import (
+	"bytes"
 	"context"
 	"encoding/base64"
 	"errors"
@@ -65,6 +66,36 @@ func (ov opValues) get(value any) bool {
 		reflect.ValueOf(value).Elem().Set(reflect.ValueOf(v))
 	}
 	return ok
+}
+
+// NewRequestFromRequest creates a new policy.Request with an existing *http.Request
+// Exported as runtime.NewRequestFromRequest().
+func NewRequestFromRequest(req *http.Request) (*Request, error) {
+	policyReq := &Request{req: req}
+
+	if req.Body != nil {
+		// since this is an already populated http.Request we want to copy
+		// over it's body, if it has one.
+		bodyBytes, err := io.ReadAll(req.Body)
+
+		if err != nil {
+			return nil, err
+		}
+
+		if err := req.Body.Close(); err != nil {
+			return nil, err
+		}
+
+		reader := NopCloser(bytes.NewReader(bodyBytes))
+
+		// SetBody also takes care of updating the http.Request's body
+		// as well, so they should stay in-sync from this point.
+		if err := policyReq.SetBody(reader, req.Header.Get("Content-Type")); err != nil {
+			return nil, err
+		}
+	}
+
+	return policyReq, nil
 }
 
 // NewRequest creates a new Request with the specified input.

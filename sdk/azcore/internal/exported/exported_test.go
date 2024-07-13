@@ -7,7 +7,10 @@
 package exported
 
 import (
+	"bytes"
+	"context"
 	"fmt"
+	"io"
 	"net/http"
 	"strings"
 	"testing"
@@ -73,4 +76,34 @@ func TestNewSASCredential(t *testing.T) {
 	const val2 = "bar"
 	cred.Update(val2)
 	require.EqualValues(t, val2, SASCredentialGet(cred))
+}
+
+func TestNewRequestFromRequest(t *testing.T) {
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+
+	expectedData := bytes.NewReader([]byte{1, 2, 3, 4, 5})
+
+	httpRequest, err := http.NewRequestWithContext(ctx, "POST", "https://example.com", expectedData)
+	require.NoError(t, err)
+
+	req, err := NewRequestFromRequest(httpRequest)
+	require.NoError(t, err)
+
+	// this fails - we need to populate the .body stream when we create this.
+	actualData, err := io.ReadAll(req.Body())
+	require.NoError(t, err)
+	require.Equal(t, []byte{1, 2, 3, 4, 5}, actualData)
+
+	// now we change stuff in the policy.Request...
+	replacementBuff := bytes.NewReader([]byte{6})
+	err = req.SetBody(NopCloser(replacementBuff), "application/coolstuff")
+	require.NoError(t, err)
+
+	// and it's automatically reflected in the http.Request, which helps us with interop
+	// with other HTTP pipelines.
+	require.Equal(t, "application/coolstuff", httpRequest.Header.Get("Content-Type"))
+	newBytes, err := io.ReadAll(httpRequest.Body)
+	require.NoError(t, err)
+	require.Equal(t, []byte{6}, newBytes)
 }

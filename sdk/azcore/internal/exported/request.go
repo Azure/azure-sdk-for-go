@@ -74,23 +74,29 @@ func NewRequestFromRequest(req *http.Request) (*Request, error) {
 	policyReq := &Request{req: req}
 
 	if req.Body != nil {
-		// since this is an already populated http.Request we want to copy
-		// over it's body, if it has one.
-		bodyBytes, err := io.ReadAll(req.Body)
+		// we can avoid a body copy here if the underlying stream is already a
+		// ReadSeekCloser.
+		readSeekCloser, isReadSeekCloser := req.Body.(io.ReadSeekCloser)
 
-		if err != nil {
-			return nil, err
+		if !isReadSeekCloser {
+			// since this is an already populated http.Request we want to copy
+			// over it's body, if it has one.
+			bodyBytes, err := io.ReadAll(req.Body)
+
+			if err != nil {
+				return nil, err
+			}
+
+			if err := req.Body.Close(); err != nil {
+				return nil, err
+			}
+
+			readSeekCloser = NopCloser(bytes.NewReader(bodyBytes))
 		}
-
-		if err := req.Body.Close(); err != nil {
-			return nil, err
-		}
-
-		reader := NopCloser(bytes.NewReader(bodyBytes))
 
 		// SetBody also takes care of updating the http.Request's body
 		// as well, so they should stay in-sync from this point.
-		if err := policyReq.SetBody(reader, req.Header.Get("Content-Type")); err != nil {
+		if err := policyReq.SetBody(readSeekCloser, req.Header.Get("Content-Type")); err != nil {
 			return nil, err
 		}
 	}

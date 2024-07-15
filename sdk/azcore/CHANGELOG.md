@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Added policy.NewRequestFromRequest(), allowing for a policy.Request to be created from an existing *http.Request.
+
 ### Breaking Changes
 
 ### Bugs Fixed

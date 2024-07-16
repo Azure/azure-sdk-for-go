@@ -80,7 +80,7 @@ func NewRequestFromRequest(req *http.Request) (*Request, error) {
 
 		if !isReadSeekCloser {
 			// since this is an already populated http.Request we want to copy
-			// over it's body, if it has one.
+			// over its body, if it has one.
 			bodyBytes, err := io.ReadAll(req.Body)
 
 			if err != nil {

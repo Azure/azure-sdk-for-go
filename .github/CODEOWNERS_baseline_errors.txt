@@ -7,9 +7,7 @@ atpham256 is not a public member of Azure.
 bleroy is not a public member of Azure.
 chlahav is not a public member of Azure.
 cijothomas is not a public member of Azure.
-cRui861 is not a public member of Azure.
 dipidoo is not a public member of Azure.
-dpwatrous is not a public member of Azure.
 Frey-Wang is not a public member of Azure.
 ingave is not a public member of Azure.
 julienstroheker is not a public member of Azure.
@@ -59,7 +57,6 @@ AzmonLogA is an invalid user. Ensure the user exists, is public member of Azure 
 azmonapplicationinsights is an invalid user. Ensure the user exists, is public member of Azure and has write permissions.
 AzureAppServiceCLI is an invalid user. Ensure the user exists, is public member of Azure and has write permissions.
 Azure/aks-pm is an invalid team. Ensure the team exists and has write permissions.
-Aviv-Yaniv is an invalid user. Ensure the user exists, is public member of Azure and has write permissions.
 Azure/azure-logicapps-team is an invalid team. Ensure the team exists and has write permissions.
 ahmedelnably is an invalid user. Ensure the user exists, is public member of Azure and has write permissions.
 arindamc is an invalid user. Ensure the user exists, is public member of Azure and has write permissions.
@@ -87,7 +84,6 @@ ccmbpxpcrew is an invalid user. Ensure the user exists, is public member of Azur
 darshanhs90 is an invalid user. Ensure the user exists, is public member of Azure and has write permissions.
 divka78 is an invalid user. Ensure the user exists, is public member of Azure and has write permissions.
 filizt is an invalid user. Ensure the user exists, is public member of Azure and has write permissions.
-JinyuID is an invalid user. Ensure the user exists, is public member of Azure and has write permissions.
 kayousef is an invalid user. Ensure the user exists, is public member of Azure and has write permissions.
 liadtal is an invalid user. Ensure the user exists, is public member of Azure and has write permissions.
 macolso is an invalid user. Ensure the user exists, is public member of Azure and has write permissions.
@@ -153,7 +149,6 @@ RandalliLama is an invalid user. Ensure the user exists, is public member of Azu
 NarayanThiru is an invalid user. Ensure the user exists, is public member of Azure and has write permissions.
 ilayrn is an invalid user. Ensure the user exists, is public member of Azure and has write permissions.
 zoharHenMicrosoft is an invalid user. Ensure the user exists, is public member of Azure and has write permissions.
-sagivf is an invalid user. Ensure the user exists, is public member of Azure and has write permissions.
 minamnmik is an invalid user. Ensure the user exists, is public member of Azure and has write permissions.
 varunkch is an invalid user. Ensure the user exists, is public member of Azure and has write permissions.
 azureml-github is an invalid user. Ensure the user exists, is public member of Azure and has write permissions.
@@ -201,7 +196,6 @@ xgithubtriage is an invalid user. Ensure the user exists, is public member of Az
 patelkunal is an invalid user. Ensure the user exists, is public member of Azure and has write permissions.
 klaaslanghout is an invalid user. Ensure the user exists, is public member of Azure and has write permissions.
 Shipra1Mishra is an invalid user. Ensure the user exists, is public member of Azure and has write permissions.
-zhusijia26 is an invalid user. Ensure the user exists, is public member of Azure and has write permissions.
 vwansuppgithub is an invalid user. Ensure the user exists, is public member of Azure and has write permissions.
 nvasuppgithub is an invalid user. Ensure the user exists, is public member of Azure and has write permissions.
 bastionsuppgithub is an invalid user. Ensure the user exists, is public member of Azure and has write permissions.

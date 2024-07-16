@@ -85,8 +85,8 @@
 /sdk/storage/                 @siminsavani-msft @souravgupta-msft @jhendrixMSFT @gapra-msft @vibhansa-msft @tanyasethi-msft
 
 # AzureSDKOwners: @jhendrixMSFT
-# ServiceLabel: %Open Telemetry
-# PRLabel: %Open Telemetry
+# ServiceLabel: %OpenTelemetry
+# PRLabel: %OpenTelemetry
 /sdk/tracing/azotel           @jhendrixMSFT @rickwinter
 
 ###########
@@ -147,7 +147,7 @@
 # ServiceLabel: %API Management
 #/<NotInRepo>/          @miaojiang
 
-# ServiceLabel: %Application Insights
+# ServiceLabel: %Monitor - ApplicationInsights
 #/<NotInRepo>/          @azmonapplicationinsights
 
 # ServiceLabel: %App Services
@@ -357,6 +357,9 @@
 # ServiceLabel: %Import Export
 #/<NotInRepo>/          @madhurinms
 
+# ServiceLabel: %Insights
+#/<NotInRepo>/          @AzmonLogA
+
 # ServiceLabel: %KeyVault
 #/<NotInRepo>/          @RandalliLama @schaabs @jlichwa
 
@@ -387,7 +390,7 @@
 # ServiceLabel: %Machine Learning Experimentation
 #/<NotInRepo>/          @aashishb
 
-# ServiceLabel: %Managed Services
+# ServiceLabel: %ManagedServices
 #/<NotInRepo>/          @Lighthouse-Azure
 
 # ServiceLabel: %MariaDB
@@ -458,9 +461,6 @@
 
 # ServiceLabel: %Notification Hub
 #/<NotInRepo>/          @tjsomasundaram
-
-# ServiceLabel: %Operational Insights
-#/<NotInRepo>/          @AzmonLogA
 
 # ServiceLabel: %Policy
 #/<NotInRepo>/          @aperezcloud @kenieva
@@ -557,9 +557,6 @@
 
 # ServiceLabel: %TimeseriesInsights
 #/<NotInRepo>/          @Shipra1Mishra
-
-# ServiceLabel: %vFXT
-#/<NotInRepo>/          @zhusijia26
 
 # ServiceLabel: %Web Apps
 #/<NotInRepo>/          @AzureAppServiceCLI @antcp

@@ -1,14 +1,9 @@
 # Release History
 
-## 1.9.2 (Unreleased)
+## 1.10.0 (2024-07-16)
 
 ### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+* `test/credential.New` supports federated authentication in Azure Pipelines
 
 ## 1.9.1 (2024-07-02)
 

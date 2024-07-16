@@ -18,10 +18,21 @@ var recordMode = recording.GetRecordMode()
 
 type NewOptions struct{}
 
-// New constructs an [azcore.TokenCredential] for use in tests
+// New constructs a credential for use in tests. In playback mode, it returns [Fake], which always
+// provides valid tokens. In live and record modes, it returns a credential based on the environment:
+//   - [azidentity.AzurePipelinesCredential] when running in an Azure Pipelines AzurePowerShell task
+//   - [azidentity.ClientSecretCredential], if New-TestResources.ps1 provided service principal details
+//   - [azidentity.DefaultAzureCredential] otherwise
 func New(*NewOptions) (azcore.TokenCredential, error) {
 	if recordMode == recording.PlaybackMode {
 		return &Fake{}, nil
+	}
+	accessToken := os.Getenv("SYSTEM_ACCESSTOKEN")
+	clientID := os.Getenv("AZURESUBSCRIPTION_CLIENT_ID")
+	connectionID := os.Getenv("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID")
+	tenant := os.Getenv("AZURESUBSCRIPTION_TENANT_ID")
+	if accessToken != "" && clientID != "" && connectionID != "" && tenant != "" {
+		return azidentity.NewAzurePipelinesCredential(tenant, clientID, connectionID, accessToken, nil)
 	}
 	if s := os.Getenv("AZURE_SERVICE_DIRECTORY"); s != "" {
 		// New-TestResources.ps1 has configured this environment, possibly with service principal details

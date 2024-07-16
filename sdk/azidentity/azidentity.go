@@ -53,8 +53,13 @@ var (
 	errInvalidTenantID = errors.New("invalid tenantID. You can locate your tenantID by following the instructions listed here: https://learn.microsoft.com/partner-center/find-ids-and-domain-names")
 )
 
-// TokenCachePersistenceOptions contains options for persistent token caching
-type TokenCachePersistenceOptions = internal.TokenCachePersistenceOptions
+// Cache represents a persistent cache that makes authentication data available across processes.
+// Construct one with [github.com/Azure/azure-sdk-for-go/sdk/azidentity/cache.New]. This package's
+// [persistent user authentication example] shows how to use a persistent cache to reuse logins
+// across application runs.
+//
+// [persistent user authentication example]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity@v1.8.0-beta.1#example-package-PersistentUserAuthentication
+type Cache = internal.Cache
 
 // setAuthorityHost initializes the authority host for credentials. Precedence is:
 //  1. cloud.Configuration.ActiveDirectoryAuthorityHost value set by user

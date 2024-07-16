@@ -30,12 +30,12 @@ type publicClientOptions struct {
 	azcore.ClientOptions
 
 	AdditionallyAllowedTenants     []string
+	Cache                          Cache
 	DeviceCodePrompt               func(context.Context, DeviceCodeMessage) error
 	DisableAutomaticAuthentication bool
 	DisableInstanceDiscovery       bool
 	LoginHint, RedirectURL         string
 	Record                         AuthenticationRecord
-	TokenCachePersistenceOptions   *TokenCachePersistenceOptions
 	Username, Password             string
 }
 
@@ -222,13 +222,13 @@ func (p *publicClient) client(tro policy.TokenRequestOptions) (msalPublicClient,
 }
 
 func (p *publicClient) newMSALClient(enableCAE bool) (msalPublicClient, error) {
-	cache, err := internal.NewCache(p.opts.TokenCachePersistenceOptions, enableCAE)
+	c, err := internal.ExportReplace(p.opts.Cache, enableCAE)
 	if err != nil {
 		return nil, err
 	}
 	o := []public.Option{
 		public.WithAuthority(runtime.JoinPaths(p.host, p.tenantID)),
-		public.WithCache(cache),
+		public.WithCache(c),
 		public.WithHTTPClient(p),
 	}
 	if enableCAE {

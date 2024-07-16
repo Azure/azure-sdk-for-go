@@ -1,5 +1,6 @@
-//go:build go1.18 && windows
-// +build go1.18,windows
+//go:build go1.18 && (linux || windows)
+// +build go1.18
+// +build linux windows
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.

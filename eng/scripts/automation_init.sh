@@ -18,7 +18,7 @@ echo "output json file: $outputFile"
 TMPDIR="/tmp"
 if [ ! "$(go version | awk '{print $3}' | cut -c 3-6)" = "1.22" ]
 then
-  wget https://golang.org/dl/go1.22.0.linux-amd64.tar.gz
+  wget -q https://golang.org/dl/go1.22.0.linux-amd64.tar.gz
   tar -C $TMPDIR -xzf go1.22.0.linux-amd64.tar.gz
   export GOROOT=$TMPDIR/go
   export PATH=$GOROOT/bin:$PATH

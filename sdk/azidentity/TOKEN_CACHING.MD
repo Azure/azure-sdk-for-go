@@ -55,4 +55,4 @@ The following table indicates the state of in-memory and persistent caching in e
 | `UsernamePasswordCredential`   | Supported                                                           | Supported                |
 | `WorkloadIdentityCredential`   | Supported                                                           | Supported                |
 
-[example]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity@v1.8.0-beta.1#pkg-overview
+[example]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity@v1.8.0-beta.1#example-package-PersistentUserAuthentication

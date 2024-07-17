@@ -34,8 +34,11 @@ type DeviceCodeCredentialOptions struct {
 	// credential will store tokens in memory and not share them.
 	Cache Cache
 
-	// ClientID is the ID of the application users will authenticate to.
-	// Defaults to the ID of an Azure development application.
+	// ClientID is the ID of the application to which users will authenticate. When not set, users
+	// will authenticate to an Azure development application, which isn't recommended for production
+	// scenarios. In production, developers should instead register their applications and assign
+	// appropriate roles. See https://aka.ms/identity/AppRegistrationAndRoleAssignment for more
+	// information.
 	ClientID string
 
 	// DisableAutomaticAuthentication prevents the credential from automatically prompting the user to authenticate.

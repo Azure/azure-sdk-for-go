@@ -63,22 +63,27 @@ func UTC(t *time.Time) *time.Time {
 // DateOnly is a [time.Time] where only the date components have a value.
 type DateOnly time.Time
 
+// MarshalJSON implements the [json.Marshaler] interface for type DateOnly.
 func (d DateOnly) MarshalJSON() ([]byte, error) {
 	return asJSON(d.String()), nil
 }
 
+// MarshalText implements the [encoding.TextMarshaler] interface for type DateOnly.
 func (d DateOnly) MarshalText() ([]byte, error) {
 	return []byte(d.String()), nil
 }
 
+// UnmarshalJSON implements the [json.Unmarshaler] interface for type DateOnly.
 func (d *DateOnly) UnmarshalJSON(data []byte) error {
 	return unmarshalJSON(FormatDateOnly, data, d)
 }
 
+// UnmarshalText implements the [encoding.TtextUnmarshaler] interface for type DateOnly.
 func (d *DateOnly) UnmarshalText(data []byte) error {
 	return unmarshalText(FormatDateOnly, data, d)
 }
 
+// String implements the [fmt.Stringer] interface for type DateOnly.
 func (d DateOnly) String() string {
 	return time.Time(d).Format(dateOnly)
 }
@@ -86,22 +91,27 @@ func (d DateOnly) String() string {
 // RFC1123 is a [time.Time] in RFC1123 format.
 type RFC1123 time.Time
 
+// MarshalJSON implements the [json.Marshaler] interface for type RFC1123.
 func (r RFC1123) MarshalJSON() ([]byte, error) {
 	return asJSON(r.String()), nil
 }
 
+// MarshalText implements the [encoding.TextMarshaler] interface for type RFC1123.
 func (r RFC1123) MarshalText() ([]byte, error) {
 	return []byte(r.String()), nil
 }
 
+// UnmarshalJSON implements the [json.Unmarshaler] interface for type RFC1123.
 func (r *RFC1123) UnmarshalJSON(data []byte) error {
 	return unmarshalJSON(FormatRFC1123, data, r)
 }
 
+// UnmarshalText implements the [encoding.TtextUnmarshaler] interface for type RFC1123.
 func (r *RFC1123) UnmarshalText(data []byte) error {
 	return unmarshalText(FormatRFC1123, data, r)
 }
 
+// String implements the [fmt.Stringer] interface for type RFC1123.
 func (r RFC1123) String() string {
 	return time.Time(r).Format(time.RFC1123)
 }
@@ -109,22 +119,27 @@ func (r RFC1123) String() string {
 // RFC3339 is a [time.Time] in RFC3339 format.
 type RFC3339 time.Time
 
+// MarshalJSON implements the [json.Marshaler] interface for type RFC3339.
 func (r RFC3339) MarshalJSON() ([]byte, error) {
 	return asJSON(r.String()), nil
 }
 
+// MarshalText implements the [encoding.TextMarshaler] interface for type RFC3339.
 func (r RFC3339) MarshalText() ([]byte, error) {
 	return []byte(r.String()), nil
 }
 
+// UnmarshalJSON implements the [json.Unmarshaler] interface for type RFC3339.
 func (r *RFC3339) UnmarshalJSON(data []byte) error {
 	return unmarshalJSON(FormatRFC3339, data, r)
 }
 
+// UnmarshalText implements the [encoding.TtextUnmarshaler] interface for type RFC3339.
 func (r *RFC3339) UnmarshalText(data []byte) error {
 	return unmarshalText(FormatRFC3339, data, r)
 }
 
+// String implements the [fmt.Stringer] interface for type RFC3339.
 func (r RFC3339) String() string {
 	return time.Time(r).Format(time.RFC3339Nano)
 }
@@ -132,22 +147,27 @@ func (r RFC3339) String() string {
 // RFC7231 is a [time.Time] in RFC7231 format.
 type RFC7231 time.Time
 
+// MarshalJSON implements the [json.Marshaler] interface for type RFC7231.
 func (r RFC7231) MarshalJSON() ([]byte, error) {
 	return asJSON(r.String()), nil
 }
 
+// MarshalText implements the [encoding.TextMarshaler] interface for type RFC7231.
 func (r RFC7231) MarshalText() ([]byte, error) {
 	return []byte(r.String()), nil
 }
 
+// UnmarshalJSON implements the [json.Unmarshaler] interface for type RFC7231.
 func (r *RFC7231) UnmarshalJSON(data []byte) error {
 	return unmarshalJSON(FormatRFC7231, data, r)
 }
 
+// UnmarshalText implements the [encoding.TtextUnmarshaler] interface for type RFC7231.
 func (r *RFC7231) UnmarshalText(data []byte) error {
 	return unmarshalText(FormatRFC7231, data, r)
 }
 
+// String implements the [fmt.Stringer] interface for type RFC7231.
 func (r RFC7231) String() string {
 	return time.Time(r).Format(http.TimeFormat)
 }
@@ -155,22 +175,27 @@ func (r RFC7231) String() string {
 // TimeOnly is a [time.Time] where only the time components have a value.
 type TimeOnly time.Time
 
+// MarshalJSON implements the [json.Marshaler] interface for type TimeOnly.
 func (t TimeOnly) MarshalJSON() ([]byte, error) {
 	return asJSON(t.String()), nil
 }
 
+// MarshalText implements the [encoding.TextMarshaler] interface for type TimeOnly.
 func (t TimeOnly) MarshalText() ([]byte, error) {
 	return []byte(t.String()), nil
 }
 
+// UnmarshalJSON implements the [json.Unmarshaler] interface for type TimeOnly.
 func (t *TimeOnly) UnmarshalJSON(data []byte) error {
 	return unmarshalJSON(FormatTimeOnly, data, t)
 }
 
+// UnmarshalText implements the [encoding.TtextUnmarshaler] interface for type TimeOnly.
 func (t *TimeOnly) UnmarshalText(data []byte) error {
 	return unmarshalText(FormatTimeOnly, data, t)
 }
 
+// String implements the [fmt.Stringer] interface for type TimeOnly.
 func (t TimeOnly) String() string {
 	return time.Time(t).Format(timeOnly)
 }
@@ -178,15 +203,18 @@ func (t TimeOnly) String() string {
 // Unix is a [time.Time] represented as a Unix time stamp.
 type Unix time.Time
 
+// MarshalJSON implements the [json.Marshaler] interface for type Unix.
 func (u Unix) MarshalJSON() ([]byte, error) {
 	// unix time stamps are sent as a JSON number, so don't quote them
 	return []byte(u.String()), nil
 }
 
+// MarshalText implements the [encoding.TextMarshaler] interface for type Unix.
 func (u Unix) MarshalText() ([]byte, error) {
 	return []byte(u.String()), nil
 }
 
+// UnmarshalJSON implements the [json.Unmarshaler] interface for type Unix.
 func (u *Unix) UnmarshalJSON(data []byte) error {
 	if data == nil || string(data) == "null" {
 		return nil
@@ -195,6 +223,7 @@ func (u *Unix) UnmarshalJSON(data []byte) error {
 	return u.UnmarshalText(data)
 }
 
+// UnmarshalText implements the [encoding.TtextUnmarshaler] interface for type Unix.
 func (u *Unix) UnmarshalText(data []byte) error {
 	// this is to handle XML with an empty value, e.g. <SomeTime />
 	if len(data) == 0 {
@@ -209,6 +238,7 @@ func (u *Unix) UnmarshalText(data []byte) error {
 	return nil
 }
 
+// String implements the [fmt.Stringer] interface for type Unix.
 func (u Unix) String() string {
 	return fmt.Sprintf("%d", time.Time(u).Unix())
 }

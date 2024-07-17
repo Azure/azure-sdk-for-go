@@ -121,7 +121,8 @@ func NewDeviceCodeCredential(options *DeviceCodeCredentialOptions) (*DeviceCodeC
 	return &DeviceCodeCredential{client: c}, nil
 }
 
-// Authenticate a user via the device code flow. Subsequent calls to GetToken will automatically use the returned AuthenticationRecord.
+// Authenticate prompts a user to log in via the device code flow. Subsequent
+// GetToken calls will automatically use the returned AuthenticationRecord.
 func (c *DeviceCodeCredential) Authenticate(ctx context.Context, opts *policy.TokenRequestOptions) (AuthenticationRecord, error) {
 	var err error
 	ctx, endSpan := runtime.StartSpan(ctx, credNameDeviceCode+"."+traceOpAuthenticate, c.client.azClient.Tracer(), nil)

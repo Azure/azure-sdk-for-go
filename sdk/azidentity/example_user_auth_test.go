@@ -64,7 +64,8 @@ func Example_persistentUserAuthentication() {
 	}
 
 	if record == (azidentity.AuthenticationRecord{}) {
-		// No stored record; call Authenticate to acquire one
+		// No stored record; call Authenticate to acquire one.
+		// This will prompt the user to authenticate interactively.
 		record, err = cred.Authenticate(context.TODO(), nil)
 		if err != nil {
 			// TODO: handle error

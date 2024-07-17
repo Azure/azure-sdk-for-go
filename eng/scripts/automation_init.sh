@@ -11,7 +11,6 @@ if [ "$2" ]; then
   outputFile=$2
 fi
 
-set -x
 set -e
 outputFile="$(realpath $outputFile)"
 echo "output json file: $outputFile"
@@ -60,4 +59,4 @@ cat > $outputFile << EOF
 EOF
 
 echo Install tsp-client
-sudo npm install -g @azure-tools/typespec-client-generator-cli
+sudo npm install -g @azure-tools/typespec-client-generator-cli@latest

@@ -44,8 +44,13 @@ func NewClient(endpoint string, credential azcore.TokenCredential, options *Clie
 		options = &ClientOptions{}
 	}
 
-	authPolicy := runtime.NewBearerTokenPolicy(credential, []string{tokenScope}, nil)
-	azcoreClient, err := azcore.NewClient(clientName, version, runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}, &options.ClientOptions)
+	authPolicy := runtime.NewBearerTokenPolicy(credential, []string{tokenScope}, &policy.BearerTokenOptions{
+		InsecureAllowCredentialWithHTTP: allowInsecure(options),
+	})
+
+	azcoreClient, err := azcore.NewClient(clientName, version, runtime.PipelineOptions{
+		PerRetry: []policy.Policy{authPolicy},
+	}, &options.ClientOptions)
 
 	if err != nil {
 		return nil, err
@@ -69,8 +74,13 @@ func NewClientWithKeyCredential(endpoint string, credential *azcore.KeyCredentia
 		options = &ClientOptions{}
 	}
 
-	authPolicy := runtime.NewKeyCredentialPolicy(credential, "api-key", nil)
-	azcoreClient, err := azcore.NewClient(clientName, version, runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}, &options.ClientOptions)
+	authPolicy := runtime.NewKeyCredentialPolicy(credential, "api-key", &runtime.KeyCredentialPolicyOptions{
+		InsecureAllowCredentialWithHTTP: allowInsecure(options),
+	})
+
+	azcoreClient, err := azcore.NewClient(clientName, version, runtime.PipelineOptions{
+		PerRetry: []policy.Policy{authPolicy},
+	}, &options.ClientOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -95,11 +105,14 @@ func NewClientForOpenAI(endpoint string, credential *azcore.KeyCredential, optio
 
 	kp := runtime.NewKeyCredentialPolicy(credential, "authorization", &runtime.KeyCredentialPolicyOptions{
 		Prefix:                          "Bearer ",
-		InsecureAllowCredentialWithHTTP: options.InsecureAllowCredentialWithHTTP,
+		InsecureAllowCredentialWithHTTP: allowInsecure(options),
 	})
 
 	azcoreClient, err := azcore.NewClient(clientName, version, runtime.PipelineOptions{
-		PerRetry: []policy.Policy{kp, newOpenAIPolicy()},
+		PerRetry: []policy.Policy{
+			kp,
+			newOpenAIPolicy(),
+		},
 	}, &options.ClientOptions)
 
 	if err != nil {
@@ -307,4 +320,8 @@ func (c ChatRequestUserMessageContent) MarshalJSON() ([]byte, error) {
 // UnmarshalJSON implements the json.Unmarshaller interface for type ChatRequestUserMessageContent.
 func (c *ChatRequestUserMessageContent) UnmarshalJSON(data []byte) error {
 	return json.Unmarshal(data, &c.value)
+}
+
+func allowInsecure(options *ClientOptions) bool {
+	return options != nil && options.InsecureAllowCredentialWithHTTP
 }

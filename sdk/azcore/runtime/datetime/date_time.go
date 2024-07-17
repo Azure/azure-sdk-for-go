@@ -35,7 +35,7 @@ const (
 func Parse(format Format, value string) (time.Time, error) {
 	switch format {
 	case FormatDateOnly:
-		return parse(time.DateOnly, value)
+		return parse(dateOnly, value)
 	case FormatRFC1123:
 		return parse(time.RFC1123, value)
 	case FormatRFC3339:

@@ -102,7 +102,8 @@ func NewInteractiveBrowserCredential(options *InteractiveBrowserCredentialOption
 	return &InteractiveBrowserCredential{client: c}, nil
 }
 
-// Authenticate a user via the default browser. Subsequent calls to GetToken will automatically use the returned AuthenticationRecord.
+// Authenticate opens the default browser so a user can log in. Subsequent
+// GetToken calls will automatically use the returned AuthenticationRecord.
 func (c *InteractiveBrowserCredential) Authenticate(ctx context.Context, opts *policy.TokenRequestOptions) (AuthenticationRecord, error) {
 	var err error
 	ctx, endSpan := runtime.StartSpan(ctx, credNameBrowser+"."+traceOpAuthenticate, c.client.azClient.Tracer(), nil)

@@ -42,7 +42,7 @@ export GO111MODULE=on
 
 generatorDirectory="$(realpath $DIRECTORY/../tools/generator)"
 cd $generatorDirectory
-go build
+go build 2>&1
 
 cp generator $GOPATH/bin/
 export PATH=$GOPATH/bin:$PATH
@@ -59,4 +59,4 @@ cat > $outputFile << EOF
 EOF
 
 echo Install tsp-client
-sudo npm install -g @azure-tools/typespec-client-generator-cli@latest
+sudo npm install -g @azure-tools/typespec-client-generator-cli@latest 2>&1

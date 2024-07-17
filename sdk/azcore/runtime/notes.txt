@@ -1,0 +1,39 @@
+types of LROs
+
+Operation-Location
+Azure-AsyncOperation
+
+Location
+
+RELO - don't return a poller? resume token goes away
+
+poller can only be used on a resource that reaches a terminal state
+
+manual polling - 
+delay := poller.Delay(res /* *http.Response */, 30 * time.Duration /*default*/)
+
+res, err := client.CreateOrUpdate(someResoure{})
+reloPoller := pollers.New(client.GetResource, func(res) string {
+	// or use reflection?
+	return res.Properties.ProvisioningState
+})
+
+reloPoller.WaitUntilDone()
+
+for {
+	if reloPoller.Done() {
+		break
+	}
+	// sleep...
+    /*res, err := client.GetResource()
+
+	if poller.Done(res.Properties.ProvisioningState) {
+		break
+	}*/
+	// sleep...
+}
+
+
+why are we doing this?
+
+RELO - old pattern can have infinite loop

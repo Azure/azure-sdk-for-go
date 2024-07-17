@@ -80,7 +80,7 @@ func (d *DateOnly) UnmarshalText(data []byte) error {
 }
 
 func (d DateOnly) String() string {
-	return time.Time(d).Format(time.DateOnly)
+	return time.Time(d).Format(dateOnly)
 }
 
 // RFC1123 is a [time.Time] in RFC1123 format.
@@ -252,6 +252,7 @@ func unmarshal[T TypeConstraint](format Format, data []byte, dest *T) error {
 	return nil
 }
 
+const dateOnly = "2006-01-02"
 const timeOnly = "15:04:05.999999999"
 
 // Azure reports time in UTC but it doesn't include the 'Z' time zone suffix in some cases.

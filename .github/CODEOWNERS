@@ -79,10 +79,10 @@
 /sdk/resourcemanager/         @ArcturusZhang @lirenhe @tadelesh @raych1
 
 # AzureSDKOwners: @jhendrixMSFT
-# ServiceOwner: @tanyasethi
+# ServiceOwner: @siminsavani-msft
 # ServiceLabel: %Azure.Core
 # PRLabel: %Storage
-/sdk/storage/                 @souravgupta-msft @jhendrixMSFT @gapra-msft @vibhansa-msft @tanyasethi-msft
+/sdk/storage/                 @siminsavani-msft @souravgupta-msft @jhendrixMSFT @gapra-msft @vibhansa-msft @tanyasethi-msft
 
 # AzureSDKOwners: @jhendrixMSFT
 # ServiceLabel: %OpenTelemetry

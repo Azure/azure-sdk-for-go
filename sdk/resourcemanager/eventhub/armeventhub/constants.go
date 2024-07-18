@@ -10,7 +10,7 @@ package armeventhub
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventhub/armeventhub"
-	moduleVersion = "v1.3.0-beta.1"
+	moduleVersion = "v1.3.0"
 )
 
 type AccessRights string
@@ -44,18 +44,34 @@ func PossibleApplicationGroupPolicyTypeValues() []ApplicationGroupPolicyType {
 	}
 }
 
+// CaptureIdentityType - Type of Azure Active Directory Managed Identity.
+type CaptureIdentityType string
+
+const (
+	CaptureIdentityTypeSystemAssigned CaptureIdentityType = "SystemAssigned"
+	CaptureIdentityTypeUserAssigned   CaptureIdentityType = "UserAssigned"
+)
+
+// PossibleCaptureIdentityTypeValues returns the possible values for the CaptureIdentityType const type.
+func PossibleCaptureIdentityTypeValues() []CaptureIdentityType {
+	return []CaptureIdentityType{
+		CaptureIdentityTypeSystemAssigned,
+		CaptureIdentityTypeUserAssigned,
+	}
+}
+
 // CleanupPolicyRetentionDescription - Enumerates the possible values for cleanup policy
 type CleanupPolicyRetentionDescription string
 
 const (
-	CleanupPolicyRetentionDescriptionCompaction CleanupPolicyRetentionDescription = "Compaction"
-	CleanupPolicyRetentionDescriptionDelete     CleanupPolicyRetentionDescription = "Delete"
+	CleanupPolicyRetentionDescriptionCompact CleanupPolicyRetentionDescription = "Compact"
+	CleanupPolicyRetentionDescriptionDelete  CleanupPolicyRetentionDescription = "Delete"
 )
 
 // PossibleCleanupPolicyRetentionDescriptionValues returns the possible values for the CleanupPolicyRetentionDescription const type.
 func PossibleCleanupPolicyRetentionDescriptionValues() []CleanupPolicyRetentionDescription {
 	return []CleanupPolicyRetentionDescription{
-		CleanupPolicyRetentionDescriptionCompaction,
+		CleanupPolicyRetentionDescriptionCompact,
 		CleanupPolicyRetentionDescriptionDelete,
 	}
 }
@@ -319,6 +335,34 @@ func PossiblePrivateLinkConnectionStatusValues() []PrivateLinkConnectionStatus {
 		PrivateLinkConnectionStatusDisconnected,
 		PrivateLinkConnectionStatusPending,
 		PrivateLinkConnectionStatusRejected,
+	}
+}
+
+// ProvisioningState - Provisioning state of the Cluster.
+type ProvisioningState string
+
+const (
+	ProvisioningStateActive    ProvisioningState = "Active"
+	ProvisioningStateCanceled  ProvisioningState = "Canceled"
+	ProvisioningStateCreating  ProvisioningState = "Creating"
+	ProvisioningStateDeleting  ProvisioningState = "Deleting"
+	ProvisioningStateFailed    ProvisioningState = "Failed"
+	ProvisioningStateScaling   ProvisioningState = "Scaling"
+	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
+	ProvisioningStateUnknown   ProvisioningState = "Unknown"
+)
+
+// PossibleProvisioningStateValues returns the possible values for the ProvisioningState const type.
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return []ProvisioningState{
+		ProvisioningStateActive,
+		ProvisioningStateCanceled,
+		ProvisioningStateCreating,
+		ProvisioningStateDeleting,
+		ProvisioningStateFailed,
+		ProvisioningStateScaling,
+		ProvisioningStateSucceeded,
+		ProvisioningStateUnknown,
 	}
 }
 

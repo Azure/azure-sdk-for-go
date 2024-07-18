@@ -26,6 +26,7 @@ extends:
   parameters:
     ServiceDirectory: "messaging/eventgrid/azeventgrid"
     RunLiveTests: true
+    UseFederatedAuth: true
     UsePipelineProxy: false
     Location: westus2
     EnvVars:

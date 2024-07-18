@@ -1,9 +1,10 @@
 # Release History
 
-## 1.3.0 (2024-07-12)
+## 1.3.0 (2024-07-18)
 
 ### Other Changes
 * Updated `azidentity` version to `1.7.0`
+* GetProperties() was called twice in DownloadFile method. Enhanced to call it only once, reducing latency.
 
 ## 1.3.0-beta.1 (2024-06-14)
 

@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Ai sdk custom_client now respects `InsecureAllowCredentialWithHTTP` flag for allowing insecure connections. (PR#23188)
+
 ### Other Changes
 
 ## 0.6.0 (2024-06-11)
@@ -18,7 +20,7 @@
 
 ### Breaking Changes
 
-- ContentFilterResultDetailsForPrompt.CustomBlocklists has been changed from a []ContentFilterBlocklistIDResult to a struct, 
+- ContentFilterResultDetailsForPrompt.CustomBlocklists has been changed from a []ContentFilterBlocklistIDResult to a struct,
   containing the slice of []ContentFilterBlocklistIDResult.
 - OnYourDataEndpointVectorizationSource.Authentication's type has changed to OnYourDataVectorSearchAuthenticationOptionsClassification
 - Casing has been corrected for fields:
@@ -34,7 +36,7 @@
 
 ### Features Added
 
-- Updating to the `2024-03-01-preview` API version. This adds support for using Dimensions with Embeddings as well as the ability to choose the embeddings format. 
+- Updating to the `2024-03-01-preview` API version. This adds support for using Dimensions with Embeddings as well as the ability to choose the embeddings format.
   This update also adds in the `Model` field for ChatCompletions responses. PR(#22603)
 
 ## 0.5.0 (2024-03-05)
@@ -54,8 +56,8 @@
 
 ### Bugs Fixed
 
-- `AudioTranscriptionOptions.Filename` and `AudioTranslationOptions.Filename` fields are now properly propagated, allowing 
-  for disambiguating the format of an audio file when OpenAI can't detect it. (PR#22210) 
+- `AudioTranscriptionOptions.Filename` and `AudioTranslationOptions.Filename` fields are now properly propagated, allowing
+  for disambiguating the format of an audio file when OpenAI can't detect it. (PR#22210)
 
 ## 0.4.0 (2023-12-11)
 
@@ -82,9 +84,11 @@ Support for many of the features mentioned in OpenAI's November Dev Day and Micr
 ## 0.3.0 (2023-09-26)
 
 ### Features Added
+
 - Support for Whisper audio APIs for transcription and translation using `GetAudioTranscription` and `GetAudioTranslation`.
 
 ### Breaking Changes
+
 - ChatChoiceContentFilterResults content filtering fields are now all typed as ContentFilterResult, instead of unique types for each field.
 - `PromptAnnotations` renamed to `PromptFilterResults` in `ChatCompletions` and `Completions`.
 
@@ -102,7 +106,7 @@ Support for many of the features mentioned in OpenAI's November Dev Day and Micr
 
 ### Bugs Fixed
 
-- EventReader, used by GetChatCompletionsStream and GetCompletionsStream for streaming results, would not return an 
+- EventReader, used by GetChatCompletionsStream and GetCompletionsStream for streaming results, would not return an
   error if the underlying Body reader was closed or EOF'd before the actual DONE: token arrived. This could result in an
   infinite loop for callers. (PR#21323)
 
@@ -114,4 +118,4 @@ Support for many of the features mentioned in OpenAI's November Dev Day and Micr
 
 ## 0.1.0 (2023-07-20)
 
-* Initial release of the `azopenai` library
+- Initial release of the `azopenai` library

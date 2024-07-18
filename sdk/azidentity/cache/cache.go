@@ -8,45 +8,101 @@
 package cache
 
 import (
+	"bytes"
+	"context"
 	"fmt"
 	"path/filepath"
+	"sync"
+	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity/internal"
 	extcache "github.com/AzureAD/microsoft-authentication-extensions-for-go/cache"
-	"github.com/AzureAD/microsoft-authentication-library-for-go/apps/cache"
+	msal "github.com/AzureAD/microsoft-authentication-library-for-go/apps/cache"
 )
 
-const defaultName = "msal.cache"
+var (
+	// once ensures New tests the storage implementation only once
+	once = &sync.Once{}
+	// storageError is the error from the storage test
+	storageError error
+	// tryStorage tests the storage implementation by round-tripping data
+	tryStorage = func() {
+		const errFmt = "persistent storage isn't available due to error %q"
+		s, err := storage("azidentity-test-cache")
+		if err != nil {
+			storageError = fmt.Errorf(errFmt, err)
+			return
+		}
+		ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
+		defer cancel()
+		in := []byte("test")
+		err = s.Write(ctx, in)
+		if err != nil {
+			storageError = fmt.Errorf(errFmt, err)
+			return
+		}
+		out, err := s.Read(ctx)
+		if err != nil {
+			storageError = fmt.Errorf(errFmt, err)
+			return
+		}
+		if !bytes.Equal(in, out) {
+			storageError = fmt.Errorf(errFmt, "read doesn't match write")
+		}
+		err = s.Delete(ctx)
+		if err != nil {
+			storageError = fmt.Errorf(errFmt, err)
+		}
+	}
+)
 
-func init() {
-	internal.NewCache = func(o *internal.TokenCachePersistenceOptions, enableCAE bool) (cache.ExportReplace, error) {
-		if o == nil {
-			return nil, nil
+// Options for persistent token caches.
+type Options struct {
+	// Name distinguishes caches. Set this to isolate data from other applications.
+	Name string
+}
+
+// New constructs persistent token caches. See the [token caching guide] for details
+// about the storage implementation.
+//
+// [token caching guide]: https://aka.ms/azsdk/go/identity/caching#Persistent-token-caching
+func New(opts *Options) (azidentity.Cache, error) {
+	once.Do(tryStorage)
+	if storageError != nil {
+		return azidentity.Cache{}, storageError
+	}
+	o := Options{}
+	if opts != nil {
+		o = *opts
+	}
+	if o.Name == "" {
+		o.Name = "msal.cache"
+	}
+	factory := func(cae bool) (msal.ExportReplace, error) {
+		name := o.Name
+		if cae {
+			name += ".cae"
 		}
-		cp := *o
-		if cp.Name == "" {
-			cp.Name = defaultName
-		}
-		suffix := ".nocae"
-		if enableCAE {
-			suffix = ".cae"
-		}
-		cp.Name += suffix
-		a, err := storage(cp)
+		p, err := cacheFilePath(name)
 		if err != nil {
 			return nil, err
 		}
-		p, err := internal.CacheFilePath(cp.Name)
+		s, err := storage(name)
 		if err != nil {
 			return nil, err
 		}
-		return extcache.New(a, p)
+		return extcache.New(s, p)
 	}
-	internal.CacheFilePath = func(name string) (string, error) {
-		dir, err := cacheDir()
-		if err != nil {
-			return "", fmt.Errorf("couldn't create a cache file due to error %q", err)
-		}
-		return filepath.Join(dir, ".IdentityService", name), nil
+	return internal.NewCache(factory), nil
+}
+
+// cacheFilePath maps a cache name to a file path. This path is the base for a lockfile.
+// Storage implementations may also use it directly to store cache data.
+func cacheFilePath(name string) (string, error) {
+	dir, err := cacheDir()
+	if err != nil {
+		return "", fmt.Errorf("couldn't create a cache file due to error %q", err)
 	}
+	return filepath.Join(dir, ".IdentityService", name), nil
 }

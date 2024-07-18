@@ -1,14 +1,10 @@
 # Release History
 
-## 1.4.0-beta.2 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.4.0 (2024-07-18)
 
 ### Other Changes
+* GetProperties() was called twice in DownloadFile method. Enhanced to call it only once, reducing latency.
+* Updated `azcore` version to `1.13.0`
 
 ## 1.4.0-beta.1 (2024-06-14)
 

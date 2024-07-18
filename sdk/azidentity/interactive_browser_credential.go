@@ -36,7 +36,7 @@ type InteractiveBrowserCredentialOptions struct {
 	// ClientID is the ID of the application to which users will authenticate. When not set, users
 	// will authenticate to an Azure development application, which isn't recommended for production
 	// scenarios. In production, developers should instead register their applications and assign
-	// appropriate roles. See https://aka.ms/identity/AppRegistrationAndRoleAssignment for more
+	// appropriate roles. See https://aka.ms/azsdk/identity/AppRegistrationAndRoleAssignment for more
 	// information.
 	ClientID string
 

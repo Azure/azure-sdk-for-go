@@ -27,7 +27,6 @@ extends:
     TimeoutInMinutes: 120
     ServiceDirectory: 'security/keyvault/azkeys'
     RunLiveTests: true
-    UseFederatedAuth: true
     UsePipelineProxy: false
     SupportedClouds: 'Public,UsGov,China'
     CloudConfig:

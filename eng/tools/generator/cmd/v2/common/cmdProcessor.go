@@ -140,7 +140,7 @@ func ExecuteTspClient(path string, args ...string) error {
 	if err != nil {
 		return fmt.Errorf("failed to execute `tsp-client %s` '%s': %+v", strings.Join(args, " "), string(output), err)
 	}
-	if strings.Contains(string(output), "error:") {
+	if strings.Contains(string(output), "error:") || strings.Contains(string(output), "- error ") {
 		return fmt.Errorf("failed to execute `tsp-client %s` '%s'", strings.Join(args, " "), string(output))
 	}
 	return nil

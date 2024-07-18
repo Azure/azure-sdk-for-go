@@ -106,6 +106,7 @@ func ReadV2ModuleNameToGetNamespace(path string) (map[string][]PackageInfo, erro
 	specName := strings.Trim(before, "/")
 
 	for i := range start {
+		hasModuleName := false
 		// get the content of the `track2` section
 		section := lines[start[i]+1 : end[i]]
 		// iterate over the rest lines, get module name
@@ -123,7 +124,12 @@ func ReadV2ModuleNameToGetNamespace(path string) (map[string][]PackageInfo, erro
 					packageConfig = matchResult[1] + ": true"
 				}
 				result[modules[2]] = append(result[modules[2]], PackageInfo{Name: namespaceName, Config: packageConfig, SpecName: specName})
+				hasModuleName = true
 			}
+		}
+
+		if !hasModuleName {
+			return nil, fmt.Errorf("%s line:%d-%d is not configured correctly, please refer to sample: `https://github.com/Azure/azure-rest-api-specs/blob/main/documentation/samplefiles/readme.go.md`", path, start[i]+1, end[i])
 		}
 	}
 

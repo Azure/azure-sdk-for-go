@@ -79,7 +79,7 @@
 /sdk/resourcemanager/         @ArcturusZhang @lirenhe @tadelesh @raych1
 
 # AzureSDKOwners: @jhendrixMSFT
-# ServiceOwner: @tanyasethi
+# ServiceOwner: @tanyasethi-msft
 # ServiceLabel: %Azure.Core
 # PRLabel: %Storage
 /sdk/storage/                 @souravgupta-msft @jhendrixMSFT @gapra-msft @vibhansa-msft @tanyasethi-msft

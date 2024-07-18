@@ -16,7 +16,6 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity/cache/internal/aescbc"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity/cache/internal/jwe"
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity/internal"
 	"github.com/AzureAD/microsoft-authentication-extensions-for-go/cache/accessor"
 	"golang.org/x/sys/unix"
 )
@@ -27,37 +26,11 @@ const (
 )
 
 var (
-	cacheDir   = os.UserHomeDir
-	tryKeyring = func() error {
-		k, err := newKeyring("azidentity-test-cache")
-		if err != nil {
-			return err
-		}
-		// the Accessor interface requires contexts for these methods but this implementation
-		// doesn't use them, which is okay because these methods don't block on user interaction
-		ctx := context.Background()
-		err = k.Write(ctx, []byte("test"))
-		if err != nil {
-			return err
-		}
-		_, err = k.Read(ctx)
-		if err != nil {
-			return err
-		}
-		return k.Delete(ctx)
+	cacheDir = os.UserHomeDir
+	storage  = func(name string) (accessor.Accessor, error) {
+		return newKeyring(name)
 	}
 )
-
-func storage(o internal.TokenCachePersistenceOptions) (accessor.Accessor, error) {
-	name := o.Name
-	if name == "" {
-		name = defaultName
-	}
-	if err := tryKeyring(); err != nil {
-		return nil, errors.New("cache encryption is impossible because the kernel key retention facility isn't usable: " + err.Error())
-	}
-	return newKeyring(name)
-}
 
 // keyring encrypts cache data with a key stored on the user keyring and writes the encrypted
 // data to a file. The encryption key, and thus the data, is lost when the system shuts down.
@@ -68,7 +41,7 @@ type keyring struct {
 }
 
 func newKeyring(name string) (*keyring, error) {
-	p, err := internal.CacheFilePath(name)
+	p, err := cacheFilePath(name)
 	if err != nil {
 		return nil, err
 	}

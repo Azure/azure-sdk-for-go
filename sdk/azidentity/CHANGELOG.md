@@ -1,14 +1,16 @@
 # Release History
 
-## 1.8.0-beta.1 (Unreleased)
+## 1.8.0-beta.1 (2024-07-17)
 
 ### Features Added
+* Restored persistent token caching feature
 
 ### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+> These changes affect only code written against a beta version such as v1.7.0-beta.1
+* Redesigned the persistent caching API. Encryption is now required in all cases
+  and persistent cache construction is separate from credential construction.
+  The `PersistentUserAuthentication` example in the package docs has been updated
+  to demonstrate the new API.
 
 ## 1.7.0 (2024-06-20)
 

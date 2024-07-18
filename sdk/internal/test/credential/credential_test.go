@@ -16,21 +16,43 @@ import (
 
 func TestNew(t *testing.T) {
 	before := recordMode
-	for _, pipeline := range []bool{true, false} {
-		name := "dev/"
-		if pipeline {
-			name = "pipeline/"
-		}
+	for _, test := range []struct {
+		name     string
+		env      map[string]string
+		expected any
+	}{
+		{
+			name: "pipeline/SP/",
+			env: map[string]string{
+				"AZURE_SERVICE_DIRECTORY":   t.Name(),
+				t.Name() + "_CLIENT_ID":     "clientID",
+				t.Name() + "_CLIENT_SECRET": "secret",
+				t.Name() + "_TENANT_ID":     "tenant",
+			},
+			expected: &azidentity.ClientSecretCredential{},
+		},
+		{
+			name: "pipeline/WIF/",
+			env: map[string]string{
+				"AZURESUBSCRIPTION_CLIENT_ID":             "clientID",
+				"AZURESUBSCRIPTION_SERVICE_CONNECTION_ID": "connectionID",
+				"AZURESUBSCRIPTION_TENANT_ID":             "tenant",
+				"SYSTEM_ACCESSTOKEN":                      "token",
+				"SYSTEM_OIDCREQUESTURI":                   "https://localhost",
+			},
+			expected: &azidentity.AzurePipelinesCredential{},
+		},
+		{
+			name:     "dev/",
+			expected: &azidentity.DefaultAzureCredential{},
+		},
+	} {
 		for _, mode := range []string{recording.LiveMode, recording.PlaybackMode, recording.RecordingMode} {
-			t.Run(name+mode, func(t *testing.T) {
+			t.Run(test.name+mode, func(t *testing.T) {
 				recordMode = mode
 				defer func() { recordMode = before }()
-				if pipeline {
-					// set environment variables as would New-TestResources.ps1
-					t.Setenv("AZURE_SERVICE_DIRECTORY", t.Name())
-					for _, v := range []string{"_CLIENT_ID", "_CLIENT_SECRET", "_TENANT_ID"} {
-						t.Setenv(t.Name()+v, recording.SanitizedValue)
-					}
+				for k, v := range test.env {
+					t.Setenv(k, v)
 				}
 				cred, err := New(nil)
 				require.NoError(t, err)
@@ -41,11 +63,7 @@ func TestNew(t *testing.T) {
 					require.Equal(t, recording.SanitizedValue, tk.Token)
 					require.True(t, tk.ExpiresOn.After(time.Now()))
 				} else {
-					if pipeline {
-						require.IsType(t, &azidentity.ClientSecretCredential{}, cred)
-					} else {
-						require.IsType(t, &azidentity.DefaultAzureCredential{}, cred)
-					}
+					require.IsType(t, test.expected, cred)
 				}
 			})
 		}

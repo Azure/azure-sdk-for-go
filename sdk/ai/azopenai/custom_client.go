@@ -94,7 +94,8 @@ func NewClientForOpenAI(endpoint string, credential *azcore.KeyCredential, optio
 	}
 
 	kp := runtime.NewKeyCredentialPolicy(credential, "authorization", &runtime.KeyCredentialPolicyOptions{
-		Prefix: "Bearer ",
+		Prefix:                          "Bearer ",
+		InsecureAllowCredentialWithHTTP: options.InsecureAllowCredentialWithHTTP,
 	})
 
 	azcoreClient, err := azcore.NewClient(clientName, version, runtime.PipelineOptions{

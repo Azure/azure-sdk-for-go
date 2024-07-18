@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/informaticadatamgmt/arminformaticadatamgmt"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a07cb79078c828c5404a5154fea6c60d6e43256e/specification/informatica/resource-manager/Informatica.DataManagement/stable/2024-05-08/examples/Organizations_ListBySubscription_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/56537883b7cdb95618c3d1ec1c0ee37b59d88d72/specification/informatica/resource-manager/Informatica.DataManagement/stable/2024-05-08/examples/Organizations_ListBySubscription_MaximumSet_Gen.json
 func ExampleOrganizationsClient_NewListBySubscriptionPager_organizationsListBySubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -71,7 +71,7 @@ func ExampleOrganizationsClient_NewListBySubscriptionPager_organizationsListBySu
 		// 					InformaticaRegion: to.Ptr("zfqodqpbeflhedypiijdkc"),
 		// 					OrganizationID: to.Ptr("wtdmhlwhkvgqdumaehgfgiqcxgnqpx"),
 		// 					OrganizationName: to.Ptr("nomzbvwe"),
-		// 					SingleSignOnURL: to.Ptr("espcbzjhtmgwfdkckhqk"),
+		// 					SingleSignOnURL: to.Ptr("https://contoso.com/singlesignon"),
 		// 				},
 		// 				LinkOrganization: &arminformaticadatamgmt.LinkOrganization{
 		// 					Token: to.Ptr("jjfouhoqpumjvrdsfbimgcy"),
@@ -101,7 +101,7 @@ func ExampleOrganizationsClient_NewListBySubscriptionPager_organizationsListBySu
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a07cb79078c828c5404a5154fea6c60d6e43256e/specification/informatica/resource-manager/Informatica.DataManagement/stable/2024-05-08/examples/Organizations_ListBySubscription_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/56537883b7cdb95618c3d1ec1c0ee37b59d88d72/specification/informatica/resource-manager/Informatica.DataManagement/stable/2024-05-08/examples/Organizations_ListBySubscription_MinimumSet_Gen.json
 func ExampleOrganizationsClient_NewListBySubscriptionPager_organizationsListBySubscriptionMin() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -133,7 +133,7 @@ func ExampleOrganizationsClient_NewListBySubscriptionPager_organizationsListBySu
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a07cb79078c828c5404a5154fea6c60d6e43256e/specification/informatica/resource-manager/Informatica.DataManagement/stable/2024-05-08/examples/Organizations_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/56537883b7cdb95618c3d1ec1c0ee37b59d88d72/specification/informatica/resource-manager/Informatica.DataManagement/stable/2024-05-08/examples/Organizations_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleOrganizationsClient_NewListByResourceGroupPager_organizationsListByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -186,7 +186,7 @@ func ExampleOrganizationsClient_NewListByResourceGroupPager_organizationsListByR
 		// 					InformaticaRegion: to.Ptr("zfqodqpbeflhedypiijdkc"),
 		// 					OrganizationID: to.Ptr("wtdmhlwhkvgqdumaehgfgiqcxgnqpx"),
 		// 					OrganizationName: to.Ptr("nomzbvwe"),
-		// 					SingleSignOnURL: to.Ptr("espcbzjhtmgwfdkckhqk"),
+		// 					SingleSignOnURL: to.Ptr("https://contoso.com/singlesignon"),
 		// 				},
 		// 				LinkOrganization: &arminformaticadatamgmt.LinkOrganization{
 		// 					Token: to.Ptr("jjfouhoqpumjvrdsfbimgcy"),
@@ -216,7 +216,7 @@ func ExampleOrganizationsClient_NewListByResourceGroupPager_organizationsListByR
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a07cb79078c828c5404a5154fea6c60d6e43256e/specification/informatica/resource-manager/Informatica.DataManagement/stable/2024-05-08/examples/Organizations_ListByResourceGroup_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/56537883b7cdb95618c3d1ec1c0ee37b59d88d72/specification/informatica/resource-manager/Informatica.DataManagement/stable/2024-05-08/examples/Organizations_ListByResourceGroup_MinimumSet_Gen.json
 func ExampleOrganizationsClient_NewListByResourceGroupPager_organizationsListByResourceGroupMin() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -248,7 +248,7 @@ func ExampleOrganizationsClient_NewListByResourceGroupPager_organizationsListByR
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a07cb79078c828c5404a5154fea6c60d6e43256e/specification/informatica/resource-manager/Informatica.DataManagement/stable/2024-05-08/examples/Organizations_Get_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/56537883b7cdb95618c3d1ec1c0ee37b59d88d72/specification/informatica/resource-manager/Informatica.DataManagement/stable/2024-05-08/examples/Organizations_Get_MaximumSet_Gen.json
 func ExampleOrganizationsClient_Get_organizationsGet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -295,7 +295,7 @@ func ExampleOrganizationsClient_Get_organizationsGet() {
 	// 			InformaticaRegion: to.Ptr("zfqodqpbeflhedypiijdkc"),
 	// 			OrganizationID: to.Ptr("wtdmhlwhkvgqdumaehgfgiqcxgnqpx"),
 	// 			OrganizationName: to.Ptr("nomzbvwe"),
-	// 			SingleSignOnURL: to.Ptr("espcbzjhtmgwfdkckhqk"),
+	// 			SingleSignOnURL: to.Ptr("https://contoso.com/singlesignon"),
 	// 		},
 	// 		LinkOrganization: &arminformaticadatamgmt.LinkOrganization{
 	// 			Token: to.Ptr("jjfouhoqpumjvrdsfbimgcy"),
@@ -323,7 +323,7 @@ func ExampleOrganizationsClient_Get_organizationsGet() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a07cb79078c828c5404a5154fea6c60d6e43256e/specification/informatica/resource-manager/Informatica.DataManagement/stable/2024-05-08/examples/Organizations_Get_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/56537883b7cdb95618c3d1ec1c0ee37b59d88d72/specification/informatica/resource-manager/Informatica.DataManagement/stable/2024-05-08/examples/Organizations_Get_MinimumSet_Gen.json
 func ExampleOrganizationsClient_Get_organizationsGetMin() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -347,7 +347,7 @@ func ExampleOrganizationsClient_Get_organizationsGetMin() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a07cb79078c828c5404a5154fea6c60d6e43256e/specification/informatica/resource-manager/Informatica.DataManagement/stable/2024-05-08/examples/Organizations_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/56537883b7cdb95618c3d1ec1c0ee37b59d88d72/specification/informatica/resource-manager/Informatica.DataManagement/stable/2024-05-08/examples/Organizations_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleOrganizationsClient_BeginCreateOrUpdate_organizationsCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -376,7 +376,7 @@ func ExampleOrganizationsClient_BeginCreateOrUpdate_organizationsCreateOrUpdate(
 				InformaticaRegion: to.Ptr("zfqodqpbeflhedypiijdkc"),
 				OrganizationID:    to.Ptr("wtdmhlwhkvgqdumaehgfgiqcxgnqpx"),
 				OrganizationName:  to.Ptr("nomzbvwe"),
-				SingleSignOnURL:   to.Ptr("espcbzjhtmgwfdkckhqk"),
+				SingleSignOnURL:   to.Ptr("https://contoso.com/singlesignon"),
 			},
 			LinkOrganization: &arminformaticadatamgmt.LinkOrganization{
 				Token: to.Ptr("jjfouhoqpumjvrdsfbimgcy"),
@@ -441,7 +441,7 @@ func ExampleOrganizationsClient_BeginCreateOrUpdate_organizationsCreateOrUpdate(
 	// 			InformaticaRegion: to.Ptr("zfqodqpbeflhedypiijdkc"),
 	// 			OrganizationID: to.Ptr("wtdmhlwhkvgqdumaehgfgiqcxgnqpx"),
 	// 			OrganizationName: to.Ptr("nomzbvwe"),
-	// 			SingleSignOnURL: to.Ptr("espcbzjhtmgwfdkckhqk"),
+	// 			SingleSignOnURL: to.Ptr("https://contoso.com/singlesignon"),
 	// 		},
 	// 		LinkOrganization: &arminformaticadatamgmt.LinkOrganization{
 	// 			Token: to.Ptr("jjfouhoqpumjvrdsfbimgcy"),
@@ -469,7 +469,7 @@ func ExampleOrganizationsClient_BeginCreateOrUpdate_organizationsCreateOrUpdate(
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a07cb79078c828c5404a5154fea6c60d6e43256e/specification/informatica/resource-manager/Informatica.DataManagement/stable/2024-05-08/examples/Organizations_CreateOrUpdate_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/56537883b7cdb95618c3d1ec1c0ee37b59d88d72/specification/informatica/resource-manager/Informatica.DataManagement/stable/2024-05-08/examples/Organizations_CreateOrUpdate_MinimumSet_Gen.json
 func ExampleOrganizationsClient_BeginCreateOrUpdate_organizationsCreateOrUpdateMin() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -499,7 +499,7 @@ func ExampleOrganizationsClient_BeginCreateOrUpdate_organizationsCreateOrUpdateM
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a07cb79078c828c5404a5154fea6c60d6e43256e/specification/informatica/resource-manager/Informatica.DataManagement/stable/2024-05-08/examples/Organizations_Update_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/56537883b7cdb95618c3d1ec1c0ee37b59d88d72/specification/informatica/resource-manager/Informatica.DataManagement/stable/2024-05-08/examples/Organizations_Update_MaximumSet_Gen.json
 func ExampleOrganizationsClient_Update_organizationsUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -520,7 +520,7 @@ func ExampleOrganizationsClient_Update_organizationsUpdate() {
 				NumberOfEmployees: to.Ptr[int32](22),
 				OfficeAddress:     to.Ptr("sfcx"),
 			},
-			ExistingResourceID: to.Ptr("uvwlcphdfkqnhrtddpsiacbowcxxo"),
+			ExistingResourceID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Informatica.DataManagement/organizations/org1/serverlessRuntimes/serverlessRuntimeName"),
 			MarketplaceDetails: &arminformaticadatamgmt.MarketplaceDetailsUpdate{
 				MarketplaceSubscriptionID: to.Ptr("szhyxzgjtssjmlguivepc"),
 				OfferDetails: &arminformaticadatamgmt.OfferDetailsUpdate{
@@ -579,7 +579,7 @@ func ExampleOrganizationsClient_Update_organizationsUpdate() {
 	// 			InformaticaRegion: to.Ptr("zfqodqpbeflhedypiijdkc"),
 	// 			OrganizationID: to.Ptr("wtdmhlwhkvgqdumaehgfgiqcxgnqpx"),
 	// 			OrganizationName: to.Ptr("nomzbvwe"),
-	// 			SingleSignOnURL: to.Ptr("espcbzjhtmgwfdkckhqk"),
+	// 			SingleSignOnURL: to.Ptr("https://contoso.com/singlesignon"),
 	// 		},
 	// 		LinkOrganization: &arminformaticadatamgmt.LinkOrganization{
 	// 			Token: to.Ptr("jjfouhoqpumjvrdsfbimgcy"),
@@ -607,7 +607,7 @@ func ExampleOrganizationsClient_Update_organizationsUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a07cb79078c828c5404a5154fea6c60d6e43256e/specification/informatica/resource-manager/Informatica.DataManagement/stable/2024-05-08/examples/Organizations_Update_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/56537883b7cdb95618c3d1ec1c0ee37b59d88d72/specification/informatica/resource-manager/Informatica.DataManagement/stable/2024-05-08/examples/Organizations_Update_MinimumSet_Gen.json
 func ExampleOrganizationsClient_Update_organizationsUpdateMin() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -631,7 +631,7 @@ func ExampleOrganizationsClient_Update_organizationsUpdateMin() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a07cb79078c828c5404a5154fea6c60d6e43256e/specification/informatica/resource-manager/Informatica.DataManagement/stable/2024-05-08/examples/Organizations_Delete_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/56537883b7cdb95618c3d1ec1c0ee37b59d88d72/specification/informatica/resource-manager/Informatica.DataManagement/stable/2024-05-08/examples/Organizations_Delete_MaximumSet_Gen.json
 func ExampleOrganizationsClient_BeginDelete_organizationsDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -652,7 +652,7 @@ func ExampleOrganizationsClient_BeginDelete_organizationsDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a07cb79078c828c5404a5154fea6c60d6e43256e/specification/informatica/resource-manager/Informatica.DataManagement/stable/2024-05-08/examples/Organizations_Delete_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/56537883b7cdb95618c3d1ec1c0ee37b59d88d72/specification/informatica/resource-manager/Informatica.DataManagement/stable/2024-05-08/examples/Organizations_Delete_MinimumSet_Gen.json
 func ExampleOrganizationsClient_BeginDelete_organizationsDeleteMin() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -673,7 +673,7 @@ func ExampleOrganizationsClient_BeginDelete_organizationsDeleteMin() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a07cb79078c828c5404a5154fea6c60d6e43256e/specification/informatica/resource-manager/Informatica.DataManagement/stable/2024-05-08/examples/Organizations_GetAllServerlessRuntimes_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/56537883b7cdb95618c3d1ec1c0ee37b59d88d72/specification/informatica/resource-manager/Informatica.DataManagement/stable/2024-05-08/examples/Organizations_GetAllServerlessRuntimes_MaximumSet_Gen.json
 func ExampleOrganizationsClient_GetAllServerlessRuntimes_organizationsGetAllServerlessRuntimes() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -708,12 +708,12 @@ func ExampleOrganizationsClient_GetAllServerlessRuntimes_organizationsGetAllServ
 	// 				Platform: to.Ptr("p"),
 	// 				Region: to.Ptr("lrudpuvzcuh"),
 	// 				ResourceGroupName: to.Ptr("ly"),
-	// 				ServerlessArmResourceID: to.Ptr("kmviaxayvasaceptsuxkzhqjzjur"),
+	// 				ServerlessArmResourceID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Informatica.DataManagement/organizations/org1/serverlessRuntimes/serverlessRuntimeName"),
 	// 				Subnet: to.Ptr("mmhpqazmxniguwzmqiu"),
 	// 				SubscriptionID: to.Ptr("zl"),
 	// 				SupplementaryFileLocation: to.Ptr("wylmhc"),
 	// 				Tags: to.Ptr("tevuusglxuivd"),
-	// 				TenantID: to.Ptr("elbephnucclhjihcj"),
+	// 				TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 				Vnet: to.Ptr("vvs"),
 	// 			},
 	// 			Status: to.Ptr("exvtblad"),
@@ -725,7 +725,7 @@ func ExampleOrganizationsClient_GetAllServerlessRuntimes_organizationsGetAllServ
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a07cb79078c828c5404a5154fea6c60d6e43256e/specification/informatica/resource-manager/Informatica.DataManagement/stable/2024-05-08/examples/Organizations_GetAllServerlessRuntimes_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/56537883b7cdb95618c3d1ec1c0ee37b59d88d72/specification/informatica/resource-manager/Informatica.DataManagement/stable/2024-05-08/examples/Organizations_GetAllServerlessRuntimes_MinimumSet_Gen.json
 func ExampleOrganizationsClient_GetAllServerlessRuntimes_organizationsGetAllServerlessRuntimesMin() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -762,7 +762,7 @@ func ExampleOrganizationsClient_GetAllServerlessRuntimes_organizationsGetAllServ
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a07cb79078c828c5404a5154fea6c60d6e43256e/specification/informatica/resource-manager/Informatica.DataManagement/stable/2024-05-08/examples/Organizations_GetServerlessMetadata_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/56537883b7cdb95618c3d1ec1c0ee37b59d88d72/specification/informatica/resource-manager/Informatica.DataManagement/stable/2024-05-08/examples/Organizations_GetServerlessMetadata_MaximumSet_Gen.json
 func ExampleOrganizationsClient_GetServerlessMetadata_organizationsGetServerlessMetadata() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -835,7 +835,7 @@ func ExampleOrganizationsClient_GetServerlessMetadata_organizationsGetServerless
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a07cb79078c828c5404a5154fea6c60d6e43256e/specification/informatica/resource-manager/Informatica.DataManagement/stable/2024-05-08/examples/Organizations_GetServerlessMetadata_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/56537883b7cdb95618c3d1ec1c0ee37b59d88d72/specification/informatica/resource-manager/Informatica.DataManagement/stable/2024-05-08/examples/Organizations_GetServerlessMetadata_MinimumSet_Gen.json
 func ExampleOrganizationsClient_GetServerlessMetadata_organizationsGetServerlessMetadataMin() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

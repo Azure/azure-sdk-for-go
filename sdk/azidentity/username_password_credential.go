@@ -29,14 +29,16 @@ type UsernamePasswordCredentialOptions struct {
 	// to enable the credential to use data from a previous authentication.
 	AuthenticationRecord AuthenticationRecord
 
+	// Cache is a persistent cache the credential will use to store the tokens it acquires, making
+	// them available to other processes and credential instances. The default, zero value means the
+	// credential will store tokens in memory and not share them.
+	Cache Cache
+
 	// DisableInstanceDiscovery should be set true only by applications authenticating in disconnected clouds, or
 	// private clouds such as Azure Stack. It determines whether the credential requests Microsoft Entra instance metadata
 	// from https://login.microsoft.com before authenticating. Setting this to true will skip this request, making
 	// the application responsible for ensuring the configured authority is valid and trustworthy.
 	DisableInstanceDiscovery bool
-
-	// TokenCachePersistenceOptions enables persistent token caching when not nil.
-	TokenCachePersistenceOptions *TokenCachePersistenceOptions
 }
 
 // UsernamePasswordCredential authenticates a user with a password. Microsoft doesn't recommend this kind of authentication,
@@ -54,13 +56,13 @@ func NewUsernamePasswordCredential(tenantID string, clientID string, username st
 		options = &UsernamePasswordCredentialOptions{}
 	}
 	opts := publicClientOptions{
-		AdditionallyAllowedTenants:   options.AdditionallyAllowedTenants,
-		ClientOptions:                options.ClientOptions,
-		DisableInstanceDiscovery:     options.DisableInstanceDiscovery,
-		Password:                     password,
-		Record:                       options.AuthenticationRecord,
-		TokenCachePersistenceOptions: options.TokenCachePersistenceOptions,
-		Username:                     username,
+		AdditionallyAllowedTenants: options.AdditionallyAllowedTenants,
+		Cache:                      options.Cache,
+		ClientOptions:              options.ClientOptions,
+		DisableInstanceDiscovery:   options.DisableInstanceDiscovery,
+		Password:                   password,
+		Record:                     options.AuthenticationRecord,
+		Username:                   username,
 	}
 	c, err := newPublicClient(tenantID, clientID, credNameUserPassword, opts)
 	if err != nil {

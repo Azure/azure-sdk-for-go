@@ -1,16 +1,10 @@
 # Release History
 
-## 3.1.0 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
+## 3.1.0 (2024-07-19)
 ### Other Changes
 * Use `sdk/internal` credential factory in tests
 * Deprecated `testutil.FakeCredential`
+
 
 ## 3.0.0 (2024-05-31)
 

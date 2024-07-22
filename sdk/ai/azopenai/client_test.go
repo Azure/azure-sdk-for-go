@@ -83,7 +83,7 @@ func TestClient_InsecureHTTPAllowed(t *testing.T) {
 	url := <-urlCh
 	t.Logf(url)
 
-	t.Run("MustBeExplicitlyConfigured", func(t *testing.T) {
+	t.Run("DefaultsToHTTPSOnly", func(t *testing.T) {
 		client, err := azopenai.NewClientForOpenAI(url, azcore.NewKeyCredential("fake-key"), nil)
 		require.NoError(t, err)
 

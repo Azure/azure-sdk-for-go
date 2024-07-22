@@ -255,17 +255,11 @@ func (c *commandContext) parseIssues(issues []*github.Issue) ([]request.Request,
 }
 
 func (c *commandContext) buildConfig(requests []request.Request) (*config.Config, error) {
-	track1Requests := config.Track1ReleaseRequests{}
 	track2Requests := config.Track2ReleaseRequests{}
 	typespecRequests := config.TypeSpecReleaseRequests{}
 
 	for _, req := range requests {
 		switch req.Track {
-		case request.Track1:
-			track1Requests.Add(req.ReadmePath, req.Tag, config.ReleaseRequestInfo{
-				TargetDate:  timePtr(req.TargetDate),
-				RequestLink: req.RequestLink,
-			})
 		case request.Track2:
 			track2Requests.Add(req.ReadmePath, config.Track2Request{
 				ReleaseRequestInfo: config.ReleaseRequestInfo{
@@ -287,7 +281,6 @@ func (c *commandContext) buildConfig(requests []request.Request) (*config.Config
 		}
 	}
 	return &config.Config{
-		Track1Requests:   track1Requests,
 		Track2Requests:   track2Requests,
 		TypeSpecRequests: typespecRequests,
 		AdditionalFlags:  c.flags.AdditionalOptions,

@@ -27,3 +27,4 @@ extends:
     IncludeRelease: true
     ServiceDirectory: 'resourcemanager/maps/armmaps'
     UsePipelineProxy: false
+    UseFederatedAuth: true

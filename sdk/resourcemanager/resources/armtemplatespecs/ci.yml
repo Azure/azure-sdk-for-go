@@ -27,3 +27,4 @@ extends:
     IncludeRelease: true
     ServiceDirectory: 'resourcemanager/resources/armtemplatespecs'
     UsePipelineProxy: false
+    UseFederatedAuth: true

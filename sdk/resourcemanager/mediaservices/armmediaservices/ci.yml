@@ -27,3 +27,4 @@ extends:
     IncludeRelease: true
     ServiceDirectory: 'resourcemanager/mediaservices/armmediaservices'
     UsePipelineProxy: false
+    UseFederatedAuth: true

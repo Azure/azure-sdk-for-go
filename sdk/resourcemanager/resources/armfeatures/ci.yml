@@ -27,3 +27,4 @@ extends:
     IncludeRelease: true
     ServiceDirectory: 'resourcemanager/resources/armfeatures'
     UsePipelineProxy: false
+    UseFederatedAuth: true

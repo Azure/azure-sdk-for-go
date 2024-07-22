@@ -27,3 +27,4 @@ extends:
     IncludeRelease: true
     ServiceDirectory: 'resourcemanager/attestation/armattestation'
     UsePipelineProxy: false
+    UseFederatedAuth: true

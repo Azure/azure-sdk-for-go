@@ -27,3 +27,4 @@ extends:
     IncludeRelease: true
     ServiceDirectory: 'resourcemanager/streamanalytics/armstreamanalytics'
     UsePipelineProxy: false
+    UseFederatedAuth: true

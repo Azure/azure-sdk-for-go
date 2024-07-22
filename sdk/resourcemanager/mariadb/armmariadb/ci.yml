@@ -27,3 +27,4 @@ extends:
     IncludeRelease: true
     ServiceDirectory: 'resourcemanager/mariadb/armmariadb'
     UsePipelineProxy: false
+    UseFederatedAuth: true

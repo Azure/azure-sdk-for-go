@@ -7,7 +7,7 @@ go: true
 clear-output-folder: false
 version: "^3.0.0"
 license-header: MICROSOFT_MIT_NO_VERSION
-input-file: "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/70cfdba3d6acf2325fa5a9d264dfdf69c99fc0f9/specification/storage/data-plane/Microsoft.FileStorage/preview/2024-05-04/file.json"
+input-file: "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/f6f50c6388fd5836fa142384641b8353a99874ef/specification/storage/data-plane/Microsoft.FileStorage/stable/2024-08-04/file.json"
 credential-scope: "https://storage.azure.com/.default"
 output-folder: ../generated
 file-prefix: "zz_"
@@ -35,7 +35,7 @@ directive:
   transform: >-
     return $.
       replaceAll(`[]string{"2023-08-03"}`, `[]string{ServiceVersion}`).
-      replaceAll(`2023-08-03`, `2024-05-04`);
+      replaceAll(`2023-08-03`, `2024-08-04`);
 ```
 
 ### Don't include share name, directory, or file name in path - we have direct URIs

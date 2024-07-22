@@ -41,3 +41,6 @@ require (
 	golang.org/x/text v0.16.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
+
+// yaml.v2 v2.2.1 is an indirect dependency of ApplicationInsights-Go and affected by a few CVEs
+replace gopkg.in/yaml.v2 => gopkg.in/yaml.v2 v2.2.8

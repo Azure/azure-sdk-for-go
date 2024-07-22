@@ -8,5 +8,5 @@ package exported
 
 const (
 	ModuleName    = "github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake"
-	ModuleVersion = "v1.2.0-beta.2"
+	ModuleVersion = "v1.2.0"
 )

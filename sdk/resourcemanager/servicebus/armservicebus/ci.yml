@@ -27,3 +27,4 @@ extends:
     IncludeRelease: true
     ServiceDirectory: 'resourcemanager/servicebus/armservicebus'
     UsePipelineProxy: false
+    UseFederatedAuth: true

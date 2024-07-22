@@ -27,3 +27,4 @@ extends:
     IncludeRelease: true
     ServiceDirectory: 'resourcemanager/databricks/armdatabricks'
     UsePipelineProxy: false
+    UseFederatedAuth: true

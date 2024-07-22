@@ -1,16 +1,24 @@
 # Release History
 
-## 0.3.0 (Unreleased)
+## 0.3.1 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
-* Removed optional fallback to plaintext storage. `azidentity/cache` now
-  always returns an error when it can't encrypt a persistent cache.
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 0.3.0 (2024-07-18)
+
+### Features Added
+* Added `New`, a constructor for persistent caches. See `azidentity` docs,
+  in particular the `PersistentUserAuthentication` example, for usage details.
+
+### Breaking Changes
+* Removed optional fallback to plaintext storage. `azidentity/cache` now
+  always returns an error when it can't encrypt a persistent cache.
 
 ## 0.2.2 (2024-05-07)
 

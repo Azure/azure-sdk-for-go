@@ -41,7 +41,7 @@ func ExampleServer() {
 			resp.SetResponse(http.StatusOK, queryResp, nil)
 
 			// to simulate the failure case, use errResp
-			//errResp.SetResponseError(http.StatusBadRequest, "ThisIsASimulatedError")
+			// errResp.SetResponseError(http.StatusBadRequest, "ThisIsASimulatedError")
 
 			return
 		},

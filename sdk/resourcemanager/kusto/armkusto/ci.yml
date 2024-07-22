@@ -27,3 +27,4 @@ extends:
     IncludeRelease: true
     ServiceDirectory: 'resourcemanager/kusto/armkusto'
     UsePipelineProxy: false
+    UseFederatedAuth: true

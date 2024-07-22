@@ -114,7 +114,7 @@ func TestClient_InsecureHTTPAllowed(t *testing.T) {
 		require.EqualError(t, err, "authenticated requests are not permitted for non TLS protected (https) endpoints")
 	})
 
-	t.Run("HTTPEnabled", func(t *testing.T) {
+	t.Run("InsecureAllowCredentialWithHTTP", func(t *testing.T) {
 		clientOptions := &azopenai.ClientOptions{
 			ClientOptions: policy.ClientOptions{
 				InsecureAllowCredentialWithHTTP: true,

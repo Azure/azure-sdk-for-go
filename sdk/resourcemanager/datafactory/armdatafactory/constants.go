@@ -1871,16 +1871,22 @@ type TriggerRunStatus string
 
 const (
 	TriggerRunStatusFailed     TriggerRunStatus = "Failed"
-	TriggerRunStatusInprogress TriggerRunStatus = "Inprogress"
+	TriggerRunStatusQueued     TriggerRunStatus = "Queued"
+	TriggerRunStatusInProgress TriggerRunStatus = "InProgress"
 	TriggerRunStatusSucceeded  TriggerRunStatus = "Succeeded"
+	TriggerRunStatusCanceling  TriggerRunStatus = "Canceling"
+	TriggerRunStatusCancelled  TriggerRunStatus = "Cancelled"
 )
 
 // PossibleTriggerRunStatusValues returns the possible values for the TriggerRunStatus const type.
 func PossibleTriggerRunStatusValues() []TriggerRunStatus {
 	return []TriggerRunStatus{
 		TriggerRunStatusFailed,
-		TriggerRunStatusInprogress,
+		TriggerRunStatusQueued,
+		TriggerRunStatusInProgress,
 		TriggerRunStatusSucceeded,
+		TriggerRunStatusCanceling,
+		TriggerRunStatusCancelled,
 	}
 }
 

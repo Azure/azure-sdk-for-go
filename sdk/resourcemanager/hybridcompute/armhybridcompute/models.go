@@ -392,6 +392,9 @@ type LicenseProfileArmProductProfileProperties struct {
 	// Indicates the subscription status of the product.
 	SubscriptionStatus *LicenseProfileSubscriptionStatus
 
+	// READ-ONLY; The timestamp in UTC when the billing ends.
+	BillingEndDate *time.Time
+
 	// READ-ONLY; The timestamp in UTC when the billing starts.
 	BillingStartDate *time.Time
 
@@ -400,6 +403,9 @@ type LicenseProfileArmProductProfileProperties struct {
 
 	// READ-ONLY; The timestamp in UTC when the user enrolls the feature.
 	EnrollmentDate *time.Time
+
+	// READ-ONLY; The errors that were encountered during the feature enrollment or disenrollment.
+	Error *ErrorDetail
 }
 
 // LicenseProfileMachineInstanceView - License Profile Instance View in Machine Properties.
@@ -1043,12 +1049,6 @@ type MachineRunCommandScriptSource struct {
 	ScriptURIManagedIdentity *RunCommandManagedIdentity
 }
 
-// MachineRunCommandUpdate - Describes a Machine Extension Update.
-type MachineRunCommandUpdate struct {
-	// Resource tags
-	Tags map[string]*string
-}
-
 // MachineRunCommandsListResult - Describes the Run Commands List Result.
 type MachineRunCommandsListResult struct {
 	// The uri to fetch the next page of run commands. Call ListNext() with this to fetch the next page of run commands.
@@ -1245,8 +1245,24 @@ type PatchSettings struct {
 	// Specifies the assessment mode.
 	AssessmentMode *AssessmentModeTypes
 
+	// Captures the hotpatch capability enrollment intent of the customers, which enables customers to patch their Windows machines
+	// without requiring a reboot.
+	EnableHotpatching *bool
+
 	// Specifies the patch mode.
 	PatchMode *PatchModeTypes
+
+	// READ-ONLY; Status of the hotpatch capability enrollment or disenrollment.
+	Status *PatchSettingsStatus
+}
+
+// PatchSettingsStatus - Status of the hotpatch capability enrollment or disenrollment.
+type PatchSettingsStatus struct {
+	// Indicates the current status of the hotpatch being enabled or disabled.
+	HotpatchEnablementStatus *HotpatchEnablementStatus
+
+	// READ-ONLY; The errors that were encountered during the hotpatch capability enrollment or disenrollment.
+	Error *ErrorDetail
 }
 
 // PrivateEndpointConnection - A private endpoint connection
@@ -1433,6 +1449,9 @@ type ProductFeature struct {
 	// Indicates the current status of the product features.
 	SubscriptionStatus *LicenseProfileSubscriptionStatus
 
+	// READ-ONLY; The timestamp in UTC when the billing ends.
+	BillingEndDate *time.Time
+
 	// READ-ONLY; The timestamp in UTC when the billing starts.
 	BillingStartDate *time.Time
 
@@ -1441,6 +1460,9 @@ type ProductFeature struct {
 
 	// READ-ONLY; The timestamp in UTC when the user enrolls the feature.
 	EnrollmentDate *time.Time
+
+	// READ-ONLY; The errors that were encountered during the feature enrollment or disenrollment.
+	Error *ErrorDetail
 }
 
 // ProvisioningIssue - Details on issues that occurred during provisioning.

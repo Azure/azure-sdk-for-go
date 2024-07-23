@@ -31,6 +31,10 @@ type NetworkSecurityPerimeterConfigurationsServer struct {
 	// NewListByPrivateLinkScopePager is the fake for method NetworkSecurityPerimeterConfigurationsClient.NewListByPrivateLinkScopePager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByPrivateLinkScopePager func(resourceGroupName string, scopeName string, options *armhybridcompute.NetworkSecurityPerimeterConfigurationsClientListByPrivateLinkScopeOptions) (resp azfake.PagerResponder[armhybridcompute.NetworkSecurityPerimeterConfigurationsClientListByPrivateLinkScopeResponse])
+
+	// BeginReconcileForPrivateLinkScope is the fake for method NetworkSecurityPerimeterConfigurationsClient.BeginReconcileForPrivateLinkScope
+	// HTTP status codes to indicate success: http.StatusAccepted
+	BeginReconcileForPrivateLinkScope func(ctx context.Context, resourceGroupName string, scopeName string, perimeterName string, options *armhybridcompute.NetworkSecurityPerimeterConfigurationsClientBeginReconcileForPrivateLinkScopeOptions) (resp azfake.PollerResponder[armhybridcompute.NetworkSecurityPerimeterConfigurationsClientReconcileForPrivateLinkScopeResponse], errResp azfake.ErrorResponder)
 }
 
 // NewNetworkSecurityPerimeterConfigurationsServerTransport creates a new instance of NetworkSecurityPerimeterConfigurationsServerTransport with the provided implementation.
@@ -38,16 +42,18 @@ type NetworkSecurityPerimeterConfigurationsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewNetworkSecurityPerimeterConfigurationsServerTransport(srv *NetworkSecurityPerimeterConfigurationsServer) *NetworkSecurityPerimeterConfigurationsServerTransport {
 	return &NetworkSecurityPerimeterConfigurationsServerTransport{
-		srv:                            srv,
-		newListByPrivateLinkScopePager: newTracker[azfake.PagerResponder[armhybridcompute.NetworkSecurityPerimeterConfigurationsClientListByPrivateLinkScopeResponse]](),
+		srv:                               srv,
+		newListByPrivateLinkScopePager:    newTracker[azfake.PagerResponder[armhybridcompute.NetworkSecurityPerimeterConfigurationsClientListByPrivateLinkScopeResponse]](),
+		beginReconcileForPrivateLinkScope: newTracker[azfake.PollerResponder[armhybridcompute.NetworkSecurityPerimeterConfigurationsClientReconcileForPrivateLinkScopeResponse]](),
 	}
 }
 
 // NetworkSecurityPerimeterConfigurationsServerTransport connects instances of armhybridcompute.NetworkSecurityPerimeterConfigurationsClient to instances of NetworkSecurityPerimeterConfigurationsServer.
 // Don't use this type directly, use NewNetworkSecurityPerimeterConfigurationsServerTransport instead.
 type NetworkSecurityPerimeterConfigurationsServerTransport struct {
-	srv                            *NetworkSecurityPerimeterConfigurationsServer
-	newListByPrivateLinkScopePager *tracker[azfake.PagerResponder[armhybridcompute.NetworkSecurityPerimeterConfigurationsClientListByPrivateLinkScopeResponse]]
+	srv                               *NetworkSecurityPerimeterConfigurationsServer
+	newListByPrivateLinkScopePager    *tracker[azfake.PagerResponder[armhybridcompute.NetworkSecurityPerimeterConfigurationsClientListByPrivateLinkScopeResponse]]
+	beginReconcileForPrivateLinkScope *tracker[azfake.PollerResponder[armhybridcompute.NetworkSecurityPerimeterConfigurationsClientReconcileForPrivateLinkScopeResponse]]
 }
 
 // Do implements the policy.Transporter interface for NetworkSecurityPerimeterConfigurationsServerTransport.
@@ -66,6 +72,8 @@ func (n *NetworkSecurityPerimeterConfigurationsServerTransport) Do(req *http.Req
 		resp, err = n.dispatchGetByPrivateLinkScope(req)
 	case "NetworkSecurityPerimeterConfigurationsClient.NewListByPrivateLinkScopePager":
 		resp, err = n.dispatchNewListByPrivateLinkScopePager(req)
+	case "NetworkSecurityPerimeterConfigurationsClient.BeginReconcileForPrivateLinkScope":
+		resp, err = n.dispatchBeginReconcileForPrivateLinkScope(req)
 	default:
 		err = fmt.Errorf("unhandled API %s", method)
 	}
@@ -152,5 +160,53 @@ func (n *NetworkSecurityPerimeterConfigurationsServerTransport) dispatchNewListB
 	if !server.PagerResponderMore(newListByPrivateLinkScopePager) {
 		n.newListByPrivateLinkScopePager.remove(req)
 	}
+	return resp, nil
+}
+
+func (n *NetworkSecurityPerimeterConfigurationsServerTransport) dispatchBeginReconcileForPrivateLinkScope(req *http.Request) (*http.Response, error) {
+	if n.srv.BeginReconcileForPrivateLinkScope == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginReconcileForPrivateLinkScope not implemented")}
+	}
+	beginReconcileForPrivateLinkScope := n.beginReconcileForPrivateLinkScope.get(req)
+	if beginReconcileForPrivateLinkScope == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.HybridCompute/privateLinkScopes/(?P<scopeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/networkSecurityPerimeterConfigurations/(?P<perimeterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/reconcile`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		scopeNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("scopeName")])
+		if err != nil {
+			return nil, err
+		}
+		perimeterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("perimeterName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := n.srv.BeginReconcileForPrivateLinkScope(req.Context(), resourceGroupNameParam, scopeNameParam, perimeterNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginReconcileForPrivateLinkScope = &respr
+		n.beginReconcileForPrivateLinkScope.add(req, beginReconcileForPrivateLinkScope)
+	}
+
+	resp, err := server.PollerResponderNext(beginReconcileForPrivateLinkScope, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusAccepted}, resp.StatusCode) {
+		n.beginReconcileForPrivateLinkScope.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginReconcileForPrivateLinkScope) {
+		n.beginReconcileForPrivateLinkScope.remove(req)
+	}
+
 	return resp, nil
 }

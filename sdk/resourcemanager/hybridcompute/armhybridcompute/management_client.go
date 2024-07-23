@@ -46,7 +46,7 @@ func NewManagementClient(subscriptionID string, credential azcore.TokenCredentia
 // BeginUpgradeExtensions - The operation to Upgrade Machine Extensions.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-31-preview
+// Generated from API version 2024-05-20-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - machineName - The name of the hybrid machine.
 //   - extensionUpgradeParameters - Parameters supplied to the Upgrade Extensions operation.
@@ -72,7 +72,7 @@ func (client *ManagementClient) BeginUpgradeExtensions(ctx context.Context, reso
 // UpgradeExtensions - The operation to Upgrade Machine Extensions.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-31-preview
+// Generated from API version 2024-05-20-preview
 func (client *ManagementClient) upgradeExtensions(ctx context.Context, resourceGroupName string, machineName string, extensionUpgradeParameters MachineExtensionUpgrade, options *ManagementClientBeginUpgradeExtensionsOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ManagementClient.BeginUpgradeExtensions"
@@ -114,7 +114,7 @@ func (client *ManagementClient) upgradeExtensionsCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-31-preview")
+	reqQP.Set("api-version", "2024-05-20-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, extensionUpgradeParameters); err != nil {

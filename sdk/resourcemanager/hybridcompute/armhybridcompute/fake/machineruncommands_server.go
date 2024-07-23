@@ -39,10 +39,6 @@ type MachineRunCommandsServer struct {
 	// NewListPager is the fake for method MachineRunCommandsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(resourceGroupName string, machineName string, options *armhybridcompute.MachineRunCommandsClientListOptions) (resp azfake.PagerResponder[armhybridcompute.MachineRunCommandsClientListResponse])
-
-	// BeginUpdate is the fake for method MachineRunCommandsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, machineName string, runCommandName string, runCommandProperties armhybridcompute.MachineRunCommandUpdate, options *armhybridcompute.MachineRunCommandsClientBeginUpdateOptions) (resp azfake.PollerResponder[armhybridcompute.MachineRunCommandsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewMachineRunCommandsServerTransport creates a new instance of MachineRunCommandsServerTransport with the provided implementation.
@@ -54,7 +50,6 @@ func NewMachineRunCommandsServerTransport(srv *MachineRunCommandsServer) *Machin
 		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armhybridcompute.MachineRunCommandsClientCreateOrUpdateResponse]](),
 		beginDelete:         newTracker[azfake.PollerResponder[armhybridcompute.MachineRunCommandsClientDeleteResponse]](),
 		newListPager:        newTracker[azfake.PagerResponder[armhybridcompute.MachineRunCommandsClientListResponse]](),
-		beginUpdate:         newTracker[azfake.PollerResponder[armhybridcompute.MachineRunCommandsClientUpdateResponse]](),
 	}
 }
 
@@ -65,7 +60,6 @@ type MachineRunCommandsServerTransport struct {
 	beginCreateOrUpdate *tracker[azfake.PollerResponder[armhybridcompute.MachineRunCommandsClientCreateOrUpdateResponse]]
 	beginDelete         *tracker[azfake.PollerResponder[armhybridcompute.MachineRunCommandsClientDeleteResponse]]
 	newListPager        *tracker[azfake.PagerResponder[armhybridcompute.MachineRunCommandsClientListResponse]]
-	beginUpdate         *tracker[azfake.PollerResponder[armhybridcompute.MachineRunCommandsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for MachineRunCommandsServerTransport.
@@ -88,8 +82,6 @@ func (m *MachineRunCommandsServerTransport) Do(req *http.Request) (*http.Respons
 		resp, err = m.dispatchGet(req)
 	case "MachineRunCommandsClient.NewListPager":
 		resp, err = m.dispatchNewListPager(req)
-	case "MachineRunCommandsClient.BeginUpdate":
-		resp, err = m.dispatchBeginUpdate(req)
 	default:
 		err = fmt.Errorf("unhandled API %s", method)
 	}
@@ -288,57 +280,5 @@ func (m *MachineRunCommandsServerTransport) dispatchNewListPager(req *http.Reque
 	if !server.PagerResponderMore(newListPager) {
 		m.newListPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (m *MachineRunCommandsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if m.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := m.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.HybridCompute/machines/(?P<machineName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/runCommands/(?P<runCommandName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armhybridcompute.MachineRunCommandUpdate](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		machineNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("machineName")])
-		if err != nil {
-			return nil, err
-		}
-		runCommandNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("runCommandName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := m.srv.BeginUpdate(req.Context(), resourceGroupNameParam, machineNameParam, runCommandNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		m.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		m.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		m.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }

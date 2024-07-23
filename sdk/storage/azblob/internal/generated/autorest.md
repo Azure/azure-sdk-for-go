@@ -35,7 +35,6 @@ directive:
   where: $
   transform: >-
     return $.
-
       replaceAll(`[]string{"2021-12-02"}`, `[]string{ServiceVersion}`);
 ```
 

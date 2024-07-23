@@ -22,7 +22,7 @@ export-clients: true
 use: "@autorest/go@4.0.0-preview.65"
 ```
 
-### Updating service version to 2024-05-04
+### Updating service version to 2024-08-04
 ```yaml
 directive:
 - from: 
@@ -35,8 +35,8 @@ directive:
   where: $
   transform: >-
     return $.
-      replaceAll(`[]string{"2021-12-02"}`, `[]string{ServiceVersion}`).
-      replaceAll(`2021-12-02`, `2024-08-04`);
+
+      replaceAll(`[]string{"2021-12-02"}`, `[]string{ServiceVersion}`);
 ```
 
 ### Undo breaking change with BlobName 

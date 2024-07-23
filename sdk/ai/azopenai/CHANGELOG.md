@@ -8,7 +8,7 @@
 
 ### Bugs Fixed
 
-- Ai sdk custom_client now respects `InsecureAllowCredentialWithHTTP` flag for allowing insecure connections. (PR#23188)
+- Client now respects the `InsecureAllowCredentialWithHTTP` flag for allowing non-HTTPS connections. Thank you @ukrocks007!  (PR#23188)
 
 ### Other Changes
 

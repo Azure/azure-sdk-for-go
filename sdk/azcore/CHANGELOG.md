@@ -10,6 +10,8 @@
 
 ### Other Changes
 
+* Include the HTTP verb and URL in `log.EventRetryPolicy` log entries so it's clear which operation is being retried.
+
 ## 1.13.0 (2024-07-16)
 
 ### Features Added

@@ -18,8 +18,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	azcred "github.com/Azure/azure-sdk-for-go/sdk/internal/test/credential"
 	"github.com/Azure/azure-sdk-for-go/sdk/monitor/query/azmetrics"
 	"github.com/stretchr/testify/require"
 )
@@ -63,34 +63,22 @@ func run(m *testing.M) int {
 	subscriptionID = getEnvVar("AZMETRICS_SUBSCRIPTION_ID", fakeSubscriptionID)
 	region = getEnvVar("AZMETRICS_LOCATION", fakeRegion)
 
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		credential = &FakeCredential{}
-		endpoint = "https://" + region + ".metrics.monitor.azure.com"
-	} else {
-		tenantID := getEnvVar("AZMETRICS_TENANT_ID", "")
-		clientID := getEnvVar("AZMETRICS_CLIENT_ID", "")
-		secret := getEnvVar("AZMETRICS_CLIENT_SECRET", "")
-		var err error
-		credential, err = azidentity.NewClientSecretCredential(tenantID, clientID, secret, nil)
-		if err != nil {
-			panic(err)
+	var err error
+	credential, err = azcred.New(nil)
+	if err != nil {
+		panic(err)
+	}
+	endpoint = "https://" + region + ".metrics.monitor.azure.com"
+	if cloudEnv, ok := os.LookupEnv("AZMETRICS_ENVIRONMENT"); ok {
+		if strings.EqualFold(cloudEnv, "AzureUSGovernment") {
+			clientCloud = cloud.AzureGovernment
+			endpoint = "https://" + region + ".metrics.monitor.azure.us"
 		}
-
-		if cloudEnv, ok := os.LookupEnv("AZMETRICS_ENVIRONMENT"); ok {
-			if strings.EqualFold(cloudEnv, "AzureCloud") {
-				endpoint = "https://" + region + ".metrics.monitor.azure.com"
-			}
-			if strings.EqualFold(cloudEnv, "AzureUSGovernment") {
-				clientCloud = cloud.AzureGovernment
-				endpoint = "https://" + region + ".metrics.monitor.azure.us"
-			}
-			if strings.EqualFold(cloudEnv, "AzureChinaCloud") {
-				clientCloud = cloud.AzureChina
-				endpoint = "https://" + region + ".metrics.monitor.azure.cn"
-			}
+		if strings.EqualFold(cloudEnv, "AzureChinaCloud") {
+			clientCloud = cloud.AzureChina
+			endpoint = "https://" + region + ".metrics.monitor.azure.cn"
 		}
 	}
-
 	return m.Run()
 }
 

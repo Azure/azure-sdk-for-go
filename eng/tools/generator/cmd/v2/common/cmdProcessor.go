@@ -147,12 +147,17 @@ func ExecuteTspClient(path string, args ...string) error {
 }
 
 func ExecuteTypeSpecGenerate(ctx *GenerateContext, emitOptions string, tspClientOptions []string) error {
+	tspConfigAbs, err := filepath.Abs(ctx.TypeSpecConfig.Path)
+	if err != nil {
+		return err
+	}
+
 	args := []string{
 		"init",
-		"--tsp-config", ctx.TypeSpecConfig.Path,
+		"--tsp-config", tspConfigAbs,
 		"--commit", ctx.SpecCommitHash,
 		"--repo", ctx.SpecRepoURL[len("https://github.com/"):],
-		"--local-spec-repo", filepath.Dir(ctx.TypeSpecConfig.Path),
+		"--local-spec-repo", filepath.Dir(tspConfigAbs),
 		"--emitter-options", emitOptions,
 	}
 

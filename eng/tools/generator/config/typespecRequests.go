@@ -37,9 +37,13 @@ type TypeSpecPakcageInfo struct {
 
 func GetTypeSpecProjectsFromConfig(config *Config, specRoot string) (tspProjects map[string][]TypeSpecPakcageInfo, errResult error) {
 	tspProjects = make(map[string][]TypeSpecPakcageInfo)
+	specRootAbs, err := filepath.Abs(specRoot)
+	if err != nil {
+		return nil, err
+	}
 	for tspConfigPath, typespecRequests := range config.TypeSpecRequests {
 		for _, releaseRequestInfo := range typespecRequests {
-			localTspConfigPath := filepath.Join(specRoot, tspConfigPath)
+			localTspConfigPath := filepath.Join(specRootAbs, tspConfigPath)
 			tspConfig, err := typespec.ParseTypeSpecConfig(localTspConfigPath)
 			if err != nil {
 				return nil, err

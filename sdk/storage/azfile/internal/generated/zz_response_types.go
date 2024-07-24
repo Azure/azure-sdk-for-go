@@ -1108,6 +1108,10 @@ type ShareClientGetPropertiesResponse struct {
 	// ETag contains the information returned from the ETag header response.
 	ETag *azcore.ETag
 
+	// EnableSnapshotVirtualDirectoryAccess contains the information returned from the x-ms-enable-snapshot-virtual-directory-access
+	// header response.
+	EnableSnapshotVirtualDirectoryAccess *bool
+
 	// EnabledProtocols contains the information returned from the x-ms-enabled-protocols header response.
 	EnabledProtocols *string
 

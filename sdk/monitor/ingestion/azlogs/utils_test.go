@@ -7,16 +7,12 @@
 package azlogs_test
 
 import (
-	"context"
-	"fmt"
 	"os"
 	"strings"
 	"testing"
-	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	azcred "github.com/Azure/azure-sdk-for-go/sdk/internal/test/credential"
 	"github.com/Azure/azure-sdk-for-go/sdk/monitor/ingestion/azlogs"
@@ -116,18 +112,4 @@ func getEnvVar(lookupValue string, fakeValue string) string {
 	}
 
 	return envVar
-}
-
-func lookupEnvVar(s string) string {
-	ret, ok := os.LookupEnv(s)
-	if !ok {
-		panic(fmt.Sprintf("Could not find env var: '%s'", s))
-	}
-	return ret
-}
-
-type FakeCredential struct{}
-
-func (f *FakeCredential) GetToken(ctx context.Context, options policy.TokenRequestOptions) (azcore.AccessToken, error) {
-	return azcore.AccessToken{Token: "faketoken", ExpiresOn: time.Now().Add(time.Hour).UTC()}, nil
 }

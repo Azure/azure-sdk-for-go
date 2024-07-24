@@ -14,7 +14,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/issue/link"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/v2/common"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/config"
-	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/config/validate"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/flags"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/repo"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/typespec"
@@ -245,7 +244,7 @@ func (c *commandContext) generateFromRequest(sdkRepo repo.SDKRepository, specRep
 		return fmt.Errorf("parse config err: %v", err)
 	}
 	log.Printf("Configuration: %s", cfg.String())
-	armServices, err := validate.ParseTrack2(cfg, specRepoParam)
+	armServices, err := config.ParseTrack2(cfg, specRepoParam)
 	if err != nil {
 		return err
 	}

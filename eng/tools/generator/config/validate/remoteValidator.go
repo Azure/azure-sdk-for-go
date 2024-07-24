@@ -7,6 +7,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"regexp"
 	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/issue/query"
@@ -22,7 +23,7 @@ type remoteValidator struct {
 
 func (v *remoteValidator) Validate(cfg config.Config) error {
 	var errResult error
-	for readme, infoMap := range cfg.Track1Requests {
+	for readme, infoMap := range cfg.Track2Requests {
 		// first we validate whether the readme exists
 		file, err := v.validateReadmeExistence(readme)
 		if err != nil {
@@ -50,13 +51,14 @@ func (v *remoteValidator) Validate(cfg config.Config) error {
 		// get the keys from infoMap, which is the tags
 		var tags []string
 		linq.From(infoMap).Select(func(item interface{}) interface{} {
-			return item.(linq.KeyValue).Key
+			return item.(config.Track2Request).PackageFlag
 		}).ToSlice(&tags)
 		// check the tags one by one
 		if err := validateTagsInReadme([]byte(contentOfReadme), readme, tags...); err != nil {
 			errResult = errors.Join(errResult, err)
 		}
-		if err := validateTagsInReadmeGo([]byte(contentOfReadmeGo), readme, tags...); err != nil {
+		// check module-name exist
+		if err := validateModuleNameInReadmeGo([]byte(contentOfReadmeGo), readme); err != nil {
 			errResult = errors.Join(errResult, err)
 		}
 	}
@@ -86,16 +88,10 @@ func validateTagsInReadme(content []byte, readme string, tags ...string) error {
 	return nil
 }
 
-func validateTagsInReadmeGo(content []byte, readme string, tags ...string) error {
-	var notFoundTags []string
-	for _, t := range tags {
-		if !findTagInGo(content, t) {
-			notFoundTags = append(notFoundTags, t)
-		}
-	}
-
-	if len(notFoundTags) > 0 {
-		return fmt.Errorf("%d tag(s) not found in readme.go.md '%s': %s", len(notFoundTags), getReadmeGoFromReadme(readme), strings.Join(notFoundTags, ", "))
+func validateModuleNameInReadmeGo(content []byte, readme string) error {
+	moduleExist := regexp.MustCompile(goReadmeModuleName).Match(content)
+	if !moduleExist {
+		return fmt.Errorf("module name not found in readme.go.md '%s'", getReadmeGoFromReadme(readme))
 	}
 
 	return nil

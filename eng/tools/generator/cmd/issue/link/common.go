@@ -88,7 +88,6 @@ func GetReadmeFromPath(ctx context.Context, client *query.Client, path string) (
 }
 
 func getReadmeFromDirectoryPath(ctx context.Context, client *query.Client, dir string) (Readme, error) {
-	log.Println("###readme...", dir)
 	if len(dir) == 0 || dir == "." {
 		return "", fmt.Errorf("cannot determine the readme.md path")
 	}
@@ -162,7 +161,6 @@ func GetTspConfigFromPath(ctx context.Context, client *query.Client, path string
 var errNoTspConfig = errors.New("cannot determine the tspconfig.yaml path")
 
 func getTspConfigFromDirectoryPath(ctx context.Context, client *query.Client, dir string) (Readme, error) {
-	log.Println("###typespec...", dir)
 	if len(dir) == 0 || dir == "." {
 		return "", errNoTspConfig
 	}

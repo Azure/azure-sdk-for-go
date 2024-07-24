@@ -8,7 +8,6 @@ import (
 )
 
 type Config struct {
-	Track1Requests   Track1ReleaseRequests   `json:"track1Requests,omitempty"`
 	Track2Requests   Track2ReleaseRequests   `json:"track2Requests,omitempty"`
 	TypeSpecRequests TypeSpecReleaseRequests `json:"typespecRequests,omitempty"`
 	RefreshInfo      RefreshInfo             `json:"refresh,omitempty"`

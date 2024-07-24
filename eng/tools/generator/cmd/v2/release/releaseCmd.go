@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"log"
+	"os"
 	"path"
 	"strings"
 	"time"
@@ -129,6 +130,14 @@ type commandContext struct {
 }
 
 func (c *commandContext) execute(sdkRepoParam, specRepoParam string) error {
+	var err error
+	if _, err := os.Stat(sdkRepoParam); os.IsNotExist(err) {
+		return err
+	}
+	if _, err := os.Stat(specRepoParam); os.IsNotExist(err) {
+		return err
+	}
+
 	sdkRepo, err := common.GetSDKRepo(sdkRepoParam, c.flags.SDKRepo)
 	if err != nil {
 		return err

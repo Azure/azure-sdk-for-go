@@ -1,5 +1,15 @@
 # Release History
 
+## 1.6.0 (2024-07-26)
+### Features Added
+
+- New value `ProvisioningStateCanceled` added to enum type `ProvisioningState`
+- New struct `EffectiveOutboundIP`
+- New struct `LoadBalancerProfile`
+- New struct `ManagedOutboundIPs`
+- New field `LoadBalancerProfile` in struct `NetworkProfile`
+
+
 ## 1.5.0 (2023-11-24)
 ### Features Added
 

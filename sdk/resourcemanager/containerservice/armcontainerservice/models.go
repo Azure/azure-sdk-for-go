@@ -25,6 +25,20 @@ type AccessProfile struct {
 	KubeConfig []byte
 }
 
+// AdvancedNetworking - Advanced Networking profile for enabling observability on a cluster. Note that enabling advanced networking
+// features may incur additional costs. For more information see aka.ms/aksadvancednetworking.
+type AdvancedNetworking struct {
+	// Observability profile to enable advanced network metrics and flow logs with historical contexts.
+	Observability *AdvancedNetworkingObservability
+}
+
+// AdvancedNetworkingObservability - Observability profile to enable advanced network metrics and flow logs with historical
+// contexts.
+type AdvancedNetworkingObservability struct {
+	// Indicates the enablement of Advanced Networking observability functionalities on clusters.
+	Enabled *bool
+}
+
 // AgentPool - Agent Pool.
 type AgentPool struct {
 	// Properties of an agent pool.
@@ -163,6 +177,9 @@ type AgentPoolUpgradeProfileProperties struct {
 	// REQUIRED; The operating system type. The default is Linux.
 	OSType *OSType
 
+	// List of components grouped by kubernetes major.minor version.
+	ComponentsByReleases []*ComponentsByRelease
+
 	// The latest AKS supported node image version.
 	LatestNodeImageVersion *string
 
@@ -195,6 +212,11 @@ type AgentPoolUpgradeSettings struct {
 	// The amount of time (in minutes) to wait after draining a node and before reimaging it and moving on to next node. If not
 	// specified, the default is 0 minutes.
 	NodeSoakDurationInMinutes *int32
+
+	// Defines the behavior for undrainable nodes during upgrade. The most common cause of undrainable nodes is Pod Disruption
+	// Budgets (PDBs), but other issues, such as pod termination grace period is
+	// exceeding the remaining per-node drain timeout or pod is still being in a running state, can also cause undrainable nodes.
+	UndrainableNodeBehavior *UndrainableNodeBehavior
 }
 
 // AgentPoolWindowsProfile - The Windows agent pool's specific profile.
@@ -202,6 +224,20 @@ type AgentPoolWindowsProfile struct {
 	// The default value is false. Outbound NAT can only be disabled if the cluster outboundType is NAT Gateway and the Windows
 	// agent pool does not have node public IP enabled.
 	DisableOutboundNat *bool
+}
+
+// AutoScaleProfile - Specifications on auto-scaling.
+type AutoScaleProfile struct {
+	// The maximum number of nodes of the specified sizes.
+	MaxCount *int32
+
+	// The minimum number of nodes of the specified sizes.
+	MinCount *int32
+
+	// The list of allowed vm sizes e.g. ['StandardE4sv3', 'StandardE16sv3', 'StandardD16sv5']. AKS will use the first available
+	// one when auto scaling. If a VM size is unavailable (e.g. due to quota or
+	// regional capacity reasons), AKS will use the next size.
+	Sizes []*string
 }
 
 // AzureKeyVaultKms - Azure Key Vault key management service settings for the security profile.
@@ -259,6 +295,28 @@ type CompatibleVersions struct {
 
 	// Product/service versions compatible with a service mesh add-on revision.
 	Versions []*string
+}
+
+type Component struct {
+	// If upgraded component version contains breaking changes from the current version. To see a detailed description of what
+	// the breaking changes are, visit
+	// https://learn.microsoft.com/azure/aks/supported-kubernetes-versions?tabs=azure-cli#aks-components-breaking-changes-by-version.
+	HasBreakingChanges *bool
+
+	// Component name.
+	Name *string
+
+	// Component version.
+	Version *string
+}
+
+// ComponentsByRelease - components of given Kubernetes version.
+type ComponentsByRelease struct {
+	// components of current or upgraded Kubernetes version in the cluster.
+	Components []*Component
+
+	// The Kubernetes version (major.minor).
+	KubernetesVersion *string
 }
 
 // CreationData - Data used when creating a target resource from a source resource.
@@ -561,6 +619,32 @@ type KubernetesVersionListResult struct {
 	Values []*KubernetesVersion
 }
 
+// LabelSelector - A label selector is a label query over a set of resources. The result of matchLabels and matchExpressions
+// are ANDed. An empty label selector matches all objects. A null label selector matches no
+// objects.
+type LabelSelector struct {
+	// matchExpressions is a list of label selector requirements. The requirements are ANDed.
+	MatchExpressions []*LabelSelectorRequirement
+
+	// matchLabels is an array of {key=value} pairs. A single {key=value} in the matchLabels map is equivalent to an element of
+	// matchExpressions, whose key field is key, the operator is In, and the values
+	// array contains only value. The requirements are ANDed.
+	MatchLabels []*string
+}
+
+// LabelSelectorRequirement - A label selector requirement is a selector that contains values, a key, and an operator that
+// relates the key and values.
+type LabelSelectorRequirement struct {
+	// key is the label key that the selector applies to.
+	Key *string
+
+	// operator represents a key's relationship to a set of values. Valid operators are In and NotIn
+	Operator *Operator
+
+	// values is an array of string values, the values array must be non-empty.
+	Values []*string
+}
+
 // LinuxOSConfig - See AKS custom node configuration [https://docs.microsoft.com/azure/aks/custom-node-configuration] for
 // more details.
 type LinuxOSConfig struct {
@@ -587,6 +671,64 @@ type LinuxProfile struct {
 
 	// REQUIRED; The SSH configuration for Linux-based VMs running on Azure.
 	SSH *SSHConfiguration
+}
+
+// LoadBalancer - The configurations regarding multiple standard load balancers. If not supplied, single load balancer mode
+// will be used. Multiple standard load balancers mode will be used if at lease one configuration
+// is supplied. There has to be a configuration named kubernetes.
+type LoadBalancer struct {
+	// The properties of the load balancer.
+	Properties *LoadBalancerProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// LoadBalancerListResult - The response from the List Load Balancers operation.
+type LoadBalancerListResult struct {
+	// The list of Load Balancers.
+	Value []*LoadBalancer
+
+	// READ-ONLY; The URL to get the next set of load balancer results.
+	NextLink *string
+}
+
+type LoadBalancerProperties struct {
+	// REQUIRED; Name of the public load balancer. There will be an internal load balancer created if needed, and the name will
+	// be <name>-internal. The internal lb shares the same configurations as the external one.
+	// The internal lbs are not needed to be included in LoadBalancer list. There must be a name of kubernetes in the list.
+	Name *string
+
+	// REQUIRED; Required field. A string value that must specify the ID of an existing agent pool. All nodes in the given pool
+	// will always be added to this load balancer. This agent pool must have at least one node
+	// and minCount>=1 for autoscaling operations. An agent pool can only be the primary pool for a single load balancer.
+	PrimaryAgentPoolName *string
+
+	// Whether to automatically place services on the load balancer. If not supplied, the default value is true. If set to false
+	// manually, both of the external and the internal load balancer will not be
+	// selected for services unless they explicitly target it.
+	AllowServicePlacement *bool
+
+	// Nodes that match this selector will be possible members of this load balancer.
+	NodeSelector *LabelSelector
+
+	// Only services that must match this selector can be placed on this load balancer.
+	ServiceLabelSelector *LabelSelector
+
+	// Services created in namespaces that match the selector can be placed on this load balancer.
+	ServiceNamespaceSelector *LabelSelector
+
+	// READ-ONLY; The current provisioning state.
+	ProvisioningState *string
 }
 
 // Machine - A machine. Contains details about the underlying virtual machine. A machine may be visible here but not in kubectl
@@ -728,6 +870,11 @@ type ManagedCluster struct {
 
 	// Resource tags.
 	Tags map[string]*string
+
+	// READ-ONLY; Unique read-only string used to implement optimistic concurrency. The eTag value will change when the resource
+	// is updated. Specify an if-match or if-none-match header with the eTag value for a
+	// subsequent request to enable optimistic concurrency per the normal etag convention.
+	ETag *string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
@@ -1050,6 +1197,11 @@ type ManagedClusterAgentPoolProfile struct {
 	// was , this field will contain the full version being used.
 	CurrentOrchestratorVersion *string
 
+	// READ-ONLY; Unique read-only string used to implement optimistic concurrency. The eTag value will change when the resource
+	// is updated. Specify an if-match or if-none-match header with the eTag value for a
+	// subsequent request to enable optimistic concurrency per the normal etag convention.
+	ETag *string
+
 	// READ-ONLY; The version of node image
 	NodeImageVersion *string
 
@@ -1253,6 +1405,11 @@ type ManagedClusterAgentPoolProfileProperties struct {
 	// READ-ONLY; If orchestratorVersion was a fully specified version , this field will be exactly equal to it. If orchestratorVersion
 	// was , this field will contain the full version being used.
 	CurrentOrchestratorVersion *string
+
+	// READ-ONLY; Unique read-only string used to implement optimistic concurrency. The eTag value will change when the resource
+	// is updated. Specify an if-match or if-none-match header with the eTag value for a
+	// subsequent request to enable optimistic concurrency per the normal etag convention.
+	ETag *string
 
 	// READ-ONLY; The version of node image
 	NodeImageVersion *string
@@ -1656,6 +1813,9 @@ type ManagedClusterPoolUpgradeProfile struct {
 
 	// REQUIRED; The operating system type. The default is Linux.
 	OSType *OSType
+
+	// List of components grouped by kubernetes major.minor version.
+	ComponentsByReleases []*ComponentsByRelease
 
 	// The Agent Pool name.
 	Name *string
@@ -2201,8 +2361,9 @@ type ManualScaleProfile struct {
 	// Number of nodes.
 	Count *int32
 
-	// The list of allowed vm sizes. AKS will use the first available one when scaling. If a VM size is unavailable (e.g. due
-	// to quota or regional capacity reasons), AKS will use the next size.
+	// The list of allowed vm sizes e.g. ['StandardE4sv3', 'StandardE16sv3', 'StandardD16sv5']. AKS will use the first available
+	// one when scaling. If a VM size is unavailable (e.g. due to quota or regional
+	// capacity reasons), AKS will use the next size.
 	Sizes []*string
 }
 
@@ -2289,15 +2450,12 @@ type MeshUpgradeProfileProperties struct {
 	Upgrades []*string
 }
 
-// NetworkMonitoring - This addon can be used to configure network monitoring and generate network monitoring data in Prometheus
-// format
-type NetworkMonitoring struct {
-	// Enable or disable the network monitoring plugin on the cluster
-	Enabled *bool
-}
-
 // NetworkProfile - Profile of network configuration.
 type NetworkProfile struct {
+	// Advanced Networking profile for enabling observability on a cluster. Note that enabling advanced networking features may
+	// incur additional costs. For more information see aka.ms/aksadvancednetworking.
+	AdvancedNetworking *AdvancedNetworking
+
 	// An IP address assigned to the Kubernetes DNS service. It must be within the Kubernetes service address range specified
 	// in serviceCidr.
 	DNSServiceIP *string
@@ -2318,9 +2476,6 @@ type NetworkProfile struct {
 	// The default is 'standard'. See Azure Load Balancer SKUs [https://docs.microsoft.com/azure/load-balancer/skus] for more
 	// information about the differences between load balancer SKUs.
 	LoadBalancerSKU *LoadBalancerSKU
-
-	// This addon can be used to configure network monitoring and generate network monitoring data in Prometheus format
-	Monitoring *NetworkMonitoring
 
 	// Profile of the cluster NAT gateway.
 	NatGatewayProfile *ManagedClusterNATGatewayProfile
@@ -2350,6 +2505,10 @@ type NetworkProfile struct {
 	// One IPv4 CIDR is expected for single-stack networking. Two CIDRs, one for each IP family (IPv4/IPv6), is expected for dual-stack
 	// networking.
 	PodCidrs []*string
+
+	// Defines access to special link local addresses (Azure Instance Metadata Service, aka IMDS) for pods with hostNetwork=false.
+	// if not specified, the default is 'IMDS'.
+	PodLinkLocalAccess *PodLinkLocalAccess
 
 	// A CIDR notation IP range from which to assign service cluster IPs. It must not overlap with any Subnet IP ranges.
 	ServiceCidr *string
@@ -2625,6 +2784,13 @@ type PrivateLinkServiceConnectionState struct {
 	Status *ConnectionStatus
 }
 
+// RebalanceLoadBalancersRequestBody - The names of the load balancers to rebalance. If set to empty, all load balancers will
+// be rebalanced.
+type RebalanceLoadBalancersRequestBody struct {
+	// The load balancer names list.
+	LoadBalancerNames []*string
+}
+
 // RelativeMonthlySchedule - For schedules like: 'recur every month on the first Monday' or 'recur every 3 months on last
 // Friday'.
 type RelativeMonthlySchedule struct {
@@ -2732,7 +2898,12 @@ type SafeguardsProfile struct {
 
 // ScaleProfile - Specifications on how to scale a VirtualMachines agent pool.
 type ScaleProfile struct {
-	// Specifications on how to scale the VirtualMachines agent pool to a fixed size.
+	// Specifications on how to auto-scale the VirtualMachines agent pool within a predefined size range. Currently, at most one
+	// AutoScaleProfile is allowed.
+	Autoscale []*AutoScaleProfile
+
+	// Specifications on how to scale the VirtualMachines agent pool to a fixed size. Currently, at most one ManualScaleProfile
+	// is allowed.
 	Manual []*ManualScaleProfile
 }
 

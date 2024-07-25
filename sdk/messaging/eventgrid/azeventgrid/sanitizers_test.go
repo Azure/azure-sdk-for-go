@@ -38,20 +38,6 @@ func sanitizeForRecording(t *testing.T, egVars eventGridVars) {
 	err = recording.AddHeaderRegexSanitizer("Aeg-Sas-Key", fakeVars.EG.Key, "", nil)
 	require.NoError(t, err)
 
-	replacements := map[string]string{
-		egVars.TokenCredVars.SubscriptionID: fakeVars.TokenCredVars.SubscriptionID,
-		egVars.TokenCredVars.TenantID:       fakeVars.TokenCredVars.TenantID,
-		egVars.TokenCredVars.ClientID:       fakeVars.TokenCredVars.ClientID,
-	}
-
-	for search, replace := range replacements {
-		err := recording.AddURISanitizer(replace, regexp.QuoteMeta(search), nil)
-		require.NoError(t, err)
-
-		err = recording.AddBodyRegexSanitizer(replace, regexp.QuoteMeta(search), nil)
-		require.NoError(t, err)
-	}
-
 	err = recording.AddHeaderRegexSanitizer("Client-Request-Id", "client-request-id", "", nil)
 	require.NoError(t, err)
 

@@ -19,7 +19,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/messaging"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/test/credential"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/eventgrid/azeventgrid"
 	"github.com/stretchr/testify/require"
@@ -27,9 +26,6 @@ import (
 
 // TestPublishEvent publishes an event using the EventGrid format.
 func TestPublishEvent(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
 	testPublish := func(t *testing.T, client *azeventgrid.Client) {
 		_, err := client.PublishEvents(context.Background(), []azeventgrid.Event{
 			{
@@ -76,9 +72,6 @@ func TestPublishEvent(t *testing.T) {
 
 // TestPublishCloudEvent publishes an event using the CloudEvent format.
 func TestPublishCloudEvent(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
 	testPublish := func(t *testing.T, client *azeventgrid.Client) {
 		ce, err := messaging.NewCloudEvent("source", "eventType", map[string]string{
 			"hello": "world",

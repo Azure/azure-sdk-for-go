@@ -43,19 +43,21 @@ var fakeVars = eventGridVars{
 	EG: topicVars{
 		Name:     "faketopic",
 		Key:      base64.StdEncoding.EncodeToString([]byte("fakekey")),
-		Endpoint: "https://localhost/fake-endpoint",
+		Endpoint: "https://" + recording.SanitizedValue + ".westus-1.eventgrid.net/",
 		SAS:      "fake-sas",
 	},
 	CE: topicVars{
 		Name:     "faketopic",
 		Key:      base64.StdEncoding.EncodeToString([]byte("fakekey")),
-		Endpoint: "https://localhost/fake-endpoint",
+		Endpoint: "https://" + recording.SanitizedValue + ".westus-1.eventgrid.net/",
 		SAS:      "fake-sas",
 	},
 }
 
 func newTestVars(t *testing.T) eventGridVars {
 	if recording.GetRecordMode() == recording.PlaybackMode {
+		addSanitizers(t)
+
 		err := recording.Start(t, recordingDirectory, nil)
 		require.NoError(t, err)
 
@@ -64,7 +66,6 @@ func newTestVars(t *testing.T) eventGridVars {
 			require.NoError(t, err)
 		})
 
-		sanitizeForPlayback(t)
 		return fakeVars
 	}
 
@@ -94,6 +95,8 @@ func newTestVars(t *testing.T) eventGridVars {
 		return egVars
 	}
 
+	addSanitizers(t)
+
 	// we're recording then, let's setup the sanitizers.
 	err := recording.Start(t, recordingDirectory, nil)
 	require.NoError(t, err)
@@ -103,7 +106,6 @@ func newTestVars(t *testing.T) eventGridVars {
 		require.NoError(t, err)
 	})
 
-	sanitizeForRecording(t, egVars)
 	return egVars
 }
 

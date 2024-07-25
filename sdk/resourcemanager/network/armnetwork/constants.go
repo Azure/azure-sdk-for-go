@@ -10,7 +10,7 @@ package armnetwork
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork"
-	moduleVersion = "v5.2.0"
+	moduleVersion = "v6.0.0"
 )
 
 // Access - Access to be allowed or denied.
@@ -830,12 +830,13 @@ func PossibleBastionConnectProtocolValues() []BastionConnectProtocol {
 	}
 }
 
-// BastionHostSKUName - The name of this Bastion Host.
+// BastionHostSKUName - The name of the sku of this Bastion Host.
 type BastionHostSKUName string
 
 const (
 	BastionHostSKUNameBasic     BastionHostSKUName = "Basic"
 	BastionHostSKUNameDeveloper BastionHostSKUName = "Developer"
+	BastionHostSKUNamePremium   BastionHostSKUName = "Premium"
 	BastionHostSKUNameStandard  BastionHostSKUName = "Standard"
 )
 
@@ -844,6 +845,7 @@ func PossibleBastionHostSKUNameValues() []BastionHostSKUName {
 	return []BastionHostSKUName{
 		BastionHostSKUNameBasic,
 		BastionHostSKUNameDeveloper,
+		BastionHostSKUNamePremium,
 		BastionHostSKUNameStandard,
 	}
 }
@@ -2866,6 +2868,26 @@ func PossiblePreferredRoutingGatewayValues() []PreferredRoutingGateway {
 		PreferredRoutingGatewayExpressRoute,
 		PreferredRoutingGatewayNone,
 		PreferredRoutingGatewayVPNGateway,
+	}
+}
+
+// ProbeNoHealthyBackendsBehavior - Determines how new connections are handled by the load balancer when all backend instances
+// are probed down.
+type ProbeNoHealthyBackendsBehavior string
+
+const (
+	// ProbeNoHealthyBackendsBehaviorAllProbedDown - No new flows will be sent to the backend pool.
+	ProbeNoHealthyBackendsBehaviorAllProbedDown ProbeNoHealthyBackendsBehavior = "AllProbedDown"
+	// ProbeNoHealthyBackendsBehaviorAllProbedUp - When all backend instances are probed down, incoming packets will be sent to
+	// all instances.
+	ProbeNoHealthyBackendsBehaviorAllProbedUp ProbeNoHealthyBackendsBehavior = "AllProbedUp"
+)
+
+// PossibleProbeNoHealthyBackendsBehaviorValues returns the possible values for the ProbeNoHealthyBackendsBehavior const type.
+func PossibleProbeNoHealthyBackendsBehaviorValues() []ProbeNoHealthyBackendsBehavior {
+	return []ProbeNoHealthyBackendsBehavior{
+		ProbeNoHealthyBackendsBehaviorAllProbedDown,
+		ProbeNoHealthyBackendsBehaviorAllProbedUp,
 	}
 }
 

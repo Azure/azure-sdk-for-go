@@ -47,7 +47,7 @@ func NewInboundSecurityRuleClient(subscriptionID string, credential azcore.Token
 // BeginCreateOrUpdate - Creates or updates the specified Network Virtual Appliance Inbound Security Rules.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01
+// Generated from API version 2024-01-01
 //   - resourceGroupName - The name of the resource group.
 //   - networkVirtualApplianceName - The name of the Network Virtual Appliance.
 //   - ruleCollectionName - The name of security rule collection.
@@ -75,7 +75,7 @@ func (client *InboundSecurityRuleClient) BeginCreateOrUpdate(ctx context.Context
 // CreateOrUpdate - Creates or updates the specified Network Virtual Appliance Inbound Security Rules.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01
+// Generated from API version 2024-01-01
 func (client *InboundSecurityRuleClient) createOrUpdate(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, ruleCollectionName string, parameters InboundSecurityRule, options *InboundSecurityRuleClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "InboundSecurityRuleClient.BeginCreateOrUpdate"
@@ -121,11 +121,80 @@ func (client *InboundSecurityRuleClient) createOrUpdateCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-01")
+	reqQP.Set("api-version", "2024-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
 		return nil, err
 	}
 	return req, nil
+}
+
+// Get - Retrieves the available specified Network Virtual Appliance Inbound Security Rules Collection.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-01-01
+//   - resourceGroupName - The name of the resource group.
+//   - networkVirtualApplianceName - The name of the Network Virtual Appliance.
+//   - ruleCollectionName - The name of security rule collection.
+//   - options - InboundSecurityRuleClientGetOptions contains the optional parameters for the InboundSecurityRuleClient.Get method.
+func (client *InboundSecurityRuleClient) Get(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, ruleCollectionName string, options *InboundSecurityRuleClientGetOptions) (InboundSecurityRuleClientGetResponse, error) {
+	var err error
+	const operationName = "InboundSecurityRuleClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getCreateRequest(ctx, resourceGroupName, networkVirtualApplianceName, ruleCollectionName, options)
+	if err != nil {
+		return InboundSecurityRuleClientGetResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return InboundSecurityRuleClientGetResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return InboundSecurityRuleClientGetResponse{}, err
+	}
+	resp, err := client.getHandleResponse(httpResp)
+	return resp, err
+}
+
+// getCreateRequest creates the Get request.
+func (client *InboundSecurityRuleClient) getCreateRequest(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, ruleCollectionName string, options *InboundSecurityRuleClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkVirtualAppliances/{networkVirtualApplianceName}/inboundSecurityRules/{ruleCollectionName}"
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if networkVirtualApplianceName == "" {
+		return nil, errors.New("parameter networkVirtualApplianceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{networkVirtualApplianceName}", url.PathEscape(networkVirtualApplianceName))
+	if ruleCollectionName == "" {
+		return nil, errors.New("parameter ruleCollectionName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{ruleCollectionName}", url.PathEscape(ruleCollectionName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-01-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getHandleResponse handles the Get response.
+func (client *InboundSecurityRuleClient) getHandleResponse(resp *http.Response) (InboundSecurityRuleClientGetResponse, error) {
+	result := InboundSecurityRuleClientGetResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.InboundSecurityRule); err != nil {
+		return InboundSecurityRuleClientGetResponse{}, err
+	}
+	return result, nil
 }

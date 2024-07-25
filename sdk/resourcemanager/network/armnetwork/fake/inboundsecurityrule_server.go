@@ -15,7 +15,7 @@ import (
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v5"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v6"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -26,6 +26,10 @@ type InboundSecurityRuleServer struct {
 	// BeginCreateOrUpdate is the fake for method InboundSecurityRuleClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, ruleCollectionName string, parameters armnetwork.InboundSecurityRule, options *armnetwork.InboundSecurityRuleClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armnetwork.InboundSecurityRuleClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method InboundSecurityRuleClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, ruleCollectionName string, options *armnetwork.InboundSecurityRuleClientGetOptions) (resp azfake.Responder[armnetwork.InboundSecurityRuleClientGetResponse], errResp azfake.ErrorResponder)
 }
 
 // NewInboundSecurityRuleServerTransport creates a new instance of InboundSecurityRuleServerTransport with the provided implementation.
@@ -59,6 +63,8 @@ func (i *InboundSecurityRuleServerTransport) Do(req *http.Request) (*http.Respon
 	switch method {
 	case "InboundSecurityRuleClient.BeginCreateOrUpdate":
 		resp, err = i.dispatchBeginCreateOrUpdate(req)
+	case "InboundSecurityRuleClient.Get":
+		resp, err = i.dispatchGet(req)
 	default:
 		err = fmt.Errorf("unhandled API %s", method)
 	}
@@ -119,5 +125,42 @@ func (i *InboundSecurityRuleServerTransport) dispatchBeginCreateOrUpdate(req *ht
 		i.beginCreateOrUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (i *InboundSecurityRuleServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if i.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/networkVirtualAppliances/(?P<networkVirtualApplianceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/inboundSecurityRules/(?P<ruleCollectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	networkVirtualApplianceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkVirtualApplianceName")])
+	if err != nil {
+		return nil, err
+	}
+	ruleCollectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("ruleCollectionName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := i.srv.Get(req.Context(), resourceGroupNameParam, networkVirtualApplianceNameParam, ruleCollectionNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).InboundSecurityRule, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }

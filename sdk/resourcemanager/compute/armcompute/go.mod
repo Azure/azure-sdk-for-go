@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v5
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v6
 
 go 1.18
 

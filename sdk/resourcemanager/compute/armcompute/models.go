@@ -5174,14 +5174,28 @@ type ScheduledEventsProfile struct {
 	TerminateNotificationProfile *TerminateNotificationProfile
 }
 
-// SecurityPostureReference - Specifies the security posture to be used for all virtual machines in the scale set. Minimum
-// api-version: 2023-03-01
+// SecurityPostureReference - Specifies the security posture to be used in the scale set. Minimum api-version: 2023-03-01
 type SecurityPostureReference struct {
-	// List of virtual machine extensions to exclude when applying the Security Posture.
-	ExcludeExtensions []*VirtualMachineExtension
-
-	// The security posture reference id in the form of /CommunityGalleries/{communityGalleryName}/securityPostures/{securityPostureName}/versions/{major.minor.patch}|{major.*}|latest
+	// REQUIRED; The security posture reference id in the form of /CommunityGalleries/{communityGalleryName}/securityPostures/{securityPostureName}/versions/{major.minor.patch}|latest
 	ID *string
+
+	// The list of virtual machine extension names to exclude when applying the security posture.
+	ExcludeExtensions []*string
+
+	// Whether the security posture can be overridden by the user.
+	IsOverridable *bool
+}
+
+// SecurityPostureReferenceUpdate - Specifies the security posture to be used in the scale set. Minimum api-version: 2023-03-01
+type SecurityPostureReferenceUpdate struct {
+	// The list of virtual machine extension names to exclude when applying the security posture.
+	ExcludeExtensions []*string
+
+	// The security posture reference id in the form of /CommunityGalleries/{communityGalleryName}/securityPostures/{securityPostureName}/versions/{major.minor.patch}|latest
+	ID *string
+
+	// Whether the security posture can be overridden by the user.
+	IsOverridable *bool
 }
 
 // SecurityProfile - Specifies the Security profile settings for the virtual machine or virtual machine scale set.
@@ -8089,6 +8103,9 @@ type VirtualMachineScaleSetUpdateVMProfile struct {
 	// Specifies Scheduled Event related configurations.
 	ScheduledEventsProfile *ScheduledEventsProfile
 
+	// The virtual machine scale set security posture reference.
+	SecurityPostureReference *SecurityPostureReferenceUpdate
+
 	// The virtual machine scale set Security profile
 	SecurityProfile *SecurityProfile
 
@@ -8333,7 +8350,7 @@ type VirtualMachineScaleSetVMProfile struct {
 	// Specifies Scheduled Event related configurations.
 	ScheduledEventsProfile *ScheduledEventsProfile
 
-	// Specifies the security posture to be used for all virtual machines in the scale set. Minimum api-version: 2023-03-01
+	// Specifies the security posture to be used in the scale set. Minimum api-version: 2023-03-01
 	SecurityPostureReference *SecurityPostureReference
 
 	// Specifies the Security related profile settings for the virtual machines in the scale set.

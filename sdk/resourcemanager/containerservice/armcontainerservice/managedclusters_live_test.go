@@ -155,15 +155,11 @@ func (testsuite *ManagedclustersTestSuite) Prepare() {
 func (testsuite *ManagedclustersTestSuite) TestContainserservice() {
 	var commandId string
 	var err error
-	// From step ManagedClusters_GetOSOptions
-	fmt.Println("Call operation: ManagedClusters_GetOSOptions")
-	managedClustersClient, err := armcontainerservice.NewManagedClustersClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
-	testsuite.Require().NoError(err)
-	_, err = managedClustersClient.GetOSOptions(testsuite.ctx, testsuite.location, &armcontainerservice.ManagedClustersClientGetOSOptionsOptions{ResourceType: nil})
-	testsuite.Require().NoError(err)
 
 	// From step ManagedClusters_List
 	fmt.Println("Call operation: ManagedClusters_List")
+	managedClustersClient, err := armcontainerservice.NewManagedClustersClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
+	testsuite.Require().NoError(err)
 	managedClustersClientNewListPager := managedClustersClient.NewListPager(nil)
 	for managedClustersClientNewListPager.More() {
 		_, err := managedClustersClientNewListPager.NextPage(testsuite.ctx)

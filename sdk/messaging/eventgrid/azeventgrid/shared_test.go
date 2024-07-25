@@ -20,7 +20,6 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/eventgrid/azeventgrid"
 	"github.com/stretchr/testify/require"
@@ -143,12 +142,10 @@ func newTestVars(t *testing.T) eventGridVars {
 }
 
 func newClientOptionsForTest(t *testing.T) struct {
-	EG  *azeventgrid.ClientOptions
-	DAC *azidentity.DefaultAzureCredentialOptions
+	EG *azeventgrid.ClientOptions
 } {
 	var ret = struct {
-		EG  *azeventgrid.ClientOptions
-		DAC *azidentity.DefaultAzureCredentialOptions
+		EG *azeventgrid.ClientOptions
 	}{}
 
 	if recording.GetRecordMode() != recording.LiveMode {
@@ -157,10 +154,6 @@ func newClientOptionsForTest(t *testing.T) struct {
 
 		clientOptions := azcore.ClientOptions{
 			Transport: recordingClient,
-		}
-
-		ret.DAC = &azidentity.DefaultAzureCredentialOptions{
-			ClientOptions: clientOptions,
 		}
 
 		ret.EG = &azeventgrid.ClientOptions{

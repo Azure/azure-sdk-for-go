@@ -4063,6 +4063,7 @@ func (v VolumePatchProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "defaultUserQuotaInKiBs", v.DefaultUserQuotaInKiBs)
 	populate(objectMap, "exportPolicy", v.ExportPolicy)
 	populate(objectMap, "isDefaultQuotaEnabled", v.IsDefaultQuotaEnabled)
+	populate(objectMap, "protocolTypes", v.ProtocolTypes)
 	populate(objectMap, "serviceLevel", v.ServiceLevel)
 	populate(objectMap, "smbAccessBasedEnumeration", v.SmbAccessBasedEnumeration)
 	populate(objectMap, "smbNonBrowsable", v.SmbNonBrowsable)
@@ -4105,6 +4106,9 @@ func (v *VolumePatchProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "isDefaultQuotaEnabled":
 			err = unpopulate(val, "IsDefaultQuotaEnabled", &v.IsDefaultQuotaEnabled)
+			delete(rawMsg, key)
+		case "protocolTypes":
+			err = unpopulate(val, "ProtocolTypes", &v.ProtocolTypes)
 			delete(rawMsg, key)
 		case "serviceLevel":
 			err = unpopulate(val, "ServiceLevel", &v.ServiceLevel)

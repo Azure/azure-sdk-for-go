@@ -27,3 +27,4 @@ extends:
     IncludeRelease: true
     ServiceDirectory: 'resourcemanager/dynatrace/armdynatrace'
     UsePipelineProxy: false
+    UseFederatedAuth: true

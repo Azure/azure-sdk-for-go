@@ -1,5 +1,23 @@
 # Release History
 
+## 2.0.0-beta.4 (2024-07-23)
+### Breaking Changes
+
+- Function `*MachineRunCommandsClient.BeginUpdate` has been removed
+- Struct `MachineRunCommandUpdate` has been removed
+
+### Features Added
+
+- New value `LicenseProfileSubscriptionStatusDisabling`, `LicenseProfileSubscriptionStatusFailed` added to enum type `LicenseProfileSubscriptionStatus`
+- New enum type `HotpatchEnablementStatus` with values `HotpatchEnablementStatusActionRequired`, `HotpatchEnablementStatusDisabled`, `HotpatchEnablementStatusEnabled`, `HotpatchEnablementStatusPendingEvaluation`, `HotpatchEnablementStatusUnknown`
+- New function `*MachinesClient.CreateOrUpdate(context.Context, string, string, Machine, *MachinesClientCreateOrUpdateOptions) (MachinesClientCreateOrUpdateResponse, error)`
+- New function `*NetworkSecurityPerimeterConfigurationsClient.BeginReconcileForPrivateLinkScope(context.Context, string, string, string, *NetworkSecurityPerimeterConfigurationsClientBeginReconcileForPrivateLinkScopeOptions) (*runtime.Poller[NetworkSecurityPerimeterConfigurationsClientReconcileForPrivateLinkScopeResponse], error)`
+- New struct `PatchSettingsStatus`
+- New field `BillingEndDate`, `Error` in struct `LicenseProfileArmProductProfileProperties`
+- New field `EnableHotpatching`, `Status` in struct `PatchSettings`
+- New field `BillingEndDate`, `Error` in struct `ProductFeature`
+
+
 ## 2.0.0-beta.3 (2024-06-21)
 ### Breaking Changes
 

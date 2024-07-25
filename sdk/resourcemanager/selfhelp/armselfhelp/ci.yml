@@ -27,3 +27,4 @@ extends:
     IncludeRelease: true
     ServiceDirectory: 'resourcemanager/selfhelp/armselfhelp'
     UsePipelineProxy: false
+    UseFederatedAuth: true

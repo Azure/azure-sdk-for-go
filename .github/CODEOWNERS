@@ -25,7 +25,7 @@
 # AzureSDKOwners: @richardpark-msft
 # ServiceLabel: %OpenAI
 # PRLabel: %OpenAI
-/sdk/ai                       @richardpark-msft @jhendrixMSFT
+/sdk/ai                       @richardpark-msft @jhendrixMSFT @chlowell
 
 # AzureSDKOwners: @jhendrixMSFT
 # ServiceLabel: %Internal
@@ -56,17 +56,17 @@
 # AzureSDKOwners: @richardpark-msft
 # ServiceLabel: %Service Bus
 # PRLabel: %Service Bus
-/sdk/messaging/azservicebus/  @richardpark-msft @jhendrixMSFT
+/sdk/messaging/azservicebus/  @richardpark-msft @chlowell @jhendrixMSFT
 
 # AzureSDKOwners: @richardpark-msft
 # ServiceLabel: %Event Grid
 # PRLabel: %Event Grid
-/sdk/messaging/eventgrid/  @richardpark-msft @jhendrixMSFT
+/sdk/messaging/eventgrid/  @richardpark-msft @chlowell @jhendrixMSFT
 
 # AzureSDKOwners: @richardpark-msft
 # ServiceLabel: %Event Hubs
 # PRLabel: %Event Hubs
-/sdk/messaging/azeventhubs/   @richardpark-msft @jhendrixMSFT
+/sdk/messaging/azeventhubs/   @richardpark-msft @chlowell @jhendrixMSFT
 
 # AzureSDKOwners: @gracewilcox
 # ServiceLabel: %Monitor
@@ -79,14 +79,14 @@
 /sdk/resourcemanager/         @ArcturusZhang @lirenhe @tadelesh @raych1
 
 # AzureSDKOwners: @jhendrixMSFT
-# ServiceOwner: @siminsavani-msft
+# ServiceOwner: @tanyasethi-msft
 # ServiceLabel: %Azure.Core
 # PRLabel: %Storage
-/sdk/storage/                 @siminsavani-msft @souravgupta-msft @jhendrixMSFT @gapra-msft @vibhansa-msft @tanyasethi-msft
+/sdk/storage/                 @souravgupta-msft @jhendrixMSFT @gapra-msft @vibhansa-msft @tanyasethi-msft
 
 # AzureSDKOwners: @jhendrixMSFT
-# ServiceLabel: %Open Telemetry
-# PRLabel: %Open Telemetry
+# ServiceLabel: %OpenTelemetry
+# PRLabel: %OpenTelemetry
 /sdk/tracing/azotel           @jhendrixMSFT @rickwinter
 
 ###########
@@ -94,9 +94,14 @@
 ###########
 /eng/                         @benbp @weshaggard
 /eng/common/                  @Azure/azure-sdk-eng
+/.github/workflows/           @Azure/azure-sdk-eng
+
 
 # Add owners for notifications for specific pipelines
 /eng/common/pipelines/codeowners-linter.yml       @rickwinter
+
+# Add owners for go sdk tool
+/eng/tools/generator          @ArcturusZhang @lirenhe @tadelesh @raych1
 
 # AzureSDKOwners: @benbp
 # ServiceLabel: %EngSys
@@ -142,7 +147,7 @@
 # ServiceLabel: %API Management
 #/<NotInRepo>/          @miaojiang
 
-# ServiceLabel: %Application Insights
+# ServiceLabel: %Monitor - ApplicationInsights
 #/<NotInRepo>/          @azmonapplicationinsights
 
 # ServiceLabel: %App Services
@@ -352,6 +357,9 @@
 # ServiceLabel: %Import Export
 #/<NotInRepo>/          @madhurinms
 
+# ServiceLabel: %Insights
+#/<NotInRepo>/          @AzmonLogA
+
 # ServiceLabel: %KeyVault
 #/<NotInRepo>/          @RandalliLama @schaabs @jlichwa
 
@@ -382,7 +390,7 @@
 # ServiceLabel: %Machine Learning Experimentation
 #/<NotInRepo>/          @aashishb
 
-# ServiceLabel: %Managed Services
+# ServiceLabel: %ManagedServices
 #/<NotInRepo>/          @Lighthouse-Azure
 
 # ServiceLabel: %MariaDB
@@ -453,9 +461,6 @@
 
 # ServiceLabel: %Notification Hub
 #/<NotInRepo>/          @tjsomasundaram
-
-# ServiceLabel: %Operational Insights
-#/<NotInRepo>/          @AzmonLogA
 
 # ServiceLabel: %Policy
 #/<NotInRepo>/          @aperezcloud @kenieva
@@ -552,9 +557,6 @@
 
 # ServiceLabel: %TimeseriesInsights
 #/<NotInRepo>/          @Shipra1Mishra
-
-# ServiceLabel: %vFXT
-#/<NotInRepo>/          @zhusijia26
 
 # ServiceLabel: %Web Apps
 #/<NotInRepo>/          @AzureAppServiceCLI @antcp

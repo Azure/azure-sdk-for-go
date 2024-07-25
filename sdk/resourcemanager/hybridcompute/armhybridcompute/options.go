@@ -133,13 +133,6 @@ type MachineRunCommandsClientBeginDeleteOptions struct {
 	ResumeToken string
 }
 
-// MachineRunCommandsClientBeginUpdateOptions contains the optional parameters for the MachineRunCommandsClient.BeginUpdate
-// method.
-type MachineRunCommandsClientBeginUpdateOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
 // MachineRunCommandsClientGetOptions contains the optional parameters for the MachineRunCommandsClient.Get method.
 type MachineRunCommandsClientGetOptions struct {
 	// placeholder for future optional parameters
@@ -161,6 +154,12 @@ type MachinesClientBeginAssessPatchesOptions struct {
 type MachinesClientBeginInstallPatchesOptions struct {
 	// Resumes the LRO from the provided token.
 	ResumeToken string
+}
+
+// MachinesClientCreateOrUpdateOptions contains the optional parameters for the MachinesClient.CreateOrUpdate method.
+type MachinesClientCreateOrUpdateOptions struct {
+	// Expands referenced resources.
+	Expand *string
 }
 
 // MachinesClientDeleteOptions contains the optional parameters for the MachinesClient.Delete method.
@@ -202,6 +201,13 @@ type ManagementClientBeginUpgradeExtensionsOptions struct {
 // NetworkProfileClientGetOptions contains the optional parameters for the NetworkProfileClient.Get method.
 type NetworkProfileClientGetOptions struct {
 	// placeholder for future optional parameters
+}
+
+// NetworkSecurityPerimeterConfigurationsClientBeginReconcileForPrivateLinkScopeOptions contains the optional parameters for
+// the NetworkSecurityPerimeterConfigurationsClient.BeginReconcileForPrivateLinkScope method.
+type NetworkSecurityPerimeterConfigurationsClientBeginReconcileForPrivateLinkScopeOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // NetworkSecurityPerimeterConfigurationsClientGetByPrivateLinkScopeOptions contains the optional parameters for the NetworkSecurityPerimeterConfigurationsClient.GetByPrivateLinkScope

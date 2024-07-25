@@ -27,3 +27,4 @@ extends:
     IncludeRelease: true
     ServiceDirectory: 'resourcemanager/servicefabric/armservicefabric'
     UsePipelineProxy: false
+    UseFederatedAuth: true

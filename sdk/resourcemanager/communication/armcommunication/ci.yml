@@ -27,3 +27,4 @@ extends:
     IncludeRelease: true
     ServiceDirectory: 'resourcemanager/communication/armcommunication'
     UsePipelineProxy: false
+    UseFederatedAuth: true

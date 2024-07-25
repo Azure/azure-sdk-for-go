@@ -11,8 +11,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/test/credential"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 	"github.com/joho/godotenv"
 )
@@ -27,21 +27,24 @@ func testMain(m *testing.M) int {
 		// if one of our vars isn't defined just assume that they're supposed to come from an .env file
 		if os.Getenv("CHECKPOINTSTORE_STORAGE_ENDPOINT") == "" {
 			if err := godotenv.Load(); err != nil {
-				log.Fatalf("Failed to load .env file when running live tests: %s", err.Error())
+				log.Printf("Failed to load .env file when running live tests: %s", err.Error())
+				return 1
 			}
 		}
 
 		// create a test storage container so our examples can run.
-		defaultAzureCred, err := azidentity.NewDefaultAzureCredential(nil)
+		tokenCred, err := credential.New(nil)
 
 		if err != nil {
-			log.Fatalf("Failed to create DAC: %s", err)
+			log.Printf("Failed to create DAC: %s", err)
+			return 1
 		}
 
-		blobClient, err := azblob.NewClient(os.Getenv("CHECKPOINTSTORE_STORAGE_ENDPOINT"), defaultAzureCred, nil)
+		blobClient, err := azblob.NewClient(os.Getenv("CHECKPOINTSTORE_STORAGE_ENDPOINT"), tokenCred, nil)
 
 		if err != nil {
-			log.Fatalf("Failed to create blob client: %s", err)
+			log.Printf("Failed to create blob client: %s", err)
+			return 1
 		}
 
 		containerName := fmt.Sprintf("container-%x", time.Now().UnixNano())
@@ -49,7 +52,8 @@ func testMain(m *testing.M) int {
 		defer func() { _, _ = blobClient.ServiceClient().DeleteContainer(context.Background(), containerName, nil) }()
 
 		if _, err := blobClient.ServiceClient().CreateContainer(context.Background(), containerName, nil); err != nil {
-			log.Fatalf("Failed to create blob container for examples: %s", err)
+			log.Printf("Failed to create blob container for examples: %s", err)
+			return 1
 		}
 
 		log.Printf("Example checkpoint container created: %s", containerName)

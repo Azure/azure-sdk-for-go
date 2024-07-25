@@ -1623,6 +1623,9 @@ type VolumePatchProperties struct {
 	// Specifies if default quota is enabled for the volume.
 	IsDefaultQuotaEnabled *bool
 
+	// Set of protocol types, default NFSv3, CIFS for SMB protocol
+	ProtocolTypes []*string
+
 	// The service level of the file system
 	ServiceLevel *ServiceLevel
 

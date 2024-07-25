@@ -27,3 +27,4 @@ extends:
     IncludeRelease: true
     ServiceDirectory: 'resourcemanager/managementgroups/armmanagementgroups'
     UsePipelineProxy: false
+    UseFederatedAuth: true

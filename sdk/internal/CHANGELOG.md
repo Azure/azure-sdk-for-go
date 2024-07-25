@@ -1,15 +1,27 @@
 # Release History
 
-## 1.9.1 (Unreleased)
+## 1.10.1 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
 
 ### Bugs Fixed
+
+### Other Changes
+
+## 1.10.0 (2024-07-16)
+
+### Features Added
+* `test/credential.New` supports federated authentication in Azure Pipelines
+
+## 1.9.1 (2024-07-02)
+
+### Bugs Fixed
 * Fixed a data race in `mock/Server.Do`.
 
 ### Other Changes
+* Upgraded dependencies
 
 ## 1.9.0 (2024-06-06)
 

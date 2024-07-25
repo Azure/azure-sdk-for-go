@@ -27,3 +27,4 @@ extends:
     IncludeRelease: true
     ServiceDirectory: 'resourcemanager/cdn/armcdn'
     UsePipelineProxy: false
+    UseFederatedAuth: true

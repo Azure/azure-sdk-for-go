@@ -26,6 +26,7 @@ extends:
   parameters:
     TimeoutInMinutes: 120
     ServiceDirectory: 'security/keyvault/azadmin'
+    UseFederatedAuth: true
     UsePipelineProxy: false
 
     # Due to the high cost of Managed HSMs, which keyvault-admin requires, we only want to run

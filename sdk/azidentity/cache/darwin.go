@@ -7,42 +7,14 @@
 package cache
 
 import (
-	"context"
-	"errors"
 	"os"
-	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity/internal"
 	"github.com/AzureAD/microsoft-authentication-extensions-for-go/cache/accessor"
 )
 
-var cacheDir = os.UserHomeDir
-
-func storage(o internal.TokenCachePersistenceOptions) (accessor.Accessor, error) {
-	name := o.Name
-	if name == "" {
-		name = defaultName
+var (
+	cacheDir = os.UserHomeDir
+	storage  = func(name string) (accessor.Accessor, error) {
+		return accessor.New(name, accessor.WithAccount("MSALCache"))
 	}
-	if err := tryAccessor(); err != nil {
-		return nil, errors.New("cache encryption is impossible because the keychain isn't usable: " + err.Error())
-	}
-	return accessor.New(name, accessor.WithAccount("MSALCache"))
-}
-
-func tryAccessor() error {
-	a, err := accessor.New("azidentity-test-cache")
-	if err != nil {
-		return err
-	}
-	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
-	defer cancel()
-	err = a.Write(ctx, []byte("test"))
-	if err != nil {
-		return err
-	}
-	_, err = a.Read(ctx)
-	if err != nil {
-		return err
-	}
-	return a.Delete(ctx)
-}
+)

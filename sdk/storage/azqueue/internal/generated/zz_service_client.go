@@ -165,7 +165,7 @@ func (client *ServiceClient) getStatisticsHandleResponse(resp *http.Response) (S
 // Generated from API version 2018-03-28
 //   - options - ServiceClientListQueuesSegmentOptions contains the optional parameters for the ServiceClient.NewListQueuesSegmentPager
 //     method.
-//
+
 // ListQueuesSegmentCreateRequest creates the ListQueuesFlatSegment ListQueuesSegment.
 func (client *ServiceClient) ListQueuesSegmentCreateRequest(ctx context.Context, options *ServiceClientListQueuesSegmentOptions) (*policy.Request, error) {
 	req, err := runtime.NewRequest(ctx, http.MethodGet, client.endpoint)
@@ -198,7 +198,7 @@ func (client *ServiceClient) ListQueuesSegmentCreateRequest(ctx context.Context,
 	return req, nil
 }
 
-// listQueuesSegmentHandleResponse handles the ListQueuesSegment response.
+// ListQueuesSegmentHandleResponse handles the ListQueuesSegment response.
 func (client *ServiceClient) ListQueuesSegmentHandleResponse(resp *http.Response) (ServiceClientListQueuesSegmentResponse, error) {
 	result := ServiceClientListQueuesSegmentResponse{}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {

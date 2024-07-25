@@ -27,3 +27,4 @@ extends:
     IncludeRelease: true
     ServiceDirectory: 'resourcemanager/storagemover/armstoragemover'
     UsePipelineProxy: false
+    UseFederatedAuth: true

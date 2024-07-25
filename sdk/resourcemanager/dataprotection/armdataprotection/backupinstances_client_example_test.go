@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dataprotection/armdataprotection/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8c74fd80b415fa1ebb6fa787d454694c39e0fd5/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/BackupInstanceOperations/ListBackupInstances.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2024-04-01/examples/BackupInstanceOperations/ListBackupInstances.json
 func ExampleBackupInstancesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -84,7 +84,7 @@ func ExampleBackupInstancesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8c74fd80b415fa1ebb6fa787d454694c39e0fd5/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/BackupInstanceOperations/GetBackupInstance.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2024-04-01/examples/BackupInstanceOperations/GetBackupInstance.json
 func ExampleBackupInstancesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -142,8 +142,8 @@ func ExampleBackupInstancesClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8c74fd80b415fa1ebb6fa787d454694c39e0fd5/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/BackupInstanceOperations/PutBackupInstance.json
-func ExampleBackupInstancesClient_BeginCreateOrUpdate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2024-04-01/examples/BackupInstanceOperations/PutBackupInstance.json
+func ExampleBackupInstancesClient_BeginCreateOrUpdate_createBackupInstance() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -198,7 +198,7 @@ func ExampleBackupInstancesClient_BeginCreateOrUpdate() {
 			},
 			ValidationType: to.Ptr(armdataprotection.ValidationTypeShallowValidation),
 		},
-	}, nil)
+	}, &armdataprotection.BackupInstancesClientBeginCreateOrUpdateOptions{XMSAuthorizationAuxiliary: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -257,7 +257,124 @@ func ExampleBackupInstancesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8c74fd80b415fa1ebb6fa787d454694c39e0fd5/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/BackupInstanceOperations/DeleteBackupInstance.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2024-04-01/examples/BackupInstanceOperations/PutBackupInstance_ResourceGuardEnabled.json
+func ExampleBackupInstancesClient_BeginCreateOrUpdate_createBackupInstanceToPerformCriticalOperationWithMua() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdataprotection.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewBackupInstancesClient().BeginCreateOrUpdate(ctx, "000pikumar", "PratikPrivatePreviewVault1", "testInstance1", armdataprotection.BackupInstanceResource{
+		Tags: map[string]*string{
+			"key1": to.Ptr("val1"),
+		},
+		Properties: &armdataprotection.BackupInstance{
+			DataSourceInfo: &armdataprotection.Datasource{
+				DatasourceType:   to.Ptr("Microsoft.DBforPostgreSQL/servers/databases"),
+				ObjectType:       to.Ptr("Datasource"),
+				ResourceID:       to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest/databases/testdb"),
+				ResourceLocation: to.Ptr(""),
+				ResourceName:     to.Ptr("testdb"),
+				ResourceType:     to.Ptr("Microsoft.DBforPostgreSQL/servers/databases"),
+				ResourceURI:      to.Ptr(""),
+			},
+			DataSourceSetInfo: &armdataprotection.DatasourceSet{
+				DatasourceType:   to.Ptr("Microsoft.DBforPostgreSQL/servers/databases"),
+				ObjectType:       to.Ptr("DatasourceSet"),
+				ResourceID:       to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest"),
+				ResourceLocation: to.Ptr(""),
+				ResourceName:     to.Ptr("viveksipgtest"),
+				ResourceType:     to.Ptr("Microsoft.DBforPostgreSQL/servers"),
+				ResourceURI:      to.Ptr(""),
+			},
+			DatasourceAuthCredentials: &armdataprotection.SecretStoreBasedAuthCredentials{
+				ObjectType: to.Ptr("SecretStoreBasedAuthCredentials"),
+				SecretStoreResource: &armdataprotection.SecretStoreResource{
+					SecretStoreType: to.Ptr(armdataprotection.SecretStoreTypeAzureKeyVault),
+					URI:             to.Ptr("https://samplevault.vault.azure.net/secrets/credentials"),
+				},
+			},
+			FriendlyName: to.Ptr("harshitbi2"),
+			ObjectType:   to.Ptr("BackupInstance"),
+			PolicyInfo: &armdataprotection.PolicyInfo{
+				PolicyID: to.Ptr("/subscriptions/04cf684a-d41f-4550-9f70-7708a3a2283b/resourceGroups/000pikumar/providers/Microsoft.DataProtection/Backupvaults/PratikPrivatePreviewVault1/backupPolicies/PratikPolicy1"),
+				PolicyParameters: &armdataprotection.PolicyParameters{
+					DataStoreParametersList: []armdataprotection.DataStoreParametersClassification{
+						&armdataprotection.AzureOperationalStoreParameters{
+							DataStoreType:   to.Ptr(armdataprotection.DataStoreTypesOperationalStore),
+							ObjectType:      to.Ptr("AzureOperationalStoreParameters"),
+							ResourceGroupID: to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest"),
+						}},
+				},
+			},
+			ResourceGuardOperationRequests: []*string{
+				to.Ptr("/subscriptions/38304e13-357e-405e-9e9a-220351dcce8c/resourcegroups/ankurResourceGuard1/providers/Microsoft.DataProtection/resourceGuards/ResourceGuard38-1/dppModifyPolicy/default")},
+			ValidationType: to.Ptr(armdataprotection.ValidationTypeShallowValidation),
+		},
+	}, &armdataprotection.BackupInstancesClientBeginCreateOrUpdateOptions{XMSAuthorizationAuxiliary: nil})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.BackupInstanceResource = armdataprotection.BackupInstanceResource{
+	// 	Name: to.Ptr("harshitbi2"),
+	// 	Type: to.Ptr("Microsoft.DataProtection/backupVaults/backupInstances"),
+	// 	ID: to.Ptr("/subscriptions/04cf684a-d41f-4550-9f70-7708a3a2283b/resourceGroups/000pikumar/providers/Microsoft.DataProtection/backupVaults/PratikPrivatePreviewVault1/backupInstances/harshitbi2"),
+	// 	Tags: map[string]*string{
+	// 		"key1": to.Ptr("val1"),
+	// 	},
+	// 	Properties: &armdataprotection.BackupInstance{
+	// 		DataSourceInfo: &armdataprotection.Datasource{
+	// 			DatasourceType: to.Ptr("OssDB"),
+	// 			ObjectType: to.Ptr("Datasource"),
+	// 			ResourceID: to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest/databases/testdb"),
+	// 			ResourceLocation: to.Ptr(""),
+	// 			ResourceName: to.Ptr("testdb"),
+	// 			ResourceType: to.Ptr("OssDB"),
+	// 			ResourceURI: to.Ptr(""),
+	// 		},
+	// 		DataSourceSetInfo: &armdataprotection.DatasourceSet{
+	// 			DatasourceType: to.Ptr("OssDB"),
+	// 			ObjectType: to.Ptr("DatasourceSet"),
+	// 			ResourceID: to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest"),
+	// 			ResourceLocation: to.Ptr(""),
+	// 			ResourceName: to.Ptr("viveksipgtest"),
+	// 			ResourceType: to.Ptr("OssDB"),
+	// 			ResourceURI: to.Ptr(""),
+	// 		},
+	// 		FriendlyName: to.Ptr("harshitbi2"),
+	// 		ObjectType: to.Ptr("BackupInstance"),
+	// 		PolicyInfo: &armdataprotection.PolicyInfo{
+	// 			PolicyID: to.Ptr("/subscriptions/04cf684a-d41f-4550-9f70-7708a3a2283b/resourceGroups/000pikumar/providers/Microsoft.DataProtection/backupVaults/PratikPrivatePreviewVault1/backupPolicies/PratikPolicy1"),
+	// 			PolicyParameters: &armdataprotection.PolicyParameters{
+	// 				DataStoreParametersList: []armdataprotection.DataStoreParametersClassification{
+	// 					&armdataprotection.AzureOperationalStoreParameters{
+	// 						DataStoreType: to.Ptr(armdataprotection.DataStoreTypesOperationalStore),
+	// 						ObjectType: to.Ptr("AzureOperationalStoreParameters"),
+	// 						ResourceGroupID: to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest"),
+	// 				}},
+	// 			},
+	// 			PolicyVersion: to.Ptr("3.2"),
+	// 		},
+	// 		ProtectionStatus: &armdataprotection.ProtectionStatusDetails{
+	// 			Status: to.Ptr(armdataprotection.Status("NotProtected")),
+	// 		},
+	// 		ProvisioningState: to.Ptr("Succeeded"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2024-04-01/examples/BackupInstanceOperations/DeleteBackupInstance.json
 func ExampleBackupInstancesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -268,7 +385,7 @@ func ExampleBackupInstancesClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewBackupInstancesClient().BeginDelete(ctx, "000pikumar", "PratikPrivatePreviewVault1", "testInstance1", nil)
+	poller, err := clientFactory.NewBackupInstancesClient().BeginDelete(ctx, "000pikumar", "PratikPrivatePreviewVault1", "testInstance1", &armdataprotection.BackupInstancesClientBeginDeleteOptions{XMSAuthorizationAuxiliary: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -278,7 +395,7 @@ func ExampleBackupInstancesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8c74fd80b415fa1ebb6fa787d454694c39e0fd5/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/BackupInstanceOperations/TriggerBackup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2024-04-01/examples/BackupInstanceOperations/TriggerBackup.json
 func ExampleBackupInstancesClient_BeginAdhocBackup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -313,7 +430,7 @@ func ExampleBackupInstancesClient_BeginAdhocBackup() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8c74fd80b415fa1ebb6fa787d454694c39e0fd5/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/BackupInstanceOperations/ValidateForBackup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2024-04-01/examples/BackupInstanceOperations/ValidateForBackup.json
 func ExampleBackupInstancesClient_BeginValidateForBackup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -374,7 +491,7 @@ func ExampleBackupInstancesClient_BeginValidateForBackup() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8c74fd80b415fa1ebb6fa787d454694c39e0fd5/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/BackupInstanceOperations/GetBackupInstanceOperationResult.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2024-04-01/examples/BackupInstanceOperations/GetBackupInstanceOperationResult.json
 func ExampleBackupInstancesClient_GetBackupInstanceOperationResult() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -429,7 +546,7 @@ func ExampleBackupInstancesClient_GetBackupInstanceOperationResult() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8c74fd80b415fa1ebb6fa787d454694c39e0fd5/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/CrossRegionRestore/TriggerCrossRegionRestore.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2024-04-01/examples/CrossRegionRestore/TriggerCrossRegionRestore.json
 func ExampleBackupInstancesClient_BeginTriggerCrossRegionRestore() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -498,7 +615,7 @@ func ExampleBackupInstancesClient_BeginTriggerCrossRegionRestore() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8c74fd80b415fa1ebb6fa787d454694c39e0fd5/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/CrossRegionRestore/ValidateCrossRegionRestore.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2024-04-01/examples/CrossRegionRestore/ValidateCrossRegionRestore.json
 func ExampleBackupInstancesClient_BeginValidateCrossRegionRestore() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -567,7 +684,7 @@ func ExampleBackupInstancesClient_BeginValidateCrossRegionRestore() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8c74fd80b415fa1ebb6fa787d454694c39e0fd5/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/BackupInstanceOperations/TriggerRehydrate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2024-04-01/examples/BackupInstanceOperations/TriggerRehydrate.json
 func ExampleBackupInstancesClient_BeginTriggerRehydrate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -592,7 +709,7 @@ func ExampleBackupInstancesClient_BeginTriggerRehydrate() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8c74fd80b415fa1ebb6fa787d454694c39e0fd5/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/BackupInstanceOperations/TriggerRestore.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2024-04-01/examples/BackupInstanceOperations/TriggerRestore.json
 func ExampleBackupInstancesClient_BeginTriggerRestore_triggerRestore() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -638,7 +755,7 @@ func ExampleBackupInstancesClient_BeginTriggerRestore_triggerRestore() {
 		SourceDataStoreType: to.Ptr(armdataprotection.SourceDataStoreTypeVaultStore),
 		SourceResourceID:    to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest/databases/testdb"),
 		RecoveryPointID:     to.Ptr("hardcodedRP"),
-	}, nil)
+	}, &armdataprotection.BackupInstancesClientBeginTriggerRestoreOptions{XMSAuthorizationAuxiliary: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -655,7 +772,7 @@ func ExampleBackupInstancesClient_BeginTriggerRestore_triggerRestore() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8c74fd80b415fa1ebb6fa787d454694c39e0fd5/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/BackupInstanceOperations/TriggerRestoreAsFiles.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2024-04-01/examples/BackupInstanceOperations/TriggerRestoreAsFiles.json
 func ExampleBackupInstancesClient_BeginTriggerRestore_triggerRestoreAsFiles() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -681,7 +798,7 @@ func ExampleBackupInstancesClient_BeginTriggerRestore_triggerRestoreAsFiles() {
 		SourceDataStoreType: to.Ptr(armdataprotection.SourceDataStoreTypeVaultStore),
 		SourceResourceID:    to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest/databases/testdb"),
 		RecoveryPointID:     to.Ptr("hardcodedRP"),
-	}, nil)
+	}, &armdataprotection.BackupInstancesClientBeginTriggerRestoreOptions{XMSAuthorizationAuxiliary: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -698,7 +815,7 @@ func ExampleBackupInstancesClient_BeginTriggerRestore_triggerRestoreAsFiles() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8c74fd80b415fa1ebb6fa787d454694c39e0fd5/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/BackupInstanceOperations/TriggerRestoreWithRehydration.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2024-04-01/examples/BackupInstanceOperations/TriggerRestoreWithRehydration.json
 func ExampleBackupInstancesClient_BeginTriggerRestore_triggerRestoreWithRehydration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -739,7 +856,7 @@ func ExampleBackupInstancesClient_BeginTriggerRestore_triggerRestoreWithRehydrat
 		RecoveryPointID:              to.Ptr("hardcodedRP"),
 		RehydrationPriority:          to.Ptr(armdataprotection.RehydrationPriorityHigh),
 		RehydrationRetentionDuration: to.Ptr("7D"),
-	}, nil)
+	}, &armdataprotection.BackupInstancesClientBeginTriggerRestoreOptions{XMSAuthorizationAuxiliary: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -756,7 +873,7 @@ func ExampleBackupInstancesClient_BeginTriggerRestore_triggerRestoreWithRehydrat
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8c74fd80b415fa1ebb6fa787d454694c39e0fd5/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/BackupInstanceOperations/ResumeBackups.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2024-04-01/examples/BackupInstanceOperations/ResumeBackups.json
 func ExampleBackupInstancesClient_BeginResumeBackups() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -777,7 +894,7 @@ func ExampleBackupInstancesClient_BeginResumeBackups() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8c74fd80b415fa1ebb6fa787d454694c39e0fd5/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/BackupInstanceOperations/ResumeProtection.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2024-04-01/examples/BackupInstanceOperations/ResumeProtection.json
 func ExampleBackupInstancesClient_BeginResumeProtection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -798,8 +915,8 @@ func ExampleBackupInstancesClient_BeginResumeProtection() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8c74fd80b415fa1ebb6fa787d454694c39e0fd5/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/BackupInstanceOperations/StopProtection.json
-func ExampleBackupInstancesClient_BeginStopProtection() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2024-04-01/examples/BackupInstanceOperations/StopProtection.json
+func ExampleBackupInstancesClient_BeginStopProtection_stopProtection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -809,7 +926,9 @@ func ExampleBackupInstancesClient_BeginStopProtection() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewBackupInstancesClient().BeginStopProtection(ctx, "testrg", "testvault", "testbi", nil)
+	poller, err := clientFactory.NewBackupInstancesClient().BeginStopProtection(ctx, "testrg", "testvault", "testbi", &armdataprotection.BackupInstancesClientBeginStopProtectionOptions{XMSAuthorizationAuxiliary: nil,
+		Parameters: nil,
+	})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -819,8 +938,8 @@ func ExampleBackupInstancesClient_BeginStopProtection() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8c74fd80b415fa1ebb6fa787d454694c39e0fd5/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/BackupInstanceOperations/SuspendBackups.json
-func ExampleBackupInstancesClient_BeginSuspendBackups() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2024-04-01/examples/BackupInstanceOperations/StopProtection_ResourceGuardEnabled.json
+func ExampleBackupInstancesClient_BeginStopProtection_stopProtectionWithMua() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -830,7 +949,12 @@ func ExampleBackupInstancesClient_BeginSuspendBackups() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewBackupInstancesClient().BeginSuspendBackups(ctx, "testrg", "testvault", "testbi", nil)
+	poller, err := clientFactory.NewBackupInstancesClient().BeginStopProtection(ctx, "testrg", "testvault", "testbi", &armdataprotection.BackupInstancesClientBeginStopProtectionOptions{XMSAuthorizationAuxiliary: nil,
+		Parameters: &armdataprotection.StopProtectionRequest{
+			ResourceGuardOperationRequests: []*string{
+				to.Ptr("/subscriptions/754ec39f-8d2a-44cf-bfbf-13107ac85c36/resourcegroups/mua-testing/providers/Microsoft.DataProtection/resourceGuards/gvjreddy-test-ecy-rg-reader/dppDisableStopProtectionRequests/default")},
+		},
+	})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -840,7 +964,56 @@ func ExampleBackupInstancesClient_BeginSuspendBackups() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8c74fd80b415fa1ebb6fa787d454694c39e0fd5/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/BackupInstanceOperations/SyncBackupInstance.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2024-04-01/examples/BackupInstanceOperations/SuspendBackups.json
+func ExampleBackupInstancesClient_BeginSuspendBackups_suspendBackups() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdataprotection.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewBackupInstancesClient().BeginSuspendBackups(ctx, "testrg", "testvault", "testbi", &armdataprotection.BackupInstancesClientBeginSuspendBackupsOptions{XMSAuthorizationAuxiliary: nil,
+		Parameters: nil,
+	})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2024-04-01/examples/BackupInstanceOperations/SuspendBackup_ResourceGuardEnabled.json
+func ExampleBackupInstancesClient_BeginSuspendBackups_suspendBackupsWithMua() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdataprotection.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewBackupInstancesClient().BeginSuspendBackups(ctx, "testrg", "testvault", "testbi", &armdataprotection.BackupInstancesClientBeginSuspendBackupsOptions{XMSAuthorizationAuxiliary: nil,
+		Parameters: &armdataprotection.SuspendBackupRequest{
+			ResourceGuardOperationRequests: []*string{
+				to.Ptr("/subscriptions/754ec39f-8d2a-44cf-bfbf-13107ac85c36/resourcegroups/mua-testing/providers/Microsoft.DataProtection/resourceGuards/gvjreddy-test-ecy-rg-reader/dppDisableSuspendBackupsRequests/default")},
+		},
+	})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2024-04-01/examples/BackupInstanceOperations/SyncBackupInstance.json
 func ExampleBackupInstancesClient_BeginSyncBackupInstance() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -863,7 +1036,7 @@ func ExampleBackupInstancesClient_BeginSyncBackupInstance() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8c74fd80b415fa1ebb6fa787d454694c39e0fd5/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/BackupInstanceOperations/ValidateRestore.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2024-04-01/examples/BackupInstanceOperations/ValidateRestore.json
 func ExampleBackupInstancesClient_BeginValidateForRestore() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -19,13 +19,15 @@ type BackupInstancesClientBeginAdhocBackupOptions struct {
 // method.
 type BackupInstancesClientBeginCreateOrUpdateOptions struct {
 	// Resumes the LRO from the provided token.
-	ResumeToken string
+	ResumeToken               string
+	XMSAuthorizationAuxiliary *string
 }
 
 // BackupInstancesClientBeginDeleteOptions contains the optional parameters for the BackupInstancesClient.BeginDelete method.
 type BackupInstancesClientBeginDeleteOptions struct {
 	// Resumes the LRO from the provided token.
-	ResumeToken string
+	ResumeToken               string
+	XMSAuthorizationAuxiliary *string
 }
 
 // BackupInstancesClientBeginResumeBackupsOptions contains the optional parameters for the BackupInstancesClient.BeginResumeBackups
@@ -45,15 +47,23 @@ type BackupInstancesClientBeginResumeProtectionOptions struct {
 // BackupInstancesClientBeginStopProtectionOptions contains the optional parameters for the BackupInstancesClient.BeginStopProtection
 // method.
 type BackupInstancesClientBeginStopProtectionOptions struct {
+	// Request body for operation
+	Parameters *StopProtectionRequest
+
 	// Resumes the LRO from the provided token.
-	ResumeToken string
+	ResumeToken               string
+	XMSAuthorizationAuxiliary *string
 }
 
 // BackupInstancesClientBeginSuspendBackupsOptions contains the optional parameters for the BackupInstancesClient.BeginSuspendBackups
 // method.
 type BackupInstancesClientBeginSuspendBackupsOptions struct {
+	// Request body for operation
+	Parameters *SuspendBackupRequest
+
 	// Resumes the LRO from the provided token.
-	ResumeToken string
+	ResumeToken               string
+	XMSAuthorizationAuxiliary *string
 }
 
 // BackupInstancesClientBeginSyncBackupInstanceOptions contains the optional parameters for the BackupInstancesClient.BeginSyncBackupInstance
@@ -81,7 +91,8 @@ type BackupInstancesClientBeginTriggerRehydrateOptions struct {
 // method.
 type BackupInstancesClientBeginTriggerRestoreOptions struct {
 	// Resumes the LRO from the provided token.
-	ResumeToken string
+	ResumeToken               string
+	XMSAuthorizationAuxiliary *string
 }
 
 // BackupInstancesClientBeginValidateCrossRegionRestoreOptions contains the optional parameters for the BackupInstancesClient.BeginValidateCrossRegionRestore
@@ -121,6 +132,12 @@ type BackupInstancesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// BackupInstancesExtensionRoutingClientListOptions contains the optional parameters for the BackupInstancesExtensionRoutingClient.NewListPager
+// method.
+type BackupInstancesExtensionRoutingClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // BackupPoliciesClientCreateOrUpdateOptions contains the optional parameters for the BackupPoliciesClient.CreateOrUpdate
 // method.
 type BackupPoliciesClientCreateOrUpdateOptions struct {
@@ -152,7 +169,8 @@ type BackupVaultOperationResultsClientGetOptions struct {
 // method.
 type BackupVaultsClientBeginCreateOrUpdateOptions struct {
 	// Resumes the LRO from the provided token.
-	ResumeToken string
+	ResumeToken               string
+	XMSAuthorizationAuxiliary *string
 }
 
 // BackupVaultsClientBeginDeleteOptions contains the optional parameters for the BackupVaultsClient.BeginDelete method.
@@ -164,7 +182,8 @@ type BackupVaultsClientBeginDeleteOptions struct {
 // BackupVaultsClientBeginUpdateOptions contains the optional parameters for the BackupVaultsClient.BeginUpdate method.
 type BackupVaultsClientBeginUpdateOptions struct {
 	// Resumes the LRO from the provided token.
-	ResumeToken string
+	ResumeToken               string
+	XMSAuthorizationAuxiliary *string
 }
 
 // BackupVaultsClientCheckNameAvailabilityOptions contains the optional parameters for the BackupVaultsClient.CheckNameAvailability
@@ -238,7 +257,7 @@ type DppResourceGuardProxyClientListOptions struct {
 // DppResourceGuardProxyClientUnlockDeleteOptions contains the optional parameters for the DppResourceGuardProxyClient.UnlockDelete
 // method.
 type DppResourceGuardProxyClientUnlockDeleteOptions struct {
-	// placeholder for future optional parameters
+	XMSAuthorizationAuxiliary *string
 }
 
 // ExportJobsClientBeginTriggerOptions contains the optional parameters for the ExportJobsClient.BeginTrigger method.

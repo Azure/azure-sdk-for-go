@@ -16,11 +16,10 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice/v5"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice/v6"
 	"net/http"
 	"net/url"
 	"regexp"
-	"strconv"
 )
 
 // AgentPoolsServer is a fake server for instances of the armcontainerservice.AgentPoolsClient type.
@@ -36,10 +35,6 @@ type AgentPoolsServer struct {
 	// BeginDelete is the fake for method AgentPoolsClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, options *armcontainerservice.AgentPoolsClientBeginDeleteOptions) (resp azfake.PollerResponder[armcontainerservice.AgentPoolsClientDeleteResponse], errResp azfake.ErrorResponder)
-
-	// BeginDeleteMachines is the fake for method AgentPoolsClient.BeginDeleteMachines
-	// HTTP status codes to indicate success: http.StatusAccepted
-	BeginDeleteMachines func(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, machines armcontainerservice.AgentPoolDeleteMachinesParameter, options *armcontainerservice.AgentPoolsClientBeginDeleteMachinesOptions) (resp azfake.PollerResponder[armcontainerservice.AgentPoolsClientDeleteMachinesResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method AgentPoolsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -71,7 +66,6 @@ func NewAgentPoolsServerTransport(srv *AgentPoolsServer) *AgentPoolsServerTransp
 		beginAbortLatestOperation:    newTracker[azfake.PollerResponder[armcontainerservice.AgentPoolsClientAbortLatestOperationResponse]](),
 		beginCreateOrUpdate:          newTracker[azfake.PollerResponder[armcontainerservice.AgentPoolsClientCreateOrUpdateResponse]](),
 		beginDelete:                  newTracker[azfake.PollerResponder[armcontainerservice.AgentPoolsClientDeleteResponse]](),
-		beginDeleteMachines:          newTracker[azfake.PollerResponder[armcontainerservice.AgentPoolsClientDeleteMachinesResponse]](),
 		newListPager:                 newTracker[azfake.PagerResponder[armcontainerservice.AgentPoolsClientListResponse]](),
 		beginUpgradeNodeImageVersion: newTracker[azfake.PollerResponder[armcontainerservice.AgentPoolsClientUpgradeNodeImageVersionResponse]](),
 	}
@@ -84,7 +78,6 @@ type AgentPoolsServerTransport struct {
 	beginAbortLatestOperation    *tracker[azfake.PollerResponder[armcontainerservice.AgentPoolsClientAbortLatestOperationResponse]]
 	beginCreateOrUpdate          *tracker[azfake.PollerResponder[armcontainerservice.AgentPoolsClientCreateOrUpdateResponse]]
 	beginDelete                  *tracker[azfake.PollerResponder[armcontainerservice.AgentPoolsClientDeleteResponse]]
-	beginDeleteMachines          *tracker[azfake.PollerResponder[armcontainerservice.AgentPoolsClientDeleteMachinesResponse]]
 	newListPager                 *tracker[azfake.PagerResponder[armcontainerservice.AgentPoolsClientListResponse]]
 	beginUpgradeNodeImageVersion *tracker[azfake.PollerResponder[armcontainerservice.AgentPoolsClientUpgradeNodeImageVersionResponse]]
 }
@@ -107,8 +100,6 @@ func (a *AgentPoolsServerTransport) Do(req *http.Request) (*http.Response, error
 		resp, err = a.dispatchBeginCreateOrUpdate(req)
 	case "AgentPoolsClient.BeginDelete":
 		resp, err = a.dispatchBeginDelete(req)
-	case "AgentPoolsClient.BeginDeleteMachines":
-		resp, err = a.dispatchBeginDeleteMachines(req)
 	case "AgentPoolsClient.Get":
 		resp, err = a.dispatchGet(req)
 	case "AgentPoolsClient.GetAvailableAgentPoolVersions":
@@ -242,7 +233,6 @@ func (a *AgentPoolsServerTransport) dispatchBeginDelete(req *http.Request) (*htt
 		if matches == nil || len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		qp := req.URL.Query()
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
@@ -255,21 +245,7 @@ func (a *AgentPoolsServerTransport) dispatchBeginDelete(req *http.Request) (*htt
 		if err != nil {
 			return nil, err
 		}
-		ignorePodDisruptionBudgetUnescaped, err := url.QueryUnescape(qp.Get("ignore-pod-disruption-budget"))
-		if err != nil {
-			return nil, err
-		}
-		ignorePodDisruptionBudgetParam, err := parseOptional(ignorePodDisruptionBudgetUnescaped, strconv.ParseBool)
-		if err != nil {
-			return nil, err
-		}
-		var options *armcontainerservice.AgentPoolsClientBeginDeleteOptions
-		if ignorePodDisruptionBudgetParam != nil {
-			options = &armcontainerservice.AgentPoolsClientBeginDeleteOptions{
-				IgnorePodDisruptionBudget: ignorePodDisruptionBudgetParam,
-			}
-		}
-		respr, errRespr := a.srv.BeginDelete(req.Context(), resourceGroupNameParam, resourceNameParam, agentPoolNameParam, options)
+		respr, errRespr := a.srv.BeginDelete(req.Context(), resourceGroupNameParam, resourceNameParam, agentPoolNameParam, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -288,58 +264,6 @@ func (a *AgentPoolsServerTransport) dispatchBeginDelete(req *http.Request) (*htt
 	}
 	if !server.PollerResponderMore(beginDelete) {
 		a.beginDelete.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (a *AgentPoolsServerTransport) dispatchBeginDeleteMachines(req *http.Request) (*http.Response, error) {
-	if a.srv.BeginDeleteMachines == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginDeleteMachines not implemented")}
-	}
-	beginDeleteMachines := a.beginDeleteMachines.get(req)
-	if beginDeleteMachines == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/agentPools/(?P<agentPoolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/deleteMachines`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcontainerservice.AgentPoolDeleteMachinesParameter](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
-		if err != nil {
-			return nil, err
-		}
-		agentPoolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("agentPoolName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := a.srv.BeginDeleteMachines(req.Context(), resourceGroupNameParam, resourceNameParam, agentPoolNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginDeleteMachines = &respr
-		a.beginDeleteMachines.add(req, beginDeleteMachines)
-	}
-
-	resp, err := server.PollerResponderNext(beginDeleteMachines, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !contains([]int{http.StatusAccepted}, resp.StatusCode) {
-		a.beginDeleteMachines.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginDeleteMachines) {
-		a.beginDeleteMachines.remove(req)
 	}
 
 	return resp, nil

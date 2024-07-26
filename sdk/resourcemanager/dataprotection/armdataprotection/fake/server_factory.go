@@ -20,6 +20,7 @@ import (
 // ServerFactory is a fake server for instances of the armdataprotection.ClientFactory type.
 type ServerFactory struct {
 	BackupInstancesServer                     BackupInstancesServer
+	BackupInstancesExtensionRoutingServer     BackupInstancesExtensionRoutingServer
 	BackupPoliciesServer                      BackupPoliciesServer
 	BackupVaultOperationResultsServer         BackupVaultOperationResultsServer
 	BackupVaultsServer                        BackupVaultsServer
@@ -57,6 +58,7 @@ type ServerFactoryTransport struct {
 	srv                                         *ServerFactory
 	trMu                                        sync.Mutex
 	trBackupInstancesServer                     *BackupInstancesServerTransport
+	trBackupInstancesExtensionRoutingServer     *BackupInstancesExtensionRoutingServerTransport
 	trBackupPoliciesServer                      *BackupPoliciesServerTransport
 	trBackupVaultOperationResultsServer         *BackupVaultOperationResultsServerTransport
 	trBackupVaultsServer                        *BackupVaultsServerTransport
@@ -97,6 +99,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewBackupInstancesServerTransport(&s.srv.BackupInstancesServer)
 		})
 		resp, err = s.trBackupInstancesServer.Do(req)
+	case "BackupInstancesExtensionRoutingClient":
+		initServer(s, &s.trBackupInstancesExtensionRoutingServer, func() *BackupInstancesExtensionRoutingServerTransport {
+			return NewBackupInstancesExtensionRoutingServerTransport(&s.srv.BackupInstancesExtensionRoutingServer)
+		})
+		resp, err = s.trBackupInstancesExtensionRoutingServer.Do(req)
 	case "BackupPoliciesClient":
 		initServer(s, &s.trBackupPoliciesServer, func() *BackupPoliciesServerTransport {
 			return NewBackupPoliciesServerTransport(&s.srv.BackupPoliciesServer)

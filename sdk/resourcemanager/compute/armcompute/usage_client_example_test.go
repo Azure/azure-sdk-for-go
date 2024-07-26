@@ -14,10 +14,10 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v5"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v6"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/computeRPCommonExamples/Usage_List_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/computeRPCommonExamples/Usage_List_MaximumSet_Gen.json
 func ExampleUsageClient_NewListPager_usageListMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,7 +54,7 @@ func ExampleUsageClient_NewListPager_usageListMaximumSetGen() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/computeRPCommonExamples/Usage_List_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/computeRPCommonExamples/Usage_List_MinimumSet_Gen.json
 func ExampleUsageClient_NewListPager_usageListMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

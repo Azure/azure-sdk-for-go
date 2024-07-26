@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v5"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v6"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/diskEncryptionSetExamples/DiskEncryptionSet_Create_WithKeyVaultFromADifferentSubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/diskEncryptionSetExamples/DiskEncryptionSet_Create_WithKeyVaultFromADifferentSubscription.json
 func ExampleDiskEncryptionSetsClient_BeginCreateOrUpdate_createADiskEncryptionSetWithKeyVaultFromADifferentSubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -69,7 +69,7 @@ func ExampleDiskEncryptionSetsClient_BeginCreateOrUpdate_createADiskEncryptionSe
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/diskEncryptionSetExamples/DiskEncryptionSet_Create_WithKeyVaultFromADifferentTenant.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/diskEncryptionSetExamples/DiskEncryptionSet_Create_WithKeyVaultFromADifferentTenant.json
 func ExampleDiskEncryptionSetsClient_BeginCreateOrUpdate_createADiskEncryptionSetWithKeyVaultFromADifferentTenant() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -129,7 +129,7 @@ func ExampleDiskEncryptionSetsClient_BeginCreateOrUpdate_createADiskEncryptionSe
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/diskEncryptionSetExamples/DiskEncryptionSet_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/diskEncryptionSetExamples/DiskEncryptionSet_Create.json
 func ExampleDiskEncryptionSetsClient_BeginCreateOrUpdate_createADiskEncryptionSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -186,7 +186,7 @@ func ExampleDiskEncryptionSetsClient_BeginCreateOrUpdate_createADiskEncryptionSe
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/diskEncryptionSetExamples/DiskEncryptionSet_Update_WithRotationToLatestKeyVersionEnabled.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/diskEncryptionSetExamples/DiskEncryptionSet_Update_WithRotationToLatestKeyVersionEnabled.json
 func ExampleDiskEncryptionSetsClient_BeginUpdate_updateADiskEncryptionSetWithRotationToLatestKeyVersionEnabledSetToTrueSucceeded() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -239,7 +239,7 @@ func ExampleDiskEncryptionSetsClient_BeginUpdate_updateADiskEncryptionSetWithRot
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/diskEncryptionSetExamples/DiskEncryptionSet_Update_WithRotationToLatestKeyVersionEnabledInProgress.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/diskEncryptionSetExamples/DiskEncryptionSet_Update_WithRotationToLatestKeyVersionEnabledInProgress.json
 func ExampleDiskEncryptionSetsClient_BeginUpdate_updateADiskEncryptionSetWithRotationToLatestKeyVersionEnabledSetToTrueUpdating() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -296,7 +296,7 @@ func ExampleDiskEncryptionSetsClient_BeginUpdate_updateADiskEncryptionSetWithRot
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/diskEncryptionSetExamples/DiskEncryptionSet_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/diskEncryptionSetExamples/DiskEncryptionSet_Update.json
 func ExampleDiskEncryptionSetsClient_BeginUpdate_updateADiskEncryptionSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -357,7 +357,7 @@ func ExampleDiskEncryptionSetsClient_BeginUpdate_updateADiskEncryptionSet() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/diskEncryptionSetExamples/DiskEncryptionSet_Get_WithAutoKeyRotationError.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/diskEncryptionSetExamples/DiskEncryptionSet_Get_WithAutoKeyRotationError.json
 func ExampleDiskEncryptionSetsClient_Get_getInformationAboutADiskEncryptionSetWhenAutoKeyRotationFailed() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -407,7 +407,7 @@ func ExampleDiskEncryptionSetsClient_Get_getInformationAboutADiskEncryptionSetWh
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/diskEncryptionSetExamples/DiskEncryptionSet_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/diskEncryptionSetExamples/DiskEncryptionSet_Get.json
 func ExampleDiskEncryptionSetsClient_Get_getInformationAboutADiskEncryptionSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -452,7 +452,7 @@ func ExampleDiskEncryptionSetsClient_Get_getInformationAboutADiskEncryptionSet()
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/diskEncryptionSetExamples/DiskEncryptionSet_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/diskEncryptionSetExamples/DiskEncryptionSet_Delete.json
 func ExampleDiskEncryptionSetsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -473,7 +473,7 @@ func ExampleDiskEncryptionSetsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/diskEncryptionSetExamples/DiskEncryptionSet_ListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/diskEncryptionSetExamples/DiskEncryptionSet_ListByResourceGroup.json
 func ExampleDiskEncryptionSetsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -551,7 +551,7 @@ func ExampleDiskEncryptionSetsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/diskEncryptionSetExamples/DiskEncryptionSet_ListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/diskEncryptionSetExamples/DiskEncryptionSet_ListBySubscription.json
 func ExampleDiskEncryptionSetsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -629,7 +629,7 @@ func ExampleDiskEncryptionSetsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/diskEncryptionSetExamples/DiskEncryptionSet_ListAssociatedResources.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/diskEncryptionSetExamples/DiskEncryptionSet_ListAssociatedResources.json
 func ExampleDiskEncryptionSetsClient_NewListAssociatedResourcesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v5"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v6"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2023-07-03/examples/galleryExamples/GalleryApplication_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2023-07-03/examples/galleryExamples/GalleryApplication_Create.json
 func ExampleGalleryApplicationsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -92,7 +92,7 @@ func ExampleGalleryApplicationsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2023-07-03/examples/galleryExamples/GalleryApplication_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2023-07-03/examples/galleryExamples/GalleryApplication_Update.json
 func ExampleGalleryApplicationsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -165,7 +165,7 @@ func ExampleGalleryApplicationsClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2023-07-03/examples/galleryExamples/GalleryApplication_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2023-07-03/examples/galleryExamples/GalleryApplication_Get.json
 func ExampleGalleryApplicationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -211,7 +211,7 @@ func ExampleGalleryApplicationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2023-07-03/examples/galleryExamples/GalleryApplication_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2023-07-03/examples/galleryExamples/GalleryApplication_Delete.json
 func ExampleGalleryApplicationsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -232,7 +232,7 @@ func ExampleGalleryApplicationsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2023-07-03/examples/galleryExamples/GalleryApplication_ListByGallery.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2023-07-03/examples/galleryExamples/GalleryApplication_ListByGallery.json
 func ExampleGalleryApplicationsClient_NewListByGalleryPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

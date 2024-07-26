@@ -1,5 +1,66 @@
 # Release History
 
+## 6.0.0 (2024-07-26)
+### Breaking Changes
+
+- Function `*ManagedClustersClient.GetOSOptions` has been removed
+- Struct `OSOptionProfile` has been removed
+- Struct `OSOptionProperty` has been removed
+- Struct `OSOptionPropertyList` has been removed
+
+### Features Added
+
+- New value `NetworkPolicyNone` added to enum type `NetworkPolicy`
+- New value `NodeOSUpgradeChannelSecurityPatch` added to enum type `NodeOSUpgradeChannel`
+- New field `DaemonsetEvictionForEmptyNodes`, `DaemonsetEvictionForOccupiedNodes`, `IgnoreDaemonsetsUtilization` in struct `ManagedClusterPropertiesAutoScalerProfile`
+
+
+## 5.1.0-beta.2 (2024-07-25)
+### Breaking Changes
+
+- Struct `NetworkMonitoring` has been removed
+- Field `Monitoring` of struct `NetworkProfile` has been removed
+
+### Features Added
+
+- New value `ManagedClusterSKUNameAutomatic` added to enum type `ManagedClusterSKUName`
+- New value `OutboundTypeNone` added to enum type `OutboundType`
+- New enum type `Operator` with values `OperatorDoesNotExist`, `OperatorExists`, `OperatorIn`, `OperatorNotIn`
+- New enum type `PodLinkLocalAccess` with values `PodLinkLocalAccessIMDS`, `PodLinkLocalAccessNone`
+- New enum type `UndrainableNodeBehavior` with values `UndrainableNodeBehaviorCordon`, `UndrainableNodeBehaviorSchedule`
+- New function `*ClientFactory.NewLoadBalancersClient() *LoadBalancersClient`
+- New function `NewLoadBalancersClient(string, azcore.TokenCredential, *arm.ClientOptions) (*LoadBalancersClient, error)`
+- New function `*LoadBalancersClient.CreateOrUpdate(context.Context, string, string, string, LoadBalancer, *LoadBalancersClientCreateOrUpdateOptions) (LoadBalancersClientCreateOrUpdateResponse, error)`
+- New function `*LoadBalancersClient.BeginDelete(context.Context, string, string, string, *LoadBalancersClientBeginDeleteOptions) (*runtime.Poller[LoadBalancersClientDeleteResponse], error)`
+- New function `*LoadBalancersClient.Get(context.Context, string, string, string, *LoadBalancersClientGetOptions) (LoadBalancersClientGetResponse, error)`
+- New function `*LoadBalancersClient.NewListByManagedClusterPager(string, string, *LoadBalancersClientListByManagedClusterOptions) *runtime.Pager[LoadBalancersClientListByManagedClusterResponse]`
+- New function `*ManagedClustersClient.BeginRebalanceLoadBalancers(context.Context, string, string, RebalanceLoadBalancersRequestBody, *ManagedClustersClientBeginRebalanceLoadBalancersOptions) (*runtime.Poller[ManagedClustersClientRebalanceLoadBalancersResponse], error)`
+- New struct `AdvancedNetworking`
+- New struct `AdvancedNetworkingObservability`
+- New struct `AutoScaleProfile`
+- New struct `Component`
+- New struct `ComponentsByRelease`
+- New struct `LabelSelector`
+- New struct `LabelSelectorRequirement`
+- New struct `LoadBalancer`
+- New struct `LoadBalancerListResult`
+- New struct `LoadBalancerProperties`
+- New struct `RebalanceLoadBalancersRequestBody`
+- New field `ComponentsByReleases` in struct `AgentPoolUpgradeProfileProperties`
+- New field `UndrainableNodeBehavior` in struct `AgentPoolUpgradeSettings`
+- New field `IfMatch`, `IfNoneMatch` in struct `AgentPoolsClientBeginCreateOrUpdateOptions`
+- New field `IfMatch` in struct `AgentPoolsClientBeginDeleteOptions`
+- New field `ETag` in struct `ManagedCluster`
+- New field `ETag` in struct `ManagedClusterAgentPoolProfile`
+- New field `ETag` in struct `ManagedClusterAgentPoolProfileProperties`
+- New field `ComponentsByReleases` in struct `ManagedClusterPoolUpgradeProfile`
+- New field `IfMatch`, `IfNoneMatch` in struct `ManagedClustersClientBeginCreateOrUpdateOptions`
+- New field `IfMatch` in struct `ManagedClustersClientBeginDeleteOptions`
+- New field `IfMatch` in struct `ManagedClustersClientBeginUpdateTagsOptions`
+- New field `AdvancedNetworking`, `PodLinkLocalAccess` in struct `NetworkProfile`
+- New field `Autoscale` in struct `ScaleProfile`
+
+
 ## 5.1.0-beta.1 (2024-04-26)
 ### Features Added
 

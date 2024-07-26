@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redhatopenshift/armredhatopenshift"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bce66ff64f0e9edc9ea6119d00324058413e81ed/specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/stable/2023-09-04/examples/OpenShiftClusters_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c1cea38fb7e5cec9afe223a2ed15cbe2fbeecbdb/specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/openshiftclusters/stable/2023-11-22/examples/OpenShiftClusters_List.json
 func ExampleOpenShiftClustersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -83,6 +83,15 @@ func ExampleOpenShiftClustersClient_NewListPager() {
 		// 					VMSize: to.Ptr("Standard_D8s_v3"),
 		// 				},
 		// 				NetworkProfile: &armredhatopenshift.NetworkProfile{
+		// 					LoadBalancerProfile: &armredhatopenshift.LoadBalancerProfile{
+		// 						EffectiveOutboundIPs: []*armredhatopenshift.EffectiveOutboundIP{
+		// 							{
+		// 								ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/clusterResourceGroup/providers/Microsoft.Network/publicIPAddresses/publicIPAddressName"),
+		// 						}},
+		// 						ManagedOutboundIPs: &armredhatopenshift.ManagedOutboundIPs{
+		// 							Count: to.Ptr[int32](1),
+		// 						},
+		// 					},
 		// 					PodCidr: to.Ptr("10.128.0.0/14"),
 		// 					PreconfiguredNSG: to.Ptr(armredhatopenshift.PreconfiguredNSGDisabled),
 		// 					ServiceCidr: to.Ptr("172.30.0.0/16"),
@@ -127,7 +136,7 @@ func ExampleOpenShiftClustersClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bce66ff64f0e9edc9ea6119d00324058413e81ed/specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/stable/2023-09-04/examples/OpenShiftClusters_ListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c1cea38fb7e5cec9afe223a2ed15cbe2fbeecbdb/specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/openshiftclusters/stable/2023-11-22/examples/OpenShiftClusters_ListByResourceGroup.json
 func ExampleOpenShiftClustersClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -192,6 +201,15 @@ func ExampleOpenShiftClustersClient_NewListByResourceGroupPager() {
 		// 					VMSize: to.Ptr("Standard_D8s_v3"),
 		// 				},
 		// 				NetworkProfile: &armredhatopenshift.NetworkProfile{
+		// 					LoadBalancerProfile: &armredhatopenshift.LoadBalancerProfile{
+		// 						EffectiveOutboundIPs: []*armredhatopenshift.EffectiveOutboundIP{
+		// 							{
+		// 								ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/clusterResourceGroup/providers/Microsoft.Network/publicIPAddresses/publicIPAddressName"),
+		// 						}},
+		// 						ManagedOutboundIPs: &armredhatopenshift.ManagedOutboundIPs{
+		// 							Count: to.Ptr[int32](1),
+		// 						},
+		// 					},
 		// 					PodCidr: to.Ptr("10.128.0.0/14"),
 		// 					PreconfiguredNSG: to.Ptr(armredhatopenshift.PreconfiguredNSGDisabled),
 		// 					ServiceCidr: to.Ptr("172.30.0.0/16"),
@@ -236,7 +254,7 @@ func ExampleOpenShiftClustersClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bce66ff64f0e9edc9ea6119d00324058413e81ed/specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/stable/2023-09-04/examples/OpenShiftClusters_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c1cea38fb7e5cec9afe223a2ed15cbe2fbeecbdb/specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/openshiftclusters/stable/2023-11-22/examples/OpenShiftClusters_Get.json
 func ExampleOpenShiftClustersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -295,6 +313,15 @@ func ExampleOpenShiftClustersClient_Get() {
 	// 			VMSize: to.Ptr("Standard_D8s_v3"),
 	// 		},
 	// 		NetworkProfile: &armredhatopenshift.NetworkProfile{
+	// 			LoadBalancerProfile: &armredhatopenshift.LoadBalancerProfile{
+	// 				EffectiveOutboundIPs: []*armredhatopenshift.EffectiveOutboundIP{
+	// 					{
+	// 						ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/clusterResourceGroup/providers/Microsoft.Network/publicIPAddresses/publicIPAddressName"),
+	// 				}},
+	// 				ManagedOutboundIPs: &armredhatopenshift.ManagedOutboundIPs{
+	// 					Count: to.Ptr[int32](1),
+	// 				},
+	// 			},
 	// 			PodCidr: to.Ptr("10.128.0.0/14"),
 	// 			PreconfiguredNSG: to.Ptr(armredhatopenshift.PreconfiguredNSGDisabled),
 	// 			ServiceCidr: to.Ptr("172.30.0.0/16"),
@@ -337,7 +364,7 @@ func ExampleOpenShiftClustersClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bce66ff64f0e9edc9ea6119d00324058413e81ed/specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/stable/2023-09-04/examples/OpenShiftClusters_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c1cea38fb7e5cec9afe223a2ed15cbe2fbeecbdb/specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/openshiftclusters/stable/2023-11-22/examples/OpenShiftClusters_CreateOrUpdate.json
 func ExampleOpenShiftClustersClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -375,6 +402,11 @@ func ExampleOpenShiftClustersClient_BeginCreateOrUpdate() {
 				VMSize:           to.Ptr("Standard_D8s_v3"),
 			},
 			NetworkProfile: &armredhatopenshift.NetworkProfile{
+				LoadBalancerProfile: &armredhatopenshift.LoadBalancerProfile{
+					ManagedOutboundIPs: &armredhatopenshift.ManagedOutboundIPs{
+						Count: to.Ptr[int32](1),
+					},
+				},
 				PodCidr:          to.Ptr("10.128.0.0/14"),
 				PreconfiguredNSG: to.Ptr(armredhatopenshift.PreconfiguredNSGDisabled),
 				ServiceCidr:      to.Ptr("172.30.0.0/16"),
@@ -464,7 +496,7 @@ func ExampleOpenShiftClustersClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bce66ff64f0e9edc9ea6119d00324058413e81ed/specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/stable/2023-09-04/examples/OpenShiftClusters_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c1cea38fb7e5cec9afe223a2ed15cbe2fbeecbdb/specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/openshiftclusters/stable/2023-11-22/examples/OpenShiftClusters_Delete.json
 func ExampleOpenShiftClustersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -485,7 +517,7 @@ func ExampleOpenShiftClustersClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bce66ff64f0e9edc9ea6119d00324058413e81ed/specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/stable/2023-09-04/examples/OpenShiftClusters_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c1cea38fb7e5cec9afe223a2ed15cbe2fbeecbdb/specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/openshiftclusters/stable/2023-11-22/examples/OpenShiftClusters_Update.json
 func ExampleOpenShiftClustersClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -519,6 +551,11 @@ func ExampleOpenShiftClustersClient_BeginUpdate() {
 				VMSize:           to.Ptr("Standard_D8s_v3"),
 			},
 			NetworkProfile: &armredhatopenshift.NetworkProfile{
+				LoadBalancerProfile: &armredhatopenshift.LoadBalancerProfile{
+					ManagedOutboundIPs: &armredhatopenshift.ManagedOutboundIPs{
+						Count: to.Ptr[int32](1),
+					},
+				},
 				PodCidr:          to.Ptr("10.128.0.0/14"),
 				PreconfiguredNSG: to.Ptr(armredhatopenshift.PreconfiguredNSGDisabled),
 				ServiceCidr:      to.Ptr("172.30.0.0/16"),
@@ -611,7 +648,7 @@ func ExampleOpenShiftClustersClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bce66ff64f0e9edc9ea6119d00324058413e81ed/specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/stable/2023-09-04/examples/OpenShiftClusters_ListAdminCredentials.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c1cea38fb7e5cec9afe223a2ed15cbe2fbeecbdb/specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/openshiftclusters/stable/2023-11-22/examples/OpenShiftClusters_ListAdminCredentials.json
 func ExampleOpenShiftClustersClient_ListAdminCredentials() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -634,7 +671,7 @@ func ExampleOpenShiftClustersClient_ListAdminCredentials() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bce66ff64f0e9edc9ea6119d00324058413e81ed/specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/stable/2023-09-04/examples/OpenShiftClusters_ListCredentials.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c1cea38fb7e5cec9afe223a2ed15cbe2fbeecbdb/specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/openshiftclusters/stable/2023-11-22/examples/OpenShiftClusters_ListCredentials.json
 func ExampleOpenShiftClustersClient_ListCredentials() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

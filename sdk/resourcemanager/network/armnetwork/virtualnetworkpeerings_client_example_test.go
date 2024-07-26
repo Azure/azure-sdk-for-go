@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v5"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v6"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/VirtualNetworkPeeringDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/VirtualNetworkPeeringDelete.json
 func ExampleVirtualNetworkPeeringsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -39,7 +39,69 @@ func ExampleVirtualNetworkPeeringsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/VirtualNetworkPeeringGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/VirtualNetworkV6SubnetPeeringGet.json
+func ExampleVirtualNetworkPeeringsClient_Get_getV6SubnetPeering() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewVirtualNetworkPeeringsClient().Get(ctx, "peerTest", "vnet1", "peer", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.VirtualNetworkPeering = armnetwork.VirtualNetworkPeering{
+	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/peerTest/providers/Microsoft.Network/virtualNetworks/vnet1/virtualNetworkPeerings/peer"),
+	// 	Name: to.Ptr("peer"),
+	// 	Properties: &armnetwork.VirtualNetworkPeeringPropertiesFormat{
+	// 		AllowForwardedTraffic: to.Ptr(true),
+	// 		AllowGatewayTransit: to.Ptr(false),
+	// 		AllowVirtualNetworkAccess: to.Ptr(true),
+	// 		EnableOnlyIPv6Peering: to.Ptr(true),
+	// 		LocalAddressSpace: &armnetwork.AddressSpace{
+	// 			AddressPrefixes: []*string{
+	// 				to.Ptr("2002:2002::/64")},
+	// 			},
+	// 			LocalSubnetNames: []*string{
+	// 				to.Ptr("Subnet1")},
+	// 				LocalVirtualNetworkAddressSpace: &armnetwork.AddressSpace{
+	// 					AddressPrefixes: []*string{
+	// 						to.Ptr("2002:2002::/64")},
+	// 					},
+	// 					PeerCompleteVnets: to.Ptr(false),
+	// 					PeeringState: to.Ptr(armnetwork.VirtualNetworkPeeringStateInitiated),
+	// 					PeeringSyncLevel: to.Ptr(armnetwork.VirtualNetworkPeeringLevelFullyInSync),
+	// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+	// 					RemoteAddressSpace: &armnetwork.AddressSpace{
+	// 						AddressPrefixes: []*string{
+	// 							to.Ptr("2001:2001::/64")},
+	// 						},
+	// 						RemoteBgpCommunities: &armnetwork.VirtualNetworkBgpCommunities{
+	// 							RegionalCommunity: to.Ptr("12076:50004"),
+	// 							VirtualNetworkCommunity: to.Ptr("12076:20002"),
+	// 						},
+	// 						RemoteSubnetNames: []*string{
+	// 							to.Ptr("Subnet2")},
+	// 							RemoteVirtualNetwork: &armnetwork.SubResource{
+	// 								ID: to.Ptr("/subscriptions/subid/resourceGroups/peerTest/providers/Microsoft.Network/virtualNetworks/vnet2"),
+	// 							},
+	// 							RemoteVirtualNetworkAddressSpace: &armnetwork.AddressSpace{
+	// 								AddressPrefixes: []*string{
+	// 									to.Ptr("2001:2001::/64")},
+	// 								},
+	// 								UseRemoteGateways: to.Ptr(false),
+	// 							},
+	// 						}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/VirtualNetworkPeeringGet.json
 func ExampleVirtualNetworkPeeringsClient_Get_getPeering() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -87,7 +149,7 @@ func ExampleVirtualNetworkPeeringsClient_Get_getPeering() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/VirtualNetworkPeeringGetWithRemoteVirtualNetworkEncryption.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/VirtualNetworkPeeringGetWithRemoteVirtualNetworkEncryption.json
 func ExampleVirtualNetworkPeeringsClient_Get_getPeeringWithRemoteVirtualNetworkEncryption() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -134,7 +196,159 @@ func ExampleVirtualNetworkPeeringsClient_Get_getPeeringWithRemoteVirtualNetworkE
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/VirtualNetworkPeeringCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/VirtualNetworkSubnetPeeringGet.json
+func ExampleVirtualNetworkPeeringsClient_Get_getSubnetPeering() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewVirtualNetworkPeeringsClient().Get(ctx, "peerTest", "vnet1", "peer", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.VirtualNetworkPeering = armnetwork.VirtualNetworkPeering{
+	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/peerTest/providers/Microsoft.Network/virtualNetworks/vnet1/virtualNetworkPeerings/peer"),
+	// 	Name: to.Ptr("peer"),
+	// 	Properties: &armnetwork.VirtualNetworkPeeringPropertiesFormat{
+	// 		AllowForwardedTraffic: to.Ptr(true),
+	// 		AllowGatewayTransit: to.Ptr(false),
+	// 		AllowVirtualNetworkAccess: to.Ptr(true),
+	// 		EnableOnlyIPv6Peering: to.Ptr(false),
+	// 		LocalAddressSpace: &armnetwork.AddressSpace{
+	// 			AddressPrefixes: []*string{
+	// 				to.Ptr("212.0.0.0/16"),
+	// 				to.Ptr("2002:2002::/64")},
+	// 			},
+	// 			LocalSubnetNames: []*string{
+	// 				to.Ptr("Subnet1")},
+	// 				LocalVirtualNetworkAddressSpace: &armnetwork.AddressSpace{
+	// 					AddressPrefixes: []*string{
+	// 						to.Ptr("212.0.0.0/16"),
+	// 						to.Ptr("2002:2002::/64")},
+	// 					},
+	// 					PeerCompleteVnets: to.Ptr(false),
+	// 					PeeringState: to.Ptr(armnetwork.VirtualNetworkPeeringStateInitiated),
+	// 					PeeringSyncLevel: to.Ptr(armnetwork.VirtualNetworkPeeringLevelFullyInSync),
+	// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+	// 					RemoteAddressSpace: &armnetwork.AddressSpace{
+	// 						AddressPrefixes: []*string{
+	// 							to.Ptr("12.0.0.0/8"),
+	// 							to.Ptr("2001:2001::/64")},
+	// 						},
+	// 						RemoteBgpCommunities: &armnetwork.VirtualNetworkBgpCommunities{
+	// 							RegionalCommunity: to.Ptr("12076:50004"),
+	// 							VirtualNetworkCommunity: to.Ptr("12076:20002"),
+	// 						},
+	// 						RemoteSubnetNames: []*string{
+	// 							to.Ptr("Subnet2")},
+	// 							RemoteVirtualNetwork: &armnetwork.SubResource{
+	// 								ID: to.Ptr("/subscriptions/subid/resourceGroups/peerTest/providers/Microsoft.Network/virtualNetworks/vnet2"),
+	// 							},
+	// 							RemoteVirtualNetworkAddressSpace: &armnetwork.AddressSpace{
+	// 								AddressPrefixes: []*string{
+	// 									to.Ptr("12.0.0.0/8"),
+	// 									to.Ptr("2001:2001::/64")},
+	// 								},
+	// 								UseRemoteGateways: to.Ptr(false),
+	// 							},
+	// 						}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/VirtualNetworkV6SubnetPeeringCreate.json
+func ExampleVirtualNetworkPeeringsClient_BeginCreateOrUpdate_createV6SubnetPeering() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVirtualNetworkPeeringsClient().BeginCreateOrUpdate(ctx, "peerTest", "vnet1", "peer", armnetwork.VirtualNetworkPeering{
+		Properties: &armnetwork.VirtualNetworkPeeringPropertiesFormat{
+			AllowForwardedTraffic:     to.Ptr(true),
+			AllowGatewayTransit:       to.Ptr(false),
+			AllowVirtualNetworkAccess: to.Ptr(true),
+			EnableOnlyIPv6Peering:     to.Ptr(true),
+			LocalSubnetNames: []*string{
+				to.Ptr("Subnet1"),
+				to.Ptr("Subnet4")},
+			PeerCompleteVnets: to.Ptr(false),
+			RemoteSubnetNames: []*string{
+				to.Ptr("Subnet2")},
+			RemoteVirtualNetwork: &armnetwork.SubResource{
+				ID: to.Ptr("/subscriptions/subid/resourceGroups/peerTest/providers/Microsoft.Network/virtualNetworks/vnet2"),
+			},
+			UseRemoteGateways: to.Ptr(false),
+		},
+	}, &armnetwork.VirtualNetworkPeeringsClientBeginCreateOrUpdateOptions{SyncRemoteAddressSpace: nil})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.VirtualNetworkPeering = armnetwork.VirtualNetworkPeering{
+	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/peerTest/providers/Microsoft.Network/virtualNetworks/vnet1/virtualNetworkPeerings/peer"),
+	// 	Name: to.Ptr("peer"),
+	// 	Properties: &armnetwork.VirtualNetworkPeeringPropertiesFormat{
+	// 		AllowForwardedTraffic: to.Ptr(true),
+	// 		AllowGatewayTransit: to.Ptr(false),
+	// 		AllowVirtualNetworkAccess: to.Ptr(true),
+	// 		EnableOnlyIPv6Peering: to.Ptr(true),
+	// 		LocalAddressSpace: &armnetwork.AddressSpace{
+	// 			AddressPrefixes: []*string{
+	// 				to.Ptr("2002::/64"),
+	// 				to.Ptr("2003::/64")},
+	// 			},
+	// 			LocalSubnetNames: []*string{
+	// 				to.Ptr("Subnet1"),
+	// 				to.Ptr("Subnet4")},
+	// 				LocalVirtualNetworkAddressSpace: &armnetwork.AddressSpace{
+	// 					AddressPrefixes: []*string{
+	// 						to.Ptr("2002::/64"),
+	// 						to.Ptr("2003::/64")},
+	// 					},
+	// 					PeerCompleteVnets: to.Ptr(false),
+	// 					PeeringState: to.Ptr(armnetwork.VirtualNetworkPeeringStateInitiated),
+	// 					PeeringSyncLevel: to.Ptr(armnetwork.VirtualNetworkPeeringLevelFullyInSync),
+	// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+	// 					RemoteAddressSpace: &armnetwork.AddressSpace{
+	// 						AddressPrefixes: []*string{
+	// 							to.Ptr("2001::/64")},
+	// 						},
+	// 						RemoteBgpCommunities: &armnetwork.VirtualNetworkBgpCommunities{
+	// 							RegionalCommunity: to.Ptr("12076:50004"),
+	// 							VirtualNetworkCommunity: to.Ptr("12076:20002"),
+	// 						},
+	// 						RemoteSubnetNames: []*string{
+	// 							to.Ptr("Subnet2")},
+	// 							RemoteVirtualNetwork: &armnetwork.SubResource{
+	// 								ID: to.Ptr("/subscriptions/subid/resourceGroups/peerTest/providers/Microsoft.Network/virtualNetworks/vnet2"),
+	// 							},
+	// 							RemoteVirtualNetworkAddressSpace: &armnetwork.AddressSpace{
+	// 								AddressPrefixes: []*string{
+	// 									to.Ptr("2001::/64")},
+	// 								},
+	// 								UseRemoteGateways: to.Ptr(false),
+	// 							},
+	// 						}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/VirtualNetworkPeeringCreate.json
 func ExampleVirtualNetworkPeeringsClient_BeginCreateOrUpdate_createPeering() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -196,7 +410,7 @@ func ExampleVirtualNetworkPeeringsClient_BeginCreateOrUpdate_createPeering() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/VirtualNetworkPeeringCreateWithRemoteVirtualNetworkEncryption.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/VirtualNetworkPeeringCreateWithRemoteVirtualNetworkEncryption.json
 func ExampleVirtualNetworkPeeringsClient_BeginCreateOrUpdate_createPeeringWithRemoteVirtualNetworkEncryption() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -257,7 +471,97 @@ func ExampleVirtualNetworkPeeringsClient_BeginCreateOrUpdate_createPeeringWithRe
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/VirtualNetworkPeeringSync.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/VirtualNetworkSubnetPeeringCreate.json
+func ExampleVirtualNetworkPeeringsClient_BeginCreateOrUpdate_createSubnetPeering() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVirtualNetworkPeeringsClient().BeginCreateOrUpdate(ctx, "peerTest", "vnet1", "peer", armnetwork.VirtualNetworkPeering{
+		Properties: &armnetwork.VirtualNetworkPeeringPropertiesFormat{
+			AllowForwardedTraffic:     to.Ptr(true),
+			AllowGatewayTransit:       to.Ptr(false),
+			AllowVirtualNetworkAccess: to.Ptr(true),
+			EnableOnlyIPv6Peering:     to.Ptr(false),
+			LocalSubnetNames: []*string{
+				to.Ptr("Subnet1"),
+				to.Ptr("Subnet4")},
+			PeerCompleteVnets: to.Ptr(false),
+			RemoteSubnetNames: []*string{
+				to.Ptr("Subnet2")},
+			RemoteVirtualNetwork: &armnetwork.SubResource{
+				ID: to.Ptr("/subscriptions/subid/resourceGroups/peerTest/providers/Microsoft.Network/virtualNetworks/vnet2"),
+			},
+			UseRemoteGateways: to.Ptr(false),
+		},
+	}, &armnetwork.VirtualNetworkPeeringsClientBeginCreateOrUpdateOptions{SyncRemoteAddressSpace: nil})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.VirtualNetworkPeering = armnetwork.VirtualNetworkPeering{
+	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/peerTest/providers/Microsoft.Network/virtualNetworks/vnet1/virtualNetworkPeerings/peer"),
+	// 	Name: to.Ptr("peer"),
+	// 	Properties: &armnetwork.VirtualNetworkPeeringPropertiesFormat{
+	// 		AllowForwardedTraffic: to.Ptr(true),
+	// 		AllowGatewayTransit: to.Ptr(false),
+	// 		AllowVirtualNetworkAccess: to.Ptr(true),
+	// 		EnableOnlyIPv6Peering: to.Ptr(false),
+	// 		LocalAddressSpace: &armnetwork.AddressSpace{
+	// 			AddressPrefixes: []*string{
+	// 				to.Ptr("212.0.0.0/16"),
+	// 				to.Ptr("13.0.0.0/8"),
+	// 				to.Ptr("2002:2002::/64")},
+	// 			},
+	// 			LocalSubnetNames: []*string{
+	// 				to.Ptr("Subnet1"),
+	// 				to.Ptr("Subnet4")},
+	// 				LocalVirtualNetworkAddressSpace: &armnetwork.AddressSpace{
+	// 					AddressPrefixes: []*string{
+	// 						to.Ptr("212.0.0.0/16"),
+	// 						to.Ptr("13.0.0.0/8"),
+	// 						to.Ptr("2002:2002::/64")},
+	// 					},
+	// 					PeerCompleteVnets: to.Ptr(false),
+	// 					PeeringState: to.Ptr(armnetwork.VirtualNetworkPeeringStateInitiated),
+	// 					PeeringSyncLevel: to.Ptr(armnetwork.VirtualNetworkPeeringLevelFullyInSync),
+	// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+	// 					RemoteAddressSpace: &armnetwork.AddressSpace{
+	// 						AddressPrefixes: []*string{
+	// 							to.Ptr("12.0.0.0/8"),
+	// 							to.Ptr("2001:2001::/64")},
+	// 						},
+	// 						RemoteBgpCommunities: &armnetwork.VirtualNetworkBgpCommunities{
+	// 							RegionalCommunity: to.Ptr("12076:50004"),
+	// 							VirtualNetworkCommunity: to.Ptr("12076:20002"),
+	// 						},
+	// 						RemoteSubnetNames: []*string{
+	// 							to.Ptr("Subnet2")},
+	// 							RemoteVirtualNetwork: &armnetwork.SubResource{
+	// 								ID: to.Ptr("/subscriptions/subid/resourceGroups/peerTest/providers/Microsoft.Network/virtualNetworks/vnet2"),
+	// 							},
+	// 							RemoteVirtualNetworkAddressSpace: &armnetwork.AddressSpace{
+	// 								AddressPrefixes: []*string{
+	// 									to.Ptr("12.0.0.0/8"),
+	// 									to.Ptr("2001:2001::/64")},
+	// 								},
+	// 								UseRemoteGateways: to.Ptr(false),
+	// 							},
+	// 						}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/VirtualNetworkPeeringSync.json
 func ExampleVirtualNetworkPeeringsClient_BeginCreateOrUpdate_syncPeering() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -319,7 +623,167 @@ func ExampleVirtualNetworkPeeringsClient_BeginCreateOrUpdate_syncPeering() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/VirtualNetworkPeeringList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/VirtualNetworkV6SubnetPeeringSync.json
+func ExampleVirtualNetworkPeeringsClient_BeginCreateOrUpdate_syncV6SubnetPeering() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVirtualNetworkPeeringsClient().BeginCreateOrUpdate(ctx, "peerTest", "vnet1", "peer", armnetwork.VirtualNetworkPeering{
+		Properties: &armnetwork.VirtualNetworkPeeringPropertiesFormat{
+			AllowForwardedTraffic:     to.Ptr(true),
+			AllowGatewayTransit:       to.Ptr(false),
+			AllowVirtualNetworkAccess: to.Ptr(true),
+			EnableOnlyIPv6Peering:     to.Ptr(true),
+			PeerCompleteVnets:         to.Ptr(false),
+			RemoteVirtualNetwork: &armnetwork.SubResource{
+				ID: to.Ptr("/subscriptions/subid/resourceGroups/peerTest/providers/Microsoft.Network/virtualNetworks/vnet2"),
+			},
+			UseRemoteGateways: to.Ptr(false),
+		},
+	}, &armnetwork.VirtualNetworkPeeringsClientBeginCreateOrUpdateOptions{SyncRemoteAddressSpace: to.Ptr(armnetwork.SyncRemoteAddressSpaceTrue)})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.VirtualNetworkPeering = armnetwork.VirtualNetworkPeering{
+	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/peerTest/providers/Microsoft.Network/virtualNetworks/vnet1/virtualNetworkPeerings/peer"),
+	// 	Name: to.Ptr("peer"),
+	// 	Properties: &armnetwork.VirtualNetworkPeeringPropertiesFormat{
+	// 		AllowForwardedTraffic: to.Ptr(true),
+	// 		AllowGatewayTransit: to.Ptr(false),
+	// 		AllowVirtualNetworkAccess: to.Ptr(true),
+	// 		EnableOnlyIPv6Peering: to.Ptr(true),
+	// 		LocalAddressSpace: &armnetwork.AddressSpace{
+	// 			AddressPrefixes: []*string{
+	// 				to.Ptr("2002:2002::/64")},
+	// 			},
+	// 			LocalSubnetNames: []*string{
+	// 				to.Ptr("Subnet1")},
+	// 				LocalVirtualNetworkAddressSpace: &armnetwork.AddressSpace{
+	// 					AddressPrefixes: []*string{
+	// 						to.Ptr("2002:2002::/64")},
+	// 					},
+	// 					PeerCompleteVnets: to.Ptr(false),
+	// 					PeeringState: to.Ptr(armnetwork.VirtualNetworkPeeringStateInitiated),
+	// 					PeeringSyncLevel: to.Ptr(armnetwork.VirtualNetworkPeeringLevelFullyInSync),
+	// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+	// 					RemoteAddressSpace: &armnetwork.AddressSpace{
+	// 						AddressPrefixes: []*string{
+	// 							to.Ptr("2001:2001::/64")},
+	// 						},
+	// 						RemoteBgpCommunities: &armnetwork.VirtualNetworkBgpCommunities{
+	// 							RegionalCommunity: to.Ptr("12076:50004"),
+	// 							VirtualNetworkCommunity: to.Ptr("12076:20002"),
+	// 						},
+	// 						RemoteSubnetNames: []*string{
+	// 							to.Ptr("Subnet2")},
+	// 							RemoteVirtualNetwork: &armnetwork.SubResource{
+	// 								ID: to.Ptr("/subscriptions/subid/resourceGroups/peerTest/providers/Microsoft.Network/virtualNetworks/vnet2"),
+	// 							},
+	// 							RemoteVirtualNetworkAddressSpace: &armnetwork.AddressSpace{
+	// 								AddressPrefixes: []*string{
+	// 									to.Ptr("2001:2001::/64")},
+	// 								},
+	// 								UseRemoteGateways: to.Ptr(false),
+	// 							},
+	// 						}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/VirtualNetworkSubnetPeeringSync.json
+func ExampleVirtualNetworkPeeringsClient_BeginCreateOrUpdate_syncSubnetPeering() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVirtualNetworkPeeringsClient().BeginCreateOrUpdate(ctx, "peerTest", "vnet1", "peer", armnetwork.VirtualNetworkPeering{
+		Properties: &armnetwork.VirtualNetworkPeeringPropertiesFormat{
+			AllowForwardedTraffic:     to.Ptr(true),
+			AllowGatewayTransit:       to.Ptr(false),
+			AllowVirtualNetworkAccess: to.Ptr(true),
+			EnableOnlyIPv6Peering:     to.Ptr(false),
+			PeerCompleteVnets:         to.Ptr(false),
+			RemoteVirtualNetwork: &armnetwork.SubResource{
+				ID: to.Ptr("/subscriptions/subid/resourceGroups/peerTest/providers/Microsoft.Network/virtualNetworks/vnet2"),
+			},
+			UseRemoteGateways: to.Ptr(false),
+		},
+	}, &armnetwork.VirtualNetworkPeeringsClientBeginCreateOrUpdateOptions{SyncRemoteAddressSpace: to.Ptr(armnetwork.SyncRemoteAddressSpaceTrue)})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.VirtualNetworkPeering = armnetwork.VirtualNetworkPeering{
+	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/peerTest/providers/Microsoft.Network/virtualNetworks/vnet1/virtualNetworkPeerings/peer"),
+	// 	Name: to.Ptr("peer"),
+	// 	Properties: &armnetwork.VirtualNetworkPeeringPropertiesFormat{
+	// 		AllowForwardedTraffic: to.Ptr(true),
+	// 		AllowGatewayTransit: to.Ptr(false),
+	// 		AllowVirtualNetworkAccess: to.Ptr(true),
+	// 		EnableOnlyIPv6Peering: to.Ptr(false),
+	// 		LocalAddressSpace: &armnetwork.AddressSpace{
+	// 			AddressPrefixes: []*string{
+	// 				to.Ptr("212.0.0.0/16"),
+	// 				to.Ptr("2002:2002::/64")},
+	// 			},
+	// 			LocalSubnetNames: []*string{
+	// 				to.Ptr("Subnet1")},
+	// 				LocalVirtualNetworkAddressSpace: &armnetwork.AddressSpace{
+	// 					AddressPrefixes: []*string{
+	// 						to.Ptr("212.0.0.0/16"),
+	// 						to.Ptr("2002:2002::/64")},
+	// 					},
+	// 					PeerCompleteVnets: to.Ptr(false),
+	// 					PeeringState: to.Ptr(armnetwork.VirtualNetworkPeeringStateInitiated),
+	// 					PeeringSyncLevel: to.Ptr(armnetwork.VirtualNetworkPeeringLevelFullyInSync),
+	// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+	// 					RemoteAddressSpace: &armnetwork.AddressSpace{
+	// 						AddressPrefixes: []*string{
+	// 							to.Ptr("12.0.0.0/8"),
+	// 							to.Ptr("2001:2001::/64")},
+	// 						},
+	// 						RemoteBgpCommunities: &armnetwork.VirtualNetworkBgpCommunities{
+	// 							RegionalCommunity: to.Ptr("12076:50004"),
+	// 							VirtualNetworkCommunity: to.Ptr("12076:20002"),
+	// 						},
+	// 						RemoteSubnetNames: []*string{
+	// 							to.Ptr("Subnet2")},
+	// 							RemoteVirtualNetwork: &armnetwork.SubResource{
+	// 								ID: to.Ptr("/subscriptions/subid/resourceGroups/peerTest/providers/Microsoft.Network/virtualNetworks/vnet2"),
+	// 							},
+	// 							RemoteVirtualNetworkAddressSpace: &armnetwork.AddressSpace{
+	// 								AddressPrefixes: []*string{
+	// 									to.Ptr("12.0.0.0/8"),
+	// 									to.Ptr("2001:2001::/64")},
+	// 								},
+	// 								UseRemoteGateways: to.Ptr(false),
+	// 							},
+	// 						}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/VirtualNetworkPeeringList.json
 func ExampleVirtualNetworkPeeringsClient_NewListPager_listPeerings() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -403,7 +867,7 @@ func ExampleVirtualNetworkPeeringsClient_NewListPager_listPeerings() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/VirtualNetworkPeeringListWithRemoteVirtualNetworkEncryption.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/VirtualNetworkPeeringListWithRemoteVirtualNetworkEncryption.json
 func ExampleVirtualNetworkPeeringsClient_NewListPager_listPeeringsWithRemoteVirtualNetworkEncryption() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

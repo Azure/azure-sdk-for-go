@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v5"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v6"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/restorePointExamples/RestorePoint_Copy_BetweenRegions.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/restorePointExamples/RestorePoint_Copy_BetweenRegions.json
 func ExampleRestorePointsClient_BeginCreate_copyARestorePointToADifferentRegion() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -45,7 +45,7 @@ func ExampleRestorePointsClient_BeginCreate_copyARestorePointToADifferentRegion(
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/restorePointExamples/RestorePoint_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/restorePointExamples/RestorePoint_Create.json
 func ExampleRestorePointsClient_BeginCreate_createARestorePoint() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -73,7 +73,7 @@ func ExampleRestorePointsClient_BeginCreate_createARestorePoint() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/restorePointExamples/RestorePoint_Delete_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/restorePointExamples/RestorePoint_Delete_MaximumSet_Gen.json
 func ExampleRestorePointsClient_BeginDelete_restorePointDeleteMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -94,7 +94,7 @@ func ExampleRestorePointsClient_BeginDelete_restorePointDeleteMaximumSetGen() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/restorePointExamples/RestorePoint_Delete_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/restorePointExamples/RestorePoint_Delete_MinimumSet_Gen.json
 func ExampleRestorePointsClient_BeginDelete_restorePointDeleteMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -115,7 +115,7 @@ func ExampleRestorePointsClient_BeginDelete_restorePointDeleteMinimumSetGen() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/restorePointExamples/RestorePoint_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/restorePointExamples/RestorePoint_Get.json
 func ExampleRestorePointsClient_Get_getARestorePoint() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -200,7 +200,7 @@ func ExampleRestorePointsClient_Get_getARestorePoint() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/restorePointExamples/RestorePoint_Get_WithInstanceView.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/restorePointExamples/RestorePoint_Get_WithInstanceView.json
 func ExampleRestorePointsClient_Get_getRestorePointWithInstanceView() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

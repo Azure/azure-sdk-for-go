@@ -2106,6 +2106,9 @@ type AuthorizationPropertiesFormat struct {
 	// The authorization use status.
 	AuthorizationUseStatus *AuthorizationUseStatus
 
+	// READ-ONLY; The reference to the ExpressRoute connection resource using the authorization.
+	ConnectionResourceURI *string
+
 	// READ-ONLY; The provisioning state of the authorization resource.
 	ProvisioningState *ProvisioningState
 }
@@ -3015,6 +3018,9 @@ type BastionHostPropertiesFormat struct {
 
 	// Enable/Disable Kerberos feature of the Bastion Host resource.
 	EnableKerberos *bool
+
+	// Enable/Disable Session Recording feature of the Bastion Host resource.
+	EnableSessionRecording *bool
 
 	// Enable/Disable Shareable Link of the Bastion Host resource.
 	EnableShareableLink *bool
@@ -5839,17 +5845,8 @@ type FilterItems struct {
 	Values []*string
 }
 
-// FirewallPacketCaptureParameters - Azure Firewall Packet Capture Parameters resource.
+// FirewallPacketCaptureParameters - Azure Firewall Packet Capture Parameters.
 type FirewallPacketCaptureParameters struct {
-	// Resource ID.
-	ID *string
-
-	// Properties of the azure firewall.
-	Properties *FirewallPacketCaptureParametersFormat
-}
-
-// FirewallPacketCaptureParametersFormat - Packet capture parameters on azure firewall.
-type FirewallPacketCaptureParametersFormat struct {
 	// Duration of packet capture in seconds.
 	DurationInSeconds *int32
 
@@ -6338,6 +6335,9 @@ type FlowLog struct {
 	// Resource ID.
 	ID *string
 
+	// FlowLog resource Managed Identity
+	Identity *ManagedServiceIdentity
+
 	// Resource location.
 	Location *string
 
@@ -6376,6 +6376,9 @@ type FlowLogInformation struct {
 
 	// Parameters that define the configuration of traffic analytics.
 	FlowAnalyticsConfiguration *TrafficAnalyticsProperties
+
+	// FlowLog resource Managed Identity
+	Identity *ManagedServiceIdentity
 }
 
 // FlowLogListResult - List of flow logs.
@@ -9721,6 +9724,9 @@ type ProbePropertiesFormat struct {
 	// probes before taking the instance out of rotation. The default value is 15, the minimum value is 5.
 	IntervalInSeconds *int32
 
+	// Determines how new connections are handled by the load balancer when all backend instances are probed down.
+	NoHealthyBackendsBehavior *ProbeNoHealthyBackendsBehavior
+
 	// The number of probes where if no response, will result in stopping further traffic from being delivered to the endpoint.
 	// This values allows endpoints to be taken out of rotation faster or slower than
 	// the typical times used in Azure.
@@ -10546,7 +10552,7 @@ func (r *Rule) GetFirewallPolicyRule() *FirewallPolicyRule {
 
 // SKU - The sku of this Bastion Host.
 type SKU struct {
-	// The name of this Bastion Host.
+	// The name of the sku of this Bastion Host.
 	Name *BastionHostSKUName
 }
 
@@ -11060,6 +11066,9 @@ type ServiceEndpointPolicyPropertiesFormat struct {
 type ServiceEndpointPropertiesFormat struct {
 	// A list of locations.
 	Locations []*string
+
+	// SubResource as network identifier.
+	NetworkIdentifier *SubResource
 
 	// The type of the endpoint service.
 	Service *string
@@ -13100,6 +13109,9 @@ type VirtualNetworkGateway struct {
 
 	// Resource ID.
 	ID *string
+
+	// The identity of the virtual network gateway, if configured.
+	Identity *ManagedServiceIdentity
 
 	// Resource location.
 	Location *string

@@ -19,17 +19,13 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/messaging"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/test/credential"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/eventgrid/azeventgrid"
 	"github.com/stretchr/testify/require"
 )
 
 // TestPublishEvent publishes an event using the EventGrid format.
 func TestPublishEvent(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
 	testPublish := func(t *testing.T, client *azeventgrid.Client) {
 		_, err := client.PublishEvents(context.Background(), []azeventgrid.Event{
 			{
@@ -64,7 +60,8 @@ func TestPublishEvent(t *testing.T) {
 		vars := newTestVars(t)
 
 		// note you need the "Event Grid sender" role.
-		cred, err := azidentity.NewDefaultAzureCredential(newClientOptionsForTest(t).DAC)
+
+		cred, err := credential.New(nil)
 		require.NoError(t, err)
 
 		client, err := azeventgrid.NewClient(vars.EG.Endpoint, cred, newClientOptionsForTest(t).EG)
@@ -75,9 +72,6 @@ func TestPublishEvent(t *testing.T) {
 
 // TestPublishCloudEvent publishes an event using the CloudEvent format.
 func TestPublishCloudEvent(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
 	testPublish := func(t *testing.T, client *azeventgrid.Client) {
 		ce, err := messaging.NewCloudEvent("source", "eventType", map[string]string{
 			"hello": "world",
@@ -107,7 +101,7 @@ func TestPublishCloudEvent(t *testing.T) {
 	t.Run("tokencredential", func(t *testing.T) {
 		vars := newTestVars(t)
 
-		tokenCred, err := azidentity.NewDefaultAzureCredential(newClientOptionsForTest(t).DAC)
+		tokenCred, err := credential.New(nil)
 		require.NoError(t, err)
 
 		client, err := azeventgrid.NewClient(vars.CE.Endpoint, tokenCred, newClientOptionsForTest(t).EG)

@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice/v5"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice/v6"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
 	"github.com/stretchr/testify/suite"
 )
@@ -155,15 +155,11 @@ func (testsuite *ManagedclustersTestSuite) Prepare() {
 func (testsuite *ManagedclustersTestSuite) TestContainserservice() {
 	var commandId string
 	var err error
-	// From step ManagedClusters_GetOSOptions
-	fmt.Println("Call operation: ManagedClusters_GetOSOptions")
-	managedClustersClient, err := armcontainerservice.NewManagedClustersClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
-	testsuite.Require().NoError(err)
-	_, err = managedClustersClient.GetOSOptions(testsuite.ctx, testsuite.location, &armcontainerservice.ManagedClustersClientGetOSOptionsOptions{ResourceType: nil})
-	testsuite.Require().NoError(err)
 
 	// From step ManagedClusters_List
 	fmt.Println("Call operation: ManagedClusters_List")
+	managedClustersClient, err := armcontainerservice.NewManagedClustersClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
+	testsuite.Require().NoError(err)
 	managedClustersClientNewListPager := managedClustersClient.NewListPager(nil)
 	for managedClustersClientNewListPager.More() {
 		_, err := managedClustersClientNewListPager.NextPage(testsuite.ctx)

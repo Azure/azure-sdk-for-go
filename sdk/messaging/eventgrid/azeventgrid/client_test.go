@@ -60,7 +60,6 @@ func TestPublishEvent(t *testing.T) {
 		vars := newTestVars(t)
 
 		// note you need the "Event Grid sender" role.
-
 		cred, err := credential.New(nil)
 		require.NoError(t, err)
 

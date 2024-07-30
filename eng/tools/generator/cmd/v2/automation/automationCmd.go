@@ -29,6 +29,7 @@ func Command() *cobra.Command {
 		Args: cobra.RangeArgs(2, 3),
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
 			log.SetFlags(0) // remove the time stamp prefix
+			log.SetOutput(os.Stdout) // set the output to stdout
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
@@ -54,7 +55,6 @@ func execute(inputPath, outputPath, goVersion string) error {
 	if err != nil {
 		return fmt.Errorf("cannot read generate input: %+v", err)
 	}
-	log.Printf("Generating using the following GenerateInput...\n%s", input.String())
 	cwd, err := os.Getwd()
 	if err != nil {
 		return err
@@ -71,7 +71,6 @@ func execute(inputPath, outputPath, goVersion string) error {
 	if err != nil {
 		return err
 	}
-	log.Printf("Output generated: \n%s", output.String())
 	log.Printf("Writing output to file '%s'...", outputPath)
 	if err := pipeline.WriteOutput(outputPath, output); err != nil {
 		return fmt.Errorf("cannot write generate output: %+v", err)

@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"log"
 	"os/exec"
+	"path/filepath"
 	"regexp"
 	"strings"
 )
@@ -106,4 +107,63 @@ func ExecuteAddIssueLabels(path, repoOwner, repoName, issueNumber, authToken str
 		return fmt.Errorf("failed to execute `pwsh Add-IssueLabels` '%s': %+v", string(output), err)
 	}
 	return nil
+}
+
+func ExecuteGo(dir string, args ...string) error {
+	cmd := exec.Command("go", args...)
+	cmd.Dir = dir
+	combinedOutput, err := cmd.CombinedOutput()
+	if err != nil {
+		return fmt.Errorf("failed to execute `go %s` '%s': %+v", strings.Join(args, " "), string(combinedOutput), err)
+	}
+
+	return nil
+}
+
+func ExecuteGoFmt(dir string, args ...string) error {
+	cmd := exec.Command("gofmt", args...)
+	cmd.Dir = dir
+	combinedOutput, err := cmd.CombinedOutput()
+	if err != nil {
+		return fmt.Errorf("failed to execute `gofmt %s` '%s': %+v", strings.Join(args, " "), string(combinedOutput), err)
+	}
+
+	return nil
+}
+
+// execute tsp-client command
+func ExecuteTspClient(path string, args ...string) error {
+	cmd := exec.Command("tsp-client", args...)
+	cmd.Dir = path
+	output, err := cmd.CombinedOutput()
+	log.Printf("Result of `tsp-client %s` execution: \n%s", strings.Join(args, " "), string(output))
+	if err != nil {
+		return fmt.Errorf("failed to execute `tsp-client %s` '%s': %+v", strings.Join(args, " "), string(output), err)
+	}
+	if strings.Contains(string(output), "error:") || strings.Contains(string(output), "- error ") {
+		return fmt.Errorf("failed to execute `tsp-client %s` '%s'", strings.Join(args, " "), string(output))
+	}
+	return nil
+}
+
+func ExecuteTypeSpecGenerate(ctx *GenerateContext, emitOptions string, tspClientOptions []string) error {
+	tspConfigAbs, err := filepath.Abs(ctx.TypeSpecConfig.Path)
+	if err != nil {
+		return err
+	}
+
+	args := []string{
+		"init",
+		"--tsp-config", tspConfigAbs,
+		"--commit", ctx.SpecCommitHash,
+		"--repo", ctx.SpecRepoURL[len("https://github.com/"):],
+		"--local-spec-repo", filepath.Dir(tspConfigAbs),
+		"--emitter-options", emitOptions,
+	}
+
+	if len(tspClientOptions) > 0 {
+		args = append(args, tspClientOptions...)
+	}
+
+	return ExecuteTspClient(ctx.SDKPath, args...)
 }

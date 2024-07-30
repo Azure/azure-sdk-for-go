@@ -7,6 +7,10 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
+	"go/ast"
+	"go/parser"
+	"go/printer"
+	"go/token"
 	"io"
 	"io/fs"
 	"log"
@@ -14,12 +18,14 @@ import (
 	"path"
 	"path/filepath"
 	"regexp"
+	"slices"
 	"strconv"
 	"strings"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/exports"
 	"github.com/Masterminds/semver"
+	"golang.org/x/tools/go/ast/astutil"
 )
 
 const (
@@ -100,6 +106,7 @@ func ReadV2ModuleNameToGetNamespace(path string) (map[string][]PackageInfo, erro
 	specName := strings.Trim(before, "/")
 
 	for i := range start {
+		hasModuleName := false
 		// get the content of the `track2` section
 		section := lines[start[i]+1 : end[i]]
 		// iterate over the rest lines, get module name
@@ -117,7 +124,12 @@ func ReadV2ModuleNameToGetNamespace(path string) (map[string][]PackageInfo, erro
 					packageConfig = matchResult[1] + ": true"
 				}
 				result[modules[2]] = append(result[modules[2]], PackageInfo{Name: namespaceName, Config: packageConfig, SpecName: specName})
+				hasModuleName = true
 			}
+		}
+
+		if !hasModuleName {
+			return nil, fmt.Errorf("%s line:%d-%d is not configured correctly, please refer to sample: `https://github.com/Azure/azure-rest-api-specs/blob/main/documentation/samplefiles/readme.go.md`", path, start[i]+2, end[i])
 		}
 	}
 
@@ -127,28 +139,31 @@ func ReadV2ModuleNameToGetNamespace(path string) (map[string][]PackageInfo, erro
 // remove all sdk generated files in given path
 func CleanSDKGeneratedFiles(path string) error {
 	log.Printf("Removing all sdk generated files in '%s'...", path)
-	files, err := os.ReadDir(path)
-	if err != nil {
-		return err
-	}
+	return filepath.Walk(path, func(path string, info fs.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
 
-	for _, file := range files {
-		if strings.HasSuffix(file.Name(), ".go") {
-			fileWithPath := filepath.Join(path, file.Name())
-			b, err := os.ReadFile(fileWithPath)
+		if info.IsDir() {
+			return nil
+		}
+
+		if strings.HasSuffix(info.Name(), ".go") {
+			b, err := os.ReadFile(path)
 			if err != nil {
 				return err
 			}
 
 			if strings.Contains(string(b), generated_file_scan_string) {
-				err = os.Remove(fileWithPath)
+				err = os.Remove(path)
 				if err != nil {
 					return err
 				}
 			}
 		}
-	}
-	return nil
+
+		return nil
+	})
 }
 
 // replace repo commit with local path in autorest.md file
@@ -354,7 +369,7 @@ func CalculateNewVersion(changelog *Changelog, previousVersion string, isCurrent
 
 // add new changelog md to changelog file
 func AddChangelogToFile(changelog *Changelog, version *semver.Version, packageRootPath, releaseDate string) (string, error) {
-	path := filepath.Join(packageRootPath, "CHANGELOG.md")
+	path := filepath.Join(packageRootPath, ChangelogFileName)
 	b, err := os.ReadFile(path)
 	if err != nil {
 		return "", err
@@ -429,7 +444,7 @@ func UpdateModuleDefinition(packageRootPath, rpName, namespaceName string, versi
 }
 
 func UpdateOnboardChangelogVersion(packageRootPath, versionNumber string) error {
-	changelogPath := filepath.Join(packageRootPath, "CHANGELOG.md")
+	changelogPath := filepath.Join(packageRootPath, ChangelogFileName)
 	b, err := os.ReadFile(changelogPath)
 	if err != nil {
 		return err
@@ -615,7 +630,7 @@ func replaceReadmeModule(path, rpName, namespaceName, currentVersion string) err
 	module := fmt.Sprintf("github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/%s/%s", rpName, namespaceName)
 
 	readmeModule := module
-	match := regexp.MustCompile(fmt.Sprintf(`%s/v\d`, module))
+	match := regexp.MustCompile(fmt.Sprintf(`%s/v\d+`, module))
 	if match.Match(readmeFile) {
 		readmeModule = match.FindString(string(readmeFile))
 	}
@@ -672,4 +687,105 @@ func ReplaceReadmeNewClientName(packageRootPath string, exports exports.Content)
 
 	var content = strings.ReplaceAll(string(b), oldClientName, fmt.Sprintf("%s()", clientName))
 	return os.WriteFile(path, []byte(content), 0644)
+}
+
+func ReplaceConstModuleVersion(packagePath string, newVersion string) error {
+	path := filepath.Join(packagePath, "constants.go")
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return err
+	}
+
+	contents := versionLineRegex.ReplaceAllString(string(data), "moduleVersion = \"v"+newVersion+"\"")
+	if contents == string(data) {
+		return nil
+	}
+
+	return os.WriteFile(path, []byte(contents), 0644)
+}
+
+func ReplaceModule(newVersion *semver.Version, packagePath, baseModule string, suffixs ...string) error {
+	return filepath.Walk(packagePath, func(path string, info fs.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+
+		if info.IsDir() {
+			return nil
+		}
+
+		hasSuffix := slices.ContainsFunc(suffixs, func(s string) bool { return strings.HasSuffix(info.Name(), s) })
+		if len(suffixs) == 0 || hasSuffix {
+			if err = ReplaceImport(path, baseModule, newVersion.Major()); err != nil {
+				return err
+			}
+		}
+
+		return nil
+	})
+}
+
+func ReplaceImport(sourceFile string, baseModule string, majorVersion int64) error {
+	fset := token.NewFileSet()
+	f, err := parser.ParseFile(fset, sourceFile, nil, parser.ParseComments)
+	if err != nil {
+		return err
+	}
+
+	rewrote := false
+	for _, i := range f.Imports {
+		if strings.HasPrefix(i.Path.Value, fmt.Sprintf("\"%s", baseModule)) {
+			oldPath := importPath(i)
+			after, _ := strings.CutPrefix(oldPath, baseModule)
+
+			newPath := baseModule
+			if after != "" {
+				before, sub, _ := strings.Cut(strings.TrimLeft(after, "/"), "/")
+				if regexp.MustCompile(`^v\d+$`).MatchString(before) {
+					if majorVersion > 1 {
+						newPath = fmt.Sprintf("%s/v%d", baseModule, majorVersion)
+					}
+					if sub != "" {
+						newPath = fmt.Sprintf("%s/%s", newPath, sub)
+					}
+				} else {
+					if majorVersion > 1 {
+						newPath = fmt.Sprintf("%s/v%d", baseModule, majorVersion)
+					}
+					newPath = fmt.Sprintf("%s/%s", newPath, before)
+					if sub != "" {
+						newPath = fmt.Sprintf("%s/%s", newPath, sub)
+					}
+				}
+			} else {
+				if majorVersion > 1 {
+					newPath = fmt.Sprintf("%s/v%d", baseModule, majorVersion)
+				}
+			}
+
+			if newPath != oldPath {
+				rewrote = astutil.RewriteImport(fset, f, oldPath, newPath)
+			}
+		}
+	}
+
+	if rewrote {
+		w, err := os.Create(sourceFile)
+		if err != nil {
+			return err
+		}
+		defer w.Close()
+
+		return printer.Fprint(w, fset, f)
+	}
+
+	return nil
+}
+
+func importPath(s *ast.ImportSpec) string {
+	t, err := strconv.Unquote(s.Path.Value)
+	if err != nil {
+		return ""
+	}
+	return t
 }

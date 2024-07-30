@@ -11,7 +11,6 @@ if [ "$2" ]; then
   outputFile=$2
 fi
 
-set -x
 set -e
 outputFile="$(realpath $outputFile)"
 echo "output json file: $outputFile"
@@ -19,7 +18,7 @@ echo "output json file: $outputFile"
 TMPDIR="/tmp"
 if [ ! "$(go version | awk '{print $3}' | cut -c 3-6)" = "1.22" ]
 then
-  wget https://golang.org/dl/go1.22.0.linux-amd64.tar.gz
+  wget -q https://golang.org/dl/go1.22.0.linux-amd64.tar.gz
   tar -C $TMPDIR -xzf go1.22.0.linux-amd64.tar.gz
   export GOROOT=$TMPDIR/go
   export PATH=$GOROOT/bin:$PATH
@@ -43,7 +42,7 @@ export GO111MODULE=on
 
 generatorDirectory="$(realpath $DIRECTORY/../tools/generator)"
 cd $generatorDirectory
-go build
+go build 2>&1
 
 cp generator $GOPATH/bin/
 export PATH=$GOPATH/bin:$PATH
@@ -58,3 +57,6 @@ cat > $outputFile << EOF
   }
 }
 EOF
+
+echo Install tsp-client
+sudo npm install -g @azure-tools/typespec-client-generator-cli@latest 2>&1

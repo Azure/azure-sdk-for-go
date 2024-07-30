@@ -17,9 +17,10 @@ import (
 
 var (
 	resultHandlerMap = map[link.Code]resultHandlerFunc{
-		link.CodeSuccess:     handleSuccess,
+		link.CodeSuccess:     handleTrack2,
 		link.CodeDataPlane:   handleDataPlane,
 		link.CodePRNotMerged: handlePRNotMerged,
+		link.CodeTypeSpec:    handleTypeSpec,
 	}
 )
 
@@ -43,10 +44,11 @@ type Request struct {
 type Track string
 
 const (
-	// Track1 ...
-	Track1 Track = "Track1"
 	// Track2 ...
 	Track2 Track = "Track2"
+
+	// TypeSpec ...
+	TypeSpec Track = "TypeSpec"
 )
 
 const (
@@ -67,7 +69,7 @@ func (e *issueError) Error() string {
 
 func initializeHandlers(options ParsingOptions) {
 	if options.IncludeDataPlaneRequests {
-		resultHandlerMap[link.CodeDataPlane] = handleSuccess
+		resultHandlerMap[link.CodeDataPlane] = handleTrack2
 	}
 }
 

@@ -196,7 +196,7 @@ func TestGlobalEndpointManagerCanUseMultipleWriteLocations(t *testing.T) {
 		refreshTimeInterval: 5 * time.Minute,
 	}
 
-	gem, err := newGlobalEndpointManager(srv.URL(), pl, []string{}, 5*time.Minute, true)
+	gem, err := newGlobalEndpointManager(srv.URL(), internalClient.Pipeline(), []string{}, 5*time.Minute, true)
 	assert.NoError(t, err)
 
 	// Multiple locations should be false for default GEM

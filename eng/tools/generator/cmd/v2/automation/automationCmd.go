@@ -31,6 +31,7 @@ func Command() *cobra.Command {
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
 			log.SetFlags(0)          // remove the time stamp prefix
 			log.SetOutput(os.Stdout) // set the output to stdout
+			cmd.SetErrPrefix("[ERROR]")
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
@@ -259,8 +260,12 @@ func (b *generateErrorBuilder) build() error {
 
 func logError(err error) string {
 	buidler := strings.Builder{}
-	for _, line := range strings.Split(err.Error(), "\n") {
+	for i, line := range strings.Split(err.Error(), "\n") {
 		if l := strings.TrimSpace(line); l != "" {
+			if i == 0 {
+				buidler.WriteString(fmt.Sprintf("%s\n", l))
+				continue
+			}
 			buidler.WriteString(fmt.Sprintf("[ERROR] %s\n", l))
 		}
 	}

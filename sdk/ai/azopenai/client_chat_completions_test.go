@@ -20,8 +20,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/test/credential"
 	"github.com/stretchr/testify/require"
 )
 
@@ -92,7 +92,7 @@ func TestClient_GetChatCompletions(t *testing.T) {
 		testFn(t, client, azureOpenAI.ChatCompletionsRAI.Model, "gpt-4", true)
 	})
 
-	t.Run("AzureOpenAI.DefaultAzureCredential", func(t *testing.T) {
+	t.Run("AzureOpenAI.TokenCredential", func(t *testing.T) {
 		if recording.GetRecordMode() == recording.PlaybackMode {
 			t.Skipf("Not running this test in playback (for now)")
 		}
@@ -103,14 +103,10 @@ func TestClient_GetChatCompletions(t *testing.T) {
 
 		recordingTransporter := newRecordingTransporter(t)
 
-		dac, err := azidentity.NewDefaultAzureCredential(&azidentity.DefaultAzureCredentialOptions{
-			ClientOptions: policy.ClientOptions{
-				Transport: recordingTransporter,
-			},
-		})
+		cred, err := credential.New(nil)
 		require.NoError(t, err)
 
-		chatClient, err := azopenai.NewClient(azureOpenAI.ChatCompletions.Endpoint.URL, dac, &azopenai.ClientOptions{
+		chatClient, err := azopenai.NewClient(azureOpenAI.ChatCompletions.Endpoint.URL, cred, &azopenai.ClientOptions{
 			ClientOptions: policy.ClientOptions{Transport: recordingTransporter},
 		})
 		require.NoError(t, err)

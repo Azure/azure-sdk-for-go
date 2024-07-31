@@ -3,7 +3,7 @@
   "generateOptions": {
     "generateScript": {
       "path": "generator automation-v2",
-      "logPrefix": "",
+      "logPrefix": "Go",
       "stderr": {
         "showInComment": "^\\[AUTOREST\\]",
         "scriptError": "^\\[ERROR\\]",
@@ -21,7 +21,7 @@
   "initOptions": {
     "initScript": {
       "path": "sh ./eng/scripts/automation_init.sh",
-      "logPrefix": "",
+      "logPrefix": "Go",
       "stderr": {
         "scriptWarning": false
       }

@@ -5,6 +5,7 @@ package automation
 
 import (
 	"archive/zip"
+	"errors"
 	"fmt"
 	"io"
 	"io/fs"
@@ -38,8 +39,7 @@ func Command() *cobra.Command {
 				goVersion = args[2]
 			}
 			if err := execute(args[0], args[1], goVersion); err != nil {
-				logError(err)
-				return err
+				return errors.New(logError(err))
 			}
 			return nil
 		},
@@ -178,7 +178,7 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 	}
 
 	for _, readme := range input.RelatedReadmeMdFiles {
-		log.Printf("Start to process readme file: %s", readme)
+		log.Printf("Start to process autorest project: %s", readme)
 
 		sepStrs := strings.Split(readme, "/")
 		for i, sepStr := range sepStrs {
@@ -257,12 +257,15 @@ func (b *generateErrorBuilder) build() error {
 	return fmt.Errorf("total %d error(s): \n%s", len(b.errors), strings.Join(messages, "\n"))
 }
 
-func logError(err error) {
+func logError(err error) string {
+	buidler := strings.Builder{}
 	for _, line := range strings.Split(err.Error(), "\n") {
 		if l := strings.TrimSpace(line); l != "" {
-			log.Printf("[ERROR] %s", l)
+			buidler.WriteString(fmt.Sprintf("[ERROR] %s\n", l))
 		}
 	}
+
+	return buidler.String()
 }
 
 func zipDirectory(srcFolder, dstZip string) error {

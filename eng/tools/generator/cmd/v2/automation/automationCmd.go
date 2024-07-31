@@ -111,7 +111,7 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 		tspconfigPath := filepath.Join(input.SpecFolder, tspProjectFolder, "tspconfig.yaml")
 		tsc, err := typespec.ParseTypeSpecConfig(tspconfigPath)
 		if err != nil {
-			errorBuilder.add(fmt.Errorf("failed to parse tspconfig.yaml: %+v", err))
+			errorBuilder.add(fmt.Errorf("failed to parse %s: %+v", tspconfigPath, err))
 			continue
 		}
 

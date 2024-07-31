@@ -28,7 +28,7 @@ func Command() *cobra.Command {
 		Use:  "automation-v2 <generate input filepath> <generate output filepath> [goVersion]",
 		Args: cobra.RangeArgs(2, 3),
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
-			log.SetFlags(0) // remove the time stamp prefix
+			log.SetFlags(0)          // remove the time stamp prefix
 			log.SetOutput(os.Stdout) // set the output to stdout
 			return nil
 		},
@@ -109,7 +109,8 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 			tspconfigPath := filepath.Join(input.SpecFolder, tspProjectFolder, "tspconfig.yaml")
 			tsc, err := typespec.ParseTypeSpecConfig(tspconfigPath)
 			if err != nil {
-				return nil, fmt.Errorf("failed to parse tspconfig.yaml: %+v", err)
+				errorBuilder.add(fmt.Errorf("failed to parse tspconfig.yaml: %+v", err))
+				continue
 			}
 
 			if ok := tsc.ExistEmitOption(string(typespec.TypeSpec_GO)); ok {
@@ -126,7 +127,8 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 
 				module, err := tsc.GetModuleName()
 				if err != nil {
-					return nil, err
+					errorBuilder.add(err)
+					continue
 				}
 
 				namespaceResult, err := generateCtx.GenerateForTypeSpec(&common.GenerateParam{

@@ -676,8 +676,8 @@ func TestManagedIdentityCredential_ServiceFabric(t *testing.T) {
 
 func TestManagedIdentityCredential_UnsupportedID(t *testing.T) {
 	t.Run("Azure Arc", func(t *testing.T) {
-		t.Setenv(identityEndpoint, "http://localhost")
-		t.Setenv(arcIMDSEndpoint, "http://localhost")
+		t.Setenv(identityEndpoint, fakeMIEndpoint)
+		t.Setenv(arcIMDSEndpoint, fakeMIEndpoint)
 		_, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{ID: ResourceID(fakeResourceID)})
 		require.Error(t, err)
 		_, err = NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{ID: ClientID(fakeClientID)})
@@ -691,8 +691,15 @@ func TestManagedIdentityCredential_UnsupportedID(t *testing.T) {
 		_, err = NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{ID: ClientID(fakeClientID)})
 		require.NoError(t, err)
 	})
+	t.Run("Cloud Shell", func(t *testing.T) {
+		t.Setenv(msiEndpoint, fakeMIEndpoint)
+		_, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{ID: ResourceID(fakeResourceID)})
+		require.Error(t, err)
+		_, err = NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{ID: ClientID(fakeClientID)})
+		require.Error(t, err)
+	})
 	t.Run("Service Fabric", func(t *testing.T) {
-		t.Setenv(identityEndpoint, "http://localhost")
+		t.Setenv(identityEndpoint, fakeMIEndpoint)
 		t.Setenv(identityHeader, "...")
 		t.Setenv(identityServerThumbprint, "...")
 		_, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{ID: ResourceID(fakeResourceID)})

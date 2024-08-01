@@ -69,7 +69,7 @@ func execute(inputPath, outputPath, goVersion string) error {
 		goVersion:  goVersion,
 	}
 	output, err := ctx.generate(input)
-	if output != nil {
+	if output != nil && len(output.Packages) != 0 {
 		log.Printf("Writing output to file '%s'...", outputPath)
 		if err := pipeline.WriteOutput(outputPath, output); err != nil {
 			return fmt.Errorf("cannot write generate output: %+v", err)
@@ -170,6 +170,8 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 
 				log.Printf("Finish to process typespec file: %s", tspconfigPath)
 			}
+		} else {
+			errorBuilder.add(fmt.Errorf("`@azure-tools/typespec-go` option not found in %s, it is required, please refer to `https://github.com/Azure/azure-rest-api-specs/blob/main/specification/contosowidgetmanager/Contoso.Management/tspconfig.yaml` to configure it", tspconfigPath))
 		}
 	}
 

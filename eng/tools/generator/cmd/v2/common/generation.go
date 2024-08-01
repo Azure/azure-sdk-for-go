@@ -561,10 +561,10 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam) (*
 			return nil, err
 		}
 
+		baseModule := fmt.Sprintf("%s/%s/%s", MgmtSDKModulePrefix, generateParam.RPName, generateParam.NamespaceName)
 		if _, err := os.Stat(filepath.Join(packagePath, "fake")); !os.IsNotExist(err) && oldModuleVersion.Major() != version.Major() {
 			log.Printf("Replace fake module v2+...")
-			if err = replaceModuleImport(packagePath, generateParam.RPName, generateParam.NamespaceName, oldModuleVersion.String(), version.String(),
-				"fake", ".go"); err != nil {
+			if err = ReplaceModule(version, packagePath, baseModule, ".go"); err != nil {
 				return nil, err
 			}
 		}
@@ -572,7 +572,6 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam) (*
 		// When sdk has major version bump, the live test needs to update the module referenced in the code.
 		if existSuffixFile(packagePath, "_live_test.go") {
 			log.Printf("Replace live test module v2+...")
-			baseModule := fmt.Sprintf("%s/%s/%s", MgmtSDKModulePrefix, generateParam.RPName, generateParam.NamespaceName)
 			if err = ReplaceModule(version, packagePath, baseModule, "_live_test.go"); err != nil {
 				return nil, err
 			}

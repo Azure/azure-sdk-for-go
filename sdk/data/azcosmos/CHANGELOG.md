@@ -3,7 +3,6 @@
 ## 1.0.4 (Unreleased)
 
 ### Features Added
-
 * Added support for tracing. See [PR 23268](https://github.com/Azure/azure-sdk-for-go/pull/23268)
 
 ### Breaking Changes

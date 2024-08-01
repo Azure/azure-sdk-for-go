@@ -4,8 +4,11 @@
 package common
 
 import (
+	"bytes"
 	"fmt"
+	"io"
 	"log"
+	"os"
 	"os/exec"
 	"path/filepath"
 	"regexp"
@@ -135,14 +138,27 @@ func ExecuteGoFmt(dir string, args ...string) error {
 func ExecuteTspClient(path string, args ...string) error {
 	cmd := exec.Command("tsp-client", args...)
 	cmd.Dir = path
-	output, err := cmd.CombinedOutput()
-	log.Printf("Result of `tsp-client %s` execution: \n%s", strings.Join(args, " "), string(output))
+	cmd.Stdout = os.Stdout
+
+	stderr, err := cmd.StderrPipe()
 	if err != nil {
-		return fmt.Errorf("failed to execute `tsp-client %s` '%s': %+v", strings.Join(args, " "), string(output), err)
+		return err
 	}
-	if strings.Contains(string(output), "error:") || strings.Contains(string(output), "- error ") {
-		return fmt.Errorf("failed to execute `tsp-client %s` '%s'", strings.Join(args, " "), string(output))
+
+	if err = cmd.Start(); err != nil {
+		return err
 	}
+
+	var buf bytes.Buffer
+	if _, err = io.Copy(&buf, stderr); err != nil {
+		return err
+	}
+
+	if err := cmd.Wait(); err != nil || len(buf.String()) > 0 {
+		log.Println(buf.String())
+		return fmt.Errorf("failed to execute `tsp-client %s`\n%s", strings.Join(args, " "), buf.String())
+	}
+
 	return nil
 }
 

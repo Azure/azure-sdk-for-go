@@ -10,7 +10,9 @@ import (
 
 func TestContainerCRUD(t *testing.T) {
 	emulatorTests := newEmulatorTests(t)
-	client := emulatorTests.getClient(t)
+	client := emulatorTests.getClient(t, newSpanValidator(t, spanMatcher{
+		ExpectedSpans: []string{"DatabaseClient.CreateContainer", "ContainerClient.Read", "ContainerClient.Replace", "ContainerClient.ReadThroughput", "ContainerClient.ReplaceThroughput", "ContainerClient.Delete"},
+	}))
 
 	database := emulatorTests.createDatabase(t, context.TODO(), client, "containerCRUD")
 	defer emulatorTests.deleteDatabase(t, context.TODO(), database)
@@ -129,7 +131,9 @@ func TestContainerCRUD(t *testing.T) {
 
 func TestContainerAutoscaleCRUD(t *testing.T) {
 	emulatorTests := newEmulatorTests(t)
-	client := emulatorTests.getClient(t)
+	client := emulatorTests.getClient(t, newSpanValidator(t, spanMatcher{
+		ExpectedSpans: []string{"DatabaseClient.CreateContainer", "ContainerClient.Read", "ContainerClient.ReadThroughput", "ContainerClient.ReplaceThroughput", "ContainerClient.Delete"},
+	}))
 
 	database := emulatorTests.createDatabase(t, context.TODO(), client, "containerCRUD")
 	defer emulatorTests.deleteDatabase(t, context.TODO(), database)

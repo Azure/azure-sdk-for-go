@@ -14,7 +14,9 @@ import (
 
 func TestGlobalEndpointManagerEmulator(t *testing.T) {
 	emulatorTests := newEmulatorTests(t)
-	client := emulatorTests.getClient(t)
+	client := emulatorTests.getClient(t, newSpanValidator(t, spanMatcher{
+		ExpectedSpans: []string{},
+	}))
 	emulatorRegionName := "South Central US"
 	preferredRegions := []string{}
 	emulatorRegion := accountRegion{Name: emulatorRegionName, Endpoint: "https://127.0.0.1:8081/"}
@@ -77,7 +79,9 @@ func TestGlobalEndpointManagerEmulator(t *testing.T) {
 
 func TestGlobalEndpointManagerPolicyEmulator(t *testing.T) {
 	emulatorTests := newEmulatorTests(t)
-	client := emulatorTests.getClient(t)
+	client := emulatorTests.getClient(t, newSpanValidator(t, spanMatcher{
+		ExpectedSpans: []string{},
+	}))
 	emulatorRegionName := "South Central US"
 
 	// Assert location cache is not populated until update() is called within the policy

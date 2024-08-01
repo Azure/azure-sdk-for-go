@@ -11,7 +11,9 @@ import (
 
 func TestAAD(t *testing.T) {
 	emulatorTests := newEmulatorTests(t)
-	client := emulatorTests.getClient(t)
+	client := emulatorTests.getClient(t, newSpanValidator(t, spanMatcher{
+		ExpectedSpans: []string{},
+	}))
 
 	database := emulatorTests.createDatabase(t, context.TODO(), client, "aadTest")
 	defer emulatorTests.deleteDatabase(t, context.TODO(), database)
@@ -27,7 +29,9 @@ func TestAAD(t *testing.T) {
 		t.Fatalf("Failed to create container: %v", err)
 	}
 
-	aadClient := emulatorTests.getAadClient(t)
+	aadClient := emulatorTests.getAadClient(t, newSpanValidator(t, spanMatcher{
+		ExpectedSpans: []string{"ContainerClient.CreateItem", "ContainerClient.ReadItem", "ContainerClient.ReplaceItem", "ContainerClient.UpsertItem", "ContainerClient.DeleteItem"},
+	}))
 
 	item := map[string]string{
 		"id":    "1",

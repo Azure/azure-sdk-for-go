@@ -26,8 +26,8 @@ func newSpanValidator(t *testing.T, matcher spanMatcher) tracing.Provider {
 					if match.name == expectedSpan {
 						found = true
 						require.True(t, match.ended, "span %s wasn't ended", match.name)
-						break;
-					}	
+						break
+					}
 				}
 				require.True(t, found, "span %s wasn't found", expectedSpan)
 			}

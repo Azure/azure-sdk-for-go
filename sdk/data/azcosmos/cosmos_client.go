@@ -203,6 +203,10 @@ func (c *Client) CreateDatabase(
 	ctx context.Context,
 	databaseProperties DatabaseProperties,
 	o *CreateDatabaseOptions) (DatabaseResponse, error) {
+	var err error
+	ctx, endSpan := azruntime.StartSpan(ctx, "Client.CreateDatabase", c.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+
 	if o == nil {
 		o = &CreateDatabaseOptions{}
 	}
@@ -234,7 +238,8 @@ func (c *Client) CreateDatabase(
 		return DatabaseResponse{}, err
 	}
 
-	return newDatabaseResponse(azResponse)
+	response, err := newDatabaseResponse(azResponse)
+	return response, err
 }
 
 // NewQueryDatabasesPager executes query for databases.

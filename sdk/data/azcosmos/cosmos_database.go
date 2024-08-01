@@ -50,6 +50,9 @@ func (db *DatabaseClient) CreateContainer(
 	ctx context.Context,
 	containerProperties ContainerProperties,
 	o *CreateContainerOptions) (ContainerResponse, error) {
+	var err error
+	ctx, endSpan := runtime.StartSpan(ctx, "DatabaseClient.CreateContainer", db.client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	if o == nil {
 		o = &CreateContainerOptions{}
 	}
@@ -81,7 +84,8 @@ func (db *DatabaseClient) CreateContainer(
 		return ContainerResponse{}, err
 	}
 
-	return newContainerResponse(azResponse)
+	response, err := newContainerResponse(azResponse)
+	return response, err
 }
 
 // NewQueryContainersPager executes query for containers within a database.
@@ -137,6 +141,9 @@ func (c *DatabaseClient) NewQueryContainersPager(query string, o *QueryContainer
 func (db *DatabaseClient) Read(
 	ctx context.Context,
 	o *ReadDatabaseOptions) (DatabaseResponse, error) {
+	var err error
+	ctx, endSpan := runtime.StartSpan(ctx, "DatabaseClient.Read", db.client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	if o == nil {
 		o = &ReadDatabaseOptions{}
 	}
@@ -161,7 +168,8 @@ func (db *DatabaseClient) Read(
 		return DatabaseResponse{}, err
 	}
 
-	return newDatabaseResponse(azResponse)
+	response, err := newDatabaseResponse(azResponse)
+	return response, err
 }
 
 // ReadThroughput obtains the provisioned throughput information for the database.
@@ -170,6 +178,9 @@ func (db *DatabaseClient) Read(
 func (db *DatabaseClient) ReadThroughput(
 	ctx context.Context,
 	o *ThroughputOptions) (ThroughputResponse, error) {
+	var err error
+	ctx, endSpan := runtime.StartSpan(ctx, "DatabaseClient.ReadThroughput", db.client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	if o == nil {
 		o = &ThroughputOptions{}
 	}
@@ -180,7 +191,8 @@ func (db *DatabaseClient) ReadThroughput(
 	}
 
 	offers := &cosmosOffers{client: db.client}
-	return offers.ReadThroughputIfExists(ctx, rid, o)
+	response, err := offers.ReadThroughputIfExists(ctx, rid, o)
+	return response, err
 }
 
 // ReplaceThroughput updates the provisioned throughput for the database.
@@ -191,6 +203,9 @@ func (db *DatabaseClient) ReplaceThroughput(
 	ctx context.Context,
 	throughputProperties ThroughputProperties,
 	o *ThroughputOptions) (ThroughputResponse, error) {
+	var err error
+	ctx, endSpan := runtime.StartSpan(ctx, "DatabaseClient.ReplaceThroughput", db.client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	if o == nil {
 		o = &ThroughputOptions{}
 	}
@@ -201,7 +216,8 @@ func (db *DatabaseClient) ReplaceThroughput(
 	}
 
 	offers := &cosmosOffers{client: db.client}
-	return offers.ReplaceThroughputIfExists(ctx, throughputProperties, rid, o)
+	response, err := offers.ReplaceThroughputIfExists(ctx, throughputProperties, rid, o)
+	return response, err
 }
 
 // Delete a Cosmos database.
@@ -210,6 +226,9 @@ func (db *DatabaseClient) ReplaceThroughput(
 func (db *DatabaseClient) Delete(
 	ctx context.Context,
 	o *DeleteDatabaseOptions) (DatabaseResponse, error) {
+	var err error
+	ctx, endSpan := runtime.StartSpan(ctx, "DatabaseClient.Delete", db.client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	if o == nil {
 		o = &DeleteDatabaseOptions{}
 	}
@@ -235,7 +254,8 @@ func (db *DatabaseClient) Delete(
 		return DatabaseResponse{}, err
 	}
 
-	return newDatabaseResponse(azResponse)
+	response, err := newDatabaseResponse(azResponse)
+	return response, err
 }
 
 func (db *DatabaseClient) getRID(ctx context.Context) (string, error) {

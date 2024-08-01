@@ -156,7 +156,17 @@ func ExecuteTspClient(path string, args ...string) error {
 
 	if err := cmd.Wait(); err != nil || len(buf.String()) > 0 {
 		log.Println(buf.String())
-		return fmt.Errorf("failed to execute `tsp-client %s`\n%s", strings.Join(args, " "), buf.String())
+
+		// filter npm notice log
+		lines := strings.Split(buf.String(), "\n")
+		newErrInfo := make([]string, 0, len(lines))
+		for _, line := range lines {
+			if !strings.Contains(line, "npm notice") {
+				newErrInfo = append(newErrInfo, line)
+			}
+		}
+
+		return fmt.Errorf("failed to execute `tsp-client %s`\n%s", strings.Join(args, " "), newErrInfo)
 	}
 
 	return nil

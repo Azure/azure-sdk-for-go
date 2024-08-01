@@ -168,7 +168,7 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 					Language:        "Go",
 				})
 
-				log.Printf("Finish to process typespec file: %s", tspconfigPath)
+				log.Printf("Finish processing typespec file: %s", tspconfigPath)
 			}
 		} else {
 			errorBuilder.add(fmt.Errorf("`@azure-tools/typespec-go` option not found in %s, it is required, please refer to `https://github.com/Azure/azure-rest-api-specs/blob/main/specification/contosowidgetmanager/Contoso.Management/tspconfig.yaml` to configure it", tspconfigPath))
@@ -233,7 +233,7 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 				Language:        "Go",
 			})
 		}
-		log.Printf("Finish to process readme file: %s", readme)
+		log.Printf("Finish processing readme file: %s", readme)
 	}
 
 	return &pipeline.GenerateOutput{

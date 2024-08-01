@@ -5,23 +5,31 @@ package azcosmos
 
 import (
 	"context"
+	"slices"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/tracing"
 	"github.com/stretchr/testify/require"
 )
 
-// NewSpanValidator creates a tracing.Provider that verifies a span was created that matches the specified SpanMatcher.
-func NewSpanValidator(t *testing.T, matcher SpanMatcher) tracing.Provider {
+// newSpanValidator creates a tracing.Provider that verifies a span was created that matches the specified SpanMatcher.
+func newSpanValidator(t *testing.T, matcher spanMatcher) tracing.Provider {
 	return tracing.NewProvider(func(name, version string) tracing.Tracer {
 		tt := matchingTracer{
 			matcher: matcher,
 		}
 
 		t.Cleanup(func() {
-			require.NotNil(t, tt.match, "didn't find a span with name %s", tt.matcher.Name)
-			require.True(t, tt.match.ended, "span wasn't ended")
-			require.EqualValues(t, matcher.Status, tt.match.status, "span status values don't match")
+			for _, expectedSpan := range matcher.ExpectedSpans {
+				found := false
+				for _, match := range tt.matches {
+					if match.name == expectedSpan {
+						found = true
+						require.True(t, match.ended, "span %s wasn't ended", match.name)
+					}	
+				}
+				require.True(t, found, "span %s wasn't found", expectedSpan)
+			}
 		})
 
 		return tracing.NewTracer(func(ctx context.Context, spanName string, options *tracing.SpanOptions) (context.Context, tracing.Span) {
@@ -35,27 +43,28 @@ func NewSpanValidator(t *testing.T, matcher SpanMatcher) tracing.Provider {
 }
 
 // SpanMatcher contains the values to match when a span is created.
-type SpanMatcher struct {
-	Name   string
-	Status tracing.SpanStatus
+type spanMatcher struct {
+	ExpectedSpans []string
 }
 
 type matchingTracer struct {
-	matcher SpanMatcher
-	match   *span
+	matcher spanMatcher
+	matches []*span
 }
 
 func (mt *matchingTracer) Start(ctx context.Context, spanName string, kind tracing.SpanKind) (context.Context, tracing.Span) {
-	if spanName != mt.matcher.Name {
+
+	if slices.IndexFunc(mt.matcher.ExpectedSpans, func(i string) bool { return i == spanName }) < 0 {
 		return ctx, tracing.Span{}
 	}
 	// span name matches our matcher, track it
-	mt.match = &span{
+	newSpan := &span{
 		name: spanName,
 	}
+	mt.matches = append(mt.matches, newSpan)
 	return ctx, tracing.NewSpan(tracing.SpanImpl{
-		End:       mt.match.End,
-		SetStatus: mt.match.SetStatus,
+		End:       newSpan.End,
+		SetStatus: newSpan.SetStatus,
 	})
 }
 

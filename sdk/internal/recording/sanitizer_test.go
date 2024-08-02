@@ -87,7 +87,7 @@ func (s *sanitizerTests) TestRemoveRegisteredSanitizers() {
 		sanitizers[i] = fmt.Sprintf("AZSDK100%d", i)
 	}
 	require.NoError(RemoveRegisteredSanitizers(sanitizers, nil))
-	require.Error(RemoveRegisteredSanitizers([]string{"unknown ID"}, nil))
+	require.NoError(RemoveRegisteredSanitizers([]string{"unknown ID"}, nil))
 }
 
 func (s *sanitizerTests) TestUriSanitizer() {

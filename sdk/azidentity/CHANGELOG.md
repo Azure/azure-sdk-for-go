@@ -9,6 +9,9 @@
 ### Bugs Fixed
 
 ### Other Changes
+* If `DefaultAzureCredential` receives a non-JSON response when probing IMDS before
+  attempting to authenticate a managed identity, it continues to the next credential
+  in the chain instead of immediately returning an error.
 
 ## 1.8.0-beta.1 (2024-07-17)
 

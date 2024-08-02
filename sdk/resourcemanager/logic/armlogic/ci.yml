@@ -27,4 +27,3 @@ extends:
     IncludeRelease: true
     ServiceDirectory: 'resourcemanager/logic/armlogic'
     UsePipelineProxy: false
-    UseFederatedAuth: true

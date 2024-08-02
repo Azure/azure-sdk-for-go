@@ -27,4 +27,3 @@ extends:
     IncludeRelease: true
     ServiceDirectory: 'resourcemanager/eventgrid/armeventgrid'
     UsePipelineProxy: false
-    UseFederatedAuth: true

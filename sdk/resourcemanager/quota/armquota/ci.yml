@@ -27,4 +27,3 @@ extends:
     IncludeRelease: true
     ServiceDirectory: 'resourcemanager/quota/armquota'
     UsePipelineProxy: false
-    UseFederatedAuth: true

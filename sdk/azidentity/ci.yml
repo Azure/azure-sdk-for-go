@@ -35,7 +35,6 @@ extends:
       EnableRaceDetector: true
       RunLiveTests: true
       ServiceDirectory: azidentity
-      UseFederatedAuth: true
       UsePipelineProxy: false
 
       ${{ if endsWith(variables['Build.DefinitionName'], 'weekly') }}:

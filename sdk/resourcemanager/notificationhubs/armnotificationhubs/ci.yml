@@ -27,4 +27,3 @@ extends:
     IncludeRelease: true
     ServiceDirectory: 'resourcemanager/notificationhubs/armnotificationhubs'
     UsePipelineProxy: false
-    UseFederatedAuth: true

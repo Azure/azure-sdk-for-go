@@ -27,4 +27,3 @@ extends:
     IncludeRelease: true
     ServiceDirectory: 'resourcemanager/search/armsearch'
     UsePipelineProxy: false
-    UseFederatedAuth: true

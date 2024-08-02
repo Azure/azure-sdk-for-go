@@ -27,4 +27,3 @@ extends:
     IncludeRelease: true
     ServiceDirectory: 'resourcemanager/compute/armcompute'
     UsePipelineProxy: false
-    UseFederatedAuth: true

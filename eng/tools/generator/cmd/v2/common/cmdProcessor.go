@@ -19,11 +19,48 @@ import (
 func ExecuteGoGenerate(path string) error {
 	cmd := exec.Command("go", "generate")
 	cmd.Dir = path
-	output, err := cmd.CombinedOutput()
-	log.Printf("Result of `go generate` execution: \n%s", string(output))
+
+	stdoutPipe, err := cmd.StdoutPipe()
 	if err != nil {
-		return fmt.Errorf("failed to execute `go generate` '%s': %+v", string(output), err)
+		return err
 	}
+
+	stderrPipe, err := cmd.StderrPipe()
+	if err != nil {
+		return err
+	}
+
+	if err = cmd.Start(); err != nil {
+		return err
+	}
+
+	var stdoutBuffer bytes.Buffer
+	if _, err = io.Copy(&stdoutBuffer, stdoutPipe); err != nil {
+		return err
+	}
+
+	var stderrBuffer bytes.Buffer
+	if _, err = io.Copy(&stderrBuffer, stderrPipe); err != nil {
+		return err
+	}
+
+	fmt.Println(stdoutBuffer.String())
+	if stdoutBuffer.Len() > 0 {
+		if strings.Contains(stdoutBuffer.String(), "error   |") {
+			// find first error message until last
+			errMsgs := stdoutBuffer.Bytes()
+			index := regexp.MustCompile(`error   \|`).FindIndex(errMsgs)
+			if len(index) == 2 {
+				return fmt.Errorf("failed to execute `go generate`:\n%s", string(errMsgs[index[0]:]))
+			}
+		}
+	}
+
+	if err := cmd.Wait(); err != nil || stderrBuffer.Len() > 0 {
+		fmt.Println(stderrBuffer.String())
+		return fmt.Errorf("failed to execute `go generate`:\n%s", stderrBuffer.String())
+	}
+
 	return nil
 }
 
@@ -154,7 +191,7 @@ func ExecuteTspClient(path string, args ...string) error {
 		return err
 	}
 
-	if err := cmd.Wait(); err != nil || len(buf.String()) > 0 {
+	if err := cmd.Wait(); err != nil || buf.Len() > 0 {
 		log.Println(buf.String())
 
 		// filter npm notice log

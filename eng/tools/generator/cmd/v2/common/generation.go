@@ -93,7 +93,7 @@ func (ctx *GenerateContext) GenerateForAutomation(readme, repo, goVersion string
 				RemoveTagSet:        true,
 			})
 			if err != nil {
-				errors = append(errors, err)
+				errors = append(errors, fmt.Errorf("failed to generate for rp: %s, namespace: %s: %+v", rpName, packageInfo.Name, err))
 				continue
 			}
 			result = append(result, *singleResult)

@@ -203,7 +203,7 @@ func ExecuteTspClient(path string, args ...string) error {
 			}
 		}
 
-		return fmt.Errorf("failed to execute `tsp-client %s`\n%s", strings.Join(args, " "), newErrInfo)
+		return fmt.Errorf("failed to execute `tsp-client %s`\n%s", strings.Join(args, " "), strings.Join(newErrInfo, "\n"))
 	}
 
 	return nil

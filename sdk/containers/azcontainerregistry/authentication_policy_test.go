@@ -144,7 +144,7 @@ func Test_authenticationPolicy_getAccessToken_live(t *testing.T) {
 	}
 	request, err := runtime.NewRequest(context.Background(), http.MethodGet, "https://test.com")
 	require.NoError(t, err)
-	token, err := p.getAccessToken(request, strings.TrimPrefix(endpoint, "https://"), "registry:catalog:*")
+	token, err := p.getAccessToken(request.Raw().Context(), strings.TrimPrefix(endpoint, "https://"), "registry:catalog:*")
 	require.NoError(t, err)
 	require.NotEmpty(t, token)
 }
@@ -169,14 +169,14 @@ func Test_authenticationPolicy_getAccessToken_error(t *testing.T) {
 	}
 	request, err := runtime.NewRequest(context.Background(), http.MethodGet, srv.URL())
 	require.NoError(t, err)
-	_, err = p.getAccessToken(request, "service", "scope")
+	_, err = p.getAccessToken(request.Raw().Context(), "service", "scope")
 	require.Error(t, err)
-	_, err = p.getAccessToken(request, "service", "scope")
+	_, err = p.getAccessToken(request.Raw().Context(), "service", "scope")
 	require.Error(t, err)
-	_, err = p.getAccessToken(request, "service", "scope")
+	_, err = p.getAccessToken(request.Raw().Context(), "service", "scope")
 	require.Error(t, err)
 	p.cred = nil
-	_, err = p.getAccessToken(request, "service", "scope")
+	_, err = p.getAccessToken(request.Raw().Context(), "service", "scope")
 	require.Error(t, err)
 }
 
@@ -191,7 +191,7 @@ func Test_authenticationPolicy_getAccessToken_live_anonymous(t *testing.T) {
 	}
 	request, err := runtime.NewRequest(context.Background(), http.MethodGet, "https://test.com")
 	require.NoError(t, err)
-	token, err := p.getAccessToken(request, strings.TrimPrefix(endpoint, "https://"), "registry:catalog:*")
+	token, err := p.getAccessToken(request.Raw().Context(), strings.TrimPrefix(endpoint, "https://"), "registry:catalog:*")
 	require.NoError(t, err)
 	require.NotEmpty(t, token)
 }

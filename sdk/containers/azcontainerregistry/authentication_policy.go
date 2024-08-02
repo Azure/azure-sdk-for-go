@@ -7,6 +7,7 @@
 package azcontainerregistry
 
 import (
+	"context"
 	"encoding/base64"
 	"encoding/json"
 	"errors"
@@ -93,7 +94,7 @@ func (p *authenticationPolicy) Do(req *policy.Request) (*http.Response, error) {
 		if service, scope, err = findServiceAndScope(resp); err != nil {
 			return nil, err
 		}
-		if accessToken, err = p.getAccessToken(req, service, scope); err != nil {
+		if accessToken, err = p.getAccessToken(req.Raw().Context(), service, scope); err != nil {
 			return nil, err
 		}
 		p.accessTokenCache.Store(accessToken)
@@ -111,10 +112,10 @@ func (p *authenticationPolicy) Do(req *policy.Request) (*http.Response, error) {
 	return resp, nil
 }
 
-func (p *authenticationPolicy) getAccessToken(req *policy.Request, service, scope string) (string, error) {
+func (p *authenticationPolicy) getAccessToken(ctx context.Context, service, scope string) (string, error) {
 	// anonymous access
 	if p.cred == nil {
-		resp, err := p.authClient.ExchangeACRRefreshTokenForACRAccessToken(req.Raw().Context(), service, scope, "", &authenticationClientExchangeACRRefreshTokenForACRAccessTokenOptions{GrantType: to.Ptr(tokenGrantTypePassword)})
+		resp, err := p.authClient.ExchangeACRRefreshTokenForACRAccessToken(ctx, service, scope, "", &authenticationClientExchangeACRRefreshTokenForACRAccessTokenOptions{GrantType: to.Ptr(tokenGrantTypePassword)})
 		if err != nil {
 			return "", err
 		}
@@ -124,16 +125,18 @@ func (p *authenticationPolicy) getAccessToken(req *policy.Request, service, scop
 	// access with token
 	// get refresh token from cache/request
 	refreshToken, err := p.refreshTokenCache.Get(acquiringResourceState{
-		policy:  p,
-		req:     req,
-		service: service,
+		ctx:           ctx,
+		aadCredential: p.cred,
+		aadScopes:     p.aadScopes,
+		authClient:    p.authClient,
+		service:       service,
 	})
 	if err != nil {
 		return "", err
 	}
 
 	// get access token from request
-	resp, err := p.authClient.ExchangeACRRefreshTokenForACRAccessToken(req.Raw().Context(), service, scope, refreshToken.Token, &authenticationClientExchangeACRRefreshTokenForACRAccessTokenOptions{GrantType: to.Ptr(tokenGrantTypeRefreshToken)})
+	resp, err := p.authClient.ExchangeACRRefreshTokenForACRAccessToken(ctx, service, scope, refreshToken.Token, &authenticationClientExchangeACRRefreshTokenForACRAccessTokenOptions{GrantType: to.Ptr(tokenGrantTypeRefreshToken)})
 	if err != nil {
 		return "", err
 	}
@@ -178,18 +181,22 @@ func getChallengeRequest(oriReq policy.Request) (*policy.Request, error) {
 }
 
 type acquiringResourceState struct {
-	req     *policy.Request
-	policy  *authenticationPolicy
-	service string
+	ctx context.Context
+
+	aadCredential azcore.TokenCredential
+	aadScopes     []string
+
+	authClient *authenticationClient
+	service    string
 }
 
 // acquireRefreshToken acquires or updates the refresh token of ACR service; only one thread/goroutine at a time ever calls this function
 func acquireRefreshToken(state acquiringResourceState) (newResource azcore.AccessToken, newExpiration time.Time, err error) {
 	// get AAD token from credential
-	aadToken, err := state.policy.cred.GetToken(
-		state.req.Raw().Context(),
+	aadToken, err := state.aadCredential.GetToken(
+		state.ctx,
 		policy.TokenRequestOptions{
-			Scopes: state.policy.aadScopes,
+			Scopes: state.aadScopes,
 		},
 	)
 	if err != nil {
@@ -197,7 +204,7 @@ func acquireRefreshToken(state acquiringResourceState) (newResource azcore.Acces
 	}
 
 	// exchange refresh token with AAD token
-	refreshResp, err := state.policy.authClient.ExchangeAADAccessTokenForACRRefreshToken(state.req.Raw().Context(), postContentSchemaGrantTypeAccessToken, state.service, &authenticationClientExchangeAADAccessTokenForACRRefreshTokenOptions{
+	refreshResp, err := state.authClient.ExchangeAADAccessTokenForACRRefreshToken(state.ctx, postContentSchemaGrantTypeAccessToken, state.service, &authenticationClientExchangeAADAccessTokenForACRRefreshTokenOptions{
 		AccessToken: &aadToken.Token,
 	})
 	if err != nil {

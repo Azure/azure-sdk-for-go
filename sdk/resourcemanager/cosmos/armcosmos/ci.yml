@@ -27,4 +27,3 @@ extends:
     IncludeRelease: true
     ServiceDirectory: 'resourcemanager/cosmos/armcosmos'
     UsePipelineProxy: false
-    UseFederatedAuth: true

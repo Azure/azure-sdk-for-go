@@ -27,4 +27,3 @@ extends:
     IncludeRelease: true
     ServiceDirectory: 'resourcemanager/iothub/armiothub'
     UsePipelineProxy: false
-    UseFederatedAuth: true

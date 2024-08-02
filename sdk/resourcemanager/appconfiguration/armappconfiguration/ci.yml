@@ -27,4 +27,3 @@ extends:
     IncludeRelease: true
     ServiceDirectory: 'resourcemanager/appconfiguration/armappconfiguration'
     UsePipelineProxy: false
-    UseFederatedAuth: true

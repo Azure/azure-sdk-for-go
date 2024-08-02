@@ -27,4 +27,3 @@ extends:
     IncludeRelease: true
     ServiceDirectory: 'resourcemanager/signalr/armsignalr'
     UsePipelineProxy: false
-    UseFederatedAuth: true

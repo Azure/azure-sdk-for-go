@@ -27,4 +27,3 @@ extends:
     IncludeRelease: true
     ServiceDirectory: 'resourcemanager/keyvault/armkeyvault'
     UsePipelineProxy: false
-    UseFederatedAuth: true

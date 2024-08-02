@@ -27,4 +27,3 @@ extends:
     IncludeRelease: true
     ServiceDirectory: 'resourcemanager/msi/armmsi'
     UsePipelineProxy: false
-    UseFederatedAuth: true

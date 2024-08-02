@@ -27,4 +27,3 @@ extends:
     IncludeRelease: true
     ServiceDirectory: 'resourcemanager/advisor/armadvisor'
     UsePipelineProxy: false
-    UseFederatedAuth: true

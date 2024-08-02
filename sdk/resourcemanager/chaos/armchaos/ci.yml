@@ -27,4 +27,3 @@ extends:
     IncludeRelease: true
     ServiceDirectory: 'resourcemanager/chaos/armchaos'
     UsePipelineProxy: false
-    UseFederatedAuth: true

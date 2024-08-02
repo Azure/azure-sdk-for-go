@@ -27,4 +27,3 @@ extends:
     IncludeRelease: true
     ServiceDirectory: 'resourcemanager/iotcentral/armiotcentral'
     UsePipelineProxy: false
-    UseFederatedAuth: true

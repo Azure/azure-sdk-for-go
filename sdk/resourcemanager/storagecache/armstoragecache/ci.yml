@@ -27,4 +27,3 @@ extends:
     IncludeRelease: true
     ServiceDirectory: 'resourcemanager/storagecache/armstoragecache'
     UsePipelineProxy: false
-    UseFederatedAuth: true

@@ -136,15 +136,17 @@ func Test_authenticationPolicy_getAccessToken_live(t *testing.T) {
 	authClient, err := newAuthenticationClient(endpoint, &authenticationClientOptions{options})
 	require.NoError(t, err)
 	p := &authenticationPolicy{
-		temporal.NewResource(acquireRefreshToken),
-		atomic.Value{},
-		cred,
-		[]string{options.Cloud.Services[ServiceName].Audience + "/.default"},
-		authClient,
+		accessTokenCache: &authenticationTokenCache{
+			temporal.NewResource(acquireRefreshToken),
+			atomic.Value{},
+			cred,
+			[]string{options.Cloud.Services[ServiceName].Audience + "/.default"},
+			authClient,
+		},
 	}
 	request, err := runtime.NewRequest(context.Background(), http.MethodGet, "https://test.com")
 	require.NoError(t, err)
-	token, err := p.getAccessToken(request.Raw().Context(), strings.TrimPrefix(endpoint, "https://"), "registry:catalog:*")
+	token, err := p.accessTokenCache.AcquireAccessToken(request.Raw().Context(), strings.TrimPrefix(endpoint, "https://"), "registry:catalog:*")
 	require.NoError(t, err)
 	require.NotEmpty(t, token)
 }
@@ -161,22 +163,24 @@ func Test_authenticationPolicy_getAccessToken_error(t *testing.T) {
 	require.NoError(t, err)
 
 	p := &authenticationPolicy{
-		temporal.NewResource(acquireRefreshToken),
-		atomic.Value{},
-		&credential.Fake{},
-		[]string{"test"},
-		authClient,
+		accessTokenCache: &authenticationTokenCache{
+			temporal.NewResource(acquireRefreshToken),
+			atomic.Value{},
+			&credential.Fake{},
+			[]string{"test"},
+			authClient,
+		},
 	}
 	request, err := runtime.NewRequest(context.Background(), http.MethodGet, srv.URL())
 	require.NoError(t, err)
-	_, err = p.getAccessToken(request.Raw().Context(), "service", "scope")
+	_, err = p.accessTokenCache.AcquireAccessToken(request.Raw().Context(), "service", "scope")
 	require.Error(t, err)
-	_, err = p.getAccessToken(request.Raw().Context(), "service", "scope")
+	_, err = p.accessTokenCache.AcquireAccessToken(request.Raw().Context(), "service", "scope")
 	require.Error(t, err)
-	_, err = p.getAccessToken(request.Raw().Context(), "service", "scope")
+	_, err = p.accessTokenCache.AcquireAccessToken(request.Raw().Context(), "service", "scope")
 	require.Error(t, err)
-	p.cred = nil
-	_, err = p.getAccessToken(request.Raw().Context(), "service", "scope")
+	p.accessTokenCache.cred = nil
+	_, err = p.accessTokenCache.AcquireAccessToken(request.Raw().Context(), "service", "scope")
 	require.Error(t, err)
 }
 
@@ -186,12 +190,14 @@ func Test_authenticationPolicy_getAccessToken_live_anonymous(t *testing.T) {
 	authClient, err := newAuthenticationClient(endpoint, &authenticationClientOptions{options})
 	require.NoError(t, err)
 	p := &authenticationPolicy{
-		refreshTokenCache: temporal.NewResource(acquireRefreshToken),
-		authClient:        authClient,
+		accessTokenCache: &authenticationTokenCache{
+			refreshTokenCache: temporal.NewResource(acquireRefreshToken),
+			authClient:        authClient,
+		},
 	}
 	request, err := runtime.NewRequest(context.Background(), http.MethodGet, "https://test.com")
 	require.NoError(t, err)
-	token, err := p.getAccessToken(request.Raw().Context(), strings.TrimPrefix(endpoint, "https://"), "registry:catalog:*")
+	token, err := p.accessTokenCache.AcquireAccessToken(request.Raw().Context(), strings.TrimPrefix(endpoint, "https://"), "registry:catalog:*")
 	require.NoError(t, err)
 	require.NotEmpty(t, token)
 }
@@ -244,11 +250,13 @@ func Test_authenticationPolicy(t *testing.T) {
 	authClient, err := newAuthenticationClient(srv.URL(), &authenticationClientOptions{ClientOptions: azcore.ClientOptions{Transport: srv}})
 	require.NoError(t, err)
 	authPolicy := &authenticationPolicy{
-		temporal.NewResource(acquireRefreshToken),
-		atomic.Value{},
-		&credential.Fake{},
-		[]string{"test"},
-		authClient,
+		accessTokenCache: &authenticationTokenCache{
+			temporal.NewResource(acquireRefreshToken),
+			atomic.Value{},
+			&credential.Fake{},
+			[]string{"test"},
+			authClient,
+		},
 	}
 	pl := runtime.NewPipeline("testmodule", "v0.1.0", runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}, &policy.ClientOptions{Transport: srv})
 

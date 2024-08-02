@@ -14,13 +14,11 @@ import (
 	"fmt"
 	"net/http"
 	"strings"
-	"sync/atomic"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/temporal"
 )
 
 const (
@@ -29,6 +27,7 @@ const (
 )
 
 type authenticationPolicyOptions struct {
+	*authenticationTokenCacheOptions
 }
 
 // authenticationPolicy is a policy to do the challenge-based authentication for container registry service. The authorization flow is as follows:
@@ -46,19 +45,15 @@ type authenticationPolicyOptions struct {
 // Each registry service shares one refresh token, it will be cached in refreshTokenCache until expire time.
 // Since the scope will be different for different API/repository/artifact, accessTokenCache will only work when continuously calling same API.
 type authenticationPolicy struct {
-	refreshTokenCache *temporal.Resource[azcore.AccessToken, acquiringResourceState]
-	accessTokenCache  atomic.Value
-	cred              azcore.TokenCredential
-	aadScopes         []string
-	authClient        *authenticationClient
+	accessTokenCache *authenticationTokenCache
 }
 
 func newAuthenticationPolicy(cred azcore.TokenCredential, scopes []string, authClient *authenticationClient, opts *authenticationPolicyOptions) *authenticationPolicy {
+	if opts == nil {
+		opts = &authenticationPolicyOptions{}
+	}
 	return &authenticationPolicy{
-		cred:              cred,
-		aadScopes:         scopes,
-		authClient:        authClient,
-		refreshTokenCache: temporal.NewResource(acquireRefreshToken),
+		accessTokenCache: newAuthenticationTokenCache(cred, scopes, authClient, opts.authenticationTokenCacheOptions),
 	}
 }
 
@@ -68,7 +63,7 @@ func (p *authenticationPolicy) Do(req *policy.Request) (*http.Response, error) {
 	if req.Raw().Header.Get(headerAuthorization) != "" {
 		// retry request could do the request with existed token directly
 		resp, err = req.Next()
-	} else if accessToken := p.accessTokenCache.Load(); accessToken != nil && accessToken != "" {
+	} else if accessToken := p.accessTokenCache.Load(); accessToken != "" {
 		// if there is a previous access token, then we try to use this token to do the request
 		req.Raw().Header.Set(
 			headerAuthorization,
@@ -94,10 +89,9 @@ func (p *authenticationPolicy) Do(req *policy.Request) (*http.Response, error) {
 		if service, scope, err = findServiceAndScope(resp); err != nil {
 			return nil, err
 		}
-		if accessToken, err = p.getAccessToken(req.Raw().Context(), service, scope); err != nil {
+		if accessToken, err = p.accessTokenCache.AcquireAccessToken(req.Raw().Context(), service, scope); err != nil {
 			return nil, err
 		}
-		p.accessTokenCache.Store(accessToken)
 		req.Raw().Header.Set(
 			headerAuthorization,
 			fmt.Sprintf("%s%s", bearerHeader, accessToken),
@@ -112,23 +106,24 @@ func (p *authenticationPolicy) Do(req *policy.Request) (*http.Response, error) {
 	return resp, nil
 }
 
-func (p *authenticationPolicy) getAccessToken(ctx context.Context, service, scope string) (string, error) {
+func (c *authenticationTokenCache) AcquireAccessToken(ctx context.Context, service, scope string) (string, error) {
 	// anonymous access
-	if p.cred == nil {
-		resp, err := p.authClient.ExchangeACRRefreshTokenForACRAccessToken(ctx, service, scope, "", &authenticationClientExchangeACRRefreshTokenForACRAccessTokenOptions{GrantType: to.Ptr(tokenGrantTypePassword)})
+	if c.cred == nil {
+		resp, err := c.authClient.ExchangeACRRefreshTokenForACRAccessToken(ctx, service, scope, "", &authenticationClientExchangeACRRefreshTokenForACRAccessTokenOptions{GrantType: to.Ptr(tokenGrantTypePassword)})
 		if err != nil {
 			return "", err
 		}
+		c.accessTokenCache.Store(*resp.acrAccessToken.AccessToken)
 		return *resp.acrAccessToken.AccessToken, nil
 	}
 
 	// access with token
 	// get refresh token from cache/request
-	refreshToken, err := p.refreshTokenCache.Get(acquiringResourceState{
+	refreshToken, err := c.refreshTokenCache.Get(acquiringResourceState{
 		ctx:           ctx,
-		aadCredential: p.cred,
-		aadScopes:     p.aadScopes,
-		authClient:    p.authClient,
+		aadCredential: c.cred,
+		aadScopes:     c.aadScopes,
+		authClient:    c.authClient,
 		service:       service,
 	})
 	if err != nil {
@@ -136,10 +131,11 @@ func (p *authenticationPolicy) getAccessToken(ctx context.Context, service, scop
 	}
 
 	// get access token from request
-	resp, err := p.authClient.ExchangeACRRefreshTokenForACRAccessToken(ctx, service, scope, refreshToken.Token, &authenticationClientExchangeACRRefreshTokenForACRAccessTokenOptions{GrantType: to.Ptr(tokenGrantTypeRefreshToken)})
+	resp, err := c.authClient.ExchangeACRRefreshTokenForACRAccessToken(ctx, service, scope, refreshToken.Token, &authenticationClientExchangeACRRefreshTokenForACRAccessTokenOptions{GrantType: to.Ptr(tokenGrantTypeRefreshToken)})
 	if err != nil {
 		return "", err
 	}
+	c.accessTokenCache.Store(*resp.acrAccessToken.AccessToken)
 	return *resp.acrAccessToken.AccessToken, nil
 }
 

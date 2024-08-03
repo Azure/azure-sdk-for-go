@@ -10,7 +10,7 @@ package armsql
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql"
-	moduleVersion = "v2.0.0-beta.5"
+	moduleVersion = "v2.0.0-beta.6"
 )
 
 type AdministratorName string
@@ -127,24 +127,6 @@ func PossibleAlwaysEncryptedEnclaveTypeValues() []AlwaysEncryptedEnclaveType {
 	return []AlwaysEncryptedEnclaveType{
 		AlwaysEncryptedEnclaveTypeDefault,
 		AlwaysEncryptedEnclaveTypeVBS,
-	}
-}
-
-// AuthMetadataLookupModes - The managed instance's authentication metadata lookup mode.
-type AuthMetadataLookupModes string
-
-const (
-	AuthMetadataLookupModesAzureAD AuthMetadataLookupModes = "AzureAD"
-	AuthMetadataLookupModesPaired  AuthMetadataLookupModes = "Paired"
-	AuthMetadataLookupModesWindows AuthMetadataLookupModes = "Windows"
-)
-
-// PossibleAuthMetadataLookupModesValues returns the possible values for the AuthMetadataLookupModes const type.
-func PossibleAuthMetadataLookupModesValues() []AuthMetadataLookupModes {
-	return []AuthMetadataLookupModes{
-		AuthMetadataLookupModesAzureAD,
-		AuthMetadataLookupModesPaired,
-		AuthMetadataLookupModesWindows,
 	}
 }
 
@@ -1006,6 +988,22 @@ func PossibleExternalGovernanceStatusValues() []ExternalGovernanceStatus {
 	}
 }
 
+// FailoverGroupDatabasesSecondaryType - Databases secondary type on partner server.
+type FailoverGroupDatabasesSecondaryType string
+
+const (
+	FailoverGroupDatabasesSecondaryTypeGeo     FailoverGroupDatabasesSecondaryType = "Geo"
+	FailoverGroupDatabasesSecondaryTypeStandby FailoverGroupDatabasesSecondaryType = "Standby"
+)
+
+// PossibleFailoverGroupDatabasesSecondaryTypeValues returns the possible values for the FailoverGroupDatabasesSecondaryType const type.
+func PossibleFailoverGroupDatabasesSecondaryTypeValues() []FailoverGroupDatabasesSecondaryType {
+	return []FailoverGroupDatabasesSecondaryType{
+		FailoverGroupDatabasesSecondaryTypeGeo,
+		FailoverGroupDatabasesSecondaryTypeStandby,
+	}
+}
+
 // FailoverGroupReplicationRole - Local replication role of the failover group instance.
 type FailoverGroupReplicationRole string
 
@@ -1019,39 +1017,6 @@ func PossibleFailoverGroupReplicationRoleValues() []FailoverGroupReplicationRole
 	return []FailoverGroupReplicationRole{
 		FailoverGroupReplicationRolePrimary,
 		FailoverGroupReplicationRoleSecondary,
-	}
-}
-
-// FailoverModeType - The link failover mode - can be Manual if intended to be used for two-way failover with a supported
-// SQL Server, or None for one-way failover to Azure.
-type FailoverModeType string
-
-const (
-	FailoverModeTypeManual FailoverModeType = "Manual"
-	FailoverModeTypeNone   FailoverModeType = "None"
-)
-
-// PossibleFailoverModeTypeValues returns the possible values for the FailoverModeType const type.
-func PossibleFailoverModeTypeValues() []FailoverModeType {
-	return []FailoverModeType{
-		FailoverModeTypeManual,
-		FailoverModeTypeNone,
-	}
-}
-
-// FailoverType - The failover type, can be ForcedAllowDataLoss or Planned.
-type FailoverType string
-
-const (
-	FailoverTypeForcedAllowDataLoss FailoverType = "ForcedAllowDataLoss"
-	FailoverTypePlanned             FailoverType = "Planned"
-)
-
-// PossibleFailoverTypeValues returns the possible values for the FailoverType const type.
-func PossibleFailoverTypeValues() []FailoverType {
-	return []FailoverType{
-		FailoverTypeForcedAllowDataLoss,
-		FailoverTypePlanned,
 	}
 }
 
@@ -1070,22 +1035,6 @@ func PossibleFreeLimitExhaustionBehaviorValues() []FreeLimitExhaustionBehavior {
 	return []FreeLimitExhaustionBehavior{
 		FreeLimitExhaustionBehaviorAutoPause,
 		FreeLimitExhaustionBehaviorBillOverUsage,
-	}
-}
-
-// FreemiumType - Weather or not Managed Instance is freemium.
-type FreemiumType string
-
-const (
-	FreemiumTypeFreemium FreemiumType = "Freemium"
-	FreemiumTypeRegular  FreemiumType = "Regular"
-)
-
-// PossibleFreemiumTypeValues returns the possible values for the FreemiumType const type.
-func PossibleFreemiumTypeValues() []FreemiumType {
-	return []FreemiumType{
-		FreemiumTypeFreemium,
-		FreemiumTypeRegular,
 	}
 }
 
@@ -1115,41 +1064,6 @@ func PossibleGeoBackupPolicyStateValues() []GeoBackupPolicyState {
 	return []GeoBackupPolicyState{
 		GeoBackupPolicyStateDisabled,
 		GeoBackupPolicyStateEnabled,
-	}
-}
-
-// HybridSecondaryUsage - Hybrid secondary usage. Possible values are 'Active' (default value) and 'Passive' (customer uses
-// the secondary as Passive DR).
-type HybridSecondaryUsage string
-
-const (
-	HybridSecondaryUsageActive  HybridSecondaryUsage = "Active"
-	HybridSecondaryUsagePassive HybridSecondaryUsage = "Passive"
-)
-
-// PossibleHybridSecondaryUsageValues returns the possible values for the HybridSecondaryUsage const type.
-func PossibleHybridSecondaryUsageValues() []HybridSecondaryUsage {
-	return []HybridSecondaryUsage{
-		HybridSecondaryUsageActive,
-		HybridSecondaryUsagePassive,
-	}
-}
-
-// HybridSecondaryUsageDetected - Hybrid secondary usage detected. Possible values are 'Active' (customer does not meet the
-// requirements to use the secondary as Passive DR) and 'Passive' (customer meets the requirements to use the
-// secondary as Passive DR).
-type HybridSecondaryUsageDetected string
-
-const (
-	HybridSecondaryUsageDetectedActive  HybridSecondaryUsageDetected = "Active"
-	HybridSecondaryUsageDetectedPassive HybridSecondaryUsageDetected = "Passive"
-)
-
-// PossibleHybridSecondaryUsageDetectedValues returns the possible values for the HybridSecondaryUsageDetected const type.
-func PossibleHybridSecondaryUsageDetectedValues() []HybridSecondaryUsageDetected {
-	return []HybridSecondaryUsageDetected{
-		HybridSecondaryUsageDetectedActive,
-		HybridSecondaryUsageDetectedPassive,
 	}
 }
 
@@ -1220,22 +1134,6 @@ func PossibleInstancePoolLicenseTypeValues() []InstancePoolLicenseType {
 	return []InstancePoolLicenseType{
 		InstancePoolLicenseTypeBasePrice,
 		InstancePoolLicenseTypeLicenseIncluded,
-	}
-}
-
-// InstanceRole - New role of managed instance in a distributed availability group, can be Primary or Secondary.
-type InstanceRole string
-
-const (
-	InstanceRolePrimary   InstanceRole = "Primary"
-	InstanceRoleSecondary InstanceRole = "Secondary"
-)
-
-// PossibleInstanceRoleValues returns the possible values for the InstanceRole const type.
-func PossibleInstanceRoleValues() []InstanceRole {
-	return []InstanceRole{
-		InstanceRolePrimary,
-		InstanceRoleSecondary,
 	}
 }
 
@@ -1434,22 +1332,6 @@ func PossibleLedgerDigestUploadsStateValues() []LedgerDigestUploadsState {
 	}
 }
 
-// LinkRole - SQL server side link role
-type LinkRole string
-
-const (
-	LinkRolePrimary   LinkRole = "Primary"
-	LinkRoleSecondary LinkRole = "Secondary"
-)
-
-// PossibleLinkRoleValues returns the possible values for the LinkRole const type.
-func PossibleLinkRoleValues() []LinkRole {
-	return []LinkRole{
-		LinkRolePrimary,
-		LinkRoleSecondary,
-	}
-}
-
 // LogSizeUnit - The units that the limit is expressed in.
 type LogSizeUnit string
 
@@ -1563,22 +1445,6 @@ func PossibleManagedInstanceAdministratorTypeValues() []ManagedInstanceAdministr
 	}
 }
 
-// ManagedInstanceDatabaseFormat - Specifies the internal format of instance databases specific to the SQL engine version.
-type ManagedInstanceDatabaseFormat string
-
-const (
-	ManagedInstanceDatabaseFormatAlwaysUpToDate ManagedInstanceDatabaseFormat = "AlwaysUpToDate"
-	ManagedInstanceDatabaseFormatSQLServer2022  ManagedInstanceDatabaseFormat = "SQLServer2022"
-)
-
-// PossibleManagedInstanceDatabaseFormatValues returns the possible values for the ManagedInstanceDatabaseFormat const type.
-func PossibleManagedInstanceDatabaseFormatValues() []ManagedInstanceDatabaseFormat {
-	return []ManagedInstanceDatabaseFormat{
-		ManagedInstanceDatabaseFormatAlwaysUpToDate,
-		ManagedInstanceDatabaseFormatSQLServer2022,
-	}
-}
-
 // ManagedInstanceLicenseType - The license type. Possible values are 'LicenseIncluded' (regular price inclusive of a new
 // SQL license) and 'BasePrice' (discounted AHB price for bringing your own SQL licenses).
 type ManagedInstanceLicenseType string
@@ -1606,6 +1472,47 @@ const (
 func PossibleManagedInstanceLongTermRetentionPolicyNameValues() []ManagedInstanceLongTermRetentionPolicyName {
 	return []ManagedInstanceLongTermRetentionPolicyName{
 		ManagedInstanceLongTermRetentionPolicyNameDefault,
+	}
+}
+
+type ManagedInstancePropertiesProvisioningState string
+
+const (
+	ManagedInstancePropertiesProvisioningStateAccepted     ManagedInstancePropertiesProvisioningState = "Accepted"
+	ManagedInstancePropertiesProvisioningStateCanceled     ManagedInstancePropertiesProvisioningState = "Canceled"
+	ManagedInstancePropertiesProvisioningStateCreated      ManagedInstancePropertiesProvisioningState = "Created"
+	ManagedInstancePropertiesProvisioningStateCreating     ManagedInstancePropertiesProvisioningState = "Creating"
+	ManagedInstancePropertiesProvisioningStateDeleted      ManagedInstancePropertiesProvisioningState = "Deleted"
+	ManagedInstancePropertiesProvisioningStateDeleting     ManagedInstancePropertiesProvisioningState = "Deleting"
+	ManagedInstancePropertiesProvisioningStateFailed       ManagedInstancePropertiesProvisioningState = "Failed"
+	ManagedInstancePropertiesProvisioningStateNotSpecified ManagedInstancePropertiesProvisioningState = "NotSpecified"
+	ManagedInstancePropertiesProvisioningStateRegistering  ManagedInstancePropertiesProvisioningState = "Registering"
+	ManagedInstancePropertiesProvisioningStateRunning      ManagedInstancePropertiesProvisioningState = "Running"
+	ManagedInstancePropertiesProvisioningStateSucceeded    ManagedInstancePropertiesProvisioningState = "Succeeded"
+	ManagedInstancePropertiesProvisioningStateTimedOut     ManagedInstancePropertiesProvisioningState = "TimedOut"
+	ManagedInstancePropertiesProvisioningStateUnknown      ManagedInstancePropertiesProvisioningState = "Unknown"
+	ManagedInstancePropertiesProvisioningStateUnrecognized ManagedInstancePropertiesProvisioningState = "Unrecognized"
+	ManagedInstancePropertiesProvisioningStateUpdating     ManagedInstancePropertiesProvisioningState = "Updating"
+)
+
+// PossibleManagedInstancePropertiesProvisioningStateValues returns the possible values for the ManagedInstancePropertiesProvisioningState const type.
+func PossibleManagedInstancePropertiesProvisioningStateValues() []ManagedInstancePropertiesProvisioningState {
+	return []ManagedInstancePropertiesProvisioningState{
+		ManagedInstancePropertiesProvisioningStateAccepted,
+		ManagedInstancePropertiesProvisioningStateCanceled,
+		ManagedInstancePropertiesProvisioningStateCreated,
+		ManagedInstancePropertiesProvisioningStateCreating,
+		ManagedInstancePropertiesProvisioningStateDeleted,
+		ManagedInstancePropertiesProvisioningStateDeleting,
+		ManagedInstancePropertiesProvisioningStateFailed,
+		ManagedInstancePropertiesProvisioningStateNotSpecified,
+		ManagedInstancePropertiesProvisioningStateRegistering,
+		ManagedInstancePropertiesProvisioningStateRunning,
+		ManagedInstancePropertiesProvisioningStateSucceeded,
+		ManagedInstancePropertiesProvisioningStateTimedOut,
+		ManagedInstancePropertiesProvisioningStateUnknown,
+		ManagedInstancePropertiesProvisioningStateUnrecognized,
+		ManagedInstancePropertiesProvisioningStateUpdating,
 	}
 }
 
@@ -2139,40 +2046,6 @@ func PossibleRecommendedSensitivityLabelUpdateKindValues() []RecommendedSensitiv
 	}
 }
 
-// ReplicaConnectedState - Link connected state
-type ReplicaConnectedState string
-
-const (
-	ReplicaConnectedStateCONNECTED    ReplicaConnectedState = "CONNECTED"
-	ReplicaConnectedStateDISCONNECTED ReplicaConnectedState = "DISCONNECTED"
-)
-
-// PossibleReplicaConnectedStateValues returns the possible values for the ReplicaConnectedState const type.
-func PossibleReplicaConnectedStateValues() []ReplicaConnectedState {
-	return []ReplicaConnectedState{
-		ReplicaConnectedStateCONNECTED,
-		ReplicaConnectedStateDISCONNECTED,
-	}
-}
-
-// ReplicaSynchronizationHealth - Link health state
-type ReplicaSynchronizationHealth string
-
-const (
-	ReplicaSynchronizationHealthHEALTHY          ReplicaSynchronizationHealth = "HEALTHY"
-	ReplicaSynchronizationHealthNOTHEALTHY       ReplicaSynchronizationHealth = "NOT_HEALTHY"
-	ReplicaSynchronizationHealthPARTIALLYHEALTHY ReplicaSynchronizationHealth = "PARTIALLY_HEALTHY"
-)
-
-// PossibleReplicaSynchronizationHealthValues returns the possible values for the ReplicaSynchronizationHealth const type.
-func PossibleReplicaSynchronizationHealthValues() []ReplicaSynchronizationHealth {
-	return []ReplicaSynchronizationHealth{
-		ReplicaSynchronizationHealthHEALTHY,
-		ReplicaSynchronizationHealthNOTHEALTHY,
-		ReplicaSynchronizationHealthPARTIALLYHEALTHY,
-	}
-}
-
 type ReplicaType string
 
 const (
@@ -2188,7 +2061,7 @@ func PossibleReplicaTypeValues() []ReplicaType {
 	}
 }
 
-// ReplicationLinkType - Link type (GEO, NAMED, STANDBY).
+// ReplicationLinkType - Link type (GEO, NAMED, STANDBY). Update operation does not support NAMED.
 type ReplicationLinkType string
 
 const (
@@ -2206,19 +2079,19 @@ func PossibleReplicationLinkTypeValues() []ReplicationLinkType {
 	}
 }
 
-// ReplicationModeType - Replication mode of the link
-type ReplicationModeType string
+// ReplicationMode - The replication mode of a distributed availability group. Parameter will be ignored during link creation.
+type ReplicationMode string
 
 const (
-	ReplicationModeTypeAsync ReplicationModeType = "Async"
-	ReplicationModeTypeSync  ReplicationModeType = "Sync"
+	ReplicationModeAsync ReplicationMode = "Async"
+	ReplicationModeSync  ReplicationMode = "Sync"
 )
 
-// PossibleReplicationModeTypeValues returns the possible values for the ReplicationModeType const type.
-func PossibleReplicationModeTypeValues() []ReplicationModeType {
-	return []ReplicationModeType{
-		ReplicationModeTypeAsync,
-		ReplicationModeTypeSync,
+// PossibleReplicationModeValues returns the possible values for the ReplicationMode const type.
+func PossibleReplicationModeValues() []ReplicationMode {
+	return []ReplicationMode{
+		ReplicationModeAsync,
+		ReplicationModeSync,
 	}
 }
 
@@ -2290,22 +2163,6 @@ func PossibleRestorePointTypeValues() []RestorePointType {
 	return []RestorePointType{
 		RestorePointTypeCONTINUOUS,
 		RestorePointTypeDISCRETE,
-	}
-}
-
-// RoleChangeType - The type of the role change, can be Planned or Forced.
-type RoleChangeType string
-
-const (
-	RoleChangeTypeForced  RoleChangeType = "Forced"
-	RoleChangeTypePlanned RoleChangeType = "Planned"
-)
-
-// PossibleRoleChangeTypeValues returns the possible values for the RoleChangeType const type.
-func PossibleRoleChangeTypeValues() []RoleChangeType {
-	return []RoleChangeType{
-		RoleChangeTypeForced,
-		RoleChangeTypePlanned,
 	}
 }
 
@@ -2531,22 +2388,6 @@ func PossibleSecurityEventTypeValues() []SecurityEventType {
 		SecurityEventTypeSQLInjectionExploit,
 		SecurityEventTypeSQLInjectionVulnerability,
 		SecurityEventTypeUndefined,
-	}
-}
-
-// SeedingModeType - Database seeding mode – can be Automatic (default), or Manual for supported scenarios.
-type SeedingModeType string
-
-const (
-	SeedingModeTypeAutomatic SeedingModeType = "Automatic"
-	SeedingModeTypeManual    SeedingModeType = "Manual"
-)
-
-// PossibleSeedingModeTypeValues returns the possible values for the SeedingModeType const type.
-func PossibleSeedingModeTypeValues() []SeedingModeType {
-	return []SeedingModeType{
-		SeedingModeTypeAutomatic,
-		SeedingModeTypeManual,
 	}
 }
 

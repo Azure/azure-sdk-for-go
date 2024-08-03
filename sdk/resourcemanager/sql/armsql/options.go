@@ -573,20 +573,6 @@ type DistributedAvailabilityGroupsClientBeginDeleteOptions struct {
 	ResumeToken string
 }
 
-// DistributedAvailabilityGroupsClientBeginFailoverOptions contains the optional parameters for the DistributedAvailabilityGroupsClient.BeginFailover
-// method.
-type DistributedAvailabilityGroupsClientBeginFailoverOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// DistributedAvailabilityGroupsClientBeginSetRoleOptions contains the optional parameters for the DistributedAvailabilityGroupsClient.BeginSetRole
-// method.
-type DistributedAvailabilityGroupsClientBeginSetRoleOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
 // DistributedAvailabilityGroupsClientBeginUpdateOptions contains the optional parameters for the DistributedAvailabilityGroupsClient.BeginUpdate
 // method.
 type DistributedAvailabilityGroupsClientBeginUpdateOptions struct {
@@ -2175,13 +2161,6 @@ type ManagedInstancesClientBeginFailoverOptions struct {
 	ResumeToken string
 }
 
-// ManagedInstancesClientBeginRefreshStatusOptions contains the optional parameters for the ManagedInstancesClient.BeginRefreshStatus
-// method.
-type ManagedInstancesClientBeginRefreshStatusOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
 // ManagedInstancesClientBeginStartOptions contains the optional parameters for the ManagedInstancesClient.BeginStart method.
 type ManagedInstancesClientBeginStartOptions struct {
 	// Resumes the LRO from the provided token.
@@ -2461,6 +2440,13 @@ type RecoverableManagedDatabasesClientListByInstanceOptions struct {
 	// placeholder for future optional parameters
 }
 
+// ReplicationLinksClientBeginCreateOrUpdateOptions contains the optional parameters for the ReplicationLinksClient.BeginCreateOrUpdate
+// method.
+type ReplicationLinksClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
 // ReplicationLinksClientBeginDeleteOptions contains the optional parameters for the ReplicationLinksClient.BeginDelete method.
 type ReplicationLinksClientBeginDeleteOptions struct {
 	// Resumes the LRO from the provided token.
@@ -2477,6 +2463,12 @@ type ReplicationLinksClientBeginFailoverAllowDataLossOptions struct {
 // ReplicationLinksClientBeginFailoverOptions contains the optional parameters for the ReplicationLinksClient.BeginFailover
 // method.
 type ReplicationLinksClientBeginFailoverOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ReplicationLinksClientBeginUpdateOptions contains the optional parameters for the ReplicationLinksClient.BeginUpdate method.
+type ReplicationLinksClientBeginUpdateOptions struct {
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }

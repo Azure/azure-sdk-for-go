@@ -47,6 +47,7 @@ func NewClientWithKey(endpoint string, cred KeyCredential, o *ClientOptions) (*C
 	if o != nil {
 		preferredRegions = o.PreferredRegions
 	}
+
 	gem, err := newGlobalEndpointManager(endpoint, newInternalPipeline(newSharedKeyCredPolicy(cred), o), preferredRegions, 0, enableCrossRegionRetries)
 	if err != nil {
 		return nil, err
@@ -137,6 +138,9 @@ func newClient(authPolicy policy.Policy, gem *globalEndpointManager, options *Cl
 			PerRetry: []policy.Policy{
 				authPolicy,
 				&clientRetryPolicy{gem: gem},
+			},
+			Tracing: azruntime.TracingOptions{
+				Namespace: "Microsoft.DocumentDB",
 			},
 		},
 		&options.ClientOptions)

@@ -19,9 +19,9 @@ import (
 	"strings"
 )
 
-// authenticationClient contains the methods for the Authentication group.
+// AuthenticationClient contains the methods for the Authentication group.
 // Don't use this type directly, use a constructor function instead.
-type authenticationClient struct {
+type AuthenticationClient struct {
 	internal *azcore.Client
 	endpoint string
 }
@@ -32,30 +32,30 @@ type authenticationClient struct {
 // Generated from API version 2021-07-01
 //   - grantType - Can take a value of accesstokenrefreshtoken, or accesstoken, or refresh_token
 //   - service - Indicates the name of your Azure container registry.
-//   - options - authenticationClientExchangeAADAccessTokenForACRRefreshTokenOptions contains the optional parameters for the
-//     authenticationClient.ExchangeAADAccessTokenForACRRefreshToken method.
-func (client *authenticationClient) ExchangeAADAccessTokenForACRRefreshToken(ctx context.Context, grantType postContentSchemaGrantType, service string, options *authenticationClientExchangeAADAccessTokenForACRRefreshTokenOptions) (authenticationClientExchangeAADAccessTokenForACRRefreshTokenResponse, error) {
+//   - options - AuthenticationClientExchangeAADAccessTokenForACRRefreshTokenOptions contains the optional parameters for the
+//     AuthenticationClient.ExchangeAADAccessTokenForACRRefreshToken method.
+func (client *AuthenticationClient) ExchangeAADAccessTokenForACRRefreshToken(ctx context.Context, grantType PostContentSchemaGrantType, service string, options *AuthenticationClientExchangeAADAccessTokenForACRRefreshTokenOptions) (AuthenticationClientExchangeAADAccessTokenForACRRefreshTokenResponse, error) {
 	var err error
 	ctx, endSpan := runtime.StartSpan(ctx, "AuthenticationClient.ExchangeAADAccessTokenForACRRefreshToken", client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.exchangeAADAccessTokenForACRRefreshTokenCreateRequest(ctx, grantType, service, options)
 	if err != nil {
-		return authenticationClientExchangeAADAccessTokenForACRRefreshTokenResponse{}, err
+		return AuthenticationClientExchangeAADAccessTokenForACRRefreshTokenResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return authenticationClientExchangeAADAccessTokenForACRRefreshTokenResponse{}, err
+		return AuthenticationClientExchangeAADAccessTokenForACRRefreshTokenResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return authenticationClientExchangeAADAccessTokenForACRRefreshTokenResponse{}, err
+		return AuthenticationClientExchangeAADAccessTokenForACRRefreshTokenResponse{}, err
 	}
 	resp, err := client.exchangeAADAccessTokenForACRRefreshTokenHandleResponse(httpResp)
 	return resp, err
 }
 
 // exchangeAADAccessTokenForACRRefreshTokenCreateRequest creates the ExchangeAADAccessTokenForACRRefreshToken request.
-func (client *authenticationClient) exchangeAADAccessTokenForACRRefreshTokenCreateRequest(ctx context.Context, grantType postContentSchemaGrantType, service string, options *authenticationClientExchangeAADAccessTokenForACRRefreshTokenOptions) (*policy.Request, error) {
+func (client *AuthenticationClient) exchangeAADAccessTokenForACRRefreshTokenCreateRequest(ctx context.Context, grantType PostContentSchemaGrantType, service string, options *AuthenticationClientExchangeAADAccessTokenForACRRefreshTokenOptions) (*policy.Request, error) {
 	urlPath := "/oauth2/exchange"
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
@@ -85,10 +85,10 @@ func (client *authenticationClient) exchangeAADAccessTokenForACRRefreshTokenCrea
 }
 
 // exchangeAADAccessTokenForACRRefreshTokenHandleResponse handles the ExchangeAADAccessTokenForACRRefreshToken response.
-func (client *authenticationClient) exchangeAADAccessTokenForACRRefreshTokenHandleResponse(resp *http.Response) (authenticationClientExchangeAADAccessTokenForACRRefreshTokenResponse, error) {
-	result := authenticationClientExchangeAADAccessTokenForACRRefreshTokenResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.acrRefreshToken); err != nil {
-		return authenticationClientExchangeAADAccessTokenForACRRefreshTokenResponse{}, err
+func (client *AuthenticationClient) exchangeAADAccessTokenForACRRefreshTokenHandleResponse(resp *http.Response) (AuthenticationClientExchangeAADAccessTokenForACRRefreshTokenResponse, error) {
+	result := AuthenticationClientExchangeAADAccessTokenForACRRefreshTokenResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ACRRefreshToken); err != nil {
+		return AuthenticationClientExchangeAADAccessTokenForACRRefreshTokenResponse{}, err
 	}
 	return result, nil
 }
@@ -101,30 +101,30 @@ func (client *authenticationClient) exchangeAADAccessTokenForACRRefreshTokenHand
 //   - scope - Which is expected to be a valid scope, and can be specified more than once for multiple scope requests. You obtained
 //     this from the Www-Authenticate response header from the challenge.
 //   - refreshToken - Must be a valid ACR refresh token
-//   - options - authenticationClientExchangeACRRefreshTokenForACRAccessTokenOptions contains the optional parameters for the
-//     authenticationClient.ExchangeACRRefreshTokenForACRAccessToken method.
-func (client *authenticationClient) ExchangeACRRefreshTokenForACRAccessToken(ctx context.Context, service string, scope string, refreshToken string, options *authenticationClientExchangeACRRefreshTokenForACRAccessTokenOptions) (authenticationClientExchangeACRRefreshTokenForACRAccessTokenResponse, error) {
+//   - options - AuthenticationClientExchangeACRRefreshTokenForACRAccessTokenOptions contains the optional parameters for the
+//     AuthenticationClient.ExchangeACRRefreshTokenForACRAccessToken method.
+func (client *AuthenticationClient) ExchangeACRRefreshTokenForACRAccessToken(ctx context.Context, service string, scope string, refreshToken string, options *AuthenticationClientExchangeACRRefreshTokenForACRAccessTokenOptions) (AuthenticationClientExchangeACRRefreshTokenForACRAccessTokenResponse, error) {
 	var err error
 	ctx, endSpan := runtime.StartSpan(ctx, "AuthenticationClient.ExchangeACRRefreshTokenForACRAccessToken", client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.exchangeACRRefreshTokenForACRAccessTokenCreateRequest(ctx, service, scope, refreshToken, options)
 	if err != nil {
-		return authenticationClientExchangeACRRefreshTokenForACRAccessTokenResponse{}, err
+		return AuthenticationClientExchangeACRRefreshTokenForACRAccessTokenResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return authenticationClientExchangeACRRefreshTokenForACRAccessTokenResponse{}, err
+		return AuthenticationClientExchangeACRRefreshTokenForACRAccessTokenResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return authenticationClientExchangeACRRefreshTokenForACRAccessTokenResponse{}, err
+		return AuthenticationClientExchangeACRRefreshTokenForACRAccessTokenResponse{}, err
 	}
 	resp, err := client.exchangeACRRefreshTokenForACRAccessTokenHandleResponse(httpResp)
 	return resp, err
 }
 
 // exchangeACRRefreshTokenForACRAccessTokenCreateRequest creates the ExchangeACRRefreshTokenForACRAccessToken request.
-func (client *authenticationClient) exchangeACRRefreshTokenForACRAccessTokenCreateRequest(ctx context.Context, service string, scope string, refreshToken string, options *authenticationClientExchangeACRRefreshTokenForACRAccessTokenOptions) (*policy.Request, error) {
+func (client *AuthenticationClient) exchangeACRRefreshTokenForACRAccessTokenCreateRequest(ctx context.Context, service string, scope string, refreshToken string, options *AuthenticationClientExchangeACRRefreshTokenForACRAccessTokenOptions) (*policy.Request, error) {
 	urlPath := "/oauth2/token"
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
@@ -149,10 +149,10 @@ func (client *authenticationClient) exchangeACRRefreshTokenForACRAccessTokenCrea
 }
 
 // exchangeACRRefreshTokenForACRAccessTokenHandleResponse handles the ExchangeACRRefreshTokenForACRAccessToken response.
-func (client *authenticationClient) exchangeACRRefreshTokenForACRAccessTokenHandleResponse(resp *http.Response) (authenticationClientExchangeACRRefreshTokenForACRAccessTokenResponse, error) {
-	result := authenticationClientExchangeACRRefreshTokenForACRAccessTokenResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.acrAccessToken); err != nil {
-		return authenticationClientExchangeACRRefreshTokenForACRAccessTokenResponse{}, err
+func (client *AuthenticationClient) exchangeACRRefreshTokenForACRAccessTokenHandleResponse(resp *http.Response) (AuthenticationClientExchangeACRRefreshTokenForACRAccessTokenResponse, error) {
+	result := AuthenticationClientExchangeACRRefreshTokenForACRAccessTokenResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ACRAccessToken); err != nil {
+		return AuthenticationClientExchangeACRRefreshTokenForACRAccessTokenResponse{}, err
 	}
 	return result, nil
 }

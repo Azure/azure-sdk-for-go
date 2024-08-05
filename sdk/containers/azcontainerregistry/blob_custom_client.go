@@ -10,13 +10,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"io"
+	"reflect"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"io"
-	"reflect"
 )
 
 // BlobClientOptions contains the optional parameters for the NewBlobClient method.
@@ -41,7 +42,7 @@ func NewBlobClient(endpoint string, credential azcore.TokenCredential, options *
 		return nil, errors.New("provided Cloud field is missing Azure Container Registry configuration")
 	}
 
-	authClient, err := newAuthenticationClient(endpoint, &authenticationClientOptions{
+	authClient, err := NewAuthenticationClient(endpoint, &AuthenticationClientOptions{
 		options.ClientOptions,
 	})
 	if err != nil {

@@ -111,7 +111,7 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 		tspconfigPath := filepath.Join(input.SpecFolder, tspProjectFolder, "tspconfig.yaml")
 		tsc, err := typespec.ParseTypeSpecConfig(tspconfigPath)
 		if err != nil {
-			errorBuilder.add(fmt.Errorf("failed to parse %s: %+v", tspconfigPath, err))
+			errorBuilder.add(fmt.Errorf("failed to parse %s: %+v\nInvalid tspconfig.yaml provided and refer to the sample file: https://aka.ms/azsdk/tspconfig-sample-mpg to fix the content", tspconfigPath, err))
 			continue
 		}
 
@@ -171,7 +171,7 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 				log.Printf("Finish processing typespec file: %s", tspconfigPath)
 			}
 		} else {
-			errorBuilder.add(fmt.Errorf("`@azure-tools/typespec-go` option not found in %s, it is required, please refer to `https://github.com/Azure/azure-rest-api-specs/blob/main/specification/contosowidgetmanager/Contoso.Management/tspconfig.yaml` to configure it", tspconfigPath))
+			errorBuilder.add(fmt.Errorf("`@azure-tools/typespec-go` option not found in %s, it is required, please refer to `https://aka.ms/azsdk/tspconfig-sample-mpg` to configure it", tspconfigPath))
 		}
 	}
 
@@ -257,7 +257,8 @@ func (b *generateErrorBuilder) build() error {
 	for _, err := range b.errors {
 		messages = append(messages, err.Error())
 	}
-	return fmt.Errorf("total %d error(s): \n%s", len(b.errors), strings.Join(messages, "\n"))
+	return fmt.Errorf("total %d error(s): \n%s\n%s", len(b.errors), strings.Join(messages, "\n"), `Refer to the detail errors for potential fixes.
+If the issue persists, contact the Go language support channel at https://aka.ms/azsdk/go-lang-teams-channel and include this spec pull request`)
 }
 
 func logError(err error) string {

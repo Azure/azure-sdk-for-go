@@ -207,9 +207,10 @@ func (c *managedIdentityClient) authenticate(ctx context.Context, id ManagedIDKi
 		defer cancel()
 		cx = policy.WithRetryOptions(cx, policy.RetryOptions{MaxRetries: -1})
 		req, err := azruntime.NewRequest(cx, http.MethodGet, c.endpoint)
-		if err == nil {
-			_, err = c.azClient.Pipeline().Do(req)
+		if err != nil {
+			return azcore.AccessToken{}, fmt.Errorf("failed to create IMDS probe request: %s", err)
 		}
+		res, err := c.azClient.Pipeline().Do(req)
 		if err != nil {
 			msg := err.Error()
 			if errors.Is(err, context.Canceled) || errors.Is(err, context.DeadlineExceeded) {
@@ -217,7 +218,16 @@ func (c *managedIdentityClient) authenticate(ctx context.Context, id ManagedIDKi
 			}
 			return azcore.AccessToken{}, newCredentialUnavailableError(credNameManagedIdentity, msg)
 		}
-		// send normal token requests from now on because something responded
+		// because IMDS always responds with JSON, assume a non-JSON response is from something else, such
+		// as a proxy, and return credentialUnavailableError so DefaultAzureCredential continues iterating
+		b, err := azruntime.Payload(res)
+		if err != nil {
+			return azcore.AccessToken{}, newCredentialUnavailableError(credNameManagedIdentity, fmt.Sprintf("failed to read IMDS probe response: %s", err))
+		}
+		if !json.Valid(b) {
+			return azcore.AccessToken{}, newCredentialUnavailableError(credNameManagedIdentity, "unexpected response to IMDS probe")
+		}
+		// send normal token requests from now on because IMDS responded
 		c.probeIMDS = false
 	}
 

@@ -9,6 +9,7 @@ package azidentity
 import (
 	"context"
 	"fmt"
+	"io"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -320,7 +321,7 @@ func TestDefaultAzureCredential_IMDS(t *testing.T) {
 						probed = true
 						require.Empty(t, hdr, "probe request shouldn't have Metadata header")
 						return &http.Response{
-							Body:       http.NoBody,
+							Body:       io.NopCloser(strings.NewReader("{}")),
 							StatusCode: http.StatusInternalServerError,
 						}
 					},
@@ -332,6 +333,29 @@ func TestDefaultAzureCredential_IMDS(t *testing.T) {
 		require.NoError(t, err)
 		require.True(t, probed)
 		require.Equal(t, tokenValue, tk.Token)
+
+		t.Run("non-JSON response", func(t *testing.T) {
+			before := defaultAzTokenProvider
+			defer func() { defaultAzTokenProvider = before }()
+			defaultAzTokenProvider = mockAzTokenProviderSuccess
+			for _, res := range [][]mock.ResponseOption{
+				{mock.WithStatusCode(http.StatusNotFound)},
+				{mock.WithBody([]byte("not json")), mock.WithStatusCode(http.StatusBadRequest)},
+				{mock.WithBody([]byte("not json")), mock.WithStatusCode(http.StatusOK)},
+			} {
+				srv, close := mock.NewTLSServer(mock.WithTransformAllRequestsToTestServerUrl())
+				defer close()
+				srv.SetResponse(res...)
+				cred, err := NewDefaultAzureCredential(&DefaultAzureCredentialOptions{
+					ClientOptions: policy.ClientOptions{
+						Transport: srv,
+					},
+				})
+				require.NoError(t, err)
+				_, err = cred.GetToken(ctx, testTRO)
+				require.NoError(t, err, "DefaultAzureCredential should continue after receiving a non-JSON response from IMDS")
+			}
+		})
 	})
 
 	t.Run("timeout", func(t *testing.T) {

@@ -44,6 +44,8 @@ func ExecuteGoGenerate(path string) error {
 		return err
 	}
 
+	err = cmd.Wait()
+
 	fmt.Println(stdoutBuffer.String())
 	if stdoutBuffer.Len() > 0 {
 		if strings.Contains(stdoutBuffer.String(), "error   |") {
@@ -56,9 +58,13 @@ func ExecuteGoGenerate(path string) error {
 		}
 	}
 
-	if err := cmd.Wait(); err != nil || stderrBuffer.Len() > 0 {
-		fmt.Println(stderrBuffer.String())
-		return fmt.Errorf("failed to execute `go generate`:\n%s", stderrBuffer.String())
+	if err != nil || stderrBuffer.Len() > 0 {
+		if stderrBuffer.Len() > 0 {
+			fmt.Println(stderrBuffer.String())
+			return fmt.Errorf("failed to execute `go generate`:\n%s", stderrBuffer.String())
+		}
+
+		return fmt.Errorf("failed to execute `go generate`:\n%+v", err)
 	}
 
 	return nil
@@ -192,18 +198,22 @@ func ExecuteTspClient(path string, args ...string) error {
 	}
 
 	if err := cmd.Wait(); err != nil || buf.Len() > 0 {
-		log.Println(buf.String())
+		if buf.Len() > 0 {
+			log.Println(buf.String())
 
-		// filter npm notice log
-		lines := strings.Split(buf.String(), "\n")
-		newErrInfo := make([]string, 0, len(lines))
-		for _, line := range lines {
-			if !strings.Contains(line, "npm notice") {
-				newErrInfo = append(newErrInfo, line)
+			// filter npm notice log
+			lines := strings.Split(buf.String(), "\n")
+			newErrInfo := make([]string, 0, len(lines))
+			for _, line := range lines {
+				if !strings.Contains(line, "npm notice") {
+					newErrInfo = append(newErrInfo, line)
+				}
 			}
+
+			return fmt.Errorf("failed to execute `tsp-client %s`\n%s", strings.Join(args, " "), strings.Join(newErrInfo, "\n"))
 		}
 
-		return fmt.Errorf("failed to execute `tsp-client %s`\n%s", strings.Join(args, " "), strings.Join(newErrInfo, "\n"))
+		return fmt.Errorf("failed to execute `tsp-client %s`\n%+v", strings.Join(args, " "), err)
 	}
 
 	return nil

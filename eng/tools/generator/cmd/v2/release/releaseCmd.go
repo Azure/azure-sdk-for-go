@@ -255,7 +255,7 @@ func (c *commandContext) generateFromRequest(sdkRepo repo.SDKRepository, specRep
 	log.Printf("Configuration: %s", cfg.String())
 	armServices, err := config.ParseTrack2(cfg, specRepoParam)
 	if err != nil {
-		return err
+		generateErr = append(generateErr, err)
 	}
 	for arm, packageInfos := range armServices {
 		for _, info := range packageInfos {
@@ -300,7 +300,7 @@ func (c *commandContext) generateFromRequest(sdkRepo repo.SDKRepository, specRep
 
 	tspProjects, err := config.GetTypeSpecProjectsFromConfig(cfg, specRepoParam)
 	if err != nil {
-		return err
+		generateErr = append(generateErr, err)
 	}
 	for rpName, packageInfos := range tspProjects {
 		for _, packageInfo := range packageInfos {

@@ -82,7 +82,7 @@ func (ctx *GenerateContext) GenerateForAutomation(readme, repo, goVersion string
 
 	for rpName, packageInfos := range rpMap {
 		for _, packageInfo := range packageInfos {
-			log.Printf("Process rp: %s, namespace: %s", rpName, packageInfo.Name)
+			log.Printf("Start to process rp: %s, namespace: %s", rpName, packageInfo.Name)
 			singleResult, err := ctx.GenerateForSingleRPNamespace(&GenerateParam{
 				RPName:              rpName,
 				NamespaceName:       packageInfo.Name,
@@ -93,7 +93,7 @@ func (ctx *GenerateContext) GenerateForAutomation(readme, repo, goVersion string
 				RemoveTagSet:        true,
 			})
 			if err != nil {
-				errors = append(errors, err)
+				errors = append(errors, fmt.Errorf("failed to generate for rp: %s, namespace: %s: %+v", rpName, packageInfo.Name, err))
 				continue
 			}
 			result = append(result, *singleResult)
@@ -128,7 +128,7 @@ func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *Generate
 			generateParam.SpecificPackageTitle = strings.Title(generateParam.RPName)
 		}
 
-		log.Printf("Use template to generate new rp folder and basic package files...")
+		log.Printf("Start to use template to generate new rp folder and basic package files...")
 		if err = template.GeneratePackageByTemplate(generateParam.RPName, generateParam.NamespaceName, template.Flags{
 			SDKRoot:        ctx.SDKPath,
 			TemplatePath:   "eng/tools/generator/template/rpName/packageName",
@@ -185,7 +185,7 @@ func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *Generate
 		}
 	}
 
-	log.Printf("Run `go generate` to regenerate the code...")
+	log.Printf("Start to run `go generate` to regenerate the code...")
 	if err := ExecuteGoGenerate(packagePath); err != nil {
 		return nil, err
 	}
@@ -233,7 +233,7 @@ func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *Generate
 		previousVersion = strings.TrimLeft(tagSplit[len(tagSplit)-1], "v")
 	}
 
-	log.Printf("Generate changelog for package...")
+	log.Printf("Start to generate changelog for package...")
 	newExports, err := exports.Get(packagePath)
 	if err != nil {
 		return nil, err
@@ -254,7 +254,7 @@ func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *Generate
 		}
 
 		if !generateParam.SkipGenerateExample {
-			log.Printf("Generate examples...")
+			log.Printf("Start to generate examples...")
 			flag, err := GetAlwaysSetBodyParamRequiredFlag(filepath.Join(packagePath, "build.go"))
 			if err != nil {
 				return nil, err
@@ -352,7 +352,7 @@ func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *Generate
 
 		// Example generation should be the last step because the package import relay on the new calculated version
 		if !generateParam.SkipGenerateExample {
-			log.Printf("Generate examples...")
+			log.Printf("Start to generate examples...")
 			flag, err := GetAlwaysSetBodyParamRequiredFlag(filepath.Join(packagePath, "build.go"))
 			if err != nil {
 				return nil, err
@@ -398,7 +398,7 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam) (*
 			generateParam.SpecificPackageTitle = strings.Title(generateParam.RPName)
 		}
 
-		log.Printf("Use template to generate new rp folder and basic package files...")
+		log.Printf("Start to use template to generate new rp folder and basic package files...")
 		sdkBasicInfo := map[string]any{
 			"rpName":         generateParam.RPName,
 			"packageName":    generateParam.NamespaceName,
@@ -419,7 +419,7 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam) (*
 		}
 	}
 
-	log.Printf("Run `tsp-client init` to regenerate the code...")
+	log.Printf("Start to run `tsp-client init` to generate the code...")
 	defaultModuleVersion := version.String()
 	emitOption := fmt.Sprintf("module-version=%s", defaultModuleVersion)
 	if generateParam.TypeSpecEmitOption != "" {
@@ -468,7 +468,7 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam) (*
 		previousVersion = strings.TrimLeft(tagSplit[len(tagSplit)-1], "v")
 	}
 
-	log.Printf("Generate changelog for package...")
+	log.Printf("Start to generate changelog for package...")
 	newExports, err := exports.Get(packagePath)
 	if err != nil {
 		return nil, err
@@ -561,10 +561,10 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam) (*
 			return nil, err
 		}
 
+		baseModule := fmt.Sprintf("%s/%s/%s", MgmtSDKModulePrefix, generateParam.RPName, generateParam.NamespaceName)
 		if _, err := os.Stat(filepath.Join(packagePath, "fake")); !os.IsNotExist(err) && oldModuleVersion.Major() != version.Major() {
 			log.Printf("Replace fake module v2+...")
-			if err = replaceModuleImport(packagePath, generateParam.RPName, generateParam.NamespaceName, oldModuleVersion.String(), version.String(),
-				"fake", ".go"); err != nil {
+			if err = ReplaceModule(version, packagePath, baseModule, ".go"); err != nil {
 				return nil, err
 			}
 		}
@@ -572,7 +572,6 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam) (*
 		// When sdk has major version bump, the live test needs to update the module referenced in the code.
 		if existSuffixFile(packagePath, "_live_test.go") {
 			log.Printf("Replace live test module v2+...")
-			baseModule := fmt.Sprintf("%s/%s/%s", MgmtSDKModulePrefix, generateParam.RPName, generateParam.NamespaceName)
 			if err = ReplaceModule(version, packagePath, baseModule, "_live_test.go"); err != nil {
 				return nil, err
 			}

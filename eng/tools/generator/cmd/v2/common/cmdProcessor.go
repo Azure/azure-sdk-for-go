@@ -4,8 +4,11 @@
 package common
 
 import (
+	"bytes"
 	"fmt"
+	"io"
 	"log"
+	"os"
 	"os/exec"
 	"path/filepath"
 	"regexp"
@@ -16,11 +19,54 @@ import (
 func ExecuteGoGenerate(path string) error {
 	cmd := exec.Command("go", "generate")
 	cmd.Dir = path
-	output, err := cmd.CombinedOutput()
-	log.Printf("Result of `go generate` execution: \n%s", string(output))
+
+	stdoutPipe, err := cmd.StdoutPipe()
 	if err != nil {
-		return fmt.Errorf("failed to execute `go generate` '%s': %+v", string(output), err)
+		return err
 	}
+
+	stderrPipe, err := cmd.StderrPipe()
+	if err != nil {
+		return err
+	}
+
+	if err = cmd.Start(); err != nil {
+		return err
+	}
+
+	var stdoutBuffer bytes.Buffer
+	if _, err = io.Copy(&stdoutBuffer, stdoutPipe); err != nil {
+		return err
+	}
+
+	var stderrBuffer bytes.Buffer
+	if _, err = io.Copy(&stderrBuffer, stderrPipe); err != nil {
+		return err
+	}
+
+	err = cmd.Wait()
+
+	fmt.Println(stdoutBuffer.String())
+	if stdoutBuffer.Len() > 0 {
+		if strings.Contains(stdoutBuffer.String(), "error   |") {
+			// find first error message until last
+			errMsgs := stdoutBuffer.Bytes()
+			index := regexp.MustCompile(`error   \|`).FindIndex(errMsgs)
+			if len(index) == 2 {
+				return fmt.Errorf("failed to execute `go generate`:\n%s", string(errMsgs[index[0]:]))
+			}
+		}
+	}
+
+	if err != nil || stderrBuffer.Len() > 0 {
+		if stderrBuffer.Len() > 0 {
+			fmt.Println(stderrBuffer.String())
+			return fmt.Errorf("failed to execute `go generate`:\n%s", stderrBuffer.String())
+		}
+
+		return fmt.Errorf("failed to execute `go generate`:\n%+v", err)
+	}
+
 	return nil
 }
 
@@ -135,14 +181,41 @@ func ExecuteGoFmt(dir string, args ...string) error {
 func ExecuteTspClient(path string, args ...string) error {
 	cmd := exec.Command("tsp-client", args...)
 	cmd.Dir = path
-	output, err := cmd.CombinedOutput()
-	log.Printf("Result of `tsp-client %s` execution: \n%s", strings.Join(args, " "), string(output))
+	cmd.Stdout = os.Stdout
+
+	stderr, err := cmd.StderrPipe()
 	if err != nil {
-		return fmt.Errorf("failed to execute `tsp-client %s` '%s': %+v", strings.Join(args, " "), string(output), err)
+		return err
 	}
-	if strings.Contains(string(output), "error:") || strings.Contains(string(output), "- error ") {
-		return fmt.Errorf("failed to execute `tsp-client %s` '%s'", strings.Join(args, " "), string(output))
+
+	if err = cmd.Start(); err != nil {
+		return err
 	}
+
+	var buf bytes.Buffer
+	if _, err = io.Copy(&buf, stderr); err != nil {
+		return err
+	}
+
+	if err := cmd.Wait(); err != nil || buf.Len() > 0 {
+		if buf.Len() > 0 {
+			log.Println(buf.String())
+
+			// filter npm notice log
+			lines := strings.Split(buf.String(), "\n")
+			newErrInfo := make([]string, 0, len(lines))
+			for _, line := range lines {
+				if !strings.Contains(line, "npm notice") {
+					newErrInfo = append(newErrInfo, line)
+				}
+			}
+
+			return fmt.Errorf("failed to execute `tsp-client %s`\n%s", strings.Join(args, " "), strings.Join(newErrInfo, "\n"))
+		}
+
+		return fmt.Errorf("failed to execute `tsp-client %s`\n%+v", strings.Join(args, " "), err)
+	}
+
 	return nil
 }
 

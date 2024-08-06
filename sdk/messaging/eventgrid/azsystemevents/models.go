@@ -6,27 +6,6 @@ package azsystemevents
 
 import "time"
 
-// ACSChatEventBaseProperties - Schema of common properties of all chat events
-type ACSChatEventBaseProperties struct {
-	// REQUIRED; The communication identifier of the target user
-	RecipientCommunicationIdentifier *CommunicationIdentifierModel
-
-	// The chat thread id
-	ThreadID *string
-
-	// The transaction id will be used as co-relation vector
-	TransactionID *string
-}
-
-// ACSChatEventInThreadBaseProperties - Schema of common properties of all thread-level chat events
-type ACSChatEventInThreadBaseProperties struct {
-	// The chat thread id
-	ThreadID *string
-
-	// The transaction id will be used as co-relation vector
-	TransactionID *string
-}
-
 // ACSChatMessageDeletedEventData - Schema of the Data property of an EventGridEvent for a Microsoft.Communication.ChatMessageDeleted
 // event.
 type ACSChatMessageDeletedEventData struct {
@@ -478,39 +457,6 @@ type ACSChatThreadDeletedEventData struct {
 	Version *int64
 }
 
-// ACSChatThreadEventBaseProperties - Schema of common properties of all chat thread events
-type ACSChatThreadEventBaseProperties struct {
-	// REQUIRED; The original creation time of the thread
-	CreateTime *time.Time
-
-	// REQUIRED; The communication identifier of the target user
-	RecipientCommunicationIdentifier *CommunicationIdentifierModel
-
-	// The chat thread id
-	ThreadID *string
-
-	// The transaction id will be used as co-relation vector
-	TransactionID *string
-
-	// The version of the thread
-	Version *int64
-}
-
-// ACSChatThreadEventInThreadBaseProperties - Schema of common properties of all chat thread events
-type ACSChatThreadEventInThreadBaseProperties struct {
-	// REQUIRED; The original creation time of the thread
-	CreateTime *time.Time
-
-	// The chat thread id
-	ThreadID *string
-
-	// The transaction id will be used as co-relation vector
-	TransactionID *string
-
-	// The version of the thread
-	Version *int64
-}
-
 // ACSChatThreadParticipantProperties - Schema of the chat thread participant
 type ACSChatThreadParticipantProperties struct {
 	// REQUIRED; The metadata of the user
@@ -737,21 +683,6 @@ type ACSMessageDeliveryStatusUpdatedEventData struct {
 	To *string
 }
 
-// ACSMessageEventData - Schema of common properties of all chat thread events
-type ACSMessageEventData struct {
-	// REQUIRED; The channel event error
-	Error *internalACSMessageChannelEventError
-
-	// REQUIRED; The time message was received
-	ReceivedTimestamp *time.Time
-
-	// The message sender
-	From *string
-
-	// The message recipient
-	To *string
-}
-
 // ACSMessageInteractiveButtonReplyContent - Message Interactive button reply content for a user to business message
 type ACSMessageInteractiveButtonReplyContent struct {
 	// The ID of the button
@@ -896,18 +827,6 @@ type ACSRouterChannelConfiguration struct {
 
 	// Max Number of Jobs for Router Job
 	MaxNumberOfJobs *int32
-}
-
-// ACSRouterEventData - Schema of common properties of all Router events
-type ACSRouterEventData struct {
-	// Router Event Channel ID
-	ChannelID *string
-
-	// Router Event Channel Reference
-	ChannelReference *string
-
-	// Router Event Job ID
-	JobID *string
 }
 
 // ACSRouterJobCancelledEventData - Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RouterJobCancelled
@@ -1062,27 +981,6 @@ type ACSRouterJobCompletedEventData struct {
 // ACSRouterJobDeletedEventData - Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RouterJobDeleted
 // event
 type ACSRouterJobDeletedEventData struct {
-	// REQUIRED; Router Job events Labels
-	Labels map[string]*string
-
-	// REQUIRED; Router Jobs events Tags
-	Tags map[string]*string
-
-	// Router Event Channel ID
-	ChannelID *string
-
-	// Router Event Channel Reference
-	ChannelReference *string
-
-	// Router Event Job ID
-	JobID *string
-
-	// Router Job events Queue Id
-	QueueID *string
-}
-
-// ACSRouterJobEventData - Schema of common properties of all Router Job events
-type ACSRouterJobEventData struct {
 	// REQUIRED; Router Job events Labels
 	Labels map[string]*string
 
@@ -1366,21 +1264,6 @@ type ACSRouterWorkerDeregisteredEventData struct {
 	WorkerID *string
 }
 
-// ACSRouterWorkerEventData - Schema of common properties of all Router Worker events
-type ACSRouterWorkerEventData struct {
-	// Router Event Channel ID
-	ChannelID *string
-
-	// Router Event Channel Reference
-	ChannelReference *string
-
-	// Router Event Job ID
-	JobID *string
-
-	// Router Worker events Worker Id
-	WorkerID *string
-}
-
 // ACSRouterWorkerOfferAcceptedEventData - Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RouterWorkerOfferAccepted
 // event
 type ACSRouterWorkerOfferAcceptedEventData struct {
@@ -1633,18 +1516,6 @@ type ACSSmsDeliveryReportReceivedEventData struct {
 
 	// Customer Content
 	Tag *string
-
-	// The identity of SMS message receiver
-	To *string
-}
-
-// ACSSmsEventBaseProperties - Schema of common properties of all SMS events
-type ACSSmsEventBaseProperties struct {
-	// The identity of SMS message sender
-	From *string
-
-	// The identity of the SMS message
-	MessageID *string
 
 	// The identity of SMS message receiver
 	To *string
@@ -2123,18 +1994,6 @@ type AppConfigurationSnapshotCreatedEventData struct {
 	SyncToken *string
 }
 
-// AppConfigurationSnapshotEventData - Schema of common properties of snapshot events
-type AppConfigurationSnapshotEventData struct {
-	// The etag representing the new state of the snapshot.
-	Etag *string
-
-	// The name of the snapshot.
-	Name *string
-
-	// The sync token representing the server state after the event.
-	SyncToken *string
-}
-
 // AppConfigurationSnapshotModifiedEventData - Schema of the Data property of an EventGridEvent for a Microsoft.AppConfiguration.SnapshotModified
 // event.
 type AppConfigurationSnapshotModifiedEventData struct {
@@ -2193,27 +2052,6 @@ type CommunicationIdentifierModel struct {
 type CommunicationUserIdentifierModel struct {
 	// REQUIRED; The Id of the communication user.
 	ID *string
-}
-
-// ContainerRegistryArtifactEventData - The content of the event request message.
-type ContainerRegistryArtifactEventData struct {
-	// REQUIRED; The connected registry information if the event is generated by a connected registry.
-	ConnectedRegistry *ContainerRegistryEventConnectedRegistry
-
-	// REQUIRED; The target of the event.
-	Target *ContainerRegistryArtifactEventTarget
-
-	// REQUIRED; The time at which the event occurred.
-	Timestamp *time.Time
-
-	// The action that encompasses the provided event.
-	Action *string
-
-	// The event ID.
-	ID *string
-
-	// The location of the event.
-	Location *string
 }
 
 // ContainerRegistryArtifactEventTarget - The target of the event.
@@ -2295,38 +2133,6 @@ type ContainerRegistryEventActor struct {
 type ContainerRegistryEventConnectedRegistry struct {
 	// The name of the connected registry that generated this event.
 	Name *string
-}
-
-// ContainerRegistryEventData - The content of the event request message.
-type ContainerRegistryEventData struct {
-	// REQUIRED; The agent that initiated the event. For most situations, this could be from the authorization context of the
-	// request.
-	Actor *ContainerRegistryEventActor
-
-	// REQUIRED; The connected registry information if the event is generated by a connected registry.
-	ConnectedRegistry *ContainerRegistryEventConnectedRegistry
-
-	// REQUIRED; The request that generated the event.
-	Request *ContainerRegistryEventRequest
-
-	// REQUIRED; The registry node that generated the event. Put differently, while the actor initiates the event, the source
-	// generates it.
-	Source *ContainerRegistryEventSource
-
-	// REQUIRED; The target of the event.
-	Target *ContainerRegistryEventTarget
-
-	// REQUIRED; The time at which the event occurred.
-	Timestamp *time.Time
-
-	// The action that encompasses the provided event.
-	Action *string
-
-	// The event ID.
-	ID *string
-
-	// The location of the event.
-	Location *string
 }
 
 // ContainerRegistryEventRequest - The request that generated the event.
@@ -2463,12 +2269,6 @@ type ContainerServiceClusterSupportEndingEventData struct {
 	KubernetesVersion *string
 }
 
-// ContainerServiceClusterSupportEventData - Schema of common properties of cluster support events
-type ContainerServiceClusterSupportEventData struct {
-	// The Kubernetes version of the ManagedCluster resource
-	KubernetesVersion *string
-}
-
 // ContainerServiceNewKubernetesVersionAvailableEventData - Schema of the Data property of an EventGridEvent for a Microsoft.ContainerService.NewKubernetesVersionAvailable
 // event
 type ContainerServiceNewKubernetesVersionAvailableEventData struct {
@@ -2484,12 +2284,6 @@ type ContainerServiceNewKubernetesVersionAvailableEventData struct {
 
 	// The highest PATCH Kubernetes version for the lowest applicable MINOR version available for the ManagedCluster resource
 	LowestMinorKubernetesVersion *string
-}
-
-// ContainerServiceNodePoolRollingEventData - Schema of common properties of node pool rolling events
-type ContainerServiceNodePoolRollingEventData struct {
-	// The name of the node pool in the ManagedCluster resource
-	NodePoolName *string
 }
 
 // ContainerServiceNodePoolRollingFailedEventData - Schema of the Data property of an EventGridEvent for a Microsoft.ContainerService.NodePoolRollingFailed
@@ -2557,50 +2351,6 @@ type DeviceConnectionStateEventInfo struct {
 	// because both in ASCII and HEX numbers come after alphabets. If you are converting the string to hex, then the number is
 	// a 256 bit number.
 	SequenceNumber *string
-}
-
-// DeviceConnectionStateEventProperties - Schema of the Data property of an EventGridEvent for a device connection state event
-// (DeviceConnected, DeviceDisconnected).
-type DeviceConnectionStateEventProperties struct {
-	// REQUIRED; Information about the device connection state event.
-	DeviceConnectionStateEventInfo *DeviceConnectionStateEventInfo
-
-	// The unique identifier of the device. This case-sensitive string can be up to 128 characters long, and supports ASCII 7-bit
-	// alphanumeric characters plus the following special characters: - : . + % _ &#35; * ? ! ( ) , = `@` ; $ '.
-	DeviceID *string
-
-	// Name of the IoT Hub where the device was created or deleted.
-	HubName *string
-
-	// The unique identifier of the module. This case-sensitive string can be up to 128 characters long, and supports ASCII 7-bit
-	// alphanumeric characters plus the following special characters: - : . + % _ &#35; * ? ! ( ) , = `@` ; $ '.
-	ModuleID *string
-}
-
-// DeviceLifeCycleEventProperties - Schema of the Data property of an EventGridEvent for a device life cycle event (DeviceCreated,
-// DeviceDeleted).
-type DeviceLifeCycleEventProperties struct {
-	// REQUIRED; Information about the device twin, which is the cloud representation of application device metadata.
-	Twin *DeviceTwinInfo
-
-	// The unique identifier of the device. This case-sensitive string can be up to 128 characters long, and supports ASCII 7-bit
-	// alphanumeric characters plus the following special characters: - : . + % _ &#35; * ? ! ( ) , = `@` ; $ '.
-	DeviceID *string
-
-	// Name of the IoT Hub where the device was created or deleted.
-	HubName *string
-}
-
-// DeviceTelemetryEventProperties - Schema of the Data property of an EventGridEvent for a device telemetry event (DeviceTelemetry).
-type DeviceTelemetryEventProperties struct {
-	// REQUIRED; The content of the message from the device.
-	Body map[string]any
-
-	// REQUIRED; Application properties are user-defined strings that can be added to the message. These fields are optional.
-	Properties map[string]*string
-
-	// REQUIRED; System properties help identify contents and source of the messages.
-	SystemProperties map[string]*string
 }
 
 // DeviceTwinInfo - Information about the device twin, which is the cloud representation of application device metadata.
@@ -2707,20 +2457,6 @@ type EventGridMQTTClientCreatedOrUpdatedEventData struct {
 
 // EventGridMQTTClientDeletedEventData - Event data for Microsoft.EventGrid.MQTTClientDeleted event.
 type EventGridMQTTClientDeletedEventData struct {
-	// Unique identifier for the MQTT client that the client presents to the service
-	// for authentication. This case-sensitive string can be up to 128 characters
-	// long, and supports UTF-8 characters.
-	ClientAuthenticationName *string
-
-	// Name of the client resource in the Event Grid namespace.
-	ClientName *string
-
-	// Name of the Event Grid namespace where the MQTT client was created or updated.
-	NamespaceName *string
-}
-
-// EventGridMQTTClientEventData - Schema of the Data property of an EventGridEvent for MQTT Client state changes.
-type EventGridMQTTClientEventData struct {
 	// Unique identifier for the MQTT client that the client presents to the service
 	// for authentication. This case-sensitive string can be up to 128 characters
 	// long, and supports UTF-8 characters.
@@ -3379,24 +3115,6 @@ type MapsGeofenceEnteredEventData struct {
 	IsEventPublished *bool
 }
 
-// MapsGeofenceEventProperties - Schema of the Data property of an EventGridEvent for a Geofence event (GeofenceEntered, GeofenceExited,
-// GeofenceResult).
-type MapsGeofenceEventProperties struct {
-	// REQUIRED; Lists the fence geometries that either fully contain the coordinate position or have an overlap with the searchBuffer
-	// around the fence.
-	Geometries []MapsGeofenceGeometry
-
-	// Lists of the geometry ID of the geofence which is expired relative to the user time in the request.
-	ExpiredGeofenceGeometryID []string
-
-	// Lists of the geometry ID of the geofence which is in invalid period relative to the user time in the request.
-	InvalidPeriodGeofenceGeometryID []string
-
-	// True if at least one event is published to the Azure Maps event subscriber, false if no event is published to the Azure
-	// Maps event subscriber.
-	IsEventPublished *bool
-}
-
 // MapsGeofenceExitedEventData - Schema of the Data property of an EventGridEvent for a Microsoft.Maps.GeofenceExited event.
 type MapsGeofenceExitedEventData struct {
 	// REQUIRED; Lists the fence geometries that either fully contain the coordinate position or have an overlap with the searchBuffer
@@ -3690,19 +3408,6 @@ type MediaJobOutputScheduledEventData struct {
 	PreviousState *MediaJobState
 }
 
-// MediaJobOutputStateChangeEventData - Schema of the Data property of an EventGridEvent for a
-// Microsoft.Media.JobOutputStateChange event.
-type MediaJobOutputStateChangeEventData struct {
-	// REQUIRED; Gets the Job correlation data.
-	JobCorrelationData map[string]*string
-
-	// REQUIRED; Gets the output.
-	Output MediaJobOutputClassification
-
-	// REQUIRED; The previous state of the Job.
-	PreviousState *MediaJobState
-}
-
 // MediaJobProcessingEventData - Job processing event data. Schema of the data property of an EventGridEvent for
 // a Microsoft.Media.JobProcessing event.
 type MediaJobProcessingEventData struct {
@@ -3719,19 +3424,6 @@ type MediaJobProcessingEventData struct {
 // MediaJobScheduledEventData - Job scheduled event data. Schema of the data property of an EventGridEvent for
 // a Microsoft.Media.JobScheduled event.
 type MediaJobScheduledEventData struct {
-	// REQUIRED; Gets the Job correlation data.
-	CorrelationData map[string]*string
-
-	// REQUIRED; The previous state of the Job.
-	PreviousState *MediaJobState
-
-	// REQUIRED; The new state of the Job.
-	State *MediaJobState
-}
-
-// MediaJobStateChangeEventData - Schema of the Data property of an EventGridEvent for a
-// Microsoft.Media.JobStateChange event.
-type MediaJobStateChangeEventData struct {
 	// REQUIRED; Gets the Job correlation data.
 	CorrelationData map[string]*string
 
@@ -4430,16 +4122,6 @@ type ResourceNotificationsResourceDeletedDetails struct {
 	Type *string
 }
 
-// ResourceNotificationsResourceDeletedEventData - Describes the schema of the common properties across all ARN system topic
-// delete events
-type ResourceNotificationsResourceDeletedEventData struct {
-	// REQUIRED; details about operational info
-	OperationalDetails *ResourceNotificationsOperationalDetails
-
-	// REQUIRED; resourceInfo details for delete event
-	ResourceDetails *ResourceNotificationsResourceDeletedDetails
-}
-
 // ResourceNotificationsResourceManagementCreatedOrUpdatedEventData - Schema of the Data property of an EventGridEvent for
 // a
 // Microsoft.ResourceNotifications.Resources.CreatedOrUpdated event.
@@ -4484,19 +4166,6 @@ type ResourceNotificationsResourceUpdatedDetails struct {
 
 	// the type of the resource for which the event is being emitted
 	Type *string
-}
-
-// ResourceNotificationsResourceUpdatedEventData - Describes the schema of the common properties across all ARN system topic
-// events
-type ResourceNotificationsResourceUpdatedEventData struct {
-	// REQUIRED; details about operational info
-	OperationalDetails *ResourceNotificationsOperationalDetails
-
-	// REQUIRED; resourceInfo details for update event
-	ResourceDetails *ResourceNotificationsResourceUpdatedDetails
-
-	// api version of the resource properties bag
-	APIVersion *string
 }
 
 // ResourceWriteCancelEventData - Schema of the Data property of an EventGridEvent for a Microsoft.Resources.ResourceWriteCancel
@@ -4903,6 +4572,12 @@ type StorageBlobRenamedEventData struct {
 // StorageBlobTierChangedEventData - Schema of the Data property of an EventGridEvent for a Microsoft.Storage.BlobTierChanged
 // event.
 type StorageBlobTierChangedEventData struct {
+	// REQUIRED; The current tier of the blob.
+	AccessTier *StorageBlobAccessTier
+
+	// REQUIRED; The previous tier of the blob.
+	PreviousTier *StorageBlobAccessTier
+
 	// REQUIRED; For service use only. Diagnostic data occasionally included by the Azure Storage service. This property should
 	// be ignored by event consumers.
 	StorageDiagnostics map[string]any

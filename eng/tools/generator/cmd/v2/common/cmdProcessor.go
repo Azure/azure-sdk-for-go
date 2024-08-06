@@ -60,8 +60,22 @@ func ExecuteGoGenerate(path string) error {
 
 	if err != nil || stderrBuffer.Len() > 0 {
 		if stderrBuffer.Len() > 0 {
-			fmt.Println(stderrBuffer.String())
-			return fmt.Errorf("failed to execute `go generate`:\n%s", stderrBuffer.String())
+			// filter go downloading log
+			// https://github.com/golang/go/blob/1f0c044d60211e435dc58844127544dd3ecb6a41/src/cmd/go/internal/modfetch/fetch.go#L201
+			lines := strings.Split(stderrBuffer.String(), "\n")
+			newLines := make([]string, 0, len(lines))
+			for _, line := range lines {
+				if !strings.HasPrefix(strings.TrimSpace(line), "go: downloading") {
+					newLines = append(newLines, line)
+				}
+			}
+
+			if len(newLines) > 0 {
+				fmt.Println(strings.Join(newLines, "\n"))
+				return fmt.Errorf("failed to execute `go generate`:\n%s", strings.Join(newLines, "\n"))
+			}
+
+			return nil
 		}
 
 		return fmt.Errorf("failed to execute `go generate`:\n%+v", err)

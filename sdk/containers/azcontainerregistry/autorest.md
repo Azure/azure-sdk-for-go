@@ -420,6 +420,20 @@ directive:
         $.ArtifactOperatingSystem.description = "The artifact platform's operating system.";
 ```
 
+### Add description for RefreshToken and AccessToken
+
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions
+    transform: >
+        $.RefreshToken.description = "The ACR refresh token response.";
+  - from: swagger-document
+    where: $.definitions
+    transform: >
+      $.AccessToken.description = "The ACR access token response.";
+```
+
 ### Remove useless Marshal method
 
 ```yaml

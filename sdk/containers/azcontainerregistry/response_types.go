@@ -12,11 +12,13 @@ import "io"
 
 // AuthenticationClientExchangeAADAccessTokenForACRRefreshTokenResponse contains the response from method AuthenticationClient.ExchangeAADAccessTokenForACRRefreshToken.
 type AuthenticationClientExchangeAADAccessTokenForACRRefreshTokenResponse struct {
+	// The ACR refresh token response.
 	ACRRefreshToken
 }
 
 // AuthenticationClientExchangeACRRefreshTokenForACRAccessTokenResponse contains the response from method AuthenticationClient.ExchangeACRRefreshTokenForACRAccessToken.
 type AuthenticationClientExchangeACRRefreshTokenForACRAccessTokenResponse struct {
+	// The ACR access token response.
 	ACRAccessToken
 }
 

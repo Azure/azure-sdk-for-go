@@ -26,6 +26,7 @@ extends:
   parameters:
     ServiceDirectory: 'containers/azcontainerregistry'
     RunLiveTests: true
+    UseFederatedAuth: true
     UsePipelineProxy: false
     TestRunTime: '30m'
     SupportedClouds: 'Public,UsGov'

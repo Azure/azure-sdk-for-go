@@ -8,24 +8,25 @@ package azcontainerregistry
 
 import (
 	"context"
-	"errors"
 	"os"
+	"os/exec"
+	"regexp"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	azcloud "github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/test/credential"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry"
 	"github.com/stretchr/testify/require"
 )
 
 const (
 	fakeACRRefreshToken = ".eyJqdGkiOiIwMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDAiLCJzdWIiOiIwMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDAiLCJuYmYiOjQ2NzA0MTEyMTIsImV4cCI6NDY3MDQyMjkxMiwiaWF0Ijo0NjcwNDExMjEyLCJpc3MiOiJBenVyZSBDb250YWluZXIgUmVnaXN0cnkiLCJhdWQiOiJhemFjcmxpdmV0ZXN0LmF6dXJlY3IuaW8iLCJ2ZXJzaW9uIjoiMS4wIiwicmlkIjoiMDAwMCIsImdyYW50X3R5cGUiOiJyZWZyZXNoX3Rva2VuIiwiYXBwaWQiOiIwMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDAiLCJwZXJtaXNzaW9ucyI6eyJBY3Rpb25zIjpbInJlYWQiLCJ3cml0ZSIsImRlbGV0ZSIsImRlbGV0ZWQvcmVhZCIsImRlbGV0ZWQvcmVzdG9yZS9hY3Rpb24iXSwiTm90QWN0aW9ucyI6bnVsbH0sInJvbGVzIjpbXX0=."
+	fakeDigest          = "sha256:00"
 	fakeLoginServer     = recording.SanitizedValue + ".azurecr.io"
+	fakeRepository      = fakeLoginServer + "/fake"
 	recordingDirectory  = "sdk/containers/azcontainerregistry/testdata"
 )
 
@@ -88,10 +89,6 @@ func run(m *testing.M) int {
 		case len(env) > 0:
 			panic("unexpected value for AZCONTAINERREGISTRY_ENVIRONMENT: " + env)
 		}
-		err = importTestImages()
-		if err != nil {
-			panic(err)
-		}
 	}
 	if recording.GetRecordMode() != recording.LiveMode {
 		proxy, err := recording.StartTestProxy(recordingDirectory, nil)
@@ -123,41 +120,37 @@ func run(m *testing.M) int {
 	return m.Run()
 }
 
-func importTestImages() error {
-	subID := os.Getenv("AZURE_SUBSCRIPTION_ID")
-	if subID == "" {
-		return errors.New("no value for AZURE_SUBSCRIPTION_ID")
+func pushImage(t *testing.T) (string, string) {
+	repository := strings.ReplaceAll(strings.ToLower(t.Name()), "/", "_")
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		return repository, fakeDigest
 	}
-	rg := os.Getenv("AZCONTAINERREGISTRY_RESOURCE_GROUP")
-	if rg == "" {
-		return errors.New("no value for AZCONTAINERREGISTRY_RESOURCE_GROUP")
-	}
-	registryName := os.Getenv("REGISTRY_NAME")
-	if registryName == "" {
-		return errors.New("no value for REGISTRY_NAME")
-	}
+	ctx, cancel := context.WithTimeout(context.Background(), 45*time.Second)
+	defer cancel()
+	image := testConfig.loginServer + "/" + repository
 
-	ctx := context.Background()
-	client, err := armcontainerregistry.NewRegistriesClient(subID, testConfig.credential, &arm.ClientOptions{ClientOptions: azcore.ClientOptions{Cloud: testConfig.cloud}})
-	if err != nil {
-		return err
+	cmd := exec.CommandContext(ctx, "docker", "build", "-t", image, "--build-arg", "ID="+repository, ".")
+	cmd.Dir = "testdata"
+	out, err := cmd.CombinedOutput()
+	require.NoError(t, err, string(out))
+
+	cmd = exec.CommandContext(ctx, "docker", "push", image)
+	out, err = cmd.CombinedOutput()
+	require.NoError(t, err, string(out))
+	digest := string(regexp.MustCompile("(sha256:[0-9a-f]{64})").Find(out))
+	require.NotEmpty(t, digest, "failed to find digest in "+string(out))
+
+	t.Cleanup(func() {
+		ctx, cancel := context.WithTimeout(context.Background(), 45*time.Second)
+		defer cancel()
+		require.NoError(t, exec.CommandContext(ctx, "docker", "rmi", image).Run())
+	})
+
+	_, hash, found := strings.Cut(digest, ":")
+	require.True(t, found)
+	if recording.GetRecordMode() == recording.RecordingMode {
+		// require.NoError(t, recording.AddGeneralRegexSanitizer("fake", repository, nil))
+		require.NoError(t, recording.AddGeneralRegexSanitizer("00", hash, nil))
 	}
-	images := []string{"hello-world:latest", "alpine:3.17.1", "alpine:3.16.3", "alpine:3.14.8", "busybox:1.36.1-uclibc", "eclipse-mosquitto:latest"}
-	for _, image := range images {
-		poller, err := client.BeginImportImage(ctx, rg, registryName, armcontainerregistry.ImportImageParameters{
-			Source: &armcontainerregistry.ImportSource{
-				SourceImage: to.Ptr("library/" + image),
-				RegistryURI: to.Ptr("docker.io"),
-			},
-			TargetTags: []*string{to.Ptr(image)},
-			Mode:       to.Ptr(armcontainerregistry.ImportModeForce),
-		}, nil)
-		if err == nil {
-			_, err = poller.PollUntilDone(ctx, nil)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return err
+	return repository, digest
 }

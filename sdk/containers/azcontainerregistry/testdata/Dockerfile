@@ -1,0 +1,3 @@
+FROM scratch
+ARG ID
+ENV ID=$ID

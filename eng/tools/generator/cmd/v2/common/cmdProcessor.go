@@ -65,7 +65,11 @@ func ExecuteGoGenerate(path string) error {
 			lines := strings.Split(stderrBuffer.String(), "\n")
 			newLines := make([]string, 0, len(lines))
 			for _, line := range lines {
-				if !strings.HasPrefix(strings.TrimSpace(line), "go: downloading") {
+				l := strings.TrimSpace(line)
+				if len(l) == 0 {
+					continue
+				}
+				if !strings.HasPrefix(l, "go: downloading") {
 					newLines = append(newLines, line)
 				}
 			}

@@ -11,7 +11,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"net/http"
 	"strings"
 	"sync/atomic"
@@ -19,6 +18,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/temporal"
 )
 
@@ -77,7 +77,7 @@ func (p *authenticationPolicy) Do(req *policy.Request) (*http.Response, error) {
 	} else {
 		// do challenge process for the initial request
 		var challengeReq *policy.Request
-		challengeReq, err = p.getChallengeRequest(*req)
+		challengeReq, err = getChallengeRequest(*req)
 		if err != nil {
 			return nil, err
 		}
@@ -167,7 +167,7 @@ func findServiceAndScope(resp *http.Response) (string, string, error) {
 	return valuesMap["service"], valuesMap["scope"], nil
 }
 
-func (p authenticationPolicy) getChallengeRequest(oriReq policy.Request) (*policy.Request, error) {
+func getChallengeRequest(oriReq policy.Request) (*policy.Request, error) {
 	copied := oriReq.Clone(oriReq.Raw().Context())
 	err := copied.SetBody(nil, "")
 	if err != nil {

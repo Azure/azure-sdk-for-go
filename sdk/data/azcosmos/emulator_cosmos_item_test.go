@@ -18,7 +18,7 @@ import (
 func TestItemCRUD(t *testing.T) {
 	emulatorTests := newEmulatorTests(t)
 	client := emulatorTests.getClient(t, newSpanValidator(t, spanMatcher{
-		ExpectedSpans: []string{"ContainerClient.CreateItem", "ContainerClient.ReadItem", "ContainerClient.ReplaceItem", "ContainerClient.UpsertItem", "ContainerClient.DeleteItem", "ContainerClient.PatchItem"},
+		ExpectedSpans: []string{"create_item aContainer", "read_item aContainer", "replace_item aContainer", "upsert_item aContainer", "delete_item aContainer", "patch_item aContainer"},
 	}))
 
 	database := emulatorTests.createDatabase(t, context.TODO(), client, "itemCRUD")
@@ -194,7 +194,7 @@ func TestItemCRUD(t *testing.T) {
 func TestItemCRUDforNullPartitionKey(t *testing.T) {
 	emulatorTests := newEmulatorTests(t)
 	client := emulatorTests.getClient(t, newSpanValidator(t, spanMatcher{
-		ExpectedSpans: []string{"ContainerClient.CreateItem", "ContainerClient.ReadItem", "ContainerClient.ReplaceItem", "ContainerClient.UpsertItem", "ContainerClient.DeleteItem", "ContainerClient.PatchItem"},
+		ExpectedSpans: []string{"create_item aContainer", "read_item aContainer", "replace_item aContainer", "upsert_item aContainer", "delete_item aContainer", "patch_item aContainer"},
 	}))
 
 	database := emulatorTests.createDatabase(t, context.TODO(), client, "itemCRUD")

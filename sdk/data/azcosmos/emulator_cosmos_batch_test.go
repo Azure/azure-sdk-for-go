@@ -12,7 +12,7 @@ import (
 func TestItemTransactionalBatch(t *testing.T) {
 	emulatorTests := newEmulatorTests(t)
 	client := emulatorTests.getClient(t, newSpanValidator(t, spanMatcher{
-		ExpectedSpans: []string{"ContainerClient.ExecuteTransactionalBatch"},
+		ExpectedSpans: []string{"execute_batch aContainer"},
 	}))
 
 	database := emulatorTests.createDatabase(t, context.TODO(), client, "itemCRUD")
@@ -172,7 +172,7 @@ func TestItemTransactionalBatch(t *testing.T) {
 func TestItemTransactionalBatchError(t *testing.T) {
 	emulatorTests := newEmulatorTests(t)
 	client := emulatorTests.getClient(t, newSpanValidator(t, spanMatcher{
-		ExpectedSpans: []string{"ContainerClient.ExecuteTransactionalBatch"},
+		ExpectedSpans: []string{"execute_batch aContainer"},
 	}))
 
 	database := emulatorTests.createDatabase(t, context.TODO(), client, "itemCRUD")

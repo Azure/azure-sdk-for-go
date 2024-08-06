@@ -9,14 +9,14 @@ const (
 	otelSpanNameCreateDatabase              = "create_database %s"
 	otelSpanNameReadDatabase                = "read_database %s"
 	otelSpanNameDeleteDatabase              = "delete_database %s"
-	otelSpanNameQueryDatabases              = "query_databases"
+	otelSpanNameQueryDatabases              = "query_databases %s"
 	otelSpanNameReadThroughputDatabase      = "read_database_throughput %s"
 	otelSpanNameReplaceThroughputDatabase   = "replace_database_throughput %s"
 	otelSpanNameCreateContainer             = "create_container %s"
 	otelSpanNameReadContainer               = "read_container %s"
 	otelSpanNameDeleteContainer             = "delete_container %s"
 	otelSpanNameReplaceContainer            = "replace_container %s"
-	otelSpanNameQueryContainers             = "query_containers"
+	otelSpanNameQueryContainers             = "query_containers %s"
 	otelSpanNameReadThroughputContainer     = "read_container_throughput %s"
 	otelSpanNameReaplaceThroughputContainer = "replace_container_throughput %s"
 	otelSpanNameExecuteBatch                = "execute_batch %s"
@@ -40,7 +40,7 @@ func getSpanNameForDatabases(operationType operationType, resourceType resourceT
 		case operationTypeDelete:
 			return fmt.Sprintf(otelSpanNameDeleteDatabase, id), nil
 		case operationTypeQuery:
-			return otelSpanNameQueryDatabases, nil
+			return fmt.Sprintf(otelSpanNameQueryDatabases, id), nil
 		}
 	case resourceTypeOffer:
 		switch operationType {
@@ -66,7 +66,7 @@ func getSpanNameForContainers(operationType operationType, resourceType resource
 		case operationTypeReplace:
 			return fmt.Sprintf(otelSpanNameReplaceContainer, id), nil
 		case operationTypeQuery:
-			return otelSpanNameQueryContainers, nil
+			return fmt.Sprintf(otelSpanNameQueryContainers, id), nil
 		case operationTypeBatch:
 			return fmt.Sprintf(otelSpanNameExecuteBatch, id), nil
 		}

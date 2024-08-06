@@ -30,7 +30,7 @@ func TestAAD(t *testing.T) {
 	}
 
 	aadClient := emulatorTests.getAadClient(t, newSpanValidator(t, spanMatcher{
-		ExpectedSpans: []string{"ContainerClient.CreateItem", "ContainerClient.ReadItem", "ContainerClient.ReplaceItem", "ContainerClient.UpsertItem", "ContainerClient.DeleteItem"},
+		ExpectedSpans: []string{"create_item aContainer", "read_item aContainer", "replace_item aContainer", "upsert_item aContainer", "delete_item aContainer"},
 	}))
 
 	item := map[string]string{

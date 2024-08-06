@@ -6,6 +6,7 @@ package azcosmos
 import (
 	"context"
 	"slices"
+	"strings"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/tracing"
@@ -55,7 +56,7 @@ type matchingTracer struct {
 
 func (mt *matchingTracer) Start(ctx context.Context, spanName string, kind tracing.SpanKind) (context.Context, tracing.Span) {
 
-	if slices.IndexFunc(mt.matcher.ExpectedSpans, func(i string) bool { return i == spanName }) < 0 {
+	if slices.IndexFunc(mt.matcher.ExpectedSpans, func(i string) bool { return i == spanName }) < 0 && !strings.Contains(spanName, "NextPage") {
 		return ctx, tracing.Span{}
 	}
 	// span name matches our matcher, track it

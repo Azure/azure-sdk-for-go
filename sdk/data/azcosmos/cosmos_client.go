@@ -272,6 +272,13 @@ func (c *Client) NewQueryDatabasesPager(query string, o *QueryDatabasesOptions) 
 			return page.ContinuationToken != nil
 		},
 		Fetcher: func(ctx context.Context, page *QueryDatabasesResponse) (QueryDatabasesResponse, error) {
+			var err error
+			spanName, err := getSpanNameForDatabases(operationTypeQuery, resourceTypeDatabase, c.gem.locationCache.defaultEndpoint.Hostname())
+			if err != nil {
+				return QueryDatabasesResponse{}, err
+			}
+			ctx, endSpan := azruntime.StartSpan(ctx, spanName, c.internal.Tracer(), nil)
+			defer func() { endSpan(err) }()
 			if page != nil {
 				if page.ContinuationToken != nil {
 					// Use the previous page continuation if available

@@ -114,6 +114,13 @@ func (c *DatabaseClient) NewQueryContainersPager(query string, o *QueryContainer
 			return page.ContinuationToken != nil
 		},
 		Fetcher: func(ctx context.Context, page *QueryContainersResponse) (QueryContainersResponse, error) {
+			var err error
+			spanName, err := getSpanNameForContainers(operationTypeQuery, resourceTypeCollection, c.id)
+			if err != nil {
+				return QueryContainersResponse{}, err
+			}
+			ctx, endSpan := runtime.StartSpan(ctx, spanName, c.client.internal.Tracer(), nil)
+			defer func() { endSpan(err) }()
 			if page != nil {
 				if page.ContinuationToken != nil {
 					// Use the previous page continuation if available

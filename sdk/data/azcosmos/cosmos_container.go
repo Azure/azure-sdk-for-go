@@ -514,6 +514,13 @@ func (c *ContainerClient) NewQueryItemsPager(query string, partitionKey Partitio
 			return page.ContinuationToken != nil
 		},
 		Fetcher: func(ctx context.Context, page *QueryItemsResponse) (QueryItemsResponse, error) {
+			var err error
+			spanName, err := getSpanNameForItems(operationTypeQuery, c.id)
+			if err != nil {
+				return QueryItemsResponse{}, err
+			}
+			ctx, endSpan := runtime.StartSpan(ctx, spanName, c.database.client.internal.Tracer(), nil)
+			defer func() { endSpan(err) }()
 			if page != nil {
 				if page.ContinuationToken != nil {
 					// Use the previous page continuation if available

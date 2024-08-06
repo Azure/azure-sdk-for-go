@@ -1,8 +1,6 @@
 # Release History
 
-## 1.8.0-beta.2 (Unreleased)
-
-### Features Added
+## 1.8.0-beta.2 (2024-08-06)
 
 ### Breaking Changes
 * `NewManagedIdentityCredential` now returns an error when a user-assigned identity
@@ -15,8 +13,6 @@
   * Azure ML (when a resource ID is specified; client IDs are supported)
   * Cloud Shell
   * Service Fabric
-
-### Bugs Fixed
 
 ### Other Changes
 * If `DefaultAzureCredential` receives a non-JSON response when probing IMDS before

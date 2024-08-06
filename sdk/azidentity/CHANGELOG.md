@@ -5,6 +5,16 @@
 ### Features Added
 
 ### Breaking Changes
+* `NewManagedIdentityCredential` now returns an error when a user-assigned identity
+  is specified on a platform whose managed identity API doesn't support that.
+  `ManagedIdentityCredential.GetToken()` formerly logged a warning in these cases.
+  Returning an error instead prevents the credential authenticating an unexpected
+  identity, causing a client to act with unexpected privileges. The affected
+  platforms are:
+  * Azure Arc
+  * Azure ML (when a resource ID is specified; client IDs are supported)
+  * Cloud Shell
+  * Service Fabric
 
 ### Bugs Fixed
 

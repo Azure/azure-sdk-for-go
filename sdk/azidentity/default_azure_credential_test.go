@@ -8,6 +8,7 @@ package azidentity
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -394,4 +395,28 @@ func TestDefaultAzureCredential_IMDS(t *testing.T) {
 		require.NoError(t, err)
 		require.Equal(t, tokenValue, tk.Token)
 	})
+}
+
+func TestDefaultAzureCredential_UnsupportedMIClientID(t *testing.T) {
+	fail := true
+	before := defaultAzTokenProvider
+	defer func() { defaultAzTokenProvider = before }()
+	defaultAzTokenProvider = func(ctx context.Context, scopes []string, tenant, subscription string) ([]byte, error) {
+		if fail {
+			return nil, errors.New("fail")
+		}
+		return mockAzTokenProviderSuccess(ctx, scopes, tenant, subscription)
+	}
+	t.Setenv(azureClientID, fakeClientID)
+	t.Setenv(msiEndpoint, fakeMIEndpoint)
+
+	cred, err := NewDefaultAzureCredential(nil)
+	require.NoError(t, err, "an unsupported client ID isn't a constructor error")
+
+	_, err = cred.GetToken(ctx, testTRO)
+	require.ErrorContains(t, err, "Cloud Shell", "error should mention the unsupported ID")
+
+	fail = false
+	_, err = cred.GetToken(ctx, testTRO)
+	require.NoError(t, err, "expected a token from AzureCLICredential")
 }

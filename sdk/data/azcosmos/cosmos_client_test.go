@@ -78,6 +78,7 @@ func TestNewClientFromConnStrSuccess(t *testing.T) {
 func TestEnsureErrorIsGeneratedOnResponse(t *testing.T) {
 	someError := map[string]string{"Code": "SomeCode"}
 
+	defaultEndpoint, _ := url.Parse(srv.URL())
 	jsonString, err := json.Marshal(someError)
 	if err != nil {
 		t.Fatal(err)
@@ -89,8 +90,11 @@ func TestEnsureErrorIsGeneratedOnResponse(t *testing.T) {
 		mock.WithBody(jsonString),
 		mock.WithStatusCode(404))
 
+	mockLocationCache := locationCache{
+		defaultEndpoint: defaultEndpoint
+	}	
 	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
-	gem := &globalEndpointManager{preferredLocations: []string{}}
+	gem := &globalEndpointManager{preferredLocations: []string{}, locationCache: mockLocationCache}
 	client := &Client{endpoint: srv.URL(), internal: internalClient, gem: gem}
 	operationContext := pipelineRequestOptions{
 		resourceType:    resourceTypeDatabase,

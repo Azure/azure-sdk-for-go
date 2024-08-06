@@ -208,7 +208,11 @@ func (c *Client) CreateDatabase(
 	databaseProperties DatabaseProperties,
 	o *CreateDatabaseOptions) (DatabaseResponse, error) {
 	var err error
-	ctx, endSpan := azruntime.StartSpan(ctx, "Client.CreateDatabase", c.internal.Tracer(), nil)
+	spanName, err := getSpanNameForDatabases(operationTypeCreate, resourceTypeDatabase, databaseProperties.ID)
+	if err != nil {
+		return DatabaseResponse{}, err
+	}
+	ctx, endSpan := azruntime.StartSpan(ctx, spanName, c.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 
 	if o == nil {
@@ -290,6 +294,7 @@ func (c *Client) NewQueryDatabasesPager(query string, o *QueryDatabasesOptions) 
 
 			return newDatabasesQueryResponse(azResponse)
 		},
+		Tracer: c.internal.Tracer(),
 	})
 }
 

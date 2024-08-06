@@ -51,7 +51,11 @@ func (db *DatabaseClient) CreateContainer(
 	containerProperties ContainerProperties,
 	o *CreateContainerOptions) (ContainerResponse, error) {
 	var err error
-	ctx, endSpan := runtime.StartSpan(ctx, "DatabaseClient.CreateContainer", db.client.internal.Tracer(), nil)
+	spanName, err := getSpanNameForContainers(operationTypeCreate, resourceTypeCollection, containerProperties.ID)
+	if err != nil {
+		return ContainerResponse{}, err
+	}
+	ctx, endSpan := runtime.StartSpan(ctx, spanName, db.client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	if o == nil {
 		o = &CreateContainerOptions{}
@@ -132,6 +136,7 @@ func (c *DatabaseClient) NewQueryContainersPager(query string, o *QueryContainer
 
 			return newContainersQueryResponse(azResponse)
 		},
+		Tracer: c.client.internal.Tracer(),
 	})
 }
 
@@ -142,7 +147,11 @@ func (db *DatabaseClient) Read(
 	ctx context.Context,
 	o *ReadDatabaseOptions) (DatabaseResponse, error) {
 	var err error
-	ctx, endSpan := runtime.StartSpan(ctx, "DatabaseClient.Read", db.client.internal.Tracer(), nil)
+	spanName, err := getSpanNameForDatabases(operationTypeRead, resourceTypeDatabase, db.id)
+	if err != nil {
+		return DatabaseResponse{}, err
+	}
+	ctx, endSpan := runtime.StartSpan(ctx, spanName, db.client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	if o == nil {
 		o = &ReadDatabaseOptions{}
@@ -179,7 +188,11 @@ func (db *DatabaseClient) ReadThroughput(
 	ctx context.Context,
 	o *ThroughputOptions) (ThroughputResponse, error) {
 	var err error
-	ctx, endSpan := runtime.StartSpan(ctx, "DatabaseClient.ReadThroughput", db.client.internal.Tracer(), nil)
+	spanName, err := getSpanNameForDatabases(operationTypeRead, resourceTypeOffer, db.id)
+	if err != nil {
+		return ThroughputResponse{}, err
+	}
+	ctx, endSpan := runtime.StartSpan(ctx, spanName, db.client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	if o == nil {
 		o = &ThroughputOptions{}
@@ -204,7 +217,11 @@ func (db *DatabaseClient) ReplaceThroughput(
 	throughputProperties ThroughputProperties,
 	o *ThroughputOptions) (ThroughputResponse, error) {
 	var err error
-	ctx, endSpan := runtime.StartSpan(ctx, "DatabaseClient.ReplaceThroughput", db.client.internal.Tracer(), nil)
+	spanName, err := getSpanNameForDatabases(operationTypeReplace, resourceTypeOffer, db.id)
+	if err != nil {
+		return ThroughputResponse{}, err
+	}
+	ctx, endSpan := runtime.StartSpan(ctx, spanName, db.client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	if o == nil {
 		o = &ThroughputOptions{}
@@ -227,7 +244,11 @@ func (db *DatabaseClient) Delete(
 	ctx context.Context,
 	o *DeleteDatabaseOptions) (DatabaseResponse, error) {
 	var err error
-	ctx, endSpan := runtime.StartSpan(ctx, "DatabaseClient.Delete", db.client.internal.Tracer(), nil)
+	spanName, err := getSpanNameForDatabases(operationTypeDelete, resourceTypeDatabase, db.id)
+	if err != nil {
+		return DatabaseResponse{}, err
+	}
+	ctx, endSpan := runtime.StartSpan(ctx, spanName, db.client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	if o == nil {
 		o = &DeleteDatabaseOptions{}

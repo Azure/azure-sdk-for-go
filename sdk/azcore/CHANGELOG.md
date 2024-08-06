@@ -4,6 +4,8 @@
 
 ### Features Added
 
+* Added field `Attributes` to `runtime.StartSpanOptions` to simplify creating spans with attributes.
+
 ### Breaking Changes
 
 ### Bugs Fixed

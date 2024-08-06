@@ -258,7 +258,7 @@ func (b *generateErrorBuilder) build() error {
 		messages = append(messages, err.Error())
 	}
 	return fmt.Errorf("total %d error(s): \n%s\n%s", len(b.errors), strings.Join(messages, "\n"), `Refer to the detail errors for potential fixes.
-If the issue persists, contact the Go language support channel at https://aka.ms/azsdk/go-lang-teams-channel and include this spec pull request`)
+If the issue persists, contact the Go language support channel at https://aka.ms/azsdk/go-lang-teams-channel and include this spec pull request.`)
 }
 
 func logError(err error) string {

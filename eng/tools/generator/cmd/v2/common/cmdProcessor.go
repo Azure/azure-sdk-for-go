@@ -71,8 +71,9 @@ func ExecuteGoGenerate(path string) error {
 			}
 
 			if len(newLines) > 0 {
-				fmt.Println(strings.Join(newLines, "\n"))
-				return fmt.Errorf("failed to execute `go generate`:\n%s", strings.Join(newLines, "\n"))
+				newErrMsg := strings.Join(newLines, "\n")
+				fmt.Println(newErrMsg)
+				return fmt.Errorf("failed to execute `go generate`:\n%s", newErrMsg)
 			}
 
 			return nil

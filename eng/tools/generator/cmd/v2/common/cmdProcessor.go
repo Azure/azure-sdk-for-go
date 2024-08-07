@@ -316,18 +316,14 @@ func diagnostics(lines []string) []diagnostic {
 		if strings.Contains(line, "warning ") {
 			if start != -1 {
 				diagnostics = append(diagnostics, diagnostic{kind: kind, start: start, end: i - 1})
-				start = i
-			} else {
-				start = i
 			}
+			start = i
 			kind = "warning"
 		} else if strings.Contains(line, "error ") {
 			if start != -1 {
 				diagnostics = append(diagnostics, diagnostic{kind: kind, start: start, end: i - 1})
-				start = i
-			} else {
-				start = i
 			}
+			start = i
 			kind = "error"
 		}
 

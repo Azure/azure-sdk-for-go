@@ -51,7 +51,7 @@ type spanMatcher struct {
 
 type matchingTracer struct {
 	matcher spanMatcher
-	matches []*span
+	matches []*matchingSpan
 }
 
 func (mt *matchingTracer) Start(ctx context.Context, spanName string, kind tracing.SpanKind) (context.Context, tracing.Span) {
@@ -60,7 +60,7 @@ func (mt *matchingTracer) Start(ctx context.Context, spanName string, kind traci
 		return ctx, tracing.Span{}
 	}
 	// span name matches our matcher, track it
-	newSpan := &span{
+	newSpan := &matchingSpan{
 		name: spanName,
 	}
 	mt.matches = append(mt.matches, newSpan)
@@ -70,18 +70,18 @@ func (mt *matchingTracer) Start(ctx context.Context, spanName string, kind traci
 	})
 }
 
-type span struct {
+type matchingSpan struct {
 	name   string
 	status tracing.SpanStatus
 	desc   string
 	ended  bool
 }
 
-func (s *span) End() {
+func (s *matchingSpan) End() {
 	s.ended = true
 }
 
-func (s *span) SetStatus(code tracing.SpanStatus, desc string) {
+func (s *matchingSpan) SetStatus(code tracing.SpanStatus, desc string) {
 	s.status = code
 	s.desc = desc
 	s.ended = true

@@ -42,11 +42,11 @@ func (c *ContainerClient) Read(
 	ctx context.Context,
 	o *ReadContainerOptions) (ContainerResponse, error) {
 	var err error
-	spanName, err := getSpanNameForContainers(operationTypeRead, resourceTypeCollection, c.id)
+	spanName, err := c.getSpanForContainer(operationTypeRead, resourceTypeCollection, c.id)
 	if err != nil {
 		return ContainerResponse{}, err
 	}
-	ctx, endSpan := runtime.StartSpan(ctx, spanName, c.database.client.internal.Tracer(), nil)
+	ctx, endSpan := runtime.StartSpan(ctx, spanName.name, c.database.client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	if o == nil {
 		o = &ReadContainerOptions{}
@@ -84,11 +84,11 @@ func (c *ContainerClient) Replace(
 	containerProperties ContainerProperties,
 	o *ReplaceContainerOptions) (ContainerResponse, error) {
 	var err error
-	spanName, err := getSpanNameForContainers(operationTypeReplace, resourceTypeCollection, c.id)
+	spanName, err := c.getSpanForContainer(operationTypeReplace, resourceTypeCollection, c.id)
 	if err != nil {
 		return ContainerResponse{}, err
 	}
-	ctx, endSpan := runtime.StartSpan(ctx, spanName, c.database.client.internal.Tracer(), nil)
+	ctx, endSpan := runtime.StartSpan(ctx, spanName.name, c.database.client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	if o == nil {
 		o = &ReplaceContainerOptions{}
@@ -127,11 +127,11 @@ func (c *ContainerClient) Delete(
 	ctx context.Context,
 	o *DeleteContainerOptions) (ContainerResponse, error) {
 	var err error
-	spanName, err := getSpanNameForContainers(operationTypeDelete, resourceTypeCollection, c.id)
+	spanName, err := c.getSpanForContainer(operationTypeDelete, resourceTypeCollection, c.id)
 	if err != nil {
 		return ContainerResponse{}, err
 	}
-	ctx, endSpan := runtime.StartSpan(ctx, spanName, c.database.client.internal.Tracer(), nil)
+	ctx, endSpan := runtime.StartSpan(ctx, spanName.name, c.database.client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	if o == nil {
 		o = &DeleteContainerOptions{}
@@ -169,11 +169,11 @@ func (c *ContainerClient) ReadThroughput(
 	ctx context.Context,
 	o *ThroughputOptions) (ThroughputResponse, error) {
 	var err error
-	spanName, err := getSpanNameForContainers(operationTypeRead, resourceTypeOffer, c.id)
+	spanName, err := c.getSpanForContainer(operationTypeRead, resourceTypeOffer, c.id)
 	if err != nil {
 		return ThroughputResponse{}, err
 	}
-	ctx, endSpan := runtime.StartSpan(ctx, spanName, c.database.client.internal.Tracer(), nil)
+	ctx, endSpan := runtime.StartSpan(ctx, spanName.name, c.database.client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	if o == nil {
 		o = &ThroughputOptions{}
@@ -198,11 +198,11 @@ func (c *ContainerClient) ReplaceThroughput(
 	throughputProperties ThroughputProperties,
 	o *ThroughputOptions) (ThroughputResponse, error) {
 	var err error
-	spanName, err := getSpanNameForContainers(operationTypeReplace, resourceTypeOffer, c.id)
+	spanName, err := c.getSpanForContainer(operationTypeReplace, resourceTypeOffer, c.id)
 	if err != nil {
 		return ThroughputResponse{}, err
 	}
-	ctx, endSpan := runtime.StartSpan(ctx, spanName, c.database.client.internal.Tracer(), nil)
+	ctx, endSpan := runtime.StartSpan(ctx, spanName.name, c.database.client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	if o == nil {
 		o = &ThroughputOptions{}
@@ -229,11 +229,11 @@ func (c *ContainerClient) CreateItem(
 	item []byte,
 	o *ItemOptions) (ItemResponse, error) {
 	var err error
-	spanName, err := getSpanNameForItems(operationTypeCreate, c.id)
+	spanName, err := c.getSpanForItems(operationTypeCreate)
 	if err != nil {
 		return ItemResponse{}, err
 	}
-	ctx, endSpan := runtime.StartSpan(ctx, spanName, c.database.client.internal.Tracer(), nil)
+	ctx, endSpan := runtime.StartSpan(ctx, spanName.name, c.database.client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	h := headerOptionsOverride{
 		partitionKey: &partitionKey,
@@ -282,11 +282,11 @@ func (c *ContainerClient) UpsertItem(
 	item []byte,
 	o *ItemOptions) (ItemResponse, error) {
 	var err error
-	spanName, err := getSpanNameForItems(operationTypeUpsert, c.id)
+	spanName, err := c.getSpanForItems(operationTypeUpsert)
 	if err != nil {
 		return ItemResponse{}, err
 	}
-	ctx, endSpan := runtime.StartSpan(ctx, spanName, c.database.client.internal.Tracer(), nil)
+	ctx, endSpan := runtime.StartSpan(ctx, spanName.name, c.database.client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	h := headerOptionsOverride{
 		partitionKey: &partitionKey,
@@ -341,11 +341,11 @@ func (c *ContainerClient) ReplaceItem(
 	item []byte,
 	o *ItemOptions) (ItemResponse, error) {
 	var err error
-	spanName, err := getSpanNameForItems(operationTypeReplace, c.id)
+	spanName, err := c.getSpanForItems(operationTypeReplace)
 	if err != nil {
 		return ItemResponse{}, err
 	}
-	ctx, endSpan := runtime.StartSpan(ctx, spanName, c.database.client.internal.Tracer(), nil)
+	ctx, endSpan := runtime.StartSpan(ctx, spanName.name, c.database.client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	h := headerOptionsOverride{
 		partitionKey: &partitionKey,
@@ -394,11 +394,11 @@ func (c *ContainerClient) ReadItem(
 	itemId string,
 	o *ItemOptions) (ItemResponse, error) {
 	var err error
-	spanName, err := getSpanNameForItems(operationTypeRead, c.id)
+	spanName, err := c.getSpanForItems(operationTypeRead)
 	if err != nil {
 		return ItemResponse{}, err
 	}
-	ctx, endSpan := runtime.StartSpan(ctx, spanName, c.database.client.internal.Tracer(), nil)
+	ctx, endSpan := runtime.StartSpan(ctx, spanName.name, c.database.client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	h := headerOptionsOverride{
 		partitionKey: &partitionKey,
@@ -443,11 +443,11 @@ func (c *ContainerClient) DeleteItem(
 	itemId string,
 	o *ItemOptions) (ItemResponse, error) {
 	var err error
-	spanName, err := getSpanNameForItems(operationTypeDelete, c.id)
+	spanName, err := c.getSpanForItems(operationTypeDelete)
 	if err != nil {
 		return ItemResponse{}, err
 	}
-	ctx, endSpan := runtime.StartSpan(ctx, spanName, c.database.client.internal.Tracer(), nil)
+	ctx, endSpan := runtime.StartSpan(ctx, spanName.name, c.database.client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	h := headerOptionsOverride{
 		partitionKey: &partitionKey,
@@ -516,11 +516,11 @@ func (c *ContainerClient) NewQueryItemsPager(query string, partitionKey Partitio
 		Fetcher: func(ctx context.Context, page *QueryItemsResponse) (QueryItemsResponse, error) {
 			var err error
 			// Move the span to the pager once https://github.com/Azure/azure-sdk-for-go/issues/23294 is fixed
-			spanName, err := getSpanNameForItems(operationTypeQuery, c.id)
+			spanName, err := c.getSpanForItems(operationTypeQuery)
 			if err != nil {
 				return QueryItemsResponse{}, err
 			}
-			ctx, endSpan := runtime.StartSpan(ctx, spanName, c.database.client.internal.Tracer(), nil)
+			ctx, endSpan := runtime.StartSpan(ctx, spanName.name, c.database.client.internal.Tracer(), nil)
 			defer func() { endSpan(err) }()
 			if page != nil {
 				if page.ContinuationToken != nil {
@@ -561,11 +561,11 @@ func (c *ContainerClient) PatchItem(
 	ops PatchOperations,
 	o *ItemOptions) (ItemResponse, error) {
 	var err error
-	spanName, err := getSpanNameForItems(operationTypePatch, c.id)
+	spanName, err := getSpanNameForItems(c.database.client.getAccountEndpoint(), operationTypePatch, c.database.id, c.id)
 	if err != nil {
 		return ItemResponse{}, err
 	}
-	ctx, endSpan := runtime.StartSpan(ctx, spanName, c.database.client.internal.Tracer(), nil)
+	ctx, endSpan := runtime.StartSpan(ctx, spanName.name, c.database.client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	h := headerOptionsOverride{
 		partitionKey: &partitionKey,
@@ -613,11 +613,11 @@ func (c *ContainerClient) NewTransactionalBatch(partitionKey PartitionKey) Trans
 // Once executed, verify the Success property of the response to determine if the batch was committed
 func (c *ContainerClient) ExecuteTransactionalBatch(ctx context.Context, b TransactionalBatch, o *TransactionalBatchOptions) (TransactionalBatchResponse, error) {
 	var err error
-	spanName, err := getSpanNameForContainers(operationTypeBatch, resourceTypeCollection, c.id)
+	spanName, err := c.getSpanForContainer(operationTypeBatch, resourceTypeCollection, c.id)
 	if err != nil {
 		return TransactionalBatchResponse{}, err
 	}
-	ctx, endSpan := runtime.StartSpan(ctx, spanName, c.database.client.internal.Tracer(), nil)
+	ctx, endSpan := runtime.StartSpan(ctx, spanName.name, c.database.client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	if len(b.operations) == 0 {
 		return TransactionalBatchResponse{}, errors.New("no operations in batch")
@@ -678,4 +678,12 @@ func (c *ContainerClient) getRID(ctx context.Context) (string, error) {
 	}
 
 	return containerResponse.ContainerProperties.ResourceID, nil
+}
+
+func (c *ContainerClient) getSpanForContainer(operationType operationType, resourceType resourceType, id string) (span, error) {
+	return getSpanNameForContainers(c.database.client.getAccountEndpoint(), operationType, resourceType, c.database.id, id)
+}
+
+func (c *ContainerClient) getSpanForItems(operationType operationType) (span, error) {
+	return getSpanNameForItems(c.database.client.getAccountEndpoint(), operationType, c.database.id, c.id)
 }

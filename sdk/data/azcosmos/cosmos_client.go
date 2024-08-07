@@ -208,11 +208,11 @@ func (c *Client) CreateDatabase(
 	databaseProperties DatabaseProperties,
 	o *CreateDatabaseOptions) (DatabaseResponse, error) {
 	var err error
-	spanName, err := getSpanNameForDatabases(operationTypeCreate, resourceTypeDatabase, databaseProperties.ID)
+	spanName, err := getSpanNameForDatabases(c.getAccountEndpoint(), operationTypeCreate, resourceTypeDatabase, databaseProperties.ID)
 	if err != nil {
 		return DatabaseResponse{}, err
 	}
-	ctx, endSpan := azruntime.StartSpan(ctx, spanName, c.internal.Tracer(), nil)
+	ctx, endSpan := azruntime.StartSpan(ctx, spanName.name, c.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 
 	if o == nil {
@@ -274,11 +274,11 @@ func (c *Client) NewQueryDatabasesPager(query string, o *QueryDatabasesOptions) 
 		Fetcher: func(ctx context.Context, page *QueryDatabasesResponse) (QueryDatabasesResponse, error) {
 			var err error
 			// Move the span to the pager once https://github.com/Azure/azure-sdk-for-go/issues/23294 is fixed
-			spanName, err := getSpanNameForDatabases(operationTypeQuery, resourceTypeDatabase, c.gem.locationCache.defaultEndpoint.Hostname())
+			spanName, err := getSpanNameForClient(c.getAccountEndpoint(), operationTypeQuery, resourceTypeDatabase, c.getAccountEndpoint().Hostname())
 			if err != nil {
 				return QueryDatabasesResponse{}, err
 			}
-			ctx, endSpan := azruntime.StartSpan(ctx, spanName, c.internal.Tracer(), nil)
+			ctx, endSpan := azruntime.StartSpan(ctx, spanName.name, c.internal.Tracer(), nil)
 			defer func() { endSpan(err) }()
 			if page != nil {
 				if page.ContinuationToken != nil {
@@ -516,6 +516,10 @@ func (c *Client) executeAndEnsureSuccessResponse(request *policy.Request) (*http
 	}
 
 	return nil, azruntime.NewResponseErrorWithErrorCode(response, response.Status)
+}
+
+func (c *Client) getAccountEndpoint() *url.URL {
+	return &c.gem.locationCache.defaultEndpoint
 }
 
 type pipelineRequestOptions struct {

@@ -3,100 +3,179 @@
 
 package azcosmos
 
-import "fmt"
+import (
+	"fmt"
+	"net/url"
 
-const (
-	otelSpanNameCreateDatabase              = "create_database %s"
-	otelSpanNameReadDatabase                = "read_database %s"
-	otelSpanNameDeleteDatabase              = "delete_database %s"
-	otelSpanNameQueryDatabases              = "query_databases %s"
-	otelSpanNameReadThroughputDatabase      = "read_database_throughput %s"
-	otelSpanNameReplaceThroughputDatabase   = "replace_database_throughput %s"
-	otelSpanNameCreateContainer             = "create_container %s"
-	otelSpanNameReadContainer               = "read_container %s"
-	otelSpanNameDeleteContainer             = "delete_container %s"
-	otelSpanNameReplaceContainer            = "replace_container %s"
-	otelSpanNameQueryContainers             = "query_containers %s"
-	otelSpanNameReadThroughputContainer     = "read_container_throughput %s"
-	otelSpanNameReaplaceThroughputContainer = "replace_container_throughput %s"
-	otelSpanNameExecuteBatch                = "execute_batch %s"
-	otelSpanNameCreateItem                  = "create_item %s"
-	otelSpanNameReadItem                    = "read_item %s"
-	otelSpanNameDeleteItem                  = "delete_item %s"
-	otelSpanNameReplaceItem                 = "replace_item %s"
-	otelSpanNameUpsertItem                  = "upsert_item %s"
-	otelSpanNamePatchItem                   = "patch_item %s"
-	otelSpanNameQueryItems                  = "query_items %s"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/tracing"
 )
 
-func getSpanNameForDatabases(operationType operationType, resourceType resourceType, id string) (string, error) {
+const (
+	otelSpanNameCreateDatabase              = "create_database"
+	otelSpanNameReadDatabase                = "read_database"
+	otelSpanNameDeleteDatabase              = "delete_database"
+	otelSpanNameQueryDatabases              = "query_databases"
+	otelSpanNameReadThroughputDatabase      = "read_database_throughput"
+	otelSpanNameReplaceThroughputDatabase   = "replace_database_throughput"
+	otelSpanNameCreateContainer             = "create_container"
+	otelSpanNameReadContainer               = "read_container"
+	otelSpanNameDeleteContainer             = "delete_container"
+	otelSpanNameReplaceContainer            = "replace_container"
+	otelSpanNameQueryContainers             = "query_containers"
+	otelSpanNameReadThroughputContainer     = "read_container_throughput"
+	otelSpanNameReaplaceThroughputContainer = "replace_container_throughput"
+	otelSpanNameExecuteBatch                = "execute_batch"
+	otelSpanNameCreateItem                  = "create_item"
+	otelSpanNameReadItem                    = "read_item"
+	otelSpanNameDeleteItem                  = "delete_item"
+	otelSpanNameReplaceItem                 = "replace_item"
+	otelSpanNameUpsertItem                  = "upsert_item"
+	otelSpanNamePatchItem                   = "patch_item"
+	otelSpanNameQueryItems                  = "query_items"
+)
+
+type span struct {
+	name       string
+	attributes []tracing.Attribute
+}
+
+func getSpanNameForClient(endpoint *url.URL, operationType operationType, resourceType resourceType, id string) (span, error) {
+	var spanName string
+	switch resourceType {
+	case resourceTypeDatabase:
+		switch operationType {
+		case operationTypeQuery:
+			spanName = otelSpanNameQueryDatabases
+		}
+	}
+
+	if spanName == "" {
+		return span{}, fmt.Errorf("undefined telemetry span for operationType %v and resourceType %v", operationType, resourceType)
+	}
+
+	return span{name: fmt.Sprintf("%s %s", spanName, id), attributes: getSpanPropertiesForClient(endpoint, spanName)}, nil
+}
+
+func getSpanNameForDatabases(endpoint *url.URL, operationType operationType, resourceType resourceType, id string) (span, error) {
+	var spanName string
 	switch resourceType {
 	case resourceTypeDatabase:
 		switch operationType {
 		case operationTypeCreate:
-			return fmt.Sprintf(otelSpanNameCreateDatabase, id), nil
+			spanName = otelSpanNameCreateDatabase
 		case operationTypeRead:
-			return fmt.Sprintf(otelSpanNameReadDatabase, id), nil
+			spanName = otelSpanNameReadDatabase
 		case operationTypeDelete:
-			return fmt.Sprintf(otelSpanNameDeleteDatabase, id), nil
+			spanName = otelSpanNameDeleteDatabase
+		}
+	case resourceTypeCollection:
+		switch operationType {
 		case operationTypeQuery:
-			return fmt.Sprintf(otelSpanNameQueryDatabases, id), nil
+			spanName = otelSpanNameQueryContainers
 		}
 	case resourceTypeOffer:
 		switch operationType {
 		case operationTypeRead:
-			return fmt.Sprintf(otelSpanNameReadThroughputDatabase, id), nil
+			spanName = otelSpanNameReadThroughputDatabase
 		case operationTypeReplace:
-			return fmt.Sprintf(otelSpanNameReplaceThroughputDatabase, id), nil
+			spanName = otelSpanNameReplaceThroughputDatabase
 		}
 	}
-	return "", fmt.Errorf("undefined telemetry span for operationType %v and resourceType %v", operationType, resourceType)
+
+	if spanName == "" {
+		return span{}, fmt.Errorf("undefined telemetry span for operationType %v and resourceType %v", operationType, resourceType)
+	}
+
+	return span{name: fmt.Sprintf("%s %s", spanName, id), attributes: getSpanPropertiesForDatabase(endpoint, spanName, id)}, nil
 }
 
-func getSpanNameForContainers(operationType operationType, resourceType resourceType, id string) (string, error) {
+func getSpanNameForContainers(endpoint *url.URL, operationType operationType, resourceType resourceType, database string, id string) (span, error) {
+	var spanName string
 	switch resourceType {
 	case resourceTypeCollection:
 		switch operationType {
 		case operationTypeCreate:
-			return fmt.Sprintf(otelSpanNameCreateContainer, id), nil
+			spanName = otelSpanNameCreateContainer
 		case operationTypeRead:
-			return fmt.Sprintf(otelSpanNameReadContainer, id), nil
+			spanName = otelSpanNameReadContainer
 		case operationTypeDelete:
-			return fmt.Sprintf(otelSpanNameDeleteContainer, id), nil
+			spanName = otelSpanNameDeleteContainer
 		case operationTypeReplace:
-			return fmt.Sprintf(otelSpanNameReplaceContainer, id), nil
-		case operationTypeQuery:
-			return fmt.Sprintf(otelSpanNameQueryContainers, id), nil
+			spanName = otelSpanNameReplaceContainer
 		case operationTypeBatch:
-			return fmt.Sprintf(otelSpanNameExecuteBatch, id), nil
+			spanName = otelSpanNameExecuteBatch
 		}
 	case resourceTypeOffer:
 		switch operationType {
 		case operationTypeRead:
-			return fmt.Sprintf(otelSpanNameReadThroughputContainer, id), nil
+			spanName = otelSpanNameReadThroughputContainer
 		case operationTypeReplace:
-			return fmt.Sprintf(otelSpanNameReaplaceThroughputContainer, id), nil
+			spanName = otelSpanNameReaplaceThroughputContainer
 		}
 	}
-	return "", fmt.Errorf("undefined telemetry span for operationType %v and resourceType %v", operationType, resourceType)
+
+	if spanName == "" {
+		return span{}, fmt.Errorf("undefined telemetry span for operationType %v and resourceType %v", operationType, resourceType)
+	}
+
+	return span{name: fmt.Sprintf("%s %s", spanName, id), attributes: getSpanPropertiesForContainer(endpoint, spanName, database, id)}, nil
 }
 
-func getSpanNameForItems(operationType operationType, id string) (string, error) {
+func getSpanNameForItems(endpoint *url.URL, operationType operationType, database string, id string) (span, error) {
+	var spanName string
 	switch operationType {
 	case operationTypeCreate:
-		return fmt.Sprintf(otelSpanNameCreateItem, id), nil
+		spanName = otelSpanNameCreateItem
 	case operationTypeRead:
-		return fmt.Sprintf(otelSpanNameReadItem, id), nil
+		spanName = otelSpanNameReadItem
 	case operationTypeDelete:
-		return fmt.Sprintf(otelSpanNameDeleteItem, id), nil
+		spanName = otelSpanNameDeleteItem
 	case operationTypeReplace:
-		return fmt.Sprintf(otelSpanNameReplaceItem, id), nil
+		spanName = otelSpanNameReplaceItem
 	case operationTypeUpsert:
-		return fmt.Sprintf(otelSpanNameUpsertItem, id), nil
+		spanName = otelSpanNameUpsertItem
 	case operationTypePatch:
-		return fmt.Sprintf(otelSpanNamePatchItem, id), nil
+		spanName = otelSpanNamePatchItem
 	case operationTypeQuery:
-		return fmt.Sprintf(otelSpanNameQueryItems, id), nil
+		spanName = otelSpanNameQueryItems
 	}
-	return "", fmt.Errorf("undefined telemetry span for operationType %v and resourceType %v", operationType, resourceTypeDocument)
+
+	if spanName == "" {
+		return span{}, fmt.Errorf("undefined telemetry span for operationType %v and resourceType %v", operationType, resourceTypeDocument)
+	}
+
+	return span{name: fmt.Sprintf("%s %s", spanName, id), attributes: getSpanPropertiesForContainer(endpoint, spanName, database, id)}, nil
+}
+
+func getSpanPropertiesForClient(endpoint *url.URL, operationName string) []tracing.Attribute {
+	return []tracing.Attribute{
+		{Key: "db.system", Value: "cosmosdb"},
+		{Key: "db.cosmosdb.connection_mode", Value: "gateway"},
+		{Key: "db.operation.name", Value: operationName},
+		{Key: "server.address", Value: endpoint.Hostname()},
+		{Key: "server.port", Value: endpoint.Port()},
+	}
+}
+
+func getSpanPropertiesForDatabase(endpoint *url.URL, operationName string, id string) []tracing.Attribute {
+	return []tracing.Attribute{
+		{Key: "db.system", Value: "cosmosdb"},
+		{Key: "db.cosmosdb.connection_mode", Value: "gateway"},
+		{Key: "db.namespace", Value: id},
+		{Key: "db.operation.name", Value: operationName},
+		{Key: "server.address", Value: endpoint.Hostname()},
+		{Key: "server.port", Value: endpoint.Port()},
+	}
+}
+
+func getSpanPropertiesForContainer(endpoint *url.URL, operationName string, database string, id string) []tracing.Attribute {
+	return []tracing.Attribute{
+		{Key: "db.system", Value: "cosmosdb"},
+		{Key: "db.cosmosdb.connection_mode", Value: "gateway"},
+		{Key: "db.namespace", Value: database},
+		{Key: "db.collection.name", Value: database},
+		{Key: "db.operation.name", Value: operationName},
+		{Key: "server.address", Value: endpoint.Hostname()},
+		{Key: "server.port", Value: endpoint.Port()},
+	}
 }

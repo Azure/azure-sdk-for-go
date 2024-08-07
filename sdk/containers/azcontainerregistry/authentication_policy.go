@@ -7,19 +7,13 @@
 package azcontainerregistry
 
 import (
-	"encoding/base64"
-	"encoding/json"
 	"errors"
 	"fmt"
 	"net/http"
 	"strings"
-	"sync/atomic"
-	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/temporal"
 )
 
 const (
@@ -28,6 +22,7 @@ const (
 )
 
 type authenticationPolicyOptions struct {
+	*authenticationTokenCacheOptions
 }
 
 // authenticationPolicy is a policy to do the challenge-based authentication for container registry service. The authorization flow is as follows:
@@ -45,19 +40,15 @@ type authenticationPolicyOptions struct {
 // Each registry service shares one refresh token, it will be cached in refreshTokenCache until expire time.
 // Since the scope will be different for different API/repository/artifact, accessTokenCache will only work when continuously calling same API.
 type authenticationPolicy struct {
-	refreshTokenCache *temporal.Resource[azcore.AccessToken, acquiringResourceState]
-	accessTokenCache  atomic.Value
-	cred              azcore.TokenCredential
-	aadScopes         []string
-	authClient        *authenticationClient
+	accessTokenCache *authenticationTokenCache
 }
 
 func newAuthenticationPolicy(cred azcore.TokenCredential, scopes []string, authClient *authenticationClient, opts *authenticationPolicyOptions) *authenticationPolicy {
+	if opts == nil {
+		opts = &authenticationPolicyOptions{}
+	}
 	return &authenticationPolicy{
-		cred:              cred,
-		aadScopes:         scopes,
-		authClient:        authClient,
-		refreshTokenCache: temporal.NewResource(acquireRefreshToken),
+		accessTokenCache: newAuthenticationTokenCache(cred, scopes, authClient, opts.authenticationTokenCacheOptions),
 	}
 }
 
@@ -67,7 +58,7 @@ func (p *authenticationPolicy) Do(req *policy.Request) (*http.Response, error) {
 	if req.Raw().Header.Get(headerAuthorization) != "" {
 		// retry request could do the request with existed token directly
 		resp, err = req.Next()
-	} else if accessToken := p.accessTokenCache.Load(); accessToken != nil && accessToken != "" {
+	} else if accessToken := p.accessTokenCache.Load(); accessToken != "" {
 		// if there is a previous access token, then we try to use this token to do the request
 		req.Raw().Header.Set(
 			headerAuthorization,
@@ -93,10 +84,9 @@ func (p *authenticationPolicy) Do(req *policy.Request) (*http.Response, error) {
 		if service, scope, err = findServiceAndScope(resp); err != nil {
 			return nil, err
 		}
-		if accessToken, err = p.getAccessToken(req, service, scope); err != nil {
+		if accessToken, err = p.accessTokenCache.AcquireAccessToken(req.Raw().Context(), service, scope); err != nil {
 			return nil, err
 		}
-		p.accessTokenCache.Store(accessToken)
 		req.Raw().Header.Set(
 			headerAuthorization,
 			fmt.Sprintf("%s%s", bearerHeader, accessToken),
@@ -109,35 +99,6 @@ func (p *authenticationPolicy) Do(req *policy.Request) (*http.Response, error) {
 	}
 
 	return resp, nil
-}
-
-func (p *authenticationPolicy) getAccessToken(req *policy.Request, service, scope string) (string, error) {
-	// anonymous access
-	if p.cred == nil {
-		resp, err := p.authClient.ExchangeACRRefreshTokenForACRAccessToken(req.Raw().Context(), service, scope, "", &authenticationClientExchangeACRRefreshTokenForACRAccessTokenOptions{GrantType: to.Ptr(tokenGrantTypePassword)})
-		if err != nil {
-			return "", err
-		}
-		return *resp.acrAccessToken.AccessToken, nil
-	}
-
-	// access with token
-	// get refresh token from cache/request
-	refreshToken, err := p.refreshTokenCache.Get(acquiringResourceState{
-		policy:  p,
-		req:     req,
-		service: service,
-	})
-	if err != nil {
-		return "", err
-	}
-
-	// get access token from request
-	resp, err := p.authClient.ExchangeACRRefreshTokenForACRAccessToken(req.Raw().Context(), service, scope, refreshToken.Token, &authenticationClientExchangeACRRefreshTokenForACRAccessTokenOptions{GrantType: to.Ptr(tokenGrantTypeRefreshToken)})
-	if err != nil {
-		return "", err
-	}
-	return *resp.acrAccessToken.AccessToken, nil
 }
 
 func findServiceAndScope(resp *http.Response) (string, string, error) {
@@ -175,75 +136,4 @@ func getChallengeRequest(oriReq policy.Request) (*policy.Request, error) {
 	}
 	copied.Raw().Header.Del("Content-Type")
 	return copied, nil
-}
-
-type acquiringResourceState struct {
-	req     *policy.Request
-	policy  *authenticationPolicy
-	service string
-}
-
-// acquireRefreshToken acquires or updates the refresh token of ACR service; only one thread/goroutine at a time ever calls this function
-func acquireRefreshToken(state acquiringResourceState) (newResource azcore.AccessToken, newExpiration time.Time, err error) {
-	// get AAD token from credential
-	aadToken, err := state.policy.cred.GetToken(
-		state.req.Raw().Context(),
-		policy.TokenRequestOptions{
-			Scopes: state.policy.aadScopes,
-		},
-	)
-	if err != nil {
-		return azcore.AccessToken{}, time.Time{}, err
-	}
-
-	// exchange refresh token with AAD token
-	refreshResp, err := state.policy.authClient.ExchangeAADAccessTokenForACRRefreshToken(state.req.Raw().Context(), postContentSchemaGrantTypeAccessToken, state.service, &authenticationClientExchangeAADAccessTokenForACRRefreshTokenOptions{
-		AccessToken: &aadToken.Token,
-	})
-	if err != nil {
-		return azcore.AccessToken{}, time.Time{}, err
-	}
-
-	refreshToken := azcore.AccessToken{
-		Token: *refreshResp.acrRefreshToken.RefreshToken,
-	}
-
-	// get refresh token expire time
-	refreshToken.ExpiresOn, err = getJWTExpireTime(*refreshResp.acrRefreshToken.RefreshToken)
-	if err != nil {
-		return azcore.AccessToken{}, time.Time{}, err
-	}
-
-	// return refresh token
-	return refreshToken, refreshToken.ExpiresOn, nil
-}
-
-func getJWTExpireTime(token string) (time.Time, error) {
-	values := strings.Split(token, ".")
-	if len(values) > 2 {
-		value := values[1]
-		padding := len(value) % 4
-		if padding > 0 {
-			for i := 0; i < 4-padding; i++ {
-				value += "="
-			}
-		}
-		parsedValue, err := base64.StdEncoding.DecodeString(value)
-		if err != nil {
-			return time.Time{}, err
-		}
-
-		var jsonValue *jwtOnlyWithExp
-		err = json.Unmarshal(parsedValue, &jsonValue)
-		if err != nil {
-			return time.Time{}, err
-		}
-		return time.Unix(jsonValue.Exp, 0), nil
-	}
-
-	return time.Time{}, errors.New("could not parse refresh token expire time")
-}
-
-type jwtOnlyWithExp struct {
-	Exp int64 `json:"exp"`
 }

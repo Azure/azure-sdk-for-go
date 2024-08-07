@@ -242,23 +242,25 @@ func ExecuteTspClient(path string, args ...string) error {
 			}
 
 			// filter diagnostic errors
-			if len(newErrMsgs) == 1 &&
+			if len(newErrMsgs) > 1 &&
 				newErrMsgs[0] == "Diagnostics were reported during compilation. Use the `--debug` flag to see the diagnostic output." {
-				newErrMsgs = getErrorDiagnostics(strings.Split(stdoutBuffer.String(), "\n"))
+				newErrMsgs = newErrMsgs[1:]
 
+				errDiags := getErrorDiagnostics(strings.Split(stdoutBuffer.String(), "\n"))
 				temp := make([]string, 0)
-				for _, line := range newErrMsgs {
+				for _, line := range errDiags {
 					line := strings.TrimSpace(line)
-					if line == "" {
-						continue
-					}
-					if strings.Contains(line, "Cleaning up temp directory") ||
+					if line == "" ||
+						strings.Contains(line, "Cleaning up temp directory") ||
 						strings.Contains(line, "Skipping cleanup of temp directory:") {
 						continue
 					}
 					temp = append(temp, line)
 				}
-				newErrMsgs = temp
+
+				if len(temp) > 0 {
+					newErrMsgs = append(newErrMsgs, errDiags...)
+				}
 			}
 
 			if len(newErrMsgs) > 0 {
@@ -329,7 +331,7 @@ func diagnostics(lines []string) []diagnostic {
 			kind = "error"
 		}
 
-		if i == len(lines)-1 {
+		if i == len(lines)-1 && start != -1 {
 			diagnostics = append(diagnostics, diagnostic{kind: kind, start: start, end: i})
 		}
 	}

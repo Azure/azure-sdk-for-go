@@ -78,7 +78,6 @@ func TestNewClientFromConnStrSuccess(t *testing.T) {
 func TestEnsureErrorIsGeneratedOnResponse(t *testing.T) {
 	someError := map[string]string{"Code": "SomeCode"}
 
-	defaultEndpoint, _ := url.Parse(srv.URL())
 	jsonString, err := json.Marshal(someError)
 	if err != nil {
 		t.Fatal(err)
@@ -90,11 +89,8 @@ func TestEnsureErrorIsGeneratedOnResponse(t *testing.T) {
 		mock.WithBody(jsonString),
 		mock.WithStatusCode(404))
 
-	mockLocationCache := locationCache{
-		defaultEndpoint: defaultEndpoint,
-	}	
 	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
-	gem := &globalEndpointManager{preferredLocations: []string{}, locationCache: mockLocationCache}
+	gem := &globalEndpointManager{preferredLocations: []string{}}
 	client := &Client{endpoint: srv.URL(), internal: internalClient, gem: gem}
 	operationContext := pipelineRequestOptions{
 		resourceType:    resourceTypeDatabase,
@@ -594,6 +590,10 @@ func TestQueryDatabases(t *testing.T) {
 	jsonStringpage2 := []byte(`{"Databases":[{"id":"doc3"},{"id":"doc4"},{"id":"doc5"}]}`)
 
 	srv, close := mock.NewTLSServer()
+	defaultEndpoint, _ := url.Parse(srv.URL())
+	mockLocationCache := &locationCache{
+		defaultEndpoint: *defaultEndpoint,
+	}
 	defer close()
 	srv.AppendResponse(
 		mock.WithBody(jsonStringpage1),
@@ -612,7 +612,7 @@ func TestQueryDatabases(t *testing.T) {
 	verifier := pipelineVerifier{}
 
 	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
-	gem := &globalEndpointManager{preferredLocations: []string{}}
+	gem := &globalEndpointManager{preferredLocations: []string{}, locationCache: mockLocationCache}
 	client := &Client{endpoint: srv.URL(), internal: internalClient, gem: gem}
 
 	receivedIds := []string{}

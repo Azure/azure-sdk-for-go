@@ -1,14 +1,10 @@
 # Release History
 
-## 1.13.1 (Unreleased)
+## 1.14.0 (2024-08-07)
 
 ### Features Added
 
 * Added field `Attributes` to `runtime.StartSpanOptions` to simplify creating spans with attributes.
-
-### Breaking Changes
-
-### Bugs Fixed
 
 ### Other Changes
 

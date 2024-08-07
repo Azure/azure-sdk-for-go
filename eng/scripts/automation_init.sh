@@ -59,4 +59,4 @@ cat > $outputFile << EOF
 EOF
 
 echo Install tsp-client
-sudo npm install -g @azure-tools/typespec-client-generator-cli@latest 2>&1
+sudo npm install -g @azure-tools/typespec-client-generator-cli@v0.10.0 2>&1

@@ -137,6 +137,7 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 				NamespaceName:       module[1],
 				SkipGenerateExample: true,
 				GoVersion:           ctx.goVersion,
+				TspClientOptions:    []string{"--debug"},
 			})
 			if err != nil {
 				errorBuilder.add(err)

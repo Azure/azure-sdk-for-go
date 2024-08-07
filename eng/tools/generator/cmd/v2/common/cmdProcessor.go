@@ -8,7 +8,6 @@ import (
 	"fmt"
 	"io"
 	"log"
-	"os"
 	"os/exec"
 	"path/filepath"
 	"regexp"
@@ -44,7 +43,7 @@ func ExecuteGoGenerate(path string) error {
 		return err
 	}
 
-	err = cmd.Wait()
+	cmdWaitErr := cmd.Wait()
 
 	fmt.Println(stdoutBuffer.String())
 	if stdoutBuffer.Len() > 0 {
@@ -58,7 +57,7 @@ func ExecuteGoGenerate(path string) error {
 		}
 	}
 
-	if err != nil || stderrBuffer.Len() > 0 {
+	if cmdWaitErr != nil || stderrBuffer.Len() > 0 {
 		if stderrBuffer.Len() > 0 {
 			fmt.Println(stderrBuffer.String())
 			// filter go downloading log
@@ -199,9 +198,13 @@ func ExecuteGoFmt(dir string, args ...string) error {
 func ExecuteTspClient(path string, args ...string) error {
 	cmd := exec.Command("tsp-client", args...)
 	cmd.Dir = path
-	cmd.Stdout = os.Stdout
 
-	stderr, err := cmd.StderrPipe()
+	stdoutPipe, err := cmd.StdoutPipe()
+	if err != nil {
+		return err
+	}
+
+	stderrPipe, err := cmd.StderrPipe()
 	if err != nil {
 		return err
 	}
@@ -210,29 +213,56 @@ func ExecuteTspClient(path string, args ...string) error {
 		return err
 	}
 
-	var buf bytes.Buffer
-	if _, err = io.Copy(&buf, stderr); err != nil {
+	var stdoutBuffer bytes.Buffer
+	if _, err = io.Copy(&stdoutBuffer, stdoutPipe); err != nil {
 		return err
 	}
 
-	if err := cmd.Wait(); err != nil || buf.Len() > 0 {
-		if buf.Len() > 0 {
-			log.Println(buf.String())
+	var stderrBuffer bytes.Buffer
+	if _, err = io.Copy(&stderrBuffer, stderrPipe); err != nil {
+		return err
+	}
+
+	cmdWaitErr := cmd.Wait()
+	fmt.Println(stdoutBuffer.String())
+
+	if cmdWaitErr != nil || stderrBuffer.Len() > 0 {
+		if stderrBuffer.Len() > 0 {
+			log.Println(stderrBuffer.String())
 
 			// filter npm notice log
-			lines := strings.Split(buf.String(), "\n")
-			newErrInfo := make([]string, 0, len(lines))
-			for _, line := range lines {
+			newErrMsgs := make([]string, 0)
+			for _, line := range strings.Split(stderrBuffer.String(), "\n") {
 				if len(strings.TrimSpace(line)) == 0 {
 					continue
 				}
 				if !strings.Contains(line, "npm notice") {
-					newErrInfo = append(newErrInfo, line)
+					newErrMsgs = append(newErrMsgs, line)
 				}
 			}
 
-			if len(newErrInfo) > 0 {
-				return fmt.Errorf("failed to execute `tsp-client %s`\n%s", strings.Join(args, " "), strings.Join(newErrInfo, "\n"))
+			// filter diagnostic errors
+			if len(newErrMsgs) == 1 &&
+				newErrMsgs[0] == "Diagnostics were reported during compilation. Use the `--debug` flag to see the diagnostic output." {
+				newErrMsgs = FilterErrorDiagnostics(strings.Split(stdoutBuffer.String(), "\n"))
+
+				temp := make([]string, 0)
+				for _, line := range newErrMsgs {
+					line := strings.TrimSpace(line)
+					if line == "" {
+						continue
+					}
+					if strings.Contains(line, "Cleaning up temp directory") ||
+						strings.Contains(line, "Skipping cleanup of temp directory:") {
+						continue
+					}
+					temp = append(temp, line)
+				}
+				newErrMsgs = temp
+			}
+
+			if len(newErrMsgs) > 0 {
+				return fmt.Errorf("failed to execute `tsp-client %s`\n%s", strings.Join(args, " "), strings.Join(newErrMsgs, "\n"))
 			}
 
 			return nil
@@ -264,4 +294,61 @@ func ExecuteTypeSpecGenerate(ctx *GenerateContext, emitOptions string, tspClient
 	}
 
 	return ExecuteTspClient(ctx.SDKPath, args...)
+}
+
+type diagnostic struct {
+	// error | warning
+	kind       string
+	start, end int
+}
+
+// get all warning and error diagnostics
+func diagnostics(lines []string) []diagnostic {
+	var kind string
+	start := -1
+	diagnostics := make([]diagnostic, 0)
+
+	// get all warning and error diagnostics
+	for i := 0; i < len(lines); i++ {
+		line := strings.TrimSpace(lines[i])
+		if strings.Contains(line, "warning ") {
+			if start != -1 {
+				diagnostics = append(diagnostics, diagnostic{kind: kind, start: start, end: i - 1})
+				start = i
+			} else {
+				start = i
+			}
+			kind = "warning"
+		} else if strings.Contains(line, "error ") {
+			if start != -1 {
+				diagnostics = append(diagnostics, diagnostic{kind: kind, start: start, end: i - 1})
+				start = i
+			} else {
+				start = i
+			}
+			kind = "error"
+		}
+
+		if i == len(lines)-1 {
+			diagnostics = append(diagnostics, diagnostic{kind: kind, start: start, end: i})
+		}
+	}
+
+	return diagnostics
+}
+
+func FilterErrorDiagnostics(lines []string) []string {
+	diags := diagnostics(lines)
+	if len(diags) == 0 {
+		return nil
+	}
+
+	result := make([]string, 0)
+	for _, diag := range diags {
+		if diag.kind == "error" {
+			result = append(result, lines[diag.start:diag.end+1]...)
+		}
+	}
+
+	return result
 }

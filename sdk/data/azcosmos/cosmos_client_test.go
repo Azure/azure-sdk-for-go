@@ -91,7 +91,7 @@ func TestEnsureErrorIsGeneratedOnResponse(t *testing.T) {
 		mock.WithStatusCode(404))
 
 	mockLocationCache := locationCache{
-		defaultEndpoint: defaultEndpoint
+		defaultEndpoint: defaultEndpoint,
 	}	
 	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
 	gem := &globalEndpointManager{preferredLocations: []string{}, locationCache: mockLocationCache}

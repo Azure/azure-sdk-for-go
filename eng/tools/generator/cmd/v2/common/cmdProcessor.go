@@ -242,7 +242,7 @@ func ExecuteTspClient(path string, args ...string) error {
 			}
 
 			// filter diagnostic errors
-			if len(newErrMsgs) > 1 &&
+			if len(newErrMsgs) >= 1 &&
 				newErrMsgs[0] == "Diagnostics were reported during compilation. Use the `--debug` flag to see the diagnostic output." {
 				newErrMsgs = newErrMsgs[1:]
 

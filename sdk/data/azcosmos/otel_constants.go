@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"net/url"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/tracing"
 )
 
@@ -35,8 +36,8 @@ const (
 )
 
 type span struct {
-	name       string
-	attributes []tracing.Attribute
+	name    string
+	options runtime.StartSpanOptions
 }
 
 func getSpanNameForClient(endpoint *url.URL, operationType operationType, resourceType resourceType, id string) (span, error) {
@@ -53,7 +54,7 @@ func getSpanNameForClient(endpoint *url.URL, operationType operationType, resour
 		return span{}, fmt.Errorf("undefined telemetry span for operationType %v and resourceType %v", operationType, resourceType)
 	}
 
-	return span{name: fmt.Sprintf("%s %s", spanName, id), attributes: getSpanPropertiesForClient(endpoint, spanName)}, nil
+	return span{name: fmt.Sprintf("%s %s", spanName, id), options: getSpanPropertiesForClient(endpoint, spanName)}, nil
 }
 
 func getSpanNameForDatabases(endpoint *url.URL, operationType operationType, resourceType resourceType, id string) (span, error) {
@@ -86,7 +87,7 @@ func getSpanNameForDatabases(endpoint *url.URL, operationType operationType, res
 		return span{}, fmt.Errorf("undefined telemetry span for operationType %v and resourceType %v", operationType, resourceType)
 	}
 
-	return span{name: fmt.Sprintf("%s %s", spanName, id), attributes: getSpanPropertiesForDatabase(endpoint, spanName, id)}, nil
+	return span{name: fmt.Sprintf("%s %s", spanName, id), options: getSpanPropertiesForDatabase(endpoint, spanName, id)}, nil
 }
 
 func getSpanNameForContainers(endpoint *url.URL, operationType operationType, resourceType resourceType, database string, id string) (span, error) {
@@ -118,7 +119,7 @@ func getSpanNameForContainers(endpoint *url.URL, operationType operationType, re
 		return span{}, fmt.Errorf("undefined telemetry span for operationType %v and resourceType %v", operationType, resourceType)
 	}
 
-	return span{name: fmt.Sprintf("%s %s", spanName, id), attributes: getSpanPropertiesForContainer(endpoint, spanName, database, id)}, nil
+	return span{name: fmt.Sprintf("%s %s", spanName, id), options: getSpanPropertiesForContainer(endpoint, spanName, database, id)}, nil
 }
 
 func getSpanNameForItems(endpoint *url.URL, operationType operationType, database string, id string) (span, error) {
@@ -144,32 +145,32 @@ func getSpanNameForItems(endpoint *url.URL, operationType operationType, databas
 		return span{}, fmt.Errorf("undefined telemetry span for operationType %v and resourceType %v", operationType, resourceTypeDocument)
 	}
 
-	return span{name: fmt.Sprintf("%s %s", spanName, id), attributes: getSpanPropertiesForContainer(endpoint, spanName, database, id)}, nil
+	return span{name: fmt.Sprintf("%s %s", spanName, id), options: getSpanPropertiesForContainer(endpoint, spanName, database, id)}, nil
 }
 
-func getSpanPropertiesForClient(endpoint *url.URL, operationName string) []tracing.Attribute {
-	return []tracing.Attribute{
+func getSpanPropertiesForClient(endpoint *url.URL, operationName string) runtime.StartSpanOptions {
+	return runtime.StartSpanOptions{Attributes: []tracing.Attribute{
 		{Key: "db.system", Value: "cosmosdb"},
 		{Key: "db.cosmosdb.connection_mode", Value: "gateway"},
 		{Key: "db.operation.name", Value: operationName},
 		{Key: "server.address", Value: endpoint.Hostname()},
 		{Key: "server.port", Value: endpoint.Port()},
-	}
+	}}
 }
 
-func getSpanPropertiesForDatabase(endpoint *url.URL, operationName string, id string) []tracing.Attribute {
-	return []tracing.Attribute{
+func getSpanPropertiesForDatabase(endpoint *url.URL, operationName string, id string) runtime.StartSpanOptions {
+	return runtime.StartSpanOptions{Attributes: []tracing.Attribute{
 		{Key: "db.system", Value: "cosmosdb"},
 		{Key: "db.cosmosdb.connection_mode", Value: "gateway"},
 		{Key: "db.namespace", Value: id},
 		{Key: "db.operation.name", Value: operationName},
 		{Key: "server.address", Value: endpoint.Hostname()},
 		{Key: "server.port", Value: endpoint.Port()},
-	}
+	}}
 }
 
-func getSpanPropertiesForContainer(endpoint *url.URL, operationName string, database string, id string) []tracing.Attribute {
-	return []tracing.Attribute{
+func getSpanPropertiesForContainer(endpoint *url.URL, operationName string, database string, id string) runtime.StartSpanOptions {
+	return runtime.StartSpanOptions{Attributes: []tracing.Attribute{
 		{Key: "db.system", Value: "cosmosdb"},
 		{Key: "db.cosmosdb.connection_mode", Value: "gateway"},
 		{Key: "db.namespace", Value: database},
@@ -177,5 +178,5 @@ func getSpanPropertiesForContainer(endpoint *url.URL, operationName string, data
 		{Key: "db.operation.name", Value: operationName},
 		{Key: "server.address", Value: endpoint.Hostname()},
 		{Key: "server.port", Value: endpoint.Port()},
-	}
+	}}
 }

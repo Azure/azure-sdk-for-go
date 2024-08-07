@@ -212,7 +212,7 @@ func (c *Client) CreateDatabase(
 	if err != nil {
 		return DatabaseResponse{}, err
 	}
-	ctx, endSpan := azruntime.StartSpan(ctx, spanName.name, c.internal.Tracer(), nil)
+	ctx, endSpan := azruntime.StartSpan(ctx, spanName.name, c.internal.Tracer(), &spanName.options)
 	defer func() { endSpan(err) }()
 
 	if o == nil {
@@ -278,7 +278,7 @@ func (c *Client) NewQueryDatabasesPager(query string, o *QueryDatabasesOptions) 
 			if err != nil {
 				return QueryDatabasesResponse{}, err
 			}
-			ctx, endSpan := azruntime.StartSpan(ctx, spanName.name, c.internal.Tracer(), nil)
+			ctx, endSpan := azruntime.StartSpan(ctx, spanName.name, c.internal.Tracer(), &spanName.options)
 			defer func() { endSpan(err) }()
 			if page != nil {
 				if page.ContinuationToken != nil {

@@ -60,6 +60,7 @@ func ExecuteGoGenerate(path string) error {
 
 	if err != nil || stderrBuffer.Len() > 0 {
 		if stderrBuffer.Len() > 0 {
+			fmt.Println(stderrBuffer.String())
 			// filter go downloading log
 			// https://github.com/golang/go/blob/1f0c044d60211e435dc58844127544dd3ecb6a41/src/cmd/go/internal/modfetch/fetch.go#L201
 			lines := strings.Split(stderrBuffer.String(), "\n")
@@ -75,9 +76,7 @@ func ExecuteGoGenerate(path string) error {
 			}
 
 			if len(newLines) > 0 {
-				newErrMsg := strings.Join(newLines, "\n")
-				fmt.Println(newErrMsg)
-				return fmt.Errorf("failed to execute `go generate`:\n%s", newErrMsg)
+				return fmt.Errorf("failed to execute `go generate`:\n%s", strings.Join(newLines, "\n"))
 			}
 
 			return nil
@@ -224,12 +223,19 @@ func ExecuteTspClient(path string, args ...string) error {
 			lines := strings.Split(buf.String(), "\n")
 			newErrInfo := make([]string, 0, len(lines))
 			for _, line := range lines {
+				if len(strings.TrimSpace(line)) == 0 {
+					continue
+				}
 				if !strings.Contains(line, "npm notice") {
 					newErrInfo = append(newErrInfo, line)
 				}
 			}
 
-			return fmt.Errorf("failed to execute `tsp-client %s`\n%s", strings.Join(args, " "), strings.Join(newErrInfo, "\n"))
+			if len(newErrInfo) > 0 {
+				return fmt.Errorf("failed to execute `tsp-client %s`\n%s", strings.Join(args, " "), strings.Join(newErrInfo, "\n"))
+			}
+
+			return nil
 		}
 
 		return fmt.Errorf("failed to execute `tsp-client %s`\n%+v", strings.Join(args, " "), err)

@@ -259,7 +259,7 @@ func ExecuteTspClient(path string, args ...string) error {
 				}
 
 				if len(temp) > 0 {
-					newErrMsgs = append(newErrMsgs, errDiags...)
+					newErrMsgs = append(newErrMsgs, temp...)
 				}
 			}
 

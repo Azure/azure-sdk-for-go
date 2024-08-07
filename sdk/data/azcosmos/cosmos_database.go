@@ -115,6 +115,7 @@ func (c *DatabaseClient) NewQueryContainersPager(query string, o *QueryContainer
 		},
 		Fetcher: func(ctx context.Context, page *QueryContainersResponse) (QueryContainersResponse, error) {
 			var err error
+			// Move the span to the pager once https://github.com/Azure/azure-sdk-for-go/issues/23294 is fixed
 			spanName, err := getSpanNameForContainers(operationTypeQuery, resourceTypeCollection, c.id)
 			if err != nil {
 				return QueryContainersResponse{}, err

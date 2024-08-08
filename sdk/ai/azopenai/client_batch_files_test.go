@@ -30,9 +30,47 @@ func TestFilesOperations(t *testing.T) {
 	getFileResp, err := client.GetFile(context.Background(), *uploadResp.ID, nil)
 	require.NoError(t, err)
 
-	require.Equal(t, azopenai.FilePurposeAssistants, getFileResp.Purpose)
+	require.Equal(t, azopenai.FilePurposeAssistants, *getFileResp.Purpose)
+
+	// fileContentsResp, err := client.GetFileContent(context.Background(), *getFileResp.ID, nil)
+	// require.NoError(t, err)
+	// require.NotEmpty(t, fileContentsResp.Value)
 
 	filesResp, err := client.ListFiles(context.Background(), nil)
 	require.NoError(t, err)
 	require.NotEmpty(t, filesResp.Data)
+}
+
+func TestBatchOperations(t *testing.T) {
+	client := newTestClient(t, azureOpenAI.Files.Endpoint)
+
+	// TODO: this is a little tricky because the files aren't instantly uploaded, so we can't just proceed
+	// with the rest of the test.
+	// uploadResp, err := client.UploadFile(context.Background(), streaming.NopCloser(bytes.NewReader([]byte("{}"))), azopenai.FilePurposeBatch, &azopenai.UploadFileOptions{
+	// 	Filename: to.Ptr("file.jsonl"),
+	// })
+	// require.NoError(t, err)
+
+	// t.Cleanup(func() {
+	// 	_, err := client.DeleteFile(context.Background(), *uploadResp.ID, nil)
+	// 	require.NoError(t, err)
+	// })
+
+	// createResp, err := client.CreateBatch(context.Background(), azopenai.BatchCreateRequest{
+	// 	InputFileID: uploadResp.ID,
+	// }, nil)
+	// require.NoError(t, err)
+	// require.NotEmpty(t, createResp)
+
+	// cancelResp, err := client.CancelBatch(context.Background(), *createResp.ID, nil)
+	// require.NoError(t, err)
+	// require.NotEmpty(t, cancelResp)
+
+	batchPager := client.NewListBatchesPager(nil)
+
+	for batchPager.More() {
+		resp, err := batchPager.NextPage(context.Background())
+		require.NoError(t, err)
+		require.NotEmpty(t, resp)
+	}
 }

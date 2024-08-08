@@ -8,6 +8,7 @@ package azopenai
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -187,4 +188,25 @@ func (tc ChatCompletionsToolChoice) MarshalJSON() ([]byte, error) {
 // UnmarshalJSON implements the json.Unmarshaller interface for type ChatCompletionsToolChoice.
 func (tc *ChatCompletionsToolChoice) UnmarshalJSON(data []byte) error {
 	return json.Unmarshal(data, &tc.value)
+}
+
+// ChatMessageContent contains message content for a ChatRequestUserMessage.
+// Only one field should be set.
+type ChatMessageContentUnion struct {
+	// Message is the contents of the message.
+	Message *string
+
+	// Items allows for more complex content to be set for this message.
+	Items []ChatMessageContentItemClassification
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ChatMessageContent.
+func (o ChatMessageContentUnion) MarshalJSON() ([]byte, error) {
+	if o.Message != nil {
+		return json.Marshal(o.Message)
+	} else if o.Items != nil {
+		return json.Marshal(o.Items)
+	} else {
+		return nil, fmt.Errorf("all fields were nil")
+	}
 }

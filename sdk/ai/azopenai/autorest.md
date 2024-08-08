@@ -284,8 +284,23 @@ directive:
   - from: client.go
     where: $
     transform: |
-      return $
-        .replace(/runtime\.JoinPaths\(client.endpoint, urlPath\)/g, "client.formatURL(urlPath, getDeployment(body))");
+      // these routes need customization for Azure.
+      const urlPaths = [
+          ".+?/audio/speech",
+          ".+?/audio/transcriptions",
+          ".+?/audio/translations",
+          ".+?/chat/completions",
+          ".+?/completions",
+          ".+?/embeddings",
+          ".+?/images/generations"
+      ].join("|");
+
+      const re = new RegExp(
+        '(urlPath := "(?:' + urlPaths + ')"\\s+' +
+        '.+?)runtime\.JoinPaths\\(client\\.endpoint, urlPath\\)',
+        'gs');
+
+      return $.replace(re, "$1client.formatURL(urlPath, getDeployment(body))");
 
   # Allow custom parsing of the returned error, mostly for handling the content filtering errors.
   - from: client.go
@@ -356,7 +371,8 @@ directive:
     where: $
     transform: |
       return $
-        .replace(/(func.*getAudio(?:Translation|Transcription)InternalCreateRequest\(.+?)options/g, "$1body")
+        .replace(/(func.* getAudio(?:Translation|Transcription)InternalCreateRequest\(.+?)options/g, "$1body")
+        .replace(/(func.* uploadFileCreateRequest\(.+?)options/g, "$1body")
         .replace(/runtime\.SetMultipartFormData\(.+?\)/sg, "setMultipartFormData(req, file, *body)")
 
   # response type parsing (can be text/plain _or_ JSON)
@@ -487,16 +503,6 @@ directive:
   - from: models_serde.go
     where: $
     transform: return $.replace(/case "prompt_filter_results":/g, 'case "prompt_annotations":\nfallthrough\ncase "prompt_filter_results":')
-```
-
-Update the ChatRequestUserMessage to allow for []ChatCompletionRequestMessageContentPartText _or_
-a string.
-
-```yaml
-directive:
-  - from: models.go
-    where: $
-    transform: return $.replace(/Content any/g, 'Content ChatRequestUserMessageContent')
 ```
 
 Add in some types that are incorrectly not being exported in the generation
@@ -633,35 +639,6 @@ directive:
         `}\n`);
 ```
 
-Fix ToolChoice discriminated union
-
-```yaml
-directive:
-  - from: swagger-document
-    where: $.definitions.ChatCompletionsOptions.properties
-    transform: $["tool_choice"]["x-ms-client-name"] = "ToolChoiceRenameMe"
-  - from: 
-    - models.go
-    - models_serde.go
-    where: $
-    transform: |
-      return $
-        .replace(/^\s+ToolChoiceRenameMe.+$/m, "ToolChoice *ChatCompletionsToolChoice")   // update the name _and_ type for the field
-        .replace(/ToolChoiceRenameMe/g, "ToolChoice")    // rename all other references
-        .replace(/populateAny\(objectMap, "tool_choice", c\.ToolChoice\)/, 'populate(objectMap, "tool_choice", c.ToolChoice)');   // treat field as typed so nil means omit.
-```
-
-```yaml
-directive:
-  - from: models.go
-    where: $
-    transform: return $.replace(/FunctionCall any/, "FunctionCall *ChatCompletionsOptionsFunctionCall");
-  - from: models_serde.go
-    where: $
-    transform: return $.replace(/populateAny\(objectMap, "function_call", c\.FunctionCall\)/, 'populate(objectMap, "function_call", c.FunctionCall)');
-```
-
-
 ```yaml
 directive:
   - from: models_serde.go
@@ -688,4 +665,148 @@ directive:
         "// - If using EmbeddingEncodingFormatBase64, the value will be a base-64 string in [EmbeddingItem.EmbeddingBase64]\n";
         
       return $.replace(/(EncodingFormat \*EmbeddingEncodingFormat)/, `${text}$1`);
+```
+
+Update docs for FunctionDefinition.Parameters to indicate it's intended to be serialized JSON bytes, 
+not an object or map[string]any.
+
+```yaml
+directive:
+  - from: models.go
+    where: $
+    transform: |
+      const comment = `	// REQUIRED; The function definition details for the function tool. \n` +
+        `	// NOTE: this field is JSON text. You can marshal it using code similar to this:\n` +
+        `	// \n` +
+        `	//	jsonBytes, err := json.Marshal(map[string]any{\n` +
+        `	//		"required": []string{"location"},\n` +
+        `	// 		"type":     "object",\n` +
+        `	// 		"properties": map[string]any{\n` +
+        `	// 			"location": map[string]any{\n` +
+        `	//	 			"type":        "string",\n` +
+        `	// 				"description": "The city and state, e.g. San Francisco, CA",\n` +
+        `	// 			},\n` +
+        `	//		},\n` +
+        `	//	})\n` +
+        `	//\n` +
+        `	//	if err != nil {\n` +
+        `	// 		panic(err)\n` +
+        `	//	}\n` +
+        `	// \n` +
+        `	//	funcDef := &azopenai.FunctionDefinition{\n` +
+        `	// 		Name:        to.Ptr("get_current_weather"),\n` +
+        `	// 		Description: to.Ptr("Get the current weather in a given location"),\n` +
+        `	// 		Parameters:  jsonBytes,\n` +
+        `	// 	}`;
+      return $.replace(/Parameters \[\]byte/, comment + "\nParameters []byte");
+```
+
+## Unions
+
+Update the ChatRequestUserMessage to allow for []ChatCompletionRequestMessageContentPartText _or_
+a string.
+
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions
+    transform: |
+      $["ChatRequestUserMessageContent"] = {
+        "x-ms-external": true,
+        "type": "object", "properties": { "stub": { "type": "string" }}
+      };
+      return $;
+  - from: swagger-document
+    where: $.definitions.ChatRequestUserMessage.properties.content
+    transform: $["$ref"] = "#/definitions/ChatRequestUserMessageContent"; return $;
+```
+
+*ChatCompletionsToolChoice
+
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions
+    transform: |
+      $["ChatCompletionsToolChoice"] = {
+        "x-ms-external": true,
+        "type": "object", "properties": { "stub": { "type": "string" }}
+      };
+      return $;
+  - from: swagger-document
+    where: $.definitions.ChatCompletionsOptions.properties.tool_choice
+    transform: $["$ref"] = "#/definitions/ChatCompletionsToolChoice"; return $;
+```
+
+*ChatCompletionsOptionsFunctionCall
+
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions
+    transform: |
+      $["ChatCompletionsOptionsFunctionCall"] = {
+        "x-ms-external": true,
+        "type": "object", "properties": { "stub": { "type": "string" }}
+      };
+      return $;
+  - from: swagger-document
+    where: $.definitions.ChatCompletionsOptions.properties.function_call
+    transform: $["$ref"] = "#/definitions/ChatCompletionsOptionsFunctionCall"; return $;
+```
+
+<!-- 
+Fix ToolChoice discriminated union
+
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.ChatCompletionsOptions.properties
+    transform: $["tool_choice"]["x-ms-client-name"] = "ToolChoiceRenameMe"
+  - from: 
+    - models.go
+    - models_serde.go
+    where: $
+    transform: |
+      return $
+        .replace(/^\s+ToolChoiceRenameMe.+$/m, "ToolChoice *ChatCompletionsToolChoice")   // update the name _and_ type for the field
+        .replace(/ToolChoiceRenameMe/g, "ToolChoice")    // rename all other references
+        .replace(/populateAny\(objectMap, "tool_choice", c\.ToolChoice\)/, 'populate(objectMap, "tool_choice", c.ToolChoice)');   // treat field as typed so nil means omit.
+``` -->
+
+
+<!-- ToolChoice and FunctionCall have types so they don't need the 'RawMessage' treatment.
+
+```yaml
+directive:
+  - from: models.go
+    where: $
+    transform: return $.replace(/FunctionCall \[\]byte/, "FunctionCall *ChatCompletionsOptionsFunctionCall");
+  - from: models_serde.go
+    where: $
+    transform: return $.replace(/json\.RawMessage\(([a-z]\.(?:FunctionCall|ToolChoice))\)/g, "$1")
+      
+``` -->
+
+## Pagers
+
+ListBatches is a pageable API.
+
+```yaml
+directive:
+  - from: client.go
+    where: $
+    transform: return $
+      .replace(/ListBatches([ (])/g, "listBatches$1")
+      .replace(/result\.ListBatchesResponse/g, "result.ListBatchesPage");
+  - from: responses.go
+    where: $
+    transform: return $.replace(/ListBatchesResponse\s+\}/g, "ListBatchesPage\n}");
+  - from: 
+    - models.go
+    - models_serde.go
+    where: $
+    transform: return $
+      .replace(/ ListBatchesResponse/g, " ListBatchesPage")
+      .replace(/ListBatchesResponse\)/g, " ListBatchesPage)");
 ```

@@ -187,6 +187,42 @@ func PossibleAzureSearchQueryTypeValues() []AzureSearchQueryType {
 	}
 }
 
+// BatchStatus - The status of a batch.
+type BatchStatus string
+
+const (
+	// BatchStatusCancelled - The batch was cancelled.
+	BatchStatusCancelled BatchStatus = "cancelled"
+	// BatchStatusCancelling - Cancellation of the batch has been initiated.
+	BatchStatusCancelling BatchStatus = "cancelling"
+	// BatchStatusCompleted - The batch has been completed and the results are ready.
+	BatchStatusCompleted BatchStatus = "completed"
+	// BatchStatusExpired - The batch was not able to complete within the 24-hour time window.
+	BatchStatusExpired BatchStatus = "expired"
+	// BatchStatusFailed - The input file has failed the validation process.
+	BatchStatusFailed BatchStatus = "failed"
+	// BatchStatusFinalizing - The batch has completed and the results are being prepared.
+	BatchStatusFinalizing BatchStatus = "finalizing"
+	// BatchStatusInProgress - The input file was successfully validated and the batch is currently being executed.
+	BatchStatusInProgress BatchStatus = "in_progress"
+	// BatchStatusValidating - The input file is being validated before the batch can begin.
+	BatchStatusValidating BatchStatus = "validating"
+)
+
+// PossibleBatchStatusValues returns the possible values for the BatchStatus const type.
+func PossibleBatchStatusValues() []BatchStatus {
+	return []BatchStatus{
+		BatchStatusCancelled,
+		BatchStatusCancelling,
+		BatchStatusCompleted,
+		BatchStatusExpired,
+		BatchStatusFailed,
+		BatchStatusFinalizing,
+		BatchStatusInProgress,
+		BatchStatusValidating,
+	}
+}
+
 // ChatCompletionRequestMessageContentPartImageURLDetail - Specifies the detail level of the image. Learn more in the Vision
 // guide [/docs/guides/vision/low-or-high-fidelity-image-understanding].
 type ChatCompletionRequestMessageContentPartImageURLDetail string
@@ -236,6 +272,8 @@ const (
 	// provide a standard chat
 	// completions response. Response content may still be influenced by the provided tool definitions.
 	ChatCompletionsToolSelectionPresetNone ChatCompletionsToolSelectionPreset = "none"
+	// ChatCompletionsToolSelectionPresetRequired - Specifies that the model must call one or more tools.
+	ChatCompletionsToolSelectionPresetRequired ChatCompletionsToolSelectionPreset = "required"
 )
 
 // PossibleChatCompletionsToolSelectionPresetValues returns the possible values for the ChatCompletionsToolSelectionPreset const type.
@@ -243,6 +281,7 @@ func PossibleChatCompletionsToolSelectionPresetValues() []ChatCompletionsToolSel
 	return []ChatCompletionsToolSelectionPreset{
 		ChatCompletionsToolSelectionPresetAuto,
 		ChatCompletionsToolSelectionPresetNone,
+		ChatCompletionsToolSelectionPresetRequired,
 	}
 }
 
@@ -396,6 +435,81 @@ func PossibleEmbeddingEncodingFormatValues() []EmbeddingEncodingFormat {
 	return []EmbeddingEncodingFormat{
 		EmbeddingEncodingFormatBase64,
 		EmbeddingEncodingFormatFloat,
+	}
+}
+
+// FilePurpose - The possible values denoting the intended usage of a file.
+type FilePurpose string
+
+const (
+	// FilePurposeAssistants - Indicates a file is used as input to assistants.
+	FilePurposeAssistants FilePurpose = "assistants"
+	// FilePurposeAssistantsOutput - Indicates a file is used as output by assistants.
+	FilePurposeAssistantsOutput FilePurpose = "assistants_output"
+	// FilePurposeBatch - Indicates a file is used as input to .
+	FilePurposeBatch FilePurpose = "batch"
+	// FilePurposeBatchOutput - Indicates a file is used as output by a vector store batch operation.
+	FilePurposeBatchOutput FilePurpose = "batch_output"
+	// FilePurposeFineTune - Indicates a file is used for fine tuning input.
+	FilePurposeFineTune FilePurpose = "fine-tune"
+	// FilePurposeFineTuneResults - Indicates a file is used for fine tuning results.
+	FilePurposeFineTuneResults FilePurpose = "fine-tune-results"
+	// FilePurposeVision - Indicates a file is used as input to a vision operation.
+	FilePurposeVision FilePurpose = "vision"
+)
+
+// PossibleFilePurposeValues returns the possible values for the FilePurpose const type.
+func PossibleFilePurposeValues() []FilePurpose {
+	return []FilePurpose{
+		FilePurposeAssistants,
+		FilePurposeAssistantsOutput,
+		FilePurposeBatch,
+		FilePurposeBatchOutput,
+		FilePurposeFineTune,
+		FilePurposeFineTuneResults,
+		FilePurposeVision,
+	}
+}
+
+// FileState - The state of the file.
+type FileState string
+
+const (
+	// FileStateDeleted - The entity has been deleted but may still be referenced by other entities predating the deletion. It
+	// can be categorized as a
+	// terminal state.
+	FileStateDeleted FileState = "deleted"
+	// FileStateDeleting - The entity is in the process to be deleted. This state is not returned by Azure OpenAI and exposed
+	// only for compatibility.
+	// It can be categorized as an active state.
+	FileStateDeleting FileState = "deleting"
+	// FileStateError - The operation has completed processing with a failure and cannot be further consumed. It can be categorized
+	// as a terminal state.
+	FileStateError FileState = "error"
+	// FileStatePending - The operation was created and is not queued to be processed in the future. It can be categorized as
+	// an inactive state.
+	FileStatePending FileState = "pending"
+	// FileStateProcessed - The operation has successfully processed and is ready for consumption. It can be categorized as a
+	// terminal state.
+	FileStateProcessed FileState = "processed"
+	// FileStateRunning - The operation has started to be processed. It can be categorized as an active state.
+	FileStateRunning FileState = "running"
+	// FileStateUploaded - The file has been uploaded but it's not yet processed. This state is not returned by Azure OpenAI and
+	// exposed only for
+	// compatibility. It can be categorized as an inactive state.
+	FileStateUploaded FileState = "uploaded"
+)
+
+// PossibleFileStateValues returns the possible values for the FileState const type.
+func PossibleFileStateValues() []FileState {
+	return []FileState{
+		FileStateDeleted,
+		FileStateDeleting,
+		FileStateError,
+		FileStatePending,
+		FileStateProcessed,
+		FileStateRunning,
+		FileStateUploaded,
 	}
 }
 

@@ -266,8 +266,6 @@ func getDeployment[T SpeechGenerationOptions | AudioTranscriptionOptions | Audio
 	var p *string
 
 	switch a := any(v).(type) {
-	case SpeechGenerationOptions:
-		p = a.DeploymentName
 	case AudioTranscriptionOptions:
 		p = a.DeploymentName
 	case AudioTranslationOptions:
@@ -302,14 +300,14 @@ type ChatRequestUserMessageContent struct {
 }
 
 // NewChatRequestUserMessageContent creates a [azopenai.ChatRequestUserMessageContent].
-func NewChatRequestUserMessageContent[T string | []ChatCompletionRequestMessageContentPartClassification](v T) ChatRequestUserMessageContent {
+func NewChatRequestUserMessageContent[T string | []ChatCompletionRequestMessageContentPartClassification](v T) *ChatRequestUserMessageContent {
 	switch actualV := any(v).(type) {
 	case string:
-		return ChatRequestUserMessageContent{value: &actualV}
+		return &ChatRequestUserMessageContent{value: &actualV}
 	case []ChatCompletionRequestMessageContentPartClassification:
-		return ChatRequestUserMessageContent{value: actualV}
+		return &ChatRequestUserMessageContent{value: actualV}
 	}
-	return ChatRequestUserMessageContent{}
+	return &ChatRequestUserMessageContent{}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type Error.

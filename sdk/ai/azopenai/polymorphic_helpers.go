@@ -166,29 +166,6 @@ func unmarshalChatCompletionsToolDefinitionClassificationArray(rawMsg json.RawMe
 	return fArray, nil
 }
 
-func unmarshalChatFinishDetailsClassification(rawMsg json.RawMessage) (ChatFinishDetailsClassification, error) {
-	if rawMsg == nil || string(rawMsg) == "null" {
-		return nil, nil
-	}
-	var m map[string]any
-	if err := json.Unmarshal(rawMsg, &m); err != nil {
-		return nil, err
-	}
-	var b ChatFinishDetailsClassification
-	switch m["type"] {
-	case "max_tokens":
-		b = &MaxTokensFinishDetails{}
-	case "stop":
-		b = &StopFinishDetails{}
-	default:
-		b = &ChatFinishDetails{}
-	}
-	if err := json.Unmarshal(rawMsg, b); err != nil {
-		return nil, err
-	}
-	return b, nil
-}
-
 func unmarshalChatRequestMessageClassification(rawMsg json.RawMessage) (ChatRequestMessageClassification, error) {
 	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil

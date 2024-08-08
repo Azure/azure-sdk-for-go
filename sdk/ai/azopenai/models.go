@@ -9,6 +9,7 @@
 package azopenai
 
 import (
+	"io"
 	"time"
 )
 
@@ -618,6 +619,250 @@ type AzureSearchIndexFieldMappingOptions struct {
 	VectorFields []string
 }
 
+// Batch - The Batch object.
+type Batch struct {
+	// REQUIRED; The time frame within which the batch should be processed.
+	CompletionWindow *string
+
+	// REQUIRED; The Unix timestamp (in seconds) for when the batch was created.
+	CreatedAt *time.Time
+
+	// REQUIRED; The OpenAI API endpoint used by the batch.
+	Endpoint *string
+
+	// REQUIRED; The id assigned to the Batch.
+	ID *string
+
+	// REQUIRED; The ID of the input file for the batch.
+	InputFileID *string
+
+	// REQUIRED; The object type, which is always batch.
+	Object *string
+
+	// REQUIRED; The current status of the batch.
+	Status *BatchStatus
+
+	// The Unix timestamp (in seconds) for when the batch was cancelled.
+	CancelledAt *time.Time
+
+	// The Unix timestamp (in seconds) for when the batch started cancelling.
+	CancellingAt *time.Time
+
+	// The Unix timestamp (in seconds) for when the batch was completed.
+	CompletedAt *time.Time
+
+	// The ID of the file containing the outputs of requests with errors.
+	ErrorFileID *string
+
+	// The list of Batch errors.
+	Errors *BatchErrorList
+
+	// The Unix timestamp (in seconds) for when the batch expired.
+	ExpiredAt *time.Time
+
+	// The Unix timestamp (in seconds) for when the batch will expire.
+	ExpiresAt *time.Time
+
+	// The Unix timestamp (in seconds) for when the batch failed.
+	FailedAt *time.Time
+
+	// The Unix timestamp (in seconds) for when the batch started finalizing.
+	FinalizingAt *time.Time
+
+	// The Unix timestamp (in seconds) for when the batch started processing.
+	InProgressAt *time.Time
+
+	// A set of key-value pairs that can be attached to the batch. This can be useful for storing additional information about
+	// the batch in a structured format.
+	Metadata map[string]*string
+
+	// The ID of the file containing the outputs of successfully executed requests.
+	OutputFileID *string
+
+	// The request counts for different statuses within the batch.
+	RequestCounts *BatchRequestCounts
+}
+
+// BatchCreateRequest - Defines the request to create a batch.
+type BatchCreateRequest struct {
+	// REQUIRED; The time frame within which the batch should be processed.
+	CompletionWindow *string
+
+	// REQUIRED; The API endpoint used by the batch.
+	Endpoint *string
+
+	// REQUIRED; The ID of the input file for the batch.
+	InputFileID *string
+
+	// A set of key-value pairs that can be attached to the batch. This can be useful for storing additional information about
+	// the batch in a structured format.
+	Metadata map[string]*string
+}
+
+// BatchCreateResponse - Defines the response when creating a batch.
+type BatchCreateResponse struct {
+	// REQUIRED; The time frame within which the batch should be processed.
+	CompletionWindow *string
+
+	// REQUIRED; The Unix timestamp (in seconds) for when the batch was created.
+	CreatedAt *time.Time
+
+	// REQUIRED; The OpenAI API endpoint used by the batch.
+	Endpoint *string
+
+	// REQUIRED; The id assigned to the Batch.
+	ID *string
+
+	// REQUIRED; The ID of the input file for the batch.
+	InputFileID *string
+
+	// CONSTANT; The object type, which is always batch.
+	// Field has constant value "batch", any specified value is ignored.
+	Object *string
+
+	// REQUIRED; The current status of the batch.
+	Status *BatchStatus
+
+	// The Unix timestamp (in seconds) for when the batch was cancelled.
+	CancelledAt *time.Time
+
+	// The Unix timestamp (in seconds) for when the batch started cancelling.
+	CancellingAt *time.Time
+
+	// The Unix timestamp (in seconds) for when the batch was completed.
+	CompletedAt *time.Time
+
+	// The ID of the file containing the outputs of requests with errors.
+	ErrorFileID *string
+
+	// The list of Batch errors.
+	Errors *BatchErrorList
+
+	// The Unix timestamp (in seconds) for when the batch expired.
+	ExpiredAt *time.Time
+
+	// The Unix timestamp (in seconds) for when the batch will expire.
+	ExpiresAt *time.Time
+
+	// The Unix timestamp (in seconds) for when the batch failed.
+	FailedAt *time.Time
+
+	// The Unix timestamp (in seconds) for when the batch started finalizing.
+	FinalizingAt *time.Time
+
+	// The Unix timestamp (in seconds) for when the batch started processing.
+	InProgressAt *time.Time
+
+	// A set of key-value pairs that can be attached to the batch. This can be useful for storing additional information about
+	// the batch in a structured format.
+	Metadata map[string]*string
+
+	// The ID of the file containing the outputs of successfully executed requests.
+	OutputFileID *string
+
+	// The request counts for different statuses within the batch.
+	RequestCounts *BatchCreateResponseRequestCounts
+}
+
+// BatchCreateResponseRequestCounts - The request counts for different statuses within the batch.
+type BatchCreateResponseRequestCounts struct {
+	// REQUIRED; Number of requests that have been completed successfully.
+	Completed *int32
+
+	// REQUIRED; Number of requests that have failed.
+	Failed *int32
+
+	// REQUIRED; Total number of requests in the batch.
+	Total *int32
+}
+
+// BatchErrorDatum - A Datum containing information about a Batch Error.
+type BatchErrorDatum struct {
+	// An error code identifying the error type.
+	Code *string
+
+	// The line number of the input file where the error occurred, if applicable.
+	Line *int32
+
+	// A human-readable message providing more details about the error.
+	Message *string
+
+	// The name of the parameter that caused the error, if applicable.
+	Param *string
+}
+
+// BatchErrorList - A list of Batch errors.
+type BatchErrorList struct {
+	// The list of Batch error data.
+	Data []BatchErrorDatum
+
+	// The object type, which is always list.
+	Object *string
+}
+
+// BatchRequestCounts - The request counts for different statuses within the batch.
+type BatchRequestCounts struct {
+	// REQUIRED; Number of requests that have been completed successfully.
+	Completed *int32
+
+	// REQUIRED; Number of requests that have failed.
+	Failed *int32
+
+	// REQUIRED; Total number of requests in the batch.
+	Total *int32
+}
+
+// BatchRequestInput - The per-line object of the batch input file
+type BatchRequestInput struct {
+	// A developer-provided per-request id that will be used to match outputs to inputs. Must be unique for each request in a
+	// batch.
+	CustomID *string
+
+	// The HTTP method to be used for the request. Currently only POST is supported.
+	Method *string
+
+	// The OpenAI API relative URL to be used for the request. Currently /v1/chat/completions, /v1/embeddings, and /v1/completions
+	// are supported.
+	URL *string
+}
+
+// BatchRequestOutput - The per-line object of the batch output and error files
+type BatchRequestOutput struct {
+	// A developer-provided per-request id that will be used to match outputs to inputs.
+	CustomID *string
+
+	// For requests that failed with a non-HTTP error, this will contain more information on the cause of the failure.
+	Error *BatchRequestOutputError
+
+	// The Id of the request.
+	ID *string
+
+	// The http response
+	Response *BatchRequestOutputResponse
+}
+
+// BatchRequestOutputError - For requests that failed with a non-HTTP error, this will contain more information on the cause
+// of the failure.
+type BatchRequestOutputError struct {
+	// A machine-readable error code.
+	Code *string
+
+	// A human-readable error message.
+	Message *string
+}
+
+// BatchRequestOutputResponse - The http response
+type BatchRequestOutputResponse struct {
+	// The JSON body of the response
+	Body map[string]*string
+
+	// An unique identifier for the OpenAI API request. Please include this request ID when contacting support.
+	RequestID *string
+
+	// The HTTP status code of the response
+	StatusCode *int32
+}
+
 // ChatChoice - The representation of a single prompt completion as part of an overall chat completions request. Generally,
 // n choices are generated per provided prompt with a default value of 1. Token limits and
 // other settings may limit the number of choices generated.
@@ -643,10 +888,6 @@ type ChatChoice struct {
 	// in the request. This supplementary information is only available when
 	// using Azure OpenAI and only when the request is configured to use enhancements.
 	Enhancements *AzureChatEnhancements
-
-	// The reason the model stopped generating tokens, together with any applicable details. This structured representation replaces
-	// 'finish_reason' for some models.
-	FinishDetails ChatFinishDetailsClassification
 
 	// The chat message for a given chat completions prompt.
 	Message *ChatResponseMessage
@@ -719,6 +960,14 @@ func (c *ChatCompletionRequestMessageContentPartText) GetChatCompletionRequestMe
 	return &ChatCompletionRequestMessageContentPart{
 		partType: c.partType,
 	}
+}
+
+// ChatCompletionStreamOptions - Options for streaming response. Only set this when you set stream: true.
+type ChatCompletionStreamOptions struct {
+	// If set, an additional chunk will be streamed before the data: [DONE] message. The usage field on this chunk shows the token
+	// usage statistics for the entire request, and the choices field will always
+	// be an empty array. All other chunks will also include a usage field, but with a null value.
+	IncludeUsage *bool
 }
 
 // ChatCompletions - Representation of the response data from a chat completions request. Completions support a wide variety
@@ -912,6 +1161,9 @@ type ChatCompletionsOptions struct {
 	// A collection of textual sequences that will end completions generation.
 	Stop []string
 
+	// Options for streaming response. Only set this when you set stream: true.
+	StreamOptions *ChatCompletionsOptionsStreamOptions
+
 	// The sampling temperature to use that controls the apparent creativity of generated completions. Higher values will make
 	// output more random while lower values will make results more focused and
 	// deterministic. It is not recommended to modify temperature and top_p for the same completions request as the interaction
@@ -938,6 +1190,14 @@ type ChatCompletionsOptions struct {
 
 	// An identifier for the caller or end user of the operation. This may be used for tracking or rate-limiting purposes.
 	User *string
+}
+
+// ChatCompletionsOptionsStreamOptions - Options for streaming response. Only set this when you set stream: true.
+type ChatCompletionsOptionsStreamOptions struct {
+	// If set, an additional chunk will be streamed before the data: [DONE] message. The usage field on this chunk shows the token
+	// usage statistics for the entire request, and the choices field will always
+	// be an empty array. All other chunks will also include a usage field, but with a null value.
+	IncludeUsage *bool
 }
 
 // ChatCompletionsResponseFormat - An abstract representation of a response format configuration usable by Chat Completions.
@@ -1147,7 +1407,7 @@ func (c *ChatRequestToolMessage) GetChatRequestMessage() *ChatRequestMessage {
 // ChatRequestUserMessage - A request chat message representing user input to the assistant.
 type ChatRequestUserMessage struct {
 	// REQUIRED; The contents of the user message, with available input types varying by selected model.
-	Content ChatRequestUserMessageContent
+	Content *ChatRequestUserMessageContent
 
 	// REQUIRED; The chat role associated with this message.
 	role *ChatRole
@@ -1658,6 +1918,54 @@ type Error struct {
 	message *string
 }
 
+// File - Represents an assistant that can call the model and use tools.
+type File struct {
+	// REQUIRED; The size of the file, in bytes.
+	Bytes *int32
+
+	// REQUIRED; The Unix timestamp, in seconds, representing when this object was created.
+	CreatedAt *time.Time
+
+	// REQUIRED; The name of the file.
+	Filename *string
+
+	// REQUIRED; The identifier, which can be referenced in API endpoints.
+	ID *string
+
+	// REQUIRED; The object type, which is always 'file'.
+	Object *string
+
+	// REQUIRED; The intended purpose of a file.
+	Purpose *FilePurpose
+
+	// The state of the file. This field is available in Azure OpenAI only.
+	Status *FileState
+
+	// The error message with details in case processing of this file failed. This field is available in Azure OpenAI only.
+	StatusDetails *string
+}
+
+// FileDeletionStatus - A status response from a file deletion operation.
+type FileDeletionStatus struct {
+	// REQUIRED; A value indicating whether deletion was successful.
+	Deleted *bool
+
+	// REQUIRED; The ID of the resource specified for deletion.
+	ID *string
+
+	// REQUIRED; The object type, which is always 'file'.
+	Object *string
+}
+
+// FileListResponse - The response data from a file list operation.
+type FileListResponse struct {
+	// REQUIRED; The files returned for the request.
+	Data []File
+
+	// REQUIRED; The object type, which is always 'list'.
+	Object *string
+}
+
 // FunctionCall - The name and arguments of a function that should be called, as generated by the model.
 type FunctionCall struct {
 	// REQUIRED; The arguments to call the function with, as generated by the model in JSON format. Note that the model does not
@@ -1680,7 +1988,30 @@ type FunctionDefinition struct {
 	Description *string
 
 	// The parameters the function accepts, described as a JSON Schema object.
-	Parameters any
+	// REQUIRED; The function definition details for the function tool.
+	// NOTE: this field is JSON text. You can marshal it using code similar to this:
+	//
+	//	jsonBytes, err := json.Marshal(map[string]any{
+	//		"required": []string{"location"},
+	// 		"type":     "object",
+	// 		"properties": map[string]any{
+	// 			"location": map[string]any{
+	//	 			"type":        "string",
+	// 				"description": "The city and state, e.g. San Francisco, CA",
+	// 			},
+	//		},
+	//	})
+	//
+	//	if err != nil {
+	// 		panic(err)
+	//	}
+	//
+	//	funcDef := &azopenai.FunctionDefinition{
+	// 		Name:        to.Ptr("get_current_weather"),
+	// 		Description: to.Ptr("Get the current weather in a given location"),
+	// 		Parameters:  jsonBytes,
+	// 	}
+	Parameters []byte
 }
 
 // FunctionName - A structure that specifies the exact name of a specific, request-provided function to use when processing
@@ -1688,6 +2019,18 @@ type FunctionDefinition struct {
 type FunctionName struct {
 	// REQUIRED; The name of the function to call.
 	Name *string
+}
+
+// GetAudioTranscriptionBody - Get audio transcription body.
+type GetAudioTranscriptionBody struct {
+	// REQUIRED; The configuration information for an audio transcription request.
+	Body *AudioTranscriptionOptions
+}
+
+// GetAudioTranslationBody - Get audio translation body.
+type GetAudioTranslationBody struct {
+	// REQUIRED; The configuration information for an audio translation request.
+	Body *AudioTranslationOptions
 }
 
 // ImageGenerationContentFilterResults - Describes the content filtering result for the image generation request.
@@ -1802,6 +2145,24 @@ type ImageGenerations struct {
 
 	// REQUIRED; The images generated by the operation.
 	Data []ImageGenerationData
+}
+
+// ListBatchesPage - A list of paginated Batch objects.
+type ListBatchesPage struct {
+	// REQUIRED; A human-readable error message.
+	Data []Batch
+
+	// REQUIRED; A human-readable error message.
+	HasMore *bool
+
+	// REQUIRED; The object type.
+	Object *string
+
+	// A human-readable error message.
+	FirstID *string
+
+	// A human-readable error message.
+	LastID *string
 }
 
 // MaxTokensFinishDetails - A structured representation of a stop reason that signifies a token limit was reached before the
@@ -2065,6 +2426,17 @@ type OnYourDataVectorizationSource struct {
 // GetOnYourDataVectorizationSource implements the OnYourDataVectorizationSourceClassification interface for type OnYourDataVectorizationSource.
 func (o *OnYourDataVectorizationSource) GetOnYourDataVectorizationSource() *OnYourDataVectorizationSource {
 	return o
+}
+
+type Paths1Filz8PFilesPostRequestbodyContentMultipartFormDataSchema struct {
+	// REQUIRED; The file data (not filename) to upload.
+	File *io.ReadSeekCloser
+
+	// REQUIRED; The intended purpose of the file.
+	Purpose *FilePurpose
+
+	// A filename to associate with the uploaded data.
+	Filename *string
 }
 
 // PineconeChatExtensionConfiguration - A specific representation of configurable options for Pinecone when using it as an

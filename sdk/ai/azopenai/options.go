@@ -8,6 +8,21 @@
 
 package azopenai
 
+// CancelBatchOptions contains the optional parameters for the Client.CancelBatch method.
+type CancelBatchOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CreateBatchOptions contains the optional parameters for the Client.CreateBatch method.
+type CreateBatchOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DeleteFileOptions contains the optional parameters for the Client.DeleteFile method.
+type DeleteFileOptions struct {
+	// placeholder for future optional parameters
+}
+
 // GenerateSpeechFromTextOptions contains the optional parameters for the Client.GenerateSpeechFromText method.
 type GenerateSpeechFromTextOptions struct {
 	// placeholder for future optional parameters
@@ -66,6 +81,11 @@ type getAudioTranslationInternalOptions struct {
 	Temperature *float32
 }
 
+// GetBatchOptions contains the optional parameters for the Client.GetBatch method.
+type GetBatchOptions struct {
+	// placeholder for future optional parameters
+}
+
 // GetChatCompletionsOptions contains the optional parameters for the Client.GetChatCompletions method.
 type GetChatCompletionsOptions struct {
 	// placeholder for future optional parameters
@@ -81,7 +101,38 @@ type GetEmbeddingsOptions struct {
 	// placeholder for future optional parameters
 }
 
+// GetFileContentOptions contains the optional parameters for the Client.GetFileContent method.
+type GetFileContentOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GetFileOptions contains the optional parameters for the Client.GetFile method.
+type GetFileOptions struct {
+	// placeholder for future optional parameters
+}
+
 // GetImageGenerationsOptions contains the optional parameters for the Client.GetImageGenerations method.
 type GetImageGenerationsOptions struct {
 	// placeholder for future optional parameters
+}
+
+// ListBatchesOptions contains the optional parameters for the Client.ListBatches method.
+type ListBatchesOptions struct {
+	// Identifier for the last event from the previous pagination request.
+	After *string
+
+	// The number of batches to retrieve. The default is 20.
+	Limit *int32
+}
+
+// ListFilesOptions contains the optional parameters for the Client.ListFiles method.
+type ListFilesOptions struct {
+	// A value that, when provided, limits list results to files matching the corresponding purpose.
+	Purpose *FilePurpose
+}
+
+// UploadFileOptions contains the optional parameters for the Client.UploadFile method.
+type UploadFileOptions struct {
+	// A filename to associate with the uploaded data.
+	Filename *string
 }

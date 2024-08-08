@@ -27,4 +27,3 @@ extends:
     IncludeRelease: true
     ServiceDirectory: 'resourcemanager/loadtesting/armloadtesting'
     UsePipelineProxy: false
-    UseFederatedAuth: true

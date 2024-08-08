@@ -27,4 +27,3 @@ extends:
     IncludeRelease: true
     ServiceDirectory: 'resourcemanager/eventhub/armeventhub'
     UsePipelineProxy: false
-    UseFederatedAuth: true

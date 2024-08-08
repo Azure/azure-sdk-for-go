@@ -22,7 +22,7 @@ parameters:
     default: false
   - name: UseFederatedAuth
     type: boolean
-    default: false
+    default: true
   - name: ServiceConnection
     type: string
     default: ''

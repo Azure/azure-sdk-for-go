@@ -27,4 +27,3 @@ extends:
     IncludeRelease: true
     ServiceDirectory: 'resourcemanager/dns/armdns'
     UsePipelineProxy: false
-    UseFederatedAuth: true

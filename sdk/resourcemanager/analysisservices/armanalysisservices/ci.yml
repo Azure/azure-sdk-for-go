@@ -27,4 +27,3 @@ extends:
     IncludeRelease: true
     ServiceDirectory: 'resourcemanager/analysisservices/armanalysisservices'
     UsePipelineProxy: false
-    UseFederatedAuth: true

@@ -27,4 +27,3 @@ extends:
     IncludeRelease: true
     ServiceDirectory: 'resourcemanager/devcenter/armdevcenter'
     UsePipelineProxy: false
-    UseFederatedAuth: true

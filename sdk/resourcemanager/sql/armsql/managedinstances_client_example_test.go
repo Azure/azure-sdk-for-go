@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/33c4457b1d13f83965f4fe3367dca4a6df898100/specification/sql/resource-manager/Microsoft.Sql/preview/2023-05-01-preview/examples/ManagedInstanceList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c7b98b36e4023331545051284d8500adf98f02fe/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ManagedInstanceList.json
 func ExampleManagedInstancesClient_NewListPager_listManagedInstances() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -45,74 +45,60 @@ func ExampleManagedInstancesClient_NewListPager_listManagedInstances() {
 		// 		{
 		// 			Name: to.Ptr("testinstance1"),
 		// 			Type: to.Ptr("Microsoft.Sql/managedInstances"),
-		// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Test1/providers/Microsoft.Sql/managedInstances/testinstance1"),
+		// 			ID: to.Ptr("/subscriptions/20d7082a-0fc7-4468-82bd-542694d5042b/resourceGroups/Test1/providers/Microsoft.Sql/managedInstances/testinstance1"),
 		// 			Location: to.Ptr("japaneast"),
 		// 			Properties: &armsql.ManagedInstanceProperties{
 		// 				AdministratorLogin: to.Ptr("dummylogin"),
-		// 				AuthenticationMetadata: to.Ptr(armsql.AuthMetadataLookupModesWindows),
 		// 				Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-		// 				CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-01T01:01:01.011Z"); return t}()),
 		// 				CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-		// 				DatabaseFormat: to.Ptr(armsql.ManagedInstanceDatabaseFormatSQLServer2022),
 		// 				DNSZone: to.Ptr("1b4e2caff2530"),
-		// 				ExternalGovernanceStatus: to.Ptr(armsql.ExternalGovernanceStatusEnabled),
 		// 				FullyQualifiedDomainName: to.Ptr("testinstance1.1b4e2caff2530.database.windows.net"),
-		// 				HybridSecondaryUsage: to.Ptr(armsql.HybridSecondaryUsagePassive),
 		// 				LicenseType: to.Ptr(armsql.ManagedInstanceLicenseTypeLicenseIncluded),
-		// 				MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_JapanEast_MI_1"),
+		// 				MaintenanceConfigurationID: to.Ptr("/subscriptions/20D7082A-0FC7-4468-82BD-542694D5042B/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_JapanEast_MI_1"),
 		// 				MinimalTLSVersion: to.Ptr("1.2"),
-		// 				PricingModel: to.Ptr(armsql.FreemiumTypeRegular),
-		// 				ProvisioningState: to.Ptr(armsql.ProvisioningStateSucceeded),
+		// 				ProvisioningState: to.Ptr(armsql.ManagedInstancePropertiesProvisioningStateSucceeded),
 		// 				ProxyOverride: to.Ptr(armsql.ManagedInstanceProxyOverrideDefault),
 		// 				PublicDataEndpointEnabled: to.Ptr(false),
 		// 				RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
 		// 				State: to.Ptr("Ready"),
 		// 				StorageSizeInGB: to.Ptr[int32](1024),
-		// 				SubnetID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
+		// 				SubnetID: to.Ptr("/subscriptions/20D7082A-0FC7-4468-82BD-542694D5042B/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
 		// 				VCores: to.Ptr[int32](8),
-		// 				VirtualClusterID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Sql/virtualClusters/vc-5555555-6666-7777-8888-999999999999"),
 		// 			},
 		// 			SKU: &armsql.SKU{
-		// 				Name: to.Ptr("GP_Gen5"),
+		// 				Name: to.Ptr("GP_Gen4"),
 		// 				Capacity: to.Ptr[int32](8),
-		// 				Family: to.Ptr("Gen5"),
+		// 				Family: to.Ptr("Gen4"),
 		// 				Tier: to.Ptr("GeneralPurpose"),
 		// 			},
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("testinstance2"),
 		// 			Type: to.Ptr("Microsoft.Sql/managedInstances"),
-		// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Test1/providers/Microsoft.Sql/managedInstances/testinstance2"),
+		// 			ID: to.Ptr("/subscriptions/20d7082a-0fc7-4468-82bd-542694d5042b/resourceGroups/Test1/providers/Microsoft.Sql/managedInstances/testinstance2"),
 		// 			Location: to.Ptr("japaneast"),
 		// 			Properties: &armsql.ManagedInstanceProperties{
 		// 				AdministratorLogin: to.Ptr("dummylogin"),
-		// 				AuthenticationMetadata: to.Ptr(armsql.AuthMetadataLookupModesWindows),
 		// 				Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-		// 				CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-01T01:01:01.011Z"); return t}()),
 		// 				CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-		// 				DatabaseFormat: to.Ptr(armsql.ManagedInstanceDatabaseFormatSQLServer2022),
 		// 				DNSZone: to.Ptr("2c3d1bdae3412"),
-		// 				ExternalGovernanceStatus: to.Ptr(armsql.ExternalGovernanceStatusEnabled),
 		// 				FullyQualifiedDomainName: to.Ptr("testinstance2.2c3d1bdae3412.database.windows.net"),
-		// 				HybridSecondaryUsage: to.Ptr(armsql.HybridSecondaryUsagePassive),
 		// 				LicenseType: to.Ptr(armsql.ManagedInstanceLicenseType("Full")),
-		// 				MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_JapanEast_MI_1"),
+		// 				MaintenanceConfigurationID: to.Ptr("/subscriptions/20D7082A-0FC7-4468-82BD-542694D5042B/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_JapanEast_MI_1"),
 		// 				MinimalTLSVersion: to.Ptr("1.2"),
-		// 				PricingModel: to.Ptr(armsql.FreemiumTypeRegular),
-		// 				ProvisioningState: to.Ptr(armsql.ProvisioningStateSucceeded),
+		// 				ProvisioningState: to.Ptr(armsql.ManagedInstancePropertiesProvisioningStateSucceeded),
 		// 				ProxyOverride: to.Ptr(armsql.ManagedInstanceProxyOverrideDefault),
 		// 				PublicDataEndpointEnabled: to.Ptr(false),
 		// 				RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
 		// 				State: to.Ptr("Ready"),
 		// 				StorageSizeInGB: to.Ptr[int32](1024),
-		// 				SubnetID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/vnet2/subnets/subnet2"),
+		// 				SubnetID: to.Ptr("/subscriptions/20D7082A-0FC7-4468-82BD-542694D5042B/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/vnet2/subnets/subnet2"),
 		// 				VCores: to.Ptr[int32](16),
-		// 				VirtualClusterID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Sql/virtualClusters/vc-5555555-6666-7777-8888-444444444444"),
 		// 			},
 		// 			SKU: &armsql.SKU{
 		// 				Name: to.Ptr("BC_Gen5"),
 		// 				Capacity: to.Ptr[int32](16),
-		// 				Family: to.Ptr("Gen5"),
+		// 				Family: to.Ptr("Gen4"),
 		// 				Tier: to.Ptr("BusinessCritical"),
 		// 			},
 		// 	}},
@@ -120,7 +106,7 @@ func ExampleManagedInstancesClient_NewListPager_listManagedInstances() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/33c4457b1d13f83965f4fe3367dca4a6df898100/specification/sql/resource-manager/Microsoft.Sql/preview/2023-05-01-preview/examples/ManagedInstanceListWithExpandEqualsAdministrators.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c7b98b36e4023331545051284d8500adf98f02fe/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ManagedInstanceListWithExpandEqualsAdministrators.json
 func ExampleManagedInstancesClient_NewListPager_listManagedInstancesWithExpandAdministratorsActivedirectory() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -147,7 +133,7 @@ func ExampleManagedInstancesClient_NewListPager_listManagedInstancesWithExpandAd
 		// 		{
 		// 			Name: to.Ptr("testinstance1"),
 		// 			Type: to.Ptr("Microsoft.Sql/managedInstances"),
-		// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Test1/providers/Microsoft.Sql/managedInstances/testinstance1"),
+		// 			ID: to.Ptr("/subscriptions/20d7082a-0fc7-4468-82bd-542694d5042b/resourceGroups/Test1/providers/Microsoft.Sql/managedInstances/testinstance1"),
 		// 			Location: to.Ptr("japaneast"),
 		// 			Properties: &armsql.ManagedInstanceProperties{
 		// 				AdministratorLogin: to.Ptr("dummylogin"),
@@ -158,31 +144,24 @@ func ExampleManagedInstancesClient_NewListPager_listManagedInstancesWithExpandAd
 		// 					Sid: to.Ptr("00000011-1111-2222-2222-123456789111"),
 		// 					TenantID: to.Ptr("00000011-1111-2222-2222-123456789111"),
 		// 				},
-		// 				AuthenticationMetadata: to.Ptr(armsql.AuthMetadataLookupModesWindows),
 		// 				Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-		// 				CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-01T01:01:01.011Z"); return t}()),
 		// 				CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-		// 				DatabaseFormat: to.Ptr(armsql.ManagedInstanceDatabaseFormatSQLServer2022),
 		// 				DNSZone: to.Ptr("1b4e2caff2530"),
-		// 				ExternalGovernanceStatus: to.Ptr(armsql.ExternalGovernanceStatusEnabled),
 		// 				FullyQualifiedDomainName: to.Ptr("testinstance1.1b4e2caff2530.database.windows.net"),
-		// 				HybridSecondaryUsage: to.Ptr(armsql.HybridSecondaryUsagePassive),
 		// 				LicenseType: to.Ptr(armsql.ManagedInstanceLicenseTypeLicenseIncluded),
-		// 				MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_JapanEast_MI_1"),
+		// 				MaintenanceConfigurationID: to.Ptr("/subscriptions/20D7082A-0FC7-4468-82BD-542694D5042B/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_JapanEast_MI_1"),
 		// 				MinimalTLSVersion: to.Ptr("1.2"),
-		// 				PricingModel: to.Ptr(armsql.FreemiumTypeRegular),
-		// 				ProvisioningState: to.Ptr(armsql.ProvisioningStateSucceeded),
+		// 				ProvisioningState: to.Ptr(armsql.ManagedInstancePropertiesProvisioningStateSucceeded),
 		// 				ProxyOverride: to.Ptr(armsql.ManagedInstanceProxyOverrideDefault),
 		// 				PublicDataEndpointEnabled: to.Ptr(false),
 		// 				RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
 		// 				State: to.Ptr("Ready"),
 		// 				StorageSizeInGB: to.Ptr[int32](1024),
-		// 				SubnetID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
+		// 				SubnetID: to.Ptr("/subscriptions/20D7082A-0FC7-4468-82BD-542694D5042B/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
 		// 				VCores: to.Ptr[int32](8),
-		// 				VirtualClusterID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Sql/virtualClusters/vc-5555555-6666-7777-8888-999999999999"),
 		// 			},
 		// 			SKU: &armsql.SKU{
-		// 				Name: to.Ptr("GP_Gen5"),
+		// 				Name: to.Ptr("GP_Gen4"),
 		// 				Capacity: to.Ptr[int32](8),
 		// 				Family: to.Ptr("Gen4"),
 		// 				Tier: to.Ptr("GeneralPurpose"),
@@ -191,7 +170,7 @@ func ExampleManagedInstancesClient_NewListPager_listManagedInstancesWithExpandAd
 		// 		{
 		// 			Name: to.Ptr("testinstance2"),
 		// 			Type: to.Ptr("Microsoft.Sql/managedInstances"),
-		// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Test1/providers/Microsoft.Sql/managedInstances/testinstance2"),
+		// 			ID: to.Ptr("/subscriptions/20d7082a-0fc7-4468-82bd-542694d5042b/resourceGroups/Test1/providers/Microsoft.Sql/managedInstances/testinstance2"),
 		// 			Location: to.Ptr("japaneast"),
 		// 			Properties: &armsql.ManagedInstanceProperties{
 		// 				AdministratorLogin: to.Ptr("dummylogin"),
@@ -202,28 +181,21 @@ func ExampleManagedInstancesClient_NewListPager_listManagedInstancesWithExpandAd
 		// 					Sid: to.Ptr("00000011-1111-2222-2222-123456789111"),
 		// 					TenantID: to.Ptr("00000011-1111-2222-2222-123456789111"),
 		// 				},
-		// 				AuthenticationMetadata: to.Ptr(armsql.AuthMetadataLookupModesWindows),
 		// 				Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-		// 				CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-01T01:01:01.011Z"); return t}()),
 		// 				CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-		// 				DatabaseFormat: to.Ptr(armsql.ManagedInstanceDatabaseFormatSQLServer2022),
 		// 				DNSZone: to.Ptr("2c3d1bdae3412"),
-		// 				ExternalGovernanceStatus: to.Ptr(armsql.ExternalGovernanceStatusEnabled),
 		// 				FullyQualifiedDomainName: to.Ptr("testinstance2.2c3d1bdae3412.database.windows.net"),
-		// 				HybridSecondaryUsage: to.Ptr(armsql.HybridSecondaryUsagePassive),
 		// 				LicenseType: to.Ptr(armsql.ManagedInstanceLicenseType("Full")),
-		// 				MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_JapanEast_MI_2"),
+		// 				MaintenanceConfigurationID: to.Ptr("/subscriptions/20D7082A-0FC7-4468-82BD-542694D5042B/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_JapanEast_MI_2"),
 		// 				MinimalTLSVersion: to.Ptr("1.2"),
-		// 				PricingModel: to.Ptr(armsql.FreemiumTypeRegular),
-		// 				ProvisioningState: to.Ptr(armsql.ProvisioningStateSucceeded),
+		// 				ProvisioningState: to.Ptr(armsql.ManagedInstancePropertiesProvisioningStateSucceeded),
 		// 				ProxyOverride: to.Ptr(armsql.ManagedInstanceProxyOverrideDefault),
 		// 				PublicDataEndpointEnabled: to.Ptr(false),
 		// 				RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
 		// 				State: to.Ptr("Ready"),
 		// 				StorageSizeInGB: to.Ptr[int32](1024),
-		// 				SubnetID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/vnet2/subnets/subnet2"),
+		// 				SubnetID: to.Ptr("/subscriptions/20D7082A-0FC7-4468-82BD-542694D5042B/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/vnet2/subnets/subnet2"),
 		// 				VCores: to.Ptr[int32](16),
-		// 				VirtualClusterID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Sql/virtualClusters/vc-5555555-6666-7777-8888-444444444444"),
 		// 			},
 		// 			SKU: &armsql.SKU{
 		// 				Name: to.Ptr("BC_Gen5"),
@@ -236,7 +208,7 @@ func ExampleManagedInstancesClient_NewListPager_listManagedInstancesWithExpandAd
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/33c4457b1d13f83965f4fe3367dca4a6df898100/specification/sql/resource-manager/Microsoft.Sql/preview/2023-05-01-preview/examples/ManagedInstanceListByInstancePool.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c7b98b36e4023331545051284d8500adf98f02fe/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ManagedInstanceListByInstancePool.json
 func ExampleManagedInstancesClient_NewListByInstancePoolPager_listManagedInstancesByInstancePool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -263,33 +235,26 @@ func ExampleManagedInstancesClient_NewListByInstancePoolPager_listManagedInstanc
 		// 		{
 		// 			Name: to.Ptr("testinstance1"),
 		// 			Type: to.Ptr("Microsoft.Sql/managedInstances"),
-		// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Test1/providers/Microsoft.Sql/managedInstances/testinstance1"),
+		// 			ID: to.Ptr("/subscriptions/20D7082A-0FC7-4468-82BD-542694D5042B/resourceGroups/Test1/providers/Microsoft.Sql/managedInstances/testinstance1"),
 		// 			Location: to.Ptr("canadacentral"),
 		// 			Properties: &armsql.ManagedInstanceProperties{
 		// 				AdministratorLogin: to.Ptr("dummylogin"),
-		// 				AuthenticationMetadata: to.Ptr(armsql.AuthMetadataLookupModesWindows),
 		// 				Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-		// 				CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-01T01:01:01.011Z"); return t}()),
 		// 				CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-		// 				DatabaseFormat: to.Ptr(armsql.ManagedInstanceDatabaseFormatSQLServer2022),
 		// 				DNSZone: to.Ptr("1b4e2caff2530"),
-		// 				ExternalGovernanceStatus: to.Ptr(armsql.ExternalGovernanceStatusEnabled),
 		// 				FullyQualifiedDomainName: to.Ptr("testinstance1.1b4e2caff2530.database.windows.net"),
-		// 				HybridSecondaryUsage: to.Ptr(armsql.HybridSecondaryUsagePassive),
-		// 				InstancePoolID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Test1/providers/Microsoft.Sql/instancePools/pool1"),
+		// 				InstancePoolID: to.Ptr("/subscriptions/20D7082A-0FC7-4468-82BD-542694D5042B/resourceGroups/Test1/providers/Microsoft.Sql/instancePools/pool1"),
 		// 				LicenseType: to.Ptr(armsql.ManagedInstanceLicenseTypeLicenseIncluded),
-		// 				MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_CanadaCentral_MI_1"),
+		// 				MaintenanceConfigurationID: to.Ptr("/subscriptions/20D7082A-0FC7-4468-82BD-542694D5042B/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_CanadaCentral_MI_1"),
 		// 				MinimalTLSVersion: to.Ptr("1.2"),
-		// 				PricingModel: to.Ptr(armsql.FreemiumTypeRegular),
-		// 				ProvisioningState: to.Ptr(armsql.ProvisioningStateSucceeded),
+		// 				ProvisioningState: to.Ptr(armsql.ManagedInstancePropertiesProvisioningStateSucceeded),
 		// 				ProxyOverride: to.Ptr(armsql.ManagedInstanceProxyOverrideRedirect),
 		// 				PublicDataEndpointEnabled: to.Ptr(false),
 		// 				RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
 		// 				State: to.Ptr("Ready"),
 		// 				StorageSizeInGB: to.Ptr[int32](1024),
-		// 				SubnetID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Test1/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
+		// 				SubnetID: to.Ptr("/subscriptions/20D7082A-0FC7-4468-82BD-542694D5042B/resourceGroups/Test1/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
 		// 				VCores: to.Ptr[int32](8),
-		// 				VirtualClusterID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Sql/virtualClusters/vc-5555555-6666-7777-8888-999999999999"),
 		// 			},
 		// 			SKU: &armsql.SKU{
 		// 				Name: to.Ptr("GP_Gen5"),
@@ -301,33 +266,26 @@ func ExampleManagedInstancesClient_NewListByInstancePoolPager_listManagedInstanc
 		// 		{
 		// 			Name: to.Ptr("testinstance2"),
 		// 			Type: to.Ptr("Microsoft.Sql/managedInstances"),
-		// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Test1/providers/Microsoft.Sql/managedInstances/testinstance2"),
+		// 			ID: to.Ptr("/subscriptions/20D7082A-0FC7-4468-82BD-542694D5042B/resourceGroups/Test1/providers/Microsoft.Sql/managedInstances/testinstance2"),
 		// 			Location: to.Ptr("canadacentral"),
 		// 			Properties: &armsql.ManagedInstanceProperties{
 		// 				AdministratorLogin: to.Ptr("dummylogin"),
-		// 				AuthenticationMetadata: to.Ptr(armsql.AuthMetadataLookupModesWindows),
 		// 				Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-		// 				CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-01T01:01:01.011Z"); return t}()),
 		// 				CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-		// 				DatabaseFormat: to.Ptr(armsql.ManagedInstanceDatabaseFormatSQLServer2022),
 		// 				DNSZone: to.Ptr("2c3d1bdae3412"),
-		// 				ExternalGovernanceStatus: to.Ptr(armsql.ExternalGovernanceStatusEnabled),
 		// 				FullyQualifiedDomainName: to.Ptr("testinstance2.2c3d1bdae3412.database.windows.net"),
-		// 				HybridSecondaryUsage: to.Ptr(armsql.HybridSecondaryUsagePassive),
-		// 				InstancePoolID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Test1/providers/Microsoft.Sql/instancePools/pool1"),
+		// 				InstancePoolID: to.Ptr("/subscriptions/20D7082A-0FC7-4468-82BD-542694D5042B/resourceGroups/Test1/providers/Microsoft.Sql/instancePools/pool1"),
 		// 				LicenseType: to.Ptr(armsql.ManagedInstanceLicenseType("Full")),
-		// 				MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_CanadaCentral_MI_1"),
+		// 				MaintenanceConfigurationID: to.Ptr("/subscriptions/20D7082A-0FC7-4468-82BD-542694D5042B/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_CanadaCentral_MI_1"),
 		// 				MinimalTLSVersion: to.Ptr("1.2"),
-		// 				PricingModel: to.Ptr(armsql.FreemiumTypeRegular),
-		// 				ProvisioningState: to.Ptr(armsql.ProvisioningStateSucceeded),
+		// 				ProvisioningState: to.Ptr(armsql.ManagedInstancePropertiesProvisioningStateSucceeded),
 		// 				ProxyOverride: to.Ptr(armsql.ManagedInstanceProxyOverrideRedirect),
 		// 				PublicDataEndpointEnabled: to.Ptr(false),
 		// 				RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
 		// 				State: to.Ptr("Ready"),
 		// 				StorageSizeInGB: to.Ptr[int32](1024),
-		// 				SubnetID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Test1/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
+		// 				SubnetID: to.Ptr("/subscriptions/20D7082A-0FC7-4468-82BD-542694D5042B/resourceGroups/Test1/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
 		// 				VCores: to.Ptr[int32](16),
-		// 				VirtualClusterID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Sql/virtualClusters/vc-5555555-6666-7777-8888-999999999999"),
 		// 			},
 		// 			SKU: &armsql.SKU{
 		// 				Name: to.Ptr("GP_Gen5"),
@@ -340,7 +298,7 @@ func ExampleManagedInstancesClient_NewListByInstancePoolPager_listManagedInstanc
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/33c4457b1d13f83965f4fe3367dca4a6df898100/specification/sql/resource-manager/Microsoft.Sql/preview/2023-05-01-preview/examples/ManagedInstanceListByInstancePoolWithExpandEqualsAdministrators.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c7b98b36e4023331545051284d8500adf98f02fe/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ManagedInstanceListByInstancePoolWithExpandEqualsAdministrators.json
 func ExampleManagedInstancesClient_NewListByInstancePoolPager_listManagedInstancesByInstancePoolWithExpandAdministratorsActivedirectory() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -367,7 +325,7 @@ func ExampleManagedInstancesClient_NewListByInstancePoolPager_listManagedInstanc
 		// 		{
 		// 			Name: to.Ptr("testinstance1"),
 		// 			Type: to.Ptr("Microsoft.Sql/managedInstances"),
-		// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Test1/providers/Microsoft.Sql/managedInstances/testinstance1"),
+		// 			ID: to.Ptr("/subscriptions/20D7082A-0FC7-4468-82BD-542694D5042B/resourceGroups/Test1/providers/Microsoft.Sql/managedInstances/testinstance1"),
 		// 			Location: to.Ptr("canadacentral"),
 		// 			Properties: &armsql.ManagedInstanceProperties{
 		// 				AdministratorLogin: to.Ptr("dummylogin"),
@@ -378,29 +336,22 @@ func ExampleManagedInstancesClient_NewListByInstancePoolPager_listManagedInstanc
 		// 					Sid: to.Ptr("00000011-1111-2222-2222-123456789111"),
 		// 					TenantID: to.Ptr("00000011-1111-2222-2222-123456789111"),
 		// 				},
-		// 				AuthenticationMetadata: to.Ptr(armsql.AuthMetadataLookupModesWindows),
 		// 				Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-		// 				CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-01T01:01:01.011Z"); return t}()),
 		// 				CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-		// 				DatabaseFormat: to.Ptr(armsql.ManagedInstanceDatabaseFormatSQLServer2022),
 		// 				DNSZone: to.Ptr("1b4e2caff2530"),
-		// 				ExternalGovernanceStatus: to.Ptr(armsql.ExternalGovernanceStatusEnabled),
 		// 				FullyQualifiedDomainName: to.Ptr("testinstance1.1b4e2caff2530.database.windows.net"),
-		// 				HybridSecondaryUsage: to.Ptr(armsql.HybridSecondaryUsagePassive),
-		// 				InstancePoolID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Test1/providers/Microsoft.Sql/instancePools/pool1"),
+		// 				InstancePoolID: to.Ptr("/subscriptions/20D7082A-0FC7-4468-82BD-542694D5042B/resourceGroups/Test1/providers/Microsoft.Sql/instancePools/pool1"),
 		// 				LicenseType: to.Ptr(armsql.ManagedInstanceLicenseTypeLicenseIncluded),
-		// 				MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_CanadaCentral_MI_1"),
+		// 				MaintenanceConfigurationID: to.Ptr("/subscriptions/20D7082A-0FC7-4468-82BD-542694D5042B/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_CanadaCentral_MI_1"),
 		// 				MinimalTLSVersion: to.Ptr("1.2"),
-		// 				PricingModel: to.Ptr(armsql.FreemiumTypeRegular),
-		// 				ProvisioningState: to.Ptr(armsql.ProvisioningStateSucceeded),
+		// 				ProvisioningState: to.Ptr(armsql.ManagedInstancePropertiesProvisioningStateSucceeded),
 		// 				ProxyOverride: to.Ptr(armsql.ManagedInstanceProxyOverrideRedirect),
 		// 				PublicDataEndpointEnabled: to.Ptr(false),
 		// 				RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
 		// 				State: to.Ptr("Ready"),
 		// 				StorageSizeInGB: to.Ptr[int32](1024),
-		// 				SubnetID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Test1/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
+		// 				SubnetID: to.Ptr("/subscriptions/20D7082A-0FC7-4468-82BD-542694D5042B/resourceGroups/Test1/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
 		// 				VCores: to.Ptr[int32](8),
-		// 				VirtualClusterID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Sql/virtualClusters/vc-5555555-6666-7777-8888-999999999999"),
 		// 			},
 		// 			SKU: &armsql.SKU{
 		// 				Name: to.Ptr("GP_Gen5"),
@@ -412,7 +363,7 @@ func ExampleManagedInstancesClient_NewListByInstancePoolPager_listManagedInstanc
 		// 		{
 		// 			Name: to.Ptr("testinstance2"),
 		// 			Type: to.Ptr("Microsoft.Sql/managedInstances"),
-		// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Test1/providers/Microsoft.Sql/managedInstances/testinstance2"),
+		// 			ID: to.Ptr("/subscriptions/20D7082A-0FC7-4468-82BD-542694D5042B/resourceGroups/Test1/providers/Microsoft.Sql/managedInstances/testinstance2"),
 		// 			Location: to.Ptr("canadacentral"),
 		// 			Properties: &armsql.ManagedInstanceProperties{
 		// 				AdministratorLogin: to.Ptr("dummylogin"),
@@ -423,29 +374,22 @@ func ExampleManagedInstancesClient_NewListByInstancePoolPager_listManagedInstanc
 		// 					Sid: to.Ptr("00000011-1111-2222-2222-123456789111"),
 		// 					TenantID: to.Ptr("00000011-1111-2222-2222-123456789111"),
 		// 				},
-		// 				AuthenticationMetadata: to.Ptr(armsql.AuthMetadataLookupModesWindows),
 		// 				Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-		// 				CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-01T01:01:01.011Z"); return t}()),
 		// 				CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-		// 				DatabaseFormat: to.Ptr(armsql.ManagedInstanceDatabaseFormatSQLServer2022),
 		// 				DNSZone: to.Ptr("2c3d1bdae3412"),
-		// 				ExternalGovernanceStatus: to.Ptr(armsql.ExternalGovernanceStatusEnabled),
 		// 				FullyQualifiedDomainName: to.Ptr("testinstance2.2c3d1bdae3412.database.windows.net"),
-		// 				HybridSecondaryUsage: to.Ptr(armsql.HybridSecondaryUsagePassive),
-		// 				InstancePoolID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Test1/providers/Microsoft.Sql/instancePools/pool1"),
+		// 				InstancePoolID: to.Ptr("/subscriptions/20D7082A-0FC7-4468-82BD-542694D5042B/resourceGroups/Test1/providers/Microsoft.Sql/instancePools/pool1"),
 		// 				LicenseType: to.Ptr(armsql.ManagedInstanceLicenseType("Full")),
-		// 				MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_CanadaCentral_MI_2"),
+		// 				MaintenanceConfigurationID: to.Ptr("/subscriptions/20D7082A-0FC7-4468-82BD-542694D5042B/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_CanadaCentral_MI_2"),
 		// 				MinimalTLSVersion: to.Ptr("1.2"),
-		// 				PricingModel: to.Ptr(armsql.FreemiumTypeRegular),
-		// 				ProvisioningState: to.Ptr(armsql.ProvisioningStateSucceeded),
+		// 				ProvisioningState: to.Ptr(armsql.ManagedInstancePropertiesProvisioningStateSucceeded),
 		// 				ProxyOverride: to.Ptr(armsql.ManagedInstanceProxyOverrideRedirect),
 		// 				PublicDataEndpointEnabled: to.Ptr(false),
 		// 				RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
 		// 				State: to.Ptr("Ready"),
 		// 				StorageSizeInGB: to.Ptr[int32](1024),
-		// 				SubnetID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Test1/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
+		// 				SubnetID: to.Ptr("/subscriptions/20D7082A-0FC7-4468-82BD-542694D5042B/resourceGroups/Test1/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
 		// 				VCores: to.Ptr[int32](16),
-		// 				VirtualClusterID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Sql/virtualClusters/vc-5555555-6666-7777-8888-999999999999"),
 		// 			},
 		// 			SKU: &armsql.SKU{
 		// 				Name: to.Ptr("GP_Gen5"),
@@ -458,7 +402,7 @@ func ExampleManagedInstancesClient_NewListByInstancePoolPager_listManagedInstanc
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/33c4457b1d13f83965f4fe3367dca4a6df898100/specification/sql/resource-manager/Microsoft.Sql/preview/2023-05-01-preview/examples/ManagedInstanceListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c7b98b36e4023331545051284d8500adf98f02fe/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ManagedInstanceListByResourceGroup.json
 func ExampleManagedInstancesClient_NewListByResourceGroupPager_listManagedInstancesByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -485,74 +429,60 @@ func ExampleManagedInstancesClient_NewListByResourceGroupPager_listManagedInstan
 		// 		{
 		// 			Name: to.Ptr("testinstance1"),
 		// 			Type: to.Ptr("Microsoft.Sql/managedInstances"),
-		// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Test1/providers/Microsoft.Sql/managedInstances/testinstance1"),
+		// 			ID: to.Ptr("/subscriptions/20d7082a-0fc7-4468-82bd-542694d5042b/resourceGroups/Test1/providers/Microsoft.Sql/managedInstances/testinstance1"),
 		// 			Location: to.Ptr("japaneast"),
 		// 			Properties: &armsql.ManagedInstanceProperties{
 		// 				AdministratorLogin: to.Ptr("dummylogin"),
-		// 				AuthenticationMetadata: to.Ptr(armsql.AuthMetadataLookupModesWindows),
 		// 				Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-		// 				CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-01T01:01:01.011Z"); return t}()),
 		// 				CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-		// 				DatabaseFormat: to.Ptr(armsql.ManagedInstanceDatabaseFormatSQLServer2022),
 		// 				DNSZone: to.Ptr("1b4e2caff2530"),
-		// 				ExternalGovernanceStatus: to.Ptr(armsql.ExternalGovernanceStatusEnabled),
 		// 				FullyQualifiedDomainName: to.Ptr("testinstance1.1b4e2caff2530.database.windows.net"),
-		// 				HybridSecondaryUsage: to.Ptr(armsql.HybridSecondaryUsagePassive),
 		// 				LicenseType: to.Ptr(armsql.ManagedInstanceLicenseTypeLicenseIncluded),
-		// 				MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_JapanEast_MI_1"),
+		// 				MaintenanceConfigurationID: to.Ptr("/subscriptions/20d7082a-0fc7-4468-82bd-542694d5042b/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_JapanEast_MI_1"),
 		// 				MinimalTLSVersion: to.Ptr("1.2"),
-		// 				PricingModel: to.Ptr(armsql.FreemiumTypeRegular),
-		// 				ProvisioningState: to.Ptr(armsql.ProvisioningStateSucceeded),
+		// 				ProvisioningState: to.Ptr(armsql.ManagedInstancePropertiesProvisioningStateSucceeded),
 		// 				ProxyOverride: to.Ptr(armsql.ManagedInstanceProxyOverrideDefault),
 		// 				PublicDataEndpointEnabled: to.Ptr(false),
 		// 				RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
 		// 				State: to.Ptr("Ready"),
 		// 				StorageSizeInGB: to.Ptr[int32](1024),
-		// 				SubnetID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
+		// 				SubnetID: to.Ptr("/subscriptions/20D7082A-0FC7-4468-82BD-542694D5042B/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
 		// 				VCores: to.Ptr[int32](8),
-		// 				VirtualClusterID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Sql/virtualClusters/vc-5555555-6666-7777-8888-999999999999"),
 		// 			},
 		// 			SKU: &armsql.SKU{
-		// 				Name: to.Ptr("GP_Gen5"),
+		// 				Name: to.Ptr("GP_Gen4"),
 		// 				Capacity: to.Ptr[int32](8),
-		// 				Family: to.Ptr("Gen5"),
+		// 				Family: to.Ptr("Gen4"),
 		// 				Tier: to.Ptr("GeneralPurpose"),
 		// 			},
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("testinstance2"),
 		// 			Type: to.Ptr("Microsoft.Sql/managedInstances"),
-		// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Test1/providers/Microsoft.Sql/managedInstances/testinstance2"),
+		// 			ID: to.Ptr("/subscriptions/20d7082a-0fc7-4468-82bd-542694d5042b/resourceGroups/Test1/providers/Microsoft.Sql/managedInstances/testinstance2"),
 		// 			Location: to.Ptr("japaneast"),
 		// 			Properties: &armsql.ManagedInstanceProperties{
 		// 				AdministratorLogin: to.Ptr("dummylogin"),
-		// 				AuthenticationMetadata: to.Ptr(armsql.AuthMetadataLookupModesWindows),
 		// 				Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-		// 				CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-01T01:01:01.011Z"); return t}()),
 		// 				CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-		// 				DatabaseFormat: to.Ptr(armsql.ManagedInstanceDatabaseFormatSQLServer2022),
 		// 				DNSZone: to.Ptr("2c3d1bdae3412"),
-		// 				ExternalGovernanceStatus: to.Ptr(armsql.ExternalGovernanceStatusEnabled),
 		// 				FullyQualifiedDomainName: to.Ptr("testinstance2.2c3d1bdae3412.database.windows.net"),
-		// 				HybridSecondaryUsage: to.Ptr(armsql.HybridSecondaryUsagePassive),
 		// 				LicenseType: to.Ptr(armsql.ManagedInstanceLicenseType("Full")),
-		// 				MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_JapanEast_MI_1"),
+		// 				MaintenanceConfigurationID: to.Ptr("/subscriptions/20d7082a-0fc7-4468-82bd-542694d5042b/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_JapanEast_MI_1"),
 		// 				MinimalTLSVersion: to.Ptr("1.2"),
-		// 				PricingModel: to.Ptr(armsql.FreemiumTypeRegular),
-		// 				ProvisioningState: to.Ptr(armsql.ProvisioningStateSucceeded),
+		// 				ProvisioningState: to.Ptr(armsql.ManagedInstancePropertiesProvisioningStateSucceeded),
 		// 				ProxyOverride: to.Ptr(armsql.ManagedInstanceProxyOverrideDefault),
 		// 				PublicDataEndpointEnabled: to.Ptr(false),
 		// 				RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
 		// 				State: to.Ptr("Ready"),
 		// 				StorageSizeInGB: to.Ptr[int32](1024),
-		// 				SubnetID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/vnet2/subnets/subnet2"),
+		// 				SubnetID: to.Ptr("/subscriptions/20D7082A-0FC7-4468-82BD-542694D5042B/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/vnet2/subnets/subnet2"),
 		// 				VCores: to.Ptr[int32](16),
-		// 				VirtualClusterID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Sql/virtualClusters/vc-5555555-6666-7777-8888-444444444444"),
 		// 			},
 		// 			SKU: &armsql.SKU{
 		// 				Name: to.Ptr("BC_Gen5"),
 		// 				Capacity: to.Ptr[int32](16),
-		// 				Family: to.Ptr("Gen5"),
+		// 				Family: to.Ptr("Gen4"),
 		// 				Tier: to.Ptr("BusinessCritical"),
 		// 			},
 		// 	}},
@@ -560,7 +490,7 @@ func ExampleManagedInstancesClient_NewListByResourceGroupPager_listManagedInstan
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/33c4457b1d13f83965f4fe3367dca4a6df898100/specification/sql/resource-manager/Microsoft.Sql/preview/2023-05-01-preview/examples/ManagedInstanceListByResourceGroupWithExpandEqualsAdministrators.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c7b98b36e4023331545051284d8500adf98f02fe/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ManagedInstanceListByResourceGroupWithExpandEqualsAdministrators.json
 func ExampleManagedInstancesClient_NewListByResourceGroupPager_listManagedInstancesByResourceGroupWithExpandAdministratorsActivedirectory() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -587,7 +517,7 @@ func ExampleManagedInstancesClient_NewListByResourceGroupPager_listManagedInstan
 		// 		{
 		// 			Name: to.Ptr("testinstance1"),
 		// 			Type: to.Ptr("Microsoft.Sql/managedInstances"),
-		// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Test1/providers/Microsoft.Sql/managedInstances/testinstance1"),
+		// 			ID: to.Ptr("/subscriptions/20d7082a-0fc7-4468-82bd-542694d5042b/resourceGroups/Test1/providers/Microsoft.Sql/managedInstances/testinstance1"),
 		// 			Location: to.Ptr("japaneast"),
 		// 			Properties: &armsql.ManagedInstanceProperties{
 		// 				AdministratorLogin: to.Ptr("dummylogin"),
@@ -598,31 +528,24 @@ func ExampleManagedInstancesClient_NewListByResourceGroupPager_listManagedInstan
 		// 					Sid: to.Ptr("00000011-1111-2222-2222-123456789111"),
 		// 					TenantID: to.Ptr("00000011-1111-2222-2222-123456789111"),
 		// 				},
-		// 				AuthenticationMetadata: to.Ptr(armsql.AuthMetadataLookupModesWindows),
 		// 				Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-		// 				CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-01T01:01:01.011Z"); return t}()),
 		// 				CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-		// 				DatabaseFormat: to.Ptr(armsql.ManagedInstanceDatabaseFormatSQLServer2022),
 		// 				DNSZone: to.Ptr("1b4e2caff2530"),
-		// 				ExternalGovernanceStatus: to.Ptr(armsql.ExternalGovernanceStatusEnabled),
 		// 				FullyQualifiedDomainName: to.Ptr("testinstance1.1b4e2caff2530.database.windows.net"),
-		// 				HybridSecondaryUsage: to.Ptr(armsql.HybridSecondaryUsagePassive),
 		// 				LicenseType: to.Ptr(armsql.ManagedInstanceLicenseTypeLicenseIncluded),
-		// 				MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_JapanEast_MI_1"),
+		// 				MaintenanceConfigurationID: to.Ptr("/subscriptions/20D7082A-0FC7-4468-82BD-542694D5042B/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_JapanEast_MI_1"),
 		// 				MinimalTLSVersion: to.Ptr("1.2"),
-		// 				PricingModel: to.Ptr(armsql.FreemiumTypeRegular),
-		// 				ProvisioningState: to.Ptr(armsql.ProvisioningStateSucceeded),
+		// 				ProvisioningState: to.Ptr(armsql.ManagedInstancePropertiesProvisioningStateSucceeded),
 		// 				ProxyOverride: to.Ptr(armsql.ManagedInstanceProxyOverrideDefault),
 		// 				PublicDataEndpointEnabled: to.Ptr(false),
 		// 				RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
 		// 				State: to.Ptr("Ready"),
 		// 				StorageSizeInGB: to.Ptr[int32](1024),
-		// 				SubnetID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
+		// 				SubnetID: to.Ptr("/subscriptions/20D7082A-0FC7-4468-82BD-542694D5042B/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
 		// 				VCores: to.Ptr[int32](8),
-		// 				VirtualClusterID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Sql/virtualClusters/vc-5555555-6666-7777-8888-999999999999"),
 		// 			},
 		// 			SKU: &armsql.SKU{
-		// 				Name: to.Ptr("GP_Gen5"),
+		// 				Name: to.Ptr("GP_Gen4"),
 		// 				Capacity: to.Ptr[int32](8),
 		// 				Family: to.Ptr("Gen4"),
 		// 				Tier: to.Ptr("GeneralPurpose"),
@@ -631,7 +554,7 @@ func ExampleManagedInstancesClient_NewListByResourceGroupPager_listManagedInstan
 		// 		{
 		// 			Name: to.Ptr("testinstance2"),
 		// 			Type: to.Ptr("Microsoft.Sql/managedInstances"),
-		// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Test1/providers/Microsoft.Sql/managedInstances/testinstance2"),
+		// 			ID: to.Ptr("/subscriptions/20d7082a-0fc7-4468-82bd-542694d5042b/resourceGroups/Test1/providers/Microsoft.Sql/managedInstances/testinstance2"),
 		// 			Location: to.Ptr("japaneast"),
 		// 			Properties: &armsql.ManagedInstanceProperties{
 		// 				AdministratorLogin: to.Ptr("dummylogin"),
@@ -642,28 +565,21 @@ func ExampleManagedInstancesClient_NewListByResourceGroupPager_listManagedInstan
 		// 					Sid: to.Ptr("00000011-1111-2222-2222-123456789111"),
 		// 					TenantID: to.Ptr("00000011-1111-2222-2222-123456789111"),
 		// 				},
-		// 				AuthenticationMetadata: to.Ptr(armsql.AuthMetadataLookupModesWindows),
 		// 				Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-		// 				CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-01T01:01:01.011Z"); return t}()),
 		// 				CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-		// 				DatabaseFormat: to.Ptr(armsql.ManagedInstanceDatabaseFormatSQLServer2022),
 		// 				DNSZone: to.Ptr("2c3d1bdae3412"),
-		// 				ExternalGovernanceStatus: to.Ptr(armsql.ExternalGovernanceStatusEnabled),
 		// 				FullyQualifiedDomainName: to.Ptr("testinstance2.2c3d1bdae3412.database.windows.net"),
-		// 				HybridSecondaryUsage: to.Ptr(armsql.HybridSecondaryUsagePassive),
 		// 				LicenseType: to.Ptr(armsql.ManagedInstanceLicenseType("Full")),
-		// 				MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_JapanEast_MI_2"),
+		// 				MaintenanceConfigurationID: to.Ptr("/subscriptions/20D7082A-0FC7-4468-82BD-542694D5042B/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_JapanEast_MI_2"),
 		// 				MinimalTLSVersion: to.Ptr("1.2"),
-		// 				PricingModel: to.Ptr(armsql.FreemiumTypeRegular),
-		// 				ProvisioningState: to.Ptr(armsql.ProvisioningStateSucceeded),
+		// 				ProvisioningState: to.Ptr(armsql.ManagedInstancePropertiesProvisioningStateSucceeded),
 		// 				ProxyOverride: to.Ptr(armsql.ManagedInstanceProxyOverrideDefault),
 		// 				PublicDataEndpointEnabled: to.Ptr(false),
 		// 				RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
 		// 				State: to.Ptr("Ready"),
 		// 				StorageSizeInGB: to.Ptr[int32](1024),
-		// 				SubnetID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/vnet2/subnets/subnet2"),
+		// 				SubnetID: to.Ptr("/subscriptions/20D7082A-0FC7-4468-82BD-542694D5042B/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/vnet2/subnets/subnet2"),
 		// 				VCores: to.Ptr[int32](16),
-		// 				VirtualClusterID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Sql/virtualClusters/vc-5555555-6666-7777-8888-444444444444"),
 		// 			},
 		// 			SKU: &armsql.SKU{
 		// 				Name: to.Ptr("BC_Gen5"),
@@ -676,7 +592,7 @@ func ExampleManagedInstancesClient_NewListByResourceGroupPager_listManagedInstan
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/33c4457b1d13f83965f4fe3367dca4a6df898100/specification/sql/resource-manager/Microsoft.Sql/preview/2023-05-01-preview/examples/ManagedInstanceGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c7b98b36e4023331545051284d8500adf98f02fe/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ManagedInstanceGet.json
 func ExampleManagedInstancesClient_Get_getManagedInstance() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -697,28 +613,22 @@ func ExampleManagedInstancesClient_Get_getManagedInstance() {
 	// res.ManagedInstance = armsql.ManagedInstance{
 	// 	Name: to.Ptr("testinstance"),
 	// 	Type: to.Ptr("Microsoft.Sql/managedInstances"),
-	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Sql/managedInstances/testinstance"),
+	// 	ID: to.Ptr("/subscriptions/20d7082a-0fc7-4468-82bd-542694d5042b/resourceGroups/testrg/providers/Microsoft.Sql/managedInstances/testinstance"),
 	// 	Location: to.Ptr("japaneast"),
 	// 	Tags: map[string]*string{
 	// 		"key": to.Ptr("value"),
 	// 	},
 	// 	Properties: &armsql.ManagedInstanceProperties{
 	// 		AdministratorLogin: to.Ptr("dummylogin"),
-	// 		AuthenticationMetadata: to.Ptr(armsql.AuthMetadataLookupModesWindows),
 	// 		Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-	// 		CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-01T01:01:01.011Z"); return t}()),
 	// 		CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-	// 		DatabaseFormat: to.Ptr(armsql.ManagedInstanceDatabaseFormatSQLServer2022),
 	// 		DNSZone: to.Ptr("1b4e2caff2530"),
-	// 		ExternalGovernanceStatus: to.Ptr(armsql.ExternalGovernanceStatusEnabled),
 	// 		FullyQualifiedDomainName: to.Ptr("testinstance.1b4e2caff2530.database.windows.net"),
-	// 		HybridSecondaryUsage: to.Ptr(armsql.HybridSecondaryUsagePassive),
-	// 		InstancePoolID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Sql/instancePools/instancePool1"),
+	// 		InstancePoolID: to.Ptr("/subscriptions/20d7082a-0fc7-4468-82bd-542694d5042b/resourceGroups/testrg/providers/Microsoft.Sql/instancePools/instancePool1"),
 	// 		LicenseType: to.Ptr(armsql.ManagedInstanceLicenseTypeLicenseIncluded),
-	// 		MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_JapanEast_MI_1"),
+	// 		MaintenanceConfigurationID: to.Ptr("/subscriptions/20D7082A-0FC7-4468-82BD-542694D5042B/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_JapanEast_MI_1"),
 	// 		MinimalTLSVersion: to.Ptr("1.2"),
-	// 		PricingModel: to.Ptr(armsql.FreemiumTypeRegular),
-	// 		ProvisioningState: to.Ptr(armsql.ProvisioningStateSucceeded),
+	// 		ProvisioningState: to.Ptr(armsql.ManagedInstancePropertiesProvisioningStateSucceeded),
 	// 		ProxyOverride: to.Ptr(armsql.ManagedInstanceProxyOverrideDefault),
 	// 		PublicDataEndpointEnabled: to.Ptr(false),
 	// 		RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
@@ -730,78 +640,19 @@ func ExampleManagedInstancesClient_Get_getManagedInstance() {
 	// 		},
 	// 		State: to.Ptr("Ready"),
 	// 		StorageSizeInGB: to.Ptr[int32](1024),
-	// 		SubnetID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
+	// 		SubnetID: to.Ptr("/subscriptions/20D7082A-0FC7-4468-82BD-542694D5042B/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
 	// 		VCores: to.Ptr[int32](8),
-	// 		VirtualClusterID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Sql/virtualClusters/vc-5555555-6666-7777-8888-999999999999"),
 	// 	},
 	// 	SKU: &armsql.SKU{
-	// 		Name: to.Ptr("GP_Gen5"),
+	// 		Name: to.Ptr("GP_Gen4"),
 	// 		Capacity: to.Ptr[int32](8),
-	// 		Family: to.Ptr("Gen5"),
+	// 		Family: to.Ptr("Gen4"),
 	// 		Tier: to.Ptr("GeneralPurpose"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/33c4457b1d13f83965f4fe3367dca4a6df898100/specification/sql/resource-manager/Microsoft.Sql/preview/2023-05-01-preview/examples/ManagedInstanceGetWhileUpdating.json
-func ExampleManagedInstancesClient_Get_getManagedInstanceWhileResourceIsUpdating() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsql.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewManagedInstancesClient().Get(ctx, "testrg", "testinstance", &armsql.ManagedInstancesClientGetOptions{Expand: nil})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.ManagedInstance = armsql.ManagedInstance{
-	// 	Name: to.Ptr("testinstance"),
-	// 	Type: to.Ptr("Microsoft.Sql/managedInstances"),
-	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Sql/managedInstances/testinstance"),
-	// 	Location: to.Ptr("japaneast"),
-	// 	Tags: map[string]*string{
-	// 		"key": to.Ptr("value"),
-	// 	},
-	// 	Properties: &armsql.ManagedInstanceProperties{
-	// 		AdministratorLogin: to.Ptr("dummylogin"),
-	// 		AuthenticationMetadata: to.Ptr(armsql.AuthMetadataLookupModesWindows),
-	// 		Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-	// 		CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-01T01:01:01.011Z"); return t}()),
-	// 		DatabaseFormat: to.Ptr(armsql.ManagedInstanceDatabaseFormatSQLServer2022),
-	// 		DNSZone: to.Ptr("1b4e2caff2530"),
-	// 		ExternalGovernanceStatus: to.Ptr(armsql.ExternalGovernanceStatusEnabled),
-	// 		FullyQualifiedDomainName: to.Ptr("testinstance.1b4e2caff2530.database.windows.net"),
-	// 		InstancePoolID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Sql/instancePools/instancePool1"),
-	// 		LicenseType: to.Ptr(armsql.ManagedInstanceLicenseTypeLicenseIncluded),
-	// 		MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_JapanEast_MI_1"),
-	// 		MinimalTLSVersion: to.Ptr("1.2"),
-	// 		PricingModel: to.Ptr(armsql.FreemiumTypeRegular),
-	// 		ProvisioningState: to.Ptr(armsql.ProvisioningStateSucceeded),
-	// 		ProxyOverride: to.Ptr(armsql.ManagedInstanceProxyOverrideDefault),
-	// 		PublicDataEndpointEnabled: to.Ptr(false),
-	// 		State: to.Ptr("Ready"),
-	// 		StorageSizeInGB: to.Ptr[int32](1024),
-	// 		SubnetID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
-	// 		VCores: to.Ptr[int32](8),
-	// 		VirtualClusterID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Sql/virtualClusters/vc-5555555-6666-7777-8888-999999999999"),
-	// 	},
-	// 	SKU: &armsql.SKU{
-	// 		Name: to.Ptr("GP_Gen5"),
-	// 		Capacity: to.Ptr[int32](8),
-	// 		Family: to.Ptr("Gen5"),
-	// 		Tier: to.Ptr("GeneralPurpose"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/33c4457b1d13f83965f4fe3367dca4a6df898100/specification/sql/resource-manager/Microsoft.Sql/preview/2023-05-01-preview/examples/ManagedInstanceGetWithExpandEqualsAdministrators.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c7b98b36e4023331545051284d8500adf98f02fe/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ManagedInstanceGetWithExpandEqualsAdministrators.json
 func ExampleManagedInstancesClient_Get_getManagedInstanceWithExpandAdministratorsActivedirectory() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -822,7 +673,7 @@ func ExampleManagedInstancesClient_Get_getManagedInstanceWithExpandAdministrator
 	// res.ManagedInstance = armsql.ManagedInstance{
 	// 	Name: to.Ptr("testinstance"),
 	// 	Type: to.Ptr("Microsoft.Sql/managedInstances"),
-	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Sql/managedInstances/testinstance"),
+	// 	ID: to.Ptr("/subscriptions/20d7082a-0fc7-4468-82bd-542694d5042b/resourceGroups/testrg/providers/Microsoft.Sql/managedInstances/testinstance"),
 	// 	Location: to.Ptr("japaneast"),
 	// 	Tags: map[string]*string{
 	// 		"key": to.Ptr("value"),
@@ -836,40 +687,33 @@ func ExampleManagedInstancesClient_Get_getManagedInstanceWithExpandAdministrator
 	// 			Sid: to.Ptr("00000011-1111-2222-2222-123456789111"),
 	// 			TenantID: to.Ptr("00000011-1111-2222-2222-123456789111"),
 	// 		},
-	// 		AuthenticationMetadata: to.Ptr(armsql.AuthMetadataLookupModesWindows),
 	// 		Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-	// 		CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-01T01:01:01.011Z"); return t}()),
 	// 		CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-	// 		DatabaseFormat: to.Ptr(armsql.ManagedInstanceDatabaseFormatSQLServer2022),
 	// 		DNSZone: to.Ptr("1b4e2caff2530"),
-	// 		ExternalGovernanceStatus: to.Ptr(armsql.ExternalGovernanceStatusEnabled),
 	// 		FullyQualifiedDomainName: to.Ptr("testinstance.1b4e2caff2530.database.windows.net"),
-	// 		HybridSecondaryUsage: to.Ptr(armsql.HybridSecondaryUsagePassive),
-	// 		InstancePoolID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Sql/instancePools/instancePool1"),
+	// 		InstancePoolID: to.Ptr("/subscriptions/20d7082a-0fc7-4468-82bd-542694d5042b/resourceGroups/testrg/providers/Microsoft.Sql/instancePools/instancePool1"),
 	// 		LicenseType: to.Ptr(armsql.ManagedInstanceLicenseTypeLicenseIncluded),
-	// 		MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_JapanEast_MI_1"),
+	// 		MaintenanceConfigurationID: to.Ptr("/subscriptions/20D7082A-0FC7-4468-82BD-542694D5042B/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_JapanEast_MI_1"),
 	// 		MinimalTLSVersion: to.Ptr("1.2"),
-	// 		PricingModel: to.Ptr(armsql.FreemiumTypeRegular),
-	// 		ProvisioningState: to.Ptr(armsql.ProvisioningStateSucceeded),
+	// 		ProvisioningState: to.Ptr(armsql.ManagedInstancePropertiesProvisioningStateSucceeded),
 	// 		ProxyOverride: to.Ptr(armsql.ManagedInstanceProxyOverrideDefault),
 	// 		PublicDataEndpointEnabled: to.Ptr(false),
 	// 		RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
 	// 		State: to.Ptr("Ready"),
 	// 		StorageSizeInGB: to.Ptr[int32](1024),
-	// 		SubnetID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
+	// 		SubnetID: to.Ptr("/subscriptions/20D7082A-0FC7-4468-82BD-542694D5042B/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
 	// 		VCores: to.Ptr[int32](8),
-	// 		VirtualClusterID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Sql/virtualClusters/vc-5555555-6666-7777-8888-999999999999"),
 	// 	},
 	// 	SKU: &armsql.SKU{
-	// 		Name: to.Ptr("GP_Gen5"),
+	// 		Name: to.Ptr("GP_Gen4"),
 	// 		Capacity: to.Ptr[int32](8),
-	// 		Family: to.Ptr("Gen5"),
+	// 		Family: to.Ptr("Gen4"),
 	// 		Tier: to.Ptr("GeneralPurpose"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/33c4457b1d13f83965f4fe3367dca4a6df898100/specification/sql/resource-manager/Microsoft.Sql/preview/2023-05-01-preview/examples/ManagedInstanceCreateMax.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c7b98b36e4023331545051284d8500adf98f02fe/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ManagedInstanceCreateMax.json
 func ExampleManagedInstancesClient_BeginCreateOrUpdate_createManagedInstanceWithAllProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -896,9 +740,7 @@ func ExampleManagedInstancesClient_BeginCreateOrUpdate_createManagedInstanceWith
 				TenantID:                  to.Ptr("00000011-1111-2222-2222-123456789111"),
 			},
 			Collation:                        to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-			DatabaseFormat:                   to.Ptr(armsql.ManagedInstanceDatabaseFormatAlwaysUpToDate),
 			DNSZonePartner:                   to.Ptr("/subscriptions/20D7082A-0FC7-4468-82BD-542694D5042B/resourceGroups/testrg/providers/Microsoft.Sql/managedInstances/testinstance"),
-			HybridSecondaryUsage:             to.Ptr(armsql.HybridSecondaryUsagePassive),
 			InstancePoolID:                   to.Ptr("/subscriptions/20D7082A-0FC7-4468-82BD-542694D5042B/resourceGroups/testrg/providers/Microsoft.Sql/instancePools/pool1"),
 			LicenseType:                      to.Ptr(armsql.ManagedInstanceLicenseTypeLicenseIncluded),
 			MaintenanceConfigurationID:       to.Ptr("/subscriptions/20D7082A-0FC7-4468-82BD-542694D5042B/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_JapanEast_MI_1"),
@@ -948,16 +790,13 @@ func ExampleManagedInstancesClient_BeginCreateOrUpdate_createManagedInstanceWith
 	// 		},
 	// 		Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
 	// 		CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-	// 		DatabaseFormat: to.Ptr(armsql.ManagedInstanceDatabaseFormatAlwaysUpToDate),
 	// 		DNSZone: to.Ptr("1b4e2caff2530"),
-	// 		ExternalGovernanceStatus: to.Ptr(armsql.ExternalGovernanceStatusEnabled),
 	// 		FullyQualifiedDomainName: to.Ptr("testinstance.1b4e2caff2530.database.windows.net"),
-	// 		HybridSecondaryUsage: to.Ptr(armsql.HybridSecondaryUsagePassive),
 	// 		InstancePoolID: to.Ptr("/subscriptions/20d7082a-0fc7-4468-82bd-542694d5042b/resourceGroups/testrg/providers/Microsoft.Sql/instancePools/pool1"),
 	// 		LicenseType: to.Ptr(armsql.ManagedInstanceLicenseTypeLicenseIncluded),
 	// 		MaintenanceConfigurationID: to.Ptr("/subscriptions/20D7082A-0FC7-4468-82BD-542694D5042B/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_JapanEast_MI_1"),
 	// 		MinimalTLSVersion: to.Ptr("1.2"),
-	// 		ProvisioningState: to.Ptr(armsql.ProvisioningStateSucceeded),
+	// 		ProvisioningState: to.Ptr(armsql.ManagedInstancePropertiesProvisioningStateSucceeded),
 	// 		ProxyOverride: to.Ptr(armsql.ManagedInstanceProxyOverrideRedirect),
 	// 		PublicDataEndpointEnabled: to.Ptr(false),
 	// 		RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
@@ -982,7 +821,7 @@ func ExampleManagedInstancesClient_BeginCreateOrUpdate_createManagedInstanceWith
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/33c4457b1d13f83965f4fe3367dca4a6df898100/specification/sql/resource-manager/Microsoft.Sql/preview/2023-05-01-preview/examples/ManagedInstanceCreateMin.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c7b98b36e4023331545051284d8500adf98f02fe/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ManagedInstanceCreateMin.json
 func ExampleManagedInstancesClient_BeginCreateOrUpdate_createManagedInstanceWithMinimalProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1004,7 +843,7 @@ func ExampleManagedInstancesClient_BeginCreateOrUpdate_createManagedInstanceWith
 			VCores:                     to.Ptr[int32](8),
 		},
 		SKU: &armsql.SKU{
-			Name: to.Ptr("GP_Gen5"),
+			Name: to.Ptr("GP_Gen4"),
 			Tier: to.Ptr("GeneralPurpose"),
 		},
 	}, nil)
@@ -1029,13 +868,10 @@ func ExampleManagedInstancesClient_BeginCreateOrUpdate_createManagedInstanceWith
 	// 		AdministratorLogin: to.Ptr("dummylogin"),
 	// 		Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
 	// 		CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-	// 		DatabaseFormat: to.Ptr(armsql.ManagedInstanceDatabaseFormatSQLServer2022),
 	// 		DNSZone: to.Ptr("1b4e2caff2530"),
-	// 		ExternalGovernanceStatus: to.Ptr(armsql.ExternalGovernanceStatusEnabled),
 	// 		FullyQualifiedDomainName: to.Ptr("testinstance.1b4e2caff2530.database.windows.net"),
-	// 		HybridSecondaryUsage: to.Ptr(armsql.HybridSecondaryUsagePassive),
 	// 		LicenseType: to.Ptr(armsql.ManagedInstanceLicenseTypeLicenseIncluded),
-	// 		ProvisioningState: to.Ptr(armsql.ProvisioningStateSucceeded),
+	// 		ProvisioningState: to.Ptr(armsql.ManagedInstancePropertiesProvisioningStateSucceeded),
 	// 		ProxyOverride: to.Ptr(armsql.ManagedInstanceProxyOverrideRedirect),
 	// 		PublicDataEndpointEnabled: to.Ptr(false),
 	// 		RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
@@ -1045,7 +881,7 @@ func ExampleManagedInstancesClient_BeginCreateOrUpdate_createManagedInstanceWith
 	// 		VCores: to.Ptr[int32](8),
 	// 	},
 	// 	SKU: &armsql.SKU{
-	// 		Name: to.Ptr("GP_Gen5"),
+	// 		Name: to.Ptr("GP_Gen4"),
 	// 		Capacity: to.Ptr[int32](8),
 	// 		Family: to.Ptr("Gen4"),
 	// 		Tier: to.Ptr("GeneralPurpose"),
@@ -1053,7 +889,7 @@ func ExampleManagedInstancesClient_BeginCreateOrUpdate_createManagedInstanceWith
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/33c4457b1d13f83965f4fe3367dca4a6df898100/specification/sql/resource-manager/Microsoft.Sql/preview/2023-05-01-preview/examples/ManagedInstanceDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c7b98b36e4023331545051284d8500adf98f02fe/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ManagedInstanceDelete.json
 func ExampleManagedInstancesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1074,7 +910,7 @@ func ExampleManagedInstancesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/33c4457b1d13f83965f4fe3367dca4a6df898100/specification/sql/resource-manager/Microsoft.Sql/preview/2023-05-01-preview/examples/ManagedInstanceRemoveMaintenanceConfiguration.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c7b98b36e4023331545051284d8500adf98f02fe/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ManagedInstanceRemoveMaintenanceConfiguration.json
 func ExampleManagedInstancesClient_BeginUpdate_removeMaintenancePolicyFromManagedInstanceSelectDefaultMaintenancePolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1087,7 +923,7 @@ func ExampleManagedInstancesClient_BeginUpdate_removeMaintenancePolicyFromManage
 	}
 	poller, err := clientFactory.NewManagedInstancesClient().BeginUpdate(ctx, "testrg", "testinstance", armsql.ManagedInstanceUpdate{
 		Properties: &armsql.ManagedInstanceProperties{
-			MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_Default"),
+			MaintenanceConfigurationID: to.Ptr("/subscriptions/20d7082a-0fc7-4468-82bd-542694d5042b/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_Default"),
 		},
 	}, nil)
 	if err != nil {
@@ -1103,29 +939,25 @@ func ExampleManagedInstancesClient_BeginUpdate_removeMaintenancePolicyFromManage
 	// res.ManagedInstance = armsql.ManagedInstance{
 	// 	Name: to.Ptr("testinstance"),
 	// 	Type: to.Ptr("Microsoft.Sql/managedInstances"),
-	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Sql/managedInstances/testinstance"),
+	// 	ID: to.Ptr("/subscriptions/20d7082a-0fc7-4468-82bd-542694d5042b/resourceGroups/testrg/providers/Microsoft.Sql/managedInstances/testinstance"),
 	// 	Location: to.Ptr("japaneast"),
 	// 	Properties: &armsql.ManagedInstanceProperties{
 	// 		AdministratorLogin: to.Ptr("dummylogin"),
-	// 		AuthenticationMetadata: to.Ptr(armsql.AuthMetadataLookupModesWindows),
 	// 		Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-	// 		DatabaseFormat: to.Ptr(armsql.ManagedInstanceDatabaseFormatSQLServer2022),
 	// 		DNSZone: to.Ptr("1b4e2caff2530"),
-	// 		ExternalGovernanceStatus: to.Ptr(armsql.ExternalGovernanceStatusEnabled),
 	// 		FullyQualifiedDomainName: to.Ptr("testinstance.1b4e2caff2530.database.windows.net"),
-	// 		HybridSecondaryUsage: to.Ptr(armsql.HybridSecondaryUsagePassive),
-	// 		InstancePoolID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Sql/instancePools/instancePool1"),
+	// 		InstancePoolID: to.Ptr("/subscriptions/20d7082a-0fc7-4468-82bd-542694d5042b/resourceGroups/testrg/providers/Microsoft.Sql/instancePools/instancePool1"),
 	// 		LicenseType: to.Ptr(armsql.ManagedInstanceLicenseTypeLicenseIncluded),
-	// 		MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_Default"),
+	// 		MaintenanceConfigurationID: to.Ptr("/subscriptions/20d7082a-0fc7-4468-82bd-542694d5042b/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_Default"),
 	// 		ProxyOverride: to.Ptr(armsql.ManagedInstanceProxyOverrideDefault),
 	// 		PublicDataEndpointEnabled: to.Ptr(false),
 	// 		State: to.Ptr("Ready"),
 	// 		StorageSizeInGB: to.Ptr[int32](1024),
-	// 		SubnetID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
+	// 		SubnetID: to.Ptr("/subscriptions/20D7082A-0FC7-4468-82BD-542694D5042B/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
 	// 		VCores: to.Ptr[int32](8),
 	// 	},
 	// 	SKU: &armsql.SKU{
-	// 		Name: to.Ptr("GP_Gen5"),
+	// 		Name: to.Ptr("GP_Gen4"),
 	// 		Capacity: to.Ptr[int32](8),
 	// 		Family: to.Ptr("Gen4"),
 	// 		Tier: to.Ptr("GeneralPurpose"),
@@ -1133,7 +965,7 @@ func ExampleManagedInstancesClient_BeginUpdate_removeMaintenancePolicyFromManage
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/33c4457b1d13f83965f4fe3367dca4a6df898100/specification/sql/resource-manager/Microsoft.Sql/preview/2023-05-01-preview/examples/ManagedInstanceUpdateMax.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c7b98b36e4023331545051284d8500adf98f02fe/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ManagedInstanceUpdateMax.json
 func ExampleManagedInstancesClient_BeginUpdate_updateManagedInstanceWithAllProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1148,12 +980,9 @@ func ExampleManagedInstancesClient_BeginUpdate_updateManagedInstanceWithAllPrope
 		Properties: &armsql.ManagedInstanceProperties{
 			AdministratorLogin:               to.Ptr("dummylogin"),
 			AdministratorLoginPassword:       to.Ptr("PLACEHOLDER"),
-			AuthenticationMetadata:           to.Ptr(armsql.AuthMetadataLookupModesWindows),
 			Collation:                        to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-			DatabaseFormat:                   to.Ptr(armsql.ManagedInstanceDatabaseFormatAlwaysUpToDate),
-			HybridSecondaryUsage:             to.Ptr(armsql.HybridSecondaryUsagePassive),
 			LicenseType:                      to.Ptr(armsql.ManagedInstanceLicenseTypeBasePrice),
-			MaintenanceConfigurationID:       to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_JapanEast_MI_1"),
+			MaintenanceConfigurationID:       to.Ptr("/subscriptions/20D7082A-0FC7-4468-82BD-542694D5042B/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_JapanEast_MI_1"),
 			MinimalTLSVersion:                to.Ptr("1.2"),
 			ProxyOverride:                    to.Ptr(armsql.ManagedInstanceProxyOverrideRedirect),
 			PublicDataEndpointEnabled:        to.Ptr(false),
@@ -1162,7 +991,7 @@ func ExampleManagedInstancesClient_BeginUpdate_updateManagedInstanceWithAllPrope
 			VCores:                           to.Ptr[int32](8),
 		},
 		SKU: &armsql.SKU{
-			Name:     to.Ptr("GP_Gen5"),
+			Name:     to.Ptr("GP_Gen4"),
 			Capacity: to.Ptr[int32](8),
 			Tier:     to.Ptr("GeneralPurpose"),
 		},
@@ -1183,35 +1012,31 @@ func ExampleManagedInstancesClient_BeginUpdate_updateManagedInstanceWithAllPrope
 	// res.ManagedInstance = armsql.ManagedInstance{
 	// 	Name: to.Ptr("testinstance"),
 	// 	Type: to.Ptr("Microsoft.Sql/managedInstances"),
-	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Sql/managedInstances/testinstance"),
+	// 	ID: to.Ptr("/subscriptions/20D7082A-0FC7-4468-82BD-542694D5042B/resourceGroups/testrg/providers/Microsoft.Sql/managedInstances/testinstance"),
 	// 	Location: to.Ptr("japaneast"),
 	// 	Tags: map[string]*string{
 	// 		"tagKey1": to.Ptr("TagValue1"),
 	// 	},
 	// 	Properties: &armsql.ManagedInstanceProperties{
 	// 		AdministratorLogin: to.Ptr("dummylogin"),
-	// 		AuthenticationMetadata: to.Ptr(armsql.AuthMetadataLookupModesWindows),
 	// 		Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
 	// 		CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-	// 		DatabaseFormat: to.Ptr(armsql.ManagedInstanceDatabaseFormatAlwaysUpToDate),
 	// 		DNSZone: to.Ptr("1b4e2caff2530"),
-	// 		ExternalGovernanceStatus: to.Ptr(armsql.ExternalGovernanceStatusEnabled),
 	// 		FullyQualifiedDomainName: to.Ptr("testinstance.1b4e2caff2530.database.windows.net"),
-	// 		HybridSecondaryUsage: to.Ptr(armsql.HybridSecondaryUsagePassive),
-	// 		InstancePoolID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Sql/instancePools/instancePool1"),
+	// 		InstancePoolID: to.Ptr("/subscriptions/20d7082a-0fc7-4468-82bd-542694d5042b/resourceGroups/testrg/providers/Microsoft.Sql/instancePools/instancePool1"),
 	// 		LicenseType: to.Ptr(armsql.ManagedInstanceLicenseTypeBasePrice),
-	// 		MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_JapanEast_MI_1"),
+	// 		MaintenanceConfigurationID: to.Ptr("/subscriptions/20D7082A-0FC7-4468-82BD-542694D5042B/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_JapanEast_MI_1"),
 	// 		MinimalTLSVersion: to.Ptr("1.2"),
 	// 		ProxyOverride: to.Ptr(armsql.ManagedInstanceProxyOverrideRedirect),
 	// 		PublicDataEndpointEnabled: to.Ptr(false),
 	// 		RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
 	// 		State: to.Ptr("Ready"),
 	// 		StorageSizeInGB: to.Ptr[int32](448),
-	// 		SubnetID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
+	// 		SubnetID: to.Ptr("/subscriptions/20D7082A-0FC7-4468-82BD-542694D5042B/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
 	// 		VCores: to.Ptr[int32](8),
 	// 	},
 	// 	SKU: &armsql.SKU{
-	// 		Name: to.Ptr("GP_Gen5"),
+	// 		Name: to.Ptr("GP_Gen4"),
 	// 		Capacity: to.Ptr[int32](8),
 	// 		Family: to.Ptr("Gen4"),
 	// 		Tier: to.Ptr("GeneralPurpose"),
@@ -1219,7 +1044,7 @@ func ExampleManagedInstancesClient_BeginUpdate_updateManagedInstanceWithAllPrope
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/33c4457b1d13f83965f4fe3367dca4a6df898100/specification/sql/resource-manager/Microsoft.Sql/preview/2023-05-01-preview/examples/ManagedInstanceUpdateMin.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c7b98b36e4023331545051284d8500adf98f02fe/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ManagedInstanceUpdateMin.json
 func ExampleManagedInstancesClient_BeginUpdate_updateManagedInstanceWithMinimalProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1248,34 +1073,30 @@ func ExampleManagedInstancesClient_BeginUpdate_updateManagedInstanceWithMinimalP
 	// res.ManagedInstance = armsql.ManagedInstance{
 	// 	Name: to.Ptr("testinstance"),
 	// 	Type: to.Ptr("Microsoft.Sql/managedInstances"),
-	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Sql/managedInstances/testinstance"),
+	// 	ID: to.Ptr("/subscriptions/20d7082a-0fc7-4468-82bd-542694d5042b/resourceGroups/testrg/providers/Microsoft.Sql/managedInstances/testinstance"),
 	// 	Location: to.Ptr("japaneast"),
 	// 	Tags: map[string]*string{
 	// 		"tagKey1": to.Ptr("TagValue1"),
 	// 	},
 	// 	Properties: &armsql.ManagedInstanceProperties{
 	// 		AdministratorLogin: to.Ptr("PLACEHOLDER"),
-	// 		AuthenticationMetadata: to.Ptr(armsql.AuthMetadataLookupModesWindows),
 	// 		Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
 	// 		CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-	// 		DatabaseFormat: to.Ptr(armsql.ManagedInstanceDatabaseFormatSQLServer2022),
 	// 		DNSZone: to.Ptr("1b4e2caff2530"),
-	// 		ExternalGovernanceStatus: to.Ptr(armsql.ExternalGovernanceStatusEnabled),
 	// 		FullyQualifiedDomainName: to.Ptr("testinstance.1b4e2caff2530.database.windows.net"),
-	// 		HybridSecondaryUsage: to.Ptr(armsql.HybridSecondaryUsagePassive),
-	// 		InstancePoolID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Sql/instancePools/instancePool1"),
+	// 		InstancePoolID: to.Ptr("/subscriptions/20d7082a-0fc7-4468-82bd-542694d5042b/resourceGroups/testrg/providers/Microsoft.Sql/instancePools/instancePool1"),
 	// 		LicenseType: to.Ptr(armsql.ManagedInstanceLicenseTypeLicenseIncluded),
-	// 		MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_Default"),
+	// 		MaintenanceConfigurationID: to.Ptr("/subscriptions/20d7082a-0fc7-4468-82bd-542694d5042b/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_Default"),
 	// 		ProxyOverride: to.Ptr(armsql.ManagedInstanceProxyOverrideDefault),
 	// 		PublicDataEndpointEnabled: to.Ptr(false),
 	// 		RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
 	// 		State: to.Ptr("Ready"),
 	// 		StorageSizeInGB: to.Ptr[int32](1024),
-	// 		SubnetID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
+	// 		SubnetID: to.Ptr("/subscriptions/20D7082A-0FC7-4468-82BD-542694D5042B/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
 	// 		VCores: to.Ptr[int32](8),
 	// 	},
 	// 	SKU: &armsql.SKU{
-	// 		Name: to.Ptr("GP_Gen5"),
+	// 		Name: to.Ptr("GP_Gen4"),
 	// 		Capacity: to.Ptr[int32](8),
 	// 		Family: to.Ptr("Gen4"),
 	// 		Tier: to.Ptr("GeneralPurpose"),
@@ -1283,7 +1104,7 @@ func ExampleManagedInstancesClient_BeginUpdate_updateManagedInstanceWithMinimalP
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/33c4457b1d13f83965f4fe3367dca4a6df898100/specification/sql/resource-manager/Microsoft.Sql/preview/2023-05-01-preview/examples/FailoverManagedInstance.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c7b98b36e4023331545051284d8500adf98f02fe/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/FailoverManagedInstance.json
 func ExampleManagedInstancesClient_BeginFailover() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1304,7 +1125,7 @@ func ExampleManagedInstancesClient_BeginFailover() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/33c4457b1d13f83965f4fe3367dca4a6df898100/specification/sql/resource-manager/Microsoft.Sql/preview/2023-05-01-preview/examples/ListOutboundNetworkDependenciesByManagedInstance.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c7b98b36e4023331545051284d8500adf98f02fe/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ListOutboundNetworkDependenciesByManagedInstance.json
 func ExampleManagedInstancesClient_NewListOutboundNetworkDependenciesByManagedInstancePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1429,43 +1250,7 @@ func ExampleManagedInstancesClient_NewListOutboundNetworkDependenciesByManagedIn
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/33c4457b1d13f83965f4fe3367dca4a6df898100/specification/sql/resource-manager/Microsoft.Sql/preview/2023-05-01-preview/examples/ManagedInstanceRefreshExternalGovernanceStatus.json
-func ExampleManagedInstancesClient_BeginRefreshStatus() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsql.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewManagedInstancesClient().BeginRefreshStatus(ctx, "sqlcrudtest-7398", "sqlcrudtest-4645", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.RefreshExternalGovernanceStatusOperationResultMI = armsql.RefreshExternalGovernanceStatusOperationResultMI{
-	// 	Name: to.Ptr("9d9a794a-5cec-4f23-af70-d29511b522a4"),
-	// 	Type: to.Ptr("Microsoft.Sql/locations/refreshExternalGovernanceStatusMIOperationResults"),
-	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroup/providers/Microsoft.Sql/locations/japaneast/refreshExternalGovernanceStatusMIOperationResults/9d9a794a-5cec-4f23-af70-d29511b522a4"),
-	// 	Properties: &armsql.RefreshExternalGovernanceStatusOperationResultPropertiesMI{
-	// 		ManagedInstanceName: to.Ptr("testsvr.database.windows.net"),
-	// 		QueuedTime: to.Ptr("2/12/2022 8:33:27 PM"),
-	// 		RequestID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-	// 		RequestType: to.Ptr("UpdatePurviewMetadata"),
-	// 		Status: to.Ptr("Completed"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/33c4457b1d13f83965f4fe3367dca4a6df898100/specification/sql/resource-manager/Microsoft.Sql/preview/2023-05-01-preview/examples/StartManagedInstance.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c7b98b36e4023331545051284d8500adf98f02fe/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/StartManagedInstance.json
 func ExampleManagedInstancesClient_BeginStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1480,60 +1265,13 @@ func ExampleManagedInstancesClient_BeginStart() {
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, nil)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.ManagedInstance = armsql.ManagedInstance{
-	// 	Name: to.Ptr("mitostart"),
-	// 	Type: to.Ptr("Microsoft.Sql/managedInstances"),
-	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/startrg/providers/Microsoft.Sql/managedInstances/mitostart"),
-	// 	Location: to.Ptr("japaneast"),
-	// 	Tags: map[string]*string{
-	// 		"key": to.Ptr("value"),
-	// 	},
-	// 	Properties: &armsql.ManagedInstanceProperties{
-	// 		AdministratorLogin: to.Ptr("dummylogin"),
-	// 		AuthenticationMetadata: to.Ptr(armsql.AuthMetadataLookupModesWindows),
-	// 		Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-	// 		CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-	// 		DatabaseFormat: to.Ptr(armsql.ManagedInstanceDatabaseFormatSQLServer2022),
-	// 		DNSZone: to.Ptr("1234567891234"),
-	// 		ExternalGovernanceStatus: to.Ptr(armsql.ExternalGovernanceStatusEnabled),
-	// 		FullyQualifiedDomainName: to.Ptr("mitostart.1234567891234.database.windows.net"),
-	// 		HybridSecondaryUsage: to.Ptr(armsql.HybridSecondaryUsagePassive),
-	// 		InstancePoolID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/startrg/providers/Microsoft.Sql/instancePools/instancePool1"),
-	// 		LicenseType: to.Ptr(armsql.ManagedInstanceLicenseTypeLicenseIncluded),
-	// 		MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_JapanEast_MI_1"),
-	// 		MinimalTLSVersion: to.Ptr("1.2"),
-	// 		ProvisioningState: to.Ptr(armsql.ProvisioningStateSucceeded),
-	// 		ProxyOverride: to.Ptr(armsql.ManagedInstanceProxyOverrideDefault),
-	// 		PublicDataEndpointEnabled: to.Ptr(false),
-	// 		RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-	// 		ServicePrincipal: &armsql.ServicePrincipal{
-	// 			Type: to.Ptr(armsql.ServicePrincipalTypeSystemAssigned),
-	// 			ClientID: to.Ptr("00000011-1111-2222-2222-123456789111"),
-	// 			PrincipalID: to.Ptr("00000011-1111-2222-2222-123456789111"),
-	// 			TenantID: to.Ptr("00000011-1111-2222-2222-123456789111"),
-	// 		},
-	// 		State: to.Ptr("Ready"),
-	// 		StorageSizeInGB: to.Ptr[int32](1024),
-	// 		SubnetID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/startrg/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
-	// 		VCores: to.Ptr[int32](8),
-	// 	},
-	// 	SKU: &armsql.SKU{
-	// 		Name: to.Ptr("GP_Gen5"),
-	// 		Capacity: to.Ptr[int32](8),
-	// 		Family: to.Ptr("Gen5"),
-	// 		Tier: to.Ptr("GeneralPurpose"),
-	// 	},
-	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/33c4457b1d13f83965f4fe3367dca4a6df898100/specification/sql/resource-manager/Microsoft.Sql/preview/2023-05-01-preview/examples/StopManagedInstance.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c7b98b36e4023331545051284d8500adf98f02fe/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/StopManagedInstance.json
 func ExampleManagedInstancesClient_BeginStop() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1548,60 +1286,13 @@ func ExampleManagedInstancesClient_BeginStop() {
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, nil)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.ManagedInstance = armsql.ManagedInstance{
-	// 	Name: to.Ptr("mitostop"),
-	// 	Type: to.Ptr("Microsoft.Sql/managedInstances"),
-	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/stoprg/providers/Microsoft.Sql/managedInstances/mitostop"),
-	// 	Location: to.Ptr("japaneast"),
-	// 	Tags: map[string]*string{
-	// 		"key": to.Ptr("value"),
-	// 	},
-	// 	Properties: &armsql.ManagedInstanceProperties{
-	// 		AdministratorLogin: to.Ptr("dummylogin"),
-	// 		AuthenticationMetadata: to.Ptr(armsql.AuthMetadataLookupModesWindows),
-	// 		Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-	// 		CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-	// 		DatabaseFormat: to.Ptr(armsql.ManagedInstanceDatabaseFormatSQLServer2022),
-	// 		DNSZone: to.Ptr("1234567891234"),
-	// 		ExternalGovernanceStatus: to.Ptr(armsql.ExternalGovernanceStatusEnabled),
-	// 		FullyQualifiedDomainName: to.Ptr("mitostop.1234567891234.database.windows.net"),
-	// 		HybridSecondaryUsage: to.Ptr(armsql.HybridSecondaryUsagePassive),
-	// 		InstancePoolID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/stoprg/providers/Microsoft.Sql/instancePools/instancePool1"),
-	// 		LicenseType: to.Ptr(armsql.ManagedInstanceLicenseTypeLicenseIncluded),
-	// 		MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_JapanEast_MI_1"),
-	// 		MinimalTLSVersion: to.Ptr("1.2"),
-	// 		ProvisioningState: to.Ptr(armsql.ProvisioningStateSucceeded),
-	// 		ProxyOverride: to.Ptr(armsql.ManagedInstanceProxyOverrideDefault),
-	// 		PublicDataEndpointEnabled: to.Ptr(false),
-	// 		RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-	// 		ServicePrincipal: &armsql.ServicePrincipal{
-	// 			Type: to.Ptr(armsql.ServicePrincipalTypeSystemAssigned),
-	// 			ClientID: to.Ptr("00000011-1111-2222-2222-123456789111"),
-	// 			PrincipalID: to.Ptr("00000011-1111-2222-2222-123456789111"),
-	// 			TenantID: to.Ptr("00000011-1111-2222-2222-123456789111"),
-	// 		},
-	// 		State: to.Ptr("Stopped"),
-	// 		StorageSizeInGB: to.Ptr[int32](1024),
-	// 		SubnetID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/stoprg/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
-	// 		VCores: to.Ptr[int32](8),
-	// 	},
-	// 	SKU: &armsql.SKU{
-	// 		Name: to.Ptr("GP_Gen5"),
-	// 		Capacity: to.Ptr[int32](8),
-	// 		Family: to.Ptr("Gen5"),
-	// 		Tier: to.Ptr("GeneralPurpose"),
-	// 	},
-	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/33c4457b1d13f83965f4fe3367dca4a6df898100/specification/sql/resource-manager/Microsoft.Sql/preview/2023-05-01-preview/examples/ManagedInstanceTopQueriesList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c7b98b36e4023331545051284d8500adf98f02fe/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ManagedInstanceTopQueriesList.json
 func ExampleManagedInstancesClient_NewListByManagedInstancePager_obtainListOfInstancesTopResourceConsumingQueries() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1638,10 +1329,10 @@ func ExampleManagedInstancesClient_NewListByManagedInstancePager_obtainListOfIns
 		// 			IntervalType: to.Ptr(armsql.QueryTimeGrainTypeP1D),
 		// 			NumberOfQueries: to.Ptr[int32](5),
 		// 			ObservationMetric: to.Ptr("cpu"),
-		// 			Queries: []*armsql.QueryStatisticsPropertiesAutoGenerated{
+		// 			Queries: []*armsql.QueryStatisticsProperties{
 		// 				{
 		// 					DatabaseName: to.Ptr("db1"),
-		// 					Intervals: []*armsql.QueryMetricIntervalAutoGenerated{
+		// 					Intervals: []*armsql.QueryMetricInterval{
 		// 						{
 		// 							ExecutionCount: to.Ptr[int64](1),
 		// 							IntervalStartTime: to.Ptr("03/03/2020 00:00:00"),
@@ -1681,7 +1372,7 @@ func ExampleManagedInstancesClient_NewListByManagedInstancePager_obtainListOfIns
 		// 				},
 		// 				{
 		// 					DatabaseName: to.Ptr("db1"),
-		// 					Intervals: []*armsql.QueryMetricIntervalAutoGenerated{
+		// 					Intervals: []*armsql.QueryMetricInterval{
 		// 						{
 		// 							ExecutionCount: to.Ptr[int64](1),
 		// 							IntervalStartTime: to.Ptr("03/03/2020 00:00:00"),
@@ -1721,7 +1412,7 @@ func ExampleManagedInstancesClient_NewListByManagedInstancePager_obtainListOfIns
 		// 				},
 		// 				{
 		// 					DatabaseName: to.Ptr("db3"),
-		// 					Intervals: []*armsql.QueryMetricIntervalAutoGenerated{
+		// 					Intervals: []*armsql.QueryMetricInterval{
 		// 						{
 		// 							ExecutionCount: to.Ptr[int64](104),
 		// 							IntervalStartTime: to.Ptr("03/04/2020 00:00:00"),
@@ -1761,7 +1452,7 @@ func ExampleManagedInstancesClient_NewListByManagedInstancePager_obtainListOfIns
 		// 				},
 		// 				{
 		// 					DatabaseName: to.Ptr("db2"),
-		// 					Intervals: []*armsql.QueryMetricIntervalAutoGenerated{
+		// 					Intervals: []*armsql.QueryMetricInterval{
 		// 						{
 		// 							ExecutionCount: to.Ptr[int64](89),
 		// 							IntervalStartTime: to.Ptr("03/03/2020 00:00:00"),
@@ -1801,7 +1492,7 @@ func ExampleManagedInstancesClient_NewListByManagedInstancePager_obtainListOfIns
 		// 				},
 		// 				{
 		// 					DatabaseName: to.Ptr("db3"),
-		// 					Intervals: []*armsql.QueryMetricIntervalAutoGenerated{
+		// 					Intervals: []*armsql.QueryMetricInterval{
 		// 						{
 		// 							ExecutionCount: to.Ptr[int64](1),
 		// 							IntervalStartTime: to.Ptr("03/04/2020 00:00:00"),
@@ -1845,7 +1536,7 @@ func ExampleManagedInstancesClient_NewListByManagedInstancePager_obtainListOfIns
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/33c4457b1d13f83965f4fe3367dca4a6df898100/specification/sql/resource-manager/Microsoft.Sql/preview/2023-05-01-preview/examples/ManagedInstanceTopQueriesListMax.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c7b98b36e4023331545051284d8500adf98f02fe/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ManagedInstanceTopQueriesListMax.json
 func ExampleManagedInstancesClient_NewListByManagedInstancePager_obtainListOfInstancesTopResourceConsumingQueriesFullBlownRequestAndResponse() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1882,10 +1573,10 @@ func ExampleManagedInstancesClient_NewListByManagedInstancePager_obtainListOfIns
 		// 			IntervalType: to.Ptr(armsql.QueryTimeGrainTypeP1D),
 		// 			NumberOfQueries: to.Ptr[int32](5),
 		// 			ObservationMetric: to.Ptr("cpu"),
-		// 			Queries: []*armsql.QueryStatisticsPropertiesAutoGenerated{
+		// 			Queries: []*armsql.QueryStatisticsProperties{
 		// 				{
 		// 					DatabaseName: to.Ptr("db1"),
-		// 					Intervals: []*armsql.QueryMetricIntervalAutoGenerated{
+		// 					Intervals: []*armsql.QueryMetricInterval{
 		// 						{
 		// 							ExecutionCount: to.Ptr[int64](1),
 		// 							IntervalStartTime: to.Ptr("03/11/2020 00:00:00"),
@@ -1925,7 +1616,7 @@ func ExampleManagedInstancesClient_NewListByManagedInstancePager_obtainListOfIns
 		// 				},
 		// 				{
 		// 					DatabaseName: to.Ptr("db1"),
-		// 					Intervals: []*armsql.QueryMetricIntervalAutoGenerated{
+		// 					Intervals: []*armsql.QueryMetricInterval{
 		// 						{
 		// 							ExecutionCount: to.Ptr[int64](1),
 		// 							IntervalStartTime: to.Ptr("03/11/2020 00:00:00"),
@@ -1965,7 +1656,7 @@ func ExampleManagedInstancesClient_NewListByManagedInstancePager_obtainListOfIns
 		// 				},
 		// 				{
 		// 					DatabaseName: to.Ptr("db1"),
-		// 					Intervals: []*armsql.QueryMetricIntervalAutoGenerated{
+		// 					Intervals: []*armsql.QueryMetricInterval{
 		// 						{
 		// 							ExecutionCount: to.Ptr[int64](82),
 		// 							IntervalStartTime: to.Ptr("03/11/2020 00:00:00"),
@@ -2005,7 +1696,7 @@ func ExampleManagedInstancesClient_NewListByManagedInstancePager_obtainListOfIns
 		// 				},
 		// 				{
 		// 					DatabaseName: to.Ptr("db1"),
-		// 					Intervals: []*armsql.QueryMetricIntervalAutoGenerated{
+		// 					Intervals: []*armsql.QueryMetricInterval{
 		// 						{
 		// 							ExecutionCount: to.Ptr[int64](1),
 		// 							IntervalStartTime: to.Ptr("03/11/2020 00:00:00"),
@@ -2045,7 +1736,7 @@ func ExampleManagedInstancesClient_NewListByManagedInstancePager_obtainListOfIns
 		// 				},
 		// 				{
 		// 					DatabaseName: to.Ptr("db2"),
-		// 					Intervals: []*armsql.QueryMetricIntervalAutoGenerated{
+		// 					Intervals: []*armsql.QueryMetricInterval{
 		// 						{
 		// 							ExecutionCount: to.Ptr[int64](1),
 		// 							IntervalStartTime: to.Ptr("03/11/2020 00:00:00"),
@@ -2089,7 +1780,7 @@ func ExampleManagedInstancesClient_NewListByManagedInstancePager_obtainListOfIns
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/33c4457b1d13f83965f4fe3367dca4a6df898100/specification/sql/resource-manager/Microsoft.Sql/preview/2023-05-01-preview/examples/ManagedInstanceTopQueriesListMin.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c7b98b36e4023331545051284d8500adf98f02fe/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ManagedInstanceTopQueriesListMin.json
 func ExampleManagedInstancesClient_NewListByManagedInstancePager_obtainListOfInstancesTopResourceConsumingQueriesMinimalRequestAndResponse() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2126,7 +1817,7 @@ func ExampleManagedInstancesClient_NewListByManagedInstancePager_obtainListOfIns
 		// 			IntervalType: to.Ptr(armsql.QueryTimeGrainTypePT1H),
 		// 			NumberOfQueries: to.Ptr[int32](5),
 		// 			ObservationMetric: to.Ptr("cpu"),
-		// 			Queries: []*armsql.QueryStatisticsPropertiesAutoGenerated{
+		// 			Queries: []*armsql.QueryStatisticsProperties{
 		// 			},
 		// 			StartTime: to.Ptr("03/10/2020 12:00:00"),
 		// 	}},

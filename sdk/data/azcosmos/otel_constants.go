@@ -42,14 +42,9 @@ type span struct {
 
 func getSpanNameForClient(endpoint *url.URL, operationType operationType, resourceType resourceType, id string) (span, error) {
 	var spanName string
-	switch resourceType {
-	case resourceTypeDatabase:
-		switch operationType {
-		case operationTypeQuery:
-			spanName = otelSpanNameQueryDatabases
-		}
+	if resourceType == resourceTypeDatabase && operationType == operationTypeQuery {
+		spanName = otelSpanNameQueryDatabases
 	}
-
 	if spanName == "" {
 		return span{}, fmt.Errorf("undefined telemetry span for operationType %v and resourceType %v", operationType, resourceType)
 	}
@@ -70,8 +65,7 @@ func getSpanNameForDatabases(endpoint *url.URL, operationType operationType, res
 			spanName = otelSpanNameDeleteDatabase
 		}
 	case resourceTypeCollection:
-		switch operationType {
-		case operationTypeQuery:
+		if operationType == operationTypeQuery {
 			spanName = otelSpanNameQueryContainers
 		}
 	case resourceTypeOffer:
@@ -174,7 +168,7 @@ func getSpanPropertiesForContainer(endpoint *url.URL, operationName string, data
 		{Key: "db.system", Value: "cosmosdb"},
 		{Key: "db.cosmosdb.connection_mode", Value: "gateway"},
 		{Key: "db.namespace", Value: database},
-		{Key: "db.collection.name", Value: database},
+		{Key: "db.collection.name", Value: id},
 		{Key: "db.operation.name", Value: operationName},
 		{Key: "server.address", Value: endpoint.Hostname()},
 		{Key: "server.port", Value: endpoint.Port()},

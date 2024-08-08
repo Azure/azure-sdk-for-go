@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice/v6"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8cbd903b0d037c427def0e8fbf167b26e87bd1a9/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-05-01/examples/SnapshotsList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c7b98b36e4023331545051284d8500adf98f02fe/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2024-05-02-preview/examples/SnapshotsList.json
 func ExampleSnapshotsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -73,7 +73,7 @@ func ExampleSnapshotsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8cbd903b0d037c427def0e8fbf167b26e87bd1a9/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-05-01/examples/SnapshotsListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c7b98b36e4023331545051284d8500adf98f02fe/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2024-05-02-preview/examples/SnapshotsListByResourceGroup.json
 func ExampleSnapshotsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -128,7 +128,7 @@ func ExampleSnapshotsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8cbd903b0d037c427def0e8fbf167b26e87bd1a9/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-05-01/examples/SnapshotsGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c7b98b36e4023331545051284d8500adf98f02fe/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2024-05-02-preview/examples/SnapshotsGet.json
 func ExampleSnapshotsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -175,7 +175,7 @@ func ExampleSnapshotsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8cbd903b0d037c427def0e8fbf167b26e87bd1a9/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-05-01/examples/SnapshotsCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c7b98b36e4023331545051284d8500adf98f02fe/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2024-05-02-preview/examples/SnapshotsCreate.json
 func ExampleSnapshotsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -233,7 +233,7 @@ func ExampleSnapshotsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8cbd903b0d037c427def0e8fbf167b26e87bd1a9/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-05-01/examples/SnapshotsUpdateTags.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c7b98b36e4023331545051284d8500adf98f02fe/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2024-05-02-preview/examples/SnapshotsUpdateTags.json
 func ExampleSnapshotsClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -285,7 +285,7 @@ func ExampleSnapshotsClient_UpdateTags() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8cbd903b0d037c427def0e8fbf167b26e87bd1a9/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-05-01/examples/SnapshotsDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c7b98b36e4023331545051284d8500adf98f02fe/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2024-05-02-preview/examples/SnapshotsDelete.json
 func ExampleSnapshotsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

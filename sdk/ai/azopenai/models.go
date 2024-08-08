@@ -1989,7 +1989,8 @@ type FunctionDefinition struct {
 
 	// The parameters the function accepts, described as a JSON Schema object.
 	// REQUIRED; The function definition details for the function tool.
-	// NOTE: this field is JSON text. You can marshal it using code similar to this:
+	// NOTE: this field is JSON text that describes a JSON schema. You can marshal a data
+	// structure using code similar to this:
 	//
 	//	jsonBytes, err := json.Marshal(map[string]any{
 	//		"required": []string{"location"},

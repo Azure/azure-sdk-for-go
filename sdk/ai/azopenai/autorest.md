@@ -676,8 +676,9 @@ directive:
     where: $
     transform: |
       const comment = `	// REQUIRED; The function definition details for the function tool. \n` +
-        `	// NOTE: this field is JSON text. You can marshal it using code similar to this:\n` +
-        `	// \n` +
+        `	// NOTE: this field is JSON text that describes a JSON schema. You can marshal a data\n` + 
+        ` // structure using code similar to this:\n` +
+        ` //\n` + 
         `	//	jsonBytes, err := json.Marshal(map[string]any{\n` +
         `	//		"required": []string{"location"},\n` +
         `	// 		"type":     "object",\n` +

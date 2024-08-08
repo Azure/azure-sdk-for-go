@@ -1449,6 +1449,7 @@ func (v VolumeGroupProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "encryption", v.Encryption)
 	populate(objectMap, "encryptionProperties", v.EncryptionProperties)
+	populate(objectMap, "enforceDataIntegrityCheckForIscsi", v.EnforceDataIntegrityCheckForIscsi)
 	populate(objectMap, "networkAcls", v.NetworkACLs)
 	populate(objectMap, "privateEndpointConnections", v.PrivateEndpointConnections)
 	populate(objectMap, "protocolType", v.ProtocolType)
@@ -1470,6 +1471,9 @@ func (v *VolumeGroupProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "encryptionProperties":
 			err = unpopulate(val, "EncryptionProperties", &v.EncryptionProperties)
+			delete(rawMsg, key)
+		case "enforceDataIntegrityCheckForIscsi":
+			err = unpopulate(val, "EnforceDataIntegrityCheckForIscsi", &v.EnforceDataIntegrityCheckForIscsi)
 			delete(rawMsg, key)
 		case "networkAcls":
 			err = unpopulate(val, "NetworkACLs", &v.NetworkACLs)
@@ -1527,6 +1531,7 @@ func (v VolumeGroupUpdateProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "encryption", v.Encryption)
 	populate(objectMap, "encryptionProperties", v.EncryptionProperties)
+	populate(objectMap, "enforceDataIntegrityCheckForIscsi", v.EnforceDataIntegrityCheckForIscsi)
 	populate(objectMap, "networkAcls", v.NetworkACLs)
 	populate(objectMap, "protocolType", v.ProtocolType)
 	return json.Marshal(objectMap)
@@ -1546,6 +1551,9 @@ func (v *VolumeGroupUpdateProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "encryptionProperties":
 			err = unpopulate(val, "EncryptionProperties", &v.EncryptionProperties)
+			delete(rawMsg, key)
+		case "enforceDataIntegrityCheckForIscsi":
+			err = unpopulate(val, "EnforceDataIntegrityCheckForIscsi", &v.EnforceDataIntegrityCheckForIscsi)
 			delete(rawMsg, key)
 		case "networkAcls":
 			err = unpopulate(val, "NetworkACLs", &v.NetworkACLs)
@@ -1708,7 +1716,7 @@ func populate(m map[string]any, k string, v any) {
 }
 
 func unpopulate(data json.RawMessage, fn string, v any) error {
-	if data == nil {
+	if data == nil || string(data) == "null" {
 		return nil
 	}
 	if err := json.Unmarshal(data, v); err != nil {

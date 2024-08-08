@@ -46,7 +46,7 @@ func NewPrivateEndpointConnectionsClient(subscriptionID string, credential azcor
 // BeginCreate - Update the state of specified private endpoint connection associated with the Elastic San
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2024-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - elasticSanName - The name of the ElasticSan.
 //   - privateEndpointConnectionName - The name of the Private Endpoint connection.
@@ -74,7 +74,7 @@ func (client *PrivateEndpointConnectionsClient) BeginCreate(ctx context.Context,
 // Create - Update the state of specified private endpoint connection associated with the Elastic San
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2024-05-01
 func (client *PrivateEndpointConnectionsClient) create(ctx context.Context, resourceGroupName string, elasticSanName string, privateEndpointConnectionName string, parameters PrivateEndpointConnection, options *PrivateEndpointConnectionsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PrivateEndpointConnectionsClient.BeginCreate"
@@ -120,7 +120,7 @@ func (client *PrivateEndpointConnectionsClient) createCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
+	reqQP.Set("api-version", "2024-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -132,7 +132,7 @@ func (client *PrivateEndpointConnectionsClient) createCreateRequest(ctx context.
 // BeginDelete - Deletes the specified private endpoint connection associated with the Elastic San
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2024-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - elasticSanName - The name of the ElasticSan.
 //   - privateEndpointConnectionName - The name of the Private Endpoint connection.
@@ -159,7 +159,7 @@ func (client *PrivateEndpointConnectionsClient) BeginDelete(ctx context.Context,
 // Delete - Deletes the specified private endpoint connection associated with the Elastic San
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2024-05-01
 func (client *PrivateEndpointConnectionsClient) deleteOperation(ctx context.Context, resourceGroupName string, elasticSanName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PrivateEndpointConnectionsClient.BeginDelete"
@@ -205,7 +205,7 @@ func (client *PrivateEndpointConnectionsClient) deleteCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
+	reqQP.Set("api-version", "2024-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -214,7 +214,7 @@ func (client *PrivateEndpointConnectionsClient) deleteCreateRequest(ctx context.
 // Get - Gets the specified private endpoint connection associated with the Elastic San
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2024-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - elasticSanName - The name of the ElasticSan.
 //   - privateEndpointConnectionName - The name of the Private Endpoint connection.
@@ -266,7 +266,7 @@ func (client *PrivateEndpointConnectionsClient) getCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
+	reqQP.Set("api-version", "2024-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -283,7 +283,7 @@ func (client *PrivateEndpointConnectionsClient) getHandleResponse(resp *http.Res
 
 // NewListPager - List all Private Endpoint Connections associated with the Elastic San.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2024-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - elasticSanName - The name of the ElasticSan.
 //   - options - PrivateEndpointConnectionsClientListOptions contains the optional parameters for the PrivateEndpointConnectionsClient.NewListPager
@@ -332,7 +332,7 @@ func (client *PrivateEndpointConnectionsClient) listCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
+	reqQP.Set("api-version", "2024-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -46,7 +46,7 @@ func NewElasticSansClient(subscriptionID string, credential azcore.TokenCredenti
 // BeginCreate - Create ElasticSan.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2024-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - elasticSanName - The name of the ElasticSan.
 //   - parameters - Elastic San object.
@@ -72,7 +72,7 @@ func (client *ElasticSansClient) BeginCreate(ctx context.Context, resourceGroupN
 // Create - Create ElasticSan.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2024-05-01
 func (client *ElasticSansClient) create(ctx context.Context, resourceGroupName string, elasticSanName string, parameters ElasticSan, options *ElasticSansClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ElasticSansClient.BeginCreate"
@@ -114,7 +114,7 @@ func (client *ElasticSansClient) createCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
+	reqQP.Set("api-version", "2024-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -126,7 +126,7 @@ func (client *ElasticSansClient) createCreateRequest(ctx context.Context, resour
 // BeginDelete - Delete a Elastic San.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2024-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - elasticSanName - The name of the ElasticSan.
 //   - options - ElasticSansClientBeginDeleteOptions contains the optional parameters for the ElasticSansClient.BeginDelete method.
@@ -151,7 +151,7 @@ func (client *ElasticSansClient) BeginDelete(ctx context.Context, resourceGroupN
 // Delete - Delete a Elastic San.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2024-05-01
 func (client *ElasticSansClient) deleteOperation(ctx context.Context, resourceGroupName string, elasticSanName string, options *ElasticSansClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ElasticSansClient.BeginDelete"
@@ -193,7 +193,7 @@ func (client *ElasticSansClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
+	reqQP.Set("api-version", "2024-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -202,7 +202,7 @@ func (client *ElasticSansClient) deleteCreateRequest(ctx context.Context, resour
 // Get - Get a ElasticSan.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2024-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - elasticSanName - The name of the ElasticSan.
 //   - options - ElasticSansClientGetOptions contains the optional parameters for the ElasticSansClient.Get method.
@@ -248,7 +248,7 @@ func (client *ElasticSansClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
+	reqQP.Set("api-version", "2024-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -265,7 +265,7 @@ func (client *ElasticSansClient) getHandleResponse(resp *http.Response) (Elastic
 
 // NewListByResourceGroupPager - Gets a list of ElasticSan in a resource group.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2024-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ElasticSansClientListByResourceGroupOptions contains the optional parameters for the ElasticSansClient.NewListByResourceGroupPager
 //     method.
@@ -308,7 +308,7 @@ func (client *ElasticSansClient) listByResourceGroupCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
+	reqQP.Set("api-version", "2024-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -325,7 +325,7 @@ func (client *ElasticSansClient) listByResourceGroupHandleResponse(resp *http.Re
 
 // NewListBySubscriptionPager - Gets a list of ElasticSans in a subscription
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2024-05-01
 //   - options - ElasticSansClientListBySubscriptionOptions contains the optional parameters for the ElasticSansClient.NewListBySubscriptionPager
 //     method.
 func (client *ElasticSansClient) NewListBySubscriptionPager(options *ElasticSansClientListBySubscriptionOptions) *runtime.Pager[ElasticSansClientListBySubscriptionResponse] {
@@ -363,7 +363,7 @@ func (client *ElasticSansClient) listBySubscriptionCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
+	reqQP.Set("api-version", "2024-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -381,7 +381,7 @@ func (client *ElasticSansClient) listBySubscriptionHandleResponse(resp *http.Res
 // BeginUpdate - Update a Elastic San.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2024-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - elasticSanName - The name of the ElasticSan.
 //   - parameters - Elastic San object.
@@ -407,7 +407,7 @@ func (client *ElasticSansClient) BeginUpdate(ctx context.Context, resourceGroupN
 // Update - Update a Elastic San.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2024-05-01
 func (client *ElasticSansClient) update(ctx context.Context, resourceGroupName string, elasticSanName string, parameters Update, options *ElasticSansClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ElasticSansClient.BeginUpdate"
@@ -449,7 +449,7 @@ func (client *ElasticSansClient) updateCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
+	reqQP.Set("api-version", "2024-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

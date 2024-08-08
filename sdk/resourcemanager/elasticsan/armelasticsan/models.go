@@ -546,6 +546,9 @@ type VolumeGroupProperties struct {
 	// Encryption Properties describing Key Vault and Identity information
 	EncryptionProperties *EncryptionProperties
 
+	// A boolean indicating whether or not Data Integrity Check is enabled
+	EnforceDataIntegrityCheckForIscsi *bool
+
 	// A collection of rules governing the accessibility from specific network locations.
 	NetworkACLs *NetworkRuleSet
 
@@ -575,6 +578,9 @@ type VolumeGroupUpdateProperties struct {
 
 	// Encryption Properties describing Key Vault and Identity information
 	EncryptionProperties *EncryptionProperties
+
+	// A boolean indicating whether or not Data Integrity Check is enabled
+	EnforceDataIntegrityCheckForIscsi *bool
 
 	// A collection of rules governing the accessibility from specific network locations.
 	NetworkACLs *NetworkRuleSet

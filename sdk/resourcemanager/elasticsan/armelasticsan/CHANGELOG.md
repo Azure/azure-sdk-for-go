@@ -1,5 +1,12 @@
 # Release History
 
+## 1.1.0 (2024-08-22)
+### Features Added
+
+- New field `EnforceDataIntegrityCheckForIscsi` in struct `VolumeGroupProperties`
+- New field `EnforceDataIntegrityCheckForIscsi` in struct `VolumeGroupUpdateProperties`
+
+
 ## 1.0.0 (2024-01-26)
 ### Other Changes
 

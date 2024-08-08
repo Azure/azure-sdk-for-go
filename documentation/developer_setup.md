@@ -257,7 +257,7 @@ If you set the environment variable `AZURE_RECORD_MODE` to "record" and run `go 
 
 ### Scrubbing Secrets
 
-Recording files live in the assets repository (`github.com/Azure/azure-sdk-assets`) and mustn't contain secrets. We use sanitizers with regular expression replacements to prevent recording secrets. The test proxy has many built-in sanitizers enabled by default. However, you may need to add your own by calling functions from the `recording` package. These functions generally take three parameters: the test instance (`t *testing.T`), the value to be removed (ie. an account name or key), and the value to use in replacement.
+Recording files live in the assets repository (`github.com/Azure/azure-sdk-assets`) and must not contain secrets. We use sanitizers with regular expression replacements to prevent recording secrets. The test proxy has many built-in sanitizers enabled by default. However, you may need to add your own by calling functions from the `recording` package. These functions generally take three parameters: the test instance (`t *testing.T`), the value to be removed (ie. an account name or key), and the value to use in replacement.
 
 | Sanitizer Type | Method |
 | -------------- | ------ |
@@ -271,7 +271,7 @@ Recording files live in the assets repository (`github.com/Azure/azure-sdk-asset
 | URI Sanitizer | `AddURISanitizer(value, regex string, options *RecordingOptions)` |
 | URI Subscription ID Sanitizer | `AddURISubscriptionIDSanitizer(value string, options *RecordingOptions)` |
 
-You may also need to remove a built-in sanitizer overwriting a non-secret value needed by a test. To do this, call `RemoveRegisteredSanitizers` to with a list of sanitizer IDs such as "AZSDK3430". See the [test proxy documentation](https://github.com/Azure/azure-sdk-tools/blob/main/tools/test-proxy/Azure.Sdk.Tools.TestProxy/Common/SanitizerDictionary.cs) for a complete list of all the built-in sanitizers and their IDs.
+You may also need to remove a built-in sanitizer overwriting a non-secret value needed by a test. To do this, call `RemoveRegisteredSanitizers` with a list of sanitizer IDs such as "AZSDK3430". See the [test proxy documentation](https://github.com/Azure/azure-sdk-tools/blob/main/tools/test-proxy/Azure.Sdk.Tools.TestProxy/Common/SanitizerDictionary.cs) for a complete list of all the built-in sanitizers and their IDs.
 
 Configure sanitizers before running tests:
 

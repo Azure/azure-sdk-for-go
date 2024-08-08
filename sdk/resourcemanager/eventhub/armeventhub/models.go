@@ -210,6 +210,16 @@ type CaptureDescription struct {
 	SkipEmptyArchives *bool
 }
 
+// CaptureIdentity - A value that indicates whether capture description is enabled.
+type CaptureIdentity struct {
+	// Type of Azure Active Directory Managed Identity.
+	Type *CaptureIdentityType
+
+	// ARM ID of Managed User Identity. This property is required is the type is UserAssignedIdentity. If type is SystemAssigned,
+	// then the System Assigned Identity Associated with the namespace will be used.
+	UserAssignedIdentity *string
+}
+
 // CheckNameAvailabilityParameter - Parameter supplied to check Namespace name availability operation
 type CheckNameAvailabilityParameter struct {
 	// REQUIRED; Name to check the namespace name availability
@@ -274,6 +284,9 @@ type ClusterProperties struct {
 
 	// READ-ONLY; The metric ID of the cluster resource. Provided by the service and not modifiable by the user.
 	MetricID *string
+
+	// READ-ONLY; Provisioning state of the Cluster.
+	ProvisioningState *ProvisioningState
 
 	// READ-ONLY; Status of the Cluster resource
 	Status *string
@@ -353,6 +366,9 @@ type ConsumerGroupProperties struct {
 
 // Destination - Capture storage details for capture description
 type Destination struct {
+	// A value that indicates whether capture description is enabled.
+	Identity *CaptureIdentity
+
 	// Name for capture destination
 	Name *string
 
@@ -679,13 +695,16 @@ type NetworkSecurityPerimeterConfiguration struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
+	// READ-ONLY; The geo-location where the resource lives
+	Location *string
+
 	// READ-ONLY; The name of the resource
 	Name *string
 
 	// READ-ONLY; Properties of the Network Security Perimeter Configuration
 	Properties *NetworkSecurityPerimeterConfigurationProperties
 
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.EventHub/Namespaces" or "Microsoft.EventHub/Namespaces/EventHubs"
 	Type *string
 }
 
@@ -703,14 +722,27 @@ type NetworkSecurityPerimeterConfigurationProperties struct {
 	// Provisioning state of NetworkSecurityPerimeter configuration propagation
 	ProvisioningState *NetworkSecurityPerimeterConfigurationProvisioningState
 
+	// READ-ONLY; Indicates that the NSP controls related to backing association are only applicable to a specific feature in
+	// backing resource's data plane.
+	ApplicableFeatures []*string
+
+	// READ-ONLY; True if the EventHub namespace is backed by another Azure resource and not visible to end users.
+	IsBackingResource *bool
+
 	// READ-ONLY; NetworkSecurityPerimeter related information
 	NetworkSecurityPerimeter *NetworkSecurityPerimeter
+
+	// READ-ONLY; Source Resource Association name
+	ParentAssociationName *string
 
 	// READ-ONLY; Information about current network profile
 	Profile *NetworkSecurityPerimeterConfigurationPropertiesProfile
 
 	// READ-ONLY; Information about resource association
 	ResourceAssociation *NetworkSecurityPerimeterConfigurationPropertiesResourceAssociation
+
+	// READ-ONLY; ARM Id of source resource
+	SourceResourceID *string
 }
 
 // NetworkSecurityPerimeterConfigurationPropertiesProfile - Information about current network profile
@@ -917,6 +949,9 @@ type Properties struct {
 	// Enumerates the possible values for the status of the Event Hub.
 	Status *EntityStatus
 
+	// Gets and Sets Metadata of User.
+	UserMetadata *string
+
 	// READ-ONLY; Exact time the Event Hub was created.
 	CreatedAt *time.Time
 
@@ -988,11 +1023,11 @@ type RetentionDescription struct {
 	CleanupPolicy *CleanupPolicyRetentionDescription
 
 	// Number of hours to retain the events for this Event Hub. This value is only used when cleanupPolicy is Delete. If cleanupPolicy
-	// is Compaction the returned value of this property is Long.MaxValue
+	// is Compact the returned value of this property is Long.MaxValue
 	RetentionTimeInHours *int64
 
 	// Number of hours to retain the tombstone markers of a compacted Event Hub. This value is only used when cleanupPolicy is
-	// Compaction. Consumer must complete reading the tombstone marker within this
+	// Compact. Consumer must complete reading the tombstone marker within this
 	// specified amount of time if consumer begins from starting offset to ensure they get a valid snapshot for the specific key
 	// described by the tombstone marker within the compacted Event Hub
 	TombstoneRetentionTimeInHours *int32

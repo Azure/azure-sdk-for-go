@@ -11,7 +11,7 @@ package armeventhub
 import "encoding/json"
 
 func unmarshalApplicationGroupPolicyClassification(rawMsg json.RawMessage) (ApplicationGroupPolicyClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -32,7 +32,7 @@ func unmarshalApplicationGroupPolicyClassification(rawMsg json.RawMessage) (Appl
 }
 
 func unmarshalApplicationGroupPolicyClassificationArray(rawMsg json.RawMessage) ([]ApplicationGroupPolicyClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var rawMessages []json.RawMessage

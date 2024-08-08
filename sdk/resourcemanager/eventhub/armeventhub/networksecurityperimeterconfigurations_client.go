@@ -47,7 +47,7 @@ func NewNetworkSecurityPerimeterConfigurationsClient(subscriptionID string, cred
 // BeginCreateOrUpdate - Refreshes any information about the association.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01-preview
+// Generated from API version 2024-01-01
 //   - resourceGroupName - Name of the resource group within the azure subscription.
 //   - namespaceName - The Namespace name
 //   - resourceAssociationName - The ResourceAssociation Name
@@ -73,7 +73,7 @@ func (client *NetworkSecurityPerimeterConfigurationsClient) BeginCreateOrUpdate(
 // CreateOrUpdate - Refreshes any information about the association.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01-preview
+// Generated from API version 2024-01-01
 func (client *NetworkSecurityPerimeterConfigurationsClient) createOrUpdate(ctx context.Context, resourceGroupName string, namespaceName string, resourceAssociationName string, options *NetworkSecurityPerimeterConfigurationsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkSecurityPerimeterConfigurationsClient.BeginCreateOrUpdate"
@@ -119,7 +119,7 @@ func (client *NetworkSecurityPerimeterConfigurationsClient) createOrUpdateCreate
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01-preview")
+	reqQP.Set("api-version", "2024-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

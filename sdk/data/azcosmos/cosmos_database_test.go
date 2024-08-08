@@ -6,6 +6,7 @@ package azcosmos
 import (
 	"context"
 	"net/http"
+	"net/url"
 	"strconv"
 	"testing"
 
@@ -20,6 +21,7 @@ func TestDatabaseQueryContainers(t *testing.T) {
 	jsonStringpage2 := []byte(`{"DocumentCollections":[{"id":"doc3"},{"id":"doc4"},{"id":"doc5"}]}`)
 
 	srv, close := mock.NewTLSServer()
+	defaultEndpoint, _ := url.Parse(srv.URL())
 	defer close()
 	srv.AppendResponse(
 		mock.WithBody(jsonStringpage1),
@@ -39,7 +41,7 @@ func TestDatabaseQueryContainers(t *testing.T) {
 
 	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
 	gem := &globalEndpointManager{preferredLocations: []string{}}
-	client := &Client{endpoint: srv.URL(), internal: internalClient, gem: gem}
+	client := &Client{endpoint: srv.URL(), endpointUrl: defaultEndpoint, internal: internalClient, gem: gem}
 
 	database, _ := newDatabase("databaseId", client)
 

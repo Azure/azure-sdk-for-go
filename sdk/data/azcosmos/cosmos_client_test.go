@@ -570,7 +570,7 @@ func TestSendPatch(t *testing.T) {
 }
 
 func TestCreateScopeFromEndpoint(t *testing.T) {
-	url := "https://foo.documents.azure.com:443/"
+	url, _ := url.Parse("https://foo.documents.azure.com:443/")
 	scope, err := createScopeFromEndpoint(url)
 	if err != nil {
 		t.Fatal(err)
@@ -613,7 +613,7 @@ func TestQueryDatabases(t *testing.T) {
 
 	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
 	gem := &globalEndpointManager{preferredLocations: []string{}, locationCache: mockLocationCache}
-	client := &Client{endpoint: srv.URL(), internal: internalClient, gem: gem}
+	client := &Client{endpoint: srv.URL(), endpointUrl: defaultEndpoint, internal: internalClient, gem: gem}
 
 	receivedIds := []string{}
 	queryPager := client.NewQueryDatabasesPager("select * from c", nil)

@@ -561,7 +561,7 @@ func (c *ContainerClient) PatchItem(
 	ops PatchOperations,
 	o *ItemOptions) (ItemResponse, error) {
 	var err error
-	spanName, err := getSpanNameForItems(c.database.client.getAccountEndpoint(), operationTypePatch, c.database.id, c.id)
+	spanName, err := c.getSpanForItems(operationTypePatch)
 	if err != nil {
 		return ItemResponse{}, err
 	}
@@ -681,9 +681,9 @@ func (c *ContainerClient) getRID(ctx context.Context) (string, error) {
 }
 
 func (c *ContainerClient) getSpanForContainer(operationType operationType, resourceType resourceType, id string) (span, error) {
-	return getSpanNameForContainers(c.database.client.getAccountEndpoint(), operationType, resourceType, c.database.id, id)
+	return getSpanNameForContainers(c.database.client.accountEndpointUrl(), operationType, resourceType, c.database.id, id)
 }
 
 func (c *ContainerClient) getSpanForItems(operationType operationType) (span, error) {
-	return getSpanNameForItems(c.database.client.getAccountEndpoint(), operationType, c.database.id, c.id)
+	return getSpanNameForItems(c.database.client.accountEndpointUrl(), operationType, c.database.id, c.id)
 }

@@ -297,9 +297,9 @@ func (db *DatabaseClient) getRID(ctx context.Context) (string, error) {
 }
 
 func (db *DatabaseClient) getSpanForDatabases(operationType operationType, resourceType resourceType) (span, error) {
-	return getSpanNameForDatabases(db.client.getAccountEndpoint(), operationType, resourceType, db.id)
+	return getSpanNameForDatabases(db.client.accountEndpointUrl(), operationType, resourceType, db.id)
 }
 
 func (db *DatabaseClient) getSpanForContainers(operationType operationType, resourceType resourceType, id string) (span, error) {
-	return getSpanNameForContainers(db.client.getAccountEndpoint(), operationType, resourceType, db.id, id)
+	return getSpanNameForContainers(db.client.accountEndpointUrl(), operationType, resourceType, db.id, id)
 }

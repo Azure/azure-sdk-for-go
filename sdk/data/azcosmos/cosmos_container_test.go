@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"net/http"
+	"net/url"
 	"strconv"
 	"testing"
 	"time"
@@ -39,6 +40,7 @@ func TestContainerRead(t *testing.T) {
 	}
 
 	srv, close := mock.NewTLSServer()
+	defaultEndpoint, _ := url.Parse(srv.URL())
 	defer close()
 	srv.SetResponse(
 		mock.WithBody(jsonString),
@@ -49,7 +51,7 @@ func TestContainerRead(t *testing.T) {
 
 	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
 	gem := &globalEndpointManager{preferredLocations: []string{}}
-	client := &Client{endpoint: srv.URL(), internal: internalClient, gem: gem}
+	client := &Client{endpoint: srv.URL(), endpointUrl: defaultEndpoint, internal: internalClient, gem: gem}
 
 	database, _ := newDatabase("databaseId", client)
 	container, _ := newContainer("containerId", database)
@@ -114,6 +116,7 @@ func TestContainerRead(t *testing.T) {
 
 func TestContainerDeleteItem(t *testing.T) {
 	srv, close := mock.NewTLSServer()
+	defaultEndpoint, _ := url.Parse(srv.URL())
 	defer close()
 	srv.SetResponse(
 		mock.WithHeader(cosmosHeaderEtag, "someEtag"),
@@ -125,7 +128,7 @@ func TestContainerDeleteItem(t *testing.T) {
 
 	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
 	gem := &globalEndpointManager{preferredLocations: []string{}}
-	client := &Client{endpoint: srv.URL(), internal: internalClient, gem: gem}
+	client := &Client{endpoint: srv.URL(), endpointUrl: defaultEndpoint, internal: internalClient, gem: gem}
 
 	database, _ := newDatabase("databaseId", client)
 	container, _ := newContainer("containerId", database)
@@ -167,6 +170,7 @@ func TestContainerDeleteItem(t *testing.T) {
 func TestContainerReadItem(t *testing.T) {
 	jsonString := []byte(`{"id":"doc1","foo":"bar"}`)
 	srv, close := mock.NewTLSServer()
+	defaultEndpoint, _ := url.Parse(srv.URL())
 	defer close()
 	srv.SetResponse(
 		mock.WithBody(jsonString),
@@ -179,7 +183,7 @@ func TestContainerReadItem(t *testing.T) {
 
 	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
 	gem := &globalEndpointManager{preferredLocations: []string{}}
-	client := &Client{endpoint: srv.URL(), internal: internalClient, gem: gem}
+	client := &Client{endpoint: srv.URL(), endpointUrl: defaultEndpoint, internal: internalClient, gem: gem}
 
 	database, _ := newDatabase("databaseId", client)
 	container, _ := newContainer("containerId", database)
@@ -225,6 +229,7 @@ func TestContainerReadItem(t *testing.T) {
 func TestContainerReplaceItem(t *testing.T) {
 	jsonString := []byte(`{"id":"doc1","foo":"bar"}`)
 	srv, close := mock.NewTLSServer()
+	defaultEndpoint, _ := url.Parse(srv.URL())
 	defer close()
 	srv.SetResponse(
 		mock.WithBody(jsonString),
@@ -237,7 +242,7 @@ func TestContainerReplaceItem(t *testing.T) {
 
 	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
 	gem := &globalEndpointManager{preferredLocations: []string{}}
-	client := &Client{endpoint: srv.URL(), internal: internalClient, gem: gem}
+	client := &Client{endpoint: srv.URL(), endpointUrl: defaultEndpoint, internal: internalClient, gem: gem}
 
 	database, _ := newDatabase("databaseId", client)
 	container, _ := newContainer("containerId", database)
@@ -287,6 +292,7 @@ func TestContainerReplaceItem(t *testing.T) {
 func TestContainerUpsertItem(t *testing.T) {
 	jsonString := []byte(`{"id":"doc1","foo":"bar"}`)
 	srv, close := mock.NewTLSServer()
+	defaultEndpoint, _ := url.Parse(srv.URL())
 	defer close()
 	srv.SetResponse(
 		mock.WithBody(jsonString),
@@ -299,7 +305,7 @@ func TestContainerUpsertItem(t *testing.T) {
 
 	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
 	gem := &globalEndpointManager{preferredLocations: []string{}}
-	client := &Client{endpoint: srv.URL(), internal: internalClient, gem: gem}
+	client := &Client{endpoint: srv.URL(), endpointUrl: defaultEndpoint, internal: internalClient, gem: gem}
 
 	database, _ := newDatabase("databaseId", client)
 	container, _ := newContainer("containerId", database)
@@ -353,6 +359,7 @@ func TestContainerUpsertItem(t *testing.T) {
 func TestContainerCreateItem(t *testing.T) {
 	jsonString := []byte(`{"id":"doc1","foo":"bar"}`)
 	srv, close := mock.NewTLSServer()
+	defaultEndpoint, _ := url.Parse(srv.URL())
 	defer close()
 	srv.SetResponse(
 		mock.WithBody(jsonString),
@@ -365,7 +372,7 @@ func TestContainerCreateItem(t *testing.T) {
 
 	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
 	gem := &globalEndpointManager{preferredLocations: []string{}}
-	client := &Client{endpoint: srv.URL(), internal: internalClient, gem: gem}
+	client := &Client{endpoint: srv.URL(), endpointUrl: defaultEndpoint, internal: internalClient, gem: gem}
 
 	database, _ := newDatabase("databaseId", client)
 	container, _ := newContainer("containerId", database)
@@ -421,6 +428,7 @@ func TestContainerQueryItems(t *testing.T) {
 	jsonStringpage2 := []byte(`{"Documents":[{"id":"doc3","foo":"bar"},{"id":"doc4","foo":"bar"},{"id":"doc5","foo":"bar"}]}`)
 
 	srv, close := mock.NewTLSServer()
+	defaultEndpoint, _ := url.Parse(srv.URL())
 	defer close()
 	srv.AppendResponse(
 		mock.WithBody(jsonStringpage1),
@@ -444,7 +452,7 @@ func TestContainerQueryItems(t *testing.T) {
 
 	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
 	gem := &globalEndpointManager{preferredLocations: []string{}}
-	client := &Client{endpoint: srv.URL(), internal: internalClient, gem: gem}
+	client := &Client{endpoint: srv.URL(), endpointUrl: defaultEndpoint, internal: internalClient, gem: gem}
 
 	database, _ := newDatabase("databaseId", client)
 	container, _ := newContainer("containerId", database)
@@ -540,6 +548,7 @@ func TestContainerExecuteBatch(t *testing.T) {
 	}
 
 	srv, close := mock.NewTLSServer()
+	defaultEndpoint, _ := url.Parse(srv.URL())
 	defer close()
 	srv.SetResponse(
 		mock.WithBody(jsonString),
@@ -552,7 +561,7 @@ func TestContainerExecuteBatch(t *testing.T) {
 
 	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
 	gem := &globalEndpointManager{preferredLocations: []string{}}
-	client := &Client{endpoint: srv.URL(), internal: internalClient, gem: gem}
+	client := &Client{endpoint: srv.URL(), endpointUrl: defaultEndpoint, internal: internalClient, gem: gem}
 
 	database, _ := newDatabase("databaseId", client)
 	container, _ := newContainer("containerId", database)
@@ -604,6 +613,7 @@ func TestContainerPatchItem(t *testing.T) {
 	patchOpt.AppendSet("/hello", "world")
 
 	srv, close := mock.NewTLSServer()
+	defaultEndpoint, _ := url.Parse(srv.URL())
 	defer close()
 	srv.SetResponse(
 		mock.WithBody(jsonString),
@@ -616,7 +626,7 @@ func TestContainerPatchItem(t *testing.T) {
 
 	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
 	gem := &globalEndpointManager{preferredLocations: []string{}}
-	client := &Client{endpoint: srv.URL(), internal: internalClient, gem: gem}
+	client := &Client{endpoint: srv.URL(), endpointUrl: defaultEndpoint, internal: internalClient, gem: gem}
 
 	database, _ := newDatabase("databaseId", client)
 	container, _ := newContainer("containerId", database)

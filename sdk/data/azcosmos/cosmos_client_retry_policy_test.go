@@ -54,7 +54,7 @@ func TestSessionNotAvailableSingleMaster(t *testing.T) {
 		mock.WithHeader("x-ms-substatus", "1002"),
 		mock.WithStatusCode(404))
 
-	client := &Client{endpoint: srv.URL(), internal: internalClient, gem: gem}
+	client := &Client{endpoint: srv.URL(), endpointUrl: defaultEndpoint, internal: internalClient, gem: gem}
 	db, _ := client.NewDatabase("database_id")
 	container, _ := db.NewContainer("container_id")
 	_, err = container.ReadItem(context.TODO(), NewPartitionKeyString("1"), "doc1", nil)
@@ -147,7 +147,7 @@ func TestSessionNotAvailableMultiMaster(t *testing.T) {
 		mock.WithHeader("x-ms-substatus", "1002"),
 		mock.WithStatusCode(404))
 
-	client := &Client{endpoint: srv.URL(), internal: internalClient, gem: gem}
+	client := &Client{endpoint: srv.URL(), endpointUrl: defaultEndpoint, internal: internalClient, gem: gem}
 	db, _ := client.NewDatabase("database_id")
 	container, _ := db.NewContainer("container_id")
 	_, err = container.ReadItem(context.TODO(), NewPartitionKeyString("1"), "doc1", nil)
@@ -251,7 +251,7 @@ func TestReadEndpointFailure(t *testing.T) {
 	srv.AppendResponse(
 		mock.WithStatusCode(200))
 
-	client := &Client{endpoint: srv.URL(), internal: internalClient, gem: gem}
+	client := &Client{endpoint: srv.URL(), endpointUrl: defaultEndpoint, internal: internalClient, gem: gem}
 	db, _ := client.NewDatabase("database_id")
 	container, _ := db.NewContainer("container_id")
 	_, err = container.ReadItem(context.TODO(), NewPartitionKeyString("1"), "doc1", nil)
@@ -294,7 +294,7 @@ func TestWriteEndpointFailure(t *testing.T) {
 
 	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerRetry: []policy.Policy{&verifier, retryPolicy}}, &policy.ClientOptions{Transport: srv})
 
-	client := &Client{endpoint: srv.URL(), internal: internalClient, gem: gem}
+	client := &Client{endpoint: srv.URL(), endpointUrl: defaultEndpoint, internal: internalClient, gem: gem}
 	db, _ := client.NewDatabase("database_id")
 	container, _ := db.NewContainer("container_id")
 
@@ -357,7 +357,7 @@ func TestReadServiceUnavailable(t *testing.T) {
 
 	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerRetry: []policy.Policy{&verifier, retryPolicy}}, &policy.ClientOptions{Transport: srv})
 
-	client := &Client{endpoint: srv.URL(), internal: internalClient, gem: gem}
+	client := &Client{endpoint: srv.URL(), endpointUrl: defaultEndpoint, internal: internalClient, gem: gem}
 	db, _ := client.NewDatabase("database_id")
 	container, _ := db.NewContainer("container_id")
 
@@ -430,7 +430,7 @@ func TestWriteServiceUnavailable(t *testing.T) {
 
 	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerRetry: []policy.Policy{&verifier, retryPolicy}}, &policy.ClientOptions{Transport: srv})
 
-	client := &Client{endpoint: srv.URL(), internal: internalClient, gem: gem}
+	client := &Client{endpoint: srv.URL(), endpointUrl: defaultEndpoint, internal: internalClient, gem: gem}
 	db, _ := client.NewDatabase("database_id")
 	container, _ := db.NewContainer("container_id")
 
@@ -509,7 +509,7 @@ func TestDnsErrorRetry(t *testing.T) {
 
 	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerRetry: []policy.Policy{&verifier, retryPolicy}}, &policy.ClientOptions{Transport: srv})
 
-	client := &Client{endpoint: srv.URL(), internal: internalClient, gem: gem}
+	client := &Client{endpoint: srv.URL(), endpointUrl: defaultEndpoint, internal: internalClient, gem: gem}
 	db, _ := client.NewDatabase("database_id")
 	container, _ := db.NewContainer("container_id")
 

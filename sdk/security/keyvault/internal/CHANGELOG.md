@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+* Allow the Key Vault client to access resources across tenants.
 
 ### Other Changes
 

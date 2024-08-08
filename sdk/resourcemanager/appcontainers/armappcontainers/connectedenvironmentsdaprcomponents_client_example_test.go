@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/ConnectedEnvironmentsDaprComponents_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/edf14cc0a577f6b9c4e3ce018cec0c383e64b7b0/specification/app/resource-manager/Microsoft.App/stable/2024-03-01/examples/ConnectedEnvironmentsDaprComponents_List.json
 func ExampleConnectedEnvironmentsDaprComponentsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -74,15 +74,6 @@ func ExampleConnectedEnvironmentsDaprComponentsClient_NewListPager() {
 		// 						{
 		// 							Name: to.Ptr("masterkey"),
 		// 					}},
-		// 					ServiceComponentBind: []*armappcontainers.DaprComponentServiceBinding{
-		// 						{
-		// 							Name: to.Ptr("statestore"),
-		// 							Metadata: &armappcontainers.DaprServiceBindMetadata{
-		// 								Name: to.Ptr("daprcomponentBind"),
-		// 								Value: to.Ptr("redis-bind"),
-		// 							},
-		// 							ServiceID: to.Ptr("/subscriptions/9f7371f1-b593-4c3c-84e2-9167806ad358/resourceGroups/ca-syn2-group/providers/Microsoft.App/containerapps/cappredis"),
-		// 					}},
 		// 					Version: to.Ptr("v1"),
 		// 				},
 		// 		}},
@@ -90,7 +81,7 @@ func ExampleConnectedEnvironmentsDaprComponentsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/ConnectedEnvironmentsDaprComponents_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/edf14cc0a577f6b9c4e3ce018cec0c383e64b7b0/specification/app/resource-manager/Microsoft.App/stable/2024-03-01/examples/ConnectedEnvironmentsDaprComponents_Get.json
 func ExampleConnectedEnvironmentsDaprComponentsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -140,21 +131,12 @@ func ExampleConnectedEnvironmentsDaprComponentsClient_Get() {
 	// 				{
 	// 					Name: to.Ptr("masterkey"),
 	// 			}},
-	// 			ServiceComponentBind: []*armappcontainers.DaprComponentServiceBinding{
-	// 				{
-	// 					Name: to.Ptr("statestore"),
-	// 					Metadata: &armappcontainers.DaprServiceBindMetadata{
-	// 						Name: to.Ptr("daprcomponentBind"),
-	// 						Value: to.Ptr("redis-bind"),
-	// 					},
-	// 					ServiceID: to.Ptr("/subscriptions/9f7371f1-b593-4c3c-84e2-9167806ad358/resourceGroups/ca-syn2-group/providers/Microsoft.App/containerapps/cappredis"),
-	// 			}},
 	// 			Version: to.Ptr("v1"),
 	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/ConnectedEnvironmentsDaprComponents_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/edf14cc0a577f6b9c4e3ce018cec0c383e64b7b0/specification/app/resource-manager/Microsoft.App/stable/2024-03-01/examples/ConnectedEnvironmentsDaprComponents_CreateOrUpdate.json
 func ExampleConnectedEnvironmentsDaprComponentsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -194,15 +176,6 @@ func ExampleConnectedEnvironmentsDaprComponentsClient_CreateOrUpdate() {
 				{
 					Name:  to.Ptr("masterkey"),
 					Value: to.Ptr("keyvalue"),
-				}},
-			ServiceComponentBind: []*armappcontainers.DaprComponentServiceBinding{
-				{
-					Name: to.Ptr("statestore"),
-					Metadata: &armappcontainers.DaprServiceBindMetadata{
-						Name:  to.Ptr("daprcomponentBind"),
-						Value: to.Ptr("redis-bind"),
-					},
-					ServiceID: to.Ptr("/subscriptions/9f7371f1-b593-4c3c-84e2-9167806ad358/resourceGroups/ca-syn2-group/providers/Microsoft.App/containerapps/cappredis"),
 				}},
 			Version: to.Ptr("v1"),
 		},
@@ -245,21 +218,12 @@ func ExampleConnectedEnvironmentsDaprComponentsClient_CreateOrUpdate() {
 	// 				{
 	// 					Name: to.Ptr("masterkey"),
 	// 			}},
-	// 			ServiceComponentBind: []*armappcontainers.DaprComponentServiceBinding{
-	// 				{
-	// 					Name: to.Ptr("statestore"),
-	// 					Metadata: &armappcontainers.DaprServiceBindMetadata{
-	// 						Name: to.Ptr("daprcomponentBind"),
-	// 						Value: to.Ptr("redis-bind"),
-	// 					},
-	// 					ServiceID: to.Ptr("/subscriptions/9f7371f1-b593-4c3c-84e2-9167806ad358/resourceGroups/ca-syn2-group/providers/Microsoft.App/containerapps/cappredis"),
-	// 			}},
 	// 			Version: to.Ptr("v1"),
 	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/ConnectedEnvironmentsDaprComponents_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/edf14cc0a577f6b9c4e3ce018cec0c383e64b7b0/specification/app/resource-manager/Microsoft.App/stable/2024-03-01/examples/ConnectedEnvironmentsDaprComponents_Delete.json
 func ExampleConnectedEnvironmentsDaprComponentsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -276,7 +240,7 @@ func ExampleConnectedEnvironmentsDaprComponentsClient_Delete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/ConnectedEnvironmentsDaprComponents_ListSecrets.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/edf14cc0a577f6b9c4e3ce018cec0c383e64b7b0/specification/app/resource-manager/Microsoft.App/stable/2024-03-01/examples/ConnectedEnvironmentsDaprComponents_ListSecrets.json
 func ExampleConnectedEnvironmentsDaprComponentsClient_ListSecrets() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

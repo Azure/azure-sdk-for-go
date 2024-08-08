@@ -1,5 +1,40 @@
 # Release History
 
+## 3.0.0 (2024-07-25)
+### Breaking Changes
+
+- Field `EndTime`, `StartTime`, `Status`, `Template` of struct `JobExecution` has been removed
+
+### Features Added
+
+- New function `*ClientFactory.NewManagedEnvironmentUsagesClient() *ManagedEnvironmentUsagesClient`
+- New function `*ClientFactory.NewUsagesClient() *UsagesClient`
+- New function `*ContainerAppsAPIClient.GetCustomDomainVerificationID(context.Context, *ContainerAppsAPIClientGetCustomDomainVerificationIDOptions) (ContainerAppsAPIClientGetCustomDomainVerificationIDResponse, error)`
+- New function `*JobsClient.GetDetector(context.Context, string, string, string, *JobsClientGetDetectorOptions) (JobsClientGetDetectorResponse, error)`
+- New function `*JobsClient.NewListDetectorsPager(string, string, *JobsClientListDetectorsOptions) *runtime.Pager[JobsClientListDetectorsResponse]`
+- New function `*JobsClient.ProxyGet(context.Context, string, string, string, *JobsClientProxyGetOptions) (JobsClientProxyGetResponse, error)`
+- New function `NewManagedEnvironmentUsagesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ManagedEnvironmentUsagesClient, error)`
+- New function `*ManagedEnvironmentUsagesClient.NewListPager(string, string, *ManagedEnvironmentUsagesClientListOptions) *runtime.Pager[ManagedEnvironmentUsagesClientListResponse]`
+- New function `NewUsagesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*UsagesClient, error)`
+- New function `*UsagesClient.NewListPager(string, *UsagesClientListOptions) *runtime.Pager[UsagesClientListResponse]`
+- New struct `BlobStorageTokenStore`
+- New struct `EncryptionSettings`
+- New struct `IngressPortMapping`
+- New struct `JobExecutionProperties`
+- New struct `ListUsagesResult`
+- New struct `ManagedEnvironmentPropertiesPeerTrafficConfiguration`
+- New struct `ManagedEnvironmentPropertiesPeerTrafficConfigurationEncryption`
+- New struct `TokenStore`
+- New struct `Usage`
+- New struct `UsageName`
+- New field `EncryptionSettings` in struct `AuthConfigProperties`
+- New field `Gpus` in struct `AvailableWorkloadProfileProperties`
+- New field `AdditionalPortMappings` in struct `Ingress`
+- New field `Properties` in struct `JobExecution`
+- New field `TokenStore` in struct `Login`
+- New field `PeerTrafficConfiguration` in struct `ManagedEnvironmentProperties`
+
+
 ## 3.0.0-beta.1 (2024-03-22)
 ### Breaking Changes
 

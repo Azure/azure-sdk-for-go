@@ -22,7 +22,7 @@ type ClientFactory struct {
 
 // NewClientFactory creates a new instance of ClientFactory with the specified values.
 // The parameter values will be propagated to any client created from this factory.
-//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
+//   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClientFactory, error) {
@@ -36,14 +36,6 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}, nil
 }
 
-// NewAppResiliencyClient creates a new instance of AppResiliencyClient.
-func (c *ClientFactory) NewAppResiliencyClient() *AppResiliencyClient {
-	return &AppResiliencyClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
 // NewAvailableWorkloadProfilesClient creates a new instance of AvailableWorkloadProfilesClient.
 func (c *ClientFactory) NewAvailableWorkloadProfilesClient() *AvailableWorkloadProfilesClient {
 	return &AvailableWorkloadProfilesClient{
@@ -55,38 +47,6 @@ func (c *ClientFactory) NewAvailableWorkloadProfilesClient() *AvailableWorkloadP
 // NewBillingMetersClient creates a new instance of BillingMetersClient.
 func (c *ClientFactory) NewBillingMetersClient() *BillingMetersClient {
 	return &BillingMetersClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewBuildAuthTokenClient creates a new instance of BuildAuthTokenClient.
-func (c *ClientFactory) NewBuildAuthTokenClient() *BuildAuthTokenClient {
-	return &BuildAuthTokenClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewBuildersClient creates a new instance of BuildersClient.
-func (c *ClientFactory) NewBuildersClient() *BuildersClient {
-	return &BuildersClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewBuildsByBuilderResourceClient creates a new instance of BuildsByBuilderResourceClient.
-func (c *ClientFactory) NewBuildsByBuilderResourceClient() *BuildsByBuilderResourceClient {
-	return &BuildsByBuilderResourceClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewBuildsClient creates a new instance of BuildsClient.
-func (c *ClientFactory) NewBuildsClient() *BuildsClient {
-	return &BuildsClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}
@@ -188,41 +148,9 @@ func (c *ClientFactory) NewContainerAppsSourceControlsClient() *ContainerAppsSou
 	}
 }
 
-// NewDaprComponentResiliencyPoliciesClient creates a new instance of DaprComponentResiliencyPoliciesClient.
-func (c *ClientFactory) NewDaprComponentResiliencyPoliciesClient() *DaprComponentResiliencyPoliciesClient {
-	return &DaprComponentResiliencyPoliciesClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
 // NewDaprComponentsClient creates a new instance of DaprComponentsClient.
 func (c *ClientFactory) NewDaprComponentsClient() *DaprComponentsClient {
 	return &DaprComponentsClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewDaprSubscriptionsClient creates a new instance of DaprSubscriptionsClient.
-func (c *ClientFactory) NewDaprSubscriptionsClient() *DaprSubscriptionsClient {
-	return &DaprSubscriptionsClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewDotNetComponentsClient creates a new instance of DotNetComponentsClient.
-func (c *ClientFactory) NewDotNetComponentsClient() *DotNetComponentsClient {
-	return &DotNetComponentsClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewJavaComponentsClient creates a new instance of JavaComponentsClient.
-func (c *ClientFactory) NewJavaComponentsClient() *JavaComponentsClient {
-	return &JavaComponentsClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

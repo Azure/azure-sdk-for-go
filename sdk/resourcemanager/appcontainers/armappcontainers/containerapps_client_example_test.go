@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/ContainerApps_ListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/edf14cc0a577f6b9c4e3ce018cec0c383e64b7b0/specification/app/resource-manager/Microsoft.App/stable/2024-03-01/examples/ContainerApps_ListBySubscription.json
 func ExampleContainerAppsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -43,9 +43,9 @@ func ExampleContainerAppsClient_NewListBySubscriptionPager() {
 		// page.ContainerAppCollection = armappcontainers.ContainerAppCollection{
 		// 	Value: []*armappcontainers.ContainerApp{
 		// 		{
-		// 			Name: to.Ptr("testcontainerApp0"),
+		// 			Name: to.Ptr("testcontainerapp0"),
 		// 			Type: to.Ptr("Microsoft.App/containerApps"),
-		// 			ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/containerApps/testcontainerApp0"),
+		// 			ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/containerApps/testcontainerapp0"),
 		// 			Location: to.Ptr("East US"),
 		// 			Properties: &armappcontainers.ContainerAppProperties{
 		// 				Configuration: &armappcontainers.Configuration{
@@ -71,7 +71,7 @@ func ExampleContainerAppsClient_NewListBySubscriptionPager() {
 		// 								CertificateID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/managedEnvironments/demokube/certificates/my-certificate-for-my-other-name-dot-com"),
 		// 						}},
 		// 						External: to.Ptr(true),
-		// 						Fqdn: to.Ptr("testcontainerApp0.demokube-t24clv0g.eastus.containerApps.k4apps.io"),
+		// 						Fqdn: to.Ptr("testcontainerapp0.demokube-t24clv0g.eastus.containerApps.k4apps.io"),
 		// 						IPSecurityRestrictions: []*armappcontainers.IPSecurityRestrictionRule{
 		// 							{
 		// 								Name: to.Ptr("Allow work IP A subnet"),
@@ -89,15 +89,14 @@ func ExampleContainerAppsClient_NewListBySubscriptionPager() {
 		// 							Affinity: to.Ptr(armappcontainers.AffinitySticky),
 		// 						},
 		// 						TargetPort: to.Ptr[int32](3000),
-		// 						TargetPortHTTPScheme: to.Ptr(armappcontainers.IngressTargetPortHTTPSchemeHTTP),
 		// 						Traffic: []*armappcontainers.TrafficWeight{
 		// 							{
-		// 								RevisionName: to.Ptr("testcontainerApp0-ab1234"),
+		// 								RevisionName: to.Ptr("testcontainerapp0-ab1234"),
 		// 								Weight: to.Ptr[int32](80),
 		// 							},
 		// 							{
 		// 								Label: to.Ptr("staging"),
-		// 								RevisionName: to.Ptr("testcontainerApp0-ab4321"),
+		// 								RevisionName: to.Ptr("testcontainerapp0-ab4321"),
 		// 								Weight: to.Ptr[int32](20),
 		// 						}},
 		// 						Transport: to.Ptr(armappcontainers.IngressTransportMethodAuto),
@@ -108,27 +107,27 @@ func ExampleContainerAppsClient_NewListBySubscriptionPager() {
 		// 					},
 		// 				},
 		// 				EventStreamEndpoint: to.Ptr("testEndpoint"),
-		// 				LatestReadyRevisionName: to.Ptr("testcontainerApp0-pjxhsye"),
-		// 				LatestRevisionFqdn: to.Ptr("testcontainerApp0-pjxhsye.demokube-t24clv0g.eastus.containerApps.k4apps.io"),
+		// 				LatestReadyRevisionName: to.Ptr("testcontainerapp0-pjxhsye"),
+		// 				LatestRevisionFqdn: to.Ptr("testcontainerapp0-pjxhsye.demokube-t24clv0g.eastus.containerApps.k4apps.io"),
 		// 				ManagedEnvironmentID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/managedEnvironments/demokube"),
 		// 				ProvisioningState: to.Ptr(armappcontainers.ContainerAppProvisioningStateSucceeded),
 		// 				Template: &armappcontainers.Template{
 		// 					Containers: []*armappcontainers.Container{
 		// 						{
-		// 							Name: to.Ptr("testcontainerApp0"),
-		// 							Image: to.Ptr("repo/testcontainerApp0:v4"),
+		// 							Name: to.Ptr("testcontainerapp0"),
+		// 							Image: to.Ptr("repo/testcontainerapp0:v4"),
 		// 							Resources: &armappcontainers.ContainerResources{
-		// 								CPU: to.Ptr[float64](0.2),
-		// 								Memory: to.Ptr("100Mi"),
+		// 								CPU: to.Ptr[float64](0.5),
+		// 								Memory: to.Ptr("1Gi"),
 		// 							},
 		// 					}},
 		// 					InitContainers: []*armappcontainers.InitContainer{
 		// 						{
 		// 							Name: to.Ptr("testinitcontainerApp0"),
-		// 							Image: to.Ptr("repo/testcontainerApp0:v4"),
+		// 							Image: to.Ptr("repo/testcontainerapp0:v4"),
 		// 							Resources: &armappcontainers.ContainerResources{
-		// 								CPU: to.Ptr[float64](0.2),
-		// 								Memory: to.Ptr("100Mi"),
+		// 								CPU: to.Ptr[float64](0.5),
+		// 								Memory: to.Ptr("1Gi"),
 		// 							},
 		// 					}},
 		// 					Scale: &armappcontainers.Scale{
@@ -147,10 +146,6 @@ func ExampleContainerAppsClient_NewListBySubscriptionPager() {
 		// 					ServiceBinds: []*armappcontainers.ServiceBind{
 		// 						{
 		// 							Name: to.Ptr("service"),
-		// 							ClientType: to.Ptr("dotnet"),
-		// 							CustomizedKeys: map[string]*string{
-		// 								"DesiredKey": to.Ptr("defaultKey"),
-		// 							},
 		// 							ServiceID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/containerApps/service"),
 		// 					}},
 		// 				},
@@ -161,7 +156,7 @@ func ExampleContainerAppsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/ContainerApps_ListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/edf14cc0a577f6b9c4e3ce018cec0c383e64b7b0/specification/app/resource-manager/Microsoft.App/stable/2024-03-01/examples/ContainerApps_ListByResourceGroup.json
 func ExampleContainerAppsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -186,9 +181,9 @@ func ExampleContainerAppsClient_NewListByResourceGroupPager() {
 		// page.ContainerAppCollection = armappcontainers.ContainerAppCollection{
 		// 	Value: []*armappcontainers.ContainerApp{
 		// 		{
-		// 			Name: to.Ptr("testcontainerApp0"),
+		// 			Name: to.Ptr("testcontainerapp0"),
 		// 			Type: to.Ptr("Microsoft.App/containerApps"),
-		// 			ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/containerApps/testcontainerApp0"),
+		// 			ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/containerApps/testcontainerapp0"),
 		// 			Location: to.Ptr("East US"),
 		// 			Properties: &armappcontainers.ContainerAppProperties{
 		// 				Configuration: &armappcontainers.Configuration{
@@ -214,7 +209,7 @@ func ExampleContainerAppsClient_NewListByResourceGroupPager() {
 		// 								CertificateID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/managedEnvironments/demokube/certificates/my-certificate-for-my-other-name-dot-com"),
 		// 						}},
 		// 						External: to.Ptr(true),
-		// 						Fqdn: to.Ptr("testcontainerApp0.demokube-t24clv0g.eastus.containerApps.k4apps.io"),
+		// 						Fqdn: to.Ptr("testcontainerapp0.demokube-t24clv0g.eastus.containerApps.k4apps.io"),
 		// 						IPSecurityRestrictions: []*armappcontainers.IPSecurityRestrictionRule{
 		// 							{
 		// 								Name: to.Ptr("Allow work IP A subnet"),
@@ -232,15 +227,14 @@ func ExampleContainerAppsClient_NewListByResourceGroupPager() {
 		// 							Affinity: to.Ptr(armappcontainers.AffinitySticky),
 		// 						},
 		// 						TargetPort: to.Ptr[int32](3000),
-		// 						TargetPortHTTPScheme: to.Ptr(armappcontainers.IngressTargetPortHTTPSchemeHTTP),
 		// 						Traffic: []*armappcontainers.TrafficWeight{
 		// 							{
-		// 								RevisionName: to.Ptr("testcontainerApp0-ab1234"),
+		// 								RevisionName: to.Ptr("testcontainerapp0-ab1234"),
 		// 								Weight: to.Ptr[int32](80),
 		// 							},
 		// 							{
 		// 								Label: to.Ptr("staging"),
-		// 								RevisionName: to.Ptr("testcontainerApp0-ab4321"),
+		// 								RevisionName: to.Ptr("testcontainerapp0-ab4321"),
 		// 								Weight: to.Ptr[int32](20),
 		// 						}},
 		// 						Transport: to.Ptr(armappcontainers.IngressTransportMethodAuto),
@@ -248,27 +242,27 @@ func ExampleContainerAppsClient_NewListByResourceGroupPager() {
 		// 					MaxInactiveRevisions: to.Ptr[int32](10),
 		// 				},
 		// 				EventStreamEndpoint: to.Ptr("testEndpoint"),
-		// 				LatestReadyRevisionName: to.Ptr("testcontainerApp0-pjxhsye"),
-		// 				LatestRevisionFqdn: to.Ptr("testcontainerApp0-pjxhsye.demokube-t24clv0g.eastus.containerApps.k4apps.io"),
+		// 				LatestReadyRevisionName: to.Ptr("testcontainerapp0-pjxhsye"),
+		// 				LatestRevisionFqdn: to.Ptr("testcontainerapp0-pjxhsye.demokube-t24clv0g.eastus.containerApps.k4apps.io"),
 		// 				ManagedEnvironmentID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/managedEnvironments/demokube"),
 		// 				ProvisioningState: to.Ptr(armappcontainers.ContainerAppProvisioningStateSucceeded),
 		// 				Template: &armappcontainers.Template{
 		// 					Containers: []*armappcontainers.Container{
 		// 						{
-		// 							Name: to.Ptr("testcontainerApp0"),
-		// 							Image: to.Ptr("repo/testcontainerApp0:v4"),
+		// 							Name: to.Ptr("testcontainerapp0"),
+		// 							Image: to.Ptr("repo/testcontainerapp0:v4"),
 		// 							Resources: &armappcontainers.ContainerResources{
-		// 								CPU: to.Ptr[float64](0.2),
-		// 								Memory: to.Ptr("100Mi"),
+		// 								CPU: to.Ptr[float64](0.5),
+		// 								Memory: to.Ptr("1Gi"),
 		// 							},
 		// 					}},
 		// 					InitContainers: []*armappcontainers.InitContainer{
 		// 						{
 		// 							Name: to.Ptr("testinitcontainerApp0"),
-		// 							Image: to.Ptr("repo/testcontainerApp0:v4"),
+		// 							Image: to.Ptr("repo/testcontainerapp0:v4"),
 		// 							Resources: &armappcontainers.ContainerResources{
-		// 								CPU: to.Ptr[float64](0.2),
-		// 								Memory: to.Ptr("100Mi"),
+		// 								CPU: to.Ptr[float64](0.5),
+		// 								Memory: to.Ptr("1Gi"),
 		// 							},
 		// 					}},
 		// 					Scale: &armappcontainers.Scale{
@@ -292,7 +286,7 @@ func ExampleContainerAppsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/ContainerApps_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/edf14cc0a577f6b9c4e3ce018cec0c383e64b7b0/specification/app/resource-manager/Microsoft.App/stable/2024-03-01/examples/ContainerApps_Get.json
 func ExampleContainerAppsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -303,7 +297,7 @@ func ExampleContainerAppsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewContainerAppsClient().Get(ctx, "rg", "testcontainerApp0", nil)
+	res, err := clientFactory.NewContainerAppsClient().Get(ctx, "rg", "testcontainerapp0", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -311,9 +305,9 @@ func ExampleContainerAppsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.ContainerApp = armappcontainers.ContainerApp{
-	// 	Name: to.Ptr("testcontainerApp0"),
+	// 	Name: to.Ptr("testcontainerapp0"),
 	// 	Type: to.Ptr("Microsoft.App/containerApps"),
-	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/containerApps/testcontainerApp0"),
+	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/containerApps/testcontainerapp0"),
 	// 	Location: to.Ptr("East US"),
 	// 	Properties: &armappcontainers.ContainerAppProperties{
 	// 		Configuration: &armappcontainers.Configuration{
@@ -339,7 +333,7 @@ func ExampleContainerAppsClient_Get() {
 	// 						CertificateID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/managedEnvironments/demokube/certificates/my-certificate-for-my-other-name-dot-com"),
 	// 				}},
 	// 				External: to.Ptr(true),
-	// 				Fqdn: to.Ptr("testcontainerApp0.demokube-t24clv0g.eastus.containerApps.k4apps.io"),
+	// 				Fqdn: to.Ptr("testcontainerapp0.demokube-t24clv0g.eastus.containerApps.k4apps.io"),
 	// 				IPSecurityRestrictions: []*armappcontainers.IPSecurityRestrictionRule{
 	// 					{
 	// 						Name: to.Ptr("Allow work IP A subnet"),
@@ -357,15 +351,14 @@ func ExampleContainerAppsClient_Get() {
 	// 					Affinity: to.Ptr(armappcontainers.AffinitySticky),
 	// 				},
 	// 				TargetPort: to.Ptr[int32](3000),
-	// 				TargetPortHTTPScheme: to.Ptr(armappcontainers.IngressTargetPortHTTPSchemeHTTP),
 	// 				Traffic: []*armappcontainers.TrafficWeight{
 	// 					{
-	// 						RevisionName: to.Ptr("testcontainerApp0-ab1234"),
+	// 						RevisionName: to.Ptr("testcontainerapp0-ab1234"),
 	// 						Weight: to.Ptr[int32](80),
 	// 					},
 	// 					{
 	// 						Label: to.Ptr("staging"),
-	// 						RevisionName: to.Ptr("testcontainerApp0-ab4321"),
+	// 						RevisionName: to.Ptr("testcontainerapp0-ab4321"),
 	// 						Weight: to.Ptr[int32](20),
 	// 				}},
 	// 				Transport: to.Ptr(armappcontainers.IngressTransportMethodAuto),
@@ -376,38 +369,27 @@ func ExampleContainerAppsClient_Get() {
 	// 			},
 	// 		},
 	// 		EventStreamEndpoint: to.Ptr("testEndpoint"),
-	// 		LatestReadyRevisionName: to.Ptr("testcontainerApp0-pjxhsye"),
-	// 		LatestRevisionFqdn: to.Ptr("testcontainerApp0-pjxhsye.demokube-t24clv0g.eastus.containerApps.k4apps.io"),
+	// 		LatestReadyRevisionName: to.Ptr("testcontainerapp0-pjxhsye"),
+	// 		LatestRevisionFqdn: to.Ptr("testcontainerapp0-pjxhsye.demokube-t24clv0g.eastus.containerApps.k4apps.io"),
 	// 		ManagedEnvironmentID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/managedEnvironments/demokube"),
 	// 		ProvisioningState: to.Ptr(armappcontainers.ContainerAppProvisioningStateSucceeded),
 	// 		Template: &armappcontainers.Template{
 	// 			Containers: []*armappcontainers.Container{
 	// 				{
-	// 					Name: to.Ptr("testcontainerApp0"),
-	// 					Image: to.Ptr("repo/testcontainerApp0:v4"),
+	// 					Name: to.Ptr("testcontainerapp0"),
+	// 					Image: to.Ptr("repo/testcontainerapp0:v4"),
 	// 					Resources: &armappcontainers.ContainerResources{
-	// 						CPU: to.Ptr[float64](0.2),
-	// 						Memory: to.Ptr("100Mi"),
+	// 						CPU: to.Ptr[float64](0.5),
+	// 						Memory: to.Ptr("1Gi"),
 	// 					},
-	// 					VolumeMounts: []*armappcontainers.VolumeMount{
-	// 						{
-	// 							MountPath: to.Ptr("/mnt/path1"),
-	// 							SubPath: to.Ptr("subPath1"),
-	// 							VolumeName: to.Ptr("azurefile"),
-	// 						},
-	// 						{
-	// 							MountPath: to.Ptr("/mnt/path2"),
-	// 							SubPath: to.Ptr("subPath2"),
-	// 							VolumeName: to.Ptr("nfsazurefile"),
-	// 					}},
 	// 			}},
 	// 			InitContainers: []*armappcontainers.InitContainer{
 	// 				{
 	// 					Name: to.Ptr("testinitcontainerApp0"),
-	// 					Image: to.Ptr("repo/testcontainerApp0:v4"),
+	// 					Image: to.Ptr("repo/testcontainerapp0:v4"),
 	// 					Resources: &armappcontainers.ContainerResources{
-	// 						CPU: to.Ptr[float64](0.2),
-	// 						Memory: to.Ptr("100Mi"),
+	// 						CPU: to.Ptr[float64](0.5),
+	// 						Memory: to.Ptr("1Gi"),
 	// 					},
 	// 			}},
 	// 			Scale: &armappcontainers.Scale{
@@ -426,22 +408,7 @@ func ExampleContainerAppsClient_Get() {
 	// 			ServiceBinds: []*armappcontainers.ServiceBind{
 	// 				{
 	// 					Name: to.Ptr("service"),
-	// 					ClientType: to.Ptr("dotnet"),
-	// 					CustomizedKeys: map[string]*string{
-	// 						"DesiredKey": to.Ptr("defaultKey"),
-	// 					},
 	// 					ServiceID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/containerApps/service"),
-	// 			}},
-	// 			Volumes: []*armappcontainers.Volume{
-	// 				{
-	// 					Name: to.Ptr("azurefile"),
-	// 					StorageName: to.Ptr("storage"),
-	// 					StorageType: to.Ptr(armappcontainers.StorageTypeAzureFile),
-	// 				},
-	// 				{
-	// 					Name: to.Ptr("nfsazurefile"),
-	// 					StorageName: to.Ptr("nfsStorage"),
-	// 					StorageType: to.Ptr(armappcontainers.StorageTypeNfsAzureFile),
 	// 			}},
 	// 		},
 	// 		WorkloadProfileName: to.Ptr("My-GP-01"),
@@ -449,288 +416,7 @@ func ExampleContainerAppsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/ContainerApps_CreateOrUpdate_ConnectedEnvironment.json
-func ExampleContainerAppsClient_BeginCreateOrUpdate_createOrUpdateAppOnAConnectedEnvironment() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappcontainers.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewContainerAppsClient().BeginCreateOrUpdate(ctx, "rg", "testcontainerApp0", armappcontainers.ContainerApp{
-		Location: to.Ptr("East US"),
-		ExtendedLocation: &armappcontainers.ExtendedLocation{
-			Name: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.ExtendedLocation/customLocations/testcustomlocation"),
-			Type: to.Ptr(armappcontainers.ExtendedLocationTypesCustomLocation),
-		},
-		Properties: &armappcontainers.ContainerAppProperties{
-			Configuration: &armappcontainers.Configuration{
-				Dapr: &armappcontainers.Dapr{
-					AppPort:            to.Ptr[int32](3000),
-					AppProtocol:        to.Ptr(armappcontainers.AppProtocolHTTP),
-					EnableAPILogging:   to.Ptr(true),
-					Enabled:            to.Ptr(true),
-					HTTPMaxRequestSize: to.Ptr[int32](10),
-					HTTPReadBufferSize: to.Ptr[int32](30),
-					LogLevel:           to.Ptr(armappcontainers.LogLevelDebug),
-				},
-				Ingress: &armappcontainers.Ingress{
-					AdditionalPortMappings: []*armappcontainers.IngressPortMapping{
-						{
-							External:   to.Ptr(true),
-							TargetPort: to.Ptr[int32](1234),
-						},
-						{
-							ExposedPort: to.Ptr[int32](3456),
-							External:    to.Ptr(false),
-							TargetPort:  to.Ptr[int32](2345),
-						}},
-					ClientCertificateMode: to.Ptr(armappcontainers.IngressClientCertificateModeAccept),
-					CorsPolicy: &armappcontainers.CorsPolicy{
-						AllowCredentials: to.Ptr(true),
-						AllowedHeaders: []*string{
-							to.Ptr("HEADER1"),
-							to.Ptr("HEADER2")},
-						AllowedMethods: []*string{
-							to.Ptr("GET"),
-							to.Ptr("POST")},
-						AllowedOrigins: []*string{
-							to.Ptr("https://a.test.com"),
-							to.Ptr("https://b.test.com")},
-						ExposeHeaders: []*string{
-							to.Ptr("HEADER3"),
-							to.Ptr("HEADER4")},
-						MaxAge: to.Ptr[int32](1234),
-					},
-					CustomDomains: []*armappcontainers.CustomDomain{
-						{
-							Name:          to.Ptr("www.my-name.com"),
-							BindingType:   to.Ptr(armappcontainers.BindingTypeSniEnabled),
-							CertificateID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/connectedEnvironments/demokube/certificates/my-certificate-for-my-name-dot-com"),
-						},
-						{
-							Name:          to.Ptr("www.my-other-name.com"),
-							BindingType:   to.Ptr(armappcontainers.BindingTypeSniEnabled),
-							CertificateID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/connectedEnvironments/demokube/certificates/my-certificate-for-my-other-name-dot-com"),
-						}},
-					External: to.Ptr(true),
-					IPSecurityRestrictions: []*armappcontainers.IPSecurityRestrictionRule{
-						{
-							Name:           to.Ptr("Allow work IP A subnet"),
-							Description:    to.Ptr("Allowing all IP's within the subnet below to access containerapp"),
-							Action:         to.Ptr(armappcontainers.ActionAllow),
-							IPAddressRange: to.Ptr("192.168.1.1/32"),
-						},
-						{
-							Name:           to.Ptr("Allow work IP B subnet"),
-							Description:    to.Ptr("Allowing all IP's within the subnet below to access containerapp"),
-							Action:         to.Ptr(armappcontainers.ActionAllow),
-							IPAddressRange: to.Ptr("192.168.1.1/8"),
-						}},
-					StickySessions: &armappcontainers.IngressStickySessions{
-						Affinity: to.Ptr(armappcontainers.AffinitySticky),
-					},
-					TargetPort: to.Ptr[int32](3000),
-					Traffic: []*armappcontainers.TrafficWeight{
-						{
-							Label:        to.Ptr("production"),
-							RevisionName: to.Ptr("testcontainerApp0-ab1234"),
-							Weight:       to.Ptr[int32](100),
-						}},
-				},
-				MaxInactiveRevisions: to.Ptr[int32](10),
-			},
-			EnvironmentID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/connectedEnvironments/demokube"),
-			Template: &armappcontainers.Template{
-				Containers: []*armappcontainers.Container{
-					{
-						Name:  to.Ptr("testcontainerApp0"),
-						Image: to.Ptr("repo/testcontainerApp0:v1"),
-						Probes: []*armappcontainers.ContainerAppProbe{
-							{
-								Type: to.Ptr(armappcontainers.TypeLiveness),
-								HTTPGet: &armappcontainers.ContainerAppProbeHTTPGet{
-									Path: to.Ptr("/health"),
-									HTTPHeaders: []*armappcontainers.ContainerAppProbeHTTPGetHTTPHeadersItem{
-										{
-											Name:  to.Ptr("Custom-Header"),
-											Value: to.Ptr("Awesome"),
-										}},
-									Port: to.Ptr[int32](8080),
-								},
-								InitialDelaySeconds: to.Ptr[int32](3),
-								PeriodSeconds:       to.Ptr[int32](3),
-							}},
-					}},
-				InitContainers: []*armappcontainers.InitContainer{
-					{
-						Name: to.Ptr("testinitcontainerApp0"),
-						Args: []*string{
-							to.Ptr("-c"),
-							to.Ptr("while true; do echo hello; sleep 10;done")},
-						Command: []*string{
-							to.Ptr("/bin/sh")},
-						Image: to.Ptr("repo/testcontainerApp0:v4"),
-						Resources: &armappcontainers.ContainerResources{
-							CPU:    to.Ptr[float64](0.2),
-							Memory: to.Ptr("100Mi"),
-						},
-					}},
-				Scale: &armappcontainers.Scale{
-					MaxReplicas: to.Ptr[int32](5),
-					MinReplicas: to.Ptr[int32](1),
-					Rules: []*armappcontainers.ScaleRule{
-						{
-							Name: to.Ptr("httpscalingrule"),
-							Custom: &armappcontainers.CustomScaleRule{
-								Type: to.Ptr("http"),
-								Metadata: map[string]*string{
-									"concurrentRequests": to.Ptr("50"),
-								},
-							},
-						}},
-				},
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.ContainerApp = armappcontainers.ContainerApp{
-	// 	Name: to.Ptr("testcontainerApp0"),
-	// 	Type: to.Ptr("Microsoft.App/containerApps"),
-	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/containerApps/testcontainerApp0"),
-	// 	Location: to.Ptr("East US"),
-	// 	ExtendedLocation: &armappcontainers.ExtendedLocation{
-	// 		Name: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.ExtendedLocation/customLocations/testcustomlocation"),
-	// 		Type: to.Ptr(armappcontainers.ExtendedLocationTypesCustomLocation),
-	// 	},
-	// 	Properties: &armappcontainers.ContainerAppProperties{
-	// 		Configuration: &armappcontainers.Configuration{
-	// 			Dapr: &armappcontainers.Dapr{
-	// 				AppPort: to.Ptr[int32](3000),
-	// 				AppProtocol: to.Ptr(armappcontainers.AppProtocolHTTP),
-	// 				Enabled: to.Ptr(true),
-	// 				HTTPReadBufferSize: to.Ptr[int32](30),
-	// 			},
-	// 			Ingress: &armappcontainers.Ingress{
-	// 				CustomDomains: []*armappcontainers.CustomDomain{
-	// 					{
-	// 						Name: to.Ptr("www.my-name.com"),
-	// 						BindingType: to.Ptr(armappcontainers.BindingTypeSniEnabled),
-	// 						CertificateID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/connectedEnvironments/demokube/certificates/my-certificate-for-my-name-dot-com"),
-	// 					},
-	// 					{
-	// 						Name: to.Ptr("www.my-other-name.com"),
-	// 						BindingType: to.Ptr(armappcontainers.BindingTypeSniEnabled),
-	// 						CertificateID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/connectedEnvironments/demokube/certificates/my-certificate-for-my-other-name-dot-com"),
-	// 				}},
-	// 				External: to.Ptr(true),
-	// 				Fqdn: to.Ptr("testcontainerApp0.demokube-t24clv0g.eastus.containerApps.k4apps.io"),
-	// 				IPSecurityRestrictions: []*armappcontainers.IPSecurityRestrictionRule{
-	// 					{
-	// 						Name: to.Ptr("Allow work IP A subnet"),
-	// 						Description: to.Ptr("Allowing all IP's within the subnet below to access containerapp"),
-	// 						Action: to.Ptr(armappcontainers.ActionAllow),
-	// 						IPAddressRange: to.Ptr("192.168.1.1/32"),
-	// 					},
-	// 					{
-	// 						Name: to.Ptr("Allow work IP B subnet"),
-	// 						Description: to.Ptr("Allowing all IP's within the subnet below to access containerapp"),
-	// 						Action: to.Ptr(armappcontainers.ActionAllow),
-	// 						IPAddressRange: to.Ptr("192.168.1.1/8"),
-	// 				}},
-	// 				StickySessions: &armappcontainers.IngressStickySessions{
-	// 					Affinity: to.Ptr(armappcontainers.AffinitySticky),
-	// 				},
-	// 				TargetPort: to.Ptr[int32](3000),
-	// 				TargetPortHTTPScheme: to.Ptr(armappcontainers.IngressTargetPortHTTPSchemeHTTP),
-	// 				Traffic: []*armappcontainers.TrafficWeight{
-	// 					{
-	// 						RevisionName: to.Ptr("testcontainerApp0-ab1234"),
-	// 						Weight: to.Ptr[int32](80),
-	// 					},
-	// 					{
-	// 						Label: to.Ptr("staging"),
-	// 						RevisionName: to.Ptr("testcontainerApp0-ab4321"),
-	// 						Weight: to.Ptr[int32](20),
-	// 				}},
-	// 				Transport: to.Ptr(armappcontainers.IngressTransportMethodAuto),
-	// 			},
-	// 		},
-	// 		EnvironmentID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/connectedEnvironments/demokube"),
-	// 		EventStreamEndpoint: to.Ptr("testEndpoint"),
-	// 		LatestReadyRevisionName: to.Ptr("testcontainerApp0-pjxhsye"),
-	// 		LatestRevisionFqdn: to.Ptr("testcontainerApp0-pjxhsye.demokube-t24clv0g.eastus.containerApps.k4apps.io"),
-	// 		ProvisioningState: to.Ptr(armappcontainers.ContainerAppProvisioningStateSucceeded),
-	// 		Template: &armappcontainers.Template{
-	// 			Containers: []*armappcontainers.Container{
-	// 				{
-	// 					Name: to.Ptr("testcontainerApp0"),
-	// 					Image: to.Ptr("repo/testcontainerApp0:v4"),
-	// 					Resources: &armappcontainers.ContainerResources{
-	// 						CPU: to.Ptr[float64](0.2),
-	// 						Memory: to.Ptr("100Mi"),
-	// 					},
-	// 					Probes: []*armappcontainers.ContainerAppProbe{
-	// 						{
-	// 							Type: to.Ptr(armappcontainers.TypeLiveness),
-	// 							HTTPGet: &armappcontainers.ContainerAppProbeHTTPGet{
-	// 								Path: to.Ptr("/health"),
-	// 								HTTPHeaders: []*armappcontainers.ContainerAppProbeHTTPGetHTTPHeadersItem{
-	// 									{
-	// 										Name: to.Ptr("Custom-Header"),
-	// 										Value: to.Ptr("Awesome"),
-	// 								}},
-	// 								Port: to.Ptr[int32](8080),
-	// 							},
-	// 							InitialDelaySeconds: to.Ptr[int32](3),
-	// 							PeriodSeconds: to.Ptr[int32](3),
-	// 					}},
-	// 			}},
-	// 			InitContainers: []*armappcontainers.InitContainer{
-	// 				{
-	// 					Name: to.Ptr("testinitcontainerApp0"),
-	// 					Args: []*string{
-	// 						to.Ptr("-c"),
-	// 						to.Ptr("while true; do echo hello; sleep 10;done")},
-	// 						Command: []*string{
-	// 							to.Ptr("/bin/sh")},
-	// 							Image: to.Ptr("repo/testcontainerApp0:v4"),
-	// 							Resources: &armappcontainers.ContainerResources{
-	// 								CPU: to.Ptr[float64](0.2),
-	// 								Memory: to.Ptr("100Mi"),
-	// 							},
-	// 					}},
-	// 					Scale: &armappcontainers.Scale{
-	// 						MaxReplicas: to.Ptr[int32](5),
-	// 						MinReplicas: to.Ptr[int32](1),
-	// 						Rules: []*armappcontainers.ScaleRule{
-	// 							{
-	// 								Name: to.Ptr("httpscalingrule"),
-	// 								HTTP: &armappcontainers.HTTPScaleRule{
-	// 									Metadata: map[string]*string{
-	// 										"concurrentRequests": to.Ptr("50"),
-	// 									},
-	// 								},
-	// 						}},
-	// 					},
-	// 				},
-	// 			},
-	// 		}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/ContainerApps_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/edf14cc0a577f6b9c4e3ce018cec0c383e64b7b0/specification/app/resource-manager/Microsoft.App/stable/2024-03-01/examples/ContainerApps_CreateOrUpdate.json
 func ExampleContainerAppsClient_BeginCreateOrUpdate_createOrUpdateContainerApp() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -741,7 +427,7 @@ func ExampleContainerAppsClient_BeginCreateOrUpdate_createOrUpdateContainerApp()
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewContainerAppsClient().BeginCreateOrUpdate(ctx, "rg", "testcontainerApp0", armappcontainers.ContainerApp{
+	poller, err := clientFactory.NewContainerAppsClient().BeginCreateOrUpdate(ctx, "rg", "testcontainerapp0", armappcontainers.ContainerApp{
 		Location: to.Ptr("East US"),
 		Properties: &armappcontainers.ContainerAppProperties{
 			Configuration: &armappcontainers.Configuration{
@@ -814,7 +500,7 @@ func ExampleContainerAppsClient_BeginCreateOrUpdate_createOrUpdateContainerApp()
 					Traffic: []*armappcontainers.TrafficWeight{
 						{
 							Label:        to.Ptr("production"),
-							RevisionName: to.Ptr("testcontainerApp0-ab1234"),
+							RevisionName: to.Ptr("testcontainerapp0-ab1234"),
 							Weight:       to.Ptr[int32](100),
 						}},
 				},
@@ -827,19 +513,8 @@ func ExampleContainerAppsClient_BeginCreateOrUpdate_createOrUpdateContainerApp()
 			Template: &armappcontainers.Template{
 				Containers: []*armappcontainers.Container{
 					{
-						Name:  to.Ptr("testcontainerApp0"),
-						Image: to.Ptr("repo/testcontainerApp0:v1"),
-						VolumeMounts: []*armappcontainers.VolumeMount{
-							{
-								MountPath:  to.Ptr("/mnt/path1"),
-								SubPath:    to.Ptr("subPath1"),
-								VolumeName: to.Ptr("azurefile"),
-							},
-							{
-								MountPath:  to.Ptr("/mnt/path2"),
-								SubPath:    to.Ptr("subPath2"),
-								VolumeName: to.Ptr("nfsazurefile"),
-							}},
+						Name:  to.Ptr("testcontainerapp0"),
+						Image: to.Ptr("repo/testcontainerapp0:v1"),
 						Probes: []*armappcontainers.ContainerAppProbe{
 							{
 								Type: to.Ptr(armappcontainers.TypeLiveness),
@@ -864,10 +539,10 @@ func ExampleContainerAppsClient_BeginCreateOrUpdate_createOrUpdateContainerApp()
 							to.Ptr("while true; do echo hello; sleep 10;done")},
 						Command: []*string{
 							to.Ptr("/bin/sh")},
-						Image: to.Ptr("repo/testcontainerApp0:v4"),
+						Image: to.Ptr("repo/testcontainerapp0:v4"),
 						Resources: &armappcontainers.ContainerResources{
-							CPU:    to.Ptr[float64](0.2),
-							Memory: to.Ptr("100Mi"),
+							CPU:    to.Ptr[float64](0.5),
+							Memory: to.Ptr("1Gi"),
 						},
 					}},
 				Scale: &armappcontainers.Scale{
@@ -886,23 +561,8 @@ func ExampleContainerAppsClient_BeginCreateOrUpdate_createOrUpdateContainerApp()
 				},
 				ServiceBinds: []*armappcontainers.ServiceBind{
 					{
-						Name:       to.Ptr("redisService"),
-						ClientType: to.Ptr("dotnet"),
-						CustomizedKeys: map[string]*string{
-							"DesiredKey": to.Ptr("defaultKey"),
-						},
+						Name:      to.Ptr("redisService"),
 						ServiceID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/containerApps/redisService"),
-					}},
-				Volumes: []*armappcontainers.Volume{
-					{
-						Name:        to.Ptr("azurefile"),
-						StorageName: to.Ptr("storage"),
-						StorageType: to.Ptr(armappcontainers.StorageTypeAzureFile),
-					},
-					{
-						Name:        to.Ptr("nfsazurefile"),
-						StorageName: to.Ptr("nfsStorage"),
-						StorageType: to.Ptr(armappcontainers.StorageTypeNfsAzureFile),
 					}},
 			},
 			WorkloadProfileName: to.Ptr("My-GP-01"),
@@ -919,9 +579,9 @@ func ExampleContainerAppsClient_BeginCreateOrUpdate_createOrUpdateContainerApp()
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.ContainerApp = armappcontainers.ContainerApp{
-	// 	Name: to.Ptr("testcontainerApp0"),
+	// 	Name: to.Ptr("testcontainerapp0"),
 	// 	Type: to.Ptr("Microsoft.App/containerApps"),
-	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/containerApps/testcontainerApp0"),
+	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/containerApps/testcontainerapp0"),
 	// 	Location: to.Ptr("East US"),
 	// 	Properties: &armappcontainers.ContainerAppProperties{
 	// 		Configuration: &armappcontainers.Configuration{
@@ -944,7 +604,7 @@ func ExampleContainerAppsClient_BeginCreateOrUpdate_createOrUpdateContainerApp()
 	// 						CertificateID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/managedEnvironments/demokube/certificates/my-certificate-for-my-other-name-dot-com"),
 	// 				}},
 	// 				External: to.Ptr(true),
-	// 				Fqdn: to.Ptr("testcontainerApp0.demokube-t24clv0g.eastus.containerApps.k4apps.io"),
+	// 				Fqdn: to.Ptr("testcontainerapp0.demokube-t24clv0g.eastus.containerApps.k4apps.io"),
 	// 				IPSecurityRestrictions: []*armappcontainers.IPSecurityRestrictionRule{
 	// 					{
 	// 						Name: to.Ptr("Allow work IP A subnet"),
@@ -962,45 +622,33 @@ func ExampleContainerAppsClient_BeginCreateOrUpdate_createOrUpdateContainerApp()
 	// 					Affinity: to.Ptr(armappcontainers.AffinitySticky),
 	// 				},
 	// 				TargetPort: to.Ptr[int32](3000),
-	// 				TargetPortHTTPScheme: to.Ptr(armappcontainers.IngressTargetPortHTTPSchemeHTTP),
 	// 				Traffic: []*armappcontainers.TrafficWeight{
 	// 					{
-	// 						RevisionName: to.Ptr("testcontainerApp0-ab1234"),
+	// 						RevisionName: to.Ptr("testcontainerapp0-ab1234"),
 	// 						Weight: to.Ptr[int32](80),
 	// 					},
 	// 					{
 	// 						Label: to.Ptr("staging"),
-	// 						RevisionName: to.Ptr("testcontainerApp0-ab4321"),
+	// 						RevisionName: to.Ptr("testcontainerapp0-ab4321"),
 	// 						Weight: to.Ptr[int32](20),
 	// 				}},
 	// 				Transport: to.Ptr(armappcontainers.IngressTransportMethodAuto),
 	// 			},
 	// 		},
 	// 		EventStreamEndpoint: to.Ptr("testEndpoint"),
-	// 		LatestReadyRevisionName: to.Ptr("testcontainerApp0-pjxhsye"),
-	// 		LatestRevisionFqdn: to.Ptr("testcontainerApp0-pjxhsye.demokube-t24clv0g.eastus.containerApps.k4apps.io"),
+	// 		LatestReadyRevisionName: to.Ptr("testcontainerapp0-pjxhsye"),
+	// 		LatestRevisionFqdn: to.Ptr("testcontainerapp0-pjxhsye.demokube-t24clv0g.eastus.containerApps.k4apps.io"),
 	// 		ManagedEnvironmentID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/managedEnvironments/demokube"),
 	// 		ProvisioningState: to.Ptr(armappcontainers.ContainerAppProvisioningStateSucceeded),
 	// 		Template: &armappcontainers.Template{
 	// 			Containers: []*armappcontainers.Container{
 	// 				{
-	// 					Name: to.Ptr("testcontainerApp0"),
-	// 					Image: to.Ptr("repo/testcontainerApp0:v4"),
+	// 					Name: to.Ptr("testcontainerapp0"),
+	// 					Image: to.Ptr("repo/testcontainerapp0:v4"),
 	// 					Resources: &armappcontainers.ContainerResources{
-	// 						CPU: to.Ptr[float64](0.2),
-	// 						Memory: to.Ptr("100Mi"),
+	// 						CPU: to.Ptr[float64](0.5),
+	// 						Memory: to.Ptr("1Gi"),
 	// 					},
-	// 					VolumeMounts: []*armappcontainers.VolumeMount{
-	// 						{
-	// 							MountPath: to.Ptr("/mnt/path1"),
-	// 							SubPath: to.Ptr("subPath1"),
-	// 							VolumeName: to.Ptr("azurefile"),
-	// 						},
-	// 						{
-	// 							MountPath: to.Ptr("/mnt/path2"),
-	// 							SubPath: to.Ptr("subPath2"),
-	// 							VolumeName: to.Ptr("nfsazurefile"),
-	// 					}},
 	// 					Probes: []*armappcontainers.ContainerAppProbe{
 	// 						{
 	// 							Type: to.Ptr(armappcontainers.TypeLiveness),
@@ -1025,10 +673,10 @@ func ExampleContainerAppsClient_BeginCreateOrUpdate_createOrUpdateContainerApp()
 	// 						to.Ptr("while true; do echo hello; sleep 10;done")},
 	// 						Command: []*string{
 	// 							to.Ptr("/bin/sh")},
-	// 							Image: to.Ptr("repo/testcontainerApp0:v4"),
+	// 							Image: to.Ptr("repo/testcontainerapp0:v4"),
 	// 							Resources: &armappcontainers.ContainerResources{
-	// 								CPU: to.Ptr[float64](0.2),
-	// 								Memory: to.Ptr("100Mi"),
+	// 								CPU: to.Ptr[float64](0.5),
+	// 								Memory: to.Ptr("1Gi"),
 	// 							},
 	// 					}},
 	// 					Scale: &armappcontainers.Scale{
@@ -1044,24 +692,13 @@ func ExampleContainerAppsClient_BeginCreateOrUpdate_createOrUpdateContainerApp()
 	// 								},
 	// 						}},
 	// 					},
-	// 					Volumes: []*armappcontainers.Volume{
-	// 						{
-	// 							Name: to.Ptr("azurefile"),
-	// 							StorageName: to.Ptr("storage"),
-	// 							StorageType: to.Ptr(armappcontainers.StorageTypeAzureFile),
-	// 						},
-	// 						{
-	// 							Name: to.Ptr("nfsazurefile"),
-	// 							StorageName: to.Ptr("nfsStorage"),
-	// 							StorageType: to.Ptr(armappcontainers.StorageTypeNfsAzureFile),
-	// 					}},
 	// 				},
 	// 				WorkloadProfileName: to.Ptr("My-GP-01"),
 	// 			},
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/ContainerApps_ManagedBy_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/edf14cc0a577f6b9c4e3ce018cec0c383e64b7b0/specification/app/resource-manager/Microsoft.App/stable/2024-03-01/examples/ContainerApps_ManagedBy_CreateOrUpdate.json
 func ExampleContainerAppsClient_BeginCreateOrUpdate_createOrUpdateManagedByApp() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1072,7 +709,7 @@ func ExampleContainerAppsClient_BeginCreateOrUpdate_createOrUpdateManagedByApp()
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewContainerAppsClient().BeginCreateOrUpdate(ctx, "rg", "testcontainerAppManagedBy", armappcontainers.ContainerApp{
+	poller, err := clientFactory.NewContainerAppsClient().BeginCreateOrUpdate(ctx, "rg", "testcontainerappmanagedby", armappcontainers.ContainerApp{
 		Location:  to.Ptr("East US"),
 		ManagedBy: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.AppPlatform/Spring/springapp"),
 		Properties: &armappcontainers.ContainerAppProperties{
@@ -1083,7 +720,7 @@ func ExampleContainerAppsClient_BeginCreateOrUpdate_createOrUpdateManagedByApp()
 					TargetPort:  to.Ptr[int32](3000),
 					Traffic: []*armappcontainers.TrafficWeight{
 						{
-							RevisionName: to.Ptr("testcontainerAppManagedBy-ab1234"),
+							RevisionName: to.Ptr("testcontainerappmanagedby-ab1234"),
 							Weight:       to.Ptr[int32](100),
 						}},
 					Transport: to.Ptr(armappcontainers.IngressTransportMethodTCP),
@@ -1093,8 +730,8 @@ func ExampleContainerAppsClient_BeginCreateOrUpdate_createOrUpdateManagedByApp()
 			Template: &armappcontainers.Template{
 				Containers: []*armappcontainers.Container{
 					{
-						Name:  to.Ptr("testcontainerAppManagedBy"),
-						Image: to.Ptr("repo/testcontainerAppManagedBy:v1"),
+						Name:  to.Ptr("testcontainerappmanagedby"),
+						Image: to.Ptr("repo/testcontainerappmanagedby:v1"),
 						Probes: []*armappcontainers.ContainerAppProbe{
 							{
 								Type:                to.Ptr(armappcontainers.TypeLiveness),
@@ -1132,9 +769,9 @@ func ExampleContainerAppsClient_BeginCreateOrUpdate_createOrUpdateManagedByApp()
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.ContainerApp = armappcontainers.ContainerApp{
-	// 	Name: to.Ptr("testcontainerAppManagedBy"),
+	// 	Name: to.Ptr("testcontainerappmanagedby"),
 	// 	Type: to.Ptr("Microsoft.App/containerApps"),
-	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/containerApps/testcontainerAppManagedBy"),
+	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/containerApps/testcontainerappmanagedby"),
 	// 	Location: to.Ptr("East US"),
 	// 	ManagedBy: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.AppPlatform/Spring/springapp"),
 	// 	Properties: &armappcontainers.ContainerAppProperties{
@@ -1142,32 +779,32 @@ func ExampleContainerAppsClient_BeginCreateOrUpdate_createOrUpdateManagedByApp()
 	// 			Ingress: &armappcontainers.Ingress{
 	// 				ExposedPort: to.Ptr[int32](4000),
 	// 				External: to.Ptr(true),
-	// 				Fqdn: to.Ptr("testcontainerAppManagedBy.demokube-t24clv0g.eastus.containerApps.k4apps.io"),
+	// 				Fqdn: to.Ptr("testcontainerappmanagedby.demokube-t24clv0g.eastus.containerApps.k4apps.io"),
 	// 				TargetPort: to.Ptr[int32](3000),
 	// 				Traffic: []*armappcontainers.TrafficWeight{
 	// 					{
-	// 						RevisionName: to.Ptr("testcontainerAppManagedBy-ab1234"),
+	// 						RevisionName: to.Ptr("testcontainerappmanagedby-ab1234"),
 	// 						Weight: to.Ptr[int32](80),
 	// 					},
 	// 					{
-	// 						RevisionName: to.Ptr("testcontainerAppManagedBy-ab4321"),
+	// 						RevisionName: to.Ptr("testcontainerappmanagedby-ab4321"),
 	// 						Weight: to.Ptr[int32](20),
 	// 				}},
 	// 				Transport: to.Ptr(armappcontainers.IngressTransportMethodTCP),
 	// 			},
 	// 		},
-	// 		LatestReadyRevisionName: to.Ptr("testcontainerAppManagedBy-pjxhsye"),
-	// 		LatestRevisionFqdn: to.Ptr("testcontainerAppManagedBy-pjxhsye.demokube-t24clv0g.eastus.containerApps.k4apps.io"),
+	// 		LatestReadyRevisionName: to.Ptr("testcontainerappmanagedby-pjxhsye"),
+	// 		LatestRevisionFqdn: to.Ptr("testcontainerappmanagedby-pjxhsye.demokube-t24clv0g.eastus.containerApps.k4apps.io"),
 	// 		ManagedEnvironmentID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/managedEnvironments/demokube"),
 	// 		ProvisioningState: to.Ptr(armappcontainers.ContainerAppProvisioningStateSucceeded),
 	// 		Template: &armappcontainers.Template{
 	// 			Containers: []*armappcontainers.Container{
 	// 				{
-	// 					Name: to.Ptr("testcontainerAppManagedBy"),
-	// 					Image: to.Ptr("repo/testcontainerAppManagedBy:v4"),
+	// 					Name: to.Ptr("testcontainerappmanagedby"),
+	// 					Image: to.Ptr("repo/testcontainerappmanagedby:v4"),
 	// 					Resources: &armappcontainers.ContainerResources{
-	// 						CPU: to.Ptr[float64](0.2),
-	// 						Memory: to.Ptr("100Mi"),
+	// 						CPU: to.Ptr[float64](0.5),
+	// 						Memory: to.Ptr("1Gi"),
 	// 					},
 	// 					Probes: []*armappcontainers.ContainerAppProbe{
 	// 						{
@@ -1197,7 +834,7 @@ func ExampleContainerAppsClient_BeginCreateOrUpdate_createOrUpdateManagedByApp()
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/ContainerApps_TcpApp_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/edf14cc0a577f6b9c4e3ce018cec0c383e64b7b0/specification/app/resource-manager/Microsoft.App/stable/2024-03-01/examples/ContainerApps_TcpApp_CreateOrUpdate.json
 func ExampleContainerAppsClient_BeginCreateOrUpdate_createOrUpdateTcpApp() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1208,7 +845,7 @@ func ExampleContainerAppsClient_BeginCreateOrUpdate_createOrUpdateTcpApp() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewContainerAppsClient().BeginCreateOrUpdate(ctx, "rg", "testcontainerAppTcp", armappcontainers.ContainerApp{
+	poller, err := clientFactory.NewContainerAppsClient().BeginCreateOrUpdate(ctx, "rg", "testcontainerapptcp", armappcontainers.ContainerApp{
 		Location: to.Ptr("East US"),
 		Properties: &armappcontainers.ContainerAppProperties{
 			Configuration: &armappcontainers.Configuration{
@@ -1218,7 +855,7 @@ func ExampleContainerAppsClient_BeginCreateOrUpdate_createOrUpdateTcpApp() {
 					TargetPort:  to.Ptr[int32](3000),
 					Traffic: []*armappcontainers.TrafficWeight{
 						{
-							RevisionName: to.Ptr("testcontainerAppTcp-ab1234"),
+							RevisionName: to.Ptr("testcontainerapptcp-ab1234"),
 							Weight:       to.Ptr[int32](100),
 						}},
 					Transport: to.Ptr(armappcontainers.IngressTransportMethodTCP),
@@ -1228,8 +865,8 @@ func ExampleContainerAppsClient_BeginCreateOrUpdate_createOrUpdateTcpApp() {
 			Template: &armappcontainers.Template{
 				Containers: []*armappcontainers.Container{
 					{
-						Name:  to.Ptr("testcontainerAppTcp"),
-						Image: to.Ptr("repo/testcontainerAppTcp:v1"),
+						Name:  to.Ptr("testcontainerapptcp"),
+						Image: to.Ptr("repo/testcontainerapptcp:v1"),
 						Probes: []*armappcontainers.ContainerAppProbe{
 							{
 								Type:                to.Ptr(armappcontainers.TypeLiveness),
@@ -1267,41 +904,41 @@ func ExampleContainerAppsClient_BeginCreateOrUpdate_createOrUpdateTcpApp() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.ContainerApp = armappcontainers.ContainerApp{
-	// 	Name: to.Ptr("testcontainerAppTcp"),
+	// 	Name: to.Ptr("testcontainerapptcp"),
 	// 	Type: to.Ptr("Microsoft.App/containerApps"),
-	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/containerApps/testcontainerAppTcp"),
+	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/containerApps/testcontainerapptcp"),
 	// 	Location: to.Ptr("East US"),
 	// 	Properties: &armappcontainers.ContainerAppProperties{
 	// 		Configuration: &armappcontainers.Configuration{
 	// 			Ingress: &armappcontainers.Ingress{
 	// 				ExposedPort: to.Ptr[int32](4000),
 	// 				External: to.Ptr(true),
-	// 				Fqdn: to.Ptr("testcontainerAppTcp.demokube-t24clv0g.eastus.containerApps.k4apps.io"),
+	// 				Fqdn: to.Ptr("testcontainerapptcp.demokube-t24clv0g.eastus.containerApps.k4apps.io"),
 	// 				TargetPort: to.Ptr[int32](3000),
 	// 				Traffic: []*armappcontainers.TrafficWeight{
 	// 					{
-	// 						RevisionName: to.Ptr("testcontainerAppTcp-ab1234"),
+	// 						RevisionName: to.Ptr("testcontainerapptcp-ab1234"),
 	// 						Weight: to.Ptr[int32](80),
 	// 					},
 	// 					{
-	// 						RevisionName: to.Ptr("testcontainerAppTcp-ab4321"),
+	// 						RevisionName: to.Ptr("testcontainerapptcp-ab4321"),
 	// 						Weight: to.Ptr[int32](20),
 	// 				}},
 	// 				Transport: to.Ptr(armappcontainers.IngressTransportMethodTCP),
 	// 			},
 	// 		},
-	// 		LatestReadyRevisionName: to.Ptr("testcontainerAppTcp-pjxhsye"),
-	// 		LatestRevisionFqdn: to.Ptr("testcontainerAppTcp-pjxhsye.demokube-t24clv0g.eastus.containerApps.k4apps.io"),
+	// 		LatestReadyRevisionName: to.Ptr("testcontainerapptcp-pjxhsye"),
+	// 		LatestRevisionFqdn: to.Ptr("testcontainerapptcp-pjxhsye.demokube-t24clv0g.eastus.containerApps.k4apps.io"),
 	// 		ManagedEnvironmentID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/managedEnvironments/demokube"),
 	// 		ProvisioningState: to.Ptr(armappcontainers.ContainerAppProvisioningStateSucceeded),
 	// 		Template: &armappcontainers.Template{
 	// 			Containers: []*armappcontainers.Container{
 	// 				{
-	// 					Name: to.Ptr("testcontainerAppTcp"),
-	// 					Image: to.Ptr("repo/testcontainerAppTcp:v4"),
+	// 					Name: to.Ptr("testcontainerapptcp"),
+	// 					Image: to.Ptr("repo/testcontainerapptcp:v4"),
 	// 					Resources: &armappcontainers.ContainerResources{
-	// 						CPU: to.Ptr[float64](0.2),
-	// 						Memory: to.Ptr("100Mi"),
+	// 						CPU: to.Ptr[float64](0.5),
+	// 						Memory: to.Ptr("1Gi"),
 	// 					},
 	// 					Probes: []*armappcontainers.ContainerAppProbe{
 	// 						{
@@ -1331,7 +968,7 @@ func ExampleContainerAppsClient_BeginCreateOrUpdate_createOrUpdateTcpApp() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/ContainerApps_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/edf14cc0a577f6b9c4e3ce018cec0c383e64b7b0/specification/app/resource-manager/Microsoft.App/stable/2024-03-01/examples/ContainerApps_Delete.json
 func ExampleContainerAppsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1342,7 +979,7 @@ func ExampleContainerAppsClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewContainerAppsClient().BeginDelete(ctx, "rg", "testWorkerApp0", nil)
+	poller, err := clientFactory.NewContainerAppsClient().BeginDelete(ctx, "rg", "testworkerapp0", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1352,7 +989,7 @@ func ExampleContainerAppsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/ContainerApps_Patch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/edf14cc0a577f6b9c4e3ce018cec0c383e64b7b0/specification/app/resource-manager/Microsoft.App/stable/2024-03-01/examples/ContainerApps_Patch.json
 func ExampleContainerAppsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1363,7 +1000,7 @@ func ExampleContainerAppsClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewContainerAppsClient().BeginUpdate(ctx, "rg", "testcontainerApp0", armappcontainers.ContainerApp{
+	poller, err := clientFactory.NewContainerAppsClient().BeginUpdate(ctx, "rg", "testcontainerapp0", armappcontainers.ContainerApp{
 		Location: to.Ptr("East US"),
 		Tags: map[string]*string{
 			"tag1": to.Ptr("value1"),
@@ -1413,7 +1050,7 @@ func ExampleContainerAppsClient_BeginUpdate() {
 					Traffic: []*armappcontainers.TrafficWeight{
 						{
 							Label:        to.Ptr("production"),
-							RevisionName: to.Ptr("testcontainerApp0-ab1234"),
+							RevisionName: to.Ptr("testcontainerapp0-ab1234"),
 							Weight:       to.Ptr[int32](100),
 						}},
 				},
@@ -1425,8 +1062,8 @@ func ExampleContainerAppsClient_BeginUpdate() {
 			Template: &armappcontainers.Template{
 				Containers: []*armappcontainers.Container{
 					{
-						Name:  to.Ptr("testcontainerApp0"),
-						Image: to.Ptr("repo/testcontainerApp0:v1"),
+						Name:  to.Ptr("testcontainerapp0"),
+						Image: to.Ptr("repo/testcontainerapp0:v1"),
 						Probes: []*armappcontainers.ContainerAppProbe{
 							{
 								Type: to.Ptr(armappcontainers.TypeLiveness),
@@ -1446,10 +1083,10 @@ func ExampleContainerAppsClient_BeginUpdate() {
 				InitContainers: []*armappcontainers.InitContainer{
 					{
 						Name:  to.Ptr("testinitcontainerApp0"),
-						Image: to.Ptr("repo/testcontainerApp0:v4"),
+						Image: to.Ptr("repo/testcontainerapp0:v4"),
 						Resources: &armappcontainers.ContainerResources{
-							CPU:    to.Ptr[float64](0.2),
-							Memory: to.Ptr("100Mi"),
+							CPU:    to.Ptr[float64](0.5),
+							Memory: to.Ptr("1Gi"),
 						},
 					}},
 				Scale: &armappcontainers.Scale{
@@ -1468,11 +1105,7 @@ func ExampleContainerAppsClient_BeginUpdate() {
 				},
 				ServiceBinds: []*armappcontainers.ServiceBind{
 					{
-						Name:       to.Ptr("service"),
-						ClientType: to.Ptr("dotnet"),
-						CustomizedKeys: map[string]*string{
-							"DesiredKey": to.Ptr("defaultKey"),
-						},
+						Name:      to.Ptr("service"),
 						ServiceID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/containerApps/service"),
 					}},
 			},
@@ -1489,9 +1122,9 @@ func ExampleContainerAppsClient_BeginUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.ContainerApp = armappcontainers.ContainerApp{
-	// 	Name: to.Ptr("testcontainerApp0"),
+	// 	Name: to.Ptr("testcontainerapp0"),
 	// 	Type: to.Ptr("Microsoft.App/containerApps"),
-	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/containerApps/testcontainerApp0"),
+	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/containerApps/testcontainerapp0"),
 	// 	Location: to.Ptr("East US"),
 	// 	Properties: &armappcontainers.ContainerAppProperties{
 	// 		Configuration: &armappcontainers.Configuration{
@@ -1517,7 +1150,7 @@ func ExampleContainerAppsClient_BeginUpdate() {
 	// 						CertificateID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/managedEnvironments/demokube/certificates/my-certificate-for-my-other-name-dot-com"),
 	// 				}},
 	// 				External: to.Ptr(true),
-	// 				Fqdn: to.Ptr("testcontainerApp0.demokube-t24clv0g.eastus.containerApps.k4apps.io"),
+	// 				Fqdn: to.Ptr("testcontainerapp0.demokube-t24clv0g.eastus.containerApps.k4apps.io"),
 	// 				IPSecurityRestrictions: []*armappcontainers.IPSecurityRestrictionRule{
 	// 					{
 	// 						Name: to.Ptr("Allow work IP A subnet"),
@@ -1532,15 +1165,14 @@ func ExampleContainerAppsClient_BeginUpdate() {
 	// 						IPAddressRange: to.Ptr("192.168.1.1/8"),
 	// 				}},
 	// 				TargetPort: to.Ptr[int32](3000),
-	// 				TargetPortHTTPScheme: to.Ptr(armappcontainers.IngressTargetPortHTTPSchemeHTTP),
 	// 				Traffic: []*armappcontainers.TrafficWeight{
 	// 					{
-	// 						RevisionName: to.Ptr("testcontainerApp0-ab1234"),
+	// 						RevisionName: to.Ptr("testcontainerapp0-ab1234"),
 	// 						Weight: to.Ptr[int32](80),
 	// 					},
 	// 					{
 	// 						Label: to.Ptr("staging"),
-	// 						RevisionName: to.Ptr("testcontainerApp0-ab4321"),
+	// 						RevisionName: to.Ptr("testcontainerapp0-ab4321"),
 	// 						Weight: to.Ptr[int32](20),
 	// 				}},
 	// 				Transport: to.Ptr(armappcontainers.IngressTransportMethodAuto),
@@ -1548,27 +1180,27 @@ func ExampleContainerAppsClient_BeginUpdate() {
 	// 			MaxInactiveRevisions: to.Ptr[int32](10),
 	// 		},
 	// 		EventStreamEndpoint: to.Ptr("testEndpoint"),
-	// 		LatestReadyRevisionName: to.Ptr("testcontainerApp0-pjxhsye"),
-	// 		LatestRevisionFqdn: to.Ptr("testcontainerApp0-pjxhsye.demokube-t24clv0g.eastus.containerApps.k4apps.io"),
+	// 		LatestReadyRevisionName: to.Ptr("testcontainerapp0-pjxhsye"),
+	// 		LatestRevisionFqdn: to.Ptr("testcontainerapp0-pjxhsye.demokube-t24clv0g.eastus.containerApps.k4apps.io"),
 	// 		ManagedEnvironmentID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/managedEnvironments/demokube"),
 	// 		ProvisioningState: to.Ptr(armappcontainers.ContainerAppProvisioningStateSucceeded),
 	// 		Template: &armappcontainers.Template{
 	// 			Containers: []*armappcontainers.Container{
 	// 				{
-	// 					Name: to.Ptr("testcontainerApp0"),
-	// 					Image: to.Ptr("repo/testcontainerApp0:v4"),
+	// 					Name: to.Ptr("testcontainerapp0"),
+	// 					Image: to.Ptr("repo/testcontainerapp0:v4"),
 	// 					Resources: &armappcontainers.ContainerResources{
-	// 						CPU: to.Ptr[float64](0.2),
-	// 						Memory: to.Ptr("100Mi"),
+	// 						CPU: to.Ptr[float64](0.5),
+	// 						Memory: to.Ptr("1Gi"),
 	// 					},
 	// 			}},
 	// 			InitContainers: []*armappcontainers.InitContainer{
 	// 				{
 	// 					Name: to.Ptr("testinitcontainerApp0"),
-	// 					Image: to.Ptr("repo/testcontainerApp0:v4"),
+	// 					Image: to.Ptr("repo/testcontainerapp0:v4"),
 	// 					Resources: &armappcontainers.ContainerResources{
-	// 						CPU: to.Ptr[float64](0.2),
-	// 						Memory: to.Ptr("100Mi"),
+	// 						CPU: to.Ptr[float64](0.5),
+	// 						Memory: to.Ptr("1Gi"),
 	// 					},
 	// 			}},
 	// 			Scale: &armappcontainers.Scale{
@@ -1590,7 +1222,7 @@ func ExampleContainerAppsClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/ContainerApps_ListCustomHostNameAnalysis.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/edf14cc0a577f6b9c4e3ce018cec0c383e64b7b0/specification/app/resource-manager/Microsoft.App/stable/2024-03-01/examples/ContainerApps_ListCustomHostNameAnalysis.json
 func ExampleContainerAppsClient_ListCustomHostNameAnalysis() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1601,7 +1233,7 @@ func ExampleContainerAppsClient_ListCustomHostNameAnalysis() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewContainerAppsClient().ListCustomHostNameAnalysis(ctx, "rg", "testcontainerApp0", &armappcontainers.ContainerAppsClientListCustomHostNameAnalysisOptions{CustomHostname: to.Ptr("my.name.corp")})
+	res, err := clientFactory.NewContainerAppsClient().ListCustomHostNameAnalysis(ctx, "rg", "testcontainerapp0", &armappcontainers.ContainerAppsClientListCustomHostNameAnalysisOptions{CustomHostname: to.Ptr("my.name.corp")})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1634,7 +1266,7 @@ func ExampleContainerAppsClient_ListCustomHostNameAnalysis() {
 	// 					}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/ContainerApps_ListSecrets.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/edf14cc0a577f6b9c4e3ce018cec0c383e64b7b0/specification/app/resource-manager/Microsoft.App/stable/2024-03-01/examples/ContainerApps_ListSecrets.json
 func ExampleContainerAppsClient_ListSecrets() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1645,7 +1277,7 @@ func ExampleContainerAppsClient_ListSecrets() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewContainerAppsClient().ListSecrets(ctx, "rg", "testcontainerApp0", nil)
+	res, err := clientFactory.NewContainerAppsClient().ListSecrets(ctx, "rg", "testcontainerapp0", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1663,7 +1295,7 @@ func ExampleContainerAppsClient_ListSecrets() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/ContainerApps_GetAuthToken.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/edf14cc0a577f6b9c4e3ce018cec0c383e64b7b0/specification/app/resource-manager/Microsoft.App/stable/2024-03-01/examples/ContainerApps_GetAuthToken.json
 func ExampleContainerAppsClient_GetAuthToken() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1674,7 +1306,7 @@ func ExampleContainerAppsClient_GetAuthToken() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewContainerAppsClient().GetAuthToken(ctx, "rg", "testcontainerApp0", nil)
+	res, err := clientFactory.NewContainerAppsClient().GetAuthToken(ctx, "rg", "testcontainerapp0", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1682,9 +1314,9 @@ func ExampleContainerAppsClient_GetAuthToken() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.ContainerAppAuthToken = armappcontainers.ContainerAppAuthToken{
-	// 	Name: to.Ptr("testcontainerApp0"),
+	// 	Name: to.Ptr("testcontainerapp0"),
 	// 	Type: to.Ptr("Microsoft.App/containerApps/accesstoken"),
-	// 	ID: to.Ptr("/subscriptions/651f8027-33e8-4ec4-97b4-f6e9f3dc8744/resourceGroups/rg/providers/Microsoft.App/containerApps/testcontainerApp0"),
+	// 	ID: to.Ptr("/subscriptions/651f8027-33e8-4ec4-97b4-f6e9f3dc8744/resourceGroups/rg/providers/Microsoft.App/containerApps/testcontainerapp0"),
 	// 	Location: to.Ptr("East US"),
 	// 	Properties: &armappcontainers.ContainerAppAuthTokenProperties{
 	// 		Expires: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-07-14T19:22:50.308Z"); return t}()),
@@ -1693,7 +1325,7 @@ func ExampleContainerAppsClient_GetAuthToken() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/ContainerApps_Start.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/edf14cc0a577f6b9c4e3ce018cec0c383e64b7b0/specification/app/resource-manager/Microsoft.App/stable/2024-03-01/examples/ContainerApps_Start.json
 func ExampleContainerAppsClient_BeginStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1704,7 +1336,7 @@ func ExampleContainerAppsClient_BeginStart() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewContainerAppsClient().BeginStart(ctx, "rg", "testWorkerApp0", nil)
+	poller, err := clientFactory.NewContainerAppsClient().BeginStart(ctx, "rg", "testworkerapp0", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1716,9 +1348,9 @@ func ExampleContainerAppsClient_BeginStart() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.ContainerApp = armappcontainers.ContainerApp{
-	// 	Name: to.Ptr("testcontainerApp0"),
+	// 	Name: to.Ptr("testcontainerapp0"),
 	// 	Type: to.Ptr("Microsoft.App/containerApps"),
-	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/containerApps/testcontainerApp0"),
+	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/containerApps/testcontainerapp0"),
 	// 	Location: to.Ptr("East US"),
 	// 	Properties: &armappcontainers.ContainerAppProperties{
 	// 		Configuration: &armappcontainers.Configuration{
@@ -1744,7 +1376,7 @@ func ExampleContainerAppsClient_BeginStart() {
 	// 						CertificateID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/managedEnvironments/demokube/certificates/my-certificate-for-my-other-name-dot-com"),
 	// 				}},
 	// 				External: to.Ptr(true),
-	// 				Fqdn: to.Ptr("testcontainerApp0.demokube-t24clv0g.eastus.containerApps.k4apps.io"),
+	// 				Fqdn: to.Ptr("testcontainerapp0.demokube-t24clv0g.eastus.containerApps.k4apps.io"),
 	// 				IPSecurityRestrictions: []*armappcontainers.IPSecurityRestrictionRule{
 	// 					{
 	// 						Name: to.Ptr("Allow work IP A subnet"),
@@ -1759,15 +1391,14 @@ func ExampleContainerAppsClient_BeginStart() {
 	// 						IPAddressRange: to.Ptr("192.168.1.1/8"),
 	// 				}},
 	// 				TargetPort: to.Ptr[int32](3000),
-	// 				TargetPortHTTPScheme: to.Ptr(armappcontainers.IngressTargetPortHTTPSchemeHTTP),
 	// 				Traffic: []*armappcontainers.TrafficWeight{
 	// 					{
-	// 						RevisionName: to.Ptr("testcontainerApp0-ab1234"),
+	// 						RevisionName: to.Ptr("testcontainerapp0-ab1234"),
 	// 						Weight: to.Ptr[int32](80),
 	// 					},
 	// 					{
 	// 						Label: to.Ptr("staging"),
-	// 						RevisionName: to.Ptr("testcontainerApp0-ab4321"),
+	// 						RevisionName: to.Ptr("testcontainerapp0-ab4321"),
 	// 						Weight: to.Ptr[int32](20),
 	// 				}},
 	// 				Transport: to.Ptr(armappcontainers.IngressTransportMethodAuto),
@@ -1775,27 +1406,27 @@ func ExampleContainerAppsClient_BeginStart() {
 	// 			MaxInactiveRevisions: to.Ptr[int32](10),
 	// 		},
 	// 		EventStreamEndpoint: to.Ptr("testEndpoint"),
-	// 		LatestReadyRevisionName: to.Ptr("testcontainerApp0-pjxhsye"),
-	// 		LatestRevisionFqdn: to.Ptr("testcontainerApp0-pjxhsye.demokube-t24clv0g.eastus.containerApps.k4apps.io"),
+	// 		LatestReadyRevisionName: to.Ptr("testcontainerapp0-pjxhsye"),
+	// 		LatestRevisionFqdn: to.Ptr("testcontainerapp0-pjxhsye.demokube-t24clv0g.eastus.containerApps.k4apps.io"),
 	// 		ManagedEnvironmentID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/managedEnvironments/demokube"),
 	// 		ProvisioningState: to.Ptr(armappcontainers.ContainerAppProvisioningStateSucceeded),
 	// 		Template: &armappcontainers.Template{
 	// 			Containers: []*armappcontainers.Container{
 	// 				{
-	// 					Name: to.Ptr("testcontainerApp0"),
-	// 					Image: to.Ptr("repo/testcontainerApp0:v4"),
+	// 					Name: to.Ptr("testcontainerapp0"),
+	// 					Image: to.Ptr("repo/testcontainerapp0:v4"),
 	// 					Resources: &armappcontainers.ContainerResources{
-	// 						CPU: to.Ptr[float64](0.2),
-	// 						Memory: to.Ptr("100Mi"),
+	// 						CPU: to.Ptr[float64](0.5),
+	// 						Memory: to.Ptr("1Gi"),
 	// 					},
 	// 			}},
 	// 			InitContainers: []*armappcontainers.InitContainer{
 	// 				{
 	// 					Name: to.Ptr("testinitcontainerApp0"),
-	// 					Image: to.Ptr("repo/testcontainerApp0:v4"),
+	// 					Image: to.Ptr("repo/testcontainerapp0:v4"),
 	// 					Resources: &armappcontainers.ContainerResources{
-	// 						CPU: to.Ptr[float64](0.2),
-	// 						Memory: to.Ptr("100Mi"),
+	// 						CPU: to.Ptr[float64](0.5),
+	// 						Memory: to.Ptr("1Gi"),
 	// 					},
 	// 			}},
 	// 			Scale: &armappcontainers.Scale{
@@ -1817,7 +1448,7 @@ func ExampleContainerAppsClient_BeginStart() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/ContainerApps_Stop.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/edf14cc0a577f6b9c4e3ce018cec0c383e64b7b0/specification/app/resource-manager/Microsoft.App/stable/2024-03-01/examples/ContainerApps_Stop.json
 func ExampleContainerAppsClient_BeginStop() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1828,7 +1459,7 @@ func ExampleContainerAppsClient_BeginStop() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewContainerAppsClient().BeginStop(ctx, "rg", "testWorkerApp0", nil)
+	poller, err := clientFactory.NewContainerAppsClient().BeginStop(ctx, "rg", "testworkerApp0", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1840,9 +1471,9 @@ func ExampleContainerAppsClient_BeginStop() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.ContainerApp = armappcontainers.ContainerApp{
-	// 	Name: to.Ptr("testcontainerApp0"),
+	// 	Name: to.Ptr("testcontainerapp0"),
 	// 	Type: to.Ptr("Microsoft.App/containerApps"),
-	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/containerApps/testcontainerApp0"),
+	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/containerApps/testcontainerapp0"),
 	// 	Location: to.Ptr("East US"),
 	// 	Properties: &armappcontainers.ContainerAppProperties{
 	// 		Configuration: &armappcontainers.Configuration{
@@ -1868,7 +1499,7 @@ func ExampleContainerAppsClient_BeginStop() {
 	// 						CertificateID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/managedEnvironments/demokube/certificates/my-certificate-for-my-other-name-dot-com"),
 	// 				}},
 	// 				External: to.Ptr(true),
-	// 				Fqdn: to.Ptr("testcontainerApp0.demokube-t24clv0g.eastus.containerApps.k4apps.io"),
+	// 				Fqdn: to.Ptr("testcontainerapp0.demokube-t24clv0g.eastus.containerApps.k4apps.io"),
 	// 				IPSecurityRestrictions: []*armappcontainers.IPSecurityRestrictionRule{
 	// 					{
 	// 						Name: to.Ptr("Allow work IP A subnet"),
@@ -1883,15 +1514,14 @@ func ExampleContainerAppsClient_BeginStop() {
 	// 						IPAddressRange: to.Ptr("192.168.1.1/8"),
 	// 				}},
 	// 				TargetPort: to.Ptr[int32](3000),
-	// 				TargetPortHTTPScheme: to.Ptr(armappcontainers.IngressTargetPortHTTPSchemeHTTP),
 	// 				Traffic: []*armappcontainers.TrafficWeight{
 	// 					{
-	// 						RevisionName: to.Ptr("testcontainerApp0-ab1234"),
+	// 						RevisionName: to.Ptr("testcontainerapp0-ab1234"),
 	// 						Weight: to.Ptr[int32](80),
 	// 					},
 	// 					{
 	// 						Label: to.Ptr("staging"),
-	// 						RevisionName: to.Ptr("testcontainerApp0-ab4321"),
+	// 						RevisionName: to.Ptr("testcontainerapp0-ab4321"),
 	// 						Weight: to.Ptr[int32](20),
 	// 				}},
 	// 				Transport: to.Ptr(armappcontainers.IngressTransportMethodAuto),
@@ -1899,15 +1529,15 @@ func ExampleContainerAppsClient_BeginStop() {
 	// 			MaxInactiveRevisions: to.Ptr[int32](10),
 	// 		},
 	// 		EventStreamEndpoint: to.Ptr("testEndpoint"),
-	// 		LatestReadyRevisionName: to.Ptr("testcontainerApp0-pjxhsye"),
-	// 		LatestRevisionFqdn: to.Ptr("testcontainerApp0-pjxhsye.demokube-t24clv0g.eastus.containerApps.k4apps.io"),
+	// 		LatestReadyRevisionName: to.Ptr("testcontainerapp0-pjxhsye"),
+	// 		LatestRevisionFqdn: to.Ptr("testcontainerapp0-pjxhsye.demokube-t24clv0g.eastus.containerApps.k4apps.io"),
 	// 		ManagedEnvironmentID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/managedEnvironments/demokube"),
 	// 		ProvisioningState: to.Ptr(armappcontainers.ContainerAppProvisioningStateSucceeded),
 	// 		Template: &armappcontainers.Template{
 	// 			Containers: []*armappcontainers.Container{
 	// 				{
-	// 					Name: to.Ptr("testcontainerApp0"),
-	// 					Image: to.Ptr("repo/testcontainerApp0:v4"),
+	// 					Name: to.Ptr("testcontainerapp0"),
+	// 					Image: to.Ptr("repo/testcontainerapp0:v4"),
 	// 					Resources: &armappcontainers.ContainerResources{
 	// 						CPU: to.Ptr[float64](0.2),
 	// 						Memory: to.Ptr("100Mi"),
@@ -1916,10 +1546,10 @@ func ExampleContainerAppsClient_BeginStop() {
 	// 			InitContainers: []*armappcontainers.InitContainer{
 	// 				{
 	// 					Name: to.Ptr("testinitcontainerApp0"),
-	// 					Image: to.Ptr("repo/testcontainerApp0:v4"),
+	// 					Image: to.Ptr("repo/testcontainerapp0:v4"),
 	// 					Resources: &armappcontainers.ContainerResources{
-	// 						CPU: to.Ptr[float64](0.2),
-	// 						Memory: to.Ptr("100Mi"),
+	// 						CPU: to.Ptr[float64](0.5),
+	// 						Memory: to.Ptr("1Gi"),
 	// 					},
 	// 			}},
 	// 			Scale: &armappcontainers.Scale{

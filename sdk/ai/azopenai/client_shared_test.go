@@ -32,6 +32,7 @@ type endpoint struct {
 }
 
 type testVars struct {
+	Batch                                 endpointWithModel
 	ChatCompletions                       endpointWithModel
 	ChatCompletionsLegacyFunctions        endpointWithModel
 	ChatCompletionsOYD                    endpointWithModel // azure only
@@ -41,6 +42,7 @@ type testVars struct {
 	Completions                           endpointWithModel
 	DallE                                 endpointWithModel
 	Embeddings                            endpointWithModel
+	Files                                 endpointWithModel
 	Speech                                endpointWithModel
 	TextEmbedding3Small                   endpointWithModel
 	Vision                                endpointWithModel
@@ -112,6 +114,10 @@ var azureOpenAI, openAI = func() (testVars, testVars) {
 
 	newTestVarsFn := func(azure bool) testVars {
 		return testVars{
+			Batch: endpointWithModel{
+				Endpoint: ifAzure(azure, servers.SWECentral, servers.OpenAI),
+				Model:    "",
+			},
 			ChatCompletions: endpointWithModel{
 				Endpoint: ifAzure(azure, servers.USEast, servers.OpenAI),
 				Model:    ifAzure(azure, "gpt-4-0613", "gpt-4-0613"),
@@ -143,6 +149,10 @@ var azureOpenAI, openAI = func() (testVars, testVars) {
 			Embeddings: endpointWithModel{
 				Endpoint: ifAzure(azure, servers.USEast, servers.OpenAI),
 				Model:    ifAzure(azure, "text-embedding-ada-002", "text-embedding-ada-002"),
+			},
+			Files: endpointWithModel{
+				Endpoint: ifAzure(azure, servers.SWECentral, servers.OpenAI),
+				Model:    "",
 			},
 			Speech: endpointWithModel{
 				Endpoint: ifAzure(azure, servers.USEast, servers.OpenAI),

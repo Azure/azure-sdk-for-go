@@ -11,22 +11,20 @@ package azopenai
 import (
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"io"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // Client contains the methods for the OpenAI group.
 // Don't use this type directly, use a constructor function instead.
 type Client struct {
-	internal *azcore.Client
-	clientData
+internal *azcore.Client; clientData;
 }
 
 // CancelBatch - Gets details for a single batch specified by the given batchID.
@@ -60,7 +58,7 @@ func (client *Client) cancelBatchCreateRequest(ctx context.Context, batchID stri
 		return nil, errors.New("parameter batchID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{batchId}", url.PathEscape(batchID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, client.formatURL(urlPath, nil))
 	if err != nil {
 		return nil, err
 	}
@@ -104,14 +102,14 @@ func (client *Client) CreateBatch(ctx context.Context, body BatchCreateRequest, 
 // createBatchCreateRequest creates the CreateBatch request.
 func (client *Client) createBatchCreateRequest(ctx context.Context, body BatchCreateRequest, options *CreateBatchOptions) (*policy.Request, error) {
 	urlPath := "/batches"
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.endpoint, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, client.formatURL(urlPath, nil))
 	if err != nil {
 		return nil, err
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -155,7 +153,7 @@ func (client *Client) deleteFileCreateRequest(ctx context.Context, fileID string
 		return nil, errors.New("parameter fileID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{fileId}", url.PathEscape(fileID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.endpoint, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, client.formatURL(urlPath, nil))
 	if err != nil {
 		return nil, err
 	}
@@ -208,10 +206,13 @@ func (client *Client) generateSpeechFromTextCreateRequest(ctx context.Context, b
 	runtime.SkipBodyDownload(req)
 	req.Raw().Header["Accept"] = []string{"application/octet-stream, application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+
+
+
 
 // getAudioTranscriptionInternal - Gets transcribed text and associated metadata from provided spoken audio data. Audio will
 // be transcribed in the written language corresponding to the language it was spoken in.
@@ -253,8 +254,7 @@ func (client *Client) getAudioTranscriptionInternalCreateRequest(ctx context.Con
 	reqQP.Set("api-version", "2024-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	if err := setMultipartFormData(req, file, *body); err != nil {
-		return nil, err
+	if err := setMultipartFormData(req, file, body); err != nil {		return nil, err
 	}
 	return req, nil
 }
@@ -267,6 +267,9 @@ func (client *Client) getAudioTranscriptionInternalHandleResponse(resp *http.Res
 	}
 	return result, nil
 }
+
+
+
 
 // getAudioTranslationInternal - Gets English language transcribed text and associated metadata from provided spoken audio
 // data.
@@ -308,8 +311,7 @@ func (client *Client) getAudioTranslationInternalCreateRequest(ctx context.Conte
 	reqQP.Set("api-version", "2024-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	if err := setMultipartFormData(req, file, *body); err != nil {
-		return nil, err
+	if err := setMultipartFormData(req, file, body); err != nil {		return nil, err
 	}
 	return req, nil
 }
@@ -354,7 +356,7 @@ func (client *Client) getBatchCreateRequest(ctx context.Context, batchID string,
 		return nil, errors.New("parameter batchID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{batchId}", url.PathEscape(batchID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, client.formatURL(urlPath, nil))
 	if err != nil {
 		return nil, err
 	}
@@ -409,8 +411,8 @@ func (client *Client) getChatCompletionsCreateRequest(ctx context.Context, body 
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -461,8 +463,8 @@ func (client *Client) getCompletionsCreateRequest(ctx context.Context, body Comp
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -512,8 +514,8 @@ func (client *Client) getEmbeddingsCreateRequest(ctx context.Context, body Embed
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -557,7 +559,7 @@ func (client *Client) getFileCreateRequest(ctx context.Context, fileID string, o
 		return nil, errors.New("parameter fileID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{fileId}", url.PathEscape(fileID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, client.formatURL(urlPath, nil))
 	if err != nil {
 		return nil, err
 	}
@@ -605,7 +607,7 @@ func (client *Client) getFileContentCreateRequest(ctx context.Context, fileID st
 		return nil, errors.New("parameter fileID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{fileId}", url.PathEscape(fileID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, client.formatURL(urlPath, nil))
 	if err != nil {
 		return nil, err
 	}
@@ -658,8 +660,8 @@ func (client *Client) getImageGenerationsCreateRequest(ctx context.Context, body
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -698,7 +700,7 @@ func (client *Client) listBatches(ctx context.Context, options *ListBatchesOptio
 // listBatchesCreateRequest creates the listBatches request.
 func (client *Client) listBatchesCreateRequest(ctx context.Context, options *ListBatchesOptions) (*policy.Request, error) {
 	urlPath := "/batches"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, client.formatURL(urlPath, nil))
 	if err != nil {
 		return nil, err
 	}
@@ -749,7 +751,7 @@ func (client *Client) ListFiles(ctx context.Context, options *ListFilesOptions) 
 // listFilesCreateRequest creates the ListFiles request.
 func (client *Client) listFilesCreateRequest(ctx context.Context, options *ListFilesOptions) (*policy.Request, error) {
 	urlPath := "/files"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, client.formatURL(urlPath, nil))
 	if err != nil {
 		return nil, err
 	}
@@ -796,19 +798,7 @@ func (client *Client) UploadFile(ctx context.Context, file io.ReadSeekCloser, pu
 	return resp, err
 }
 
-// uploadFileCreateRequest creates the UploadFile request.
-func (client *Client) uploadFileCreateRequest(ctx context.Context, file io.ReadSeekCloser, purpose FilePurpose, body *UploadFileOptions) (*policy.Request, error) {
-	urlPath := "/files"
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.endpoint, urlPath))
-	if err != nil {
-		return nil, err
-	}
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	if err := setMultipartFormData(req, file, *body); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
+
 
 // uploadFileHandleResponse handles the UploadFile response.
 func (client *Client) uploadFileHandleResponse(resp *http.Response) (UploadFileResponse, error) {
@@ -818,3 +808,4 @@ func (client *Client) uploadFileHandleResponse(resp *http.Response) (UploadFileR
 	}
 	return result, nil
 }
+

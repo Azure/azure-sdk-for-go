@@ -279,7 +279,6 @@ directive:
   - from: client.go
     where: $
     transform: |
-      // these routes need customization for Azure.
       const urlPaths = [
           ".+?/audio/speech",
           ".+?/audio/transcriptions",
@@ -296,7 +295,9 @@ directive:
         'gs');
 
       return $.replace(re, "$1client.formatURL(urlPath, getDeployment(body))");
-
+  - from: client.go
+    where: $
+    transform: return $.replace(/runtime\.JoinPaths\(client\.endpoint, urlPath\)/g, "client.formatURL(urlPath, nil)");      
   # Allow custom parsing of the returned error, mostly for handling the content filtering errors.
   - from: client.go
     where: $
@@ -368,7 +369,7 @@ directive:
       return $
         .replace(/(func.* getAudio(?:Translation|Transcription)InternalCreateRequest\(.+?)options/g, "$1body")
         .replace(/(func.* uploadFileCreateRequest\(.+?)options/g, "$1body")
-        .replace(/runtime\.SetMultipartFormData\(.+?\)/sg, "setMultipartFormData(req, file, *body)")
+        .replace(/runtime\.SetMultipartFormData\(.+?\)/sg, "setMultipartFormData(req, file, *body)");
 
   # response type parsing (can be text/plain _or_ JSON)
   - from: client.go
@@ -805,4 +806,13 @@ directive:
     transform: return $
       .replace(/ ListBatchesResponse/g, " ListBatchesPage")
       .replace(/ListBatchesResponse\)/g, " ListBatchesPage)");
+```
+
+## Files
+
+```yaml
+directive:
+  - from: client.go
+    where: $
+    transform: return $.replace(/\/\/ uploadFileCreateRequest creates .+?return req, nil\s+}/s, "");
 ```

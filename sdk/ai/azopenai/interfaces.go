@@ -120,3 +120,4 @@ type OnYourDataVectorizationSourceClassification interface {
 	// GetOnYourDataVectorizationSource returns the OnYourDataVectorizationSource content of the underlying type.
 	GetOnYourDataVectorizationSource() *OnYourDataVectorizationSource
 }
+

@@ -139,3 +139,19 @@ func (b *BlobItem) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) error 
 	}
 	return nil
 }
+
+func (b BlobItem) MarshalXML(enc *xml.Encoder, element xml.StartElement) error {
+	//encode the struct overwriting metadata and ormetadata
+	type alias BlobItem
+	aux := &struct {
+		alias
+		//BlobName   *BlobName            `xml:"Name"`
+		Metadata   additionalProperties `xml:"Metadata"`
+		OrMetadata additionalProperties `xml:"OrMetadata"`
+	}{
+		alias:      alias(b),
+		Metadata:   additionalProperties(b.Metadata),
+		OrMetadata: additionalProperties(b.OrMetadata),
+	}
+	return enc.EncodeElement(aux, element)
+}

@@ -11,17 +11,17 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
-// authenticationClientOptions contains the optional parameters for the newAuthenticationClient method.
-type authenticationClientOptions struct {
+// AuthenticationClientOptions contains the optional parameters for the NewAuthenticationClient method.
+type AuthenticationClientOptions struct {
 	azcore.ClientOptions
 }
 
-// newAuthenticationClient creates a new instance of AuthenticationClient with the specified values.
+// NewAuthenticationClient creates a new instance of AuthenticationClient with the specified values.
 //   - endpoint - Registry login URL
 //   - options - Client options, pass nil to accept the default values.
-func newAuthenticationClient(endpoint string, options *authenticationClientOptions) (*authenticationClient, error) {
+func NewAuthenticationClient(endpoint string, options *AuthenticationClientOptions) (*AuthenticationClient, error) {
 	if options == nil {
-		options = &authenticationClientOptions{}
+		options = &AuthenticationClientOptions{}
 	}
 
 	azcoreClient, err := azcore.NewClient(moduleName, moduleVersion, runtime.PipelineOptions{}, &options.ClientOptions)
@@ -29,7 +29,7 @@ func newAuthenticationClient(endpoint string, options *authenticationClientOptio
 		return nil, err
 	}
 
-	client := &authenticationClient{
+	client := &AuthenticationClient{
 		internal: azcoreClient,
 		endpoint: endpoint,
 	}

@@ -39,7 +39,7 @@ type AssociationsInterfaceClientUpdateResponse struct {
 
 // FrontendsInterfaceClientCreateOrUpdateResponse contains the response from method FrontendsInterfaceClient.BeginCreateOrUpdate.
 type FrontendsInterfaceClientCreateOrUpdateResponse struct {
-	// Frontend Subresource of Traffic Controller.
+	// Frontend Sub Resource of Traffic Controller.
 	Frontend
 }
 
@@ -50,7 +50,7 @@ type FrontendsInterfaceClientDeleteResponse struct {
 
 // FrontendsInterfaceClientGetResponse contains the response from method FrontendsInterfaceClient.Get.
 type FrontendsInterfaceClientGetResponse struct {
-	// Frontend Subresource of Traffic Controller.
+	// Frontend Sub Resource of Traffic Controller.
 	Frontend
 }
 
@@ -62,7 +62,7 @@ type FrontendsInterfaceClientListByTrafficControllerResponse struct {
 
 // FrontendsInterfaceClientUpdateResponse contains the response from method FrontendsInterfaceClient.Update.
 type FrontendsInterfaceClientUpdateResponse struct {
-	// Frontend Subresource of Traffic Controller.
+	// Frontend Sub Resource of Traffic Controller.
 	Frontend
 }
 
@@ -70,6 +70,35 @@ type FrontendsInterfaceClientUpdateResponse struct {
 type OperationsClientListResponse struct {
 	// A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to get the next set of results.
 	OperationListResult
+}
+
+// SecurityPoliciesInterfaceClientCreateOrUpdateResponse contains the response from method SecurityPoliciesInterfaceClient.BeginCreateOrUpdate.
+type SecurityPoliciesInterfaceClientCreateOrUpdateResponse struct {
+	// SecurityPolicy Subresource of Traffic Controller.
+	SecurityPolicy
+}
+
+// SecurityPoliciesInterfaceClientDeleteResponse contains the response from method SecurityPoliciesInterfaceClient.BeginDelete.
+type SecurityPoliciesInterfaceClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// SecurityPoliciesInterfaceClientGetResponse contains the response from method SecurityPoliciesInterfaceClient.Get.
+type SecurityPoliciesInterfaceClientGetResponse struct {
+	// SecurityPolicy Subresource of Traffic Controller.
+	SecurityPolicy
+}
+
+// SecurityPoliciesInterfaceClientListByTrafficControllerResponse contains the response from method SecurityPoliciesInterfaceClient.NewListByTrafficControllerPager.
+type SecurityPoliciesInterfaceClientListByTrafficControllerResponse struct {
+	// The response of a SecurityPolicy list operation.
+	SecurityPolicyListResult
+}
+
+// SecurityPoliciesInterfaceClientUpdateResponse contains the response from method SecurityPoliciesInterfaceClient.Update.
+type SecurityPoliciesInterfaceClientUpdateResponse struct {
+	// SecurityPolicy Subresource of Traffic Controller.
+	SecurityPolicy
 }
 
 // TrafficControllerInterfaceClientCreateOrUpdateResponse contains the response from method TrafficControllerInterfaceClient.BeginCreateOrUpdate.

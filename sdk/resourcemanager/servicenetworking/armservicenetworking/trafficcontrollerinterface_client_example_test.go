@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicenetworking/armservicenetworking"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/stable/2023-11-01/examples/TrafficControllersGetList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/aa23ddc02b2b1c5a34c56a49d83b77c0a1aaa614/specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/preview/2024-05-01-preview/examples/TrafficControllersGetList.json
 func ExampleTrafficControllerInterfaceClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -62,13 +62,22 @@ func ExampleTrafficControllerInterfaceClient_NewListBySubscriptionPager() {
 		// 							ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ServiceNetworking/trafficControllers/tc1/frontends/fe1"),
 		// 					}},
 		// 					ProvisioningState: to.Ptr(armservicenetworking.ProvisioningStateSucceeded),
+		// 					SecurityPolicies: []*armservicenetworking.ResourceID{
+		// 						{
+		// 							ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ServiceNetworking/trafficControllers/tc1/securityPolicies/sp1"),
+		// 					}},
+		// 					SecurityPolicyConfigurations: &armservicenetworking.SecurityPolicyConfigurations{
+		// 						WafSecurityPolicy: &armservicenetworking.WafSecurityPolicy{
+		// 							ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ServiceNetworking/trafficControllers/tc1/securityPolicies/waf-0"),
+		// 						},
+		// 					},
 		// 				},
 		// 		}},
 		// 	}
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/stable/2023-11-01/examples/TrafficControllersGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/aa23ddc02b2b1c5a34c56a49d83b77c0a1aaa614/specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/preview/2024-05-01-preview/examples/TrafficControllersGet.json
 func ExampleTrafficControllerInterfaceClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -112,13 +121,22 @@ func ExampleTrafficControllerInterfaceClient_NewListByResourceGroupPager() {
 		// 							ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ServiceNetworking/trafficControllers/tc1/frontends/fe1"),
 		// 					}},
 		// 					ProvisioningState: to.Ptr(armservicenetworking.ProvisioningStateSucceeded),
+		// 					SecurityPolicies: []*armservicenetworking.ResourceID{
+		// 						{
+		// 							ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ServiceNetworking/trafficControllers/tc1/securityPolicies/sp1"),
+		// 					}},
+		// 					SecurityPolicyConfigurations: &armservicenetworking.SecurityPolicyConfigurations{
+		// 						WafSecurityPolicy: &armservicenetworking.WafSecurityPolicy{
+		// 							ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ServiceNetworking/trafficControllers/tc1/securityPolicies/waf-0"),
+		// 						},
+		// 					},
 		// 				},
 		// 		}},
 		// 	}
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/stable/2023-11-01/examples/TrafficControllerGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/aa23ddc02b2b1c5a34c56a49d83b77c0a1aaa614/specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/preview/2024-05-01-preview/examples/TrafficControllerGet.json
 func ExampleTrafficControllerInterfaceClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -160,7 +178,7 @@ func ExampleTrafficControllerInterfaceClient_Get() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/stable/2023-11-01/examples/TrafficControllerPut.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/aa23ddc02b2b1c5a34c56a49d83b77c0a1aaa614/specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/preview/2024-05-01-preview/examples/TrafficControllerPut.json
 func ExampleTrafficControllerInterfaceClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -207,11 +225,20 @@ func ExampleTrafficControllerInterfaceClient_BeginCreateOrUpdate() {
 	// 					ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ServiceNetworking/trafficControllers/tc1/frontends/fe1"),
 	// 			}},
 	// 			ProvisioningState: to.Ptr(armservicenetworking.ProvisioningStateSucceeded),
+	// 			SecurityPolicies: []*armservicenetworking.ResourceID{
+	// 				{
+	// 					ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ServiceNetworking/trafficControllers/tc1/securityPolicies/sp1"),
+	// 			}},
+	// 			SecurityPolicyConfigurations: &armservicenetworking.SecurityPolicyConfigurations{
+	// 				WafSecurityPolicy: &armservicenetworking.WafSecurityPolicy{
+	// 					ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ServiceNetworking/trafficControllers/tc1/securityPolicies/waf-0"),
+	// 				},
+	// 			},
 	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/stable/2023-11-01/examples/TrafficControllerPatch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/aa23ddc02b2b1c5a34c56a49d83b77c0a1aaa614/specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/preview/2024-05-01-preview/examples/TrafficControllerPatch.json
 func ExampleTrafficControllerInterfaceClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -253,11 +280,20 @@ func ExampleTrafficControllerInterfaceClient_Update() {
 	// 					ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ServiceNetworking/trafficControllers/tc1/frontends/fe1"),
 	// 			}},
 	// 			ProvisioningState: to.Ptr(armservicenetworking.ProvisioningStateSucceeded),
+	// 			SecurityPolicies: []*armservicenetworking.ResourceID{
+	// 				{
+	// 					ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ServiceNetworking/trafficControllers/tc1/securityPolicies/sp1"),
+	// 			}},
+	// 			SecurityPolicyConfigurations: &armservicenetworking.SecurityPolicyConfigurations{
+	// 				WafSecurityPolicy: &armservicenetworking.WafSecurityPolicy{
+	// 					ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ServiceNetworking/trafficControllers/tc1/securityPolicies/waf-0"),
+	// 				},
+	// 			},
 	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/stable/2023-11-01/examples/TrafficControllerDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/aa23ddc02b2b1c5a34c56a49d83b77c0a1aaa614/specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/preview/2024-05-01-preview/examples/TrafficControllerDelete.json
 func ExampleTrafficControllerInterfaceClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -22,6 +22,7 @@ type ServerFactory struct {
 	AssociationsInterfaceServer      AssociationsInterfaceServer
 	FrontendsInterfaceServer         FrontendsInterfaceServer
 	OperationsServer                 OperationsServer
+	SecurityPoliciesInterfaceServer  SecurityPoliciesInterfaceServer
 	TrafficControllerInterfaceServer TrafficControllerInterfaceServer
 }
 
@@ -42,6 +43,7 @@ type ServerFactoryTransport struct {
 	trAssociationsInterfaceServer      *AssociationsInterfaceServerTransport
 	trFrontendsInterfaceServer         *FrontendsInterfaceServerTransport
 	trOperationsServer                 *OperationsServerTransport
+	trSecurityPoliciesInterfaceServer  *SecurityPoliciesInterfaceServerTransport
 	trTrafficControllerInterfaceServer *TrafficControllerInterfaceServerTransport
 }
 
@@ -71,6 +73,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "OperationsClient":
 		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
+	case "SecurityPoliciesInterfaceClient":
+		initServer(s, &s.trSecurityPoliciesInterfaceServer, func() *SecurityPoliciesInterfaceServerTransport {
+			return NewSecurityPoliciesInterfaceServerTransport(&s.srv.SecurityPoliciesInterfaceServer)
+		})
+		resp, err = s.trSecurityPoliciesInterfaceServer.Do(req)
 	case "TrafficControllerInterfaceClient":
 		initServer(s, &s.trTrafficControllerInterfaceServer, func() *TrafficControllerInterfaceServerTransport {
 			return NewTrafficControllerInterfaceServerTransport(&s.srv.TrafficControllerInterfaceServer)

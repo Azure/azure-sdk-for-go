@@ -10,7 +10,7 @@ package armservicenetworking
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicenetworking/armservicenetworking"
-	moduleVersion = "v1.0.0"
+	moduleVersion = "v1.1.0-beta.1"
 )
 
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -27,9 +27,11 @@ func PossibleActionTypeValues() []ActionType {
 	}
 }
 
+// AssociationType - Association Type Enum
 type AssociationType string
 
 const (
+	// AssociationTypeSubnets - Association of Type Subnet
 	AssociationTypeSubnets AssociationType = "subnets"
 )
 
@@ -79,16 +81,39 @@ func PossibleOriginValues() []Origin {
 	}
 }
 
+// PolicyType - Policy Type of the Security Policy
+type PolicyType string
+
+const (
+	// PolicyTypeWAF - Policy of Type WAF
+	PolicyTypeWAF PolicyType = "waf"
+)
+
+// PossiblePolicyTypeValues returns the possible values for the PolicyType const type.
+func PossiblePolicyTypeValues() []PolicyType {
+	return []PolicyType{
+		PolicyTypeWAF,
+	}
+}
+
+// ProvisioningState - Resource Provisioning State Enum
 type ProvisioningState string
 
 const (
-	ProvisioningStateAccepted     ProvisioningState = "Accepted"
-	ProvisioningStateCanceled     ProvisioningState = "Canceled"
-	ProvisioningStateDeleting     ProvisioningState = "Deleting"
-	ProvisioningStateFailed       ProvisioningState = "Failed"
+	// ProvisioningStateAccepted - Resource in Accepted State
+	ProvisioningStateAccepted ProvisioningState = "Accepted"
+	// ProvisioningStateCanceled - Resource in Canceled State
+	ProvisioningStateCanceled ProvisioningState = "Canceled"
+	// ProvisioningStateDeleting - Resource in Deleting State
+	ProvisioningStateDeleting ProvisioningState = "Deleting"
+	// ProvisioningStateFailed - Resource in Failed State
+	ProvisioningStateFailed ProvisioningState = "Failed"
+	// ProvisioningStateProvisioning - Resource in Provisioning State
 	ProvisioningStateProvisioning ProvisioningState = "Provisioning"
-	ProvisioningStateSucceeded    ProvisioningState = "Succeeded"
-	ProvisioningStateUpdating     ProvisioningState = "Updating"
+	// ProvisioningStateSucceeded - Resource in Succeeded State
+	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
+	// ProvisioningStateUpdating - Resource in Updating State
+	ProvisioningStateUpdating ProvisioningState = "Updating"
 )
 
 // PossibleProvisioningStateValues returns the possible values for the ProvisioningState const type.

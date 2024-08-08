@@ -69,7 +69,7 @@ type AssociationSubnetUpdate struct {
 
 // AssociationUpdate - The type used for update operations of the Association.
 type AssociationUpdate struct {
-	// The updatable properties of the Association.
+	// The resource-specific properties for this resource.
 	Properties *AssociationUpdateProperties
 
 	// Resource tags.
@@ -85,7 +85,7 @@ type AssociationUpdateProperties struct {
 	Subnet *AssociationSubnetUpdate
 }
 
-// Frontend Subresource of Traffic Controller.
+// Frontend Sub Resource of Traffic Controller.
 type Frontend struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string
@@ -188,6 +188,78 @@ type ResourceID struct {
 	ID *string
 }
 
+// SecurityPolicy Subresource of Traffic Controller.
+type SecurityPolicy struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// The resource-specific properties for this resource.
+	Properties *SecurityPolicyProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// SecurityPolicyConfigurations Subresource of Traffic Controller.
+type SecurityPolicyConfigurations struct {
+	// Contains reference to a WAF-type security policy that is applied at the Traffic Controller level.
+	WafSecurityPolicy *WafSecurityPolicy
+}
+
+// SecurityPolicyConfigurationsUpdate - SecurityPolicyConfigurations Subresource of Traffic Controller.
+type SecurityPolicyConfigurationsUpdate struct {
+	// Contains reference to a WAF-type security policy that is applied at the Traffic Controller level.
+	WafSecurityPolicy *WafSecurityPolicyUpdate
+}
+
+// SecurityPolicyListResult - The response of a SecurityPolicy list operation.
+type SecurityPolicyListResult struct {
+	// REQUIRED; The SecurityPolicy items on this page
+	Value []*SecurityPolicy
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// SecurityPolicyProperties - SecurityPolicy Properties.
+type SecurityPolicyProperties struct {
+	// Web Application Firewall Policy of the Traffic Controller Security Policy
+	WafPolicy *WafPolicy
+
+	// READ-ONLY; Type of the Traffic Controller Security Policy
+	PolicyType *PolicyType
+
+	// READ-ONLY; Provisioning State of Traffic Controller SecurityPolicy Resource
+	ProvisioningState *ProvisioningState
+}
+
+// SecurityPolicyUpdate - The type used for update operations of the SecurityPolicy.
+type SecurityPolicyUpdate struct {
+	// The resource-specific properties for this resource.
+	Properties *SecurityPolicyUpdateProperties
+
+	// Resource tags.
+	Tags map[string]*string
+}
+
+// SecurityPolicyUpdateProperties - The updatable properties of the SecurityPolicy.
+type SecurityPolicyUpdateProperties struct {
+	// Web Application Firewall Policy of the Traffic Controller Security Policy
+	WafPolicy *WafPolicyUpdate
+}
+
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
@@ -244,6 +316,9 @@ type TrafficControllerListResult struct {
 
 // TrafficControllerProperties - Traffic Controller Properties.
 type TrafficControllerProperties struct {
+	// Security Policy Configuration
+	SecurityPolicyConfigurations *SecurityPolicyConfigurations
+
 	// READ-ONLY; Associations References List
 	Associations []*ResourceID
 
@@ -255,10 +330,46 @@ type TrafficControllerProperties struct {
 
 	// READ-ONLY; The status of the last operation.
 	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; Security Policies References List
+	SecurityPolicies []*ResourceID
 }
 
 // TrafficControllerUpdate - The type used for update operations of the TrafficController.
 type TrafficControllerUpdate struct {
+	// The resource-specific properties for this resource.
+	Properties *TrafficControllerUpdateProperties
+
 	// Resource tags.
 	Tags map[string]*string
+}
+
+// TrafficControllerUpdateProperties - The updatable properties of the TrafficController.
+type TrafficControllerUpdateProperties struct {
+	// Security Policy Configuration
+	SecurityPolicyConfigurations *SecurityPolicyConfigurationsUpdate
+}
+
+// WafPolicy - Web Application Firewall Policy
+type WafPolicy struct {
+	// REQUIRED; Resource ID of the WAF
+	ID *string
+}
+
+// WafPolicyUpdate - Web Application Firewall Policy
+type WafPolicyUpdate struct {
+	// Resource ID of the WAF
+	ID *string
+}
+
+// WafSecurityPolicy - Web Application Firewall Security Policy
+type WafSecurityPolicy struct {
+	// REQUIRED; Resource ID of the Waf Security Policy
+	ID *string
+}
+
+// WafSecurityPolicyUpdate - Web Application Firewall Security Policy
+type WafSecurityPolicyUpdate struct {
+	// Resource ID of the Waf Security Policy
+	ID *string
 }

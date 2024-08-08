@@ -73,6 +73,38 @@ type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// SecurityPoliciesInterfaceClientBeginCreateOrUpdateOptions contains the optional parameters for the SecurityPoliciesInterfaceClient.BeginCreateOrUpdate
+// method.
+type SecurityPoliciesInterfaceClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// SecurityPoliciesInterfaceClientBeginDeleteOptions contains the optional parameters for the SecurityPoliciesInterfaceClient.BeginDelete
+// method.
+type SecurityPoliciesInterfaceClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// SecurityPoliciesInterfaceClientGetOptions contains the optional parameters for the SecurityPoliciesInterfaceClient.Get
+// method.
+type SecurityPoliciesInterfaceClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SecurityPoliciesInterfaceClientListByTrafficControllerOptions contains the optional parameters for the SecurityPoliciesInterfaceClient.NewListByTrafficControllerPager
+// method.
+type SecurityPoliciesInterfaceClientListByTrafficControllerOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SecurityPoliciesInterfaceClientUpdateOptions contains the optional parameters for the SecurityPoliciesInterfaceClient.Update
+// method.
+type SecurityPoliciesInterfaceClientUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
 // TrafficControllerInterfaceClientBeginCreateOrUpdateOptions contains the optional parameters for the TrafficControllerInterfaceClient.BeginCreateOrUpdate
 // method.
 type TrafficControllerInterfaceClientBeginCreateOrUpdateOptions struct {

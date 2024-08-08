@@ -3662,7 +3662,7 @@ type FunctionSecrets struct {
 type FunctionsAlwaysReadyConfig struct {
 	// Sets the number of 'Always Ready' instances for a given function group or a specific function. For additional information
 	// see https://aka.ms/flexconsumption/alwaysready.
-	InstanceCount *float32
+	InstanceCount *int32
 
 	// Either a function group or a function name is required. For additional information see https://aka.ms/flexconsumption/alwaysready.
 	Name *string
@@ -3718,10 +3718,10 @@ type FunctionsScaleAndConcurrency struct {
 
 	// Set the amount of memory allocated to each instance of the function app in MB. CPU and network bandwidth are allocated
 	// proportionally.
-	InstanceMemoryMB *float32
+	InstanceMemoryMB *int32
 
 	// The maximum number of instances for the function app.
-	MaximumInstanceCount *float32
+	MaximumInstanceCount *int32
 
 	// Scale and concurrency settings for the function app triggers.
 	Triggers *FunctionsScaleAndConcurrencyTriggers
@@ -3736,7 +3736,7 @@ type FunctionsScaleAndConcurrencyTriggers struct {
 // FunctionsScaleAndConcurrencyTriggersHTTP - Scale and concurrency settings for the HTTP trigger.
 type FunctionsScaleAndConcurrencyTriggersHTTP struct {
 	// The maximum number of concurrent HTTP trigger invocations per instance.
-	PerInstanceConcurrency *float32
+	PerInstanceConcurrency *int32
 }
 
 // GeoRegion - Geographical region.

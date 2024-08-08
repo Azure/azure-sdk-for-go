@@ -1,5 +1,14 @@
 # Release History
 
+## 4.0.0 (2024-08-08)
+### Breaking Changes
+
+- Type of `FunctionsAlwaysReadyConfig.InstanceCount` has been changed from `*float32` to `*int32`
+- Type of `FunctionsScaleAndConcurrency.InstanceMemoryMB` has been changed from `*float32` to `*int32`
+- Type of `FunctionsScaleAndConcurrency.MaximumInstanceCount` has been changed from `*float32` to `*int32`
+- Type of `FunctionsScaleAndConcurrencyTriggersHTTP.PerInstanceConcurrency` has been changed from `*float32` to `*int32`
+
+
 ## 3.0.0 (2024-06-21)
 ### Breaking Changes
 

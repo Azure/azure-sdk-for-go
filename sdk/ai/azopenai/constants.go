@@ -20,7 +20,7 @@ const (
 
 // PossibleAudioTaskLabelValues returns the possible values for the AudioTaskLabel const type.
 func PossibleAudioTaskLabelValues() []AudioTaskLabel {
-	return []AudioTaskLabel{	
+	return []AudioTaskLabel{
 		AudioTaskLabelTranscribe,
 		AudioTaskLabelTranslate,
 	}
@@ -37,17 +37,17 @@ const (
 	// AudioTranscriptionFormatText - Use a response body that is plain text containing the raw, unannotated transcription.
 	AudioTranscriptionFormatText AudioTranscriptionFormat = "text"
 	// AudioTranscriptionFormatVerboseJSON - Use a response body that is a JSON object containing transcription text along with
-// timing, segments, and other
-// metadata.
+	// timing, segments, and other
+	// metadata.
 	AudioTranscriptionFormatVerboseJSON AudioTranscriptionFormat = "verbose_json"
 	// AudioTranscriptionFormatVtt - Use a response body that is plain text in Web Video Text Tracks (VTT) format that also includes
-// timing information.
+	// timing information.
 	AudioTranscriptionFormatVtt AudioTranscriptionFormat = "vtt"
 )
 
 // PossibleAudioTranscriptionFormatValues returns the possible values for the AudioTranscriptionFormat const type.
 func PossibleAudioTranscriptionFormatValues() []AudioTranscriptionFormat {
-	return []AudioTranscriptionFormat{	
+	return []AudioTranscriptionFormat{
 		AudioTranscriptionFormatJSON,
 		AudioTranscriptionFormatSrt,
 		AudioTranscriptionFormatText,
@@ -62,18 +62,18 @@ type AudioTranscriptionTimestampGranularity string
 
 const (
 	// AudioTranscriptionTimestampGranularitySegment - Indicates that responses should include timing and other information about
-// each transcribed audio segment. Audio
-// segment timestamp information does not incur any additional latency.
+	// each transcribed audio segment. Audio
+	// segment timestamp information does not incur any additional latency.
 	AudioTranscriptionTimestampGranularitySegment AudioTranscriptionTimestampGranularity = "segment"
 	// AudioTranscriptionTimestampGranularityWord - Indicates that responses should include timing information about each transcribed
-// word. Note that generating word
-// timestamp information will incur additional response latency.
+	// word. Note that generating word
+	// timestamp information will incur additional response latency.
 	AudioTranscriptionTimestampGranularityWord AudioTranscriptionTimestampGranularity = "word"
 )
 
 // PossibleAudioTranscriptionTimestampGranularityValues returns the possible values for the AudioTranscriptionTimestampGranularity const type.
 func PossibleAudioTranscriptionTimestampGranularityValues() []AudioTranscriptionTimestampGranularity {
-	return []AudioTranscriptionTimestampGranularity{	
+	return []AudioTranscriptionTimestampGranularity{
 		AudioTranscriptionTimestampGranularitySegment,
 		AudioTranscriptionTimestampGranularityWord,
 	}
@@ -90,17 +90,17 @@ const (
 	// AudioTranslationFormatText - Use a response body that is plain text containing the raw, unannotated translation.
 	AudioTranslationFormatText AudioTranslationFormat = "text"
 	// AudioTranslationFormatVerboseJSON - Use a response body that is a JSON object containing translation text along with timing,
-// segments, and other
-// metadata.
+	// segments, and other
+	// metadata.
 	AudioTranslationFormatVerboseJSON AudioTranslationFormat = "verbose_json"
 	// AudioTranslationFormatVtt - Use a response body that is plain text in Web Video Text Tracks (VTT) format that also includes
-// timing information.
+	// timing information.
 	AudioTranslationFormatVtt AudioTranslationFormat = "vtt"
 )
 
 // PossibleAudioTranslationFormatValues returns the possible values for the AudioTranslationFormat const type.
 func PossibleAudioTranslationFormatValues() []AudioTranslationFormat {
-	return []AudioTranslationFormat{	
+	return []AudioTranslationFormat{
 		AudioTranslationFormatJSON,
 		AudioTranslationFormatSrt,
 		AudioTranslationFormatText,
@@ -114,16 +114,16 @@ type AzureChatExtensionRetrieveDocumentFilterReason string
 
 const (
 	// AzureChatExtensionRetrieveDocumentFilterReasonRerank - The document is not filtered by original search score threshold,
-// but is filtered by rerank score and `top_n_documents` configure.
+	// but is filtered by rerank score and `top_n_documents` configure.
 	AzureChatExtensionRetrieveDocumentFilterReasonRerank AzureChatExtensionRetrieveDocumentFilterReason = "rerank"
 	// AzureChatExtensionRetrieveDocumentFilterReasonScore - The document is filtered by original search score threshold defined
-// by `strictness` configure.
+	// by `strictness` configure.
 	AzureChatExtensionRetrieveDocumentFilterReasonScore AzureChatExtensionRetrieveDocumentFilterReason = "score"
 )
 
 // PossibleAzureChatExtensionRetrieveDocumentFilterReasonValues returns the possible values for the AzureChatExtensionRetrieveDocumentFilterReason const type.
 func PossibleAzureChatExtensionRetrieveDocumentFilterReasonValues() []AzureChatExtensionRetrieveDocumentFilterReason {
-	return []AzureChatExtensionRetrieveDocumentFilterReason{	
+	return []AzureChatExtensionRetrieveDocumentFilterReason{
 		AzureChatExtensionRetrieveDocumentFilterReasonRerank,
 		AzureChatExtensionRetrieveDocumentFilterReasonScore,
 	}
@@ -138,7 +138,7 @@ const (
 	// AzureChatExtensionTypeAzureCosmosDB - Represents the use of Azure Cosmos DB as an Azure OpenAI chat extension.
 	AzureChatExtensionTypeAzureCosmosDB AzureChatExtensionType = "azure_cosmos_db"
 	// AzureChatExtensionTypeAzureMachineLearningIndex - Represents the use of Azure Machine Learning index as an Azure OpenAI
-// chat extension.
+	// chat extension.
 	AzureChatExtensionTypeAzureMachineLearningIndex AzureChatExtensionType = "azure_ml_index"
 	// AzureChatExtensionTypeAzureSearch - Represents the use of Azure AI Search as an Azure OpenAI chat extension.
 	AzureChatExtensionTypeAzureSearch AzureChatExtensionType = "azure_search"
@@ -150,7 +150,7 @@ const (
 
 // PossibleAzureChatExtensionTypeValues returns the possible values for the AzureChatExtensionType const type.
 func PossibleAzureChatExtensionTypeValues() []AzureChatExtensionType {
-	return []AzureChatExtensionType{	
+	return []AzureChatExtensionType{
 		AzureChatExtensionTypeAzureCosmosDB,
 		AzureChatExtensionTypeAzureMachineLearningIndex,
 		AzureChatExtensionTypeAzureSearch,
@@ -178,7 +178,7 @@ const (
 
 // PossibleAzureSearchQueryTypeValues returns the possible values for the AzureSearchQueryType const type.
 func PossibleAzureSearchQueryTypeValues() []AzureSearchQueryType {
-	return []AzureSearchQueryType{	
+	return []AzureSearchQueryType{
 		AzureSearchQueryTypeSemantic,
 		AzureSearchQueryTypeSimple,
 		AzureSearchQueryTypeVector,
@@ -211,7 +211,7 @@ const (
 
 // PossibleBatchStatusValues returns the possible values for the BatchStatus const type.
 func PossibleBatchStatusValues() []BatchStatus {
-	return []BatchStatus{	
+	return []BatchStatus{
 		BatchStatusCancelled,
 		BatchStatusCancelling,
 		BatchStatusCompleted,
@@ -230,12 +230,12 @@ type ChatCompletionRequestMessageContentPartImageURLDetail string
 const (
 	ChatCompletionRequestMessageContentPartImageURLDetailAuto ChatCompletionRequestMessageContentPartImageURLDetail = "auto"
 	ChatCompletionRequestMessageContentPartImageURLDetailHigh ChatCompletionRequestMessageContentPartImageURLDetail = "high"
-	ChatCompletionRequestMessageContentPartImageURLDetailLow ChatCompletionRequestMessageContentPartImageURLDetail = "low"
+	ChatCompletionRequestMessageContentPartImageURLDetailLow  ChatCompletionRequestMessageContentPartImageURLDetail = "low"
 )
 
 // PossibleChatCompletionRequestMessageContentPartImageURLDetailValues returns the possible values for the ChatCompletionRequestMessageContentPartImageURLDetail const type.
 func PossibleChatCompletionRequestMessageContentPartImageURLDetailValues() []ChatCompletionRequestMessageContentPartImageURLDetail {
-	return []ChatCompletionRequestMessageContentPartImageURLDetail{	
+	return []ChatCompletionRequestMessageContentPartImageURLDetail{
 		ChatCompletionRequestMessageContentPartImageURLDetailAuto,
 		ChatCompletionRequestMessageContentPartImageURLDetailHigh,
 		ChatCompletionRequestMessageContentPartImageURLDetailLow,
@@ -254,7 +254,7 @@ const (
 
 // PossibleChatCompletionRequestMessageContentPartTypeValues returns the possible values for the ChatCompletionRequestMessageContentPartType const type.
 func PossibleChatCompletionRequestMessageContentPartTypeValues() []ChatCompletionRequestMessageContentPartType {
-	return []ChatCompletionRequestMessageContentPartType{	
+	return []ChatCompletionRequestMessageContentPartType{
 		ChatCompletionRequestMessageContentPartTypeImageURL,
 		ChatCompletionRequestMessageContentPartTypeText,
 	}
@@ -265,12 +265,12 @@ type ChatCompletionsToolSelectionPreset string
 
 const (
 	// ChatCompletionsToolSelectionPresetAuto - Specifies that the model may either use any of the tools provided in this chat
-// completions request or
-// instead return a standard chat completions response as if no tools were provided.
+	// completions request or
+	// instead return a standard chat completions response as if no tools were provided.
 	ChatCompletionsToolSelectionPresetAuto ChatCompletionsToolSelectionPreset = "auto"
 	// ChatCompletionsToolSelectionPresetNone - Specifies that the model should not respond with a tool call and should instead
-// provide a standard chat
-// completions response. Response content may still be influenced by the provided tool definitions.
+	// provide a standard chat
+	// completions response. Response content may still be influenced by the provided tool definitions.
 	ChatCompletionsToolSelectionPresetNone ChatCompletionsToolSelectionPreset = "none"
 	// ChatCompletionsToolSelectionPresetRequired - Specifies that the model must call one or more tools.
 	ChatCompletionsToolSelectionPresetRequired ChatCompletionsToolSelectionPreset = "required"
@@ -278,7 +278,7 @@ const (
 
 // PossibleChatCompletionsToolSelectionPresetValues returns the possible values for the ChatCompletionsToolSelectionPreset const type.
 func PossibleChatCompletionsToolSelectionPresetValues() []ChatCompletionsToolSelectionPreset {
-	return []ChatCompletionsToolSelectionPreset{	
+	return []ChatCompletionsToolSelectionPreset{
 		ChatCompletionsToolSelectionPresetAuto,
 		ChatCompletionsToolSelectionPresetNone,
 		ChatCompletionsToolSelectionPresetRequired,
@@ -291,21 +291,21 @@ type ChatMessageImageDetailLevel string
 
 const (
 	// ChatMessageImageDetailLevelAuto - Specifies that the model should determine which detail level to apply using heuristics
-// like image size.
+	// like image size.
 	ChatMessageImageDetailLevelAuto ChatMessageImageDetailLevel = "auto"
 	// ChatMessageImageDetailLevelHigh - Specifies that image evaluation should enable the 'high-res' model that may be more accurate
-// for highly detailed
-// images but may also be slower and consume more tokens.
+	// for highly detailed
+	// images but may also be slower and consume more tokens.
 	ChatMessageImageDetailLevelHigh ChatMessageImageDetailLevel = "high"
 	// ChatMessageImageDetailLevelLow - Specifies that image evaluation should be constrained to the 'low-res' model that may
-// be faster and consume fewer
-// tokens but may also be less accurate for highly detailed images.
+	// be faster and consume fewer
+	// tokens but may also be less accurate for highly detailed images.
 	ChatMessageImageDetailLevelLow ChatMessageImageDetailLevel = "low"
 )
 
 // PossibleChatMessageImageDetailLevelValues returns the possible values for the ChatMessageImageDetailLevel const type.
 func PossibleChatMessageImageDetailLevelValues() []ChatMessageImageDetailLevel {
-	return []ChatMessageImageDetailLevel{	
+	return []ChatMessageImageDetailLevel{
 		ChatMessageImageDetailLevelAuto,
 		ChatMessageImageDetailLevelHigh,
 		ChatMessageImageDetailLevelLow,
@@ -330,7 +330,7 @@ const (
 
 // PossibleChatRoleValues returns the possible values for the ChatRole const type.
 func PossibleChatRoleValues() []ChatRole {
-	return []ChatRole{	
+	return []ChatRole{
 		ChatRoleAssistant,
 		ChatRoleFunction,
 		ChatRoleSystem,
@@ -344,8 +344,8 @@ type CompletionsFinishReason string
 
 const (
 	// CompletionsFinishReasonContentFiltered - Completions generated a response that was identified as potentially sensitive
-// per content
-// moderation policies.
+	// per content
+	// moderation policies.
 	CompletionsFinishReasonContentFiltered CompletionsFinishReason = "content_filter"
 	// CompletionsFinishReasonFunctionCall - Completion ended normally, with the model requesting a function to be called.
 	CompletionsFinishReasonFunctionCall CompletionsFinishReason = "function_call"
@@ -359,7 +359,7 @@ const (
 
 // PossibleCompletionsFinishReasonValues returns the possible values for the CompletionsFinishReason const type.
 func PossibleCompletionsFinishReasonValues() []CompletionsFinishReason {
-	return []CompletionsFinishReason{	
+	return []CompletionsFinishReason{
 		CompletionsFinishReasonContentFiltered,
 		CompletionsFinishReasonFunctionCall,
 		CompletionsFinishReasonStopped,
@@ -373,27 +373,27 @@ type ContentFilterSeverity string
 
 const (
 	// ContentFilterSeverityHigh - Content that displays explicit and severe harmful instructions, actions,
-// damage, or abuse; includes endorsement, glorification, or promotion of severe
-// harmful acts, extreme or illegal forms of harm, radicalization, or non-consensual
-// power exchange or abuse.
+	// damage, or abuse; includes endorsement, glorification, or promotion of severe
+	// harmful acts, extreme or illegal forms of harm, radicalization, or non-consensual
+	// power exchange or abuse.
 	ContentFilterSeverityHigh ContentFilterSeverity = "high"
 	// ContentFilterSeverityLow - Content that expresses prejudiced, judgmental, or opinionated views, includes offensive
-// use of language, stereotyping, use cases exploring a fictional world (for example, gaming,
-// literature) and depictions at low intensity.
+	// use of language, stereotyping, use cases exploring a fictional world (for example, gaming,
+	// literature) and depictions at low intensity.
 	ContentFilterSeverityLow ContentFilterSeverity = "low"
 	// ContentFilterSeverityMedium - Content that uses offensive, insulting, mocking, intimidating, or demeaning language
-// towards specific identity groups, includes depictions of seeking and executing harmful
-// instructions, fantasies, glorification, promotion of harm at medium intensity.
+	// towards specific identity groups, includes depictions of seeking and executing harmful
+	// instructions, fantasies, glorification, promotion of harm at medium intensity.
 	ContentFilterSeverityMedium ContentFilterSeverity = "medium"
 	// ContentFilterSeveritySafe - Content may be related to violence, self-harm, sexual, or hate categories but the terms
-// are used in general, journalistic, scientific, medical, and similar professional contexts,
-// which are appropriate for most audiences.
+	// are used in general, journalistic, scientific, medical, and similar professional contexts,
+	// which are appropriate for most audiences.
 	ContentFilterSeveritySafe ContentFilterSeverity = "safe"
 )
 
 // PossibleContentFilterSeverityValues returns the possible values for the ContentFilterSeverity const type.
 func PossibleContentFilterSeverityValues() []ContentFilterSeverity {
-	return []ContentFilterSeverity{	
+	return []ContentFilterSeverity{
 		ContentFilterSeverityHigh,
 		ContentFilterSeverityLow,
 		ContentFilterSeverityMedium,
@@ -414,7 +414,7 @@ const (
 
 // PossibleElasticsearchQueryTypeValues returns the possible values for the ElasticsearchQueryType const type.
 func PossibleElasticsearchQueryTypeValues() []ElasticsearchQueryType {
-	return []ElasticsearchQueryType{	
+	return []ElasticsearchQueryType{
 		ElasticsearchQueryTypeSimple,
 		ElasticsearchQueryTypeVector,
 	}
@@ -432,7 +432,7 @@ const (
 
 // PossibleEmbeddingEncodingFormatValues returns the possible values for the EmbeddingEncodingFormat const type.
 func PossibleEmbeddingEncodingFormatValues() []EmbeddingEncodingFormat {
-	return []EmbeddingEncodingFormat{	
+	return []EmbeddingEncodingFormat{
 		EmbeddingEncodingFormatBase64,
 		EmbeddingEncodingFormatFloat,
 	}
@@ -460,7 +460,7 @@ const (
 
 // PossibleFilePurposeValues returns the possible values for the FilePurpose const type.
 func PossibleFilePurposeValues() []FilePurpose {
-	return []FilePurpose{	
+	return []FilePurpose{
 		FilePurposeAssistants,
 		FilePurposeAssistantsOutput,
 		FilePurposeBatch,
@@ -476,33 +476,33 @@ type FileState string
 
 const (
 	// FileStateDeleted - The entity has been deleted but may still be referenced by other entities predating the deletion. It
-// can be categorized as a
-// terminal state.
+	// can be categorized as a
+	// terminal state.
 	FileStateDeleted FileState = "deleted"
 	// FileStateDeleting - The entity is in the process to be deleted. This state is not returned by Azure OpenAI and exposed
-// only for compatibility.
-// It can be categorized as an active state.
+	// only for compatibility.
+	// It can be categorized as an active state.
 	FileStateDeleting FileState = "deleting"
 	// FileStateError - The operation has completed processing with a failure and cannot be further consumed. It can be categorized
-// as a terminal state.
+	// as a terminal state.
 	FileStateError FileState = "error"
 	// FileStatePending - The operation was created and is not queued to be processed in the future. It can be categorized as
-// an inactive state.
+	// an inactive state.
 	FileStatePending FileState = "pending"
 	// FileStateProcessed - The operation has successfully processed and is ready for consumption. It can be categorized as a
-// terminal state.
+	// terminal state.
 	FileStateProcessed FileState = "processed"
 	// FileStateRunning - The operation has started to be processed. It can be categorized as an active state.
 	FileStateRunning FileState = "running"
 	// FileStateUploaded - The file has been uploaded but it's not yet processed. This state is not returned by Azure OpenAI and
-// exposed only for
-// compatibility. It can be categorized as an inactive state.
+	// exposed only for
+	// compatibility. It can be categorized as an inactive state.
 	FileStateUploaded FileState = "uploaded"
 )
 
 // PossibleFileStateValues returns the possible values for the FileState const type.
 func PossibleFileStateValues() []FileState {
-	return []FileState{	
+	return []FileState{
 		FileStateDeleted,
 		FileStateDeleting,
 		FileStateError,
@@ -519,18 +519,18 @@ type FunctionCallPreset string
 
 const (
 	// FunctionCallPresetAuto - Specifies that the model may either use any of the functions provided in this chat completions
-// request or
-// instead return a standard chat completions response as if no functions were provided.
+	// request or
+	// instead return a standard chat completions response as if no functions were provided.
 	FunctionCallPresetAuto FunctionCallPreset = "auto"
 	// FunctionCallPresetNone - Specifies that the model should not respond with a function call and should instead provide a
-// standard chat
-// completions response. Response content may still be influenced by the provided function information.
+	// standard chat
+	// completions response. Response content may still be influenced by the provided function information.
 	FunctionCallPresetNone FunctionCallPreset = "none"
 )
 
 // PossibleFunctionCallPresetValues returns the possible values for the FunctionCallPreset const type.
 func PossibleFunctionCallPresetValues() []FunctionCallPreset {
-	return []FunctionCallPreset{	
+	return []FunctionCallPreset{
 		FunctionCallPresetAuto,
 		FunctionCallPresetNone,
 	}
@@ -543,13 +543,13 @@ const (
 	// ImageGenerationQualityHd - Requests image generation with higher quality, higher cost and lower speed relative to standard.
 	ImageGenerationQualityHd ImageGenerationQuality = "hd"
 	// ImageGenerationQualityStandard - Requests image generation with standard, balanced characteristics of quality, cost, and
-// speed.
+	// speed.
 	ImageGenerationQualityStandard ImageGenerationQuality = "standard"
 )
 
 // PossibleImageGenerationQualityValues returns the possible values for the ImageGenerationQuality const type.
 func PossibleImageGenerationQualityValues() []ImageGenerationQuality {
-	return []ImageGenerationQuality{	
+	return []ImageGenerationQuality{
 		ImageGenerationQualityHd,
 		ImageGenerationQualityStandard,
 	}
@@ -567,7 +567,7 @@ const (
 
 // PossibleImageGenerationResponseFormatValues returns the possible values for the ImageGenerationResponseFormat const type.
 func PossibleImageGenerationResponseFormatValues() []ImageGenerationResponseFormat {
-	return []ImageGenerationResponseFormat{	
+	return []ImageGenerationResponseFormat{
 		ImageGenerationResponseFormatBase64,
 		ImageGenerationResponseFormatURL,
 	}
@@ -578,16 +578,16 @@ type ImageGenerationStyle string
 
 const (
 	// ImageGenerationStyleNatural - Requests image generation in a natural style with less preference for dramatic and hyper-realistic
-// characteristics.
+	// characteristics.
 	ImageGenerationStyleNatural ImageGenerationStyle = "natural"
 	// ImageGenerationStyleVivid - Requests image generation in a vivid style with a higher preference for dramatic and hyper-realistic
-// characteristics.
+	// characteristics.
 	ImageGenerationStyleVivid ImageGenerationStyle = "vivid"
 )
 
 // PossibleImageGenerationStyleValues returns the possible values for the ImageGenerationStyle const type.
 func PossibleImageGenerationStyleValues() []ImageGenerationStyle {
-	return []ImageGenerationStyle{	
+	return []ImageGenerationStyle{
 		ImageGenerationStyleNatural,
 		ImageGenerationStyleVivid,
 	}
@@ -599,25 +599,25 @@ type ImageSize string
 
 const (
 	// ImageSizeSize1024X1024 - A standard, square image size of 1024x1024 pixels.
-// Supported by both dall-e-2 and dall-e-3 models.
+	// Supported by both dall-e-2 and dall-e-3 models.
 	ImageSizeSize1024X1024 ImageSize = "1024x1024"
 	// ImageSizeSize1024X1792 - A taller image size of 1792x1024 pixels.
-// Only supported with dall-e-3 models.
+	// Only supported with dall-e-3 models.
 	ImageSizeSize1024X1792 ImageSize = "1024x1792"
 	// ImageSizeSize1792X1024 - A wider image size of 1024x1792 pixels.
-// Only supported with dall-e-3 models.
+	// Only supported with dall-e-3 models.
 	ImageSizeSize1792X1024 ImageSize = "1792x1024"
 	// ImageSizeSize256X256 - Very small image size of 256x256 pixels.
-// Only supported with dall-e-2 models.
+	// Only supported with dall-e-2 models.
 	ImageSizeSize256X256 ImageSize = "256x256"
 	// ImageSizeSize512X512 - A smaller image size of 512x512 pixels.
-// Only supported with dall-e-2 models.
+	// Only supported with dall-e-2 models.
 	ImageSizeSize512X512 ImageSize = "512x512"
 )
 
 // PossibleImageSizeValues returns the possible values for the ImageSize const type.
 func PossibleImageSizeValues() []ImageSize {
-	return []ImageSize{	
+	return []ImageSize{
 		ImageSizeSize1024X1024,
 		ImageSizeSize1024X1792,
 		ImageSizeSize1792X1024,
@@ -648,7 +648,7 @@ const (
 
 // PossibleOnYourDataAuthenticationTypeValues returns the possible values for the OnYourDataAuthenticationType const type.
 func PossibleOnYourDataAuthenticationTypeValues() []OnYourDataAuthenticationType {
-	return []OnYourDataAuthenticationType{	
+	return []OnYourDataAuthenticationType{
 		OnYourDataAuthenticationTypeAPIKey,
 		OnYourDataAuthenticationTypeAccessToken,
 		OnYourDataAuthenticationTypeConnectionString,
@@ -673,7 +673,7 @@ const (
 
 // PossibleOnYourDataContextPropertyValues returns the possible values for the OnYourDataContextProperty const type.
 func PossibleOnYourDataContextPropertyValues() []OnYourDataContextProperty {
-	return []OnYourDataContextProperty{	
+	return []OnYourDataContextProperty{
 		OnYourDataContextPropertyAllRetrievedDocuments,
 		OnYourDataContextPropertyCitations,
 		OnYourDataContextPropertyIntent,
@@ -692,7 +692,7 @@ const (
 
 // PossibleOnYourDataVectorSearchAuthenticationTypeValues returns the possible values for the OnYourDataVectorSearchAuthenticationType const type.
 func PossibleOnYourDataVectorSearchAuthenticationTypeValues() []OnYourDataVectorSearchAuthenticationType {
-	return []OnYourDataVectorSearchAuthenticationType{	
+	return []OnYourDataVectorSearchAuthenticationType{
 		OnYourDataVectorSearchAuthenticationTypeAPIKey,
 		OnYourDataVectorSearchAuthenticationTypeAccessToken,
 	}
@@ -704,21 +704,21 @@ type OnYourDataVectorizationSourceType string
 
 const (
 	// OnYourDataVectorizationSourceTypeDeploymentName - Represents an Ada model deployment name to use. This model deployment
-// must be in the same Azure OpenAI resource, but
-// On Your Data will use this model deployment via an internal call rather than a public one, which enables vector
-// search even in private networks.
+	// must be in the same Azure OpenAI resource, but
+	// On Your Data will use this model deployment via an internal call rather than a public one, which enables vector
+	// search even in private networks.
 	OnYourDataVectorizationSourceTypeDeploymentName OnYourDataVectorizationSourceType = "deployment_name"
 	// OnYourDataVectorizationSourceTypeEndpoint - Represents vectorization performed by public service calls to an Azure OpenAI
-// embedding model.
+	// embedding model.
 	OnYourDataVectorizationSourceTypeEndpoint OnYourDataVectorizationSourceType = "endpoint"
 	// OnYourDataVectorizationSourceTypeModelID - Represents a specific embedding model ID as defined in the search service.
-// Currently only supported by Elasticsearch®.
+	// Currently only supported by Elasticsearch®.
 	OnYourDataVectorizationSourceTypeModelID OnYourDataVectorizationSourceType = "model_id"
 )
 
 // PossibleOnYourDataVectorizationSourceTypeValues returns the possible values for the OnYourDataVectorizationSourceType const type.
 func PossibleOnYourDataVectorizationSourceTypeValues() []OnYourDataVectorizationSourceType {
-	return []OnYourDataVectorizationSourceType{	
+	return []OnYourDataVectorizationSourceType{
 		OnYourDataVectorizationSourceTypeDeploymentName,
 		OnYourDataVectorizationSourceTypeEndpoint,
 		OnYourDataVectorizationSourceTypeModelID,
@@ -730,27 +730,27 @@ type SpeechGenerationResponseFormat string
 
 const (
 	// SpeechGenerationResponseFormatAac - Use AAC as the audio output format. AAC is optimized for digital audio compression
-// and is preferred by YouTube, Android, and iOS.
+	// and is preferred by YouTube, Android, and iOS.
 	SpeechGenerationResponseFormatAac SpeechGenerationResponseFormat = "aac"
 	// SpeechGenerationResponseFormatFlac - Use FLAC as the audio output format. FLAC is a fully lossless format optimized for
-// maximum quality at the expense of size.
+	// maximum quality at the expense of size.
 	SpeechGenerationResponseFormatFlac SpeechGenerationResponseFormat = "flac"
 	// SpeechGenerationResponseFormatMp3 - Use MP3 as the audio output format. MP3 is the default, general-purpose format.
 	SpeechGenerationResponseFormatMp3 SpeechGenerationResponseFormat = "mp3"
 	// SpeechGenerationResponseFormatOpus - Use Opus as the audio output format. Opus is optimized for internet streaming and
-// low latency.
+	// low latency.
 	SpeechGenerationResponseFormatOpus SpeechGenerationResponseFormat = "opus"
 	// SpeechGenerationResponseFormatPcm - Use uncompressed PCM as the audio output format, which is similar to WAV but contains
-// raw samples in 24kHz (16-bit signed, low-endian), without the header.
+	// raw samples in 24kHz (16-bit signed, low-endian), without the header.
 	SpeechGenerationResponseFormatPcm SpeechGenerationResponseFormat = "pcm"
 	// SpeechGenerationResponseFormatWav - Use uncompressed WAV as the audio output format, suitable for low-latency applications
-// to avoid decoding overhead.
+	// to avoid decoding overhead.
 	SpeechGenerationResponseFormatWav SpeechGenerationResponseFormat = "wav"
 )
 
 // PossibleSpeechGenerationResponseFormatValues returns the possible values for the SpeechGenerationResponseFormat const type.
 func PossibleSpeechGenerationResponseFormatValues() []SpeechGenerationResponseFormat {
-	return []SpeechGenerationResponseFormat{	
+	return []SpeechGenerationResponseFormat{
 		SpeechGenerationResponseFormatAac,
 		SpeechGenerationResponseFormatFlac,
 		SpeechGenerationResponseFormatMp3,
@@ -780,7 +780,7 @@ const (
 
 // PossibleSpeechVoiceValues returns the possible values for the SpeechVoice const type.
 func PossibleSpeechVoiceValues() []SpeechVoice {
-	return []SpeechVoice{	
+	return []SpeechVoice{
 		SpeechVoiceAlloy,
 		SpeechVoiceEcho,
 		SpeechVoiceFable,
@@ -789,4 +789,3 @@ func PossibleSpeechVoiceValues() []SpeechVoice {
 		SpeechVoiceShimmer,
 	}
 }
-

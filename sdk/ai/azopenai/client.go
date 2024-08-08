@@ -11,20 +11,22 @@ package azopenai
 import (
 	"context"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"io"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // Client contains the methods for the OpenAI group.
 // Don't use this type directly, use a constructor function instead.
 type Client struct {
-internal *azcore.Client; clientData;
+	internal *azcore.Client
+	clientData
 }
 
 // CancelBatch - Gets details for a single batch specified by the given batchID.
@@ -108,8 +110,8 @@ func (client *Client) createBatchCreateRequest(ctx context.Context, body BatchCr
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
-	return nil, err
-}
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -206,13 +208,10 @@ func (client *Client) generateSpeechFromTextCreateRequest(ctx context.Context, b
 	runtime.SkipBodyDownload(req)
 	req.Raw().Header["Accept"] = []string{"application/octet-stream, application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
-	return nil, err
-}
+		return nil, err
+	}
 	return req, nil
 }
-
-
-
 
 // getAudioTranscriptionInternal - Gets transcribed text and associated metadata from provided spoken audio data. Audio will
 // be transcribed in the written language corresponding to the language it was spoken in.
@@ -254,7 +253,8 @@ func (client *Client) getAudioTranscriptionInternalCreateRequest(ctx context.Con
 	reqQP.Set("api-version", "2024-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	if err := setMultipartFormData(req, file, body); err != nil {		return nil, err
+	if err := setMultipartFormData(req, file, *body); err != nil {
+		return nil, err
 	}
 	return req, nil
 }
@@ -267,9 +267,6 @@ func (client *Client) getAudioTranscriptionInternalHandleResponse(resp *http.Res
 	}
 	return result, nil
 }
-
-
-
 
 // getAudioTranslationInternal - Gets English language transcribed text and associated metadata from provided spoken audio
 // data.
@@ -311,7 +308,8 @@ func (client *Client) getAudioTranslationInternalCreateRequest(ctx context.Conte
 	reqQP.Set("api-version", "2024-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	if err := setMultipartFormData(req, file, body); err != nil {		return nil, err
+	if err := setMultipartFormData(req, file, *body); err != nil {
+		return nil, err
 	}
 	return req, nil
 }
@@ -411,8 +409,8 @@ func (client *Client) getChatCompletionsCreateRequest(ctx context.Context, body 
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
-	return nil, err
-}
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -463,8 +461,8 @@ func (client *Client) getCompletionsCreateRequest(ctx context.Context, body Comp
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
-	return nil, err
-}
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -514,8 +512,8 @@ func (client *Client) getEmbeddingsCreateRequest(ctx context.Context, body Embed
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
-	return nil, err
-}
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -660,8 +658,8 @@ func (client *Client) getImageGenerationsCreateRequest(ctx context.Context, body
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
-	return nil, err
-}
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -798,8 +796,6 @@ func (client *Client) UploadFile(ctx context.Context, file io.ReadSeekCloser, pu
 	return resp, err
 }
 
-
-
 // uploadFileHandleResponse handles the UploadFile response.
 func (client *Client) uploadFileHandleResponse(resp *http.Response) (UploadFileResponse, error) {
 	result := UploadFileResponse{}
@@ -808,4 +804,3 @@ func (client *Client) uploadFileHandleResponse(resp *http.Response) (UploadFileR
 	}
 	return result, nil
 }
-

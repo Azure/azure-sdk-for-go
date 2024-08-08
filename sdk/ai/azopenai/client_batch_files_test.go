@@ -27,6 +27,11 @@ func TestFilesOperations(t *testing.T) {
 		require.NoError(t, err)
 	})
 
+	getFileResp, err := client.GetFile(context.Background(), *uploadResp.ID, nil)
+	require.NoError(t, err)
+
+	require.Equal(t, azopenai.FilePurposeAssistants, getFileResp.Purpose)
+
 	filesResp, err := client.ListFiles(context.Background(), nil)
 	require.NoError(t, err)
 	require.NotEmpty(t, filesResp.Data)

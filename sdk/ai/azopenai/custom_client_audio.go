@@ -110,7 +110,7 @@ func setMultipartFormData[T getAudioTranscriptionInternalOptions | getAudioTrans
 
 	var filename = "audio.mp3"
 
-	switch opt := any(*options).(type) {
+	switch opt := any(options).(type) {
 	case getAudioTranscriptionInternalOptions:
 		if opt.Filename != nil {
 			filename = *opt.Filename

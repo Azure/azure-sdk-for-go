@@ -26,7 +26,7 @@ func TestSetMultipartFormData(t *testing.T) {
 		req, err := runtime.NewRequest(context.Background(), "POST", "http://localhost")
 		require.NoError(t, err)
 
-		err = setMultipartFormData(req, streaming.NopCloser(bytes.NewReader([]byte{1, 2, 3})), &getAudioTranscriptionInternalOptions{
+		err = setMultipartFormData(req, streaming.NopCloser(bytes.NewReader([]byte{1, 2, 3})), getAudioTranscriptionInternalOptions{
 			Language:       to.Ptr("en"),
 			DeploymentName: to.Ptr("hello"),
 			Prompt:         to.Ptr("my prompt"),
@@ -54,7 +54,7 @@ func TestSetMultipartFormData(t *testing.T) {
 		req, err := runtime.NewRequest(context.Background(), "POST", "http://localhost")
 		require.NoError(t, err)
 
-		err = setMultipartFormData(req, streaming.NopCloser(bytes.NewReader([]byte{1, 2, 3})), &getAudioTranslationInternalOptions{
+		err = setMultipartFormData(req, streaming.NopCloser(bytes.NewReader([]byte{1, 2, 3})), getAudioTranslationInternalOptions{
 			DeploymentName: to.Ptr("hello"),
 			Prompt:         to.Ptr("my prompt"),
 			ResponseFormat: to.Ptr(AudioTranslationFormatJSON),

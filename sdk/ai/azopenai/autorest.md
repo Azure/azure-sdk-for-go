@@ -235,11 +235,6 @@ directive:
 
 ## Move the Azure extensions into their own section of the options
 
-```yaml
-# TODO: rename and move.
-```
-
-
 We've moved these 'extension' data types into their own field. 
 
 ```yaml

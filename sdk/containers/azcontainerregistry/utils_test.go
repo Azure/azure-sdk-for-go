@@ -25,19 +25,21 @@ import (
 const (
 	fakeACRRefreshToken = ".eyJqdGkiOiIwMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDAiLCJzdWIiOiIwMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDAiLCJuYmYiOjQ2NzA0MTEyMTIsImV4cCI6NDY3MDQyMjkxMiwiaWF0Ijo0NjcwNDExMjEyLCJpc3MiOiJBenVyZSBDb250YWluZXIgUmVnaXN0cnkiLCJhdWQiOiJhemFjcmxpdmV0ZXN0LmF6dXJlY3IuaW8iLCJ2ZXJzaW9uIjoiMS4wIiwicmlkIjoiMDAwMCIsImdyYW50X3R5cGUiOiJyZWZyZXNoX3Rva2VuIiwiYXBwaWQiOiIwMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDAiLCJwZXJtaXNzaW9ucyI6eyJBY3Rpb25zIjpbInJlYWQiLCJ3cml0ZSIsImRlbGV0ZSIsImRlbGV0ZWQvcmVhZCIsImRlbGV0ZWQvcmVzdG9yZS9hY3Rpb24iXSwiTm90QWN0aW9ucyI6bnVsbH0sInJvbGVzIjpbXX0=."
 	fakeDigest          = "sha256:00"
-	fakeLoginServer     = recording.SanitizedValue + ".azurecr.io"
+	fakeLoginServer     = fakeRegistry + ".azurecr.io"
+	fakeRegistry        = recording.SanitizedValue
 	fakeRepository      = fakeLoginServer + "/fake"
 	recordingDirectory  = "sdk/containers/azcontainerregistry/testdata"
 )
 
 var testConfig = struct {
-	cloud       azcloud.Configuration
-	credential  azcore.TokenCredential
-	loginServer string
+	cloud                     azcloud.Configuration
+	credential                azcore.TokenCredential
+	loginServer, registryName string
 }{
-	cloud:       azcloud.AzurePublic,
-	credential:  &credential.Fake{},
-	loginServer: fakeLoginServer,
+	cloud:        azcloud.AzurePublic,
+	credential:   &credential.Fake{},
+	loginServer:  fakeLoginServer,
+	registryName: recording.SanitizedValue,
 }
 
 // getEndpointCredAndClientOptions will create a credential and a client options for test application.
@@ -77,6 +79,9 @@ func run(m *testing.M) int {
 		}
 		if testConfig.loginServer = os.Getenv("LOGIN_SERVER"); testConfig.loginServer == "" {
 			panic("no value for LOGIN_SERVER")
+		}
+		if testConfig.registryName = os.Getenv("REGISTRY_NAME"); testConfig.registryName == "" {
+			panic("no value for REGISTRY_NAME")
 		}
 		env := os.Getenv("AZCONTAINERREGISTRY_ENVIRONMENT")
 		switch {
@@ -127,24 +132,15 @@ func pushImage(t *testing.T) (string, string) {
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 45*time.Second)
 	defer cancel()
-	image := testConfig.loginServer + "/" + repository
 
-	cmd := exec.CommandContext(ctx, "docker", "build", "-t", image, "--build-arg", "ID="+repository, ".")
+	cmd := exec.CommandContext(ctx, "az", "acr", "build", "-r", testConfig.registryName, "--image", repository, "--build-arg", "ID="+repository, ".")
 	cmd.Dir = "testdata"
 	out, err := cmd.CombinedOutput()
 	require.NoError(t, err, string(out))
 
-	cmd = exec.CommandContext(ctx, "docker", "push", image)
-	out, err = cmd.CombinedOutput()
-	require.NoError(t, err, string(out))
+	// this assumes the image has one layer digest, which should be true so long as it's FROM scratch
 	digest := string(regexp.MustCompile("(sha256:[0-9a-f]{64})").Find(out))
 	require.NotEmpty(t, digest, "failed to find digest in "+string(out))
-
-	t.Cleanup(func() {
-		ctx, cancel := context.WithTimeout(context.Background(), 45*time.Second)
-		defer cancel()
-		require.NoError(t, exec.CommandContext(ctx, "docker", "rmi", image).Run())
-	})
 
 	_, hash, found := strings.Cut(digest, ":")
 	require.True(t, found)

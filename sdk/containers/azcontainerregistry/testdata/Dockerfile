@@ -1,3 +1,3 @@
-FROM mcr.microsoft.com/mcr/hello-world
+FROM scratch
 ARG ID
 ENV ID=$ID

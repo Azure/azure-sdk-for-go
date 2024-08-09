@@ -142,6 +142,11 @@ type ExtensionsClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
+// ExtensionsClientDisableAzureMonitorAgentResponse contains the response from method ExtensionsClient.BeginDisableAzureMonitorAgent.
+type ExtensionsClientDisableAzureMonitorAgentResponse struct {
+	// placeholder for future response values
+}
+
 // ExtensionsClientDisableAzureMonitorResponse contains the response from method ExtensionsClient.BeginDisableAzureMonitor.
 type ExtensionsClientDisableAzureMonitorResponse struct {
 	// placeholder for future response values
@@ -149,6 +154,11 @@ type ExtensionsClientDisableAzureMonitorResponse struct {
 
 // ExtensionsClientDisableMonitoringResponse contains the response from method ExtensionsClient.BeginDisableMonitoring.
 type ExtensionsClientDisableMonitoringResponse struct {
+	// placeholder for future response values
+}
+
+// ExtensionsClientEnableAzureMonitorAgentResponse contains the response from method ExtensionsClient.BeginEnableAzureMonitorAgent.
+type ExtensionsClientEnableAzureMonitorAgentResponse struct {
 	// placeholder for future response values
 }
 
@@ -166,6 +176,12 @@ type ExtensionsClientEnableMonitoringResponse struct {
 type ExtensionsClientGetAzureAsyncOperationStatusResponse struct {
 	// The azure async operation response.
 	AsyncOperationResult
+}
+
+// ExtensionsClientGetAzureMonitorAgentStatusResponse contains the response from method ExtensionsClient.GetAzureMonitorAgentStatus.
+type ExtensionsClientGetAzureMonitorAgentStatusResponse struct {
+	// The azure monitor status response.
+	AzureMonitorResponse
 }
 
 // ExtensionsClientGetAzureMonitorStatusResponse contains the response from method ExtensionsClient.GetAzureMonitorStatus.

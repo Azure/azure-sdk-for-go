@@ -623,6 +623,9 @@ type ClusterMonitoringResponse struct {
 
 // ClusterPatchParameters - The PatchCluster request parameters
 type ClusterPatchParameters struct {
+	// The identity of the cluster, if configured.
+	Identity *ClusterIdentity
+
 	// The resource tags.
 	Tags map[string]*string
 }
@@ -840,6 +843,15 @@ type IPConfigurationProperties struct {
 	ProvisioningState *PrivateLinkConfigurationProvisioningState
 }
 
+// IPTag - Contains the IpTag associated with the public IP address
+type IPTag struct {
+	// REQUIRED; Gets or sets the ipTag type: Example FirstPartyUsage.
+	IPTagType *string
+
+	// REQUIRED; Gets or sets value of the IpTag associated with the public IP. Example HDInsight, SQL, Storage etc
+	Tag *string
+}
+
 // KafkaRestProperties - The kafka rest proxy configuration which contains AAD security group information.
 type KafkaRestProperties struct {
 	// The information of AAD security group.
@@ -947,8 +959,16 @@ type NameAvailabilityCheckResult struct {
 
 // NetworkProperties - The network properties.
 type NetworkProperties struct {
+	// A value to describe how the outbound dependencies of a HDInsight cluster are managed. 'Managed' means that the outbound
+	// dependencies are managed by the HDInsight service. 'External' means that the
+	// outbound dependencies are managed by a customer specific solution.
+	OutboundDependenciesManagedType *OutboundDependenciesManagedType
+
 	// Indicates whether or not private link is enabled.
 	PrivateLink *PrivateLink
+
+	// Gets or sets the IP tag for the public IPs created along with the HDInsight Clusters.
+	PublicIPTag *IPTag
 
 	// The direction for the resource provider connection.
 	ResourceProviderConnection *ResourceProviderConnection

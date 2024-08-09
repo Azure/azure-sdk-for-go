@@ -34,3 +34,7 @@ require (
 
 // used in stress tests
 require github.com/microsoft/ApplicationInsights-Go v0.4.4
+
+// NOTE: ApplicationInsights-Go is a frozen project. We only use it for our stress tests to report metrics so we've just
+// done a small update to keep it's dependencies up to date.
+replace github.com/microsoft/ApplicationInsights-Go v0.4.4 => github.com/richardpark-msft/ApplicationInsights-Go v0.0.0-20240809214047-fa65343f2c29

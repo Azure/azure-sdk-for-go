@@ -14,9 +14,6 @@ require (
 require (
 	// used in tests only
 	github.com/joho/godotenv v1.5.1
-
-	// used in stress tests
-	github.com/microsoft/ApplicationInsights-Go v0.4.4
 	github.com/stretchr/testify v1.9.0
 
 	// used in examples only
@@ -42,5 +39,9 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
-// yaml.v2 v2.2.1 is an indirect dependency of ApplicationInsights-Go and affected by a few CVEs
-replace gopkg.in/yaml.v2 => gopkg.in/yaml.v2 v2.2.8
+// used in stress tests
+require github.com/microsoft/ApplicationInsights-Go v0.4.4
+
+// NOTE: ApplicationInsights-Go is a frozen project. We only use it for our stress tests to report metrics so we've just
+// done a small update to keep it's dependencies up to date.
+replace github.com/microsoft/ApplicationInsights-Go v0.4.4 => github.com/richardpark-msft/ApplicationInsights-Go v0.0.0-20240809214047-fa65343f2c29

@@ -793,11 +793,11 @@ type BatchErrorDatum struct {
 
 // BatchErrorList - A list of Batch errors.
 type BatchErrorList struct {
+	// REQUIRED; The object type, which is always list.
+	Object *string
+
 	// The list of Batch error data.
 	Data []BatchErrorDatum
-
-	// The object type, which is always list.
-	Object *string
 }
 
 // BatchRequestCounts - The request counts for different statuses within the batch.
@@ -2148,22 +2148,22 @@ type ImageGenerations struct {
 	Data []ImageGenerationData
 }
 
-// ListBatchesPage - A list of paginated Batch objects.
+// ListBatchesPage - The response data for a requested list of items.
 type ListBatchesPage struct {
-	// REQUIRED; A human-readable error message.
+	// REQUIRED; The requested list of items.
 	Data []Batch
 
-	// REQUIRED; A human-readable error message.
-	HasMore *bool
-
-	// REQUIRED; The object type.
-	Object *string
-
-	// A human-readable error message.
+	// REQUIRED; The first ID represented in this list.
 	FirstID *string
 
-	// A human-readable error message.
+	// REQUIRED; A value indicating whether there are additional values available not captured in this list.
+	HasMore *bool
+
+	// REQUIRED; The last ID represented in this list.
 	LastID *string
+
+	// REQUIRED; The object type, which is always list.
+	Object *string
 }
 
 // MaxTokensFinishDetails - A structured representation of a stop reason that signifies a token limit was reached before the

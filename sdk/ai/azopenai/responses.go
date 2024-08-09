@@ -95,7 +95,7 @@ type GetImageGenerationsResponse struct {
 
 // ListBatchesResponse contains the response from method Client.ListBatches.
 type ListBatchesResponse struct {
-	// A list of paginated Batch objects.
+	// The response data for a requested list of items.
 	ListBatchesPage
 }
 

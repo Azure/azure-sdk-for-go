@@ -816,3 +816,14 @@ directive:
     where: $
     transform: return $.replace(/\/\/ uploadFileCreateRequest creates .+?return req, nil\s+}/s, "");
 ```
+
+## Anonymous types
+
+Give names to anonymous types
+
+```yaml
+directive:
+  - from: swagger-document
+    where: $.paths['/batches'].get.responses['200'].schema
+    transform: $["x-ms-client-name"] = "ListBatchesPage"; return $;
+```

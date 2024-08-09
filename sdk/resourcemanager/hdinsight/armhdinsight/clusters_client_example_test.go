@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hdinsight/armhdinsight"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2023-04-15-preview/examples/CreateHDInsightClusterWithAutoscaleConfig.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/aec83a5f0ed56da4fd16fa027b9fa27edfa8988b/specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2024-08-01-preview/examples/CreateHDInsightClusterWithAutoscaleConfig.json
 func ExampleClustersClient_BeginCreate_createHdInsightClusterWithAutoscaleConfiguration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -217,7 +217,7 @@ func ExampleClustersClient_BeginCreate_createHdInsightClusterWithAutoscaleConfig
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2023-04-15-preview/examples/CreateLinuxHadoopAdlsGen2.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/aec83a5f0ed56da4fd16fa027b9fa27edfa8988b/specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2024-08-01-preview/examples/CreateLinuxHadoopAdlsGen2.json
 func ExampleClustersClient_BeginCreate_createHadoopClusterWithAzureDataLakeStorageGen2() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -392,7 +392,7 @@ func ExampleClustersClient_BeginCreate_createHadoopClusterWithAzureDataLakeStora
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2023-04-15-preview/examples/CreateLinuxHadoopSshPassword.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/aec83a5f0ed56da4fd16fa027b9fa27edfa8988b/specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2024-08-01-preview/examples/CreateLinuxHadoopSshPassword.json
 func ExampleClustersClient_BeginCreate_createHadoopOnLinuxClusterWithSshPassword() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -567,7 +567,7 @@ func ExampleClustersClient_BeginCreate_createHadoopOnLinuxClusterWithSshPassword
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2023-04-15-preview/examples/CreateLinuxHadoopSshPublicKey.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/aec83a5f0ed56da4fd16fa027b9fa27edfa8988b/specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2024-08-01-preview/examples/CreateLinuxHadoopSshPublicKey.json
 func ExampleClustersClient_BeginCreate_createHadoopOnLinuxClusterWithSshPublicKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -747,7 +747,7 @@ func ExampleClustersClient_BeginCreate_createHadoopOnLinuxClusterWithSshPublicKe
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2023-04-15-preview/examples/CreateKafkaClusterWithKafkaRestProxy.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/aec83a5f0ed56da4fd16fa027b9fa27edfa8988b/specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2024-08-01-preview/examples/CreateKafkaClusterWithKafkaRestProxy.json
 func ExampleClustersClient_BeginCreate_createKafkaClusterWithKafkaRestProxy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -972,7 +972,7 @@ func ExampleClustersClient_BeginCreate_createKafkaClusterWithKafkaRestProxy() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2023-04-15-preview/examples/CreateLinuxHadoopSecureHadoop.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/aec83a5f0ed56da4fd16fa027b9fa27edfa8988b/specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2024-08-01-preview/examples/CreateLinuxHadoopSecureHadoop.json
 func ExampleClustersClient_BeginCreate_createSecureHadoopCluster() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1191,7 +1191,7 @@ func ExampleClustersClient_BeginCreate_createSecureHadoopCluster() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2023-04-15-preview/examples/CreateLinuxSparkSshPassword.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/aec83a5f0ed56da4fd16fa027b9fa27edfa8988b/specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2024-08-01-preview/examples/CreateLinuxSparkSshPassword.json
 func ExampleClustersClient_BeginCreate_createSparkOnLinuxClusterWithSshPassword() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1355,7 +1355,7 @@ func ExampleClustersClient_BeginCreate_createSparkOnLinuxClusterWithSshPassword(
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2023-04-15-preview/examples/CreateHDInsightClusterWithTLS12.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/aec83a5f0ed56da4fd16fa027b9fa27edfa8988b/specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2024-08-01-preview/examples/CreateHDInsightClusterWithTLS12.json
 func ExampleClustersClient_BeginCreate_createClusterWithTls12() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1526,7 +1526,7 @@ func ExampleClustersClient_BeginCreate_createClusterWithTls12() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2023-04-15-preview/examples/CreateHDInsightClusterWithAvailabilityZones.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/aec83a5f0ed56da4fd16fa027b9fa27edfa8988b/specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2024-08-01-preview/examples/CreateHDInsightClusterWithAvailabilityZones.json
 func ExampleClustersClient_BeginCreate_createClusterWithAvailabilityZones() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1721,7 +1721,7 @@ func ExampleClustersClient_BeginCreate_createClusterWithAvailabilityZones() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2023-04-15-preview/examples/CreateHDInsightClusterWithComputeIsolationProperties.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/aec83a5f0ed56da4fd16fa027b9fa27edfa8988b/specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2024-08-01-preview/examples/CreateHDInsightClusterWithComputeIsolationProperties.json
 func ExampleClustersClient_BeginCreate_createClusterWithComputeIsolationProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1871,7 +1871,7 @@ func ExampleClustersClient_BeginCreate_createClusterWithComputeIsolationProperti
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2023-04-15-preview/examples/CreateHDInsightClusterWithEncryptionAtHost.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/aec83a5f0ed56da4fd16fa027b9fa27edfa8988b/specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2024-08-01-preview/examples/CreateHDInsightClusterWithEncryptionAtHost.json
 func ExampleClustersClient_BeginCreate_createClusterWithEncryptionAtHost() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2046,7 +2046,7 @@ func ExampleClustersClient_BeginCreate_createClusterWithEncryptionAtHost() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2023-04-15-preview/examples/CreateHDInsightClusterWithEncryptionInTransit.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/aec83a5f0ed56da4fd16fa027b9fa27edfa8988b/specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2024-08-01-preview/examples/CreateHDInsightClusterWithEncryptionInTransit.json
 func ExampleClustersClient_BeginCreate_createClusterWithEncryptionInTransit() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2221,7 +2221,7 @@ func ExampleClustersClient_BeginCreate_createClusterWithEncryptionInTransit() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2023-04-15-preview/examples/CreateHDInsightClusterWithCustomNetworkProperties.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/aec83a5f0ed56da4fd16fa027b9fa27edfa8988b/specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2024-08-01-preview/examples/CreateHDInsightClusterWithCustomNetworkProperties.json
 func ExampleClustersClient_BeginCreate_createClusterWithNetworkProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2295,7 +2295,11 @@ func ExampleClustersClient_BeginCreate_createClusterWithNetworkProperties() {
 					}},
 			},
 			NetworkProperties: &armhdinsight.NetworkProperties{
-				PrivateLink:                to.Ptr(armhdinsight.PrivateLinkEnabled),
+				PrivateLink: to.Ptr(armhdinsight.PrivateLinkEnabled),
+				PublicIPTag: &armhdinsight.IPTag{
+					IPTagType: to.Ptr("FirstPartyUsage"),
+					Tag:       to.Ptr("/<TagName>"),
+				},
 				ResourceProviderConnection: to.Ptr(armhdinsight.ResourceProviderConnectionOutbound),
 			},
 			OSType: to.Ptr(armhdinsight.OSTypeLinux),
@@ -2373,6 +2377,10 @@ func ExampleClustersClient_BeginCreate_createClusterWithNetworkProperties() {
 	// 		CreatedDate: to.Ptr("2020-06-09T12:25:43.48"),
 	// 		NetworkProperties: &armhdinsight.NetworkProperties{
 	// 			PrivateLink: to.Ptr(armhdinsight.PrivateLinkEnabled),
+	// 			PublicIPTag: &armhdinsight.IPTag{
+	// 				IPTagType: to.Ptr("FirstPartyUsage"),
+	// 				Tag: to.Ptr("/<TagName>"),
+	// 			},
 	// 			ResourceProviderConnection: to.Ptr(armhdinsight.ResourceProviderConnectionOutbound),
 	// 		},
 	// 		OSType: to.Ptr(armhdinsight.OSTypeLinux),
@@ -2385,8 +2393,8 @@ func ExampleClustersClient_BeginCreate_createClusterWithNetworkProperties() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2023-04-15-preview/examples/PatchLinuxHadoopCluster.json
-func ExampleClustersClient_Update() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/aec83a5f0ed56da4fd16fa027b9fa27edfa8988b/specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2024-08-01-preview/examples/PatchLinuxHadoopCluster.json
+func ExampleClustersClient_Update_patchHdInsightLinuxClusters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -2488,7 +2496,118 @@ func ExampleClustersClient_Update() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2023-04-15-preview/examples/DeleteLinuxHadoopCluster.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/aec83a5f0ed56da4fd16fa027b9fa27edfa8988b/specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2024-08-01-preview/examples/PatchLinuxHadoopClusterWithSystemMSI.json
+func ExampleClustersClient_Update_patchHdInsightLinuxClustersWithSystemAssignedMsi() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armhdinsight.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewClustersClient().Update(ctx, "rg1", "cluster1", armhdinsight.ClusterPatchParameters{
+		Identity: &armhdinsight.ClusterIdentity{
+			Type: to.Ptr(armhdinsight.ResourceIdentityTypeSystemAssigned),
+		},
+		Tags: map[string]*string{
+			"key1": to.Ptr("val1"),
+			"key2": to.Ptr("val2"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Cluster = armhdinsight.Cluster{
+	// 	Name: to.Ptr("cluster1"),
+	// 	Type: to.Ptr("Microsoft.HDInsight/clusters"),
+	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.HDInsight/clusters/cluster1"),
+	// 	Location: to.Ptr("West US"),
+	// 	Tags: map[string]*string{
+	// 		"key1": to.Ptr("val1"),
+	// 		"key2": to.Ptr("val2"),
+	// 	},
+	// 	Etag: to.Ptr("f0212a39-b827-45e0-9ffa-4f5232e58851"),
+	// 	Identity: &armhdinsight.ClusterIdentity{
+	// 		Type: to.Ptr(armhdinsight.ResourceIdentityTypeSystemAssigned),
+	// 		PrincipalID: to.Ptr("principalId"),
+	// 		TenantID: to.Ptr("tenantId"),
+	// 	},
+	// 	Properties: &armhdinsight.ClusterGetProperties{
+	// 		ClusterDefinition: &armhdinsight.ClusterDefinition{
+	// 			Blueprint: to.Ptr("https://blueprints.azurehdinsight.net/hadoop-3.5.1000.0.9243893.json"),
+	// 			Kind: to.Ptr("hadoop"),
+	// 		},
+	// 		ClusterState: to.Ptr("Running"),
+	// 		ClusterVersion: to.Ptr("3.5.1000.0"),
+	// 		ComputeProfile: &armhdinsight.ComputeProfile{
+	// 			Roles: []*armhdinsight.Role{
+	// 				{
+	// 					Name: to.Ptr("headnode"),
+	// 					HardwareProfile: &armhdinsight.HardwareProfile{
+	// 						VMSize: to.Ptr("Standard_D3_V2"),
+	// 					},
+	// 					OSProfile: &armhdinsight.OsProfile{
+	// 						LinuxOperatingSystemProfile: &armhdinsight.LinuxOperatingSystemProfile{
+	// 							Username: to.Ptr("sshuser"),
+	// 						},
+	// 					},
+	// 					TargetInstanceCount: to.Ptr[int32](2),
+	// 				},
+	// 				{
+	// 					Name: to.Ptr("workernode"),
+	// 					HardwareProfile: &armhdinsight.HardwareProfile{
+	// 						VMSize: to.Ptr("Standard_D3_V2"),
+	// 					},
+	// 					OSProfile: &armhdinsight.OsProfile{
+	// 						LinuxOperatingSystemProfile: &armhdinsight.LinuxOperatingSystemProfile{
+	// 							Username: to.Ptr("sshuser"),
+	// 						},
+	// 					},
+	// 					TargetInstanceCount: to.Ptr[int32](4),
+	// 				},
+	// 				{
+	// 					Name: to.Ptr("zookeepernode"),
+	// 					HardwareProfile: &armhdinsight.HardwareProfile{
+	// 						VMSize: to.Ptr("Medium"),
+	// 					},
+	// 					OSProfile: &armhdinsight.OsProfile{
+	// 						LinuxOperatingSystemProfile: &armhdinsight.LinuxOperatingSystemProfile{
+	// 							Username: to.Ptr("sshuser"),
+	// 						},
+	// 					},
+	// 					TargetInstanceCount: to.Ptr[int32](3),
+	// 			}},
+	// 		},
+	// 		ConnectivityEndpoints: []*armhdinsight.ConnectivityEndpoint{
+	// 			{
+	// 				Name: to.Ptr("SSH"),
+	// 				Location: to.Ptr("cluster1-ssh.azurehdinsight.net"),
+	// 				Port: to.Ptr[int32](22),
+	// 				Protocol: to.Ptr("TCP"),
+	// 			},
+	// 			{
+	// 				Name: to.Ptr("HTTPS"),
+	// 				Location: to.Ptr("cluster1.azurehdinsight.net"),
+	// 				Port: to.Ptr[int32](443),
+	// 				Protocol: to.Ptr("TCP"),
+	// 		}},
+	// 		CreatedDate: to.Ptr("2017-01-11T18:58:26.187"),
+	// 		OSType: to.Ptr(armhdinsight.OSTypeLinux),
+	// 		ProvisioningState: to.Ptr(armhdinsight.HDInsightClusterProvisioningStateSucceeded),
+	// 		QuotaInfo: &armhdinsight.QuotaInfo{
+	// 			CoresUsed: to.Ptr[int32](24),
+	// 		},
+	// 		Tier: to.Ptr(armhdinsight.TierStandard),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/aec83a5f0ed56da4fd16fa027b9fa27edfa8988b/specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2024-08-01-preview/examples/DeleteLinuxHadoopCluster.json
 func ExampleClustersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2509,7 +2628,7 @@ func ExampleClustersClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2023-04-15-preview/examples/GetLinuxHadoopCluster.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/aec83a5f0ed56da4fd16fa027b9fa27edfa8988b/specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2024-08-01-preview/examples/GetLinuxHadoopCluster.json
 func ExampleClustersClient_Get_getHadoopOnLinuxCluster() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2606,7 +2725,7 @@ func ExampleClustersClient_Get_getHadoopOnLinuxCluster() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2023-04-15-preview/examples/GetLinuxSparkCluster.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/aec83a5f0ed56da4fd16fa027b9fa27edfa8988b/specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2024-08-01-preview/examples/GetLinuxSparkCluster.json
 func ExampleClustersClient_Get_getSparkOnLinuxCluster() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2706,7 +2825,7 @@ func ExampleClustersClient_Get_getSparkOnLinuxCluster() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2023-04-15-preview/examples/GetLinuxHadoopAllClustersInResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/aec83a5f0ed56da4fd16fa027b9fa27edfa8988b/specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2024-08-01-preview/examples/GetLinuxHadoopAllClustersInResourceGroup.json
 func ExampleClustersClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2888,7 +3007,7 @@ func ExampleClustersClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2023-04-15-preview/examples/ResizeLinuxHadoopCluster.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/aec83a5f0ed56da4fd16fa027b9fa27edfa8988b/specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2024-08-01-preview/examples/ResizeLinuxHadoopCluster.json
 func ExampleClustersClient_BeginResize() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2911,7 +3030,7 @@ func ExampleClustersClient_BeginResize() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2023-04-15-preview/examples/DisableClusterAutoScale.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/aec83a5f0ed56da4fd16fa027b9fa27edfa8988b/specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2024-08-01-preview/examples/DisableClusterAutoScale.json
 func ExampleClustersClient_BeginUpdateAutoScaleConfiguration_disableAutoscaleForTheHdInsightCluster() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2932,7 +3051,7 @@ func ExampleClustersClient_BeginUpdateAutoScaleConfiguration_disableAutoscaleFor
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2023-04-15-preview/examples/EnableOrUpdateAutoScaleWithLoadBasedConfiguration.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/aec83a5f0ed56da4fd16fa027b9fa27edfa8988b/specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2024-08-01-preview/examples/EnableOrUpdateAutoScaleWithLoadBasedConfiguration.json
 func ExampleClustersClient_BeginUpdateAutoScaleConfiguration_enableOrUpdateAutoscaleWithTheLoadBasedConfigurationForHdInsightCluster() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2960,7 +3079,7 @@ func ExampleClustersClient_BeginUpdateAutoScaleConfiguration_enableOrUpdateAutos
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2023-04-15-preview/examples/EnableOrUpdateAutoScaleWithScheduleBasedConfiguration.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/aec83a5f0ed56da4fd16fa027b9fa27edfa8988b/specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2024-08-01-preview/examples/EnableOrUpdateAutoScaleWithScheduleBasedConfiguration.json
 func ExampleClustersClient_BeginUpdateAutoScaleConfiguration_enableOrUpdateAutoscaleWithTheScheduleBasedConfigurationForHdInsightCluster() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2997,7 +3116,7 @@ func ExampleClustersClient_BeginUpdateAutoScaleConfiguration_enableOrUpdateAutos
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2023-04-15-preview/examples/GetLinuxHadoopAllClusters.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/aec83a5f0ed56da4fd16fa027b9fa27edfa8988b/specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2024-08-01-preview/examples/GetLinuxHadoopAllClusters.json
 func ExampleClustersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3179,7 +3298,7 @@ func ExampleClustersClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2023-04-15-preview/examples/RotateLinuxHadoopClusterDiskEncryptionKey.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/aec83a5f0ed56da4fd16fa027b9fa27edfa8988b/specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2024-08-01-preview/examples/RotateLinuxHadoopClusterDiskEncryptionKey.json
 func ExampleClustersClient_BeginRotateDiskEncryptionKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3204,7 +3323,7 @@ func ExampleClustersClient_BeginRotateDiskEncryptionKey() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2023-04-15-preview/examples/HDI_Clusters_GetGatewaySettings.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/aec83a5f0ed56da4fd16fa027b9fa27edfa8988b/specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2024-08-01-preview/examples/HDI_Clusters_GetGatewaySettings.json
 func ExampleClustersClient_GetGatewaySettings() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3229,7 +3348,7 @@ func ExampleClustersClient_GetGatewaySettings() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2023-04-15-preview/examples/HDI_Clusters_UpdateGatewaySettings_Enable.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/aec83a5f0ed56da4fd16fa027b9fa27edfa8988b/specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2024-08-01-preview/examples/HDI_Clusters_UpdateGatewaySettings_Enable.json
 func ExampleClustersClient_BeginUpdateGatewaySettings() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3254,7 +3373,7 @@ func ExampleClustersClient_BeginUpdateGatewaySettings() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2023-04-15-preview/examples/GetClusterCreatingAsyncOperationStatus.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/aec83a5f0ed56da4fd16fa027b9fa27edfa8988b/specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2024-08-01-preview/examples/GetClusterCreatingAsyncOperationStatus.json
 func ExampleClustersClient_GetAzureAsyncOperationStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3277,7 +3396,7 @@ func ExampleClustersClient_GetAzureAsyncOperationStatus() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2023-04-15-preview/examples/HDI_Clusters_UpdateClusterIdentityCertificate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/aec83a5f0ed56da4fd16fa027b9fa27edfa8988b/specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2024-08-01-preview/examples/HDI_Clusters_UpdateClusterIdentityCertificate.json
 func ExampleClustersClient_BeginUpdateIdentityCertificate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3302,7 +3421,7 @@ func ExampleClustersClient_BeginUpdateIdentityCertificate() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2023-04-15-preview/examples/PostExecuteScriptAction.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/aec83a5f0ed56da4fd16fa027b9fa27edfa8988b/specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2024-08-01-preview/examples/PostExecuteScriptAction.json
 func ExampleClustersClient_BeginExecuteScriptActions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

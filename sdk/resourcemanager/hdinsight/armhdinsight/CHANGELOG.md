@@ -1,5 +1,17 @@
 # Release History
 
+## 1.3.0-beta.2 (2024-08-22)
+### Features Added
+
+- New enum type `OutboundDependenciesManagedType` with values `OutboundDependenciesManagedTypeExternal`, `OutboundDependenciesManagedTypeManaged`
+- New function `*ExtensionsClient.BeginDisableAzureMonitorAgent(context.Context, string, string, *ExtensionsClientBeginDisableAzureMonitorAgentOptions) (*runtime.Poller[ExtensionsClientDisableAzureMonitorAgentResponse], error)`
+- New function `*ExtensionsClient.BeginEnableAzureMonitorAgent(context.Context, string, string, AzureMonitorRequest, *ExtensionsClientBeginEnableAzureMonitorAgentOptions) (*runtime.Poller[ExtensionsClientEnableAzureMonitorAgentResponse], error)`
+- New function `*ExtensionsClient.GetAzureMonitorAgentStatus(context.Context, string, string, *ExtensionsClientGetAzureMonitorAgentStatusOptions) (ExtensionsClientGetAzureMonitorAgentStatusResponse, error)`
+- New struct `IPTag`
+- New field `Identity` in struct `ClusterPatchParameters`
+- New field `OutboundDependenciesManagedType`, `PublicIPTag` in struct `NetworkProperties`
+
+
 ## 1.3.0-beta.1 (2023-11-30)
 ### Features Added
 

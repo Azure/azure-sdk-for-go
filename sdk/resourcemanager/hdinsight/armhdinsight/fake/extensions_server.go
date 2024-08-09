@@ -35,6 +35,10 @@ type ExtensionsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDisableAzureMonitor func(ctx context.Context, resourceGroupName string, clusterName string, options *armhdinsight.ExtensionsClientBeginDisableAzureMonitorOptions) (resp azfake.PollerResponder[armhdinsight.ExtensionsClientDisableAzureMonitorResponse], errResp azfake.ErrorResponder)
 
+	// BeginDisableAzureMonitorAgent is the fake for method ExtensionsClient.BeginDisableAzureMonitorAgent
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginDisableAzureMonitorAgent func(ctx context.Context, resourceGroupName string, clusterName string, options *armhdinsight.ExtensionsClientBeginDisableAzureMonitorAgentOptions) (resp azfake.PollerResponder[armhdinsight.ExtensionsClientDisableAzureMonitorAgentResponse], errResp azfake.ErrorResponder)
+
 	// BeginDisableMonitoring is the fake for method ExtensionsClient.BeginDisableMonitoring
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDisableMonitoring func(ctx context.Context, resourceGroupName string, clusterName string, options *armhdinsight.ExtensionsClientBeginDisableMonitoringOptions) (resp azfake.PollerResponder[armhdinsight.ExtensionsClientDisableMonitoringResponse], errResp azfake.ErrorResponder)
@@ -42,6 +46,10 @@ type ExtensionsServer struct {
 	// BeginEnableAzureMonitor is the fake for method ExtensionsClient.BeginEnableAzureMonitor
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginEnableAzureMonitor func(ctx context.Context, resourceGroupName string, clusterName string, parameters armhdinsight.AzureMonitorRequest, options *armhdinsight.ExtensionsClientBeginEnableAzureMonitorOptions) (resp azfake.PollerResponder[armhdinsight.ExtensionsClientEnableAzureMonitorResponse], errResp azfake.ErrorResponder)
+
+	// BeginEnableAzureMonitorAgent is the fake for method ExtensionsClient.BeginEnableAzureMonitorAgent
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginEnableAzureMonitorAgent func(ctx context.Context, resourceGroupName string, clusterName string, parameters armhdinsight.AzureMonitorRequest, options *armhdinsight.ExtensionsClientBeginEnableAzureMonitorAgentOptions) (resp azfake.PollerResponder[armhdinsight.ExtensionsClientEnableAzureMonitorAgentResponse], errResp azfake.ErrorResponder)
 
 	// BeginEnableMonitoring is the fake for method ExtensionsClient.BeginEnableMonitoring
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
@@ -54,6 +62,10 @@ type ExtensionsServer struct {
 	// GetAzureAsyncOperationStatus is the fake for method ExtensionsClient.GetAzureAsyncOperationStatus
 	// HTTP status codes to indicate success: http.StatusOK
 	GetAzureAsyncOperationStatus func(ctx context.Context, resourceGroupName string, clusterName string, extensionName string, operationID string, options *armhdinsight.ExtensionsClientGetAzureAsyncOperationStatusOptions) (resp azfake.Responder[armhdinsight.ExtensionsClientGetAzureAsyncOperationStatusResponse], errResp azfake.ErrorResponder)
+
+	// GetAzureMonitorAgentStatus is the fake for method ExtensionsClient.GetAzureMonitorAgentStatus
+	// HTTP status codes to indicate success: http.StatusOK
+	GetAzureMonitorAgentStatus func(ctx context.Context, resourceGroupName string, clusterName string, options *armhdinsight.ExtensionsClientGetAzureMonitorAgentStatusOptions) (resp azfake.Responder[armhdinsight.ExtensionsClientGetAzureMonitorAgentStatusResponse], errResp azfake.ErrorResponder)
 
 	// GetAzureMonitorStatus is the fake for method ExtensionsClient.GetAzureMonitorStatus
 	// HTTP status codes to indicate success: http.StatusOK
@@ -69,26 +81,30 @@ type ExtensionsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewExtensionsServerTransport(srv *ExtensionsServer) *ExtensionsServerTransport {
 	return &ExtensionsServerTransport{
-		srv:                      srv,
-		beginCreate:              newTracker[azfake.PollerResponder[armhdinsight.ExtensionsClientCreateResponse]](),
-		beginDelete:              newTracker[azfake.PollerResponder[armhdinsight.ExtensionsClientDeleteResponse]](),
-		beginDisableAzureMonitor: newTracker[azfake.PollerResponder[armhdinsight.ExtensionsClientDisableAzureMonitorResponse]](),
-		beginDisableMonitoring:   newTracker[azfake.PollerResponder[armhdinsight.ExtensionsClientDisableMonitoringResponse]](),
-		beginEnableAzureMonitor:  newTracker[azfake.PollerResponder[armhdinsight.ExtensionsClientEnableAzureMonitorResponse]](),
-		beginEnableMonitoring:    newTracker[azfake.PollerResponder[armhdinsight.ExtensionsClientEnableMonitoringResponse]](),
+		srv:                           srv,
+		beginCreate:                   newTracker[azfake.PollerResponder[armhdinsight.ExtensionsClientCreateResponse]](),
+		beginDelete:                   newTracker[azfake.PollerResponder[armhdinsight.ExtensionsClientDeleteResponse]](),
+		beginDisableAzureMonitor:      newTracker[azfake.PollerResponder[armhdinsight.ExtensionsClientDisableAzureMonitorResponse]](),
+		beginDisableAzureMonitorAgent: newTracker[azfake.PollerResponder[armhdinsight.ExtensionsClientDisableAzureMonitorAgentResponse]](),
+		beginDisableMonitoring:        newTracker[azfake.PollerResponder[armhdinsight.ExtensionsClientDisableMonitoringResponse]](),
+		beginEnableAzureMonitor:       newTracker[azfake.PollerResponder[armhdinsight.ExtensionsClientEnableAzureMonitorResponse]](),
+		beginEnableAzureMonitorAgent:  newTracker[azfake.PollerResponder[armhdinsight.ExtensionsClientEnableAzureMonitorAgentResponse]](),
+		beginEnableMonitoring:         newTracker[azfake.PollerResponder[armhdinsight.ExtensionsClientEnableMonitoringResponse]](),
 	}
 }
 
 // ExtensionsServerTransport connects instances of armhdinsight.ExtensionsClient to instances of ExtensionsServer.
 // Don't use this type directly, use NewExtensionsServerTransport instead.
 type ExtensionsServerTransport struct {
-	srv                      *ExtensionsServer
-	beginCreate              *tracker[azfake.PollerResponder[armhdinsight.ExtensionsClientCreateResponse]]
-	beginDelete              *tracker[azfake.PollerResponder[armhdinsight.ExtensionsClientDeleteResponse]]
-	beginDisableAzureMonitor *tracker[azfake.PollerResponder[armhdinsight.ExtensionsClientDisableAzureMonitorResponse]]
-	beginDisableMonitoring   *tracker[azfake.PollerResponder[armhdinsight.ExtensionsClientDisableMonitoringResponse]]
-	beginEnableAzureMonitor  *tracker[azfake.PollerResponder[armhdinsight.ExtensionsClientEnableAzureMonitorResponse]]
-	beginEnableMonitoring    *tracker[azfake.PollerResponder[armhdinsight.ExtensionsClientEnableMonitoringResponse]]
+	srv                           *ExtensionsServer
+	beginCreate                   *tracker[azfake.PollerResponder[armhdinsight.ExtensionsClientCreateResponse]]
+	beginDelete                   *tracker[azfake.PollerResponder[armhdinsight.ExtensionsClientDeleteResponse]]
+	beginDisableAzureMonitor      *tracker[azfake.PollerResponder[armhdinsight.ExtensionsClientDisableAzureMonitorResponse]]
+	beginDisableAzureMonitorAgent *tracker[azfake.PollerResponder[armhdinsight.ExtensionsClientDisableAzureMonitorAgentResponse]]
+	beginDisableMonitoring        *tracker[azfake.PollerResponder[armhdinsight.ExtensionsClientDisableMonitoringResponse]]
+	beginEnableAzureMonitor       *tracker[azfake.PollerResponder[armhdinsight.ExtensionsClientEnableAzureMonitorResponse]]
+	beginEnableAzureMonitorAgent  *tracker[azfake.PollerResponder[armhdinsight.ExtensionsClientEnableAzureMonitorAgentResponse]]
+	beginEnableMonitoring         *tracker[azfake.PollerResponder[armhdinsight.ExtensionsClientEnableMonitoringResponse]]
 }
 
 // Do implements the policy.Transporter interface for ExtensionsServerTransport.
@@ -109,16 +125,22 @@ func (e *ExtensionsServerTransport) Do(req *http.Request) (*http.Response, error
 		resp, err = e.dispatchBeginDelete(req)
 	case "ExtensionsClient.BeginDisableAzureMonitor":
 		resp, err = e.dispatchBeginDisableAzureMonitor(req)
+	case "ExtensionsClient.BeginDisableAzureMonitorAgent":
+		resp, err = e.dispatchBeginDisableAzureMonitorAgent(req)
 	case "ExtensionsClient.BeginDisableMonitoring":
 		resp, err = e.dispatchBeginDisableMonitoring(req)
 	case "ExtensionsClient.BeginEnableAzureMonitor":
 		resp, err = e.dispatchBeginEnableAzureMonitor(req)
+	case "ExtensionsClient.BeginEnableAzureMonitorAgent":
+		resp, err = e.dispatchBeginEnableAzureMonitorAgent(req)
 	case "ExtensionsClient.BeginEnableMonitoring":
 		resp, err = e.dispatchBeginEnableMonitoring(req)
 	case "ExtensionsClient.Get":
 		resp, err = e.dispatchGet(req)
 	case "ExtensionsClient.GetAzureAsyncOperationStatus":
 		resp, err = e.dispatchGetAzureAsyncOperationStatus(req)
+	case "ExtensionsClient.GetAzureMonitorAgentStatus":
+		resp, err = e.dispatchGetAzureMonitorAgentStatus(req)
 	case "ExtensionsClient.GetAzureMonitorStatus":
 		resp, err = e.dispatchGetAzureMonitorStatus(req)
 	case "ExtensionsClient.GetMonitoringStatus":
@@ -278,6 +300,50 @@ func (e *ExtensionsServerTransport) dispatchBeginDisableAzureMonitor(req *http.R
 	return resp, nil
 }
 
+func (e *ExtensionsServerTransport) dispatchBeginDisableAzureMonitorAgent(req *http.Request) (*http.Response, error) {
+	if e.srv.BeginDisableAzureMonitorAgent == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginDisableAzureMonitorAgent not implemented")}
+	}
+	beginDisableAzureMonitorAgent := e.beginDisableAzureMonitorAgent.get(req)
+	if beginDisableAzureMonitorAgent == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.HDInsight/clusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/extensions/azureMonitorAgent`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := e.srv.BeginDisableAzureMonitorAgent(req.Context(), resourceGroupNameParam, clusterNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginDisableAzureMonitorAgent = &respr
+		e.beginDisableAzureMonitorAgent.add(req, beginDisableAzureMonitorAgent)
+	}
+
+	resp, err := server.PollerResponderNext(beginDisableAzureMonitorAgent, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		e.beginDisableAzureMonitorAgent.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginDisableAzureMonitorAgent) {
+		e.beginDisableAzureMonitorAgent.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (e *ExtensionsServerTransport) dispatchBeginDisableMonitoring(req *http.Request) (*http.Response, error) {
 	if e.srv.BeginDisableMonitoring == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDisableMonitoring not implemented")}
@@ -365,6 +431,54 @@ func (e *ExtensionsServerTransport) dispatchBeginEnableAzureMonitor(req *http.Re
 	}
 	if !server.PollerResponderMore(beginEnableAzureMonitor) {
 		e.beginEnableAzureMonitor.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (e *ExtensionsServerTransport) dispatchBeginEnableAzureMonitorAgent(req *http.Request) (*http.Response, error) {
+	if e.srv.BeginEnableAzureMonitorAgent == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginEnableAzureMonitorAgent not implemented")}
+	}
+	beginEnableAzureMonitorAgent := e.beginEnableAzureMonitorAgent.get(req)
+	if beginEnableAzureMonitorAgent == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.HDInsight/clusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/extensions/azureMonitorAgent`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armhdinsight.AzureMonitorRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := e.srv.BeginEnableAzureMonitorAgent(req.Context(), resourceGroupNameParam, clusterNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginEnableAzureMonitorAgent = &respr
+		e.beginEnableAzureMonitorAgent.add(req, beginEnableAzureMonitorAgent)
+	}
+
+	resp, err := server.PollerResponderNext(beginEnableAzureMonitorAgent, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		e.beginEnableAzureMonitorAgent.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginEnableAzureMonitorAgent) {
+		e.beginEnableAzureMonitorAgent.remove(req)
 	}
 
 	return resp, nil
@@ -490,6 +604,39 @@ func (e *ExtensionsServerTransport) dispatchGetAzureAsyncOperationStatus(req *ht
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AsyncOperationResult, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (e *ExtensionsServerTransport) dispatchGetAzureMonitorAgentStatus(req *http.Request) (*http.Response, error) {
+	if e.srv.GetAzureMonitorAgentStatus == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetAzureMonitorAgentStatus not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.HDInsight/clusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/extensions/azureMonitorAgent`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := e.srv.GetAzureMonitorAgentStatus(req.Context(), resourceGroupNameParam, clusterNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AzureMonitorResponse, req)
 	if err != nil {
 		return nil, err
 	}

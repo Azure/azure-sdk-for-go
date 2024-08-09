@@ -150,6 +150,13 @@ type ExtensionsClientBeginDeleteOptions struct {
 	ResumeToken string
 }
 
+// ExtensionsClientBeginDisableAzureMonitorAgentOptions contains the optional parameters for the ExtensionsClient.BeginDisableAzureMonitorAgent
+// method.
+type ExtensionsClientBeginDisableAzureMonitorAgentOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
 // ExtensionsClientBeginDisableAzureMonitorOptions contains the optional parameters for the ExtensionsClient.BeginDisableAzureMonitor
 // method.
 type ExtensionsClientBeginDisableAzureMonitorOptions struct {
@@ -160,6 +167,13 @@ type ExtensionsClientBeginDisableAzureMonitorOptions struct {
 // ExtensionsClientBeginDisableMonitoringOptions contains the optional parameters for the ExtensionsClient.BeginDisableMonitoring
 // method.
 type ExtensionsClientBeginDisableMonitoringOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ExtensionsClientBeginEnableAzureMonitorAgentOptions contains the optional parameters for the ExtensionsClient.BeginEnableAzureMonitorAgent
+// method.
+type ExtensionsClientBeginEnableAzureMonitorAgentOptions struct {
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }
@@ -181,6 +195,12 @@ type ExtensionsClientBeginEnableMonitoringOptions struct {
 // ExtensionsClientGetAzureAsyncOperationStatusOptions contains the optional parameters for the ExtensionsClient.GetAzureAsyncOperationStatus
 // method.
 type ExtensionsClientGetAzureAsyncOperationStatusOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ExtensionsClientGetAzureMonitorAgentStatusOptions contains the optional parameters for the ExtensionsClient.GetAzureMonitorAgentStatus
+// method.
+type ExtensionsClientGetAzureMonitorAgentStatusOptions struct {
 	// placeholder for future optional parameters
 }
 

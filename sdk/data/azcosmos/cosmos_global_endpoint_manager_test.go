@@ -12,6 +12,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
@@ -176,9 +177,9 @@ func TestGlobalEndpointManagerCanUseMultipleWriteLocations(t *testing.T) {
 	defer close()
 	srv.SetResponse(mock.WithStatusCode(http.StatusOK))
 
-	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
+	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
 
-	client := &Client{endpoint: srv.URL(), pipeline: pl}
+	client := &Client{endpoint: srv.URL(), internal: internalClient}
 
 	preferredRegions := []string{"West US", "Central US"}
 
@@ -195,7 +196,7 @@ func TestGlobalEndpointManagerCanUseMultipleWriteLocations(t *testing.T) {
 		refreshTimeInterval: 5 * time.Minute,
 	}
 
-	gem, err := newGlobalEndpointManager(srv.URL(), pl, []string{}, 5*time.Minute, true)
+	gem, err := newGlobalEndpointManager(srv.URL(), internalClient.Pipeline(), []string{}, 5*time.Minute, true)
 	assert.NoError(t, err)
 
 	// Multiple locations should be false for default GEM

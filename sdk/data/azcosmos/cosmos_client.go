@@ -27,9 +27,10 @@ const (
 
 // Client is used to interact with the Azure Cosmos DB database service.
 type Client struct {
-	endpoint string
-	pipeline azruntime.Pipeline
-	gem      *globalEndpointManager
+	endpoint    string
+	internal    *azcore.Client
+	gem         *globalEndpointManager
+	endpointUrl *url.URL
 }
 
 // Endpoint used to create the client.
@@ -42,16 +43,26 @@ func (c *Client) Endpoint() string {
 // cred - The credential used to authenticate with the cosmos service.
 // options - Optional Cosmos client options.  Pass nil to accept default values.
 func NewClientWithKey(endpoint string, cred KeyCredential, o *ClientOptions) (*Client, error) {
+	endpointUrl, err := url.Parse(endpoint)
+	if err != nil {
+		return nil, err
+	}
 	preferredRegions := []string{}
 	enableCrossRegionRetries := true
 	if o != nil {
 		preferredRegions = o.PreferredRegions
 	}
+
 	gem, err := newGlobalEndpointManager(endpoint, newInternalPipeline(newSharedKeyCredPolicy(cred), o), preferredRegions, 0, enableCrossRegionRetries)
 	if err != nil {
 		return nil, err
 	}
-	return &Client{endpoint: endpoint, pipeline: newPipeline(newSharedKeyCredPolicy(cred), gem, o), gem: gem}, nil
+
+	internalClient, err := newClient(newSharedKeyCredPolicy(cred), gem, o)
+	if err != nil {
+		return nil, err
+	}
+	return &Client{endpoint: endpoint, endpointUrl: endpointUrl, internal: internalClient, gem: gem}, nil
 }
 
 // NewClient creates a new instance of Cosmos client with Azure AD access token authentication. It uses the default pipeline configuration.
@@ -59,7 +70,11 @@ func NewClientWithKey(endpoint string, cred KeyCredential, o *ClientOptions) (*C
 // cred - The credential used to authenticate with the cosmos service.
 // options - Optional Cosmos client options.  Pass nil to accept default values.
 func NewClient(endpoint string, cred azcore.TokenCredential, o *ClientOptions) (*Client, error) {
-	scope, err := createScopeFromEndpoint(endpoint)
+	endpointUrl, err := url.Parse(endpoint)
+	if err != nil {
+		return nil, err
+	}
+	scope, err := createScopeFromEndpoint(endpointUrl)
 	if err != nil {
 		return nil, err
 	}
@@ -72,7 +87,12 @@ func NewClient(endpoint string, cred azcore.TokenCredential, o *ClientOptions) (
 	if err != nil {
 		return nil, err
 	}
-	return &Client{endpoint: endpoint, pipeline: newPipeline(newCosmosBearerTokenPolicy(cred, scope, nil), gem, o), gem: gem}, nil
+
+	internalClient, err := newClient(newCosmosBearerTokenPolicy(cred, scope, nil), gem, o)
+	if err != nil {
+		return nil, err
+	}
+	return &Client{endpoint: endpoint, endpointUrl: endpointUrl, internal: internalClient, gem: gem}, nil
 }
 
 // NewClientFromConnectionString creates a new instance of Cosmos client from connection string. It uses the default pipeline configuration.
@@ -111,11 +131,11 @@ func NewClientFromConnectionString(connectionString string, o *ClientOptions) (*
 	return NewClientWithKey(endpoint, cred, o)
 }
 
-func newPipeline(authPolicy policy.Policy, gem *globalEndpointManager, options *ClientOptions) azruntime.Pipeline {
+func newClient(authPolicy policy.Policy, gem *globalEndpointManager, options *ClientOptions) (*azcore.Client, error) {
 	if options == nil {
 		options = &ClientOptions{}
 	}
-	return azruntime.NewPipeline("azcosmos", serviceLibVersion,
+	return azcore.NewClient(moduleName, serviceLibVersion,
 		azruntime.PipelineOptions{
 			AllowedHeaders: getAllowedHeaders(),
 			PerCall: []policy.Policy{
@@ -128,6 +148,9 @@ func newPipeline(authPolicy policy.Policy, gem *globalEndpointManager, options *
 				authPolicy,
 				&clientRetryPolicy{gem: gem},
 			},
+			Tracing: azruntime.TracingOptions{
+				Namespace: "Microsoft.DocumentDB",
+			},
 		},
 		&options.ClientOptions)
 }
@@ -136,7 +159,7 @@ func newInternalPipeline(authPolicy policy.Policy, options *ClientOptions) azrun
 	if options == nil {
 		options = &ClientOptions{}
 	}
-	return azruntime.NewPipeline("azcosmos", serviceLibVersion,
+	return azruntime.NewPipeline(moduleName, serviceLibVersion,
 		azruntime.PipelineOptions{
 			AllowedHeaders: getAllowedHeaders(),
 			PerRetry: []policy.Policy{
@@ -146,13 +169,8 @@ func newInternalPipeline(authPolicy policy.Policy, options *ClientOptions) azrun
 		&options.ClientOptions)
 }
 
-func createScopeFromEndpoint(endpoint string) ([]string, error) {
-	u, err := url.Parse(endpoint)
-	if err != nil {
-		return nil, err
-	}
-
-	return []string{fmt.Sprintf("%s://%s/.default", u.Scheme, u.Hostname())}, nil
+func createScopeFromEndpoint(endpoint *url.URL) ([]string, error) {
+	return []string{fmt.Sprintf("%s://%s/.default", endpoint.Scheme, endpoint.Hostname())}, nil
 }
 
 // NewDatabase returns a struct that represents a database and allows database level operations.
@@ -193,6 +211,14 @@ func (c *Client) CreateDatabase(
 	ctx context.Context,
 	databaseProperties DatabaseProperties,
 	o *CreateDatabaseOptions) (DatabaseResponse, error) {
+	var err error
+	spanName, err := getSpanNameForDatabases(c.accountEndpointUrl(), operationTypeCreate, resourceTypeDatabase, databaseProperties.ID)
+	if err != nil {
+		return DatabaseResponse{}, err
+	}
+	ctx, endSpan := azruntime.StartSpan(ctx, spanName.name, c.internal.Tracer(), &spanName.options)
+	defer func() { endSpan(err) }()
+
 	if o == nil {
 		o = &CreateDatabaseOptions{}
 	}
@@ -224,7 +250,8 @@ func (c *Client) CreateDatabase(
 		return DatabaseResponse{}, err
 	}
 
-	return newDatabaseResponse(azResponse)
+	response, err := newDatabaseResponse(azResponse)
+	return response, err
 }
 
 // NewQueryDatabasesPager executes query for databases.
@@ -249,6 +276,14 @@ func (c *Client) NewQueryDatabasesPager(query string, o *QueryDatabasesOptions) 
 			return page.ContinuationToken != nil
 		},
 		Fetcher: func(ctx context.Context, page *QueryDatabasesResponse) (QueryDatabasesResponse, error) {
+			var err error
+			// Move the span to the pager once https://github.com/Azure/azure-sdk-for-go/issues/23294 is fixed
+			spanName, err := getSpanNameForClient(c.accountEndpointUrl(), operationTypeQuery, resourceTypeDatabase, c.accountEndpointUrl().Hostname())
+			if err != nil {
+				return QueryDatabasesResponse{}, err
+			}
+			ctx, endSpan := azruntime.StartSpan(ctx, spanName.name, c.internal.Tracer(), &spanName.options)
+			defer func() { endSpan(err) }()
 			if page != nil {
 				if page.ContinuationToken != nil {
 					// Use the previous page continuation if available
@@ -271,6 +306,7 @@ func (c *Client) NewQueryDatabasesPager(query string, o *QueryDatabasesOptions) 
 
 			return newDatabasesQueryResponse(azResponse)
 		},
+		Tracer: c.internal.Tracer(),
 	})
 }
 
@@ -473,7 +509,7 @@ func (c *Client) attachContent(content interface{}, req *policy.Request) error {
 
 func (c *Client) executeAndEnsureSuccessResponse(request *policy.Request) (*http.Response, error) {
 	log.Write(azlog.EventResponse, fmt.Sprintf("\n===== Client preferred regions:\n%v\n=====\n", c.gem.preferredLocations))
-	response, err := c.pipeline.Do(request)
+	response, err := c.internal.Pipeline().Do(request)
 	if err != nil {
 		return nil, err
 	}
@@ -484,6 +520,10 @@ func (c *Client) executeAndEnsureSuccessResponse(request *policy.Request) (*http
 	}
 
 	return nil, azruntime.NewResponseErrorWithErrorCode(response, response.Status)
+}
+
+func (c *Client) accountEndpointUrl() *url.URL {
+	return c.endpointUrl
 }
 
 type pipelineRequestOptions struct {

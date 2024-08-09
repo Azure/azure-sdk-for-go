@@ -12,7 +12,9 @@ import (
 
 func TestSinglePartitionQueryWithIndexMetrics(t *testing.T) {
 	emulatorTests := newEmulatorTests(t)
-	client := emulatorTests.getClient(t)
+	client := emulatorTests.getClient(t, newSpanValidator(t, spanMatcher{
+		ExpectedSpans: []string{},
+	}))
 
 	database := emulatorTests.createDatabase(t, context.TODO(), client, "queryTests")
 	defer emulatorTests.deleteDatabase(t, context.TODO(), database)
@@ -85,7 +87,9 @@ func TestSinglePartitionQueryWithIndexMetrics(t *testing.T) {
 
 func TestSinglePartitionQuery(t *testing.T) {
 	emulatorTests := newEmulatorTests(t)
-	client := emulatorTests.getClient(t)
+	client := emulatorTests.getClient(t, newSpanValidator(t, spanMatcher{
+		ExpectedSpans: []string{},
+	}))
 
 	database := emulatorTests.createDatabase(t, context.TODO(), client, "queryTests")
 	defer emulatorTests.deleteDatabase(t, context.TODO(), database)
@@ -171,7 +175,9 @@ func TestSinglePartitionQuery(t *testing.T) {
 
 func TestSinglePartitionQueryWithParameters(t *testing.T) {
 	emulatorTests := newEmulatorTests(t)
-	client := emulatorTests.getClient(t)
+	client := emulatorTests.getClient(t, newSpanValidator(t, spanMatcher{
+		ExpectedSpans: []string{},
+	}))
 
 	database := emulatorTests.createDatabase(t, context.TODO(), client, "queryTests")
 	defer emulatorTests.deleteDatabase(t, context.TODO(), database)
@@ -221,7 +227,9 @@ func TestSinglePartitionQueryWithParameters(t *testing.T) {
 
 func TestSinglePartitionQueryWithProjection(t *testing.T) {
 	emulatorTests := newEmulatorTests(t)
-	client := emulatorTests.getClient(t)
+	client := emulatorTests.getClient(t, newSpanValidator(t, spanMatcher{
+		ExpectedSpans: []string{},
+	}))
 
 	database := emulatorTests.createDatabase(t, context.TODO(), client, "queryTests")
 	defer emulatorTests.deleteDatabase(t, context.TODO(), database)

@@ -13,4 +13,6 @@ const (
 	operationTypeReplace operationType = 5
 	operationTypeDelete  operationType = 4
 	operationTypeUpsert  operationType = 20
+	operationTypeQuery   operationType = 15
+	operationTypeBatch   operationType = 40
 )

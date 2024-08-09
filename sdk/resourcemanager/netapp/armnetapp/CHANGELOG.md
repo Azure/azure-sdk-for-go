@@ -1,5 +1,11 @@
 # Release History
 
+## 7.2.0 (2024-08-23)
+### Features Added
+
+- New field `ReplicationID` in struct `Replication`
+
+
 ## 7.1.0 (2024-07-26)
 ### Features Added
 

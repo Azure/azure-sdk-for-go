@@ -1,5 +1,95 @@
 # Release History
 
+## 0.4.0 (2024-08-22)
+### Breaking Changes
+
+- Field `ClusterIdentity` of struct `KafkaProfile` has been removed
+
+### Features Added
+
+- New value `ClusterAvailableUpgradeTypePatchVersionUpgrade` added to enum type `ClusterAvailableUpgradeType`
+- New value `ClusterUpgradeTypePatchVersionUpgrade` added to enum type `ClusterUpgradeType`
+- New enum type `Category` with values `CategoryCustom`, `CategoryPredefined`
+- New enum type `ClusterPoolUpgradeHistoryType` with values `ClusterPoolUpgradeHistoryTypeAKSPatchUpgrade`, `ClusterPoolUpgradeHistoryTypeNodeOsUpgrade`
+- New enum type `ClusterPoolUpgradeHistoryUpgradeResultType` with values `ClusterPoolUpgradeHistoryUpgradeResultTypeFailed`, `ClusterPoolUpgradeHistoryUpgradeResultTypeSucceed`
+- New enum type `ClusterUpgradeHistorySeverityType` with values `ClusterUpgradeHistorySeverityTypeCritical`, `ClusterUpgradeHistorySeverityTypeHigh`, `ClusterUpgradeHistorySeverityTypeLow`, `ClusterUpgradeHistorySeverityTypeMedium`
+- New enum type `ClusterUpgradeHistoryType` with values `ClusterUpgradeHistoryTypeAKSPatchUpgrade`, `ClusterUpgradeHistoryTypeHotfixUpgrade`, `ClusterUpgradeHistoryTypeHotfixUpgradeRollback`, `ClusterUpgradeHistoryTypePatchVersionUpgrade`, `ClusterUpgradeHistoryTypePatchVersionUpgradeRollback`
+- New enum type `ClusterUpgradeHistoryUpgradeResultType` with values `ClusterUpgradeHistoryUpgradeResultTypeFailed`, `ClusterUpgradeHistoryUpgradeResultTypeSucceed`
+- New enum type `LibraryManagementAction` with values `LibraryManagementActionInstall`, `LibraryManagementActionUninstall`
+- New enum type `ManagedIdentityType` with values `ManagedIdentityTypeCluster`, `ManagedIdentityTypeInternal`, `ManagedIdentityTypeUser`
+- New enum type `Status` with values `StatusINSTALLED`, `StatusINSTALLFAILED`, `StatusINSTALLING`, `StatusUNINSTALLFAILED`, `StatusUNINSTALLING`
+- New enum type `Type` with values `TypeMaven`, `TypePypi`
+- New function `*ClientFactory.NewClusterLibrariesClient() *ClusterLibrariesClient`
+- New function `*ClientFactory.NewClusterPoolUpgradeHistoriesClient() *ClusterPoolUpgradeHistoriesClient`
+- New function `*ClientFactory.NewClusterUpgradeHistoriesClient() *ClusterUpgradeHistoriesClient`
+- New function `*ClusterAksPatchUpgradeHistoryProperties.GetClusterUpgradeHistoryProperties() *ClusterUpgradeHistoryProperties`
+- New function `*ClusterAvailableInPlaceUpgradeProperties.GetClusterAvailableInPlaceUpgradeProperties() *ClusterAvailableInPlaceUpgradeProperties`
+- New function `*ClusterAvailableInPlaceUpgradeProperties.GetClusterAvailableUpgradeProperties() *ClusterAvailableUpgradeProperties`
+- New function `*ClusterAvailableUpgradeHotfixUpgradeProperties.GetClusterAvailableInPlaceUpgradeProperties() *ClusterAvailableInPlaceUpgradeProperties`
+- New function `*ClusterAvailableUpgradePatchVersionUpgradeProperties.GetClusterAvailableInPlaceUpgradeProperties() *ClusterAvailableInPlaceUpgradeProperties`
+- New function `*ClusterAvailableUpgradePatchVersionUpgradeProperties.GetClusterAvailableUpgradeProperties() *ClusterAvailableUpgradeProperties`
+- New function `*ClusterHotfixUpgradeHistoryProperties.GetClusterInPlaceUpgradeHistoryProperties() *ClusterInPlaceUpgradeHistoryProperties`
+- New function `*ClusterHotfixUpgradeHistoryProperties.GetClusterUpgradeHistoryProperties() *ClusterUpgradeHistoryProperties`
+- New function `*ClusterHotfixUpgradeProperties.GetClusterInPlaceUpgradeProperties() *ClusterInPlaceUpgradeProperties`
+- New function `*ClusterHotfixUpgradeRollbackHistoryProperties.GetClusterInPlaceUpgradeHistoryProperties() *ClusterInPlaceUpgradeHistoryProperties`
+- New function `*ClusterHotfixUpgradeRollbackHistoryProperties.GetClusterUpgradeHistoryProperties() *ClusterUpgradeHistoryProperties`
+- New function `*ClusterInPlaceUpgradeHistoryProperties.GetClusterInPlaceUpgradeHistoryProperties() *ClusterInPlaceUpgradeHistoryProperties`
+- New function `*ClusterInPlaceUpgradeHistoryProperties.GetClusterUpgradeHistoryProperties() *ClusterUpgradeHistoryProperties`
+- New function `*ClusterInPlaceUpgradeProperties.GetClusterInPlaceUpgradeProperties() *ClusterInPlaceUpgradeProperties`
+- New function `*ClusterInPlaceUpgradeProperties.GetClusterUpgradeProperties() *ClusterUpgradeProperties`
+- New function `NewClusterLibrariesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ClusterLibrariesClient, error)`
+- New function `*ClusterLibrariesClient.NewListPager(string, string, string, Category, *ClusterLibrariesClientListOptions) *runtime.Pager[ClusterLibrariesClientListResponse]`
+- New function `*ClusterLibrariesClient.BeginManageLibraries(context.Context, string, string, string, ClusterLibraryManagementOperation, *ClusterLibrariesClientBeginManageLibrariesOptions) (*runtime.Poller[ClusterLibrariesClientManageLibrariesResponse], error)`
+- New function `*ClusterLibraryProperties.GetClusterLibraryProperties() *ClusterLibraryProperties`
+- New function `*ClusterPatchVersionUpgradeHistoryProperties.GetClusterInPlaceUpgradeHistoryProperties() *ClusterInPlaceUpgradeHistoryProperties`
+- New function `*ClusterPatchVersionUpgradeHistoryProperties.GetClusterUpgradeHistoryProperties() *ClusterUpgradeHistoryProperties`
+- New function `*ClusterPatchVersionUpgradeProperties.GetClusterInPlaceUpgradeProperties() *ClusterInPlaceUpgradeProperties`
+- New function `*ClusterPatchVersionUpgradeProperties.GetClusterUpgradeProperties() *ClusterUpgradeProperties`
+- New function `*ClusterPatchVersionUpgradeRollbackHistoryProperties.GetClusterInPlaceUpgradeHistoryProperties() *ClusterInPlaceUpgradeHistoryProperties`
+- New function `*ClusterPatchVersionUpgradeRollbackHistoryProperties.GetClusterUpgradeHistoryProperties() *ClusterUpgradeHistoryProperties`
+- New function `*ClusterPoolAksPatchUpgradeHistoryProperties.GetClusterPoolUpgradeHistoryProperties() *ClusterPoolUpgradeHistoryProperties`
+- New function `*ClusterPoolNodeOsUpgradeHistoryProperties.GetClusterPoolUpgradeHistoryProperties() *ClusterPoolUpgradeHistoryProperties`
+- New function `NewClusterPoolUpgradeHistoriesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ClusterPoolUpgradeHistoriesClient, error)`
+- New function `*ClusterPoolUpgradeHistoriesClient.NewListPager(string, string, *ClusterPoolUpgradeHistoriesClientListOptions) *runtime.Pager[ClusterPoolUpgradeHistoriesClientListResponse]`
+- New function `*ClusterPoolUpgradeHistoryProperties.GetClusterPoolUpgradeHistoryProperties() *ClusterPoolUpgradeHistoryProperties`
+- New function `NewClusterUpgradeHistoriesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ClusterUpgradeHistoriesClient, error)`
+- New function `*ClusterUpgradeHistoriesClient.NewListPager(string, string, string, *ClusterUpgradeHistoriesClientListOptions) *runtime.Pager[ClusterUpgradeHistoriesClientListResponse]`
+- New function `*ClusterUpgradeHistoryProperties.GetClusterUpgradeHistoryProperties() *ClusterUpgradeHistoryProperties`
+- New function `*ClustersClient.BeginUpgradeManualRollback(context.Context, string, string, string, ClusterUpgradeRollback, *ClustersClientBeginUpgradeManualRollbackOptions) (*runtime.Poller[ClustersClientUpgradeManualRollbackResponse], error)`
+- New function `*MavenLibraryProperties.GetClusterLibraryProperties() *ClusterLibraryProperties`
+- New function `*PyPiLibraryProperties.GetClusterLibraryProperties() *ClusterLibraryProperties`
+- New struct `ClusterAksPatchUpgradeHistoryProperties`
+- New struct `ClusterAvailableUpgradePatchVersionUpgradeProperties`
+- New struct `ClusterHotfixUpgradeHistoryProperties`
+- New struct `ClusterHotfixUpgradeRollbackHistoryProperties`
+- New struct `ClusterLibrary`
+- New struct `ClusterLibraryList`
+- New struct `ClusterLibraryManagementOperation`
+- New struct `ClusterLibraryManagementOperationProperties`
+- New struct `ClusterPatchVersionUpgradeHistoryProperties`
+- New struct `ClusterPatchVersionUpgradeProperties`
+- New struct `ClusterPatchVersionUpgradeRollbackHistoryProperties`
+- New struct `ClusterPoolAksPatchUpgradeHistoryProperties`
+- New struct `ClusterPoolNodeOsUpgradeHistoryProperties`
+- New struct `ClusterPoolUpgradeHistory`
+- New struct `ClusterPoolUpgradeHistoryListResult`
+- New struct `ClusterUpgradeHistory`
+- New struct `ClusterUpgradeHistoryListResult`
+- New struct `ClusterUpgradeRollback`
+- New struct `ClusterUpgradeRollbackProperties`
+- New struct `IPTag`
+- New struct `ManagedIdentityProfile`
+- New struct `ManagedIdentitySpec`
+- New struct `MavenLibraryProperties`
+- New struct `PyPiLibraryProperties`
+- New field `PublicIPTag` in struct `ClusterPoolResourcePropertiesClusterPoolProfile`
+- New field `AvailabilityZones` in struct `ClusterPoolResourcePropertiesComputeProfile`
+- New field `ManagedIdentityProfile` in struct `ClusterProfile`
+- New field `AvailabilityZones` in struct `ComputeProfile`
+- New field `VMSize` in struct `SSHProfile`
+- New field `SecretsProfile`, `TrinoProfile` in struct `UpdatableClusterProfile`
+
+
 ## 0.3.0 (2024-04-26)
 ### Breaking Changes
 

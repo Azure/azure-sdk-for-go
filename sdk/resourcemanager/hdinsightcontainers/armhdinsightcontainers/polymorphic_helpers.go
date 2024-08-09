@@ -20,10 +20,14 @@ func unmarshalClusterAvailableUpgradePropertiesClassification(rawMsg json.RawMes
 	}
 	var b ClusterAvailableUpgradePropertiesClassification
 	switch m["upgradeType"] {
+	case "ClusterAvailableInPlaceUpgradeProperties":
+		b = &ClusterAvailableInPlaceUpgradeProperties{}
 	case string(ClusterAvailableUpgradeTypeAKSPatchUpgrade):
 		b = &ClusterAvailableUpgradeAksPatchUpgradeProperties{}
 	case string(ClusterAvailableUpgradeTypeHotfixUpgrade):
 		b = &ClusterAvailableUpgradeHotfixUpgradeProperties{}
+	case string(ClusterAvailableUpgradeTypePatchVersionUpgrade):
+		b = &ClusterAvailableUpgradePatchVersionUpgradeProperties{}
 	default:
 		b = &ClusterAvailableUpgradeProperties{}
 	}
@@ -54,6 +58,29 @@ func unmarshalClusterJobPropertiesClassification(rawMsg json.RawMessage) (Cluste
 	return b, nil
 }
 
+func unmarshalClusterLibraryPropertiesClassification(rawMsg json.RawMessage) (ClusterLibraryPropertiesClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b ClusterLibraryPropertiesClassification
+	switch m["type"] {
+	case string(TypeMaven):
+		b = &MavenLibraryProperties{}
+	case string(TypePypi):
+		b = &PyPiLibraryProperties{}
+	default:
+		b = &ClusterLibraryProperties{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
 func unmarshalClusterPoolAvailableUpgradePropertiesClassification(rawMsg json.RawMessage) (ClusterPoolAvailableUpgradePropertiesClassification, error) {
 	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
@@ -70,6 +97,29 @@ func unmarshalClusterPoolAvailableUpgradePropertiesClassification(rawMsg json.Ra
 		b = &ClusterPoolAvailableUpgradeNodeOsUpgradeProperties{}
 	default:
 		b = &ClusterPoolAvailableUpgradeProperties{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
+func unmarshalClusterPoolUpgradeHistoryPropertiesClassification(rawMsg json.RawMessage) (ClusterPoolUpgradeHistoryPropertiesClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b ClusterPoolUpgradeHistoryPropertiesClassification
+	switch m["upgradeType"] {
+	case string(ClusterPoolUpgradeHistoryTypeAKSPatchUpgrade):
+		b = &ClusterPoolAksPatchUpgradeHistoryProperties{}
+	case string(ClusterPoolUpgradeHistoryTypeNodeOsUpgrade):
+		b = &ClusterPoolNodeOsUpgradeHistoryProperties{}
+	default:
+		b = &ClusterPoolUpgradeHistoryProperties{}
 	}
 	if err := json.Unmarshal(rawMsg, b); err != nil {
 		return nil, err
@@ -100,6 +150,37 @@ func unmarshalClusterPoolUpgradePropertiesClassification(rawMsg json.RawMessage)
 	return b, nil
 }
 
+func unmarshalClusterUpgradeHistoryPropertiesClassification(rawMsg json.RawMessage) (ClusterUpgradeHistoryPropertiesClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b ClusterUpgradeHistoryPropertiesClassification
+	switch m["upgradeType"] {
+	case "ClusterInPlaceUpgradeHistoryProperties":
+		b = &ClusterInPlaceUpgradeHistoryProperties{}
+	case string(ClusterUpgradeHistoryTypeAKSPatchUpgrade):
+		b = &ClusterAksPatchUpgradeHistoryProperties{}
+	case string(ClusterUpgradeHistoryTypeHotfixUpgrade):
+		b = &ClusterHotfixUpgradeHistoryProperties{}
+	case string(ClusterUpgradeHistoryTypeHotfixUpgradeRollback):
+		b = &ClusterHotfixUpgradeRollbackHistoryProperties{}
+	case string(ClusterUpgradeHistoryTypePatchVersionUpgrade):
+		b = &ClusterPatchVersionUpgradeHistoryProperties{}
+	case string(ClusterUpgradeHistoryTypePatchVersionUpgradeRollback):
+		b = &ClusterPatchVersionUpgradeRollbackHistoryProperties{}
+	default:
+		b = &ClusterUpgradeHistoryProperties{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
 func unmarshalClusterUpgradePropertiesClassification(rawMsg json.RawMessage) (ClusterUpgradePropertiesClassification, error) {
 	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
@@ -110,10 +191,14 @@ func unmarshalClusterUpgradePropertiesClassification(rawMsg json.RawMessage) (Cl
 	}
 	var b ClusterUpgradePropertiesClassification
 	switch m["upgradeType"] {
+	case "ClusterInPlaceUpgradeProperties":
+		b = &ClusterInPlaceUpgradeProperties{}
 	case string(ClusterUpgradeTypeAKSPatchUpgrade):
 		b = &ClusterAKSPatchVersionUpgradeProperties{}
 	case string(ClusterUpgradeTypeHotfixUpgrade):
 		b = &ClusterHotfixUpgradeProperties{}
+	case string(ClusterUpgradeTypePatchVersionUpgrade):
+		b = &ClusterPatchVersionUpgradeProperties{}
 	default:
 		b = &ClusterUpgradeProperties{}
 	}

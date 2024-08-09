@@ -105,6 +105,86 @@ type ClusterAccessProfile struct {
 	PrivateLinkServiceID *string
 }
 
+// ClusterAksPatchUpgradeHistoryProperties - Cluster aks patch upgrade history properties.
+type ClusterAksPatchUpgradeHistoryProperties struct {
+	// REQUIRED; Time when created this upgrade history.
+	UTCTime *string
+
+	// REQUIRED; Result of this upgrade.
+	UpgradeResult *ClusterUpgradeHistoryUpgradeResultType
+
+	// REQUIRED; Type of upgrade.
+	UpgradeType *ClusterUpgradeHistoryType
+
+	// Version going to update.
+	NewVersion *string
+
+	// Version before update.
+	OriginalVersion *string
+}
+
+// GetClusterUpgradeHistoryProperties implements the ClusterUpgradeHistoryPropertiesClassification interface for type ClusterAksPatchUpgradeHistoryProperties.
+func (c *ClusterAksPatchUpgradeHistoryProperties) GetClusterUpgradeHistoryProperties() *ClusterUpgradeHistoryProperties {
+	return &ClusterUpgradeHistoryProperties{
+		UTCTime:       c.UTCTime,
+		UpgradeResult: c.UpgradeResult,
+		UpgradeType:   c.UpgradeType,
+	}
+}
+
+// ClusterAvailableInPlaceUpgradeProperties - Cluster available in-place upgrade.
+type ClusterAvailableInPlaceUpgradeProperties struct {
+	// REQUIRED; Type of upgrade.
+	UpgradeType *ClusterAvailableUpgradeType
+
+	// Name of component to be upgraded.
+	ComponentName *string
+
+	// Created time of current available upgrade version
+	CreatedTime *time.Time
+
+	// Hotfix version upgrade description.
+	Description *string
+
+	// Extended properties of current available upgrade version
+	ExtendedProperties *string
+
+	// Severity of this upgrade.
+	Severity *Severity
+
+	// Source build number of current cluster component.
+	SourceBuildNumber *string
+
+	// Source cluster version of current cluster component.
+	SourceClusterVersion *string
+
+	// Source OSS version of current cluster component.
+	SourceOssVersion *string
+
+	// Target build number of component to be upgraded.
+	TargetBuildNumber *string
+
+	// Target cluster version of component to be upgraded.
+	TargetClusterVersion *string
+
+	// Target OSS version of component to be upgraded.
+	TargetOssVersion *string
+}
+
+// GetClusterAvailableInPlaceUpgradeProperties implements the ClusterAvailableInPlaceUpgradePropertiesClassification interface
+// for type ClusterAvailableInPlaceUpgradeProperties.
+func (c *ClusterAvailableInPlaceUpgradeProperties) GetClusterAvailableInPlaceUpgradeProperties() *ClusterAvailableInPlaceUpgradeProperties {
+	return c
+}
+
+// GetClusterAvailableUpgradeProperties implements the ClusterAvailableUpgradePropertiesClassification interface for type
+// ClusterAvailableInPlaceUpgradeProperties.
+func (c *ClusterAvailableInPlaceUpgradeProperties) GetClusterAvailableUpgradeProperties() *ClusterAvailableUpgradeProperties {
+	return &ClusterAvailableUpgradeProperties{
+		UpgradeType: c.UpgradeType,
+	}
+}
+
 // ClusterAvailableUpgrade - Cluster available upgrade.
 type ClusterAvailableUpgrade struct {
 	// Gets or sets the properties. Define cluster upgrade specific properties.
@@ -185,6 +265,25 @@ type ClusterAvailableUpgradeHotfixUpgradeProperties struct {
 	TargetOssVersion *string
 }
 
+// GetClusterAvailableInPlaceUpgradeProperties implements the ClusterAvailableInPlaceUpgradePropertiesClassification interface
+// for type ClusterAvailableUpgradeHotfixUpgradeProperties.
+func (c *ClusterAvailableUpgradeHotfixUpgradeProperties) GetClusterAvailableInPlaceUpgradeProperties() *ClusterAvailableInPlaceUpgradeProperties {
+	return &ClusterAvailableInPlaceUpgradeProperties{
+		ComponentName:        c.ComponentName,
+		CreatedTime:          c.CreatedTime,
+		Description:          c.Description,
+		ExtendedProperties:   c.ExtendedProperties,
+		Severity:             c.Severity,
+		SourceBuildNumber:    c.SourceBuildNumber,
+		SourceClusterVersion: c.SourceClusterVersion,
+		SourceOssVersion:     c.SourceOssVersion,
+		TargetBuildNumber:    c.TargetBuildNumber,
+		TargetClusterVersion: c.TargetClusterVersion,
+		TargetOssVersion:     c.TargetOssVersion,
+		UpgradeType:          c.UpgradeType,
+	}
+}
+
 // GetClusterAvailableUpgradeProperties implements the ClusterAvailableUpgradePropertiesClassification interface for type
 // ClusterAvailableUpgradeHotfixUpgradeProperties.
 func (c *ClusterAvailableUpgradeHotfixUpgradeProperties) GetClusterAvailableUpgradeProperties() *ClusterAvailableUpgradeProperties {
@@ -200,6 +299,72 @@ type ClusterAvailableUpgradeList struct {
 
 	// The URL of next result page.
 	NextLink *string
+}
+
+// ClusterAvailableUpgradePatchVersionUpgradeProperties - Cluster available patch version upgrade.
+type ClusterAvailableUpgradePatchVersionUpgradeProperties struct {
+	// REQUIRED; Type of upgrade.
+	UpgradeType *ClusterAvailableUpgradeType
+
+	// Name of component to be upgraded.
+	ComponentName *string
+
+	// Created time of current available upgrade version
+	CreatedTime *time.Time
+
+	// Hotfix version upgrade description.
+	Description *string
+
+	// Extended properties of current available upgrade version
+	ExtendedProperties *string
+
+	// Severity of this upgrade.
+	Severity *Severity
+
+	// Source build number of current cluster component.
+	SourceBuildNumber *string
+
+	// Source cluster version of current cluster component.
+	SourceClusterVersion *string
+
+	// Source OSS version of current cluster component.
+	SourceOssVersion *string
+
+	// Target build number of component to be upgraded.
+	TargetBuildNumber *string
+
+	// Target cluster version of component to be upgraded.
+	TargetClusterVersion *string
+
+	// Target OSS version of component to be upgraded.
+	TargetOssVersion *string
+}
+
+// GetClusterAvailableInPlaceUpgradeProperties implements the ClusterAvailableInPlaceUpgradePropertiesClassification interface
+// for type ClusterAvailableUpgradePatchVersionUpgradeProperties.
+func (c *ClusterAvailableUpgradePatchVersionUpgradeProperties) GetClusterAvailableInPlaceUpgradeProperties() *ClusterAvailableInPlaceUpgradeProperties {
+	return &ClusterAvailableInPlaceUpgradeProperties{
+		ComponentName:        c.ComponentName,
+		CreatedTime:          c.CreatedTime,
+		Description:          c.Description,
+		ExtendedProperties:   c.ExtendedProperties,
+		Severity:             c.Severity,
+		SourceBuildNumber:    c.SourceBuildNumber,
+		SourceClusterVersion: c.SourceClusterVersion,
+		SourceOssVersion:     c.SourceOssVersion,
+		TargetBuildNumber:    c.TargetBuildNumber,
+		TargetClusterVersion: c.TargetClusterVersion,
+		TargetOssVersion:     c.TargetOssVersion,
+		UpgradeType:          c.UpgradeType,
+	}
+}
+
+// GetClusterAvailableUpgradeProperties implements the ClusterAvailableUpgradePropertiesClassification interface for type
+// ClusterAvailableUpgradePatchVersionUpgradeProperties.
+func (c *ClusterAvailableUpgradePatchVersionUpgradeProperties) GetClusterAvailableUpgradeProperties() *ClusterAvailableUpgradeProperties {
+	return &ClusterAvailableUpgradeProperties{
+		UpgradeType: c.UpgradeType,
+	}
 }
 
 // ClusterAvailableUpgradeProperties - Cluster available upgrade properties.
@@ -238,6 +403,69 @@ type ClusterConfigFile struct {
 	Values map[string]*string
 }
 
+// ClusterHotfixUpgradeHistoryProperties - Cluster hotfix upgrade history properties.
+type ClusterHotfixUpgradeHistoryProperties struct {
+	// REQUIRED; Time when created this upgrade history.
+	UTCTime *string
+
+	// REQUIRED; Result of this upgrade.
+	UpgradeResult *ClusterUpgradeHistoryUpgradeResultType
+
+	// REQUIRED; Type of upgrade.
+	UpgradeType *ClusterUpgradeHistoryType
+
+	// Component name to upgrade.
+	ComponentName *string
+
+	// Severity of this upgrade.
+	Severity *ClusterUpgradeHistorySeverityType
+
+	// Source build number.
+	SourceBuildNumber *string
+
+	// Version with three part.
+	SourceClusterVersion *string
+
+	// Version with three part.
+	SourceOssVersion *string
+
+	// Target build number.
+	TargetBuildNumber *string
+
+	// Version with three part.
+	TargetClusterVersion *string
+
+	// Version with three part.
+	TargetOssVersion *string
+}
+
+// GetClusterInPlaceUpgradeHistoryProperties implements the ClusterInPlaceUpgradeHistoryPropertiesClassification interface
+// for type ClusterHotfixUpgradeHistoryProperties.
+func (c *ClusterHotfixUpgradeHistoryProperties) GetClusterInPlaceUpgradeHistoryProperties() *ClusterInPlaceUpgradeHistoryProperties {
+	return &ClusterInPlaceUpgradeHistoryProperties{
+		ComponentName:        c.ComponentName,
+		Severity:             c.Severity,
+		SourceBuildNumber:    c.SourceBuildNumber,
+		SourceClusterVersion: c.SourceClusterVersion,
+		SourceOssVersion:     c.SourceOssVersion,
+		TargetBuildNumber:    c.TargetBuildNumber,
+		TargetClusterVersion: c.TargetClusterVersion,
+		TargetOssVersion:     c.TargetOssVersion,
+		UTCTime:              c.UTCTime,
+		UpgradeResult:        c.UpgradeResult,
+		UpgradeType:          c.UpgradeType,
+	}
+}
+
+// GetClusterUpgradeHistoryProperties implements the ClusterUpgradeHistoryPropertiesClassification interface for type ClusterHotfixUpgradeHistoryProperties.
+func (c *ClusterHotfixUpgradeHistoryProperties) GetClusterUpgradeHistoryProperties() *ClusterUpgradeHistoryProperties {
+	return &ClusterUpgradeHistoryProperties{
+		UTCTime:       c.UTCTime,
+		UpgradeResult: c.UpgradeResult,
+		UpgradeType:   c.UpgradeType,
+	}
+}
+
 // ClusterHotfixUpgradeProperties - Properties of upgrading cluster's hotfix.
 type ClusterHotfixUpgradeProperties struct {
 	// REQUIRED; Type of upgrade.
@@ -256,8 +484,163 @@ type ClusterHotfixUpgradeProperties struct {
 	TargetOssVersion *string
 }
 
+// GetClusterInPlaceUpgradeProperties implements the ClusterInPlaceUpgradePropertiesClassification interface for type ClusterHotfixUpgradeProperties.
+func (c *ClusterHotfixUpgradeProperties) GetClusterInPlaceUpgradeProperties() *ClusterInPlaceUpgradeProperties {
+	return &ClusterInPlaceUpgradeProperties{
+		ComponentName:        c.ComponentName,
+		TargetBuildNumber:    c.TargetBuildNumber,
+		TargetClusterVersion: c.TargetClusterVersion,
+		TargetOssVersion:     c.TargetOssVersion,
+		UpgradeType:          c.UpgradeType,
+	}
+}
+
 // GetClusterUpgradeProperties implements the ClusterUpgradePropertiesClassification interface for type ClusterHotfixUpgradeProperties.
 func (c *ClusterHotfixUpgradeProperties) GetClusterUpgradeProperties() *ClusterUpgradeProperties {
+	return &ClusterUpgradeProperties{
+		UpgradeType: c.UpgradeType,
+	}
+}
+
+// ClusterHotfixUpgradeRollbackHistoryProperties - Cluster hotfix upgrade rollback history properties.
+type ClusterHotfixUpgradeRollbackHistoryProperties struct {
+	// REQUIRED; Time when created this upgrade history.
+	UTCTime *string
+
+	// REQUIRED; Result of this upgrade.
+	UpgradeResult *ClusterUpgradeHistoryUpgradeResultType
+
+	// REQUIRED; Type of upgrade.
+	UpgradeType *ClusterUpgradeHistoryType
+
+	// Component name to upgrade.
+	ComponentName *string
+
+	// Severity of this upgrade.
+	Severity *ClusterUpgradeHistorySeverityType
+
+	// Source build number.
+	SourceBuildNumber *string
+
+	// Version with three part.
+	SourceClusterVersion *string
+
+	// Version with three part.
+	SourceOssVersion *string
+
+	// Target build number.
+	TargetBuildNumber *string
+
+	// Version with three part.
+	TargetClusterVersion *string
+
+	// Version with three part.
+	TargetOssVersion *string
+}
+
+// GetClusterInPlaceUpgradeHistoryProperties implements the ClusterInPlaceUpgradeHistoryPropertiesClassification interface
+// for type ClusterHotfixUpgradeRollbackHistoryProperties.
+func (c *ClusterHotfixUpgradeRollbackHistoryProperties) GetClusterInPlaceUpgradeHistoryProperties() *ClusterInPlaceUpgradeHistoryProperties {
+	return &ClusterInPlaceUpgradeHistoryProperties{
+		ComponentName:        c.ComponentName,
+		Severity:             c.Severity,
+		SourceBuildNumber:    c.SourceBuildNumber,
+		SourceClusterVersion: c.SourceClusterVersion,
+		SourceOssVersion:     c.SourceOssVersion,
+		TargetBuildNumber:    c.TargetBuildNumber,
+		TargetClusterVersion: c.TargetClusterVersion,
+		TargetOssVersion:     c.TargetOssVersion,
+		UTCTime:              c.UTCTime,
+		UpgradeResult:        c.UpgradeResult,
+		UpgradeType:          c.UpgradeType,
+	}
+}
+
+// GetClusterUpgradeHistoryProperties implements the ClusterUpgradeHistoryPropertiesClassification interface for type ClusterHotfixUpgradeRollbackHistoryProperties.
+func (c *ClusterHotfixUpgradeRollbackHistoryProperties) GetClusterUpgradeHistoryProperties() *ClusterUpgradeHistoryProperties {
+	return &ClusterUpgradeHistoryProperties{
+		UTCTime:       c.UTCTime,
+		UpgradeResult: c.UpgradeResult,
+		UpgradeType:   c.UpgradeType,
+	}
+}
+
+// ClusterInPlaceUpgradeHistoryProperties - Cluster in-place upgrade history properties.
+type ClusterInPlaceUpgradeHistoryProperties struct {
+	// REQUIRED; Time when created this upgrade history.
+	UTCTime *string
+
+	// REQUIRED; Result of this upgrade.
+	UpgradeResult *ClusterUpgradeHistoryUpgradeResultType
+
+	// REQUIRED; Type of upgrade.
+	UpgradeType *ClusterUpgradeHistoryType
+
+	// Component name to upgrade.
+	ComponentName *string
+
+	// Severity of this upgrade.
+	Severity *ClusterUpgradeHistorySeverityType
+
+	// Source build number.
+	SourceBuildNumber *string
+
+	// Version with three part.
+	SourceClusterVersion *string
+
+	// Version with three part.
+	SourceOssVersion *string
+
+	// Target build number.
+	TargetBuildNumber *string
+
+	// Version with three part.
+	TargetClusterVersion *string
+
+	// Version with three part.
+	TargetOssVersion *string
+}
+
+// GetClusterInPlaceUpgradeHistoryProperties implements the ClusterInPlaceUpgradeHistoryPropertiesClassification interface
+// for type ClusterInPlaceUpgradeHistoryProperties.
+func (c *ClusterInPlaceUpgradeHistoryProperties) GetClusterInPlaceUpgradeHistoryProperties() *ClusterInPlaceUpgradeHistoryProperties {
+	return c
+}
+
+// GetClusterUpgradeHistoryProperties implements the ClusterUpgradeHistoryPropertiesClassification interface for type ClusterInPlaceUpgradeHistoryProperties.
+func (c *ClusterInPlaceUpgradeHistoryProperties) GetClusterUpgradeHistoryProperties() *ClusterUpgradeHistoryProperties {
+	return &ClusterUpgradeHistoryProperties{
+		UTCTime:       c.UTCTime,
+		UpgradeResult: c.UpgradeResult,
+		UpgradeType:   c.UpgradeType,
+	}
+}
+
+// ClusterInPlaceUpgradeProperties - Properties of in-place upgrading cluster.
+type ClusterInPlaceUpgradeProperties struct {
+	// REQUIRED; Type of upgrade.
+	UpgradeType *ClusterUpgradeType
+
+	// Name of component to be upgraded.
+	ComponentName *string
+
+	// Target build number of component to be upgraded.
+	TargetBuildNumber *string
+
+	// Target cluster version of component to be upgraded.
+	TargetClusterVersion *string
+
+	// Target OSS version of component to be upgraded.
+	TargetOssVersion *string
+}
+
+// GetClusterInPlaceUpgradeProperties implements the ClusterInPlaceUpgradePropertiesClassification interface for type ClusterInPlaceUpgradeProperties.
+func (c *ClusterInPlaceUpgradeProperties) GetClusterInPlaceUpgradeProperties() *ClusterInPlaceUpgradeProperties {
+	return c
+}
+
+// GetClusterUpgradeProperties implements the ClusterUpgradePropertiesClassification interface for type ClusterInPlaceUpgradeProperties.
+func (c *ClusterInPlaceUpgradeProperties) GetClusterUpgradeProperties() *ClusterUpgradeProperties {
 	return &ClusterUpgradeProperties{
 		UpgradeType: c.UpgradeType,
 	}
@@ -338,6 +721,81 @@ type ClusterJobProperties struct {
 // GetClusterJobProperties implements the ClusterJobPropertiesClassification interface for type ClusterJobProperties.
 func (c *ClusterJobProperties) GetClusterJobProperties() *ClusterJobProperties { return c }
 
+// ClusterLibrary - Libraries in the cluster.
+type ClusterLibrary struct {
+	// REQUIRED; Properties of a library in the cluster.
+	Properties ClusterLibraryPropertiesClassification
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ClusterLibraryList - Collection of libraries in the cluster.
+type ClusterLibraryList struct {
+	// REQUIRED; Collection of libraries in the cluster.
+	Value []*ClusterLibrary
+
+	// READ-ONLY; The url of next result page.
+	NextLink *string
+}
+
+// ClusterLibraryManagementOperation - Library management operation.
+type ClusterLibraryManagementOperation struct {
+	// REQUIRED; Properties of a library management operation.
+	Properties *ClusterLibraryManagementOperationProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ClusterLibraryManagementOperationProperties - Properties of a library management operation.
+type ClusterLibraryManagementOperationProperties struct {
+	// REQUIRED; The library management action.
+	Action *LibraryManagementAction
+
+	// REQUIRED; The libraries to be installed/updated/uninstalled.
+	Libraries []*ClusterLibrary
+}
+
+// ClusterLibraryProperties - Properties of a library in the cluster.
+type ClusterLibraryProperties struct {
+	// REQUIRED; Type of the library.
+	Type *Type
+
+	// Remark of the latest library management operation.
+	Remarks *string
+
+	// READ-ONLY; Error message of the library operation when a failure occurs.
+	Message *string
+
+	// READ-ONLY; Status of the library.
+	Status *Status
+
+	// READ-ONLY; Timestamp of the latest library management operation.
+	Timestamp *time.Time
+}
+
+// GetClusterLibraryProperties implements the ClusterLibraryPropertiesClassification interface for type ClusterLibraryProperties.
+func (c *ClusterLibraryProperties) GetClusterLibraryProperties() *ClusterLibraryProperties { return c }
+
 // ClusterListResult - The list cluster operation response.
 type ClusterListResult struct {
 	// The list of clusters.
@@ -381,6 +839,168 @@ type ClusterPatch struct {
 type ClusterPatchProperties struct {
 	// Cluster resource patch properties.
 	ClusterProfile *UpdatableClusterProfile
+}
+
+// ClusterPatchVersionUpgradeHistoryProperties - Cluster patch version upgrade history properties.
+type ClusterPatchVersionUpgradeHistoryProperties struct {
+	// REQUIRED; Time when created this upgrade history.
+	UTCTime *string
+
+	// REQUIRED; Result of this upgrade.
+	UpgradeResult *ClusterUpgradeHistoryUpgradeResultType
+
+	// REQUIRED; Type of upgrade.
+	UpgradeType *ClusterUpgradeHistoryType
+
+	// Component name to upgrade.
+	ComponentName *string
+
+	// Severity of this upgrade.
+	Severity *ClusterUpgradeHistorySeverityType
+
+	// Source build number.
+	SourceBuildNumber *string
+
+	// Version with three part.
+	SourceClusterVersion *string
+
+	// Version with three part.
+	SourceOssVersion *string
+
+	// Target build number.
+	TargetBuildNumber *string
+
+	// Version with three part.
+	TargetClusterVersion *string
+
+	// Version with three part.
+	TargetOssVersion *string
+}
+
+// GetClusterInPlaceUpgradeHistoryProperties implements the ClusterInPlaceUpgradeHistoryPropertiesClassification interface
+// for type ClusterPatchVersionUpgradeHistoryProperties.
+func (c *ClusterPatchVersionUpgradeHistoryProperties) GetClusterInPlaceUpgradeHistoryProperties() *ClusterInPlaceUpgradeHistoryProperties {
+	return &ClusterInPlaceUpgradeHistoryProperties{
+		ComponentName:        c.ComponentName,
+		Severity:             c.Severity,
+		SourceBuildNumber:    c.SourceBuildNumber,
+		SourceClusterVersion: c.SourceClusterVersion,
+		SourceOssVersion:     c.SourceOssVersion,
+		TargetBuildNumber:    c.TargetBuildNumber,
+		TargetClusterVersion: c.TargetClusterVersion,
+		TargetOssVersion:     c.TargetOssVersion,
+		UTCTime:              c.UTCTime,
+		UpgradeResult:        c.UpgradeResult,
+		UpgradeType:          c.UpgradeType,
+	}
+}
+
+// GetClusterUpgradeHistoryProperties implements the ClusterUpgradeHistoryPropertiesClassification interface for type ClusterPatchVersionUpgradeHistoryProperties.
+func (c *ClusterPatchVersionUpgradeHistoryProperties) GetClusterUpgradeHistoryProperties() *ClusterUpgradeHistoryProperties {
+	return &ClusterUpgradeHistoryProperties{
+		UTCTime:       c.UTCTime,
+		UpgradeResult: c.UpgradeResult,
+		UpgradeType:   c.UpgradeType,
+	}
+}
+
+// ClusterPatchVersionUpgradeProperties - Properties of upgrading cluster's patch version.
+type ClusterPatchVersionUpgradeProperties struct {
+	// REQUIRED; Type of upgrade.
+	UpgradeType *ClusterUpgradeType
+
+	// Name of component to be upgraded.
+	ComponentName *string
+
+	// Target build number of component to be upgraded.
+	TargetBuildNumber *string
+
+	// Target cluster version of component to be upgraded.
+	TargetClusterVersion *string
+
+	// Target OSS version of component to be upgraded.
+	TargetOssVersion *string
+}
+
+// GetClusterInPlaceUpgradeProperties implements the ClusterInPlaceUpgradePropertiesClassification interface for type ClusterPatchVersionUpgradeProperties.
+func (c *ClusterPatchVersionUpgradeProperties) GetClusterInPlaceUpgradeProperties() *ClusterInPlaceUpgradeProperties {
+	return &ClusterInPlaceUpgradeProperties{
+		ComponentName:        c.ComponentName,
+		TargetBuildNumber:    c.TargetBuildNumber,
+		TargetClusterVersion: c.TargetClusterVersion,
+		TargetOssVersion:     c.TargetOssVersion,
+		UpgradeType:          c.UpgradeType,
+	}
+}
+
+// GetClusterUpgradeProperties implements the ClusterUpgradePropertiesClassification interface for type ClusterPatchVersionUpgradeProperties.
+func (c *ClusterPatchVersionUpgradeProperties) GetClusterUpgradeProperties() *ClusterUpgradeProperties {
+	return &ClusterUpgradeProperties{
+		UpgradeType: c.UpgradeType,
+	}
+}
+
+// ClusterPatchVersionUpgradeRollbackHistoryProperties - Cluster patch version upgrade rollback history properties.
+type ClusterPatchVersionUpgradeRollbackHistoryProperties struct {
+	// REQUIRED; Time when created this upgrade history.
+	UTCTime *string
+
+	// REQUIRED; Result of this upgrade.
+	UpgradeResult *ClusterUpgradeHistoryUpgradeResultType
+
+	// REQUIRED; Type of upgrade.
+	UpgradeType *ClusterUpgradeHistoryType
+
+	// Component name to upgrade.
+	ComponentName *string
+
+	// Severity of this upgrade.
+	Severity *ClusterUpgradeHistorySeverityType
+
+	// Source build number.
+	SourceBuildNumber *string
+
+	// Version with three part.
+	SourceClusterVersion *string
+
+	// Version with three part.
+	SourceOssVersion *string
+
+	// Target build number.
+	TargetBuildNumber *string
+
+	// Version with three part.
+	TargetClusterVersion *string
+
+	// Version with three part.
+	TargetOssVersion *string
+}
+
+// GetClusterInPlaceUpgradeHistoryProperties implements the ClusterInPlaceUpgradeHistoryPropertiesClassification interface
+// for type ClusterPatchVersionUpgradeRollbackHistoryProperties.
+func (c *ClusterPatchVersionUpgradeRollbackHistoryProperties) GetClusterInPlaceUpgradeHistoryProperties() *ClusterInPlaceUpgradeHistoryProperties {
+	return &ClusterInPlaceUpgradeHistoryProperties{
+		ComponentName:        c.ComponentName,
+		Severity:             c.Severity,
+		SourceBuildNumber:    c.SourceBuildNumber,
+		SourceClusterVersion: c.SourceClusterVersion,
+		SourceOssVersion:     c.SourceOssVersion,
+		TargetBuildNumber:    c.TargetBuildNumber,
+		TargetClusterVersion: c.TargetClusterVersion,
+		TargetOssVersion:     c.TargetOssVersion,
+		UTCTime:              c.UTCTime,
+		UpgradeResult:        c.UpgradeResult,
+		UpgradeType:          c.UpgradeType,
+	}
+}
+
+// GetClusterUpgradeHistoryProperties implements the ClusterUpgradeHistoryPropertiesClassification interface for type ClusterPatchVersionUpgradeRollbackHistoryProperties.
+func (c *ClusterPatchVersionUpgradeRollbackHistoryProperties) GetClusterUpgradeHistoryProperties() *ClusterUpgradeHistoryProperties {
+	return &ClusterUpgradeHistoryProperties{
+		UTCTime:       c.UTCTime,
+		UpgradeResult: c.UpgradeResult,
+		UpgradeType:   c.UpgradeType,
+	}
 }
 
 // ClusterPool - Cluster pool.
@@ -429,6 +1049,40 @@ type ClusterPoolAKSPatchVersionUpgradeProperties struct {
 func (c *ClusterPoolAKSPatchVersionUpgradeProperties) GetClusterPoolUpgradeProperties() *ClusterPoolUpgradeProperties {
 	return &ClusterPoolUpgradeProperties{
 		UpgradeType: c.UpgradeType,
+	}
+}
+
+// ClusterPoolAksPatchUpgradeHistoryProperties - Cluster pool aks upgrade history properties.
+type ClusterPoolAksPatchUpgradeHistoryProperties struct {
+	// REQUIRED; Time when created this upgrade history.
+	UTCTime *string
+
+	// REQUIRED; Result of this upgrade.
+	UpgradeResult *ClusterPoolUpgradeHistoryUpgradeResultType
+
+	// REQUIRED; Type of upgrade.
+	UpgradeType *ClusterPoolUpgradeHistoryType
+
+	// Version going to update.
+	NewVersion *string
+
+	// Version before update.
+	OriginalVersion *string
+
+	// Whether upgrade all cluster nodes.
+	UpgradeAllClusterNodes *bool
+
+	// Whether upgrade cluster pool.
+	UpgradeClusterPool *bool
+}
+
+// GetClusterPoolUpgradeHistoryProperties implements the ClusterPoolUpgradeHistoryPropertiesClassification interface for type
+// ClusterPoolAksPatchUpgradeHistoryProperties.
+func (c *ClusterPoolAksPatchUpgradeHistoryProperties) GetClusterPoolUpgradeHistoryProperties() *ClusterPoolUpgradeHistoryProperties {
+	return &ClusterPoolUpgradeHistoryProperties{
+		UTCTime:       c.UTCTime,
+		UpgradeResult: c.UpgradeResult,
+		UpgradeType:   c.UpgradeType,
 	}
 }
 
@@ -533,6 +1187,31 @@ func (c *ClusterPoolNodeOsImageUpdateProperties) GetClusterPoolUpgradeProperties
 	}
 }
 
+// ClusterPoolNodeOsUpgradeHistoryProperties - Cluster pool node os upgrade history properties.
+type ClusterPoolNodeOsUpgradeHistoryProperties struct {
+	// REQUIRED; Time when created this upgrade history.
+	UTCTime *string
+
+	// REQUIRED; Result of this upgrade.
+	UpgradeResult *ClusterPoolUpgradeHistoryUpgradeResultType
+
+	// REQUIRED; Type of upgrade.
+	UpgradeType *ClusterPoolUpgradeHistoryType
+
+	// New Node Os version.
+	NewNodeOs *string
+}
+
+// GetClusterPoolUpgradeHistoryProperties implements the ClusterPoolUpgradeHistoryPropertiesClassification interface for type
+// ClusterPoolNodeOsUpgradeHistoryProperties.
+func (c *ClusterPoolNodeOsUpgradeHistoryProperties) GetClusterPoolUpgradeHistoryProperties() *ClusterPoolUpgradeHistoryProperties {
+	return &ClusterPoolUpgradeHistoryProperties{
+		UTCTime:       c.UTCTime,
+		UpgradeResult: c.UpgradeResult,
+		UpgradeType:   c.UpgradeType,
+	}
+}
+
 // ClusterPoolResourceProperties - Cluster pool resource properties.
 type ClusterPoolResourceProperties struct {
 	// REQUIRED; CLuster pool compute profile.
@@ -586,12 +1265,18 @@ type ClusterPoolResourcePropertiesAksClusterProfile struct {
 type ClusterPoolResourcePropertiesClusterPoolProfile struct {
 	// REQUIRED; Cluster pool version is a 2-part version.
 	ClusterPoolVersion *string
+
+	// Gets or sets the IP tag for the public IPs created along with the HDInsightOnAks ClusterPools and Clusters.
+	PublicIPTag *IPTag
 }
 
 // ClusterPoolResourcePropertiesComputeProfile - CLuster pool compute profile.
 type ClusterPoolResourcePropertiesComputeProfile struct {
 	// REQUIRED; The virtual machine SKU.
 	VMSize *string
+
+	// The list of Availability zones to use for AKS VMSS nodes.
+	AvailabilityZones []*string
 
 	// READ-ONLY; The number of virtual machines.
 	Count *int32
@@ -613,7 +1298,7 @@ type ClusterPoolResourcePropertiesNetworkProfile struct {
 
 	// IP ranges are specified in CIDR format, e.g. 137.117.106.88/29. This feature is not compatible with private AKS clusters.
 	// So you cannot set enablePrivateApiServer to true and
-	// apiServerAuthorizedIpRanges at the same time.
+	// apiServerAuthorizedIpRanges at the same time. Currently, this property is not supported and please don't use it.
 	APIServerAuthorizedIPRanges []*string
 
 	// ClusterPool is based on AKS cluster. AKS cluster exposes the API server to public internet by default. If you set this
@@ -629,6 +1314,51 @@ type ClusterPoolResourcePropertiesNetworkProfile struct {
 type ClusterPoolUpgrade struct {
 	// REQUIRED; Properties of upgrading cluster pool.
 	Properties ClusterPoolUpgradePropertiesClassification
+}
+
+// ClusterPoolUpgradeHistory - Cluster pool upgrade history.
+type ClusterPoolUpgradeHistory struct {
+	// REQUIRED; Properties of cluster pool upgrade history.
+	Properties ClusterPoolUpgradeHistoryPropertiesClassification
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ClusterPoolUpgradeHistoryListResult - Represents a list of cluster pool upgrade history.
+type ClusterPoolUpgradeHistoryListResult struct {
+	// REQUIRED; The list of cluster pool upgrade history.
+	Value []*ClusterPoolUpgradeHistory
+
+	// READ-ONLY; The link (url) to the next page of results.
+	NextLink *string
+}
+
+// ClusterPoolUpgradeHistoryProperties - Properties of cluster pool upgrade history.
+type ClusterPoolUpgradeHistoryProperties struct {
+	// REQUIRED; Time when created this upgrade history.
+	UTCTime *string
+
+	// REQUIRED; Result of this upgrade.
+	UpgradeResult *ClusterPoolUpgradeHistoryUpgradeResultType
+
+	// REQUIRED; Type of upgrade.
+	UpgradeType *ClusterPoolUpgradeHistoryType
+}
+
+// GetClusterPoolUpgradeHistoryProperties implements the ClusterPoolUpgradeHistoryPropertiesClassification interface for type
+// ClusterPoolUpgradeHistoryProperties.
+func (c *ClusterPoolUpgradeHistoryProperties) GetClusterPoolUpgradeHistoryProperties() *ClusterPoolUpgradeHistoryProperties {
+	return c
 }
 
 // ClusterPoolUpgradeProperties - Properties of upgrading cluster pool.
@@ -701,7 +1431,7 @@ type ClusterProfile struct {
 	// The Flink cluster profile.
 	FlinkProfile *FlinkProfile
 
-	// This property is required by Trino, Spark and Flink cluster but is optional for Kafka cluster.
+	// This is deprecated. Please use managed identity profile instead.
 	IdentityProfile *IdentityProfile
 
 	// The Kafka cluster profile.
@@ -712,6 +1442,9 @@ type ClusterProfile struct {
 
 	// Cluster log analytics profile to enable or disable OMS agent for cluster.
 	LogAnalyticsProfile *ClusterLogAnalyticsProfile
+
+	// This property is required by Trino, Spark and Flink cluster but is optional for Kafka cluster.
+	ManagedIdentityProfile *ManagedIdentityProfile
 
 	// Cluster Prometheus profile.
 	PrometheusProfile *ClusterPrometheusProfile
@@ -837,6 +1570,50 @@ type ClusterUpgrade struct {
 	Properties ClusterUpgradePropertiesClassification
 }
 
+// ClusterUpgradeHistory - Cluster upgrade history.
+type ClusterUpgradeHistory struct {
+	// REQUIRED; Properties of cluster upgrade history.
+	Properties ClusterUpgradeHistoryPropertiesClassification
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ClusterUpgradeHistoryListResult - Represents a list of cluster upgrade history.
+type ClusterUpgradeHistoryListResult struct {
+	// REQUIRED; The list of cluster upgrade history.
+	Value []*ClusterUpgradeHistory
+
+	// READ-ONLY; The link (url) to the next page of results.
+	NextLink *string
+}
+
+// ClusterUpgradeHistoryProperties - Properties of cluster upgrade history.
+type ClusterUpgradeHistoryProperties struct {
+	// REQUIRED; Time when created this upgrade history.
+	UTCTime *string
+
+	// REQUIRED; Result of this upgrade.
+	UpgradeResult *ClusterUpgradeHistoryUpgradeResultType
+
+	// REQUIRED; Type of upgrade.
+	UpgradeType *ClusterUpgradeHistoryType
+}
+
+// GetClusterUpgradeHistoryProperties implements the ClusterUpgradeHistoryPropertiesClassification interface for type ClusterUpgradeHistoryProperties.
+func (c *ClusterUpgradeHistoryProperties) GetClusterUpgradeHistoryProperties() *ClusterUpgradeHistoryProperties {
+	return c
+}
+
 // ClusterUpgradeProperties - Properties of upgrading cluster.
 type ClusterUpgradeProperties struct {
 	// REQUIRED; Type of upgrade.
@@ -845,6 +1622,18 @@ type ClusterUpgradeProperties struct {
 
 // GetClusterUpgradeProperties implements the ClusterUpgradePropertiesClassification interface for type ClusterUpgradeProperties.
 func (c *ClusterUpgradeProperties) GetClusterUpgradeProperties() *ClusterUpgradeProperties { return c }
+
+// ClusterUpgradeRollback - Cluster Upgrade.
+type ClusterUpgradeRollback struct {
+	// REQUIRED; Properties for manual rollback of cluster's upgrade.
+	Properties *ClusterUpgradeRollbackProperties
+}
+
+// ClusterUpgradeRollbackProperties - Properties for manual rollback of cluster's upgrade.
+type ClusterUpgradeRollbackProperties struct {
+	// REQUIRED; A specific upgrade history to rollback
+	UpgradeHistory *string
+}
 
 // ClusterVersion - Available cluster version.
 type ClusterVersion struct {
@@ -908,6 +1697,9 @@ type ComparisonRule struct {
 type ComputeProfile struct {
 	// REQUIRED; The nodes definitions.
 	Nodes []*NodeProfile
+
+	// The list of Availability zones to use for AKS VMSS nodes.
+	AvailabilityZones []*string
 }
 
 // ComputeResourceDefinition - The cpu and memory requirement definition.
@@ -1114,6 +1906,15 @@ type HiveCatalogOption struct {
 	MetastoreDbConnectionUserName *string
 }
 
+// IPTag - Contains the IpTag associated with the public IP address
+type IPTag struct {
+	// REQUIRED; Gets or sets the ipTag type: Example FirstPartyUsage.
+	IPTagType *string
+
+	// REQUIRED; Gets or sets value of the IpTag associated with the public IP. Example HDInsight, SQL, Storage etc
+	Tag *string
+}
+
 // IdentityProfile - Identity Profile with details of an MSI.
 type IdentityProfile struct {
 	// REQUIRED; ClientId of the MSI.
@@ -1149,9 +1950,6 @@ type KafkaProfile struct {
 	// Fully qualified path of Azure Storage container used for Tiered Storage.
 	RemoteStorageURI *string
 
-	// READ-ONLY; Identity of the internal service components inside the Kafka cluster.
-	ClusterIdentity *IdentityProfile
-
 	// READ-ONLY; Kafka bootstrap server and brokers related connectivity endpoints.
 	ConnectivityEndpoints *KafkaConnectivityEndpoints
 }
@@ -1177,6 +1975,65 @@ type LoadBasedConfig struct {
 	// User can specify the poll interval, this is the time period (in seconds) after which scaling metrics are polled for triggering
 	// a scaling operation.
 	PollInterval *int32
+}
+
+// ManagedIdentityProfile - The details of managed identity.
+type ManagedIdentityProfile struct {
+	// REQUIRED; The list of managed identity.
+	IdentityList []*ManagedIdentitySpec
+}
+
+// ManagedIdentitySpec - The details of a managed identity.
+type ManagedIdentitySpec struct {
+	// REQUIRED; ClientId of the managed identity.
+	ClientID *string
+
+	// REQUIRED; ObjectId of the managed identity.
+	ObjectID *string
+
+	// REQUIRED; ResourceId of the managed identity.
+	ResourceID *string
+
+	// REQUIRED; The type of managed identity.
+	Type *ManagedIdentityType
+}
+
+// MavenLibraryProperties - Properties of a Maven library in the cluster.
+type MavenLibraryProperties struct {
+	// REQUIRED; GroupId of the Maven package.
+	GroupID *string
+
+	// REQUIRED; ArtifactId of the Maven package.
+	Name *string
+
+	// REQUIRED; Type of the library.
+	Type *Type
+
+	// Remark of the latest library management operation.
+	Remarks *string
+
+	// Version of the Maven package.
+	Version *string
+
+	// READ-ONLY; Error message of the library operation when a failure occurs.
+	Message *string
+
+	// READ-ONLY; Status of the library.
+	Status *Status
+
+	// READ-ONLY; Timestamp of the latest library management operation.
+	Timestamp *time.Time
+}
+
+// GetClusterLibraryProperties implements the ClusterLibraryPropertiesClassification interface for type MavenLibraryProperties.
+func (m *MavenLibraryProperties) GetClusterLibraryProperties() *ClusterLibraryProperties {
+	return &ClusterLibraryProperties{
+		Message:   m.Message,
+		Remarks:   m.Remarks,
+		Status:    m.Status,
+		Timestamp: m.Timestamp,
+		Type:      m.Type,
+	}
 }
 
 // NameAvailabilityParameters - Details of check name availability request body.
@@ -1261,6 +2118,41 @@ type OperationListResult struct {
 	Value []*Operation
 }
 
+// PyPiLibraryProperties - Properties of a PyPi library in the cluster.
+type PyPiLibraryProperties struct {
+	// REQUIRED; Name of the PyPi package.
+	Name *string
+
+	// REQUIRED; Type of the library.
+	Type *Type
+
+	// Remark of the latest library management operation.
+	Remarks *string
+
+	// Version of the PyPi package.
+	Version *string
+
+	// READ-ONLY; Error message of the library operation when a failure occurs.
+	Message *string
+
+	// READ-ONLY; Status of the library.
+	Status *Status
+
+	// READ-ONLY; Timestamp of the latest library management operation.
+	Timestamp *time.Time
+}
+
+// GetClusterLibraryProperties implements the ClusterLibraryPropertiesClassification interface for type PyPiLibraryProperties.
+func (p *PyPiLibraryProperties) GetClusterLibraryProperties() *ClusterLibraryProperties {
+	return &ClusterLibraryProperties{
+		Message:   p.Message,
+		Remarks:   p.Remarks,
+		Status:    p.Status,
+		Timestamp: p.Timestamp,
+		Type:      p.Type,
+	}
+}
+
 // RangerAdminSpec - Specification for the Ranger Admin service.
 type RangerAdminSpec struct {
 	// REQUIRED; List of usernames that should be marked as ranger admins. These usernames should match the user principal name
@@ -1334,6 +2226,9 @@ type SSHConnectivityEndpoint struct {
 type SSHProfile struct {
 	// REQUIRED; Number of ssh pods per cluster.
 	Count *int32
+
+	// The virtual machine SKU.
+	VMSize *string
 
 	// READ-ONLY; Prefix of the pod names. Pod number will be appended to the prefix. The ingress URLs for the pods will be available
 	// at //-
@@ -1685,6 +2580,12 @@ type UpdatableClusterProfile struct {
 	// The script action profile list.
 	ScriptActionProfiles []*ScriptActionProfile
 
+	// The cluster secret profile.
+	SecretsProfile *SecretsProfile
+
 	// The service configs profiles.
 	ServiceConfigsProfiles []*ClusterServiceConfigsProfile
+
+	// Trino Cluster profile.
+	TrinoProfile *TrinoProfile
 }

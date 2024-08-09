@@ -20,43 +20,43 @@ import (
 	"strings"
 )
 
-// ClusterPoolAvailableUpgradesClient contains the methods for the ClusterPoolAvailableUpgrades group.
-// Don't use this type directly, use NewClusterPoolAvailableUpgradesClient() instead.
-type ClusterPoolAvailableUpgradesClient struct {
+// ClusterPoolUpgradeHistoriesClient contains the methods for the ClusterPoolUpgradeHistories group.
+// Don't use this type directly, use NewClusterPoolUpgradeHistoriesClient() instead.
+type ClusterPoolUpgradeHistoriesClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewClusterPoolAvailableUpgradesClient creates a new instance of ClusterPoolAvailableUpgradesClient with the specified values.
+// NewClusterPoolUpgradeHistoriesClient creates a new instance of ClusterPoolUpgradeHistoriesClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
-func NewClusterPoolAvailableUpgradesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClusterPoolAvailableUpgradesClient, error) {
+func NewClusterPoolUpgradeHistoriesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClusterPoolUpgradeHistoriesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
-	client := &ClusterPoolAvailableUpgradesClient{
+	client := &ClusterPoolUpgradeHistoriesClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
 	return client, nil
 }
 
-// NewListPager - List a cluster pool available upgrade.
+// NewListPager - Returns a list of upgrade history.
 //
 // Generated from API version 2024-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterPoolName - The name of the cluster pool.
-//   - options - ClusterPoolAvailableUpgradesClientListOptions contains the optional parameters for the ClusterPoolAvailableUpgradesClient.NewListPager
+//   - options - ClusterPoolUpgradeHistoriesClientListOptions contains the optional parameters for the ClusterPoolUpgradeHistoriesClient.NewListPager
 //     method.
-func (client *ClusterPoolAvailableUpgradesClient) NewListPager(resourceGroupName string, clusterPoolName string, options *ClusterPoolAvailableUpgradesClientListOptions) *runtime.Pager[ClusterPoolAvailableUpgradesClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[ClusterPoolAvailableUpgradesClientListResponse]{
-		More: func(page ClusterPoolAvailableUpgradesClientListResponse) bool {
+func (client *ClusterPoolUpgradeHistoriesClient) NewListPager(resourceGroupName string, clusterPoolName string, options *ClusterPoolUpgradeHistoriesClientListOptions) *runtime.Pager[ClusterPoolUpgradeHistoriesClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ClusterPoolUpgradeHistoriesClientListResponse]{
+		More: func(page ClusterPoolUpgradeHistoriesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *ClusterPoolAvailableUpgradesClientListResponse) (ClusterPoolAvailableUpgradesClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ClusterPoolAvailableUpgradesClient.NewListPager")
+		Fetcher: func(ctx context.Context, page *ClusterPoolUpgradeHistoriesClientListResponse) (ClusterPoolUpgradeHistoriesClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ClusterPoolUpgradeHistoriesClient.NewListPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -65,7 +65,7 @@ func (client *ClusterPoolAvailableUpgradesClient) NewListPager(resourceGroupName
 				return client.listCreateRequest(ctx, resourceGroupName, clusterPoolName, options)
 			}, nil)
 			if err != nil {
-				return ClusterPoolAvailableUpgradesClientListResponse{}, err
+				return ClusterPoolUpgradeHistoriesClientListResponse{}, err
 			}
 			return client.listHandleResponse(resp)
 		},
@@ -74,8 +74,8 @@ func (client *ClusterPoolAvailableUpgradesClient) NewListPager(resourceGroupName
 }
 
 // listCreateRequest creates the List request.
-func (client *ClusterPoolAvailableUpgradesClient) listCreateRequest(ctx context.Context, resourceGroupName string, clusterPoolName string, options *ClusterPoolAvailableUpgradesClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusterpools/{clusterPoolName}/availableUpgrades"
+func (client *ClusterPoolUpgradeHistoriesClient) listCreateRequest(ctx context.Context, resourceGroupName string, clusterPoolName string, options *ClusterPoolUpgradeHistoriesClientListOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusterpools/{clusterPoolName}/upgradeHistories"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -100,10 +100,10 @@ func (client *ClusterPoolAvailableUpgradesClient) listCreateRequest(ctx context.
 }
 
 // listHandleResponse handles the List response.
-func (client *ClusterPoolAvailableUpgradesClient) listHandleResponse(resp *http.Response) (ClusterPoolAvailableUpgradesClientListResponse, error) {
-	result := ClusterPoolAvailableUpgradesClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ClusterPoolAvailableUpgradeList); err != nil {
-		return ClusterPoolAvailableUpgradesClientListResponse{}, err
+func (client *ClusterPoolUpgradeHistoriesClient) listHandleResponse(resp *http.Response) (ClusterPoolUpgradeHistoriesClientListResponse, error) {
+	result := ClusterPoolUpgradeHistoriesClientListResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ClusterPoolUpgradeHistoryListResult); err != nil {
+		return ClusterPoolUpgradeHistoriesClientListResponse{}, err
 	}
 	return result, nil
 }

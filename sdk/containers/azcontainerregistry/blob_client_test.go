@@ -8,27 +8,194 @@ package azcontainerregistry
 
 import (
 	"bytes"
-	"context"
 	"fmt"
+	"io"
+	"net/http"
+	"regexp"
+	"strconv"
+	"strings"
+	"testing"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/require"
-	"io"
-	"net/http"
-	"strconv"
-	"strings"
-	"testing"
 )
 
-const alpineBlobDigest = "sha256:042a816809aac8d0f7d7cacac7965782ee2ecac3f21bcf9f24b1de1a7387b769"
+// blobDigest returns the digest of the first blob i.e. layer in the image manifest
+func blobDigest(t *testing.T, image, imageDigest string) string {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		return fakeDigest
+	}
+	client, err := NewClient("https://"+testConfig.loginServer, testConfig.credential, nil)
+	require.NoError(t, err)
+	res, err := client.GetManifest(ctx, image, imageDigest, &ClientGetManifestOptions{Accept: to.Ptr("application/vnd.docker.distribution.manifest.v2+json")})
+	require.NoError(t, err)
+	reader, err := NewDigestValidationReader(*res.DockerContentDigest, res.ManifestData)
+	require.NoError(t, err)
+	manifest, err := io.ReadAll(reader)
+	require.NoError(t, err)
+	blobDigest := string(regexp.MustCompile("(sha256:[a-f0-9]{64})").Find(manifest))
+	require.NotEmpty(t, blobDigest)
+	_, hash, found := strings.Cut(blobDigest, ":")
+	require.True(t, found)
+	if recording.GetRecordMode() == recording.RecordingMode {
+		require.NoError(t, recording.AddGeneralRegexSanitizer("00", hash, nil))
+	}
+	return blobDigest
+}
+
+func TestBlobClient(t *testing.T) {
+	repository, digest := buildImage(t)
+	blobDigest := blobDigest(t, repository, digest)
+
+	t.Run("CheckBlobExists", func(t *testing.T) {
+		startRecording(t)
+		endpoint, cred, options := getEndpointCredAndClientOptions(t)
+		client, err := NewBlobClient(endpoint, cred, &BlobClientOptions{ClientOptions: options})
+		require.NoError(t, err)
+		res, err := client.CheckBlobExists(ctx, repository, blobDigest, nil)
+		require.NoError(t, err)
+		require.Equal(t, blobDigest, *res.DockerContentDigest)
+	})
+
+	t.Run("CheckChunkExists", func(t *testing.T) {
+		startRecording(t)
+		endpoint, cred, options := getEndpointCredAndClientOptions(t)
+		client, err := NewBlobClient(endpoint, cred, &BlobClientOptions{ClientOptions: options})
+		require.NoError(t, err)
+		res, err := client.CheckChunkExists(ctx, repository, blobDigest, "bytes=0-299", nil)
+		require.NoError(t, err)
+		require.NotEmpty(t, *res.ContentLength)
+	})
+
+	t.Run("CheckChunkExists_fail", func(t *testing.T) {
+		startRecording(t)
+		endpoint, cred, options := getEndpointCredAndClientOptions(t)
+		client, err := NewBlobClient(endpoint, cred, &BlobClientOptions{ClientOptions: options})
+		require.NoError(t, err)
+		_, err = client.CheckChunkExists(ctx, repository, "wrong digest", "bytes=0-299", nil)
+		require.Error(t, err)
+	})
+
+	t.Run("CheckBlobExists_fail", func(t *testing.T) {
+		startRecording(t)
+		endpoint, cred, options := getEndpointCredAndClientOptions(t)
+		client, err := NewBlobClient(endpoint, cred, &BlobClientOptions{ClientOptions: options})
+		require.NoError(t, err)
+		_, err = client.CheckBlobExists(ctx, repository, "wrong digest", nil)
+		require.Error(t, err)
+	})
+
+	t.Run("CompleteUpload_wrongDigest", func(t *testing.T) {
+		startRecording(t)
+		endpoint, cred, options := getEndpointCredAndClientOptions(t)
+		client, err := NewBlobClient(endpoint, cred, &BlobClientOptions{ClientOptions: options})
+		require.NoError(t, err)
+		getRes, err := client.GetBlob(ctx, repository, blobDigest, nil)
+		require.NoError(t, err)
+		blob, err := io.ReadAll(getRes.BlobData)
+		require.NoError(t, err)
+		startRes, err := client.StartUpload(ctx, "hello-world", nil)
+		require.NoError(t, err)
+		uploadResp, err := client.uploadChunk(ctx, *startRes.Location, streaming.NopCloser(bytes.NewReader(blob)), nil)
+		require.NoError(t, err)
+		_, err = client.completeUpload(ctx, "sha256:00000000", *uploadResp.Location, nil)
+		require.Error(t, err)
+	})
+
+	t.Run("DeleteBlob_fail", func(t *testing.T) {
+		startRecording(t)
+		endpoint, cred, options := getEndpointCredAndClientOptions(t)
+		client, err := NewBlobClient(endpoint, cred, &BlobClientOptions{ClientOptions: options})
+		require.NoError(t, err)
+		_, err = client.DeleteBlob(ctx, repository, "wrong digest", nil)
+		require.Error(t, err)
+	})
+
+	t.Run("GetBlob", func(t *testing.T) {
+		startRecording(t)
+		endpoint, cred, options := getEndpointCredAndClientOptions(t)
+		client, err := NewBlobClient(endpoint, cred, &BlobClientOptions{ClientOptions: options})
+		require.NoError(t, err)
+		res, err := client.GetBlob(ctx, repository, blobDigest, nil)
+		require.NoError(t, err)
+		require.NotEmpty(t, *res.ContentLength)
+		if recording.GetRecordMode() != recording.PlaybackMode {
+			reader, err := NewDigestValidationReader(blobDigest, res.BlobData)
+			require.NoError(t, err)
+			_, err = io.ReadAll(reader)
+			require.NoError(t, err)
+		}
+	})
+
+	t.Run("GetBlob_fail", func(t *testing.T) {
+		startRecording(t)
+		endpoint, cred, options := getEndpointCredAndClientOptions(t)
+		client, err := NewBlobClient(endpoint, cred, &BlobClientOptions{ClientOptions: options})
+		require.NoError(t, err)
+		_, err = client.GetBlob(ctx, repository, "wrong digest", nil)
+		require.Error(t, err)
+	})
+
+	t.Run("GetChunk", func(t *testing.T) {
+		startRecording(t)
+		endpoint, cred, options := getEndpointCredAndClientOptions(t)
+		client, err := NewBlobClient(endpoint, cred, &BlobClientOptions{ClientOptions: options})
+		require.NoError(t, err)
+		chunkSize := 1000
+		current := 0
+		blob := bytes.NewBuffer(nil)
+		for {
+			res, err := client.GetChunk(ctx, repository, blobDigest, fmt.Sprintf("bytes=%d-%d", current, current+chunkSize-1), nil)
+			require.NoError(t, err)
+			chunk, err := io.ReadAll(res.ChunkData)
+			require.NoError(t, err)
+			_, err = blob.Write(chunk)
+			require.NoError(t, err)
+			totalSize, _ := strconv.Atoi(strings.Split(*res.ContentRange, "/")[1])
+			currentRangeEnd, _ := strconv.Atoi(strings.Split(strings.Split(*res.ContentRange, "/")[0], "-")[1])
+			if totalSize == currentRangeEnd+1 {
+				break
+			}
+			current += chunkSize
+		}
+		if recording.GetRecordMode() != recording.PlaybackMode {
+			reader, err := NewDigestValidationReader(blobDigest, blob)
+			require.NoError(t, err)
+			_, err = io.ReadAll(reader)
+			require.NoError(t, err)
+		}
+	})
+
+	t.Run("GetChunk_fail", func(t *testing.T) {
+		startRecording(t)
+		endpoint, cred, options := getEndpointCredAndClientOptions(t)
+		client, err := NewBlobClient(endpoint, cred, &BlobClientOptions{ClientOptions: options})
+		require.NoError(t, err)
+		_, err = client.GetChunk(ctx, repository, "wrong digest", "bytes=0-999", nil)
+		require.Error(t, err)
+	})
+
+	t.Run("MountBlob", func(t *testing.T) {
+		repository2, _ := buildImage(t)
+		startRecording(t)
+		endpoint, cred, options := getEndpointCredAndClientOptions(t)
+		client, err := NewBlobClient(endpoint, cred, &BlobClientOptions{ClientOptions: options})
+		require.NoError(t, err)
+		res, err := client.MountBlob(ctx, repository2, repository, blobDigest, nil)
+		require.NoError(t, err)
+		require.NotEmpty(t, res.Location)
+	})
+}
 
 func TestBlobClient_CancelUpload(t *testing.T) {
 	startRecording(t)
 	endpoint, cred, options := getEndpointCredAndClientOptions(t)
-	ctx := context.Background()
 	client, err := NewBlobClient(endpoint, cred, &BlobClientOptions{ClientOptions: options})
 	require.NoError(t, err)
 	startRes, err := client.StartUpload(ctx, "hello-world", nil)
@@ -40,67 +207,22 @@ func TestBlobClient_CancelUpload(t *testing.T) {
 func TestBlobClient_CancelUpload_fail(t *testing.T) {
 	startRecording(t)
 	endpoint, cred, options := getEndpointCredAndClientOptions(t)
-	ctx := context.Background()
 	client, err := NewBlobClient(endpoint, cred, &BlobClientOptions{ClientOptions: options})
 	require.NoError(t, err)
 	_, err = client.CancelUpload(ctx, "wrong location", nil)
 	require.Error(t, err)
 }
 
-func TestBlobClient_CheckBlobExists(t *testing.T) {
-	startRecording(t)
-	endpoint, cred, options := getEndpointCredAndClientOptions(t)
-	ctx := context.Background()
-	client, err := NewBlobClient(endpoint, cred, &BlobClientOptions{ClientOptions: options})
-	require.NoError(t, err)
-	res, err := client.CheckBlobExists(ctx, "alpine", alpineBlobDigest, nil)
-	require.NoError(t, err)
-	require.Equal(t, alpineBlobDigest, *res.DockerContentDigest)
-}
-
-func TestBlobClient_CheckBlobExists_fail(t *testing.T) {
-	startRecording(t)
-	endpoint, cred, options := getEndpointCredAndClientOptions(t)
-	ctx := context.Background()
-	client, err := NewBlobClient(endpoint, cred, &BlobClientOptions{ClientOptions: options})
-	require.NoError(t, err)
-	_, err = client.CheckBlobExists(ctx, "alpine", "wrong digest", nil)
-	require.Error(t, err)
-}
-
 func TestBlobClient_CheckBlobExists_empty(t *testing.T) {
-	ctx := context.Background()
 	client, err := NewBlobClient("endpoint", nil, nil)
 	require.NoError(t, err)
 	_, err = client.CheckBlobExists(ctx, "", "digest", nil)
 	require.Error(t, err)
-	_, err = client.CheckBlobExists(ctx, "alpine", "", nil)
-	require.Error(t, err)
-}
-
-func TestBlobClient_CheckChunkExists(t *testing.T) {
-	startRecording(t)
-	endpoint, cred, options := getEndpointCredAndClientOptions(t)
-	ctx := context.Background()
-	client, err := NewBlobClient(endpoint, cred, &BlobClientOptions{ClientOptions: options})
-	require.NoError(t, err)
-	res, err := client.CheckChunkExists(ctx, "alpine", alpineBlobDigest, "bytes=0-299", nil)
-	require.NoError(t, err)
-	require.NotEmpty(t, *res.ContentLength)
-}
-
-func TestBlobClient_CheckChunkExists_fail(t *testing.T) {
-	startRecording(t)
-	endpoint, cred, options := getEndpointCredAndClientOptions(t)
-	ctx := context.Background()
-	client, err := NewBlobClient(endpoint, cred, &BlobClientOptions{ClientOptions: options})
-	require.NoError(t, err)
-	_, err = client.CheckChunkExists(ctx, "alpine", "wrong digest", "bytes=0-299", nil)
+	_, err = client.CheckBlobExists(ctx, "repository", "", nil)
 	require.Error(t, err)
 }
 
 func TestBlobClient_CheckChunkExists_empty(t *testing.T) {
-	ctx := context.Background()
 	client, err := NewBlobClient("endpoint", nil, nil)
 	require.NoError(t, err)
 	_, err = client.CheckChunkExists(ctx, "", "digest", "range", nil)
@@ -109,48 +231,18 @@ func TestBlobClient_CheckChunkExists_empty(t *testing.T) {
 	require.Error(t, err)
 }
 
-func TestBlobClient_completeUpload_wrongDigest(t *testing.T) {
-	startRecording(t)
-	endpoint, cred, options := getEndpointCredAndClientOptions(t)
-	ctx := context.Background()
-	client, err := NewBlobClient(endpoint, cred, &BlobClientOptions{ClientOptions: options})
-	require.NoError(t, err)
-	getRes, err := client.GetBlob(ctx, "alpine", alpineBlobDigest, nil)
-	require.NoError(t, err)
-	blob, err := io.ReadAll(getRes.BlobData)
-	require.NoError(t, err)
-	startRes, err := client.StartUpload(ctx, "hello-world", nil)
-	require.NoError(t, err)
-	uploadResp, err := client.uploadChunk(ctx, *startRes.Location, streaming.NopCloser(bytes.NewReader(blob)), nil)
-	require.NoError(t, err)
-	_, err = client.completeUpload(ctx, "sha256:00000000", *uploadResp.Location, nil)
-	require.Error(t, err)
-}
-
 func TestBlobClient_DeleteBlob(t *testing.T) {
-	d := "sha256:bfe296a525011f7eb76075d688c681ca4feaad5afe3b142b36e30f1a171dc99a"
-	require.NotEqual(t, d, alpineBlobDigest, "test bug: deleting a blob used in other tests")
+	repository, imgDigest := buildImage(t)
+	blobDigest := blobDigest(t, repository, imgDigest)
 	startRecording(t)
 	endpoint, cred, options := getEndpointCredAndClientOptions(t)
-	ctx := context.Background()
 	client, err := NewBlobClient(endpoint, cred, &BlobClientOptions{ClientOptions: options})
 	require.NoError(t, err)
-	_, err = client.DeleteBlob(ctx, "alpine", d, nil)
+	_, err = client.DeleteBlob(ctx, repository, blobDigest, nil)
 	require.NoError(t, err)
-}
-
-func TestBlobClient_DeleteBlob_fail(t *testing.T) {
-	startRecording(t)
-	endpoint, cred, options := getEndpointCredAndClientOptions(t)
-	ctx := context.Background()
-	client, err := NewBlobClient(endpoint, cred, &BlobClientOptions{ClientOptions: options})
-	require.NoError(t, err)
-	_, err = client.DeleteBlob(ctx, "alpine", "wrong digest", nil)
-	require.Error(t, err)
 }
 
 func TestBlobClient_DeleteBlob_empty(t *testing.T) {
-	ctx := context.Background()
 	client, err := NewBlobClient("endpoint", nil, nil)
 	require.NoError(t, err)
 	_, err = client.DeleteBlob(ctx, "", "digest", nil)
@@ -159,19 +251,13 @@ func TestBlobClient_DeleteBlob_empty(t *testing.T) {
 	require.Error(t, err)
 }
 
-func TestBlobClient_GetBlob(t *testing.T) {
-	startRecording(t)
-	endpoint, cred, options := getEndpointCredAndClientOptions(t)
-	ctx := context.Background()
-	client, err := NewBlobClient(endpoint, cred, &BlobClientOptions{ClientOptions: options})
+func TestBlobClient_GetBlob_empty(t *testing.T) {
+	client, err := NewBlobClient("endpoint", nil, nil)
 	require.NoError(t, err)
-	res, err := client.GetBlob(ctx, "alpine", alpineBlobDigest, nil)
-	require.NoError(t, err)
-	require.NotEmpty(t, *res.ContentLength)
-	reader, err := NewDigestValidationReader(alpineBlobDigest, res.BlobData)
-	require.NoError(t, err)
-	_, err = io.ReadAll(reader)
-	require.NoError(t, err)
+	_, err = client.GetBlob(ctx, "", "digest", nil)
+	require.Error(t, err)
+	_, err = client.GetBlob(ctx, "repository", "", nil)
+	require.Error(t, err)
 }
 
 func TestBlobClient_GetBlob_wrongDigest(t *testing.T) {
@@ -185,7 +271,6 @@ func TestBlobClient_GetBlob_wrongDigest(t *testing.T) {
 		azcoreClient,
 		srv.URL(),
 	}
-	ctx := context.Background()
 	resp, err := client.GetBlob(ctx, "name", "sha256:9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08", nil)
 	require.NoError(t, err)
 	reader, err := NewDigestValidationReader("sha256:wrong", resp.BlobData)
@@ -194,79 +279,18 @@ func TestBlobClient_GetBlob_wrongDigest(t *testing.T) {
 	require.Error(t, err, ErrMismatchedHash)
 }
 
-func TestBlobClient_GetBlob_fail(t *testing.T) {
-	startRecording(t)
-	endpoint, cred, options := getEndpointCredAndClientOptions(t)
-	ctx := context.Background()
-	client, err := NewBlobClient(endpoint, cred, &BlobClientOptions{ClientOptions: options})
-	require.NoError(t, err)
-	_, err = client.GetBlob(ctx, "alpine", "wrong digest", nil)
-	require.Error(t, err)
-}
-
-func TestBlobClient_GetBlob_empty(t *testing.T) {
-	ctx := context.Background()
-	client, err := NewBlobClient("endpoint", nil, nil)
-	require.NoError(t, err)
-	_, err = client.GetBlob(ctx, "", "digest", nil)
-	require.Error(t, err)
-	_, err = client.GetBlob(ctx, "alpine", "", nil)
-	require.Error(t, err)
-}
-
-func TestBlobClient_GetChunk(t *testing.T) {
-	startRecording(t)
-	endpoint, cred, options := getEndpointCredAndClientOptions(t)
-	ctx := context.Background()
-	client, err := NewBlobClient(endpoint, cred, &BlobClientOptions{ClientOptions: options})
-	require.NoError(t, err)
-	chunkSize := 1000
-	current := 0
-	blob := bytes.NewBuffer(nil)
-	for {
-		res, err := client.GetChunk(ctx, "alpine", alpineBlobDigest, fmt.Sprintf("bytes=%d-%d", current, current+chunkSize-1), nil)
-		require.NoError(t, err)
-		chunk, err := io.ReadAll(res.ChunkData)
-		require.NoError(t, err)
-		_, err = blob.Write(chunk)
-		require.NoError(t, err)
-		totalSize, _ := strconv.Atoi(strings.Split(*res.ContentRange, "/")[1])
-		currentRangeEnd, _ := strconv.Atoi(strings.Split(strings.Split(*res.ContentRange, "/")[0], "-")[1])
-		if totalSize == currentRangeEnd+1 {
-			break
-		}
-		current += chunkSize
-	}
-	reader, err := NewDigestValidationReader(alpineBlobDigest, blob)
-	require.NoError(t, err)
-	_, err = io.ReadAll(reader)
-	require.NoError(t, err)
-}
-
-func TestBlobClient_GetChunk_fail(t *testing.T) {
-	startRecording(t)
-	endpoint, cred, options := getEndpointCredAndClientOptions(t)
-	ctx := context.Background()
-	client, err := NewBlobClient(endpoint, cred, &BlobClientOptions{ClientOptions: options})
-	require.NoError(t, err)
-	_, err = client.GetChunk(ctx, "alpine", "wrong digest", "bytes=0-999", nil)
-	require.Error(t, err)
-}
-
 func TestBlobClient_GetChunk_empty(t *testing.T) {
-	ctx := context.Background()
 	client, err := NewBlobClient("endpoint", nil, nil)
 	require.NoError(t, err)
 	_, err = client.GetChunk(ctx, "", "digest", "bytes=0-999", nil)
 	require.Error(t, err)
-	_, err = client.GetChunk(ctx, "alpine", "", "bytes=0-999", nil)
+	_, err = client.GetChunk(ctx, "repository", "", "bytes=0-999", nil)
 	require.Error(t, err)
 }
 
 func TestBlobClient_GetUploadStatus(t *testing.T) {
 	startRecording(t)
 	endpoint, cred, options := getEndpointCredAndClientOptions(t)
-	ctx := context.Background()
 	client, err := NewBlobClient(endpoint, cred, &BlobClientOptions{ClientOptions: options})
 	require.NoError(t, err)
 	startRes, err := client.StartUpload(ctx, "hello-world", nil)
@@ -281,28 +305,15 @@ func TestBlobClient_GetUploadStatus(t *testing.T) {
 func TestBlobClient_GetUploadStatus_fail(t *testing.T) {
 	startRecording(t)
 	endpoint, cred, options := getEndpointCredAndClientOptions(t)
-	ctx := context.Background()
 	client, err := NewBlobClient(endpoint, cred, &BlobClientOptions{ClientOptions: options})
 	require.NoError(t, err)
 	_, err = client.GetUploadStatus(ctx, "wrong location", nil)
 	require.Error(t, err)
 }
 
-func TestBlobClient_MountBlob(t *testing.T) {
-	startRecording(t)
-	endpoint, cred, options := getEndpointCredAndClientOptions(t)
-	ctx := context.Background()
-	client, err := NewBlobClient(endpoint, cred, &BlobClientOptions{ClientOptions: options})
-	require.NoError(t, err)
-	res, err := client.MountBlob(ctx, "hello-world", "alpine", alpineBlobDigest, nil)
-	require.NoError(t, err)
-	require.NotEmpty(t, res.Location)
-}
-
 func TestBlobClient_MountBlob_fail(t *testing.T) {
 	startRecording(t)
 	endpoint, cred, options := getEndpointCredAndClientOptions(t)
-	ctx := context.Background()
 	client, err := NewBlobClient(endpoint, cred, &BlobClientOptions{ClientOptions: options})
 	require.NoError(t, err)
 	_, err = client.MountBlob(ctx, "wrong name", "wrong from", "wrong mount", nil)
@@ -310,7 +321,6 @@ func TestBlobClient_MountBlob_fail(t *testing.T) {
 }
 
 func TestBlobClient_MountBlob_empty(t *testing.T) {
-	ctx := context.Background()
 	client, err := NewBlobClient("endpoint", nil, nil)
 	require.NoError(t, err)
 	_, err = client.MountBlob(ctx, "", "from", "mount", nil)
@@ -320,7 +330,6 @@ func TestBlobClient_MountBlob_empty(t *testing.T) {
 func TestBlobClient_StartUpload(t *testing.T) {
 	startRecording(t)
 	endpoint, cred, options := getEndpointCredAndClientOptions(t)
-	ctx := context.Background()
 	client, err := NewBlobClient(endpoint, cred, &BlobClientOptions{ClientOptions: options})
 	require.NoError(t, err)
 	startRes, err := client.StartUpload(ctx, "hello-world", nil)
@@ -331,7 +340,6 @@ func TestBlobClient_StartUpload(t *testing.T) {
 }
 
 func TestBlobClient_StartUpload_empty(t *testing.T) {
-	ctx := context.Background()
 	client, err := NewBlobClient("endpoint", nil, nil)
 	require.NoError(t, err)
 	_, err = client.StartUpload(ctx, "", nil)
@@ -345,7 +353,6 @@ func TestBlobClient_wrongEndpoint(t *testing.T) {
 		azcoreClient,
 		"wrong-endpoint",
 	}
-	ctx := context.Background()
 	_, err = client.CancelUpload(ctx, "location", nil)
 	require.Error(t, err)
 	_, err = client.CheckBlobExists(ctx, "name", "digest", nil)

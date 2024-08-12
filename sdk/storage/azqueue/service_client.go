@@ -24,6 +24,11 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/sas"
 )
 
+// ClientOptions contains the optional parameters when creating a ServiceClient or QueueClient.
+type ClientOptions struct {
+	azcore.ClientOptions
+}
+
 // ServiceClient represents a URL to the Azure Queue Storage service allowing you to manipulate queues.
 type ServiceClient base.Client[generated.ServiceClient]
 

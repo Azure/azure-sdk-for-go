@@ -664,8 +664,7 @@ type ShareClientChangeLeaseOptions struct {
 // ShareClientCreateOptions contains the optional parameters for the ShareClient.Create method.
 type ShareClientCreateOptions struct {
 	// Specifies the access tier of the share.
-	AccessTier                           *ShareAccessTier
-	EnableSnapshotVirtualDirectoryAccess *bool
+	AccessTier *ShareAccessTier
 
 	// Protocols to enable on the share.
 	EnabledProtocols *string
@@ -810,8 +809,7 @@ type ShareClientSetMetadataOptions struct {
 // ShareClientSetPropertiesOptions contains the optional parameters for the ShareClient.SetProperties method.
 type ShareClientSetPropertiesOptions struct {
 	// Specifies the access tier of the share.
-	AccessTier                           *ShareAccessTier
-	EnableSnapshotVirtualDirectoryAccess *bool
+	AccessTier *ShareAccessTier
 
 	// Specifies the maximum size of the share, in gigabytes.
 	Quota *int32

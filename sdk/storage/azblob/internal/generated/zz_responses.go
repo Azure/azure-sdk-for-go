@@ -490,9 +490,6 @@ type BlobClientGetAccountInfoResponse struct {
 	// Date contains the information returned from the Date header response.
 	Date *time.Time
 
-	// IsHierarchicalNamespaceEnabled contains the information returned from the x-ms-is-hns-enabled header response.
-	IsHierarchicalNamespaceEnabled *bool
-
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
 
@@ -1373,9 +1370,6 @@ type ContainerClientGetAccountInfoResponse struct {
 
 	// Date contains the information returned from the Date header response.
 	Date *time.Time
-
-	// IsHierarchicalNamespaceEnabled contains the information returned from the x-ms-is-hns-enabled header response.
-	IsHierarchicalNamespaceEnabled *bool
 
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string

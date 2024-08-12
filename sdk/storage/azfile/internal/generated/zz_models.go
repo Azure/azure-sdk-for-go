@@ -265,13 +265,12 @@ type ShareProperties struct {
 	LastModified *time.Time `xml:"Last-Modified"`
 
 	// REQUIRED
-	Quota                                *int32     `xml:"Quota"`
-	AccessTier                           *string    `xml:"AccessTier"`
-	AccessTierChangeTime                 *time.Time `xml:"AccessTierChangeTime"`
-	AccessTierTransitionState            *string    `xml:"AccessTierTransitionState"`
-	DeletedTime                          *time.Time `xml:"DeletedTime"`
-	EnableSnapshotVirtualDirectoryAccess *bool      `xml:"EnableSnapshotVirtualDirectoryAccess"`
-	EnabledProtocols                     *string    `xml:"EnabledProtocols"`
+	Quota                     *int32     `xml:"Quota"`
+	AccessTier                *string    `xml:"AccessTier"`
+	AccessTierChangeTime      *time.Time `xml:"AccessTierChangeTime"`
+	AccessTierTransitionState *string    `xml:"AccessTierTransitionState"`
+	DeletedTime               *time.Time `xml:"DeletedTime"`
+	EnabledProtocols          *string    `xml:"EnabledProtocols"`
 
 	// When a share is leased, specifies whether the lease is of infinite or fixed duration.
 	LeaseDuration *LeaseDurationType `xml:"LeaseDuration"`
@@ -313,8 +312,7 @@ type SMBMultichannel struct {
 }
 
 type StorageError struct {
-	AuthenticationErrorDetail *string
-	Message                   *string
+	Message *string
 }
 
 // StorageServiceProperties - Storage service properties.

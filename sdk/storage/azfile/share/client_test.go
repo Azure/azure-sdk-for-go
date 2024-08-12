@@ -310,6 +310,7 @@ func (s *ShareRecordedTestsSuite) TestAuthenticationErrorDetailError() {
 	_, err = shareClient.SetAccessPolicy(context.Background(), &share.SetAccessPolicyOptions{
 		ShareACL: signedIdentifiers,
 	})
+	_require.NoError(err)
 
 	sasQueryParams, err := sas.SignatureValues{
 		Protocol:   sas.ProtocolHTTPS,

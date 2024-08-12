@@ -17,7 +17,9 @@ import (
 
 func TestItemCRUD(t *testing.T) {
 	emulatorTests := newEmulatorTests(t)
-	client := emulatorTests.getClient(t)
+	client := emulatorTests.getClient(t, newSpanValidator(t, spanMatcher{
+		ExpectedSpans: []string{"create_item aContainer", "read_item aContainer", "replace_item aContainer", "upsert_item aContainer", "delete_item aContainer", "patch_item aContainer"},
+	}))
 
 	database := emulatorTests.createDatabase(t, context.TODO(), client, "itemCRUD")
 	defer emulatorTests.deleteDatabase(t, context.TODO(), database)
@@ -191,7 +193,9 @@ func TestItemCRUD(t *testing.T) {
 
 func TestItemCRUDforNullPartitionKey(t *testing.T) {
 	emulatorTests := newEmulatorTests(t)
-	client := emulatorTests.getClient(t)
+	client := emulatorTests.getClient(t, newSpanValidator(t, spanMatcher{
+		ExpectedSpans: []string{"create_item aContainer", "read_item aContainer", "replace_item aContainer", "upsert_item aContainer", "delete_item aContainer", "patch_item aContainer"},
+	}))
 
 	database := emulatorTests.createDatabase(t, context.TODO(), client, "itemCRUD")
 	defer emulatorTests.deleteDatabase(t, context.TODO(), database)
@@ -366,7 +370,9 @@ func TestItemCRUDforNullPartitionKey(t *testing.T) {
 
 func TestItemConcurrent(t *testing.T) {
 	emulatorTests := newEmulatorTests(t)
-	client := emulatorTests.getClient(t)
+	client := emulatorTests.getClient(t, newSpanValidator(t, spanMatcher{
+		ExpectedSpans: []string{},
+	}))
 
 	database := emulatorTests.createDatabase(t, context.TODO(), client, "itemCRUD")
 	defer emulatorTests.deleteDatabase(t, context.TODO(), database)
@@ -417,7 +423,9 @@ func TestItemConcurrent(t *testing.T) {
 
 func TestItemIdEncodingRoutingGW(t *testing.T) {
 	emulatorTests := newEmulatorTests(t)
-	client := emulatorTests.getClient(t)
+	client := emulatorTests.getClient(t, newSpanValidator(t, spanMatcher{
+		ExpectedSpans: []string{},
+	}))
 
 	database := emulatorTests.createDatabase(t, context.TODO(), client, "itemCRUD")
 	defer emulatorTests.deleteDatabase(t, context.TODO(), database)
@@ -456,7 +464,9 @@ func TestItemIdEncodingRoutingGW(t *testing.T) {
 
 func TestItemIdEncodingComputeGW(t *testing.T) {
 	emulatorTests := newEmulatorTestsWithComputeGateway(t)
-	client := emulatorTests.getClient(t)
+	client := emulatorTests.getClient(t, newSpanValidator(t, spanMatcher{
+		ExpectedSpans: []string{},
+	}))
 
 	database := emulatorTests.createDatabase(t, context.TODO(), client, "itemCRUD")
 	defer emulatorTests.deleteDatabase(t, context.TODO(), database)

@@ -3,5 +3,9 @@
 
 package azcosmos
 
-// serviceLibVersion is the semantic version (see http://semver.org) of this module.
-const serviceLibVersion = "v1.0.4"
+const (
+	moduleName = "github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos"
+
+	// serviceLibVersion is the semantic version (see http://semver.org) of this module.
+	serviceLibVersion = "v1.0.4"
+)

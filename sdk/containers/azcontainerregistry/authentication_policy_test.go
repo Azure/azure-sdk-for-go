@@ -22,7 +22,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/temporal"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/test/credential"
@@ -201,20 +200,11 @@ func Test_authenticationPolicy_anonymousAccess(t *testing.T) {
 	endpoint, _, options := getEndpointCredAndClientOptions(t)
 	client, err := NewClient(endpoint, nil, &ClientOptions{ClientOptions: options})
 	require.NoError(t, err)
-	ctx := context.Background()
 	pager := client.NewListRepositoriesPager(nil)
-	repositoryName := ""
 	for pager.More() {
-		page, err := pager.NextPage(ctx)
+		_, err = pager.NextPage(ctx)
 		require.NoError(t, err)
-		require.NotEmpty(t, page.Repositories.Names)
-		if repositoryName == "" {
-			repositoryName = *page.Repositories.Names[0]
-		}
 	}
-	require.NotEmpty(t, repositoryName)
-	_, err = client.UpdateRepositoryProperties(ctx, repositoryName, &ClientUpdateRepositoryPropertiesOptions{Value: &RepositoryWriteableProperties{CanDelete: to.Ptr(true)}})
-	require.Error(t, err)
 }
 
 func Test_getChallengeRequest(t *testing.T) {

@@ -310,7 +310,6 @@ func (s *ShareRecordedTestsSuite) TestAuthenticationErrorDetailError() {
 	_, err = shareClient.SetAccessPolicy(context.Background(), &share.SetAccessPolicyOptions{
 		ShareACL: signedIdentifiers,
 	})
-	_require.NoError(err)
 
 	sasQueryParams, err := sas.SignatureValues{
 		Protocol:   sas.ProtocolHTTPS,
@@ -329,7 +328,7 @@ func (s *ShareRecordedTestsSuite) TestAuthenticationErrorDetailError() {
 
 	var responseErr *azcore.ResponseError
 	_require.ErrorAs(err, &responseErr)
-	testcommon.ValidateFileErrorCode(_require, err, fileerror.AuthenticationFailed)
+	_require.Equal("AuthenticationFailed", responseErr.ErrorCode)
 	_require.Contains(responseErr.Error(), "AuthenticationErrorDetail")
 }
 

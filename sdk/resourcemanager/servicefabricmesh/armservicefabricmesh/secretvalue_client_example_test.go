@@ -32,7 +32,7 @@ func ExampleSecretValueClient_Create() {
 	res, err := clientFactory.NewSecretValueClient().Create(ctx, "sbz_demo", "dbConnectionString", "v1", armservicefabricmesh.SecretValueResourceDescription{
 		Name: to.Ptr("v1"),
 		Properties: &armservicefabricmesh.SecretValueResourceProperties{
-			Value: to.Ptr("mongodb://contoso123:0Fc3IolnL12312asdfawejunASDF@asdfYXX2t8a97kghVcUzcDv98hawelufhawefafnoQRGwNj2nMPL1Y9qsIr9Srdw==@contoso123.documents.azure.com:10255/mydatabase?ssl=true"),
+			Value: to.Ptr("mongodb://fakeconnectionstring"),
 		},
 	}, nil)
 	if err != nil {
@@ -163,6 +163,6 @@ func ExampleSecretValueClient_ListValue() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.SecretValue = armservicefabricmesh.SecretValue{
-	// 	Value: to.Ptr("mongodb://contoso123:0Fc3IolnL12312asdfawejunASDF@asdfYXX2t8a97kghVcUzcDv98hawelufhawefafnoQRGwNj2nMPL1Y9qsIr9Srdw==@contoso123.documents.azure.com:10255/mydatabase?ssl=true"),
+	// 	Value: to.Ptr("mongodb://fakeconnectionstring"),
 	// }
 }

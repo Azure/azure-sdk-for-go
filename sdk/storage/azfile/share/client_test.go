@@ -329,7 +329,7 @@ func (s *ShareRecordedTestsSuite) TestAuthenticationErrorDetailError() {
 
 	var responseErr *azcore.ResponseError
 	_require.ErrorAs(err, &responseErr)
-	_require.Equal("AuthenticationFailed", responseErr.ErrorCode)
+	testcommon.ValidateFileErrorCode(_require, err, fileerror.AuthenticationFailed)
 	_require.Contains(responseErr.Error(), "AuthenticationErrorDetail")
 }
 

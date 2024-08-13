@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: D:/Go/src/github.com/Azure/dev/azure-sdk-for-go/sdk/resourcemanager/healthdataaiservices/armhealthdataaiservices/TempTypeSpecFiles/HealthDataAIServices.Management/examples/2024-02-28-preview/PrivateLinks_ListByDeidService_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/925b1febaaebc3e1d602c765168e8ddabc7153a5/specification/healthdataaiservices/HealthDataAIServices.Management/examples/2024-02-28-preview/PrivateLinks_ListByDeidService_MaximumSet_Gen.json
 func ExamplePrivateLinksClient_NewListByDeidServicePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

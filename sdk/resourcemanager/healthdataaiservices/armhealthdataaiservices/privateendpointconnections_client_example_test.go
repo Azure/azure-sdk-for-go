@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: D:/Go/src/github.com/Azure/dev/azure-sdk-for-go/sdk/resourcemanager/healthdataaiservices/armhealthdataaiservices/TempTypeSpecFiles/HealthDataAIServices.Management/examples/2024-02-28-preview/PrivateEndpointConnections_Create_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/925b1febaaebc3e1d602c765168e8ddabc7153a5/specification/healthdataaiservices/HealthDataAIServices.Management/examples/2024-02-28-preview/PrivateEndpointConnections_Create_MaximumSet_Gen.json
 func ExamplePrivateEndpointConnectionsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -74,7 +74,7 @@ func ExamplePrivateEndpointConnectionsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: D:/Go/src/github.com/Azure/dev/azure-sdk-for-go/sdk/resourcemanager/healthdataaiservices/armhealthdataaiservices/TempTypeSpecFiles/HealthDataAIServices.Management/examples/2024-02-28-preview/PrivateEndpointConnections_Delete_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/925b1febaaebc3e1d602c765168e8ddabc7153a5/specification/healthdataaiservices/HealthDataAIServices.Management/examples/2024-02-28-preview/PrivateEndpointConnections_Delete_MaximumSet_Gen.json
 func ExamplePrivateEndpointConnectionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -95,7 +95,7 @@ func ExamplePrivateEndpointConnectionsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: D:/Go/src/github.com/Azure/dev/azure-sdk-for-go/sdk/resourcemanager/healthdataaiservices/armhealthdataaiservices/TempTypeSpecFiles/HealthDataAIServices.Management/examples/2024-02-28-preview/PrivateEndpointConnections_Get_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/925b1febaaebc3e1d602c765168e8ddabc7153a5/specification/healthdataaiservices/HealthDataAIServices.Management/examples/2024-02-28-preview/PrivateEndpointConnections_Get_MaximumSet_Gen.json
 func ExamplePrivateEndpointConnectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -144,7 +144,7 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: D:/Go/src/github.com/Azure/dev/azure-sdk-for-go/sdk/resourcemanager/healthdataaiservices/armhealthdataaiservices/TempTypeSpecFiles/HealthDataAIServices.Management/examples/2024-02-28-preview/PrivateEndpointConnections_ListByDeidService_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/925b1febaaebc3e1d602c765168e8ddabc7153a5/specification/healthdataaiservices/HealthDataAIServices.Management/examples/2024-02-28-preview/PrivateEndpointConnections_ListByDeidService_MaximumSet_Gen.json
 func ExamplePrivateEndpointConnectionsClient_NewListByDeidServicePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

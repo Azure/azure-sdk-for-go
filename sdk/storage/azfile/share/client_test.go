@@ -9,6 +9,7 @@ package share_test
 import (
 	"context"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/fileerror"
@@ -276,6 +277,60 @@ func (s *ShareRecordedTestsSuite) TestShareCreateNilMetadata() {
 	response, err := shareClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
 	_require.Len(response.Metadata, 0)
+}
+
+func (s *ShareRecordedTestsSuite) TestAuthenticationErrorDetailError() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	cred, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
+	_require.NoError(err)
+
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	id := "testAccessPolicy"
+	ps := share.AccessPolicyPermission{
+		Write: true,
+	}
+	_require.NoError(err)
+
+	signedIdentifiers := make([]*share.SignedIdentifier, 0)
+	signedIdentifiers = append(signedIdentifiers, &share.SignedIdentifier{
+		AccessPolicy: &share.AccessPolicy{
+			Expiry:     to.Ptr(time.Now().Add(-1 * time.Hour)),
+			Permission: to.Ptr(ps.String()),
+		},
+		ID: &id,
+	})
+	_, err = shareClient.SetAccessPolicy(context.Background(), &share.SetAccessPolicyOptions{
+		ShareACL: signedIdentifiers,
+	})
+	_require.NoError(err)
+
+	sasQueryParams, err := sas.SignatureValues{
+		Protocol:   sas.ProtocolHTTPS,
+		Identifier: id,
+		ShareName:  shareName,
+	}.SignWithSharedKey(cred)
+	_require.NoError(err)
+
+	shareSAS := shareClient.URL() + "?" + sasQueryParams.Encode()
+	shareClientSAS, err := share.NewClientWithNoCredential(shareSAS, nil)
+	_require.NoError(err)
+
+	dirClient := testcommon.GetDirectoryClient(testcommon.GenerateDirectoryName(testName), shareClientSAS)
+	_, err = dirClient.Create(context.Background(), nil)
+	_require.Error(err)
+
+	var responseErr *azcore.ResponseError
+	_require.ErrorAs(err, &responseErr)
+	testcommon.ValidateFileErrorCode(_require, err, fileerror.AuthenticationFailed)
+	_require.Contains(responseErr.Error(), "AuthenticationErrorDetail")
 }
 
 func (s *ShareRecordedTestsSuite) TestShareCreateNegativeInvalidName() {

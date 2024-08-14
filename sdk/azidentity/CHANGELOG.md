@@ -3,6 +3,7 @@
 ## 1.8.0-beta.3 (Unreleased)
 
 ### Features Added
+* Added `ObjectID` type for `ManagedIdentityCredentialOptions.ID`
 
 ### Breaking Changes
 

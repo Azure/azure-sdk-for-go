@@ -165,8 +165,8 @@ func newManagedIdentityClient(options *ManagedIdentityCredentialOptions) (*manag
 	} else if endpoint, ok := os.LookupEnv(msiEndpoint); ok {
 		c.endpoint = endpoint
 		if _, ok := os.LookupEnv(msiSecret); ok {
-			if options.ID != nil && options.ID.idKind() == miResourceID {
-				return nil, errors.New("the Azure ML API doesn't support specifying a managed identity by resource ID")
+			if options.ID != nil && options.ID.idKind() != miClientID {
+				return nil, errors.New("the Azure ML API supports specifying a user-assigned managed identity by client ID only")
 			}
 			env = "Azure ML"
 			c.msiType = msiTypeAzureML
@@ -348,10 +348,13 @@ func (c *managedIdentityClient) createIMDSAuthRequest(ctx context.Context, id Ma
 	q.Add("api-version", imdsAPIVersion)
 	q.Add("resource", strings.Join(scopes, " "))
 	if id != nil {
-		if id.idKind() == miResourceID {
-			q.Add(msiResID, id.String())
-		} else {
+		switch id.idKind() {
+		case miClientID:
 			q.Add(qpClientID, id.String())
+		case miObjectID:
+			q.Add("object_id", id.String())
+		case miResourceID:
+			q.Add(msiResID, id.String())
 		}
 	}
 	request.Raw().URL.RawQuery = q.Encode()
@@ -368,10 +371,13 @@ func (c *managedIdentityClient) createAppServiceAuthRequest(ctx context.Context,
 	q.Add("api-version", "2019-08-01")
 	q.Add("resource", scopes[0])
 	if id != nil {
-		if id.idKind() == miResourceID {
-			q.Add(miResID, id.String())
-		} else {
+		switch id.idKind() {
+		case miClientID:
 			q.Add(qpClientID, id.String())
+		case miObjectID:
+			q.Add("principal_id", id.String())
+		case miResourceID:
+			q.Add(miResID, id.String())
 		}
 	}
 	request.Raw().URL.RawQuery = q.Encode()
@@ -389,10 +395,13 @@ func (c *managedIdentityClient) createAzureMLAuthRequest(ctx context.Context, id
 	q.Add("resource", strings.Join(scopes, " "))
 	q.Add("clientid", os.Getenv(defaultIdentityClientID))
 	if id != nil {
-		if id.idKind() == miResourceID {
-			return nil, newAuthenticationFailedError(credNameManagedIdentity, "Azure ML doesn't support specifying a managed identity by resource ID", nil, nil)
-		} else {
+		switch id.idKind() {
+		case miClientID:
 			q.Set("clientid", id.String())
+		case miObjectID:
+			return nil, newAuthenticationFailedError(credNameManagedIdentity, "Azure ML doesn't support specifying a managed identity by object ID", nil, nil)
+		case miResourceID:
+			return nil, newAuthenticationFailedError(credNameManagedIdentity, "Azure ML doesn't support specifying a managed identity by resource ID", nil, nil)
 		}
 	}
 	request.Raw().URL.RawQuery = q.Encode()

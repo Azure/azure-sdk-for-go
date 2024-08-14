@@ -620,13 +620,15 @@ func PossibleGrainParameterValues() []GrainParameter {
 type GranularityType string
 
 const (
-	GranularityTypeDaily GranularityType = "Daily"
+	GranularityTypeDaily   GranularityType = "Daily"
+	GranularityTypeMonthly GranularityType = "Monthly"
 )
 
 // PossibleGranularityTypeValues returns the possible values for the GranularityType const type.
 func PossibleGranularityTypeValues() []GranularityType {
 	return []GranularityType{
 		GranularityTypeDaily,
+		GranularityTypeMonthly,
 	}
 }
 

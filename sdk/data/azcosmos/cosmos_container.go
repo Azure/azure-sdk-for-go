@@ -138,9 +138,8 @@ func (c *ContainerClient) Delete(
 	}
 
 	operationContext := pipelineRequestOptions{
-		resourceType:     resourceTypeCollection,
-		resourceAddress:  c.link,
-		isWriteOperation: true,
+		resourceType:    resourceTypeCollection,
+		resourceAddress: c.link,
 	}
 
 	path, err := generatePathForNameBased(resourceTypeCollection, c.link, false)

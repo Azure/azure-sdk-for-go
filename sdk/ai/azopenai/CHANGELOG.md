@@ -1,16 +1,10 @@
 # Release History
 
-## 0.6.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 0.6.1 (2024-08-14)
 
 ### Bugs Fixed
 
 - Client now respects the `InsecureAllowCredentialWithHTTP` flag for allowing non-HTTPS connections. Thank you @ukrocks007!  (PR#23188)
-
-### Other Changes
 
 ## 0.6.0 (2024-06-11)
 

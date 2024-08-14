@@ -41,11 +41,11 @@ extends:
         - task: AzureCLI@2
           displayName: Set OIDC token
           inputs:
-            azureSubscription: azure-sdk-tests
-            scriptType: pscore
-            scriptLocation: inlineScript
             addSpnToEnvironment: true
+            azureSubscription: azure-sdk-tests
             inlineScript: Write-Host "##vso[task.setvariable variable=OIDC_TOKEN;]$($env:idToken)"
+            scriptLocation: inlineScript
+            scriptType: pscore
         MatrixConfigs:
           - Name: managed_identity_matrix
             GenerateVMJobs: true

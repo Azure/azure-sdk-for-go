@@ -4,7 +4,13 @@
 
 ### Features Added
 
+- New fields have been added:
+  - StorageBlobCreatedEventData: AccessTier
+  - StorageBlobTierChangedEventData: AccessTier and PreviousTier
+
 ### Breaking Changes
+
+- Models that were not system events (ex: ACSChatMessageEventInThreadBaseProperties), or referenced by system events, have been removed. 
 
 ### Bugs Fixed
 

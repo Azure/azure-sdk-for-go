@@ -137,11 +137,28 @@ func deleteUnneededFiles() {
 
 func doRemove() error {
 	modelsToRemove := []string{
-		// these are not events, themselves, but are just contained within
-		// other events.
+		// These types are base objects of some of our system events in the TypeSpec, giving them a simple way to share fields.
+		// Our generator handles this parent/child relationship by just inlining those properties into the children, so the base struct is just vestigial.
+		// Note that these have been annotated with @output, which is why they're not just clipped out using our normal "unused/unreferenced" type logic
+		// in the Go emitter.
+		"ACSChatEventBaseProperties",
+		"ACSChatEventInThreadBaseProperties",
+		"ACSChatMessageEventBaseProperties",
+		"ACSChatMessageEventInThreadBaseProperties",
+		"ACSChatThreadEventBaseProperties",
+		"ACSChatThreadEventInThreadBaseProperties",
+		"ACSRouterEventData",
+		"ACSRouterJobEventData",
+		"ACSRouterWorkerEventData",
+		"ACSSmsEventBaseProperties",
+		"AppConfigurationSnapshotEventData",
 		"AVSClusterEventData",
 		"AVSPrivateCloudEventData",
 		"AVSScriptExecutionEventData",
+		"ContainerServiceClusterSupportEventData",
+		"ContainerServiceNodePoolRollingEventData",
+		"ResourceNotificationsResourceDeletedEventData",
+		"ResourceNotificationsResourceUpdatedEventData",
 	}
 
 	for _, m := range modelsToRemove {

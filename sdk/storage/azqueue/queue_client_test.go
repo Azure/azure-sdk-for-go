@@ -9,6 +9,7 @@ package azqueue_test
 import (
 	"context"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/test/credential"
 	"os"
 	"strconv"
@@ -110,7 +111,10 @@ func (s *UnrecordedTestSuite) TestQueueClientUsingOauthWithCustomAudience() {
 	_require.NoError(err)
 
 	options := &azqueue.ClientOptions{Audience: "https://" + accountName + ".queue.core.windows.net"}
-	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
+	
+	transport, err := recording.NewRecordingHTTPClient(s.T(), nil)
+	require.NoError(s.T(), err)
+	options.Transport = transport
 
 	qClient, err := azqueue.NewQueueClient(queueURL, cred, nil)
 	_require.NoError(err)

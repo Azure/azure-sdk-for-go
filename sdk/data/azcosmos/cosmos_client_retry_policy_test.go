@@ -9,67 +9,14 @@ import (
 	"net"
 	"net/http"
 	"net/url"
-	"strings"
 	"testing"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/stretchr/testify/assert"
 )
-
-func TestRoutingSingleMasterDocumentWrite(t *testing.T) {
-	srv, closeFunc := mock.NewTLSServer()
-	defer closeFunc()
-
-	defaultEndpoint, err := url.Parse(srv.URL())
-	assert.NoError(t, err)
-
-	gemServer, gemClose := mock.NewTLSServer()
-	defer gemClose()
-	gemServer.SetResponse(mock.WithStatusCode(200))
-
-	internalPipeline := azruntime.NewPipeline("azcosmosgemtest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: gemServer})
-
-	gem := &globalEndpointManager{
-		clientEndpoint:      gemServer.URL(),
-		pipeline:            internalPipeline,
-		preferredLocations:  []string{"Central US"},
-		locationCache:       CreateMockLC(*defaultEndpoint, false),
-		refreshTimeInterval: defaultExpirationTime,
-		lastUpdateTime:      time.Time{},
-	}
-
-	retryPolicy := &clientRetryPolicy{gem: gem}
-	verifier := clientRetryPolicyVerifier{}
-
-	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerRetry: []policy.Policy{&verifier, retryPolicy}}, &policy.ClientOptions{Transport: srv})
-
-	srv.AppendResponse(
-		mock.WithStatusCode(201))
-
-	// Testing write requests
-	item := map[string]interface{}{
-		"id":    "1",
-		"value": "2",
-	}
-	marshalled, err := json.Marshal(item)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	client := &Client{endpoint: srv.URL(), endpointUrl: defaultEndpoint, internal: internalClient, gem: gem}
-	db, _ := client.NewDatabase("database_id")
-	container, _ := db.NewContainer("container_id")
-	_, err = container.CreateItem(context.TODO(), NewPartitionKeyString("1"), marshalled, nil)
-
-	assert.NoError(t, err)
-
-	// Request should have gone to primary region regardless of Preference because its Single Master
-	assert.Equal(t, verifier.requests[0].endpoint.Host, "")
-}
 
 func TestSessionNotAvailableSingleMaster(t *testing.T) {
 	srv, closeFunc := mock.NewTLSServer()
@@ -96,7 +43,7 @@ func TestSessionNotAvailableSingleMaster(t *testing.T) {
 	retryPolicy := &clientRetryPolicy{gem: gem}
 	verifier := clientRetryPolicyVerifier{}
 
-	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerRetry: []policy.Policy{&verifier, retryPolicy}}, &policy.ClientOptions{Transport: srv})
+	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerRetry: []policy.Policy{&verifier, retryPolicy}}, &policy.ClientOptions{Transport: srv})
 
 	// Setting up responses for consistent failures
 	srv.AppendResponse(
@@ -106,7 +53,7 @@ func TestSessionNotAvailableSingleMaster(t *testing.T) {
 		mock.WithHeader("x-ms-substatus", "1002"),
 		mock.WithStatusCode(404))
 
-	client := &Client{endpoint: srv.URL(), endpointUrl: defaultEndpoint, internal: internalClient, gem: gem}
+	client := &Client{endpoint: srv.URL(), pipeline: pl, gem: gem}
 	db, _ := client.NewDatabase("database_id")
 	container, _ := db.NewContainer("container_id")
 	_, err = container.ReadItem(context.TODO(), NewPartitionKeyString("1"), "doc1", nil)
@@ -183,7 +130,7 @@ func TestSessionNotAvailableMultiMaster(t *testing.T) {
 	retryPolicy := &clientRetryPolicy{gem: gem}
 	verifier := clientRetryPolicyVerifier{}
 
-	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerRetry: []policy.Policy{&verifier, retryPolicy}}, &policy.ClientOptions{Transport: srv})
+	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerRetry: []policy.Policy{&verifier, retryPolicy}}, &policy.ClientOptions{Transport: srv})
 
 	// Setting up responses for using all retries and failing
 	srv.AppendResponse(
@@ -199,7 +146,7 @@ func TestSessionNotAvailableMultiMaster(t *testing.T) {
 		mock.WithHeader("x-ms-substatus", "1002"),
 		mock.WithStatusCode(404))
 
-	client := &Client{endpoint: srv.URL(), endpointUrl: defaultEndpoint, internal: internalClient, gem: gem}
+	client := &Client{endpoint: srv.URL(), pipeline: pl, gem: gem}
 	db, _ := client.NewDatabase("database_id")
 	container, _ := db.NewContainer("container_id")
 	_, err = container.ReadItem(context.TODO(), NewPartitionKeyString("1"), "doc1", nil)
@@ -291,7 +238,7 @@ func TestReadEndpointFailure(t *testing.T) {
 	retryPolicy := &clientRetryPolicy{gem: gem}
 	verifier := clientRetryPolicyVerifier{}
 
-	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerRetry: []policy.Policy{&verifier, retryPolicy}}, &policy.ClientOptions{Transport: srv})
+	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerRetry: []policy.Policy{&verifier, retryPolicy}}, &policy.ClientOptions{Transport: srv})
 
 	// Setting up responses for retrying twice
 	srv.AppendResponse(
@@ -303,7 +250,7 @@ func TestReadEndpointFailure(t *testing.T) {
 	srv.AppendResponse(
 		mock.WithStatusCode(200))
 
-	client := &Client{endpoint: srv.URL(), endpointUrl: defaultEndpoint, internal: internalClient, gem: gem}
+	client := &Client{endpoint: srv.URL(), pipeline: pl, gem: gem}
 	db, _ := client.NewDatabase("database_id")
 	container, _ := db.NewContainer("container_id")
 	_, err = container.ReadItem(context.TODO(), NewPartitionKeyString("1"), "doc1", nil)
@@ -344,9 +291,9 @@ func TestWriteEndpointFailure(t *testing.T) {
 	retryPolicy := &clientRetryPolicy{gem: gem}
 	verifier := clientRetryPolicyVerifier{}
 
-	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerRetry: []policy.Policy{&verifier, retryPolicy}}, &policy.ClientOptions{Transport: srv})
+	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerRetry: []policy.Policy{&verifier, retryPolicy}}, &policy.ClientOptions{Transport: srv})
 
-	client := &Client{endpoint: srv.URL(), endpointUrl: defaultEndpoint, internal: internalClient, gem: gem}
+	client := &Client{endpoint: srv.URL(), pipeline: pl, gem: gem}
 	db, _ := client.NewDatabase("database_id")
 	container, _ := db.NewContainer("container_id")
 
@@ -407,9 +354,9 @@ func TestReadServiceUnavailable(t *testing.T) {
 	retryPolicy := &clientRetryPolicy{gem: gem}
 	verifier := clientRetryPolicyVerifier{}
 
-	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerRetry: []policy.Policy{&verifier, retryPolicy}}, &policy.ClientOptions{Transport: srv})
+	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerRetry: []policy.Policy{&verifier, retryPolicy}}, &policy.ClientOptions{Transport: srv})
 
-	client := &Client{endpoint: srv.URL(), endpointUrl: defaultEndpoint, internal: internalClient, gem: gem}
+	client := &Client{endpoint: srv.URL(), pipeline: pl, gem: gem}
 	db, _ := client.NewDatabase("database_id")
 	container, _ := db.NewContainer("container_id")
 
@@ -480,9 +427,9 @@ func TestWriteServiceUnavailable(t *testing.T) {
 	retryPolicy := &clientRetryPolicy{gem: gem}
 	verifier := clientRetryPolicyVerifier{}
 
-	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerRetry: []policy.Policy{&verifier, retryPolicy}}, &policy.ClientOptions{Transport: srv})
+	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerRetry: []policy.Policy{&verifier, retryPolicy}}, &policy.ClientOptions{Transport: srv})
 
-	client := &Client{endpoint: srv.URL(), endpointUrl: defaultEndpoint, internal: internalClient, gem: gem}
+	client := &Client{endpoint: srv.URL(), pipeline: pl, gem: gem}
 	db, _ := client.NewDatabase("database_id")
 	container, _ := db.NewContainer("container_id")
 
@@ -559,9 +506,9 @@ func TestDnsErrorRetry(t *testing.T) {
 	retryPolicy := &clientRetryPolicy{gem: gem}
 	verifier := clientRetryPolicyVerifier{}
 
-	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerRetry: []policy.Policy{&verifier, retryPolicy}}, &policy.ClientOptions{Transport: srv})
+	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerRetry: []policy.Policy{&verifier, retryPolicy}}, &policy.ClientOptions{Transport: srv})
 
-	client := &Client{endpoint: srv.URL(), endpointUrl: defaultEndpoint, internal: internalClient, gem: gem}
+	client := &Client{endpoint: srv.URL(), pipeline: pl, gem: gem}
 	db, _ := client.NewDatabase("database_id")
 	container, _ := db.NewContainer("container_id")
 
@@ -590,13 +537,11 @@ func CreateMockLC(defaultEndpoint url.URL, isMultiMaster bool) *locationCache {
 	dereferencedEndpoint := defaultEndpoint
 
 	for _, value := range availableWriteLocs {
-		regionalEndpoint, _ := url.Parse(defaultEndpoint.Scheme + "://" + defaultEndpoint.Hostname() + "-" + strings.ToLower(strings.ReplaceAll(value, " ", "-")))
-		availableWriteEndpointsByLoc[value] = *regionalEndpoint
+		availableWriteEndpointsByLoc[value] = defaultEndpoint
 	}
 
 	for _, value := range availableReadLocs {
-		regionalEndpoint, _ := url.Parse(defaultEndpoint.Scheme + "://" + defaultEndpoint.Hostname() + "-" + strings.ToLower(strings.ReplaceAll(value, " ", "-")))
-		availableReadEndpointsByLoc[value] = *regionalEndpoint
+		availableReadEndpointsByLoc[value] = defaultEndpoint
 	}
 
 	dbAccountLocationInfo := &databaseAccountLocationsInfo{
@@ -625,7 +570,6 @@ type clientRetryPolicyVerifier struct {
 
 type clientRetryPolicyVerifierRequest struct {
 	retryContext *retryContext
-	endpoint     *url.URL
 }
 
 func (p *clientRetryPolicyVerifier) Do(req *policy.Request) (*http.Response, error) {
@@ -634,7 +578,6 @@ func (p *clientRetryPolicyVerifier) Do(req *policy.Request) (*http.Response, err
 	o := retryContext{}
 	req.OperationValue(&o)
 	pr.retryContext = &o
-	pr.endpoint = req.Raw().URL
 	p.requests = append(p.requests, pr)
 	return resp, err
 }

@@ -1,6 +1,6 @@
 # Release History
 
-## 3.0.0 (2024-07-25)
+## 3.0.0 (2024-08-23)
 ### Breaking Changes
 
 - Field `EndTime`, `StartTime`, `Status`, `Template` of struct `JobExecution` has been removed

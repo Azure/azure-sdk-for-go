@@ -274,7 +274,7 @@ func TestGlobalEndpointManagerResolveEndpointSingleMasterDocumentOperation(t *te
 	serverEndpoint, _ := url.Parse("https://myaccount.documents.azure.com:443/")
 
 	mockLc := createLocationCacheForGem(*serverEndpoint, false)
-	
+
 	mockGem := globalEndpointManager{
 		clientEndpoint:      "https://localhost",
 		preferredLocations:  []string{"Central US"},
@@ -299,7 +299,7 @@ func TestGlobalEndpointManagerResolveEndpointMultiMasterDocumentOperation(t *tes
 	serverEndpoint, _ := url.Parse("https://myaccount.documents.azure.com:443/")
 
 	mockLc := createLocationCacheForGem(*serverEndpoint, true)
-	
+
 	mockGem := globalEndpointManager{
 		clientEndpoint:      "https://localhost",
 		preferredLocations:  []string{"Central US"},
@@ -324,7 +324,7 @@ func TestGlobalEndpointManagerResolveEndpointSingleMasterMetadataOperation(t *te
 	serverEndpoint, _ := url.Parse("https://myaccount.documents.azure.com:443/")
 
 	mockLc := createLocationCacheForGem(*serverEndpoint, false)
-	
+
 	mockGem := globalEndpointManager{
 		clientEndpoint:      "https://localhost",
 		preferredLocations:  []string{"Central US"},
@@ -349,7 +349,7 @@ func TestGlobalEndpointManagerResolveEndpointMultiMasterMetadataOperation(t *tes
 	serverEndpoint, _ := url.Parse("https://myaccount.documents.azure.com:443/")
 
 	mockLc := createLocationCacheForGem(*serverEndpoint, true)
-	
+
 	mockGem := globalEndpointManager{
 		clientEndpoint:      "https://localhost",
 		preferredLocations:  []string{"Central US"},

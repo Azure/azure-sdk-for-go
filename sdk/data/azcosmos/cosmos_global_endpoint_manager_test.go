@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/url"
+	"strings"
 	"sync"
 	"testing"
 	"time"
@@ -267,4 +268,61 @@ func TestGlobalEndpointManagerConcurrentUpdate(t *testing.T) {
 	assert.NoError(t, err)
 	callCount = countPolicy.callCount
 	assert.Equal(t, callCount, 2)
+}
+
+func TestGlobalEndpointManagerResolveEndpointSingleMasterDocumentOperation(t *testing.T) {
+	serverEndpoint, err := url.Parse("https://myaccount.documents.azure.com:443/")
+
+	mockLc := createLocationCacheForGem(*serverEndpoint, false)
+	
+	mockGem := globalEndpointManager{
+		clientEndpoint:      "https://localhost",
+		preferredLocations:  preferredRegions,
+		locationCache:       mockLc,
+		refreshTimeInterval: 5 * time.Minute,
+	}
+
+	selectedEndpoint := mockGem.ResolveServiceEndpoint(0, resourceTypeDocument, false, false)
+
+	assert.Equal(t, *serverEndpoint, selectedEndpoint)
+}
+
+func createLocationCacheForGem(defaultEndpoint url.URL, isMultiMaster bool) *locationCache {
+	availableWriteLocs := []string{"East US"}
+	if isMultiMaster {
+		availableWriteLocs = []string{"East US", "Central US"}
+	}
+	availableReadLocs := []string{"East US", "Central US", "East US 2"}
+	availableWriteEndpointsByLoc := map[string]url.URL{}
+	availableReadEndpointsByLoc := map[string]url.URL{}
+	dereferencedEndpoint := defaultEndpoint
+
+	for _, value := range availableWriteLocs {
+		regionalEndpoint, _ := url.Parse(defaultEndpoint.Scheme + "://" + defaultEndpoint.Hostname() + "-" + strings.ToLower(strings.ReplaceAll(value, " ", "-")))
+		availableWriteEndpointsByLoc[value] = *regionalEndpoint
+	}
+
+	for _, value := range availableReadLocs {
+		regionalEndpoint, _ := url.Parse(defaultEndpoint.Scheme + "://" + defaultEndpoint.Hostname() + "-" + strings.ToLower(strings.ReplaceAll(value, " ", "-")))
+		availableReadEndpointsByLoc[value] = *regionalEndpoint
+	}
+
+	dbAccountLocationInfo := &databaseAccountLocationsInfo{
+		prefLocations:                 []string{},
+		availWriteLocations:           availableWriteLocs,
+		availReadLocations:            availableReadLocs,
+		availWriteEndpointsByLocation: availableWriteEndpointsByLoc,
+		availReadEndpointsByLocation:  availableReadEndpointsByLoc,
+		writeEndpoints:                []url.URL{dereferencedEndpoint},
+		readEndpoints:                 []url.URL{dereferencedEndpoint},
+	}
+
+	return &locationCache{
+		defaultEndpoint:                   defaultEndpoint,
+		locationInfo:                      *dbAccountLocationInfo,
+		locationUnavailabilityInfoMap:     make(map[url.URL]locationUnavailabilityInfo),
+		unavailableLocationExpirationTime: defaultExpirationTime,
+		enableCrossRegionRetries:          true,
+		enableMultipleWriteLocations:      isMultiMaster,
+	}
 }

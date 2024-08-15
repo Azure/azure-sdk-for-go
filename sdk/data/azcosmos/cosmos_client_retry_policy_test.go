@@ -9,6 +9,7 @@ import (
 	"net"
 	"net/http"
 	"net/url"
+	"strings"
 	"testing"
 	"time"
 
@@ -18,6 +19,57 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/stretchr/testify/assert"
 )
+
+func TestRoutingSingleMasterDocumentWrite(t *testing.T) {
+	srv, closeFunc := mock.NewTLSServer()
+	defer closeFunc()
+
+	defaultEndpoint, err := url.Parse(srv.URL())
+	assert.NoError(t, err)
+
+	gemServer, gemClose := mock.NewTLSServer()
+	defer gemClose()
+	gemServer.SetResponse(mock.WithStatusCode(200))
+
+	internalPipeline := azruntime.NewPipeline("azcosmosgemtest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: gemServer})
+
+	gem := &globalEndpointManager{
+		clientEndpoint:      gemServer.URL(),
+		pipeline:            internalPipeline,
+		preferredLocations:  []string{"Central US"},
+		locationCache:       CreateMockLC(*defaultEndpoint, false),
+		refreshTimeInterval: defaultExpirationTime,
+		lastUpdateTime:      time.Time{},
+	}
+
+	retryPolicy := &clientRetryPolicy{gem: gem}
+	verifier := clientRetryPolicyVerifier{}
+
+	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerRetry: []policy.Policy{&verifier, retryPolicy}}, &policy.ClientOptions{Transport: srv})
+
+	srv.AppendResponse(
+		mock.WithStatusCode(201))
+
+	// Testing write requests
+	item := map[string]interface{}{
+		"id":    "1",
+		"value": "2",
+	}
+	marshalled, err := json.Marshal(item)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	client := &Client{endpoint: srv.URL(), endpointUrl: defaultEndpoint, internal: internalClient, gem: gem}
+	db, _ := client.NewDatabase("database_id")
+	container, _ := db.NewContainer("container_id")
+	_, err = container.CreateItem(context.TODO(), NewPartitionKeyString("1"), marshalled, nil)
+
+	assert.NoError(t, err)
+
+	// Request should have gone to primary region regardless of Preference because its Single Master
+	assert.Equal(t, verifier.requests[0].endpoint.Host, "")
+}
 
 func TestSessionNotAvailableSingleMaster(t *testing.T) {
 	srv, closeFunc := mock.NewTLSServer()
@@ -538,11 +590,13 @@ func CreateMockLC(defaultEndpoint url.URL, isMultiMaster bool) *locationCache {
 	dereferencedEndpoint := defaultEndpoint
 
 	for _, value := range availableWriteLocs {
-		availableWriteEndpointsByLoc[value] = defaultEndpoint
+		regionalEndpoint, _ := url.Parse(defaultEndpoint.Scheme + "://" + defaultEndpoint.Hostname() + "-" + strings.ToLower(strings.ReplaceAll(value, " ", "-")))
+		availableWriteEndpointsByLoc[value] = *regionalEndpoint
 	}
 
 	for _, value := range availableReadLocs {
-		availableReadEndpointsByLoc[value] = defaultEndpoint
+		regionalEndpoint, _ := url.Parse(defaultEndpoint.Scheme + "://" + defaultEndpoint.Hostname() + "-" + strings.ToLower(strings.ReplaceAll(value, " ", "-")))
+		availableReadEndpointsByLoc[value] = *regionalEndpoint
 	}
 
 	dbAccountLocationInfo := &databaseAccountLocationsInfo{
@@ -571,6 +625,7 @@ type clientRetryPolicyVerifier struct {
 
 type clientRetryPolicyVerifierRequest struct {
 	retryContext *retryContext
+	endpoint     *url.URL
 }
 
 func (p *clientRetryPolicyVerifier) Do(req *policy.Request) (*http.Response, error) {
@@ -579,6 +634,7 @@ func (p *clientRetryPolicyVerifier) Do(req *policy.Request) (*http.Response, err
 	o := retryContext{}
 	req.OperationValue(&o)
 	pr.retryContext = &o
+	pr.endpoint = req.Raw().URL
 	p.requests = append(p.requests, pr)
 	return resp, err
 }

@@ -271,20 +271,103 @@ func TestGlobalEndpointManagerConcurrentUpdate(t *testing.T) {
 }
 
 func TestGlobalEndpointManagerResolveEndpointSingleMasterDocumentOperation(t *testing.T) {
-	serverEndpoint, err := url.Parse("https://myaccount.documents.azure.com:443/")
+	serverEndpoint, _ := url.Parse("https://myaccount.documents.azure.com:443/")
 
 	mockLc := createLocationCacheForGem(*serverEndpoint, false)
 	
 	mockGem := globalEndpointManager{
 		clientEndpoint:      "https://localhost",
-		preferredLocations:  preferredRegions,
+		preferredLocations:  []string{"Central US"},
 		locationCache:       mockLc,
 		refreshTimeInterval: 5 * time.Minute,
 	}
 
-	selectedEndpoint := mockGem.ResolveServiceEndpoint(0, resourceTypeDocument, false, false)
+	// Reads should follow preferred locations
+	writeOperation := false
+	selectedEndpoint := mockGem.ResolveServiceEndpoint(0, resourceTypeDocument, writeOperation, false)
 
-	assert.Equal(t, *serverEndpoint, selectedEndpoint)
+	assert.True(t, strings.Contains(selectedEndpoint.Host, "central-us"))
+
+	// Writes should go to primary endpoint
+	writeOperation = true
+	selectedEndpoint = mockGem.ResolveServiceEndpoint(0, resourceTypeDocument, writeOperation, false)
+
+	assert.True(t, strings.Contains(selectedEndpoint.Host, "east-us"))
+}
+
+func TestGlobalEndpointManagerResolveEndpointMultiMasterDocumentOperation(t *testing.T) {
+	serverEndpoint, _ := url.Parse("https://myaccount.documents.azure.com:443/")
+
+	mockLc := createLocationCacheForGem(*serverEndpoint, true)
+	
+	mockGem := globalEndpointManager{
+		clientEndpoint:      "https://localhost",
+		preferredLocations:  []string{"Central US"},
+		locationCache:       mockLc,
+		refreshTimeInterval: 5 * time.Minute,
+	}
+
+	// Reads and Writes should follow preferred locations
+	writeOperation := false
+	selectedEndpoint := mockGem.ResolveServiceEndpoint(0, resourceTypeDocument, writeOperation, false)
+
+	assert.True(t, strings.Contains(selectedEndpoint.Host, "central-us"))
+
+	// Writes should go to primary endpoint
+	writeOperation = true
+	selectedEndpoint = mockGem.ResolveServiceEndpoint(0, resourceTypeDocument, writeOperation, false)
+
+	assert.True(t, strings.Contains(selectedEndpoint.Host, "central-us"))
+}
+
+func TestGlobalEndpointManagerResolveEndpointSingleMasterMetadataOperation(t *testing.T) {
+	serverEndpoint, _ := url.Parse("https://myaccount.documents.azure.com:443/")
+
+	mockLc := createLocationCacheForGem(*serverEndpoint, false)
+	
+	mockGem := globalEndpointManager{
+		clientEndpoint:      "https://localhost",
+		preferredLocations:  []string{"Central US"},
+		locationCache:       mockLc,
+		refreshTimeInterval: 5 * time.Minute,
+	}
+
+	// Reads should follow preferred locations
+	writeOperation := false
+	selectedEndpoint := mockGem.ResolveServiceEndpoint(0, resourceTypeCollection, writeOperation, false)
+
+	assert.True(t, strings.Contains(selectedEndpoint.Host, "central-us"))
+
+	// Writes should go to primary endpoint
+	writeOperation = true
+	selectedEndpoint = mockGem.ResolveServiceEndpoint(0, resourceTypeCollection, writeOperation, false)
+
+	assert.True(t, strings.Contains(selectedEndpoint.Host, "east-us"))
+}
+
+func TestGlobalEndpointManagerResolveEndpointMultiMasterMetadataOperation(t *testing.T) {
+	serverEndpoint, _ := url.Parse("https://myaccount.documents.azure.com:443/")
+
+	mockLc := createLocationCacheForGem(*serverEndpoint, true)
+	
+	mockGem := globalEndpointManager{
+		clientEndpoint:      "https://localhost",
+		preferredLocations:  []string{"Central US"},
+		locationCache:       mockLc,
+		refreshTimeInterval: 5 * time.Minute,
+	}
+
+	// Reads should follow preferred locations
+	writeOperation := false
+	selectedEndpoint := mockGem.ResolveServiceEndpoint(0, resourceTypeCollection, writeOperation, false)
+
+	assert.True(t, strings.Contains(selectedEndpoint.Host, "central-us"))
+
+	// Writes should go to primary endpoint
+	writeOperation = true
+	selectedEndpoint = mockGem.ResolveServiceEndpoint(0, resourceTypeCollection, writeOperation, false)
+
+	assert.True(t, strings.Contains(selectedEndpoint.Host, "east-us"))
 }
 
 func createLocationCacheForGem(defaultEndpoint url.URL, isMultiMaster bool) *locationCache {
@@ -295,29 +378,32 @@ func createLocationCacheForGem(defaultEndpoint url.URL, isMultiMaster bool) *loc
 	availableReadLocs := []string{"East US", "Central US", "East US 2"}
 	availableWriteEndpointsByLoc := map[string]url.URL{}
 	availableReadEndpointsByLoc := map[string]url.URL{}
-	dereferencedEndpoint := defaultEndpoint
+	writeEndpoints := []url.URL{}
+	readEndpoints := []url.URL{}
 
 	for _, value := range availableWriteLocs {
 		regionalEndpoint, _ := url.Parse(defaultEndpoint.Scheme + "://" + defaultEndpoint.Hostname() + "-" + strings.ToLower(strings.ReplaceAll(value, " ", "-")))
 		availableWriteEndpointsByLoc[value] = *regionalEndpoint
+		writeEndpoints = append(writeEndpoints, *regionalEndpoint)
 	}
 
 	for _, value := range availableReadLocs {
 		regionalEndpoint, _ := url.Parse(defaultEndpoint.Scheme + "://" + defaultEndpoint.Hostname() + "-" + strings.ToLower(strings.ReplaceAll(value, " ", "-")))
 		availableReadEndpointsByLoc[value] = *regionalEndpoint
+		readEndpoints = append(readEndpoints, *regionalEndpoint)
 	}
 
 	dbAccountLocationInfo := &databaseAccountLocationsInfo{
-		prefLocations:                 []string{},
+		prefLocations:                 []string{"Central US"},
 		availWriteLocations:           availableWriteLocs,
 		availReadLocations:            availableReadLocs,
 		availWriteEndpointsByLocation: availableWriteEndpointsByLoc,
 		availReadEndpointsByLocation:  availableReadEndpointsByLoc,
-		writeEndpoints:                []url.URL{dereferencedEndpoint},
-		readEndpoints:                 []url.URL{dereferencedEndpoint},
+		writeEndpoints:                writeEndpoints,
+		readEndpoints:                 readEndpoints,
 	}
 
-	return &locationCache{
+	cache := locationCache{
 		defaultEndpoint:                   defaultEndpoint,
 		locationInfo:                      *dbAccountLocationInfo,
 		locationUnavailabilityInfoMap:     make(map[url.URL]locationUnavailabilityInfo),
@@ -325,4 +411,9 @@ func createLocationCacheForGem(defaultEndpoint url.URL, isMultiMaster bool) *loc
 		enableCrossRegionRetries:          true,
 		enableMultipleWriteLocations:      isMultiMaster,
 	}
+
+	// Order by preference
+	cache.update(nil, nil, nil, nil)
+
+	return &cache
 }

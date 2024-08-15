@@ -8,7 +8,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
-* Fixed sending `Prefer` header on metadata operations.
+* Fixed sending `Prefer` header with `return=minimal` value on metadata operations. See [PR 23335](https://github.com/Azure/azure-sdk-for-go/pull/23335)
 
 ### Other Changes
 

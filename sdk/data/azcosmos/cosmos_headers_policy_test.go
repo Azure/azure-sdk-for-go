@@ -25,6 +25,7 @@ func TestAddContentHeaderDefaultOnWriteOperation(t *testing.T) {
 	req, err := azruntime.NewRequest(context.Background(), http.MethodGet, srv.URL())
 	req.SetOperationValue(pipelineRequestOptions{
 		isWriteOperation: true,
+		resourceType:     resourceTypeDocument,
 	})
 
 	if err != nil {
@@ -38,6 +39,34 @@ func TestAddContentHeaderDefaultOnWriteOperation(t *testing.T) {
 
 	if !verifier.isEnableContentResponseOnWriteHeaderSet {
 		t.Fatalf("expected content response header to be set")
+	}
+}
+
+func TestAddContentHeaderDefaultOnNonDocumentWriteOperation(t *testing.T) {
+	headerPolicy := &headerPolicies{}
+	srv, close := mock.NewTLSServer()
+	defer close()
+	srv.SetResponse(mock.WithStatusCode(http.StatusOK))
+
+	verifier := headerPoliciesVerify{}
+	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{headerPolicy, &verifier}}, &policy.ClientOptions{Transport: srv})
+	req, err := azruntime.NewRequest(context.Background(), http.MethodGet, srv.URL())
+	req.SetOperationValue(pipelineRequestOptions{
+		isWriteOperation: true,
+		resourceType:     resourceTypeCollection,
+	})
+
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	_, err = pl.Do(req)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	if verifier.isEnableContentResponseOnWriteHeaderSet {
+		t.Fatalf("expected content response header not to be set")
 	}
 }
 

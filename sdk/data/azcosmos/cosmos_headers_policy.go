@@ -43,7 +43,7 @@ func (p *headerPolicies) Do(req *policy.Request) (*http.Response, error) {
 			}
 		}
 
-		if o.isWriteOperation && !enableContentResponseOnWrite {
+		if o.isWriteOperation && o.resourceType == resourceTypeDocument && !enableContentResponseOnWrite {
 			req.Raw().Header.Add(cosmosHeaderPrefer, cosmosHeaderValuesPreferMinimal)
 		}
 	}

@@ -1,16 +1,10 @@
 # Release History
 
-## 1.2.2 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 1.2.2 (2024-08-15)
 
 ### Bugs Fixed
 
-- Fixed a bug that where a short context deadline could prevent recovery from ever happening. The end result would be a broken PartitionClient/ConsumerClient that would never recover from the underlying failure. (PR#      )
-
-### Other Changes
+- Fixed a bug that where a short context deadline could prevent recovery from ever happening. The end result would be a broken PartitionClient/ConsumerClient that would never recover from the underlying failure. (PR#23337)
 
 ## 1.2.1 (2024-05-20)
 

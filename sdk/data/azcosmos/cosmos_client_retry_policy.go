@@ -40,7 +40,7 @@ func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 	for {
 		// Update the retry context with the latest retry values
 		req.SetOperationValue(retryContext)
-		resolvedEndpoint := p.gem.ResolveServiceEndpoint(retryContext.retryCount, o.isWriteOperation, retryContext.useWriteEndpoint)
+		resolvedEndpoint := p.gem.ResolveServiceEndpoint(retryContext.retryCount, o.resourceType, o.isWriteOperation, retryContext.useWriteEndpoint)
 		req.Raw().Host = resolvedEndpoint.Host
 		req.Raw().URL.Host = resolvedEndpoint.Host
 		response, err := req.Next() // err can happen in weird scenarios (connectivity, etc)

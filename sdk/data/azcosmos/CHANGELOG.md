@@ -8,6 +8,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+* Fixed sending `Prefer` header on metadata operations.
 
 ### Other Changes
 

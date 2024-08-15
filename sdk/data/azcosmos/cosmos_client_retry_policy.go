@@ -74,11 +74,11 @@ func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 					return nil, errorinfo.NonRetriableError(azruntime.NewResponseErrorWithErrorCode(response, response.Status))
 				}
 			} else if response.StatusCode == http.StatusNotFound {
-				if !p.attemptRetryOnSessionUnavailable(req, o.isWriteOperation, &retryContext) {
+				if !p.attemptRetryOnSessionUnavailable(o.isWriteOperation, &retryContext) {
 					return nil, errorinfo.NonRetriableError(azruntime.NewResponseErrorWithErrorCode(response, response.Status))
 				}
 			} else if response.StatusCode == http.StatusServiceUnavailable {
-				if !p.attemptRetryOnServiceUnavailable(req, o.isWriteOperation, &retryContext) {
+				if !p.attemptRetryOnServiceUnavailable(o.isWriteOperation, &retryContext) {
 					return nil, errorinfo.NonRetriableError(azruntime.NewResponseErrorWithErrorCode(response, response.Status))
 				}
 			}
@@ -151,7 +151,7 @@ func (p *clientRetryPolicy) attemptRetryOnEndpointFailure(req *policy.Request, i
 	return true, nil
 }
 
-func (p *clientRetryPolicy) attemptRetryOnSessionUnavailable(req *policy.Request, isWriteOperation bool, retryContext *retryContext) bool {
+func (p *clientRetryPolicy) attemptRetryOnSessionUnavailable(isWriteOperation bool, retryContext *retryContext) bool {
 	if p.gem.CanUseMultipleWriteLocations() {
 		endpoints := p.gem.locationCache.locationInfo.availReadLocations
 		if isWriteOperation {
@@ -170,7 +170,7 @@ func (p *clientRetryPolicy) attemptRetryOnSessionUnavailable(req *policy.Request
 	return true
 }
 
-func (p *clientRetryPolicy) attemptRetryOnServiceUnavailable(req *policy.Request, isWriteOperation bool, retryContext *retryContext) bool {
+func (p *clientRetryPolicy) attemptRetryOnServiceUnavailable(isWriteOperation bool, retryContext *retryContext) bool {
 	if !p.gem.locationCache.enableCrossRegionRetries || retryContext.preferredLocationIndex >= len(p.gem.preferredLocations) {
 		return false
 	}

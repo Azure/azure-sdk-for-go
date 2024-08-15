@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixed a bug that where a short context deadline could prevent recovery from ever happening. The end result would be a broken PartitionClient/ConsumerClient that would never recover from the underlying failure. (PR#      )
+
 ### Other Changes
 
 ## 1.2.1 (2024-05-20)

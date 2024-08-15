@@ -140,6 +140,7 @@ func TestAddContentHeaderOnWriteOperationWithOverride(t *testing.T) {
 	contentOverride := false
 	req.SetOperationValue(pipelineRequestOptions{
 		isWriteOperation: true,
+		resourceType:     resourceTypeDocument,
 		headerOptionsOverride: &headerOptionsOverride{
 			enableContentResponseOnWrite: &contentOverride,
 		},

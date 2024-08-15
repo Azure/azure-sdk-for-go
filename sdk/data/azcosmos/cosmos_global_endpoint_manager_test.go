@@ -413,7 +413,7 @@ func createLocationCacheForGem(defaultEndpoint url.URL, isMultiMaster bool) *loc
 	}
 
 	// Order by preference
-	cache.update(nil, nil, nil, nil)
+	_ := cache.update(nil, nil, nil, nil)
 
 	return &cache
 }

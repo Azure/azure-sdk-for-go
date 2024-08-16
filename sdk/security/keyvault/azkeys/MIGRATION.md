@@ -1,4 +1,4 @@
-# Guide to migrate from `keyvault` and to `azkeys`
+# Guide to migrate from `keyvault` to `azkeys`
 
 This guide is intended to assist in the migration to the `azkeys` module from the deprecated `keyvault` module. `azkeys` allows users to create and manage [keys][keys] with Azure Key Vault.
 
@@ -6,11 +6,15 @@ This guide is intended to assist in the migration to the `azkeys` module from th
 
 In the past, Azure Key Vault operations were all contained in a single package. For Go, this was `github.com/Azure/azure-sdk-for-go/services/keyvault/<version>/keyvault`. 
 
-The current strategy is to break up the Key Vault into separate modules by functionality. Now there is a specific module for keys, secrets, and certificates. This guide focuses on migrating keys operations to use the new `azkeys` module.
+The new SDK divides the Key Vault API into separate modules for keys, secrets, and certificates. This guide focuses on migrating keys operations to use the new `azkeys` module.
 
 Besides, module name changes. There are a number of name differences for methods and variables. All new modules also authenticate using our [azidentity] module.
 
 ## Code examples
+
+The following code example shows the difference between the old and new modules when creating a key. The biggest differences are the client and authentication. In the `keyvault` module, users created a `keyvault.BaseClient` then added an `Authorizer` to the client to authenticate. In the `azkeys` module, users create a credential using the [azidentity] module then use that credential to construct the client.
+
+Another difference is that the Key Vault URL is now passed to the client once during construction, not every time a method is called.
 
 ### `keyvault` create key
 ```go
@@ -77,7 +81,6 @@ func main() {
 		Curve: to.Ptr(azkeys.CurveNameP256K),
 		Kty:   to.Ptr(azkeys.KeyTypeEC),
 	}
-	// if a key with the same name already exists, a new version of that key is created
 	resp, err := client.CreateKey(context.TODO(), "<key name>", keyParams, nil)
 	if err != nil {
 		// TODO: handle error

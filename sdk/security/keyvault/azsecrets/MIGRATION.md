@@ -1,4 +1,4 @@
-# Guide to migrate from `keyvault` and to `azsecrets`
+# Guide to migrate from `keyvault` to `azsecrets`
 
 This guide is intended to assist in the migration to the `azsecrets` module from the deprecated `keyvault` module. `azsecrets` allows users to create and manage [secrets] with Azure Key Vault.
 
@@ -6,11 +6,15 @@ This guide is intended to assist in the migration to the `azsecrets` module from
 
 In the past, Azure Key Vault operations were all contained in a single package. For Go, this was `github.com/Azure/azure-sdk-for-go/services/keyvault/<version>/keyvault`. 
 
-The current strategy is to break up the Key Vault into separate modules by functionality. Now there is a specific module for keys, secrets, and certificates. This guide focuses on migrating secret operations to use the new `azsecrets` module.
+The new SDK divides the Key Vault API into separate modules for keys, secrets, and certificates. This guide focuses on migrating secret operations to use the new `azsecrets` module.
 
 Besides, module name changes. There are a number of name differences for methods and variables. All new modules also authenticate using our [azidentity] module.
 
 ## Code examples
+
+The following code example shows the difference between the old and new modules when creating a secret. The biggest differences are the client and authentication. In the `keyvault` module, users created a `keyvault.BaseClient` then added an `Authorizer` to the client to authenticate. In the `azsecrets` module, users create a credential using the [azidentity] module then use that credential to construct the client.
+
+Another difference is that the Key Vault URL is now passed to the client once during construction, not every time a method is called.
 
 ### `keyvault` create secret
 
@@ -79,8 +83,6 @@ func main() {
 		// TODO: handle error
 	}
 
-	// If no secret with the given name exists, Key Vault creates a new secret with that name and the given value.
-	// If the given name is in use, Key Vault creates a new version of that secret, with the given value.
 	resp, err := client.SetSecret(context.TODO(), secretName, azsecrets.SetSecretParameters{Value: &secretValue}, nil)
 	if err != nil {
 		// TODO: handle error
@@ -89,10 +91,6 @@ func main() {
 	fmt.Printf("Set secret %s", resp.ID.Name())
 }
 ```
-
-
-
-
 
 [azidentity]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity
 [secrets]: https://learn.microsoft.com/azure/key-vault/secrets/about-secrets

@@ -9,7 +9,6 @@ common to these SDKs.
 * [Authentication Errors](#authentication-errors)
   * [HTTP 401 Errors](#http-401-errors)
     * [Frequent HTTP 401 Errors in Logs](#frequent-http-401-errors-in-logs)
-    * [AKV10032: Invalid Issuer](#akv10032-invalid-issuer)
   * [HTTP 403 Errors](#http-403-errors)
     * [Operation Not Permitted](#operation-not-permitted)
     * [Access Denied to First Party Service](#access-denied-to-first-party-service)
@@ -26,35 +25,7 @@ HTTP 401 errors may indicate authentication problems, but silent 401 errors are 
 
 #### Frequent HTTP 401 Errors in Logs
 
-Most often, this is expected. Azure Key Vault issues a challenge for initial requests that force authentication. You may
-see these errors most often during application startup, but you may also see these periodically during the application's
-lifetime when authentication tokens are near expiration.
-
-If you are not seeing subsequent exceptions from the Key Vault SDKs, authentication challenges are likely the cause. If
-you continuously see 401 errors without successful operations, there may be an issue with the authentication module
-that's being used. We recommend using the Azure SDK's [azidentity][azidentity] module for authentication.
-
-#### AKV10032: Invalid Issuer
-
-You may see an error similar to:
-
-```text
---------------------------------------------------------------------------------
-RESPONSE 401: 401 Unauthorized
-ERROR CODE: Unauthorized
---------------------------------------------------------------------------------
-{
-  "error": {
-    "code": "Unauthorized",
-    "message": "AKV10032: Invalid issuer. Expected one of https://sts.windows.net/{tenant 1}/, found https://sts.windows.net/{tenant 2}/."
-  }
-}
-```
-
-This is most often caused by being logged into a different tenant than the Key Vault authenticates.
-See our [DefaultAzureCredential][DefaultAzureCredential] documentation to see the order credentials are read. You may be logged into a different
-tenant for one credential that gets read before another credential. For example, you might be logged into Visual Studio
-under the wrong tenant even though you're logged into the Azure CLI under the right tenant.
+Most often, this is expected. A Key Vault client sends its first request without authorization to discover authentication parameters. This can cause a 401 response to appear in logs without a corresponding error.
 
 ### HTTP 403 Errors
 

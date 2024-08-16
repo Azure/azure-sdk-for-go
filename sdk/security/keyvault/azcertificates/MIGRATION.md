@@ -1,4 +1,4 @@
-# Guide to migrate from `keyvault` and to `azcertificates`
+# Guide to migrate from `keyvault` to `azcertificates`
 
 This guide is intended to assist in the migration to the `azcertificates` module from the deprecated `keyvault` module. `azcertificates` allows users to create and manage [certificates][certificates] with Azure Key Vault.
 
@@ -6,11 +6,15 @@ This guide is intended to assist in the migration to the `azcertificates` module
 
 In the past, Azure Key Vault operations were all contained in a single package. For Go, this was `github.com/Azure/azure-sdk-for-go/services/keyvault/<version>/keyvault`. 
 
-The current strategy is to break up the Key Vault into separate modules by functionality. Now there is a specific module for keys, secrets, and certificates. This guide focuses on migrating certificate operations to use the new `azcertificates` module.
+The new SDK divides the Key Vault API into separate modules for keys, secrets, and certificates. This guide focuses on migrating certificate operations to use the new `azcertificates` module.
 
 Besides, module name changes. There are a number of name differences for methods and variables. All new modules also authenticate using our [azidentity] module.
 
-## Code examples
+## Code example
+
+The following code example shows the difference between the old and new modules when creating a certificate. The biggest differences are the client and authentication. In the `keyvault` module, users created a `keyvault.BaseClient` then added an `Authorizer` to the client to authenticate. In the `azcertificates` module, users create a credential using the [azidentity] module then use that credential to construct the client.
+
+Another difference is that the Key Vault URL is now passed to the client once during construction, not every time a method is called.
 
 ### `keyvault` create certificate
 ```go
@@ -76,14 +80,12 @@ func main() {
 	}
 
 	createParams := azcertificates.CreateCertificateParameters{
-		// this policy is suitable for a self-signed certificate
 		CertificatePolicy: &azcertificates.CertificatePolicy{
 			IssuerParameters:          &azcertificates.IssuerParameters{Name: to.Ptr("self")},
 			X509CertificateProperties: &azcertificates.X509CertificateProperties{Subject: to.Ptr("CN=DefaultPolicy")},
 		},
 	}
-	// if a certificate with the same name already exists, a new version of the certificate is created
-	resp, err := client.CreateCertificate(context.TODO(), "certificateName", createParams, nil)
+	resp, err := client.CreateCertificate(context.TODO(), "<cert name>", createParams, nil)
 	if err != nil {
 		// TODO: handle error
 	}

@@ -38,10 +38,10 @@
 /sdk/data/azappconfig/        @jhendrixMSFT @rickwinter
 
 # AzureSDKOwners: @jhendrixMSFT
-# ServiceOwner: @ealsur
+# ServiceOwner: @Pilchie
 # ServiceLabel: %Cosmos
 # PRLabel: %Cosmos
-/sdk/data/azcosmos/           @ealsur @kirankumarkolli @simorenoh @kushagraThapar @Pilchie
+/sdk/data/azcosmos/           @kirankumarkolli @simorenoh @kushagraThapar @Pilchie
 
 # AzureSDKOwners: @jhendrixMSFT
 # ServiceLabel: %Tables

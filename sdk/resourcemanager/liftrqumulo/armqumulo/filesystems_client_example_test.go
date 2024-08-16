@@ -15,11 +15,11 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/liftrqumulo/armqumulo"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/liftrqumulo/armqumulo/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/liftrqumulo/resource-manager/Qumulo.Storage/stable/2022-10-12/examples/FileSystems_ListBySubscription_MaximumSet_Gen.json
-func ExampleFileSystemsClient_NewListBySubscriptionPager_fileSystemsListBySubscriptionMaximumSetGen() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/72de08114673a547de8a017c85ed89a2017a86f7/specification/liftrqumulo/resource-manager/Qumulo.Storage/stable/2024-06-19/examples/FileSystems_ListBySubscription_MaximumSet_Gen.json
+func ExampleFileSystemsClient_NewListBySubscriptionPager_fileSystemsListBySubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -43,48 +43,48 @@ func ExampleFileSystemsClient_NewListBySubscriptionPager_fileSystemsListBySubscr
 		// page.FileSystemResourceListResult = armqumulo.FileSystemResourceListResult{
 		// 	Value: []*armqumulo.FileSystemResource{
 		// 		{
-		// 			Name: to.Ptr("bii"),
-		// 			Type: to.Ptr("qtvxrqwpoistduq"),
-		// 			ID: to.Ptr("tvelgpobdtazrweunifqzaxkgjauyx"),
+		// 			Name: to.Ptr("stftolw"),
+		// 			Type: to.Ptr("wj"),
+		// 			ID: to.Ptr("rfta"),
 		// 			SystemData: &armqumulo.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-14T04:40:17.991Z"); return t}()),
-		// 				CreatedBy: to.Ptr("mtdhqooysjhueaojwpmvophkgntl"),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-21T08:11:54.895Z"); return t}()),
+		// 				CreatedBy: to.Ptr("usnkckwkizihezb"),
 		// 				CreatedByType: to.Ptr(armqumulo.CreatedByTypeUser),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-14T04:40:17.991Z"); return t}()),
-		// 				LastModifiedBy: to.Ptr("jcywglomzuamsxltnoegdrkzlscxl"),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-21T08:11:54.895Z"); return t}()),
+		// 				LastModifiedBy: to.Ptr("yjsiqdgtsmycxlncjceemlucn"),
 		// 				LastModifiedByType: to.Ptr(armqumulo.CreatedByTypeUser),
 		// 			},
-		// 			Location: to.Ptr("przdlsmlzsszphnixq"),
+		// 			Location: to.Ptr("pnb"),
 		// 			Tags: map[string]*string{
-		// 				"key6565": to.Ptr("cgdhmupta"),
+		// 				"key7090": to.Ptr("rurrdiaqp"),
 		// 			},
 		// 			Identity: &armqumulo.ManagedServiceIdentity{
 		// 				Type: to.Ptr(armqumulo.ManagedServiceIdentityTypeNone),
 		// 				PrincipalID: to.Ptr("11111111-1111-1111-1111-111111111111"),
 		// 				TenantID: to.Ptr("11111111-1111-1111-1111-111111111111"),
 		// 				UserAssignedIdentities: map[string]*armqumulo.UserAssignedIdentity{
-		// 					"key4522": &armqumulo.UserAssignedIdentity{
+		// 					"key7679": &armqumulo.UserAssignedIdentity{
 		// 						ClientID: to.Ptr("11111111-1111-1111-1111-111111111111"),
 		// 						PrincipalID: to.Ptr("11111111-1111-1111-1111-111111111111"),
 		// 					},
 		// 				},
 		// 			},
 		// 			Properties: &armqumulo.FileSystemResourceProperties{
-		// 				AvailabilityZone: to.Ptr("maseyqhlnhoiwbabcqabtedbjpip"),
-		// 				ClusterLoginURL: to.Ptr("jjqhgevy"),
-		// 				DelegatedSubnetID: to.Ptr("neqctctqdmjezfgt"),
-		// 				InitialCapacity: to.Ptr[int32](9),
+		// 				AvailabilityZone: to.Ptr("eqdvbdiuwmhhzqzmksmwllpddqquwt"),
+		// 				ClusterLoginURL: to.Ptr("ykaynsjvhihdthkkvvodjrgc"),
+		// 				DelegatedSubnetID: to.Ptr("jykmxrf"),
 		// 				MarketplaceDetails: &armqumulo.MarketplaceDetails{
-		// 					MarketplaceSubscriptionID: to.Ptr("ujrcqvxfnhxxheoth"),
+		// 					MarketplaceSubscriptionID: to.Ptr("xaqtkloiyovmexqhn"),
 		// 					MarketplaceSubscriptionStatus: to.Ptr(armqumulo.MarketplaceSubscriptionStatusPendingFulfillmentStart),
-		// 					OfferID: to.Ptr("eiyhbmpwgezcmzrrfoiskuxlcvwojf"),
-		// 					PlanID: to.Ptr("x"),
-		// 					PublisherID: to.Ptr("wfmokfdjbwpjhz"),
+		// 					OfferID: to.Ptr("s"),
+		// 					PlanID: to.Ptr("fwtpz"),
+		// 					PublisherID: to.Ptr("czxcfrwodazyaft"),
+		// 					TermUnit: to.Ptr("cfwwczmygsimcyvoclcw"),
 		// 				},
 		// 				PrivateIPs: []*string{
-		// 					to.Ptr("kslguxrwbwkrj")},
+		// 					to.Ptr("gzken")},
 		// 					ProvisioningState: to.Ptr(armqumulo.ProvisioningStateSucceeded),
-		// 					StorageSKU: to.Ptr(armqumulo.StorageSKUStandard),
+		// 					StorageSKU: to.Ptr("yhyzby"),
 		// 					UserDetails: &armqumulo.UserDetails{
 		// 					},
 		// 				},
@@ -93,7 +93,7 @@ func ExampleFileSystemsClient_NewListBySubscriptionPager_fileSystemsListBySubscr
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/liftrqumulo/resource-manager/Qumulo.Storage/stable/2022-10-12/examples/FileSystems_ListBySubscription_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/72de08114673a547de8a017c85ed89a2017a86f7/specification/liftrqumulo/resource-manager/Qumulo.Storage/stable/2024-06-19/examples/FileSystems_ListBySubscription_MinimumSet_Gen.json
 func ExampleFileSystemsClient_NewListBySubscriptionPager_fileSystemsListBySubscriptionMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -123,16 +123,14 @@ func ExampleFileSystemsClient_NewListBySubscriptionPager_fileSystemsListBySubscr
 		// 			Location: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
 		// 			Properties: &armqumulo.FileSystemResourceProperties{
 		// 				DelegatedSubnetID: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
-		// 				InitialCapacity: to.Ptr[int32](9),
 		// 				MarketplaceDetails: &armqumulo.MarketplaceDetails{
 		// 					MarketplaceSubscriptionID: to.Ptr("aaaaaaaaaaaaaaaaa"),
 		// 					MarketplaceSubscriptionStatus: to.Ptr(armqumulo.MarketplaceSubscriptionStatusPendingFulfillmentStart),
 		// 					OfferID: to.Ptr("aaaaaaaaa"),
 		// 					PlanID: to.Ptr("aaaaaaa"),
-		// 					PublisherID: to.Ptr("aaaaaaaaaaaaaaaaaaaa"),
 		// 				},
 		// 				ProvisioningState: to.Ptr(armqumulo.ProvisioningStateSucceeded),
-		// 				StorageSKU: to.Ptr(armqumulo.StorageSKUStandard),
+		// 				StorageSKU: to.Ptr("Standard"),
 		// 				UserDetails: &armqumulo.UserDetails{
 		// 				},
 		// 			},
@@ -141,8 +139,8 @@ func ExampleFileSystemsClient_NewListBySubscriptionPager_fileSystemsListBySubscr
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/liftrqumulo/resource-manager/Qumulo.Storage/stable/2022-10-12/examples/FileSystems_ListByResourceGroup_MaximumSet_Gen.json
-func ExampleFileSystemsClient_NewListByResourceGroupPager_fileSystemsListByResourceGroupMaximumSetGen() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/72de08114673a547de8a017c85ed89a2017a86f7/specification/liftrqumulo/resource-manager/Qumulo.Storage/stable/2024-06-19/examples/FileSystems_ListByResourceGroup_MaximumSet_Gen.json
+func ExampleFileSystemsClient_NewListByResourceGroupPager_fileSystemsListByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -166,48 +164,48 @@ func ExampleFileSystemsClient_NewListByResourceGroupPager_fileSystemsListByResou
 		// page.FileSystemResourceListResult = armqumulo.FileSystemResourceListResult{
 		// 	Value: []*armqumulo.FileSystemResource{
 		// 		{
-		// 			Name: to.Ptr("bii"),
-		// 			Type: to.Ptr("qtvxrqwpoistduq"),
-		// 			ID: to.Ptr("tvelgpobdtazrweunifqzaxkgjauyx"),
+		// 			Name: to.Ptr("stftolw"),
+		// 			Type: to.Ptr("wj"),
+		// 			ID: to.Ptr("rfta"),
 		// 			SystemData: &armqumulo.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-14T04:40:17.991Z"); return t}()),
-		// 				CreatedBy: to.Ptr("mtdhqooysjhueaojwpmvophkgntl"),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-21T08:11:54.895Z"); return t}()),
+		// 				CreatedBy: to.Ptr("usnkckwkizihezb"),
 		// 				CreatedByType: to.Ptr(armqumulo.CreatedByTypeUser),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-14T04:40:17.991Z"); return t}()),
-		// 				LastModifiedBy: to.Ptr("jcywglomzuamsxltnoegdrkzlscxl"),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-21T08:11:54.895Z"); return t}()),
+		// 				LastModifiedBy: to.Ptr("yjsiqdgtsmycxlncjceemlucn"),
 		// 				LastModifiedByType: to.Ptr(armqumulo.CreatedByTypeUser),
 		// 			},
-		// 			Location: to.Ptr("przdlsmlzsszphnixq"),
+		// 			Location: to.Ptr("pnb"),
 		// 			Tags: map[string]*string{
-		// 				"key6565": to.Ptr("cgdhmupta"),
+		// 				"key7090": to.Ptr("rurrdiaqp"),
 		// 			},
 		// 			Identity: &armqumulo.ManagedServiceIdentity{
 		// 				Type: to.Ptr(armqumulo.ManagedServiceIdentityTypeNone),
 		// 				PrincipalID: to.Ptr("11111111-1111-1111-1111-111111111111"),
 		// 				TenantID: to.Ptr("11111111-1111-1111-1111-111111111111"),
 		// 				UserAssignedIdentities: map[string]*armqumulo.UserAssignedIdentity{
-		// 					"key4522": &armqumulo.UserAssignedIdentity{
+		// 					"key7679": &armqumulo.UserAssignedIdentity{
 		// 						ClientID: to.Ptr("11111111-1111-1111-1111-111111111111"),
 		// 						PrincipalID: to.Ptr("11111111-1111-1111-1111-111111111111"),
 		// 					},
 		// 				},
 		// 			},
 		// 			Properties: &armqumulo.FileSystemResourceProperties{
-		// 				AvailabilityZone: to.Ptr("maseyqhlnhoiwbabcqabtedbjpip"),
-		// 				ClusterLoginURL: to.Ptr("jjqhgevy"),
-		// 				DelegatedSubnetID: to.Ptr("neqctctqdmjezfgt"),
-		// 				InitialCapacity: to.Ptr[int32](9),
+		// 				AvailabilityZone: to.Ptr("eqdvbdiuwmhhzqzmksmwllpddqquwt"),
+		// 				ClusterLoginURL: to.Ptr("ykaynsjvhihdthkkvvodjrgc"),
+		// 				DelegatedSubnetID: to.Ptr("jykmxrf"),
 		// 				MarketplaceDetails: &armqumulo.MarketplaceDetails{
-		// 					MarketplaceSubscriptionID: to.Ptr("ujrcqvxfnhxxheoth"),
+		// 					MarketplaceSubscriptionID: to.Ptr("xaqtkloiyovmexqhn"),
 		// 					MarketplaceSubscriptionStatus: to.Ptr(armqumulo.MarketplaceSubscriptionStatusPendingFulfillmentStart),
-		// 					OfferID: to.Ptr("eiyhbmpwgezcmzrrfoiskuxlcvwojf"),
-		// 					PlanID: to.Ptr("x"),
-		// 					PublisherID: to.Ptr("wfmokfdjbwpjhz"),
+		// 					OfferID: to.Ptr("s"),
+		// 					PlanID: to.Ptr("fwtpz"),
+		// 					PublisherID: to.Ptr("czxcfrwodazyaft"),
+		// 					TermUnit: to.Ptr("cfwwczmygsimcyvoclcw"),
 		// 				},
 		// 				PrivateIPs: []*string{
-		// 					to.Ptr("kslguxrwbwkrj")},
+		// 					to.Ptr("gzken")},
 		// 					ProvisioningState: to.Ptr(armqumulo.ProvisioningStateSucceeded),
-		// 					StorageSKU: to.Ptr(armqumulo.StorageSKUStandard),
+		// 					StorageSKU: to.Ptr("yhyzby"),
 		// 					UserDetails: &armqumulo.UserDetails{
 		// 					},
 		// 				},
@@ -216,7 +214,7 @@ func ExampleFileSystemsClient_NewListByResourceGroupPager_fileSystemsListByResou
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/liftrqumulo/resource-manager/Qumulo.Storage/stable/2022-10-12/examples/FileSystems_ListByResourceGroup_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/72de08114673a547de8a017c85ed89a2017a86f7/specification/liftrqumulo/resource-manager/Qumulo.Storage/stable/2024-06-19/examples/FileSystems_ListByResourceGroup_MinimumSet_Gen.json
 func ExampleFileSystemsClient_NewListByResourceGroupPager_fileSystemsListByResourceGroupMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -246,16 +244,14 @@ func ExampleFileSystemsClient_NewListByResourceGroupPager_fileSystemsListByResou
 		// 			Location: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
 		// 			Properties: &armqumulo.FileSystemResourceProperties{
 		// 				DelegatedSubnetID: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
-		// 				InitialCapacity: to.Ptr[int32](9),
 		// 				MarketplaceDetails: &armqumulo.MarketplaceDetails{
 		// 					MarketplaceSubscriptionID: to.Ptr("aaaaaaaaaaaaaaaaa"),
 		// 					MarketplaceSubscriptionStatus: to.Ptr(armqumulo.MarketplaceSubscriptionStatusPendingFulfillmentStart),
 		// 					OfferID: to.Ptr("aaaaaaaaa"),
 		// 					PlanID: to.Ptr("aaaaaaa"),
-		// 					PublisherID: to.Ptr("aaaaaaaaaaaaaaaaaaaa"),
 		// 				},
 		// 				ProvisioningState: to.Ptr(armqumulo.ProvisioningStateSucceeded),
-		// 				StorageSKU: to.Ptr(armqumulo.StorageSKUStandard),
+		// 				StorageSKU: to.Ptr("Standard"),
 		// 				UserDetails: &armqumulo.UserDetails{
 		// 				},
 		// 			},
@@ -264,8 +260,8 @@ func ExampleFileSystemsClient_NewListByResourceGroupPager_fileSystemsListByResou
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/liftrqumulo/resource-manager/Qumulo.Storage/stable/2022-10-12/examples/FileSystems_Get_MaximumSet_Gen.json
-func ExampleFileSystemsClient_Get_fileSystemsGetMaximumSetGen() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/72de08114673a547de8a017c85ed89a2017a86f7/specification/liftrqumulo/resource-manager/Qumulo.Storage/stable/2024-06-19/examples/FileSystems_Get_MaximumSet_Gen.json
+func ExampleFileSystemsClient_Get_fileSystemsGet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -275,7 +271,7 @@ func ExampleFileSystemsClient_Get_fileSystemsGetMaximumSetGen() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewFileSystemsClient().Get(ctx, "rgQumulo", "nauwwbfoqehgbhdsmkewoboyxeqg", nil)
+	res, err := clientFactory.NewFileSystemsClient().Get(ctx, "rgQumulo", "sihbehcisdqtqqyfiewiiaphgh", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -283,55 +279,55 @@ func ExampleFileSystemsClient_Get_fileSystemsGetMaximumSetGen() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.FileSystemResource = armqumulo.FileSystemResource{
-	// 	Name: to.Ptr("bii"),
-	// 	Type: to.Ptr("qtvxrqwpoistduq"),
-	// 	ID: to.Ptr("tvelgpobdtazrweunifqzaxkgjauyx"),
+	// 	Name: to.Ptr("stftolw"),
+	// 	Type: to.Ptr("wj"),
+	// 	ID: to.Ptr("rfta"),
 	// 	SystemData: &armqumulo.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-14T04:40:17.991Z"); return t}()),
-	// 		CreatedBy: to.Ptr("mtdhqooysjhueaojwpmvophkgntl"),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-21T08:11:54.895Z"); return t}()),
+	// 		CreatedBy: to.Ptr("usnkckwkizihezb"),
 	// 		CreatedByType: to.Ptr(armqumulo.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-14T04:40:17.991Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("jcywglomzuamsxltnoegdrkzlscxl"),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-21T08:11:54.895Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("yjsiqdgtsmycxlncjceemlucn"),
 	// 		LastModifiedByType: to.Ptr(armqumulo.CreatedByTypeUser),
 	// 	},
-	// 	Location: to.Ptr("przdlsmlzsszphnixq"),
+	// 	Location: to.Ptr("pnb"),
 	// 	Tags: map[string]*string{
-	// 		"key6565": to.Ptr("cgdhmupta"),
+	// 		"key7090": to.Ptr("rurrdiaqp"),
 	// 	},
 	// 	Identity: &armqumulo.ManagedServiceIdentity{
 	// 		Type: to.Ptr(armqumulo.ManagedServiceIdentityTypeNone),
 	// 		PrincipalID: to.Ptr("11111111-1111-1111-1111-111111111111"),
 	// 		TenantID: to.Ptr("11111111-1111-1111-1111-111111111111"),
 	// 		UserAssignedIdentities: map[string]*armqumulo.UserAssignedIdentity{
-	// 			"key4522": &armqumulo.UserAssignedIdentity{
+	// 			"key7679": &armqumulo.UserAssignedIdentity{
 	// 				ClientID: to.Ptr("11111111-1111-1111-1111-111111111111"),
 	// 				PrincipalID: to.Ptr("11111111-1111-1111-1111-111111111111"),
 	// 			},
 	// 		},
 	// 	},
 	// 	Properties: &armqumulo.FileSystemResourceProperties{
-	// 		AvailabilityZone: to.Ptr("maseyqhlnhoiwbabcqabtedbjpip"),
-	// 		ClusterLoginURL: to.Ptr("jjqhgevy"),
-	// 		DelegatedSubnetID: to.Ptr("neqctctqdmjezfgt"),
-	// 		InitialCapacity: to.Ptr[int32](9),
+	// 		AvailabilityZone: to.Ptr("eqdvbdiuwmhhzqzmksmwllpddqquwt"),
+	// 		ClusterLoginURL: to.Ptr("ykaynsjvhihdthkkvvodjrgc"),
+	// 		DelegatedSubnetID: to.Ptr("jykmxrf"),
 	// 		MarketplaceDetails: &armqumulo.MarketplaceDetails{
-	// 			MarketplaceSubscriptionID: to.Ptr("ujrcqvxfnhxxheoth"),
+	// 			MarketplaceSubscriptionID: to.Ptr("xaqtkloiyovmexqhn"),
 	// 			MarketplaceSubscriptionStatus: to.Ptr(armqumulo.MarketplaceSubscriptionStatusPendingFulfillmentStart),
-	// 			OfferID: to.Ptr("eiyhbmpwgezcmzrrfoiskuxlcvwojf"),
-	// 			PlanID: to.Ptr("x"),
-	// 			PublisherID: to.Ptr("wfmokfdjbwpjhz"),
+	// 			OfferID: to.Ptr("s"),
+	// 			PlanID: to.Ptr("fwtpz"),
+	// 			PublisherID: to.Ptr("czxcfrwodazyaft"),
+	// 			TermUnit: to.Ptr("cfwwczmygsimcyvoclcw"),
 	// 		},
 	// 		PrivateIPs: []*string{
-	// 			to.Ptr("kslguxrwbwkrj")},
+	// 			to.Ptr("gzken")},
 	// 			ProvisioningState: to.Ptr(armqumulo.ProvisioningStateSucceeded),
-	// 			StorageSKU: to.Ptr(armqumulo.StorageSKUStandard),
+	// 			StorageSKU: to.Ptr("yhyzby"),
 	// 			UserDetails: &armqumulo.UserDetails{
 	// 			},
 	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/liftrqumulo/resource-manager/Qumulo.Storage/stable/2022-10-12/examples/FileSystems_Get_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/72de08114673a547de8a017c85ed89a2017a86f7/specification/liftrqumulo/resource-manager/Qumulo.Storage/stable/2024-06-19/examples/FileSystems_Get_MinimumSet_Gen.json
 func ExampleFileSystemsClient_Get_fileSystemsGetMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -355,24 +351,23 @@ func ExampleFileSystemsClient_Get_fileSystemsGetMinimumSetGen() {
 	// 	Location: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
 	// 	Properties: &armqumulo.FileSystemResourceProperties{
 	// 		DelegatedSubnetID: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
-	// 		InitialCapacity: to.Ptr[int32](9),
 	// 		MarketplaceDetails: &armqumulo.MarketplaceDetails{
 	// 			MarketplaceSubscriptionID: to.Ptr("aaaaaaaaaaaaaaaaa"),
 	// 			MarketplaceSubscriptionStatus: to.Ptr(armqumulo.MarketplaceSubscriptionStatusPendingFulfillmentStart),
 	// 			OfferID: to.Ptr("aaaaaaaaa"),
 	// 			PlanID: to.Ptr("aaaaaaa"),
-	// 			PublisherID: to.Ptr("aaaaaaaaaaaaaaaaaaaa"),
+	// 			TermUnit: to.Ptr("zxv"),
 	// 		},
 	// 		ProvisioningState: to.Ptr(armqumulo.ProvisioningStateSucceeded),
-	// 		StorageSKU: to.Ptr(armqumulo.StorageSKUStandard),
+	// 		StorageSKU: to.Ptr("Standard"),
 	// 		UserDetails: &armqumulo.UserDetails{
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/liftrqumulo/resource-manager/Qumulo.Storage/stable/2022-10-12/examples/FileSystems_CreateOrUpdate_MaximumSet_Gen.json
-func ExampleFileSystemsClient_BeginCreateOrUpdate_fileSystemsCreateOrUpdateMaximumSetGen() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/72de08114673a547de8a017c85ed89a2017a86f7/specification/liftrqumulo/resource-manager/Qumulo.Storage/stable/2024-06-19/examples/FileSystems_CreateOrUpdate_MaximumSet_Gen.json
+func ExampleFileSystemsClient_BeginCreateOrUpdate_fileSystemsCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -382,36 +377,35 @@ func ExampleFileSystemsClient_BeginCreateOrUpdate_fileSystemsCreateOrUpdateMaxim
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewFileSystemsClient().BeginCreateOrUpdate(ctx, "rgQumulo", "nauwwbfoqehgbhdsmkewoboyxeqg", armqumulo.FileSystemResource{
-		Location: to.Ptr("przdlsmlzsszphnixq"),
+	poller, err := clientFactory.NewFileSystemsClient().BeginCreateOrUpdate(ctx, "rgQumulo", "hfcmtgaes", armqumulo.FileSystemResource{
+		Location: to.Ptr("pnb"),
 		Tags: map[string]*string{
-			"key6565": to.Ptr("cgdhmupta"),
+			"key7090": to.Ptr("rurrdiaqp"),
 		},
 		Identity: &armqumulo.ManagedServiceIdentity{
 			Type: to.Ptr(armqumulo.ManagedServiceIdentityTypeNone),
 			UserAssignedIdentities: map[string]*armqumulo.UserAssignedIdentity{
-				"key4522": {},
+				"key7679": {},
 			},
 		},
 		Properties: &armqumulo.FileSystemResourceProperties{
-			AdminPassword:     to.Ptr("ekceujoecaashtjlsgcymnrdozk"),
-			AvailabilityZone:  to.Ptr("maseyqhlnhoiwbabcqabtedbjpip"),
-			ClusterLoginURL:   to.Ptr("jjqhgevy"),
-			DelegatedSubnetID: to.Ptr("neqctctqdmjezfgt"),
-			InitialCapacity:   to.Ptr[int32](9),
+			AdminPassword:     to.Ptr("fakeTestSecretPlaceholder"),
+			AvailabilityZone:  to.Ptr("eqdvbdiuwmhhzqzmksmwllpddqquwt"),
+			ClusterLoginURL:   to.Ptr("ykaynsjvhihdthkkvvodjrgc"),
+			DelegatedSubnetID: to.Ptr("jykmxrf"),
 			MarketplaceDetails: &armqumulo.MarketplaceDetails{
-				MarketplaceSubscriptionID:     to.Ptr("ujrcqvxfnhxxheoth"),
+				MarketplaceSubscriptionID:     to.Ptr("xaqtkloiyovmexqhn"),
 				MarketplaceSubscriptionStatus: to.Ptr(armqumulo.MarketplaceSubscriptionStatusPendingFulfillmentStart),
-				OfferID:                       to.Ptr("eiyhbmpwgezcmzrrfoiskuxlcvwojf"),
-				PlanID:                        to.Ptr("x"),
-				PublisherID:                   to.Ptr("wfmokfdjbwpjhz"),
+				OfferID:                       to.Ptr("s"),
+				PlanID:                        to.Ptr("fwtpz"),
+				PublisherID:                   to.Ptr("czxcfrwodazyaft"),
+				TermUnit:                      to.Ptr("cfwwczmygsimcyvoclcw"),
 			},
 			PrivateIPs: []*string{
-				to.Ptr("kslguxrwbwkrj")},
-			ProvisioningState: to.Ptr(armqumulo.ProvisioningStateAccepted),
-			StorageSKU:        to.Ptr(armqumulo.StorageSKUStandard),
+				to.Ptr("gzken")},
+			StorageSKU: to.Ptr("yhyzby"),
 			UserDetails: &armqumulo.UserDetails{
-				Email: to.Ptr("viptslwulnpaupfljvnjeq"),
+				Email: to.Ptr("aqsnzyroo"),
 			},
 		},
 	}, nil)
@@ -426,55 +420,55 @@ func ExampleFileSystemsClient_BeginCreateOrUpdate_fileSystemsCreateOrUpdateMaxim
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.FileSystemResource = armqumulo.FileSystemResource{
-	// 	Name: to.Ptr("bii"),
-	// 	Type: to.Ptr("qtvxrqwpoistduq"),
-	// 	ID: to.Ptr("tvelgpobdtazrweunifqzaxkgjauyx"),
+	// 	Name: to.Ptr("stftolw"),
+	// 	Type: to.Ptr("wj"),
+	// 	ID: to.Ptr("rfta"),
 	// 	SystemData: &armqumulo.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-14T04:40:17.991Z"); return t}()),
-	// 		CreatedBy: to.Ptr("mtdhqooysjhueaojwpmvophkgntl"),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-21T08:11:54.895Z"); return t}()),
+	// 		CreatedBy: to.Ptr("usnkckwkizihezb"),
 	// 		CreatedByType: to.Ptr(armqumulo.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-14T04:40:17.991Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("jcywglomzuamsxltnoegdrkzlscxl"),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-21T08:11:54.895Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("yjsiqdgtsmycxlncjceemlucn"),
 	// 		LastModifiedByType: to.Ptr(armqumulo.CreatedByTypeUser),
 	// 	},
-	// 	Location: to.Ptr("przdlsmlzsszphnixq"),
+	// 	Location: to.Ptr("pnb"),
 	// 	Tags: map[string]*string{
-	// 		"key6565": to.Ptr("cgdhmupta"),
+	// 		"key7090": to.Ptr("rurrdiaqp"),
 	// 	},
 	// 	Identity: &armqumulo.ManagedServiceIdentity{
 	// 		Type: to.Ptr(armqumulo.ManagedServiceIdentityTypeNone),
 	// 		PrincipalID: to.Ptr("11111111-1111-1111-1111-111111111111"),
 	// 		TenantID: to.Ptr("11111111-1111-1111-1111-111111111111"),
 	// 		UserAssignedIdentities: map[string]*armqumulo.UserAssignedIdentity{
-	// 			"key4522": &armqumulo.UserAssignedIdentity{
+	// 			"key7679": &armqumulo.UserAssignedIdentity{
 	// 				ClientID: to.Ptr("11111111-1111-1111-1111-111111111111"),
 	// 				PrincipalID: to.Ptr("11111111-1111-1111-1111-111111111111"),
 	// 			},
 	// 		},
 	// 	},
 	// 	Properties: &armqumulo.FileSystemResourceProperties{
-	// 		AvailabilityZone: to.Ptr("maseyqhlnhoiwbabcqabtedbjpip"),
-	// 		ClusterLoginURL: to.Ptr("jjqhgevy"),
-	// 		DelegatedSubnetID: to.Ptr("neqctctqdmjezfgt"),
-	// 		InitialCapacity: to.Ptr[int32](9),
+	// 		AvailabilityZone: to.Ptr("eqdvbdiuwmhhzqzmksmwllpddqquwt"),
+	// 		ClusterLoginURL: to.Ptr("ykaynsjvhihdthkkvvodjrgc"),
+	// 		DelegatedSubnetID: to.Ptr("jykmxrf"),
 	// 		MarketplaceDetails: &armqumulo.MarketplaceDetails{
-	// 			MarketplaceSubscriptionID: to.Ptr("ujrcqvxfnhxxheoth"),
+	// 			MarketplaceSubscriptionID: to.Ptr("xaqtkloiyovmexqhn"),
 	// 			MarketplaceSubscriptionStatus: to.Ptr(armqumulo.MarketplaceSubscriptionStatusPendingFulfillmentStart),
-	// 			OfferID: to.Ptr("eiyhbmpwgezcmzrrfoiskuxlcvwojf"),
-	// 			PlanID: to.Ptr("x"),
-	// 			PublisherID: to.Ptr("wfmokfdjbwpjhz"),
+	// 			OfferID: to.Ptr("s"),
+	// 			PlanID: to.Ptr("fwtpz"),
+	// 			PublisherID: to.Ptr("czxcfrwodazyaft"),
+	// 			TermUnit: to.Ptr("cfwwczmygsimcyvoclcw"),
 	// 		},
 	// 		PrivateIPs: []*string{
-	// 			to.Ptr("kslguxrwbwkrj")},
+	// 			to.Ptr("gzken")},
 	// 			ProvisioningState: to.Ptr(armqumulo.ProvisioningStateSucceeded),
-	// 			StorageSKU: to.Ptr(armqumulo.StorageSKUStandard),
+	// 			StorageSKU: to.Ptr("yhyzby"),
 	// 			UserDetails: &armqumulo.UserDetails{
 	// 			},
 	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/liftrqumulo/resource-manager/Qumulo.Storage/stable/2022-10-12/examples/FileSystems_CreateOrUpdate_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/72de08114673a547de8a017c85ed89a2017a86f7/specification/liftrqumulo/resource-manager/Qumulo.Storage/stable/2024-06-19/examples/FileSystems_CreateOrUpdate_MinimumSet_Gen.json
 func ExampleFileSystemsClient_BeginCreateOrUpdate_fileSystemsCreateOrUpdateMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -488,18 +482,15 @@ func ExampleFileSystemsClient_BeginCreateOrUpdate_fileSystemsCreateOrUpdateMinim
 	poller, err := clientFactory.NewFileSystemsClient().BeginCreateOrUpdate(ctx, "rgopenapi", "aaaaaaaa", armqumulo.FileSystemResource{
 		Location: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaa"),
 		Properties: &armqumulo.FileSystemResourceProperties{
-			AdminPassword:     to.Ptr("ekceujoecaashtjlsgcymnrdozk"),
+			AdminPassword:     to.Ptr("fakeTestSecretPlaceholder"),
 			DelegatedSubnetID: to.Ptr("aaaaaaaaaa"),
-			InitialCapacity:   to.Ptr[int32](9),
 			MarketplaceDetails: &armqumulo.MarketplaceDetails{
 				MarketplaceSubscriptionID:     to.Ptr("aaaaaaaaaaaaa"),
 				MarketplaceSubscriptionStatus: to.Ptr(armqumulo.MarketplaceSubscriptionStatusPendingFulfillmentStart),
 				OfferID:                       to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaa"),
 				PlanID:                        to.Ptr("aaaaaa"),
-				PublisherID:                   to.Ptr("aa"),
 			},
-			ProvisioningState: to.Ptr(armqumulo.ProvisioningStateAccepted),
-			StorageSKU:        to.Ptr(armqumulo.StorageSKUStandard),
+			StorageSKU: to.Ptr("Standard"),
 			UserDetails: &armqumulo.UserDetails{
 				Email: to.Ptr("viptslwulnpaupfljvnjeq"),
 			},
@@ -520,7 +511,6 @@ func ExampleFileSystemsClient_BeginCreateOrUpdate_fileSystemsCreateOrUpdateMinim
 	// 	Location: to.Ptr("aaaaaaaaa"),
 	// 	Properties: &armqumulo.FileSystemResourceProperties{
 	// 		DelegatedSubnetID: to.Ptr("aaaaaaaaaa"),
-	// 		InitialCapacity: to.Ptr[int32](9),
 	// 		MarketplaceDetails: &armqumulo.MarketplaceDetails{
 	// 			MarketplaceSubscriptionID: to.Ptr("aaaaaaaaaaaaa"),
 	// 			MarketplaceSubscriptionStatus: to.Ptr(armqumulo.MarketplaceSubscriptionStatusPendingFulfillmentStart),
@@ -529,15 +519,15 @@ func ExampleFileSystemsClient_BeginCreateOrUpdate_fileSystemsCreateOrUpdateMinim
 	// 			PublisherID: to.Ptr("aa"),
 	// 		},
 	// 		ProvisioningState: to.Ptr(armqumulo.ProvisioningStateSucceeded),
-	// 		StorageSKU: to.Ptr(armqumulo.StorageSKUStandard),
+	// 		StorageSKU: to.Ptr("Standard"),
 	// 		UserDetails: &armqumulo.UserDetails{
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/liftrqumulo/resource-manager/Qumulo.Storage/stable/2022-10-12/examples/FileSystems_Update_MaximumSet_Gen.json
-func ExampleFileSystemsClient_Update_fileSystemsUpdateMaximumSetGen() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/72de08114673a547de8a017c85ed89a2017a86f7/specification/liftrqumulo/resource-manager/Qumulo.Storage/stable/2024-06-19/examples/FileSystems_Update_MaximumSet_Gen.json
+func ExampleFileSystemsClient_Update_fileSystemsUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -547,31 +537,29 @@ func ExampleFileSystemsClient_Update_fileSystemsUpdateMaximumSetGen() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewFileSystemsClient().Update(ctx, "rgQumulo", "nauwwbfoqehgbhdsmkewoboyxeqg", armqumulo.FileSystemResourceUpdate{
+	res, err := clientFactory.NewFileSystemsClient().Update(ctx, "rgQumulo", "ahpixnvykleksjlr", armqumulo.FileSystemResourceUpdate{
 		Identity: &armqumulo.ManagedServiceIdentity{
 			Type: to.Ptr(armqumulo.ManagedServiceIdentityTypeNone),
 			UserAssignedIdentities: map[string]*armqumulo.UserAssignedIdentity{
-				"key4522": {},
+				"key7679": {},
 			},
 		},
 		Properties: &armqumulo.FileSystemResourceUpdateProperties{
-			ClusterLoginURL:   to.Ptr("adabmuthwrbjshzfbo"),
-			DelegatedSubnetID: to.Ptr("vjfirtaljehawmflyfianw"),
+			DelegatedSubnetID: to.Ptr("bqaryqsjlackxphpmzffgoqsvm"),
 			MarketplaceDetails: &armqumulo.MarketplaceDetails{
-				MarketplaceSubscriptionID:     to.Ptr("ujrcqvxfnhxxheoth"),
+				MarketplaceSubscriptionID:     to.Ptr("xaqtkloiyovmexqhn"),
 				MarketplaceSubscriptionStatus: to.Ptr(armqumulo.MarketplaceSubscriptionStatusPendingFulfillmentStart),
-				OfferID:                       to.Ptr("eiyhbmpwgezcmzrrfoiskuxlcvwojf"),
-				PlanID:                        to.Ptr("x"),
-				PublisherID:                   to.Ptr("wfmokfdjbwpjhz"),
+				OfferID:                       to.Ptr("s"),
+				PlanID:                        to.Ptr("fwtpz"),
+				PublisherID:                   to.Ptr("czxcfrwodazyaft"),
+				TermUnit:                      to.Ptr("cfwwczmygsimcyvoclcw"),
 			},
-			PrivateIPs: []*string{
-				to.Ptr("eugjqbaoucgjsopzfrq")},
 			UserDetails: &armqumulo.UserDetails{
-				Email: to.Ptr("aa"),
+				Email: to.Ptr("aqsnzyroo"),
 			},
 		},
 		Tags: map[string]*string{
-			"key7534": to.Ptr("jsgqvqbagquvxowbrkanyhzvo"),
+			"key357": to.Ptr("ztkkvhfia"),
 		},
 	}, nil)
 	if err != nil {
@@ -581,55 +569,55 @@ func ExampleFileSystemsClient_Update_fileSystemsUpdateMaximumSetGen() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.FileSystemResource = armqumulo.FileSystemResource{
-	// 	Name: to.Ptr("bii"),
-	// 	Type: to.Ptr("qtvxrqwpoistduq"),
-	// 	ID: to.Ptr("tvelgpobdtazrweunifqzaxkgjauyx"),
+	// 	Name: to.Ptr("stftolw"),
+	// 	Type: to.Ptr("wj"),
+	// 	ID: to.Ptr("rfta"),
 	// 	SystemData: &armqumulo.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-14T04:40:17.991Z"); return t}()),
-	// 		CreatedBy: to.Ptr("mtdhqooysjhueaojwpmvophkgntl"),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-21T08:11:54.895Z"); return t}()),
+	// 		CreatedBy: to.Ptr("usnkckwkizihezb"),
 	// 		CreatedByType: to.Ptr(armqumulo.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-14T04:40:17.991Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("jcywglomzuamsxltnoegdrkzlscxl"),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-21T08:11:54.895Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("yjsiqdgtsmycxlncjceemlucn"),
 	// 		LastModifiedByType: to.Ptr(armqumulo.CreatedByTypeUser),
 	// 	},
-	// 	Location: to.Ptr("przdlsmlzsszphnixq"),
+	// 	Location: to.Ptr("pnb"),
 	// 	Tags: map[string]*string{
-	// 		"key6565": to.Ptr("cgdhmupta"),
+	// 		"key7090": to.Ptr("rurrdiaqp"),
 	// 	},
 	// 	Identity: &armqumulo.ManagedServiceIdentity{
 	// 		Type: to.Ptr(armqumulo.ManagedServiceIdentityTypeNone),
 	// 		PrincipalID: to.Ptr("11111111-1111-1111-1111-111111111111"),
 	// 		TenantID: to.Ptr("11111111-1111-1111-1111-111111111111"),
 	// 		UserAssignedIdentities: map[string]*armqumulo.UserAssignedIdentity{
-	// 			"key4522": &armqumulo.UserAssignedIdentity{
+	// 			"key7679": &armqumulo.UserAssignedIdentity{
 	// 				ClientID: to.Ptr("11111111-1111-1111-1111-111111111111"),
 	// 				PrincipalID: to.Ptr("11111111-1111-1111-1111-111111111111"),
 	// 			},
 	// 		},
 	// 	},
 	// 	Properties: &armqumulo.FileSystemResourceProperties{
-	// 		AvailabilityZone: to.Ptr("maseyqhlnhoiwbabcqabtedbjpip"),
-	// 		ClusterLoginURL: to.Ptr("jjqhgevy"),
-	// 		DelegatedSubnetID: to.Ptr("neqctctqdmjezfgt"),
-	// 		InitialCapacity: to.Ptr[int32](9),
+	// 		AvailabilityZone: to.Ptr("eqdvbdiuwmhhzqzmksmwllpddqquwt"),
+	// 		ClusterLoginURL: to.Ptr("ykaynsjvhihdthkkvvodjrgc"),
+	// 		DelegatedSubnetID: to.Ptr("jykmxrf"),
 	// 		MarketplaceDetails: &armqumulo.MarketplaceDetails{
-	// 			MarketplaceSubscriptionID: to.Ptr("ujrcqvxfnhxxheoth"),
+	// 			MarketplaceSubscriptionID: to.Ptr("xaqtkloiyovmexqhn"),
 	// 			MarketplaceSubscriptionStatus: to.Ptr(armqumulo.MarketplaceSubscriptionStatusPendingFulfillmentStart),
-	// 			OfferID: to.Ptr("eiyhbmpwgezcmzrrfoiskuxlcvwojf"),
-	// 			PlanID: to.Ptr("x"),
-	// 			PublisherID: to.Ptr("wfmokfdjbwpjhz"),
+	// 			OfferID: to.Ptr("s"),
+	// 			PlanID: to.Ptr("fwtpz"),
+	// 			PublisherID: to.Ptr("czxcfrwodazyaft"),
+	// 			TermUnit: to.Ptr("cfwwczmygsimcyvoclcw"),
 	// 		},
 	// 		PrivateIPs: []*string{
-	// 			to.Ptr("eugjqbaoucgjsopzfrq")},
+	// 			to.Ptr("gzken")},
 	// 			ProvisioningState: to.Ptr(armqumulo.ProvisioningStateSucceeded),
-	// 			StorageSKU: to.Ptr(armqumulo.StorageSKUStandard),
+	// 			StorageSKU: to.Ptr("yhyzby"),
 	// 			UserDetails: &armqumulo.UserDetails{
 	// 			},
 	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/liftrqumulo/resource-manager/Qumulo.Storage/stable/2022-10-12/examples/FileSystems_Update_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/72de08114673a547de8a017c85ed89a2017a86f7/specification/liftrqumulo/resource-manager/Qumulo.Storage/stable/2024-06-19/examples/FileSystems_Update_MinimumSet_Gen.json
 func ExampleFileSystemsClient_Update_fileSystemsUpdateMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -652,24 +640,22 @@ func ExampleFileSystemsClient_Update_fileSystemsUpdateMinimumSetGen() {
 	// 	Location: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
 	// 	Properties: &armqumulo.FileSystemResourceProperties{
 	// 		DelegatedSubnetID: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
-	// 		InitialCapacity: to.Ptr[int32](9),
 	// 		MarketplaceDetails: &armqumulo.MarketplaceDetails{
 	// 			MarketplaceSubscriptionID: to.Ptr("aaaaaaaaaaaaaaaaa"),
 	// 			MarketplaceSubscriptionStatus: to.Ptr(armqumulo.MarketplaceSubscriptionStatusPendingFulfillmentStart),
 	// 			OfferID: to.Ptr("aaaaaaaaa"),
 	// 			PlanID: to.Ptr("aaaaaaa"),
-	// 			PublisherID: to.Ptr("aaaaaaaaaaaaaaaaaaaa"),
 	// 		},
 	// 		ProvisioningState: to.Ptr(armqumulo.ProvisioningStateSucceeded),
-	// 		StorageSKU: to.Ptr(armqumulo.StorageSKUStandard),
+	// 		StorageSKU: to.Ptr("Standard"),
 	// 		UserDetails: &armqumulo.UserDetails{
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/liftrqumulo/resource-manager/Qumulo.Storage/stable/2022-10-12/examples/FileSystems_Delete_MaximumSet_Gen.json
-func ExampleFileSystemsClient_BeginDelete_fileSystemsDeleteMaximumSetGen() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/72de08114673a547de8a017c85ed89a2017a86f7/specification/liftrqumulo/resource-manager/Qumulo.Storage/stable/2024-06-19/examples/FileSystems_Delete_MaximumSet_Gen.json
+func ExampleFileSystemsClient_BeginDelete_fileSystemsDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -679,7 +665,7 @@ func ExampleFileSystemsClient_BeginDelete_fileSystemsDeleteMaximumSetGen() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewFileSystemsClient().BeginDelete(ctx, "rgQumulo", "nauwwbfoqehgbhdsmkewoboyxeqg", nil)
+	poller, err := clientFactory.NewFileSystemsClient().BeginDelete(ctx, "rgQumulo", "xoschzkccroahrykedlvbbnsddq", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -689,7 +675,7 @@ func ExampleFileSystemsClient_BeginDelete_fileSystemsDeleteMaximumSetGen() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/liftrqumulo/resource-manager/Qumulo.Storage/stable/2022-10-12/examples/FileSystems_Delete_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/72de08114673a547de8a017c85ed89a2017a86f7/specification/liftrqumulo/resource-manager/Qumulo.Storage/stable/2024-06-19/examples/FileSystems_Delete_MinimumSet_Gen.json
 func ExampleFileSystemsClient_BeginDelete_fileSystemsDeleteMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -700,7 +686,7 @@ func ExampleFileSystemsClient_BeginDelete_fileSystemsDeleteMinimumSetGen() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewFileSystemsClient().BeginDelete(ctx, "rgQumulo", "nauwwbfoqehgbhdsmkewoboyxeqg", nil)
+	poller, err := clientFactory.NewFileSystemsClient().BeginDelete(ctx, "rgQumulo", "jgtskkiplquyrlkaxvhdg", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

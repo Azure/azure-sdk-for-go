@@ -1,6 +1,6 @@
 # Release History
 
-## 1.8.0-beta.2 (Unreleased)
+## 1.8.0-beta.3 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,25 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.8.0-beta.2 (2024-08-06)
+
+### Breaking Changes
+* `NewManagedIdentityCredential` now returns an error when a user-assigned identity
+  is specified on a platform whose managed identity API doesn't support that.
+  `ManagedIdentityCredential.GetToken()` formerly logged a warning in these cases.
+  Returning an error instead prevents the credential authenticating an unexpected
+  identity, causing a client to act with unexpected privileges. The affected
+  platforms are:
+  * Azure Arc
+  * Azure ML (when a resource ID is specified; client IDs are supported)
+  * Cloud Shell
+  * Service Fabric
+
+### Other Changes
+* If `DefaultAzureCredential` receives a non-JSON response when probing IMDS before
+  attempting to authenticate a managed identity, it continues to the next credential
+  in the chain instead of immediately returning an error.
 
 ## 1.8.0-beta.1 (2024-07-17)
 

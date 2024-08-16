@@ -14,10 +14,10 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice/v5"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice/v6"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2024-04-02-preview/examples/TrustedAccessRoles_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8cbd903b0d037c427def0e8fbf167b26e87bd1a9/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-05-01/examples/TrustedAccessRoles_List.json
 func ExampleTrustedAccessRolesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

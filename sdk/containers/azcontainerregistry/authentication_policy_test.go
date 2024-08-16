@@ -133,7 +133,7 @@ func Test_authenticationPolicy_getAccessToken_live(t *testing.T) {
 	if reflect.ValueOf(options.Cloud).IsZero() {
 		options.Cloud = cloud.AzurePublic
 	}
-	authClient, err := newAuthenticationClient(endpoint, &authenticationClientOptions{options})
+	authClient, err := NewAuthenticationClient(endpoint, &AuthenticationClientOptions{options})
 	require.NoError(t, err)
 	p := &authenticationPolicy{
 		temporal.NewResource(acquireRefreshToken),
@@ -157,7 +157,7 @@ func Test_authenticationPolicy_getAccessToken_error(t *testing.T) {
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte("{\"refresh_token\": \".eyJqdGkiOiIwMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDAiLCJzdWIiOiIwMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDAiLCJuYmYiOjQ2NzA0MTEyMTIsImV4cCI6NDY3MDQyMjkxMiwiaWF0Ijo0NjcwNDExMjEyLCJpc3MiOiJBenVyZSBDb250YWluZXIgUmVnaXN0cnkiLCJhdWQiOiJhemFjcmxpdmV0ZXN0LmF6dXJlY3IuaW8iLCJ2ZXJzaW9uIjoiMS4wIiwicmlkIjoiMDAwMCIsImdyYW50X3R5cGUiOiJyZWZyZXNoX3Rva2VuIiwiYXBwaWQiOiIwMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDAiLCJwZXJtaXNzaW9ucyI6eyJBY3Rpb25zIjpbInJlYWQiLCJ3cml0ZSIsImRlbGV0ZSIsImRlbGV0ZWQvcmVhZCIsImRlbGV0ZWQvcmVzdG9yZS9hY3Rpb24iXSwiTm90QWN0aW9ucyI6bnVsbH0sInJvbGVzIjpbXX0.\"}")))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte("wrong response")))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte("wrong response")))
-	authClient, err := newAuthenticationClient(srv.URL(), &authenticationClientOptions{ClientOptions: azcore.ClientOptions{Transport: srv}})
+	authClient, err := NewAuthenticationClient(srv.URL(), &AuthenticationClientOptions{ClientOptions: azcore.ClientOptions{Transport: srv}})
 	require.NoError(t, err)
 
 	p := &authenticationPolicy{
@@ -183,7 +183,7 @@ func Test_authenticationPolicy_getAccessToken_error(t *testing.T) {
 func Test_authenticationPolicy_getAccessToken_live_anonymous(t *testing.T) {
 	startRecording(t)
 	endpoint, _, options := getEndpointCredAndClientOptions(t)
-	authClient, err := newAuthenticationClient(endpoint, &authenticationClientOptions{options})
+	authClient, err := NewAuthenticationClient(endpoint, &AuthenticationClientOptions{options})
 	require.NoError(t, err)
 	p := &authenticationPolicy{
 		refreshTokenCache: temporal.NewResource(acquireRefreshToken),
@@ -217,14 +217,13 @@ func Test_authenticationPolicy_anonymousAccess(t *testing.T) {
 	require.Error(t, err)
 }
 
-func Test_authenticationPolicy_getChallengeRequest(t *testing.T) {
+func Test_getChallengeRequest(t *testing.T) {
 	oriReq, err := runtime.NewRequest(context.Background(), http.MethodPost, "https://test.com")
 	require.NoError(t, err)
 	testBody := []byte("test")
 	err = oriReq.SetBody(streaming.NopCloser(bytes.NewReader(testBody)), "text/plain")
 	require.NoError(t, err)
-	p := &authenticationPolicy{}
-	challengeReq, err := p.getChallengeRequest(*oriReq)
+	challengeReq, err := getChallengeRequest(*oriReq)
 	require.NoError(t, err)
 	require.Equal(t, fmt.Sprintf("%d", len(testBody)), oriReq.Raw().Header.Get("Content-Length"))
 	require.Equal(t, "", challengeReq.Raw().Header.Get("Content-Length"))
@@ -242,7 +241,7 @@ func Test_authenticationPolicy(t *testing.T) {
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte("{\"access_token\": \"test\"}")))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
 
-	authClient, err := newAuthenticationClient(srv.URL(), &authenticationClientOptions{ClientOptions: azcore.ClientOptions{Transport: srv}})
+	authClient, err := NewAuthenticationClient(srv.URL(), &AuthenticationClientOptions{ClientOptions: azcore.ClientOptions{Transport: srv}})
 	require.NoError(t, err)
 	authPolicy := &authenticationPolicy{
 		temporal.NewResource(acquireRefreshToken),

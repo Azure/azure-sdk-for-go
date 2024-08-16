@@ -26,8 +26,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/test/credential"
 	"github.com/stretchr/testify/require"
 )
 
@@ -132,10 +132,10 @@ func mustGetClient(t *testing.T, args newClientArgs) *azopenaiassistants.Client 
 
 	if args.Azure {
 		if args.UseIdentity {
-			dac, err := azidentity.NewDefaultAzureCredential(nil)
+			cred, err := credential.New(nil)
 			require.NoError(t, err)
 
-			tmpClient, err := azopenaiassistants.NewClient(tv.AOAIEndpoint, dac, opts)
+			tmpClient, err := azopenaiassistants.NewClient(tv.AOAIEndpoint, cred, opts)
 			require.NoError(t, err)
 			return tmpClient
 		} else {

@@ -229,3 +229,41 @@ func TestStartSpansDontNest(t *testing.T) {
 	require.EqualValues(t, 2, httpSpanCount)
 	require.EqualValues(t, 3, endCalled)
 }
+
+func TestStartSpanWithAttributes(t *testing.T) {
+	spanAttrs := []tracing.Attribute{
+		{
+			Key:   "int_attr",
+			Value: 12345,
+		},
+		{
+			Key:   "string_attr",
+			Value: "foo",
+		},
+	}
+
+	// span no error
+	var startCalled bool
+	var endCalled bool
+	tr := tracing.NewTracer(func(ctx context.Context, spanName string, options *tracing.SpanOptions) (context.Context, tracing.Span) {
+		startCalled = true
+		require.EqualValues(t, "TestStartSpan", spanName)
+		require.NotNil(t, options)
+		require.EqualValues(t, tracing.SpanKindInternal, options.Kind)
+		require.EqualValues(t, spanAttrs, options.Attributes)
+		spanImpl := tracing.SpanImpl{
+			End: func() { endCalled = true },
+		}
+		return ctx, tracing.NewSpan(spanImpl)
+	}, nil)
+	ctx, end := StartSpan(context.Background(), "TestStartSpan", tr, &StartSpanOptions{
+		Attributes: spanAttrs,
+	})
+	end(nil)
+	ctxTr := ctx.Value(shared.CtxWithTracingTracer{})
+	require.NotNil(t, ctxTr)
+	_, ok := ctxTr.(tracing.Tracer)
+	require.True(t, ok)
+	require.True(t, startCalled)
+	require.True(t, endCalled)
+}

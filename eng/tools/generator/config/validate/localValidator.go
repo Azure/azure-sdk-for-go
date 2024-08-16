@@ -21,7 +21,7 @@ type localValidator struct {
 
 func (v *localValidator) Validate(cfg config.Config) error {
 	var errResult error
-	for readme, infoMap := range cfg.Track1Requests {
+	for readme, infoMap := range cfg.Track2Requests {
 		if err := v.validateReadmeExistence(readme); err != nil {
 			errResult = errors.Join(errResult, err)
 			continue // readme file cannot pass validation, we just skip the validations
@@ -46,13 +46,14 @@ func (v *localValidator) Validate(cfg config.Config) error {
 		// get the keys from infoMap, which is the tags
 		var tags []string
 		linq.From(infoMap).Select(func(item interface{}) interface{} {
-			return item.(linq.KeyValue).Key
+			return item.(config.Track2Request).PackageFlag
 		}).ToSlice(&tags)
 		// check the tags one by one
 		if err := validateTagsInReadme(contentOfReadme, readme, tags...); err != nil {
 			errResult = errors.Join(errResult, err)
 		}
-		if err := validateTagsInReadmeGo(contentOfReadmeGo, readme, tags...); err != nil {
+		// check module-name exist
+		if err := validateModuleNameInReadmeGo(contentOfReadmeGo, readme); err != nil {
 			errResult = errors.Join(errResult, err)
 		}
 	}
@@ -75,10 +76,6 @@ func getReadmeContent(specRoot, readme string) ([]byte, error) {
 
 func findTagInReadme(content []byte, tag string) bool {
 	return regexp.MustCompile(fmt.Sprintf(tagDefinedInReadmeRegex, tag)).Match(content)
-}
-
-func findTagInGo(content []byte, tag string) bool {
-	return regexp.MustCompile(tagInBatchRegex + tag + `\s+`).Match(content)
 }
 
 func getReadmeGoFromReadme(readme string) string {

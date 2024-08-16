@@ -10,6 +10,7 @@ import (
 	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/issue/query"
+	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/typespec"
 	"github.com/ahmetb/go-linq/v3"
 	"github.com/google/go-github/v62/github"
 )
@@ -55,6 +56,23 @@ func (l commitLink) Resolve() (ResolveResult, error) {
 	linq.From(commit.Files).Select(func(item interface{}) interface{} {
 		return item.(*github.CommitFile).GetFilename()
 	}).ToSlice(&filePaths)
+
+	tspConfig, err := GetTspConfigPathFromChangedFiles(l.ctx, l.client, filePaths)
+	if err != nil {
+		if !strings.Contains(err.Error(), "cannot get any tspconfig files from these changed files:") {
+			return nil, err
+		}
+	} else if tspConfig != "" {
+		remoteTspConfigPath := fmt.Sprintf("https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/%s", tspConfig)
+		exist, err := typespec.TspConfigExistEmitOption(remoteTspConfigPath, string(typespec.TypeSpec_GO))
+		if err != nil {
+			return nil, err
+		}
+		if exist {
+			return getResult(tspConfig), nil
+		}
+	}
+
 	readme, err := GetReadmePathFromChangedFiles(l.ctx, l.client, filePaths)
 	if err != nil {
 		return nil, fmt.Errorf("cannot resolve commit link '%s': %+v", l.GetReleaseLink(), err)

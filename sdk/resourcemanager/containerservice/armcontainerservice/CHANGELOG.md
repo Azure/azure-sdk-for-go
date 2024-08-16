@@ -1,5 +1,20 @@
 # Release History
 
+## 6.0.0 (2024-07-26)
+### Breaking Changes
+
+- Function `*ManagedClustersClient.GetOSOptions` has been removed
+- Struct `OSOptionProfile` has been removed
+- Struct `OSOptionProperty` has been removed
+- Struct `OSOptionPropertyList` has been removed
+
+### Features Added
+
+- New value `NetworkPolicyNone` added to enum type `NetworkPolicy`
+- New value `NodeOSUpgradeChannelSecurityPatch` added to enum type `NodeOSUpgradeChannel`
+- New field `DaemonsetEvictionForEmptyNodes`, `DaemonsetEvictionForOccupiedNodes`, `IgnoreDaemonsetsUtilization` in struct `ManagedClusterPropertiesAutoScalerProfile`
+
+
 ## 5.1.0-beta.2 (2024-07-25)
 ### Breaking Changes
 

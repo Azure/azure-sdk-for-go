@@ -673,3 +673,38 @@ func TestManagedIdentityCredential_ServiceFabric(t *testing.T) {
 	}
 	testGetTokenSuccess(t, cred)
 }
+
+func TestManagedIdentityCredential_UnsupportedID(t *testing.T) {
+	t.Run("Azure Arc", func(t *testing.T) {
+		t.Setenv(identityEndpoint, fakeMIEndpoint)
+		t.Setenv(arcIMDSEndpoint, fakeMIEndpoint)
+		_, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{ID: ResourceID(fakeResourceID)})
+		require.Error(t, err)
+		_, err = NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{ID: ClientID(fakeClientID)})
+		require.Error(t, err)
+	})
+	t.Run("Azure ML", func(t *testing.T) {
+		t.Setenv(msiEndpoint, fakeMIEndpoint)
+		t.Setenv(msiSecret, "...")
+		_, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{ID: ResourceID(fakeResourceID)})
+		require.Error(t, err)
+		_, err = NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{ID: ClientID(fakeClientID)})
+		require.NoError(t, err)
+	})
+	t.Run("Cloud Shell", func(t *testing.T) {
+		t.Setenv(msiEndpoint, fakeMIEndpoint)
+		_, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{ID: ResourceID(fakeResourceID)})
+		require.Error(t, err)
+		_, err = NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{ID: ClientID(fakeClientID)})
+		require.Error(t, err)
+	})
+	t.Run("Service Fabric", func(t *testing.T) {
+		t.Setenv(identityEndpoint, fakeMIEndpoint)
+		t.Setenv(identityHeader, "...")
+		t.Setenv(identityServerThumbprint, "...")
+		_, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{ID: ResourceID(fakeResourceID)})
+		require.Error(t, err)
+		_, err = NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{ID: ClientID(fakeClientID)})
+		require.Error(t, err)
+	})
+}

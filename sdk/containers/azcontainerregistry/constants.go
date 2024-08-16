@@ -163,36 +163,36 @@ func PossibleContentTypeValues() []ContentType {
 	}
 }
 
-// postContentSchemaGrantType - Can take a value of accesstokenrefreshtoken, or accesstoken, or refresh_token
-type postContentSchemaGrantType string
+// PostContentSchemaGrantType - Can take a value of accesstokenrefreshtoken, or accesstoken, or refresh_token
+type PostContentSchemaGrantType string
 
 const (
-	postContentSchemaGrantTypeAccessToken             postContentSchemaGrantType = "access_token"
-	postContentSchemaGrantTypeAccessTokenRefreshToken postContentSchemaGrantType = "access_token_refresh_token"
-	postContentSchemaGrantTypeRefreshToken            postContentSchemaGrantType = "refresh_token"
+	PostContentSchemaGrantTypeAccessToken             PostContentSchemaGrantType = "access_token"
+	PostContentSchemaGrantTypeAccessTokenRefreshToken PostContentSchemaGrantType = "access_token_refresh_token"
+	PostContentSchemaGrantTypeRefreshToken            PostContentSchemaGrantType = "refresh_token"
 )
 
-// possiblePostContentSchemaGrantTypeValues returns the possible values for the postContentSchemaGrantType const type.
-func possiblePostContentSchemaGrantTypeValues() []postContentSchemaGrantType {
-	return []postContentSchemaGrantType{
-		postContentSchemaGrantTypeAccessToken,
-		postContentSchemaGrantTypeAccessTokenRefreshToken,
-		postContentSchemaGrantTypeRefreshToken,
+// PossiblePostContentSchemaGrantTypeValues returns the possible values for the PostContentSchemaGrantType const type.
+func PossiblePostContentSchemaGrantTypeValues() []PostContentSchemaGrantType {
+	return []PostContentSchemaGrantType{
+		PostContentSchemaGrantTypeAccessToken,
+		PostContentSchemaGrantTypeAccessTokenRefreshToken,
+		PostContentSchemaGrantTypeRefreshToken,
 	}
 }
 
-// tokenGrantType - Grant type is expected to be refresh_token
-type tokenGrantType string
+// TokenGrantType - Grant type is expected to be refresh_token
+type TokenGrantType string
 
 const (
-	tokenGrantTypePassword     tokenGrantType = "password"
-	tokenGrantTypeRefreshToken tokenGrantType = "refresh_token"
+	TokenGrantTypePassword     TokenGrantType = "password"
+	TokenGrantTypeRefreshToken TokenGrantType = "refresh_token"
 )
 
-// possibleTokenGrantTypeValues returns the possible values for the tokenGrantType const type.
-func possibleTokenGrantTypeValues() []tokenGrantType {
-	return []tokenGrantType{
-		tokenGrantTypePassword,
-		tokenGrantTypeRefreshToken,
+// PossibleTokenGrantTypeValues returns the possible values for the TokenGrantType const type.
+func PossibleTokenGrantTypeValues() []TokenGrantType {
+	return []TokenGrantType{
+		TokenGrantTypePassword,
+		TokenGrantTypeRefreshToken,
 	}
 }

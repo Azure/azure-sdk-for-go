@@ -104,13 +104,14 @@ func TestClient_GetManifest(t *testing.T) {
 	require.Error(t, err)
 	res, err := client.GetManifest(ctx, repository, "latest", &ClientGetManifestOptions{Accept: to.Ptr("application/vnd.docker.distribution.manifest.v2+json")})
 	require.NoError(t, err)
-	if recording.GetRecordMode() != recording.PlaybackMode {
-		reader, err := NewDigestValidationReader(*res.DockerContentDigest, res.ManifestData)
-		require.NoError(t, err)
-		manifest, err := io.ReadAll(reader)
-		require.NoError(t, err)
-		require.NotEmpty(t, manifest)
+	reader, err := NewDigestValidationReader(*res.DockerContentDigest, res.ManifestData)
+	require.NoError(t, err)
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		reader.digestValidator = &sha256Validator{&fakeHash{}}
 	}
+	manifest, err := io.ReadAll(reader)
+	require.NoError(t, err)
+	require.NotEmpty(t, manifest)
 }
 
 func TestClient_GetManifest_wrongServerDigest(t *testing.T) {
@@ -483,12 +484,10 @@ func TestClient_UploadManifest(t *testing.T) {
 	require.NotEmpty(t, *uploadRes.DockerContentDigest)
 	_, err = reader.Seek(0, io.SeekStart)
 	require.NoError(t, err)
-	if recording.GetRecordMode() != recording.PlaybackMode {
-		validateReader, err := NewDigestValidationReader(*uploadRes.DockerContentDigest, reader)
-		require.NoError(t, err)
-		_, err = io.ReadAll(validateReader)
-		require.NoError(t, err)
-	}
+	validateReader, err := NewDigestValidationReader(*uploadRes.DockerContentDigest, reader)
+	require.NoError(t, err)
+	_, err = io.ReadAll(validateReader)
+	require.NoError(t, err)
 }
 
 func TestClient_UploadManifest_empty(t *testing.T) {

@@ -125,12 +125,13 @@ func TestBlobClient(t *testing.T) {
 		res, err := client.GetBlob(ctx, repository, blobDigest, nil)
 		require.NoError(t, err)
 		require.NotEmpty(t, *res.ContentLength)
-		if recording.GetRecordMode() != recording.PlaybackMode {
-			reader, err := NewDigestValidationReader(blobDigest, res.BlobData)
-			require.NoError(t, err)
-			_, err = io.ReadAll(reader)
-			require.NoError(t, err)
+		reader, err := NewDigestValidationReader(blobDigest, res.BlobData)
+		require.NoError(t, err)
+		if recording.GetRecordMode() == recording.PlaybackMode {
+			reader.digestValidator = &sha256Validator{&fakeHash{}}
 		}
+		_, err = io.ReadAll(reader)
+		require.NoError(t, err)
 	})
 
 	t.Run("GetBlob_fail", func(t *testing.T) {
@@ -164,12 +165,13 @@ func TestBlobClient(t *testing.T) {
 			}
 			current += chunkSize
 		}
-		if recording.GetRecordMode() != recording.PlaybackMode {
-			reader, err := NewDigestValidationReader(blobDigest, blob)
-			require.NoError(t, err)
-			_, err = io.ReadAll(reader)
-			require.NoError(t, err)
+		reader, err := NewDigestValidationReader(blobDigest, blob)
+		require.NoError(t, err)
+		if recording.GetRecordMode() == recording.PlaybackMode {
+			reader.digestValidator = &sha256Validator{&fakeHash{}}
 		}
+		_, err = io.ReadAll(reader)
+		require.NoError(t, err)
 	})
 
 	t.Run("GetChunk_fail", func(t *testing.T) {

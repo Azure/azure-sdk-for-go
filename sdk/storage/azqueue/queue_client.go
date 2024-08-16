@@ -22,7 +22,7 @@ import (
 )
 
 // ClientOptions contains the optional parameters when creating a Client.
-type ClientOptions base.ClientOptions
+type ClientOptions = base.ClientOptions
 
 // QueueClient represents a URL to the Azure Queue Storage service allowing you to manipulate queues.
 type QueueClient base.CompositeClient[generated.QueueClient, generated.MessagesClient]

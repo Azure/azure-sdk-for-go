@@ -111,9 +111,10 @@ func (s *UnrecordedTestSuite) TestQueueClientUsingOauthWithCustomAudience() {
 	_require.NoError(err)
 
 	options := &azqueue.ClientOptions{Audience: "https://" + accountName + ".queue.core.windows.net"}
-	
+	options.Logging.AllowedHeaders = append(options.Logging.AllowedHeaders, "X-Request-Mismatch", "X-Request-Mismatch-Error")
 	transport, err := recording.NewRecordingHTTPClient(s.T(), nil)
 	require.NoError(s.T(), err)
+
 	options.Transport = transport
 
 	qClient, err := azqueue.NewQueueClient(queueURL, cred, nil)

@@ -345,16 +345,16 @@ func (c *managedIdentityClient) createIMDSAuthRequest(ctx context.Context, id Ma
 	}
 	request.Raw().Header.Set(headerMetadata, "true")
 	q := request.Raw().URL.Query()
-	q.Add("api-version", imdsAPIVersion)
-	q.Add("resource", strings.Join(scopes, " "))
+	q.Set("api-version", imdsAPIVersion)
+	q.Set("resource", strings.Join(scopes, " "))
 	if id != nil {
 		switch id.idKind() {
 		case miClientID:
-			q.Add(qpClientID, id.String())
+			q.Set(qpClientID, id.String())
 		case miObjectID:
-			q.Add("object_id", id.String())
+			q.Set("object_id", id.String())
 		case miResourceID:
-			q.Add(msiResID, id.String())
+			q.Set(msiResID, id.String())
 		}
 	}
 	request.Raw().URL.RawQuery = q.Encode()
@@ -368,16 +368,16 @@ func (c *managedIdentityClient) createAppServiceAuthRequest(ctx context.Context,
 	}
 	request.Raw().Header.Set("X-IDENTITY-HEADER", os.Getenv(identityHeader))
 	q := request.Raw().URL.Query()
-	q.Add("api-version", "2019-08-01")
-	q.Add("resource", scopes[0])
+	q.Set("api-version", "2019-08-01")
+	q.Set("resource", scopes[0])
 	if id != nil {
 		switch id.idKind() {
 		case miClientID:
-			q.Add(qpClientID, id.String())
+			q.Set(qpClientID, id.String())
 		case miObjectID:
-			q.Add("principal_id", id.String())
+			q.Set("principal_id", id.String())
 		case miResourceID:
-			q.Add(miResID, id.String())
+			q.Set(miResID, id.String())
 		}
 	}
 	request.Raw().URL.RawQuery = q.Encode()
@@ -391,9 +391,9 @@ func (c *managedIdentityClient) createAzureMLAuthRequest(ctx context.Context, id
 	}
 	request.Raw().Header.Set("secret", os.Getenv(msiSecret))
 	q := request.Raw().URL.Query()
-	q.Add("api-version", "2017-09-01")
-	q.Add("resource", strings.Join(scopes, " "))
-	q.Add("clientid", os.Getenv(defaultIdentityClientID))
+	q.Set("api-version", "2017-09-01")
+	q.Set("resource", strings.Join(scopes, " "))
+	q.Set("clientid", os.Getenv(defaultIdentityClientID))
 	if id != nil {
 		switch id.idKind() {
 		case miClientID:
@@ -416,8 +416,8 @@ func (c *managedIdentityClient) createServiceFabricAuthRequest(ctx context.Conte
 	q := request.Raw().URL.Query()
 	request.Raw().Header.Set("Accept", "application/json")
 	request.Raw().Header.Set("Secret", os.Getenv(identityHeader))
-	q.Add("api-version", serviceFabricAPIVersion)
-	q.Add("resource", strings.Join(scopes, " "))
+	q.Set("api-version", serviceFabricAPIVersion)
+	q.Set("resource", strings.Join(scopes, " "))
 	request.Raw().URL.RawQuery = q.Encode()
 	return request, nil
 }
@@ -430,8 +430,8 @@ func (c *managedIdentityClient) getAzureArcSecretKey(ctx context.Context, resour
 	}
 	request.Raw().Header.Set(headerMetadata, "true")
 	q := request.Raw().URL.Query()
-	q.Add("api-version", azureArcAPIVersion)
-	q.Add("resource", strings.Join(resources, " "))
+	q.Set("api-version", azureArcAPIVersion)
+	q.Set("resource", strings.Join(resources, " "))
 	request.Raw().URL.RawQuery = q.Encode()
 	// send the initial request to get the short-lived secret key
 	response, err := c.azClient.Pipeline().Do(request)
@@ -482,8 +482,8 @@ func (c *managedIdentityClient) createAzureArcAuthRequest(ctx context.Context, r
 	request.Raw().Header.Set(headerMetadata, "true")
 	request.Raw().Header.Set("Authorization", fmt.Sprintf("Basic %s", key))
 	q := request.Raw().URL.Query()
-	q.Add("api-version", azureArcAPIVersion)
-	q.Add("resource", strings.Join(resources, " "))
+	q.Set("api-version", azureArcAPIVersion)
+	q.Set("resource", strings.Join(resources, " "))
 	request.Raw().URL.RawQuery = q.Encode()
 	return request, nil
 }

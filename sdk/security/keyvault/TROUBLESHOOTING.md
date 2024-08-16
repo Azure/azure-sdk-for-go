@@ -21,7 +21,7 @@ common to these SDKs.
 
 ### HTTP 401 Errors
 
-HTTP 401 errors may indicate authentication problems, but silent 401 errors are also an expected part of the Azure Key Vault authentication flow.
+HTTP 401 errors may indicate authentication problems.
 
 #### Frequent HTTP 401 Errors in Logs
 

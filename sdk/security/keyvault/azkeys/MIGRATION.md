@@ -8,7 +8,7 @@ In the past, Azure Key Vault operations were all contained in a single package. 
 
 The new SDK divides the Key Vault API into separate modules for keys, secrets, and certificates. This guide focuses on migrating keys operations to use the new `azkeys` module.
 
-Besides, module name changes. There are a number of name differences for methods and variables. All new modules also authenticate using our [azidentity] module.
+There are other changes besides the module name. For example, some type and method names are different, and all new modules authenticate using our [azidentity] module.
 
 ## Code examples
 

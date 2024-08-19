@@ -15,7 +15,7 @@ import (
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights/v2"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -23,6 +23,14 @@ import (
 
 // TablesServer is a fake server for instances of the armoperationalinsights.TablesClient type.
 type TablesServer struct {
+	// BeginCreateOrUpdate is the fake for method TablesClient.BeginCreateOrUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, workspaceName string, tableName string, parameters armoperationalinsights.Table, options *armoperationalinsights.TablesClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armoperationalinsights.TablesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+
+	// BeginDelete is the fake for method TablesClient.BeginDelete
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginDelete func(ctx context.Context, resourceGroupName string, workspaceName string, tableName string, options *armoperationalinsights.TablesClientBeginDeleteOptions) (resp azfake.PollerResponder[armoperationalinsights.TablesClientDeleteResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method TablesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, workspaceName string, tableName string, options *armoperationalinsights.TablesClientGetOptions) (resp azfake.Responder[armoperationalinsights.TablesClientGetResponse], errResp azfake.ErrorResponder)
@@ -31,9 +39,13 @@ type TablesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByWorkspacePager func(resourceGroupName string, workspaceName string, options *armoperationalinsights.TablesClientListByWorkspaceOptions) (resp azfake.PagerResponder[armoperationalinsights.TablesClientListByWorkspaceResponse])
 
-	// Update is the fake for method TablesClient.Update
+	// Migrate is the fake for method TablesClient.Migrate
 	// HTTP status codes to indicate success: http.StatusOK
-	Update func(ctx context.Context, resourceGroupName string, workspaceName string, tableName string, parameters armoperationalinsights.Table, options *armoperationalinsights.TablesClientUpdateOptions) (resp azfake.Responder[armoperationalinsights.TablesClientUpdateResponse], errResp azfake.ErrorResponder)
+	Migrate func(ctx context.Context, resourceGroupName string, workspaceName string, tableName string, options *armoperationalinsights.TablesClientMigrateOptions) (resp azfake.Responder[armoperationalinsights.TablesClientMigrateResponse], errResp azfake.ErrorResponder)
+
+	// BeginUpdate is the fake for method TablesClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, workspaceName string, tableName string, parameters armoperationalinsights.Table, options *armoperationalinsights.TablesClientBeginUpdateOptions) (resp azfake.PollerResponder[armoperationalinsights.TablesClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewTablesServerTransport creates a new instance of TablesServerTransport with the provided implementation.
@@ -42,7 +54,10 @@ type TablesServer struct {
 func NewTablesServerTransport(srv *TablesServer) *TablesServerTransport {
 	return &TablesServerTransport{
 		srv:                     srv,
+		beginCreateOrUpdate:     newTracker[azfake.PollerResponder[armoperationalinsights.TablesClientCreateOrUpdateResponse]](),
+		beginDelete:             newTracker[azfake.PollerResponder[armoperationalinsights.TablesClientDeleteResponse]](),
 		newListByWorkspacePager: newTracker[azfake.PagerResponder[armoperationalinsights.TablesClientListByWorkspaceResponse]](),
+		beginUpdate:             newTracker[azfake.PollerResponder[armoperationalinsights.TablesClientUpdateResponse]](),
 	}
 }
 
@@ -50,7 +65,10 @@ func NewTablesServerTransport(srv *TablesServer) *TablesServerTransport {
 // Don't use this type directly, use NewTablesServerTransport instead.
 type TablesServerTransport struct {
 	srv                     *TablesServer
+	beginCreateOrUpdate     *tracker[azfake.PollerResponder[armoperationalinsights.TablesClientCreateOrUpdateResponse]]
+	beginDelete             *tracker[azfake.PollerResponder[armoperationalinsights.TablesClientDeleteResponse]]
 	newListByWorkspacePager *tracker[azfake.PagerResponder[armoperationalinsights.TablesClientListByWorkspaceResponse]]
+	beginUpdate             *tracker[azfake.PollerResponder[armoperationalinsights.TablesClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for TablesServerTransport.
@@ -65,18 +83,124 @@ func (t *TablesServerTransport) Do(req *http.Request) (*http.Response, error) {
 	var err error
 
 	switch method {
+	case "TablesClient.BeginCreateOrUpdate":
+		resp, err = t.dispatchBeginCreateOrUpdate(req)
+	case "TablesClient.BeginDelete":
+		resp, err = t.dispatchBeginDelete(req)
 	case "TablesClient.Get":
 		resp, err = t.dispatchGet(req)
 	case "TablesClient.NewListByWorkspacePager":
 		resp, err = t.dispatchNewListByWorkspacePager(req)
-	case "TablesClient.Update":
-		resp, err = t.dispatchUpdate(req)
+	case "TablesClient.Migrate":
+		resp, err = t.dispatchMigrate(req)
+	case "TablesClient.BeginUpdate":
+		resp, err = t.dispatchBeginUpdate(req)
 	default:
 		err = fmt.Errorf("unhandled API %s", method)
 	}
 
 	if err != nil {
 		return nil, err
+	}
+
+	return resp, nil
+}
+
+func (t *TablesServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
+	if t.srv.BeginCreateOrUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
+	}
+	beginCreateOrUpdate := t.beginCreateOrUpdate.get(req)
+	if beginCreateOrUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.OperationalInsights/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/tables/(?P<tableName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armoperationalinsights.Table](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
+		if err != nil {
+			return nil, err
+		}
+		tableNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("tableName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := t.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, workspaceNameParam, tableNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginCreateOrUpdate = &respr
+		t.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginCreateOrUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		t.beginCreateOrUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginCreateOrUpdate) {
+		t.beginCreateOrUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (t *TablesServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
+	if t.srv.BeginDelete == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
+	}
+	beginDelete := t.beginDelete.get(req)
+	if beginDelete == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.OperationalInsights/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/tables/(?P<tableName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
+		if err != nil {
+			return nil, err
+		}
+		tableNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("tableName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := t.srv.BeginDelete(req.Context(), resourceGroupNameParam, workspaceNameParam, tableNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginDelete = &respr
+		t.beginDelete.add(req, beginDelete)
+	}
+
+	resp, err := server.PollerResponderNext(beginDelete, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		t.beginDelete.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginDelete) {
+		t.beginDelete.remove(req)
 	}
 
 	return resp, nil
@@ -157,19 +281,15 @@ func (t *TablesServerTransport) dispatchNewListByWorkspacePager(req *http.Reques
 	return resp, nil
 }
 
-func (t *TablesServerTransport) dispatchUpdate(req *http.Request) (*http.Response, error) {
-	if t.srv.Update == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Update not implemented")}
+func (t *TablesServerTransport) dispatchMigrate(req *http.Request) (*http.Response, error) {
+	if t.srv.Migrate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Migrate not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.OperationalInsights/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/tables/(?P<tableName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.OperationalInsights/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/tables/(?P<tableName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/migrate`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armoperationalinsights.Table](req)
-	if err != nil {
-		return nil, err
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
@@ -183,7 +303,7 @@ func (t *TablesServerTransport) dispatchUpdate(req *http.Request) (*http.Respons
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := t.srv.Update(req.Context(), resourceGroupNameParam, workspaceNameParam, tableNameParam, body, nil)
+	respr, errRespr := t.srv.Migrate(req.Context(), resourceGroupNameParam, workspaceNameParam, tableNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -191,9 +311,61 @@ func (t *TablesServerTransport) dispatchUpdate(req *http.Request) (*http.Respons
 	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Table, req)
+	resp, err := server.NewResponse(respContent, req, nil)
 	if err != nil {
 		return nil, err
 	}
+	return resp, nil
+}
+
+func (t *TablesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if t.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := t.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.OperationalInsights/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/tables/(?P<tableName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armoperationalinsights.Table](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
+		if err != nil {
+			return nil, err
+		}
+		tableNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("tableName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := t.srv.BeginUpdate(req.Context(), resourceGroupNameParam, workspaceNameParam, tableNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		t.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		t.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		t.beginUpdate.remove(req)
+	}
+
 	return resp, nil
 }

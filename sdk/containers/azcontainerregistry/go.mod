@@ -6,7 +6,6 @@ require (
 	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.13.0
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.7.0
 	github.com/Azure/azure-sdk-for-go/sdk/internal v1.10.0
-	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry v1.2.0
 	github.com/stretchr/testify v1.9.0
 )
 

@@ -1,5 +1,151 @@
 # Release History
 
+## 9.0.0 (2024-08-23)
+### Breaking Changes
+
+- Type of `AzureTableStorageLinkedService.TypeProperties` has been changed from `*AzureStorageLinkedServiceTypeProperties` to `*AzureTableStorageLinkedServiceTypeProperties`
+
+### Features Added
+
+- New value `SQLServerAuthenticationTypeUserAssignedManagedIdentity` added to enum type `SQLServerAuthenticationType`
+- New struct `AzureTableStorageLinkedServiceTypeProperties`
+- New struct `ContinuationSettingsReference`
+- New field `Version` in struct `AmazonMWSLinkedService`
+- New field `Version` in struct `AmazonRdsForOracleLinkedService`
+- New field `Version` in struct `AmazonRdsForSQLServerLinkedService`
+- New field `Version` in struct `AmazonRedshiftLinkedService`
+- New field `Version` in struct `AmazonS3CompatibleLinkedService`
+- New field `Version` in struct `AmazonS3LinkedService`
+- New field `Version` in struct `AppFiguresLinkedService`
+- New field `Version` in struct `AsanaLinkedService`
+- New field `Version` in struct `AzureBatchLinkedService`
+- New field `Version` in struct `AzureBlobFSLinkedService`
+- New field `Version` in struct `AzureBlobStorageLinkedService`
+- New field `Version` in struct `AzureDataExplorerLinkedService`
+- New field `Version` in struct `AzureDataLakeAnalyticsLinkedService`
+- New field `Version` in struct `AzureDataLakeStoreLinkedService`
+- New field `Version` in struct `AzureDatabricksDeltaLakeLinkedService`
+- New field `Version` in struct `AzureDatabricksLinkedService`
+- New field `Version` in struct `AzureFileStorageLinkedService`
+- New field `Credential`, `ServiceEndpoint` in struct `AzureFileStorageLinkedServiceTypeProperties`
+- New field `Version` in struct `AzureFunctionLinkedService`
+- New field `Version` in struct `AzureKeyVaultLinkedService`
+- New field `Version` in struct `AzureMLLinkedService`
+- New field `Version` in struct `AzureMLServiceLinkedService`
+- New field `Version` in struct `AzureMariaDBLinkedService`
+- New field `Version` in struct `AzureMySQLLinkedService`
+- New field `Version` in struct `AzurePostgreSQLLinkedService`
+- New field `Version` in struct `AzureSQLDWLinkedService`
+- New field `Version` in struct `AzureSQLDatabaseLinkedService`
+- New field `Version` in struct `AzureSQLMILinkedService`
+- New field `Version` in struct `AzureSearchLinkedService`
+- New field `Version` in struct `AzureStorageLinkedService`
+- New field `Version` in struct `AzureSynapseArtifactsLinkedService`
+- New field `Version` in struct `AzureTableStorageLinkedService`
+- New field `Version` in struct `CassandraLinkedService`
+- New field `Version` in struct `CommonDataServiceForAppsLinkedService`
+- New field `Domain` in struct `CommonDataServiceForAppsLinkedServiceTypeProperties`
+- New field `Version` in struct `ConcurLinkedService`
+- New field `Version` in struct `CosmosDbLinkedService`
+- New field `Version` in struct `CosmosDbMongoDbAPILinkedService`
+- New field `Version` in struct `CouchbaseLinkedService`
+- New field `Version` in struct `CustomDataSourceLinkedService`
+- New field `Version` in struct `DataworldLinkedService`
+- New field `Version` in struct `Db2LinkedService`
+- New field `Version` in struct `DrillLinkedService`
+- New field `Version` in struct `DynamicsAXLinkedService`
+- New field `Version` in struct `DynamicsCrmLinkedService`
+- New field `Domain` in struct `DynamicsCrmLinkedServiceTypeProperties`
+- New field `Version` in struct `DynamicsLinkedService`
+- New field `Domain` in struct `DynamicsLinkedServiceTypeProperties`
+- New field `Version` in struct `EloquaLinkedService`
+- New field `ContinuationSettings` in struct `ExecuteDataFlowActivityTypeProperties`
+- New field `ContinuationSettings` in struct `ExecutePowerQueryActivityTypeProperties`
+- New field `Version` in struct `FileServerLinkedService`
+- New field `Version` in struct `FtpServerLinkedService`
+- New field `Version` in struct `GoogleAdWordsLinkedService`
+- New field `Version` in struct `GoogleBigQueryLinkedService`
+- New field `Version` in struct `GoogleBigQueryV2LinkedService`
+- New field `Version` in struct `GoogleCloudStorageLinkedService`
+- New field `Version` in struct `GoogleSheetsLinkedService`
+- New field `Version` in struct `GreenplumLinkedService`
+- New field `Version` in struct `HBaseLinkedService`
+- New field `Version` in struct `HDInsightLinkedService`
+- New field `Version` in struct `HDInsightOnDemandLinkedService`
+- New field `Version` in struct `HTTPLinkedService`
+- New field `Version` in struct `HdfsLinkedService`
+- New field `Version` in struct `HiveLinkedService`
+- New field `Version` in struct `HubspotLinkedService`
+- New field `Version` in struct `ImpalaLinkedService`
+- New field `Version` in struct `InformixLinkedService`
+- New field `Version` in struct `JiraLinkedService`
+- New field `Version` in struct `LakeHouseLinkedService`
+- New field `Version` in struct `LinkedService`
+- New field `Version` in struct `MagentoLinkedService`
+- New field `Version` in struct `MariaDBLinkedService`
+- New field `Version` in struct `MarketoLinkedService`
+- New field `Version` in struct `MicrosoftAccessLinkedService`
+- New field `Version` in struct `MongoDbAtlasLinkedService`
+- New field `Version` in struct `MongoDbLinkedService`
+- New field `Version` in struct `MongoDbV2LinkedService`
+- New field `Version` in struct `MySQLLinkedService`
+- New field `Version` in struct `NetezzaLinkedService`
+- New field `Version` in struct `ODataLinkedService`
+- New field `Version` in struct `OdbcLinkedService`
+- New field `Version` in struct `Office365LinkedService`
+- New field `Version` in struct `OracleCloudStorageLinkedService`
+- New field `Version` in struct `OracleLinkedService`
+- New field `Version` in struct `OracleServiceCloudLinkedService`
+- New field `Version` in struct `PaypalLinkedService`
+- New field `Version` in struct `PhoenixLinkedService`
+- New field `Version` in struct `PostgreSQLLinkedService`
+- New field `Version` in struct `PostgreSQLV2LinkedService`
+- New field `Version` in struct `PrestoLinkedService`
+- New field `Version` in struct `QuickBooksLinkedService`
+- New field `Version` in struct `QuickbaseLinkedService`
+- New field `Version` in struct `ResponsysLinkedService`
+- New field `Version` in struct `RestServiceLinkedService`
+- New field `ServicePrincipalCredentialType`, `ServicePrincipalEmbeddedCert`, `ServicePrincipalEmbeddedCertPassword` in struct `RestServiceLinkedServiceTypeProperties`
+- New field `Version` in struct `SQLServerLinkedService`
+- New field `Credential` in struct `SQLServerLinkedServiceTypeProperties`
+- New field `Version` in struct `SalesforceLinkedService`
+- New field `Version` in struct `SalesforceMarketingCloudLinkedService`
+- New field `Version` in struct `SalesforceServiceCloudLinkedService`
+- New field `Version` in struct `SalesforceServiceCloudV2LinkedService`
+- New field `Version` in struct `SalesforceV2LinkedService`
+- New field `Version` in struct `SapBWLinkedService`
+- New field `Version` in struct `SapCloudForCustomerLinkedService`
+- New field `Version` in struct `SapEccLinkedService`
+- New field `Version` in struct `SapHanaLinkedService`
+- New field `Version` in struct `SapOdpLinkedService`
+- New field `Version` in struct `SapOpenHubLinkedService`
+- New field `Version` in struct `SapTableLinkedService`
+- New field `Version` in struct `ServiceNowLinkedService`
+- New field `Version` in struct `ServiceNowV2LinkedService`
+- New field `Version` in struct `SftpServerLinkedService`
+- New field `Version` in struct `SharePointOnlineListLinkedService`
+- New field `ServicePrincipalCredentialType`, `ServicePrincipalEmbeddedCert`, `ServicePrincipalEmbeddedCertPassword` in struct `SharePointOnlineListLinkedServiceTypeProperties`
+- New field `Version` in struct `ShopifyLinkedService`
+- New field `Version` in struct `SmartsheetLinkedService`
+- New field `StorageIntegration` in struct `SnowflakeExportCopyCommand`
+- New field `StorageIntegration` in struct `SnowflakeImportCopyCommand`
+- New field `Version` in struct `SnowflakeLinkedService`
+- New field `Version` in struct `SnowflakeV2LinkedService`
+- New field `Version` in struct `SparkLinkedService`
+- New field `Version` in struct `SquareLinkedService`
+- New field `Version` in struct `SybaseLinkedService`
+- New field `Version` in struct `TeamDeskLinkedService`
+- New field `Version` in struct `TeradataLinkedService`
+- New field `Version` in struct `TwilioLinkedService`
+- New field `Version` in struct `VerticaLinkedService`
+- New field `Database`, `Port`, `Server`, `UID` in struct `VerticaLinkedServiceTypeProperties`
+- New field `Version` in struct `WarehouseLinkedService`
+- New field `Version` in struct `WebLinkedService`
+- New field `Version` in struct `XeroLinkedService`
+- New field `Version` in struct `ZendeskLinkedService`
+- New field `Version` in struct `ZohoLinkedService`
+
+
 ## 8.0.0 (2024-06-05)
 ### Breaking Changes
 

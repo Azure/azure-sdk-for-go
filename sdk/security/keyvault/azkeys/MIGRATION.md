@@ -21,7 +21,6 @@ Another difference is that the Key Vault URL is now passed to the client once du
 import (
 	"context"
 	"fmt"
-	"os"
 
 	"github.com/Azure/azure-sdk-for-go/profiles/latest/keyvault/keyvault"
 	kvauth "github.com/Azure/azure-sdk-for-go/services/keyvault/auth"
@@ -31,8 +30,7 @@ func main() {
     vaultURL := "https://<TODO: your vault name>.vault.azure.net"
     authorizer, err := kvauth.NewAuthorizerFromEnvironment()
 	if err != nil {
-		fmt.Printf("unable to create vault authorizer: %v\n", err)
-		os.Exit(1)
+		// TODO: handle error
 	}
 
 	basicClient := keyvault.New()
@@ -45,8 +43,7 @@ func main() {
     }
 	newBundle, err := basicClient.CreateKey(context.TODO(), vaultURL, "<key name>", keyParams)
 	if err != nil {
-		fmt.Printf("unable to add/update key: %v\n", err)
-		os.Exit(1)
+		// TODO: handle error
 	}
 	fmt.Println("added/updated: " + *newBundle.JSONWebKey.Kid)
 }
@@ -88,7 +85,6 @@ func main() {
 	fmt.Println(*resp.Key.KID)
 }
 ```
-
 
 [azidentity]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity
 [keys]: https://learn.microsoft.com/azure/key-vault/keys/about-keys

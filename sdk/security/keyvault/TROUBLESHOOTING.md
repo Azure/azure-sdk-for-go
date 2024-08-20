@@ -101,13 +101,13 @@ If you are using the `azidentity` module to authenticate Azure Key Vault clients
 
 #### Incorrect challenge resource
 
-If an error is thrown with a message similar to:
+If the client returns an error with a message similar to:
 
 ```text
 challenge resource 'myvault.vault.azure.net' doesn't match the requested domain. Set DisableChallengeResourceVerification to true in your client options to disable. See https://aka.ms/azsdk/blog/vault-uri for more information
 ```
 
-Check that the resources is expected - that you're not receiving a challenge from an unknown host which may indicate an incorrect request URI. If it is correct but you are using a mock service or non-transparent proxy for testing, set the DisableChallengeResourceVerification to true in your client options:
+Check that the resources is expected - that you're not receiving a challenge from an unknown host which may indicate an incorrect request URI. If it is correct but you are using a mock service or non-transparent proxy for testing, set `DisableChallengeResourceVerification` to true in your client options:
 
 ```go
 vaultURL := "https://myvault.vault.azure.net"

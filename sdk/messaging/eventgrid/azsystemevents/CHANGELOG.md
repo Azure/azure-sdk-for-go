@@ -1,6 +1,6 @@
 # Release History
 
-## 0.4.1 (Unreleased)
+## 0.4.1 (2024-08-20)
 
 ### Features Added
 
@@ -11,10 +11,6 @@
 ### Breaking Changes
 
 - Models that were not system events (ex: ACSChatMessageEventInThreadBaseProperties), or referenced by system events, have been removed. 
-
-### Bugs Fixed
-
-### Other Changes
 
 ## 0.4.0 (2024-06-11)
 

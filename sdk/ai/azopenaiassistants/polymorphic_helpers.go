@@ -500,3 +500,49 @@ func unmarshalToolDefinitionClassificationArray(rawMsg json.RawMessage) ([]ToolD
 	}
 	return fArray, nil
 }
+
+func unmarshalVectorStoreChunkingStrategyRequestClassification(rawMsg json.RawMessage) (VectorStoreChunkingStrategyRequestClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b VectorStoreChunkingStrategyRequestClassification
+	switch m["type"] {
+	case string(VectorStoreChunkingStrategyRequestTypeAuto):
+		b = &VectorStoreAutoChunkingStrategyRequest{}
+	case string(VectorStoreChunkingStrategyRequestTypeStatic):
+		b = &VectorStoreStaticChunkingStrategyRequest{}
+	default:
+		b = &VectorStoreChunkingStrategyRequest{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
+func unmarshalVectorStoreChunkingStrategyResponseClassification(rawMsg json.RawMessage) (VectorStoreChunkingStrategyResponseClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b VectorStoreChunkingStrategyResponseClassification
+	switch m["type"] {
+	case string(VectorStoreChunkingStrategyResponseTypeOther):
+		b = &VectorStoreAutoChunkingStrategyResponse{}
+	case string(VectorStoreChunkingStrategyResponseTypeStatic):
+		b = &VectorStoreStaticChunkingStrategyResponse{}
+	default:
+		b = &VectorStoreChunkingStrategyResponse{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}

@@ -629,6 +629,38 @@ func PossibleTruncationStrategyValues() []TruncationStrategy {
 	}
 }
 
+// VectorStoreChunkingStrategyRequestType - Type of chunking strategy
+type VectorStoreChunkingStrategyRequestType string
+
+const (
+	VectorStoreChunkingStrategyRequestTypeAuto   VectorStoreChunkingStrategyRequestType = "auto"
+	VectorStoreChunkingStrategyRequestTypeStatic VectorStoreChunkingStrategyRequestType = "static"
+)
+
+// PossibleVectorStoreChunkingStrategyRequestTypeValues returns the possible values for the VectorStoreChunkingStrategyRequestType const type.
+func PossibleVectorStoreChunkingStrategyRequestTypeValues() []VectorStoreChunkingStrategyRequestType {
+	return []VectorStoreChunkingStrategyRequestType{
+		VectorStoreChunkingStrategyRequestTypeAuto,
+		VectorStoreChunkingStrategyRequestTypeStatic,
+	}
+}
+
+// VectorStoreChunkingStrategyResponseType - Type of chunking strategy
+type VectorStoreChunkingStrategyResponseType string
+
+const (
+	VectorStoreChunkingStrategyResponseTypeOther  VectorStoreChunkingStrategyResponseType = "other"
+	VectorStoreChunkingStrategyResponseTypeStatic VectorStoreChunkingStrategyResponseType = "static"
+)
+
+// PossibleVectorStoreChunkingStrategyResponseTypeValues returns the possible values for the VectorStoreChunkingStrategyResponseType const type.
+func PossibleVectorStoreChunkingStrategyResponseTypeValues() []VectorStoreChunkingStrategyResponseType {
+	return []VectorStoreChunkingStrategyResponseType{
+		VectorStoreChunkingStrategyResponseTypeOther,
+		VectorStoreChunkingStrategyResponseTypeStatic,
+	}
+}
+
 // VectorStoreExpirationPolicyAnchor - Describes the relationship between the days and the expiration of this vector store
 type VectorStoreExpirationPolicyAnchor string
 

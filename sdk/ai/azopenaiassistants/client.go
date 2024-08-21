@@ -242,7 +242,7 @@ func (client *Client) createMessageHandleResponse(resp *http.Response) (CreateMe
 //
 // Generated from API version 2024-07-01-preview
 //   - threadID - The ID of the thread to run.
-//   - createRunBody - The details for the run to create.
+//   - createRunBody - The details used when creating a new run of an assistant thread.
 //   - options - CreateRunOptions contains the optional parameters for the Client.CreateRun method.
 func (client *Client) CreateRun(ctx context.Context, threadID string, createRunBody CreateRunBody, options *CreateRunOptions) (CreateRunResponse, error) {
 	var err error
@@ -433,13 +433,13 @@ func (client *Client) createVectorStoreHandleResponse(resp *http.Response) (Crea
 // CreateVectorStoreFile - Create a vector store file by attaching a file to a vector store.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01-preview
+// Generated from API version 2024-07-01-preview
 //   - vectorStoreID - The ID of the vector store for which to create a File.
-//   - fileID - A File ID that the vector store should use. Useful for tools like file_search that can access files.
+//   - body - Request object for creating a vector store file.
 //   - options - CreateVectorStoreFileOptions contains the optional parameters for the Client.CreateVectorStoreFile method.
-func (client *Client) CreateVectorStoreFile(ctx context.Context, vectorStoreID string, fileID string, options *CreateVectorStoreFileOptions) (CreateVectorStoreFileResponse, error) {
+func (client *Client) CreateVectorStoreFile(ctx context.Context, vectorStoreID string, body CreateVectorStoreFileBody, options *CreateVectorStoreFileOptions) (CreateVectorStoreFileResponse, error) {
 	var err error
-	req, err := client.createVectorStoreFileCreateRequest(ctx, vectorStoreID, fileID, options)
+	req, err := client.createVectorStoreFileCreateRequest(ctx, vectorStoreID, body, options)
 	if err != nil {
 		return CreateVectorStoreFileResponse{}, err
 	}
@@ -456,7 +456,7 @@ func (client *Client) CreateVectorStoreFile(ctx context.Context, vectorStoreID s
 }
 
 // createVectorStoreFileCreateRequest creates the CreateVectorStoreFile request.
-func (client *Client) createVectorStoreFileCreateRequest(ctx context.Context, vectorStoreID string, fileID string, options *CreateVectorStoreFileOptions) (*policy.Request, error) {
+func (client *Client) createVectorStoreFileCreateRequest(ctx context.Context, vectorStoreID string, body CreateVectorStoreFileBody, options *CreateVectorStoreFileOptions) (*policy.Request, error) {
 	urlPath := client.formatURL("/vector_stores/{vectorStoreId}/files")
 	if vectorStoreID == "" {
 		return nil, errors.New("parameter vectorStoreID cannot be empty")
@@ -467,7 +467,7 @@ func (client *Client) createVectorStoreFileCreateRequest(ctx context.Context, ve
 		return nil, err
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, fileIDStruct{fileID}); err != nil {
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
 		return nil, err
 	}
 	return req, nil

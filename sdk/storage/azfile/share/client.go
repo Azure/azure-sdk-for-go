@@ -176,6 +176,14 @@ func (s *Client) Delete(ctx context.Context, options *DeleteOptions) (DeleteResp
 	return resp, err
 }
 
+//// List operation creates a new share within a storage account. If a share with the same name already exists, the operation fails.
+//// For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/list-share.
+//func (s *Client) List(ctx context.Context, options *ListOptions) (ListResponse, error) {
+//	opts := options.format()
+//	resp, err := s.generated().List(ctx, opts)
+//	return resp, err
+//}
+
 // Restore operation restores a share that had previously been soft-deleted.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/restore-share.
 func (s *Client) Restore(ctx context.Context, deletedShareVersion string, options *RestoreOptions) (RestoreResponse, error) {

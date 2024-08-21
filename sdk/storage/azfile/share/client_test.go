@@ -279,6 +279,25 @@ func (s *ShareRecordedTestsSuite) TestShareCreateNilMetadata() {
 	_require.Len(response.Metadata, 0)
 }
 
+func (s *ShareUnrecordedTestsSuite) TestShareCreateWithSnapshotVirtualDirectoryAccess() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountPremium, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := svcClient.NewShareClient(shareName)
+
+	_, err = shareClient.Create(context.Background(), &share.CreateOptions{EnabledProtocols: to.Ptr("NFS")})
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+	_require.NoError(err)
+
+	_, err = shareClient.SetProperties(context.Background(), &share.SetPropertiesOptions{EnableSnapshotVirtualDirectoryAccess: to.Ptr(false)})
+	response, err := shareClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(response.EnableSnapshotVirtualDirectoryAccess, to.Ptr(false))
+}
+
 func (s *ShareRecordedTestsSuite) TestAuthenticationErrorDetailError() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -434,6 +453,27 @@ func (s *ShareRecordedTestsSuite) TestShareGetSetPropertiesDefault() {
 	_require.NotNil(props.Version)
 	_require.Equal(props.Date.IsZero(), false)
 	_require.Greater(*props.Quota, int32(0)) // When using service default quota, it could be any value
+}
+
+func (s *ShareRecordedTestsSuite) TestShareGetSetPropertiesWithSnapshotVirtualDirectory() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+
+	_, err = shareClient.Create(context.Background(), nil)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	_, err = shareClient.SetProperties(context.Background(), &share.SetPropertiesOptions{
+		EnableSnapshotVirtualDirectoryAccess: to.Ptr(true),
+	})
+	_require.NoError(err)
+
+	props, err := shareClient.GetProperties(context.Background(), nil)
+	_require.Equal(*props.EnableSnapshotVirtualDirectoryAccess, true)
 }
 
 func (s *ShareRecordedTestsSuite) TestShareSetQuotaNegative() {

@@ -275,6 +275,62 @@ func (s *ServiceRecordedTestsSuite) TestAccountListSharesNonDefault() {
 	}
 }
 
+func (s *ServiceUnrecordedTestsSuite) TestListSharesEnableSnapshotVirtualDirectoryAccess() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountPremium, nil)
+	_require.NoError(err)
+
+	mySharePrefix := testcommon.GenerateEntityName(testName)
+	pager := svcClient.NewListSharesPager(&service.ListSharesOptions{
+		Prefix: to.Ptr(mySharePrefix),
+	})
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.NoError(err)
+		_require.Equal(*resp.Prefix, mySharePrefix)
+		_require.Len(resp.Shares, 0)
+	}
+
+	shareClients := map[string]*share.Client{}
+	for i := 0; i < 4; i++ {
+		shareName := mySharePrefix + "share" + strconv.Itoa(i)
+		shareClients[shareName] = svcClient.NewShareClient(shareName)
+		_, err = shareClients[shareName].Create(context.Background(), &share.CreateOptions{EnabledProtocols: to.Ptr("NFS")})
+		defer testcommon.DeleteShare(context.Background(), _require, shareClients[shareName])
+
+		_, err := shareClients[shareName].SetMetadata(context.Background(), &share.SetMetadataOptions{
+			Metadata: testcommon.BasicMetadata,
+		})
+		_require.NoError(err)
+
+		_, err = shareClients[shareName].SetProperties(context.Background(), &share.SetPropertiesOptions{
+			EnableSnapshotVirtualDirectoryAccess: to.Ptr(true),
+		})
+		_require.NoError(err)
+
+	}
+
+	pager = svcClient.NewListSharesPager(&service.ListSharesOptions{
+		Include:    service.ListSharesInclude{Metadata: true, Snapshots: true},
+		Prefix:     to.Ptr(mySharePrefix),
+		MaxResults: to.Ptr(int32(2)),
+	})
+
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.NoError(err)
+		if len(resp.Shares) > 0 {
+			_require.Len(resp.Shares, 2)
+		}
+		for _, shareItem := range resp.Shares {
+			_require.NotNil(shareItem.Properties)
+			_require.Equal(shareItem.Properties.EnableSnapshotVirtualDirectoryAccess, to.Ptr(true))
+		}
+	}
+}
+
 func (s *ServiceUnrecordedTestsSuite) TestSASServiceClientRestoreShare() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

@@ -230,8 +230,9 @@ func GetRecoveryKind(err error) RecoveryKind {
 		}
 	}
 
-	// check the "special" AMQP errors that aren't condition-based.
-	if IsLinkError(err) {
+	// fall back to just checking where the error was delivered (ie, LinkError, ConnError, SessionError) - in most cases that should give
+	// us an idea of how localized the failure was.
+	if linkErr := (*amqp.LinkError)(nil); errors.As(err, &linkErr) {
 		return RecoveryKindLink
 	}
 

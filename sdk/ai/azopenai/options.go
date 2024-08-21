@@ -121,7 +121,7 @@ type ListBatchesOptions struct {
 	// Identifier for the last event from the previous pagination request.
 	After *string
 
-	// The number of batches to retrieve. The default is 20.
+	// Number of batches to retrieve. Defaults to 20.
 	Limit *int32
 }
 

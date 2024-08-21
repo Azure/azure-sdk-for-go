@@ -621,15 +621,6 @@ type AzureSearchIndexFieldMappingOptions struct {
 
 // Batch - The Batch object.
 type Batch struct {
-	// REQUIRED; The time frame within which the batch should be processed.
-	CompletionWindow *string
-
-	// REQUIRED; The Unix timestamp (in seconds) for when the batch was created.
-	CreatedAt *time.Time
-
-	// REQUIRED; The OpenAI API endpoint used by the batch.
-	Endpoint *string
-
 	// REQUIRED; The id assigned to the Batch.
 	ID *string
 
@@ -639,9 +630,6 @@ type Batch struct {
 	// REQUIRED; The object type, which is always batch.
 	Object *string
 
-	// REQUIRED; The current status of the batch.
-	Status *BatchStatus
-
 	// The Unix timestamp (in seconds) for when the batch was cancelled.
 	CancelledAt *time.Time
 
@@ -650,6 +638,15 @@ type Batch struct {
 
 	// The Unix timestamp (in seconds) for when the batch was completed.
 	CompletedAt *time.Time
+
+	// The time frame within which the batch should be processed.
+	CompletionWindow *string
+
+	// The Unix timestamp (in seconds) for when the batch was created.
+	CreatedAt *time.Time
+
+	// The OpenAI API endpoint used by the batch.
+	Endpoint *string
 
 	// The ID of the file containing the outputs of requests with errors.
 	ErrorFileID *string
@@ -681,6 +678,9 @@ type Batch struct {
 
 	// The request counts for different statuses within the batch.
 	RequestCounts *BatchRequestCounts
+
+	// The current status of the batch.
+	Status *BatchStatus
 }
 
 // BatchCreateRequest - Defines the request to create a batch.
@@ -701,15 +701,6 @@ type BatchCreateRequest struct {
 
 // BatchCreateResponse - Defines the response when creating a batch.
 type BatchCreateResponse struct {
-	// REQUIRED; The time frame within which the batch should be processed.
-	CompletionWindow *string
-
-	// REQUIRED; The Unix timestamp (in seconds) for when the batch was created.
-	CreatedAt *time.Time
-
-	// REQUIRED; The OpenAI API endpoint used by the batch.
-	Endpoint *string
-
 	// REQUIRED; The id assigned to the Batch.
 	ID *string
 
@@ -720,9 +711,6 @@ type BatchCreateResponse struct {
 	// Field has constant value "batch", any specified value is ignored.
 	Object *string
 
-	// REQUIRED; The current status of the batch.
-	Status *BatchStatus
-
 	// The Unix timestamp (in seconds) for when the batch was cancelled.
 	CancelledAt *time.Time
 
@@ -731,6 +719,15 @@ type BatchCreateResponse struct {
 
 	// The Unix timestamp (in seconds) for when the batch was completed.
 	CompletedAt *time.Time
+
+	// The time frame within which the batch should be processed.
+	CompletionWindow *string
+
+	// The Unix timestamp (in seconds) for when the batch was created.
+	CreatedAt *time.Time
+
+	// The OpenAI API endpoint used by the batch.
+	Endpoint *string
 
 	// The ID of the file containing the outputs of requests with errors.
 	ErrorFileID *string
@@ -762,17 +759,20 @@ type BatchCreateResponse struct {
 
 	// The request counts for different statuses within the batch.
 	RequestCounts *BatchCreateResponseRequestCounts
+
+	// The current status of the batch.
+	Status *BatchStatus
 }
 
 // BatchCreateResponseRequestCounts - The request counts for different statuses within the batch.
 type BatchCreateResponseRequestCounts struct {
-	// REQUIRED; Number of requests that have been completed successfully.
+	// Number of requests that have been completed successfully.
 	Completed *int32
 
-	// REQUIRED; Number of requests that have failed.
+	// Number of requests that have failed.
 	Failed *int32
 
-	// REQUIRED; Total number of requests in the batch.
+	// Total number of requests in the batch.
 	Total *int32
 }
 
@@ -802,13 +802,13 @@ type BatchErrorList struct {
 
 // BatchRequestCounts - The request counts for different statuses within the batch.
 type BatchRequestCounts struct {
-	// REQUIRED; Number of requests that have been completed successfully.
+	// Number of requests that have been completed successfully.
 	Completed *int32
 
-	// REQUIRED; Number of requests that have failed.
+	// Number of requests that have failed.
 	Failed *int32
 
-	// REQUIRED; Total number of requests in the batch.
+	// Total number of requests in the batch.
 	Total *int32
 }
 
@@ -960,14 +960,6 @@ func (c *ChatCompletionRequestMessageContentPartText) GetChatCompletionRequestMe
 	return &ChatCompletionRequestMessageContentPart{
 		partType: c.partType,
 	}
-}
-
-// ChatCompletionStreamOptions - Options for streaming response. Only set this when you set stream: true.
-type ChatCompletionStreamOptions struct {
-	// If set, an additional chunk will be streamed before the data: [DONE] message. The usage field on this chunk shows the token
-	// usage statistics for the entire request, and the choices field will always
-	// be an empty array. All other chunks will also include a usage field, but with a null value.
-	IncludeUsage *bool
 }
 
 // ChatCompletions - Representation of the response data from a chat completions request. Completions support a wide variety
@@ -1161,9 +1153,6 @@ type ChatCompletionsOptions struct {
 	// A collection of textual sequences that will end completions generation.
 	Stop []string
 
-	// Options for streaming response. Only set this when you set stream: true.
-	StreamOptions *ChatCompletionsOptionsStreamOptions
-
 	// The sampling temperature to use that controls the apparent creativity of generated completions. Higher values will make
 	// output more random while lower values will make results more focused and
 	// deterministic. It is not recommended to modify temperature and top_p for the same completions request as the interaction
@@ -1190,14 +1179,6 @@ type ChatCompletionsOptions struct {
 
 	// An identifier for the caller or end user of the operation. This may be used for tracking or rate-limiting purposes.
 	User *string
-}
-
-// ChatCompletionsOptionsStreamOptions - Options for streaming response. Only set this when you set stream: true.
-type ChatCompletionsOptionsStreamOptions struct {
-	// If set, an additional chunk will be streamed before the data: [DONE] message. The usage field on this chunk shows the token
-	// usage statistics for the entire request, and the choices field will always
-	// be an empty array. All other chunks will also include a usage field, but with a null value.
-	IncludeUsage *bool
 }
 
 // ChatCompletionsResponseFormat - An abstract representation of a response format configuration usable by Chat Completions.
@@ -1654,7 +1635,7 @@ type ContentFilterCitedDetectionResult struct {
 	// REQUIRED; A value indicating whether or not the content has been filtered.
 	Filtered *bool
 
-	// REQUIRED; The license description associated with the detection.
+	// The license description associated with the detection.
 	License *string
 
 	// The internet location associated with the detection.
@@ -2150,20 +2131,20 @@ type ImageGenerations struct {
 
 // ListBatchesPage - The response data for a requested list of items.
 type ListBatchesPage struct {
-	// REQUIRED; The requested list of items.
-	Data []Batch
-
-	// REQUIRED; The first ID represented in this list.
-	FirstID *string
-
-	// REQUIRED; A value indicating whether there are additional values available not captured in this list.
-	HasMore *bool
-
-	// REQUIRED; The last ID represented in this list.
-	LastID *string
-
 	// REQUIRED; The object type, which is always list.
 	Object *string
+
+	// The requested list of items.
+	Data []Batch
+
+	// The first ID represented in this list.
+	FirstID *string
+
+	// A value indicating whether there are additional values available not captured in this list.
+	HasMore *bool
+
+	// The last ID represented in this list.
+	LastID *string
 }
 
 // MaxTokensFinishDetails - A structured representation of a stop reason that signifies a token limit was reached before the

@@ -60,7 +60,7 @@ func (client *Client) cancelBatchCreateRequest(ctx context.Context, batchID stri
 		return nil, errors.New("parameter batchID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{batchId}", url.PathEscape(batchID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, client.formatURL(urlPath, nil))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, client.formatURL(urlPath, nil))
 	if err != nil {
 		return nil, err
 	}
@@ -82,10 +82,11 @@ func (client *Client) cancelBatchHandleResponse(resp *http.Response) (CancelBatc
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-07-01-preview
+//   - createBatchRequest - The specification of the batch to create and execute.
 //   - options - CreateBatchOptions contains the optional parameters for the Client.CreateBatch method.
-func (client *Client) CreateBatch(ctx context.Context, body BatchCreateRequest, options *CreateBatchOptions) (CreateBatchResponse, error) {
+func (client *Client) CreateBatch(ctx context.Context, createBatchRequest BatchCreateRequest, options *CreateBatchOptions) (CreateBatchResponse, error) {
 	var err error
-	req, err := client.createBatchCreateRequest(ctx, body, options)
+	req, err := client.createBatchCreateRequest(ctx, createBatchRequest, options)
 	if err != nil {
 		return CreateBatchResponse{}, err
 	}
@@ -102,14 +103,14 @@ func (client *Client) CreateBatch(ctx context.Context, body BatchCreateRequest, 
 }
 
 // createBatchCreateRequest creates the CreateBatch request.
-func (client *Client) createBatchCreateRequest(ctx context.Context, body BatchCreateRequest, options *CreateBatchOptions) (*policy.Request, error) {
+func (client *Client) createBatchCreateRequest(ctx context.Context, createBatchRequest BatchCreateRequest, options *CreateBatchOptions) (*policy.Request, error) {
 	urlPath := "/batches"
 	req, err := runtime.NewRequest(ctx, http.MethodPost, client.formatURL(urlPath, nil))
 	if err != nil {
 		return nil, err
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
+	if err := runtime.MarshalAsJSON(req, createBatchRequest); err != nil {
 		return nil, err
 	}
 	return req, nil

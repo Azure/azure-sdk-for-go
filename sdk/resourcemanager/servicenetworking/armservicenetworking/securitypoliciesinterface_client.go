@@ -20,68 +20,68 @@ import (
 	"strings"
 )
 
-// AssociationsInterfaceClient contains the methods for the AssociationsInterface group.
-// Don't use this type directly, use NewAssociationsInterfaceClient() instead.
-type AssociationsInterfaceClient struct {
+// SecurityPoliciesInterfaceClient contains the methods for the SecurityPoliciesInterface group.
+// Don't use this type directly, use NewSecurityPoliciesInterfaceClient() instead.
+type SecurityPoliciesInterfaceClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewAssociationsInterfaceClient creates a new instance of AssociationsInterfaceClient with the specified values.
+// NewSecurityPoliciesInterfaceClient creates a new instance of SecurityPoliciesInterfaceClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
-func NewAssociationsInterfaceClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AssociationsInterfaceClient, error) {
+func NewSecurityPoliciesInterfaceClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SecurityPoliciesInterfaceClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
-	client := &AssociationsInterfaceClient{
+	client := &SecurityPoliciesInterfaceClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
 	return client, nil
 }
 
-// BeginCreateOrUpdate - Create a Association
+// BeginCreateOrUpdate - Create a SecurityPolicy
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - trafficControllerName - traffic controller name for path
-//   - associationName - Name of Association
+//   - securityPolicyName - SecurityPolicy
 //   - resource - Resource create parameters.
-//   - options - AssociationsInterfaceClientBeginCreateOrUpdateOptions contains the optional parameters for the AssociationsInterfaceClient.BeginCreateOrUpdate
+//   - options - SecurityPoliciesInterfaceClientBeginCreateOrUpdateOptions contains the optional parameters for the SecurityPoliciesInterfaceClient.BeginCreateOrUpdate
 //     method.
-func (client *AssociationsInterfaceClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, trafficControllerName string, associationName string, resource Association, options *AssociationsInterfaceClientBeginCreateOrUpdateOptions) (*runtime.Poller[AssociationsInterfaceClientCreateOrUpdateResponse], error) {
+func (client *SecurityPoliciesInterfaceClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, trafficControllerName string, securityPolicyName string, resource SecurityPolicy, options *SecurityPoliciesInterfaceClientBeginCreateOrUpdateOptions) (*runtime.Poller[SecurityPoliciesInterfaceClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.createOrUpdate(ctx, resourceGroupName, trafficControllerName, associationName, resource, options)
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, trafficControllerName, securityPolicyName, resource, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AssociationsInterfaceClientCreateOrUpdateResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SecurityPoliciesInterfaceClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AssociationsInterfaceClientCreateOrUpdateResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SecurityPoliciesInterfaceClientCreateOrUpdateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
 }
 
-// CreateOrUpdate - Create a Association
+// CreateOrUpdate - Create a SecurityPolicy
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-05-01-preview
-func (client *AssociationsInterfaceClient) createOrUpdate(ctx context.Context, resourceGroupName string, trafficControllerName string, associationName string, resource Association, options *AssociationsInterfaceClientBeginCreateOrUpdateOptions) (*http.Response, error) {
+func (client *SecurityPoliciesInterfaceClient) createOrUpdate(ctx context.Context, resourceGroupName string, trafficControllerName string, securityPolicyName string, resource SecurityPolicy, options *SecurityPoliciesInterfaceClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "AssociationsInterfaceClient.BeginCreateOrUpdate"
+	const operationName = "SecurityPoliciesInterfaceClient.BeginCreateOrUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, trafficControllerName, associationName, resource, options)
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, trafficControllerName, securityPolicyName, resource, options)
 	if err != nil {
 		return nil, err
 	}
@@ -97,8 +97,8 @@ func (client *AssociationsInterfaceClient) createOrUpdate(ctx context.Context, r
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *AssociationsInterfaceClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, trafficControllerName string, associationName string, resource Association, options *AssociationsInterfaceClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/associations/{associationName}"
+func (client *SecurityPoliciesInterfaceClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, trafficControllerName string, securityPolicyName string, resource SecurityPolicy, options *SecurityPoliciesInterfaceClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/securityPolicy/{securityPolicyName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -111,10 +111,10 @@ func (client *AssociationsInterfaceClient) createOrUpdateCreateRequest(ctx conte
 		return nil, errors.New("parameter trafficControllerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{trafficControllerName}", url.PathEscape(trafficControllerName))
-	if associationName == "" {
-		return nil, errors.New("parameter associationName cannot be empty")
+	if securityPolicyName == "" {
+		return nil, errors.New("parameter securityPolicyName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{associationName}", url.PathEscape(associationName))
+	urlPath = strings.ReplaceAll(urlPath, "{securityPolicyName}", url.PathEscape(securityPolicyName))
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -129,44 +129,44 @@ func (client *AssociationsInterfaceClient) createOrUpdateCreateRequest(ctx conte
 	return req, nil
 }
 
-// BeginDelete - Delete a Association
+// BeginDelete - Delete a SecurityPolicy
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - trafficControllerName - traffic controller name for path
-//   - associationName - Name of Association
-//   - options - AssociationsInterfaceClientBeginDeleteOptions contains the optional parameters for the AssociationsInterfaceClient.BeginDelete
+//   - securityPolicyName - SecurityPolicy
+//   - options - SecurityPoliciesInterfaceClientBeginDeleteOptions contains the optional parameters for the SecurityPoliciesInterfaceClient.BeginDelete
 //     method.
-func (client *AssociationsInterfaceClient) BeginDelete(ctx context.Context, resourceGroupName string, trafficControllerName string, associationName string, options *AssociationsInterfaceClientBeginDeleteOptions) (*runtime.Poller[AssociationsInterfaceClientDeleteResponse], error) {
+func (client *SecurityPoliciesInterfaceClient) BeginDelete(ctx context.Context, resourceGroupName string, trafficControllerName string, securityPolicyName string, options *SecurityPoliciesInterfaceClientBeginDeleteOptions) (*runtime.Poller[SecurityPoliciesInterfaceClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, trafficControllerName, associationName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, trafficControllerName, securityPolicyName, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AssociationsInterfaceClientDeleteResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SecurityPoliciesInterfaceClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AssociationsInterfaceClientDeleteResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SecurityPoliciesInterfaceClientDeleteResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
 }
 
-// Delete - Delete a Association
+// Delete - Delete a SecurityPolicy
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-05-01-preview
-func (client *AssociationsInterfaceClient) deleteOperation(ctx context.Context, resourceGroupName string, trafficControllerName string, associationName string, options *AssociationsInterfaceClientBeginDeleteOptions) (*http.Response, error) {
+func (client *SecurityPoliciesInterfaceClient) deleteOperation(ctx context.Context, resourceGroupName string, trafficControllerName string, securityPolicyName string, options *SecurityPoliciesInterfaceClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
-	const operationName = "AssociationsInterfaceClient.BeginDelete"
+	const operationName = "SecurityPoliciesInterfaceClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, trafficControllerName, associationName, options)
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, trafficControllerName, securityPolicyName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -182,8 +182,8 @@ func (client *AssociationsInterfaceClient) deleteOperation(ctx context.Context, 
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *AssociationsInterfaceClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, trafficControllerName string, associationName string, options *AssociationsInterfaceClientBeginDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/associations/{associationName}"
+func (client *SecurityPoliciesInterfaceClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, trafficControllerName string, securityPolicyName string, options *SecurityPoliciesInterfaceClientBeginDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/securityPolicy/{securityPolicyName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -196,10 +196,10 @@ func (client *AssociationsInterfaceClient) deleteCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter trafficControllerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{trafficControllerName}", url.PathEscape(trafficControllerName))
-	if associationName == "" {
-		return nil, errors.New("parameter associationName cannot be empty")
+	if securityPolicyName == "" {
+		return nil, errors.New("parameter securityPolicyName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{associationName}", url.PathEscape(associationName))
+	urlPath = strings.ReplaceAll(urlPath, "{securityPolicyName}", url.PathEscape(securityPolicyName))
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -211,40 +211,40 @@ func (client *AssociationsInterfaceClient) deleteCreateRequest(ctx context.Conte
 	return req, nil
 }
 
-// Get - Get a Association
+// Get - Get a SecurityPolicy
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - trafficControllerName - traffic controller name for path
-//   - associationName - Name of Association
-//   - options - AssociationsInterfaceClientGetOptions contains the optional parameters for the AssociationsInterfaceClient.Get
+//   - securityPolicyName - SecurityPolicy
+//   - options - SecurityPoliciesInterfaceClientGetOptions contains the optional parameters for the SecurityPoliciesInterfaceClient.Get
 //     method.
-func (client *AssociationsInterfaceClient) Get(ctx context.Context, resourceGroupName string, trafficControllerName string, associationName string, options *AssociationsInterfaceClientGetOptions) (AssociationsInterfaceClientGetResponse, error) {
+func (client *SecurityPoliciesInterfaceClient) Get(ctx context.Context, resourceGroupName string, trafficControllerName string, securityPolicyName string, options *SecurityPoliciesInterfaceClientGetOptions) (SecurityPoliciesInterfaceClientGetResponse, error) {
 	var err error
-	const operationName = "AssociationsInterfaceClient.Get"
+	const operationName = "SecurityPoliciesInterfaceClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, resourceGroupName, trafficControllerName, associationName, options)
+	req, err := client.getCreateRequest(ctx, resourceGroupName, trafficControllerName, securityPolicyName, options)
 	if err != nil {
-		return AssociationsInterfaceClientGetResponse{}, err
+		return SecurityPoliciesInterfaceClientGetResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return AssociationsInterfaceClientGetResponse{}, err
+		return SecurityPoliciesInterfaceClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return AssociationsInterfaceClientGetResponse{}, err
+		return SecurityPoliciesInterfaceClientGetResponse{}, err
 	}
 	resp, err := client.getHandleResponse(httpResp)
 	return resp, err
 }
 
 // getCreateRequest creates the Get request.
-func (client *AssociationsInterfaceClient) getCreateRequest(ctx context.Context, resourceGroupName string, trafficControllerName string, associationName string, options *AssociationsInterfaceClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/associations/{associationName}"
+func (client *SecurityPoliciesInterfaceClient) getCreateRequest(ctx context.Context, resourceGroupName string, trafficControllerName string, securityPolicyName string, options *SecurityPoliciesInterfaceClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/securityPolicy/{securityPolicyName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -257,10 +257,10 @@ func (client *AssociationsInterfaceClient) getCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter trafficControllerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{trafficControllerName}", url.PathEscape(trafficControllerName))
-	if associationName == "" {
-		return nil, errors.New("parameter associationName cannot be empty")
+	if securityPolicyName == "" {
+		return nil, errors.New("parameter securityPolicyName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{associationName}", url.PathEscape(associationName))
+	urlPath = strings.ReplaceAll(urlPath, "{securityPolicyName}", url.PathEscape(securityPolicyName))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -273,28 +273,28 @@ func (client *AssociationsInterfaceClient) getCreateRequest(ctx context.Context,
 }
 
 // getHandleResponse handles the Get response.
-func (client *AssociationsInterfaceClient) getHandleResponse(resp *http.Response) (AssociationsInterfaceClientGetResponse, error) {
-	result := AssociationsInterfaceClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.Association); err != nil {
-		return AssociationsInterfaceClientGetResponse{}, err
+func (client *SecurityPoliciesInterfaceClient) getHandleResponse(resp *http.Response) (SecurityPoliciesInterfaceClientGetResponse, error) {
+	result := SecurityPoliciesInterfaceClientGetResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SecurityPolicy); err != nil {
+		return SecurityPoliciesInterfaceClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// NewListByTrafficControllerPager - List Association resources by TrafficController
+// NewListByTrafficControllerPager - List SecurityPolicy resources by TrafficController
 //
 // Generated from API version 2024-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - trafficControllerName - traffic controller name for path
-//   - options - AssociationsInterfaceClientListByTrafficControllerOptions contains the optional parameters for the AssociationsInterfaceClient.NewListByTrafficControllerPager
+//   - options - SecurityPoliciesInterfaceClientListByTrafficControllerOptions contains the optional parameters for the SecurityPoliciesInterfaceClient.NewListByTrafficControllerPager
 //     method.
-func (client *AssociationsInterfaceClient) NewListByTrafficControllerPager(resourceGroupName string, trafficControllerName string, options *AssociationsInterfaceClientListByTrafficControllerOptions) *runtime.Pager[AssociationsInterfaceClientListByTrafficControllerResponse] {
-	return runtime.NewPager(runtime.PagingHandler[AssociationsInterfaceClientListByTrafficControllerResponse]{
-		More: func(page AssociationsInterfaceClientListByTrafficControllerResponse) bool {
+func (client *SecurityPoliciesInterfaceClient) NewListByTrafficControllerPager(resourceGroupName string, trafficControllerName string, options *SecurityPoliciesInterfaceClientListByTrafficControllerOptions) *runtime.Pager[SecurityPoliciesInterfaceClientListByTrafficControllerResponse] {
+	return runtime.NewPager(runtime.PagingHandler[SecurityPoliciesInterfaceClientListByTrafficControllerResponse]{
+		More: func(page SecurityPoliciesInterfaceClientListByTrafficControllerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *AssociationsInterfaceClientListByTrafficControllerResponse) (AssociationsInterfaceClientListByTrafficControllerResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AssociationsInterfaceClient.NewListByTrafficControllerPager")
+		Fetcher: func(ctx context.Context, page *SecurityPoliciesInterfaceClientListByTrafficControllerResponse) (SecurityPoliciesInterfaceClientListByTrafficControllerResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SecurityPoliciesInterfaceClient.NewListByTrafficControllerPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -303,7 +303,7 @@ func (client *AssociationsInterfaceClient) NewListByTrafficControllerPager(resou
 				return client.listByTrafficControllerCreateRequest(ctx, resourceGroupName, trafficControllerName, options)
 			}, nil)
 			if err != nil {
-				return AssociationsInterfaceClientListByTrafficControllerResponse{}, err
+				return SecurityPoliciesInterfaceClientListByTrafficControllerResponse{}, err
 			}
 			return client.listByTrafficControllerHandleResponse(resp)
 		},
@@ -312,8 +312,8 @@ func (client *AssociationsInterfaceClient) NewListByTrafficControllerPager(resou
 }
 
 // listByTrafficControllerCreateRequest creates the ListByTrafficController request.
-func (client *AssociationsInterfaceClient) listByTrafficControllerCreateRequest(ctx context.Context, resourceGroupName string, trafficControllerName string, options *AssociationsInterfaceClientListByTrafficControllerOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/associations"
+func (client *SecurityPoliciesInterfaceClient) listByTrafficControllerCreateRequest(ctx context.Context, resourceGroupName string, trafficControllerName string, options *SecurityPoliciesInterfaceClientListByTrafficControllerOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/securityPolicy"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -338,49 +338,49 @@ func (client *AssociationsInterfaceClient) listByTrafficControllerCreateRequest(
 }
 
 // listByTrafficControllerHandleResponse handles the ListByTrafficController response.
-func (client *AssociationsInterfaceClient) listByTrafficControllerHandleResponse(resp *http.Response) (AssociationsInterfaceClientListByTrafficControllerResponse, error) {
-	result := AssociationsInterfaceClientListByTrafficControllerResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.AssociationListResult); err != nil {
-		return AssociationsInterfaceClientListByTrafficControllerResponse{}, err
+func (client *SecurityPoliciesInterfaceClient) listByTrafficControllerHandleResponse(resp *http.Response) (SecurityPoliciesInterfaceClientListByTrafficControllerResponse, error) {
+	result := SecurityPoliciesInterfaceClientListByTrafficControllerResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SecurityPolicyListResult); err != nil {
+		return SecurityPoliciesInterfaceClientListByTrafficControllerResponse{}, err
 	}
 	return result, nil
 }
 
-// Update - Update a Association
+// Update - Update a SecurityPolicy
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - trafficControllerName - traffic controller name for path
-//   - associationName - Name of Association
+//   - securityPolicyName - SecurityPolicy
 //   - properties - The resource properties to be updated.
-//   - options - AssociationsInterfaceClientUpdateOptions contains the optional parameters for the AssociationsInterfaceClient.Update
+//   - options - SecurityPoliciesInterfaceClientUpdateOptions contains the optional parameters for the SecurityPoliciesInterfaceClient.Update
 //     method.
-func (client *AssociationsInterfaceClient) Update(ctx context.Context, resourceGroupName string, trafficControllerName string, associationName string, properties AssociationUpdate, options *AssociationsInterfaceClientUpdateOptions) (AssociationsInterfaceClientUpdateResponse, error) {
+func (client *SecurityPoliciesInterfaceClient) Update(ctx context.Context, resourceGroupName string, trafficControllerName string, securityPolicyName string, properties SecurityPolicyUpdate, options *SecurityPoliciesInterfaceClientUpdateOptions) (SecurityPoliciesInterfaceClientUpdateResponse, error) {
 	var err error
-	const operationName = "AssociationsInterfaceClient.Update"
+	const operationName = "SecurityPoliciesInterfaceClient.Update"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, trafficControllerName, associationName, properties, options)
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, trafficControllerName, securityPolicyName, properties, options)
 	if err != nil {
-		return AssociationsInterfaceClientUpdateResponse{}, err
+		return SecurityPoliciesInterfaceClientUpdateResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return AssociationsInterfaceClientUpdateResponse{}, err
+		return SecurityPoliciesInterfaceClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return AssociationsInterfaceClientUpdateResponse{}, err
+		return SecurityPoliciesInterfaceClientUpdateResponse{}, err
 	}
 	resp, err := client.updateHandleResponse(httpResp)
 	return resp, err
 }
 
 // updateCreateRequest creates the Update request.
-func (client *AssociationsInterfaceClient) updateCreateRequest(ctx context.Context, resourceGroupName string, trafficControllerName string, associationName string, properties AssociationUpdate, options *AssociationsInterfaceClientUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/associations/{associationName}"
+func (client *SecurityPoliciesInterfaceClient) updateCreateRequest(ctx context.Context, resourceGroupName string, trafficControllerName string, securityPolicyName string, properties SecurityPolicyUpdate, options *SecurityPoliciesInterfaceClientUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/securityPolicy/{securityPolicyName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -393,10 +393,10 @@ func (client *AssociationsInterfaceClient) updateCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter trafficControllerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{trafficControllerName}", url.PathEscape(trafficControllerName))
-	if associationName == "" {
-		return nil, errors.New("parameter associationName cannot be empty")
+	if securityPolicyName == "" {
+		return nil, errors.New("parameter securityPolicyName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{associationName}", url.PathEscape(associationName))
+	urlPath = strings.ReplaceAll(urlPath, "{securityPolicyName}", url.PathEscape(securityPolicyName))
 	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -412,10 +412,10 @@ func (client *AssociationsInterfaceClient) updateCreateRequest(ctx context.Conte
 }
 
 // updateHandleResponse handles the Update response.
-func (client *AssociationsInterfaceClient) updateHandleResponse(resp *http.Response) (AssociationsInterfaceClientUpdateResponse, error) {
-	result := AssociationsInterfaceClientUpdateResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.Association); err != nil {
-		return AssociationsInterfaceClientUpdateResponse{}, err
+func (client *SecurityPoliciesInterfaceClient) updateHandleResponse(resp *http.Response) (SecurityPoliciesInterfaceClientUpdateResponse, error) {
+	result := SecurityPoliciesInterfaceClientUpdateResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SecurityPolicy); err != nil {
+		return SecurityPoliciesInterfaceClientUpdateResponse{}, err
 	}
 	return result, nil
 }

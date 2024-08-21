@@ -1,5 +1,19 @@
 # Release History
 
+## 6.1.0 (2024-08-23)
+### Features Added
+
+- New enum type `AllocationStrategy` with values `AllocationStrategyCapacityOptimized`, `AllocationStrategyLowestPrice`
+- New enum type `ZonalPlatformFaultDomainAlignMode` with values `ZonalPlatformFaultDomainAlignModeAligned`, `ZonalPlatformFaultDomainAlignModeUnaligned`
+- New struct `SKUProfile`
+- New struct `SKUProfileVMSize`
+- New field `ScheduledEventsPolicy` in struct `AvailabilitySetProperties`
+- New field `LogicalSectorSize` in struct `DiskRestorePointProperties`
+- New field `SKUProfile`, `ZonalPlatformFaultDomainAlignMode` in struct `VirtualMachineScaleSetProperties`
+- New field `Zones` in struct `VirtualMachineScaleSetUpdate`
+- New field `SKUProfile`, `ZonalPlatformFaultDomainAlignMode` in struct `VirtualMachineScaleSetUpdateProperties`
+
+
 ## 6.0.0 (2024-07-26)
 ### Breaking Changes
 

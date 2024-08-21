@@ -8,9 +8,9 @@
 
 package azcontainerregistry
 
-// authenticationClientExchangeAADAccessTokenForACRRefreshTokenOptions contains the optional parameters for the authenticationClient.ExchangeAADAccessTokenForACRRefreshToken
+// AuthenticationClientExchangeAADAccessTokenForACRRefreshTokenOptions contains the optional parameters for the AuthenticationClient.ExchangeAADAccessTokenForACRRefreshToken
 // method.
-type authenticationClientExchangeAADAccessTokenForACRRefreshTokenOptions struct {
+type AuthenticationClientExchangeAADAccessTokenForACRRefreshTokenOptions struct {
 	// AAD access token, mandatory when granttype is accesstokenrefreshtoken or access_token.
 	AccessToken *string
 
@@ -21,11 +21,11 @@ type authenticationClientExchangeAADAccessTokenForACRRefreshTokenOptions struct 
 	Tenant *string
 }
 
-// authenticationClientExchangeACRRefreshTokenForACRAccessTokenOptions contains the optional parameters for the authenticationClient.ExchangeACRRefreshTokenForACRAccessToken
+// AuthenticationClientExchangeACRRefreshTokenForACRAccessTokenOptions contains the optional parameters for the AuthenticationClient.ExchangeACRRefreshTokenForACRAccessToken
 // method.
-type authenticationClientExchangeACRRefreshTokenForACRAccessTokenOptions struct {
+type AuthenticationClientExchangeACRRefreshTokenForACRAccessTokenOptions struct {
 	// Grant type is expected to be refresh_token
-	GrantType *tokenGrantType
+	GrantType *TokenGrantType
 }
 
 // BlobClientCancelUploadOptions contains the optional parameters for the BlobClient.CancelUpload method.

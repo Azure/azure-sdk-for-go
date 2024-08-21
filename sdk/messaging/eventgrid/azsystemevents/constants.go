@@ -1154,6 +1154,33 @@ func PossibleStampKindValues() []StampKind {
 	}
 }
 
+// StorageBlobAccessTier - The access tier of the blob.
+type StorageBlobAccessTier string
+
+const (
+	// StorageBlobAccessTierArchive - The blob is in access tier Archive
+	StorageBlobAccessTierArchive StorageBlobAccessTier = "Archive"
+	// StorageBlobAccessTierCold - The blob is in access tier Cold
+	StorageBlobAccessTierCold StorageBlobAccessTier = "Cold"
+	// StorageBlobAccessTierCool - The blob is in access tier Cool
+	StorageBlobAccessTierCool StorageBlobAccessTier = "Cool"
+	// StorageBlobAccessTierDefault - The blob is in access tier Default(Inferred)
+	StorageBlobAccessTierDefault StorageBlobAccessTier = "Default"
+	// StorageBlobAccessTierHot - The blob is in access tier Hot
+	StorageBlobAccessTierHot StorageBlobAccessTier = "Hot"
+)
+
+// PossibleStorageBlobAccessTierValues returns the possible values for the StorageBlobAccessTier const type.
+func PossibleStorageBlobAccessTierValues() []StorageBlobAccessTier {
+	return []StorageBlobAccessTier{
+		StorageBlobAccessTierArchive,
+		StorageBlobAccessTierCold,
+		StorageBlobAccessTierCool,
+		StorageBlobAccessTierDefault,
+		StorageBlobAccessTierHot,
+	}
+}
+
 // StorageTaskAssignmentCompletedStatus - The status for a storage task.
 type StorageTaskAssignmentCompletedStatus string
 

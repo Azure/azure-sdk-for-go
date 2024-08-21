@@ -29,7 +29,7 @@ type AssociationsInterfaceServer struct {
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, trafficControllerName string, associationName string, resource armservicenetworking.Association, options *armservicenetworking.AssociationsInterfaceClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armservicenetworking.AssociationsInterfaceClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method AssociationsInterfaceClient.BeginDelete
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	// HTTP status codes to indicate success: http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, trafficControllerName string, associationName string, options *armservicenetworking.AssociationsInterfaceClientBeginDeleteOptions) (resp azfake.PollerResponder[armservicenetworking.AssociationsInterfaceClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method AssociationsInterfaceClient.Get
@@ -188,9 +188,9 @@ func (a *AssociationsInterfaceServerTransport) dispatchBeginDelete(req *http.Req
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !contains([]int{http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		a.beginDelete.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginDelete) {
 		a.beginDelete.remove(req)

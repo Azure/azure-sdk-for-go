@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearning/armmachinelearning/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearning/armmachinelearning/v4"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/aafb0944f7ab936e8cfbad8969bd5eb32263fb4f/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/Datastore/list.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Datastore/list.json
 func ExampleDatastoresClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -69,6 +69,9 @@ func ExampleDatastoresClient_NewListPager() {
 		// 				},
 		// 				Credentials: &armmachinelearning.AccountKeyDatastoreCredentials{
 		// 					CredentialsType: to.Ptr(armmachinelearning.CredentialsTypeAccountKey),
+		// 					Secrets: &armmachinelearning.AccountKeyDatastoreSecrets{
+		// 						SecretsType: to.Ptr(armmachinelearning.SecretsTypeAccountKey),
+		// 					},
 		// 				},
 		// 				DatastoreType: to.Ptr(armmachinelearning.DatastoreTypeAzureBlob),
 		// 				IsDefault: to.Ptr(false),
@@ -82,7 +85,7 @@ func ExampleDatastoresClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/aafb0944f7ab936e8cfbad8969bd5eb32263fb4f/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/Datastore/delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Datastore/delete.json
 func ExampleDatastoresClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -99,7 +102,7 @@ func ExampleDatastoresClient_Delete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/aafb0944f7ab936e8cfbad8969bd5eb32263fb4f/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/Datastore/get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Datastore/get.json
 func ExampleDatastoresClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -136,6 +139,9 @@ func ExampleDatastoresClient_Get() {
 	// 		},
 	// 		Credentials: &armmachinelearning.AccountKeyDatastoreCredentials{
 	// 			CredentialsType: to.Ptr(armmachinelearning.CredentialsTypeAccountKey),
+	// 			Secrets: &armmachinelearning.AccountKeyDatastoreSecrets{
+	// 				SecretsType: to.Ptr(armmachinelearning.SecretsTypeAccountKey),
+	// 			},
 	// 		},
 	// 		DatastoreType: to.Ptr(armmachinelearning.DatastoreTypeAzureBlob),
 	// 		IsDefault: to.Ptr(false),
@@ -147,7 +153,7 @@ func ExampleDatastoresClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/aafb0944f7ab936e8cfbad8969bd5eb32263fb4f/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/Datastore/AzureDataLakeGen1WServicePrincipal/createOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Datastore/AzureDataLakeGen1WServicePrincipal/createOrUpdate.json
 func ExampleDatastoresClient_CreateOrUpdate_createOrUpdateDatastoreAzureDataLakeGen1WServicePrincipal() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -207,6 +213,9 @@ func ExampleDatastoresClient_CreateOrUpdate_createOrUpdateDatastoreAzureDataLake
 	// 			AuthorityURL: to.Ptr("string"),
 	// 			ClientID: to.Ptr("00000000-1111-2222-3333-444444444444"),
 	// 			ResourceURL: to.Ptr("string"),
+	// 			Secrets: &armmachinelearning.ServicePrincipalDatastoreSecrets{
+	// 				SecretsType: to.Ptr(armmachinelearning.SecretsTypeServicePrincipal),
+	// 			},
 	// 			TenantID: to.Ptr("00000000-1111-2222-3333-444444444444"),
 	// 		},
 	// 		DatastoreType: to.Ptr(armmachinelearning.DatastoreTypeAzureDataLakeGen1),
@@ -215,7 +224,7 @@ func ExampleDatastoresClient_CreateOrUpdate_createOrUpdateDatastoreAzureDataLake
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/aafb0944f7ab936e8cfbad8969bd5eb32263fb4f/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/Datastore/AzureDataLakeGen2WServicePrincipal/createOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Datastore/AzureDataLakeGen2WServicePrincipal/createOrUpdate.json
 func ExampleDatastoresClient_CreateOrUpdate_createOrUpdateDatastoreAzureDataLakeGen2WServicePrincipal() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -278,6 +287,9 @@ func ExampleDatastoresClient_CreateOrUpdate_createOrUpdateDatastoreAzureDataLake
 	// 			AuthorityURL: to.Ptr("string"),
 	// 			ClientID: to.Ptr("00000000-1111-2222-3333-444444444444"),
 	// 			ResourceURL: to.Ptr("string"),
+	// 			Secrets: &armmachinelearning.ServicePrincipalDatastoreSecrets{
+	// 				SecretsType: to.Ptr(armmachinelearning.SecretsTypeServicePrincipal),
+	// 			},
 	// 			TenantID: to.Ptr("00000000-1111-2222-3333-444444444444"),
 	// 		},
 	// 		DatastoreType: to.Ptr(armmachinelearning.DatastoreTypeAzureDataLakeGen2),
@@ -289,7 +301,7 @@ func ExampleDatastoresClient_CreateOrUpdate_createOrUpdateDatastoreAzureDataLake
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/aafb0944f7ab936e8cfbad8969bd5eb32263fb4f/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/Datastore/AzureFileWAccountKey/createOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Datastore/AzureFileWAccountKey/createOrUpdate.json
 func ExampleDatastoresClient_CreateOrUpdate_createOrUpdateDatastoreAzureFileStoreWAccountKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -345,6 +357,9 @@ func ExampleDatastoresClient_CreateOrUpdate_createOrUpdateDatastoreAzureFileStor
 	// 		},
 	// 		Credentials: &armmachinelearning.AccountKeyDatastoreCredentials{
 	// 			CredentialsType: to.Ptr(armmachinelearning.CredentialsTypeAccountKey),
+	// 			Secrets: &armmachinelearning.AccountKeyDatastoreSecrets{
+	// 				SecretsType: to.Ptr(armmachinelearning.SecretsTypeAccountKey),
+	// 			},
 	// 		},
 	// 		DatastoreType: to.Ptr(armmachinelearning.DatastoreTypeAzureFile),
 	// 		AccountName: to.Ptr("string"),
@@ -355,7 +370,7 @@ func ExampleDatastoresClient_CreateOrUpdate_createOrUpdateDatastoreAzureFileStor
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/aafb0944f7ab936e8cfbad8969bd5eb32263fb4f/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/Datastore/AzureBlobWAccountKey/createOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Datastore/AzureBlobWAccountKey/createOrUpdate.json
 func ExampleDatastoresClient_CreateOrUpdate_createOrUpdateDatastoreAzureBlobWAccountKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -411,6 +426,9 @@ func ExampleDatastoresClient_CreateOrUpdate_createOrUpdateDatastoreAzureBlobWAcc
 	// 		},
 	// 		Credentials: &armmachinelearning.AccountKeyDatastoreCredentials{
 	// 			CredentialsType: to.Ptr(armmachinelearning.CredentialsTypeAccountKey),
+	// 			Secrets: &armmachinelearning.AccountKeyDatastoreSecrets{
+	// 				SecretsType: to.Ptr(armmachinelearning.SecretsTypeAccountKey),
+	// 			},
 	// 		},
 	// 		DatastoreType: to.Ptr(armmachinelearning.DatastoreTypeAzureBlob),
 	// 		IsDefault: to.Ptr(false),
@@ -422,7 +440,7 @@ func ExampleDatastoresClient_CreateOrUpdate_createOrUpdateDatastoreAzureBlobWAcc
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/aafb0944f7ab936e8cfbad8969bd5eb32263fb4f/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/Datastore/listSecrets.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Datastore/listSecrets.json
 func ExampleDatastoresClient_ListSecrets() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

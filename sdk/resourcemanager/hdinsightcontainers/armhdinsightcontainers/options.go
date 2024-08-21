@@ -39,9 +39,27 @@ type ClusterJobsClientListOptions struct {
 	Filter *string
 }
 
+// ClusterLibrariesClientBeginManageLibrariesOptions contains the optional parameters for the ClusterLibrariesClient.BeginManageLibraries
+// method.
+type ClusterLibrariesClientBeginManageLibrariesOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ClusterLibrariesClientListOptions contains the optional parameters for the ClusterLibrariesClient.NewListPager method.
+type ClusterLibrariesClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // ClusterPoolAvailableUpgradesClientListOptions contains the optional parameters for the ClusterPoolAvailableUpgradesClient.NewListPager
 // method.
 type ClusterPoolAvailableUpgradesClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClusterPoolUpgradeHistoriesClientListOptions contains the optional parameters for the ClusterPoolUpgradeHistoriesClient.NewListPager
+// method.
+type ClusterPoolUpgradeHistoriesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -87,6 +105,12 @@ type ClusterPoolsClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
+// ClusterUpgradeHistoriesClientListOptions contains the optional parameters for the ClusterUpgradeHistoriesClient.NewListPager
+// method.
+type ClusterUpgradeHistoriesClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // ClustersClientBeginCreateOptions contains the optional parameters for the ClustersClient.BeginCreate method.
 type ClustersClientBeginCreateOptions struct {
 	// Resumes the LRO from the provided token.
@@ -107,6 +131,13 @@ type ClustersClientBeginResizeOptions struct {
 
 // ClustersClientBeginUpdateOptions contains the optional parameters for the ClustersClient.BeginUpdate method.
 type ClustersClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ClustersClientBeginUpgradeManualRollbackOptions contains the optional parameters for the ClustersClient.BeginUpgradeManualRollback
+// method.
+type ClustersClientBeginUpgradeManualRollbackOptions struct {
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }

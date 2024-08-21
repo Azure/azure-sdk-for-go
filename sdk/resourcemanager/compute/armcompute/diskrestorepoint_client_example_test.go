@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v6"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/diskRestorePointExamples/DiskRestorePoint_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c7b98b36e4023331545051284d8500adf98f02fe/specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2024-03-02/examples/diskRestorePointExamples/DiskRestorePoint_Get.json
 func ExampleDiskRestorePointClient_Get_getAnIncrementalDiskRestorePointResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -42,6 +42,7 @@ func ExampleDiskRestorePointClient_Get_getAnIncrementalDiskRestorePointResource(
 	// 	Properties: &armcompute.DiskRestorePointProperties{
 	// 		FamilyID: to.Ptr("996bf3ce-b6ff-4e86-9db6-dc27ea06cea5"),
 	// 		HyperVGeneration: to.Ptr(armcompute.HyperVGenerationV1),
+	// 		LogicalSectorSize: to.Ptr[int32](4096),
 	// 		NetworkAccessPolicy: to.Ptr(armcompute.NetworkAccessPolicyAllowAll),
 	// 		OSType: to.Ptr(armcompute.OperatingSystemTypesWindows),
 	// 		PublicNetworkAccess: to.Ptr(armcompute.PublicNetworkAccessDisabled),
@@ -52,7 +53,7 @@ func ExampleDiskRestorePointClient_Get_getAnIncrementalDiskRestorePointResource(
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/diskRestorePointExamples/DiskRestorePoint_Get_WhenSourceResourceIsFromDifferentRegion.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c7b98b36e4023331545051284d8500adf98f02fe/specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2024-03-02/examples/diskRestorePointExamples/DiskRestorePoint_Get_WhenSourceResourceIsFromDifferentRegion.json
 func ExampleDiskRestorePointClient_Get_getAnIncrementalDiskRestorePointWhenSourceResourceIsFromADifferentRegion() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -77,6 +78,7 @@ func ExampleDiskRestorePointClient_Get_getAnIncrementalDiskRestorePointWhenSourc
 	// 		CompletionPercent: to.Ptr[float32](100),
 	// 		FamilyID: to.Ptr("996bf3ce-b6ff-4e86-9db6-dc27ea06cea5"),
 	// 		HyperVGeneration: to.Ptr(armcompute.HyperVGenerationV1),
+	// 		LogicalSectorSize: to.Ptr[int32](4096),
 	// 		NetworkAccessPolicy: to.Ptr(armcompute.NetworkAccessPolicyAllowAll),
 	// 		OSType: to.Ptr(armcompute.OperatingSystemTypesWindows),
 	// 		PublicNetworkAccess: to.Ptr(armcompute.PublicNetworkAccessDisabled),
@@ -89,7 +91,7 @@ func ExampleDiskRestorePointClient_Get_getAnIncrementalDiskRestorePointWhenSourc
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/diskRestorePointExamples/DiskRestorePoint_ListByVmRestorePoint.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c7b98b36e4023331545051284d8500adf98f02fe/specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2024-03-02/examples/diskRestorePointExamples/DiskRestorePoint_ListByVmRestorePoint.json
 func ExampleDiskRestorePointClient_NewListByRestorePointPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -119,6 +121,7 @@ func ExampleDiskRestorePointClient_NewListByRestorePointPager() {
 		// 			Properties: &armcompute.DiskRestorePointProperties{
 		// 				FamilyID: to.Ptr("996bf3ce-b6ff-4e86-9db6-dc27ea06cea5"),
 		// 				HyperVGeneration: to.Ptr(armcompute.HyperVGenerationV1),
+		// 				LogicalSectorSize: to.Ptr[int32](4096),
 		// 				NetworkAccessPolicy: to.Ptr(armcompute.NetworkAccessPolicyAllowAll),
 		// 				OSType: to.Ptr(armcompute.OperatingSystemTypesWindows),
 		// 				PublicNetworkAccess: to.Ptr(armcompute.PublicNetworkAccessDisabled),
@@ -131,7 +134,7 @@ func ExampleDiskRestorePointClient_NewListByRestorePointPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/diskRestorePointExamples/DiskRestorePoint_BeginGetAccess.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c7b98b36e4023331545051284d8500adf98f02fe/specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2024-03-02/examples/diskRestorePointExamples/DiskRestorePoint_BeginGetAccess.json
 func ExampleDiskRestorePointClient_BeginGrantAccess() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -162,7 +165,7 @@ func ExampleDiskRestorePointClient_BeginGrantAccess() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/diskRestorePointExamples/DiskRestorePoint_EndGetAccess.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c7b98b36e4023331545051284d8500adf98f02fe/specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2024-03-02/examples/diskRestorePointExamples/DiskRestorePoint_EndGetAccess.json
 func ExampleDiskRestorePointClient_BeginRevokeAccess() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearning/armmachinelearning/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearning/armmachinelearning/v4"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/aafb0944f7ab936e8cfbad8969bd5eb32263fb4f/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/Compute/list.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Compute/list.json
 func ExampleComputeClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -74,7 +74,7 @@ func ExampleComputeClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/aafb0944f7ab936e8cfbad8969bd5eb32263fb4f/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/Compute/get/AKSCompute.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Compute/get/AKSCompute.json
 func ExampleComputeClient_Get_getAAksCompute() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -108,7 +108,7 @@ func ExampleComputeClient_Get_getAAksCompute() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/aafb0944f7ab936e8cfbad8969bd5eb32263fb4f/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/Compute/get/AmlCompute.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Compute/get/AmlCompute.json
 func ExampleComputeClient_Get_getAAmlCompute() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -169,7 +169,7 @@ func ExampleComputeClient_Get_getAAmlCompute() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/aafb0944f7ab936e8cfbad8969bd5eb32263fb4f/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/Compute/get/KubernetesCompute.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Compute/get/KubernetesCompute.json
 func ExampleComputeClient_Get_getAKubernetesCompute() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -225,7 +225,7 @@ func ExampleComputeClient_Get_getAKubernetesCompute() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/aafb0944f7ab936e8cfbad8969bd5eb32263fb4f/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/Compute/get/ComputeInstance.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Compute/get/ComputeInstance.json
 func ExampleComputeClient_Get_getAnComputeInstance() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -267,6 +267,42 @@ func ExampleComputeClient_Get_getAnComputeInstance() {
 	// 				UserName: to.Ptr("foobar@microsoft.com"),
 	// 				UserOrgID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 			},
+	// 			CustomServices: []*armmachinelearning.CustomService{
+	// 				{
+	// 					Name: to.Ptr("rstudio"),
+	// 					Docker: &armmachinelearning.Docker{
+	// 						Privileged: to.Ptr(true),
+	// 					},
+	// 					Endpoints: []*armmachinelearning.Endpoint{
+	// 						{
+	// 							Name: to.Ptr("connect"),
+	// 							Published: to.Ptr[int32](8787),
+	// 							Target: to.Ptr[int32](8787),
+	// 							Protocol: to.Ptr(armmachinelearning.ProtocolHTTP),
+	// 					}},
+	// 					EnvironmentVariables: map[string]*armmachinelearning.EnvironmentVariable{
+	// 						"test_var": &armmachinelearning.EnvironmentVariable{
+	// 							Type: to.Ptr(armmachinelearning.EnvironmentVariableTypeLocal),
+	// 							Value: to.Ptr("test_val"),
+	// 						},
+	// 					},
+	// 					Image: &armmachinelearning.Image{
+	// 						Type: to.Ptr(armmachinelearning.ImageTypeDocker),
+	// 						Reference: to.Ptr("ghcr.io/azure/rocker-rstudio-ml-verse:latest"),
+	// 					},
+	// 					Volumes: []*armmachinelearning.VolumeDefinition{
+	// 						{
+	// 							Type: to.Ptr(armmachinelearning.VolumeDefinitionTypeBind),
+	// 							ReadOnly: to.Ptr(false),
+	// 							Source: to.Ptr("/home/azureuser/cloudfiles"),
+	// 							Target: to.Ptr("/home/azureuser/cloudfiles"),
+	// 					}},
+	// 			}},
+	// 			OSImageMetadata: &armmachinelearning.ImageMetadata{
+	// 				CurrentImageVersion: to.Ptr("22.06.14"),
+	// 				IsLatestOsImageVersion: to.Ptr(false),
+	// 				LatestImageVersion: to.Ptr("22.07.22"),
+	// 			},
 	// 			PersonalComputeInstanceSettings: &armmachinelearning.PersonalComputeInstanceSettings{
 	// 				AssignedUser: &armmachinelearning.AssignedUser{
 	// 					ObjectID: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -292,7 +328,7 @@ func ExampleComputeClient_Get_getAnComputeInstance() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/aafb0944f7ab936e8cfbad8969bd5eb32263fb4f/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/Compute/createOrUpdate/KubernetesCompute.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Compute/createOrUpdate/KubernetesCompute.json
 func ExampleComputeClient_BeginCreateOrUpdate_attachAKubernetesCompute() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -376,7 +412,7 @@ func ExampleComputeClient_BeginCreateOrUpdate_attachAKubernetesCompute() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/aafb0944f7ab936e8cfbad8969bd5eb32263fb4f/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/Compute/createOrUpdate/BasicAmlCompute.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Compute/createOrUpdate/BasicAmlCompute.json
 func ExampleComputeClient_BeginCreateOrUpdate_createAAmlCompute() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -431,7 +467,7 @@ func ExampleComputeClient_BeginCreateOrUpdate_createAAmlCompute() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/aafb0944f7ab936e8cfbad8969bd5eb32263fb4f/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/Compute/createOrUpdate/BasicDataFactoryCompute.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Compute/createOrUpdate/BasicDataFactoryCompute.json
 func ExampleComputeClient_BeginCreateOrUpdate_createADataFactoryCompute() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -470,7 +506,7 @@ func ExampleComputeClient_BeginCreateOrUpdate_createADataFactoryCompute() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/aafb0944f7ab936e8cfbad8969bd5eb32263fb4f/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/Compute/createOrUpdate/BasicAKSCompute.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Compute/createOrUpdate/BasicAKSCompute.json
 func ExampleComputeClient_BeginCreateOrUpdate_createAnAksCompute() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -509,7 +545,7 @@ func ExampleComputeClient_BeginCreateOrUpdate_createAnAksCompute() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/aafb0944f7ab936e8cfbad8969bd5eb32263fb4f/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/Compute/createOrUpdate/ComputeInstance.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Compute/createOrUpdate/ComputeInstance.json
 func ExampleComputeClient_BeginCreateOrUpdate_createAnComputeInstanceCompute() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -526,6 +562,37 @@ func ExampleComputeClient_BeginCreateOrUpdate_createAnComputeInstanceCompute() {
 			Properties: &armmachinelearning.ComputeInstanceProperties{
 				ApplicationSharingPolicy:         to.Ptr(armmachinelearning.ApplicationSharingPolicyPersonal),
 				ComputeInstanceAuthorizationType: to.Ptr(armmachinelearning.ComputeInstanceAuthorizationTypePersonal),
+				CustomServices: []*armmachinelearning.CustomService{
+					{
+						Name: to.Ptr("rstudio"),
+						Docker: &armmachinelearning.Docker{
+							Privileged: to.Ptr(true),
+						},
+						Endpoints: []*armmachinelearning.Endpoint{
+							{
+								Name:      to.Ptr("connect"),
+								Published: to.Ptr[int32](8787),
+								Target:    to.Ptr[int32](8787),
+								Protocol:  to.Ptr(armmachinelearning.ProtocolHTTP),
+							}},
+						EnvironmentVariables: map[string]*armmachinelearning.EnvironmentVariable{
+							"test_variable": {
+								Type:  to.Ptr(armmachinelearning.EnvironmentVariableTypeLocal),
+								Value: to.Ptr("test_value"),
+							},
+						},
+						Image: &armmachinelearning.Image{
+							Type:      to.Ptr(armmachinelearning.ImageTypeDocker),
+							Reference: to.Ptr("ghcr.io/azure/rocker-rstudio-ml-verse:latest"),
+						},
+						Volumes: []*armmachinelearning.VolumeDefinition{
+							{
+								Type:     to.Ptr(armmachinelearning.VolumeDefinitionTypeBind),
+								ReadOnly: to.Ptr(false),
+								Source:   to.Ptr("/home/azureuser/cloudfiles"),
+								Target:   to.Ptr("/home/azureuser/cloudfiles"),
+							}},
+					}},
 				PersonalComputeInstanceSettings: &armmachinelearning.PersonalComputeInstanceSettings{
 					AssignedUser: &armmachinelearning.AssignedUser{
 						ObjectID: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -565,7 +632,7 @@ func ExampleComputeClient_BeginCreateOrUpdate_createAnComputeInstanceCompute() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/aafb0944f7ab936e8cfbad8969bd5eb32263fb4f/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/Compute/createOrUpdate/ComputeInstanceWithSchedules.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Compute/createOrUpdate/ComputeInstanceWithSchedules.json
 func ExampleComputeClient_BeginCreateOrUpdate_createAnComputeInstanceComputeWithSchedules() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -592,13 +659,13 @@ func ExampleComputeClient_BeginCreateOrUpdate_createAnComputeInstanceComputeWith
 					ComputeStartStop: []*armmachinelearning.ComputeStartStopSchedule{
 						{
 							Action: to.Ptr(armmachinelearning.ComputePowerActionStop),
-							Cron: &armmachinelearning.CronTrigger{
+							Cron: &armmachinelearning.Cron{
+								Expression: to.Ptr("0 18 * * *"),
 								StartTime:  to.Ptr("2021-04-23T01:30:00"),
 								TimeZone:   to.Ptr("Pacific Standard Time"),
-								Expression: to.Ptr("0 18 * * *"),
 							},
 							Status:      to.Ptr(armmachinelearning.ScheduleStatusEnabled),
-							TriggerType: to.Ptr(armmachinelearning.TriggerTypeCron),
+							TriggerType: to.Ptr(armmachinelearning.ComputeTriggerTypeCron),
 						}},
 				},
 				SSHSettings: &armmachinelearning.ComputeInstanceSSHSettings{
@@ -631,7 +698,7 @@ func ExampleComputeClient_BeginCreateOrUpdate_createAnComputeInstanceComputeWith
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/aafb0944f7ab936e8cfbad8969bd5eb32263fb4f/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/Compute/createOrUpdate/ComputeInstanceMinimal.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Compute/createOrUpdate/ComputeInstanceMinimal.json
 func ExampleComputeClient_BeginCreateOrUpdate_createAnComputeInstanceComputeWithMinimalInputs() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -673,7 +740,7 @@ func ExampleComputeClient_BeginCreateOrUpdate_createAnComputeInstanceComputeWith
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/aafb0944f7ab936e8cfbad8969bd5eb32263fb4f/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/Compute/createOrUpdate/AmlCompute.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Compute/createOrUpdate/AmlCompute.json
 func ExampleComputeClient_BeginCreateOrUpdate_updateAAmlCompute() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -751,7 +818,7 @@ func ExampleComputeClient_BeginCreateOrUpdate_updateAAmlCompute() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/aafb0944f7ab936e8cfbad8969bd5eb32263fb4f/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/Compute/createOrUpdate/AKSCompute.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Compute/createOrUpdate/AKSCompute.json
 func ExampleComputeClient_BeginCreateOrUpdate_updateAnAksCompute() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -800,7 +867,7 @@ func ExampleComputeClient_BeginCreateOrUpdate_updateAnAksCompute() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/aafb0944f7ab936e8cfbad8969bd5eb32263fb4f/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/Compute/patch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Compute/patch.json
 func ExampleComputeClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -845,7 +912,7 @@ func ExampleComputeClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/aafb0944f7ab936e8cfbad8969bd5eb32263fb4f/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/Compute/delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Compute/delete.json
 func ExampleComputeClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -866,7 +933,7 @@ func ExampleComputeClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/aafb0944f7ab936e8cfbad8969bd5eb32263fb4f/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/Compute/listNodes.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Compute/listNodes.json
 func ExampleComputeClient_NewListNodesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -909,7 +976,7 @@ func ExampleComputeClient_NewListNodesPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/aafb0944f7ab936e8cfbad8969bd5eb32263fb4f/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/Compute/listKeys.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Compute/listKeys.json
 func ExampleComputeClient_ListKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -937,7 +1004,7 @@ func ExampleComputeClient_ListKeys() {
 	// 	                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/aafb0944f7ab936e8cfbad8969bd5eb32263fb4f/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/Compute/start.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Compute/start.json
 func ExampleComputeClient_BeginStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -958,7 +1025,7 @@ func ExampleComputeClient_BeginStart() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/aafb0944f7ab936e8cfbad8969bd5eb32263fb4f/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/Compute/stop.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Compute/stop.json
 func ExampleComputeClient_BeginStop() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -979,7 +1046,7 @@ func ExampleComputeClient_BeginStop() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/aafb0944f7ab936e8cfbad8969bd5eb32263fb4f/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/Compute/restart.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Compute/restart.json
 func ExampleComputeClient_BeginRestart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

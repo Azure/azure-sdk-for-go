@@ -21,6 +21,7 @@ spec:
       args: 
         - >
           set -ex;
+          set -o pipefail;
           mkdir -p "$DEBUG_SHARE";
           {{if eq .Stress.testTarget "multibalance" }}
           /app/stress "{{.Stress.testTarget}}" "-rounds" "{{.Stress.rounds}}" "{{.Stress.verbose}}" 2>&1 | tee -a "${DEBUG_SHARE}/{{ .Stress.Scenario }}-`date +%s`.log";

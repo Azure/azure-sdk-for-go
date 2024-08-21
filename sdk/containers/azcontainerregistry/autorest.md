@@ -309,49 +309,6 @@ directive:
     transform: return $.replaceAll(/result\.Link = &val/g, "val = runtime.JoinPaths(client.endpoint, extractNextLink(val))\n\t\tresult.Link = &val");
 ```
 
-### Do not export Authentication client and related models
-
-```yaml
-directive:
-  - from:
-      - authentication_client.go
-    where: $
-    transform: return $.replaceAll(/ AuthenticationClient/g, " authenticationClient").replaceAll(/\*AuthenticationClient/g, "*authenticationClient").replace(/NewAuthenticationClient/, "newAuthenticationClient").replaceAll(/\(AuthenticationClient/g, "(authenticationClient");
-  - from:
-      - authentication_client.go
-    where: $
-    transform: return $.replace(/PostContentSchemaGrantType/, "postContentSchemaGrantType").replace(/PostContentSchemaGrantType/, "postContentSchemaGrantType");
-  - from:
-      - authentication_client.go
-    where: $
-    transform: return $.replace(/result\.AcrAccessToken/, "result.acrAccessToken").replace(/result\.AcrRefreshToken/, "result.acrRefreshToken");
-  - from:
-      - response_types.go
-    where: $
-    transform: return $.replaceAll(/AuthenticationClient/g, "authenticationClient").replace(/AcrRefreshToken\n/, "acrRefreshToken\n").replace(/AcrAccessToken\n/, "acrAccessToken\n");
-  - from:
-      - models.go
-      - options.go
-    where: $
-    transform: return $.replaceAll(/AuthenticationClient/g, "authenticationClient").replace(/AcrRefreshToken struct/, "acrRefreshToken struct").replace(/AcrAccessToken struct/, "acrAccessToken struct");
-  - from:
-      - options.go
-    where: $
-    transform: return $.replace(/TokenGrantType/, "tokenGrantType");
-  - from:
-      - constants.go
-    where: $
-    transform: return $.replaceAll(/ TokenGrantType/g, " tokenGrantType").replaceAll(/\tTokenGrantType/g, "\ttokenGrantType").replaceAll(/\]TokenGrantType/g, "]tokenGrantType").replaceAll(/PossibleTokenGrantType/g, "possibleTokenGrantType");
-  - from:
-      - constants.go
-    where: $
-    transform: return $.replaceAll(/ PostContentSchemaGrantType/g, " postContentSchemaGrantType").replaceAll(/\tPostContentSchemaGrantType/g, "\tpostContentSchemaGrantType").replaceAll(/\]PostContentSchemaGrantType/g, "]postContentSchemaGrantType").replaceAll(/PossiblePostContentSchemaGrantType/g, "possiblePostContentSchemaGrantType");
-  - from:
-      - models_serde.go
-    where: $
-    transform: return $.replaceAll(/ AcrAccessToken/g, " acrAccessToken").replace(/\*AcrAccessToken/g, "*acrAccessToken").replaceAll(/ AcrRefreshToken/g, " acrRefreshToken").replace(/\*AcrRefreshToken/g, "*acrRefreshToken");
-```
-
 ### Rename all Acr to ACR
 
 ```yaml
@@ -461,6 +418,20 @@ directive:
     where: $.definitions
     transform: >
         $.ArtifactOperatingSystem.description = "The artifact platform's operating system.";
+```
+
+### Add description for RefreshToken and AccessToken
+
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions
+    transform: >
+        $.RefreshToken.description = "The ACR refresh token response.";
+  - from: swagger-document
+    where: $.definitions
+    transform: >
+      $.AccessToken.description = "The ACR access token response.";
 ```
 
 ### Remove useless Marshal method

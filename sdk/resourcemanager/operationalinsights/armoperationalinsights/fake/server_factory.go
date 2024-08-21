@@ -31,6 +31,8 @@ type ServerFactory struct {
 	ManagementGroupsServer      ManagementGroupsServer
 	OperationStatusesServer     OperationStatusesServer
 	OperationsServer            OperationsServer
+	QueriesServer               QueriesServer
+	QueryPacksServer            QueryPacksServer
 	SavedSearchesServer         SavedSearchesServer
 	SchemaServer                SchemaServer
 	SharedKeysServer            SharedKeysServer
@@ -67,6 +69,8 @@ type ServerFactoryTransport struct {
 	trManagementGroupsServer      *ManagementGroupsServerTransport
 	trOperationStatusesServer     *OperationStatusesServerTransport
 	trOperationsServer            *OperationsServerTransport
+	trQueriesServer               *QueriesServerTransport
+	trQueryPacksServer            *QueryPacksServerTransport
 	trSavedSearchesServer         *SavedSearchesServerTransport
 	trSchemaServer                *SchemaServerTransport
 	trSharedKeysServer            *SharedKeysServerTransport
@@ -140,6 +144,12 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "OperationsClient":
 		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
+	case "QueriesClient":
+		initServer(s, &s.trQueriesServer, func() *QueriesServerTransport { return NewQueriesServerTransport(&s.srv.QueriesServer) })
+		resp, err = s.trQueriesServer.Do(req)
+	case "QueryPacksClient":
+		initServer(s, &s.trQueryPacksServer, func() *QueryPacksServerTransport { return NewQueryPacksServerTransport(&s.srv.QueryPacksServer) })
+		resp, err = s.trQueryPacksServer.Do(req)
 	case "SavedSearchesClient":
 		initServer(s, &s.trSavedSearchesServer, func() *SavedSearchesServerTransport {
 			return NewSavedSearchesServerTransport(&s.srv.SavedSearchesServer)

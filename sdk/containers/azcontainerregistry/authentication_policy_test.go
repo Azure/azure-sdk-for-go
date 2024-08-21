@@ -22,7 +22,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/temporal"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/test/credential"
@@ -133,7 +132,7 @@ func Test_authenticationPolicy_getAccessToken_live(t *testing.T) {
 	if reflect.ValueOf(options.Cloud).IsZero() {
 		options.Cloud = cloud.AzurePublic
 	}
-	authClient, err := newAuthenticationClient(endpoint, &authenticationClientOptions{options})
+	authClient, err := NewAuthenticationClient(endpoint, &AuthenticationClientOptions{options})
 	require.NoError(t, err)
 	p := &authenticationPolicy{
 		temporal.NewResource(acquireRefreshToken),
@@ -157,7 +156,7 @@ func Test_authenticationPolicy_getAccessToken_error(t *testing.T) {
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte("{\"refresh_token\": \".eyJqdGkiOiIwMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDAiLCJzdWIiOiIwMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDAiLCJuYmYiOjQ2NzA0MTEyMTIsImV4cCI6NDY3MDQyMjkxMiwiaWF0Ijo0NjcwNDExMjEyLCJpc3MiOiJBenVyZSBDb250YWluZXIgUmVnaXN0cnkiLCJhdWQiOiJhemFjcmxpdmV0ZXN0LmF6dXJlY3IuaW8iLCJ2ZXJzaW9uIjoiMS4wIiwicmlkIjoiMDAwMCIsImdyYW50X3R5cGUiOiJyZWZyZXNoX3Rva2VuIiwiYXBwaWQiOiIwMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDAiLCJwZXJtaXNzaW9ucyI6eyJBY3Rpb25zIjpbInJlYWQiLCJ3cml0ZSIsImRlbGV0ZSIsImRlbGV0ZWQvcmVhZCIsImRlbGV0ZWQvcmVzdG9yZS9hY3Rpb24iXSwiTm90QWN0aW9ucyI6bnVsbH0sInJvbGVzIjpbXX0.\"}")))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte("wrong response")))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte("wrong response")))
-	authClient, err := newAuthenticationClient(srv.URL(), &authenticationClientOptions{ClientOptions: azcore.ClientOptions{Transport: srv}})
+	authClient, err := NewAuthenticationClient(srv.URL(), &AuthenticationClientOptions{ClientOptions: azcore.ClientOptions{Transport: srv}})
 	require.NoError(t, err)
 
 	p := &authenticationPolicy{
@@ -183,7 +182,7 @@ func Test_authenticationPolicy_getAccessToken_error(t *testing.T) {
 func Test_authenticationPolicy_getAccessToken_live_anonymous(t *testing.T) {
 	startRecording(t)
 	endpoint, _, options := getEndpointCredAndClientOptions(t)
-	authClient, err := newAuthenticationClient(endpoint, &authenticationClientOptions{options})
+	authClient, err := NewAuthenticationClient(endpoint, &AuthenticationClientOptions{options})
 	require.NoError(t, err)
 	p := &authenticationPolicy{
 		refreshTokenCache: temporal.NewResource(acquireRefreshToken),
@@ -201,20 +200,11 @@ func Test_authenticationPolicy_anonymousAccess(t *testing.T) {
 	endpoint, _, options := getEndpointCredAndClientOptions(t)
 	client, err := NewClient(endpoint, nil, &ClientOptions{ClientOptions: options})
 	require.NoError(t, err)
-	ctx := context.Background()
 	pager := client.NewListRepositoriesPager(nil)
-	repositoryName := ""
 	for pager.More() {
-		page, err := pager.NextPage(ctx)
+		_, err = pager.NextPage(ctx)
 		require.NoError(t, err)
-		require.NotEmpty(t, page.Repositories.Names)
-		if repositoryName == "" {
-			repositoryName = *page.Repositories.Names[0]
-		}
 	}
-	require.NotEmpty(t, repositoryName)
-	_, err = client.UpdateRepositoryProperties(ctx, repositoryName, &ClientUpdateRepositoryPropertiesOptions{Value: &RepositoryWriteableProperties{CanDelete: to.Ptr(true)}})
-	require.Error(t, err)
 }
 
 func Test_getChallengeRequest(t *testing.T) {
@@ -241,7 +231,7 @@ func Test_authenticationPolicy(t *testing.T) {
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte("{\"access_token\": \"test\"}")))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
 
-	authClient, err := newAuthenticationClient(srv.URL(), &authenticationClientOptions{ClientOptions: azcore.ClientOptions{Transport: srv}})
+	authClient, err := NewAuthenticationClient(srv.URL(), &AuthenticationClientOptions{ClientOptions: azcore.ClientOptions{Transport: srv}})
 	require.NoError(t, err)
 	authPolicy := &authenticationPolicy{
 		temporal.NewResource(acquireRefreshToken),

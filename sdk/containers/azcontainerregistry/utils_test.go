@@ -8,36 +8,42 @@ package azcontainerregistry
 
 import (
 	"context"
-	"errors"
 	"os"
+	"os/exec"
+	"regexp"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	azcloud "github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/test/credential"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry"
 	"github.com/stretchr/testify/require"
 )
 
 const (
 	fakeACRRefreshToken = ".eyJqdGkiOiIwMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDAiLCJzdWIiOiIwMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDAiLCJuYmYiOjQ2NzA0MTEyMTIsImV4cCI6NDY3MDQyMjkxMiwiaWF0Ijo0NjcwNDExMjEyLCJpc3MiOiJBenVyZSBDb250YWluZXIgUmVnaXN0cnkiLCJhdWQiOiJhemFjcmxpdmV0ZXN0LmF6dXJlY3IuaW8iLCJ2ZXJzaW9uIjoiMS4wIiwicmlkIjoiMDAwMCIsImdyYW50X3R5cGUiOiJyZWZyZXNoX3Rva2VuIiwiYXBwaWQiOiIwMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDAiLCJwZXJtaXNzaW9ucyI6eyJBY3Rpb25zIjpbInJlYWQiLCJ3cml0ZSIsImRlbGV0ZSIsImRlbGV0ZWQvcmVhZCIsImRlbGV0ZWQvcmVzdG9yZS9hY3Rpb24iXSwiTm90QWN0aW9ucyI6bnVsbH0sInJvbGVzIjpbXX0=."
-	fakeLoginServer     = recording.SanitizedValue + ".azurecr.io"
+	fakeDigest          = "sha256:00"
+	fakeLoginServer     = fakeRegistry + ".azurecr.io"
+	fakeRegistry        = recording.SanitizedValue
 	recordingDirectory  = "sdk/containers/azcontainerregistry/testdata"
 )
 
-var testConfig = struct {
-	cloud       azcloud.Configuration
-	credential  azcore.TokenCredential
-	loginServer string
-}{
-	cloud:       azcloud.AzurePublic,
-	credential:  &credential.Fake{},
-	loginServer: fakeLoginServer,
-}
+var (
+	ctx = context.Background()
+
+	testConfig = struct {
+		cloud                     azcloud.Configuration
+		credential                azcore.TokenCredential
+		loginServer, registryName string
+	}{
+		cloud:        azcloud.AzurePublic,
+		credential:   &credential.Fake{},
+		loginServer:  fakeLoginServer,
+		registryName: fakeRegistry,
+	}
+)
 
 // getEndpointCredAndClientOptions will create a credential and a client options for test application.
 // The client options will initialize the transport for recording client add recording policy to the pipeline.
@@ -77,6 +83,9 @@ func run(m *testing.M) int {
 		if testConfig.loginServer = os.Getenv("LOGIN_SERVER"); testConfig.loginServer == "" {
 			panic("no value for LOGIN_SERVER")
 		}
+		if testConfig.registryName = os.Getenv("REGISTRY_NAME"); testConfig.registryName == "" {
+			panic("no value for REGISTRY_NAME")
+		}
 		env := os.Getenv("AZCONTAINERREGISTRY_ENVIRONMENT")
 		switch {
 		case strings.EqualFold(env, "AzureUSGovernment"):
@@ -87,10 +96,6 @@ func run(m *testing.M) int {
 			testConfig.cloud = azcloud.AzureChina
 		case len(env) > 0:
 			panic("unexpected value for AZCONTAINERREGISTRY_ENVIRONMENT: " + env)
-		}
-		err = importTestImages()
-		if err != nil {
-			panic(err)
 		}
 	}
 	if recording.GetRecordMode() != recording.LiveMode {
@@ -123,41 +128,50 @@ func run(m *testing.M) int {
 	return m.Run()
 }
 
-func importTestImages() error {
-	subID := os.Getenv("AZURE_SUBSCRIPTION_ID")
-	if subID == "" {
-		return errors.New("no value for AZURE_SUBSCRIPTION_ID")
-	}
-	rg := os.Getenv("AZCONTAINERREGISTRY_RESOURCE_GROUP")
-	if rg == "" {
-		return errors.New("no value for AZCONTAINERREGISTRY_RESOURCE_GROUP")
-	}
-	registryName := os.Getenv("REGISTRY_NAME")
-	if registryName == "" {
-		return errors.New("no value for REGISTRY_NAME")
+// buildImage invokes the Azure CLI to build a new image in ACR for the given test. It returns the image's repository and digest.
+func buildImage(t *testing.T) (string, string) {
+	repository := strings.ReplaceAll(strings.ToLower(t.Name()), "/", "_")
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		return repository, fakeDigest
 	}
 
-	ctx := context.Background()
-	client, err := armcontainerregistry.NewRegistriesClient(subID, testConfig.credential, &arm.ClientOptions{ClientOptions: azcore.ClientOptions{Cloud: testConfig.cloud}})
-	if err != nil {
-		return err
-	}
-	images := []string{"hello-world:latest", "alpine:3.17.1", "alpine:3.16.3", "alpine:3.14.8", "busybox:1.36.1-uclibc", "eclipse-mosquitto:latest"}
-	for _, image := range images {
-		poller, err := client.BeginImportImage(ctx, rg, registryName, armcontainerregistry.ImportImageParameters{
-			Source: &armcontainerregistry.ImportSource{
-				SourceImage: to.Ptr("library/" + image),
-				RegistryURI: to.Ptr("docker.io"),
-			},
-			TargetTags: []*string{to.Ptr(image)},
-			Mode:       to.Ptr(armcontainerregistry.ImportModeForce),
-		}, nil)
-		if err == nil {
-			_, err = poller.PollUntilDone(ctx, nil)
+	// build images in parallel, in separate goroutines, because building can be slow and may require retries in CI
+	t.Parallel()
+	ctx, cancel := context.WithTimeout(ctx, 3*time.Minute)
+	defer cancel()
+
+	ch := make(chan struct{})
+	var (
+		err error
+		out []byte
+	)
+	go func() {
+		defer close(ch)
+		for {
+			select {
+			case <-ctx.Done():
+				err = ctx.Err()
+				return
+			default:
+				cmd := exec.CommandContext(ctx, "az", "acr", "build", "-r", testConfig.registryName, "--image", repository, "--build-arg", "ID="+repository, ".")
+				cmd.Dir = "testdata"
+				out, err = cmd.CombinedOutput()
+				if err == nil {
+					return
+				}
+			}
 		}
-		if err != nil {
-			return err
-		}
+	}()
+	<-ch
+	require.NoError(t, err, string(out))
+
+	// this assumes the image has one layer digest i.e., it's FROM scratch and the Dockerfile touches the filesystem once
+	digest := string(regexp.MustCompile("(sha256:[0-9a-f]{64})").Find(out))
+	require.NotEmpty(t, digest, "failed to find digest in "+string(out))
+	if recording.GetRecordMode() == recording.RecordingMode {
+		_, sum, found := strings.Cut(digest, ":")
+		require.True(t, found)
+		require.NoError(t, recording.AddGeneralRegexSanitizer("00", sum, nil))
 	}
-	return err
+	return repository, digest
 }

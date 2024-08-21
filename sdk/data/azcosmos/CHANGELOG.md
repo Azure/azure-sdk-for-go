@@ -3,10 +3,13 @@
 ## 1.0.4 (Unreleased)
 
 ### Features Added
+* Added support for OpenTelemetry trace spans. See [PR 23268](https://github.com/Azure/azure-sdk-for-go/pull/23268)
 
 ### Breaking Changes
 
 ### Bugs Fixed
+* Fixed sending `Prefer` header with `return=minimal` value on metadata operations. See [PR 23335](https://github.com/Azure/azure-sdk-for-go/pull/23335)
+* Fixed routing metadata requests to satellite regions when using ClientOptions.PreferredRegions and multiple write region accounts. See [PR 23339](https://github.com/Azure/azure-sdk-for-go/pull/23339)
 
 ### Other Changes
 

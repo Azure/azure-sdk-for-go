@@ -4,6 +4,8 @@
 
 ### Features Added
 
+* Add `AuthenticationClient` enabling third party libraries to interact with container and artifact registries
+
 ### Breaking Changes
 
 ### Bugs Fixed

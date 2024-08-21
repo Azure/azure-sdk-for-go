@@ -1,5 +1,11 @@
 # Release History
 
+## 2.0.0-beta.4 (2024-08-19)
+### Features Added
+
+- New function `*QueryPacksClient.CreateOrUpdateWithoutName(context.Context, string, LogAnalyticsQueryPack, *QueryPacksClientCreateOrUpdateWithoutNameOptions) (QueryPacksClientCreateOrUpdateWithoutNameResponse, error)`
+
+
 ## 1.2.0 (2023-11-24)
 ### Features Added
 

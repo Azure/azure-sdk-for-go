@@ -2506,6 +2506,7 @@ func (r Replication) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "endpointType", r.EndpointType)
 	populate(objectMap, "remoteVolumeRegion", r.RemoteVolumeRegion)
 	populate(objectMap, "remoteVolumeResourceId", r.RemoteVolumeResourceID)
+	populate(objectMap, "replicationId", r.ReplicationID)
 	populate(objectMap, "replicationSchedule", r.ReplicationSchedule)
 	return json.Marshal(objectMap)
 }
@@ -2527,6 +2528,9 @@ func (r *Replication) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "remoteVolumeResourceId":
 			err = unpopulate(val, "RemoteVolumeResourceID", &r.RemoteVolumeResourceID)
+			delete(rawMsg, key)
+		case "replicationId":
+			err = unpopulate(val, "ReplicationID", &r.ReplicationID)
 			delete(rawMsg, key)
 		case "replicationSchedule":
 			err = unpopulate(val, "ReplicationSchedule", &r.ReplicationSchedule)

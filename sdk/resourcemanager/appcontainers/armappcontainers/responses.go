@@ -8,35 +8,6 @@
 
 package armappcontainers
 
-// AppResiliencyClientCreateOrUpdateResponse contains the response from method AppResiliencyClient.CreateOrUpdate.
-type AppResiliencyClientCreateOrUpdateResponse struct {
-	// Configuration to setup App Resiliency
-	AppResiliency
-}
-
-// AppResiliencyClientDeleteResponse contains the response from method AppResiliencyClient.Delete.
-type AppResiliencyClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// AppResiliencyClientGetResponse contains the response from method AppResiliencyClient.Get.
-type AppResiliencyClientGetResponse struct {
-	// Configuration to setup App Resiliency
-	AppResiliency
-}
-
-// AppResiliencyClientListResponse contains the response from method AppResiliencyClient.NewListPager.
-type AppResiliencyClientListResponse struct {
-	// Collection of AppResiliency policies
-	AppResiliencyCollection
-}
-
-// AppResiliencyClientUpdateResponse contains the response from method AppResiliencyClient.Update.
-type AppResiliencyClientUpdateResponse struct {
-	// Configuration to setup App Resiliency
-	AppResiliency
-}
-
 // AvailableWorkloadProfilesClientGetResponse contains the response from method AvailableWorkloadProfilesClient.NewGetPager.
 type AvailableWorkloadProfilesClientGetResponse struct {
 	// Collection of available workload profiles in the location.
@@ -47,70 +18,6 @@ type AvailableWorkloadProfilesClientGetResponse struct {
 type BillingMetersClientGetResponse struct {
 	// Collection of billing meters.
 	BillingMeterCollection
-}
-
-// BuildAuthTokenClientListResponse contains the response from method BuildAuthTokenClient.List.
-type BuildAuthTokenClientListResponse struct {
-	// Build Auth Token.
-	BuildToken
-}
-
-// BuildersClientCreateOrUpdateResponse contains the response from method BuildersClient.BeginCreateOrUpdate.
-type BuildersClientCreateOrUpdateResponse struct {
-	// Information about the SourceToCloud builder resource.
-	BuilderResource
-}
-
-// BuildersClientDeleteResponse contains the response from method BuildersClient.BeginDelete.
-type BuildersClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// BuildersClientGetResponse contains the response from method BuildersClient.Get.
-type BuildersClientGetResponse struct {
-	// Information about the SourceToCloud builder resource.
-	BuilderResource
-}
-
-// BuildersClientListByResourceGroupResponse contains the response from method BuildersClient.NewListByResourceGroupPager.
-type BuildersClientListByResourceGroupResponse struct {
-	// The response of a BuilderResource list operation.
-	BuilderCollection
-}
-
-// BuildersClientListBySubscriptionResponse contains the response from method BuildersClient.NewListBySubscriptionPager.
-type BuildersClientListBySubscriptionResponse struct {
-	// The response of a BuilderResource list operation.
-	BuilderCollection
-}
-
-// BuildersClientUpdateResponse contains the response from method BuildersClient.BeginUpdate.
-type BuildersClientUpdateResponse struct {
-	// Information about the SourceToCloud builder resource.
-	BuilderResource
-}
-
-// BuildsByBuilderResourceClientListResponse contains the response from method BuildsByBuilderResourceClient.NewListPager.
-type BuildsByBuilderResourceClientListResponse struct {
-	// The response of a BuildResource list operation.
-	BuildCollection
-}
-
-// BuildsClientCreateOrUpdateResponse contains the response from method BuildsClient.BeginCreateOrUpdate.
-type BuildsClientCreateOrUpdateResponse struct {
-	// Information pertaining to an individual build.
-	BuildResource
-}
-
-// BuildsClientDeleteResponse contains the response from method BuildsClient.BeginDelete.
-type BuildsClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// BuildsClientGetResponse contains the response from method BuildsClient.Get.
-type BuildsClientGetResponse struct {
-	// Information pertaining to an individual build.
-	BuildResource
 }
 
 // CertificatesClientCreateOrUpdateResponse contains the response from method CertificatesClient.CreateOrUpdate.
@@ -456,29 +363,6 @@ type ContainerAppsSourceControlsClientListByContainerAppResponse struct {
 	SourceControlCollection
 }
 
-// DaprComponentResiliencyPoliciesClientCreateOrUpdateResponse contains the response from method DaprComponentResiliencyPoliciesClient.CreateOrUpdate.
-type DaprComponentResiliencyPoliciesClientCreateOrUpdateResponse struct {
-	// Dapr Component Resiliency Policy.
-	DaprComponentResiliencyPolicy
-}
-
-// DaprComponentResiliencyPoliciesClientDeleteResponse contains the response from method DaprComponentResiliencyPoliciesClient.Delete.
-type DaprComponentResiliencyPoliciesClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// DaprComponentResiliencyPoliciesClientGetResponse contains the response from method DaprComponentResiliencyPoliciesClient.Get.
-type DaprComponentResiliencyPoliciesClientGetResponse struct {
-	// Dapr Component Resiliency Policy.
-	DaprComponentResiliencyPolicy
-}
-
-// DaprComponentResiliencyPoliciesClientListResponse contains the response from method DaprComponentResiliencyPoliciesClient.NewListPager.
-type DaprComponentResiliencyPoliciesClientListResponse struct {
-	// Dapr Component Resiliency Policies ARM resource.
-	DaprComponentResiliencyPoliciesCollection
-}
-
 // DaprComponentsClientCreateOrUpdateResponse contains the response from method DaprComponentsClient.CreateOrUpdate.
 type DaprComponentsClientCreateOrUpdateResponse struct {
 	// Dapr Component.
@@ -506,87 +390,6 @@ type DaprComponentsClientListResponse struct {
 type DaprComponentsClientListSecretsResponse struct {
 	// Dapr component Secrets Collection for ListSecrets Action.
 	DaprSecretsCollection
-}
-
-// DaprSubscriptionsClientCreateOrUpdateResponse contains the response from method DaprSubscriptionsClient.CreateOrUpdate.
-type DaprSubscriptionsClientCreateOrUpdateResponse struct {
-	// Dapr PubSub Event Subscription.
-	DaprSubscription
-}
-
-// DaprSubscriptionsClientDeleteResponse contains the response from method DaprSubscriptionsClient.Delete.
-type DaprSubscriptionsClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// DaprSubscriptionsClientGetResponse contains the response from method DaprSubscriptionsClient.Get.
-type DaprSubscriptionsClientGetResponse struct {
-	// Dapr PubSub Event Subscription.
-	DaprSubscription
-}
-
-// DaprSubscriptionsClientListResponse contains the response from method DaprSubscriptionsClient.NewListPager.
-type DaprSubscriptionsClientListResponse struct {
-	// Dapr Subscriptions ARM resource.
-	DaprSubscriptionsCollection
-}
-
-// DotNetComponentsClientCreateOrUpdateResponse contains the response from method DotNetComponentsClient.BeginCreateOrUpdate.
-type DotNetComponentsClientCreateOrUpdateResponse struct {
-	// .NET Component.
-	DotNetComponent
-}
-
-// DotNetComponentsClientDeleteResponse contains the response from method DotNetComponentsClient.BeginDelete.
-type DotNetComponentsClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// DotNetComponentsClientGetResponse contains the response from method DotNetComponentsClient.Get.
-type DotNetComponentsClientGetResponse struct {
-	// .NET Component.
-	DotNetComponent
-}
-
-// DotNetComponentsClientListResponse contains the response from method DotNetComponentsClient.NewListPager.
-type DotNetComponentsClientListResponse struct {
-	// .NET Components ARM resource.
-	DotNetComponentsCollection
-}
-
-// DotNetComponentsClientUpdateResponse contains the response from method DotNetComponentsClient.BeginUpdate.
-type DotNetComponentsClientUpdateResponse struct {
-	// .NET Component.
-	DotNetComponent
-}
-
-// JavaComponentsClientCreateOrUpdateResponse contains the response from method JavaComponentsClient.BeginCreateOrUpdate.
-type JavaComponentsClientCreateOrUpdateResponse struct {
-	// Java Component.
-	JavaComponent
-}
-
-// JavaComponentsClientDeleteResponse contains the response from method JavaComponentsClient.BeginDelete.
-type JavaComponentsClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// JavaComponentsClientGetResponse contains the response from method JavaComponentsClient.Get.
-type JavaComponentsClientGetResponse struct {
-	// Java Component.
-	JavaComponent
-}
-
-// JavaComponentsClientListResponse contains the response from method JavaComponentsClient.NewListPager.
-type JavaComponentsClientListResponse struct {
-	// Java Components ARM resource.
-	JavaComponentsCollection
-}
-
-// JavaComponentsClientUpdateResponse contains the response from method JavaComponentsClient.BeginUpdate.
-type JavaComponentsClientUpdateResponse struct {
-	// Java Component.
-	JavaComponent
 }
 
 // JobsClientCreateOrUpdateResponse contains the response from method JobsClient.BeginCreateOrUpdate.
@@ -624,7 +427,7 @@ type JobsClientListBySubscriptionResponse struct {
 	JobsCollection
 }
 
-// JobsClientListDetectorsResponse contains the response from method JobsClient.ListDetectors.
+// JobsClientListDetectorsResponse contains the response from method JobsClient.NewListDetectorsPager.
 type JobsClientListDetectorsResponse struct {
 	// Diagnostics data collection for a resource.
 	DiagnosticsCollection

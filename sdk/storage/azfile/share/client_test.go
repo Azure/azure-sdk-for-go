@@ -475,6 +475,7 @@ func (s *ShareRecordedTestsSuite) TestShareGetSetPropertiesWithSnapshotVirtualDi
 	_require.NoError(err)
 
 	props, err := shareClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
 	_require.Equal(*props.EnableSnapshotVirtualDirectoryAccess, true)
 }
 

@@ -37,14 +37,14 @@ func main() {
 		panic(err)
 	}
 
-	fmt.Printf("transformError...\n")
-	if err := transformError(); err != nil {
-		panic(err)
-	}
-
 	// fix result types
 	fmt.Printf("fix result types...\n")
 	if err := fixResultTypes(); err != nil {
+		panic(err)
+	}
+
+	fmt.Printf("fix doc comment...\n")
+	if err := fixDocComment(); err != nil {
 		panic(err)
 	}
 }
@@ -66,7 +66,7 @@ func useAZCoreCloudEvent() error {
 }
 
 func deleteModels() error {
-	models := "CloudEvent|InnerError|PublishResult"
+	models := "CloudEvent|InnerError|PublishResult|acknowledgeEventsRequest|rejectEventsRequest|releaseEventsRequest|renewEventLocksRequest"
 
 	if err := replaceAllInFile(
 		"models_serde.go",
@@ -78,6 +78,12 @@ func deleteModels() error {
 	if err := replaceAllInFile(
 		"models.go",
 		regexp.MustCompile(fmt.Sprintf(`(?s)// (%s).+?type (%s) struct.+?\n}`, models, models)), nil); err != nil {
+		return err
+	}
+
+	if err := replaceAllInFile(
+		"models.go",
+		regexp.MustCompile(fmt.Sprintf(`(?s)type (%s) struct.+?\n}`, models)), nil); err != nil {
 		return err
 	}
 
@@ -229,49 +235,6 @@ func replaceAllInFile(file string, re *regexp.Regexp, replacement []byte) error 
 	return nil
 }
 
-func transformError() error {
-	// clip out some of the internal fields
-	err := replaceAllInFile("models.go", regexp.MustCompile(`(?s)// [^/]+?\s+(Innererror \*InnerError|Details \[\]Error|Target \*string)\n`), nil)
-
-	if err != nil {
-		return fmt.Errorf("failed to splice out the error fields in models.go: %w", err)
-	}
-
-	// delete these lines from the marshallers and ummarshallers
-	/*
-		populate(objectMap, "details", e.Details)
-		populate(objectMap, "innererror", e.Innererror)
-		populate(objectMap, "target", e.Target)
-	*/
-
-	err = replaceAllInFile("models_serde.go", regexp.MustCompile(`(?m)^\s+populate\(objectMap, "(details|innererror|target)", e\.(Details|Innererror|Target)\)$`), nil)
-
-	if err != nil {
-		return fmt.Errorf("removing Error populate lines: %w", err)
-	}
-
-	/*
-		case "details":
-			err = unpopulate(val, "Details", &e.Details)
-			delete(rawMsg, key)
-		case "innererror":
-			err = unpopulate(val, "Innererror", &e.Innererror)
-			delete(rawMsg, key)
-		case "target":
-			err = unpopulate(val, "Target", &e.Target)
-			delete(rawMsg, key)
-		}
-	*/
-
-	err = replaceAllInFile("models_serde.go", regexp.MustCompile(`(?s)case "(details|innererror|target)":.+?delete\(rawMsg, key\)\n`), nil)
-
-	if err != nil {
-		return fmt.Errorf("removing Error unpopulate lines: %w", err)
-	}
-
-	return nil
-}
-
 func fixResultTypes() error {
 	symbols, err := gopls.SymbolsSlice("models.go")
 
@@ -331,6 +294,42 @@ func fixResultTypes() error {
 		if err := os.WriteFile("responses.go", newData, 0600); err != nil {
 			return err
 		}
+	}
+
+	return nil
+}
+
+func fixDocComment() error {
+	data, err := os.ReadFile("sender_client.go")
+
+	if err != nil {
+		return err
+	}
+
+	newBytes := bytes.Replace(data,
+		[]byte("// SenderClient contains the methods for the Sender group."),
+		[]byte("// SenderClient contains the methods for the Microsoft.EventGrid namespace."), 1)
+
+	err = os.WriteFile("sender_client.go", newBytes, 0600)
+
+	if err != nil {
+		return err
+	}
+
+	data, err = os.ReadFile("receiver_client.go")
+
+	if err != nil {
+		return err
+	}
+
+	newBytes = bytes.Replace(data,
+		[]byte("// ReceiverClient contains the methods for the Receiver group."),
+		[]byte("// ReceiverClient contains the methods for the Microsoft.EventGrid namespace."), 1)
+
+	err = os.WriteFile("receiver_client.go", newBytes, 0600)
+
+	if err != nil {
+		return err
 	}
 
 	return nil

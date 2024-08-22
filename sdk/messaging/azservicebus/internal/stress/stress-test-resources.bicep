@@ -14,6 +14,7 @@ module sb '../../test-resources.bicep' = {
     location: resourceGroup().location
     testApplicationOid: testApplicationOid
     enablePremium: false // we don't use/need Premium for our stress tests
+    disableAddingRBACRole: true // in stress we just inherit these permissions, we don't set the RBAC roles explicitly
   }
 }
 

@@ -275,7 +275,7 @@ func (s *ServiceRecordedTestsSuite) TestAccountListSharesNonDefault() {
 	}
 }
 
-func (s *ServiceUnrecordedTestsSuite) TestListSharesEnableSnapshotVirtualDirectoryAccess() {
+func (s *ServiceRecordedTestsSuite) TestListSharesEnableSnapshotVirtualDirectoryAccess() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 

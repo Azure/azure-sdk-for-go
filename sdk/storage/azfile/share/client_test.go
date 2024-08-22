@@ -293,6 +293,7 @@ func (s *ShareRecordedTestsSuite) TestShareCreateWithSnapshotVirtualDirectoryAcc
 	_require.NoError(err)
 
 	_, err = shareClient.SetProperties(context.Background(), nil)
+	_require.NoError(err)
 	response, err := shareClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
 	_require.Equal(response.EnableSnapshotVirtualDirectoryAccess, to.Ptr(false))
@@ -466,6 +467,7 @@ func (s *ShareRecordedTestsSuite) TestShareGetSetPropertiesWithSnapshotVirtualDi
 
 	_, err = shareClient.Create(context.Background(), nil)
 	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+	_require.NoError(err)
 
 	_, err = shareClient.SetProperties(context.Background(), &share.SetPropertiesOptions{
 		EnableSnapshotVirtualDirectoryAccess: to.Ptr(true),

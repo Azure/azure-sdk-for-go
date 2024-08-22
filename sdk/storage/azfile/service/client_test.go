@@ -299,6 +299,7 @@ func (s *ServiceRecordedTestsSuite) TestListSharesEnableSnapshotVirtualDirectory
 		shareClients[shareName] = svcClient.NewShareClient(shareName)
 		_, err = shareClients[shareName].Create(context.Background(), &share.CreateOptions{EnabledProtocols: to.Ptr("NFS")})
 		defer testcommon.DeleteShare(context.Background(), _require, shareClients[shareName])
+		_require.NoError(err)
 
 		_, err := shareClients[shareName].SetMetadata(context.Background(), &share.SetMetadataOptions{
 			Metadata: testcommon.BasicMetadata,

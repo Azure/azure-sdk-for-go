@@ -292,11 +292,27 @@ func (s *ShareRecordedTestsSuite) TestShareCreateWithSnapshotVirtualDirectoryAcc
 	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
 	_require.NoError(err)
 
-	_, err = shareClient.SetProperties(context.Background(), nil)
-	_require.NoError(err)
 	response, err := shareClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
 	_require.Equal(response.EnableSnapshotVirtualDirectoryAccess, to.Ptr(false))
+}
+
+func (s *ShareRecordedTestsSuite) TestShareCreateWithSnapshotVirtualDirectoryAccessDefault() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountPremium, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := svcClient.NewShareClient(shareName)
+
+	_, err = shareClient.Create(context.Background(), &share.CreateOptions{EnabledProtocols: to.Ptr("NFS"), EnableSnapshotVirtualDirectoryAccess: to.Ptr(true)})
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+	_require.NoError(err)
+
+	response, err := shareClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(response.EnableSnapshotVirtualDirectoryAccess, to.Ptr(true))
 }
 
 func (s *ShareRecordedTestsSuite) TestAuthenticationErrorDetailError() {

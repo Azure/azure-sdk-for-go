@@ -11,6 +11,9 @@ import (
 	"fmt"
 )
 
+// NOTE: most of this code doesn't need to be here but there's a bug
+// that's trimming it out: https://github.com/Azure/typespec-azure/issues/1412
+
 // Error implements the error interface for type Error.
 // Note that the message contents are not contractual and can change over time.
 func (e *Error) Error() string {

@@ -3,12 +3,15 @@
 ## 1.3.1 (Unreleased)
 
 ### Features Added
+* Snapshot management support via REST for NFS shares.
+* Upgraded service version to `2024-08-04`.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+* Updated `azcore` version to `1.14.0`
 
 ## 1.3.0 (2024-07-18)
 

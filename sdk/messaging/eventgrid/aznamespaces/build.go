@@ -3,7 +3,7 @@
 
 //go:generate tsp-client sync
 // NOTE: it'd be nice to avoid specifying my emitter options here. It doesn't seem to be using my tspconfig.yaml.
-//go:generate tsp-client generate"
+//go:generate tsp-client generate
 //go:generate goimports -w ./..
 //go:generate go run ./internal/generate
 //go:generate goimports -w ./..

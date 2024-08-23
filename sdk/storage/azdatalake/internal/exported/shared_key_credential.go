@@ -110,8 +110,7 @@ func (c *SharedKeyCredential) buildStringToSign(req *http.Request) (string, erro
 	return stringToSign, nil
 }
 
-// NewHeaderStringComparer performs a multi-level, weight-based comparison of two strings
-func compareHeaders(lhs, rhs string) int {
+func getWeightTables() [][]int {
 	tableLv0 := [...]int{
 		0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0,
 		0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0,
@@ -135,6 +134,11 @@ func compareHeaders(lhs, rhs string) int {
 		0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0,
 	}
 	tables := [][]int{tableLv0[:], tableLv2[:]}
+	return tables
+}
+
+// NewHeaderStringComparer performs a multi-level, weight-based comparison of two strings
+func compareHeaders(lhs, rhs string, tables [][]int) int {
 	currLevel, i, j := 0, 0, 0
 	n := len(tables)
 	lhsLen := len(lhs)
@@ -215,9 +219,10 @@ func (c *SharedKeyCredential) buildCanonicalizedHeader(headers http.Header) stri
 		keys = append(keys, key)
 	}
 
+	tables := getWeightTables()
 	// Sort the keys using the custom comparator
 	sort.Slice(keys, func(i, j int) bool {
-		return compareHeaders(keys[i], keys[j]) < 0
+		return compareHeaders(keys[i], keys[j], tables) < 0
 	})
 
 	ch := bytes.NewBufferString("")

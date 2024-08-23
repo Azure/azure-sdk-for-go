@@ -35,6 +35,9 @@ type CreateOptions struct {
 	Quota *int32
 	// Root squash to set on the share. Only valid for NFS shares.
 	RootSquash *RootSquash
+	// Specifies whether the snapshot virtual directory should be accessible at the root of share mount point
+	// when NFS is enabled.
+	EnableSnapshotVirtualDirectoryAccess *bool
 }
 
 func (o *CreateOptions) format() *generated.ShareClientCreateOptions {
@@ -43,11 +46,12 @@ func (o *CreateOptions) format() *generated.ShareClientCreateOptions {
 	}
 
 	return &generated.ShareClientCreateOptions{
-		AccessTier:       o.AccessTier,
-		EnabledProtocols: o.EnabledProtocols,
-		Metadata:         o.Metadata,
-		Quota:            o.Quota,
-		RootSquash:       o.RootSquash,
+		AccessTier:                           o.AccessTier,
+		EnabledProtocols:                     o.EnabledProtocols,
+		Metadata:                             o.Metadata,
+		Quota:                                o.Quota,
+		RootSquash:                           o.RootSquash,
+		EnableSnapshotVirtualDirectoryAccess: o.EnableSnapshotVirtualDirectoryAccess,
 	}
 }
 
@@ -116,6 +120,9 @@ type SetPropertiesOptions struct {
 	RootSquash *RootSquash
 	// LeaseAccessConditions contains optional parameters to access leased entity.
 	LeaseAccessConditions *LeaseAccessConditions
+	// Specifies whether the snapshot virtual directory should be accessible at the root of share mount point
+	// when NFS is enabled.
+	EnableSnapshotVirtualDirectoryAccess *bool
 }
 
 func (o *SetPropertiesOptions) format() (*generated.ShareClientSetPropertiesOptions, *LeaseAccessConditions) {
@@ -124,9 +131,10 @@ func (o *SetPropertiesOptions) format() (*generated.ShareClientSetPropertiesOpti
 	}
 
 	return &generated.ShareClientSetPropertiesOptions{
-		AccessTier: o.AccessTier,
-		Quota:      o.Quota,
-		RootSquash: o.RootSquash,
+		AccessTier:                           o.AccessTier,
+		Quota:                                o.Quota,
+		RootSquash:                           o.RootSquash,
+		EnableSnapshotVirtualDirectoryAccess: o.EnableSnapshotVirtualDirectoryAccess,
 	}, o.LeaseAccessConditions
 }
 

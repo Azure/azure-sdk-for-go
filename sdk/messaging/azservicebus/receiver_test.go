@@ -17,7 +17,6 @@ import (
 
 	"log"
 
-	azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/admin"
@@ -1051,15 +1050,7 @@ func TestReceiveWithDifferentWaitTime(t *testing.T) {
 }
 
 func TestReceiverConnectionTimeout(t *testing.T) {
-	recovered := false
-
-	azlog.SetListener(func(e azlog.Event, msg string) {
-		if strings.Contains(msg, "Recovered connection and links") {
-			recovered = true
-		}
-	})
-
-	defer azlog.SetListener(nil)
+	getLogs := test.CaptureLogsForTest(false)
 
 	var conn *slowConn
 
@@ -1117,10 +1108,17 @@ func TestReceiverConnectionTimeout(t *testing.T) {
 
 	log.Printf("\n\n\nAbout to renew message lock\n\n\n")
 
-	require.False(t, recovered)
-
 	err = receiver.RenewMessageLock(context.Background(), messages[0], nil)
 	require.NoError(t, err)
+
+	// check that the log messages made it in.
+	recovered := false
+
+	for _, log := range getLogs() {
+		if strings.Contains(log, "Recovered connection and links") {
+			recovered = true
+		}
+	}
 
 	require.True(t, recovered)
 

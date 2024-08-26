@@ -21,6 +21,9 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/sas"
 )
 
+// ClientOptions contains the optional parameters when creating a Client.
+type ClientOptions = base.ClientOptions
+
 // QueueClient represents a URL to the Azure Queue Storage service allowing you to manipulate queues.
 type QueueClient base.CompositeClient[generated.QueueClient, generated.MessagesClient]
 
@@ -52,13 +55,10 @@ func (q *QueueClient) URL() string {
 //   - cred - an Azure AD credential, typically obtained via the azidentity module
 //   - options - client options; pass nil to accept the default values
 func NewQueueClient(queueURL string, cred azcore.TokenCredential, options *ClientOptions) (*QueueClient, error) {
+	audience := base.GetAudience((*base.ClientOptions)(options))
 	conOptions := shared.GetClientOptions(options)
-	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{shared.TokenScope}, &policy.BearerTokenOptions{
-		InsecureAllowCredentialWithHTTP: conOptions.InsecureAllowCredentialWithHTTP,
-	})
-	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
-	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
-
+	authPolicy := shared.NewStorageChallengePolicy(cred, audience, conOptions.InsecureAllowCredentialWithHTTP)
+	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}, &conOptions.ClientOptions)
 	return (*QueueClient)(base.NewQueueClient(queueURL, pl, nil)), nil
 }
 

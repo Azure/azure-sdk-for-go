@@ -554,7 +554,13 @@ type MessageAttachment struct {
 	FileID *string
 
 	// REQUIRED; The tools to add to this file.
-	Tools []MessageAttachmentToolDefinition
+	Tools []MessageAttachmentToolAssignment
+}
+
+// MessageAttachmentToolAssignment - The possible tools to which files will be added by this message
+type MessageAttachmentToolAssignment struct {
+	// REQUIRED; The type of the tool being selected.
+	Type *MessageAttachmentToolAssignmentType
 }
 
 // MessageContent - An abstract representation of a single item of thread message content.

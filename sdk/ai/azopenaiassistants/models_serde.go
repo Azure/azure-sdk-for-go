@@ -1212,6 +1212,33 @@ func (m *MessageAttachment) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type MessageAttachmentToolAssignment.
+func (m MessageAttachmentToolAssignment) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "type", m.Type)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type MessageAttachmentToolAssignment.
+func (m *MessageAttachmentToolAssignment) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", m, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "type":
+			err = unpopulate(val, "Type", &m.Type)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", m, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type MessageContent.
 func (m MessageContent) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)

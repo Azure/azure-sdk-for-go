@@ -322,6 +322,22 @@ func PossibleListSortOrderValues() []ListSortOrder {
 	}
 }
 
+// MessageAttachmentToolAssignmentType - The type of the tool being selected.
+type MessageAttachmentToolAssignmentType string
+
+const (
+	MessageAttachmentToolAssignmentTypeCodeInterpreter MessageAttachmentToolAssignmentType = "code_interpreter"
+	MessageAttachmentToolAssignmentTypeFileSearch      MessageAttachmentToolAssignmentType = "file_search"
+)
+
+// PossibleMessageAttachmentToolAssignmentTypeValues returns the possible values for the MessageAttachmentToolAssignmentType const type.
+func PossibleMessageAttachmentToolAssignmentTypeValues() []MessageAttachmentToolAssignmentType {
+	return []MessageAttachmentToolAssignmentType{
+		MessageAttachmentToolAssignmentTypeCodeInterpreter,
+		MessageAttachmentToolAssignmentTypeFileSearch,
+	}
+}
+
 // MessageIncompleteDetailsReason - A set of reasons describing why a message is marked as incomplete.
 type MessageIncompleteDetailsReason string
 

@@ -915,6 +915,7 @@ type OpenAIFile struct {
 	StatusDetails *string
 }
 
+// CreateVectorStoreFileBody contains arguments for the [CreateVectorStoreFile] method.
 type CreateVectorStoreFileBody struct {
 	// REQUIRED; A File ID that the vector store should use. Useful for tools like file_search that can access files.
 	FileID *string

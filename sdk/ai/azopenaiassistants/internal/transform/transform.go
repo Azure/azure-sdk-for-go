@@ -206,6 +206,7 @@ func (t *transformer) applyHacks() error {
 		"SubmitToolOutputsToRunBody":     "// SubmitToolOutputsToRunBody contains arguments for the [SubmitToolOutputsToRun] method.",
 		"UpdateMessageBody":              "// UpdateMessageBody contains arguments for the [UpdateMessage] method.",
 		"UpdateRunBody":                  "// UpdateRunBody contains arguments for the [UpdateRun] method.",
+		"CreateVectorStoreFileBody":      "// CreateVectorStoreFileBody contains arguments for the [CreateVectorStoreFile] method.",
 	}
 
 	for typeName, comment := range docs {

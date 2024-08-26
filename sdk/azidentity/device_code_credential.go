@@ -29,8 +29,16 @@ type DeviceCodeCredentialOptions struct {
 	// to enable the credential to use data from a previous authentication.
 	AuthenticationRecord AuthenticationRecord
 
-	// ClientID is the ID of the application users will authenticate to.
-	// Defaults to the ID of an Azure development application.
+	// Cache is a persistent cache the credential will use to store the tokens it acquires, making
+	// them available to other processes and credential instances. The default, zero value means the
+	// credential will store tokens in memory and not share them.
+	Cache Cache
+
+	// ClientID is the ID of the application to which users will authenticate. When not set, users
+	// will authenticate to an Azure development application, which isn't recommended for production
+	// scenarios. In production, developers should instead register their applications and assign
+	// appropriate roles. See https://aka.ms/azsdk/identity/AppRegistrationAndRoleAssignment for more
+	// information.
 	ClientID string
 
 	// DisableAutomaticAuthentication prevents the credential from automatically prompting the user to authenticate.
@@ -48,9 +56,6 @@ type DeviceCodeCredentialOptions struct {
 	// "organizations" tenant, which can authenticate work and school accounts. Required for single-tenant
 	// applications.
 	TenantID string
-
-	// TokenCachePersistenceOptions enables persistent token caching when not nil.
-	TokenCachePersistenceOptions *TokenCachePersistenceOptions
 
 	// UserPrompt controls how the credential presents authentication instructions. The credential calls
 	// this function with authentication details when it receives a device code. By default, the credential
@@ -101,12 +106,12 @@ func NewDeviceCodeCredential(options *DeviceCodeCredentialOptions) (*DeviceCodeC
 	cp.init()
 	msalOpts := publicClientOptions{
 		AdditionallyAllowedTenants:     cp.AdditionallyAllowedTenants,
+		Cache:                          cp.Cache,
 		ClientOptions:                  cp.ClientOptions,
 		DeviceCodePrompt:               cp.UserPrompt,
 		DisableAutomaticAuthentication: cp.DisableAutomaticAuthentication,
 		DisableInstanceDiscovery:       cp.DisableInstanceDiscovery,
 		Record:                         cp.AuthenticationRecord,
-		TokenCachePersistenceOptions:   cp.TokenCachePersistenceOptions,
 	}
 	c, err := newPublicClient(cp.TenantID, cp.ClientID, credNameDeviceCode, msalOpts)
 	if err != nil {
@@ -116,7 +121,8 @@ func NewDeviceCodeCredential(options *DeviceCodeCredentialOptions) (*DeviceCodeC
 	return &DeviceCodeCredential{client: c}, nil
 }
 
-// Authenticate a user via the device code flow. Subsequent calls to GetToken will automatically use the returned AuthenticationRecord.
+// Authenticate prompts a user to log in via the device code flow. Subsequent
+// GetToken calls will automatically use the returned AuthenticationRecord.
 func (c *DeviceCodeCredential) Authenticate(ctx context.Context, opts *policy.TokenRequestOptions) (AuthenticationRecord, error) {
 	var err error
 	ctx, endSpan := runtime.StartSpan(ctx, credNameDeviceCode+"."+traceOpAuthenticate, c.client.azClient.Tracer(), nil)

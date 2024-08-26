@@ -16,8 +16,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v5"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v5/fake"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v6"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v6/fake"
 )
 
 func ExampleInterfacesServer() {
@@ -43,7 +43,7 @@ func ExampleInterfacesServer() {
 			resp.SetResponse(http.StatusOK, interfaceResp, nil)
 
 			// to simulate the failure case, use errResp
-			//errResp.SetResponseError(http.StatusBadRequest, "ThisIsASimulatedError")
+			// errResp.SetResponseError(http.StatusBadRequest, "ThisIsASimulatedError")
 
 			return
 		},

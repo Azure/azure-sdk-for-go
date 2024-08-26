@@ -419,7 +419,7 @@ func (client *ClustersClient) update(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
 		err = runtime.NewResponseError(httpResp)
 		return nil, err
 	}

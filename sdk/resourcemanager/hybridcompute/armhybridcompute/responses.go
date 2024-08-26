@@ -142,16 +142,16 @@ type MachineRunCommandsClientListResponse struct {
 	MachineRunCommandsListResult
 }
 
-// MachineRunCommandsClientUpdateResponse contains the response from method MachineRunCommandsClient.BeginUpdate.
-type MachineRunCommandsClientUpdateResponse struct {
-	// Describes a Run Command
-	MachineRunCommand
-}
-
 // MachinesClientAssessPatchesResponse contains the response from method MachinesClient.BeginAssessPatches.
 type MachinesClientAssessPatchesResponse struct {
 	// Describes the properties of an AssessPatches result.
 	MachineAssessPatchesResult
+}
+
+// MachinesClientCreateOrUpdateResponse contains the response from method MachinesClient.CreateOrUpdate.
+type MachinesClientCreateOrUpdateResponse struct {
+	// Describes a hybrid machine.
+	Machine
 }
 
 // MachinesClientDeleteResponse contains the response from method MachinesClient.Delete.
@@ -210,6 +210,11 @@ type NetworkSecurityPerimeterConfigurationsClientGetByPrivateLinkScopeResponse s
 type NetworkSecurityPerimeterConfigurationsClientListByPrivateLinkScopeResponse struct {
 	// A list of network security perimeter configurations.
 	NetworkSecurityPerimeterConfigurationListResult
+}
+
+// NetworkSecurityPerimeterConfigurationsClientReconcileForPrivateLinkScopeResponse contains the response from method NetworkSecurityPerimeterConfigurationsClient.BeginReconcileForPrivateLinkScope.
+type NetworkSecurityPerimeterConfigurationsClientReconcileForPrivateLinkScopeResponse struct {
+	// placeholder for future response values
 }
 
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.

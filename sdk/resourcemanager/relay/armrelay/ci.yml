@@ -27,3 +27,4 @@ extends:
     IncludeRelease: true
     ServiceDirectory: 'resourcemanager/relay/armrelay'
     UsePipelineProxy: false
+    UseFederatedAuth: true

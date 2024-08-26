@@ -27,3 +27,4 @@ extends:
     IncludeRelease: true
     ServiceDirectory: 'resourcemanager/redis/armredis'
     UsePipelineProxy: false
+    UseFederatedAuth: true

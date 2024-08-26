@@ -27,3 +27,4 @@ extends:
     IncludeRelease: true
     ServiceDirectory: 'resourcemanager/privatedns/armprivatedns'
     UsePipelineProxy: false
+    UseFederatedAuth: true

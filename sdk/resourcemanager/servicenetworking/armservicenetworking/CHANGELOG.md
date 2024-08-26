@@ -1,5 +1,32 @@
 # Release History
 
+## 1.1.0-beta.1 (2024-08-23)
+### Features Added
+
+- New enum type `PolicyType` with values `PolicyTypeWAF`
+- New function `*ClientFactory.NewSecurityPoliciesInterfaceClient() *SecurityPoliciesInterfaceClient`
+- New function `NewSecurityPoliciesInterfaceClient(string, azcore.TokenCredential, *arm.ClientOptions) (*SecurityPoliciesInterfaceClient, error)`
+- New function `*SecurityPoliciesInterfaceClient.BeginCreateOrUpdate(context.Context, string, string, string, SecurityPolicy, *SecurityPoliciesInterfaceClientBeginCreateOrUpdateOptions) (*runtime.Poller[SecurityPoliciesInterfaceClientCreateOrUpdateResponse], error)`
+- New function `*SecurityPoliciesInterfaceClient.BeginDelete(context.Context, string, string, string, *SecurityPoliciesInterfaceClientBeginDeleteOptions) (*runtime.Poller[SecurityPoliciesInterfaceClientDeleteResponse], error)`
+- New function `*SecurityPoliciesInterfaceClient.Get(context.Context, string, string, string, *SecurityPoliciesInterfaceClientGetOptions) (SecurityPoliciesInterfaceClientGetResponse, error)`
+- New function `*SecurityPoliciesInterfaceClient.NewListByTrafficControllerPager(string, string, *SecurityPoliciesInterfaceClientListByTrafficControllerOptions) *runtime.Pager[SecurityPoliciesInterfaceClientListByTrafficControllerResponse]`
+- New function `*SecurityPoliciesInterfaceClient.Update(context.Context, string, string, string, SecurityPolicyUpdate, *SecurityPoliciesInterfaceClientUpdateOptions) (SecurityPoliciesInterfaceClientUpdateResponse, error)`
+- New struct `SecurityPolicy`
+- New struct `SecurityPolicyConfigurations`
+- New struct `SecurityPolicyConfigurationsUpdate`
+- New struct `SecurityPolicyListResult`
+- New struct `SecurityPolicyProperties`
+- New struct `SecurityPolicyUpdate`
+- New struct `SecurityPolicyUpdateProperties`
+- New struct `TrafficControllerUpdateProperties`
+- New struct `WafPolicy`
+- New struct `WafPolicyUpdate`
+- New struct `WafSecurityPolicy`
+- New struct `WafSecurityPolicyUpdate`
+- New field `SecurityPolicies`, `SecurityPolicyConfigurations` in struct `TrafficControllerProperties`
+- New field `Properties` in struct `TrafficControllerUpdate`
+
+
 ## 1.0.0 (2023-11-24)
 ### Features Added
 

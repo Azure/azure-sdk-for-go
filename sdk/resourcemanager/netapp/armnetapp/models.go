@@ -644,11 +644,11 @@ type KeyVaultProperties struct {
 	// REQUIRED; The name of KeyVault key.
 	KeyName *string
 
-	// REQUIRED; The resource ID of KeyVault.
-	KeyVaultResourceID *string
-
 	// REQUIRED; The Uri of KeyVault.
 	KeyVaultURI *string
+
+	// The resource ID of KeyVault.
+	KeyVaultResourceID *string
 
 	// READ-ONLY; UUID v4 used to identify the Azure Key Vault configuration
 	KeyVaultID *string
@@ -885,7 +885,7 @@ type PoolPatchProperties struct {
 	// The qos type of the pool
 	QosType *QosType
 
-	// Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value must be multiply of 1099511627776).
+	// Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value must be multiple of 1099511627776).
 	Size *int64
 }
 
@@ -894,7 +894,7 @@ type PoolProperties struct {
 	// REQUIRED; The service level of the file system
 	ServiceLevel *ServiceLevel
 
-	// REQUIRED; Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value must be multiply of 1099511627776).
+	// REQUIRED; Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value must be multiple of 1099511627776).
 	Size *int64
 
 	// If enabled (true) the pool can contain cool Access enabled volumes.
@@ -1011,6 +1011,9 @@ type Replication struct {
 
 	// Schedule
 	ReplicationSchedule *ReplicationSchedule
+
+	// READ-ONLY; UUID v4 used to identify the replication.
+	ReplicationID *string
 }
 
 // ReplicationObject - Replication properties
@@ -1623,6 +1626,9 @@ type VolumePatchProperties struct {
 	// Specifies if default quota is enabled for the volume.
 	IsDefaultQuotaEnabled *bool
 
+	// Set of protocol types, default NFSv3, CIFS for SMB protocol
+	ProtocolTypes []*string
+
 	// The service level of the file system
 	ServiceLevel *ServiceLevel
 
@@ -1647,9 +1653,10 @@ type VolumePatchProperties struct {
 	// owner and read/execute to group and other users.
 	UnixPermissions *string
 
-	// Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. Minimum size is
-	// 100 GiB. Upper limit is 100TiB, 500Tib for LargeVolume or 2400Tib for LargeVolume
-	// on exceptional basis. Specified in bytes.
+	// Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. For regular volumes,
+	// valid values are in the range 50GiB to 100TiB. For large volumes, valid
+	// values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB to 2400TiB. Values expressed in
+	// bytes as multiples of 1 GiB.
 	UsageThreshold *int64
 }
 
@@ -1676,9 +1683,10 @@ type VolumeProperties struct {
 	// REQUIRED; The Azure Resource URI for a delegated subnet. Must have the delegation Microsoft.NetApp/volumes
 	SubnetID *string
 
-	// REQUIRED; Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. Minimum
-	// size is 100 GiB. Upper limit is 100TiB, 500Tib for LargeVolume or 2400Tib for LargeVolume
-	// on exceptional basis. Specified in bytes.
+	// REQUIRED; Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. For regular
+	// volumes, valid values are in the range 50GiB to 100TiB. For large volumes, valid
+	// values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB to 2400TiB. Values expressed in
+	// bytes as multiples of 1 GiB.
 	UsageThreshold *int64
 
 	// Specifies whether the volume is enabled for Azure VMware Solution (AVS) datastore purpose

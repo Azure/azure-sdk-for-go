@@ -11,3 +11,6 @@ options:
     module-version: "0.0.1"
     emitter-output-dir: "{project-root}/../../azsystemevents"
     slice-elements-byval: "true"
+linter:
+  extends:
+    - "@azure-tools/typespec-azure-core/all"

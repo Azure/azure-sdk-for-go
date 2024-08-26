@@ -10,12 +10,14 @@ package azcontainerregistry
 
 import "time"
 
-type acrAccessToken struct {
+// ACRAccessToken - The ACR access token response.
+type ACRAccessToken struct {
 	// The access token for performing authenticated requests
 	AccessToken *string
 }
 
-type acrRefreshToken struct {
+// ACRRefreshToken - The ACR refresh token response.
+type ACRRefreshToken struct {
 	// The refresh token to be used for generating access tokens
 	RefreshToken *string
 }

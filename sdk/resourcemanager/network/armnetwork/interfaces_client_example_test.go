@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v5"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v6"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/CloudServiceRoleInstanceNetworkInterfaceList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/CloudServiceRoleInstanceNetworkInterfaceList.json
 func ExampleInterfacesClient_NewListCloudServiceRoleInstanceNetworkInterfacesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -93,7 +93,7 @@ func ExampleInterfacesClient_NewListCloudServiceRoleInstanceNetworkInterfacesPag
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/CloudServiceNetworkInterfaceList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/CloudServiceNetworkInterfaceList.json
 func ExampleInterfacesClient_NewListCloudServiceNetworkInterfacesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -215,7 +215,7 @@ func ExampleInterfacesClient_NewListCloudServiceNetworkInterfacesPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/CloudServiceNetworkInterfaceGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/CloudServiceNetworkInterfaceGet.json
 func ExampleInterfacesClient_GetCloudServiceNetworkInterface() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -282,7 +282,7 @@ func ExampleInterfacesClient_GetCloudServiceNetworkInterface() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/NetworkInterfaceDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/NetworkInterfaceDelete.json
 func ExampleInterfacesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -303,7 +303,7 @@ func ExampleInterfacesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/NetworkInterfaceGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/NetworkInterfaceGet.json
 func ExampleInterfacesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -387,7 +387,7 @@ func ExampleInterfacesClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/NetworkInterfaceCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/NetworkInterfaceCreate.json
 func ExampleInterfacesClient_BeginCreateOrUpdate_createNetworkInterface() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -487,7 +487,7 @@ func ExampleInterfacesClient_BeginCreateOrUpdate_createNetworkInterface() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/NetworkInterfaceCreateGatewayLoadBalancerConsumer.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/NetworkInterfaceCreateGatewayLoadBalancerConsumer.json
 func ExampleInterfacesClient_BeginCreateOrUpdate_createNetworkInterfaceWithGatewayLoadBalancerConsumerConfigured() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -569,7 +569,7 @@ func ExampleInterfacesClient_BeginCreateOrUpdate_createNetworkInterfaceWithGatew
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/NetworkInterfaceUpdateTags.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/NetworkInterfaceUpdateTags.json
 func ExampleInterfacesClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -635,7 +635,7 @@ func ExampleInterfacesClient_UpdateTags() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/NetworkInterfaceListAll.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/NetworkInterfaceListAll.json
 func ExampleInterfacesClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -746,7 +746,7 @@ func ExampleInterfacesClient_NewListAllPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/NetworkInterfaceList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/NetworkInterfaceList.json
 func ExampleInterfacesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -871,7 +871,7 @@ func ExampleInterfacesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/NetworkInterfaceEffectiveRouteTableList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/NetworkInterfaceEffectiveRouteTableList.json
 func ExampleInterfacesClient_BeginGetEffectiveRouteTable() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -952,7 +952,7 @@ func ExampleInterfacesClient_BeginGetEffectiveRouteTable() {
 	// 						}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/NetworkInterfaceEffectiveNSGList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/NetworkInterfaceEffectiveNSGList.json
 func ExampleInterfacesClient_BeginListEffectiveNetworkSecurityGroups() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1034,7 +1034,7 @@ func ExampleInterfacesClient_BeginListEffectiveNetworkSecurityGroups() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/VmssVmNetworkInterfaceList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/VmssVmNetworkInterfaceList.json
 func ExampleInterfacesClient_NewListVirtualMachineScaleSetVMNetworkInterfacesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1112,7 +1112,7 @@ func ExampleInterfacesClient_NewListVirtualMachineScaleSetVMNetworkInterfacesPag
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/VmssNetworkInterfaceList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/VmssNetworkInterfaceList.json
 func ExampleInterfacesClient_NewListVirtualMachineScaleSetNetworkInterfacesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1170,21 +1170,6 @@ func ExampleInterfacesClient_NewListVirtualMachineScaleSetNetworkInterfacesPager
 		// 							PublicIPAddress: &armnetwork.PublicIPAddress{
 		// 								ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Compute/virtualMachineScaleSets/vmss1/virtualMachines/0/networkInterfaces/nic1/ipConfigurations/ip1/publicIPAddresses/pub1"),
 		// 							},
-		// 							Subnet: &armnetwork.Subnet{
-		// 								ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
-		// 							},
-		// 						},
-		// 					},
-		// 					{
-		// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Compute/virtualMachineScaleSets/vmss1/virtualMachines/0/networkInterfaces/nic1/ipConfigurations/ip2"),
-		// 						Name: to.Ptr("ip2"),
-		// 						Properties: &armnetwork.InterfaceIPConfigurationPropertiesFormat{
-		// 							Primary: to.Ptr(false),
-		// 							PrivateIPAddress: to.Ptr("10.0.0.16/28"),
-		// 							PrivateIPAddressPrefixLength: to.Ptr[int32](28),
-		// 							PrivateIPAddressVersion: to.Ptr(armnetwork.IPVersionIPv4),
-		// 							PrivateIPAllocationMethod: to.Ptr(armnetwork.IPAllocationMethodDynamic),
-		// 							ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
 		// 							Subnet: &armnetwork.Subnet{
 		// 								ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
 		// 							},
@@ -1255,7 +1240,7 @@ func ExampleInterfacesClient_NewListVirtualMachineScaleSetNetworkInterfacesPager
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/VmssNetworkInterfaceGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/VmssNetworkInterfaceGet.json
 func ExampleInterfacesClient_GetVirtualMachineScaleSetNetworkInterface() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1311,21 +1296,6 @@ func ExampleInterfacesClient_GetVirtualMachineScaleSetNetworkInterface() {
 	// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
 	// 					},
 	// 				},
-	// 			},
-	// 			{
-	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Compute/virtualMachineScaleSets/vmss1/virtualMachines/1/networkInterfaces/nic1/ipConfigurations/ip2"),
-	// 				Name: to.Ptr("ip2"),
-	// 				Properties: &armnetwork.InterfaceIPConfigurationPropertiesFormat{
-	// 					Primary: to.Ptr(false),
-	// 					PrivateIPAddress: to.Ptr("10.0.0.16/28"),
-	// 					PrivateIPAddressPrefixLength: to.Ptr[int32](28),
-	// 					PrivateIPAddressVersion: to.Ptr(armnetwork.IPVersionIPv4),
-	// 					PrivateIPAllocationMethod: to.Ptr(armnetwork.IPAllocationMethodDynamic),
-	// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-	// 					Subnet: &armnetwork.Subnet{
-	// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
-	// 					},
-	// 				},
 	// 		}},
 	// 		MacAddress: to.Ptr("00-00-00-00-00-00"),
 	// 		NetworkSecurityGroup: &armnetwork.SecurityGroup{
@@ -1340,7 +1310,7 @@ func ExampleInterfacesClient_GetVirtualMachineScaleSetNetworkInterface() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/VmssNetworkInterfaceIpConfigList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/VmssNetworkInterfaceIpConfigList.json
 func ExampleInterfacesClient_NewListVirtualMachineScaleSetIPConfigurationsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1385,27 +1355,12 @@ func ExampleInterfacesClient_NewListVirtualMachineScaleSetIPConfigurationsPager(
 		// 					ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
 		// 				},
 		// 			},
-		// 		},
-		// 		{
-		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Compute/virtualMachineScaleSets/vmss1/virtualMachines/2/networkInterfaces/nic1/ipConfigurations/ip2"),
-		// 			Name: to.Ptr("ip2"),
-		// 			Properties: &armnetwork.InterfaceIPConfigurationPropertiesFormat{
-		// 				Primary: to.Ptr(false),
-		// 				PrivateIPAddress: to.Ptr("10.0.0.16/28"),
-		// 				PrivateIPAddressPrefixLength: to.Ptr[int32](28),
-		// 				PrivateIPAddressVersion: to.Ptr(armnetwork.IPVersionIPv4),
-		// 				PrivateIPAllocationMethod: to.Ptr(armnetwork.IPAllocationMethodDynamic),
-		// 				ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-		// 				Subnet: &armnetwork.Subnet{
-		// 					ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
-		// 				},
-		// 			},
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f4c6c8697c59f966db0d1e36b62df3af3bca9065/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/VmssNetworkInterfaceIpConfigGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/VmssNetworkInterfaceIpConfigGet.json
 func ExampleInterfacesClient_GetVirtualMachineScaleSetIPConfiguration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

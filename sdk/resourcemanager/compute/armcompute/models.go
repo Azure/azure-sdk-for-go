@@ -208,6 +208,10 @@ type AvailabilitySetProperties struct {
 	// 2018-04-01.
 	ProximityPlacementGroup *SubResource
 
+	// Specifies Redeploy, Reboot and ScheduledEventsAdditionalPublishingTargets Scheduled Event related configurations for the
+	// availability set.
+	ScheduledEventsPolicy *ScheduledEventsPolicy
+
 	// A list of references to all virtual machines in the availability set.
 	VirtualMachines []*SubResource
 
@@ -368,7 +372,7 @@ type CapacityReservationGroupInstanceView struct {
 	// READ-ONLY; List of instance view of the capacity reservations under the capacity reservation group.
 	CapacityReservations []*CapacityReservationInstanceViewWithName
 
-	// READ-ONLY; List of the subscriptions that the capacity reservation group is shared with. Note: Minimum api-version: 2024-03-01.
+	// READ-ONLY; List of the subscriptions that the capacity reservation group is shared with. Note: Minimum api-version: 2023-09-01.
 	// Please refer to https://aka.ms/computereservationsharing for more details.
 	SharedSubscriptionIDs []*SubResourceReadOnly
 }
@@ -388,7 +392,7 @@ type CapacityReservationGroupProperties struct {
 	// Specifies the settings to enable sharing across subscriptions for the capacity reservation group resource. Pls. keep in
 	// mind the capacity reservation group resource generally can be shared across
 	// subscriptions belonging to a single azure AAD tenant or cross AAD tenant if there is a trust relationship established between
-	// the AAD tenants. Note: Minimum api-version: 2024-03-01. Please refer to
+	// the AAD tenants. Note: Minimum api-version: 2023-09-01. Please refer to
 	// https://aka.ms/computereservationsharing for more details.
 	SharingProfile *ResourceSharingProfile
 
@@ -1858,6 +1862,10 @@ type DiskRestorePointProperties struct {
 
 	// READ-ONLY; id of the backing snapshot's MIS family
 	FamilyID *string
+
+	// READ-ONLY; Logical sector size in bytes for disk restore points of UltraSSDLRS and PremiumV2LRS disks. Supported values
+	// are 512 and 4096. 4096 is the default.
+	LogicalSectorSize *int32
 
 	// READ-ONLY; The Operating System type.
 	OSType *OperatingSystemTypes
@@ -4101,7 +4109,7 @@ type ProximityPlacementGroupUpdate struct {
 	Tags map[string]*string
 }
 
-// ProxyAgentSettings - Specifies ProxyAgent settings while creating the virtual machine. Minimum api-version: 2024-03-01.
+// ProxyAgentSettings - Specifies ProxyAgent settings while creating the virtual machine. Minimum api-version: 2023-09-01.
 type ProxyAgentSettings struct {
 	// Specifies whether ProxyAgent feature should be enabled on the virtual machine or virtual machine scale set.
 	Enabled *bool
@@ -4458,7 +4466,7 @@ type ResourceSKUsResult struct {
 
 type ResourceSharingProfile struct {
 	// Specifies an array of subscription resource IDs that capacity reservation group is shared with. Note: Minimum api-version:
-	// 2024-03-01. Please refer to https://aka.ms/computereservationsharing for more
+	// 2023-09-01. Please refer to https://aka.ms/computereservationsharing for more
 	// details.
 	SubscriptionIDs []*SubResource
 }
@@ -5038,6 +5046,22 @@ type SKU struct {
 	Tier *string
 }
 
+// SKUProfile - Specifies the sku profile for the virtual machine scale set. With this property the customer is able to specify
+// a list of VM sizes and an allocation strategy.
+type SKUProfile struct {
+	// Specifies the allocation strategy for the virtual machine scale set based on which the VMs will be allocated.
+	AllocationStrategy *AllocationStrategy
+
+	// Specifies the VM sizes for the virtual machine scale set.
+	VMSizes []*SKUProfileVMSize
+}
+
+// SKUProfileVMSize - Specifies the VM Size.
+type SKUProfileVMSize struct {
+	// Specifies the name of the VM Size.
+	Name *string
+}
+
 // SSHConfiguration - SSH configuration for Linux based VMs running on Azure
 type SSHConfiguration struct {
 	// The list of SSH public keys used to authenticate with linux based VMs.
@@ -5174,14 +5198,28 @@ type ScheduledEventsProfile struct {
 	TerminateNotificationProfile *TerminateNotificationProfile
 }
 
-// SecurityPostureReference - Specifies the security posture to be used for all virtual machines in the scale set. Minimum
-// api-version: 2023-03-01
+// SecurityPostureReference - Specifies the security posture to be used in the scale set. Minimum api-version: 2023-03-01
 type SecurityPostureReference struct {
-	// List of virtual machine extensions to exclude when applying the Security Posture.
-	ExcludeExtensions []*VirtualMachineExtension
-
-	// The security posture reference id in the form of /CommunityGalleries/{communityGalleryName}/securityPostures/{securityPostureName}/versions/{major.minor.patch}|{major.*}|latest
+	// REQUIRED; The security posture reference id in the form of /CommunityGalleries/{communityGalleryName}/securityPostures/{securityPostureName}/versions/{major.minor.patch}|latest
 	ID *string
+
+	// The list of virtual machine extension names to exclude when applying the security posture.
+	ExcludeExtensions []*string
+
+	// Whether the security posture can be overridden by the user.
+	IsOverridable *bool
+}
+
+// SecurityPostureReferenceUpdate - Specifies the security posture to be used in the scale set. Minimum api-version: 2023-03-01
+type SecurityPostureReferenceUpdate struct {
+	// The list of virtual machine extension names to exclude when applying the security posture.
+	ExcludeExtensions []*string
+
+	// The security posture reference id in the form of /CommunityGalleries/{communityGalleryName}/securityPostures/{securityPostureName}/versions/{major.minor.patch}|latest
+	ID *string
+
+	// Whether the security posture can be overridden by the user.
+	IsOverridable *bool
 }
 
 // SecurityProfile - Specifies the Security profile settings for the virtual machine or virtual machine scale set.
@@ -5195,7 +5233,7 @@ type SecurityProfile struct {
 	// Specifies the Managed Identity used by ADE to get access token for keyvault operations.
 	EncryptionIdentity *EncryptionIdentity
 
-	// Specifies ProxyAgent settings while creating the virtual machine. Minimum api-version: 2024-03-01.
+	// Specifies ProxyAgent settings while creating the virtual machine. Minimum api-version: 2023-09-01.
 	ProxyAgentSettings *ProxyAgentSettings
 
 	// Specifies the SecurityType of the virtual machine. It has to be set to any specified value to enable UefiSettings. The
@@ -7125,7 +7163,7 @@ type VirtualMachineScaleSet struct {
 	// Resource tags
 	Tags map[string]*string
 
-	// The virtual machine scale set zones. NOTE: Availability zones can only be set when you create the scale set
+	// The virtual machine scale set zones.
 	Zones []*string
 
 	// READ-ONLY; Etag is property returned in Create/Update/Get response of the VMSS, so that customer can supply it in the header
@@ -7654,6 +7692,9 @@ type VirtualMachineScaleSetProperties struct {
 	// Policy for Resiliency
 	ResiliencyPolicy *ResiliencyPolicy
 
+	// Specifies the sku profile for the virtual machine scale set.
+	SKUProfile *SKUProfile
+
 	// Specifies the policies applied when scaling in Virtual Machines in the Virtual Machine Scale Set.
 	ScaleInPolicy *ScaleInPolicy
 
@@ -7673,6 +7714,9 @@ type VirtualMachineScaleSetProperties struct {
 
 	// The virtual machine profile.
 	VirtualMachineProfile *VirtualMachineScaleSetVMProfile
+
+	// Specifies the align mode between Virtual Machine Scale Set compute and storage Fault Domain count.
+	ZonalPlatformFaultDomainAlignMode *ZonalPlatformFaultDomainAlignMode
 
 	// Whether to force strictly even Virtual Machine distribution cross x-zones in case there is zone outage. zoneBalance property
 	// can only be set if the zones property of the scale set contains more than
@@ -7821,6 +7865,9 @@ type VirtualMachineScaleSetUpdate struct {
 
 	// Resource tags
 	Tags map[string]*string
+
+	// The virtual machine scale set zones.
+	Zones []*string
 }
 
 // VirtualMachineScaleSetUpdateIPConfiguration - Describes a virtual machine scale set network profile's IP configuration.
@@ -8006,6 +8053,9 @@ type VirtualMachineScaleSetUpdateProperties struct {
 	// Policy for Resiliency
 	ResiliencyPolicy *ResiliencyPolicy
 
+	// Specifies the sku profile for the virtual machine scale set.
+	SKUProfile *SKUProfile
+
 	// Specifies the policies applied when scaling in Virtual Machines in the Virtual Machine Scale Set.
 	ScaleInPolicy *ScaleInPolicy
 
@@ -8022,6 +8072,9 @@ type VirtualMachineScaleSetUpdateProperties struct {
 
 	// The virtual machine profile.
 	VirtualMachineProfile *VirtualMachineScaleSetUpdateVMProfile
+
+	// Specifies the align mode between Virtual Machine Scale Set compute and storage Fault Domain count.
+	ZonalPlatformFaultDomainAlignMode *ZonalPlatformFaultDomainAlignMode
 }
 
 // VirtualMachineScaleSetUpdatePublicIPAddressConfiguration - Describes a virtual machines scale set IP Configuration's PublicIPAddress
@@ -8088,6 +8141,9 @@ type VirtualMachineScaleSetUpdateVMProfile struct {
 
 	// Specifies Scheduled Event related configurations.
 	ScheduledEventsProfile *ScheduledEventsProfile
+
+	// The virtual machine scale set security posture reference.
+	SecurityPostureReference *SecurityPostureReferenceUpdate
 
 	// The virtual machine scale set Security profile
 	SecurityProfile *SecurityProfile
@@ -8333,7 +8389,7 @@ type VirtualMachineScaleSetVMProfile struct {
 	// Specifies Scheduled Event related configurations.
 	ScheduledEventsProfile *ScheduledEventsProfile
 
-	// Specifies the security posture to be used for all virtual machines in the scale set. Minimum api-version: 2023-03-01
+	// Specifies the security posture to be used in the scale set. Minimum api-version: 2023-03-01
 	SecurityPostureReference *SecurityPostureReference
 
 	// Specifies the Security related profile settings for the virtual machines in the scale set.
@@ -8350,9 +8406,9 @@ type VirtualMachineScaleSetVMProfile struct {
 	// in here. Minimum api-version: 2021-03-01.
 	UserData *string
 
-	// READ-ONLY; Specifies the time in which this VM profile for the Virtual Machine Scale Set was created. Minimum API version
-	// for this property is 2024-03-01. This value will be added to VMSS Flex VM tags when
-	// creating/updating the VMSS VM Profile with minimum api-version 2024-03-01.
+	// READ-ONLY; Specifies the time in which this VM profile for the Virtual Machine Scale Set was created. This value will be
+	// added to VMSS Flex VM tags when creating/updating the VMSS VM Profile. Minimum API version
+	// for this property is 2023-09-01.
 	TimeCreated *time.Time
 }
 
@@ -8408,8 +8464,8 @@ type VirtualMachineScaleSetVMProperties struct {
 	// Specifies the storage settings for the virtual machine disks.
 	StorageProfile *StorageProfile
 
-	// UserData for the VM, which must be base-64 encoded. Customer should not pass any secrets in here.
-	// Minimum api-version: 2021-03-01
+	// UserData for the VM, which must be base-64 encoded. Customer should not pass any secrets in here. Minimum api-version:
+	// 2021-03-01
 	UserData *string
 
 	// READ-ONLY; The virtual machine instance view.
@@ -8425,8 +8481,7 @@ type VirtualMachineScaleSetVMProperties struct {
 	// READ-ONLY; The provisioning state, which only appears in the response.
 	ProvisioningState *string
 
-	// READ-ONLY; Specifies the time at which the Virtual Machine resource was created.
-	// Minimum api-version: 2021-11-01.
+	// READ-ONLY; Specifies the time at which the Virtual Machine resource was created. Minimum api-version: 2021-11-01.
 	TimeCreated *time.Time
 
 	// READ-ONLY; Azure VM unique ID.
@@ -8593,9 +8648,6 @@ type WindowsConfiguration struct {
 	// reprovisioning.
 	EnableAutomaticUpdates *bool
 
-	// Indicates whether VMAgent Platform Updates is enabled for the Windows virtual machine. Default value is false.
-	EnableVMAgentPlatformUpdates *bool
-
 	// [Preview Feature] Specifies settings related to VM Guest Patching on Windows.
 	PatchSettings *PatchSettings
 
@@ -8612,6 +8664,9 @@ type WindowsConfiguration struct {
 
 	// Specifies the Windows Remote Management listeners. This enables remote Windows PowerShell.
 	WinRM *WinRMConfiguration
+
+	// READ-ONLY; Indicates whether VMAgent Platform Updates are enabled for the Windows Virtual Machine.
+	EnableVMAgentPlatformUpdates *bool
 }
 
 // WindowsParameters - Input for InstallPatches on a Windows VM, as directly received by the API

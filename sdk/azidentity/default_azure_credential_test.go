@@ -8,7 +8,9 @@ package azidentity
 
 import (
 	"context"
+	"errors"
 	"fmt"
+	"io"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -320,7 +322,7 @@ func TestDefaultAzureCredential_IMDS(t *testing.T) {
 						probed = true
 						require.Empty(t, hdr, "probe request shouldn't have Metadata header")
 						return &http.Response{
-							Body:       http.NoBody,
+							Body:       io.NopCloser(strings.NewReader("{}")),
 							StatusCode: http.StatusInternalServerError,
 						}
 					},
@@ -332,6 +334,29 @@ func TestDefaultAzureCredential_IMDS(t *testing.T) {
 		require.NoError(t, err)
 		require.True(t, probed)
 		require.Equal(t, tokenValue, tk.Token)
+
+		t.Run("non-JSON response", func(t *testing.T) {
+			before := defaultAzTokenProvider
+			defer func() { defaultAzTokenProvider = before }()
+			defaultAzTokenProvider = mockAzTokenProviderSuccess
+			for _, res := range [][]mock.ResponseOption{
+				{mock.WithStatusCode(http.StatusNotFound)},
+				{mock.WithBody([]byte("not json")), mock.WithStatusCode(http.StatusBadRequest)},
+				{mock.WithBody([]byte("not json")), mock.WithStatusCode(http.StatusOK)},
+			} {
+				srv, close := mock.NewTLSServer(mock.WithTransformAllRequestsToTestServerUrl())
+				defer close()
+				srv.SetResponse(res...)
+				cred, err := NewDefaultAzureCredential(&DefaultAzureCredentialOptions{
+					ClientOptions: policy.ClientOptions{
+						Transport: srv,
+					},
+				})
+				require.NoError(t, err)
+				_, err = cred.GetToken(ctx, testTRO)
+				require.NoError(t, err, "DefaultAzureCredential should continue after receiving a non-JSON response from IMDS")
+			}
+		})
 	})
 
 	t.Run("timeout", func(t *testing.T) {
@@ -370,4 +395,28 @@ func TestDefaultAzureCredential_IMDS(t *testing.T) {
 		require.NoError(t, err)
 		require.Equal(t, tokenValue, tk.Token)
 	})
+}
+
+func TestDefaultAzureCredential_UnsupportedMIClientID(t *testing.T) {
+	fail := true
+	before := defaultAzTokenProvider
+	defer func() { defaultAzTokenProvider = before }()
+	defaultAzTokenProvider = func(ctx context.Context, scopes []string, tenant, subscription string) ([]byte, error) {
+		if fail {
+			return nil, errors.New("fail")
+		}
+		return mockAzTokenProviderSuccess(ctx, scopes, tenant, subscription)
+	}
+	t.Setenv(azureClientID, fakeClientID)
+	t.Setenv(msiEndpoint, fakeMIEndpoint)
+
+	cred, err := NewDefaultAzureCredential(nil)
+	require.NoError(t, err, "an unsupported client ID isn't a constructor error")
+
+	_, err = cred.GetToken(ctx, testTRO)
+	require.ErrorContains(t, err, "Cloud Shell", "error should mention the unsupported ID")
+
+	fail = false
+	_, err = cred.GetToken(ctx, testTRO)
+	require.NoError(t, err, "expected a token from AzureCLICredential")
 }

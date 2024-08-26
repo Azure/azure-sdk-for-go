@@ -38,10 +38,10 @@
 /sdk/data/azappconfig/        @jhendrixMSFT @rickwinter
 
 # AzureSDKOwners: @jhendrixMSFT
-# ServiceOwner: @ealsur
+# ServiceOwner: @Pilchie
 # ServiceLabel: %Cosmos
 # PRLabel: %Cosmos
-/sdk/data/azcosmos/           @ealsur @kirankumarkolli @simorenoh @kushagraThapar @Pilchie
+/sdk/data/azcosmos/           @kirankumarkolli @simorenoh @kushagraThapar @Pilchie
 
 # AzureSDKOwners: @jhendrixMSFT
 # ServiceLabel: %Tables
@@ -79,14 +79,14 @@
 /sdk/resourcemanager/         @ArcturusZhang @lirenhe @tadelesh @raych1
 
 # AzureSDKOwners: @jhendrixMSFT
-# ServiceOwner: @siminsavani-msft
+# ServiceOwner: @tanyasethi-msft
 # ServiceLabel: %Azure.Core
 # PRLabel: %Storage
-/sdk/storage/                 @siminsavani-msft @souravgupta-msft @jhendrixMSFT @gapra-msft @vibhansa-msft @tanyasethi-msft
+/sdk/storage/                 @souravgupta-msft @jhendrixMSFT @gapra-msft @vibhansa-msft @tanyasethi-msft
 
 # AzureSDKOwners: @jhendrixMSFT
-# ServiceLabel: %Open Telemetry
-# PRLabel: %Open Telemetry
+# ServiceLabel: %OpenTelemetry
+# PRLabel: %OpenTelemetry
 /sdk/tracing/azotel           @jhendrixMSFT @rickwinter
 
 ###########
@@ -99,6 +99,10 @@
 
 # Add owners for notifications for specific pipelines
 /eng/common/pipelines/codeowners-linter.yml       @rickwinter
+
+# Add owners for go sdk tool
+/eng/tools/generator          @ArcturusZhang @lirenhe @tadelesh @raych1
+/eng/tools/internal           @ArcturusZhang @lirenhe @tadelesh @raych1
 
 # AzureSDKOwners: @benbp
 # ServiceLabel: %EngSys
@@ -144,7 +148,7 @@
 # ServiceLabel: %API Management
 #/<NotInRepo>/          @miaojiang
 
-# ServiceLabel: %Application Insights
+# ServiceLabel: %Monitor - ApplicationInsights
 #/<NotInRepo>/          @azmonapplicationinsights
 
 # ServiceLabel: %App Services
@@ -354,6 +358,9 @@
 # ServiceLabel: %Import Export
 #/<NotInRepo>/          @madhurinms
 
+# ServiceLabel: %Insights
+#/<NotInRepo>/          @AzmonLogA
+
 # ServiceLabel: %KeyVault
 #/<NotInRepo>/          @RandalliLama @schaabs @jlichwa
 
@@ -384,7 +391,7 @@
 # ServiceLabel: %Machine Learning Experimentation
 #/<NotInRepo>/          @aashishb
 
-# ServiceLabel: %Managed Services
+# ServiceLabel: %ManagedServices
 #/<NotInRepo>/          @Lighthouse-Azure
 
 # ServiceLabel: %MariaDB
@@ -455,9 +462,6 @@
 
 # ServiceLabel: %Notification Hub
 #/<NotInRepo>/          @tjsomasundaram
-
-# ServiceLabel: %Operational Insights
-#/<NotInRepo>/          @AzmonLogA
 
 # ServiceLabel: %Policy
 #/<NotInRepo>/          @aperezcloud @kenieva
@@ -535,7 +539,7 @@
 #/<NotInRepo>/          @xgithubtriage
 
 # ServiceLabel: %Storsimple
-#/<NotInRepo>/          @anoobbacker @ganzee @manuaery @patelkunal
+#/<NotInRepo>/          @anoobbacker @ganzee @manuaery
 
 # ServiceLabel: %Stream Analytics
 #/<NotInRepo>/          @atpham256
@@ -554,9 +558,6 @@
 
 # ServiceLabel: %TimeseriesInsights
 #/<NotInRepo>/          @Shipra1Mishra
-
-# ServiceLabel: %vFXT
-#/<NotInRepo>/          @zhusijia26
 
 # ServiceLabel: %Web Apps
 #/<NotInRepo>/          @AzureAppServiceCLI @antcp

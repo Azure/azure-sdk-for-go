@@ -27,3 +27,4 @@ extends:
     IncludeRelease: true
     ServiceDirectory: 'resourcemanager/postgresql/armpostgresql'
     UsePipelineProxy: false
+    UseFederatedAuth: true

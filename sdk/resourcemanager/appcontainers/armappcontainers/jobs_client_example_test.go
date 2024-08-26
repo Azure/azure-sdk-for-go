@@ -18,8 +18,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/Job_ListDetectors.json
-func ExampleJobsClient_ListDetectors() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/edf14cc0a577f6b9c4e3ce018cec0c383e64b7b0/specification/app/resource-manager/Microsoft.App/stable/2024-03-01/examples/Job_ListDetectors.json
+func ExampleJobsClient_NewListDetectorsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,41 +29,46 @@ func ExampleJobsClient_ListDetectors() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewJobsClient().ListDetectors(ctx, "mikono-workerapp-test-rg", "mikonojob1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
+	pager := clientFactory.NewJobsClient().NewListDetectorsPager("mikono-workerapp-test-rg", "mikonojob1", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.DiagnosticsCollection = armappcontainers.DiagnosticsCollection{
+		// 	Value: []*armappcontainers.Diagnostics{
+		// 		{
+		// 			Name: to.Ptr("cappjobContainerAppAvailabilityMetrics"),
+		// 			Type: to.Ptr("Microsoft.App/containerapps/detectors"),
+		// 			ID: to.Ptr("/subscriptions/f07f3711-b45e-40fe-a941-4e6d93f851e6/resourceGroups/mikono-workerapp-test-rg/providers/Microsoft.App/jobs/mikonojob1/detectors/cappjobContainerAppAvailabilityMetrics"),
+		// 			Properties: &armappcontainers.DiagnosticsProperties{
+		// 				Dataset: []*armappcontainers.DiagnosticsDataAPIResponse{
+		// 				},
+		// 				Metadata: &armappcontainers.DiagnosticsDefinition{
+		// 					Name: to.Ptr("Availability Metrics for Container App Jobs"),
+		// 					Type: to.Ptr("Analysis"),
+		// 					Author: to.Ptr(""),
+		// 					Category: to.Ptr("Availability and Performance"),
+		// 					ID: to.Ptr("cappjobContainerAppAvailabilityMetrics"),
+		// 					Score: to.Ptr[float32](0),
+		// 					SupportTopicList: []*armappcontainers.DiagnosticSupportTopic{
+		// 					},
+		// 				},
+		// 				Status: &armappcontainers.DiagnosticsStatus{
+		// 					StatusID: to.Ptr[int32](4),
+		// 				},
+		// 			},
+		// 	}},
+		// }
 	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.DiagnosticsCollection = armappcontainers.DiagnosticsCollection{
-	// 	Value: []*armappcontainers.Diagnostics{
-	// 		{
-	// 			Name: to.Ptr("cappjobContainerAppAvailabilityMetrics"),
-	// 			Type: to.Ptr("Microsoft.App/containerapps/detectors"),
-	// 			ID: to.Ptr("/subscriptions/f07f3711-b45e-40fe-a941-4e6d93f851e6/resourceGroups/mikono-workerapp-test-rg/providers/Microsoft.App/jobs/mikonojob1/detectors/cappjobContainerAppAvailabilityMetrics"),
-	// 			Properties: &armappcontainers.DiagnosticsProperties{
-	// 				Dataset: []*armappcontainers.DiagnosticsDataAPIResponse{
-	// 				},
-	// 				Metadata: &armappcontainers.DiagnosticsDefinition{
-	// 					Name: to.Ptr("Availability Metrics for Container App Jobs"),
-	// 					Type: to.Ptr("Analysis"),
-	// 					Author: to.Ptr(""),
-	// 					Category: to.Ptr("Availability and Performance"),
-	// 					ID: to.Ptr("cappjobContainerAppAvailabilityMetrics"),
-	// 					Score: to.Ptr[float32](0),
-	// 					SupportTopicList: []*armappcontainers.DiagnosticSupportTopic{
-	// 					},
-	// 				},
-	// 				Status: &armappcontainers.DiagnosticsStatus{
-	// 					StatusID: to.Ptr[int32](4),
-	// 				},
-	// 			},
-	// 	}},
-	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/Job_GetDetector.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/edf14cc0a577f6b9c4e3ce018cec0c383e64b7b0/specification/app/resource-manager/Microsoft.App/stable/2024-03-01/examples/Job_GetDetector.json
 func ExampleJobsClient_GetDetector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -135,7 +140,7 @@ func ExampleJobsClient_GetDetector() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/Job_ProxyGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/edf14cc0a577f6b9c4e3ce018cec0c383e64b7b0/specification/app/resource-manager/Microsoft.App/stable/2024-03-01/examples/Job_ProxyGet.json
 func ExampleJobsClient_ProxyGet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -146,7 +151,7 @@ func ExampleJobsClient_ProxyGet() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewJobsClient().ProxyGet(ctx, "rg", "testcontainerAppsJob0", nil)
+	res, err := clientFactory.NewJobsClient().ProxyGet(ctx, "rg", "testcontainerappsjob0", "rootApi", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -154,9 +159,9 @@ func ExampleJobsClient_ProxyGet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.Job = armappcontainers.Job{
-	// 	Name: to.Ptr("testcontainerAppsJob0"),
+	// 	Name: to.Ptr("testcontainerappsjob0"),
 	// 	Type: to.Ptr("Microsoft.App/jobs"),
-	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/jobs/testcontainerAppsJob0/detectorproperties/rootApi"),
+	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/jobs/testcontainerappsjob0/detectorproperties/rootApi"),
 	// 	Location: to.Ptr("East US"),
 	// 	Properties: &armappcontainers.JobProperties{
 	// 		Configuration: &armappcontainers.JobConfiguration{
@@ -173,20 +178,20 @@ func ExampleJobsClient_ProxyGet() {
 	// 		Template: &armappcontainers.JobTemplate{
 	// 			Containers: []*armappcontainers.Container{
 	// 				{
-	// 					Name: to.Ptr("testcontainerAppsJob0"),
-	// 					Image: to.Ptr("repo/testcontainerAppsJob0:v4"),
+	// 					Name: to.Ptr("testcontainerappsjob0"),
+	// 					Image: to.Ptr("repo/testcontainerappsjob0:v4"),
 	// 					Resources: &armappcontainers.ContainerResources{
-	// 						CPU: to.Ptr[float64](0.2),
-	// 						Memory: to.Ptr("100Mi"),
+	// 						CPU: to.Ptr[float64](0.5),
+	// 						Memory: to.Ptr("1Gi"),
 	// 					},
 	// 			}},
 	// 			InitContainers: []*armappcontainers.InitContainer{
 	// 				{
 	// 					Name: to.Ptr("testinitcontainerAppsJob0"),
-	// 					Image: to.Ptr("repo/testcontainerAppsJob0:v4"),
+	// 					Image: to.Ptr("repo/testcontainerappsjob0:v4"),
 	// 					Resources: &armappcontainers.ContainerResources{
-	// 						CPU: to.Ptr[float64](0.2),
-	// 						Memory: to.Ptr("100Mi"),
+	// 						CPU: to.Ptr[float64](0.5),
+	// 						Memory: to.Ptr("1Gi"),
 	// 					},
 	// 			}},
 	// 		},
@@ -194,7 +199,7 @@ func ExampleJobsClient_ProxyGet() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/Jobs_ListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/edf14cc0a577f6b9c4e3ce018cec0c383e64b7b0/specification/app/resource-manager/Microsoft.App/stable/2024-03-01/examples/Jobs_ListBySubscription.json
 func ExampleJobsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -219,9 +224,9 @@ func ExampleJobsClient_NewListBySubscriptionPager() {
 		// page.JobsCollection = armappcontainers.JobsCollection{
 		// 	Value: []*armappcontainers.Job{
 		// 		{
-		// 			Name: to.Ptr("testcontainerAppsJob0"),
+		// 			Name: to.Ptr("testcontainerappsjob0"),
 		// 			Type: to.Ptr("Microsoft.App/jobs"),
-		// 			ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/jobs/testcontainerAppsJob0"),
+		// 			ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/jobs/testcontainerappsjob0"),
 		// 			Location: to.Ptr("East US"),
 		// 			Properties: &armappcontainers.JobProperties{
 		// 				Configuration: &armappcontainers.JobConfiguration{
@@ -238,29 +243,29 @@ func ExampleJobsClient_NewListBySubscriptionPager() {
 		// 				Template: &armappcontainers.JobTemplate{
 		// 					Containers: []*armappcontainers.Container{
 		// 						{
-		// 							Name: to.Ptr("testcontainerAppsJob0"),
-		// 							Image: to.Ptr("repo/testcontainerAppsJob0:v4"),
+		// 							Name: to.Ptr("testcontainerappsjob0"),
+		// 							Image: to.Ptr("repo/testcontainerappsjob0:v4"),
 		// 							Resources: &armappcontainers.ContainerResources{
-		// 								CPU: to.Ptr[float64](0.2),
-		// 								Memory: to.Ptr("100Mi"),
+		// 								CPU: to.Ptr[float64](0.5),
+		// 								Memory: to.Ptr("1Gi"),
 		// 							},
 		// 					}},
 		// 					InitContainers: []*armappcontainers.InitContainer{
 		// 						{
 		// 							Name: to.Ptr("testinitcontainerAppsJob0"),
-		// 							Image: to.Ptr("repo/testcontainerAppsJob0:v4"),
+		// 							Image: to.Ptr("repo/testcontainerappsjob0:v4"),
 		// 							Resources: &armappcontainers.ContainerResources{
-		// 								CPU: to.Ptr[float64](0.2),
-		// 								Memory: to.Ptr("100Mi"),
+		// 								CPU: to.Ptr[float64](0.5),
+		// 								Memory: to.Ptr("1Gi"),
 		// 							},
 		// 					}},
 		// 				},
 		// 			},
 		// 		},
 		// 		{
-		// 			Name: to.Ptr("testcontainerAppsJob1"),
+		// 			Name: to.Ptr("testcontainerappsjob1"),
 		// 			Type: to.Ptr("Microsoft.App/jobs"),
-		// 			ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/jobs/testcontainerAppsJob1"),
+		// 			ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/jobs/testcontainerappsjob1"),
 		// 			Location: to.Ptr("East US"),
 		// 			Properties: &armappcontainers.JobProperties{
 		// 				Configuration: &armappcontainers.JobConfiguration{
@@ -278,20 +283,20 @@ func ExampleJobsClient_NewListBySubscriptionPager() {
 		// 				Template: &armappcontainers.JobTemplate{
 		// 					Containers: []*armappcontainers.Container{
 		// 						{
-		// 							Name: to.Ptr("testcontainerAppsJob1"),
-		// 							Image: to.Ptr("repo/testcontainerAppsJob1:v4"),
+		// 							Name: to.Ptr("testcontainerappsjob1"),
+		// 							Image: to.Ptr("repo/testcontainerappsjob1:v4"),
 		// 							Resources: &armappcontainers.ContainerResources{
-		// 								CPU: to.Ptr[float64](0.2),
-		// 								Memory: to.Ptr("100Mi"),
+		// 								CPU: to.Ptr[float64](0.5),
+		// 								Memory: to.Ptr("1Gi"),
 		// 							},
 		// 					}},
 		// 					InitContainers: []*armappcontainers.InitContainer{
 		// 						{
 		// 							Name: to.Ptr("testinitcontainerAppsJob1"),
-		// 							Image: to.Ptr("repo/testcontainerAppsJob1:v4"),
+		// 							Image: to.Ptr("repo/testcontainerappsjob1:v4"),
 		// 							Resources: &armappcontainers.ContainerResources{
-		// 								CPU: to.Ptr[float64](0.2),
-		// 								Memory: to.Ptr("100Mi"),
+		// 								CPU: to.Ptr[float64](0.5),
+		// 								Memory: to.Ptr("1Gi"),
 		// 							},
 		// 					}},
 		// 				},
@@ -301,7 +306,7 @@ func ExampleJobsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/Jobs_ListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/edf14cc0a577f6b9c4e3ce018cec0c383e64b7b0/specification/app/resource-manager/Microsoft.App/stable/2024-03-01/examples/Jobs_ListByResourceGroup.json
 func ExampleJobsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -326,9 +331,9 @@ func ExampleJobsClient_NewListByResourceGroupPager() {
 		// page.JobsCollection = armappcontainers.JobsCollection{
 		// 	Value: []*armappcontainers.Job{
 		// 		{
-		// 			Name: to.Ptr("testcontainerAppsJob0"),
+		// 			Name: to.Ptr("testcontainerappsjob0"),
 		// 			Type: to.Ptr("Microsoft.App/jobs"),
-		// 			ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/jobs/testcontainerAppsJob0"),
+		// 			ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/jobs/testcontainerappsjob0"),
 		// 			Location: to.Ptr("East US"),
 		// 			Properties: &armappcontainers.JobProperties{
 		// 				Configuration: &armappcontainers.JobConfiguration{
@@ -345,29 +350,29 @@ func ExampleJobsClient_NewListByResourceGroupPager() {
 		// 				Template: &armappcontainers.JobTemplate{
 		// 					Containers: []*armappcontainers.Container{
 		// 						{
-		// 							Name: to.Ptr("testcontainerAppsJob0"),
-		// 							Image: to.Ptr("repo/testcontainerAppsJob0:v4"),
+		// 							Name: to.Ptr("testcontainerappsjob0"),
+		// 							Image: to.Ptr("repo/testcontainerappsjob0:v4"),
 		// 							Resources: &armappcontainers.ContainerResources{
-		// 								CPU: to.Ptr[float64](0.2),
-		// 								Memory: to.Ptr("100Mi"),
+		// 								CPU: to.Ptr[float64](0.5),
+		// 								Memory: to.Ptr("1Gi"),
 		// 							},
 		// 					}},
 		// 					InitContainers: []*armappcontainers.InitContainer{
 		// 						{
 		// 							Name: to.Ptr("testinitcontainerAppsJob0"),
-		// 							Image: to.Ptr("repo/testcontainerAppsJob0:v4"),
+		// 							Image: to.Ptr("repo/testcontainerappsjob0:v4"),
 		// 							Resources: &armappcontainers.ContainerResources{
-		// 								CPU: to.Ptr[float64](0.2),
-		// 								Memory: to.Ptr("100Mi"),
+		// 								CPU: to.Ptr[float64](0.5),
+		// 								Memory: to.Ptr("1Gi"),
 		// 							},
 		// 					}},
 		// 				},
 		// 			},
 		// 		},
 		// 		{
-		// 			Name: to.Ptr("testcontainerAppsJob1"),
+		// 			Name: to.Ptr("testcontainerappsjob1"),
 		// 			Type: to.Ptr("Microsoft.App/jobs"),
-		// 			ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/jobs/testcontainerAppsJob1"),
+		// 			ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/jobs/testcontainerappsjob1"),
 		// 			Location: to.Ptr("East US"),
 		// 			Properties: &armappcontainers.JobProperties{
 		// 				Configuration: &armappcontainers.JobConfiguration{
@@ -386,10 +391,10 @@ func ExampleJobsClient_NewListByResourceGroupPager() {
 		// 					Containers: []*armappcontainers.Container{
 		// 						{
 		// 							Name: to.Ptr("testcontainerApp0"),
-		// 							Image: to.Ptr("repo/testcontainerAppsJob1:v4"),
+		// 							Image: to.Ptr("repo/testcontainerappsjob1:v4"),
 		// 							Resources: &armappcontainers.ContainerResources{
-		// 								CPU: to.Ptr[float64](0.2),
-		// 								Memory: to.Ptr("100Mi"),
+		// 								CPU: to.Ptr[float64](0.5),
+		// 								Memory: to.Ptr("1Gi"),
 		// 							},
 		// 					}},
 		// 					InitContainers: []*armappcontainers.InitContainer{
@@ -397,8 +402,8 @@ func ExampleJobsClient_NewListByResourceGroupPager() {
 		// 							Name: to.Ptr("testinitcontainerApp0"),
 		// 							Image: to.Ptr("repo/testinitcontainerAppsJob1:v4"),
 		// 							Resources: &armappcontainers.ContainerResources{
-		// 								CPU: to.Ptr[float64](0.2),
-		// 								Memory: to.Ptr("100Mi"),
+		// 								CPU: to.Ptr[float64](0.5),
+		// 								Memory: to.Ptr("1Gi"),
 		// 							},
 		// 					}},
 		// 				},
@@ -408,7 +413,7 @@ func ExampleJobsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/Job_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/edf14cc0a577f6b9c4e3ce018cec0c383e64b7b0/specification/app/resource-manager/Microsoft.App/stable/2024-03-01/examples/Job_Get.json
 func ExampleJobsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -419,7 +424,7 @@ func ExampleJobsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewJobsClient().Get(ctx, "rg", "testcontainerAppsJob0", nil)
+	res, err := clientFactory.NewJobsClient().Get(ctx, "rg", "testcontainerappsjob0", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -427,9 +432,9 @@ func ExampleJobsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.Job = armappcontainers.Job{
-	// 	Name: to.Ptr("testcontainerAppsJob0"),
+	// 	Name: to.Ptr("testcontainerappsjob0"),
 	// 	Type: to.Ptr("Microsoft.App/jobs"),
-	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/jobs/testcontainerAppsJob0"),
+	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/jobs/testcontainerappsjob0"),
 	// 	Location: to.Ptr("East US"),
 	// 	Properties: &armappcontainers.JobProperties{
 	// 		Configuration: &armappcontainers.JobConfiguration{
@@ -446,50 +451,28 @@ func ExampleJobsClient_Get() {
 	// 		Template: &armappcontainers.JobTemplate{
 	// 			Containers: []*armappcontainers.Container{
 	// 				{
-	// 					Name: to.Ptr("testcontainerAppsJob0"),
-	// 					Image: to.Ptr("repo/testcontainerAppsJob0:v4"),
+	// 					Name: to.Ptr("testcontainerappsjob0"),
+	// 					Image: to.Ptr("repo/testcontainerappsjob0:v4"),
 	// 					Resources: &armappcontainers.ContainerResources{
-	// 						CPU: to.Ptr[float64](0.2),
-	// 						Memory: to.Ptr("100Mi"),
+	// 						CPU: to.Ptr[float64](0.5),
+	// 						Memory: to.Ptr("1Gi"),
 	// 					},
-	// 					VolumeMounts: []*armappcontainers.VolumeMount{
-	// 						{
-	// 							MountPath: to.Ptr("/mnt/path1"),
-	// 							SubPath: to.Ptr("subPath1"),
-	// 							VolumeName: to.Ptr("azurefile"),
-	// 						},
-	// 						{
-	// 							MountPath: to.Ptr("/mnt/path2"),
-	// 							SubPath: to.Ptr("subPath2"),
-	// 							VolumeName: to.Ptr("nfsazurefile"),
-	// 					}},
 	// 			}},
 	// 			InitContainers: []*armappcontainers.InitContainer{
 	// 				{
 	// 					Name: to.Ptr("testinitcontainerAppsJob0"),
-	// 					Image: to.Ptr("repo/testcontainerAppsJob0:v4"),
+	// 					Image: to.Ptr("repo/testcontainerappsjob0:v4"),
 	// 					Resources: &armappcontainers.ContainerResources{
-	// 						CPU: to.Ptr[float64](0.2),
-	// 						Memory: to.Ptr("100Mi"),
+	// 						CPU: to.Ptr[float64](0.5),
+	// 						Memory: to.Ptr("1Gi"),
 	// 					},
-	// 			}},
-	// 			Volumes: []*armappcontainers.Volume{
-	// 				{
-	// 					Name: to.Ptr("azurefile"),
-	// 					StorageName: to.Ptr("storage"),
-	// 					StorageType: to.Ptr(armappcontainers.StorageTypeAzureFile),
-	// 				},
-	// 				{
-	// 					Name: to.Ptr("nfsazurefile"),
-	// 					StorageName: to.Ptr("nfsStorage"),
-	// 					StorageType: to.Ptr(armappcontainers.StorageTypeNfsAzureFile),
 	// 			}},
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/Job_CreateorUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/edf14cc0a577f6b9c4e3ce018cec0c383e64b7b0/specification/app/resource-manager/Microsoft.App/stable/2024-03-01/examples/Job_CreateorUpdate.json
 func ExampleJobsClient_BeginCreateOrUpdate_createOrUpdateContainerAppsJob() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -500,7 +483,7 @@ func ExampleJobsClient_BeginCreateOrUpdate_createOrUpdateContainerAppsJob() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewJobsClient().BeginCreateOrUpdate(ctx, "rg", "testcontainerAppsJob0", armappcontainers.Job{
+	poller, err := clientFactory.NewJobsClient().BeginCreateOrUpdate(ctx, "rg", "testcontainerappsjob0", armappcontainers.Job{
 		Location: to.Ptr("East US"),
 		Properties: &armappcontainers.JobProperties{
 			Configuration: &armappcontainers.JobConfiguration{
@@ -516,19 +499,8 @@ func ExampleJobsClient_BeginCreateOrUpdate_createOrUpdateContainerAppsJob() {
 			Template: &armappcontainers.JobTemplate{
 				Containers: []*armappcontainers.Container{
 					{
-						Name:  to.Ptr("testcontainerAppsJob0"),
-						Image: to.Ptr("repo/testcontainerAppsJob0:v1"),
-						VolumeMounts: []*armappcontainers.VolumeMount{
-							{
-								MountPath:  to.Ptr("/mnt/path1"),
-								SubPath:    to.Ptr("subPath1"),
-								VolumeName: to.Ptr("azurefile"),
-							},
-							{
-								MountPath:  to.Ptr("/mnt/path2"),
-								SubPath:    to.Ptr("subPath2"),
-								VolumeName: to.Ptr("nfsazurefile"),
-							}},
+						Name:  to.Ptr("testcontainerappsjob0"),
+						Image: to.Ptr("repo/testcontainerappsjob0:v1"),
 						Probes: []*armappcontainers.ContainerAppProbe{
 							{
 								Type: to.Ptr(armappcontainers.TypeLiveness),
@@ -553,10 +525,10 @@ func ExampleJobsClient_BeginCreateOrUpdate_createOrUpdateContainerAppsJob() {
 							to.Ptr("while true; do echo hello; sleep 10;done")},
 						Command: []*string{
 							to.Ptr("/bin/sh")},
-						Image: to.Ptr("repo/testcontainerAppsJob0:v4"),
+						Image: to.Ptr("repo/testcontainerappsjob0:v4"),
 						Resources: &armappcontainers.ContainerResources{
-							CPU:    to.Ptr[float64](0.2),
-							Memory: to.Ptr("100Mi"),
+							CPU:    to.Ptr[float64](0.5),
+							Memory: to.Ptr("1Gi"),
 						},
 					}},
 			},
@@ -573,9 +545,9 @@ func ExampleJobsClient_BeginCreateOrUpdate_createOrUpdateContainerAppsJob() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.Job = armappcontainers.Job{
-	// 	Name: to.Ptr("testcontainerAppsJob0"),
+	// 	Name: to.Ptr("testcontainerappsjob0"),
 	// 	Type: to.Ptr("Microsoft.App/jobs"),
-	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/jobs/testcontainerAppsJob0"),
+	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/jobs/testcontainerappsjob0"),
 	// 	Location: to.Ptr("East US"),
 	// 	Properties: &armappcontainers.JobProperties{
 	// 		Configuration: &armappcontainers.JobConfiguration{
@@ -593,175 +565,11 @@ func ExampleJobsClient_BeginCreateOrUpdate_createOrUpdateContainerAppsJob() {
 	// 		Template: &armappcontainers.JobTemplate{
 	// 			Containers: []*armappcontainers.Container{
 	// 				{
-	// 					Name: to.Ptr("testcontainerAppsJob0"),
-	// 					Image: to.Ptr("repo/testcontainerAppsJob0:v4"),
+	// 					Name: to.Ptr("testcontainerappsjob0"),
+	// 					Image: to.Ptr("repo/testcontainerappsjob0:v4"),
 	// 					Resources: &armappcontainers.ContainerResources{
-	// 						CPU: to.Ptr[float64](0.2),
-	// 						Memory: to.Ptr("100Mi"),
-	// 					},
-	// 					VolumeMounts: []*armappcontainers.VolumeMount{
-	// 						{
-	// 							MountPath: to.Ptr("/mnt/path1"),
-	// 							SubPath: to.Ptr("subPath1"),
-	// 							VolumeName: to.Ptr("azurefile"),
-	// 						},
-	// 						{
-	// 							MountPath: to.Ptr("/mnt/path2"),
-	// 							SubPath: to.Ptr("subPath2"),
-	// 							VolumeName: to.Ptr("nfsazurefile"),
-	// 					}},
-	// 					Probes: []*armappcontainers.ContainerAppProbe{
-	// 						{
-	// 							Type: to.Ptr(armappcontainers.TypeLiveness),
-	// 							HTTPGet: &armappcontainers.ContainerAppProbeHTTPGet{
-	// 								Path: to.Ptr("/health"),
-	// 								HTTPHeaders: []*armappcontainers.ContainerAppProbeHTTPGetHTTPHeadersItem{
-	// 									{
-	// 										Name: to.Ptr("Custom-Header"),
-	// 										Value: to.Ptr("Awesome"),
-	// 								}},
-	// 								Port: to.Ptr[int32](8080),
-	// 							},
-	// 							InitialDelaySeconds: to.Ptr[int32](3),
-	// 							PeriodSeconds: to.Ptr[int32](3),
-	// 					}},
-	// 			}},
-	// 			InitContainers: []*armappcontainers.InitContainer{
-	// 				{
-	// 					Name: to.Ptr("testinitcontainerAppsJob0"),
-	// 					Args: []*string{
-	// 						to.Ptr("-c"),
-	// 						to.Ptr("while true; do echo hello; sleep 10;done")},
-	// 						Command: []*string{
-	// 							to.Ptr("/bin/sh")},
-	// 							Image: to.Ptr("repo/testcontainerAppsJob0:v4"),
-	// 							Resources: &armappcontainers.ContainerResources{
-	// 								CPU: to.Ptr[float64](0.2),
-	// 								Memory: to.Ptr("100Mi"),
-	// 							},
-	// 					}},
-	// 					Volumes: []*armappcontainers.Volume{
-	// 						{
-	// 							Name: to.Ptr("azurefile"),
-	// 							StorageName: to.Ptr("storage"),
-	// 							StorageType: to.Ptr(armappcontainers.StorageTypeAzureFile),
-	// 						},
-	// 						{
-	// 							Name: to.Ptr("nfsazurefile"),
-	// 							StorageName: to.Ptr("nfsStorage"),
-	// 							StorageType: to.Ptr(armappcontainers.StorageTypeNfsAzureFile),
-	// 					}},
-	// 				},
-	// 			},
-	// 		}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/Job_CreateorUpdate_ConnectedEnvironment.json
-func ExampleJobsClient_BeginCreateOrUpdate_createOrUpdateContainerAppsJobOnAConnectedEnvironment() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappcontainers.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewJobsClient().BeginCreateOrUpdate(ctx, "rg", "testcontainerAppsJob0", armappcontainers.Job{
-		Location: to.Ptr("East US"),
-		ExtendedLocation: &armappcontainers.ExtendedLocation{
-			Name: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.ExtendedLocation/customLocations/testcustomlocation"),
-			Type: to.Ptr(armappcontainers.ExtendedLocationTypesCustomLocation),
-		},
-		Properties: &armappcontainers.JobProperties{
-			Configuration: &armappcontainers.JobConfiguration{
-				ManualTriggerConfig: &armappcontainers.JobConfigurationManualTriggerConfig{
-					Parallelism:            to.Ptr[int32](4),
-					ReplicaCompletionCount: to.Ptr[int32](1),
-				},
-				ReplicaRetryLimit: to.Ptr[int32](10),
-				ReplicaTimeout:    to.Ptr[int32](10),
-				TriggerType:       to.Ptr(armappcontainers.TriggerTypeManual),
-			},
-			EnvironmentID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/connectedEnvironments/demokube"),
-			Template: &armappcontainers.JobTemplate{
-				Containers: []*armappcontainers.Container{
-					{
-						Name:  to.Ptr("testcontainerAppsJob0"),
-						Image: to.Ptr("repo/testcontainerAppsJob0:v1"),
-						Probes: []*armappcontainers.ContainerAppProbe{
-							{
-								Type: to.Ptr(armappcontainers.TypeLiveness),
-								HTTPGet: &armappcontainers.ContainerAppProbeHTTPGet{
-									Path: to.Ptr("/health"),
-									HTTPHeaders: []*armappcontainers.ContainerAppProbeHTTPGetHTTPHeadersItem{
-										{
-											Name:  to.Ptr("Custom-Header"),
-											Value: to.Ptr("Awesome"),
-										}},
-									Port: to.Ptr[int32](8080),
-								},
-								InitialDelaySeconds: to.Ptr[int32](5),
-								PeriodSeconds:       to.Ptr[int32](3),
-							}},
-					}},
-				InitContainers: []*armappcontainers.InitContainer{
-					{
-						Name: to.Ptr("testinitcontainerAppsJob0"),
-						Args: []*string{
-							to.Ptr("-c"),
-							to.Ptr("while true; do echo hello; sleep 10;done")},
-						Command: []*string{
-							to.Ptr("/bin/sh")},
-						Image: to.Ptr("repo/testcontainerAppsJob0:v4"),
-						Resources: &armappcontainers.ContainerResources{
-							CPU:    to.Ptr[float64](0.2),
-							Memory: to.Ptr("100Mi"),
-						},
-					}},
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.Job = armappcontainers.Job{
-	// 	Name: to.Ptr("testcontainerAppsJob0"),
-	// 	Type: to.Ptr("Microsoft.App/jobs"),
-	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/jobs/testcontainerAppsJob0"),
-	// 	Location: to.Ptr("East US"),
-	// 	ExtendedLocation: &armappcontainers.ExtendedLocation{
-	// 		Name: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.ExtendedLocation/customLocations/testcustomlocation"),
-	// 		Type: to.Ptr(armappcontainers.ExtendedLocationTypesCustomLocation),
-	// 	},
-	// 	Properties: &armappcontainers.JobProperties{
-	// 		Configuration: &armappcontainers.JobConfiguration{
-	// 			ManualTriggerConfig: &armappcontainers.JobConfigurationManualTriggerConfig{
-	// 				Parallelism: to.Ptr[int32](4),
-	// 				ReplicaCompletionCount: to.Ptr[int32](1),
-	// 			},
-	// 			ReplicaRetryLimit: to.Ptr[int32](10),
-	// 			ReplicaTimeout: to.Ptr[int32](10),
-	// 			TriggerType: to.Ptr(armappcontainers.TriggerTypeManual),
-	// 		},
-	// 		EnvironmentID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/connectedEnvironments/demokube"),
-	// 		EventStreamEndpoint: to.Ptr("testEndpoint"),
-	// 		ProvisioningState: to.Ptr(armappcontainers.JobProvisioningStateSucceeded),
-	// 		Template: &armappcontainers.JobTemplate{
-	// 			Containers: []*armappcontainers.Container{
-	// 				{
-	// 					Name: to.Ptr("testcontainerAppsJob0"),
-	// 					Image: to.Ptr("repo/testcontainerAppsJob0:v4"),
-	// 					Resources: &armappcontainers.ContainerResources{
-	// 						CPU: to.Ptr[float64](0.2),
-	// 						Memory: to.Ptr("100Mi"),
+	// 						CPU: to.Ptr[float64](0.5),
+	// 						Memory: to.Ptr("1Gi"),
 	// 					},
 	// 					Probes: []*armappcontainers.ContainerAppProbe{
 	// 						{
@@ -787,10 +595,10 @@ func ExampleJobsClient_BeginCreateOrUpdate_createOrUpdateContainerAppsJobOnAConn
 	// 						to.Ptr("while true; do echo hello; sleep 10;done")},
 	// 						Command: []*string{
 	// 							to.Ptr("/bin/sh")},
-	// 							Image: to.Ptr("repo/testcontainerAppsJob0:v4"),
+	// 							Image: to.Ptr("repo/testcontainerappsjob0:v4"),
 	// 							Resources: &armappcontainers.ContainerResources{
-	// 								CPU: to.Ptr[float64](0.2),
-	// 								Memory: to.Ptr("100Mi"),
+	// 								CPU: to.Ptr[float64](0.5),
+	// 								Memory: to.Ptr("1Gi"),
 	// 							},
 	// 					}},
 	// 				},
@@ -798,7 +606,7 @@ func ExampleJobsClient_BeginCreateOrUpdate_createOrUpdateContainerAppsJobOnAConn
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/Job_CreateorUpdate_EventTrigger.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/edf14cc0a577f6b9c4e3ce018cec0c383e64b7b0/specification/app/resource-manager/Microsoft.App/stable/2024-03-01/examples/Job_CreateorUpdate_EventTrigger.json
 func ExampleJobsClient_BeginCreateOrUpdate_createOrUpdateContainerAppsJobWithEventDrivenTrigger() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -809,7 +617,7 @@ func ExampleJobsClient_BeginCreateOrUpdate_createOrUpdateContainerAppsJobWithEve
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewJobsClient().BeginCreateOrUpdate(ctx, "rg", "testcontainerAppsJob0", armappcontainers.Job{
+	poller, err := clientFactory.NewJobsClient().BeginCreateOrUpdate(ctx, "rg", "testcontainerappsjob0", armappcontainers.Job{
 		Location: to.Ptr("East US"),
 		Properties: &armappcontainers.JobProperties{
 			Configuration: &armappcontainers.JobConfiguration{
@@ -838,8 +646,8 @@ func ExampleJobsClient_BeginCreateOrUpdate_createOrUpdateContainerAppsJobWithEve
 			Template: &armappcontainers.JobTemplate{
 				Containers: []*armappcontainers.Container{
 					{
-						Name:  to.Ptr("testcontainerAppsJob0"),
-						Image: to.Ptr("repo/testcontainerAppsJob0:v1"),
+						Name:  to.Ptr("testcontainerappsjob0"),
+						Image: to.Ptr("repo/testcontainerappsjob0:v1"),
 					}},
 				InitContainers: []*armappcontainers.InitContainer{
 					{
@@ -849,10 +657,10 @@ func ExampleJobsClient_BeginCreateOrUpdate_createOrUpdateContainerAppsJobWithEve
 							to.Ptr("while true; do echo hello; sleep 10;done")},
 						Command: []*string{
 							to.Ptr("/bin/sh")},
-						Image: to.Ptr("repo/testcontainerAppsJob0:v4"),
+						Image: to.Ptr("repo/testcontainerappsjob0:v4"),
 						Resources: &armappcontainers.ContainerResources{
-							CPU:    to.Ptr[float64](0.2),
-							Memory: to.Ptr("100Mi"),
+							CPU:    to.Ptr[float64](0.5),
+							Memory: to.Ptr("1Gi"),
 						},
 					}},
 			},
@@ -869,9 +677,9 @@ func ExampleJobsClient_BeginCreateOrUpdate_createOrUpdateContainerAppsJobWithEve
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.Job = armappcontainers.Job{
-	// 	Name: to.Ptr("testcontainerAppsJob0"),
+	// 	Name: to.Ptr("testcontainerappsjob0"),
 	// 	Type: to.Ptr("Microsoft.App/jobs"),
-	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/jobs/testcontainerAppsJob0"),
+	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/jobs/testcontainerappsjob0"),
 	// 	Location: to.Ptr("East US"),
 	// 	Properties: &armappcontainers.JobProperties{
 	// 		Configuration: &armappcontainers.JobConfiguration{
@@ -902,11 +710,11 @@ func ExampleJobsClient_BeginCreateOrUpdate_createOrUpdateContainerAppsJobWithEve
 	// 		Template: &armappcontainers.JobTemplate{
 	// 			Containers: []*armappcontainers.Container{
 	// 				{
-	// 					Name: to.Ptr("testcontainerAppsJob0"),
-	// 					Image: to.Ptr("repo/testcontainerAppsJob0:v4"),
+	// 					Name: to.Ptr("testcontainerappsjob0"),
+	// 					Image: to.Ptr("repo/testcontainerappsjob0:v4"),
 	// 					Resources: &armappcontainers.ContainerResources{
-	// 						CPU: to.Ptr[float64](0.2),
-	// 						Memory: to.Ptr("100Mi"),
+	// 						CPU: to.Ptr[float64](0.5),
+	// 						Memory: to.Ptr("1Gi"),
 	// 					},
 	// 			}},
 	// 			InitContainers: []*armappcontainers.InitContainer{
@@ -917,10 +725,10 @@ func ExampleJobsClient_BeginCreateOrUpdate_createOrUpdateContainerAppsJobWithEve
 	// 						to.Ptr("while true; do echo hello; sleep 10;done")},
 	// 						Command: []*string{
 	// 							to.Ptr("/bin/sh")},
-	// 							Image: to.Ptr("repo/testcontainerAppsJob0:v4"),
+	// 							Image: to.Ptr("repo/testcontainerappsjob0:v4"),
 	// 							Resources: &armappcontainers.ContainerResources{
-	// 								CPU: to.Ptr[float64](0.2),
-	// 								Memory: to.Ptr("100Mi"),
+	// 								CPU: to.Ptr[float64](0.5),
+	// 								Memory: to.Ptr("1Gi"),
 	// 							},
 	// 					}},
 	// 				},
@@ -928,7 +736,7 @@ func ExampleJobsClient_BeginCreateOrUpdate_createOrUpdateContainerAppsJobWithEve
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/Job_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/edf14cc0a577f6b9c4e3ce018cec0c383e64b7b0/specification/app/resource-manager/Microsoft.App/stable/2024-03-01/examples/Job_Delete.json
 func ExampleJobsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -939,7 +747,7 @@ func ExampleJobsClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewJobsClient().BeginDelete(ctx, "rg", "testWorkerContainerAppsJob0", nil)
+	poller, err := clientFactory.NewJobsClient().BeginDelete(ctx, "rg", "testworkercontainerappsjob0", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -949,7 +757,7 @@ func ExampleJobsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/Job_Patch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/edf14cc0a577f6b9c4e3ce018cec0c383e64b7b0/specification/app/resource-manager/Microsoft.App/stable/2024-03-01/examples/Job_Patch.json
 func ExampleJobsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -960,7 +768,7 @@ func ExampleJobsClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewJobsClient().BeginUpdate(ctx, "rg", "testcontainerAppsJob0", armappcontainers.JobPatchProperties{
+	poller, err := clientFactory.NewJobsClient().BeginUpdate(ctx, "rg", "testcontainerappsjob0", armappcontainers.JobPatchProperties{
 		Properties: &armappcontainers.JobPatchPropertiesProperties{
 			Configuration: &armappcontainers.JobConfiguration{
 				ManualTriggerConfig: &armappcontainers.JobConfigurationManualTriggerConfig{
@@ -974,8 +782,8 @@ func ExampleJobsClient_BeginUpdate() {
 			Template: &armappcontainers.JobTemplate{
 				Containers: []*armappcontainers.Container{
 					{
-						Name:  to.Ptr("testcontainerAppsJob0"),
-						Image: to.Ptr("repo/testcontainerAppsJob0:v1"),
+						Name:  to.Ptr("testcontainerappsjob0"),
+						Image: to.Ptr("repo/testcontainerappsjob0:v1"),
 						Probes: []*armappcontainers.ContainerAppProbe{
 							{
 								Type: to.Ptr(armappcontainers.TypeLiveness),
@@ -1000,10 +808,10 @@ func ExampleJobsClient_BeginUpdate() {
 							to.Ptr("while true; do echo hello; sleep 10;done")},
 						Command: []*string{
 							to.Ptr("/bin/sh")},
-						Image: to.Ptr("repo/testcontainerAppsJob0:v4"),
+						Image: to.Ptr("repo/testcontainerappsjob0:v4"),
 						Resources: &armappcontainers.ContainerResources{
-							CPU:    to.Ptr[float64](0.2),
-							Memory: to.Ptr("100Mi"),
+							CPU:    to.Ptr[float64](0.5),
+							Memory: to.Ptr("1Gi"),
 						},
 					}},
 			},
@@ -1020,9 +828,9 @@ func ExampleJobsClient_BeginUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.Job = armappcontainers.Job{
-	// 	Name: to.Ptr("testcontainerAppsJob0"),
+	// 	Name: to.Ptr("testcontainerappsjob0"),
 	// 	Type: to.Ptr("Microsoft.App/jobs"),
-	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/jobs/testcontainerAppsJob0"),
+	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/jobs/testcontainerappsjob0"),
 	// 	Location: to.Ptr("East US"),
 	// 	Properties: &armappcontainers.JobProperties{
 	// 		Configuration: &armappcontainers.JobConfiguration{
@@ -1039,20 +847,20 @@ func ExampleJobsClient_BeginUpdate() {
 	// 		Template: &armappcontainers.JobTemplate{
 	// 			Containers: []*armappcontainers.Container{
 	// 				{
-	// 					Name: to.Ptr("testcontainerAppsJob0"),
-	// 					Image: to.Ptr("repo/testcontainerAppsJob0:v4"),
+	// 					Name: to.Ptr("testcontainerappsjob0"),
+	// 					Image: to.Ptr("repo/testcontainerappsjob0:v4"),
 	// 					Resources: &armappcontainers.ContainerResources{
-	// 						CPU: to.Ptr[float64](0.2),
-	// 						Memory: to.Ptr("100Mi"),
+	// 						CPU: to.Ptr[float64](0.5),
+	// 						Memory: to.Ptr("1Gi"),
 	// 					},
 	// 			}},
 	// 			InitContainers: []*armappcontainers.InitContainer{
 	// 				{
 	// 					Name: to.Ptr("testinitcontainerAppsJob0"),
-	// 					Image: to.Ptr("repo/testcontainerAppsJob0:v4"),
+	// 					Image: to.Ptr("repo/testcontainerappsjob0:v4"),
 	// 					Resources: &armappcontainers.ContainerResources{
-	// 						CPU: to.Ptr[float64](0.2),
-	// 						Memory: to.Ptr("100Mi"),
+	// 						CPU: to.Ptr[float64](0.5),
+	// 						Memory: to.Ptr("1Gi"),
 	// 					},
 	// 			}},
 	// 		},
@@ -1060,7 +868,7 @@ func ExampleJobsClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/Job_Start.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/edf14cc0a577f6b9c4e3ce018cec0c383e64b7b0/specification/app/resource-manager/Microsoft.App/stable/2024-03-01/examples/Job_Start.json
 func ExampleJobsClient_BeginStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1071,14 +879,14 @@ func ExampleJobsClient_BeginStart() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewJobsClient().BeginStart(ctx, "rg", "testcontainerAppsJob0", &armappcontainers.JobsClientBeginStartOptions{Template: &armappcontainers.JobExecutionTemplate{
+	poller, err := clientFactory.NewJobsClient().BeginStart(ctx, "rg", "testcontainerappsjob0", &armappcontainers.JobsClientBeginStartOptions{Template: &armappcontainers.JobExecutionTemplate{
 		Containers: []*armappcontainers.JobExecutionContainer{
 			{
-				Name:  to.Ptr("testcontainerAppsJob0"),
-				Image: to.Ptr("repo/testcontainerAppsJob0:v4"),
+				Name:  to.Ptr("testcontainerappsjob0"),
+				Image: to.Ptr("repo/testcontainerappsjob0:v4"),
 				Resources: &armappcontainers.ContainerResources{
-					CPU:    to.Ptr[float64](0.2),
-					Memory: to.Ptr("100Mi"),
+					CPU:    to.Ptr[float64](0.5),
+					Memory: to.Ptr("1Gi"),
 				},
 			}},
 		InitContainers: []*armappcontainers.JobExecutionContainer{
@@ -1089,10 +897,10 @@ func ExampleJobsClient_BeginStart() {
 					to.Ptr("while true; do echo hello; sleep 10;done")},
 				Command: []*string{
 					to.Ptr("/bin/sh")},
-				Image: to.Ptr("repo/testcontainerAppsJob0:v4"),
+				Image: to.Ptr("repo/testcontainerappsjob0:v4"),
 				Resources: &armappcontainers.ContainerResources{
-					CPU:    to.Ptr[float64](0.2),
-					Memory: to.Ptr("100Mi"),
+					CPU:    to.Ptr[float64](0.5),
+					Memory: to.Ptr("1Gi"),
 				},
 			}},
 	},
@@ -1108,12 +916,12 @@ func ExampleJobsClient_BeginStart() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.JobExecutionBase = armappcontainers.JobExecutionBase{
-	// 	Name: to.Ptr("testcontainerAppsJob0-pjxhsye"),
+	// 	Name: to.Ptr("testcontainerappsjob0-pjxhsye"),
 	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/jobs/{containerAppsJobName}/executions/{jobExecutionName}"),
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/Job_Stop_Execution.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/edf14cc0a577f6b9c4e3ce018cec0c383e64b7b0/specification/app/resource-manager/Microsoft.App/stable/2024-03-01/examples/Job_Stop_Execution.json
 func ExampleJobsClient_BeginStopExecution() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1124,7 +932,7 @@ func ExampleJobsClient_BeginStopExecution() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewJobsClient().BeginStopExecution(ctx, "rg", "testcontainerAppsJob0", "jobExecution1", nil)
+	poller, err := clientFactory.NewJobsClient().BeginStopExecution(ctx, "rg", "testcontainerappsjob0", "jobExecution1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1134,7 +942,7 @@ func ExampleJobsClient_BeginStopExecution() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/Job_Stop_Multiple.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/edf14cc0a577f6b9c4e3ce018cec0c383e64b7b0/specification/app/resource-manager/Microsoft.App/stable/2024-03-01/examples/Job_Stop_Multiple.json
 func ExampleJobsClient_BeginStopMultipleExecutions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1145,7 +953,7 @@ func ExampleJobsClient_BeginStopMultipleExecutions() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewJobsClient().BeginStopMultipleExecutions(ctx, "rg", "testcontainerAppsJob0", nil)
+	poller, err := clientFactory.NewJobsClient().BeginStopMultipleExecutions(ctx, "rg", "testcontainerappsjob0", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1185,7 +993,7 @@ func ExampleJobsClient_BeginStopMultipleExecutions() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/Job_ListSecrets.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/edf14cc0a577f6b9c4e3ce018cec0c383e64b7b0/specification/app/resource-manager/Microsoft.App/stable/2024-03-01/examples/Job_ListSecrets.json
 func ExampleJobsClient_ListSecrets() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1196,7 +1004,7 @@ func ExampleJobsClient_ListSecrets() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewJobsClient().ListSecrets(ctx, "rg", "testcontainerAppsJob0", nil)
+	res, err := clientFactory.NewJobsClient().ListSecrets(ctx, "rg", "testcontainerappsjob0", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

@@ -46,7 +46,7 @@ func NewPrivateLinkResourcesClient(subscriptionID string, credential azcore.Toke
 // Get - Gets the private link resources that need to be created for a Azure Monitor PrivateLinkScope.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-31-preview
+// Generated from API version 2024-05-20-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - scopeName - The name of the Azure Arc PrivateLinkScope resource.
 //   - groupName - The name of the private link resource.
@@ -98,7 +98,7 @@ func (client *PrivateLinkResourcesClient) getCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-31-preview")
+	reqQP.Set("api-version", "2024-05-20-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -115,7 +115,7 @@ func (client *PrivateLinkResourcesClient) getHandleResponse(resp *http.Response)
 
 // NewListByPrivateLinkScopePager - Gets the private link resources that need to be created for a Azure Monitor PrivateLinkScope.
 //
-// Generated from API version 2024-03-31-preview
+// Generated from API version 2024-05-20-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - scopeName - The name of the Azure Arc PrivateLinkScope resource.
 //   - options - PrivateLinkResourcesClientListByPrivateLinkScopeOptions contains the optional parameters for the PrivateLinkResourcesClient.NewListByPrivateLinkScopePager
@@ -163,7 +163,7 @@ func (client *PrivateLinkResourcesClient) listByPrivateLinkScopeCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-31-preview")
+	reqQP.Set("api-version", "2024-05-20-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

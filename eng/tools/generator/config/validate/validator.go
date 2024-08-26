@@ -5,14 +5,8 @@ package validate
 
 import (
 	"context"
-	"errors"
-	"fmt"
-	"path/filepath"
-	"strconv"
-	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/issue/query"
-	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/v2/common"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/config"
 )
 
@@ -31,51 +25,4 @@ func NewRemoteValidator(ctx context.Context, client *query.Client) Validator {
 		ctx:    ctx,
 		client: client,
 	}
-}
-func ParseTrack2(config *config.Config, specRoot string) (armServices map[string][]common.PackageInfo, errResult error) {
-	armServices = make(map[string][]common.PackageInfo)
-	for readme, track2Request := range config.Track2Requests {
-		for _, request := range track2Request {
-			service, err := common.ReadV2ModuleNameToGetNamespace(filepath.Join(specRoot, getReadmeGoFromReadme(readme)))
-			if err != nil {
-				errResult = errors.Join(errResult, fmt.Errorf("cannot get readme.go.md content: %+v", err))
-				continue
-			}
-
-			var subService string
-			_, after, _ := strings.Cut(request.PackageFlag, "package-")
-			s := strings.Split(after, "-")
-			if _, err = strconv.Atoi(s[0]); err != nil && s[0] != "preview" {
-				subService = s[0]
-			}
-
-			for arm, packageInfos := range service {
-				if subService == "" && len(packageInfos) > 0 {
-					packageInfos[0].RequestLink = request.RequestLink
-					packageInfos[0].ReleaseDate = request.TargetDate
-					packageInfos[0].Tag = fmt.Sprintf("tag: %s", request.PackageFlag)
-					armServices[arm] = append(armServices[arm], packageInfos[0])
-				}
-
-				if subService != "" && len(packageInfos) == 1 {
-					packageInfos[0].RequestLink = request.RequestLink
-					packageInfos[0].ReleaseDate = request.TargetDate
-					packageInfos[0].Tag = fmt.Sprintf("tag: %s", request.PackageFlag)
-					armServices[arm] = append(armServices[arm], packageInfos[0])
-				} else if subService != "" && len(packageInfos) > 1 {
-					for _, packageInfo := range packageInfos {
-						if strings.Contains(packageInfo.Config, subService) {
-							packageInfo.RequestLink = request.RequestLink
-							packageInfo.ReleaseDate = request.TargetDate
-							packageInfo.Tag = fmt.Sprintf("tag: %s", request.PackageFlag)
-							armServices[arm] = append(armServices[arm], packageInfo)
-							break
-						}
-					}
-				}
-			}
-		}
-	}
-
-	return armServices, errResult
 }

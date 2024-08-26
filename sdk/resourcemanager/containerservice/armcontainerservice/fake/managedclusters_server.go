@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice/v5"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice/v6"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -60,10 +60,6 @@ type ManagedClustersServer struct {
 	// GetMeshUpgradeProfile is the fake for method ManagedClustersClient.GetMeshUpgradeProfile
 	// HTTP status codes to indicate success: http.StatusOK
 	GetMeshUpgradeProfile func(ctx context.Context, resourceGroupName string, resourceName string, mode string, options *armcontainerservice.ManagedClustersClientGetMeshUpgradeProfileOptions) (resp azfake.Responder[armcontainerservice.ManagedClustersClientGetMeshUpgradeProfileResponse], errResp azfake.ErrorResponder)
-
-	// GetOSOptions is the fake for method ManagedClustersClient.GetOSOptions
-	// HTTP status codes to indicate success: http.StatusOK
-	GetOSOptions func(ctx context.Context, location string, options *armcontainerservice.ManagedClustersClientGetOSOptionsOptions) (resp azfake.Responder[armcontainerservice.ManagedClustersClientGetOSOptionsResponse], errResp azfake.ErrorResponder)
 
 	// GetSafeguardsVersions is the fake for method ManagedClustersClient.GetSafeguardsVersions
 	// HTTP status codes to indicate success: http.StatusOK
@@ -117,6 +113,10 @@ type ManagedClustersServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListSafeguardsVersionsPager func(location string, options *armcontainerservice.ManagedClustersClientListSafeguardsVersionsOptions) (resp azfake.PagerResponder[armcontainerservice.ManagedClustersClientListSafeguardsVersionsResponse])
 
+	// BeginRebalanceLoadBalancers is the fake for method ManagedClustersClient.BeginRebalanceLoadBalancers
+	// HTTP status codes to indicate success: http.StatusAccepted
+	BeginRebalanceLoadBalancers func(ctx context.Context, resourceGroupName string, resourceName string, parameters armcontainerservice.RebalanceLoadBalancersRequestBody, options *armcontainerservice.ManagedClustersClientBeginRebalanceLoadBalancersOptions) (resp azfake.PollerResponder[armcontainerservice.ManagedClustersClientRebalanceLoadBalancersResponse], errResp azfake.ErrorResponder)
+
 	// BeginResetAADProfile is the fake for method ManagedClustersClient.BeginResetAADProfile
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginResetAADProfile func(ctx context.Context, resourceGroupName string, resourceName string, parameters armcontainerservice.ManagedClusterAADProfile, options *armcontainerservice.ManagedClustersClientBeginResetAADProfileOptions) (resp azfake.PollerResponder[armcontainerservice.ManagedClustersClientResetAADProfileResponse], errResp azfake.ErrorResponder)
@@ -166,6 +166,7 @@ func NewManagedClustersServerTransport(srv *ManagedClustersServer) *ManagedClust
 		newListMeshUpgradeProfilesPager:  newTracker[azfake.PagerResponder[armcontainerservice.ManagedClustersClientListMeshUpgradeProfilesResponse]](),
 		newListOutboundNetworkDependenciesEndpointsPager: newTracker[azfake.PagerResponder[armcontainerservice.ManagedClustersClientListOutboundNetworkDependenciesEndpointsResponse]](),
 		newListSafeguardsVersionsPager:                   newTracker[azfake.PagerResponder[armcontainerservice.ManagedClustersClientListSafeguardsVersionsResponse]](),
+		beginRebalanceLoadBalancers:                      newTracker[azfake.PollerResponder[armcontainerservice.ManagedClustersClientRebalanceLoadBalancersResponse]](),
 		beginResetAADProfile:                             newTracker[azfake.PollerResponder[armcontainerservice.ManagedClustersClientResetAADProfileResponse]](),
 		beginResetServicePrincipalProfile:                newTracker[azfake.PollerResponder[armcontainerservice.ManagedClustersClientResetServicePrincipalProfileResponse]](),
 		beginRotateClusterCertificates:                   newTracker[azfake.PollerResponder[armcontainerservice.ManagedClustersClientRotateClusterCertificatesResponse]](),
@@ -191,6 +192,7 @@ type ManagedClustersServerTransport struct {
 	newListMeshUpgradeProfilesPager                  *tracker[azfake.PagerResponder[armcontainerservice.ManagedClustersClientListMeshUpgradeProfilesResponse]]
 	newListOutboundNetworkDependenciesEndpointsPager *tracker[azfake.PagerResponder[armcontainerservice.ManagedClustersClientListOutboundNetworkDependenciesEndpointsResponse]]
 	newListSafeguardsVersionsPager                   *tracker[azfake.PagerResponder[armcontainerservice.ManagedClustersClientListSafeguardsVersionsResponse]]
+	beginRebalanceLoadBalancers                      *tracker[azfake.PollerResponder[armcontainerservice.ManagedClustersClientRebalanceLoadBalancersResponse]]
 	beginResetAADProfile                             *tracker[azfake.PollerResponder[armcontainerservice.ManagedClustersClientResetAADProfileResponse]]
 	beginResetServicePrincipalProfile                *tracker[azfake.PollerResponder[armcontainerservice.ManagedClustersClientResetServicePrincipalProfileResponse]]
 	beginRotateClusterCertificates                   *tracker[azfake.PollerResponder[armcontainerservice.ManagedClustersClientRotateClusterCertificatesResponse]]
@@ -231,8 +233,6 @@ func (m *ManagedClustersServerTransport) Do(req *http.Request) (*http.Response, 
 		resp, err = m.dispatchGetMeshRevisionProfile(req)
 	case "ManagedClustersClient.GetMeshUpgradeProfile":
 		resp, err = m.dispatchGetMeshUpgradeProfile(req)
-	case "ManagedClustersClient.GetOSOptions":
-		resp, err = m.dispatchGetOSOptions(req)
 	case "ManagedClustersClient.GetSafeguardsVersions":
 		resp, err = m.dispatchGetSafeguardsVersions(req)
 	case "ManagedClustersClient.GetUpgradeProfile":
@@ -259,6 +259,8 @@ func (m *ManagedClustersServerTransport) Do(req *http.Request) (*http.Response, 
 		resp, err = m.dispatchNewListOutboundNetworkDependenciesEndpointsPager(req)
 	case "ManagedClustersClient.NewListSafeguardsVersionsPager":
 		resp, err = m.dispatchNewListSafeguardsVersionsPager(req)
+	case "ManagedClustersClient.BeginRebalanceLoadBalancers":
+		resp, err = m.dispatchBeginRebalanceLoadBalancers(req)
 	case "ManagedClustersClient.BeginResetAADProfile":
 		resp, err = m.dispatchBeginResetAADProfile(req)
 	case "ManagedClustersClient.BeginResetServicePrincipalProfile":
@@ -354,7 +356,16 @@ func (m *ManagedClustersServerTransport) dispatchBeginCreateOrUpdate(req *http.R
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := m.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, resourceNameParam, body, nil)
+		ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
+		ifNoneMatchParam := getOptional(getHeaderValue(req.Header, "If-None-Match"))
+		var options *armcontainerservice.ManagedClustersClientBeginCreateOrUpdateOptions
+		if ifMatchParam != nil || ifNoneMatchParam != nil {
+			options = &armcontainerservice.ManagedClustersClientBeginCreateOrUpdateOptions{
+				IfMatch:     ifMatchParam,
+				IfNoneMatch: ifNoneMatchParam,
+			}
+		}
+		respr, errRespr := m.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, resourceNameParam, body, options)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -407,10 +418,12 @@ func (m *ManagedClustersServerTransport) dispatchBeginDelete(req *http.Request) 
 		if err != nil {
 			return nil, err
 		}
+		ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
 		var options *armcontainerservice.ManagedClustersClientBeginDeleteOptions
-		if ignorePodDisruptionBudgetParam != nil {
+		if ignorePodDisruptionBudgetParam != nil || ifMatchParam != nil {
 			options = &armcontainerservice.ManagedClustersClientBeginDeleteOptions{
 				IgnorePodDisruptionBudget: ignorePodDisruptionBudgetParam,
+				IfMatch:                   ifMatchParam,
 			}
 		}
 		respr, errRespr := m.srv.BeginDelete(req.Context(), resourceGroupNameParam, resourceNameParam, options)
@@ -644,47 +657,6 @@ func (m *ManagedClustersServerTransport) dispatchGetMeshUpgradeProfile(req *http
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).MeshUpgradeProfile, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (m *ManagedClustersServerTransport) dispatchGetOSOptions(req *http.Request) (*http.Response, error) {
-	if m.srv.GetOSOptions == nil {
-		return nil, &nonRetriableError{errors.New("fake for method GetOSOptions not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/osOptions/default`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	qp := req.URL.Query()
-	locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
-	if err != nil {
-		return nil, err
-	}
-	resourceTypeUnescaped, err := url.QueryUnescape(qp.Get("resource-type"))
-	if err != nil {
-		return nil, err
-	}
-	resourceTypeParam := getOptional(resourceTypeUnescaped)
-	var options *armcontainerservice.ManagedClustersClientGetOSOptionsOptions
-	if resourceTypeParam != nil {
-		options = &armcontainerservice.ManagedClustersClientGetOSOptionsOptions{
-			ResourceType: resourceTypeParam,
-		}
-	}
-	respr, errRespr := m.srv.GetOSOptions(req.Context(), locationParam, options)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).OSOptionProfile, req)
 	if err != nil {
 		return nil, err
 	}
@@ -1190,6 +1162,54 @@ func (m *ManagedClustersServerTransport) dispatchNewListSafeguardsVersionsPager(
 	return resp, nil
 }
 
+func (m *ManagedClustersServerTransport) dispatchBeginRebalanceLoadBalancers(req *http.Request) (*http.Response, error) {
+	if m.srv.BeginRebalanceLoadBalancers == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginRebalanceLoadBalancers not implemented")}
+	}
+	beginRebalanceLoadBalancers := m.beginRebalanceLoadBalancers.get(req)
+	if beginRebalanceLoadBalancers == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/rebalanceLoadBalancers`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armcontainerservice.RebalanceLoadBalancersRequestBody](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := m.srv.BeginRebalanceLoadBalancers(req.Context(), resourceGroupNameParam, resourceNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginRebalanceLoadBalancers = &respr
+		m.beginRebalanceLoadBalancers.add(req, beginRebalanceLoadBalancers)
+	}
+
+	resp, err := server.PollerResponderNext(beginRebalanceLoadBalancers, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusAccepted}, resp.StatusCode) {
+		m.beginRebalanceLoadBalancers.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginRebalanceLoadBalancers) {
+		m.beginRebalanceLoadBalancers.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (m *ManagedClustersServerTransport) dispatchBeginResetAADProfile(req *http.Request) (*http.Response, error) {
 	if m.srv.BeginResetAADProfile == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginResetAADProfile not implemented")}
@@ -1534,7 +1554,14 @@ func (m *ManagedClustersServerTransport) dispatchBeginUpdateTags(req *http.Reque
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := m.srv.BeginUpdateTags(req.Context(), resourceGroupNameParam, resourceNameParam, body, nil)
+		ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
+		var options *armcontainerservice.ManagedClustersClientBeginUpdateTagsOptions
+		if ifMatchParam != nil {
+			options = &armcontainerservice.ManagedClustersClientBeginUpdateTagsOptions{
+				IfMatch: ifMatchParam,
+			}
+		}
+		respr, errRespr := m.srv.BeginUpdateTags(req.Context(), resourceGroupNameParam, resourceNameParam, body, options)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}

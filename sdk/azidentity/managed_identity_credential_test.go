@@ -578,41 +578,53 @@ func TestManagedIdentityCredential_IMDSLive(t *testing.T) {
 	if recording.GetRecordMode() != recording.PlaybackMode && !liveManagedIdentity.imds {
 		t.Skip("set IDENTITY_IMDS_AVAILABLE to run this test")
 	}
-	opts, stop := initRecording(t)
-	defer stop()
-	cred, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{ClientOptions: opts})
-	if err != nil {
-		t.Fatal(err)
-	}
-	testGetTokenSuccess(t, cred)
-}
 
-func TestManagedIdentityCredential_IMDSClientIDLive(t *testing.T) {
-	if recording.GetRecordMode() != recording.PlaybackMode && !liveManagedIdentity.imds || liveManagedIdentity.clientID == "" {
-		t.Skip("set IDENTITY_IMDS_AVAILABLE and IDENTITY_VM_USER_ASSIGNED_MI_CLIENT_ID to run this test")
-	}
-	opts, stop := initRecording(t)
-	defer stop()
-	o := ManagedIdentityCredentialOptions{ClientOptions: opts, ID: ClientID(liveManagedIdentity.clientID)}
-	cred, err := NewManagedIdentityCredential(&o)
-	if err != nil {
-		t.Fatal(err)
-	}
-	testGetTokenSuccess(t, cred)
-}
+	t.Run("client ID", func(t *testing.T) {
+		if recording.GetRecordMode() != recording.PlaybackMode && liveManagedIdentity.clientID == "" {
+			t.Skip("set IDENTITY_VM_USER_ASSIGNED_MI_CLIENT_ID to run this test")
+		}
+		opts, stop := initRecording(t)
+		defer stop()
+		cred, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{
+			ClientOptions: opts, ID: ClientID(liveManagedIdentity.clientID)},
+		)
+		require.NoError(t, err)
+		testGetTokenSuccess(t, cred)
+	})
 
-func TestManagedIdentityCredential_IMDSResourceIDLive(t *testing.T) {
-	if recording.GetRecordMode() != recording.PlaybackMode && !liveManagedIdentity.imds || liveManagedIdentity.resourceID == "" {
-		t.Skip("set IDENTITY_IMDS_AVAILABLE and IDENTITY_VM_USER_ASSIGNED_MI_RESOURCE_ID to run this test")
-	}
-	opts, stop := initRecording(t)
-	defer stop()
-	o := ManagedIdentityCredentialOptions{ClientOptions: opts, ID: ResourceID(liveManagedIdentity.resourceID)}
-	cred, err := NewManagedIdentityCredential(&o)
-	if err != nil {
-		t.Fatal(err)
-	}
-	testGetTokenSuccess(t, cred)
+	t.Run("object ID", func(t *testing.T) {
+		if recording.GetRecordMode() != recording.PlaybackMode && liveManagedIdentity.objectID == "" {
+			t.Skip("set IDENTITY_VM_USER_ASSIGNED_MI_OBJECT_ID to run this test")
+		}
+		opts, stop := initRecording(t)
+		defer stop()
+		cred, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{
+			ClientOptions: opts, ID: ObjectID(liveManagedIdentity.objectID)},
+		)
+		require.NoError(t, err)
+		testGetTokenSuccess(t, cred)
+	})
+
+	t.Run("resource ID", func(t *testing.T) {
+		if recording.GetRecordMode() != recording.PlaybackMode && liveManagedIdentity.resourceID == "" {
+			t.Skip("set IDENTITY_VM_USER_ASSIGNED_MI_RESOURCE_ID to run this test")
+		}
+		opts, stop := initRecording(t)
+		defer stop()
+		cred, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{
+			ClientOptions: opts, ID: ResourceID(liveManagedIdentity.resourceID)},
+		)
+		require.NoError(t, err)
+		testGetTokenSuccess(t, cred)
+	})
+
+	t.Run("system assigned", func(t *testing.T) {
+		opts, stop := initRecording(t)
+		defer stop()
+		cred, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{ClientOptions: opts})
+		require.NoError(t, err)
+		testGetTokenSuccess(t, cred)
+	})
 }
 
 func TestManagedIdentityCredential_IMDSRetries(t *testing.T) {
@@ -672,4 +684,41 @@ func TestManagedIdentityCredential_ServiceFabric(t *testing.T) {
 		t.Fatal(err)
 	}
 	testGetTokenSuccess(t, cred)
+}
+
+func TestManagedIdentityCredential_UnsupportedID(t *testing.T) {
+	t.Run("Azure Arc", func(t *testing.T) {
+		t.Setenv(identityEndpoint, fakeMIEndpoint)
+		t.Setenv(arcIMDSEndpoint, fakeMIEndpoint)
+		for _, id := range []ManagedIDKind{ClientID(fakeClientID), ObjectID(fakeObjectID), ResourceID(fakeResourceID)} {
+			_, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{ID: id})
+			require.Errorf(t, err, "expected an error for %T", id)
+		}
+	})
+	t.Run("Azure ML", func(t *testing.T) {
+		t.Setenv(msiEndpoint, fakeMIEndpoint)
+		t.Setenv(msiSecret, "...")
+		_, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{ID: ResourceID(fakeResourceID)})
+		require.Error(t, err)
+		_, err = NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{ID: ObjectID(fakeObjectID)})
+		require.Error(t, err)
+		_, err = NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{ID: ClientID(fakeClientID)})
+		require.NoError(t, err)
+	})
+	t.Run("Cloud Shell", func(t *testing.T) {
+		t.Setenv(msiEndpoint, fakeMIEndpoint)
+		for _, id := range []ManagedIDKind{ClientID(fakeClientID), ObjectID(fakeObjectID), ResourceID(fakeResourceID)} {
+			_, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{ID: id})
+			require.Errorf(t, err, "expected an error for %T", id)
+		}
+	})
+	t.Run("Service Fabric", func(t *testing.T) {
+		t.Setenv(identityEndpoint, fakeMIEndpoint)
+		t.Setenv(identityHeader, "...")
+		t.Setenv(identityServerThumbprint, "...")
+		for _, id := range []ManagedIDKind{ClientID(fakeClientID), ObjectID(fakeObjectID), ResourceID(fakeResourceID)} {
+			_, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{ID: id})
+			require.Errorf(t, err, "expected an error for %T", id)
+		}
+	})
 }

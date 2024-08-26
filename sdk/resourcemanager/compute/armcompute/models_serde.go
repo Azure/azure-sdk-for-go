@@ -499,6 +499,7 @@ func (a AvailabilitySetProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "platformFaultDomainCount", a.PlatformFaultDomainCount)
 	populate(objectMap, "platformUpdateDomainCount", a.PlatformUpdateDomainCount)
 	populate(objectMap, "proximityPlacementGroup", a.ProximityPlacementGroup)
+	populate(objectMap, "scheduledEventsPolicy", a.ScheduledEventsPolicy)
 	populate(objectMap, "statuses", a.Statuses)
 	populate(objectMap, "virtualMachines", a.VirtualMachines)
 	return json.Marshal(objectMap)
@@ -521,6 +522,9 @@ func (a *AvailabilitySetProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "proximityPlacementGroup":
 			err = unpopulate(val, "ProximityPlacementGroup", &a.ProximityPlacementGroup)
+			delete(rawMsg, key)
+		case "scheduledEventsPolicy":
+			err = unpopulate(val, "ScheduledEventsPolicy", &a.ScheduledEventsPolicy)
 			delete(rawMsg, key)
 		case "statuses":
 			err = unpopulate(val, "Statuses", &a.Statuses)
@@ -4206,6 +4210,7 @@ func (d DiskRestorePointProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "encryption", d.Encryption)
 	populate(objectMap, "familyId", d.FamilyID)
 	populate(objectMap, "hyperVGeneration", d.HyperVGeneration)
+	populate(objectMap, "logicalSectorSize", d.LogicalSectorSize)
 	populate(objectMap, "networkAccessPolicy", d.NetworkAccessPolicy)
 	populate(objectMap, "osType", d.OSType)
 	populate(objectMap, "publicNetworkAccess", d.PublicNetworkAccess)
@@ -4244,6 +4249,9 @@ func (d *DiskRestorePointProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "hyperVGeneration":
 			err = unpopulate(val, "HyperVGeneration", &d.HyperVGeneration)
+			delete(rawMsg, key)
+		case "logicalSectorSize":
+			err = unpopulate(val, "LogicalSectorSize", &d.LogicalSectorSize)
 			delete(rawMsg, key)
 		case "networkAccessPolicy":
 			err = unpopulate(val, "NetworkAccessPolicy", &d.NetworkAccessPolicy)
@@ -12071,6 +12079,64 @@ func (s *SKU) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type SKUProfile.
+func (s SKUProfile) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "allocationStrategy", s.AllocationStrategy)
+	populate(objectMap, "vmSizes", s.VMSizes)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type SKUProfile.
+func (s *SKUProfile) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", s, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "allocationStrategy":
+			err = unpopulate(val, "AllocationStrategy", &s.AllocationStrategy)
+			delete(rawMsg, key)
+		case "vmSizes":
+			err = unpopulate(val, "VMSizes", &s.VMSizes)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", s, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type SKUProfileVMSize.
+func (s SKUProfileVMSize) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "name", s.Name)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type SKUProfileVMSize.
+func (s *SKUProfileVMSize) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", s, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "name":
+			err = unpopulate(val, "Name", &s.Name)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", s, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type SSHConfiguration.
 func (s SSHConfiguration) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -12456,6 +12522,7 @@ func (s SecurityPostureReference) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "excludeExtensions", s.ExcludeExtensions)
 	populate(objectMap, "id", s.ID)
+	populate(objectMap, "isOverridable", s.IsOverridable)
 	return json.Marshal(objectMap)
 }
 
@@ -12473,6 +12540,44 @@ func (s *SecurityPostureReference) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "id":
 			err = unpopulate(val, "ID", &s.ID)
+			delete(rawMsg, key)
+		case "isOverridable":
+			err = unpopulate(val, "IsOverridable", &s.IsOverridable)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", s, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type SecurityPostureReferenceUpdate.
+func (s SecurityPostureReferenceUpdate) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "excludeExtensions", s.ExcludeExtensions)
+	populate(objectMap, "id", s.ID)
+	populate(objectMap, "isOverridable", s.IsOverridable)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type SecurityPostureReferenceUpdate.
+func (s *SecurityPostureReferenceUpdate) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", s, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "excludeExtensions":
+			err = unpopulate(val, "ExcludeExtensions", &s.ExcludeExtensions)
+			delete(rawMsg, key)
+		case "id":
+			err = unpopulate(val, "ID", &s.ID)
+			delete(rawMsg, key)
+		case "isOverridable":
+			err = unpopulate(val, "IsOverridable", &s.IsOverridable)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -17903,6 +18008,7 @@ func (v VirtualMachineScaleSetProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "provisioningState", v.ProvisioningState)
 	populate(objectMap, "proximityPlacementGroup", v.ProximityPlacementGroup)
 	populate(objectMap, "resiliencyPolicy", v.ResiliencyPolicy)
+	populate(objectMap, "skuProfile", v.SKUProfile)
 	populate(objectMap, "scaleInPolicy", v.ScaleInPolicy)
 	populate(objectMap, "scheduledEventsPolicy", v.ScheduledEventsPolicy)
 	populate(objectMap, "singlePlacementGroup", v.SinglePlacementGroup)
@@ -17911,6 +18017,7 @@ func (v VirtualMachineScaleSetProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "uniqueId", v.UniqueID)
 	populate(objectMap, "upgradePolicy", v.UpgradePolicy)
 	populate(objectMap, "virtualMachineProfile", v.VirtualMachineProfile)
+	populate(objectMap, "zonalPlatformFaultDomainAlignMode", v.ZonalPlatformFaultDomainAlignMode)
 	populate(objectMap, "zoneBalance", v.ZoneBalance)
 	return json.Marshal(objectMap)
 }
@@ -17960,6 +18067,9 @@ func (v *VirtualMachineScaleSetProperties) UnmarshalJSON(data []byte) error {
 		case "resiliencyPolicy":
 			err = unpopulate(val, "ResiliencyPolicy", &v.ResiliencyPolicy)
 			delete(rawMsg, key)
+		case "skuProfile":
+			err = unpopulate(val, "SKUProfile", &v.SKUProfile)
+			delete(rawMsg, key)
 		case "scaleInPolicy":
 			err = unpopulate(val, "ScaleInPolicy", &v.ScaleInPolicy)
 			delete(rawMsg, key)
@@ -17983,6 +18093,9 @@ func (v *VirtualMachineScaleSetProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "virtualMachineProfile":
 			err = unpopulate(val, "VirtualMachineProfile", &v.VirtualMachineProfile)
+			delete(rawMsg, key)
+		case "zonalPlatformFaultDomainAlignMode":
+			err = unpopulate(val, "ZonalPlatformFaultDomainAlignMode", &v.ZonalPlatformFaultDomainAlignMode)
 			delete(rawMsg, key)
 		case "zoneBalance":
 			err = unpopulate(val, "ZoneBalance", &v.ZoneBalance)
@@ -18272,6 +18385,7 @@ func (v VirtualMachineScaleSetUpdate) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "properties", v.Properties)
 	populate(objectMap, "sku", v.SKU)
 	populate(objectMap, "tags", v.Tags)
+	populate(objectMap, "zones", v.Zones)
 	return json.Marshal(objectMap)
 }
 
@@ -18298,6 +18412,9 @@ func (v *VirtualMachineScaleSetUpdate) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "tags":
 			err = unpopulate(val, "Tags", &v.Tags)
+			delete(rawMsg, key)
+		case "zones":
+			err = unpopulate(val, "Zones", &v.Zones)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -18630,11 +18747,13 @@ func (v VirtualMachineScaleSetUpdateProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "priorityMixPolicy", v.PriorityMixPolicy)
 	populate(objectMap, "proximityPlacementGroup", v.ProximityPlacementGroup)
 	populate(objectMap, "resiliencyPolicy", v.ResiliencyPolicy)
+	populate(objectMap, "skuProfile", v.SKUProfile)
 	populate(objectMap, "scaleInPolicy", v.ScaleInPolicy)
 	populate(objectMap, "singlePlacementGroup", v.SinglePlacementGroup)
 	populate(objectMap, "spotRestorePolicy", v.SpotRestorePolicy)
 	populate(objectMap, "upgradePolicy", v.UpgradePolicy)
 	populate(objectMap, "virtualMachineProfile", v.VirtualMachineProfile)
+	populate(objectMap, "zonalPlatformFaultDomainAlignMode", v.ZonalPlatformFaultDomainAlignMode)
 	return json.Marshal(objectMap)
 }
 
@@ -18668,6 +18787,9 @@ func (v *VirtualMachineScaleSetUpdateProperties) UnmarshalJSON(data []byte) erro
 		case "resiliencyPolicy":
 			err = unpopulate(val, "ResiliencyPolicy", &v.ResiliencyPolicy)
 			delete(rawMsg, key)
+		case "skuProfile":
+			err = unpopulate(val, "SKUProfile", &v.SKUProfile)
+			delete(rawMsg, key)
 		case "scaleInPolicy":
 			err = unpopulate(val, "ScaleInPolicy", &v.ScaleInPolicy)
 			delete(rawMsg, key)
@@ -18682,6 +18804,9 @@ func (v *VirtualMachineScaleSetUpdateProperties) UnmarshalJSON(data []byte) erro
 			delete(rawMsg, key)
 		case "virtualMachineProfile":
 			err = unpopulate(val, "VirtualMachineProfile", &v.VirtualMachineProfile)
+			delete(rawMsg, key)
+		case "zonalPlatformFaultDomainAlignMode":
+			err = unpopulate(val, "ZonalPlatformFaultDomainAlignMode", &v.ZonalPlatformFaultDomainAlignMode)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -18811,6 +18936,7 @@ func (v VirtualMachineScaleSetUpdateVMProfile) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "networkProfile", v.NetworkProfile)
 	populate(objectMap, "osProfile", v.OSProfile)
 	populate(objectMap, "scheduledEventsProfile", v.ScheduledEventsProfile)
+	populate(objectMap, "securityPostureReference", v.SecurityPostureReference)
 	populate(objectMap, "securityProfile", v.SecurityProfile)
 	populate(objectMap, "storageProfile", v.StorageProfile)
 	populate(objectMap, "userData", v.UserData)
@@ -18849,6 +18975,9 @@ func (v *VirtualMachineScaleSetUpdateVMProfile) UnmarshalJSON(data []byte) error
 			delete(rawMsg, key)
 		case "scheduledEventsProfile":
 			err = unpopulate(val, "ScheduledEventsProfile", &v.ScheduledEventsProfile)
+			delete(rawMsg, key)
+		case "securityPostureReference":
+			err = unpopulate(val, "SecurityPostureReference", &v.SecurityPostureReference)
 			delete(rawMsg, key)
 		case "securityProfile":
 			err = unpopulate(val, "SecurityProfile", &v.SecurityProfile)

@@ -10,14 +10,16 @@ package azcontainerregistry
 
 import "io"
 
-// authenticationClientExchangeAADAccessTokenForACRRefreshTokenResponse contains the response from method authenticationClient.ExchangeAADAccessTokenForACRRefreshToken.
-type authenticationClientExchangeAADAccessTokenForACRRefreshTokenResponse struct {
-	acrRefreshToken
+// AuthenticationClientExchangeAADAccessTokenForACRRefreshTokenResponse contains the response from method AuthenticationClient.ExchangeAADAccessTokenForACRRefreshToken.
+type AuthenticationClientExchangeAADAccessTokenForACRRefreshTokenResponse struct {
+	// The ACR refresh token response.
+	ACRRefreshToken
 }
 
-// authenticationClientExchangeACRRefreshTokenForACRAccessTokenResponse contains the response from method authenticationClient.ExchangeACRRefreshTokenForACRAccessToken.
-type authenticationClientExchangeACRRefreshTokenForACRAccessTokenResponse struct {
-	acrAccessToken
+// AuthenticationClientExchangeACRRefreshTokenForACRAccessTokenResponse contains the response from method AuthenticationClient.ExchangeACRRefreshTokenForACRAccessToken.
+type AuthenticationClientExchangeACRRefreshTokenForACRAccessTokenResponse struct {
+	// The ACR access token response.
+	ACRAccessToken
 }
 
 // BlobClientCancelUploadResponse contains the response from method BlobClient.CancelUpload.

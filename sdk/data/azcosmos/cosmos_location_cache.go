@@ -113,8 +113,8 @@ func (lc *locationCache) update(writeLocations []accountRegion, readLocations []
 	return nil
 }
 
-func (lc *locationCache) resolveServiceEndpoint(locationIndex int, isWriteOperation, useWriteEndpoint bool) url.URL {
-	if (isWriteOperation || useWriteEndpoint) && !lc.canUseMultipleWriteLocs() {
+func (lc *locationCache) resolveServiceEndpoint(locationIndex int, resourceType resourceType, isWriteOperation, useWriteEndpoint bool) url.URL {
+	if (isWriteOperation || useWriteEndpoint) && !lc.canUseMultipleWriteLocsToRoute(resourceType) {
 		if lc.enableCrossRegionRetries && len(lc.locationInfo.availWriteLocations) > 0 {
 			locationIndex = min(locationIndex%2, len(lc.locationInfo.availWriteLocations)-1)
 			writeLocation := lc.locationInfo.availWriteLocations[locationIndex]
@@ -128,6 +128,10 @@ func (lc *locationCache) resolveServiceEndpoint(locationIndex int, isWriteOperat
 		endpoints = lc.locationInfo.writeEndpoints
 	}
 	return endpoints[locationIndex%len(endpoints)]
+}
+
+func (lc *locationCache) canUseMultipleWriteLocsToRoute(resourceType resourceType) bool {
+	return lc.canUseMultipleWriteLocs() && resourceType == resourceTypeDocument
 }
 
 func (lc *locationCache) readEndpoints() ([]url.URL, error) {

@@ -13,8 +13,8 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/test/credential"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azwebpubsub"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azwebpubsub/internal"
 	"github.com/stretchr/testify/require"
@@ -127,7 +127,7 @@ func newClientWrapper(t *testing.T) clientWrapper {
 		require.NoError(t, err)
 		client = tmpClient
 	} else {
-		cred, err := azidentity.NewDefaultAzureCredential(nil)
+		cred, err := credential.New(nil)
 		require.NoError(t, err)
 
 		tmpClient, err := azwebpubsub.NewClient(tv.Endpoint, cred, options)

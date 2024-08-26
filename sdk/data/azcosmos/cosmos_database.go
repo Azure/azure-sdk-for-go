@@ -50,6 +50,13 @@ func (db *DatabaseClient) CreateContainer(
 	ctx context.Context,
 	containerProperties ContainerProperties,
 	o *CreateContainerOptions) (ContainerResponse, error) {
+	var err error
+	spanName, err := db.getSpanForContainers(operationTypeCreate, resourceTypeCollection, containerProperties.ID)
+	if err != nil {
+		return ContainerResponse{}, err
+	}
+	ctx, endSpan := runtime.StartSpan(ctx, spanName.name, db.client.internal.Tracer(), &spanName.options)
+	defer func() { endSpan(err) }()
 	if o == nil {
 		o = &CreateContainerOptions{}
 	}
@@ -81,7 +88,8 @@ func (db *DatabaseClient) CreateContainer(
 		return ContainerResponse{}, err
 	}
 
-	return newContainerResponse(azResponse)
+	response, err := newContainerResponse(azResponse)
+	return response, err
 }
 
 // NewQueryContainersPager executes query for containers within a database.
@@ -106,6 +114,14 @@ func (c *DatabaseClient) NewQueryContainersPager(query string, o *QueryContainer
 			return page.ContinuationToken != nil
 		},
 		Fetcher: func(ctx context.Context, page *QueryContainersResponse) (QueryContainersResponse, error) {
+			var err error
+			// Move the span to the pager once https://github.com/Azure/azure-sdk-for-go/issues/23294 is fixed
+			spanName, err := c.getSpanForDatabases(operationTypeQuery, resourceTypeCollection)
+			if err != nil {
+				return QueryContainersResponse{}, err
+			}
+			ctx, endSpan := runtime.StartSpan(ctx, spanName.name, c.client.internal.Tracer(), &spanName.options)
+			defer func() { endSpan(err) }()
 			if page != nil {
 				if page.ContinuationToken != nil {
 					// Use the previous page continuation if available
@@ -128,6 +144,7 @@ func (c *DatabaseClient) NewQueryContainersPager(query string, o *QueryContainer
 
 			return newContainersQueryResponse(azResponse)
 		},
+		Tracer: c.client.internal.Tracer(),
 	})
 }
 
@@ -137,6 +154,13 @@ func (c *DatabaseClient) NewQueryContainersPager(query string, o *QueryContainer
 func (db *DatabaseClient) Read(
 	ctx context.Context,
 	o *ReadDatabaseOptions) (DatabaseResponse, error) {
+	var err error
+	spanName, err := db.getSpanForDatabases(operationTypeRead, resourceTypeDatabase)
+	if err != nil {
+		return DatabaseResponse{}, err
+	}
+	ctx, endSpan := runtime.StartSpan(ctx, spanName.name, db.client.internal.Tracer(), &spanName.options)
+	defer func() { endSpan(err) }()
 	if o == nil {
 		o = &ReadDatabaseOptions{}
 	}
@@ -161,7 +185,8 @@ func (db *DatabaseClient) Read(
 		return DatabaseResponse{}, err
 	}
 
-	return newDatabaseResponse(azResponse)
+	response, err := newDatabaseResponse(azResponse)
+	return response, err
 }
 
 // ReadThroughput obtains the provisioned throughput information for the database.
@@ -170,6 +195,13 @@ func (db *DatabaseClient) Read(
 func (db *DatabaseClient) ReadThroughput(
 	ctx context.Context,
 	o *ThroughputOptions) (ThroughputResponse, error) {
+	var err error
+	spanName, err := db.getSpanForDatabases(operationTypeRead, resourceTypeOffer)
+	if err != nil {
+		return ThroughputResponse{}, err
+	}
+	ctx, endSpan := runtime.StartSpan(ctx, spanName.name, db.client.internal.Tracer(), &spanName.options)
+	defer func() { endSpan(err) }()
 	if o == nil {
 		o = &ThroughputOptions{}
 	}
@@ -180,7 +212,8 @@ func (db *DatabaseClient) ReadThroughput(
 	}
 
 	offers := &cosmosOffers{client: db.client}
-	return offers.ReadThroughputIfExists(ctx, rid, o)
+	response, err := offers.ReadThroughputIfExists(ctx, rid, o)
+	return response, err
 }
 
 // ReplaceThroughput updates the provisioned throughput for the database.
@@ -191,6 +224,13 @@ func (db *DatabaseClient) ReplaceThroughput(
 	ctx context.Context,
 	throughputProperties ThroughputProperties,
 	o *ThroughputOptions) (ThroughputResponse, error) {
+	var err error
+	spanName, err := db.getSpanForDatabases(operationTypeReplace, resourceTypeOffer)
+	if err != nil {
+		return ThroughputResponse{}, err
+	}
+	ctx, endSpan := runtime.StartSpan(ctx, spanName.name, db.client.internal.Tracer(), &spanName.options)
+	defer func() { endSpan(err) }()
 	if o == nil {
 		o = &ThroughputOptions{}
 	}
@@ -201,7 +241,8 @@ func (db *DatabaseClient) ReplaceThroughput(
 	}
 
 	offers := &cosmosOffers{client: db.client}
-	return offers.ReplaceThroughputIfExists(ctx, throughputProperties, rid, o)
+	response, err := offers.ReplaceThroughputIfExists(ctx, throughputProperties, rid, o)
+	return response, err
 }
 
 // Delete a Cosmos database.
@@ -210,6 +251,13 @@ func (db *DatabaseClient) ReplaceThroughput(
 func (db *DatabaseClient) Delete(
 	ctx context.Context,
 	o *DeleteDatabaseOptions) (DatabaseResponse, error) {
+	var err error
+	spanName, err := db.getSpanForDatabases(operationTypeDelete, resourceTypeDatabase)
+	if err != nil {
+		return DatabaseResponse{}, err
+	}
+	ctx, endSpan := runtime.StartSpan(ctx, spanName.name, db.client.internal.Tracer(), &spanName.options)
+	defer func() { endSpan(err) }()
 	if o == nil {
 		o = &DeleteDatabaseOptions{}
 	}
@@ -235,7 +283,8 @@ func (db *DatabaseClient) Delete(
 		return DatabaseResponse{}, err
 	}
 
-	return newDatabaseResponse(azResponse)
+	response, err := newDatabaseResponse(azResponse)
+	return response, err
 }
 
 func (db *DatabaseClient) getRID(ctx context.Context) (string, error) {
@@ -245,4 +294,12 @@ func (db *DatabaseClient) getRID(ctx context.Context) (string, error) {
 	}
 
 	return dbResponse.DatabaseProperties.ResourceID, nil
+}
+
+func (db *DatabaseClient) getSpanForDatabases(operationType operationType, resourceType resourceType) (span, error) {
+	return getSpanNameForDatabases(db.client.accountEndpointUrl(), operationType, resourceType, db.id)
+}
+
+func (db *DatabaseClient) getSpanForContainers(operationType operationType, resourceType resourceType, id string) (span, error) {
+	return getSpanNameForContainers(db.client.accountEndpointUrl(), operationType, resourceType, db.id, id)
 }

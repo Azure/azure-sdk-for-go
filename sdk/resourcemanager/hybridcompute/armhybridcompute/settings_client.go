@@ -46,7 +46,7 @@ func NewSettingsClient(subscriptionID string, credential azcore.TokenCredential,
 // Get - Returns the base Settings for the target resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-31-preview
+// Generated from API version 2024-05-20-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - baseProvider - The name of the base Resource Provider.
 //   - baseResourceType - The name of the base Resource Type.
@@ -107,7 +107,7 @@ func (client *SettingsClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-31-preview")
+	reqQP.Set("api-version", "2024-05-20-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -125,7 +125,7 @@ func (client *SettingsClient) getHandleResponse(resp *http.Response) (SettingsCl
 // Patch - Update the base Settings of the target resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-31-preview
+// Generated from API version 2024-05-20-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - baseProvider - The name of the base Resource Provider.
 //   - baseResourceType - The name of the base Resource Type.
@@ -187,7 +187,7 @@ func (client *SettingsClient) patchCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-31-preview")
+	reqQP.Set("api-version", "2024-05-20-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -208,7 +208,7 @@ func (client *SettingsClient) patchHandleResponse(resp *http.Response) (Settings
 // Update - Updates the base Settings of the target resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-31-preview
+// Generated from API version 2024-05-20-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - baseProvider - The name of the base Resource Provider.
 //   - baseResourceType - The name of the base Resource Type.
@@ -270,7 +270,7 @@ func (client *SettingsClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-31-preview")
+	reqQP.Set("api-version", "2024-05-20-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

@@ -10,7 +10,7 @@ package armcompute
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
-	moduleVersion = "v5.7.0"
+	moduleVersion = "v6.1.0"
 )
 
 type AccessLevel string
@@ -47,6 +47,23 @@ func PossibleAggregatedReplicationStateValues() []AggregatedReplicationState {
 		AggregatedReplicationStateFailed,
 		AggregatedReplicationStateInProgress,
 		AggregatedReplicationStateUnknown,
+	}
+}
+
+// AllocationStrategy - Specifies the allocation strategy for the virtual machine scale set based on which the VMs will be
+// allocated.
+type AllocationStrategy string
+
+const (
+	AllocationStrategyCapacityOptimized AllocationStrategy = "CapacityOptimized"
+	AllocationStrategyLowestPrice       AllocationStrategy = "LowestPrice"
+)
+
+// PossibleAllocationStrategyValues returns the possible values for the AllocationStrategy const type.
+func PossibleAllocationStrategyValues() []AllocationStrategy {
+	return []AllocationStrategy{
+		AllocationStrategyCapacityOptimized,
+		AllocationStrategyLowestPrice,
 	}
 }
 
@@ -480,9 +497,8 @@ func PossibleDiskDeleteOptionTypesValues() []DiskDeleteOptionTypes {
 // is applicable only for managed data disks. If a previous detachment attempt of the data disk did not complete due to an
 // unexpected failure from the virtual machine and the disk is still not released
 // then use force-detach as a last resort option to detach the disk forcibly from the VM. All writes might not have been flushed
-// when using this detach behavior. This feature is still in preview mode and
-// is not supported for VirtualMachineScaleSet. To force-detach a data disk update toBeDetached to 'true' along with setting
-// detachOption: 'ForceDetach'.
+// when using this detach behavior. This feature is still in preview mode. To
+// force-detach a data disk update toBeDetached to 'true' along with setting detachOption: 'ForceDetach'.
 type DiskDetachOptionTypes string
 
 const (
@@ -2826,5 +2842,22 @@ func PossibleWindowsVMGuestPatchModeValues() []WindowsVMGuestPatchMode {
 		WindowsVMGuestPatchModeAutomaticByOS,
 		WindowsVMGuestPatchModeAutomaticByPlatform,
 		WindowsVMGuestPatchModeManual,
+	}
+}
+
+// ZonalPlatformFaultDomainAlignMode - Specifies the align mode between Virtual Machine Scale Set compute and storage Fault
+// Domain count.
+type ZonalPlatformFaultDomainAlignMode string
+
+const (
+	ZonalPlatformFaultDomainAlignModeAligned   ZonalPlatformFaultDomainAlignMode = "Aligned"
+	ZonalPlatformFaultDomainAlignModeUnaligned ZonalPlatformFaultDomainAlignMode = "Unaligned"
+)
+
+// PossibleZonalPlatformFaultDomainAlignModeValues returns the possible values for the ZonalPlatformFaultDomainAlignMode const type.
+func PossibleZonalPlatformFaultDomainAlignModeValues() []ZonalPlatformFaultDomainAlignMode {
+	return []ZonalPlatformFaultDomainAlignMode{
+		ZonalPlatformFaultDomainAlignModeAligned,
+		ZonalPlatformFaultDomainAlignModeUnaligned,
 	}
 }

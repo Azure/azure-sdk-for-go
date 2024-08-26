@@ -27,3 +27,4 @@ extends:
     IncludeRelease: true
     ServiceDirectory: 'resourcemanager/datafactory/armdatafactory'
     UsePipelineProxy: false
+    UseFederatedAuth: true

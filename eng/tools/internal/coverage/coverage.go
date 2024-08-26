@@ -5,7 +5,7 @@ import (
 	"errors"
 	"flag"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
 	"os"
 	"path/filepath"
@@ -57,7 +57,7 @@ func readConfigData(coverageConfig string) *codeCoverage {
 	check(err)
 	defer jsonFile.Close()
 
-	byteValue, err := ioutil.ReadAll(jsonFile)
+	byteValue, err := io.ReadAll(jsonFile)
 	check(err)
 
 	var cov codeCoverage
@@ -113,7 +113,7 @@ func parseCoverageFiles(coverageFiles []string) []float64 {
 		check(err)
 		defer xmlFile.Close()
 
-		byteValue, err := ioutil.ReadAll(xmlFile)
+		byteValue, err := io.ReadAll(xmlFile)
 		check(err)
 
 		coveragePercent, err := parseCoveragePercent(byteValue)

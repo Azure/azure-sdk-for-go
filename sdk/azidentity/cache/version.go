@@ -7,4 +7,4 @@
 package cache
 
 //lint:ignore U1000 used by automation
-const version = "v0.3.0"
+const version = "v0.3.1"

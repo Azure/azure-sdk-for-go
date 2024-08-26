@@ -30,12 +30,22 @@ extends:
           SubscriptionConfigurations:
             - $(sub-config-azure-cloud-test-resources)
             - $(sub-config-identity-test-resources)
+      EnableRaceDetector: true
       RunLiveTests: true
       ServiceDirectory: azidentity
       UseFederatedAuth: true
       UsePipelineProxy: false
 
       ${{ if endsWith(variables['Build.DefinitionName'], 'weekly') }}:
+        PreSteps:
+        - task: AzureCLI@2
+          displayName: Set OIDC token
+          inputs:
+            addSpnToEnvironment: true
+            azureSubscription: azure-sdk-tests
+            inlineScript: Write-Host "##vso[task.setvariable variable=OIDC_TOKEN;]$($env:idToken)"
+            scriptLocation: inlineScript
+            scriptType: pscore
         MatrixConfigs:
           - Name: managed_identity_matrix
             GenerateVMJobs: true

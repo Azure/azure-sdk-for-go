@@ -27,6 +27,7 @@ extends:
   parameters:
     ServiceDirectory: 'security/keyvault/azcertificates'
     RunLiveTests: true
+    UseFederatedAuth: true
     UsePipelineProxy: false
     SupportedClouds: 'Public,UsGov,China'
     TestRunTime: '900s'

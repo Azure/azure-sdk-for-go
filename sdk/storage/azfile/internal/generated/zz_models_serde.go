@@ -250,6 +250,7 @@ func (s *ShareProperties) UnmarshalXML(dec *xml.Decoder, start xml.StartElement)
 // MarshalJSON implements the json.Marshaller interface for type StorageError.
 func (s StorageError) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "AuthenticationErrorDetail", s.AuthenticationErrorDetail)
 	populate(objectMap, "Message", s.Message)
 	return json.Marshal(objectMap)
 }
@@ -263,6 +264,9 @@ func (s *StorageError) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "AuthenticationErrorDetail":
+			err = unpopulate(val, "AuthenticationErrorDetail", &s.AuthenticationErrorDetail)
+			delete(rawMsg, key)
 		case "Message":
 			err = unpopulate(val, "Message", &s.Message)
 			delete(rawMsg, key)

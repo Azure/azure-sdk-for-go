@@ -109,11 +109,8 @@ func TestConsumeCloudEventContainerServiceSupportEndedEvent(t *testing.T) {
 
 	event := parseCloudEvent(t, requestContent)
 
-	sysEvent := deserializeSystemEvent[azsystemevents.ContainerServiceClusterSupportEventData](t, event.Data)
+	sysEvent := deserializeSystemEvent[azsystemevents.ContainerServiceClusterSupportEndedEventData](t, event.Data)
 	require.Equal(t, "1.23.15", *sysEvent.KubernetesVersion)
-
-	sysEvent2 := deserializeSystemEvent[azsystemevents.ContainerServiceClusterSupportEndedEventData](t, event.Data)
-	require.Equal(t, "1.23.15", *sysEvent2.KubernetesVersion)
 }
 
 func TestConsumeCloudEventContainerServiceSupportEndingEvent(t *testing.T) {
@@ -131,13 +128,10 @@ func TestConsumeCloudEventContainerServiceSupportEndingEvent(t *testing.T) {
 	}`
 
 	event := parseCloudEvent(t, requestContent)
-
 	require.NotEmpty(t, event)
-	sysEvent := deserializeSystemEvent[azsystemevents.ContainerServiceClusterSupportEventData](t, event.Data)
-	require.Equal(t, "1.23.15", *sysEvent.KubernetesVersion)
 
-	sysEvent2 := deserializeSystemEvent[azsystemevents.ContainerServiceClusterSupportEndingEventData](t, event.Data)
-	require.Equal(t, "1.23.15", *sysEvent2.KubernetesVersion)
+	sysEvent := deserializeSystemEvent[azsystemevents.ContainerServiceClusterSupportEndingEventData](t, event.Data)
+	require.Equal(t, "1.23.15", *sysEvent.KubernetesVersion)
 }
 
 func TestConsumeCloudEventContainerServiceNodePoolRollingFailed(t *testing.T) {
@@ -156,11 +150,8 @@ func TestConsumeCloudEventContainerServiceNodePoolRollingFailed(t *testing.T) {
 
 	event := parseCloudEvent(t, requestContent)
 
-	sysEvent := deserializeSystemEvent[azsystemevents.ContainerServiceNodePoolRollingEventData](t, event.Data)
+	sysEvent := deserializeSystemEvent[azsystemevents.ContainerServiceNodePoolRollingFailedEventData](t, event.Data)
 	require.Equal(t, "nodepool1", *sysEvent.NodePoolName)
-
-	sysEvent2 := deserializeSystemEvent[azsystemevents.ContainerServiceNodePoolRollingFailedEventData](t, event.Data)
-	require.Equal(t, "nodepool1", *sysEvent2.NodePoolName)
 }
 
 func TestConsumeCloudEventContainerServiceNodePoolRollingStarted(t *testing.T) {
@@ -180,7 +171,7 @@ func TestConsumeCloudEventContainerServiceNodePoolRollingStarted(t *testing.T) {
 	event := parseCloudEvent(t, requestContent)
 
 	require.NotEmpty(t, event)
-	sysEvent := deserializeSystemEvent[azsystemevents.ContainerServiceNodePoolRollingEventData](t, event.Data)
+	sysEvent := deserializeSystemEvent[azsystemevents.ContainerServiceNodePoolRollingStartedEventData](t, event.Data)
 	require.Equal(t, "nodepool1", *sysEvent.NodePoolName)
 }
 
@@ -199,10 +190,7 @@ func TestConsumeCloudEventContainerServiceNodePoolRollingSucceeded(t *testing.T)
 	}`
 
 	event := parseCloudEvent(t, requestContent)
-
 	require.NotEmpty(t, event)
-	sysEvent := deserializeSystemEvent[azsystemevents.ContainerServiceNodePoolRollingEventData](t, event.Data)
-	require.Equal(t, "nodepool1", *sysEvent.NodePoolName)
 
 	sysEvent2 := deserializeSystemEvent[azsystemevents.ContainerServiceNodePoolRollingSucceededEventData](t, event.Data)
 	require.Equal(t, "nodepool1", *sysEvent2.NodePoolName)

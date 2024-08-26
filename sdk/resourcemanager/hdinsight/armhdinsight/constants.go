@@ -10,7 +10,7 @@ package armhdinsight
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hdinsight/armhdinsight"
-	moduleVersion = "v1.3.0-beta.1"
+	moduleVersion = "v1.3.0-beta.2"
 )
 
 // AsyncOperationState - The async operation state.
@@ -163,6 +163,24 @@ func PossibleOSTypeValues() []OSType {
 	return []OSType{
 		OSTypeLinux,
 		OSTypeWindows,
+	}
+}
+
+// OutboundDependenciesManagedType - A value to describe how the outbound dependencies of a HDInsight cluster are managed.
+// 'Managed' means that the outbound dependencies are managed by the HDInsight service. 'External' means that the
+// outbound dependencies are managed by a customer specific solution.
+type OutboundDependenciesManagedType string
+
+const (
+	OutboundDependenciesManagedTypeExternal OutboundDependenciesManagedType = "External"
+	OutboundDependenciesManagedTypeManaged  OutboundDependenciesManagedType = "Managed"
+)
+
+// PossibleOutboundDependenciesManagedTypeValues returns the possible values for the OutboundDependenciesManagedType const type.
+func PossibleOutboundDependenciesManagedTypeValues() []OutboundDependenciesManagedType {
+	return []OutboundDependenciesManagedType{
+		OutboundDependenciesManagedTypeExternal,
+		OutboundDependenciesManagedTypeManaged,
 	}
 }
 

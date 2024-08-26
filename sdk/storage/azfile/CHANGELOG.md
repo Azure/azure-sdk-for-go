@@ -1,14 +1,23 @@
 # Release History
 
-## 1.3.0-beta.2 (Unreleased)
+## 1.3.1 (Unreleased)
 
 ### Features Added
+* Snapshot management support via REST for NFS shares.
+* Upgraded service version to `2024-08-04`.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+* Updated `azcore` version to `1.14.0`
+
+## 1.3.0 (2024-07-18)
+
+### Other Changes
+* GetProperties() was called twice in DownloadFile method. Enhanced to call it only once, reducing latency.
+* Updated `azcore` version to `1.13.0`
 
 ## 1.3.0-beta.1 (2024-06-14)
 

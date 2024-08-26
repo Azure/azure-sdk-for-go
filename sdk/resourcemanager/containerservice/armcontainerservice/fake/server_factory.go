@@ -20,6 +20,7 @@ import (
 // ServerFactory is a fake server for instances of the armcontainerservice.ClientFactory type.
 type ServerFactory struct {
 	AgentPoolsServer                  AgentPoolsServer
+	LoadBalancersServer               LoadBalancersServer
 	MachinesServer                    MachinesServer
 	MaintenanceConfigurationsServer   MaintenanceConfigurationsServer
 	ManagedClusterSnapshotsServer     ManagedClusterSnapshotsServer
@@ -49,6 +50,7 @@ type ServerFactoryTransport struct {
 	srv                                 *ServerFactory
 	trMu                                sync.Mutex
 	trAgentPoolsServer                  *AgentPoolsServerTransport
+	trLoadBalancersServer               *LoadBalancersServerTransport
 	trMachinesServer                    *MachinesServerTransport
 	trMaintenanceConfigurationsServer   *MaintenanceConfigurationsServerTransport
 	trManagedClusterSnapshotsServer     *ManagedClusterSnapshotsServerTransport
@@ -79,6 +81,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "AgentPoolsClient":
 		initServer(s, &s.trAgentPoolsServer, func() *AgentPoolsServerTransport { return NewAgentPoolsServerTransport(&s.srv.AgentPoolsServer) })
 		resp, err = s.trAgentPoolsServer.Do(req)
+	case "LoadBalancersClient":
+		initServer(s, &s.trLoadBalancersServer, func() *LoadBalancersServerTransport {
+			return NewLoadBalancersServerTransport(&s.srv.LoadBalancersServer)
+		})
+		resp, err = s.trLoadBalancersServer.Do(req)
 	case "MachinesClient":
 		initServer(s, &s.trMachinesServer, func() *MachinesServerTransport { return NewMachinesServerTransport(&s.srv.MachinesServer) })
 		resp, err = s.trMachinesServer.Do(req)

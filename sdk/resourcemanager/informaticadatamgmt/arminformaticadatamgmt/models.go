@@ -355,11 +355,11 @@ type LinkOrganization struct {
 
 // MarketplaceDetails - Marketplace details.
 type MarketplaceDetails struct {
-	// REQUIRED; Marketplace Subscription Id
-	MarketplaceSubscriptionID *string
-
 	// REQUIRED; Marketplace offer details.
 	OfferDetails *OfferDetails
+
+	// Marketplace Subscription Id
+	MarketplaceSubscriptionID *string
 }
 
 // MarketplaceDetailsUpdate - Marketplace details

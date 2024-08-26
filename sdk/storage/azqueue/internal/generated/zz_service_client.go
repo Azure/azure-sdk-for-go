@@ -72,7 +72,7 @@ func (client *ServiceClient) getPropertiesCreateRequest(ctx context.Context, opt
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2018-03-28"}
+	req.Raw().Header["x-ms-version"] = []string{"2024-08-04"}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
@@ -130,7 +130,7 @@ func (client *ServiceClient) getStatisticsCreateRequest(ctx context.Context, opt
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2018-03-28"}
+	req.Raw().Header["x-ms-version"] = []string{"2024-08-04"}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
@@ -165,7 +165,7 @@ func (client *ServiceClient) getStatisticsHandleResponse(resp *http.Response) (S
 // Generated from API version 2018-03-28
 //   - options - ServiceClientListQueuesSegmentOptions contains the optional parameters for the ServiceClient.NewListQueuesSegmentPager
 //     method.
-
+//
 // ListQueuesSegmentCreateRequest creates the ListQueuesFlatSegment ListQueuesSegment.
 func (client *ServiceClient) ListQueuesSegmentCreateRequest(ctx context.Context, options *ServiceClientListQueuesSegmentOptions) (*policy.Request, error) {
 	req, err := runtime.NewRequest(ctx, http.MethodGet, client.endpoint)
@@ -190,7 +190,7 @@ func (client *ServiceClient) ListQueuesSegmentCreateRequest(ctx context.Context,
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2018-03-28"}
+	req.Raw().Header["x-ms-version"] = []string{"2024-08-04"}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
@@ -198,7 +198,7 @@ func (client *ServiceClient) ListQueuesSegmentCreateRequest(ctx context.Context,
 	return req, nil
 }
 
-// ListQueuesSegmentHandleResponse handles the ListQueuesSegment response.
+// listQueuesSegmentHandleResponse handles the ListQueuesSegment response.
 func (client *ServiceClient) ListQueuesSegmentHandleResponse(resp *http.Response) (ServiceClientListQueuesSegmentResponse, error) {
 	result := ServiceClientListQueuesSegmentResponse{}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
@@ -255,7 +255,7 @@ func (client *ServiceClient) setPropertiesCreateRequest(ctx context.Context, sto
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2018-03-28"}
+	req.Raw().Header["x-ms-version"] = []string{"2024-08-04"}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}

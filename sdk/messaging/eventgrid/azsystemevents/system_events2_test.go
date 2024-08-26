@@ -212,11 +212,8 @@ func TestConsumeContainerServiceSupportEndedEvent(t *testing.T) {
 
 	event := parseEvent(t, requestContent)
 
-	sysEvent := deserializeSystemEvent[azsystemevents.ContainerServiceClusterSupportEventData](t, event.Data)
+	sysEvent := deserializeSystemEvent[azsystemevents.ContainerServiceClusterSupportEndedEventData](t, event.Data)
 	require.Equal(t, "1.23.15", *sysEvent.KubernetesVersion)
-
-	sysEvent2 := deserializeSystemEvent[azsystemevents.ContainerServiceClusterSupportEndedEventData](t, event.Data)
-	require.Equal(t, "1.23.15", *sysEvent2.KubernetesVersion)
 }
 
 func TestConsumeContainerServiceSupportEndingEvent(t *testing.T) {
@@ -237,11 +234,8 @@ func TestConsumeContainerServiceSupportEndingEvent(t *testing.T) {
 	event := parseEvent(t, requestContent)
 
 	require.NotEmpty(t, event)
-	sysEvent := deserializeSystemEvent[azsystemevents.ContainerServiceClusterSupportEventData](t, event.Data)
+	sysEvent := deserializeSystemEvent[azsystemevents.ContainerServiceClusterSupportEndingEventData](t, event.Data)
 	require.Equal(t, "1.23.15", *sysEvent.KubernetesVersion)
-
-	sysEvent2 := deserializeSystemEvent[azsystemevents.ContainerServiceClusterSupportEndingEventData](t, event.Data)
-	require.Equal(t, "1.23.15", *sysEvent2.KubernetesVersion)
 }
 
 func TestConsumeContainerServiceNodePoolRollingFailed(t *testing.T) {
@@ -263,11 +257,8 @@ func TestConsumeContainerServiceNodePoolRollingFailed(t *testing.T) {
 
 	require.NotEmpty(t, event)
 
-	sysEvent := deserializeSystemEvent[azsystemevents.ContainerServiceNodePoolRollingEventData](t, event.Data)
+	sysEvent := deserializeSystemEvent[azsystemevents.ContainerServiceNodePoolRollingFailedEventData](t, event.Data)
 	require.Equal(t, "nodepool1", *sysEvent.NodePoolName)
-
-	sysEvent2 := deserializeSystemEvent[azsystemevents.ContainerServiceNodePoolRollingFailedEventData](t, event.Data)
-	require.Equal(t, "nodepool1", *sysEvent2.NodePoolName)
 }
 
 func TestConsumeContainerServiceNodePoolRollingStarted(t *testing.T) {
@@ -286,13 +277,10 @@ func TestConsumeContainerServiceNodePoolRollingStarted(t *testing.T) {
 	}`
 
 	event := parseEvent(t, requestContent)
-
 	require.NotEmpty(t, event)
-	sysEvent := deserializeSystemEvent[azsystemevents.ContainerServiceNodePoolRollingEventData](t, event.Data)
-	require.Equal(t, "nodepool1", *sysEvent.NodePoolName)
 
-	sysEvent2 := deserializeSystemEvent[azsystemevents.ContainerServiceNodePoolRollingStartedEventData](t, event.Data)
-	require.Equal(t, "nodepool1", *sysEvent2.NodePoolName)
+	sysEvent := deserializeSystemEvent[azsystemevents.ContainerServiceNodePoolRollingStartedEventData](t, event.Data)
+	require.Equal(t, "nodepool1", *sysEvent.NodePoolName)
 }
 
 func TestConsumeContainerServiceNodePoolRollingSucceeded(t *testing.T) {
@@ -312,11 +300,8 @@ func TestConsumeContainerServiceNodePoolRollingSucceeded(t *testing.T) {
 
 	event := parseEvent(t, requestContent)
 
-	sysEvent := deserializeSystemEvent[azsystemevents.ContainerServiceNodePoolRollingEventData](t, event.Data)
+	sysEvent := deserializeSystemEvent[azsystemevents.ContainerServiceNodePoolRollingSucceededEventData](t, event.Data)
 	require.Equal(t, "nodepool1", *sysEvent.NodePoolName)
-
-	sysEvent2 := deserializeSystemEvent[azsystemevents.ContainerServiceNodePoolRollingSucceededEventData](t, event.Data)
-	require.Equal(t, "nodepool1", *sysEvent2.NodePoolName)
 }
 
 func TestConsumeIoTHubDeviceCreatedEvent(t *testing.T) {
@@ -1399,7 +1384,7 @@ func TestConsumeAcsEmailDeliveryReportReceivedEvent(t *testing.T) {
 			"recipient": "test1@contoso.com",
 			"messageId": "950850f5-bcdf-4315-b77a-6447cf56fac9",
 			"status": "Delivered",
-			"deliveryAttemptTimeStamp": "2023-02-09T19:46:12.2480265+00:00",
+			"deliveryAttemptTimestamp": "2023-02-09T19:46:12.2480265+00:00",
 			"deliveryStatusDetails": {
 				"statusMessage": "DestinationMailboxFull"
 			}

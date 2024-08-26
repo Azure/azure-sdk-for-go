@@ -393,58 +393,58 @@ func (testsuite *EventhubTestSuite) TestConsumergroups() {
 }
 
 // Microsoft.EventHub/namespaces/applicationGroups
-//func (testsuite *EventhubTestSuite) TestApplicationgroup() {
-//	var err error
-//	// From step ApplicationGroup_CreateOrUpdateApplicationGroup
-//	fmt.Println("Call operation: ApplicationGroup_CreateOrUpdateApplicationGroup")
-//	applicationGroupClient, err := armeventhub.NewApplicationGroupClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
-//	testsuite.Require().NoError(err)
-//	_, err = applicationGroupClient.CreateOrUpdateApplicationGroup(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.applicationGroupName, armeventhub.ApplicationGroup{
-//		Properties: &armeventhub.ApplicationGroupProperties{
-//			ClientAppGroupIdentifier: to.Ptr("SASKeyName=KeyName"),
-//			IsEnabled:                to.Ptr(true),
-//			Policies: []armeventhub.ApplicationGroupPolicyClassification{
-//				&armeventhub.ThrottlingPolicy{
-//					Name:               to.Ptr("ThrottlingPolicy1"),
-//					Type:               to.Ptr(armeventhub.ApplicationGroupPolicyTypeThrottlingPolicy),
-//					MetricID:           to.Ptr(armeventhub.MetricIDIncomingMessages),
-//					RateLimitThreshold: to.Ptr[int64](7912),
-//				},
-//				&armeventhub.ThrottlingPolicy{
-//					Name:               to.Ptr("ThrottlingPolicy2"),
-//					Type:               to.Ptr(armeventhub.ApplicationGroupPolicyTypeThrottlingPolicy),
-//					MetricID:           to.Ptr(armeventhub.MetricIDIncomingBytes),
-//					RateLimitThreshold: to.Ptr[int64](3951729),
-//				},
-//				&armeventhub.ThrottlingPolicy{
-//					Name:               to.Ptr("ThrottlingPolicy3"),
-//					Type:               to.Ptr(armeventhub.ApplicationGroupPolicyTypeThrottlingPolicy),
-//					MetricID:           to.Ptr(armeventhub.MetricIDOutgoingBytes),
-//					RateLimitThreshold: to.Ptr[int64](245175),
-//				}},
-//		},
-//	}, nil)
-//	testsuite.Require().NoError(err)
-//
-//	// From step ApplicationGroup_ListByNamespace
-//	fmt.Println("Call operation: ApplicationGroup_ListByNamespace")
-//	applicationGroupClientNewListByNamespacePager := applicationGroupClient.NewListByNamespacePager(testsuite.resourceGroupName, testsuite.namespaceName, nil)
-//	for applicationGroupClientNewListByNamespacePager.More() {
-//		_, err := applicationGroupClientNewListByNamespacePager.NextPage(testsuite.ctx)
-//		testsuite.Require().NoError(err)
-//		break
-//	}
-//
-//	// From step ApplicationGroup_Get
-//	fmt.Println("Call operation: ApplicationGroup_Get")
-//	_, err = applicationGroupClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.applicationGroupName, nil)
-//	testsuite.Require().NoError(err)
-//
-//	// From step ApplicationGroup_Delete
-//	fmt.Println("Call operation: ApplicationGroup_Delete")
-//	_, err = applicationGroupClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.applicationGroupName, nil)
-//	testsuite.Require().NoError(err)
-//}
+// func (testsuite *EventhubTestSuite) TestApplicationgroup() {
+// 	var err error
+// 	// From step ApplicationGroup_CreateOrUpdateApplicationGroup
+// 	fmt.Println("Call operation: ApplicationGroup_CreateOrUpdateApplicationGroup")
+// 	applicationGroupClient, err := armeventhub.NewApplicationGroupClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
+// 	testsuite.Require().NoError(err)
+// 	_, err = applicationGroupClient.CreateOrUpdateApplicationGroup(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.applicationGroupName, armeventhub.ApplicationGroup{
+// 		Properties: &armeventhub.ApplicationGroupProperties{
+// 			ClientAppGroupIdentifier: to.Ptr("SASKeyName=KeyName"),
+// 			IsEnabled:                to.Ptr(true),
+// 			Policies: []armeventhub.ApplicationGroupPolicyClassification{
+// 				&armeventhub.ThrottlingPolicy{
+// 					Name:               to.Ptr("ThrottlingPolicy1"),
+// 					Type:               to.Ptr(armeventhub.ApplicationGroupPolicyTypeThrottlingPolicy),
+// 					MetricID:           to.Ptr(armeventhub.MetricIDIncomingMessages),
+// 					RateLimitThreshold: to.Ptr[int64](7912),
+// 				},
+// 				&armeventhub.ThrottlingPolicy{
+// 					Name:               to.Ptr("ThrottlingPolicy2"),
+// 					Type:               to.Ptr(armeventhub.ApplicationGroupPolicyTypeThrottlingPolicy),
+// 					MetricID:           to.Ptr(armeventhub.MetricIDIncomingBytes),
+// 					RateLimitThreshold: to.Ptr[int64](3951729),
+// 				},
+// 				&armeventhub.ThrottlingPolicy{
+// 					Name:               to.Ptr("ThrottlingPolicy3"),
+// 					Type:               to.Ptr(armeventhub.ApplicationGroupPolicyTypeThrottlingPolicy),
+// 					MetricID:           to.Ptr(armeventhub.MetricIDOutgoingBytes),
+// 					RateLimitThreshold: to.Ptr[int64](245175),
+// 				}},
+// 		},
+// 	}, nil)
+// 	testsuite.Require().NoError(err)
+
+// 	// From step ApplicationGroup_ListByNamespace
+// 	fmt.Println("Call operation: ApplicationGroup_ListByNamespace")
+// 	applicationGroupClientNewListByNamespacePager := applicationGroupClient.NewListByNamespacePager(testsuite.resourceGroupName, testsuite.namespaceName, nil)
+// 	for applicationGroupClientNewListByNamespacePager.More() {
+// 		_, err := applicationGroupClientNewListByNamespacePager.NextPage(testsuite.ctx)
+// 		testsuite.Require().NoError(err)
+// 		break
+// 	}
+
+// 	// From step ApplicationGroup_Get
+// 	fmt.Println("Call operation: ApplicationGroup_Get")
+// 	_, err = applicationGroupClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.applicationGroupName, nil)
+// 	testsuite.Require().NoError(err)
+
+// 	// From step ApplicationGroup_Delete
+// 	fmt.Println("Call operation: ApplicationGroup_Delete")
+// 	_, err = applicationGroupClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.applicationGroupName, nil)
+// 	testsuite.Require().NoError(err)
+// }
 
 // Microsoft.EventHub/namespaces/schemagroups
 func (testsuite *EventhubTestSuite) TestSchemaregistry() {

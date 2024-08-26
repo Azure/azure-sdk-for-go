@@ -7,28 +7,23 @@
 package cache
 
 import (
-	"context"
-	"errors"
 	"os"
 	"path/filepath"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity/internal"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/require"
 )
 
-var ctx = context.Background()
-
 func TestKeyExistsButNotFile(t *testing.T) {
 	expected := []byte(t.Name())
-	a, err := storage(internal.TokenCachePersistenceOptions{Name: t.Name()})
+	a, err := storage(t.Name())
 	require.NoError(t, err)
 	err = a.Write(ctx, append([]byte("not"), expected...))
 	require.NoError(t, err)
 	t.Cleanup(func() { require.NoError(t, a.Delete(ctx)) })
 
-	p, err := internal.CacheFilePath(t.Name())
+	p, err := cacheFilePath(t.Name())
 	require.NoError(t, err)
 	require.NoError(t, os.Remove(p))
 
@@ -138,15 +133,4 @@ func TestTwoInstances(t *testing.T) {
 			require.NoError(t, b.Delete(ctx))
 		})
 	}
-}
-
-func TestKeyringUnusable(t *testing.T) {
-	before := tryKeyring
-	t.Cleanup(func() { tryKeyring = before })
-	expected := errors.New("it didn't work")
-	tryKeyring = func() error { return expected }
-
-	_, err := storage(internal.TokenCachePersistenceOptions{})
-	require.Error(t, err)
-	require.Contains(t, err.Error(), expected.Error())
 }

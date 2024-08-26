@@ -1,7 +1,7 @@
 github.com/Azure/azure-sdk-for-go v68.0.0+incompatible h1:fcYLmCpyNYRnvJbPerq7U0hS+6+I79yEDJBqVNcqUzU=
 github.com/Azure/azure-sdk-for-go v68.0.0+incompatible/go.mod h1:9XXNKU+eRnpl9moKnB4QOLf1HestfXbmab5FXxiDBjc=
-github.com/Azure/azure-sdk-for-go/eng/tools/internal v0.0.0-20240702220607-99bf66f829d5 h1:+YA95N694gcLMNvW9sXbhEK4nvYwGAMENw4e4ijBDBQ=
-github.com/Azure/azure-sdk-for-go/eng/tools/internal v0.0.0-20240702220607-99bf66f829d5/go.mod h1:PbAlIFeOJmHf0o1OFe9I2g72u1Vby2RlvomjTZhnOiY=
+github.com/Azure/azure-sdk-for-go/eng/tools/internal v0.0.0-20240716213924-c15b04334b8a h1:t0y2eFbJZrNzB2hPwBJx1/Ni7FnvwC8UVVgvU0gIBHk=
+github.com/Azure/azure-sdk-for-go/eng/tools/internal v0.0.0-20240716213924-c15b04334b8a/go.mod h1:DSTpg4FK2y8LwnrVjr4qKrAwmv9RMHjQTOr9XuW+meo=
 github.com/cpuguy83/go-md2man/v2 v2.0.4/go.mod h1:tgQtvFlXSQOSOSIRvRPT7W67SCa46tRHOmNcaadrF8o=
 github.com/inconshreveable/mousetrap v1.1.0 h1:wN+x4NVGpMsO7ErUn/mUI3vEoE6Jt13X2s0bqwp9tc8=
 github.com/inconshreveable/mousetrap v1.1.0/go.mod h1:vpF70FUmC8bwa3OWnCshd2FqLfsEA9PFc4w1p2J65bw=

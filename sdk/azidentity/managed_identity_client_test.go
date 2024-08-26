@@ -17,7 +17,6 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
 
@@ -121,65 +120,5 @@ func TestManagedIdentityClient_IMDSErrors(t *testing.T) {
 				t.Fatalf("expected %T, got %T", unavailableErr, err)
 			}
 		})
-	}
-}
-
-func TestManagedIdentityClient_UserAssignedIDWarning(t *testing.T) {
-	for _, test := range []struct {
-		name          string
-		createRequest func(*managedIdentityClient) error
-	}{
-		{
-			name: "Azure Arc",
-			createRequest: func(client *managedIdentityClient) error {
-				_, err := client.createAzureArcAuthRequest(context.Background(), client.id, []string{liveTestScope}, "key")
-				return err
-			},
-		},
-		{
-			name: "Cloud Shell",
-			createRequest: func(client *managedIdentityClient) error {
-				_, err := client.createCloudShellAuthRequest(context.Background(), client.id, []string{liveTestScope})
-				return err
-			},
-		},
-		{
-			name: "Service Fabric",
-			createRequest: func(client *managedIdentityClient) error {
-				_, err := client.createServiceFabricAuthRequest(context.Background(), client.id, []string{liveTestScope})
-				return err
-			},
-		},
-	} {
-		for _, id := range []ManagedIDKind{ClientID(fakeClientID), ResourceID(fakeResourceID)} {
-			s := "-ClientID"
-			if id.String() == fakeResourceID {
-				s = "-ResourceID"
-			}
-			t.Run(test.name+s, func(t *testing.T) {
-				msgs := []string{}
-				log.SetListener(func(event log.Event, msg string) {
-					if event == EventAuthentication {
-						msgs = append(msgs, msg)
-					}
-				})
-				client, err := newManagedIdentityClient(&ManagedIdentityCredentialOptions{
-					ID: id,
-				})
-				if err != nil {
-					t.Fatal(err)
-				}
-				err = test.createRequest(client)
-				if err != nil {
-					t.Fatal(err)
-				}
-				for _, msg := range msgs {
-					if strings.Contains(msg, test.name) && strings.Contains(msg, "user-assigned") {
-						return
-					}
-				}
-				t.Fatalf("expected warning about user-assigned ID, got:\n%s", strings.Join(msgs, "\n"))
-			})
-		}
 	}
 }

@@ -1,10 +1,13 @@
 # Release History
 
-## 1.3.1-beta.1 (2024-09-10)
+## 1.3.1-beta.1 (2024-08-27)
 
 ### Features Added
+* Snapshot management support via REST for NFS shares.
+* Upgraded service version to `2024-08-04`.
 
 ### Other Changes
+* Updated `azcore` version to `1.14.0`
 
 ## 1.3.0 (2024-07-18)
 

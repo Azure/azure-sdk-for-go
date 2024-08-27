@@ -428,12 +428,8 @@ func NonExportedFilter(changelog *Changelog) {
 		if changelog.Modified.HasBreakingChanges() {
 			breakingChanges := changelog.Modified.BreakingChanges
 			for fName := range breakingChanges.Funcs {
-				before, after, b := strings.Cut(fName, ".")
-				// skip NewClient function
-				if !b && strings.HasPrefix(before, "New") {
-					continue
-				}
-				if !ast.IsExported(strings.TrimLeft(before, "*")) || !ast.IsExported(after) {
+				before, after, _ := strings.Cut(fName, ".")
+				if !ast.IsExported(strings.TrimLeft(before, "*")) || (after != "" && !ast.IsExported(after)) {
 					delete(changelog.Modified.BreakingChanges.Funcs, fName)
 				}
 			}

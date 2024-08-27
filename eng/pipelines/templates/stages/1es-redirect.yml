@@ -44,6 +44,8 @@ extends:
       credscan:
         suppressionsFile: '$(Build.SourcesDirectory)/eng/CredScanSuppression.json'
         toolVersion: '2.3.12.23'
+      # Turn off the build warnings caused by disabling some sdl checks
+      createAdoIssuesForJustificationsForDisablement: false
       eslint:
         enabled: false
         justificationForDisabling: "ESLint injected task has failures because it uses an old version of mkdirp. We should not fail for tools not controlled by the repo. See: https://dev.azure.com/azure-sdk/internal/_build/results?buildId=3556850"

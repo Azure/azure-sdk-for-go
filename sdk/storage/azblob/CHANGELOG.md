@@ -1,13 +1,9 @@
 # Release History
 
-## 1.4.1 (Unreleased)
+## 1.4.1-beta.1 (2024-08-27)
 
 ### Features Added
 * Upgraded service version to `2024-08-04`.
-
-### Breaking Changes
-
-### Bugs Fixed
 
 ### Other Changes
 * Updated `azcore` version to `1.14.0`

@@ -175,11 +175,11 @@ func TestAssistantMessages(t *testing.T) {
 
 		require.Equal(t, azopenaiassistants.MessageAttachmentToolAssignment{
 			Type: to.Ptr(azopenaiassistants.MessageAttachmentToolAssignmentType("code_interpreter")),
-		}, *attachmentTools[0].Type)
+		}, attachmentTools[0])
 
 		require.Equal(t, azopenaiassistants.MessageAttachmentToolAssignment{
 			Type: to.Ptr(azopenaiassistants.MessageAttachmentToolAssignmentType("file_search")),
-		}, *attachmentTools[1].Type)
+		}, attachmentTools[1])
 
 		messageID := messageResp.ID
 

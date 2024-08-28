@@ -3,6 +3,7 @@
 ### 1.0.1 (Unreleased)
 
 #### Features Added
+* Support service versions in Queues package.
 
 #### Breaking Changes
 

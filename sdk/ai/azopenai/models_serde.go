@@ -4822,41 +4822,6 @@ func (o *OnYourDataVectorizationSource) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Paths1Filz8PFilesPostRequestbodyContentMultipartFormDataSchema.
-func (p Paths1Filz8PFilesPostRequestbodyContentMultipartFormDataSchema) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "file", p.File)
-	populate(objectMap, "filename", p.Filename)
-	populate(objectMap, "purpose", p.Purpose)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type Paths1Filz8PFilesPostRequestbodyContentMultipartFormDataSchema.
-func (p *Paths1Filz8PFilesPostRequestbodyContentMultipartFormDataSchema) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", p, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "file":
-			err = unpopulate(val, "File", &p.File)
-			delete(rawMsg, key)
-		case "filename":
-			err = unpopulate(val, "Filename", &p.Filename)
-			delete(rawMsg, key)
-		case "purpose":
-			err = unpopulate(val, "Purpose", &p.Purpose)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", p, err)
-		}
-	}
-	return nil
-}
-
 // MarshalJSON implements the json.Marshaller interface for type PineconeChatExtensionConfiguration.
 func (p PineconeChatExtensionConfiguration) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)

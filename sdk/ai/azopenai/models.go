@@ -9,7 +9,6 @@
 package azopenai
 
 import (
-	"io"
 	"time"
 )
 
@@ -2408,17 +2407,6 @@ type OnYourDataVectorizationSource struct {
 // GetOnYourDataVectorizationSource implements the OnYourDataVectorizationSourceClassification interface for type OnYourDataVectorizationSource.
 func (o *OnYourDataVectorizationSource) GetOnYourDataVectorizationSource() *OnYourDataVectorizationSource {
 	return o
-}
-
-type Paths1Filz8PFilesPostRequestbodyContentMultipartFormDataSchema struct {
-	// REQUIRED; The file data (not filename) to upload.
-	File *io.ReadSeekCloser
-
-	// REQUIRED; The intended purpose of the file.
-	Purpose *FilePurpose
-
-	// A filename to associate with the uploaded data.
-	Filename *string
 }
 
 // PineconeChatExtensionConfiguration - A specific representation of configurable options for Pinecone when using it as an

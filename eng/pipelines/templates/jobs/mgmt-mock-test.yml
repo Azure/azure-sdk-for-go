@@ -78,11 +78,10 @@ jobs:
         testRunTitle: 'Test result on ${{ parameters.ServiceDirectory }}'
         failTaskOnFailedTests: true
 
-    - task: PublishCodeCoverageResults@1
+    - task: PublishCodeCoverageResults@2
       continueOnError: true
       condition: succeededOrFailed()
       inputs:
-        codeCoverageTool: Cobertura
         summaryFileLocation: '$(Build.SourcesDirectory)/sdk/${{parameters.ServiceDirectory}}/coverage.xml'
         additionalCodeCoverageFiles: '$(Build.SourcesDirectory)/sdk/${{parameters.ServiceDirectory}}/coverage.html'
         failIfCoverageEmpty: true

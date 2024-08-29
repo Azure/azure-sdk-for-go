@@ -46,7 +46,8 @@ directive:
   transform: >
       $["x-ms-content-crc64"] = {
         "x-ms-client-name": "ContentCRC64",
-        "type": "array",
+        "type": "string",
+        "format": "byte",
         "description": "Returned for a block blob so that the client can check the integrity of message content."
       };
 ```

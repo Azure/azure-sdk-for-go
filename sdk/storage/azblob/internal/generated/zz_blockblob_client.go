@@ -940,6 +940,9 @@ func (client *BlockBlobClient) uploadHandleResponse(resp *http.Response) (BlockB
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
 		result.ClientRequestID = &val
 	}
+	if val := resp.Header.Get("x-ms-content-crc64"); val != "" {
+		result.ContentCRC64 = &val
+	}
 	if val := resp.Header.Get("Content-MD5"); val != "" {
 		contentMD5, err := base64.StdEncoding.DecodeString(val)
 		if err != nil {

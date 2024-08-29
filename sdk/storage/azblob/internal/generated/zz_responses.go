@@ -1179,6 +1179,9 @@ type BlockBlobClientUploadResponse struct {
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string
 
+	// ContentCRC64 contains the information returned from the x-ms-content-crc64 header response.
+	ContentCRC64 *string
+
 	// ContentMD5 contains the information returned from the Content-MD5 header response.
 	ContentMD5 []byte
 

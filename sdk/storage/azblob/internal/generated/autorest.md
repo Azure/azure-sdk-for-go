@@ -38,6 +38,19 @@ directive:
       replaceAll(`[]string{"2021-12-02"}`, `[]string{ServiceVersion}`);
 ```
 
+### Fix CRC Response Header in PutBlob response
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/{containerName}/{blob}?BlockBlob"].put.responses["201"].headers
+  transform: >
+      $["x-ms-content-crc64"] = {
+        "x-ms-client-name": "ContentCRC64",
+        "type": "array",
+        "description": "Returned for a block blob so that the client can check the integrity of message content."
+      };
+```
+
 ### Undo breaking change with BlobName 
 ``` yaml
 directive:

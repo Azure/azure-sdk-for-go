@@ -3,11 +3,11 @@
 ## 1.4.1-beta.2 (Unreleased)
 
 ### Features Added
+* Added crc64 response header to Put Blob.
 
 ### Breaking Changes
 
 ### Bugs Fixed
-* Fixed a bug to ensure crc64 response header is returned in Put Blob request. Fixes [#23372](https://github.com/Azure/azure-sdk-for-go/issues/23372).
 
 ### Other Changes
 

@@ -378,13 +378,17 @@ func (s *BlockBlobRecordedTestsSuite) TestPutBlobCrcResponseHeader() {
 	_require.NoError(err)
 
 	contentSize := 4 * 1024 // 4 KB
-	r, _ := testcommon.GetDataAndReader(testName, contentSize)
+	r, sourceData := testcommon.GetDataAndReader(testName, contentSize)
 	rsc := streaming.NopCloser(r)
+	crc64Value := crc64.Checksum(sourceData, shared.CRC64Table)
+	crc := make([]byte, 8)
+	binary.LittleEndian.PutUint64(crc, crc64Value)
 
 	resp, err := bbClient.Upload(context.Background(), rsc, nil)
 	_require.NoError(err)
 	_require.NotNil(resp)
 	_require.NotNil(resp.ContentCRC64)
+	_require.Equal(resp.ContentCRC64, crc)
 }
 
 func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockFromURLWithMD5() {

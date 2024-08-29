@@ -11,6 +11,7 @@
 
 ### Other Changes
 * Updated `azcore` version to `1.14.0`
+* Updated `azblob` version to `1.4.1-beta.1`
 
 ## 1.2.0 (2024-07-19)
 

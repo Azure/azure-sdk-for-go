@@ -357,7 +357,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestBlockBlobClientConnectionString() {
 //		_require.EqualValues(destData, content)
 //	}
 
-func (s *BlockBlobRecordedTestsSuite) TestPutBlob() {
+func (s *BlockBlobRecordedTestsSuite) TestPutBlobCrcResponseHeader() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)

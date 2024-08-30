@@ -3,6 +3,7 @@
 ## 1.4.1-beta.2 (Unreleased)
 
 ### Features Added
+* Added crc64 response header to Put Blob.
 
 ### Breaking Changes
 

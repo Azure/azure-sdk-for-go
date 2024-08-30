@@ -1,16 +1,13 @@
 # Release History
 
-## 1.2.1 (Unreleased)
+## 1.2.1-beta.1 (2024-08-30)
 
 ### Features Added
 * Upgraded service version to `2024-08-04`.
 
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
 * Updated `azcore` version to `1.14.0`
+* Updated `azblob` version to `1.4.1-beta.1`
 
 ## 1.2.0 (2024-07-19)
 

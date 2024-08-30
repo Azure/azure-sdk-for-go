@@ -38,7 +38,7 @@ jobs:
   strategy:
     matrix: $[ ${{ parameters.Matrix }} ]
 
-  dependsOn: 
+  dependsOn:
    - ${{ parameters.DependsOn }}
 
   pool:

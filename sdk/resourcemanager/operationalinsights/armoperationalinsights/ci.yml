@@ -27,4 +27,3 @@ extends:
     IncludeRelease: true
     ServiceDirectory: 'resourcemanager/operationalinsights/armoperationalinsights'
     UsePipelineProxy: false
-    UseFederatedAuth: true

@@ -27,4 +27,3 @@ extends:
     IncludeRelease: true
     ServiceDirectory: 'resourcemanager/mongocluster/armmongocluster'
     UsePipelineProxy: false
-    UseFederatedAuth: true

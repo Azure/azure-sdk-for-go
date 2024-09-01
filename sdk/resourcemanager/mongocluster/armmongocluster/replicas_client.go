@@ -16,62 +16,62 @@ import (
 	"strings"
 )
 
-// PrivateLinksClient contains the methods for the PrivateLinks group.
-// Don't use this type directly, use NewPrivateLinksClient() instead.
-type PrivateLinksClient struct {
+// ReplicasClient contains the methods for the Replicas group.
+// Don't use this type directly, use NewReplicasClient() instead.
+type ReplicasClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewPrivateLinksClient creates a new instance of PrivateLinksClient with the specified values.
+// NewReplicasClient creates a new instance of ReplicasClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
-func NewPrivateLinksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PrivateLinksClient, error) {
+func NewReplicasClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ReplicasClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
-	client := &PrivateLinksClient{
+	client := &ReplicasClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
 	return client, nil
 }
 
-// NewListByMongoClusterPager - list private links on the given resource
+// NewListByParentPager - List all the replicas for the mongo cluster.
 //
 // Generated from API version 2024-07-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - mongoClusterName - The name of the mongo cluster.
-//   - options - PrivateLinksClientListByMongoClusterOptions contains the optional parameters for the PrivateLinksClient.NewListByMongoClusterPager
+//   - options - ReplicasClientListByParentOptions contains the optional parameters for the ReplicasClient.NewListByParentPager
 //     method.
-func (client *PrivateLinksClient) NewListByMongoClusterPager(resourceGroupName string, mongoClusterName string, options *PrivateLinksClientListByMongoClusterOptions) *runtime.Pager[PrivateLinksClientListByMongoClusterResponse] {
-	return runtime.NewPager(runtime.PagingHandler[PrivateLinksClientListByMongoClusterResponse]{
-		More: func(page PrivateLinksClientListByMongoClusterResponse) bool {
+func (client *ReplicasClient) NewListByParentPager(resourceGroupName string, mongoClusterName string, options *ReplicasClientListByParentOptions) *runtime.Pager[ReplicasClientListByParentResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ReplicasClientListByParentResponse]{
+		More: func(page ReplicasClientListByParentResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *PrivateLinksClientListByMongoClusterResponse) (PrivateLinksClientListByMongoClusterResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "PrivateLinksClient.NewListByMongoClusterPager")
+		Fetcher: func(ctx context.Context, page *ReplicasClientListByParentResponse) (ReplicasClientListByParentResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ReplicasClient.NewListByParentPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
 			}
 			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByMongoClusterCreateRequest(ctx, resourceGroupName, mongoClusterName, options)
+				return client.listByParentCreateRequest(ctx, resourceGroupName, mongoClusterName, options)
 			}, nil)
 			if err != nil {
-				return PrivateLinksClientListByMongoClusterResponse{}, err
+				return ReplicasClientListByParentResponse{}, err
 			}
-			return client.listByMongoClusterHandleResponse(resp)
+			return client.listByParentHandleResponse(resp)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
-// listByMongoClusterCreateRequest creates the ListByMongoCluster request.
-func (client *PrivateLinksClient) listByMongoClusterCreateRequest(ctx context.Context, resourceGroupName string, mongoClusterName string, _ *PrivateLinksClientListByMongoClusterOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/mongoClusters/{mongoClusterName}/privateLinkResources"
+// listByParentCreateRequest creates the ListByParent request.
+func (client *ReplicasClient) listByParentCreateRequest(ctx context.Context, resourceGroupName string, mongoClusterName string, _ *ReplicasClientListByParentOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/mongoClusters/{mongoClusterName}/replicas"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -95,11 +95,11 @@ func (client *PrivateLinksClient) listByMongoClusterCreateRequest(ctx context.Co
 	return req, nil
 }
 
-// listByMongoClusterHandleResponse handles the ListByMongoCluster response.
-func (client *PrivateLinksClient) listByMongoClusterHandleResponse(resp *http.Response) (PrivateLinksClientListByMongoClusterResponse, error) {
-	result := PrivateLinksClientListByMongoClusterResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkResourceListResult); err != nil {
-		return PrivateLinksClientListByMongoClusterResponse{}, err
+// listByParentHandleResponse handles the ListByParent response.
+func (client *ReplicasClient) listByParentHandleResponse(resp *http.Response) (ReplicasClientListByParentResponse, error) {
+	result := ReplicasClientListByParentResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ReplicaListResult); err != nil {
+		return ReplicasClientListByParentResponse{}, err
 	}
 	return result, nil
 }

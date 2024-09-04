@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixed a bug where cancelling RenewMessageLock() calls could cause hangs in future RenewMessageLock calls. (PR#TBD)
+
 ### Other Changes
 
 ## 1.7.1 (2024-05-20)

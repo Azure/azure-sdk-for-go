@@ -112,7 +112,7 @@ func (c *confidentialClient) GetToken(ctx context.Context, tro policy.TokenReque
 		var unavailableErr credentialUnavailable
 		if !errors.As(err, &unavailableErr) {
 			res := getResponseFromError(err)
-			err = newAuthenticationFailedError(c.name, err.Error(), res, err)
+			err = newAuthenticationFailedError(c.name, err.Error(), res)
 		}
 	} else {
 		msg := fmt.Sprintf("%s.GetToken() acquired a token for scope %q", c.name, strings.Join(ar.GrantedScopes, ", "))

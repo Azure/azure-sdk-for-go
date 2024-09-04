@@ -245,7 +245,7 @@ func (p *publicClient) token(ar public.AuthResult, err error) (azcore.AccessToke
 		p.record, err = newAuthenticationRecord(ar)
 	} else {
 		res := getResponseFromError(err)
-		err = newAuthenticationFailedError(p.name, err.Error(), res, err)
+		err = newAuthenticationFailedError(p.name, err.Error(), res)
 	}
 	return azcore.AccessToken{Token: ar.AccessToken, ExpiresOn: ar.ExpiresOn.UTC()}, err
 }

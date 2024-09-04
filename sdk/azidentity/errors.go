@@ -40,11 +40,10 @@ type AuthenticationFailedError struct {
 
 	credType string
 	message  string
-	err      error
 }
 
-func newAuthenticationFailedError(credType string, message string, resp *http.Response, err error) error {
-	return &AuthenticationFailedError{credType: credType, message: message, RawResponse: resp, err: err}
+func newAuthenticationFailedError(credType, message string, resp *http.Response) error {
+	return &AuthenticationFailedError{credType: credType, message: message, RawResponse: resp}
 }
 
 // Error implements the error interface. Note that the message contents are not contractual and can change over time.

@@ -463,6 +463,10 @@
 # ServiceLabel: %Notification Hub
 #/<NotInRepo>/          @tjsomasundaram
 
+# ServiceLabel: %Operator Nexus - Network Cloud
+#/<NotInRepo>/           @Azure/azure-sdk-write-networkcloud
+
+
 # ServiceLabel: %Policy
 #/<NotInRepo>/          @aperezcloud @kenieva
 

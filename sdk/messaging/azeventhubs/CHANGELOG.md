@@ -1,5 +1,11 @@
 # Release History
 
+## 1.2.3 (Unreleased)
+
+### Bugs Fixed
+
+- Fixed a bug where cancelling RenewMessageLock() calls could cause hangs in future RenewMessageLock calls. (PR#TBD)
+
 ## 1.2.2 (2024-08-15)
 
 ### Bugs Fixed

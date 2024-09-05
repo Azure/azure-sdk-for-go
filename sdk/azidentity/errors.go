@@ -38,8 +38,8 @@ type AuthenticationFailedError struct {
 	// RawResponse is the HTTP response motivating the error, if available.
 	RawResponse *http.Response
 
-	credType string
-	message  string
+	credType, message string
+	omitResponse      bool
 }
 
 func newAuthenticationFailedError(credType, message string, resp *http.Response) error {
@@ -48,7 +48,7 @@ func newAuthenticationFailedError(credType, message string, resp *http.Response)
 
 // Error implements the error interface. Note that the message contents are not contractual and can change over time.
 func (e *AuthenticationFailedError) Error() string {
-	if e.RawResponse == nil {
+	if e.RawResponse == nil || e.omitResponse {
 		return e.credType + ": " + e.message
 	}
 	msg := &bytes.Buffer{}

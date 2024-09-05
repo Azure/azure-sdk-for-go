@@ -109,8 +109,11 @@ func (c *confidentialClient) GetToken(ctx context.Context, tro policy.TokenReque
 	if err != nil {
 		// We could get a credentialUnavailableError from managed identity authentication because in that case the error comes from our code.
 		// We return it directly because it affects the behavior of credential chains. Otherwise, we return AuthenticationFailedError.
-		var unavailableErr credentialUnavailable
-		if !errors.As(err, &unavailableErr) {
+		var (
+			authFailedErr  *AuthenticationFailedError
+			unavailableErr credentialUnavailable
+		)
+		if !errors.As(err, &unavailableErr) && !errors.As(err, &authFailedErr) {
 			res := getResponseFromError(err)
 			err = newAuthenticationFailedError(c.name, err.Error(), res)
 		}

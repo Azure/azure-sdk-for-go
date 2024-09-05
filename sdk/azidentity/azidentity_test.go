@@ -101,6 +101,77 @@ func (t *tokenRequestCountingPolicy) Do(req *policy.Request) (*http.Response, er
 	return req.Next()
 }
 
+func TestResponseErrors(t *testing.T) {
+	// compact removes whitespace from errors to simplify validation
+	compact := func(s string) string {
+		return strings.Map(func(r rune) rune {
+			if r == ' ' || r == '\n' || r == '\t' {
+				return -1
+			}
+			return r
+		}, s)
+	}
+	content := "no tokens here"
+	statusCode := http.StatusTeapot
+	validate := func(t *testing.T, err error) {
+		require.Error(t, err)
+		flatErr := compact(err.Error())
+		actual := strings.Count(flatErr, compact(http.StatusText(statusCode)))
+		require.Equal(t, 1, actual, "error message should include response exactly once:\n%s", err.Error())
+		actual = strings.Count(flatErr, compact(content))
+		require.Equal(t, 1, actual, "error message should include body exactly once:\n%s", err.Error())
+	}
+
+	for _, client := range []struct {
+		name string
+		ctor func(co policy.ClientOptions) (azcore.TokenCredential, error)
+	}{
+		{
+			name: "confidential",
+			ctor: func(co policy.ClientOptions) (azcore.TokenCredential, error) {
+				return NewClientSecretCredential(fakeTenantID, fakeClientID, fakeSecret, &ClientSecretCredentialOptions{ClientOptions: co})
+			},
+		},
+		{
+			name: "managed identity",
+			ctor: func(co policy.ClientOptions) (azcore.TokenCredential, error) {
+				return NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{ClientOptions: co})
+			},
+		},
+		{
+			name: "public",
+			ctor: func(co policy.ClientOptions) (azcore.TokenCredential, error) {
+				return NewUsernamePasswordCredential(fakeTenantID, fakeClientID, "username", "password", &UsernamePasswordCredentialOptions{ClientOptions: co})
+			},
+		},
+	} {
+		t.Run(client.name, func(t *testing.T) {
+			cred, err := client.ctor(policy.ClientOptions{
+				Retry: policy.RetryOptions{MaxRetries: -1},
+				Transport: &mockSTS{
+					tokenRequestCallback: func(*http.Request) *http.Response {
+						return &http.Response{
+							Body:       io.NopCloser(bytes.NewBufferString(content)),
+							Status:     http.StatusText(statusCode),
+							StatusCode: statusCode,
+						}
+					},
+				},
+			})
+			require.NoError(t, err)
+			_, err = cred.GetToken(ctx, testTRO)
+			validate(t, err)
+
+			t.Run("ChainedTokenCredential", func(t *testing.T) {
+				chain, err := NewChainedTokenCredential([]azcore.TokenCredential{cred}, nil)
+				require.NoError(t, err)
+				_, err = chain.GetToken(ctx, testTRO)
+				validate(t, err)
+			})
+		})
+	}
+}
+
 func TestTenantID(t *testing.T) {
 	type tc struct {
 		name           string

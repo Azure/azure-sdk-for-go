@@ -61,7 +61,7 @@ func (e *AuthenticationFailedError) Error() string {
 		fmt.Fprintln(msg, "Request information not available")
 	}
 	fmt.Fprintln(msg, "--------------------------------------------------------------------------------")
-	fmt.Fprintf(msg, "RESPONSE %s\n", e.RawResponse.Status)
+	fmt.Fprintf(msg, "RESPONSE %d: %s\n", e.RawResponse.StatusCode, e.RawResponse.Status)
 	fmt.Fprintln(msg, "--------------------------------------------------------------------------------")
 	body, err := runtime.Payload(e.RawResponse)
 	switch {

@@ -13,7 +13,6 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/messaging"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/eventgrid/aznamespaces"
 )
 
@@ -26,7 +25,9 @@ func Example_publishAndReceiveCloudEvents() {
 		return
 	}
 
-	tokenCredential, err := azidentity.NewDefaultAzureCredential(nil)
+	// TODO: replace this with a credential type from the azidentity package, like this:
+	// tokenCredential, err := azidentity.NewDefaultAzureCredential(nil)
+	tokenCredential, err := newExampleCredential()
 
 	if err != nil {
 		// TODO: Update the following line with your application specific error handling logic

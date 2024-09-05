@@ -46,6 +46,19 @@ func newAuthenticationFailedError(credType, message string, resp *http.Response)
 	return &AuthenticationFailedError{credType: credType, message: message, RawResponse: resp}
 }
 
+// newAuthenticationFailedErrorFromMSAL creates an AuthenticationFailedError from an MSAL error.
+// If the error is an MSAL CallErr, the new error includes an HTTP response and not the MSAL error
+// message, because that message is redundant given the response. If the original error isn't a
+// CallErr, the returned error incorporates its message.
+func newAuthenticationFailedErrorFromMSAL(credType string, err error) error {
+	msg := ""
+	res := getResponseFromError(err)
+	if res == nil {
+		msg = err.Error()
+	}
+	return newAuthenticationFailedError(credType, msg, res)
+}
+
 // Error implements the error interface. Note that the message contents are not contractual and can change over time.
 func (e *AuthenticationFailedError) Error() string {
 	if e.RawResponse == nil || e.omitResponse {

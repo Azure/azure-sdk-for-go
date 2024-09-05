@@ -76,7 +76,7 @@ func (options *QueryOptions) toHeaders() *map[string]string {
 		dedicatedGatewayRequestOptions := options.DedicatedGatewayRequestOptions
 
 		if dedicatedGatewayRequestOptions.MaxIntegratedCacheStaleness != nil {
-			milliseconds := (*dedicatedGatewayRequestOptions.MaxIntegratedCacheStaleness).Milliseconds()
+			milliseconds := dedicatedGatewayRequestOptions.MaxIntegratedCacheStaleness.Milliseconds()
 			headers[headerDedicatedGatewayMaxAge] = strconv.FormatInt(milliseconds, 10)
 		}
 	}

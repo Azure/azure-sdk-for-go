@@ -357,6 +357,40 @@ func (s *BlockBlobUnrecordedTestsSuite) TestBlockBlobClientConnectionString() {
 //		_require.EqualValues(destData, content)
 //	}
 
+func (s *BlockBlobRecordedTestsSuite) TestPutBlobCrcResponseHeader() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	accountName, accountKey := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	blobName := testName
+	blobURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s/%s", accountName, containerName, blobName)
+
+	cred, err := blob.NewSharedKeyCredential(accountName, accountKey)
+	_require.NoError(err)
+
+	bbClient, err := blockblob.NewClientWithSharedKeyCredential(blobURL, cred, nil)
+	_require.NoError(err)
+
+	contentSize := 4 * 1024 // 4 KB
+	r, sourceData := testcommon.GetDataAndReader(testName, contentSize)
+	rsc := streaming.NopCloser(r)
+	crc64Value := crc64.Checksum(sourceData, shared.CRC64Table)
+	crc := make([]byte, 8)
+	binary.LittleEndian.PutUint64(crc, crc64Value)
+
+	resp, err := bbClient.Upload(context.Background(), rsc, nil)
+	_require.NoError(err)
+	_require.NotNil(resp)
+	_require.NotNil(resp.ContentCRC64)
+	_require.Equal(resp.ContentCRC64, crc)
+}
+
 func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockFromURLWithMD5() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

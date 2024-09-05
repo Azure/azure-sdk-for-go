@@ -27,4 +27,3 @@ extends:
     IncludeRelease: true
     ServiceDirectory: 'resourcemanager/cosmosforpostgresql/armcosmosforpostgresql'
     UsePipelineProxy: false
-    UseFederatedAuth: true

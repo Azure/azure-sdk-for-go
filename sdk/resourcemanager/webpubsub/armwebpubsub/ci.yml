@@ -27,4 +27,3 @@ extends:
     IncludeRelease: true
     ServiceDirectory: 'resourcemanager/webpubsub/armwebpubsub'
     UsePipelineProxy: false
-    UseFederatedAuth: true

@@ -179,6 +179,34 @@ func TestBearerTokenPolicy_AuthZHandler(t *testing.T) {
 	require.Equal(t, 1, handler.onReqCalls)
 	// handler functions didn't return errors, so the policy should have sent a request after calling each
 	require.Equal(t, 2, srv.Requests())
+
+	t.Run("SupportsCAE", func(t *testing.T) {
+		for _, supportsCAE := range []bool{true, false} {
+			srv, close := mock.NewTLSServer(mock.WithTransformAllRequestsToTestServerUrl())
+			defer close()
+			srv.AppendResponse(mock.WithStatusCode(200))
+
+			calls := 0
+			cred := mockCredential{
+				getTokenImpl: func(_ context.Context, actual policy.TokenRequestOptions) (exported.AccessToken, error) {
+					calls += 1
+					require.Equal(t, supportsCAE, actual.EnableCAE, "policy should request CAE tokens only when AuthorizationHandler.SupportsCAE is true")
+					return exported.AccessToken{Token: tokenValue, ExpiresOn: time.Now().Add(time.Hour)}, nil
+				},
+			}
+			o := policy.BearerTokenOptions{AuthorizationHandler: policy.AuthorizationHandler{
+				OnChallenge: func(*policy.Request, *http.Response, func(policy.TokenRequestOptions) error) error {
+					return nil
+				},
+				SupportsCAE: supportsCAE,
+			}}
+			b = NewBearerTokenPolicy(cred, nil, &o)
+			pl = newTestPipeline(&policy.ClientOptions{PerRetryPolicies: []policy.Policy{b}, Transport: srv})
+			_, err = pl.Do(req)
+			require.NoError(t, err)
+			require.Equal(t, 1, calls, "policy should have called GetToken once")
+		}
+	})
 }
 
 func TestBearerTokenPolicy_AuthZHandlerErrors(t *testing.T) {
@@ -222,6 +250,94 @@ func TestBearerTokenPolicy_AuthZHandlerErrors(t *testing.T) {
 		handler.onChallengeErr = nil
 		// the policy should have sent one request, because OnRequest returned nil but OnChallenge returned an error
 		require.Equal(t, i+1, srv.Requests())
+	}
+}
+
+func TestBearerTokenPolicyChallengeHandling(t *testing.T) {
+	for _, test := range []struct {
+		challenge, desc, expectedClaims string
+		err                             error
+	}{
+		{
+			desc: "no challenge",
+		},
+		{
+			desc:      "no claims",
+			challenge: `Bearer authorization_uri="https://login.windows.net/", error="invalid_token", error_description="The authentication failed because of missing 'Authorization' header."`,
+			err:       (*exported.ResponseError)(nil),
+		},
+		{
+			desc:      "parsing error",
+			challenge: `Bearer claims="not base64"`,
+			err:       (*exported.ResponseError)(nil),
+		},
+
+		// CAE claims challenges. Position of the "claims" parameter within the challenge shouldn't affect parsing.
+		{
+			desc:           "insufficient claims",
+			challenge:      `Bearer realm="", authorization_uri="https://login.microsoftonline.com/common/oauth2/authorize", client_id="00000003-0000-0000-c000-000000000000", error="insufficient_claims", claims="eyJhY2Nlc3NfdG9rZW4iOiB7ImZvbyI6ICJiYXIifX0="`,
+			expectedClaims: `{"access_token": {"foo": "bar"}}`,
+		},
+		{
+			desc:           "insufficient claims",
+			challenge:      `Bearer claims="eyJhY2Nlc3NfdG9rZW4iOiB7ImZvbyI6ICJiYXIifX0=", realm="", authorization_uri="https://login.microsoftonline.com/common/oauth2/authorize", client_id="00000003-0000-0000-c000-000000000000", error="insufficient_claims"`,
+			expectedClaims: `{"access_token": {"foo": "bar"}}`,
+		},
+		{
+			desc:           "sessions revoked",
+			challenge:      `Bearer authorization_uri="https://login.windows.net/", error="invalid_token", error_description="User session has been revoked", claims="eyJhY2Nlc3NfdG9rZW4iOnsibmJmIjp7ImVzc2VudGlhbCI6dHJ1ZSwgInZhbHVlIjoiMTYwMzc0MjgwMCJ9fX0="`,
+			expectedClaims: `{"access_token":{"nbf":{"essential":true, "value":"1603742800"}}}`,
+		},
+		{
+			desc:           "sessions revoked",
+			challenge:      `Bearer authorization_uri="https://login.windows.net/", claims="eyJhY2Nlc3NfdG9rZW4iOnsibmJmIjp7ImVzc2VudGlhbCI6dHJ1ZSwgInZhbHVlIjoiMTYwMzc0MjgwMCJ9fX0=", error="invalid_token", error_description="User session has been revoked"`,
+			expectedClaims: `{"access_token":{"nbf":{"essential":true, "value":"1603742800"}}}`,
+		},
+		{
+			desc:           "IP policy",
+			challenge:      `Bearer authorization_uri="https://login.windows.net/", error="invalid_token", error_description="Tenant IP Policy validate failed.", claims="eyJhY2Nlc3NfdG9rZW4iOnsibmJmIjp7ImVzc2VudGlhbCI6dHJ1ZSwidmFsdWUiOiIxNjEwNTYzMDA2In0sInhtc19ycF9pcGFkZHIiOnsidmFsdWUiOiIxLjIuMy40In19fQ"`,
+			expectedClaims: `{"access_token":{"nbf":{"essential":true,"value":"1610563006"},"xms_rp_ipaddr":{"value":"1.2.3.4"}}}`,
+		},
+		{
+			desc:           "IP policy",
+			challenge:      `Bearer authorization_uri="https://login.windows.net/", error="invalid_token", claims="eyJhY2Nlc3NfdG9rZW4iOnsibmJmIjp7ImVzc2VudGlhbCI6dHJ1ZSwidmFsdWUiOiIxNjEwNTYzMDA2In0sInhtc19ycF9pcGFkZHIiOnsidmFsdWUiOiIxLjIuMy40In19fQ", error_description="Tenant IP Policy validate failed."`,
+			expectedClaims: `{"access_token":{"nbf":{"essential":true,"value":"1610563006"},"xms_rp_ipaddr":{"value":"1.2.3.4"}}}`,
+		},
+	} {
+		t.Run(test.desc, func(t *testing.T) {
+			srv, close := mock.NewTLSServer()
+			defer close()
+			srv.SetResponse(mock.WithHeader(shared.HeaderWWWAuthenticate, test.challenge), mock.WithStatusCode(http.StatusUnauthorized))
+			tkReqs := 0
+			cred := mockCredential{
+				getTokenImpl: func(_ context.Context, actual policy.TokenRequestOptions) (exported.AccessToken, error) {
+					require.True(t, actual.EnableCAE)
+					tkReqs += 1
+					switch tkReqs {
+					case 1:
+						require.Empty(t, actual.Claims)
+					case 2:
+						require.Equal(t, test.expectedClaims, actual.Claims)
+					default:
+						t.Fatalf("unexpected token request")
+					}
+					return exported.AccessToken{Token: "...", ExpiresOn: time.Now().Add(time.Hour).UTC()}, nil
+				},
+			}
+			b := NewBearerTokenPolicy(cred, []string{scope}, nil)
+			pipeline := newTestPipeline(&policy.ClientOptions{PerRetryPolicies: []policy.Policy{b}, Transport: srv})
+			req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
+			require.NoError(t, err)
+			_, err = pipeline.Do(req)
+			if test.err == nil {
+				require.NoError(t, err)
+			} else {
+				require.ErrorAs(t, err, &test.err)
+			}
+			if test.expectedClaims != "" {
+				require.Equal(t, 2, tkReqs, "policy should have requested a new token upon receiving the challenge")
+			}
+		})
 	}
 }
 

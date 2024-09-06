@@ -220,9 +220,8 @@ func TestBearerTokenPolicyChallengeParsing(t *testing.T) {
 		},
 		{
 			desc:      "parsing error",
-			challenge: `Bearer claims="invalid"`,
-			// the specific error type isn't important but it must be nonretriable
-			err: (errorinfo.NonRetriable)(nil),
+			challenge: `Bearer claims="not base64"`,
+			err:       (*azcore.ResponseError)(nil),
 		},
 		// CAE claims challenges. Position of the "claims" parameter within the challenge shouldn't affect parsing.
 		{
@@ -263,6 +262,7 @@ func TestBearerTokenPolicyChallengeParsing(t *testing.T) {
 			calls := 0
 			cred := mockCredential{
 				getTokenImpl: func(ctx context.Context, actual azpolicy.TokenRequestOptions) (azcore.AccessToken, error) {
+					require.True(t, actual.EnableCAE, "policy should request CAE tokens")
 					calls += 1
 					if calls == 2 && test.expectedClaims != "" {
 						require.Equal(t, test.expectedClaims, actual.Claims)

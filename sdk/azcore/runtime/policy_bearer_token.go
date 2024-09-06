@@ -4,6 +4,7 @@
 package runtime
 
 import (
+	"encoding/base64"
 	"errors"
 	"net/http"
 	"strings"
@@ -51,18 +52,24 @@ func NewBearerTokenPolicy(cred exported.TokenCredential, scopes []string, opts *
 	if opts == nil {
 		opts = &policy.BearerTokenOptions{}
 	}
-	return &BearerTokenPolicy{
+	b := &BearerTokenPolicy{
 		authzHandler: opts.AuthorizationHandler,
 		cred:         cred,
 		scopes:       scopes,
 		mainResource: temporal.NewResource(acquire),
 		allowHTTP:    opts.InsecureAllowCredentialWithHTTP,
 	}
+	if b.authzHandler.OnChallenge == nil {
+		b.authzHandler.OnChallenge = b.handleClaimsChallenge
+		b.authzHandler.SupportsCAE = true
+	}
+	return b
 }
 
 // authenticateAndAuthorize returns a function which authorizes req with a token from the policy's credential
 func (b *BearerTokenPolicy) authenticateAndAuthorize(req *policy.Request) func(policy.TokenRequestOptions) error {
 	return func(tro policy.TokenRequestOptions) error {
+		tro.EnableCAE = b.authzHandler.SupportsCAE
 		as := acquiringResourceState{p: b, req: req, tro: tro}
 		tk, err := b.mainResource.Get(as)
 		if err != nil {
@@ -103,7 +110,7 @@ func (b *BearerTokenPolicy) Do(req *policy.Request) (*http.Response, error) {
 
 	if res.StatusCode == http.StatusUnauthorized {
 		b.mainResource.Expire()
-		if res.Header.Get("WWW-Authenticate") != "" && b.authzHandler.OnChallenge != nil {
+		if res.Header.Get(shared.HeaderWWWAuthenticate) != "" && b.authzHandler.OnChallenge != nil {
 			if err = b.authzHandler.OnChallenge(req, res, b.authenticateAndAuthorize(req)); err == nil {
 				res, err = req.Next()
 			}
@@ -115,9 +122,54 @@ func (b *BearerTokenPolicy) Do(req *policy.Request) (*http.Response, error) {
 	return res, err
 }
 
+func (b *BearerTokenPolicy) handleClaimsChallenge(_ *policy.Request, res *http.Response, authNZ func(policy.TokenRequestOptions) error) error {
+	challenge := res.Header.Get(shared.HeaderWWWAuthenticate)
+	claims, err := parseChallenge(challenge)
+	if err != nil {
+		// challenge contains claims we can't parse
+		return err
+	}
+	if claims == "" {
+		// no claims in challenge, so this is a simple authorization failure
+		return NewResponseError(res)
+	}
+	// request a new token having the specified claims, send the request again
+	return authNZ(policy.TokenRequestOptions{Claims: claims, EnableCAE: true, Scopes: b.scopes})
+}
+
 func checkHTTPSForAuth(req *policy.Request, allowHTTP bool) error {
 	if strings.ToLower(req.Raw().URL.Scheme) != "https" && !allowHTTP {
 		return errorinfo.NonRetriableError(errors.New("authenticated requests are not permitted for non TLS protected (https) endpoints"))
 	}
 	return nil
+}
+
+// parseChallenge parses claims from an authentication challenge so a client can request a token that
+// will satisfy conditional access policies. It returns a non-nil error when the given value contains
+// claims it can't parse. If the value contains no claims, it returns an empty string and a nil error.
+func parseChallenge(wwwAuthenticate string) (string, error) {
+	var (
+		claims string
+		err    error
+	)
+	for _, param := range strings.Split(wwwAuthenticate, ",") {
+		if _, after, found := strings.Cut(param, "claims="); found {
+			if claims != "" {
+				// The header contains multiple challenges, at least two of which specify claims. The specs allow this
+				// but it's unclear what a client should do in this case and there's as yet no concrete example of it.
+				err = errors.New("found multiple claims parameters in challenge: " + wwwAuthenticate)
+				break
+			}
+			// trim stuff that would get an error from RawURLEncoding; claims may or may not be padded
+			claims = strings.Trim(after, `\"=`)
+			// we don't return this error because it's something unhelpful like "illegal base64 data at input byte 42"
+			if b, de := base64.RawURLEncoding.DecodeString(claims); de == nil {
+				claims = string(b)
+			} else {
+				err = errors.New("challenge contains invalid claims: " + claims)
+				break
+			}
+		}
+	}
+	return claims, err
 }

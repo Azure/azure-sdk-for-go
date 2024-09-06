@@ -4,6 +4,7 @@
 package azcosmos
 
 import (
+	"strconv"
 	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -34,6 +35,8 @@ type ItemOptions struct {
 	// IfMatchEtag is used to ensure optimistic concurrency control.
 	// https://docs.microsoft.com/azure/cosmos-db/sql/database-transactions-optimistic-concurrency#optimistic-concurrency-control
 	IfMatchEtag *azcore.ETag
+	// Options for operations in the dedicated gateway.
+	DedicatedGatewayRequestOptions *DedicatedGatewayRequestOptions
 }
 
 func (options *ItemOptions) toHeaders() *map[string]string {
@@ -61,6 +64,15 @@ func (options *ItemOptions) toHeaders() *map[string]string {
 
 	if options.IfMatchEtag != nil {
 		headers[headerIfMatch] = string(*options.IfMatchEtag)
+	}
+
+	if options.DedicatedGatewayRequestOptions != nil {
+		dedicatedGatewayRequestOptions := options.DedicatedGatewayRequestOptions
+
+		if dedicatedGatewayRequestOptions.MaxIntegratedCacheStaleness != nil {
+			milliseconds := dedicatedGatewayRequestOptions.MaxIntegratedCacheStaleness.Milliseconds()
+			headers[headerDedicatedGatewayMaxAge] = strconv.FormatInt(milliseconds, 10)
+		}
 	}
 
 	return &headers

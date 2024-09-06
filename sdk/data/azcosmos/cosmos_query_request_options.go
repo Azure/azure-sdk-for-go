@@ -3,7 +3,10 @@
 
 package azcosmos
 
-import "fmt"
+import (
+	"fmt"
+	"strconv"
+)
 
 // QueryOptions includes options for query operations on items.
 type QueryOptions struct {
@@ -34,6 +37,8 @@ type QueryOptions struct {
 	// QueryParameters allows execution of parametrized queries.
 	// See https://docs.microsoft.com/azure/cosmos-db/sql/sql-query-parameterized-queries
 	QueryParameters []QueryParameter
+	// Options for operations in the dedicated gateway.
+	DedicatedGatewayRequestOptions *DedicatedGatewayRequestOptions
 }
 
 func (options *QueryOptions) toHeaders() *map[string]string {
@@ -65,6 +70,15 @@ func (options *QueryOptions) toHeaders() *map[string]string {
 
 	if options.ContinuationToken != nil {
 		headers[cosmosHeaderContinuationToken] = *options.ContinuationToken
+	}
+
+	if options.DedicatedGatewayRequestOptions != nil {
+		dedicatedGatewayRequestOptions := options.DedicatedGatewayRequestOptions
+
+		if dedicatedGatewayRequestOptions.MaxIntegratedCacheStaleness != nil {
+			milliseconds := dedicatedGatewayRequestOptions.MaxIntegratedCacheStaleness.Milliseconds()
+			headers[headerDedicatedGatewayMaxAge] = strconv.FormatInt(milliseconds, 10)
+		}
 	}
 
 	headers[cosmosHeaderPopulateQueryMetrics] = "true"

@@ -107,8 +107,6 @@ func (c *confidentialClient) GetToken(ctx context.Context, tro policy.TokenReque
 		}
 	}
 	if err != nil {
-		// We could get an azidentity error type from managed identity authentication because in that case the error comes from our code.
-		// We return it directly because it affects the behavior of credential chains. Otherwise, we return AuthenticationFailedError.
 		var (
 			authFailedErr  *AuthenticationFailedError
 			unavailableErr credentialUnavailable

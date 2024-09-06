@@ -37,7 +37,7 @@ func azTokenOutput(expiresOn string, expires_on int64) []byte {
 }
 
 func mockAzTokenProviderFailure(context.Context, []string, string, string) ([]byte, error) {
-	return nil, newAuthenticationFailedError(credNameAzureCLI, "mock provider error", nil, nil)
+	return nil, newAuthenticationFailedError(credNameAzureCLI, "mock provider error", nil)
 }
 
 func mockAzTokenProviderSuccess(context.Context, []string, string, string) ([]byte, error) {

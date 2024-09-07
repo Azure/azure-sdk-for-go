@@ -13,10 +13,15 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/require"
 )
 
 func TestFilesOperations(t *testing.T) {
+	if recording.GetRecordMode() != recording.LiveMode {
+		t.Skip("Skipping test in playback and record mode")
+	}
+
 	client := newTestClient(t, azureOpenAI.Files.Endpoint)
 
 	uploadResp, err := client.UploadFile(context.Background(), streaming.NopCloser(bytes.NewReader([]byte("hello world"))), azopenai.FilePurposeAssistants, nil)
@@ -46,6 +51,9 @@ func TestFileDownload(t *testing.T) {
 }
 
 func TestBatchOperations(t *testing.T) {
+	if recording.GetRecordMode() != recording.LiveMode {
+		t.Skip("Skipping test in playback and record mode")
+	}
 	client := newTestClient(t, azureOpenAI.Files.Endpoint)
 
 	// TODO: this is a little tricky because the files aren't instantly uploaded, so we can't just proceed

@@ -22,8 +22,9 @@ const credNameManagedIdentity = "ManagedIdentityCredential"
 type managedIdentityIDKind int
 
 const (
-	miClientID   managedIdentityIDKind = 0
-	miResourceID managedIdentityIDKind = 1
+	miClientID managedIdentityIDKind = iota
+	miObjectID
+	miResourceID
 )
 
 // ManagedIDKind identifies the ID of a managed identity as either a client or resource ID
@@ -32,7 +33,7 @@ type ManagedIDKind interface {
 	idKind() managedIdentityIDKind
 }
 
-// ClientID is the client ID of a user-assigned managed identity. NewManagedIdentityCredential
+// ClientID is the client ID of a user-assigned managed identity. [NewManagedIdentityCredential]
 // returns an error when a ClientID is specified on the following platforms:
 //
 //   - Azure Arc
@@ -49,7 +50,25 @@ func (c ClientID) String() string {
 	return string(c)
 }
 
-// ResourceID is the resource ID of a user-assigned managed identity. NewManagedIdentityCredential
+// ObjectID is the object ID of a user-assigned managed identity. [NewManagedIdentityCredential]
+// returns an error when an ObjectID is specified on the following platforms:
+//
+//   - Azure Arc
+//   - Azure ML
+//   - Cloud Shell
+//   - Service Fabric
+type ObjectID string
+
+func (ObjectID) idKind() managedIdentityIDKind {
+	return miObjectID
+}
+
+// String returns the string value of the ID.
+func (o ObjectID) String() string {
+	return string(o)
+}
+
+// ResourceID is the resource ID of a user-assigned managed identity. [NewManagedIdentityCredential]
 // returns an error when a ResourceID is specified on the following platforms:
 //
 //   - Azure Arc
@@ -72,7 +91,7 @@ type ManagedIdentityCredentialOptions struct {
 	azcore.ClientOptions
 
 	// ID of a managed identity the credential should authenticate. Set this field to use a specific identity instead of
-	// the hosting environment's default. The value may be the identity's client ID or resource ID.
+	// the hosting environment's default. The value may be the identity's client, object, or resource ID.
 	// NewManagedIdentityCredential returns an error when the hosting environment doesn't support user-assigned managed
 	// identities, or the specified kind of ID.
 	ID ManagedIDKind

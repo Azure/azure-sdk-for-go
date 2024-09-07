@@ -850,7 +850,7 @@ func TestConsumeCloudEventAcsEmailDeliveryReportReceivedEvent(t *testing.T) {
 			"deliveryStatusDetails": {
 				"statusMessage": "DestinationMailboxFull"
 			},
-			"deliveryAttemptTimeStamp": "2023-02-09T19:46:12.2480265+00:00"
+			"deliveryAttemptTimestamp": "2023-02-09T19:46:12.2480265+00:00"
 		},
 		"type": "Microsoft.Communication.EmailDeliveryReportReceived",
 		"time": "2023-02-09T19:46:12.2478002Z",

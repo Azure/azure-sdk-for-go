@@ -152,9 +152,8 @@ steps:
       testRunTitle: 'Go ${{ parameters.GoVersion }} on ${{ parameters.Image }}'
       failTaskOnFailedTests: true
 
-  - task: PublishCodeCoverageResults@1
+  - task: PublishCodeCoverageResults@2
     condition: succeededOrFailed()
     inputs:
-      codeCoverageTool: Cobertura
       summaryFileLocation: './coverage.xml'
       additionalCodeCoverageFiles: './coverage.html'

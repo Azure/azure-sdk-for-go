@@ -13,6 +13,9 @@ param location string = resourceGroup().location
 @description('Enable deploying a premium service bus')
 param enablePremium bool = true
 
+@description('Disable applying any RBAC rules')
+param disableAddingRBACRole bool = false
+
 var apiVersion = '2017-04-01'
 var serviceBusDataOwnerRoleId = '/subscriptions/${subscription().subscriptionId}/providers/Microsoft.Authorization/roleDefinitions/090c5cfd-751d-490a-894a-3ce6f1109419'
 
@@ -86,7 +89,7 @@ resource authorizationRuleNameListenOnly 'Microsoft.ServiceBus/namespaces/Author
   }
 }
 
-resource dataOwnerRoleId 'Microsoft.Authorization/roleAssignments@2018-01-01-preview' = {
+resource dataOwnerRoleId 'Microsoft.Authorization/roleAssignments@2018-01-01-preview' = if (!disableAddingRBACRole) {
   name: guid('dataOwnerRoleId${baseName}')
   properties: {
     roleDefinitionId: serviceBusDataOwnerRoleId

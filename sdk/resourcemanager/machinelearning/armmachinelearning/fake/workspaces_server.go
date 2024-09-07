@@ -16,11 +16,12 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearning/armmachinelearning/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearning/armmachinelearning/v4"
 	"net/http"
 	"net/url"
 	"reflect"
 	"regexp"
+	"strconv"
 )
 
 // WorkspacesServer is a fake server for instances of the armmachinelearning.WorkspacesClient type.
@@ -224,6 +225,7 @@ func (w *WorkspacesServerTransport) dispatchBeginDelete(req *http.Request) (*htt
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
+		qp := req.URL.Query()
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
@@ -232,7 +234,21 @@ func (w *WorkspacesServerTransport) dispatchBeginDelete(req *http.Request) (*htt
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := w.srv.BeginDelete(req.Context(), resourceGroupNameParam, workspaceNameParam, nil)
+		forceToPurgeUnescaped, err := url.QueryUnescape(qp.Get("forceToPurge"))
+		if err != nil {
+			return nil, err
+		}
+		forceToPurgeParam, err := parseOptional(forceToPurgeUnescaped, strconv.ParseBool)
+		if err != nil {
+			return nil, err
+		}
+		var options *armmachinelearning.WorkspacesClientBeginDeleteOptions
+		if forceToPurgeParam != nil {
+			options = &armmachinelearning.WorkspacesClientBeginDeleteOptions{
+				ForceToPurge: forceToPurgeParam,
+			}
+		}
+		respr, errRespr := w.srv.BeginDelete(req.Context(), resourceGroupNameParam, workspaceNameParam, options)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}

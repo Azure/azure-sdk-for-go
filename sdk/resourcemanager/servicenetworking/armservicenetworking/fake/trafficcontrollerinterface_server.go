@@ -29,7 +29,7 @@ type TrafficControllerInterfaceServer struct {
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, trafficControllerName string, resource armservicenetworking.TrafficController, options *armservicenetworking.TrafficControllerInterfaceClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armservicenetworking.TrafficControllerInterfaceClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method TrafficControllerInterfaceClient.BeginDelete
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	// HTTP status codes to indicate success: http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, trafficControllerName string, options *armservicenetworking.TrafficControllerInterfaceClientBeginDeleteOptions) (resp azfake.PollerResponder[armservicenetworking.TrafficControllerInterfaceClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method TrafficControllerInterfaceClient.Get
@@ -188,9 +188,9 @@ func (t *TrafficControllerInterfaceServerTransport) dispatchBeginDelete(req *htt
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !contains([]int{http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		t.beginDelete.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginDelete) {
 		t.beginDelete.remove(req)

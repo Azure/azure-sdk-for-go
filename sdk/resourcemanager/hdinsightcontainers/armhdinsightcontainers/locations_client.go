@@ -46,7 +46,7 @@ func NewLocationsClient(subscriptionID string, credential azcore.TokenCredential
 // CheckNameAvailability - Check the availability of the resource name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01-preview
+// Generated from API version 2024-05-01-preview
 //   - location - The name of the Azure region.
 //   - nameAvailabilityParameters - The name and type of the resource.
 //   - options - LocationsClientCheckNameAvailabilityOptions contains the optional parameters for the LocationsClient.CheckNameAvailability
@@ -89,7 +89,7 @@ func (client *LocationsClient) checkNameAvailabilityCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-01-preview")
+	reqQP.Set("api-version", "2024-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, nameAvailabilityParameters); err != nil {

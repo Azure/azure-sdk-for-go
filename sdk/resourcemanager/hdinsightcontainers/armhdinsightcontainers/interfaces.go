@@ -8,13 +8,45 @@
 
 package armhdinsightcontainers
 
+// ClusterAvailableInPlaceUpgradePropertiesClassification provides polymorphic access to related types.
+// Call the interface's GetClusterAvailableInPlaceUpgradeProperties() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *ClusterAvailableInPlaceUpgradeProperties, *ClusterAvailableUpgradeHotfixUpgradeProperties, *ClusterAvailableUpgradePatchVersionUpgradeProperties
+type ClusterAvailableInPlaceUpgradePropertiesClassification interface {
+	ClusterAvailableUpgradePropertiesClassification
+	// GetClusterAvailableInPlaceUpgradeProperties returns the ClusterAvailableInPlaceUpgradeProperties content of the underlying type.
+	GetClusterAvailableInPlaceUpgradeProperties() *ClusterAvailableInPlaceUpgradeProperties
+}
+
 // ClusterAvailableUpgradePropertiesClassification provides polymorphic access to related types.
 // Call the interface's GetClusterAvailableUpgradeProperties() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *ClusterAvailableUpgradeAksPatchUpgradeProperties, *ClusterAvailableUpgradeHotfixUpgradeProperties, *ClusterAvailableUpgradeProperties
+// - *ClusterAvailableInPlaceUpgradeProperties, *ClusterAvailableUpgradeAksPatchUpgradeProperties, *ClusterAvailableUpgradeHotfixUpgradeProperties,
+// - *ClusterAvailableUpgradePatchVersionUpgradeProperties, *ClusterAvailableUpgradeProperties
 type ClusterAvailableUpgradePropertiesClassification interface {
 	// GetClusterAvailableUpgradeProperties returns the ClusterAvailableUpgradeProperties content of the underlying type.
 	GetClusterAvailableUpgradeProperties() *ClusterAvailableUpgradeProperties
+}
+
+// ClusterInPlaceUpgradeHistoryPropertiesClassification provides polymorphic access to related types.
+// Call the interface's GetClusterInPlaceUpgradeHistoryProperties() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *ClusterHotfixUpgradeHistoryProperties, *ClusterHotfixUpgradeRollbackHistoryProperties, *ClusterInPlaceUpgradeHistoryProperties,
+// - *ClusterPatchVersionUpgradeHistoryProperties, *ClusterPatchVersionUpgradeRollbackHistoryProperties
+type ClusterInPlaceUpgradeHistoryPropertiesClassification interface {
+	ClusterUpgradeHistoryPropertiesClassification
+	// GetClusterInPlaceUpgradeHistoryProperties returns the ClusterInPlaceUpgradeHistoryProperties content of the underlying type.
+	GetClusterInPlaceUpgradeHistoryProperties() *ClusterInPlaceUpgradeHistoryProperties
+}
+
+// ClusterInPlaceUpgradePropertiesClassification provides polymorphic access to related types.
+// Call the interface's GetClusterInPlaceUpgradeProperties() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *ClusterHotfixUpgradeProperties, *ClusterInPlaceUpgradeProperties, *ClusterPatchVersionUpgradeProperties
+type ClusterInPlaceUpgradePropertiesClassification interface {
+	ClusterUpgradePropertiesClassification
+	// GetClusterInPlaceUpgradeProperties returns the ClusterInPlaceUpgradeProperties content of the underlying type.
+	GetClusterInPlaceUpgradeProperties() *ClusterInPlaceUpgradeProperties
 }
 
 // ClusterJobPropertiesClassification provides polymorphic access to related types.
@@ -26,6 +58,15 @@ type ClusterJobPropertiesClassification interface {
 	GetClusterJobProperties() *ClusterJobProperties
 }
 
+// ClusterLibraryPropertiesClassification provides polymorphic access to related types.
+// Call the interface's GetClusterLibraryProperties() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *ClusterLibraryProperties, *MavenLibraryProperties, *PyPiLibraryProperties
+type ClusterLibraryPropertiesClassification interface {
+	// GetClusterLibraryProperties returns the ClusterLibraryProperties content of the underlying type.
+	GetClusterLibraryProperties() *ClusterLibraryProperties
+}
+
 // ClusterPoolAvailableUpgradePropertiesClassification provides polymorphic access to related types.
 // Call the interface's GetClusterPoolAvailableUpgradeProperties() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -33,6 +74,15 @@ type ClusterJobPropertiesClassification interface {
 type ClusterPoolAvailableUpgradePropertiesClassification interface {
 	// GetClusterPoolAvailableUpgradeProperties returns the ClusterPoolAvailableUpgradeProperties content of the underlying type.
 	GetClusterPoolAvailableUpgradeProperties() *ClusterPoolAvailableUpgradeProperties
+}
+
+// ClusterPoolUpgradeHistoryPropertiesClassification provides polymorphic access to related types.
+// Call the interface's GetClusterPoolUpgradeHistoryProperties() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *ClusterPoolAksPatchUpgradeHistoryProperties, *ClusterPoolNodeOsUpgradeHistoryProperties, *ClusterPoolUpgradeHistoryProperties
+type ClusterPoolUpgradeHistoryPropertiesClassification interface {
+	// GetClusterPoolUpgradeHistoryProperties returns the ClusterPoolUpgradeHistoryProperties content of the underlying type.
+	GetClusterPoolUpgradeHistoryProperties() *ClusterPoolUpgradeHistoryProperties
 }
 
 // ClusterPoolUpgradePropertiesClassification provides polymorphic access to related types.
@@ -44,10 +94,22 @@ type ClusterPoolUpgradePropertiesClassification interface {
 	GetClusterPoolUpgradeProperties() *ClusterPoolUpgradeProperties
 }
 
+// ClusterUpgradeHistoryPropertiesClassification provides polymorphic access to related types.
+// Call the interface's GetClusterUpgradeHistoryProperties() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *ClusterAksPatchUpgradeHistoryProperties, *ClusterHotfixUpgradeHistoryProperties, *ClusterHotfixUpgradeRollbackHistoryProperties,
+// - *ClusterInPlaceUpgradeHistoryProperties, *ClusterPatchVersionUpgradeHistoryProperties, *ClusterPatchVersionUpgradeRollbackHistoryProperties,
+// - *ClusterUpgradeHistoryProperties
+type ClusterUpgradeHistoryPropertiesClassification interface {
+	// GetClusterUpgradeHistoryProperties returns the ClusterUpgradeHistoryProperties content of the underlying type.
+	GetClusterUpgradeHistoryProperties() *ClusterUpgradeHistoryProperties
+}
+
 // ClusterUpgradePropertiesClassification provides polymorphic access to related types.
 // Call the interface's GetClusterUpgradeProperties() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *ClusterAKSPatchVersionUpgradeProperties, *ClusterHotfixUpgradeProperties, *ClusterUpgradeProperties
+// - *ClusterAKSPatchVersionUpgradeProperties, *ClusterHotfixUpgradeProperties, *ClusterInPlaceUpgradeProperties, *ClusterPatchVersionUpgradeProperties,
+// - *ClusterUpgradeProperties
 type ClusterUpgradePropertiesClassification interface {
 	// GetClusterUpgradeProperties returns the ClusterUpgradeProperties content of the underlying type.
 	GetClusterUpgradeProperties() *ClusterUpgradeProperties

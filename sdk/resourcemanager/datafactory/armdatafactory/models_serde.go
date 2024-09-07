@@ -377,6 +377,7 @@ func (a AmazonMWSLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", a.Parameters)
 	objectMap["type"] = "AmazonMWS"
 	populate(objectMap, "typeProperties", a.TypeProperties)
+	populate(objectMap, "version", a.Version)
 	if a.AdditionalProperties != nil {
 		for key, val := range a.AdditionalProperties {
 			objectMap[key] = val
@@ -411,6 +412,9 @@ func (a *AmazonMWSLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &a.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &a.Version)
 			delete(rawMsg, key)
 		default:
 			if a.AdditionalProperties == nil {
@@ -681,6 +685,7 @@ func (a AmazonRdsForOracleLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", a.Parameters)
 	objectMap["type"] = "AmazonRdsForOracle"
 	populate(objectMap, "typeProperties", a.TypeProperties)
+	populate(objectMap, "version", a.Version)
 	if a.AdditionalProperties != nil {
 		for key, val := range a.AdditionalProperties {
 			objectMap[key] = val
@@ -715,6 +720,9 @@ func (a *AmazonRdsForOracleLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &a.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &a.Version)
 			delete(rawMsg, key)
 		default:
 			if a.AdditionalProperties == nil {
@@ -965,6 +973,7 @@ func (a AmazonRdsForSQLServerLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", a.Parameters)
 	objectMap["type"] = "AmazonRdsForSqlServer"
 	populate(objectMap, "typeProperties", a.TypeProperties)
+	populate(objectMap, "version", a.Version)
 	if a.AdditionalProperties != nil {
 		for key, val := range a.AdditionalProperties {
 			objectMap[key] = val
@@ -999,6 +1008,9 @@ func (a *AmazonRdsForSQLServerLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &a.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &a.Version)
 			delete(rawMsg, key)
 		default:
 			if a.AdditionalProperties == nil {
@@ -1349,6 +1361,7 @@ func (a AmazonRedshiftLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", a.Parameters)
 	objectMap["type"] = "AmazonRedshift"
 	populate(objectMap, "typeProperties", a.TypeProperties)
+	populate(objectMap, "version", a.Version)
 	if a.AdditionalProperties != nil {
 		for key, val := range a.AdditionalProperties {
 			objectMap[key] = val
@@ -1383,6 +1396,9 @@ func (a *AmazonRedshiftLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &a.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &a.Version)
 			delete(rawMsg, key)
 		default:
 			if a.AdditionalProperties == nil {
@@ -1641,6 +1657,7 @@ func (a AmazonS3CompatibleLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", a.Parameters)
 	objectMap["type"] = "AmazonS3Compatible"
 	populate(objectMap, "typeProperties", a.TypeProperties)
+	populate(objectMap, "version", a.Version)
 	if a.AdditionalProperties != nil {
 		for key, val := range a.AdditionalProperties {
 			objectMap[key] = val
@@ -1675,6 +1692,9 @@ func (a *AmazonS3CompatibleLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &a.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &a.Version)
 			delete(rawMsg, key)
 		default:
 			if a.AdditionalProperties == nil {
@@ -2023,6 +2043,7 @@ func (a AmazonS3LinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", a.Parameters)
 	objectMap["type"] = "AmazonS3"
 	populate(objectMap, "typeProperties", a.TypeProperties)
+	populate(objectMap, "version", a.Version)
 	if a.AdditionalProperties != nil {
 		for key, val := range a.AdditionalProperties {
 			objectMap[key] = val
@@ -2057,6 +2078,9 @@ func (a *AmazonS3LinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &a.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &a.Version)
 			delete(rawMsg, key)
 		default:
 			if a.AdditionalProperties == nil {
@@ -2280,6 +2304,7 @@ func (a AppFiguresLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", a.Parameters)
 	objectMap["type"] = "AppFigures"
 	populate(objectMap, "typeProperties", a.TypeProperties)
+	populate(objectMap, "version", a.Version)
 	if a.AdditionalProperties != nil {
 		for key, val := range a.AdditionalProperties {
 			objectMap[key] = val
@@ -2314,6 +2339,9 @@ func (a *AppFiguresLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &a.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &a.Version)
 			delete(rawMsg, key)
 		default:
 			if a.AdditionalProperties == nil {
@@ -2505,6 +2533,7 @@ func (a AsanaLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", a.Parameters)
 	objectMap["type"] = "Asana"
 	populate(objectMap, "typeProperties", a.TypeProperties)
+	populate(objectMap, "version", a.Version)
 	if a.AdditionalProperties != nil {
 		for key, val := range a.AdditionalProperties {
 			objectMap[key] = val
@@ -2539,6 +2568,9 @@ func (a *AsanaLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &a.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &a.Version)
 			delete(rawMsg, key)
 		default:
 			if a.AdditionalProperties == nil {
@@ -3013,6 +3045,7 @@ func (a AzureBatchLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", a.Parameters)
 	objectMap["type"] = "AzureBatch"
 	populate(objectMap, "typeProperties", a.TypeProperties)
+	populate(objectMap, "version", a.Version)
 	if a.AdditionalProperties != nil {
 		for key, val := range a.AdditionalProperties {
 			objectMap[key] = val
@@ -3047,6 +3080,9 @@ func (a *AzureBatchLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &a.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &a.Version)
 			delete(rawMsg, key)
 		default:
 			if a.AdditionalProperties == nil {
@@ -3364,6 +3400,7 @@ func (a AzureBlobFSLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", a.Parameters)
 	objectMap["type"] = "AzureBlobFS"
 	populate(objectMap, "typeProperties", a.TypeProperties)
+	populate(objectMap, "version", a.Version)
 	if a.AdditionalProperties != nil {
 		for key, val := range a.AdditionalProperties {
 			objectMap[key] = val
@@ -3398,6 +3435,9 @@ func (a *AzureBlobFSLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &a.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &a.Version)
 			delete(rawMsg, key)
 		default:
 			if a.AdditionalProperties == nil {
@@ -3843,6 +3883,7 @@ func (a AzureBlobStorageLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", a.Parameters)
 	objectMap["type"] = "AzureBlobStorage"
 	populate(objectMap, "typeProperties", a.TypeProperties)
+	populate(objectMap, "version", a.Version)
 	if a.AdditionalProperties != nil {
 		for key, val := range a.AdditionalProperties {
 			objectMap[key] = val
@@ -3877,6 +3918,9 @@ func (a *AzureBlobStorageLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &a.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &a.Version)
 			delete(rawMsg, key)
 		default:
 			if a.AdditionalProperties == nil {
@@ -4326,6 +4370,7 @@ func (a AzureDataExplorerLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", a.Parameters)
 	objectMap["type"] = "AzureDataExplorer"
 	populate(objectMap, "typeProperties", a.TypeProperties)
+	populate(objectMap, "version", a.Version)
 	if a.AdditionalProperties != nil {
 		for key, val := range a.AdditionalProperties {
 			objectMap[key] = val
@@ -4360,6 +4405,9 @@ func (a *AzureDataExplorerLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &a.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &a.Version)
 			delete(rawMsg, key)
 		default:
 			if a.AdditionalProperties == nil {
@@ -4661,6 +4709,7 @@ func (a AzureDataLakeAnalyticsLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", a.Parameters)
 	objectMap["type"] = "AzureDataLakeAnalytics"
 	populate(objectMap, "typeProperties", a.TypeProperties)
+	populate(objectMap, "version", a.Version)
 	if a.AdditionalProperties != nil {
 		for key, val := range a.AdditionalProperties {
 			objectMap[key] = val
@@ -4695,6 +4744,9 @@ func (a *AzureDataLakeAnalyticsLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &a.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &a.Version)
 			delete(rawMsg, key)
 		default:
 			if a.AdditionalProperties == nil {
@@ -4891,6 +4943,7 @@ func (a AzureDataLakeStoreLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", a.Parameters)
 	objectMap["type"] = "AzureDataLakeStore"
 	populate(objectMap, "typeProperties", a.TypeProperties)
+	populate(objectMap, "version", a.Version)
 	if a.AdditionalProperties != nil {
 		for key, val := range a.AdditionalProperties {
 			objectMap[key] = val
@@ -4925,6 +4978,9 @@ func (a *AzureDataLakeStoreLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &a.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &a.Version)
 			delete(rawMsg, key)
 		default:
 			if a.AdditionalProperties == nil {
@@ -5563,6 +5619,7 @@ func (a AzureDatabricksDeltaLakeLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", a.Parameters)
 	objectMap["type"] = "AzureDatabricksDeltaLake"
 	populate(objectMap, "typeProperties", a.TypeProperties)
+	populate(objectMap, "version", a.Version)
 	if a.AdditionalProperties != nil {
 		for key, val := range a.AdditionalProperties {
 			objectMap[key] = val
@@ -5597,6 +5654,9 @@ func (a *AzureDatabricksDeltaLakeLinkedService) UnmarshalJSON(data []byte) error
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &a.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &a.Version)
 			delete(rawMsg, key)
 		default:
 			if a.AdditionalProperties == nil {
@@ -5812,6 +5872,7 @@ func (a AzureDatabricksLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", a.Parameters)
 	objectMap["type"] = "AzureDatabricks"
 	populate(objectMap, "typeProperties", a.TypeProperties)
+	populate(objectMap, "version", a.Version)
 	if a.AdditionalProperties != nil {
 		for key, val := range a.AdditionalProperties {
 			objectMap[key] = val
@@ -5846,6 +5907,9 @@ func (a *AzureDatabricksLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &a.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &a.Version)
 			delete(rawMsg, key)
 		default:
 			if a.AdditionalProperties == nil {
@@ -5973,6 +6037,7 @@ func (a AzureFileStorageLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", a.Parameters)
 	objectMap["type"] = "AzureFileStorage"
 	populate(objectMap, "typeProperties", a.TypeProperties)
+	populate(objectMap, "version", a.Version)
 	if a.AdditionalProperties != nil {
 		for key, val := range a.AdditionalProperties {
 			objectMap[key] = val
@@ -6008,6 +6073,9 @@ func (a *AzureFileStorageLinkedService) UnmarshalJSON(data []byte) error {
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &a.TypeProperties)
 			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &a.Version)
+			delete(rawMsg, key)
 		default:
 			if a.AdditionalProperties == nil {
 				a.AdditionalProperties = map[string]any{}
@@ -6031,12 +6099,14 @@ func (a AzureFileStorageLinkedServiceTypeProperties) MarshalJSON() ([]byte, erro
 	objectMap := make(map[string]any)
 	populate(objectMap, "accountKey", a.AccountKey)
 	populateAny(objectMap, "connectionString", a.ConnectionString)
+	populate(objectMap, "credential", a.Credential)
 	populate(objectMap, "encryptedCredential", a.EncryptedCredential)
 	populateAny(objectMap, "fileShare", a.FileShare)
 	populateAny(objectMap, "host", a.Host)
 	populate(objectMap, "password", a.Password)
 	populate(objectMap, "sasToken", a.SasToken)
 	populateAny(objectMap, "sasUri", a.SasURI)
+	populateAny(objectMap, "serviceEndpoint", a.ServiceEndpoint)
 	populateAny(objectMap, "snapshot", a.Snapshot)
 	populateAny(objectMap, "userId", a.UserID)
 	return json.Marshal(objectMap)
@@ -6057,6 +6127,9 @@ func (a *AzureFileStorageLinkedServiceTypeProperties) UnmarshalJSON(data []byte)
 		case "connectionString":
 			err = unpopulate(val, "ConnectionString", &a.ConnectionString)
 			delete(rawMsg, key)
+		case "credential":
+			err = unpopulate(val, "Credential", &a.Credential)
+			delete(rawMsg, key)
 		case "encryptedCredential":
 			err = unpopulate(val, "EncryptedCredential", &a.EncryptedCredential)
 			delete(rawMsg, key)
@@ -6074,6 +6147,9 @@ func (a *AzureFileStorageLinkedServiceTypeProperties) UnmarshalJSON(data []byte)
 			delete(rawMsg, key)
 		case "sasUri":
 			err = unpopulate(val, "SasURI", &a.SasURI)
+			delete(rawMsg, key)
+		case "serviceEndpoint":
+			err = unpopulate(val, "ServiceEndpoint", &a.ServiceEndpoint)
 			delete(rawMsg, key)
 		case "snapshot":
 			err = unpopulate(val, "Snapshot", &a.Snapshot)
@@ -6413,6 +6489,7 @@ func (a AzureFunctionLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", a.Parameters)
 	objectMap["type"] = "AzureFunction"
 	populate(objectMap, "typeProperties", a.TypeProperties)
+	populate(objectMap, "version", a.Version)
 	if a.AdditionalProperties != nil {
 		for key, val := range a.AdditionalProperties {
 			objectMap[key] = val
@@ -6447,6 +6524,9 @@ func (a *AzureFunctionLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &a.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &a.Version)
 			delete(rawMsg, key)
 		default:
 			if a.AdditionalProperties == nil {
@@ -6522,6 +6602,7 @@ func (a AzureKeyVaultLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", a.Parameters)
 	objectMap["type"] = "AzureKeyVault"
 	populate(objectMap, "typeProperties", a.TypeProperties)
+	populate(objectMap, "version", a.Version)
 	if a.AdditionalProperties != nil {
 		for key, val := range a.AdditionalProperties {
 			objectMap[key] = val
@@ -6556,6 +6637,9 @@ func (a *AzureKeyVaultLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &a.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &a.Version)
 			delete(rawMsg, key)
 		default:
 			if a.AdditionalProperties == nil {
@@ -6900,6 +6984,7 @@ func (a AzureMLLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", a.Parameters)
 	objectMap["type"] = "AzureML"
 	populate(objectMap, "typeProperties", a.TypeProperties)
+	populate(objectMap, "version", a.Version)
 	if a.AdditionalProperties != nil {
 		for key, val := range a.AdditionalProperties {
 			objectMap[key] = val
@@ -6934,6 +7019,9 @@ func (a *AzureMLLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &a.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &a.Version)
 			delete(rawMsg, key)
 		default:
 			if a.AdditionalProperties == nil {
@@ -7017,6 +7105,7 @@ func (a AzureMLServiceLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", a.Parameters)
 	objectMap["type"] = "AzureMLService"
 	populate(objectMap, "typeProperties", a.TypeProperties)
+	populate(objectMap, "version", a.Version)
 	if a.AdditionalProperties != nil {
 		for key, val := range a.AdditionalProperties {
 			objectMap[key] = val
@@ -7051,6 +7140,9 @@ func (a *AzureMLServiceLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &a.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &a.Version)
 			delete(rawMsg, key)
 		default:
 			if a.AdditionalProperties == nil {
@@ -7278,6 +7370,7 @@ func (a AzureMariaDBLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", a.Parameters)
 	objectMap["type"] = "AzureMariaDB"
 	populate(objectMap, "typeProperties", a.TypeProperties)
+	populate(objectMap, "version", a.Version)
 	if a.AdditionalProperties != nil {
 		for key, val := range a.AdditionalProperties {
 			objectMap[key] = val
@@ -7312,6 +7405,9 @@ func (a *AzureMariaDBLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &a.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &a.Version)
 			delete(rawMsg, key)
 		default:
 			if a.AdditionalProperties == nil {
@@ -7519,6 +7615,7 @@ func (a AzureMySQLLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", a.Parameters)
 	objectMap["type"] = "AzureMySql"
 	populate(objectMap, "typeProperties", a.TypeProperties)
+	populate(objectMap, "version", a.Version)
 	if a.AdditionalProperties != nil {
 		for key, val := range a.AdditionalProperties {
 			objectMap[key] = val
@@ -7553,6 +7650,9 @@ func (a *AzureMySQLLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &a.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &a.Version)
 			delete(rawMsg, key)
 		default:
 			if a.AdditionalProperties == nil {
@@ -7861,6 +7961,7 @@ func (a AzurePostgreSQLLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", a.Parameters)
 	objectMap["type"] = "AzurePostgreSql"
 	populate(objectMap, "typeProperties", a.TypeProperties)
+	populate(objectMap, "version", a.Version)
 	if a.AdditionalProperties != nil {
 		for key, val := range a.AdditionalProperties {
 			objectMap[key] = val
@@ -7895,6 +7996,9 @@ func (a *AzurePostgreSQLLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &a.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &a.Version)
 			delete(rawMsg, key)
 		default:
 			if a.AdditionalProperties == nil {
@@ -8273,6 +8377,7 @@ func (a AzureSQLDWLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", a.Parameters)
 	objectMap["type"] = "AzureSqlDW"
 	populate(objectMap, "typeProperties", a.TypeProperties)
+	populate(objectMap, "version", a.Version)
 	if a.AdditionalProperties != nil {
 		for key, val := range a.AdditionalProperties {
 			objectMap[key] = val
@@ -8307,6 +8412,9 @@ func (a *AzureSQLDWLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &a.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &a.Version)
 			delete(rawMsg, key)
 		default:
 			if a.AdditionalProperties == nil {
@@ -8591,6 +8699,7 @@ func (a AzureSQLDatabaseLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", a.Parameters)
 	objectMap["type"] = "AzureSqlDatabase"
 	populate(objectMap, "typeProperties", a.TypeProperties)
+	populate(objectMap, "version", a.Version)
 	if a.AdditionalProperties != nil {
 		for key, val := range a.AdditionalProperties {
 			objectMap[key] = val
@@ -8625,6 +8734,9 @@ func (a *AzureSQLDatabaseLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &a.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &a.Version)
 			delete(rawMsg, key)
 		default:
 			if a.AdditionalProperties == nil {
@@ -8804,6 +8916,7 @@ func (a AzureSQLMILinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", a.Parameters)
 	objectMap["type"] = "AzureSqlMI"
 	populate(objectMap, "typeProperties", a.TypeProperties)
+	populate(objectMap, "version", a.Version)
 	if a.AdditionalProperties != nil {
 		for key, val := range a.AdditionalProperties {
 			objectMap[key] = val
@@ -8838,6 +8951,9 @@ func (a *AzureSQLMILinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &a.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &a.Version)
 			delete(rawMsg, key)
 		default:
 			if a.AdditionalProperties == nil {
@@ -9602,6 +9718,7 @@ func (a AzureSearchLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", a.Parameters)
 	objectMap["type"] = "AzureSearch"
 	populate(objectMap, "typeProperties", a.TypeProperties)
+	populate(objectMap, "version", a.Version)
 	if a.AdditionalProperties != nil {
 		for key, val := range a.AdditionalProperties {
 			objectMap[key] = val
@@ -9636,6 +9753,9 @@ func (a *AzureSearchLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &a.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &a.Version)
 			delete(rawMsg, key)
 		default:
 			if a.AdditionalProperties == nil {
@@ -9699,6 +9819,7 @@ func (a AzureStorageLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", a.Parameters)
 	objectMap["type"] = "AzureStorage"
 	populate(objectMap, "typeProperties", a.TypeProperties)
+	populate(objectMap, "version", a.Version)
 	if a.AdditionalProperties != nil {
 		for key, val := range a.AdditionalProperties {
 			objectMap[key] = val
@@ -9733,6 +9854,9 @@ func (a *AzureStorageLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &a.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &a.Version)
 			delete(rawMsg, key)
 		default:
 			if a.AdditionalProperties == nil {
@@ -9804,6 +9928,7 @@ func (a AzureSynapseArtifactsLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", a.Parameters)
 	objectMap["type"] = "AzureSynapseArtifacts"
 	populate(objectMap, "typeProperties", a.TypeProperties)
+	populate(objectMap, "version", a.Version)
 	if a.AdditionalProperties != nil {
 		for key, val := range a.AdditionalProperties {
 			objectMap[key] = val
@@ -9838,6 +9963,9 @@ func (a *AzureSynapseArtifactsLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &a.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &a.Version)
 			delete(rawMsg, key)
 		default:
 			if a.AdditionalProperties == nil {
@@ -10158,6 +10286,7 @@ func (a AzureTableStorageLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", a.Parameters)
 	objectMap["type"] = "AzureTableStorage"
 	populate(objectMap, "typeProperties", a.TypeProperties)
+	populate(objectMap, "version", a.Version)
 	if a.AdditionalProperties != nil {
 		for key, val := range a.AdditionalProperties {
 			objectMap[key] = val
@@ -10193,6 +10322,9 @@ func (a *AzureTableStorageLinkedService) UnmarshalJSON(data []byte) error {
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &a.TypeProperties)
 			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &a.Version)
+			delete(rawMsg, key)
 		default:
 			if a.AdditionalProperties == nil {
 				a.AdditionalProperties = map[string]any{}
@@ -10202,6 +10334,57 @@ func (a *AzureTableStorageLinkedService) UnmarshalJSON(data []byte) error {
 				err = json.Unmarshal(val, &aux)
 				a.AdditionalProperties[key] = aux
 			}
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", a, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AzureTableStorageLinkedServiceTypeProperties.
+func (a AzureTableStorageLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "accountKey", a.AccountKey)
+	populateAny(objectMap, "connectionString", a.ConnectionString)
+	populate(objectMap, "credential", a.Credential)
+	populate(objectMap, "encryptedCredential", a.EncryptedCredential)
+	populate(objectMap, "sasToken", a.SasToken)
+	populateAny(objectMap, "sasUri", a.SasURI)
+	populateAny(objectMap, "serviceEndpoint", a.ServiceEndpoint)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AzureTableStorageLinkedServiceTypeProperties.
+func (a *AzureTableStorageLinkedServiceTypeProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", a, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "accountKey":
+			err = unpopulate(val, "AccountKey", &a.AccountKey)
+			delete(rawMsg, key)
+		case "connectionString":
+			err = unpopulate(val, "ConnectionString", &a.ConnectionString)
+			delete(rawMsg, key)
+		case "credential":
+			err = unpopulate(val, "Credential", &a.Credential)
+			delete(rawMsg, key)
+		case "encryptedCredential":
+			err = unpopulate(val, "EncryptedCredential", &a.EncryptedCredential)
+			delete(rawMsg, key)
+		case "sasToken":
+			err = unpopulate(val, "SasToken", &a.SasToken)
+			delete(rawMsg, key)
+		case "sasUri":
+			err = unpopulate(val, "SasURI", &a.SasURI)
+			delete(rawMsg, key)
+		case "serviceEndpoint":
+			err = unpopulate(val, "ServiceEndpoint", &a.ServiceEndpoint)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -10923,6 +11106,7 @@ func (c CassandraLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", c.Parameters)
 	objectMap["type"] = "Cassandra"
 	populate(objectMap, "typeProperties", c.TypeProperties)
+	populate(objectMap, "version", c.Version)
 	if c.AdditionalProperties != nil {
 		for key, val := range c.AdditionalProperties {
 			objectMap[key] = val
@@ -10957,6 +11141,9 @@ func (c *CassandraLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &c.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &c.Version)
 			delete(rawMsg, key)
 		default:
 			if c.AdditionalProperties == nil {
@@ -11638,6 +11825,7 @@ func (c CommonDataServiceForAppsLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", c.Parameters)
 	objectMap["type"] = "CommonDataServiceForApps"
 	populate(objectMap, "typeProperties", c.TypeProperties)
+	populate(objectMap, "version", c.Version)
 	if c.AdditionalProperties != nil {
 		for key, val := range c.AdditionalProperties {
 			objectMap[key] = val
@@ -11673,6 +11861,9 @@ func (c *CommonDataServiceForAppsLinkedService) UnmarshalJSON(data []byte) error
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &c.TypeProperties)
 			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &c.Version)
+			delete(rawMsg, key)
 		default:
 			if c.AdditionalProperties == nil {
 				c.AdditionalProperties = map[string]any{}
@@ -11696,6 +11887,7 @@ func (c CommonDataServiceForAppsLinkedServiceTypeProperties) MarshalJSON() ([]by
 	objectMap := make(map[string]any)
 	populateAny(objectMap, "authenticationType", c.AuthenticationType)
 	populateAny(objectMap, "deploymentType", c.DeploymentType)
+	populateAny(objectMap, "domain", c.Domain)
 	populate(objectMap, "encryptedCredential", c.EncryptedCredential)
 	populateAny(objectMap, "hostName", c.HostName)
 	populateAny(objectMap, "organizationName", c.OrganizationName)
@@ -11723,6 +11915,9 @@ func (c *CommonDataServiceForAppsLinkedServiceTypeProperties) UnmarshalJSON(data
 			delete(rawMsg, key)
 		case "deploymentType":
 			err = unpopulate(val, "DeploymentType", &c.DeploymentType)
+			delete(rawMsg, key)
+		case "domain":
+			err = unpopulate(val, "Domain", &c.Domain)
 			delete(rawMsg, key)
 		case "encryptedCredential":
 			err = unpopulate(val, "EncryptedCredential", &c.EncryptedCredential)
@@ -11988,6 +12183,7 @@ func (c ConcurLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", c.Parameters)
 	objectMap["type"] = "Concur"
 	populate(objectMap, "typeProperties", c.TypeProperties)
+	populate(objectMap, "version", c.Version)
 	if c.AdditionalProperties != nil {
 		for key, val := range c.AdditionalProperties {
 			objectMap[key] = val
@@ -12022,6 +12218,9 @@ func (c *ConcurLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &c.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &c.Version)
 			delete(rawMsg, key)
 		default:
 			if c.AdditionalProperties == nil {
@@ -12266,6 +12465,41 @@ func (c *ConnectionStateProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "status":
 			err = unpopulate(val, "Status", &c.Status)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", c, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ContinuationSettingsReference.
+func (c ContinuationSettingsReference) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populateAny(objectMap, "continuationTtlInMinutes", c.ContinuationTTLInMinutes)
+	populateAny(objectMap, "customizedCheckpointKey", c.CustomizedCheckpointKey)
+	populateAny(objectMap, "idleCondition", c.IdleCondition)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ContinuationSettingsReference.
+func (c *ContinuationSettingsReference) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", c, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "continuationTtlInMinutes":
+			err = unpopulate(val, "ContinuationTTLInMinutes", &c.ContinuationTTLInMinutes)
+			delete(rawMsg, key)
+		case "customizedCheckpointKey":
+			err = unpopulate(val, "CustomizedCheckpointKey", &c.CustomizedCheckpointKey)
+			delete(rawMsg, key)
+		case "idleCondition":
+			err = unpopulate(val, "IdleCondition", &c.IdleCondition)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -12720,6 +12954,7 @@ func (c CosmosDbLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", c.Parameters)
 	objectMap["type"] = "CosmosDb"
 	populate(objectMap, "typeProperties", c.TypeProperties)
+	populate(objectMap, "version", c.Version)
 	if c.AdditionalProperties != nil {
 		for key, val := range c.AdditionalProperties {
 			objectMap[key] = val
@@ -12754,6 +12989,9 @@ func (c *CosmosDbLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &c.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &c.Version)
 			delete(rawMsg, key)
 		default:
 			if c.AdditionalProperties == nil {
@@ -12954,6 +13192,7 @@ func (c CosmosDbMongoDbAPILinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", c.Parameters)
 	objectMap["type"] = "CosmosDbMongoDbApi"
 	populate(objectMap, "typeProperties", c.TypeProperties)
+	populate(objectMap, "version", c.Version)
 	if c.AdditionalProperties != nil {
 		for key, val := range c.AdditionalProperties {
 			objectMap[key] = val
@@ -12988,6 +13227,9 @@ func (c *CosmosDbMongoDbAPILinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &c.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &c.Version)
 			delete(rawMsg, key)
 		default:
 			if c.AdditionalProperties == nil {
@@ -13448,6 +13690,7 @@ func (c CouchbaseLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", c.Parameters)
 	objectMap["type"] = "Couchbase"
 	populate(objectMap, "typeProperties", c.TypeProperties)
+	populate(objectMap, "version", c.Version)
 	if c.AdditionalProperties != nil {
 		for key, val := range c.AdditionalProperties {
 			objectMap[key] = val
@@ -13482,6 +13725,9 @@ func (c *CouchbaseLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &c.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &c.Version)
 			delete(rawMsg, key)
 		default:
 			if c.AdditionalProperties == nil {
@@ -14155,6 +14401,7 @@ func (c CustomDataSourceLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", c.Parameters)
 	objectMap["type"] = "CustomDataSource"
 	populateAny(objectMap, "typeProperties", c.TypeProperties)
+	populate(objectMap, "version", c.Version)
 	if c.AdditionalProperties != nil {
 		for key, val := range c.AdditionalProperties {
 			objectMap[key] = val
@@ -14189,6 +14436,9 @@ func (c *CustomDataSourceLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &c.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &c.Version)
 			delete(rawMsg, key)
 		default:
 			if c.AdditionalProperties == nil {
@@ -16055,6 +16305,7 @@ func (d DataworldLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", d.Parameters)
 	objectMap["type"] = "Dataworld"
 	populate(objectMap, "typeProperties", d.TypeProperties)
+	populate(objectMap, "version", d.Version)
 	if d.AdditionalProperties != nil {
 		for key, val := range d.AdditionalProperties {
 			objectMap[key] = val
@@ -16089,6 +16340,9 @@ func (d *DataworldLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &d.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &d.Version)
 			delete(rawMsg, key)
 		default:
 			if d.AdditionalProperties == nil {
@@ -16148,6 +16402,7 @@ func (d Db2LinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", d.Parameters)
 	objectMap["type"] = "Db2"
 	populate(objectMap, "typeProperties", d.TypeProperties)
+	populate(objectMap, "version", d.Version)
 	if d.AdditionalProperties != nil {
 		for key, val := range d.AdditionalProperties {
 			objectMap[key] = val
@@ -16182,6 +16437,9 @@ func (d *Db2LinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &d.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &d.Version)
 			delete(rawMsg, key)
 		default:
 			if d.AdditionalProperties == nil {
@@ -17335,6 +17593,7 @@ func (d DrillLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", d.Parameters)
 	objectMap["type"] = "Drill"
 	populate(objectMap, "typeProperties", d.TypeProperties)
+	populate(objectMap, "version", d.Version)
 	if d.AdditionalProperties != nil {
 		for key, val := range d.AdditionalProperties {
 			objectMap[key] = val
@@ -17369,6 +17628,9 @@ func (d *DrillLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &d.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &d.Version)
 			delete(rawMsg, key)
 		default:
 			if d.AdditionalProperties == nil {
@@ -17576,6 +17838,7 @@ func (d DynamicsAXLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", d.Parameters)
 	objectMap["type"] = "DynamicsAX"
 	populate(objectMap, "typeProperties", d.TypeProperties)
+	populate(objectMap, "version", d.Version)
 	if d.AdditionalProperties != nil {
 		for key, val := range d.AdditionalProperties {
 			objectMap[key] = val
@@ -17610,6 +17873,9 @@ func (d *DynamicsAXLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &d.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &d.Version)
 			delete(rawMsg, key)
 		default:
 			if d.AdditionalProperties == nil {
@@ -17961,6 +18227,7 @@ func (d DynamicsCrmLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", d.Parameters)
 	objectMap["type"] = "DynamicsCrm"
 	populate(objectMap, "typeProperties", d.TypeProperties)
+	populate(objectMap, "version", d.Version)
 	if d.AdditionalProperties != nil {
 		for key, val := range d.AdditionalProperties {
 			objectMap[key] = val
@@ -17996,6 +18263,9 @@ func (d *DynamicsCrmLinkedService) UnmarshalJSON(data []byte) error {
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &d.TypeProperties)
 			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &d.Version)
+			delete(rawMsg, key)
 		default:
 			if d.AdditionalProperties == nil {
 				d.AdditionalProperties = map[string]any{}
@@ -18020,6 +18290,7 @@ func (d DynamicsCrmLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	populateAny(objectMap, "authenticationType", d.AuthenticationType)
 	populate(objectMap, "credential", d.Credential)
 	populateAny(objectMap, "deploymentType", d.DeploymentType)
+	populateAny(objectMap, "domain", d.Domain)
 	populate(objectMap, "encryptedCredential", d.EncryptedCredential)
 	populateAny(objectMap, "hostName", d.HostName)
 	populateAny(objectMap, "organizationName", d.OrganizationName)
@@ -18050,6 +18321,9 @@ func (d *DynamicsCrmLinkedServiceTypeProperties) UnmarshalJSON(data []byte) erro
 			delete(rawMsg, key)
 		case "deploymentType":
 			err = unpopulate(val, "DeploymentType", &d.DeploymentType)
+			delete(rawMsg, key)
+		case "domain":
+			err = unpopulate(val, "Domain", &d.Domain)
 			delete(rawMsg, key)
 		case "encryptedCredential":
 			err = unpopulate(val, "EncryptedCredential", &d.EncryptedCredential)
@@ -18343,6 +18617,7 @@ func (d DynamicsLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", d.Parameters)
 	objectMap["type"] = "Dynamics"
 	populate(objectMap, "typeProperties", d.TypeProperties)
+	populate(objectMap, "version", d.Version)
 	if d.AdditionalProperties != nil {
 		for key, val := range d.AdditionalProperties {
 			objectMap[key] = val
@@ -18378,6 +18653,9 @@ func (d *DynamicsLinkedService) UnmarshalJSON(data []byte) error {
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &d.TypeProperties)
 			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &d.Version)
+			delete(rawMsg, key)
 		default:
 			if d.AdditionalProperties == nil {
 				d.AdditionalProperties = map[string]any{}
@@ -18402,6 +18680,7 @@ func (d DynamicsLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	populateAny(objectMap, "authenticationType", d.AuthenticationType)
 	populate(objectMap, "credential", d.Credential)
 	populateAny(objectMap, "deploymentType", d.DeploymentType)
+	populateAny(objectMap, "domain", d.Domain)
 	populate(objectMap, "encryptedCredential", d.EncryptedCredential)
 	populateAny(objectMap, "hostName", d.HostName)
 	populateAny(objectMap, "organizationName", d.OrganizationName)
@@ -18432,6 +18711,9 @@ func (d *DynamicsLinkedServiceTypeProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "deploymentType":
 			err = unpopulate(val, "DeploymentType", &d.DeploymentType)
+			delete(rawMsg, key)
+		case "domain":
+			err = unpopulate(val, "Domain", &d.Domain)
 			delete(rawMsg, key)
 		case "encryptedCredential":
 			err = unpopulate(val, "EncryptedCredential", &d.EncryptedCredential)
@@ -18624,6 +18906,7 @@ func (e EloquaLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", e.Parameters)
 	objectMap["type"] = "Eloqua"
 	populate(objectMap, "typeProperties", e.TypeProperties)
+	populate(objectMap, "version", e.Version)
 	if e.AdditionalProperties != nil {
 		for key, val := range e.AdditionalProperties {
 			objectMap[key] = val
@@ -18658,6 +18941,9 @@ func (e *EloquaLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &e.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &e.Version)
 			delete(rawMsg, key)
 		default:
 			if e.AdditionalProperties == nil {
@@ -19277,6 +19563,7 @@ func (e *ExecuteDataFlowActivity) UnmarshalJSON(data []byte) error {
 func (e ExecuteDataFlowActivityTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "compute", e.Compute)
+	populate(objectMap, "continuationSettings", e.ContinuationSettings)
 	populateAny(objectMap, "continueOnError", e.ContinueOnError)
 	populate(objectMap, "dataFlow", e.DataFlow)
 	populate(objectMap, "integrationRuntime", e.IntegrationRuntime)
@@ -19298,6 +19585,9 @@ func (e *ExecuteDataFlowActivityTypeProperties) UnmarshalJSON(data []byte) error
 		switch key {
 		case "compute":
 			err = unpopulate(val, "Compute", &e.Compute)
+			delete(rawMsg, key)
+		case "continuationSettings":
+			err = unpopulate(val, "ContinuationSettings", &e.ContinuationSettings)
 			delete(rawMsg, key)
 		case "continueOnError":
 			err = unpopulate(val, "ContinueOnError", &e.ContinueOnError)
@@ -19514,6 +19804,7 @@ func (e *ExecutePipelineActivityTypeProperties) UnmarshalJSON(data []byte) error
 func (e ExecutePowerQueryActivityTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "compute", e.Compute)
+	populate(objectMap, "continuationSettings", e.ContinuationSettings)
 	populateAny(objectMap, "continueOnError", e.ContinueOnError)
 	populate(objectMap, "dataFlow", e.DataFlow)
 	populate(objectMap, "integrationRuntime", e.IntegrationRuntime)
@@ -19537,6 +19828,9 @@ func (e *ExecutePowerQueryActivityTypeProperties) UnmarshalJSON(data []byte) err
 		switch key {
 		case "compute":
 			err = unpopulate(val, "Compute", &e.Compute)
+			delete(rawMsg, key)
+		case "continuationSettings":
+			err = unpopulate(val, "ContinuationSettings", &e.ContinuationSettings)
 			delete(rawMsg, key)
 		case "continueOnError":
 			err = unpopulate(val, "ContinueOnError", &e.ContinueOnError)
@@ -20669,6 +20963,7 @@ func (f FileServerLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", f.Parameters)
 	objectMap["type"] = "FileServer"
 	populate(objectMap, "typeProperties", f.TypeProperties)
+	populate(objectMap, "version", f.Version)
 	if f.AdditionalProperties != nil {
 		for key, val := range f.AdditionalProperties {
 			objectMap[key] = val
@@ -20703,6 +20998,9 @@ func (f *FileServerLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &f.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &f.Version)
 			delete(rawMsg, key)
 		default:
 			if f.AdditionalProperties == nil {
@@ -21695,6 +21993,7 @@ func (f FtpServerLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", f.Parameters)
 	objectMap["type"] = "FtpServer"
 	populate(objectMap, "typeProperties", f.TypeProperties)
+	populate(objectMap, "version", f.Version)
 	if f.AdditionalProperties != nil {
 		for key, val := range f.AdditionalProperties {
 			objectMap[key] = val
@@ -21729,6 +22028,9 @@ func (f *FtpServerLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &f.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &f.Version)
 			delete(rawMsg, key)
 		default:
 			if f.AdditionalProperties == nil {
@@ -22235,6 +22537,7 @@ func (g GoogleAdWordsLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", g.Parameters)
 	objectMap["type"] = "GoogleAdWords"
 	populate(objectMap, "typeProperties", g.TypeProperties)
+	populate(objectMap, "version", g.Version)
 	if g.AdditionalProperties != nil {
 		for key, val := range g.AdditionalProperties {
 			objectMap[key] = val
@@ -22269,6 +22572,9 @@ func (g *GoogleAdWordsLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &g.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &g.Version)
 			delete(rawMsg, key)
 		default:
 			if g.AdditionalProperties == nil {
@@ -22563,6 +22869,7 @@ func (g GoogleBigQueryLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", g.Parameters)
 	objectMap["type"] = "GoogleBigQuery"
 	populate(objectMap, "typeProperties", g.TypeProperties)
+	populate(objectMap, "version", g.Version)
 	if g.AdditionalProperties != nil {
 		for key, val := range g.AdditionalProperties {
 			objectMap[key] = val
@@ -22597,6 +22904,9 @@ func (g *GoogleBigQueryLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &g.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &g.Version)
 			delete(rawMsg, key)
 		default:
 			if g.AdditionalProperties == nil {
@@ -22871,6 +23181,7 @@ func (g GoogleBigQueryV2LinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", g.Parameters)
 	objectMap["type"] = "GoogleBigQueryV2"
 	populate(objectMap, "typeProperties", g.TypeProperties)
+	populate(objectMap, "version", g.Version)
 	if g.AdditionalProperties != nil {
 		for key, val := range g.AdditionalProperties {
 			objectMap[key] = val
@@ -22905,6 +23216,9 @@ func (g *GoogleBigQueryV2LinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &g.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &g.Version)
 			delete(rawMsg, key)
 		default:
 			if g.AdditionalProperties == nil {
@@ -23128,6 +23442,7 @@ func (g GoogleCloudStorageLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", g.Parameters)
 	objectMap["type"] = "GoogleCloudStorage"
 	populate(objectMap, "typeProperties", g.TypeProperties)
+	populate(objectMap, "version", g.Version)
 	if g.AdditionalProperties != nil {
 		for key, val := range g.AdditionalProperties {
 			objectMap[key] = val
@@ -23162,6 +23477,9 @@ func (g *GoogleCloudStorageLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &g.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &g.Version)
 			delete(rawMsg, key)
 		default:
 			if g.AdditionalProperties == nil {
@@ -23377,6 +23695,7 @@ func (g GoogleSheetsLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", g.Parameters)
 	objectMap["type"] = "GoogleSheets"
 	populate(objectMap, "typeProperties", g.TypeProperties)
+	populate(objectMap, "version", g.Version)
 	if g.AdditionalProperties != nil {
 		for key, val := range g.AdditionalProperties {
 			objectMap[key] = val
@@ -23411,6 +23730,9 @@ func (g *GoogleSheetsLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &g.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &g.Version)
 			delete(rawMsg, key)
 		default:
 			if g.AdditionalProperties == nil {
@@ -23505,6 +23827,7 @@ func (g GreenplumLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", g.Parameters)
 	objectMap["type"] = "Greenplum"
 	populate(objectMap, "typeProperties", g.TypeProperties)
+	populate(objectMap, "version", g.Version)
 	if g.AdditionalProperties != nil {
 		for key, val := range g.AdditionalProperties {
 			objectMap[key] = val
@@ -23539,6 +23862,9 @@ func (g *GreenplumLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &g.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &g.Version)
 			delete(rawMsg, key)
 		default:
 			if g.AdditionalProperties == nil {
@@ -23746,6 +24072,7 @@ func (h HBaseLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", h.Parameters)
 	objectMap["type"] = "HBase"
 	populate(objectMap, "typeProperties", h.TypeProperties)
+	populate(objectMap, "version", h.Version)
 	if h.AdditionalProperties != nil {
 		for key, val := range h.AdditionalProperties {
 			objectMap[key] = val
@@ -23780,6 +24107,9 @@ func (h *HBaseLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &h.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &h.Version)
 			delete(rawMsg, key)
 		default:
 			if h.AdditionalProperties == nil {
@@ -24152,6 +24482,7 @@ func (h HDInsightLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", h.Parameters)
 	objectMap["type"] = "HDInsight"
 	populate(objectMap, "typeProperties", h.TypeProperties)
+	populate(objectMap, "version", h.Version)
 	if h.AdditionalProperties != nil {
 		for key, val := range h.AdditionalProperties {
 			objectMap[key] = val
@@ -24186,6 +24517,9 @@ func (h *HDInsightLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &h.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &h.Version)
 			delete(rawMsg, key)
 		default:
 			if h.AdditionalProperties == nil {
@@ -24402,6 +24736,7 @@ func (h HDInsightOnDemandLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", h.Parameters)
 	objectMap["type"] = "HDInsightOnDemand"
 	populate(objectMap, "typeProperties", h.TypeProperties)
+	populate(objectMap, "version", h.Version)
 	if h.AdditionalProperties != nil {
 		for key, val := range h.AdditionalProperties {
 			objectMap[key] = val
@@ -24436,6 +24771,9 @@ func (h *HDInsightOnDemandLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &h.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &h.Version)
 			delete(rawMsg, key)
 		default:
 			if h.AdditionalProperties == nil {
@@ -25151,6 +25489,7 @@ func (h HTTPLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", h.Parameters)
 	objectMap["type"] = "HttpServer"
 	populate(objectMap, "typeProperties", h.TypeProperties)
+	populate(objectMap, "version", h.Version)
 	if h.AdditionalProperties != nil {
 		for key, val := range h.AdditionalProperties {
 			objectMap[key] = val
@@ -25185,6 +25524,9 @@ func (h *HTTPLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &h.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &h.Version)
 			delete(rawMsg, key)
 		default:
 			if h.AdditionalProperties == nil {
@@ -25458,6 +25800,7 @@ func (h HdfsLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", h.Parameters)
 	objectMap["type"] = "Hdfs"
 	populate(objectMap, "typeProperties", h.TypeProperties)
+	populate(objectMap, "version", h.Version)
 	if h.AdditionalProperties != nil {
 		for key, val := range h.AdditionalProperties {
 			objectMap[key] = val
@@ -25492,6 +25835,9 @@ func (h *HdfsLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &h.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &h.Version)
 			delete(rawMsg, key)
 		default:
 			if h.AdditionalProperties == nil {
@@ -25804,6 +26150,7 @@ func (h HiveLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", h.Parameters)
 	objectMap["type"] = "Hive"
 	populate(objectMap, "typeProperties", h.TypeProperties)
+	populate(objectMap, "version", h.Version)
 	if h.AdditionalProperties != nil {
 		for key, val := range h.AdditionalProperties {
 			objectMap[key] = val
@@ -25838,6 +26185,9 @@ func (h *HiveLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &h.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &h.Version)
 			delete(rawMsg, key)
 		default:
 			if h.AdditionalProperties == nil {
@@ -26101,6 +26451,7 @@ func (h HubspotLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", h.Parameters)
 	objectMap["type"] = "Hubspot"
 	populate(objectMap, "typeProperties", h.TypeProperties)
+	populate(objectMap, "version", h.Version)
 	if h.AdditionalProperties != nil {
 		for key, val := range h.AdditionalProperties {
 			objectMap[key] = val
@@ -26135,6 +26486,9 @@ func (h *HubspotLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &h.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &h.Version)
 			delete(rawMsg, key)
 		default:
 			if h.AdditionalProperties == nil {
@@ -26502,6 +26856,7 @@ func (i ImpalaLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", i.Parameters)
 	objectMap["type"] = "Impala"
 	populate(objectMap, "typeProperties", i.TypeProperties)
+	populate(objectMap, "version", i.Version)
 	if i.AdditionalProperties != nil {
 		for key, val := range i.AdditionalProperties {
 			objectMap[key] = val
@@ -26536,6 +26891,9 @@ func (i *ImpalaLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &i.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &i.Version)
 			delete(rawMsg, key)
 		default:
 			if i.AdditionalProperties == nil {
@@ -26817,6 +27175,7 @@ func (i InformixLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", i.Parameters)
 	objectMap["type"] = "Informix"
 	populate(objectMap, "typeProperties", i.TypeProperties)
+	populate(objectMap, "version", i.Version)
 	if i.AdditionalProperties != nil {
 		for key, val := range i.AdditionalProperties {
 			objectMap[key] = val
@@ -26851,6 +27210,9 @@ func (i *InformixLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &i.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &i.Version)
 			delete(rawMsg, key)
 		default:
 			if i.AdditionalProperties == nil {
@@ -28647,6 +29009,7 @@ func (j JiraLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", j.Parameters)
 	objectMap["type"] = "Jira"
 	populate(objectMap, "typeProperties", j.TypeProperties)
+	populate(objectMap, "version", j.Version)
 	if j.AdditionalProperties != nil {
 		for key, val := range j.AdditionalProperties {
 			objectMap[key] = val
@@ -28681,6 +29044,9 @@ func (j *JiraLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &j.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &j.Version)
 			delete(rawMsg, key)
 		default:
 			if j.AdditionalProperties == nil {
@@ -28908,6 +29274,7 @@ func (l LakeHouseLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", l.Parameters)
 	objectMap["type"] = "LakeHouse"
 	populate(objectMap, "typeProperties", l.TypeProperties)
+	populate(objectMap, "version", l.Version)
 	if l.AdditionalProperties != nil {
 		for key, val := range l.AdditionalProperties {
 			objectMap[key] = val
@@ -28942,6 +29309,9 @@ func (l *LakeHouseLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &l.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &l.Version)
 			delete(rawMsg, key)
 		default:
 			if l.AdditionalProperties == nil {
@@ -29665,6 +30035,7 @@ func (l LinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "description", l.Description)
 	populate(objectMap, "parameters", l.Parameters)
 	objectMap["type"] = l.Type
+	populate(objectMap, "version", l.Version)
 	if l.AdditionalProperties != nil {
 		for key, val := range l.AdditionalProperties {
 			objectMap[key] = val
@@ -29696,6 +30067,9 @@ func (l *LinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "type":
 			err = unpopulate(val, "Type", &l.Type)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &l.Version)
 			delete(rawMsg, key)
 		default:
 			if l.AdditionalProperties == nil {
@@ -30097,6 +30471,7 @@ func (m MagentoLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", m.Parameters)
 	objectMap["type"] = "Magento"
 	populate(objectMap, "typeProperties", m.TypeProperties)
+	populate(objectMap, "version", m.Version)
 	if m.AdditionalProperties != nil {
 		for key, val := range m.AdditionalProperties {
 			objectMap[key] = val
@@ -30131,6 +30506,9 @@ func (m *MagentoLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &m.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &m.Version)
 			delete(rawMsg, key)
 		default:
 			if m.AdditionalProperties == nil {
@@ -31595,6 +31973,7 @@ func (m MariaDBLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", m.Parameters)
 	objectMap["type"] = "MariaDB"
 	populate(objectMap, "typeProperties", m.TypeProperties)
+	populate(objectMap, "version", m.Version)
 	if m.AdditionalProperties != nil {
 		for key, val := range m.AdditionalProperties {
 			objectMap[key] = val
@@ -31629,6 +32008,9 @@ func (m *MariaDBLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &m.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &m.Version)
 			delete(rawMsg, key)
 		default:
 			if m.AdditionalProperties == nil {
@@ -31856,6 +32238,7 @@ func (m MarketoLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", m.Parameters)
 	objectMap["type"] = "Marketo"
 	populate(objectMap, "typeProperties", m.TypeProperties)
+	populate(objectMap, "version", m.Version)
 	if m.AdditionalProperties != nil {
 		for key, val := range m.AdditionalProperties {
 			objectMap[key] = val
@@ -31890,6 +32273,9 @@ func (m *MarketoLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &m.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &m.Version)
 			delete(rawMsg, key)
 		default:
 			if m.AdditionalProperties == nil {
@@ -32144,6 +32530,7 @@ func (m MicrosoftAccessLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", m.Parameters)
 	objectMap["type"] = "MicrosoftAccess"
 	populate(objectMap, "typeProperties", m.TypeProperties)
+	populate(objectMap, "version", m.Version)
 	if m.AdditionalProperties != nil {
 		for key, val := range m.AdditionalProperties {
 			objectMap[key] = val
@@ -32178,6 +32565,9 @@ func (m *MicrosoftAccessLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &m.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &m.Version)
 			delete(rawMsg, key)
 		default:
 			if m.AdditionalProperties == nil {
@@ -32591,6 +32981,7 @@ func (m MongoDbAtlasLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", m.Parameters)
 	objectMap["type"] = "MongoDbAtlas"
 	populate(objectMap, "typeProperties", m.TypeProperties)
+	populate(objectMap, "version", m.Version)
 	if m.AdditionalProperties != nil {
 		for key, val := range m.AdditionalProperties {
 			objectMap[key] = val
@@ -32625,6 +33016,9 @@ func (m *MongoDbAtlasLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &m.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &m.Version)
 			delete(rawMsg, key)
 		default:
 			if m.AdditionalProperties == nil {
@@ -32991,6 +33385,7 @@ func (m MongoDbLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", m.Parameters)
 	objectMap["type"] = "MongoDb"
 	populate(objectMap, "typeProperties", m.TypeProperties)
+	populate(objectMap, "version", m.Version)
 	if m.AdditionalProperties != nil {
 		for key, val := range m.AdditionalProperties {
 			objectMap[key] = val
@@ -33025,6 +33420,9 @@ func (m *MongoDbLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &m.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &m.Version)
 			delete(rawMsg, key)
 		default:
 			if m.AdditionalProperties == nil {
@@ -33283,6 +33681,7 @@ func (m MongoDbV2LinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", m.Parameters)
 	objectMap["type"] = "MongoDbV2"
 	populate(objectMap, "typeProperties", m.TypeProperties)
+	populate(objectMap, "version", m.Version)
 	if m.AdditionalProperties != nil {
 		for key, val := range m.AdditionalProperties {
 			objectMap[key] = val
@@ -33317,6 +33716,9 @@ func (m *MongoDbV2LinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &m.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &m.Version)
 			delete(rawMsg, key)
 		default:
 			if m.AdditionalProperties == nil {
@@ -33582,6 +33984,7 @@ func (m MySQLLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", m.Parameters)
 	objectMap["type"] = "MySql"
 	populate(objectMap, "typeProperties", m.TypeProperties)
+	populate(objectMap, "version", m.Version)
 	if m.AdditionalProperties != nil {
 		for key, val := range m.AdditionalProperties {
 			objectMap[key] = val
@@ -33616,6 +34019,9 @@ func (m *MySQLLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &m.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &m.Version)
 			delete(rawMsg, key)
 		default:
 			if m.AdditionalProperties == nil {
@@ -33878,6 +34284,7 @@ func (n NetezzaLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", n.Parameters)
 	objectMap["type"] = "Netezza"
 	populate(objectMap, "typeProperties", n.TypeProperties)
+	populate(objectMap, "version", n.Version)
 	if n.AdditionalProperties != nil {
 		for key, val := range n.AdditionalProperties {
 			objectMap[key] = val
@@ -33912,6 +34319,9 @@ func (n *NetezzaLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &n.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &n.Version)
 			delete(rawMsg, key)
 		default:
 			if n.AdditionalProperties == nil {
@@ -34228,6 +34638,7 @@ func (o ODataLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", o.Parameters)
 	objectMap["type"] = "OData"
 	populate(objectMap, "typeProperties", o.TypeProperties)
+	populate(objectMap, "version", o.Version)
 	if o.AdditionalProperties != nil {
 		for key, val := range o.AdditionalProperties {
 			objectMap[key] = val
@@ -34262,6 +34673,9 @@ func (o *ODataLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &o.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &o.Version)
 			delete(rawMsg, key)
 		default:
 			if o.AdditionalProperties == nil {
@@ -34540,6 +34954,7 @@ func (o OdbcLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", o.Parameters)
 	objectMap["type"] = "Odbc"
 	populate(objectMap, "typeProperties", o.TypeProperties)
+	populate(objectMap, "version", o.Version)
 	if o.AdditionalProperties != nil {
 		for key, val := range o.AdditionalProperties {
 			objectMap[key] = val
@@ -34574,6 +34989,9 @@ func (o *OdbcLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &o.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &o.Version)
 			delete(rawMsg, key)
 		default:
 			if o.AdditionalProperties == nil {
@@ -34995,6 +35413,7 @@ func (o Office365LinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", o.Parameters)
 	objectMap["type"] = "Office365"
 	populate(objectMap, "typeProperties", o.TypeProperties)
+	populate(objectMap, "version", o.Version)
 	if o.AdditionalProperties != nil {
 		for key, val := range o.AdditionalProperties {
 			objectMap[key] = val
@@ -35029,6 +35448,9 @@ func (o *Office365LinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &o.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &o.Version)
 			delete(rawMsg, key)
 		default:
 			if o.AdditionalProperties == nil {
@@ -35513,6 +35935,7 @@ func (o OracleCloudStorageLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", o.Parameters)
 	objectMap["type"] = "OracleCloudStorage"
 	populate(objectMap, "typeProperties", o.TypeProperties)
+	populate(objectMap, "version", o.Version)
 	if o.AdditionalProperties != nil {
 		for key, val := range o.AdditionalProperties {
 			objectMap[key] = val
@@ -35547,6 +35970,9 @@ func (o *OracleCloudStorageLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &o.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &o.Version)
 			delete(rawMsg, key)
 		default:
 			if o.AdditionalProperties == nil {
@@ -35762,6 +36188,7 @@ func (o OracleLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", o.Parameters)
 	objectMap["type"] = "Oracle"
 	populate(objectMap, "typeProperties", o.TypeProperties)
+	populate(objectMap, "version", o.Version)
 	if o.AdditionalProperties != nil {
 		for key, val := range o.AdditionalProperties {
 			objectMap[key] = val
@@ -35796,6 +36223,9 @@ func (o *OracleLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &o.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &o.Version)
 			delete(rawMsg, key)
 		default:
 			if o.AdditionalProperties == nil {
@@ -35898,6 +36328,7 @@ func (o OracleServiceCloudLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", o.Parameters)
 	objectMap["type"] = "OracleServiceCloud"
 	populate(objectMap, "typeProperties", o.TypeProperties)
+	populate(objectMap, "version", o.Version)
 	if o.AdditionalProperties != nil {
 		for key, val := range o.AdditionalProperties {
 			objectMap[key] = val
@@ -35932,6 +36363,9 @@ func (o *OracleServiceCloudLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &o.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &o.Version)
 			delete(rawMsg, key)
 		default:
 			if o.AdditionalProperties == nil {
@@ -37214,6 +37648,7 @@ func (p PaypalLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", p.Parameters)
 	objectMap["type"] = "Paypal"
 	populate(objectMap, "typeProperties", p.TypeProperties)
+	populate(objectMap, "version", p.Version)
 	if p.AdditionalProperties != nil {
 		for key, val := range p.AdditionalProperties {
 			objectMap[key] = val
@@ -37248,6 +37683,9 @@ func (p *PaypalLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &p.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &p.Version)
 			delete(rawMsg, key)
 		default:
 			if p.AdditionalProperties == nil {
@@ -37506,6 +37944,7 @@ func (p PhoenixLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", p.Parameters)
 	objectMap["type"] = "Phoenix"
 	populate(objectMap, "typeProperties", p.TypeProperties)
+	populate(objectMap, "version", p.Version)
 	if p.AdditionalProperties != nil {
 		for key, val := range p.AdditionalProperties {
 			objectMap[key] = val
@@ -37540,6 +37979,9 @@ func (p *PhoenixLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &p.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &p.Version)
 			delete(rawMsg, key)
 		default:
 			if p.AdditionalProperties == nil {
@@ -38315,6 +38757,7 @@ func (p PostgreSQLLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", p.Parameters)
 	objectMap["type"] = "PostgreSql"
 	populate(objectMap, "typeProperties", p.TypeProperties)
+	populate(objectMap, "version", p.Version)
 	if p.AdditionalProperties != nil {
 		for key, val := range p.AdditionalProperties {
 			objectMap[key] = val
@@ -38349,6 +38792,9 @@ func (p *PostgreSQLLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &p.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &p.Version)
 			delete(rawMsg, key)
 		default:
 			if p.AdditionalProperties == nil {
@@ -38591,6 +39037,7 @@ func (p PostgreSQLV2LinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", p.Parameters)
 	objectMap["type"] = "PostgreSqlV2"
 	populate(objectMap, "typeProperties", p.TypeProperties)
+	populate(objectMap, "version", p.Version)
 	if p.AdditionalProperties != nil {
 		for key, val := range p.AdditionalProperties {
 			objectMap[key] = val
@@ -38625,6 +39072,9 @@ func (p *PostgreSQLV2LinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &p.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &p.Version)
 			delete(rawMsg, key)
 		default:
 			if p.AdditionalProperties == nil {
@@ -39134,6 +39584,7 @@ func (p PrestoLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", p.Parameters)
 	objectMap["type"] = "Presto"
 	populate(objectMap, "typeProperties", p.TypeProperties)
+	populate(objectMap, "version", p.Version)
 	if p.AdditionalProperties != nil {
 		for key, val := range p.AdditionalProperties {
 			objectMap[key] = val
@@ -39168,6 +39619,9 @@ func (p *PrestoLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &p.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &p.Version)
 			delete(rawMsg, key)
 		default:
 			if p.AdditionalProperties == nil {
@@ -39792,6 +40246,7 @@ func (q QuickBooksLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", q.Parameters)
 	objectMap["type"] = "QuickBooks"
 	populate(objectMap, "typeProperties", q.TypeProperties)
+	populate(objectMap, "version", q.Version)
 	if q.AdditionalProperties != nil {
 		for key, val := range q.AdditionalProperties {
 			objectMap[key] = val
@@ -39826,6 +40281,9 @@ func (q *QuickBooksLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &q.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &q.Version)
 			delete(rawMsg, key)
 		default:
 			if q.AdditionalProperties == nil {
@@ -40057,6 +40515,7 @@ func (q QuickbaseLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", q.Parameters)
 	objectMap["type"] = "Quickbase"
 	populate(objectMap, "typeProperties", q.TypeProperties)
+	populate(objectMap, "version", q.Version)
 	if q.AdditionalProperties != nil {
 		for key, val := range q.AdditionalProperties {
 			objectMap[key] = val
@@ -40091,6 +40550,9 @@ func (q *QuickbaseLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &q.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &q.Version)
 			delete(rawMsg, key)
 		default:
 			if q.AdditionalProperties == nil {
@@ -40634,6 +41096,7 @@ func (r ResponsysLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", r.Parameters)
 	objectMap["type"] = "Responsys"
 	populate(objectMap, "typeProperties", r.TypeProperties)
+	populate(objectMap, "version", r.Version)
 	if r.AdditionalProperties != nil {
 		for key, val := range r.AdditionalProperties {
 			objectMap[key] = val
@@ -40668,6 +41131,9 @@ func (r *ResponsysLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &r.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &r.Version)
 			delete(rawMsg, key)
 		default:
 			if r.AdditionalProperties == nil {
@@ -41008,6 +41474,7 @@ func (r RestServiceLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", r.Parameters)
 	objectMap["type"] = "RestService"
 	populate(objectMap, "typeProperties", r.TypeProperties)
+	populate(objectMap, "version", r.Version)
 	if r.AdditionalProperties != nil {
 		for key, val := range r.AdditionalProperties {
 			objectMap[key] = val
@@ -41043,6 +41510,9 @@ func (r *RestServiceLinkedService) UnmarshalJSON(data []byte) error {
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &r.TypeProperties)
 			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &r.Version)
+			delete(rawMsg, key)
 		default:
 			if r.AdditionalProperties == nil {
 				r.AdditionalProperties = map[string]any{}
@@ -41076,6 +41546,9 @@ func (r RestServiceLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "password", r.Password)
 	populateAny(objectMap, "resource", r.Resource)
 	populateAny(objectMap, "scope", r.Scope)
+	populateAny(objectMap, "servicePrincipalCredentialType", r.ServicePrincipalCredentialType)
+	populate(objectMap, "servicePrincipalEmbeddedCert", r.ServicePrincipalEmbeddedCert)
+	populate(objectMap, "servicePrincipalEmbeddedCertPassword", r.ServicePrincipalEmbeddedCertPassword)
 	populateAny(objectMap, "servicePrincipalId", r.ServicePrincipalID)
 	populate(objectMap, "servicePrincipalKey", r.ServicePrincipalKey)
 	populateAny(objectMap, "tenant", r.Tenant)
@@ -41129,6 +41602,15 @@ func (r *RestServiceLinkedServiceTypeProperties) UnmarshalJSON(data []byte) erro
 			delete(rawMsg, key)
 		case "scope":
 			err = unpopulate(val, "Scope", &r.Scope)
+			delete(rawMsg, key)
+		case "servicePrincipalCredentialType":
+			err = unpopulate(val, "ServicePrincipalCredentialType", &r.ServicePrincipalCredentialType)
+			delete(rawMsg, key)
+		case "servicePrincipalEmbeddedCert":
+			r.ServicePrincipalEmbeddedCert, err = unmarshalSecretBaseClassification(val)
+			delete(rawMsg, key)
+		case "servicePrincipalEmbeddedCertPassword":
+			r.ServicePrincipalEmbeddedCertPassword, err = unmarshalSecretBaseClassification(val)
 			delete(rawMsg, key)
 		case "servicePrincipalId":
 			err = unpopulate(val, "ServicePrincipalID", &r.ServicePrincipalID)
@@ -41970,6 +42452,7 @@ func (s SQLServerLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", s.Parameters)
 	objectMap["type"] = "SqlServer"
 	populate(objectMap, "typeProperties", s.TypeProperties)
+	populate(objectMap, "version", s.Version)
 	if s.AdditionalProperties != nil {
 		for key, val := range s.AdditionalProperties {
 			objectMap[key] = val
@@ -42005,6 +42488,9 @@ func (s *SQLServerLinkedService) UnmarshalJSON(data []byte) error {
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &s.TypeProperties)
 			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &s.Version)
+			delete(rawMsg, key)
 		default:
 			if s.AdditionalProperties == nil {
 				s.AdditionalProperties = map[string]any{}
@@ -42034,6 +42520,7 @@ func (s SQLServerLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	populateAny(objectMap, "connectRetryInterval", s.ConnectRetryInterval)
 	populateAny(objectMap, "connectTimeout", s.ConnectTimeout)
 	populateAny(objectMap, "connectionString", s.ConnectionString)
+	populate(objectMap, "credential", s.Credential)
 	populateAny(objectMap, "database", s.Database)
 	populateAny(objectMap, "encrypt", s.Encrypt)
 	populate(objectMap, "encryptedCredential", s.EncryptedCredential)
@@ -42086,6 +42573,9 @@ func (s *SQLServerLinkedServiceTypeProperties) UnmarshalJSON(data []byte) error 
 			delete(rawMsg, key)
 		case "connectionString":
 			err = unpopulate(val, "ConnectionString", &s.ConnectionString)
+			delete(rawMsg, key)
+		case "credential":
+			err = unpopulate(val, "Credential", &s.Credential)
 			delete(rawMsg, key)
 		case "database":
 			err = unpopulate(val, "Database", &s.Database)
@@ -43119,6 +43609,7 @@ func (s SalesforceLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", s.Parameters)
 	objectMap["type"] = "Salesforce"
 	populate(objectMap, "typeProperties", s.TypeProperties)
+	populate(objectMap, "version", s.Version)
 	if s.AdditionalProperties != nil {
 		for key, val := range s.AdditionalProperties {
 			objectMap[key] = val
@@ -43153,6 +43644,9 @@ func (s *SalesforceLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &s.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &s.Version)
 			delete(rawMsg, key)
 		default:
 			if s.AdditionalProperties == nil {
@@ -43228,6 +43722,7 @@ func (s SalesforceMarketingCloudLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", s.Parameters)
 	objectMap["type"] = "SalesforceMarketingCloud"
 	populate(objectMap, "typeProperties", s.TypeProperties)
+	populate(objectMap, "version", s.Version)
 	if s.AdditionalProperties != nil {
 		for key, val := range s.AdditionalProperties {
 			objectMap[key] = val
@@ -43262,6 +43757,9 @@ func (s *SalesforceMarketingCloudLinkedService) UnmarshalJSON(data []byte) error
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &s.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &s.Version)
 			delete(rawMsg, key)
 		default:
 			if s.AdditionalProperties == nil {
@@ -43586,6 +44084,7 @@ func (s SalesforceServiceCloudLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", s.Parameters)
 	objectMap["type"] = "SalesforceServiceCloud"
 	populate(objectMap, "typeProperties", s.TypeProperties)
+	populate(objectMap, "version", s.Version)
 	if s.AdditionalProperties != nil {
 		for key, val := range s.AdditionalProperties {
 			objectMap[key] = val
@@ -43620,6 +44119,9 @@ func (s *SalesforceServiceCloudLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &s.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &s.Version)
 			delete(rawMsg, key)
 		default:
 			if s.AdditionalProperties == nil {
@@ -43948,6 +44450,7 @@ func (s SalesforceServiceCloudV2LinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", s.Parameters)
 	objectMap["type"] = "SalesforceServiceCloudV2"
 	populate(objectMap, "typeProperties", s.TypeProperties)
+	populate(objectMap, "version", s.Version)
 	if s.AdditionalProperties != nil {
 		for key, val := range s.AdditionalProperties {
 			objectMap[key] = val
@@ -43982,6 +44485,9 @@ func (s *SalesforceServiceCloudV2LinkedService) UnmarshalJSON(data []byte) error
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &s.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &s.Version)
 			delete(rawMsg, key)
 		default:
 			if s.AdditionalProperties == nil {
@@ -44466,6 +44972,7 @@ func (s SalesforceV2LinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", s.Parameters)
 	objectMap["type"] = "SalesforceV2"
 	populate(objectMap, "typeProperties", s.TypeProperties)
+	populate(objectMap, "version", s.Version)
 	if s.AdditionalProperties != nil {
 		for key, val := range s.AdditionalProperties {
 			objectMap[key] = val
@@ -44500,6 +45007,9 @@ func (s *SalesforceV2LinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &s.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &s.Version)
 			delete(rawMsg, key)
 		default:
 			if s.AdditionalProperties == nil {
@@ -44836,6 +45346,7 @@ func (s SapBWLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", s.Parameters)
 	objectMap["type"] = "SapBW"
 	populate(objectMap, "typeProperties", s.TypeProperties)
+	populate(objectMap, "version", s.Version)
 	if s.AdditionalProperties != nil {
 		for key, val := range s.AdditionalProperties {
 			objectMap[key] = val
@@ -44870,6 +45381,9 @@ func (s *SapBWLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &s.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &s.Version)
 			delete(rawMsg, key)
 		default:
 			if s.AdditionalProperties == nil {
@@ -45085,6 +45599,7 @@ func (s SapCloudForCustomerLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", s.Parameters)
 	objectMap["type"] = "SapCloudForCustomer"
 	populate(objectMap, "typeProperties", s.TypeProperties)
+	populate(objectMap, "version", s.Version)
 	if s.AdditionalProperties != nil {
 		for key, val := range s.AdditionalProperties {
 			objectMap[key] = val
@@ -45119,6 +45634,9 @@ func (s *SapCloudForCustomerLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &s.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &s.Version)
 			delete(rawMsg, key)
 		default:
 			if s.AdditionalProperties == nil {
@@ -45435,6 +45953,7 @@ func (s SapEccLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", s.Parameters)
 	objectMap["type"] = "SapEcc"
 	populate(objectMap, "typeProperties", s.TypeProperties)
+	populate(objectMap, "version", s.Version)
 	if s.AdditionalProperties != nil {
 		for key, val := range s.AdditionalProperties {
 			objectMap[key] = val
@@ -45469,6 +45988,9 @@ func (s *SapEccLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &s.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &s.Version)
 			delete(rawMsg, key)
 		default:
 			if s.AdditionalProperties == nil {
@@ -45711,6 +46233,7 @@ func (s SapHanaLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", s.Parameters)
 	objectMap["type"] = "SapHana"
 	populate(objectMap, "typeProperties", s.TypeProperties)
+	populate(objectMap, "version", s.Version)
 	if s.AdditionalProperties != nil {
 		for key, val := range s.AdditionalProperties {
 			objectMap[key] = val
@@ -45745,6 +46268,9 @@ func (s *SapHanaLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &s.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &s.Version)
 			delete(rawMsg, key)
 		default:
 			if s.AdditionalProperties == nil {
@@ -46034,6 +46560,7 @@ func (s SapOdpLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", s.Parameters)
 	objectMap["type"] = "SapOdp"
 	populate(objectMap, "typeProperties", s.TypeProperties)
+	populate(objectMap, "version", s.Version)
 	if s.AdditionalProperties != nil {
 		for key, val := range s.AdditionalProperties {
 			objectMap[key] = val
@@ -46068,6 +46595,9 @@ func (s *SapOdpLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &s.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &s.Version)
 			delete(rawMsg, key)
 		default:
 			if s.AdditionalProperties == nil {
@@ -46378,6 +46908,7 @@ func (s SapOpenHubLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", s.Parameters)
 	objectMap["type"] = "SapOpenHub"
 	populate(objectMap, "typeProperties", s.TypeProperties)
+	populate(objectMap, "version", s.Version)
 	if s.AdditionalProperties != nil {
 		for key, val := range s.AdditionalProperties {
 			objectMap[key] = val
@@ -46412,6 +46943,9 @@ func (s *SapOpenHubLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &s.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &s.Version)
 			delete(rawMsg, key)
 		default:
 			if s.AdditionalProperties == nil {
@@ -46698,6 +47232,7 @@ func (s SapTableLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", s.Parameters)
 	objectMap["type"] = "SapTable"
 	populate(objectMap, "typeProperties", s.TypeProperties)
+	populate(objectMap, "version", s.Version)
 	if s.AdditionalProperties != nil {
 		for key, val := range s.AdditionalProperties {
 			objectMap[key] = val
@@ -46732,6 +47267,9 @@ func (s *SapTableLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &s.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &s.Version)
 			delete(rawMsg, key)
 		default:
 			if s.AdditionalProperties == nil {
@@ -47961,6 +48499,7 @@ func (s ServiceNowLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", s.Parameters)
 	objectMap["type"] = "ServiceNow"
 	populate(objectMap, "typeProperties", s.TypeProperties)
+	populate(objectMap, "version", s.Version)
 	if s.AdditionalProperties != nil {
 		for key, val := range s.AdditionalProperties {
 			objectMap[key] = val
@@ -47995,6 +48534,9 @@ func (s *ServiceNowLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &s.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &s.Version)
 			delete(rawMsg, key)
 		default:
 			if s.AdditionalProperties == nil {
@@ -48230,6 +48772,7 @@ func (s ServiceNowV2LinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", s.Parameters)
 	objectMap["type"] = "ServiceNowV2"
 	populate(objectMap, "typeProperties", s.TypeProperties)
+	populate(objectMap, "version", s.Version)
 	if s.AdditionalProperties != nil {
 		for key, val := range s.AdditionalProperties {
 			objectMap[key] = val
@@ -48264,6 +48807,9 @@ func (s *ServiceNowV2LinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &s.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &s.Version)
 			delete(rawMsg, key)
 		default:
 			if s.AdditionalProperties == nil {
@@ -48829,6 +49375,7 @@ func (s SftpServerLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", s.Parameters)
 	objectMap["type"] = "Sftp"
 	populate(objectMap, "typeProperties", s.TypeProperties)
+	populate(objectMap, "version", s.Version)
 	if s.AdditionalProperties != nil {
 		for key, val := range s.AdditionalProperties {
 			objectMap[key] = val
@@ -48863,6 +49410,9 @@ func (s *SftpServerLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &s.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &s.Version)
 			delete(rawMsg, key)
 		default:
 			if s.AdditionalProperties == nil {
@@ -49051,6 +49601,7 @@ func (s SharePointOnlineListLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", s.Parameters)
 	objectMap["type"] = "SharePointOnlineList"
 	populate(objectMap, "typeProperties", s.TypeProperties)
+	populate(objectMap, "version", s.Version)
 	if s.AdditionalProperties != nil {
 		for key, val := range s.AdditionalProperties {
 			objectMap[key] = val
@@ -49086,6 +49637,9 @@ func (s *SharePointOnlineListLinkedService) UnmarshalJSON(data []byte) error {
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &s.TypeProperties)
 			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &s.Version)
+			delete(rawMsg, key)
 		default:
 			if s.AdditionalProperties == nil {
 				s.AdditionalProperties = map[string]any{}
@@ -49108,6 +49662,9 @@ func (s *SharePointOnlineListLinkedService) UnmarshalJSON(data []byte) error {
 func (s SharePointOnlineListLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "encryptedCredential", s.EncryptedCredential)
+	populateAny(objectMap, "servicePrincipalCredentialType", s.ServicePrincipalCredentialType)
+	populate(objectMap, "servicePrincipalEmbeddedCert", s.ServicePrincipalEmbeddedCert)
+	populate(objectMap, "servicePrincipalEmbeddedCertPassword", s.ServicePrincipalEmbeddedCertPassword)
 	populateAny(objectMap, "servicePrincipalId", s.ServicePrincipalID)
 	populate(objectMap, "servicePrincipalKey", s.ServicePrincipalKey)
 	populateAny(objectMap, "siteUrl", s.SiteURL)
@@ -49126,6 +49683,15 @@ func (s *SharePointOnlineListLinkedServiceTypeProperties) UnmarshalJSON(data []b
 		switch key {
 		case "encryptedCredential":
 			err = unpopulate(val, "EncryptedCredential", &s.EncryptedCredential)
+			delete(rawMsg, key)
+		case "servicePrincipalCredentialType":
+			err = unpopulate(val, "ServicePrincipalCredentialType", &s.ServicePrincipalCredentialType)
+			delete(rawMsg, key)
+		case "servicePrincipalEmbeddedCert":
+			s.ServicePrincipalEmbeddedCert, err = unmarshalSecretBaseClassification(val)
+			delete(rawMsg, key)
+		case "servicePrincipalEmbeddedCertPassword":
+			s.ServicePrincipalEmbeddedCertPassword, err = unmarshalSecretBaseClassification(val)
 			delete(rawMsg, key)
 		case "servicePrincipalId":
 			err = unpopulate(val, "ServicePrincipalID", &s.ServicePrincipalID)
@@ -49296,6 +49862,7 @@ func (s ShopifyLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", s.Parameters)
 	objectMap["type"] = "Shopify"
 	populate(objectMap, "typeProperties", s.TypeProperties)
+	populate(objectMap, "version", s.Version)
 	if s.AdditionalProperties != nil {
 		for key, val := range s.AdditionalProperties {
 			objectMap[key] = val
@@ -49330,6 +49897,9 @@ func (s *ShopifyLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &s.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &s.Version)
 			delete(rawMsg, key)
 		default:
 			if s.AdditionalProperties == nil {
@@ -49580,6 +50150,7 @@ func (s SmartsheetLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", s.Parameters)
 	objectMap["type"] = "Smartsheet"
 	populate(objectMap, "typeProperties", s.TypeProperties)
+	populate(objectMap, "version", s.Version)
 	if s.AdditionalProperties != nil {
 		for key, val := range s.AdditionalProperties {
 			objectMap[key] = val
@@ -49614,6 +50185,9 @@ func (s *SmartsheetLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &s.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &s.Version)
 			delete(rawMsg, key)
 		default:
 			if s.AdditionalProperties == nil {
@@ -49774,6 +50348,7 @@ func (s SnowflakeExportCopyCommand) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "additionalCopyOptions", s.AdditionalCopyOptions)
 	populate(objectMap, "additionalFormatOptions", s.AdditionalFormatOptions)
+	populateAny(objectMap, "storageIntegration", s.StorageIntegration)
 	objectMap["type"] = "SnowflakeExportCopyCommand"
 	if s.AdditionalProperties != nil {
 		for key, val := range s.AdditionalProperties {
@@ -49797,6 +50372,9 @@ func (s *SnowflakeExportCopyCommand) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "additionalFormatOptions":
 			err = unpopulate(val, "AdditionalFormatOptions", &s.AdditionalFormatOptions)
+			delete(rawMsg, key)
+		case "storageIntegration":
+			err = unpopulate(val, "StorageIntegration", &s.StorageIntegration)
 			delete(rawMsg, key)
 		case "type":
 			err = unpopulate(val, "Type", &s.Type)
@@ -49824,6 +50402,7 @@ func (s SnowflakeImportCopyCommand) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "additionalCopyOptions", s.AdditionalCopyOptions)
 	populate(objectMap, "additionalFormatOptions", s.AdditionalFormatOptions)
+	populateAny(objectMap, "storageIntegration", s.StorageIntegration)
 	objectMap["type"] = "SnowflakeImportCopyCommand"
 	if s.AdditionalProperties != nil {
 		for key, val := range s.AdditionalProperties {
@@ -49847,6 +50426,9 @@ func (s *SnowflakeImportCopyCommand) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "additionalFormatOptions":
 			err = unpopulate(val, "AdditionalFormatOptions", &s.AdditionalFormatOptions)
+			delete(rawMsg, key)
+		case "storageIntegration":
+			err = unpopulate(val, "StorageIntegration", &s.StorageIntegration)
 			delete(rawMsg, key)
 		case "type":
 			err = unpopulate(val, "Type", &s.Type)
@@ -49878,6 +50460,7 @@ func (s SnowflakeLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", s.Parameters)
 	objectMap["type"] = "Snowflake"
 	populate(objectMap, "typeProperties", s.TypeProperties)
+	populate(objectMap, "version", s.Version)
 	if s.AdditionalProperties != nil {
 		for key, val := range s.AdditionalProperties {
 			objectMap[key] = val
@@ -49912,6 +50495,9 @@ func (s *SnowflakeLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &s.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &s.Version)
 			delete(rawMsg, key)
 		default:
 			if s.AdditionalProperties == nil {
@@ -50264,6 +50850,7 @@ func (s SnowflakeV2LinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", s.Parameters)
 	objectMap["type"] = "SnowflakeV2"
 	populate(objectMap, "typeProperties", s.TypeProperties)
+	populate(objectMap, "version", s.Version)
 	if s.AdditionalProperties != nil {
 		for key, val := range s.AdditionalProperties {
 			objectMap[key] = val
@@ -50298,6 +50885,9 @@ func (s *SnowflakeV2LinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &s.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &s.Version)
 			delete(rawMsg, key)
 		default:
 			if s.AdditionalProperties == nil {
@@ -50532,6 +51122,7 @@ func (s SparkLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", s.Parameters)
 	objectMap["type"] = "Spark"
 	populate(objectMap, "typeProperties", s.TypeProperties)
+	populate(objectMap, "version", s.Version)
 	if s.AdditionalProperties != nil {
 		for key, val := range s.AdditionalProperties {
 			objectMap[key] = val
@@ -50566,6 +51157,9 @@ func (s *SparkLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &s.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &s.Version)
 			delete(rawMsg, key)
 		default:
 			if s.AdditionalProperties == nil {
@@ -50817,6 +51411,7 @@ func (s SquareLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", s.Parameters)
 	objectMap["type"] = "Square"
 	populate(objectMap, "typeProperties", s.TypeProperties)
+	populate(objectMap, "version", s.Version)
 	if s.AdditionalProperties != nil {
 		for key, val := range s.AdditionalProperties {
 			objectMap[key] = val
@@ -50851,6 +51446,9 @@ func (s *SquareLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &s.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &s.Version)
 			delete(rawMsg, key)
 		default:
 			if s.AdditionalProperties == nil {
@@ -51842,6 +52440,7 @@ func (s SybaseLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", s.Parameters)
 	objectMap["type"] = "Sybase"
 	populate(objectMap, "typeProperties", s.TypeProperties)
+	populate(objectMap, "version", s.Version)
 	if s.AdditionalProperties != nil {
 		for key, val := range s.AdditionalProperties {
 			objectMap[key] = val
@@ -51876,6 +52475,9 @@ func (s *SybaseLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &s.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &s.Version)
 			delete(rawMsg, key)
 		default:
 			if s.AdditionalProperties == nil {
@@ -52652,6 +53254,7 @@ func (t TeamDeskLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", t.Parameters)
 	objectMap["type"] = "TeamDesk"
 	populate(objectMap, "typeProperties", t.TypeProperties)
+	populate(objectMap, "version", t.Version)
 	if t.AdditionalProperties != nil {
 		for key, val := range t.AdditionalProperties {
 			objectMap[key] = val
@@ -52686,6 +53289,9 @@ func (t *TeamDeskLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &t.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &t.Version)
 			delete(rawMsg, key)
 		default:
 			if t.AdditionalProperties == nil {
@@ -52761,6 +53367,7 @@ func (t TeradataLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", t.Parameters)
 	objectMap["type"] = "Teradata"
 	populate(objectMap, "typeProperties", t.TypeProperties)
+	populate(objectMap, "version", t.Version)
 	if t.AdditionalProperties != nil {
 		for key, val := range t.AdditionalProperties {
 			objectMap[key] = val
@@ -52795,6 +53402,9 @@ func (t *TeradataLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &t.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &t.Version)
 			delete(rawMsg, key)
 		default:
 			if t.AdditionalProperties == nil {
@@ -53796,6 +54406,7 @@ func (t TwilioLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", t.Parameters)
 	objectMap["type"] = "Twilio"
 	populate(objectMap, "typeProperties", t.TypeProperties)
+	populate(objectMap, "version", t.Version)
 	if t.AdditionalProperties != nil {
 		for key, val := range t.AdditionalProperties {
 			objectMap[key] = val
@@ -53830,6 +54441,9 @@ func (t *TwilioLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &t.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &t.Version)
 			delete(rawMsg, key)
 		default:
 			if t.AdditionalProperties == nil {
@@ -54305,6 +54919,7 @@ func (v VerticaLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", v.Parameters)
 	objectMap["type"] = "Vertica"
 	populate(objectMap, "typeProperties", v.TypeProperties)
+	populate(objectMap, "version", v.Version)
 	if v.AdditionalProperties != nil {
 		for key, val := range v.AdditionalProperties {
 			objectMap[key] = val
@@ -54340,6 +54955,9 @@ func (v *VerticaLinkedService) UnmarshalJSON(data []byte) error {
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &v.TypeProperties)
 			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &v.Version)
+			delete(rawMsg, key)
 		default:
 			if v.AdditionalProperties == nil {
 				v.AdditionalProperties = map[string]any{}
@@ -54362,8 +54980,12 @@ func (v *VerticaLinkedService) UnmarshalJSON(data []byte) error {
 func (v VerticaLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populateAny(objectMap, "connectionString", v.ConnectionString)
+	populateAny(objectMap, "database", v.Database)
 	populate(objectMap, "encryptedCredential", v.EncryptedCredential)
+	populateAny(objectMap, "port", v.Port)
 	populate(objectMap, "pwd", v.Pwd)
+	populateAny(objectMap, "server", v.Server)
+	populateAny(objectMap, "uid", v.UID)
 	return json.Marshal(objectMap)
 }
 
@@ -54379,11 +55001,23 @@ func (v *VerticaLinkedServiceTypeProperties) UnmarshalJSON(data []byte) error {
 		case "connectionString":
 			err = unpopulate(val, "ConnectionString", &v.ConnectionString)
 			delete(rawMsg, key)
+		case "database":
+			err = unpopulate(val, "Database", &v.Database)
+			delete(rawMsg, key)
 		case "encryptedCredential":
 			err = unpopulate(val, "EncryptedCredential", &v.EncryptedCredential)
 			delete(rawMsg, key)
+		case "port":
+			err = unpopulate(val, "Port", &v.Port)
+			delete(rawMsg, key)
 		case "pwd":
 			err = unpopulate(val, "Pwd", &v.Pwd)
+			delete(rawMsg, key)
+		case "server":
+			err = unpopulate(val, "Server", &v.Server)
+			delete(rawMsg, key)
+		case "uid":
+			err = unpopulate(val, "UID", &v.UID)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -54643,6 +55277,7 @@ func (w WarehouseLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", w.Parameters)
 	objectMap["type"] = "Warehouse"
 	populate(objectMap, "typeProperties", w.TypeProperties)
+	populate(objectMap, "version", w.Version)
 	if w.AdditionalProperties != nil {
 		for key, val := range w.AdditionalProperties {
 			objectMap[key] = val
@@ -54677,6 +55312,9 @@ func (w *WarehouseLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &w.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &w.Version)
 			delete(rawMsg, key)
 		default:
 			if w.AdditionalProperties == nil {
@@ -55475,6 +56113,7 @@ func (w WebLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", w.Parameters)
 	objectMap["type"] = "Web"
 	populate(objectMap, "typeProperties", w.TypeProperties)
+	populate(objectMap, "version", w.Version)
 	if w.AdditionalProperties != nil {
 		for key, val := range w.AdditionalProperties {
 			objectMap[key] = val
@@ -55509,6 +56148,9 @@ func (w *WebLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			w.TypeProperties, err = unmarshalWebLinkedServiceTypePropertiesClassification(val)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &w.Version)
 			delete(rawMsg, key)
 		default:
 			if w.AdditionalProperties == nil {
@@ -56023,6 +56665,7 @@ func (x XeroLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", x.Parameters)
 	objectMap["type"] = "Xero"
 	populate(objectMap, "typeProperties", x.TypeProperties)
+	populate(objectMap, "version", x.Version)
 	if x.AdditionalProperties != nil {
 		for key, val := range x.AdditionalProperties {
 			objectMap[key] = val
@@ -56057,6 +56700,9 @@ func (x *XeroLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &x.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &x.Version)
 			delete(rawMsg, key)
 		default:
 			if x.AdditionalProperties == nil {
@@ -56284,6 +56930,7 @@ func (z ZendeskLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", z.Parameters)
 	objectMap["type"] = "Zendesk"
 	populate(objectMap, "typeProperties", z.TypeProperties)
+	populate(objectMap, "version", z.Version)
 	if z.AdditionalProperties != nil {
 		for key, val := range z.AdditionalProperties {
 			objectMap[key] = val
@@ -56318,6 +56965,9 @@ func (z *ZendeskLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &z.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &z.Version)
 			delete(rawMsg, key)
 		default:
 			if z.AdditionalProperties == nil {
@@ -56439,6 +57089,7 @@ func (z ZohoLinkedService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parameters", z.Parameters)
 	objectMap["type"] = "Zoho"
 	populate(objectMap, "typeProperties", z.TypeProperties)
+	populate(objectMap, "version", z.Version)
 	if z.AdditionalProperties != nil {
 		for key, val := range z.AdditionalProperties {
 			objectMap[key] = val
@@ -56473,6 +57124,9 @@ func (z *ZohoLinkedService) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &z.TypeProperties)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &z.Version)
 			delete(rawMsg, key)
 		default:
 			if z.AdditionalProperties == nil {

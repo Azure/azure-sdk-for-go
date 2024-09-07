@@ -44,10 +44,89 @@ func NewCodeVersionsClient(subscriptionID string, credential azcore.TokenCredent
 	return client, nil
 }
 
+// CreateOrGetStartPendingUpload - Generate a storage location and credential for the client to upload a code asset to.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - Name of Azure Machine Learning workspace.
+//   - name - Container name. This is case-sensitive.
+//   - version - Version identifier. This is case-sensitive.
+//   - body - Pending upload request object
+//   - options - CodeVersionsClientCreateOrGetStartPendingUploadOptions contains the optional parameters for the CodeVersionsClient.CreateOrGetStartPendingUpload
+//     method.
+func (client *CodeVersionsClient) CreateOrGetStartPendingUpload(ctx context.Context, resourceGroupName string, workspaceName string, name string, version string, body PendingUploadRequestDto, options *CodeVersionsClientCreateOrGetStartPendingUploadOptions) (CodeVersionsClientCreateOrGetStartPendingUploadResponse, error) {
+	var err error
+	const operationName = "CodeVersionsClient.CreateOrGetStartPendingUpload"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.createOrGetStartPendingUploadCreateRequest(ctx, resourceGroupName, workspaceName, name, version, body, options)
+	if err != nil {
+		return CodeVersionsClientCreateOrGetStartPendingUploadResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return CodeVersionsClientCreateOrGetStartPendingUploadResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return CodeVersionsClientCreateOrGetStartPendingUploadResponse{}, err
+	}
+	resp, err := client.createOrGetStartPendingUploadHandleResponse(httpResp)
+	return resp, err
+}
+
+// createOrGetStartPendingUploadCreateRequest creates the CreateOrGetStartPendingUpload request.
+func (client *CodeVersionsClient) createOrGetStartPendingUploadCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, name string, version string, body PendingUploadRequestDto, options *CodeVersionsClientCreateOrGetStartPendingUploadOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/codes/{name}/versions/{version}/startPendingUpload"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if workspaceName == "" {
+		return nil, errors.New("parameter workspaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
+	if name == "" {
+		return nil, errors.New("parameter name cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+	if version == "" {
+		return nil, errors.New("parameter version cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{version}", url.PathEscape(version))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-04-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// createOrGetStartPendingUploadHandleResponse handles the CreateOrGetStartPendingUpload response.
+func (client *CodeVersionsClient) createOrGetStartPendingUploadHandleResponse(resp *http.Response) (CodeVersionsClientCreateOrGetStartPendingUploadResponse, error) {
+	result := CodeVersionsClientCreateOrGetStartPendingUploadResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PendingUploadResponseDto); err != nil {
+		return CodeVersionsClientCreateOrGetStartPendingUploadResponse{}, err
+	}
+	return result, nil
+}
+
 // CreateOrUpdate - Create or update version.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2024-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - Name of Azure Machine Learning workspace.
 //   - name - Container name. This is case-sensitive.
@@ -105,7 +184,7 @@ func (client *CodeVersionsClient) createOrUpdateCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -126,7 +205,7 @@ func (client *CodeVersionsClient) createOrUpdateHandleResponse(resp *http.Respon
 // Delete - Delete version.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2024-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - Name of Azure Machine Learning workspace.
 //   - name - Container name. This is case-sensitive.
@@ -181,7 +260,7 @@ func (client *CodeVersionsClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -190,7 +269,7 @@ func (client *CodeVersionsClient) deleteCreateRequest(ctx context.Context, resou
 // Get - Get version.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2024-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - Name of Azure Machine Learning workspace.
 //   - name - Container name. This is case-sensitive.
@@ -246,7 +325,7 @@ func (client *CodeVersionsClient) getCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -263,7 +342,7 @@ func (client *CodeVersionsClient) getHandleResponse(resp *http.Response) (CodeVe
 
 // NewListPager - List versions.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2024-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - Name of Azure Machine Learning workspace.
 //   - name - Container name. This is case-sensitive.
@@ -315,15 +394,21 @@ func (client *CodeVersionsClient) listCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
 	if options != nil && options.OrderBy != nil {
 		reqQP.Set("$orderBy", *options.OrderBy)
+	}
+	if options != nil && options.Skip != nil {
+		reqQP.Set("$skip", *options.Skip)
 	}
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	if options != nil && options.Skip != nil {
-		reqQP.Set("$skip", *options.Skip)
+	reqQP.Set("api-version", "2024-04-01")
+	if options != nil && options.Hash != nil {
+		reqQP.Set("hash", *options.Hash)
+	}
+	if options != nil && options.HashVersion != nil {
+		reqQP.Set("hashVersion", *options.HashVersion)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
@@ -337,4 +422,95 @@ func (client *CodeVersionsClient) listHandleResponse(resp *http.Response) (CodeV
 		return CodeVersionsClientListResponse{}, err
 	}
 	return result, nil
+}
+
+// BeginPublish - Publish version asset into registry.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - Name of Azure Machine Learning workspace.
+//   - name - Container name.
+//   - version - Version identifier.
+//   - body - Destination registry info
+//   - options - CodeVersionsClientBeginPublishOptions contains the optional parameters for the CodeVersionsClient.BeginPublish
+//     method.
+func (client *CodeVersionsClient) BeginPublish(ctx context.Context, resourceGroupName string, workspaceName string, name string, version string, body DestinationAsset, options *CodeVersionsClientBeginPublishOptions) (*runtime.Poller[CodeVersionsClientPublishResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.publish(ctx, resourceGroupName, workspaceName, name, version, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CodeVersionsClientPublishResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[CodeVersionsClientPublishResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// Publish - Publish version asset into registry.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01
+func (client *CodeVersionsClient) publish(ctx context.Context, resourceGroupName string, workspaceName string, name string, version string, body DestinationAsset, options *CodeVersionsClientBeginPublishOptions) (*http.Response, error) {
+	var err error
+	const operationName = "CodeVersionsClient.BeginPublish"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.publishCreateRequest(ctx, resourceGroupName, workspaceName, name, version, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// publishCreateRequest creates the Publish request.
+func (client *CodeVersionsClient) publishCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, name string, version string, body DestinationAsset, options *CodeVersionsClientBeginPublishOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/codes/{name}/versions/{version}/publish"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if workspaceName == "" {
+		return nil, errors.New("parameter workspaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
+	if name == "" {
+		return nil, errors.New("parameter name cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+	if version == "" {
+		return nil, errors.New("parameter version cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{version}", url.PathEscape(version))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-04-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
 }

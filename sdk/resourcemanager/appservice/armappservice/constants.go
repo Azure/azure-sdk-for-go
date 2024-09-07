@@ -10,7 +10,7 @@ package armappservice
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice"
-	moduleVersion = "v3.0.0"
+	moduleVersion = "v4.0.0"
 )
 
 // ActiveRevisionsMode - ActiveRevisionsMode controls how active revisions are handled for the Container app:Multiple: multiple

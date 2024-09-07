@@ -1,6 +1,6 @@
 # Release History
 
-## 0.4.1 (Unreleased)
+## 0.4.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,18 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 0.4.1 (2024-08-20)
+
+### Features Added
+
+- New fields have been added:
+  - StorageBlobCreatedEventData: AccessTier
+  - StorageBlobTierChangedEventData: AccessTier and PreviousTier
+
+### Breaking Changes
+
+- Models that were not system events (ex: ACSChatMessageEventInThreadBaseProperties), or referenced by system events, have been removed. 
 
 ## 0.4.0 (2024-06-11)
 

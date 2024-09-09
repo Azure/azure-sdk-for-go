@@ -27,4 +27,3 @@ extends:
     IncludeRelease: true
     ServiceDirectory: 'resourcemanager/storage/armstorage'
     UsePipelineProxy: false
-    UseFederatedAuth: true

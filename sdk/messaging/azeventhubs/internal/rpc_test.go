@@ -404,6 +404,23 @@ func TestRPCLinkCancelClientSideWait(t *testing.T) {
 
 }
 
+func TestRPCLinkUsesCorrectFlags(t *testing.T) {
+	tester := NewRPCTester(t)
+
+	link, err := NewRPCLink(context.Background(), RPCLinkArgs{
+		Client: &rpcTesterClient{
+			session: tester,
+		},
+		Address:  "some-address",
+		LogEvent: "rpctesting",
+	})
+	require.NoError(t, err)
+	require.NoError(t, link.Close(context.Background()))
+
+	require.Equal(t, amqp.SenderSettleModeSettled, *tester.receiverOpts.RequestedSenderSettleMode)
+	require.Equal(t, amqp.ReceiverSettleModeFirst, *tester.receiverOpts.SettlementMode)
+}
+
 func NewRPCTester(t *testing.T) *rpcTester {
 	return &rpcTester{t: t,
 		ResponsesCh:    make(chan *rpcTestResp, 1000),
@@ -421,6 +438,7 @@ func NewRPCTester(t *testing.T) *rpcTester {
 type rpcTester struct {
 	amqpwrap.AMQPSenderCloser
 	amqpwrap.AMQPReceiverCloser
+	receiverOpts *amqp.ReceiverOptions
 
 	// Accepted contains all the messages where we called AcceptMessage(msg)
 	// We only call this when we
@@ -465,6 +483,7 @@ func (c *rpcTesterClient) NewSession(ctx context.Context, opts *amqp.SessionOpti
 func (c *rpcTesterClient) Close() error { return nil }
 
 func (tester *rpcTester) NewReceiver(ctx context.Context, source string, partitionID string, opts *amqp.ReceiverOptions) (amqpwrap.AMQPReceiverCloser, error) {
+	tester.receiverOpts = opts
 	return tester, nil
 }
 

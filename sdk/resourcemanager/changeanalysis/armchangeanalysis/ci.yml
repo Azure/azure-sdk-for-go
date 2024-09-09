@@ -27,4 +27,3 @@ extends:
     IncludeRelease: true
     ServiceDirectory: 'resourcemanager/changeanalysis/armchangeanalysis'
     UsePipelineProxy: false
-    UseFederatedAuth: true

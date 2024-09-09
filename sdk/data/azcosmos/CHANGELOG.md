@@ -4,6 +4,7 @@
 
 ### Features Added
 * Added support for OpenTelemetry trace spans. See [PR 23268](https://github.com/Azure/azure-sdk-for-go/pull/23268)
+* Added support for MaxIntegratedCacheStaleness option See [PR 23406](https://github.com/Azure/azure-sdk-for-go/pull/23406)
 
 ### Breaking Changes
 

@@ -4,7 +4,9 @@
 package azcosmos
 
 import (
+	"strconv"
 	"testing"
+	"time"
 )
 
 func TestQueryRequestOptionsToHeaders(t *testing.T) {
@@ -18,6 +20,10 @@ func TestQueryRequestOptionsToHeaders(t *testing.T) {
 	options.PopulateIndexMetrics = true
 	continuation := "continuationToken"
 	options.ContinuationToken = &continuation
+	maxIntegratedCacheStalenessDuration := time.Duration(5 * time.Minute)
+	options.DedicatedGatewayRequestOptions = &DedicatedGatewayRequestOptions{
+		MaxIntegratedCacheStaleness: &maxIntegratedCacheStalenessDuration,
+	}
 	header := options.toHeaders()
 	if header == nil {
 		t.Fatal("toHeaders should return non-nil")
@@ -47,5 +53,8 @@ func TestQueryRequestOptionsToHeaders(t *testing.T) {
 	}
 	if headers[cosmosHeaderPopulateQueryMetrics] != "true" {
 		t.Errorf("PopulateQueryMetrics should be true but got %v", headers[cosmosHeaderPopulateQueryMetrics])
+	}
+	if headers[headerDedicatedGatewayMaxAge] != strconv.FormatInt(300000, 10) {
+		t.Errorf("headerDedicatedGatewayMaxAge should be 300000 but got %v", headers[headerDedicatedGatewayMaxAge])
 	}
 }

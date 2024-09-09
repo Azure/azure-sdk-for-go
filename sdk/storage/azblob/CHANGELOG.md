@@ -1,5 +1,16 @@
 # Release History
 
+## 1.4.1-beta.2 (Unreleased)
+
+### Features Added
+* Added crc64 response header to Put Blob.
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 1.4.1-beta.1 (2024-08-27)
 
 ### Features Added

@@ -10,6 +10,7 @@
 ### Bugs Fixed
 
 ### Other Changes
+* Removed redundant content from error messages
 
 ## 1.8.0-beta.2 (2024-08-06)
 

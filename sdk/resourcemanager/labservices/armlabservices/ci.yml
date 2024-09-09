@@ -27,4 +27,3 @@ extends:
     IncludeRelease: true
     ServiceDirectory: 'resourcemanager/labservices/armlabservices'
     UsePipelineProxy: false
-    UseFederatedAuth: true

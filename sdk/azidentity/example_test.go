@@ -94,16 +94,31 @@ func ExampleNewClientCertificateCredential() {
 	// Output:
 }
 
+// This example shows how to specify a user-assigned identity. Note that some hosting environments
+// don't support user-assigned identities, and some that do support them accept only a subset of
+// their identifiers. See the documentation for [ClientID], [ResourceID], and [ObjectID] for details.
 func ExampleNewManagedIdentityCredential_userAssigned() {
-	// select a user assigned identity with its client ID...
+	// select a user-assigned identity with its client ID...
 	clientID := azidentity.ClientID("abcd1234-...")
 	opts := azidentity.ManagedIdentityCredentialOptions{ID: clientID}
 	cred, err = azidentity.NewManagedIdentityCredential(&opts)
-	handleError(err)
+	if err != nil {
+		// TODO
+	}
 
-	// ...or its resource ID
+	// ...or its resource ID...
 	resourceID := azidentity.ResourceID("/subscriptions/...")
 	opts = azidentity.ManagedIdentityCredentialOptions{ID: resourceID}
 	cred, err = azidentity.NewManagedIdentityCredential(&opts)
-	handleError(err)
+	if err != nil {
+		// TODO
+	}
+
+	// ...or its object ID
+	objectID := azidentity.ObjectID("4321dcba-...")
+	opts = azidentity.ManagedIdentityCredentialOptions{ID: objectID}
+	cred, err = azidentity.NewManagedIdentityCredential(&opts)
+	if err != nil {
+		// TODO
+	}
 }

@@ -27,4 +27,3 @@ extends:
     IncludeRelease: true
     ServiceDirectory: 'resourcemanager/botservice/armbotservice'
     UsePipelineProxy: false
-    UseFederatedAuth: true

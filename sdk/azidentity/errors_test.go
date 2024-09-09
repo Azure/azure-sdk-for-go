@@ -31,7 +31,7 @@ func TestAuthenticationFailedErrorInterface(t *testing.T) {
 		Body:       io.NopCloser(bytes.NewBufferString(resBodyString)),
 		Request:    req,
 	}
-	err = newAuthenticationFailedError(credNameAzureCLI, "error message", res, nil)
+	err = newAuthenticationFailedError(credNameAzureCLI, "error message", res)
 	if e, ok := err.(*AuthenticationFailedError); ok {
 		if e.RawResponse == nil {
 			t.Fatal("expected a non-nil RawResponse")
@@ -61,7 +61,7 @@ func TestAuthenticationFailedErrorInterface(t *testing.T) {
 }
 
 func TestAuthenticationFailedErrorWithoutResponse(t *testing.T) {
-	err := newAuthenticationFailedError(credNameAzureCLI, "error message", nil, nil)
+	err := newAuthenticationFailedError(credNameAzureCLI, "error message", nil)
 	if _, ok := err.(*AuthenticationFailedError); !ok {
 		t.Fatalf("expected AuthenticationFailedError, received %T", err)
 	}
@@ -79,7 +79,7 @@ func TestAuthenticationFailedErrorWithoutRequest(t *testing.T) {
 		Body:       io.NopCloser(bytes.NewBufferString(resBodyString)),
 		Request:    nil,
 	}
-	err := newAuthenticationFailedError(credNameAzureCLI, "error message", res, nil)
+	err := newAuthenticationFailedError(credNameAzureCLI, "error message", res)
 	if e, ok := err.(*AuthenticationFailedError); ok {
 		if e.RawResponse == nil {
 			t.Fatal("expected a non-nil RawResponse")

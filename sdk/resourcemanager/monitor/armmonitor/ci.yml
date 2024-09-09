@@ -27,4 +27,3 @@ extends:
     IncludeRelease: true
     ServiceDirectory: 'resourcemanager/monitor/armmonitor'
     UsePipelineProxy: false
-    UseFederatedAuth: true

@@ -27,4 +27,3 @@ extends:
     IncludeRelease: true
     ServiceDirectory: 'resourcemanager/alertsmanagement/armalertsmanagement'
     UsePipelineProxy: false
-    UseFederatedAuth: true

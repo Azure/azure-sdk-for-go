@@ -27,4 +27,3 @@ extends:
     IncludeRelease: true
     ServiceDirectory: 'resourcemanager/apimanagement/armapimanagement'
     UsePipelineProxy: false
-    UseFederatedAuth: true

@@ -10,7 +10,7 @@ require (
 
 require (
 	// test dependencies
-	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.7.0
+	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.7.0 // indirect
 	github.com/joho/godotenv v1.5.1
 	github.com/stretchr/testify v1.9.0
 )

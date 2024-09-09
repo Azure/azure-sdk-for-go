@@ -322,6 +322,7 @@ func allowInsecure(options *ClientOptions) bool {
 	return options != nil && options.InsecureAllowCredentialWithHTTP
 }
 
+// NOTE: This is a workaround for an emitter issue, see: https://github.com/Azure/azure-sdk-for-go/issues/23417
 type tempAPIVersionPolicy struct{}
 
 func (tavp tempAPIVersionPolicy) Do(req *policy.Request) (*http.Response, error) {

@@ -116,7 +116,7 @@ func (b *azureOpenAIPolicy) Do(req *policy.Request) (*http.Response, error) {
 	reqQP := req.Raw().URL.Query()
 
 	// TODO: there used to be a constant with this value but it doesn't appear to be generated anymore.
-	reqQP.Set("api-version", string("2024-05-01-preview"))
+	reqQP.Set("api-version", string("2024-07-01-preview"))
 
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Add("OpenAI-Beta", "assistants=v2")

@@ -1114,9 +1114,18 @@ func TestReceiverConnectionTimeout(t *testing.T) {
 	// check that the log messages made it in.
 	recovered := false
 
-	for _, log := range getLogs() {
+	logs := getLogs()
+
+	for _, log := range logs {
 		if strings.Contains(log, "Recovered connection and links") {
 			recovered = true
+		}
+	}
+
+	if !recovered {
+		// dump out the logs so we can see what happened instead...
+		for _, log := range logs {
+			t.Logf("LOG: %s", log)
 		}
 	}
 

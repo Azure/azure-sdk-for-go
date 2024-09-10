@@ -90,7 +90,7 @@ func (client *Client) GetAudioTranslation(ctx context.Context, body AudioTransla
 	return GetAudioTranslationResponse(resp), nil
 }
 
-func setMultipartFormData[T getAudioTranscriptionInternalOptions | getAudioTranslationInternalOptions](req *policy.Request, file io.ReadSeekCloser, options T) error {
+func setMultipartFormData[T getAudioTranscriptionInternalOptions | getAudioTranslationInternalOptions | UploadFileOptions](req *policy.Request, file io.ReadSeekCloser, options T) error {
 	body := bytes.Buffer{}
 	writer := multipart.NewWriter(&body)
 

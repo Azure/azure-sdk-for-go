@@ -131,6 +131,31 @@ func ExampleClient_GetChatCompletions_functions() {
 		return
 	}
 
+	jsonBytes, err := json.Marshal(map[string]any{
+		"required": []string{"location"},
+		"type":     "object",
+		"properties": map[string]any{
+			"location": map[string]any{
+				"type":        "string",
+				"description": "The city and state, e.g. San Francisco, CA",
+			},
+			"unit": map[string]any{
+				"type": "string",
+				"enum": []string{"celsius", "fahrenheit"},
+			},
+		},
+	})
+
+	if err != nil {
+		panic(err)
+	}
+
+	funcDef := &azopenai.FunctionDefinition{
+		Name:        to.Ptr("get_current_weather"),
+		Description: to.Ptr("Get the current weather in a given location"),
+		Parameters:  jsonBytes,
+	}
+
 	resp, err := client.GetChatCompletions(context.TODO(), azopenai.ChatCompletionsOptions{
 		DeploymentName: &modelDeploymentID,
 		Messages: []azopenai.ChatRequestMessageClassification{
@@ -140,24 +165,7 @@ func ExampleClient_GetChatCompletions_functions() {
 		},
 		Tools: []azopenai.ChatCompletionsToolDefinitionClassification{
 			&azopenai.ChatCompletionsFunctionToolDefinition{
-				Function: &azopenai.FunctionDefinition{
-					Name:        to.Ptr("get_current_weather"),
-					Description: to.Ptr("Get the current weather in a given location"),
-					Parameters: map[string]any{
-						"required": []string{"location"},
-						"type":     "object",
-						"properties": map[string]any{
-							"location": map[string]any{
-								"type":        "string",
-								"description": "The city and state, e.g. San Francisco, CA",
-							},
-							"unit": map[string]any{
-								"type": "string",
-								"enum": []string{"celsius", "fahrenheit"},
-							},
-						},
-					},
-				},
+				Function: funcDef,
 			},
 		},
 		Temperature: to.Ptr[float32](0.0),
@@ -219,6 +227,27 @@ func ExampleClient_GetChatCompletions_legacyFunctions() {
 		return
 	}
 
+	parametersJSON, err := json.Marshal(map[string]any{
+		"required": []string{"location"},
+		"type":     "object",
+		"properties": map[string]any{
+			"location": map[string]any{
+				"type":        "string",
+				"description": "The city and state, e.g. San Francisco, CA",
+			},
+			"unit": map[string]any{
+				"type": "string",
+				"enum": []string{"celsius", "fahrenheit"},
+			},
+		},
+	})
+
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Printf("ERROR: %s", err)
+		return
+	}
+
 	resp, err := client.GetChatCompletions(context.TODO(), azopenai.ChatCompletionsOptions{
 		DeploymentName: &modelDeploymentID,
 		Messages: []azopenai.ChatRequestMessageClassification{
@@ -234,20 +263,7 @@ func ExampleClient_GetChatCompletions_legacyFunctions() {
 				Name:        to.Ptr("get_current_weather"),
 				Description: to.Ptr("Get the current weather in a given location"),
 
-				Parameters: map[string]any{
-					"required": []string{"location"},
-					"type":     "object",
-					"properties": map[string]any{
-						"location": map[string]any{
-							"type":        "string",
-							"description": "The city and state, e.g. San Francisco, CA",
-						},
-						"unit": map[string]any{
-							"type": "string",
-							"enum": []string{"celsius", "fahrenheit"},
-						},
-					},
-				},
+				Parameters: parametersJSON,
 			},
 		},
 		Temperature: to.Ptr[float32](0.0),

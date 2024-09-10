@@ -1,14 +1,45 @@
 # Release History
 
-## 0.6.2 (Unreleased)
+## 0.6.2 (2024-09-10)
 
 ### Features Added
 
+- Added Batch and File APIs.
+
 ### Breaking Changes
 
-### Bugs Fixed
+- FunctionDefinition.Parameters has been changed to take JSON instead of an object/map. You can set it using code 
+similar to this:
 
-### Other Changes
+  ```go
+    parametersJSON, err := json.Marshal(map[string]any{
+      "required": []string{"location"},
+      "type":     "object",
+      "properties": map[string]any{
+        "location": map[string]any{
+          "type":        "string",
+          "description": "The city and state, e.g. San Francisco, CA",
+        },
+      },
+    })
+    
+    if err != nil {
+      // TODO: Update the following line with your application specific error handling logic
+      log.Printf("ERROR: %s", err)
+      return
+    }
+
+    // and then, in ChatCompletionsOptions
+    opts := azopenai.ChatCompletionsOptions{
+      Functions: []azopenai.FunctionDefinition{
+        {
+          Name:        to.Ptr("get_current_weather"),
+          Description: to.Ptr("Get the current weather in a given location"),
+          Parameters: parametersJSON,
+        },
+      },
+    }
+  ```
 
 ## 0.6.1 (2024-08-14)
 

@@ -17,7 +17,9 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling"
 	"net/http"
+	"net/url"
 	"regexp"
+	"strconv"
 )
 
 // PropertyServer is a fake server for instances of the armbilling.PropertyClient type.
@@ -81,7 +83,31 @@ func (p *PropertyServerTransport) dispatchGet(req *http.Request) (*http.Response
 	if matches == nil || len(matches) < 1 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	respr, errRespr := p.srv.Get(req.Context(), nil)
+	qp := req.URL.Query()
+	includeBillingCountryUnescaped, err := url.QueryUnescape(qp.Get("includeBillingCountry"))
+	if err != nil {
+		return nil, err
+	}
+	includeBillingCountryParam, err := parseOptional(includeBillingCountryUnescaped, strconv.ParseBool)
+	if err != nil {
+		return nil, err
+	}
+	includeTransitionStatusUnescaped, err := url.QueryUnescape(qp.Get("includeTransitionStatus"))
+	if err != nil {
+		return nil, err
+	}
+	includeTransitionStatusParam, err := parseOptional(includeTransitionStatusUnescaped, strconv.ParseBool)
+	if err != nil {
+		return nil, err
+	}
+	var options *armbilling.PropertyClientGetOptions
+	if includeBillingCountryParam != nil || includeTransitionStatusParam != nil {
+		options = &armbilling.PropertyClientGetOptions{
+			IncludeBillingCountry:   includeBillingCountryParam,
+			IncludeTransitionStatus: includeTransitionStatusParam,
+		}
+	}
+	respr, errRespr := p.srv.Get(req.Context(), options)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}

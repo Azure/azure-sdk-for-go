@@ -40,9 +40,404 @@ func NewPermissionsClient(credential azcore.TokenCredential, options *arm.Client
 	return client, nil
 }
 
+// CheckAccessByBillingAccount - Provides a list of check access response objects for a billing account.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01
+//   - billingAccountName - The ID that uniquely identifies a billing account.
+//   - parameters - The request object against which access of the caller will be checked.
+//   - options - PermissionsClientCheckAccessByBillingAccountOptions contains the optional parameters for the PermissionsClient.CheckAccessByBillingAccount
+//     method.
+func (client *PermissionsClient) CheckAccessByBillingAccount(ctx context.Context, billingAccountName string, parameters CheckAccessRequest, options *PermissionsClientCheckAccessByBillingAccountOptions) (PermissionsClientCheckAccessByBillingAccountResponse, error) {
+	var err error
+	const operationName = "PermissionsClient.CheckAccessByBillingAccount"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.checkAccessByBillingAccountCreateRequest(ctx, billingAccountName, parameters, options)
+	if err != nil {
+		return PermissionsClientCheckAccessByBillingAccountResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return PermissionsClientCheckAccessByBillingAccountResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return PermissionsClientCheckAccessByBillingAccountResponse{}, err
+	}
+	resp, err := client.checkAccessByBillingAccountHandleResponse(httpResp)
+	return resp, err
+}
+
+// checkAccessByBillingAccountCreateRequest creates the CheckAccessByBillingAccount request.
+func (client *PermissionsClient) checkAccessByBillingAccountCreateRequest(ctx context.Context, billingAccountName string, parameters CheckAccessRequest, options *PermissionsClientCheckAccessByBillingAccountOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/checkAccess"
+	if billingAccountName == "" {
+		return nil, errors.New("parameter billingAccountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-04-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// checkAccessByBillingAccountHandleResponse handles the CheckAccessByBillingAccount response.
+func (client *PermissionsClient) checkAccessByBillingAccountHandleResponse(resp *http.Response) (PermissionsClientCheckAccessByBillingAccountResponse, error) {
+	result := PermissionsClientCheckAccessByBillingAccountResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.CheckAccessResponseArray); err != nil {
+		return PermissionsClientCheckAccessByBillingAccountResponse{}, err
+	}
+	return result, nil
+}
+
+// CheckAccessByBillingProfile - Provides a list of check access response objects for a billing profile.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01
+//   - billingAccountName - The ID that uniquely identifies a billing account.
+//   - billingProfileName - The ID that uniquely identifies a billing profile.
+//   - parameters - The request object against which access of the caller will be checked.
+//   - options - PermissionsClientCheckAccessByBillingProfileOptions contains the optional parameters for the PermissionsClient.CheckAccessByBillingProfile
+//     method.
+func (client *PermissionsClient) CheckAccessByBillingProfile(ctx context.Context, billingAccountName string, billingProfileName string, parameters CheckAccessRequest, options *PermissionsClientCheckAccessByBillingProfileOptions) (PermissionsClientCheckAccessByBillingProfileResponse, error) {
+	var err error
+	const operationName = "PermissionsClient.CheckAccessByBillingProfile"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.checkAccessByBillingProfileCreateRequest(ctx, billingAccountName, billingProfileName, parameters, options)
+	if err != nil {
+		return PermissionsClientCheckAccessByBillingProfileResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return PermissionsClientCheckAccessByBillingProfileResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return PermissionsClientCheckAccessByBillingProfileResponse{}, err
+	}
+	resp, err := client.checkAccessByBillingProfileHandleResponse(httpResp)
+	return resp, err
+}
+
+// checkAccessByBillingProfileCreateRequest creates the CheckAccessByBillingProfile request.
+func (client *PermissionsClient) checkAccessByBillingProfileCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, parameters CheckAccessRequest, options *PermissionsClientCheckAccessByBillingProfileOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/checkAccess"
+	if billingAccountName == "" {
+		return nil, errors.New("parameter billingAccountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
+	if billingProfileName == "" {
+		return nil, errors.New("parameter billingProfileName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingProfileName}", url.PathEscape(billingProfileName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-04-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// checkAccessByBillingProfileHandleResponse handles the CheckAccessByBillingProfile response.
+func (client *PermissionsClient) checkAccessByBillingProfileHandleResponse(resp *http.Response) (PermissionsClientCheckAccessByBillingProfileResponse, error) {
+	result := PermissionsClientCheckAccessByBillingProfileResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.CheckAccessResponseArray); err != nil {
+		return PermissionsClientCheckAccessByBillingProfileResponse{}, err
+	}
+	return result, nil
+}
+
+// CheckAccessByCustomer - Provides a list of check access response objects for a customer.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01
+//   - billingAccountName - The ID that uniquely identifies a billing account.
+//   - billingProfileName - The ID that uniquely identifies a billing profile.
+//   - customerName - The ID that uniquely identifies a customer.
+//   - parameters - The request object against which access of the caller will be checked.
+//   - options - PermissionsClientCheckAccessByCustomerOptions contains the optional parameters for the PermissionsClient.CheckAccessByCustomer
+//     method.
+func (client *PermissionsClient) CheckAccessByCustomer(ctx context.Context, billingAccountName string, billingProfileName string, customerName string, parameters CheckAccessRequest, options *PermissionsClientCheckAccessByCustomerOptions) (PermissionsClientCheckAccessByCustomerResponse, error) {
+	var err error
+	const operationName = "PermissionsClient.CheckAccessByCustomer"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.checkAccessByCustomerCreateRequest(ctx, billingAccountName, billingProfileName, customerName, parameters, options)
+	if err != nil {
+		return PermissionsClientCheckAccessByCustomerResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return PermissionsClientCheckAccessByCustomerResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return PermissionsClientCheckAccessByCustomerResponse{}, err
+	}
+	resp, err := client.checkAccessByCustomerHandleResponse(httpResp)
+	return resp, err
+}
+
+// checkAccessByCustomerCreateRequest creates the CheckAccessByCustomer request.
+func (client *PermissionsClient) checkAccessByCustomerCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, customerName string, parameters CheckAccessRequest, options *PermissionsClientCheckAccessByCustomerOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/customers/{customerName}/checkAccess"
+	if billingAccountName == "" {
+		return nil, errors.New("parameter billingAccountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
+	if billingProfileName == "" {
+		return nil, errors.New("parameter billingProfileName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingProfileName}", url.PathEscape(billingProfileName))
+	if customerName == "" {
+		return nil, errors.New("parameter customerName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{customerName}", url.PathEscape(customerName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-04-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// checkAccessByCustomerHandleResponse handles the CheckAccessByCustomer response.
+func (client *PermissionsClient) checkAccessByCustomerHandleResponse(resp *http.Response) (PermissionsClientCheckAccessByCustomerResponse, error) {
+	result := PermissionsClientCheckAccessByCustomerResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.CheckAccessResponseArray); err != nil {
+		return PermissionsClientCheckAccessByCustomerResponse{}, err
+	}
+	return result, nil
+}
+
+// CheckAccessByDepartment - Provides a list of check access response objects for a department.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01
+//   - billingAccountName - The ID that uniquely identifies a billing account.
+//   - departmentName - The name of the department.
+//   - parameters - The request object against which access of the caller will be checked.
+//   - options - PermissionsClientCheckAccessByDepartmentOptions contains the optional parameters for the PermissionsClient.CheckAccessByDepartment
+//     method.
+func (client *PermissionsClient) CheckAccessByDepartment(ctx context.Context, billingAccountName string, departmentName string, parameters CheckAccessRequest, options *PermissionsClientCheckAccessByDepartmentOptions) (PermissionsClientCheckAccessByDepartmentResponse, error) {
+	var err error
+	const operationName = "PermissionsClient.CheckAccessByDepartment"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.checkAccessByDepartmentCreateRequest(ctx, billingAccountName, departmentName, parameters, options)
+	if err != nil {
+		return PermissionsClientCheckAccessByDepartmentResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return PermissionsClientCheckAccessByDepartmentResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return PermissionsClientCheckAccessByDepartmentResponse{}, err
+	}
+	resp, err := client.checkAccessByDepartmentHandleResponse(httpResp)
+	return resp, err
+}
+
+// checkAccessByDepartmentCreateRequest creates the CheckAccessByDepartment request.
+func (client *PermissionsClient) checkAccessByDepartmentCreateRequest(ctx context.Context, billingAccountName string, departmentName string, parameters CheckAccessRequest, options *PermissionsClientCheckAccessByDepartmentOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/departments/{departmentName}/checkAccess"
+	if billingAccountName == "" {
+		return nil, errors.New("parameter billingAccountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
+	if departmentName == "" {
+		return nil, errors.New("parameter departmentName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{departmentName}", url.PathEscape(departmentName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-04-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// checkAccessByDepartmentHandleResponse handles the CheckAccessByDepartment response.
+func (client *PermissionsClient) checkAccessByDepartmentHandleResponse(resp *http.Response) (PermissionsClientCheckAccessByDepartmentResponse, error) {
+	result := PermissionsClientCheckAccessByDepartmentResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.CheckAccessResponseArray); err != nil {
+		return PermissionsClientCheckAccessByDepartmentResponse{}, err
+	}
+	return result, nil
+}
+
+// CheckAccessByEnrollmentAccount - Provides a list of check access response objects for an enrollment account.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01
+//   - billingAccountName - The ID that uniquely identifies a billing account.
+//   - enrollmentAccountName - The name of the enrollment account.
+//   - parameters - The request object against which access of the caller will be checked.
+//   - options - PermissionsClientCheckAccessByEnrollmentAccountOptions contains the optional parameters for the PermissionsClient.CheckAccessByEnrollmentAccount
+//     method.
+func (client *PermissionsClient) CheckAccessByEnrollmentAccount(ctx context.Context, billingAccountName string, enrollmentAccountName string, parameters CheckAccessRequest, options *PermissionsClientCheckAccessByEnrollmentAccountOptions) (PermissionsClientCheckAccessByEnrollmentAccountResponse, error) {
+	var err error
+	const operationName = "PermissionsClient.CheckAccessByEnrollmentAccount"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.checkAccessByEnrollmentAccountCreateRequest(ctx, billingAccountName, enrollmentAccountName, parameters, options)
+	if err != nil {
+		return PermissionsClientCheckAccessByEnrollmentAccountResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return PermissionsClientCheckAccessByEnrollmentAccountResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return PermissionsClientCheckAccessByEnrollmentAccountResponse{}, err
+	}
+	resp, err := client.checkAccessByEnrollmentAccountHandleResponse(httpResp)
+	return resp, err
+}
+
+// checkAccessByEnrollmentAccountCreateRequest creates the CheckAccessByEnrollmentAccount request.
+func (client *PermissionsClient) checkAccessByEnrollmentAccountCreateRequest(ctx context.Context, billingAccountName string, enrollmentAccountName string, parameters CheckAccessRequest, options *PermissionsClientCheckAccessByEnrollmentAccountOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/enrollmentAccounts/{enrollmentAccountName}/checkAccess"
+	if billingAccountName == "" {
+		return nil, errors.New("parameter billingAccountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
+	if enrollmentAccountName == "" {
+		return nil, errors.New("parameter enrollmentAccountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{enrollmentAccountName}", url.PathEscape(enrollmentAccountName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-04-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// checkAccessByEnrollmentAccountHandleResponse handles the CheckAccessByEnrollmentAccount response.
+func (client *PermissionsClient) checkAccessByEnrollmentAccountHandleResponse(resp *http.Response) (PermissionsClientCheckAccessByEnrollmentAccountResponse, error) {
+	result := PermissionsClientCheckAccessByEnrollmentAccountResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.CheckAccessResponseArray); err != nil {
+		return PermissionsClientCheckAccessByEnrollmentAccountResponse{}, err
+	}
+	return result, nil
+}
+
+// CheckAccessByInvoiceSection - Provides a list of check access response objects for an invoice section.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01
+//   - billingAccountName - The ID that uniquely identifies a billing account.
+//   - billingProfileName - The ID that uniquely identifies a billing profile.
+//   - invoiceSectionName - The ID that uniquely identifies an invoice section.
+//   - parameters - The request object against which access of the caller will be checked.
+//   - options - PermissionsClientCheckAccessByInvoiceSectionOptions contains the optional parameters for the PermissionsClient.CheckAccessByInvoiceSection
+//     method.
+func (client *PermissionsClient) CheckAccessByInvoiceSection(ctx context.Context, billingAccountName string, billingProfileName string, invoiceSectionName string, parameters CheckAccessRequest, options *PermissionsClientCheckAccessByInvoiceSectionOptions) (PermissionsClientCheckAccessByInvoiceSectionResponse, error) {
+	var err error
+	const operationName = "PermissionsClient.CheckAccessByInvoiceSection"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.checkAccessByInvoiceSectionCreateRequest(ctx, billingAccountName, billingProfileName, invoiceSectionName, parameters, options)
+	if err != nil {
+		return PermissionsClientCheckAccessByInvoiceSectionResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return PermissionsClientCheckAccessByInvoiceSectionResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return PermissionsClientCheckAccessByInvoiceSectionResponse{}, err
+	}
+	resp, err := client.checkAccessByInvoiceSectionHandleResponse(httpResp)
+	return resp, err
+}
+
+// checkAccessByInvoiceSectionCreateRequest creates the CheckAccessByInvoiceSection request.
+func (client *PermissionsClient) checkAccessByInvoiceSectionCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, invoiceSectionName string, parameters CheckAccessRequest, options *PermissionsClientCheckAccessByInvoiceSectionOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{invoiceSectionName}/checkAccess"
+	if billingAccountName == "" {
+		return nil, errors.New("parameter billingAccountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
+	if billingProfileName == "" {
+		return nil, errors.New("parameter billingProfileName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingProfileName}", url.PathEscape(billingProfileName))
+	if invoiceSectionName == "" {
+		return nil, errors.New("parameter invoiceSectionName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{invoiceSectionName}", url.PathEscape(invoiceSectionName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-04-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// checkAccessByInvoiceSectionHandleResponse handles the CheckAccessByInvoiceSection response.
+func (client *PermissionsClient) checkAccessByInvoiceSectionHandleResponse(resp *http.Response) (PermissionsClientCheckAccessByInvoiceSectionResponse, error) {
+	result := PermissionsClientCheckAccessByInvoiceSectionResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.CheckAccessResponseArray); err != nil {
+		return PermissionsClientCheckAccessByInvoiceSectionResponse{}, err
+	}
+	return result, nil
+}
+
 // NewListByBillingAccountPager - Lists the billing permissions the caller has on a billing account.
 //
-// Generated from API version 2020-05-01
+// Generated from API version 2024-04-01
 //   - billingAccountName - The ID that uniquely identifies a billing account.
 //   - options - PermissionsClientListByBillingAccountOptions contains the optional parameters for the PermissionsClient.NewListByBillingAccountPager
 //     method.
@@ -81,7 +476,7 @@ func (client *PermissionsClient) listByBillingAccountCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-05-01")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -90,7 +485,7 @@ func (client *PermissionsClient) listByBillingAccountCreateRequest(ctx context.C
 // listByBillingAccountHandleResponse handles the ListByBillingAccount response.
 func (client *PermissionsClient) listByBillingAccountHandleResponse(resp *http.Response) (PermissionsClientListByBillingAccountResponse, error) {
 	result := PermissionsClientListByBillingAccountResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.PermissionsListResult); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.PermissionListResult); err != nil {
 		return PermissionsClientListByBillingAccountResponse{}, err
 	}
 	return result, nil
@@ -98,7 +493,7 @@ func (client *PermissionsClient) listByBillingAccountHandleResponse(resp *http.R
 
 // NewListByBillingProfilePager - Lists the billing permissions the caller has on a billing profile.
 //
-// Generated from API version 2020-05-01
+// Generated from API version 2024-04-01
 //   - billingAccountName - The ID that uniquely identifies a billing account.
 //   - billingProfileName - The ID that uniquely identifies a billing profile.
 //   - options - PermissionsClientListByBillingProfileOptions contains the optional parameters for the PermissionsClient.NewListByBillingProfilePager
@@ -142,7 +537,7 @@ func (client *PermissionsClient) listByBillingProfileCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-05-01")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -151,7 +546,7 @@ func (client *PermissionsClient) listByBillingProfileCreateRequest(ctx context.C
 // listByBillingProfileHandleResponse handles the ListByBillingProfile response.
 func (client *PermissionsClient) listByBillingProfileHandleResponse(resp *http.Response) (PermissionsClientListByBillingProfileResponse, error) {
 	result := PermissionsClientListByBillingProfileResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.PermissionsListResult); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.PermissionListResult); err != nil {
 		return PermissionsClientListByBillingProfileResponse{}, err
 	}
 	return result, nil
@@ -159,12 +554,13 @@ func (client *PermissionsClient) listByBillingProfileHandleResponse(resp *http.R
 
 // NewListByCustomerPager - Lists the billing permissions the caller has for a customer.
 //
-// Generated from API version 2020-05-01
+// Generated from API version 2024-04-01
 //   - billingAccountName - The ID that uniquely identifies a billing account.
+//   - billingProfileName - The ID that uniquely identifies a billing profile.
 //   - customerName - The ID that uniquely identifies a customer.
 //   - options - PermissionsClientListByCustomerOptions contains the optional parameters for the PermissionsClient.NewListByCustomerPager
 //     method.
-func (client *PermissionsClient) NewListByCustomerPager(billingAccountName string, customerName string, options *PermissionsClientListByCustomerOptions) *runtime.Pager[PermissionsClientListByCustomerResponse] {
+func (client *PermissionsClient) NewListByCustomerPager(billingAccountName string, billingProfileName string, customerName string, options *PermissionsClientListByCustomerOptions) *runtime.Pager[PermissionsClientListByCustomerResponse] {
 	return runtime.NewPager(runtime.PagingHandler[PermissionsClientListByCustomerResponse]{
 		More: func(page PermissionsClientListByCustomerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -176,7 +572,7 @@ func (client *PermissionsClient) NewListByCustomerPager(billingAccountName strin
 				nextLink = *page.NextLink
 			}
 			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByCustomerCreateRequest(ctx, billingAccountName, customerName, options)
+				return client.listByCustomerCreateRequest(ctx, billingAccountName, billingProfileName, customerName, options)
 			}, nil)
 			if err != nil {
 				return PermissionsClientListByCustomerResponse{}, err
@@ -188,7 +584,73 @@ func (client *PermissionsClient) NewListByCustomerPager(billingAccountName strin
 }
 
 // listByCustomerCreateRequest creates the ListByCustomer request.
-func (client *PermissionsClient) listByCustomerCreateRequest(ctx context.Context, billingAccountName string, customerName string, options *PermissionsClientListByCustomerOptions) (*policy.Request, error) {
+func (client *PermissionsClient) listByCustomerCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, customerName string, options *PermissionsClientListByCustomerOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/customers/{customerName}/billingPermissions"
+	if billingAccountName == "" {
+		return nil, errors.New("parameter billingAccountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
+	if billingProfileName == "" {
+		return nil, errors.New("parameter billingProfileName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingProfileName}", url.PathEscape(billingProfileName))
+	if customerName == "" {
+		return nil, errors.New("parameter customerName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{customerName}", url.PathEscape(customerName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-04-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listByCustomerHandleResponse handles the ListByCustomer response.
+func (client *PermissionsClient) listByCustomerHandleResponse(resp *http.Response) (PermissionsClientListByCustomerResponse, error) {
+	result := PermissionsClientListByCustomerResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PermissionListResult); err != nil {
+		return PermissionsClientListByCustomerResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListByCustomerAtBillingAccountPager - Lists the billing permissions the caller has for a customer at billing account
+// level.
+//
+// Generated from API version 2024-04-01
+//   - billingAccountName - The ID that uniquely identifies a billing account.
+//   - customerName - The ID that uniquely identifies a customer.
+//   - options - PermissionsClientListByCustomerAtBillingAccountOptions contains the optional parameters for the PermissionsClient.NewListByCustomerAtBillingAccountPager
+//     method.
+func (client *PermissionsClient) NewListByCustomerAtBillingAccountPager(billingAccountName string, customerName string, options *PermissionsClientListByCustomerAtBillingAccountOptions) *runtime.Pager[PermissionsClientListByCustomerAtBillingAccountResponse] {
+	return runtime.NewPager(runtime.PagingHandler[PermissionsClientListByCustomerAtBillingAccountResponse]{
+		More: func(page PermissionsClientListByCustomerAtBillingAccountResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *PermissionsClientListByCustomerAtBillingAccountResponse) (PermissionsClientListByCustomerAtBillingAccountResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "PermissionsClient.NewListByCustomerAtBillingAccountPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByCustomerAtBillingAccountCreateRequest(ctx, billingAccountName, customerName, options)
+			}, nil)
+			if err != nil {
+				return PermissionsClientListByCustomerAtBillingAccountResponse{}, err
+			}
+			return client.listByCustomerAtBillingAccountHandleResponse(resp)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listByCustomerAtBillingAccountCreateRequest creates the ListByCustomerAtBillingAccount request.
+func (client *PermissionsClient) listByCustomerAtBillingAccountCreateRequest(ctx context.Context, billingAccountName string, customerName string, options *PermissionsClientListByCustomerAtBillingAccountOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/customers/{customerName}/billingPermissions"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -203,54 +665,176 @@ func (client *PermissionsClient) listByCustomerCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-05-01")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// listByCustomerHandleResponse handles the ListByCustomer response.
-func (client *PermissionsClient) listByCustomerHandleResponse(resp *http.Response) (PermissionsClientListByCustomerResponse, error) {
-	result := PermissionsClientListByCustomerResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.PermissionsListResult); err != nil {
-		return PermissionsClientListByCustomerResponse{}, err
+// listByCustomerAtBillingAccountHandleResponse handles the ListByCustomerAtBillingAccount response.
+func (client *PermissionsClient) listByCustomerAtBillingAccountHandleResponse(resp *http.Response) (PermissionsClientListByCustomerAtBillingAccountResponse, error) {
+	result := PermissionsClientListByCustomerAtBillingAccountResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PermissionListResult); err != nil {
+		return PermissionsClientListByCustomerAtBillingAccountResponse{}, err
 	}
 	return result, nil
 }
 
-// NewListByInvoiceSectionsPager - Lists the billing permissions the caller has on an invoice section.
+// NewListByDepartmentPager - Lists the billing permissions the caller has for a department.
 //
-// Generated from API version 2020-05-01
+// Generated from API version 2024-04-01
 //   - billingAccountName - The ID that uniquely identifies a billing account.
-//   - billingProfileName - The ID that uniquely identifies a billing profile.
-//   - invoiceSectionName - The ID that uniquely identifies an invoice section.
-//   - options - PermissionsClientListByInvoiceSectionsOptions contains the optional parameters for the PermissionsClient.NewListByInvoiceSectionsPager
+//   - departmentName - The name of the department.
+//   - options - PermissionsClientListByDepartmentOptions contains the optional parameters for the PermissionsClient.NewListByDepartmentPager
 //     method.
-func (client *PermissionsClient) NewListByInvoiceSectionsPager(billingAccountName string, billingProfileName string, invoiceSectionName string, options *PermissionsClientListByInvoiceSectionsOptions) *runtime.Pager[PermissionsClientListByInvoiceSectionsResponse] {
-	return runtime.NewPager(runtime.PagingHandler[PermissionsClientListByInvoiceSectionsResponse]{
-		More: func(page PermissionsClientListByInvoiceSectionsResponse) bool {
+func (client *PermissionsClient) NewListByDepartmentPager(billingAccountName string, departmentName string, options *PermissionsClientListByDepartmentOptions) *runtime.Pager[PermissionsClientListByDepartmentResponse] {
+	return runtime.NewPager(runtime.PagingHandler[PermissionsClientListByDepartmentResponse]{
+		More: func(page PermissionsClientListByDepartmentResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *PermissionsClientListByInvoiceSectionsResponse) (PermissionsClientListByInvoiceSectionsResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "PermissionsClient.NewListByInvoiceSectionsPager")
+		Fetcher: func(ctx context.Context, page *PermissionsClientListByDepartmentResponse) (PermissionsClientListByDepartmentResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "PermissionsClient.NewListByDepartmentPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
 			}
 			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByInvoiceSectionsCreateRequest(ctx, billingAccountName, billingProfileName, invoiceSectionName, options)
+				return client.listByDepartmentCreateRequest(ctx, billingAccountName, departmentName, options)
 			}, nil)
 			if err != nil {
-				return PermissionsClientListByInvoiceSectionsResponse{}, err
+				return PermissionsClientListByDepartmentResponse{}, err
 			}
-			return client.listByInvoiceSectionsHandleResponse(resp)
+			return client.listByDepartmentHandleResponse(resp)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
-// listByInvoiceSectionsCreateRequest creates the ListByInvoiceSections request.
-func (client *PermissionsClient) listByInvoiceSectionsCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, invoiceSectionName string, options *PermissionsClientListByInvoiceSectionsOptions) (*policy.Request, error) {
+// listByDepartmentCreateRequest creates the ListByDepartment request.
+func (client *PermissionsClient) listByDepartmentCreateRequest(ctx context.Context, billingAccountName string, departmentName string, options *PermissionsClientListByDepartmentOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/departments/{departmentName}/billingPermissions"
+	if billingAccountName == "" {
+		return nil, errors.New("parameter billingAccountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
+	if departmentName == "" {
+		return nil, errors.New("parameter departmentName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{departmentName}", url.PathEscape(departmentName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-04-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listByDepartmentHandleResponse handles the ListByDepartment response.
+func (client *PermissionsClient) listByDepartmentHandleResponse(resp *http.Response) (PermissionsClientListByDepartmentResponse, error) {
+	result := PermissionsClientListByDepartmentResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PermissionListResult); err != nil {
+		return PermissionsClientListByDepartmentResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListByEnrollmentAccountPager - Lists the billing permissions the caller has for an enrollment account.
+//
+// Generated from API version 2024-04-01
+//   - billingAccountName - The ID that uniquely identifies a billing account.
+//   - enrollmentAccountName - The name of the enrollment account.
+//   - options - PermissionsClientListByEnrollmentAccountOptions contains the optional parameters for the PermissionsClient.NewListByEnrollmentAccountPager
+//     method.
+func (client *PermissionsClient) NewListByEnrollmentAccountPager(billingAccountName string, enrollmentAccountName string, options *PermissionsClientListByEnrollmentAccountOptions) *runtime.Pager[PermissionsClientListByEnrollmentAccountResponse] {
+	return runtime.NewPager(runtime.PagingHandler[PermissionsClientListByEnrollmentAccountResponse]{
+		More: func(page PermissionsClientListByEnrollmentAccountResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *PermissionsClientListByEnrollmentAccountResponse) (PermissionsClientListByEnrollmentAccountResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "PermissionsClient.NewListByEnrollmentAccountPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByEnrollmentAccountCreateRequest(ctx, billingAccountName, enrollmentAccountName, options)
+			}, nil)
+			if err != nil {
+				return PermissionsClientListByEnrollmentAccountResponse{}, err
+			}
+			return client.listByEnrollmentAccountHandleResponse(resp)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listByEnrollmentAccountCreateRequest creates the ListByEnrollmentAccount request.
+func (client *PermissionsClient) listByEnrollmentAccountCreateRequest(ctx context.Context, billingAccountName string, enrollmentAccountName string, options *PermissionsClientListByEnrollmentAccountOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/enrollmentAccounts/{enrollmentAccountName}/billingPermissions"
+	if billingAccountName == "" {
+		return nil, errors.New("parameter billingAccountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
+	if enrollmentAccountName == "" {
+		return nil, errors.New("parameter enrollmentAccountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{enrollmentAccountName}", url.PathEscape(enrollmentAccountName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-04-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listByEnrollmentAccountHandleResponse handles the ListByEnrollmentAccount response.
+func (client *PermissionsClient) listByEnrollmentAccountHandleResponse(resp *http.Response) (PermissionsClientListByEnrollmentAccountResponse, error) {
+	result := PermissionsClientListByEnrollmentAccountResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PermissionListResult); err != nil {
+		return PermissionsClientListByEnrollmentAccountResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListByInvoiceSectionPager - Lists the billing permissions the caller has for an invoice section.
+//
+// Generated from API version 2024-04-01
+//   - billingAccountName - The ID that uniquely identifies a billing account.
+//   - billingProfileName - The ID that uniquely identifies a billing profile.
+//   - invoiceSectionName - The ID that uniquely identifies an invoice section.
+//   - options - PermissionsClientListByInvoiceSectionOptions contains the optional parameters for the PermissionsClient.NewListByInvoiceSectionPager
+//     method.
+func (client *PermissionsClient) NewListByInvoiceSectionPager(billingAccountName string, billingProfileName string, invoiceSectionName string, options *PermissionsClientListByInvoiceSectionOptions) *runtime.Pager[PermissionsClientListByInvoiceSectionResponse] {
+	return runtime.NewPager(runtime.PagingHandler[PermissionsClientListByInvoiceSectionResponse]{
+		More: func(page PermissionsClientListByInvoiceSectionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *PermissionsClientListByInvoiceSectionResponse) (PermissionsClientListByInvoiceSectionResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "PermissionsClient.NewListByInvoiceSectionPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByInvoiceSectionCreateRequest(ctx, billingAccountName, billingProfileName, invoiceSectionName, options)
+			}, nil)
+			if err != nil {
+				return PermissionsClientListByInvoiceSectionResponse{}, err
+			}
+			return client.listByInvoiceSectionHandleResponse(resp)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listByInvoiceSectionCreateRequest creates the ListByInvoiceSection request.
+func (client *PermissionsClient) listByInvoiceSectionCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, invoiceSectionName string, options *PermissionsClientListByInvoiceSectionOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{invoiceSectionName}/billingPermissions"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -269,17 +853,17 @@ func (client *PermissionsClient) listByInvoiceSectionsCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-05-01")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// listByInvoiceSectionsHandleResponse handles the ListByInvoiceSections response.
-func (client *PermissionsClient) listByInvoiceSectionsHandleResponse(resp *http.Response) (PermissionsClientListByInvoiceSectionsResponse, error) {
-	result := PermissionsClientListByInvoiceSectionsResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.PermissionsListResult); err != nil {
-		return PermissionsClientListByInvoiceSectionsResponse{}, err
+// listByInvoiceSectionHandleResponse handles the ListByInvoiceSection response.
+func (client *PermissionsClient) listByInvoiceSectionHandleResponse(resp *http.Response) (PermissionsClientListByInvoiceSectionResponse, error) {
+	result := PermissionsClientListByInvoiceSectionResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PermissionListResult); err != nil {
+		return PermissionsClientListByInvoiceSectionResponse{}, err
 	}
 	return result, nil
 }

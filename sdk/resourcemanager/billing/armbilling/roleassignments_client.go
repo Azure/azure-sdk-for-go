@@ -17,6 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
+	"strconv"
 	"strings"
 )
 
@@ -40,11 +41,576 @@ func NewRoleAssignmentsClient(credential azcore.TokenCredential, options *arm.Cl
 	return client, nil
 }
 
-// DeleteByBillingAccount - Deletes a role assignment for the caller on a billing account. The operation is supported for
-// billing accounts with agreement type Microsoft Partner Agreement or Microsoft Customer Agreement.
+// BeginCreateByBillingAccount - Adds a role assignment on a billing account. The operation is supported for billing accounts
+// with agreement type Microsoft Partner Agreement or Microsoft Customer Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-05-01
+// Generated from API version 2024-04-01
+//   - billingAccountName - The ID that uniquely identifies a billing account.
+//   - parameters - The properties of the billing role assignment.
+//   - options - RoleAssignmentsClientBeginCreateByBillingAccountOptions contains the optional parameters for the RoleAssignmentsClient.BeginCreateByBillingAccount
+//     method.
+func (client *RoleAssignmentsClient) BeginCreateByBillingAccount(ctx context.Context, billingAccountName string, parameters RoleAssignmentProperties, options *RoleAssignmentsClientBeginCreateByBillingAccountOptions) (*runtime.Poller[RoleAssignmentsClientCreateByBillingAccountResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createByBillingAccount(ctx, billingAccountName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[RoleAssignmentsClientCreateByBillingAccountResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[RoleAssignmentsClientCreateByBillingAccountResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// CreateByBillingAccount - Adds a role assignment on a billing account. The operation is supported for billing accounts with
+// agreement type Microsoft Partner Agreement or Microsoft Customer Agreement.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01
+func (client *RoleAssignmentsClient) createByBillingAccount(ctx context.Context, billingAccountName string, parameters RoleAssignmentProperties, options *RoleAssignmentsClientBeginCreateByBillingAccountOptions) (*http.Response, error) {
+	var err error
+	const operationName = "RoleAssignmentsClient.BeginCreateByBillingAccount"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.createByBillingAccountCreateRequest(ctx, billingAccountName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// createByBillingAccountCreateRequest creates the CreateByBillingAccount request.
+func (client *RoleAssignmentsClient) createByBillingAccountCreateRequest(ctx context.Context, billingAccountName string, parameters RoleAssignmentProperties, options *RoleAssignmentsClientBeginCreateByBillingAccountOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/createBillingRoleAssignment"
+	if billingAccountName == "" {
+		return nil, errors.New("parameter billingAccountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-04-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginCreateByBillingProfile - Adds a role assignment on a billing profile. The operation is supported for billing accounts
+// with agreement type Microsoft Partner Agreement or Microsoft Customer Agreement.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01
+//   - billingAccountName - The ID that uniquely identifies a billing account.
+//   - billingProfileName - The ID that uniquely identifies a billing profile.
+//   - parameters - The properties of the billing role assignment.
+//   - options - RoleAssignmentsClientBeginCreateByBillingProfileOptions contains the optional parameters for the RoleAssignmentsClient.BeginCreateByBillingProfile
+//     method.
+func (client *RoleAssignmentsClient) BeginCreateByBillingProfile(ctx context.Context, billingAccountName string, billingProfileName string, parameters RoleAssignmentProperties, options *RoleAssignmentsClientBeginCreateByBillingProfileOptions) (*runtime.Poller[RoleAssignmentsClientCreateByBillingProfileResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createByBillingProfile(ctx, billingAccountName, billingProfileName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[RoleAssignmentsClientCreateByBillingProfileResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[RoleAssignmentsClientCreateByBillingProfileResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// CreateByBillingProfile - Adds a role assignment on a billing profile. The operation is supported for billing accounts with
+// agreement type Microsoft Partner Agreement or Microsoft Customer Agreement.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01
+func (client *RoleAssignmentsClient) createByBillingProfile(ctx context.Context, billingAccountName string, billingProfileName string, parameters RoleAssignmentProperties, options *RoleAssignmentsClientBeginCreateByBillingProfileOptions) (*http.Response, error) {
+	var err error
+	const operationName = "RoleAssignmentsClient.BeginCreateByBillingProfile"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.createByBillingProfileCreateRequest(ctx, billingAccountName, billingProfileName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// createByBillingProfileCreateRequest creates the CreateByBillingProfile request.
+func (client *RoleAssignmentsClient) createByBillingProfileCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, parameters RoleAssignmentProperties, options *RoleAssignmentsClientBeginCreateByBillingProfileOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/createBillingRoleAssignment"
+	if billingAccountName == "" {
+		return nil, errors.New("parameter billingAccountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
+	if billingProfileName == "" {
+		return nil, errors.New("parameter billingProfileName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingProfileName}", url.PathEscape(billingProfileName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-04-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginCreateByCustomer - Adds a role assignment on a customer. The operation is supported for billing accounts with agreement
+// type Microsoft Partner Agreement.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01
+//   - billingAccountName - The ID that uniquely identifies a billing account.
+//   - billingProfileName - The ID that uniquely identifies a billing profile.
+//   - customerName - The ID that uniquely identifies a customer.
+//   - parameters - The properties of the billing role assignment.
+//   - options - RoleAssignmentsClientBeginCreateByCustomerOptions contains the optional parameters for the RoleAssignmentsClient.BeginCreateByCustomer
+//     method.
+func (client *RoleAssignmentsClient) BeginCreateByCustomer(ctx context.Context, billingAccountName string, billingProfileName string, customerName string, parameters RoleAssignmentProperties, options *RoleAssignmentsClientBeginCreateByCustomerOptions) (*runtime.Poller[RoleAssignmentsClientCreateByCustomerResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createByCustomer(ctx, billingAccountName, billingProfileName, customerName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[RoleAssignmentsClientCreateByCustomerResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[RoleAssignmentsClientCreateByCustomerResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// CreateByCustomer - Adds a role assignment on a customer. The operation is supported for billing accounts with agreement
+// type Microsoft Partner Agreement.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01
+func (client *RoleAssignmentsClient) createByCustomer(ctx context.Context, billingAccountName string, billingProfileName string, customerName string, parameters RoleAssignmentProperties, options *RoleAssignmentsClientBeginCreateByCustomerOptions) (*http.Response, error) {
+	var err error
+	const operationName = "RoleAssignmentsClient.BeginCreateByCustomer"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.createByCustomerCreateRequest(ctx, billingAccountName, billingProfileName, customerName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// createByCustomerCreateRequest creates the CreateByCustomer request.
+func (client *RoleAssignmentsClient) createByCustomerCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, customerName string, parameters RoleAssignmentProperties, options *RoleAssignmentsClientBeginCreateByCustomerOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/customers/{customerName}/createBillingRoleAssignment"
+	if billingAccountName == "" {
+		return nil, errors.New("parameter billingAccountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
+	if billingProfileName == "" {
+		return nil, errors.New("parameter billingProfileName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingProfileName}", url.PathEscape(billingProfileName))
+	if customerName == "" {
+		return nil, errors.New("parameter customerName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{customerName}", url.PathEscape(customerName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-04-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginCreateByInvoiceSection - Adds a role assignment on an invoice section. The operation is supported for billing accounts
+// with agreement type Microsoft Customer Agreement.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01
+//   - billingAccountName - The ID that uniquely identifies a billing account.
+//   - billingProfileName - The ID that uniquely identifies a billing profile.
+//   - invoiceSectionName - The ID that uniquely identifies an invoice section.
+//   - parameters - The properties of the billing role assignment.
+//   - options - RoleAssignmentsClientBeginCreateByInvoiceSectionOptions contains the optional parameters for the RoleAssignmentsClient.BeginCreateByInvoiceSection
+//     method.
+func (client *RoleAssignmentsClient) BeginCreateByInvoiceSection(ctx context.Context, billingAccountName string, billingProfileName string, invoiceSectionName string, parameters RoleAssignmentProperties, options *RoleAssignmentsClientBeginCreateByInvoiceSectionOptions) (*runtime.Poller[RoleAssignmentsClientCreateByInvoiceSectionResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createByInvoiceSection(ctx, billingAccountName, billingProfileName, invoiceSectionName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[RoleAssignmentsClientCreateByInvoiceSectionResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[RoleAssignmentsClientCreateByInvoiceSectionResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// CreateByInvoiceSection - Adds a role assignment on an invoice section. The operation is supported for billing accounts
+// with agreement type Microsoft Customer Agreement.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01
+func (client *RoleAssignmentsClient) createByInvoiceSection(ctx context.Context, billingAccountName string, billingProfileName string, invoiceSectionName string, parameters RoleAssignmentProperties, options *RoleAssignmentsClientBeginCreateByInvoiceSectionOptions) (*http.Response, error) {
+	var err error
+	const operationName = "RoleAssignmentsClient.BeginCreateByInvoiceSection"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.createByInvoiceSectionCreateRequest(ctx, billingAccountName, billingProfileName, invoiceSectionName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// createByInvoiceSectionCreateRequest creates the CreateByInvoiceSection request.
+func (client *RoleAssignmentsClient) createByInvoiceSectionCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, invoiceSectionName string, parameters RoleAssignmentProperties, options *RoleAssignmentsClientBeginCreateByInvoiceSectionOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{invoiceSectionName}/createBillingRoleAssignment"
+	if billingAccountName == "" {
+		return nil, errors.New("parameter billingAccountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
+	if billingProfileName == "" {
+		return nil, errors.New("parameter billingProfileName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingProfileName}", url.PathEscape(billingProfileName))
+	if invoiceSectionName == "" {
+		return nil, errors.New("parameter invoiceSectionName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{invoiceSectionName}", url.PathEscape(invoiceSectionName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-04-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginCreateOrUpdateByBillingAccount - Create or update a billing role assignment. The operation is supported only for billing
+// accounts with agreement type Enterprise Agreement.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01
+//   - billingAccountName - The ID that uniquely identifies a billing account.
+//   - billingRoleAssignmentName - The ID that uniquely identifies a role assignment.
+//   - parameters - The properties of the billing role assignment.
+//   - options - RoleAssignmentsClientBeginCreateOrUpdateByBillingAccountOptions contains the optional parameters for the RoleAssignmentsClient.BeginCreateOrUpdateByBillingAccount
+//     method.
+func (client *RoleAssignmentsClient) BeginCreateOrUpdateByBillingAccount(ctx context.Context, billingAccountName string, billingRoleAssignmentName string, parameters RoleAssignment, options *RoleAssignmentsClientBeginCreateOrUpdateByBillingAccountOptions) (*runtime.Poller[RoleAssignmentsClientCreateOrUpdateByBillingAccountResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdateByBillingAccount(ctx, billingAccountName, billingRoleAssignmentName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[RoleAssignmentsClientCreateOrUpdateByBillingAccountResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[RoleAssignmentsClientCreateOrUpdateByBillingAccountResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// CreateOrUpdateByBillingAccount - Create or update a billing role assignment. The operation is supported only for billing
+// accounts with agreement type Enterprise Agreement.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01
+func (client *RoleAssignmentsClient) createOrUpdateByBillingAccount(ctx context.Context, billingAccountName string, billingRoleAssignmentName string, parameters RoleAssignment, options *RoleAssignmentsClientBeginCreateOrUpdateByBillingAccountOptions) (*http.Response, error) {
+	var err error
+	const operationName = "RoleAssignmentsClient.BeginCreateOrUpdateByBillingAccount"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.createOrUpdateByBillingAccountCreateRequest(ctx, billingAccountName, billingRoleAssignmentName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// createOrUpdateByBillingAccountCreateRequest creates the CreateOrUpdateByBillingAccount request.
+func (client *RoleAssignmentsClient) createOrUpdateByBillingAccountCreateRequest(ctx context.Context, billingAccountName string, billingRoleAssignmentName string, parameters RoleAssignment, options *RoleAssignmentsClientBeginCreateOrUpdateByBillingAccountOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingRoleAssignments/{billingRoleAssignmentName}"
+	if billingAccountName == "" {
+		return nil, errors.New("parameter billingAccountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
+	if billingRoleAssignmentName == "" {
+		return nil, errors.New("parameter billingRoleAssignmentName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingRoleAssignmentName}", url.PathEscape(billingRoleAssignmentName))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-04-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginCreateOrUpdateByDepartment - Create or update a billing role assignment. The operation is supported only for billing
+// accounts with agreement type Enterprise Agreement.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01
+//   - billingAccountName - The ID that uniquely identifies a billing account.
+//   - departmentName - The name of the department.
+//   - billingRoleAssignmentName - The ID that uniquely identifies a role assignment.
+//   - parameters - The properties of the billing role assignment.
+//   - options - RoleAssignmentsClientBeginCreateOrUpdateByDepartmentOptions contains the optional parameters for the RoleAssignmentsClient.BeginCreateOrUpdateByDepartment
+//     method.
+func (client *RoleAssignmentsClient) BeginCreateOrUpdateByDepartment(ctx context.Context, billingAccountName string, departmentName string, billingRoleAssignmentName string, parameters RoleAssignment, options *RoleAssignmentsClientBeginCreateOrUpdateByDepartmentOptions) (*runtime.Poller[RoleAssignmentsClientCreateOrUpdateByDepartmentResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdateByDepartment(ctx, billingAccountName, departmentName, billingRoleAssignmentName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[RoleAssignmentsClientCreateOrUpdateByDepartmentResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[RoleAssignmentsClientCreateOrUpdateByDepartmentResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// CreateOrUpdateByDepartment - Create or update a billing role assignment. The operation is supported only for billing accounts
+// with agreement type Enterprise Agreement.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01
+func (client *RoleAssignmentsClient) createOrUpdateByDepartment(ctx context.Context, billingAccountName string, departmentName string, billingRoleAssignmentName string, parameters RoleAssignment, options *RoleAssignmentsClientBeginCreateOrUpdateByDepartmentOptions) (*http.Response, error) {
+	var err error
+	const operationName = "RoleAssignmentsClient.BeginCreateOrUpdateByDepartment"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.createOrUpdateByDepartmentCreateRequest(ctx, billingAccountName, departmentName, billingRoleAssignmentName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// createOrUpdateByDepartmentCreateRequest creates the CreateOrUpdateByDepartment request.
+func (client *RoleAssignmentsClient) createOrUpdateByDepartmentCreateRequest(ctx context.Context, billingAccountName string, departmentName string, billingRoleAssignmentName string, parameters RoleAssignment, options *RoleAssignmentsClientBeginCreateOrUpdateByDepartmentOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/departments/{departmentName}/billingRoleAssignments/{billingRoleAssignmentName}"
+	if billingAccountName == "" {
+		return nil, errors.New("parameter billingAccountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
+	if departmentName == "" {
+		return nil, errors.New("parameter departmentName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{departmentName}", url.PathEscape(departmentName))
+	if billingRoleAssignmentName == "" {
+		return nil, errors.New("parameter billingRoleAssignmentName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingRoleAssignmentName}", url.PathEscape(billingRoleAssignmentName))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-04-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginCreateOrUpdateByEnrollmentAccount - Create or update a billing role assignment. The operation is supported only for
+// billing accounts with agreement type Enterprise Agreement.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01
+//   - billingAccountName - The ID that uniquely identifies a billing account.
+//   - enrollmentAccountName - The name of the enrollment account.
+//   - billingRoleAssignmentName - The ID that uniquely identifies a role assignment.
+//   - parameters - The properties of the billing role assignment.
+//   - options - RoleAssignmentsClientBeginCreateOrUpdateByEnrollmentAccountOptions contains the optional parameters for the RoleAssignmentsClient.BeginCreateOrUpdateByEnrollmentAccount
+//     method.
+func (client *RoleAssignmentsClient) BeginCreateOrUpdateByEnrollmentAccount(ctx context.Context, billingAccountName string, enrollmentAccountName string, billingRoleAssignmentName string, parameters RoleAssignment, options *RoleAssignmentsClientBeginCreateOrUpdateByEnrollmentAccountOptions) (*runtime.Poller[RoleAssignmentsClientCreateOrUpdateByEnrollmentAccountResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdateByEnrollmentAccount(ctx, billingAccountName, enrollmentAccountName, billingRoleAssignmentName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[RoleAssignmentsClientCreateOrUpdateByEnrollmentAccountResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[RoleAssignmentsClientCreateOrUpdateByEnrollmentAccountResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// CreateOrUpdateByEnrollmentAccount - Create or update a billing role assignment. The operation is supported only for billing
+// accounts with agreement type Enterprise Agreement.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01
+func (client *RoleAssignmentsClient) createOrUpdateByEnrollmentAccount(ctx context.Context, billingAccountName string, enrollmentAccountName string, billingRoleAssignmentName string, parameters RoleAssignment, options *RoleAssignmentsClientBeginCreateOrUpdateByEnrollmentAccountOptions) (*http.Response, error) {
+	var err error
+	const operationName = "RoleAssignmentsClient.BeginCreateOrUpdateByEnrollmentAccount"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.createOrUpdateByEnrollmentAccountCreateRequest(ctx, billingAccountName, enrollmentAccountName, billingRoleAssignmentName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// createOrUpdateByEnrollmentAccountCreateRequest creates the CreateOrUpdateByEnrollmentAccount request.
+func (client *RoleAssignmentsClient) createOrUpdateByEnrollmentAccountCreateRequest(ctx context.Context, billingAccountName string, enrollmentAccountName string, billingRoleAssignmentName string, parameters RoleAssignment, options *RoleAssignmentsClientBeginCreateOrUpdateByEnrollmentAccountOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/enrollmentAccounts/{enrollmentAccountName}/billingRoleAssignments/{billingRoleAssignmentName}"
+	if billingAccountName == "" {
+		return nil, errors.New("parameter billingAccountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
+	if enrollmentAccountName == "" {
+		return nil, errors.New("parameter enrollmentAccountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{enrollmentAccountName}", url.PathEscape(enrollmentAccountName))
+	if billingRoleAssignmentName == "" {
+		return nil, errors.New("parameter billingRoleAssignmentName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingRoleAssignmentName}", url.PathEscape(billingRoleAssignmentName))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-04-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// DeleteByBillingAccount - Deletes a role assignment on a billing account. The operation is supported for billing accounts
+// with agreement type Microsoft Partner Agreement, Microsoft Customer Agreement or Enterprise Agreement.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01
 //   - billingAccountName - The ID that uniquely identifies a billing account.
 //   - billingRoleAssignmentName - The ID that uniquely identifies a role assignment.
 //   - options - RoleAssignmentsClientDeleteByBillingAccountOptions contains the optional parameters for the RoleAssignmentsClient.DeleteByBillingAccount
@@ -63,12 +629,11 @@ func (client *RoleAssignmentsClient) DeleteByBillingAccount(ctx context.Context,
 	if err != nil {
 		return RoleAssignmentsClientDeleteByBillingAccountResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
 		err = runtime.NewResponseError(httpResp)
 		return RoleAssignmentsClientDeleteByBillingAccountResponse{}, err
 	}
-	resp, err := client.deleteByBillingAccountHandleResponse(httpResp)
-	return resp, err
+	return RoleAssignmentsClientDeleteByBillingAccountResponse{}, nil
 }
 
 // deleteByBillingAccountCreateRequest creates the DeleteByBillingAccount request.
@@ -87,26 +652,17 @@ func (client *RoleAssignmentsClient) deleteByBillingAccountCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-05-01")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// deleteByBillingAccountHandleResponse handles the DeleteByBillingAccount response.
-func (client *RoleAssignmentsClient) deleteByBillingAccountHandleResponse(resp *http.Response) (RoleAssignmentsClientDeleteByBillingAccountResponse, error) {
-	result := RoleAssignmentsClientDeleteByBillingAccountResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.RoleAssignment); err != nil {
-		return RoleAssignmentsClientDeleteByBillingAccountResponse{}, err
-	}
-	return result, nil
-}
-
-// DeleteByBillingProfile - Deletes a role assignment for the caller on a billing profile. The operation is supported for
-// billing accounts with agreement type Microsoft Partner Agreement or Microsoft Customer Agreement.
+// DeleteByBillingProfile - Deletes a role assignment on a billing profile. The operation is supported for billing accounts
+// with agreement type Microsoft Partner Agreement or Microsoft Customer Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-05-01
+// Generated from API version 2024-04-01
 //   - billingAccountName - The ID that uniquely identifies a billing account.
 //   - billingProfileName - The ID that uniquely identifies a billing profile.
 //   - billingRoleAssignmentName - The ID that uniquely identifies a role assignment.
@@ -126,12 +682,11 @@ func (client *RoleAssignmentsClient) DeleteByBillingProfile(ctx context.Context,
 	if err != nil {
 		return RoleAssignmentsClientDeleteByBillingProfileResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
 		err = runtime.NewResponseError(httpResp)
 		return RoleAssignmentsClientDeleteByBillingProfileResponse{}, err
 	}
-	resp, err := client.deleteByBillingProfileHandleResponse(httpResp)
-	return resp, err
+	return RoleAssignmentsClientDeleteByBillingProfileResponse{}, nil
 }
 
 // deleteByBillingProfileCreateRequest creates the DeleteByBillingProfile request.
@@ -154,26 +709,193 @@ func (client *RoleAssignmentsClient) deleteByBillingProfileCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-05-01")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// deleteByBillingProfileHandleResponse handles the DeleteByBillingProfile response.
-func (client *RoleAssignmentsClient) deleteByBillingProfileHandleResponse(resp *http.Response) (RoleAssignmentsClientDeleteByBillingProfileResponse, error) {
-	result := RoleAssignmentsClientDeleteByBillingProfileResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.RoleAssignment); err != nil {
-		return RoleAssignmentsClientDeleteByBillingProfileResponse{}, err
-	}
-	return result, nil
-}
-
-// DeleteByInvoiceSection - Deletes a role assignment for the caller on an invoice section. The operation is supported for
-// billing accounts with agreement type Microsoft Customer Agreement.
+// DeleteByCustomer - Deletes a role assignment on a customer. The operation is supported for billing accounts with agreement
+// type Microsoft Partner Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-05-01
+// Generated from API version 2024-04-01
+//   - billingAccountName - The ID that uniquely identifies a billing account.
+//   - billingProfileName - The ID that uniquely identifies a billing profile.
+//   - customerName - The ID that uniquely identifies a customer.
+//   - billingRoleAssignmentName - The ID that uniquely identifies a role assignment.
+//   - options - RoleAssignmentsClientDeleteByCustomerOptions contains the optional parameters for the RoleAssignmentsClient.DeleteByCustomer
+//     method.
+func (client *RoleAssignmentsClient) DeleteByCustomer(ctx context.Context, billingAccountName string, billingProfileName string, customerName string, billingRoleAssignmentName string, options *RoleAssignmentsClientDeleteByCustomerOptions) (RoleAssignmentsClientDeleteByCustomerResponse, error) {
+	var err error
+	const operationName = "RoleAssignmentsClient.DeleteByCustomer"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.deleteByCustomerCreateRequest(ctx, billingAccountName, billingProfileName, customerName, billingRoleAssignmentName, options)
+	if err != nil {
+		return RoleAssignmentsClientDeleteByCustomerResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return RoleAssignmentsClientDeleteByCustomerResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
+		err = runtime.NewResponseError(httpResp)
+		return RoleAssignmentsClientDeleteByCustomerResponse{}, err
+	}
+	return RoleAssignmentsClientDeleteByCustomerResponse{}, nil
+}
+
+// deleteByCustomerCreateRequest creates the DeleteByCustomer request.
+func (client *RoleAssignmentsClient) deleteByCustomerCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, customerName string, billingRoleAssignmentName string, options *RoleAssignmentsClientDeleteByCustomerOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/customers/{customerName}/billingRoleAssignments/{billingRoleAssignmentName}"
+	if billingAccountName == "" {
+		return nil, errors.New("parameter billingAccountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
+	if billingProfileName == "" {
+		return nil, errors.New("parameter billingProfileName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingProfileName}", url.PathEscape(billingProfileName))
+	if customerName == "" {
+		return nil, errors.New("parameter customerName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{customerName}", url.PathEscape(customerName))
+	if billingRoleAssignmentName == "" {
+		return nil, errors.New("parameter billingRoleAssignmentName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingRoleAssignmentName}", url.PathEscape(billingRoleAssignmentName))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-04-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// DeleteByDepartment - Deletes a role assignment on a department. The operation is supported only for billing accounts with
+// agreement type Enterprise Agreement.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01
+//   - billingAccountName - The ID that uniquely identifies a billing account.
+//   - departmentName - The name of the department.
+//   - billingRoleAssignmentName - The ID that uniquely identifies a role assignment.
+//   - options - RoleAssignmentsClientDeleteByDepartmentOptions contains the optional parameters for the RoleAssignmentsClient.DeleteByDepartment
+//     method.
+func (client *RoleAssignmentsClient) DeleteByDepartment(ctx context.Context, billingAccountName string, departmentName string, billingRoleAssignmentName string, options *RoleAssignmentsClientDeleteByDepartmentOptions) (RoleAssignmentsClientDeleteByDepartmentResponse, error) {
+	var err error
+	const operationName = "RoleAssignmentsClient.DeleteByDepartment"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.deleteByDepartmentCreateRequest(ctx, billingAccountName, departmentName, billingRoleAssignmentName, options)
+	if err != nil {
+		return RoleAssignmentsClientDeleteByDepartmentResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return RoleAssignmentsClientDeleteByDepartmentResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
+		err = runtime.NewResponseError(httpResp)
+		return RoleAssignmentsClientDeleteByDepartmentResponse{}, err
+	}
+	return RoleAssignmentsClientDeleteByDepartmentResponse{}, nil
+}
+
+// deleteByDepartmentCreateRequest creates the DeleteByDepartment request.
+func (client *RoleAssignmentsClient) deleteByDepartmentCreateRequest(ctx context.Context, billingAccountName string, departmentName string, billingRoleAssignmentName string, options *RoleAssignmentsClientDeleteByDepartmentOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/departments/{departmentName}/billingRoleAssignments/{billingRoleAssignmentName}"
+	if billingAccountName == "" {
+		return nil, errors.New("parameter billingAccountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
+	if departmentName == "" {
+		return nil, errors.New("parameter departmentName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{departmentName}", url.PathEscape(departmentName))
+	if billingRoleAssignmentName == "" {
+		return nil, errors.New("parameter billingRoleAssignmentName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingRoleAssignmentName}", url.PathEscape(billingRoleAssignmentName))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-04-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// DeleteByEnrollmentAccount - Deletes a role assignment on a enrollment Account. The operation is supported only for billing
+// accounts with agreement type Enterprise Agreement.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01
+//   - billingAccountName - The ID that uniquely identifies a billing account.
+//   - enrollmentAccountName - The name of the enrollment account.
+//   - billingRoleAssignmentName - The ID that uniquely identifies a role assignment.
+//   - options - RoleAssignmentsClientDeleteByEnrollmentAccountOptions contains the optional parameters for the RoleAssignmentsClient.DeleteByEnrollmentAccount
+//     method.
+func (client *RoleAssignmentsClient) DeleteByEnrollmentAccount(ctx context.Context, billingAccountName string, enrollmentAccountName string, billingRoleAssignmentName string, options *RoleAssignmentsClientDeleteByEnrollmentAccountOptions) (RoleAssignmentsClientDeleteByEnrollmentAccountResponse, error) {
+	var err error
+	const operationName = "RoleAssignmentsClient.DeleteByEnrollmentAccount"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.deleteByEnrollmentAccountCreateRequest(ctx, billingAccountName, enrollmentAccountName, billingRoleAssignmentName, options)
+	if err != nil {
+		return RoleAssignmentsClientDeleteByEnrollmentAccountResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return RoleAssignmentsClientDeleteByEnrollmentAccountResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
+		err = runtime.NewResponseError(httpResp)
+		return RoleAssignmentsClientDeleteByEnrollmentAccountResponse{}, err
+	}
+	return RoleAssignmentsClientDeleteByEnrollmentAccountResponse{}, nil
+}
+
+// deleteByEnrollmentAccountCreateRequest creates the DeleteByEnrollmentAccount request.
+func (client *RoleAssignmentsClient) deleteByEnrollmentAccountCreateRequest(ctx context.Context, billingAccountName string, enrollmentAccountName string, billingRoleAssignmentName string, options *RoleAssignmentsClientDeleteByEnrollmentAccountOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/enrollmentAccounts/{enrollmentAccountName}/billingRoleAssignments/{billingRoleAssignmentName}"
+	if billingAccountName == "" {
+		return nil, errors.New("parameter billingAccountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
+	if enrollmentAccountName == "" {
+		return nil, errors.New("parameter enrollmentAccountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{enrollmentAccountName}", url.PathEscape(enrollmentAccountName))
+	if billingRoleAssignmentName == "" {
+		return nil, errors.New("parameter billingRoleAssignmentName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingRoleAssignmentName}", url.PathEscape(billingRoleAssignmentName))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-04-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// DeleteByInvoiceSection - Deletes a role assignment on an invoice section. The operation is supported for billing accounts
+// with agreement type Microsoft Customer Agreement.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01
 //   - billingAccountName - The ID that uniquely identifies a billing account.
 //   - billingProfileName - The ID that uniquely identifies a billing profile.
 //   - invoiceSectionName - The ID that uniquely identifies an invoice section.
@@ -194,12 +916,11 @@ func (client *RoleAssignmentsClient) DeleteByInvoiceSection(ctx context.Context,
 	if err != nil {
 		return RoleAssignmentsClientDeleteByInvoiceSectionResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
 		err = runtime.NewResponseError(httpResp)
 		return RoleAssignmentsClientDeleteByInvoiceSectionResponse{}, err
 	}
-	resp, err := client.deleteByInvoiceSectionHandleResponse(httpResp)
-	return resp, err
+	return RoleAssignmentsClientDeleteByInvoiceSectionResponse{}, nil
 }
 
 // deleteByInvoiceSectionCreateRequest creates the DeleteByInvoiceSection request.
@@ -226,26 +947,18 @@ func (client *RoleAssignmentsClient) deleteByInvoiceSectionCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-05-01")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// deleteByInvoiceSectionHandleResponse handles the DeleteByInvoiceSection response.
-func (client *RoleAssignmentsClient) deleteByInvoiceSectionHandleResponse(resp *http.Response) (RoleAssignmentsClientDeleteByInvoiceSectionResponse, error) {
-	result := RoleAssignmentsClientDeleteByInvoiceSectionResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.RoleAssignment); err != nil {
-		return RoleAssignmentsClientDeleteByInvoiceSectionResponse{}, err
-	}
-	return result, nil
-}
-
 // GetByBillingAccount - Gets a role assignment for the caller on a billing account. The operation is supported for billing
-// accounts with agreement type Microsoft Partner Agreement or Microsoft Customer Agreement.
+// accounts with agreement type Microsoft Partner Agreement, Microsoft Customer Agreement or Enterprise
+// Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-05-01
+// Generated from API version 2024-04-01
 //   - billingAccountName - The ID that uniquely identifies a billing account.
 //   - billingRoleAssignmentName - The ID that uniquely identifies a role assignment.
 //   - options - RoleAssignmentsClientGetByBillingAccountOptions contains the optional parameters for the RoleAssignmentsClient.GetByBillingAccount
@@ -288,7 +1001,7 @@ func (client *RoleAssignmentsClient) getByBillingAccountCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-05-01")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -307,7 +1020,7 @@ func (client *RoleAssignmentsClient) getByBillingAccountHandleResponse(resp *htt
 // accounts with agreement type Microsoft Partner Agreement or Microsoft Customer Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-05-01
+// Generated from API version 2024-04-01
 //   - billingAccountName - The ID that uniquely identifies a billing account.
 //   - billingProfileName - The ID that uniquely identifies a billing profile.
 //   - billingRoleAssignmentName - The ID that uniquely identifies a role assignment.
@@ -355,7 +1068,7 @@ func (client *RoleAssignmentsClient) getByBillingProfileCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-05-01")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -370,11 +1083,217 @@ func (client *RoleAssignmentsClient) getByBillingProfileHandleResponse(resp *htt
 	return result, nil
 }
 
+// GetByCustomer - Gets a role assignment for the caller on a customer. The operation is supported for billing accounts with
+// agreement type Microsoft Partner Agreement.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01
+//   - billingAccountName - The ID that uniquely identifies a billing account.
+//   - billingProfileName - The ID that uniquely identifies a billing profile.
+//   - customerName - The ID that uniquely identifies a customer.
+//   - billingRoleAssignmentName - The ID that uniquely identifies a role assignment.
+//   - options - RoleAssignmentsClientGetByCustomerOptions contains the optional parameters for the RoleAssignmentsClient.GetByCustomer
+//     method.
+func (client *RoleAssignmentsClient) GetByCustomer(ctx context.Context, billingAccountName string, billingProfileName string, customerName string, billingRoleAssignmentName string, options *RoleAssignmentsClientGetByCustomerOptions) (RoleAssignmentsClientGetByCustomerResponse, error) {
+	var err error
+	const operationName = "RoleAssignmentsClient.GetByCustomer"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getByCustomerCreateRequest(ctx, billingAccountName, billingProfileName, customerName, billingRoleAssignmentName, options)
+	if err != nil {
+		return RoleAssignmentsClientGetByCustomerResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return RoleAssignmentsClientGetByCustomerResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return RoleAssignmentsClientGetByCustomerResponse{}, err
+	}
+	resp, err := client.getByCustomerHandleResponse(httpResp)
+	return resp, err
+}
+
+// getByCustomerCreateRequest creates the GetByCustomer request.
+func (client *RoleAssignmentsClient) getByCustomerCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, customerName string, billingRoleAssignmentName string, options *RoleAssignmentsClientGetByCustomerOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/customers/{customerName}/billingRoleAssignments/{billingRoleAssignmentName}"
+	if billingAccountName == "" {
+		return nil, errors.New("parameter billingAccountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
+	if billingProfileName == "" {
+		return nil, errors.New("parameter billingProfileName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingProfileName}", url.PathEscape(billingProfileName))
+	if customerName == "" {
+		return nil, errors.New("parameter customerName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{customerName}", url.PathEscape(customerName))
+	if billingRoleAssignmentName == "" {
+		return nil, errors.New("parameter billingRoleAssignmentName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingRoleAssignmentName}", url.PathEscape(billingRoleAssignmentName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-04-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getByCustomerHandleResponse handles the GetByCustomer response.
+func (client *RoleAssignmentsClient) getByCustomerHandleResponse(resp *http.Response) (RoleAssignmentsClientGetByCustomerResponse, error) {
+	result := RoleAssignmentsClientGetByCustomerResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RoleAssignment); err != nil {
+		return RoleAssignmentsClientGetByCustomerResponse{}, err
+	}
+	return result, nil
+}
+
+// GetByDepartment - Gets a role assignment for the caller on a department. The operation is supported only for billing accounts
+// with agreement type Enterprise Agreement.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01
+//   - billingAccountName - The ID that uniquely identifies a billing account.
+//   - departmentName - The name of the department.
+//   - billingRoleAssignmentName - The ID that uniquely identifies a role assignment.
+//   - options - RoleAssignmentsClientGetByDepartmentOptions contains the optional parameters for the RoleAssignmentsClient.GetByDepartment
+//     method.
+func (client *RoleAssignmentsClient) GetByDepartment(ctx context.Context, billingAccountName string, departmentName string, billingRoleAssignmentName string, options *RoleAssignmentsClientGetByDepartmentOptions) (RoleAssignmentsClientGetByDepartmentResponse, error) {
+	var err error
+	const operationName = "RoleAssignmentsClient.GetByDepartment"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getByDepartmentCreateRequest(ctx, billingAccountName, departmentName, billingRoleAssignmentName, options)
+	if err != nil {
+		return RoleAssignmentsClientGetByDepartmentResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return RoleAssignmentsClientGetByDepartmentResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return RoleAssignmentsClientGetByDepartmentResponse{}, err
+	}
+	resp, err := client.getByDepartmentHandleResponse(httpResp)
+	return resp, err
+}
+
+// getByDepartmentCreateRequest creates the GetByDepartment request.
+func (client *RoleAssignmentsClient) getByDepartmentCreateRequest(ctx context.Context, billingAccountName string, departmentName string, billingRoleAssignmentName string, options *RoleAssignmentsClientGetByDepartmentOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/departments/{departmentName}/billingRoleAssignments/{billingRoleAssignmentName}"
+	if billingAccountName == "" {
+		return nil, errors.New("parameter billingAccountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
+	if departmentName == "" {
+		return nil, errors.New("parameter departmentName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{departmentName}", url.PathEscape(departmentName))
+	if billingRoleAssignmentName == "" {
+		return nil, errors.New("parameter billingRoleAssignmentName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingRoleAssignmentName}", url.PathEscape(billingRoleAssignmentName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-04-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getByDepartmentHandleResponse handles the GetByDepartment response.
+func (client *RoleAssignmentsClient) getByDepartmentHandleResponse(resp *http.Response) (RoleAssignmentsClientGetByDepartmentResponse, error) {
+	result := RoleAssignmentsClientGetByDepartmentResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RoleAssignment); err != nil {
+		return RoleAssignmentsClientGetByDepartmentResponse{}, err
+	}
+	return result, nil
+}
+
+// GetByEnrollmentAccount - Gets a role assignment for the caller on a enrollment Account. The operation is supported only
+// for billing accounts with agreement type Enterprise Agreement.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01
+//   - billingAccountName - The ID that uniquely identifies a billing account.
+//   - enrollmentAccountName - The name of the enrollment account.
+//   - billingRoleAssignmentName - The ID that uniquely identifies a role assignment.
+//   - options - RoleAssignmentsClientGetByEnrollmentAccountOptions contains the optional parameters for the RoleAssignmentsClient.GetByEnrollmentAccount
+//     method.
+func (client *RoleAssignmentsClient) GetByEnrollmentAccount(ctx context.Context, billingAccountName string, enrollmentAccountName string, billingRoleAssignmentName string, options *RoleAssignmentsClientGetByEnrollmentAccountOptions) (RoleAssignmentsClientGetByEnrollmentAccountResponse, error) {
+	var err error
+	const operationName = "RoleAssignmentsClient.GetByEnrollmentAccount"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getByEnrollmentAccountCreateRequest(ctx, billingAccountName, enrollmentAccountName, billingRoleAssignmentName, options)
+	if err != nil {
+		return RoleAssignmentsClientGetByEnrollmentAccountResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return RoleAssignmentsClientGetByEnrollmentAccountResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return RoleAssignmentsClientGetByEnrollmentAccountResponse{}, err
+	}
+	resp, err := client.getByEnrollmentAccountHandleResponse(httpResp)
+	return resp, err
+}
+
+// getByEnrollmentAccountCreateRequest creates the GetByEnrollmentAccount request.
+func (client *RoleAssignmentsClient) getByEnrollmentAccountCreateRequest(ctx context.Context, billingAccountName string, enrollmentAccountName string, billingRoleAssignmentName string, options *RoleAssignmentsClientGetByEnrollmentAccountOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/enrollmentAccounts/{enrollmentAccountName}/billingRoleAssignments/{billingRoleAssignmentName}"
+	if billingAccountName == "" {
+		return nil, errors.New("parameter billingAccountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
+	if enrollmentAccountName == "" {
+		return nil, errors.New("parameter enrollmentAccountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{enrollmentAccountName}", url.PathEscape(enrollmentAccountName))
+	if billingRoleAssignmentName == "" {
+		return nil, errors.New("parameter billingRoleAssignmentName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingRoleAssignmentName}", url.PathEscape(billingRoleAssignmentName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-04-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getByEnrollmentAccountHandleResponse handles the GetByEnrollmentAccount response.
+func (client *RoleAssignmentsClient) getByEnrollmentAccountHandleResponse(resp *http.Response) (RoleAssignmentsClientGetByEnrollmentAccountResponse, error) {
+	result := RoleAssignmentsClientGetByEnrollmentAccountResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RoleAssignment); err != nil {
+		return RoleAssignmentsClientGetByEnrollmentAccountResponse{}, err
+	}
+	return result, nil
+}
+
 // GetByInvoiceSection - Gets a role assignment for the caller on an invoice section. The operation is supported for billing
 // accounts with agreement type Microsoft Customer Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-05-01
+// Generated from API version 2024-04-01
 //   - billingAccountName - The ID that uniquely identifies a billing account.
 //   - billingProfileName - The ID that uniquely identifies a billing profile.
 //   - invoiceSectionName - The ID that uniquely identifies an invoice section.
@@ -427,7 +1346,7 @@ func (client *RoleAssignmentsClient) getByInvoiceSectionCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-05-01")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -443,9 +1362,10 @@ func (client *RoleAssignmentsClient) getByInvoiceSectionHandleResponse(resp *htt
 }
 
 // NewListByBillingAccountPager - Lists the role assignments for the caller on a billing account. The operation is supported
-// for billing accounts with agreement type Microsoft Partner Agreement or Microsoft Customer Agreement.
+// for billing accounts with agreement type Microsoft Partner Agreement, Microsoft Customer Agreement or
+// Enterprise Agreement.
 //
-// Generated from API version 2020-05-01
+// Generated from API version 2024-04-01
 //   - billingAccountName - The ID that uniquely identifies a billing account.
 //   - options - RoleAssignmentsClientListByBillingAccountOptions contains the optional parameters for the RoleAssignmentsClient.NewListByBillingAccountPager
 //     method.
@@ -484,7 +1404,16 @@ func (client *RoleAssignmentsClient) listByBillingAccountCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-05-01")
+	reqQP.Set("api-version", "2024-04-01")
+	if options != nil && options.Filter != nil {
+		reqQP.Set("filter", *options.Filter)
+	}
+	if options != nil && options.Skip != nil {
+		reqQP.Set("skip", strconv.FormatInt(*options.Skip, 10))
+	}
+	if options != nil && options.Top != nil {
+		reqQP.Set("top", strconv.FormatInt(*options.Top, 10))
+	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -500,9 +1429,9 @@ func (client *RoleAssignmentsClient) listByBillingAccountHandleResponse(resp *ht
 }
 
 // NewListByBillingProfilePager - Lists the role assignments for the caller on a billing profile. The operation is supported
-// for billing accounts with agreement type Microsoft Customer Agreement.
+// for billing accounts with agreement type Microsoft Partner Agreement or Microsoft Customer Agreement.
 //
-// Generated from API version 2020-05-01
+// Generated from API version 2024-04-01
 //   - billingAccountName - The ID that uniquely identifies a billing account.
 //   - billingProfileName - The ID that uniquely identifies a billing profile.
 //   - options - RoleAssignmentsClientListByBillingProfileOptions contains the optional parameters for the RoleAssignmentsClient.NewListByBillingProfilePager
@@ -546,7 +1475,16 @@ func (client *RoleAssignmentsClient) listByBillingProfileCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-05-01")
+	reqQP.Set("api-version", "2024-04-01")
+	if options != nil && options.Filter != nil {
+		reqQP.Set("filter", *options.Filter)
+	}
+	if options != nil && options.Skip != nil {
+		reqQP.Set("skip", strconv.FormatInt(*options.Skip, 10))
+	}
+	if options != nil && options.Top != nil {
+		reqQP.Set("top", strconv.FormatInt(*options.Top, 10))
+	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -561,10 +1499,210 @@ func (client *RoleAssignmentsClient) listByBillingProfileHandleResponse(resp *ht
 	return result, nil
 }
 
+// NewListByCustomerPager - Lists the role assignments for the caller on customer. The operation is supported for billing
+// accounts with agreement type Microsoft Partner Agreement.
+//
+// Generated from API version 2024-04-01
+//   - billingAccountName - The ID that uniquely identifies a billing account.
+//   - billingProfileName - The ID that uniquely identifies a billing profile.
+//   - customerName - The ID that uniquely identifies a customer.
+//   - options - RoleAssignmentsClientListByCustomerOptions contains the optional parameters for the RoleAssignmentsClient.NewListByCustomerPager
+//     method.
+func (client *RoleAssignmentsClient) NewListByCustomerPager(billingAccountName string, billingProfileName string, customerName string, options *RoleAssignmentsClientListByCustomerOptions) *runtime.Pager[RoleAssignmentsClientListByCustomerResponse] {
+	return runtime.NewPager(runtime.PagingHandler[RoleAssignmentsClientListByCustomerResponse]{
+		More: func(page RoleAssignmentsClientListByCustomerResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *RoleAssignmentsClientListByCustomerResponse) (RoleAssignmentsClientListByCustomerResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "RoleAssignmentsClient.NewListByCustomerPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByCustomerCreateRequest(ctx, billingAccountName, billingProfileName, customerName, options)
+			}, nil)
+			if err != nil {
+				return RoleAssignmentsClientListByCustomerResponse{}, err
+			}
+			return client.listByCustomerHandleResponse(resp)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listByCustomerCreateRequest creates the ListByCustomer request.
+func (client *RoleAssignmentsClient) listByCustomerCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, customerName string, options *RoleAssignmentsClientListByCustomerOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/customers/{customerName}/billingRoleAssignments"
+	if billingAccountName == "" {
+		return nil, errors.New("parameter billingAccountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
+	if billingProfileName == "" {
+		return nil, errors.New("parameter billingProfileName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingProfileName}", url.PathEscape(billingProfileName))
+	if customerName == "" {
+		return nil, errors.New("parameter customerName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{customerName}", url.PathEscape(customerName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-04-01")
+	if options != nil && options.Filter != nil {
+		reqQP.Set("filter", *options.Filter)
+	}
+	if options != nil && options.Skip != nil {
+		reqQP.Set("skip", strconv.FormatInt(*options.Skip, 10))
+	}
+	if options != nil && options.Top != nil {
+		reqQP.Set("top", strconv.FormatInt(*options.Top, 10))
+	}
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listByCustomerHandleResponse handles the ListByCustomer response.
+func (client *RoleAssignmentsClient) listByCustomerHandleResponse(resp *http.Response) (RoleAssignmentsClientListByCustomerResponse, error) {
+	result := RoleAssignmentsClientListByCustomerResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RoleAssignmentListResult); err != nil {
+		return RoleAssignmentsClientListByCustomerResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListByDepartmentPager - Lists the role assignments for the caller on a department. The operation is supported for billing
+// accounts of type Enterprise Agreement.
+//
+// Generated from API version 2024-04-01
+//   - billingAccountName - The ID that uniquely identifies a billing account.
+//   - departmentName - The name of the department.
+//   - options - RoleAssignmentsClientListByDepartmentOptions contains the optional parameters for the RoleAssignmentsClient.NewListByDepartmentPager
+//     method.
+func (client *RoleAssignmentsClient) NewListByDepartmentPager(billingAccountName string, departmentName string, options *RoleAssignmentsClientListByDepartmentOptions) *runtime.Pager[RoleAssignmentsClientListByDepartmentResponse] {
+	return runtime.NewPager(runtime.PagingHandler[RoleAssignmentsClientListByDepartmentResponse]{
+		More: func(page RoleAssignmentsClientListByDepartmentResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *RoleAssignmentsClientListByDepartmentResponse) (RoleAssignmentsClientListByDepartmentResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "RoleAssignmentsClient.NewListByDepartmentPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByDepartmentCreateRequest(ctx, billingAccountName, departmentName, options)
+			}, nil)
+			if err != nil {
+				return RoleAssignmentsClientListByDepartmentResponse{}, err
+			}
+			return client.listByDepartmentHandleResponse(resp)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listByDepartmentCreateRequest creates the ListByDepartment request.
+func (client *RoleAssignmentsClient) listByDepartmentCreateRequest(ctx context.Context, billingAccountName string, departmentName string, options *RoleAssignmentsClientListByDepartmentOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/departments/{departmentName}/billingRoleAssignments"
+	if billingAccountName == "" {
+		return nil, errors.New("parameter billingAccountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
+	if departmentName == "" {
+		return nil, errors.New("parameter departmentName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{departmentName}", url.PathEscape(departmentName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-04-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listByDepartmentHandleResponse handles the ListByDepartment response.
+func (client *RoleAssignmentsClient) listByDepartmentHandleResponse(resp *http.Response) (RoleAssignmentsClientListByDepartmentResponse, error) {
+	result := RoleAssignmentsClientListByDepartmentResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RoleAssignmentListResult); err != nil {
+		return RoleAssignmentsClientListByDepartmentResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListByEnrollmentAccountPager - Lists the role assignments for the caller on a enrollment account. The operation is supported
+// for billing accounts of type Enterprise Agreement.
+//
+// Generated from API version 2024-04-01
+//   - billingAccountName - The ID that uniquely identifies a billing account.
+//   - enrollmentAccountName - The name of the enrollment account.
+//   - options - RoleAssignmentsClientListByEnrollmentAccountOptions contains the optional parameters for the RoleAssignmentsClient.NewListByEnrollmentAccountPager
+//     method.
+func (client *RoleAssignmentsClient) NewListByEnrollmentAccountPager(billingAccountName string, enrollmentAccountName string, options *RoleAssignmentsClientListByEnrollmentAccountOptions) *runtime.Pager[RoleAssignmentsClientListByEnrollmentAccountResponse] {
+	return runtime.NewPager(runtime.PagingHandler[RoleAssignmentsClientListByEnrollmentAccountResponse]{
+		More: func(page RoleAssignmentsClientListByEnrollmentAccountResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *RoleAssignmentsClientListByEnrollmentAccountResponse) (RoleAssignmentsClientListByEnrollmentAccountResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "RoleAssignmentsClient.NewListByEnrollmentAccountPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByEnrollmentAccountCreateRequest(ctx, billingAccountName, enrollmentAccountName, options)
+			}, nil)
+			if err != nil {
+				return RoleAssignmentsClientListByEnrollmentAccountResponse{}, err
+			}
+			return client.listByEnrollmentAccountHandleResponse(resp)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listByEnrollmentAccountCreateRequest creates the ListByEnrollmentAccount request.
+func (client *RoleAssignmentsClient) listByEnrollmentAccountCreateRequest(ctx context.Context, billingAccountName string, enrollmentAccountName string, options *RoleAssignmentsClientListByEnrollmentAccountOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/enrollmentAccounts/{enrollmentAccountName}/billingRoleAssignments"
+	if billingAccountName == "" {
+		return nil, errors.New("parameter billingAccountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
+	if enrollmentAccountName == "" {
+		return nil, errors.New("parameter enrollmentAccountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{enrollmentAccountName}", url.PathEscape(enrollmentAccountName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-04-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listByEnrollmentAccountHandleResponse handles the ListByEnrollmentAccount response.
+func (client *RoleAssignmentsClient) listByEnrollmentAccountHandleResponse(resp *http.Response) (RoleAssignmentsClientListByEnrollmentAccountResponse, error) {
+	result := RoleAssignmentsClientListByEnrollmentAccountResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RoleAssignmentListResult); err != nil {
+		return RoleAssignmentsClientListByEnrollmentAccountResponse{}, err
+	}
+	return result, nil
+}
+
 // NewListByInvoiceSectionPager - Lists the role assignments for the caller on an invoice section. The operation is supported
 // for billing accounts with agreement type Microsoft Customer Agreement.
 //
-// Generated from API version 2020-05-01
+// Generated from API version 2024-04-01
 //   - billingAccountName - The ID that uniquely identifies a billing account.
 //   - billingProfileName - The ID that uniquely identifies a billing profile.
 //   - invoiceSectionName - The ID that uniquely identifies an invoice section.
@@ -613,7 +1751,16 @@ func (client *RoleAssignmentsClient) listByInvoiceSectionCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-05-01")
+	reqQP.Set("api-version", "2024-04-01")
+	if options != nil && options.Filter != nil {
+		reqQP.Set("filter", *options.Filter)
+	}
+	if options != nil && options.Skip != nil {
+		reqQP.Set("skip", strconv.FormatInt(*options.Skip, 10))
+	}
+	if options != nil && options.Top != nil {
+		reqQP.Set("top", strconv.FormatInt(*options.Top, 10))
+	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -626,4 +1773,341 @@ func (client *RoleAssignmentsClient) listByInvoiceSectionHandleResponse(resp *ht
 		return RoleAssignmentsClientListByInvoiceSectionResponse{}, err
 	}
 	return result, nil
+}
+
+// BeginResolveByBillingAccount - Lists the role assignments for the caller on a billing account while fetching user info
+// for each role assignment. The operation is supported for billing accounts with agreement type Microsoft Partner
+// Agreement, Microsoft Customer Agreement or Enterprise Agreement.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01
+//   - billingAccountName - The ID that uniquely identifies a billing account.
+//   - options - RoleAssignmentsClientBeginResolveByBillingAccountOptions contains the optional parameters for the RoleAssignmentsClient.BeginResolveByBillingAccount
+//     method.
+func (client *RoleAssignmentsClient) BeginResolveByBillingAccount(ctx context.Context, billingAccountName string, options *RoleAssignmentsClientBeginResolveByBillingAccountOptions) (*runtime.Poller[RoleAssignmentsClientResolveByBillingAccountResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.resolveByBillingAccount(ctx, billingAccountName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[RoleAssignmentsClientResolveByBillingAccountResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[RoleAssignmentsClientResolveByBillingAccountResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// ResolveByBillingAccount - Lists the role assignments for the caller on a billing account while fetching user info for each
+// role assignment. The operation is supported for billing accounts with agreement type Microsoft Partner
+// Agreement, Microsoft Customer Agreement or Enterprise Agreement.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01
+func (client *RoleAssignmentsClient) resolveByBillingAccount(ctx context.Context, billingAccountName string, options *RoleAssignmentsClientBeginResolveByBillingAccountOptions) (*http.Response, error) {
+	var err error
+	const operationName = "RoleAssignmentsClient.BeginResolveByBillingAccount"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.resolveByBillingAccountCreateRequest(ctx, billingAccountName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// resolveByBillingAccountCreateRequest creates the ResolveByBillingAccount request.
+func (client *RoleAssignmentsClient) resolveByBillingAccountCreateRequest(ctx context.Context, billingAccountName string, options *RoleAssignmentsClientBeginResolveByBillingAccountOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/resolveBillingRoleAssignments"
+	if billingAccountName == "" {
+		return nil, errors.New("parameter billingAccountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-04-01")
+	if options != nil && options.Filter != nil {
+		reqQP.Set("filter", *options.Filter)
+	}
+	if options != nil && options.ResolveScopeDisplayNames != nil {
+		reqQP.Set("resolveScopeDisplayNames", strconv.FormatBool(*options.ResolveScopeDisplayNames))
+	}
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// BeginResolveByBillingProfile - Lists the role assignments for the caller on an billing profile while fetching user info
+// for each role assignment. The operation is supported for billing accounts with agreement type Microsoft Partner
+// Agreement or Microsoft Customer Agreement.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01
+//   - billingAccountName - The ID that uniquely identifies a billing account.
+//   - billingProfileName - The ID that uniquely identifies a billing profile.
+//   - options - RoleAssignmentsClientBeginResolveByBillingProfileOptions contains the optional parameters for the RoleAssignmentsClient.BeginResolveByBillingProfile
+//     method.
+func (client *RoleAssignmentsClient) BeginResolveByBillingProfile(ctx context.Context, billingAccountName string, billingProfileName string, options *RoleAssignmentsClientBeginResolveByBillingProfileOptions) (*runtime.Poller[RoleAssignmentsClientResolveByBillingProfileResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.resolveByBillingProfile(ctx, billingAccountName, billingProfileName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[RoleAssignmentsClientResolveByBillingProfileResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[RoleAssignmentsClientResolveByBillingProfileResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// ResolveByBillingProfile - Lists the role assignments for the caller on an billing profile while fetching user info for
+// each role assignment. The operation is supported for billing accounts with agreement type Microsoft Partner
+// Agreement or Microsoft Customer Agreement.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01
+func (client *RoleAssignmentsClient) resolveByBillingProfile(ctx context.Context, billingAccountName string, billingProfileName string, options *RoleAssignmentsClientBeginResolveByBillingProfileOptions) (*http.Response, error) {
+	var err error
+	const operationName = "RoleAssignmentsClient.BeginResolveByBillingProfile"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.resolveByBillingProfileCreateRequest(ctx, billingAccountName, billingProfileName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// resolveByBillingProfileCreateRequest creates the ResolveByBillingProfile request.
+func (client *RoleAssignmentsClient) resolveByBillingProfileCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, options *RoleAssignmentsClientBeginResolveByBillingProfileOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/resolveBillingRoleAssignments"
+	if billingAccountName == "" {
+		return nil, errors.New("parameter billingAccountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
+	if billingProfileName == "" {
+		return nil, errors.New("parameter billingProfileName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingProfileName}", url.PathEscape(billingProfileName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-04-01")
+	if options != nil && options.Filter != nil {
+		reqQP.Set("filter", *options.Filter)
+	}
+	if options != nil && options.ResolveScopeDisplayNames != nil {
+		reqQP.Set("resolveScopeDisplayNames", strconv.FormatBool(*options.ResolveScopeDisplayNames))
+	}
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// BeginResolveByCustomer - Lists the role assignments for the caller on a customer while fetching user info for each role
+// assignment. The operation is supported for billing accounts with agreement type Microsoft Partner
+// Agreement.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01
+//   - billingAccountName - The ID that uniquely identifies a billing account.
+//   - billingProfileName - The ID that uniquely identifies a billing profile.
+//   - customerName - The ID that uniquely identifies a customer.
+//   - options - RoleAssignmentsClientBeginResolveByCustomerOptions contains the optional parameters for the RoleAssignmentsClient.BeginResolveByCustomer
+//     method.
+func (client *RoleAssignmentsClient) BeginResolveByCustomer(ctx context.Context, billingAccountName string, billingProfileName string, customerName string, options *RoleAssignmentsClientBeginResolveByCustomerOptions) (*runtime.Poller[RoleAssignmentsClientResolveByCustomerResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.resolveByCustomer(ctx, billingAccountName, billingProfileName, customerName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[RoleAssignmentsClientResolveByCustomerResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[RoleAssignmentsClientResolveByCustomerResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// ResolveByCustomer - Lists the role assignments for the caller on a customer while fetching user info for each role assignment.
+// The operation is supported for billing accounts with agreement type Microsoft Partner
+// Agreement.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01
+func (client *RoleAssignmentsClient) resolveByCustomer(ctx context.Context, billingAccountName string, billingProfileName string, customerName string, options *RoleAssignmentsClientBeginResolveByCustomerOptions) (*http.Response, error) {
+	var err error
+	const operationName = "RoleAssignmentsClient.BeginResolveByCustomer"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.resolveByCustomerCreateRequest(ctx, billingAccountName, billingProfileName, customerName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// resolveByCustomerCreateRequest creates the ResolveByCustomer request.
+func (client *RoleAssignmentsClient) resolveByCustomerCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, customerName string, options *RoleAssignmentsClientBeginResolveByCustomerOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/customers/{customerName}/resolveBillingRoleAssignments"
+	if billingAccountName == "" {
+		return nil, errors.New("parameter billingAccountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
+	if billingProfileName == "" {
+		return nil, errors.New("parameter billingProfileName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingProfileName}", url.PathEscape(billingProfileName))
+	if customerName == "" {
+		return nil, errors.New("parameter customerName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{customerName}", url.PathEscape(customerName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-04-01")
+	if options != nil && options.Filter != nil {
+		reqQP.Set("filter", *options.Filter)
+	}
+	if options != nil && options.ResolveScopeDisplayNames != nil {
+		reqQP.Set("resolveScopeDisplayNames", strconv.FormatBool(*options.ResolveScopeDisplayNames))
+	}
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// BeginResolveByInvoiceSection - Lists the role assignments for the caller on an invoice section while fetching user info
+// for each role assignment. The operation is supported for billing accounts with agreement type Microsoft
+// Customer Agreement.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01
+//   - billingAccountName - The ID that uniquely identifies a billing account.
+//   - billingProfileName - The ID that uniquely identifies a billing profile.
+//   - invoiceSectionName - The ID that uniquely identifies an invoice section.
+//   - options - RoleAssignmentsClientBeginResolveByInvoiceSectionOptions contains the optional parameters for the RoleAssignmentsClient.BeginResolveByInvoiceSection
+//     method.
+func (client *RoleAssignmentsClient) BeginResolveByInvoiceSection(ctx context.Context, billingAccountName string, billingProfileName string, invoiceSectionName string, options *RoleAssignmentsClientBeginResolveByInvoiceSectionOptions) (*runtime.Poller[RoleAssignmentsClientResolveByInvoiceSectionResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.resolveByInvoiceSection(ctx, billingAccountName, billingProfileName, invoiceSectionName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[RoleAssignmentsClientResolveByInvoiceSectionResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[RoleAssignmentsClientResolveByInvoiceSectionResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// ResolveByInvoiceSection - Lists the role assignments for the caller on an invoice section while fetching user info for
+// each role assignment. The operation is supported for billing accounts with agreement type Microsoft
+// Customer Agreement.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01
+func (client *RoleAssignmentsClient) resolveByInvoiceSection(ctx context.Context, billingAccountName string, billingProfileName string, invoiceSectionName string, options *RoleAssignmentsClientBeginResolveByInvoiceSectionOptions) (*http.Response, error) {
+	var err error
+	const operationName = "RoleAssignmentsClient.BeginResolveByInvoiceSection"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.resolveByInvoiceSectionCreateRequest(ctx, billingAccountName, billingProfileName, invoiceSectionName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// resolveByInvoiceSectionCreateRequest creates the ResolveByInvoiceSection request.
+func (client *RoleAssignmentsClient) resolveByInvoiceSectionCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, invoiceSectionName string, options *RoleAssignmentsClientBeginResolveByInvoiceSectionOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{invoiceSectionName}/resolveBillingRoleAssignments"
+	if billingAccountName == "" {
+		return nil, errors.New("parameter billingAccountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
+	if billingProfileName == "" {
+		return nil, errors.New("parameter billingProfileName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingProfileName}", url.PathEscape(billingProfileName))
+	if invoiceSectionName == "" {
+		return nil, errors.New("parameter invoiceSectionName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{invoiceSectionName}", url.PathEscape(invoiceSectionName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-04-01")
+	if options != nil && options.Filter != nil {
+		reqQP.Set("filter", *options.Filter)
+	}
+	if options != nil && options.ResolveScopeDisplayNames != nil {
+		reqQP.Set("resolveScopeDisplayNames", strconv.FormatBool(*options.ResolveScopeDisplayNames))
+	}
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
 }

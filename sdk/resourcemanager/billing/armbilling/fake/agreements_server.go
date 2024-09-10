@@ -87,7 +87,6 @@ func (a *AgreementsServerTransport) dispatchGet(req *http.Request) (*http.Respon
 	if matches == nil || len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	qp := req.URL.Query()
 	billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
 	if err != nil {
 		return nil, err
@@ -96,18 +95,7 @@ func (a *AgreementsServerTransport) dispatchGet(req *http.Request) (*http.Respon
 	if err != nil {
 		return nil, err
 	}
-	expandUnescaped, err := url.QueryUnescape(qp.Get("$expand"))
-	if err != nil {
-		return nil, err
-	}
-	expandParam := getOptional(expandUnescaped)
-	var options *armbilling.AgreementsClientGetOptions
-	if expandParam != nil {
-		options = &armbilling.AgreementsClientGetOptions{
-			Expand: expandParam,
-		}
-	}
-	respr, errRespr := a.srv.Get(req.Context(), billingAccountNameParam, agreementNameParam, options)
+	respr, errRespr := a.srv.Get(req.Context(), billingAccountNameParam, agreementNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -139,7 +127,7 @@ func (a *AgreementsServerTransport) dispatchNewListByBillingAccountPager(req *ht
 		if err != nil {
 			return nil, err
 		}
-		expandUnescaped, err := url.QueryUnescape(qp.Get("$expand"))
+		expandUnescaped, err := url.QueryUnescape(qp.Get("expand"))
 		if err != nil {
 			return nil, err
 		}

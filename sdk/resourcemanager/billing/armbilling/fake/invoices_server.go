@@ -20,49 +20,59 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"strconv"
+	"time"
 )
 
 // InvoicesServer is a fake server for instances of the armbilling.InvoicesClient type.
 type InvoicesServer struct {
-	// BeginDownloadBillingSubscriptionInvoice is the fake for method InvoicesClient.BeginDownloadBillingSubscriptionInvoice
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginDownloadBillingSubscriptionInvoice func(ctx context.Context, invoiceName string, downloadToken string, options *armbilling.InvoicesClientBeginDownloadBillingSubscriptionInvoiceOptions) (resp azfake.PollerResponder[armbilling.InvoicesClientDownloadBillingSubscriptionInvoiceResponse], errResp azfake.ErrorResponder)
+	// BeginAmend is the fake for method InvoicesClient.BeginAmend
+	// HTTP status codes to indicate success: http.StatusAccepted
+	BeginAmend func(ctx context.Context, billingAccountName string, invoiceName string, options *armbilling.InvoicesClientBeginAmendOptions) (resp azfake.PollerResponder[armbilling.InvoicesClientAmendResponse], errResp azfake.ErrorResponder)
 
-	// BeginDownloadInvoice is the fake for method InvoicesClient.BeginDownloadInvoice
+	// BeginDownloadByBillingAccount is the fake for method InvoicesClient.BeginDownloadByBillingAccount
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginDownloadInvoice func(ctx context.Context, billingAccountName string, invoiceName string, downloadToken string, options *armbilling.InvoicesClientBeginDownloadInvoiceOptions) (resp azfake.PollerResponder[armbilling.InvoicesClientDownloadInvoiceResponse], errResp azfake.ErrorResponder)
+	BeginDownloadByBillingAccount func(ctx context.Context, billingAccountName string, invoiceName string, options *armbilling.InvoicesClientBeginDownloadByBillingAccountOptions) (resp azfake.PollerResponder[armbilling.InvoicesClientDownloadByBillingAccountResponse], errResp azfake.ErrorResponder)
 
-	// BeginDownloadMultipleBillingProfileInvoices is the fake for method InvoicesClient.BeginDownloadMultipleBillingProfileInvoices
+	// BeginDownloadByBillingSubscription is the fake for method InvoicesClient.BeginDownloadByBillingSubscription
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginDownloadMultipleBillingProfileInvoices func(ctx context.Context, billingAccountName string, downloadUrls []*string, options *armbilling.InvoicesClientBeginDownloadMultipleBillingProfileInvoicesOptions) (resp azfake.PollerResponder[armbilling.InvoicesClientDownloadMultipleBillingProfileInvoicesResponse], errResp azfake.ErrorResponder)
+	BeginDownloadByBillingSubscription func(ctx context.Context, invoiceName string, options *armbilling.InvoicesClientBeginDownloadByBillingSubscriptionOptions) (resp azfake.PollerResponder[armbilling.InvoicesClientDownloadByBillingSubscriptionResponse], errResp azfake.ErrorResponder)
 
-	// BeginDownloadMultipleBillingSubscriptionInvoices is the fake for method InvoicesClient.BeginDownloadMultipleBillingSubscriptionInvoices
+	// BeginDownloadDocumentsByBillingAccount is the fake for method InvoicesClient.BeginDownloadDocumentsByBillingAccount
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginDownloadMultipleBillingSubscriptionInvoices func(ctx context.Context, downloadUrls []*string, options *armbilling.InvoicesClientBeginDownloadMultipleBillingSubscriptionInvoicesOptions) (resp azfake.PollerResponder[armbilling.InvoicesClientDownloadMultipleBillingSubscriptionInvoicesResponse], errResp azfake.ErrorResponder)
+	BeginDownloadDocumentsByBillingAccount func(ctx context.Context, billingAccountName string, parameters []*armbilling.DocumentDownloadRequest, options *armbilling.InvoicesClientBeginDownloadDocumentsByBillingAccountOptions) (resp azfake.PollerResponder[armbilling.InvoicesClientDownloadDocumentsByBillingAccountResponse], errResp azfake.ErrorResponder)
+
+	// BeginDownloadDocumentsByBillingSubscription is the fake for method InvoicesClient.BeginDownloadDocumentsByBillingSubscription
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginDownloadDocumentsByBillingSubscription func(ctx context.Context, parameters []*armbilling.DocumentDownloadRequest, options *armbilling.InvoicesClientBeginDownloadDocumentsByBillingSubscriptionOptions) (resp azfake.PollerResponder[armbilling.InvoicesClientDownloadDocumentsByBillingSubscriptionResponse], errResp azfake.ErrorResponder)
+
+	// BeginDownloadSummaryByBillingAccount is the fake for method InvoicesClient.BeginDownloadSummaryByBillingAccount
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginDownloadSummaryByBillingAccount func(ctx context.Context, billingAccountName string, invoiceName string, options *armbilling.InvoicesClientBeginDownloadSummaryByBillingAccountOptions) (resp azfake.PollerResponder[armbilling.InvoicesClientDownloadSummaryByBillingAccountResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method InvoicesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, billingAccountName string, invoiceName string, options *armbilling.InvoicesClientGetOptions) (resp azfake.Responder[armbilling.InvoicesClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, invoiceName string, options *armbilling.InvoicesClientGetOptions) (resp azfake.Responder[armbilling.InvoicesClientGetResponse], errResp azfake.ErrorResponder)
 
-	// GetByID is the fake for method InvoicesClient.GetByID
+	// GetByBillingAccount is the fake for method InvoicesClient.GetByBillingAccount
 	// HTTP status codes to indicate success: http.StatusOK
-	GetByID func(ctx context.Context, invoiceName string, options *armbilling.InvoicesClientGetByIDOptions) (resp azfake.Responder[armbilling.InvoicesClientGetByIDResponse], errResp azfake.ErrorResponder)
+	GetByBillingAccount func(ctx context.Context, billingAccountName string, invoiceName string, options *armbilling.InvoicesClientGetByBillingAccountOptions) (resp azfake.Responder[armbilling.InvoicesClientGetByBillingAccountResponse], errResp azfake.ErrorResponder)
 
-	// GetBySubscriptionAndInvoiceID is the fake for method InvoicesClient.GetBySubscriptionAndInvoiceID
+	// GetByBillingSubscription is the fake for method InvoicesClient.GetByBillingSubscription
 	// HTTP status codes to indicate success: http.StatusOK
-	GetBySubscriptionAndInvoiceID func(ctx context.Context, invoiceName string, options *armbilling.InvoicesClientGetBySubscriptionAndInvoiceIDOptions) (resp azfake.Responder[armbilling.InvoicesClientGetBySubscriptionAndInvoiceIDResponse], errResp azfake.ErrorResponder)
+	GetByBillingSubscription func(ctx context.Context, invoiceName string, options *armbilling.InvoicesClientGetByBillingSubscriptionOptions) (resp azfake.Responder[armbilling.InvoicesClientGetByBillingSubscriptionResponse], errResp azfake.ErrorResponder)
 
 	// NewListByBillingAccountPager is the fake for method InvoicesClient.NewListByBillingAccountPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListByBillingAccountPager func(billingAccountName string, periodStartDate string, periodEndDate string, options *armbilling.InvoicesClientListByBillingAccountOptions) (resp azfake.PagerResponder[armbilling.InvoicesClientListByBillingAccountResponse])
+	NewListByBillingAccountPager func(billingAccountName string, options *armbilling.InvoicesClientListByBillingAccountOptions) (resp azfake.PagerResponder[armbilling.InvoicesClientListByBillingAccountResponse])
 
 	// NewListByBillingProfilePager is the fake for method InvoicesClient.NewListByBillingProfilePager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListByBillingProfilePager func(billingAccountName string, billingProfileName string, periodStartDate string, periodEndDate string, options *armbilling.InvoicesClientListByBillingProfileOptions) (resp azfake.PagerResponder[armbilling.InvoicesClientListByBillingProfileResponse])
+	NewListByBillingProfilePager func(billingAccountName string, billingProfileName string, options *armbilling.InvoicesClientListByBillingProfileOptions) (resp azfake.PagerResponder[armbilling.InvoicesClientListByBillingProfileResponse])
 
 	// NewListByBillingSubscriptionPager is the fake for method InvoicesClient.NewListByBillingSubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListByBillingSubscriptionPager func(periodStartDate string, periodEndDate string, options *armbilling.InvoicesClientListByBillingSubscriptionOptions) (resp azfake.PagerResponder[armbilling.InvoicesClientListByBillingSubscriptionResponse])
+	NewListByBillingSubscriptionPager func(options *armbilling.InvoicesClientListByBillingSubscriptionOptions) (resp azfake.PagerResponder[armbilling.InvoicesClientListByBillingSubscriptionResponse])
 }
 
 // NewInvoicesServerTransport creates a new instance of InvoicesServerTransport with the provided implementation.
@@ -70,28 +80,32 @@ type InvoicesServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewInvoicesServerTransport(srv *InvoicesServer) *InvoicesServerTransport {
 	return &InvoicesServerTransport{
-		srv:                                     srv,
-		beginDownloadBillingSubscriptionInvoice: newTracker[azfake.PollerResponder[armbilling.InvoicesClientDownloadBillingSubscriptionInvoiceResponse]](),
-		beginDownloadInvoice:                    newTracker[azfake.PollerResponder[armbilling.InvoicesClientDownloadInvoiceResponse]](),
-		beginDownloadMultipleBillingProfileInvoices:      newTracker[azfake.PollerResponder[armbilling.InvoicesClientDownloadMultipleBillingProfileInvoicesResponse]](),
-		beginDownloadMultipleBillingSubscriptionInvoices: newTracker[azfake.PollerResponder[armbilling.InvoicesClientDownloadMultipleBillingSubscriptionInvoicesResponse]](),
-		newListByBillingAccountPager:                     newTracker[azfake.PagerResponder[armbilling.InvoicesClientListByBillingAccountResponse]](),
-		newListByBillingProfilePager:                     newTracker[azfake.PagerResponder[armbilling.InvoicesClientListByBillingProfileResponse]](),
-		newListByBillingSubscriptionPager:                newTracker[azfake.PagerResponder[armbilling.InvoicesClientListByBillingSubscriptionResponse]](),
+		srv:                                    srv,
+		beginAmend:                             newTracker[azfake.PollerResponder[armbilling.InvoicesClientAmendResponse]](),
+		beginDownloadByBillingAccount:          newTracker[azfake.PollerResponder[armbilling.InvoicesClientDownloadByBillingAccountResponse]](),
+		beginDownloadByBillingSubscription:     newTracker[azfake.PollerResponder[armbilling.InvoicesClientDownloadByBillingSubscriptionResponse]](),
+		beginDownloadDocumentsByBillingAccount: newTracker[azfake.PollerResponder[armbilling.InvoicesClientDownloadDocumentsByBillingAccountResponse]](),
+		beginDownloadDocumentsByBillingSubscription: newTracker[azfake.PollerResponder[armbilling.InvoicesClientDownloadDocumentsByBillingSubscriptionResponse]](),
+		beginDownloadSummaryByBillingAccount:        newTracker[azfake.PollerResponder[armbilling.InvoicesClientDownloadSummaryByBillingAccountResponse]](),
+		newListByBillingAccountPager:                newTracker[azfake.PagerResponder[armbilling.InvoicesClientListByBillingAccountResponse]](),
+		newListByBillingProfilePager:                newTracker[azfake.PagerResponder[armbilling.InvoicesClientListByBillingProfileResponse]](),
+		newListByBillingSubscriptionPager:           newTracker[azfake.PagerResponder[armbilling.InvoicesClientListByBillingSubscriptionResponse]](),
 	}
 }
 
 // InvoicesServerTransport connects instances of armbilling.InvoicesClient to instances of InvoicesServer.
 // Don't use this type directly, use NewInvoicesServerTransport instead.
 type InvoicesServerTransport struct {
-	srv                                              *InvoicesServer
-	beginDownloadBillingSubscriptionInvoice          *tracker[azfake.PollerResponder[armbilling.InvoicesClientDownloadBillingSubscriptionInvoiceResponse]]
-	beginDownloadInvoice                             *tracker[azfake.PollerResponder[armbilling.InvoicesClientDownloadInvoiceResponse]]
-	beginDownloadMultipleBillingProfileInvoices      *tracker[azfake.PollerResponder[armbilling.InvoicesClientDownloadMultipleBillingProfileInvoicesResponse]]
-	beginDownloadMultipleBillingSubscriptionInvoices *tracker[azfake.PollerResponder[armbilling.InvoicesClientDownloadMultipleBillingSubscriptionInvoicesResponse]]
-	newListByBillingAccountPager                     *tracker[azfake.PagerResponder[armbilling.InvoicesClientListByBillingAccountResponse]]
-	newListByBillingProfilePager                     *tracker[azfake.PagerResponder[armbilling.InvoicesClientListByBillingProfileResponse]]
-	newListByBillingSubscriptionPager                *tracker[azfake.PagerResponder[armbilling.InvoicesClientListByBillingSubscriptionResponse]]
+	srv                                         *InvoicesServer
+	beginAmend                                  *tracker[azfake.PollerResponder[armbilling.InvoicesClientAmendResponse]]
+	beginDownloadByBillingAccount               *tracker[azfake.PollerResponder[armbilling.InvoicesClientDownloadByBillingAccountResponse]]
+	beginDownloadByBillingSubscription          *tracker[azfake.PollerResponder[armbilling.InvoicesClientDownloadByBillingSubscriptionResponse]]
+	beginDownloadDocumentsByBillingAccount      *tracker[azfake.PollerResponder[armbilling.InvoicesClientDownloadDocumentsByBillingAccountResponse]]
+	beginDownloadDocumentsByBillingSubscription *tracker[azfake.PollerResponder[armbilling.InvoicesClientDownloadDocumentsByBillingSubscriptionResponse]]
+	beginDownloadSummaryByBillingAccount        *tracker[azfake.PollerResponder[armbilling.InvoicesClientDownloadSummaryByBillingAccountResponse]]
+	newListByBillingAccountPager                *tracker[azfake.PagerResponder[armbilling.InvoicesClientListByBillingAccountResponse]]
+	newListByBillingProfilePager                *tracker[azfake.PagerResponder[armbilling.InvoicesClientListByBillingProfileResponse]]
+	newListByBillingSubscriptionPager           *tracker[azfake.PagerResponder[armbilling.InvoicesClientListByBillingSubscriptionResponse]]
 }
 
 // Do implements the policy.Transporter interface for InvoicesServerTransport.
@@ -106,20 +120,24 @@ func (i *InvoicesServerTransport) Do(req *http.Request) (*http.Response, error) 
 	var err error
 
 	switch method {
-	case "InvoicesClient.BeginDownloadBillingSubscriptionInvoice":
-		resp, err = i.dispatchBeginDownloadBillingSubscriptionInvoice(req)
-	case "InvoicesClient.BeginDownloadInvoice":
-		resp, err = i.dispatchBeginDownloadInvoice(req)
-	case "InvoicesClient.BeginDownloadMultipleBillingProfileInvoices":
-		resp, err = i.dispatchBeginDownloadMultipleBillingProfileInvoices(req)
-	case "InvoicesClient.BeginDownloadMultipleBillingSubscriptionInvoices":
-		resp, err = i.dispatchBeginDownloadMultipleBillingSubscriptionInvoices(req)
+	case "InvoicesClient.BeginAmend":
+		resp, err = i.dispatchBeginAmend(req)
+	case "InvoicesClient.BeginDownloadByBillingAccount":
+		resp, err = i.dispatchBeginDownloadByBillingAccount(req)
+	case "InvoicesClient.BeginDownloadByBillingSubscription":
+		resp, err = i.dispatchBeginDownloadByBillingSubscription(req)
+	case "InvoicesClient.BeginDownloadDocumentsByBillingAccount":
+		resp, err = i.dispatchBeginDownloadDocumentsByBillingAccount(req)
+	case "InvoicesClient.BeginDownloadDocumentsByBillingSubscription":
+		resp, err = i.dispatchBeginDownloadDocumentsByBillingSubscription(req)
+	case "InvoicesClient.BeginDownloadSummaryByBillingAccount":
+		resp, err = i.dispatchBeginDownloadSummaryByBillingAccount(req)
 	case "InvoicesClient.Get":
 		resp, err = i.dispatchGet(req)
-	case "InvoicesClient.GetByID":
-		resp, err = i.dispatchGetByID(req)
-	case "InvoicesClient.GetBySubscriptionAndInvoiceID":
-		resp, err = i.dispatchGetBySubscriptionAndInvoiceID(req)
+	case "InvoicesClient.GetByBillingAccount":
+		resp, err = i.dispatchGetByBillingAccount(req)
+	case "InvoicesClient.GetByBillingSubscription":
+		resp, err = i.dispatchGetByBillingSubscription(req)
 	case "InvoicesClient.NewListByBillingAccountPager":
 		resp, err = i.dispatchNewListByBillingAccountPager(req)
 	case "InvoicesClient.NewListByBillingProfilePager":
@@ -137,57 +155,56 @@ func (i *InvoicesServerTransport) Do(req *http.Request) (*http.Response, error) 
 	return resp, nil
 }
 
-func (i *InvoicesServerTransport) dispatchBeginDownloadBillingSubscriptionInvoice(req *http.Request) (*http.Response, error) {
-	if i.srv.BeginDownloadBillingSubscriptionInvoice == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginDownloadBillingSubscriptionInvoice not implemented")}
+func (i *InvoicesServerTransport) dispatchBeginAmend(req *http.Request) (*http.Response, error) {
+	if i.srv.BeginAmend == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginAmend not implemented")}
 	}
-	beginDownloadBillingSubscriptionInvoice := i.beginDownloadBillingSubscriptionInvoice.get(req)
-	if beginDownloadBillingSubscriptionInvoice == nil {
-		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/default/billingSubscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/invoices/(?P<invoiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/download`
+	beginAmend := i.beginAmend.get(req)
+	if beginAmend == nil {
+		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/invoices/(?P<invoiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/amend`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		qp := req.URL.Query()
+		billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
+		if err != nil {
+			return nil, err
+		}
 		invoiceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("invoiceName")])
 		if err != nil {
 			return nil, err
 		}
-		downloadTokenParam, err := url.QueryUnescape(qp.Get("downloadToken"))
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := i.srv.BeginDownloadBillingSubscriptionInvoice(req.Context(), invoiceNameParam, downloadTokenParam, nil)
+		respr, errRespr := i.srv.BeginAmend(req.Context(), billingAccountNameParam, invoiceNameParam, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		beginDownloadBillingSubscriptionInvoice = &respr
-		i.beginDownloadBillingSubscriptionInvoice.add(req, beginDownloadBillingSubscriptionInvoice)
+		beginAmend = &respr
+		i.beginAmend.add(req, beginAmend)
 	}
 
-	resp, err := server.PollerResponderNext(beginDownloadBillingSubscriptionInvoice, req)
+	resp, err := server.PollerResponderNext(beginAmend, req)
 	if err != nil {
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		i.beginDownloadBillingSubscriptionInvoice.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	if !contains([]int{http.StatusAccepted}, resp.StatusCode) {
+		i.beginAmend.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(beginDownloadBillingSubscriptionInvoice) {
-		i.beginDownloadBillingSubscriptionInvoice.remove(req)
+	if !server.PollerResponderMore(beginAmend) {
+		i.beginAmend.remove(req)
 	}
 
 	return resp, nil
 }
 
-func (i *InvoicesServerTransport) dispatchBeginDownloadInvoice(req *http.Request) (*http.Response, error) {
-	if i.srv.BeginDownloadInvoice == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginDownloadInvoice not implemented")}
+func (i *InvoicesServerTransport) dispatchBeginDownloadByBillingAccount(req *http.Request) (*http.Response, error) {
+	if i.srv.BeginDownloadByBillingAccount == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginDownloadByBillingAccount not implemented")}
 	}
-	beginDownloadInvoice := i.beginDownloadInvoice.get(req)
-	if beginDownloadInvoice == nil {
+	beginDownloadByBillingAccount := i.beginDownloadByBillingAccount.get(req)
+	if beginDownloadByBillingAccount == nil {
 		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/invoices/(?P<invoiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/download`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -203,47 +220,106 @@ func (i *InvoicesServerTransport) dispatchBeginDownloadInvoice(req *http.Request
 		if err != nil {
 			return nil, err
 		}
-		downloadTokenParam, err := url.QueryUnescape(qp.Get("downloadToken"))
+		documentNameUnescaped, err := url.QueryUnescape(qp.Get("documentName"))
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := i.srv.BeginDownloadInvoice(req.Context(), billingAccountNameParam, invoiceNameParam, downloadTokenParam, nil)
+		documentNameParam := getOptional(documentNameUnescaped)
+		var options *armbilling.InvoicesClientBeginDownloadByBillingAccountOptions
+		if documentNameParam != nil {
+			options = &armbilling.InvoicesClientBeginDownloadByBillingAccountOptions{
+				DocumentName: documentNameParam,
+			}
+		}
+		respr, errRespr := i.srv.BeginDownloadByBillingAccount(req.Context(), billingAccountNameParam, invoiceNameParam, options)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		beginDownloadInvoice = &respr
-		i.beginDownloadInvoice.add(req, beginDownloadInvoice)
+		beginDownloadByBillingAccount = &respr
+		i.beginDownloadByBillingAccount.add(req, beginDownloadByBillingAccount)
 	}
 
-	resp, err := server.PollerResponderNext(beginDownloadInvoice, req)
+	resp, err := server.PollerResponderNext(beginDownloadByBillingAccount, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		i.beginDownloadInvoice.remove(req)
+		i.beginDownloadByBillingAccount.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(beginDownloadInvoice) {
-		i.beginDownloadInvoice.remove(req)
+	if !server.PollerResponderMore(beginDownloadByBillingAccount) {
+		i.beginDownloadByBillingAccount.remove(req)
 	}
 
 	return resp, nil
 }
 
-func (i *InvoicesServerTransport) dispatchBeginDownloadMultipleBillingProfileInvoices(req *http.Request) (*http.Response, error) {
-	if i.srv.BeginDownloadMultipleBillingProfileInvoices == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginDownloadMultipleBillingProfileInvoices not implemented")}
+func (i *InvoicesServerTransport) dispatchBeginDownloadByBillingSubscription(req *http.Request) (*http.Response, error) {
+	if i.srv.BeginDownloadByBillingSubscription == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginDownloadByBillingSubscription not implemented")}
 	}
-	beginDownloadMultipleBillingProfileInvoices := i.beginDownloadMultipleBillingProfileInvoices.get(req)
-	if beginDownloadMultipleBillingProfileInvoices == nil {
+	beginDownloadByBillingSubscription := i.beginDownloadByBillingSubscription.get(req)
+	if beginDownloadByBillingSubscription == nil {
+		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/default/billingSubscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/invoices/(?P<invoiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/download`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		invoiceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("invoiceName")])
+		if err != nil {
+			return nil, err
+		}
+		documentNameUnescaped, err := url.QueryUnescape(qp.Get("documentName"))
+		if err != nil {
+			return nil, err
+		}
+		documentNameParam := getOptional(documentNameUnescaped)
+		var options *armbilling.InvoicesClientBeginDownloadByBillingSubscriptionOptions
+		if documentNameParam != nil {
+			options = &armbilling.InvoicesClientBeginDownloadByBillingSubscriptionOptions{
+				DocumentName: documentNameParam,
+			}
+		}
+		respr, errRespr := i.srv.BeginDownloadByBillingSubscription(req.Context(), invoiceNameParam, options)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginDownloadByBillingSubscription = &respr
+		i.beginDownloadByBillingSubscription.add(req, beginDownloadByBillingSubscription)
+	}
+
+	resp, err := server.PollerResponderNext(beginDownloadByBillingSubscription, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		i.beginDownloadByBillingSubscription.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginDownloadByBillingSubscription) {
+		i.beginDownloadByBillingSubscription.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (i *InvoicesServerTransport) dispatchBeginDownloadDocumentsByBillingAccount(req *http.Request) (*http.Response, error) {
+	if i.srv.BeginDownloadDocumentsByBillingAccount == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginDownloadDocumentsByBillingAccount not implemented")}
+	}
+	beginDownloadDocumentsByBillingAccount := i.beginDownloadDocumentsByBillingAccount.get(req)
+	if beginDownloadDocumentsByBillingAccount == nil {
 		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/downloadDocuments`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 1 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		body, err := server.UnmarshalRequestAsJSON[[]*string](req)
+		body, err := server.UnmarshalRequestAsJSON[[]*armbilling.DocumentDownloadRequest](req)
 		if err != nil {
 			return nil, err
 		}
@@ -251,65 +327,109 @@ func (i *InvoicesServerTransport) dispatchBeginDownloadMultipleBillingProfileInv
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := i.srv.BeginDownloadMultipleBillingProfileInvoices(req.Context(), billingAccountNameParam, body, nil)
+		respr, errRespr := i.srv.BeginDownloadDocumentsByBillingAccount(req.Context(), billingAccountNameParam, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		beginDownloadMultipleBillingProfileInvoices = &respr
-		i.beginDownloadMultipleBillingProfileInvoices.add(req, beginDownloadMultipleBillingProfileInvoices)
+		beginDownloadDocumentsByBillingAccount = &respr
+		i.beginDownloadDocumentsByBillingAccount.add(req, beginDownloadDocumentsByBillingAccount)
 	}
 
-	resp, err := server.PollerResponderNext(beginDownloadMultipleBillingProfileInvoices, req)
+	resp, err := server.PollerResponderNext(beginDownloadDocumentsByBillingAccount, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		i.beginDownloadMultipleBillingProfileInvoices.remove(req)
+		i.beginDownloadDocumentsByBillingAccount.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(beginDownloadMultipleBillingProfileInvoices) {
-		i.beginDownloadMultipleBillingProfileInvoices.remove(req)
+	if !server.PollerResponderMore(beginDownloadDocumentsByBillingAccount) {
+		i.beginDownloadDocumentsByBillingAccount.remove(req)
 	}
 
 	return resp, nil
 }
 
-func (i *InvoicesServerTransport) dispatchBeginDownloadMultipleBillingSubscriptionInvoices(req *http.Request) (*http.Response, error) {
-	if i.srv.BeginDownloadMultipleBillingSubscriptionInvoices == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginDownloadMultipleBillingSubscriptionInvoices not implemented")}
+func (i *InvoicesServerTransport) dispatchBeginDownloadDocumentsByBillingSubscription(req *http.Request) (*http.Response, error) {
+	if i.srv.BeginDownloadDocumentsByBillingSubscription == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginDownloadDocumentsByBillingSubscription not implemented")}
 	}
-	beginDownloadMultipleBillingSubscriptionInvoices := i.beginDownloadMultipleBillingSubscriptionInvoices.get(req)
-	if beginDownloadMultipleBillingSubscriptionInvoices == nil {
+	beginDownloadDocumentsByBillingSubscription := i.beginDownloadDocumentsByBillingSubscription.get(req)
+	if beginDownloadDocumentsByBillingSubscription == nil {
 		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/default/billingSubscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/downloadDocuments`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 1 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		body, err := server.UnmarshalRequestAsJSON[[]*string](req)
+		body, err := server.UnmarshalRequestAsJSON[[]*armbilling.DocumentDownloadRequest](req)
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := i.srv.BeginDownloadMultipleBillingSubscriptionInvoices(req.Context(), body, nil)
+		respr, errRespr := i.srv.BeginDownloadDocumentsByBillingSubscription(req.Context(), body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		beginDownloadMultipleBillingSubscriptionInvoices = &respr
-		i.beginDownloadMultipleBillingSubscriptionInvoices.add(req, beginDownloadMultipleBillingSubscriptionInvoices)
+		beginDownloadDocumentsByBillingSubscription = &respr
+		i.beginDownloadDocumentsByBillingSubscription.add(req, beginDownloadDocumentsByBillingSubscription)
 	}
 
-	resp, err := server.PollerResponderNext(beginDownloadMultipleBillingSubscriptionInvoices, req)
+	resp, err := server.PollerResponderNext(beginDownloadDocumentsByBillingSubscription, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		i.beginDownloadMultipleBillingSubscriptionInvoices.remove(req)
+		i.beginDownloadDocumentsByBillingSubscription.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(beginDownloadMultipleBillingSubscriptionInvoices) {
-		i.beginDownloadMultipleBillingSubscriptionInvoices.remove(req)
+	if !server.PollerResponderMore(beginDownloadDocumentsByBillingSubscription) {
+		i.beginDownloadDocumentsByBillingSubscription.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (i *InvoicesServerTransport) dispatchBeginDownloadSummaryByBillingAccount(req *http.Request) (*http.Response, error) {
+	if i.srv.BeginDownloadSummaryByBillingAccount == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginDownloadSummaryByBillingAccount not implemented")}
+	}
+	beginDownloadSummaryByBillingAccount := i.beginDownloadSummaryByBillingAccount.get(req)
+	if beginDownloadSummaryByBillingAccount == nil {
+		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/invoices/(?P<invoiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/downloadSummary`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
+		if err != nil {
+			return nil, err
+		}
+		invoiceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("invoiceName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := i.srv.BeginDownloadSummaryByBillingAccount(req.Context(), billingAccountNameParam, invoiceNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginDownloadSummaryByBillingAccount = &respr
+		i.beginDownloadSummaryByBillingAccount.add(req, beginDownloadSummaryByBillingAccount)
+	}
+
+	resp, err := server.PollerResponderNext(beginDownloadSummaryByBillingAccount, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		i.beginDownloadSummaryByBillingAccount.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginDownloadSummaryByBillingAccount) {
+		i.beginDownloadSummaryByBillingAccount.remove(req)
 	}
 
 	return resp, nil
@@ -318,6 +438,35 @@ func (i *InvoicesServerTransport) dispatchBeginDownloadMultipleBillingSubscripti
 func (i *InvoicesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if i.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/default/invoices/(?P<invoiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 1 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	invoiceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("invoiceName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := i.srv.Get(req.Context(), invoiceNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Invoice, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (i *InvoicesServerTransport) dispatchGetByBillingAccount(req *http.Request) (*http.Response, error) {
+	if i.srv.GetByBillingAccount == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetByBillingAccount not implemented")}
 	}
 	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/invoices/(?P<invoiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
@@ -333,7 +482,7 @@ func (i *InvoicesServerTransport) dispatchGet(req *http.Request) (*http.Response
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := i.srv.Get(req.Context(), billingAccountNameParam, invoiceNameParam, nil)
+	respr, errRespr := i.srv.GetByBillingAccount(req.Context(), billingAccountNameParam, invoiceNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -348,38 +497,9 @@ func (i *InvoicesServerTransport) dispatchGet(req *http.Request) (*http.Response
 	return resp, nil
 }
 
-func (i *InvoicesServerTransport) dispatchGetByID(req *http.Request) (*http.Response, error) {
-	if i.srv.GetByID == nil {
-		return nil, &nonRetriableError{errors.New("fake for method GetByID not implemented")}
-	}
-	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/default/invoices/(?P<invoiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	invoiceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("invoiceName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := i.srv.GetByID(req.Context(), invoiceNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Invoice, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (i *InvoicesServerTransport) dispatchGetBySubscriptionAndInvoiceID(req *http.Request) (*http.Response, error) {
-	if i.srv.GetBySubscriptionAndInvoiceID == nil {
-		return nil, &nonRetriableError{errors.New("fake for method GetBySubscriptionAndInvoiceID not implemented")}
+func (i *InvoicesServerTransport) dispatchGetByBillingSubscription(req *http.Request) (*http.Response, error) {
+	if i.srv.GetByBillingSubscription == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetByBillingSubscription not implemented")}
 	}
 	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/default/billingSubscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/invoices/(?P<invoiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
@@ -391,7 +511,7 @@ func (i *InvoicesServerTransport) dispatchGetBySubscriptionAndInvoiceID(req *htt
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := i.srv.GetBySubscriptionAndInvoiceID(req.Context(), invoiceNameParam, nil)
+	respr, errRespr := i.srv.GetByBillingSubscription(req.Context(), invoiceNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -423,15 +543,87 @@ func (i *InvoicesServerTransport) dispatchNewListByBillingAccountPager(req *http
 		if err != nil {
 			return nil, err
 		}
-		periodStartDateParam, err := url.QueryUnescape(qp.Get("periodStartDate"))
+		periodStartDateUnescaped, err := url.QueryUnescape(qp.Get("periodStartDate"))
 		if err != nil {
 			return nil, err
 		}
-		periodEndDateParam, err := url.QueryUnescape(qp.Get("periodEndDate"))
+		periodStartDateParam, err := parseOptional(periodStartDateUnescaped, func(v string) (time.Time, error) { return time.Parse("2006-01-02", v) })
 		if err != nil {
 			return nil, err
 		}
-		resp := i.srv.NewListByBillingAccountPager(billingAccountNameParam, periodStartDateParam, periodEndDateParam, nil)
+		periodEndDateUnescaped, err := url.QueryUnescape(qp.Get("periodEndDate"))
+		if err != nil {
+			return nil, err
+		}
+		periodEndDateParam, err := parseOptional(periodEndDateUnescaped, func(v string) (time.Time, error) { return time.Parse("2006-01-02", v) })
+		if err != nil {
+			return nil, err
+		}
+		filterUnescaped, err := url.QueryUnescape(qp.Get("filter"))
+		if err != nil {
+			return nil, err
+		}
+		filterParam := getOptional(filterUnescaped)
+		orderByUnescaped, err := url.QueryUnescape(qp.Get("orderBy"))
+		if err != nil {
+			return nil, err
+		}
+		orderByParam := getOptional(orderByUnescaped)
+		topUnescaped, err := url.QueryUnescape(qp.Get("top"))
+		if err != nil {
+			return nil, err
+		}
+		topParam, err := parseOptional(topUnescaped, func(v string) (int64, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 64)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return p, nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		skipUnescaped, err := url.QueryUnescape(qp.Get("skip"))
+		if err != nil {
+			return nil, err
+		}
+		skipParam, err := parseOptional(skipUnescaped, func(v string) (int64, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 64)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return p, nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		countUnescaped, err := url.QueryUnescape(qp.Get("count"))
+		if err != nil {
+			return nil, err
+		}
+		countParam, err := parseOptional(countUnescaped, strconv.ParseBool)
+		if err != nil {
+			return nil, err
+		}
+		searchUnescaped, err := url.QueryUnescape(qp.Get("search"))
+		if err != nil {
+			return nil, err
+		}
+		searchParam := getOptional(searchUnescaped)
+		var options *armbilling.InvoicesClientListByBillingAccountOptions
+		if periodStartDateParam != nil || periodEndDateParam != nil || filterParam != nil || orderByParam != nil || topParam != nil || skipParam != nil || countParam != nil || searchParam != nil {
+			options = &armbilling.InvoicesClientListByBillingAccountOptions{
+				PeriodStartDate: periodStartDateParam,
+				PeriodEndDate:   periodEndDateParam,
+				Filter:          filterParam,
+				OrderBy:         orderByParam,
+				Top:             topParam,
+				Skip:            skipParam,
+				Count:           countParam,
+				Search:          searchParam,
+			}
+		}
+		resp := i.srv.NewListByBillingAccountPager(billingAccountNameParam, options)
 		newListByBillingAccountPager = &resp
 		i.newListByBillingAccountPager.add(req, newListByBillingAccountPager)
 		server.PagerResponderInjectNextLinks(newListByBillingAccountPager, req, func(page *armbilling.InvoicesClientListByBillingAccountResponse, createLink func() string) {
@@ -473,15 +665,87 @@ func (i *InvoicesServerTransport) dispatchNewListByBillingProfilePager(req *http
 		if err != nil {
 			return nil, err
 		}
-		periodStartDateParam, err := url.QueryUnescape(qp.Get("periodStartDate"))
+		periodStartDateUnescaped, err := url.QueryUnescape(qp.Get("periodStartDate"))
 		if err != nil {
 			return nil, err
 		}
-		periodEndDateParam, err := url.QueryUnescape(qp.Get("periodEndDate"))
+		periodStartDateParam, err := parseOptional(periodStartDateUnescaped, func(v string) (time.Time, error) { return time.Parse("2006-01-02", v) })
 		if err != nil {
 			return nil, err
 		}
-		resp := i.srv.NewListByBillingProfilePager(billingAccountNameParam, billingProfileNameParam, periodStartDateParam, periodEndDateParam, nil)
+		periodEndDateUnescaped, err := url.QueryUnescape(qp.Get("periodEndDate"))
+		if err != nil {
+			return nil, err
+		}
+		periodEndDateParam, err := parseOptional(periodEndDateUnescaped, func(v string) (time.Time, error) { return time.Parse("2006-01-02", v) })
+		if err != nil {
+			return nil, err
+		}
+		filterUnescaped, err := url.QueryUnescape(qp.Get("filter"))
+		if err != nil {
+			return nil, err
+		}
+		filterParam := getOptional(filterUnescaped)
+		orderByUnescaped, err := url.QueryUnescape(qp.Get("orderBy"))
+		if err != nil {
+			return nil, err
+		}
+		orderByParam := getOptional(orderByUnescaped)
+		topUnescaped, err := url.QueryUnescape(qp.Get("top"))
+		if err != nil {
+			return nil, err
+		}
+		topParam, err := parseOptional(topUnescaped, func(v string) (int64, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 64)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return p, nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		skipUnescaped, err := url.QueryUnescape(qp.Get("skip"))
+		if err != nil {
+			return nil, err
+		}
+		skipParam, err := parseOptional(skipUnescaped, func(v string) (int64, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 64)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return p, nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		countUnescaped, err := url.QueryUnescape(qp.Get("count"))
+		if err != nil {
+			return nil, err
+		}
+		countParam, err := parseOptional(countUnescaped, strconv.ParseBool)
+		if err != nil {
+			return nil, err
+		}
+		searchUnescaped, err := url.QueryUnescape(qp.Get("search"))
+		if err != nil {
+			return nil, err
+		}
+		searchParam := getOptional(searchUnescaped)
+		var options *armbilling.InvoicesClientListByBillingProfileOptions
+		if periodStartDateParam != nil || periodEndDateParam != nil || filterParam != nil || orderByParam != nil || topParam != nil || skipParam != nil || countParam != nil || searchParam != nil {
+			options = &armbilling.InvoicesClientListByBillingProfileOptions{
+				PeriodStartDate: periodStartDateParam,
+				PeriodEndDate:   periodEndDateParam,
+				Filter:          filterParam,
+				OrderBy:         orderByParam,
+				Top:             topParam,
+				Skip:            skipParam,
+				Count:           countParam,
+				Search:          searchParam,
+			}
+		}
+		resp := i.srv.NewListByBillingProfilePager(billingAccountNameParam, billingProfileNameParam, options)
 		newListByBillingProfilePager = &resp
 		i.newListByBillingProfilePager.add(req, newListByBillingProfilePager)
 		server.PagerResponderInjectNextLinks(newListByBillingProfilePager, req, func(page *armbilling.InvoicesClientListByBillingProfileResponse, createLink func() string) {
@@ -515,15 +779,87 @@ func (i *InvoicesServerTransport) dispatchNewListByBillingSubscriptionPager(req 
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
-		periodStartDateParam, err := url.QueryUnescape(qp.Get("periodStartDate"))
+		periodStartDateUnescaped, err := url.QueryUnescape(qp.Get("periodStartDate"))
 		if err != nil {
 			return nil, err
 		}
-		periodEndDateParam, err := url.QueryUnescape(qp.Get("periodEndDate"))
+		periodStartDateParam, err := parseOptional(periodStartDateUnescaped, func(v string) (time.Time, error) { return time.Parse("2006-01-02", v) })
 		if err != nil {
 			return nil, err
 		}
-		resp := i.srv.NewListByBillingSubscriptionPager(periodStartDateParam, periodEndDateParam, nil)
+		periodEndDateUnescaped, err := url.QueryUnescape(qp.Get("periodEndDate"))
+		if err != nil {
+			return nil, err
+		}
+		periodEndDateParam, err := parseOptional(periodEndDateUnescaped, func(v string) (time.Time, error) { return time.Parse("2006-01-02", v) })
+		if err != nil {
+			return nil, err
+		}
+		filterUnescaped, err := url.QueryUnescape(qp.Get("filter"))
+		if err != nil {
+			return nil, err
+		}
+		filterParam := getOptional(filterUnescaped)
+		orderByUnescaped, err := url.QueryUnescape(qp.Get("orderBy"))
+		if err != nil {
+			return nil, err
+		}
+		orderByParam := getOptional(orderByUnescaped)
+		topUnescaped, err := url.QueryUnescape(qp.Get("top"))
+		if err != nil {
+			return nil, err
+		}
+		topParam, err := parseOptional(topUnescaped, func(v string) (int64, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 64)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return p, nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		skipUnescaped, err := url.QueryUnescape(qp.Get("skip"))
+		if err != nil {
+			return nil, err
+		}
+		skipParam, err := parseOptional(skipUnescaped, func(v string) (int64, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 64)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return p, nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		countUnescaped, err := url.QueryUnescape(qp.Get("count"))
+		if err != nil {
+			return nil, err
+		}
+		countParam, err := parseOptional(countUnescaped, strconv.ParseBool)
+		if err != nil {
+			return nil, err
+		}
+		searchUnescaped, err := url.QueryUnescape(qp.Get("search"))
+		if err != nil {
+			return nil, err
+		}
+		searchParam := getOptional(searchUnescaped)
+		var options *armbilling.InvoicesClientListByBillingSubscriptionOptions
+		if periodStartDateParam != nil || periodEndDateParam != nil || filterParam != nil || orderByParam != nil || topParam != nil || skipParam != nil || countParam != nil || searchParam != nil {
+			options = &armbilling.InvoicesClientListByBillingSubscriptionOptions{
+				PeriodStartDate: periodStartDateParam,
+				PeriodEndDate:   periodEndDateParam,
+				Filter:          filterParam,
+				OrderBy:         orderByParam,
+				Top:             topParam,
+				Skip:            skipParam,
+				Count:           countParam,
+				Search:          searchParam,
+			}
+		}
+		resp := i.srv.NewListByBillingSubscriptionPager(options)
 		newListByBillingSubscriptionPager = &resp
 		i.newListByBillingSubscriptionPager.add(req, newListByBillingSubscriptionPager)
 		server.PagerResponderInjectNextLinks(newListByBillingSubscriptionPager, req, func(page *armbilling.InvoicesClientListByBillingSubscriptionResponse, createLink func() string) {

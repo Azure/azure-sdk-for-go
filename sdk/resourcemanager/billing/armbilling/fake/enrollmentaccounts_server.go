@@ -20,17 +20,26 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"strconv"
 )
 
 // EnrollmentAccountsServer is a fake server for instances of the armbilling.EnrollmentAccountsClient type.
 type EnrollmentAccountsServer struct {
 	// Get is the fake for method EnrollmentAccountsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, name string, options *armbilling.EnrollmentAccountsClientGetOptions) (resp azfake.Responder[armbilling.EnrollmentAccountsClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, billingAccountName string, enrollmentAccountName string, options *armbilling.EnrollmentAccountsClientGetOptions) (resp azfake.Responder[armbilling.EnrollmentAccountsClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method EnrollmentAccountsClient.NewListPager
+	// GetByDepartment is the fake for method EnrollmentAccountsClient.GetByDepartment
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armbilling.EnrollmentAccountsClientListOptions) (resp azfake.PagerResponder[armbilling.EnrollmentAccountsClientListResponse])
+	GetByDepartment func(ctx context.Context, billingAccountName string, departmentName string, enrollmentAccountName string, options *armbilling.EnrollmentAccountsClientGetByDepartmentOptions) (resp azfake.Responder[armbilling.EnrollmentAccountsClientGetByDepartmentResponse], errResp azfake.ErrorResponder)
+
+	// NewListByBillingAccountPager is the fake for method EnrollmentAccountsClient.NewListByBillingAccountPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByBillingAccountPager func(billingAccountName string, options *armbilling.EnrollmentAccountsClientListByBillingAccountOptions) (resp azfake.PagerResponder[armbilling.EnrollmentAccountsClientListByBillingAccountResponse])
+
+	// NewListByDepartmentPager is the fake for method EnrollmentAccountsClient.NewListByDepartmentPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByDepartmentPager func(billingAccountName string, departmentName string, options *armbilling.EnrollmentAccountsClientListByDepartmentOptions) (resp azfake.PagerResponder[armbilling.EnrollmentAccountsClientListByDepartmentResponse])
 }
 
 // NewEnrollmentAccountsServerTransport creates a new instance of EnrollmentAccountsServerTransport with the provided implementation.
@@ -38,16 +47,18 @@ type EnrollmentAccountsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewEnrollmentAccountsServerTransport(srv *EnrollmentAccountsServer) *EnrollmentAccountsServerTransport {
 	return &EnrollmentAccountsServerTransport{
-		srv:          srv,
-		newListPager: newTracker[azfake.PagerResponder[armbilling.EnrollmentAccountsClientListResponse]](),
+		srv:                          srv,
+		newListByBillingAccountPager: newTracker[azfake.PagerResponder[armbilling.EnrollmentAccountsClientListByBillingAccountResponse]](),
+		newListByDepartmentPager:     newTracker[azfake.PagerResponder[armbilling.EnrollmentAccountsClientListByDepartmentResponse]](),
 	}
 }
 
 // EnrollmentAccountsServerTransport connects instances of armbilling.EnrollmentAccountsClient to instances of EnrollmentAccountsServer.
 // Don't use this type directly, use NewEnrollmentAccountsServerTransport instead.
 type EnrollmentAccountsServerTransport struct {
-	srv          *EnrollmentAccountsServer
-	newListPager *tracker[azfake.PagerResponder[armbilling.EnrollmentAccountsClientListResponse]]
+	srv                          *EnrollmentAccountsServer
+	newListByBillingAccountPager *tracker[azfake.PagerResponder[armbilling.EnrollmentAccountsClientListByBillingAccountResponse]]
+	newListByDepartmentPager     *tracker[azfake.PagerResponder[armbilling.EnrollmentAccountsClientListByDepartmentResponse]]
 }
 
 // Do implements the policy.Transporter interface for EnrollmentAccountsServerTransport.
@@ -64,8 +75,12 @@ func (e *EnrollmentAccountsServerTransport) Do(req *http.Request) (*http.Respons
 	switch method {
 	case "EnrollmentAccountsClient.Get":
 		resp, err = e.dispatchGet(req)
-	case "EnrollmentAccountsClient.NewListPager":
-		resp, err = e.dispatchNewListPager(req)
+	case "EnrollmentAccountsClient.GetByDepartment":
+		resp, err = e.dispatchGetByDepartment(req)
+	case "EnrollmentAccountsClient.NewListByBillingAccountPager":
+		resp, err = e.dispatchNewListByBillingAccountPager(req)
+	case "EnrollmentAccountsClient.NewListByDepartmentPager":
+		resp, err = e.dispatchNewListByDepartmentPager(req)
 	default:
 		err = fmt.Errorf("unhandled API %s", method)
 	}
@@ -81,17 +96,21 @@ func (e *EnrollmentAccountsServerTransport) dispatchGet(req *http.Request) (*htt
 	if e.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Billing/enrollmentAccounts/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/enrollmentAccounts/(?P<enrollmentAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
+	if matches == nil || len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := e.srv.Get(req.Context(), nameParam, nil)
+	enrollmentAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("enrollmentAccountName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := e.srv.Get(req.Context(), billingAccountNameParam, enrollmentAccountNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -99,36 +118,250 @@ func (e *EnrollmentAccountsServerTransport) dispatchGet(req *http.Request) (*htt
 	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).EnrollmentAccountSummary, req)
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).EnrollmentAccount, req)
 	if err != nil {
 		return nil, err
 	}
 	return resp, nil
 }
 
-func (e *EnrollmentAccountsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if e.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+func (e *EnrollmentAccountsServerTransport) dispatchGetByDepartment(req *http.Request) (*http.Response, error) {
+	if e.srv.GetByDepartment == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetByDepartment not implemented")}
 	}
-	newListPager := e.newListPager.get(req)
-	if newListPager == nil {
-		resp := e.srv.NewListPager(nil)
-		newListPager = &resp
-		e.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armbilling.EnrollmentAccountsClientListResponse, createLink func() string) {
+	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/departments/(?P<departmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/enrollmentAccounts/(?P<enrollmentAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
+	if err != nil {
+		return nil, err
+	}
+	departmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("departmentName")])
+	if err != nil {
+		return nil, err
+	}
+	enrollmentAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("enrollmentAccountName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := e.srv.GetByDepartment(req.Context(), billingAccountNameParam, departmentNameParam, enrollmentAccountNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).EnrollmentAccount, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (e *EnrollmentAccountsServerTransport) dispatchNewListByBillingAccountPager(req *http.Request) (*http.Response, error) {
+	if e.srv.NewListByBillingAccountPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByBillingAccountPager not implemented")}
+	}
+	newListByBillingAccountPager := e.newListByBillingAccountPager.get(req)
+	if newListByBillingAccountPager == nil {
+		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/enrollmentAccounts`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 1 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
+		if err != nil {
+			return nil, err
+		}
+		filterUnescaped, err := url.QueryUnescape(qp.Get("filter"))
+		if err != nil {
+			return nil, err
+		}
+		filterParam := getOptional(filterUnescaped)
+		orderByUnescaped, err := url.QueryUnescape(qp.Get("orderBy"))
+		if err != nil {
+			return nil, err
+		}
+		orderByParam := getOptional(orderByUnescaped)
+		topUnescaped, err := url.QueryUnescape(qp.Get("top"))
+		if err != nil {
+			return nil, err
+		}
+		topParam, err := parseOptional(topUnescaped, func(v string) (int64, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 64)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return p, nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		skipUnescaped, err := url.QueryUnescape(qp.Get("skip"))
+		if err != nil {
+			return nil, err
+		}
+		skipParam, err := parseOptional(skipUnescaped, func(v string) (int64, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 64)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return p, nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		countUnescaped, err := url.QueryUnescape(qp.Get("count"))
+		if err != nil {
+			return nil, err
+		}
+		countParam, err := parseOptional(countUnescaped, strconv.ParseBool)
+		if err != nil {
+			return nil, err
+		}
+		searchUnescaped, err := url.QueryUnescape(qp.Get("search"))
+		if err != nil {
+			return nil, err
+		}
+		searchParam := getOptional(searchUnescaped)
+		var options *armbilling.EnrollmentAccountsClientListByBillingAccountOptions
+		if filterParam != nil || orderByParam != nil || topParam != nil || skipParam != nil || countParam != nil || searchParam != nil {
+			options = &armbilling.EnrollmentAccountsClientListByBillingAccountOptions{
+				Filter:  filterParam,
+				OrderBy: orderByParam,
+				Top:     topParam,
+				Skip:    skipParam,
+				Count:   countParam,
+				Search:  searchParam,
+			}
+		}
+		resp := e.srv.NewListByBillingAccountPager(billingAccountNameParam, options)
+		newListByBillingAccountPager = &resp
+		e.newListByBillingAccountPager.add(req, newListByBillingAccountPager)
+		server.PagerResponderInjectNextLinks(newListByBillingAccountPager, req, func(page *armbilling.EnrollmentAccountsClientListByBillingAccountResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(newListPager, req)
+	resp, err := server.PagerResponderNext(newListByBillingAccountPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
-		e.newListPager.remove(req)
+		e.newListByBillingAccountPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(newListPager) {
-		e.newListPager.remove(req)
+	if !server.PagerResponderMore(newListByBillingAccountPager) {
+		e.newListByBillingAccountPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (e *EnrollmentAccountsServerTransport) dispatchNewListByDepartmentPager(req *http.Request) (*http.Response, error) {
+	if e.srv.NewListByDepartmentPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByDepartmentPager not implemented")}
+	}
+	newListByDepartmentPager := e.newListByDepartmentPager.get(req)
+	if newListByDepartmentPager == nil {
+		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/departments/(?P<departmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/enrollmentAccounts`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
+		if err != nil {
+			return nil, err
+		}
+		departmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("departmentName")])
+		if err != nil {
+			return nil, err
+		}
+		filterUnescaped, err := url.QueryUnescape(qp.Get("filter"))
+		if err != nil {
+			return nil, err
+		}
+		filterParam := getOptional(filterUnescaped)
+		orderByUnescaped, err := url.QueryUnescape(qp.Get("orderBy"))
+		if err != nil {
+			return nil, err
+		}
+		orderByParam := getOptional(orderByUnescaped)
+		topUnescaped, err := url.QueryUnescape(qp.Get("top"))
+		if err != nil {
+			return nil, err
+		}
+		topParam, err := parseOptional(topUnescaped, func(v string) (int64, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 64)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return p, nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		skipUnescaped, err := url.QueryUnescape(qp.Get("skip"))
+		if err != nil {
+			return nil, err
+		}
+		skipParam, err := parseOptional(skipUnescaped, func(v string) (int64, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 64)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return p, nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		countUnescaped, err := url.QueryUnescape(qp.Get("count"))
+		if err != nil {
+			return nil, err
+		}
+		countParam, err := parseOptional(countUnescaped, strconv.ParseBool)
+		if err != nil {
+			return nil, err
+		}
+		searchUnescaped, err := url.QueryUnescape(qp.Get("search"))
+		if err != nil {
+			return nil, err
+		}
+		searchParam := getOptional(searchUnescaped)
+		var options *armbilling.EnrollmentAccountsClientListByDepartmentOptions
+		if filterParam != nil || orderByParam != nil || topParam != nil || skipParam != nil || countParam != nil || searchParam != nil {
+			options = &armbilling.EnrollmentAccountsClientListByDepartmentOptions{
+				Filter:  filterParam,
+				OrderBy: orderByParam,
+				Top:     topParam,
+				Skip:    skipParam,
+				Count:   countParam,
+				Search:  searchParam,
+			}
+		}
+		resp := e.srv.NewListByDepartmentPager(billingAccountNameParam, departmentNameParam, options)
+		newListByDepartmentPager = &resp
+		e.newListByDepartmentPager.add(req, newListByDepartmentPager)
+		server.PagerResponderInjectNextLinks(newListByDepartmentPager, req, func(page *armbilling.EnrollmentAccountsClientListByDepartmentResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByDepartmentPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		e.newListByDepartmentPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByDepartmentPager) {
+		e.newListByDepartmentPager.remove(req)
 	}
 	return resp, nil
 }

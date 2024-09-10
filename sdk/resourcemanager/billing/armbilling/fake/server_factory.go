@@ -19,27 +19,36 @@ import (
 
 // ServerFactory is a fake server for instances of the armbilling.ClientFactory type.
 type ServerFactory struct {
-	AccountsServer           AccountsServer
-	AddressServer            AddressServer
-	AgreementsServer         AgreementsServer
-	AvailableBalancesServer  AvailableBalancesServer
-	CustomersServer          CustomersServer
-	EnrollmentAccountsServer EnrollmentAccountsServer
-	InstructionsServer       InstructionsServer
-	InvoiceSectionsServer    InvoiceSectionsServer
-	InvoicesServer           InvoicesServer
-	OperationsServer         OperationsServer
-	PeriodsServer            PeriodsServer
-	PermissionsServer        PermissionsServer
-	PoliciesServer           PoliciesServer
-	ProductsServer           ProductsServer
-	ProfilesServer           ProfilesServer
-	PropertyServer           PropertyServer
-	ReservationsServer       ReservationsServer
-	RoleAssignmentsServer    RoleAssignmentsServer
-	RoleDefinitionsServer    RoleDefinitionsServer
-	SubscriptionsServer      SubscriptionsServer
-	TransactionsServer       TransactionsServer
+	AccountsServer             AccountsServer
+	AddressServer              AddressServer
+	AgreementsServer           AgreementsServer
+	AssociatedTenantsServer    AssociatedTenantsServer
+	AvailableBalancesServer    AvailableBalancesServer
+	CustomersServer            CustomersServer
+	DepartmentsServer          DepartmentsServer
+	EnrollmentAccountsServer   EnrollmentAccountsServer
+	InvoiceSectionsServer      InvoiceSectionsServer
+	InvoicesServer             InvoicesServer
+	OperationsServer           OperationsServer
+	PartnerTransfersServer     PartnerTransfersServer
+	PaymentMethodsServer       PaymentMethodsServer
+	PermissionsServer          PermissionsServer
+	PoliciesServer             PoliciesServer
+	ProductsServer             ProductsServer
+	ProfilesServer             ProfilesServer
+	PropertyServer             PropertyServer
+	RecipientTransfersServer   RecipientTransfersServer
+	RequestsServer             RequestsServer
+	ReservationOrdersServer    ReservationOrdersServer
+	ReservationsServer         ReservationsServer
+	RoleAssignmentsServer      RoleAssignmentsServer
+	RoleDefinitionServer       RoleDefinitionServer
+	SavingsPlanOrdersServer    SavingsPlanOrdersServer
+	SavingsPlansServer         SavingsPlansServer
+	SubscriptionsAliasesServer SubscriptionsAliasesServer
+	SubscriptionsServer        SubscriptionsServer
+	TransactionsServer         TransactionsServer
+	TransfersServer            TransfersServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -54,29 +63,38 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armbilling.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                        *ServerFactory
-	trMu                       sync.Mutex
-	trAccountsServer           *AccountsServerTransport
-	trAddressServer            *AddressServerTransport
-	trAgreementsServer         *AgreementsServerTransport
-	trAvailableBalancesServer  *AvailableBalancesServerTransport
-	trCustomersServer          *CustomersServerTransport
-	trEnrollmentAccountsServer *EnrollmentAccountsServerTransport
-	trInstructionsServer       *InstructionsServerTransport
-	trInvoiceSectionsServer    *InvoiceSectionsServerTransport
-	trInvoicesServer           *InvoicesServerTransport
-	trOperationsServer         *OperationsServerTransport
-	trPeriodsServer            *PeriodsServerTransport
-	trPermissionsServer        *PermissionsServerTransport
-	trPoliciesServer           *PoliciesServerTransport
-	trProductsServer           *ProductsServerTransport
-	trProfilesServer           *ProfilesServerTransport
-	trPropertyServer           *PropertyServerTransport
-	trReservationsServer       *ReservationsServerTransport
-	trRoleAssignmentsServer    *RoleAssignmentsServerTransport
-	trRoleDefinitionsServer    *RoleDefinitionsServerTransport
-	trSubscriptionsServer      *SubscriptionsServerTransport
-	trTransactionsServer       *TransactionsServerTransport
+	srv                          *ServerFactory
+	trMu                         sync.Mutex
+	trAccountsServer             *AccountsServerTransport
+	trAddressServer              *AddressServerTransport
+	trAgreementsServer           *AgreementsServerTransport
+	trAssociatedTenantsServer    *AssociatedTenantsServerTransport
+	trAvailableBalancesServer    *AvailableBalancesServerTransport
+	trCustomersServer            *CustomersServerTransport
+	trDepartmentsServer          *DepartmentsServerTransport
+	trEnrollmentAccountsServer   *EnrollmentAccountsServerTransport
+	trInvoiceSectionsServer      *InvoiceSectionsServerTransport
+	trInvoicesServer             *InvoicesServerTransport
+	trOperationsServer           *OperationsServerTransport
+	trPartnerTransfersServer     *PartnerTransfersServerTransport
+	trPaymentMethodsServer       *PaymentMethodsServerTransport
+	trPermissionsServer          *PermissionsServerTransport
+	trPoliciesServer             *PoliciesServerTransport
+	trProductsServer             *ProductsServerTransport
+	trProfilesServer             *ProfilesServerTransport
+	trPropertyServer             *PropertyServerTransport
+	trRecipientTransfersServer   *RecipientTransfersServerTransport
+	trRequestsServer             *RequestsServerTransport
+	trReservationOrdersServer    *ReservationOrdersServerTransport
+	trReservationsServer         *ReservationsServerTransport
+	trRoleAssignmentsServer      *RoleAssignmentsServerTransport
+	trRoleDefinitionServer       *RoleDefinitionServerTransport
+	trSavingsPlanOrdersServer    *SavingsPlanOrdersServerTransport
+	trSavingsPlansServer         *SavingsPlansServerTransport
+	trSubscriptionsAliasesServer *SubscriptionsAliasesServerTransport
+	trSubscriptionsServer        *SubscriptionsServerTransport
+	trTransactionsServer         *TransactionsServerTransport
+	trTransfersServer            *TransfersServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -101,6 +119,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "AgreementsClient":
 		initServer(s, &s.trAgreementsServer, func() *AgreementsServerTransport { return NewAgreementsServerTransport(&s.srv.AgreementsServer) })
 		resp, err = s.trAgreementsServer.Do(req)
+	case "AssociatedTenantsClient":
+		initServer(s, &s.trAssociatedTenantsServer, func() *AssociatedTenantsServerTransport {
+			return NewAssociatedTenantsServerTransport(&s.srv.AssociatedTenantsServer)
+		})
+		resp, err = s.trAssociatedTenantsServer.Do(req)
 	case "AvailableBalancesClient":
 		initServer(s, &s.trAvailableBalancesServer, func() *AvailableBalancesServerTransport {
 			return NewAvailableBalancesServerTransport(&s.srv.AvailableBalancesServer)
@@ -109,14 +132,14 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "CustomersClient":
 		initServer(s, &s.trCustomersServer, func() *CustomersServerTransport { return NewCustomersServerTransport(&s.srv.CustomersServer) })
 		resp, err = s.trCustomersServer.Do(req)
+	case "DepartmentsClient":
+		initServer(s, &s.trDepartmentsServer, func() *DepartmentsServerTransport { return NewDepartmentsServerTransport(&s.srv.DepartmentsServer) })
+		resp, err = s.trDepartmentsServer.Do(req)
 	case "EnrollmentAccountsClient":
 		initServer(s, &s.trEnrollmentAccountsServer, func() *EnrollmentAccountsServerTransport {
 			return NewEnrollmentAccountsServerTransport(&s.srv.EnrollmentAccountsServer)
 		})
 		resp, err = s.trEnrollmentAccountsServer.Do(req)
-	case "InstructionsClient":
-		initServer(s, &s.trInstructionsServer, func() *InstructionsServerTransport { return NewInstructionsServerTransport(&s.srv.InstructionsServer) })
-		resp, err = s.trInstructionsServer.Do(req)
 	case "InvoiceSectionsClient":
 		initServer(s, &s.trInvoiceSectionsServer, func() *InvoiceSectionsServerTransport {
 			return NewInvoiceSectionsServerTransport(&s.srv.InvoiceSectionsServer)
@@ -128,9 +151,16 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "OperationsClient":
 		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
-	case "PeriodsClient":
-		initServer(s, &s.trPeriodsServer, func() *PeriodsServerTransport { return NewPeriodsServerTransport(&s.srv.PeriodsServer) })
-		resp, err = s.trPeriodsServer.Do(req)
+	case "PartnerTransfersClient":
+		initServer(s, &s.trPartnerTransfersServer, func() *PartnerTransfersServerTransport {
+			return NewPartnerTransfersServerTransport(&s.srv.PartnerTransfersServer)
+		})
+		resp, err = s.trPartnerTransfersServer.Do(req)
+	case "PaymentMethodsClient":
+		initServer(s, &s.trPaymentMethodsServer, func() *PaymentMethodsServerTransport {
+			return NewPaymentMethodsServerTransport(&s.srv.PaymentMethodsServer)
+		})
+		resp, err = s.trPaymentMethodsServer.Do(req)
 	case "PermissionsClient":
 		initServer(s, &s.trPermissionsServer, func() *PermissionsServerTransport { return NewPermissionsServerTransport(&s.srv.PermissionsServer) })
 		resp, err = s.trPermissionsServer.Do(req)
@@ -146,6 +176,19 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "PropertyClient":
 		initServer(s, &s.trPropertyServer, func() *PropertyServerTransport { return NewPropertyServerTransport(&s.srv.PropertyServer) })
 		resp, err = s.trPropertyServer.Do(req)
+	case "RecipientTransfersClient":
+		initServer(s, &s.trRecipientTransfersServer, func() *RecipientTransfersServerTransport {
+			return NewRecipientTransfersServerTransport(&s.srv.RecipientTransfersServer)
+		})
+		resp, err = s.trRecipientTransfersServer.Do(req)
+	case "RequestsClient":
+		initServer(s, &s.trRequestsServer, func() *RequestsServerTransport { return NewRequestsServerTransport(&s.srv.RequestsServer) })
+		resp, err = s.trRequestsServer.Do(req)
+	case "ReservationOrdersClient":
+		initServer(s, &s.trReservationOrdersServer, func() *ReservationOrdersServerTransport {
+			return NewReservationOrdersServerTransport(&s.srv.ReservationOrdersServer)
+		})
+		resp, err = s.trReservationOrdersServer.Do(req)
 	case "ReservationsClient":
 		initServer(s, &s.trReservationsServer, func() *ReservationsServerTransport { return NewReservationsServerTransport(&s.srv.ReservationsServer) })
 		resp, err = s.trReservationsServer.Do(req)
@@ -154,11 +197,24 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewRoleAssignmentsServerTransport(&s.srv.RoleAssignmentsServer)
 		})
 		resp, err = s.trRoleAssignmentsServer.Do(req)
-	case "RoleDefinitionsClient":
-		initServer(s, &s.trRoleDefinitionsServer, func() *RoleDefinitionsServerTransport {
-			return NewRoleDefinitionsServerTransport(&s.srv.RoleDefinitionsServer)
+	case "RoleDefinitionClient":
+		initServer(s, &s.trRoleDefinitionServer, func() *RoleDefinitionServerTransport {
+			return NewRoleDefinitionServerTransport(&s.srv.RoleDefinitionServer)
 		})
-		resp, err = s.trRoleDefinitionsServer.Do(req)
+		resp, err = s.trRoleDefinitionServer.Do(req)
+	case "SavingsPlanOrdersClient":
+		initServer(s, &s.trSavingsPlanOrdersServer, func() *SavingsPlanOrdersServerTransport {
+			return NewSavingsPlanOrdersServerTransport(&s.srv.SavingsPlanOrdersServer)
+		})
+		resp, err = s.trSavingsPlanOrdersServer.Do(req)
+	case "SavingsPlansClient":
+		initServer(s, &s.trSavingsPlansServer, func() *SavingsPlansServerTransport { return NewSavingsPlansServerTransport(&s.srv.SavingsPlansServer) })
+		resp, err = s.trSavingsPlansServer.Do(req)
+	case "SubscriptionsAliasesClient":
+		initServer(s, &s.trSubscriptionsAliasesServer, func() *SubscriptionsAliasesServerTransport {
+			return NewSubscriptionsAliasesServerTransport(&s.srv.SubscriptionsAliasesServer)
+		})
+		resp, err = s.trSubscriptionsAliasesServer.Do(req)
 	case "SubscriptionsClient":
 		initServer(s, &s.trSubscriptionsServer, func() *SubscriptionsServerTransport {
 			return NewSubscriptionsServerTransport(&s.srv.SubscriptionsServer)
@@ -167,6 +223,9 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "TransactionsClient":
 		initServer(s, &s.trTransactionsServer, func() *TransactionsServerTransport { return NewTransactionsServerTransport(&s.srv.TransactionsServer) })
 		resp, err = s.trTransactionsServer.Do(req)
+	case "TransfersClient":
+		initServer(s, &s.trTransfersServer, func() *TransfersServerTransport { return NewTransfersServerTransport(&s.srv.TransfersServer) })
+		resp, err = s.trTransfersServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
 	}

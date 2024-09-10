@@ -17,6 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
+	"strconv"
 	"strings"
 )
 
@@ -28,7 +29,7 @@ type PropertyClient struct {
 }
 
 // NewPropertyClient creates a new instance of PropertyClient with the specified values.
-//   - subscriptionID - The ID that uniquely identifies an Azure subscription.
+//   - subscriptionID - The ID that uniquely identifies a billing subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewPropertyClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PropertyClient, error) {
@@ -43,11 +44,10 @@ func NewPropertyClient(subscriptionID string, credential azcore.TokenCredential,
 	return client, nil
 }
 
-// Get - Get the billing properties for a subscription. This operation is not supported for billing accounts with agreement
-// type Enterprise Agreement.
+// Get - Gets the billing properties for a subscription
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-05-01
+// Generated from API version 2024-04-01
 //   - options - PropertyClientGetOptions contains the optional parameters for the PropertyClient.Get method.
 func (client *PropertyClient) Get(ctx context.Context, options *PropertyClientGetOptions) (PropertyClientGetResponse, error) {
 	var err error
@@ -83,7 +83,13 @@ func (client *PropertyClient) getCreateRequest(ctx context.Context, options *Pro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-05-01")
+	reqQP.Set("api-version", "2024-04-01")
+	if options != nil && options.IncludeBillingCountry != nil {
+		reqQP.Set("includeBillingCountry", strconv.FormatBool(*options.IncludeBillingCountry))
+	}
+	if options != nil && options.IncludeTransitionStatus != nil {
+		reqQP.Set("includeTransitionStatus", strconv.FormatBool(*options.IncludeTransitionStatus))
+	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -98,12 +104,13 @@ func (client *PropertyClient) getHandleResponse(resp *http.Response) (PropertyCl
 	return result, nil
 }
 
-// Update - Updates the billing property of a subscription. Currently, cost center can be updated. The operation is supported
-// only for billing accounts with agreement type Microsoft Customer Agreement.
+// Update - Updates the billing property of a subscription. Currently, cost center can be updated for billing accounts with
+// agreement type Microsoft Customer Agreement and subscription service usage address can
+// be updated for billing accounts with agreement type Microsoft Online Service Program.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-05-01
-//   - parameters - Request parameters that are provided to the update billing property operation.
+// Generated from API version 2024-04-01
+//   - parameters - A billing property.
 //   - options - PropertyClientUpdateOptions contains the optional parameters for the PropertyClient.Update method.
 func (client *PropertyClient) Update(ctx context.Context, parameters Property, options *PropertyClientUpdateOptions) (PropertyClientUpdateResponse, error) {
 	var err error
@@ -139,7 +146,7 @@ func (client *PropertyClient) updateCreateRequest(ctx context.Context, parameter
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-05-01")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

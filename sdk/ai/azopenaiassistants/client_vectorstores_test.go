@@ -50,7 +50,9 @@ func TestAssistantsWithVectorStores(t *testing.T) {
 
 			defer mustDeleteVectorStore(t, client, vectorStoreID)
 
-			createVectorFileResp, err := client.CreateVectorStoreFile(context.Background(), vectorStoreID, fileID, nil)
+			createVectorFileResp, err := client.CreateVectorStoreFile(context.Background(), vectorStoreID, azopenaiassistants.CreateVectorStoreFileBody{
+				FileID: &fileID,
+			}, nil)
 			require.NoError(t, err)
 			require.NotEmpty(t, createVectorFileResp)
 

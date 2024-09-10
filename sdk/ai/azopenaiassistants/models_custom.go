@@ -10,56 +10,6 @@ import (
 
 // OpenAI's reference doc for Assistants: https://platform.openai.com/docs/api-reference/assistants
 
-// MessageAttachmentToolDefinition specifies the tools the files being attached will be
-// associated with.
-type MessageAttachmentToolDefinition struct {
-	// CodeInterpreterToolDefinition should be set if you attach files for the CodeInterpreter tool.
-	CodeInterpreterToolDefinition *CodeInterpreterToolDefinition
-
-	// FileSearchToolDefinition should be set if you attach files for the FileSearchToolDefinition tool.
-	FileSearchToolDefinition *FileSearchToolDefinition
-}
-
-// MarshalJSON implements the json.Marshaller interface for type MessageAttachmentToolDefinition.
-func (m MessageAttachmentToolDefinition) MarshalJSON() ([]byte, error) {
-	if m.CodeInterpreterToolDefinition != nil {
-		return json.Marshal(m.CodeInterpreterToolDefinition)
-	}
-
-	// if by chance neither of them is filled out then we'll just serialize a JSON null, which is correct. The service
-	// does its own validation.
-	return json.Marshal(m.FileSearchToolDefinition)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type MessageAttachmentToolDefinition.
-func (m *MessageAttachmentToolDefinition) UnmarshalJSON(data []byte) error {
-	var v *struct {
-		Type string
-		// NOTE: This type needs to include, uniquely, all the fields of the individual types.
-		// You can't just embed them because fields that are common between them will
-		// just get ignored.
-	}
-
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-
-	switch v.Type {
-	case "code_interpreter":
-		m.CodeInterpreterToolDefinition = &CodeInterpreterToolDefinition{
-			Type: &v.Type,
-		}
-		return nil
-	case "file_search":
-		m.FileSearchToolDefinition = &FileSearchToolDefinition{
-			Type: &v.Type,
-		}
-		return nil
-	default:
-		return fmt.Errorf("unhandled Type (%q) for MessageAttachmentToolDefinition", v.Type)
-	}
-}
-
 // AssistantsAPIToolChoiceOption controls which tools are called by the model.
 type AssistantsAPIToolChoiceOption struct {
 	// Mode controls the behavior for this particular tool.
@@ -200,9 +150,4 @@ func unmarshalStringOrObject[T any](jsonBytes []byte) (string, *T, error) {
 	}
 
 	return "", model, nil
-}
-
-// this is a workaround until I figure out where the generation is going awry for the vector store
-type fileIDStruct struct {
-	FileID string `json:"file_id"`
 }

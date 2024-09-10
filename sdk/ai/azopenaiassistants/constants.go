@@ -322,6 +322,22 @@ func PossibleListSortOrderValues() []ListSortOrder {
 	}
 }
 
+// MessageAttachmentToolAssignmentType - The type of the tool being selected.
+type MessageAttachmentToolAssignmentType string
+
+const (
+	MessageAttachmentToolAssignmentTypeCodeInterpreter MessageAttachmentToolAssignmentType = "code_interpreter"
+	MessageAttachmentToolAssignmentTypeFileSearch      MessageAttachmentToolAssignmentType = "file_search"
+)
+
+// PossibleMessageAttachmentToolAssignmentTypeValues returns the possible values for the MessageAttachmentToolAssignmentType const type.
+func PossibleMessageAttachmentToolAssignmentTypeValues() []MessageAttachmentToolAssignmentType {
+	return []MessageAttachmentToolAssignmentType{
+		MessageAttachmentToolAssignmentTypeCodeInterpreter,
+		MessageAttachmentToolAssignmentTypeFileSearch,
+	}
+}
+
 // MessageIncompleteDetailsReason - A set of reasons describing why a message is marked as incomplete.
 type MessageIncompleteDetailsReason string
 
@@ -626,6 +642,38 @@ func PossibleTruncationStrategyValues() []TruncationStrategy {
 	return []TruncationStrategy{
 		TruncationStrategyAuto,
 		TruncationStrategyLastMessages,
+	}
+}
+
+// VectorStoreChunkingStrategyRequestType - Type of chunking strategy
+type VectorStoreChunkingStrategyRequestType string
+
+const (
+	VectorStoreChunkingStrategyRequestTypeAuto   VectorStoreChunkingStrategyRequestType = "auto"
+	VectorStoreChunkingStrategyRequestTypeStatic VectorStoreChunkingStrategyRequestType = "static"
+)
+
+// PossibleVectorStoreChunkingStrategyRequestTypeValues returns the possible values for the VectorStoreChunkingStrategyRequestType const type.
+func PossibleVectorStoreChunkingStrategyRequestTypeValues() []VectorStoreChunkingStrategyRequestType {
+	return []VectorStoreChunkingStrategyRequestType{
+		VectorStoreChunkingStrategyRequestTypeAuto,
+		VectorStoreChunkingStrategyRequestTypeStatic,
+	}
+}
+
+// VectorStoreChunkingStrategyResponseType - Type of chunking strategy
+type VectorStoreChunkingStrategyResponseType string
+
+const (
+	VectorStoreChunkingStrategyResponseTypeOther  VectorStoreChunkingStrategyResponseType = "other"
+	VectorStoreChunkingStrategyResponseTypeStatic VectorStoreChunkingStrategyResponseType = "static"
+)
+
+// PossibleVectorStoreChunkingStrategyResponseTypeValues returns the possible values for the VectorStoreChunkingStrategyResponseType const type.
+func PossibleVectorStoreChunkingStrategyResponseTypeValues() []VectorStoreChunkingStrategyResponseType {
+	return []VectorStoreChunkingStrategyResponseType{
+		VectorStoreChunkingStrategyResponseTypeOther,
+		VectorStoreChunkingStrategyResponseTypeStatic,
 	}
 }
 

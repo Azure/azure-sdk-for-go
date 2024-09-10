@@ -124,3 +124,21 @@ type ToolDefinitionClassification interface {
 	// GetToolDefinition returns the ToolDefinition content of the underlying type.
 	GetToolDefinition() *ToolDefinition
 }
+
+// VectorStoreChunkingStrategyRequestClassification provides polymorphic access to related types.
+// Call the interface's GetVectorStoreChunkingStrategyRequest() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *VectorStoreAutoChunkingStrategyRequest, *VectorStoreChunkingStrategyRequest, *VectorStoreStaticChunkingStrategyRequest
+type VectorStoreChunkingStrategyRequestClassification interface {
+	// GetVectorStoreChunkingStrategyRequest returns the VectorStoreChunkingStrategyRequest content of the underlying type.
+	GetVectorStoreChunkingStrategyRequest() *VectorStoreChunkingStrategyRequest
+}
+
+// VectorStoreChunkingStrategyResponseClassification provides polymorphic access to related types.
+// Call the interface's GetVectorStoreChunkingStrategyResponse() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *VectorStoreAutoChunkingStrategyResponse, *VectorStoreChunkingStrategyResponse, *VectorStoreStaticChunkingStrategyResponse
+type VectorStoreChunkingStrategyResponseClassification interface {
+	// GetVectorStoreChunkingStrategyResponse returns the VectorStoreChunkingStrategyResponse content of the underlying type.
+	GetVectorStoreChunkingStrategyResponse() *VectorStoreChunkingStrategyResponse
+}

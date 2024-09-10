@@ -191,10 +191,11 @@ directive:
         'Paths1G1Yr9HDeploymentsDeploymentidAudioTranslationsPostRequestbodyContentMultipartFormDataSchema',
         'Paths1MlipaDeploymentsDeploymentidAudioTranscriptionsPostRequestbodyContentMultipartFormDataSchema',
         'Paths1Filz8PFilesPostRequestbodyContentMultipartFormDataSchema',
+        'BatchCreateResponse',
       ];
 
       for (let name of typesToRemove) {
-        $ = $.replace(new RegExp(`type ${name} struct.+?\n}`, "s"), "")
+        $ = $.replace(new RegExp(`(// ${name} - [\\w\\s\\.,]+\n)?type ${name} struct.+?\s*\}`, "s"), "")
         .replace(new RegExp(`// MarshalJSON implements the json.Marshaller interface for type ${name}.+?\n}`, "s"), "")
         .replace(new RegExp(`// UnmarshalJSON implements the json.Unmarshaller interface for type ${name}.+?\n}`, "s"), "");
       }

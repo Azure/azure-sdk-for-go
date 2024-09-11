@@ -16,7 +16,7 @@ require (
 	github.com/joho/godotenv v1.5.1
 
 	// used in stress tests
-	github.com/microsoft/ApplicationInsights-Go v0.4.4
+	// github.com/microsoft/ApplicationInsights-Go v0.4.4
 	github.com/stretchr/testify v1.9.0
 
 	// used in examples only
@@ -26,11 +26,10 @@ require (
 require github.com/golang/mock v1.6.0
 
 require (
-	code.cloudfoundry.org/clock v1.2.0 // indirect
 	github.com/AzureAD/microsoft-authentication-library-for-go v1.2.2 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
-	github.com/gofrs/uuid v4.4.0+incompatible // indirect
 	github.com/golang-jwt/jwt/v5 v5.2.1 // indirect
+	github.com/google/go-cmp v0.6.0 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/kylelemons/godebug v1.1.0 // indirect
 	github.com/pkg/browser v0.0.0-20240102092130-5ac0b6a4141c // indirect
@@ -41,6 +40,3 @@ require (
 	golang.org/x/text v0.16.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
-
-// yaml.v2 v2.2.1 is an indirect dependency of ApplicationInsights-Go and affected by a few CVEs
-replace gopkg.in/yaml.v2 => gopkg.in/yaml.v2 v2.2.8

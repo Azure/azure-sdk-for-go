@@ -133,7 +133,7 @@ client := armresources.NewResourceGroupsClient("subscription ID", chain, nil)
 |[DefaultAzureCredential](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#DefaultAzureCredential)|Simplified authentication experience for getting started developing Azure apps
 |[ChainedTokenCredential](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#ChainedTokenCredential)|Define custom authentication flows, composing multiple credentials
 
-### Authenticating Azure Hosted Applications
+### Authenticating Azure-Hosted Applications
 
 |Credential|Usage
 |-|-

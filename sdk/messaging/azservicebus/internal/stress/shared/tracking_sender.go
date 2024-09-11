@@ -8,10 +8,9 @@ import (
 	"fmt"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus"
-	"github.com/microsoft/ApplicationInsights-Go/appinsights"
 )
 
-func NewTrackingSender(tc appinsights.TelemetryClient, client *azservicebus.Client, queueOrTopic string, options *azservicebus.NewSenderOptions) (*TrackingSender, error) {
+func NewTrackingSender(tc *TelemetryClientWrapper, client *azservicebus.Client, queueOrTopic string, options *azservicebus.NewSenderOptions) (*TrackingSender, error) {
 	tmpSender, err := client.NewSender(queueOrTopic, options)
 
 	if err != nil {
@@ -23,7 +22,7 @@ func NewTrackingSender(tc appinsights.TelemetryClient, client *azservicebus.Clie
 
 // TrackingSender reports metrics and errors automatically for its methods.
 type TrackingSender struct {
-	tc appinsights.TelemetryClient
+	tc *TelemetryClientWrapper
 	s  *azservicebus.Sender
 }
 

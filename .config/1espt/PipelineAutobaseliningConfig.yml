@@ -2048,3 +2048,12 @@ pipelines:
           lastModifiedDate: 2024-09-11
         armory:
           lastModifiedDate: 2024-09-11
+  3529:
+    retail:
+      source:
+        credscan:
+          lastModifiedDate: 2024-09-12
+        psscriptanalyzer:
+          lastModifiedDate: 2024-09-12
+        armory:
+          lastModifiedDate: 2024-09-12

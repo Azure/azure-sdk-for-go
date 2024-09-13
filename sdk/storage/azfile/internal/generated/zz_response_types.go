@@ -1134,6 +1134,16 @@ type ShareClientGetPropertiesResponse struct {
 	// response.
 	NextAllowedQuotaDowngradeTime *time.Time
 
+	// PaidBurstingEnabled contains the information returned from the x-ms-share-paid-bursting-enabled header response.
+	PaidBurstingEnabled *bool
+
+	// PaidBurstingMaxBandwidthMibps contains the information returned from the x-ms-share-paid-bursting-max-bandwidth-mibps header
+	// response.
+	PaidBurstingMaxBandwidthMibps *int64
+
+	// PaidBurstingMaxIops contains the information returned from the x-ms-share-paid-bursting-max-iops header response.
+	PaidBurstingMaxIops *int64
+
 	// ProvisionedBandwidthMiBps contains the information returned from the x-ms-share-provisioned-bandwidth-mibps header response.
 	ProvisionedBandwidthMiBps *int32
 

@@ -32,6 +32,54 @@ type DeveloperHubServiceClientListGitHubOAuthResponse struct {
 	GitHubOAuthListResponse
 }
 
+// IacProfilesClientCreateOrUpdateResponse contains the response from method IacProfilesClient.CreateOrUpdate.
+type IacProfilesClientCreateOrUpdateResponse struct {
+	// Resource representation of a IacProfile.
+	IacProfile
+}
+
+// IacProfilesClientDeleteResponse contains the response from method IacProfilesClient.Delete.
+type IacProfilesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// IacProfilesClientExportResponse contains the response from method IacProfilesClient.Export.
+type IacProfilesClientExportResponse struct {
+	PrLinkResponse
+}
+
+// IacProfilesClientGetResponse contains the response from method IacProfilesClient.Get.
+type IacProfilesClientGetResponse struct {
+	// Resource representation of a IacProfile.
+	IacProfile
+}
+
+// IacProfilesClientListByResourceGroupResponse contains the response from method IacProfilesClient.NewListByResourceGroupPager.
+type IacProfilesClientListByResourceGroupResponse struct {
+	IacProfileListResult
+}
+
+// IacProfilesClientListResponse contains the response from method IacProfilesClient.NewListPager.
+type IacProfilesClientListResponse struct {
+	IacProfileListResult
+}
+
+// IacProfilesClientScaleResponse contains the response from method IacProfilesClient.Scale.
+type IacProfilesClientScaleResponse struct {
+	PrLinkResponse
+}
+
+// IacProfilesClientSyncResponse contains the response from method IacProfilesClient.Sync.
+type IacProfilesClientSyncResponse struct {
+	// placeholder for future response values
+}
+
+// IacProfilesClientUpdateTagsResponse contains the response from method IacProfilesClient.UpdateTags.
+type IacProfilesClientUpdateTagsResponse struct {
+	// Resource representation of a IacProfile.
+	IacProfile
+}
+
 // OperationsClientListResponse contains the response from method OperationsClient.List.
 type OperationsClientListResponse struct {
 	// A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to get the next set of results.

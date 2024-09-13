@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devhub/armdevhub"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/developerhub/resource-manager/Microsoft.DevHub/preview/2022-10-11-preview/examples/Workflow_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/34f5146bc945549d087d38a8a593c0a5f475ad7f/specification/developerhub/resource-manager/Microsoft.DevHub/preview/2024-05-01-preview/examples/Workflow_List.json
 func ExampleWorkflowClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -45,7 +45,7 @@ func ExampleWorkflowClient_NewListPager() {
 		// 		{
 		// 			Name: to.Ptr("workflow1"),
 		// 			Type: to.Ptr("Micfosoft.DevHub/Workflow"),
-		// 			ID: to.Ptr("/subscription/subscriptionId1/resourceGroups/resourceGroup1/providers/Microsoft.DevHub/workflow/workflow1"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroup1/providers/Microsoft.DevHub/workflow/workflow1"),
 		// 			SystemData: &armdevhub.SystemData{
 		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-24T16:30:55.000Z"); return t}()),
 		// 				CreatedBy: to.Ptr("foo@contoso.com"),
@@ -64,9 +64,9 @@ func ExampleWorkflowClient_NewListPager() {
 		// 						AcrRegistryName: to.Ptr("registry1"),
 		// 						AcrRepositoryName: to.Ptr("repo1"),
 		// 						AcrResourceGroup: to.Ptr("resourceGroup1"),
-		// 						AcrSubscriptionID: to.Ptr("subscriptionId1"),
+		// 						AcrSubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 					},
-		// 					AksResourceID: to.Ptr("/subscriptions/subscriptionId1/resourcegroups/resourceGroup1/providers/Microsoft.ContainerService/managedClusters/cluster1"),
+		// 					AksResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/resourceGroup1/providers/Microsoft.ContainerService/managedClusters/cluster1"),
 		// 					AuthStatus: to.Ptr(armdevhub.AuthorizationStatusAuthorized),
 		// 					BranchName: to.Ptr("branch1"),
 		// 					DeploymentProperties: &armdevhub.DeploymentProperties{
@@ -93,7 +93,7 @@ func ExampleWorkflowClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/developerhub/resource-manager/Microsoft.DevHub/preview/2022-10-11-preview/examples/Workflow_ListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/34f5146bc945549d087d38a8a593c0a5f475ad7f/specification/developerhub/resource-manager/Microsoft.DevHub/preview/2024-05-01-preview/examples/Workflow_ListByResourceGroup.json
 func ExampleWorkflowClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -104,7 +104,7 @@ func ExampleWorkflowClient_NewListByResourceGroupPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewWorkflowClient().NewListByResourceGroupPager("resourceGroup1", &armdevhub.WorkflowClientListByResourceGroupOptions{ManagedClusterResource: to.Ptr("/subscriptions/subscriptionId1/resourcegroups/resourceGroup1/providers/Microsoft.ContainerService/managedClusters/cluster1")})
+	pager := clientFactory.NewWorkflowClient().NewListByResourceGroupPager("resourceGroup1", &armdevhub.WorkflowClientListByResourceGroupOptions{ManagedClusterResource: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/resourceGroup1/providers/Microsoft.ContainerService/managedClusters/cluster1")})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -120,7 +120,7 @@ func ExampleWorkflowClient_NewListByResourceGroupPager() {
 		// 		{
 		// 			Name: to.Ptr("workflow1"),
 		// 			Type: to.Ptr("Micfosoft.DevHub/Workflow"),
-		// 			ID: to.Ptr("/subscription/subscriptionId1/resourceGroups/resourceGroup1/providers/Microsoft.DevHub/workflow/workflow1"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroup1/providers/Microsoft.DevHub/workflow/workflow1"),
 		// 			SystemData: &armdevhub.SystemData{
 		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-24T16:30:55.000Z"); return t}()),
 		// 				CreatedBy: to.Ptr("foo@contoso.com"),
@@ -139,9 +139,9 @@ func ExampleWorkflowClient_NewListByResourceGroupPager() {
 		// 						AcrRegistryName: to.Ptr("registry1"),
 		// 						AcrRepositoryName: to.Ptr("repo1"),
 		// 						AcrResourceGroup: to.Ptr("resourceGroup1"),
-		// 						AcrSubscriptionID: to.Ptr("subscriptionId1"),
+		// 						AcrSubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 					},
-		// 					AksResourceID: to.Ptr("/subscriptions/subscriptionId1/resourcegroups/resourceGroup1/providers/Microsoft.ContainerService/managedClusters/cluster1"),
+		// 					AksResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/resourceGroup1/providers/Microsoft.ContainerService/managedClusters/cluster1"),
 		// 					AuthStatus: to.Ptr(armdevhub.AuthorizationStatusAuthorized),
 		// 					BranchName: to.Ptr("branch1"),
 		// 					DeploymentProperties: &armdevhub.DeploymentProperties{
@@ -174,7 +174,7 @@ func ExampleWorkflowClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/developerhub/resource-manager/Microsoft.DevHub/preview/2022-10-11-preview/examples/Workflow_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/34f5146bc945549d087d38a8a593c0a5f475ad7f/specification/developerhub/resource-manager/Microsoft.DevHub/preview/2024-05-01-preview/examples/Workflow_Get.json
 func ExampleWorkflowClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -195,7 +195,7 @@ func ExampleWorkflowClient_Get() {
 	// res.Workflow = armdevhub.Workflow{
 	// 	Name: to.Ptr("workflow1"),
 	// 	Type: to.Ptr("Micfosoft.DevHub/Workflow"),
-	// 	ID: to.Ptr("/subscription/subscriptionId1/resourceGroups/resourceGroup1/providers/Microsoft.DevHub/workflow/workflow1"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroup1/providers/Microsoft.DevHub/workflow/workflow1"),
 	// 	SystemData: &armdevhub.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-24T16:30:55.000Z"); return t}()),
 	// 		CreatedBy: to.Ptr("foo@contoso.com"),
@@ -214,9 +214,9 @@ func ExampleWorkflowClient_Get() {
 	// 				AcrRegistryName: to.Ptr("registry1"),
 	// 				AcrRepositoryName: to.Ptr("repo1"),
 	// 				AcrResourceGroup: to.Ptr("resourceGroup1"),
-	// 				AcrSubscriptionID: to.Ptr("subscriptionId1"),
+	// 				AcrSubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 			},
-	// 			AksResourceID: to.Ptr("/subscriptions/subscriptionId1/resourcegroups/resourceGroup1/providers/Microsoft.ContainerService/managedClusters/cluster1"),
+	// 			AksResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/resourceGroup1/providers/Microsoft.ContainerService/managedClusters/cluster1"),
 	// 			AuthStatus: to.Ptr(armdevhub.AuthorizationStatusAuthorized),
 	// 			BranchName: to.Ptr("branch1"),
 	// 			DeploymentProperties: &armdevhub.DeploymentProperties{
@@ -247,7 +247,7 @@ func ExampleWorkflowClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/developerhub/resource-manager/Microsoft.DevHub/preview/2022-10-11-preview/examples/Workflow_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/34f5146bc945549d087d38a8a593c0a5f475ad7f/specification/developerhub/resource-manager/Microsoft.DevHub/preview/2024-05-01-preview/examples/Workflow_CreateOrUpdate.json
 func ExampleWorkflowClient_CreateOrUpdate_createWorkflow() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -269,9 +269,9 @@ func ExampleWorkflowClient_CreateOrUpdate_createWorkflow() {
 					AcrRegistryName:   to.Ptr("registry1"),
 					AcrRepositoryName: to.Ptr("repo1"),
 					AcrResourceGroup:  to.Ptr("resourceGroup1"),
-					AcrSubscriptionID: to.Ptr("subscriptionId1"),
+					AcrSubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 				},
-				AksResourceID: to.Ptr("/subscriptions/subscriptionId1/resourcegroups/resourceGroup1/providers/Microsoft.ContainerService/managedClusters/cluster1"),
+				AksResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/resourceGroup1/providers/Microsoft.ContainerService/managedClusters/cluster1"),
 				BranchName:    to.Ptr("branch1"),
 				DeploymentProperties: &armdevhub.DeploymentProperties{
 					KubeManifestLocations: []*string{
@@ -302,7 +302,7 @@ func ExampleWorkflowClient_CreateOrUpdate_createWorkflow() {
 	// res.Workflow = armdevhub.Workflow{
 	// 	Name: to.Ptr("workflow1"),
 	// 	Type: to.Ptr("Micfosoft.DevHub/Workflow"),
-	// 	ID: to.Ptr("/subscription/subscriptionId1/resourceGroups/resourceGroup1/providers/Microsoft.DevHub/workflow/workflow1"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroup1/providers/Microsoft.DevHub/workflow/workflow1"),
 	// 	SystemData: &armdevhub.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-24T16:30:55.000Z"); return t}()),
 	// 		CreatedBy: to.Ptr("foo@contoso.com"),
@@ -321,9 +321,9 @@ func ExampleWorkflowClient_CreateOrUpdate_createWorkflow() {
 	// 				AcrRegistryName: to.Ptr("registry1"),
 	// 				AcrRepositoryName: to.Ptr("repo1"),
 	// 				AcrResourceGroup: to.Ptr("resourceGroup1"),
-	// 				AcrSubscriptionID: to.Ptr("subscriptionId1"),
+	// 				AcrSubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 			},
-	// 			AksResourceID: to.Ptr("/subscriptions/subscriptionId1/resourcegroups/resourceGroup1/providers/Microsoft.ContainerService/managedClusters/cluster1"),
+	// 			AksResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/resourceGroup1/providers/Microsoft.ContainerService/managedClusters/cluster1"),
 	// 			AuthStatus: to.Ptr(armdevhub.AuthorizationStatusAuthorized),
 	// 			BranchName: to.Ptr("branch2"),
 	// 			DeploymentProperties: &armdevhub.DeploymentProperties{
@@ -350,7 +350,7 @@ func ExampleWorkflowClient_CreateOrUpdate_createWorkflow() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/developerhub/resource-manager/Microsoft.DevHub/preview/2022-10-11-preview/examples/Workflow_CreateOrUpdate_WithArtifactGen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/34f5146bc945549d087d38a8a593c0a5f475ad7f/specification/developerhub/resource-manager/Microsoft.DevHub/preview/2024-05-01-preview/examples/Workflow_CreateOrUpdate_WithArtifactGen.json
 func ExampleWorkflowClient_CreateOrUpdate_createWorkflowWithArtifactGeneration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -386,9 +386,9 @@ func ExampleWorkflowClient_CreateOrUpdate_createWorkflowWithArtifactGeneration()
 					AcrRegistryName:   to.Ptr("registry1"),
 					AcrRepositoryName: to.Ptr("repo1"),
 					AcrResourceGroup:  to.Ptr("resourceGroup1"),
-					AcrSubscriptionID: to.Ptr("subscriptionId1"),
+					AcrSubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 				},
-				AksResourceID: to.Ptr("/subscriptions/subscriptionId1/resourcegroups/resourceGroup1/providers/Microsoft.ContainerService/managedClusters/cluster1"),
+				AksResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/resourceGroup1/providers/Microsoft.ContainerService/managedClusters/cluster1"),
 				BranchName:    to.Ptr("branch1"),
 				DeploymentProperties: &armdevhub.DeploymentProperties{
 					KubeManifestLocations: []*string{
@@ -418,7 +418,7 @@ func ExampleWorkflowClient_CreateOrUpdate_createWorkflowWithArtifactGeneration()
 	// res.Workflow = armdevhub.Workflow{
 	// 	Name: to.Ptr("workflow1"),
 	// 	Type: to.Ptr("Micfosoft.DevHub/Workflow"),
-	// 	ID: to.Ptr("/subscription/subscriptionId1/resourceGroups/resourceGroup1/providers/Microsoft.DevHub/workflow/workflow1"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroup1/providers/Microsoft.DevHub/workflow/workflow1"),
 	// 	SystemData: &armdevhub.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-24T16:30:55.000Z"); return t}()),
 	// 		CreatedBy: to.Ptr("foo@contoso.com"),
@@ -437,9 +437,9 @@ func ExampleWorkflowClient_CreateOrUpdate_createWorkflowWithArtifactGeneration()
 	// 				AcrRegistryName: to.Ptr("registry1"),
 	// 				AcrRepositoryName: to.Ptr("repo1"),
 	// 				AcrResourceGroup: to.Ptr("resourceGroup1"),
-	// 				AcrSubscriptionID: to.Ptr("subscriptionId1"),
+	// 				AcrSubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 			},
-	// 			AksResourceID: to.Ptr("/subscriptions/subscriptionId1/resourcegroups/resourceGroup1/providers/Microsoft.ContainerService/managedClusters/cluster1"),
+	// 			AksResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/resourceGroup1/providers/Microsoft.ContainerService/managedClusters/cluster1"),
 	// 			AuthStatus: to.Ptr(armdevhub.AuthorizationStatusAuthorized),
 	// 			BranchName: to.Ptr("branch2"),
 	// 			DeploymentProperties: &armdevhub.DeploymentProperties{
@@ -466,7 +466,7 @@ func ExampleWorkflowClient_CreateOrUpdate_createWorkflowWithArtifactGeneration()
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/developerhub/resource-manager/Microsoft.DevHub/preview/2022-10-11-preview/examples/Workflow_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/34f5146bc945549d087d38a8a593c0a5f475ad7f/specification/developerhub/resource-manager/Microsoft.DevHub/preview/2024-05-01-preview/examples/Workflow_Delete.json
 func ExampleWorkflowClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -489,7 +489,7 @@ func ExampleWorkflowClient_Delete() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/developerhub/resource-manager/Microsoft.DevHub/preview/2022-10-11-preview/examples/Workflow_UpdateTags.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/34f5146bc945549d087d38a8a593c0a5f475ad7f/specification/developerhub/resource-manager/Microsoft.DevHub/preview/2024-05-01-preview/examples/Workflow_UpdateTags.json
 func ExampleWorkflowClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -515,7 +515,7 @@ func ExampleWorkflowClient_UpdateTags() {
 	// res.Workflow = armdevhub.Workflow{
 	// 	Name: to.Ptr("workflow1"),
 	// 	Type: to.Ptr("Micfosoft.DevHub/Workflow"),
-	// 	ID: to.Ptr("/subscription/subscriptionId1/resourceGroups/resourceGroup1/providers/Microsoft.DevHub/workflow/workflow1"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroup1/providers/Microsoft.DevHub/workflow/workflow1"),
 	// 	SystemData: &armdevhub.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-24T16:30:55.000Z"); return t}()),
 	// 		CreatedBy: to.Ptr("foo@contoso.com"),
@@ -536,9 +536,9 @@ func ExampleWorkflowClient_UpdateTags() {
 	// 				AcrRegistryName: to.Ptr("registry1"),
 	// 				AcrRepositoryName: to.Ptr("repo1"),
 	// 				AcrResourceGroup: to.Ptr("resourceGroup1"),
-	// 				AcrSubscriptionID: to.Ptr("subscriptionId1"),
+	// 				AcrSubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 			},
-	// 			AksResourceID: to.Ptr("/subscriptions/subscriptionId1/resourcegroups/resourceGroup1/providers/Microsoft.ContainerService/managedClusters/cluster1"),
+	// 			AksResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/resourceGroup1/providers/Microsoft.ContainerService/managedClusters/cluster1"),
 	// 			AuthStatus: to.Ptr(armdevhub.AuthorizationStatusAuthorized),
 	// 			BranchName: to.Ptr("branch1"),
 	// 			DeploymentProperties: &armdevhub.DeploymentProperties{

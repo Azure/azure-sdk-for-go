@@ -263,51 +263,50 @@ func TestBearerTokenPolicyChallengeHandling(t *testing.T) {
 		},
 		{
 			desc:      "no claims",
-			challenge: `Bearer authorization_uri="https://login.windows.net/", error="invalid_token", error_description="The authentication failed because of missing 'Authorization' header."`,
+			challenge: `Bearer authorization_uri="https://login.windows.net/", error="insufficient_claims", error_description="The authentication failed because of missing 'Authorization' header."`,
+			err:       (*exported.ResponseError)(nil),
+		},
+		{
+			desc:      "unexpected error value",
+			challenge: `Bearer authorization_uri="https://login.windows.net/", error="invalid_token", claims="ey=="`,
 			err:       (*exported.ResponseError)(nil),
 		},
 		{
 			desc:      "parsing error",
-			challenge: `Bearer claims="not base64"`,
+			challenge: `Bearer claims="not base64", error="insufficient_claims"`,
 			err:       (*exported.ResponseError)(nil),
 		},
-
-		// CAE claims challenges. Position of the "claims" parameter within the challenge shouldn't affect parsing.
 		{
-			desc:           "insufficient claims",
-			challenge:      `Bearer realm="", authorization_uri="https://login.microsoftonline.com/common/oauth2/authorize", client_id="00000003-0000-0000-c000-000000000000", error="insufficient_claims", claims="eyJhY2Nlc3NfdG9rZW4iOiB7ImZvbyI6ICJiYXIifX0="`,
-			expectedClaims: `{"access_token": {"foo": "bar"}}`,
+			desc:           "no padding",
+			challenge:      `Bearer error="insufficient_claims", authorization_uri="http://localhost", claims="ey"`,
+			expectedClaims: "{",
+		},
+		{
+			desc:           "more parameters, different order",
+			challenge:      `Bearer realm="", authorization_uri="http://localhost", client_id="00000003-0000-0000-c000-000000000000", error="insufficient_claims", claims="ey=="`,
+			expectedClaims: "{",
 		},
 		{
 			desc:           "insufficient claims",
-			challenge:      `Bearer claims="eyJhY2Nlc3NfdG9rZW4iOiB7ImZvbyI6ICJiYXIifX0=", realm="", authorization_uri="https://login.microsoftonline.com/common/oauth2/authorize", client_id="00000003-0000-0000-c000-000000000000", error="insufficient_claims"`,
-			expectedClaims: `{"access_token": {"foo": "bar"}}`,
+			challenge:      `Bearer claims="ey==", authorization_uri="http://localhost", client_id="00000003-0000-0000-c000-000000000000", error="insufficient_claims"`,
+			expectedClaims: "{",
 		},
 		{
-			desc:           "sessions revoked",
-			challenge:      `Bearer authorization_uri="https://login.windows.net/", error="invalid_token", error_description="User session has been revoked", claims="eyJhY2Nlc3NfdG9rZW4iOnsibmJmIjp7ImVzc2VudGlhbCI6dHJ1ZSwgInZhbHVlIjoiMTYwMzc0MjgwMCJ9fX0="`,
-			expectedClaims: `{"access_token":{"nbf":{"essential":true, "value":"1603742800"}}}`,
+			desc:           "standard",
+			challenge:      `Bearer realm="", authorization_uri="https://login.microsoftonline.com/common/oauth2/authorize", error="insufficient_claims", claims="eyJhY2Nlc3NfdG9rZW4iOnsibmJmIjp7ImVzc2VudGlhbCI6dHJ1ZSwidmFsdWUiOiIxNzI2MDc3NTk1In0sInhtc19jYWVlcnJvciI6eyJ2YWx1ZSI6IjEwMDEyIn19fQ=="`,
+			expectedClaims: `{"access_token":{"nbf":{"essential":true,"value":"1726077595"},"xms_caeerror":{"value":"10012"}}}`,
 		},
 		{
-			desc:           "sessions revoked",
-			challenge:      `Bearer authorization_uri="https://login.windows.net/", claims="eyJhY2Nlc3NfdG9rZW4iOnsibmJmIjp7ImVzc2VudGlhbCI6dHJ1ZSwgInZhbHVlIjoiMTYwMzc0MjgwMCJ9fX0=", error="invalid_token", error_description="User session has been revoked"`,
-			expectedClaims: `{"access_token":{"nbf":{"essential":true, "value":"1603742800"}}}`,
-		},
-		{
-			desc:           "IP policy",
-			challenge:      `Bearer authorization_uri="https://login.windows.net/", error="invalid_token", error_description="Tenant IP Policy validate failed.", claims="eyJhY2Nlc3NfdG9rZW4iOnsibmJmIjp7ImVzc2VudGlhbCI6dHJ1ZSwidmFsdWUiOiIxNjEwNTYzMDA2In0sInhtc19ycF9pcGFkZHIiOnsidmFsdWUiOiIxLjIuMy40In19fQ"`,
-			expectedClaims: `{"access_token":{"nbf":{"essential":true,"value":"1610563006"},"xms_rp_ipaddr":{"value":"1.2.3.4"}}}`,
-		},
-		{
-			desc:           "IP policy",
-			challenge:      `Bearer authorization_uri="https://login.windows.net/", error="invalid_token", claims="eyJhY2Nlc3NfdG9rZW4iOnsibmJmIjp7ImVzc2VudGlhbCI6dHJ1ZSwidmFsdWUiOiIxNjEwNTYzMDA2In0sInhtc19ycF9pcGFkZHIiOnsidmFsdWUiOiIxLjIuMy40In19fQ", error_description="Tenant IP Policy validate failed."`,
-			expectedClaims: `{"access_token":{"nbf":{"essential":true,"value":"1610563006"},"xms_rp_ipaddr":{"value":"1.2.3.4"}}}`,
+			desc:           "multiple challenges",
+			challenge:      `PoP realm="", authorization_uri="https://login.microsoftonline.com/common/oauth2/authorize", client_id="00000003-0000-0000-c000-000000000000", nonce="ey==", Bearer realm="", authorization_uri="https://login.microsoftonline.com/common/oauth2/authorize", client_id="00000003-0000-0000-c000-000000000000", error_description="Continuous access evaluation resulted in challenge with result: InteractionRequired and code: TokenIssuedBeforeRevocationTimestamp", error="insufficient_claims", claims="eyJhY2Nlc3NfdG9rZW4iOnsibmJmIjp7ImVzc2VudGlhbCI6dHJ1ZSwgInZhbHVlIjoiMTcyNjI1ODEyMiJ9fX0="`,
+			expectedClaims: `{"access_token":{"nbf":{"essential":true, "value":"1726258122"}}}`,
 		},
 	} {
 		t.Run(test.desc, func(t *testing.T) {
 			srv, close := mock.NewTLSServer()
 			defer close()
-			srv.SetResponse(mock.WithHeader(shared.HeaderWWWAuthenticate, test.challenge), mock.WithStatusCode(http.StatusUnauthorized))
+			srv.AppendResponse(mock.WithHeader(shared.HeaderWWWAuthenticate, test.challenge), mock.WithStatusCode(http.StatusUnauthorized))
+			srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
 			tkReqs := 0
 			cred := mockCredential{
 				getTokenImpl: func(_ context.Context, actual policy.TokenRequestOptions) (exported.AccessToken, error) {
@@ -321,7 +320,7 @@ func TestBearerTokenPolicyChallengeHandling(t *testing.T) {
 					default:
 						t.Fatalf("unexpected token request")
 					}
-					return exported.AccessToken{Token: "...", ExpiresOn: time.Now().Add(time.Hour).UTC()}, nil
+					return exported.AccessToken{Token: tokenValue, ExpiresOn: time.Now().Add(time.Hour).UTC()}, nil
 				},
 			}
 			b := NewBearerTokenPolicy(cred, []string{scope}, nil)

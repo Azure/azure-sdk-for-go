@@ -7,7 +7,9 @@ import (
 	"encoding/base64"
 	"errors"
 	"net/http"
+	"regexp"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
@@ -123,8 +125,7 @@ func (b *BearerTokenPolicy) Do(req *policy.Request) (*http.Response, error) {
 }
 
 func (b *BearerTokenPolicy) handleClaimsChallenge(_ *policy.Request, res *http.Response, authNZ func(policy.TokenRequestOptions) error) error {
-	challenge := res.Header.Get(shared.HeaderWWWAuthenticate)
-	claims, err := parseChallenge(challenge)
+	claims, err := parseCAEChallenge(res)
 	if err != nil {
 		// challenge contains claims we can't parse
 		return err
@@ -144,32 +145,59 @@ func checkHTTPSForAuth(req *policy.Request, allowHTTP bool) error {
 	return nil
 }
 
-// parseChallenge parses claims from an authentication challenge so a client can request a token that
-// will satisfy conditional access policies. It returns a non-nil error when the given value contains
-// claims it can't parse. If the value contains no claims, it returns an empty string and a nil error.
-func parseChallenge(wwwAuthenticate string) (string, error) {
-	var (
-		claims string
-		err    error
-	)
-	for _, param := range strings.Split(wwwAuthenticate, ",") {
-		if _, after, found := strings.Cut(param, "claims="); found {
-			if claims != "" {
-				// The header contains multiple challenges, at least two of which specify claims. The specs allow this
-				// but it's unclear what a client should do in this case and there's as yet no concrete example of it.
-				err = errors.New("found multiple claims parameters in challenge: " + wwwAuthenticate)
-				break
+var (
+	claimsChallenge *regexp.Regexp
+	once            = &sync.Once{}
+)
+
+// parseCAEChallenge extracts claims from the first CAE challenge in the response's WWW-Authenticate header. If
+// the response doesn't contain a CAE challenge, it returns an empty string and nil error. It returns a non-nil
+// error only when it identifies a CAE challenge whose claims aren't valid base64.
+func parseCAEChallenge(res *http.Response) (string, error) {
+	once.Do(func() {
+		// This expression matches CAE claims challenges and captures their parameters. It doesn't
+		// correspond precisely to the challenge grammar in RFC 7235 appendix C because CAE challenges
+		// are more narrowly defined at
+		// https://learn.microsoft.com/entra/identity-platform/claims-challenge#claims-challenge-header-format
+		claimsChallenge = regexp.MustCompile(`(?:\w+ ((?:\w+="[^"]*",?\s*)+))`)
+	})
+	// WWW-Authenticate can have multiple values, each containing multiple challenges
+	for _, h := range res.Header.Values(shared.HeaderWWWAuthenticate) {
+		for _, sm := range claimsChallenge.FindAllStringSubmatch(h, -1) {
+			if len(sm) < 2 {
+				continue
 			}
-			// trim stuff that would get an error from RawURLEncoding; claims may or may not be padded
-			claims = strings.Trim(after, `\"=`)
-			// we don't return this error because it's something unhelpful like "illegal base64 data at input byte 42"
-			if b, de := base64.RawURLEncoding.DecodeString(claims); de == nil {
-				claims = string(b)
-			} else {
-				err = errors.New("challenge contains invalid claims: " + claims)
-				break
+			for _, params := range sm[1:] {
+				cae := false
+				claims := ""
+				for _, param := range strings.Split(params, ", ") {
+					k, v, found := strings.Cut(param, `="`)
+					if !found {
+						// should never happen given the regex that got us here
+						continue
+					}
+					switch strings.Trim(k, " ") {
+					case "claims":
+						claims = v
+					case "error":
+						// v has an irrelevant trailing quote
+						if strings.HasPrefix(v, "insufficient_claims") {
+							cae = true
+						}
+					}
+				}
+				if cae && claims != "" {
+					// remove the trailing quote and any base64 padding
+					if end := strings.IndexAny(claims, `="`); end > 0 {
+						claims = claims[:end]
+					}
+					if b, de := base64.RawURLEncoding.DecodeString(claims); de == nil {
+						return string(b), nil
+					}
+					return "", errors.New("challenge contains invalid claims: " + claims)
+				}
 			}
 		}
 	}
-	return claims, err
+	return "", nil
 }

@@ -1,13 +1,9 @@
 # Release History
 
-## 1.8.0-beta.3 (Unreleased)
+## 1.8.0-beta.3 (2024-09-17)
 
 ### Features Added
 * Added `ObjectID` type for `ManagedIdentityCredentialOptions.ID`
-
-### Breaking Changes
-
-### Bugs Fixed
 
 ### Other Changes
 * Removed redundant content from error messages

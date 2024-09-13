@@ -22,7 +22,7 @@ export-clients: true
 use: "@autorest/go@4.0.0-preview.65"
 ```
 
-### Updating service version to 2024-08-04
+### Updating service version to 2024-11-04
 ```yaml
 directive:
 - from: 
@@ -35,7 +35,7 @@ directive:
   where: $
   transform: >-
     return $.
-      replaceAll(`[]string{"2021-12-02"}`, `[]string{ServiceVersion}`);
+      replaceAll(`[]string{"2024-08-04"}`, `[]string{ServiceVersion}`);
 ```
 
 ### Fix CRC Response Header in PutBlob response

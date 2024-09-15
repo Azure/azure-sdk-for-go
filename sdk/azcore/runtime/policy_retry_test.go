@@ -894,3 +894,24 @@ func (n *nilRespInjector) Do(req *http.Request) (*http.Response, error) {
 	}
 	return n.t.Do(req)
 }
+
+func BenchmarkCalcDelay_defaultSettings(b *testing.B) {
+	retryOptions := policy.RetryOptions{}
+	setDefaults(&retryOptions)
+
+	for i := 0; i < b.N; i++ {
+		calcDelay(retryOptions, 32)
+	}
+}
+
+func BenchmarkCalcDelay_overflow(b *testing.B) {
+	retryOptions := policy.RetryOptions{
+		RetryDelay:    1,
+		MaxRetryDelay: math.MaxInt64,
+	}
+	setDefaults(&retryOptions)
+
+	for i := 0; i < b.N; i++ {
+		calcDelay(retryOptions, 100)
+	}
+}

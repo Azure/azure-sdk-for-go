@@ -59,13 +59,36 @@ func setDefaults(o *policy.RetryOptions) {
 }
 
 func calcDelay(o policy.RetryOptions, try int32) time.Duration { // try is >=1; never 0
-	delay := time.Duration((1<<try)-1) * o.RetryDelay
+	const maxDelay = math.MaxInt64
 
-	// Introduce some jitter:  [0.0, 1.0) / 2 = [0.0, 0.5) + 0.8 = [0.8, 1.3)
-	delay = time.Duration(delay.Seconds() * (rand.Float64()/2 + 0.8) * float64(time.Second)) // NOTE: We want math/rand; not crypto/rand
+	var factor int64
+	if try >= 63 {
+		factor = maxDelay
+	} else {
+		factor = int64(1)<<try - 1
+	}
+
+	var delay time.Duration
+	if factor > maxDelay/int64(o.RetryDelay) {
+		delay = maxDelay
+	} else {
+		delay = time.Duration(factor) * o.RetryDelay
+	}
+
+	// Introduce jitter:  [0.0, 1.0) / 2 = [0.0, 0.5) + 0.8 = [0.8, 1.3)
+	jitterMultiplier := rand.Float64()/2 + 0.8 // NOTE: We want math/rand; not crypto/rand
+
+	delayFloat := float64(delay) * jitterMultiplier
+	if delayFloat > float64(maxDelay) {
+		delay = maxDelay
+	} else {
+		delay = time.Duration(delayFloat)
+	}
+
 	if delay > o.MaxRetryDelay {
 		delay = o.MaxRetryDelay
 	}
+
 	return delay
 }
 

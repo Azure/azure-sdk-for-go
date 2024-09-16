@@ -79,7 +79,7 @@ func calcDelay(o policy.RetryOptions, try int32) time.Duration { // try is >=1; 
 	jitterMultiplier := rand.Float64()/2 + 0.8 // NOTE: We want math/rand; not crypto/rand
 
 	delayFloat := float64(delay) * jitterMultiplier
-	if delayFloat > float64(maxDelay) {
+	if delayFloat >= float64(maxDelay) { // NOTE: if the jitter pushes us over the maxDelay, just return the maxDelay
 		delay = maxDelay
 	} else {
 		delay = time.Duration(delayFloat)

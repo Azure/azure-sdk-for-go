@@ -955,7 +955,7 @@ func TestCalcDelay(t *testing.T) {
 		}
 		setDefaults(&retryOptions)
 
-		for i := int32(63); i < 1000; i++ {
+		for i := int32(63); i < 100000; i++ {
 			requireWithinJitter(
 				t, math.MaxInt64, calcDelay(retryOptions, i),
 			)

@@ -62,7 +62,7 @@ func NewBearerTokenPolicy(cred exported.TokenCredential, scopes []string, opts *
 		allowHTTP:    opts.InsecureAllowCredentialWithHTTP,
 	}
 	if b.authzHandler.OnChallenge == nil {
-		b.authzHandler.OnChallenge = b.handleClaimsChallenge
+		b.authzHandler.OnChallenge = b.handleCAEChallenge
 		b.authzHandler.SupportsCAE = true
 	}
 	return b
@@ -124,7 +124,7 @@ func (b *BearerTokenPolicy) Do(req *policy.Request) (*http.Response, error) {
 	return res, err
 }
 
-func (b *BearerTokenPolicy) handleClaimsChallenge(_ *policy.Request, res *http.Response, authNZ func(policy.TokenRequestOptions) error) error {
+func (b *BearerTokenPolicy) handleCAEChallenge(_ *policy.Request, res *http.Response, authNZ func(policy.TokenRequestOptions) error) error {
 	claims, err := parseCAEChallenge(res)
 	if err != nil {
 		// challenge contains claims we can't parse

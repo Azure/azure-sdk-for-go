@@ -8,7 +8,7 @@ This module provides models and convenience functions to make it simpler to use 
 
 ### Prerequisites
 
-* Go, version 1.18 or higher - [Install Go](https://go.dev/doc/install)
+* Go, version 1.21 or higher - [Install Go](https://go.dev/doc/install)
 * [Azure subscription][azure_sub]
 * [Azure OpenAI access][azure_openai_access]
 

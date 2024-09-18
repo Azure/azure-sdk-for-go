@@ -57,10 +57,6 @@ func TestClient_GetAudioTranscription(t *testing.T) {
 	})
 
 	t.Run(fmt.Sprintf("%s (%s)", openai.AudioTranscriptionNewParamsResponseFormatJSON, "mp3"), func(t *testing.T) {
-		if recording.GetRecordMode() == recording.PlaybackMode {
-			t.Skip("TODO: sanitization break: needs to be looked at")
-		}
-
 		transcriptResp, err := client.Audio.Transcriptions.New(context.Background(), openai.AudioTranscriptionNewParams{
 			Model:          openai.F(openai.AudioModel(model)),
 			File:           openai.F(getFile(t, "testdata/sampledata_audiofiles_myVoiceIsMyPassportVerifyMe01.mp3")),

@@ -10,52 +10,167 @@ package armbilling
 
 import "time"
 
+// AcceptTransferProperties - Request parameters to accept transfer.
+type AcceptTransferProperties struct {
+	// Request parameters to accept transfer.
+	ProductDetails []*ProductDetails
+}
+
+// AcceptTransferRequest - Request parameters to accept transfer.
+type AcceptTransferRequest struct {
+	// Request parameters to accept transfer.
+	Properties *AcceptTransferProperties
+}
+
 // Account - A billing account.
 type Account struct {
-	// The properties of the billing account.
+	// A billing account.
 	Properties *AccountProperties
 
-	// READ-ONLY; Resource Id.
+	// Dictionary of metadata associated with the resource. It may not be populated for all resource types. Maximum key/value
+	// length supported of 256 characters. Keys/value should not empty value nor null.
+	// Keys can not contain < > % & \ ? /
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; Resource name.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
-// AccountListResult - The list of billing accounts.
+// AccountListResult - A container for a list of resources
 type AccountListResult struct {
 	// READ-ONLY; The link (url) to the next page of results.
 	NextLink *string
 
-	// READ-ONLY; The list of billing accounts.
+	// READ-ONLY; The list of resources.
 	Value []*Account
 }
 
-// AccountProperties - The properties of the billing account.
+// AccountPatch - A billing account.
+type AccountPatch struct {
+	// A billing account.
+	Properties *AccountProperties
+
+	// Dictionary of metadata associated with the resource. It may not be populated for all resource types. Maximum key/value
+	// length supported of 256 characters. Keys/value should not empty value nor null.
+	// Keys can not contain < > % & \ ? /
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// AccountPolicy - A policy at billing account scope.
+type AccountPolicy struct {
+	// A policy at billing account scope.
+	Properties *AccountPolicyProperties
+
+	// Dictionary of metadata associated with the resource. It may not be populated for all resource types. Maximum key/value
+	// length supported of 256 characters. Keys/value should not empty value nor null.
+	// Keys can not contain < > % & \ ? /
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// AccountPolicyProperties - A policy at billing account scope.
+type AccountPolicyProperties struct {
+	// The policies for Enterprise Agreement enrollments.
+	EnterpriseAgreementPolicies *AccountPolicyPropertiesEnterpriseAgreementPolicies
+
+	// The policy that controls whether Azure marketplace purchases are allowed.
+	MarketplacePurchases *MarketplacePurchasesPolicy
+
+	// List of all policies defined at the billing scope.
+	Policies []*PolicySummary
+
+	// The policy that controls whether Azure reservation purchases are allowed.
+	ReservationPurchases *ReservationPurchasesPolicy
+
+	// The policy that controls whether users with Azure savings plan purchase are allowed.
+	SavingsPlanPurchases *SavingsPlanPurchasesPolicy
+
+	// READ-ONLY; The provisioning state of the resource during a long-running operation.
+	ProvisioningState *ProvisioningState
+}
+
+// AccountPolicyPropertiesEnterpriseAgreementPolicies - The policies for Enterprise Agreement enrollments.
+type AccountPolicyPropertiesEnterpriseAgreementPolicies struct {
+	// The policy that controls whether account owner can view charges.
+	AccountOwnerViewCharges *EnrollmentAccountOwnerViewCharges
+
+	// The state showing the enrollment auth level.
+	AuthenticationType *EnrollmentAuthLevelState
+
+	// The policy that controls whether department admin can view charges.
+	DepartmentAdminViewCharges *EnrollmentDepartmentAdminViewCharges
+}
+
+// AccountProperties - A billing account.
 type AccountProperties struct {
-	// The billing profiles associated with the billing account. By default this is not populated, unless it's specified in $expand.
-	BillingProfiles *ProfilesOnExpand
-
-	// The departments associated to the enrollment.
-	Departments []*Department
-
 	// The billing account name.
 	DisplayName *string
 
-	// The accounts associated to the enrollment.
-	EnrollmentAccounts []*EnrollmentAccount
+	// The properties of an enrollment.
+	EnrollmentDetails *AccountPropertiesEnrollmentDetails
 
-	// Notification email address, only for legacy accounts
+	// Indicates whether or not the billing account has any billing profiles.
+	HasNoBillingProfiles *bool
+
+	// Indicates whether user has read access to the billing account.
+	HasReadAccess *bool
+
+	// Notification email address for legacy account. Available for agreement type Microsoft Online Services Program.
 	NotificationEmailAddress *string
 
+	// The tenant that was used to set up the billing account. By default, only users from this tenant can get role assignments
+	// on the billing account and all purchases are provisioned in this tenant.
+	PrimaryBillingTenantID *string
+
+	// Describes the registration number of the organization linked with the billing account.
+	RegistrationNumber *AccountPropertiesRegistrationNumber
+
 	// The address of the individual or organization that is responsible for the billing account.
-	SoldTo *AddressDetails
+	SoldTo *AccountPropertiesSoldTo
+
+	// A list of tax identifiers for the billing account.
+	TaxIDs []*TaxIdentifier
 
 	// READ-ONLY; The current status of the billing account.
 	AccountStatus *AccountStatus
+
+	// READ-ONLY; Reason for the specified billing account status.
+	AccountStatusReasonCode *BillingAccountStatusReasonCode
+
+	// READ-ONLY; The tier of the account.
+	AccountSubType *AccountSubType
 
 	// READ-ONLY; The type of customer.
 	AccountType *AccountType
@@ -63,26 +178,83 @@ type AccountProperties struct {
 	// READ-ONLY; The type of agreement.
 	AgreementType *AgreementType
 
-	// READ-ONLY; The details about the associated legacy enrollment. By default this is not populated, unless it's specified
-	// in $expand.
-	EnrollmentDetails *Enrollment
+	// READ-ONLY; Identifies the billing relationships represented by a billing account. The billing relationship may be between
+	// Microsoft, the customer, and/or a third-party.
+	BillingRelationshipTypes []*BillingRelationshipType
 
-	// READ-ONLY; Indicates whether user has read access to the billing account.
-	HasReadAccess *bool
+	// READ-ONLY; The provisioning state of the resource during a long-running operation.
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; Qualifications for pricing on a billing account. Values may be Commercial, Education, Charity or Government.
+	Qualifications []*string
 }
 
-// AccountUpdateRequest - The request properties of the billing account that can be updated.
-type AccountUpdateRequest struct {
-	// A billing property.
-	Properties *AccountProperties
+// AccountPropertiesEnrollmentDetails - The properties of an enrollment.
+type AccountPropertiesEnrollmentDetails struct {
+	// The end date of the enrollment.
+	EndDate *time.Time
+
+	// The properties of an enrollment which are applicable only for indirect enrollments.
+	IndirectRelationshipInfo *EnrollmentDetailsIndirectRelationshipInfo
+
+	// The purchase order number of the enrollment.
+	PoNumber *string
+
+	// The start date of the enrollment.
+	StartDate *time.Time
+
+	// READ-ONLY; The billing cycle for the enrollment.
+	BillingCycle *string
+
+	// READ-ONLY; The channel type of the enrollment.
+	Channel *string
+
+	// READ-ONLY; The cloud of the enrollment.
+	Cloud *string
+
+	// READ-ONLY; The country code of the enrollment.
+	CountryCode *string
+
+	// READ-ONLY; The billing currency for the enrollment.
+	Currency *string
+
+	// READ-ONLY; The billing account extension opted by the company.
+	ExtendedTermOption *ExtendedTermOption
+
+	// READ-ONLY; The contact who receives invoices of the enrollment.
+	InvoiceRecipient *string
+
+	// READ-ONLY; The language for the enrollment.
+	Language *string
+
+	// READ-ONLY; Markup status of enrollment, applicable only for indirect enrollments.
+	MarkupStatus *MarkupStatus
+
+	// READ-ONLY; The support coverage period for the enrollment.
+	SupportCoverage *string
+
+	// READ-ONLY; The support level offer associated with an enrollment.
+	SupportLevel *SupportLevel
 }
 
-// AddressDetails - Address details.
-type AddressDetails struct {
+// AccountPropertiesRegistrationNumber - Describes the registration number of the organization linked with the billing account.
+type AccountPropertiesRegistrationNumber struct {
+	// The unique identification number of the organization linked with the billing account.
+	ID *string
+
+	// READ-ONLY; Identifies if the registration number is required for the billing account.
+	Required *bool
+
+	// READ-ONLY; The types of registration number allowed based on the country of the billing account.
+	Type []*string
+}
+
+// AccountPropertiesSoldTo - The address of the individual or organization that is responsible for the billing account.
+type AccountPropertiesSoldTo struct {
 	// REQUIRED; Address line 1.
 	AddressLine1 *string
 
-	// REQUIRED; Country code uses ISO2, 2-digit format.
+	// REQUIRED; Country code uses ISO 3166-1 Alpha-2 format.
 	Country *string
 
 	// Address line 2.
@@ -94,7 +266,7 @@ type AddressDetails struct {
 	// Address city.
 	City *string
 
-	// Company name.
+	// Company name. Optional for MCA Individual (Pay-as-you-go).
 	CompanyName *string
 
 	// Address district.
@@ -103,10 +275,13 @@ type AddressDetails struct {
 	// Email address.
 	Email *string
 
-	// First name.
+	// First name. Optional for MCA Enterprise.
 	FirstName *string
 
-	// Last name.
+	// Indicates if the address is incomplete.
+	IsValidAddress *bool
+
+	// Last name. Optional for MCA Enterprise.
 	LastName *string
 
 	// Middle name.
@@ -122,35 +297,100 @@ type AddressDetails struct {
 	Region *string
 }
 
+// AddressDetails - Address details.
+type AddressDetails struct {
+	// REQUIRED; Address line 1.
+	AddressLine1 *string
+
+	// REQUIRED; Country code uses ISO 3166-1 Alpha-2 format.
+	Country *string
+
+	// Address line 2.
+	AddressLine2 *string
+
+	// Address line 3.
+	AddressLine3 *string
+
+	// Address city.
+	City *string
+
+	// Company name. Optional for MCA Individual (Pay-as-you-go).
+	CompanyName *string
+
+	// Address district.
+	District *string
+
+	// Email address.
+	Email *string
+
+	// First name. Optional for MCA Enterprise.
+	FirstName *string
+
+	// Indicates if the address is incomplete.
+	IsValidAddress *bool
+
+	// Last name. Optional for MCA Enterprise.
+	LastName *string
+
+	// Middle name.
+	MiddleName *string
+
+	// Phone number.
+	PhoneNumber *string
+
+	// Postal code.
+	PostalCode *string
+
+	// Address region.
+	Region *string
+}
+
+// AddressValidationResponse - Result of the address validation.
+type AddressValidationResponse struct {
+	// READ-ONLY; Status of the address validation.
+	Status *AddressValidationStatus
+
+	// READ-ONLY; The list of suggested addresses.
+	SuggestedAddresses []*AddressDetails
+
+	// READ-ONLY; Validation error message.
+	ValidationMessage *string
+}
+
 // Agreement - An agreement.
 type Agreement struct {
-	// The properties of an agreement.
+	// An agreement.
 	Properties *AgreementProperties
 
-	// READ-ONLY; Resource Id.
+	// Dictionary of metadata associated with the resource. It may not be populated for all resource types. Maximum key/value
+	// length supported of 256 characters. Keys/value should not empty value nor null.
+	// Keys can not contain < > % & \ ? /
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; Resource name.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
-// AgreementListResult - Result of listing agreements.
+// AgreementListResult - A container for a list of resources
 type AgreementListResult struct {
 	// READ-ONLY; The link (url) to the next page of results.
 	NextLink *string
 
-	// READ-ONLY; The list of agreements.
+	// READ-ONLY; The list of resources.
 	Value []*Agreement
 }
 
-// AgreementProperties - The properties of an agreement.
+// AgreementProperties - An agreement.
 type AgreementProperties struct {
-	// The list of participants that participates in acceptance of an agreement.
-	Participants []*Participants
-
 	// READ-ONLY; The mode of acceptance for an agreement.
 	AcceptanceMode *AcceptanceMode
 
@@ -158,10 +398,13 @@ type AgreementProperties struct {
 	AgreementLink *string
 
 	// READ-ONLY; The list of billing profiles associated with agreement and present only for specific agreements.
-	BillingProfileInfo *ProfileInfo
+	BillingProfileInfo []*ProfileInfo
 
-	// READ-ONLY; The category of the agreement signed by a customer.
+	// READ-ONLY; The category of the agreement.
 	Category *Category
+
+	// READ-ONLY; The name of the agreement signed by a customer.
+	DisplayName *string
 
 	// READ-ONLY; The date from which the agreement is effective.
 	EffectiveDate *time.Time
@@ -169,170 +412,516 @@ type AgreementProperties struct {
 	// READ-ONLY; The date when the agreement expires.
 	ExpirationDate *time.Time
 
+	// READ-ONLY; The ID of the lead billing account if this agreement is part of the Customer Affiliate Purchase Terms.
+	LeadBillingAccountName *string
+
+	// READ-ONLY; The list of participants that participates in acceptance of an agreement.
+	Participants []*Participant
+
 	// READ-ONLY; The current status of the agreement.
 	Status *string
 }
 
 // Amount - The amount.
 type Amount struct {
-	// Amount value.
-	Value *float32
-
 	// READ-ONLY; The currency for the amount value.
 	Currency *string
+
+	// READ-ONLY; The amount value. For example, if the currency is USD, then a value of 600 would be $600.00.
+	Value *float32
 }
 
-// AvailableBalance - The latest Azure credit balance. This is the balance available for pay now.
-type AvailableBalance struct {
-	// The properties of available balance.
-	Properties *AvailableBalanceProperties
+// AppliedScopeProperties - Properties specific to applied scope type. Not required if not applicable.
+type AppliedScopeProperties struct {
+	// Display name
+	DisplayName *string
 
-	// READ-ONLY; Resource Id.
+	// Fully-qualified identifier of the management group where the benefit is applied.
+	ManagementGroupID *string
+
+	// Fully-qualified identifier of the resource group where the benefit is applied.
+	ResourceGroupID *string
+
+	// Fully-qualified identifier of the subscription where the benefit is applied.
+	SubscriptionID *string
+
+	// Tenant ID where the savings plan where the benefit is applied.
+	TenantID *string
+}
+
+// AssociatedTenant - An associated tenant.
+type AssociatedTenant struct {
+	// An associated tenant.
+	Properties *AssociatedTenantProperties
+
+	// Dictionary of metadata associated with the resource. It may not be populated for all resource types. Maximum key/value
+	// length supported of 256 characters. Keys/value should not empty value nor null.
+	// Keys can not contain < > % & \ ? /
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; Resource name.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
-// AvailableBalanceProperties - The properties of available balance.
+// AssociatedTenantListResult - A container for a list of resources
+type AssociatedTenantListResult struct {
+	// READ-ONLY; The link (url) to the next page of results.
+	NextLink *string
+
+	// READ-ONLY; The list of resources.
+	Value []*AssociatedTenant
+}
+
+// AssociatedTenantProperties - An associated tenant.
+type AssociatedTenantProperties struct {
+	// The state determines whether users from the associated tenant can be assigned roles for commerce activities like viewing
+	// and downloading invoices, managing payments, and making purchases.
+	BillingManagementState *BillingManagementTenantState
+
+	// The name of the associated tenant.
+	DisplayName *string
+
+	// The state determines whether subscriptions and licenses can be provisioned in the associated tenant. It can be set to 'Pending'
+	// to initiate a billing request.
+	ProvisioningManagementState *ProvisioningTenantState
+
+	// The ID that uniquely identifies a tenant.
+	TenantID *string
+
+	// READ-ONLY; The unique identifier for the billing request that is created when enabling provisioning for an associated tenant.
+	ProvisioningBillingRequestID *string
+
+	// READ-ONLY; The provisioning state of the resource during a long-running operation.
+	ProvisioningState *ProvisioningState
+}
+
+// AvailableBalance - The Available Credit or Payment on Account Balance. The credit balance can be used to settle due or
+// past due invoices.
+type AvailableBalance struct {
+	// The Available Credit or Payment on Account Balance. The credit balance can be used to settle due or past due invoices.
+	Properties *AvailableBalanceProperties
+
+	// Dictionary of metadata associated with the resource. It may not be populated for all resource types. Maximum key/value
+	// length supported of 256 characters. Keys/value should not empty value nor null.
+	// Keys can not contain < > % & \ ? /
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// AvailableBalanceProperties - The Available Credit or Payment on Account Balance. The credit balance can be used to settle
+// due or past due invoices.
 type AvailableBalanceProperties struct {
-	// READ-ONLY; Balance amount.
-	Amount *Amount
+	// Credit amount for immediate payment.
+	Amount *AvailableBalancePropertiesAmount
+
+	// Total amount of payments on accounts.
+	TotalPaymentsOnAccount *AvailableBalancePropertiesTotalPaymentsOnAccount
+
+	// READ-ONLY; The list of payments on accounts.
+	PaymentsOnAccount []*PaymentOnAccount
+}
+
+// AvailableBalancePropertiesAmount - Credit amount for immediate payment.
+type AvailableBalancePropertiesAmount struct {
+	// READ-ONLY; The currency for the amount value.
+	Currency *string
+
+	// READ-ONLY; The amount value. For example, if the currency is USD, then a value of 600 would be $600.00.
+	Value *float32
+}
+
+// AvailableBalancePropertiesTotalPaymentsOnAccount - Total amount of payments on accounts.
+type AvailableBalancePropertiesTotalPaymentsOnAccount struct {
+	// READ-ONLY; The currency for the amount value.
+	Currency *string
+
+	// READ-ONLY; The amount value. For example, if the currency is USD, then a value of 600 would be $600.00.
+	Value *float32
 }
 
 // AzurePlan - Details of the Azure plan.
 type AzurePlan struct {
-	// The sku id.
-	SKUID *string
+	// The ID that uniquely identifies a product.
+	ProductID *string
 
-	// READ-ONLY; The sku description.
+	// The sku description.
 	SKUDescription *string
+
+	// The ID that uniquely identifies a sku.
+	SKUID *string
+}
+
+// Beneficiary - Details of the beneficiary.
+type Beneficiary struct {
+	// The ID that uniquely identifies a user in a tenant.
+	ObjectID *string
+
+	// The ID that uniquely identifies a tenant.
+	TenantID *string
+}
+
+// CancelSubscriptionRequest - Request parameters for cancel customer subscription.
+type CancelSubscriptionRequest struct {
+	// REQUIRED; Cancellation reason.
+	CancellationReason *CancellationReason
+
+	// The fully qualified ID that uniquely identifies a customer.
+	CustomerID *string
+}
+
+// CheckAccessRequest - Request to check access.
+type CheckAccessRequest struct {
+	// List of actions passed in the request body against which the permissions will be checked.
+	Actions []*string
+}
+
+// CheckAccessResponse - The properties of a check access response.
+type CheckAccessResponse struct {
+	// READ-ONLY; Access Decision, specifies access is allowed or not.
+	AccessDecision *AccessDecision
+
+	// READ-ONLY; Gets or sets an action.
+	Action *string
+}
+
+// Commitment towards the benefit.
+type Commitment struct {
+	Amount *float64
+
+	// The ISO 4217 3-letter currency code for the currency used by this purchase record.
+	CurrencyCode *string
+
+	// Commitment grain.
+	Grain *CommitmentGrain
 }
 
 // Customer - A partner's customer.
 type Customer struct {
-	// The customer.
+	// A partner's customer.
 	Properties *CustomerProperties
 
-	// READ-ONLY; Resource Id.
+	// Dictionary of metadata associated with the resource. It may not be populated for all resource types. Maximum key/value
+	// length supported of 256 characters. Keys/value should not empty value nor null.
+	// Keys can not contain < > % & \ ? /
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; Resource name.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
-// CustomerListResult - The list of customers.
+// CustomerListResult - A container for a list of resources
 type CustomerListResult struct {
 	// READ-ONLY; The link (url) to the next page of results.
 	NextLink *string
 
-	// READ-ONLY; Total number of records.
-	TotalCount *int32
-
-	// READ-ONLY; The list of customers.
+	// READ-ONLY; The list of resources.
 	Value []*Customer
 }
 
-// CustomerPolicy - The customer's Policy.
+// CustomerPolicy - A policy at customer scope.
 type CustomerPolicy struct {
-	// The properties of a customer's policy.
+	// A policy at customer scope.
 	Properties *CustomerPolicyProperties
 
-	// READ-ONLY; Resource Id.
+	// Dictionary of metadata associated with the resource. It may not be populated for all resource types. Maximum key/value
+	// length supported of 256 characters. Keys/value should not empty value nor null.
+	// Keys can not contain < > % & \ ? /
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; Resource name.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
-// CustomerPolicyProperties - The properties of a customer's policy.
+// CustomerPolicyProperties - A policy at customer scope.
 type CustomerPolicyProperties struct {
-	// The policy that controls whether the users in customer's organization can view charges at pay-as-you-go prices.
-	ViewCharges *ViewCharges
+	// REQUIRED; The policy that controls whether the users in customer's organization can view charges at pay-as-you-go prices.
+	ViewCharges *ViewChargesPolicy
+
+	// List of all policies defined at the billing scope.
+	Policies []*PolicySummary
+
+	// READ-ONLY; The provisioning state of the resource during a long-running operation.
+	ProvisioningState *ProvisioningState
 }
 
-// CustomerProperties - The properties of a customer.
+// CustomerProperties - A partner's customer.
 type CustomerProperties struct {
-	// The name of the customer.
-	DisplayName *string
-
 	// Azure plans enabled for the customer.
 	EnabledAzurePlans []*AzurePlan
 
 	// The list of resellers for which an Azure plan is enabled for the customer.
 	Resellers []*Reseller
 
-	// READ-ONLY; The name of the billing profile for the invoice section.
+	// Dictionary of metadata associated with the resource. Maximum key/value length supported of 256 characters. Keys/value should
+	// not empty value nor null. Keys can not contain < > % & \ ? /
+	Tags map[string]*string
+
+	// READ-ONLY; The name of the billing profile.
 	BillingProfileDisplayName *string
 
-	// READ-ONLY; The ID of the billing profile for the invoice section.
+	// READ-ONLY; The fully qualified ID that uniquely identifies a billing profile.
 	BillingProfileID *string
+
+	// READ-ONLY; The name of the customer.
+	DisplayName *string
+
+	// READ-ONLY; Identifies the status of an customer. This is an upcoming property that will be populated in the future.
+	Status *CustomerStatus
+
+	// READ-ONLY; The system generated unique identifier for a customer.
+	SystemID *string
 }
 
-// Department - A department.
+// DeleteBillingProfileEligibilityDetail - Validation details of delete billing profile eligibility.
+type DeleteBillingProfileEligibilityDetail struct {
+	// Code of the delete invoice section eligibility response.
+	Code *DeleteBillingProfileEligibilityCode
+
+	// Validation message.
+	Message *string
+}
+
+// DeleteBillingProfileEligibilityResult - Eligibility to delete a billing profile result.
+type DeleteBillingProfileEligibilityResult struct {
+	// Validation details of delete billing profile eligibility.
+	EligibilityDetails []*DeleteBillingProfileEligibilityDetail
+
+	// Status describing if billing profile is eligible to be deleted.
+	EligibilityStatus *DeleteBillingProfileEligibilityStatus
+}
+
+// DeleteInvoiceSectionEligibilityDetail - The details of delete invoice section eligibility result.
+type DeleteInvoiceSectionEligibilityDetail struct {
+	// Code for the delete invoice section validation.
+	Code *DeleteInvoiceSectionEligibilityCode
+
+	// Validation message.
+	Message *string
+}
+
+// DeleteInvoiceSectionEligibilityResult - Eligibility to delete an invoice section result.
+type DeleteInvoiceSectionEligibilityResult struct {
+	// A list of delete invoice section eligibility result details.
+	EligibilityDetails []*DeleteInvoiceSectionEligibilityDetail
+
+	// Status describing if invoice section is eligible to be deleted.
+	EligibilityStatus *DeleteInvoiceSectionEligibilityStatus
+}
+
+// Department - Optional grouping of enrollment accounts to segment costs into logical groupings and set budgets.
 type Department struct {
-	// A department.
+	// Optional grouping of enrollment accounts to segment costs into logical groupings and set budgets.
 	Properties *DepartmentProperties
 
-	// READ-ONLY; Resource Id.
+	// Dictionary of metadata associated with the resource. It may not be populated for all resource types. Maximum key/value
+	// length supported of 256 characters. Keys/value should not empty value nor null.
+	// Keys can not contain < > % & \ ? /
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; Resource name.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
-// DepartmentProperties - The properties of a department.
+// DepartmentListResult - A container for a list of resources
+type DepartmentListResult struct {
+	// READ-ONLY; The link (url) to the next page of results.
+	NextLink *string
+
+	// READ-ONLY; The list of resources.
+	Value []*Department
+}
+
+// DepartmentProperties - Optional grouping of enrollment accounts to segment costs into logical groupings and set budgets.
 type DepartmentProperties struct {
 	// The cost center associated with the department.
 	CostCenter *string
 
 	// The name of the department.
-	DepartmentName *string
+	DisplayName *string
 
-	// Associated enrollment accounts. By default this is not populated, unless it's specified in $expand.
-	EnrollmentAccounts []*EnrollmentAccount
+	// READ-ONLY; The ID that uniquely identifies the department.
+	ID *string
 
-	// The status of the department.
+	// READ-ONLY; The status of the department.
 	Status *string
 }
 
-// Document - The properties of a document.
-type Document struct {
-	// READ-ONLY; The type of the document.
-	Kind *DocumentType
+// DetailedTransferStatus - Detailed transfer status.
+type DetailedTransferStatus struct {
+	// Error details for transfer execution.
+	ErrorDetails *TransferError
 
-	// READ-ONLY; The source of the document. ENF for Brazil and DRS for rest of the world.
-	Source *DocumentSource
+	// READ-ONLY; The ID of the product that is transferred.
+	ProductID *string
 
-	// READ-ONLY; Document URL.
-	URL *string
+	// READ-ONLY; The name of the product that is transferred.
+	ProductName *string
+
+	// READ-ONLY; Type of product that is transferred.
+	ProductType *ProductType
+
+	// READ-ONLY; The SKU of the product that is transferred.
+	SKUDescription *string
+
+	// READ-ONLY; Transfer status.
+	TransferStatus *ProductTransferStatus
 }
 
-// DownloadURL - A secure URL that can be used to download a an entity until the URL expires.
-type DownloadURL struct {
+// DocumentDownloadRequest - A list of download details for individual documents.
+type DocumentDownloadRequest struct {
+	// The ID that uniquely identifies an invoice document. This ID may be an identifier for an invoice PDF, a credit note, or
+	// a tax receipt. If omitted, the most recent invoice PDF for the invoice will be
+	// returned.
+	DocumentName *string
+
+	// The ID that uniquely identifies an invoice.
+	InvoiceName *string
+}
+
+// DocumentDownloadResult - A secure URL that can be used to download a an entity until the URL expires.
+type DocumentDownloadResult struct {
 	// READ-ONLY; The time in UTC when the download URL will expire.
-	ExpiryTime *time.Time
+	ExpiryTime *string
 
-	// READ-ONLY; The URL to the PDF file.
+	// READ-ONLY; The URL to the PDF or .zip file.
 	URL *string
 }
 
-// Enrollment - The properties of an enrollment.
-type Enrollment struct {
+// EnrollmentAccount - It is an organizational hierarchy within a billing account to administer and manage azure costs.
+type EnrollmentAccount struct {
+	// It is an organizational hierarchy within a billing account to administer and manage azure costs.
+	Properties *EnrollmentAccountProperties
+
+	// Dictionary of metadata associated with the resource. It may not be populated for all resource types. Maximum key/value
+	// length supported of 256 characters. Keys/value should not empty value nor null.
+	// Keys can not contain < > % & \ ? /
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// EnrollmentAccountListResult - A container for a list of resources
+type EnrollmentAccountListResult struct {
+	// READ-ONLY; The link (url) to the next page of results.
+	NextLink *string
+
+	// READ-ONLY; The list of resources.
+	Value []*EnrollmentAccount
+}
+
+// EnrollmentAccountProperties - It is an organizational hierarchy within a billing account to administer and manage azure
+// costs.
+type EnrollmentAccountProperties struct {
+	// The cost center associated with the enrollment account.
+	CostCenter *string
+
+	// The name of the enrollment account.
+	DisplayName *string
+
+	// Boolean flag which enables subscribers to run development and testing workloads on Azure at special Dev/Test rates.
+	IsDevTestEnabled *bool
+
+	// READ-ONLY; The owner of the enrollment account.
+	AccountOwner *string
+
+	// READ-ONLY; The authorization type of the enrollment account.
+	AuthType *string
+
+	// READ-ONLY; The name of the department under which the enrollment account exists.
+	DepartmentDisplayName *string
+
+	// READ-ONLY; The ID that uniquely identifies the department.
+	DepartmentID *string
+
+	// READ-ONLY; The date of expiration of the enrollment account.
+	EndDate *time.Time
+
+	// READ-ONLY; The date from which the enrollment account became valid and functional.
+	StartDate *time.Time
+
+	// READ-ONLY; The status of the enrollment account.
+	Status *string
+}
+
+// EnrollmentAccountSubscriptionDetails - The billing properties that can be modified. Available only for the Enterprise Agreement
+// Type.
+type EnrollmentAccountSubscriptionDetails struct {
+	// READ-ONLY; The enrollment Account and the subscription association start date. This field is available only for the Enterprise
+	// Agreement Type.
+	EnrollmentAccountStartDate *time.Time
+
+	// READ-ONLY; The current enrollment account status of the subscription. This field is available only for the Enterprise Agreement
+	// Type.
+	SubscriptionEnrollmentAccountStatus *SubscriptionEnrollmentAccountStatus
+}
+
+// EnrollmentDetails - The properties of an enrollment.
+type EnrollmentDetails struct {
 	// The end date of the enrollment.
 	EndDate *time.Time
+
+	// The properties of an enrollment which are applicable only for indirect enrollments.
+	IndirectRelationshipInfo *EnrollmentDetailsIndirectRelationshipInfo
+
+	// The purchase order number of the enrollment.
+	PoNumber *string
 
 	// The start date of the enrollment.
 	StartDate *time.Time
@@ -343,158 +932,136 @@ type Enrollment struct {
 	// READ-ONLY; The channel type of the enrollment.
 	Channel *string
 
+	// READ-ONLY; The cloud of the enrollment.
+	Cloud *string
+
 	// READ-ONLY; The country code of the enrollment.
 	CountryCode *string
 
 	// READ-ONLY; The billing currency for the enrollment.
 	Currency *string
 
+	// READ-ONLY; The billing account extension opted by the company.
+	ExtendedTermOption *ExtendedTermOption
+
+	// READ-ONLY; The contact who receives invoices of the enrollment.
+	InvoiceRecipient *string
+
 	// READ-ONLY; The language for the enrollment.
 	Language *string
 
-	// READ-ONLY; The policies for Enterprise Agreement enrollments.
-	Policies *EnrollmentPolicies
+	// READ-ONLY; Markup status of enrollment, applicable only for indirect enrollments.
+	MarkupStatus *MarkupStatus
 
-	// READ-ONLY; The current status of the enrollment.
-	Status *string
+	// READ-ONLY; The support coverage period for the enrollment.
+	SupportCoverage *string
+
+	// READ-ONLY; The support level offer associated with an enrollment.
+	SupportLevel *SupportLevel
 }
 
-// EnrollmentAccount - An enrollment account.
-type EnrollmentAccount struct {
-	// The properties of an enrollment account.
-	Properties *EnrollmentAccountProperties
+// EnrollmentDetailsIndirectRelationshipInfo - The properties of an enrollment which are applicable only for indirect enrollments.
+type EnrollmentDetailsIndirectRelationshipInfo struct {
+	// The billing account name of the partner or the customer for an indirect motion.
+	BillingAccountName *string
 
-	// READ-ONLY; Resource Id.
-	ID *string
+	// The billing profile name of the partner or the customer for an indirect motion.
+	BillingProfileName *string
 
-	// READ-ONLY; Resource name.
-	Name *string
+	// The display name of the partner or customer for an indirect motion.
+	DisplayName *string
+}
 
-	// READ-ONLY; Resource type.
+// EnterpriseAgreementPolicies - The policies for Enterprise Agreement enrollments.
+type EnterpriseAgreementPolicies struct {
+	// The policy that controls whether account owner can view charges.
+	AccountOwnerViewCharges *EnrollmentAccountOwnerViewCharges
+
+	// The state showing the enrollment auth level.
+	AuthenticationType *EnrollmentAuthLevelState
+
+	// The policy that controls whether department admin can view charges.
+	DepartmentAdminViewCharges *EnrollmentDepartmentAdminViewCharges
+}
+
+// ErrorAdditionalInfo - The resource management error additional info.
+type ErrorAdditionalInfo struct {
+	// READ-ONLY; The additional info.
+	Info any
+
+	// READ-ONLY; The additional info type.
 	Type *string
 }
 
-// EnrollmentAccountContext - The enrollment account context
-type EnrollmentAccountContext struct {
-	// The cost center associated with the enrollment account.
-	CostCenter *string
+// ErrorDetail - The error detail.
+type ErrorDetail struct {
+	// READ-ONLY; The error additional info.
+	AdditionalInfo []*ErrorAdditionalInfo
 
-	// The end date of the enrollment account.
-	EndDate *time.Time
-
-	// The ID of the enrollment account.
-	EnrollmentAccountName *string
-
-	// The start date of the enrollment account.
-	StartDate *time.Time
-}
-
-// EnrollmentAccountListResult - Result of listing enrollment accounts.
-type EnrollmentAccountListResult struct {
-	// READ-ONLY; The link (url) to the next page of results.
-	NextLink *string
-
-	// READ-ONLY; The list of enrollment accounts.
-	Value []*EnrollmentAccountSummary
-}
-
-// EnrollmentAccountProperties - The properties of an enrollment account.
-type EnrollmentAccountProperties struct {
-	// The name of the enrollment account.
-	AccountName *string
-
-	// The owner of the enrollment account.
-	AccountOwner *string
-
-	// The enrollment account owner email address.
-	AccountOwnerEmail *string
-
-	// The cost center associated with the enrollment account.
-	CostCenter *string
-
-	// Associated department. By default this is not populated, unless it's specified in $expand.
-	Department *Department
-
-	// The end date of the enrollment account.
-	EndDate *time.Time
-
-	// The start date of the enrollment account.
-	StartDate *time.Time
-
-	// The status of the enrollment account.
-	Status *string
-}
-
-// EnrollmentAccountSummary - An enrollment account resource.
-type EnrollmentAccountSummary struct {
-	// An enrollment account.
-	Properties *EnrollmentAccountSummaryProperties
-
-	// READ-ONLY; Resource Id.
-	ID *string
-
-	// READ-ONLY; Resource name.
-	Name *string
-
-	// READ-ONLY; Resource type.
-	Type *string
-}
-
-// EnrollmentAccountSummaryProperties - The properties of the enrollment account.
-type EnrollmentAccountSummaryProperties struct {
-	// READ-ONLY; The account owner's principal name.
-	PrincipalName *string
-}
-
-// EnrollmentPolicies - The policies for Enterprise Agreement enrollments.
-type EnrollmentPolicies struct {
-	// READ-ONLY; The policy that controls whether Account Owners can view charges.
-	AccountOwnerViewCharges *bool
-
-	// READ-ONLY; The policy that controls whether Department Administrators can view charges.
-	DepartmentAdminViewCharges *bool
-
-	// READ-ONLY; The policy that controls whether Azure marketplace purchases are allowed in the enrollment.
-	MarketplaceEnabled *bool
-
-	// READ-ONLY; The policy that controls whether Azure reservation purchases are allowed in the enrollment.
-	ReservedInstancesEnabled *bool
-}
-
-// ErrorDetails - The details of the error.
-type ErrorDetails struct {
-	// READ-ONLY; Error code.
+	// READ-ONLY; The error code.
 	Code *string
 
-	// READ-ONLY; The sub details of the error.
-	Details []*ErrorSubDetailsItem
+	// READ-ONLY; The error details.
+	Details []*ErrorDetail
 
-	// READ-ONLY; Error message indicating why the operation failed.
+	// READ-ONLY; The error message.
 	Message *string
 
-	// READ-ONLY; The target of the particular error.
+	// READ-ONLY; The error target.
 	Target *string
 }
 
-// ErrorResponse - Error response indicates that the service is not able to process the incoming request. The reason is provided
-// in the error message.
+// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
+// (This also follows the OData error response format.).
 type ErrorResponse struct {
-	// The details of the error.
-	Error *ErrorDetails
+	// The error object.
+	Error *ErrorDetail
 }
 
-type ErrorSubDetailsItem struct {
-	// READ-ONLY; Error code.
-	Code *string
+// ExtendedStatusDefinitionProperties - Extended status definition properties
+type ExtendedStatusDefinitionProperties struct {
+	// Subscription Id
+	SubscriptionID *string
+}
 
-	// READ-ONLY; Error message indicating why the operation failed.
+// ExtendedStatusInfo - Extended status information
+type ExtendedStatusInfo struct {
+	// The message giving detailed information about the status code.
 	Message *string
 
-	// READ-ONLY; The target of the particular error.
-	Target *string
+	// Properties specific to credit line check failure
+	Properties *ExtendedStatusInfoProperties
+
+	// Status code providing additional information.
+	StatusCode *string
 }
 
-// IndirectRelationshipInfo - The billing profile details of the partner of the customer for an indirect motion.
+// ExtendedStatusInfoProperties - Properties specific to credit line check failure
+type ExtendedStatusInfoProperties struct {
+	// The subscription that has failed credit line check.
+	SubscriptionID *string
+}
+
+// ExternalReference - An external reference.
+type ExternalReference struct {
+	// READ-ONLY; The ID that uniquely identifies an external reference.
+	ID *string
+
+	// READ-ONLY; The URL of the external reference.
+	URL *string
+}
+
+// FailedPayment - A failed payment.
+type FailedPayment struct {
+	// READ-ONLY; The date when the payment was attempted.
+	Date *time.Time
+
+	// READ-ONLY; The reason that the payment failed.
+	FailedPaymentReason *FailedPaymentReason
+}
+
+// IndirectRelationshipInfo - Identifies the billing profile that is linked to another billing profile in indirect purchase
+// motion.
 type IndirectRelationshipInfo struct {
 	// The billing account name of the partner or the customer for an indirect motion.
 	BillingAccountName *string
@@ -506,43 +1073,16 @@ type IndirectRelationshipInfo struct {
 	DisplayName *string
 }
 
-// Instruction - An instruction.
-type Instruction struct {
-	// A billing instruction used during invoice generation.
-	Properties *InstructionProperties
-
-	// READ-ONLY; Resource Id.
-	ID *string
-
-	// READ-ONLY; Resource name.
-	Name *string
-
-	// READ-ONLY; Resource type.
-	Type *string
+// InitiateTransferProperties - Request parameters to initiate transfer.
+type InitiateTransferProperties struct {
+	// The email ID of the recipient to whom the transfer request is sent.
+	RecipientEmailID *string
 }
 
-// InstructionListResult - The list of billing instructions used during invoice generation.
-type InstructionListResult struct {
-	// READ-ONLY; The link (url) to the next page of results.
-	NextLink *string
-
-	// READ-ONLY; The list of billing instructions used during invoice generation.
-	Value []*Instruction
-}
-
-// InstructionProperties - A billing instruction used during invoice generation.
-type InstructionProperties struct {
-	// REQUIRED; The amount budgeted for this billing instruction.
-	Amount *float32
-
-	// REQUIRED; The date this billing instruction is no longer in effect.
-	EndDate *time.Time
-
-	// REQUIRED; The date this billing instruction goes into effect.
-	StartDate *time.Time
-
-	// The date this billing instruction was created.
-	CreationDate *time.Time
+// InitiateTransferRequest - Request parameters to initiate transfer.
+type InitiateTransferRequest struct {
+	// Request parameters to initiate transfer.
+	Properties *InitiateTransferProperties
 }
 
 // Invoice - An invoice.
@@ -550,39 +1090,91 @@ type Invoice struct {
 	// An invoice.
 	Properties *InvoiceProperties
 
-	// READ-ONLY; Resource Id.
+	// Dictionary of metadata associated with the resource. It may not be populated for all resource types. Maximum key/value
+	// length supported of 256 characters. Keys/value should not empty value nor null.
+	// Keys can not contain < > % & \ ? /
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; Resource name.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
-// InvoiceListResult - The list of invoices.
+// InvoiceDocument - The properties of a document.
+type InvoiceDocument struct {
+	// READ-ONLY; The document numbers for the invoice document.
+	DocumentNumbers []*string
+
+	// READ-ONLY; The URL to download the invoice document if the source is external to Microsoft.Billing.
+	ExternalURL *string
+
+	// READ-ONLY; The type of the document.
+	Kind *InvoiceDocumentType
+
+	// READ-ONLY; The ID that uniquely identifies an invoice document. This ID may be an identifier for an invoice PDF, a credit
+	// note, or a tax receipt.
+	Name *string
+
+	// READ-ONLY; The source of the document. ENF for Brazil and DRS for rest of the world.
+	Source *DocumentSource
+
+	// READ-ONLY; The URL to download the invoice document if the source is internal to Microsoft.Billing.
+	URL *string
+}
+
+// InvoiceListResult - A container for a list of resources
 type InvoiceListResult struct {
 	// READ-ONLY; The link (url) to the next page of results.
 	NextLink *string
 
-	// READ-ONLY; Total number of records.
-	TotalCount *int32
-
-	// READ-ONLY; The list of invoices.
+	// READ-ONLY; The list of resources.
 	Value []*Invoice
 }
 
-// InvoiceProperties - The properties of the invoice.
+// InvoiceProperties - An invoice.
 type InvoiceProperties struct {
-	// READ-ONLY; The amount due as of now.
-	AmountDue *Amount
+	// The amount due as of now.
+	AmountDue *InvoicePropertiesAmountDue
 
-	// READ-ONLY; The amount of Azure prepayment applied to the charges. This field is applicable to billing accounts with agreement
-	// type Microsoft Customer Agreement.
-	AzurePrepaymentApplied *Amount
+	// The amount of Azure prepayment applied to the charges. This field is applicable to billing accounts with agreement type
+	// Microsoft Customer Agreement.
+	AzurePrepaymentApplied *InvoicePropertiesAzurePrepaymentApplied
 
-	// READ-ONLY; The total charges for the invoice billing period.
-	BilledAmount *Amount
+	// The total charges for the invoice billing period.
+	BilledAmount *InvoicePropertiesBilledAmount
+
+	// The total refund for returns and cancellations during the invoice billing period. This field is applicable to billing accounts
+	// with agreement type Microsoft Customer Agreement.
+	CreditAmount *InvoicePropertiesCreditAmount
+
+	// The amount of free Azure credits applied to the charges. This field is applicable to billing accounts with agreement type
+	// Microsoft Customer Agreement.
+	FreeAzureCreditApplied *InvoicePropertiesFreeAzureCreditApplied
+
+	// Rebill details for an invoice.
+	RebillDetails *InvoicePropertiesRebillDetails
+
+	// The details of a refund request.
+	RefundDetails *InvoicePropertiesRefundDetails
+
+	// The pre-tax amount due. This field is applicable to billing accounts with agreement type Microsoft Customer Agreement.
+	SubTotal *InvoicePropertiesSubTotal
+
+	// The amount of tax charged for the billing period. This field is applicable to billing accounts with agreement type Microsoft
+	// Customer Agreement.
+	TaxAmount *InvoicePropertiesTaxAmount
+
+	// The amount due when the invoice was generated. This field is applicable to billing accounts with agreement type Microsoft
+	// Customer Agreement.
+	TotalAmount *InvoicePropertiesTotalAmount
 
 	// READ-ONLY; The Id of the active invoice which is originally billed after this invoice was voided. This field is applicable
 	// to the void invoices only.
@@ -594,10 +1186,6 @@ type InvoiceProperties struct {
 	// READ-ONLY; The ID of the billing profile for which the invoice is generated.
 	BillingProfileID *string
 
-	// READ-ONLY; The total refund for returns and cancellations during the invoice billing period. This field is applicable to
-	// billing accounts with agreement type Microsoft Customer Agreement.
-	CreditAmount *Amount
-
 	// READ-ONLY; The Id of the invoice which got voided and this credit note was issued as a result. This field is applicable
 	// to the credit notes only.
 	CreditForDocumentID *string
@@ -605,23 +1193,22 @@ type InvoiceProperties struct {
 	// READ-ONLY; The type of the document.
 	DocumentType *InvoiceDocumentType
 
-	// READ-ONLY; List of documents available to download such as invoice and tax receipt.
-	Documents []*Document
+	// READ-ONLY; List of documents available to download and view such as invoice, credit note, or tax receipt.
+	Documents []*InvoiceDocument
 
 	// READ-ONLY; The due date for the invoice.
 	DueDate *time.Time
 
-	// READ-ONLY; The amount of free Azure credits applied to the charges. This field is applicable to billing accounts with agreement
-	// type Microsoft Customer Agreement.
-	FreeAzureCreditApplied *Amount
+	// READ-ONLY; List of failed payments.
+	FailedPayments []*FailedPayment
 
 	// READ-ONLY; The date when the invoice was generated.
 	InvoiceDate *time.Time
 
-	// READ-ONLY; The end date of the billing period for which the invoice is generated.
+	// READ-ONLY; The end date of the billing period for which the invoice is generated. The date is in MM-DD-YYYY format.
 	InvoicePeriodEndDate *time.Time
 
-	// READ-ONLY; The start date of the billing period for which the invoice is generated.
+	// READ-ONLY; The start date of the billing period for which the invoice is generated. The date is in MM-DD-YYYY format.
 	InvoicePeriodStartDate *time.Time
 
 	// READ-ONLY; Invoice type.
@@ -632,201 +1219,367 @@ type InvoiceProperties struct {
 	IsMonthlyInvoice *bool
 
 	// READ-ONLY; List of payments.
-	Payments []*PaymentProperties
+	Payments []*Payment
 
 	// READ-ONLY; An optional purchase order number for the invoice.
 	PurchaseOrderNumber *string
 
-	// READ-ONLY; Rebill details for an invoice.
-	RebillDetails map[string]*RebillDetails
+	// READ-ONLY; Identifies the type of tax calculation used for the invoice. The field is applicable only to invoices with special
+	// tax calculation logic.
+	SpecialTaxationType *SpecialTaxationType
 
 	// READ-ONLY; The current status of the invoice.
 	Status *InvoiceStatus
 
-	// READ-ONLY; The pre-tax amount due. This field is applicable to billing accounts with agreement type Microsoft Customer
-	// Agreement.
-	SubTotal *Amount
+	// READ-ONLY; The name of the billing subscription for which the invoice is generated.
+	SubscriptionDisplayName *string
 
 	// READ-ONLY; The ID of the subscription for which the invoice is generated.
 	SubscriptionID *string
+}
 
-	// READ-ONLY; The amount of tax charged for the billing period. This field is applicable to billing accounts with agreement
-	// type Microsoft Customer Agreement.
-	TaxAmount *Amount
+// InvoicePropertiesAmountDue - The amount due as of now.
+type InvoicePropertiesAmountDue struct {
+	// READ-ONLY; The currency for the amount value.
+	Currency *string
 
-	// READ-ONLY; The amount due when the invoice was generated. This field is applicable to billing accounts with agreement type
-	// Microsoft Customer Agreement.
-	TotalAmount *Amount
+	// READ-ONLY; The amount value. For example, if the currency is USD, then a value of 600 would be $600.00.
+	Value *float32
+}
+
+// InvoicePropertiesAzurePrepaymentApplied - The amount of Azure prepayment applied to the charges. This field is applicable
+// to billing accounts with agreement type Microsoft Customer Agreement.
+type InvoicePropertiesAzurePrepaymentApplied struct {
+	// READ-ONLY; The currency for the amount value.
+	Currency *string
+
+	// READ-ONLY; The amount value. For example, if the currency is USD, then a value of 600 would be $600.00.
+	Value *float32
+}
+
+// InvoicePropertiesBilledAmount - The total charges for the invoice billing period.
+type InvoicePropertiesBilledAmount struct {
+	// READ-ONLY; The currency for the amount value.
+	Currency *string
+
+	// READ-ONLY; The amount value. For example, if the currency is USD, then a value of 600 would be $600.00.
+	Value *float32
+}
+
+// InvoicePropertiesCreditAmount - The total refund for returns and cancellations during the invoice billing period. This
+// field is applicable to billing accounts with agreement type Microsoft Customer Agreement.
+type InvoicePropertiesCreditAmount struct {
+	// READ-ONLY; The currency for the amount value.
+	Currency *string
+
+	// READ-ONLY; The amount value. For example, if the currency is USD, then a value of 600 would be $600.00.
+	Value *float32
+}
+
+// InvoicePropertiesFreeAzureCreditApplied - The amount of free Azure credits applied to the charges. This field is applicable
+// to billing accounts with agreement type Microsoft Customer Agreement.
+type InvoicePropertiesFreeAzureCreditApplied struct {
+	// READ-ONLY; The currency for the amount value.
+	Currency *string
+
+	// READ-ONLY; The amount value. For example, if the currency is USD, then a value of 600 would be $600.00.
+	Value *float32
+}
+
+// InvoicePropertiesRebillDetails - Rebill details for an invoice.
+type InvoicePropertiesRebillDetails struct {
+	// READ-ONLY; The ID of credit note.
+	CreditNoteDocumentID *string
+
+	// READ-ONLY; The ID of invoice.
+	InvoiceDocumentID *string
+
+	// READ-ONLY; The rebill details of an invoice.
+	RebillDetails *RebillDetails
+}
+
+// InvoicePropertiesRefundDetails - The details of a refund request.
+type InvoicePropertiesRefundDetails struct {
+	// The amount refunded.
+	AmountRefunded *RefundDetailsSummaryAmountRefunded
+
+	// The amount of refund requested.
+	AmountRequested *RefundDetailsSummaryAmountRequested
+
+	// READ-ONLY; Date when the refund was approved.
+	ApprovedOn *time.Time
+
+	// READ-ONLY; Date when the refund was completed.
+	CompletedOn *time.Time
+
+	// READ-ONLY; The invoice ID of the rebill invoice for a refund.
+	RebillInvoiceID *string
+
+	// READ-ONLY; The ID of refund operation.
+	RefundOperationID *string
+
+	// READ-ONLY; The reason for refund.
+	RefundReason *RefundReasonCode
+
+	// READ-ONLY; The status of refund request.
+	RefundStatus *RefundStatus
+
+	// READ-ONLY; Date when the refund was requested.
+	RequestedOn *time.Time
+
+	// READ-ONLY; The number of transactions refunded.
+	TransactionCount *int32
+}
+
+// InvoicePropertiesSubTotal - The pre-tax amount due. This field is applicable to billing accounts with agreement type Microsoft
+// Customer Agreement.
+type InvoicePropertiesSubTotal struct {
+	// READ-ONLY; The currency for the amount value.
+	Currency *string
+
+	// READ-ONLY; The amount value. For example, if the currency is USD, then a value of 600 would be $600.00.
+	Value *float32
+}
+
+// InvoicePropertiesTaxAmount - The amount of tax charged for the billing period. This field is applicable to billing accounts
+// with agreement type Microsoft Customer Agreement.
+type InvoicePropertiesTaxAmount struct {
+	// READ-ONLY; The currency for the amount value.
+	Currency *string
+
+	// READ-ONLY; The amount value. For example, if the currency is USD, then a value of 600 would be $600.00.
+	Value *float32
+}
+
+// InvoicePropertiesTotalAmount - The amount due when the invoice was generated. This field is applicable to billing accounts
+// with agreement type Microsoft Customer Agreement.
+type InvoicePropertiesTotalAmount struct {
+	// READ-ONLY; The currency for the amount value.
+	Currency *string
+
+	// READ-ONLY; The amount value. For example, if the currency is USD, then a value of 600 would be $600.00.
+	Value *float32
 }
 
 // InvoiceSection - An invoice section.
 type InvoiceSection struct {
-	// The properties of an invoice section.
+	// An invoice section.
 	Properties *InvoiceSectionProperties
 
-	// READ-ONLY; Resource Id.
+	// Dictionary of metadata associated with the resource. It may not be populated for all resource types. Maximum key/value
+	// length supported of 256 characters. Keys/value should not empty value nor null.
+	// Keys can not contain < > % & \ ? /
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; Resource name.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
-// InvoiceSectionCreationRequest - The properties of the invoice section.
-type InvoiceSectionCreationRequest struct {
-	// The name of the invoice section.
-	DisplayName *string
-}
-
-// InvoiceSectionListResult - The list of invoice sections.
+// InvoiceSectionListResult - A container for a list of resources
 type InvoiceSectionListResult struct {
 	// READ-ONLY; The link (url) to the next page of results.
 	NextLink *string
 
-	// READ-ONLY; Total number of records.
-	TotalCount *int32
-
-	// READ-ONLY; The list of invoice sections.
+	// READ-ONLY; The list of resources.
 	Value []*InvoiceSection
 }
 
-// InvoiceSectionListWithCreateSubPermissionResult - The list of invoice section properties with create subscription permission.
-type InvoiceSectionListWithCreateSubPermissionResult struct {
-	// The list of invoice section properties with create subscription permission.
-	Value []*InvoiceSectionWithCreateSubPermission
-
-	// READ-ONLY; The link (url) to the next page of results.
-	NextLink *string
-}
-
-// InvoiceSectionProperties - The properties of an invoice section.
+// InvoiceSectionProperties - An invoice section.
 type InvoiceSectionProperties struct {
 	// The name of the invoice section.
 	DisplayName *string
 
-	// Dictionary of metadata associated with the invoice section.
-	Labels map[string]*string
+	// Reason for the specified invoice section status.
+	ReasonCode *InvoiceSectionStateReasonCode
 
-	// Dictionary of metadata associated with the invoice section. Maximum key/value length supported of 256 characters. Keys/value
-	// should not empty value nor null. Keys can not contain < > % & \ ? /
+	// Identifies the status of an invoice section.
+	State *InvoiceSectionState
+
+	// Dictionary of metadata associated with the resource. Maximum key/value length supported of 256 characters. Keys/value should
+	// not empty value nor null. Keys can not contain < > % & \ ? /
 	Tags map[string]*string
 
-	// READ-ONLY; Identifies the state of an invoice section.
-	State *InvoiceSectionState
+	// Identifies the cloud environments that are associated with an invoice section. This is a system managed optional field
+	// and gets updated as the invoice section gets associated with accounts in various
+	// clouds.
+	TargetCloud *string
+
+	// READ-ONLY; The provisioning state of the resource during a long-running operation.
+	ProvisioningState *ProvisioningState
 
 	// READ-ONLY; The system generated unique identifier for an invoice section.
 	SystemID *string
-
-	// READ-ONLY; Identifies the cloud environments that are associated with an invoice section. This is a system managed optional
-	// field and gets updated as the invoice section gets associated with accounts in various
-	// clouds.
-	TargetCloud *TargetCloud
 }
 
 // InvoiceSectionWithCreateSubPermission - Invoice section properties with create subscription permission.
 type InvoiceSectionWithCreateSubPermission struct {
-	// Enabled azure plans for the associated billing profile.
-	EnabledAzurePlans []*AzurePlan
-
-	// READ-ONLY; The name of the billing profile for the invoice section.
+	// READ-ONLY; The name of the billing profile.
 	BillingProfileDisplayName *string
 
-	// READ-ONLY; The ID of the billing profile for the invoice section.
+	// READ-ONLY; The fully qualified ID that uniquely identifies a billing profile.
 	BillingProfileID *string
 
 	// READ-ONLY; The billing profile spending limit.
-	BillingProfileSpendingLimit *SpendingLimitForBillingProfile
+	BillingProfileSpendingLimit *SpendingLimit
 
 	// READ-ONLY; The status of the billing profile.
 	BillingProfileStatus *BillingProfileStatus
 
 	// READ-ONLY; Reason for the specified billing profile status.
-	BillingProfileStatusReasonCode *StatusReasonCodeForBillingProfile
+	BillingProfileStatusReasonCode *BillingProfileStatusReasonCode
 
 	// READ-ONLY; The system generated unique identifier for a billing profile.
 	BillingProfileSystemID *string
 
+	// READ-ONLY; Enabled azure plans for the associated billing profile.
+	EnabledAzurePlans []*AzurePlan
+
 	// READ-ONLY; The name of the invoice section.
 	InvoiceSectionDisplayName *string
 
-	// READ-ONLY; The ID of the invoice section.
+	// READ-ONLY; The fully qualified ID that uniquely identifies an invoice section.
 	InvoiceSectionID *string
 
 	// READ-ONLY; The system generated unique identifier for an invoice section.
 	InvoiceSectionSystemID *string
 }
 
-// InvoiceSectionsOnExpand - The invoice sections associated to the billing profile. By default this is not populated, unless
-// it's specified in $expand.
-type InvoiceSectionsOnExpand struct {
-	// The invoice sections associated to the billing profile.
-	Value []*InvoiceSection
+// InvoiceSectionWithCreateSubPermissionListResult - A container for a list of resources
+type InvoiceSectionWithCreateSubPermissionListResult struct {
+	// READ-ONLY; The link (url) to the next page of results.
+	NextLink *string
 
-	// READ-ONLY; Indicates whether there are more invoice sections than the ones listed in this collection. The collection lists
-	// a maximum of 50 invoice sections. To get all invoice sections, use the list invoice
-	// sections API.
-	HasMoreResults *bool
+	// READ-ONLY; The list of resources.
+	Value []*InvoiceSectionWithCreateSubPermission
 }
 
-// Operation - A Billing REST API operation.
+// MoveBillingSubscriptionEligibilityResult - Result of the transfer eligibility validation.
+type MoveBillingSubscriptionEligibilityResult struct {
+	// Error details of the transfer eligibility validation.
+	ErrorDetails *MoveBillingSubscriptionErrorDetails
+
+	// READ-ONLY; Specifies whether the subscription is eligible to be transferred.
+	IsMoveEligible *bool
+}
+
+// MoveBillingSubscriptionErrorDetails - Error details of the transfer eligibility validation.
+type MoveBillingSubscriptionErrorDetails struct {
+	// Error code of the transfer validation response.
+	Code *SubscriptionTransferValidationErrorCode
+
+	// Detailed error message explaining the error.
+	Details *string
+
+	// The error message.
+	Message *string
+}
+
+// MoveBillingSubscriptionRequest - Request parameters to transfer billing subscription.
+type MoveBillingSubscriptionRequest struct {
+	// The destination enrollment account id.
+	DestinationEnrollmentAccountID *string
+
+	// The destination invoice section id.
+	DestinationInvoiceSectionID *string
+}
+
+// MoveProductEligibilityResult - Result of the transfer eligibility validation.
+type MoveProductEligibilityResult struct {
+	// Error details of the transfer eligibility validation.
+	ErrorDetails *MoveProductEligibilityResultErrorDetails
+
+	// Specifies whether the subscription is eligible to be transferred.
+	IsMoveEligible *bool
+}
+
+// MoveProductEligibilityResultErrorDetails - Error details of the transfer eligibility validation.
+type MoveProductEligibilityResultErrorDetails struct {
+	// READ-ONLY; Error code for the product transfer validation.
+	Code *MoveValidationErrorCode
+
+	// READ-ONLY; Error details of the transfer eligibility validation.
+	Details *string
+
+	// READ-ONLY; The error message.
+	Message *string
+}
+
+// MoveProductErrorDetails - Error details of the transfer eligibility validation.
+type MoveProductErrorDetails struct {
+	// READ-ONLY; Error code for the product transfer validation.
+	Code *MoveValidationErrorCode
+
+	// READ-ONLY; Error details of the transfer eligibility validation.
+	Details *string
+
+	// READ-ONLY; The error message.
+	Message *string
+}
+
+// MoveProductRequest - The properties of the product to initiate a transfer.
+type MoveProductRequest struct {
+	// REQUIRED; The destination invoice section id.
+	DestinationInvoiceSectionID *string
+}
+
+// NextBillingCycleDetails - Billing cycle details of the product.
+type NextBillingCycleDetails struct {
+	// READ-ONLY; Billing frequency of the product under the subscription.
+	BillingFrequency *string
+}
+
+// Operation - Details of a REST API operation, returned from the Resource Provider Operations API.
 type Operation struct {
-	// The object that represents the operation.
+	// Localized display information for this particular operation.
 	Display *OperationDisplay
 
-	// READ-ONLY; Identifies if the operation is a data operation.
+	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for ARM/control-plane
+	// operations.
 	IsDataAction *bool
 
-	// READ-ONLY; Operation name: {provider}/{resource}/{operation}.
+	// READ-ONLY; The name of the operation, as per Resource-Based Access Control (RBAC). Examples: "Microsoft.Compute/virtualMachines/write",
+	// "Microsoft.Compute/virtualMachines/capture/action".
 	Name *string
 }
 
-// OperationDisplay - The object that represents the operation.
+// OperationDisplay - Localized display information for this particular operation.
 type OperationDisplay struct {
-	// READ-ONLY; Description of operation.
+	// READ-ONLY; The short, localized friendly description of the operation; suitable for tool tips and detailed views.
 	Description *string
 
-	// READ-ONLY; Operation type such as read, write and delete.
+	// READ-ONLY; The concise, localized friendly name for the operation; suitable for dropdowns. E.g. "Create or Update Virtual
+	// Machine", "Restart Virtual Machine".
 	Operation *string
 
-	// READ-ONLY; Service provider: Microsoft.Billing.
+	// READ-ONLY; The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or "Microsoft
+	// Compute".
 	Provider *string
 
-	// READ-ONLY; Resource on which the operation is performed such as invoice and billing subscription.
+	// READ-ONLY; The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or "Job
+	// Schedule Collections".
 	Resource *string
 }
 
-// OperationListResult - The list of billing operations and a URL link to get the next set of results.
+// OperationListResult - A container for a list of resources
 type OperationListResult struct {
-	// READ-ONLY; URL to get the next set of operation list results if there are any.
+	// READ-ONLY; The link (url) to the next page of results.
 	NextLink *string
 
-	// READ-ONLY; The list of billing operations supported by the Microsoft.Billing resource provider.
+	// READ-ONLY; The list of resources.
 	Value []*Operation
 }
 
-// OperationsErrorDetails - The details of the error.
-type OperationsErrorDetails struct {
-	// READ-ONLY; Error code.
-	Code *string
-
-	// READ-ONLY; Error message indicating why the operation failed.
-	Message *string
-
-	// READ-ONLY; The target of the particular error.
-	Target *string
-}
-
-// OperationsErrorResponse - Error response indicates that the service is not able to process the incoming request. The reason
-// is provided in the error message.
-type OperationsErrorResponse struct {
-	// The details of the error.
-	Error *OperationsErrorDetails
-}
-
-// Participants - The details about a participant.
-type Participants struct {
+// Participant - Billing account name. Available for a specific type of agreement.
+type Participant struct {
 	// READ-ONLY; The email address of the participant.
 	Email *string
 
@@ -837,16 +1590,138 @@ type Participants struct {
 	StatusDate *time.Time
 }
 
-// PaymentProperties - The properties of a payment.
-type PaymentProperties struct {
-	// The family of payment method.
-	PaymentMethodFamily *PaymentMethodFamily
+// PartnerInitiateTransferProperties - Request parameters to initiate transfer.
+type PartnerInitiateTransferProperties struct {
+	// The email ID of the recipient to whom the transfer request is sent.
+	RecipientEmailID *string
 
-	// READ-ONLY; The paid amount.
-	Amount *Amount
+	// Optional MPN ID of the reseller for transfer requests that are sent from a Microsoft Partner Agreement billing account.
+	ResellerID *string
+}
+
+// PartnerInitiateTransferRequest - Request parameters to initiate partner transfer.
+type PartnerInitiateTransferRequest struct {
+	// Request parameters to initiate partner transfer.
+	Properties *PartnerInitiateTransferProperties
+}
+
+// PartnerTransferDetails - Details of the transfer.
+type PartnerTransferDetails struct {
+	// Details of the transfer.
+	Properties *PartnerTransferProperties
+
+	// Dictionary of metadata associated with the resource. It may not be populated for all resource types. Maximum key/value
+	// length supported of 256 characters. Keys/value should not empty value nor null.
+	// Keys can not contain < > % & \ ? /
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// PartnerTransferDetailsListResult - The list of transfers initiated by partner.
+type PartnerTransferDetailsListResult struct {
+	// READ-ONLY; The link (url) to the next page of results.
+	NextLink *string
+
+	// READ-ONLY; The list of transfers initiated by partner.
+	Value []*PartnerTransferDetails
+}
+
+// PartnerTransferProperties - Transfer Details.
+type PartnerTransferProperties struct {
+	// READ-ONLY; The email ID of the user who canceled the transfer request.
+	CanceledBy *string
+
+	// READ-ONLY; Detailed transfer status.
+	DetailedTransferStatus []*DetailedTransferStatus
+
+	// READ-ONLY; The time at which the transfer request expires.
+	ExpirationTime *time.Time
+
+	// READ-ONLY; The type of customer who sent the transfer request.
+	InitiatorCustomerType *InitiatorCustomerType
+
+	// READ-ONLY; The email ID of the user who sent the transfer request.
+	InitiatorEmailID *string
+
+	// READ-ONLY; The email ID of the user to whom the transfer request was sent.
+	RecipientEmailID *string
+
+	// READ-ONLY; Optional MPN ID of the reseller for transfer requests that are sent from a Microsoft Partner Agreement billing
+	// account.
+	ResellerID *string
+
+	// READ-ONLY; Optional name of the reseller for transfer requests that are sent from Microsoft Partner Agreement billing account.
+	ResellerName *string
+
+	// READ-ONLY; Overall transfer status.
+	TransferStatus *TransferStatus
+}
+
+// Patch - The request for reservation patch
+type Patch struct {
+	// Properties for reservation patch
+	Properties *PatchProperties
+
+	// The sku information associated to this reservation
+	SKU *ReservationSKUProperty
+
+	// Tags for this reservation
+	Tags map[string]*string
+}
+
+// PatchProperties - Properties for reservation patch
+type PatchProperties struct {
+	// Properties specific to applied scope type. Not required if not applicable. Required and need to provide tenantId and managementGroupId
+	// if AppliedScopeType is ManagementGroup
+	AppliedScopeProperties *ReservationAppliedScopeProperties
+
+	// Type of the Applied Scope.
+	AppliedScopeType *AppliedScopeType
+
+	// Display name of the reservation
+	DisplayName *string
+
+	// Turning this on will apply the reservation discount to other VMs in the same VM size group. Only specify for VirtualMachines
+	// reserved resource type.
+	InstanceFlexibility *InstanceFlexibility
+
+	// Setting this to true will automatically purchase a new benefit on the expiration date time.
+	Renew           *bool
+	RenewProperties *PatchPropertiesRenewProperties
+
+	// This is the date-time when the Azure hybrid benefit needs to be reviewed.
+	ReviewDateTime *time.Time
+}
+
+type PatchPropertiesRenewProperties struct {
+	// The request for reservation purchase
+	PurchaseProperties *ReservationPurchaseRequest
+}
+
+// Payment - An invoice payment.
+type Payment struct {
+	// The paid amount.
+	Amount *PaymentAmount
 
 	// READ-ONLY; The date when the payment was made.
 	Date *time.Time
+
+	// READ-ONLY; The family of payment method.
+	PaymentMethodFamily *PaymentMethodFamily
+
+	// READ-ONLY; The ID that uniquely identifies the payment method used for the invoice.
+	PaymentMethodID *string
 
 	// READ-ONLY; The type of payment method.
 	PaymentMethodType *string
@@ -855,54 +1730,242 @@ type PaymentProperties struct {
 	PaymentType *string
 }
 
-// Period - A billing period resource.
-type Period struct {
-	// A billing period.
-	Properties *PeriodProperties
+// PaymentAmount - The paid amount.
+type PaymentAmount struct {
+	// READ-ONLY; The currency for the amount value.
+	Currency *string
 
-	// READ-ONLY; Resource Id.
+	// READ-ONLY; The amount value. For example, if the currency is USD, then a value of 600 would be $600.00.
+	Value *float32
+}
+
+// PaymentDetail - Information about payment related to a savings plan order.
+type PaymentDetail struct {
+	// Amount charged in Billing currency. Tax not included. Is null for future payments
+	BillingCurrencyTotal *Price
+
+	// Date when the payment needs to be done.
+	DueDate *time.Time
+
+	// Date when the transaction is completed. Null when it is scheduled.
+	PaymentDate *time.Time
+
+	// Amount in pricing currency. Tax not included.
+	PricingCurrencyTotal *Price
+
+	// Describes whether the payment is completed, failed, pending, cancelled or scheduled in the future.
+	Status *PaymentStatus
+
+	// READ-ONLY; Extended status information
+	ExtendedStatusInfo *ExtendedStatusInfo
+}
+
+// PaymentMethod - A payment method.
+type PaymentMethod struct {
+	// Payment method properties
+	Properties *PaymentMethodProperties
+
+	// Dictionary of metadata associated with the resource. It may not be populated for all resource types. Maximum key/value
+	// length supported of 256 characters. Keys/value should not empty value nor null.
+	// Keys can not contain < > % & \ ? /
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; Resource name.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
-// PeriodProperties - The properties of the billing period.
-type PeriodProperties struct {
-	// READ-ONLY; The end of the date range covered by the billing period.
-	BillingPeriodEndDate *time.Time
+// PaymentMethodLink - A payment method link.
+type PaymentMethodLink struct {
+	// Payment method link properties
+	Properties *PaymentMethodLinkProperties
 
-	// READ-ONLY; The start of the date range covered by the billing period.
-	BillingPeriodStartDate *time.Time
+	// Dictionary of metadata associated with the resource. It may not be populated for all resource types. Maximum key/value
+	// length supported of 256 characters. Keys/value should not empty value nor null.
+	// Keys can not contain < > % & \ ? /
+	Tags map[string]*string
 
-	// READ-ONLY; Array of invoice ids that associated with.
-	InvoiceIDs []*string
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
 }
 
-// PeriodsListResult - Result of listing billing periods. It contains a list of available billing periods in reverse chronological
-// order.
-type PeriodsListResult struct {
+// PaymentMethodLinkProperties - The properties of a payment method link.
+type PaymentMethodLinkProperties struct {
+	// Projection of a payment method. Will not be returned in this or future versions.
+	PaymentMethod *PaymentMethodProperties
+
+	// Id of payment method. Example: /providers/Microsoft.Billing/paymentMethods/ABCDABCDABC0
+	PaymentMethodID *string
+
+	// READ-ONLY; The account holder name for the payment method. This is only supported for payment methods with family CreditCard.
+	AccountHolderName *string
+
+	// READ-ONLY; The display name of the payment method.
+	DisplayName *string
+
+	// READ-ONLY; The expiration month and year of the payment method. This is only supported for payment methods with family
+	// CreditCard.
+	Expiration *string
+
+	// READ-ONLY; The family of payment method.
+	Family *PaymentMethodFamily
+
+	// READ-ONLY; Last four digits of payment method.
+	LastFourDigits *string
+
+	// READ-ONLY; The list of logos for the payment method.
+	Logos []*PaymentMethodLogo
+
+	// READ-ONLY; The type of payment method.
+	PaymentMethodType *string
+
+	// READ-ONLY; Status of the payment method.
+	Status *PaymentMethodStatus
+}
+
+// PaymentMethodLinksListResult - The list of payment method links.
+type PaymentMethodLinksListResult struct {
 	// READ-ONLY; The link (url) to the next page of results.
 	NextLink *string
 
-	// READ-ONLY; The list of billing periods.
-	Value []*Period
+	// READ-ONLY; The list of payment method links.
+	Value []*PaymentMethodLink
 }
 
-// PermissionsListResult - Result of list billingPermissions a caller has on a billing account.
-type PermissionsListResult struct {
+// PaymentMethodLogo - Logo of payment method.
+type PaymentMethodLogo struct {
+	// READ-ONLY; MIME type of the logo.
+	MimeType *string
+
+	// READ-ONLY; Public URL of image of the logo.
+	URL *string
+}
+
+// PaymentMethodProperties - The properties of a payment method.
+type PaymentMethodProperties struct {
+	// The family of payment method.
+	Family *PaymentMethodFamily
+
+	// The list of logos for the payment method.
+	Logos []*PaymentMethodLogo
+
+	// Status of the payment method.
+	Status *PaymentMethodStatus
+
+	// READ-ONLY; The account holder name for the payment method. This is only supported for payment methods with family CreditCard.
+	AccountHolderName *string
+
+	// READ-ONLY; The display name of the payment method.
+	DisplayName *string
+
+	// READ-ONLY; The expiration month and year of the payment method. This is only supported for payment methods with family
+	// CreditCard.
+	Expiration *string
+
+	// READ-ONLY; Id of payment method.
+	ID *string
+
+	// READ-ONLY; Last four digits of payment method.
+	LastFourDigits *string
+
+	// READ-ONLY; The type of payment method.
+	PaymentMethodType *string
+}
+
+// PaymentMethodsListResult - The list of payment methods.
+type PaymentMethodsListResult struct {
 	// READ-ONLY; The link (url) to the next page of results.
 	NextLink *string
 
-	// READ-ONLY; The list of billingPermissions a caller has on a billing account.
-	Value []*PermissionsProperties
+	// READ-ONLY; The list of payment methods.
+	Value []*PaymentMethod
 }
 
-// PermissionsProperties - The set of allowed action and not allowed actions a caller has on a billing account
-type PermissionsProperties struct {
+// PaymentOnAccount - A Payment on Account.
+type PaymentOnAccount struct {
+	// Payment on Account amount.
+	Amount *PaymentOnAccountAmount
+
+	// READ-ONLY; The name of the billing profile for the payments on account.
+	BillingProfileDisplayName *string
+
+	// READ-ONLY; The ID of the billing profile for the payments on account.
+	BillingProfileID *string
+
+	// READ-ONLY; The date of the payments on account.
+	Date *time.Time
+
+	// READ-ONLY; The ID of the invoice for which the payments on account was generated.
+	InvoiceID *string
+
+	// READ-ONLY; The name of the invoice for the payments on account.
+	InvoiceName *string
+
+	// READ-ONLY; Payment on Account type.
+	PaymentMethodType *PaymentMethodFamily
+}
+
+// PaymentOnAccountAmount - Payment on Account amount.
+type PaymentOnAccountAmount struct {
+	// READ-ONLY; The currency for the amount value.
+	Currency *string
+
+	// READ-ONLY; The amount value. For example, if the currency is USD, then a value of 600 would be $600.00.
+	Value *float32
+}
+
+// PaymentTerm - The properties of payment term.
+type PaymentTerm struct {
+	// The date on when the defined 'Payment Term' will end and is always in UTC.
+	EndDate *time.Time
+
+	// The date on when the defined 'Payment Term' will be effective from and is always in UTC.
+	StartDate *time.Time
+
+	// Represents duration in netXX format. Always in days.
+	Term *string
+
+	// READ-ONLY; Indicates payment term is the standard payment term.
+	IsDefault *bool
+}
+
+// PaymentTermsEligibilityDetail - Details of the payment terms eligibility.
+type PaymentTermsEligibilityDetail struct {
+	// Indicates the reason for the ineligibility of the payment terms.
+	Code *PaymentTermsEligibilityCode
+
+	// Indicates the message for the ineligibility of the payment terms.
+	Message *string
+}
+
+// PaymentTermsEligibilityResult - Result of the payment terms eligibility.
+type PaymentTermsEligibilityResult struct {
+	// Details of the payment terms eligibility.
+	EligibilityDetails []*PaymentTermsEligibilityDetail
+
+	// Indicates the eligibility status of the payment terms.
+	EligibilityStatus *PaymentTermsEligibilityStatus
+}
+
+// Permission - The set of allowed action and not allowed actions a caller has on a resource.
+type Permission struct {
 	// READ-ONLY; The set of actions that the caller is allowed to perform.
 	Actions []*string
 
@@ -910,61 +1973,143 @@ type PermissionsProperties struct {
 	NotActions []*string
 }
 
-// Policy - A policy.
-type Policy struct {
-	// The properties of a policy.
-	Properties *PolicyProperties
+// PermissionListResult - A container for a list of resources
+type PermissionListResult struct {
+	// READ-ONLY; The link (url) to the next page of results.
+	NextLink *string
 
-	// READ-ONLY; Resource Id.
-	ID *string
-
-	// READ-ONLY; Resource name.
-	Name *string
-
-	// READ-ONLY; Resource type.
-	Type *string
+	// READ-ONLY; The list of resources.
+	Value []*Permission
 }
 
-// PolicyProperties - The properties of a policy.
-type PolicyProperties struct {
-	// The policy that controls whether Azure marketplace purchases are allowed for a billing profile.
-	MarketplacePurchases *MarketplacePurchasesPolicy
+// PlanInformation - Information describing the type of billing plan for this savings plan.
+type PlanInformation struct {
+	// For recurring billing plans, indicates the date when next payment will be processed. Null when total is paid off.
+	NextPaymentDueDate *time.Time
 
-	// The policy that controls whether Azure reservation purchases are allowed for a billing profile.
-	ReservationPurchases *ReservationPurchasesPolicy
+	// Amount of money to be paid for the Order. Tax is not included.
+	PricingCurrencyTotal *Price
 
-	// The policy that controls whether users with Azure RBAC access to a subscription can view its charges.
-	ViewCharges *ViewChargesPolicy
+	// Date when the billing plan has started.
+	StartDate    *time.Time
+	Transactions []*PaymentDetail
+}
+
+// PolicySummary - The summary of the policy.
+type PolicySummary struct {
+	// The name of the policy.
+	Name *string
+
+	// The type of the policy.
+	PolicyType *PolicyType
+
+	// The scope at which the policy is defined.
+	Scope *string
+
+	// The value of the policy.
+	Value *string
+}
+
+// Price - The price.
+type Price struct {
+	Amount *float64
+
+	// The ISO 4217 3-letter currency code for the currency used by this purchase record.
+	CurrencyCode *string
+}
+
+// Principal - A principal who has interacted with a billing entity.
+type Principal struct {
+	// The object id of the principal who has interacted with a billing entity.
+	ObjectID *string
+
+	// The tenant id of the principal who has interacted with a billing entity.
+	TenantID *string
+
+	// The user principal name of the principal who has interacted with a billing entity.
+	Upn *string
 }
 
 // Product - A product.
 type Product struct {
-	// The properties of a product.
+	// A product.
 	Properties *ProductProperties
 
-	// READ-ONLY; Resource Id.
+	// Dictionary of metadata associated with the resource. It may not be populated for all resource types. Maximum key/value
+	// length supported of 256 characters. Keys/value should not empty value nor null.
+	// Keys can not contain < > % & \ ? /
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; Resource name.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
-// ProductProperties - The properties of a product.
+// ProductDetails - Details of the product that is transferred.
+type ProductDetails struct {
+	// The ID of the product that is transferred.
+	ProductID *string
+
+	// Type of the product that is transferred.
+	ProductType *ProductType
+}
+
+// ProductListResult - A container for a list of resources
+type ProductListResult struct {
+	// READ-ONLY; The link (url) to the next page of results.
+	NextLink *string
+
+	// READ-ONLY; The list of resources.
+	Value []*Product
+}
+
+// ProductPatch - A product.
+type ProductPatch struct {
+	// A product.
+	Properties *ProductProperties
+
+	// Dictionary of metadata associated with the resource. It may not be populated for all resource types. Maximum key/value
+	// length supported of 256 characters. Keys/value should not empty value nor null.
+	// Keys can not contain < > % & \ ? /
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ProductProperties - A product.
 type ProductProperties struct {
 	// Indicates whether auto renewal is turned on or off for a product.
 	AutoRenew *AutoRenew
 
-	// The frequency at which the product will be billed.
-	BillingFrequency *BillingFrequency
+	// The last month charges.
+	LastCharge *ProductPropertiesLastCharge
 
-	// The current status of the product.
-	Status *ProductStatusType
+	// Reseller for this product. The fields is not available for Microsoft Partner Agreement products.
+	Reseller *ProductPropertiesReseller
 
 	// READ-ONLY; The availability of the product.
 	AvailabilityID *string
+
+	// READ-ONLY; The frequency at which the product will be billed.
+	BillingFrequency *string
 
 	// READ-ONLY; The name of the billing profile to which the product is billed.
 	BillingProfileDisplayName *string
@@ -984,7 +2129,7 @@ type ProductProperties struct {
 	DisplayName *string
 
 	// READ-ONLY; The date when the product will be renewed or canceled.
-	EndDate *time.Time
+	EndDate *string
 
 	// READ-ONLY; The name of the invoice section to which the product is billed.
 	InvoiceSectionDisplayName *string
@@ -992,11 +2137,8 @@ type ProductProperties struct {
 	// READ-ONLY; The ID of the invoice section to which the product is billed.
 	InvoiceSectionID *string
 
-	// READ-ONLY; The last month charges.
-	LastCharge *Amount
-
 	// READ-ONLY; The date of the last charge.
-	LastChargeDate *time.Time
+	LastChargeDate *string
 
 	// READ-ONLY; The description of the type of product.
 	ProductType *string
@@ -1005,13 +2147,10 @@ type ProductProperties struct {
 	ProductTypeID *string
 
 	// READ-ONLY; The date when the product was purchased.
-	PurchaseDate *time.Time
+	PurchaseDate *string
 
 	// READ-ONLY; The quantity purchased for the product.
-	Quantity *float32
-
-	// READ-ONLY; Reseller for this product.
-	Reseller *Reseller
+	Quantity *int64
 
 	// READ-ONLY; The sku description of the product.
 	SKUDescription *string
@@ -1019,84 +2158,150 @@ type ProductProperties struct {
 	// READ-ONLY; The sku ID of the product.
 	SKUID *string
 
+	// READ-ONLY; The status of the product.
+	Status *ProductStatus
+
 	// READ-ONLY; The id of the tenant in which the product is used.
 	TenantID *string
 }
 
-// ProductsListResult - The list of products. It contains a list of available product summaries in reverse chronological order
-// by purchase date.
-type ProductsListResult struct {
-	// READ-ONLY; The link (url) to the next page of results.
-	NextLink *string
+// ProductPropertiesLastCharge - The last month charges.
+type ProductPropertiesLastCharge struct {
+	// READ-ONLY; The currency for the amount value.
+	Currency *string
 
-	// READ-ONLY; Total number of records.
-	TotalCount *int32
+	// READ-ONLY; The amount value. For example, if the currency is USD, then a value of 600 would be $600.00.
+	Value *float32
+}
 
-	// READ-ONLY; The list of products.
-	Value []*Product
+// ProductPropertiesReseller - Reseller for this product. The fields is not available for Microsoft Partner Agreement products.
+type ProductPropertiesReseller struct {
+	// READ-ONLY; The name of the reseller.
+	Description *string
+
+	// READ-ONLY; The MPN ID of the reseller.
+	ResellerID *string
 }
 
 // Profile - A billing profile.
 type Profile struct {
-	// The properties of the billing profile.
+	// A billing profile.
 	Properties *ProfileProperties
 
-	// READ-ONLY; Resource Id.
+	// Dictionary of metadata associated with the resource. It may not be populated for all resource types. Maximum key/value
+	// length supported of 256 characters. Keys/value should not empty value nor null.
+	// Keys can not contain < > % & \ ? /
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; Resource name.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
-}
-
-// ProfileCreationRequest - The request parameters for creating a new billing profile.
-type ProfileCreationRequest struct {
-	// The address of the individual or organization that is responsible for the billing profile.
-	BillTo *AddressDetails
-
-	// The name of the billing profile.
-	DisplayName *string
-
-	// Enabled azure plans for the billing profile.
-	EnabledAzurePlans []*AzurePlan
-
-	// Flag controlling whether the invoices for the billing profile are sent through email.
-	InvoiceEmailOptIn *bool
-
-	// The purchase order name that will appear on the invoices generated for the billing profile.
-	PoNumber *string
 }
 
 // ProfileInfo - Details about billing profile associated with agreement and available only for specific agreements.
 type ProfileInfo struct {
-	// The name of the billing profile
+	// The fully qualified ID that uniquely identifies a billing account.
+	BillingAccountID *string
+
+	// The name of the billing profile.
 	BillingProfileDisplayName *string
 
-	// The unique identifier for the billing profile.
+	// The friendly ID that uniquely identifies a billing profile.
 	BillingProfileID *string
 
-	// Billing account name. This property is available for a specific type of agreement.
+	// The fully qualified ID that uniquely identifies a billing profile.
+	BillingProfileSystemID *string
+
+	// Billing account name. Available for a specific type of agreement.
 	IndirectRelationshipOrganizationName *string
 }
 
-// ProfileListResult - The list of billing profiles.
+// ProfileListResult - A container for a list of resources
 type ProfileListResult struct {
 	// READ-ONLY; The link (url) to the next page of results.
 	NextLink *string
 
-	// READ-ONLY; Total number of records.
-	TotalCount *int32
-
-	// READ-ONLY; The list of billing profiles.
+	// READ-ONLY; The list of resources.
 	Value []*Profile
 }
 
-// ProfileProperties - The properties of the billing profile.
+// ProfilePolicy - A policy at billing profile scope.
+type ProfilePolicy struct {
+	// A policy at billing profile scope.
+	Properties *ProfilePolicyProperties
+
+	// Dictionary of metadata associated with the resource. It may not be populated for all resource types. Maximum key/value
+	// length supported of 256 characters. Keys/value should not empty value nor null.
+	// Keys can not contain < > % & \ ? /
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ProfilePolicyProperties - A policy at billing profile scope.
+type ProfilePolicyProperties struct {
+	// The policies for Enterprise Agreement enrollments.
+	EnterpriseAgreementPolicies *ProfilePolicyPropertiesEnterpriseAgreementPolicies
+
+	// The policy that controls invoice section label management at invoice section scope. This is allowed by default.
+	InvoiceSectionLabelManagement *InvoiceSectionLabelManagementPolicy
+
+	// The policy that controls whether Azure marketplace purchases are allowed.
+	MarketplacePurchases *MarketplacePurchasesPolicy
+
+	// List of all policies defined at the billing scope.
+	Policies []*PolicySummary
+
+	// The policy that controls whether Azure reservation purchases are allowed.
+	ReservationPurchases *ReservationPurchasesPolicy
+
+	// The policy that controls whether users with Azure savings plan purchase are allowed.
+	SavingsPlanPurchases *SavingsPlanPurchasesPolicy
+
+	// The policy that controls whether the users in customer's organization can view charges at pay-as-you-go prices.
+	ViewCharges *ViewChargesPolicy
+
+	// READ-ONLY; The provisioning state of the resource during a long-running operation.
+	ProvisioningState *ProvisioningState
+}
+
+// ProfilePolicyPropertiesEnterpriseAgreementPolicies - The policies for Enterprise Agreement enrollments.
+type ProfilePolicyPropertiesEnterpriseAgreementPolicies struct {
+	// The policy that controls whether account owner can view charges.
+	AccountOwnerViewCharges *EnrollmentAccountOwnerViewCharges
+
+	// The state showing the enrollment auth level.
+	AuthenticationType *EnrollmentAuthLevelState
+
+	// The policy that controls whether department admin can view charges.
+	DepartmentAdminViewCharges *EnrollmentDepartmentAdminViewCharges
+}
+
+// ProfileProperties - A billing profile.
 type ProfileProperties struct {
 	// Billing address.
-	BillTo *AddressDetails
+	BillTo *ProfilePropertiesBillTo
+
+	// The current payment term of the billing profile.
+	CurrentPaymentTerm *ProfilePropertiesCurrentPaymentTerm
 
 	// The name of the billing profile.
 	DisplayName *string
@@ -1104,19 +2309,31 @@ type ProfileProperties struct {
 	// Information about the enabled azure plans.
 	EnabledAzurePlans []*AzurePlan
 
+	// Identifies the billing profile that is linked to another billing profile in indirect purchase motion.
+	IndirectRelationshipInfo *ProfilePropertiesIndirectRelationshipInfo
+
 	// Flag controlling whether the invoices for the billing profile are sent through email.
 	InvoiceEmailOptIn *bool
 
-	// The invoice sections associated to the billing profile. By default this is not populated, unless it's specified in $expand.
-	InvoiceSections *InvoiceSectionsOnExpand
+	// The list of email addresses to receive invoices by email for the billing profile.
+	InvoiceRecipients []*string
 
-	// The purchase order name that will appear on the invoices generated for the billing profile.
+	// The default purchase order number that will appear on the invoices generated for the billing profile.
 	PoNumber *string
 
-	// Tags of billing profiles.
+	// The default address where the products are shipped, or the services are being used. If a ship to is not specified for a
+	// product or a subscription, then this address will be used.
+	ShipTo *ProfilePropertiesShipTo
+
+	// The address of the individual or organization that is responsible for the billing account.
+	SoldTo *ProfilePropertiesSoldTo
+
+	// Dictionary of metadata associated with the resource. Maximum key/value length supported of 256 characters. Keys/value should
+	// not empty value nor null. Keys can not contain < > % & \ ? /
 	Tags map[string]*string
 
-	// READ-ONLY; Identifies which services and purchases are paid by a billing profile.
+	// READ-ONLY; Identifies the billing relationship represented by the billing profile. The billing relationship may be between
+	// Microsoft, the customer, and/or a third-party.
 	BillingRelationshipType *BillingRelationshipType
 
 	// READ-ONLY; The currency in which the charges for the billing profile are billed.
@@ -1125,20 +2342,26 @@ type ProfileProperties struct {
 	// READ-ONLY; Indicates whether user has read access to the billing profile.
 	HasReadAccess *bool
 
-	// READ-ONLY; Identifies the billing profile that is linked to another billing profile in indirect purchase motion.
-	IndirectRelationshipInfo *IndirectRelationshipInfo
-
 	// READ-ONLY; The day of the month when the invoice for the billing profile is generated.
 	InvoiceDay *int32
 
+	// READ-ONLY; The other payment terms of the billing profile.
+	OtherPaymentTerms []*PaymentTerm
+
+	// READ-ONLY; The provisioning state of the resource during a long-running operation.
+	ProvisioningState *ProvisioningState
+
 	// READ-ONLY; The billing profile spending limit.
 	SpendingLimit *SpendingLimit
+
+	// READ-ONLY; The details of billing profile spending limit.
+	SpendingLimitDetails []*SpendingLimitDetails
 
 	// READ-ONLY; The status of the billing profile.
 	Status *BillingProfileStatus
 
 	// READ-ONLY; Reason for the specified billing profile status.
-	StatusReasonCode *StatusReasonCode
+	StatusReasonCode *BillingProfileStatusReasonCode
 
 	// READ-ONLY; The system generated unique identifier for a billing profile.
 	SystemID *string
@@ -1146,19 +2369,180 @@ type ProfileProperties struct {
 	// READ-ONLY; Identifies the cloud environments that are associated with a billing profile. This is a system managed optional
 	// field and gets updated as the billing profile gets associated with accounts in various
 	// clouds.
-	TargetClouds []*TargetCloud
+	TargetClouds []*string
 }
 
-// ProfilesOnExpand - The billing profiles associated with the billing account. By default this is not populated, unless it's
-// specified in $expand.
-type ProfilesOnExpand struct {
-	// The billing profiles associated with the billing account.
-	Value []*Profile
+// ProfilePropertiesBillTo - Billing address.
+type ProfilePropertiesBillTo struct {
+	// REQUIRED; Address line 1.
+	AddressLine1 *string
 
-	// READ-ONLY; Indicates whether there are more billing profiles than the ones listed in this collection. The collection lists
-	// a maximum of 50 billing profiles. To get all billing profiles, use the list billing
-	// profiles API.
-	HasMoreResults *bool
+	// REQUIRED; Country code uses ISO 3166-1 Alpha-2 format.
+	Country *string
+
+	// Address line 2.
+	AddressLine2 *string
+
+	// Address line 3.
+	AddressLine3 *string
+
+	// Address city.
+	City *string
+
+	// Company name. Optional for MCA Individual (Pay-as-you-go).
+	CompanyName *string
+
+	// Address district.
+	District *string
+
+	// Email address.
+	Email *string
+
+	// First name. Optional for MCA Enterprise.
+	FirstName *string
+
+	// Indicates if the address is incomplete.
+	IsValidAddress *bool
+
+	// Last name. Optional for MCA Enterprise.
+	LastName *string
+
+	// Middle name.
+	MiddleName *string
+
+	// Phone number.
+	PhoneNumber *string
+
+	// Postal code.
+	PostalCode *string
+
+	// Address region.
+	Region *string
+}
+
+// ProfilePropertiesCurrentPaymentTerm - The current payment term of the billing profile.
+type ProfilePropertiesCurrentPaymentTerm struct {
+	// The date on when the defined 'Payment Term' will end and is always in UTC.
+	EndDate *time.Time
+
+	// The date on when the defined 'Payment Term' will be effective from and is always in UTC.
+	StartDate *time.Time
+
+	// Represents duration in netXX format. Always in days.
+	Term *string
+
+	// READ-ONLY; Indicates payment term is the standard payment term.
+	IsDefault *bool
+}
+
+// ProfilePropertiesIndirectRelationshipInfo - Identifies the billing profile that is linked to another billing profile in
+// indirect purchase motion.
+type ProfilePropertiesIndirectRelationshipInfo struct {
+	// The billing account name of the partner or the customer for an indirect motion.
+	BillingAccountName *string
+
+	// The billing profile name of the partner or the customer for an indirect motion.
+	BillingProfileName *string
+
+	// The display name of the partner or customer for an indirect motion.
+	DisplayName *string
+}
+
+// ProfilePropertiesShipTo - The default address where the products are shipped, or the services are being used. If a ship
+// to is not specified for a product or a subscription, then this address will be used.
+type ProfilePropertiesShipTo struct {
+	// REQUIRED; Address line 1.
+	AddressLine1 *string
+
+	// REQUIRED; Country code uses ISO 3166-1 Alpha-2 format.
+	Country *string
+
+	// Address line 2.
+	AddressLine2 *string
+
+	// Address line 3.
+	AddressLine3 *string
+
+	// Address city.
+	City *string
+
+	// Company name. Optional for MCA Individual (Pay-as-you-go).
+	CompanyName *string
+
+	// Address district.
+	District *string
+
+	// Email address.
+	Email *string
+
+	// First name. Optional for MCA Enterprise.
+	FirstName *string
+
+	// Indicates if the address is incomplete.
+	IsValidAddress *bool
+
+	// Last name. Optional for MCA Enterprise.
+	LastName *string
+
+	// Middle name.
+	MiddleName *string
+
+	// Phone number.
+	PhoneNumber *string
+
+	// Postal code.
+	PostalCode *string
+
+	// Address region.
+	Region *string
+}
+
+// ProfilePropertiesSoldTo - The address of the individual or organization that is responsible for the billing account.
+type ProfilePropertiesSoldTo struct {
+	// REQUIRED; Address line 1.
+	AddressLine1 *string
+
+	// REQUIRED; Country code uses ISO 3166-1 Alpha-2 format.
+	Country *string
+
+	// Address line 2.
+	AddressLine2 *string
+
+	// Address line 3.
+	AddressLine3 *string
+
+	// Address city.
+	City *string
+
+	// Company name. Optional for MCA Individual (Pay-as-you-go).
+	CompanyName *string
+
+	// Address district.
+	District *string
+
+	// Email address.
+	Email *string
+
+	// First name. Optional for MCA Enterprise.
+	FirstName *string
+
+	// Indicates if the address is incomplete.
+	IsValidAddress *bool
+
+	// Last name. Optional for MCA Enterprise.
+	LastName *string
+
+	// Middle name.
+	MiddleName *string
+
+	// Phone number.
+	PhoneNumber *string
+
+	// Postal code.
+	PostalCode *string
+
+	// Address region.
+	Region *string
 }
 
 // Property - A billing property.
@@ -1166,38 +2550,84 @@ type Property struct {
 	// A billing property.
 	Properties *PropertyProperties
 
-	// READ-ONLY; Resource Id.
+	// Dictionary of metadata associated with the resource. It may not be populated for all resource types. Maximum key/value
+	// length supported of 256 characters. Keys/value should not empty value nor null.
+	// Keys can not contain < > % & \ ? /
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; Resource name.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
-// PropertyProperties - The billing property.
+// PropertyProperties - A billing property.
 type PropertyProperties struct {
-	// The cost center applied to the subscription.
+	// The cost center applied to the subscription. Available for agreement type Microsoft Customer Agreement and Microsoft Partner
+	// Agreement. This property can be updated via patch.
 	CostCenter *string
 
-	// READ-ONLY; The email address on which the account admin gets all Azure notifications.
+	// The enrollment details for the subscription. Available for billing accounts with agreement type Enterprise Agreement.
+	EnrollmentDetails *PropertyPropertiesEnrollmentDetails
+
+	// The address of the individual or organization where service subscription is being used. Available for agreement type Microsoft
+	// Online Services Program. This property can be updated via patch.
+	SubscriptionServiceUsageAddress *PropertyPropertiesSubscriptionServiceUsageAddress
+
+	// READ-ONLY; Notification email address for legacy account. Available for agreement type Microsoft Online Services Program.
 	AccountAdminNotificationEmailAddress *string
 
-	// READ-ONLY; The name of the billing account to which the subscription is billed.
+	// READ-ONLY; The type of agreement.
+	BillingAccountAgreementType *AgreementType
+
+	// READ-ONLY; The name of the billing account.
 	BillingAccountDisplayName *string
 
-	// READ-ONLY; The ID of the billing account to which the subscription is billed.
+	// READ-ONLY; The fully qualified ID that uniquely identifies a billing account.
 	BillingAccountID *string
 
-	// READ-ONLY; The name of the billing profile to which the subscription is billed.
+	// READ-ONLY; The country of the individual or organization that is responsible for the billing account.
+	BillingAccountSoldToCountry *string
+
+	// READ-ONLY; The current status of the billing account.
+	BillingAccountStatus *AccountStatus
+
+	// READ-ONLY; Reason for the specified billing account status.
+	BillingAccountStatusReasonCode *BillingAccountStatusReasonCode
+
+	// READ-ONLY; The tier of the account.
+	BillingAccountSubType *AccountSubType
+
+	// READ-ONLY; The type of customer.
+	BillingAccountType *AccountType
+
+	// READ-ONLY; The billing currency for the subscription. Available for billing accounts with agreement type Enterprise Agreement
+	BillingCurrency *string
+
+	// READ-ONLY; The name of the billing profile.
 	BillingProfileDisplayName *string
 
-	// READ-ONLY; The ID of the billing profile to which the subscription is billed.
+	// READ-ONLY; The fully qualified ID that uniquely identifies a billing profile.
 	BillingProfileID *string
 
+	// READ-ONLY; The payment method family of the primary payment method for the billing profile.
+	BillingProfilePaymentMethodFamily *PaymentMethodFamily
+
+	// READ-ONLY; The payment method type of the primary payment method for the billing profile.
+	BillingProfilePaymentMethodType *string
+
 	// READ-ONLY; The billing profile spending limit.
-	BillingProfileSpendingLimit *BillingProfileSpendingLimit
+	BillingProfileSpendingLimit *SpendingLimit
+
+	// READ-ONLY; The details of billing profile spending limit.
+	BillingProfileSpendingLimitDetails []*SpendingLimitDetails
 
 	// READ-ONLY; The status of the billing profile.
 	BillingProfileStatus *BillingProfileStatus
@@ -1208,26 +2638,198 @@ type PropertyProperties struct {
 	// READ-ONLY; The Azure AD tenant ID of the billing account for the subscription.
 	BillingTenantID *string
 
-	// READ-ONLY; The name of the invoice section to which the subscription is billed.
+	// READ-ONLY; The name of the customer.
+	CustomerDisplayName *string
+
+	// READ-ONLY; The fully qualified ID that uniquely identifies a customer.
+	CustomerID *string
+
+	// READ-ONLY; Identifies the status of an customer. This is an upcoming property that will be populated in the future.
+	CustomerStatus *CustomerStatus
+
+	// READ-ONLY; The name of the invoice section.
 	InvoiceSectionDisplayName *string
 
-	// READ-ONLY; The ID of the invoice section to which the subscription is billed.
+	// READ-ONLY; The fully qualified ID that uniquely identifies an invoice section.
 	InvoiceSectionID *string
+
+	// READ-ONLY; Identifies the status of an invoice section.
+	InvoiceSectionStatus *InvoiceSectionState
+
+	// READ-ONLY; Reason for the specified invoice section status.
+	InvoiceSectionStatusReasonCode *InvoiceSectionStateReasonCode
 
 	// READ-ONLY; Indicates whether user is the account admin.
 	IsAccountAdmin *bool
 
-	// READ-ONLY; The product ID of the Azure plan.
+	// READ-ONLY; Specifies if the billing account for the subscription is transitioned from a Microsoft Online Service Program
+	// to a Microsoft Customer Agreement (MCA) account. Will be present and value will be true if
+	// its a transitioned billing account.
+	IsTransitionedBillingAccount *bool
+
+	// READ-ONLY; The ID that uniquely identifies a product.
 	ProductID *string
 
-	// READ-ONLY; The product name of the Azure plan.
+	// READ-ONLY; The ID that uniquely identifies a product.
 	ProductName *string
 
-	// READ-ONLY; The sku description of the Azure plan for the subscription.
+	// READ-ONLY; The sku description.
 	SKUDescription *string
 
-	// READ-ONLY; The sku ID of the Azure plan for the subscription.
+	// READ-ONLY; The ID that uniquely identifies a sku.
 	SKUID *string
+
+	// READ-ONLY; The subscription status.
+	SubscriptionBillingStatus *BillingSubscriptionStatus
+
+	// READ-ONLY; The reason codes for the subscription status.
+	SubscriptionBillingStatusDetails []*SubscriptionStatusDetails
+
+	// READ-ONLY; The type of billing subscription.
+	SubscriptionBillingType *SubscriptionBillingType
+
+	// READ-ONLY; The Azure workload type of the subscription.
+	SubscriptionWorkloadType *SubscriptionWorkloadType
+}
+
+// PropertyPropertiesEnrollmentDetails - The enrollment details for the subscription. Available for billing accounts with
+// agreement type Enterprise Agreement.
+type PropertyPropertiesEnrollmentDetails struct {
+	// The name of the department
+	DepartmentDisplayName *string
+
+	// The ID that uniquely identifies the department.
+	DepartmentID *string
+
+	// The name of the enrollment account.
+	EnrollmentAccountDisplayName *string
+
+	// The ID that uniquely identifies an enrollment account.
+	EnrollmentAccountID *string
+
+	// The status of the enrollment account.
+	EnrollmentAccountStatus *string
+}
+
+// PropertyPropertiesSubscriptionServiceUsageAddress - The address of the individual or organization where service subscription
+// is being used. Available for agreement type Microsoft Online Services Program. This property can be updated via patch.
+type PropertyPropertiesSubscriptionServiceUsageAddress struct {
+	// REQUIRED; Address line 1.
+	AddressLine1 *string
+
+	// REQUIRED; Country code uses ISO 3166-1 Alpha-2 format.
+	Country *string
+
+	// Address line 2.
+	AddressLine2 *string
+
+	// Address line 3.
+	AddressLine3 *string
+
+	// Address city.
+	City *string
+
+	// Company name. Optional for MCA Individual (Pay-as-you-go).
+	CompanyName *string
+
+	// Address district.
+	District *string
+
+	// Email address.
+	Email *string
+
+	// First name. Optional for MCA Enterprise.
+	FirstName *string
+
+	// Indicates if the address is incomplete.
+	IsValidAddress *bool
+
+	// Last name. Optional for MCA Enterprise.
+	LastName *string
+
+	// Middle name.
+	MiddleName *string
+
+	// Phone number.
+	PhoneNumber *string
+
+	// Postal code.
+	PostalCode *string
+
+	// Address region.
+	Region *string
+}
+
+// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
+// location
+type ProxyResource struct {
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ProxyResourceWithTags - Common fields that are returned in the response for all Azure Resource Manager resources.
+type ProxyResourceWithTags struct {
+	// Dictionary of metadata associated with the resource. It may not be populated for all resource types. Maximum key/value
+	// length supported of 256 characters. Keys/value should not empty value nor null.
+	// Keys can not contain < > % & \ ? /
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// PurchaseRequest - Purchase request.
+type PurchaseRequest struct {
+	// Purchase request properties.
+	Properties *PurchaseRequestProperties
+
+	// The SKU to be applied for this resource
+	SKU *SKU
+}
+
+// PurchaseRequestProperties - Purchase request properties.
+type PurchaseRequestProperties struct {
+	// Properties specific to applied scope type. Not required if not applicable.
+	AppliedScopeProperties *AppliedScopeProperties
+
+	// Type of the Applied Scope.
+	AppliedScopeType *AppliedScopeType
+
+	// Represents the billing plan in ISO 8601 format. Required only for monthly purchases.
+	BillingPlan *BillingPlan
+
+	// Subscription that will be charged for purchasing SavingsPlan
+	BillingScopeID *string
+
+	// Commitment towards the benefit.
+	Commitment *Commitment
+
+	// Friendly name of the savings plan
+	DisplayName *string
+
+	// Setting this to true will automatically purchase a new benefit on the expiration date time.
+	Renew *bool
+
+	// Represents the Savings plan term in ISO 8601 format.
+	Term *SavingsPlanTerm
 }
 
 // RebillDetails - The rebill details of an invoice.
@@ -1238,8 +2840,386 @@ type RebillDetails struct {
 	// READ-ONLY; The ID of invoice.
 	InvoiceDocumentID *string
 
-	// READ-ONLY; Rebill details for an invoice.
-	RebillDetails map[string]*RebillDetails
+	// READ-ONLY; The rebill details of an invoice.
+	RebillDetails *RebillDetails
+}
+
+// RecipientTransferDetails - Details of the transfer.
+type RecipientTransferDetails struct {
+	// Details of the transfer.
+	Properties *RecipientTransferProperties
+
+	// Dictionary of metadata associated with the resource. It may not be populated for all resource types. Maximum key/value
+	// length supported of 256 characters. Keys/value should not empty value nor null.
+	// Keys can not contain < > % & \ ? /
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// RecipientTransferDetailsListResult - The list of transfers received by caller.
+type RecipientTransferDetailsListResult struct {
+	// READ-ONLY; The link (url) to the next page of results.
+	NextLink *string
+
+	// READ-ONLY; The list of transfers received by caller.
+	Value []*RecipientTransferDetails
+}
+
+// RecipientTransferProperties - Transfer Details.
+type RecipientTransferProperties struct {
+	// READ-ONLY; Type of subscriptions that can be transferred.
+	AllowedProductType []*EligibleProductType
+
+	// READ-ONLY; The email ID of the user who canceled the transfer request.
+	CanceledBy *string
+
+	// READ-ONLY; The customer tenant id.
+	CustomerTenantID *string
+
+	// READ-ONLY; Detailed transfer status.
+	DetailedTransferStatus []*DetailedTransferStatus
+
+	// READ-ONLY; The time at which the transfer request expires.
+	ExpirationTime *time.Time
+
+	// READ-ONLY; The type of customer who sent the transfer request.
+	InitiatorCustomerType *InitiatorCustomerType
+
+	// READ-ONLY; The email ID of the user who sent the transfer request.
+	InitiatorEmailID *string
+
+	// READ-ONLY; The email ID of the user to whom the transfer request was sent.
+	RecipientEmailID *string
+
+	// READ-ONLY; Optional MPN ID of the reseller for transfer requests that are sent from a Microsoft Partner Agreement billing
+	// account.
+	ResellerID *string
+
+	// READ-ONLY; Optional name of the reseller for transfer requests that are sent from Microsoft Partner Agreement billing account.
+	ResellerName *string
+
+	// READ-ONLY; List of supported account types.
+	SupportedAccounts []*SupportedAccountType
+
+	// READ-ONLY; Overall transfer status.
+	TransferStatus *TransferStatus
+}
+
+// RefundDetailsSummary - The details of refund request.
+type RefundDetailsSummary struct {
+	// The amount refunded.
+	AmountRefunded *RefundDetailsSummaryAmountRefunded
+
+	// The amount of refund requested.
+	AmountRequested *RefundDetailsSummaryAmountRequested
+
+	// READ-ONLY; Date when the refund was approved.
+	ApprovedOn *time.Time
+
+	// READ-ONLY; Date when the refund was completed.
+	CompletedOn *time.Time
+
+	// READ-ONLY; The invoice ID of the rebill invoice for a refund.
+	RebillInvoiceID *string
+
+	// READ-ONLY; The ID of refund operation.
+	RefundOperationID *string
+
+	// READ-ONLY; The reason for refund.
+	RefundReason *RefundReasonCode
+
+	// READ-ONLY; The status of refund request.
+	RefundStatus *RefundStatus
+
+	// READ-ONLY; Date when the refund was requested.
+	RequestedOn *time.Time
+
+	// READ-ONLY; The number of transactions refunded.
+	TransactionCount *int32
+}
+
+// RefundDetailsSummaryAmountRefunded - The amount refunded.
+type RefundDetailsSummaryAmountRefunded struct {
+	// READ-ONLY; The currency for the amount value.
+	Currency *string
+
+	// READ-ONLY; The amount value. For example, if the currency is USD, then a value of 600 would be $600.00.
+	Value *float32
+}
+
+// RefundDetailsSummaryAmountRequested - The amount of refund requested.
+type RefundDetailsSummaryAmountRequested struct {
+	// READ-ONLY; The currency for the amount value.
+	Currency *string
+
+	// READ-ONLY; The amount value. For example, if the currency is USD, then a value of 600 would be $600.00.
+	Value *float32
+}
+
+// RefundTransactionDetails - The refund details of a transaction.
+type RefundTransactionDetails struct {
+	// The amount refunded.
+	AmountRefunded *RefundTransactionDetailsAmountRefunded
+
+	// The amount of refund requested.
+	AmountRequested *RefundTransactionDetailsAmountRequested
+
+	// The ID of refund operation.
+	RefundOperationID *string
+}
+
+// RefundTransactionDetailsAmountRefunded - The amount refunded.
+type RefundTransactionDetailsAmountRefunded struct {
+	// READ-ONLY; The currency for the amount value.
+	Currency *string
+
+	// READ-ONLY; The amount value. For example, if the currency is USD, then a value of 600 would be $600.00.
+	Value *float32
+}
+
+// RefundTransactionDetailsAmountRequested - The amount of refund requested.
+type RefundTransactionDetailsAmountRequested struct {
+	// READ-ONLY; The currency for the amount value.
+	Currency *string
+
+	// READ-ONLY; The amount value. For example, if the currency is USD, then a value of 600 would be $600.00.
+	Value *float32
+}
+
+// RegistrationNumber - Describes the registration number of the organization linked with the billing account.
+type RegistrationNumber struct {
+	// The unique identification number of the organization linked with the billing account.
+	ID *string
+
+	// READ-ONLY; Identifies if the registration number is required for the billing account.
+	Required *bool
+
+	// READ-ONLY; The types of registration number allowed based on the country of the billing account.
+	Type []*string
+}
+
+// RenewProperties - Properties specific to renew.
+type RenewProperties struct {
+	// Purchase request.
+	PurchaseProperties *PurchaseRequest
+}
+
+// RenewPropertiesResponse - The renew properties for a reservation.
+type RenewPropertiesResponse struct {
+	// Currency and amount that customer will be charged in customer's local currency for renewal purchase. Tax is not included.
+	BillingCurrencyTotal *Price
+
+	// Amount that Microsoft uses for record. Used during refund for calculating refund limit. Tax is not included. This is locked
+	// price 30 days before expiry.
+	PricingCurrencyTotal *Price
+
+	// The request for reservation purchase
+	PurchaseProperties *ReservationPurchaseRequest
+}
+
+// RenewalTermDetails - Details for the next renewal term of a subscription.
+type RenewalTermDetails struct {
+	// The quantity of licenses or fulfillment units for the subscription.
+	Quantity *int64
+
+	// READ-ONLY; The billing frequency in ISO8601 format of product in the subscription. Example: P1M, P3M, P1Y
+	BillingFrequency *string
+
+	// READ-ONLY; Id of the product for which the subscription is purchased.
+	ProductID *string
+
+	// READ-ONLY; Type Id of the product for which the subscription is purchased.
+	ProductTypeID *string
+
+	// READ-ONLY; The SKU ID of the product for which the subscription is purchased. This field is is only available for Microsoft
+	// Customer Agreement billing accounts.
+	SKUID *string
+
+	// READ-ONLY; The duration in ISO8601 format for which you can use the subscription. Example: P1M, P3M, P1Y
+	TermDuration *string
+
+	// READ-ONLY; End date of the term in UTC time.
+	TermEndDate *time.Time
+}
+
+// Request - A request submitted by a user to manage billing. Users with an owner role on the scope can approve or decline
+// these requests.
+type Request struct {
+	// A request submitted by a user to manage billing. Users with an owner role on the scope can approve or decline these requests.
+	Properties *RequestProperties
+
+	// Dictionary of metadata associated with the resource. It may not be populated for all resource types. Maximum key/value
+	// length supported of 256 characters. Keys/value should not empty value nor null.
+	// Keys can not contain < > % & \ ? /
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// RequestListResult - A container for a list of resources
+type RequestListResult struct {
+	// READ-ONLY; The link (url) to the next page of results.
+	NextLink *string
+
+	// READ-ONLY; The list of resources.
+	Value []*Request
+}
+
+// RequestProperties - A request submitted by a user to manage billing. Users with an owner role on the scope can approve
+// or decline these requests.
+type RequestProperties struct {
+	// Additional information for the billing request.
+	AdditionalInformation map[string]*string
+
+	// The principal of the entity who created the request.
+	CreatedBy *RequestPropertiesCreatedBy
+
+	// The reason to approve or decline the request.
+	DecisionReason *string
+
+	// Justification for submitting request.
+	Justification *string
+
+	// The principal of the entity who last updated the request.
+	LastUpdatedBy *RequestPropertiesLastUpdatedBy
+
+	// The recipients of the billing request.
+	Recipients []*Principal
+
+	// The billing scope for which the request was submitted (ex. '/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}').
+	RequestScope *string
+
+	// The principal of the request reviewer. Will only be set if request is approved.
+	ReviewedBy *RequestPropertiesReviewedBy
+
+	// Status of billing request.
+	Status *BillingRequestStatus
+
+	// Type of billing request.
+	Type *BillingRequestType
+
+	// READ-ONLY; The name of the billing account.
+	BillingAccountDisplayName *string
+
+	// READ-ONLY; The fully qualified ID that uniquely identifies a billing account.
+	BillingAccountID *string
+
+	// READ-ONLY; The ID that uniquely identifies a billing account.
+	BillingAccountName *string
+
+	// READ-ONLY; The primary tenant ID of the billing account for which the billing request was submitted.
+	BillingAccountPrimaryBillingTenantID *string
+
+	// READ-ONLY; The name of the billing profile.
+	BillingProfileDisplayName *string
+
+	// READ-ONLY; The fully qualified ID that uniquely identifies a billing profile.
+	BillingProfileID *string
+
+	// READ-ONLY; The ID that uniquely identifies a billing profile.
+	BillingProfileName *string
+
+	// READ-ONLY; The billing scope for which the request will be applied. This is a read only property derived by the service.
+	BillingScope *string
+
+	// READ-ONLY; The date and time when the request was created.
+	CreationDate *time.Time
+
+	// READ-ONLY; The name of the customer.
+	CustomerDisplayName *string
+
+	// READ-ONLY; The fully qualified ID that uniquely identifies a customer.
+	CustomerID *string
+
+	// READ-ONLY; The ID that uniquely identifies a customer.
+	CustomerName *string
+
+	// READ-ONLY; The date and time when the request expires.
+	ExpirationDate *time.Time
+
+	// READ-ONLY; The name of the invoice section.
+	InvoiceSectionDisplayName *string
+
+	// READ-ONLY; The fully qualified ID that uniquely identifies an invoice section.
+	InvoiceSectionID *string
+
+	// READ-ONLY; The ID that uniquely identifies an invoice section.
+	InvoiceSectionName *string
+
+	// READ-ONLY; Date and time of last update.
+	LastUpdatedDate *time.Time
+
+	// READ-ONLY; The provisioning state of the resource during a long-running operation.
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; The date and time when the request was reviewed.
+	ReviewalDate *time.Time
+
+	// READ-ONLY; The name of the billing subscription.
+	SubscriptionDisplayName *string
+
+	// READ-ONLY; The fully qualified ID that uniquely identifies a billing subscription.
+	SubscriptionID *string
+
+	// READ-ONLY; The ID that uniquely identifies a billing subscription.
+	SubscriptionName *string
+}
+
+// RequestPropertiesCreatedBy - The principal of the entity who created the request.
+type RequestPropertiesCreatedBy struct {
+	// The object id of the principal who has interacted with a billing entity.
+	ObjectID *string
+
+	// The tenant id of the principal who has interacted with a billing entity.
+	TenantID *string
+
+	// The user principal name of the principal who has interacted with a billing entity.
+	Upn *string
+}
+
+// RequestPropertiesLastUpdatedBy - The principal of the entity who last updated the request.
+type RequestPropertiesLastUpdatedBy struct {
+	// The object id of the principal who has interacted with a billing entity.
+	ObjectID *string
+
+	// The tenant id of the principal who has interacted with a billing entity.
+	TenantID *string
+
+	// The user principal name of the principal who has interacted with a billing entity.
+	Upn *string
+}
+
+// RequestPropertiesReviewedBy - The principal of the request reviewer. Will only be set if request is approved.
+type RequestPropertiesReviewedBy struct {
+	// The object id of the principal who has interacted with a billing entity.
+	ObjectID *string
+
+	// The tenant id of the principal who has interacted with a billing entity.
+	TenantID *string
+
+	// The user principal name of the principal who has interacted with a billing entity.
+	Upn *string
 }
 
 // Reseller - Details of the reseller.
@@ -1253,32 +3233,269 @@ type Reseller struct {
 
 // Reservation - The definition of the reservation.
 type Reservation struct {
+	Etag *int32
+
+	// The location of the reservation.
+	Location *string
+
 	// The properties associated to this reservation
 	Properties *ReservationProperty
 
 	// The sku information associated to this reservation
 	SKU *ReservationSKUProperty
 
-	// READ-ONLY; The id of the reservation.
+	// Tags for this reservation
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; The location of the reservation.
-	Location *string
-
-	// READ-ONLY; The name of the reservation.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; The type of the reservation.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
+}
+
+// ReservationAppliedScopeProperties - Properties specific to applied scope type. Not required if not applicable. Required
+// and need to provide tenantId and managementGroupId if AppliedScopeType is ManagementGroup
+type ReservationAppliedScopeProperties struct {
+	// Display name
+	DisplayName *string
+
+	// Fully-qualified identifier of the management group where the benefit must be applied.
+	ManagementGroupID *string
+
+	// Fully-qualified identifier of the resource group.
+	ResourceGroupID *string
+
+	// Fully-qualified identifier of the subscription.
+	SubscriptionID *string
+
+	// Tenant ID where the reservation should apply benefit.
+	TenantID *string
+}
+
+// ReservationExtendedStatusInfo - Extended status information for the reservation.
+type ReservationExtendedStatusInfo struct {
+	// The message giving detailed information about the status code.
+	Message *string
+
+	// Properties for extended status information
+	Properties *ExtendedStatusDefinitionProperties
+
+	// The status of the reservation.
+	StatusCode *ReservationStatusCode
+}
+
+// ReservationList - List of `Reservations
+type ReservationList struct {
+	// Url to get the next page of reservations.
+	NextLink *string
+	Value    []*Reservation
+}
+
+// ReservationMergeProperties - Properties of reservation merge
+type ReservationMergeProperties struct {
+	// Reservation resource id Created due to the merge. Format of the resource id is /providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}
+	MergeDestination *string
+
+	// Resource ids of the source reservation's merged to form this reservation. Format of the resource id is /providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}
+	MergeSources []*string
+}
+
+// ReservationOrder - Details of a reservation order being returned.
+type ReservationOrder struct {
+	Etag *int32
+
+	// The properties associated to this reservation order
+	Properties *ReservationOrderProperty
+
+	// Tags for this reservation
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ReservationOrderBillingPlanInformation - Information describing the type of billing plan for this reservation order.
+type ReservationOrderBillingPlanInformation struct {
+	// For recurring billing plans, indicates the date when next payment will be processed. Null when total is paid off.
+	NextPaymentDueDate *time.Time
+
+	// Amount of money to be paid for the Order. Tax is not included.
+	PricingCurrencyTotal *Price
+
+	// Date when the billing plan has started.
+	StartDate    *time.Time
+	Transactions []*ReservationPaymentDetail
+}
+
+// ReservationOrderList - List of ReservationOrders
+type ReservationOrderList struct {
+	// Url to get the next page of reservationOrders.
+	NextLink *string
+	Value    []*ReservationOrder
+}
+
+// ReservationOrderProperty - Properties of a reservation order.
+type ReservationOrderProperty struct {
+	// This is the DateTime when the reservation benefit started.
+	BenefitStartTime *time.Time
+
+	// Billing account Id associated to this reservation order.
+	BillingAccountID *string
+
+	// Represent the billing plans.
+	BillingPlan *ReservationBillingPlan
+
+	// Billing profile Id associated to this reservation order.
+	BillingProfileID *string
+
+	// This is the DateTime when the reservation order was created.
+	CreatedDateTime *time.Time
+
+	// Fully-qualified identifier of the customerId where the benefit is applied. Present only for Enterprise Agreement PartnerLed
+	// customers.
+	CustomerID *string
+
+	// Friendly name for user to easily identified the reservation order.
+	DisplayName *string
+
+	// Enrollment id of the reservation order.
+	EnrollmentID *string
+
+	// This is the date when the reservation order will expire.
+	ExpiryDate *time.Time
+
+	// This is the date-time when the reservation order will expire.
+	ExpiryDateTime *time.Time
+
+	// Extended status information for the reservation.
+	ExtendedStatusInfo *ReservationExtendedStatusInfo
+
+	// Total original quantity of the skus purchased in the reservation order.
+	OriginalQuantity *int32
+
+	// Information describing the type of billing plan for this reservation order.
+	PlanInformation *ReservationOrderBillingPlanInformation
+
+	// Represents UPN
+	ProductCode *string
+
+	// This is the DateTime when the reservation order was initially requested for purchase.
+	RequestDateTime *time.Time
+	Reservations    []*Reservation
+
+	// This is the date-time when the Azure Hybrid Benefit needs to be reviewed.
+	ReviewDateTime *time.Time
+
+	// READ-ONLY; The provisioning state of the reservation, e.g. Succeeded
+	ProvisioningState *string
+
+	// READ-ONLY; The term of the reservation, e.g. P1Y
+	Term *string
+}
+
+// ReservationPaymentDetail - Information about payment related to a reservation order.
+type ReservationPaymentDetail struct {
+	// Shows the Account that is charged for this payment.
+	BillingAccount *string
+
+	// Amount charged in Billing currency. Tax not included. Is null for future payments
+	BillingCurrencyTotal *Price
+
+	// Date when the payment needs to be done.
+	DueDate *time.Time
+
+	// Extended status information for the reservation.
+	ExtendedStatusInfo *ReservationExtendedStatusInfo
+
+	// Date when the transaction is completed. Is null when it is scheduled.
+	PaymentDate *time.Time
+
+	// Amount in pricing currency. Tax not included.
+	PricingCurrencyTotal *Price
+
+	// Describes whether the payment is completed, failed, pending, cancelled or scheduled in the future.
+	Status *PaymentStatus
 }
 
 // ReservationProperty - The property of reservation object.
 type ReservationProperty struct {
+	// Properties specific to applied scope type. Not required if not applicable. Required and need to provide tenantId and managementGroupId
+	// if AppliedScopeType is ManagementGroup
+	AppliedScopeProperties *ReservationAppliedScopeProperties
+
 	// The array of applied scopes of a reservation. Will be null if the reservation is in Shared scope
 	AppliedScopes []*string
 
+	// Indicates if the reservation is archived
+	Archived *bool
+
+	// This is the DateTime when the reservation benefit started.
+	BenefitStartTime *time.Time
+
+	// The billing plan options available for this sku.
+	BillingPlan *ReservationBillingPlan
+
+	// Capabilities of the reservation
+	Capabilities *string
+
+	// This is the date-time when the reservation will expire.
+	ExpiryDateTime *time.Time
+
+	// The message giving detailed information about the status code.
+	ExtendedStatusInfo *ReservationExtendedStatusInfo
+
+	// Allows reservation discount to be applied across skus within the same auto fit group. Not all skus support instance size
+	// flexibility.
+	InstanceFlexibility *InstanceFlexibility
+
+	// Properties of reservation merge
+	MergeProperties *ReservationMergeProperties
+
+	// Represents UPN
+	ProductCode *string
+
+	// This is the date when the reservation was purchased.
+	PurchaseDate *time.Time
+
+	// This is the date-time when the reservation was purchased.
+	PurchaseDateTime *time.Time
+
+	// Reservation Id of the reservation which is purchased because of renew. Format of the resource Id is /providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}.
+	RenewDestination *string
+
+	// The renew properties for a reservation.
+	RenewProperties *RenewPropertiesResponse
+
+	// This is the date-time when the Azure Hybrid Benefit needs to be reviewed.
+	ReviewDateTime *time.Time
+
+	// Properties of reservation split
+	SplitProperties *ReservationSplitProperties
+
+	// Properties of reservation swap
+	SwapProperties *ReservationSwapProperties
+
 	// READ-ONLY; The applied scope type of the reservation.
 	AppliedScopeType *string
+
+	// READ-ONLY; Subscription that will be charged for purchasing reservation or savings plan
+	BillingScopeID *string
 
 	// READ-ONLY; The display name of the reservation
 	DisplayName *string
@@ -1287,10 +3504,13 @@ type ReservationProperty struct {
 	DisplayProvisioningState *string
 
 	// READ-ONLY; The effective date time of the reservation
-	EffectiveDateTime *string
+	EffectiveDateTime *time.Time
 
 	// READ-ONLY; The expiry date of the reservation
 	ExpiryDate *string
+
+	// READ-ONLY; DateTime of the last time the reservation was updated.
+	LastUpdatedDateTime *time.Time
 
 	// READ-ONLY; The provisioning state of the reservation, e.g. Succeeded
 	ProvisioningState *string
@@ -1331,14 +3551,87 @@ type ReservationPropertyUtilization struct {
 	// The array of aggregates of a reservation's utilization
 	Aggregates []*ReservationUtilizationAggregates
 
-	// READ-ONLY; The number of days trend for a reservation
+	// READ-ONLY; last 7 day utilization trend for a reservation
 	Trend *string
+}
+
+// ReservationPurchaseRequest - The request for reservation purchase
+type ReservationPurchaseRequest struct {
+	// The Azure region where the reserved resource lives.
+	Location *string
+
+	// Properties of reservation purchase request
+	Properties *ReservationPurchaseRequestProperties
+
+	// The name of sku
+	SKU *SKUName
+}
+
+// ReservationPurchaseRequestProperties - Properties of reservation purchase request
+type ReservationPurchaseRequestProperties struct {
+	// Properties specific to applied scope type. Not required if not applicable. Required and need to provide tenantId and managementGroupId
+	// if AppliedScopeType is ManagementGroup
+	AppliedScopeProperties *ReservationAppliedScopeProperties
+
+	// Type of the Applied Scope.
+	AppliedScopeType *AppliedScopeType
+
+	// List of the subscriptions that the benefit will be applied. Do not specify if AppliedScopeType is Shared.
+	AppliedScopes []*string
+
+	// Represent the billing plans.
+	BillingPlan *ReservationBillingPlan
+
+	// Friendly name of the reservation
+	DisplayName *string
+
+	// Allows reservation discount to be applied across skus within the same auto fit group. Not all skus support instance size
+	// flexibility.
+	InstanceFlexibility *InstanceFlexibility
+
+	// Quantity of the skus that are part of the reservation. Must be greater than zero.
+	Quantity *int32
+
+	// Setting this to true will automatically purchase a new benefit on the expiration date time.
+	Renew *bool
+
+	// Properties specific to each reserved resource type. Not required if not applicable.
+	ReservedResourceProperties *ReservationPurchaseRequestPropertiesReservedResourceProperties
+
+	// This is the date-time when the Azure hybrid benefit needs to be reviewed.
+	ReviewDateTime *time.Time
+
+	// READ-ONLY; Subscription that will be charged for purchasing reservation or savings plan
+	BillingScopeID *string
+
+	// READ-ONLY; The reserved source type of the reservation, e.g. virtual machine.
+	ReservedResourceType *string
+
+	// READ-ONLY; The term of the reservation, e.g. P1Y
+	Term *string
+}
+
+// ReservationPurchaseRequestPropertiesReservedResourceProperties - Properties specific to each reserved resource type. Not
+// required if not applicable.
+type ReservationPurchaseRequestPropertiesReservedResourceProperties struct {
+	// Turning this on will apply the reservation discount to other VMs in the same VM size group. Only specify for VirtualMachines
+	// reserved resource type.
+	InstanceFlexibility *InstanceFlexibility
 }
 
 // ReservationSKUProperty - The property of reservation sku object.
 type ReservationSKUProperty struct {
 	// READ-ONLY; The name of the reservation sku.
 	Name *string
+}
+
+// ReservationSplitProperties - Properties of reservation split
+type ReservationSplitProperties struct {
+	// List of destination resource id that are created due to split. Format of the resource id is /providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}
+	SplitDestinations []*string
+
+	// Resource id of the reservation from which this is split. Format of the resource id is /providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}
+	SplitSource *string
 }
 
 // ReservationSummary - The roll up count summary of reservations in each state
@@ -1355,11 +3648,29 @@ type ReservationSummary struct {
 	// READ-ONLY; The number of reservation in Failed state
 	FailedCount *float32
 
+	// READ-ONLY; The number of reservation in 'No Benefit' state
+	NoBenefitCount *float32
+
 	// READ-ONLY; The number of reservation in Pending state
 	PendingCount *float32
 
+	// READ-ONLY; The number of reservation in Processing state
+	ProcessingCount *float32
+
 	// READ-ONLY; The number of reservation in Succeeded state
 	SucceededCount *float32
+
+	// READ-ONLY; The number of reservation in Warning state
+	WarningCount *float32
+}
+
+// ReservationSwapProperties - Properties of reservation swap
+type ReservationSwapProperties struct {
+	// Reservation resource id that the original resource gets swapped to. Format of the resource id is /providers/microsoft.capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}
+	SwapDestination *string
+
+	// Resource id of the source reservation that gets swapped. Format of the resource id is /providers/microsoft.capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}
+	SwapSource *string
 }
 
 // ReservationUtilizationAggregates - The aggregate values of reservation utilization
@@ -1389,397 +3700,1428 @@ type ReservationsListResult struct {
 	Value []*Reservation
 }
 
-// Resource - The Resource model definition.
+// Resource - Common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
-	// READ-ONLY; Resource Id.
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; Resource name.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
-// RoleAssignment - The role assignment
+// RoleAssignment - The properties of the billing role assignment.
 type RoleAssignment struct {
-	// The properties of the role assignment.
+	// The properties of the billing role assignment.
 	Properties *RoleAssignmentProperties
 
-	// READ-ONLY; Resource Id.
+	// Dictionary of metadata associated with the resource. It may not be populated for all resource types. Maximum key/value
+	// length supported of 256 characters. Keys/value should not empty value nor null.
+	// Keys can not contain < > % & \ ? /
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; Resource name.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
-// RoleAssignmentListResult - The list of role assignments.
+// RoleAssignmentListResult - A container for a list of resources
 type RoleAssignmentListResult struct {
 	// READ-ONLY; The link (url) to the next page of results.
 	NextLink *string
 
-	// READ-ONLY; The list of role assignments.
+	// READ-ONLY; The list of resources.
 	Value []*RoleAssignment
 }
 
-// RoleAssignmentProperties - The properties of the role assignment.
+// RoleAssignmentProperties - The properties of the billing role assignment.
 type RoleAssignmentProperties struct {
-	// The principal id of the user to whom the role was assigned.
+	// REQUIRED; The ID of the role definition.
+	RoleDefinitionID *string
+
+	// The object id of the user to whom the role was assigned.
 	PrincipalID *string
+
+	// The principal PUID of the user to whom the role was assigned.
+	PrincipalPuid *string
 
 	// The principal tenant id of the user to whom the role was assigned.
 	PrincipalTenantID *string
 
-	// The ID of the role definition.
-	RoleDefinitionID *string
+	// The scope at which the role was assigned.
+	Scope *string
 
-	// The authentication type.
+	// The authentication type of the user, whether Organization or MSA, of the user to whom the role was assigned. This is supported
+	// only for billing accounts with agreement type Enterprise Agreement.
 	UserAuthenticationType *string
 
-	// The email address of the user.
+	// The email address of the user to whom the role was assigned. This is supported only for billing accounts with agreement
+	// type Enterprise Agreement.
 	UserEmailAddress *string
 
-	// READ-ONLY; The principal Id of the user who created the role assignment.
+	// READ-ONLY; The name of the billing account.
+	BillingAccountDisplayName *string
+
+	// READ-ONLY; The fully qualified ID that uniquely identifies a billing account.
+	BillingAccountID *string
+
+	// READ-ONLY; The name of the billing profile.
+	BillingProfileDisplayName *string
+
+	// READ-ONLY; The fully qualified ID that uniquely identifies a billing profile.
+	BillingProfileID *string
+
+	// READ-ONLY; The ID of the billing request that was created for the role assignment. This is only applicable to cross tenant
+	// role assignments or role assignments created through the billing request.
+	BillingRequestID *string
+
+	// READ-ONLY; The object ID of the user who created the role assignment.
 	CreatedByPrincipalID *string
+
+	// READ-ONLY; The principal PUID of the user who created the role assignment.
+	CreatedByPrincipalPuid *string
 
 	// READ-ONLY; The tenant Id of the user who created the role assignment.
 	CreatedByPrincipalTenantID *string
 
-	// READ-ONLY; The email address of the user who created the role assignment.
+	// READ-ONLY; The email address of the user who created the role assignment. This is supported only for billing accounts with
+	// agreement type Enterprise Agreement.
 	CreatedByUserEmailAddress *string
 
 	// READ-ONLY; The date the role assignment was created.
-	CreatedOn *string
+	CreatedOn *time.Time
 
-	// READ-ONLY; The scope at which the role was assigned.
-	Scope *string
+	// READ-ONLY; The name of the customer.
+	CustomerDisplayName *string
+
+	// READ-ONLY; The fully qualified ID that uniquely identifies a customer.
+	CustomerID *string
+
+	// READ-ONLY; The name of the invoice section.
+	InvoiceSectionDisplayName *string
+
+	// READ-ONLY; The fully qualified ID that uniquely identifies an invoice section.
+	InvoiceSectionID *string
+
+	// READ-ONLY; The principal PUID of the user who modified the role assignment.
+	ModifiedByPrincipalID *string
+
+	// READ-ONLY; The principal PUID of the user who modified the role assignment.
+	ModifiedByPrincipalPuid *string
+
+	// READ-ONLY; The tenant Id of the user who modified the role assignment.
+	ModifiedByPrincipalTenantID *string
+
+	// READ-ONLY; The email address of the user who modified the role assignment. This is supported only for billing accounts
+	// with agreement type Enterprise Agreement.
+	ModifiedByUserEmailAddress *string
+
+	// READ-ONLY; The date the role assignment was modified.
+	ModifiedOn *time.Time
+
+	// READ-ONLY; The display name of the principal to whom the role was assigned.
+	PrincipalDisplayName *string
+
+	// READ-ONLY; The friendly name of the tenant of the user to whom the role was assigned. This will be 'Primary Tenant' for
+	// the primary tenant of the billing account.
+	PrincipalTenantName *string
+
+	// READ-ONLY; The type of a role Assignment.
+	PrincipalType *PrincipalType
+
+	// READ-ONLY; The provisioning state of the resource during a long-running operation.
+	ProvisioningState *ProvisioningState
 }
 
 // RoleDefinition - The properties of a role definition.
 type RoleDefinition struct {
-	// The properties of the a role definition.
+	// The properties of a role definition.
 	Properties *RoleDefinitionProperties
 
-	// READ-ONLY; Resource Id.
+	// Dictionary of metadata associated with the resource. It may not be populated for all resource types. Maximum key/value
+	// length supported of 256 characters. Keys/value should not empty value nor null.
+	// Keys can not contain < > % & \ ? /
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; Resource name.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
-// RoleDefinitionListResult - The list of role definitions.
+// RoleDefinitionListResult - A container for a list of resources
 type RoleDefinitionListResult struct {
 	// READ-ONLY; The link (url) to the next page of results.
 	NextLink *string
 
-	// READ-ONLY; The role definitions.
+	// READ-ONLY; The list of resources.
 	Value []*RoleDefinition
 }
 
-// RoleDefinitionProperties - The properties of the a role definition.
+// RoleDefinitionProperties - The properties of a role definition.
 type RoleDefinitionProperties struct {
-	// The billingPermissions the role has
-	Permissions []*PermissionsProperties
+	// REQUIRED; The name of the role.
+	RoleName *string
 
-	// READ-ONLY; The role description
+	// READ-ONLY; The role description.
 	Description *string
 
-	// READ-ONLY; The name of the role
-	RoleName *string
+	// READ-ONLY; The billingPermissions the role has.
+	Permissions []*Permission
 }
 
-// Subscription - A billing subscription.
-type Subscription struct {
-	// The billing properties of a subscription.
-	Properties *SubscriptionProperties
+// SKU - The SKU to be applied for this resource
+type SKU struct {
+	// Name of the SKU to be applied
+	Name *string
+}
 
-	// READ-ONLY; Resource Id.
+// SKUName - The name of sku
+type SKUName struct {
+	Name *string
+}
+
+// SavingsPlanModel - Savings plan
+type SavingsPlanModel struct {
+	// REQUIRED; Savings plan SKU
+	SKU *SKU
+
+	// Savings plan properties
+	Properties *SavingsPlanModelProperties
+
+	// Dictionary of metadata associated with the resource. It may not be populated for all resource types. Maximum key/value
+	// length supported of 256 characters. Keys/value should not empty value nor null.
+	// Keys can not contain < > % & \ ? /
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; Resource name.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
-// SubscriptionProperties - The billing properties of a subscription.
-type SubscriptionProperties struct {
-	// The cost center applied to the subscription.
-	CostCenter *string
+// SavingsPlanModelList - List of savings plans
+type SavingsPlanModelList struct {
+	// Url to get the next page.
+	NextLink *string
+	Value    []*SavingsPlanModel
+}
 
-	// The sku ID of the Azure plan for the subscription.
-	SKUID *string
+// SavingsPlanModelListResult - List of savings plans
+type SavingsPlanModelListResult struct {
+	// Url to get the next page.
+	NextLink *string
 
-	// The current billing status of the subscription.
-	SubscriptionBillingStatus *BillingSubscriptionStatusType
+	// The roll out count summary of the savings plans
+	Summary *SavingsPlanSummaryCount
+	Value   []*SavingsPlanModel
+}
 
-	// READ-ONLY; The name of the billing profile to which the subscription is billed.
-	BillingProfileDisplayName *string
+// SavingsPlanModelProperties - Savings plan properties
+type SavingsPlanModelProperties struct {
+	// Properties specific to applied scope type. Not required if not applicable.
+	AppliedScopeProperties *AppliedScopeProperties
 
-	// READ-ONLY; The ID of the billing profile to which the subscription is billed.
-	BillingProfileID *string
+	// Type of the Applied Scope.
+	AppliedScopeType *AppliedScopeType
 
-	// READ-ONLY; The name of the customer for whom the subscription was created. The field is applicable only for Microsoft Partner
-	// Agreement billing account.
-	CustomerDisplayName *string
+	// Represents the billing plan in ISO 8601 format. Required only for monthly purchases.
+	BillingPlan *BillingPlan
 
-	// READ-ONLY; The ID of the customer for whom the subscription was created. The field is applicable only for Microsoft Partner
-	// Agreement billing account.
-	CustomerID *string
+	// Subscription that will be charged for purchasing SavingsPlan
+	BillingScopeID *string
 
-	// READ-ONLY; The name of the subscription.
+	// Commitment towards the benefit.
+	Commitment *Commitment
+
+	// Display name
 	DisplayName *string
 
-	// READ-ONLY; The name of the invoice section to which the subscription is billed.
-	InvoiceSectionDisplayName *string
+	// Represents UPN
+	ProductCode *string
 
-	// READ-ONLY; The ID of the invoice section to which the subscription is billed.
+	// The provisioning state of the resource during a long-running operation.
+	ProvisioningState *ProvisioningState
+
+	// Setting this to true will automatically purchase a new benefit on the expiration date time.
+	Renew *bool
+
+	// SavingsPlan Id of the SavingsPlan which is purchased because of renew.
+	RenewDestination *string
+
+	// Properties specific to renew.
+	RenewProperties *RenewProperties
+
+	// SavingsPlan Id of the SavingsPlan from which this SavingsPlan is renewed.
+	RenewSource *string
+
+	// Represents the Savings plan term in ISO 8601 format.
+	Term *SavingsPlanTerm
+
+	// READ-ONLY; This is the DateTime when the savings plan benefit starts.
+	BenefitStartTime *time.Time
+
+	// READ-ONLY; Fully-qualified identifier of the billing account where the savings plan is applied.
+	BillingAccountID *string
+
+	// READ-ONLY; Fully-qualified identifier of the billing profile where the savings plan is applied. Present only for Field-led
+	// or Customer-led customers.
+	BillingProfileID *string
+
+	// READ-ONLY; Fully-qualified identifier of the customer where the savings plan is applied. Present only for Partner-led customers.
+	CustomerID *string
+
+	// READ-ONLY; The provisioning state of the savings plan for display, e.g. Succeeded
+	DisplayProvisioningState *string
+
+	// READ-ONLY; DateTime of the savings plan starting when this version is effective from.
+	EffectiveDateTime *time.Time
+
+	// READ-ONLY; This is the date-time when the savings plan will expire.
+	ExpiryDateTime *time.Time
+
+	// READ-ONLY; Extended status information
+	ExtendedStatusInfo *ExtendedStatusInfo
+
+	// READ-ONLY; Date time when the savings plan was purchased.
+	PurchaseDateTime *time.Time
+
+	// READ-ONLY; The applied scope type of the savings plan for display, e.g. Shared
+	UserFriendlyAppliedScopeType *string
+
+	// READ-ONLY; Savings plan utilization
+	Utilization *Utilization
+}
+
+// SavingsPlanOrderModel - Savings plan order
+type SavingsPlanOrderModel struct {
+	// REQUIRED; Savings plan SKU
+	SKU *SKU
+
+	// Savings plan order properties
+	Properties *SavingsPlanOrderModelProperties
+
+	// Dictionary of metadata associated with the resource. It may not be populated for all resource types. Maximum key/value
+	// length supported of 256 characters. Keys/value should not empty value nor null.
+	// Keys can not contain < > % & \ ? /
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// SavingsPlanOrderModelList - List of savings plan orders
+type SavingsPlanOrderModelList struct {
+	// Url to get the next page.
+	NextLink *string
+	Value    []*SavingsPlanOrderModel
+}
+
+// SavingsPlanOrderModelProperties - Savings plan order properties
+type SavingsPlanOrderModelProperties struct {
+	// Represents the billing plan in ISO 8601 format. Required only for monthly purchases.
+	BillingPlan *BillingPlan
+
+	// Subscription that will be charged for purchasing SavingsPlan
+	BillingScopeID *string
+
+	// Display name
+	DisplayName *string
+
+	// Information describing the type of billing plan for this savings plan.
+	PlanInformation *PlanInformation
+
+	// Represents UPN
+	ProductCode  *string
+	SavingsPlans []*string
+
+	// Represents the Savings plan term in ISO 8601 format.
+	Term *SavingsPlanTerm
+
+	// READ-ONLY; DateTime when the savings plan benefit started.
+	BenefitStartTime *time.Time
+
+	// READ-ONLY; Fully-qualified identifier of the billing account where the savings plan is applied.
+	BillingAccountID *string
+
+	// READ-ONLY; Fully-qualified identifier of the billing profile where the savings plan is applied. Present only for Field-led
+	// or Customer-led customers.
+	BillingProfileID *string
+
+	// READ-ONLY; Fully-qualified identifier of the customer where the savings plan is applied. Present only for Partner-led customers.
+	CustomerID *string
+
+	// READ-ONLY; DateTime when the savings plan will expire.
+	ExpiryDateTime *time.Time
+
+	// READ-ONLY; Extended status information
+	ExtendedStatusInfo *ExtendedStatusInfo
+
+	// READ-ONLY; The provisioning state of the savings plan, e.g. Succeeded
+	ProvisioningState *string
+}
+
+// SavingsPlanSummaryCount - The roll up count summary of savings plans in each state
+type SavingsPlanSummaryCount struct {
+	// READ-ONLY; The number of savings plans in Cancelled state
+	CancelledCount *float32
+
+	// READ-ONLY; The number of savings plans in Expired state
+	ExpiredCount *float32
+
+	// READ-ONLY; The number of savings plans in Expiring state
+	ExpiringCount *float32
+
+	// READ-ONLY; The number of savings plans in Failed state
+	FailedCount *float32
+
+	// READ-ONLY; The number of savings plans in No Benefit state
+	NoBenefitCount *float32
+
+	// READ-ONLY; The number of savings plans in Pending state
+	PendingCount *float32
+
+	// READ-ONLY; The number of savings plans in Processing state
+	ProcessingCount *float32
+
+	// READ-ONLY; The number of savings plans in Succeeded state
+	SucceededCount *float32
+
+	// READ-ONLY; The number of savings plans in Warning state
+	WarningCount *float32
+}
+
+// SavingsPlanUpdateRequest - Savings plan patch request
+type SavingsPlanUpdateRequest struct {
+	// Savings plan patch request
+	Properties *SavingsPlanUpdateRequestProperties
+
+	// The SKU to be applied for this resource
+	SKU *SKU
+
+	// Tags for this reservation
+	Tags map[string]*string
+}
+
+// SavingsPlanUpdateRequestProperties - Savings plan patch request
+type SavingsPlanUpdateRequestProperties struct {
+	// Properties specific to applied scope type. Not required if not applicable.
+	AppliedScopeProperties *AppliedScopeProperties
+
+	// Type of the Applied Scope.
+	AppliedScopeType *AppliedScopeType
+
+	// Display name
+	DisplayName *string
+
+	// Setting this to true will automatically purchase a new benefit on the expiration date time.
+	Renew *bool
+
+	// Properties specific to renew.
+	RenewProperties *RenewProperties
+}
+
+// SavingsPlanUpdateValidateRequest - Savings plan update validate request.
+type SavingsPlanUpdateValidateRequest struct {
+	// The benefits of a savings plan.
+	Benefits []*SavingsPlanUpdateRequestProperties
+}
+
+// SavingsPlanValidResponseProperty - Benefit scope response property
+type SavingsPlanValidResponseProperty struct {
+	// Failure reason if the provided input is invalid
+	Reason *string
+
+	// Failure reason code if the provided input is invalid
+	ReasonCode *string
+
+	// Indicates if the provided input is valid
+	Valid *bool
+}
+
+// SavingsPlanValidateResponse - Savings plan update validate response.
+type SavingsPlanValidateResponse struct {
+	Benefits []*SavingsPlanValidResponseProperty
+
+	// Url to get the next page.
+	NextLink *string
+}
+
+// SpendingLimitDetails - The billing profile spending limit.
+type SpendingLimitDetails struct {
+	// The initial amount for the billing profile.
+	Amount *float32
+
+	// The currency in which the charges for the billing profile are billed.
+	Currency *string
+
+	// The date when this spending limit is no longer in effect.
+	EndDate *time.Time
+
+	// The date when this spending limit goes into effect.
+	StartDate *time.Time
+
+	// The status of current spending limit.
+	Status *SpendingLimitStatus
+
+	// The type of spending limit.
+	Type *SpendingLimitType
+}
+
+// Subscription - The billing properties of a subscription.
+type Subscription struct {
+	// The properties of a(n) BillingSubscription
+	Properties *SubscriptionProperties
+
+	// Dictionary of metadata associated with the resource. It may not be populated for all resource types. Maximum key/value
+	// length supported of 256 characters. Keys/value should not empty value nor null.
+	// Keys can not contain < > % & \ ? /
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// SubscriptionAlias - A billing subscription alias.
+type SubscriptionAlias struct {
+	// The properties of a(n) BillingSubscriptionAlias
+	Properties *SubscriptionAliasProperties
+
+	// Dictionary of metadata associated with the resource. It may not be populated for all resource types. Maximum key/value
+	// length supported of 256 characters. Keys/value should not empty value nor null.
+	// Keys can not contain < > % & \ ? /
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// SubscriptionAliasListResult - A container for a list of resources
+type SubscriptionAliasListResult struct {
+	// READ-ONLY; The link (url) to the next page of results.
+	NextLink *string
+
+	// READ-ONLY; The list of resources.
+	Value []*SubscriptionAlias
+}
+
+// SubscriptionAliasProperties - A billing subscription alias.
+type SubscriptionAliasProperties struct {
+	// Indicates whether auto renewal is turned on or off for a product.
+	AutoRenew *AutoRenew
+
+	// The beneficiary of the billing subscription.
+	Beneficiary *Beneficiary
+
+	// The provisioning tenant of the subscription.
+	BeneficiaryTenantID *string
+
+	// The billing frequency in ISO8601 format of product in the subscription. Example: P1M, P3M, P1Y
+	BillingFrequency *string
+
+	// The fully qualified ID that uniquely identifies a billing profile.
+	BillingProfileID *string
+
+	// The cost center applied to the subscription. This field is only available for consumption subscriptions of Microsoft Customer
+	// Agreement or Enterprise Agreement Type billing accounts.
+	ConsumptionCostCenter *string
+
+	// The fully qualified ID that uniquely identifies a customer.
+	CustomerID *string
+
+	// The name of the billing subscription.
+	DisplayName *string
+
+	// The fully qualified ID that uniquely identifies an invoice section.
 	InvoiceSectionID *string
 
-	// READ-ONLY; The last month charges.
+	// Id of the product for which the subscription is purchased.
+	ProductTypeID *string
+
+	// The tenant in which the subscription is provisioned.
+	ProvisioningTenantID *string
+
+	// The quantity of licenses or fulfillment units for the subscription.
+	Quantity *int64
+
+	// The SKU ID of the product for which the subscription is purchased. This field is is only available for Microsoft Customer
+	// Agreement billing accounts.
+	SKUID *string
+
+	// System imposed policies that regulate behavior of the subscription.
+	SystemOverrides *SystemOverrides
+
+	// The duration in ISO8601 format for which you can use the subscription. Example: P1M, P3M, P1Y
+	TermDuration *string
+
+	// READ-ONLY; Dictionary of billing policies associated with the subscription.
+	BillingPolicies map[string]*string
+
+	// READ-ONLY; The name of the billing profile.
+	BillingProfileDisplayName *string
+
+	// READ-ONLY; The ID that uniquely identifies a billing profile.
+	BillingProfileName *string
+
+	// READ-ONLY; The ID of the billing subscription with the subscription alias.
+	BillingSubscriptionID *string
+
+	// READ-ONLY; The name of the customer.
+	CustomerDisplayName *string
+
+	// READ-ONLY; The ID that uniquely identifies a customer.
+	CustomerName *string
+
+	// READ-ONLY; The enrollment Account name associated with the subscription. This field is available only for the Enterprise
+	// Agreement Type billing accounts.
+	EnrollmentAccountDisplayName *string
+
+	// READ-ONLY; The enrollment Account ID associated with the subscription. This field is available only for the Enterprise
+	// Agreement Type billing accounts.
+	EnrollmentAccountID *string
+
+	// READ-ONLY; Enrollment Account Subscription details. This field is available only for the Enterprise Agreement Type billing
+	// accounts.
+	EnrollmentAccountSubscriptionDetails *EnrollmentAccountSubscriptionDetails
+
+	// READ-ONLY; The name of the invoice section.
+	InvoiceSectionDisplayName *string
+
+	// READ-ONLY; The ID that uniquely identifies an invoice section.
+	InvoiceSectionName *string
+
+	// READ-ONLY; The last month's charges. This field is only available for usage based subscriptions of Microsoft Customer Agreement
+	// billing accounts.
 	LastMonthCharges *Amount
 
-	// READ-ONLY; The current month to date charges.
+	// READ-ONLY; The current month to date charges. This field is only available for usage based subscriptions of Microsoft Customer
+	// Agreement billing accounts.
 	MonthToDateCharges *Amount
 
-	// READ-ONLY; Reseller for this subscription.
+	// READ-ONLY; Next billing cycle details of the subscription.
+	NextBillingCycleDetails *NextBillingCycleDetails
+
+	// READ-ONLY; The offer ID for the subscription. This field is only available for the Microsoft Online Services Program billing
+	// accounts.
+	OfferID *string
+
+	// READ-ONLY; The status of an operation on the subscription. When None, there is no ongoing operation. When LockedForUpdate,
+	// write operations will be blocked on the Billing Subscription. Other is the default value
+	// and you may need to refer to the latest API version for more details.
+	OperationStatus *BillingSubscriptionOperationStatus
+
+	// READ-ONLY; The category of the product for which the subscription is purchased. Possible values include: AzureSupport,
+	// Hardware, ReservationOrder, SaaS, SavingsPlanOrder, Software, UsageBased, Other.
+	ProductCategory *string
+
+	// READ-ONLY; Type of the product for which the subscription is purchased.
+	ProductType *string
+
+	// READ-ONLY; The provisioning state of the resource during a long-running operation.
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; Purchase date of the product in UTC time.
+	PurchaseDate *time.Time
+
+	// READ-ONLY; Details for the next renewal term of a subscription.
+	RenewalTermDetails *RenewalTermDetails
+
+	// READ-ONLY; Reseller for this subscription. The fields is not available for Microsoft Partner Agreement billing accounts.
 	Reseller *Reseller
 
-	// READ-ONLY; The sku description of the Azure plan for the subscription.
+	// READ-ONLY; Unique identifier of the linked resource.
+	ResourceURI *string
+
+	// READ-ONLY; The SKU description of the product for which the subscription is purchased. This field is is only available
+	// for billing accounts with agreement type Microsoft Customer Agreement and Microsoft Partner
+	// Agreement.
 	SKUDescription *string
+
+	// READ-ONLY; The status of the subscription. This field is not available for Enterprise Agreement billing accounts
+	Status *BillingSubscriptionStatus
 
 	// READ-ONLY; The ID of the subscription.
 	SubscriptionID *string
 
-	// READ-ONLY; The suspension reason for a subscription. Applies only to subscriptions in Microsoft Online Services Program
-	// billing accounts.
+	// READ-ONLY; The suspension details for a subscription. This field is not available for Enterprise Agreement billing accounts.
+	SuspensionReasonDetails []*SubscriptionStatusDetails
+
+	// READ-ONLY; The suspension reason for a subscription. This field is not available for Enterprise Agreement billing accounts.
 	SuspensionReasons []*string
+
+	// READ-ONLY; End date of the term in UTC time.
+	TermEndDate *time.Time
+
+	// READ-ONLY; Start date of the term in UTC time.
+	TermStartDate *time.Time
 }
 
-// SubscriptionsListResult - The list of billing subscriptions.
-type SubscriptionsListResult struct {
+// SubscriptionEnrollmentDetails - The enrollment details for the subscription. Available for billing accounts with agreement
+// type Enterprise Agreement.
+type SubscriptionEnrollmentDetails struct {
+	// The name of the department
+	DepartmentDisplayName *string
+
+	// The ID that uniquely identifies the department.
+	DepartmentID *string
+
+	// The name of the enrollment account.
+	EnrollmentAccountDisplayName *string
+
+	// The ID that uniquely identifies an enrollment account.
+	EnrollmentAccountID *string
+
+	// The status of the enrollment account.
+	EnrollmentAccountStatus *string
+}
+
+// SubscriptionListResult - A container for a list of resources
+type SubscriptionListResult struct {
 	// READ-ONLY; The link (url) to the next page of results.
 	NextLink *string
 
 	// READ-ONLY; Total number of records.
 	TotalCount *int32
 
-	// READ-ONLY; The list of billing subscriptions.
+	// READ-ONLY; The list of resources.
 	Value []*Subscription
+}
+
+// SubscriptionMergeRequest - Request parameters that are provided to merge the two billing subscriptions.
+type SubscriptionMergeRequest struct {
+	// The quantity of the source billing subscription that will be merged with the target billing subscription.
+	Quantity *int32
+
+	// The ID of the target billing subscription that will be merged with the source subscription provided in the request.
+	TargetBillingSubscriptionName *string
+}
+
+// SubscriptionPatch - The billing properties of a subscription.
+type SubscriptionPatch struct {
+	// The properties of a(n) BillingSubscription
+	Properties *SubscriptionProperties
+
+	// Dictionary of metadata associated with the resource. It may not be populated for all resource types. Maximum key/value
+	// length supported of 256 characters. Keys/value should not empty value nor null.
+	// Keys can not contain < > % & \ ? /
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// SubscriptionPolicy - A policy at subscription scope.
+type SubscriptionPolicy struct {
+	// A policy at subscription scope.
+	Properties *SubscriptionPolicyProperties
+
+	// Dictionary of metadata associated with the resource. It may not be populated for all resource types. Maximum key/value
+	// length supported of 256 characters. Keys/value should not empty value nor null.
+	// Keys can not contain < > % & \ ? /
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// SubscriptionPolicyProperties - A policy at subscription scope.
+type SubscriptionPolicyProperties struct {
+	// List of all policies defined at the billing scope.
+	Policies []*PolicySummary
+
+	// READ-ONLY; The provisioning state of the resource during a long-running operation.
+	ProvisioningState *ProvisioningState
+}
+
+// SubscriptionProperties - The billing properties of a subscription.
+type SubscriptionProperties struct {
+	// Indicates whether auto renewal is turned on or off for a product.
+	AutoRenew *AutoRenew
+
+	// The beneficiary of the billing subscription.
+	Beneficiary *Beneficiary
+
+	// The provisioning tenant of the subscription.
+	BeneficiaryTenantID *string
+
+	// The billing frequency in ISO8601 format of product in the subscription. Example: P1M, P3M, P1Y
+	BillingFrequency *string
+
+	// The fully qualified ID that uniquely identifies a billing profile.
+	BillingProfileID *string
+
+	// The cost center applied to the subscription. This field is only available for consumption subscriptions of Microsoft Customer
+	// Agreement or Enterprise Agreement Type billing accounts.
+	ConsumptionCostCenter *string
+
+	// The fully qualified ID that uniquely identifies a customer.
+	CustomerID *string
+
+	// The name of the billing subscription.
+	DisplayName *string
+
+	// The fully qualified ID that uniquely identifies an invoice section.
+	InvoiceSectionID *string
+
+	// Id of the product for which the subscription is purchased.
+	ProductTypeID *string
+
+	// The tenant in which the subscription is provisioned.
+	ProvisioningTenantID *string
+
+	// The quantity of licenses or fulfillment units for the subscription.
+	Quantity *int64
+
+	// The SKU ID of the product for which the subscription is purchased. This field is is only available for Microsoft Customer
+	// Agreement billing accounts.
+	SKUID *string
+
+	// System imposed policies that regulate behavior of the subscription.
+	SystemOverrides *SystemOverrides
+
+	// The duration in ISO8601 format for which you can use the subscription. Example: P1M, P3M, P1Y
+	TermDuration *string
+
+	// READ-ONLY; Dictionary of billing policies associated with the subscription.
+	BillingPolicies map[string]*string
+
+	// READ-ONLY; The name of the billing profile.
+	BillingProfileDisplayName *string
+
+	// READ-ONLY; The ID that uniquely identifies a billing profile.
+	BillingProfileName *string
+
+	// READ-ONLY; The name of the customer.
+	CustomerDisplayName *string
+
+	// READ-ONLY; The ID that uniquely identifies a customer.
+	CustomerName *string
+
+	// READ-ONLY; The enrollment Account name associated with the subscription. This field is available only for the Enterprise
+	// Agreement Type billing accounts.
+	EnrollmentAccountDisplayName *string
+
+	// READ-ONLY; The enrollment Account ID associated with the subscription. This field is available only for the Enterprise
+	// Agreement Type billing accounts.
+	EnrollmentAccountID *string
+
+	// READ-ONLY; Enrollment Account Subscription details. This field is available only for the Enterprise Agreement Type billing
+	// accounts.
+	EnrollmentAccountSubscriptionDetails *EnrollmentAccountSubscriptionDetails
+
+	// READ-ONLY; The name of the invoice section.
+	InvoiceSectionDisplayName *string
+
+	// READ-ONLY; The ID that uniquely identifies an invoice section.
+	InvoiceSectionName *string
+
+	// READ-ONLY; The last month's charges. This field is only available for usage based subscriptions of Microsoft Customer Agreement
+	// billing accounts.
+	LastMonthCharges *Amount
+
+	// READ-ONLY; The current month to date charges. This field is only available for usage based subscriptions of Microsoft Customer
+	// Agreement billing accounts.
+	MonthToDateCharges *Amount
+
+	// READ-ONLY; Next billing cycle details of the subscription.
+	NextBillingCycleDetails *NextBillingCycleDetails
+
+	// READ-ONLY; The offer ID for the subscription. This field is only available for the Microsoft Online Services Program billing
+	// accounts.
+	OfferID *string
+
+	// READ-ONLY; The status of an operation on the subscription. When None, there is no ongoing operation. When LockedForUpdate,
+	// write operations will be blocked on the Billing Subscription. Other is the default value
+	// and you may need to refer to the latest API version for more details.
+	OperationStatus *BillingSubscriptionOperationStatus
+
+	// READ-ONLY; The category of the product for which the subscription is purchased. Possible values include: AzureSupport,
+	// Hardware, ReservationOrder, SaaS, SavingsPlanOrder, Software, UsageBased, Other.
+	ProductCategory *string
+
+	// READ-ONLY; Type of the product for which the subscription is purchased.
+	ProductType *string
+
+	// READ-ONLY; The provisioning state of the resource during a long-running operation.
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; Purchase date of the product in UTC time.
+	PurchaseDate *time.Time
+
+	// READ-ONLY; Details for the next renewal term of a subscription.
+	RenewalTermDetails *RenewalTermDetails
+
+	// READ-ONLY; Reseller for this subscription. The fields is not available for Microsoft Partner Agreement billing accounts.
+	Reseller *Reseller
+
+	// READ-ONLY; Unique identifier of the linked resource.
+	ResourceURI *string
+
+	// READ-ONLY; The SKU description of the product for which the subscription is purchased. This field is is only available
+	// for billing accounts with agreement type Microsoft Customer Agreement and Microsoft Partner
+	// Agreement.
+	SKUDescription *string
+
+	// READ-ONLY; The status of the subscription. This field is not available for Enterprise Agreement billing accounts
+	Status *BillingSubscriptionStatus
+
+	// READ-ONLY; The ID of the subscription.
+	SubscriptionID *string
+
+	// READ-ONLY; The suspension details for a subscription. This field is not available for Enterprise Agreement billing accounts.
+	SuspensionReasonDetails []*SubscriptionStatusDetails
+
+	// READ-ONLY; The suspension reason for a subscription. This field is not available for Enterprise Agreement billing accounts.
+	SuspensionReasons []*string
+
+	// READ-ONLY; End date of the term in UTC time.
+	TermEndDate *time.Time
+
+	// READ-ONLY; Start date of the term in UTC time.
+	TermStartDate *time.Time
+}
+
+// SubscriptionSplitRequest - Request parameters that are provided to split the billing subscription.
+type SubscriptionSplitRequest struct {
+	// The billing frequency of the target subscription in the ISO8601 format. Example: P1M, P3M, P1Y"
+	BillingFrequency *string
+
+	// The quantity of the target product to which the subscription needs to be split into.
+	Quantity *int32
+
+	// The ID of the target product to which the subscription needs to be split into. This value is not same as the value returned
+	// in Get API call and can be retrieved from Catalog API to know the product id
+	// to split into.
+	TargetProductTypeID *string
+
+	// The ID of the target product to which the subscription needs to be split into. This value is not same as the value returned
+	// in Get API call and can be retrieved from Catalog API to know the sku id to
+	// split into.
+	TargetSKUID *string
+
+	// The term duration of the target in ISO8601 format product to which the subscription needs to be split into. Example: P1M,
+	// P1Y
+	TermDuration *string
+}
+
+// SubscriptionStatusDetails - The suspension details for a subscription. This field is not available for Enterprise Agreement
+// billing accounts.
+type SubscriptionStatusDetails struct {
+	// READ-ONLY; The suspension effective date for a subscription. This field is not available for Enterprise Agreement billing
+	// accounts.
+	EffectiveDate *time.Time
+
+	// READ-ONLY; The suspension reason for a subscription. This field is not available for Enterprise Agreement billing accounts.
+	Reason *SubscriptionStatusReason
+}
+
+// SystemData - Metadata pertaining to creation and last modification of the resource.
+type SystemData struct {
+	// The timestamp of resource creation (UTC).
+	CreatedAt *time.Time
+
+	// The identity that created the resource.
+	CreatedBy *string
+
+	// The type of identity that created the resource.
+	CreatedByType *CreatedByType
+
+	// The timestamp of resource last modification (UTC)
+	LastModifiedAt *time.Time
+
+	// The identity that last modified the resource.
+	LastModifiedBy *string
+
+	// The type of identity that last modified the resource.
+	LastModifiedByType *CreatedByType
+}
+
+// SystemOverrides - System imposed policies that regulate behavior of the subscription.
+type SystemOverrides struct {
+	// READ-ONLY; The policy override for the subscription indicates whether the self-serve cancellation or seat reduction is
+	// allowed.
+	Cancellation *Cancellation
+
+	// READ-ONLY; The end date in UTC time by when the self-serve cancellation ends.
+	CancellationAllowedEndDate *time.Time
+}
+
+// TaxIdentifier - A tax identifier for the billing account.
+type TaxIdentifier struct {
+	// The country of the tax identifier.
+	Country *string
+
+	// The id of the tax identifier.
+	ID *string
+
+	// The scope of the tax identifier.
+	Scope *string
+
+	// The status of the tax identifier.
+	Status *TaxIdentifierStatus
+
+	// The type of the tax identifier.
+	Type *TaxIdentifierType
 }
 
 // Transaction - A transaction.
 type Transaction struct {
-	// The properties of a transaction.
+	// A transaction.
 	Properties *TransactionProperties
 
-	// READ-ONLY; Resource Id.
+	// Dictionary of metadata associated with the resource. It may not be populated for all resource types. Maximum key/value
+	// length supported of 256 characters. Keys/value should not empty value nor null.
+	// Keys can not contain < > % & \ ? /
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; Resource name.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
-// TransactionListResult - The list of transactions.
+// TransactionListResult - A container for a list of resources
 type TransactionListResult struct {
 	// READ-ONLY; The link (url) to the next page of results.
 	NextLink *string
 
-	// READ-ONLY; Total number of records.
-	TotalCount *int32
-
-	// READ-ONLY; The list of transactions.
+	// READ-ONLY; The list of resources.
 	Value []*Transaction
 }
 
-// TransactionProperties - The properties of a transaction.
+// TransactionProperties - A transaction.
 type TransactionProperties struct {
-	// The kind of transaction. Options are all or reservation.
-	Kind *TransactionTypeKind
+	// The amount of any Azure credits automatically applied to this transaction.
+	AzureCreditApplied *TransactionPropertiesAzureCreditApplied
 
-	// The type of transaction.
-	TransactionType *ReservationType
-
-	// READ-ONLY; The amount of any Azure credits automatically applied to this transaction.
-	AzureCreditApplied *Amount
-
-	// READ-ONLY; The type of azure plan of the subscription that was used for the transaction.
+	// Details of the Azure plan.
 	AzurePlan *string
 
-	// READ-ONLY; The ISO 4217 code for the currency in which this transaction is billed.
+	// The ISO 4217 code for the currency in which this transaction is billed.
 	BillingCurrency *string
 
-	// READ-ONLY; The name of the billing profile which will be billed for the transaction.
-	BillingProfileDisplayName *string
+	// The name of the billing profile.
+	BillingProfileDisplayName any
 
-	// READ-ONLY; The ID of the billing profile which will be billed for the transaction.
+	// The fully qualified ID that uniquely identifies a billing profile.
 	BillingProfileID *string
 
-	// READ-ONLY; The name of the customer for which the transaction took place. The field is applicable only for Microsoft Partner
-	// Agreement billing account.
+	// The amount of Microsoft Azure Consumption Commitment(MACC) decrement through the transaction.
+	ConsumptionCommitmentDecremented *TransactionPropertiesConsumptionCommitmentDecremented
+
+	// The credit type of the transaction. Applies only to credited transactions.
+	CreditType *CreditType
+
+	// The name of the customer.
 	CustomerDisplayName *string
 
-	// READ-ONLY; The ID of the customer for which the transaction took place. The field is applicable only for Microsoft Partner
-	// Agreement billing account.
+	// The fully qualified ID that uniquely identifies a customer.
 	CustomerID *string
 
-	// READ-ONLY; The date of transaction.
+	// The date of transaction.
 	Date *time.Time
 
-	// READ-ONLY; The percentage discount, if any, applied to this transaction.
+	// The percentage discount, if any, applied to this transaction.
 	Discount *float32
 
-	// READ-ONLY; The price of the product after applying any discounts.
-	EffectivePrice *Amount
+	// The price of the product after applying any discounts.
+	EffectivePrice *TransactionPropertiesEffectivePrice
 
-	// READ-ONLY; The exchange rate used to convert charged amount to billing currency, if applicable.
+	// The exchange rate used to convert charged amount to billing currency, if applicable.
 	ExchangeRate *float32
 
-	// READ-ONLY; Invoice on which the transaction was billed or 'pending' if the transaction is not billed.
+	// Invoice name on which the transaction was billed or 'Pending' if the transaction is not billed.
 	Invoice *string
 
-	// READ-ONLY; The ID of the invoice on which the transaction was billed. This field is only applicable for transactions which
-	// are billed.
+	// The fully qualified ID of the invoice on which the transaction was billed. This field is only applicable for transactions
+	// which are billed.
 	InvoiceID *string
 
-	// READ-ONLY; The name of the invoice section which will be billed for the transaction.
+	// The name of the invoice section.
 	InvoiceSectionDisplayName *string
 
-	// READ-ONLY; The ID of the invoice section which will be billed for the transaction.
+	// The fully qualified ID that uniquely identifies an invoice section.
 	InvoiceSectionID *string
 
-	// READ-ONLY; The retail price of the product.
-	MarketPrice *Amount
+	// Whether or not the transaction is third party.
+	IsThirdParty *bool
 
-	// READ-ONLY; The order ID of the reservation. The field is only applicable for transaction of kind reservation.
-	OrderID *string
+	// Type of the transaction, billed or unbilled.
+	Kind *TransactionKind
 
-	// READ-ONLY; The name of the reservation order. The field is only applicable for transactions of kind reservation.
-	OrderName *string
+	// The retail price of the product.
+	MarketPrice *TransactionPropertiesMarketPrice
 
-	// READ-ONLY; The ISO 4217 code for the currency in which the product is priced.
+	// The part number of the product for which the transaction took place. The field is only applicable for Enterprise Agreement
+	// invoices.
+	PartNumber *string
+
+	// The ISO 4217 code for the currency in which the product is priced.
 	PricingCurrency *string
 
-	// READ-ONLY; The description of the product for which the transaction took place.
+	// The description of the product for which the transaction took place.
 	ProductDescription *string
 
-	// READ-ONLY; The family of the product for which the transaction took place.
+	// The family of the product for which the transaction took place.
 	ProductFamily *string
 
-	// READ-ONLY; The type of the product for which the transaction took place.
+	// The type of the product for which the transaction took place.
 	ProductType *string
 
-	// READ-ONLY; The ID of the product type for which the transaction took place.
+	// The ID of the product type for which the transaction took place.
 	ProductTypeID *string
 
-	// READ-ONLY; The quantity purchased in the transaction.
+	// The quantity purchased in the transaction.
 	Quantity *int32
 
-	// READ-ONLY; The end date of the product term, or the end date of the month in which usage ended.
+	// There reason code for the transaction.
+	ReasonCode *string
+
+	// The refund details of a transaction.
+	RefundTransactionDetails *TransactionPropertiesRefundTransactionDetails
+
+	// The end date of the product term, or the end date of the month in which usage ended.
 	ServicePeriodEndDate *time.Time
 
-	// READ-ONLY; The date of the purchase of the product, or the start date of the month in which usage started.
+	// The date of the purchase of the product, or the start date of the month in which usage started.
 	ServicePeriodStartDate *time.Time
 
-	// READ-ONLY; The pre-tax charged amount for the transaction.
-	SubTotal *Amount
+	// Identifies the type of tax calculation used for the invoice. The field is applicable only to invoices with special tax
+	// calculation logic.
+	SpecialTaxationType *SpecialTaxationType
 
-	// READ-ONLY; The ID of the subscription that was used for the transaction. The field is only applicable for transaction of
-	// kind reservation.
-	SubscriptionID *string
+	// The pre-tax charged amount for the transaction.
+	SubTotal *TransactionPropertiesSubTotal
 
-	// READ-ONLY; The name of the subscription that was used for the transaction. The field is only applicable for transaction
-	// of kind reservation.
-	SubscriptionName *string
+	// The tax amount applied to the transaction.
+	Tax *TransactionPropertiesTax
 
-	// READ-ONLY; The tax amount applied to the transaction.
-	Tax *Amount
+	// The charge associated with the transaction.
+	TransactionAmount *TransactionPropertiesTransactionAmount
 
-	// READ-ONLY; The charge associated with the transaction.
-	TransactionAmount *Amount
+	// The type of transaction.
+	TransactionType *string
 
-	// READ-ONLY; The unit of measure used to bill for the product. For example, compute services are billed per hour.
+	// The unit of measure used to bill for the product. For example, compute services are billed per hour.
 	UnitOfMeasure *string
 
-	// READ-ONLY; The description for the unit of measure for a given product.
+	// The description for the unit of measure for a given product.
 	UnitType *string
 
-	// READ-ONLY; The number of units used for a given product.
+	// The number of units used for a given product.
 	Units *float32
 }
 
-// TransferBillingSubscriptionRequestProperties - Request parameters to transfer billing subscription.
-type TransferBillingSubscriptionRequestProperties struct {
-	// REQUIRED; The destination invoice section id.
-	DestinationInvoiceSectionID *string
+// TransactionPropertiesAzureCreditApplied - The amount of any Azure credits automatically applied to this transaction.
+type TransactionPropertiesAzureCreditApplied struct {
+	// READ-ONLY; The currency for the amount value.
+	Currency *string
+
+	// READ-ONLY; The amount value. For example, if the currency is USD, then a value of 600 would be $600.00.
+	Value *float32
 }
 
-// TransferProductRequestProperties - The properties of the product to initiate a transfer.
-type TransferProductRequestProperties struct {
-	// The destination invoice section id.
-	DestinationInvoiceSectionID *string
+// TransactionPropertiesConsumptionCommitmentDecremented - The amount of Microsoft Azure Consumption Commitment(MACC) decrement
+// through the transaction.
+type TransactionPropertiesConsumptionCommitmentDecremented struct {
+	// READ-ONLY; The currency for the amount value.
+	Currency *string
+
+	// READ-ONLY; The amount value. For example, if the currency is USD, then a value of 600 would be $600.00.
+	Value *float32
 }
 
-// ValidateAddressResponse - Result of the address validation
-type ValidateAddressResponse struct {
-	// status of the address validation.
-	Status *AddressValidationStatus
+// TransactionPropertiesEffectivePrice - The price of the product after applying any discounts.
+type TransactionPropertiesEffectivePrice struct {
+	// READ-ONLY; The currency for the amount value.
+	Currency *string
 
-	// The list of suggested addresses.
-	SuggestedAddresses []*AddressDetails
-
-	// Validation error message.
-	ValidationMessage *string
+	// READ-ONLY; The amount value. For example, if the currency is USD, then a value of 600 would be $600.00.
+	Value *float32
 }
 
-// ValidateProductTransferEligibilityError - Error details of the product transfer eligibility validation.
-type ValidateProductTransferEligibilityError struct {
-	// Error code for the product transfer validation.
-	Code *ProductTransferValidationErrorCode
+// TransactionPropertiesMarketPrice - The retail price of the product.
+type TransactionPropertiesMarketPrice struct {
+	// READ-ONLY; The currency for the amount value.
+	Currency *string
 
-	// Detailed error message explaining the error.
-	Details *string
+	// READ-ONLY; The amount value. For example, if the currency is USD, then a value of 600 would be $600.00.
+	Value *float32
+}
 
-	// The error message.
+// TransactionPropertiesRefundTransactionDetails - The refund details of a transaction.
+type TransactionPropertiesRefundTransactionDetails struct {
+	// The amount refunded.
+	AmountRefunded *RefundTransactionDetailsAmountRefunded
+
+	// The amount of refund requested.
+	AmountRequested *RefundTransactionDetailsAmountRequested
+
+	// The ID of refund operation.
+	RefundOperationID *string
+}
+
+// TransactionPropertiesSubTotal - The pre-tax charged amount for the transaction.
+type TransactionPropertiesSubTotal struct {
+	// READ-ONLY; The currency for the amount value.
+	Currency *string
+
+	// READ-ONLY; The amount value. For example, if the currency is USD, then a value of 600 would be $600.00.
+	Value *float32
+}
+
+// TransactionPropertiesTax - The tax amount applied to the transaction.
+type TransactionPropertiesTax struct {
+	// READ-ONLY; The currency for the amount value.
+	Currency *string
+
+	// READ-ONLY; The amount value. For example, if the currency is USD, then a value of 600 would be $600.00.
+	Value *float32
+}
+
+// TransactionPropertiesTransactionAmount - The charge associated with the transaction.
+type TransactionPropertiesTransactionAmount struct {
+	// READ-ONLY; The currency for the amount value.
+	Currency *string
+
+	// READ-ONLY; The amount value. For example, if the currency is USD, then a value of 600 would be $600.00.
+	Value *float32
+}
+
+// TransactionSummary - A transaction summary.
+type TransactionSummary struct {
+	// READ-ONLY; The total amount of any Azure credits applied.
+	AzureCreditApplied *float32
+
+	// READ-ONLY; The ISO 4217 code for the currency in which the transactions are billed.
+	BillingCurrency *string
+
+	// READ-ONLY; The total Microsoft Azure Consumption Commitment (MACC) decrement through the invoice.
+	ConsumptionCommitmentDecremented *float32
+
+	// READ-ONLY; The total pre-tax charged amount.
+	SubTotal *float32
+
+	// READ-ONLY; The total tax amount applied.
+	Tax *float32
+
+	// READ-ONLY; The total charges.
+	Total *float32
+}
+
+// TransferDetails - Details of the transfer.
+type TransferDetails struct {
+	// Details of the transfer.
+	Properties *TransferProperties
+
+	// Dictionary of metadata associated with the resource. It may not be populated for all resource types. Maximum key/value
+	// length supported of 256 characters. Keys/value should not empty value nor null.
+	// Keys can not contain < > % & \ ? /
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// TransferDetailsListResult - The list of transfers initiated by caller.
+type TransferDetailsListResult struct {
+	// READ-ONLY; The link (url) to the next page of results.
+	NextLink *string
+
+	// READ-ONLY; The list of transfers initiated by caller.
+	Value []*TransferDetails
+}
+
+// TransferError - Error details for transfer execution.
+type TransferError struct {
+	// READ-ONLY; Error code.
+	Code *string
+
+	// READ-ONLY; Error message.
 	Message *string
 }
 
-// ValidateProductTransferEligibilityResult - Result of the product transfer eligibility validation.
-type ValidateProductTransferEligibilityResult struct {
-	// Validation error details.
-	ErrorDetails *ValidateProductTransferEligibilityError
-
-	// READ-ONLY; Specifies whether the transfer is eligible or not.
-	IsMoveEligible *bool
+// TransferItemQueryParameter - Query parameter to enumerate transfer requests.
+type TransferItemQueryParameter struct {
+	// State of the transfer request query filter.
+	State *string
 }
 
-// ValidateSubscriptionTransferEligibilityError - Error details of the transfer eligibility validation
-type ValidateSubscriptionTransferEligibilityError struct {
-	// Error code for the product transfer validation.
-	Code *SubscriptionTransferValidationErrorCode
+// TransferProperties - Transfer details
+type TransferProperties struct {
+	// READ-ONLY; The email ID of the user who canceled the transfer request.
+	CanceledBy *string
 
-	// Detailed error message explaining the error.
-	Details *string
+	// READ-ONLY; Detailed transfer status.
+	DetailedTransferStatus []*DetailedTransferStatus
 
-	// The error message.
+	// READ-ONLY; The time at which the transfer request expires.
+	ExpirationTime *time.Time
+
+	// READ-ONLY; The email ID of the user who sent the transfer request.
+	InitiatorEmailID *string
+
+	// READ-ONLY; The email ID of the user to whom the transfer request was sent.
+	RecipientEmailID *string
+
+	// READ-ONLY; Overall transfer status.
+	TransferStatus *TransferStatus
+}
+
+// TransitionDetails - The details for a billing account transitioned from agreement type Microsoft Online Services Program
+// to agreement type Microsoft Customer Agreement.
+type TransitionDetails struct {
+	// READ-ONLY; The anniversary day of the pre-transitioned account of type Microsoft Online Services Program.
+	AnniversaryDay *int32
+
+	// READ-ONLY; The transition completion date.
+	TransitionDate *time.Time
+}
+
+// Utilization - Savings plan utilization
+type Utilization struct {
+	// The array of aggregates of a savings plan's utilization
+	Aggregates []*UtilizationAggregates
+
+	// READ-ONLY; The trend for a savings plan's utilization
+	Trend *string
+}
+
+// UtilizationAggregates - The aggregate values of savings plan utilization
+type UtilizationAggregates struct {
+	// READ-ONLY; The grain of the aggregate
+	Grain *float32
+
+	// READ-ONLY; The grain unit of the aggregate
+	GrainUnit *string
+
+	// READ-ONLY; The aggregate value
+	Value *float32
+
+	// READ-ONLY; The aggregate value unit
+	ValueUnit *string
+}
+
+// ValidateTransferListResponse - Result of transfer validation.
+type ValidateTransferListResponse struct {
+	// READ-ONLY; The list of transfer validation results.
+	Value []*ValidateTransferResponse
+}
+
+// ValidateTransferResponse - Transfer validation response.
+type ValidateTransferResponse struct {
+	// The properties of transfer validation response.
+	Properties *ValidateTransferResponseProperties
+}
+
+// ValidateTransferResponseProperties - The properties of transfer validation response.
+type ValidateTransferResponseProperties struct {
+	// The array of validation results.
+	Results []*ValidationResultProperties
+
+	// READ-ONLY; The product id for which this result applies.
+	ProductID *string
+
+	// READ-ONLY; The status of validation
+	Status *string
+}
+
+// ValidationResultProperties - The properties of the validation result.
+type ValidationResultProperties struct {
+	// READ-ONLY; Result Code.
+	Code *string
+
+	// READ-ONLY; Result Level.
+	Level *string
+
+	// READ-ONLY; The validation message.
 	Message *string
-}
-
-// ValidateSubscriptionTransferEligibilityResult - Result of the transfer eligibility validation.
-type ValidateSubscriptionTransferEligibilityResult struct {
-	// Validation error details.
-	ErrorDetails *ValidateSubscriptionTransferEligibilityError
-
-	// READ-ONLY; Specifies whether the subscription is eligible to be transferred.
-	IsMoveEligible *bool
 }

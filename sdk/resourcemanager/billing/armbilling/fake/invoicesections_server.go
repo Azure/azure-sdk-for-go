@@ -12,21 +12,27 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"net/http"
+	"net/url"
+	"regexp"
+	"strconv"
+
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling"
-	"net/http"
-	"net/url"
-	"regexp"
 )
 
 // InvoiceSectionsServer is a fake server for instances of the armbilling.InvoiceSectionsClient type.
 type InvoiceSectionsServer struct {
 	// BeginCreateOrUpdate is the fake for method InvoiceSectionsClient.BeginCreateOrUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated, http.StatusAccepted
 	BeginCreateOrUpdate func(ctx context.Context, billingAccountName string, billingProfileName string, invoiceSectionName string, parameters armbilling.InvoiceSection, options *armbilling.InvoiceSectionsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armbilling.InvoiceSectionsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+
+	// BeginDelete is the fake for method InvoiceSectionsClient.BeginDelete
+	// HTTP status codes to indicate success: http.StatusAccepted, http.StatusNoContent
+	BeginDelete func(ctx context.Context, billingAccountName string, billingProfileName string, invoiceSectionName string, options *armbilling.InvoiceSectionsClientBeginDeleteOptions) (resp azfake.PollerResponder[armbilling.InvoiceSectionsClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method InvoiceSectionsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -35,6 +41,10 @@ type InvoiceSectionsServer struct {
 	// NewListByBillingProfilePager is the fake for method InvoiceSectionsClient.NewListByBillingProfilePager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByBillingProfilePager func(billingAccountName string, billingProfileName string, options *armbilling.InvoiceSectionsClientListByBillingProfileOptions) (resp azfake.PagerResponder[armbilling.InvoiceSectionsClientListByBillingProfileResponse])
+
+	// ValidateDeleteEligibility is the fake for method InvoiceSectionsClient.ValidateDeleteEligibility
+	// HTTP status codes to indicate success: http.StatusOK
+	ValidateDeleteEligibility func(ctx context.Context, billingAccountName string, billingProfileName string, invoiceSectionName string, options *armbilling.InvoiceSectionsClientValidateDeleteEligibilityOptions) (resp azfake.Responder[armbilling.InvoiceSectionsClientValidateDeleteEligibilityResponse], errResp azfake.ErrorResponder)
 }
 
 // NewInvoiceSectionsServerTransport creates a new instance of InvoiceSectionsServerTransport with the provided implementation.
@@ -44,6 +54,7 @@ func NewInvoiceSectionsServerTransport(srv *InvoiceSectionsServer) *InvoiceSecti
 	return &InvoiceSectionsServerTransport{
 		srv:                          srv,
 		beginCreateOrUpdate:          newTracker[azfake.PollerResponder[armbilling.InvoiceSectionsClientCreateOrUpdateResponse]](),
+		beginDelete:                  newTracker[azfake.PollerResponder[armbilling.InvoiceSectionsClientDeleteResponse]](),
 		newListByBillingProfilePager: newTracker[azfake.PagerResponder[armbilling.InvoiceSectionsClientListByBillingProfileResponse]](),
 	}
 }
@@ -53,6 +64,7 @@ func NewInvoiceSectionsServerTransport(srv *InvoiceSectionsServer) *InvoiceSecti
 type InvoiceSectionsServerTransport struct {
 	srv                          *InvoiceSectionsServer
 	beginCreateOrUpdate          *tracker[azfake.PollerResponder[armbilling.InvoiceSectionsClientCreateOrUpdateResponse]]
+	beginDelete                  *tracker[azfake.PollerResponder[armbilling.InvoiceSectionsClientDeleteResponse]]
 	newListByBillingProfilePager *tracker[azfake.PagerResponder[armbilling.InvoiceSectionsClientListByBillingProfileResponse]]
 }
 
@@ -70,10 +82,14 @@ func (i *InvoiceSectionsServerTransport) Do(req *http.Request) (*http.Response, 
 	switch method {
 	case "InvoiceSectionsClient.BeginCreateOrUpdate":
 		resp, err = i.dispatchBeginCreateOrUpdate(req)
+	case "InvoiceSectionsClient.BeginDelete":
+		resp, err = i.dispatchBeginDelete(req)
 	case "InvoiceSectionsClient.Get":
 		resp, err = i.dispatchGet(req)
 	case "InvoiceSectionsClient.NewListByBillingProfilePager":
 		resp, err = i.dispatchNewListByBillingProfilePager(req)
+	case "InvoiceSectionsClient.ValidateDeleteEligibility":
+		resp, err = i.dispatchValidateDeleteEligibility(req)
 	default:
 		err = fmt.Errorf("unhandled API %s", method)
 	}
@@ -126,12 +142,60 @@ func (i *InvoiceSectionsServerTransport) dispatchBeginCreateOrUpdate(req *http.R
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusCreated, http.StatusAccepted}, resp.StatusCode) {
 		i.beginCreateOrUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated, http.StatusAccepted", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginCreateOrUpdate) {
 		i.beginCreateOrUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (i *InvoiceSectionsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
+	if i.srv.BeginDelete == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
+	}
+	beginDelete := i.beginDelete.get(req)
+	if beginDelete == nil {
+		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/invoiceSections/(?P<invoiceSectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
+		if err != nil {
+			return nil, err
+		}
+		billingProfileNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingProfileName")])
+		if err != nil {
+			return nil, err
+		}
+		invoiceSectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("invoiceSectionName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := i.srv.BeginDelete(req.Context(), billingAccountNameParam, billingProfileNameParam, invoiceSectionNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginDelete = &respr
+		i.beginDelete.add(req, beginDelete)
+	}
+
+	resp, err := server.PollerResponderNext(beginDelete, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		i.beginDelete.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginDelete) {
+		i.beginDelete.remove(req)
 	}
 
 	return resp, nil
@@ -186,6 +250,7 @@ func (i *InvoiceSectionsServerTransport) dispatchNewListByBillingProfilePager(re
 		if matches == nil || len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
+		qp := req.URL.Query()
 		billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
 		if err != nil {
 			return nil, err
@@ -194,7 +259,78 @@ func (i *InvoiceSectionsServerTransport) dispatchNewListByBillingProfilePager(re
 		if err != nil {
 			return nil, err
 		}
-		resp := i.srv.NewListByBillingProfilePager(billingAccountNameParam, billingProfileNameParam, nil)
+		includeDeletedUnescaped, err := url.QueryUnescape(qp.Get("includeDeleted"))
+		if err != nil {
+			return nil, err
+		}
+		includeDeletedParam, err := parseOptional(includeDeletedUnescaped, strconv.ParseBool)
+		if err != nil {
+			return nil, err
+		}
+		filterUnescaped, err := url.QueryUnescape(qp.Get("filter"))
+		if err != nil {
+			return nil, err
+		}
+		filterParam := getOptional(filterUnescaped)
+		orderByUnescaped, err := url.QueryUnescape(qp.Get("orderBy"))
+		if err != nil {
+			return nil, err
+		}
+		orderByParam := getOptional(orderByUnescaped)
+		topUnescaped, err := url.QueryUnescape(qp.Get("top"))
+		if err != nil {
+			return nil, err
+		}
+		topParam, err := parseOptional(topUnescaped, func(v string) (int64, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 64)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return p, nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		skipUnescaped, err := url.QueryUnescape(qp.Get("skip"))
+		if err != nil {
+			return nil, err
+		}
+		skipParam, err := parseOptional(skipUnescaped, func(v string) (int64, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 64)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return p, nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		countUnescaped, err := url.QueryUnescape(qp.Get("count"))
+		if err != nil {
+			return nil, err
+		}
+		countParam, err := parseOptional(countUnescaped, strconv.ParseBool)
+		if err != nil {
+			return nil, err
+		}
+		searchUnescaped, err := url.QueryUnescape(qp.Get("search"))
+		if err != nil {
+			return nil, err
+		}
+		searchParam := getOptional(searchUnescaped)
+		var options *armbilling.InvoiceSectionsClientListByBillingProfileOptions
+		if includeDeletedParam != nil || filterParam != nil || orderByParam != nil || topParam != nil || skipParam != nil || countParam != nil || searchParam != nil {
+			options = &armbilling.InvoiceSectionsClientListByBillingProfileOptions{
+				IncludeDeleted: includeDeletedParam,
+				Filter:         filterParam,
+				OrderBy:        orderByParam,
+				Top:            topParam,
+				Skip:           skipParam,
+				Count:          countParam,
+				Search:         searchParam,
+			}
+		}
+		resp := i.srv.NewListByBillingProfilePager(billingAccountNameParam, billingProfileNameParam, options)
 		newListByBillingProfilePager = &resp
 		i.newListByBillingProfilePager.add(req, newListByBillingProfilePager)
 		server.PagerResponderInjectNextLinks(newListByBillingProfilePager, req, func(page *armbilling.InvoiceSectionsClientListByBillingProfileResponse, createLink func() string) {
@@ -211,6 +347,43 @@ func (i *InvoiceSectionsServerTransport) dispatchNewListByBillingProfilePager(re
 	}
 	if !server.PagerResponderMore(newListByBillingProfilePager) {
 		i.newListByBillingProfilePager.remove(req)
+	}
+	return resp, nil
+}
+
+func (i *InvoiceSectionsServerTransport) dispatchValidateDeleteEligibility(req *http.Request) (*http.Response, error) {
+	if i.srv.ValidateDeleteEligibility == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ValidateDeleteEligibility not implemented")}
+	}
+	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/invoiceSections/(?P<invoiceSectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validateDeleteEligibility`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
+	if err != nil {
+		return nil, err
+	}
+	billingProfileNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingProfileName")])
+	if err != nil {
+		return nil, err
+	}
+	invoiceSectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("invoiceSectionName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := i.srv.ValidateDeleteEligibility(req.Context(), billingAccountNameParam, billingProfileNameParam, invoiceSectionNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DeleteInvoiceSectionEligibilityResult, req)
+	if err != nil {
+		return nil, err
 	}
 	return resp, nil
 }

@@ -18,8 +18,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/BillingProfilesListByBillingAccount.json
-func ExampleProfilesClient_NewListByBillingAccountPager_billingProfilesListByBillingAccount() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/billingProfilesValidateDeleteEligibilityFailure.json
+func ExampleProfilesClient_ValidateDeleteEligibility_billingProfilesValidateDeleteEligibilityFailure() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,329 +29,41 @@ func ExampleProfilesClient_NewListByBillingAccountPager_billingProfilesListByBil
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewProfilesClient().NewListByBillingAccountPager("{billingAccountName}", &armbilling.ProfilesClientListByBillingAccountOptions{Expand: nil})
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.ProfileListResult = armbilling.ProfileListResult{
-		// 	Value: []*armbilling.Profile{
-		// 		{
-		// 			Name: to.Ptr("11000000-0000-0000-0000-000000000000"),
-		// 			Type: to.Ptr("Microsoft.Billing/billingAccounts/billingProfiles"),
-		// 			ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/11000000-0000-0000-0000-000000000000"),
-		// 			Properties: &armbilling.ProfileProperties{
-		// 				BillTo: &armbilling.AddressDetails{
-		// 					AddressLine1: to.Ptr("Test Address1"),
-		// 					AddressLine2: to.Ptr("Test Address2"),
-		// 					AddressLine3: to.Ptr("Test Address3"),
-		// 					City: to.Ptr("City"),
-		// 					CompanyName: to.Ptr("Contoso"),
-		// 					Country: to.Ptr("US"),
-		// 					Email: to.Ptr("abc@contoso.com"),
-		// 					FirstName: to.Ptr("Test"),
-		// 					LastName: to.Ptr("User"),
-		// 					PhoneNumber: to.Ptr("000-000-0000"),
-		// 					PostalCode: to.Ptr("00000"),
-		// 					Region: to.Ptr("WA"),
-		// 				},
-		// 				BillingRelationshipType: to.Ptr(armbilling.BillingRelationshipTypeDirect),
-		// 				Currency: to.Ptr("USD"),
-		// 				DisplayName: to.Ptr("BillingProfile1"),
-		// 				EnabledAzurePlans: []*armbilling.AzurePlan{
-		// 					{
-		// 						SKUDescription: to.Ptr("Microsoft Azure Plan"),
-		// 						SKUID: to.Ptr("0001"),
-		// 					},
-		// 					{
-		// 						SKUDescription: to.Ptr("Microsoft Azure Plan for DevTest"),
-		// 						SKUID: to.Ptr("0002"),
-		// 				}},
-		// 				HasReadAccess: to.Ptr(true),
-		// 				InvoiceDay: to.Ptr[int32](5),
-		// 				InvoiceEmailOptIn: to.Ptr(true),
-		// 				PoNumber: to.Ptr("ABC12345"),
-		// 				SpendingLimit: to.Ptr(armbilling.SpendingLimitOn),
-		// 				Status: to.Ptr(armbilling.BillingProfileStatusWarned),
-		// 				StatusReasonCode: to.Ptr(armbilling.StatusReasonCodePastDue),
-		// 				SystemID: to.Ptr("1XXX-11XX-XX1-XXXX-XXX"),
-		// 			},
-		// 		},
-		// 		{
-		// 			Name: to.Ptr("11000000-0000-0000-0000-000000000001"),
-		// 			Type: to.Ptr("Microsoft.Billing/billingAccounts/billingProfiles"),
-		// 			ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/11000000-0000-0000-0000-000000000001"),
-		// 			Properties: &armbilling.ProfileProperties{
-		// 				BillTo: &armbilling.AddressDetails{
-		// 					AddressLine1: to.Ptr("Test Address1"),
-		// 					AddressLine2: to.Ptr("Test Address2"),
-		// 					AddressLine3: to.Ptr("Test Address3"),
-		// 					City: to.Ptr("City"),
-		// 					CompanyName: to.Ptr("Contoso"),
-		// 					Country: to.Ptr("US"),
-		// 					Email: to.Ptr("abc@contoso.com"),
-		// 					FirstName: to.Ptr("Test"),
-		// 					LastName: to.Ptr("User"),
-		// 					PhoneNumber: to.Ptr("000-000-0000"),
-		// 					PostalCode: to.Ptr("00000"),
-		// 					Region: to.Ptr("WA"),
-		// 				},
-		// 				BillingRelationshipType: to.Ptr(armbilling.BillingRelationshipTypeIndirectCustomer),
-		// 				Currency: to.Ptr("USD"),
-		// 				DisplayName: to.Ptr("BillingProfile2"),
-		// 				EnabledAzurePlans: []*armbilling.AzurePlan{
-		// 					{
-		// 						SKUDescription: to.Ptr("Microsoft Azure Plan"),
-		// 						SKUID: to.Ptr("0001"),
-		// 					},
-		// 					{
-		// 						SKUDescription: to.Ptr("Microsoft Azure Plan for DevTest"),
-		// 						SKUID: to.Ptr("0002"),
-		// 				}},
-		// 				HasReadAccess: to.Ptr(true),
-		// 				IndirectRelationshipInfo: &armbilling.IndirectRelationshipInfo{
-		// 					BillingAccountName: to.Ptr("30000000-0000-0000-0000-000000000001_00000000-0000-0000-0000-000000000000"),
-		// 					BillingProfileName: to.Ptr("33000000-0000-0000-0000-000000000001"),
-		// 					DisplayName: to.Ptr("Partner1"),
-		// 				},
-		// 				InvoiceDay: to.Ptr[int32](5),
-		// 				InvoiceEmailOptIn: to.Ptr(true),
-		// 				PoNumber: to.Ptr("ABC12345"),
-		// 				SpendingLimit: to.Ptr(armbilling.SpendingLimitOff),
-		// 				Status: to.Ptr(armbilling.BillingProfileStatusActive),
-		// 				SystemID: to.Ptr("2XXX-22XX-XX1-XXXX-XXX"),
-		// 				TargetClouds: []*armbilling.TargetCloud{
-		// 				},
-		// 			},
-		// 	}},
-		// }
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/BillingProfilesListWithExpand.json
-func ExampleProfilesClient_NewListByBillingAccountPager_billingProfilesListWithExpand() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewProfilesClient().NewListByBillingAccountPager("{billingAccountName}", &armbilling.ProfilesClientListByBillingAccountOptions{Expand: to.Ptr("invoiceSections")})
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.ProfileListResult = armbilling.ProfileListResult{
-		// 	Value: []*armbilling.Profile{
-		// 		{
-		// 			Name: to.Ptr("11000000-0000-0000-0000-000000000000"),
-		// 			Type: to.Ptr("Microsoft.Billing/billingAccounts/billingProfiles"),
-		// 			ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/11000000-0000-0000-0000-000000000000"),
-		// 			Properties: &armbilling.ProfileProperties{
-		// 				BillTo: &armbilling.AddressDetails{
-		// 					AddressLine1: to.Ptr("Test Address1"),
-		// 					AddressLine2: to.Ptr("Test Address2"),
-		// 					AddressLine3: to.Ptr("Test Address3"),
-		// 					City: to.Ptr("City"),
-		// 					CompanyName: to.Ptr("Contoso"),
-		// 					Country: to.Ptr("US"),
-		// 					Email: to.Ptr("abc@contoso.com"),
-		// 					FirstName: to.Ptr("Test"),
-		// 					LastName: to.Ptr("User"),
-		// 					PhoneNumber: to.Ptr("000-000-0000"),
-		// 					PostalCode: to.Ptr("00000"),
-		// 					Region: to.Ptr("WA"),
-		// 				},
-		// 				BillingRelationshipType: to.Ptr(armbilling.BillingRelationshipTypeDirect),
-		// 				Currency: to.Ptr("USD"),
-		// 				DisplayName: to.Ptr("BillingProfile1"),
-		// 				EnabledAzurePlans: []*armbilling.AzurePlan{
-		// 					{
-		// 						SKUDescription: to.Ptr("Microsoft Azure Plan"),
-		// 						SKUID: to.Ptr("0001"),
-		// 					},
-		// 					{
-		// 						SKUDescription: to.Ptr("Microsoft Azure Plan for DevTest"),
-		// 						SKUID: to.Ptr("0002"),
-		// 				}},
-		// 				HasReadAccess: to.Ptr(true),
-		// 				InvoiceDay: to.Ptr[int32](5),
-		// 				InvoiceEmailOptIn: to.Ptr(true),
-		// 				InvoiceSections: &armbilling.InvoiceSectionsOnExpand{
-		// 					HasMoreResults: to.Ptr(false),
-		// 					Value: []*armbilling.InvoiceSection{
-		// 						{
-		// 							Name: to.Ptr("invoiceSectionId1"),
-		// 							Type: to.Ptr("Microsoft.Billing/billingAccounts/billingProfiles/invoiceSections"),
-		// 							ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/11000000-0000-0000-0000-000000000000/invoiceSections/invoiceSectionId1"),
-		// 							Properties: &armbilling.InvoiceSectionProperties{
-		// 								DisplayName: to.Ptr("invoiceSectionName1"),
-		// 								Labels: map[string]*string{
-		// 									"costCategory": to.Ptr("Support"),
-		// 									"pcCode": to.Ptr("A123456"),
-		// 								},
-		// 								State: to.Ptr(armbilling.InvoiceSectionStateActive),
-		// 								SystemID: to.Ptr("9XXX-11XX-XX1-XXXX-XXX"),
-		// 							},
-		// 					}},
-		// 				},
-		// 				PoNumber: to.Ptr("ABC12345"),
-		// 				SpendingLimit: to.Ptr(armbilling.SpendingLimitOn),
-		// 				Status: to.Ptr(armbilling.BillingProfileStatusWarned),
-		// 				StatusReasonCode: to.Ptr(armbilling.StatusReasonCodePastDue),
-		// 				SystemID: to.Ptr("1XXX-11XX-XX1-XXXX-XXX"),
-		// 				TargetClouds: []*armbilling.TargetCloud{
-		// 				},
-		// 			},
-		// 		},
-		// 		{
-		// 			Name: to.Ptr("11000000-0000-0000-0000-000000000001"),
-		// 			Type: to.Ptr("Microsoft.Billing/billingAccounts/billingProfiles"),
-		// 			ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/11000000-0000-0000-0000-000000000001"),
-		// 			Properties: &armbilling.ProfileProperties{
-		// 				BillTo: &armbilling.AddressDetails{
-		// 					AddressLine1: to.Ptr("Test Address1"),
-		// 					AddressLine2: to.Ptr("Test Address2"),
-		// 					AddressLine3: to.Ptr("Test Address3"),
-		// 					City: to.Ptr("City"),
-		// 					CompanyName: to.Ptr("Contoso"),
-		// 					Country: to.Ptr("US"),
-		// 					Email: to.Ptr("abc@contoso.com"),
-		// 					FirstName: to.Ptr("Test"),
-		// 					LastName: to.Ptr("User"),
-		// 					PhoneNumber: to.Ptr("000-000-0000"),
-		// 					PostalCode: to.Ptr("00000"),
-		// 					Region: to.Ptr("WA"),
-		// 				},
-		// 				BillingRelationshipType: to.Ptr(armbilling.BillingRelationshipTypeIndirectCustomer),
-		// 				Currency: to.Ptr("USD"),
-		// 				DisplayName: to.Ptr("BillingProfile2"),
-		// 				EnabledAzurePlans: []*armbilling.AzurePlan{
-		// 					{
-		// 						SKUDescription: to.Ptr("Microsoft Azure Plan"),
-		// 						SKUID: to.Ptr("0001"),
-		// 					},
-		// 					{
-		// 						SKUDescription: to.Ptr("Microsoft Azure Plan for DevTest"),
-		// 						SKUID: to.Ptr("0002"),
-		// 				}},
-		// 				HasReadAccess: to.Ptr(true),
-		// 				IndirectRelationshipInfo: &armbilling.IndirectRelationshipInfo{
-		// 					BillingAccountName: to.Ptr("30000000-0000-0000-0000-000000000001_00000000-0000-0000-0000-000000000000"),
-		// 					BillingProfileName: to.Ptr("33000000-0000-0000-0000-000000000001"),
-		// 					DisplayName: to.Ptr("Partner1"),
-		// 				},
-		// 				InvoiceDay: to.Ptr[int32](5),
-		// 				InvoiceEmailOptIn: to.Ptr(true),
-		// 				InvoiceSections: &armbilling.InvoiceSectionsOnExpand{
-		// 					HasMoreResults: to.Ptr(false),
-		// 					Value: []*armbilling.InvoiceSection{
-		// 						{
-		// 							Name: to.Ptr("invoiceSectionId2"),
-		// 							Type: to.Ptr("Microsoft.Billing/billingAccounts/billingProfiles/invoiceSections"),
-		// 							ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/11000000-0000-0000-0000-000000000001/invoiceSections/invoiceSectionId2"),
-		// 							Properties: &armbilling.InvoiceSectionProperties{
-		// 								DisplayName: to.Ptr("invoiceSectionName2"),
-		// 								Labels: map[string]*string{
-		// 									"costCategory": to.Ptr("Marketing"),
-		// 									"pcCode": to.Ptr("Z223456"),
-		// 								},
-		// 								State: to.Ptr(armbilling.InvoiceSectionStateActive),
-		// 								SystemID: to.Ptr("9XXX-22XX-XX1-XXXX-XXX"),
-		// 							},
-		// 					}},
-		// 				},
-		// 				PoNumber: to.Ptr("ABC12345"),
-		// 				SpendingLimit: to.Ptr(armbilling.SpendingLimitOn),
-		// 				Status: to.Ptr(armbilling.BillingProfileStatusWarned),
-		// 				StatusReasonCode: to.Ptr(armbilling.StatusReasonCodePastDue),
-		// 				SystemID: to.Ptr("2XXX-22XX-XX1-XXXX-XXX"),
-		// 				TargetClouds: []*armbilling.TargetCloud{
-		// 				},
-		// 			},
-		// 	}},
-		// }
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/BillingProfile.json
-func ExampleProfilesClient_Get_billingProfile() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewProfilesClient().Get(ctx, "{billingAccountName}", "{billingProfileName}", &armbilling.ProfilesClientGetOptions{Expand: nil})
+	res, err := clientFactory.NewProfilesClient().ValidateDeleteEligibility(ctx, "00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31", "xxxx-xxxx-xxx-xxx", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.Profile = armbilling.Profile{
-	// 	Name: to.Ptr("{billingProfileName}"),
-	// 	Type: to.Ptr("Microsoft.Billing/billingAccounts/billingProfiles"),
-	// 	ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}"),
-	// 	Properties: &armbilling.ProfileProperties{
-	// 		BillTo: &armbilling.AddressDetails{
-	// 			AddressLine1: to.Ptr("Test Address1"),
-	// 			AddressLine2: to.Ptr("Test Address2"),
-	// 			AddressLine3: to.Ptr("Test Address3"),
-	// 			City: to.Ptr("City"),
-	// 			CompanyName: to.Ptr("Contoso"),
-	// 			Country: to.Ptr("US"),
-	// 			Email: to.Ptr("abc@contoso.com"),
-	// 			FirstName: to.Ptr("Test"),
-	// 			LastName: to.Ptr("User"),
-	// 			PhoneNumber: to.Ptr("000-000-0000"),
-	// 			PostalCode: to.Ptr("00000"),
-	// 			Region: to.Ptr("WA"),
+	// res.DeleteBillingProfileEligibilityResult = armbilling.DeleteBillingProfileEligibilityResult{
+	// 	EligibilityDetails: []*armbilling.DeleteBillingProfileEligibilityDetail{
+	// 		{
+	// 			Code: to.Ptr(armbilling.DeleteBillingProfileEligibilityCodeActiveBillingSubscriptions),
+	// 			Message: to.Ptr("There are active or disabled subscriptions assigned to the invoice section. Either move the subscription to another invoice section or delete the subscriptions and then try deleting the invoice section."),
 	// 		},
-	// 		BillingRelationshipType: to.Ptr(armbilling.BillingRelationshipTypeDirect),
-	// 		Currency: to.Ptr("USD"),
-	// 		DisplayName: to.Ptr("Billing Profile1"),
-	// 		EnabledAzurePlans: []*armbilling.AzurePlan{
-	// 			{
-	// 				SKUDescription: to.Ptr("Microsoft Azure Plan"),
-	// 				SKUID: to.Ptr("0001"),
-	// 			},
-	// 			{
-	// 				SKUDescription: to.Ptr("Microsoft Azure Plan for DevTest"),
-	// 				SKUID: to.Ptr("0002"),
-	// 		}},
-	// 		HasReadAccess: to.Ptr(true),
-	// 		InvoiceDay: to.Ptr[int32](5),
-	// 		InvoiceEmailOptIn: to.Ptr(true),
-	// 		PoNumber: to.Ptr("ABC12345"),
-	// 		SpendingLimit: to.Ptr(armbilling.SpendingLimitOn),
-	// 		Status: to.Ptr(armbilling.BillingProfileStatusWarned),
-	// 		StatusReasonCode: to.Ptr(armbilling.StatusReasonCodePastDue),
-	// 		SystemID: to.Ptr("1XXX-11XX-XX1-XXXX-XXX"),
-	// 	},
+	// 		{
+	// 			Code: to.Ptr(armbilling.DeleteBillingProfileEligibilityCodeLastBillingProfile),
+	// 			Message: to.Ptr("Billing profile cannot be deleted as this is the only billing profile in this billing account."),
+	// 		},
+	// 		{
+	// 			Code: to.Ptr(armbilling.DeleteBillingProfileEligibilityCodeOutstandingCharges),
+	// 			Message: to.Ptr("Billing Profile cannot be deleted as there are outstanding charges on this billing profile."),
+	// 		},
+	// 		{
+	// 			Code: to.Ptr(armbilling.DeleteBillingProfileEligibilityCodePendingCharges),
+	// 			Message: to.Ptr("Billing Profile cannot be deleted as there are pending charges accumulating on this billing profile."),
+	// 		},
+	// 		{
+	// 			Code: to.Ptr(armbilling.DeleteBillingProfileEligibilityCodeReservedInstances),
+	// 			Message: to.Ptr("Billing Profile cannot be deleted as there are reserved assets with a billing plan."),
+	// 	}},
+	// 	EligibilityStatus: to.Ptr(armbilling.DeleteBillingProfileEligibilityStatusNotAllowed),
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/BillingProfileWithExpand.json
-func ExampleProfilesClient_Get_billingProfileWithExpand() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/billingProfilesValidateDeleteEligibilitySuccess.json
+func ExampleProfilesClient_ValidateDeleteEligibility_billingProfilesValidateDeleteEligibilitySuccess() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -361,7 +73,50 @@ func ExampleProfilesClient_Get_billingProfileWithExpand() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewProfilesClient().Get(ctx, "{billingAccountName}", "{billingProfileName}", &armbilling.ProfilesClientGetOptions{Expand: to.Ptr("invoiceSections")})
+	res, err := clientFactory.NewProfilesClient().ValidateDeleteEligibility(ctx, "00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31", "xxxx-xxxx-xxx-xxx", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.DeleteBillingProfileEligibilityResult = armbilling.DeleteBillingProfileEligibilityResult{
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/billingProfilesDelete.json
+func ExampleProfilesClient_BeginDelete() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewProfilesClient().BeginDelete(ctx, "00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31", "xxxx-xxxx-xxx-xxx", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/billingProfilesGet.json
+func ExampleProfilesClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewProfilesClient().Get(ctx, "00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31", "xxxx-xxxx-xxx-xxx", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -369,11 +124,11 @@ func ExampleProfilesClient_Get_billingProfileWithExpand() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.Profile = armbilling.Profile{
-	// 	Name: to.Ptr("{billingProfileName}"),
+	// 	Name: to.Ptr("xxxx-xxxx-xxx-xxx"),
 	// 	Type: to.Ptr("Microsoft.Billing/billingAccounts/billingProfiles"),
-	// 	ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}"),
+	// 	ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/billingProfiles/xxxx-xxxx-xxx-xxx"),
 	// 	Properties: &armbilling.ProfileProperties{
-	// 		BillTo: &armbilling.AddressDetails{
+	// 		BillTo: &armbilling.ProfilePropertiesBillTo{
 	// 			AddressLine1: to.Ptr("Test Address1"),
 	// 			AddressLine2: to.Ptr("Test Address2"),
 	// 			AddressLine3: to.Ptr("Test Address3"),
@@ -382,54 +137,69 @@ func ExampleProfilesClient_Get_billingProfileWithExpand() {
 	// 			Country: to.Ptr("US"),
 	// 			Email: to.Ptr("abc@contoso.com"),
 	// 			FirstName: to.Ptr("Test"),
+	// 			IsValidAddress: to.Ptr(true),
 	// 			LastName: to.Ptr("User"),
 	// 			PhoneNumber: to.Ptr("000-000-0000"),
 	// 			PostalCode: to.Ptr("00000"),
 	// 			Region: to.Ptr("WA"),
 	// 		},
-	// 		BillingRelationshipType: to.Ptr(armbilling.BillingRelationshipTypeDirect),
 	// 		Currency: to.Ptr("USD"),
-	// 		DisplayName: to.Ptr("Billing Profile1"),
-	// 		EnabledAzurePlans: []*armbilling.AzurePlan{
-	// 			{
-	// 				SKUDescription: to.Ptr("Microsoft Azure Plan"),
-	// 				SKUID: to.Ptr("0001"),
-	// 			},
-	// 			{
-	// 				SKUDescription: to.Ptr("Microsoft Azure Plan for DevTest"),
-	// 				SKUID: to.Ptr("0002"),
-	// 		}},
+	// 		DisplayName: to.Ptr("Billing Profile 1"),
 	// 		HasReadAccess: to.Ptr(true),
 	// 		InvoiceDay: to.Ptr[int32](5),
 	// 		InvoiceEmailOptIn: to.Ptr(true),
-	// 		InvoiceSections: &armbilling.InvoiceSectionsOnExpand{
-	// 			HasMoreResults: to.Ptr(false),
-	// 			Value: []*armbilling.InvoiceSection{
+	// 		InvoiceRecipients: []*string{
+	// 			to.Ptr("abc@contoso.com"),
+	// 			to.Ptr("xyz@contoso.com")},
+	// 			PoNumber: to.Ptr("ABC12345"),
+	// 			ShipTo: &armbilling.ProfilePropertiesShipTo{
+	// 				AddressLine1: to.Ptr("Test Address1"),
+	// 				AddressLine2: to.Ptr("Test Address2"),
+	// 				AddressLine3: to.Ptr("Test Address3"),
+	// 				City: to.Ptr("City"),
+	// 				CompanyName: to.Ptr("Contoso"),
+	// 				Country: to.Ptr("US"),
+	// 				Email: to.Ptr("abc@contoso.com"),
+	// 				FirstName: to.Ptr("Test"),
+	// 				IsValidAddress: to.Ptr(true),
+	// 				LastName: to.Ptr("User"),
+	// 				PhoneNumber: to.Ptr("000-000-0000"),
+	// 				PostalCode: to.Ptr("00000"),
+	// 				Region: to.Ptr("WA"),
+	// 			},
+	// 			SoldTo: &armbilling.ProfilePropertiesSoldTo{
+	// 				AddressLine1: to.Ptr("Test Address1"),
+	// 				AddressLine2: to.Ptr("Test Address2"),
+	// 				AddressLine3: to.Ptr("Test Address3"),
+	// 				City: to.Ptr("City"),
+	// 				CompanyName: to.Ptr("Contoso"),
+	// 				Country: to.Ptr("US"),
+	// 				Email: to.Ptr("abc@contoso.com"),
+	// 				FirstName: to.Ptr("Test"),
+	// 				IsValidAddress: to.Ptr(true),
+	// 				LastName: to.Ptr("User"),
+	// 				PhoneNumber: to.Ptr("000-000-0000"),
+	// 				PostalCode: to.Ptr("00000"),
+	// 				Region: to.Ptr("WA"),
+	// 			},
+	// 			SpendingLimit: to.Ptr(armbilling.SpendingLimitOn),
+	// 			SpendingLimitDetails: []*armbilling.SpendingLimitDetails{
 	// 				{
-	// 					Name: to.Ptr("invoiceSectionId1"),
-	// 					Type: to.Ptr("Microsoft.Billing/billingAccounts/billingProfiles/invoiceSections"),
-	// 					ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/invoiceSectionId1"),
-	// 					Properties: &armbilling.InvoiceSectionProperties{
-	// 						DisplayName: to.Ptr("invoiceSectionName1"),
-	// 						Labels: map[string]*string{
-	// 							"costCategory": to.Ptr("Support"),
-	// 							"pcCode": to.Ptr("A123456"),
-	// 						},
-	// 						State: to.Ptr(armbilling.InvoiceSectionStateActive),
-	// 						SystemID: to.Ptr("9XXX-11XX-XX1-XXXX-XXX"),
-	// 					},
+	// 					Type: to.Ptr(armbilling.SpendingLimitTypeFreeAccount),
+	// 					Amount: to.Ptr[float32](200),
+	// 					Currency: to.Ptr("USD"),
+	// 					EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-01T00:00:00.000Z"); return t}()),
+	// 					StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-01T00:00:00.000Z"); return t}()),
+	// 					Status: to.Ptr(armbilling.SpendingLimitStatusActive),
 	// 			}},
+	// 			Status: to.Ptr(armbilling.BillingProfileStatusWarned),
+	// 			StatusReasonCode: to.Ptr(armbilling.BillingProfileStatusReasonCodePastDue),
+	// 			SystemID: to.Ptr("11111111-1111-1111-1111-111111111111"),
 	// 		},
-	// 		PoNumber: to.Ptr("ABC12345"),
-	// 		SpendingLimit: to.Ptr(armbilling.SpendingLimitOn),
-	// 		Status: to.Ptr(armbilling.BillingProfileStatusWarned),
-	// 		StatusReasonCode: to.Ptr(armbilling.StatusReasonCodePastDue),
-	// 		SystemID: to.Ptr("1XXX-11XX-XX1-XXXX-XXX"),
-	// 	},
-	// }
+	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/PutBillingProfile.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/billingProfilesCreateOrUpdate.json
 func ExampleProfilesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -440,18 +210,24 @@ func ExampleProfilesClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewProfilesClient().BeginCreateOrUpdate(ctx, "{billingAccountName}", "{billingProfileName}", armbilling.Profile{
+	poller, err := clientFactory.NewProfilesClient().BeginCreateOrUpdate(ctx, "00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31", "xxxx-xxxx-xxx-xxx", armbilling.Profile{
 		Properties: &armbilling.ProfileProperties{
-			BillTo: &armbilling.AddressDetails{
-				AddressLine1: to.Ptr("Test Address 1"),
-				City:         to.Ptr("Redmond"),
-				Country:      to.Ptr("US"),
-				FirstName:    to.Ptr("Test"),
-				LastName:     to.Ptr("User"),
-				PostalCode:   to.Ptr("12345"),
-				Region:       to.Ptr("WA"),
+			BillTo: &armbilling.ProfilePropertiesBillTo{
+				AddressLine1:   to.Ptr("Test Address1"),
+				AddressLine2:   to.Ptr("Test Address2"),
+				AddressLine3:   to.Ptr("Test Address3"),
+				City:           to.Ptr("City"),
+				CompanyName:    to.Ptr("Contoso"),
+				Country:        to.Ptr("US"),
+				Email:          to.Ptr("abc@contoso.com"),
+				FirstName:      to.Ptr("Test"),
+				IsValidAddress: to.Ptr(true),
+				LastName:       to.Ptr("User"),
+				PhoneNumber:    to.Ptr("000-000-0000"),
+				PostalCode:     to.Ptr("00000"),
+				Region:         to.Ptr("WA"),
 			},
-			DisplayName: to.Ptr("Finance"),
+			DisplayName: to.Ptr("Billing Profile 1"),
 			EnabledAzurePlans: []*armbilling.AzurePlan{
 				{
 					SKUID: to.Ptr("0001"),
@@ -461,6 +237,21 @@ func ExampleProfilesClient_BeginCreateOrUpdate() {
 				}},
 			InvoiceEmailOptIn: to.Ptr(true),
 			PoNumber:          to.Ptr("ABC12345"),
+			ShipTo: &armbilling.ProfilePropertiesShipTo{
+				AddressLine1:   to.Ptr("Test Address1"),
+				AddressLine2:   to.Ptr("Test Address2"),
+				AddressLine3:   to.Ptr("Test Address3"),
+				City:           to.Ptr("City"),
+				CompanyName:    to.Ptr("Contoso"),
+				Country:        to.Ptr("US"),
+				Email:          to.Ptr("abc@contoso.com"),
+				FirstName:      to.Ptr("Test"),
+				IsValidAddress: to.Ptr(true),
+				LastName:       to.Ptr("User"),
+				PhoneNumber:    to.Ptr("000-000-0000"),
+				PostalCode:     to.Ptr("00000"),
+				Region:         to.Ptr("WA"),
+			},
 		},
 	}, nil)
 	if err != nil {
@@ -474,37 +265,284 @@ func ExampleProfilesClient_BeginCreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.Profile = armbilling.Profile{
-	// 	Name: to.Ptr("billingProfileId1"),
+	// 	Name: to.Ptr("xxxx-xxxx-xxx-xxx"),
 	// 	Type: to.Ptr("Microsoft.Billing/billingAccounts/billingProfiles"),
-	// 	ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/billingProfileId1"),
+	// 	ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/billingProfiles/xxxx-xxxx-xxx-xxx"),
 	// 	Properties: &armbilling.ProfileProperties{
-	// 		BillTo: &armbilling.AddressDetails{
-	// 			AddressLine1: to.Ptr("Test Address 1"),
-	// 			City: to.Ptr("Redmond"),
+	// 		BillTo: &armbilling.ProfilePropertiesBillTo{
+	// 			AddressLine1: to.Ptr("Test Address1"),
+	// 			AddressLine2: to.Ptr("Test Address2"),
+	// 			AddressLine3: to.Ptr("Test Address3"),
+	// 			City: to.Ptr("City"),
+	// 			CompanyName: to.Ptr("Contoso"),
 	// 			Country: to.Ptr("US"),
+	// 			Email: to.Ptr("abc@contoso.com"),
 	// 			FirstName: to.Ptr("Test"),
+	// 			IsValidAddress: to.Ptr(true),
 	// 			LastName: to.Ptr("User"),
-	// 			PostalCode: to.Ptr("12345"),
+	// 			PhoneNumber: to.Ptr("000-000-0000"),
+	// 			PostalCode: to.Ptr("00000"),
 	// 			Region: to.Ptr("WA"),
 	// 		},
 	// 		Currency: to.Ptr("USD"),
-	// 		DisplayName: to.Ptr("Finance"),
-	// 		EnabledAzurePlans: []*armbilling.AzurePlan{
-	// 			{
-	// 				SKUDescription: to.Ptr("Microsoft Azure Plan"),
-	// 				SKUID: to.Ptr("0001"),
-	// 			},
-	// 			{
-	// 				SKUDescription: to.Ptr("Microsoft Azure Plan for DevTest"),
-	// 				SKUID: to.Ptr("0002"),
-	// 		}},
+	// 		DisplayName: to.Ptr("Billing Profile 1"),
 	// 		HasReadAccess: to.Ptr(true),
 	// 		InvoiceDay: to.Ptr[int32](5),
 	// 		InvoiceEmailOptIn: to.Ptr(true),
 	// 		PoNumber: to.Ptr("ABC12345"),
-	// 		SpendingLimit: to.Ptr(armbilling.SpendingLimitOff),
+	// 		ShipTo: &armbilling.ProfilePropertiesShipTo{
+	// 			AddressLine1: to.Ptr("Test Address1"),
+	// 			AddressLine2: to.Ptr("Test Address2"),
+	// 			AddressLine3: to.Ptr("Test Address3"),
+	// 			City: to.Ptr("City"),
+	// 			CompanyName: to.Ptr("Contoso"),
+	// 			Country: to.Ptr("US"),
+	// 			Email: to.Ptr("abc@contoso.com"),
+	// 			FirstName: to.Ptr("Test"),
+	// 			IsValidAddress: to.Ptr(true),
+	// 			LastName: to.Ptr("User"),
+	// 			PhoneNumber: to.Ptr("000-000-0000"),
+	// 			PostalCode: to.Ptr("00000"),
+	// 			Region: to.Ptr("WA"),
+	// 		},
 	// 		Status: to.Ptr(armbilling.BillingProfileStatusActive),
-	// 		SystemID: to.Ptr("1XXX-11XX-XX1-XXXX-XXX"),
+	// 		SystemID: to.Ptr("11111111-1111-1111-1111-111111111111"),
 	// 	},
 	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/billingProfilesListByBillingAccount.json
+func ExampleProfilesClient_NewListByBillingAccountPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewProfilesClient().NewListByBillingAccountPager("00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31", &armbilling.ProfilesClientListByBillingAccountOptions{IncludeDeleted: nil,
+		Filter:  nil,
+		OrderBy: nil,
+		Top:     nil,
+		Skip:    nil,
+		Count:   nil,
+		Search:  nil,
+	})
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.ProfileListResult = armbilling.ProfileListResult{
+		// 	Value: []*armbilling.Profile{
+		// 		{
+		// 			Name: to.Ptr("xxxx-xxxx-xxx-xxx"),
+		// 			Type: to.Ptr("Microsoft.Billing/billingAccounts/billingProfiles"),
+		// 			ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/billingProfiles/xxxx-xxxx-xxx-xxx"),
+		// 			Properties: &armbilling.ProfileProperties{
+		// 				BillTo: &armbilling.ProfilePropertiesBillTo{
+		// 					AddressLine1: to.Ptr("Test Address1"),
+		// 					AddressLine2: to.Ptr("Test Address2"),
+		// 					AddressLine3: to.Ptr("Test Address3"),
+		// 					City: to.Ptr("City"),
+		// 					CompanyName: to.Ptr("Contoso"),
+		// 					Country: to.Ptr("US"),
+		// 					Email: to.Ptr("abc@contoso.com"),
+		// 					FirstName: to.Ptr("Test"),
+		// 					IsValidAddress: to.Ptr(true),
+		// 					LastName: to.Ptr("User"),
+		// 					PhoneNumber: to.Ptr("000-000-0000"),
+		// 					PostalCode: to.Ptr("00000"),
+		// 					Region: to.Ptr("WA"),
+		// 				},
+		// 				Currency: to.Ptr("USD"),
+		// 				DisplayName: to.Ptr("Billing Profile 1"),
+		// 				HasReadAccess: to.Ptr(true),
+		// 				InvoiceDay: to.Ptr[int32](5),
+		// 				InvoiceEmailOptIn: to.Ptr(true),
+		// 				InvoiceRecipients: []*string{
+		// 					to.Ptr("abc@contoso.com"),
+		// 					to.Ptr("xyz@contoso.com")},
+		// 					PoNumber: to.Ptr("ABC12345"),
+		// 					ShipTo: &armbilling.ProfilePropertiesShipTo{
+		// 						AddressLine1: to.Ptr("Test Address1"),
+		// 						AddressLine2: to.Ptr("Test Address2"),
+		// 						AddressLine3: to.Ptr("Test Address3"),
+		// 						City: to.Ptr("City"),
+		// 						CompanyName: to.Ptr("Contoso"),
+		// 						Country: to.Ptr("US"),
+		// 						Email: to.Ptr("abc@contoso.com"),
+		// 						FirstName: to.Ptr("Test"),
+		// 						IsValidAddress: to.Ptr(true),
+		// 						LastName: to.Ptr("User"),
+		// 						PhoneNumber: to.Ptr("000-000-0000"),
+		// 						PostalCode: to.Ptr("00000"),
+		// 						Region: to.Ptr("WA"),
+		// 					},
+		// 					SoldTo: &armbilling.ProfilePropertiesSoldTo{
+		// 						AddressLine1: to.Ptr("Test Address1"),
+		// 						AddressLine2: to.Ptr("Test Address2"),
+		// 						AddressLine3: to.Ptr("Test Address3"),
+		// 						City: to.Ptr("City"),
+		// 						CompanyName: to.Ptr("Contoso"),
+		// 						Country: to.Ptr("US"),
+		// 						Email: to.Ptr("abc@contoso.com"),
+		// 						FirstName: to.Ptr("Test"),
+		// 						IsValidAddress: to.Ptr(true),
+		// 						LastName: to.Ptr("User"),
+		// 						PhoneNumber: to.Ptr("000-000-0000"),
+		// 						PostalCode: to.Ptr("00000"),
+		// 						Region: to.Ptr("WA"),
+		// 					},
+		// 					SpendingLimit: to.Ptr(armbilling.SpendingLimitOn),
+		// 					SpendingLimitDetails: []*armbilling.SpendingLimitDetails{
+		// 						{
+		// 							Type: to.Ptr(armbilling.SpendingLimitTypeFreeAccount),
+		// 							Amount: to.Ptr[float32](200),
+		// 							Currency: to.Ptr("USD"),
+		// 							EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-01T00:00:00.000Z"); return t}()),
+		// 							StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-01T00:00:00.000Z"); return t}()),
+		// 							Status: to.Ptr(armbilling.SpendingLimitStatusActive),
+		// 					}},
+		// 					Status: to.Ptr(armbilling.BillingProfileStatusWarned),
+		// 					StatusReasonCode: to.Ptr(armbilling.BillingProfileStatusReasonCodePastDue),
+		// 					SystemID: to.Ptr("11111111-1111-1111-1111-111111111111"),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("yyyy-yyyy-yyy-yyy"),
+		// 				Type: to.Ptr("Microsoft.Billing/billingAccounts/billingProfiles"),
+		// 				ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/billingProfiles/yyyy-yyyy-yyy-yyy"),
+		// 				Properties: &armbilling.ProfileProperties{
+		// 					BillTo: &armbilling.ProfilePropertiesBillTo{
+		// 						AddressLine1: to.Ptr("Test Address1"),
+		// 						AddressLine2: to.Ptr("Test Address2"),
+		// 						AddressLine3: to.Ptr("Test Address3"),
+		// 						City: to.Ptr("City"),
+		// 						CompanyName: to.Ptr("Contoso"),
+		// 						Country: to.Ptr("US"),
+		// 						Email: to.Ptr("abc@contoso.com"),
+		// 						FirstName: to.Ptr("Test"),
+		// 						IsValidAddress: to.Ptr(true),
+		// 						LastName: to.Ptr("User"),
+		// 						PhoneNumber: to.Ptr("000-000-0000"),
+		// 						PostalCode: to.Ptr("00000"),
+		// 						Region: to.Ptr("WA"),
+		// 					},
+		// 					Currency: to.Ptr("USD"),
+		// 					DisplayName: to.Ptr("Billing Profile 2"),
+		// 					HasReadAccess: to.Ptr(true),
+		// 					InvoiceDay: to.Ptr[int32](5),
+		// 					InvoiceEmailOptIn: to.Ptr(true),
+		// 					InvoiceRecipients: []*string{
+		// 						to.Ptr("abc@contoso.com"),
+		// 						to.Ptr("xyz@contoso.com")},
+		// 						PoNumber: to.Ptr("ABC12345"),
+		// 						ShipTo: &armbilling.ProfilePropertiesShipTo{
+		// 							AddressLine1: to.Ptr("Test Address1"),
+		// 							AddressLine2: to.Ptr("Test Address2"),
+		// 							AddressLine3: to.Ptr("Test Address3"),
+		// 							City: to.Ptr("City"),
+		// 							CompanyName: to.Ptr("Contoso"),
+		// 							Country: to.Ptr("US"),
+		// 							Email: to.Ptr("abc@contoso.com"),
+		// 							FirstName: to.Ptr("Test"),
+		// 							IsValidAddress: to.Ptr(true),
+		// 							LastName: to.Ptr("User"),
+		// 							PhoneNumber: to.Ptr("000-000-0000"),
+		// 							PostalCode: to.Ptr("00000"),
+		// 							Region: to.Ptr("WA"),
+		// 						},
+		// 						SoldTo: &armbilling.ProfilePropertiesSoldTo{
+		// 							AddressLine1: to.Ptr("Test Address1"),
+		// 							AddressLine2: to.Ptr("Test Address2"),
+		// 							AddressLine3: to.Ptr("Test Address3"),
+		// 							City: to.Ptr("City"),
+		// 							CompanyName: to.Ptr("Contoso"),
+		// 							Country: to.Ptr("US"),
+		// 							Email: to.Ptr("abc@contoso.com"),
+		// 							FirstName: to.Ptr("Test"),
+		// 							IsValidAddress: to.Ptr(true),
+		// 							LastName: to.Ptr("User"),
+		// 							PhoneNumber: to.Ptr("000-000-0000"),
+		// 							PostalCode: to.Ptr("00000"),
+		// 							Region: to.Ptr("WA"),
+		// 						},
+		// 						Status: to.Ptr(armbilling.BillingProfileStatusUnderReview),
+		// 						StatusReasonCode: to.Ptr(armbilling.BillingProfileStatusReasonCodeUnusualActivity),
+		// 						SystemID: to.Ptr("22222222-2222-2222-2222-222222222222"),
+		// 					},
+		// 				},
+		// 				{
+		// 					Name: to.Ptr("zzzz-zzzz-zzz-zzz"),
+		// 					Type: to.Ptr("Microsoft.Billing/billingAccounts/billingProfiles"),
+		// 					ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/billingProfiles/zzzz-zzzz-zzz-zzz"),
+		// 					Properties: &armbilling.ProfileProperties{
+		// 						BillTo: &armbilling.ProfilePropertiesBillTo{
+		// 							AddressLine1: to.Ptr("Test Address1"),
+		// 							AddressLine2: to.Ptr("Test Address2"),
+		// 							AddressLine3: to.Ptr("Test Address3"),
+		// 							City: to.Ptr("City"),
+		// 							CompanyName: to.Ptr("Contoso"),
+		// 							Country: to.Ptr("US"),
+		// 							Email: to.Ptr("abc@contoso.com"),
+		// 							FirstName: to.Ptr("Test"),
+		// 							IsValidAddress: to.Ptr(true),
+		// 							LastName: to.Ptr("User"),
+		// 							PhoneNumber: to.Ptr("000-000-0000"),
+		// 							PostalCode: to.Ptr("00000"),
+		// 							Region: to.Ptr("WA"),
+		// 						},
+		// 						Currency: to.Ptr("USD"),
+		// 						DisplayName: to.Ptr("Billing Profile 1"),
+		// 						HasReadAccess: to.Ptr(true),
+		// 						InvoiceDay: to.Ptr[int32](5),
+		// 						InvoiceEmailOptIn: to.Ptr(true),
+		// 						InvoiceRecipients: []*string{
+		// 							to.Ptr("abc@contoso.com"),
+		// 							to.Ptr("xyz@contoso.com")},
+		// 							PoNumber: to.Ptr("ABC12345"),
+		// 							ShipTo: &armbilling.ProfilePropertiesShipTo{
+		// 								AddressLine1: to.Ptr("Test Address1"),
+		// 								AddressLine2: to.Ptr("Test Address2"),
+		// 								AddressLine3: to.Ptr("Test Address3"),
+		// 								City: to.Ptr("City"),
+		// 								CompanyName: to.Ptr("Contoso"),
+		// 								Country: to.Ptr("US"),
+		// 								Email: to.Ptr("abc@contoso.com"),
+		// 								FirstName: to.Ptr("Test"),
+		// 								IsValidAddress: to.Ptr(true),
+		// 								LastName: to.Ptr("User"),
+		// 								PhoneNumber: to.Ptr("000-000-0000"),
+		// 								PostalCode: to.Ptr("00000"),
+		// 								Region: to.Ptr("WA"),
+		// 							},
+		// 							SoldTo: &armbilling.ProfilePropertiesSoldTo{
+		// 								AddressLine1: to.Ptr("Test Address1"),
+		// 								AddressLine2: to.Ptr("Test Address2"),
+		// 								AddressLine3: to.Ptr("Test Address3"),
+		// 								City: to.Ptr("City"),
+		// 								CompanyName: to.Ptr("Contoso"),
+		// 								Country: to.Ptr("US"),
+		// 								Email: to.Ptr("abc@contoso.com"),
+		// 								FirstName: to.Ptr("Test"),
+		// 								IsValidAddress: to.Ptr(true),
+		// 								LastName: to.Ptr("User"),
+		// 								PhoneNumber: to.Ptr("000-000-0000"),
+		// 								PostalCode: to.Ptr("00000"),
+		// 								Region: to.Ptr("WA"),
+		// 							},
+		// 							Status: to.Ptr(armbilling.BillingProfileStatusActive),
+		// 							SystemID: to.Ptr("33333333-3333-3333-3333-333333333333"),
+		// 						},
+		// 				}},
+		// 			}
+	}
 }

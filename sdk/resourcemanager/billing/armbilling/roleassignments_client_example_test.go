@@ -13,181 +13,12 @@ import (
 	"context"
 	"log"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/BillingAccountRoleAssignment.json
-func ExampleRoleAssignmentsClient_GetByBillingAccount() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewRoleAssignmentsClient().GetByBillingAccount(ctx, "{billingAccountName}", "{billingRoleAssignmentId}", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.RoleAssignment = armbilling.RoleAssignment{
-	// 	Name: to.Ptr("10000000-aaaa-bbbb-cccc-100000000000_6fd330f6-7d26-4aff-b9cf-7bd699f965b9"),
-	// 	Type: to.Ptr("Microsoft.Billing/billingAccounts/billingRoleAssignments"),
-	// 	ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingRoleAssignments/10000000-aaaa-bbbb-cccc-100000000000_6fd330f6-7d26-4aff-b9cf-7bd699f965b9"),
-	// 	Properties: &armbilling.RoleAssignmentProperties{
-	// 		CreatedByPrincipalID: to.Ptr("10000000-aaaa-bbbb-cccc-3fd5ff9d6aa1"),
-	// 		CreatedByPrincipalTenantID: to.Ptr("7ca289b9-c32d-4f01-8566-7ff93261d76f"),
-	// 		CreatedOn: to.Ptr("2018-06-21T21:34:12.2363515+00:00"),
-	// 		PrincipalID: to.Ptr("6fd330f6-7d26-4aff-b9cf-7bd699f965b9"),
-	// 		PrincipalTenantID: to.Ptr("10000000-aaaa-bbbb-cccc-2d7cd011db47"),
-	// 		RoleDefinitionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingRoleDefinitions/50000000-aaaa-bbbb-cccc-100000000002"),
-	// 		Scope: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/BillingAccountRoleAssignmentDelete.json
-func ExampleRoleAssignmentsClient_DeleteByBillingAccount() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewRoleAssignmentsClient().DeleteByBillingAccount(ctx, "{billingAccountName}", "{billingRoleAssignmentName}", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.RoleAssignment = armbilling.RoleAssignment{
-	// 	Name: to.Ptr("10000000-aaaa-bbbb-cccc-100000000000_6fd330f6-7d26-4aff-b9cf-7bd699f965b9"),
-	// 	Type: to.Ptr("Microsoft.Billing/billingAccounts/billingRoleAssignments"),
-	// 	ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingRoleAssignments/10000000-aaaa-bbbb-cccc-100000000000_6fd330f6-7d26-4aff-b9cf-7bd699f965b9"),
-	// 	Properties: &armbilling.RoleAssignmentProperties{
-	// 		CreatedByPrincipalID: to.Ptr("10000000-aaaa-bbbb-cccc-3fd5ff9d6aa1"),
-	// 		CreatedByPrincipalTenantID: to.Ptr("7ca289b9-c32d-4f01-8566-7ff93261d76f"),
-	// 		CreatedOn: to.Ptr("2018-06-21T21:34:12.2363515+00:00"),
-	// 		PrincipalID: to.Ptr("6fd330f6-7d26-4aff-b9cf-7bd699f965b9"),
-	// 		PrincipalTenantID: to.Ptr("10000000-aaaa-bbbb-cccc-2d7cd011db47"),
-	// 		RoleDefinitionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingRoleDefinitions/50000000-aaaa-bbbb-cccc-100000000002"),
-	// 		Scope: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/InvoiceSectionRoleAssignment.json
-func ExampleRoleAssignmentsClient_GetByInvoiceSection() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewRoleAssignmentsClient().GetByInvoiceSection(ctx, "{billingAccountName}", "{billingProfileName}", "{invoiceSectionName}", "{billingRoleAssignmentName}", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.RoleAssignment = armbilling.RoleAssignment{
-	// 	Name: to.Ptr("10000000-aaaa-bbbb-cccc-100000000000_6fd330f6-7d26-4aff-b9cf-7bd699f965b9"),
-	// 	Type: to.Ptr("Microsoft.Billing/billingAccounts/billingProfiles/invoiceSections/billingRoleAssignments"),
-	// 	ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{invoiceSectionName}/10000000-aaaa-bbbb-cccc-100000000000_6fd330f6-7d26-4aff-b9cf-7bd699f965b9"),
-	// 	Properties: &armbilling.RoleAssignmentProperties{
-	// 		CreatedByPrincipalID: to.Ptr("10000000-aaaa-bbbb-cccc-3fd5ff9d6aa1"),
-	// 		CreatedByPrincipalTenantID: to.Ptr("7ca289b9-c32d-4f01-8566-7ff93261d76f"),
-	// 		CreatedOn: to.Ptr("2018-06-21T21:34:12.2363515+00:00"),
-	// 		PrincipalID: to.Ptr("6fd330f6-7d26-4aff-b9cf-7bd699f965b9"),
-	// 		PrincipalTenantID: to.Ptr("10000000-aaaa-bbbb-cccc-2d7cd011db47"),
-	// 		RoleDefinitionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingRoleDefinitions/50000000-aaaa-bbbb-cccc-100000000002"),
-	// 		Scope: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{invoiceSectionName}"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/InvoiceSectionRoleAssignmentDelete.json
-func ExampleRoleAssignmentsClient_DeleteByInvoiceSection() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewRoleAssignmentsClient().DeleteByInvoiceSection(ctx, "{billingAccountName}", "{billingProfileName}", "{invoiceSectionName}", "{billingRoleAssignmentName}", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.RoleAssignment = armbilling.RoleAssignment{
-	// 	Name: to.Ptr("10000000-aaaa-bbbb-cccc-100000000000_6fd330f6-7d26-4aff-b9cf-7bd699f965b9"),
-	// 	Type: to.Ptr("Microsoft.Billing/billingAccounts/billingProfiles/invoiceSections/billingRoleAssignments"),
-	// 	ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{invoiceSectionName}/10000000-aaaa-bbbb-cccc-100000000000_6fd330f6-7d26-4aff-b9cf-7bd699f965b9"),
-	// 	Properties: &armbilling.RoleAssignmentProperties{
-	// 		CreatedByPrincipalID: to.Ptr("10000000-aaaa-bbbb-cccc-3fd5ff9d6aa1"),
-	// 		CreatedByPrincipalTenantID: to.Ptr("7ca289b9-c32d-4f01-8566-7ff93261d76f"),
-	// 		CreatedOn: to.Ptr("2018-06-21T21:34:12.2363515+00:00"),
-	// 		PrincipalID: to.Ptr("6fd330f6-7d26-4aff-b9cf-7bd699f965b9"),
-	// 		PrincipalTenantID: to.Ptr("10000000-aaaa-bbbb-cccc-2d7cd011db47"),
-	// 		RoleDefinitionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingRoleDefinitions/50000000-aaaa-bbbb-cccc-100000000002"),
-	// 		Scope: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{invoiceSectionName}"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/BillingProfileRoleAssignment.json
-func ExampleRoleAssignmentsClient_GetByBillingProfile() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewRoleAssignmentsClient().GetByBillingProfile(ctx, "{billingAccountName}", "{billingProfileName}", "{billingRoleAssignmentName}", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.RoleAssignment = armbilling.RoleAssignment{
-	// 	Name: to.Ptr("10000000-aaaa-bbbb-cccc-100000000000_b1839933-b3ac-42ca-8112-d29c43f3ab47"),
-	// 	Type: to.Ptr("Microsoft.Billing/billingAccounts/billingProfiles/billingRoleAssignments"),
-	// 	ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/billingRoleAssignments/10000000-aaaa-bbbb-cccc-100000000000_b1839933-b3ac-42ca-8112-d29c43f3ab47"),
-	// 	Properties: &armbilling.RoleAssignmentProperties{
-	// 		CreatedByPrincipalID: to.Ptr("10000000-aaaa-bbbb-cccc-3fd5ff9d6aa1"),
-	// 		CreatedByPrincipalTenantID: to.Ptr("7ca289b9-c32d-4f01-8566-7ff93261d76f"),
-	// 		CreatedOn: to.Ptr("2018-06-21T21:58:19.9073876+00:00"),
-	// 		PrincipalID: to.Ptr("6fd330f6-7d26-4aff-b9cf-7bd699f965b9"),
-	// 		PrincipalTenantID: to.Ptr("10000000-aaaa-bbbb-cccc-2d7cd011db47"),
-	// 		RoleDefinitionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingRoleDefinitions/50000000-aaaa-bbbb-cccc-100000000002"),
-	// 		Scope: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/BillingProfileRoleAssignmentDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/billingRoleAssignmentDeleteByBillingProfile.json
 func ExampleRoleAssignmentsClient_DeleteByBillingProfile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -198,7 +29,24 @@ func ExampleRoleAssignmentsClient_DeleteByBillingProfile() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewRoleAssignmentsClient().DeleteByBillingProfile(ctx, "{billingAccountName}", "{billingProfileName}", "{billingRoleAssignmentName}", nil)
+	_, err = clientFactory.NewRoleAssignmentsClient().DeleteByBillingProfile(ctx, "00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30", "BKM6-54VH-BG7-PGB", "10000000-aaaa-bbbb-cccc-100000000000_6fd330f6-7d26-4aff-b9cf-7bd699f965b9", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/billingRoleAssignmentGetByBillingProfile.json
+func ExampleRoleAssignmentsClient_GetByBillingProfile() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewRoleAssignmentsClient().GetByBillingProfile(ctx, "00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30", "xxxx-xxxx-xxx-xxx", "10000000-aaaa-bbbb-cccc-100000000000_6fd330f6-7d26-4aff-b9cf-7bd699f965b9", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -206,134 +54,22 @@ func ExampleRoleAssignmentsClient_DeleteByBillingProfile() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.RoleAssignment = armbilling.RoleAssignment{
-	// 	Name: to.Ptr("10000000-aaaa-bbbb-cccc-100000000000_b1839933-b3ac-42ca-8112-d29c43f3ab47"),
+	// 	Name: to.Ptr("10000000-aaaa-bbbb-cccc-100000000000_6fd330f6-7d26-4aff-b9cf-7bd699f965b9"),
 	// 	Type: to.Ptr("Microsoft.Billing/billingAccounts/billingProfiles/billingRoleAssignments"),
-	// 	ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/10000000-aaaa-bbbb-cccc-100000000000_b1839933-b3ac-42ca-8112-d29c43f3ab47"),
+	// 	ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingProfiles/xxxx-xxxx-xxx-xxx/billingRoleAssignments/10000000-aaaa-bbbb-cccc-100000000000_6fd330f6-7d26-4aff-b9cf-7bd699f965b9"),
 	// 	Properties: &armbilling.RoleAssignmentProperties{
-	// 		CreatedByPrincipalID: to.Ptr("10000000-aaaa-bbbb-cccc-3fd5ff9d6aa1"),
-	// 		CreatedByPrincipalTenantID: to.Ptr("7ca289b9-c32d-4f01-8566-7ff93261d76f"),
-	// 		CreatedOn: to.Ptr("2018-06-21T21:58:19.9073876+00:00"),
-	// 		PrincipalID: to.Ptr("6fd330f6-7d26-4aff-b9cf-7bd699f965b9"),
-	// 		PrincipalTenantID: to.Ptr("10000000-aaaa-bbbb-cccc-2d7cd011db47"),
-	// 		RoleDefinitionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingRoleDefinitions/50000000-aaaa-bbbb-cccc-100000000002"),
-	// 		Scope: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}"),
+	// 		CreatedByPrincipalID: to.Ptr("46b831ec-42b2-4f1a-8b54-3fd5ff9d6aa1"),
+	// 		CreatedByPrincipalTenantID: to.Ptr("076915e7-de10-4323-bb34-a58c904068bb"),
+	// 		CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-04T22:39:34.260Z"); return t}()),
+	// 		PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 		PrincipalType: to.Ptr(armbilling.PrincipalTypeUser),
+	// 		RoleDefinitionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingProfiles/xxxx-xxxx-xxx-xxx/billingRoleDefinitions/00000000-0000-0000-0000-000000000000"),
+	// 		Scope: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingProfiles/xxxx-xxxx-xxx-xxx"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/BillingAccountRoleAssignmentList.json
-func ExampleRoleAssignmentsClient_NewListByBillingAccountPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewRoleAssignmentsClient().NewListByBillingAccountPager("{billingAccountName}", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.RoleAssignmentListResult = armbilling.RoleAssignmentListResult{
-		// 	Value: []*armbilling.RoleAssignment{
-		// 		{
-		// 			Name: to.Ptr("10000000-aaaa-bbbb-cccc-100000000000_6fd330f6-7d26-4aff-b9cf-7bd699f965b9"),
-		// 			Type: to.Ptr("Microsoft.Billing/billingAccounts/billingRoleAssignments"),
-		// 			ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingRoleAssignments/10000000-aaaa-bbbb-cccc-100000000000_6fd330f6-7d26-4aff-b9cf-7bd699f965b9"),
-		// 			Properties: &armbilling.RoleAssignmentProperties{
-		// 				CreatedByPrincipalID: to.Ptr("10000000-aaaa-bbbb-cccc-3fd5ff9d6aa1"),
-		// 				CreatedByPrincipalTenantID: to.Ptr("7ca289b9-c32d-4f01-8566-7ff93261d76f"),
-		// 				CreatedOn: to.Ptr("2018-06-21T21:34:12.2363515+00:00"),
-		// 				PrincipalID: to.Ptr("6fd330f6-7d26-4aff-b9cf-7bd699f965b9"),
-		// 				PrincipalTenantID: to.Ptr("10000000-aaaa-bbbb-cccc-2d7cd011db47"),
-		// 				RoleDefinitionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingRoleDefinitions/50000000-aaaa-bbbb-cccc-100000000002"),
-		// 				Scope: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}"),
-		// 			},
-		// 		},
-		// 		{
-		// 			Name: to.Ptr("10000000-aaaa-bbbb-cccc-100000000000_b1839933-b3ac-42ca-8112-d29c43f3ab47"),
-		// 			Type: to.Ptr("Microsoft.Billing/billingAccounts/billingRoleAssignments"),
-		// 			ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingRoleAssignments/10000000-aaaa-bbbb-cccc-100000000000_b1839933-b3ac-42ca-8112-d29c43f3ab47"),
-		// 			Properties: &armbilling.RoleAssignmentProperties{
-		// 				CreatedByPrincipalID: to.Ptr("10000000-aaaa-bbbb-cccc-3fd5ff9d6aa1"),
-		// 				CreatedByPrincipalTenantID: to.Ptr("7ca289b9-c32d-4f01-8566-7ff93261d76f"),
-		// 				CreatedOn: to.Ptr("2018-06-21T21:58:19.9073876+00:00"),
-		// 				PrincipalID: to.Ptr("b1839933-b3ac-42ca-8112-d29c43f3ab47"),
-		// 				PrincipalTenantID: to.Ptr("10000000-aaaa-bbbb-cccc-2d7cd011db47"),
-		// 				RoleDefinitionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingRoleDefinitions/50000000-aaaa-bbbb-cccc-100000000002"),
-		// 				Scope: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}"),
-		// 			},
-		// 	}},
-		// }
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/InvoiceSectionRoleAssignmentList.json
-func ExampleRoleAssignmentsClient_NewListByInvoiceSectionPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewRoleAssignmentsClient().NewListByInvoiceSectionPager("{billingAccountName}", "{billingProfileName}", "{invoiceSectionName}", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.RoleAssignmentListResult = armbilling.RoleAssignmentListResult{
-		// 	Value: []*armbilling.RoleAssignment{
-		// 		{
-		// 			Name: to.Ptr("10000000-aaaa-bbbb-cccc-100000000000_6fd330f6-7d26-4aff-b9cf-7bd699f965b9"),
-		// 			Type: to.Ptr("Microsoft.Billing/billingAccounts/billingProfiles/invoiceSections/billingRoleAssignments"),
-		// 			ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{invoiceSectionName}/10000000-aaaa-bbbb-cccc-100000000000_6fd330f6-7d26-4aff-b9cf-7bd699f965b9"),
-		// 			Properties: &armbilling.RoleAssignmentProperties{
-		// 				CreatedByPrincipalID: to.Ptr("10000000-aaaa-bbbb-cccc-3fd5ff9d6aa1"),
-		// 				CreatedByPrincipalTenantID: to.Ptr("7ca289b9-c32d-4f01-8566-7ff93261d76f"),
-		// 				CreatedOn: to.Ptr("2018-06-21T21:34:12.2363515+00:00"),
-		// 				PrincipalID: to.Ptr("6fd330f6-7d26-4aff-b9cf-7bd699f965b9"),
-		// 				PrincipalTenantID: to.Ptr("10000000-aaaa-bbbb-cccc-2d7cd011db47"),
-		// 				RoleDefinitionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingRoleDefinitions/50000000-aaaa-bbbb-cccc-100000000002"),
-		// 				Scope: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{invoiceSectionName}"),
-		// 			},
-		// 		},
-		// 		{
-		// 			Name: to.Ptr("10000000-aaaa-bbbb-cccc-100000000000_b1839933-b3ac-42ca-8112-d29c43f3ab47"),
-		// 			Type: to.Ptr("Microsoft.Billing/billingAccounts/billingProfiles/invoiceSections/billingRoleAssignments"),
-		// 			ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{invoiceSectionName}/10000000-aaaa-bbbb-cccc-100000000000_b1839933-b3ac-42ca-8112-d29c43f3ab47"),
-		// 			Properties: &armbilling.RoleAssignmentProperties{
-		// 				CreatedByPrincipalID: to.Ptr("10000000-aaaa-bbbb-cccc-3fd5ff9d6aa1"),
-		// 				CreatedByPrincipalTenantID: to.Ptr("7ca289b9-c32d-4f01-8566-7ff93261d76f"),
-		// 				CreatedOn: to.Ptr("2018-06-21T21:58:19.9073876+00:00"),
-		// 				PrincipalID: to.Ptr("6fd330f6-7d26-4aff-b9cf-7bd699f965b9"),
-		// 				PrincipalTenantID: to.Ptr("10000000-aaaa-bbbb-cccc-2d7cd011db47"),
-		// 				RoleDefinitionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingRoleDefinitions/50000000-aaaa-bbbb-cccc-100000000002"),
-		// 				Scope: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{invoiceSectionName}"),
-		// 			},
-		// 	}},
-		// }
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/BillingProfileRoleAssignmentList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/billingRoleAssignmentListByBillingProfile.json
 func ExampleRoleAssignmentsClient_NewListByBillingProfilePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -344,7 +80,10 @@ func ExampleRoleAssignmentsClient_NewListByBillingProfilePager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewRoleAssignmentsClient().NewListByBillingProfilePager("{billingAccountName}", "{billingProfileName}", nil)
+	pager := clientFactory.NewRoleAssignmentsClient().NewListByBillingProfilePager("00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30", "xxxx-xxxx-xxx-xxx", &armbilling.RoleAssignmentsClientListByBillingProfileOptions{Filter: nil,
+		Top:  nil,
+		Skip: nil,
+	})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -360,31 +99,1114 @@ func ExampleRoleAssignmentsClient_NewListByBillingProfilePager() {
 		// 		{
 		// 			Name: to.Ptr("10000000-aaaa-bbbb-cccc-100000000000_6fd330f6-7d26-4aff-b9cf-7bd699f965b9"),
 		// 			Type: to.Ptr("Microsoft.Billing/billingAccounts/billingProfiles/billingRoleAssignments"),
-		// 			ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/10000000-aaaa-bbbb-cccc-100000000000_6fd330f6-7d26-4aff-b9cf-7bd699f965b9"),
+		// 			ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingProfiles/xxxx-xxxx-xxx-xxx/billingRoleAssignments/10000000-aaaa-bbbb-cccc-100000000000_6fd330f6-7d26-4aff-b9cf-7bd699f965b9"),
 		// 			Properties: &armbilling.RoleAssignmentProperties{
-		// 				CreatedByPrincipalID: to.Ptr("10000000-aaaa-bbbb-cccc-3fd5ff9d6aa1"),
-		// 				CreatedByPrincipalTenantID: to.Ptr("7ca289b9-c32d-4f01-8566-7ff93261d76f"),
-		// 				CreatedOn: to.Ptr("2018-06-21T21:34:12.2363515+00:00"),
-		// 				PrincipalID: to.Ptr("6fd330f6-7d26-4aff-b9cf-7bd699f965b9"),
-		// 				PrincipalTenantID: to.Ptr("10000000-aaaa-bbbb-cccc-2d7cd011db47"),
-		// 				RoleDefinitionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingRoleDefinitions/50000000-aaaa-bbbb-cccc-100000000002"),
-		// 				Scope: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}"),
+		// 				CreatedByPrincipalID: to.Ptr("00000000-0000-0000-0000-000000000001"),
+		// 				CreatedByPrincipalTenantID: to.Ptr("076915e7-de10-4323-bb34-a58c904068bb"),
+		// 				CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-19T20:10:50.102Z"); return t}()),
+		// 				PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 				PrincipalType: to.Ptr(armbilling.PrincipalTypeUser),
+		// 				RoleDefinitionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingProfiles/xxxx-xxxx-xxx-xxx/billingRoleDefinitions/00000000-0000-0000-0000-000000000000"),
+		// 				Scope: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingProfiles/xxxx-xxxx-xxx-xxx"),
 		// 			},
 		// 		},
 		// 		{
-		// 			Name: to.Ptr("10000000-aaaa-bbbb-cccc-100000000000_00000000-0000-0000-0000-000000000000"),
+		// 			Name: to.Ptr("10000000-aaaa-bbbb-cccc-100000000000_b1839933-b3ac-42ca-8112-d29c43f3ab47"),
 		// 			Type: to.Ptr("Microsoft.Billing/billingAccounts/billingProfiles/billingRoleAssignments"),
-		// 			ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/10000000-aaaa-bbbb-cccc-100000000000_00000000-0000-0000-0000-000000000000"),
+		// 			ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingProfiles/xxxx-xxxx-xxx-xxx/billingRoleAssignments/10000000-aaaa-bbbb-cccc-100000000000_b1839933-b3ac-42ca-8112-d29c43f3ab47"),
 		// 			Properties: &armbilling.RoleAssignmentProperties{
-		// 				CreatedByPrincipalID: to.Ptr("10000000-aaaa-bbbb-cccc-3fd5ff9d6aa1"),
-		// 				CreatedByPrincipalTenantID: to.Ptr("7ca289b9-c32d-4f01-8566-7ff93261d76f"),
-		// 				CreatedOn: to.Ptr("2018-06-21T21:58:19.9073876+00:00"),
-		// 				PrincipalID: to.Ptr("b1839933-b3ac-42ca-8112-d29c43f3ab47"),
-		// 				PrincipalTenantID: to.Ptr("10000000-aaaa-bbbb-cccc-2d7cd011db47"),
-		// 				RoleDefinitionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingRoleDefinitions/50000000-aaaa-bbbb-cccc-100000000002"),
-		// 				Scope: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}"),
+		// 				CreatedByPrincipalID: to.Ptr("00000000-0000-0000-0000-000000000001"),
+		// 				CreatedByPrincipalTenantID: to.Ptr("076915e7-de10-4323-bb34-a58c904068bb"),
+		// 				CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-19T20:10:50.102Z"); return t}()),
+		// 				PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 				PrincipalType: to.Ptr(armbilling.PrincipalTypeUser),
+		// 				RoleDefinitionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingProfiles/xxxx-xxxx-xxx-xxx/billingRoleDefinitions/00000000-0000-0000-0000-000000000001"),
+		// 				Scope: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingProfiles/xxxx-xxxx-xxx-xxx"),
 		// 			},
 		// 	}},
 		// }
 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/billingRoleAssignmentCreateByBillingProfile.json
+func ExampleRoleAssignmentsClient_BeginCreateByBillingProfile() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewRoleAssignmentsClient().BeginCreateByBillingProfile(ctx, "00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30", "BKM6-54VH-BG7-PGB", armbilling.RoleAssignmentProperties{
+		PrincipalID:       to.Ptr("00000000-0000-0000-0000-000000000000"),
+		PrincipalTenantID: to.Ptr("076915e7-de10-4323-bb34-a58c904068bb"),
+		RoleDefinitionID:  to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingProfiles/BKM6-54VH-BG7-PGB/billingRoleDefinitions/10000000-aaaa-bbbb-cccc-100000000000"),
+		UserEmailAddress:  to.Ptr("john@contoso.com"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.RoleAssignment = armbilling.RoleAssignment{
+	// 	Name: to.Ptr("10000000-aaaa-bbbb-cccc-100000000000_00000000-0000-0000-0000-000000000000"),
+	// 	Type: to.Ptr("Microsoft.Billing/billingAccounts/billingProfiles/billingRoleAssignments"),
+	// 	ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingProfiles/BKM6-54VH-BG7-PGB/billingRoleAssignments/10000000-aaaa-bbbb-cccc-100000000000_00000000-0000-0000-0000-000000000000"),
+	// 	Properties: &armbilling.RoleAssignmentProperties{
+	// 		CreatedByPrincipalID: to.Ptr("47309529-17e6-4104-b9e8-39f62fa1e5ed"),
+	// 		CreatedByPrincipalTenantID: to.Ptr("076915e7-de10-4323-bb34-a58c904068bb"),
+	// 		CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-19T20:10:50.102Z"); return t}()),
+	// 		PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 		PrincipalType: to.Ptr(armbilling.PrincipalTypeUser),
+	// 		RoleDefinitionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingRoleDefinitions/10000000-aaaa-bbbb-cccc-100000000000"),
+	// 		Scope: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingProfiles/BKM6-54VH-BG7-PGB"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/billingRoleAssignmentDeleteByCustomer.json
+func ExampleRoleAssignmentsClient_DeleteByCustomer() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	_, err = clientFactory.NewRoleAssignmentsClient().DeleteByCustomer(ctx, "00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30", "BKM6-54VH-BG7-PGB", "703ab484-dda2-4402-827b-a74513b61e2d", "30000000-aaaa-bbbb-cccc-100000000000_00000000-0000-0000-0000-000000000000", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/billingRoleAssignmentGetByCustomer.json
+func ExampleRoleAssignmentsClient_GetByCustomer() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewRoleAssignmentsClient().GetByCustomer(ctx, "00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30", "xxxx-xxxx-xxx-xxx", "703ab484-dda2-4402-827b-a74513b61e2d", "30000000-aaaa-bbbb-cccc-100000000000_6fd330f6-7d26-4aff-b9cf-7bd699f965b9", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.RoleAssignment = armbilling.RoleAssignment{
+	// 	Name: to.Ptr("30000000-aaaa-bbbb-cccc-100000000000_6fd330f6-7d26-4aff-b9cf-7bd699f965b9"),
+	// 	Type: to.Ptr("Microsoft.Billing/billingAccounts/billingProfiles/customers/billingRoleAssignments"),
+	// 	ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingProfiles/xxxx-xxxx-xxx-xxx/customers/703ab484-dda2-4402-827b-a74513b61e2d/billingRoleAssignments/30000000-aaaa-bbbb-cccc-100000000000_6fd330f6-7d26-4aff-b9cf-7bd699f965b9"),
+	// 	Properties: &armbilling.RoleAssignmentProperties{
+	// 		CreatedByPrincipalID: to.Ptr(""),
+	// 		CreatedByPrincipalTenantID: to.Ptr("076915e7-de10-4323-bb34-a58c904068bb"),
+	// 		CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-04T22:39:34.260Z"); return t}()),
+	// 		PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 		PrincipalType: to.Ptr(armbilling.PrincipalTypeUser),
+	// 		RoleDefinitionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingProfiles/xxxx-xxxx-xxx-xxx/customers/703ab484-dda2-4402-827b-a74513b61e2d/billingRoleDefinitions/30000000-aaaa-bbbb-cccc-100000000000"),
+	// 		Scope: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingProfiles/xxxx-xxxx-xxx-xxx/customers/703ab484-dda2-4402-827b-a74513b61e2d"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/billingRoleAssignmentListByCustomer.json
+func ExampleRoleAssignmentsClient_NewListByCustomerPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewRoleAssignmentsClient().NewListByCustomerPager("00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30", "BKM6-54VH-BG7-PGB", "703ab484-dda2-4402-827b-a74513b61e2d", &armbilling.RoleAssignmentsClientListByCustomerOptions{Filter: nil,
+		Top:  nil,
+		Skip: nil,
+	})
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.RoleAssignmentListResult = armbilling.RoleAssignmentListResult{
+		// 	Value: []*armbilling.RoleAssignment{
+		// 		{
+		// 			Name: to.Ptr("30000000-aaaa-bbbb-cccc-100000000000_6fd330f6-7d26-4aff-b9cf-7bd699f965b9"),
+		// 			Type: to.Ptr("Microsoft.Billing/billingAccounts/billingProfiles/customers/billingRoleAssignments"),
+		// 			ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingProfiles/BKM6-54VH-BG7-PGB/customers/703ab484-dda2-4402-827b-a74513b61e2d/billingRoleAssignments/30000000-aaaa-bbbb-cccc-100000000000_6fd330f6-7d26-4aff-b9cf-7bd699f965b9"),
+		// 			Properties: &armbilling.RoleAssignmentProperties{
+		// 				CreatedByPrincipalID: to.Ptr(""),
+		// 				CreatedByPrincipalTenantID: to.Ptr("076915e7-de10-4323-bb34-a58c904068bb"),
+		// 				CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-19T20:10:50.102Z"); return t}()),
+		// 				PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 				PrincipalType: to.Ptr(armbilling.PrincipalTypeUser),
+		// 				RoleDefinitionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingProfiles/BKM6-54VH-BG7-PGB/customers/703ab484-dda2-4402-827b-a74513b61e2d/billingRoleDefinitions/30000000-aaaa-bbbb-cccc-100000000000"),
+		// 				Scope: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingProfiles/BKM6-54VH-BG7-PGB/customers/703ab484-dda2-4402-827b-a74513b61e2d"),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("30000000-aaaa-bbbb-cccc-100000000000_b1839933-b3ac-42ca-8112-d29c43f3ab47"),
+		// 			Type: to.Ptr("Microsoft.Billing/billingAccounts/billingProfiles/customers/billingRoleAssignments"),
+		// 			ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingProfiles/BKM6-54VH-BG7-PGB/customers/703ab484-dda2-4402-827b-a74513b61e2d/billingRoleAssignments/30000000-aaaa-bbbb-cccc-100000000000_b1839933-b3ac-42ca-8112-d29c43f3ab47"),
+		// 			Properties: &armbilling.RoleAssignmentProperties{
+		// 				CreatedByPrincipalID: to.Ptr(""),
+		// 				CreatedByPrincipalTenantID: to.Ptr("076915e7-de10-4323-bb34-a58c904068bb"),
+		// 				CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-19T20:10:50.102Z"); return t}()),
+		// 				PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 				PrincipalType: to.Ptr(armbilling.PrincipalTypeUser),
+		// 				RoleDefinitionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingProfiles/BKM6-54VH-BG7-PGB/customers/703ab484-dda2-4402-827b-a74513b61e2d/billingRoleDefinitions/30000000-aaaa-bbbb-cccc-100000000000"),
+		// 				Scope: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingProfiles/BKM6-54VH-BG7-PGB/customers/703ab484-dda2-4402-827b-a74513b61e2d"),
+		// 			},
+		// 	}},
+		// }
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/billingRoleAssignmentCreateByCustomer.json
+func ExampleRoleAssignmentsClient_BeginCreateByCustomer() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewRoleAssignmentsClient().BeginCreateByCustomer(ctx, "00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30", "BKM6-54VH-BG7-PGB", "703ab484-dda2-4402-827b-a74513b61e2d", armbilling.RoleAssignmentProperties{
+		PrincipalID:       to.Ptr("00000000-0000-0000-0000-000000000000"),
+		PrincipalTenantID: to.Ptr("076915e7-de10-4323-bb34-a58c904068bb"),
+		RoleDefinitionID:  to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingProfileName/BKM6-54VH-BG7-PGB/customers/703ab484-dda2-4402-827b-a74513b61e2d/billingRoleDefinitions/30000000-aaaa-bbbb-cccc-100000000000"),
+		UserEmailAddress:  to.Ptr("john@contoso.com"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.RoleAssignment = armbilling.RoleAssignment{
+	// 	Name: to.Ptr("30000000-aaaa-bbbb-cccc-100000000000_00000000-0000-0000-0000-000000000000"),
+	// 	Type: to.Ptr("Microsoft.Billing/billingAccounts/billingProfiles/customers/billingRoleAssignments"),
+	// 	ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingProfileName/BKM6-54VH-BG7-PGB/customers/703ab484-dda2-4402-827b-a74513b61e2d/billingRoleAssignments/30000000-aaaa-bbbb-cccc-100000000000_00000000-0000-0000-0000-000000000000"),
+	// 	Properties: &armbilling.RoleAssignmentProperties{
+	// 		CreatedByPrincipalID: to.Ptr("47309529-17e6-4104-b9e8-39f62fa1e5ed"),
+	// 		CreatedByPrincipalTenantID: to.Ptr("076915e7-de10-4323-bb34-a58c904068bb"),
+	// 		CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-19T20:10:50.102Z"); return t}()),
+	// 		PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 		PrincipalType: to.Ptr(armbilling.PrincipalTypeUser),
+	// 		RoleDefinitionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingProfileName/BKM6-54VH-BG7-PGB/customers/703ab484-dda2-4402-827b-a74513b61e2d/billingRoleDefinitions/30000000-aaaa-bbbb-cccc-100000000000"),
+	// 		Scope: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingProfileName/BKM6-54VH-BG7-PGB/customers/703ab484-dda2-4402-827b-a74513b61e2d"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/resolveBillingRoleAssignmentByCustomer.json
+func ExampleRoleAssignmentsClient_BeginResolveByCustomer() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewRoleAssignmentsClient().BeginResolveByCustomer(ctx, "00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30", "xxxx-xxxx-xxx-xxx", "703ab484-dda2-4402-827b-a74513b61e2d", &armbilling.RoleAssignmentsClientBeginResolveByCustomerOptions{ResolveScopeDisplayNames: nil,
+		Filter: nil,
+	})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.RoleAssignmentListResult = armbilling.RoleAssignmentListResult{
+	// 	Value: []*armbilling.RoleAssignment{
+	// 		{
+	// 			Name: to.Ptr("30000000-aaaa-bbbb-cccc-100000000000_6fd330f6-7d26-4aff-b9cf-7bd699f965b9"),
+	// 			Type: to.Ptr("Microsoft.Billing/billingAccounts/billingProfiles/customers/billingRoleAssignments"),
+	// 			ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingProfiles/xxxx-xxxx-xxx-xxx/customers/703ab484-dda2-4402-827b-a74513b61e2d/billingRoleAssignments/30000000-aaaa-bbbb-cccc-100000000000_6fd330f6-7d26-4aff-b9cf-7bd699f965b9"),
+	// 			Properties: &armbilling.RoleAssignmentProperties{
+	// 				CreatedByPrincipalID: to.Ptr("00000000-0000-0000-0000-000000000001"),
+	// 				CreatedByPrincipalTenantID: to.Ptr("076915e7-de10-4323-bb34-a58c904068bb"),
+	// 				CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-19T20:10:50.102Z"); return t}()),
+	// 				PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				PrincipalTenantID: to.Ptr("c360d6f1-2709-476d-81bb-d075b213d9fc"),
+	// 				PrincipalTenantName: to.Ptr("Foo Bar"),
+	// 				PrincipalType: to.Ptr(armbilling.PrincipalTypeUser),
+	// 				RoleDefinitionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingProfiles/xxxx-xxxx-xxx-xxx/customers/703ab484-dda2-4402-827b-a74513b61e2d/billingRoleDefinitions/30000000-aaaa-bbbb-cccc-100000000000"),
+	// 				Scope: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingProfiles/xxxx-xxxx-xxx-xxx/customers/703ab484-dda2-4402-827b-a74513b61e2d"),
+	// 				UserEmailAddress: to.Ptr("foo@bar.com"),
+	// 			},
+	// 		},
+	// 		{
+	// 			Name: to.Ptr("30000000-aaaa-bbbb-cccc-100000000000_b1839933-b3ac-42ca-8112-d29c43f3ab47"),
+	// 			Type: to.Ptr("Microsoft.Billing/billingAccounts/billingProfiles/customers/billingRoleAssignments"),
+	// 			ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingProfiles/xxxx-xxxx-xxx-xxx/customers/703ab484-dda2-4402-827b-a74513b61e2d/billingRoleAssignments/30000000-aaaa-bbbb-cccc-100000000000_b1839933-b3ac-42ca-8112-d29c43f3ab47"),
+	// 			Properties: &armbilling.RoleAssignmentProperties{
+	// 				CreatedByPrincipalID: to.Ptr("00000000-0000-0000-0000-000000000001"),
+	// 				CreatedByPrincipalTenantID: to.Ptr("076915e7-de10-4323-bb34-a58c904068bb"),
+	// 				CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-19T20:10:50.102Z"); return t}()),
+	// 				PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				PrincipalTenantID: to.Ptr("c360d6f1-2709-476d-81bb-d075b213d9fc"),
+	// 				PrincipalTenantName: to.Ptr("Foo Bar"),
+	// 				PrincipalType: to.Ptr(armbilling.PrincipalTypeUser),
+	// 				RoleDefinitionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingProfiles/xxxx-xxxx-xxx-xxx/customers/703ab484-dda2-4402-827b-a74513b61e2d/billingRoleDefinitions/30000000-aaaa-bbbb-cccc-100000000000"),
+	// 				Scope: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingProfiles/xxxx-xxxx-xxx-xxx/customers/703ab484-dda2-4402-827b-a74513b61e2d"),
+	// 				UserEmailAddress: to.Ptr("foo@bar.com"),
+	// 			},
+	// 	}},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/billingRoleAssignmentDeleteByInvoiceSection.json
+func ExampleRoleAssignmentsClient_DeleteByInvoiceSection() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	_, err = clientFactory.NewRoleAssignmentsClient().DeleteByInvoiceSection(ctx, "00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30", "BKM6-54VH-BG7-PGB", "xxxx-xxxx-xxx-xxx", "10000000-aaaa-bbbb-cccc-100000000000_6fd330f6-7d26-4aff-b9cf-7bd699f965b9", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/billingRoleAssignmentGetByInvoiceSection.json
+func ExampleRoleAssignmentsClient_GetByInvoiceSection() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewRoleAssignmentsClient().GetByInvoiceSection(ctx, "00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30", "BKM6-54VH-BG7-PGB", "xxxx-xxxx-xxx-xxx", "10000000-aaaa-bbbb-cccc-100000000000_6fd330f6-7d26-4aff-b9cf-7bd699f965b9", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.RoleAssignment = armbilling.RoleAssignment{
+	// 	Name: to.Ptr("10000000-aaaa-bbbb-cccc-100000000000_6fd330f6-7d26-4aff-b9cf-7bd699f965b9"),
+	// 	Type: to.Ptr("Microsoft.Billing/billingAccounts/billingProfiles/invoiceSections/billingRoleAssignments"),
+	// 	ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingProfiles/BKM6-54VH-BG7-PGB/invoiceSections/xxxx-xxxx-xxx-xxx/billingRoleAssignments/10000000-aaaa-bbbb-cccc-100000000000_6fd330f6-7d26-4aff-b9cf-7bd699f965b9"),
+	// 	Properties: &armbilling.RoleAssignmentProperties{
+	// 		CreatedByPrincipalID: to.Ptr("46b831ec-42b2-4f1a-8b54-3fd5ff9d6aa1"),
+	// 		CreatedByPrincipalTenantID: to.Ptr("076915e7-de10-4323-bb34-a58c904068bb"),
+	// 		CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-19T20:10:50.102Z"); return t}()),
+	// 		PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 		PrincipalType: to.Ptr(armbilling.PrincipalTypeUser),
+	// 		RoleDefinitionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingProfiles/BKM6-54VH-BG7-PGB/invoiceSections/xxxx-xxxx-xxx-xxx/billingRoleDefinitions/50000000-aaaa-bbbb-cccc-100000000000"),
+	// 		Scope: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingProfiles/BKM6-54VH-BG7-PGB/invoiceSections/xxxx-xxxx-xxx-xxx"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/billingRoleAssignmentListByInvoiceSection.json
+func ExampleRoleAssignmentsClient_NewListByInvoiceSectionPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewRoleAssignmentsClient().NewListByInvoiceSectionPager("00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30", "BKM6-54VH-BG7-PGB", "xxxx-xxxx-xxx-xxx", &armbilling.RoleAssignmentsClientListByInvoiceSectionOptions{Filter: nil,
+		Top:  nil,
+		Skip: nil,
+	})
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.RoleAssignmentListResult = armbilling.RoleAssignmentListResult{
+		// 	Value: []*armbilling.RoleAssignment{
+		// 		{
+		// 			Name: to.Ptr("10000000-aaaa-bbbb-cccc-100000000000_6fd330f6-7d26-4aff-b9cf-7bd699f965b9"),
+		// 			Type: to.Ptr("Microsoft.Billing/billingAccounts/billingProfiles/invoiceSections/billingRoleAssignments"),
+		// 			ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingProfiles/BKM6-54VH-BG7-PGB/invoiceSections/xxxx-xxxx-xxx-xxx/billingRoleAssignments/10000000-aaaa-bbbb-cccc-100000000000_6fd330f6-7d26-4aff-b9cf-7bd699f965b9"),
+		// 			Properties: &armbilling.RoleAssignmentProperties{
+		// 				CreatedByPrincipalID: to.Ptr("00000000-0000-0000-0000-000000000001"),
+		// 				CreatedByPrincipalTenantID: to.Ptr("076915e7-de10-4323-bb34-a58c904068bb"),
+		// 				CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-19T20:10:50.102Z"); return t}()),
+		// 				PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 				PrincipalType: to.Ptr(armbilling.PrincipalTypeUser),
+		// 				RoleDefinitionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingProfiles/BKM6-54VH-BG7-PGB/invoiceSections/xxxx-xxxx-xxx-xxx/billingRoleDefinitions/30000000-aaaa-bbbb-cccc-100000000002"),
+		// 				Scope: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingProfiles/BKM6-54VH-BG7-PGB/invoiceSections/xxxx-xxxx-xxx-xxx"),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("10000000-aaaa-bbbb-cccc-100000000000_b1839933-b3ac-42ca-8112-d29c43f3ab47"),
+		// 			Type: to.Ptr("Microsoft.Billing/billingAccounts/billingProfiles/invoiceSections/billingRoleAssignments"),
+		// 			ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingProfiles/BKM6-54VH-BG7-PGB/invoiceSections/xxxx-xxxx-xxx-xxx/billingRoleAssignments/10000000-aaaa-bbbb-cccc-100000000000_b1839933-b3ac-42ca-8112-d29c43f3ab47"),
+		// 			Properties: &armbilling.RoleAssignmentProperties{
+		// 				CreatedByPrincipalID: to.Ptr("00000000-0000-0000-0000-000000000001"),
+		// 				CreatedByPrincipalTenantID: to.Ptr("076915e7-de10-4323-bb34-a58c904068bb"),
+		// 				CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-19T20:10:50.102Z"); return t}()),
+		// 				PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 				PrincipalType: to.Ptr(armbilling.PrincipalTypeUser),
+		// 				RoleDefinitionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingProfiles/BKM6-54VH-BG7-PGB/invoiceSections/xxxx-xxxx-xxx-xxx/billingRoleDefinitions/30000000-aaaa-bbbb-cccc-100000000001"),
+		// 				Scope: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingProfiles/BKM6-54VH-BG7-PGB/invoiceSections/xxxx-xxxx-xxx-xxx"),
+		// 			},
+		// 	}},
+		// }
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/billingRoleAssignmentCreateByInvoiceSection.json
+func ExampleRoleAssignmentsClient_BeginCreateByInvoiceSection() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewRoleAssignmentsClient().BeginCreateByInvoiceSection(ctx, "00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30", "BKM6-54VH-BG7-PGB", "xxxx-xxxx-xxx-xxx", armbilling.RoleAssignmentProperties{
+		PrincipalID:       to.Ptr("00000000-0000-0000-0000-000000000000"),
+		PrincipalTenantID: to.Ptr("076915e7-de10-4323-bb34-a58c904068bb"),
+		RoleDefinitionID:  to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingProfiles/BKM6-54VH-BG7-PGB/invoiceSections/xxxx-xxxx-xxx-xxx/billingRoleDefinitions/10000000-aaaa-bbbb-cccc-100000000000"),
+		UserEmailAddress:  to.Ptr("john@contoso.com"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.RoleAssignment = armbilling.RoleAssignment{
+	// 	Name: to.Ptr("10000000-aaaa-bbbb-cccc-100000000000_00000000-0000-0000-0000-000000000000"),
+	// 	Type: to.Ptr("Microsoft.Billing/billingAccounts/billingProfiles/invoiceSections/billingRoleAssignments"),
+	// 	ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingProfiles/BKM6-54VH-BG7-PGB/invoiceSections/xxxx-xxxx-xxx-xxx/billingRoleAssignments/10000000-aaaa-bbbb-cccc-100000000000_00000000-0000-0000-0000-000000000000"),
+	// 	Properties: &armbilling.RoleAssignmentProperties{
+	// 		CreatedByPrincipalID: to.Ptr("47309529-17e6-4104-b9e8-39f62fa1e5ed"),
+	// 		CreatedByPrincipalTenantID: to.Ptr("076915e7-de10-4323-bb34-a58c904068bb"),
+	// 		CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-19T20:10:50.102Z"); return t}()),
+	// 		PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 		PrincipalType: to.Ptr(armbilling.PrincipalTypeUser),
+	// 		RoleDefinitionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingProfiles/BKM6-54VH-BG7-PGB/invoiceSections/xxxx-xxxx-xxx-xxx/billingRoleDefinitions/10000000-aaaa-bbbb-cccc-100000000000"),
+	// 		Scope: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingProfiles/BKM6-54VH-BG7-PGB/invoiceSections/xxxx-xxxx-xxx-xxx"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/resolveBillingRoleAssignmentByInvoiceSection.json
+func ExampleRoleAssignmentsClient_BeginResolveByInvoiceSection() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewRoleAssignmentsClient().BeginResolveByInvoiceSection(ctx, "00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30", "BKM6-54VH-BG7-PGB", "xxxx-xxxx-xxx-xxx", &armbilling.RoleAssignmentsClientBeginResolveByInvoiceSectionOptions{ResolveScopeDisplayNames: nil,
+		Filter: nil,
+	})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.RoleAssignmentListResult = armbilling.RoleAssignmentListResult{
+	// 	Value: []*armbilling.RoleAssignment{
+	// 		{
+	// 			Name: to.Ptr("10000000-aaaa-bbbb-cccc-100000000000_6fd330f6-7d26-4aff-b9cf-7bd699f965b9"),
+	// 			Type: to.Ptr("Microsoft.Billing/billingAccounts/billingProfiles/invoiceSections/billingRoleAssignments"),
+	// 			ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingProfiles/BKM6-54VH-BG7-PGB/invoiceSections/xxxx-xxxx-xxx-xxx/billingRoleAssignments/10000000-aaaa-bbbb-cccc-100000000000_6fd330f6-7d26-4aff-b9cf-7bd699f965b9"),
+	// 			Properties: &armbilling.RoleAssignmentProperties{
+	// 				CreatedByPrincipalID: to.Ptr("00000000-0000-0000-0000-000000000001"),
+	// 				CreatedByPrincipalTenantID: to.Ptr("076915e7-de10-4323-bb34-a58c904068bb"),
+	// 				CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-19T20:10:50.102Z"); return t}()),
+	// 				PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				PrincipalType: to.Ptr(armbilling.PrincipalTypeUser),
+	// 				RoleDefinitionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingProfiles/BKM6-54VH-BG7-PGB/invoiceSections/xxxx-xxxx-xxx-xxx/billingRoleDefinitions/30000000-aaaa-bbbb-cccc-100000000000"),
+	// 				Scope: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingProfiles/BKM6-54VH-BG7-PGB/invoiceSections/xxxx-xxxx-xxx-xxx"),
+	// 			},
+	// 		},
+	// 		{
+	// 			Name: to.Ptr("10000000-aaaa-bbbb-cccc-100000000000_b1839933-b3ac-42ca-8112-d29c43f3ab47"),
+	// 			Type: to.Ptr("Microsoft.Billing/billingAccounts/billingProfiles/invoiceSections/billingRoleAssignments"),
+	// 			ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingProfiles/BKM6-54VH-BG7-PGB/invoiceSections/xxxx-xxxx-xxx-xxx/billingRoleAssignments/10000000-aaaa-bbbb-cccc-100000000000_b1839933-b3ac-42ca-8112-d29c43f3ab47"),
+	// 			Properties: &armbilling.RoleAssignmentProperties{
+	// 				CreatedByPrincipalID: to.Ptr("00000000-0000-0000-0000-000000000001"),
+	// 				CreatedByPrincipalTenantID: to.Ptr("076915e7-de10-4323-bb34-a58c904068bb"),
+	// 				CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-19T20:10:50.102Z"); return t}()),
+	// 				PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				PrincipalType: to.Ptr(armbilling.PrincipalTypeUser),
+	// 				RoleDefinitionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingProfiles/BKM6-54VH-BG7-PGB/invoiceSections/xxxx-xxxx-xxx-xxx/billingRoleDefinitions/30000000-aaaa-bbbb-cccc-100000000000"),
+	// 				Scope: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingProfiles/BKM6-54VH-BG7-PGB/invoiceSections/xxxx-xxxx-xxx-xxx"),
+	// 			},
+	// 	}},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/resolveBillingRoleAssignmentByBillingProfile.json
+func ExampleRoleAssignmentsClient_BeginResolveByBillingProfile() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewRoleAssignmentsClient().BeginResolveByBillingProfile(ctx, "00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30", "xxxx-xxxx-xxx-xxx", &armbilling.RoleAssignmentsClientBeginResolveByBillingProfileOptions{ResolveScopeDisplayNames: nil,
+		Filter: nil,
+	})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.RoleAssignmentListResult = armbilling.RoleAssignmentListResult{
+	// 	Value: []*armbilling.RoleAssignment{
+	// 		{
+	// 			Name: to.Ptr("10000000-aaaa-bbbb-cccc-100000000000_6fd330f6-7d26-4aff-b9cf-7bd699f965b9"),
+	// 			Type: to.Ptr("Microsoft.Billing/billingAccounts/billingProfiles/billingRoleAssignments"),
+	// 			ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingProfiles/xxxx-xxxx-xxx-xxx/billingRoleAssignments/10000000-aaaa-bbbb-cccc-100000000000_6fd330f6-7d26-4aff-b9cf-7bd699f965b9"),
+	// 			Properties: &armbilling.RoleAssignmentProperties{
+	// 				CreatedByPrincipalID: to.Ptr("00000000-0000-0000-0000-000000000001"),
+	// 				CreatedByPrincipalTenantID: to.Ptr("076915e7-de10-4323-bb34-a58c904068bb"),
+	// 				CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-19T20:10:50.102Z"); return t}()),
+	// 				PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				PrincipalType: to.Ptr(armbilling.PrincipalTypeUser),
+	// 				RoleDefinitionID: to.Ptr("providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingProfiles/xxxx-xxxx-xxx-xxx/billingRoleDefinitions/00000000-0000-0000-0000-000000000000"),
+	// 				Scope: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingProfiles/xxxx-xxxx-xxx-xxx"),
+	// 			},
+	// 		},
+	// 		{
+	// 			Name: to.Ptr("10000000-aaaa-bbbb-cccc-100000000000_b1839933-b3ac-42ca-8112-d29c43f3ab47"),
+	// 			Type: to.Ptr("Microsoft.Billing/billingAccounts/billingProfiles/billingRoleAssignments"),
+	// 			ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingProfiles/xxxx-xxxx-xxx-xxx/billingRoleAssignments/10000000-aaaa-bbbb-cccc-100000000000_b1839933-b3ac-42ca-8112-d29c43f3ab47"),
+	// 			Properties: &armbilling.RoleAssignmentProperties{
+	// 				CreatedByPrincipalID: to.Ptr("00000000-0000-0000-0000-000000000001"),
+	// 				CreatedByPrincipalTenantID: to.Ptr("076915e7-de10-4323-bb34-a58c904068bb"),
+	// 				CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-19T20:10:50.102Z"); return t}()),
+	// 				PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				PrincipalType: to.Ptr(armbilling.PrincipalTypeUser),
+	// 				RoleDefinitionID: to.Ptr("providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingProfiles/xxxx-xxxx-xxx-xxx/billingRoleDefinitions/00000000-0000-0000-0000-000000000001"),
+	// 				Scope: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingProfiles/xxxx-xxxx-xxx-xxx"),
+	// 			},
+	// 	}},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/billingRoleAssignmentDeleteByBillingAccount.json
+func ExampleRoleAssignmentsClient_DeleteByBillingAccount() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	_, err = clientFactory.NewRoleAssignmentsClient().DeleteByBillingAccount(ctx, "00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30", "10000000-aaaa-bbbb-cccc-100000000000_6fd330f6-7d26-4aff-b9cf-7bd699f965b9", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/billingRoleAssignmentGetByBillingAccount.json
+func ExampleRoleAssignmentsClient_GetByBillingAccount() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewRoleAssignmentsClient().GetByBillingAccount(ctx, "00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30", "10000000-aaaa-bbbb-cccc-100000000000_6fd330f6-7d26-4aff-b9cf-7bd699f965b9", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.RoleAssignment = armbilling.RoleAssignment{
+	// 	Name: to.Ptr("10000000-aaaa-bbbb-cccc-100000000000_6fd330f6-7d26-4aff-b9cf-7bd699f965b9"),
+	// 	Type: to.Ptr("Microsoft.Billing/billingAccounts/billingRoleAssignments"),
+	// 	ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingRoleAssignments/10000000-aaaa-bbbb-cccc-100000000000_6fd330f6-7d26-4aff-b9cf-7bd699f965b9"),
+	// 	Properties: &armbilling.RoleAssignmentProperties{
+	// 		CreatedByPrincipalID: to.Ptr(""),
+	// 		CreatedByPrincipalTenantID: to.Ptr("076915e7-de10-4323-bb34-a58c904068bb"),
+	// 		CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-04T22:39:34.260Z"); return t}()),
+	// 		PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 		PrincipalType: to.Ptr(armbilling.PrincipalTypeUser),
+	// 		RoleDefinitionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingRoleDefinitions/00000000-0000-0000-0000-000000000000"),
+	// 		Scope: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/billingRoleAssignmentCreateOrUpdateByBillingAccount.json
+func ExampleRoleAssignmentsClient_BeginCreateOrUpdateByBillingAccount() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewRoleAssignmentsClient().BeginCreateOrUpdateByBillingAccount(ctx, "7898901", "9dfd08c2-62a3-4d47-85bd-1cdba1408402", armbilling.RoleAssignment{
+		Properties: &armbilling.RoleAssignmentProperties{
+			PrincipalID:       to.Ptr("00000000-0000-0000-0000-000000000000"),
+			PrincipalTenantID: to.Ptr("076915e7-de10-4323-bb34-a58c904068bb"),
+			RoleDefinitionID:  to.Ptr("/providers/Microsoft.Billing/billingAccounts/7898901/billingRoleDefinitions/9f1983cb-2574-400c-87e9-34cf8e2280db"),
+			UserEmailAddress:  to.Ptr("john@contoso.com"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.RoleAssignment = armbilling.RoleAssignment{
+	// 	Name: to.Ptr("9dfd08c2-62a3-4d47-85bd-1cdba1408402"),
+	// 	Type: to.Ptr("Microsoft.Billing/billingAccounts/billingRoleAssignments"),
+	// 	ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/7898901/billingRoleAssignments/9dfd08c2-62a3-4d47-85bd-1cdba1408402"),
+	// 	Properties: &armbilling.RoleAssignmentProperties{
+	// 		CreatedByPrincipalID: to.Ptr("60d97094-2be4-46cc-a4fe-3633021a25b9"),
+	// 		CreatedByPrincipalTenantID: to.Ptr("076915e7-de10-4323-bb34-a58c904068bb"),
+	// 		CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-19T20:10:50.102Z"); return t}()),
+	// 		PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 		PrincipalTenantID: to.Ptr("7ca289b9-c32d-4f01-8566-7ff93261d76f"),
+	// 		RoleDefinitionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/7898901/billingRoleDefinitions/9f1983cb-2574-400c-87e9-34cf8e2280db"),
+	// 		Scope: to.Ptr("/providers/Microsoft.Billing/billingAccounts/7898901"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/billingRoleAssignmentListByBillingAccount.json
+func ExampleRoleAssignmentsClient_NewListByBillingAccountPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewRoleAssignmentsClient().NewListByBillingAccountPager("00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30", &armbilling.RoleAssignmentsClientListByBillingAccountOptions{Filter: nil,
+		Top:  nil,
+		Skip: nil,
+	})
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.RoleAssignmentListResult = armbilling.RoleAssignmentListResult{
+		// 	Value: []*armbilling.RoleAssignment{
+		// 		{
+		// 			Name: to.Ptr("10000000-aaaa-bbbb-cccc-100000000000_6fd330f6-7d26-4aff-b9cf-7bd699f965b9"),
+		// 			Type: to.Ptr("Microsoft.Billing/billingAccounts/billingRoleAssignments"),
+		// 			ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingRoleAssignments/10000000-aaaa-bbbb-cccc-100000000000_6fd330f6-7d26-4aff-b9cf-7bd699f965b9"),
+		// 			Properties: &armbilling.RoleAssignmentProperties{
+		// 				CreatedByPrincipalID: to.Ptr("00000000-0000-0000-0000-000000000001"),
+		// 				CreatedByPrincipalTenantID: to.Ptr("076915e7-de10-4323-bb34-a58c904068bb"),
+		// 				CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-19T20:10:50.102Z"); return t}()),
+		// 				PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 				PrincipalType: to.Ptr(armbilling.PrincipalTypeUser),
+		// 				RoleDefinitionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingRoleDefinitions/00000000-0000-0000-0000-000000000000"),
+		// 				Scope: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30"),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("10000000-aaaa-bbbb-cccc-100000000000_b1839933-b3ac-42ca-8112-d29c43f3ab47"),
+		// 			Type: to.Ptr("Microsoft.Billing/billingAccounts/billingRoleAssignments"),
+		// 			ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingRoleAssignments/10000000-aaaa-bbbb-cccc-100000000000_b1839933-b3ac-42ca-8112-d29c43f3ab47"),
+		// 			Properties: &armbilling.RoleAssignmentProperties{
+		// 				CreatedByPrincipalID: to.Ptr("00000000-0000-0000-0000-000000000001"),
+		// 				CreatedByPrincipalTenantID: to.Ptr("076915e7-de10-4323-bb34-a58c904068bb"),
+		// 				CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-19T20:10:50.102Z"); return t}()),
+		// 				PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 				PrincipalType: to.Ptr(armbilling.PrincipalTypeUser),
+		// 				RoleDefinitionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingRoleDefinitions/00000000-0000-0000-0000-000000000001"),
+		// 				Scope: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30"),
+		// 			},
+		// 	}},
+		// }
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/billingRoleAssignmentCreateByBillingAccount.json
+func ExampleRoleAssignmentsClient_BeginCreateByBillingAccount() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewRoleAssignmentsClient().BeginCreateByBillingAccount(ctx, "00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30", armbilling.RoleAssignmentProperties{
+		PrincipalID:       to.Ptr("00000000-0000-0000-0000-000000000000"),
+		PrincipalTenantID: to.Ptr("076915e7-de10-4323-bb34-a58c904068bb"),
+		RoleDefinitionID:  to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingRoleDefinitions/10000000-aaaa-bbbb-cccc-100000000000"),
+		UserEmailAddress:  to.Ptr("john@contoso.com"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.RoleAssignment = armbilling.RoleAssignment{
+	// 	Name: to.Ptr("10000000-aaaa-bbbb-cccc-100000000000_00000000-0000-0000-0000-000000000000"),
+	// 	Type: to.Ptr("Microsoft.Billing/billingAccounts/billingRoleAssignments"),
+	// 	ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingRoleAssignments/10000000-aaaa-bbbb-cccc-100000000000_00000000-0000-0000-0000-000000000000"),
+	// 	Properties: &armbilling.RoleAssignmentProperties{
+	// 		CreatedByPrincipalID: to.Ptr("47309529-17e6-4104-b9e8-39f62fa1e5ed"),
+	// 		CreatedByPrincipalTenantID: to.Ptr("076915e7-de10-4323-bb34-a58c904068bb"),
+	// 		CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-19T20:10:50.102Z"); return t}()),
+	// 		PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 		PrincipalType: to.Ptr(armbilling.PrincipalTypeUser),
+	// 		RoleDefinitionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingRoleDefinitions/10000000-aaaa-bbbb-cccc-100000000000"),
+	// 		Scope: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/billingRoleAssignmentDeleteByDepartment.json
+func ExampleRoleAssignmentsClient_DeleteByDepartment() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	_, err = clientFactory.NewRoleAssignmentsClient().DeleteByDepartment(ctx, "8608480", "123456", "9dfd08c2-62a3-4d47-85bd-1cdba1408402", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/billingRoleAssignmentGetByDepartment.json
+func ExampleRoleAssignmentsClient_GetByDepartment() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewRoleAssignmentsClient().GetByDepartment(ctx, "7898901", "225314", "9dfd08c2-62a3-4d47-85bd-1cdba1408402", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.RoleAssignment = armbilling.RoleAssignment{
+	// 	Name: to.Ptr("9dfd08c2-62a3-4d47-85bd-1cdba1408402"),
+	// 	Type: to.Ptr("Microsoft.Billing/billingAccounts/departments/billingRoleAssignments"),
+	// 	ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/7898901/departments/225314/billingRoleAssignments/9dfd08c2-62a3-4d47-85bd-1cdba1408402"),
+	// 	Properties: &armbilling.RoleAssignmentProperties{
+	// 		CreatedByUserEmailAddress: to.Ptr("test@billtest900006.onmicrosoft.com"),
+	// 		CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-19T20:10:50.102Z"); return t}()),
+	// 		RoleDefinitionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/7898901/departments/225314/billingRoleDefinitions/c15c22c0-9faf-424c-9b7e-bd91c06a240b"),
+	// 		Scope: to.Ptr("/providers/Microsoft.Billing/billingAccounts/7898901/departments/225314"),
+	// 		UserAuthenticationType: to.Ptr("Organization"),
+	// 		UserEmailAddress: to.Ptr("a_owner@billtest900006.onmicrosoft.com"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/billingRoleAssignmentCreateOrUpdateByDepartment.json
+func ExampleRoleAssignmentsClient_BeginCreateOrUpdateByDepartment() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewRoleAssignmentsClient().BeginCreateOrUpdateByDepartment(ctx, "7898901", "12345", "9dfd08c2-62a3-4d47-85bd-1cdba1408402", armbilling.RoleAssignment{
+		Properties: &armbilling.RoleAssignmentProperties{
+			PrincipalID:       to.Ptr("00000000-0000-0000-0000-000000000000"),
+			PrincipalTenantID: to.Ptr("076915e7-de10-4323-bb34-a58c904068bb"),
+			RoleDefinitionID:  to.Ptr("/providers/Microsoft.Billing/billingAccounts/7898901/departments/12345/billingRoleDefinitions/9f1983cb-2574-400c-87e9-34cf8e2280db"),
+			UserEmailAddress:  to.Ptr("john@contoso.com"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.RoleAssignment = armbilling.RoleAssignment{
+	// 	Name: to.Ptr("9dfd08c2-62a3-4d47-85bd-1cdba1408402"),
+	// 	Type: to.Ptr("Microsoft.Billing/billingAccounts/departments/billingRoleAssignments"),
+	// 	ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/7898901/departments/12345/billingRoleAssignments/9dfd08c2-62a3-4d47-85bd-1cdba1408402"),
+	// 	Properties: &armbilling.RoleAssignmentProperties{
+	// 		CreatedByPrincipalID: to.Ptr("60d97094-2be4-46cc-a4fe-3633021a25b9"),
+	// 		CreatedByPrincipalTenantID: to.Ptr("076915e7-de10-4323-bb34-a58c904068bb"),
+	// 		CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-19T20:10:50.102Z"); return t}()),
+	// 		PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 		PrincipalTenantID: to.Ptr("7ca289b9-c32d-4f01-8566-7ff93261d76f"),
+	// 		RoleDefinitionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/7898901/departments/12345/billingRoleDefinitions/9f1983cb-2574-400c-87e9-34cf8e2280db"),
+	// 		Scope: to.Ptr("/providers/Microsoft.Billing/billingAccounts/7898901/departments/12345"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/billingRoleAssignmentListByDepartment.json
+func ExampleRoleAssignmentsClient_NewListByDepartmentPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewRoleAssignmentsClient().NewListByDepartmentPager("00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30", "12345", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.RoleAssignmentListResult = armbilling.RoleAssignmentListResult{
+		// 	Value: []*armbilling.RoleAssignment{
+		// 		{
+		// 			Name: to.Ptr("10000000-aaaa-bbbb-cccc-100000000000_6fd330f6-7d26-4aff-b9cf-7bd699f965b9"),
+		// 			Type: to.Ptr("Microsoft.Billing/billingAccounts/departments/billingRoleAssignments"),
+		// 			ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/departments/12345/billingRoleAssignments/10000000-aaaa-bbbb-cccc-100000000000_6fd330f6-7d26-4aff-b9cf-7bd699f965b9"),
+		// 			Properties: &armbilling.RoleAssignmentProperties{
+		// 				CreatedByPrincipalID: to.Ptr("00000000-0000-0000-0000-000000000001"),
+		// 				CreatedByPrincipalTenantID: to.Ptr("076915e7-de10-4323-bb34-a58c904068bb"),
+		// 				CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-19T20:10:50.102Z"); return t}()),
+		// 				PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 				PrincipalType: to.Ptr(armbilling.PrincipalTypeUser),
+		// 				RoleDefinitionID: to.Ptr("providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/departments/12345/billingRoleDefinitions/00000000-0000-0000-0000-000000000000"),
+		// 				Scope: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/departments/12345"),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("10000000-aaaa-bbbb-cccc-100000000000_b1839933-b3ac-42ca-8112-d29c43f3ab47"),
+		// 			Type: to.Ptr("Microsoft.Billing/billingAccounts/departments/billingRoleAssignments"),
+		// 			ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/departments/12345/billingRoleAssignments/10000000-aaaa-bbbb-cccc-100000000000_b1839933-b3ac-42ca-8112-d29c43f3ab47"),
+		// 			Properties: &armbilling.RoleAssignmentProperties{
+		// 				CreatedByPrincipalID: to.Ptr("00000000-0000-0000-0000-000000000001"),
+		// 				CreatedByPrincipalTenantID: to.Ptr("076915e7-de10-4323-bb34-a58c904068bb"),
+		// 				CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-19T20:10:50.102Z"); return t}()),
+		// 				PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 				PrincipalType: to.Ptr(armbilling.PrincipalTypeUser),
+		// 				RoleDefinitionID: to.Ptr("\"/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/departments/12345/billingRoleDefinitions/00000000-0000-0000-0000-000000000001"),
+		// 				Scope: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/departments/12345"),
+		// 			},
+		// 	}},
+		// }
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/billingRoleAssignmentDeleteByEnrollmentAccount.json
+func ExampleRoleAssignmentsClient_DeleteByEnrollmentAccount() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	_, err = clientFactory.NewRoleAssignmentsClient().DeleteByEnrollmentAccount(ctx, "8608480", "123456", "9dfd08c2-62a3-4d47-85bd-1cdba1408402", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/billingRoleAssignmentGetByEnrollmentAccount.json
+func ExampleRoleAssignmentsClient_GetByEnrollmentAccount() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewRoleAssignmentsClient().GetByEnrollmentAccount(ctx, "7898901", "225314", "9dfd08c2-62a3-4d47-85bd-1cdba1408402", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.RoleAssignment = armbilling.RoleAssignment{
+	// 	Name: to.Ptr("9dfd08c2-62a3-4d47-85bd-1cdba1408402"),
+	// 	Type: to.Ptr("Microsoft.Billing/billingAccounts/enrollmentAccounts/billingRoleAssignments"),
+	// 	ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/7898901/enrollmentAccounts/225314/billingRoleAssignments/9dfd08c2-62a3-4d47-85bd-1cdba1408402"),
+	// 	Properties: &armbilling.RoleAssignmentProperties{
+	// 		CreatedByUserEmailAddress: to.Ptr("test@billtest900006.onmicrosoft.com"),
+	// 		CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-19T20:10:50.102Z"); return t}()),
+	// 		RoleDefinitionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/7898901/enrollmentAccounts/225314/billingRoleDefinitions/c15c22c0-9faf-424c-9b7e-bd91c06a240b"),
+	// 		Scope: to.Ptr("/providers/Microsoft.Billing/billingAccounts/7898901/enrollmentAccounts/225314"),
+	// 		UserAuthenticationType: to.Ptr("Organization"),
+	// 		UserEmailAddress: to.Ptr("a_owner@billtest900006.onmicrosoft.com"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/billingRoleAssignmentCreateOrUpdateByEnrollmentAccount.json
+func ExampleRoleAssignmentsClient_BeginCreateOrUpdateByEnrollmentAccount() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewRoleAssignmentsClient().BeginCreateOrUpdateByEnrollmentAccount(ctx, "7898901", "123456", "9dfd08c2-62a3-4d47-85bd-1cdba1408402", armbilling.RoleAssignment{
+		Properties: &armbilling.RoleAssignmentProperties{
+			PrincipalID:       to.Ptr("00000000-0000-0000-0000-000000000000"),
+			PrincipalTenantID: to.Ptr("076915e7-de10-4323-bb34-a58c904068bb"),
+			RoleDefinitionID:  to.Ptr("/providers/Microsoft.Billing/billingAccounts/7898901/enrollmentAccounts/123456/billingRoleDefinitions/9f1983cb-2574-400c-87e9-34cf8e2280db"),
+			UserEmailAddress:  to.Ptr("john@contoso.com"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.RoleAssignment = armbilling.RoleAssignment{
+	// 	Name: to.Ptr("9dfd08c2-62a3-4d47-85bd-1cdba1408402"),
+	// 	Type: to.Ptr("Microsoft.Billing/billingAccounts/enrollmentAccounts/billingRoleAssignments"),
+	// 	ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/7898901/enrollmentAccounts/123456/billingRoleAssignments/9dfd08c2-62a3-4d47-85bd-1cdba1408402"),
+	// 	Properties: &armbilling.RoleAssignmentProperties{
+	// 		CreatedByPrincipalID: to.Ptr("60d97094-2be4-46cc-a4fe-3633021a25b9"),
+	// 		CreatedByPrincipalTenantID: to.Ptr("076915e7-de10-4323-bb34-a58c904068bb"),
+	// 		CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-19T20:10:50.102Z"); return t}()),
+	// 		PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 		PrincipalTenantID: to.Ptr("7ca289b9-c32d-4f01-8566-7ff93261d76f"),
+	// 		RoleDefinitionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/7898901/enrollmentAccounts/123456/billingRoleDefinitions/9f1983cb-2574-400c-87e9-34cf8e2280db"),
+	// 		Scope: to.Ptr("/providers/Microsoft.Billing/billingAccounts/7898901/enrollmentAccounts/123456"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/billingRoleAssignmentListByEnrollmentAccount.json
+func ExampleRoleAssignmentsClient_NewListByEnrollmentAccountPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewRoleAssignmentsClient().NewListByEnrollmentAccountPager("6100092", "123456", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.RoleAssignmentListResult = armbilling.RoleAssignmentListResult{
+		// 	Value: []*armbilling.RoleAssignment{
+		// 		{
+		// 			Name: to.Ptr("10000000-aaaa-bbbb-cccc-100000000000_6fd330f6-7d26-4aff-b9cf-7bd699f965b9"),
+		// 			Type: to.Ptr("Microsoft.Billing/billingAccounts/enrollmentAccounts/billingRoleAssignments"),
+		// 			ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/6100092/enrollmentAccounts/123456/billingRoleAssignments/10000000-aaaa-bbbb-cccc-100000000000_6fd330f6-7d26-4aff-b9cf-7bd699f965b9"),
+		// 			Properties: &armbilling.RoleAssignmentProperties{
+		// 				CreatedByPrincipalID: to.Ptr("00000000-0000-0000-0000-000000000001"),
+		// 				CreatedByPrincipalTenantID: to.Ptr("076915e7-de10-4323-bb34-a58c904068bb"),
+		// 				CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-19T20:10:50.102Z"); return t}()),
+		// 				PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 				PrincipalType: to.Ptr(armbilling.PrincipalTypeUser),
+		// 				RoleDefinitionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/6100092/enrollmentAccounts/123456/billingRoleDefinitions/50000000-0000-0000-0000-000000000000"),
+		// 				Scope: to.Ptr("/providers/Microsoft.Billing/billingAccounts/6100092/enrollmentAccounts/123456"),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("10000000-aaaa-bbbb-cccc-100000000000_b1839933-b3ac-42ca-8112-d29c43f3ab47"),
+		// 			Type: to.Ptr("Microsoft.Billing/billingAccounts/enrollmentAccounts/billingRoleAssignments"),
+		// 			ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/6100092/enrollmentAccounts/123456/billingRoleAssignments/10000000-aaaa-bbbb-cccc-100000000000_b1839933-b3ac-42ca-8112-d29c43f3ab47"),
+		// 			Properties: &armbilling.RoleAssignmentProperties{
+		// 				CreatedByPrincipalID: to.Ptr("00000000-0000-0000-0000-000000000001"),
+		// 				CreatedByPrincipalTenantID: to.Ptr("076915e7-de10-4323-bb34-a58c904068bb"),
+		// 				CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-19T20:10:50.102Z"); return t}()),
+		// 				PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 				PrincipalType: to.Ptr(armbilling.PrincipalTypeUser),
+		// 				RoleDefinitionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/6100092/enrollmentAccounts/123456/billingRoleDefinitions/50000000-0000-0000-0000-000000000001"),
+		// 				Scope: to.Ptr("/providers/Microsoft.Billing/billingAccounts/6100092/enrollmentAccounts/123456"),
+		// 			},
+		// 	}},
+		// }
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/resolveBillingRoleAssignmentByBillingAccount.json
+func ExampleRoleAssignmentsClient_BeginResolveByBillingAccount() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewRoleAssignmentsClient().BeginResolveByBillingAccount(ctx, "00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30", &armbilling.RoleAssignmentsClientBeginResolveByBillingAccountOptions{ResolveScopeDisplayNames: nil,
+		Filter: nil,
+	})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.RoleAssignmentListResult = armbilling.RoleAssignmentListResult{
+	// 	Value: []*armbilling.RoleAssignment{
+	// 		{
+	// 			Name: to.Ptr("10000000-aaaa-bbbb-cccc-100000000000_6fd330f6-7d26-4aff-b9cf-7bd699f965b9"),
+	// 			Type: to.Ptr("Microsoft.Billing/billingAccounts/billingRoleAssignments"),
+	// 			ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingRoleAssignments/10000000-aaaa-bbbb-cccc-100000000000_6fd330f6-7d26-4aff-b9cf-7bd699f965b9"),
+	// 			Properties: &armbilling.RoleAssignmentProperties{
+	// 				CreatedByPrincipalID: to.Ptr("00000000-0000-0000-0000-000000000001"),
+	// 				CreatedByPrincipalTenantID: to.Ptr("076915e7-de10-4323-bb34-a58c904068bb"),
+	// 				CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-19T20:10:50.102Z"); return t}()),
+	// 				PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				PrincipalType: to.Ptr(armbilling.PrincipalTypeUser),
+	// 				RoleDefinitionID: to.Ptr("providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingRoleDefinitions/00000000-0000-0000-0000-000000000000"),
+	// 				Scope: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30"),
+	// 			},
+	// 		},
+	// 		{
+	// 			Name: to.Ptr("10000000-aaaa-bbbb-cccc-100000000000_b1839933-b3ac-42ca-8112-d29c43f3ab47"),
+	// 			Type: to.Ptr("Microsoft.Billing/billingAccounts/billingRoleAssignments"),
+	// 			ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingRoleAssignments/10000000-aaaa-bbbb-cccc-100000000000_b1839933-b3ac-42ca-8112-d29c43f3ab47"),
+	// 			Properties: &armbilling.RoleAssignmentProperties{
+	// 				CreatedByPrincipalID: to.Ptr("00000000-0000-0000-0000-000000000001"),
+	// 				CreatedByPrincipalTenantID: to.Ptr("076915e7-de10-4323-bb34-a58c904068bb"),
+	// 				CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-19T20:10:50.102Z"); return t}()),
+	// 				PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				PrincipalType: to.Ptr(armbilling.PrincipalTypeUser),
+	// 				RoleDefinitionID: to.Ptr("providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingRoleDefinitions/00000000-0000-0000-0000-000000000001"),
+	// 				Scope: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30"),
+	// 			},
+	// 	}},
+	// }
 }

@@ -3,7 +3,7 @@
 ## 4.0.0-beta.1 (2024-09-27)
 ### Breaking Changes
 
-- Field `Readwrite` of struct `CommandPostBody` has been removed
+- Field `Readwrite` of struct `CommandPostBody` has been renamed to `ReadWrite`
 
 ### Features Added
 
@@ -189,7 +189,6 @@
 - New field `Identity` in struct `CassandraTableCreateUpdateParameters`
 - New field `Identity` in struct `CassandraTableGetResults`
 - New field `AutoReplicate`, `BackupSchedules`, `ClusterType`, `Extensions`, `ExternalDataCenters`, `ScheduledEventStrategy` in struct `ClusterResourceProperties`
-- New field `ReadWrite` in struct `CommandPostBody`
 - New field `IsLatestModel` in struct `ComponentsM9L909SchemasCassandraclusterpublicstatusPropertiesDatacentersItemsPropertiesNodesItems`
 - New field `CapacityMode`, `DefaultPriorityLevel`, `DiagnosticLogSettings`, `EnableMaterializedViews`, `EnablePerRegionPerPartitionAutoscale`, `EnablePriorityBasedExecution` in struct `DatabaseAccountCreateUpdateProperties`
 - New field `CapacityMode`, `CapacityModeChangeTransitionState`, `DefaultPriorityLevel`, `DiagnosticLogSettings`, `EnableMaterializedViews`, `EnablePerRegionPerPartitionAutoscale`, `EnablePriorityBasedExecution` in struct `DatabaseAccountGetProperties`

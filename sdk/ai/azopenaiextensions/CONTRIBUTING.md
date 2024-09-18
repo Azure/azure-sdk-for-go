@@ -9,7 +9,7 @@ The `azopenaiextensions` package can be used with either Azure OpenAI's public s
 ### Prerequisites
 
 For code fixes that do not require code generation:
-- Go 1.18 (or greater)
+- Go 1.21 (or greater)
 
 For code generation:
 - [NodeJS (use the latest LTS)](https://nodejs.org)

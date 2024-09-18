@@ -13,12 +13,19 @@ import (
 	"context"
 	"log"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+)
+import (
+	"encoding/json"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling"
+	"reflect"
+	"time"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/TransactionsListByInvoice.json
-func ExampleTransactionsClient_NewListByInvoicePager() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/transactionsListByCustomer.json
+func ExampleTransactionsClient_NewListByCustomerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -28,7 +35,13 @@ func ExampleTransactionsClient_NewListByInvoicePager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewTransactionsClient().NewListByInvoicePager("{billingAccountName}", "{invoiceName}", nil)
+	pager := clientFactory.NewTransactionsClient().NewListByCustomerPager("00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31", "xxxx-xxxx-xxx-xxx", "22000000-0000-0000-0000-000000000000", func() time.Time { t, _ := time.Parse("2006-01-02", "2024-04-01"); return t }(), func() time.Time { t, _ := time.Parse("2006-01-02", "2023-05-30"); return t }(), armbilling.TransactionTypeBilled, &armbilling.TransactionsClientListByCustomerOptions{Filter: to.Ptr("properties/date gt '2020-10-01'"),
+		OrderBy: nil,
+		Top:     nil,
+		Skip:    nil,
+		Count:   nil,
+		Search:  to.Ptr("storage"),
+	})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -43,54 +56,57 @@ func ExampleTransactionsClient_NewListByInvoicePager() {
 		// 	Value: []*armbilling.Transaction{
 		// 		{
 		// 			Name: to.Ptr("41000000-0000-0000-0000-000000000000"),
-		// 			Type: to.Ptr("Microsoft.Billing/billingAccounts/transactions"),
-		// 			ID: to.Ptr("/providers/Microsoft.Billing/BillingAccounts/{billingAccountName}/transactions/41000000-0000-0000-0000-000000000000"),
+		// 			Type: to.Ptr("Microsoft.Billing/billingAccounts/billingProfiles/transactions"),
+		// 			ID: to.Ptr("/providers/Microsoft.Billing/BillingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/BillingProfiles/xxxx-xxxx-xxx-xxx/transactions/41000000-0000-0000-0000-000000000000"),
 		// 			Properties: &armbilling.TransactionProperties{
-		// 				AzureCreditApplied: &armbilling.Amount{
+		// 				AzureCreditApplied: &armbilling.TransactionPropertiesAzureCreditApplied{
 		// 					Currency: to.Ptr("USD"),
 		// 					Value: to.Ptr[float32](2000),
 		// 				},
-		// 				AzurePlan: to.Ptr("Microsoft Azure Plan for DevTest"),
 		// 				BillingCurrency: to.Ptr("USD"),
-		// 				BillingProfileDisplayName: to.Ptr("Contoso operations billing"),
-		// 				BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}"),
-		// 				Date: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-05-01T00:00:00.000Z"); return t}()),
+		// 				BillingProfileDisplayName: "Contoso operations billing",
+		// 				BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/billingProfiles/xxxx-xxxx-xxx-xxx"),
+		// 				ConsumptionCommitmentDecremented: &armbilling.TransactionPropertiesConsumptionCommitmentDecremented{
+		// 					Currency: to.Ptr("USD"),
+		// 					Value: to.Ptr[float32](100),
+		// 				},
+		// 				CustomerDisplayName: to.Ptr("Contoso operations customer"),
+		// 				CustomerID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/billingProfiles/xxxx-xxxx-xxx-xxx/customers/22000000-0000-0000-0000-000000000000"),
+		// 				Date: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-01T00:00:00.000Z"); return t}()),
 		// 				Discount: to.Ptr[float32](0.1),
-		// 				EffectivePrice: &armbilling.Amount{
+		// 				EffectivePrice: &armbilling.TransactionPropertiesEffectivePrice{
 		// 					Currency: to.Ptr("USD"),
 		// 					Value: to.Ptr[float32](10),
 		// 				},
 		// 				ExchangeRate: to.Ptr[float32](1),
-		// 				Invoice: to.Ptr("2344233"),
-		// 				InvoiceID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/invoices/2344233"),
-		// 				InvoiceSectionDisplayName: to.Ptr("Contoso operations invoiceSection"),
-		// 				InvoiceSectionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/22000000-0000-0000-0000-000000000000"),
-		// 				Kind: to.Ptr(armbilling.TransactionTypeKindAll),
-		// 				MarketPrice: &armbilling.Amount{
+		// 				Invoice: to.Ptr("G123456789"),
+		// 				InvoiceID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/invoices/G123456789"),
+		// 				MarketPrice: &armbilling.TransactionPropertiesMarketPrice{
 		// 					Currency: to.Ptr("USD"),
 		// 					Value: to.Ptr[float32](20),
 		// 				},
+		// 				PartNumber: to.Ptr("0001"),
 		// 				PricingCurrency: to.Ptr("USD"),
 		// 				ProductDescription: to.Ptr("Standard D1, US West 3"),
 		// 				ProductFamily: to.Ptr("Storage"),
 		// 				ProductType: to.Ptr("VM Instance"),
 		// 				ProductTypeID: to.Ptr("A12345"),
 		// 				Quantity: to.Ptr[int32](1),
-		// 				ServicePeriodEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-09-30T00:00:00.000Z"); return t}()),
-		// 				ServicePeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-05-01T00:00:00.000Z"); return t}()),
-		// 				SubTotal: &armbilling.Amount{
+		// 				ServicePeriodEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-09-30T00:00:00.000Z"); return t}()),
+		// 				ServicePeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-01T00:00:00.000Z"); return t}()),
+		// 				SubTotal: &armbilling.TransactionPropertiesSubTotal{
 		// 					Currency: to.Ptr("USD"),
 		// 					Value: to.Ptr[float32](4500),
 		// 				},
-		// 				Tax: &armbilling.Amount{
+		// 				Tax: &armbilling.TransactionPropertiesTax{
 		// 					Currency: to.Ptr("USD"),
 		// 					Value: to.Ptr[float32](500),
 		// 				},
-		// 				TransactionAmount: &armbilling.Amount{
+		// 				TransactionAmount: &armbilling.TransactionPropertiesTransactionAmount{
 		// 					Currency: to.Ptr("USD"),
 		// 					Value: to.Ptr[float32](5000),
 		// 				},
-		// 				TransactionType: to.Ptr(armbilling.ReservationTypePurchase),
+		// 				TransactionType: to.Ptr("Purchase"),
 		// 				UnitOfMeasure: to.Ptr("1 Minute"),
 		// 				UnitType: to.Ptr("1 Runtime Minute"),
 		// 				Units: to.Ptr[float32](11.25),
@@ -98,53 +114,56 @@ func ExampleTransactionsClient_NewListByInvoicePager() {
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("51000000-0000-0000-0000-000000000000"),
-		// 			Type: to.Ptr("Microsoft.Billing/billingAccounts/transactions"),
-		// 			ID: to.Ptr("/providers/Microsoft.Billing/BillingAccounts/{billingAccountName}/transactions/51000000-0000-0000-0000-000000000000"),
+		// 			Type: to.Ptr("Microsoft.Billing/billingAccounts/billingProfiles/transactions"),
+		// 			ID: to.Ptr("/providers/Microsoft.Billing/BillingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/BillingProfiles/xxxx-xxxx-xxx-xxx/transactions/51000000-0000-0000-0000-000000000000"),
 		// 			Properties: &armbilling.TransactionProperties{
-		// 				AzureCreditApplied: &armbilling.Amount{
+		// 				AzureCreditApplied: &armbilling.TransactionPropertiesAzureCreditApplied{
 		// 					Currency: to.Ptr("USD"),
 		// 					Value: to.Ptr[float32](20),
 		// 				},
-		// 				AzurePlan: to.Ptr("Microsoft Azure Plan for DevTest"),
 		// 				BillingCurrency: to.Ptr("USD"),
-		// 				BillingProfileDisplayName: to.Ptr("Contoso operations billing"),
-		// 				BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}"),
-		// 				Date: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-01T00:00:00.000Z"); return t}()),
+		// 				BillingProfileDisplayName: "Contoso operations billing",
+		// 				BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/billingProfiles/xxxx-xxxx-xxx-xxx"),
+		// 				ConsumptionCommitmentDecremented: &armbilling.TransactionPropertiesConsumptionCommitmentDecremented{
+		// 					Currency: to.Ptr("USD"),
+		// 					Value: to.Ptr[float32](50),
+		// 				},
+		// 				CustomerDisplayName: to.Ptr("Contoso operations customer"),
+		// 				CustomerID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/billingProfiles/xxxx-xxxx-xxx-xxx/customers/22000000-0000-0000-0000-000000000000"),
+		// 				Date: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-01T00:00:00.000Z"); return t}()),
 		// 				Discount: to.Ptr[float32](0.1),
-		// 				EffectivePrice: &armbilling.Amount{
+		// 				EffectivePrice: &armbilling.TransactionPropertiesEffectivePrice{
 		// 					Currency: to.Ptr("USD"),
 		// 					Value: to.Ptr[float32](10),
 		// 				},
 		// 				ExchangeRate: to.Ptr[float32](1),
 		// 				Invoice: to.Ptr("pending"),
-		// 				InvoiceSectionDisplayName: to.Ptr("Contoso operations invoiceSection"),
-		// 				InvoiceSectionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/22000000-0000-0000-0000-000000000000"),
-		// 				Kind: to.Ptr(armbilling.TransactionTypeKindAll),
-		// 				MarketPrice: &armbilling.Amount{
+		// 				MarketPrice: &armbilling.TransactionPropertiesMarketPrice{
 		// 					Currency: to.Ptr("USD"),
 		// 					Value: to.Ptr[float32](20),
 		// 				},
+		// 				PartNumber: to.Ptr("0002"),
 		// 				PricingCurrency: to.Ptr("USD"),
 		// 				ProductDescription: to.Ptr("Standard Support"),
 		// 				ProductFamily: to.Ptr("Storage"),
 		// 				ProductType: to.Ptr("VM Instance"),
 		// 				ProductTypeID: to.Ptr("A12345"),
 		// 				Quantity: to.Ptr[int32](1),
-		// 				ServicePeriodEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-09-30T00:00:00.000Z"); return t}()),
-		// 				ServicePeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-05-01T00:00:00.000Z"); return t}()),
-		// 				SubTotal: &armbilling.Amount{
+		// 				ServicePeriodEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-09-30T00:00:00.000Z"); return t}()),
+		// 				ServicePeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-01T00:00:00.000Z"); return t}()),
+		// 				SubTotal: &armbilling.TransactionPropertiesSubTotal{
 		// 					Currency: to.Ptr("USD"),
 		// 					Value: to.Ptr[float32](45),
 		// 				},
-		// 				Tax: &armbilling.Amount{
+		// 				Tax: &armbilling.TransactionPropertiesTax{
 		// 					Currency: to.Ptr("USD"),
 		// 					Value: to.Ptr[float32](5),
 		// 				},
-		// 				TransactionAmount: &armbilling.Amount{
+		// 				TransactionAmount: &armbilling.TransactionPropertiesTransactionAmount{
 		// 					Currency: to.Ptr("USD"),
 		// 					Value: to.Ptr[float32](50),
 		// 				},
-		// 				TransactionType: to.Ptr(armbilling.ReservationType("Cancel")),
+		// 				TransactionType: to.Ptr("Cancel"),
 		// 				UnitOfMeasure: to.Ptr("1 Minute"),
 		// 				UnitType: to.Ptr("1 Runtime Minute"),
 		// 				Units: to.Ptr[float32](1.25),
@@ -152,4 +171,509 @@ func ExampleTransactionsClient_NewListByInvoicePager() {
 		// 	}},
 		// }
 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/transactionsListByInvoiceSection.json
+func ExampleTransactionsClient_NewListByInvoiceSectionPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewTransactionsClient().NewListByInvoiceSectionPager("00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31", "xxxx-xxxx-xxx-xxx", "22000000-0000-0000-0000-000000000000", func() time.Time { t, _ := time.Parse("2006-01-02", "2024-04-01"); return t }(), func() time.Time { t, _ := time.Parse("2006-01-02", "2023-05-30"); return t }(), armbilling.TransactionTypeBilled, &armbilling.TransactionsClientListByInvoiceSectionOptions{Filter: to.Ptr("properties/date gt '2020-10-01'"),
+		OrderBy: nil,
+		Top:     nil,
+		Skip:    nil,
+		Count:   nil,
+		Search:  to.Ptr("storage"),
+	})
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.TransactionListResult = armbilling.TransactionListResult{
+		// 	Value: []*armbilling.Transaction{
+		// 		{
+		// 			Name: to.Ptr("41000000-0000-0000-0000-000000000000"),
+		// 			Type: to.Ptr("Microsoft.Billing/billingAccounts/billingProfiles/transactions"),
+		// 			ID: to.Ptr("/providers/Microsoft.Billing/BillingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/BillingProfiles/xxxx-xxxx-xxx-xxx/transactions/41000000-0000-0000-0000-000000000000"),
+		// 			Properties: &armbilling.TransactionProperties{
+		// 				AzureCreditApplied: &armbilling.TransactionPropertiesAzureCreditApplied{
+		// 					Currency: to.Ptr("USD"),
+		// 					Value: to.Ptr[float32](2000),
+		// 				},
+		// 				BillingCurrency: to.Ptr("USD"),
+		// 				BillingProfileDisplayName: "Contoso operations billing",
+		// 				BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/billingProfiles/xxxx-xxxx-xxx-xxx"),
+		// 				ConsumptionCommitmentDecremented: &armbilling.TransactionPropertiesConsumptionCommitmentDecremented{
+		// 					Currency: to.Ptr("USD"),
+		// 					Value: to.Ptr[float32](100),
+		// 				},
+		// 				Date: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-01T00:00:00.000Z"); return t}()),
+		// 				Discount: to.Ptr[float32](0.1),
+		// 				EffectivePrice: &armbilling.TransactionPropertiesEffectivePrice{
+		// 					Currency: to.Ptr("USD"),
+		// 					Value: to.Ptr[float32](10),
+		// 				},
+		// 				ExchangeRate: to.Ptr[float32](1),
+		// 				Invoice: to.Ptr("G123456789"),
+		// 				InvoiceID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/invoices/G123456789"),
+		// 				InvoiceSectionDisplayName: to.Ptr("Contoso operations invoiceSection"),
+		// 				InvoiceSectionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/billingProfiles/xxxx-xxxx-xxx-xxx/invoiceSections/22000000-0000-0000-0000-000000000000"),
+		// 				MarketPrice: &armbilling.TransactionPropertiesMarketPrice{
+		// 					Currency: to.Ptr("USD"),
+		// 					Value: to.Ptr[float32](20),
+		// 				},
+		// 				PartNumber: to.Ptr("0001"),
+		// 				PricingCurrency: to.Ptr("USD"),
+		// 				ProductDescription: to.Ptr("Standard D1, US West 3"),
+		// 				ProductFamily: to.Ptr("Storage"),
+		// 				ProductType: to.Ptr("VM Instance"),
+		// 				ProductTypeID: to.Ptr("A12345"),
+		// 				Quantity: to.Ptr[int32](1),
+		// 				ServicePeriodEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-09-30T00:00:00.000Z"); return t}()),
+		// 				ServicePeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-01T00:00:00.000Z"); return t}()),
+		// 				SubTotal: &armbilling.TransactionPropertiesSubTotal{
+		// 					Currency: to.Ptr("USD"),
+		// 					Value: to.Ptr[float32](4500),
+		// 				},
+		// 				Tax: &armbilling.TransactionPropertiesTax{
+		// 					Currency: to.Ptr("USD"),
+		// 					Value: to.Ptr[float32](500),
+		// 				},
+		// 				TransactionAmount: &armbilling.TransactionPropertiesTransactionAmount{
+		// 					Currency: to.Ptr("USD"),
+		// 					Value: to.Ptr[float32](5000),
+		// 				},
+		// 				TransactionType: to.Ptr("Purchase"),
+		// 				UnitOfMeasure: to.Ptr("1 Minute"),
+		// 				UnitType: to.Ptr("1 Runtime Minute"),
+		// 				Units: to.Ptr[float32](11.25),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("51000000-0000-0000-0000-000000000000"),
+		// 			Type: to.Ptr("Microsoft.Billing/billingAccounts/billingProfiles/transactions"),
+		// 			ID: to.Ptr("/providers/Microsoft.Billing/BillingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/BillingProfiles/xxxx-xxxx-xxx-xxx/transactions/51000000-0000-0000-0000-000000000000"),
+		// 			Properties: &armbilling.TransactionProperties{
+		// 				AzureCreditApplied: &armbilling.TransactionPropertiesAzureCreditApplied{
+		// 					Currency: to.Ptr("USD"),
+		// 					Value: to.Ptr[float32](20),
+		// 				},
+		// 				BillingCurrency: to.Ptr("USD"),
+		// 				BillingProfileDisplayName: "Contoso operations billing",
+		// 				BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/billingProfiles/xxxx-xxxx-xxx-xxx"),
+		// 				ConsumptionCommitmentDecremented: &armbilling.TransactionPropertiesConsumptionCommitmentDecremented{
+		// 					Currency: to.Ptr("USD"),
+		// 					Value: to.Ptr[float32](50),
+		// 				},
+		// 				Date: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-01T00:00:00.000Z"); return t}()),
+		// 				Discount: to.Ptr[float32](0.1),
+		// 				EffectivePrice: &armbilling.TransactionPropertiesEffectivePrice{
+		// 					Currency: to.Ptr("USD"),
+		// 					Value: to.Ptr[float32](10),
+		// 				},
+		// 				ExchangeRate: to.Ptr[float32](1),
+		// 				Invoice: to.Ptr("pending"),
+		// 				InvoiceSectionDisplayName: to.Ptr("Contoso operations invoiceSection"),
+		// 				InvoiceSectionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/billingProfiles/xxxx-xxxx-xxx-xxx/invoiceSections/22000000-0000-0000-0000-000000000000"),
+		// 				MarketPrice: &armbilling.TransactionPropertiesMarketPrice{
+		// 					Currency: to.Ptr("USD"),
+		// 					Value: to.Ptr[float32](20),
+		// 				},
+		// 				PartNumber: to.Ptr("0002"),
+		// 				PricingCurrency: to.Ptr("USD"),
+		// 				ProductDescription: to.Ptr("Standard Support"),
+		// 				ProductFamily: to.Ptr("Storage"),
+		// 				ProductType: to.Ptr("VM Instance"),
+		// 				ProductTypeID: to.Ptr("A12345"),
+		// 				Quantity: to.Ptr[int32](1),
+		// 				ServicePeriodEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-09-30T00:00:00.000Z"); return t}()),
+		// 				ServicePeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-01T00:00:00.000Z"); return t}()),
+		// 				SubTotal: &armbilling.TransactionPropertiesSubTotal{
+		// 					Currency: to.Ptr("USD"),
+		// 					Value: to.Ptr[float32](45),
+		// 				},
+		// 				Tax: &armbilling.TransactionPropertiesTax{
+		// 					Currency: to.Ptr("USD"),
+		// 					Value: to.Ptr[float32](5),
+		// 				},
+		// 				TransactionAmount: &armbilling.TransactionPropertiesTransactionAmount{
+		// 					Currency: to.Ptr("USD"),
+		// 					Value: to.Ptr[float32](50),
+		// 				},
+		// 				TransactionType: to.Ptr("Cancel"),
+		// 				UnitOfMeasure: to.Ptr("1 Minute"),
+		// 				UnitType: to.Ptr("1 Runtime Minute"),
+		// 				Units: to.Ptr[float32](1.25),
+		// 			},
+		// 	}},
+		// }
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/transactionsListByBillingProfile.json
+func ExampleTransactionsClient_NewListByBillingProfilePager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewTransactionsClient().NewListByBillingProfilePager("00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31", "xxxx-xxxx-xxx-xxx", func() time.Time { t, _ := time.Parse("2006-01-02", "2024-04-01"); return t }(), func() time.Time { t, _ := time.Parse("2006-01-02", "2023-05-30"); return t }(), armbilling.TransactionTypeBilled, &armbilling.TransactionsClientListByBillingProfileOptions{Filter: to.Ptr("properties/date gt '2020-10-01'"),
+		OrderBy: nil,
+		Top:     nil,
+		Skip:    nil,
+		Count:   nil,
+		Search:  to.Ptr("storage"),
+	})
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.TransactionListResult = armbilling.TransactionListResult{
+		// 	Value: []*armbilling.Transaction{
+		// 		{
+		// 			Name: to.Ptr("41000000-0000-0000-0000-000000000000"),
+		// 			Type: to.Ptr("Microsoft.Billing/billingAccounts/billingProfiles/transactions"),
+		// 			ID: to.Ptr("/providers/Microsoft.Billing/BillingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/BillingProfiles/xxxx-xxxx-xxx-xxx/transactions/41000000-0000-0000-0000-000000000000"),
+		// 			Properties: &armbilling.TransactionProperties{
+		// 				AzureCreditApplied: &armbilling.TransactionPropertiesAzureCreditApplied{
+		// 					Currency: to.Ptr("USD"),
+		// 					Value: to.Ptr[float32](2000),
+		// 				},
+		// 				BillingCurrency: to.Ptr("USD"),
+		// 				BillingProfileDisplayName: "Contoso operations billing",
+		// 				BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/billingProfiles/xxxx-xxxx-xxx-xxx"),
+		// 				ConsumptionCommitmentDecremented: &armbilling.TransactionPropertiesConsumptionCommitmentDecremented{
+		// 					Currency: to.Ptr("USD"),
+		// 					Value: to.Ptr[float32](100),
+		// 				},
+		// 				Date: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-01T00:00:00.000Z"); return t}()),
+		// 				Discount: to.Ptr[float32](0.1),
+		// 				EffectivePrice: &armbilling.TransactionPropertiesEffectivePrice{
+		// 					Currency: to.Ptr("USD"),
+		// 					Value: to.Ptr[float32](10),
+		// 				},
+		// 				ExchangeRate: to.Ptr[float32](1),
+		// 				Invoice: to.Ptr("G123456789"),
+		// 				InvoiceID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/invoices/G123456789"),
+		// 				InvoiceSectionDisplayName: to.Ptr("Contoso operations invoiceSection"),
+		// 				InvoiceSectionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/billingProfiles/xxxx-xxxx-xxx-xxx/invoiceSections/22000000-0000-0000-0000-000000000000"),
+		// 				MarketPrice: &armbilling.TransactionPropertiesMarketPrice{
+		// 					Currency: to.Ptr("USD"),
+		// 					Value: to.Ptr[float32](20),
+		// 				},
+		// 				PartNumber: to.Ptr("0001"),
+		// 				PricingCurrency: to.Ptr("USD"),
+		// 				ProductDescription: to.Ptr("Standard D1, US West 3"),
+		// 				ProductFamily: to.Ptr("Storage"),
+		// 				ProductType: to.Ptr("VM Instance"),
+		// 				ProductTypeID: to.Ptr("A12345"),
+		// 				Quantity: to.Ptr[int32](1),
+		// 				ServicePeriodEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-09-30T00:00:00.000Z"); return t}()),
+		// 				ServicePeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-01T00:00:00.000Z"); return t}()),
+		// 				SubTotal: &armbilling.TransactionPropertiesSubTotal{
+		// 					Currency: to.Ptr("USD"),
+		// 					Value: to.Ptr[float32](4500),
+		// 				},
+		// 				Tax: &armbilling.TransactionPropertiesTax{
+		// 					Currency: to.Ptr("USD"),
+		// 					Value: to.Ptr[float32](500),
+		// 				},
+		// 				TransactionAmount: &armbilling.TransactionPropertiesTransactionAmount{
+		// 					Currency: to.Ptr("USD"),
+		// 					Value: to.Ptr[float32](5000),
+		// 				},
+		// 				TransactionType: to.Ptr("Purchase"),
+		// 				UnitOfMeasure: to.Ptr("1 Minute"),
+		// 				UnitType: to.Ptr("1 Runtime Minute"),
+		// 				Units: to.Ptr[float32](11.25),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("51000000-0000-0000-0000-000000000000"),
+		// 			Type: to.Ptr("Microsoft.Billing/billingAccounts/billingProfiles/transactions"),
+		// 			ID: to.Ptr("/providers/Microsoft.Billing/BillingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/BillingProfiles/xxxx-xxxx-xxx-xxx/transactions/51000000-0000-0000-0000-000000000000"),
+		// 			Properties: &armbilling.TransactionProperties{
+		// 				AzureCreditApplied: &armbilling.TransactionPropertiesAzureCreditApplied{
+		// 					Currency: to.Ptr("USD"),
+		// 					Value: to.Ptr[float32](20),
+		// 				},
+		// 				BillingCurrency: to.Ptr("USD"),
+		// 				BillingProfileDisplayName: "Contoso operations billing",
+		// 				BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/billingProfiles/xxxx-xxxx-xxx-xxx"),
+		// 				ConsumptionCommitmentDecremented: &armbilling.TransactionPropertiesConsumptionCommitmentDecremented{
+		// 					Currency: to.Ptr("USD"),
+		// 					Value: to.Ptr[float32](50),
+		// 				},
+		// 				Date: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-01T00:00:00.000Z"); return t}()),
+		// 				Discount: to.Ptr[float32](0.1),
+		// 				EffectivePrice: &armbilling.TransactionPropertiesEffectivePrice{
+		// 					Currency: to.Ptr("USD"),
+		// 					Value: to.Ptr[float32](10),
+		// 				},
+		// 				ExchangeRate: to.Ptr[float32](1),
+		// 				Invoice: to.Ptr("pending"),
+		// 				InvoiceSectionDisplayName: to.Ptr("Contoso operations invoiceSection"),
+		// 				InvoiceSectionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/billingProfiles/xxxx-xxxx-xxx-xxx/invoiceSections/22000000-0000-0000-0000-000000000000"),
+		// 				MarketPrice: &armbilling.TransactionPropertiesMarketPrice{
+		// 					Currency: to.Ptr("USD"),
+		// 					Value: to.Ptr[float32](20),
+		// 				},
+		// 				PartNumber: to.Ptr("0002"),
+		// 				PricingCurrency: to.Ptr("USD"),
+		// 				ProductDescription: to.Ptr("Standard Support"),
+		// 				ProductFamily: to.Ptr("Storage"),
+		// 				ProductType: to.Ptr("VM Instance"),
+		// 				ProductTypeID: to.Ptr("A12345"),
+		// 				Quantity: to.Ptr[int32](1),
+		// 				ServicePeriodEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-09-30T00:00:00.000Z"); return t}()),
+		// 				ServicePeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-01T00:00:00.000Z"); return t}()),
+		// 				SubTotal: &armbilling.TransactionPropertiesSubTotal{
+		// 					Currency: to.Ptr("USD"),
+		// 					Value: to.Ptr[float32](45),
+		// 				},
+		// 				Tax: &armbilling.TransactionPropertiesTax{
+		// 					Currency: to.Ptr("USD"),
+		// 					Value: to.Ptr[float32](5),
+		// 				},
+		// 				TransactionAmount: &armbilling.TransactionPropertiesTransactionAmount{
+		// 					Currency: to.Ptr("USD"),
+		// 					Value: to.Ptr[float32](50),
+		// 				},
+		// 				TransactionType: to.Ptr("Cancel"),
+		// 				UnitOfMeasure: to.Ptr("1 Minute"),
+		// 				UnitType: to.Ptr("1 Runtime Minute"),
+		// 				Units: to.Ptr[float32](1.25),
+		// 			},
+		// 	}},
+		// }
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/transactionsListByInvoice.json
+func ExampleTransactionsClient_NewListByInvoicePager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewTransactionsClient().NewListByInvoicePager("00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31", "G123456789", &armbilling.TransactionsClientListByInvoiceOptions{Filter: nil,
+		OrderBy: nil,
+		Top:     nil,
+		Skip:    nil,
+		Count:   nil,
+		Search:  nil,
+	})
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.TransactionListResult = armbilling.TransactionListResult{
+		// 	Value: []*armbilling.Transaction{
+		// 		{
+		// 			Name: to.Ptr("41000000-0000-0000-0000-000000000000"),
+		// 			Type: to.Ptr("Microsoft.Billing/billingAccounts/billingProfiles/transactions"),
+		// 			ID: to.Ptr("/providers/Microsoft.Billing/BillingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/BillingProfiles/xxxx-xxxx-xxx-xxx/transactions/41000000-0000-0000-0000-000000000000"),
+		// 			Properties: &armbilling.TransactionProperties{
+		// 				AzureCreditApplied: &armbilling.TransactionPropertiesAzureCreditApplied{
+		// 					Currency: to.Ptr("USD"),
+		// 					Value: to.Ptr[float32](2000),
+		// 				},
+		// 				BillingCurrency: to.Ptr("USD"),
+		// 				BillingProfileDisplayName: "Contoso operations billing",
+		// 				BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/billingProfiles/xxxx-xxxx-xxx-xxx"),
+		// 				ConsumptionCommitmentDecremented: &armbilling.TransactionPropertiesConsumptionCommitmentDecremented{
+		// 					Currency: to.Ptr("USD"),
+		// 					Value: to.Ptr[float32](100),
+		// 				},
+		// 				Date: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-01T00:00:00.000Z"); return t}()),
+		// 				Discount: to.Ptr[float32](0.1),
+		// 				EffectivePrice: &armbilling.TransactionPropertiesEffectivePrice{
+		// 					Currency: to.Ptr("USD"),
+		// 					Value: to.Ptr[float32](10),
+		// 				},
+		// 				ExchangeRate: to.Ptr[float32](1),
+		// 				Invoice: to.Ptr("G123456789"),
+		// 				InvoiceID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/invoices/G123456789"),
+		// 				InvoiceSectionDisplayName: to.Ptr("Contoso operations invoiceSection"),
+		// 				InvoiceSectionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/billingProfiles/xxxx-xxxx-xxx-xxx/invoiceSections/22000000-0000-0000-0000-000000000000"),
+		// 				MarketPrice: &armbilling.TransactionPropertiesMarketPrice{
+		// 					Currency: to.Ptr("USD"),
+		// 					Value: to.Ptr[float32](20),
+		// 				},
+		// 				PartNumber: to.Ptr("0001"),
+		// 				PricingCurrency: to.Ptr("USD"),
+		// 				ProductDescription: to.Ptr("Standard D1, US West 3"),
+		// 				ProductFamily: to.Ptr("Storage"),
+		// 				ProductType: to.Ptr("VM Instance"),
+		// 				ProductTypeID: to.Ptr("A12345"),
+		// 				Quantity: to.Ptr[int32](1),
+		// 				ServicePeriodEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-09-30T00:00:00.000Z"); return t}()),
+		// 				ServicePeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-01T00:00:00.000Z"); return t}()),
+		// 				SubTotal: &armbilling.TransactionPropertiesSubTotal{
+		// 					Currency: to.Ptr("USD"),
+		// 					Value: to.Ptr[float32](4500),
+		// 				},
+		// 				Tax: &armbilling.TransactionPropertiesTax{
+		// 					Currency: to.Ptr("USD"),
+		// 					Value: to.Ptr[float32](500),
+		// 				},
+		// 				TransactionAmount: &armbilling.TransactionPropertiesTransactionAmount{
+		// 					Currency: to.Ptr("USD"),
+		// 					Value: to.Ptr[float32](5000),
+		// 				},
+		// 				TransactionType: to.Ptr("Purchase"),
+		// 				UnitOfMeasure: to.Ptr("1 Minute"),
+		// 				UnitType: to.Ptr("1 Runtime Minute"),
+		// 				Units: to.Ptr[float32](11.25),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("51000000-0000-0000-0000-000000000000"),
+		// 			Type: to.Ptr("Microsoft.Billing/billingAccounts/billingProfiles/transactions"),
+		// 			ID: to.Ptr("/providers/Microsoft.Billing/BillingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/BillingProfiles/xxxx-xxxx-xxx-xxx/transactions/51000000-0000-0000-0000-000000000000"),
+		// 			Properties: &armbilling.TransactionProperties{
+		// 				AzureCreditApplied: &armbilling.TransactionPropertiesAzureCreditApplied{
+		// 					Currency: to.Ptr("USD"),
+		// 					Value: to.Ptr[float32](20),
+		// 				},
+		// 				BillingCurrency: to.Ptr("USD"),
+		// 				BillingProfileDisplayName: "Contoso operations billing",
+		// 				BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/billingProfiles/xxxx-xxxx-xxx-xxx"),
+		// 				ConsumptionCommitmentDecremented: &armbilling.TransactionPropertiesConsumptionCommitmentDecremented{
+		// 					Currency: to.Ptr("USD"),
+		// 					Value: to.Ptr[float32](50),
+		// 				},
+		// 				Date: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-01T00:00:00.000Z"); return t}()),
+		// 				Discount: to.Ptr[float32](0.1),
+		// 				EffectivePrice: &armbilling.TransactionPropertiesEffectivePrice{
+		// 					Currency: to.Ptr("USD"),
+		// 					Value: to.Ptr[float32](10),
+		// 				},
+		// 				ExchangeRate: to.Ptr[float32](1),
+		// 				Invoice: to.Ptr("pending"),
+		// 				InvoiceSectionDisplayName: to.Ptr("Contoso operations invoiceSection"),
+		// 				InvoiceSectionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/billingProfiles/xxxx-xxxx-xxx-xxx/invoiceSections/22000000-0000-0000-0000-000000000000"),
+		// 				MarketPrice: &armbilling.TransactionPropertiesMarketPrice{
+		// 					Currency: to.Ptr("USD"),
+		// 					Value: to.Ptr[float32](20),
+		// 				},
+		// 				PartNumber: to.Ptr("0002"),
+		// 				PricingCurrency: to.Ptr("USD"),
+		// 				ProductDescription: to.Ptr("Standard Support"),
+		// 				ProductFamily: to.Ptr("Storage"),
+		// 				ProductType: to.Ptr("VM Instance"),
+		// 				ProductTypeID: to.Ptr("A12345"),
+		// 				Quantity: to.Ptr[int32](1),
+		// 				ServicePeriodEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-09-30T00:00:00.000Z"); return t}()),
+		// 				ServicePeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-01T00:00:00.000Z"); return t}()),
+		// 				SubTotal: &armbilling.TransactionPropertiesSubTotal{
+		// 					Currency: to.Ptr("USD"),
+		// 					Value: to.Ptr[float32](45),
+		// 				},
+		// 				Tax: &armbilling.TransactionPropertiesTax{
+		// 					Currency: to.Ptr("USD"),
+		// 					Value: to.Ptr[float32](5),
+		// 				},
+		// 				TransactionAmount: &armbilling.TransactionPropertiesTransactionAmount{
+		// 					Currency: to.Ptr("USD"),
+		// 					Value: to.Ptr[float32](50),
+		// 				},
+		// 				TransactionType: to.Ptr("Cancel"),
+		// 				UnitOfMeasure: to.Ptr("1 Minute"),
+		// 				UnitType: to.Ptr("1 Runtime Minute"),
+		// 				Units: to.Ptr[float32](1.25),
+		// 			},
+		// 	}},
+		// }
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/transactionsDownloadByInvoice.json
+func ExampleTransactionsClient_BeginTransactionsDownloadByInvoice() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewTransactionsClient().BeginTransactionsDownloadByInvoice(ctx, "00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31", "G123456789", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.DocumentDownloadResult = armbilling.DocumentDownloadResult{
+	// 	ExpiryTime: to.Ptr("2023-02-16T17:32:28Z"),
+	// 	URL: to.Ptr("https://myaccount.blob.core.windows.net/invoices/1383724_invoice.csv?sv=2019-02-02&sr=b&sp=r"),
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/transactionSummaryGetByInvoice.json
+func ExampleTransactionsClient_GetTransactionSummaryByInvoice() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewTransactionsClient().GetTransactionSummaryByInvoice(ctx, "00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31", "G123456789", &armbilling.TransactionsClientGetTransactionSummaryByInvoiceOptions{Filter: nil,
+		Search: nil,
+	})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.TransactionSummary = armbilling.TransactionSummary{
+	// 	AzureCreditApplied: to.Ptr[float32](100),
+	// 	BillingCurrency: to.Ptr("USD"),
+	// 	ConsumptionCommitmentDecremented: to.Ptr[float32](1000),
+	// 	SubTotal: to.Ptr[float32](1000),
+	// 	Tax: to.Ptr[float32](500),
+	// 	Total: to.Ptr[float32](5400),
+	// }
 }

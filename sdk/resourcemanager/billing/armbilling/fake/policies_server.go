@@ -23,34 +23,64 @@ import (
 
 // PoliciesServer is a fake server for instances of the armbilling.PoliciesClient type.
 type PoliciesServer struct {
+	// BeginCreateOrUpdateByBillingAccount is the fake for method PoliciesClient.BeginCreateOrUpdateByBillingAccount
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	BeginCreateOrUpdateByBillingAccount func(ctx context.Context, billingAccountName string, parameters armbilling.AccountPolicy, options *armbilling.PoliciesClientBeginCreateOrUpdateByBillingAccountOptions) (resp azfake.PollerResponder[armbilling.PoliciesClientCreateOrUpdateByBillingAccountResponse], errResp azfake.ErrorResponder)
+
+	// BeginCreateOrUpdateByBillingProfile is the fake for method PoliciesClient.BeginCreateOrUpdateByBillingProfile
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	BeginCreateOrUpdateByBillingProfile func(ctx context.Context, billingAccountName string, billingProfileName string, parameters armbilling.ProfilePolicy, options *armbilling.PoliciesClientBeginCreateOrUpdateByBillingProfileOptions) (resp azfake.PollerResponder[armbilling.PoliciesClientCreateOrUpdateByBillingProfileResponse], errResp azfake.ErrorResponder)
+
+	// BeginCreateOrUpdateByCustomer is the fake for method PoliciesClient.BeginCreateOrUpdateByCustomer
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	BeginCreateOrUpdateByCustomer func(ctx context.Context, billingAccountName string, billingProfileName string, customerName string, parameters armbilling.CustomerPolicy, options *armbilling.PoliciesClientBeginCreateOrUpdateByCustomerOptions) (resp azfake.PollerResponder[armbilling.PoliciesClientCreateOrUpdateByCustomerResponse], errResp azfake.ErrorResponder)
+
+	// BeginCreateOrUpdateByCustomerAtBillingAccount is the fake for method PoliciesClient.BeginCreateOrUpdateByCustomerAtBillingAccount
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	BeginCreateOrUpdateByCustomerAtBillingAccount func(ctx context.Context, billingAccountName string, customerName string, parameters armbilling.CustomerPolicy, options *armbilling.PoliciesClientBeginCreateOrUpdateByCustomerAtBillingAccountOptions) (resp azfake.PollerResponder[armbilling.PoliciesClientCreateOrUpdateByCustomerAtBillingAccountResponse], errResp azfake.ErrorResponder)
+
+	// GetByBillingAccount is the fake for method PoliciesClient.GetByBillingAccount
+	// HTTP status codes to indicate success: http.StatusOK
+	GetByBillingAccount func(ctx context.Context, billingAccountName string, options *armbilling.PoliciesClientGetByBillingAccountOptions) (resp azfake.Responder[armbilling.PoliciesClientGetByBillingAccountResponse], errResp azfake.ErrorResponder)
+
 	// GetByBillingProfile is the fake for method PoliciesClient.GetByBillingProfile
 	// HTTP status codes to indicate success: http.StatusOK
 	GetByBillingProfile func(ctx context.Context, billingAccountName string, billingProfileName string, options *armbilling.PoliciesClientGetByBillingProfileOptions) (resp azfake.Responder[armbilling.PoliciesClientGetByBillingProfileResponse], errResp azfake.ErrorResponder)
 
 	// GetByCustomer is the fake for method PoliciesClient.GetByCustomer
 	// HTTP status codes to indicate success: http.StatusOK
-	GetByCustomer func(ctx context.Context, billingAccountName string, customerName string, options *armbilling.PoliciesClientGetByCustomerOptions) (resp azfake.Responder[armbilling.PoliciesClientGetByCustomerResponse], errResp azfake.ErrorResponder)
+	GetByCustomer func(ctx context.Context, billingAccountName string, billingProfileName string, customerName string, policyName armbilling.ServiceDefinedResourceName, options *armbilling.PoliciesClientGetByCustomerOptions) (resp azfake.Responder[armbilling.PoliciesClientGetByCustomerResponse], errResp azfake.ErrorResponder)
 
-	// Update is the fake for method PoliciesClient.Update
+	// GetByCustomerAtBillingAccount is the fake for method PoliciesClient.GetByCustomerAtBillingAccount
 	// HTTP status codes to indicate success: http.StatusOK
-	Update func(ctx context.Context, billingAccountName string, billingProfileName string, parameters armbilling.Policy, options *armbilling.PoliciesClientUpdateOptions) (resp azfake.Responder[armbilling.PoliciesClientUpdateResponse], errResp azfake.ErrorResponder)
+	GetByCustomerAtBillingAccount func(ctx context.Context, billingAccountName string, customerName string, options *armbilling.PoliciesClientGetByCustomerAtBillingAccountOptions) (resp azfake.Responder[armbilling.PoliciesClientGetByCustomerAtBillingAccountResponse], errResp azfake.ErrorResponder)
 
-	// UpdateCustomer is the fake for method PoliciesClient.UpdateCustomer
+	// GetBySubscription is the fake for method PoliciesClient.GetBySubscription
 	// HTTP status codes to indicate success: http.StatusOK
-	UpdateCustomer func(ctx context.Context, billingAccountName string, customerName string, parameters armbilling.CustomerPolicy, options *armbilling.PoliciesClientUpdateCustomerOptions) (resp azfake.Responder[armbilling.PoliciesClientUpdateCustomerResponse], errResp azfake.ErrorResponder)
+	GetBySubscription func(ctx context.Context, options *armbilling.PoliciesClientGetBySubscriptionOptions) (resp azfake.Responder[armbilling.PoliciesClientGetBySubscriptionResponse], errResp azfake.ErrorResponder)
 }
 
 // NewPoliciesServerTransport creates a new instance of PoliciesServerTransport with the provided implementation.
 // The returned PoliciesServerTransport instance is connected to an instance of armbilling.PoliciesClient via the
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewPoliciesServerTransport(srv *PoliciesServer) *PoliciesServerTransport {
-	return &PoliciesServerTransport{srv: srv}
+	return &PoliciesServerTransport{
+		srv:                                           srv,
+		beginCreateOrUpdateByBillingAccount:           newTracker[azfake.PollerResponder[armbilling.PoliciesClientCreateOrUpdateByBillingAccountResponse]](),
+		beginCreateOrUpdateByBillingProfile:           newTracker[azfake.PollerResponder[armbilling.PoliciesClientCreateOrUpdateByBillingProfileResponse]](),
+		beginCreateOrUpdateByCustomer:                 newTracker[azfake.PollerResponder[armbilling.PoliciesClientCreateOrUpdateByCustomerResponse]](),
+		beginCreateOrUpdateByCustomerAtBillingAccount: newTracker[azfake.PollerResponder[armbilling.PoliciesClientCreateOrUpdateByCustomerAtBillingAccountResponse]](),
+	}
 }
 
 // PoliciesServerTransport connects instances of armbilling.PoliciesClient to instances of PoliciesServer.
 // Don't use this type directly, use NewPoliciesServerTransport instead.
 type PoliciesServerTransport struct {
-	srv *PoliciesServer
+	srv                                           *PoliciesServer
+	beginCreateOrUpdateByBillingAccount           *tracker[azfake.PollerResponder[armbilling.PoliciesClientCreateOrUpdateByBillingAccountResponse]]
+	beginCreateOrUpdateByBillingProfile           *tracker[azfake.PollerResponder[armbilling.PoliciesClientCreateOrUpdateByBillingProfileResponse]]
+	beginCreateOrUpdateByCustomer                 *tracker[azfake.PollerResponder[armbilling.PoliciesClientCreateOrUpdateByCustomerResponse]]
+	beginCreateOrUpdateByCustomerAtBillingAccount *tracker[azfake.PollerResponder[armbilling.PoliciesClientCreateOrUpdateByCustomerAtBillingAccountResponse]]
 }
 
 // Do implements the policy.Transporter interface for PoliciesServerTransport.
@@ -65,14 +95,24 @@ func (p *PoliciesServerTransport) Do(req *http.Request) (*http.Response, error) 
 	var err error
 
 	switch method {
+	case "PoliciesClient.BeginCreateOrUpdateByBillingAccount":
+		resp, err = p.dispatchBeginCreateOrUpdateByBillingAccount(req)
+	case "PoliciesClient.BeginCreateOrUpdateByBillingProfile":
+		resp, err = p.dispatchBeginCreateOrUpdateByBillingProfile(req)
+	case "PoliciesClient.BeginCreateOrUpdateByCustomer":
+		resp, err = p.dispatchBeginCreateOrUpdateByCustomer(req)
+	case "PoliciesClient.BeginCreateOrUpdateByCustomerAtBillingAccount":
+		resp, err = p.dispatchBeginCreateOrUpdateByCustomerAtBillingAccount(req)
+	case "PoliciesClient.GetByBillingAccount":
+		resp, err = p.dispatchGetByBillingAccount(req)
 	case "PoliciesClient.GetByBillingProfile":
 		resp, err = p.dispatchGetByBillingProfile(req)
 	case "PoliciesClient.GetByCustomer":
 		resp, err = p.dispatchGetByCustomer(req)
-	case "PoliciesClient.Update":
-		resp, err = p.dispatchUpdate(req)
-	case "PoliciesClient.UpdateCustomer":
-		resp, err = p.dispatchUpdateCustomer(req)
+	case "PoliciesClient.GetByCustomerAtBillingAccount":
+		resp, err = p.dispatchGetByCustomerAtBillingAccount(req)
+	case "PoliciesClient.GetBySubscription":
+		resp, err = p.dispatchGetBySubscription(req)
 	default:
 		err = fmt.Errorf("unhandled API %s", method)
 	}
@@ -81,6 +121,227 @@ func (p *PoliciesServerTransport) Do(req *http.Request) (*http.Response, error) 
 		return nil, err
 	}
 
+	return resp, nil
+}
+
+func (p *PoliciesServerTransport) dispatchBeginCreateOrUpdateByBillingAccount(req *http.Request) (*http.Response, error) {
+	if p.srv.BeginCreateOrUpdateByBillingAccount == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdateByBillingAccount not implemented")}
+	}
+	beginCreateOrUpdateByBillingAccount := p.beginCreateOrUpdateByBillingAccount.get(req)
+	if beginCreateOrUpdateByBillingAccount == nil {
+		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/policies/default`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 1 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armbilling.AccountPolicy](req)
+		if err != nil {
+			return nil, err
+		}
+		billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := p.srv.BeginCreateOrUpdateByBillingAccount(req.Context(), billingAccountNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginCreateOrUpdateByBillingAccount = &respr
+		p.beginCreateOrUpdateByBillingAccount.add(req, beginCreateOrUpdateByBillingAccount)
+	}
+
+	resp, err := server.PollerResponderNext(beginCreateOrUpdateByBillingAccount, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		p.beginCreateOrUpdateByBillingAccount.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginCreateOrUpdateByBillingAccount) {
+		p.beginCreateOrUpdateByBillingAccount.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (p *PoliciesServerTransport) dispatchBeginCreateOrUpdateByBillingProfile(req *http.Request) (*http.Response, error) {
+	if p.srv.BeginCreateOrUpdateByBillingProfile == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdateByBillingProfile not implemented")}
+	}
+	beginCreateOrUpdateByBillingProfile := p.beginCreateOrUpdateByBillingProfile.get(req)
+	if beginCreateOrUpdateByBillingProfile == nil {
+		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/policies/default`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armbilling.ProfilePolicy](req)
+		if err != nil {
+			return nil, err
+		}
+		billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
+		if err != nil {
+			return nil, err
+		}
+		billingProfileNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingProfileName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := p.srv.BeginCreateOrUpdateByBillingProfile(req.Context(), billingAccountNameParam, billingProfileNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginCreateOrUpdateByBillingProfile = &respr
+		p.beginCreateOrUpdateByBillingProfile.add(req, beginCreateOrUpdateByBillingProfile)
+	}
+
+	resp, err := server.PollerResponderNext(beginCreateOrUpdateByBillingProfile, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		p.beginCreateOrUpdateByBillingProfile.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginCreateOrUpdateByBillingProfile) {
+		p.beginCreateOrUpdateByBillingProfile.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (p *PoliciesServerTransport) dispatchBeginCreateOrUpdateByCustomer(req *http.Request) (*http.Response, error) {
+	if p.srv.BeginCreateOrUpdateByCustomer == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdateByCustomer not implemented")}
+	}
+	beginCreateOrUpdateByCustomer := p.beginCreateOrUpdateByCustomer.get(req)
+	if beginCreateOrUpdateByCustomer == nil {
+		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/customers/(?P<customerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/policies/default`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armbilling.CustomerPolicy](req)
+		if err != nil {
+			return nil, err
+		}
+		billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
+		if err != nil {
+			return nil, err
+		}
+		billingProfileNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingProfileName")])
+		if err != nil {
+			return nil, err
+		}
+		customerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("customerName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := p.srv.BeginCreateOrUpdateByCustomer(req.Context(), billingAccountNameParam, billingProfileNameParam, customerNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginCreateOrUpdateByCustomer = &respr
+		p.beginCreateOrUpdateByCustomer.add(req, beginCreateOrUpdateByCustomer)
+	}
+
+	resp, err := server.PollerResponderNext(beginCreateOrUpdateByCustomer, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		p.beginCreateOrUpdateByCustomer.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginCreateOrUpdateByCustomer) {
+		p.beginCreateOrUpdateByCustomer.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (p *PoliciesServerTransport) dispatchBeginCreateOrUpdateByCustomerAtBillingAccount(req *http.Request) (*http.Response, error) {
+	if p.srv.BeginCreateOrUpdateByCustomerAtBillingAccount == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdateByCustomerAtBillingAccount not implemented")}
+	}
+	beginCreateOrUpdateByCustomerAtBillingAccount := p.beginCreateOrUpdateByCustomerAtBillingAccount.get(req)
+	if beginCreateOrUpdateByCustomerAtBillingAccount == nil {
+		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/customers/(?P<customerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/policies/default`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armbilling.CustomerPolicy](req)
+		if err != nil {
+			return nil, err
+		}
+		billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
+		if err != nil {
+			return nil, err
+		}
+		customerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("customerName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := p.srv.BeginCreateOrUpdateByCustomerAtBillingAccount(req.Context(), billingAccountNameParam, customerNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginCreateOrUpdateByCustomerAtBillingAccount = &respr
+		p.beginCreateOrUpdateByCustomerAtBillingAccount.add(req, beginCreateOrUpdateByCustomerAtBillingAccount)
+	}
+
+	resp, err := server.PollerResponderNext(beginCreateOrUpdateByCustomerAtBillingAccount, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		p.beginCreateOrUpdateByCustomerAtBillingAccount.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginCreateOrUpdateByCustomerAtBillingAccount) {
+		p.beginCreateOrUpdateByCustomerAtBillingAccount.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (p *PoliciesServerTransport) dispatchGetByBillingAccount(req *http.Request) (*http.Response, error) {
+	if p.srv.GetByBillingAccount == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetByBillingAccount not implemented")}
+	}
+	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/policies/default`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 1 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := p.srv.GetByBillingAccount(req.Context(), billingAccountNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AccountPolicy, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 
@@ -110,7 +371,7 @@ func (p *PoliciesServerTransport) dispatchGetByBillingProfile(req *http.Request)
 	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Policy, req)
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ProfilePolicy, req)
 	if err != nil {
 		return nil, err
 	}
@@ -121,48 +382,11 @@ func (p *PoliciesServerTransport) dispatchGetByCustomer(req *http.Request) (*htt
 	if p.srv.GetByCustomer == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetByCustomer not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/customers/(?P<customerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/policies/default`
+	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/customers/(?P<customerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/policies/(?P<policyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if matches == nil || len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
-	if err != nil {
-		return nil, err
-	}
-	customerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("customerName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := p.srv.GetByCustomer(req.Context(), billingAccountNameParam, customerNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CustomerPolicy, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (p *PoliciesServerTransport) dispatchUpdate(req *http.Request) (*http.Response, error) {
-	if p.srv.Update == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Update not implemented")}
-	}
-	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/policies/default`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armbilling.Policy](req)
-	if err != nil {
-		return nil, err
 	}
 	billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
 	if err != nil {
@@ -172,7 +396,21 @@ func (p *PoliciesServerTransport) dispatchUpdate(req *http.Request) (*http.Respo
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := p.srv.Update(req.Context(), billingAccountNameParam, billingProfileNameParam, body, nil)
+	customerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("customerName")])
+	if err != nil {
+		return nil, err
+	}
+	policyNameParam, err := parseWithCast(matches[regex.SubexpIndex("policyName")], func(v string) (armbilling.ServiceDefinedResourceName, error) {
+		p, unescapeErr := url.PathUnescape(v)
+		if unescapeErr != nil {
+			return "", unescapeErr
+		}
+		return armbilling.ServiceDefinedResourceName(p), nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := p.srv.GetByCustomer(req.Context(), billingAccountNameParam, billingProfileNameParam, customerNameParam, policyNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -180,26 +418,22 @@ func (p *PoliciesServerTransport) dispatchUpdate(req *http.Request) (*http.Respo
 	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Policy, req)
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CustomerPolicy, req)
 	if err != nil {
 		return nil, err
 	}
 	return resp, nil
 }
 
-func (p *PoliciesServerTransport) dispatchUpdateCustomer(req *http.Request) (*http.Response, error) {
-	if p.srv.UpdateCustomer == nil {
-		return nil, &nonRetriableError{errors.New("fake for method UpdateCustomer not implemented")}
+func (p *PoliciesServerTransport) dispatchGetByCustomerAtBillingAccount(req *http.Request) (*http.Response, error) {
+	if p.srv.GetByCustomerAtBillingAccount == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetByCustomerAtBillingAccount not implemented")}
 	}
 	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/customers/(?P<customerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/policies/default`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armbilling.CustomerPolicy](req)
-	if err != nil {
-		return nil, err
 	}
 	billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
 	if err != nil {
@@ -209,7 +443,7 @@ func (p *PoliciesServerTransport) dispatchUpdateCustomer(req *http.Request) (*ht
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := p.srv.UpdateCustomer(req.Context(), billingAccountNameParam, customerNameParam, body, nil)
+	respr, errRespr := p.srv.GetByCustomerAtBillingAccount(req.Context(), billingAccountNameParam, customerNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -218,6 +452,31 @@ func (p *PoliciesServerTransport) dispatchUpdateCustomer(req *http.Request) (*ht
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CustomerPolicy, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (p *PoliciesServerTransport) dispatchGetBySubscription(req *http.Request) (*http.Response, error) {
+	if p.srv.GetBySubscription == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetBySubscription not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Billing/policies/default`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 1 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	respr, errRespr := p.srv.GetBySubscription(req.Context(), nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SubscriptionPolicy, req)
 	if err != nil {
 		return nil, err
 	}

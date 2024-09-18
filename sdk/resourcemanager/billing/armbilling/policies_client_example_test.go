@@ -13,78 +13,18 @@ import (
 	"context"
 	"log"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+)
+import (
+	"encoding/json"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling"
+	"reflect"
+	"time"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/Policy.json
-func ExamplePoliciesClient_GetByBillingProfile() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewPoliciesClient().GetByBillingProfile(ctx, "{billingAccountName}", "{billingProfileName}", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.Policy = armbilling.Policy{
-	// 	Name: to.Ptr("default"),
-	// 	Type: to.Ptr("Microsoft.Billing/billingAccounts/billingProfiles/policies"),
-	// 	ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/policies/default"),
-	// 	Properties: &armbilling.PolicyProperties{
-	// 		MarketplacePurchases: to.Ptr(armbilling.MarketplacePurchasesPolicyAllAllowed),
-	// 		ReservationPurchases: to.Ptr(armbilling.ReservationPurchasesPolicyAllowed),
-	// 		ViewCharges: to.Ptr(armbilling.ViewChargesPolicyAllowed),
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/UpdatePolicy.json
-func ExamplePoliciesClient_Update() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewPoliciesClient().Update(ctx, "{billingAccountName}", "{billingProfileName}", armbilling.Policy{
-		Properties: &armbilling.PolicyProperties{
-			MarketplacePurchases: to.Ptr(armbilling.MarketplacePurchasesPolicyOnlyFreeAllowed),
-			ReservationPurchases: to.Ptr(armbilling.ReservationPurchasesPolicyNotAllowed),
-			ViewCharges:          to.Ptr(armbilling.ViewChargesPolicyAllowed),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.Policy = armbilling.Policy{
-	// 	Name: to.Ptr("default"),
-	// 	Type: to.Ptr("Microsoft.Billing/billingAccounts/billingProfiles/policies"),
-	// 	ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/policies/default"),
-	// 	Properties: &armbilling.PolicyProperties{
-	// 		MarketplacePurchases: to.Ptr(armbilling.MarketplacePurchasesPolicyOnlyFreeAllowed),
-	// 		ReservationPurchases: to.Ptr(armbilling.ReservationPurchasesPolicyNotAllowed),
-	// 		ViewCharges: to.Ptr(armbilling.ViewChargesPolicyAllowed),
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/CustomerPolicy.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/policiesGetByCustomer.json
 func ExamplePoliciesClient_GetByCustomer() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -95,7 +35,7 @@ func ExamplePoliciesClient_GetByCustomer() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewPoliciesClient().GetByCustomer(ctx, "{billingAccountName}", "{customerName}", nil)
+	res, err := clientFactory.NewPoliciesClient().GetByCustomer(ctx, "00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31", "xxxx-xxxx-xxx-xxx", "11111111-1111-1111-1111-111111111111", armbilling.ServiceDefinedResourceNameDefault, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -104,16 +44,16 @@ func ExamplePoliciesClient_GetByCustomer() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.CustomerPolicy = armbilling.CustomerPolicy{
 	// 	Name: to.Ptr("default"),
-	// 	Type: to.Ptr("Microsoft.Billing/billingAccounts/customers/policies"),
-	// 	ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/customers/{customerName}/policies/default"),
+	// 	Type: to.Ptr("Microsoft.Billing/billingAccounts/billingProfiles/customers/policies"),
+	// 	ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/billingProfiles/xxxx-xxxx-xxx-xxx/customers/11111111-1111-1111-1111-111111111111/policies/default"),
 	// 	Properties: &armbilling.CustomerPolicyProperties{
-	// 		ViewCharges: to.Ptr(armbilling.ViewChargesAllowed),
+	// 		ViewCharges: to.Ptr(armbilling.ViewChargesPolicyAllowed),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/UpdateCustomerPolicy.json
-func ExamplePoliciesClient_UpdateCustomer() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/policiesPutByCustomer.json
+func ExamplePoliciesClient_BeginCreateOrUpdateByCustomer() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -123,11 +63,116 @@ func ExamplePoliciesClient_UpdateCustomer() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewPoliciesClient().UpdateCustomer(ctx, "{billingAccountName}", "{customerName}", armbilling.CustomerPolicy{
+	poller, err := clientFactory.NewPoliciesClient().BeginCreateOrUpdateByCustomer(ctx, "00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31", "xxxx-xxxx-xxx-xxx", "11111111-1111-1111-1111-111111111111", armbilling.CustomerPolicy{
 		Properties: &armbilling.CustomerPolicyProperties{
-			ViewCharges: to.Ptr(armbilling.ViewChargesNotAllowed),
+			ViewCharges: to.Ptr(armbilling.ViewChargesPolicyAllowed),
 		},
 	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.CustomerPolicy = armbilling.CustomerPolicy{
+	// 	Name: to.Ptr("default"),
+	// 	Type: to.Ptr("Microsoft.Billing/billingAccounts/billingProfiles/customers/policies"),
+	// 	ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/billingProfiles/xxxx-xxxx-xxx-xxx/customers/11111111-1111-1111-1111-111111111111/policies/default"),
+	// 	Properties: &armbilling.CustomerPolicyProperties{
+	// 		ViewCharges: to.Ptr(armbilling.ViewChargesPolicyAllowed),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/policiesGetByBillingProfile.json
+func ExamplePoliciesClient_GetByBillingProfile() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewPoliciesClient().GetByBillingProfile(ctx, "00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31", "xxxx-xxxx-xxx-xxx", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.ProfilePolicy = armbilling.ProfilePolicy{
+	// 	Name: to.Ptr("default"),
+	// 	Type: to.Ptr("Microsoft.Billing/billingAccounts/billingProfiles/policies"),
+	// 	ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingProfiles/xxxx-xxxx-xxx-xxx/policies/default"),
+	// 	Properties: &armbilling.ProfilePolicyProperties{
+	// 		InvoiceSectionLabelManagement: to.Ptr(armbilling.InvoiceSectionLabelManagementPolicyAllowed),
+	// 		MarketplacePurchases: to.Ptr(armbilling.MarketplacePurchasesPolicyAllAllowed),
+	// 		ReservationPurchases: to.Ptr(armbilling.ReservationPurchasesPolicyAllowed),
+	// 		SavingsPlanPurchases: to.Ptr(armbilling.SavingsPlanPurchasesPolicyAllowed),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/policiesPutByBillingProfile.json
+func ExamplePoliciesClient_BeginCreateOrUpdateByBillingProfile() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewPoliciesClient().BeginCreateOrUpdateByBillingProfile(ctx, "00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31", "xxxx-xxxx-xxx-xxx", armbilling.ProfilePolicy{
+		Properties: &armbilling.ProfilePolicyProperties{
+			InvoiceSectionLabelManagement: to.Ptr(armbilling.InvoiceSectionLabelManagementPolicyAllowed),
+			MarketplacePurchases:          to.Ptr(armbilling.MarketplacePurchasesPolicyAllAllowed),
+			ReservationPurchases:          to.Ptr(armbilling.ReservationPurchasesPolicyAllowed),
+			SavingsPlanPurchases:          to.Ptr(armbilling.SavingsPlanPurchasesPolicyAllowed),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.ProfilePolicy = armbilling.ProfilePolicy{
+	// 	Name: to.Ptr("default"),
+	// 	Type: to.Ptr("Microsoft.Billing/billingAccounts/billingProfiles/policies"),
+	// 	ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingProfiles/xxxx-xxxx-xxx-xxx/policies/default"),
+	// 	Properties: &armbilling.ProfilePolicyProperties{
+	// 		InvoiceSectionLabelManagement: to.Ptr(armbilling.InvoiceSectionLabelManagementPolicyAllowed),
+	// 		MarketplacePurchases: to.Ptr(armbilling.MarketplacePurchasesPolicyAllAllowed),
+	// 		ReservationPurchases: to.Ptr(armbilling.ReservationPurchasesPolicyAllowed),
+	// 		SavingsPlanPurchases: to.Ptr(armbilling.SavingsPlanPurchasesPolicyAllowed),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/policiesGetByCustomerAtBillingAccount.json
+func ExamplePoliciesClient_GetByCustomerAtBillingAccount() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewPoliciesClient().GetByCustomerAtBillingAccount(ctx, "00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31", "11111111-1111-1111-1111-111111111111", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -136,10 +181,159 @@ func ExamplePoliciesClient_UpdateCustomer() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.CustomerPolicy = armbilling.CustomerPolicy{
 	// 	Name: to.Ptr("default"),
-	// 	Type: to.Ptr("Microsoft.Billing/billingAccounts/customers/policies"),
-	// 	ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/customers/{customerName}/policies/default"),
+	// 	Type: to.Ptr("Microsoft.Billing/billingAccounts/billingProfiles/customers/policies"),
+	// 	ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/billingProfiles/xxxx-xxxx-xxx-xxx/customers/11111111-1111-1111-1111-111111111111/policies/default"),
 	// 	Properties: &armbilling.CustomerPolicyProperties{
-	// 		ViewCharges: to.Ptr(armbilling.ViewChargesNotAllowed),
+	// 		ViewCharges: to.Ptr(armbilling.ViewChargesPolicyAllowed),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/policiesPutByCustomerAtBillingAccount.json
+func ExamplePoliciesClient_BeginCreateOrUpdateByCustomerAtBillingAccount() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewPoliciesClient().BeginCreateOrUpdateByCustomerAtBillingAccount(ctx, "00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31", "11111111-1111-1111-1111-111111111111", armbilling.CustomerPolicy{
+		Properties: &armbilling.CustomerPolicyProperties{
+			ViewCharges: to.Ptr(armbilling.ViewChargesPolicyAllowed),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.CustomerPolicy = armbilling.CustomerPolicy{
+	// 	Name: to.Ptr("default"),
+	// 	Type: to.Ptr("Microsoft.Billing/billingAccounts/billingProfiles/customers/policies"),
+	// 	ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/billingProfiles/xxxx-xxxx-xxx-xxx/customers/11111111-1111-1111-1111-111111111111/policies/default"),
+	// 	Properties: &armbilling.CustomerPolicyProperties{
+	// 		ViewCharges: to.Ptr(armbilling.ViewChargesPolicyAllowed),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/policiesGetByBillingAccount.json
+func ExamplePoliciesClient_GetByBillingAccount() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewPoliciesClient().GetByBillingAccount(ctx, "1234567", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.AccountPolicy = armbilling.AccountPolicy{
+	// 	Name: to.Ptr("default"),
+	// 	Type: to.Ptr("Microsoft.Billing/billingAccounts/policies"),
+	// 	ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/1234567/policies/default"),
+	// 	Properties: &armbilling.AccountPolicyProperties{
+	// 		EnterpriseAgreementPolicies: &armbilling.AccountPolicyPropertiesEnterpriseAgreementPolicies{
+	// 			AuthenticationType: to.Ptr(armbilling.EnrollmentAuthLevelStateOrganizationalAccountOnly),
+	// 		},
+	// 		MarketplacePurchases: to.Ptr(armbilling.MarketplacePurchasesPolicyAllAllowed),
+	// 		ReservationPurchases: to.Ptr(armbilling.ReservationPurchasesPolicyAllowed),
+	// 		SavingsPlanPurchases: to.Ptr(armbilling.SavingsPlanPurchasesPolicyNotAllowed),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/policiesPutByBillingAccount.json
+func ExamplePoliciesClient_BeginCreateOrUpdateByBillingAccount() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewPoliciesClient().BeginCreateOrUpdateByBillingAccount(ctx, "1234567", armbilling.AccountPolicy{
+		Properties: &armbilling.AccountPolicyProperties{
+			EnterpriseAgreementPolicies: &armbilling.AccountPolicyPropertiesEnterpriseAgreementPolicies{
+				AuthenticationType: to.Ptr(armbilling.EnrollmentAuthLevelStateOrganizationalAccountOnly),
+			},
+			MarketplacePurchases: to.Ptr(armbilling.MarketplacePurchasesPolicyAllAllowed),
+			ReservationPurchases: to.Ptr(armbilling.ReservationPurchasesPolicyAllowed),
+			SavingsPlanPurchases: to.Ptr(armbilling.SavingsPlanPurchasesPolicyNotAllowed),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.AccountPolicy = armbilling.AccountPolicy{
+	// 	Name: to.Ptr("default"),
+	// 	Type: to.Ptr("Microsoft.Billing/billingAccounts/policies"),
+	// 	ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/1234567/policies/default"),
+	// 	Properties: &armbilling.AccountPolicyProperties{
+	// 		EnterpriseAgreementPolicies: &armbilling.AccountPolicyPropertiesEnterpriseAgreementPolicies{
+	// 			AuthenticationType: to.Ptr(armbilling.EnrollmentAuthLevelStateOrganizationalAccountOnly),
+	// 		},
+	// 		MarketplacePurchases: to.Ptr(armbilling.MarketplacePurchasesPolicyAllAllowed),
+	// 		ReservationPurchases: to.Ptr(armbilling.ReservationPurchasesPolicyAllowed),
+	// 		SavingsPlanPurchases: to.Ptr(armbilling.SavingsPlanPurchasesPolicyNotAllowed),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/policiesGetBySubscription.json
+func ExamplePoliciesClient_GetBySubscription() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewPoliciesClient().GetBySubscription(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.SubscriptionPolicy = armbilling.SubscriptionPolicy{
+	// 	Name: to.Ptr("default"),
+	// 	Type: to.Ptr("Microsoft.Billing/policies"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Billing/policies/default"),
+	// 	Properties: &armbilling.SubscriptionPolicyProperties{
+	// 		Policies: []*armbilling.PolicySummary{
+	// 			{
+	// 				Name: to.Ptr("ViewCharges"),
+	// 				PolicyType: to.Ptr(armbilling.PolicyTypeSystemControlled),
+	// 				Scope: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000"),
+	// 				Value: to.Ptr("Allowed"),
+	// 		}},
 	// 	},
 	// }
 }

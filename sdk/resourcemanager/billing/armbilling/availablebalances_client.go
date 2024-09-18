@@ -40,39 +40,100 @@ func NewAvailableBalancesClient(credential azcore.TokenCredential, options *arm.
 	return client, nil
 }
 
-// Get - The available credit balance for a billing profile. This is the balance that can be used for pay now to settle due
-// or past due invoices. The operation is supported only for billing accounts with
-// agreement type Microsoft Customer Agreement.
+// GetByBillingAccount - The Available Credit or Payment on Account Balance for a billing account. The credit balance can
+// be used to settle due or past due invoices and is supported for billing accounts with agreement type
+// Microsoft Customer Agreement. The payment on account balance is supported for billing accounts with agreement type Microsoft
+// Customer Agreement or Microsoft Online Services Program.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-05-01
+// Generated from API version 2024-04-01
 //   - billingAccountName - The ID that uniquely identifies a billing account.
-//   - billingProfileName - The ID that uniquely identifies a billing profile.
-//   - options - AvailableBalancesClientGetOptions contains the optional parameters for the AvailableBalancesClient.Get method.
-func (client *AvailableBalancesClient) Get(ctx context.Context, billingAccountName string, billingProfileName string, options *AvailableBalancesClientGetOptions) (AvailableBalancesClientGetResponse, error) {
+//   - options - AvailableBalancesClientGetByBillingAccountOptions contains the optional parameters for the AvailableBalancesClient.GetByBillingAccount
+//     method.
+func (client *AvailableBalancesClient) GetByBillingAccount(ctx context.Context, billingAccountName string, options *AvailableBalancesClientGetByBillingAccountOptions) (AvailableBalancesClientGetByBillingAccountResponse, error) {
 	var err error
-	const operationName = "AvailableBalancesClient.Get"
+	const operationName = "AvailableBalancesClient.GetByBillingAccount"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, billingAccountName, billingProfileName, options)
+	req, err := client.getByBillingAccountCreateRequest(ctx, billingAccountName, options)
 	if err != nil {
-		return AvailableBalancesClientGetResponse{}, err
+		return AvailableBalancesClientGetByBillingAccountResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return AvailableBalancesClientGetResponse{}, err
+		return AvailableBalancesClientGetByBillingAccountResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return AvailableBalancesClientGetResponse{}, err
+		return AvailableBalancesClientGetByBillingAccountResponse{}, err
 	}
-	resp, err := client.getHandleResponse(httpResp)
+	resp, err := client.getByBillingAccountHandleResponse(httpResp)
 	return resp, err
 }
 
-// getCreateRequest creates the Get request.
-func (client *AvailableBalancesClient) getCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, options *AvailableBalancesClientGetOptions) (*policy.Request, error) {
+// getByBillingAccountCreateRequest creates the GetByBillingAccount request.
+func (client *AvailableBalancesClient) getByBillingAccountCreateRequest(ctx context.Context, billingAccountName string, options *AvailableBalancesClientGetByBillingAccountOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/availableBalance/default"
+	if billingAccountName == "" {
+		return nil, errors.New("parameter billingAccountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-04-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getByBillingAccountHandleResponse handles the GetByBillingAccount response.
+func (client *AvailableBalancesClient) getByBillingAccountHandleResponse(resp *http.Response) (AvailableBalancesClientGetByBillingAccountResponse, error) {
+	result := AvailableBalancesClientGetByBillingAccountResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AvailableBalance); err != nil {
+		return AvailableBalancesClientGetByBillingAccountResponse{}, err
+	}
+	return result, nil
+}
+
+// GetByBillingProfile - The Available Credit or Payment on Account Balance for a billing profile. The credit balance can
+// be used to settle due or past due invoices and is supported for billing accounts with agreement type
+// Microsoft Customer Agreement. The payment on account balance is supported for billing accounts with agreement type Microsoft
+// Customer Agreement.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01
+//   - billingAccountName - The ID that uniquely identifies a billing account.
+//   - billingProfileName - The ID that uniquely identifies a billing profile.
+//   - options - AvailableBalancesClientGetByBillingProfileOptions contains the optional parameters for the AvailableBalancesClient.GetByBillingProfile
+//     method.
+func (client *AvailableBalancesClient) GetByBillingProfile(ctx context.Context, billingAccountName string, billingProfileName string, options *AvailableBalancesClientGetByBillingProfileOptions) (AvailableBalancesClientGetByBillingProfileResponse, error) {
+	var err error
+	const operationName = "AvailableBalancesClient.GetByBillingProfile"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getByBillingProfileCreateRequest(ctx, billingAccountName, billingProfileName, options)
+	if err != nil {
+		return AvailableBalancesClientGetByBillingProfileResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return AvailableBalancesClientGetByBillingProfileResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return AvailableBalancesClientGetByBillingProfileResponse{}, err
+	}
+	resp, err := client.getByBillingProfileHandleResponse(httpResp)
+	return resp, err
+}
+
+// getByBillingProfileCreateRequest creates the GetByBillingProfile request.
+func (client *AvailableBalancesClient) getByBillingProfileCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, options *AvailableBalancesClientGetByBillingProfileOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/availableBalance/default"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -87,17 +148,17 @@ func (client *AvailableBalancesClient) getCreateRequest(ctx context.Context, bil
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-05-01")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// getHandleResponse handles the Get response.
-func (client *AvailableBalancesClient) getHandleResponse(resp *http.Response) (AvailableBalancesClientGetResponse, error) {
-	result := AvailableBalancesClientGetResponse{}
+// getByBillingProfileHandleResponse handles the GetByBillingProfile response.
+func (client *AvailableBalancesClient) getByBillingProfileHandleResponse(resp *http.Response) (AvailableBalancesClientGetByBillingProfileResponse, error) {
+	result := AvailableBalancesClientGetByBillingProfileResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AvailableBalance); err != nil {
-		return AvailableBalancesClientGetResponse{}, err
+		return AvailableBalancesClientGetByBillingProfileResponse{}, err
 	}
 	return result, nil
 }

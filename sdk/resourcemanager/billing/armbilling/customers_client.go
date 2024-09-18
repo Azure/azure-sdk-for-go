@@ -17,6 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
+	"strconv"
 	"strings"
 )
 
@@ -44,17 +45,18 @@ func NewCustomersClient(credential azcore.TokenCredential, options *arm.ClientOp
 // Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-05-01
+// Generated from API version 2024-04-01
 //   - billingAccountName - The ID that uniquely identifies a billing account.
+//   - billingProfileName - The ID that uniquely identifies a billing profile.
 //   - customerName - The ID that uniquely identifies a customer.
 //   - options - CustomersClientGetOptions contains the optional parameters for the CustomersClient.Get method.
-func (client *CustomersClient) Get(ctx context.Context, billingAccountName string, customerName string, options *CustomersClientGetOptions) (CustomersClientGetResponse, error) {
+func (client *CustomersClient) Get(ctx context.Context, billingAccountName string, billingProfileName string, customerName string, options *CustomersClientGetOptions) (CustomersClientGetResponse, error) {
 	var err error
 	const operationName = "CustomersClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, billingAccountName, customerName, options)
+	req, err := client.getCreateRequest(ctx, billingAccountName, billingProfileName, customerName, options)
 	if err != nil {
 		return CustomersClientGetResponse{}, err
 	}
@@ -71,12 +73,16 @@ func (client *CustomersClient) Get(ctx context.Context, billingAccountName strin
 }
 
 // getCreateRequest creates the Get request.
-func (client *CustomersClient) getCreateRequest(ctx context.Context, billingAccountName string, customerName string, options *CustomersClientGetOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/customers/{customerName}"
+func (client *CustomersClient) getCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, customerName string, options *CustomersClientGetOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/customers/{customerName}"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
+	if billingProfileName == "" {
+		return nil, errors.New("parameter billingProfileName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingProfileName}", url.PathEscape(billingProfileName))
 	if customerName == "" {
 		return nil, errors.New("parameter customerName cannot be empty")
 	}
@@ -86,10 +92,7 @@ func (client *CustomersClient) getCreateRequest(ctx context.Context, billingAcco
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-05-01")
-	if options != nil && options.Expand != nil {
-		reqQP.Set("$expand", *options.Expand)
-	}
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -104,10 +107,72 @@ func (client *CustomersClient) getHandleResponse(resp *http.Response) (Customers
 	return result, nil
 }
 
+// GetByBillingAccount - Gets a customer by its ID at billing account level. The operation is supported only for billing accounts
+// with agreement type Microsoft Partner Agreement.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01
+//   - billingAccountName - The ID that uniquely identifies a billing account.
+//   - customerName - The ID that uniquely identifies a customer.
+//   - options - CustomersClientGetByBillingAccountOptions contains the optional parameters for the CustomersClient.GetByBillingAccount
+//     method.
+func (client *CustomersClient) GetByBillingAccount(ctx context.Context, billingAccountName string, customerName string, options *CustomersClientGetByBillingAccountOptions) (CustomersClientGetByBillingAccountResponse, error) {
+	var err error
+	const operationName = "CustomersClient.GetByBillingAccount"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getByBillingAccountCreateRequest(ctx, billingAccountName, customerName, options)
+	if err != nil {
+		return CustomersClientGetByBillingAccountResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return CustomersClientGetByBillingAccountResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return CustomersClientGetByBillingAccountResponse{}, err
+	}
+	resp, err := client.getByBillingAccountHandleResponse(httpResp)
+	return resp, err
+}
+
+// getByBillingAccountCreateRequest creates the GetByBillingAccount request.
+func (client *CustomersClient) getByBillingAccountCreateRequest(ctx context.Context, billingAccountName string, customerName string, options *CustomersClientGetByBillingAccountOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/customers/{customerName}"
+	if billingAccountName == "" {
+		return nil, errors.New("parameter billingAccountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
+	if customerName == "" {
+		return nil, errors.New("parameter customerName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{customerName}", url.PathEscape(customerName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-04-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getByBillingAccountHandleResponse handles the GetByBillingAccount response.
+func (client *CustomersClient) getByBillingAccountHandleResponse(resp *http.Response) (CustomersClientGetByBillingAccountResponse, error) {
+	result := CustomersClientGetByBillingAccountResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Customer); err != nil {
+		return CustomersClientGetByBillingAccountResponse{}, err
+	}
+	return result, nil
+}
+
 // NewListByBillingAccountPager - Lists the customers that are billed to a billing account. The operation is supported only
 // for billing accounts with agreement type Microsoft Partner Agreement.
 //
-// Generated from API version 2020-05-01
+// Generated from API version 2024-04-01
 //   - billingAccountName - The ID that uniquely identifies a billing account.
 //   - options - CustomersClientListByBillingAccountOptions contains the optional parameters for the CustomersClient.NewListByBillingAccountPager
 //     method.
@@ -146,12 +211,27 @@ func (client *CustomersClient) listByBillingAccountCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-05-01")
-	if options != nil && options.Search != nil {
-		reqQP.Set("$search", *options.Search)
+	reqQP.Set("api-version", "2024-04-01")
+	if options != nil && options.Count != nil {
+		reqQP.Set("count", strconv.FormatBool(*options.Count))
+	}
+	if options != nil && options.Expand != nil {
+		reqQP.Set("expand", *options.Expand)
 	}
 	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+		reqQP.Set("filter", *options.Filter)
+	}
+	if options != nil && options.OrderBy != nil {
+		reqQP.Set("orderBy", *options.OrderBy)
+	}
+	if options != nil && options.Search != nil {
+		reqQP.Set("search", *options.Search)
+	}
+	if options != nil && options.Skip != nil {
+		reqQP.Set("skip", strconv.FormatInt(*options.Skip, 10))
+	}
+	if options != nil && options.Top != nil {
+		reqQP.Set("top", strconv.FormatInt(*options.Top, 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
@@ -170,7 +250,7 @@ func (client *CustomersClient) listByBillingAccountHandleResponse(resp *http.Res
 // NewListByBillingProfilePager - Lists the customers that are billed to a billing profile. The operation is supported only
 // for billing accounts with agreement type Microsoft Partner Agreement.
 //
-// Generated from API version 2020-05-01
+// Generated from API version 2024-04-01
 //   - billingAccountName - The ID that uniquely identifies a billing account.
 //   - billingProfileName - The ID that uniquely identifies a billing profile.
 //   - options - CustomersClientListByBillingProfileOptions contains the optional parameters for the CustomersClient.NewListByBillingProfilePager
@@ -214,12 +294,27 @@ func (client *CustomersClient) listByBillingProfileCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-05-01")
-	if options != nil && options.Search != nil {
-		reqQP.Set("$search", *options.Search)
+	reqQP.Set("api-version", "2024-04-01")
+	if options != nil && options.Count != nil {
+		reqQP.Set("count", strconv.FormatBool(*options.Count))
+	}
+	if options != nil && options.Expand != nil {
+		reqQP.Set("expand", *options.Expand)
 	}
 	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+		reqQP.Set("filter", *options.Filter)
+	}
+	if options != nil && options.OrderBy != nil {
+		reqQP.Set("orderBy", *options.OrderBy)
+	}
+	if options != nil && options.Search != nil {
+		reqQP.Set("search", *options.Search)
+	}
+	if options != nil && options.Skip != nil {
+		reqQP.Set("skip", strconv.FormatInt(*options.Skip, 10))
+	}
+	if options != nil && options.Top != nil {
+		reqQP.Set("top", strconv.FormatInt(*options.Top, 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}

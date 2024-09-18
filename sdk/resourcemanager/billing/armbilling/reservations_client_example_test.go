@@ -13,12 +13,18 @@ import (
 	"context"
 	"log"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+)
+import (
+	"encoding/json"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling"
+	"reflect"
+	"time"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/ReservationsListByBillingAccount.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/reservationsListByBillingAccount.json
 func ExampleReservationsClient_NewListByBillingAccountPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -29,10 +35,12 @@ func ExampleReservationsClient_NewListByBillingAccountPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewReservationsClient().NewListByBillingAccountPager("{billingAccountName}", &armbilling.ReservationsClientListByBillingAccountOptions{Filter: to.Ptr("properties/reservedResourceType eq 'VirtualMachines'"),
-		Orderby:        to.Ptr("properties/userFriendlyAppliedScopeType asc"),
+	pager := clientFactory.NewReservationsClient().NewListByBillingAccountPager("00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31", &armbilling.ReservationsClientListByBillingAccountOptions{Filter: nil,
+		OrderBy:        nil,
+		Skiptoken:      nil,
 		RefreshSummary: nil,
 		SelectedState:  to.Ptr("Succeeded"),
+		Take:           nil,
 	})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
@@ -50,25 +58,40 @@ func ExampleReservationsClient_NewListByBillingAccountPager() {
 		// 		ExpiredCount: to.Ptr[float32](0),
 		// 		ExpiringCount: to.Ptr[float32](0),
 		// 		FailedCount: to.Ptr[float32](0),
+		// 		NoBenefitCount: to.Ptr[float32](0),
 		// 		PendingCount: to.Ptr[float32](0),
+		// 		ProcessingCount: to.Ptr[float32](0),
 		// 		SucceededCount: to.Ptr[float32](1),
+		// 		WarningCount: to.Ptr[float32](0),
 		// 	},
 		// 	Value: []*armbilling.Reservation{
 		// 		{
-		// 			Name: to.Ptr("00000000-0000-0000-0000-000000000001/00000000-0000-0000-0000-000000000000"),
-		// 			Type: to.Ptr("Microsoft.Capacity/reservationOrders/reservations"),
-		// 			ID: to.Ptr("/providers/microsoft.capacity/reservationOrders/00000000-0000-0000-0000-000000000001/reservations/00000000-0000-0000-0000-000000000000"),
-		// 			Location: to.Ptr("westus"),
+		// 			Name: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 			Type: to.Ptr("microsoft.billing/billingAccounts/reservationOrders/reservations"),
+		// 			ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/reservationOrders/00000000-0000-0000-0000-000000000001/reservations/00000000-0000-0000-0000-000000000000"),
+		// 			Location: to.Ptr("global"),
 		// 			Properties: &armbilling.ReservationProperty{
 		// 				AppliedScopeType: to.Ptr("Shared"),
-		// 				DisplayName: to.Ptr("VM_RI_07-21-2020_12-06"),
+		// 				Archived: to.Ptr(false),
+		// 				BenefitStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-18T21:54:31.074Z"); return t}()),
+		// 				BillingPlan: to.Ptr(armbilling.ReservationBillingPlanMonthly),
+		// 				BillingScopeID: to.Ptr("/subscriptions/eef82110-c91b-4395-9420-fcfcbefc5a47"),
+		// 				DisplayName: to.Ptr("VirtualMachineSoftware_01-18-2022_13-51"),
 		// 				DisplayProvisioningState: to.Ptr("Succeeded"),
-		// 				EffectiveDateTime: to.Ptr("0001-01-01T00:00:00"),
-		// 				ExpiryDate: to.Ptr("2023-07-21"),
+		// 				EffectiveDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "1-01-01T00:00:00.000Z"); return t}()),
+		// 				ExpiryDate: to.Ptr("2025-01-18"),
+		// 				ExpiryDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-18T21:54:31.074Z"); return t}()),
+		// 				InstanceFlexibility: to.Ptr(armbilling.InstanceFlexibilityOn),
+		// 				LastUpdatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0-12-31T15:54:17.000Z"); return t}()),
+		// 				ProductCode: to.Ptr("20000000-0000-0000-0000-000000000005"),
 		// 				ProvisioningState: to.Ptr("Succeeded"),
-		// 				Quantity: to.Ptr[float32](2),
+		// 				PurchaseDate: to.Ptr(func() time.Time { t, _ := time.Parse("2006-01-02", "2022-01-18"); return t}()),
+		// 				PurchaseDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-18T21:51:29.906Z"); return t}()),
+		// 				Quantity: to.Ptr[float32](1),
 		// 				Renew: to.Ptr(false),
-		// 				ReservedResourceType: to.Ptr("VirtualMachines"),
+		// 				ReservedResourceType: to.Ptr("VirtualMachineSoftware"),
+		// 				SKUDescription: to.Ptr("Sku description"),
+		// 				Term: to.Ptr("P3Y"),
 		// 				UserFriendlyAppliedScopeType: to.Ptr("Shared"),
 		// 				UserFriendlyRenewState: to.Ptr("Off"),
 		// 				Utilization: &armbilling.ReservationPropertyUtilization{
@@ -76,33 +99,37 @@ func ExampleReservationsClient_NewListByBillingAccountPager() {
 		// 						{
 		// 							Grain: to.Ptr[float32](1),
 		// 							GrainUnit: to.Ptr("days"),
-		// 							Value: to.Ptr[float32](0.05),
+		// 							Value: to.Ptr[float32](0),
 		// 							ValueUnit: to.Ptr("percentage"),
 		// 						},
 		// 						{
 		// 							Grain: to.Ptr[float32](7),
 		// 							GrainUnit: to.Ptr("days"),
-		// 							Value: to.Ptr[float32](0.05),
+		// 							Value: to.Ptr[float32](0),
 		// 							ValueUnit: to.Ptr("percentage"),
 		// 						},
 		// 						{
 		// 							Grain: to.Ptr[float32](30),
 		// 							GrainUnit: to.Ptr("days"),
-		// 							Value: to.Ptr[float32](0.05),
+		// 							Value: to.Ptr[float32](0),
 		// 							ValueUnit: to.Ptr("percentage"),
 		// 					}},
-		// 					Trend: to.Ptr("UP"),
+		// 					Trend: to.Ptr("SAME"),
 		// 				},
 		// 			},
 		// 			SKU: &armbilling.ReservationSKUProperty{
-		// 				Name: to.Ptr("Standard_D1"),
+		// 				Name: to.Ptr("mock_sku"),
+		// 			},
+		// 			Tags: map[string]*string{
+		// 				"key1": to.Ptr("value1"),
+		// 				"key2": to.Ptr("value2"),
 		// 			},
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/ReservationsListByBillingProfile.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/reservationsListByBillingProfile.json
 func ExampleReservationsClient_NewListByBillingProfilePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -113,10 +140,12 @@ func ExampleReservationsClient_NewListByBillingProfilePager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewReservationsClient().NewListByBillingProfilePager("{billingAccountName}", "{billingProfileName}", &armbilling.ReservationsClientListByBillingProfileOptions{Filter: to.Ptr("properties/reservedResourceType eq 'VirtualMachines'"),
-		Orderby:        to.Ptr("properties/userFriendlyAppliedScopeType asc"),
+	pager := clientFactory.NewReservationsClient().NewListByBillingProfilePager("00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31", "AAAA-AAAA-AAA-AAA", &armbilling.ReservationsClientListByBillingProfileOptions{Filter: nil,
+		OrderBy:        nil,
+		Skiptoken:      nil,
 		RefreshSummary: nil,
 		SelectedState:  to.Ptr("Succeeded"),
+		Take:           nil,
 	})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
@@ -134,26 +163,40 @@ func ExampleReservationsClient_NewListByBillingProfilePager() {
 		// 		ExpiredCount: to.Ptr[float32](0),
 		// 		ExpiringCount: to.Ptr[float32](0),
 		// 		FailedCount: to.Ptr[float32](0),
+		// 		NoBenefitCount: to.Ptr[float32](0),
 		// 		PendingCount: to.Ptr[float32](0),
+		// 		ProcessingCount: to.Ptr[float32](0),
 		// 		SucceededCount: to.Ptr[float32](1),
+		// 		WarningCount: to.Ptr[float32](0),
 		// 	},
 		// 	Value: []*armbilling.Reservation{
 		// 		{
-		// 			Name: to.Ptr("00000000-0000-0000-0000-000000000001/00000000-0000-0000-0000-000000000000"),
-		// 			Type: to.Ptr("Microsoft.Capacity/reservationOrders/reservations"),
-		// 			ID: to.Ptr("/providers/microsoft.capacity/reservationOrders/00000000-0000-0000-0000-000000000001/reservations/00000000-0000-0000-0000-000000000000"),
-		// 			Location: to.Ptr("westus"),
+		// 			Name: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 			Type: to.Ptr("microsoft.billing/billingAccounts/reservationOrders/reservations"),
+		// 			ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/reservationOrders/00000000-0000-0000-0000-000000000001/reservations/00000000-0000-0000-0000-000000000000"),
+		// 			Location: to.Ptr("global"),
 		// 			Properties: &armbilling.ReservationProperty{
 		// 				AppliedScopeType: to.Ptr("Shared"),
-		// 				DisplayName: to.Ptr("VM_RI_07-21-2020_12-06"),
+		// 				Archived: to.Ptr(false),
+		// 				BenefitStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-18T21:54:31.074Z"); return t}()),
+		// 				BillingPlan: to.Ptr(armbilling.ReservationBillingPlanMonthly),
+		// 				BillingScopeID: to.Ptr("/subscriptions/eef82110-c91b-4395-9420-fcfcbefc5a47"),
+		// 				DisplayName: to.Ptr("VirtualMachineSoftware_01-18-2022_13-51"),
 		// 				DisplayProvisioningState: to.Ptr("Succeeded"),
-		// 				EffectiveDateTime: to.Ptr("0001-01-01T00:00:00"),
-		// 				ExpiryDate: to.Ptr("2023-07-21"),
+		// 				EffectiveDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "1-01-01T00:00:00.000Z"); return t}()),
+		// 				ExpiryDate: to.Ptr("2025-01-18"),
+		// 				ExpiryDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-18T21:54:31.074Z"); return t}()),
+		// 				InstanceFlexibility: to.Ptr(armbilling.InstanceFlexibilityOn),
+		// 				LastUpdatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0-12-31T15:54:17.000Z"); return t}()),
+		// 				ProductCode: to.Ptr("20000000-0000-0000-0000-000000000005"),
 		// 				ProvisioningState: to.Ptr("Succeeded"),
-		// 				Quantity: to.Ptr[float32](2),
+		// 				PurchaseDate: to.Ptr(func() time.Time { t, _ := time.Parse("2006-01-02", "2022-01-18"); return t}()),
+		// 				PurchaseDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-18T21:51:29.906Z"); return t}()),
+		// 				Quantity: to.Ptr[float32](1),
 		// 				Renew: to.Ptr(false),
-		// 				RenewSource: to.Ptr("/providers/Microsoft.Capacity/reservationorders/00000000-0000-0000-0000-000000000002/reservations/00000000-0000-0000-0000-000000000003"),
-		// 				ReservedResourceType: to.Ptr("VirtualMachines"),
+		// 				ReservedResourceType: to.Ptr("VirtualMachineSoftware"),
+		// 				SKUDescription: to.Ptr("Sku description"),
+		// 				Term: to.Ptr("P3Y"),
 		// 				UserFriendlyAppliedScopeType: to.Ptr("Shared"),
 		// 				UserFriendlyRenewState: to.Ptr("Off"),
 		// 				Utilization: &armbilling.ReservationPropertyUtilization{
@@ -161,26 +204,707 @@ func ExampleReservationsClient_NewListByBillingProfilePager() {
 		// 						{
 		// 							Grain: to.Ptr[float32](1),
 		// 							GrainUnit: to.Ptr("days"),
-		// 							Value: to.Ptr[float32](0.05),
+		// 							Value: to.Ptr[float32](0),
 		// 							ValueUnit: to.Ptr("percentage"),
 		// 						},
 		// 						{
 		// 							Grain: to.Ptr[float32](7),
 		// 							GrainUnit: to.Ptr("days"),
-		// 							Value: to.Ptr[float32](0.05),
+		// 							Value: to.Ptr[float32](0),
 		// 							ValueUnit: to.Ptr("percentage"),
 		// 						},
 		// 						{
 		// 							Grain: to.Ptr[float32](30),
 		// 							GrainUnit: to.Ptr("days"),
-		// 							Value: to.Ptr[float32](0.05),
+		// 							Value: to.Ptr[float32](0),
 		// 							ValueUnit: to.Ptr("percentage"),
 		// 					}},
-		// 					Trend: to.Ptr("UP"),
+		// 					Trend: to.Ptr("SAME"),
 		// 				},
 		// 			},
 		// 			SKU: &armbilling.ReservationSKUProperty{
-		// 				Name: to.Ptr("Standard_D1"),
+		// 				Name: to.Ptr("mock_sku"),
+		// 			},
+		// 			Tags: map[string]*string{
+		// 				"key1": to.Ptr("value1"),
+		// 				"key2": to.Ptr("value2"),
+		// 			},
+		// 	}},
+		// }
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/reservationGetByBillingAccount.json
+func ExampleReservationsClient_GetByReservationOrder_reservationGetByBillingAccount() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewReservationsClient().GetByReservationOrder(ctx, "00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31", "20000000-0000-0000-0000-000000000000", "30000000-0000-0000-0000-000000000000", &armbilling.ReservationsClientGetByReservationOrderOptions{Expand: nil})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Reservation = armbilling.Reservation{
+	// 	Name: to.Ptr("30000000-0000-0000-0000-000000000000"),
+	// 	Type: to.Ptr("microsoft.billing/billingAccounts/reservationOrders/reservations"),
+	// 	ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/reservationOrders/20000000-0000-0000-0000-000000000000/reservations/30000000-0000-0000-0000-000000000000"),
+	// 	Etag: to.Ptr[int32](15),
+	// 	Location: to.Ptr("westus"),
+	// 	Properties: &armbilling.ReservationProperty{
+	// 		AppliedScopeType: to.Ptr("Shared"),
+	// 		Archived: to.Ptr(false),
+	// 		BenefitStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-25T06:34:12.926Z"); return t}()),
+	// 		BillingPlan: to.Ptr(armbilling.ReservationBillingPlanMonthly),
+	// 		BillingScopeID: to.Ptr("/subscriptions/30000000-0000-0000-0000-000000000009"),
+	// 		DisplayName: to.Ptr("VM_RI_11-24-2021_22-30"),
+	// 		DisplayProvisioningState: to.Ptr("Succeeded"),
+	// 		EffectiveDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-24T01:46:05.425Z"); return t}()),
+	// 		ExpiryDate: to.Ptr("2024-11-25"),
+	// 		ExpiryDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-25T06:34:12.926Z"); return t}()),
+	// 		InstanceFlexibility: to.Ptr(armbilling.InstanceFlexibilityOn),
+	// 		LastUpdatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-24T01:46:05.534Z"); return t}()),
+	// 		ProductCode: to.Ptr("20000000-0000-0000-0000-000000000005"),
+	// 		ProvisioningState: to.Ptr("Succeeded"),
+	// 		PurchaseDate: to.Ptr(func() time.Time { t, _ := time.Parse("2006-01-02", "2021-11-25"); return t}()),
+	// 		PurchaseDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-25T06:31:18.392Z"); return t}()),
+	// 		Quantity: to.Ptr[float32](1),
+	// 		Renew: to.Ptr(true),
+	// 		RenewProperties: &armbilling.RenewPropertiesResponse{
+	// 			BillingCurrencyTotal: &armbilling.Price{
+	// 				Amount: to.Ptr[float64](715.68),
+	// 				CurrencyCode: to.Ptr("USD"),
+	// 			},
+	// 			PricingCurrencyTotal: &armbilling.Price{
+	// 				Amount: to.Ptr[float64](715.68),
+	// 				CurrencyCode: to.Ptr("USD"),
+	// 			},
+	// 			PurchaseProperties: &armbilling.ReservationPurchaseRequest{
+	// 				Location: to.Ptr("westus"),
+	// 				Properties: &armbilling.ReservationPurchaseRequestProperties{
+	// 					AppliedScopeType: to.Ptr(armbilling.AppliedScopeTypeShared),
+	// 					BillingPlan: to.Ptr(armbilling.ReservationBillingPlanMonthly),
+	// 					BillingScopeID: to.Ptr("/subscriptions/30000000-0000-0000-0000-000000000009"),
+	// 					DisplayName: to.Ptr("VM_RI_11-24-2021_22-30_renewed"),
+	// 					InstanceFlexibility: to.Ptr(armbilling.InstanceFlexibilityOn),
+	// 					Quantity: to.Ptr[int32](1),
+	// 					Renew: to.Ptr(false),
+	// 					ReservedResourceProperties: &armbilling.ReservationPurchaseRequestPropertiesReservedResourceProperties{
+	// 						InstanceFlexibility: to.Ptr(armbilling.InstanceFlexibilityOn),
+	// 					},
+	// 					ReservedResourceType: to.Ptr("VirtualMachines"),
+	// 					Term: to.Ptr("P3Y"),
+	// 				},
+	// 				SKU: &armbilling.SKUName{
+	// 					Name: to.Ptr("Standard_DS1_v2"),
+	// 				},
+	// 			},
+	// 		},
+	// 		ReservedResourceType: to.Ptr("VirtualMachines"),
+	// 		SKUDescription: to.Ptr("Reserved VM Instance, Standard_DS1_v2, US West, 3 Years"),
+	// 		Term: to.Ptr("P3Y"),
+	// 		UserFriendlyAppliedScopeType: to.Ptr("Shared"),
+	// 		UserFriendlyRenewState: to.Ptr("On"),
+	// 		Utilization: &armbilling.ReservationPropertyUtilization{
+	// 			Aggregates: []*armbilling.ReservationUtilizationAggregates{
+	// 				{
+	// 					Grain: to.Ptr[float32](1),
+	// 					GrainUnit: to.Ptr("days"),
+	// 					Value: to.Ptr[float32](0),
+	// 					ValueUnit: to.Ptr("percentage"),
+	// 				},
+	// 				{
+	// 					Grain: to.Ptr[float32](7),
+	// 					GrainUnit: to.Ptr("days"),
+	// 					Value: to.Ptr[float32](0),
+	// 					ValueUnit: to.Ptr("percentage"),
+	// 				},
+	// 				{
+	// 					Grain: to.Ptr[float32](30),
+	// 					GrainUnit: to.Ptr("days"),
+	// 					Value: to.Ptr[float32](0),
+	// 					ValueUnit: to.Ptr("percentage"),
+	// 			}},
+	// 			Trend: to.Ptr("SAME"),
+	// 		},
+	// 	},
+	// 	SKU: &armbilling.ReservationSKUProperty{
+	// 		Name: to.Ptr("Standard_DS1_v2"),
+	// 	},
+	// 	Tags: map[string]*string{
+	// 		"key1": to.Ptr("value1"),
+	// 		"key2": to.Ptr("value2"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/reservationGetByBillingAccountManagementGroup.json
+func ExampleReservationsClient_GetByReservationOrder_reservationGetByBillingAccountManagementGroup() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewReservationsClient().GetByReservationOrder(ctx, "00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31", "20000000-0000-0000-0000-000000000000", "30000000-0000-0000-0000-000000000000", &armbilling.ReservationsClientGetByReservationOrderOptions{Expand: nil})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Reservation = armbilling.Reservation{
+	// 	Name: to.Ptr("30000000-0000-0000-0000-000000000000"),
+	// 	Type: to.Ptr("microsoft.billing/billingAccounts/reservationOrders/reservations"),
+	// 	ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/reservationOrders/20000000-0000-0000-0000-000000000000/reservations/30000000-0000-0000-0000-000000000000"),
+	// 	Etag: to.Ptr[int32](21),
+	// 	Location: to.Ptr("westus"),
+	// 	Properties: &armbilling.ReservationProperty{
+	// 		AppliedScopeProperties: &armbilling.ReservationAppliedScopeProperties{
+	// 			DisplayName: to.Ptr("TestRg"),
+	// 			ManagementGroupID: to.Ptr("/providers/Microsoft.Management/managementGroups/TestRg"),
+	// 			TenantID: to.Ptr("50000000-0000-0000-0000-000000000009"),
+	// 		},
+	// 		AppliedScopeType: to.Ptr("ManagementGroup"),
+	// 		Archived: to.Ptr(false),
+	// 		BenefitStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-25T06:34:12.926Z"); return t}()),
+	// 		BillingPlan: to.Ptr(armbilling.ReservationBillingPlanMonthly),
+	// 		BillingScopeID: to.Ptr("/subscriptions/30000000-0000-0000-0000-000000000009"),
+	// 		DisplayName: to.Ptr("VM_RI_11-24-2021_22-30"),
+	// 		DisplayProvisioningState: to.Ptr("NoBenefit"),
+	// 		EffectiveDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-26T01:19:31.991Z"); return t}()),
+	// 		ExpiryDate: to.Ptr("2024-11-25"),
+	// 		ExpiryDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-25T06:34:12.926Z"); return t}()),
+	// 		ExtendedStatusInfo: &armbilling.ReservationExtendedStatusInfo{
+	// 			Message: to.Ptr("The subscriptions utilizing the reservation were removed or transferred from this account and no longer receive the reservation benefit. You can cancel the reservation or transfer to the right account or create resources and subscriptions to map it to this reservation."),
+	// 			StatusCode: to.Ptr(armbilling.ReservationStatusCodeNoBenefit),
+	// 		},
+	// 		InstanceFlexibility: to.Ptr(armbilling.InstanceFlexibilityOn),
+	// 		LastUpdatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-26T01:19:32.069Z"); return t}()),
+	// 		ProductCode: to.Ptr("20000000-0000-0000-0000-000000000005"),
+	// 		ProvisioningState: to.Ptr("Succeeded"),
+	// 		PurchaseDate: to.Ptr(func() time.Time { t, _ := time.Parse("2006-01-02", "2021-11-25"); return t}()),
+	// 		PurchaseDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-25T06:31:18.392Z"); return t}()),
+	// 		Quantity: to.Ptr[float32](1),
+	// 		Renew: to.Ptr(true),
+	// 		RenewProperties: &armbilling.RenewPropertiesResponse{
+	// 			BillingCurrencyTotal: &armbilling.Price{
+	// 				Amount: to.Ptr[float64](715.68),
+	// 				CurrencyCode: to.Ptr("USD"),
+	// 			},
+	// 			PricingCurrencyTotal: &armbilling.Price{
+	// 				Amount: to.Ptr[float64](715.68),
+	// 				CurrencyCode: to.Ptr("USD"),
+	// 			},
+	// 			PurchaseProperties: &armbilling.ReservationPurchaseRequest{
+	// 				Location: to.Ptr("westus"),
+	// 				Properties: &armbilling.ReservationPurchaseRequestProperties{
+	// 					AppliedScopeProperties: &armbilling.ReservationAppliedScopeProperties{
+	// 						ManagementGroupID: to.Ptr("/providers/Microsoft.Management/managementGroups/TestRg"),
+	// 						TenantID: to.Ptr("50000000-0000-0000-0000-000000000009"),
+	// 					},
+	// 					AppliedScopeType: to.Ptr(armbilling.AppliedScopeTypeManagementGroup),
+	// 					BillingPlan: to.Ptr(armbilling.ReservationBillingPlanMonthly),
+	// 					BillingScopeID: to.Ptr("/subscriptions/30000000-0000-0000-0000-000000000009"),
+	// 					DisplayName: to.Ptr("VM_RI_11-24-2021_22-30_renewed"),
+	// 					InstanceFlexibility: to.Ptr(armbilling.InstanceFlexibilityOn),
+	// 					Quantity: to.Ptr[int32](1),
+	// 					Renew: to.Ptr(false),
+	// 					ReservedResourceProperties: &armbilling.ReservationPurchaseRequestPropertiesReservedResourceProperties{
+	// 						InstanceFlexibility: to.Ptr(armbilling.InstanceFlexibilityOn),
+	// 					},
+	// 					ReservedResourceType: to.Ptr("VirtualMachines"),
+	// 					Term: to.Ptr("P3Y"),
+	// 				},
+	// 				SKU: &armbilling.SKUName{
+	// 					Name: to.Ptr("Standard_DS1_v2"),
+	// 				},
+	// 			},
+	// 		},
+	// 		ReservedResourceType: to.Ptr("VirtualMachines"),
+	// 		SKUDescription: to.Ptr("Reserved VM Instance, Standard_DS1_v2, US West, 3 Years"),
+	// 		Term: to.Ptr("P3Y"),
+	// 		UserFriendlyAppliedScopeType: to.Ptr("ManagementGroup"),
+	// 		UserFriendlyRenewState: to.Ptr("On"),
+	// 		Utilization: &armbilling.ReservationPropertyUtilization{
+	// 			Aggregates: []*armbilling.ReservationUtilizationAggregates{
+	// 				{
+	// 					Grain: to.Ptr[float32](1),
+	// 					GrainUnit: to.Ptr("days"),
+	// 					Value: to.Ptr[float32](0),
+	// 					ValueUnit: to.Ptr("percentage"),
+	// 				},
+	// 				{
+	// 					Grain: to.Ptr[float32](7),
+	// 					GrainUnit: to.Ptr("days"),
+	// 					Value: to.Ptr[float32](0),
+	// 					ValueUnit: to.Ptr("percentage"),
+	// 				},
+	// 				{
+	// 					Grain: to.Ptr[float32](30),
+	// 					GrainUnit: to.Ptr("days"),
+	// 					Value: to.Ptr[float32](0),
+	// 					ValueUnit: to.Ptr("percentage"),
+	// 			}},
+	// 			Trend: to.Ptr("SAME"),
+	// 		},
+	// 	},
+	// 	SKU: &armbilling.ReservationSKUProperty{
+	// 		Name: to.Ptr("Standard_DS1_v2"),
+	// 	},
+	// 	Tags: map[string]*string{
+	// 		"key1": to.Ptr("value1"),
+	// 		"key2": to.Ptr("value2"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/reservationGetByBillingAccountSingleResourceGroup.json
+func ExampleReservationsClient_GetByReservationOrder_reservationGetByBillingAccountSingleResourceGroup() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewReservationsClient().GetByReservationOrder(ctx, "00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31", "20000000-0000-0000-0000-000000000000", "30000000-0000-0000-0000-000000000000", &armbilling.ReservationsClientGetByReservationOrderOptions{Expand: nil})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Reservation = armbilling.Reservation{
+	// 	Name: to.Ptr("30000000-0000-0000-0000-000000000000"),
+	// 	Type: to.Ptr("microsoft.billing/billingAccounts/reservationOrders/reservations"),
+	// 	ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/reservationOrders/20000000-0000-0000-0000-000000000000/reservations/30000000-0000-0000-0000-000000000000"),
+	// 	Etag: to.Ptr[int32](23),
+	// 	Location: to.Ptr("westus"),
+	// 	Properties: &armbilling.ReservationProperty{
+	// 		AppliedScopeProperties: &armbilling.ReservationAppliedScopeProperties{
+	// 			DisplayName: to.Ptr("fastpathtesting_20210915"),
+	// 			ResourceGroupID: to.Ptr("/subscriptions/30000000-0000-0000-0000-000000000009/resourcegroups/fastpathtesting_20210915"),
+	// 		},
+	// 		AppliedScopeType: to.Ptr("Single"),
+	// 		Archived: to.Ptr(false),
+	// 		BenefitStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-25T06:34:12.926Z"); return t}()),
+	// 		BillingPlan: to.Ptr(armbilling.ReservationBillingPlanMonthly),
+	// 		BillingScopeID: to.Ptr("/subscriptions/30000000-0000-0000-0000-000000000009"),
+	// 		DisplayName: to.Ptr("VM_RI_11-24-2021_22-30"),
+	// 		DisplayProvisioningState: to.Ptr("Succeeded"),
+	// 		EffectiveDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-26T01:21:47.293Z"); return t}()),
+	// 		ExpiryDate: to.Ptr("2024-11-25"),
+	// 		ExpiryDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-25T06:34:12.926Z"); return t}()),
+	// 		InstanceFlexibility: to.Ptr(armbilling.InstanceFlexibilityOn),
+	// 		LastUpdatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-26T01:21:47.356Z"); return t}()),
+	// 		ProductCode: to.Ptr("20000000-0000-0000-0000-000000000005"),
+	// 		ProvisioningState: to.Ptr("Succeeded"),
+	// 		PurchaseDate: to.Ptr(func() time.Time { t, _ := time.Parse("2006-01-02", "2021-11-25"); return t}()),
+	// 		PurchaseDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-25T06:31:18.392Z"); return t}()),
+	// 		Quantity: to.Ptr[float32](1),
+	// 		Renew: to.Ptr(true),
+	// 		RenewProperties: &armbilling.RenewPropertiesResponse{
+	// 			BillingCurrencyTotal: &armbilling.Price{
+	// 				Amount: to.Ptr[float64](715.68),
+	// 				CurrencyCode: to.Ptr("USD"),
+	// 			},
+	// 			PricingCurrencyTotal: &armbilling.Price{
+	// 				Amount: to.Ptr[float64](715.68),
+	// 				CurrencyCode: to.Ptr("USD"),
+	// 			},
+	// 			PurchaseProperties: &armbilling.ReservationPurchaseRequest{
+	// 				Location: to.Ptr("westus"),
+	// 				Properties: &armbilling.ReservationPurchaseRequestProperties{
+	// 					AppliedScopeType: to.Ptr(armbilling.AppliedScopeTypeSingle),
+	// 					AppliedScopes: []*string{
+	// 						to.Ptr("/subscriptions/30000000-0000-0000-0000-000000000009/resourcegroups/fastpathtesting_20210915")},
+	// 						BillingPlan: to.Ptr(armbilling.ReservationBillingPlanMonthly),
+	// 						BillingScopeID: to.Ptr("/subscriptions/30000000-0000-0000-0000-000000000009"),
+	// 						DisplayName: to.Ptr("VM_RI_11-24-2021_22-30_renewed"),
+	// 						InstanceFlexibility: to.Ptr(armbilling.InstanceFlexibilityOn),
+	// 						Quantity: to.Ptr[int32](1),
+	// 						Renew: to.Ptr(false),
+	// 						ReservedResourceProperties: &armbilling.ReservationPurchaseRequestPropertiesReservedResourceProperties{
+	// 							InstanceFlexibility: to.Ptr(armbilling.InstanceFlexibilityOn),
+	// 						},
+	// 						ReservedResourceType: to.Ptr("VirtualMachines"),
+	// 						Term: to.Ptr("P3Y"),
+	// 					},
+	// 					SKU: &armbilling.SKUName{
+	// 						Name: to.Ptr("Standard_DS1_v2"),
+	// 					},
+	// 				},
+	// 			},
+	// 			ReservedResourceType: to.Ptr("VirtualMachines"),
+	// 			SKUDescription: to.Ptr("Reserved VM Instance, Standard_DS1_v2, US West, 3 Years"),
+	// 			Term: to.Ptr("P3Y"),
+	// 			UserFriendlyAppliedScopeType: to.Ptr("ResourceGroup"),
+	// 			UserFriendlyRenewState: to.Ptr("On"),
+	// 			Utilization: &armbilling.ReservationPropertyUtilization{
+	// 				Aggregates: []*armbilling.ReservationUtilizationAggregates{
+	// 					{
+	// 						Grain: to.Ptr[float32](1),
+	// 						GrainUnit: to.Ptr("days"),
+	// 						Value: to.Ptr[float32](0),
+	// 						ValueUnit: to.Ptr("percentage"),
+	// 					},
+	// 					{
+	// 						Grain: to.Ptr[float32](7),
+	// 						GrainUnit: to.Ptr("days"),
+	// 						Value: to.Ptr[float32](0),
+	// 						ValueUnit: to.Ptr("percentage"),
+	// 					},
+	// 					{
+	// 						Grain: to.Ptr[float32](30),
+	// 						GrainUnit: to.Ptr("days"),
+	// 						Value: to.Ptr[float32](0),
+	// 						ValueUnit: to.Ptr("percentage"),
+	// 				}},
+	// 				Trend: to.Ptr("SAME"),
+	// 			},
+	// 		},
+	// 		SKU: &armbilling.ReservationSKUProperty{
+	// 			Name: to.Ptr("Standard_DS1_v2"),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"key1": to.Ptr("value1"),
+	// 			"key2": to.Ptr("value2"),
+	// 		},
+	// 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/reservationGetByBillingAccountSingleScope.json
+func ExampleReservationsClient_GetByReservationOrder_reservationGetByBillingAccountSingleScope() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewReservationsClient().GetByReservationOrder(ctx, "00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31", "20000000-0000-0000-0000-000000000000", "30000000-0000-0000-0000-000000000000", &armbilling.ReservationsClientGetByReservationOrderOptions{Expand: nil})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Reservation = armbilling.Reservation{
+	// 	Name: to.Ptr("30000000-0000-0000-0000-000000000000"),
+	// 	Type: to.Ptr("microsoft.billing/billingAccounts/reservationOrders/reservations"),
+	// 	ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/reservationOrders/20000000-0000-0000-0000-000000000000/reservations/30000000-0000-0000-0000-000000000000"),
+	// 	Etag: to.Ptr[int32](19),
+	// 	Location: to.Ptr("westus"),
+	// 	Properties: &armbilling.ReservationProperty{
+	// 		AppliedScopeProperties: &armbilling.ReservationAppliedScopeProperties{
+	// 			DisplayName: to.Ptr("Azure subscription 1"),
+	// 			SubscriptionID: to.Ptr("/subscriptions/30000000-0000-0000-0000-000000000009"),
+	// 		},
+	// 		AppliedScopeType: to.Ptr("Single"),
+	// 		Archived: to.Ptr(false),
+	// 		BenefitStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-25T06:34:12.926Z"); return t}()),
+	// 		BillingPlan: to.Ptr(armbilling.ReservationBillingPlanMonthly),
+	// 		BillingScopeID: to.Ptr("/subscriptions/30000000-0000-0000-0000-000000000009"),
+	// 		DisplayName: to.Ptr("VM_RI_11-24-2021_22-30"),
+	// 		DisplayProvisioningState: to.Ptr("Succeeded"),
+	// 		EffectiveDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-26T01:14:18.558Z"); return t}()),
+	// 		ExpiryDate: to.Ptr("2024-11-25"),
+	// 		ExpiryDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-25T06:34:12.926Z"); return t}()),
+	// 		InstanceFlexibility: to.Ptr(armbilling.InstanceFlexibilityOff),
+	// 		LastUpdatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-26T01:14:18.605Z"); return t}()),
+	// 		ProductCode: to.Ptr("20000000-0000-0000-0000-000000000005"),
+	// 		ProvisioningState: to.Ptr("Succeeded"),
+	// 		PurchaseDate: to.Ptr(func() time.Time { t, _ := time.Parse("2006-01-02", "2021-11-25"); return t}()),
+	// 		PurchaseDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-25T06:31:18.392Z"); return t}()),
+	// 		Quantity: to.Ptr[float32](1),
+	// 		Renew: to.Ptr(true),
+	// 		RenewProperties: &armbilling.RenewPropertiesResponse{
+	// 			BillingCurrencyTotal: &armbilling.Price{
+	// 				Amount: to.Ptr[float64](715.68),
+	// 				CurrencyCode: to.Ptr("USD"),
+	// 			},
+	// 			PricingCurrencyTotal: &armbilling.Price{
+	// 				Amount: to.Ptr[float64](715.68),
+	// 				CurrencyCode: to.Ptr("USD"),
+	// 			},
+	// 			PurchaseProperties: &armbilling.ReservationPurchaseRequest{
+	// 				Location: to.Ptr("westus"),
+	// 				Properties: &armbilling.ReservationPurchaseRequestProperties{
+	// 					AppliedScopeType: to.Ptr(armbilling.AppliedScopeTypeSingle),
+	// 					AppliedScopes: []*string{
+	// 						to.Ptr("/subscriptions/30000000-0000-0000-0000-000000000009")},
+	// 						BillingPlan: to.Ptr(armbilling.ReservationBillingPlanMonthly),
+	// 						BillingScopeID: to.Ptr("/subscriptions/30000000-0000-0000-0000-000000000009"),
+	// 						DisplayName: to.Ptr("VM_RI_11-24-2021_22-30_renewed"),
+	// 						InstanceFlexibility: to.Ptr(armbilling.InstanceFlexibilityOff),
+	// 						Quantity: to.Ptr[int32](1),
+	// 						Renew: to.Ptr(false),
+	// 						ReservedResourceProperties: &armbilling.ReservationPurchaseRequestPropertiesReservedResourceProperties{
+	// 							InstanceFlexibility: to.Ptr(armbilling.InstanceFlexibilityOff),
+	// 						},
+	// 						ReservedResourceType: to.Ptr("VirtualMachines"),
+	// 						Term: to.Ptr("P3Y"),
+	// 					},
+	// 					SKU: &armbilling.SKUName{
+	// 						Name: to.Ptr("Standard_DS1_v2"),
+	// 					},
+	// 				},
+	// 			},
+	// 			ReservedResourceType: to.Ptr("VirtualMachines"),
+	// 			SKUDescription: to.Ptr("Reserved VM Instance, Standard_DS1_v2, US West, 3 Years"),
+	// 			Term: to.Ptr("P3Y"),
+	// 			UserFriendlyAppliedScopeType: to.Ptr("Single"),
+	// 			UserFriendlyRenewState: to.Ptr("On"),
+	// 			Utilization: &armbilling.ReservationPropertyUtilization{
+	// 				Aggregates: []*armbilling.ReservationUtilizationAggregates{
+	// 					{
+	// 						Grain: to.Ptr[float32](1),
+	// 						GrainUnit: to.Ptr("days"),
+	// 						Value: to.Ptr[float32](0),
+	// 						ValueUnit: to.Ptr("percentage"),
+	// 					},
+	// 					{
+	// 						Grain: to.Ptr[float32](7),
+	// 						GrainUnit: to.Ptr("days"),
+	// 						Value: to.Ptr[float32](0),
+	// 						ValueUnit: to.Ptr("percentage"),
+	// 					},
+	// 					{
+	// 						Grain: to.Ptr[float32](30),
+	// 						GrainUnit: to.Ptr("days"),
+	// 						Value: to.Ptr[float32](0),
+	// 						ValueUnit: to.Ptr("percentage"),
+	// 				}},
+	// 				Trend: to.Ptr("SAME"),
+	// 			},
+	// 		},
+	// 		SKU: &armbilling.ReservationSKUProperty{
+	// 			Name: to.Ptr("Standard_DS1_v2"),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"key1": to.Ptr("value1"),
+	// 			"key2": to.Ptr("value2"),
+	// 		},
+	// 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/reservationUpdateByBillingAccount.json
+func ExampleReservationsClient_BeginUpdateByBillingAccount() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewReservationsClient().BeginUpdateByBillingAccount(ctx, "00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31", "20000000-0000-0000-0000-000000000000", "30000000-0000-0000-0000-000000000000", armbilling.Patch{
+		Properties: &armbilling.PatchProperties{
+			DisplayName: to.Ptr("NewName"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Reservation = armbilling.Reservation{
+	// 	Name: to.Ptr("30000000-0000-0000-0000-000000000000"),
+	// 	Type: to.Ptr("microsoft.billing/billingAccounts/reservationOrders/reservations"),
+	// 	ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/reservationOrders/20000000-0000-0000-0000-000000000000/reservations/30000000-0000-0000-0000-000000000000"),
+	// 	Etag: to.Ptr[int32](15),
+	// 	Location: to.Ptr("westus"),
+	// 	Properties: &armbilling.ReservationProperty{
+	// 		AppliedScopeType: to.Ptr("Shared"),
+	// 		Archived: to.Ptr(false),
+	// 		BenefitStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-25T06:34:12.926Z"); return t}()),
+	// 		BillingPlan: to.Ptr(armbilling.ReservationBillingPlanMonthly),
+	// 		BillingScopeID: to.Ptr("/subscriptions/30000000-0000-0000-0000-000000000009"),
+	// 		DisplayName: to.Ptr("NewName"),
+	// 		DisplayProvisioningState: to.Ptr("Succeeded"),
+	// 		EffectiveDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-24T01:46:05.425Z"); return t}()),
+	// 		ExpiryDate: to.Ptr("2024-11-25"),
+	// 		ExpiryDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-25T06:34:12.926Z"); return t}()),
+	// 		InstanceFlexibility: to.Ptr(armbilling.InstanceFlexibilityOn),
+	// 		LastUpdatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-24T01:46:05.534Z"); return t}()),
+	// 		ProductCode: to.Ptr("20000000-0000-0000-0000-000000000005"),
+	// 		ProvisioningState: to.Ptr("Succeeded"),
+	// 		PurchaseDate: to.Ptr(func() time.Time { t, _ := time.Parse("2006-01-02", "2021-11-25"); return t}()),
+	// 		PurchaseDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-25T06:31:18.392Z"); return t}()),
+	// 		Quantity: to.Ptr[float32](1),
+	// 		Renew: to.Ptr(true),
+	// 		RenewProperties: &armbilling.RenewPropertiesResponse{
+	// 			BillingCurrencyTotal: &armbilling.Price{
+	// 				Amount: to.Ptr[float64](715.68),
+	// 				CurrencyCode: to.Ptr("USD"),
+	// 			},
+	// 			PricingCurrencyTotal: &armbilling.Price{
+	// 				Amount: to.Ptr[float64](715.68),
+	// 				CurrencyCode: to.Ptr("USD"),
+	// 			},
+	// 			PurchaseProperties: &armbilling.ReservationPurchaseRequest{
+	// 				Location: to.Ptr("westus"),
+	// 				Properties: &armbilling.ReservationPurchaseRequestProperties{
+	// 					AppliedScopeType: to.Ptr(armbilling.AppliedScopeTypeShared),
+	// 					BillingPlan: to.Ptr(armbilling.ReservationBillingPlanMonthly),
+	// 					BillingScopeID: to.Ptr("/subscriptions/30000000-0000-0000-0000-000000000009"),
+	// 					DisplayName: to.Ptr("VM_RI_11-24-2021_22-30_renewed"),
+	// 					InstanceFlexibility: to.Ptr(armbilling.InstanceFlexibilityOn),
+	// 					Quantity: to.Ptr[int32](1),
+	// 					Renew: to.Ptr(false),
+	// 					ReservedResourceProperties: &armbilling.ReservationPurchaseRequestPropertiesReservedResourceProperties{
+	// 						InstanceFlexibility: to.Ptr(armbilling.InstanceFlexibilityOn),
+	// 					},
+	// 					ReservedResourceType: to.Ptr("VirtualMachines"),
+	// 					Term: to.Ptr("P3Y"),
+	// 				},
+	// 				SKU: &armbilling.SKUName{
+	// 					Name: to.Ptr("Standard_DS1_v2"),
+	// 				},
+	// 			},
+	// 		},
+	// 		ReservedResourceType: to.Ptr("VirtualMachines"),
+	// 		SKUDescription: to.Ptr("Reserved VM Instance, Standard_DS1_v2, US West, 3 Years"),
+	// 		Term: to.Ptr("P3Y"),
+	// 		UserFriendlyAppliedScopeType: to.Ptr("Shared"),
+	// 		UserFriendlyRenewState: to.Ptr("On"),
+	// 		Utilization: &armbilling.ReservationPropertyUtilization{
+	// 			Aggregates: []*armbilling.ReservationUtilizationAggregates{
+	// 				{
+	// 					Grain: to.Ptr[float32](1),
+	// 					GrainUnit: to.Ptr("days"),
+	// 					Value: to.Ptr[float32](0),
+	// 					ValueUnit: to.Ptr("percentage"),
+	// 				},
+	// 				{
+	// 					Grain: to.Ptr[float32](7),
+	// 					GrainUnit: to.Ptr("days"),
+	// 					Value: to.Ptr[float32](0),
+	// 					ValueUnit: to.Ptr("percentage"),
+	// 				},
+	// 				{
+	// 					Grain: to.Ptr[float32](30),
+	// 					GrainUnit: to.Ptr("days"),
+	// 					Value: to.Ptr[float32](0),
+	// 					ValueUnit: to.Ptr("percentage"),
+	// 			}},
+	// 			Trend: to.Ptr("SAME"),
+	// 		},
+	// 	},
+	// 	SKU: &armbilling.ReservationSKUProperty{
+	// 		Name: to.Ptr("Standard_DS1_v2"),
+	// 	},
+	// 	Tags: map[string]*string{
+	// 		"key1": to.Ptr("value1"),
+	// 		"key2": to.Ptr("value2"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/reservationsGetFromOrderByBillingAccount.json
+func ExampleReservationsClient_NewListByReservationOrderPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewReservationsClient().NewListByReservationOrderPager("00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31", "20000000-0000-0000-0000-000000000000", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.ReservationList = armbilling.ReservationList{
+		// 	Value: []*armbilling.Reservation{
+		// 		{
+		// 			Name: to.Ptr("a7d70646-b848-4498-8093-5938128b225c"),
+		// 			Type: to.Ptr("microsoft.billing/billingAccounts/reservationOrders/reservations"),
+		// 			ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/4973e1de-a829-5c64-4fef-0a692e2b3108:1970c5da-0aa4-46fd-a917-4772f9a17978_2019-05-31/reservationOrders/99f340d1-6db4-41b4-b469-cfc499716973/reservations/a7d70646-b848-4498-8093-5938128b225c"),
+		// 			Etag: to.Ptr[int32](15),
+		// 			Location: to.Ptr("westus"),
+		// 			Properties: &armbilling.ReservationProperty{
+		// 				AppliedScopeType: to.Ptr("Shared"),
+		// 				Archived: to.Ptr(false),
+		// 				BenefitStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-25T06:34:12.926Z"); return t}()),
+		// 				BillingPlan: to.Ptr(armbilling.ReservationBillingPlanMonthly),
+		// 				BillingScopeID: to.Ptr("/subscriptions/eef82110-c91b-4395-9420-fcfcbefc5a47"),
+		// 				DisplayName: to.Ptr("VM_RI_11-24-2021_22-30"),
+		// 				DisplayProvisioningState: to.Ptr("Succeeded"),
+		// 				EffectiveDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-24T01:46:05.425Z"); return t}()),
+		// 				ExpiryDate: to.Ptr("2024-11-25"),
+		// 				ExpiryDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-25T06:34:12.926Z"); return t}()),
+		// 				InstanceFlexibility: to.Ptr(armbilling.InstanceFlexibilityOn),
+		// 				LastUpdatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-24T01:46:05.534Z"); return t}()),
+		// 				ProductCode: to.Ptr("20000000-0000-0000-0000-000000000005"),
+		// 				ProvisioningState: to.Ptr("Succeeded"),
+		// 				PurchaseDate: to.Ptr(func() time.Time { t, _ := time.Parse("2006-01-02", "2021-11-25"); return t}()),
+		// 				PurchaseDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-25T06:31:18.392Z"); return t}()),
+		// 				Quantity: to.Ptr[float32](1),
+		// 				Renew: to.Ptr(true),
+		// 				ReservedResourceType: to.Ptr("VirtualMachines"),
+		// 				SKUDescription: to.Ptr("Reserved VM Instance, Standard_DS1_v2, US West, 3 Years"),
+		// 				Term: to.Ptr("P3Y"),
+		// 				UserFriendlyAppliedScopeType: to.Ptr("Shared"),
+		// 				UserFriendlyRenewState: to.Ptr("On"),
+		// 				Utilization: &armbilling.ReservationPropertyUtilization{
+		// 					Aggregates: []*armbilling.ReservationUtilizationAggregates{
+		// 						{
+		// 							Grain: to.Ptr[float32](1),
+		// 							GrainUnit: to.Ptr("days"),
+		// 							Value: to.Ptr[float32](0),
+		// 							ValueUnit: to.Ptr("percentage"),
+		// 						},
+		// 						{
+		// 							Grain: to.Ptr[float32](7),
+		// 							GrainUnit: to.Ptr("days"),
+		// 							Value: to.Ptr[float32](0),
+		// 							ValueUnit: to.Ptr("percentage"),
+		// 						},
+		// 						{
+		// 							Grain: to.Ptr[float32](30),
+		// 							GrainUnit: to.Ptr("days"),
+		// 							Value: to.Ptr[float32](0),
+		// 							ValueUnit: to.Ptr("percentage"),
+		// 					}},
+		// 					Trend: to.Ptr("SAME"),
+		// 				},
+		// 			},
+		// 			SKU: &armbilling.ReservationSKUProperty{
+		// 				Name: to.Ptr("Standard_DS1_v2"),
+		// 			},
+		// 			Tags: map[string]*string{
+		// 				"key1": to.Ptr("value1"),
+		// 				"key2": to.Ptr("value2"),
 		// 			},
 		// 	}},
 		// }

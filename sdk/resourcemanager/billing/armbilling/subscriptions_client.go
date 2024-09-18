@@ -17,46 +17,199 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
+	"strconv"
 	"strings"
 )
 
 // SubscriptionsClient contains the methods for the BillingSubscriptions group.
 // Don't use this type directly, use NewSubscriptionsClient() instead.
 type SubscriptionsClient struct {
-	internal       *arm.Client
-	subscriptionID string
+	internal *arm.Client
 }
 
 // NewSubscriptionsClient creates a new instance of SubscriptionsClient with the specified values.
-//   - subscriptionID - The ID that uniquely identifies an Azure subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
-func NewSubscriptionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SubscriptionsClient, error) {
+func NewSubscriptionsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*SubscriptionsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &SubscriptionsClient{
-		subscriptionID: subscriptionID,
-		internal:       cl,
+		internal: cl,
 	}
 	return client, nil
 }
 
-// Get - Gets a subscription by its ID. The operation is supported for billing accounts with agreement type Microsoft Customer
-// Agreement and Microsoft Partner Agreement.
+// BeginCancel - Cancels a usage-based subscription. This operation is supported only for billing accounts of type Microsoft
+// Partner Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-05-01
+// Generated from API version 2024-04-01
 //   - billingAccountName - The ID that uniquely identifies a billing account.
+//   - billingSubscriptionName - The ID that uniquely identifies a subscription.
+//   - parameters - Request parameters for cancel customer subscription.
+//   - options - SubscriptionsClientBeginCancelOptions contains the optional parameters for the SubscriptionsClient.BeginCancel
+//     method.
+func (client *SubscriptionsClient) BeginCancel(ctx context.Context, billingAccountName string, billingSubscriptionName string, parameters CancelSubscriptionRequest, options *SubscriptionsClientBeginCancelOptions) (*runtime.Poller[SubscriptionsClientCancelResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.cancel(ctx, billingAccountName, billingSubscriptionName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SubscriptionsClientCancelResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SubscriptionsClientCancelResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// Cancel - Cancels a usage-based subscription. This operation is supported only for billing accounts of type Microsoft Partner
+// Agreement.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01
+func (client *SubscriptionsClient) cancel(ctx context.Context, billingAccountName string, billingSubscriptionName string, parameters CancelSubscriptionRequest, options *SubscriptionsClientBeginCancelOptions) (*http.Response, error) {
+	var err error
+	const operationName = "SubscriptionsClient.BeginCancel"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.cancelCreateRequest(ctx, billingAccountName, billingSubscriptionName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// cancelCreateRequest creates the Cancel request.
+func (client *SubscriptionsClient) cancelCreateRequest(ctx context.Context, billingAccountName string, billingSubscriptionName string, parameters CancelSubscriptionRequest, options *SubscriptionsClientBeginCancelOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingSubscriptions/{billingSubscriptionName}/cancel"
+	if billingAccountName == "" {
+		return nil, errors.New("parameter billingAccountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
+	if billingSubscriptionName == "" {
+		return nil, errors.New("parameter billingSubscriptionName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingSubscriptionName}", url.PathEscape(billingSubscriptionName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-04-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginDelete - Cancels a billing subscription. This operation is supported only for billing accounts of type Microsoft Partner
+// Agreement or Microsoft Customer Agreement.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01
+//   - billingAccountName - The ID that uniquely identifies a billing account.
+//   - billingSubscriptionName - The ID that uniquely identifies a subscription.
+//   - options - SubscriptionsClientBeginDeleteOptions contains the optional parameters for the SubscriptionsClient.BeginDelete
+//     method.
+func (client *SubscriptionsClient) BeginDelete(ctx context.Context, billingAccountName string, billingSubscriptionName string, options *SubscriptionsClientBeginDeleteOptions) (*runtime.Poller[SubscriptionsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, billingAccountName, billingSubscriptionName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SubscriptionsClientDeleteResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SubscriptionsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// Delete - Cancels a billing subscription. This operation is supported only for billing accounts of type Microsoft Partner
+// Agreement or Microsoft Customer Agreement.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01
+func (client *SubscriptionsClient) deleteOperation(ctx context.Context, billingAccountName string, billingSubscriptionName string, options *SubscriptionsClientBeginDeleteOptions) (*http.Response, error) {
+	var err error
+	const operationName = "SubscriptionsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.deleteCreateRequest(ctx, billingAccountName, billingSubscriptionName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// deleteCreateRequest creates the Delete request.
+func (client *SubscriptionsClient) deleteCreateRequest(ctx context.Context, billingAccountName string, billingSubscriptionName string, options *SubscriptionsClientBeginDeleteOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingSubscriptions/{billingSubscriptionName}"
+	if billingAccountName == "" {
+		return nil, errors.New("parameter billingAccountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
+	if billingSubscriptionName == "" {
+		return nil, errors.New("parameter billingSubscriptionName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingSubscriptionName}", url.PathEscape(billingSubscriptionName))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-04-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// Get - Gets a subscription by its ID. The operation is supported for billing accounts with agreement type Microsoft Customer
+// Agreement, Microsoft Partner Agreement, and Enterprise Agreement.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01
+//   - billingAccountName - The ID that uniquely identifies a billing account.
+//   - billingSubscriptionName - The ID that uniquely identifies a subscription.
 //   - options - SubscriptionsClientGetOptions contains the optional parameters for the SubscriptionsClient.Get method.
-func (client *SubscriptionsClient) Get(ctx context.Context, billingAccountName string, options *SubscriptionsClientGetOptions) (SubscriptionsClientGetResponse, error) {
+func (client *SubscriptionsClient) Get(ctx context.Context, billingAccountName string, billingSubscriptionName string, options *SubscriptionsClientGetOptions) (SubscriptionsClientGetResponse, error) {
 	var err error
 	const operationName = "SubscriptionsClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, billingAccountName, options)
+	req, err := client.getCreateRequest(ctx, billingAccountName, billingSubscriptionName, options)
 	if err != nil {
 		return SubscriptionsClientGetResponse{}, err
 	}
@@ -73,22 +226,25 @@ func (client *SubscriptionsClient) Get(ctx context.Context, billingAccountName s
 }
 
 // getCreateRequest creates the Get request.
-func (client *SubscriptionsClient) getCreateRequest(ctx context.Context, billingAccountName string, options *SubscriptionsClientGetOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingSubscriptions/{subscriptionId}"
+func (client *SubscriptionsClient) getCreateRequest(ctx context.Context, billingAccountName string, billingSubscriptionName string, options *SubscriptionsClientGetOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingSubscriptions/{billingSubscriptionName}"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	if billingSubscriptionName == "" {
+		return nil, errors.New("parameter billingSubscriptionName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	urlPath = strings.ReplaceAll(urlPath, "{billingSubscriptionName}", url.PathEscape(billingSubscriptionName))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-05-01")
+	reqQP.Set("api-version", "2024-04-01")
+	if options != nil && options.Expand != nil {
+		reqQP.Set("expand", *options.Expand)
+	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -103,10 +259,79 @@ func (client *SubscriptionsClient) getHandleResponse(resp *http.Response) (Subsc
 	return result, nil
 }
 
-// NewListByBillingAccountPager - Lists the subscriptions for a billing account. The operation is supported for billing accounts
-// with agreement type Microsoft Customer Agreement or Microsoft Partner Agreement.
+// GetByBillingProfile - Gets a subscription by its billing profile and ID. The operation is supported for billing accounts
+// with agreement type Enterprise Agreement.
+// If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-05-01
+// Generated from API version 2024-04-01
+//   - billingAccountName - The ID that uniquely identifies a billing account.
+//   - billingProfileName - The ID that uniquely identifies a billing profile.
+//   - billingSubscriptionName - The ID that uniquely identifies a subscription.
+//   - options - SubscriptionsClientGetByBillingProfileOptions contains the optional parameters for the SubscriptionsClient.GetByBillingProfile
+//     method.
+func (client *SubscriptionsClient) GetByBillingProfile(ctx context.Context, billingAccountName string, billingProfileName string, billingSubscriptionName string, options *SubscriptionsClientGetByBillingProfileOptions) (SubscriptionsClientGetByBillingProfileResponse, error) {
+	var err error
+	const operationName = "SubscriptionsClient.GetByBillingProfile"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getByBillingProfileCreateRequest(ctx, billingAccountName, billingProfileName, billingSubscriptionName, options)
+	if err != nil {
+		return SubscriptionsClientGetByBillingProfileResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return SubscriptionsClientGetByBillingProfileResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return SubscriptionsClientGetByBillingProfileResponse{}, err
+	}
+	resp, err := client.getByBillingProfileHandleResponse(httpResp)
+	return resp, err
+}
+
+// getByBillingProfileCreateRequest creates the GetByBillingProfile request.
+func (client *SubscriptionsClient) getByBillingProfileCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, billingSubscriptionName string, options *SubscriptionsClientGetByBillingProfileOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/billingSubscriptions/{billingSubscriptionName}"
+	if billingAccountName == "" {
+		return nil, errors.New("parameter billingAccountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
+	if billingProfileName == "" {
+		return nil, errors.New("parameter billingProfileName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingProfileName}", url.PathEscape(billingProfileName))
+	if billingSubscriptionName == "" {
+		return nil, errors.New("parameter billingSubscriptionName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingSubscriptionName}", url.PathEscape(billingSubscriptionName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-04-01")
+	if options != nil && options.Expand != nil {
+		reqQP.Set("expand", *options.Expand)
+	}
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getByBillingProfileHandleResponse handles the GetByBillingProfile response.
+func (client *SubscriptionsClient) getByBillingProfileHandleResponse(resp *http.Response) (SubscriptionsClientGetByBillingProfileResponse, error) {
+	result := SubscriptionsClientGetByBillingProfileResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Subscription); err != nil {
+		return SubscriptionsClientGetByBillingProfileResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListByBillingAccountPager - Lists the subscriptions for a billing account.
+//
+// Generated from API version 2024-04-01
 //   - billingAccountName - The ID that uniquely identifies a billing account.
 //   - options - SubscriptionsClientListByBillingAccountOptions contains the optional parameters for the SubscriptionsClient.NewListByBillingAccountPager
 //     method.
@@ -145,7 +370,37 @@ func (client *SubscriptionsClient) listByBillingAccountCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-05-01")
+	reqQP.Set("api-version", "2024-04-01")
+	if options != nil && options.Count != nil {
+		reqQP.Set("count", strconv.FormatBool(*options.Count))
+	}
+	if options != nil && options.Expand != nil {
+		reqQP.Set("expand", *options.Expand)
+	}
+	if options != nil && options.Filter != nil {
+		reqQP.Set("filter", *options.Filter)
+	}
+	if options != nil && options.IncludeDeleted != nil {
+		reqQP.Set("includeDeleted", strconv.FormatBool(*options.IncludeDeleted))
+	}
+	if options != nil && options.IncludeFailed != nil {
+		reqQP.Set("includeFailed", strconv.FormatBool(*options.IncludeFailed))
+	}
+	if options != nil && options.IncludeTenantSubscriptions != nil {
+		reqQP.Set("includeTenantSubscriptions", strconv.FormatBool(*options.IncludeTenantSubscriptions))
+	}
+	if options != nil && options.OrderBy != nil {
+		reqQP.Set("orderBy", *options.OrderBy)
+	}
+	if options != nil && options.Search != nil {
+		reqQP.Set("search", *options.Search)
+	}
+	if options != nil && options.Skip != nil {
+		reqQP.Set("skip", strconv.FormatInt(*options.Skip, 10))
+	}
+	if options != nil && options.Top != nil {
+		reqQP.Set("top", strconv.FormatInt(*options.Top, 10))
+	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -154,7 +409,7 @@ func (client *SubscriptionsClient) listByBillingAccountCreateRequest(ctx context
 // listByBillingAccountHandleResponse handles the ListByBillingAccount response.
 func (client *SubscriptionsClient) listByBillingAccountHandleResponse(resp *http.Response) (SubscriptionsClientListByBillingAccountResponse, error) {
 	result := SubscriptionsClientListByBillingAccountResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.SubscriptionsListResult); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.SubscriptionListResult); err != nil {
 		return SubscriptionsClientListByBillingAccountResponse{}, err
 	}
 	return result, nil
@@ -163,7 +418,7 @@ func (client *SubscriptionsClient) listByBillingAccountHandleResponse(resp *http
 // NewListByBillingProfilePager - Lists the subscriptions that are billed to a billing profile. The operation is supported
 // for billing accounts with agreement type Microsoft Customer Agreement or Microsoft Partner Agreement.
 //
-// Generated from API version 2020-05-01
+// Generated from API version 2024-04-01
 //   - billingAccountName - The ID that uniquely identifies a billing account.
 //   - billingProfileName - The ID that uniquely identifies a billing profile.
 //   - options - SubscriptionsClientListByBillingProfileOptions contains the optional parameters for the SubscriptionsClient.NewListByBillingProfilePager
@@ -207,7 +462,31 @@ func (client *SubscriptionsClient) listByBillingProfileCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-05-01")
+	reqQP.Set("api-version", "2024-04-01")
+	if options != nil && options.Count != nil {
+		reqQP.Set("count", strconv.FormatBool(*options.Count))
+	}
+	if options != nil && options.Expand != nil {
+		reqQP.Set("expand", *options.Expand)
+	}
+	if options != nil && options.Filter != nil {
+		reqQP.Set("filter", *options.Filter)
+	}
+	if options != nil && options.IncludeDeleted != nil {
+		reqQP.Set("includeDeleted", strconv.FormatBool(*options.IncludeDeleted))
+	}
+	if options != nil && options.OrderBy != nil {
+		reqQP.Set("orderBy", *options.OrderBy)
+	}
+	if options != nil && options.Search != nil {
+		reqQP.Set("search", *options.Search)
+	}
+	if options != nil && options.Skip != nil {
+		reqQP.Set("skip", strconv.FormatInt(*options.Skip, 10))
+	}
+	if options != nil && options.Top != nil {
+		reqQP.Set("top", strconv.FormatInt(*options.Top, 10))
+	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -216,7 +495,7 @@ func (client *SubscriptionsClient) listByBillingProfileCreateRequest(ctx context
 // listByBillingProfileHandleResponse handles the ListByBillingProfile response.
 func (client *SubscriptionsClient) listByBillingProfileHandleResponse(resp *http.Response) (SubscriptionsClientListByBillingProfileResponse, error) {
 	result := SubscriptionsClientListByBillingProfileResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.SubscriptionsListResult); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.SubscriptionListResult); err != nil {
 		return SubscriptionsClientListByBillingProfileResponse{}, err
 	}
 	return result, nil
@@ -225,12 +504,13 @@ func (client *SubscriptionsClient) listByBillingProfileHandleResponse(resp *http
 // NewListByCustomerPager - Lists the subscriptions for a customer. The operation is supported only for billing accounts with
 // agreement type Microsoft Partner Agreement.
 //
-// Generated from API version 2020-05-01
+// Generated from API version 2024-04-01
 //   - billingAccountName - The ID that uniquely identifies a billing account.
+//   - billingProfileName - The ID that uniquely identifies a billing profile.
 //   - customerName - The ID that uniquely identifies a customer.
 //   - options - SubscriptionsClientListByCustomerOptions contains the optional parameters for the SubscriptionsClient.NewListByCustomerPager
 //     method.
-func (client *SubscriptionsClient) NewListByCustomerPager(billingAccountName string, customerName string, options *SubscriptionsClientListByCustomerOptions) *runtime.Pager[SubscriptionsClientListByCustomerResponse] {
+func (client *SubscriptionsClient) NewListByCustomerPager(billingAccountName string, billingProfileName string, customerName string, options *SubscriptionsClientListByCustomerOptions) *runtime.Pager[SubscriptionsClientListByCustomerResponse] {
 	return runtime.NewPager(runtime.PagingHandler[SubscriptionsClientListByCustomerResponse]{
 		More: func(page SubscriptionsClientListByCustomerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -242,7 +522,7 @@ func (client *SubscriptionsClient) NewListByCustomerPager(billingAccountName str
 				nextLink = *page.NextLink
 			}
 			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByCustomerCreateRequest(ctx, billingAccountName, customerName, options)
+				return client.listByCustomerCreateRequest(ctx, billingAccountName, billingProfileName, customerName, options)
 			}, nil)
 			if err != nil {
 				return SubscriptionsClientListByCustomerResponse{}, err
@@ -254,7 +534,97 @@ func (client *SubscriptionsClient) NewListByCustomerPager(billingAccountName str
 }
 
 // listByCustomerCreateRequest creates the ListByCustomer request.
-func (client *SubscriptionsClient) listByCustomerCreateRequest(ctx context.Context, billingAccountName string, customerName string, options *SubscriptionsClientListByCustomerOptions) (*policy.Request, error) {
+func (client *SubscriptionsClient) listByCustomerCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, customerName string, options *SubscriptionsClientListByCustomerOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/customers/{customerName}/billingSubscriptions"
+	if billingAccountName == "" {
+		return nil, errors.New("parameter billingAccountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
+	if billingProfileName == "" {
+		return nil, errors.New("parameter billingProfileName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingProfileName}", url.PathEscape(billingProfileName))
+	if customerName == "" {
+		return nil, errors.New("parameter customerName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{customerName}", url.PathEscape(customerName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-04-01")
+	if options != nil && options.Count != nil {
+		reqQP.Set("count", strconv.FormatBool(*options.Count))
+	}
+	if options != nil && options.Expand != nil {
+		reqQP.Set("expand", *options.Expand)
+	}
+	if options != nil && options.Filter != nil {
+		reqQP.Set("filter", *options.Filter)
+	}
+	if options != nil && options.IncludeDeleted != nil {
+		reqQP.Set("includeDeleted", strconv.FormatBool(*options.IncludeDeleted))
+	}
+	if options != nil && options.OrderBy != nil {
+		reqQP.Set("orderBy", *options.OrderBy)
+	}
+	if options != nil && options.Search != nil {
+		reqQP.Set("search", *options.Search)
+	}
+	if options != nil && options.Skip != nil {
+		reqQP.Set("skip", strconv.FormatInt(*options.Skip, 10))
+	}
+	if options != nil && options.Top != nil {
+		reqQP.Set("top", strconv.FormatInt(*options.Top, 10))
+	}
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listByCustomerHandleResponse handles the ListByCustomer response.
+func (client *SubscriptionsClient) listByCustomerHandleResponse(resp *http.Response) (SubscriptionsClientListByCustomerResponse, error) {
+	result := SubscriptionsClientListByCustomerResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SubscriptionListResult); err != nil {
+		return SubscriptionsClientListByCustomerResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListByCustomerAtBillingAccountPager - Lists the subscriptions for a customer at billing account level. The operation
+// is supported only for billing accounts with agreement type Microsoft Partner Agreement.
+//
+// Generated from API version 2024-04-01
+//   - billingAccountName - The ID that uniquely identifies a billing account.
+//   - customerName - The ID that uniquely identifies a customer.
+//   - options - SubscriptionsClientListByCustomerAtBillingAccountOptions contains the optional parameters for the SubscriptionsClient.NewListByCustomerAtBillingAccountPager
+//     method.
+func (client *SubscriptionsClient) NewListByCustomerAtBillingAccountPager(billingAccountName string, customerName string, options *SubscriptionsClientListByCustomerAtBillingAccountOptions) *runtime.Pager[SubscriptionsClientListByCustomerAtBillingAccountResponse] {
+	return runtime.NewPager(runtime.PagingHandler[SubscriptionsClientListByCustomerAtBillingAccountResponse]{
+		More: func(page SubscriptionsClientListByCustomerAtBillingAccountResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *SubscriptionsClientListByCustomerAtBillingAccountResponse) (SubscriptionsClientListByCustomerAtBillingAccountResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SubscriptionsClient.NewListByCustomerAtBillingAccountPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByCustomerAtBillingAccountCreateRequest(ctx, billingAccountName, customerName, options)
+			}, nil)
+			if err != nil {
+				return SubscriptionsClientListByCustomerAtBillingAccountResponse{}, err
+			}
+			return client.listByCustomerAtBillingAccountHandleResponse(resp)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listByCustomerAtBillingAccountCreateRequest creates the ListByCustomerAtBillingAccount request.
+func (client *SubscriptionsClient) listByCustomerAtBillingAccountCreateRequest(ctx context.Context, billingAccountName string, customerName string, options *SubscriptionsClientListByCustomerAtBillingAccountOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/customers/{customerName}/billingSubscriptions"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -269,17 +639,121 @@ func (client *SubscriptionsClient) listByCustomerCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-05-01")
+	reqQP.Set("api-version", "2024-04-01")
+	if options != nil && options.Count != nil {
+		reqQP.Set("count", strconv.FormatBool(*options.Count))
+	}
+	if options != nil && options.Expand != nil {
+		reqQP.Set("expand", *options.Expand)
+	}
+	if options != nil && options.Filter != nil {
+		reqQP.Set("filter", *options.Filter)
+	}
+	if options != nil && options.IncludeDeleted != nil {
+		reqQP.Set("includeDeleted", strconv.FormatBool(*options.IncludeDeleted))
+	}
+	if options != nil && options.OrderBy != nil {
+		reqQP.Set("orderBy", *options.OrderBy)
+	}
+	if options != nil && options.Search != nil {
+		reqQP.Set("search", *options.Search)
+	}
+	if options != nil && options.Skip != nil {
+		reqQP.Set("skip", strconv.FormatInt(*options.Skip, 10))
+	}
+	if options != nil && options.Top != nil {
+		reqQP.Set("top", strconv.FormatInt(*options.Top, 10))
+	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// listByCustomerHandleResponse handles the ListByCustomer response.
-func (client *SubscriptionsClient) listByCustomerHandleResponse(resp *http.Response) (SubscriptionsClientListByCustomerResponse, error) {
-	result := SubscriptionsClientListByCustomerResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.SubscriptionsListResult); err != nil {
-		return SubscriptionsClientListByCustomerResponse{}, err
+// listByCustomerAtBillingAccountHandleResponse handles the ListByCustomerAtBillingAccount response.
+func (client *SubscriptionsClient) listByCustomerAtBillingAccountHandleResponse(resp *http.Response) (SubscriptionsClientListByCustomerAtBillingAccountResponse, error) {
+	result := SubscriptionsClientListByCustomerAtBillingAccountResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SubscriptionListResult); err != nil {
+		return SubscriptionsClientListByCustomerAtBillingAccountResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListByEnrollmentAccountPager - Lists the subscriptions for an enrollment account. The operation is supported for billing
+// accounts with agreement type Enterprise Agreement.
+//
+// Generated from API version 2024-04-01
+//   - billingAccountName - The ID that uniquely identifies a billing account.
+//   - enrollmentAccountName - The name of the enrollment account.
+//   - options - SubscriptionsClientListByEnrollmentAccountOptions contains the optional parameters for the SubscriptionsClient.NewListByEnrollmentAccountPager
+//     method.
+func (client *SubscriptionsClient) NewListByEnrollmentAccountPager(billingAccountName string, enrollmentAccountName string, options *SubscriptionsClientListByEnrollmentAccountOptions) *runtime.Pager[SubscriptionsClientListByEnrollmentAccountResponse] {
+	return runtime.NewPager(runtime.PagingHandler[SubscriptionsClientListByEnrollmentAccountResponse]{
+		More: func(page SubscriptionsClientListByEnrollmentAccountResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *SubscriptionsClientListByEnrollmentAccountResponse) (SubscriptionsClientListByEnrollmentAccountResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SubscriptionsClient.NewListByEnrollmentAccountPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByEnrollmentAccountCreateRequest(ctx, billingAccountName, enrollmentAccountName, options)
+			}, nil)
+			if err != nil {
+				return SubscriptionsClientListByEnrollmentAccountResponse{}, err
+			}
+			return client.listByEnrollmentAccountHandleResponse(resp)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listByEnrollmentAccountCreateRequest creates the ListByEnrollmentAccount request.
+func (client *SubscriptionsClient) listByEnrollmentAccountCreateRequest(ctx context.Context, billingAccountName string, enrollmentAccountName string, options *SubscriptionsClientListByEnrollmentAccountOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/enrollmentAccounts/{enrollmentAccountName}/billingSubscriptions"
+	if billingAccountName == "" {
+		return nil, errors.New("parameter billingAccountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
+	if enrollmentAccountName == "" {
+		return nil, errors.New("parameter enrollmentAccountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{enrollmentAccountName}", url.PathEscape(enrollmentAccountName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-04-01")
+	if options != nil && options.Count != nil {
+		reqQP.Set("count", strconv.FormatBool(*options.Count))
+	}
+	if options != nil && options.Filter != nil {
+		reqQP.Set("filter", *options.Filter)
+	}
+	if options != nil && options.OrderBy != nil {
+		reqQP.Set("orderBy", *options.OrderBy)
+	}
+	if options != nil && options.Search != nil {
+		reqQP.Set("search", *options.Search)
+	}
+	if options != nil && options.Skip != nil {
+		reqQP.Set("skip", strconv.FormatInt(*options.Skip, 10))
+	}
+	if options != nil && options.Top != nil {
+		reqQP.Set("top", strconv.FormatInt(*options.Top, 10))
+	}
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listByEnrollmentAccountHandleResponse handles the ListByEnrollmentAccount response.
+func (client *SubscriptionsClient) listByEnrollmentAccountHandleResponse(resp *http.Response) (SubscriptionsClientListByEnrollmentAccountResponse, error) {
+	result := SubscriptionsClientListByEnrollmentAccountResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SubscriptionListResult); err != nil {
+		return SubscriptionsClientListByEnrollmentAccountResponse{}, err
 	}
 	return result, nil
 }
@@ -287,7 +761,7 @@ func (client *SubscriptionsClient) listByCustomerHandleResponse(resp *http.Respo
 // NewListByInvoiceSectionPager - Lists the subscriptions that are billed to an invoice section. The operation is supported
 // only for billing accounts with agreement type Microsoft Customer Agreement.
 //
-// Generated from API version 2020-05-01
+// Generated from API version 2024-04-01
 //   - billingAccountName - The ID that uniquely identifies a billing account.
 //   - billingProfileName - The ID that uniquely identifies a billing profile.
 //   - invoiceSectionName - The ID that uniquely identifies an invoice section.
@@ -336,7 +810,31 @@ func (client *SubscriptionsClient) listByInvoiceSectionCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-05-01")
+	reqQP.Set("api-version", "2024-04-01")
+	if options != nil && options.Count != nil {
+		reqQP.Set("count", strconv.FormatBool(*options.Count))
+	}
+	if options != nil && options.Expand != nil {
+		reqQP.Set("expand", *options.Expand)
+	}
+	if options != nil && options.Filter != nil {
+		reqQP.Set("filter", *options.Filter)
+	}
+	if options != nil && options.IncludeDeleted != nil {
+		reqQP.Set("includeDeleted", strconv.FormatBool(*options.IncludeDeleted))
+	}
+	if options != nil && options.OrderBy != nil {
+		reqQP.Set("orderBy", *options.OrderBy)
+	}
+	if options != nil && options.Search != nil {
+		reqQP.Set("search", *options.Search)
+	}
+	if options != nil && options.Skip != nil {
+		reqQP.Set("skip", strconv.FormatInt(*options.Skip, 10))
+	}
+	if options != nil && options.Top != nil {
+		reqQP.Set("top", strconv.FormatInt(*options.Top, 10))
+	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -345,29 +843,108 @@ func (client *SubscriptionsClient) listByInvoiceSectionCreateRequest(ctx context
 // listByInvoiceSectionHandleResponse handles the ListByInvoiceSection response.
 func (client *SubscriptionsClient) listByInvoiceSectionHandleResponse(resp *http.Response) (SubscriptionsClientListByInvoiceSectionResponse, error) {
 	result := SubscriptionsClientListByInvoiceSectionResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.SubscriptionsListResult); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.SubscriptionListResult); err != nil {
 		return SubscriptionsClientListByInvoiceSectionResponse{}, err
 	}
 	return result, nil
 }
 
-// BeginMove - Moves a subscription's charges to a new invoice section. The new invoice section must belong to the same billing
-// profile as the existing invoice section. This operation is supported for billing
+// BeginMerge - Merges the billing subscription provided in the request with a target billing subscription.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01
+//   - billingAccountName - The ID that uniquely identifies a billing account.
+//   - billingSubscriptionName - The ID that uniquely identifies a subscription.
+//   - parameters - Request parameters that are provided to merge the two billing subscriptions.
+//   - options - SubscriptionsClientBeginMergeOptions contains the optional parameters for the SubscriptionsClient.BeginMerge
+//     method.
+func (client *SubscriptionsClient) BeginMerge(ctx context.Context, billingAccountName string, billingSubscriptionName string, parameters SubscriptionMergeRequest, options *SubscriptionsClientBeginMergeOptions) (*runtime.Poller[SubscriptionsClientMergeResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.merge(ctx, billingAccountName, billingSubscriptionName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SubscriptionsClientMergeResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SubscriptionsClientMergeResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// Merge - Merges the billing subscription provided in the request with a target billing subscription.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01
+func (client *SubscriptionsClient) merge(ctx context.Context, billingAccountName string, billingSubscriptionName string, parameters SubscriptionMergeRequest, options *SubscriptionsClientBeginMergeOptions) (*http.Response, error) {
+	var err error
+	const operationName = "SubscriptionsClient.BeginMerge"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.mergeCreateRequest(ctx, billingAccountName, billingSubscriptionName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// mergeCreateRequest creates the Merge request.
+func (client *SubscriptionsClient) mergeCreateRequest(ctx context.Context, billingAccountName string, billingSubscriptionName string, parameters SubscriptionMergeRequest, options *SubscriptionsClientBeginMergeOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingSubscriptions/{billingSubscriptionName}/merge"
+	if billingAccountName == "" {
+		return nil, errors.New("parameter billingAccountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
+	if billingSubscriptionName == "" {
+		return nil, errors.New("parameter billingSubscriptionName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingSubscriptionName}", url.PathEscape(billingSubscriptionName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-04-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginMove - Moves charges for a subscription to a new invoice section. The new invoice section must belong to the same
+// billing profile as the existing invoice section. This operation is supported for billing
 // accounts with agreement type Microsoft Customer Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-05-01
+// Generated from API version 2024-04-01
 //   - billingAccountName - The ID that uniquely identifies a billing account.
-//   - parameters - Request parameters that are provided to the move subscription operation.
+//   - billingSubscriptionName - The ID that uniquely identifies a subscription.
+//   - parameters - Request parameters to transfer billing subscription.
 //   - options - SubscriptionsClientBeginMoveOptions contains the optional parameters for the SubscriptionsClient.BeginMove method.
-func (client *SubscriptionsClient) BeginMove(ctx context.Context, billingAccountName string, parameters TransferBillingSubscriptionRequestProperties, options *SubscriptionsClientBeginMoveOptions) (*runtime.Poller[SubscriptionsClientMoveResponse], error) {
+func (client *SubscriptionsClient) BeginMove(ctx context.Context, billingAccountName string, billingSubscriptionName string, parameters MoveBillingSubscriptionRequest, options *SubscriptionsClientBeginMoveOptions) (*runtime.Poller[SubscriptionsClientMoveResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.move(ctx, billingAccountName, parameters, options)
+		resp, err := client.move(ctx, billingAccountName, billingSubscriptionName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SubscriptionsClientMoveResponse]{
-			Tracer: client.internal.Tracer(),
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
@@ -377,19 +954,19 @@ func (client *SubscriptionsClient) BeginMove(ctx context.Context, billingAccount
 	}
 }
 
-// Move - Moves a subscription's charges to a new invoice section. The new invoice section must belong to the same billing
+// Move - Moves charges for a subscription to a new invoice section. The new invoice section must belong to the same billing
 // profile as the existing invoice section. This operation is supported for billing
 // accounts with agreement type Microsoft Customer Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-05-01
-func (client *SubscriptionsClient) move(ctx context.Context, billingAccountName string, parameters TransferBillingSubscriptionRequestProperties, options *SubscriptionsClientBeginMoveOptions) (*http.Response, error) {
+// Generated from API version 2024-04-01
+func (client *SubscriptionsClient) move(ctx context.Context, billingAccountName string, billingSubscriptionName string, parameters MoveBillingSubscriptionRequest, options *SubscriptionsClientBeginMoveOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SubscriptionsClient.BeginMove"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.moveCreateRequest(ctx, billingAccountName, parameters, options)
+	req, err := client.moveCreateRequest(ctx, billingAccountName, billingSubscriptionName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -405,22 +982,22 @@ func (client *SubscriptionsClient) move(ctx context.Context, billingAccountName 
 }
 
 // moveCreateRequest creates the Move request.
-func (client *SubscriptionsClient) moveCreateRequest(ctx context.Context, billingAccountName string, parameters TransferBillingSubscriptionRequestProperties, options *SubscriptionsClientBeginMoveOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingSubscriptions/{subscriptionId}/move"
+func (client *SubscriptionsClient) moveCreateRequest(ctx context.Context, billingAccountName string, billingSubscriptionName string, parameters MoveBillingSubscriptionRequest, options *SubscriptionsClientBeginMoveOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingSubscriptions/{billingSubscriptionName}/move"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	if billingSubscriptionName == "" {
+		return nil, errors.New("parameter billingSubscriptionName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	urlPath = strings.ReplaceAll(urlPath, "{billingSubscriptionName}", url.PathEscape(billingSubscriptionName))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-05-01")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -429,53 +1006,154 @@ func (client *SubscriptionsClient) moveCreateRequest(ctx context.Context, billin
 	return req, nil
 }
 
-// Update - Updates the properties of a billing subscription. Currently, cost center can be updated. The operation is supported
-// only for billing accounts with agreement type Microsoft Customer Agreement.
+// BeginSplit - Splits a subscription into a new subscription with quantity less than current subscription quantity and not
+// equal to 0.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-05-01
+// Generated from API version 2024-04-01
 //   - billingAccountName - The ID that uniquely identifies a billing account.
-//   - parameters - Request parameters that are provided to the update billing subscription operation.
-//   - options - SubscriptionsClientUpdateOptions contains the optional parameters for the SubscriptionsClient.Update method.
-func (client *SubscriptionsClient) Update(ctx context.Context, billingAccountName string, parameters Subscription, options *SubscriptionsClientUpdateOptions) (SubscriptionsClientUpdateResponse, error) {
+//   - billingSubscriptionName - The ID that uniquely identifies a subscription.
+//   - parameters - Request parameters that are provided to split the billing subscription.
+//   - options - SubscriptionsClientBeginSplitOptions contains the optional parameters for the SubscriptionsClient.BeginSplit
+//     method.
+func (client *SubscriptionsClient) BeginSplit(ctx context.Context, billingAccountName string, billingSubscriptionName string, parameters SubscriptionSplitRequest, options *SubscriptionsClientBeginSplitOptions) (*runtime.Poller[SubscriptionsClientSplitResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.split(ctx, billingAccountName, billingSubscriptionName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SubscriptionsClientSplitResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SubscriptionsClientSplitResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// Split - Splits a subscription into a new subscription with quantity less than current subscription quantity and not equal
+// to 0.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01
+func (client *SubscriptionsClient) split(ctx context.Context, billingAccountName string, billingSubscriptionName string, parameters SubscriptionSplitRequest, options *SubscriptionsClientBeginSplitOptions) (*http.Response, error) {
 	var err error
-	const operationName = "SubscriptionsClient.Update"
+	const operationName = "SubscriptionsClient.BeginSplit"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, billingAccountName, parameters, options)
+	req, err := client.splitCreateRequest(ctx, billingAccountName, billingSubscriptionName, parameters, options)
 	if err != nil {
-		return SubscriptionsClientUpdateResponse{}, err
+		return nil, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return SubscriptionsClientUpdateResponse{}, err
+		return nil, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
 		err = runtime.NewResponseError(httpResp)
-		return SubscriptionsClientUpdateResponse{}, err
+		return nil, err
 	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return httpResp, nil
 }
 
-// updateCreateRequest creates the Update request.
-func (client *SubscriptionsClient) updateCreateRequest(ctx context.Context, billingAccountName string, parameters Subscription, options *SubscriptionsClientUpdateOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingSubscriptions/{subscriptionId}"
+// splitCreateRequest creates the Split request.
+func (client *SubscriptionsClient) splitCreateRequest(ctx context.Context, billingAccountName string, billingSubscriptionName string, parameters SubscriptionSplitRequest, options *SubscriptionsClientBeginSplitOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingSubscriptions/{billingSubscriptionName}/split"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	if billingSubscriptionName == "" {
+		return nil, errors.New("parameter billingSubscriptionName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	urlPath = strings.ReplaceAll(urlPath, "{billingSubscriptionName}", url.PathEscape(billingSubscriptionName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-04-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginUpdate - Updates the properties of a billing subscription.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01
+//   - billingAccountName - The ID that uniquely identifies a billing account.
+//   - billingSubscriptionName - The ID that uniquely identifies a subscription.
+//   - parameters - The billing properties of a subscription.
+//   - options - SubscriptionsClientBeginUpdateOptions contains the optional parameters for the SubscriptionsClient.BeginUpdate
+//     method.
+func (client *SubscriptionsClient) BeginUpdate(ctx context.Context, billingAccountName string, billingSubscriptionName string, parameters SubscriptionPatch, options *SubscriptionsClientBeginUpdateOptions) (*runtime.Poller[SubscriptionsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, billingAccountName, billingSubscriptionName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SubscriptionsClientUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SubscriptionsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// Update - Updates the properties of a billing subscription.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01
+func (client *SubscriptionsClient) update(ctx context.Context, billingAccountName string, billingSubscriptionName string, parameters SubscriptionPatch, options *SubscriptionsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "SubscriptionsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, billingAccountName, billingSubscriptionName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the Update request.
+func (client *SubscriptionsClient) updateCreateRequest(ctx context.Context, billingAccountName string, billingSubscriptionName string, parameters SubscriptionPatch, options *SubscriptionsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingSubscriptions/{billingSubscriptionName}"
+	if billingAccountName == "" {
+		return nil, errors.New("parameter billingAccountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
+	if billingSubscriptionName == "" {
+		return nil, errors.New("parameter billingSubscriptionName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingSubscriptionName}", url.PathEscape(billingSubscriptionName))
 	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-05-01")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -484,63 +1162,55 @@ func (client *SubscriptionsClient) updateCreateRequest(ctx context.Context, bill
 	return req, nil
 }
 
-// updateHandleResponse handles the Update response.
-func (client *SubscriptionsClient) updateHandleResponse(resp *http.Response) (SubscriptionsClientUpdateResponse, error) {
-	result := SubscriptionsClientUpdateResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.Subscription); err != nil {
-		return SubscriptionsClientUpdateResponse{}, err
-	}
-	return result, nil
-}
-
-// ValidateMove - Validates if a subscription's charges can be moved to a new invoice section. This operation is supported
-// for billing accounts with agreement type Microsoft Customer Agreement.
+// ValidateMoveEligibility - Validates if charges for a subscription can be moved to a new invoice section. This operation
+// is supported for billing accounts with agreement type Microsoft Customer Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-05-01
+// Generated from API version 2024-04-01
 //   - billingAccountName - The ID that uniquely identifies a billing account.
-//   - parameters - Request parameters that are provided to the validate move eligibility operation.
-//   - options - SubscriptionsClientValidateMoveOptions contains the optional parameters for the SubscriptionsClient.ValidateMove
+//   - billingSubscriptionName - The ID that uniquely identifies a subscription.
+//   - parameters - Request parameters to transfer billing subscription.
+//   - options - SubscriptionsClientValidateMoveEligibilityOptions contains the optional parameters for the SubscriptionsClient.ValidateMoveEligibility
 //     method.
-func (client *SubscriptionsClient) ValidateMove(ctx context.Context, billingAccountName string, parameters TransferBillingSubscriptionRequestProperties, options *SubscriptionsClientValidateMoveOptions) (SubscriptionsClientValidateMoveResponse, error) {
+func (client *SubscriptionsClient) ValidateMoveEligibility(ctx context.Context, billingAccountName string, billingSubscriptionName string, parameters MoveBillingSubscriptionRequest, options *SubscriptionsClientValidateMoveEligibilityOptions) (SubscriptionsClientValidateMoveEligibilityResponse, error) {
 	var err error
-	const operationName = "SubscriptionsClient.ValidateMove"
+	const operationName = "SubscriptionsClient.ValidateMoveEligibility"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.validateMoveCreateRequest(ctx, billingAccountName, parameters, options)
+	req, err := client.validateMoveEligibilityCreateRequest(ctx, billingAccountName, billingSubscriptionName, parameters, options)
 	if err != nil {
-		return SubscriptionsClientValidateMoveResponse{}, err
+		return SubscriptionsClientValidateMoveEligibilityResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return SubscriptionsClientValidateMoveResponse{}, err
+		return SubscriptionsClientValidateMoveEligibilityResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return SubscriptionsClientValidateMoveResponse{}, err
+		return SubscriptionsClientValidateMoveEligibilityResponse{}, err
 	}
-	resp, err := client.validateMoveHandleResponse(httpResp)
+	resp, err := client.validateMoveEligibilityHandleResponse(httpResp)
 	return resp, err
 }
 
-// validateMoveCreateRequest creates the ValidateMove request.
-func (client *SubscriptionsClient) validateMoveCreateRequest(ctx context.Context, billingAccountName string, parameters TransferBillingSubscriptionRequestProperties, options *SubscriptionsClientValidateMoveOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingSubscriptions/{subscriptionId}/validateMoveEligibility"
+// validateMoveEligibilityCreateRequest creates the ValidateMoveEligibility request.
+func (client *SubscriptionsClient) validateMoveEligibilityCreateRequest(ctx context.Context, billingAccountName string, billingSubscriptionName string, parameters MoveBillingSubscriptionRequest, options *SubscriptionsClientValidateMoveEligibilityOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingSubscriptions/{billingSubscriptionName}/validateMoveEligibility"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	if billingSubscriptionName == "" {
+		return nil, errors.New("parameter billingSubscriptionName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	urlPath = strings.ReplaceAll(urlPath, "{billingSubscriptionName}", url.PathEscape(billingSubscriptionName))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-05-01")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -549,11 +1219,11 @@ func (client *SubscriptionsClient) validateMoveCreateRequest(ctx context.Context
 	return req, nil
 }
 
-// validateMoveHandleResponse handles the ValidateMove response.
-func (client *SubscriptionsClient) validateMoveHandleResponse(resp *http.Response) (SubscriptionsClientValidateMoveResponse, error) {
-	result := SubscriptionsClientValidateMoveResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ValidateSubscriptionTransferEligibilityResult); err != nil {
-		return SubscriptionsClientValidateMoveResponse{}, err
+// validateMoveEligibilityHandleResponse handles the ValidateMoveEligibility response.
+func (client *SubscriptionsClient) validateMoveEligibilityHandleResponse(resp *http.Response) (SubscriptionsClientValidateMoveEligibilityResponse, error) {
+	result := SubscriptionsClientValidateMoveEligibilityResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.MoveBillingSubscriptionEligibilityResult); err != nil {
+		return SubscriptionsClientValidateMoveEligibilityResponse{}, err
 	}
 	return result, nil
 }

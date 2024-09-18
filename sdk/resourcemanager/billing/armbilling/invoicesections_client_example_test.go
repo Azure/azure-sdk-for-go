@@ -13,13 +13,19 @@ import (
 	"context"
 	"log"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+)
+import (
+	"encoding/json"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling"
+	"reflect"
+	"time"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/InvoiceSectionsListByBillingProfile.json
-func ExampleInvoiceSectionsClient_NewListByBillingProfilePager() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/invoiceSectionsValidateDeleteEligibilityFailure.json
+func ExampleInvoiceSectionsClient_ValidateDeleteEligibility_invoiceSectionsValidateDeleteEligibilityFailure() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,61 +35,79 @@ func ExampleInvoiceSectionsClient_NewListByBillingProfilePager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewInvoiceSectionsClient().NewListByBillingProfilePager("{billingAccountName}", "{billingProfileName}", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.InvoiceSectionListResult = armbilling.InvoiceSectionListResult{
-		// 	Value: []*armbilling.InvoiceSection{
-		// 		{
-		// 			Name: to.Ptr("22000000-0000-0000-0000-000000000000"),
-		// 			Type: to.Ptr("Microsoft.Billing/billingAccounts/billingProfiles/invoiceSections"),
-		// 			ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/22000000-0000-0000-0000-000000000000"),
-		// 			Properties: &armbilling.InvoiceSectionProperties{
-		// 				DisplayName: to.Ptr("invoiceSection1"),
-		// 				Labels: map[string]*string{
-		// 					"costCategory": to.Ptr("Support"),
-		// 					"pcCode": to.Ptr("A123456"),
-		// 				},
-		// 				State: to.Ptr(armbilling.InvoiceSectionStateActive),
-		// 				SystemID: to.Ptr("XX1X-XXAA-XXX-ZZZ"),
-		// 				Tags: map[string]*string{
-		// 					"costCategory": to.Ptr("Support"),
-		// 					"pcCode": to.Ptr("A123456"),
-		// 				},
-		// 			},
-		// 		},
-		// 		{
-		// 			Name: to.Ptr("22000000-0000-0000-0000-000000000011"),
-		// 			Type: to.Ptr("Microsoft.Billing/billingAccounts/billingProfiles/invoiceSections"),
-		// 			ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/22000000-0000-0000-0000-000000000011"),
-		// 			Properties: &armbilling.InvoiceSectionProperties{
-		// 				DisplayName: to.Ptr("invoiceSection2"),
-		// 				Labels: map[string]*string{
-		// 					"costCategory": to.Ptr("Marketing"),
-		// 					"pcCode": to.Ptr("Z223456"),
-		// 				},
-		// 				State: to.Ptr(armbilling.InvoiceSectionStateRestricted),
-		// 				SystemID: to.Ptr("YY1X-BBAA-XXX-ZZZ"),
-		// 				Tags: map[string]*string{
-		// 					"costCategory": to.Ptr("Marketing"),
-		// 					"pcCode": to.Ptr("Z223456"),
-		// 				},
-		// 				TargetCloud: to.Ptr(armbilling.TargetCloudUSSec),
-		// 			},
-		// 	}},
-		// }
+	res, err := clientFactory.NewInvoiceSectionsClient().ValidateDeleteEligibility(ctx, "00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31", "xxxx-xxxx-xxx-xxx", "yyyy-yyyy-yyy-yyy", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.DeleteInvoiceSectionEligibilityResult = armbilling.DeleteInvoiceSectionEligibilityResult{
+	// 	EligibilityDetails: []*armbilling.DeleteInvoiceSectionEligibilityDetail{
+	// 		{
+	// 			Code: to.Ptr(armbilling.DeleteInvoiceSectionEligibilityCodeActiveBillingSubscriptions),
+	// 			Message: to.Ptr("There are active or disabled subscriptions assigned to the invoice section. Either move the subscription to another invoice section or delete the subscriptions and then try deleting the invoice section."),
+	// 		},
+	// 		{
+	// 			Code: to.Ptr(armbilling.DeleteInvoiceSectionEligibilityCodeLastInvoiceSection),
+	// 			Message: to.Ptr("This is the only invoice section in this billing profile so it can’t be deleted."),
+	// 		},
+	// 		{
+	// 			Code: to.Ptr(armbilling.DeleteInvoiceSectionEligibilityCodeActiveAzurePlans),
+	// 			Message: to.Ptr("This is the invoice section that was created when its billing profile was created so it can’t be deleted."),
+	// 		},
+	// 		{
+	// 			Code: to.Ptr(armbilling.DeleteInvoiceSectionEligibilityCodeReservedInstances),
+	// 			Message: to.Ptr("The invoice section has the RI asset with a billing plan."),
+	// 	}},
+	// 	EligibilityStatus: to.Ptr(armbilling.DeleteInvoiceSectionEligibilityStatusNotAllowed),
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/invoiceSectionsValidateDeleteEligibilitySuccess.json
+func ExampleInvoiceSectionsClient_ValidateDeleteEligibility_invoiceSectionsValidateDeleteEligibilitySuccess() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewInvoiceSectionsClient().ValidateDeleteEligibility(ctx, "00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31", "xxxx-xxxx-xxx-xxx", "yyyy-yyyy-yyy-yyy", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.DeleteInvoiceSectionEligibilityResult = armbilling.DeleteInvoiceSectionEligibilityResult{
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/invoiceSectionsDelete.json
+func ExampleInvoiceSectionsClient_BeginDelete() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewInvoiceSectionsClient().BeginDelete(ctx, "00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31", "xxxx-xxxx-xxx-xxx", "yyyy-yyyy-yyy-yyy", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/InvoiceSection.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/invoiceSectionsGet.json
 func ExampleInvoiceSectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -94,7 +118,7 @@ func ExampleInvoiceSectionsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewInvoiceSectionsClient().Get(ctx, "{billingAccountName}", "{billingProfileName}", "{invoiceSectionName}", nil)
+	res, err := clientFactory.NewInvoiceSectionsClient().Get(ctx, "00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31", "xxxx-xxxx-xxx-xxx", "yyyy-yyyy-yyy-yyy", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -102,17 +126,12 @@ func ExampleInvoiceSectionsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.InvoiceSection = armbilling.InvoiceSection{
-	// 	Name: to.Ptr("{invoiceSectionName}"),
+	// 	Name: to.Ptr("invoice-section-1"),
 	// 	Type: to.Ptr("Microsoft.Billing/billingAccounts/billingProfiles/invoiceSections"),
-	// 	ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{invoiceSectionName}"),
+	// 	ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/billingProfiles/xxxx-xxxx-xxx-xxx/invoiceSections/invoice-section-1"),
 	// 	Properties: &armbilling.InvoiceSectionProperties{
-	// 		DisplayName: to.Ptr("invoiceSection1"),
-	// 		Labels: map[string]*string{
-	// 			"costCategory": to.Ptr("Support"),
-	// 			"pcCode": to.Ptr("A123456"),
-	// 		},
-	// 		State: to.Ptr(armbilling.InvoiceSectionStateActive),
-	// 		SystemID: to.Ptr("XX1X-XXAA-XXX-ZZZ"),
+	// 		DisplayName: to.Ptr("Invoice Section 1"),
+	// 		SystemID: to.Ptr("yyyy-yyyy-yyy-yyy"),
 	// 		Tags: map[string]*string{
 	// 			"costCategory": to.Ptr("Support"),
 	// 			"pcCode": to.Ptr("A123456"),
@@ -121,7 +140,7 @@ func ExampleInvoiceSectionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/PutInvoiceSection.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/invoiceSectionsCreateOrUpdate.json
 func ExampleInvoiceSectionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -132,10 +151,10 @@ func ExampleInvoiceSectionsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewInvoiceSectionsClient().BeginCreateOrUpdate(ctx, "{billingAccountName}", "{billingProfileName}", "{invoiceSectionName}", armbilling.InvoiceSection{
+	poller, err := clientFactory.NewInvoiceSectionsClient().BeginCreateOrUpdate(ctx, "00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31", "xxxx-xxxx-xxx-xxx", "invoice-section-1", armbilling.InvoiceSection{
 		Properties: &armbilling.InvoiceSectionProperties{
-			DisplayName: to.Ptr("invoiceSection1"),
-			Labels: map[string]*string{
+			DisplayName: to.Ptr("Invoice Section 1"),
+			Tags: map[string]*string{
 				"costCategory": to.Ptr("Support"),
 				"pcCode":       to.Ptr("A123456"),
 			},
@@ -152,16 +171,94 @@ func ExampleInvoiceSectionsClient_BeginCreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.InvoiceSection = armbilling.InvoiceSection{
-	// 	Name: to.Ptr("{invoiceSectionName}"),
+	// 	Name: to.Ptr("invoice-section-1"),
 	// 	Type: to.Ptr("Microsoft.Billing/billingAccounts/billingProfiles/invoiceSections"),
-	// 	ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{invoiceSectionName}"),
+	// 	ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/billingProfiles/xxxx-xxxx-xxx-xxx/invoiceSections/invoice-section-1"),
 	// 	Properties: &armbilling.InvoiceSectionProperties{
-	// 		DisplayName: to.Ptr("invoiceSection1"),
-	// 		Labels: map[string]*string{
+	// 		DisplayName: to.Ptr("Invoice Section 1"),
+	// 		SystemID: to.Ptr("yyyy-yyyy-yyy-yyy"),
+	// 		Tags: map[string]*string{
 	// 			"costCategory": to.Ptr("Support"),
 	// 			"pcCode": to.Ptr("A123456"),
 	// 		},
-	// 		SystemID: to.Ptr("XX1X-XXAA-XXX-ZZZ"),
 	// 	},
 	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/invoiceSectionsListByBillingProfile.json
+func ExampleInvoiceSectionsClient_NewListByBillingProfilePager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewInvoiceSectionsClient().NewListByBillingProfilePager("00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31", "xxxx-xxxx-xxx-xxx", &armbilling.InvoiceSectionsClientListByBillingProfileOptions{IncludeDeleted: to.Ptr(true),
+		Filter:  nil,
+		OrderBy: nil,
+		Top:     nil,
+		Skip:    nil,
+		Count:   nil,
+		Search:  nil,
+	})
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.InvoiceSectionListResult = armbilling.InvoiceSectionListResult{
+		// 	Value: []*armbilling.InvoiceSection{
+		// 		{
+		// 			Name: to.Ptr("invoice-section-1"),
+		// 			Type: to.Ptr("Microsoft.Billing/billingAccounts/billingProfiles/invoiceSections"),
+		// 			ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/billingProfiles/xxxx-xxxx-xxx-xxx/invoiceSections/invoice-section-1"),
+		// 			Properties: &armbilling.InvoiceSectionProperties{
+		// 				DisplayName: to.Ptr("Invoice Section 1"),
+		// 				State: to.Ptr(armbilling.InvoiceSectionStateActive),
+		// 				SystemID: to.Ptr("yyyy-yyyy-yyy-yyy"),
+		// 				Tags: map[string]*string{
+		// 					"costCategory": to.Ptr("Support"),
+		// 					"pcCode": to.Ptr("A123456"),
+		// 				},
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("invoice-section-2"),
+		// 			Type: to.Ptr("Microsoft.Billing/billingAccounts/billingProfiles/invoiceSections"),
+		// 			ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/billingProfiles/xxxx-xxxx-xxx-xxx/invoiceSections/invoice-section-2"),
+		// 			Properties: &armbilling.InvoiceSectionProperties{
+		// 				DisplayName: to.Ptr("Invoice Section 2"),
+		// 				ReasonCode: to.Ptr(armbilling.InvoiceSectionStateReasonCodePastDue),
+		// 				State: to.Ptr(armbilling.InvoiceSectionStateWarned),
+		// 				SystemID: to.Ptr("zzzz-zzzz-zzz-zzz"),
+		// 				Tags: map[string]*string{
+		// 					"costCategory": to.Ptr("Marketing"),
+		// 					"pcCode": to.Ptr("Z345678"),
+		// 				},
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("invoice-section-3"),
+		// 			Type: to.Ptr("Microsoft.Billing/billingAccounts/billingProfiles/invoiceSections"),
+		// 			ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/billingProfiles/xxxx-xxxx-xxx-xxx/invoiceSections/invoice-section-3"),
+		// 			Properties: &armbilling.InvoiceSectionProperties{
+		// 				DisplayName: to.Ptr("Invoice Section 3"),
+		// 				State: to.Ptr(armbilling.InvoiceSectionStateDeleted),
+		// 				SystemID: to.Ptr("aaaa-aaaa-aaa-aaa"),
+		// 				Tags: map[string]*string{
+		// 					"costCategory": to.Ptr("Support"),
+		// 					"pcCode": to.Ptr("A123456"),
+		// 				},
+		// 			},
+		// 	}},
+		// }
+	}
 }

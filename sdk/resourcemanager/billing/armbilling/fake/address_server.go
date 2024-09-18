@@ -12,11 +12,12 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"net/http"
+
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling"
-	"net/http"
 )
 
 // AddressServer is a fake server for instances of the armbilling.AddressClient type.

@@ -10822,6 +10822,7 @@ func (s StorageLifecyclePolicyCompletedEventData) MarshalJSON() ([]byte, error) 
 	populate(objectMap, "deleteSummary", s.DeleteSummary)
 	populate(objectMap, "scheduleTime", s.ScheduleTime)
 	populate(objectMap, "tierToArchiveSummary", s.TierToArchiveSummary)
+	populate(objectMap, "tierToColdSummary", s.TierToColdSummary)
 	populate(objectMap, "tierToCoolSummary", s.TierToCoolSummary)
 	return json.Marshal(objectMap)
 }
@@ -10843,6 +10844,9 @@ func (s *StorageLifecyclePolicyCompletedEventData) UnmarshalJSON(data []byte) er
 			delete(rawMsg, key)
 		case "tierToArchiveSummary":
 			err = unpopulate(val, "TierToArchiveSummary", &s.TierToArchiveSummary)
+			delete(rawMsg, key)
+		case "tierToColdSummary":
+			err = unpopulate(val, "TierToColdSummary", &s.TierToColdSummary)
 			delete(rawMsg, key)
 		case "tierToCoolSummary":
 			err = unpopulate(val, "TierToCoolSummary", &s.TierToCoolSummary)

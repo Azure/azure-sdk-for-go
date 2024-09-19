@@ -4839,6 +4839,9 @@ type StorageLifecyclePolicyCompletedEventData struct {
 	TierToArchiveSummary *StorageLifecyclePolicyActionSummaryDetail
 
 	// REQUIRED; Execution statistics of a specific policy action in a Blob Management cycle.
+	TierToColdSummary *StorageLifecyclePolicyActionSummaryDetail
+
+	// REQUIRED; Execution statistics of a specific policy action in a Blob Management cycle.
 	TierToCoolSummary *StorageLifecyclePolicyActionSummaryDetail
 
 	// The time the policy task was scheduled.

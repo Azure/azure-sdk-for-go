@@ -1,14 +1,11 @@
 # Release History
 
-## 0.4.2 (Unreleased)
+## 0.4.2 (2024-09-19)
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- A new field has been added to StorageLifecyclePolicyCompletedEventData:
+  - TierToColdSummary
 
 ## 0.4.1 (2024-08-20)
 

@@ -159,7 +159,8 @@ func parseCAEChallenge(res *http.Response) (string, error) {
 		// correspond precisely to the challenge grammar in RFC 7235 appendix C because CAE challenges
 		// are more narrowly defined at
 		// https://learn.microsoft.com/entra/identity-platform/claims-challenge#claims-challenge-header-format
-		claimsChallenge = regexp.MustCompile(`(?:\w+ ((?:\w+="[^"]*",?\s*)+))`)
+		// It matches only Bearer challenges because this policy doesn't support other auth schemes.
+		claimsChallenge = regexp.MustCompile(`(?:Bearer ((?:\w+="[^"]*",?\s*)+))`)
 	})
 	// WWW-Authenticate can have multiple values, each containing multiple challenges
 	for _, h := range res.Header.Values(shared.HeaderWWWAuthenticate) {

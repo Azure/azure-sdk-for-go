@@ -74,7 +74,7 @@ func TestAzurePipelinesCredential(t *testing.T) {
 		if len(unset) > 0 {
 			t.Skip("no value for ", strings.Join(unset, ", "))
 		}
-		cred, err := NewAzurePipelinesCredential(tenantID, clientID, connectionID, systemAccessToken, nil)
+		_, err := NewAzurePipelinesCredential(tenantID, clientID, connectionID, systemAccessToken, nil)
 		require.ErrorContains(t, err, "302 (Found)")
 	})
 }

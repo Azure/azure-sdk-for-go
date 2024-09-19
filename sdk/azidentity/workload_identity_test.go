@@ -10,11 +10,14 @@ import (
 	"context"
 	"crypto"
 	"crypto/sha1"
+	"crypto/tls"
 	"crypto/x509"
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"net/http/httptest"
+	"net/url"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -214,6 +217,64 @@ func TestTestWorkloadIdentityCredential_IncompleteConfig(t *testing.T) {
 			}
 		})
 	}
+}
+
+func TestWorkloadIdentityCredential_SNIPolicy(t *testing.T) {
+	called := false
+	expected := ""
+	ts := httptest.NewUnstartedServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
+		fmt.Fprintln(w, string(accessTokenRespSuccess))
+	}))
+	defer ts.Close()
+	ts.TLS = &tls.Config{
+		GetCertificate: func(info *tls.ClientHelloInfo) (*tls.Certificate, error) {
+			called = true
+			if expected == "" {
+				t.Error("test bug: expected server name not set; should match test server's DNS name")
+			} else if actual := info.ServerName; actual != expected {
+				t.Errorf("expected %q, got %q", expected, actual)
+			}
+			return nil, nil
+		},
+	}
+	ts.StartTLS()
+	cert := ts.Certificate()
+	expected = cert.DNSNames[0]
+	ca := x509.NewCertPool()
+	ca.AddCert(cert)
+	aksSNIPolicyCA = ca
+	u, err := url.Parse(ts.URL)
+	require.NoError(t, err)
+
+	f := filepath.Join(t.TempDir(), t.Name())
+	require.NoError(t, os.WriteFile(f, []byte(tokenValue), 0600))
+
+	for k, v := range map[string]string{
+		"AZURE_AURELIA_SNI_NAME":       expected,
+		"AZURE_AURELIA_TOKEN_ENDPOINT": u.Host,
+		azureClientID:                  fakeClientID,
+		azureFederatedTokenFile:        f,
+		azureTenantID:                  fakeTenantID,
+	} {
+		t.Setenv(k, v)
+	}
+
+	cred, err := NewWorkloadIdentityCredential(&WorkloadIdentityCredentialOptions{
+		ClientOptions: policy.ClientOptions{
+			Transport: &mockSTS{
+				tokenRequestCallback: func(*http.Request) *http.Response {
+					t.Fatal("credential should have sent token request to endpoint specified in environment variable")
+					return nil
+				},
+			},
+		},
+	})
+	require.NoError(t, err)
+
+	tk, err := cred.GetToken(ctx, testTRO)
+	require.NoError(t, err)
+	require.Equal(t, tokenValue, tk.Token)
+	require.True(t, called, "test bug: test server's GetCertificate function wasn't called")
 }
 
 func TestWorkloadIdentityCredential_NoFile(t *testing.T) {

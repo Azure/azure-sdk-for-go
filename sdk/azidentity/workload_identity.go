@@ -8,8 +8,12 @@ package azidentity
 
 import (
 	"context"
+	"crypto/tls"
+	"crypto/x509"
 	"errors"
+	"net/http"
 	"os"
+	"strings"
 	"sync"
 	"time"
 
@@ -94,6 +98,24 @@ func NewWorkloadIdentityCredential(options *WorkloadIdentityCredentialOptions) (
 		ClientOptions:              options.ClientOptions,
 		DisableInstanceDiscovery:   options.DisableInstanceDiscovery,
 	}
+	sni := os.Getenv("AZURE_AURELIA_SNI_NAME")
+	host := os.Getenv("AZURE_AURELIA_TOKEN_ENDPOINT")
+	if sni != "" && host != "" {
+		co := caco.ClientOptions
+		co.Transport = &http.Client{
+			Transport: &http.Transport{
+				TLSClientConfig: &tls.Config{
+					RootCAs:    aksSNIPolicyCA,
+					ServerName: sni,
+				},
+			},
+		}
+		p := &aksSNIPolicy{
+			h:  host,
+			pl: runtime.NewPipeline(module, version, runtime.PipelineOptions{}, &co),
+		}
+		caco.ClientOptions.PerRetryPolicies = append(caco.ClientOptions.PerRetryPolicies, p)
+	}
 	cred, err := NewClientAssertionCredential(tenantID, clientID, w.getAssertion, &caco)
 	if err != nil {
 		return nil, err
@@ -138,4 +160,21 @@ func (w *WorkloadIdentityCredential) getAssertion(context.Context) (string, erro
 		defer w.mtx.RUnlock()
 	}
 	return w.assertion, nil
+}
+
+// aksSNIPolicyCA enables tests to configure aksSNIPolicy to trust a test server's cert
+var aksSNIPolicyCA *x509.CertPool
+
+type aksSNIPolicy struct {
+	h  string
+	pl runtime.Pipeline
+}
+
+func (a *aksSNIPolicy) Do(req *policy.Request) (*http.Response, error) {
+	if r := req.Raw(); strings.HasSuffix(r.URL.Path, "/token") {
+		r.URL.Host = a.h
+		r.Host = ""
+		return a.pl.Do(req)
+	}
+	return req.Next()
 }

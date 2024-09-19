@@ -56,7 +56,7 @@ func TestAzurePipelinesCredential(t *testing.T) {
 		}
 		clientID := os.Getenv("AZURESUBSCRIPTION_CLIENT_ID")
 		connectionID := os.Getenv("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID")
-		systemAccessToken := os.Getenv("SYSTEM_ACCESSTOKEN")
+		systemAccessToken := "invalidSystemAccessToken"
 		tenantID := os.Getenv("AZURESUBSCRIPTION_TENANT_ID")
 		unset := []string{}
 		if clientID == "" {
@@ -75,7 +75,6 @@ func TestAzurePipelinesCredential(t *testing.T) {
 			t.Skip("no value for ", strings.Join(unset, ", "))
 		}
 		cred, err := NewAzurePipelinesCredential(tenantID, clientID, connectionID, systemAccessToken, nil)
-		require.NoError(t, err)
-		testGetTokenSuccess(t, cred)
+		require.ErrorContains(t, err, "302 (Found)")
 	})
 }

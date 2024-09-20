@@ -27,9 +27,7 @@ func TestBackupRestore(t *testing.T) {
 	// if in live mode, wait 30 seconds before polling again
 	// in playback mode, we don't need that delay, so shortening the retry frequency
 	var frequency time.Duration
-	if recording.GetRecordMode() != recording.PlaybackMode {
-		frequency = time.Second * 30
-	} else {
+	if recording.GetRecordMode() == recording.PlaybackMode {
 		frequency = time.Second
 	}
 
@@ -78,9 +76,7 @@ func TestBackupRestoreWithResumeToken(t *testing.T) {
 	// if in live mode, wait 30 seconds before polling again
 	// in playback mode, we don't need that delay, so shortening the retry frequency
 	var frequency time.Duration
-	if recording.GetRecordMode() != recording.PlaybackMode {
-		frequency = time.Second * 30
-	} else {
+	if recording.GetRecordMode() == recording.PlaybackMode {
 		frequency = time.Second
 	}
 
@@ -141,9 +137,7 @@ func TestBeginSelectiveKeyRestoreOperation(t *testing.T) {
 	// if in live mode, wait 30 seconds before polling again
 	// in playback mode, we don't need that delay, so shortening the retry frequency
 	var frequency time.Duration
-	if recording.GetRecordMode() != recording.PlaybackMode {
-		frequency = time.Second * 30
-	} else {
+	if recording.GetRecordMode() == recording.PlaybackMode {
 		frequency = time.Second
 	}
 

@@ -195,6 +195,8 @@ func parseCAEChallenge(res *http.Response) (string, error) {
 					if b, de := base64.RawURLEncoding.DecodeString(claims); de == nil {
 						return string(b), nil
 					}
+					// we don't include the decoding error because it's something
+					// unhelpful like "illegal base64 data at input byte 42"
 					return "", errors.New("challenge contains invalid claims: " + claims)
 				}
 			}

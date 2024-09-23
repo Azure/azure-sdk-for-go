@@ -121,6 +121,8 @@ func (a *AzurePipelinesCredential) getAssertion(ctx context.Context) (string, er
 		return "", newAuthenticationFailedError(credNameAzurePipelines, "couldn't create OIDC token request: "+err.Error(), nil)
 	}
 	req.Header.Set("Authorization", "Bearer "+a.systemAccessToken)
+	// instruct endpoint to return 401 instead of 302, if the system access token is invalid
+	req.Header.Set("X-TFS-FedAuthRedirect", "Suppress")
 	res, err := doForClient(a.cred.client.azClient, req)
 	if err != nil {
 		return "", newAuthenticationFailedError(credNameAzurePipelines, "couldn't send OIDC token request: "+err.Error(), nil)

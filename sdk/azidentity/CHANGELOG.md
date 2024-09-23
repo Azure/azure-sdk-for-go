@@ -9,6 +9,8 @@
 ### Bugs Fixed
 
 ### Other Changes
+* `AzurePipelinesCredential` sets an additional OIDC request header so that it
+  receives a 401 instead of a 302 after presenting an invalid system access token
 
 ## 1.8.0-beta.3 (2024-09-17)
 

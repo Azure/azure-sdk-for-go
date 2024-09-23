@@ -35,6 +35,7 @@ func TestAzurePipelinesCredential(t *testing.T) {
 				require.Equal(t, expected.Host, r.Host)
 				require.Equal(t, expected.Path, r.URL.Path)
 				require.Equal(t, expected.RawQuery, r.URL.RawQuery)
+				require.Equal(t, "Suppress", r.Header.Get("X-TFS-FedAuthRedirect"))
 				return true
 			}),
 		)

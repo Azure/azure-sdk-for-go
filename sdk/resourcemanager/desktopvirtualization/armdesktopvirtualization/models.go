@@ -42,18 +42,153 @@ type AgentUpdateProperties struct {
 	UseSessionHostLocalTime *bool
 }
 
-// Application - Schema for Application properties.
-type Application struct {
-	// REQUIRED; Detailed properties for Application
-	Properties *ApplicationProperties
+// AppAttachPackage - Schema for App Attach Package properties.
+type AppAttachPackage struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// REQUIRED; Detailed properties for App Attach Package
+	Properties *AppAttachPackageProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// AppAttachPackageInfoProperties - Schema for Import Package Information properties.
+type AppAttachPackageInfoProperties struct {
+	// Date certificate expires, found in the appxmanifest.xml.
+	CertificateExpiry *time.Time
+
+	// Certificate name found in the appxmanifest.xml.
+	CertificateName *string
+
+	// User friendly Name to be displayed in the portal.
+	DisplayName *string
+
+	// VHD/CIM image path on Network Share.
+	ImagePath *string
+
+	// Make this version of the package the active one across the hostpool.
+	IsActive *bool
+
+	// Is package timestamped so it can ignore the certificate expiry date
+	IsPackageTimestamped *PackageTimestamped
+
+	// Specifies how to register Package in feed.
+	IsRegularRegistration *bool
+
+	// Date Package was last updated, found in the appxmanifest.xml.
+	LastUpdated *time.Time
+
+	// Alias of App Attach Package. Assigned at import time
+	PackageAlias *string
+
+	// List of package applications.
+	PackageApplications []*MsixPackageApplications
+
+	// List of package dependencies.
+	PackageDependencies []*MsixPackageDependencies
+
+	// Package Family Name from appxmanifest.xml. Contains Package Name and Publisher name.
+	PackageFamilyName *string
+
+	// Package Full Name from appxmanifest.xml.
+	PackageFullName *string
+
+	// Package Name from appxmanifest.xml.
+	PackageName *string
+
+	// Relative Path to the package inside the image.
+	PackageRelativePath *string
+
+	// Package version found in the appxmanifest.xml.
+	Version *string
+}
+
+// AppAttachPackageList - List of App Attach Package definitions.
+type AppAttachPackageList struct {
+	// List of App Attach Package definitions.
+	Value []*AppAttachPackage
+
+	// READ-ONLY; Link to the next page of results.
+	NextLink *string
+}
+
+// AppAttachPackagePatch - Schema for updatable App Attach Package properties.
+type AppAttachPackagePatch struct {
+	// Detailed properties for App Attach Package
+	Properties *AppAttachPackagePatchProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// AppAttachPackagePatchProperties - Schema for patchable fields on an App Attach Package.
+type AppAttachPackagePatchProperties struct {
+	// Parameter indicating how the health check should behave if this package fails staging
+	FailHealthCheckOnStagingFailure *FailHealthCheckOnStagingFailure
+
+	// List of Hostpool resource Ids.
+	HostPoolReferences []*string
+
+	// Detailed properties for App Attach Package
+	Image *AppAttachPackageInfoProperties
+
+	// URL path to certificate name located in keyVault
+	KeyVaultURL *string
+}
+
+// AppAttachPackageProperties - Schema for App Attach Package properties.
+type AppAttachPackageProperties struct {
+	// Parameter indicating how the health check should behave if this package fails staging
+	FailHealthCheckOnStagingFailure *FailHealthCheckOnStagingFailure
+
+	// List of Hostpool resource Ids.
+	HostPoolReferences []*string
+
+	// Detailed properties for App Attach Package
+	Image *AppAttachPackageInfoProperties
+
+	// URL path to certificate name located in keyVault
+	KeyVaultURL *string
+
+	// READ-ONLY; The provisioning state of the App Attach Package.
+	ProvisioningState *ProvisioningState
+}
+
+// Application - Schema for Application properties.
+type Application struct {
+	// REQUIRED; Detailed properties for Application
+	Properties *ApplicationProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
@@ -62,17 +197,17 @@ type Application struct {
 
 // ApplicationGroup - Represents a ApplicationGroup definition.
 type ApplicationGroup struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
 	// REQUIRED; Detailed properties for ApplicationGroup
 	Properties *ApplicationGroupProperties
 	Identity   *ResourceModelWithAllowedPropertySetIdentity
 
-	// Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps are
+	// Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type. E.g. ApiApps are
 	// a kind of Microsoft.Web/sites type. If supported, the resource provider must
 	// validate and persist this value.
 	Kind *string
-
-	// The geo-location where the resource lives
-	Location *string
 
 	// The fully qualified resource ID of the resource that manages this resource. Indicates if this resource is managed by another
 	// Azure resource. If this is present, complete mode deployment will not
@@ -90,13 +225,13 @@ type ApplicationGroup struct {
 	// (section 14.26), and If-Range (section 14.27) header fields.
 	Etag *string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
@@ -120,11 +255,14 @@ type ApplicationGroupPatch struct {
 	// tags to be updated
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
@@ -275,13 +413,13 @@ type Desktop struct {
 	// Detailed properties for Desktop
 	Properties *DesktopProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
@@ -338,11 +476,14 @@ type ExpandMsixImage struct {
 	// Detailed properties for ExpandMsixImage
 	Properties *ExpandMsixImageProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
@@ -359,6 +500,12 @@ type ExpandMsixImageList struct {
 
 // ExpandMsixImageProperties - Schema for Expand MSIX Image properties.
 type ExpandMsixImageProperties struct {
+	// Date certificate expires, found in the appxmanifest.xml.
+	CertificateExpiry *time.Time
+
+	// Certificate name found in the appxmanifest.xml.
+	CertificateName *string
+
 	// User friendly Name to be displayed in the portal.
 	DisplayName *string
 
@@ -395,23 +542,23 @@ type ExpandMsixImageProperties struct {
 	// Relative Path to the package inside the image.
 	PackageRelativePath *string
 
-	// Package Version found in the appxmanifest.xml.
+	// Package version found in the appxmanifest.xml.
 	Version *string
 }
 
 // HostPool - Represents a HostPool definition.
 type HostPool struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
 	// REQUIRED; Detailed properties for HostPool
 	Properties *HostPoolProperties
 	Identity   *ResourceModelWithAllowedPropertySetIdentity
 
-	// Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps are
+	// Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type. E.g. ApiApps are
 	// a kind of Microsoft.Web/sites type. If supported, the resource provider must
 	// validate and persist this value.
 	Kind *string
-
-	// The geo-location where the resource lives
-	Location *string
 
 	// The fully qualified resource ID of the resource that manages this resource. Indicates if this resource is managed by another
 	// Azure resource. If this is present, complete mode deployment will not
@@ -429,13 +576,13 @@ type HostPool struct {
 	// (section 14.26), and If-Range (section 14.27) header fields.
 	Etag *string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
@@ -459,11 +606,14 @@ type HostPoolPatch struct {
 	// tags to be updated
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
@@ -586,6 +736,9 @@ type HostPoolProperties struct {
 	// Is validation environment.
 	ValidationEnvironment *bool
 
+	// READ-ONLY; List of App Attach Package links.
+	AppAttachPackageReferences []*string
+
 	// READ-ONLY; List of applicationGroup links.
 	ApplicationGroupReferences []*string
 
@@ -597,6 +750,15 @@ type HostPoolProperties struct {
 
 	// READ-ONLY; List of private endpoint connection associated with the specified resource
 	PrivateEndpointConnections []*PrivateEndpointConnection
+}
+
+// ImportPackageInfoRequest - Information to import app attach package
+type ImportPackageInfoRequest struct {
+	// Possible device architectures that an app attach package can be configured for
+	PackageArchitecture *AppAttachPackageArchitectures
+
+	// URI to Image
+	Path *string
 }
 
 // LogSpecification - Specifications of the Log for Azure Monitoring
@@ -622,13 +784,13 @@ type MSIXPackage struct {
 	// REQUIRED; Detailed properties for MSIX Package
 	Properties *MSIXPackageProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
@@ -649,11 +811,14 @@ type MSIXPackagePatch struct {
 	// Detailed properties for MSIX Package
 	Properties *MSIXPackagePatchProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
@@ -703,7 +868,7 @@ type MSIXPackageProperties struct {
 	// Relative Path to the package inside the image.
 	PackageRelativePath *string
 
-	// Package Version found in the appxmanifest.xml.
+	// Package version found in the appxmanifest.xml.
 	Version *string
 }
 
@@ -767,22 +932,25 @@ type OperationProperties struct {
 	ServiceSpecification *ServiceSpecification
 }
 
-// PrivateEndpoint - The Private Endpoint resource.
+// PrivateEndpoint - The private endpoint resource.
 type PrivateEndpoint struct {
-	// READ-ONLY; The ARM identifier for Private Endpoint
+	// READ-ONLY; The ARM identifier for private endpoint.
 	ID *string
 }
 
-// PrivateEndpointConnection - The Private Endpoint Connection resource.
+// PrivateEndpointConnection - The private endpoint connection resource.
 type PrivateEndpointConnection struct {
 	// Resource properties.
 	Properties *PrivateEndpointConnectionProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
@@ -798,13 +966,16 @@ type PrivateEndpointConnectionListResultWithSystemData struct {
 	NextLink *string
 }
 
-// PrivateEndpointConnectionProperties - Properties of the PrivateEndpointConnectProperties.
+// PrivateEndpointConnectionProperties - Properties of the private endpoint connection.
 type PrivateEndpointConnectionProperties struct {
 	// REQUIRED; A collection of information about the state of the connection between service consumer and provider.
 	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState
 
-	// The resource of private end point.
+	// The private endpoint resource.
 	PrivateEndpoint *PrivateEndpoint
+
+	// READ-ONLY; The group ids for the private endpoint resource.
+	GroupIDs []*string
 
 	// READ-ONLY; The provisioning state of the private endpoint connection resource.
 	ProvisioningState *PrivateEndpointConnectionProvisioningState
@@ -815,13 +986,13 @@ type PrivateEndpointConnectionWithSystemData struct {
 	// Resource properties.
 	Properties *PrivateEndpointConnectionProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
@@ -833,11 +1004,14 @@ type PrivateLinkResource struct {
 	// Resource properties.
 	Properties *PrivateLinkResourceProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
@@ -898,14 +1072,32 @@ type RegistrationInfoPatch struct {
 	RegistrationTokenOperation *RegistrationTokenOperation
 }
 
+// RegistrationTokenList - List of RegistrationToken definitions.
+type RegistrationTokenList struct {
+	// List of RegistrationToken definitions.
+	Value []*RegistrationTokenMinimal
+
+	// READ-ONLY; Link to the next page of results.
+	NextLink *string
+}
+
+// RegistrationTokenMinimal - Represents a Minimal set of properties for RegistrationToken definition.
+type RegistrationTokenMinimal struct {
+	// Expiration time of registration token.
+	ExpirationTime *time.Time
+
+	// The registration token base64 encoded string.
+	Token *string
+}
+
 type ResourceModelWithAllowedPropertySetIdentity struct {
 	// The identity type.
 	Type *string
 
-	// READ-ONLY; The principal ID of resource identity.
+	// READ-ONLY; The principal ID of resource identity. The value must be an UUID.
 	PrincipalID *string
 
-	// READ-ONLY; The tenant ID of resource.
+	// READ-ONLY; The tenant ID of resource. The value must be an UUID.
 	TenantID *string
 }
 
@@ -928,7 +1120,7 @@ type ResourceModelWithAllowedPropertySetPlan struct {
 }
 
 type ResourceModelWithAllowedPropertySetSKU struct {
-	// REQUIRED; The name of the SKU. Ex - P3. It is typically a letter+number code
+	// REQUIRED; The name of the SKU. E.g. P3. It is typically a letter+number code
 	Name *string
 
 	// If the SKU supports scale out/in then the capacity integer should be included. If scale out/in is not possible for the
@@ -996,17 +1188,17 @@ type ScalingHostPoolReference struct {
 
 // ScalingPlan - Represents a scaling plan definition.
 type ScalingPlan struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
 	// REQUIRED; Detailed properties for scaling plan.
 	Properties *ScalingPlanProperties
 	Identity   *ResourceModelWithAllowedPropertySetIdentity
 
-	// Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps are
+	// Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type. E.g. ApiApps are
 	// a kind of Microsoft.Web/sites type. If supported, the resource provider must
 	// validate and persist this value.
 	Kind *string
-
-	// The geo-location where the resource lives
-	Location *string
 
 	// The fully qualified resource ID of the resource that manages this resource. Indicates if this resource is managed by another
 	// Azure resource. If this is present, complete mode deployment will not
@@ -1024,13 +1216,13 @@ type ScalingPlan struct {
 	// (section 14.26), and If-Range (section 14.27) header fields.
 	Etag *string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
@@ -1081,13 +1273,13 @@ type ScalingPlanPersonalSchedule struct {
 	// REQUIRED; Detailed properties for ScalingPlanPersonalSchedule
 	Properties *ScalingPlanPersonalScheduleProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
@@ -1205,13 +1397,13 @@ type ScalingPlanPooledSchedule struct {
 	// REQUIRED; Detailed properties for ScalingPlanPooledSchedule
 	Properties *ScalingPlanPooledScheduleProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
@@ -1232,11 +1424,14 @@ type ScalingPlanPooledSchedulePatch struct {
 	// Detailed properties for ScalingPlanPooledSchedule
 	Properties *ScalingPlanPooledScheduleProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
@@ -1400,13 +1595,13 @@ type SessionHost struct {
 	// Detailed properties for SessionHost
 	Properties *SessionHostProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
@@ -1451,11 +1646,14 @@ type SessionHostPatch struct {
 	// Detailed properties for SessionHost
 	Properties *SessionHostPatchProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
@@ -1532,11 +1730,14 @@ type StartMenuItem struct {
 	// Detailed properties for StartMenuItem
 	Properties *StartMenuItemProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
@@ -1604,13 +1805,13 @@ type UserSession struct {
 	// Detailed properties for UserSession
 	Properties *UserSessionProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
@@ -1649,15 +1850,14 @@ type UserSessionProperties struct {
 
 // Workspace - Represents a Workspace definition.
 type Workspace struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
 	Identity *ResourceModelWithAllowedPropertySetIdentity
 
-	// Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps are
+	// Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type. E.g. ApiApps are
 	// a kind of Microsoft.Web/sites type. If supported, the resource provider must
 	// validate and persist this value.
 	Kind *string
-
-	// The geo-location where the resource lives
-	Location *string
 
 	// The fully qualified resource ID of the resource that manages this resource. Indicates if this resource is managed by another
 	// Azure resource. If this is present, complete mode deployment will not
@@ -1678,13 +1878,13 @@ type Workspace struct {
 	// (section 14.26), and If-Range (section 14.27) header fields.
 	Etag *string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"

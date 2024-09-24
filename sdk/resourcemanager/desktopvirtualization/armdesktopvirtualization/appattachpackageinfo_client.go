@@ -20,62 +20,63 @@ import (
 	"strings"
 )
 
-// MsixImagesClient contains the methods for the MsixImages group.
-// Don't use this type directly, use NewMsixImagesClient() instead.
-type MsixImagesClient struct {
+// AppAttachPackageInfoClient contains the methods for the AppAttachPackageInfo group.
+// Don't use this type directly, use NewAppAttachPackageInfoClient() instead.
+type AppAttachPackageInfoClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewMsixImagesClient creates a new instance of MsixImagesClient with the specified values.
+// NewAppAttachPackageInfoClient creates a new instance of AppAttachPackageInfoClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
-func NewMsixImagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MsixImagesClient, error) {
+func NewAppAttachPackageInfoClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AppAttachPackageInfoClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
-	client := &MsixImagesClient{
+	client := &AppAttachPackageInfoClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
 	return client, nil
 }
 
-// NewExpandPager - Expands and Lists MSIX packages in an Image, given the Image Path.
+// NewImportPager - Gets information from a package given the path to the package.
 //
 // Generated from API version 2024-04-03
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - hostPoolName - The name of the host pool within the specified resource group
-//   - msixImageURI - Object containing URI to MSIX Image
-//   - options - MsixImagesClientExpandOptions contains the optional parameters for the MsixImagesClient.NewExpandPager method.
-func (client *MsixImagesClient) NewExpandPager(resourceGroupName string, hostPoolName string, msixImageURI MSIXImageURI, options *MsixImagesClientExpandOptions) *runtime.Pager[MsixImagesClientExpandResponse] {
-	return runtime.NewPager(runtime.PagingHandler[MsixImagesClientExpandResponse]{
-		More: func(page MsixImagesClientExpandResponse) bool {
+//   - importPackageInfoRequest - Object containing URI to package image and other optional properties
+//   - options - AppAttachPackageInfoClientImportOptions contains the optional parameters for the AppAttachPackageInfoClient.NewImportPager
+//     method.
+func (client *AppAttachPackageInfoClient) NewImportPager(resourceGroupName string, hostPoolName string, importPackageInfoRequest ImportPackageInfoRequest, options *AppAttachPackageInfoClientImportOptions) *runtime.Pager[AppAttachPackageInfoClientImportResponse] {
+	return runtime.NewPager(runtime.PagingHandler[AppAttachPackageInfoClientImportResponse]{
+		More: func(page AppAttachPackageInfoClientImportResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *MsixImagesClientExpandResponse) (MsixImagesClientExpandResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "MsixImagesClient.NewExpandPager")
+		Fetcher: func(ctx context.Context, page *AppAttachPackageInfoClientImportResponse) (AppAttachPackageInfoClientImportResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AppAttachPackageInfoClient.NewImportPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
 			}
 			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.expandCreateRequest(ctx, resourceGroupName, hostPoolName, msixImageURI, options)
+				return client.importCreateRequest(ctx, resourceGroupName, hostPoolName, importPackageInfoRequest, options)
 			}, nil)
 			if err != nil {
-				return MsixImagesClientExpandResponse{}, err
+				return AppAttachPackageInfoClientImportResponse{}, err
 			}
-			return client.expandHandleResponse(resp)
+			return client.importHandleResponse(resp)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
-// expandCreateRequest creates the Expand request.
-func (client *MsixImagesClient) expandCreateRequest(ctx context.Context, resourceGroupName string, hostPoolName string, msixImageURI MSIXImageURI, options *MsixImagesClientExpandOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/hostPools/{hostPoolName}/expandMsixImage"
+// importCreateRequest creates the Import request.
+func (client *AppAttachPackageInfoClient) importCreateRequest(ctx context.Context, resourceGroupName string, hostPoolName string, importPackageInfoRequest ImportPackageInfoRequest, options *AppAttachPackageInfoClientImportOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/hostPools/{hostPoolName}/importAppAttachPackageInfo"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -96,17 +97,17 @@ func (client *MsixImagesClient) expandCreateRequest(ctx context.Context, resourc
 	reqQP.Set("api-version", "2024-04-03")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, msixImageURI); err != nil {
+	if err := runtime.MarshalAsJSON(req, importPackageInfoRequest); err != nil {
 		return nil, err
 	}
 	return req, nil
 }
 
-// expandHandleResponse handles the Expand response.
-func (client *MsixImagesClient) expandHandleResponse(resp *http.Response) (MsixImagesClientExpandResponse, error) {
-	result := MsixImagesClientExpandResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ExpandMsixImageList); err != nil {
-		return MsixImagesClientExpandResponse{}, err
+// importHandleResponse handles the Import response.
+func (client *AppAttachPackageInfoClient) importHandleResponse(resp *http.Response) (AppAttachPackageInfoClientImportResponse, error) {
+	result := AppAttachPackageInfoClientImportResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AppAttachPackageList); err != nil {
+		return AppAttachPackageInfoClientImportResponse{}, err
 	}
 	return result, nil
 }

@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v6"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/NetworkManagerGroupGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/NetworkManagerGroupGet.json
 func ExampleGroupsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -42,6 +42,7 @@ func ExampleGroupsClient_Get() {
 	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroup/rg1/providers/Microsoft.Network/networkManagers/testNetworkManager/networkGroups/testNetworkGroup"),
 	// 	Properties: &armnetwork.GroupProperties{
 	// 		Description: to.Ptr("A sample group"),
+	// 		MemberType: to.Ptr(armnetwork.GroupMemberTypeVirtualNetwork),
 	// 		ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
 	// 		ResourceGUID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 	},
@@ -56,7 +57,7 @@ func ExampleGroupsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/NetworkManagerGroupPut.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/NetworkManagerGroupPut.json
 func ExampleGroupsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -70,6 +71,7 @@ func ExampleGroupsClient_CreateOrUpdate() {
 	res, err := clientFactory.NewGroupsClient().CreateOrUpdate(ctx, "rg1", "testNetworkManager", "testNetworkGroup", armnetwork.Group{
 		Properties: &armnetwork.GroupProperties{
 			Description: to.Ptr("A sample group"),
+			MemberType:  to.Ptr(armnetwork.GroupMemberTypeVirtualNetwork),
 		},
 	}, &armnetwork.GroupsClientCreateOrUpdateOptions{IfMatch: nil})
 	if err != nil {
@@ -84,6 +86,7 @@ func ExampleGroupsClient_CreateOrUpdate() {
 	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroup/rg1/providers/Microsoft.Network/networkManagers/testNetworkManager/networkGroups/testNetworkGroup"),
 	// 	Properties: &armnetwork.GroupProperties{
 	// 		Description: to.Ptr("A sample group"),
+	// 		MemberType: to.Ptr(armnetwork.GroupMemberTypeVirtualNetwork),
 	// 		ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
 	// 		ResourceGUID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 	},
@@ -98,7 +101,7 @@ func ExampleGroupsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/NetworkManagerGroupDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/NetworkManagerGroupDelete.json
 func ExampleGroupsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -119,7 +122,7 @@ func ExampleGroupsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/NetworkManagerGroupList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/NetworkManagerGroupList.json
 func ExampleGroupsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -151,6 +154,7 @@ func ExampleGroupsClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroup/rg1/providers/Microsoft.Network/networkManagers/testNetworkManager/networkGroups/testNetworkGroup"),
 		// 			Properties: &armnetwork.GroupProperties{
 		// 				Description: to.Ptr("A sample group"),
+		// 				MemberType: to.Ptr(armnetwork.GroupMemberTypeVirtualNetwork),
 		// 				ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
 		// 				ResourceGUID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 			},

@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v6"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/AzureFirewallDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/AzureFirewallDelete.json
 func ExampleAzureFirewallsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -39,7 +39,7 @@ func ExampleAzureFirewallsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/AzureFirewallGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/AzureFirewallGet.json
 func ExampleAzureFirewallsClient_Get_getAzureFirewall() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -71,6 +71,7 @@ func ExampleAzureFirewallsClient_Get_getAzureFirewall() {
 	// 		},
 	// 		ApplicationRuleCollections: []*armnetwork.AzureFirewallApplicationRuleCollection{
 	// 			{
+	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azurefirewall/applicationRuleCollections/apprulecoll"),
 	// 				Name: to.Ptr("apprulecoll"),
 	// 				Properties: &armnetwork.AzureFirewallApplicationRuleCollectionPropertiesFormat{
 	// 					Action: &armnetwork.AzureFirewallRCAction{
@@ -94,9 +95,13 @@ func ExampleAzureFirewallsClient_Get_getAzureFirewall() {
 	// 							}},
 	// 						},
 	// 				}},
+	// 				AutoscaleConfiguration: &armnetwork.AzureFirewallAutoscaleConfiguration{
+	// 					MaxCapacity: to.Ptr[int32](15),
+	// 					MinCapacity: to.Ptr[int32](10),
+	// 				},
 	// 				IPConfigurations: []*armnetwork.AzureFirewallIPConfiguration{
 	// 					{
-	// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azurefirewallgw/ipConfigurations/azureFirewallIpConfiguration"),
+	// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azurefirewall/ipConfigurations/azureFirewallIpConfiguration"),
 	// 						Name: to.Ptr("azureFirewallIpConfiguration"),
 	// 						Etag: to.Ptr("w/\\00000000-0000-0000-0000-000000000000\\"),
 	// 						Properties: &armnetwork.AzureFirewallIPConfigurationPropertiesFormat{
@@ -114,6 +119,7 @@ func ExampleAzureFirewallsClient_Get_getAzureFirewall() {
 	// 				},
 	// 				NatRuleCollections: []*armnetwork.AzureFirewallNatRuleCollection{
 	// 					{
+	// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azurefirewall/natRuleCollections/natrulecoll"),
 	// 						Name: to.Ptr("natrulecoll"),
 	// 						Properties: &armnetwork.AzureFirewallNatRuleCollectionProperties{
 	// 							Action: &armnetwork.AzureFirewallNatRCAction{
@@ -153,6 +159,7 @@ func ExampleAzureFirewallsClient_Get_getAzureFirewall() {
 	// 												}},
 	// 												NetworkRuleCollections: []*armnetwork.AzureFirewallNetworkRuleCollection{
 	// 													{
+	// 														ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azurefirewall/networkRuleCollections/netrulecoll"),
 	// 														Name: to.Ptr("netrulecoll"),
 	// 														Properties: &armnetwork.AzureFirewallNetworkRuleCollectionPropertiesFormat{
 	// 															Action: &armnetwork.AzureFirewallRCAction{
@@ -201,7 +208,7 @@ func ExampleAzureFirewallsClient_Get_getAzureFirewall() {
 	// 																		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/AzureFirewallGetWithAdditionalProperties.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/AzureFirewallGetWithAdditionalProperties.json
 func ExampleAzureFirewallsClient_Get_getAzureFirewallWithAdditionalProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -235,6 +242,7 @@ func ExampleAzureFirewallsClient_Get_getAzureFirewallWithAdditionalProperties() 
 	// 		},
 	// 		ApplicationRuleCollections: []*armnetwork.AzureFirewallApplicationRuleCollection{
 	// 			{
+	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azurefirewall/applicationRuleCollections/apprulecoll"),
 	// 				Name: to.Ptr("apprulecoll"),
 	// 				Properties: &armnetwork.AzureFirewallApplicationRuleCollectionPropertiesFormat{
 	// 					Action: &armnetwork.AzureFirewallRCAction{
@@ -260,7 +268,7 @@ func ExampleAzureFirewallsClient_Get_getAzureFirewallWithAdditionalProperties() 
 	// 				}},
 	// 				IPConfigurations: []*armnetwork.AzureFirewallIPConfiguration{
 	// 					{
-	// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azurefirewallgw/ipConfigurations/azureFirewallIpConfiguration"),
+	// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azurefirewall/ipConfigurations/azureFirewallIpConfiguration"),
 	// 						Name: to.Ptr("azureFirewallIpConfiguration"),
 	// 						Etag: to.Ptr("w/\\00000000-0000-0000-0000-000000000000\\"),
 	// 						Properties: &armnetwork.AzureFirewallIPConfigurationPropertiesFormat{
@@ -276,6 +284,7 @@ func ExampleAzureFirewallsClient_Get_getAzureFirewallWithAdditionalProperties() 
 	// 				}},
 	// 				NatRuleCollections: []*armnetwork.AzureFirewallNatRuleCollection{
 	// 					{
+	// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azurefirewall/natRuleCollections/natrulecoll"),
 	// 						Name: to.Ptr("natrulecoll"),
 	// 						Properties: &armnetwork.AzureFirewallNatRuleCollectionProperties{
 	// 							Action: &armnetwork.AzureFirewallNatRCAction{
@@ -315,6 +324,7 @@ func ExampleAzureFirewallsClient_Get_getAzureFirewallWithAdditionalProperties() 
 	// 												}},
 	// 												NetworkRuleCollections: []*armnetwork.AzureFirewallNetworkRuleCollection{
 	// 													{
+	// 														ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azurefirewall/networkRuleCollections/netrulecoll"),
 	// 														Name: to.Ptr("netrulecoll"),
 	// 														Properties: &armnetwork.AzureFirewallNetworkRuleCollectionPropertiesFormat{
 	// 															Action: &armnetwork.AzureFirewallRCAction{
@@ -363,7 +373,7 @@ func ExampleAzureFirewallsClient_Get_getAzureFirewallWithAdditionalProperties() 
 	// 																		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/AzureFirewallGetWithIpGroups.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/AzureFirewallGetWithIpGroups.json
 func ExampleAzureFirewallsClient_Get_getAzureFirewallWithIpGroups() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -395,6 +405,7 @@ func ExampleAzureFirewallsClient_Get_getAzureFirewallWithIpGroups() {
 	// 		},
 	// 		ApplicationRuleCollections: []*armnetwork.AzureFirewallApplicationRuleCollection{
 	// 			{
+	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azurefirewall/applicationRuleCollections/apprulecoll"),
 	// 				Name: to.Ptr("apprulecoll"),
 	// 				Properties: &armnetwork.AzureFirewallApplicationRuleCollectionPropertiesFormat{
 	// 					Action: &armnetwork.AzureFirewallRCAction{
@@ -419,7 +430,7 @@ func ExampleAzureFirewallsClient_Get_getAzureFirewallWithIpGroups() {
 	// 				}},
 	// 				IPConfigurations: []*armnetwork.AzureFirewallIPConfiguration{
 	// 					{
-	// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azurefirewallgw/ipConfigurations/azureFirewallIpConfiguration"),
+	// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azurefirewall/ipConfigurations/azureFirewallIpConfiguration"),
 	// 						Name: to.Ptr("azureFirewallIpConfiguration"),
 	// 						Etag: to.Ptr("w/\\00000000-0000-0000-0000-000000000000\\"),
 	// 						Properties: &armnetwork.AzureFirewallIPConfigurationPropertiesFormat{
@@ -448,6 +459,7 @@ func ExampleAzureFirewallsClient_Get_getAzureFirewallWithIpGroups() {
 	// 				}},
 	// 				NatRuleCollections: []*armnetwork.AzureFirewallNatRuleCollection{
 	// 					{
+	// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azurefirewall/natRuleCollections/natrulecoll"),
 	// 						Name: to.Ptr("natrulecoll"),
 	// 						Properties: &armnetwork.AzureFirewallNatRuleCollectionProperties{
 	// 							Action: &armnetwork.AzureFirewallNatRCAction{
@@ -487,6 +499,7 @@ func ExampleAzureFirewallsClient_Get_getAzureFirewallWithIpGroups() {
 	// 												}},
 	// 												NetworkRuleCollections: []*armnetwork.AzureFirewallNetworkRuleCollection{
 	// 													{
+	// 														ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azurefirewall/networkRuleCollections/netrulecoll"),
 	// 														Name: to.Ptr("netrulecoll"),
 	// 														Properties: &armnetwork.AzureFirewallNetworkRuleCollectionPropertiesFormat{
 	// 															Action: &armnetwork.AzureFirewallRCAction{
@@ -535,7 +548,7 @@ func ExampleAzureFirewallsClient_Get_getAzureFirewallWithIpGroups() {
 	// 																		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/AzureFirewallGetWithZones.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/AzureFirewallGetWithZones.json
 func ExampleAzureFirewallsClient_Get_getAzureFirewallWithZones() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -567,6 +580,7 @@ func ExampleAzureFirewallsClient_Get_getAzureFirewallWithZones() {
 	// 		},
 	// 		ApplicationRuleCollections: []*armnetwork.AzureFirewallApplicationRuleCollection{
 	// 			{
+	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azurefirewall/applicationRuleCollections/apprulecoll"),
 	// 				Name: to.Ptr("apprulecoll"),
 	// 				Properties: &armnetwork.AzureFirewallApplicationRuleCollectionPropertiesFormat{
 	// 					Action: &armnetwork.AzureFirewallRCAction{
@@ -592,7 +606,7 @@ func ExampleAzureFirewallsClient_Get_getAzureFirewallWithZones() {
 	// 				}},
 	// 				IPConfigurations: []*armnetwork.AzureFirewallIPConfiguration{
 	// 					{
-	// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azurefirewallgw/ipConfigurations/azureFirewallIpConfiguration"),
+	// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azurefirewall/ipConfigurations/azureFirewallIpConfiguration"),
 	// 						Name: to.Ptr("azureFirewallIpConfiguration"),
 	// 						Etag: to.Ptr("w/\\00000000-0000-0000-0000-000000000000\\"),
 	// 						Properties: &armnetwork.AzureFirewallIPConfigurationPropertiesFormat{
@@ -610,6 +624,7 @@ func ExampleAzureFirewallsClient_Get_getAzureFirewallWithZones() {
 	// 				},
 	// 				NatRuleCollections: []*armnetwork.AzureFirewallNatRuleCollection{
 	// 					{
+	// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azurefirewall/natRuleCollections/natrulecoll"),
 	// 						Name: to.Ptr("natrulecoll"),
 	// 						Properties: &armnetwork.AzureFirewallNatRuleCollectionProperties{
 	// 							Action: &armnetwork.AzureFirewallNatRCAction{
@@ -649,6 +664,7 @@ func ExampleAzureFirewallsClient_Get_getAzureFirewallWithZones() {
 	// 												}},
 	// 												NetworkRuleCollections: []*armnetwork.AzureFirewallNetworkRuleCollection{
 	// 													{
+	// 														ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azurefirewall/networkRuleCollections/netrulecoll"),
 	// 														Name: to.Ptr("netrulecoll"),
 	// 														Properties: &armnetwork.AzureFirewallNetworkRuleCollectionPropertiesFormat{
 	// 															Action: &armnetwork.AzureFirewallRCAction{
@@ -699,7 +715,7 @@ func ExampleAzureFirewallsClient_Get_getAzureFirewallWithZones() {
 	// 																			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/AzureFirewallGetWithMgmtSubnet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/AzureFirewallGetWithMgmtSubnet.json
 func ExampleAzureFirewallsClient_Get_getAzureFirewallWithManagementSubnet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -731,6 +747,7 @@ func ExampleAzureFirewallsClient_Get_getAzureFirewallWithManagementSubnet() {
 	// 		},
 	// 		ApplicationRuleCollections: []*armnetwork.AzureFirewallApplicationRuleCollection{
 	// 			{
+	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azurefirewall/applicationRuleCollections/apprulecoll"),
 	// 				Name: to.Ptr("apprulecoll"),
 	// 				Properties: &armnetwork.AzureFirewallApplicationRuleCollectionPropertiesFormat{
 	// 					Action: &armnetwork.AzureFirewallRCAction{
@@ -756,7 +773,7 @@ func ExampleAzureFirewallsClient_Get_getAzureFirewallWithManagementSubnet() {
 	// 				}},
 	// 				IPConfigurations: []*armnetwork.AzureFirewallIPConfiguration{
 	// 					{
-	// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azurefirewallgw/ipConfigurations/azureFirewallIpConfiguration"),
+	// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azurefirewall/ipConfigurations/azureFirewallIpConfiguration"),
 	// 						Name: to.Ptr("azureFirewallIpConfiguration"),
 	// 						Etag: to.Ptr("w/\\00000000-0000-0000-0000-000000000000\\"),
 	// 						Properties: &armnetwork.AzureFirewallIPConfigurationPropertiesFormat{
@@ -771,7 +788,7 @@ func ExampleAzureFirewallsClient_Get_getAzureFirewallWithManagementSubnet() {
 	// 						},
 	// 				}},
 	// 				ManagementIPConfiguration: &armnetwork.AzureFirewallIPConfiguration{
-	// 					ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azurefirewallgw/ipConfigurations/azureFirewallMgmtIpConfiguration"),
+	// 					ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azurefirewall/ipConfigurations/azureFirewallMgmtIpConfiguration"),
 	// 					Name: to.Ptr("azureFirewallMgmtIpConfiguration"),
 	// 					Etag: to.Ptr("w/\\00000000-0000-0000-0000-000000000000\\"),
 	// 					Properties: &armnetwork.AzureFirewallIPConfigurationPropertiesFormat{
@@ -786,6 +803,7 @@ func ExampleAzureFirewallsClient_Get_getAzureFirewallWithManagementSubnet() {
 	// 				},
 	// 				NatRuleCollections: []*armnetwork.AzureFirewallNatRuleCollection{
 	// 					{
+	// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azurefirewall/natRuleCollections/natrulecoll"),
 	// 						Name: to.Ptr("natrulecoll"),
 	// 						Properties: &armnetwork.AzureFirewallNatRuleCollectionProperties{
 	// 							Action: &armnetwork.AzureFirewallNatRCAction{
@@ -825,6 +843,7 @@ func ExampleAzureFirewallsClient_Get_getAzureFirewallWithManagementSubnet() {
 	// 												}},
 	// 												NetworkRuleCollections: []*armnetwork.AzureFirewallNetworkRuleCollection{
 	// 													{
+	// 														ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azurefirewall/networkRuleCollections/netrulecoll"),
 	// 														Name: to.Ptr("netrulecoll"),
 	// 														Properties: &armnetwork.AzureFirewallNetworkRuleCollectionPropertiesFormat{
 	// 															Action: &armnetwork.AzureFirewallRCAction{
@@ -873,7 +892,7 @@ func ExampleAzureFirewallsClient_Get_getAzureFirewallWithManagementSubnet() {
 	// 																		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/AzureFirewallPut.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/AzureFirewallPut.json
 func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewall() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -892,6 +911,7 @@ func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewall() {
 		Properties: &armnetwork.AzureFirewallPropertiesFormat{
 			ApplicationRuleCollections: []*armnetwork.AzureFirewallApplicationRuleCollection{
 				{
+					ID:   to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azurefirewall/applicationRuleCollections/apprulecoll"),
 					Name: to.Ptr("apprulecoll"),
 					Properties: &armnetwork.AzureFirewallApplicationRuleCollectionPropertiesFormat{
 						Action: &armnetwork.AzureFirewallRCAction{
@@ -929,6 +949,7 @@ func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewall() {
 				}},
 			NatRuleCollections: []*armnetwork.AzureFirewallNatRuleCollection{
 				{
+					ID:   to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azurefirewall/natRuleCollections/natrulecoll"),
 					Name: to.Ptr("natrulecoll"),
 					Properties: &armnetwork.AzureFirewallNatRuleCollectionProperties{
 						Action: &armnetwork.AzureFirewallNatRCAction{
@@ -968,6 +989,7 @@ func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewall() {
 				}},
 			NetworkRuleCollections: []*armnetwork.AzureFirewallNetworkRuleCollection{
 				{
+					ID:   to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azurefirewall/networkRuleCollections/netrulecoll"),
 					Name: to.Ptr("netrulecoll"),
 					Properties: &armnetwork.AzureFirewallNetworkRuleCollectionPropertiesFormat{
 						Action: &armnetwork.AzureFirewallRCAction{
@@ -1036,6 +1058,7 @@ func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewall() {
 	// 		},
 	// 		ApplicationRuleCollections: []*armnetwork.AzureFirewallApplicationRuleCollection{
 	// 			{
+	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azurefirewall/applicationRuleCollections/apprulecoll"),
 	// 				Name: to.Ptr("apprulecoll"),
 	// 				Properties: &armnetwork.AzureFirewallApplicationRuleCollectionPropertiesFormat{
 	// 					Action: &armnetwork.AzureFirewallRCAction{
@@ -1061,7 +1084,7 @@ func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewall() {
 	// 				}},
 	// 				IPConfigurations: []*armnetwork.AzureFirewallIPConfiguration{
 	// 					{
-	// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azfirewallgw/ipConfigurations/azureFirewallIpConfiguration"),
+	// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azurefirewall/ipConfigurations/azureFirewallIpConfiguration"),
 	// 						Name: to.Ptr("azureFirewallIpConfiguration"),
 	// 						Etag: to.Ptr("w/\\00000000-0000-0000-0000-000000000000\\"),
 	// 						Properties: &armnetwork.AzureFirewallIPConfigurationPropertiesFormat{
@@ -1079,6 +1102,7 @@ func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewall() {
 	// 				},
 	// 				NatRuleCollections: []*armnetwork.AzureFirewallNatRuleCollection{
 	// 					{
+	// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azurefirewall/natRuleCollections/natrulecoll"),
 	// 						Name: to.Ptr("natrulecoll"),
 	// 						Properties: &armnetwork.AzureFirewallNatRuleCollectionProperties{
 	// 							Action: &armnetwork.AzureFirewallNatRCAction{
@@ -1118,6 +1142,7 @@ func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewall() {
 	// 												}},
 	// 												NetworkRuleCollections: []*armnetwork.AzureFirewallNetworkRuleCollection{
 	// 													{
+	// 														ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azurefirewall/networkRuleCollections/netrulecoll"),
 	// 														Name: to.Ptr("netrulecoll"),
 	// 														Properties: &armnetwork.AzureFirewallNetworkRuleCollectionPropertiesFormat{
 	// 															Action: &armnetwork.AzureFirewallRCAction{
@@ -1166,7 +1191,7 @@ func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewall() {
 	// 																		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/AzureFirewallPutWithAdditionalProperties.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/AzureFirewallPutWithAdditionalProperties.json
 func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewallWithAdditionalProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1189,6 +1214,7 @@ func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewallWithAddi
 			},
 			ApplicationRuleCollections: []*armnetwork.AzureFirewallApplicationRuleCollection{
 				{
+					ID:   to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azurefirewall/applicationRuleCollections/apprulecoll"),
 					Name: to.Ptr("apprulecoll"),
 					Properties: &armnetwork.AzureFirewallApplicationRuleCollectionPropertiesFormat{
 						Action: &armnetwork.AzureFirewallRCAction{
@@ -1227,6 +1253,7 @@ func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewallWithAddi
 			IPGroups: []*armnetwork.AzureFirewallIPGroups{},
 			NatRuleCollections: []*armnetwork.AzureFirewallNatRuleCollection{
 				{
+					ID:   to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azurefirewall/natRuleCollections/natrulecoll"),
 					Name: to.Ptr("natrulecoll"),
 					Properties: &armnetwork.AzureFirewallNatRuleCollectionProperties{
 						Action: &armnetwork.AzureFirewallNatRCAction{
@@ -1266,6 +1293,7 @@ func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewallWithAddi
 				}},
 			NetworkRuleCollections: []*armnetwork.AzureFirewallNetworkRuleCollection{
 				{
+					ID:   to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azurefirewall/networkRuleCollections/netrulecoll"),
 					Name: to.Ptr("netrulecoll"),
 					Properties: &armnetwork.AzureFirewallNetworkRuleCollectionPropertiesFormat{
 						Action: &armnetwork.AzureFirewallRCAction{
@@ -1336,6 +1364,7 @@ func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewallWithAddi
 	// 		},
 	// 		ApplicationRuleCollections: []*armnetwork.AzureFirewallApplicationRuleCollection{
 	// 			{
+	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azurefirewall/applicationRuleCollections/apprulecoll"),
 	// 				Name: to.Ptr("apprulecoll"),
 	// 				Properties: &armnetwork.AzureFirewallApplicationRuleCollectionPropertiesFormat{
 	// 					Action: &armnetwork.AzureFirewallRCAction{
@@ -1361,7 +1390,7 @@ func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewallWithAddi
 	// 				}},
 	// 				IPConfigurations: []*armnetwork.AzureFirewallIPConfiguration{
 	// 					{
-	// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azfirewallgw/ipConfigurations/azureFirewallIpConfiguration"),
+	// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azurefirewall/ipConfigurations/azureFirewallIpConfiguration"),
 	// 						Name: to.Ptr("azureFirewallIpConfiguration"),
 	// 						Etag: to.Ptr("w/\\00000000-0000-0000-0000-000000000000\\"),
 	// 						Properties: &armnetwork.AzureFirewallIPConfigurationPropertiesFormat{
@@ -1377,6 +1406,7 @@ func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewallWithAddi
 	// 				}},
 	// 				NatRuleCollections: []*armnetwork.AzureFirewallNatRuleCollection{
 	// 					{
+	// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azurefirewall/natRuleCollections/natrulecoll"),
 	// 						Name: to.Ptr("natrulecoll"),
 	// 						Properties: &armnetwork.AzureFirewallNatRuleCollectionProperties{
 	// 							Action: &armnetwork.AzureFirewallNatRCAction{
@@ -1416,6 +1446,7 @@ func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewallWithAddi
 	// 												}},
 	// 												NetworkRuleCollections: []*armnetwork.AzureFirewallNetworkRuleCollection{
 	// 													{
+	// 														ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azurefirewall/networkRuleCollections/netrulecoll"),
 	// 														Name: to.Ptr("netrulecoll"),
 	// 														Properties: &armnetwork.AzureFirewallNetworkRuleCollectionPropertiesFormat{
 	// 															Action: &armnetwork.AzureFirewallRCAction{
@@ -1464,7 +1495,7 @@ func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewallWithAddi
 	// 																		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/AzureFirewallPutWithIpGroups.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/AzureFirewallPutWithIpGroups.json
 func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewallWithIpGroups() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1483,6 +1514,7 @@ func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewallWithIpGr
 		Properties: &armnetwork.AzureFirewallPropertiesFormat{
 			ApplicationRuleCollections: []*armnetwork.AzureFirewallApplicationRuleCollection{
 				{
+					ID:   to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azurefirewall/applicationRuleCollections/apprulecoll"),
 					Name: to.Ptr("apprulecoll"),
 					Properties: &armnetwork.AzureFirewallApplicationRuleCollectionPropertiesFormat{
 						Action: &armnetwork.AzureFirewallRCAction{
@@ -1520,6 +1552,7 @@ func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewallWithIpGr
 				}},
 			NatRuleCollections: []*armnetwork.AzureFirewallNatRuleCollection{
 				{
+					ID:   to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azurefirewall/natRuleCollections/natrulecoll"),
 					Name: to.Ptr("natrulecoll"),
 					Properties: &armnetwork.AzureFirewallNatRuleCollectionProperties{
 						Action: &armnetwork.AzureFirewallNatRCAction{
@@ -1559,6 +1592,7 @@ func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewallWithIpGr
 				}},
 			NetworkRuleCollections: []*armnetwork.AzureFirewallNetworkRuleCollection{
 				{
+					ID:   to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azurefirewall/networkRuleCollections/netrulecoll"),
 					Name: to.Ptr("netrulecoll"),
 					Properties: &armnetwork.AzureFirewallNetworkRuleCollectionPropertiesFormat{
 						Action: &armnetwork.AzureFirewallRCAction{
@@ -1627,6 +1661,7 @@ func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewallWithIpGr
 	// 		},
 	// 		ApplicationRuleCollections: []*armnetwork.AzureFirewallApplicationRuleCollection{
 	// 			{
+	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azurefirewall/applicationRuleCollections/apprulecoll"),
 	// 				Name: to.Ptr("apprulecoll"),
 	// 				Properties: &armnetwork.AzureFirewallApplicationRuleCollectionPropertiesFormat{
 	// 					Action: &armnetwork.AzureFirewallRCAction{
@@ -1652,7 +1687,7 @@ func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewallWithIpGr
 	// 				}},
 	// 				IPConfigurations: []*armnetwork.AzureFirewallIPConfiguration{
 	// 					{
-	// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azfirewallgw/ipConfigurations/azureFirewallIpConfiguration"),
+	// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azurefirewall/ipConfigurations/azureFirewallIpConfiguration"),
 	// 						Name: to.Ptr("azureFirewallIpConfiguration"),
 	// 						Etag: to.Ptr("w/\\00000000-0000-0000-0000-000000000000\\"),
 	// 						Properties: &armnetwork.AzureFirewallIPConfigurationPropertiesFormat{
@@ -1668,6 +1703,7 @@ func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewallWithIpGr
 	// 				}},
 	// 				NatRuleCollections: []*armnetwork.AzureFirewallNatRuleCollection{
 	// 					{
+	// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azurefirewall/natRuleCollections/natrulecoll"),
 	// 						Name: to.Ptr("natrulecoll"),
 	// 						Properties: &armnetwork.AzureFirewallNatRuleCollectionProperties{
 	// 							Action: &armnetwork.AzureFirewallNatRCAction{
@@ -1707,6 +1743,7 @@ func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewallWithIpGr
 	// 												}},
 	// 												NetworkRuleCollections: []*armnetwork.AzureFirewallNetworkRuleCollection{
 	// 													{
+	// 														ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azurefirewall/networkRuleCollections/netrulecoll"),
 	// 														Name: to.Ptr("netrulecoll"),
 	// 														Properties: &armnetwork.AzureFirewallNetworkRuleCollectionPropertiesFormat{
 	// 															Action: &armnetwork.AzureFirewallRCAction{
@@ -1755,7 +1792,7 @@ func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewallWithIpGr
 	// 																		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/AzureFirewallPutWithZones.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/AzureFirewallPutWithZones.json
 func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewallWithZones() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1774,6 +1811,7 @@ func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewallWithZone
 		Properties: &armnetwork.AzureFirewallPropertiesFormat{
 			ApplicationRuleCollections: []*armnetwork.AzureFirewallApplicationRuleCollection{
 				{
+					ID:   to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azurefirewall/applicationRuleCollections/apprulecoll"),
 					Name: to.Ptr("apprulecoll"),
 					Properties: &armnetwork.AzureFirewallApplicationRuleCollectionPropertiesFormat{
 						Action: &armnetwork.AzureFirewallRCAction{
@@ -1811,6 +1849,7 @@ func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewallWithZone
 				}},
 			NatRuleCollections: []*armnetwork.AzureFirewallNatRuleCollection{
 				{
+					ID:   to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azurefirewall/natRuleCollections/natrulecoll"),
 					Name: to.Ptr("natrulecoll"),
 					Properties: &armnetwork.AzureFirewallNatRuleCollectionProperties{
 						Action: &armnetwork.AzureFirewallNatRCAction{
@@ -1850,6 +1889,7 @@ func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewallWithZone
 				}},
 			NetworkRuleCollections: []*armnetwork.AzureFirewallNetworkRuleCollection{
 				{
+					ID:   to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azurefirewall/networkRuleCollections/netrulecoll"),
 					Name: to.Ptr("netrulecoll"),
 					Properties: &armnetwork.AzureFirewallNetworkRuleCollectionPropertiesFormat{
 						Action: &armnetwork.AzureFirewallRCAction{
@@ -1921,6 +1961,7 @@ func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewallWithZone
 	// 		},
 	// 		ApplicationRuleCollections: []*armnetwork.AzureFirewallApplicationRuleCollection{
 	// 			{
+	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azurefirewall/applicationRuleCollections/apprulecoll"),
 	// 				Name: to.Ptr("apprulecoll"),
 	// 				Properties: &armnetwork.AzureFirewallApplicationRuleCollectionPropertiesFormat{
 	// 					Action: &armnetwork.AzureFirewallRCAction{
@@ -1946,7 +1987,7 @@ func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewallWithZone
 	// 				}},
 	// 				IPConfigurations: []*armnetwork.AzureFirewallIPConfiguration{
 	// 					{
-	// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azfirewallgw/ipConfigurations/azureFirewallIpConfiguration"),
+	// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azurefirewall/ipConfigurations/azureFirewallIpConfiguration"),
 	// 						Name: to.Ptr("azureFirewallIpConfiguration"),
 	// 						Etag: to.Ptr("w/\\00000000-0000-0000-0000-000000000000\\"),
 	// 						Properties: &armnetwork.AzureFirewallIPConfigurationPropertiesFormat{
@@ -1964,6 +2005,7 @@ func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewallWithZone
 	// 				},
 	// 				NatRuleCollections: []*armnetwork.AzureFirewallNatRuleCollection{
 	// 					{
+	// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azurefirewall/natRuleCollections/natrulecoll"),
 	// 						Name: to.Ptr("natrulecoll"),
 	// 						Properties: &armnetwork.AzureFirewallNatRuleCollectionProperties{
 	// 							Action: &armnetwork.AzureFirewallNatRCAction{
@@ -2003,6 +2045,7 @@ func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewallWithZone
 	// 												}},
 	// 												NetworkRuleCollections: []*armnetwork.AzureFirewallNetworkRuleCollection{
 	// 													{
+	// 														ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azurefirewall/networkRuleCollections/netrulecoll"),
 	// 														Name: to.Ptr("netrulecoll"),
 	// 														Properties: &armnetwork.AzureFirewallNetworkRuleCollectionPropertiesFormat{
 	// 															Action: &armnetwork.AzureFirewallRCAction{
@@ -2053,7 +2096,7 @@ func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewallWithZone
 	// 																			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/AzureFirewallPutWithMgmtSubnet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/AzureFirewallPutWithMgmtSubnet.json
 func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewallWithManagementSubnet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2072,6 +2115,7 @@ func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewallWithMana
 		Properties: &armnetwork.AzureFirewallPropertiesFormat{
 			ApplicationRuleCollections: []*armnetwork.AzureFirewallApplicationRuleCollection{
 				{
+					ID:   to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azurefirewall/applicationRuleCollections/apprulecoll"),
 					Name: to.Ptr("apprulecoll"),
 					Properties: &armnetwork.AzureFirewallApplicationRuleCollectionPropertiesFormat{
 						Action: &armnetwork.AzureFirewallRCAction{
@@ -2120,6 +2164,7 @@ func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewallWithMana
 			},
 			NatRuleCollections: []*armnetwork.AzureFirewallNatRuleCollection{
 				{
+					ID:   to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azurefirewall/natRuleCollections/natrulecoll"),
 					Name: to.Ptr("natrulecoll"),
 					Properties: &armnetwork.AzureFirewallNatRuleCollectionProperties{
 						Action: &armnetwork.AzureFirewallNatRCAction{
@@ -2159,6 +2204,7 @@ func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewallWithMana
 				}},
 			NetworkRuleCollections: []*armnetwork.AzureFirewallNetworkRuleCollection{
 				{
+					ID:   to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azurefirewall/networkRuleCollections/netrulecoll"),
 					Name: to.Ptr("netrulecoll"),
 					Properties: &armnetwork.AzureFirewallNetworkRuleCollectionPropertiesFormat{
 						Action: &armnetwork.AzureFirewallRCAction{
@@ -2227,6 +2273,7 @@ func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewallWithMana
 	// 		},
 	// 		ApplicationRuleCollections: []*armnetwork.AzureFirewallApplicationRuleCollection{
 	// 			{
+	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azurefirewall/applicationRuleCollections/apprulecoll"),
 	// 				Name: to.Ptr("apprulecoll"),
 	// 				Properties: &armnetwork.AzureFirewallApplicationRuleCollectionPropertiesFormat{
 	// 					Action: &armnetwork.AzureFirewallRCAction{
@@ -2252,7 +2299,7 @@ func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewallWithMana
 	// 				}},
 	// 				IPConfigurations: []*armnetwork.AzureFirewallIPConfiguration{
 	// 					{
-	// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azfirewallgw/ipConfigurations/azureFirewallIpConfiguration"),
+	// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azurefirewall/ipConfigurations/azureFirewallIpConfiguration"),
 	// 						Name: to.Ptr("azureFirewallIpConfiguration"),
 	// 						Etag: to.Ptr("w/\\00000000-0000-0000-0000-000000000000\\"),
 	// 						Properties: &armnetwork.AzureFirewallIPConfigurationPropertiesFormat{
@@ -2268,6 +2315,7 @@ func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewallWithMana
 	// 				}},
 	// 				NatRuleCollections: []*armnetwork.AzureFirewallNatRuleCollection{
 	// 					{
+	// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azurefirewall/natRuleCollections/natrulecoll"),
 	// 						Name: to.Ptr("natrulecoll"),
 	// 						Properties: &armnetwork.AzureFirewallNatRuleCollectionProperties{
 	// 							Action: &armnetwork.AzureFirewallNatRCAction{
@@ -2307,6 +2355,7 @@ func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewallWithMana
 	// 												}},
 	// 												NetworkRuleCollections: []*armnetwork.AzureFirewallNetworkRuleCollection{
 	// 													{
+	// 														ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azurefirewall/networkRuleCollections/netrulecoll"),
 	// 														Name: to.Ptr("netrulecoll"),
 	// 														Properties: &armnetwork.AzureFirewallNetworkRuleCollectionPropertiesFormat{
 	// 															Action: &armnetwork.AzureFirewallRCAction{
@@ -2355,7 +2404,7 @@ func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewallWithMana
 	// 																		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/AzureFirewallPutInHub.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/AzureFirewallPutInHub.json
 func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewallInVirtualHub() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2442,7 +2491,7 @@ func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewallInVirtua
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/AzureFirewallUpdateTags.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/AzureFirewallUpdateTags.json
 func ExampleAzureFirewallsClient_BeginUpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2485,7 +2534,7 @@ func ExampleAzureFirewallsClient_BeginUpdateTags() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/AzureFirewallListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/AzureFirewallListByResourceGroup.json
 func ExampleAzureFirewallsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2525,6 +2574,7 @@ func ExampleAzureFirewallsClient_NewListPager() {
 		// 				},
 		// 				ApplicationRuleCollections: []*armnetwork.AzureFirewallApplicationRuleCollection{
 		// 					{
+		// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azurefirewall/applicationRuleCollections/apprulecoll"),
 		// 						Name: to.Ptr("apprulecoll"),
 		// 						Properties: &armnetwork.AzureFirewallApplicationRuleCollectionPropertiesFormat{
 		// 							Action: &armnetwork.AzureFirewallRCAction{
@@ -2550,7 +2600,7 @@ func ExampleAzureFirewallsClient_NewListPager() {
 		// 						}},
 		// 						IPConfigurations: []*armnetwork.AzureFirewallIPConfiguration{
 		// 							{
-		// 								ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azfirewallgw/ipConfigurations/azureFirewallIpConfiguration"),
+		// 								ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azurefirewall/ipConfigurations/azureFirewallIpConfiguration"),
 		// 								Name: to.Ptr("azureFirewallIpConfiguration"),
 		// 								Etag: to.Ptr("w/\\00000000-0000-0000-0000-000000000000\\"),
 		// 								Properties: &armnetwork.AzureFirewallIPConfigurationPropertiesFormat{
@@ -2567,7 +2617,7 @@ func ExampleAzureFirewallsClient_NewListPager() {
 		// 						IPGroups: []*armnetwork.AzureFirewallIPGroups{
 		// 						},
 		// 						ManagementIPConfiguration: &armnetwork.AzureFirewallIPConfiguration{
-		// 							ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azurefirewallgw/ipConfigurations/azureFirewallMgmtIpConfiguration"),
+		// 							ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azurefirewall/ipConfigurations/azureFirewallMgmtIpConfiguration"),
 		// 							Name: to.Ptr("azureFirewallMgmtIpConfiguration"),
 		// 							Etag: to.Ptr("w/\\00000000-0000-0000-0000-000000000000\\"),
 		// 							Properties: &armnetwork.AzureFirewallIPConfigurationPropertiesFormat{
@@ -2582,6 +2632,7 @@ func ExampleAzureFirewallsClient_NewListPager() {
 		// 						},
 		// 						NatRuleCollections: []*armnetwork.AzureFirewallNatRuleCollection{
 		// 							{
+		// 								ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azurefirewall/natRuleCollections/natrulecoll"),
 		// 								Name: to.Ptr("natrulecoll"),
 		// 								Properties: &armnetwork.AzureFirewallNatRuleCollectionProperties{
 		// 									Action: &armnetwork.AzureFirewallNatRCAction{
@@ -2621,6 +2672,7 @@ func ExampleAzureFirewallsClient_NewListPager() {
 		// 														}},
 		// 														NetworkRuleCollections: []*armnetwork.AzureFirewallNetworkRuleCollection{
 		// 															{
+		// 																ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azurefirewall/networkRuleCollections/netrulecoll"),
 		// 																Name: to.Ptr("netrulecoll"),
 		// 																Properties: &armnetwork.AzureFirewallNetworkRuleCollectionPropertiesFormat{
 		// 																	Action: &armnetwork.AzureFirewallRCAction{
@@ -2667,7 +2719,7 @@ func ExampleAzureFirewallsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/AzureFirewallListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/AzureFirewallListBySubscription.json
 func ExampleAzureFirewallsClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2707,6 +2759,7 @@ func ExampleAzureFirewallsClient_NewListAllPager() {
 		// 				},
 		// 				ApplicationRuleCollections: []*armnetwork.AzureFirewallApplicationRuleCollection{
 		// 					{
+		// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azurefirewall/applicationRuleCollections/apprulecoll"),
 		// 						Name: to.Ptr("apprulecoll"),
 		// 						Properties: &armnetwork.AzureFirewallApplicationRuleCollectionPropertiesFormat{
 		// 							Action: &armnetwork.AzureFirewallRCAction{
@@ -2732,7 +2785,7 @@ func ExampleAzureFirewallsClient_NewListAllPager() {
 		// 						}},
 		// 						IPConfigurations: []*armnetwork.AzureFirewallIPConfiguration{
 		// 							{
-		// 								ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azfirewallgw/ipConfigurations/azureFirewallIpConfiguration"),
+		// 								ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azurefirewall/ipConfigurations/azureFirewallIpConfiguration"),
 		// 								Name: to.Ptr("azureFirewallIpConfiguration"),
 		// 								Etag: to.Ptr("w/\\00000000-0000-0000-0000-000000000000\\"),
 		// 								Properties: &armnetwork.AzureFirewallIPConfigurationPropertiesFormat{
@@ -2749,7 +2802,7 @@ func ExampleAzureFirewallsClient_NewListAllPager() {
 		// 						IPGroups: []*armnetwork.AzureFirewallIPGroups{
 		// 						},
 		// 						ManagementIPConfiguration: &armnetwork.AzureFirewallIPConfiguration{
-		// 							ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azurefirewallgw/ipConfigurations/azureFirewallMgmtIpConfiguration"),
+		// 							ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azurefirewall/ipConfigurations/azureFirewallMgmtIpConfiguration"),
 		// 							Name: to.Ptr("azureFirewallMgmtIpConfiguration"),
 		// 							Etag: to.Ptr("w/\\00000000-0000-0000-0000-000000000000\\"),
 		// 							Properties: &armnetwork.AzureFirewallIPConfigurationPropertiesFormat{
@@ -2764,6 +2817,7 @@ func ExampleAzureFirewallsClient_NewListAllPager() {
 		// 						},
 		// 						NatRuleCollections: []*armnetwork.AzureFirewallNatRuleCollection{
 		// 							{
+		// 								ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azurefirewall/natRuleCollections/natrulecoll"),
 		// 								Name: to.Ptr("natrulecoll"),
 		// 								Properties: &armnetwork.AzureFirewallNatRuleCollectionProperties{
 		// 									Action: &armnetwork.AzureFirewallNatRCAction{
@@ -2803,6 +2857,7 @@ func ExampleAzureFirewallsClient_NewListAllPager() {
 		// 														}},
 		// 														NetworkRuleCollections: []*armnetwork.AzureFirewallNetworkRuleCollection{
 		// 															{
+		// 																ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azurefirewall/networkRuleCollections/netrulecoll"),
 		// 																Name: to.Ptr("netrulecoll"),
 		// 																Properties: &armnetwork.AzureFirewallNetworkRuleCollectionPropertiesFormat{
 		// 																	Action: &armnetwork.AzureFirewallRCAction{
@@ -2849,7 +2904,7 @@ func ExampleAzureFirewallsClient_NewListAllPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/AzureFirewallListLearnedIPPrefixes.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/AzureFirewallListLearnedIPPrefixes.json
 func ExampleAzureFirewallsClient_BeginListLearnedPrefixes() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2878,7 +2933,7 @@ func ExampleAzureFirewallsClient_BeginListLearnedPrefixes() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/AzureFirewallPacketCapture.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/AzureFirewallPacketCapture.json
 func ExampleAzureFirewallsClient_BeginPacketCapture() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -13,6 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/require"
 )
 
@@ -36,6 +37,9 @@ func TestClient_GetCompletions_AzureOpenAI_ContentFilter_Response(t *testing.T) 
 }
 
 func TestClient_GetChatCompletions_AzureOpenAI_ContentFilterWithError(t *testing.T) {
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		t.Skip("Skipping content filter test in live/record mode. Content filtering isn't easily triggerable.")
+	}
 	client := newTestClient(t, azureOpenAI.ChatCompletionsRAI.Endpoint)
 
 	resp, err := client.GetChatCompletions(context.Background(), azopenai.ChatCompletionsOptions{
@@ -47,6 +51,7 @@ func TestClient_GetChatCompletions_AzureOpenAI_ContentFilterWithError(t *testing
 		Temperature:    to.Ptr(float32(0.0)),
 		DeploymentName: &azureOpenAI.ChatCompletionsRAI.Model,
 	}, nil)
+
 	require.Empty(t, resp)
 	assertContentFilterError(t, err, true)
 }

@@ -30,7 +30,7 @@ func TestChatCompletions_extensions_bringYourOwnData(t *testing.T) {
 		},
 		DeploymentName: &azureOpenAI.ChatCompletionsOYD.Model,
 	}, nil)
-	require.NoError(t, err)
+	customRequireNoError(t, err, true)
 	require.NotEmpty(t, resp)
 
 	msgContext := resp.Choices[0].Message.Context
@@ -54,7 +54,7 @@ func TestChatExtensionsStreaming_extensions_bringYourOwnData(t *testing.T) {
 		DeploymentName: &azureOpenAI.ChatCompletionsOYD.Model,
 	}, nil)
 
-	require.NoError(t, err)
+	customRequireNoError(t, err, true)
 	defer streamResp.ChatCompletionsStream.Close()
 
 	text := ""

@@ -182,6 +182,24 @@ type PrivateLinkResourcesClientListResponse struct {
 	PrivateLinkResourceList
 }
 
+// ReplicaSharedPrivateLinkResourcesClientCreateOrUpdateResponse contains the response from method ReplicaSharedPrivateLinkResourcesClient.BeginCreateOrUpdate.
+type ReplicaSharedPrivateLinkResourcesClientCreateOrUpdateResponse struct {
+	// Describes a Shared Private Link Resource
+	SharedPrivateLinkResource
+}
+
+// ReplicaSharedPrivateLinkResourcesClientGetResponse contains the response from method ReplicaSharedPrivateLinkResourcesClient.Get.
+type ReplicaSharedPrivateLinkResourcesClientGetResponse struct {
+	// Describes a Shared Private Link Resource
+	SharedPrivateLinkResource
+}
+
+// ReplicaSharedPrivateLinkResourcesClientListResponse contains the response from method ReplicaSharedPrivateLinkResourcesClient.NewListPager.
+type ReplicaSharedPrivateLinkResourcesClientListResponse struct {
+	// A list of shared private link resources
+	SharedPrivateLinkResourceList
+}
+
 // ReplicasClientCreateOrUpdateResponse contains the response from method ReplicasClient.BeginCreateOrUpdate.
 type ReplicasClientCreateOrUpdateResponse struct {
 	// A class represent a replica resource.

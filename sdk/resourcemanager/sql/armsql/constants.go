@@ -10,7 +10,7 @@ package armsql
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql"
-	moduleVersion = "v2.0.0-beta.5"
+	moduleVersion = "v2.0.0-beta.6"
 )
 
 type AdministratorName string
@@ -1006,6 +1006,22 @@ func PossibleExternalGovernanceStatusValues() []ExternalGovernanceStatus {
 	}
 }
 
+// FailoverGroupDatabasesSecondaryType - Databases secondary type on partner server.
+type FailoverGroupDatabasesSecondaryType string
+
+const (
+	FailoverGroupDatabasesSecondaryTypeGeo     FailoverGroupDatabasesSecondaryType = "Geo"
+	FailoverGroupDatabasesSecondaryTypeStandby FailoverGroupDatabasesSecondaryType = "Standby"
+)
+
+// PossibleFailoverGroupDatabasesSecondaryTypeValues returns the possible values for the FailoverGroupDatabasesSecondaryType const type.
+func PossibleFailoverGroupDatabasesSecondaryTypeValues() []FailoverGroupDatabasesSecondaryType {
+	return []FailoverGroupDatabasesSecondaryType{
+		FailoverGroupDatabasesSecondaryTypeGeo,
+		FailoverGroupDatabasesSecondaryTypeStandby,
+	}
+}
+
 // FailoverGroupReplicationRole - Local replication role of the failover group instance.
 type FailoverGroupReplicationRole string
 
@@ -1019,39 +1035,6 @@ func PossibleFailoverGroupReplicationRoleValues() []FailoverGroupReplicationRole
 	return []FailoverGroupReplicationRole{
 		FailoverGroupReplicationRolePrimary,
 		FailoverGroupReplicationRoleSecondary,
-	}
-}
-
-// FailoverModeType - The link failover mode - can be Manual if intended to be used for two-way failover with a supported
-// SQL Server, or None for one-way failover to Azure.
-type FailoverModeType string
-
-const (
-	FailoverModeTypeManual FailoverModeType = "Manual"
-	FailoverModeTypeNone   FailoverModeType = "None"
-)
-
-// PossibleFailoverModeTypeValues returns the possible values for the FailoverModeType const type.
-func PossibleFailoverModeTypeValues() []FailoverModeType {
-	return []FailoverModeType{
-		FailoverModeTypeManual,
-		FailoverModeTypeNone,
-	}
-}
-
-// FailoverType - The failover type, can be ForcedAllowDataLoss or Planned.
-type FailoverType string
-
-const (
-	FailoverTypeForcedAllowDataLoss FailoverType = "ForcedAllowDataLoss"
-	FailoverTypePlanned             FailoverType = "Planned"
-)
-
-// PossibleFailoverTypeValues returns the possible values for the FailoverType const type.
-func PossibleFailoverTypeValues() []FailoverType {
-	return []FailoverType{
-		FailoverTypeForcedAllowDataLoss,
-		FailoverTypePlanned,
 	}
 }
 
@@ -1220,22 +1203,6 @@ func PossibleInstancePoolLicenseTypeValues() []InstancePoolLicenseType {
 	return []InstancePoolLicenseType{
 		InstancePoolLicenseTypeBasePrice,
 		InstancePoolLicenseTypeLicenseIncluded,
-	}
-}
-
-// InstanceRole - New role of managed instance in a distributed availability group, can be Primary or Secondary.
-type InstanceRole string
-
-const (
-	InstanceRolePrimary   InstanceRole = "Primary"
-	InstanceRoleSecondary InstanceRole = "Secondary"
-)
-
-// PossibleInstanceRoleValues returns the possible values for the InstanceRole const type.
-func PossibleInstanceRoleValues() []InstanceRole {
-	return []InstanceRole{
-		InstanceRolePrimary,
-		InstanceRoleSecondary,
 	}
 }
 
@@ -1431,22 +1398,6 @@ func PossibleLedgerDigestUploadsStateValues() []LedgerDigestUploadsState {
 	return []LedgerDigestUploadsState{
 		LedgerDigestUploadsStateDisabled,
 		LedgerDigestUploadsStateEnabled,
-	}
-}
-
-// LinkRole - SQL server side link role
-type LinkRole string
-
-const (
-	LinkRolePrimary   LinkRole = "Primary"
-	LinkRoleSecondary LinkRole = "Secondary"
-)
-
-// PossibleLinkRoleValues returns the possible values for the LinkRole const type.
-func PossibleLinkRoleValues() []LinkRole {
-	return []LinkRole{
-		LinkRolePrimary,
-		LinkRoleSecondary,
 	}
 }
 
@@ -2139,40 +2090,6 @@ func PossibleRecommendedSensitivityLabelUpdateKindValues() []RecommendedSensitiv
 	}
 }
 
-// ReplicaConnectedState - Link connected state
-type ReplicaConnectedState string
-
-const (
-	ReplicaConnectedStateCONNECTED    ReplicaConnectedState = "CONNECTED"
-	ReplicaConnectedStateDISCONNECTED ReplicaConnectedState = "DISCONNECTED"
-)
-
-// PossibleReplicaConnectedStateValues returns the possible values for the ReplicaConnectedState const type.
-func PossibleReplicaConnectedStateValues() []ReplicaConnectedState {
-	return []ReplicaConnectedState{
-		ReplicaConnectedStateCONNECTED,
-		ReplicaConnectedStateDISCONNECTED,
-	}
-}
-
-// ReplicaSynchronizationHealth - Link health state
-type ReplicaSynchronizationHealth string
-
-const (
-	ReplicaSynchronizationHealthHEALTHY          ReplicaSynchronizationHealth = "HEALTHY"
-	ReplicaSynchronizationHealthNOTHEALTHY       ReplicaSynchronizationHealth = "NOT_HEALTHY"
-	ReplicaSynchronizationHealthPARTIALLYHEALTHY ReplicaSynchronizationHealth = "PARTIALLY_HEALTHY"
-)
-
-// PossibleReplicaSynchronizationHealthValues returns the possible values for the ReplicaSynchronizationHealth const type.
-func PossibleReplicaSynchronizationHealthValues() []ReplicaSynchronizationHealth {
-	return []ReplicaSynchronizationHealth{
-		ReplicaSynchronizationHealthHEALTHY,
-		ReplicaSynchronizationHealthNOTHEALTHY,
-		ReplicaSynchronizationHealthPARTIALLYHEALTHY,
-	}
-}
-
 type ReplicaType string
 
 const (
@@ -2188,7 +2105,7 @@ func PossibleReplicaTypeValues() []ReplicaType {
 	}
 }
 
-// ReplicationLinkType - Link type (GEO, NAMED, STANDBY).
+// ReplicationLinkType - Link type (GEO, NAMED, STANDBY). Update operation does not support NAMED.
 type ReplicationLinkType string
 
 const (
@@ -2206,19 +2123,19 @@ func PossibleReplicationLinkTypeValues() []ReplicationLinkType {
 	}
 }
 
-// ReplicationModeType - Replication mode of the link
-type ReplicationModeType string
+// ReplicationMode - The replication mode of a distributed availability group. Parameter will be ignored during link creation.
+type ReplicationMode string
 
 const (
-	ReplicationModeTypeAsync ReplicationModeType = "Async"
-	ReplicationModeTypeSync  ReplicationModeType = "Sync"
+	ReplicationModeAsync ReplicationMode = "Async"
+	ReplicationModeSync  ReplicationMode = "Sync"
 )
 
-// PossibleReplicationModeTypeValues returns the possible values for the ReplicationModeType const type.
-func PossibleReplicationModeTypeValues() []ReplicationModeType {
-	return []ReplicationModeType{
-		ReplicationModeTypeAsync,
-		ReplicationModeTypeSync,
+// PossibleReplicationModeValues returns the possible values for the ReplicationMode const type.
+func PossibleReplicationModeValues() []ReplicationMode {
+	return []ReplicationMode{
+		ReplicationModeAsync,
+		ReplicationModeSync,
 	}
 }
 
@@ -2290,22 +2207,6 @@ func PossibleRestorePointTypeValues() []RestorePointType {
 	return []RestorePointType{
 		RestorePointTypeCONTINUOUS,
 		RestorePointTypeDISCRETE,
-	}
-}
-
-// RoleChangeType - The type of the role change, can be Planned or Forced.
-type RoleChangeType string
-
-const (
-	RoleChangeTypeForced  RoleChangeType = "Forced"
-	RoleChangeTypePlanned RoleChangeType = "Planned"
-)
-
-// PossibleRoleChangeTypeValues returns the possible values for the RoleChangeType const type.
-func PossibleRoleChangeTypeValues() []RoleChangeType {
-	return []RoleChangeType{
-		RoleChangeTypeForced,
-		RoleChangeTypePlanned,
 	}
 }
 
@@ -2531,22 +2432,6 @@ func PossibleSecurityEventTypeValues() []SecurityEventType {
 		SecurityEventTypeSQLInjectionExploit,
 		SecurityEventTypeSQLInjectionVulnerability,
 		SecurityEventTypeUndefined,
-	}
-}
-
-// SeedingModeType - Database seeding mode – can be Automatic (default), or Manual for supported scenarios.
-type SeedingModeType string
-
-const (
-	SeedingModeTypeAutomatic SeedingModeType = "Automatic"
-	SeedingModeTypeManual    SeedingModeType = "Manual"
-)
-
-// PossibleSeedingModeTypeValues returns the possible values for the SeedingModeType const type.
-func PossibleSeedingModeTypeValues() []SeedingModeType {
-	return []SeedingModeType{
-		SeedingModeTypeAutomatic,
-		SeedingModeTypeManual,
 	}
 }
 

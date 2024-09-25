@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elasticsan/armelasticsan"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/907b79c0a6a660826e54dc1f16ea14b831b201d2/specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2023-01-01/examples/PrivateEndpointConnections_Create_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/21c2852d62ccc3abe9cc3800c989c6826f8363dc/specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2024-05-01/examples/PrivateEndpointConnections_Create_MaximumSet_Gen.json
 func ExamplePrivateEndpointConnectionsClient_BeginCreate_privateEndpointConnectionsCreateMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -79,7 +79,7 @@ func ExamplePrivateEndpointConnectionsClient_BeginCreate_privateEndpointConnecti
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/907b79c0a6a660826e54dc1f16ea14b831b201d2/specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2023-01-01/examples/PrivateEndpointConnections_Create_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/21c2852d62ccc3abe9cc3800c989c6826f8363dc/specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2024-05-01/examples/PrivateEndpointConnections_Create_MinimumSet_Gen.json
 func ExamplePrivateEndpointConnectionsClient_BeginCreate_privateEndpointConnectionsCreateMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -133,7 +133,7 @@ func ExamplePrivateEndpointConnectionsClient_BeginCreate_privateEndpointConnecti
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/907b79c0a6a660826e54dc1f16ea14b831b201d2/specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2023-01-01/examples/PrivateEndpointConnections_Get_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/21c2852d62ccc3abe9cc3800c989c6826f8363dc/specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2024-05-01/examples/PrivateEndpointConnections_Get_MaximumSet_Gen.json
 func ExamplePrivateEndpointConnectionsClient_Get_privateEndpointConnectionsGetMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -179,7 +179,7 @@ func ExamplePrivateEndpointConnectionsClient_Get_privateEndpointConnectionsGetMa
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/907b79c0a6a660826e54dc1f16ea14b831b201d2/specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2023-01-01/examples/PrivateEndpointConnections_Get_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/21c2852d62ccc3abe9cc3800c989c6826f8363dc/specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2024-05-01/examples/PrivateEndpointConnections_Get_MinimumSet_Gen.json
 func ExamplePrivateEndpointConnectionsClient_Get_privateEndpointConnectionsGetMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -225,7 +225,7 @@ func ExamplePrivateEndpointConnectionsClient_Get_privateEndpointConnectionsGetMi
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/907b79c0a6a660826e54dc1f16ea14b831b201d2/specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2023-01-01/examples/PrivateEndpointConnections_Delete_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/21c2852d62ccc3abe9cc3800c989c6826f8363dc/specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2024-05-01/examples/PrivateEndpointConnections_Delete_MaximumSet_Gen.json
 func ExamplePrivateEndpointConnectionsClient_BeginDelete_privateEndpointConnectionsDeleteMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -246,7 +246,7 @@ func ExamplePrivateEndpointConnectionsClient_BeginDelete_privateEndpointConnecti
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/907b79c0a6a660826e54dc1f16ea14b831b201d2/specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2023-01-01/examples/PrivateEndpointConnections_Delete_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/21c2852d62ccc3abe9cc3800c989c6826f8363dc/specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2024-05-01/examples/PrivateEndpointConnections_Delete_MinimumSet_Gen.json
 func ExamplePrivateEndpointConnectionsClient_BeginDelete_privateEndpointConnectionsDeleteMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -267,7 +267,7 @@ func ExamplePrivateEndpointConnectionsClient_BeginDelete_privateEndpointConnecti
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/907b79c0a6a660826e54dc1f16ea14b831b201d2/specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2023-01-01/examples/PrivateEndpointConnections_List_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/21c2852d62ccc3abe9cc3800c989c6826f8363dc/specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2024-05-01/examples/PrivateEndpointConnections_List_MaximumSet_Gen.json
 func ExamplePrivateEndpointConnectionsClient_NewListPager_privateEndpointConnectionsListMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -321,7 +321,7 @@ func ExamplePrivateEndpointConnectionsClient_NewListPager_privateEndpointConnect
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/907b79c0a6a660826e54dc1f16ea14b831b201d2/specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2023-01-01/examples/PrivateEndpointConnections_List_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/21c2852d62ccc3abe9cc3800c989c6826f8363dc/specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2024-05-01/examples/PrivateEndpointConnections_List_MinimumSet_Gen.json
 func ExamplePrivateEndpointConnectionsClient_NewListPager_privateEndpointConnectionsListMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -30,6 +30,16 @@ type AccessProfile struct {
 type AdvancedNetworking struct {
 	// Observability profile to enable advanced network metrics and flow logs with historical contexts.
 	Observability *AdvancedNetworkingObservability
+
+	// Security profile to enable security features on cilium based cluster.
+	Security *AdvancedNetworkingSecurity
+}
+
+// AdvancedNetworkingFQDNPolicy - FQDNFiltering profile to enable FQDN Policy filtering on cilium based cluster.
+type AdvancedNetworkingFQDNPolicy struct {
+	// This feature allows user to configure network policy based on DNS (FQDN) names. It can be enabled only on cilium based
+	// clusters. If not specified, the default is false.
+	Enabled *bool
 }
 
 // AdvancedNetworkingObservability - Observability profile to enable advanced network metrics and flow logs with historical
@@ -37,6 +47,17 @@ type AdvancedNetworking struct {
 type AdvancedNetworkingObservability struct {
 	// Indicates the enablement of Advanced Networking observability functionalities on clusters.
 	Enabled *bool
+
+	// Management of TLS certificates for querying network flow logs via the flow log endpoint for Advanced Networking observability
+	// clusters. If not specified, the default is Managed. For more information
+	// see aka.ms/acnstls.
+	TLSManagement *TLSManagement
+}
+
+// AdvancedNetworkingSecurity - Security profile to enable security features on cilium based cluster.
+type AdvancedNetworkingSecurity struct {
+	// FQDNFiltering profile to enable FQDN Policy filtering on cilium based cluster.
+	FqdnPolicy *AdvancedNetworkingFQDNPolicy
 }
 
 // AgentPool - Agent Pool.
@@ -100,6 +121,11 @@ type AgentPoolDeleteMachinesParameter struct {
 }
 
 type AgentPoolGPUProfile struct {
+	// Specify the type of GPU driver to install when creating Windows agent pools. If not provided, AKS selects the driver based
+	// on system compatibility. This cannot be changed once the AgentPool has been
+	// created. This cannot be set on Linux AgentPools. For Linux AgentPools, the driver is selected based on system compatibility.
+	DriverType *DriverType
+
 	// The default value is true when the vmSize of the agent pool contains a GPU, false otherwise. GPU Driver Installation can
 	// only be set true when VM has an associated GPU resource. Setting this field to
 	// false prevents automatic GPU driver installation. In that case, in order for the GPU to be usable, the user must perform
@@ -750,7 +776,7 @@ type Machine struct {
 
 // MachineIPAddress - The machine IP address details.
 type MachineIPAddress struct {
-	// READ-ONLY; To determine if address belongs IPv4 or IPv6 family.
+	// READ-ONLY; To determine if address belongs IPv4 or IPv6 family
 	Family *IPFamily
 
 	// READ-ONLY; IPv4 or IPv6 address of the machine
@@ -1599,6 +1625,11 @@ type ManagedClusterIngressProfile struct {
 	WebAppRouting *ManagedClusterIngressProfileWebAppRouting
 }
 
+type ManagedClusterIngressProfileNginx struct {
+	// Ingress type for the default NginxIngressController custom resource
+	DefaultIngressControllerType *NginxIngressControllerType
+}
+
 // ManagedClusterIngressProfileWebAppRouting - Web App Routing settings for the ingress profile.
 type ManagedClusterIngressProfileWebAppRouting struct {
 	// Resource IDs of the DNS zones to be associated with the Web App Routing add-on. Used only when Web App Routing is enabled.
@@ -1608,6 +1639,9 @@ type ManagedClusterIngressProfileWebAppRouting struct {
 
 	// Whether to enable Web App Routing.
 	Enabled *bool
+
+	// Configuration for the default NginxIngressController. See more at https://learn.microsoft.com/en-us/azure/aks/app-routing-nginx-configuration#the-default-nginx-ingress-controller.
+	Nginx *ManagedClusterIngressProfileNginx
 
 	// READ-ONLY; Managed identity of the Web Application Routing add-on. This is the identity that should be granted permissions,
 	// for example, to manage the associated Azure DNS resource and get certificates from
@@ -2872,8 +2906,7 @@ type ScaleProfile struct {
 	// AutoScaleProfile is allowed.
 	Autoscale []*AutoScaleProfile
 
-	// Specifications on how to scale the VirtualMachines agent pool to a fixed size. Currently, at most one ManualScaleProfile
-	// is allowed.
+	// Specifications on how to scale the VirtualMachines agent pool to a fixed size.
 	Manual []*ManualScaleProfile
 }
 

@@ -76,7 +76,7 @@
 # AzureSDKOwners: @lirenhe
 # ServiceLabel: %Mgmt
 # PRLabel: %Mgmt
-/sdk/resourcemanager/         @ArcturusZhang @lirenhe @tadelesh @raych1
+/sdk/resourcemanager/         @ArcturusZhang @lirenhe @tadelesh
 
 # AzureSDKOwners: @jhendrixMSFT
 # ServiceOwner: @tanyasethi-msft
@@ -622,8 +622,8 @@
 /.github/CODEOWNERS           @rickwinter @sandeep-sen @Azure/azure-sdk-eng
 
 # Add owners for go sdk tool
-/eng/tools/generator          @ArcturusZhang @lirenhe @tadelesh @raych1
-/eng/tools/internal           @ArcturusZhang @lirenhe @tadelesh @raych1
+/eng/tools/generator          @ArcturusZhang @lirenhe @tadelesh
+/eng/tools/internal           @ArcturusZhang @lirenhe @tadelesh
 
 # Add owners for notifications for specific pipelines
 /eng/common/pipelines/codeowners-linter.yml       @rickwinter

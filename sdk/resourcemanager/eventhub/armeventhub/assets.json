@@ -2,5 +2,5 @@
   "AssetsRepo": "Azure/azure-sdk-assets",
   "AssetsRepoPrefixPath": "go",
   "TagPrefix": "go/resourcemanager/eventhub/armeventhub",
-  "Tag": "go/resourcemanager/eventhub/armeventhub_90bd8b77a0"
+  "Tag": "go/resourcemanager/eventhub/armeventhub_cdf8f28bdf"
 }

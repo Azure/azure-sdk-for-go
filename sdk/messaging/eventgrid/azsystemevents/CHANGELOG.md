@@ -1,5 +1,15 @@
 # Release History
 
+## 0.4.3 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 0.4.2 (2024-09-19)
 
 ### Features Added

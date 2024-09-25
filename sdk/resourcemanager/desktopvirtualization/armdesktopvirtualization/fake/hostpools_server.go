@@ -46,6 +46,10 @@ type HostPoolsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(resourceGroupName string, options *armdesktopvirtualization.HostPoolsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armdesktopvirtualization.HostPoolsClientListByResourceGroupResponse])
 
+	// ListRegistrationTokens is the fake for method HostPoolsClient.ListRegistrationTokens
+	// HTTP status codes to indicate success: http.StatusOK
+	ListRegistrationTokens func(ctx context.Context, resourceGroupName string, hostPoolName string, options *armdesktopvirtualization.HostPoolsClientListRegistrationTokensOptions) (resp azfake.Responder[armdesktopvirtualization.HostPoolsClientListRegistrationTokensResponse], errResp azfake.ErrorResponder)
+
 	// RetrieveRegistrationToken is the fake for method HostPoolsClient.RetrieveRegistrationToken
 	// HTTP status codes to indicate success: http.StatusOK
 	RetrieveRegistrationToken func(ctx context.Context, resourceGroupName string, hostPoolName string, options *armdesktopvirtualization.HostPoolsClientRetrieveRegistrationTokenOptions) (resp azfake.Responder[armdesktopvirtualization.HostPoolsClientRetrieveRegistrationTokenResponse], errResp azfake.ErrorResponder)
@@ -96,6 +100,8 @@ func (h *HostPoolsServerTransport) Do(req *http.Request) (*http.Response, error)
 		resp, err = h.dispatchNewListPager(req)
 	case "HostPoolsClient.NewListByResourceGroupPager":
 		resp, err = h.dispatchNewListByResourceGroupPager(req)
+	case "HostPoolsClient.ListRegistrationTokens":
+		resp, err = h.dispatchListRegistrationTokens(req)
 	case "HostPoolsClient.RetrieveRegistrationToken":
 		resp, err = h.dispatchRetrieveRegistrationToken(req)
 	case "HostPoolsClient.Update":
@@ -385,6 +391,39 @@ func (h *HostPoolsServerTransport) dispatchNewListByResourceGroupPager(req *http
 	}
 	if !server.PagerResponderMore(newListByResourceGroupPager) {
 		h.newListByResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (h *HostPoolsServerTransport) dispatchListRegistrationTokens(req *http.Request) (*http.Response, error) {
+	if h.srv.ListRegistrationTokens == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListRegistrationTokens not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DesktopVirtualization/hostPools/(?P<hostPoolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listRegistrationTokens`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	hostPoolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("hostPoolName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := h.srv.ListRegistrationTokens(req.Context(), resourceGroupNameParam, hostPoolNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RegistrationTokenList, req)
+	if err != nil {
+		return nil, err
 	}
 	return resp, nil
 }

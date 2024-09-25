@@ -8,6 +8,47 @@
 
 package armdesktopvirtualization
 
+// AppAttachPackageClientCreateOrUpdateResponse contains the response from method AppAttachPackageClient.CreateOrUpdate.
+type AppAttachPackageClientCreateOrUpdateResponse struct {
+	// Schema for App Attach Package properties.
+	AppAttachPackage
+}
+
+// AppAttachPackageClientDeleteResponse contains the response from method AppAttachPackageClient.Delete.
+type AppAttachPackageClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// AppAttachPackageClientGetResponse contains the response from method AppAttachPackageClient.Get.
+type AppAttachPackageClientGetResponse struct {
+	// Schema for App Attach Package properties.
+	AppAttachPackage
+}
+
+// AppAttachPackageClientListByResourceGroupResponse contains the response from method AppAttachPackageClient.NewListByResourceGroupPager.
+type AppAttachPackageClientListByResourceGroupResponse struct {
+	// List of App Attach Package definitions.
+	AppAttachPackageList
+}
+
+// AppAttachPackageClientListBySubscriptionResponse contains the response from method AppAttachPackageClient.NewListBySubscriptionPager.
+type AppAttachPackageClientListBySubscriptionResponse struct {
+	// List of App Attach Package definitions.
+	AppAttachPackageList
+}
+
+// AppAttachPackageClientUpdateResponse contains the response from method AppAttachPackageClient.Update.
+type AppAttachPackageClientUpdateResponse struct {
+	// Schema for App Attach Package properties.
+	AppAttachPackage
+}
+
+// AppAttachPackageInfoClientImportResponse contains the response from method AppAttachPackageInfoClient.NewImportPager.
+type AppAttachPackageInfoClientImportResponse struct {
+	// List of App Attach Package definitions.
+	AppAttachPackageList
+}
+
 // ApplicationGroupsClientCreateOrUpdateResponse contains the response from method ApplicationGroupsClient.CreateOrUpdate.
 type ApplicationGroupsClientCreateOrUpdateResponse struct {
 	// Represents a ApplicationGroup definition.
@@ -111,6 +152,12 @@ type HostPoolsClientGetResponse struct {
 type HostPoolsClientListByResourceGroupResponse struct {
 	// List of HostPool definitions.
 	HostPoolList
+}
+
+// HostPoolsClientListRegistrationTokensResponse contains the response from method HostPoolsClient.ListRegistrationTokens.
+type HostPoolsClientListRegistrationTokensResponse struct {
+	// List of RegistrationToken definitions.
+	RegistrationTokenList
 }
 
 // HostPoolsClientListResponse contains the response from method HostPoolsClient.NewListPager.

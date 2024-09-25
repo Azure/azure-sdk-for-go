@@ -10,8 +10,34 @@ package armdesktopvirtualization
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/desktopvirtualization/armdesktopvirtualization"
-	moduleVersion = "v2.2.0"
+	moduleVersion = "v2.3.0"
 )
+
+// AppAttachPackageArchitectures - Possible device architectures that an app attach package can be configured for
+type AppAttachPackageArchitectures string
+
+const (
+	AppAttachPackageArchitecturesALL     AppAttachPackageArchitectures = "ALL"
+	AppAttachPackageArchitecturesARM     AppAttachPackageArchitectures = "ARM"
+	AppAttachPackageArchitecturesARM64   AppAttachPackageArchitectures = "ARM64"
+	AppAttachPackageArchitecturesNeutral AppAttachPackageArchitectures = "Neutral"
+	AppAttachPackageArchitecturesX64     AppAttachPackageArchitectures = "x64"
+	AppAttachPackageArchitecturesX86     AppAttachPackageArchitectures = "x86"
+	AppAttachPackageArchitecturesX86A64  AppAttachPackageArchitectures = "x86a64"
+)
+
+// PossibleAppAttachPackageArchitecturesValues returns the possible values for the AppAttachPackageArchitectures const type.
+func PossibleAppAttachPackageArchitecturesValues() []AppAttachPackageArchitectures {
+	return []AppAttachPackageArchitectures{
+		AppAttachPackageArchitecturesALL,
+		AppAttachPackageArchitecturesARM,
+		AppAttachPackageArchitecturesARM64,
+		AppAttachPackageArchitecturesNeutral,
+		AppAttachPackageArchitecturesX64,
+		AppAttachPackageArchitecturesX86,
+		AppAttachPackageArchitecturesX86A64,
+	}
+}
 
 // ApplicationGroupType - Resource Type of ApplicationGroup.
 type ApplicationGroupType string
@@ -107,6 +133,24 @@ func PossibleDayOfWeekValues() []DayOfWeek {
 		DayOfWeekThursday,
 		DayOfWeekTuesday,
 		DayOfWeekWednesday,
+	}
+}
+
+// FailHealthCheckOnStagingFailure - Parameter indicating how the health check should behave if this package fails staging
+type FailHealthCheckOnStagingFailure string
+
+const (
+	FailHealthCheckOnStagingFailureDoNotFail       FailHealthCheckOnStagingFailure = "DoNotFail"
+	FailHealthCheckOnStagingFailureNeedsAssistance FailHealthCheckOnStagingFailure = "NeedsAssistance"
+	FailHealthCheckOnStagingFailureUnhealthy       FailHealthCheckOnStagingFailure = "Unhealthy"
+)
+
+// PossibleFailHealthCheckOnStagingFailureValues returns the possible values for the FailHealthCheckOnStagingFailure const type.
+func PossibleFailHealthCheckOnStagingFailureValues() []FailHealthCheckOnStagingFailure {
+	return []FailHealthCheckOnStagingFailure{
+		FailHealthCheckOnStagingFailureDoNotFail,
+		FailHealthCheckOnStagingFailureNeedsAssistance,
+		FailHealthCheckOnStagingFailureUnhealthy,
 	}
 }
 
@@ -266,6 +310,22 @@ func PossibleLoadBalancerTypeValues() []LoadBalancerType {
 	}
 }
 
+// PackageTimestamped - Is package timestamped so it can ignore the certificate expiry date
+type PackageTimestamped string
+
+const (
+	PackageTimestampedNotTimestamped PackageTimestamped = "NotTimestamped"
+	PackageTimestampedTimestamped    PackageTimestamped = "Timestamped"
+)
+
+// PossiblePackageTimestampedValues returns the possible values for the PackageTimestamped const type.
+func PossiblePackageTimestampedValues() []PackageTimestamped {
+	return []PackageTimestamped{
+		PackageTimestampedNotTimestamped,
+		PackageTimestampedTimestamped,
+	}
+}
+
 // PersonalDesktopAssignmentType - PersonalDesktopAssignment type for HostPool.
 type PersonalDesktopAssignmentType string
 
@@ -335,6 +395,26 @@ func PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointSer
 		PrivateEndpointServiceConnectionStatusApproved,
 		PrivateEndpointServiceConnectionStatusPending,
 		PrivateEndpointServiceConnectionStatusRejected,
+	}
+}
+
+// ProvisioningState - The current provisioning state.
+type ProvisioningState string
+
+const (
+	ProvisioningStateCanceled     ProvisioningState = "Canceled"
+	ProvisioningStateFailed       ProvisioningState = "Failed"
+	ProvisioningStateProvisioning ProvisioningState = "Provisioning"
+	ProvisioningStateSucceeded    ProvisioningState = "Succeeded"
+)
+
+// PossibleProvisioningStateValues returns the possible values for the ProvisioningState const type.
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return []ProvisioningState{
+		ProvisioningStateCanceled,
+		ProvisioningStateFailed,
+		ProvisioningStateProvisioning,
+		ProvisioningStateSucceeded,
 	}
 }
 

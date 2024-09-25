@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/desktopvirtualization/armdesktopvirtualization/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2023-09-05/examples/SessionHost_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2024-04-03/examples/SessionHost_Get.json
 func ExampleSessionHostsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -40,6 +40,14 @@ func ExampleSessionHostsClient_Get() {
 	// 	Name: to.Ptr("sessionHost1.microsoft.com"),
 	// 	Type: to.Ptr("Microsoft.DesktopVirtualization/hostPools/sessionHosts"),
 	// 	ID: to.Ptr("/subscriptions/daefabc0-95b4-48b3-b645-8a753a63c4fa/resourceGroups/resourceGroup1/providers/Microsoft.DesktopVirtualization/hostPools/hostPool1/sessionHosts/sessionHost1.microsoft.com"),
+	// 	SystemData: &armdesktopvirtualization.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.123Z"); return t}()),
+	// 		CreatedBy: to.Ptr("user1"),
+	// 		CreatedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.123Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("user2"),
+	// 		LastModifiedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
+	// 	},
 	// 	Properties: &armdesktopvirtualization.SessionHostProperties{
 	// 		AgentVersion: to.Ptr("1.0.0.1391"),
 	// 		AllowNewSession: to.Ptr(true),
@@ -68,18 +76,10 @@ func ExampleSessionHostsClient_Get() {
 	// 		UpdateState: to.Ptr(armdesktopvirtualization.UpdateStateSucceeded),
 	// 		VirtualMachineID: to.Ptr("29491b54-c033-4dec-b09a-18bf0ebafaef"),
 	// 	},
-	// 	SystemData: &armdesktopvirtualization.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.123Z"); return t}()),
-	// 		CreatedBy: to.Ptr("user1"),
-	// 		CreatedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.123Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("user2"),
-	// 		LastModifiedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
-	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2023-09-05/examples/SessionHost_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2024-04-03/examples/SessionHost_Delete.json
 func ExampleSessionHostsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -96,7 +96,7 @@ func ExampleSessionHostsClient_Delete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2023-09-05/examples/SessionHost_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2024-04-03/examples/SessionHost_Update.json
 func ExampleSessionHostsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -126,6 +126,14 @@ func ExampleSessionHostsClient_Update() {
 	// 	Name: to.Ptr("sessionHost1.microsoft.com"),
 	// 	Type: to.Ptr("Microsoft.DesktopVirtualization/hostPools/sessionhosts"),
 	// 	ID: to.Ptr("/subscriptions/daefabc0-95b4-48b3-b645-8a753a63c4fa/resourceGroups/resourceGroup1/providers/Microsoft.DesktopVirtualization/hostPools/hostPool1/sessionHosts/sessionHost1.microsoft.com"),
+	// 	SystemData: &armdesktopvirtualization.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.123Z"); return t}()),
+	// 		CreatedBy: to.Ptr("user1"),
+	// 		CreatedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.123Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("user2"),
+	// 		LastModifiedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
+	// 	},
 	// 	Properties: &armdesktopvirtualization.SessionHostProperties{
 	// 		AgentVersion: to.Ptr("1.0.0.1391"),
 	// 		AllowNewSession: to.Ptr(true),
@@ -154,18 +162,10 @@ func ExampleSessionHostsClient_Update() {
 	// 		UpdateState: to.Ptr(armdesktopvirtualization.UpdateStateSucceeded),
 	// 		VirtualMachineID: to.Ptr("29491b54-c033-4dec-b09a-18bf0ebafaef"),
 	// 	},
-	// 	SystemData: &armdesktopvirtualization.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.123Z"); return t}()),
-	// 		CreatedBy: to.Ptr("user1"),
-	// 		CreatedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.123Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("user2"),
-	// 		LastModifiedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
-	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2023-09-05/examples/SessionHost_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2024-04-03/examples/SessionHost_List.json
 func ExampleSessionHostsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -196,6 +196,14 @@ func ExampleSessionHostsClient_NewListPager() {
 		// 			Name: to.Ptr("sessionHost1.microsoft.com"),
 		// 			Type: to.Ptr("Microsoft.DesktopVirtualization/hostPools/sessionhosts"),
 		// 			ID: to.Ptr("/subscriptions/daefabc0-95b4-48b3-b645-8a753a63c4fa/resourceGroups/resourceGroup1/providers/Microsoft.DesktopVirtualization/hostPools/hostPool1/sessionHosts/sessionHost1.microsoft.com"),
+		// 			SystemData: &armdesktopvirtualization.SystemData{
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.123Z"); return t}()),
+		// 				CreatedBy: to.Ptr("user1"),
+		// 				CreatedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.123Z"); return t}()),
+		// 				LastModifiedBy: to.Ptr("user2"),
+		// 				LastModifiedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
+		// 			},
 		// 			Properties: &armdesktopvirtualization.SessionHostProperties{
 		// 				AgentVersion: to.Ptr("1.0.0.1391"),
 		// 				AllowNewSession: to.Ptr(true),
@@ -224,6 +232,11 @@ func ExampleSessionHostsClient_NewListPager() {
 		// 				UpdateState: to.Ptr(armdesktopvirtualization.UpdateStateSucceeded),
 		// 				VirtualMachineID: to.Ptr("29491b54-c033-4dec-b09a-18bf0ebafaef"),
 		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("sessionHost2.microsoft.com"),
+		// 			Type: to.Ptr("Microsoft.DesktopVirtualization/hostPools/sessionhosts"),
+		// 			ID: to.Ptr("/subscriptions/daefabc0-95b4-48b3-b645-8a753a63c4fa/resourceGroups/resourceGroup1/providers/Microsoft.DesktopVirtualization/hostPools/hostPool1/sessionHosts/sessionHost2microsoft.com"),
 		// 			SystemData: &armdesktopvirtualization.SystemData{
 		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.123Z"); return t}()),
 		// 				CreatedBy: to.Ptr("user1"),
@@ -232,11 +245,6 @@ func ExampleSessionHostsClient_NewListPager() {
 		// 				LastModifiedBy: to.Ptr("user2"),
 		// 				LastModifiedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
 		// 			},
-		// 		},
-		// 		{
-		// 			Name: to.Ptr("sessionHost2.microsoft.com"),
-		// 			Type: to.Ptr("Microsoft.DesktopVirtualization/hostPools/sessionhosts"),
-		// 			ID: to.Ptr("/subscriptions/daefabc0-95b4-48b3-b645-8a753a63c4fa/resourceGroups/resourceGroup1/providers/Microsoft.DesktopVirtualization/hostPools/hostPool1/sessionHosts/sessionHost2microsoft.com"),
 		// 			Properties: &armdesktopvirtualization.SessionHostProperties{
 		// 				AgentVersion: to.Ptr("1.0.0.1391"),
 		// 				AllowNewSession: to.Ptr(true),
@@ -264,14 +272,6 @@ func ExampleSessionHostsClient_NewListPager() {
 		// 				UpdateErrorMessage: to.Ptr(""),
 		// 				UpdateState: to.Ptr(armdesktopvirtualization.UpdateStateSucceeded),
 		// 				VirtualMachineID: to.Ptr("39491b54-c033-4dec-b09a-18bf0ebafaef"),
-		// 			},
-		// 			SystemData: &armdesktopvirtualization.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.123Z"); return t}()),
-		// 				CreatedBy: to.Ptr("user1"),
-		// 				CreatedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.123Z"); return t}()),
-		// 				LastModifiedBy: to.Ptr("user2"),
-		// 				LastModifiedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
 		// 			},
 		// 	}},
 		// }

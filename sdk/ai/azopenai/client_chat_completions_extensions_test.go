@@ -54,7 +54,7 @@ func TestChatExtensionsStreaming_extensions_bringYourOwnData(t *testing.T) {
 		DeploymentName: &azureOpenAI.ChatCompletionsOYD.Model,
 	}, nil)
 
-	require.NoError(t, err)
+	customRequireNoError(t, err, true)
 	defer streamResp.ChatCompletionsStream.Close()
 
 	text := ""

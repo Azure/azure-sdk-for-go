@@ -438,12 +438,20 @@ func customRequireNoError(t *testing.T, err error, throttlingAllowed bool) {
 	}
 
 	if throttlingAllowed {
-		if respErr := (*azcore.ResponseError)(nil); errors.As(err, &respErr) && respErr.StatusCode == http.StatusTooManyRequests {
+		var respErr *azcore.ResponseError
+
+		switch {
+		case errors.As(err, &respErr) && respErr.StatusCode == http.StatusTooManyRequests:
 			t.Skip("Skipping test because of throttling (http.StatusTooManyRequests)")
 			return
-		}
-
-		if errors.Is(err, context.DeadlineExceeded) {
+		// If you're using OYD, then the response error (from Azure OpenAI) will be a 400, but the underlying text will mention
+		// that it's 429'd.
+		// 	  "code": 400,
+		// 	  "message": "Server responded with status 429. Error message: {'error': {'code': '429', 'message': 'Rate limit is exceeded. Try again in 1 seconds.'}}"
+		case errors.As(err, &respErr) && respErr.StatusCode == http.StatusBadRequest && strings.Contains(err.Error(), "Rate limit is exceeded"):
+			t.Skip("Skipping test because of throttling in OYD resource")
+			return
+		case errors.Is(err, context.DeadlineExceeded):
 			t.Skip("Skipping test because of throttling (DeadlineExceeded)")
 			return
 		}
